@@ -1,6 +1,13 @@
 // Service worker mínimo: cachea el shell de la app para que la PWA
 // arranque instantáneamente y funcione (parcialmente) offline.
-const CACHE_NAME = "hello-supabase-__BUILD_ID__";
+//
+// Este repo aloja varias apps en subcarpetas distintas, cada una con su
+// propio service worker, pero el Cache Storage es compartido por todo el
+// origen (pacosql.github.io). Por eso el nombre de caché lleva el prefijo
+// "weights-" y el cleanup de "activate" solo toca cachés con ese prefijo,
+// para no borrar nunca la caché de otra app del mismo hosting.
+const CACHE_PREFIX = "weights-shell-";
+const CACHE_NAME = `${CACHE_PREFIX}__BUILD_ID__`;
 const SHELL = [
   "./",
   "./index.html",
@@ -20,7 +27,11 @@ self.addEventListener("install", (event) => {
 self.addEventListener("activate", (event) => {
   event.waitUntil(
     caches.keys().then((keys) =>
-      Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)))
+      Promise.all(
+        keys
+          .filter((k) => k.startsWith(CACHE_PREFIX) && k !== CACHE_NAME)
+          .map((k) => caches.delete(k))
+      )
     )
   );
   self.clients.claim();

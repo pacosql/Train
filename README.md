@@ -1,70 +1,54 @@
-# Hello Supabase 👋
+# Train — hosting de pruebas de concepto
 
-PWA mínima (sin build, HTML/CSS/JS puro) para comprobar que la conexión a
-Supabase funciona, pensada para instalarse en el iPhone como app de
-pantalla de inicio.
+Este repo es un **hosting compartido** para pequeñas apps de prueba de
+concepto, todas desplegadas juntas en GitHub Pages y, cuando lo
+necesitan, compartiendo un mismo proyecto de Supabase.
 
-## 1. Configura tus credenciales
+## Convención
 
-Edita [`config.js`](./config.js) con los datos de tu proyecto (Supabase →
-*Project Settings → API*):
+Cada app vive en su propia carpeta en la raíz del repo y sigue estas
+reglas para no interferir con las demás:
 
-```js
-window.SUPABASE_CONFIG = {
-  url: "https://TU-PROYECTO.supabase.co",
-  anonKey: "TU-ANON-KEY",
-};
-```
+- **Carpeta propia**: `<app>/index.html`, `<app>/manifest.json`,
+  `<app>/sw.js`, `<app>/config.js`, `<app>/icons/`.
+- **URL propia**: `https://<usuario>.github.io/Train/<app>/`.
+- **Prefijo propio en Supabase**: todas las tablas de la app se llaman
+  `<app>_algo` (p. ej. `weights_hello`, `weights_entries`), aunque
+  compartan proyecto de Supabase con otras apps de este repo.
+- **Caché propia**: el `CACHE_NAME` de cada `sw.js` empieza por
+  `<app>-`, y su limpieza en `activate` solo borra cachés con ese
+  prefijo — así el service worker de una app nunca borra la caché de
+  otra (el Cache Storage es compartido por todo el origen
+  `github.io`).
+- **Build id**: cada `index.html`/`sw.js` lleva un marcador
+  `__BUILD_ID__` que el workflow de despliegue sustituye por el hash
+  corto del commit, visible al pie de página — sirve para confirmar
+  de un vistazo qué versión estás viendo.
 
-La `anon key` es pública por diseño (se usa desde el navegador) y va
-protegida por las políticas de *Row Level Security* de tus tablas, así
-que no hay problema en que viva en un archivo del repo.
+## Apps
 
-## 2. (Opcional) Crea la tabla de prueba
+| App | Carpeta | URL | Prefijo Supabase |
+|---|---|---|---|
+| 🏋️ Weights | [`weights/`](./weights) | `/Train/weights/` | `weights_` |
 
-La app funciona igualmente sin esta tabla (te avisa con instrucciones si
-no existe), pero para ver datos reales yendo y viniendo, ejecuta esto en
-el **SQL Editor** de Supabase:
+## Añadir una app nueva
 
-```sql
-create table hello (
-  id bigint generated always as identity primary key,
-  message text not null,
-  created_at timestamptz default now()
-);
+1. Crea `<app>/` con su propio `index.html`, `manifest.json`, `sw.js`,
+   `config.js` e `icons/` (puedes copiar la estructura de `weights/`
+   como plantilla).
+2. Usa un `CACHE_NAME` con prefijo `<app>-` en su `sw.js`.
+3. Prefija todas sus tablas de Supabase con `<app>_`.
+4. Añade una entrada a la tabla de arriba y, opcionalmente, una tarjeta
+   en el [`index.html`](./index.html) de la raíz.
 
-alter table hello enable row level security;
-
-create policy "allow anon read" on hello
-  for select to anon using (true);
-
-create policy "allow anon insert" on hello
-  for insert to anon with check (true);
-```
-
-## 3. Publica el sitio (GitHub Pages)
+## 3. Publica el hosting (GitHub Pages)
 
 1. En GitHub: **Settings → Pages → Build and deployment → Source**, elige
-   **GitHub Actions** (solo hay que hacerlo una vez).
+   **GitHub Actions** (solo hay que hacerlo una vez para todo el repo).
 2. El workflow [`.github/workflows/pages.yml`](./.github/workflows/pages.yml)
-   despliega automáticamente en cada push a `main`.
+   despliega automáticamente en cada push a `main`, y sella cada
+   `index.html`/`sw.js` de cada app con el hash del commit.
 3. Para probarlo ahora mismo sin esperar al merge: pestaña **Actions** →
-   *Deploy static site to Pages* → **Run workflow**, eligiendo esta rama.
-4. Cuando termine, tendrás una URL tipo
-   `https://<tu-usuario>.github.io/Train/`.
-
-## 4. Instálala en el iPhone
-
-1. Abre la URL de GitHub Pages en **Safari** (tiene que ser Safari, no
-   Chrome, para que funcione "Añadir a inicio").
-2. Toca el icono de compartir (el cuadrado con la flecha hacia arriba).
-3. Elige **"Añadir a pantalla de inicio"**.
-4. Listo: se abre a pantalla completa como una app nativa, con su propio
-   icono.
-
-## Qué hace la app
-
-- Comprueba la conexión básica contra la API REST de Supabase (`ping`).
-- Lee y escribe filas en la tabla `hello`, si existe.
-- Se puede usar sin conexión gracias a un Service Worker que cachea el
-  "shell" de la app (las llamadas a Supabase nunca se cachean).
+   *Deploy static site to Pages* → **Run workflow**, eligiendo la rama.
+4. Cuando termine, la raíz queda en `https://<tu-usuario>.github.io/Train/`
+   con enlaces a cada app.
