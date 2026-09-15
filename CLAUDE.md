@@ -91,6 +91,7 @@ Al crear una app nueva `<app>/`:
 |---|---|---|
 | 🏋️ Weights | `weights/` | `weights_` |
 | ⚽ Football | `football/` | `football_` |
+| 🎾 Pistas | `pistas/` | `pistas_` |
 
 (Actualiza esta tabla al añadir una app nueva.)
 
