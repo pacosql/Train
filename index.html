@@ -187,7 +187,7 @@ create policy "allow anon insert" on hello
       try {
         const start = performance.now();
         const res = await fetch(`${url}/rest/v1/`, {
-          headers: { apikey: anonKey },
+          headers: { apikey: anonKey, Authorization: `Bearer ${anonKey}` },
         });
         const ms = Math.round(performance.now() - start);
         if (res.ok || res.status === 404) {
@@ -220,7 +220,7 @@ create policy "allow anon insert" on hello
 
       if (error) {
         tableDot.classList.add("err");
-        if (error.code === "42P01") {
+        if (error.code === "42P01" || error.code === "PGRST205") {
           tableStatus.textContent = "La tabla aún no existe.";
           tableHint.hidden = false;
         } else {
