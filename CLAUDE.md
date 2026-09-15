@@ -90,6 +90,7 @@ Al crear una app nueva `<app>/`:
 | App | Carpeta | Prefijo Supabase |
 |---|---|---|
 | 🏋️ Weights | `weights/` | `weights_` |
+| 🎾 Pistas | `pistas/` | `pistas_` |
 
 (Actualiza esta tabla al añadir una app nueva.)
 
