@@ -1,0 +1,290 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Football</title>
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#216e39" />
+
+  <!-- iOS: instalar como app de pantalla de inicio -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Football" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" href="icons/icon-192.png" />
+
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #f5f7f5;
+      --card: #ffffff;
+      --text: #10230f;
+      --muted: #5b6b5b;
+      --accent: #216e39;
+      --accent-dark: #16542a;
+      --danger: #e5484d;
+      --border: #e2e8e2;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0d1a0f;
+        --card: #16211a;
+        --text: #eaf3ea;
+        --muted: #93a693;
+        --border: #24322a;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      padding: 24px 16px 40px;
+    }
+    .wrap { max-width: 480px; margin: 0 auto; }
+    h1 { font-size: 2rem; margin: 8px 0 4px; text-align: center; }
+    .sub { color: var(--muted); margin: 0 0 24px; font-size: 0.95rem; text-align: center; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+    .card h2 { font-size: 1rem; margin: 0 0 12px; display: flex; align-items: center; gap: 8px; }
+    .dot {
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--muted); flex-shrink: 0;
+      transition: background 0.2s;
+    }
+    .dot.ok { background: var(--accent); }
+    .dot.err { background: var(--danger); }
+    .status-text { font-size: 0.9rem; color: var(--muted); white-space: pre-wrap; word-break: break-word; }
+    button {
+      background: var(--accent);
+      color: #eafff0;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    button:active { background: var(--accent-dark); }
+    button:disabled { opacity: 0.5; cursor: default; }
+    .row { display: flex; gap: 8px; }
+    input[type="text"] {
+      flex: 1;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+    ul.messages { list-style: none; margin: 12px 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+    ul.messages li {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 0.9rem;
+    }
+    ul.messages li .meta { color: var(--muted); font-size: 0.75rem; margin-top: 2px; }
+    .hint {
+      font-size: 0.8rem;
+      color: var(--muted);
+      background: var(--bg);
+      border: 1px dashed var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-top: 10px;
+    }
+    .build-id {
+      text-align: center;
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-top: 24px;
+      font-family: ui-monospace, monospace;
+    }
+    pre {
+      background: var(--bg);
+      border-radius: 8px;
+      padding: 8px 10px;
+      overflow-x: auto;
+      font-size: 0.75rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>⚽ Fútbol</h1>
+    <p class="sub">Hello World de este hosting, listo para instalar como app.</p>
+
+    <div class="card">
+      <h2><span id="ping-dot" class="dot"></span> Conexión con Supabase</h2>
+      <div id="ping-status" class="status-text">Comprobando…</div>
+    </div>
+
+    <div class="card">
+      <h2><span id="table-dot" class="dot"></span> Tabla de prueba <code>football_hello</code></h2>
+      <div id="table-status" class="status-text">Comprobando…</div>
+
+      <div id="table-ui" hidden>
+        <div class="row">
+          <input id="msg-input" type="text" placeholder="Escribe un mensaje…" maxlength="200" />
+          <button id="send-btn">Enviar</button>
+        </div>
+        <ul id="messages" class="messages"></ul>
+      </div>
+
+      <div id="table-hint" class="hint" hidden>
+        No existe la tabla <code>football_hello</code> todavía. Ve al SQL Editor de tu
+        proyecto de Supabase y ejecuta:
+        <pre>create table football_hello (
+  id bigint generated always as identity primary key,
+  message text not null,
+  created_at timestamptz default now()
+);
+
+alter table football_hello enable row level security;
+
+create policy "allow anon read" on football_hello
+  for select to anon using (true);
+
+create policy "allow anon insert" on football_hello
+  for insert to anon with check (true);</pre>
+        Luego recarga esta página.
+      </div>
+    </div>
+
+    <div class="build-id">build __BUILD_ID__</div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="config.js"></script>
+  <script>
+    const { url, anonKey } = window.FOOTBALL_CONFIG;
+    const pingDot = document.getElementById("ping-dot");
+    const pingStatus = document.getElementById("ping-status");
+    const tableDot = document.getElementById("table-dot");
+    const tableStatus = document.getElementById("table-status");
+    const tableUi = document.getElementById("table-ui");
+    const tableHint = document.getElementById("table-hint");
+    const messagesEl = document.getElementById("messages");
+    const input = document.getElementById("msg-input");
+    const sendBtn = document.getElementById("send-btn");
+
+    if (!url || url.includes("YOUR-PROJECT") || !anonKey || anonKey.includes("YOUR-ANON-KEY")) {
+      pingDot.classList.add("err");
+      pingStatus.textContent = "Faltan credenciales: edita config.js con tu URL y anon key de Supabase.";
+      tableDot.classList.add("err");
+      tableStatus.textContent = "Sin credenciales no se puede comprobar.";
+    } else {
+      const client = supabase.createClient(url, anonKey);
+      runChecks(client);
+    }
+
+    async function runChecks(client) {
+      // 1) Ping básico: ¿responde la API REST de Supabase con estas credenciales?
+      // (usamos HEAD sobre la propia tabla "football_hello" en vez de la raíz
+      // /rest/v1/, que algunos proyectos bloquean con 401 aunque la key sea válida)
+      try {
+        const start = performance.now();
+        const res = await fetch(`${url}/rest/v1/football_hello?select=id&limit=1`, {
+          method: "HEAD",
+          headers: { apikey: anonKey, Authorization: `Bearer ${anonKey}` },
+        });
+        const ms = Math.round(performance.now() - start);
+        if (res.ok || res.status === 404 || res.status === 406) {
+          pingDot.classList.add("ok");
+          pingStatus.textContent = `Conectado ✅ (${ms} ms) — ${url}`;
+        } else {
+          pingDot.classList.add("err");
+          pingStatus.textContent = `Respuesta inesperada: HTTP ${res.status}`;
+        }
+      } catch (err) {
+        pingDot.classList.add("err");
+        pingStatus.textContent = `Error de red: ${err.message}`;
+      }
+
+      // 2) Tabla de prueba "football_hello"
+      await refreshMessages(client);
+
+      sendBtn.addEventListener("click", () => sendMessage(client));
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") sendMessage(client);
+      });
+    }
+
+    async function refreshMessages(client) {
+      const { data, error } = await client
+        .from("football_hello")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .limit(20);
+
+      if (error) {
+        tableDot.classList.add("err");
+        if (error.code === "42P01" || error.code === "PGRST205") {
+          tableStatus.textContent = "La tabla aún no existe.";
+          tableHint.hidden = false;
+        } else {
+          tableStatus.textContent = `Error: ${error.message}`;
+        }
+        tableUi.hidden = true;
+        return;
+      }
+
+      tableDot.classList.add("ok");
+      tableStatus.textContent = `Conectado ✅ — ${data.length} mensaje(s)`;
+      tableHint.hidden = true;
+      tableUi.hidden = false;
+      renderMessages(data);
+    }
+
+    function renderMessages(rows) {
+      messagesEl.innerHTML = "";
+      for (const row of rows) {
+        const li = document.createElement("li");
+        const when = row.created_at ? new Date(row.created_at).toLocaleString() : "";
+        li.innerHTML = `${escapeHtml(row.message)}<div class="meta">${when}</div>`;
+        messagesEl.appendChild(li);
+      }
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement("div");
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    async function sendMessage(client) {
+      const value = input.value.trim();
+      if (!value) return;
+      sendBtn.disabled = true;
+      const { error } = await client.from("football_hello").insert({ message: value });
+      sendBtn.disabled = false;
+      if (error) {
+        alert(`No se pudo enviar: ${error.message}`);
+        return;
+      }
+      input.value = "";
+      await refreshMessages(client);
+    }
+
+    // Registrar el service worker para poder instalar la PWA.
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("sw.js").catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>
