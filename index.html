@@ -106,6 +106,13 @@
       padding: 10px 12px;
       margin-top: 10px;
     }
+    .build-id {
+      text-align: center;
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-top: 24px;
+      font-family: ui-monospace, monospace;
+    }
     pre {
       background: var(--bg);
       border-radius: 8px;
@@ -156,6 +163,8 @@ create policy "allow anon insert" on hello
         Luego recarga esta página.
       </div>
     </div>
+
+    <div class="build-id">build __BUILD_ID__</div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>

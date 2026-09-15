@@ -1,6 +1,6 @@
 // Service worker mínimo: cachea el shell de la app para que la PWA
 // arranque instantáneamente y funcione (parcialmente) offline.
-const CACHE_NAME = "hello-supabase-v1";
+const CACHE_NAME = "hello-supabase-__BUILD_ID__";
 const SHELL = [
   "./",
   "./index.html",

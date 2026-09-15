@@ -23,6 +23,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Stamp build id
+        run: |
+          BUILD_ID="${GITHUB_SHA::7}"
+          sed -i "s/__BUILD_ID__/${BUILD_ID}/g" index.html sw.js
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
