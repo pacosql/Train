@@ -38,8 +38,9 @@ reglas para no interferir con las demás:
    como plantilla).
 2. Usa un `CACHE_NAME` con prefijo `<app>-` en su `sw.js`.
 3. Prefija todas sus tablas de Supabase con `<app>_`.
-4. Añade una entrada a la tabla de arriba y, opcionalmente, una tarjeta
-   en el [`index.html`](./index.html) de la raíz.
+4. Añade siempre una entrada a la tabla de arriba **y** una tarjeta
+   (botón) en el [`index.html`](./index.html) de la raíz que enlace a
+   `<app>/` — todas las apps deben quedar accesibles desde el índice.
 
 ## 3. Publica el hosting (GitHub Pages)
 

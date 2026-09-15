@@ -65,10 +65,22 @@
 
     <a class="app-card" href="weights/">
       <div class="name">🏋️ Weights</div>
-      <div class="desc">App de entrenamiento — tablas con prefijo <code>weights_</code></div>
+      <div class="desc">Hello World de conexión con Supabase — tablas con prefijo <code>weights_</code></div>
     </a>
 
     <div class="build-id">build __BUILD_ID__</div>
   </div>
+
+  <script>
+    // Limpia cualquier service worker/caché huérfano que haya quedado
+    // registrado en la raíz de versiones anteriores del hosting.
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.getRegistrations().then((regs) => {
+        for (const reg of regs) {
+          if (reg.scope === new URL("./", location.href).href) reg.unregister();
+        }
+      });
+    }
+  </script>
 </body>
 </html>
