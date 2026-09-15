@@ -193,13 +193,16 @@ create policy "allow anon insert" on hello
 
     async function runChecks(client) {
       // 1) Ping básico: ¿responde la API REST de Supabase con estas credenciales?
+      // (usamos HEAD sobre la propia tabla "hello" en vez de la raíz /rest/v1/,
+      // que algunos proyectos bloquean con 401 aunque la key sea válida)
       try {
         const start = performance.now();
-        const res = await fetch(`${url}/rest/v1/`, {
+        const res = await fetch(`${url}/rest/v1/hello?select=id&limit=1`, {
+          method: "HEAD",
           headers: { apikey: anonKey, Authorization: `Bearer ${anonKey}` },
         });
         const ms = Math.round(performance.now() - start);
-        if (res.ok || res.status === 404) {
+        if (res.ok || res.status === 404 || res.status === 406) {
           pingDot.classList.add("ok");
           pingStatus.textContent = `Conectado ✅ (${ms} ms) — ${url}`;
         } else {
