@@ -6,6 +6,33 @@ vive en su propia carpeta y sigue las reglas de abajo para no chocar con
 las demás. Lee también [`README.md`](./README.md) para el detalle
 completo de la convención.
 
+## Instrucción para cualquier chat que lea esto
+
+El usuario NO va a pegar ninguna plantilla ni instrucciones detalladas.
+En cuanto mencione, aunque sea de pasada y en una frase suelta, que
+quiere montar/crear/probar una app o idea nueva en este hosting (p. ej.
+"quiero hacer una app de tenis", o simplemente "tenis"), actúa tú solo,
+de principio a fin, sin pedir confirmación para cada paso:
+
+1. Deduce un nombre de carpeta corto en minúsculas a partir de lo que
+   diga (p. ej. "tenis" → `tenis/`).
+2. Sigue al pie de la letra la "Convención por app" de más abajo:
+   carpeta, prefijo de tablas, prefijo de caché, botón en el índice,
+   fila en el README.
+3. Crea al menos una tabla mínima de prueba con el prefijo de la app y
+   verifica leyendo/escribiendo en ella de verdad (no basta con que el
+   código compile).
+4. Antes de tocar Supabase, comprueba `$SUPABASE_ACCESS_TOKEN` (el hook
+   de arranque ya te avisa si falta o si la red está bloqueada) — si
+   falta, es lo único por lo que debes parar a preguntar.
+5. Despliega fusionando tu rama en `main` y haciendo push (dispara el
+   deploy solo) y comprueba que el sitio final funciona de verdad.
+6. Termina dando la URL final ya funcionando — no una lista de próximos
+   pasos.
+
+La app "Weights" (`weights/`) es la referencia de cómo debe quedar el
+resultado. Cópiale el patrón.
+
 ## Supabase compartido
 
 - Project ref: `dzlhsdpgyxnjwudmrnul`
