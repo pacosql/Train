@@ -242,16 +242,17 @@ function selectStart(m) {
 
 // ---------- Render: mapa de pistas ----------
 
-const BUSY_COLOR = "#9aa39c";
-
 function courtSvg(type, color, busy) {
-  const fill = busy ? BUSY_COLOR : color;
+  const fill = color;
+  const cross = busy
+    ? `<g fill="none" stroke-linecap="round"><g stroke="rgba(255,255,255,0.75)" stroke-width="4.5"><line x1="7" y1="7" x2="113" y2="65" /><line x1="113" y1="7" x2="7" y2="65" /></g><g stroke="#e5484d" stroke-width="1.8"><line x1="7" y1="7" x2="113" y2="65" /><line x1="113" y1="7" x2="7" y2="65" /></g></g>`
+    : "";
   if (type === "padel") {
     // Pista de pádel: más pequeña (20x10 m), cerrada por paredes de cristal
     // con malla metálica en el centro de los laterales, sin líneas de
     // dobles: solo dos líneas de saque y la línea central entre ellas.
     return `<svg class="court-mini" viewBox="0 0 120 72" aria-hidden="true">
-      <rect x="2" y="2" width="116" height="68" rx="6" fill="${busy ? "#dfe3dd" : "#e6ebe3"}" />
+      <rect x="2" y="2" width="116" height="68" rx="6" fill="#e6ebe3" />
       <rect x="18" y="14" width="84" height="44" fill="${fill}" />
       <g fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round">
         <line x1="30" y1="14" x2="30" y2="58" /><line x1="90" y1="14" x2="90" y2="58" />
@@ -266,6 +267,7 @@ function courtSvg(type, color, busy) {
       <g fill="none" stroke="rgba(70,80,90,0.7)" stroke-width="3.5" stroke-dasharray="1.5 2">
         <line x1="36" y1="14" x2="84" y2="14" /><line x1="36" y1="58" x2="84" y2="58" />
       </g>
+      ${cross}
     </svg>`;
   }
   return `<svg class="court-mini" viewBox="0 0 120 72" aria-hidden="true">
@@ -277,6 +279,7 @@ function courtSvg(type, color, busy) {
       <line x1="36" y1="36" x2="84" y2="36" />
     </g>
     <line x1="60" y1="5" x2="60" y2="67" stroke="#fff" stroke-width="2.4" stroke-dasharray="3 2" />
+    ${cross}
   </svg>`;
 }
 
