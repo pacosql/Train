@@ -680,10 +680,14 @@ async function loadSavedCover() {
   }
 }
 
-function setupCoverPicker() {
-  if (!new URLSearchParams(location.search).has("portadas")) return;
+let pickerWired = false;
+
+function openCoverPicker() {
   document.body.classList.add("picking");
   document.getElementById("cover-picker").hidden = false;
+  applyCover(COVERS[currentCoverIndex].id);
+  if (pickerWired) return;
+  pickerWired = true;
 
   const go = (delta) => applyCover(COVERS[(currentCoverIndex + delta + COVERS.length) % COVERS.length].id);
   document.getElementById("picker-prev").addEventListener("click", () => go(-1));
@@ -717,6 +721,11 @@ function setupCoverPicker() {
     history.replaceState(null, "", location.pathname);
     showToast(`Portada "${COVERS[currentCoverIndex].name}" guardada para todos`);
   });
+}
+
+function setupCoverPicker() {
+  document.getElementById("open-picker").addEventListener("click", openCoverPicker);
+  if (new URLSearchParams(location.search).has("portadas") || location.hash === "#portadas") openCoverPicker();
 }
 
 async function init() {

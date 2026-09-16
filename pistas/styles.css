@@ -111,6 +111,15 @@ button { font-family: inherit; }
   font-family: ui-monospace, monospace;
 }
 #cover.is-light .cover-foot { color: rgba(0, 0, 0, 0.3); }
+#cover .foot-link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
 
 /* Disposiciones */
 #cover.layout-top-left { align-items: flex-start; }
