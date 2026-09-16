@@ -13,9 +13,9 @@ const DAYS_AHEAD = 14;
 const MIS_RESERVAS_KEY = "pistas_mis_reservas";
 
 const COURT_TYPES = {
-  tenis_dura: { label: "Tenis · pista dura", color: "#2f6fed" },
+  tenis_dura: { label: "Tenis · pista rápida", color: "#2f6fed" },
   tenis_tierra: { label: "Tenis · tierra batida", color: "#b5652d" },
-  tenis_cesped: { label: "Tenis · césped", color: "#2f9e44" },
+  tenis_cesped: { label: "Tenis · hierba", color: "#2f9e44" },
   padel: { label: "Pádel", color: "#8b5cf6" },
 };
 const TYPE_ORDER = ["tenis_dura", "tenis_tierra", "tenis_cesped", "padel"];
