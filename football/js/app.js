@@ -5,7 +5,7 @@ import { CREATIVE_GAMES } from "./games-creative.js";
 import { QUIZ_GAMES_2 } from "./games-data-2.js";
 import { CREATIVE_GAMES_2 } from "./games-creative-2.js";
 import { GAMES_PACK_3 } from "./games-pack.js";
-import { getRating, setRating, applyReworkReset } from "./ratings.js";
+import { getRating, setRating, initRatings, reloadRatings, fetchReworkNote } from "./ratings.js";
 
 // El número de cada juego (#1, #2…) es su posición en este array — para
 // que sea estable de verdad, los juegos nuevos SIEMPRE se añaden al
@@ -28,10 +28,9 @@ const root = document.getElementById("app");
 let cleanupCurrent = null;
 let activeTab = "new";
 
-// Los juegos que estaban en "🔧 Revisar" vuelven a "Nuevos" al publicarse
-// una tanda de mejoras — se ejecuta una sola vez por navegador y deja el
-// aviso para contarlo en el menú.
-const reworkReset = applyReworkReset();
+// Nota de la última tanda de mejoras publicada por el agente revisor; se
+// pinta en el menú para saber qué ha cambiado desde la última vez.
+let reworkNote = null;
 
 function teardown() {
   if (cleanupCurrent) {
@@ -50,6 +49,17 @@ function categorize() {
   return groups;
 }
 
+function renderReworkNote() {
+  if (!reworkNote || !Array.isArray(reworkNote.games) || !reworkNote.games.length) return "";
+  const names = reworkNote.games
+    .map((id) => (GAMES_BY_ID[id] ? `#${GAMES_BY_ID[id].num} ${GAMES_BY_ID[id].title}` : id))
+    .join(", ");
+  const when = reworkNote.at ? new Date(reworkNote.at).toLocaleString() : "";
+  return `<div class="rework-note">🔧 <b>Última tanda de mejoras</b>${when ? ` · ${when}` : ""}<br>${names}${
+    reworkNote.summary ? `<br><span class="rework-sum">${reworkNote.summary}</span>` : ""
+  }</div>`;
+}
+
 async function renderMenu() {
   teardown();
   const groups = categorize();
@@ -65,11 +75,7 @@ async function renderMenu() {
         <button class="tab-btn" data-tab="dislike">👎 No me gusta (${groups.dislike.length})</button>
         <button class="tab-btn" data-tab="review">🔧 Revisar (${groups.review.length})</button>
       </div>
-      ${reworkReset.length
-        ? `<div class="rework-note">🔧 ${reworkReset.length} ejercicio${reworkReset.length > 1 ? "s" : ""} que habías marcado para revisar ${reworkReset.length > 1 ? "han vuelto" : "ha vuelto"} a <b>Nuevos</b> con una versión mejorada: ${reworkReset
-            .map((id) => GAMES_BY_ID[id] ? `#${GAMES_BY_ID[id].num} ${GAMES_BY_ID[id].title}` : id)
-            .join(", ")}.</div>`
-        : ""}
+      ${renderReworkNote()}
       <div class="game-grid" data-grid></div>
       <div class="recent">
         <h2>Últimas partidas</h2>
@@ -178,10 +184,13 @@ function renderGame(id) {
     });
   }
   rateBar.querySelectorAll(".rate-btn").forEach((btn) => {
-    btn.addEventListener("click", () => {
+    btn.addEventListener("click", async () => {
       const value = btn.dataset.rate;
       const current = getRating(id);
-      setRating(id, current === value ? "new" : value);
+      rateBar.querySelectorAll(".rate-btn").forEach((b) => (b.disabled = true));
+      // Se espera a que Supabase lo confirme antes de volver al menú, para
+      // que la pestaña de destino ya muestre el cambio al llegar.
+      await setRating(id, current === value ? "new" : value);
       onExit();
     });
   });
@@ -199,7 +208,31 @@ function route() {
 }
 
 window.addEventListener("hashchange", route);
+
+// Se pinta ya, sin esperar a la red: si Supabase tarda o no hay conexión
+// la app tiene que arrancar igual (es una PWA). Cuando llegan las
+// valoraciones se vuelve a pintar el menú con sus cuentas.
 route();
+
+(async () => {
+  try {
+    await initRatings(client);
+    reworkNote = await fetchReworkNote();
+  } catch (_) {
+    // Sin red se juega igual, solo que sin valoraciones.
+  }
+  if (!location.hash || location.hash === "#/") route();
+})();
+
+// Al volver a la pestaña, recarga por si se ha valorado desde otro
+// dispositivo o el agente ha limpiado la bandeja de revisar.
+document.addEventListener("visibilitychange", async () => {
+  if (document.visibilityState !== "visible") return;
+  if (location.hash && location.hash !== "#/") return;
+  await reloadRatings();
+  reworkNote = await fetchReworkNote();
+  route();
+});
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
