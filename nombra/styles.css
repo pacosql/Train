@@ -118,6 +118,38 @@ section { margin-bottom: 26px; }
 
 .empty { color: var(--muted); font-size: 0.85rem; }
 
+.swipe-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 22px 18px;
+  text-align: center;
+}
+.swipe-card .name-text {
+  font-weight: 800;
+  font-size: 1.4rem;
+  text-transform: lowercase;
+  margin-bottom: 4px;
+}
+.swipe-card .nota { margin-bottom: 14px; min-height: 1em; }
+.swipe-actions { display: flex; gap: 10px; justify-content: center; }
+.swipe-actions button {
+  flex: 1;
+  max-width: 180px;
+  border: none;
+  border-radius: 12px;
+  padding: 14px 10px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.btn-dislike { background: rgba(229, 72, 77, 0.15); color: var(--bad); }
+.btn-like { background: rgba(47, 158, 68, 0.15); color: var(--ok); }
+
+.head-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+
+details > summary { cursor: pointer; }
+
 .build-id {
   text-align: center;
   font-size: 0.7rem;
