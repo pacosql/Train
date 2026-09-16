@@ -5,11 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Weights</title>
 
-  <!-- PWA -->
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#3ecf8e" />
-
-  <!-- iOS: instalar como app de pantalla de inicio -->
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Weights" />
@@ -27,6 +24,8 @@
       --accent-dark: #249d68;
       --danger: #e5484d;
       --border: #e2e8e5;
+      --push: #5b8def;
+      --pull: #f2994a;
       padding-top: env(safe-area-inset-top, 0px);
       padding-bottom: env(safe-area-inset-bottom, 0px);
     }
@@ -39,130 +38,232 @@
         --border: #24322b;
       }
     }
-    * { box-sizing: border-box; }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
     body {
       margin: 0;
       background: var(--bg);
       color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      padding: 24px 16px 40px;
+      padding: 20px 16px 40px;
     }
     .wrap { max-width: 480px; margin: 0 auto; }
-    h1 { font-size: 1.5rem; margin: 8px 0 4px; }
-    .sub { color: var(--muted); margin: 0 0 24px; font-size: 0.95rem; }
+    h1 { font-size: 1.4rem; margin: 0 0 4px; display: flex; align-items: center; gap: 8px; }
+    h2 { font-size: 1.1rem; margin: 0 0 4px; }
+    .sub { color: var(--muted); margin: 0 0 20px; font-size: 0.9rem; }
     .card {
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 16px;
       padding: 18px;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
     }
-    .card h2 { font-size: 1rem; margin: 0 0 12px; display: flex; align-items: center; gap: 8px; }
-    .dot {
-      width: 10px; height: 10px; border-radius: 50%;
-      background: var(--muted); flex-shrink: 0;
-      transition: background 0.2s;
-    }
-    .dot.ok { background: var(--accent); }
-    .dot.err { background: var(--danger); }
-    .status-text { font-size: 0.9rem; color: var(--muted); white-space: pre-wrap; word-break: break-word; }
     button {
       background: var(--accent);
       color: #06231a;
       border: none;
-      border-radius: 10px;
-      padding: 10px 16px;
-      font-size: 0.95rem;
+      border-radius: 12px;
+      padding: 14px 18px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      width: 100%;
+    }
+    button.secondary {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
       font-weight: 600;
+    }
+    button.small {
+      width: auto;
+      padding: 8px 14px;
+      font-size: 0.85rem;
+    }
+    button:disabled { opacity: 0.4; cursor: default; }
+    .row { display: flex; gap: 10px; }
+    .row > * { flex: 1; }
+    .chip-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+    .chip {
+      flex: 1;
+      min-width: 70px;
+      text-align: center;
+      padding: 12px 8px;
+      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      font-weight: 700;
       cursor: pointer;
     }
-    button:active { background: var(--accent-dark); }
-    button:disabled { opacity: 0.5; cursor: default; }
-    .row { display: flex; gap: 8px; }
-    input[type="text"] {
-      flex: 1;
-      padding: 10px 12px;
+    .chip.selected { border-color: var(--accent); background: rgba(62,207,142,0.15); }
+    input[type="number"], input[type="text"] {
+      width: 100%;
+      padding: 12px;
       border-radius: 10px;
       border: 1px solid var(--border);
       background: var(--bg);
       color: var(--text);
-      font-size: 0.95rem;
+      font-size: 1rem;
     }
-    ul.messages { list-style: none; margin: 12px 0 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
-    ul.messages li {
-      background: var(--bg);
+    label { font-size: 0.8rem; color: var(--muted); display: block; margin-bottom: 6px; }
+    .exercise-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px;
+      border-radius: 12px;
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 8px 12px;
-      font-size: 0.9rem;
-    }
-    ul.messages li .meta { color: var(--muted); font-size: 0.75rem; margin-top: 2px; }
-    .hint {
-      font-size: 0.8rem;
-      color: var(--muted);
+      margin-bottom: 8px;
+      cursor: pointer;
       background: var(--bg);
-      border: 1px dashed var(--border);
-      border-radius: 10px;
-      padding: 10px 12px;
-      margin-top: 10px;
     }
-    .build-id {
-      text-align: center;
+    .exercise-item .name { font-weight: 700; }
+    .exercise-item .muscle { color: var(--muted); font-size: 0.8rem; }
+    .badge {
       font-size: 0.7rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 999px;
+      text-transform: uppercase;
+      color: white;
+      flex-shrink: 0;
+    }
+    .badge.push { background: var(--push); }
+    .badge.pull { background: var(--pull); }
+    .set-dots { display: flex; gap: 8px; justify-content: center; margin: 16px 0; }
+    .set-dot {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      border: 2px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700;
       color: var(--muted);
-      margin-top: 24px;
-      font-family: ui-monospace, monospace;
-    }
-    pre {
       background: var(--bg);
-      border-radius: 8px;
-      padding: 8px 10px;
-      overflow-x: auto;
-      font-size: 0.75rem;
     }
+    .set-dot.done { background: var(--accent); border-color: var(--accent); color: #06231a; }
+    .set-dot.current { border-color: var(--accent); color: var(--text); }
+    .stat { text-align: center; }
+    .stat .value { font-size: 1.8rem; font-weight: 800; }
+    .stat .label { font-size: 0.75rem; color: var(--muted); }
+    .hint { font-size: 0.85rem; color: var(--muted); margin-top: 4px; }
+    .status-bar {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 0.75rem; color: var(--muted);
+      margin-bottom: 16px;
+    }
+    .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+    .dot.ok { background: var(--accent); }
+    .dot.err { background: var(--danger); }
+    .history-list { margin: 0; padding: 0; list-style: none; }
+    .history-list li {
+      display: flex; justify-content: space-between;
+      padding: 8px 0; border-bottom: 1px solid var(--border);
+      font-size: 0.85rem;
+    }
+    .history-list li:last-child { border-bottom: none; }
+    .build-id { text-align: center; font-size: 0.7rem; color: var(--muted); margin-top: 20px; font-family: ui-monospace, monospace; }
+    [hidden] { display: none !important; }
   </style>
 </head>
 <body>
   <div class="wrap">
-    <h1>🏋️ Weights</h1>
-    <p class="sub">Prueba mínima de conexión, lista para instalar como app.</p>
+    <div class="status-bar"><span id="conn-dot" class="dot"></span><span id="conn-text">Conectando…</span></div>
 
-    <div class="card">
-      <h2><span id="ping-dot" class="dot"></span> Conexión con Supabase</h2>
-      <div id="ping-status" class="status-text">Comprobando…</div>
-    </div>
+    <!-- HOME -->
+    <section id="screen-home">
+      <h1>🏋️ Weights</h1>
+      <p class="sub">Tu tutor de entrenamiento en el gimnasio.</p>
+      <div class="card">
+        <button id="btn-start">Start</button>
+      </div>
+      <div class="card" id="history-card" hidden>
+        <h2>Últimas sesiones</h2>
+        <ul id="history-list" class="history-list"></ul>
+      </div>
+    </section>
 
-    <div class="card">
-      <h2><span id="table-dot" class="dot"></span> Tabla de prueba <code>weights_hello</code></h2>
-      <div id="table-status" class="status-text">Comprobando…</div>
+    <!-- SETUP: duración -->
+    <section id="screen-setup" hidden>
+      <h2>¿Cuánto va a durar hoy?</h2>
+      <p class="sub">Elige la duración total del entrenamiento.</p>
+      <div class="chip-row">
+        <div class="chip" data-min="60">60 min</div>
+        <div class="chip" data-min="90">90 min</div>
+        <div class="chip" data-min="120">120 min</div>
+      </div>
+      <div class="card">
+        <label for="custom-duration">O pon una duración custom (minutos)</label>
+        <input id="custom-duration" type="number" min="10" step="5" placeholder="p. ej. 75" />
+      </div>
+      <button id="btn-confirm-duration">Confirmar</button>
+    </section>
 
-      <div id="table-ui" hidden>
-        <div class="row">
-          <input id="msg-input" type="text" placeholder="Escribe un mensaje…" maxlength="200" />
-          <button id="send-btn">Enviar</button>
+    <!-- CARDIO -->
+    <section id="screen-cardio" hidden>
+      <h2>🚴 Elíptica / Bicicleta</h2>
+      <p class="sub">Siempre empezamos calentando con cardio.</p>
+      <div class="card">
+        <div class="stat">
+          <div class="value" id="cardio-minutes">15</div>
+          <div class="label">minutos sugeridos</div>
         </div>
-        <ul id="messages" class="messages"></ul>
+        <p class="hint" id="cardio-hint"></p>
+      </div>
+      <button id="btn-cardio-done">Cardio terminado</button>
+    </section>
+
+    <!-- PICK EXERCISE -->
+    <section id="screen-pick" hidden>
+      <h2>Siguiente ejercicio</h2>
+      <p class="sub">Ordenados para que alternes empuje/tirón y descanses mejor. Elige el que tengas libre.</p>
+      <div id="exercise-list"></div>
+      <button id="btn-finish-session" class="secondary" style="margin-top: 8px;">Terminar entrenamiento</button>
+    </section>
+
+    <!-- ACTIVE EXERCISE -->
+    <section id="screen-exercise" hidden>
+      <h2 id="ex-name">—</h2>
+      <p class="sub"><span id="ex-badge" class="badge"></span> <span id="ex-muscle"></span></p>
+
+      <div class="card">
+        <p class="hint" id="ex-recommendation"></p>
+        <label for="ex-weight">Peso (kg)</label>
+        <input id="ex-weight" type="number" step="0.5" min="0" />
       </div>
 
-      <div id="table-hint" class="hint" hidden>
-        No existe la tabla <code>weights_hello</code> todavía. Ve al SQL Editor de tu
-        proyecto de Supabase y ejecuta:
-        <pre>create table weights_hello (
-  id bigint generated always as identity primary key,
-  message text not null,
-  created_at timestamptz default now()
-);
-
-alter table weights_hello enable row level security;
-
-create policy "allow anon read" on weights_hello
-  for select to anon using (true);
-
-create policy "allow anon insert" on weights_hello
-  for insert to anon with check (true);</pre>
-        Luego recarga esta página.
+      <div class="card">
+        <p class="hint" style="text-align:center; margin-bottom:0;">3 series × 8 repeticiones — busca el fallo en la última</p>
+        <div class="set-dots" id="set-dots">
+          <div class="set-dot" data-set="1">1</div>
+          <div class="set-dot" data-set="2">2</div>
+          <div class="set-dot" data-set="3">3</div>
+        </div>
+        <button id="btn-mark-set">Marcar serie hecha</button>
       </div>
-    </div>
+
+      <button id="btn-finish-exercise" class="secondary" disabled>Fin del ejercicio</button>
+    </section>
+
+    <!-- FEEDBACK -->
+    <section id="screen-feedback" hidden>
+      <h2>¿Cómo quieres la próxima vez?</h2>
+      <p class="sub">Esto decide si subo, mantengo o bajo el peso la próxima vez que hagas <span id="fb-name"></span>.</p>
+      <div class="chip-row">
+        <div class="chip" data-fb="menos">Menos</div>
+        <div class="chip" data-fb="igual">Igual</div>
+        <div class="chip" data-fb="mas">Más</div>
+      </div>
+      <button id="btn-save-feedback" disabled>Guardar y seguir</button>
+    </section>
+
+    <!-- SUMMARY -->
+    <section id="screen-summary" hidden>
+      <h2>💪 Entrenamiento terminado</h2>
+      <div class="card">
+        <ul class="history-list" id="summary-list"></ul>
+      </div>
+      <button id="btn-new-session">Nuevo entrenamiento</button>
+    </section>
 
     <div class="build-id">build __BUILD_ID__</div>
   </div>
@@ -171,115 +272,377 @@ create policy "allow anon insert" on weights_hello
   <script src="config.js"></script>
   <script>
     const { url, anonKey } = window.WEIGHTS_CONFIG;
-    const pingDot = document.getElementById("ping-dot");
-    const pingStatus = document.getElementById("ping-status");
-    const tableDot = document.getElementById("table-dot");
-    const tableStatus = document.getElementById("table-status");
-    const tableUi = document.getElementById("table-ui");
-    const tableHint = document.getElementById("table-hint");
-    const messagesEl = document.getElementById("messages");
-    const input = document.getElementById("msg-input");
-    const sendBtn = document.getElementById("send-btn");
+    const T = {
+      exercises: "weights_exercises",
+      sessions: "weights_sessions",
+      sessionExercises: "weights_session_exercises",
+    };
 
-    if (!url || url.includes("YOUR-PROJECT") || !anonKey || anonKey.includes("YOUR-ANON-KEY")) {
-      pingDot.classList.add("err");
-      pingStatus.textContent = "Faltan credenciales: edita config.js con tu URL y anon key de Supabase.";
-      tableDot.classList.add("err");
-      tableStatus.textContent = "Sin credenciales no se puede comprobar.";
-    } else {
-      const client = supabase.createClient(url, anonKey);
-      runChecks(client);
+    const el = (id) => document.getElementById(id);
+    const screens = ["home", "setup", "cardio", "pick", "exercise", "feedback", "summary"];
+    function showScreen(name) {
+      for (const s of screens) el(`screen-${s}`).hidden = s !== name;
+      state.screen = name;
+      saveState();
     }
 
-    async function runChecks(client) {
-      // 1) Ping básico: ¿responde la API REST de Supabase con estas credenciales?
-      // (usamos HEAD sobre la propia tabla "weights_hello" en vez de la raíz /rest/v1/,
-      // que algunos proyectos bloquean con 401 aunque la key sea válida)
+    let client = null;
+    let catalog = [];
+    let historyByExercise = {}; // exercise_id -> {weight_used, next_time}
+
+    const STORAGE_KEY = "weights_app_state_v1";
+    let state = loadState() || freshState();
+
+    function freshState() {
+      return {
+        screen: "home",
+        sessionId: null,
+        plannedDuration: null,
+        cardioMinutesSuggested: null,
+        doneExerciseIds: [],
+        lastMovementType: "cardio",
+        currentExerciseId: null,
+        setsCompleted: 0,
+        summary: [],
+      };
+    }
+    function saveState() {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+    }
+    function loadState() {
       try {
-        const start = performance.now();
-        const res = await fetch(`${url}/rest/v1/weights_hello?select=id&limit=1`, {
-          method: "HEAD",
-          headers: { apikey: anonKey, Authorization: `Bearer ${anonKey}` },
-        });
-        const ms = Math.round(performance.now() - start);
-        if (res.ok || res.status === 404 || res.status === 406) {
-          pingDot.classList.add("ok");
-          pingStatus.textContent = `Conectado ✅ (${ms} ms) — ${url}`;
-        } else {
-          pingDot.classList.add("err");
-          pingStatus.textContent = `Respuesta inesperada: HTTP ${res.status}`;
-        }
-      } catch (err) {
-        pingDot.classList.add("err");
-        pingStatus.textContent = `Error de red: ${err.message}`;
-      }
+        const raw = localStorage.getItem(STORAGE_KEY);
+        return raw ? JSON.parse(raw) : null;
+      } catch (e) { return null; }
+    }
+    function clearState() {
+      state = freshState();
+      saveState();
+    }
 
-      // 2) Tabla de prueba "weights_hello"
-      await refreshMessages(client);
+    function suggestCardioMinutes(totalMin) {
+      const raw = Math.round((totalMin * 0.15) / 5) * 5;
+      return Math.max(10, Math.min(20, raw || 15));
+    }
 
-      sendBtn.addEventListener("click", () => sendMessage(client));
-      input.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") sendMessage(client);
+    function suggestWeight(exercise, last) {
+      if (!last || last.weight_used == null) return null;
+      let delta = 0;
+      const harder = exercise.assisted ? -1 : 1;
+      if (last.next_time === "mas") delta = harder * exercise.weight_step;
+      else if (last.next_time === "menos") delta = -harder * exercise.weight_step;
+      return Math.max(0, Number(last.weight_used) + delta);
+    }
+
+    function orderExercises() {
+      const remaining = catalog.filter(
+        (e) => e.movement_type !== "cardio" && !state.doneExerciseIds.includes(e.id)
+      );
+      const opposite = state.lastMovementType === "push" ? "pull" : state.lastMovementType === "pull" ? "push" : null;
+      return remaining.slice().sort((a, b) => {
+        const aOpp = a.movement_type === opposite ? 0 : 1;
+        const bOpp = b.movement_type === opposite ? 0 : 1;
+        if (aOpp !== bOpp) return aOpp - bOpp;
+        return a.sort_order - b.sort_order;
       });
     }
 
-    async function refreshMessages(client) {
-      const { data, error } = await client
-        .from("weights_hello")
-        .select("*")
-        .order("created_at", { ascending: false })
-        .limit(20);
-
-      if (error) {
-        tableDot.classList.add("err");
-        if (error.code === "42P01" || error.code === "PGRST205") {
-          tableStatus.textContent = "La tabla aún no existe.";
-          tableHint.hidden = false;
-        } else {
-          tableStatus.textContent = `Error: ${error.message}`;
-        }
-        tableUi.hidden = true;
+    function renderPickScreen() {
+      const list = orderExercises();
+      const container = el("exercise-list");
+      container.innerHTML = "";
+      if (list.length === 0) {
+        container.innerHTML = '<p class="hint">Has hecho todos los ejercicios de esta sesión. ¡Buen trabajo!</p>';
         return;
       }
-
-      tableDot.classList.add("ok");
-      tableStatus.textContent = `Conectado ✅ — ${data.length} mensaje(s)`;
-      tableHint.hidden = true;
-      tableUi.hidden = false;
-      renderMessages(data);
+      for (const ex of list) {
+        const last = historyByExercise[ex.id];
+        const div = document.createElement("div");
+        div.className = "exercise-item";
+        div.innerHTML = `
+          <div>
+            <div class="name">${ex.name}</div>
+            <div class="muscle">${ex.muscle_group}${last ? " · último: " + last.weight_used + " kg" : " · sin historial"}</div>
+          </div>
+          <span class="badge ${ex.movement_type}">${ex.movement_type === "push" ? "Empuje" : "Tirón"}</span>
+        `;
+        div.addEventListener("click", () => startExercise(ex));
+        container.appendChild(div);
+      }
     }
 
-    function renderMessages(rows) {
-      messagesEl.innerHTML = "";
-      for (const row of rows) {
+    function startExercise(ex) {
+      state.currentExerciseId = ex.id;
+      state.setsCompleted = 0;
+      saveState();
+
+      el("ex-name").textContent = ex.name;
+      el("ex-muscle").textContent = ex.muscle_group;
+      const badge = el("ex-badge");
+      badge.className = "badge " + ex.movement_type;
+      badge.textContent = ex.movement_type === "push" ? "Empuje" : "Tirón";
+
+      const last = historyByExercise[ex.id];
+      const suggested = suggestWeight(ex, last);
+      const weightInput = el("ex-weight");
+      if (suggested != null) {
+        weightInput.value = suggested;
+        const dirTxt = last.next_time === "mas" ? "subiendo" : last.next_time === "menos" ? "bajando" : "manteniendo";
+        el("ex-recommendation").textContent =
+          `Última vez: ${last.weight_used} kg. Sugerido hoy (${dirTxt}): ${suggested} kg.`;
+      } else {
+        weightInput.value = "";
+        el("ex-recommendation").textContent = "Sin historial todavía — pon el peso con el que vas a empezar.";
+      }
+
+      updateSetDots();
+      el("btn-finish-exercise").disabled = true;
+      showScreen("exercise");
+    }
+
+    function updateSetDots() {
+      for (let i = 1; i <= 3; i++) {
+        const dot = document.querySelector(`.set-dot[data-set="${i}"]`);
+        dot.classList.toggle("done", i <= state.setsCompleted);
+        dot.classList.toggle("current", i === state.setsCompleted + 1);
+      }
+      el("btn-mark-set").disabled = state.setsCompleted >= 3;
+      el("btn-finish-exercise").disabled = state.setsCompleted < 3;
+    }
+
+    async function finishExercise() {
+      const ex = catalog.find((e) => e.id === state.currentExerciseId);
+      const weightUsed = parseFloat(el("ex-weight").value) || 0;
+      state.pendingExercise = { exercise: ex, weightUsed };
+      saveState();
+      el("fb-name").textContent = ex.name;
+      document.querySelectorAll("#screen-feedback .chip").forEach((c) => c.classList.remove("selected"));
+      el("btn-save-feedback").disabled = true;
+      showScreen("feedback");
+    }
+
+    async function saveFeedback(nextTime) {
+      const { exercise, weightUsed } = state.pendingExercise;
+      const { error } = await client.from(T.sessionExercises).insert({
+        session_id: state.sessionId,
+        exercise_id: exercise.id,
+        order_index: state.doneExerciseIds.length,
+        weight_used: weightUsed,
+        sets: 3,
+        reps: 8,
+        next_time: nextTime,
+      });
+      if (error) {
+        alert("No se pudo guardar: " + error.message);
+        return;
+      }
+      historyByExercise[exercise.id] = { weight_used: weightUsed, next_time: nextTime };
+      state.doneExerciseIds.push(exercise.id);
+      state.lastMovementType = exercise.movement_type;
+      state.summary.push({ name: exercise.name, weight: weightUsed, next_time: nextTime });
+      state.currentExerciseId = null;
+      state.pendingExercise = null;
+      saveState();
+      renderPickScreen();
+      showScreen("pick");
+    }
+
+    async function finishSession() {
+      if (state.sessionId) {
+        await client
+          .from(T.sessions)
+          .update({ ended_at: new Date().toISOString(), status: "done" })
+          .eq("id", state.sessionId);
+      }
+      const list = el("summary-list");
+      list.innerHTML = "";
+      for (const item of state.summary) {
         const li = document.createElement("li");
-        const when = row.created_at ? new Date(row.created_at).toLocaleString() : "";
-        li.innerHTML = `${escapeHtml(row.message)}<div class="meta">${when}</div>`;
-        messagesEl.appendChild(li);
+        li.innerHTML = `<span>${item.name} — ${item.weight} kg</span><span>${item.next_time}</span>`;
+        list.appendChild(li);
+      }
+      if (state.summary.length === 0) {
+        list.innerHTML = "<li>No se registró ningún ejercicio.</li>";
+      }
+      state.sessionId = null; // la sesión ya se cerró en la base de datos
+      showScreen("summary");
+      // El reseteo completo ocurre cuando el usuario pulsa "Nuevo entrenamiento".
+    }
+
+    async function loadHistoryList() {
+      const { data, error } = await client
+        .from(T.sessions)
+        .select("id, started_at, ended_at, status")
+        .order("started_at", { ascending: false })
+        .limit(5);
+      if (error || !data || data.length === 0) return;
+      el("history-card").hidden = false;
+      const list = el("history-list");
+      list.innerHTML = "";
+      for (const s of data) {
+        const li = document.createElement("li");
+        const when = new Date(s.started_at).toLocaleDateString();
+        li.innerHTML = `<span>${when}</span><span>${s.status === "done" ? "✅" : "…"}</span>`;
+        list.appendChild(li);
       }
     }
 
-    function escapeHtml(str) {
-      const div = document.createElement("div");
-      div.textContent = str;
-      return div.innerHTML;
+    async function loadCatalogAndHistory() {
+      const { data: exs, error: exErr } = await client.from(T.exercises).select("*").order("sort_order");
+      if (exErr) throw exErr;
+      catalog = exs;
+
+      const { data: rows, error: histErr } = await client
+        .from(T.sessionExercises)
+        .select("exercise_id, weight_used, next_time, completed_at")
+        .order("completed_at", { ascending: false })
+        .limit(200);
+      if (histErr) throw histErr;
+      for (const row of rows) {
+        if (!(row.exercise_id in historyByExercise)) {
+          historyByExercise[row.exercise_id] = { weight_used: row.weight_used, next_time: row.next_time };
+        }
+      }
     }
 
-    async function sendMessage(client) {
-      const value = input.value.trim();
-      if (!value) return;
-      sendBtn.disabled = true;
-      const { error } = await client.from("weights_hello").insert({ message: value });
-      sendBtn.disabled = false;
+    async function startNewSession() {
+      const { data, error } = await client
+        .from(T.sessions)
+        .insert({ status: "in_progress" })
+        .select()
+        .single();
       if (error) {
-        alert(`No se pudo enviar: ${error.message}`);
+        alert("No se pudo crear la sesión: " + error.message);
         return;
       }
-      input.value = "";
-      await refreshMessages(client);
+      state = freshState();
+      state.sessionId = data.id;
+      saveState();
+      showScreen("setup");
     }
 
-    // Registrar el service worker para poder instalar la PWA.
+    function selectDurationChip(min) {
+      document.querySelectorAll("#screen-setup .chip").forEach((c) => c.classList.toggle("selected", Number(c.dataset.min) === min));
+      el("custom-duration").value = "";
+      state.plannedDuration = min;
+      saveState();
+    }
+
+    async function confirmDuration() {
+      const custom = parseInt(el("custom-duration").value, 10);
+      const total = custom > 0 ? custom : state.plannedDuration;
+      if (!total) {
+        alert("Elige o escribe una duración.");
+        return;
+      }
+      state.plannedDuration = total;
+      state.cardioMinutesSuggested = suggestCardioMinutes(total);
+      saveState();
+
+      if (state.sessionId) {
+        await client
+          .from(T.sessions)
+          .update({ planned_duration_min: total, cardio_minutes_planned: state.cardioMinutesSuggested })
+          .eq("id", state.sessionId);
+      }
+
+      el("cardio-minutes").textContent = state.cardioMinutesSuggested;
+      el("cardio-hint").textContent = `Para una sesión de ${total} min, esto deja tiempo de sobra para las máquinas.`;
+      showScreen("cardio");
+    }
+
+    function wireEvents() {
+      el("btn-start").addEventListener("click", startNewSession);
+
+      document.querySelectorAll("#screen-setup .chip").forEach((chip) => {
+        chip.addEventListener("click", () => selectDurationChip(Number(chip.dataset.min)));
+      });
+      el("btn-confirm-duration").addEventListener("click", confirmDuration);
+
+      el("btn-cardio-done").addEventListener("click", async () => {
+        if (state.sessionId) {
+          await client.from(T.sessions).update({ cardio_minutes_done: state.cardioMinutesSuggested }).eq("id", state.sessionId);
+        }
+        state.lastMovementType = "cardio";
+        saveState();
+        renderPickScreen();
+        showScreen("pick");
+      });
+
+      el("btn-mark-set").addEventListener("click", () => {
+        state.setsCompleted = Math.min(3, state.setsCompleted + 1);
+        saveState();
+        updateSetDots();
+      });
+      el("btn-finish-exercise").addEventListener("click", finishExercise);
+
+      document.querySelectorAll("#screen-feedback .chip").forEach((chip) => {
+        chip.addEventListener("click", () => {
+          document.querySelectorAll("#screen-feedback .chip").forEach((c) => c.classList.remove("selected"));
+          chip.classList.add("selected");
+          el("btn-save-feedback").disabled = false;
+          el("btn-save-feedback").dataset.value = chip.dataset.fb;
+        });
+      });
+      el("btn-save-feedback").addEventListener("click", (e) => saveFeedback(e.target.dataset.value));
+
+      el("btn-finish-session").addEventListener("click", finishSession);
+      el("btn-new-session").addEventListener("click", () => {
+        clearState();
+        showScreen("home");
+        loadHistoryList();
+      });
+    }
+
+    async function init() {
+      wireEvents();
+
+      if (!url || !anonKey) {
+        el("conn-dot").classList.add("err");
+        el("conn-text").textContent = "Faltan credenciales en config.js";
+        return;
+      }
+      client = supabase.createClient(url, anonKey);
+
+      try {
+        await loadCatalogAndHistory();
+        el("conn-dot").classList.add("ok");
+        el("conn-text").textContent = "Conectado";
+      } catch (err) {
+        el("conn-dot").classList.add("err");
+        el("conn-text").textContent = "Error de conexión: " + err.message;
+        return;
+      }
+
+      await loadHistoryList();
+
+      // Restaura la pantalla donde te quedaste (por si recargas a mitad de entreno).
+      if (state.screen && state.screen !== "home" && state.sessionId) {
+        if (state.screen === "pick" || state.screen === "exercise" || state.screen === "feedback") {
+          renderPickScreen();
+        }
+        if (state.screen === "exercise" && state.currentExerciseId) {
+          const ex = catalog.find((e) => e.id === state.currentExerciseId);
+          if (ex) startExercise(ex);
+          else showScreen("pick");
+        } else if (state.screen === "feedback" && state.pendingExercise) {
+          el("fb-name").textContent = state.pendingExercise.exercise.name;
+          showScreen("feedback");
+        } else if (state.screen === "cardio") {
+          el("cardio-minutes").textContent = state.cardioMinutesSuggested || 15;
+          showScreen("cardio");
+        } else if (state.screen === "setup") {
+          showScreen("setup");
+        } else {
+          showScreen(state.screen);
+        }
+      } else {
+        showScreen("home");
+      }
+    }
+
+    init();
+
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => {
         navigator.serviceWorker.register("sw.js").catch(() => {});
