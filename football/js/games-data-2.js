@@ -212,6 +212,8 @@ function temperatureQuestion() {
     sub: "¿Qué temperatura hay ahora?",
     choices,
     correctIndex: choices.indexOf(String(correct)),
+    // El resultado puede ser bajo cero: el teclado necesita el botón ±.
+    allowNegative: true,
   };
 }
 
@@ -234,13 +236,13 @@ function patternQuestion() {
 }
 
 export const QUIZ_GAMES_2 = [
-  { id: "problemas", title: "Problemas de palabras", emoji: "📖", topic: "Problemas", mode: "lives", lives: 3, generateQuestion: wordProblemQuestion },
+  { id: "problemas", title: "Problemas de palabras", emoji: "📖", topic: "Problemas", mode: "lives", lives: 3, v: 2, input: "keypad", generateQuestion: wordProblemQuestion },
   { id: "romanos", title: "Números romanos", emoji: "🏛️", topic: "Numeración", mode: "lives", lives: 3, generateQuestion: romanQuestion },
   { id: "redondeo", title: "Redondea", emoji: "🔘", topic: "Redondeo", mode: "lives", lives: 3, generateQuestion: roundingQuestion },
   { id: "precios", title: "¿Qué es más barato?", emoji: "🏷️", topic: "Dinero", mode: "lives", lives: 3, generateQuestion: priceQuestion },
   { id: "grafico", title: "Lee el gráfico", emoji: "📈", topic: "Datos", mode: "lives", lives: 3, generateQuestion: chartQuestion },
   { id: "factores", title: "Árbol de factores", emoji: "🌳", topic: "Divisibilidad", mode: "lives", lives: 3, generateQuestion: factorsQuestion },
   { id: "transcurrido", title: "Tiempo transcurrido", emoji: "⏳", topic: "Tiempo", mode: "lives", lives: 3, generateQuestion: elapsedQuestion },
-  { id: "temperaturas", title: "Temperaturas", emoji: "🌡️", topic: "Negativos", mode: "lives", lives: 3, generateQuestion: temperatureQuestion },
+  { id: "temperaturas", title: "Temperaturas", emoji: "🌡️", topic: "Negativos", mode: "lives", lives: 3, v: 2, input: "keypad", generateQuestion: temperatureQuestion },
   { id: "patron", title: "Completa el patrón", emoji: "🧵", topic: "Patrones visuales", mode: "lives", lives: 3, generateQuestion: patternQuestion },
 ];

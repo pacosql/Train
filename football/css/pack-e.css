@@ -1,0 +1,107 @@
+/* Pack E — estilos de los juegos visuales: grafica, tarta2, ritmo,
+   binario y cubos. Todo va con el prefijo .pe- para no chocar con las
+   clases de style.css ni con las de otros packs. */
+
+/* ---------- 1. Continúa la gráfica ---------- */
+.pe-graf-wrap { width: 100%; max-width: 340px; }
+.pe-graf-svg { display: block; width: 100%; height: auto; touch-action: manipulation; }
+.pe-graf-axis { stroke: var(--border); stroke-width: 2; }
+.pe-graf-guide { stroke: var(--border); stroke-width: 1.5; stroke-dasharray: 4 4; }
+.pe-graf-line { fill: none; stroke: var(--accent); stroke-width: 3; stroke-linejoin: round; stroke-linecap: round; }
+.pe-graf-pt { fill: var(--accent); }
+.pe-graf-lbl { fill: var(--muted); font-size: 11px; font-weight: 700; }
+.pe-graf-cand { cursor: pointer; }
+.pe-graf-dot { fill: var(--card); stroke: var(--accent-2); stroke-width: 3; }
+.pe-graf-cand:active .pe-graf-dot { stroke-width: 5; }
+.pe-graf-cand.correct .pe-graf-dot { fill: var(--good); stroke: var(--good); }
+.pe-graf-cand.wrong .pe-graf-dot { fill: var(--danger); stroke: var(--danger); }
+
+/* ---------- 2. Reparte la tarta ---------- */
+.pe-tarta-wrap {
+  width: 210px; max-width: 72vw; margin: 0 auto;
+  touch-action: none; /* el arrastre rotacional no debe hacer scroll */
+  cursor: grab;
+}
+.pe-tarta-svg { display: block; width: 100%; height: auto; }
+.pe-tarta-base { fill: var(--bg); stroke: var(--border); stroke-width: 3; }
+.pe-tarta-slice { fill: var(--accent); fill-opacity: 0.85; }
+.pe-tarta-tick { stroke: var(--muted); stroke-width: 1; opacity: 0.45; }
+.pe-tarta-knife { stroke: var(--text); stroke-width: 4; stroke-linecap: round; }
+.pe-tarta-knife-fixed { stroke: var(--muted); stroke-width: 3; }
+.pe-tarta-hub { fill: var(--text); }
+.pe-tarta-readout { margin-top: 12px; font-size: 0.95rem; color: var(--muted); }
+.pe-tarta-readout b { font-size: 1.35rem; color: var(--accent); }
+
+/* ---------- 3. Compás musical ---------- */
+.pe-ritmo-bar {
+  position: relative; width: 100%; max-width: 320px; height: 58px;
+  background: var(--bg); border: 2px solid var(--border); border-radius: 12px;
+  overflow: hidden; display: flex;
+}
+.pe-ritmo-bar.pe-ritmo-over { border-color: var(--danger); }
+.pe-ritmo-blocks { display: flex; width: 100%; }
+.pe-ritmo-block {
+  display: flex; align-items: center; justify-content: center;
+  background: var(--accent); color: #fff;
+  border-right: 2px solid var(--card); box-sizing: border-box;
+  min-width: 0; overflow: hidden;
+}
+.pe-ritmo-guide {
+  position: absolute; top: 0; bottom: 0; width: 1px;
+  border-left: 1px dashed var(--border);
+}
+.pe-ritmo-glyph { width: 20px; height: 22px; flex: none; }
+.pe-ritmo-total { margin-top: 12px; font-size: 0.95rem; color: var(--muted); }
+.pe-ritmo-total b { font-size: 1.4rem; color: var(--accent); }
+.pe-ritmo-notes {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+  width: 100%; max-width: 320px; margin-top: 16px;
+}
+.pe-ritmo-note {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  background: var(--card); color: var(--text);
+  border: 2px solid var(--border); border-radius: 12px;
+  padding: 8px 2px; cursor: pointer;
+}
+.pe-ritmo-note:active { transform: scale(0.96); border-color: var(--accent); }
+.pe-ritmo-name { font-size: 0.62rem; color: var(--muted); }
+.pe-ritmo-frac { font-size: 0.85rem; font-weight: 800; color: var(--accent); }
+
+/* ---------- 4. Bombillas binarias ---------- */
+.pe-bin-row { display: flex; gap: 6px; justify-content: center; width: 100%; max-width: 330px; }
+.pe-bin-bulb {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px;
+  background: transparent; border: 2px solid transparent; border-radius: 12px;
+  padding: 4px 0; cursor: pointer;
+}
+.pe-bin-bulb:active { transform: scale(0.95); }
+.pe-bin-svg { width: 100%; max-width: 48px; height: auto; }
+.pe-bin-glass { fill: var(--bg); stroke: var(--border); stroke-width: 2; }
+.pe-bin-fil { fill: none; stroke: var(--border); stroke-width: 2; stroke-linejoin: round; }
+.pe-bin-cap { fill: var(--muted); }
+.pe-bin-bulb.on .pe-bin-glass { fill: #f7c948; stroke: #d99e00; }
+.pe-bin-bulb.on .pe-bin-fil { stroke: #8a5a00; }
+.pe-bin-bulb.on .pe-bin-svg { filter: drop-shadow(0 0 7px rgba(247, 201, 72, 0.85)); }
+.pe-bin-place { font-size: 0.8rem; font-weight: 800; color: var(--muted); }
+.pe-bin-bulb.on .pe-bin-place { color: var(--accent); }
+.pe-bin-readout { margin-top: 14px; font-size: 0.95rem; color: var(--muted); }
+.pe-bin-readout b { font-size: 1.6rem; color: var(--accent); }
+
+/* ---------- 5. Cuenta los cubos ---------- */
+.pe-cubos-wrap {
+  width: 100%; max-width: 280px; display: flex; justify-content: center;
+  margin-bottom: 18px;
+}
+.pe-cubos-svg { width: 100%; height: auto; max-height: 190px; }
+.pe-cubos-t { fill: var(--accent-2); stroke: var(--card); stroke-width: 1.2; }
+.pe-cubos-l { fill: var(--accent); stroke: var(--card); stroke-width: 1.2; }
+.pe-cubos-r { fill: var(--accent-dark); stroke: var(--card); stroke-width: 1.2; }
+
+/* Pantallas estrechas: los juegos siguen cabiendo a 400px o menos. */
+@media (max-width: 400px) {
+  .pe-ritmo-notes { gap: 6px; }
+  .pe-ritmo-name { font-size: 0.58rem; }
+  .pe-bin-row { gap: 4px; }
+  .pe-cubos-wrap { max-width: 240px; }
+  .pe-cubos-svg { max-height: 165px; }
+}

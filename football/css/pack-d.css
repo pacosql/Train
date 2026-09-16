@@ -1,0 +1,341 @@
+/* Pack D — medidas y mundo real: calendario, compra, proporciones,
+   termómetro y brújula. Prefijos: .cal- .shop- .ratio- .therm- .rose-
+   Sólo variables ya existentes en style.css, así que claro y oscuro
+   funcionan solos. Pensado para 400px de ancho como mínimo. */
+
+/* Envoltorio común: .game-body centra, aquí sólo se apila el contenido. */
+.cal-wrap,
+.shop-wrap,
+.ratio-wrap,
+.therm-wrap,
+.rose-wrap {
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Enunciados más compactos que el .prompt global: estos juegos llevan
+   mucho dibujo debajo y no cabe todo a 1,35rem. */
+.cal-wrap .cal-prompt,
+.shop-wrap .shop-prompt,
+.ratio-wrap .ratio-prompt,
+.therm-wrap .therm-prompt,
+.rose-wrap .rose-prompt {
+  font-size: 1.05rem;
+  margin-bottom: 14px;
+}
+
+/* ---------- Calendario ---------- */
+.cal-month {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--accent-2);
+  text-transform: capitalize;
+  letter-spacing: 0.04em;
+  margin-bottom: 6px;
+}
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+  width: 100%;
+  max-width: 320px;
+}
+.cal-head {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--muted);
+  text-align: center;
+  padding-bottom: 2px;
+}
+.cal-head.cal-weekend { color: var(--accent-2); }
+.cal-cell {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: 7px;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+}
+.cal-empty { background: transparent; border-color: transparent; }
+button.cal-day {
+  cursor: pointer;
+  font-family: inherit;
+  padding: 0;
+}
+button.cal-day:active { transform: scale(0.92); }
+.cal-cell.cal-mark {
+  background: var(--accent-2);
+  border-color: var(--accent-2);
+  color: #fff;
+  font-weight: 800;
+}
+.cal-cell.correct { background: var(--good); border-color: var(--good); color: #fff; }
+.cal-cell.wrong { background: var(--danger); border-color: var(--danger); color: #fff; }
+.cal-cell:disabled { opacity: 1; }
+.cal-wrap .cal-choices {
+  grid-template-columns: repeat(4, 1fr);
+  max-width: 320px;
+  margin-top: 14px;
+  gap: 7px;
+}
+.cal-choices .choice-btn { padding: 11px 4px; font-size: 1rem; }
+
+/* ---------- La compra ---------- */
+.shop-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+  width: 100%;
+  max-width: 330px;
+}
+.shop-grid .shop-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 9px 2px;
+}
+.shop-emoji { font-size: 1.5rem; line-height: 1.1; }
+.shop-precio { font-size: 0.72rem; font-weight: 700; color: var(--muted); }
+.shop-cart {
+  width: 100%;
+  max-width: 330px;
+  margin-top: 12px;
+  padding: 9px 12px;
+  border: 2px dashed var(--border);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 46px;
+}
+.shop-cart-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  font-size: 1.1rem;
+  line-height: 1.2;
+  flex: 1;
+  min-width: 0;
+}
+.shop-empty { font-size: 0.75rem; color: var(--muted); font-style: italic; }
+.shop-total {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--accent);
+  white-space: nowrap;
+  text-align: right;
+}
+.shop-of { display: block; font-size: 0.66rem; font-weight: 600; color: var(--muted); }
+.shop-wrap button.shop-reset { margin-top: 10px; padding: 7px 14px; font-size: 0.8rem; }
+
+/* ---------- Mezclas y proporciones ---------- */
+.ratio-base {
+  width: 100%;
+  max-width: 320px;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.ratio-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.ratio-label {
+  font-size: 0.72rem;
+  color: var(--muted);
+  font-weight: 700;
+  min-width: 74px;
+}
+.ratio-num {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--accent);
+  min-width: 16px;
+}
+.ratio-icons { font-size: 1.3rem; letter-spacing: 1px; line-height: 1.2; }
+.ratio-question {
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: center;
+  margin: 14px 0 12px;
+}
+.ratio-question small { display: block; font-size: 0.72rem; color: var(--muted); font-weight: 500; margin-top: 3px; }
+.ratio-wrap .ratio-choices { max-width: 300px; }
+
+/* ---------- Termómetro ---------- */
+.therm-col {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  height: 230px;
+  width: 132px;
+}
+.therm-ticks {
+  position: relative;
+  width: 44px;
+  height: 100%;
+}
+.therm-tick {
+  position: absolute;
+  right: 6px;
+  transform: translateY(50%);
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.therm-tick.therm-zero { color: var(--accent-2); }
+.therm-tube {
+  position: relative;
+  width: 40px;
+  height: 100%;
+  background: var(--bg);
+  border: 3px solid var(--border);
+  border-radius: 20px 20px 6px 6px;
+  overflow: hidden;
+  touch-action: none;
+  cursor: pointer;
+}
+.therm-fill {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to top, #e5484d, #f5a623);
+  border-radius: 0 0 4px 4px;
+}
+.therm-fill.therm-cold { background: linear-gradient(to top, #2ea3c4, #7fd4e8); }
+.therm-level {
+  position: absolute;
+  left: -2px;
+  right: -2px;
+  height: 3px;
+  background: var(--text);
+  transform: translateY(50%);
+  pointer-events: none;
+}
+/* Bulbo decorativo: cuelga por debajo del tubo, que es la zona real de
+   arrastre — por eso no se le añade z-index negativo (desaparecería). */
+.therm-bulb {
+  position: absolute;
+  left: 42px;
+  bottom: -16px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #e5484d;
+  border: 3px solid var(--border);
+}
+.therm-value {
+  margin-top: 26px;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+.therm-value.therm-neg { color: var(--accent-2); }
+.therm-confirm { margin-top: 10px; }
+
+/* ---------- Giros y direcciones ---------- */
+.rose {
+  position: relative;
+  width: 240px;
+  height: 240px;
+  max-width: 78vw;
+  max-height: 78vw;
+  margin: 2px auto 0;
+}
+.rose-ring {
+  position: absolute;
+  inset: 8%;
+  border: 2px dashed var(--border);
+  border-radius: 50%;
+  background: var(--bg);
+}
+/* Cruz N-S / E-O: dos líneas finas para leer los ejes de un vistazo. */
+.rose-cross {
+  position: absolute;
+  inset: 8%;
+  background:
+    linear-gradient(var(--border), var(--border)) center/2px 100% no-repeat,
+    linear-gradient(var(--border), var(--border)) center/100% 2px no-repeat;
+  border-radius: 50%;
+}
+.rose-arrow {
+  position: absolute;
+  left: 50%;
+  top: 16%;
+  width: 7px;
+  height: 34%;
+  background: var(--accent);
+  border-radius: 4px;
+  transform-origin: 50% 100%;
+  transition: transform 0.55s ease;
+  z-index: 2;
+}
+.rose-head {
+  position: absolute;
+  top: -11px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  border-bottom: 13px solid var(--accent);
+}
+.rose-hub {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent-dark);
+  transform: translate(-50%, -50%);
+  z-index: 3;
+}
+.rose-point {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  min-width: 38px;
+  padding: 6px 4px;
+  border-radius: 10px;
+  border: 2px solid var(--border);
+  background: var(--card);
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  z-index: 4;
+}
+.rose-point.rose-cardinal { color: var(--text); font-size: 0.95rem; }
+.rose-point:active { transform: translate(-50%, -50%) scale(0.92); }
+.rose-point.correct { background: var(--good); border-color: var(--good); color: #fff; }
+.rose-point.wrong { background: var(--danger); border-color: var(--danger); color: #fff; }
+.rose-point:disabled { cursor: default; }
+
+/* Móviles estrechos: lo único que no cabe son la rosa y el calendario. */
+@media (max-width: 380px) {
+  .cal-grid { max-width: 290px; }
+  .cal-cell { font-size: 0.74rem; border-radius: 6px; }
+  .shop-grid { max-width: 300px; }
+  .ratio-icons { font-size: 1.15rem; }
+  .rose-point { min-width: 34px; font-size: 0.75rem; }
+}

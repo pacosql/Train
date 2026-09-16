@@ -1,0 +1,207 @@
+/* Pack C — juegos de lógica y detección: error, semáforo, líneas,
+   colorea y puzle. Todo se apoya en las variables de style.css, así el
+   modo claro/oscuro sale solo. */
+
+/* ---------- Encuentra el error ---------- */
+.err-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 340px;
+}
+/* Especificidad extra: .err-step también es .choice-btn y debe ganarle
+   el padding/tamaño aunque style.css se cargue después. */
+.err-steps .err-step {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 13px 10px;
+  font-size: 1rem;
+  text-align: center;
+}
+.err-num {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.72rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.err-step.correct .err-num,
+.err-step.wrong .err-num {
+  background: rgba(255, 255, 255, 0.32);
+}
+
+/* ---------- Verdadero o falso (semáforo) ---------- */
+.sem-eq {
+  width: 100%;
+  max-width: 300px;
+  margin: 4px 0 24px;
+  padding: 18px 12px;
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 1.9rem;
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: 1px;
+}
+.sem-eq.ok { border-color: var(--good); color: var(--good); }
+.sem-eq.bad { border-color: var(--danger); color: var(--danger); }
+.sem-buttons { display: flex; gap: 18px; }
+.sem-btn {
+  width: 92px;
+  height: 74px;
+  border: 2px solid var(--border);
+  border-radius: 16px;
+  background: var(--bg);
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.sem-btn:active { transform: scale(0.95); }
+.sem-yes { border-color: var(--good); }
+.sem-no { border-color: var(--danger); }
+.sem-btn:disabled { opacity: 0.45; cursor: default; }
+
+/* ---------- Une con líneas ---------- */
+.lin-board {
+  position: relative;
+  display: flex;
+  gap: 56px;
+  width: 100%;
+  max-width: 340px;
+  margin: 0 auto;
+}
+.lin-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+  z-index: 0;
+}
+.lin-line { stroke: var(--accent-2); stroke-width: 3; stroke-linecap: round; }
+.lin-col {
+  position: relative;
+  z-index: 1;
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.lin-card {
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 13px 4px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  cursor: pointer;
+}
+.lin-card:active { transform: scale(0.97); }
+.lin-card.picked { background: var(--accent); border-color: var(--accent); color: #fff; }
+.lin-card.matched { background: var(--accent-2); border-color: var(--accent-2); color: #fff; }
+.lin-card.wrong { background: var(--danger); border-color: var(--danger); color: #fff; }
+.lin-card:disabled { cursor: default; }
+
+/* ---------- Colorea por resultado ---------- */
+.col-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+}
+.col-cell {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text);
+  cursor: pointer;
+}
+.col-cell:active { transform: scale(0.96); }
+.col-cell.hit { background: var(--accent-2); border-color: var(--accent-2); color: #fff; }
+.col-cell.wrong { background: var(--danger); border-color: var(--danger); color: #fff; }
+.col-cell:disabled { cursor: default; }
+.col-cell:disabled:not(.hit):not(.wrong) { opacity: 0.5; }
+
+/* ---------- Puzle numérico ---------- */
+.puz-eq {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 4px 0 26px;
+}
+.puz-token { font-size: 1.6rem; font-weight: 800; color: var(--text); }
+.puz-hole {
+  min-width: 58px;
+  height: 56px;
+  border: 2px dashed var(--accent);
+  border-radius: 12px;
+  background: var(--bg);
+  color: var(--muted);
+  font-size: 1.4rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+.puz-hole.filled { border-style: solid; color: var(--text); }
+.puz-hole.correct { background: var(--good); border-color: var(--good); color: #fff; }
+.puz-hole.wrong { background: var(--danger); border-color: var(--danger); color: #fff; }
+.puz-tray {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 330px;
+}
+.puz-piece {
+  min-width: 56px;
+  padding: 12px 6px;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 2px 0 var(--border);
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text);
+  cursor: pointer;
+}
+.puz-piece:active { transform: translateY(2px); box-shadow: none; }
+.puz-piece.used,
+.puz-piece:disabled { opacity: 0.3; box-shadow: none; cursor: default; }
+
+/* ---------- Móviles estrechos ---------- */
+@media (max-width: 400px) {
+  .err-steps .err-step { font-size: 0.92rem; padding: 12px 6px; gap: 6px; }
+  .sem-eq { font-size: 1.6rem; padding: 15px 8px; }
+  .sem-btn { width: 76px; height: 66px; font-size: 1.7rem; }
+  .sem-buttons { gap: 12px; }
+  .lin-board { gap: 34px; }
+  .lin-card { font-size: 0.92rem; padding: 12px 2px; }
+  .col-grid { gap: 6px; }
+  .col-cell { font-size: 0.82rem; border-radius: 8px; }
+  .puz-token { font-size: 1.35rem; }
+  .puz-hole { min-width: 50px; height: 50px; font-size: 1.2rem; }
+  .puz-piece { min-width: 48px; padding: 10px 4px; font-size: 1.05rem; }
+}

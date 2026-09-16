@@ -3,15 +3,32 @@
 import { randInt, pick, buildChoices, shuffle } from "./utils.js";
 
 // ---------- 1. Comparador mayor / menor (contrarreloj) ----------
+// v2: los dos números ya no se leen sueltos sobre una balanza decorativa;
+// se sitúan sobre una recta numérica compartida, que es lo que de verdad
+// explica por qué uno es mayor que otro (y sostiene los negativos).
+function compareLineSvg(a, b) {
+  const min = -50, max = 99;
+  const pos = (v) => ((v - min) / (max - min)) * 100;
+  const zero = pos(0);
+  return `
+    <svg class="cmp-line" viewBox="0 0 100 34" preserveAspectRatio="none">
+      <line x1="0" y1="20" x2="100" y2="20" stroke="var(--border)" stroke-width="1.2"/>
+      <line x1="${zero}" y1="15" x2="${zero}" y2="25" stroke="var(--muted)" stroke-width="0.8"/>
+      <circle cx="${pos(a)}" cy="20" r="3.4" fill="var(--accent)"/>
+      <circle cx="${pos(b)}" cy="20" r="3.4" fill="var(--accent-2)"/>
+      <text x="${pos(a)}" y="11" font-size="7" text-anchor="middle" fill="var(--accent)">${a}</text>
+      <text x="${pos(b)}" y="32" font-size="7" text-anchor="middle" fill="var(--accent-2)">${b}</text>
+    </svg>`;
+}
 function compareQuestion() {
   const a = randInt(-50, 99);
   const b = randInt(-50, 99);
   const symbol = a === b ? "=" : a > b ? ">" : "<";
-  const labels = { ">": "Mayor (>)", "<": "Menor (<)", "=": "Igual (=)" };
+  const labels = { ">": "A es mayor", "<": "B es mayor", "=": "Son iguales" };
   const correctLabel = labels[symbol];
   const choices = shuffle([labels[">"], labels["<"], labels["="]]);
   return {
-    prompt: `${a} &nbsp;⚖️&nbsp; ${b}`,
+    prompt: `${compareLineSvg(a, b)}<br><span class="cmp-a">A = ${a}</span> &nbsp; <span class="cmp-b">B = ${b}</span>`,
     sub: "¿Qué relación es correcta?",
     choices,
     correctIndex: choices.indexOf(correctLabel),
@@ -113,9 +130,14 @@ function statsQuestion() {
     correct = Number(Object.entries(counts).sort((a, b) => b[1] - a[1])[0][0]);
   }
   const choices = buildChoices(correct, () => Math.max(1, correct + pick([-3, -2, -1, 1, 2, 3]))).map(String);
+  // v2: los datos se presentan como fichas y, en las rondas de mediana,
+  // ordenados de menor a mayor — leerlos en fila apelotonados hacía la
+  // pregunta más de lectura que de estadística.
+  const shownNums = stat === "mediana" ? [...nums].sort((a, b) => a - b) : nums;
+  const cards = shownNums.map((v) => `<span class="data-chip">${v}</span>`).join("");
   return {
-    prompt: `Datos: ${nums.join(", ")}`,
-    sub: `¿Cuál es la ${stat}?`,
+    prompt: `<span class="data-row">${cards}</span>`,
+    sub: `¿Cuál es la ${stat}?${stat === "mediana" ? " (ya están ordenados)" : ""}`,
     choices,
     correctIndex: choices.indexOf(String(correct)),
   };
@@ -261,11 +283,11 @@ function sequenceQuestion() {
 }
 
 export const QUIZ_GAMES = [
-  { id: "comparador", title: "Mayor o menor", emoji: "⚖️", topic: "Comparación", mode: "timeAttack", timeLimit: 30, generateQuestion: compareQuestion },
-  { id: "calculo", title: "Cálculo veloz", emoji: "🧮", topic: "Cálculo mental", mode: "timeAttack", timeLimit: 30, generateQuestion: mentalMathQuestion },
+  { id: "comparador", title: "Mayor o menor", emoji: "⚖️", topic: "Comparación", mode: "timeAttack", timeLimit: 30, v: 2, generateQuestion: compareQuestion },
+  { id: "calculo", title: "Cálculo veloz", emoji: "🧮", topic: "Cálculo mental", mode: "timeAttack", timeLimit: 30, v: 2, input: "keypad", generateQuestion: mentalMathQuestion },
   { id: "geometria", title: "Formas", emoji: "🔺", topic: "Geometría", mode: "lives", lives: 3, generateQuestion: geometryQuestion },
   { id: "algebra", title: "Encuentra la x", emoji: "🧩", topic: "Álgebra", mode: "lives", lives: 3, generateQuestion: algebraQuestion },
-  { id: "estadistica", title: "Media y moda", emoji: "📊", topic: "Estadística", mode: "lives", lives: 3, generateQuestion: statsQuestion },
+  { id: "estadistica", title: "Media y moda", emoji: "📊", topic: "Estadística", mode: "lives", lives: 3, v: 2, generateQuestion: statsQuestion },
   { id: "distancias", title: "Distancias", emoji: "📏", topic: "Medidas", mode: "lives", lives: 3, generateQuestion: distanceQuestion },
   { id: "pesos", title: "Pesos", emoji: "🐘", topic: "Medidas", mode: "lives", lives: 3, generateQuestion: weightQuestion },
   { id: "fracciones", title: "La tarta", emoji: "🍕", topic: "Fracciones", mode: "lives", lives: 3, generateQuestion: fractionsQuestion },

@@ -1,0 +1,377 @@
+/* ==========================================================================
+   Pack B — juegos de manipular y construir: ábaco, reparte, vaso, torre, regla.
+   Todo con prefijo .pb- para no chocar con style.css ni con otros packs.
+   Variables reutilizadas: --bg --card --text --muted --accent --accent-2
+   --accent-dark --danger --good --border.
+   ========================================================================== */
+
+.pb-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 12px;
+}
+.pb-actions button { padding-top: 9px; padding-bottom: 9px; }
+
+/* ---------- 🧮 Ábaco ---------- */
+.pb-abaco {
+  width: 100%;
+  max-width: 340px;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 10px 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.pb-row {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.pb-row-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-size: 0.6rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--muted);
+}
+.pb-row-head b {
+  font-size: 0.95rem;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+.pb-rod {
+  position: relative;
+  width: 100%;
+  height: 30px;
+  border-radius: 4px;
+  /* La varilla: línea fina centrada donde ensartan las bolas. */
+  background: linear-gradient(var(--border), var(--border)) center / 100% 3px no-repeat;
+}
+.pb-bead {
+  position: absolute;
+  top: 4px;
+  left: 0;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border-radius: 50%;
+  border: 2px solid var(--accent-dark);
+  background: var(--accent);
+  cursor: pointer;
+  transition: left 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+}
+.pb-bead.off {
+  background: var(--card);
+  border-color: var(--border);
+}
+.pb-bead:active { transform: scale(0.9); }
+.pb-abaco-readout {
+  margin-top: 12px;
+  font-size: 0.9rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+.pb-abaco-readout b {
+  font-size: 1.5rem;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- 🍪 Reparte en cajas ---------- */
+.pb-pool {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 14px;
+  min-height: 24px;
+}
+.pb-pool-dots {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  max-width: 220px;
+}
+.pb-pool-empty { color: var(--good); }
+.pb-cookie {
+  display: block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent-2);
+  border: 2px solid var(--accent-dark);
+}
+.pb-boxes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  width: 100%;
+}
+.pb-box-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+.pb-box {
+  width: 68px;
+  height: 66px;
+  padding: 5px;
+  background: var(--bg);
+  border: 2px dashed var(--border);
+  border-top-width: 4px;
+  border-radius: 4px 4px 10px 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.pb-box:active { transform: scale(0.97); }
+.pb-box-cookies {
+  display: flex;
+  flex-wrap: wrap-reverse;
+  gap: 4px;
+  justify-content: center;
+  align-content: flex-start;
+  width: 100%;
+}
+.pb-box-minus {
+  width: 34px;
+  height: 26px;
+  border-radius: 8px;
+  border: 2px solid var(--border);
+  background: var(--card);
+  color: var(--muted);
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+}
+
+/* ---------- 🥛 Llena el vaso ---------- */
+.pb-vaso-zone {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.pb-glass {
+  position: relative;
+  width: 86px;
+  height: 180px;
+  flex: none;
+  border: 3px solid var(--border);
+  border-top: none;
+  border-radius: 6px 6px 16px 16px;
+  background: var(--card);
+  overflow: hidden;
+}
+.pb-liquid {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(var(--accent-2), var(--accent));
+  transition: height 0.4s ease;
+}
+.pb-glass-mark {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 0;
+  border-top: 1px dashed var(--muted);
+  opacity: 0.55;
+  pointer-events: none;
+}
+.pb-glass-mark i {
+  position: absolute;
+  right: 3px;
+  top: -12px;
+  font-size: 0.55rem;
+  font-style: normal;
+  font-weight: 700;
+  color: var(--muted);
+  /* Chip de fondo: la marca queda legible tanto sobre el vaso vacío
+     como sobre el líquido. */
+  background: var(--card);
+  border-radius: 3px;
+  padding: 0 3px;
+}
+.pb-vaso-info { padding-bottom: 8px; }
+.pb-vaso-now {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+.pb-vaso-target {
+  font-size: 0.78rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+.pb-measures {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  width: 100%;
+  max-width: 320px;
+}
+.pb-measure-btn {
+  font-size: 0.82rem;
+  line-height: 1.4;
+  padding: 10px 4px;
+}
+
+/* ---------- 🏗️ Construye la torre ---------- */
+.pb-towers {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  align-items: flex-end;
+  width: 100%;
+}
+.pb-tower-side {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex: 1 1 0;
+  min-width: 0;
+}
+.pb-tower {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 2px;
+  width: 100%;
+  max-width: 120px;
+  min-height: 190px;
+  padding: 4px 4px 0;
+  margin: 0;
+  /* Suelo común y mismo borde (invisible en el modelo) para que las dos
+     torres tengan bloques idénticos y se comparen a la misma altura. */
+  border: 2px solid transparent;
+  border-bottom: 3px solid var(--border);
+  background: none;
+}
+.pb-tower-mine {
+  border: 2px dashed var(--border);
+  border-bottom: 3px solid var(--accent);
+  border-radius: 10px 10px 0 0;
+  background: var(--bg);
+  cursor: pointer;
+}
+.pb-tower-mine:active { transform: scale(0.99); }
+.pb-brick {
+  width: 100%;
+  height: 15px;
+  flex: none;
+  border-radius: 3px;
+}
+.pb-brick-model { background: var(--muted); }
+.pb-brick-mine { background: var(--accent); }
+.pb-tower-name {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+.pb-tower-name b { color: var(--accent); }
+
+/* ---------- 📏 Mide con la regla ---------- */
+.pb-ruler-zone {
+  width: 100%;
+  max-width: 330px;
+  padding: 0 4px;
+}
+.pb-pencil-lane {
+  position: relative;
+  height: 34px;
+  width: 100%;
+  /* Mismo borde (invisible) que .pb-ruler: los hijos absolutos se posicionan
+     dentro del borde, así lápiz y marcas comparten el mismo origen exacto. */
+  border: 2px solid transparent;
+}
+.pb-pencil {
+  position: absolute;
+  bottom: 6px;
+  height: 16px;
+  border-radius: 3px 0 0 3px;
+  background: linear-gradient(var(--accent-2), var(--accent-dark));
+}
+/* La punta va DENTRO de la barra: si sobresaliera, el lápiz acabaría más
+   allá de su marca y la medida que se ve no sería la correcta. */
+.pb-pencil-tip {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-left: 10px solid var(--danger);
+}
+.pb-ruler {
+  position: relative;
+  width: 100%;
+  height: 52px;
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+}
+.pb-mark {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 26px;
+  transform: translateX(-50%);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 2px;
+  border-radius: 6px;
+}
+.pb-mark-line {
+  width: 2px;
+  height: 16px;
+  background: var(--muted);
+  border-radius: 1px;
+}
+.pb-mark-num {
+  font-size: 0.66rem;
+  font-weight: 800;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+.pb-mark:active { background: var(--border); }
+.pb-mark.correct { background: var(--good); }
+.pb-mark.correct .pb-mark-num, .pb-mark.wrong .pb-mark-num { color: #fff; }
+.pb-mark.correct .pb-mark-line, .pb-mark.wrong .pb-mark-line { background: #fff; }
+.pb-mark.wrong { background: var(--danger); }
+
+/* ---------- Pantallas estrechas (360 px y menos) ---------- */
+@media (max-width: 380px) {
+  .pb-abaco { padding: 8px 6px 10px; }
+  .pb-box { width: 62px; height: 62px; }
+  .pb-glass { width: 74px; height: 164px; }
+  .pb-vaso-now { font-size: 1.35rem; }
+  .pb-mark { width: 22px; }
+  .pb-mark-num { font-size: 0.6rem; }
+}

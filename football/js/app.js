@@ -4,7 +4,8 @@ import { QUIZ_GAMES } from "./games-data.js";
 import { CREATIVE_GAMES } from "./games-creative.js";
 import { QUIZ_GAMES_2 } from "./games-data-2.js";
 import { CREATIVE_GAMES_2 } from "./games-creative-2.js";
-import { getRating, setRating } from "./ratings.js";
+import { GAMES_PACK_3 } from "./games-pack.js";
+import { getRating, setRating, applyReworkReset } from "./ratings.js";
 
 // El número de cada juego (#1, #2…) es su posición en este array — para
 // que sea estable de verdad, los juegos nuevos SIEMPRE se añaden al
@@ -15,6 +16,7 @@ const GAMES = [
   ...QUIZ_GAMES,
   ...QUIZ_GAMES_2,
   ...CREATIVE_GAMES_2,
+  ...GAMES_PACK_3,
 ].map((g, i) => ({ ...g, num: i + 1 }));
 const GAMES_BY_ID = Object.fromEntries(GAMES.map((g) => [g.id, g]));
 
@@ -25,6 +27,11 @@ const client =
 const root = document.getElementById("app");
 let cleanupCurrent = null;
 let activeTab = "new";
+
+// Los juegos que estaban en "🔧 Revisar" vuelven a "Nuevos" al publicarse
+// una tanda de mejoras — se ejecuta una sola vez por navegador y deja el
+// aviso para contarlo en el menú.
+const reworkReset = applyReworkReset();
 
 function teardown() {
   if (cleanupCurrent) {
@@ -58,6 +65,11 @@ async function renderMenu() {
         <button class="tab-btn" data-tab="dislike">👎 No me gusta (${groups.dislike.length})</button>
         <button class="tab-btn" data-tab="review">🔧 Revisar (${groups.review.length})</button>
       </div>
+      ${reworkReset.length
+        ? `<div class="rework-note">🔧 ${reworkReset.length} ejercicio${reworkReset.length > 1 ? "s" : ""} que habías marcado para revisar ${reworkReset.length > 1 ? "han vuelto" : "ha vuelto"} a <b>Nuevos</b> con una versión mejorada: ${reworkReset
+            .map((id) => GAMES_BY_ID[id] ? `#${GAMES_BY_ID[id].num} ${GAMES_BY_ID[id].title}` : id)
+            .join(", ")}.</div>`
+        : ""}
       <div class="game-grid" data-grid></div>
       <div class="recent">
         <h2>Últimas partidas</h2>
@@ -100,7 +112,7 @@ function renderGrid(groups) {
     const card = document.createElement("a");
     card.className = "game-card";
     card.href = `#/game/${g.id}`;
-    card.innerHTML = `<span class="num-badge">#${g.num}</span><span class="emoji">${g.emoji}</span><span class="name">${g.title}</span><span class="topic">${g.topic}</span>`;
+    card.innerHTML = `<span class="num-badge">#${g.num}</span>${g.v ? `<span class="v-badge">v${g.v}</span>` : ""}<span class="emoji">${g.emoji}</span><span class="name">${g.title}</span><span class="topic">${g.topic}</span>`;
     grid.appendChild(card);
   });
 }
@@ -139,7 +151,7 @@ function renderGame(id) {
   }
   root.innerHTML = `
     <div class="game-screen" data-screen>
-      <div class="game-num-header">Ejercicio #${game.num} · ${game.title}</div>
+      <div class="game-num-header">Ejercicio #${game.num} · ${game.title}${game.v ? ` · v${game.v}` : ""}</div>
       <div class="game-mount" data-mount></div>
       <div class="rate-bar" data-rate-bar>
         <button class="rate-btn dislike" data-rate="dislike">👎 No me gusta</button>

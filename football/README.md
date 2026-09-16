@@ -1,6 +1,6 @@
 # Math Games 🧠
 
-PWA (sin build, HTML/CSS/JS puro) con **40 ejercicios de matemáticas**,
+PWA (sin build, HTML/CSS/JS puro) con **65 ejercicios de matemáticas**,
 cada uno numerado (#1-#40) para poder referirse a ellos sin ambigüedad.
 Cálculo mental, geometría, álgebra, estadística, fracciones, dinero,
 probabilidad, coordenadas, tiempo y más. Nace como banco de pruebas
@@ -75,10 +75,68 @@ juego de una sesión a otra.
 | 39 | 🔲 Área y perímetro | Geometría | Cuenta cuadrados para el área, o calcula el perímetro |
 | 40 | 🌀 Laberinto numérico | Múltiplos y reglas | Recorre una cuadrícula pisando solo casillas que cumplen la regla |
 
-Los juegos "contrarreloj" (#12, #13) terminan a los 30 segundos; el
-resto termina a las 3 vidas o, en #7 y #39 (parcialmente), al completar
-el objetivo. Todos guardan la puntuación final en Supabase y el menú
-principal muestra las últimas partidas jugadas.
+## Ejercicios #41-#65 (tercera tanda) — 25 mecánicas propias más
+
+| # | Juego | Tema | Mecánica |
+|---|---|---|---|
+| 41 | 🎣 Pesca de números | Multiplicación | Peces cruzan el estanque en horizontal; pesca el del resultado correcto |
+| 42 | 🪜 Escalera de rachas | Cálculo mental | Aciertas y subes un peldaño, fallas y bajas; llega arriba |
+| 43 | 🎰 Tragaperras de operaciones | Operaciones | Elige el operador que hace verdadera la ecuación de los rodillos |
+| 44 | 🎲 Dados | Sumas rápidas | Dados con puntos reales; suma o resta el resultado al vuelo |
+| 45 | 🏁 Carrera de cálculo | Cálculo mental | Corre contra la CPU: cada acierto te adelanta un tramo |
+| 46 | 🪀 Ábaco | Valor posicional | Mueve las cuentas de centenas/decenas/unidades |
+| 47 | 📦 Reparte en cajas | División | Reparte las galletas a partes iguales entre las cajas |
+| 48 | 💧 Llena el vaso | Capacidad | Añade medidas (100/250/500 ml) hasta el volumen exacto |
+| 49 | 🏗️ Construye la torre | Comparación | Iguala, dobla o supera la torre de referencia |
+| 50 | 🖍️ Mide con la regla | Medidas | Lee dónde acaba el objeto sobre la regla (con desplazamientos) |
+| 51 | 🔍 Encuentra el error | Razonamiento | Detecta el paso equivocado de un cálculo desarrollado |
+| 52 | 🚦 Verdadero o falso | Cálculo mental | Contrarreloj 30s: ✅/❌ a ecuaciones a toda velocidad |
+| 53 | 🪢 Une con líneas | Emparejar | Une operación y resultado trazando líneas entre columnas |
+| 54 | 🎨 Colorea por resultado | Cálculo mental | Colorea todas las casillas cuyo resultado coincide |
+| 55 | 🪄 Puzle numérico | Álgebra | Coloca piezas en los huecos de la ecuación |
+| 56 | 🗓️ Calendario | Tiempo | Mes real: días entre fechas y "el tercer martes" |
+| 57 | 🛒 La compra | Dinero | Llena el carro gastando el presupuesto exacto |
+| 58 | ⚗️ Mezclas y proporciones | Proporcionalidad | Escala una receta manteniendo la razón |
+| 59 | ♨️ Termómetro | Negativos | Arrastra el mercurio (vertical) hasta la temperatura pedida |
+| 60 | 🧭 Giros y direcciones | Ángulos | Gira 45/90/135°… sobre la rosa de los vientos |
+| 61 | 📉 Continúa la gráfica | Datos | Toca el punto que continúa la tendencia |
+| 62 | 🍰 Reparte la tarta | Fracciones | Arrastra el corte para separar la fracción pedida |
+| 63 | 🎵 Compás musical | Fracciones | Completa un compás de 4/4 con redondas, blancas y negras |
+| 64 | 💡 Bombillas binarias | Valor posicional | Enciende bombillas 16/8/4/2/1 para formar el número |
+| 65 | 🧊 Cuenta los cubos | Volumen | Cuenta los cubos de un bloque 3D al que le falta un trozo |
+
+Los juegos "contrarreloj" (#12, #13, #52) terminan a los 30 segundos;
+el resto termina a las 3 vidas o al completar el objetivo. Todos
+guardan la puntuación final en Supabase y el menú principal muestra las
+últimas partidas jugadas.
+
+## Versiones (v2) y bandeja "Revisar"
+
+Cuando un ejercicio recibe una vuelta de mejoras, se marca con un
+distintivo **v2** en su tarjeta y en la cabecera de la partida. Al
+publicarse una tanda de mejoras, la app sube su `REWORK_GENERATION`
+(ver [`js/ratings.js`](./js/ratings.js)) y, la primera vez que se abre
+después, **vacía la bandeja "🔧 Revisar"**: esos ejercicios vuelven a
+"🆕 Nuevos" para poder juzgarlos otra vez desde cero, con un aviso en
+el menú diciendo cuáles han vuelto. Las valoraciones 👍 y 👎 no se
+tocan.
+
+### Vuelta de la generación 2
+
+- **Motor de preguntas (afecta a los 18 ejercicios de tipo pregunta)**:
+  racha visible con bonus creciente (+2 por acierto encadenado a partir
+  del tercero, hasta +10), resumen final con aciertos/intentos y mejor
+  racha, y un modo nuevo de responder **escribiendo en un teclado
+  numérico** en vez de elegir entre opciones.
+- **#13 Cálculo veloz, #21 Problemas de palabras, #28 Temperaturas**:
+  pasan a teclado numérico — hay que producir el resultado, no
+  reconocerlo entre cuatro botones (con botón ± para los negativos).
+- **#12 Mayor o menor**: los dos números se sitúan sobre una recta
+  numérica compartida en vez de leerse sueltos, que es lo que explica
+  de verdad por qué uno es mayor (y sostiene los negativos).
+- **#16 Media y moda**: los datos se muestran como fichas y, en las
+  rondas de mediana, ya ordenados — la pregunta era más de lectura
+  apelotonada que de estadística.
 
 ## Valoración (🆕 / 👍 / 👎 / 🔧)
 
@@ -177,15 +235,18 @@ Una vez publicado, esta app queda en:
 
 ## Qué hace la app
 
-- Menú con los 40 ejercicios numerados, organizados en pestañas
+- Menú con los 65 ejercicios numerados, organizados en pestañas
   🆕/👍/👎/🔧; cada uno abre en su propia pantalla (`#/game/<id>`), sin
   recargar la página.
-- Motor de preguntas compartido (`js/quiz-engine.js`) para los 17
-  ejercicios de "pregunta + opciones" (`js/games-data.js` y
-  `js/games-data-2.js`); los otros 23 (`js/game-*.js` y
+- Motor de preguntas compartido (`js/quiz-engine.js`) para los 18
+  ejercicios de "pregunta + opciones o teclado" (`js/games-data.js` y
+  `js/games-data-2.js`); los otros 47 (`js/game-*.js` y
   `js/balloons-game.js`) tienen cada uno su propia mecánica de
   interacción (arrastrar, tocar en orden, emparejar, construir,
-  escribir, clasificar…).
+  escribir, clasificar, recorrer…).
+- Los estilos de las tandas #41-#65 viven en `css/pack-a.css` …
+  `css/pack-e.css`, uno por tanda temática, para que tocar una no
+  arrastre a las demás.
 - Guarda cada partida en `football_scores` y muestra las últimas en el
   menú.
 - Se puede usar sin conexión gracias a un Service Worker que cachea el
