@@ -1,77 +1,52 @@
 # Weights 🏋️
 
-PWA mínima (sin build, HTML/CSS/JS puro) que comprueba la conexión con
-Supabase y sirve de base para la app de seguimiento de entrenamiento.
-Forma parte del hosting multi-app de este repo — ver el
-[README de la raíz](../README.md) para el panorama general.
+Tutor de entrenamiento para el gimnasio. PWA sin build (HTML/CSS/JS
+puro), pensada para instalarse en el iPhone y usarse máquina a máquina
+durante el entrenamiento. Forma parte del hosting multi-app de este
+repo — ver el [README de la raíz](../README.md) para el panorama
+general.
 
-Vive en `weights/` y todas sus tablas en Supabase usan el prefijo
-`weights_`, para poder compartir el mismo proyecto de Supabase con otras
-apps de este mismo repo sin que sus tablas choquen entre sí.
+## Cómo funciona
 
-## 1. Configura tus credenciales
+1. **Start** → eliges la duración total del entrenamiento (60 / 90 /
+   120 min, o una duración custom).
+2. La app sugiere cuántos minutos de **elíptica/bicicleta** hacer de
+   calentamiento (siempre el primer "ejercicio").
+3. Tras el cardio, la app propone una **lista ordenada de ejercicios**
+   — prioriza los del grupo opuesto (empuje/tirón) al último que
+   hiciste, para que descanses mejor entre máquinas. Tú miras qué
+   máquina está libre en el gimnasio y eliges de esa lista.
+4. Para el ejercicio elegido, la app te muestra el **último peso**
+   usado y una recomendación (subir/mantener/bajar) basada en lo que
+   marcaste la vez anterior.
+5. Hilo de 3 series × 8 repeticiones — vas marcando cada serie hecha.
+6. Al terminar las 3 series, marcas si la **próxima vez** quieres más,
+   igual o menos peso — eso es lo que alimenta la recomendación de la
+   próxima sesión.
+7. Vuelves al paso 3 hasta que pulsas "Terminar entrenamiento".
 
-Edita [`config.js`](./config.js) con los datos de tu proyecto (Supabase →
-*Project Settings → API*):
+Para las máquinas asistidas (dominadas/fondos asistidos), la lógica de
+peso está invertida: menos peso en la pila = más difícil (menos
+ayuda), así que "más difícil la próxima vez" baja el número en vez de
+subirlo.
 
-```js
-window.WEIGHTS_CONFIG = {
-  url: "https://TU-PROYECTO.supabase.co",
-  anonKey: "TU-ANON-KEY",
-  tablePrefix: "weights_",
-};
-```
+## Esquema de datos (Supabase, prefijo `weights_`)
 
-La `anon key` es pública por diseño (se usa desde el navegador) y va
-protegida por las políticas de *Row Level Security* de tus tablas, así
-que no hay problema en que viva en un archivo del repo.
+- `weights_exercises`: catálogo de máquinas/ejercicios (nombre, grupo
+  muscular, tipo de movimiento push/pull/cardio, si es asistida, y el
+  incremento de peso típico).
+- `weights_sessions`: una fila por entrenamiento (duración planeada,
+  minutos de cardio, inicio/fin).
+- `weights_session_exercises`: una fila por ejercicio hecho dentro de
+  una sesión (peso usado, series, repeticiones, y la preferencia
+  "más/igual/menos" para la próxima vez).
 
-## 2. (Opcional) Crea la tabla de prueba
+Añadir una máquina nueva es una fila en `weights_exercises` — no hace
+falta tocar el código de la app.
 
-La app funciona igualmente sin esta tabla (te avisa con instrucciones si
-no existe), pero para ver datos reales yendo y viniendo, ejecuta esto en
-el **SQL Editor** de Supabase:
+## Configuración
 
-```sql
-create table weights_hello (
-  id bigint generated always as identity primary key,
-  message text not null,
-  created_at timestamptz default now()
-);
-
-alter table weights_hello enable row level security;
-
-create policy "allow anon read" on weights_hello
-  for select to anon using (true);
-
-create policy "allow anon insert" on weights_hello
-  for insert to anon with check (true);
-```
-
-## 3. Publica el sitio (GitHub Pages)
-
-Esta app se despliega junto con el resto del hosting desde la raíz del
-repo — ver el paso 3 del [README general](../README.md#3-publica-el-hosting-github-pages).
-Una vez publicado, esta app queda en:
-
-`https://<tu-usuario>.github.io/Train/weights/`
-
-## 4. Instálala en el iPhone
-
-1. Abre la URL de `weights/` en **Safari** (tiene que ser Safari, no
-   Chrome, para que funcione "Añadir a inicio").
-2. Toca el icono de compartir (el cuadrado con la flecha hacia arriba).
-3. Elige **"Añadir a pantalla de inicio"**.
-4. Listo: se abre a pantalla completa como una app nativa, con su propio
-   icono.
-
-## Qué hace la app
-
-- Comprueba la conexión básica contra la API REST de Supabase (`ping`).
-- Lee y escribe filas en la tabla `weights_hello`, si existe.
-- Se puede usar sin conexión gracias a un Service Worker que cachea el
-  "shell" de la app (las llamadas a Supabase nunca se cachean). Su caché
-  usa el prefijo `weights-shell-` para no interferir con la de otras apps
-  del mismo hosting.
-- Al pie de página muestra un `build <hash>` para poder confirmar de un
-  vistazo qué versión está sirviendo GitHub Pages.
+Igual que el resto de apps de este hosting: [`config.js`](./config.js)
+tiene la URL y la anon key de Supabase (públicas, protegidas por RLS).
+Ver el [README de la raíz](../README.md) para cómo desplegar y cómo
+instalar la PWA en el iPhone.
