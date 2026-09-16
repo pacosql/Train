@@ -1,4 +1,4 @@
-// App de reservas de "Eduardo Carrillo Tenis y Pádel Club".
+// App de reservas de "Eduardo Carrillo Tenis & Pádel Club".
 //
 // Prototipo sin autenticación: cualquier visitante puede leer/crear/cancelar
 // reservas (RLS de Supabase abierta a "anon"). Para producción real haría
@@ -109,7 +109,14 @@ async function loadCourts() {
   state.courts = data;
 }
 
+// Si el usuario cambia de día varias veces seguidas, una respuesta antigua
+// podría llegar después de una más reciente y pisar sus datos. Cada llamada
+// se marca con un id creciente y solo aplica su resultado si sigue siendo
+// la más reciente en vuelo.
+let reservasRequestId = 0;
+
 async function loadReservasForDay(offset) {
+  const requestId = ++reservasRequestId;
   const dayStart = dateForOffset(offset);
   const dayEnd = new Date(dayStart);
   dayEnd.setDate(dayEnd.getDate() + 1);
@@ -119,6 +126,7 @@ async function loadReservasForDay(offset) {
     .lt("start_time", dayEnd.toISOString())
     .gt("end_time", dayStart.toISOString())
     .order("start_time", { ascending: true });
+  if (requestId !== reservasRequestId) return; // ya hay una petición más nueva en curso
   if (error) {
     console.error(error);
     state.reservas = [];
@@ -242,20 +250,36 @@ function selectStart(m) {
 
 // ---------- Render: mapa de pistas ----------
 
-function courtSvg(type, color) {
+function courtSvg(type, color, busy) {
+  const fill = color;
+  const cross = busy
+    ? `<g fill="none" stroke-linecap="round"><g stroke="rgba(255,255,255,0.75)" stroke-width="4.5"><line x1="7" y1="7" x2="113" y2="65" /><line x1="113" y1="7" x2="7" y2="65" /></g><g stroke="#e5484d" stroke-width="1.8"><line x1="7" y1="7" x2="113" y2="65" /><line x1="113" y1="7" x2="7" y2="65" /></g></g>`
+    : "";
   if (type === "padel") {
+    // Pista de pádel: más pequeña (20x10 m), cerrada por paredes de cristal
+    // con malla metálica en el centro de los laterales, sin líneas de
+    // dobles: solo dos líneas de saque y la línea central entre ellas.
     return `<svg class="court-mini" viewBox="0 0 120 72" aria-hidden="true">
-      <rect x="2" y="2" width="116" height="68" rx="6" fill="${color}" />
-      <rect x="9" y="9" width="102" height="54" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="4" />
-      <g stroke="#fff" stroke-width="1.6" stroke-linecap="round">
-        <line x1="26" y1="9" x2="26" y2="63" /><line x1="94" y1="9" x2="94" y2="63" />
-        <line x1="26" y1="36" x2="94" y2="36" />
+      <rect x="2" y="2" width="116" height="68" rx="6" fill="#e6ebe3" />
+      <rect x="18" y="14" width="84" height="44" fill="${fill}" />
+      <g fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round">
+        <line x1="30" y1="14" x2="30" y2="58" /><line x1="90" y1="14" x2="90" y2="58" />
+        <line x1="30" y1="36" x2="90" y2="36" />
       </g>
-      <line x1="60" y1="6" x2="60" y2="66" stroke="#fff" stroke-width="2.4" stroke-dasharray="3 2" />
+      <line x1="60" y1="12" x2="60" y2="60" stroke="#fff" stroke-width="2.2" stroke-dasharray="3 2" />
+      <g fill="none" stroke="rgba(120,190,235,0.9)" stroke-width="3.5">
+        <line x1="18" y1="14" x2="18" y2="58" /><line x1="102" y1="14" x2="102" y2="58" />
+        <line x1="18" y1="14" x2="36" y2="14" /><line x1="84" y1="14" x2="102" y2="14" />
+        <line x1="18" y1="58" x2="36" y2="58" /><line x1="84" y1="58" x2="102" y2="58" />
+      </g>
+      <g fill="none" stroke="rgba(70,80,90,0.7)" stroke-width="3.5" stroke-dasharray="1.5 2">
+        <line x1="36" y1="14" x2="84" y2="14" /><line x1="36" y1="58" x2="84" y2="58" />
+      </g>
+      ${cross}
     </svg>`;
   }
   return `<svg class="court-mini" viewBox="0 0 120 72" aria-hidden="true">
-    <rect x="2" y="2" width="116" height="68" rx="6" fill="${color}" />
+    <rect x="2" y="2" width="116" height="68" rx="6" fill="${fill}" />
     <g fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round">
       <rect x="12" y="9" width="96" height="54" />
       <line x1="12" y1="16" x2="108" y2="16" /><line x1="12" y1="56" x2="108" y2="56" />
@@ -263,6 +287,7 @@ function courtSvg(type, color) {
       <line x1="36" y1="36" x2="84" y2="36" />
     </g>
     <line x1="60" y1="5" x2="60" y2="67" stroke="#fff" stroke-width="2.4" stroke-dasharray="3 2" />
+    ${cross}
   </svg>`;
 }
 
@@ -305,7 +330,7 @@ function renderCourtsMap() {
       card.type = "button";
       card.className = "court-card " + (free ? "is-free" : "is-busy");
       card.innerHTML = `
-        ${courtSvg(type, meta.color)}
+        ${courtSvg(type, meta.color, !free)}
         <span class="name">${escapeHtml(court.name)}</span>
         <span class="status ${free ? "free" : "busy"}">${free ? "Libre" : "Ocupada"}</span>
         <span class="schedule-link">Ver horario del día</span>
@@ -635,7 +660,15 @@ async function init() {
   renderMisReservasBadge();
 
   if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("sw.js").catch(() => {});
+    navigator.serviceWorker.register("sw.js").then((reg) => reg.update()).catch(() => {});
+    // Cuando un despliegue nuevo toma el control, recarga una vez sola
+    // para que esta pestaña ya abierta también vea la versión nueva.
+    let reloaded = false;
+    navigator.serviceWorker.addEventListener("controllerchange", () => {
+      if (reloaded) return;
+      reloaded = true;
+      location.reload();
+    });
   }
 }
 

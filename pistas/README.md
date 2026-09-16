@@ -1,4 +1,4 @@
-# Pistas 🎾 — Eduardo Carrillo Tenis y Pádel Club
+# Pistas 🎾 — Eduardo Carrillo Tenis & Pádel Club
 
 Prototipo funcional (sin build, HTML/CSS/JS puro) de reserva de pistas
 para un club de tenis y pádel. Forma parte del hosting multi-app de
@@ -10,7 +10,8 @@ Vive en `pistas/` y todas sus tablas en Supabase usan el prefijo
 
 ## Qué hace
 
-- **Portada** con el nombre del club y un botón "Reservar pista".
+- **Portada** con el nombre del club (mapa isométrico de las 13 pistas
+  de fondo) y un botón "Reservar pista".
 - Filtros de **día** (próximos 14 días), **duración** (60 / 90 / 120
   min) y **hora de inicio** (huecos cada 30 min, de 9:00 a 23:00).
 - **Mapa de pistas** agrupado por tipo, con cada pista dibujada (pista
