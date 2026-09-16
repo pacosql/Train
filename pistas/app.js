@@ -242,20 +242,34 @@ function selectStart(m) {
 
 // ---------- Render: mapa de pistas ----------
 
-function courtSvg(type, color) {
+const BUSY_COLOR = "#9aa39c";
+
+function courtSvg(type, color, busy) {
+  const fill = busy ? BUSY_COLOR : color;
   if (type === "padel") {
+    // Pista de pádel: más pequeña (20x10 m), cerrada por paredes de cristal
+    // con malla metálica en el centro de los laterales, sin líneas de
+    // dobles: solo dos líneas de saque y la línea central entre ellas.
     return `<svg class="court-mini" viewBox="0 0 120 72" aria-hidden="true">
-      <rect x="2" y="2" width="116" height="68" rx="6" fill="${color}" />
-      <rect x="9" y="9" width="102" height="54" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="4" />
-      <g stroke="#fff" stroke-width="1.6" stroke-linecap="round">
-        <line x1="26" y1="9" x2="26" y2="63" /><line x1="94" y1="9" x2="94" y2="63" />
-        <line x1="26" y1="36" x2="94" y2="36" />
+      <rect x="2" y="2" width="116" height="68" rx="6" fill="${busy ? "#dfe3dd" : "#e6ebe3"}" />
+      <rect x="18" y="14" width="84" height="44" fill="${fill}" />
+      <g fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round">
+        <line x1="30" y1="14" x2="30" y2="58" /><line x1="90" y1="14" x2="90" y2="58" />
+        <line x1="30" y1="36" x2="90" y2="36" />
       </g>
-      <line x1="60" y1="6" x2="60" y2="66" stroke="#fff" stroke-width="2.4" stroke-dasharray="3 2" />
+      <line x1="60" y1="12" x2="60" y2="60" stroke="#fff" stroke-width="2.2" stroke-dasharray="3 2" />
+      <g fill="none" stroke="rgba(120,190,235,0.9)" stroke-width="3.5">
+        <line x1="18" y1="14" x2="18" y2="58" /><line x1="102" y1="14" x2="102" y2="58" />
+        <line x1="18" y1="14" x2="36" y2="14" /><line x1="84" y1="14" x2="102" y2="14" />
+        <line x1="18" y1="58" x2="36" y2="58" /><line x1="84" y1="58" x2="102" y2="58" />
+      </g>
+      <g fill="none" stroke="rgba(70,80,90,0.7)" stroke-width="3.5" stroke-dasharray="1.5 2">
+        <line x1="36" y1="14" x2="84" y2="14" /><line x1="36" y1="58" x2="84" y2="58" />
+      </g>
     </svg>`;
   }
   return `<svg class="court-mini" viewBox="0 0 120 72" aria-hidden="true">
-    <rect x="2" y="2" width="116" height="68" rx="6" fill="${color}" />
+    <rect x="2" y="2" width="116" height="68" rx="6" fill="${fill}" />
     <g fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round">
       <rect x="12" y="9" width="96" height="54" />
       <line x1="12" y1="16" x2="108" y2="16" /><line x1="12" y1="56" x2="108" y2="56" />
@@ -305,7 +319,7 @@ function renderCourtsMap() {
       card.type = "button";
       card.className = "court-card " + (free ? "is-free" : "is-busy");
       card.innerHTML = `
-        ${courtSvg(type, meta.color)}
+        ${courtSvg(type, meta.color, !free)}
         <span class="name">${escapeHtml(court.name)}</span>
         <span class="status ${free ? "free" : "busy"}">${free ? "Libre" : "Ocupada"}</span>
         <span class="schedule-link">Ver horario del día</span>
@@ -620,7 +634,93 @@ document.getElementById("btn-mis-reservas").addEventListener("click", () => {
   dlgMisReservas.showModal();
 });
 
+// ---------- Portada (catálogo + selector) ----------
+
+const COVER_KEY = "pistas_cover";
+const COVERS = window.PISTAS_COVERS;
+let currentCoverIndex = 0;
+
+function applyCover(id) {
+  const idx = Math.max(0, COVERS.findIndex((c) => c.id === id));
+  const c = COVERS[idx];
+  currentCoverIndex = idx;
+  const cover = document.getElementById("cover");
+  cover.className = `font-${c.font} layout-${c.layout}${c.light ? " is-light" : ""}`;
+  cover.style.setProperty("--cv-bg", c.vars.bg);
+  cover.style.setProperty("--cv-text", c.vars.text);
+  cover.style.setProperty("--cv-sub", c.vars.sub);
+  cover.style.setProperty("--cv-btn", c.vars.btn);
+  cover.style.setProperty("--cv-btn-text", c.vars.btnText);
+  document.getElementById("cover-bg").innerHTML = c.art();
+  document.getElementById("picker-label").innerHTML =
+    `<strong>${escapeHtml(c.name)}</strong>${idx + 1} / ${COVERS.length}`;
+}
+
+function getSavedCoverLocal() {
+  try {
+    return localStorage.getItem(COVER_KEY);
+  } catch {
+    return null;
+  }
+}
+
+async function loadSavedCover() {
+  const { data, error } = await client.from("pistas_config").select("value").eq("key", "cover").maybeSingle();
+  if (error || !data || !data.value || !data.value.id) return;
+  if (data.value.id !== COVERS[currentCoverIndex].id && !document.body.classList.contains("picking")) {
+    applyCover(data.value.id);
+  }
+  try {
+    localStorage.setItem(COVER_KEY, data.value.id);
+  } catch {
+    /* noop */
+  }
+}
+
+function setupCoverPicker() {
+  if (!new URLSearchParams(location.search).has("portadas")) return;
+  document.body.classList.add("picking");
+  document.getElementById("cover-picker").hidden = false;
+
+  const go = (delta) => applyCover(COVERS[(currentCoverIndex + delta + COVERS.length) % COVERS.length].id);
+  document.getElementById("picker-prev").addEventListener("click", () => go(-1));
+  document.getElementById("picker-next").addEventListener("click", () => go(1));
+  document.addEventListener("keydown", (ev) => {
+    if (ev.key === "ArrowLeft") go(-1);
+    if (ev.key === "ArrowRight") go(1);
+  });
+
+  document.getElementById("picker-select").addEventListener("click", async () => {
+    const btn = document.getElementById("picker-select");
+    const id = COVERS[currentCoverIndex].id;
+    btn.disabled = true;
+    btn.textContent = "Guardando…";
+    const { error } = await client
+      .from("pistas_config")
+      .upsert({ key: "cover", value: { id }, updated_at: new Date().toISOString() });
+    btn.disabled = false;
+    btn.textContent = "Seleccionar esta portada";
+    if (error) {
+      alert(`No se pudo guardar la portada: ${error.message}`);
+      return;
+    }
+    try {
+      localStorage.setItem(COVER_KEY, id);
+    } catch {
+      /* noop */
+    }
+    document.body.classList.remove("picking");
+    document.getElementById("cover-picker").hidden = true;
+    history.replaceState(null, "", location.pathname);
+    showToast(`Portada "${COVERS[currentCoverIndex].name}" guardada para todos`);
+  });
+}
+
 async function init() {
+  applyCover(getSavedCoverLocal() || COVERS[0].id);
+  setupCoverPicker();
+  loadSavedCover();
+
   // Si hoy ya no queda ningún hueco reservable, arranca en mañana.
   state.dayOffset = selectableStartMinutes(state.duration, 0).length > 0 ? 0 : 1;
   state.startMinutes = selectableStartMinutes(state.duration, state.dayOffset)[0] ?? null;
