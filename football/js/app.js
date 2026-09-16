@@ -1,9 +1,12 @@
 import { mountQuizGame } from "./quiz-engine.js";
 import { mountBalloonsGame } from "./balloons-game.js";
 import { QUIZ_GAMES } from "./games-data.js";
+import { CREATIVE_GAMES } from "./games-creative.js";
+import { getRating, setRating } from "./ratings.js";
 
 const GAMES = [
   { id: "globos", title: "Globos de multiplicar", emoji: "🎈", topic: "Multiplicación", custom: mountBalloonsGame },
+  ...CREATIVE_GAMES,
   ...QUIZ_GAMES,
 ];
 const GAMES_BY_ID = Object.fromEntries(GAMES.map((g) => [g.id, g]));
@@ -14,6 +17,7 @@ const client =
 
 const root = document.getElementById("app");
 let cleanupCurrent = null;
+let activeTab = "new";
 
 function teardown() {
   if (cleanupCurrent) {
@@ -22,13 +26,29 @@ function teardown() {
   }
 }
 
+function categorize() {
+  const groups = { new: [], like: [], dislike: [] };
+  GAMES.forEach((g) => {
+    const r = getRating(g.id);
+    const key = r === "like" || r === "dislike" ? r : "new";
+    groups[key].push(g);
+  });
+  return groups;
+}
+
 async function renderMenu() {
   teardown();
+  const groups = categorize();
   root.innerHTML = `
     <div class="menu-wrap">
       <div class="menu-header">
         <h1>🧠 Math Games</h1>
-        <p>Elige un juego y a jugar. Cada partida mide tu velocidad y puntuación.</p>
+        <p>Elige un juego y a jugar. Puntúalo con 👍 / 👎 para organizar tus ideas.</p>
+      </div>
+      <div class="tab-bar" data-tabs>
+        <button class="tab-btn" data-tab="new">🆕 Nuevos (${groups.new.length})</button>
+        <button class="tab-btn" data-tab="like">👍 Me gusta (${groups.like.length})</button>
+        <button class="tab-btn" data-tab="dislike">👎 No me gusta (${groups.dislike.length})</button>
       </div>
       <div class="game-grid" data-grid></div>
       <div class="recent">
@@ -38,15 +58,41 @@ async function renderMenu() {
       <div class="build-id">build __BUILD_ID__</div>
     </div>
   `;
+  root.querySelectorAll("[data-tab]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      activeTab = btn.dataset.tab;
+      renderGrid(groups);
+    });
+  });
+  renderGrid(groups);
+  await renderRecent();
+}
+
+function renderGrid(groups) {
+  root.querySelectorAll("[data-tab]").forEach((btn) => {
+    btn.classList.toggle("active", btn.dataset.tab === activeTab);
+  });
   const grid = root.querySelector("[data-grid]");
-  GAMES.forEach((g) => {
+  if (!grid) return;
+  const list = groups[activeTab];
+  if (!list.length) {
+    const msg =
+      activeTab === "new"
+        ? "No quedan juegos nuevos — ¡los has valorado todos!"
+        : activeTab === "like"
+        ? "Aún no has marcado ningún juego con 👍."
+        : "Aún no has marcado ningún juego con 👎.";
+    grid.innerHTML = `<div class="tab-empty">${msg}</div>`;
+    return;
+  }
+  grid.innerHTML = "";
+  list.forEach((g) => {
     const card = document.createElement("a");
     card.className = "game-card";
     card.href = `#/game/${g.id}`;
     card.innerHTML = `<span class="emoji">${g.emoji}</span><span class="name">${g.title}</span><span class="topic">${g.topic}</span>`;
     grid.appendChild(card);
   });
-  await renderRecent();
 }
 
 async function renderRecent() {
@@ -81,21 +127,46 @@ function renderGame(id) {
     location.hash = "#/";
     return;
   }
-  root.innerHTML = `<div class="game-screen" data-screen></div>`;
-  const screen = root.querySelector("[data-screen]");
+  root.innerHTML = `
+    <div class="game-screen" data-screen>
+      <div class="game-mount" data-mount></div>
+      <div class="rate-bar" data-rate-bar>
+        <button class="rate-btn dislike" data-rate="dislike">👎 No me gusta</button>
+        <button class="rate-btn like" data-rate="like">👍 Me gusta</button>
+      </div>
+    </div>
+  `;
+  const mount = root.querySelector("[data-mount]");
   const onExit = () => {
     location.hash = "#/";
   };
   if (game.custom) {
-    cleanupCurrent = game.custom(screen, { client, onExit });
+    cleanupCurrent = game.custom(mount, { client, onExit });
   } else {
-    cleanupCurrent = mountQuizGame(screen, { ...game, client, onExit });
+    cleanupCurrent = mountQuizGame(mount, { ...game, client, onExit });
   }
+
+  const rateBar = root.querySelector("[data-rate-bar]");
+  function refreshRateButtons() {
+    const current = getRating(id);
+    rateBar.querySelectorAll(".rate-btn").forEach((b) => {
+      b.classList.toggle("active", b.dataset.rate === current);
+    });
+  }
+  rateBar.querySelectorAll(".rate-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const value = btn.dataset.rate;
+      const current = getRating(id);
+      setRating(id, current === value ? "new" : value);
+      refreshRateButtons();
+    });
+  });
+  refreshRateButtons();
 }
 
 function route() {
   const hash = location.hash || "#/";
-  const match = hash.match(/^#\/game\/([a-z]+)$/);
+  const match = hash.match(/^#\/game\/([a-z0-9-]+)$/);
   if (match) {
     renderGame(match[1]);
   } else {

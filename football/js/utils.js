@@ -28,6 +28,19 @@ export function buildChoices(correct, distractorFn, count = 4) {
   return shuffle(Array.from(set));
 }
 
+export function clamp(v, min, max) {
+  return Math.max(min, Math.min(max, v));
+}
+
+// Ángulo en grados (0-360, 0 = arriba, sentido horario) desde el centro
+// de un elemento hasta un punto — usado por los juegos de arrastrar
+// agujas/flechas (reloj, ángulos).
+export function angleFromCenter(cx, cy, x, y) {
+  let deg = Math.atan2(x - cx, -(y - cy)) * (180 / Math.PI);
+  if (deg < 0) deg += 360;
+  return deg;
+}
+
 export async function saveScore(client, game, { score, rounds, avgMs }) {
   if (!client) return;
   try {
