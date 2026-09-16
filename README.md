@@ -33,6 +33,7 @@ reglas para no interferir con las demás:
 | 🧠 Math Games | [`football/`](./football) | `/Train/football/` | `football_` |
 | 🎾 Pistas | [`pistas/`](./pistas) | `/Train/pistas/` | `pistas_` |
 | 🎬 Cartelera Cine | [`cartelera/`](./cartelera) | `/Train/cartelera/` | `cartelera_` |
+| 🎾 Nombra | [`nombra/`](./nombra) | `/Train/nombra/` | `nombra_` |
 
 ## Añadir una app nueva
 
