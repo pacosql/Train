@@ -78,7 +78,7 @@
   </div>
 
   <!-- ---------- Dialog: horario del día de una pista ---------- -->
-  <dialog id="dlg-schedule">
+  <dialog id="dlg-schedule" tabindex="-1">
     <div class="dialog-inner">
       <h3 id="sched-title">Horario</h3>
       <p class="summary" id="sched-summary"></p>
@@ -94,10 +94,10 @@
   </dialog>
 
   <!-- ---------- Dialog: confirmar reserva ---------- -->
-  <dialog id="dlg-booking">
+  <dialog id="dlg-booking" tabindex="-1">
     <div class="dialog-inner">
       <h3>Confirmar reserva</h3>
-      <p class="summary" id="booking-summary"></p>
+      <p class="summary" id="booking-summary" tabindex="-1" autofocus></p>
       <div class="field" id="booking-duration-field">
         <label for="booking-duration">Duración</label>
         <select id="booking-duration"></select>
@@ -119,7 +119,7 @@
   </dialog>
 
   <!-- ---------- Dialog: mis reservas ---------- -->
-  <dialog id="dlg-mis-reservas">
+  <dialog id="dlg-mis-reservas" tabindex="-1">
     <div class="dialog-inner">
       <h3>Mis reservas</h3>
       <p class="summary">Reservas hechas desde este dispositivo.</p>
