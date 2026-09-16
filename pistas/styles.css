@@ -80,8 +80,16 @@ button { font-family: inherit; }
   text-transform: uppercase;
   color: #d9f24a;
 }
+#cover .cover-cta {
+  position: absolute;
+  z-index: 2;
+  left: 0;
+  right: 0;
+  bottom: calc(48px + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  justify-content: center;
+}
 #btn-reservar {
-  margin-top: 44px;
   background: #d9f24a;
   color: #0b2a2e;
   border: none;
@@ -90,7 +98,7 @@ button { font-family: inherit; }
   font-size: 1.05rem;
   font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 #btn-reservar:active { filter: brightness(0.9); }
 #cover .cover-foot {
