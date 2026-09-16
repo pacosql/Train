@@ -18,14 +18,7 @@
 
   <!-- ---------- Portada ---------- -->
   <div id="cover">
-    <svg class="court-art" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <rect x="40" y="30" width="320" height="440" fill="none" stroke="currentColor" stroke-width="2" />
-      <line x1="40" y1="250" x2="360" y2="250" stroke="currentColor" stroke-width="2" />
-      <rect x="90" y="30" width="220" height="220" fill="none" stroke="currentColor" stroke-width="1.4" />
-      <rect x="90" y="250" width="220" height="220" fill="none" stroke="currentColor" stroke-width="1.4" />
-      <line x1="200" y1="30" x2="200" y2="470" stroke="currentColor" stroke-width="1" />
-      <circle cx="200" cy="250" r="150" fill="none" stroke="currentColor" stroke-width="1" />
-    </svg>
+    <div id="cover-bg" class="cover-bg" aria-hidden="true"></div>
     <div class="cover-content">
       <div class="brand">
         <h1>Eduardo Carrillo</h1>
@@ -34,6 +27,16 @@
       <button id="btn-reservar">Reservar pista</button>
     </div>
     <div class="cover-foot">build __BUILD_ID__</div>
+
+    <!-- Selector de portada: solo visible entrando con ?portadas -->
+    <div id="cover-picker" hidden>
+      <div class="picker-nav">
+        <button type="button" id="picker-prev">‹ Atrás</button>
+        <div id="picker-label" class="picker-label"></div>
+        <button type="button" id="picker-next">Siguiente ›</button>
+      </div>
+      <button type="button" id="picker-select">Seleccionar esta portada</button>
+    </div>
   </div>
 
   <!-- ---------- App de reservas ---------- -->
@@ -133,6 +136,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script src="config.js"></script>
+  <script src="covers.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
