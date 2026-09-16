@@ -14,7 +14,7 @@ Vive en `pistas/` y todas sus tablas en Supabase usan el prefijo
 - Filtros de **día** (próximos 14 días), **duración** (60 / 90 / 120
   min) y **hora de inicio** (huecos cada 30 min, de 9:00 a 23:00).
 - **Mapa de pistas** agrupado por tipo y coloreado: azul = tenis pista
-  rápida, marrón = tierra batida, verde = hierba, morado = pádel. Cada
+  dura, marrón = tierra batida, verde = hierba, morado = pádel. Cada
   tarjeta muestra si esa pista está libre u ocupada para el filtro
   actual.
 - **Horario del día por pista**: al pulsar "ver horario" (o sobre una
@@ -31,14 +31,14 @@ Vive en `pistas/` y todas sus tablas en Supabase usan el prefijo
 
 | Tipo | Cantidad | Nombres |
 |---|---|---|
-| 🔵 Tenis pista rápida | 3 | Tenis Pista Rápida 1–3 |
+| 🔵 Tenis pista dura | 3 | Tenis Dura 1–3 |
 | 🟤 Tenis tierra batida | 3 | Tenis Tierra 1–3 |
 | 🟢 Tenis hierba | 2 | Tenis Hierba 1–2 |
 | 🟣 Pádel | 5 | Pádel 1–5 |
 
-Nomenclatura alineada con la que usan los medios españoles al narrar
-los Grand Slam: "hierba" (Wimbledon), "tierra batida" (Roland Garros) y
-"pista rápida" (US Open y Open de Australia, superficie de cemento).
+Los tres tipos de superficie de tenis del club se llaman siempre
+"hierba", "tierra batida" y "pista dura" — sin usar otros sinónimos
+("césped", "pista rápida", "cemento"...) en ningún sitio.
 
 ## Esquema de datos (Supabase)
 
