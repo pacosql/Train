@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Cartelera Cine</title>
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#d4af37" />
+
+  <!-- iOS: instalar como app de pantalla de inicio -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Cartelera" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" href="icons/icon-192.png" />
+
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0f0f14;
+      --card: #1a1a22;
+      --card-2: #23232d;
+      --text: #f2f0e8;
+      --muted: #9b98a8;
+      --accent: #d4af37;
+      --accent-2: #f0c750;
+      --danger: #e5484d;
+      --ok: #3ecf8e;
+      --border: #2c2c38;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      padding: 20px 14px 48px;
+    }
+    .wrap { max-width: 560px; margin: 0 auto; }
+
+    header { margin-bottom: 16px; }
+    h1 { font-size: 1.5rem; margin: 4px 0 2px; }
+    .sub { color: var(--muted); margin: 0; font-size: 0.9rem; }
+
+    .update-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px 16px;
+      margin: 16px 0 18px;
+    }
+    .update-row { display: flex; align-items: center; gap: 10px; justify-content: space-between; }
+    button.refresh {
+      background: var(--accent);
+      color: #241d05;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    button.refresh:active { background: var(--accent-2); }
+    button.refresh:disabled { opacity: 0.55; cursor: default; }
+    .update-status { font-size: 0.82rem; color: var(--muted); flex: 1; }
+    .progress-track {
+      margin-top: 10px;
+      height: 6px;
+      border-radius: 4px;
+      background: var(--card-2);
+      overflow: hidden;
+      display: none;
+    }
+    .progress-track.on { display: block; }
+    .progress-bar {
+      height: 100%;
+      width: 40%;
+      border-radius: 4px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      animation: slide 1.1s ease-in-out infinite;
+    }
+    @keyframes slide {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(250%); }
+    }
+
+    .empty-hint {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.9rem;
+      padding: 40px 10px;
+    }
+
+    .movies { display: flex; flex-direction: column; gap: 16px; }
+    .movie {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+    }
+    .poster-wrap {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 2 / 3;
+      background: var(--card-2);
+    }
+    .poster-wrap img.poster { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .poster-title {
+      position: absolute; left: 0; right: 0; bottom: 0;
+      padding: 28px 14px 12px;
+      background: linear-gradient(to top, rgba(0,0,0,0.85), rgba(0,0,0,0));
+    }
+    .poster-title h2 { margin: 0; font-size: 1.15rem; line-height: 1.25; }
+
+    .movie-body { padding: 12px 14px 16px; }
+    .badges { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+    .badge {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: var(--card-2);
+      color: var(--muted);
+      border: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    .badge.tp { background: rgba(62,207,142,0.15); color: var(--ok); border-color: rgba(62,207,142,0.3); }
+    .badge.restrict { background: rgba(229,72,77,0.15); color: #ff8a8d; border-color: rgba(229,72,77,0.3); }
+
+    .sinopsis {
+      font-size: 0.9rem;
+      line-height: 1.45;
+      color: var(--text);
+      margin: 0 0 8px;
+    }
+    .sinopsis.clamped {
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .toggle-link {
+      background: none; border: none; padding: 0; margin-bottom: 10px;
+      color: var(--accent); font-size: 0.82rem; font-weight: 600; cursor: pointer;
+    }
+
+    .critica {
+      font-size: 0.85rem;
+      font-style: italic;
+      color: var(--muted);
+      border-left: 3px solid var(--accent);
+      padding: 4px 0 4px 10px;
+      margin: 10px 0;
+    }
+
+    .gallery {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 4px 0 2px;
+      margin-top: 8px;
+      scrollbar-width: none;
+    }
+    .gallery::-webkit-scrollbar { display: none; }
+    .gallery img {
+      height: 78px;
+      width: auto;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    .meta-line { font-size: 0.78rem; color: var(--muted); margin-top: 10px; }
+    .meta-line a { color: var(--muted); }
+
+    .lightbox {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.9);
+      display: none; align-items: center; justify-content: center;
+      padding: 20px; z-index: 50;
+    }
+    .lightbox.on { display: flex; }
+    .lightbox img { max-width: 100%; max-height: 100%; border-radius: 8px; }
+
+    .build-id {
+      text-align: center;
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-top: 28px;
+      font-family: ui-monospace, monospace;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>🎬 Cartelera Cine</h1>
+      <p class="sub">Qué películas hay en cartelera en los cines de Murcia ahora mismo.</p>
+    </header>
+
+    <div class="update-card">
+      <div class="update-row">
+        <div class="update-status" id="update-status">Comprobando estado…</div>
+        <button class="refresh" id="refresh-btn">🔄 Actualizar</button>
+      </div>
+      <div class="progress-track" id="progress-track"><div class="progress-bar"></div></div>
+    </div>
+
+    <div id="empty-hint" class="empty-hint" hidden>
+      Aún no hay cartelera cargada. Toca «Actualizar» para buscarla.
+    </div>
+
+    <div id="movies" class="movies"></div>
+
+    <div class="build-id">build __BUILD_ID__</div>
+  </div>
+
+  <div class="lightbox" id="lightbox">
+    <img id="lightbox-img" src="" alt="" />
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="config.js"></script>
+  <script>
+    const { url, anonKey, functionName } = window.CARTELERA_CONFIG;
+    const client = supabase.createClient(url, anonKey);
+
+    const updateStatusEl = document.getElementById("update-status");
+    const refreshBtn = document.getElementById("refresh-btn");
+    const progressTrack = document.getElementById("progress-track");
+    const moviesEl = document.getElementById("movies");
+    const emptyHint = document.getElementById("empty-hint");
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = document.getElementById("lightbox-img");
+
+    let pollTimer = null;
+
+    lightbox.addEventListener("click", () => lightbox.classList.remove("on"));
+
+    function openLightbox(src) {
+      lightboxImg.src = src;
+      lightbox.classList.add("on");
+    }
+
+    function escapeHtml(str) {
+      const div = document.createElement("div");
+      div.textContent = str || "";
+      return div.innerHTML;
+    }
+
+    function fmtWhen(iso) {
+      if (!iso) return "nunca";
+      const d = new Date(iso);
+      return d.toLocaleString("es-ES", { day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit" });
+    }
+
+    function claseBadge(clasificacion) {
+      if (!clasificacion) return { text: "Clasificación no disponible", cls: "" };
+      if (/todos los p[uú]blicos/i.test(clasificacion)) return { text: "🟢 " + clasificacion, cls: "tp" };
+      return { text: "🔞 " + clasificacion, cls: "restrict" };
+    }
+
+    function movieCard(m) {
+      const badges = [];
+      if (m.duracion_min) badges.push(`<span class="badge">⏱ ${m.duracion_min} min</span>`);
+      if (m.genero) badges.push(`<span class="badge">🎭 ${escapeHtml(m.genero)}</span>`);
+      const cb = claseBadge(m.clasificacion_edad);
+      badges.push(`<span class="badge ${cb.cls}">${escapeHtml(cb.text)}</span>`);
+
+      const poster = m.poster_url || "";
+      const sinopsis = m.sinopsis ? escapeHtml(m.sinopsis) : "Sin sinopsis disponible.";
+      const critica = m.critica
+        ? `<div class="critica">“${escapeHtml(m.critica)}”</div>`
+        : "";
+      const gallery = (m.fotos || []).length
+        ? `<div class="gallery">${m.fotos
+            .map((f) => `<img src="${f}" loading="lazy" alt="Foto de ${escapeHtml(m.titulo)}" />`)
+            .join("")}</div>`
+        : "";
+      const personas = [
+        m.director ? `Dirigida por ${escapeHtml(m.director)}` : "",
+        m.reparto ? `Reparto: ${escapeHtml(m.reparto)}` : "",
+      ].filter(Boolean).join(" · ");
+
+      const wrap = document.createElement("article");
+      wrap.className = "movie";
+      wrap.innerHTML = `
+        <div class="poster-wrap">
+          ${poster ? `<img class="poster" src="${poster}" loading="lazy" alt="Cartel de ${escapeHtml(m.titulo)}" />` : ""}
+          <div class="poster-title"><h2>${escapeHtml(m.titulo)}</h2></div>
+        </div>
+        <div class="movie-body">
+          <div class="badges">${badges.join("")}</div>
+          <p class="sinopsis clamped">${sinopsis}</p>
+          <button class="toggle-link" data-action="toggle-sinopsis">Leer más</button>
+          ${critica}
+          ${gallery}
+          ${personas ? `<div class="meta-line">${personas}</div>` : ""}
+          <div class="meta-line">Fuente: <a href="${m.fuente_url}" target="_blank" rel="noopener">${escapeHtml(m.fuente || "ver ficha")}</a> · actualizado ${fmtWhen(m.actualizado_en)}</div>
+        </div>
+      `;
+
+      const sinopsisEl = wrap.querySelector(".sinopsis");
+      const toggleBtn = wrap.querySelector('[data-action="toggle-sinopsis"]');
+      toggleBtn.addEventListener("click", () => {
+        sinopsisEl.classList.toggle("clamped");
+        toggleBtn.textContent = sinopsisEl.classList.contains("clamped") ? "Leer más" : "Leer menos";
+      });
+      wrap.querySelectorAll(".gallery img").forEach((img) => {
+        img.addEventListener("click", () => openLightbox(img.src));
+      });
+
+      return wrap;
+    }
+
+    async function loadMovies() {
+      const { data, error } = await client
+        .from("cartelera_peliculas")
+        .select("*")
+        .order("titulo", { ascending: true });
+
+      if (error) {
+        moviesEl.innerHTML = "";
+        emptyHint.hidden = false;
+        emptyHint.textContent = `No se pudo cargar la cartelera: ${error.message}`;
+        return 0;
+      }
+
+      moviesEl.innerHTML = "";
+      if (!data || data.length === 0) {
+        emptyHint.hidden = false;
+        emptyHint.textContent = "Aún no hay cartelera cargada. Toca «Actualizar» para buscarla.";
+        return 0;
+      }
+      emptyHint.hidden = true;
+      for (const m of data) moviesEl.appendChild(movieCard(m));
+      return data.length;
+    }
+
+    async function loadEstado() {
+      const { data } = await client.from("cartelera_estado").select("*").eq("id", 1).maybeSingle();
+      return data;
+    }
+
+    function renderEstado(estado, count) {
+      if (!estado || estado.estado === "nunca") {
+        updateStatusEl.textContent = "Todavía no se ha cargado ninguna cartelera.";
+        return;
+      }
+      if (estado.estado === "actualizando") {
+        updateStatusEl.textContent = estado.mensaje || "Actualizando…";
+        return;
+      }
+      if (estado.estado === "error") {
+        updateStatusEl.textContent = `⚠️ Último intento falló: ${estado.mensaje || "error desconocido"}`;
+        return;
+      }
+      updateStatusEl.textContent = `${count} película(s) en cartelera · última actualización ${fmtWhen(estado.terminado_en)}`;
+    }
+
+    function setUpdating(on) {
+      refreshBtn.disabled = on;
+      progressTrack.classList.toggle("on", on);
+      refreshBtn.textContent = on ? "Actualizando…" : "🔄 Actualizar";
+    }
+
+    async function pollWhileUpdating() {
+      const estado = await loadEstado();
+      renderEstado(estado, (await client.from("cartelera_peliculas").select("id", { count: "exact", head: true })).count || 0);
+      if (estado && estado.estado === "actualizando") {
+        pollTimer = setTimeout(pollWhileUpdating, 1500);
+      }
+    }
+
+    async function runUpdate() {
+      setUpdating(true);
+      clearTimeout(pollTimer);
+      pollWhileUpdating();
+      try {
+        const res = await fetch(`${url}/functions/v1/${functionName}`, {
+          method: "POST",
+          headers: { apikey: anonKey, Authorization: `Bearer ${anonKey}` },
+        });
+        if (!res.ok) {
+          const body = await res.text().catch(() => "");
+          throw new Error(`HTTP ${res.status} ${body}`.trim());
+        }
+      } catch (err) {
+        updateStatusEl.textContent = `⚠️ No se pudo actualizar: ${err.message}`;
+      } finally {
+        clearTimeout(pollTimer);
+        setUpdating(false);
+        const count = await loadMovies();
+        const estado = await loadEstado();
+        renderEstado(estado, count);
+      }
+    }
+
+    refreshBtn.addEventListener("click", runUpdate);
+
+    (async function init() {
+      const count = await loadMovies();
+      const estado = await loadEstado();
+      renderEstado(estado, count);
+      if (count === 0 && (!estado || estado.estado !== "actualizando")) {
+        runUpdate();
+      } else if (estado && estado.estado === "actualizando") {
+        setUpdating(true);
+        pollWhileUpdating();
+      }
+    })();
+
+    // Registrar el service worker para poder instalar la PWA.
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("sw.js").catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>
