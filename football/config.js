@@ -1,6 +1,8 @@
-// Config de la app "Football". Comparte proyecto de Supabase con el
-// resto de apps de este hosting, pero todas sus tablas usan el prefijo
-// "football_" para no chocar con las de otras apps.
+// Config de la app "Math Games" (carpeta y prefijo de tablas heredados
+// de un prototipo anterior llamado "football", se mantienen tal cual).
+// Comparte proyecto de Supabase con el resto de apps de este hosting,
+// pero todas sus tablas usan el prefijo "football_" para no chocar con
+// las de otras apps.
 //
 // La "anon key" es pública por diseño (se usa en el cliente) y está
 // protegida por las políticas de Row Level Security (RLS) de cada tabla,

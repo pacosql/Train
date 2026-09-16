@@ -1,19 +1,39 @@
-# Football ⚽
+# Math Games 🧠
 
-PWA mínima (sin build, HTML/CSS/JS puro), tipo "Hello World", que
-comprueba la conexión con Supabase. Sirve para validar que el hosting
-multi-app de este repo funciona de verdad. Forma parte del hosting
-multi-app de este repo — ver el [README de la raíz](../README.md) para
-el panorama general.
+PWA (sin build, HTML/CSS/JS puro) con **10 minijuegos de matemáticas**:
+cálculo mental, geometría, álgebra, estadística, fracciones, conversión
+de unidades y patrones numéricos. Nace como banco de pruebas rápido
+para sacar ideas de mecánicas (tipo Duolingo Math, Synthesis o
+DreamBox) de cara a otra app de matemáticas más grande.
 
-Vive en `football/` y todas sus tablas en Supabase usan el prefijo
-`football_`, para poder compartir el mismo proyecto de Supabase con
-otras apps de este mismo repo sin que sus tablas choquen entre sí.
+Vive en `football/` y usa el prefijo `football_` en Supabase — nombres
+heredados de un prototipo anterior de esta misma carpeta, se han
+mantenido tal cual en vez de renombrar. Forma parte del hosting
+multi-app de este repo — ver el [README de la raíz](../README.md).
+
+## Los 10 juegos
+
+| Juego | Tema | Mecánica |
+|---|---|---|
+| 🎈 Globos de multiplicar | Multiplicación | Pincha el globo con el resultado correcto antes de que se escape (mide velocidad de respuesta) |
+| ⚖️ Mayor o menor | Comparación | Contrarreloj (30s), compara dos números |
+| 🧮 Cálculo veloz | Cálculo mental | Contrarreloj (30s), suma/resta/multiplicación |
+| 🔺 Formas | Geometría | Nombre y número de lados de una figura |
+| 🧩 Encuentra la x | Álgebra | Resuelve una ecuación lineal sencilla |
+| 📊 Media y moda | Estadística | Calcula media, mediana o moda de una lista |
+| 📏 Distancias | Medidas | Convierte entre mm/cm/m/km |
+| 🐘 Pesos | Medidas | Convierte entre g/kg/t |
+| 🍕 La tarta | Fracciones | Identifica la fracción sombreada de un círculo |
+| 🔢 Secuencias | Patrones | Encuentra el siguiente número de la serie |
+
+Los juegos "contrarreloj" (⚖️ y 🧮) terminan a los 30 segundos; el
+resto termina a las 3 vidas. Todos guardan la puntuación final en
+Supabase y el menú principal muestra las últimas partidas jugadas.
 
 ## 1. Configura tus credenciales
 
-Edita [`config.js`](./config.js) con los datos de tu proyecto (Supabase →
-*Project Settings → API*):
+Ya viene configurado en [`config.js`](./config.js) con el proyecto
+compartido de este hosting. Si quieres apuntar a otro proyecto:
 
 ```js
 window.FOOTBALL_CONFIG = {
@@ -23,29 +43,24 @@ window.FOOTBALL_CONFIG = {
 };
 ```
 
-La `anon key` es pública por diseño (se usa desde el navegador) y va
-protegida por las políticas de *Row Level Security* de tus tablas, así
-que no hay problema en que viva en un archivo del repo.
-
-## 2. (Opcional) Crea la tabla de prueba
-
-La app funciona igualmente sin esta tabla (te avisa con instrucciones si
-no existe), pero para ver datos reales yendo y viniendo, ejecuta esto en
-el **SQL Editor** de Supabase:
+## 2. Tabla de puntuaciones
 
 ```sql
-create table football_hello (
+create table football_scores (
   id bigint generated always as identity primary key,
-  message text not null,
+  game text not null,
+  score int not null,
+  rounds int,
+  avg_ms int,
   created_at timestamptz default now()
 );
 
-alter table football_hello enable row level security;
+alter table football_scores enable row level security;
 
-create policy "allow anon read" on football_hello
+create policy "allow anon read" on football_scores
   for select to anon using (true);
 
-create policy "allow anon insert" on football_hello
+create policy "allow anon insert" on football_scores
   for insert to anon with check (true);
 ```
 
@@ -59,11 +74,15 @@ Una vez publicado, esta app queda en:
 
 ## Qué hace la app
 
-- Comprueba la conexión básica contra la API REST de Supabase (`ping`).
-- Lee y escribe filas en la tabla `football_hello`, si existe.
+- Menú con los 10 juegos; cada uno abre en su propia pantalla
+  (`#/game/<id>`), sin recargar la página.
+- Motor de preguntas compartido (`js/quiz-engine.js`) para 9 de los 10
+  juegos; el de globos (`js/balloons-game.js`) tiene su propia mecánica
+  de animación.
+- Guarda cada partida en `football_scores` y muestra las últimas en el
+  menú.
 - Se puede usar sin conexión gracias a un Service Worker que cachea el
-  "shell" de la app (las llamadas a Supabase nunca se cachean). Su caché
-  usa el prefijo `football-shell-` para no interferir con la de otras
-  apps del mismo hosting.
-- Al pie de página muestra un `build <hash>` para poder confirmar de un
+  "shell" de la app (las llamadas a Supabase nunca se cachean). Su
+  caché usa el prefijo `football-shell-`.
+- Al pie de página muestra un `build <hash>` para confirmar de un
   vistazo qué versión está sirviendo GitHub Pages.
