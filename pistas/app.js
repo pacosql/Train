@@ -680,10 +680,14 @@ async function loadSavedCover() {
   }
 }
 
-function setupCoverPicker() {
-  if (!new URLSearchParams(location.search).has("portadas")) return;
+let pickerWired = false;
+
+function openCoverPicker() {
   document.body.classList.add("picking");
   document.getElementById("cover-picker").hidden = false;
+  applyCover(COVERS[currentCoverIndex].id);
+  if (pickerWired) return;
+  pickerWired = true;
 
   const go = (delta) => applyCover(COVERS[(currentCoverIndex + delta + COVERS.length) % COVERS.length].id);
   document.getElementById("picker-prev").addEventListener("click", () => go(-1));
@@ -719,6 +723,11 @@ function setupCoverPicker() {
   });
 }
 
+function setupCoverPicker() {
+  document.getElementById("open-picker").addEventListener("click", openCoverPicker);
+  if (new URLSearchParams(location.search).has("portadas") || location.hash === "#portadas") openCoverPicker();
+}
+
 async function init() {
   applyCover(getSavedCoverLocal() || COVERS[0].id);
   setupCoverPicker();
@@ -738,7 +747,15 @@ async function init() {
   renderMisReservasBadge();
 
   if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("sw.js").catch(() => {});
+    navigator.serviceWorker.register("sw.js").then((reg) => reg.update()).catch(() => {});
+    // Cuando un despliegue nuevo toma el control, recarga una vez sola
+    // para que esta pestaña ya abierta también vea la versión nueva.
+    let reloaded = false;
+    navigator.serviceWorker.addEventListener("controllerchange", () => {
+      if (reloaded) return;
+      reloaded = true;
+      location.reload();
+    });
   }
 }
 

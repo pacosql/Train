@@ -111,6 +111,22 @@ button { font-family: inherit; }
   font-family: ui-monospace, monospace;
 }
 #cover.is-light .cover-foot { color: rgba(0, 0, 0, 0.3); }
+.btn-cover-picker {
+  margin-top: 16px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1.5px solid rgba(255, 255, 255, 0.55);
+  color: inherit;
+  border-radius: 12px;
+  padding: 11px 22px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+#cover.is-light .btn-cover-picker {
+  background: rgba(0, 0, 0, 0.05);
+  border-color: rgba(0, 0, 0, 0.35);
+}
+.btn-cover-picker:active { background: rgba(255, 255, 255, 0.22); }
 
 /* Disposiciones */
 #cover.layout-top-left { align-items: flex-start; }
