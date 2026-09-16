@@ -1,25 +1,17 @@
-// "Ordena los números": toca los chips en el orden correcto (ascendente
-// o descendente). Mecánica de secuencia por toques, no de elegir opción.
-import { randInt, shuffle, saveScore } from "./utils.js";
+// "Plano cartesiano": toca la celda que corresponde a las coordenadas
+// (x, y) pedidas. Introduce lectura de coordenadas con una cuadrícula
+// tocable, distinto de arrastrar o elegir entre texto.
+import { randInt, saveScore } from "./utils.js";
 
-function buildRound(count) {
-  const set = new Set();
-  while (set.size < count) set.add(randInt(1, 60));
-  const nums = Array.from(set);
-  const asc = Math.random() < 0.5;
-  const order = [...nums].sort((a, b) => (asc ? a - b : b - a));
-  return { shown: shuffle(nums), order, asc };
-}
+const SIZE = 6; // cuadrícula 6x6, coordenadas 0-5
 
-export function mountOrdenGame(container, { client, onExit }) {
+export function mountCoordenadasGame(container, { client, onExit }) {
   const startLives = 3;
   let lives = startLives;
   let score = 0;
   let rounds = 0;
   let finished = false;
-  let round = null;
-  let nextIdx = 0;
-  let completed = 0; // rondas completadas de verdad — sube la dificultad
+  let targetX = 0, targetY = 0;
 
   container.innerHTML = `
     <div class="game-topbar">
@@ -44,50 +36,45 @@ export function mountOrdenGame(container, { client, onExit }) {
   }
 
   function nextRound() {
-    const count = Math.min(4 + Math.floor(completed / 2), 8);
-    round = buildRound(count);
-    nextIdx = 0;
+    targetX = randInt(0, SIZE - 1);
+    targetY = randInt(0, SIZE - 1);
     body.innerHTML = `
-      <p class="prompt">Toca los números de ${round.asc ? "menor a mayor" : "mayor a menor"}<small>Empieza por ${round.order[0]}</small></p>
-      <div class="order-row" data-row></div>
+      <p class="prompt">Toca el punto <b>(${targetX}, ${targetY})</b></p>
+      <div class="coord-grid" data-grid></div>
       <div class="feedback" data-feedback></div>
     `;
-    const row = body.querySelector("[data-row]");
-    round.shown.forEach((val) => {
-      const el = document.createElement("button");
-      el.className = "choice-btn order-chip";
-      el.textContent = val;
-      el.addEventListener("click", () => tapChip(val, el));
-      row.appendChild(el);
-    });
+    const grid = body.querySelector("[data-grid]");
+    grid.style.gridTemplateColumns = `repeat(${SIZE}, 1fr)`;
+    // fila 0 de y va abajo del todo (como un eje cartesiano real)
+    for (let row = SIZE - 1; row >= 0; row--) {
+      for (let col = 0; col < SIZE; col++) {
+        const cell = document.createElement("button");
+        cell.className = "coord-cell";
+        cell.addEventListener("click", () => tapCell(col, row, cell));
+        grid.appendChild(cell);
+      }
+    }
   }
 
-  function tapChip(val, el) {
+  function tapCell(x, y, el) {
     if (finished || el.disabled) return;
     rounds++;
     const feedback = body.querySelector("[data-feedback]");
-    if (val === round.order[nextIdx]) {
-      el.disabled = true;
+    if (x === targetX && y === targetY) {
       el.classList.add("correct");
-      nextIdx++;
-      if (nextIdx >= round.order.length) {
-        completed++;
-        score += 10;
-        renderScore();
-        feedback.textContent = "¡Orden completo!";
-        feedback.className = "feedback ok";
-        setTimeout(nextRound, 600);
-      } else {
-        feedback.textContent = `Bien — ahora el ${round.order[nextIdx]}`;
-        feedback.className = "feedback ok";
-      }
+      score += 10;
+      renderScore();
+      feedback.textContent = "¡Ahí es!";
+      feedback.className = "feedback ok";
+      body.querySelectorAll(".coord-cell").forEach((c) => (c.disabled = true));
+      setTimeout(nextRound, 550);
     } else {
       lives--;
       renderLives();
       el.classList.add("wrong");
-      feedback.textContent = "Ese no toca ahora…";
+      setTimeout(() => el.classList.remove("wrong"), 300);
+      feedback.textContent = "Ahí no es…";
       feedback.className = "feedback bad";
-      setTimeout(() => el.classList.remove("wrong"), 350);
       if (lives <= 0) setTimeout(() => finish(false), 400);
     }
   }
@@ -96,10 +83,10 @@ export function mountOrdenGame(container, { client, onExit }) {
     if (finished) return;
     finished = true;
     if (userExited) return onExit();
-    saveScore(client, "orden", { score, rounds });
+    saveScore(client, "coordenadas", { score, rounds });
     body.innerHTML = `
       <div class="end-card">
-        <div>📶</div>
+        <div>🗺️</div>
         <div class="big-score">${score} pts</div>
         <p>${rounds} toques</p>
         <div class="end-actions">
@@ -116,7 +103,6 @@ export function mountOrdenGame(container, { client, onExit }) {
     lives = startLives;
     score = 0;
     rounds = 0;
-    completed = 0;
     finished = false;
     renderLives();
     renderScore();

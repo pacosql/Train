@@ -1,10 +1,21 @@
-// "Equilibra la balanza": toca pesas para igualar el peso objetivo.
-// La barra se inclina en tiempo real — feedback visual, no botones A/B/C/D.
+// "Cuenta las monedas": toca monedas/billetes para alcanzar el importe
+// exacto — aplicación real del dinero, mismo patrón "toca hasta cuadrar"
+// que la balanza pero con denominaciones de céntimos/euros.
 import { randInt, saveScore } from "./utils.js";
 
-const WEIGHTS = [1, 2, 5, 10];
+const COINS = [
+  { value: 200, label: "2€", emoji: "🪙" },
+  { value: 100, label: "1€", emoji: "🪙" },
+  { value: 50, label: "50c", emoji: "🟤" },
+  { value: 20, label: "20c", emoji: "🟤" },
+  { value: 10, label: "10c", emoji: "🟤" },
+];
 
-export function mountBalanzaGame(container, { client, onExit }) {
+function formatCents(c) {
+  return `${(c / 100).toFixed(2)} €`;
+}
+
+export function mountMonedasGame(container, { client, onExit }) {
   const startLives = 3;
   let lives = startLives;
   let score = 0;
@@ -12,7 +23,6 @@ export function mountBalanzaGame(container, { client, onExit }) {
   let finished = false;
   let target = 0;
   let current = 0;
-  let solved = 0; // básculas resueltas de verdad — sube el rango de pesos
 
   container.innerHTML = `
     <div class="game-topbar">
@@ -37,68 +47,52 @@ export function mountBalanzaGame(container, { client, onExit }) {
   }
 
   function nextRound() {
-    const cap = Math.min(35 + solved * 8, 80);
-    target = randInt(6, cap);
+    // Múltiplo de 10 céntimos siempre alcanzable con las monedas disponibles.
+    target = randInt(3, 30) * 10;
     current = 0;
     body.innerHTML = `
-      <p class="prompt">Iguala <b>${target} kg</b> en el lado derecho</p>
-      <div class="scale-wrap">
-        <div class="scale-beam" data-beam>
-          <div class="scale-pan left"><span>${target} kg</span></div>
-          <div class="scale-pan right"><span data-current>0 kg</span></div>
-        </div>
-        <div class="scale-pivot"></div>
-      </div>
-      <div class="weight-btns" data-weights></div>
+      <p class="prompt">Junta <b>${formatCents(target)}</b></p>
+      <div class="money-total" data-total>${formatCents(0)}</div>
+      <div class="money-coins" data-coins></div>
       <div class="feedback" data-feedback></div>
-      <button class="secondary" data-reset style="margin-top:8px;">↺ Reiniciar</button>
+      <button class="secondary" data-reset style="margin-top:10px;">↺ Reiniciar</button>
     `;
-    const weightsEl = body.querySelector("[data-weights]");
-    WEIGHTS.forEach((w) => {
+    const coinsEl = body.querySelector("[data-coins]");
+    COINS.forEach((c) => {
       const btn = document.createElement("button");
-      btn.className = "choice-btn weight-btn";
-      btn.textContent = `+${w}`;
-      btn.addEventListener("click", () => addWeight(w));
-      weightsEl.appendChild(btn);
+      btn.className = "choice-btn coin-btn";
+      btn.innerHTML = `${c.emoji}<br>${c.label}`;
+      btn.addEventListener("click", () => addCoin(c.value));
+      coinsEl.appendChild(btn);
     });
     body.querySelector("[data-reset]").addEventListener("click", () => {
       current = 0;
-      updateBeam();
+      body.querySelector("[data-total]").textContent = formatCents(current);
     });
-    updateBeam();
   }
 
-  function updateBeam() {
-    const beam = body.querySelector("[data-beam]");
-    const currentEl = body.querySelector("[data-current]");
-    currentEl.textContent = `${current} kg`;
-    const diff = Math.max(-18, Math.min(18, current - target));
-    beam.style.transform = `rotate(${diff}deg)`;
-  }
-
-  function addWeight(w) {
+  function addCoin(v) {
     if (finished) return;
-    current += w;
-    updateBeam();
+    current += v;
+    body.querySelector("[data-total]").textContent = formatCents(current);
     const feedback = body.querySelector("[data-feedback]");
     rounds++;
     if (current === target) {
-      solved++;
       score += 10;
       renderScore();
-      feedback.textContent = "¡Equilibrada!";
+      feedback.textContent = "¡Justo!";
       feedback.className = "feedback ok";
-      setTimeout(nextRound, 600);
+      setTimeout(nextRound, 650);
     } else if (current > target) {
       lives--;
       renderLives();
       feedback.textContent = "Te has pasado — vuelve a intentarlo";
       feedback.className = "feedback bad";
-      if (lives <= 0) return setTimeout(() => finish(false), 500);
+      if (lives <= 0) return setTimeout(() => finish(false), 550);
       setTimeout(() => {
         current = 0;
-        updateBeam();
-      }, 500);
+        body.querySelector("[data-total]").textContent = formatCents(current);
+      }, 550);
     }
   }
 
@@ -106,12 +100,12 @@ export function mountBalanzaGame(container, { client, onExit }) {
     if (finished) return;
     finished = true;
     if (userExited) return onExit();
-    saveScore(client, "balanza", { score, rounds });
+    saveScore(client, "monedas", { score, rounds });
     body.innerHTML = `
       <div class="end-card">
-        <div>⚖️</div>
+        <div>💰</div>
         <div class="big-score">${score} pts</div>
-        <p>${rounds} pesas añadidas</p>
+        <p>${rounds} monedas usadas</p>
         <div class="end-actions">
           <button class="primary" data-retry>Jugar otra vez</button>
           <button class="secondary" data-menu>Volver al menú</button>
@@ -126,7 +120,6 @@ export function mountBalanzaGame(container, { client, onExit }) {
     lives = startLives;
     score = 0;
     rounds = 0;
-    solved = 0;
     finished = false;
     renderLives();
     renderScore();

@@ -49,6 +49,7 @@ export function mountMemoriaGame(container, { client, onExit }) {
   let score = 0;
   let attempts = 0;
   let matchedPairs = 0;
+  let misses = 0;
   let finished = false;
   let flipped = [];
   let busy = false;
@@ -58,6 +59,7 @@ export function mountMemoriaGame(container, { client, onExit }) {
       <button class="back-btn" data-exit>← Menú</button>
       <div class="game-stats">
         <span data-progress>0/6 parejas</span>
+        <span class="lives" data-misses>❌ 0</span>
         <span class="score" data-score>⭐ 0</span>
       </div>
     </div>
@@ -65,18 +67,21 @@ export function mountMemoriaGame(container, { client, onExit }) {
   `;
   container.querySelector("[data-exit]").addEventListener("click", () => finish(true));
   const progressEl = container.querySelector("[data-progress]");
+  const missesEl = container.querySelector("[data-misses]");
   const scoreEl = container.querySelector("[data-score]");
   const body = container.querySelector("[data-body]");
 
   function renderScore() {
     scoreEl.textContent = `⭐ ${score}`;
     progressEl.textContent = `${matchedPairs}/6 parejas`;
+    missesEl.textContent = `❌ ${misses}`;
   }
 
   function start() {
     score = 0;
     attempts = 0;
     matchedPairs = 0;
+    misses = 0;
     finished = false;
     flipped = [];
     busy = false;
@@ -118,6 +123,8 @@ export function mountMemoriaGame(container, { client, onExit }) {
       busy = false;
       if (matchedPairs >= 6) setTimeout(() => finish(false), 400);
     } else {
+      misses++;
+      renderScore();
       setTimeout(() => {
         first.el.classList.remove("open");
         second.el.classList.remove("open");
@@ -136,7 +143,7 @@ export function mountMemoriaGame(container, { client, onExit }) {
       <div class="end-card">
         <div>🃏</div>
         <div class="big-score">${score} pts</div>
-        <p>${attempts} intentos para las 6 parejas</p>
+        <p>${attempts} intentos para las 6 parejas (${misses} fallos)</p>
         <div class="end-actions">
           <button class="primary" data-retry>Jugar otra vez</button>
           <button class="secondary" data-menu>Volver al menú</button>

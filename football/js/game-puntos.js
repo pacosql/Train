@@ -85,7 +85,7 @@ export function mountPuntosGame(container, { client, onExit }) {
       bodyEl.querySelector("[data-poly]").setAttribute("points", pathPts.join(" "));
       nextIdx++;
       if (nextIdx >= round.values.length) {
-        score += 15;
+        score += 10;
         renderScore();
         feedback.textContent = "¡Camino completo!";
         feedback.className = "feedback ok";

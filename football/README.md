@@ -1,52 +1,83 @@
 # Math Games 🧠
 
-PWA (sin build, HTML/CSS/JS puro) con **20 minijuegos de matemáticas**:
-cálculo mental, geometría, álgebra, estadística, fracciones, conversión
-de unidades, patrones numéricos, tiempo y más. Nace como banco de
-pruebas rápido para sacar ideas de mecánicas (tipo Duolingo Math,
-Synthesis o DreamBox) de cara a otra app de matemáticas más grande.
-Cada juego se puede marcar con 👍 / 👎 desde su propia pantalla, y el
-menú los organiza en tres pestañas — 🆕 Nuevos, 👍 Me gusta, 👎 No me
-gusta — para llevar el control de qué mecánicas convencen.
+PWA (sin build, HTML/CSS/JS puro) con **40 ejercicios de matemáticas**,
+cada uno numerado (#1-#40) para poder referirse a ellos sin ambigüedad.
+Cálculo mental, geometría, álgebra, estadística, fracciones, dinero,
+probabilidad, coordenadas, tiempo y más. Nace como banco de pruebas
+rápido para sacar ideas de mecánicas (tipo Duolingo Math, Synthesis,
+DreamBox o SplashLearn) de cara a otra app de matemáticas más grande.
+Cada ejercicio se puede marcar con 👍/👎/🔧 desde su propia pantalla, y
+el menú los organiza en cuatro pestañas para llevar el control de qué
+mecánicas convencen.
 
 Vive en `football/` y usa el prefijo `football_` en Supabase — nombres
 heredados de un prototipo anterior de esta misma carpeta, se han
 mantenido tal cual en vez de renombrar. Forma parte del hosting
 multi-app de este repo — ver el [README de la raíz](../README.md).
 
-## Los 10 juegos "creativos" (mecánica propia, sin opciones A/B/C/D)
+**El número de cada ejercicio es fijo** (definido por su posición en
+`js/app.js`, array `GAMES`): los ejercicios nuevos siempre se añaden al
+final, nunca se insertan en medio, así que "#17" siempre es el mismo
+juego de una sesión a otra.
 
-| Juego | Tema | Mecánica |
-|---|---|---|
-| 🎈 Globos de multiplicar | Multiplicación | Pincha el globo con el resultado correcto antes de que se escape (mide velocidad de respuesta) |
-| 🫧 Parejas que suman | Cálculo mental | Toca 2 burbujas cuya suma sea el número objetivo |
-| 📶 Ordena los números | Orden numérico | Toca los chips en el orden correcto (según la instrucción) |
-| 📍 Recta numérica | Sentido numérico | Arrastra un marcador hasta el punto exacto de la recta |
-| 🕐 Pon en hora el reloj | Tiempo | Arrastra las agujas de un reloj analógico hasta la hora pedida |
-| 🏋️ Equilibra la balanza | Igualdad y pesos | Toca pesas para igualar el peso objetivo; la barra se inclina en vivo |
-| 🃏 Memoria matemática | Memoria y cálculo | Voltea cartas para encontrar la pareja operación ↔ resultado |
-| 🎯 Atrapa los múltiplos | Múltiplos y reglas | Flujo continuo de números — toca solo los que cumplen la regla vigente |
-| 🧱 Construye el número | Valor posicional | Toca columnas de centenas/decenas/unidades hasta formar el número |
-| 📐 Ajusta el ángulo | Geometría | Arrastra una flecha sobre un transportador hasta el ángulo pedido |
-| ✏️ Une los puntos | Conteo salteado | Toca los puntos en orden (de 2 en 2, de 5 en 5…) y traza el camino |
+## Ejercicios #1-#20 (primera tanda) — mecánica propia, sin A/B/C/D
 
-## Los 10 juegos de "pregunta + 4 opciones" (motor de quiz compartido)
+| # | Juego | Tema | Mecánica |
+|---|---|---|---|
+| 1 | 🎈 Globos de multiplicar | Multiplicación | Pincha el globo con el resultado correcto antes de que se escape (mide velocidad de respuesta) |
+| 2 | 🫧 Parejas que suman | Cálculo mental | Toca 2 burbujas cuya suma sea el número objetivo |
+| 3 | 📶 Ordena los números | Orden numérico | Toca los chips en el orden correcto; el número de chips sube con la racha |
+| 4 | 📍 Recta numérica | Sentido numérico | Arrastra un marcador hasta el punto exacto de la recta |
+| 5 | 🕐 Pon en hora el reloj | Tiempo | Arrastra las agujas de un reloj analógico hasta la hora pedida |
+| 6 | 🏋️ Equilibra la balanza | Igualdad y pesos | Toca pesas para igualar el peso objetivo; la barra se inclina en vivo, el rango sube con la racha |
+| 7 | 🃏 Memoria matemática | Memoria y cálculo | Voltea cartas para encontrar la pareja operación ↔ resultado |
+| 8 | 🎯 Atrapa los múltiplos | Múltiplos y reglas | Flujo continuo de números — toca solo los que cumplen la regla vigente |
+| 9 | 🧱 Construye el número | Valor posicional | Toca columnas de centenas/decenas/unidades hasta formar el número |
+| 10 | 📐 Ajusta el ángulo | Geometría | Arrastra una flecha sobre un transportador hasta el ángulo pedido |
+| 11 | ✏️ Une los puntos | Conteo salteado | Toca los puntos en orden (de 2 en 2, de 5 en 5…) y traza el camino |
+| 12 | ⚖️ Mayor o menor | Comparación | Contrarreloj (30s), compara dos números |
+| 13 | 🧮 Cálculo veloz | Cálculo mental | Contrarreloj (30s), suma/resta/multiplicación |
+| 14 | 🔺 Formas | Geometría | Nombre y número de lados de una figura |
+| 15 | 🧩 Encuentra la x | Álgebra | Resuelve una ecuación lineal sencilla |
+| 16 | 📊 Media y moda | Estadística | Calcula media, mediana o moda de una lista |
+| 17 | 📏 Distancias | Medidas | Convierte entre mm/cm/m/km |
+| 18 | 🐘 Pesos | Medidas | Convierte entre g/kg/t |
+| 19 | 🍕 La tarta | Fracciones | Identifica la fracción sombreada de un círculo |
+| 20 | 🔢 Secuencias | Patrones | Encuentra el siguiente número de la serie |
 
-| Juego | Tema | Mecánica |
-|---|---|---|
-| ⚖️ Mayor o menor | Comparación | Contrarreloj (30s), compara dos números |
-| 🧮 Cálculo veloz | Cálculo mental | Contrarreloj (30s), suma/resta/multiplicación |
-| 🔺 Formas | Geometría | Nombre y número de lados de una figura |
-| 🧩 Encuentra la x | Álgebra | Resuelve una ecuación lineal sencilla |
-| 📊 Media y moda | Estadística | Calcula media, mediana o moda de una lista |
-| 📏 Distancias | Medidas | Convierte entre mm/cm/m/km |
-| 🐘 Pesos | Medidas | Convierte entre g/kg/t |
-| 🍕 La tarta | Fracciones | Identifica la fracción sombreada de un círculo |
-| 🔢 Secuencias | Patrones | Encuentra el siguiente número de la serie |
+## Ejercicios #21-#29 (segunda tanda) — pregunta + opciones, temas nuevos
 
-Los juegos "contrarreloj" (⚖️ y 🧮) terminan a los 30 segundos; el
-resto termina a las 3 vidas o, en 🃏 y 🎯, cuando se completan todas
-las parejas. Todos guardan la puntuación final en Supabase y el menú
+| # | Juego | Tema | Mecánica |
+|---|---|---|---|
+| 21 | 📖 Problemas de palabras | Problemas | Enunciados cortos (reparto, compras…) con 4 opciones |
+| 22 | 🏛️ Números romanos | Numeración | Traduce entre número arábigo y romano |
+| 23 | 🔘 Redondea | Redondeo | Redondea a la decena o centena más cercana |
+| 24 | 🏷️ ¿Qué es más barato? | Dinero | Compara el precio por unidad de dos paquetes |
+| 25 | 📈 Lee el gráfico | Datos | Lee valores de un gráfico de barras generado al vuelo |
+| 26 | 🌳 Árbol de factores | Divisibilidad | Identifica un factor real de un número |
+| 27 | ⏳ Tiempo transcurrido | Tiempo | Calcula la duración entre una hora de salida y de llegada |
+| 28 | 🌡️ Temperaturas | Negativos | Sube/baja una temperatura, con resultados negativos |
+| 29 | 🧵 Completa el patrón | Patrones visuales | Sigue un patrón de formas/colores (no numérico) |
+
+## Ejercicios #30-#40 (tercera tanda) — mecánica propia, temas nuevos
+
+| # | Juego | Tema | Mecánica |
+|---|---|---|---|
+| 30 | 🎡 Ruleta de probabilidad | Probabilidad | Adivina el color más probable y gira la ruleta de verdad |
+| 31 | 🧺 Clasifica los números | Clasificación | Toca un número y su cesta (par/impar, primo, múltiplo…) |
+| 32 | 🎚️ Estima el resultado | Estimación | Arrastra a una aproximación — no hace falta el valor exacto |
+| 33 | ⌨️ Teclado numérico | Cálculo mental | Escribe la respuesta con un teclado, en vez de elegir |
+| 34 | 🍫 Compara fracciones | Fracciones | Dos barras rellenas — toca cuál es mayor |
+| 35 | 💰 Cuenta las monedas | Dinero | Toca monedas/billetes hasta juntar el importe exacto |
+| 36 | 🗺️ Plano cartesiano | Coordenadas | Toca la celda (x, y) pedida en una cuadrícula |
+| 37 | 🪞 Simetría | Geometría | Completa una figura simétrica tocando la única celda que falta |
+| 38 | 🔗 Amigos del 10 | Cálculo mental | Diagrama de enlace — toca el número que falta (10/20/100) |
+| 39 | 🔲 Área y perímetro | Geometría | Cuenta cuadrados para el área, o calcula el perímetro |
+| 40 | 🌀 Laberinto numérico | Múltiplos y reglas | Recorre una cuadrícula pisando solo casillas que cumplen la regla |
+
+Los juegos "contrarreloj" (#12, #13) terminan a los 30 segundos; el
+resto termina a las 3 vidas o, en #7 y #39 (parcialmente), al completar
+el objetivo. Todos guardan la puntuación final en Supabase y el menú
 principal muestra las últimas partidas jugadas.
 
 ## Valoración (🆕 / 👍 / 👎 / 🔧)
@@ -59,10 +90,48 @@ juego, lo devuelve a "Nuevo"). El menú principal tiene cuatro pestañas
 —🆕 Nuevos, 👍 Me gusta, 👎 No me gusta, 🔧 Revisar— que filtran la
 cuadrícula según la valoración. **"🔧 Revisar" significa "me gusta la
 idea pero algo falla o se puede mejorar"** — es la señal para volver a
-ese juego, probarlo a fondo y arreglarlo/mejorarlo antes de pasar a
+ese ejercicio, probarlo a fondo y arreglarlo/mejorarlo antes de pasar a
 "👍 Me gusta". Esto se guarda en `localStorage` del navegador (es una
 preferencia personal de exploración, no vive en Supabase ni se
 comparte entre dispositivos).
+
+## Auditoría de consistencia (2026-09-16)
+
+Se revisó generador por generador la lógica de los 20 ejercicios
+originales y se encontraron y arreglaron, con simulaciones de decenas
+de miles de rondas antes/después de cada arreglo:
+
+- **#17/#18 Distancias/Pesos**: conversiones entre unidades muy
+  dispares (mm→km, g→t) redondeaban a "0" y la ronda se quedaba con una
+  única opción posible. Arreglado regenerando hasta un resultado real.
+- **#16 Media y moda**: ~15% de las rondas de "moda" tenían un empate
+  accidental entre dos números. Arreglado forzando una moda única.
+- **#19 La tarta**: ~32% de las rondas no llegaban a 4 opciones
+  distintas porque el rango de distractores era demasiado estrecho.
+  Arreglado sorteando en todo el rango posible.
+- **#7 Memoria**: ~11% de las partidas tenían dos cartas con el mismo
+  texto (confuso — solo una de las dos emparejaba de verdad). Arreglado
+  forzando texto único en las 12 caras.
+- **#11 Une los puntos**: el conteo salteado siempre empezaba justo en
+  el propio "salto" (2,2,2…), sin variedad. Ahora varía el inicio.
+- **#3/#11 Ordena/Une los puntos**: puntuaban distinto al resto de
+  juegos (+5 por toque, +15 por ronda) — normalizado a +10 por ronda
+  completada, igual que el resto.
+- **#7 Memoria**: no tenía ninguna señal de fallo (a diferencia de
+  todos los demás, con corazones de vida) — se añadió un contador de
+  fallos (❌) junto al de parejas.
+
+Al construir los 20 ejercicios nuevos (#21-#40) se aplicó la misma
+disciplina desde el principio — cada generador con aleatoriedad se
+probó miles de veces antes de darlo por bueno — y aun así aparecieron
+más casos reales del mismo tipo de fallo (empates y rangos de
+distractores demasiado estrechos), ya corregidos: la ruleta de
+probabilidad (#30) podía salir con dos colores empatados en el trozo
+más grande (~40% de las rondas), el árbol de factores (#26) podía
+tocarle un número primo sin factores propios (~25%), el lector de
+gráficos (#25) podía tener barras empatadas en el máximo/mínimo (~7%),
+y el primer diseño de Simetría (#37) dejaba varias celdas igual de
+plausibles como "la que falta" en vez de una sola inequívoca.
 
 ## 1. Configura tus credenciales
 
@@ -108,12 +177,15 @@ Una vez publicado, esta app queda en:
 
 ## Qué hace la app
 
-- Menú con los 20 juegos, organizados en pestañas 🆕/👍/👎; cada juego
-  abre en su propia pantalla (`#/game/<id>`), sin recargar la página.
-- Motor de preguntas compartido (`js/quiz-engine.js`) para los 9 juegos
-  de "pregunta + 4 opciones"; los otros 11 (`js/game-*.js` y
+- Menú con los 40 ejercicios numerados, organizados en pestañas
+  🆕/👍/👎/🔧; cada uno abre en su propia pantalla (`#/game/<id>`), sin
+  recargar la página.
+- Motor de preguntas compartido (`js/quiz-engine.js`) para los 17
+  ejercicios de "pregunta + opciones" (`js/games-data.js` y
+  `js/games-data-2.js`); los otros 23 (`js/game-*.js` y
   `js/balloons-game.js`) tienen cada uno su propia mecánica de
-  interacción (arrastrar, tocar en orden, emparejar, construir…).
+  interacción (arrastrar, tocar en orden, emparejar, construir,
+  escribir, clasificar…).
 - Guarda cada partida en `football_scores` y muestra las últimas en el
   menú.
 - Se puede usar sin conexión gracias a un Service Worker que cachea el

@@ -2,13 +2,20 @@ import { mountQuizGame } from "./quiz-engine.js";
 import { mountBalloonsGame } from "./balloons-game.js";
 import { QUIZ_GAMES } from "./games-data.js";
 import { CREATIVE_GAMES } from "./games-creative.js";
+import { QUIZ_GAMES_2 } from "./games-data-2.js";
+import { CREATIVE_GAMES_2 } from "./games-creative-2.js";
 import { getRating, setRating } from "./ratings.js";
 
+// El número de cada juego (#1, #2…) es su posición en este array — para
+// que sea estable de verdad, los juegos nuevos SIEMPRE se añaden al
+// final (nunca se insertan en medio ni se reordenan los existentes).
 const GAMES = [
   { id: "globos", title: "Globos de multiplicar", emoji: "🎈", topic: "Multiplicación", custom: mountBalloonsGame },
   ...CREATIVE_GAMES,
   ...QUIZ_GAMES,
-];
+  ...QUIZ_GAMES_2,
+  ...CREATIVE_GAMES_2,
+].map((g, i) => ({ ...g, num: i + 1 }));
 const GAMES_BY_ID = Object.fromEntries(GAMES.map((g) => [g.id, g]));
 
 const { url, anonKey } = window.FOOTBALL_CONFIG || {};
@@ -93,7 +100,7 @@ function renderGrid(groups) {
     const card = document.createElement("a");
     card.className = "game-card";
     card.href = `#/game/${g.id}`;
-    card.innerHTML = `<span class="emoji">${g.emoji}</span><span class="name">${g.title}</span><span class="topic">${g.topic}</span>`;
+    card.innerHTML = `<span class="num-badge">#${g.num}</span><span class="emoji">${g.emoji}</span><span class="name">${g.title}</span><span class="topic">${g.topic}</span>`;
     grid.appendChild(card);
   });
 }
@@ -132,6 +139,7 @@ function renderGame(id) {
   }
   root.innerHTML = `
     <div class="game-screen" data-screen>
+      <div class="game-num-header">Ejercicio #${game.num} · ${game.title}</div>
       <div class="game-mount" data-mount></div>
       <div class="rate-bar" data-rate-bar>
         <button class="rate-btn dislike" data-rate="dislike">👎 No me gusta</button>
