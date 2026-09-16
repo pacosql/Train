@@ -45,7 +45,7 @@
         <p class="club-sub">Tenis y Pádel Club</p>
         <div class="club-hours">Abierto 9:00–23:00, todos los días</div>
       </div>
-      <button id="btn-mis-reservas" type="button">Mis reservas</button>
+      <button id="btn-mis-reservas" type="button">Mis reservas <span id="mis-reservas-badge" class="badge" hidden></span></button>
     </div>
 
     <div class="section">
@@ -71,7 +71,8 @@
         <span class="item"><span class="dot" style="background:#2f9e44"></span>Hierba</span>
         <span class="item"><span class="dot" style="background:#8b5cf6"></span>Pádel</span>
       </div>
-      <div id="courts-map"></div>
+      <div id="map-summary" class="map-summary"></div>
+      <div id="courts-map"><p class="map-msg">Cargando pistas…</p></div>
     </div>
 
     <div class="build-id">build __BUILD_ID__</div>

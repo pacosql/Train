@@ -11,6 +11,7 @@ const SLOT_MINUTES = 30;
 const DURATIONS = [60, 90, 120];
 const DAYS_AHEAD = 14;
 const MIS_RESERVAS_KEY = "pistas_mis_reservas";
+const LAST_CUSTOMER_KEY = "pistas_last_customer";
 
 const COURT_TYPES = {
   tenis_dura: { label: "Tenis · pista dura", color: "#2f6fed" },
@@ -54,12 +55,14 @@ function fmtMinutes(minutes) {
 
 function fmtDayChip(offset) {
   const d = dateForOffset(offset);
-  if (offset === 0) return { top: "Hoy", sub: d.toLocaleDateString("es-ES", { day: "2-digit", month: "short" }) };
-  if (offset === 1) return { top: "Mañana", sub: d.toLocaleDateString("es-ES", { day: "2-digit", month: "short" }) };
-  return {
-    top: d.toLocaleDateString("es-ES", { weekday: "short" }).replace(".", ""),
-    sub: d.toLocaleDateString("es-ES", { day: "2-digit", month: "short" }),
-  };
+  const sub = d.toLocaleDateString("es-ES", { day: "2-digit", month: "short" });
+  if (offset === 0) return { top: "Hoy", sub };
+  if (offset === 1) return { top: "Mañana", sub };
+  return { top: d.toLocaleDateString("es-ES", { weekday: "short" }).replace(".", ""), sub };
+}
+
+function fmtShortDate(date) {
+  return date.toLocaleDateString("es-ES", { weekday: "short", day: "numeric", month: "short" }).replace(/\./g, "");
 }
 
 function fmtLongDate(date) {
@@ -72,16 +75,22 @@ function nowRoundedMinutes() {
   return Math.ceil(mins / SLOT_MINUTES) * SLOT_MINUTES;
 }
 
+// Un hueco de hoy que ya ha empezado se enseña (el día se ve completo desde
+// la apertura) pero no se puede reservar.
+function isPastSlot(offset, minutes) {
+  return offset === 0 && minutes < nowRoundedMinutes();
+}
+
 function validStartMinutes(duration) {
-  // El día se ve completo desde la apertura, aunque ya sea tarde: es un
-  // horario de consulta/demo, no oculta huecos de la mañana solo porque
-  // "ahora" sea otra hora.
   const openMin = OPEN_HOUR * 60;
-  const closeMin = CLOSE_HOUR * 60;
-  const lastStart = closeMin - duration;
+  const lastStart = CLOSE_HOUR * 60 - duration;
   const list = [];
   for (let m = openMin; m <= lastStart; m += SLOT_MINUTES) list.push(m);
   return list;
+}
+
+function selectableStartMinutes(duration, offset) {
+  return validStartMinutes(duration).filter((m) => !isPastSlot(offset, m));
 }
 
 // ---------- Carga de datos ----------
@@ -93,7 +102,8 @@ async function loadCourts() {
     .order("sort_order", { ascending: true });
   if (error) {
     console.error(error);
-    document.getElementById("courts-map").textContent = "No se pudo cargar la lista de pistas.";
+    document.getElementById("courts-map").innerHTML =
+      '<p class="map-msg">No se pudo cargar la lista de pistas. Comprueba la conexión y recarga.</p>';
     return;
   }
   state.courts = data;
@@ -105,7 +115,7 @@ async function loadReservasForDay(offset) {
   dayEnd.setDate(dayEnd.getDate() + 1);
   const { data, error } = await client
     .from("pistas_reservas")
-    .select("id,court_id,start_time,end_time,customer_name")
+    .select("id,court_id,start_time,end_time")
     .lt("start_time", dayEnd.toISOString())
     .gt("end_time", dayStart.toISOString())
     .order("start_time", { ascending: true });
@@ -179,18 +189,33 @@ function renderDurationChips() {
 function renderTimeChips() {
   const wrap = document.getElementById("time-chips");
   wrap.innerHTML = "";
-  const list = validStartMinutes(state.duration);
-  if (!list.includes(state.startMinutes)) {
-    state.startMinutes = list[0] ?? null;
+  const all = validStartMinutes(state.duration);
+  const selectable = selectableStartMinutes(state.duration, state.dayOffset);
+
+  if (!selectable.includes(state.startMinutes)) {
+    state.startMinutes = selectable[0] ?? null;
   }
-  for (const m of list) {
+
+  for (const m of all) {
+    const past = isPastSlot(state.dayOffset, m);
     const chip = document.createElement("button");
     chip.type = "button";
-    chip.className = "chip" + (m === state.startMinutes ? " active" : "");
+    chip.className = "chip" + (m === state.startMinutes ? " active" : "") + (past ? " past" : "");
+    chip.disabled = past;
     chip.textContent = fmtMinutes(m);
-    chip.addEventListener("click", () => selectStart(m));
+    if (!past) chip.addEventListener("click", () => selectStart(m));
     wrap.appendChild(chip);
   }
+  scrollActiveChipIntoView(wrap);
+}
+
+function scrollActiveChipIntoView(wrap) {
+  const chip = wrap.querySelector(".chip.active");
+  if (!chip || wrap.clientWidth === 0) return;
+  // Deja asomar el hueco anterior (tachado si ya pasó) para que se vea que
+  // la fila empieza en la apertura, no en la hora actual.
+  const left = chip.getBoundingClientRect().left - wrap.getBoundingClientRect().left + wrap.scrollLeft;
+  wrap.scrollLeft = Math.max(0, left - 64);
 }
 
 function selectDay(offset) {
@@ -217,10 +242,48 @@ function selectStart(m) {
 
 // ---------- Render: mapa de pistas ----------
 
+function courtSvg(type, color) {
+  if (type === "padel") {
+    return `<svg class="court-mini" viewBox="0 0 120 72" aria-hidden="true">
+      <rect x="2" y="2" width="116" height="68" rx="6" fill="${color}" />
+      <rect x="9" y="9" width="102" height="54" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="4" />
+      <g stroke="#fff" stroke-width="1.6" stroke-linecap="round">
+        <line x1="26" y1="9" x2="26" y2="63" /><line x1="94" y1="9" x2="94" y2="63" />
+        <line x1="26" y1="36" x2="94" y2="36" />
+      </g>
+      <line x1="60" y1="6" x2="60" y2="66" stroke="#fff" stroke-width="2.4" stroke-dasharray="3 2" />
+    </svg>`;
+  }
+  return `<svg class="court-mini" viewBox="0 0 120 72" aria-hidden="true">
+    <rect x="2" y="2" width="116" height="68" rx="6" fill="${color}" />
+    <g fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round">
+      <rect x="12" y="9" width="96" height="54" />
+      <line x1="12" y1="16" x2="108" y2="16" /><line x1="12" y1="56" x2="108" y2="56" />
+      <line x1="36" y1="16" x2="36" y2="56" /><line x1="84" y1="16" x2="84" y2="56" />
+      <line x1="36" y1="36" x2="84" y2="36" />
+    </g>
+    <line x1="60" y1="5" x2="60" y2="67" stroke="#fff" stroke-width="2.4" stroke-dasharray="3 2" />
+  </svg>`;
+}
+
 function renderCourtsMap() {
   const wrap = document.getElementById("courts-map");
+  const summary = document.getElementById("map-summary");
   wrap.innerHTML = "";
-  if (state.startMinutes == null) return;
+
+  if (state.startMinutes == null) {
+    summary.textContent = "";
+    wrap.innerHTML =
+      '<p class="map-msg">Hoy ya no quedan huecos para esta duración. ' +
+      '<button type="button" class="link-btn" id="go-tomorrow">Ver mañana</button></p>';
+    document.getElementById("go-tomorrow").addEventListener("click", () => selectDay(1));
+    return;
+  }
+
+  const base = dateForOffset(state.dayOffset);
+  const start = dateWithMinutes(base, state.startMinutes);
+  const end = dateWithMinutes(base, state.startMinutes + state.duration);
+  let freeCount = 0;
 
   for (const type of TYPE_ORDER) {
     const courts = state.courts.filter((c) => c.type === type);
@@ -235,24 +298,20 @@ function renderCourtsMap() {
     grid.className = "court-grid";
 
     for (const court of courts) {
-      const base = dateForOffset(state.dayOffset);
-      const start = dateWithMinutes(base, state.startMinutes);
-      const end = dateWithMinutes(base, state.startMinutes + state.duration);
       const free = isRangeFree(court.id, start, end);
+      if (free) freeCount++;
 
       const card = document.createElement("button");
       card.type = "button";
-      card.className = "court-card";
-      card.style.setProperty("--court-color", meta.color);
+      card.className = "court-card " + (free ? "is-free" : "is-busy");
       card.innerHTML = `
+        ${courtSvg(type, meta.color)}
         <span class="name">${escapeHtml(court.name)}</span>
         <span class="status ${free ? "free" : "busy"}">${free ? "Libre" : "Ocupada"}</span>
         <span class="schedule-link">Ver horario del día</span>
       `;
       card.addEventListener("click", (ev) => {
-        if (ev.target.classList.contains("schedule-link")) {
-          openSchedule(court);
-        } else if (free) {
+        if (free && !ev.target.classList.contains("schedule-link")) {
           openBooking(court, state.startMinutes);
         } else {
           openSchedule(court);
@@ -264,6 +323,10 @@ function renderCourtsMap() {
     group.appendChild(grid);
     wrap.appendChild(group);
   }
+
+  summary.textContent =
+    `${freeCount} de ${state.courts.length} pistas libres · ${fmtShortDate(base)} · ` +
+    `${fmtMinutes(state.startMinutes)}–${fmtMinutes(state.startMinutes + state.duration)}`;
 }
 
 function escapeHtml(str) {
@@ -275,10 +338,8 @@ function escapeHtml(str) {
 // ---------- Dialog: horario del día ----------
 
 const dlgSchedule = document.getElementById("dlg-schedule");
-let scheduleCourt = null;
 
 function openSchedule(court) {
-  scheduleCourt = court;
   document.getElementById("sched-title").textContent = court.name;
   document.getElementById("sched-summary").textContent = fmtLongDate(dateForOffset(state.dayOffset));
 
@@ -286,19 +347,18 @@ function openSchedule(court) {
   grid.innerHTML = "";
   const openMin = OPEN_HOUR * 60;
   const closeMin = CLOSE_HOUR * 60;
-  const nowFloor = state.dayOffset === 0 ? nowRoundedMinutes() : -1;
+  const base = dateForOffset(state.dayOffset);
 
   for (let m = openMin; m < closeMin; m += SLOT_MINUTES) {
-    const base = dateForOffset(state.dayOffset);
     const cellStart = dateWithMinutes(base, m);
     const cellEnd = dateWithMinutes(base, m + SLOT_MINUTES);
     const free = isRangeFree(court.id, cellStart, cellEnd);
-    const isPast = m < nowFloor;
+    const past = isPastSlot(state.dayOffset, m);
 
     const cell = document.createElement("div");
-    cell.className = "day-cell " + (free ? "free" : "busy") + (isPast ? " past" : "");
+    cell.className = "day-cell " + (free ? "free" : "busy") + (past ? " past" : "");
     cell.textContent = fmtMinutes(m);
-    if (free && !isPast) {
+    if (free && !past) {
       cell.addEventListener("click", () => {
         dlgSchedule.close();
         selectStart(m);
@@ -316,6 +376,22 @@ const dlgBooking = document.getElementById("dlg-booking");
 let bookingCourt = null;
 let bookingStart = null;
 
+function getLastCustomer() {
+  try {
+    return JSON.parse(localStorage.getItem(LAST_CUSTOMER_KEY) || "{}");
+  } catch {
+    return {};
+  }
+}
+
+function saveLastCustomer(name, phone) {
+  try {
+    localStorage.setItem(LAST_CUSTOMER_KEY, JSON.stringify({ name, phone }));
+  } catch {
+    /* noop */
+  }
+}
+
 function openBooking(court, startMinutes) {
   bookingCourt = court;
   bookingStart = startMinutes;
@@ -328,8 +404,9 @@ function openBooking(court, startMinutes) {
   updateBookingSummary();
   durationSelect.onchange = updateBookingSummary;
 
-  document.getElementById("booking-name").value = "";
-  document.getElementById("booking-phone").value = "";
+  const last = getLastCustomer();
+  document.getElementById("booking-name").value = last.name || "";
+  document.getElementById("booking-phone").value = last.phone || "";
   document.getElementById("booking-msg").textContent = "";
   document.getElementById("booking-msg").className = "form-msg";
   dlgBooking.showModal();
@@ -338,8 +415,10 @@ function openBooking(court, startMinutes) {
 function updateBookingSummary() {
   const duration = Number(document.getElementById("booking-duration").value);
   const end = bookingStart + duration;
-  document.getElementById("booking-summary").textContent =
-    `${bookingCourt.name} — ${fmtLongDate(dateForOffset(state.dayOffset))}, ` +
+  const meta = COURT_TYPES[bookingCourt.type];
+  document.getElementById("booking-summary").innerHTML =
+    `<span class="dot" style="background:${meta.color}"></span>` +
+    `<strong>${escapeHtml(bookingCourt.name)}</strong> · ${fmtLongDate(dateForOffset(state.dayOffset))}, ` +
     `${fmtMinutes(bookingStart)}–${fmtMinutes(end)} (${duration} min)`;
 }
 
@@ -352,6 +431,7 @@ document.getElementById("booking-confirm").addEventListener("click", async () =>
   if (!name) {
     msg.textContent = "Escribe tu nombre para reservar.";
     msg.className = "form-msg err";
+    document.getElementById("booking-name").focus();
     return;
   }
 
@@ -391,6 +471,7 @@ document.getElementById("booking-confirm").addEventListener("click", async () =>
     return;
   }
 
+  saveLastCustomer(name, phone);
   saveMisReserva({
     id: data.id,
     cancel_token: data.cancel_token,
@@ -399,6 +480,7 @@ document.getElementById("booking-confirm").addEventListener("click", async () =>
     start: data.start_time,
     end: data.end_time,
   });
+  renderMisReservasBadge();
 
   msg.textContent = "¡Reserva confirmada! 🎾";
   msg.className = "form-msg ok";
@@ -437,6 +519,14 @@ function removeMisReserva(id) {
   }
 }
 
+function renderMisReservasBadge() {
+  const now = new Date();
+  const upcoming = getMisReservas().filter((r) => new Date(r.end) > now).length;
+  const badge = document.getElementById("mis-reservas-badge");
+  badge.textContent = String(upcoming);
+  badge.hidden = upcoming === 0;
+}
+
 const dlgMisReservas = document.getElementById("dlg-mis-reservas");
 
 function renderMisReservas() {
@@ -454,11 +544,13 @@ function renderMisReservas() {
     const start = new Date(r.start);
     const end = new Date(r.end);
     const past = end < now;
+    const color = (COURT_TYPES[r.court_type] || {}).color || "var(--muted)";
     const li = document.createElement("li");
+    if (past) li.classList.add("past");
     li.innerHTML = `
       <div class="meta">
-        <strong>${escapeHtml(r.court_name)}</strong>
-        <span>${start.toLocaleDateString("es-ES", { day: "2-digit", month: "short" })} · ${start.toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" })}–${end.toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" })}${past ? " · finalizada" : ""}</span>
+        <strong><span class="dot" style="background:${color}"></span>${escapeHtml(r.court_name)}</strong>
+        <span>${fmtShortDate(start)} · ${start.toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" })}–${end.toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" })}${past ? " · finalizada" : ""}</span>
       </div>
     `;
     if (!past) {
@@ -486,6 +578,7 @@ async function cancelMisReserva(r) {
   }
   removeMisReserva(r.id);
   renderMisReservas();
+  renderMisReservasBadge();
   await loadReservasForDay(state.dayOffset);
   renderCourtsMap();
   showToast("Reserva cancelada");
@@ -513,6 +606,8 @@ for (const dlg of document.querySelectorAll("dialog")) {
 document.getElementById("btn-reservar").addEventListener("click", () => {
   document.getElementById("cover").hidden = true;
   document.getElementById("app").hidden = false;
+  window.scrollTo(0, 0);
+  scrollActiveChipIntoView(document.getElementById("time-chips"));
 });
 
 document.getElementById("btn-back").addEventListener("click", () => {
@@ -526,8 +621,9 @@ document.getElementById("btn-mis-reservas").addEventListener("click", () => {
 });
 
 async function init() {
-  state.dayOffset = 0;
-  state.startMinutes = validStartMinutes(state.duration)[0];
+  // Si hoy ya no queda ningún hueco reservable, arranca en mañana.
+  state.dayOffset = selectableStartMinutes(state.duration, 0).length > 0 ? 0 : 1;
+  state.startMinutes = selectableStartMinutes(state.duration, state.dayOffset)[0] ?? null;
 
   await loadCourts();
   await loadReservasForDay(state.dayOffset);
@@ -536,6 +632,7 @@ async function init() {
   renderDurationChips();
   renderTimeChips();
   renderCourtsMap();
+  renderMisReservasBadge();
 
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("sw.js").catch(() => {});
