@@ -13,6 +13,8 @@ const SHELL = [
   "./index.html",
   "./manifest.json",
   "./config.js",
+  "./app.js",
+  "./styles.css",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
 ];
