@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Nombra — nombres para tu empresa de tenis y pádel</title>
+
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0e1512" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Nombra" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="badge-row">
+        <span>🎾</span><span>🏓</span>
+      </div>
+      <h1>Nombra</h1>
+      <p class="tagline">
+        Ideas de nombre para una empresa/marca de tenis y pádel, con
+        comprobación de dominio <strong>.com</strong> en vivo y enlaces
+        directos a los buscadores oficiales de marca y de dominio
+        <strong>.es</strong>.
+      </p>
+    </header>
+
+    <section class="callout">
+      <strong>Qué comprueba esta app y qué no:</strong>
+      <ul>
+        <li>✅ <strong>.com</strong>: consulta en vivo al registro (RDAP) desde tu navegador — libre/registrado al instante.</li>
+        <li>⚠️ <strong>.es</strong>: se intenta también en vivo, pero el registro español no siempre responde a este tipo de consulta desde el navegador — si falla, te dejamos el enlace oficial para comprobarlo a mano.</li>
+        <li>ℹ️ <strong>Marca/nombre de empresa (España y EEUU)</strong>: no existe una API pública para esto. Te dejamos enlaces directos a OEPM, Registro Mercantil y USPTO para que compruebes tú mismo antes de decidirte — ninguna comprobación automática aquí sustituye a una búsqueda de marca profesional.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Añade un nombre para comprobar</h2>
+      <form id="form-nuevo" class="add-form">
+        <input id="input-nombre" type="text" maxlength="40" placeholder="p. ej. padelium, smashly..." autocomplete="off" />
+        <button type="submit">Añadir</button>
+      </form>
+    </section>
+
+    <section>
+      <h2>Ideas de partida (tenis · pádel)</h2>
+      <p class="sub">Nombres inventados, sin significado obvio en un diccionario — punto de partida, no garantía de nada.</p>
+      <div id="lista-nombres" class="name-list"></div>
+    </section>
+
+    <section>
+      <h2>Guardadas</h2>
+      <p class="sub">Compartidas con quien use esta app (tabla <code>nombra_ideas</code> en Supabase).</p>
+      <div id="lista-guardadas" class="name-list"></div>
+    </section>
+
+    <div class="build-id">build __BUILD_ID__</div>
+  </div>
+
+  <template id="tpl-nombre-card">
+    <div class="name-card">
+      <div class="name-head">
+        <span class="name-text"></span>
+        <button class="btn-check" type="button">Comprobar</button>
+      </div>
+      <div class="checks"></div>
+      <div class="official-links"></div>
+      <button class="btn-save" type="button">Guardar idea</button>
+    </div>
+  </template>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
