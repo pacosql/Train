@@ -95,7 +95,19 @@ function statsQuestion() {
     const sorted = [...nums].sort((a, b) => a - b);
     correct = sorted[Math.floor(n / 2)];
   } else {
-    nums[3] = nums[0]; // garantiza una moda clara
+    // Fuerza una moda inequívoca: nums[0] repetido dos veces y el resto de
+    // valores pairwise distintos entre sí (si no, con nums al azar hay ~15%
+    // de rondas donde dos números "de relleno" coinciden por casualidad y
+    // crean un empate de moda ambiguo).
+    nums[3] = nums[0];
+    for (let i = 1; i < n; i++) {
+      if (i === 3) continue;
+      let guard = 0;
+      while (nums.some((v, j) => j !== i && v === nums[i]) && guard < 50) {
+        nums[i] = randInt(1, 20);
+        guard++;
+      }
+    }
     const counts = {};
     nums.forEach((v) => (counts[v] = (counts[v] || 0) + 1));
     correct = Number(Object.entries(counts).sort((a, b) => b[1] - a[1])[0][0]);
@@ -117,14 +129,22 @@ function distanceQuestion() {
     { name: "m", toM: 1 },
     { name: "km", toM: 1000 },
   ];
-  const from = pick(units);
-  let to = pick(units);
-  while (to === from) to = pick(units);
-  const value = randInt(1, 20) * (from.name === "km" ? 1 : from.name === "m" ? 10 : 1);
-  const meters = value * from.toM;
-  let correct = meters / to.toM;
-  correct = Math.round(correct * 1000) / 1000;
-  const correctStr = Number.isInteger(correct) ? String(correct) : correct.toFixed(correct < 1 ? 3 : 1);
+  // Saltos de magnitud grandes (p.ej. mm → km) hacen que el resultado
+  // redondeado a 3 decimales colapse a "0" — una pregunta rota con una
+  // única opción posible. Regenera la ronda hasta obtener un resultado
+  // real y no degenerado.
+  let from, to, value, correct, correctStr;
+  let guard = 0;
+  do {
+    from = pick(units);
+    to = pick(units);
+    while (to === from) to = pick(units);
+    value = randInt(1, 20) * (from.name === "km" ? 1 : from.name === "m" ? 10 : 1);
+    const meters = value * from.toM;
+    correct = Math.round((meters / to.toM) * 1000) / 1000;
+    correctStr = Number.isInteger(correct) ? String(correct) : correct.toFixed(correct < 1 ? 3 : 1);
+    guard++;
+  } while (correct === 0 && guard < 30);
   const choices = buildChoices(correctStr, () => {
     const factor = pick([0.1, 0.5, 2, 10]);
     const d = correct * factor;
@@ -144,14 +164,20 @@ function weightQuestion() {
     { name: "kg", toKg: 1 },
     { name: "t", toKg: 1000 },
   ];
-  const from = pick(units);
-  let to = pick(units);
-  while (to === from) to = pick(units);
-  const value = randInt(1, 20) * (from.name === "g" ? 100 : 1);
-  const kg = value * from.toKg;
-  let correct = kg / to.toKg;
-  correct = Math.round(correct * 1000) / 1000;
-  const correctStr = Number.isInteger(correct) ? String(correct) : correct.toFixed(3);
+  // Mismo problema que en distancias: g → t con valores pequeños puede
+  // redondear a "0". Regenera hasta obtener un resultado no degenerado.
+  let from, to, value, correct, correctStr;
+  let guard = 0;
+  do {
+    from = pick(units);
+    to = pick(units);
+    while (to === from) to = pick(units);
+    value = randInt(1, 20) * (from.name === "g" ? 100 : 1);
+    const kg = value * from.toKg;
+    correct = Math.round((kg / to.toKg) * 1000) / 1000;
+    correctStr = Number.isInteger(correct) ? String(correct) : correct.toFixed(3);
+    guard++;
+  } while (correct === 0 && guard < 30);
   const choices = buildChoices(correctStr, () => {
     const factor = pick([0.1, 0.5, 2, 10]);
     const d = correct * factor;
@@ -181,12 +207,20 @@ function pieSvg(total, shaded) {
 }
 function gcd(a, b) { return b === 0 ? a : gcd(b, a % b); }
 function fractionsQuestion() {
-  const total = pick([3, 4, 5, 6, 8]);
+  // total=3 solo admite 2 fracciones distintas posibles (1/3, 2/3) y
+  // total=4 solo 3 (1/4, 1/2, 3/4) — con menos de 4 opciones reales,
+  // buildChoices no puede rellenar el cuadro de 4 respuestas y la ronda
+  // sale con menos botones de los que debería. Se excluyen ambos.
+  const total = pick([5, 6, 8, 10, 12]);
   const shaded = randInt(1, total - 1);
   const g = gcd(shaded, total);
   const correct = `${shaded / g}/${total / g}`;
+  // Un offset estrecho (±1/±2) no siempre alcanza a "ver" las 3 fracciones
+  // distintas que hacen falta desde algunos valores de shaded (p.ej. desde
+  // 1/5 solo se alcanzaban 2/5 y 3/5, nunca 4/5) — sorteando en todo el
+  // rango [1, total-1] sí se garantizan 4 opciones distintas siempre.
   const choices = buildChoices(correct, () => {
-    const s = Math.max(1, Math.min(total - 1, shaded + pick([-2, -1, 1, 2])));
+    const s = randInt(1, total - 1);
     const gg = gcd(s, total);
     return `${s / gg}/${total / gg}`;
   }).map(String);

@@ -49,14 +49,18 @@ resto termina a las 3 vidas o, en 🃏 y 🎯, cuando se completan todas
 las parejas. Todos guardan la puntuación final en Supabase y el menú
 principal muestra las últimas partidas jugadas.
 
-## Valoración (👍 / 👎 / 🆕)
+## Valoración (🆕 / 👍 / 👎 / 🔧)
 
-Cada pantalla de juego tiene, debajo del propio juego, dos botones fijos
-"👎 No me gusta" / "👍 Me gusta". Al pulsar uno, el juego pasa a esa
-categoría en el menú (pulsar el mismo botón otra vez lo devuelve a
-"Nuevo"). El menú principal tiene tres pestañas —🆕 Nuevos, 👍 Me
-gusta, 👎 No me gusta— que filtran la cuadrícula de juegos según su
-valoración. Esto se guarda en `localStorage` del navegador (es una
+Cada pantalla de juego tiene, debajo del propio juego, tres botones fijos:
+"👎 No me gusta", "🔧 Revisar" y "👍 Me gusta". Al pulsar uno, el juego
+pasa a esa categoría y vuelves directo al menú para ver dónde ha
+aterrizado (pulsar el mismo botón otra vez, desde la pantalla del
+juego, lo devuelve a "Nuevo"). El menú principal tiene cuatro pestañas
+—🆕 Nuevos, 👍 Me gusta, 👎 No me gusta, 🔧 Revisar— que filtran la
+cuadrícula según la valoración. **"🔧 Revisar" significa "me gusta la
+idea pero algo falla o se puede mejorar"** — es la señal para volver a
+ese juego, probarlo a fondo y arreglarlo/mejorarlo antes de pasar a
+"👍 Me gusta". Esto se guarda en `localStorage` del navegador (es una
 preferencia personal de exploración, no vive en Supabase ni se
 comparte entre dispositivos).
 

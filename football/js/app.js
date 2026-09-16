@@ -27,10 +27,10 @@ function teardown() {
 }
 
 function categorize() {
-  const groups = { new: [], like: [], dislike: [] };
+  const groups = { new: [], like: [], dislike: [], review: [] };
   GAMES.forEach((g) => {
     const r = getRating(g.id);
-    const key = r === "like" || r === "dislike" ? r : "new";
+    const key = r === "like" || r === "dislike" || r === "review" ? r : "new";
     groups[key].push(g);
   });
   return groups;
@@ -49,6 +49,7 @@ async function renderMenu() {
         <button class="tab-btn" data-tab="new">🆕 Nuevos (${groups.new.length})</button>
         <button class="tab-btn" data-tab="like">👍 Me gusta (${groups.like.length})</button>
         <button class="tab-btn" data-tab="dislike">👎 No me gusta (${groups.dislike.length})</button>
+        <button class="tab-btn" data-tab="review">🔧 Revisar (${groups.review.length})</button>
       </div>
       <div class="game-grid" data-grid></div>
       <div class="recent">
@@ -81,7 +82,9 @@ function renderGrid(groups) {
         ? "No quedan juegos nuevos — ¡los has valorado todos!"
         : activeTab === "like"
         ? "Aún no has marcado ningún juego con 👍."
-        : "Aún no has marcado ningún juego con 👎.";
+        : activeTab === "dislike"
+        ? "Aún no has marcado ningún juego con 👎."
+        : "Aún no has marcado ningún juego para revisar.";
     grid.innerHTML = `<div class="tab-empty">${msg}</div>`;
     return;
   }
@@ -132,6 +135,7 @@ function renderGame(id) {
       <div class="game-mount" data-mount></div>
       <div class="rate-bar" data-rate-bar>
         <button class="rate-btn dislike" data-rate="dislike">👎 No me gusta</button>
+        <button class="rate-btn review" data-rate="review">🔧 Revisar</button>
         <button class="rate-btn like" data-rate="like">👍 Me gusta</button>
       </div>
     </div>

@@ -38,9 +38,9 @@ body {
 .menu-header { text-align: center; margin-bottom: 20px; }
 .menu-header h1 { font-size: 1.7rem; margin: 6px 0 2px; }
 .menu-header p { color: var(--muted); margin: 0; font-size: 0.9rem; }
-.tab-bar { display: flex; gap: 8px; margin-top: 4px; }
+.tab-bar { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
 .tab-btn {
-  flex: 1;
+  flex: 1 1 45%;
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 12px;
@@ -52,6 +52,7 @@ body {
   text-align: center;
 }
 .tab-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.tab-btn.active[data-tab="review"] { background: var(--accent-2); border-color: var(--accent-2); }
 .tab-empty {
   grid-column: 1 / -1;
   text-align: center;
@@ -118,20 +119,21 @@ body {
 .game-screen { flex: 1; display: flex; flex-direction: column; max-width: 640px; margin: 0 auto; width: 100%; padding: 0 16px 24px; }
 .game-mount { flex: 1; display: flex; flex-direction: column; min-height: 0; }
 
-.rate-bar { display: flex; gap: 10px; margin-top: 14px; }
+.rate-bar { display: flex; gap: 8px; margin-top: 14px; }
 .rate-btn {
   flex: 1;
   background: var(--card);
   border: 2px solid var(--border);
   border-radius: 12px;
-  padding: 12px 10px;
-  font-size: 0.88rem;
+  padding: 12px 6px;
+  font-size: 0.8rem;
   font-weight: 700;
   color: var(--text);
   cursor: pointer;
 }
 .rate-btn.active.like { background: var(--good); border-color: var(--good); color: #fff; }
 .rate-btn.active.dislike { background: var(--danger); border-color: var(--danger); color: #fff; }
+.rate-btn.active.review { background: var(--accent-2); border-color: var(--accent-2); color: #fff; }
 .game-topbar {
   display: flex; align-items: center; justify-content: space-between;
   padding: 14px 0 10px;

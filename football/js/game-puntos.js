@@ -10,7 +10,10 @@ const CELLS = [
 
 function buildRound() {
   const step = pick([1, 2, 3, 5, 10]);
-  const start = step === 1 ? randInt(1, 5) : step;
+  // Antes el conteo salteado (step > 1) siempre arrancaba justo en el
+  // propio "step" (2,2,2…/10,10,10…) — nada de variedad entre partidas.
+  // Arranca en un múltiplo aleatorio pequeño en su lugar.
+  const start = step === 1 ? randInt(1, 5) : step * randInt(1, step >= 10 ? 2 : 3);
   const count = 8;
   const values = Array.from({ length: count }, (_, i) => start + i * step);
   const cells = shuffle(CELLS).slice(0, count);

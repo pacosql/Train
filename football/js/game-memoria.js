@@ -10,18 +10,37 @@ const SHAPES = [
 ];
 
 function buildPairs() {
+  // Sin control de duplicados, ~11% de las partidas generaban dos cartas
+  // con el mismo texto (p.ej. dos "6 × 7" pertenecientes a parejas
+  // distintas, o un resultado de suma igual a uno de multiplicación) —
+  // el jugador las ve idénticas pero solo una realmente empareja,
+  // resultado confuso. "used" fuerza que las 12 caras sean todas únicas.
   const pairs = [];
+  const used = new Set();
   const usedShapes = shuffle(SHAPES).slice(0, 2);
-  usedShapes.forEach(([name, sides]) => pairs.push([name, sides]));
-  while (pairs.length < 6) {
+  usedShapes.forEach(([name, sides]) => {
+    pairs.push([name, sides]);
+    used.add(name);
+    used.add(sides);
+  });
+  let guard = 0;
+  while (pairs.length < 6 && guard < 200) {
+    guard++;
     const type = pick(["mult", "add"]);
+    let op, ans;
     if (type === "mult") {
       const a = randInt(2, 9), b = randInt(2, 9);
-      pairs.push([`${a} × ${b}`, String(a * b)]);
+      op = `${a} × ${b}`;
+      ans = String(a * b);
     } else {
       const a = randInt(5, 40), b = randInt(5, 40);
-      pairs.push([`${a} + ${b}`, String(a + b)]);
+      op = `${a} + ${b}`;
+      ans = String(a + b);
     }
+    if (used.has(op) || used.has(ans)) continue;
+    used.add(op);
+    used.add(ans);
+    pairs.push([op, ans]);
   }
   return pairs;
 }
