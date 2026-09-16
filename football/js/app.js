@@ -158,7 +158,7 @@ function renderGame(id) {
       const value = btn.dataset.rate;
       const current = getRating(id);
       setRating(id, current === value ? "new" : value);
-      refreshRateButtons();
+      onExit();
     });
   });
   refreshRateButtons();
