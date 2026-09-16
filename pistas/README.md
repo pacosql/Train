@@ -1,4 +1,4 @@
-# Pistas 🎾 — Eduardo Carrillo Tenis y Pádel Club
+# Pistas 🎾 — Eduardo Carrillo Tenis & Pádel Club
 
 Prototipo funcional (sin build, HTML/CSS/JS puro) de reserva de pistas
 para un club de tenis y pádel. Forma parte del hosting multi-app de
