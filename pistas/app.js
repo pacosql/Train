@@ -296,7 +296,7 @@ function openSchedule(court) {
     const isPast = m < nowFloor;
 
     const cell = document.createElement("div");
-    cell.className = "day-cell " + (isPast ? "past" : free ? "free" : "busy");
+    cell.className = "day-cell " + (free ? "free" : "busy") + (isPast ? " past" : "");
     cell.textContent = fmtMinutes(m);
     if (free && !isPast) {
       cell.addEventListener("click", () => {
