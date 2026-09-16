@@ -344,8 +344,8 @@ dialog::backdrop { background: rgba(6, 12, 8, 0.55); }
   cursor: pointer;
 }
 .day-cell.free { background: rgba(47, 158, 68, 0.12); border-color: rgba(47, 158, 68, 0.3); }
-.day-cell.busy { background: rgba(229, 72, 77, 0.12); border-color: rgba(229, 72, 77, 0.25); color: var(--muted); cursor: default; }
-.day-cell.past { opacity: 0.35; cursor: default; }
+.day-cell.busy { background: rgba(229, 72, 77, 0.12); border-color: rgba(229, 72, 77, 0.25); color: var(--danger); cursor: default; }
+.day-cell.past { opacity: 0.4; cursor: default; }
 
 .reservas-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
 .reservas-list li {
