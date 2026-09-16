@@ -747,7 +747,15 @@ async function init() {
   renderMisReservasBadge();
 
   if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.register("sw.js").catch(() => {});
+    navigator.serviceWorker.register("sw.js").then((reg) => reg.update()).catch(() => {});
+    // Cuando un despliegue nuevo toma el control, recarga una vez sola
+    // para que esta pestaña ya abierta también vea la versión nueva.
+    let reloaded = false;
+    navigator.serviceWorker.addEventListener("controllerchange", () => {
+      if (reloaded) return;
+      reloaded = true;
+      location.reload();
+    });
   }
 }
 
