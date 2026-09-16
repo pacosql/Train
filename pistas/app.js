@@ -109,7 +109,14 @@ async function loadCourts() {
   state.courts = data;
 }
 
+// Si el usuario cambia de día varias veces seguidas, una respuesta antigua
+// podría llegar después de una más reciente y pisar sus datos. Cada llamada
+// se marca con un id creciente y solo aplica su resultado si sigue siendo
+// la más reciente en vuelo.
+let reservasRequestId = 0;
+
 async function loadReservasForDay(offset) {
+  const requestId = ++reservasRequestId;
   const dayStart = dateForOffset(offset);
   const dayEnd = new Date(dayStart);
   dayEnd.setDate(dayEnd.getDate() + 1);
@@ -119,6 +126,7 @@ async function loadReservasForDay(offset) {
     .lt("start_time", dayEnd.toISOString())
     .gt("end_time", dayStart.toISOString())
     .order("start_time", { ascending: true });
+  if (requestId !== reservasRequestId) return; // ya hay una petición más nueva en curso
   if (error) {
     console.error(error);
     state.reservas = [];
