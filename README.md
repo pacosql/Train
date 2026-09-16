@@ -30,7 +30,9 @@ reglas para no interferir con las demás:
 | App | Carpeta | URL | Prefijo Supabase |
 |---|---|---|---|
 | 🏋️ Weights | [`weights/`](./weights) | `/Train/weights/` | `weights_` |
+| 🧠 Math Games | [`football/`](./football) | `/Train/football/` | `football_` |
 | 🎾 Pistas | [`pistas/`](./pistas) | `/Train/pistas/` | `pistas_` |
+| 🎬 Cartelera Cine | [`cartelera/`](./cartelera) | `/Train/cartelera/` | `cartelera_` |
 
 ## Añadir una app nueva
 

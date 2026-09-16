@@ -90,7 +90,9 @@ Al crear una app nueva `<app>/`:
 | App | Carpeta | Prefijo Supabase |
 |---|---|---|
 | 🏋️ Weights | `weights/` | `weights_` |
+| 🧠 Math Games | `football/` (carpeta/prefijo heredados de un prototipo anterior) | `football_` |
 | 🎾 Pistas | `pistas/` | `pistas_` |
+| 🎬 Cartelera Cine | `cartelera/` | `cartelera_` |
 
 (Actualiza esta tabla al añadir una app nueva.)
 

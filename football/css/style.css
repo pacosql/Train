@@ -1,0 +1,365 @@
+:root {
+  color-scheme: light dark;
+  --bg: #f2f0fb;
+  --card: #ffffff;
+  --text: #201a3a;
+  --muted: #66618a;
+  --accent: #5b3ecc;
+  --accent-2: #2ea3c4;
+  --accent-dark: #4830a0;
+  --danger: #e5484d;
+  --good: #16a34a;
+  --border: #e3e0f5;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14112a;
+    --card: #1e1a3d;
+    --text: #f1efff;
+    --muted: #a29ecb;
+    --border: #322c5c;
+  }
+}
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  overflow-x: hidden;
+}
+#app { min-height: 100%; display: flex; flex-direction: column; }
+
+/* ---------- Menú ---------- */
+.menu-wrap { max-width: 640px; margin: 0 auto; padding: 24px 16px 40px; width: 100%; }
+.menu-header { text-align: center; margin-bottom: 20px; }
+.menu-header h1 { font-size: 1.7rem; margin: 6px 0 2px; }
+.menu-header p { color: var(--muted); margin: 0; font-size: 0.9rem; }
+.tab-bar { display: flex; gap: 8px; margin-top: 4px; }
+.tab-btn {
+  flex: 1;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 10px 6px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--muted);
+  cursor: pointer;
+  text-align: center;
+}
+.tab-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.tab-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.85rem;
+  padding: 30px 10px;
+}
+
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 20px;
+}
+@media (min-width: 420px) {
+  .game-grid { grid-template-columns: repeat(3, 1fr); }
+}
+.game-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px 10px;
+  text-align: center;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: var(--text);
+  text-decoration: none;
+  transition: transform 0.12s ease;
+}
+.game-card:active { transform: scale(0.96); }
+.game-card .emoji { font-size: 2.1rem; line-height: 1; }
+.game-card .name { font-weight: 700; font-size: 0.85rem; }
+.game-card .topic { font-size: 0.68rem; color: var(--muted); }
+.recent {
+  margin-top: 28px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 14px 16px;
+}
+.recent h2 { font-size: 0.9rem; margin: 0 0 10px; }
+.recent ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.recent li {
+  display: flex; justify-content: space-between; gap: 8px;
+  font-size: 0.82rem; color: var(--muted);
+  border-bottom: 1px dashed var(--border);
+  padding-bottom: 6px;
+}
+.recent li:last-child { border-bottom: none; padding-bottom: 0; }
+.recent li b { color: var(--text); }
+.recent .empty { font-size: 0.82rem; color: var(--muted); }
+.build-id {
+  text-align: center;
+  font-size: 0.68rem;
+  color: var(--muted);
+  margin-top: 26px;
+  font-family: ui-monospace, monospace;
+}
+
+/* ---------- Pantalla de juego ---------- */
+.game-screen { flex: 1; display: flex; flex-direction: column; max-width: 640px; margin: 0 auto; width: 100%; padding: 0 16px 24px; }
+.game-mount { flex: 1; display: flex; flex-direction: column; min-height: 0; }
+
+.rate-bar { display: flex; gap: 10px; margin-top: 14px; }
+.rate-btn {
+  flex: 1;
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 10px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text);
+  cursor: pointer;
+}
+.rate-btn.active.like { background: var(--good); border-color: var(--good); color: #fff; }
+.rate-btn.active.dislike { background: var(--danger); border-color: var(--danger); color: #fff; }
+.game-topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 0 10px;
+  gap: 10px;
+}
+.back-btn {
+  background: none; border: none; color: var(--muted);
+  font-size: 0.85rem; cursor: pointer; padding: 6px 4px;
+  display: flex; align-items: center; gap: 4px;
+}
+.game-stats { display: flex; gap: 14px; font-size: 0.85rem; font-weight: 600; }
+.game-stats .lives { color: var(--danger); }
+.game-stats .score { color: var(--accent); }
+.game-stats .timer { color: var(--accent-2); font-variant-numeric: tabular-nums; }
+
+.game-body {
+  flex: 1;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 22px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 320px;
+  position: relative;
+  overflow: hidden;
+}
+
+.prompt { font-size: 1.35rem; font-weight: 700; text-align: center; margin: 0 0 22px; }
+.prompt small { display: block; font-weight: 500; font-size: 0.78rem; color: var(--muted); margin-top: 6px; }
+.choices { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width: 100%; max-width: 360px; }
+.choice-btn {
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 8px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+  cursor: pointer;
+}
+.choice-btn:active { transform: scale(0.97); }
+.choice-btn.correct { background: var(--good); border-color: var(--good); color: #fff; }
+.choice-btn.wrong { background: var(--danger); border-color: var(--danger); color: #fff; }
+.choice-btn:disabled { opacity: 0.55; }
+
+.feedback { min-height: 1.3rem; font-size: 0.85rem; font-weight: 600; margin-top: 14px; }
+.feedback.ok { color: var(--good); }
+.feedback.bad { color: var(--danger); }
+
+.end-card { text-align: center; }
+.end-card .big-score { font-size: 2.4rem; font-weight: 800; color: var(--accent); margin: 6px 0; }
+.end-card p { color: var(--muted); font-size: 0.88rem; margin: 4px 0 18px; }
+.end-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+button.primary {
+  background: var(--accent); color: #fff; border: none; border-radius: 10px;
+  padding: 11px 18px; font-size: 0.92rem; font-weight: 700; cursor: pointer;
+}
+button.secondary {
+  background: transparent; color: var(--accent); border: 2px solid var(--accent); border-radius: 10px;
+  padding: 9px 16px; font-size: 0.92rem; font-weight: 700; cursor: pointer;
+}
+
+/* ---------- Juego de globos ---------- */
+.balloon-question {
+  position: absolute;
+  top: 14px; left: 0; right: 0;
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: 800;
+  z-index: 5;
+}
+.balloon-sky {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  overflow: hidden;
+}
+.balloon {
+  position: absolute;
+  bottom: -70px;
+  width: 66px;
+  height: 82px;
+  border-radius: 50% 50% 50% 50% / 58% 58% 42% 42%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-weight: 800;
+  font-size: 1.05rem;
+  cursor: pointer;
+  box-shadow: inset -6px -8px 0 rgba(0,0,0,0.08);
+  animation-name: float-up;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+.balloon::after {
+  content: "";
+  position: absolute;
+  bottom: -14px;
+  left: 50%;
+  width: 2px;
+  height: 14px;
+  background: rgba(0,0,0,0.25);
+}
+.balloon.popped { animation: pop 0.25s forwards; pointer-events: none; }
+@keyframes float-up {
+  from { transform: translateY(0); }
+  to { transform: translateY(-430px); }
+}
+@keyframes pop {
+  to { transform: scale(1.6); opacity: 0; }
+}
+.lives-hearts { position: absolute; top: 14px; right: 14px; font-size: 0.95rem; z-index: 5; }
+
+/* ---------- Parejas que suman ---------- */
+.bubble-field { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; max-width: 340px; }
+.bubble-chip {
+  width: 62px; height: 62px; border-radius: 50%;
+  background: linear-gradient(160deg, var(--accent-2), var(--accent));
+  color: #fff; font-weight: 800; font-size: 1.1rem;
+  border: none; cursor: pointer;
+  animation: bob 2.4s ease-in-out infinite;
+}
+.bubble-chip.picked { outline: 3px solid var(--text); }
+.bubble-chip.correct { background: var(--good); animation: none; }
+.bubble-chip.wrong { background: var(--danger); animation: none; }
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+/* ---------- Ordena los números ---------- */
+.order-row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; max-width: 380px; }
+.order-chip { min-width: 62px; }
+
+/* ---------- Memoria matemática ---------- */
+.memo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: 100%; max-width: 380px; }
+.memo-card {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 10px;
+  border: 2px solid var(--border);
+  background: var(--accent);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 0.85rem; color: #fff;
+  padding: 4px;
+}
+.memo-card .memo-front { display: none; text-align: center; color: var(--text); }
+.memo-card .memo-back { font-size: 1.3rem; }
+.memo-card.open, .memo-card.matched { background: var(--card); }
+.memo-card.open .memo-back, .memo-card.matched .memo-back { display: none; }
+.memo-card.open .memo-front, .memo-card.matched .memo-front { display: block; }
+.memo-card.matched { border-color: var(--good); opacity: 0.7; }
+
+/* ---------- Equilibra la balanza ---------- */
+.scale-wrap { width: 100%; max-width: 320px; display: flex; flex-direction: column; align-items: center; }
+.scale-beam {
+  display: flex; justify-content: space-between; width: 100%;
+  transition: transform 0.25s ease;
+  transform-origin: center;
+}
+.scale-pan {
+  background: var(--bg); border: 2px solid var(--border); border-radius: 12px;
+  padding: 14px 10px; min-width: 84px; text-align: center; font-weight: 800;
+}
+.scale-pivot { width: 4px; height: 22px; background: var(--muted); margin-top: -2px; }
+.weight-btns { display: flex; gap: 8px; margin-top: 18px; flex-wrap: wrap; justify-content: center; }
+.weight-btn { min-width: 56px; }
+
+/* ---------- Construye el número ---------- */
+.blocks-readout { font-size: 2rem; font-weight: 800; color: var(--accent); margin-bottom: 14px; }
+.blocks-cols { display: flex; gap: 14px; justify-content: center; align-items: flex-end; width: 100%; }
+.blocks-col { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.blocks-stack { display: flex; flex-direction: column-reverse; gap: 2px; min-height: 90px; justify-content: flex-start; }
+.block-unit { width: 34px; height: 10px; border-radius: 3px; }
+.block-c { background: var(--accent); width: 40px; height: 14px; }
+.block-d { background: var(--accent-2); }
+.block-u { background: #f5a623; width: 14px; height: 14px; border-radius: 50%; align-self: center; }
+
+/* ---------- Recta numérica ---------- */
+.number-line { position: relative; width: 100%; max-width: 340px; height: 60px; touch-action: none; }
+.nl-track { position: absolute; top: 50%; left: 0; right: 0; height: 4px; background: var(--border); border-radius: 2px; }
+.nl-marker {
+  position: absolute; top: 50%; width: 26px; height: 26px; border-radius: 50%;
+  background: var(--accent); transform: translate(-50%, -50%); cursor: grab;
+  border: 3px solid var(--card); box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+.nl-value { margin-top: 14px; font-size: 1.4rem; font-weight: 800; color: var(--accent); }
+
+/* ---------- Reloj / ángulo (esfera y transportador) ---------- */
+.clock-face, .angle-dial {
+  position: relative; width: 200px; height: 200px; border-radius: 50%;
+  background: var(--bg); border: 3px solid var(--border); touch-action: none;
+}
+.clock-num { position: absolute; font-size: 0.8rem; font-weight: 700; color: var(--muted); }
+.clock-num.n12 { top: 8px; left: 50%; transform: translateX(-50%); }
+.clock-num.n6 { bottom: 8px; left: 50%; transform: translateX(-50%); }
+.clock-num.n3 { right: 10px; top: 50%; transform: translateY(-50%); }
+.clock-num.n9 { left: 10px; top: 50%; transform: translateY(-50%); }
+.clock-hand, .angle-needle {
+  position: absolute; left: 50%; bottom: 50%; width: 6px;
+  background: var(--text); border-radius: 4px; cursor: grab;
+  transform-origin: bottom center;
+}
+.clock-hand.hour { height: 27%; }
+.clock-hand.minute { height: 38%; background: var(--accent); }
+.angle-needle { height: 42%; width: 8px; background: var(--accent); }
+.clock-center { position: absolute; left: 50%; top: 50%; width: 10px; height: 10px; border-radius: 50%; background: var(--text); transform: translate(-50%, -50%); }
+.angle-tick { position: absolute; width: 3px; height: 10px; background: var(--muted); left: 50%; top: 4px; transform-origin: 50% 96px; }
+.angle-tick.t0 { transform: translateX(-50%) rotate(0deg); }
+.angle-tick.t90 { transform: translateX(-50%) rotate(90deg); }
+.angle-tick.t180 { transform: translateX(-50%) rotate(180deg); }
+.angle-tick.t270 { transform: translateX(-50%) rotate(270deg); }
+
+/* ---------- Une los puntos ---------- */
+.dots-field { position: relative; width: 100%; height: 100%; min-height: 300px; }
+.dots-svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.dots-svg polyline { fill: none; stroke: var(--accent); stroke-width: 1.4; }
+.dot-point {
+  position: absolute; width: 40px; height: 40px; border-radius: 50%;
+  background: var(--accent-2); color: #fff; font-weight: 800; font-size: 0.8rem;
+  border: 3px solid var(--card); transform: translate(-50%, -50%);
+  cursor: pointer;
+}
+.dot-point.used { background: var(--good); }
+.dot-point.wrong { background: var(--danger); }
