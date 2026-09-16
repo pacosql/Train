@@ -72,15 +72,15 @@ function nowRoundedMinutes() {
   return Math.ceil(mins / SLOT_MINUTES) * SLOT_MINUTES;
 }
 
-function validStartMinutes(duration, offset) {
+function validStartMinutes(duration) {
+  // El día se ve completo desde la apertura, aunque ya sea tarde: es un
+  // horario de consulta/demo, no oculta huecos de la mañana solo porque
+  // "ahora" sea otra hora.
   const openMin = OPEN_HOUR * 60;
   const closeMin = CLOSE_HOUR * 60;
   const lastStart = closeMin - duration;
   const list = [];
-  const floor = offset === 0 ? Math.max(openMin, nowRoundedMinutes()) : openMin;
-  for (let m = openMin; m <= lastStart; m += SLOT_MINUTES) {
-    if (m >= floor) list.push(m);
-  }
+  for (let m = openMin; m <= lastStart; m += SLOT_MINUTES) list.push(m);
   return list;
 }
 
@@ -179,13 +179,9 @@ function renderDurationChips() {
 function renderTimeChips() {
   const wrap = document.getElementById("time-chips");
   wrap.innerHTML = "";
-  const list = validStartMinutes(state.duration, state.dayOffset);
+  const list = validStartMinutes(state.duration);
   if (!list.includes(state.startMinutes)) {
     state.startMinutes = list[0] ?? null;
-  }
-  if (list.length === 0) {
-    wrap.innerHTML = '<span style="color:var(--muted);font-size:0.85rem;">No quedan horas libres hoy para esta duración.</span>';
-    return;
   }
   for (const m of list) {
     const chip = document.createElement("button");
@@ -519,23 +515,22 @@ document.getElementById("btn-reservar").addEventListener("click", () => {
   document.getElementById("app").hidden = false;
 });
 
+document.getElementById("btn-back").addEventListener("click", () => {
+  document.getElementById("app").hidden = true;
+  document.getElementById("cover").hidden = false;
+});
+
 document.getElementById("btn-mis-reservas").addEventListener("click", () => {
   renderMisReservas();
   dlgMisReservas.showModal();
 });
 
 async function init() {
-  const list = validStartMinutes(state.duration, 0);
-  let offset = 0;
-  if (list.length === 0) {
-    offset = 1; // hoy ya no quedan huecos: por defecto mañana
-  }
-  state.dayOffset = offset;
+  state.dayOffset = 0;
+  state.startMinutes = validStartMinutes(state.duration)[0];
 
   await loadCourts();
-  await loadReservasForDay(offset);
-
-  state.startMinutes = validStartMinutes(state.duration, offset)[0] ?? OPEN_HOUR * 60;
+  await loadReservasForDay(state.dayOffset);
 
   renderDayChips();
   renderDurationChips();
