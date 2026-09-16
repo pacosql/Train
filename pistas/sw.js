@@ -1,5 +1,5 @@
-// Service worker mínimo: cachea el shell de la app para que la PWA
-// arranque instantáneamente y funcione (parcialmente) offline.
+// Service worker: cachea el shell de la app para que la PWA arranque
+// instantáneamente y funcione (parcialmente) offline.
 //
 // Este repo aloja varias apps en subcarpetas distintas, cada una con su
 // propio service worker, pero el Cache Storage es compartido por todo el
@@ -20,31 +20,42 @@ const SHELL = [
 ];
 
 self.addEventListener("install", (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(SHELL))
-  );
+  event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(SHELL)));
   self.skipWaiting();
 });
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(
-        keys
-          .filter((k) => k.startsWith(CACHE_PREFIX) && k !== CACHE_NAME)
-          .map((k) => caches.delete(k))
+    caches
+      .keys()
+      .then((keys) =>
+        Promise.all(keys.filter((k) => k.startsWith(CACHE_PREFIX) && k !== CACHE_NAME).map((k) => caches.delete(k)))
       )
-    )
   );
   self.clients.claim();
 });
 
 self.addEventListener("fetch", (event) => {
   const { request } = event;
+  if (request.method !== "GET") return;
   // Nunca cachear llamadas a Supabase: siempre queremos datos frescos.
   if (request.url.includes(".supabase.co")) return;
 
-  event.respondWith(
-    caches.match(request).then((cached) => cached || fetch(request))
-  );
+  const sameOrigin = new URL(request.url).origin === self.location.origin;
+  if (sameOrigin) {
+    // Shell propio: red primero, para que cada despliegue se vea a la primera
+    // carga; la caché solo entra en juego sin conexión.
+    event.respondWith(
+      fetch(request)
+        .then((res) => {
+          const copy = res.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+          return res;
+        })
+        .catch(() => caches.match(request))
+    );
+  } else {
+    // Librerías de CDN con URL versionada: caché primero.
+    event.respondWith(caches.match(request).then((cached) => cached || fetch(request)));
+  }
 });

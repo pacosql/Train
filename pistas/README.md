@@ -13,10 +13,15 @@ Vive en `pistas/` y todas sus tablas en Supabase usan el prefijo
 - **Portada** con el nombre del club y un botón "Reservar pista".
 - Filtros de **día** (próximos 14 días), **duración** (60 / 90 / 120
   min) y **hora de inicio** (huecos cada 30 min, de 9:00 a 23:00).
-- **Mapa de pistas** agrupado por tipo y coloreado: azul = tenis pista
-  dura, marrón = tierra batida, verde = césped, morado = pádel. Cada
-  tarjeta muestra si esa pista está libre u ocupada para el filtro
-  actual.
+- **Mapa de pistas** agrupado por tipo, con cada pista dibujada (pista
+  de tenis con sus líneas, pista de pádel con paredes de cristal) y
+  coloreada por superficie: azul = pista dura, marrón = tierra batida,
+  verde = hierba, morado = pádel. Cada tarjeta muestra si esa pista
+  está libre u ocupada para el filtro actual, y arriba un resumen
+  ("8 de 13 pistas libres · mié 16 sept · 20:30–21:30").
+- Los huecos de hoy que ya han pasado se ven (el día siempre se muestra
+  desde las 9:00) pero tachados y no reservables; por defecto se
+  selecciona el próximo hueco disponible.
 - **Horario del día por pista**: al pulsar "ver horario" (o sobre una
   pista ocupada) se abre el detalle de esa pista con los 28 huecos de
   media hora del día, para elegir directamente uno libre.
@@ -25,7 +30,12 @@ Vive en `pistas/` y todas sus tablas en Supabase usan el prefijo
   hueco a la vez, la base de datos rechaza la segunda automáticamente
   (ver más abajo) y la app avisa para elegir otro horario.
 - **Mis reservas**: reservas hechas desde ese mismo dispositivo
-  (guardadas en `localStorage`), con opción de cancelar.
+  (guardadas en `localStorage`), con contador en la cabecera y opción
+  de cancelar. El nombre y teléfono de la última reserva se recuerdan
+  para no volver a teclearlos.
+- El service worker sirve el shell de la app con estrategia "red
+  primero": cada despliegue se ve a la primera carga, y la caché solo
+  se usa sin conexión.
 
 ## Pistas del club
 
@@ -33,8 +43,12 @@ Vive en `pistas/` y todas sus tablas en Supabase usan el prefijo
 |---|---|---|
 | 🔵 Tenis pista dura | 3 | Tenis Dura 1–3 |
 | 🟤 Tenis tierra batida | 3 | Tenis Tierra 1–3 |
-| 🟢 Tenis césped | 2 | Tenis Césped 1–2 |
+| 🟢 Tenis hierba | 2 | Tenis Hierba 1–2 |
 | 🟣 Pádel | 5 | Pádel 1–5 |
+
+Los tres tipos de superficie de tenis del club se llaman siempre
+"hierba", "tierra batida" y "pista dura" — sin usar otros sinónimos
+("césped", "pista rápida", "cemento"...) en ningún sitio.
 
 ## Esquema de datos (Supabase)
 

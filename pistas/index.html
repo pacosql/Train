@@ -18,27 +18,21 @@
 
   <!-- ---------- Portada ---------- -->
   <div id="cover">
-    <div class="badge-row">
-      <span>🎾</span>
-      <svg width="34" height="34" viewBox="0 0 48 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Pala de pádel">
-        <rect x="6" y="2" width="36" height="40" rx="17" fill="#c4b5fd" />
-        <rect x="20" y="40" width="8" height="20" rx="4" fill="#c4b5fd" />
-        <g fill="#8b5cf6">
-          <circle cx="16" cy="14" r="2.2" /><circle cx="24" cy="12" r="2.2" /><circle cx="32" cy="14" r="2.2" />
-          <circle cx="13" cy="22" r="2.2" /><circle cx="20" cy="21" r="2.2" /><circle cx="28" cy="21" r="2.2" /><circle cx="35" cy="22" r="2.2" />
-          <circle cx="16" cy="30" r="2.2" /><circle cx="24" cy="31" r="2.2" /><circle cx="32" cy="30" r="2.2" />
-        </g>
-      </svg>
+    <svg class="court-art" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+      <rect x="40" y="30" width="320" height="440" fill="none" stroke="currentColor" stroke-width="2" />
+      <line x1="40" y1="250" x2="360" y2="250" stroke="currentColor" stroke-width="2" />
+      <rect x="90" y="30" width="220" height="220" fill="none" stroke="currentColor" stroke-width="1.4" />
+      <rect x="90" y="250" width="220" height="220" fill="none" stroke="currentColor" stroke-width="1.4" />
+      <line x1="200" y1="30" x2="200" y2="470" stroke="currentColor" stroke-width="1" />
+      <circle cx="200" cy="250" r="150" fill="none" stroke="currentColor" stroke-width="1" />
+    </svg>
+    <div class="cover-content">
+      <div class="brand">
+        <h1>Eduardo Carrillo</h1>
+        <p class="brand-sub">Tenis y Pádel Club</p>
+      </div>
+      <button id="btn-reservar">Reservar pista</button>
     </div>
-    <h1>Eduardo Carrillo<br />Tenis y Pádel Club</h1>
-    <p class="tagline">Reserva tu pista en segundos: tenis (dura, tierra batida o césped) y pádel.</p>
-    <div class="types">
-      <span class="type-chip"><span class="dot" style="background:#2f6fed"></span>Tenis pista dura</span>
-      <span class="type-chip"><span class="dot" style="background:#b5652d"></span>Tenis tierra batida</span>
-      <span class="type-chip"><span class="dot" style="background:#2f9e44"></span>Tenis césped</span>
-      <span class="type-chip"><span class="dot" style="background:#8b5cf6"></span>Pádel</span>
-    </div>
-    <button id="btn-reservar">Reservar pista</button>
     <div class="cover-foot">build __BUILD_ID__</div>
   </div>
 
@@ -48,9 +42,10 @@
       <button id="btn-back" type="button" aria-label="Volver a la portada">←</button>
       <div class="header-title">
         <h2 class="club-name">Eduardo Carrillo</h2>
-        <div class="club-sub">Tenis y Pádel Club · abierto 9:00–23:00, todos los días</div>
+        <p class="club-sub">Tenis y Pádel Club</p>
+        <div class="club-hours">Abierto 9:00–23:00, todos los días</div>
       </div>
-      <button id="btn-mis-reservas" type="button">Mis reservas</button>
+      <button id="btn-mis-reservas" type="button">Mis reservas <span id="mis-reservas-badge" class="badge" hidden></span></button>
     </div>
 
     <div class="section">
@@ -71,19 +66,20 @@
     <div class="section">
       <h3>Mapa de pistas</h3>
       <div class="legend">
-        <span class="item"><span class="dot" style="background:#2f6fed"></span>Dura</span>
+        <span class="item"><span class="dot" style="background:#2f6fed"></span>Pista dura</span>
         <span class="item"><span class="dot" style="background:#b5652d"></span>Tierra batida</span>
-        <span class="item"><span class="dot" style="background:#2f9e44"></span>Césped</span>
+        <span class="item"><span class="dot" style="background:#2f9e44"></span>Hierba</span>
         <span class="item"><span class="dot" style="background:#8b5cf6"></span>Pádel</span>
       </div>
-      <div id="courts-map"></div>
+      <div id="map-summary" class="map-summary"></div>
+      <div id="courts-map"><p class="map-msg">Cargando pistas…</p></div>
     </div>
 
     <div class="build-id">build __BUILD_ID__</div>
   </div>
 
   <!-- ---------- Dialog: horario del día de una pista ---------- -->
-  <dialog id="dlg-schedule">
+  <dialog id="dlg-schedule" tabindex="-1">
     <div class="dialog-inner">
       <h3 id="sched-title">Horario</h3>
       <p class="summary" id="sched-summary"></p>
@@ -99,10 +95,10 @@
   </dialog>
 
   <!-- ---------- Dialog: confirmar reserva ---------- -->
-  <dialog id="dlg-booking">
+  <dialog id="dlg-booking" tabindex="-1">
     <div class="dialog-inner">
       <h3>Confirmar reserva</h3>
-      <p class="summary" id="booking-summary"></p>
+      <p class="summary" id="booking-summary" tabindex="-1" autofocus></p>
       <div class="field" id="booking-duration-field">
         <label for="booking-duration">Duración</label>
         <select id="booking-duration"></select>
@@ -124,7 +120,7 @@
   </dialog>
 
   <!-- ---------- Dialog: mis reservas ---------- -->
-  <dialog id="dlg-mis-reservas">
+  <dialog id="dlg-mis-reservas" tabindex="-1">
     <div class="dialog-inner">
       <h3>Mis reservas</h3>
       <p class="summary">Reservas hechas desde este dispositivo.</p>
