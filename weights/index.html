@@ -227,13 +227,38 @@
       <h2>Siguiente ejercicio</h2>
       <p class="sub">Ordenados por preferencia (alternar empuje/tirón hoy + tiempo desde la última vez). Puedes repetir uno que ya hayas hecho.</p>
       <div id="exercise-list"></div>
+      <button id="btn-add-exercise" class="secondary" style="margin-top: 8px;">+ Añadir máquina nueva</button>
       <button id="btn-finish-session" class="secondary" style="margin-top: 8px;">Terminar entrenamiento</button>
+    </section>
+
+    <!-- ADD EXERCISE -->
+    <section id="screen-add-exercise" hidden>
+      <h2>Nueva máquina</h2>
+      <p class="sub">Se añade al catálogo para siempre, no solo para hoy.</p>
+      <div class="card">
+        <label for="new-ex-name">Nombre (como pone en la máquina)</label>
+        <input id="new-ex-name" type="text" placeholder="p. ej. Curl de bíceps" />
+        <label for="new-ex-muscle" style="margin-top:12px;">Grupo muscular</label>
+        <input id="new-ex-muscle" type="text" placeholder="p. ej. Bíceps" />
+      </div>
+      <div class="card">
+        <label>Tipo de movimiento</label>
+        <div class="chip-row">
+          <div class="chip" data-type="push">Empuje</div>
+          <div class="chip" data-type="pull">Tirón</div>
+        </div>
+        <label style="display:flex; align-items:center; gap:8px; margin-top:4px;">
+          <input id="new-ex-assisted" type="checkbox" style="width:auto;" /> Máquina asistida (menos peso = más difícil)
+        </label>
+      </div>
+      <button id="btn-save-new-exercise">Guardar máquina</button>
+      <button id="btn-cancel-new-exercise" class="secondary" style="margin-top: 8px;">Cancelar</button>
     </section>
 
     <!-- ACTIVE EXERCISE -->
     <section id="screen-exercise" hidden>
       <h2 id="ex-name">—</h2>
-      <p class="sub"><span id="ex-badge" class="badge"></span> <span id="ex-muscle"></span></p>
+      <p class="sub"><span id="ex-badge" class="badge"></span> <span id="ex-muscle"></span> · <span id="ex-elapsed">⏱ 0:00</span></p>
 
       <div class="card">
         <p class="hint" id="ex-recommendation"></p>
@@ -280,7 +305,7 @@
     };
 
     const el = (id) => document.getElementById(id);
-    const screens = ["home", "setup", "cardio-pick", "cardio", "pick", "exercise", "feedback", "summary"];
+    const screens = ["home", "setup", "cardio-pick", "cardio", "pick", "exercise", "add-exercise", "feedback", "summary"];
 
     function showScreen(name) {
       for (const s of screens) el(`screen-${s}`).hidden = s !== name;
@@ -290,8 +315,8 @@
         const hasActive = !!(state.sessionId && state.lastActiveScreen);
         el("active-session-banner").hidden = !hasActive;
       }
-      el("top-bar-tag").hidden = !state.sessionId;
       saveState();
+      tick();
     }
 
     function goHome() {
@@ -320,7 +345,33 @@
       if (state.cardioExerciseId === undefined) state.cardioExerciseId = null;
       if (state.doneExerciseIds === undefined) state.doneExerciseIds = [];
       if (state.summary === undefined) state.summary = [];
+      if (state.sessionStartedAt === undefined) state.sessionStartedAt = null;
+      if (state.currentExerciseStartedAt === undefined) state.currentExerciseStartedAt = null;
       saveState();
+    }
+
+    function formatElapsed(startIso) {
+      if (!startIso) return "0:00";
+      const totalSec = Math.max(0, Math.floor((Date.now() - new Date(startIso).getTime()) / 1000));
+      const h = Math.floor(totalSec / 3600);
+      const m = Math.floor((totalSec % 3600) / 60);
+      const s = totalSec % 60;
+      const mm = h > 0 ? String(m).padStart(2, "0") : String(m);
+      const ss = String(s).padStart(2, "0");
+      return h > 0 ? `${h}:${mm}:${ss}` : `${mm}:${ss}`;
+    }
+
+    function tick() {
+      const tag = el("top-bar-tag");
+      if (state.sessionId && state.sessionStartedAt) {
+        tag.hidden = false;
+        tag.textContent = "⏱ " + formatElapsed(state.sessionStartedAt);
+      } else {
+        tag.hidden = true;
+      }
+      if (state.screen === "exercise" && state.currentExerciseStartedAt) {
+        el("ex-elapsed").textContent = "⏱ " + formatElapsed(state.currentExerciseStartedAt);
+      }
     }
 
     function freshState() {
@@ -328,12 +379,14 @@
         screen: "home",
         lastActiveScreen: null,
         sessionId: null,
+        sessionStartedAt: null,
         plannedDuration: null,
         cardioMinutesSuggested: null,
         cardioExerciseId: null,
         doneExerciseIds: [],
         lastMovementType: "cardio",
         currentExerciseId: null,
+        currentExerciseStartedAt: null,
         currentWeightDraft: null,
         pendingExercise: null,
         summary: [],
@@ -393,6 +446,58 @@
         });
     }
 
+    function slugify(name) {
+      return (
+        name
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[̀-ͯ]/g, "")
+          .replace(/[^a-z0-9]+/g, "_")
+          .replace(/^_+|_+$/g, "") || "maquina"
+      );
+    }
+
+    async function saveNewExercise() {
+      const name = el("new-ex-name").value.trim();
+      const muscle = el("new-ex-muscle").value.trim();
+      const typeChip = document.querySelector("#screen-add-exercise .chip.selected");
+      const assisted = el("new-ex-assisted").checked;
+      if (!name || !muscle || !typeChip) {
+        alert("Rellena el nombre, el grupo muscular, y elige empuje o tirón.");
+        return;
+      }
+      const movementType = typeChip.dataset.type;
+      const baseSlug = slugify(name);
+      for (let attempt = 0; attempt < 3; attempt++) {
+        const slug = attempt === 0 ? baseSlug : `${baseSlug}_${attempt}`;
+        const { data, error } = await client
+          .from(T.exercises)
+          .insert({
+            slug,
+            name,
+            muscle_group: muscle,
+            movement_type: movementType,
+            assisted,
+            weight_step: 5,
+            sort_order: catalog.length,
+          })
+          .select()
+          .single();
+        if (!error) {
+          catalog.push(data);
+          renderPickScreen();
+          showScreen("pick");
+          return;
+        }
+        if (error.code !== "23505") {
+          alert("No se pudo guardar la máquina: " + error.message);
+          return;
+        }
+        // slug duplicado, reintenta con un sufijo distinto
+      }
+      alert("No se pudo generar un identificador único para esa máquina — prueba con otro nombre.");
+    }
+
     function renderPickScreen() {
       const list = orderExercises();
       const container = el("exercise-list");
@@ -419,6 +524,9 @@
       if (!resuming) {
         state.currentExerciseId = ex.id;
         state.currentWeightDraft = null;
+        state.currentExerciseStartedAt = new Date().toISOString();
+      } else if (!state.currentExerciseStartedAt) {
+        state.currentExerciseStartedAt = new Date().toISOString();
       }
       saveState();
 
@@ -480,6 +588,7 @@
       state.lastMovementType = exercise.movement_type;
       state.summary.push({ name: exercise.name, weight: weightUsed, next_time: nextTime });
       state.currentExerciseId = null;
+      state.currentExerciseStartedAt = null;
       state.currentWeightDraft = null;
       state.pendingExercise = null;
       saveState();
@@ -564,8 +673,21 @@
       }
       state = freshState();
       state.sessionId = data.id;
+      state.sessionStartedAt = data.started_at;
       saveState();
       showScreen("setup");
+    }
+
+    async function hydrateSessionStart() {
+      // Compatibilidad: una sesión ya en marcha antes de este cambio no
+      // tiene sessionStartedAt guardado en local — lo recuperamos de la BD.
+      if (state.sessionId && !state.sessionStartedAt) {
+        const { data } = await client.from(T.sessions).select("started_at").eq("id", state.sessionId).single();
+        if (data) {
+          state.sessionStartedAt = data.started_at;
+          saveState();
+        }
+      }
     }
 
     function selectDurationChip(min) {
@@ -680,6 +802,22 @@
       });
       el("btn-finish-exercise").addEventListener("click", finishExercise);
 
+      el("btn-add-exercise").addEventListener("click", () => {
+        el("new-ex-name").value = "";
+        el("new-ex-muscle").value = "";
+        el("new-ex-assisted").checked = false;
+        document.querySelectorAll("#screen-add-exercise .chip").forEach((c) => c.classList.remove("selected"));
+        showScreen("add-exercise");
+      });
+      el("btn-cancel-new-exercise").addEventListener("click", () => showScreen("pick"));
+      document.querySelectorAll("#screen-add-exercise .chip").forEach((chip) => {
+        chip.addEventListener("click", () => {
+          document.querySelectorAll("#screen-add-exercise .chip").forEach((c) => c.classList.remove("selected"));
+          chip.classList.add("selected");
+        });
+      });
+      el("btn-save-new-exercise").addEventListener("click", saveNewExercise);
+
       document.querySelectorAll("#screen-feedback .chip").forEach((chip) => {
         chip.addEventListener("click", () => {
           document.querySelectorAll("#screen-feedback .chip").forEach((c) => c.classList.remove("selected"));
@@ -719,6 +857,8 @@
       }
 
       await loadHistoryList();
+      await hydrateSessionStart();
+      setInterval(tick, 1000);
 
       // Reanuda automáticamente donde lo dejaste (recarga a mitad de entreno,
       // o vuelves a abrir la PWA con una sesión en marcha).
