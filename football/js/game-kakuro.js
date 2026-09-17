@@ -302,6 +302,7 @@ export function mountKakuroGame(container, { client, onExit }) {
         <button class="secondary kk-tool" data-clear>↺ Borrar</button>
         <button class="secondary kk-tool" data-give>🔎 Solución (−1 vida)</button>
       </div>
+      <button class="primary kk-check" data-check disabled>✓ Comprobar</button>
       <div class="feedback" data-feedback></div>
     `;
 
@@ -322,8 +323,7 @@ export function mountKakuroGame(container, { client, onExit }) {
         const next = nextEmpty(selected);
         selected = vals[selected] === 0 ? selected : next;
         renderGrid();
-        if (vals.every((v) => v > 0)) check();
-        else say("", "");
+        say(vals.some((v) => v === 0) ? "" : "Rejilla llena: dale a Comprobar", "");
       });
     });
     body.querySelector("[data-clear]").addEventListener("click", () => {
@@ -336,6 +336,11 @@ export function mountKakuroGame(container, { client, onExit }) {
     body.querySelector("[data-give]").addEventListener("click", () => {
       if (finished || locked) return;
       loseRound("Solución al descubierto");
+    });
+    body.querySelector("[data-check]").addEventListener("click", () => {
+      if (finished || locked) return;
+      if (vals.some((v) => v === 0)) return say("Aún quedan casillas vacías", "bad");
+      check();
     });
     renderGrid();
     say("Toca una casilla y luego un dígito", "");
@@ -358,6 +363,9 @@ export function mountKakuroGame(container, { client, onExit }) {
       if (selected === w) btn.classList.add("sel");
       if (badSet && badSet.has(w)) btn.classList.add("bad");
     });
+    // Se comprueba cuando el jugador quiera, con la rejilla llena.
+    const chk = body.querySelector("[data-check]");
+    if (chk) chk.disabled = vals.some((v) => v === 0);
   }
 
   // Primer bloque que no cuadra, con el porqué concreto.

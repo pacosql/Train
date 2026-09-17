@@ -7,6 +7,530 @@
              .bn- (binario) .cd- (coordenadas) .rp- (reparte)
              .cl- (calendario) .pr- (proporciones) .gf- (gráfica) */
 
+/* ---- regla, torre, balanza ---- */
+/* ==========================================================================
+   Rehechos: #50 Mide con la regla (.rg-), #49 Construye la torre (.tw-),
+   #6 Equilibra la balanza (.bz-).
+   Sólo variables que ya existen en style.css (--bg --card --text --muted
+   --accent --accent-2 --accent-dark --danger --good --border), así que el
+   modo claro y el oscuro salen solos, igual que en pack-b.css.
+   Pensado para 400 px de ancho y para jugarse con el pulgar.
+   ========================================================================== */
+
+/* ---------- 📏 Mide con la regla: estirar / recortar ---------- */
+.rg-wrap {
+  width: 100%;
+  max-width: 340px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.rg-wrap .rg-prompt { font-size: 1.05rem; margin-bottom: 16px; }
+
+/* Toda la zona es arrastrable: touch-action none para que el dedo mueva la
+   punta en vez de hacer scroll de la página. */
+.rg-stage {
+  position: relative;
+  width: 100%;
+  padding-top: 4px;
+  touch-action: none;
+  cursor: ew-resize;
+  user-select: none;
+}
+/* El mismo borde (invisible) que .rg-ruler: los hijos absolutos se colocan
+   dentro del borde, así objeto y marcas comparten origen al píxel. */
+.rg-lane {
+  position: relative;
+  height: 42px;
+  width: 100%;
+  border: 2px solid transparent;
+}
+.rg-piece {
+  position: absolute;
+  bottom: 8px;
+  height: 18px;
+  transition: left 0.12s ease, width 0.12s ease;
+}
+.rg-pencil {
+  border-radius: 4px 0 0 4px;
+  background: linear-gradient(var(--accent-2), var(--accent-dark));
+}
+/* La punta va DENTRO de la barra: si sobresaliera, el lápiz acabaría más
+   allá de su marca y la longitud dibujada no sería la real. */
+.rg-pencil::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+  border-top: 9px solid transparent;
+  border-bottom: 9px solid transparent;
+  border-left: 11px solid var(--danger);
+}
+.rg-tape {
+  border-radius: 4px;
+  background: repeating-linear-gradient(135deg, var(--accent) 0 7px, var(--accent-dark) 7px 14px);
+}
+.rg-piece.rg-flip { transform: scaleX(-1); }
+.rg-handle {
+  position: absolute;
+  bottom: 22px;
+  width: 26px;
+  height: 26px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  border: 3px solid var(--accent);
+  background: var(--card);
+  pointer-events: none;
+  transition: left 0.12s ease;
+}
+.rg-handle::after {
+  content: "⇔";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+.rg-ruler {
+  position: relative;
+  width: 100%;
+  height: 48px;
+  border: 2px solid var(--border);
+  border-radius: 7px;
+  background: var(--bg);
+  overflow: hidden;
+}
+.rg-tick {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  pointer-events: none;
+}
+.rg-tick-line {
+  display: block;
+  width: 2px;
+  height: 9px;
+  background: var(--muted);
+  border-radius: 1px;
+}
+.rg-tick-big .rg-tick-line { height: 15px; }
+.rg-tick-num {
+  font-size: 0.64rem;
+  font-weight: 800;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+/* Bandas al pie de la regla: gris el tramo que ocupa tu objeto, verde el
+   tramo que pedía. La longitud se ve como un trozo de regla, no como cifra. */
+.rg-band {
+  position: absolute;
+  bottom: 0;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--muted);
+  opacity: 0;
+  transition: left 0.12s ease, width 0.12s ease, opacity 0.2s ease;
+}
+.rg-band.on { opacity: 0.5; }
+.rg-band-good {
+  bottom: 10px;
+  height: 6px;
+  background: var(--good);
+}
+.rg-band-good.on { opacity: 1; }
+.rg-cursor {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--accent);
+  transform: translateX(-50%);
+  opacity: 0.75;
+  transition: left 0.12s ease;
+}
+.rg-cursor.wrong { width: 3px; background: var(--danger); opacity: 1; }
+.rg-cursor.right { width: 3px; background: var(--good); opacity: 1; }
+.rg-readout {
+  margin-top: 10px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--muted);
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+.rg-readout b {
+  font-size: 1.5rem;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+.rg-why { display: none; }
+.rg-why.on {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 6px;
+  text-align: center;
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+.rg-why-bad { color: var(--danger); font-weight: 700; }
+.rg-why-good { color: var(--good); font-weight: 700; }
+.rg-wrap .rg-confirm { margin-top: 14px; }
+
+/* ---------- 🏗️ Construye la torre: piezas de valores distintos ---------- */
+.tw-wrap {
+  width: 100%;
+  max-width: 340px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.tw-wrap .tw-prompt { font-size: 1.02rem; margin-bottom: 14px; }
+.tw-arena {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+  justify-content: center;
+  align-items: flex-end;
+}
+.tw-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex: 1 1 0;
+  min-width: 0;
+}
+/* column-reverse: las piezas se apilan desde el suelo, como una torre. */
+.tw-stack {
+  position: relative;
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-start;
+  width: 100%;
+  max-width: 112px;
+  min-height: 226px;
+  padding: 0 4px;
+  border-bottom: 3px solid var(--border);
+}
+.tw-mine {
+  border: 2px dashed var(--border);
+  border-bottom: 3px solid var(--accent);
+  border-radius: 10px 10px 0 0;
+  background: var(--bg);
+}
+.tw-unit {
+  display: block;
+  height: 12px;
+  flex: none;
+  margin-bottom: 1px;
+  border-radius: 2px;
+  background: var(--muted);
+  opacity: 0.85;
+}
+.tw-piece {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  flex: none;
+  margin-bottom: 1px;
+  padding: 0;
+  overflow: hidden;
+  border: 2px solid var(--accent-dark);
+  border-radius: 3px;
+  background: var(--accent);
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.6rem;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+}
+.tw-piece:active { transform: scale(0.96); }
+.tw-piece-sol { border-color: var(--good); background: var(--good); }
+/* Guía punteada a la altura del modelo: comparar es ver si pasas de la
+   línea, no restar de cabeza. */
+.tw-guide {
+  position: absolute;
+  left: -2px;
+  right: -2px;
+  height: 0;
+  border-top: 2px dashed var(--accent-2);
+  pointer-events: none;
+  z-index: 2;
+}
+.tw-guide i {
+  position: absolute;
+  right: 2px;
+  top: -13px;
+  font-size: 0.58rem;
+  font-style: normal;
+  font-weight: 800;
+  color: var(--accent-2);
+  background: var(--card);
+  border-radius: 3px;
+  padding: 0 3px;
+}
+.tw-label { font-size: 0.72rem; font-weight: 700; color: var(--muted); }
+.tw-label b { color: var(--accent); font-size: 0.95rem; font-variant-numeric: tabular-nums; }
+.tw-tray {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  justify-content: center;
+  align-items: flex-end;
+  width: 100%;
+  margin-top: 14px;
+}
+/* Cada ficha lleva una barrita proporcional a su valor: se ve lo que mide
+   antes de apilarla, pero el botón sigue siendo grande para el pulgar. */
+.tw-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+  width: 46px;
+  min-height: 54px;
+  padding: 5px 3px 5px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: inherit;
+  cursor: pointer;
+}
+.tw-tile b { font-size: 1rem; font-weight: 800; line-height: 1; }
+.tw-tile-bar {
+  display: block;
+  width: 14px;
+  border-radius: 2px;
+  background: var(--accent);
+}
+.tw-tile:active { transform: scale(0.94); }
+.tw-tile-used { opacity: 0.3; }
+.tw-tile:disabled { cursor: default; }
+.tw-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 12px;
+}
+.tw-actions button { padding-top: 9px; padding-bottom: 9px; }
+.tw-why { display: none; }
+.tw-why.on {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 6px;
+  text-align: center;
+  font-size: 0.76rem;
+  line-height: 1.45;
+  color: var(--muted);
+}
+.tw-why-line b { color: var(--text); }
+.tw-why-bad { color: var(--danger); font-weight: 700; }
+.tw-why-good { color: var(--good); font-weight: 700; }
+
+/* ---------- ⚖️ Equilibra la balanza: sacos con incógnita ---------- */
+.bz-wrap {
+  width: 100%;
+  max-width: 340px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.bz-wrap .bz-prompt { font-size: 1.05rem; margin-bottom: 8px; }
+.bz-scale {
+  position: relative;
+  width: 100%;
+  min-height: 154px;
+}
+/* La viga va de un centro de plato al otro (22% y 78%), así las cuerdas
+   cuelgan justo de sus extremos y el dibujo no se descuadra al inclinarse. */
+.bz-bar {
+  position: absolute;
+  top: 8px;
+  left: 22%;
+  right: 22%;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--accent-dark);
+  transform-origin: 50% 50%;
+  transition: transform 0.35s ease;
+  z-index: 3;
+}
+.bz-side {
+  position: absolute;
+  top: 12px;
+  width: 44%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2;
+}
+.bz-side-l { left: 0; }
+.bz-side-r { right: 0; }
+.bz-rope {
+  display: block;
+  width: 2px;
+  background: var(--muted);
+  opacity: 0.6;
+  transition: height 0.35s ease;
+}
+.bz-pan {
+  width: 100%;
+  min-height: 62px;
+  padding: 5px 4px;
+  border: 2px solid var(--border);
+  border-top: 3px solid var(--accent);
+  border-radius: 4px 4px 16px 16px;
+  background: var(--card);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  justify-content: center;
+  align-content: flex-end;
+}
+.bz-mast {
+  position: absolute;
+  top: 10px;
+  left: calc(50% - 3px);
+  width: 6px;
+  height: 116px;
+  border-radius: 3px 3px 0 0;
+  background: var(--border);
+  z-index: 1;
+}
+.bz-base {
+  position: absolute;
+  top: 126px;
+  left: calc(50% - 36px);
+  width: 72px;
+  height: 8px;
+  border-radius: 6px;
+  background: var(--border);
+  z-index: 1;
+}
+.bz-saco, .bz-pesa {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  flex: none;
+  font-size: 0.72rem;
+  font-weight: 800;
+  line-height: 1;
+}
+.bz-saco {
+  border: 2px solid var(--accent-dark);
+  border-radius: 6px 6px 10px 10px;
+  background: var(--accent-2);
+  color: #fff;
+}
+.bz-pesa {
+  border: 2px solid var(--muted);
+  border-radius: 50%;
+  background: var(--bg);
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+.bz-vacio { font-size: 0.62rem; font-style: italic; color: var(--muted); }
+.bz-tilt {
+  margin-top: 8px;
+  min-height: 1.2rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+.bz-tilt-ok { color: var(--good); }
+.bz-dial {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  margin-top: 10px;
+}
+.bz-step {
+  width: 48px;
+  height: 46px;
+  flex: none;
+  border: 2px solid var(--accent);
+  border-radius: 12px;
+  background: var(--card);
+  color: var(--accent);
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+.bz-step:active { transform: scale(0.94); }
+.bz-step:disabled {
+  border-color: var(--border);
+  color: var(--muted);
+  opacity: 0.45;
+  cursor: default;
+}
+.bz-value {
+  min-width: 82px;
+  text-align: center;
+  font-size: 0.68rem;
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--muted);
+}
+.bz-value b {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 3px;
+  font-size: 1.6rem;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+.bz-value b i { font-size: 0.7rem; font-style: normal; }
+.bz-moves { margin-top: 8px; font-size: 0.72rem; font-weight: 600; color: var(--muted); }
+.bz-moves b { color: var(--accent-2); font-variant-numeric: tabular-nums; }
+.bz-why { display: none; }
+.bz-why.on {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-top: 6px;
+  text-align: center;
+  font-size: 0.76rem;
+  line-height: 1.45;
+  color: var(--muted);
+}
+.bz-why-eq { font-size: 0.86rem; font-weight: 800; color: var(--text); }
+.bz-wrap .bz-confirm { margin-top: 12px; }
+
+/* ---------- Pantallas estrechas (380 px y menos) ---------- */
+@media (max-width: 380px) {
+  .rg-tick-num { font-size: 0.58rem; }
+  .rg-readout b { font-size: 1.3rem; }
+  .tw-stack { min-height: 210px; max-width: 100px; }
+  .tw-tile { width: 42px; }
+  .bz-step { width: 42px; height: 44px; font-size: 0.92rem; }
+  .bz-value { min-width: 72px; }
+  .bz-value b { font-size: 1.35rem; }
+  .bz-saco, .bz-pesa { width: 23px; height: 23px; font-size: 0.66rem; }
+}
+
 /* ---- binario, coordenadas, reparte ---- */
 /* ==========================================================================
    Agente B — CSS de los 3 juegos rehechos: contador binario (.bn-),

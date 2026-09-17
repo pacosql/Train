@@ -185,8 +185,8 @@
 .mp-region:active { opacity: 0.82; }
 .mp-region.is-conflict rect { animation: mp-flash 0.55s ease-in-out infinite alternate; }
 @keyframes mp-flash { to { fill: var(--danger); } }
-.mp-edge { stroke: var(--text); stroke-width: 3; stroke-linecap: round; opacity: 0.85; }
-.mp-frame { fill: none; stroke: var(--text); stroke-width: 3; rx: 6; opacity: 0.85; }
+.mp-edge { stroke: var(--text); stroke-width: 3; stroke-linecap: round; opacity: 0.85; pointer-events: none; }
+.mp-frame { fill: none; stroke: var(--text); stroke-width: 3; rx: 6; opacity: 0.85; pointer-events: none; }
 .mp-glyph { fill: rgba(0, 0, 0, 0.45); }
 .mp-palette {
   display: flex; flex-wrap: wrap; gap: 8px; align-items: center;

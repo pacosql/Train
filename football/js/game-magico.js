@@ -207,6 +207,7 @@ export function mountMagicoGame(container, { client, onExit }) {
         <button class="secondary mg-tool" data-clear>↺ Vaciar huecos</button>
         <button class="secondary mg-tool" data-give>🔎 Solución (−1 vida)</button>
       </div>
+      <button class="primary mg-check" data-check disabled>✓ Comprobar</button>
       <div class="feedback" data-feedback></div>
     `;
 
@@ -224,6 +225,11 @@ export function mountMagicoGame(container, { client, onExit }) {
     body.querySelector("[data-give]").addEventListener("click", () => {
       if (finished || locked) return;
       loseRound("Solución al descubierto");
+    });
+    body.querySelector("[data-check]").addEventListener("click", () => {
+      if (finished || locked) return;
+      if (puzzle.holes.some((h) => !grid[h])) return say("Aún quedan huecos sin ficha", "bad");
+      check();
     });
     render();
     say("Toca una ficha y luego un hueco", "");
@@ -253,6 +259,9 @@ export function mountMagicoGame(container, { client, onExit }) {
       });
       bankEl.appendChild(btn);
     });
+    // Se comprueba cuando el jugador quiera, con todos los huecos llenos.
+    const chk = body.querySelector("[data-check]");
+    if (chk) chk.disabled = puzzle.holes.some((h) => !grid[h]);
   }
 
   function tapCell(i) {
@@ -272,8 +281,7 @@ export function mountMagicoGame(container, { client, onExit }) {
     grid[i] = bank[selected].v;
     selected = -1;
     render();
-    if (puzzle.holes.every((h) => grid[h] > 0)) check();
-    else say("", "");
+    say(puzzle.holes.some((h) => !grid[h]) ? "" : "Todo colocado: dale a Comprobar", "");
   }
 
   // Primera línea que no suma lo que debe, con la diferencia exacta.
