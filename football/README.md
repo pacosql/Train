@@ -1,7 +1,7 @@
 # Math Games 🧠
 
-PWA (sin build, HTML/CSS/JS puro) con **65 ejercicios de matemáticas**,
-cada uno numerado (#1-#40) para poder referirse a ellos sin ambigüedad.
+PWA (sin build, HTML/CSS/JS puro) con **90 ejercicios de matemáticas**,
+cada uno numerado (#1-#90) para poder referirse a ellos sin ambigüedad.
 Cálculo mental, geometría, álgebra, estadística, fracciones, dinero,
 probabilidad, coordenadas, tiempo y más. Nace como banco de pruebas
 rápido para sacar ideas de mecánicas (tipo Duolingo Math, Synthesis,
@@ -110,6 +110,67 @@ el resto termina a las 3 vidas o al completar el objetivo. Todos
 guardan la puntuación final en Supabase y el menú principal muestra las
 últimas partidas jugadas.
 
+## Ejercicios #66-#90 (cuarta tanda) — 🔧 revisados aparte, 25 mecánicas nuevas
+
+La columna **de dónde sale** dice si la mecánica viene de una fuente
+concreta de ahí fuera o es inventada, y con qué proceso (la terna de
+combinación forzada, la inversión o la restricción).
+
+### Tramo «Puzzles de lápiz y papel» — [`css/pack-g.css`](./css/pack-g.css)
+
+| # | Juego | Tema | Mecánica | De dónde sale |
+|---|---|---|---|---|
+| 66 | 🟧 Pentominós | Área y teselado | Encaja las piezas en el rectángulo sin huecos ni solapes; el área total es fija, así que sobra o falta hueco | Manipulativos de aula / pentominós de Golomb (familia 7) |
+| 67 | 🔼 Mayor que | Orden y lógica | Futoshiki 4×4: cada toque cicla la casilla, respetando los signos < > entre vecinas | Puzzles de lápiz y papel (familia 4) |
+| 68 | ➕ Kakuro | Sumas con restricción | Rellena con 1-9 sin repetir para que cada bloque sume lo indicado (17 en dos casillas solo puede ser 8+9) | Puzzles de lápiz y papel (familia 4) |
+| 69 | ⬛ Shikaku | Multiplicación y área | Arrastras para dibujar cada rectángulo y se lee en vivo «3 × 2 = 6»: la multiplicación no se calcula, se dibuja | Puzzles de lápiz y papel (familia 4) |
+| 70 | 🔯 Cuadrado mágico | Sumas | Coloca las fichas que faltan; cada hueco está atado a fila + columna (+ diagonal), así que es un sistema de sumas | Gardner / puzzles clásicos (familia 3) |
+
+
+### Tramo «Números, descomposición y estrategia» — [`css/pack-h.css`](./css/pack-h.css)
+
+| # | Juego | Tema | Mecánica | De dónde sale |
+|---|---|---|---|---|
+| 71 | 🔟 Cifras | Operaciones | Combinas dos fichas con + − × ÷ y el resultado **pasa a ser una ficha nueva**, gastando los dos operandos | Concurso *Cifras y Letras* (familia 10) + *Digits* del NYT (familia 2) |
+| 72 | 🔀 Todas las formas | Descomposición | Inversión: dado el resultado, encuentra **todas** las parejas que lo forman; «3 de 5 encontradas» | Inventado: inversión 4.3 |
+| 73 | 🪛 Inventa la regla | Patrones | Inversión de «¿qué número sigue?»: te dan la serie y construyes la regla que la genera | Inventado: inversión 4.3 |
+| 74 | 🧹 Criba de primos | Primos | Tachas los múltiplos de 2, 3, 5, 7 fase a fase y al final quedan los primos: el algoritmo ES el gesto | Clásico: criba de Eratóstenes (familia 3) |
+| 75 | 🎋 Nim de palillos | Paridad y restos | Quitas 1, 2 o 3 palillos y pierde quien coge el último; no se gana sin la aritmética modular | Gardner / juegos de patio (familias 3 y 10) |
+
+
+### Tramo «Manipulativos y proporción» — [`css/pack-i.css`](./css/pack-i.css)
+
+| # | Juego | Tema | Mecánica | De dónde sale |
+|---|---|---|---|---|
+| 76 | 🥖 La misma cantidad | Fracciones equivalentes | Dos barras del mismo largo partidas en distinto número de trozos: marcas el punto equivalente, así que 2/3 = 4/6 se ve como longitud | Manipulativos de aula / barras de fracciones (familia 7) |
+| 77 | 🥐 Dobleces de masa | Potencias de 2 | Cada doblez duplica las capas y la pila duplica su altura; se ven los dobleces pero **no** las capas | Inventado: terna *potencias + doblar + panadería* |
+| 78 | 🧪 Mezcla las probetas | Media ponderada | Viertes arrastrando y el color del matraz sale interpolado: verter ES promediar | Inventado: terna *media + verter + laboratorio* |
+| 79 | 🔬 La lupa decimal | Decimales | Tocas el trozo de recta y se amplía ×10: cada zoom parte el anterior en 10, que es lo que significa la cifra siguiente | Inventado: terna *decimales + deslizar + laboratorio* |
+| 80 | 💸 Rebajas | Porcentajes | Inversión: estiras una barra sobre el precio hasta dar con el descuento que cuadra; la parte sombreada es a la vez el % y el dinero | Inventado: terna *porcentajes + estirar + mercado* |
+
+
+### Tramo «Mundo real y deducción» — [`css/pack-j.css`](./css/pack-j.css)
+
+| # | Juego | Tema | Mecánica | De dónde sale |
+|---|---|---|---|---|
+| 81 | ✈️ Escalas | Tiempo y horarios | Encadenas vuelos comprobando que la conexión da; las tarjetas solo dan salida + duración, así que hay que sumar la llegada | Inventado: terna *tiempo + sincronizar + aeropuerto* |
+| 82 | 👕 Cuántos conjuntos | Combinatoria | Inversión: construyes **todas** las combinaciones distintas y al cerrarlas aparece la rejilla «2 × 3 = 6» | Inventado: terna *combinatoria + construir + sastrería* |
+| 83 | 🚢 Hundir la flota | Coordenadas y deducción | Tablero 6×6 con contadores por fila y columna: se deduce, no se adivina | Juegos populares / puzzles de deducción (familia 10) |
+| 84 | 🪣 El pintor | Área | Mides la pared (rectángulos pegados) y compras los botes justos; el área **no** se dice | Inventado: terna *área + pintar + obra* |
+| 85 | ⚙️ Engranajes | Mínimo común múltiplo | Haces rodar la rueda y paras cuando las marcas vuelven a coincidir: eso pasa a las vueltas del m.c.m. | Inventado: terna *múltiplos + rodar + taller* |
+
+
+### Tramo «Riesgo, visual y sin palabras» — [`css/pack-k.css`](./css/pack-k.css)
+
+| # | Juego | Tema | Mecánica | De dónde sale |
+|---|---|---|---|---|
+| 86 | ✖️ Tachones | Probabilidad y orden | Tiras dos dados y tachas solo hacia delante: lo que saltas lo pierdes. Al decidir se ven cuántas de las 36 combinaciones caen a cada lado | Juego de mesa *Qwixx* / valor esperado (familia 5) |
+| 87 | ♠️ Sin pasarse | Cálculo y riesgo | Cada carta trae una operación que se aplica a tu total y decides cuándo pararte, sin pasarte del objetivo | Blackjack matemático de aula + *El Precio Justo* (familia 10) |
+| 88 | 🐧 El puente | Complementos sin palabras | **Ni una palabra ni una cifra en pantalla**: tocas la pieza que encaja en el hueco y al fallar la animación muestra al pingüino cayendo | Diseño de puzles de **ST Math** (familia 1) + restricción 4.4 |
+| 89 | 🌈 Colorea el mapa | Lógica y grafos | Coloreas sin que dos vecinas compartan color y con el mínimo de colores posible | Divulgación de **Clara Grima**: grafos y los cuatro colores (familia 2) |
+| 90 | 🤿 Buceo | Enteros | Llevas al buzo a la cota exacta con saltos de un solo uso: enteros con signo como desplazamiento vertical real | Inventado: terna *negativos + apilar + fondo del mar* |
+
+
 ## Versiones (v2) y bandeja "Revisar"
 
 Cuando un ejercicio recibe una vuelta de mejoras, se marca con un
@@ -137,6 +198,71 @@ tocan.
 - **#16 Media y moda**: los datos se muestran como fichas y, en las
   rondas de mediana, ya ordenados — la pregunta era más de lectura
   apelotonada que de estadística.
+
+### Vuelta del 17-09-2026 — los 9 marcados con 🔧
+
+Los nueve ejercicios que estaban en la bandeja "🔧 Revisar" se han
+**rehecho de mecánica**, no retocado de estilo: en los nueve el gesto del
+dedo tenía que pasar a ser la propia matemática. Todos suben a **v2** y
+vuelven a "🆕 Nuevos" para juzgarlos de cero.
+
+| # | Juego | Qué chirriaba | Qué hace ahora | De dónde sale la mecánica |
+|---|---|---|---|---|
+| 6 | 🏋️ Equilibra la balanza | Acumular pesas +1/+2/+5/+10 hacia un objetivo es "Llena el vaso" con kg, y con el +1 disponible no hay nada que pensar | Álgebra real: sacos de peso desconocido y pesas en los platos; el dedo mueve **la incógnita** y la balanza solo dice qué lado pesa más, nunca los totales. Ajustes contados (8), así que el barrido a ciegas no llega. Nivel 3: sacos en los dos platos (`k·x + a = m·x + b`) | Inversión 4.3 (hallar el operando) + manipulativo de balanza algebraica (Polypad, familia 1) |
+| 36 | 🗺️ Plano cartesiano | "Toca la celda (x, y)": se cuentan celdas sin leer el plano, sin cuadrantes negativos y sin que importe el orden del par | "Cierra la figura": se dan tres vértices y hay que colocar el cuarto (D = A + C − B) en los cuatro cuadrantes, leyendo los ejes | Inversión 4.3 |
+| 47 | 📦 Reparte en cajas | El total era siempre múltiplo del tamaño, así que nunca había resto y se resolvía repartiendo una a cada caja, sin dividir | "Sin sobras": el **resto es el protagonista** y hay que encontrar **todos** los tamaños que reparten exacto (los divisores de N) | Inversión 4.3 (todas las soluciones) |
+| 49 | 🏗️ Construye la torre | Todos los bloques valían 1: "apilar" era pulsar N veces un contador, equivalente a teclear el número | Piezas de valores distintos y de un solo uso, cada una mide en pantalla lo que vale; llegar a la altura es un subset-sum de **solución única**, y hay que calcular la relación (doble, mitad, triple) antes de apilar | Inversión 4.3 + regletas Cuisenaire (familia 7) |
+| 50 | 🖍️ Mide con la regla | Test de 13 opciones con una regla dibujada al lado. Y un error de concepto: pedía una **longitud** y se respondía sobre una escala de **posiciones** | La medida se **construye**: un extremo clavado en una marca que casi nunca es el 0 y se arrastra el otro hasta que mida lo pedido; el readout da la posición, no la longitud, así que hay que restar. Nivel 3: regla numerada de 5 en 5 | Inversión 4.3 + restricción 4.4 (un único gesto) |
+| 56 | 🗓️ Calendario | Mitad búsqueda visual ("el tercer martes" se barre con la vista), mitad resta disfrazada que se contestaba sin mirar el calendario | Dos rondas de aritmética modular con el dedo: **colocar el 1** deduciendo su columna a partir de otra fecha (módulo 7, y el mes no se dibuja hasta confirmar), y **planificar** marcando todos los días "cada N desde el D" | Inversión 4.3 (construir el mes) |
+| 58 | ⚗️ Mezclas y proporciones | Regla de tres con 4 botones; los iconos de la receta no participaban — cambiando las mates por capitales funcionaba igual | Se **estira** una torre de bloques hasta que la mezcla sabe igual (el alto ES la cantidad, estirar = multiplicar); la mitad de las rondas dan el lado grande, así que hay que dividir antes | Regla 4.2 (el gesto encarna el concepto) |
+| 61 | 📉 Continúa la gráfica | Cuatro puntos sobre la curva: se acertaba a ojo prolongando la recta, sin calcular el patrón | Se **dibuja** la gráfica: enunciado + primer punto, y el resto salen planos para arrastrarlos a su altura. En nivel alto el eje x va de 2 en 2, así que leer el eje es parte del problema | Inversión 4.3 (dibujar en vez de elegir) |
+| 64 | 💡 Bombillas binarias | Traductor decimal→binario: con el método voraz (la bombilla más grande que quepa) se resuelve sin entender nada, y el acarreo —lo que da sentido a la base 2— no aparecía nunca | "El contador": el juego **nunca dice el número**, pide `+1` / `−1` varias veces, y el gesto de apagar la fila de unos y encender el de al lado **es** el acarreo | Inversión 4.3 + restricción 4.4 (sin el número en pantalla) |
+
+Bugs reales encontrados al rehacerlos, además del rediseño:
+
+- **#6 Balanza**: `rounds++` corría en **cada pesa tocada**, así que
+  `saveScore(rounds)` guardaba basura; los `setTimeout` no se
+  registraban, así que al salir al menú a mitad de ronda se seguía
+  pintando sobre un contenedor ya desmontado; y sin bloqueo se podían
+  perder varias vidas de un solo golpe.
+- **#36 Plano cartesiano** y **#64 Bombillas**: mismo fallo de
+  temporizadores sin cancelar en la función de limpieza.
+- **#61 Continúa la gráfica**: el punto pintado tapaba el círculo de
+  agarre y el arrastre no arrancaba (lo encontró la prueba de navegador,
+  no la lectura del código).
+- Varios `do/while` tenían guardas **imposibles por construcción**
+  (`end0 > CM`, `length < 2`, `target < 2`), es decir que no protegían de
+  nada.
+- **#50 Regla** y **#49 Torre** no tenían progresión ninguna: el rango
+  era fijo para toda la partida.
+
+### Fallo de toda la app encontrado al verificar esta vuelta
+
+Un verificador independiente (que no escribió ninguno de los nueve)
+jugó los 9 en el navegador y encontró un fallo que **no era de esta
+tanda: venía de antes y afectaba a los 65 ejercicios**, porque está en
+el patrón de la casa ([`js/game-vaso.js`](./js/game-vaso.js)) y en el
+motor de preguntas ([`js/quiz-engine.js`](./js/quiz-engine.js)).
+
+Con el end-card en pantalla, el botón **«← Menú»** de la barra superior
+quedaba muerto: el listener llama a `finish(true)` y `finish` empieza
+con `if (finished) return`, así que al terminar la partida el clic se
+tragaba y nunca se llamaba a `onExit()`. No dejaba encerrado a nadie
+(el "Volver al menú" del end-card sí funcionaba), pero era un botón
+visible y habilitado que no hacía nada.
+
+Arreglado en los **73 ficheros** afectados dejando que la guarda frene
+solo los remates automáticos, no la salida del usuario:
+
+```js
+if (finished) return userExited ? onExit() : undefined;
+```
+
+Los estilos de esta vuelta viven en [`css/pack-f.css`](./css/pack-f.css).
+Las clases viejas que estos nueve ya no usan se han dejado intactas en
+`pack-a…pack-e` porque las usan otros ejercicios.
+
+
 
 ## Valoración (🆕 / 👍 / 👎 / 🔧)
 
@@ -235,7 +361,7 @@ Una vez publicado, esta app queda en:
 
 ## Qué hace la app
 
-- Menú con los 65 ejercicios numerados, organizados en pestañas
+- Menú con los 90 ejercicios numerados, organizados en pestañas
   🆕/👍/👎/🔧; cada uno abre en su propia pantalla (`#/game/<id>`), sin
   recargar la página.
 - Motor de preguntas compartido (`js/quiz-engine.js`) para los 18

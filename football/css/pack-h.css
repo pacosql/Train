@@ -1,0 +1,357 @@
+/* Pack H — tramo "Números, descomposición y estrategia": cifras,
+   todas las formas, inventa la regla, criba de primos y nim. Todo se
+   apoya en las variables de style.css (--bg, --card, --text, --muted,
+   --accent, --accent-2, --good, --danger, --border), así el modo claro
+   y el oscuro salen solos; los pocos tonos propios se redefinen en el
+   bloque prefers-color-scheme del final. Prefijos: cf- td- iv- cb- nm- */
+
+:root {
+  --ph-soft: rgba(91, 62, 204, 0.08); /* relleno suave sobre fondo claro */
+  --ph-soft-2: rgba(46, 163, 196, 0.12);
+}
+
+/* ---------- Cifras ---------- */
+.cf-tiles {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  max-width: 340px;
+  min-height: 60px;
+}
+.cf-tile {
+  min-width: 60px;
+  height: 56px;
+  padding: 0 8px;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 2px 0 var(--border);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text);
+  cursor: pointer;
+}
+.cf-tile:active { transform: translateY(2px); box-shadow: none; }
+.cf-tile.sel { background: var(--accent); border-color: var(--accent); color: #fff; box-shadow: none; }
+.cf-tile.fresh { border-color: var(--accent-2); color: var(--accent-2); }
+.cf-tile:disabled { cursor: default; opacity: 0.6; }
+.cf-ops {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin: 14px 0 10px;
+}
+.cf-op {
+  width: 56px;
+  height: 48px;
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--accent);
+  cursor: pointer;
+}
+.cf-op.sel { background: var(--accent); border-color: var(--accent); color: #fff; }
+.cf-op:disabled { opacity: 0.5; cursor: default; }
+.cf-trail {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  min-height: 22px;
+  width: 100%;
+  max-width: 340px;
+}
+.cf-step {
+  background: var(--ph-soft);
+  border-radius: 8px;
+  padding: 3px 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+.cf-hint { font-size: 0.75rem; color: var(--muted); }
+.cf-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+.cf-actions button { padding: 8px 12px; font-size: 0.8rem; }
+.cf-actions button:disabled { opacity: 0.4; cursor: default; }
+
+/* ---------- Todas las formas ---------- */
+.td-counter {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--accent-2);
+  margin-bottom: 12px;
+}
+.td-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  width: 100%;
+  max-width: 340px;
+}
+.td-card {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text);
+  cursor: pointer;
+}
+.td-card:active { transform: scale(0.96); }
+.td-card.sel { background: var(--accent); border-color: var(--accent); color: #fff; }
+.td-card.found { background: var(--good); border-color: var(--good); color: #fff; opacity: 0.85; }
+.td-card.wrong { background: var(--danger); border-color: var(--danger); color: #fff; }
+.td-card:disabled { cursor: default; }
+.td-found {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+  min-height: 20px;
+  margin-top: 12px;
+  width: 100%;
+  max-width: 340px;
+}
+.td-chip {
+  background: var(--ph-soft-2);
+  border-radius: 8px;
+  padding: 3px 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--accent-2);
+}
+
+/* ---------- Inventa la regla ---------- */
+.iv-series {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  max-width: 340px;
+  margin-bottom: 18px;
+}
+.iv-term {
+  min-width: 46px;
+  padding: 8px 6px;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  text-align: center;
+}
+.iv-arrow { color: var(--muted); font-size: 0.85rem; }
+.iv-rule {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 340px;
+}
+.iv-row { display: flex; flex-direction: column; gap: 6px; }
+.iv-label { font-size: 0.78rem; font-weight: 700; color: var(--muted); }
+.iv-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.iv-chip {
+  min-width: 44px;
+  padding: 9px 4px;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--text);
+  cursor: pointer;
+}
+.iv-chip:active { transform: scale(0.95); }
+.iv-chip.on { background: var(--accent-2); border-color: var(--accent-2); color: #fff; }
+.iv-chip:disabled { opacity: 0.5; cursor: default; }
+.iv-guess {
+  margin: 14px 0 10px;
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--accent);
+  min-height: 1.2rem;
+}
+
+/* ---------- Criba de primos ---------- */
+.cb-steps {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.cb-step {
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 2px solid var(--border);
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--muted);
+}
+.cb-step.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+.cb-step.done { background: var(--ph-soft); border-color: var(--accent); color: var(--accent); }
+.cb-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 5px;
+  width: 100%;
+  max-width: 340px;
+}
+.cb-cell {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text);
+  cursor: pointer;
+}
+.cb-cell:active { transform: scale(0.94); }
+.cb-cell.base { border-color: var(--accent); color: var(--accent); }
+.cb-cell.crossed {
+  background: transparent;
+  border-color: transparent;
+  color: var(--muted);
+  opacity: 0.4;
+  text-decoration: line-through;
+  cursor: default;
+}
+.cb-cell.prime {
+  background: var(--good);
+  border-color: var(--good);
+  color: #fff;
+  opacity: 1;
+}
+.cb-cell.wrong { background: var(--danger); border-color: var(--danger); color: #fff; }
+.cb-cell.shake { animation: cb-shake 0.4s ease; }
+@keyframes cb-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+/* ---------- Nim de palillos ---------- */
+.nm-sticks {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  max-width: 320px;
+  min-height: 56px;
+  margin-bottom: 10px;
+}
+.nm-stick {
+  width: 9px;
+  height: 44px;
+  border-radius: 5px;
+  background: linear-gradient(180deg, var(--accent-2), var(--accent));
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.nm-stick.gone { opacity: 0.16; transform: scaleY(0.35); }
+.nm-turn {
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--muted);
+  margin-bottom: 12px;
+  min-height: 1.1rem;
+}
+.nm-pad { display: flex; gap: 10px; }
+.nm-take {
+  width: 88px;
+  height: 66px;
+  background: var(--bg);
+  border: 2px solid var(--accent);
+  border-radius: 14px;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--accent);
+  cursor: pointer;
+}
+.nm-take small { display: block; font-size: 0.6rem; font-weight: 600; color: var(--muted); }
+.nm-take:active { transform: scale(0.95); }
+.nm-take:disabled { opacity: 0.35; cursor: default; }
+.nm-line {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px;
+  margin: 8px 0;
+}
+.nm-mark {
+  min-width: 22px;
+  padding: 2px 0;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--muted);
+  text-align: center;
+}
+.nm-mark.trap {
+  background: var(--danger);
+  border-color: var(--danger);
+  color: #fff;
+}
+
+/* ---------- Modo oscuro: solo los tonos propios ---------- */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ph-soft: rgba(141, 118, 246, 0.16);
+    --ph-soft-2: rgba(46, 163, 196, 0.22);
+  }
+  .cf-step { color: #c3b4ff; }
+  .cf-tile.fresh { color: #6fd3ea; border-color: #6fd3ea; }
+  .cb-step.done { color: #c3b4ff; border-color: #6d5bd0; }
+  .cf-op { color: #c3b4ff; }
+  .iv-guess { color: #c3b4ff; }
+  .td-counter { color: #6fd3ea; }
+  .td-chip { color: #6fd3ea; }
+  .nm-take { color: #c3b4ff; border-color: #6d5bd0; }
+}
+
+/* ---------- Móviles estrechos ---------- */
+@media (max-width: 400px) {
+  .cf-tile { min-width: 52px; height: 50px; font-size: 1.1rem; }
+  .cf-op { width: 48px; height: 44px; font-size: 1.15rem; }
+  .cf-actions button { padding: 7px 10px; font-size: 0.75rem; }
+  .td-grid { gap: 6px; }
+  .td-card { font-size: 1rem; border-radius: 10px; }
+  .iv-term { min-width: 40px; font-size: 0.95rem; padding: 7px 4px; }
+  .iv-chip { min-width: 40px; font-size: 0.85rem; padding: 8px 3px; }
+  .cb-grid { gap: 4px; }
+  .cb-cell { font-size: 0.72rem; border-radius: 7px; border-width: 1px; }
+  .nm-stick { width: 8px; height: 40px; }
+  .nm-take { width: 76px; height: 60px; font-size: 1.15rem; }
+  .nm-pad { gap: 8px; }
+}
+@media (max-width: 340px) {
+  .cb-grid { grid-template-columns: repeat(6, 1fr); }
+  .td-grid { grid-template-columns: repeat(3, 1fr); }
+}

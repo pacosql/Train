@@ -40,10 +40,10 @@ export const GAMES_PACK_3 = [
   { id: "carrera", title: "Carrera de cálculo", emoji: "🏁", topic: "Cálculo mental", custom: mountCarreraGame },
   // Manipular y construir
   { id: "abaco", title: "Ábaco", emoji: "🪀", topic: "Valor posicional", custom: mountAbacoGame },
-  { id: "reparte", title: "Reparte en cajas", emoji: "📦", topic: "División", custom: mountReparteGame },
+  { id: "reparte", title: "Reparte en cajas", emoji: "📦", topic: "División", v: 2, custom: mountReparteGame },
   { id: "vaso", title: "Llena el vaso", emoji: "💧", topic: "Capacidad", custom: mountVasoGame },
-  { id: "torre", title: "Construye la torre", emoji: "🏗️", topic: "Comparación", custom: mountTorreGame },
-  { id: "regla", title: "Mide con la regla", emoji: "🖍️", topic: "Medidas", custom: mountReglaGame },
+  { id: "torre", title: "Construye la torre", emoji: "🏗️", topic: "Comparación", v: 2, custom: mountTorreGame },
+  { id: "regla", title: "Mide con la regla", emoji: "🖍️", topic: "Medidas", v: 2, custom: mountReglaGame },
   // Lógica y detección
   { id: "error", title: "Encuentra el error", emoji: "🔍", topic: "Razonamiento", custom: mountErrorGame },
   { id: "semaforo", title: "Verdadero o falso", emoji: "🚦", topic: "Cálculo mental", custom: mountSemaforoGame },
@@ -51,15 +51,15 @@ export const GAMES_PACK_3 = [
   { id: "colorea", title: "Colorea por resultado", emoji: "🎨", topic: "Cálculo mental", custom: mountColoreaGame },
   { id: "puzle", title: "Puzle numérico", emoji: "🪄", topic: "Álgebra", custom: mountPuzleGame },
   // Medida y mundo real
-  { id: "calendario", title: "Calendario", emoji: "🗓️", topic: "Tiempo", custom: mountCalendarioGame },
+  { id: "calendario", title: "Calendario", emoji: "🗓️", topic: "Tiempo", v: 2, custom: mountCalendarioGame },
   { id: "compra", title: "La compra", emoji: "🛒", topic: "Dinero", custom: mountCompraGame },
-  { id: "proporciones", title: "Mezclas y proporciones", emoji: "⚗️", topic: "Proporcionalidad", custom: mountProporcionesGame },
+  { id: "proporciones", title: "Mezclas y proporciones", emoji: "⚗️", topic: "Proporcionalidad", v: 2, custom: mountProporcionesGame },
   { id: "termometro", title: "Termómetro", emoji: "♨️", topic: "Negativos", custom: mountTermometroGame },
   { id: "brujula", title: "Giros y direcciones", emoji: "🧭", topic: "Ángulos", custom: mountBrujulaGame },
   // Visual y gráfico
-  { id: "grafica", title: "Continúa la gráfica", emoji: "📉", topic: "Datos", custom: mountGraficaGame },
+  { id: "grafica", title: "Continúa la gráfica", emoji: "📉", topic: "Datos", v: 2, custom: mountGraficaGame },
   { id: "tarta2", title: "Reparte la tarta", emoji: "🍰", topic: "Fracciones", custom: mountTarta2Game },
   { id: "ritmo", title: "Compás musical", emoji: "🎵", topic: "Fracciones", custom: mountRitmoGame },
-  { id: "binario", title: "Bombillas binarias", emoji: "💡", topic: "Valor posicional", custom: mountBinarioGame },
+  { id: "binario", title: "Bombillas binarias", emoji: "💡", topic: "Valor posicional", v: 2, custom: mountBinarioGame },
   { id: "cubos", title: "Cuenta los cubos", emoji: "🧊", topic: "Volumen", custom: mountCubosGame },
 ];

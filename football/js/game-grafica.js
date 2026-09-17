@@ -1,91 +1,99 @@
-// "Continúa la gráfica": una serie con un patrón claro (sumar siempre lo
-// mismo, restar siempre lo mismo o duplicar) dibujada como gráfico de
-// líneas; el jugador toca el punto candidato que sigue el patrón.
-import { randInt, pick, shuffle, saveScore } from "./utils.js";
+// "Continúa la gráfica": antes era un test de cuatro puntos candidatos —
+// la gráfica era decoración y el patrón se podía acertar a ojo mirando qué
+// punto seguía la recta. Ahora está invertido: el jugador DIBUJA la
+// gráfica. Se da un enunciado ("empieza con 3 litros y entran 4 cada
+// hora") y el primer punto ya colocado; el resto de puntos salen planos y
+// hay que arrastrarlos a su altura. Arrastrar es la variación: el alto de
+// cada punto es la cantidad y la pendiente aparece sola al acertar.
+// El eje x puede ir de 2 en 2 (niveles altos), así que hay que aplicar la
+// variación por unidad al intervalo real: leer el eje forma parte.
+// Al fallar se dibuja encima la gráfica correcta con sus valores y la
+// cadena de sumas, para ver dónde se desvió.
+import { randInt, pick, saveScore } from "./utils.js";
 
-const W = 300, H = 210;
-const PAD_L = 26, PAD_R = 16, PAD_T = 26, PAD_B = 28;
+const W = 300;
+const H = 224;
+const PAD_L = 30;
+const PAD_R = 14;
+const PAD_T = 26;
+const PAD_B = 32;
+const PLOT_H = H - PAD_T - PAD_B;
+const TOPE = 24; // ningún valor pasa de aquí, así la rejilla es legible
+const Y_NICE = [8, 10, 12, 16, 20, 24];
 
-// Genera la serie y el valor siguiente. Todos los valores quedan > 0 para
-// que el gráfico nunca baje del eje.
-function buildSeries() {
-  const kind = pick(["sube", "baja", "dobla"]);
-  const values = [];
-  let next;
-  if (kind === "sube") {
-    const n = pick([4, 5]);
-    const step = randInt(2, 5);
-    const start = randInt(1, 6);
-    for (let i = 0; i < n; i++) values.push(start + i * step);
-    next = start + n * step;
-  } else if (kind === "baja") {
-    const n = pick([4, 5]);
-    const step = randInt(2, 4);
-    const start = n * step + randInt(1, 5);
-    for (let i = 0; i < n; i++) values.push(start - i * step);
-    next = start - n * step;
-  } else {
-    const start = randInt(1, 3);
-    for (let i = 0; i < 4; i++) values.push(start * Math.pow(2, i));
-    next = start * 16;
-  }
-  return { values, next };
-}
+// Niveles por racha: más puntos que dibujar, variación mayor, y al final
+// aparecen la duplicación y el eje de 2 en 2.
+const NIVELES = [
+  { n: 3, paso: [2, 3], tipos: ["sube"], intervalos: [1] },
+  { n: 3, paso: [2, 4], tipos: ["sube", "baja"], intervalos: [1] },
+  { n: 4, paso: [2, 4], tipos: ["sube", "baja"], intervalos: [1] },
+  { n: 4, paso: [2, 5], tipos: ["sube", "baja", "dobla"], intervalos: [1, 2] },
+];
 
-// Los candidatos se dibujan a alturas proporcionales a su valor: si dos
-// estuvieran demasiado juntos serían indistinguibles a simple vista, así
-// que se exige una separación mínima entre todos ellos.
-function buildCandidates(values, next) {
-  const all = values.concat([next]);
-  const span = Math.max(...all) - Math.min(...all);
-  const gap = Math.max(1, Math.round(span * 0.14));
-  const out = [next];
-  for (const d of shuffle([1, 2, 3, -1, -2, -3])) {
-    if (out.length === 4) break;
-    const v = next + d * gap;
-    if (v > 0 && out.every((o) => Math.abs(o - v) >= gap)) out.push(v);
-  }
-  return out;
-}
+const CONTEXTOS = {
+  sube: [
+    { emoji: "🪣", uy: "L", ux: "h", frase: (v0, p) => `El depósito tiene ${v0} litros y entran ${p} litros cada hora` },
+    { emoji: "💰", uy: "€", ux: "sem", frase: (v0, p) => `Ana tiene ${v0} € y ahorra ${p} € cada semana` },
+    { emoji: "🌱", uy: "cm", ux: "días", frase: (v0, p) => `La planta mide ${v0} cm y crece ${p} cm cada día` },
+    { emoji: "📚", uy: "pág", ux: "días", frase: (v0, p) => `Lleva ${v0} páginas leídas y lee ${p} páginas cada día` },
+  ],
+  baja: [
+    { emoji: "🪣", uy: "L", ux: "h", frase: (v0, p) => `El depósito tiene ${v0} litros y se van ${p} litros cada hora` },
+    { emoji: "🍬", uy: "🍬", ux: "días", frase: (v0, p) => `Hay ${v0} caramelos y cada día se comen ${p}` },
+    { emoji: "🚚", uy: "km", ux: "h", frase: (v0, p) => `Faltan ${v0} km y el camión hace ${p} km cada hora` },
+  ],
+  dobla: [
+    { emoji: "🦠", uy: "🦠", ux: "h", frase: (v0) => `Hay ${v0} bacterias y se duplican cada hora` },
+    { emoji: "❤️", uy: "❤️", ux: "h", frase: (v0) => `El vídeo tiene ${v0} me gusta y se duplican cada hora` },
+  ],
+};
 
-function chartSvg(values, cands, next) {
-  const cols = values.length + 1;
-  const colW = (W - PAD_L - PAD_R) / cols;
-  const vmax = Math.max(...values, ...cands) * 1.12;
-  const xFor = (i) => PAD_L + (i + 0.5) * colW;
-  const yFor = (v) => H - PAD_B - (v / vmax) * (H - PAD_T - PAD_B);
+// Genera la ronda entera. Se exporta para que el script de simulación
+// pruebe exactamente los mismos números que corren en el juego.
+export function buildRondaGrafica(nivel) {
+  const cfg = NIVELES[nivel];
+  let tipo = "sube";
+  let intervalo = 1;
+  let n = cfg.n;
+  let paso = 0;
+  let v0 = 0;
+  let valores = [];
+  let guard = 0;
+  do {
+    guard++;
+    tipo = pick(cfg.tipos);
+    intervalo = tipo === "dobla" ? 1 : pick(cfg.intervalos);
+    n = tipo === "dobla" ? 3 : cfg.n;
+    if (tipo === "dobla") {
+      // v0 · 2³ tiene que caber: v0 como máximo 3.
+      paso = 2;
+      v0 = randInt(1, Math.floor(TOPE / 8));
+      valores = [v0];
+      for (let i = 1; i <= n; i++) valores.push(valores[i - 1] * 2);
+    } else {
+      // El salto entre puntos es paso · intervalo; se acota el paso para
+      // que la serie entera quepa entre 1 y TOPE sin rechazos en balde.
+      const saltoMax = Math.floor((TOPE - 1) / n);
+      const pasoMax = Math.max(cfg.paso[0], Math.min(cfg.paso[1], Math.floor(saltoMax / intervalo)));
+      paso = randInt(cfg.paso[0], pasoMax);
+      const salto = paso * intervalo;
+      v0 = tipo === "sube"
+        ? randInt(1, Math.max(1, Math.min(6, TOPE - n * salto)))
+        : randInt(n * salto + 1, Math.min(TOPE, n * salto + 6));
+      valores = [v0];
+      for (let i = 1; i <= n; i++) {
+        valores.push(tipo === "sube" ? valores[i - 1] + salto : valores[i - 1] - salto);
+      }
+    }
+  } while (
+    (Math.min(...valores) < 1 || Math.max(...valores) > TOPE ||
+      valores.slice(1).some((v) => v === v0)) && guard < 200
+  );
 
-  const line = values.map((v, i) => `${xFor(i)},${yFor(v)}`).join(" ");
-  const pts = values
-    .map(
-      (v, i) =>
-        `<circle class="pe-graf-pt" cx="${xFor(i)}" cy="${yFor(v)}" r="4.5"/>` +
-        `<text class="pe-graf-lbl" x="${xFor(i)}" y="${yFor(v) - 10}" text-anchor="middle">${v}</text>`
-    )
-    .join("");
-
-  const cx = xFor(values.length);
-  const dots = cands
-    .map(
-      (v) => `
-      <g class="pe-graf-cand" data-v="${v}" data-ok="${v === next ? 1 : 0}">
-        <circle cx="${cx}" cy="${yFor(v)}" r="17" fill="transparent"/>
-        <text class="pe-graf-lbl" x="${cx - 15}" y="${yFor(v) + 4}" text-anchor="end">${v}</text>
-        <circle class="pe-graf-dot" cx="${cx}" cy="${yFor(v)}" r="8"/>
-      </g>`
-    )
-    .join("");
-
-  return `
-    <svg class="pe-graf-svg" viewBox="0 0 ${W} ${H}" role="img">
-      <line class="pe-graf-axis" x1="${PAD_L - 8}" y1="${H - PAD_B}" x2="${W - 6}" y2="${H - PAD_B}"/>
-      <line class="pe-graf-axis" x1="${PAD_L - 8}" y1="${PAD_T - 14}" x2="${PAD_L - 8}" y2="${H - PAD_B}"/>
-      <line class="pe-graf-guide" x1="${cx}" y1="${PAD_T - 14}" x2="${cx}" y2="${H - PAD_B}"/>
-      <polyline class="pe-graf-line" points="${line}"/>
-      ${pts}
-      ${dots}
-    </svg>
-  `;
+  const maximo = Math.max(...valores);
+  const yMax = Y_NICE.find((y) => y >= maximo) || TOPE;
+  const ctx = pick(CONTEXTOS[tipo]);
+  return { tipo, intervalo, n, paso, v0, valores, yMax, ctx, guard };
 }
 
 export function mountGraficaGame(container, { client, onExit }) {
@@ -93,9 +101,13 @@ export function mountGraficaGame(container, { client, onExit }) {
   let lives = startLives;
   let score = 0;
   let rounds = 0;
+  let streak = 0;
   let finished = false;
-  let answered = false;
-  let next = 0;
+  let locked = false;
+  let timers = [];
+  let ronda = null;
+  let puntos = []; // altura actual de cada punto arrastrable (índice 1..n)
+  let svgEl = null;
 
   container.innerHTML = `
     <div class="game-topbar">
@@ -112,63 +124,203 @@ export function mountGraficaGame(container, { client, onExit }) {
   const scoreEl = container.querySelector("[data-score]");
   const body = container.querySelector("[data-body]");
 
+  function later(fn, ms) {
+    timers.push(setTimeout(() => { if (!finished) fn(); }, ms));
+  }
+  function clearTimers() {
+    timers.forEach(clearTimeout);
+    timers = [];
+  }
+
   function renderLives() {
     livesEl.textContent = "❤️".repeat(Math.max(lives, 0)) + "🖤".repeat(startLives - Math.max(lives, 0));
   }
   function renderScore() {
     scoreEl.textContent = `⭐ ${score}`;
   }
+  function nivelActual() {
+    return Math.min(Math.floor(streak / 2), NIVELES.length - 1);
+  }
+
+  function xFor(i) {
+    return PAD_L + (i * (W - PAD_L - PAD_R)) / ronda.n;
+  }
+  function yFor(v) {
+    return H - PAD_B - (v / ronda.yMax) * PLOT_H;
+  }
 
   function nextRound() {
     if (finished) return;
-    // Repite hasta tener 4 candidatos bien separados: si no, dos puntos
-    // caerían casi a la misma altura y la respuesta sería discutible.
-    let series, cands, guard = 0;
-    do {
-      series = buildSeries();
-      cands = buildCandidates(series.values, series.next);
-      guard++;
-    } while (cands.length < 4 && guard < 30);
-    next = series.next;
-    answered = false;
+    ronda = buildRondaGrafica(nivelActual());
+    locked = false;
+    // Salida plana a la altura del primer dato: con variación distinta de
+    // cero, ningún punto empieza ya acertado.
+    puntos = [];
+    for (let i = 0; i <= ronda.n; i++) puntos.push(ronda.v0);
+
+    const pasoY = ronda.yMax <= 12 ? 2 : 4;
+    let rejilla = "";
+    for (let v = 0; v <= ronda.yMax; v += pasoY) {
+      rejilla += `<line class="gf-grid" x1="${PAD_L}" y1="${yFor(v)}" x2="${W - PAD_R}" y2="${yFor(v)}"/>` +
+        `<text class="gf-lbl" x="${PAD_L - 6}" y="${yFor(v) + 4}" text-anchor="end">${v}</text>`;
+    }
+    let ejeX = "";
+    for (let i = 0; i <= ronda.n; i++) {
+      ejeX += `<text class="gf-lbl" x="${xFor(i)}" y="${H - PAD_B + 15}" text-anchor="middle">${i * ronda.intervalo}</text>`;
+    }
+    let manos = "";
+    for (let i = 1; i <= ronda.n; i++) {
+      // El círculo de agarre va el ÚLTIMO del grupo: así queda por encima
+      // del punto pintado y recibe él el pointerdown (si no, el dedo toca
+      // el punto visible y el arrastre no arranca).
+      manos += `
+        <g class="gf-h" data-i="${i}">
+          <circle class="gf-dot" cx="${xFor(i)}" cy="${yFor(ronda.v0)}" r="9"/>
+          <text class="gf-val" x="${xFor(i)}" y="${yFor(ronda.v0) - 15}" text-anchor="middle">${ronda.v0}</text>
+          <circle class="gf-hit" data-hit cx="${xFor(i)}" cy="${yFor(ronda.v0)}" r="20" fill="transparent"/>
+        </g>`;
+    }
+    let meta = `<polyline class="gf-target" data-target points="${ronda.valores.map((v, i) => `${xFor(i)},${yFor(v)}`).join(" ")}"/>`;
+    for (let i = 1; i <= ronda.n; i++) {
+      // El último valor se etiqueta a la izquierda para no salirse del lienzo.
+      const der = i < ronda.n;
+      meta += `<text class="gf-tval" data-tv="${i}" x="${xFor(i) + (der ? 13 : -13)}" y="${yFor(ronda.valores[i]) + 4}" text-anchor="${der ? "start" : "end"}">${ronda.valores[i]}</text>`;
+    }
 
     body.innerHTML = `
-      <p class="prompt">¿Qué punto continúa la gráfica?<small>Mira cómo cambia la serie y toca el punto correcto</small></p>
-      <div class="pe-graf-wrap">${chartSvg(series.values, cands, series.next)}</div>
-      <div class="feedback" data-feedback></div>
+      <div class="gf-wrap">
+        <p class="prompt gf-prompt">${ronda.ctx.emoji} ${ronda.ctx.frase(ronda.v0, ronda.paso)}<small>Arrastra cada punto a su altura${ronda.intervalo > 1 ? ` — ojo: el eje va de ${ronda.intervalo} en ${ronda.intervalo}` : ""}</small></p>
+        <svg class="gf-svg" data-svg viewBox="0 0 ${W} ${H}" role="img" aria-label="gráfica para dibujar">
+          ${rejilla}
+          <line class="gf-axis" x1="${PAD_L}" y1="${PAD_T - 6}" x2="${PAD_L}" y2="${H - PAD_B}"/>
+          <line class="gf-axis" x1="${PAD_L}" y1="${H - PAD_B}" x2="${W - PAD_R}" y2="${H - PAD_B}"/>
+          <text class="gf-unit" x="${PAD_L - 6}" y="${PAD_T - 8}" text-anchor="end">${ronda.ctx.uy}</text>
+          <text class="gf-unit" x="${W - PAD_R}" y="${H - 6}" text-anchor="end">${ronda.ctx.ux}</text>
+          ${ejeX}
+          ${meta}
+          <polyline class="gf-line" data-line points=""/>
+          <circle class="gf-fixed" cx="${xFor(0)}" cy="${yFor(ronda.v0)}" r="7"/>
+          <text class="gf-val gf-val-fixed" x="${xFor(0) + 4}" y="${yFor(ronda.v0) - 13}" text-anchor="middle">${ronda.v0}</text>
+          ${manos}
+        </svg>
+        <div class="gf-chain" data-chain></div>
+        <button class="primary gf-ok" type="button" data-confirm>Listo</button>
+        <div class="feedback" data-feedback></div>
+      </div>
     `;
-    body.querySelectorAll(".pe-graf-cand").forEach((g) => {
-      g.addEventListener("click", () => tap(g));
+
+    svgEl = body.querySelector("[data-svg]");
+    pintar();
+    bindArrastre();
+    body.querySelector("[data-confirm]").addEventListener("click", resolver);
+  }
+
+  function pintar() {
+    svgEl.querySelector("[data-line]").setAttribute(
+      "points",
+      puntos.map((v, i) => `${xFor(i)},${yFor(v)}`).join(" ")
+    );
+    svgEl.querySelectorAll(".gf-h").forEach((g) => {
+      const i = Number(g.dataset.i);
+      const y = yFor(puntos[i]);
+      g.querySelector("[data-hit]").setAttribute("cy", String(y));
+      g.querySelector(".gf-dot").setAttribute("cy", String(y));
+      const t = g.querySelector(".gf-val");
+      t.setAttribute("y", String(y - 15));
+      t.textContent = String(puntos[i]);
     });
   }
 
-  function tap(g) {
-    if (finished || answered) return;
-    answered = true;
+  function bindArrastre() {
+    let activo = 0;
+    function aValor(clientY) {
+      const rect = svgEl.getBoundingClientRect();
+      const escala = rect.height / H; // el viewBox mantiene la proporción
+      const y0 = rect.top + (H - PAD_B) * escala;
+      const v = Math.round(((y0 - clientY) / (PLOT_H * escala)) * ronda.yMax);
+      return Math.max(0, Math.min(ronda.yMax, v));
+    }
+    // Los listeners van en el <g> y la captura también: así da igual qué
+    // hijo del punto reciba el toque, el arrastre sigue al dedo aunque se
+    // salga del círculo.
+    svgEl.querySelectorAll(".gf-h").forEach((g) => {
+      function onDown(e) {
+        if (finished || locked) return;
+        activo = Number(g.dataset.i);
+        puntos[activo] = aValor(e.clientY);
+        pintar();
+        g.setPointerCapture(e.pointerId);
+      }
+      function onMove(e) {
+        if (!activo || finished || locked) return;
+        puntos[activo] = aValor(e.clientY);
+        pintar();
+      }
+      function onUp() {
+        activo = 0;
+      }
+      g.addEventListener("pointerdown", onDown);
+      g.addEventListener("pointermove", onMove);
+      g.addEventListener("pointerup", onUp);
+      g.addEventListener("pointercancel", onUp);
+    });
+  }
+
+  function resolver() {
+    if (finished || locked) return;
+    locked = true;
     rounds++;
+    const fallos = [];
+    for (let i = 1; i <= ronda.n; i++) {
+      if (puntos[i] !== ronda.valores[i]) fallos.push(i);
+    }
+    const ok = fallos.length === 0;
+    body.querySelector("[data-confirm]").disabled = true;
+    svgEl.querySelectorAll(".gf-h").forEach((g) => {
+      g.classList.add(fallos.includes(Number(g.dataset.i)) ? "gf-bad" : "gf-good");
+    });
+    // Siempre se enseña la cadena: al acertar confirma el razonamiento y
+    // al fallar es la explicación de por qué.
+    const salto = ronda.tipo === "dobla" ? null : ronda.paso * ronda.intervalo;
+    const regla = ronda.tipo === "dobla"
+      ? "cada hora se dobla"
+      : `${ronda.tipo === "sube" ? "suma" : "resta"} ${salto} de un punto al siguiente` +
+        (ronda.intervalo > 1 ? ` (${ronda.paso} × ${ronda.intervalo})` : "");
+    body.querySelector("[data-chain]").innerHTML =
+      `<b>${ronda.valores.join(" → ")}</b><span>${regla}</span>`;
     const feedback = body.querySelector("[data-feedback]");
-    if (g.dataset.ok === "1") {
-      g.classList.add("correct");
+
+    if (ok) {
+      streak++;
       score += 10;
       renderScore();
-      feedback.textContent = "¡Sigue el patrón!";
+      feedback.textContent = "¡Gráfica clavada!";
       feedback.className = "feedback ok";
-      setTimeout(nextRound, 750);
+      later(nextRound, 1400);
     } else {
+      streak = 0;
       lives--;
       renderLives();
-      g.classList.add("wrong");
-      body.querySelector(`.pe-graf-cand[data-ok="1"]`).classList.add("correct");
-      feedback.textContent = `Era el ${next}`;
+      svgEl.classList.add("gf-reveal"); // saca la gráfica correcta encima
+      // Solo se etiqueta el valor bueno de los puntos fallados: en los
+      // acertados ya está pintado el del jugador y se duplicaría.
+      fallos.forEach((i) => { svgEl.querySelector(`[data-tv="${i}"]`).classList.add("gf-show"); });
+      feedback.textContent = fallos.length === 1
+        ? `1 punto fuera de sitio: el ${fallos[0] * ronda.intervalo} era ${ronda.valores[fallos[0]]}`
+        : `${fallos.length} puntos fuera de sitio`;
       feedback.className = "feedback bad";
-      if (lives <= 0) return setTimeout(() => finish(false), 800);
-      setTimeout(nextRound, 1100);
+      if (lives <= 0) return later(() => finish(false), 2200);
+      later(nextRound, 2600);
     }
   }
 
   function finish(userExited) {
-    if (finished) return;
+    // Con el end-card en pantalla la partida ya está terminada, pero el
+    // botón "← Menú" de la barra tiene que seguir llevando al menú: la
+    // guarda solo debe frenar los remates automáticos, no la salida.
+    if (finished) return userExited ? onExit() : undefined;
     finished = true;
+    clearTimers();
     if (userExited) return onExit();
     saveScore(client, "grafica", { score, rounds });
     body.innerHTML = `
@@ -187,10 +339,13 @@ export function mountGraficaGame(container, { client, onExit }) {
   }
 
   function start() {
+    clearTimers();
     lives = startLives;
     score = 0;
     rounds = 0;
+    streak = 0;
     finished = false;
+    locked = false;
     renderLives();
     renderScore();
     nextRound();
@@ -199,5 +354,6 @@ export function mountGraficaGame(container, { client, onExit }) {
   start();
   return () => {
     finished = true;
+    clearTimers();
   };
 }

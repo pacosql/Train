@@ -1,4 +1,4 @@
-// App de reservas de "Eduardo Carrillo Tenis & Pádel Club".
+// App de reservas de "Ranero Tenis & Pádel Club".
 //
 // Prototipo sin autenticación: cualquier visitante puede leer/crear/cancelar
 // reservas (RLS de Supabase abierta a "anon"). Para producción real haría
