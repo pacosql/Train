@@ -141,7 +141,11 @@ export function generateRecetaRound() {
   const chosen = shuffle(INGREDIENTS).slice(0, howMany);
 
   const ingredients = chosen.map((ing) => {
-    const mMax = Math.max(1, Math.floor(ing.maxCount / den));
+    // `m` se acota por el mayor de num/den, porque la cantidad final
+    // puede crecer (factor > 1) o encogerse (factor < 1): hay que dejar
+    // margen en la dirección que más crezca para no acabar con
+    // cantidades absurdas en ninguno de los dos sentidos.
+    const mMax = Math.max(1, Math.floor(ing.maxCount / Math.max(num, den)));
     const m = randInt(1, mMax);
     const countUnits = den * m; // múltiplo exacto de den
     const qtyX = countUnits * ing.unitSize;
