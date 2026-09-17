@@ -218,11 +218,12 @@
 
     <!-- CARDIO PICK -->
     <section id="screen-cardio-pick" hidden>
-      <h2>¿Elíptica o bicicleta hoy?</h2>
+      <h2>¿Qué cardio hoy?</h2>
       <p class="sub">Siempre empezamos calentando con cardio.</p>
       <div class="chip-row">
         <div class="chip" data-cardio="eliptica">🏃 Elíptica</div>
         <div class="chip" data-cardio="bicicleta">🚴 Bicicleta</div>
+        <div class="chip" data-cardio="andar">🚶 Andar</div>
       </div>
     </section>
 
@@ -340,6 +341,12 @@
       sessions: "weights_sessions",
       sessionExercises: "weights_session_exercises",
     };
+    // Icono por tipo de cardio, con emoji genérico de respaldo — así una
+    // opción de cardio nueva (slug distinto) no necesita tocar el código.
+    const CARDIO_ICONS = { eliptica: "🏃", bicicleta: "🚴", andar: "🚶" };
+    function cardioTitle(ex) {
+      return `${CARDIO_ICONS[ex.slug] || "🏃"} ${ex.name}`;
+    }
 
     const el = (id) => document.getElementById(id);
     const screens = ["home", "setup", "cardio-pick", "cardio", "pick", "exercise", "add-exercise", "feedback", "summary"];
@@ -603,7 +610,7 @@
         state.cardioStartedAt = new Date().toISOString();
       }
       saveState();
-      el("cardio-title").textContent = ex.slug === "eliptica" ? "🏃 Elíptica" : "🚴 Bicicleta";
+      el("cardio-title").textContent = cardioTitle(ex);
       el("cardio-minutes").textContent = state.cardioMinutesSuggested || 15;
       el("cardio-hint").textContent = "Repites cardio cuando quieras — marca \"Cardio terminado\" al acabar.";
       showScreen("cardio");
@@ -854,7 +861,7 @@
       state.cardioExerciseId = ex.id;
       state.cardioStartedAt = new Date().toISOString();
       saveState();
-      el("cardio-title").textContent = slug === "eliptica" ? "🏃 Elíptica" : "🚴 Bicicleta";
+      el("cardio-title").textContent = cardioTitle(ex);
       el("cardio-minutes").textContent = state.cardioMinutesSuggested;
       el("cardio-hint").textContent = `Para una sesión de ${state.plannedDuration} min, esto deja tiempo de sobra para las máquinas.`;
       showScreen("cardio");
@@ -901,7 +908,7 @@
         showScreen("feedback");
       } else if (target === "cardio") {
         const cardioEx = catalog.find((e) => e.id === state.cardioExerciseId);
-        el("cardio-title").textContent = cardioEx ? cardioEx.name : "🚴 Cardio";
+        el("cardio-title").textContent = cardioEx ? cardioTitle(cardioEx) : "🚴 Cardio";
         el("cardio-minutes").textContent = state.cardioMinutesSuggested || 15;
         showScreen("cardio");
       } else {
