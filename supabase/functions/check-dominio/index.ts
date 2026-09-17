@@ -60,10 +60,27 @@ async function whoisRaw(host, query, port = 43) {
   }
 }
 
+function withTimeout(promise, ms, onTimeout) {
+  return Promise.race([
+    promise,
+    new Promise((resolve) => setTimeout(() => resolve(onTimeout), ms)),
+  ]);
+}
+
 async function checkEs(slug) {
   const domain = `${slug}.es`;
   try {
-    const text = await whoisRaw("whois.nic.es", domain);
+    // El whois de whois.nic.es puede tardar minuto y medio en dar
+    // timeout de verdad (confirmado en real) — con IP no autorizada por
+    // Red.es casi nunca hay datos útiles, así que se corta pronto en
+    // vez de bloquear comprobaciones en lote.
+    const text = await withTimeout(whoisRaw("whois.nic.es", domain), 4000, null);
+    if (text === null) {
+      return {
+        libre: null,
+        detalle: "whois.nic.es no respondió a tiempo (puede tardar >1min sin IP autorizada por Red.es). Usa el enlace manual.",
+      };
+    }
     const lower = text.toLowerCase();
     const accesoRestringido =
       lower.includes("conditions of use") ||
