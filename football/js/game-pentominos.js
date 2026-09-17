@@ -198,13 +198,20 @@ function piecesFromGrid(grid, cols, count) {
   return cells.map((cs) => ptNormalize(cs));
 }
 
-// Genera una ronda válida: troceado real + teselado ÚNICO + variedad de
-// formas. Devuelve { cols, rows, size, shapes, solution, attempts, fallback }.
-export function ptGenerate(streak, maxTries = 400) {
+// Genera una ronda válida. Aquí la respuesta del jugador no es "una
+// combinación concreta" sino "el rectángulo queda cubierto sin huecos", así
+// que no hay ambigüedad al corregir: cualquier teselado completo es correcto
+// y siempre existe al menos uno (el propio troceado). Aun así se busca el
+// troceado con MENOS teselados posibles entre varios candidatos, para que la
+// pieza no sobre por todos lados, y se verifica por fuerza bruta (exact
+// cover) que el candidato elegido es resoluble.
+// Devuelve { cols, rows, size, shapes, solution, covers, attempts, fallback }.
+export function ptGenerate(streak, maxTries = 60, samples = 8) {
   const lv = ptLevelFor(streak);
   let attempts = 0;
-  let relaxed = null;
-  while (attempts < maxTries) {
+  let best = null;
+  let tested = 0;
+  while (attempts < maxTries && tested < samples) {
     attempts++;
     const grid = ptChop(lv.cols, lv.rows, lv.count, lv.size);
     if (!grid) continue;
@@ -217,21 +224,18 @@ export function ptGenerate(streak, maxTries = 400) {
       distinct.add(rs[0]);
     }
     if (distinct.size < 3) continue;
+    tested++;
     const empty = new Array(lv.cols * lv.rows).fill(false);
-    const covers = ptCountCovers(lv.cols, lv.rows, empty, shapes, 2);
-    if (covers === 1) {
-      return { cols: lv.cols, rows: lv.rows, size: lv.size, shapes, solution: grid, attempts, fallback: false };
-    }
-    if (covers >= 1 && !relaxed) {
-      relaxed = { cols: lv.cols, rows: lv.rows, size: lv.size, shapes, solution: grid, attempts, fallback: false };
-    }
+    const covers = ptCountCovers(lv.cols, lv.rows, empty, shapes, 6);
+    if (covers < 1) continue; // no debería pasar nunca: el troceado ya es solución
+    const cand = { cols: lv.cols, rows: lv.rows, size: lv.size, shapes, solution: grid, covers };
+    if (!best || covers < best.covers) best = cand;
+    if (covers === 1) break;
   }
-  // Guarda agotada: primero un troceado válido aunque admita más de un
-  // teselado (sigue siendo resoluble y cualquier relleno completo vale),
-  // y como último recurso el puzle fijo.
-  if (relaxed) return { ...relaxed, attempts, fallback: false };
+  if (best) return { ...best, attempts, fallback: false };
+  // Guarda agotada: puzle fijo, válido y resoluble, nunca uno roto.
   const shapes = piecesFromGrid(PT_FALLBACK.solution, PT_FALLBACK.cols, 4);
-  return { ...PT_FALLBACK, shapes, attempts, fallback: true };
+  return { ...PT_FALLBACK, shapes, covers: 1, attempts, fallback: true };
 }
 
 export function mountPentominosGame(container, { client, onExit }) {

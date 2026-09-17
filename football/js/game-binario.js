@@ -223,14 +223,17 @@ export function mountBinarioGame(container, { client, onExit }) {
       return `<i class="bn-bit${bit ? " up" : ""}${changed ? " chg" : ""}">${bit}</i>`;
     }).join("");
     const sign = round.dir > 0 ? "+" : "−";
+    // "el 4, el 2 y el 1": leerlo en voz alta es la mitad de la explicación.
+    const listOf = (vals) => vals.map((p) => `el ${p}`).join(", ").replace(/, (el \d+)$/, " y $1");
     const parts = [];
-    if (offs.length) parts.push(`se apaga${offs.length > 1 ? "n" : ""} ${offs.join(", ")}`);
-    if (ons.length) parts.push(`se enciende${ons.length > 1 ? "n" : ""} ${ons.join(", ")}`);
+    if (offs.length) parts.push(`se apaga${offs.length > 1 ? "n" : ""} ${listOf(offs)}`);
+    if (ons.length) parts.push(`se enciende${ons.length > 1 ? "n" : ""} ${listOf(ons)}`);
     const tail = round.dir > 0 && offs.length
       ? ` — los unos de la derecha se agotan y llevas una al sitio siguiente.`
       : round.dir < 0 && ons.length
         ? ` — no hay nada que quitar a la derecha, así que pides prestado al sitio siguiente.`
         : "";
+    const n = offs.length + ons.length;
     const why = body.querySelector("[data-why]");
     why.hidden = false;
     why.innerHTML = `
@@ -239,7 +242,7 @@ export function mountBinarioGame(container, { client, onExit }) {
       <div class="bn-why-row">${row(a, b)}</div>
       <div class="bn-why-arrow">↓</div>
       <div class="bn-why-row">${row(b, a)}</div>
-      <p class="bn-why-text">Cambian ${offs.length + ons.length} interruptores: ${parts.join(" y ")}${tail}</p>
+      <p class="bn-why-text">${n === 1 ? "Cambia 1 interruptor" : `Cambian ${n} interruptores`}: ${parts.join("; ")}${tail}</p>
     `;
   }
 

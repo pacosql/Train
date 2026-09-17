@@ -170,11 +170,14 @@ export function mountGraficaGame(container, { client, onExit }) {
     }
     let manos = "";
     for (let i = 1; i <= ronda.n; i++) {
+      // El círculo de agarre va el ÚLTIMO del grupo: así queda por encima
+      // del punto pintado y recibe él el pointerdown (si no, el dedo toca
+      // el punto visible y el arrastre no arranca).
       manos += `
         <g class="gf-h" data-i="${i}">
-          <circle class="gf-hit" data-hit cx="${xFor(i)}" cy="${yFor(ronda.v0)}" r="19" fill="transparent"/>
           <circle class="gf-dot" cx="${xFor(i)}" cy="${yFor(ronda.v0)}" r="9"/>
           <text class="gf-val" x="${xFor(i)}" y="${yFor(ronda.v0) - 15}" text-anchor="middle">${ronda.v0}</text>
+          <circle class="gf-hit" data-hit cx="${xFor(i)}" cy="${yFor(ronda.v0)}" r="20" fill="transparent"/>
         </g>`;
     }
     let meta = `<polyline class="gf-target" data-target points="${ronda.valores.map((v, i) => `${xFor(i)},${yFor(v)}`).join(" ")}"/>`;
@@ -220,7 +223,7 @@ export function mountGraficaGame(container, { client, onExit }) {
     svgEl.querySelectorAll(".gf-h").forEach((g) => {
       const i = Number(g.dataset.i);
       const y = yFor(puntos[i]);
-      g.querySelector(".gf-hit").setAttribute("cy", String(y));
+      g.querySelector("[data-hit]").setAttribute("cy", String(y));
       g.querySelector(".gf-dot").setAttribute("cy", String(y));
       const t = g.querySelector(".gf-val");
       t.setAttribute("y", String(y - 15));
@@ -237,14 +240,16 @@ export function mountGraficaGame(container, { client, onExit }) {
       const v = Math.round(((y0 - clientY) / (PLOT_H * escala)) * ronda.yMax);
       return Math.max(0, Math.min(ronda.yMax, v));
     }
+    // Los listeners van en el <g> y la captura también: así da igual qué
+    // hijo del punto reciba el toque, el arrastre sigue al dedo aunque se
+    // salga del círculo.
     svgEl.querySelectorAll(".gf-h").forEach((g) => {
-      const hit = g.querySelector("[data-hit]");
       function onDown(e) {
         if (finished || locked) return;
         activo = Number(g.dataset.i);
         puntos[activo] = aValor(e.clientY);
         pintar();
-        hit.setPointerCapture(e.pointerId);
+        g.setPointerCapture(e.pointerId);
       }
       function onMove(e) {
         if (!activo || finished || locked) return;
@@ -254,10 +259,10 @@ export function mountGraficaGame(container, { client, onExit }) {
       function onUp() {
         activo = 0;
       }
-      hit.addEventListener("pointerdown", onDown);
-      hit.addEventListener("pointermove", onMove);
-      hit.addEventListener("pointerup", onUp);
-      hit.addEventListener("pointercancel", onUp);
+      g.addEventListener("pointerdown", onDown);
+      g.addEventListener("pointermove", onMove);
+      g.addEventListener("pointerup", onUp);
+      g.addEventListener("pointercancel", onUp);
     });
   }
 

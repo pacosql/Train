@@ -285,11 +285,11 @@ export function mountReglaGame(container, { client, onExit }) {
     const a = Math.min(round.anchor, freeMark);
     const b = Math.max(round.anchor, freeMark);
     const cuenta = round.mode === "estira"
-      ? `${round.anchor} + ${round.length} = ${round.target}`
-      : `${round.anchor} − ${round.length} = ${round.target}`;
+      ? `${round.anchor} + ${round.length} = ${round.target}, había que acabar en el ${round.target}`
+      : `${round.anchor} − ${round.length} = ${round.target}, había que empezar en el ${round.target}`;
     why.innerHTML = `
-      <span class="rg-why-bad">${b} − ${a} = ${mide} cm</span>
-      <span class="rg-why-good">pedía ${round.length} cm → ${cuenta}</span>
+      <span class="rg-why-bad">Tu trozo: de ${a} a ${b} → ${b} − ${a} = ${mide} cm</span>
+      <span class="rg-why-good">Pedía ${round.length} cm: ${cuenta}</span>
     `;
     why.classList.add("on");
     const good = body.querySelector("[data-good]");

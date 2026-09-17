@@ -192,7 +192,9 @@ export function mountReparteGame(container, { client, onExit }) {
     btn.classList.add("no");
     note.textContent = `sobran ${rest}`;
     renderTray(size, true);
-    fb.textContent = `De ${size} en ${size} sobran ${rest}: ${round.total} = ${size} × ${full} + ${rest}`;
+    // La cuenta entera se queda escrita debajo del dibujo (rp-caption), así
+    // que aquí basta con el porqué en una línea.
+    fb.textContent = `De ${size} en ${size} no cabe justo: sobran ${rest} galleta${rest > 1 ? "s" : ""}`;
     fb.className = "feedback bad";
     if (lives <= 0) {
       locked = true;

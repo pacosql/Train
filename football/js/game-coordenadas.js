@@ -135,7 +135,7 @@ export function mountCoordenadasGame(container, { client, onExit }) {
       <div class="cd-wrap" data-wrap></div>
       <div class="cd-readout" data-readout>Toca un punto del plano</div>
       <div class="feedback" data-feedback></div>
-      <button class="primary" data-confirm disabled style="margin-top:10px;">✓ Confirmar D</button>
+      <button class="primary cd-confirm" data-confirm disabled style="margin-top:10px;">✓ Confirmar D</button>
     `;
     body.querySelector("[data-confirm]").addEventListener("click", check);
     renderPlane();

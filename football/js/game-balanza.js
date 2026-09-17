@@ -117,7 +117,7 @@ export function mountBalanzaGame(container, { client, onExit }) {
   let value = 0;   // lo que el jugador cree que pesa un saco
   let movesLeft = MOVES;
   let locked = false;
-  let beamEl, panLEl, panREl, tiltEl, valueEl, movesEl;
+  let barEl, ropeLEl, ropeREl, panLEl, panREl, tiltEl, valueEl, movesEl;
 
   container.innerHTML = `
     <div class="game-topbar">
@@ -175,19 +175,23 @@ export function mountBalanzaGame(container, { client, onExit }) {
       <div class="bz-wrap">
         <p class="prompt bz-prompt">¿Cuánto pesa <b>un saco</b>?<small>los sacos son todos iguales — la balanza está en equilibrio cuando aciertas</small></p>
         <div class="bz-scale">
-          <div class="bz-beam" data-beam>
-            <span class="bz-bar"></span>
-            <div class="bz-hang bz-hang-l"><div class="bz-pan" data-pan-l></div></div>
-            <div class="bz-hang bz-hang-r"><div class="bz-pan" data-pan-r></div></div>
-          </div>
           <span class="bz-mast"></span>
           <span class="bz-base"></span>
+          <span class="bz-bar" data-bar></span>
+          <div class="bz-side bz-side-l">
+            <span class="bz-rope" data-rope-l></span>
+            <div class="bz-pan" data-pan-l></div>
+          </div>
+          <div class="bz-side bz-side-r">
+            <span class="bz-rope" data-rope-r></span>
+            <div class="bz-pan" data-pan-r></div>
+          </div>
         </div>
         <div class="bz-tilt" data-tilt></div>
         <div class="bz-dial">
           <button class="bz-step" data-adj="-5">−5</button>
           <button class="bz-step" data-adj="-1">−1</button>
-          <div class="bz-value">1 saco =<b data-x>0</b>kg</div>
+          <div class="bz-value">1 saco pesa<b><span data-x>0</span><i>kg</i></b></div>
           <button class="bz-step" data-adj="1">+1</button>
           <button class="bz-step" data-adj="5">+5</button>
         </div>
@@ -198,7 +202,9 @@ export function mountBalanzaGame(container, { client, onExit }) {
       </div>
     `;
 
-    beamEl = body.querySelector("[data-beam]");
+    barEl = body.querySelector("[data-bar]");
+    ropeLEl = body.querySelector("[data-rope-l]");
+    ropeREl = body.querySelector("[data-rope-r]");
     panLEl = body.querySelector("[data-pan-l]");
     panREl = body.querySelector("[data-pan-r]");
     tiltEl = body.querySelector("[data-tilt]");
@@ -226,11 +232,15 @@ export function mountBalanzaGame(container, { client, onExit }) {
 
   function renderScale() {
     const diff = pesoIzq(value) - pesoDer(value);
-    // Izquierda más pesada = la izquierda baja = giro antihorario.
-    const rot = -clamp(diff * 1.6, -14, 14);
-    beamEl.style.transform = `rotate(${rot}deg)`;
-    panLEl.style.transform = `rotate(${-rot}deg)`;
-    panREl.style.transform = `rotate(${-rot}deg)`;
+    // El plato que pesa más baja, y la viga se inclina justo lo que da esa
+    // bajada: así el dibujo es coherente (cuerdas pegadas a los extremos) y
+    // la diferencia se lee de un vistazo sin decir los kilos.
+    const dy = clamp(diff * 2.4, -18, 18);
+    ropeLEl.style.height = `${16 + dy}px`;
+    ropeREl.style.height = `${16 - dy}px`;
+    const semi = Math.max(barEl.getBoundingClientRect().width / 2, 40);
+    const rot = -(Math.atan2(dy, semi) * 180) / Math.PI;
+    barEl.style.transform = `rotate(${rot}deg)`;
     valueEl.textContent = String(value);
     movesEl.textContent = String(movesLeft);
     // Sólo el lado que pesa más: los totales se revelan al confirmar, si no

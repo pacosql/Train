@@ -332,7 +332,7 @@ export function mountTorreGame(container, { client, onExit }) {
     // sumaste tú y la única descomposición que valía.
     why.innerHTML = `
       <span class="tw-why-line">Pedía ${round.text}: <b>${round.how}</b></span>
-      <span class="tw-why-line tw-why-bad">Tú: ${used.map((i) => round.pieces[i]).join(" + ")} = ${suma}</span>
+      <span class="tw-why-line tw-why-bad">Tú: ${used.length > 1 ? `${used.map((i) => round.pieces[i]).join(" + ")} = ${suma}` : suma}</span>
       <span class="tw-why-line tw-why-good">Única forma: ${round.sol.join(" + ")} = ${round.target}</span>
     `;
     why.classList.add("on");
