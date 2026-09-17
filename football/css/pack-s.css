@@ -1,0 +1,401 @@
+/* Pack S — octava tanda (17-09-2026, tarde) — tramo único
+   Prefijos: .rgl- (regletas), .bn10- (bonos10), .obj- (objetivo),
+   .fls- (flash), .gcv- (geoclavos), .est- (estadisticas).
+   Verificados sin colisión con el resto del catálogo. */
+
+/* --- regletas --- */
+/* Regletas relativas — prefijo exclusivo .rgl- (verificado libre con
+   `grep -rn "\.rgl-" football/css/*.css` antes de crear este archivo).
+   Reutiliza .game-topbar, .choices, .choice-btn, .prompt, .feedback y
+   .end-card de style.css; aquí solo van las regletas dibujadas a escala. */
+
+.rgl-rods {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 320px;
+  margin: 4px auto 22px;
+}
+
+.rgl-rod-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.rgl-rod-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.rgl-rod-label strong {
+  color: var(--accent);
+}
+
+/* Cada regleta es una barra cuya anchura es proporcional a su longitud
+   (px por unidad fijo en JS), con el color fijo de esa longitud. */
+.rgl-rod {
+  position: relative;
+  height: 44px;
+  border-radius: 8px;
+  border: 2px solid rgba(0, 0, 0, 0.15);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.rgl-rod-short {
+  height: 34px;
+}
+
+/* Líneas que dividen la regleta unidad en "d" partes iguales, para que
+   se pueda comparar visualmente cuántas partes ocupa la regleta corta. */
+.rgl-rod-divider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  border-left: 2px dashed rgba(0, 0, 0, 0.35);
+}
+
+/* Sombreado sutil sobre las primeras "n" partes de la unidad, del mismo
+   ancho que la regleta corta, para reforzar la comparación de un vistazo. */
+.rgl-rod-highlight {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(255, 255, 255, 0.32);
+  border-right: 2px solid rgba(0, 0, 0, 0.3);
+}
+
+.rgl-rod-num {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-weight: 800;
+  font-size: 0.85rem;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+@media (max-width: 400px) {
+  .rgl-rods {
+    max-width: 100%;
+  }
+}
+
+/* --- bonos10 --- */
+/* ---------- Bonos de agujeros (bonos10) ---------- */
+/* Prefijo exclusivo bn10- (comprobado libre en css/style.css). Las
+   fichas nunca muestran un dígito: el valor se reconoce solo por el
+   patrón fijo de agujeros, inspirado en las piezas Numicon. */
+.bn10-target-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+.bn10-target-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.bn10-tile-slot { display: flex; }
+
+.bn10-tile {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: 1fr;
+  gap: 4px;
+  width: 44px;
+  height: 108px;
+  padding: 6px;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+}
+.bn10-tile.bn10-target {
+  width: 64px;
+  height: 152px;
+  padding: 8px;
+  border-width: 3px;
+  border-color: var(--accent);
+}
+
+.bn10-dot {
+  border-radius: 50%;
+  background: transparent;
+  border: 2px solid transparent;
+}
+.bn10-dot.on {
+  background: var(--accent-2);
+  border-color: var(--accent-2);
+}
+.bn10-target .bn10-dot.on {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.bn10-bank {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 360px;
+  margin-bottom: 4px;
+}
+.bn10-choice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+}
+.bn10-choice.bn10-selected {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent) inset;
+}
+.bn10-choice.correct .bn10-dot.on { background: #fff; border-color: #fff; }
+.bn10-choice.wrong .bn10-dot.on { background: #fff; border-color: #fff; }
+
+.bn10-confirm-btn { margin-top: 14px; }
+.bn10-confirm-btn:disabled { opacity: 0.45; cursor: default; }
+
+/* --- objetivo --- */
+/* "Da en el número" (objetivo) — prefijo exclusivo obj-. Reutiliza
+   .game-body, .prompt, .choice-btn, .feedback, .end-card y las variables
+   de tema de css/style.css; solo añade lo específico de este juego. */
+
+.obj-target {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--accent);
+  background: var(--bg);
+  border: 2px solid var(--accent);
+  border-radius: 14px;
+  padding: 10px 22px;
+  margin-bottom: 18px;
+}
+
+.obj-numbers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  width: 100%;
+  max-width: 360px;
+  margin-bottom: 16px;
+}
+
+.obj-num {
+  min-width: 64px;
+  padding: 14px 10px;
+}
+
+.obj-ops {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  width: 100%;
+  max-width: 360px;
+  margin-bottom: 4px;
+}
+
+.obj-op-btn {
+  flex: 1 1 0;
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 8px;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--text);
+  cursor: pointer;
+}
+.obj-op-btn:active { transform: scale(0.97); }
+.obj-op-btn:disabled { opacity: 0.4; cursor: default; }
+
+.obj-num.obj-selected,
+.obj-op-btn.obj-selected {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.obj-giveup-btn {
+  margin-top: 14px;
+}
+
+/* --- flash --- */
+/* game-flash.js — "Vistazo relámpago" (subitizing). Prefijo exclusivo
+   fls- (verificado libre con grep sobre css/*.css). Reutiliza .prompt,
+   .feedback, .choice-btn, .primary, .secondary, .end-card de style.css.
+   Variables reutilizadas: --card --text --muted --border --accent. */
+
+.fls-stage {
+  position: relative;
+  width: 100%;
+  max-width: 260px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.fls-area {
+  position: relative;
+  width: 260px;
+  max-width: 100%;
+  height: 200px;
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.fls-area.fls-empty { background: var(--bg); }
+
+.fls-dot {
+  position: absolute;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.fls-ready-btn { min-width: 140px; }
+
+.fls-keypad {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  width: 100%;
+}
+
+.fls-key { padding: 14px 4px; font-size: 1.1rem; font-weight: 700; }
+
+.fls-continue-btn { min-width: 140px; }
+
+/* --- geoclavos --- */
+/* ---------- Geoclavos: "Encierra el perímetro" (geoplano) ---------- */
+.gcv-board {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto 10px;
+}
+.gcv-svg {
+  width: 100%;
+  max-width: 260px;
+  height: auto;
+  touch-action: manipulation;
+}
+.gcv-hit {
+  fill: var(--bg);
+  stroke: var(--border);
+  stroke-width: 1.5;
+  cursor: pointer;
+}
+.gcv-hit:active { fill: var(--border); }
+.gcv-side {
+  stroke: var(--accent);
+  stroke-width: 3;
+  stroke-linecap: round;
+  /* Un lado dibujado (sobre todo el de cierre) puede pasar justo encima de
+     un clavo — sin esto, la línea intercepta el click y el clavo que hay
+     debajo queda inalcanzable. */
+  pointer-events: none;
+}
+.gcv-nail {
+  fill: var(--accent);
+  pointer-events: none;
+}
+.gcv-nail-first {
+  fill: var(--accent-2);
+}
+.gcv-info {
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin: 4px 0 12px;
+}
+.gcv-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+
+/* --- estadisticas --- */
+/* Estilos exclusivos del ejercicio "Estadísticas de fútbol" (id
+   `estadisticas`). Prefijo `est-` verificado libre en football/css/*.css
+   (grep -rn "\.est-" no devolvió nada antes de crear este archivo).
+   Reutiliza .game-topbar, .lives, .score, .prompt, .choice-btn, .feedback
+   y .end-card de style.css — aquí solo se añade el layout específico de
+   las tarjetas de jugador y su fila de goles. */
+
+.est-players {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 380px;
+}
+
+.est-player-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  text-align: left;
+  padding: 12px 14px;
+}
+
+.est-player-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.est-player-emoji {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.est-player-name {
+  font-weight: 800;
+  font-size: 1rem;
+}
+
+.est-goals-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.est-goal-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 26px;
+  padding: 0 6px;
+  border-radius: 8px;
+  background: var(--border);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.est-player-card.correct .est-goal-chip,
+.est-player-card.wrong .est-goal-chip {
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+

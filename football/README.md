@@ -1,7 +1,7 @@
 # Math Games 🧠
 
-PWA (sin build, HTML/CSS/JS puro) con **129 ejercicios de matemáticas**,
-cada uno numerado (#1-#129) para poder referirse a ellos sin ambigüedad.
+PWA (sin build, HTML/CSS/JS puro) con **135 ejercicios de matemáticas**,
+cada uno numerado (#1-#135) para poder referirse a ellos sin ambigüedad.
 Cálculo mental, geometría, álgebra, estadística, fracciones, dinero,
 probabilidad, coordenadas, tiempo y más. Nace como banco de pruebas
 rápido para sacar ideas de mecánicas (tipo Duolingo Math, Synthesis,
@@ -435,6 +435,56 @@ mirando un número en pantalla (no lo hay) — confirmando que el
 marcador sube +10 en cada acierto, y que fallar a propósito en #124
 resta una vida con el mensaje correcto.
 
+## Ejercicios #130-#135 (octava tanda, 17-09-2026 tarde) — tramo único
+
+### Tramo único — [`css/pack-s.css`](./css/pack-s.css)
+
+Sin filas `review` pendientes, se saltó el paso de revisión. Familia 7
+(manipulativos de aula) llevaba 3 rondas sin tocarse, así que se
+priorizó ahí, junto con prensa (NYT) e investigación educativa
+(subitizing).
+
+| # | Juego | Tema | Mecánica | De dónde sale |
+|---|---|---|---|---|
+| 130 | 🟧 Regletas relativas | Fracciones equivalentes | Con dos regletas Cuisenaire (una declarada "la unidad"), di qué fracción de la unidad representa la más corta — el mismo color/longitud vale distinto según qué se elija como entero | Cuisenaire rods, familia 7 |
+| 131 | 🔵 Bonos de agujeros | Number bonds / subitizing | Toca dos fichas con patrones de agujeros (sin ningún dígito impreso) cuya suma iguale la ficha objetivo, también mostrada como figura de agujeros | Numicon, familia 7 |
+| 132 | 🎯 Da en el número | Operaciones combinadas | Combina números de una bolsa con +, −, ×, ÷ (cada uno usable una vez, sin fracciones ni negativos) hasta alcanzar exacto el objetivo | NYT Digits, familia 2 |
+| 133 | ⚡ Vistazo relámpago | Subitizing | Un patrón de puntos aparece solo 500-900ms y desaparece; teclea cuántos había sin haber podido contarlos | Investigación en subitizing, familia 12 |
+| 134 | 📐 Encierra el perímetro | Perímetro | En un geoplano, construye una figura tocando clavos en orden hasta que su perímetro real coincida con el objetivo — al revés que #39, que da la figura y pide calcular | Geoboard, familia 7 — inversión 4.3 |
+| 135 | ⚽ Estadísticas de fútbol | Media, mediana y moda | Calcula la media o mediana de goles de 3 jugadores para decidir a cuál fichar — el cálculo es el medio para decidir, no la pregunta directa | Inventado: terna *media/mediana/moda + apostar + fútbol* |
+
+Verificación antes de publicar: `verify_regletas.mjs` sobre 200.000
+rondas de #130 (fracción siempre simplificada, longitudes siempre en
+1-10); `verify_bonos10.mjs` sobre 20.000 rondas de #131 (por fuerza
+bruta independiente: el banco tiene siempre EXACTAMENTE un par que
+suma el objetivo); `verify_objetivo.mjs` sobre 5.000 rondas de #132
+(cada paso de la solución de ejemplo recalculado desde cero, sin
+fracciones ni negativos, ningún número de partida reutilizado);
+`sim_flash.mjs` sobre 8.000 rondas de #133 (cantidad de puntos 3-9,
+distancia mínima entre puntos siempre respetada, exposición siempre
+en 500-900ms); `verify_geoclavos.mjs` sobre 20.000 rondas de #134
+(el rectángulo generador siempre cabe en la rejilla 6×6 y el objetivo
+es siempre par y alcanzable); `test_estadisticas.mjs` sobre 20.000
+rondas de #135 (media y mediana recalculadas de forma independiente,
+0 empates en la estadística preguntada). Los 135 ejercicios cargan sin
+error de consola, y los 6 nuevos se jugaron de verdad en el navegador
+calculando la respuesta correcta de forma independiente — incluyendo
+#134, donde el generador de la prueba eligió su propio rectángulo
+válido (no el de la ronda) para demostrar que cualquier figura
+correcta se acepta — confirmando que el marcador sube +10 en cada
+acierto, y que fallar a propósito en #134 resta una vida con el
+mensaje correcto.
+
+**Fallo real encontrado y corregido en #134 antes de publicar:** al
+jugarlo de verdad, el clic para cerrar la figura sobre el primer clavo
+fallaba de forma intermitente — el lado recién dibujado (una línea
+SVG) se pintaba encima del clavo y le robaba el evento de clic,
+porque solo los clavos ya tocados (`.gcv-nail`) tenían
+`pointer-events: none`, pero los LADOS (`.gcv-side`) no. Añadido
+`pointer-events: none` también a `.gcv-side`; reproducido el fallo
+antes del cambio y confirmado que desaparece después, en Chromium real
+(no fue un artefacto de la prueba).
+
 ## Versiones (v2) y bandeja "Revisar"
 
 Cuando un ejercicio recibe una vuelta de mejoras, se marca con un
@@ -680,17 +730,17 @@ Una vez publicado, esta app queda en:
 
 ## Qué hace la app
 
-- Menú con los 129 ejercicios numerados, organizados en pestañas
+- Menú con los 135 ejercicios numerados, organizados en pestañas
   🆕/👍/👎/🔧; cada uno abre en su propia pantalla (`#/game/<id>`), sin
   recargar la página.
 - Motor de preguntas compartido (`js/quiz-engine.js`) para los 18
   ejercicios de "pregunta + opciones o teclado" (`js/games-data.js` y
-  `js/games-data-2.js`); los otros 111 (`js/game-*.js` y
+  `js/games-data-2.js`); los otros 117 (`js/game-*.js` y
   `js/balloons-game.js`) tienen cada uno su propia mecánica de
   interacción (arrastrar, tocar en orden, emparejar, construir,
   escribir, clasificar, recorrer…).
 - Los estilos de cada tanda viven en su propio `css/pack-<letra>.css`
-  (de `pack-a.css` a `pack-r.css`, uno por tramo temático), para que
+  (de `pack-a.css` a `pack-s.css`, uno por tramo temático), para que
   tocar una tanda no arrastre a las demás.
 - Guarda cada partida en `football_scores` y muestra las últimas en el
   menú.
