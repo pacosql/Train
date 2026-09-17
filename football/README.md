@@ -170,6 +170,37 @@ combinación forzada, la inversión o la restricción).
 | 89 | 🌈 Colorea el mapa | Lógica y grafos | Coloreas sin que dos vecinas compartan color y con el mínimo de colores posible | Divulgación de **Clara Grima**: grafos y los cuatro colores (familia 2) |
 | 90 | 🤿 Buceo | Enteros | Llevas al buzo a la cota exacta con saltos de un solo uso: enteros con signo como desplazamiento vertical real | Inventado: terna *negativos + apilar + fondo del mar* |
 
+## Ejercicios #91-#96 (quinta tanda) — tramo 1: deducción y valor posicional
+
+Primer tramo de la tanda del 17-09-2026 (tarde). Media tanda sale de
+investigar apps edtech, prensa/blogs de divulgación y retos de aula que
+no se habían tocado en las últimas rondas; la otra mitad, del proceso de
+combinación forzada (4.1) y de inversión (4.3). Backlog fusionado en
+Supabase (`idea_log`) antes de construir nada.
+
+### Tramo «Deducción y valor posicional» — [`css/pack-l.css`](./css/pack-l.css)
+
+| # | Juego | Tema | Mecánica | De dónde sale |
+|---|---|---|---|---|
+| 91 | 🔑 Rompe el código | Valor posicional | Mastermind numérico de 3 cifras sin repetir: cada intento da cifras en su sitio y cifras descolocadas, con el historial completo siempre visible para razonar | Number Mastermind (familia 6) |
+| 92 | 🎴 Trío | Lógica y atributos | 9 cartas con 3 atributos; toca 3 donde cada atributo sea TODO igual o TODO distinto — nunca "dos y una" | Juego de mesa *Set* (familia 5) |
+| 93 | 📦 ¿Qué cubo sale? | Geometría espacial | Un desarrollo plano en cruz y 3 cubos ya plegados en pseudo-3D real (`rotateX/rotateY`); solo uno es coherente con qué caras quedan opuestas | *Net or Not* / vídeojuegos de plegado (familia 6) |
+| 94 | 🧲 Caen diez | Sumas | Grid tipo caída: toca dos fichas adyacentes (nunca en diagonal) que sumen exactamente 10 y caen las de arriba a rellenar | *Sum10* / Toy Theater (familia 1) |
+| 95 | 🫙 Las jarras | Capacidad y lógica | El puzle clásico de trasvases (Gardner / *Die Hard 3*): llenar, vaciar y verter entre dos jarras hasta dejar exactamente el objetivo | Martin Gardner (familia 3) |
+| 96 | 👁️ Golpe de vista | Número sense (subitización) | Flashea un patrón de puntos menos de un segundo; hay que teclear cuántos había sin tiempo para contarlos uno a uno | Apps de subitización (familia 12, investigación educativa) |
+
+Verificación de calidad antes de publicar: cada generador con
+aleatoriedad se simuló miles de rondas en Node (`compareGuess` de #91:
+20.000 pares código/intento; `hasTrio` de #92: 2.000 repartos, 100% con
+trío tras la guarda; `esValido` de #93: 5.000 desarrollos, siempre
+exactamente 1 cubo válido de 3; `hayJugada` de #94: 5.000 cuadrículas,
+99,68% ya jugables sin forzar nada; `generateRound`+BFS `solve` de #95:
+5.000 rondas siempre alcanzables y siempre resueltas; colocación de
+puntos de #96: 2.000 rondas sin solapes). Después, los 96 ejercicios del
+catálogo (también los 90 viejos) se cargaron en Chromium a 390px sin
+ningún error de consola, y los 6 nuevos se jugaron de verdad calculando
+la jugada correcta (lectura del tablero, no fuerza bruta) hasta confirmar
+que el marcador sube en cada uno.
 
 ## Versiones (v2) y bandeja "Revisar"
 
