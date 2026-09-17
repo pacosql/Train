@@ -18,7 +18,7 @@
       /* Texto grande a propósito: se usa en el gimnasio, muchas veces sin
          gafas/lentillas puestas del todo. Todo lo demás usa rem, así que
          esto escala toda la app de una vez. */
-      font-size: 125%;
+      font-size: 150%;
     }
     :root {
       color-scheme: light dark;
@@ -191,7 +191,7 @@
         <button id="btn-continue-session">Continuar</button>
       </div>
 
-      <div class="card">
+      <div class="card" id="start-new-card">
         <button id="btn-start">Start</button>
       </div>
       <div class="card" id="history-card" hidden>
@@ -275,7 +275,13 @@
     <!-- ACTIVE EXERCISE -->
     <section id="screen-exercise" hidden>
       <h2 id="ex-name">—</h2>
-      <p class="sub"><span id="ex-badge" class="badge"></span> <span id="ex-muscle"></span> · <span id="ex-elapsed">⏱ 0:00</span></p>
+      <p class="sub"><span id="ex-badge" class="badge"></span> <span id="ex-muscle"></span></p>
+      <div class="card" style="text-align:center; padding: 10px 18px;">
+        <div class="stat">
+          <div class="value" id="ex-elapsed">⏱ 0:00</div>
+          <div class="label">tiempo en este ejercicio</div>
+        </div>
+      </div>
       <p class="hint" id="ex-notes" hidden></p>
 
       <div class="card">
@@ -337,6 +343,10 @@
       if (name === "home") {
         const hasActive = !!(state.sessionId && state.lastActiveScreen);
         el("active-session-banner").hidden = !hasActive;
+        // Con una sesión activa, solo se muestra "Continuar" — el botón
+        // "Start" (que crea una sesión NUEVA) desaparece para que no
+        // parezcan la misma acción.
+        el("start-new-card").hidden = hasActive;
       }
       saveState();
       tick();
