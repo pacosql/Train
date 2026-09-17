@@ -16,14 +16,15 @@ import { randInt, saveScore } from "./utils.js";
 const SIZE = 4;
 const CELLS = SIZE * SIZE;
 
-// Rejilla de reserva con solución garantizada única (diagonal principal +
-// su reflejo, verificada por fuerza bruta en el script de verificación).
+// Rejilla de reserva con solución garantizada única (verificada por
+// fuerza bruta exhaustiva sobre las 65536 rejillas posibles en el script
+// de verificación: exactamente 1 rejilla produce estas pistas).
 // fila-mayor, 1 = llena.
 const FALLBACK_GRID = [
+  1, 1, 0, 1,
+  0, 0, 1, 0,
   1, 0, 0, 1,
   0, 1, 1, 0,
-  0, 1, 1, 0,
-  1, 0, 0, 1,
 ];
 
 // Dado un array de 4 booleanos/0-1, devuelve la lista de longitudes de
