@@ -29,17 +29,17 @@
     </header>
 
     <section class="callout">
-      <strong>Qué comprueba esta app y qué no (verificado de verdad, no supuesto):</strong>
+      <strong>Todo nombre que ves aquí ya ha pasado un cribado antes de llegarte:</strong>
       <ul>
-        <li>✅ <strong>.com</strong>: comprobación en vivo vía RDAP, ejecutada desde una función de Supabase — funciona, verificado con dominios reales.</li>
-        <li>🚫 <strong>.es</strong>: verificado que <u>no hay forma automática de comprobarlo</u> desde ningún sitio (ni navegador, ni Supabase, ni esta función): el registro español no tiene RDAP público, y el whois por puerto 43 exige una IP autorizada por Red.es que no tenemos. Se deja el enlace oficial para comprobarlo a mano.</li>
-        <li>ℹ️ <strong>Marca/nombre de empresa (España y EEUU)</strong>: sin API pública. Enlaces directos a OEPM, Registro Mercantil y USPTO — ninguna comprobación aquí sustituye a una búsqueda de marca profesional.</li>
+        <li>✅ <strong>.com libre</strong>: comprobado en vivo vía RDAP desde una función de Supabase antes de insertarlo en la cola — nunca ves un nombre con el .com ocupado.</li>
+        <li>🔎 <strong>Cribado de colisión (marca/empresa, España + EEUU)</strong>: búsqueda previa para descartar coincidencias evidentes con negocios o marcas existentes. Importante ser honestos: no existe una API oficial de OEPM/USPTO/Registro Mercantil, así que esto es un filtro de "no hay nada obvio", no un certificado legal — antes de registrar nada de verdad, una búsqueda de marca profesional siempre es recomendable.</li>
+        <li>🚫 <strong>.es</strong>: sigue sin poder comprobarse en automático desde ningún sitio (registro español sin RDAP público). Enlace manual disponible en cada nombre.</li>
       </ul>
     </section>
 
     <section>
       <h2>¿Te gusta este nombre?</h2>
-      <p class="sub"><span id="cola-count">0</span> por decidir.</p>
+      <p class="sub"><span id="cola-count">0</span> por decidir — todos ya verificados.</p>
       <div id="swipe-area"></div>
     </section>
 
@@ -56,11 +56,9 @@
     </section>
 
     <section>
-      <h2>Añade un nombre a la cola</h2>
-      <form id="form-nuevo" class="add-form">
-        <input id="input-nombre" type="text" maxlength="40" placeholder="p. ej. padelium, smashly..." autocomplete="off" />
-        <button type="submit">Añadir</button>
-      </form>
+      <h2>🔍 Para revisar</h2>
+      <p class="sub">Ni te convencen ni los descartas — para volver a mirarlos con calma.</p>
+      <div id="lista-revisar" class="name-list"></div>
     </section>
 
     <section>
@@ -77,9 +75,12 @@
   <template id="tpl-swipe-card">
     <div class="swipe-card">
       <div class="name-text"></div>
-      <div class="nota sub"></div>
+      <div class="checks"></div>
+      <div class="colision-info sub"></div>
+      <input class="nota-input" type="text" maxlength="200" placeholder="nota opcional si te gusta (para inspirar los siguientes)" />
       <div class="swipe-actions">
-        <button class="btn-dislike" type="button">👎 No me gusta</button>
+        <button class="btn-dislike" type="button">👎 No</button>
+        <button class="btn-revisar" type="button">🔍 Revisar</button>
         <button class="btn-like" type="button">👍 Me gusta</button>
       </div>
     </div>
@@ -91,7 +92,9 @@
         <span class="name-text"></span>
         <div class="head-actions"></div>
       </div>
+      <div class="nota-guardada"></div>
       <div class="checks"></div>
+      <div class="colision-info sub"></div>
       <div class="official-links"></div>
     </div>
   </template>
