@@ -1,9 +1,17 @@
 // "Tiro con rebote": billar con una sola banda (la superior). El lanzador y
-// el objetivo están siempre a la misma altura (la base), así que el punto
-// de rebote se calcula con el truco del espejo: reflejar el objetivo al
-// otro lado de la banda y trazar la recta hasta el lanzador. Eso equivale
-// a exigir ángulo de incidencia = ángulo de reflexión, aquí resuelto con
-// una proporción de triángulos (ver `puntoRebote`).
+// el objetivo están sobre pedestales de ALTURA DISTINTA (nunca la misma),
+// así que el punto de rebote no es nunca el punto medio a ojo: hay que
+// comparar de verdad cuánto le queda a cada uno hasta la banda. Se calcula
+// con el truco del espejo: reflejar el objetivo al otro lado de la banda y
+// trazar la recta hasta el lanzador, lo que equivale a exigir ángulo de
+// incidencia = ángulo de reflexión (ver `puntoRebote`).
+//
+// (Aviso de la vuelta de revisión: la primera versión ponía lanzador y
+// objetivo a la MISMA altura, con lo que el rebote caía siempre en el
+// punto medio exacto sin que hiciera falta calcular nada — el mando
+// encarnaba "toca el centro a ojo", no una proporción. Con alturas
+// distintas el punto sí depende de verdad de la proporción entre las dos
+// distancias a la banda.)
 import { randInt, clamp, saveScore } from "./utils.js";
 
 const SW = 100; // ancho de la mesa, en unidades == % del ancho real dibujado
@@ -11,46 +19,54 @@ const SH = 62; // alto del dibujo, en las mismas unidades
 const EDGE_MARGIN = 10; // el lanzador/objetivo no pueden nacer pegados al borde
 const MIN_GAP = 18; // separación mínima entre lanzador y objetivo
 const WALL_MARGIN = 6; // el rebote correcto no puede caer pegado al borde de la banda
-const H_MIN = 24; // altura mínima de la banda sobre la base
+const PLAT_MIN = 4; // altura mínima del pedestal (lanzador/objetivo) sobre la base
+const PLAT_MAX = 18; // altura máxima del pedestal
+const MIN_PLAT_GAP = 4; // diferencia mínima entre las dos alturas, para que la proporción no sea casi 1:1
+const WALL_ABOVE_MARGIN = 8; // la banda siempre queda al menos esto por encima del pedestal más alto
 const H_MAX = 46; // altura máxima de la banda sobre la base
 const TOLERANCE = 3; // tolerancia: ±3% del ancho de la mesa
 
-// Punto de la banda donde el ángulo de incidencia = ángulo de reflexión.
+// Punto de la banda donde el ángulo de incidencia = ángulo de reflexión,
+// con el lanzador a altura hA y el objetivo a altura hB (pueden ser
+// distintas) y la banda a altura H por encima de la base.
 //
-// Truco del espejo: reflejamos el objetivo (Xd, 0) al otro lado de la
-// banda, es decir lo subimos de altura 0 a altura 2H -> (Xd, 2H). La recta
-// entre el lanzador (Xo, 0) y ese reflejo cruza la altura de la banda
-// (y = H) en la fracción de su recorrido vertical t = H / (2H) = 1/2:
+// Truco del espejo: reflejamos el objetivo (Xd, hB) al otro lado de la
+// banda -> (Xd, 2H - hB). La recta entre el lanzador (Xo, hA) y ese
+// reflejo cruza la altura de la banda (y = H) en la fracción de su
+// recorrido vertical:
+//   dA = H - hA   (lo que le queda al lanzador hasta la banda)
+//   dB = H - hB   (lo que le queda al objetivo hasta la banda)
+//   t = dA / (dA + dB)
 //   Xr = Xo + (Xd - Xo) * t
 //
-// Por qué esa t da el punto correcto: el lanzador y el objetivo comparten
-// la misma altura (0) y la banda es una única línea horizontal a altura H,
-// así que los dos triángulos rectángulos "rebote→lanzador" y
-// "rebote→objetivo" tienen el MISMO cateto vertical (H). Ángulo de
-// incidencia = ángulo de reflexión respecto a la normal (vertical) exige
-// que esos dos ángulos sean iguales; con el mismo cateto vertical, la
-// única forma de que los ángulos coincidan es que los catetos horizontales
-// también coincidan. Por eso el rebote siempre cae en el punto medio entre
-// Xo y Xd, sea cual sea H (la altura de la banda solo cambia lo empinada
-// que se ve la trayectoria, no la posición horizontal del rebote).
-export function puntoRebote(Xo, Xd, H) {
-  const t = H / (2 * H);
+// Con dA = dB (mismas alturas) esto colapsa a t=1/2 (punto medio) — por
+// eso ahora se exige hA != hB: así el rebote depende de verdad de la
+// proporción entre dA y dB, no es un punto medio a ojo.
+export function puntoRebote(Xo, Xd, H, hA, hB) {
+  const dA = H - hA;
+  const dB = H - hB;
+  const t = dA / (dA + dB);
   return Xo + (Xd - Xo) * t;
 }
 
 // Sortea una ronda válida: descarta con do/while las combinaciones cuyo
-// punto de rebote se saldría de los límites jugables de la banda.
+// punto de rebote se saldría de los límites jugables de la banda, o cuyas
+// dos alturas de pedestal queden demasiado parecidas.
 function generarRonda() {
-  let Xo, Xd, H, Xr;
+  let Xo, Xd, H, hA, hB, Xr;
   do {
     Xo = randInt(EDGE_MARGIN, SW - EDGE_MARGIN);
     do {
       Xd = randInt(EDGE_MARGIN, SW - EDGE_MARGIN);
     } while (Math.abs(Xd - Xo) < MIN_GAP);
-    H = randInt(H_MIN, H_MAX);
-    Xr = puntoRebote(Xo, Xd, H);
+    do {
+      hA = randInt(PLAT_MIN, PLAT_MAX);
+      hB = randInt(PLAT_MIN, PLAT_MAX);
+    } while (Math.abs(hA - hB) < MIN_PLAT_GAP);
+    H = randInt(Math.max(hA, hB) + WALL_ABOVE_MARGIN, H_MAX);
+    Xr = puntoRebote(Xo, Xd, H, hA, hB);
   } while (Xr < WALL_MARGIN || Xr > SW - WALL_MARGIN);
-  return { Xo, Xd, H, Xr };
+  return { Xo, Xd, H, hA, hB, Xr };
 }
 
 export function mountReboteGame(container, { client, onExit }) {
@@ -59,7 +75,7 @@ export function mountReboteGame(container, { client, onExit }) {
   let score = 0;
   let rounds = 0;
   let finished = false;
-  let Xo = 0, Xd = 0, H = 0, Xr = 0;
+  let Xo = 0, Xd = 0, H = 0, hA = 0, hB = 0, Xr = 0;
   let selX = null;
   let dragging = false;
   let locked = false; // evita seguir arrastrando/confirmar mientras se resuelve la ronda
@@ -92,29 +108,33 @@ export function mountReboteGame(container, { client, onExit }) {
   }
 
   function nextRound() {
-    ({ Xo, Xd, H, Xr } = generarRonda());
+    ({ Xo, Xd, H, hA, hB, Xr } = generarRonda());
     selX = null;
     dragging = false;
     locked = false;
     const wallY = SH - H;
     const wallTopPct = (wallY / SH) * 100;
+    const yO = SH - hA;
+    const yD = SH - hB;
 
     body.innerHTML = `
       <p class="prompt">Toca y arrastra en la banda superior hasta el punto exacto de rebote
-        <small>🎱 lanzador en X=${Xo} · 🥅 portería en X=${Xd} · banda a H=${H}</small>
+        <small>🎱 lanzador a ${hA} de altura (le quedan ${H - hA} hasta la banda) · 🥅 portería a ${hB} de altura (le quedan ${H - hB} hasta la banda)</small>
       </p>
-      <div class="rb-table" data-table>
-        <svg class="rb-svg" viewBox="0 0 ${SW} ${SH}" preserveAspectRatio="none">
-          <line class="rb-base" x1="0" y1="${SH}" x2="${SW}" y2="${SH}"></line>
-          <line class="rb-wallline" x1="0" y1="${wallY}" x2="${SW}" y2="${wallY}"></line>
+      <div class="rbt-table" data-table>
+        <svg class="rbt-svg" viewBox="0 0 ${SW} ${SH}" preserveAspectRatio="none">
+          <line class="rbt-base" x1="0" y1="${SH}" x2="${SW}" y2="${SH}"></line>
+          <line class="rbt-wallline" x1="0" y1="${wallY}" x2="${SW}" y2="${wallY}"></line>
+          <line class="rbt-pedestal" x1="${Xo}" y1="${SH}" x2="${Xo}" y2="${yO}"></line>
+          <line class="rbt-pedestal" x1="${Xd}" y1="${SH}" x2="${Xd}" y2="${yD}"></line>
           <g data-lines></g>
-          <circle class="rb-dot rb-dot-origin" cx="${Xo}" cy="${SH}" r="2.6"></circle>
-          <circle class="rb-dot rb-dot-target" cx="${Xd}" cy="${SH}" r="2.6"></circle>
-          <circle class="rb-marker" data-marker cx="${Xo}" cy="${wallY}" r="3" style="display:none"></circle>
+          <circle class="rbt-dot rbt-dot-origin" cx="${Xo}" cy="${yO}" r="2.6"></circle>
+          <circle class="rbt-dot rbt-dot-target" cx="${Xd}" cy="${yD}" r="2.6"></circle>
+          <circle class="rbt-marker" data-marker cx="${Xo}" cy="${wallY}" r="3" style="display:none"></circle>
         </svg>
-        <div class="rb-wall" data-wall style="top:${wallTopPct}%;"></div>
-        <span class="rb-emoji" style="left:${Xo}%;">🎱</span>
-        <span class="rb-emoji" style="left:${Xd}%;">🥅</span>
+        <div class="rbt-wall" data-wall style="top:${wallTopPct}%;"></div>
+        <span class="rbt-emoji" style="left:${Xo}%;bottom:${(hA / SH) * 100}%;">🎱</span>
+        <span class="rbt-emoji" style="left:${Xd}%;bottom:${(hB / SH) * 100}%;">🥅</span>
       </div>
       <div class="feedback" data-feedback></div>
       <button class="primary" data-confirm disabled>Confirmar rebote</button>
@@ -125,7 +145,7 @@ export function mountReboteGame(container, { client, onExit }) {
   }
 
   function svgEl() {
-    return body.querySelector(".rb-svg");
+    return body.querySelector(".rbt-svg");
   }
   function linesG() {
     return body.querySelector("[data-lines]");
@@ -141,8 +161,8 @@ export function mountReboteGame(container, { client, onExit }) {
     marker.setAttribute("cx", String(selX));
     marker.style.display = "block";
     linesG().innerHTML = `
-      <line class="rb-line rb-line-preview" x1="${Xo}" y1="${SH}" x2="${selX}" y2="${wallY}"></line>
-      <line class="rb-line rb-line-preview" x1="${selX}" y1="${wallY}" x2="${Xd}" y2="${SH}"></line>
+      <line class="rbt-line rbt-line-preview" x1="${Xo}" y1="${SH - hA}" x2="${selX}" y2="${wallY}"></line>
+      <line class="rbt-line rbt-line-preview" x1="${selX}" y1="${wallY}" x2="${Xd}" y2="${SH - hB}"></line>
     `;
     body.querySelector("[data-confirm]").disabled = false;
   }
@@ -180,34 +200,36 @@ export function mountReboteGame(container, { client, onExit }) {
     const ok = dist <= TOLERANCE;
 
     let linesHtml = `
-      <line class="rb-line ${ok ? "rb-line-ok" : "rb-line-bad"}" x1="${Xo}" y1="${SH}" x2="${selX}" y2="${wallY}"></line>
-      <line class="rb-line ${ok ? "rb-line-ok" : "rb-line-bad"}" x1="${selX}" y1="${wallY}" x2="${Xd}" y2="${SH}"></line>
+      <line class="rbt-line ${ok ? "rbt-line-ok" : "rbt-line-bad"}" x1="${Xo}" y1="${SH - hA}" x2="${selX}" y2="${wallY}"></line>
+      <line class="rbt-line ${ok ? "rbt-line-ok" : "rbt-line-bad"}" x1="${selX}" y1="${wallY}" x2="${Xd}" y2="${SH - hB}"></line>
     `;
     if (!ok) {
       linesHtml += `
-        <line class="rb-line rb-line-correct" x1="${Xo}" y1="${SH}" x2="${Xr}" y2="${wallY}"></line>
-        <line class="rb-line rb-line-correct" x1="${Xr}" y1="${wallY}" x2="${Xd}" y2="${SH}"></line>
-        <circle class="rb-dot rb-dot-correct" cx="${Xr}" cy="${wallY}" r="3"></circle>
+        <line class="rbt-line rbt-line-correct" x1="${Xo}" y1="${SH - hA}" x2="${Xr}" y2="${wallY}"></line>
+        <line class="rbt-line rbt-line-correct" x1="${Xr}" y1="${wallY}" x2="${Xd}" y2="${SH - hB}"></line>
+        <circle class="rbt-dot rbt-dot-correct" cx="${Xr}" cy="${wallY}" r="3"></circle>
       `;
     }
     linesG().innerHTML = linesHtml;
 
+    const dA = H - hA;
+    const dB = H - hB;
     const izq = Math.abs(Xr - Xo).toFixed(1);
     const der = Math.abs(Xd - Xr).toFixed(1);
 
     if (ok) {
       score += 10;
       renderScore();
-      feedback.textContent = `¡Rebote perfecto! En X=${Xr.toFixed(1)} los dos tramos bajan la misma altura H=${H}, así que sus catetos horizontales coinciden: ${izq} = ${der}.`;
+      feedback.textContent = `¡Rebote perfecto! Al lanzador le quedan ${dA} hasta la banda y a la portería ${dB}: el rebote reparte la distancia horizontal en esa misma proporción (${dA}:${dB}), por eso cae en X=${Xr.toFixed(1)} — ${izq} de un lado, ${der} del otro.`;
       feedback.className = "feedback ok";
-      later(nextRound, 1100);
+      later(nextRound, 1300);
     } else {
       lives--;
       renderLives();
-      feedback.textContent = `No era ahí (tocaste X=${selX.toFixed(1)}). El rebote correcto estaba en X=${Xr.toFixed(1)}, a mitad de camino entre el lanzador (${Xo}) y la portería (${Xd}): con H=${H} en los dos tramos, los catetos horizontales deben ser iguales (${izq} = ${der}).`;
+      feedback.textContent = `No era ahí (tocaste X=${selX.toFixed(1)}). Al lanzador le quedan ${dA} hasta la banda y a la portería ${dB}: el rebote correcto reparte la distancia horizontal en la proporción ${dA}:${dB}, así que cae en X=${Xr.toFixed(1)} (${izq} de un lado, ${der} del otro) — no en el punto medio.`;
       feedback.className = "feedback bad";
-      if (lives <= 0) return later(() => finish(false), 1500);
-      later(nextRound, 1700);
+      if (lives <= 0) return later(() => finish(false), 1700);
+      later(nextRound, 1900);
     }
   }
 

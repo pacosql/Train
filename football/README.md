@@ -202,6 +202,45 @@ ningún error de consola, y los 6 nuevos se jugaron de verdad calculando
 la jugada correcta (lectura del tablero, no fuerza bruta) hasta confirmar
 que el marcador sube en cada uno.
 
+## Ejercicios #97-#102 (quinta tanda) — tramo 2: ángulos, simetría y proporción
+
+### Tramo «Ángulos, simetría y proporción» — [`css/pack-m.css`](./css/pack-m.css)
+
+| # | Juego | Tema | Mecánica | De dónde sale |
+|---|---|---|---|---|
+| 97 | 🕰️ El ángulo de las agujas | Ángulos | Arrastra un único marcador giratorio hasta cubrir exactamente el ángulo real entre las agujas a una hora dada | Actividad clásica de aula (ángulo horario/minutero) |
+| 98 | 🧣 Dobla la tela | Simetría | Un estampado en cuadrícula y varias líneas de doblez candidatas; solo una hace que el patrón case consigo mismo | Inventado: terna *simetría + doblar + sastrería* |
+| 99 | 🐑 La valla del huerto | Perímetro y área | Perímetro FIJO de cuerda: estirar un lado encoge el otro; hay que alcanzar el área pedida | Inventado: terna *perímetro + estirar + jardín* |
+| 100 | 🎱 Tiro con rebote | Ángulos | Billar con una banda: toca el punto exacto donde incidencia = reflexión, con lanzador y portería a **alturas distintas** | Inventado: terna *ángulos + disparar + fútbol* |
+| 101 | 🗾 La escala del mapa | Proporción | Cuenta las marcas de una misma cuadrícula en la barra de escala y en el mapa para deducir la distancia real | Mapas y planos (vida real) |
+| 102 | 🕶️ La sombra | Proporcionalidad | Estira la altura del árbol hasta que cuadre con la proporción sombra/altura de un poste de referencia (triángulos semejantes) | Medida indirecta de Exploratorium |
+
+**Vuelta de revisión sobre la marcha (#100):** al terminarlo, el propio
+proceso de verificación (jugarlo de verdad, no solo leer el código)
+encontró que la primera versión ponía el lanzador y la portería a la
+**misma altura** — con eso, por geometría, el punto de rebote es SIEMPRE
+el punto medio exacto entre los dos, sin que haga falta calcular nada
+(la altura de la banda se cancela en la fórmula). Es decir: la mecánica
+NO era la matemática, era "toca el centro a ojo" disfrazado de billar.
+Arreglado dándole a cada uno un pedestal de altura distinta, así el
+rebote depende de verdad de la proporción entre las dos distancias a la
+banda — se verificó con una simulación de 20.000 rondas que la desviación
+respecto al punto medio ingenuo llega hasta 17 unidades (ya no es un
+empate con la trivialidad) y que ángulo de incidencia = ángulo de
+reflexión se cumple exacto en todos los casos.
+
+Verificación antes de publicar: `computeClockAngle` de #97 sobre 2.400
+combinaciones hora/minuto (nunca 0°, siempre en [0°,180°]); `esEjeValido`
+de #98 sobre 5.000 patrones (exactamente 1 candidato válido siempre);
+generación de #99 sobre 20.000 combinaciones P/ancho (área objetivo
+siempre entera y alcanzable); `puntoRebote` de #100 sobre 20.000 rondas
+tras el arreglo (0 fuera de rango, ángulos iguales verificados con
+arcotangente); `distanciaReal` de #101 sobre 5.300 combinaciones (siempre
+un resultado limpio de máximo 2 decimales); generación de #102 sobre
+3.000 combinaciones (altura siempre exacta). Los 102 ejercicios cargan
+sin error de consola, y los 6 nuevos se jugaron de verdad (arrastrando al
+punto/ángulo/altura calculados a mano) confirmando que el marcador sube.
+
 ## Versiones (v2) y bandeja "Revisar"
 
 Cuando un ejercicio recibe una vuelta de mejoras, se marca con un
