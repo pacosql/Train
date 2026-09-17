@@ -1,0 +1,497 @@
+/* Pack P — segunda tanda del 17-09-2026, tramo 1 de nuevos ejercicios.
+   Prefijos: .knk- (kenken, no ".kk-": ya la usa Kakuro en pack-g.css)
+   .ht- (hitori) .cv- (clave) .pj- (puja) .az- (anzuelo). */
+
+/* #114 🔷 KenKen mini (.knk-) */
+/* KenKen mini (id: kenken) — prefijo exclusivo ".knk-".
+   NOTA: el encargo pedía prefijo ".kk-", pero ese prefijo YA lo usa
+   "Kakuro" (ver comentario "Prefijos: ... .kk- kakuro ..." al principio de
+   football/css/pack-g.css). Para no chocar con esa app se usa ".knk-"
+   (KenKen) en su lugar; quien integre este CSS en football/css/ debe
+   añadir ".knk- (kenken)" a la lista de prefijos del pack donde lo pegue.
+   Solo usa variables ya definidas en style.css (--bg, --card, --text,
+   --muted, --accent, --accent-2, --danger, --good, --border), así que
+   claro y oscuro funcionan solos sin tocar nada más. Pensado para 400px
+   de ancho y dedo gordo. */
+
+.knk-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3px;
+  max-width: 320px;
+  margin: 14px auto;
+  background: var(--border);
+  padding: 3px;
+  border-radius: 10px;
+}
+
+.knk-cell {
+  position: relative;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text);
+  cursor: pointer;
+  padding: 0;
+}
+.knk-cell:active { transform: scale(0.95); }
+
+/* Bordes gruesos: marcan el límite de cada jaula frente a sus vecinas. */
+.knk-cell.knk-edge-top { border-top: 3px solid var(--text); }
+.knk-cell.knk-edge-bottom { border-bottom: 3px solid var(--text); }
+.knk-cell.knk-edge-left { border-left: 3px solid var(--text); }
+.knk-cell.knk-edge-right { border-right: 3px solid var(--text); }
+
+.knk-cell.selected {
+  background: var(--accent-2);
+  color: #fff;
+  box-shadow: inset 0 0 0 2px var(--accent);
+}
+.knk-cell.bad {
+  background: var(--danger);
+  border-color: var(--danger);
+  color: #fff;
+}
+
+.knk-cage-label {
+  position: absolute;
+  top: 2px;
+  left: 4px;
+  font-size: 0.62rem;
+  font-weight: 600;
+  color: var(--accent);
+  line-height: 1;
+}
+.knk-cell.selected .knk-cage-label,
+.knk-cell.bad .knk-cage-label {
+  color: #fff;
+}
+
+.knk-cell-value { pointer-events: none; }
+
+.knk-keypad {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  max-width: 320px;
+  margin: 0 auto 12px;
+}
+.knk-key {
+  padding: 12px 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  border-radius: 8px;
+  border: 2px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  cursor: pointer;
+}
+.knk-key:active { transform: scale(0.94); }
+
+.knk-tools { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 10px; }
+.knk-tools .knk-tool { padding: 8px 12px; font-size: 0.78rem; }
+
+.knk-check { display: block; margin: 0 auto; }
+
+@media (max-width: 380px) {
+  .knk-grid { max-width: 270px; }
+  .knk-cell { font-size: 1.1rem; }
+  .knk-cage-label { font-size: 0.56rem; }
+  .knk-keypad { max-width: 270px; gap: 6px; }
+  .knk-key { padding: 10px 0; font-size: 1.05rem; }
+}
+
+/* #115 ⚫ Hitori (.ht-) */
+/* Estilos exclusivos del juego "Hitori" (prefijo obligatorio: .ht-). */
+:root {
+  --ht-bg: #f4f1ea;
+  --ht-fg: #2b2620;
+  --ht-cell-bg: #ffffff;
+  --ht-cell-border: #cfc7b8;
+  --ht-cell-shaded-bg: #2b2620;
+  --ht-cell-shaded-fg: #f4f1ea;
+  --ht-accent: #b5482f;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ht-bg: #1c1a17;
+    --ht-fg: #f1ece1;
+    --ht-cell-bg: #2a2723;
+    --ht-cell-border: #45403a;
+    --ht-cell-shaded-bg: #0d0c0b;
+    --ht-cell-shaded-fg: #f1ece1;
+    --ht-accent: #e08a6b;
+  }
+}
+
+.ht-root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.ht-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  gap: 6px;
+  width: min(320px, 82vw);
+  aspect-ratio: 1 / 1;
+  margin: 4px auto;
+  background: var(--ht-bg);
+  padding: 8px;
+  border-radius: 12px;
+}
+
+.ht-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(18px, 5.5vw, 24px);
+  font-weight: 700;
+  color: var(--ht-fg);
+  background: var(--ht-cell-bg);
+  border: 2px solid var(--ht-cell-border);
+  border-radius: 8px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  transition: background 0.12s ease, color 0.12s ease, transform 0.08s ease;
+}
+
+.ht-cell:active {
+  transform: scale(0.94);
+}
+
+.ht-cell--shaded {
+  background: var(--ht-cell-shaded-bg);
+  color: var(--ht-cell-shaded-fg);
+  border-color: var(--ht-cell-shaded-bg);
+}
+
+.ht-actions {
+  display: flex;
+  gap: 10px;
+  width: min(320px, 82vw);
+  margin-top: 4px;
+}
+
+.ht-actions button {
+  flex: 1;
+}
+
+/* #116 🔐 La clave secreta (.cv-) */
+/* "La clave secreta" (game-clave.js) — prefijo exclusivo .cv-
+   Variables propias en :root, con su variante para tema oscuro, para no
+   depender de que las del núcleo (--card, --border...) sigan llamándose
+   igual en el futuro. */
+:root {
+  --cv-tile-bg: var(--card, #ffffff);
+  --cv-tile-border: var(--border, #e3e0f5);
+  --cv-tile-text: var(--text, #201a3a);
+  --cv-tile-filled-bg: color-mix(in srgb, var(--accent, #5b3ecc) 12%, var(--cv-tile-bg));
+  --cv-key-bg: var(--card, #ffffff);
+  --cv-key-border: var(--border, #e3e0f5);
+  --cv-key-text: var(--text, #201a3a);
+  --cv-key-sel-bg: var(--accent, #5b3ecc);
+  --cv-key-sel-text: #ffffff;
+  --cv-op-text: var(--muted, #66618a);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --cv-tile-bg: var(--card, #1e1a3d);
+    --cv-tile-border: var(--border, #322c5c);
+    --cv-tile-text: var(--text, #f1efff);
+    --cv-tile-filled-bg: color-mix(in srgb, var(--accent, #5b3ecc) 22%, var(--cv-tile-bg));
+    --cv-key-bg: var(--card, #1e1a3d);
+    --cv-key-border: var(--border, #322c5c);
+    --cv-key-text: var(--text, #f1efff);
+  }
+}
+
+/* Ecuación con letras: AB + CD = EFG */
+.cv-equation {
+  margin: 4px auto 14px;
+  display: flex;
+  justify-content: center;
+}
+.cv-eq-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 360px;
+}
+.cv-tile {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 54px;
+  border: 2px solid var(--cv-tile-border);
+  border-radius: 10px;
+  background: var(--cv-tile-bg);
+  color: var(--cv-tile-text);
+  line-height: 1.1;
+}
+.cv-tile-letter-label {
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+.cv-tile-val {
+  font-style: normal;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--accent, #5b3ecc);
+  min-height: 1.1em;
+}
+.cv-op {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--cv-op-text);
+  padding: 0 2px;
+}
+
+/* Teclado de letras: toca una letra y luego un dígito para asignarla */
+.cv-keyboard {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  max-width: 340px;
+  margin: 0 auto 12px;
+}
+.cv-letter-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  width: 52px;
+  height: 52px;
+  padding: 0;
+  border: 2px solid var(--cv-key-border);
+  border-radius: 12px;
+  background: var(--cv-key-bg);
+  color: var(--cv-key-text);
+  font-size: 1.1rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+.cv-letter-val {
+  font-style: normal;
+  font-size: 0.85rem;
+  font-weight: 700;
+  opacity: 0.75;
+}
+.cv-letter-btn.filled { background: var(--cv-tile-filled-bg); }
+.cv-letter-btn.sel {
+  border-color: var(--cv-key-sel-bg);
+  background: var(--cv-key-sel-bg);
+  color: var(--cv-key-sel-text);
+}
+.cv-letter-btn.sel .cv-letter-val { color: var(--cv-key-sel-text); opacity: 0.9; }
+.cv-letter-btn:active { transform: scale(0.95); }
+
+/* Teclado numérico 0-9 */
+.cv-digits {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto 10px;
+}
+.cv-digit-btn {
+  padding: 12px 0;
+  border: 2px solid var(--cv-key-border);
+  border-radius: 10px;
+  background: var(--cv-key-bg);
+  color: var(--cv-key-text);
+  font-size: 1.1rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+.cv-digit-btn:active { transform: scale(0.94); }
+
+.cv-tools { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 6px; }
+.cv-tool { padding: 8px 12px; font-size: 0.78rem; }
+
+.cv-check {
+  display: block;
+  margin: 10px auto 0;
+  min-width: 170px;
+  padding: 12px 18px;
+}
+
+@media (max-width: 420px) {
+  .cv-tile { width: 38px; height: 48px; }
+  .cv-tile-letter-label { font-size: 0.95rem; }
+  .cv-tile-val { font-size: 0.85rem; }
+  .cv-letter-btn { width: 46px; height: 46px; font-size: 1rem; }
+  .cv-digits { max-width: 270px; }
+  .cv-digit-btn { padding: 10px 0; font-size: 1rem; }
+}
+
+/* #117 💵 Sin pasarse de precio (.pj-) */
+/* Estilos exclusivos del juego "puja" (Sin pasarse de precio).
+   Prefijo obligatorio: .pj- . Reutiliza variables ya definidas en el
+   :root del núcleo (--muted, --border, --good, --danger, --card, --text)
+   y añade solo las suyas propias, con su variante para modo oscuro. */
+
+:root {
+  --pj-high-bg: rgba(229, 72, 77, 0.12);
+  --pj-high-fg: #c23237;
+  --pj-low-bg: rgba(46, 163, 196, 0.14);
+  --pj-low-fg: #1f7996;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --pj-high-bg: rgba(229, 72, 77, 0.22);
+    --pj-high-fg: #ff8a8d;
+    --pj-low-bg: rgba(46, 163, 196, 0.24);
+    --pj-low-fg: #7fd4ec;
+  }
+}
+
+.pj-product {
+  text-align: center;
+  margin-bottom: 6px;
+}
+.pj-product-emoji {
+  font-size: 48px;
+  line-height: 1.1;
+}
+.pj-product-name {
+  font-weight: 600;
+  font-size: 18px;
+  margin-top: 2px;
+}
+
+.pj-attempts {
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted);
+  margin: 2px 0 6px;
+}
+
+.pj-hint {
+  text-align: center;
+  font-weight: 700;
+  font-size: 16px;
+  min-height: 22px;
+  margin: 4px 0 8px;
+}
+.pj-hint-high { color: var(--pj-high-fg); }
+.pj-hint-low { color: var(--pj-low-fg); }
+
+.pj-history {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 12px;
+  max-height: 160px;
+  overflow-y: auto;
+}
+.pj-history-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  font-size: 14px;
+}
+.pj-history-guess {
+  font-weight: 600;
+}
+.pj-history-badge {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 999px;
+}
+.pj-history-badge.pj-high {
+  background: var(--pj-high-bg);
+  color: var(--pj-high-fg);
+}
+.pj-history-badge.pj-low {
+  background: var(--pj-low-bg);
+  color: var(--pj-low-fg);
+}
+
+/* #118 🐟 Pesca de factores (.az-) */
+/* "Pesca de factores" (anzuelo) — estilos exclusivos, prefijo .az- */
+
+:root {
+  --az-water: #cdeaf7;
+  --az-water-border: #9fd3ea;
+  --az-fish-bg: var(--card, #ffffff);
+  --az-fish-border: var(--border, #e3e0f5);
+  --az-caught-bg: #ffe9a8;
+  --az-caught-border: #f5a623;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --az-water: #0f2f3d;
+    --az-water-border: #1c4a5e;
+    --az-fish-bg: var(--card, #1e1a3d);
+    --az-fish-border: var(--border, #322c5c);
+    --az-caught-bg: #4a3c14;
+    --az-caught-border: #d99a1f;
+  }
+}
+
+.az-pond {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(78px, 1fr));
+  gap: 10px;
+  background: var(--az-water);
+  border: 1px solid var(--az-water-border);
+  border-radius: 16px;
+  padding: 14px;
+  margin: 12px 0;
+}
+
+.az-fish {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-height: 64px;
+  padding: 8px 4px;
+  background: var(--az-fish-bg);
+  border: 2px solid var(--az-fish-border);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+}
+.az-fish:active { transform: scale(0.94); }
+
+.az-fish-emoji { font-size: 1.5rem; line-height: 1; }
+.az-fish-num { font-size: 1rem; font-weight: 700; }
+
+.az-fish.az-caught {
+  background: var(--az-caught-bg);
+  border-color: var(--az-caught-border);
+  transform: translateY(-6px);
+}
+.az-fish.az-caught .az-fish-emoji { filter: grayscale(0.4); }
+
+.az-done-btn { margin-top: 6px; width: 100%; }
+
+@media (max-width: 400px) {
+  .az-pond { grid-template-columns: repeat(auto-fill, minmax(68px, 1fr)); gap: 8px; }
+  .az-fish { min-height: 56px; }
+}
