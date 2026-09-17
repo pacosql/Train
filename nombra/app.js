@@ -1,22 +1,19 @@
 // Nombra — buscador de nombres de empresa (tenis / pádel)
 //
-// Todo nombre que llega a "pendiente" ya ha sido vetado ANTES de
-// insertarse (com_libre=true comprobado vía RDAP + cribado de colisión
-// de marca/empresa en ES/EEUU) — este front-end nunca hace esa
-// comprobación ni ofrece un botón para lanzarla; solo pinta lo que ya
-// viene verificado. El vetado lo hace Claude con WebSearch + la función
-// de Supabase "check-dominio" antes de insertar cada fila.
+// Todo nombre que llega a "pendiente" ya viene vetado (com_libre=true
+// comprobado vía RDAP + cribado de colisión de marca/empresa en
+// ES/EEUU). Este front-end nunca lanza esa comprobación: solo pinta lo
+// que ya viene verificado y recoge decisiones.
 //
-// Flujo deliberadamente mínimo: swipe me_gusta / no_me_gusta /
-// definitivo sobre la cola "pendiente" — el comentario está siempre
-// visible y se guarda pase lo que pase, para inspirar las siguientes
-// rondas. El resto de información (checks, colisión, enlaces) vive
-// plegada bajo "más información", nunca en primer plano. Todo el
-// estado vive en nombra_ideas (PostgREST directo, sin SDK) para seguir
-// la partida desde cualquier dispositivo.
+// Decisiones: me_gusta / no_me_gusta / favorito, con comentario
+// opcional que se guarda siempre (alimenta las siguientes rondas).
+// Un descartado puede recuperarse desde su lista. Las sugerencias del
+// usuario (p. ej. "Paco Play") van a nombra_sugerencias para generar
+// nombres parecidos en la siguiente tanda.
 
 const REST = `${window.NOMBRA_CONFIG.url}/rest/v1`;
 const TABLE = `${window.NOMBRA_CONFIG.tablePrefix}ideas`;
+const TABLE_SUG = `${window.NOMBRA_CONFIG.tablePrefix}sugerencias`;
 const ANON = window.NOMBRA_CONFIG.anonKey;
 
 const HEADERS = {
@@ -33,44 +30,72 @@ const officialLinks = (name) => [
   { label: `Buscar "${name}" en Google`, url: `https://www.google.com/search?q=%22${encodeURIComponent(name)}%22` },
 ];
 
-// ---- REST helpers ----
+let cola = [];
+let ultimaDecision = null; // { id, statusAnterior, notaAnterior } para deshacer
+let ocupado = false; // evita que un doble toque mande dos decisiones
 
-async function fetchIdeas(status) {
-  const res = await fetch(`${REST}/${TABLE}?status=eq.${status}&order=created_at.asc&select=*`, { headers: HEADERS });
-  if (!res.ok) return [];
+// ---- REST ----
+
+async function apiGet(path) {
+  const res = await fetch(`${REST}/${path}`, { headers: HEADERS });
+  if (!res.ok) throw new Error(`GET ${path} → ${res.status}`);
   return res.json();
 }
 
-async function updateIdea(id, fields) {
-  await fetch(`${REST}/${TABLE}?id=eq.${id}`, {
+async function apiPatch(path, fields) {
+  const res = await fetch(`${REST}/${path}`, {
     method: "PATCH",
     headers: { ...HEADERS, Prefer: "return=minimal" },
     body: JSON.stringify(fields),
   });
+  if (!res.ok) throw new Error(`PATCH ${path} → ${res.status}`);
 }
 
-// ---- Render: cola de swipe ----
+async function apiPost(path, body) {
+  const res = await fetch(`${REST}/${path}`, {
+    method: "POST",
+    headers: { ...HEADERS, Prefer: "return=minimal" },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error(`POST ${path} → ${res.status}`);
+}
 
-let cola = [];
+const fetchIdeas = (status) =>
+  apiGet(`${TABLE}?status=eq.${status}&order=created_at.asc&select=*`);
+
+// ---- Errores visibles (antes fallaba en silencio y se quedaba en blanco) ----
+
+function mostrarError(err) {
+  const banner = document.getElementById("error-banner");
+  document.getElementById("error-texto").textContent =
+    `No se pudo conectar con la base de datos (${err.message}).`;
+  banner.hidden = false;
+}
+
+function ocultarError() {
+  document.getElementById("error-banner").hidden = true;
+}
+
+// ---- Pintado ----
 
 function renderDominioChecks(container, row) {
   container.innerHTML = "";
-  const rows = [
+  const filas = [
     row.com_libre === true ? ["ok", ".com: libre (verificado)"] : ["bad", ".com: no verificado"],
     row.es_libre === true
       ? ["ok", ".es: libre"]
       : ["warn", ".es: no comprobable en automático — usa el enlace manual"],
   ];
-  for (const [state, label] of rows) {
-    const div = document.createElement("div");
-    div.className = "check-row";
-    const dot = document.createElement("span");
-    dot.className = `dot ${state}`;
-    div.appendChild(dot);
+  for (const [estado, texto] of filas) {
+    const fila = document.createElement("div");
+    fila.className = "check-row";
+    const punto = document.createElement("span");
+    punto.className = `dot ${estado}`;
+    fila.appendChild(punto);
     const span = document.createElement("span");
-    span.textContent = label;
-    div.appendChild(span);
-    container.appendChild(div);
+    span.textContent = texto;
+    fila.appendChild(span);
+    container.appendChild(fila);
   }
 }
 
@@ -84,64 +109,95 @@ function pintaSiguienteSwipe() {
   const area = document.getElementById("swipe-area");
   area.innerHTML = "";
   document.getElementById("cola-count").textContent = cola.length;
+
   if (cola.length === 0) {
     const p = document.createElement("p");
     p.className = "empty";
-    p.textContent = "No hay más nombres pendientes por decidir.";
+    p.textContent = "No quedan nombres por decidir. Déjame una sugerencia aquí abajo y te busco más.";
     area.appendChild(p);
     return;
   }
+
   const item = cola[0];
-  const tpl = document.getElementById("tpl-swipe-card");
-  const node = tpl.content.cloneNode(true);
+  const node = document.getElementById("tpl-swipe-card").content.cloneNode(true);
   node.querySelector(".name-text").textContent = item.nombre;
   renderDominioChecks(node.querySelector(".checks"), item);
   renderColision(node.querySelector(".colision-info"), item);
 
   const notaInput = node.querySelector(".nota-input");
-  const decide = (status) => async () => {
-    await updateIdea(item.id, { status, nota: notaInput.value.trim() || null });
-    cola.shift();
-    await recargarTodo();
+  const botones = [...node.querySelectorAll(".swipe-actions button")];
+
+  const decidir = (status) => async () => {
+    if (ocupado) return;
+    ocupado = true;
+    botones.forEach((b) => (b.disabled = true));
+    try {
+      await apiPatch(`${TABLE}?id=eq.${item.id}`, {
+        status,
+        nota: notaInput.value.trim() || null,
+      });
+      ultimaDecision = { id: item.id, nombre: item.nombre, notaAnterior: item.nota ?? null };
+      ocultarError();
+      await recargarTodo();
+    } catch (err) {
+      mostrarError(err);
+      botones.forEach((b) => (b.disabled = false));
+    } finally {
+      ocupado = false;
+    }
   };
 
-  node.querySelector(".btn-like").addEventListener("click", decide("me_gusta"));
-  node.querySelector(".btn-dislike").addEventListener("click", decide("no_me_gusta"));
-  node.querySelector(".btn-star").addEventListener("click", decide("favorito"));
+  node.querySelector(".btn-dislike").addEventListener("click", decidir("no_me_gusta"));
+  node.querySelector(".btn-star").addEventListener("click", decidir("favorito"));
+  node.querySelector(".btn-like").addEventListener("click", decidir("me_gusta"));
 
   area.appendChild(node);
 }
 
-// ---- Render: tarjetas de listas (me gusta / definitivos / revisar) ----
+function botonAccion(texto, clase, alPulsar) {
+  const b = document.createElement("button");
+  b.type = "button";
+  b.className = clase;
+  b.textContent = texto;
+  b.addEventListener("click", async () => {
+    if (ocupado) return;
+    ocupado = true;
+    b.disabled = true;
+    try {
+      await alPulsar();
+      ocultarError();
+      await recargarTodo();
+    } catch (err) {
+      mostrarError(err);
+      b.disabled = false;
+    } finally {
+      ocupado = false;
+    }
+  });
+  return b;
+}
 
-function renderCard(container, row, opts) {
-  const tpl = document.getElementById("tpl-nombre-card");
-  const node = tpl.content.cloneNode(true);
+function renderCard(container, row, acciones) {
+  const node = document.getElementById("tpl-nombre-card").content.cloneNode(true);
   const card = node.querySelector(".name-card");
   card.querySelector(".name-text").textContent = row.nombre;
 
-  if (row.nota) {
-    card.querySelector(".nota-guardada").textContent = `📝 ${row.nota}`;
-  }
+  const notaEl = card.querySelector(".nota-guardada");
+  if (row.nota) notaEl.textContent = `📝 ${row.nota}`;
+  else notaEl.remove();
 
-  const actions = card.querySelector(".head-actions");
-  if (opts.marcarDefinitivo) {
-    const btnStar = document.createElement("button");
-    btnStar.className = "btn-save";
-    btnStar.type = "button";
-    btnStar.textContent = "⭐ Definitivo";
-    btnStar.addEventListener("click", async () => {
-      await updateIdea(row.id, { status: "favorito" });
-      await recargarTodo();
-    });
-    actions.appendChild(btnStar);
+  const zonaAcciones = card.querySelector(".head-actions");
+  for (const a of acciones) {
+    zonaAcciones.appendChild(
+      botonAccion(a.texto, a.clase, () => apiPatch(`${TABLE}?id=eq.${row.id}`, { status: a.status }))
+    );
   }
 
   renderDominioChecks(card.querySelector(".checks"), row);
   renderColision(card.querySelector(".colision-info"), row);
 
   const linksEl = card.querySelector(".official-links");
-  officialLinks(row.nombre).forEach((l) => {
+  for (const l of officialLinks(row.nombre)) {
     const a = document.createElement("a");
     a.className = "btn-link";
     a.href = l.url;
@@ -149,44 +205,118 @@ function renderCard(container, row, opts) {
     a.rel = "noopener noreferrer";
     a.textContent = l.label;
     linksEl.appendChild(a);
-  });
+  }
 
   container.appendChild(node);
 }
 
+function pintaLista(idContenedor, idContador, filas, vacio, acciones) {
+  const contenedor = document.getElementById(idContenedor);
+  contenedor.innerHTML = "";
+  document.getElementById(idContador).textContent = filas.length ? `(${filas.length})` : "";
+  if (filas.length === 0) {
+    const p = document.createElement("p");
+    p.className = "empty";
+    p.textContent = vacio;
+    contenedor.appendChild(p);
+    return;
+  }
+  for (const row of filas) renderCard(contenedor, row, acciones);
+}
+
+async function pintaSugerencias() {
+  const filas = await apiGet(`${TABLE_SUG}?order=created_at.desc&select=*`);
+  const wrap = document.getElementById("sug-lista-wrap");
+  const lista = document.getElementById("sug-lista");
+  document.getElementById("sug-count").textContent = filas.length;
+  wrap.hidden = filas.length === 0;
+  lista.innerHTML = "";
+  for (const s of filas) {
+    const li = document.createElement("li");
+    li.textContent = s.atendida ? `${s.texto} ✓` : s.texto;
+    lista.appendChild(li);
+  }
+}
+
 async function recargarTodo() {
-  const [pendientes, meGusta, favoritos, descartados] = await Promise.all([
-    fetchIdeas("pendiente"),
-    fetchIdeas("me_gusta"),
-    fetchIdeas("favorito"),
-    fetchIdeas("no_me_gusta"),
-  ]);
+  try {
+    const [pendientes, meGusta, favoritos, descartados] = await Promise.all([
+      fetchIdeas("pendiente"),
+      fetchIdeas("me_gusta"),
+      fetchIdeas("favorito"),
+      fetchIdeas("no_me_gusta"),
+    ]);
 
-  cola = pendientes;
-  pintaSiguienteSwipe();
+    cola = pendientes;
+    pintaSiguienteSwipe();
 
-  const listaMeGusta = document.getElementById("lista-me-gusta");
-  listaMeGusta.innerHTML = "";
-  if (meGusta.length === 0) listaMeGusta.innerHTML = '<p class="empty">Nada todavía.</p>';
-  for (const row of meGusta) renderCard(listaMeGusta, row, { marcarDefinitivo: true });
+    pintaLista("lista-definitivos", "count-definitivos", favoritos, "Todavía no hay ningún definitivo.", [
+      { texto: "👍 Bajar a me gusta", clase: "btn-mini", status: "me_gusta" },
+    ]);
+    pintaLista("lista-me-gusta", "count-megusta", meGusta, "Nada todavía.", [
+      { texto: "⭐ Definitivo", clase: "btn-mini btn-mini-star", status: "favorito" },
+      { texto: "👎 Descartar", clase: "btn-mini", status: "no_me_gusta" },
+    ]);
+    pintaLista("lista-descartados", "count-descartados", descartados, "Ninguno todavía.", [
+      { texto: "👍 Me gusta", clase: "btn-mini btn-mini-like", status: "me_gusta" },
+      { texto: "↩️ A la cola", clase: "btn-mini", status: "pendiente" },
+    ]);
 
-  const listaDefinitivos = document.getElementById("lista-definitivos");
-  listaDefinitivos.innerHTML = "";
-  if (favoritos.length === 0) listaDefinitivos.innerHTML = '<p class="empty">Todavía no hay ningún definitivo.</p>';
-  for (const row of favoritos) renderCard(listaDefinitivos, row, { marcarDefinitivo: false });
+    document.getElementById("btn-deshacer").hidden = ultimaDecision === null;
+    await pintaSugerencias();
+    ocultarError();
+  } catch (err) {
+    mostrarError(err);
+  }
+}
 
-  const listaDescartados = document.getElementById("lista-descartados");
-  listaDescartados.innerHTML = "";
-  if (descartados.length === 0) listaDescartados.innerHTML = '<p class="empty">Ninguno todavía.</p>';
-  for (const row of descartados) {
-    const span = document.createElement("div");
-    span.className = "name-card";
-    span.textContent = row.nombre;
-    listaDescartados.appendChild(span);
+// ---- Sugerencias del usuario ----
+
+async function enviarSugerencia(ev) {
+  ev.preventDefault();
+  const input = document.getElementById("input-sugerencia");
+  const msg = document.getElementById("sug-msg");
+  const texto = input.value.trim();
+  if (!texto) return;
+  try {
+    await apiPost(TABLE_SUG, [{ texto }]);
+    input.value = "";
+    msg.textContent = "✓ Guardada. La usaré para buscarte nombres parecidos (ya verificados).";
+    msg.hidden = false;
+    await pintaSugerencias();
+  } catch (err) {
+    msg.textContent = `No se pudo guardar: ${err.message}`;
+    msg.hidden = false;
+  }
+}
+
+// ---- Deshacer ----
+
+async function deshacer() {
+  if (!ultimaDecision || ocupado) return;
+  ocupado = true;
+  const btn = document.getElementById("btn-deshacer");
+  btn.disabled = true;
+  try {
+    await apiPatch(`${TABLE}?id=eq.${ultimaDecision.id}`, {
+      status: "pendiente",
+      nota: ultimaDecision.notaAnterior,
+    });
+    ultimaDecision = null;
+    await recargarTodo();
+  } catch (err) {
+    mostrarError(err);
+  } finally {
+    btn.disabled = false;
+    ocupado = false;
   }
 }
 
 function init() {
+  document.getElementById("form-sugerencia").addEventListener("submit", enviarSugerencia);
+  document.getElementById("btn-deshacer").addEventListener("click", deshacer);
+  document.getElementById("btn-reintentar").addEventListener("click", recargarTodo);
+
   recargarTodo();
 
   if ("serviceWorker" in navigator) {
