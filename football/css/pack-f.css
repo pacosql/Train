@@ -385,10 +385,21 @@
 .bz-side-r { right: 0; }
 .bz-rope {
   display: block;
-  width: 2px;
-  background: var(--muted);
-  opacity: 0.6;
+  width: 3px;
+  background: var(--accent-dark);
+  border-radius: 2px;
   transition: height 0.35s ease;
+}
+/* Punto de anclaje visible donde la cuerda entra en el plato — sin esto
+   los platos parecen flotar sueltos, sobre todo con la cuerda corta. */
+.bz-rope::after {
+  content: "";
+  display: block;
+  width: 8px;
+  height: 8px;
+  margin: -2px auto 0;
+  border-radius: 50%;
+  background: var(--accent-dark);
 }
 .bz-pan {
   width: 100%;

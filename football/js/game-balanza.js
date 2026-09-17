@@ -1,4 +1,4 @@
-// #6 "Equilibra la balanza" (Igualdad y pesos) — REHECHO dos veces.
+// #6 "Equilibra la balanza" (Igualdad y pesos) — REHECHO tres veces.
 // v2: pasó de acumular pesas +1/+2/+5/+10 (== "Llena el vaso" con kg) a
 // álgebra de verdad: sacos idénticos de peso desconocido y pesas conocidas
 // en los platos; el dedo mueve LA INCÓGNITA y la balanza sólo dice qué lado
@@ -10,6 +10,16 @@
 // evitar, y sin relación entre nivel y dificultad real. Ahora el
 // presupuesto se ata al coste óptimo de cada ronda con un margen que se
 // estrecha con el nivel (slackFor): +3 al empezar, +1 en el nivel avanzado.
+// v4 (marcado 🔧 una tercera vez, sin nota): jugadas 40 rondas óptimas de
+// verdad en Chromium a 390px de ancho, sin encontrar NINGÚN fallo numérico
+// (margen de ajustes siempre positivo). El problema resultó ser visual, no
+// matemático: una captura de pantalla mostró la cuerda de cada plato tan
+// fina (2px) y transparente (opacity 0.6, color apagado) que a simple
+// vista los platos parecían flotar sueltos, sin conexión con la viga — no
+// se leía como una balanza. Cuerda más gruesa y visible, con un punto de
+// anclaje donde entra en el plato, y una altura mínima para que nunca
+// desaparezca del todo en un desequilibrio extremo (antes podía llegar a
+// altura negativa, es decir 0 real).
 import { randInt, pick, clamp, saveScore } from "./utils.js";
 
 const MIN_X = 1;
@@ -251,8 +261,11 @@ export function mountBalanzaGame(container, { client, onExit }) {
     // bajada: así el dibujo es coherente (cuerdas pegadas a los extremos) y
     // la diferencia se lee de un vistazo sin decir los kilos.
     const dy = clamp(diff * 2.4, -18, 18);
-    ropeLEl.style.height = `${16 + dy}px`;
-    ropeREl.style.height = `${16 - dy}px`;
+    // Nunca por debajo de un mínimo visible: con dy en su extremo (±18) una
+    // cuerda podía quedar en -2px (0 real), y el plato parecía flotar
+    // pegado a la viga sin cuerda que lo sostenga.
+    ropeLEl.style.height = `${Math.max(4, 16 + dy)}px`;
+    ropeREl.style.height = `${Math.max(4, 16 - dy)}px`;
     const semi = Math.max(barEl.getBoundingClientRect().width / 2, 40);
     const rot = -(Math.atan2(dy, semi) * 180) / Math.PI;
     barEl.style.transform = `rotate(${rot}deg)`;
