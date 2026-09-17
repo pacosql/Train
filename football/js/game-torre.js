@@ -1,28 +1,162 @@
-// "Construye la torre": copiar, doblar o superar en 3 una torre modelo.
-// Comparar dos alturas lado a lado hace visible la relación (doble, +3)
-// mucho antes de que el niño sepa escribirla como operación.
-import { randInt, pick, saveScore } from "./utils.js";
+// #49 "Construye la torre" (Comparación) — REHECHO.
+// Antes: todos los bloques valían 1, así que "apilar" era darle N veces a
+// un contador — cambiar las mates por cualquier otra pregunta habría dado
+// el mismo juego, y sólo había 15 rondas distintas posibles.
+// Ahora: la bandeja trae piezas CONCRETAS de valores distintos y de un solo
+// uso, y cada pieza mide en pantalla exactamente lo que vale. Alcanzar la
+// altura pedida obliga a descomponer el número en las piezas que hay (no
+// existe la pieza "+1" infinita), y la relación con el modelo —doble,
+// mitad, triple, tantos menos— hay que calcularla antes de apilar. Cada
+// ronda tiene una única combinación válida, comprobada por fuerza bruta.
+import { randInt, pick, shuffle, saveScore } from "./utils.js";
 
-const RULES = [
-  { id: "igual", text: "igual de alta", apply: (n) => n },
-  { id: "doble", text: "el doble de alta", apply: (n) => n * 2 },
-  { id: "mas3", text: "3 bloques más alta", apply: (n) => n + 3 },
+const UNIT = 12;       // px de alto por unidad de valor
+const MAX_STACK = 18;  // tope físico: por encima la torre no cabe
+const MAX_TARGET = 15;
+
+export function torreLevelFor(streak) {
+  return streak >= 5 ? 2 : streak >= 2 ? 1 : 0;
+}
+
+// Relaciones con el modelo. Cada una devuelve el modelo, la altura pedida
+// y la cuenta escrita, que es lo que se muestra al fallar.
+function relIgual() {
+  const n = randInt(4, 12);
+  return { id: "igual", model: n, target: n, text: "igual de alta", how: `el modelo mide ${n} → ${n}` };
+}
+function relMas(dmin, dmax) {
+  return () => {
+    const n = randInt(3, 9);
+    const d = randInt(dmin, dmax);
+    return { id: `mas${d}`, model: n, target: n + d, text: `${d} más alta`, how: `${n} + ${d} = ${n + d}` };
+  };
+}
+function relMenos(dmin, dmax) {
+  return () => {
+    const n = randInt(7, 14);
+    const d = randInt(dmin, dmax);
+    return { id: `menos${d}`, model: n, target: n - d, text: `${d} más baja`, how: `${n} − ${d} = ${n - d}` };
+  };
+}
+function relDoble() {
+  const n = randInt(3, 7);
+  return { id: "doble", model: n, target: n * 2, text: "el doble de alta", how: `${n} × 2 = ${n * 2}` };
+}
+function relTriple() {
+  const n = randInt(2, 5);
+  return { id: "triple", model: n, target: n * 3, text: "el triple de alta", how: `${n} × 3 = ${n * 3}` };
+}
+function relMitad() {
+  const n = 2 * randInt(3, 7);
+  return { id: "mitad", model: n, target: n / 2, text: "la mitad de alta", how: `${n} ÷ 2 = ${n / 2}` };
+}
+
+const REL_LEVELS = [
+  [relIgual, relMas(2, 3)],
+  [relIgual, relDoble, relMas(3, 5), relMenos(2, 3)],
+  [relDoble, relTriple, relMitad, relMas(4, 6), relMenos(3, 4)],
 ];
 
-const MAX_STACK = 14; // tope físico: por encima la torre no cabe en pantalla
+// Cuántos subconjuntos de piezas suman `target` (fuerza bruta: como mucho
+// 6 piezas, 63 combinaciones). Es la garantía de solución única.
+export function countSubsets(pieces, target) {
+  let n = 0;
+  const total = 1 << pieces.length;
+  for (let m = 1; m < total; m++) {
+    let s = 0;
+    for (let i = 0; i < pieces.length; i++) if (m & (1 << i)) s += pieces[i];
+    if (s === target) n++;
+  }
+  return n;
+}
+
+// Parte `target` en `n` valores DISTINTOS de 1 a 9 (valores repetidos
+// harían indistinguibles dos soluciones).
+function distinctPartition(target, n) {
+  for (let t = 0; t < 80; t++) {
+    const vals = [];
+    let rest = target;
+    let ok = true;
+    for (let i = 0; i < n - 1; i++) {
+      const left = n - 1 - i; // piezas que aún quedan por poner, incluida la última
+      const hi = Math.min(9, rest - left);
+      if (hi < 1) { ok = false; break; }
+      const v = randInt(1, hi);
+      vals.push(v);
+      rest -= v;
+    }
+    if (!ok || rest < 1 || rest > 9) continue;
+    vals.push(rest);
+    if (new Set(vals).size === vals.length) return vals;
+  }
+  return null;
+}
+
+// Bandeja jugable: la solución usa 2 o 3 piezas (nunca una sola, que sería
+// un toque), sobran piezas sin usar y no hay ninguna otra combinación que
+// sume lo pedido.
+function makeTray(target) {
+  const solSize = target >= 10 ? pick([2, 3, 3]) : pick([2, 2, 3]);
+  const sol = distinctPartition(target, solSize);
+  if (!sol) return null;
+  const free = [];
+  for (let v = 1; v <= 9; v++) if (!sol.includes(v)) free.push(v);
+  const extrasCount = randInt(2, 3);
+  if (free.length < extrasCount) return null;
+  const extras = shuffle(free).slice(0, extrasCount);
+  const pieces = shuffle(sol.concat(extras));
+  if (countSubsets(pieces, target) !== 1) return null;
+  return { pieces, sol: sol.slice().sort((a, b) => b - a) };
+}
+
+function tryTorre(level) {
+  const rel = pick(REL_LEVELS[level])();
+  if (rel.target < 3 || rel.target > MAX_TARGET) return null;
+  if (rel.model < 2 || rel.model > 14) return null;
+  const tray = makeTray(rel.target);
+  if (!tray) return null;
+  return {
+    model: rel.model,
+    target: rel.target,
+    text: rel.text,
+    how: rel.how,
+    pieces: tray.pieces,
+    sol: tray.sol,
+    key: `${rel.id}|${rel.model}`,
+  };
+}
+
+// Reserva determinista: con piezas 1-2-4-8 toda altura tiene una única
+// descomposición (es el binario), así que siempre es una ronda legal.
+function fallbackTorre() {
+  return {
+    model: 6, target: 6, text: "igual de alta", how: "el modelo mide 6 → 6",
+    pieces: [4, 1, 8, 2], sol: [4, 2], key: "reserva",
+  };
+}
+
+export function makeTorreRound(streak, lastKey) {
+  const level = torreLevelFor(streak);
+  let cand = null;
+  let guard = 0;
+  do {
+    cand = tryTorre(level);
+    guard++;
+  } while ((!cand || cand.key === lastKey) && guard < 400);
+  return cand && cand.key !== lastKey ? cand : fallbackTorre();
+}
 
 export function mountTorreGame(container, { client, onExit }) {
   const startLives = 3;
   let lives = startLives;
   let score = 0;
   let rounds = 0;
+  let streak = 0;
   let finished = false;
-  let model = 0;
-  let target = 0;
-  let built = 0;
-  let lastKey = "";
-  let locked = false; // evita tocar mientras se resuelve la ronda
-  const timers = [];
+  let timers = [];
+  let round = null;
+  let used = [];  // índices de las piezas que están en la torre, en orden
+  let locked = false;
 
   container.innerHTML = `
     <div class="game-topbar">
@@ -42,6 +176,10 @@ export function mountTorreGame(container, { client, onExit }) {
   function later(fn, ms) {
     timers.push(setTimeout(() => { if (!finished) fn(); }, ms));
   }
+  function clearTimers() {
+    timers.forEach(clearTimeout);
+    timers = [];
+  }
 
   function renderLives() {
     livesEl.textContent = "❤️".repeat(Math.max(lives, 0)) + "🖤".repeat(startLives - Math.max(lives, 0));
@@ -50,111 +188,169 @@ export function mountTorreGame(container, { client, onExit }) {
     scoreEl.textContent = `⭐ ${score}`;
   }
 
+  function sumUsed() {
+    return used.reduce((t, i) => t + round.pieces[i], 0);
+  }
+
   function nextRound() {
-    // El modelo empieza en 2 para que "el doble" nunca coincida con "igual",
-    // y el objetivo se limita a lo que cabe apilado en el vaso de la derecha.
-    let rule = null;
-    let key = "";
-    do {
-      model = randInt(2, 6);
-      rule = pick(RULES);
-      target = rule.apply(model);
-      key = `${model}-${rule.id}`;
-    } while (target < 2 || target > 12 || key === lastKey);
-    lastKey = key;
-    built = 0;
+    round = makeTorreRound(streak, round ? round.key : "");
+    used = [];
     locked = false;
 
     body.innerHTML = `
-      <p class="prompt">Haz una torre <b>${rule.text}</b><small>Toca la zona de la derecha para poner bloques</small></p>
-      <div class="pb-towers">
-        <div class="pb-tower-side">
-          <div class="pb-tower pb-tower-model" data-model></div>
-          <span class="pb-tower-name">Modelo (${model})</span>
+      <div class="tw-wrap">
+        <p class="prompt tw-prompt">Hazla <b>${round.text}</b> que el modelo<small>cada pieza mide lo que vale — sólo hay una combinación posible</small></p>
+        <div class="tw-arena">
+          <div class="tw-col">
+            <div class="tw-stack" data-model></div>
+            <span class="tw-label">Modelo <b>${round.model}</b></span>
+          </div>
+          <div class="tw-col">
+            <div class="tw-stack tw-mine" data-mine>
+              <span class="tw-guide" data-guide><i>${round.model}</i></span>
+            </div>
+            <span class="tw-label">Tu torre <b data-sum>0</b></span>
+          </div>
         </div>
-        <div class="pb-tower-side">
-          <button class="pb-tower pb-tower-mine" data-mine type="button"></button>
-          <span class="pb-tower-name">Tu torre: <b data-count>0</b></span>
+        <div class="tw-tray" data-tray></div>
+        <div class="feedback" data-feedback></div>
+        <div class="tw-why" data-why></div>
+        <div class="tw-actions">
+          <button class="primary" data-confirm>Confirmar</button>
+          <button class="secondary" data-reset>↺ Vaciar</button>
         </div>
-      </div>
-      <div class="feedback" data-feedback></div>
-      <div class="pb-actions">
-        <button class="primary" data-confirm>Confirmar</button>
-        <button class="secondary" data-undo>− Quitar</button>
-        <button class="secondary" data-reset>↺</button>
       </div>
     `;
 
+    // Modelo: bloques de 1 en 1, para poder contarlo de un vistazo.
     const modelEl = body.querySelector("[data-model]");
-    for (let i = 0; i < model; i++) {
-      const b = document.createElement("div");
-      b.className = "pb-brick pb-brick-model";
-      modelEl.appendChild(b);
-    }
-    body.querySelector("[data-mine]").addEventListener("click", addBrick);
-    body.querySelector("[data-confirm]").addEventListener("click", check);
-    body.querySelector("[data-undo]").addEventListener("click", () => {
-      if (finished || locked || built === 0) return;
-      built--;
-      renderMine();
-    });
+    let mh = "";
+    for (let i = 0; i < round.model; i++) mh += `<span class="tw-unit"></span>`;
+    modelEl.innerHTML = mh;
+    // La guía punteada lleva la altura del modelo al lado de tu torre:
+    // comparar es ver si pasas de la línea, no restar en la cabeza.
+    body.querySelector("[data-guide]").style.bottom = `${round.model * UNIT}px`;
+
+    body.querySelector("[data-confirm]").addEventListener("click", confirmar);
     body.querySelector("[data-reset]").addEventListener("click", () => {
       if (finished || locked) return;
-      built = 0;
-      renderMine();
+      used = [];
+      render();
     });
-    renderMine();
+    render();
   }
 
-  function renderMine() {
+  function render() {
     const mine = body.querySelector("[data-mine]");
+    const tray = body.querySelector("[data-tray]");
+    const guide = body.querySelector("[data-guide]");
     mine.innerHTML = "";
-    for (let i = 0; i < built; i++) {
-      const b = document.createElement("div");
-      b.className = "pb-brick pb-brick-mine";
+    mine.appendChild(guide);
+    used.forEach((idx, pos) => {
+      const v = round.pieces[idx];
+      const b = document.createElement("button");
+      b.className = "tw-piece tw-piece-on";
+      b.type = "button";
+      b.style.height = `${v * UNIT}px`;
+      b.textContent = String(v);
+      b.addEventListener("click", () => {
+        if (finished || locked) return;
+        used.splice(pos, 1);
+        render();
+      });
       mine.appendChild(b);
+    });
+
+    tray.innerHTML = "";
+    round.pieces.forEach((v, idx) => {
+      const b = document.createElement("button");
+      b.className = "tw-tile";
+      b.type = "button";
+      b.dataset.idx = String(idx);
+      b.innerHTML = `<i class="tw-tile-bar" style="height:${v * 4 + 4}px"></i><b>${v}</b>`;
+      if (used.includes(idx)) {
+        b.classList.add("tw-tile-used");
+        b.disabled = true;
+      }
+      b.addEventListener("click", () => {
+        if (finished || locked || used.includes(idx)) return;
+        if (sumUsed() + v > MAX_STACK) {
+          const f = body.querySelector("[data-feedback]");
+          f.textContent = "Esa pieza ya no cabe encima";
+          f.className = "feedback bad";
+          return;
+        }
+        used.push(idx);
+        render();
+      });
+      tray.appendChild(b);
+    });
+
+    const suma = sumUsed();
+    body.querySelector("[data-sum]").textContent = String(suma);
+    const f = body.querySelector("[data-feedback]");
+    if (!locked) {
+      f.textContent = "";
+      f.className = "feedback";
     }
-    body.querySelector("[data-count]").textContent = String(built);
-    const feedback = body.querySelector("[data-feedback]");
-    feedback.textContent = "";
-    feedback.className = "feedback";
   }
 
-  function addBrick() {
-    if (finished || locked || built >= MAX_STACK) return;
-    built++;
-    renderMine();
-  }
-
-  function check() {
+  function confirmar() {
     if (finished || locked) return;
+    const suma = sumUsed();
+    if (used.length === 0) {
+      const f = body.querySelector("[data-feedback]");
+      f.textContent = "Pon alguna pieza primero";
+      f.className = "feedback bad";
+      return;
+    }
     locked = true;
     rounds++;
     const feedback = body.querySelector("[data-feedback]");
-    if (built === target) {
+    const why = body.querySelector("[data-why]");
+
+    if (suma === round.target) {
+      streak++;
       score += 10;
       renderScore();
-      feedback.textContent = "¡Torre perfecta!";
+      feedback.textContent = `¡Justo! ${used.map((i) => round.pieces[i]).join(" + ")} = ${round.target}`;
       feedback.className = "feedback ok";
-      later(nextRound, 800);
-    } else {
-      lives--;
-      renderLives();
-      feedback.textContent = built > target ? `Te sobran ${built - target} bloques` : `Te faltan ${target - built} bloques`;
-      feedback.className = "feedback bad";
-      if (lives <= 0) return later(() => finish(false), 800);
-      later(() => {
-        built = 0;
-        locked = false;
-        renderMine();
-      }, 800);
+      later(nextRound, 950);
+      return;
     }
+
+    streak = 0;
+    lives--;
+    renderLives();
+    const dif = Math.abs(suma - round.target);
+    feedback.textContent = suma > round.target
+      ? `Te has pasado en ${dif}`
+      : `Te faltan ${dif}`;
+    feedback.className = "feedback bad";
+
+    // Al fallar se ve la cuenta entera: cómo salía la altura pedida, qué
+    // sumaste tú y la única descomposición que valía.
+    why.innerHTML = `
+      <span class="tw-why-line">Pedía ${round.text}: <b>${round.how}</b></span>
+      <span class="tw-why-line tw-why-bad">Tú: ${used.map((i) => round.pieces[i]).join(" + ")} = ${suma}</span>
+      <span class="tw-why-line tw-why-good">Única forma: ${round.sol.join(" + ")} = ${round.target}</span>
+    `;
+    why.classList.add("on");
+    // Y la torre buena se levanta sola al lado del modelo.
+    later(() => {
+      used = round.sol.map((v) => round.pieces.indexOf(v));
+      render();
+      body.querySelectorAll(".tw-piece-on").forEach((el) => el.classList.add("tw-piece-sol"));
+    }, 750);
+
+    if (lives <= 0) return later(() => finish(false), 2500);
+    later(nextRound, 2500);
   }
 
   function finish(userExited) {
     if (finished) return;
     finished = true;
-    timers.forEach(clearTimeout);
+    clearTimers();
     if (userExited) return onExit();
     saveScore(client, "torre", { score, rounds });
     body.innerHTML = `
@@ -173,11 +369,13 @@ export function mountTorreGame(container, { client, onExit }) {
   }
 
   function start() {
+    clearTimers();
     lives = startLives;
     score = 0;
     rounds = 0;
+    streak = 0;
+    round = null;
     finished = false;
-    lastKey = "";
     renderLives();
     renderScore();
     nextRound();
@@ -186,6 +384,6 @@ export function mountTorreGame(container, { client, onExit }) {
   start();
   return () => {
     finished = true;
-    timers.forEach(clearTimeout);
+    clearTimers();
   };
 }

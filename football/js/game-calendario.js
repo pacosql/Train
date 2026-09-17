@@ -1,9 +1,17 @@
-// "Calendario": se trabaja sobre un mes real con los offsets de día de la
-// semana correctos, no sobre una lista de números — así contar días y
-// localizar "el tercer martes" se parece a leer un calendario de pared.
-import { randInt, buildChoices, saveScore } from "./utils.js";
+// "Calendario": dos rondas manipulativas sobre un mes REAL (año, mes y
+// días de verdad). Antes era mitad búsqueda visual ("toca el tercer
+// martes") y mitad resta disfrazada ("¿cuántos días del 4 al 17?", que se
+// respondía sin mirar el calendario). Ahora el dedo hace la aritmética:
+//   1) "Coloca el 1": dado el día de la semana de una fecha del mes, hay
+//      que colocar la ficha del día 1 en su columna. Eso es módulo 7:
+//      quitar semanas completas y retroceder los días que sobran.
+//   2) "Planifica los ensayos": marcar en la rejilla todos los días de un
+//      evento que se repite cada N días. Contar de N en N sobre siete
+//      columnas es donde se ve el patrón (la diagonal del calendario).
+// Todas las fechas se construyen con Date.UTC para que ninguna zona
+// horaria mueva un día.
+import { randInt, pick, saveScore } from "./utils.js";
 
-const YEAR = 2025;
 const MESES = [
   "enero", "febrero", "marzo", "abril", "mayo", "junio",
   "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre",
@@ -11,11 +19,70 @@ const MESES = [
 // Semana que empieza en lunes (como en España), no en domingo.
 const DIAS = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"];
 const DIAS_CORTOS = ["L", "M", "X", "J", "V", "S", "D"];
-const ORDINALES = ["primer", "segundo", "tercer", "cuarto", "quinto"];
+// Se incluye 2024 a propósito: es bisiesto, así febrero sale de 28 y de 29.
+const ANIOS = [2024, 2025, 2026, 2027];
+// La pista se aleja del día 1 según la racha: cuanto más lejos, más
+// semanas completas hay que descontar antes de retroceder columnas.
+const MIN_PISTA = [9, 13, 17];
+// Paso del evento que se repite: pasos cortos = más ensayos que contar.
+const RANGO_PASO = [[8, 12], [6, 12], [4, 12]];
+const MIN_MARCAS = 3;
+const MAX_MARCAS = 6;
 
-// Índice de día de semana con lunes = 0 (Date.getDay() usa domingo = 0).
-function weekdayIndex(year, month, day) {
-  return (new Date(year, month, day).getDay() + 6) % 7;
+function diasDelMes(anio, mes) {
+  // Día 0 del mes siguiente = último día de este mes.
+  return new Date(Date.UTC(anio, mes + 1, 0)).getUTCDate();
+}
+
+// Columna de la rejilla (lunes = 0); Date.getUTCDay() usa domingo = 0.
+function columna(anio, mes, dia) {
+  return (new Date(Date.UTC(anio, mes, dia)).getUTCDay() + 6) % 7;
+}
+
+// Genera la ronda entera. Se exporta para que el script de simulación
+// pruebe exactamente los mismos números que corren en el juego.
+export function buildRondaCalendario(modo, nivel) {
+  const anio = pick(ANIOS);
+  const mes = randInt(0, 11);
+  const dias = diasDelMes(anio, mes);
+  const col1 = columna(anio, mes, 1);
+
+  if (modo === "columna") {
+    // Se descarta la pista que cae en la misma columna que el 1: ahí no
+    // habría nada que contar (la respuesta sería "la misma columna").
+    let pista = 0;
+    let guard = 0;
+    do {
+      pista = randInt(MIN_PISTA[nivel], dias);
+      guard++;
+    } while ((pista - 1) % 7 === 0 && guard < 200);
+    return {
+      modo, anio, mes, dias, col1, pista, guard,
+      colPista: columna(anio, mes, pista),
+      semanas: Math.floor((pista - 1) / 7),
+      resto: (pista - 1) % 7,
+    };
+  }
+
+  // Paso múltiplo de 7 fuera: repetiría siempre la misma columna y se
+  // resolvería mirando, no contando. Y entre 3 y 6 marcas: menos no es un
+  // patrón y más se vuelve tedioso con el pulgar.
+  let paso = 0;
+  let inicio = 0;
+  let objetivo = [];
+  let guard = 0;
+  const [pmin, pmax] = RANGO_PASO[nivel];
+  do {
+    paso = randInt(pmin, pmax);
+    inicio = randInt(1, 12);
+    objetivo = [];
+    for (let d = inicio; d <= dias; d += paso) objetivo.push(d);
+    guard++;
+  } while (
+    (paso % 7 === 0 || objetivo.length < MIN_MARCAS || objetivo.length > MAX_MARCAS) &&
+    guard < 400
+  );
+  return { modo, anio, mes, dias, col1, paso, inicio, objetivo, guard };
 }
 
 export function mountCalendarioGame(container, { client, onExit }) {
@@ -23,10 +90,14 @@ export function mountCalendarioGame(container, { client, onExit }) {
   let lives = startLives;
   let score = 0;
   let rounds = 0;
+  let streak = 0;
   let roundIndex = 0;
   let finished = false;
+  let locked = false;
   let timers = [];
-  let answerDay = 0;
+  let ronda = null;
+  let eleccion = -1; // columna elegida en el modo "columna"
+  let marcados = new Set(); // días marcados en el modo "planifica"
 
   container.innerHTML = `
     <div class="game-topbar">
@@ -57,113 +128,169 @@ export function mountCalendarioGame(container, { client, onExit }) {
   function renderScore() {
     scoreEl.textContent = `⭐ ${score}`;
   }
+  function nivelActual() {
+    return Math.min(Math.floor(streak / 2), MIN_PISTA.length - 1);
+  }
 
-  function gridHTML(month, days, offset, interactive, marks) {
-    let cells = "";
-    for (let i = 0; i < offset; i++) cells += `<div class="cal-cell cal-empty"></div>`;
-    for (let d = 1; d <= days; d++) {
-      const mark = marks.includes(d) ? " cal-mark" : "";
-      cells += interactive
-        ? `<button class="cal-cell cal-day${mark}" data-day="${d}">${d}</button>`
-        : `<div class="cal-cell cal-day${mark}">${d}</div>`;
+  function cabeceraHTML() {
+    return DIAS_CORTOS
+      .map((d, i) => `<div class="cl-head${i > 4 ? " cl-weekend" : ""}">${d}</div>`)
+      .join("");
+  }
+
+  // Rejilla del mes con el día 1 en la columna `col`. `col` es parámetro
+  // (y no siempre el real) porque al fallar se enseña también el mes que
+  // habría salido con la columna elegida.
+  function rejillaHTML(col, opts) {
+    const o = opts || {};
+    const marcas = o.marcas || new Set();
+    const buenos = o.buenos || [];
+    const malos = o.malos || [];
+    let celdas = "";
+    for (let i = 0; i < col; i++) celdas += `<div class="cl-cell cl-empty"></div>`;
+    for (let d = 1; d <= ronda.dias; d++) {
+      const clases = ["cl-cell", "cl-day"];
+      if (marcas.has(d)) clases.push("cl-mark");
+      if (buenos.includes(d)) clases.push("cl-ok");
+      if (malos.includes(d)) clases.push("cl-bad");
+      if (o.destacado === d) clases.push("cl-hl");
+      const fijo = d === ronda.inicio ? " cl-fixed" : "";
+      celdas += o.interactivo && d !== ronda.inicio
+        ? `<button class="${clases.join(" ")}" type="button" data-day="${d}">${d}</button>`
+        : `<div class="${clases.join(" ")}${fijo}">${d}</div>`;
     }
-    const head = DIAS_CORTOS.map((d, i) =>
-      `<div class="cal-head${i > 4 ? " cal-weekend" : ""}">${d}</div>`).join("");
-    return `
-      <div class="cal-month">${MESES[month]} ${YEAR}</div>
-      <div class="cal-grid" data-grid>${head}${cells}</div>
-    `;
+    return `<div class="cl-grid">${cabeceraHTML()}${celdas}</div>`;
+  }
+
+  function cadenaHTML() {
+    return ronda.objetivo.join(" → ");
   }
 
   function nextRound() {
-    const month = randInt(0, 11);
-    const days = new Date(YEAR, month + 1, 0).getDate();
-    const offset = weekdayIndex(YEAR, month, 1);
-    const tapMode = roundIndex % 2 === 0;
+    if (finished) return;
+    const modo = roundIndex % 2 === 0 ? "columna" : "planifica";
     roundIndex++;
+    ronda = buildRondaCalendario(modo, nivelActual());
+    locked = false;
+    eleccion = -1;
+    marcados = new Set();
 
-    if (tapMode) {
-      const wd = randInt(0, 6);
-      // Listamos los días reales de ese día de la semana: así el ordinal
-      // que pedimos siempre existe (nunca "quinto viernes" si hay cuatro).
-      const matches = [];
-      for (let d = 1; d <= days; d++) if (weekdayIndex(YEAR, month, d) === wd) matches.push(d);
-      const n = randInt(1, matches.length);
-      answerDay = matches[n - 1];
+    if (modo === "columna") {
       body.innerHTML = `
-        <div class="cal-wrap">
-          <p class="prompt cal-prompt">Toca el <b>${ORDINALES[n - 1]} ${DIAS[wd]}</b></p>
-          ${gridHTML(month, days, offset, true, [])}
+        <div class="cl-wrap">
+          <p class="prompt cl-prompt">El <b>${ronda.pista}</b> de ${MESES[ronda.mes]} de ${ronda.anio}
+            es <b>${DIAS[ronda.colPista]}</b><small>¿En qué columna empieza el mes? Coloca ahí la ficha del 1</small></p>
+          <div class="cl-month">${MESES[ronda.mes]} ${ronda.anio} · ${ronda.dias} días</div>
+          <div class="cl-board" data-board>
+            <div class="cl-grid">
+              ${cabeceraHTML()}
+              ${DIAS_CORTOS.map((_, i) => `<button class="cl-cell cl-slot" type="button" data-col="${i}">·</button>`).join("")}
+            </div>
+          </div>
+          <div class="cl-note" data-note>Quita las semanas completas y retrocede lo que sobre.</div>
+          <button class="primary cl-confirm" data-confirm disabled>Montar el mes</button>
           <div class="feedback" data-feedback></div>
         </div>
       `;
-      body.querySelector("[data-grid]").addEventListener("click", (e) => {
-        const btn = e.target.closest("[data-day]");
-        if (btn) answerTap(Number(btn.dataset.day), btn);
+      const board = body.querySelector("[data-board]");
+      board.addEventListener("click", (e) => {
+        const btn = e.target.closest("[data-col]");
+        if (!btn || finished || locked) return;
+        eleccion = Number(btn.dataset.col);
+        board.querySelectorAll("[data-col]").forEach((b) => {
+          const puesto = Number(b.dataset.col) === eleccion;
+          b.classList.toggle("cl-chip", puesto);
+          b.textContent = puesto ? "1" : "·";
+        });
+        body.querySelector("[data-confirm]").disabled = false;
       });
-    } else {
-      const a = randInt(1, days - 6);
-      const b = randInt(a + 3, Math.min(days, a + 18));
-      const correct = b - a; // días que "faltan": diferencia, sin contar el día de salida
-      body.innerHTML = `
-        <div class="cal-wrap">
-          <p class="prompt cal-prompt">¿Cuántos días faltan del <b>${a}</b> al <b>${b}</b>?</p>
-          ${gridHTML(month, days, offset, false, [a, b])}
-          <div class="choices cal-choices" data-choices></div>
-          <div class="feedback" data-feedback></div>
-        </div>
-      `;
-      const choicesEl = body.querySelector("[data-choices]");
-      buildChoices(correct, () => randInt(Math.max(1, correct - 4), correct + 4)).forEach((v) => {
-        const btn = document.createElement("button");
-        btn.className = "choice-btn";
-        btn.textContent = v;
-        btn.addEventListener("click", () => answerChoice(v, correct, btn, choicesEl));
-        choicesEl.appendChild(btn);
-      });
+      body.querySelector("[data-confirm]").addEventListener("click", resolverColumna);
+      return;
     }
+
+    marcados = new Set([ronda.inicio]);
+    body.innerHTML = `
+      <div class="cl-wrap">
+        <p class="prompt cl-prompt">Ensayo el día <b>${ronda.inicio}</b>, y luego <b>cada ${ronda.paso} días</b><small>Marca todos los ensayos que caen en el mes</small></p>
+        <div class="cl-month">${MESES[ronda.mes]} ${ronda.anio} · ${ronda.dias} días</div>
+        <div class="cl-board" data-board>${rejillaHTML(ronda.col1, { interactivo: true, marcas: marcados })}</div>
+        <div class="cl-note" data-note>Marcados: <b data-count>1</b></div>
+        <button class="primary cl-confirm" data-confirm>Listo</button>
+        <div class="feedback" data-feedback></div>
+      </div>
+    `;
+    const board = body.querySelector("[data-board]");
+    board.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-day]");
+      if (!btn || finished || locked) return;
+      const d = Number(btn.dataset.day);
+      if (marcados.has(d)) marcados.delete(d);
+      else marcados.add(d);
+      btn.classList.toggle("cl-mark", marcados.has(d));
+      body.querySelector("[data-count]").textContent = String(marcados.size);
+    });
+    body.querySelector("[data-confirm]").addEventListener("click", resolverPlanifica);
   }
 
-  function resolve(ok, msgOk, msgBad) {
+  function resolverColumna() {
+    if (finished || locked || eleccion < 0) return;
+    const ok = eleccion === ronda.col1;
+    // Se monta el mes de verdad: ahí se ve si el día de la pista cae
+    // donde decía el enunciado, que es la comprobación que enseña.
+    body.querySelector("[data-board]").innerHTML =
+      rejillaHTML(ronda.col1, { destacado: ronda.pista }) +
+      (ok ? "" : `<div class="cl-extra">Tú lo empezaste en <b>${DIAS[eleccion]}</b></div>`);
+    const semanas = ronda.semanas === 1 ? "1 semana" : `${ronda.semanas} semanas`;
+    body.querySelector("[data-note]").innerHTML =
+      `Del 1 al ${ronda.pista} hay ${ronda.pista - 1} días = ${semanas} y ${ronda.resto} día${ronda.resto === 1 ? "" : "s"}: ` +
+      `retrocede ${ronda.resto} desde el ${DIAS[ronda.colPista]} → el 1 es <b>${DIAS[ronda.col1]}</b>`;
+    resolver(ok, "¡El mes encaja!", `El 1 era ${DIAS[ronda.col1]}`);
+  }
+
+  function resolverPlanifica() {
+    if (finished || locked) return;
+    const malos = Array.from(marcados).filter((d) => !ronda.objetivo.includes(d));
+    const faltan = ronda.objetivo.filter((d) => !marcados.has(d));
+    const ok = malos.length === 0 && faltan.length === 0;
+    body.querySelector("[data-board]").innerHTML = rejillaHTML(ronda.col1, {
+      marcas: marcados,
+      buenos: ronda.objetivo,
+      malos,
+    });
+    body.querySelector("[data-note]").innerHTML =
+      `Sumando ${ronda.paso}: <b>${cadenaHTML()}</b> (el siguiente, ${ronda.objetivo[ronda.objetivo.length - 1] + ronda.paso}, ya es del mes siguiente)`;
+    const partes = [];
+    if (faltan.length) partes.push(`faltaban ${faltan.join(", ")}`);
+    if (malos.length) partes.push(`sobraban ${malos.join(", ")}`);
+    resolver(
+      ok,
+      `¡Los ${ronda.objetivo.length} ensayos!`,
+      partes.join(" y ").replace(/^./, (c) => c.toUpperCase())
+    );
+  }
+
+  function resolver(ok, msgOk, msgBad) {
+    locked = true;
     rounds++;
+    const confirmar = body.querySelector("[data-confirm]");
+    if (confirmar) confirmar.disabled = true;
     const feedback = body.querySelector("[data-feedback]");
     if (ok) {
+      streak++;
       score += 10;
       renderScore();
       feedback.textContent = msgOk;
       feedback.className = "feedback ok";
-      later(nextRound, 750);
+      later(nextRound, 1300);
     } else {
+      streak = 0;
       lives--;
       renderLives();
       feedback.textContent = msgBad;
       feedback.className = "feedback bad";
-      if (lives <= 0) return later(() => finish(false), 800);
-      later(nextRound, 1200);
+      if (lives <= 0) return later(() => finish(false), 1900);
+      later(nextRound, 2400);
     }
-  }
-
-  function answerTap(day, btn) {
-    if (finished) return;
-    const grid = body.querySelector("[data-grid]");
-    grid.querySelectorAll("[data-day]").forEach((b) => { b.disabled = true; });
-    const ok = day === answerDay;
-    btn.classList.add(ok ? "correct" : "wrong");
-    if (!ok) grid.querySelector(`[data-day="${answerDay}"]`).classList.add("correct");
-    resolve(ok, "¡Ese es!", `Era el día ${answerDay}`);
-  }
-
-  function answerChoice(v, correct, btn, choicesEl) {
-    if (finished) return;
-    choicesEl.querySelectorAll("button").forEach((b) => { b.disabled = true; });
-    const ok = v === correct;
-    btn.classList.add(ok ? "correct" : "wrong");
-    if (!ok) {
-      choicesEl.querySelectorAll("button").forEach((b) => {
-        if (Number(b.textContent) === correct) b.classList.add("correct");
-      });
-    }
-    resolve(ok, "¡Correcto!", `Eran ${correct} días`);
   }
 
   function finish(userExited) {
@@ -192,8 +319,10 @@ export function mountCalendarioGame(container, { client, onExit }) {
     lives = startLives;
     score = 0;
     rounds = 0;
+    streak = 0;
     roundIndex = 0;
     finished = false;
+    locked = false;
     renderLives();
     renderScore();
     nextRound();
