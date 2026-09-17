@@ -1,7 +1,7 @@
 # Math Games 🧠
 
-PWA (sin build, HTML/CSS/JS puro) con **113 ejercicios de matemáticas**,
-cada uno numerado (#1-#113) para poder referirse a ellos sin ambigüedad.
+PWA (sin build, HTML/CSS/JS puro) con **118 ejercicios de matemáticas**,
+cada uno numerado (#1-#118) para poder referirse a ellos sin ambigüedad.
 Cálculo mental, geometría, álgebra, estadística, fracciones, dinero,
 probabilidad, coordenadas, tiempo y más. Nace como banco de pruebas
 rápido para sacar ideas de mecánicas (tipo Duolingo Math, Synthesis,
@@ -308,6 +308,48 @@ correcta (subconjunto que suma, producto cruzado, combinación de
 potencia, emparejamiento por paridad, m.c.m.) confirmando que el
 marcador sube.
 
+## Ejercicios #114-#118 (sexta tanda) — tramo 1
+
+### Tramo 1 — [`css/pack-p.css`](./css/pack-p.css)
+
+| # | Juego | Tema | Mecánica | De dónde sale |
+|---|---|---|---|---|
+| 114 | 🔷 KenKen mini | Operaciones y lógica | Rejilla 4×4 sin repetir 1-4 por fila/columna, con "jaulas" que exigen que sus celdas combinen con +, ×, - o ÷ para dar un objetivo | KenKen, Tetsuya Miyamoto |
+| 115 | ⚫ Hitori | Lógica de eliminación | Sombrea celdas de una rejilla 5×5 para que ningún número quede repetido sin sombrear en su fila/columna, sin negras pegadas y con las blancas siempre conectadas | Hitori (Nikoli) |
+| 116 | 🔐 La clave secreta | Criptaritmos | Criptaritmo tipo AB+CD=EFG: cada letra es una cifra fija, letras distintas son cifras distintas, ninguna cifra inicial puede ser 0 | SEND+MORE=MONEY, Martin Gardner |
+| 117 | 💵 Sin pasarse de precio | Estimación y comparación | Adivina el precio exacto de un producto en máximo 6 intentos; tras cada puja solo se dice "más alto"/"más bajo", así que conviene converger por bisección | El Precio Justo |
+| 118 | 🐟 Pesca de factores | Factores y divisores | Pesca entre un estanque de números solo los que dividen exactamente al objetivo, dejando fuera los señuelos que no lo dividen | Inventado: terna *factores/divisores + pescar + estanque* |
+
+Verificación antes de publicar: `verify_kenken.mjs` sobre 5.000 rondas de
+#114 (cuadrado latino siempre válido, jaulas de resta/división siempre de 2
+celdas, objetivos coherentes recalculados de forma independiente);
+`test_hitori.mjs` sobre 5.000 rondas de #115 (0 falsos negativos de
+`esSolucionValida` sobre su propia construcción); `validate_clave.mjs`
+sobre 500 rondas de #116 con verificación independiente de unicidad por
+fuerza bruta (0 rondas con más de una solución); `validate_puja.mjs`
+confirmando que el banco de 20 productos cabe en los 6 intentos incluso
+sin bisección perfecta; `sim_anzuelo.mjs` sobre 3.000 rondas de #118
+(generador siempre produce un estanque con 4+ divisores reales). Los 118
+ejercicios cargan sin error de consola, y los 5 nuevos se jugaron de
+verdad en el navegador calculando la jugada correcta de forma
+independiente (sin acceder al estado interno del módulo: la resolución de
+#114 y #116 se hizo leyendo solo el DOM — jaulas reconstruidas a partir de
+los bordes ya dibujados por la UI, ecuación leída directamente del
+`data-tile-letter` de cada ficha) y confirmando que el marcador sube
++10 en cada acierto; también se comprobó que fallar #118 a propósito resta
+una vida con el mensaje correcto.
+
+**Fallo real encontrado y corregido en #114 antes de publicar:** el
+generador no comprobaba que la solución fuera única — en una simulación de
+3.000 rondas, un **25%** tenían más de un cuadrado latino 4×4 que cumplía
+todas las jaulas igual de bien, pero `kkFindIssue` solo aceptaba la
+solución concreta que el generador había guardado internamente, así que
+un jugador que encontrara una solución alternativa igual de válida habría
+sido marcado como error. Se quitó esa comparación final (bastaba con que
+filas, columnas y jaulas cuadren para que la rejilla sea correcta) y se
+verificó con un test dedicado que, sobre una ronda con dos soluciones
+reales, ambas quedan aceptadas.
+
 ## Versiones (v2) y bandeja "Revisar"
 
 Cuando un ejercicio recibe una vuelta de mejoras, se marca con un
@@ -527,17 +569,17 @@ Una vez publicado, esta app queda en:
 
 ## Qué hace la app
 
-- Menú con los 113 ejercicios numerados, organizados en pestañas
+- Menú con los 118 ejercicios numerados, organizados en pestañas
   🆕/👍/👎/🔧; cada uno abre en su propia pantalla (`#/game/<id>`), sin
   recargar la página.
 - Motor de preguntas compartido (`js/quiz-engine.js`) para los 18
   ejercicios de "pregunta + opciones o teclado" (`js/games-data.js` y
-  `js/games-data-2.js`); los otros 95 (`js/game-*.js` y
+  `js/games-data-2.js`); los otros 100 (`js/game-*.js` y
   `js/balloons-game.js`) tienen cada uno su propia mecánica de
   interacción (arrastrar, tocar en orden, emparejar, construir,
   escribir, clasificar, recorrer…).
 - Los estilos de cada tanda viven en su propio `css/pack-<letra>.css`
-  (de `pack-a.css` a `pack-o.css`, uno por tramo temático), para que
+  (de `pack-a.css` a `pack-p.css`, uno por tramo temático), para que
   tocar una tanda no arrastre a las demás.
 - Guarda cada partida en `football_scores` y muestra las últimas en el
   menú.
