@@ -163,7 +163,8 @@ export function mountBuceoGame(container, { client, onExit }) {
         <line x1="48" y1="${yOf(round.target)}" x2="132" y2="${yOf(round.target)}" class="bu-goal"/>
         <text x="134" y="${yOf(round.target) + 5}" class="bu-goal-ico">🧰</text>
         <polyline points="" class="bu-trail" data-trail/>
-        <g class="bu-diver" data-diver><text x="58" y="0" class="bu-diver-ico">🤿</text></g>
+        <g data-gapmark></g>
+        <g class="bu-diver" data-diver><text x="58" y="5" class="bu-diver-ico">🤿</text></g>
       </svg>`;
   }
 
@@ -277,12 +278,26 @@ export function mountBuceoGame(container, { client, onExit }) {
 
     body.innerHTML = `
       <p class="prompt">No has llegado a la cota<small>objetivo ${depth(round.target)}</small></p>
+      <div class="bu-line bu-line-center">${lineSvg()}</div>
       <div class="bu-steps">${chain}</div>
       <div class="bu-why">${why} De ${depth(round.start)} a ${depth(round.target)} hay
         <b>${signed(round.delta)}</b>, y los únicos saltos que lo dan eran <b>${sol}</b>.</div>
       <div class="feedback bad">−1 vida</div>
       <button class="primary" data-go style="margin-top:12px;">Seguir →</button>
     `;
+    // La recta vertical repite el recorrido hecho y marca en rojo lo que
+    // faltaba para la cota.
+    renderPos(false);
+    if (gap !== 0) {
+      const mark = body.querySelector("[data-gapmark]");
+      const y1 = yOf(pos);
+      const y2 = yOf(round.target);
+      mark.innerHTML = `
+        <line x1="112" y1="${y1}" x2="112" y2="${y2}" class="bu-gapline"/>
+        <line x1="106" y1="${y1}" x2="118" y2="${y1}" class="bu-gapline"/>
+        <line x1="106" y1="${y2}" x2="118" y2="${y2}" class="bu-gapline"/>
+        <text x="122" y="${(y1 + y2) / 2 + 3}" class="bu-gaptxt">${Math.abs(gap)} m</text>`;
+    }
     body.querySelector("[data-go]").addEventListener("click", () => {
       if (lives <= 0) return finish(false);
       nextRound();
