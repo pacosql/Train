@@ -1,6 +1,6 @@
 # Math Games 🧠
 
-PWA (sin build, HTML/CSS/JS puro) con **70 ejercicios de matemáticas**,
+PWA (sin build, HTML/CSS/JS puro) con **75 ejercicios de matemáticas**,
 cada uno numerado (#1-#40) para poder referirse a ellos sin ambigüedad.
 Cálculo mental, geometría, álgebra, estadística, fracciones, dinero,
 probabilidad, coordenadas, tiempo y más. Nace como banco de pruebas
@@ -110,7 +110,7 @@ el resto termina a las 3 vidas o al completar el objetivo. Todos
 guardan la puntuación final en Supabase y el menú principal muestra las
 últimas partidas jugadas.
 
-## Ejercicios #66-#70 (cuarta tanda) — 🔧 revisados aparte, 5 mecánicas nuevas
+## Ejercicios #66-#75 (cuarta tanda) — 🔧 revisados aparte, 10 mecánicas nuevas
 
 La columna **de dónde sale** dice si la mecánica viene de una fuente
 concreta de ahí fuera o es inventada, y con qué proceso (la terna de
@@ -125,6 +125,17 @@ combinación forzada, la inversión o la restricción).
 | 68 | ➕ Kakuro | Sumas con restricción | Rellena con 1-9 sin repetir para que cada bloque sume lo indicado (17 en dos casillas solo puede ser 8+9) | Puzzles de lápiz y papel (familia 4) |
 | 69 | ⬛ Shikaku | Multiplicación y área | Arrastras para dibujar cada rectángulo y se lee en vivo «3 × 2 = 6»: la multiplicación no se calcula, se dibuja | Puzzles de lápiz y papel (familia 4) |
 | 70 | 🔯 Cuadrado mágico | Sumas | Coloca las fichas que faltan; cada hueco está atado a fila + columna (+ diagonal), así que es un sistema de sumas | Gardner / puzzles clásicos (familia 3) |
+
+
+### Tramo «Números, descomposición y estrategia» — [`css/pack-h.css`](./css/pack-h.css)
+
+| # | Juego | Tema | Mecánica | De dónde sale |
+|---|---|---|---|---|
+| 71 | 🔟 Cifras | Operaciones | Combinas dos fichas con + − × ÷ y el resultado **pasa a ser una ficha nueva**, gastando los dos operandos | Concurso *Cifras y Letras* (familia 10) + *Digits* del NYT (familia 2) |
+| 72 | 🔀 Todas las formas | Descomposición | Inversión: dado el resultado, encuentra **todas** las parejas que lo forman; «3 de 5 encontradas» | Inventado: inversión 4.3 |
+| 73 | 🪛 Inventa la regla | Patrones | Inversión de «¿qué número sigue?»: te dan la serie y construyes la regla que la genera | Inventado: inversión 4.3 |
+| 74 | 🧹 Criba de primos | Primos | Tachas los múltiplos de 2, 3, 5, 7 fase a fase y al final quedan los primos: el algoritmo ES el gesto | Clásico: criba de Eratóstenes (familia 3) |
+| 75 | 🎋 Nim de palillos | Paridad y restos | Quitas 1, 2 o 3 palillos y pierde quien coge el último; no se gana sin la aritmética modular | Gardner / juegos de patio (familias 3 y 10) |
 
 
 ## Versiones (v2) y bandeja "Revisar"
@@ -317,7 +328,7 @@ Una vez publicado, esta app queda en:
 
 ## Qué hace la app
 
-- Menú con los 70 ejercicios numerados, organizados en pestañas
+- Menú con los 75 ejercicios numerados, organizados en pestañas
   🆕/👍/👎/🔧; cada uno abre en su propia pantalla (`#/game/<id>`), sin
   recargar la página.
 - Motor de preguntas compartido (`js/quiz-engine.js`) para los 18
