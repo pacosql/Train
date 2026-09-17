@@ -1,7 +1,7 @@
 # Math Games 🧠
 
-PWA (sin build, HTML/CSS/JS puro) con **135 ejercicios de matemáticas**,
-cada uno numerado (#1-#135) para poder referirse a ellos sin ambigüedad.
+PWA (sin build, HTML/CSS/JS puro) con **140 ejercicios de matemáticas**,
+cada uno numerado (#1-#140) para poder referirse a ellos sin ambigüedad.
 Cálculo mental, geometría, álgebra, estadística, fracciones, dinero,
 probabilidad, coordenadas, tiempo y más. Nace como banco de pruebas
 rápido para sacar ideas de mecánicas (tipo Duolingo Math, Synthesis,
@@ -485,6 +485,58 @@ porque solo los clavos ya tocados (`.gcv-nail`) tenían
 antes del cambio y confirmado que desaparece después, en Chromium real
 (no fue un artefacto de la prueba).
 
+## Ejercicios #136-#140 (novena tanda, 17-09-2026 tarde) — tramo único
+
+### Tramo único — [`css/pack-t.css`](./css/pack-t.css)
+
+Sin filas `review` pendientes, se saltó el paso de revisión. Familias
+usadas: 1 (apps edtech, tape diagrams de Zearn), 5 (juegos de mesa /
+código César), 6 (mecánicas de videojuego, panel "mayor/menor" tipo
+puzle numérico), 11 (vida real, calidad/control) y 8 (retos lógicos,
+secuencias con intruso).
+
+| # | Juego | Tema | Mecánica | De dónde sale |
+|---|---|---|---|---|
+| 136 | 📊 Diagrama de tiras | Razones y reparto proporcional | Dos tiras formadas por segmentos iguales representan un total repartido; sin ver el valor de cada segmento, deduce cuánto vale 1 segmento o cuánto tiene una persona | Tape diagrams (Zearn/Singapore Math), familia 1 |
+| 137 | 🔐 Máquina de cifrado | Aritmética modular | Dada una letra, un desplazamiento k y si toca cifrar o descifrar, calcula la letra resultante en un alfabeto circular de 27 símbolos (con envoltura) | Cifrado César, familia 5 |
+| 138 | ✈️ Panel de vuelos | Valor posicional | Con 4 dígitos sueltos, colócalos en orden para formar el mayor o el menor número posible — el caso "menor" con un 0 en el banco obliga a razonar que el 0 nunca puede ir primero | Puzles de valor posicional tipo "Number Sequencer", familia 6 |
+| 139 | 🎚️ Iguala el relleno | Porcentajes | Sin ver ningún número, arrastra una barra hasta que su relleno iguale a ojo (con tolerancia) el de una barra de referencia marcada con un porcentaje objetivo oculto | Inventado: terna *porcentaje + arrastrar + comparar a ciegas* |
+| 140 | 🥐 La hornada con un fallo | Secuencias | De una fila de bandejas con cantidades que siguen un patrón (aritmético, geométrico o cíclico), toca la única que rompe el patrón | Control de calidad / detección de intrusos en secuencias, familia 8 — inversión 4.3 sobre "completa la secuencia" |
+
+Verificación antes de publicar: `verify_tiras.mjs` sobre 20.000 rondas
+de #136 (unidad y reparto siempre recalculados de forma independiente,
+sin restos); `test_enigma.mjs` sobre 20.000 rondas de #137 (cifrado y
+descifrado comprobados con la fórmula modular reimplementada desde
+cero, ~70% de los casos con envoltura del alfabeto); `test_maxmin.mjs`
+sobre 8.000 rondas de #138 (mayor y menor recalculados por fuerza
+bruta independiente, con el caso especial del 0 en primera posición
+verificado en más de 2.800 rondas); `verify_iguala.mjs` sobre 10.000
+generaciones de #139 (objetivo siempre múltiplo de 5 entre 10 y 90);
+`test_hornada.mjs` sobre 20.000 rondas de #140 (la bandeja fallona
+detectada de forma independiente por un solucionador que prueba los
+tres patrones posibles, nunca reutilizando la lógica interna del
+juego). Los 140 ejercicios cargan sin error de consola, y los 5 nuevos
+se jugaron de verdad en el navegador calculando la respuesta correcta
+de forma independiente, confirmando que el marcador sube +10 en cada
+acierto; además se comprobó en #137 que fallar a propósito resta una
+vida con el mensaje correcto.
+
+**Hallazgo de auditoría (sin cambio de código):** al investigar la
+familia de "Fermi" se confirmó que ya existe como ejercicio (#pack-7,
+"¿De qué orden?"), así que se descartó antes de construir nada. Más
+importante: comparando el código de #132 "Da en el número" (tanda
+anterior, inspirado en NYT Digits) con [`game-cifras.js`](./js/game-cifras.js)
+(#pack-4, ya existente) se confirmó que **ambos comparten el mismo
+núcleo mecánico** — combinar números con +/−/×/÷ persiguiendo un
+objetivo, estilo "Cifras y Letras"/Countdown Numbers. No se detectó
+la tanda pasada porque solo se comprobó contra `game-codigo.js`
+(Mastermind). Se documenta aquí en vez de reescribir #132 sin que
+nadie lo haya pedido: no está marcado para revisar y funciona bien
+matemáticamente por sí solo — pero queda anotado para que ninguna
+tanda futura proponga un tercer ejercicio con esta misma mecánica.
+También se descartó "Which One Doesn't Belong" por solapar con el
+ya existente `game-intruso.js` (odd-one-out).
+
 ## Versiones (v2) y bandeja "Revisar"
 
 Cuando un ejercicio recibe una vuelta de mejoras, se marca con un
@@ -730,17 +782,17 @@ Una vez publicado, esta app queda en:
 
 ## Qué hace la app
 
-- Menú con los 135 ejercicios numerados, organizados en pestañas
+- Menú con los 140 ejercicios numerados, organizados en pestañas
   🆕/👍/👎/🔧; cada uno abre en su propia pantalla (`#/game/<id>`), sin
   recargar la página.
 - Motor de preguntas compartido (`js/quiz-engine.js`) para los 18
   ejercicios de "pregunta + opciones o teclado" (`js/games-data.js` y
-  `js/games-data-2.js`); los otros 117 (`js/game-*.js` y
+  `js/games-data-2.js`); los otros 122 (`js/game-*.js` y
   `js/balloons-game.js`) tienen cada uno su propia mecánica de
   interacción (arrastrar, tocar en orden, emparejar, construir,
   escribir, clasificar, recorrer…).
 - Los estilos de cada tanda viven en su propio `css/pack-<letra>.css`
-  (de `pack-a.css` a `pack-s.css`, uno por tramo temático), para que
+  (de `pack-a.css` a `pack-t.css`, uno por tramo temático), para que
   tocar una tanda no arrastre a las demás.
 - Guarda cada partida en `football_scores` y muestra las últimas en el
   menú.
