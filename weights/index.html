@@ -276,6 +276,7 @@
     <section id="screen-exercise" hidden>
       <h2 id="ex-name">—</h2>
       <p class="sub"><span id="ex-badge" class="badge"></span> <span id="ex-muscle"></span> · <span id="ex-elapsed">⏱ 0:00</span></p>
+      <p class="hint" id="ex-notes" hidden></p>
 
       <div class="card">
         <p class="hint" id="ex-recommendation"></p>
@@ -539,10 +540,11 @@
         const badgeTxt = ex.movement_type === "push" ? "Empuje" : ex.movement_type === "pull" ? "Tirón" : "Cardio";
         const div = document.createElement("div");
         div.className = "exercise-item";
+        const notesTxt = ex.notes ? ` · ${ex.notes}` : "";
         div.innerHTML = `
           <div>
             <div class="name">${ex.name}${doneToday ? " ✓ hecho hoy" : ""}</div>
-            <div class="muscle">${ex.muscle_group}${lastTxt}</div>
+            <div class="muscle">${ex.muscle_group}${lastTxt}${notesTxt}</div>
           </div>
           <span class="badge ${ex.movement_type}">${badgeTxt}</span>
         `;
@@ -594,8 +596,9 @@
 
       const last = historyByExercise[ex.id];
       const suggested = suggestWeight(ex, last);
+      const initialWeight = suggested != null ? suggested : ex.default_weight != null ? Number(ex.default_weight) : 0;
       if (!resuming) {
-        state.currentWeightDraft = suggested != null ? suggested : 0;
+        state.currentWeightDraft = initialWeight;
         saveState();
       }
       renderWeightDisplay();
@@ -603,9 +606,13 @@
       if (suggested != null) {
         const dirTxt = last.next_time === "mas" ? "subiendo" : last.next_time === "menos" ? "bajando" : "manteniendo";
         el("ex-recommendation").textContent = `Última vez: ${last.weight_used} kg. Sugerido hoy (${dirTxt}): ${suggested} kg.`;
+      } else if (ex.default_weight != null) {
+        el("ex-recommendation").textContent = `Sin historial todavía — peso de referencia: ${ex.default_weight} kg.`;
       } else {
         el("ex-recommendation").textContent = "Sin historial todavía — ajusta el peso con el que vas a empezar.";
       }
+      el("ex-notes").textContent = ex.notes || "";
+      el("ex-notes").hidden = !ex.notes;
 
       const started = !!state.currentExerciseStartedAt;
       el("btn-start-exercise").hidden = started;
