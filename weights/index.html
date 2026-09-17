@@ -229,6 +229,12 @@
     <!-- CARDIO -->
     <section id="screen-cardio" hidden>
       <h2 id="cardio-title">🚴 Cardio</h2>
+      <div class="card" style="text-align:center; padding: 10px 18px;">
+        <div class="stat">
+          <div class="value" id="cardio-elapsed">⏱ 0:00</div>
+          <div class="label">tiempo en cardio</div>
+        </div>
+      </div>
       <div class="card">
         <div class="stat">
           <div class="value" id="cardio-minutes">15</div>
@@ -237,6 +243,7 @@
         <p class="hint" id="cardio-hint"></p>
       </div>
       <button id="btn-cardio-done">Cardio terminado</button>
+      <button id="btn-back-cardio" class="secondary" style="margin-top: 8px;">← Ver lista de ejercicios</button>
     </section>
 
     <!-- PICK EXERCISE -->
@@ -297,6 +304,7 @@
       <p class="hint" style="text-align:center;">3 series × 8 repeticiones — busca el fallo en la última</p>
       <button id="btn-start-exercise">Start</button>
       <button id="btn-finish-exercise" hidden>Finalizar ejercicio</button>
+      <button id="btn-back-exercise" class="secondary" style="margin-top: 8px;">← Ver lista de ejercicios</button>
     </section>
 
     <!-- FEEDBACK -->
@@ -380,6 +388,7 @@
       if (state.summary === undefined) state.summary = [];
       if (state.sessionStartedAt === undefined) state.sessionStartedAt = null;
       if (state.currentExerciseStartedAt === undefined) state.currentExerciseStartedAt = null;
+      if (state.cardioStartedAt === undefined) state.cardioStartedAt = null;
       saveState();
     }
 
@@ -407,6 +416,11 @@
           ? "⏱ " + formatElapsed(state.currentExerciseStartedAt)
           : "⏱ sin empezar";
       }
+      if (state.screen === "cardio") {
+        el("cardio-elapsed").textContent = state.cardioStartedAt
+          ? "⏱ " + formatElapsed(state.cardioStartedAt)
+          : "⏱ sin empezar";
+      }
     }
 
     function freshState() {
@@ -423,9 +437,23 @@
         currentExerciseId: null,
         currentExerciseStartedAt: null,
         currentWeightDraft: null,
+        cardioStartedAt: null,
         pendingExercise: null,
         summary: [],
       };
+    }
+
+    // Solo puede haber una cosa "en marcha" a la vez (un ejercicio de
+    // fuerza o cardio). Empezar la otra abandona silenciosamente lo que
+    // hubiera sin marcarlo como hecho ni pedir feedback — así se puede
+    // ir y venir de la lista libremente.
+    function abandonInProgressExercise() {
+      state.currentExerciseId = null;
+      state.currentExerciseStartedAt = null;
+      state.currentWeightDraft = null;
+    }
+    function abandonInProgressCardio() {
+      state.cardioStartedAt = null;
     }
     function saveState() {
       try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
@@ -558,18 +586,36 @@
           </div>
           <span class="badge ${ex.movement_type}">${badgeTxt}</span>
         `;
-        div.addEventListener("click", () => (isCardio ? startCardioFromList(ex) : startExercise(ex)));
+        div.addEventListener("click", () =>
+          isCardio
+            ? startCardioFromList(ex, { resume: ex.id === state.cardioExerciseId })
+            : startExercise(ex, { resume: ex.id === state.currentExerciseId })
+        );
         container.appendChild(div);
       }
     }
 
-    function startCardioFromList(ex) {
-      state.cardioExerciseId = ex.id;
+    function startCardioFromList(ex, opts = {}) {
+      const resuming = !!(opts.resume && state.cardioExerciseId === ex.id && state.cardioStartedAt);
+      if (!resuming) {
+        abandonInProgressExercise();
+        state.cardioExerciseId = ex.id;
+        state.cardioStartedAt = new Date().toISOString();
+      }
       saveState();
       el("cardio-title").textContent = ex.slug === "eliptica" ? "🏃 Elíptica" : "🚴 Bicicleta";
       el("cardio-minutes").textContent = state.cardioMinutesSuggested || 15;
       el("cardio-hint").textContent = "Repites cardio cuando quieras — marca \"Cardio terminado\" al acabar.";
       showScreen("cardio");
+    }
+
+    function goToListWithoutFinishing() {
+      // Ver la lista de ejercicios no cuenta como abandonar nada — el
+      // ejercicio o cardio en marcha se queda "pausado" en el estado
+      // hasta que se elige otra cosa (entonces sí se abandona) o se
+      // vuelve a pulsar el mismo, que lo retoma con su cronómetro.
+      renderPickScreen();
+      showScreen("pick");
     }
 
     function renderWeightDisplay() {
@@ -593,6 +639,7 @@
       // con calma antes de empezar de verdad la serie.
       const resuming = !!(opts.resume && state.currentExerciseId === ex.id && state.currentWeightDraft != null);
       if (!resuming) {
+        abandonInProgressCardio();
         state.currentExerciseId = ex.id;
         state.currentExerciseStartedAt = null;
       }
@@ -803,7 +850,9 @@
     function pickCardio(slug) {
       const ex = catalog.find((e) => e.slug === slug);
       if (!ex) return;
+      abandonInProgressExercise();
       state.cardioExerciseId = ex.id;
+      state.cardioStartedAt = new Date().toISOString();
       saveState();
       el("cardio-title").textContent = slug === "eliptica" ? "🏃 Elíptica" : "🚴 Bicicleta";
       el("cardio-minutes").textContent = state.cardioMinutesSuggested;
@@ -829,6 +878,7 @@
         state.summary.push({ name: cardioEx.name, minutes: state.cardioMinutesSuggested });
       }
       state.lastMovementType = "cardio";
+      state.cardioStartedAt = null;
       saveState();
       renderPickScreen();
       showScreen("pick");
@@ -877,11 +927,13 @@
         chip.addEventListener("click", () => pickCardio(chip.dataset.cardio));
       });
       el("btn-cardio-done").addEventListener("click", finishCardio);
+      el("btn-back-cardio").addEventListener("click", goToListWithoutFinishing);
 
       el("ex-weight-minus").addEventListener("click", () => adjustWeight(-1));
       el("ex-weight-plus").addEventListener("click", () => adjustWeight(1));
       el("btn-start-exercise").addEventListener("click", beginExercise);
       el("btn-finish-exercise").addEventListener("click", finishExercise);
+      el("btn-back-exercise").addEventListener("click", goToListWithoutFinishing);
 
       el("btn-add-exercise").addEventListener("click", () => {
         el("new-ex-name").value = "";
