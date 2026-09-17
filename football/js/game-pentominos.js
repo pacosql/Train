@@ -502,10 +502,7 @@ export function mountPentominosGame(container, { client, onExit }) {
     }
     const orphan = new Set(guilty);
     strikes++;
-    if (strikes >= 3) {
-      renderBoard(orphan);
-      return loseRound(reason);
-    }
+    if (strikes >= 3) return loseRound(reason, orphan);
     renderBoard(orphan);
     say(`${reason} (fallo ${strikes} de 3)`, "bad");
     locked = true;
@@ -543,16 +540,24 @@ export function mountPentominosGame(container, { client, onExit }) {
     later(nextRound, 900);
   }
 
-  function loseRound(reason) {
+  function loseRound(reason, orphan) {
     locked = true;
     rounds++;
     streak = 0;
     lives--;
     renderLives();
-    showSolution();
     say(`${reason}. Así era la solución.`, "bad");
-    if (lives <= 0) return later(() => finish(false), 2400);
-    later(nextRound, 2400);
+    // Primero se ve el hueco culpable parpadeando y luego la solución: si se
+    // pintara la solución de golpe no habría tiempo de entender el fallo.
+    if (orphan) {
+      renderBoard(orphan);
+      later(showSolution, 1400);
+    } else {
+      showSolution();
+    }
+    const wait = orphan ? 3600 : 2400;
+    if (lives <= 0) return later(() => finish(false), wait);
+    later(nextRound, wait);
   }
 
   function finish(userExited) {

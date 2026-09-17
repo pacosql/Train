@@ -291,7 +291,8 @@ export function mountMagicoGame(container, { client, onExit }) {
       if (sum !== puzzle.target) {
         const diff = sum - puzzle.target;
         const how = diff > 0 ? `${diff} de más` : `${-diff} de menos`;
-        return { text: `${line.name} suma ${sum} y debe sumar ${puzzle.target}: ${how}`, cells: line.cells };
+        const name = line.name.charAt(0).toUpperCase() + line.name.slice(1);
+        return { text: `${name} suma ${sum} y debe sumar ${puzzle.target}: ${how}`, cells: line.cells };
       }
     }
     return null;
