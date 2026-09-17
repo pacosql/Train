@@ -69,9 +69,14 @@ function bestAssignment(counts) {
 // explicar el resultado). Se descartan rondas triviales: la respuesta
 // nunca es 0 (con cantidades >=1 el máximo es siempre >=1, porque
 // cualquier color con al menos 1 ficha llena la fila de tamaño 1) y se
-// limita a que "vaciar la bolsa entera" (usar todos los colores) no
-// salga en más de ~1 de cada 5 rondas, para que lo típico sea tener que
-// decidir cuántas filas —y no simplemente "todas"— caben.
+// limita a que "vaciar la bolsa entera" (usar todos los colores de la
+// ronda) no salga en más de ~1 de cada 5 rondas, para que lo típico sea
+// tener que decidir cuántas filas —y no simplemente "todas"— caben.
+// Con cantidades uniformes hasta 6, "caben todas" resulta ser el caso
+// más común (los tamaños de fila más pequeños se llenan con muy poca
+// ficha), así que además de rechazar ese caso casi siempre se acota el
+// rango de cantidades algo por debajo del tamaño de fila más grande
+// posible para esa bolsa.
 export function generateMosaicoRound() {
   let colors, counts, result;
   let guard = 0;
@@ -79,11 +84,15 @@ export function generateMosaicoRound() {
     guard++;
     const numColors = pick(COLOR_COUNT_POOL);
     colors = shuffle(COLOR_DEFS).slice(0, numColors);
-    counts = colors.map(() => randInt(1, 6));
+    // Tope de cantidad algo por debajo de "una ficha para cada fila que
+    // haría falta para vaciar todo": mantiene rondas variadas sin dejar
+    // de permitir ocasionalmente cantidades grandes.
+    const maxQty = Math.min(6, numColors + 1);
+    counts = colors.map(() => randInt(1, maxQty));
     result = bestAssignment(counts);
   } while (
-    guard < 60 &&
-    (result.filled === 0 || (result.filled === colors.length && Math.random() > 0.22))
+    guard < 300 &&
+    (result.filled === 0 || (result.filled === colors.length && Math.random() > 0.05))
   );
 
   const bag = colors.map((c, i) => ({ ...c, count: counts[i] }));
