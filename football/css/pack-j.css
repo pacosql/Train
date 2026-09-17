@@ -1,0 +1,446 @@
+/* Pack J — mundo real y deducción: escalas de vuelos, combinatoria de
+   conjuntos, hundir la flota, área con botes de pintura y engranajes.
+   Prefijos: .es- .cj- .fl- .pn- .en-
+   Sólo se usan las variables de style.css, más cuatro tonos propios con
+   su versión oscura, así que claro y oscuro funcionan solos.
+   Pensado para 400 px de ancho (se juega con el pulgar). */
+
+:root {
+  --pj-track: #e9e6f8;
+  --pj-paint: #cbb8ff;
+  --pj-grid: rgba(32, 26, 58, 0.22);
+  --pj-tooth: #b9aee8;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --pj-track: #2a2450;
+    --pj-paint: #4c3f8f;
+    --pj-grid: rgba(241, 239, 255, 0.28);
+    --pj-tooth: #55488f;
+  }
+}
+
+/* Envoltorios: apilan el contenido centrado y caben en 400 px. */
+.es-wrap,
+.cj-wrap,
+.fl-wrap,
+.pn-wrap,
+.en-wrap {
+  width: 100%;
+  max-width: 330px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Enunciados más bajos que el .prompt global: debajo hay mucho dibujo. */
+.es-wrap .es-prompt,
+.cj-wrap .cj-prompt,
+.fl-wrap .fl-prompt,
+.pn-wrap .pn-prompt,
+.en-wrap .en-prompt {
+  font-size: 1.05rem;
+  margin-bottom: 12px;
+}
+
+/* ---------- Escalas ---------- */
+.es-segs { width: 100%; display: flex; flex-direction: column; gap: 8px; }
+.es-seg { width: 100%; }
+.es-seg-head {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+.es-seg-head b {
+  display: inline-block;
+  min-width: 16px;
+  margin-right: 4px;
+  padding: 0 4px;
+  border-radius: 5px;
+  background: var(--accent-2);
+  color: #fff;
+  font-size: 0.68rem;
+  text-align: center;
+}
+.es-seg-opts { display: flex; gap: 6px; }
+.es-wrap .es-card {
+  flex: 1;
+  min-width: 0;
+  padding: 7px 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  line-height: 1.15;
+}
+.es-card .es-code { font-size: 0.6rem; font-weight: 700; color: var(--muted); letter-spacing: 0.03em; }
+.es-card .es-dep { font-size: 1.05rem; font-variant-numeric: tabular-nums; }
+.es-card .es-dur { font-size: 0.6rem; color: var(--muted); font-weight: 600; }
+.es-card.es-sel { border-color: var(--accent); background: var(--card); box-shadow: 0 0 0 2px var(--accent) inset; }
+.es-card.correct .es-code,
+.es-card.correct .es-dur { color: #fff; }
+
+/* Línea de tiempo: las barras van a escala, así que el hueco se VE.
+   Los minutos del hueco sólo se escriben al confirmar. */
+.es-tl { width: 100%; margin-top: 12px; display: flex; flex-direction: column; }
+.es-tl-row { display: flex; align-items: center; gap: 6px; }
+.es-tl-tag {
+  width: 15px;
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: var(--muted);
+  text-align: center;
+}
+.es-tl-track {
+  position: relative;
+  flex: 1;
+  height: 20px;
+  border-radius: 6px;
+  background: var(--pj-track);
+}
+.es-tl-bar {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  border-radius: 5px;
+  background: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 3px;
+  min-width: 26px;
+}
+.es-tl-bar.bad { background: var(--danger); }
+.es-tl-bar .es-tl-dep,
+.es-tl-bar .es-tl-arr {
+  font-size: 0.55rem;
+  font-weight: 800;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+.es-tl-empty {
+  font-size: 0.6rem;
+  font-style: italic;
+  color: var(--muted);
+  padding: 3px 6px;
+}
+.es-tl-gap {
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: var(--muted);
+  margin: 2px 0 2px 21px;
+  padding-left: 6px;
+  border-left: 2px dashed var(--border);
+}
+.es-tl-gap.ok { color: var(--good); border-color: var(--good); }
+.es-tl-gap.bad { color: var(--danger); border-color: var(--danger); }
+.es-wrap .es-go { margin-top: 10px; }
+
+/* ---------- Cuántos conjuntos ---------- */
+.cj-rack { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; width: 100%; }
+.cj-wrap .cj-item {
+  padding: 6px 7px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 56px;
+}
+.cj-item small { font-size: 0.6rem; color: var(--muted); font-weight: 700; }
+.cj-swatch {
+  width: 30px;
+  height: 30px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+}
+.cj-item.cj-sel { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent) inset; }
+.cj-vs { font-size: 0.9rem; font-weight: 800; color: var(--muted); margin: 5px 0; }
+.cj-board {
+  width: 100%;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.cj-count { font-size: 0.9rem; font-weight: 700; }
+.cj-count b { color: var(--accent); }
+.cj-tries { font-size: 0.68rem; font-weight: 700; color: var(--muted); }
+.cj-made {
+  width: 100%;
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: center;
+  min-height: 20px;
+}
+.cj-chip {
+  display: inline-flex;
+  width: 26px;
+  height: 18px;
+  border-radius: 5px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.cj-chip i { flex: 1; }
+
+/* Rejilla final: el producto se ve como tabla (filas × columnas). */
+.cj-grid {
+  display: grid;
+  gap: 3px;
+  width: 100%;
+  max-width: 228px;
+  margin: 0 auto;
+  align-items: center;
+}
+.cj-gh { text-align: center; }
+.cj-gh i {
+  display: flex;
+  width: 22px;
+  height: 22px;
+  margin: 0 auto;
+  border-radius: 6px;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+}
+.cj-cell {
+  position: relative;
+  aspect-ratio: 1;
+  display: flex;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  overflow: hidden;
+  opacity: 0.35;
+}
+.cj-cell i { flex: 1; }
+.cj-cell.ok { opacity: 1; border: 2px solid var(--good); }
+.cj-cell.miss { opacity: 1; border: 2px solid var(--danger); }
+.cj-cell u {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: #fff;
+}
+
+/* ---------- Hundir la flota ---------- */
+.fl-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+  width: 100%;
+  max-width: 300px;
+}
+.fl-corner { aspect-ratio: 1; }
+.fl-head {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+.fl-head.fl-done { color: var(--good); }
+.fl-head.fl-over { color: var(--danger); }
+.fl-cell {
+  aspect-ratio: 1;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--bg);
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 0.9rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.fl-cell:active { transform: scale(0.92); }
+.fl-cell.fl-ship { background: var(--accent-2); border-color: var(--accent-2); }
+.fl-cell.fl-water { color: var(--muted); font-size: 1.2rem; font-weight: 800; }
+.fl-cell.fl-fixed { box-shadow: 0 0 0 2px var(--accent) inset; cursor: default; }
+.fl-cell.fl-sol { background: var(--good); border-color: var(--good); }
+.fl-cell.fl-bad { background: var(--danger); border-color: var(--danger); color: #fff; }
+.fl-wrap .fl-go { margin-top: 10px; }
+
+/* ---------- El pintor ---------- */
+.pn-wall { position: relative; margin: 0 auto 12px; }
+.pn-rect {
+  position: absolute;
+  background-color: var(--pj-paint);
+  background-image:
+    linear-gradient(to right, var(--pj-grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--pj-grid) 1px, transparent 1px);
+  background-position: 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pn-rect.pn-split { outline: 2px dashed var(--accent-2); outline-offset: -2px; }
+.pn-rect span {
+  font-size: 0.58rem;
+  font-weight: 800;
+  line-height: 1.1;
+  text-align: center;
+  color: var(--text);
+  background: var(--card);
+  border-radius: 5px;
+  padding: 1px 3px;
+}
+.pn-cans { display: flex; gap: 7px; justify-content: center; width: 100%; }
+.pn-wrap .pn-can {
+  flex: 1;
+  min-width: 0;
+  padding: 7px 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  line-height: 1.15;
+}
+.pn-can .pn-bucket { font-size: 1.2rem; }
+.pn-can b { font-size: 0.92rem; }
+.pn-can small { font-size: 0.58rem; color: var(--muted); font-weight: 700; }
+.pn-cart {
+  width: 100%;
+  margin-top: 10px;
+  padding: 7px 10px;
+  border: 2px dashed var(--border);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 40px;
+}
+.pn-cart-items { display: flex; flex-wrap: wrap; gap: 3px; flex: 1; min-width: 0; }
+.pn-chip {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 2px 5px;
+  font-family: inherit;
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: var(--text);
+  cursor: pointer;
+}
+.pn-empty { font-size: 0.68rem; color: var(--muted); }
+.pn-cart-total { font-size: 1.05rem; font-weight: 800; color: var(--accent); white-space: nowrap; }
+.pn-actions { display: flex; gap: 8px; margin-top: 10px; }
+
+/* ---------- Engranajes ---------- */
+.en-shop {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 130px;
+  margin-bottom: 4px;
+}
+.en-gear {
+  position: relative;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 3px solid var(--border);
+  flex: none;
+  touch-action: none;
+}
+.en-gear.en-small { margin-left: -9px; }
+.en-gear[data-drag] { cursor: grab; }
+/* Los dientes son un anillo de cuñas: tantas como dientes tenga la rueda,
+   así se pueden contar. --step lo pone el juego. */
+.en-gear-inner {
+  position: absolute;
+  inset: -7px;
+  border-radius: 50%;
+}
+/* La máscara va sólo en el pseudoelemento de los dientes: si se pusiera en
+   .en-gear-inner también recortaría la marca pintada, que es lo que hay
+   que mirar para saber cuándo coinciden. */
+.en-gear-inner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: repeating-conic-gradient(from calc(var(--step) / -4),
+    var(--pj-tooth) 0 calc(var(--step) / 2),
+    transparent calc(var(--step) / 2) var(--step));
+  -webkit-mask: radial-gradient(closest-side, transparent 76%, #000 76%);
+  mask: radial-gradient(closest-side, transparent 76%, #000 76%);
+}
+.en-mark {
+  position: absolute;
+  left: 50%;
+  top: 12%;
+  width: 6px;
+  height: 38%;
+  margin-left: -3px;
+  border-radius: 3px;
+  background: var(--accent);
+}
+.en-gear::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  margin: -6px 0 0 -6px;
+  border-radius: 50%;
+  background: var(--accent-dark);
+}
+.en-teeth-label {
+  position: absolute;
+  left: 50%;
+  bottom: 12%;
+  transform: translateX(-50%);
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: var(--muted);
+}
+.en-teeth { font-size: 0.72rem; font-weight: 700; color: var(--muted); }
+.en-teeth b { color: var(--accent-2); }
+.en-wrap .keypad { margin-top: 4px; }
+/* Las dos listas de múltiplos: sólo se ven al resolver la ronda. */
+.en-mul {
+  width: 100%;
+  margin-top: 12px;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg);
+  font-size: 0.68rem;
+  font-variant-numeric: tabular-nums;
+  text-align: left;
+  color: var(--text);
+}
+.en-mul span {
+  display: inline-block;
+  min-width: 82px;
+  font-weight: 800;
+  color: var(--muted);
+}
+.en-mul b { color: var(--good); }
+.en-mul-end { margin-top: 4px; font-weight: 700; color: var(--accent-2); }
+.en-mul.en-hidden { display: none; }
+
+/* Móviles estrechos: lo único que no cabe son el tablero y las tarjetas. */
+@media (max-width: 380px) {
+  .fl-grid { max-width: 270px; }
+  .fl-cell { font-size: 0.8rem; border-radius: 6px; }
+  .es-card .es-dep { font-size: 0.95rem; }
+  .cj-grid { max-width: 235px; }
+  .en-mul span { min-width: 74px; }
+}

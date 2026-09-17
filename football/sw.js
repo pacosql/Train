@@ -19,6 +19,7 @@ const SHELL = [
   "./css/pack-c.css",
   "./css/pack-d.css",
   "./css/pack-e.css",
+  "./css/pack-f.css",
   "./js/app.js",
   "./js/utils.js",
   "./js/ratings.js",

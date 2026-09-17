@@ -1,0 +1,713 @@
+/* ==========================================================================
+   Pack I — manipulativos y proporción: barras equivalentes, dobleces de
+   masa, probetas, lupa decimal y rebajas.
+   Prefijos propios: .ba- .db- .pb2- .lu- .rb-  (nada de .pb-, que es del
+   pack B). No se redefine ninguna clase del núcleo sin cualificar.
+   Variables de style.css: --bg --card --text --muted --accent --accent-2
+   --accent-dark --danger --good --border (ya cambian en modo oscuro).
+   Ancho de referencia: el interior de .game-body a 400 px ≈ 332 px.
+   ========================================================================== */
+
+/* ---------- 📏 La misma cantidad (fracciones equivalentes) ---------- */
+.ba-stack {
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.ba-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 5px;
+}
+.ba-label b {
+  color: var(--accent);
+  font-size: 0.95rem;
+  font-variant-numeric: tabular-nums;
+}
+.ba-bar {
+  position: relative;
+  height: 34px;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  overflow: hidden;
+}
+.ba-bar-play {
+  height: 46px;
+  border-color: var(--accent);
+  cursor: pointer;
+  /* El dedo arrastra la marca: el navegador no debe hacer scroll aquí. */
+  touch-action: none;
+}
+.ba-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+}
+.ba-fill-model { background: var(--accent); }
+.ba-fill-play {
+  background: var(--accent-2);
+  transition: width 0.12s ease;
+}
+/* Divisiones: se dibujan del color de la tarjeta para verse igual sobre el
+   relleno y sobre el hueco, en claro y en oscuro. */
+.ba-tick {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  margin-left: -1px;
+  background: var(--card);
+}
+.ba-goal {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  margin-left: -1.5px;
+  background: var(--text);
+}
+.ba-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  margin-left: -2px;
+  background: var(--text);
+  transition: left 0.12s ease;
+}
+.ba-handle::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 14px;
+  height: 22px;
+  border-radius: 6px;
+  background: var(--text);
+  transform: translate(-50%, -50%);
+}
+.ba-handle-bad, .ba-handle-bad::after { background: var(--danger); }
+.ba-handle-good, .ba-handle-good::after { background: var(--good); }
+.ba-check { margin-top: 16px; }
+
+/* Superposición que se pinta al fallar: el desfase se ve como longitud. */
+.ba-over {
+  width: 100%;
+  max-width: 320px;
+}
+.ba-over:empty { display: none; }
+.ba-over-title {
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  margin-top: 14px;
+}
+.ba-over-lane {
+  position: relative;
+  height: 20px;
+  margin-top: 4px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  background: var(--bg);
+  overflow: hidden;
+}
+.ba-over-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+}
+.ba-over-a { background: var(--accent); }
+.ba-over-b { background: var(--accent-2); }
+.ba-over-gap {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(45deg, var(--danger), var(--danger) 3px, transparent 3px, transparent 7px);
+}
+.ba-over-name {
+  position: absolute;
+  right: 5px;
+  top: 2px;
+  font-size: 0.6rem;
+  font-weight: 800;
+  color: var(--text);
+}
+
+/* ---------- 🥐 Dobleces de masa (potencias de 2) ---------- */
+.db-table {
+  position: relative;
+  width: 100%;
+  max-width: 280px;
+  height: 168px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  /* Mesa de la panadería: superficie visible para que la altura de la pila
+     se pueda comparar de un doblez al siguiente. */
+  background: linear-gradient(transparent 40%, var(--bg));
+  border: 2px solid var(--border);
+  border-bottom-width: 4px;
+  border-radius: 10px 10px 4px 4px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+.db-stack {
+  position: relative;
+  display: flex;
+  flex-direction: column-reverse;
+  width: 124px;
+}
+/* La masa tiene color de masa en los dos modos: no depende del tema. */
+.db-layer {
+  display: block;
+  width: 100%;
+  background: #e8bd7a;
+  border-top: 1px solid rgba(120, 76, 16, 0.55);
+}
+.db-ghost {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 12px;
+  border-radius: 3px;
+  background: rgba(232, 189, 122, 0.9);
+  pointer-events: none;
+  animation: db-fold 0.28s ease-out forwards;
+}
+@keyframes db-fold {
+  from { transform: translateY(-52px) rotate(-9deg) scaleX(0.55); opacity: 0.25; }
+  to { transform: none; opacity: 0; }
+}
+.db-count {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+.db-count b {
+  color: var(--accent);
+  font-size: 1.2rem;
+  font-variant-numeric: tabular-nums;
+}
+.db-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+.db-fold-btn { min-width: 118px; }
+.db-reset {
+  margin-top: 10px;
+  padding: 6px 12px;
+  font-size: 0.75rem;
+}
+/* Escalera 1-2-4-8-16-32-64-128 que aparece al fallar. */
+.db-ladder {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  margin-top: 12px;
+  max-width: 320px;
+}
+.db-ladder:empty { display: none; }
+.db-step {
+  min-width: 32px;
+  padding: 3px 5px;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--text);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.db-step i {
+  display: block;
+  font-style: normal;
+  font-size: 0.5rem;
+  font-weight: 800;
+  color: var(--muted);
+}
+.db-step-good {
+  background: var(--good);
+  border-color: var(--good);
+  color: #fff;
+}
+.db-step-bad {
+  background: var(--danger);
+  border-color: var(--danger);
+  color: #fff;
+}
+.db-step-good i, .db-step-bad i { color: #fff; }
+.db-arrow {
+  font-size: 0.5rem;
+  font-weight: 800;
+  color: var(--muted);
+}
+
+/* ---------- 🧪 Mezcla las probetas (media ponderada) ---------- */
+.pb2-bench {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 320px;
+  margin-bottom: 12px;
+}
+.pb2-tube-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex: none;
+}
+.pb2-tube {
+  position: relative;
+  width: 50px;
+  height: 142px;
+  border: 3px solid var(--border);
+  border-top: none;
+  border-radius: 4px 4px 12px 12px;
+  background: var(--card);
+  overflow: hidden;
+  cursor: ns-resize;
+  /* Se vierte arrastrando de arriba abajo. */
+  touch-action: none;
+}
+.pb2-liquid {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transition: height 0.12s ease;
+}
+.pb2-grad {
+  position: absolute;
+  left: 0;
+  width: 10px;
+  height: 0;
+  border-top: 1px solid var(--muted);
+  opacity: 0.5;
+  pointer-events: none;
+}
+.pb2-tube-name {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+.pb2-tube-name b { color: var(--text); }
+.pb2-tube-read {
+  font-size: 0.62rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+.pb2-tube-read b {
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+.pb2-flask-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex: none;
+}
+.pb2-flask {
+  position: relative;
+  width: 76px;
+  height: 100px;
+  border: 3px solid var(--border);
+  border-top: none;
+  border-radius: 6px 6px 30px 30px;
+  background: var(--card);
+  overflow: hidden;
+}
+.pb2-mix {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transition: height 0.18s ease;
+}
+.pb2-goal-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 0;
+  border-top: 2px dashed var(--accent);
+  pointer-events: none;
+}
+.pb2-goal-line i {
+  position: absolute;
+  right: 2px;
+  top: -11px;
+  font-style: normal;
+  font-size: 0.5rem;
+  font-weight: 800;
+  color: var(--accent);
+  background: var(--card);
+  border-radius: 3px;
+  padding: 0 2px;
+}
+.pb2-flask-read {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+.pb2-flask-read b {
+  color: var(--accent);
+  font-size: 0.95rem;
+  font-variant-numeric: tabular-nums;
+}
+.pb2-target {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.66rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+.pb2-swatch {
+  width: 15px;
+  height: 15px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+}
+.pb2-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+/* Cuentas de la mezcla: solo aparecen al fallar. */
+.pb2-calc {
+  width: 100%;
+  max-width: 320px;
+}
+.pb2-calc:empty { display: none; }
+.pb2-calc-row {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--muted);
+  line-height: 1.55;
+  font-variant-numeric: tabular-nums;
+}
+.pb2-calc-row b { color: var(--text); }
+.pb2-calc-sum { border-top: 1px solid var(--border); margin-top: 3px; padding-top: 3px; }
+.pb2-calc-good, .pb2-calc-good b { color: var(--good); }
+
+/* ---------- 🔍 La lupa decimal (decimales) ---------- */
+.lu-zoom {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: var(--accent);
+  /* Hueco para que la chincheta del número no pise este rótulo. */
+  margin-bottom: 24px;
+}
+.lu-stage {
+  width: 100%;
+  max-width: 300px;
+}
+.lu-frame {
+  position: relative;
+  animation: lu-zoomin 0.26s ease-out;
+}
+@keyframes lu-zoomin {
+  from { transform: scaleX(0.5); opacity: 0.3; }
+  to { transform: none; opacity: 1; }
+}
+.lu-regions {
+  display: flex;
+  height: 48px;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  overflow: hidden;
+}
+.lu-region {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 0;
+  border: none;
+  border-right: 1px solid var(--border);
+  background: transparent;
+  cursor: pointer;
+}
+.lu-region:last-child { border-right: none; }
+.lu-region:active { background: var(--border); }
+.lu-region.lu-good { background: var(--good); }
+.lu-region.lu-bad { background: var(--danger); }
+.lu-axis {
+  position: relative;
+  height: 28px;
+}
+.lu-tick {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+.lu-tick::before {
+  content: "";
+  width: 2px;
+  height: 7px;
+  background: var(--muted);
+}
+.lu-tick i {
+  font-style: normal;
+  font-size: 0.55rem;
+  font-weight: 800;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+.lu-rule {
+  position: relative;
+  height: 54px;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+}
+.lu-mark {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 26px;
+  transform: translateX(-50%);
+  padding: 0;
+  border: none;
+  background: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 3px;
+}
+.lu-mark-line {
+  width: 2px;
+  height: 20px;
+  background: var(--muted);
+  border-radius: 1px;
+}
+.lu-mark-num {
+  font-size: 0.66rem;
+  font-weight: 800;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+.lu-mark:active { background: var(--border); }
+.lu-mark.lu-good { background: var(--good); }
+.lu-mark.lu-bad { background: var(--danger); }
+.lu-mark.lu-good .lu-mark-num, .lu-mark.lu-bad .lu-mark-num { color: #fff; }
+.lu-mark.lu-good .lu-mark-line, .lu-mark.lu-bad .lu-mark-line { background: #fff; }
+.lu-ends {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: var(--muted);
+  margin-top: 3px;
+  font-variant-numeric: tabular-nums;
+}
+/* Chincheta con el número en su sitio exacto (se clava al resolver). */
+.lu-pin {
+  position: absolute;
+  top: -15px;
+  width: 0;
+  pointer-events: none;
+}
+.lu-pin::after {
+  content: "";
+  position: absolute;
+  top: 15px;
+  left: -1px;
+  width: 2px;
+  height: 60px;
+  background: var(--accent);
+}
+.lu-pin i {
+  position: absolute;
+  left: 0;
+  transform: translateX(-50%);
+  font-style: normal;
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: #fff;
+  background: var(--accent);
+  padding: 1px 5px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+.lu-why {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-align: center;
+  max-width: 300px;
+  margin-top: 12px;
+}
+.lu-why:empty { display: none; }
+
+/* ---------- 🏷️ Rebajas (porcentajes) ---------- */
+.rb-tag {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  border: 2px dashed var(--border);
+  border-radius: 12px;
+  background: var(--bg);
+  margin-bottom: 18px;
+}
+.rb-old {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--muted);
+  text-decoration: line-through;
+  font-variant-numeric: tabular-nums;
+}
+.rb-arrow { color: var(--muted); }
+.rb-new {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: var(--danger);
+  font-variant-numeric: tabular-nums;
+}
+.rb-barwrap {
+  width: 100%;
+  max-width: 300px;
+}
+.rb-scale {
+  position: relative;
+  height: 15px;
+  font-size: 0.55rem;
+  font-weight: 800;
+  color: var(--muted);
+}
+.rb-scale span {
+  position: absolute;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+.rb-scale-eur { margin-top: 3px; }
+.rb-bar {
+  position: relative;
+  height: 46px;
+  border: 2px solid var(--accent);
+  border-radius: 8px;
+  background: var(--bg);
+  overflow: hidden;
+  cursor: pointer;
+  /* Se estira arrastrando: sin scroll del navegador. */
+  touch-action: none;
+}
+.rb-shade {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background: var(--accent);
+  transition: width 0.12s ease;
+}
+.rb-shade-bad { background: var(--danger); }
+.rb-handle {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  margin-left: -2px;
+  background: var(--text);
+  transition: left 0.12s ease;
+}
+.rb-handle::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 14px;
+  height: 22px;
+  border-radius: 6px;
+  background: var(--text);
+  transform: translate(-50%, -50%);
+}
+/* Barra del porcentaje correcto, dibujada al fallar. */
+.rb-goodbar {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 11px;
+  background: var(--good);
+}
+.rb-goodbar i {
+  position: absolute;
+  right: 3px;
+  bottom: 12px;
+  font-style: normal;
+  font-size: 0.58rem;
+  font-weight: 800;
+  color: var(--good);
+}
+.rb-read {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 12px 0 4px;
+}
+.rb-read > b {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+.rb-read span {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+.rb-read span b {
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+.rb-calc {
+  width: 100%;
+  max-width: 320px;
+  margin-top: 10px;
+}
+.rb-calc:empty { display: none; }
+.rb-calc-row {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--muted);
+  line-height: 1.55;
+  font-variant-numeric: tabular-nums;
+}
+.rb-calc-good, .rb-calc-good b { color: var(--good); }
+
+/* ---------- Pantallas estrechas (360 px y menos) ---------- */
+@media (max-width: 380px) {
+  .ba-bar-play { height: 42px; }
+  .db-table { height: 150px; }
+  .db-fold-btn { min-width: 104px; }
+  .pb2-bench { gap: 8px; }
+  .pb2-tube { width: 44px; height: 132px; }
+  .pb2-flask { width: 68px; height: 92px; }
+  .lu-tick i { font-size: 0.5rem; }
+  .lu-mark { width: 22px; }
+  .lu-mark-num { font-size: 0.6rem; }
+  .rb-new { font-size: 1.2rem; }
+  .rb-read > b { font-size: 1.4rem; }
+}

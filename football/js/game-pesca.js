@@ -153,7 +153,10 @@ export function mountPescaGame(container, { client, onExit }) {
   }
 
   function finish(userExited) {
-    if (finished) return;
+    // Con el end-card en pantalla la partida ya está terminada, pero el
+    // botón "← Menú" de la barra tiene que seguir llevando al menú: la
+    // guarda solo debe frenar los remates automáticos, no la salida.
+    if (finished) return userExited ? onExit() : undefined;
     finished = true;
     if (roundTimer) clearTimeout(roundTimer);
     if (userExited) return onExit();

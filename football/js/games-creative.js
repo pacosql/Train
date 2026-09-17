@@ -17,7 +17,7 @@ export const CREATIVE_GAMES = [
   { id: "orden", title: "Ordena los números", emoji: "📶", topic: "Orden numérico", custom: mountOrdenGame },
   { id: "recta", title: "Recta numérica", emoji: "📍", topic: "Sentido numérico", custom: mountRectaGame },
   { id: "reloj", title: "Pon en hora el reloj", emoji: "🕐", topic: "Tiempo", custom: mountRelojGame },
-  { id: "balanza", title: "Equilibra la balanza", emoji: "🏋️", topic: "Igualdad y pesos", custom: mountBalanzaGame },
+  { id: "balanza", title: "Equilibra la balanza", emoji: "🏋️", topic: "Igualdad y pesos", v: 2, custom: mountBalanzaGame },
   { id: "memoria", title: "Memoria matemática", emoji: "🃏", topic: "Memoria y cálculo", custom: mountMemoriaGame },
   { id: "atrapa", title: "Atrapa los múltiplos", emoji: "🎯", topic: "Múltiplos y reglas", custom: mountAtrapaGame },
   { id: "bloques", title: "Construye el número", emoji: "🧱", topic: "Valor posicional", custom: mountBloquesGame },
