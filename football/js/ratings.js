@@ -26,7 +26,13 @@ function withTimeout(promise, ms = NET_TIMEOUT_MS) {
 }
 
 export function getRating(id) {
-  return cache.get(id) || "new";
+  return cache.get(id)?.rating || "new";
+}
+
+// Consejo/nota que el jugador escribió al marcar "🔧 Revisar" — explica
+// qué falla, para que quien mejore el ejercicio no tenga que adivinarlo.
+export function getRatingNote(id) {
+  return cache.get(id)?.note || "";
 }
 
 export function ratingsLoaded() {
@@ -42,24 +48,27 @@ export async function initRatings(supabaseClient) {
 
 export async function reloadRatings() {
   if (!client) return;
-  const { data, error } = await withTimeout(client.from("football_ratings").select("game,rating"));
+  const { data, error } = await withTimeout(client.from("football_ratings").select("game,rating,note"));
   if (error || !data) return;
-  cache = new Map(data.map((row) => [row.game, row.rating]));
+  cache = new Map(data.map((row) => [row.game, { rating: row.rating, note: row.note || "" }]));
   loaded = true;
 }
 
-export async function setRating(id, value) {
+export async function setRating(id, value, note = "") {
   if (value === "new") {
     cache.delete(id);
     if (client) await withTimeout(client.from("football_ratings").delete().eq("game", id));
     return;
   }
-  cache.set(id, value);
+  cache.set(id, { rating: value, note });
   if (client) {
     await withTimeout(
       client
         .from("football_ratings")
-        .upsert({ game: id, rating: value, updated_at: new Date().toISOString() }, { onConflict: "game" })
+        .upsert(
+          { game: id, rating: value, note: note || null, updated_at: new Date().toISOString() },
+          { onConflict: "game" }
+        )
     );
   }
 }

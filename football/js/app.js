@@ -5,7 +5,7 @@ import { CREATIVE_GAMES } from "./games-creative.js";
 import { QUIZ_GAMES_2 } from "./games-data-2.js";
 import { CREATIVE_GAMES_2 } from "./games-creative-2.js";
 import { GAMES_PACK_3 } from "./games-pack.js";
-import { getRating, setRating, initRatings, reloadRatings, fetchReworkNote } from "./ratings.js";
+import { getRating, getRatingNote, setRating, initRatings, reloadRatings, fetchReworkNote } from "./ratings.js";
 
 // El número de cada juego (#1, #2…) es su posición en este array — para
 // que sea estable de verdad, los juegos nuevos SIEMPRE se añaden al
@@ -31,6 +31,10 @@ let activeTab = "new";
 // Nota de la última tanda de mejoras publicada por el agente revisor; se
 // pinta en el menú para saber qué ha cambiado desde la última vez.
 let reworkNote = null;
+
+function escapeHtml(str) {
+  return str.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
 
 function teardown() {
   if (cleanupCurrent) {
@@ -118,7 +122,10 @@ function renderGrid(groups) {
     const card = document.createElement("a");
     card.className = "game-card";
     card.href = `#/game/${g.id}`;
-    card.innerHTML = `<span class="num-badge">#${g.num}</span>${g.v ? `<span class="v-badge">v${g.v}</span>` : ""}<span class="emoji">${g.emoji}</span><span class="name">${g.title}</span><span class="topic">${g.topic}</span>`;
+    const note = activeTab === "review" ? getRatingNote(g.id) : "";
+    card.innerHTML = `<span class="num-badge">#${g.num}</span>${g.v ? `<span class="v-badge">v${g.v}</span>` : ""}<span class="emoji">${g.emoji}</span><span class="name">${g.title}</span><span class="topic">${g.topic}</span>${
+      note ? `<span class="note-hint">📝 ${escapeHtml(note)}</span>` : ""
+    }`;
     grid.appendChild(card);
   });
 }
@@ -183,10 +190,51 @@ function renderGame(id) {
       b.classList.toggle("active", b.dataset.rate === current);
     });
   }
+  // Marcar "🔧 Revisar" abre un cuadro para explicar qué falla — ese
+  // texto se guarda junto con la valoración y lo lee quien mejora el
+  // ejercicio, en vez de tener que adivinar por qué se marcó.
+  function openReviewNote(isEditing) {
+    if (root.querySelector("[data-review-box]")) return;
+    const screen = root.querySelector("[data-screen]");
+    const box = document.createElement("div");
+    box.className = "review-note-box";
+    box.setAttribute("data-review-box", "");
+    box.innerHTML = `
+      <label for="review-note-input">¿Qué falla? Cuéntalo y se usará para mejorarlo</label>
+      <textarea id="review-note-input" data-review-input rows="3" placeholder="Ej.: la ruleta gira muy deprisa, cuesta leer el número a tiempo..."></textarea>
+      <div class="review-note-actions">
+        <button type="button" data-review-cancel>Cancelar</button>
+        ${isEditing ? `<button type="button" class="review-note-remove" data-review-remove>Quitar de 🔧 Revisar</button>` : ""}
+        <button type="button" class="review-note-save" data-review-save>${
+          isEditing ? "Guardar nota" : "Guardar y marcar 🔧"
+        }</button>
+      </div>
+    `;
+    screen.appendChild(box);
+    const textarea = box.querySelector("[data-review-input]");
+    textarea.value = getRatingNote(id);
+    textarea.focus();
+    const disableBox = () => box.querySelectorAll("button, textarea").forEach((el) => (el.disabled = true));
+    box.querySelector("[data-review-cancel]").addEventListener("click", () => box.remove());
+    box.querySelector("[data-review-remove]")?.addEventListener("click", async () => {
+      disableBox();
+      await setRating(id, "new");
+      onExit();
+    });
+    box.querySelector("[data-review-save]").addEventListener("click", async () => {
+      disableBox();
+      await setRating(id, "review", textarea.value.trim());
+      onExit();
+    });
+  }
   rateBar.querySelectorAll(".rate-btn").forEach((btn) => {
     btn.addEventListener("click", async () => {
       const value = btn.dataset.rate;
       const current = getRating(id);
+      if (value === "review") {
+        openReviewNote(current === "review");
+        return;
+      }
       rateBar.querySelectorAll(".rate-btn").forEach((b) => (b.disabled = true));
       // Se espera a que Supabase lo confirme antes de volver al menú, para
       // que la pestaña de destino ya muestre el cambio al llegar.
