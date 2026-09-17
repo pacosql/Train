@@ -47,6 +47,15 @@
       padding: 20px 16px 40px;
     }
     .wrap { max-width: 480px; margin: 0 auto; }
+    .top-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .top-bar-title { font-weight: 800; cursor: pointer; font-size: 1rem; }
+    .top-bar-tag {
+      font-size: 0.7rem; font-weight: 700; color: var(--accent-dark);
+      background: rgba(62,207,142,0.15); padding: 3px 8px; border-radius: 999px;
+    }
     h1 { font-size: 1.4rem; margin: 0 0 4px; display: flex; align-items: center; gap: 8px; }
     h2 { font-size: 1.1rem; margin: 0 0 4px; }
     .sub { color: var(--muted); margin: 0 0 20px; font-size: 0.9rem; }
@@ -74,14 +83,7 @@
       border: 1px solid var(--border);
       font-weight: 600;
     }
-    button.small {
-      width: auto;
-      padding: 8px 14px;
-      font-size: 0.85rem;
-    }
     button:disabled { opacity: 0.4; cursor: default; }
-    .row { display: flex; gap: 10px; }
-    .row > * { flex: 1; }
     .chip-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
     .chip {
       flex: 1;
@@ -130,18 +132,6 @@
     }
     .badge.push { background: var(--push); }
     .badge.pull { background: var(--pull); }
-    .set-dots { display: flex; gap: 8px; justify-content: center; margin: 16px 0; }
-    .set-dot {
-      width: 44px; height: 44px;
-      border-radius: 50%;
-      border: 2px solid var(--border);
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 700;
-      color: var(--muted);
-      background: var(--bg);
-    }
-    .set-dot.done { background: var(--accent); border-color: var(--accent); color: #06231a; }
-    .set-dot.current { border-color: var(--accent); color: var(--text); }
     .stat { text-align: center; }
     .stat .value { font-size: 1.8rem; font-weight: 800; }
     .stat .label { font-size: 0.75rem; color: var(--muted); }
@@ -167,12 +157,23 @@
 </head>
 <body>
   <div class="wrap">
+    <div class="top-bar">
+      <span id="top-bar-title" class="top-bar-title">🏋️ Weights</span>
+      <span id="top-bar-tag" class="top-bar-tag" hidden>● Sesión activa</span>
+    </div>
     <div class="status-bar"><span id="conn-dot" class="dot"></span><span id="conn-text">Conectando…</span></div>
 
     <!-- HOME -->
     <section id="screen-home">
       <h1>🏋️ Weights</h1>
       <p class="sub">Tu tutor de entrenamiento en el gimnasio.</p>
+
+      <div class="card" id="active-session-banner" hidden>
+        <h2>🟢 Sesión activa</h2>
+        <p class="hint">Tienes un entrenamiento en marcha.</p>
+        <button id="btn-continue-session">Continuar</button>
+      </div>
+
       <div class="card">
         <button id="btn-start">Start</button>
       </div>
@@ -198,10 +199,19 @@
       <button id="btn-confirm-duration">Confirmar</button>
     </section>
 
+    <!-- CARDIO PICK -->
+    <section id="screen-cardio-pick" hidden>
+      <h2>¿Elíptica o bicicleta hoy?</h2>
+      <p class="sub">Siempre empezamos calentando con cardio.</p>
+      <div class="chip-row">
+        <div class="chip" data-cardio="eliptica">🏃 Elíptica</div>
+        <div class="chip" data-cardio="bicicleta">🚴 Bicicleta</div>
+      </div>
+    </section>
+
     <!-- CARDIO -->
     <section id="screen-cardio" hidden>
-      <h2>🚴 Elíptica / Bicicleta</h2>
-      <p class="sub">Siempre empezamos calentando con cardio.</p>
+      <h2 id="cardio-title">🚴 Cardio</h2>
       <div class="card">
         <div class="stat">
           <div class="value" id="cardio-minutes">15</div>
@@ -215,7 +225,7 @@
     <!-- PICK EXERCISE -->
     <section id="screen-pick" hidden>
       <h2>Siguiente ejercicio</h2>
-      <p class="sub">Ordenados para que alternes empuje/tirón y descanses mejor. Elige el que tengas libre.</p>
+      <p class="sub">Ordenados por preferencia (alternar empuje/tirón hoy + tiempo desde la última vez). Puedes repetir uno que ya hayas hecho.</p>
       <div id="exercise-list"></div>
       <button id="btn-finish-session" class="secondary" style="margin-top: 8px;">Terminar entrenamiento</button>
     </section>
@@ -231,17 +241,8 @@
         <input id="ex-weight" type="number" step="0.5" min="0" />
       </div>
 
-      <div class="card">
-        <p class="hint" style="text-align:center; margin-bottom:0;">3 series × 8 repeticiones — busca el fallo en la última</p>
-        <div class="set-dots" id="set-dots">
-          <div class="set-dot" data-set="1">1</div>
-          <div class="set-dot" data-set="2">2</div>
-          <div class="set-dot" data-set="3">3</div>
-        </div>
-        <button id="btn-mark-set">Marcar serie hecha</button>
-      </div>
-
-      <button id="btn-finish-exercise" class="secondary" disabled>Fin del ejercicio</button>
+      <p class="hint" style="text-align:center;">3 series × 8 repeticiones — busca el fallo en la última</p>
+      <button id="btn-finish-exercise">Finalizar ejercicio</button>
     </section>
 
     <!-- FEEDBACK -->
@@ -279,30 +280,62 @@
     };
 
     const el = (id) => document.getElementById(id);
-    const screens = ["home", "setup", "cardio", "pick", "exercise", "feedback", "summary"];
+    const screens = ["home", "setup", "cardio-pick", "cardio", "pick", "exercise", "feedback", "summary"];
+
     function showScreen(name) {
       for (const s of screens) el(`screen-${s}`).hidden = s !== name;
       state.screen = name;
+      if (name !== "home") state.lastActiveScreen = name;
+      if (name === "home") {
+        const hasActive = !!(state.sessionId && state.lastActiveScreen);
+        el("active-session-banner").hidden = !hasActive;
+      }
+      el("top-bar-tag").hidden = !state.sessionId;
       saveState();
+    }
+
+    function goHome() {
+      showScreen("home");
     }
 
     let client = null;
     let catalog = [];
-    let historyByExercise = {}; // exercise_id -> {weight_used, next_time}
+    let historyByExercise = {}; // exercise_id -> {weight_used, next_time, completed_at}
 
     const STORAGE_KEY = "weights_app_state_v1";
     let state = loadState() || freshState();
+    migrateState();
+
+    // Compatibilidad con sesiones guardadas por una versión anterior de la
+    // app (antes de que existiera lastActiveScreen/cardioExerciseId/etc.) —
+    // sin esto, una sesión activa guardada con el formato viejo dejaría de
+    // ser accesible al actualizar la app a mitad de entrenamiento.
+    function migrateState() {
+      if (state.lastActiveScreen === undefined) {
+        state.lastActiveScreen =
+          state.screen && state.screen !== "home" && state.screen !== "summary" ? state.screen : null;
+      }
+      if (state.currentWeightDraft === undefined) state.currentWeightDraft = null;
+      if (state.pendingExercise === undefined) state.pendingExercise = null;
+      if (state.cardioExerciseId === undefined) state.cardioExerciseId = null;
+      if (state.doneExerciseIds === undefined) state.doneExerciseIds = [];
+      if (state.summary === undefined) state.summary = [];
+      saveState();
+    }
 
     function freshState() {
       return {
         screen: "home",
+        lastActiveScreen: null,
         sessionId: null,
         plannedDuration: null,
         cardioMinutesSuggested: null,
+        cardioExerciseId: null,
         doneExerciseIds: [],
         lastMovementType: "cardio",
         currentExerciseId: null,
-        setsCompleted: 0,
+        currentWeightDraft: null,
+        pendingExercise: null,
         summary: [],
       };
     }
@@ -334,35 +367,45 @@
       return Math.max(0, Number(last.weight_used) + delta);
     }
 
+    function daysSince(iso) {
+      if (!iso) return null;
+      return (Date.now() - new Date(iso).getTime()) / (1000 * 60 * 60 * 24);
+    }
+
+    // Orden de preferencia: prioriza (1) lo no hecho todavía hoy, (2) el tipo
+    // opuesto (empuje/tirón) al último ejercicio de la sesión, para descansar
+    // mejor, y (3) cuánto tiempo hace que no se hace (basado en el historial
+    // de los últimos días) — nunca oculta nada, solo lo ordena. Se puede
+    // repetir cualquier ejercicio ya hecho hoy.
     function orderExercises() {
-      const remaining = catalog.filter(
-        (e) => e.movement_type !== "cardio" && !state.doneExerciseIds.includes(e.id)
-      );
+      const strength = catalog.filter((e) => e.movement_type !== "cardio");
       const opposite = state.lastMovementType === "push" ? "pull" : state.lastMovementType === "pull" ? "push" : null;
-      return remaining.slice().sort((a, b) => {
-        const aOpp = a.movement_type === opposite ? 0 : 1;
-        const bOpp = b.movement_type === opposite ? 0 : 1;
-        if (aOpp !== bOpp) return aOpp - bOpp;
-        return a.sort_order - b.sort_order;
-      });
+
+      return strength
+        .map((ex) => ({ ex, doneToday: state.doneExerciseIds.includes(ex.id) }))
+        .sort((a, b) => {
+          const scoreA = (a.doneToday ? 0 : 100) + (a.ex.movement_type === opposite ? 50 : 0);
+          const scoreB = (b.doneToday ? 0 : 100) + (b.ex.movement_type === opposite ? 50 : 0);
+          if (scoreA !== scoreB) return scoreB - scoreA;
+          const daysA = historyByExercise[a.ex.id] ? daysSince(historyByExercise[a.ex.id].completed_at) : Infinity;
+          const daysB = historyByExercise[b.ex.id] ? daysSince(historyByExercise[b.ex.id].completed_at) : Infinity;
+          return daysB - daysA;
+        });
     }
 
     function renderPickScreen() {
       const list = orderExercises();
       const container = el("exercise-list");
       container.innerHTML = "";
-      if (list.length === 0) {
-        container.innerHTML = '<p class="hint">Has hecho todos los ejercicios de esta sesión. ¡Buen trabajo!</p>';
-        return;
-      }
-      for (const ex of list) {
+      for (const { ex, doneToday } of list) {
         const last = historyByExercise[ex.id];
+        const lastTxt = last && last.weight_used != null ? " · último: " + last.weight_used + " kg" : " · sin historial";
         const div = document.createElement("div");
         div.className = "exercise-item";
         div.innerHTML = `
           <div>
-            <div class="name">${ex.name}</div>
-            <div class="muscle">${ex.muscle_group}${last ? " · último: " + last.weight_used + " kg" : " · sin historial"}</div>
+            <div class="name">${ex.name}${doneToday ? " ✓ hecho hoy" : ""}</div>
+            <div class="muscle">${ex.muscle_group}${lastTxt}</div>
           </div>
           <span class="badge ${ex.movement_type}">${ex.movement_type === "push" ? "Empuje" : "Tirón"}</span>
         `;
@@ -371,9 +414,12 @@
       }
     }
 
-    function startExercise(ex) {
-      state.currentExerciseId = ex.id;
-      state.setsCompleted = 0;
+    function startExercise(ex, opts = {}) {
+      const resuming = !!(opts.resume && state.currentExerciseId === ex.id && state.currentWeightDraft != null);
+      if (!resuming) {
+        state.currentExerciseId = ex.id;
+        state.currentWeightDraft = null;
+      }
       saveState();
 
       el("ex-name").textContent = ex.name;
@@ -385,29 +431,22 @@
       const last = historyByExercise[ex.id];
       const suggested = suggestWeight(ex, last);
       const weightInput = el("ex-weight");
-      if (suggested != null) {
+      if (resuming) {
+        weightInput.value = state.currentWeightDraft;
+      } else if (suggested != null) {
         weightInput.value = suggested;
-        const dirTxt = last.next_time === "mas" ? "subiendo" : last.next_time === "menos" ? "bajando" : "manteniendo";
-        el("ex-recommendation").textContent =
-          `Última vez: ${last.weight_used} kg. Sugerido hoy (${dirTxt}): ${suggested} kg.`;
       } else {
         weightInput.value = "";
+      }
+
+      if (suggested != null) {
+        const dirTxt = last.next_time === "mas" ? "subiendo" : last.next_time === "menos" ? "bajando" : "manteniendo";
+        el("ex-recommendation").textContent = `Última vez: ${last.weight_used} kg. Sugerido hoy (${dirTxt}): ${suggested} kg.`;
+      } else {
         el("ex-recommendation").textContent = "Sin historial todavía — pon el peso con el que vas a empezar.";
       }
 
-      updateSetDots();
-      el("btn-finish-exercise").disabled = true;
       showScreen("exercise");
-    }
-
-    function updateSetDots() {
-      for (let i = 1; i <= 3; i++) {
-        const dot = document.querySelector(`.set-dot[data-set="${i}"]`);
-        dot.classList.toggle("done", i <= state.setsCompleted);
-        dot.classList.toggle("current", i === state.setsCompleted + 1);
-      }
-      el("btn-mark-set").disabled = state.setsCompleted >= 3;
-      el("btn-finish-exercise").disabled = state.setsCompleted < 3;
     }
 
     async function finishExercise() {
@@ -436,11 +475,12 @@
         alert("No se pudo guardar: " + error.message);
         return;
       }
-      historyByExercise[exercise.id] = { weight_used: weightUsed, next_time: nextTime };
-      state.doneExerciseIds.push(exercise.id);
+      historyByExercise[exercise.id] = { weight_used: weightUsed, next_time: nextTime, completed_at: new Date().toISOString() };
+      if (!state.doneExerciseIds.includes(exercise.id)) state.doneExerciseIds.push(exercise.id);
       state.lastMovementType = exercise.movement_type;
       state.summary.push({ name: exercise.name, weight: weightUsed, next_time: nextTime });
       state.currentExerciseId = null;
+      state.currentWeightDraft = null;
       state.pendingExercise = null;
       saveState();
       renderPickScreen();
@@ -458,13 +498,16 @@
       list.innerHTML = "";
       for (const item of state.summary) {
         const li = document.createElement("li");
-        li.innerHTML = `<span>${item.name} — ${item.weight} kg</span><span>${item.next_time}</span>`;
+        li.innerHTML = item.minutes != null
+          ? `<span>${item.name} — ${item.minutes} min</span><span></span>`
+          : `<span>${item.name} — ${item.weight} kg</span><span>${item.next_time}</span>`;
         list.appendChild(li);
       }
       if (state.summary.length === 0) {
         list.innerHTML = "<li>No se registró ningún ejercicio.</li>";
       }
       state.sessionId = null; // la sesión ya se cerró en la base de datos
+      state.lastActiveScreen = null;
       showScreen("summary");
       // El reseteo completo ocurre cuando el usuario pulsa "Nuevo entrenamiento".
     }
@@ -496,11 +539,15 @@
         .from(T.sessionExercises)
         .select("exercise_id, weight_used, next_time, completed_at")
         .order("completed_at", { ascending: false })
-        .limit(200);
+        .limit(300);
       if (histErr) throw histErr;
       for (const row of rows) {
         if (!(row.exercise_id in historyByExercise)) {
-          historyByExercise[row.exercise_id] = { weight_used: row.weight_used, next_time: row.next_time };
+          historyByExercise[row.exercise_id] = {
+            weight_used: row.weight_used,
+            next_time: row.next_time,
+            completed_at: row.completed_at,
+          };
         }
       }
     }
@@ -546,33 +593,90 @@
           .eq("id", state.sessionId);
       }
 
+      showScreen("cardio-pick");
+    }
+
+    function pickCardio(slug) {
+      const ex = catalog.find((e) => e.slug === slug);
+      if (!ex) return;
+      state.cardioExerciseId = ex.id;
+      saveState();
+      el("cardio-title").textContent = slug === "eliptica" ? "🏃 Elíptica" : "🚴 Bicicleta";
       el("cardio-minutes").textContent = state.cardioMinutesSuggested;
-      el("cardio-hint").textContent = `Para una sesión de ${total} min, esto deja tiempo de sobra para las máquinas.`;
+      el("cardio-hint").textContent = `Para una sesión de ${state.plannedDuration} min, esto deja tiempo de sobra para las máquinas.`;
       showScreen("cardio");
     }
 
+    async function finishCardio() {
+      const cardioEx = catalog.find((e) => e.id === state.cardioExerciseId);
+      if (state.sessionId && cardioEx) {
+        await client.from(T.sessionExercises).insert({
+          session_id: state.sessionId,
+          exercise_id: cardioEx.id,
+          order_index: -1,
+          minutes: state.cardioMinutesSuggested,
+          weight_used: null,
+          sets: null,
+          reps: null,
+          next_time: null,
+        });
+        await client.from(T.sessions).update({ cardio_minutes_done: state.cardioMinutesSuggested }).eq("id", state.sessionId);
+        historyByExercise[cardioEx.id] = { weight_used: null, next_time: null, completed_at: new Date().toISOString() };
+        state.summary.push({ name: cardioEx.name, minutes: state.cardioMinutesSuggested });
+      }
+      state.lastMovementType = "cardio";
+      saveState();
+      renderPickScreen();
+      showScreen("pick");
+    }
+
+    function restoreScreen(target) {
+      if (!target || !state.sessionId) {
+        showScreen("home");
+        return;
+      }
+      if (target === "pick" || target === "exercise" || target === "feedback") {
+        renderPickScreen();
+      }
+      if (target === "exercise" && state.currentExerciseId) {
+        const ex = catalog.find((e) => e.id === state.currentExerciseId);
+        if (ex) startExercise(ex, { resume: true });
+        else showScreen("pick");
+      } else if (target === "feedback" && state.pendingExercise) {
+        el("fb-name").textContent = state.pendingExercise.exercise.name;
+        showScreen("feedback");
+      } else if (target === "cardio") {
+        const cardioEx = catalog.find((e) => e.id === state.cardioExerciseId);
+        el("cardio-title").textContent = cardioEx ? cardioEx.name : "🚴 Cardio";
+        el("cardio-minutes").textContent = state.cardioMinutesSuggested || 15;
+        showScreen("cardio");
+      } else {
+        showScreen(target);
+      }
+    }
+
     function wireEvents() {
-      el("btn-start").addEventListener("click", startNewSession);
+      el("top-bar-title").addEventListener("click", goHome);
+      el("btn-continue-session").addEventListener("click", () => restoreScreen(state.lastActiveScreen));
+
+      el("btn-start").addEventListener("click", () => {
+        if (state.sessionId && !confirm("Ya tienes una sesión activa. ¿Seguro que quieres empezar una nueva?")) return;
+        startNewSession();
+      });
 
       document.querySelectorAll("#screen-setup .chip").forEach((chip) => {
         chip.addEventListener("click", () => selectDurationChip(Number(chip.dataset.min)));
       });
       el("btn-confirm-duration").addEventListener("click", confirmDuration);
 
-      el("btn-cardio-done").addEventListener("click", async () => {
-        if (state.sessionId) {
-          await client.from(T.sessions).update({ cardio_minutes_done: state.cardioMinutesSuggested }).eq("id", state.sessionId);
-        }
-        state.lastMovementType = "cardio";
-        saveState();
-        renderPickScreen();
-        showScreen("pick");
+      document.querySelectorAll("#screen-cardio-pick .chip").forEach((chip) => {
+        chip.addEventListener("click", () => pickCardio(chip.dataset.cardio));
       });
+      el("btn-cardio-done").addEventListener("click", finishCardio);
 
-      el("btn-mark-set").addEventListener("click", () => {
-        state.setsCompleted = Math.min(3, state.setsCompleted + 1);
+      el("ex-weight").addEventListener("input", () => {
+        state.currentWeightDraft = el("ex-weight").value;
         saveState();
-        updateSetDots();
       });
       el("btn-finish-exercise").addEventListener("click", finishExercise);
 
@@ -616,26 +720,10 @@
 
       await loadHistoryList();
 
-      // Restaura la pantalla donde te quedaste (por si recargas a mitad de entreno).
-      if (state.screen && state.screen !== "home" && state.sessionId) {
-        if (state.screen === "pick" || state.screen === "exercise" || state.screen === "feedback") {
-          renderPickScreen();
-        }
-        if (state.screen === "exercise" && state.currentExerciseId) {
-          const ex = catalog.find((e) => e.id === state.currentExerciseId);
-          if (ex) startExercise(ex);
-          else showScreen("pick");
-        } else if (state.screen === "feedback" && state.pendingExercise) {
-          el("fb-name").textContent = state.pendingExercise.exercise.name;
-          showScreen("feedback");
-        } else if (state.screen === "cardio") {
-          el("cardio-minutes").textContent = state.cardioMinutesSuggested || 15;
-          showScreen("cardio");
-        } else if (state.screen === "setup") {
-          showScreen("setup");
-        } else {
-          showScreen(state.screen);
-        }
+      // Reanuda automáticamente donde lo dejaste (recarga a mitad de entreno,
+      // o vuelves a abrir la PWA con una sesión en marcha).
+      if (state.sessionId && state.lastActiveScreen) {
+        restoreScreen(state.lastActiveScreen);
       } else {
         showScreen("home");
       }
