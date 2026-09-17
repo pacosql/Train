@@ -240,6 +240,7 @@ export function mountFutoshikiGame(container, { client, onExit }) {
         <button class="secondary fu-tool" data-clear>↺ Borrar</button>
         <button class="secondary fu-tool" data-give>🔎 Solución (−1 vida)</button>
       </div>
+      <button class="primary fu-check" data-check disabled>✓ Comprobar</button>
       <div class="feedback" data-feedback></div>
     `;
 
@@ -265,6 +266,11 @@ export function mountFutoshikiGame(container, { client, onExit }) {
       if (finished || locked) return;
       loseRound("Solución al descubierto");
     });
+    body.querySelector("[data-check]").addEventListener("click", () => {
+      if (finished || locked) return;
+      if (grid.some((v) => v === 0)) return say("Aún quedan casillas vacías", "bad");
+      check();
+    });
     renderGrid();
     say("Toca una casilla para cambiar su número", "");
   }
@@ -277,6 +283,11 @@ export function mountFutoshikiGame(container, { client, onExit }) {
       if (puzzle.givens[i]) btn.classList.add("given");
       if (badSet && badSet.has(i)) btn.classList.add("bad");
     });
+    // El botón de comprobar solo se activa con la rejilla llena: así el
+    // jugador decide cuándo se corrige y no se le penaliza un número a medio
+    // girar (cada toque cicla 1→2→3→4).
+    const chk = body.querySelector("[data-check]");
+    if (chk) chk.disabled = grid.some((v) => v === 0);
   }
 
   function cycle(i) {
@@ -284,8 +295,7 @@ export function mountFutoshikiGame(container, { client, onExit }) {
     if (puzzle.givens[i]) return say("Ese número viene de regalo: no se toca", "");
     grid[i] = (grid[i] + 1) % (N + 1);
     renderGrid();
-    if (grid.every((v) => v > 0)) check();
-    else say("", "");
+    say(grid.some((v) => v === 0) ? "" : "Rejilla llena: dale a Comprobar", "");
   }
 
   // Busca el primer incumplimiento y lo explica con nombres y números.

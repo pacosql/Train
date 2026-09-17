@@ -194,11 +194,21 @@
   display: grid;
   gap: 3px;
   width: 100%;
-  max-width: 260px;
+  max-width: 228px;
   margin: 0 auto;
   align-items: center;
 }
-.cj-gh { font-size: 0.85rem; text-align: center; }
+.cj-gh { text-align: center; }
+.cj-gh i {
+  display: flex;
+  width: 22px;
+  height: 22px;
+  margin: 0 auto;
+  border-radius: 6px;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+}
 .cj-cell {
   position: relative;
   aspect-ratio: 1;

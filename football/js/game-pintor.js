@@ -167,7 +167,8 @@ export function mountPintorGame(container, { client, onExit }) {
   function renderCart() {
     round.yields.forEach((y, i) => {
       const btn = body.querySelector(`[data-can="${i}"]`);
-      btn.querySelector("[data-stock]").textContent = `quedan ${round.stocks[i] - cart[i]}`;
+      const left = round.stocks[i] - cart[i];
+      btn.querySelector("[data-stock]").textContent = left === 1 ? "queda 1" : `quedan ${left}`;
       btn.disabled = locked || cart[i] >= round.stocks[i];
     });
     const items = [];

@@ -187,10 +187,10 @@ export function mountConjuntosGame(container, { client, onExit }) {
     let html = `<div class="cj-grid" style="grid-template-columns:28px repeat(${round.bottoms.length}, 1fr)">`;
     html += `<span class="cj-gh"></span>`;
     round.bottoms.forEach((c) => {
-      html += `<span class="cj-gh" style="color:${c.hex}">👖</span>`;
+      html += `<span class="cj-gh"><i style="background:${c.hex}">👖</i></span>`;
     });
     round.tops.forEach((t, ti) => {
-      html += `<span class="cj-gh" style="color:${t.hex}">👕</span>`;
+      html += `<span class="cj-gh"><i style="background:${t.hex}">👕</i></span>`;
       round.bottoms.forEach((b, bi) => {
         const hit = done.has(`${ti}-${bi}`);
         html += `<span class="cj-cell ${hit ? "ok" : (showMissing ? "miss" : "")}">

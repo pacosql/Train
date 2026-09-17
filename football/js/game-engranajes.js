@@ -100,7 +100,9 @@ export function mountEngranajesGame(container, { client, onExit }) {
   }
 
   function gearHtml(teeth, cls, extra) {
-    const d = Math.max(56, Math.min(120, Math.round(teeth * 5.4)));
+    // El diámetro crece con los dientes (y nunca baja de 70 px, que es lo
+    // que hace falta para arrastrar con el pulgar).
+    const d = Math.round(52 + teeth * 3.2);
     return `<div class="en-gear ${cls}" style="width:${d}px;height:${d}px" ${extra || ""}>
       <div class="en-gear-inner" data-inner="${cls}" style="--step:${(360 / teeth).toFixed(3)}deg">
         <span class="en-mark"></span>
@@ -169,7 +171,7 @@ export function mountEngranajesGame(container, { client, onExit }) {
     small.style.transform = `rotate(${-total * round.big / round.small}deg)`;
     const teethEl = body.querySelector("[data-teeth]");
     if (teethEl) {
-      const passed = Math.floor((total / 360) * round.big);
+      const passed = Math.round((total / 360) * round.big);
       teethEl.innerHTML = `dientes engranados: <b>${passed}</b>`;
     }
   }
