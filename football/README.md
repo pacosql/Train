@@ -1,6 +1,6 @@
 # Math Games 🧠
 
-PWA (sin build, HTML/CSS/JS puro) con **65 ejercicios de matemáticas**,
+PWA (sin build, HTML/CSS/JS puro) con **70 ejercicios de matemáticas**,
 cada uno numerado (#1-#40) para poder referirse a ellos sin ambigüedad.
 Cálculo mental, geometría, álgebra, estadística, fracciones, dinero,
 probabilidad, coordenadas, tiempo y más. Nace como banco de pruebas
@@ -109,6 +109,23 @@ Los juegos "contrarreloj" (#12, #13, #52) terminan a los 30 segundos;
 el resto termina a las 3 vidas o al completar el objetivo. Todos
 guardan la puntuación final en Supabase y el menú principal muestra las
 últimas partidas jugadas.
+
+## Ejercicios #66-#70 (cuarta tanda) — 🔧 revisados aparte, 5 mecánicas nuevas
+
+La columna **de dónde sale** dice si la mecánica viene de una fuente
+concreta de ahí fuera o es inventada, y con qué proceso (la terna de
+combinación forzada, la inversión o la restricción).
+
+### Tramo «Puzzles de lápiz y papel» — [`css/pack-g.css`](./css/pack-g.css)
+
+| # | Juego | Tema | Mecánica | De dónde sale |
+|---|---|---|---|---|
+| 66 | 🟧 Pentominós | Área y teselado | Encaja las piezas en el rectángulo sin huecos ni solapes; el área total es fija, así que sobra o falta hueco | Manipulativos de aula / pentominós de Golomb (familia 7) |
+| 67 | 🔼 Mayor que | Orden y lógica | Futoshiki 4×4: cada toque cicla la casilla, respetando los signos < > entre vecinas | Puzzles de lápiz y papel (familia 4) |
+| 68 | ➕ Kakuro | Sumas con restricción | Rellena con 1-9 sin repetir para que cada bloque sume lo indicado (17 en dos casillas solo puede ser 8+9) | Puzzles de lápiz y papel (familia 4) |
+| 69 | ⬛ Shikaku | Multiplicación y área | Arrastras para dibujar cada rectángulo y se lee en vivo «3 × 2 = 6»: la multiplicación no se calcula, se dibuja | Puzzles de lápiz y papel (familia 4) |
+| 70 | 🔯 Cuadrado mágico | Sumas | Coloca las fichas que faltan; cada hueco está atado a fila + columna (+ diagonal), así que es un sistema de sumas | Gardner / puzzles clásicos (familia 3) |
+
 
 ## Versiones (v2) y bandeja "Revisar"
 
@@ -300,7 +317,7 @@ Una vez publicado, esta app queda en:
 
 ## Qué hace la app
 
-- Menú con los 65 ejercicios numerados, organizados en pestañas
+- Menú con los 70 ejercicios numerados, organizados en pestañas
   🆕/👍/👎/🔧; cada uno abre en su propia pantalla (`#/game/<id>`), sin
   recargar la página.
 - Motor de preguntas compartido (`js/quiz-engine.js`) para los 18
