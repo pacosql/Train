@@ -146,6 +146,8 @@
     .item .name { font-weight: 800; font-size: 0.98rem; }
     .item .meta { color: var(--text-2); font-size: 0.75rem; margin-top: 2px; }
     .item .reason { font-size: 0.72rem; font-weight: 700; color: var(--accent); margin-top: 3px; }
+    .item .reason.warn { color: var(--pull); }
+    .item .reason.muted { color: var(--text-2); }
     .item.done .name { color: var(--text-2); }
     .pill { font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; padding: 4px 9px; border-radius: 999px; flex-shrink: 0; }
     .pill.push { background: var(--push); color: #04142e; }
@@ -443,7 +445,7 @@
     <!-- PICK -->
     <section id="screen-pick" hidden>
       <h2>¿Qué toca ahora?</h2>
-      <p class="sub">Ordenados por lo que más te conviene: alterno empuje y tirón, y priorizo lo que llevas más tiempo sin hacer. Tú eliges lo que tengas libre.</p>
+      <p class="sub">Evito el músculo que acabas de trabajar, alterno empuje y tirón y priorizo lo que llevas más tiempo sin hacer. Cada uno te dice por qué está ahí — tú eliges lo que tengas libre.</p>
       <div id="exercise-list"></div>
       <button id="btn-add-exercise" class="secondary" style="margin-top:6px;">+ Añadir máquina nueva</button>
       <button id="btn-finish-session" class="ghost">Terminar entrenamiento</button>
@@ -641,7 +643,7 @@
         sessionId: null, sessionStartedAt: null,
         plannedDuration: null, cardioMinutesSuggested: null,
         cardioExerciseId: null, cardioStartedAt: null,
-        doneExerciseIds: [], lastMovementType: "cardio",
+        doneExerciseIds: [],
         currentExerciseId: null, currentExerciseStartedAt: null, currentWeightDraft: null,
         pendingExercise: null, summary: [],
       };
@@ -695,10 +697,6 @@
       const h = Math.floor(total / 3600), m = Math.floor((total % 3600) / 60), s = total % 60;
       const mm = h > 0 ? String(m).padStart(2, "0") : String(m);
       return h > 0 ? `${h}:${mm}:${String(s).padStart(2, "0")}` : `${mm}:${String(s).padStart(2, "0")}`;
-    }
-    function daysSince(iso) {
-      if (!iso) return null;
-      return (Date.now() - new Date(iso).getTime()) / (1000 * 60 * 60 * 24);
     }
     // Días de calendario, no horas: un entrenamiento de ayer por la tarde
     // es "ayer" aunque hayan pasado menos de 24 h.
@@ -883,34 +881,156 @@
       return Math.max(0, Number(last.weight_used) + delta);
     }
 
-    // Puntuación combinada, no una jerarquía rígida: alternar empuje/tirón
-    // ayuda, pero llevar días sin hacer algo puede pesar más.
-    function exerciseScore(ex, doneToday, opposite) {
-      let score = 0;
-      if (doneToday) score -= 1000;
-      if (ex.movement_type === opposite) score += 30;
-      const last = historyByExercise[ex.id];
-      const days = last ? daysSince(last.completed_at) : null;
-      score += days == null ? 80 : Math.min(days, 14) * 5;
-      return score;
+    // Etiquetas de músculo por palabra clave, igual que los textos
+    // educativos: así "Pecho / Tríceps" y "Pecho / Hombro / Tríceps" se
+    // reconocen como el mismo trabajo aunque el texto no coincida.
+    const MUSCLE_TAGS = [
+      { match: /pecho|pectoral/i, tag: "pecho" },
+      { match: /espalda|dorsal/i, tag: "espalda" },
+      { match: /hombro|deltoides/i, tag: "hombro" },
+      { match: /b[íi]ceps/i, tag: "bíceps" },
+      { match: /tr[íi]ceps/i, tag: "tríceps" },
+      { match: /pierna|cu[áa]driceps|gl[úu]teo|isquio|femoral/i, tag: "pierna" },
+      { match: /gemelo|s[óo]leo/i, tag: "gemelos" },
+      { match: /abdomen|abdominal|core|lumbar/i, tag: "core" },
+    ];
+    function muscleTags(ex) {
+      return MUSCLE_TAGS.filter((m) => m.match.test(ex.muscle_group || "")).map((m) => m.tag);
     }
-    function recommendationReason(ex, doneToday, opposite) {
-      if (doneToday) return "Ya lo has hecho hoy";
-      const last = historyByExercise[ex.id];
-      if (!last) return "Nunca lo has hecho";
-      const d = calendarDaysAgo(last.completed_at) || 0;
-      if (d >= 1) return `${d} ${d === 1 ? "día" : "días"} sin hacerlo`;
-      if (ex.movement_type === opposite) return "Alterna con lo último que hiciste";
-      return "Hecho hace poco";
+    // El primer músculo que nombra la máquina es el que de verdad trabaja; los
+    // que vienen detrás son ayudantes, así que cuentan la mitad. Sin esto,
+    // el "Tríceps" de "Pecho / Hombro / Tríceps" bloquearía media sala.
+    function muscleWeights(ex) {
+      const group = ex.muscle_group || "";
+      const hits = MUSCLE_TAGS
+        .map((m) => ({ tag: m.tag, at: group.search(m.match) }))
+        .filter((h) => h.at >= 0)
+        .sort((a, b) => a.at - b.at);
+      const out = new Map();
+      hits.forEach((h, i) => out.set(h.tag, i === 0 ? 1 : 0.5));
+      return out;
     }
-    function orderExercises() {
-      const opposite = state.lastMovementType === "push" ? "pull" : state.lastMovementType === "pull" ? "push" : null;
-      return catalog
-        .map((ex) => {
-          const doneToday = state.doneExerciseIds.includes(ex.id);
-          return { ex, doneToday, reason: recommendationReason(ex, doneToday, opposite), score: exerciseScore(ex, doneToday, opposite) };
-        })
-        .sort((a, b) => b.score - a.score);
+    function isStrength(ex) { return ex.movement_type === "push" || ex.movement_type === "pull"; }
+    function movementWord(type) { return type === "push" ? "empuje" : type === "pull" ? "tirón" : "cardio"; }
+
+    // "Hecho hoy" cuenta lo de esta sesión y también lo de cualquier otra
+    // sesión del mismo día.
+    function didToday(ex) {
+      if (state.doneExerciseIds.includes(ex.id)) return true;
+      const last = historyByExercise[ex.id];
+      return !!last && calendarDaysAgo(last.completed_at) === 0;
+    }
+    function daysSinceExercise(ex) {
+      const last = historyByExercise[ex.id];
+      return last ? Math.max(0, calendarDaysAgo(last.completed_at)) : null;
+    }
+
+    // El último ejercicio de fuerza que hiciste, sea de esta sesión, de otra
+    // de hoy o del entrenamiento anterior.
+    function lastStrengthDone() {
+      let best = null;
+      for (const ex of catalog) {
+        if (!isStrength(ex)) continue;
+        const last = historyByExercise[ex.id];
+        if (!last) continue;
+        if (!best || new Date(last.completed_at) > new Date(best.at)) best = { at: last.completed_at, ex };
+      }
+      return best;
+    }
+
+    // El ejercicio que tienes empezado y sin terminar ahora mismo.
+    function isRunning(ex) {
+      return ex.movement_type === "cardio"
+        ? !!state.cardioStartedAt && state.cardioExerciseId === ex.id
+        : !!state.currentExerciseStartedAt && state.currentExerciseId === ex.id;
+    }
+
+    function pickContext() {
+      // Músculos que ya has tocado hoy: no tiene sentido mandarte otra vez al
+      // pecho justo después del press de pecho.
+      const musclesToday = new Map();
+      for (const ex of catalog) {
+        if (ex.movement_type === "cardio" || !didToday(ex)) continue;
+        for (const [tag, w] of muscleWeights(ex)) {
+          musclesToday.set(tag, Math.max(musclesToday.get(tag) || 0, w));
+        }
+      }
+      const last = lastStrengthDone();
+      return {
+        musclesToday,
+        lastType: last ? last.ex.movement_type : null,
+        lastName: last ? last.ex.name : null,
+        lastToday: last ? calendarDaysAgo(last.at) === 0 : false,
+      };
+    }
+
+    // Tres cestas antes que la puntuación: primero lo que te queda por hacer,
+    // luego el cardio (es el calentamiento o el remate, no el siguiente
+    // ejercicio) y al final lo que ya has hecho hoy, por si quieres repetir.
+    function rateExercise(ex, ctx) {
+      const running = isRunning(ex);
+      const done = didToday(ex);
+      const cardio = ex.movement_type === "cardio";
+      const bucket = running ? -1 : done ? 2 : cardio ? 1 : 0;
+
+      const days = daysSinceExercise(ex);
+      // Nunca hecho vale lo mismo que llevar tres semanas sin hacerlo: llama
+      // la atención, pero no gana a "hoy ya has machacado ese músculo".
+      let score = (days == null ? 21 : Math.min(days, 21)) * 3;
+
+      // Solapamiento con lo que ya has trabajado hoy, ponderado por si es el
+      // músculo principal de cada máquina o solo un ayudante.
+      const overlap = [];
+      let load = 0;
+      if (!done) {
+        for (const [tag, w] of muscleWeights(ex)) {
+          const todayW = ctx.musclesToday.get(tag) || 0;
+          if (!todayW) continue;
+          overlap.push({ tag, load: w * todayW });
+          load += w * todayW;
+        }
+        load = Math.min(load, 2);
+        score -= Math.round(load * 30);
+      }
+
+      let alt = 0;
+      if (isStrength(ex) && ctx.lastType) {
+        // Alternar importa mucho dentro de la sesión (para descansar el
+        // músculo) y bastante menos entre un día y otro.
+        const weight = ctx.lastToday ? 28 : 14;
+        alt = ex.movement_type === ctx.lastType ? -Math.round(weight * 0.65) : weight;
+        score += alt;
+      }
+
+      return { bucket, score, running, done, days, overlap, load, alt };
+    }
+
+    function rateReason(ex, r, ctx) {
+      if (r.running) return { text: "⏱ En marcha · vuelve para terminarlo", tone: "good" };
+      if (r.done) return { text: "Ya lo has hecho hoy", tone: "muted" };
+      const bits = [];
+      let tone = "good";
+
+      if (r.days == null) bits.push("Nunca lo has hecho");
+      else if (r.days === 0) { bits.push("Ya lo hiciste hoy"); tone = "warn"; }
+      else if (r.days === 1) { bits.push("Lo hiciste ayer"); tone = "warn"; }
+      else bits.push(`${r.days} días sin hacerlo`);
+
+      // Solo se avisa del solapamiento cuando pisa de verdad el músculo
+      // principal; que compartan un ayudante no merece una advertencia.
+      const heavy = r.overlap.filter((o) => o.load >= 0.75).map((o) => o.tag);
+      if (heavy.length) {
+        bits.push(`hoy ya has trabajado ${heavy.join(" y ")}`);
+        tone = "warn";
+      } else if (r.alt > 0) {
+        bits.push(ctx.lastToday
+          ? `descansas del ${movementWord(ctx.lastType)} de ${ctx.lastName}`
+          : `alternas con tu último entreno (${movementWord(ctx.lastType)})`);
+      } else if (r.alt < 0) {
+        bits.push(ctx.lastToday ? `otra vez ${movementWord(ex.movement_type)}` : `mismo tipo que tu último entreno`);
+        tone = "warn";
+      }
+      return { text: bits.join(" · "), tone };
     }
 
     // ---------- gráfica de progreso ----------
@@ -1051,11 +1171,30 @@
       return type === "push" ? "Empuje" : type === "pull" ? "Tirón" : type === "cardio" ? "Cardio" : "Sin clasificar";
     }
 
+    const PICK_HEADERS = { "-1": "⏱ Lo que tienes empezado", 1: "❤️ Cardio · para alargar o rematar", 2: "✅ Ya hecho hoy" };
+
     function renderPickScreen() {
-      const list = orderExercises();
+      const ctx = pickContext();
+      const rated = catalog
+        .map((ex) => ({ ex, r: rateExercise(ex, ctx) }))
+        .sort((a, b) => a.r.bucket - b.r.bucket || b.r.score - a.r.score);
+
       const box = el("exercise-list");
       box.innerHTML = "";
-      list.forEach(({ ex, doneToday, reason }, i) => {
+      let bucket = null;
+      let starred = false;
+
+      for (const { ex, r } of rated) {
+        if (r.bucket !== bucket) {
+          bucket = r.bucket;
+          if (PICK_HEADERS[bucket]) {
+            const h = document.createElement("div");
+            h.className = "group-header";
+            h.textContent = PICK_HEADERS[bucket];
+            box.appendChild(h);
+          }
+        }
+
         const last = historyByExercise[ex.id];
         const isCardio = ex.movement_type === "cardio";
         const weightTxt = isCardio
@@ -1065,13 +1204,18 @@
           : ex.default_weight != null
           ? ` · ref. ${ex.default_weight} kg`
           : "";
+
+        const isTop = r.bucket === 0 && !starred;
+        if (isTop) starred = true;
+        const reason = rateReason(ex, r, ctx);
+
         const div = document.createElement("div");
-        div.className = `item ${ex.movement_type}${i === 0 && !doneToday ? " top" : ""}${doneToday ? " done" : ""}`;
+        div.className = `item ${ex.movement_type}${isTop || r.running ? " top" : ""}${r.done && !r.running ? " done" : ""}`;
         div.innerHTML =
           `<div class="item-main">
-             <div class="name">${ex.name}${doneToday ? " ✓" : ""}</div>
+             <div class="name">${ex.name}${r.done && !r.running ? " ✓" : ""}</div>
              <div class="meta">${muscleLabel(ex)}${weightTxt}</div>
-             <div class="reason">${i === 0 && !doneToday ? "⭐ Recomendado · " : ""}${reason}</div>
+             <div class="reason ${reason.tone}">${isTop ? "⭐ Recomendado · " : ""}${reason.text}</div>
            </div>
            <span class="pill ${ex.movement_type}">${badgeLabel(ex.movement_type)}</span>`;
         div.addEventListener("click", () =>
@@ -1080,7 +1224,7 @@
             : startExercise(ex, { resume: ex.id === state.currentExerciseId })
         );
         box.appendChild(div);
-      });
+      }
     }
 
     // ---------- catálogo ----------
@@ -1242,7 +1386,6 @@
         state.summary.push({ name: cardioEx.name, minutes });
         if (!state.doneExerciseIds.includes(cardioEx.id)) state.doneExerciseIds.push(cardioEx.id);
       }
-      state.lastMovementType = "cardio";
       state.cardioStartedAt = null;
       saveState();
       renderPickScreen();
@@ -1361,7 +1504,6 @@
       historyByExercise[exercise.id] = { weight_used: weightUsed, next_time: nextTime, completed_at: nowIso };
       (seriesByExercise[exercise.id] ||= []).push({ at: nowIso, weight: weightUsed, minutes: null });
       if (!state.doneExerciseIds.includes(exercise.id)) state.doneExerciseIds.push(exercise.id);
-      state.lastMovementType = exercise.movement_type;
       state.summary.push({ name: exercise.name, weight: weightUsed, next_time: nextTime });
       state.currentExerciseId = null;
       state.currentExerciseStartedAt = null;

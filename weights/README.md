@@ -12,10 +12,8 @@ general.
    120 min, o una duración custom).
 2. La app sugiere cuántos minutos de **elíptica/bicicleta** hacer de
    calentamiento (siempre el primer "ejercicio").
-3. Tras el cardio, la app propone una **lista ordenada de ejercicios**
-   — prioriza los del grupo opuesto (empuje/tirón) al último que
-   hiciste, para que descanses mejor entre máquinas. Tú miras qué
-   máquina está libre en el gimnasio y eliges de esa lista.
+3. Tras el cardio, la app propone una **lista ordenada de ejercicios**.
+   Tú miras qué máquina está libre en el gimnasio y eliges de esa lista.
 4. Para el ejercicio elegido, la app te muestra el **último peso**
    usado y una recomendación (subir/mantener/bajar) basada en lo que
    marcaste la vez anterior.
@@ -52,6 +50,36 @@ desde su ficha, sin frenar el entrenamiento para rellenar formularios.
 La columna `description` de `weights_exercises` guarda el texto de "cómo
 entrenarlo" de cada máquina (colocación, ejecución, errores típicos y
 esquema de series). Si está vacía, la app usa un texto genérico.
+
+## Cómo se ordena la lista de ejercicios
+
+Primero se reparten en cestas, porque el orden dentro de cada una solo
+tiene sentido comparado con sus iguales:
+
+1. **Lo que tienes empezado** — el ejercicio o el cardio que has
+   arrancado y aún no has terminado, arriba del todo para volver a él.
+2. **Pendientes** — las máquinas de fuerza que no has hecho hoy. Esta
+   es la lista de verdad, y la primera lleva la estrella.
+3. **Cardio** — el cardio es el calentamiento o el remate, nunca "el
+   siguiente ejercicio", así que baja siempre por debajo de la fuerza.
+4. **Ya hecho hoy** — al final, por si quieres repetir algo.
+
+Dentro de cada cesta se puntúa con tres señales:
+
+- **Cuánto hace que no lo haces** (días de calendario, tope 21; "nunca
+  lo has hecho" vale lo mismo que tres semanas). Es la señal base.
+- **Músculos que ya has trabajado hoy** — resta. Se cuenta con las
+  etiquetas de `MUSCLE_TAGS`, no con el texto literal, y el primer
+  músculo que nombra la máquina pesa el doble que los de ayuda: así
+  el "Tríceps" de *Pecho / Hombro / Tríceps* no bloquea media sala,
+  pero el *Pectoral* después del *Press de Pecho* sí cae al fondo.
+- **Alternar empuje y tirón** con el último ejercicio de fuerza que
+  hiciste — pesa mucho si fue hoy (descanso entre máquinas) y la mitad
+  si fue en el entrenamiento anterior.
+
+Cada fila enseña en una línea la razón de estar donde está ("descansas
+del tirón de Remo", "hoy ya has trabajado pecho", "9 días sin
+hacerlo"), en verde si empuja hacia arriba y en ámbar si la frena.
 
 Para las máquinas asistidas (dominadas/fondos asistidos), la lógica de
 peso está invertida: menos peso en la pila = más difícil (menos
