@@ -1,0 +1,547 @@
+/* Pack O — tanda del 17-09-2026 (tarde), tramo 4 (último) de nuevos ejercicios.
+   Prefijos: .bl- (blobs) .pf- (prefieres) .ck- (cohete) .tu- (tuercas) .ml- (malabares). */
+
+/* #109 🫐 Blobs de suma (.bl-) */
+/* Estilos exclusivos de "Blobs de suma" (id: blobs). Prefijo obligatorio
+   `.bl-` en todas las clases — no redefine nada del núcleo sin prefijo.
+   Variables en :root para que funcione en claro y oscuro sin duplicar
+   reglas (el núcleo ya define --bg/--fg/--card/etc.; aquí solo añadimos
+   las propias de este juego, con valores por defecto razonables). */
+:root {
+  --bl-tile-bg: #eef2ff;
+  --bl-tile-border: #6366f1;
+  --bl-tile-fg: #1e1b4b;
+  --bl-tile-selected-bg: #6366f1;
+  --bl-tile-selected-fg: #ffffff;
+  --bl-sumbar-fg: #4b5563;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bl-tile-bg: #312e5c;
+    --bl-tile-border: #a5b4fc;
+    --bl-tile-fg: #eef2ff;
+    --bl-tile-selected-bg: #a5b4fc;
+    --bl-tile-selected-fg: #1e1b4b;
+    --bl-sumbar-fg: #cbd5e1;
+  }
+}
+
+/* Racimo de fichas: fila flexible con salto de línea, con pequeños
+   desplazamientos/rotaciones inline (por ficha) que le dan aspecto de
+   "nube" en vez de tabla — se calculan en JS y se aplican vía style. */
+.bl-cluster {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 8px 26px;
+  min-height: 160px;
+}
+
+.bl-tile {
+  appearance: none;
+  border: none;
+  border-radius: 999px;
+  width: 58px;
+  height: 58px;
+  min-width: 58px;
+  min-height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--bl-tile-fg);
+  background: var(--bl-tile-bg);
+  box-shadow: 0 2px 0 var(--bl-tile-border), 0 4px 10px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  transition: transform 0.12s ease, background 0.12s ease, box-shadow 0.12s ease;
+  touch-action: manipulation;
+}
+
+.bl-tile:active {
+  transform: scale(0.94) !important;
+}
+
+.bl-tile.bl-selected {
+  background: var(--bl-tile-selected-bg);
+  color: var(--bl-tile-selected-fg);
+  box-shadow: 0 0 0 3px var(--bl-tile-border), 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.bl-sumbar {
+  text-align: center;
+  font-size: 0.95rem;
+  color: var(--bl-sumbar-fg);
+  margin-bottom: 6px;
+}
+
+.bl-check-btn {
+  display: block;
+  margin: 6px auto 0;
+  min-width: 160px;
+}
+
+.bl-check-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Pulgar cómodo a 400px: fichas de tamaño táctil (>=48px) con separación
+   suficiente para no fallar el toque, y racimo centrado sin scroll lateral. */
+@media (max-width: 400px) {
+  .bl-cluster {
+    gap: 10px;
+    padding: 14px 4px 20px;
+  }
+  .bl-tile {
+    width: 52px;
+    height: 52px;
+    min-width: 52px;
+    min-height: 52px;
+    font-size: 1.15rem;
+  }
+}
+
+/* #110 🤔 ¿Qué prefieres? (.pf-) */
+/* ============================================================
+   🤔 ¿Qué prefieres? — comparación y sentido numérico
+   Prefijo de clase EXCLUSIVO: .pf-
+   No redefine ninguna clase del núcleo (.choices, .choice-btn,
+   .feedback, .end-card, .prompt... ya existen en css/style.css y se
+   reutilizan tal cual). Todos los colores usan las variables ya
+   definidas en :root / @media (prefers-color-scheme: dark) del
+   propio css/style.css, así que el juego hereda el tema claro/oscuro
+   sin duplicar ninguna regla aquí.
+
+   ESTE FICHERO ES SOLO DE SCRATCHPAD: cuando se integre en el repo
+   real, su contenido debe copiarse dentro de uno de los ficheros de
+   football/css/ (p. ej. un pack-*.css nuevo o existente), nunca
+   servirse desde aquí.
+   ============================================================ */
+
+.pf-options {
+  /* Hereda grid-template-columns/gap/max-width de .choices en
+     style.css; aquí solo se ajusta el respiro vertical entre tarjetas
+     para que quepa texto de dos líneas cómodo con el pulgar. */
+  gap: 12px;
+}
+
+.pf-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 96px;
+  padding: 16px 12px;
+  text-align: center;
+  font-size: 0.94rem;
+  line-height: 1.3;
+}
+
+.pf-emoji {
+  font-size: 1.7rem;
+  line-height: 1;
+}
+
+.pf-text {
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* El botón ganador y el elegido erróneo ya se pintan con las clases
+   del núcleo .choice-btn.correct / .choice-btn.wrong (verde/rojo con
+   var(--good) y var(--danger)); aquí no hace falta tocar nada más. */
+
+/* ---------- Móviles estrechos (jugable con el pulgar a 400px) ---------- */
+@media (max-width: 380px) {
+  .pf-option { min-height: 84px; padding: 12px 8px; font-size: 0.86rem; }
+  .pf-emoji { font-size: 1.4rem; }
+}
+
+/* #111 🚀 Cohete exponencial (.ck-) */
+/* ============================================================
+   🚀 Cohete exponencial — prefijo exclusivo .ck-
+   Variables propias en :root (con fallback a las variables del
+   tema del núcleo si existen) y su versión para modo oscuro, tal
+   como pide la convención de la casa. No redefine ninguna clase
+   sin prefijo del núcleo (game-topbar, feedback, end-card, etc.)
+   ============================================================ */
+
+:root {
+  --ck-bg: var(--card, #ffffff);
+  --ck-border: var(--border, #e3e0f5);
+  --ck-text: var(--text, #201a3a);
+  --ck-muted: var(--muted, #66618a);
+  --ck-accent: var(--accent, #5b3ecc);
+  --ck-accent-2: var(--accent-2, #2ea3c4);
+  --ck-danger: var(--danger, #e5484d);
+  --ck-good: var(--good, #16a34a);
+  --ck-sky-top: #dfeeff;
+  --ck-sky-bottom: #f5f9ff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ck-bg: var(--card, #1e1a3d);
+    --ck-border: var(--border, #322c5c);
+    --ck-text: var(--text, #f1efff);
+    --ck-muted: var(--muted, #a29ecb);
+    --ck-sky-top: #0d1230;
+    --ck-sky-bottom: #1a2050;
+  }
+}
+
+.ck-body { display: flex; flex-direction: column; gap: 14px; }
+
+/* ---------- Zona de la órbita (barra vertical + cohete) ---------- */
+.ck-orbit-zone {
+  display: flex;
+  align-items: stretch;
+  gap: 12px;
+}
+
+.ck-track {
+  position: relative;
+  width: 84px;
+  min-width: 84px;
+  height: 220px;
+  border-radius: 16px;
+  overflow: hidden;
+  background: linear-gradient(180deg, var(--ck-sky-top), var(--ck-sky-bottom));
+  border: 1px solid var(--ck-border);
+}
+
+.ck-target-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-top: 2px dashed var(--ck-danger);
+  transition: bottom 0.15s ease;
+}
+.ck-target-line i {
+  position: absolute;
+  top: -18px;
+  left: 4px;
+  font-style: normal;
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: var(--ck-danger);
+  white-space: nowrap;
+}
+
+.ck-rocket {
+  position: absolute;
+  left: 50%;
+  bottom: 0%;
+  transform: translate(-50%, 50%);
+  font-size: 1.8rem;
+  line-height: 1;
+  transition: bottom 0.15s ease;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.25));
+}
+
+.ck-readout {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 10px;
+  border-radius: 14px;
+  background: var(--ck-bg);
+  border: 1px solid var(--ck-border);
+  color: var(--ck-text);
+  font-size: 1.05rem;
+}
+.ck-readout sup { font-size: 0.75em; }
+.ck-readout b { color: var(--ck-accent); }
+
+/* ---------- Steppers de base y exponente ---------- */
+.ck-controls {
+  display: flex;
+  gap: 10px;
+}
+
+.ck-stepper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 8px;
+  border-radius: 14px;
+  background: var(--ck-bg);
+  border: 1px solid var(--ck-border);
+}
+
+.ck-stepper-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--ck-muted);
+}
+
+.ck-stepper-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ck-step-btn {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border-radius: 12px;
+  border: 1px solid var(--ck-border);
+  background: var(--ck-accent-2);
+  color: #fff;
+  font-size: 1.3rem;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+}
+.ck-step-btn:active { filter: brightness(0.9); }
+
+.ck-stepper-value {
+  min-width: 28px;
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--ck-text);
+}
+
+.ck-launch-btn {
+  width: 100%;
+  padding: 14px;
+  font-size: 1.05rem;
+}
+
+/* ---------- Ajustes finos a 400px de ancho (jugable a una mano) ---------- */
+@media (max-width: 420px) {
+  .ck-track { width: 72px; min-width: 72px; height: 190px; }
+  .ck-readout { font-size: 0.95rem; }
+  .ck-step-btn { width: 40px; height: 40px; min-width: 40px; }
+}
+
+/* #112 🔩 Pares de tuercas (.tu-) */
+/* ============================================================
+   🔩 Pares de tuercas — tema: paridad
+   Prefijo de clase EXCLUSIVO: .tu-
+   Usa solo variables del tema (--card, --border, --text, --muted,
+   --accent, --good, --danger) para que funcione en claro y oscuro sin
+   duplicar reglas: esas variables ya cambian de valor con el modo del
+   sistema en el núcleo (style.css), este fichero no necesita su propia
+   media query.
+   ============================================================ */
+
+.tu-board {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin: 4px 0 14px;
+}
+
+.tu-col {
+  flex: 1 1 0;
+  max-width: 170px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tu-col-title {
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+.tu-list {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tu-piece {
+  width: 100%;
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text);
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: transform 0.12s ease, border-color 0.12s ease, opacity 0.2s ease;
+  touch-action: manipulation;
+}
+
+.tu-piece:active {
+  transform: scale(0.96);
+}
+
+.tu-num {
+  font-size: 1.15rem;
+}
+
+.tu-piece.tu-selected {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(91, 62, 204, 0.25);
+  transform: translateY(-2px);
+}
+
+.tu-piece.tu-matched {
+  border-color: var(--good);
+  opacity: 0.55;
+  cursor: default;
+  pointer-events: none;
+}
+.tu-piece.tu-matched .tu-num {
+  text-decoration: line-through;
+}
+
+.tu-piece.tu-rejected {
+  border-color: var(--danger);
+  animation: tu-shake 0.35s ease;
+}
+
+@keyframes tu-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.tu-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.tu-progress {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+/* #113 🤹 Malabares (.ml-) */
+/* Estilos exclusivos del juego "Malabares" (m.c.m.) — prefijo .ml- */
+:root {
+  --ml-cell-bg: #f2f0fb;
+  --ml-cell-border: #e3e0f5;
+  --ml-land-bg: #5b3ecc;
+  --ml-land-text: #ffffff;
+  --ml-target-ring: #2ea3c4;
+  --ml-label-text: #66618a;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ml-cell-bg: #1e1a3d;
+    --ml-cell-border: #322c5c;
+    --ml-land-bg: #8a6ff0;
+    --ml-land-text: #14112a;
+    --ml-target-ring: #58c6e8;
+    --ml-label-text: #a29ecb;
+  }
+}
+
+.ml-hint {
+  display: block;
+  color: var(--ml-label-text);
+  margin: 2px 0 12px;
+}
+
+.ml-timelines {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+  margin-bottom: 16px;
+}
+
+.ml-labels {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 4px;
+  flex: 0 0 auto;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--ml-label-text);
+  white-space: nowrap;
+  padding-right: 2px;
+}
+
+.ml-label {
+  height: 26px;
+  display: flex;
+  align-items: center;
+}
+
+.ml-scroll {
+  flex: 1 1 auto;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: 8px;
+}
+
+.ml-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ml-cellrow {
+  display: flex;
+  gap: 2px;
+  height: 26px;
+}
+
+.ml-cell {
+  flex: 0 0 22px;
+  width: 22px;
+  height: 22px;
+  border-radius: 5px;
+  background: var(--ml-cell-bg);
+  border: 1px solid var(--ml-cell-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: var(--ml-cell-border);
+  flex-shrink: 0;
+}
+
+.ml-cell--land {
+  background: var(--ml-land-bg);
+  border-color: var(--ml-land-bg);
+  color: var(--ml-land-text);
+}
+
+.ml-choices {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.ml-choice {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+@media (min-width: 420px) {
+  .ml-choices {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
