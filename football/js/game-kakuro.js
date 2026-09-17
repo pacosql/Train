@@ -295,7 +295,7 @@ export function mountKakuroGame(container, { client, onExit }) {
     pad += `<button type="button" class="kk-key kk-del" data-key="0">✕</button>`;
 
     body.innerHTML = `
-      <p class="prompt">Que cada bloque sume su pista<small>Dígitos 1-9, sin repetir dentro del mismo bloque. ↗ suma hacia la derecha, ↙ hacia abajo</small></p>
+      <p class="prompt">Que cada bloque sume su pista<small>Dígitos 1-9 sin repetir en el bloque. En las casillas grises: el número de arriba es la suma de las casillas de su derecha; el de abajo, de las que bajan</small></p>
       <div class="kk-grid" data-grid style="--kk-d:${D}">${html}</div>
       <div class="kk-pad" data-pad>${pad}</div>
       <div class="kk-tools">

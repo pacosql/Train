@@ -14,6 +14,11 @@
   --g-p5: #7a5cff;
   --g-soft: rgba(91, 62, 204, 0.1);
   --g-cellbg: var(--bg);
+  /* Relleno de las casillas negras del kakuro: tiene que contrastar de
+     verdad con las blancas, si no la rejilla no se lee. */
+  --g-block: #b4accf;
+  --g-blockline: #ffffff;
+  --g-clue: #241d4d;
 }
 @media (prefers-color-scheme: dark) {
   :root {
@@ -25,6 +30,9 @@
     --g-p5: #a48bff;
     --g-soft: rgba(138, 116, 255, 0.16);
     --g-cellbg: #100d24;
+    --g-block: #423a73;
+    --g-blockline: #16112e;
+    --g-clue: #f1efff;
   }
 }
 
@@ -209,40 +217,42 @@
 }
 .kk-cell {
   padding: 0;
-  border: 2px solid var(--border);
+  border: 2px solid var(--g-block);
   background: var(--g-cellbg);
   color: var(--text);
   font-size: 1.25rem;
   font-weight: 800;
   cursor: pointer;
 }
-.kk-cell.sel { border-color: var(--accent); background: var(--g-soft); }
+.kk-cell.sel { border-color: var(--accent); background: var(--g-soft); box-shadow: 0 0 0 2px var(--accent); }
 .kk-cell.given { border-color: var(--accent); color: var(--accent); background: var(--g-soft); cursor: default; }
 .kk-cell.bad { background: var(--danger); border-color: var(--danger); color: #fff; }
 .kk-cell.reveal { background: var(--good); border-color: var(--good); color: #fff; }
-.kk-block { background: var(--border); }
+.kk-block { background: var(--g-block); }
+/* Casilla de pista: la raya separa la suma de la fila (arriba, a la derecha)
+   de la suma de la columna (abajo, a la izquierda). */
 .kk-clue {
   position: relative;
   display: block;
-  background: var(--border);
+  background: var(--g-block);
   background-image: linear-gradient(
     to bottom right,
-    transparent calc(50% - 1px),
-    var(--muted) calc(50% - 1px),
-    var(--muted) calc(50% + 1px),
-    transparent calc(50% + 1px)
+    transparent calc(50% - 1.5px),
+    var(--g-blockline) calc(50% - 1.5px),
+    var(--g-blockline) calc(50% + 1.5px),
+    transparent calc(50% + 1.5px)
   );
 }
 .kk-clue i {
   position: absolute;
-  font-size: 0.62rem;
+  font-size: 0.74rem;
   font-weight: 800;
   font-style: normal;
-  color: var(--text);
+  color: var(--g-clue);
   line-height: 1;
 }
-.kk-clue .kk-a { top: 4px; right: 4px; }
-.kk-clue .kk-d { bottom: 4px; left: 4px; }
+.kk-clue .kk-a { top: 3px; right: 4px; }
+.kk-clue .kk-d { bottom: 3px; left: 4px; }
 
 .kk-pad {
   display: grid;
@@ -411,7 +421,7 @@
   .fu-cell { width: 46px; height: 46px; font-size: 1.3rem; }
   .kk-grid { max-width: 270px; }
   .kk-cell { font-size: 1.05rem; }
-  .kk-clue i { font-size: 0.56rem; }
+  .kk-clue i { font-size: 0.66rem; }
   .kk-pad { max-width: 270px; gap: 5px; }
   .kk-key { padding: 10px 0; font-size: 0.95rem; }
   .sk-grid { max-width: 270px; }
