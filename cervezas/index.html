@@ -24,9 +24,11 @@
       --text: #fbf3e7;
       --text-2: #b7a691;
       --accent: #f5a623;
-      --accent-soft: rgba(245, 166, 35, 0.16);
       --accent-ink: #2b1a02;
-      --minus: #ff6b6b;
+      --josema: #e66767;
+      --josema-soft: rgba(230, 103, 103, 0.16);
+      --paco: #3987e5;
+      --paco-soft: rgba(57, 135, 229, 0.16);
       padding-top: env(safe-area-inset-top, 0px);
       padding-bottom: env(safe-area-inset-bottom, 0px);
     }
@@ -35,7 +37,7 @@
 
     body {
       margin: 0;
-      background: var(--bg);
+      background: radial-gradient(circle at 50% -10%, #2a1d10 0%, var(--bg) 55%);
       color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       padding: 20px 16px 40px;
@@ -44,77 +46,6 @@
     }
     .wrap { max-width: 480px; margin: 0 auto; }
 
-    h1 { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.4px; margin: 0 0 2px; display: flex; align-items: center; gap: 8px; }
-    .sub { color: var(--text-2); font-size: 0.88rem; margin: 0 0 20px; }
-
-    .total-card {
-      background: linear-gradient(180deg, var(--surface-2), var(--surface));
-      border: 1px solid var(--line-strong);
-      border-radius: 20px;
-      padding: 18px 20px;
-      text-align: center;
-      margin-bottom: 18px;
-    }
-    .total-label { font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.9px; color: var(--text-2); }
-    .total-value { font-size: 2.6rem; font-weight: 900; color: var(--accent); line-height: 1.1; }
-
-    .players { display: grid; gap: 14px; }
-    .player-card {
-      background: var(--surface);
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      padding: 18px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-    }
-    .player-name { font-size: 1.15rem; font-weight: 800; }
-    .player-count {
-      font-size: 3.6rem;
-      font-weight: 900;
-      font-variant-numeric: tabular-nums;
-      color: var(--accent);
-      transition: transform 0.15s ease;
-    }
-    .player-count.bump { transform: scale(1.12); }
-
-    .btn-row { display: flex; gap: 12px; width: 100%; }
-    .btn-count {
-      flex: 1;
-      border: none;
-      border-radius: 16px;
-      font-size: 2rem;
-      font-weight: 800;
-      padding: 14px 0;
-      cursor: pointer;
-      user-select: none;
-      -webkit-user-select: none;
-      touch-action: manipulation;
-    }
-    .btn-count:active { transform: scale(0.96); }
-    .btn-count:disabled { opacity: 0.5; cursor: default; }
-    .btn-plus { background: var(--accent); color: var(--accent-ink); }
-    .btn-minus { background: var(--surface-2); color: var(--minus); border: 1px solid var(--line-strong); }
-
-    .status {
-      margin-top: 18px;
-      font-size: 0.82rem;
-      color: var(--text-2);
-      text-align: center;
-      min-height: 1.2em;
-    }
-    .status.error { color: var(--minus); }
-
-    .build-id {
-      text-align: center;
-      font-size: 0.68rem;
-      color: var(--text-2);
-      margin-top: 28px;
-      font-family: ui-monospace, monospace;
-      opacity: 0.6;
-    }
-
     a.back-link {
       display: inline-block;
       color: var(--text-2);
@@ -122,20 +53,338 @@
       font-size: 0.82rem;
       margin-bottom: 14px;
     }
+
+    h1 { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.4px; margin: 0 0 2px; display: flex; align-items: center; gap: 8px; }
+    .sub { color: var(--text-2); font-size: 0.85rem; margin: 0 0 18px; }
+
+    /* ---------- hero: cara a cara ---------- */
+    .hero {
+      background: linear-gradient(180deg, var(--surface-2), var(--surface));
+      border: 1px solid var(--line-strong);
+      border-radius: 22px;
+      padding: 18px 18px 20px;
+      margin-bottom: 16px;
+    }
+    .hero-eyebrow {
+      text-align: center;
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-2);
+      margin-bottom: 12px;
+    }
+    .hero-faces {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+    }
+    .hero-face { text-align: center; width: 84px; }
+    .avatar-badge {
+      position: relative;
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: var(--surface);
+      margin: 0 auto 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 0 3px var(--ring, var(--line-strong));
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+    }
+    .avatar-badge svg { width: 60px; height: 60px; }
+    .avatar-badge.leading { transform: scale(1.06); box-shadow: 0 0 0 3px var(--ring), 0 0 16px -2px var(--ring); }
+    .crown {
+      position: absolute;
+      top: -16px;
+      left: 50%;
+      transform: translateX(-50%) scale(0);
+      font-size: 1.3rem;
+      transition: transform 0.3s cubic-bezier(.34,1.56,.64,1);
+    }
+    .avatar-badge.leading .crown { transform: translateX(-50%) scale(1); }
+    .hero-name { font-size: 0.85rem; font-weight: 700; }
+
+    .hero-vs {
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--text-2);
+      padding-bottom: 22px;
+    }
+
+    .hero-score {
+      text-align: center;
+      font-size: 2.2rem;
+      font-weight: 900;
+      margin: 14px 0 4px;
+      font-variant-numeric: tabular-nums;
+    }
+    .hero-score .n-josema { color: var(--josema); }
+    .hero-score .n-paco { color: var(--paco); }
+    .hero-score .dash { color: var(--text-2); font-size: 1.4rem; margin: 0 6px; }
+
+    .hero-status {
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-2);
+      margin-bottom: 14px;
+      min-height: 1.2em;
+    }
+
+    .h2h-bar {
+      display: flex;
+      height: 14px;
+      border-radius: 7px;
+      overflow: hidden;
+      background: var(--bg);
+    }
+    .h2h-seg { height: 100%; transition: width 0.5s cubic-bezier(.34,1.56,.64,1); }
+    .h2h-seg.seg-josema { background: var(--josema); margin-right: 2px; }
+    .h2h-seg.seg-paco { background: var(--paco); }
+
+    /* ---------- jugadores ---------- */
+    .players { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .player-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 16px 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+    .player-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: var(--accent-wash);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+    .player-card.bump::before { opacity: 1; }
+    .player-avatar { width: 56px; height: 56px; border-radius: 50%; background: var(--surface-2); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 0 2px var(--ring); }
+    .player-avatar svg { width: 46px; height: 46px; }
+    .player-name { font-size: 1rem; font-weight: 800; }
+
+    .mug { width: 74px; height: 100px; overflow: visible; }
+    .mug .liquid { transition: y 0.5s cubic-bezier(.34,1.56,.64,1), height 0.5s cubic-bezier(.34,1.56,.64,1); }
+
+    .tonight-count {
+      font-size: 2rem;
+      font-weight: 900;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+      margin-top: -6px;
+    }
+    .tonight-label { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-2); font-weight: 700; margin-top: -4px; }
+    .alltime-caption { font-size: 0.72rem; color: var(--text-2); }
+
+    .btn-row { display: flex; gap: 8px; width: 100%; margin-top: 2px; }
+    .btn-count {
+      flex: 1;
+      border: none;
+      border-radius: 14px;
+      font-size: 1.6rem;
+      font-weight: 800;
+      padding: 10px 0;
+      cursor: pointer;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+      position: relative;
+    }
+    .btn-count:active { transform: scale(0.94); }
+    .btn-count:disabled { opacity: 0.4; cursor: default; }
+    .btn-plus { background: var(--ring); color: #12100a; }
+    .btn-minus { background: var(--surface-2); color: var(--text-2); border: 1px solid var(--line-strong); }
+
+    #card-josema { --ring: var(--josema); --accent-wash: var(--josema-soft); }
+    #card-paco { --ring: var(--paco); --accent-wash: var(--paco-soft); }
+
+    .status {
+      margin-top: 16px;
+      font-size: 0.82rem;
+      color: var(--text-2);
+      text-align: center;
+      min-height: 1.2em;
+    }
+    .status.error { color: var(--josema); }
+
+    .build-id {
+      text-align: center;
+      font-size: 0.68rem;
+      color: var(--text-2);
+      margin-top: 24px;
+      font-family: ui-monospace, monospace;
+      opacity: 0.6;
+    }
+
+    .confetti-piece {
+      position: fixed;
+      width: 7px;
+      height: 7px;
+      border-radius: 2px;
+      pointer-events: none;
+      z-index: 50;
+      animation: confetti-pop 0.7s ease-out forwards;
+    }
+    @keyframes confetti-pop {
+      0% { transform: translate(0, 0) rotate(0deg) scale(1); opacity: 1; }
+      100% { transform: translate(var(--dx), var(--dy)) rotate(180deg) scale(0.4); opacity: 0; }
+    }
+
+    @media (max-width: 360px) {
+      .hero-faces { gap: 10px; }
+      .hero-face { width: 72px; }
+    }
   </style>
 </head>
 <body>
   <div class="wrap">
     <a class="back-link" href="../">&larr; Train</a>
     <h1>🍺 Cervezas</h1>
-    <p class="sub">Cada vez que te tomes una, dale al más. Se sincroniza al momento entre los dos móviles.</p>
+    <p class="sub">Cada cerveza cuenta para esta noche y para el total de siempre. Dale al más cuando os toméis una.</p>
 
-    <div class="total-card">
-      <div class="total-label">Entre los dos</div>
-      <div class="total-value" id="total">0</div>
+    <div class="hero">
+      <div class="hero-eyebrow">Esta noche</div>
+      <div class="hero-faces">
+        <div class="hero-face">
+          <div class="avatar-badge" id="badge-josema" style="--ring: var(--josema);">
+            <span class="crown">👑</span>
+            <svg viewBox="0 0 100 100">
+              <circle cx="19" cy="62" r="7" fill="#e8b48c"/>
+              <circle cx="81" cy="62" r="7" fill="#e8b48c"/>
+              <circle cx="50" cy="60" r="32" fill="#e8b48c"/>
+              <path d="M22 44 Q18 40 20 34" stroke="#2b1a0e" stroke-width="6" fill="none" stroke-linecap="round"/>
+              <path d="M78 44 Q82 40 80 34" stroke="#2b1a0e" stroke-width="6" fill="none" stroke-linecap="round"/>
+              <circle cx="40" cy="58" r="3.4" fill="#2b1a0e"/>
+              <circle cx="60" cy="58" r="3.4" fill="#2b1a0e"/>
+              <path d="M37 72 Q50 82 63 72" stroke="#2b1a0e" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+              <path d="M15 36 Q15 6 50 6 Q85 6 85 36 L85 26 Q85 14 50 14 Q15 14 15 26 Z" fill="#e66767"/>
+              <ellipse cx="38" cy="35" rx="26" ry="8" fill="#e66767"/>
+              <circle cx="50" cy="8" r="3" fill="#c94f4f"/>
+            </svg>
+          </div>
+          <div class="hero-name">Josema</div>
+        </div>
+
+        <div class="hero-vs">VS</div>
+
+        <div class="hero-face">
+          <div class="avatar-badge" id="badge-paco" style="--ring: var(--paco);">
+            <span class="crown">👑</span>
+            <svg viewBox="0 0 100 100">
+              <circle cx="19" cy="60" r="7" fill="#e8b48c"/>
+              <circle cx="81" cy="60" r="7" fill="#e8b48c"/>
+              <path d="M20 46 Q14 30 30 22" stroke="#6b4a33" stroke-width="8" fill="none" stroke-linecap="round"/>
+              <path d="M80 46 Q86 30 70 22" stroke="#6b4a33" stroke-width="8" fill="none" stroke-linecap="round"/>
+              <circle cx="50" cy="58" r="32" fill="#e8b48c"/>
+              <ellipse cx="46" cy="30" rx="16" ry="8" fill="#ffffff" opacity="0.18"/>
+              <circle cx="40" cy="56" r="3.4" fill="#2b1a0e"/>
+              <circle cx="60" cy="56" r="3.4" fill="#2b1a0e"/>
+              <path d="M37 70 Q50 80 63 70" stroke="#2b1a0e" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="hero-name">Paco</div>
+        </div>
+      </div>
+
+      <div class="hero-score">
+        <span class="n-josema" id="hero-josema">0</span><span class="dash">&ndash;</span><span class="n-paco" id="hero-paco">0</span>
+      </div>
+      <div class="hero-status" id="hero-status">Esperando la primera cerveza&hellip;</div>
+
+      <div class="h2h-bar">
+        <div class="h2h-seg seg-josema" id="seg-josema" style="width: 50%;"></div>
+        <div class="h2h-seg seg-paco" id="seg-paco" style="width: 50%;"></div>
+      </div>
     </div>
 
-    <div class="players" id="players"></div>
+    <div class="players">
+      <div class="player-card" id="card-josema">
+        <div class="player-avatar">
+          <svg viewBox="0 0 100 100">
+            <circle cx="19" cy="62" r="7" fill="#e8b48c"/>
+            <circle cx="81" cy="62" r="7" fill="#e8b48c"/>
+            <circle cx="50" cy="60" r="32" fill="#e8b48c"/>
+            <path d="M22 44 Q18 40 20 34" stroke="#2b1a0e" stroke-width="6" fill="none" stroke-linecap="round"/>
+            <path d="M78 44 Q82 40 80 34" stroke="#2b1a0e" stroke-width="6" fill="none" stroke-linecap="round"/>
+            <circle cx="40" cy="58" r="3.4" fill="#2b1a0e"/>
+            <circle cx="60" cy="58" r="3.4" fill="#2b1a0e"/>
+            <path d="M37 72 Q50 82 63 72" stroke="#2b1a0e" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+            <path d="M15 36 Q15 6 50 6 Q85 6 85 36 L85 26 Q85 14 50 14 Q15 14 15 26 Z" fill="#e66767"/>
+            <ellipse cx="38" cy="35" rx="26" ry="8" fill="#e66767"/>
+            <circle cx="50" cy="8" r="3" fill="#c94f4f"/>
+          </svg>
+        </div>
+        <div class="player-name">Josema</div>
+
+        <svg class="mug" viewBox="0 0 100 140">
+          <clipPath id="clip-josema"><rect x="27" y="26" width="46" height="86" rx="8"/></clipPath>
+          <rect x="24" y="16" width="34" height="14" rx="5" fill="#fbf3e7" opacity="0.9"/>
+          <rect class="liquid" id="liquid-josema" x="27" y="110" width="46" height="0" fill="var(--josema)" clip-path="url(#clip-josema)"/>
+          <g opacity="0.35">
+            <line x1="27" y1="50" x2="73" y2="50" stroke="#fff" stroke-width="2"/>
+            <line x1="27" y1="70" x2="73" y2="70" stroke="#fff" stroke-width="2"/>
+            <line x1="27" y1="90" x2="73" y2="90" stroke="#fff" stroke-width="2"/>
+          </g>
+          <rect x="27" y="26" width="46" height="86" rx="8" fill="none" stroke="#57493a" stroke-width="4"/>
+          <path d="M73 46 a14 16 0 0 1 0 32" fill="none" stroke="#57493a" stroke-width="5" stroke-linecap="round"/>
+        </svg>
+        <div class="tonight-count" id="count-josema">0</div>
+        <div class="tonight-label">esta noche</div>
+        <div class="alltime-caption" id="alltime-josema">0 en total</div>
+
+        <div class="btn-row">
+          <button class="btn-count btn-minus" data-persona="Josema" data-delta="-1" disabled>&minus;</button>
+          <button class="btn-count btn-plus" data-persona="Josema" data-delta="1">+</button>
+        </div>
+      </div>
+
+      <div class="player-card" id="card-paco">
+        <div class="player-avatar">
+          <svg viewBox="0 0 100 100">
+            <circle cx="19" cy="60" r="7" fill="#e8b48c"/>
+            <circle cx="81" cy="60" r="7" fill="#e8b48c"/>
+            <path d="M20 46 Q14 30 30 22" stroke="#6b4a33" stroke-width="8" fill="none" stroke-linecap="round"/>
+            <path d="M80 46 Q86 30 70 22" stroke="#6b4a33" stroke-width="8" fill="none" stroke-linecap="round"/>
+            <circle cx="50" cy="58" r="32" fill="#e8b48c"/>
+            <ellipse cx="46" cy="30" rx="16" ry="8" fill="#ffffff" opacity="0.18"/>
+            <circle cx="40" cy="56" r="3.4" fill="#2b1a0e"/>
+            <circle cx="60" cy="56" r="3.4" fill="#2b1a0e"/>
+            <path d="M37 70 Q50 80 63 70" stroke="#2b1a0e" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="player-name">Paco</div>
+
+        <svg class="mug" viewBox="0 0 100 140">
+          <clipPath id="clip-paco"><rect x="27" y="26" width="46" height="86" rx="8"/></clipPath>
+          <rect x="24" y="16" width="34" height="14" rx="5" fill="#fbf3e7" opacity="0.9"/>
+          <rect class="liquid" id="liquid-paco" x="27" y="110" width="46" height="0" fill="var(--paco)" clip-path="url(#clip-paco)"/>
+          <g opacity="0.35">
+            <line x1="27" y1="50" x2="73" y2="50" stroke="#fff" stroke-width="2"/>
+            <line x1="27" y1="70" x2="73" y2="70" stroke="#fff" stroke-width="2"/>
+            <line x1="27" y1="90" x2="73" y2="90" stroke="#fff" stroke-width="2"/>
+          </g>
+          <rect x="27" y="26" width="46" height="86" rx="8" fill="none" stroke="#57493a" stroke-width="4"/>
+          <path d="M73 46 a14 16 0 0 1 0 32" fill="none" stroke="#57493a" stroke-width="5" stroke-linecap="round"/>
+        </svg>
+        <div class="tonight-count" id="count-paco">0</div>
+        <div class="tonight-label">esta noche</div>
+        <div class="alltime-caption" id="alltime-paco">0 en total</div>
+
+        <div class="btn-row">
+          <button class="btn-count btn-minus" data-persona="Paco" data-delta="-1" disabled>&minus;</button>
+          <button class="btn-count btn-plus" data-persona="Paco" data-delta="1">+</button>
+        </div>
+      </div>
+    </div>
 
     <div class="status" id="status"></div>
     <div class="build-id">build __BUILD_ID__</div>
@@ -145,73 +394,135 @@
   <script src="config.js"></script>
   <script>
     const { url, anonKey, personas } = window.CERVEZAS_CONFIG;
+    const NIGHT_CUTOFF_HOUR = 11; // antes de esta hora, sigue contando como "de anoche"
+    const MUG_TOP = 34, MUG_BOTTOM = 110, MUG_RANGE = MUG_BOTTOM - MUG_TOP;
 
     let client = null;
-    const counts = Object.fromEntries(personas.map((p) => [p, 0]));
-    const pending = Object.fromEntries(personas.map((p) => [p, false]));
+    let refreshTimer = null;
+    const pending = { Josema: false, Paco: false };
+    const state = {
+      tonight: { Josema: 0, Paco: 0 },
+      allTime: { Josema: 0, Paco: 0 },
+    };
 
-    const playersEl = document.getElementById("players");
-    const totalEl = document.getElementById("total");
     const statusEl = document.getElementById("status");
+    const heroStatusEl = document.getElementById("hero-status");
 
     function showStatus(msg, isError) {
       statusEl.textContent = msg || "";
       statusEl.classList.toggle("error", !!isError);
     }
 
-    function renderPlayers() {
-      playersEl.innerHTML = personas
-        .map(
-          (persona) => `
-        <div class="player-card">
-          <div class="player-name">${persona}</div>
-          <div class="player-count" id="count-${persona}">${counts[persona]}</div>
-          <div class="btn-row">
-            <button class="btn-count btn-minus" data-persona="${persona}" data-delta="-1" ${
-              counts[persona] <= 0 ? "disabled" : ""
-            }>&minus;</button>
-            <button class="btn-count btn-plus" data-persona="${persona}" data-delta="1">+</button>
-          </div>
-        </div>`
-        )
-        .join("");
-
-      playersEl.querySelectorAll(".btn-count").forEach((btn) => {
-        btn.addEventListener("click", () =>
-          applyDelta(btn.dataset.persona, Number(btn.dataset.delta))
-        );
-      });
+    function nightStartISO() {
+      const now = new Date();
+      const start = new Date(now);
+      start.setHours(NIGHT_CUTOFF_HOUR, 0, 0, 0);
+      if (now.getTime() < start.getTime()) start.setDate(start.getDate() - 1);
+      return start.toISOString();
     }
 
-    function renderTotal() {
-      totalEl.textContent = personas.reduce((sum, p) => sum + counts[p], 0);
+    function slug(persona) {
+      return persona.toLowerCase();
     }
 
-    function setCount(persona, value, animate) {
-      counts[persona] = value;
-      const el = document.getElementById(`count-${persona}`);
-      if (el) {
-        el.textContent = value;
-        if (animate) {
-          el.classList.remove("bump");
-          void el.offsetWidth;
-          el.classList.add("bump");
-        }
+    function bump(el) {
+      el.classList.remove("bump");
+      void el.offsetWidth;
+      el.classList.add("bump");
+      setTimeout(() => el.classList.remove("bump"), 350);
+    }
+
+    function setMug(persona, tonightCount) {
+      const other = personas.find((p) => p !== persona);
+      const denom = Math.max(4, state.tonight[persona] || 0, state.tonight[other] || 0);
+      const pct = denom ? Math.min(tonightCount / denom, 1) : 0;
+      const height = pct * MUG_RANGE;
+      const liquid = document.getElementById(`liquid-${slug(persona)}`);
+      liquid.setAttribute("y", MUG_BOTTOM - height);
+      liquid.setAttribute("height", height);
+    }
+
+    function setTonight(persona, value, animate) {
+      state.tonight[persona] = value;
+      const countEl = document.getElementById(`count-${slug(persona)}`);
+      countEl.textContent = value;
+      const cardEl = document.getElementById(`card-${slug(persona)}`);
+      const minusBtn = cardEl.querySelector(".btn-minus");
+      minusBtn.disabled = value <= 0;
+      if (animate) bump(cardEl);
+      // recalcular las dos jarras porque la escala es relativa al líder
+      personas.forEach((p) => setMug(p, state.tonight[p]));
+    }
+
+    function setAllTime(persona, value) {
+      state.allTime[persona] = value;
+      const el = document.getElementById(`alltime-${slug(persona)}`);
+      el.textContent = `${value} en total`;
+    }
+
+    function renderHero() {
+      const j = state.tonight.Josema, p = state.tonight.Paco;
+      const total = j + p;
+      document.getElementById("hero-josema").textContent = j;
+      document.getElementById("hero-paco").textContent = p;
+
+      const jPct = total ? (j / total) * 100 : 50;
+      const pPct = total ? (p / total) * 100 : 50;
+      document.getElementById("seg-josema").style.width = jPct + "%";
+      document.getElementById("seg-paco").style.width = pPct + "%";
+
+      const badgeJosema = document.getElementById("badge-josema");
+      const badgePaco = document.getElementById("badge-paco");
+      badgeJosema.classList.remove("leading");
+      badgePaco.classList.remove("leading");
+
+      if (total === 0) {
+        heroStatusEl.textContent = "Esperando la primera cerveza…";
+      } else if (j === p) {
+        heroStatusEl.textContent = `Vais empatados a ${j} 🤝`;
+      } else if (j > p) {
+        badgeJosema.classList.add("leading");
+        heroStatusEl.textContent = `Josema manda, le saca ${j - p} a Paco`;
+      } else {
+        badgePaco.classList.add("leading");
+        heroStatusEl.textContent = `Paco manda, le saca ${p - j} a Josema`;
       }
-      const minusBtn = playersEl.querySelector(
-        `.btn-minus[data-persona="${persona}"]`
-      );
-      if (minusBtn) minusBtn.disabled = value <= 0;
-      renderTotal();
     }
 
-    async function applyDelta(persona, delta) {
+    function burstConfetti(x, y, color) {
+      for (let i = 0; i < 10; i++) {
+        const el = document.createElement("div");
+        el.className = "confetti-piece";
+        el.style.left = x + "px";
+        el.style.top = y + "px";
+        el.style.background = color;
+        const angle = Math.random() * Math.PI * 2;
+        const dist = 30 + Math.random() * 40;
+        el.style.setProperty("--dx", Math.cos(angle) * dist + "px");
+        el.style.setProperty("--dy", Math.sin(angle) * dist - 30 + "px");
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 700);
+      }
+    }
+
+    async function applyDelta(persona, delta, btn) {
       if (pending[persona]) return;
+      if (delta < 0 && state.tonight[persona] <= 0) return;
       pending[persona] = true;
 
-      // Optimista: refleja el cambio al instante, la respuesta del
-      // servidor (o el evento realtime) confirma el valor real.
-      setCount(persona, Math.max(0, counts[persona] + delta), true);
+      const color = getComputedStyle(document.documentElement).getPropertyValue(
+        persona === "Josema" ? "--josema" : "--paco"
+      );
+      if (delta > 0 && btn) {
+        const rect = btn.getBoundingClientRect();
+        burstConfetti(rect.left + rect.width / 2, rect.top, color.trim());
+      }
+
+      // Optimista: refleja el cambio al instante, la respuesta del RPC (o
+      // el refresco vía realtime) confirma los valores reales.
+      setTonight(persona, Math.max(0, state.tonight[persona] + delta), true);
+      setAllTime(persona, Math.max(0, state.allTime[persona] + delta));
+      renderHero();
 
       try {
         const { data, error } = await client.rpc("cervezas_sumar", {
@@ -219,7 +530,7 @@
           p_delta: delta,
         });
         if (error) throw error;
-        setCount(persona, data, false);
+        setAllTime(persona, data);
         showStatus("");
       } catch (err) {
         showStatus("Sin conexión con Supabase: " + err.message, true);
@@ -228,46 +539,80 @@
       }
     }
 
+    async function refreshTonight() {
+      try {
+        const { data, error } = await client.rpc("cervezas_esta_noche", {
+          p_desde: nightStartISO(),
+        });
+        if (error) throw error;
+        const map = Object.fromEntries(personas.map((p) => [p, 0]));
+        data.forEach((row) => {
+          if (map[row.persona] !== undefined) map[row.persona] = Number(row.cantidad);
+        });
+        personas.forEach((p) => setTonight(p, map[p], false));
+        renderHero();
+      } catch (err) {
+        showStatus("Sin conexión con Supabase: " + err.message, true);
+      }
+    }
+
+    function scheduleRefreshTonight() {
+      clearTimeout(refreshTimer);
+      refreshTimer = setTimeout(refreshTonight, 200);
+    }
+
     async function loadInitial() {
       const { data, error } = await client
         .from("cervezas_contador")
         .select("persona, cantidad")
         .in("persona", personas);
       if (error) throw error;
-      data.forEach((row) => setCount(row.persona, row.cantidad, false));
+      data.forEach((row) => setAllTime(row.persona, row.cantidad));
+      await refreshTonight();
     }
 
     function subscribeRealtime() {
       client
-        .channel("cervezas_contador_changes")
+        .channel("cervezas_changes")
         .on(
           "postgres_changes",
           { event: "*", schema: "public", table: "cervezas_contador" },
           (payload) => {
             const row = payload.new;
-            if (row && personas.includes(row.persona)) {
-              setCount(row.persona, row.cantidad, true);
-            }
+            if (row && personas.includes(row.persona)) setAllTime(row.persona, row.cantidad);
           }
+        )
+        .on(
+          "postgres_changes",
+          { event: "INSERT", schema: "public", table: "cervezas_eventos" },
+          () => scheduleRefreshTonight()
         )
         .subscribe();
     }
 
+    function wireEvents() {
+      document.querySelectorAll(".btn-count").forEach((btn) => {
+        btn.addEventListener("click", () =>
+          applyDelta(btn.dataset.persona, Number(btn.dataset.delta), btn)
+        );
+      });
+    }
+
     async function init() {
-      renderPlayers();
-      renderTotal();
+      wireEvents();
+      renderHero();
       if (!url || !anonKey) {
         showStatus("Faltan credenciales en config.js", true);
         return;
       }
-      client = supabase.createClient(url, anonKey);
       try {
+        client = supabase.createClient(url, anonKey);
         await loadInitial();
         showStatus("");
+        subscribeRealtime();
       } catch (err) {
         showStatus("Sin conexión con Supabase: " + err.message, true);
       }
-      subscribeRealtime();
     }
 
     init();
