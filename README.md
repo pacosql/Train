@@ -34,6 +34,7 @@ reglas para no interferir con las demás:
 | 🎾 Pistas | [`pistas/`](./pistas) | `/Train/pistas/` | `pistas_` |
 | 🎬 Cartelera Cine | [`cartelera/`](./cartelera) | `/Train/cartelera/` | `cartelera_` |
 | 🎾 Nombra | [`nombra/`](./nombra) | `/Train/nombra/` | `nombra_` |
+| 📚 Vocabulary | [`vocab/`](./vocab) | `/Train/vocab/` | `vocab_` |
 
 ## Añadir una app nueva
 
