@@ -1,7 +1,7 @@
 # Math Games 🧠
 
-PWA (sin build, HTML/CSS/JS puro) con **140 ejercicios de matemáticas**,
-cada uno numerado (#1-#140) para poder referirse a ellos sin ambigüedad.
+PWA (sin build, HTML/CSS/JS puro) con **145 ejercicios de matemáticas**,
+cada uno numerado (#1-#145) para poder referirse a ellos sin ambigüedad.
 Cálculo mental, geometría, álgebra, estadística, fracciones, dinero,
 probabilidad, coordenadas, tiempo y más. Nace como banco de pruebas
 rápido para sacar ideas de mecánicas (tipo Duolingo Math, Synthesis,
@@ -537,6 +537,70 @@ tanda futura proponga un tercer ejercicio con esta misma mecánica.
 También se descartó "Which One Doesn't Belong" por solapar con el
 ya existente `game-intruso.js` (odd-one-out).
 
+## Ejercicios #141-#145 (décima tanda, 17-09-2026) — tramo único
+
+### Tramo único — [`css/pack-u.css`](./css/pack-u.css)
+
+Sin filas `review` pendientes, se saltó el paso de revisión. Familias
+usadas: 4 (puzzles de lápiz y papel), 10 (concursos de TV y juegos
+populares) y 11 (vida real) — las 3 únicas que quedaban fuera de la
+unión de familias de las 3 rondas anteriores.
+
+| # | Juego | Tema | Mecánica | De dónde sale |
+|---|---|---|---|---|
+| 141 | ▢ Nonograma mini | Lógica | Rejilla 4×4 con pistas de fila/columna (longitudes de tramos rellenos); hay que deducir qué celdas van llenas para que cuadren TODAS las pistas a la vez | Nonograma / Griddler / Picross, familia 4 |
+| 142 | 🔢 Descifra la suma | Aritmética con letras | Suma `AB + C = DE` donde cada letra es un dígito distinto; se acepta cualquier asignación que cumpla la ecuación, no solo la generada | Cryptarithm / SEND+MORE=MONEY (Henry Dudeney), familia 4 |
+| 143 | 📉 Compra y vende | Finanzas | Arrastra un marcador sobre la línea de tiempo de precios de una acción hasta el día en que más se habría ganado vendiendo | Inventado, inspirado en juegos de bolsa educativos (Stock Market Game), familia 11 |
+| 144 | 🧾 La factura por tramos | Tarifas por tramos | Una tarifa de agua o luz cobra distinto precio por tramos de consumo; hay que sumar cada tramo a su propio precio, no multiplicar todo por la tarifa más alta | Inventado, inspirado en tarifas progresivas reales, familia 11 |
+| 145 | 🦆 La oca numérica | Operaciones con reglas | Suma la tirada de dado a la posición y aplica la regla de la casilla especial (oca = salta a la siguiente oca; puente = salto fijo) para hallar la casilla final | Juego de la oca (juego popular tradicional), familia 10 |
+
+Verificación antes de publicar: `verify_nonograma.mjs` sobre 2.000
+rondas de #141 (solución única confirmada por fuerza bruta exhaustiva
+sobre las 65.536 rejillas 4×4 posibles; un bug real en la rejilla de
+reserva —con 3 soluciones en vez de 1— se detectó y corrigió antes de
+publicar); `verify_criptaritmo.mjs` sobre 2.000 rondas de #142 (unicidad
+canónica comprobada por fuerza bruta sobre las 5!=120 permutaciones de
+cada ronda, tras confirmar por fuerza bruta global que la forma
+`AB+C=DE` tiene una simetría B↔C inevitable — dos letras con el mismo
+peso en la suma — por lo que "exactamente una solución" solo tiene
+sentido salvo ese intercambio; la corrección se hace sobre la propiedad
+aritmética, nunca comparando con la solución generada, la misma lección
+del bug de `game-kenken.js`); `verify_bolsa.mjs` sobre 10.000 rondas de
+#143 (mejor día y ganancia máxima recalculados de forma independiente,
+siempre estrictamente positiva); `verify_factura.mjs` sobre 10.000
+rondas de #144 (importe recalculado tramo a tramo, tarifas siempre
+estrictamente crecientes, sin huecos ni solapes entre tramos);
+`verify_oca.mjs` sobre 10.000 rondas de #145 (destino final recalculado
+de forma independiente, la regla nunca se encadena más de una vez, sin
+solapes entre casillas especiales). Los 145 ejercicios cargan sin error
+de consola, y los 5 nuevos se jugaron de verdad en el navegador
+calculando la respuesta correcta de forma independiente, confirmando
+que el marcador sube +10 en cada acierto.
+
+**Fallo real encontrado y corregido en #143 antes de publicar:** al
+jugarlo de verdad, arrastrar el marcador no movía nada — el marcador
+visual (`.bls-marker`) se dibuja encima de la zona de arrastre real
+(`.bls-hit`, más grande para poder tocarla con el pulgar) y, al nacer
+centrado exactamente sobre ella, le robaba todos los eventos de puntero
+desde el primer fotograma. Mismo bug que `.gcv-side`/`.gcv-nail` en
+`game-geoclavos.js` de una tanda anterior: añadido `pointer-events: none`
+a `.bls-marker`; reproducido el fallo antes del cambio (el día mostrado
+nunca cambiaba al arrastrar) y confirmado que desaparece después, en
+Chromium real.
+
+**Hallazgo de auditoría (sin cambio de código):** al investigar la
+familia 5 (juegos de mesa) para una idea de "múltiplos y sincronizar en
+un circo" se descubrió que `game-malabares.js` (#pack-8, ya existente)
+YA es exactamente esa mecánica (m.c.m. de periodos); descartada antes de
+construir nada. También se descartó "reparte el presupuesto en
+categorías por porcentaje" al descubrir que `game-sobres.js` (#pack-7,
+"Reparte la paga") ya es esa mecánica, y "pinta una pared calculando el
+área" al descubrir que `game-pintor.js` (#pack-4) ya la cubre. Una
+cuarta idea ("el precio justo": pujar sin pasarse) se descartó por
+solapar temáticamente con `game-puja.js` (#pack-9), aunque su mecánica
+concreta —búsqueda binaria con pistas de más/menos— difiera; se
+sustituyó por "la oca numérica" (#145).
+
 ## Versiones (v2) y bandeja "Revisar"
 
 Cuando un ejercicio recibe una vuelta de mejoras, se marca con un
@@ -782,17 +846,17 @@ Una vez publicado, esta app queda en:
 
 ## Qué hace la app
 
-- Menú con los 140 ejercicios numerados, organizados en pestañas
+- Menú con los 145 ejercicios numerados, organizados en pestañas
   🆕/👍/👎/🔧; cada uno abre en su propia pantalla (`#/game/<id>`), sin
   recargar la página.
 - Motor de preguntas compartido (`js/quiz-engine.js`) para los 18
   ejercicios de "pregunta + opciones o teclado" (`js/games-data.js` y
-  `js/games-data-2.js`); los otros 122 (`js/game-*.js` y
+  `js/games-data-2.js`); los otros 127 (`js/game-*.js` y
   `js/balloons-game.js`) tienen cada uno su propia mecánica de
   interacción (arrastrar, tocar en orden, emparejar, construir,
   escribir, clasificar, recorrer…).
 - Los estilos de cada tanda viven en su propio `css/pack-<letra>.css`
-  (de `pack-a.css` a `pack-t.css`, uno por tramo temático), para que
+  (de `pack-a.css` a `pack-u.css`, uno por tramo temático), para que
   tocar una tanda no arrastre a las demás.
 - Guarda cada partida en `football_scores` y muestra las últimas en el
   menú.
