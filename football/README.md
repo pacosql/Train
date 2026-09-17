@@ -434,6 +434,31 @@ simulado sin degenerados en los dos casos, y partida jugada de principio a
 fin calculando la respuesta correcta en cada ronda (incluidas las rondas
 del nivel más difícil tras el cambio), confirmando que el marcador sube.
 
+### Vuelta del 17-09-2026 (noche) — #6 marcado 🔧 una TERCERA vez
+
+Otra vez sin nota. Antes de tocar nada se jugaron **40 rondas óptimas de
+verdad** en Chromium a 390px de ancho (leyendo los platos del DOM,
+resolviendo la ecuación y moviendo el dial con el número mínimo de
+ajustes): **cero fallos**, margen de ajustes siempre positivo (mínimo 1).
+El generador y el presupuesto de la v3 estaban bien — el problema no era
+matemático.
+
+Una captura de pantalla lo dejó claro: la cuerda de cada plato era tan
+fina (2px) y apagada (opacity 0.6) que los platos parecían **flotar
+sueltos**, sin conexión visible con la viga — no se leía como una
+balanza a simple vista, aunque los números por debajo fueran correctos.
+Además, en un desequilibrio extremo la cuerda del lado que sube podía
+calcular una altura negativa (0 real), desapareciendo del todo.
+
+| # | Juego | Qué chirriaba | Qué hace ahora |
+|---|---|---|---|
+| 6 | 🏋️ Equilibra la balanza | Cuerdas casi invisibles (2px, semitransparentes): los platos no se leían conectados a la viga | Cuerdas más gruesas (3px) y de color sólido, con un punto de anclaje circular donde entran en el plato, y una altura mínima de 4px para que nunca desaparezcan |
+
+Sube a **v4**. Verificación: repetidas las mismas 40 rondas óptimas tras
+el cambio (0 fallos), capturas de pantalla en claro y oscuro confirmando
+que ahora se lee como una balanza, y suite completa de 123 ejercicios sin
+error de consola.
+
 ### Vuelta del 17-09-2026 — los 9 marcados con 🔧
 
 Los nueve ejercicios que estaban en la bandeja "🔧 Revisar" se han
