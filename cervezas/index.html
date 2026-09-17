@@ -258,17 +258,20 @@
           <div class="avatar-badge" id="badge-josema" style="--ring: var(--josema);">
             <span class="crown">👑</span>
             <svg viewBox="0 0 100 100">
-              <circle cx="19" cy="62" r="7" fill="#e8b48c"/>
-              <circle cx="81" cy="62" r="7" fill="#e8b48c"/>
-              <circle cx="50" cy="60" r="32" fill="#e8b48c"/>
-              <path d="M22 44 Q18 40 20 34" stroke="#2b1a0e" stroke-width="6" fill="none" stroke-linecap="round"/>
-              <path d="M78 44 Q82 40 80 34" stroke="#2b1a0e" stroke-width="6" fill="none" stroke-linecap="round"/>
-              <circle cx="40" cy="58" r="3.4" fill="#2b1a0e"/>
-              <circle cx="60" cy="58" r="3.4" fill="#2b1a0e"/>
-              <path d="M37 72 Q50 82 63 72" stroke="#2b1a0e" stroke-width="3.4" fill="none" stroke-linecap="round"/>
-              <path d="M15 36 Q15 6 50 6 Q85 6 85 36 L85 26 Q85 14 50 14 Q15 14 15 26 Z" fill="#e66767"/>
-              <ellipse cx="38" cy="35" rx="26" ry="8" fill="#e66767"/>
-              <circle cx="50" cy="8" r="3" fill="#c94f4f"/>
+              <clipPath id="headclip-josema-hero"><circle cx="50" cy="60" r="32"/></clipPath>
+              <circle cx="19" cy="64" r="7" fill="#d9a679"/>
+              <circle cx="81" cy="64" r="7" fill="#d9a679"/>
+              <circle cx="50" cy="60" r="32" fill="#d9a679"/>
+              <g clip-path="url(#headclip-josema-hero)">
+                <ellipse cx="50" cy="78" rx="30" ry="20" fill="#2b211a"/>
+              </g>
+              <path d="M22 54 h18 a2 2 0 0 1 2 2 v3 a8 8 0 0 1 -8 8 h-4 a8 8 0 0 1 -8 -8 v-5 a2 2 0 0 1 2 -2 Z" fill="#15100c"/>
+              <path d="M60 54 h18 a2 2 0 0 1 2 2 v5 a8 8 0 0 1 -8 8 h-4 a8 8 0 0 1 -8 -8 v-3 a2 2 0 0 1 2 -2 Z" fill="#15100c"/>
+              <path d="M40 57 h20" stroke="#15100c" stroke-width="3"/>
+              <path d="M36 70 Q50 80 64 70 Q50 84 36 70 Z" fill="#fff" opacity="0.92"/>
+              <path d="M15 36 Q15 6 50 6 Q85 6 85 36 L85 26 Q85 14 50 14 Q15 14 15 26 Z" fill="#d8c39a"/>
+              <ellipse cx="38" cy="35" rx="26" ry="8" fill="#c7ad7e"/>
+              <circle cx="50" cy="8" r="3" fill="#b89a68"/>
             </svg>
           </div>
           <div class="hero-name">Josema</div>
@@ -280,15 +283,20 @@
           <div class="avatar-badge" id="badge-paco" style="--ring: var(--paco);">
             <span class="crown">👑</span>
             <svg viewBox="0 0 100 100">
-              <circle cx="19" cy="60" r="7" fill="#e8b48c"/>
-              <circle cx="81" cy="60" r="7" fill="#e8b48c"/>
-              <path d="M20 46 Q14 30 30 22" stroke="#6b4a33" stroke-width="8" fill="none" stroke-linecap="round"/>
-              <path d="M80 46 Q86 30 70 22" stroke="#6b4a33" stroke-width="8" fill="none" stroke-linecap="round"/>
-              <circle cx="50" cy="58" r="32" fill="#e8b48c"/>
-              <ellipse cx="46" cy="30" rx="16" ry="8" fill="#ffffff" opacity="0.18"/>
-              <circle cx="40" cy="56" r="3.4" fill="#2b1a0e"/>
-              <circle cx="60" cy="56" r="3.4" fill="#2b1a0e"/>
-              <path d="M37 70 Q50 80 63 70" stroke="#2b1a0e" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+              <clipPath id="headclip-paco-hero"><circle cx="50" cy="58" r="32"/></clipPath>
+              <circle cx="19" cy="62" r="7" fill="#d9a679"/>
+              <circle cx="81" cy="62" r="7" fill="#d9a679"/>
+              <path d="M20 48 Q15 34 26 26" stroke="#8a8580" stroke-width="7" fill="none" stroke-linecap="round"/>
+              <path d="M80 48 Q85 34 74 26" stroke="#8a8580" stroke-width="7" fill="none" stroke-linecap="round"/>
+              <circle cx="50" cy="58" r="32" fill="#d9a679"/>
+              <ellipse cx="47" cy="30" rx="17" ry="9" fill="#ffffff" opacity="0.2"/>
+              <g clip-path="url(#headclip-paco-hero)">
+                <ellipse cx="50" cy="76" rx="22" ry="15" fill="#9a958f"/>
+              </g>
+              <path d="M22 54 h18 a2 2 0 0 1 2 2 v3 a8 8 0 0 1 -8 8 h-4 a8 8 0 0 1 -8 -8 v-5 a2 2 0 0 1 2 -2 Z" fill="#15100c"/>
+              <path d="M60 54 h18 a2 2 0 0 1 2 2 v5 a8 8 0 0 1 -8 8 h-4 a8 8 0 0 1 -8 -8 v-3 a2 2 0 0 1 2 -2 Z" fill="#15100c"/>
+              <path d="M40 57 h20" stroke="#15100c" stroke-width="3"/>
+              <path d="M38 72 Q50 80 62 72 Q50 84 38 72 Z" fill="#3a2a1c"/>
             </svg>
           </div>
           <div class="hero-name">Paco</div>
@@ -310,17 +318,20 @@
       <div class="player-card" id="card-josema">
         <div class="player-avatar">
           <svg viewBox="0 0 100 100">
-            <circle cx="19" cy="62" r="7" fill="#e8b48c"/>
-            <circle cx="81" cy="62" r="7" fill="#e8b48c"/>
-            <circle cx="50" cy="60" r="32" fill="#e8b48c"/>
-            <path d="M22 44 Q18 40 20 34" stroke="#2b1a0e" stroke-width="6" fill="none" stroke-linecap="round"/>
-            <path d="M78 44 Q82 40 80 34" stroke="#2b1a0e" stroke-width="6" fill="none" stroke-linecap="round"/>
-            <circle cx="40" cy="58" r="3.4" fill="#2b1a0e"/>
-            <circle cx="60" cy="58" r="3.4" fill="#2b1a0e"/>
-            <path d="M37 72 Q50 82 63 72" stroke="#2b1a0e" stroke-width="3.4" fill="none" stroke-linecap="round"/>
-            <path d="M15 36 Q15 6 50 6 Q85 6 85 36 L85 26 Q85 14 50 14 Q15 14 15 26 Z" fill="#e66767"/>
-            <ellipse cx="38" cy="35" rx="26" ry="8" fill="#e66767"/>
-            <circle cx="50" cy="8" r="3" fill="#c94f4f"/>
+            <clipPath id="headclip-josema-card"><circle cx="50" cy="60" r="32"/></clipPath>
+            <circle cx="19" cy="64" r="7" fill="#d9a679"/>
+            <circle cx="81" cy="64" r="7" fill="#d9a679"/>
+            <circle cx="50" cy="60" r="32" fill="#d9a679"/>
+            <g clip-path="url(#headclip-josema-card)">
+              <ellipse cx="50" cy="78" rx="30" ry="20" fill="#2b211a"/>
+            </g>
+            <path d="M22 54 h18 a2 2 0 0 1 2 2 v3 a8 8 0 0 1 -8 8 h-4 a8 8 0 0 1 -8 -8 v-5 a2 2 0 0 1 2 -2 Z" fill="#15100c"/>
+            <path d="M60 54 h18 a2 2 0 0 1 2 2 v5 a8 8 0 0 1 -8 8 h-4 a8 8 0 0 1 -8 -8 v-3 a2 2 0 0 1 2 -2 Z" fill="#15100c"/>
+            <path d="M40 57 h20" stroke="#15100c" stroke-width="3"/>
+            <path d="M36 70 Q50 80 64 70 Q50 84 36 70 Z" fill="#fff" opacity="0.92"/>
+            <path d="M15 36 Q15 6 50 6 Q85 6 85 36 L85 26 Q85 14 50 14 Q15 14 15 26 Z" fill="#d8c39a"/>
+            <ellipse cx="38" cy="35" rx="26" ry="8" fill="#c7ad7e"/>
+            <circle cx="50" cy="8" r="3" fill="#b89a68"/>
           </svg>
         </div>
         <div class="player-name">Josema</div>
@@ -350,15 +361,20 @@
       <div class="player-card" id="card-paco">
         <div class="player-avatar">
           <svg viewBox="0 0 100 100">
-            <circle cx="19" cy="60" r="7" fill="#e8b48c"/>
-            <circle cx="81" cy="60" r="7" fill="#e8b48c"/>
-            <path d="M20 46 Q14 30 30 22" stroke="#6b4a33" stroke-width="8" fill="none" stroke-linecap="round"/>
-            <path d="M80 46 Q86 30 70 22" stroke="#6b4a33" stroke-width="8" fill="none" stroke-linecap="round"/>
-            <circle cx="50" cy="58" r="32" fill="#e8b48c"/>
-            <ellipse cx="46" cy="30" rx="16" ry="8" fill="#ffffff" opacity="0.18"/>
-            <circle cx="40" cy="56" r="3.4" fill="#2b1a0e"/>
-            <circle cx="60" cy="56" r="3.4" fill="#2b1a0e"/>
-            <path d="M37 70 Q50 80 63 70" stroke="#2b1a0e" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+            <clipPath id="headclip-paco-card"><circle cx="50" cy="58" r="32"/></clipPath>
+            <circle cx="19" cy="62" r="7" fill="#d9a679"/>
+            <circle cx="81" cy="62" r="7" fill="#d9a679"/>
+            <path d="M20 48 Q15 34 26 26" stroke="#8a8580" stroke-width="7" fill="none" stroke-linecap="round"/>
+            <path d="M80 48 Q85 34 74 26" stroke="#8a8580" stroke-width="7" fill="none" stroke-linecap="round"/>
+            <circle cx="50" cy="58" r="32" fill="#d9a679"/>
+            <ellipse cx="47" cy="30" rx="17" ry="9" fill="#ffffff" opacity="0.2"/>
+            <g clip-path="url(#headclip-paco-card)">
+              <ellipse cx="50" cy="76" rx="22" ry="15" fill="#9a958f"/>
+            </g>
+            <path d="M22 54 h18 a2 2 0 0 1 2 2 v3 a8 8 0 0 1 -8 8 h-4 a8 8 0 0 1 -8 -8 v-5 a2 2 0 0 1 2 -2 Z" fill="#15100c"/>
+            <path d="M60 54 h18 a2 2 0 0 1 2 2 v5 a8 8 0 0 1 -8 8 h-4 a8 8 0 0 1 -8 -8 v-3 a2 2 0 0 1 2 -2 Z" fill="#15100c"/>
+            <path d="M40 57 h20" stroke="#15100c" stroke-width="3"/>
+            <path d="M38 72 Q50 80 62 72 Q50 84 38 72 Z" fill="#3a2a1c"/>
           </svg>
         </div>
         <div class="player-name">Paco</div>
