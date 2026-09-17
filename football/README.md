@@ -1,7 +1,7 @@
 # Math Games 🧠
 
-PWA (sin build, HTML/CSS/JS puro) con **149 ejercicios de matemáticas**,
-cada uno numerado (#1-#149) para poder referirse a ellos sin ambigüedad.
+PWA (sin build, HTML/CSS/JS puro) con **152 ejercicios de matemáticas**,
+cada uno numerado (#1-#152) para poder referirse a ellos sin ambigüedad.
 Cálculo mental, geometría, álgebra, estadística, fracciones, dinero,
 probabilidad, coordenadas, tiempo y más. Nace como banco de pruebas
 rápido para sacar ideas de mecánicas (tipo Duolingo Math, Synthesis,
@@ -646,6 +646,49 @@ puntúa) ya es `game-categorias.js` (#pack-11). También se descartó una
 variante de dominó "que suma un número fijo" por ser la misma mecánica
 de complemento a un total que `game-amigos10.js`, solo con otro disfraz.
 
+## Ejercicios #150-#152 (duodécima tanda, 17-09-2026 noche) — tramo único
+
+### Tramo único — [`css/pack-w.css`](./css/pack-w.css)
+
+Sin filas `review` pendientes, se saltó el paso de revisión. Familias
+usadas: 2 (prensa), 7 (manipulativos de aula) y 12 (investigación
+educativa) — las 3 únicas que quedaban fuera de la unión de familias de
+las 3 rondas anteriores. Tanda modesta (3 ideas): el catálogo (149
+ejercicios antes de esta tanda) está ya muy saturado y la auditoría
+previa a programar descartó 2 ideas más por duplicado (ver más abajo);
+la familia 12 se investigó pero no dio ninguna mecánica nueva
+transferible a un solo ejercicio (spaced retrieval es una propiedad del
+reparto de rondas de toda la app, no de un ejercicio individual, y
+productive struggle es un principio de diseño, no una mecánica).
+
+| # | Juego | Tema | Mecánica | De dónde sale |
+|---|---|---|---|---|
+| 150 | 🔗 Conexión numérica | Propiedades de los números | 6 números se reparten en secreto en 2 grupos de 3 que comparten una propiedad matemática cada uno; toca los 3 que crees que van juntos, sin que se diga cuál es la regla | NYT Connections (agrupar por categoría compartida sin decirla), familia 2 |
+| 151 | 🦵 Salta a la decena | Estrategias de suma | Para sumar dos números por la estrategia de la recta numérica vacía, primero se salta hasta la siguiente decena; calcula el tamaño de ESE primer salto, no el resultado final | Recta numérica vacía / bridging through ten (Zearn, DreamBox, Singapore Math), familia 7 |
+| 152 | 🥧 Suma de fracciones circulares | Fracciones con denominador común | Dos fracciones de denominador distinto se muestran como porciones de tarta; toca, en una tarta de referencia dividida en el mínimo común múltiplo, el número de porciones que representa la suma | Fracciones circulares (manipulativo de aula), adaptado para trabajar la suma con denominador común, familia 7 |
+
+Verificación antes de publicar: `verify_conexion.mjs` sobre 3.000
+rondas de #150 (fuerza bruta sobre las 10 particiones posibles de 6
+números en 2 grupos de 3, confirmando que exactamente una es
+"doblemente coherente" bajo el catálogo completo de 8 propiedades, no
+solo las 2 usadas para generar la ronda); `verify_saltos.mjs` sobre
+10.000 rondas de #151 (primer salto, aterrizaje y suma final
+recalculados de forma independiente); `verify_sumafrac.mjs` sobre
+10.000 rondas de #152 (mínimo común múltiplo y conversión de ambas
+fracciones recalculados desde cero, suma siempre entera y sin pasarse
+de una tarta completa). Los 152 ejercicios cargan sin error de consola,
+y los 3 nuevos se jugaron de verdad en el navegador calculando la
+respuesta correcta de forma independiente, confirmando que el marcador
+sube +10 en cada acierto; se comprobó además en #151 que fallar a
+propósito resta una vida con el mensaje correcto.
+
+**Hallazgo de auditoría (sin cambio de código):** antes de programar,
+se descartaron 2 ideas más por duplicar mecánicas ya existentes:
+"construir un ángulo dado su valor arrastrando" ya es exactamente
+`game-angulo.js`; "encontrar el paso que falla en un cálculo resuelto"
+(worked examples + detección de error) ya es exactamente
+`game-error.js`.
+
 ## Versiones (v2) y bandeja "Revisar"
 
 Cuando un ejercicio recibe una vuelta de mejoras, se marca con un
@@ -891,17 +934,17 @@ Una vez publicado, esta app queda en:
 
 ## Qué hace la app
 
-- Menú con los 149 ejercicios numerados, organizados en pestañas
+- Menú con los 152 ejercicios numerados, organizados en pestañas
   🆕/👍/👎/🔧; cada uno abre en su propia pantalla (`#/game/<id>`), sin
   recargar la página.
 - Motor de preguntas compartido (`js/quiz-engine.js`) para los 18
   ejercicios de "pregunta + opciones o teclado" (`js/games-data.js` y
-  `js/games-data-2.js`); los otros 131 (`js/game-*.js` y
+  `js/games-data-2.js`); los otros 134 (`js/game-*.js` y
   `js/balloons-game.js`) tienen cada uno su propia mecánica de
   interacción (arrastrar, tocar en orden, emparejar, construir,
   escribir, clasificar, recorrer…).
 - Los estilos de cada tanda viven en su propio `css/pack-<letra>.css`
-  (de `pack-a.css` a `pack-v.css`, uno por tramo temático), para que
+  (de `pack-a.css` a `pack-w.css`, uno por tramo temático), para que
   tocar una tanda no arrastre a las demás.
 - Guarda cada partida en `football_scores` y muestra las últimas en el
   menú.

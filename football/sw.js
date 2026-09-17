@@ -9,6 +9,11 @@
 const CACHE_PREFIX = "football-shell-";
 const CACHE_NAME = `${CACHE_PREFIX}__BUILD_ID__`;
 const SHELL = [
+  "./css/pack-w.css",
+  "./js/games-pack-16.js",
+  "./js/game-conexion.js",
+  "./js/game-saltos.js",
+  "./js/game-sumafrac.js",
   "./css/pack-v.css",
   "./js/games-pack-15.js",
   "./js/game-bachet.js",
