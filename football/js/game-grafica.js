@@ -184,7 +184,7 @@ export function mountGraficaGame(container, { client, onExit }) {
     for (let i = 1; i <= ronda.n; i++) {
       // El último valor se etiqueta a la izquierda para no salirse del lienzo.
       const der = i < ronda.n;
-      meta += `<text class="gf-tval" x="${xFor(i) + (der ? 13 : -13)}" y="${yFor(ronda.valores[i]) + 4}" text-anchor="${der ? "start" : "end"}">${ronda.valores[i]}</text>`;
+      meta += `<text class="gf-tval" data-tv="${i}" x="${xFor(i) + (der ? 13 : -13)}" y="${yFor(ronda.valores[i]) + 4}" text-anchor="${der ? "start" : "end"}">${ronda.valores[i]}</text>`;
     }
 
     body.innerHTML = `
@@ -302,6 +302,9 @@ export function mountGraficaGame(container, { client, onExit }) {
       lives--;
       renderLives();
       svgEl.classList.add("gf-reveal"); // saca la gráfica correcta encima
+      // Solo se etiqueta el valor bueno de los puntos fallados: en los
+      // acertados ya está pintado el del jugador y se duplicaría.
+      fallos.forEach((i) => { svgEl.querySelector(`[data-tv="${i}"]`).classList.add("gf-show"); });
       feedback.textContent = fallos.length === 1
         ? `1 punto fuera de sitio: el ${fallos[0] * ronda.intervalo} era ${ronda.valores[fallos[0]]}`
         : `${fallos.length} puntos fuera de sitio`;

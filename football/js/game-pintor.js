@@ -219,7 +219,7 @@ export function mountPintorGame(container, { client, onExit }) {
     // cada uno y la suma, y se dice la combinación de botes que cuadraba.
     const parts = round.rects.map((r) => `${r.w}×${r.h}=${r.w * r.h}`).join(" + ");
     const solText = round.sol
-      .map((n, i) => (n ? `${n}×${round.yields[i]} m²` : null))
+      .map((n, i) => (n ? `${n} bote${n > 1 ? "s" : ""} de ${round.yields[i]} m²` : null))
       .filter(Boolean).join(" + ");
     feedback.innerHTML = `La pared era ${parts} = <b>${round.area} m²</b>.
       Con ${total} m² te ${diff > 0 ? `sobraban <b>${diff}</b>` : `faltaban <b>${-diff}</b>`} m².

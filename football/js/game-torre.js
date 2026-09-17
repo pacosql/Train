@@ -101,12 +101,19 @@ function makeTray(target) {
   if (!sol) return null;
   const free = [];
   for (let v = 1; v <= 9; v++) if (!sol.includes(v)) free.push(v);
-  const extrasCount = randInt(2, 3);
-  if (free.length < extrasCount) return null;
-  const extras = shuffle(free).slice(0, extrasCount);
-  const pieces = shuffle(sol.concat(extras));
-  if (countSubsets(pieces, target) !== 1) return null;
-  return { pieces, sol: sol.slice().sort((a, b) => b - a) };
+  // Se prueban varias bandejas de distractores con la MISMA solución: si no,
+  // las soluciones de 3 piezas (que chocan más) casi nunca sobrevivirían y el
+  // juego se quedaría en descomposiciones de dos piezas.
+  for (let t = 0; t < 12; t++) {
+    const extrasCount = randInt(2, 3);
+    if (free.length < extrasCount) return null;
+    const extras = shuffle(free).slice(0, extrasCount);
+    const pieces = shuffle(sol.concat(extras));
+    if (countSubsets(pieces, target) === 1) {
+      return { pieces, sol: sol.slice().sort((a, b) => b - a) };
+    }
+  }
+  return null;
 }
 
 function tryTorre(level) {

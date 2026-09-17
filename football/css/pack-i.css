@@ -85,9 +85,9 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 18px;
+  width: 14px;
   height: 22px;
-  border-radius: 7px;
+  border-radius: 6px;
   background: var(--text);
   transform: translate(-50%, -50%);
 }
@@ -150,7 +150,12 @@
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  border-bottom: 3px solid var(--border);
+  /* Mesa de la panadería: superficie visible para que la altura de la pila
+     se pueda comparar de un doblez al siguiente. */
+  background: linear-gradient(transparent 40%, var(--bg));
+  border: 2px solid var(--border);
+  border-bottom-width: 4px;
+  border-radius: 10px 10px 4px 4px;
   margin-bottom: 10px;
   overflow: hidden;
 }
@@ -406,7 +411,8 @@
   font-weight: 800;
   letter-spacing: 0.02em;
   color: var(--accent);
-  margin-bottom: 10px;
+  /* Hueco para que la chincheta del número no pise este rótulo. */
+  margin-bottom: 24px;
 }
 .lu-stage {
   width: 100%;
@@ -632,9 +638,9 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 18px;
+  width: 14px;
   height: 22px;
-  border-radius: 7px;
+  border-radius: 6px;
   background: var(--text);
   transform: translate(-50%, -50%);
 }

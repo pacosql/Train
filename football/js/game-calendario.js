@@ -180,7 +180,7 @@ export function mountCalendarioGame(container, { client, onExit }) {
         <div class="cl-wrap">
           <p class="prompt cl-prompt">El <b>${ronda.pista}</b> de ${MESES[ronda.mes]} de ${ronda.anio}
             es <b>${DIAS[ronda.colPista]}</b><small>¿En qué columna empieza el mes? Coloca ahí la ficha del 1</small></p>
-          <div class="cl-month">${MESES[ronda.mes]} ${ronda.anio} · ${ronda.dias} días</div>
+          <div class="cl-month"><span>${MESES[ronda.mes]}</span> ${ronda.anio} · ${ronda.dias} días</div>
           <div class="cl-board" data-board>
             <div class="cl-grid">
               ${cabeceraHTML()}
@@ -212,7 +212,7 @@ export function mountCalendarioGame(container, { client, onExit }) {
     body.innerHTML = `
       <div class="cl-wrap">
         <p class="prompt cl-prompt">Ensayo el día <b>${ronda.inicio}</b>, y luego <b>cada ${ronda.paso} días</b><small>Marca todos los ensayos que caen en el mes</small></p>
-        <div class="cl-month">${MESES[ronda.mes]} ${ronda.anio} · ${ronda.dias} días</div>
+        <div class="cl-month"><span>${MESES[ronda.mes]}</span> ${ronda.anio} · ${ronda.dias} días</div>
         <div class="cl-board" data-board>${rejillaHTML(ronda.col1, { interactivo: true, marcas: marcados })}</div>
         <div class="cl-note" data-note>Marcados: <b data-count>1</b></div>
         <button class="primary cl-confirm" data-confirm>Listo</button>

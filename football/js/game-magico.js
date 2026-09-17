@@ -34,6 +34,7 @@ export function mgOrientations() {
 }
 
 export function mgLevelFor(streak) {
+  if (streak >= 8) return { holes: 6, aMax: 9, ds: [2, 3] };
   if (streak >= 6) return { holes: 5, aMax: 9, ds: [2, 3] };
   if (streak >= 4) return { holes: 4, aMax: 8, ds: [2] };
   if (streak >= 2) return { holes: 4, aMax: 6, ds: [1] };

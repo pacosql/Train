@@ -331,8 +331,10 @@ export function mountFlotaGame(container, { client, onExit }) {
         btn.textContent = "✖";
       }
     }
-    feedback.innerHTML = `Así estaba la flota: te faltaban <b>${missing}</b> casillas
-      ${wrong ? `y sobraban <b>${wrong}</b>` : ""}.`;
+    const parts = [];
+    if (missing) parts.push(missing === 1 ? "te faltaba <b>1</b> casilla" : `te faltaban <b>${missing}</b> casillas`);
+    if (wrong) parts.push(wrong === 1 ? "te sobraba <b>1</b>" : `te sobraban <b>${wrong}</b>`);
+    feedback.innerHTML = `Así estaba la flota: ${parts.join(" y ")}.`;
     feedback.className = "feedback bad";
     if (lives <= 0) return later(() => finish(false), 3000);
     later(nextRound, 3000);

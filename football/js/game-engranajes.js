@@ -249,18 +249,19 @@ export function mountEngranajesGame(container, { client, onExit }) {
     }
     const target = 360 * round.turnsBig;
     const err = total - target;
-    const turnsBig = total / 360;
-    const turnsSmall = (total * round.big / round.small) / 360;
+    const dec = (v) => v.toFixed(1).replace(".", ",");
+    const turnsBig = dec(total / 360);
+    const turnsSmall = dec((total * round.big / round.small) / 360);
     if (Math.abs(err) <= round.tol) {
       return win(`¡Coinciden! ${round.turnsBig} vueltas de la grande y
         ${round.turnsSmall} de la pequeña: ${round.lcm} dientes en las dos.`);
     }
     if (err < 0) {
-      return lose(`Aún no: la grande iba por ${turnsBig.toFixed(1)} vueltas y la pequeña
-        por ${turnsSmall.toFixed(1)}. Coinciden a las ${round.turnsBig} vueltas de la grande.`);
+      return lose(`Aún no: la grande iba por ${turnsBig} vueltas y la pequeña
+        por ${turnsSmall}. Coinciden a las ${round.turnsBig} vueltas de la grande.`);
     }
     return lose(`Te has pasado: la primera coincidencia era a las ${round.turnsBig} vueltas
-      de la grande (ibas por ${turnsBig.toFixed(1)}).`);
+      de la grande (ibas por ${turnsBig}).`);
   }
 
   function submitAsk() {

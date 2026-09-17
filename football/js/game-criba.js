@@ -198,6 +198,7 @@ export function mountCribaGame(container, { client, onExit }) {
     phase = round.phases.length - 1;
     paintGrid();
     body.querySelectorAll(".cb-cell").forEach((btn) => {
+      btn.classList.remove("wrong", "shake"); // que ningún rojo tape los primos
       if (!crossed.has(Number(btn.dataset.n))) btn.classList.add("prime");
     });
     body.querySelector("[data-prompt]").innerHTML =

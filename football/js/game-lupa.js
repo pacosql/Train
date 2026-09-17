@@ -207,6 +207,11 @@ export function mountLupaGame(container, { client, onExit }) {
     return `${fmt(round.cents)} son ${round.c1} décimas y ${round.c2} centésimas`;
   }
 
+  // Descomposición posicional: lo que la lupa acaba de recorrer.
+  function breakdown() {
+    return `${fmt(round.cents)} = ${round.unit} enteros · ${round.c1} décimas · ${round.c2} centésimas`;
+  }
+
   // Pinta el acierto/el fallo y clava el número en su sitio exacto.
   function markSolution(okChoice, chosen) {
     const level = round.levels[levelIdx];
@@ -225,7 +230,7 @@ export function mountLupaGame(container, { client, onExit }) {
     pin.style.left = `${pos}%`;
     pin.innerHTML = `<i>${fmt(round.cents)}</i>`;
     frame.appendChild(pin);
-    if (!okChoice) body.querySelector("[data-why]").textContent = why(level);
+    if (!okChoice) body.querySelector("[data-why]").textContent = breakdown();
   }
 
   function finish(userExited) {

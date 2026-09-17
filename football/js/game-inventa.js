@@ -212,9 +212,10 @@ export function mountInventaGame(container, { client, onExit }) {
     lives--;
     renderLives();
     streak = 0;
+    const num = (v) => String(v).replace("-", "−"); // signo menos de verdad
     say(
-      `Con ${ruleText(selMul, selAdd)}: ${mine.join(" → ")}<br>` +
-        `el ${ORDINAL[bad]} sale ${mine[bad]} y debería ser ${round.series[bad]}`,
+      `Con ${ruleText(selMul, selAdd)}: ${mine.map(num).join(" → ")}<br>` +
+        `el ${ORDINAL[bad]} sale ${num(mine[bad])} y debería ser ${round.series[bad]}`,
       "bad"
     );
     if (lives <= 0) {
