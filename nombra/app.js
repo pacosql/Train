@@ -99,6 +99,14 @@ function renderDominioChecks(container, row) {
   }
 }
 
+function pintaPorque(el, row) {
+  if (!row.porque) {
+    el.remove();
+    return;
+  }
+  el.textContent = row.porque;
+}
+
 function renderColision(container, row) {
   container.textContent = row.colision_detalle
     ? `🔎 Cribado de colisión: ${row.colision_detalle}`
@@ -121,6 +129,7 @@ function pintaSiguienteSwipe() {
   const item = cola[0];
   const node = document.getElementById("tpl-swipe-card").content.cloneNode(true);
   node.querySelector(".name-text").textContent = item.nombre;
+  pintaPorque(node.querySelector(".porque"), item);
   renderDominioChecks(node.querySelector(".checks"), item);
   renderColision(node.querySelector(".colision-info"), item);
 
@@ -181,6 +190,7 @@ function renderCard(container, row, acciones) {
   const node = document.getElementById("tpl-nombre-card").content.cloneNode(true);
   const card = node.querySelector(".name-card");
   card.querySelector(".name-text").textContent = row.nombre;
+  pintaPorque(card.querySelector(".porque"), row);
 
   const notaEl = card.querySelector(".nota-guardada");
   if (row.nota) notaEl.textContent = `📝 ${row.nota}`;
