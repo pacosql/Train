@@ -22,26 +22,30 @@
     }
     :root {
       color-scheme: light dark;
-      --bg: #f5f7f6;
+      --bg: #f2f5f3;
       --card: #ffffff;
       --text: #10231a;
       --muted: #5b6b63;
       --accent: #3ecf8e;
       --accent-dark: #249d68;
+      --stop: #ff8a3d;
+      --stop-dark: #e06a1a;
       --danger: #e5484d;
       --border: #e2e8e5;
       --push: #5b8def;
       --pull: #f2994a;
+      --shadow: 0 2px 10px rgba(16, 35, 26, 0.06);
       padding-top: env(safe-area-inset-top, 0px);
       padding-bottom: env(safe-area-inset-bottom, 0px);
     }
     @media (prefers-color-scheme: dark) {
       :root {
-        --bg: #0e1512;
-        --card: #16211c;
+        --bg: #0c1310;
+        --card: #17221c;
         --text: #eaf3ee;
         --muted: #93a69c;
-        --border: #24322b;
+        --border: #263229;
+        --shadow: 0 2px 14px rgba(0, 0, 0, 0.35);
       }
     }
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -59,36 +63,48 @@
     }
     .top-bar-title { font-weight: 800; cursor: pointer; font-size: 1rem; }
     .top-bar-tag {
-      font-size: 0.7rem; font-weight: 700; color: var(--accent-dark);
-      background: rgba(62,207,142,0.15); padding: 3px 8px; border-radius: 999px;
+      font-size: 0.75rem; font-weight: 800; color: var(--accent-dark);
+      background: rgba(62,207,142,0.15); padding: 5px 12px; border-radius: 999px;
+      cursor: pointer; transition: transform 0.1s ease, background 0.15s ease;
+      border: 1px solid rgba(62,207,142,0.3);
     }
+    .top-bar-tag:active { transform: scale(0.96); }
     h1 { font-size: 1.4rem; margin: 0 0 4px; display: flex; align-items: center; gap: 8px; }
     h2 { font-size: 1.1rem; margin: 0 0 4px; }
     .sub { color: var(--muted); margin: 0 0 20px; font-size: 0.9rem; }
     .card {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 16px;
+      border-radius: 18px;
       padding: 18px;
       margin-bottom: 14px;
+      box-shadow: var(--shadow);
     }
     button {
       background: var(--accent);
       color: #06231a;
       border: none;
-      border-radius: 12px;
-      padding: 14px 18px;
+      border-radius: 14px;
+      padding: 15px 18px;
       font-size: 1rem;
-      font-weight: 700;
+      font-weight: 800;
       cursor: pointer;
       width: 100%;
+      margin-bottom: 10px;
+      transition: transform 0.08s ease, opacity 0.15s ease, box-shadow 0.15s ease;
+      box-shadow: 0 3px 0 rgba(0,0,0,0.08);
     }
+    button:last-child { margin-bottom: 0; }
+    button:active { transform: translateY(2px); box-shadow: none; }
+    button.stop { background: var(--stop); color: #2a1400; }
     button.secondary {
       background: transparent;
       color: var(--text);
-      border: 1px solid var(--border);
-      font-weight: 600;
+      border: 1.5px solid var(--border);
+      font-weight: 700;
+      box-shadow: none;
     }
+    button.small { width: auto; padding: 10px 16px; margin: 0; flex-shrink: 0; }
     button:disabled { opacity: 0.4; cursor: default; }
     .chip-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
     .chip {
@@ -96,19 +112,22 @@
       min-width: 70px;
       text-align: center;
       padding: 12px 8px;
-      border-radius: 12px;
+      border-radius: 14px;
       border: 1.5px solid var(--border);
       background: var(--bg);
       color: var(--text);
       font-weight: 700;
       cursor: pointer;
+      transition: border-color 0.15s ease, background 0.15s ease;
     }
     .chip.selected { border-color: var(--accent); background: rgba(62,207,142,0.15); }
+    .row { display: flex; gap: 10px; align-items: stretch; }
+    .row input { flex: 1; width: auto; }
     input[type="number"], input[type="text"] {
       width: 100%;
       padding: 12px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
+      border-radius: 12px;
+      border: 1.5px solid var(--border);
       background: var(--bg);
       color: var(--text);
       font-size: 1rem;
@@ -118,23 +137,31 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 14px;
-      border-radius: 12px;
+      padding: 14px 16px;
+      border-radius: 14px;
       border: 1px solid var(--border);
-      margin-bottom: 8px;
+      border-left: 5px solid var(--muted);
+      margin-bottom: 10px;
       cursor: pointer;
-      background: var(--bg);
+      background: var(--card);
+      box-shadow: var(--shadow);
+      transition: transform 0.08s ease;
     }
-    .exercise-item .name { font-weight: 700; }
-    .exercise-item .muscle { color: var(--muted); font-size: 0.8rem; }
+    .exercise-item:active { transform: scale(0.98); }
+    .exercise-item.push { border-left-color: var(--push); }
+    .exercise-item.pull { border-left-color: var(--pull); }
+    .exercise-item.cardio { border-left-color: var(--muted); }
+    .exercise-item .name { font-weight: 800; }
+    .exercise-item .muscle { color: var(--muted); font-size: 0.8rem; margin-top: 2px; }
     .badge {
-      font-size: 0.7rem;
-      font-weight: 700;
-      padding: 3px 8px;
+      font-size: 0.68rem;
+      font-weight: 800;
+      padding: 4px 10px;
       border-radius: 999px;
       text-transform: uppercase;
       color: white;
       flex-shrink: 0;
+      margin-left: 10px;
     }
     .badge.push { background: var(--push); }
     .badge.pull { background: var(--pull); }
@@ -146,7 +173,7 @@
     .stepper-btn {
       width: 3rem; height: 3rem; border-radius: 50%;
       font-size: 1.6rem; font-weight: 800; padding: 0; flex: none;
-      line-height: 1;
+      line-height: 1; margin-bottom: 0;
     }
     .stepper-value { font-size: 2.4rem; font-weight: 800; min-width: 5rem; text-align: center; }
     .stat { text-align: center; }
@@ -168,6 +195,8 @@
       font-size: 0.85rem;
     }
     .history-list li:last-child { border-bottom: none; }
+    .notes-note { background: rgba(242,153,74,0.12); border: 1px dashed var(--pull); border-radius: 12px; padding: 10px 14px; font-size: 0.85rem; margin-bottom: 14px; }
+    .description-note { text-align: center; margin-top: 14px; font-style: italic; }
     .build-id { text-align: center; font-size: 0.7rem; color: var(--muted); margin-top: 20px; font-family: ui-monospace, monospace; }
     [hidden] { display: none !important; }
   </style>
@@ -176,7 +205,7 @@
   <div class="wrap">
     <div class="top-bar">
       <span id="top-bar-title" class="top-bar-title">🏋️ Weights</span>
-      <span id="top-bar-tag" class="top-bar-tag" hidden>● Sesión activa</span>
+      <span id="top-bar-tag" class="top-bar-tag" hidden>⏱ 0:00</span>
     </div>
     <div class="status-bar"><span id="conn-dot" class="dot"></span><span id="conn-text">Conectando…</span></div>
 
@@ -232,7 +261,7 @@
       <h2 id="cardio-title">🚴 Cardio</h2>
       <div class="card" style="text-align:center; padding: 10px 18px;">
         <div class="stat">
-          <div class="value" id="cardio-elapsed">⏱ 0:00</div>
+          <div class="value" id="cardio-elapsed">⏱ sin empezar</div>
           <div class="label">tiempo en cardio</div>
         </div>
       </div>
@@ -243,8 +272,9 @@
         </div>
         <p class="hint" id="cardio-hint"></p>
       </div>
-      <button id="btn-cardio-done">Cardio terminado</button>
-      <button id="btn-back-cardio" class="secondary" style="margin-top: 8px;">← Ver lista de ejercicios</button>
+      <button id="btn-start-cardio">Start</button>
+      <button id="btn-cardio-done" class="stop" hidden>Stop</button>
+      <button id="btn-back-cardio" class="secondary">← Ver lista de ejercicios</button>
     </section>
 
     <!-- PICK EXERCISE -->
@@ -252,8 +282,8 @@
       <h2>Siguiente ejercicio</h2>
       <p class="sub">Ordenados por preferencia (alternar empuje/tirón hoy + tiempo desde la última vez). Puedes repetir uno que ya hayas hecho.</p>
       <div id="exercise-list"></div>
-      <button id="btn-add-exercise" class="secondary" style="margin-top: 8px;">+ Añadir máquina nueva</button>
-      <button id="btn-finish-session" class="secondary" style="margin-top: 8px;">Terminar entrenamiento</button>
+      <button id="btn-add-exercise" class="secondary">+ Añadir máquina nueva</button>
+      <button id="btn-finish-session" class="secondary">Terminar entrenamiento</button>
     </section>
 
     <!-- ADD EXERCISE -->
@@ -276,21 +306,33 @@
           <input id="new-ex-assisted" type="checkbox" style="width:auto;" /> Máquina asistida (menos peso = más difícil)
         </label>
       </div>
+      <div class="card">
+        <label for="new-ex-notes">Notas de configuración (opcional)</label>
+        <input id="new-ex-notes" type="text" placeholder="p. ej. asiento en posición 3" />
+      </div>
       <button id="btn-save-new-exercise">Guardar máquina</button>
-      <button id="btn-cancel-new-exercise" class="secondary" style="margin-top: 8px;">Cancelar</button>
+      <button id="btn-cancel-new-exercise" class="secondary">Cancelar</button>
     </section>
 
     <!-- ACTIVE EXERCISE -->
     <section id="screen-exercise" hidden>
       <h2 id="ex-name">—</h2>
       <p class="sub"><span id="ex-badge" class="badge"></span> <span id="ex-muscle"></span></p>
+
       <div class="card" style="text-align:center; padding: 10px 18px;">
         <div class="stat">
-          <div class="value" id="ex-elapsed">⏱ 0:00</div>
+          <div class="value" id="ex-elapsed">⏱ sin empezar</div>
           <div class="label">tiempo en este ejercicio</div>
         </div>
       </div>
-      <p class="hint" id="ex-notes" hidden></p>
+
+      <div class="card">
+        <label for="ex-notes-input">📝 Notas de la máquina (opcional)</label>
+        <div class="row">
+          <input id="ex-notes-input" type="text" placeholder="p. ej. asiento en posición 3" />
+          <button id="btn-save-notes" class="small secondary">Guardar</button>
+        </div>
+      </div>
 
       <div class="card">
         <p class="hint" id="ex-recommendation"></p>
@@ -302,10 +344,11 @@
         </div>
       </div>
 
-      <p class="hint" style="text-align:center;">3 series × 8 repeticiones — busca el fallo en la última</p>
       <button id="btn-start-exercise">Start</button>
-      <button id="btn-finish-exercise" hidden>Finalizar ejercicio</button>
-      <button id="btn-back-exercise" class="secondary" style="margin-top: 8px;">← Ver lista de ejercicios</button>
+      <button id="btn-save-weight-only" class="secondary">💾 Guardar peso sin cronometrar</button>
+      <button id="btn-finish-exercise" class="stop" hidden>Stop</button>
+      <button id="btn-back-exercise" class="secondary">← Ver lista de ejercicios</button>
+      <p class="hint description-note" id="ex-description"></p>
     </section>
 
     <!-- FEEDBACK -->
@@ -347,6 +390,7 @@
     function cardioTitle(ex) {
       return `${CARDIO_ICONS[ex.slug] || "🏃"} ${ex.name}`;
     }
+    const DEFAULT_DESCRIPTION = "3 series × 8 repeticiones. Busca llegar al fallo (o cerca) en la última serie.";
 
     const el = (id) => document.getElementById(id);
     const screens = ["home", "setup", "cardio-pick", "cardio", "pick", "exercise", "add-exercise", "feedback", "summary"];
@@ -369,6 +413,15 @@
 
     function goHome() {
       showScreen("home");
+    }
+
+    // El indicador de arriba con el tiempo de sesión siempre te lleva de
+    // vuelta a lo que tengas en marcha (ejercicio o cardio), a diferencia
+    // del título "Weights" que lleva a Inicio.
+    function goToCurrentActivity() {
+      if (state.sessionId && state.lastActiveScreen) {
+        restoreScreen(state.lastActiveScreen);
+      }
     }
 
     let client = null;
@@ -534,6 +587,7 @@
       const muscle = el("new-ex-muscle").value.trim();
       const typeChip = document.querySelector("#screen-add-exercise .chip.selected");
       const assisted = el("new-ex-assisted").checked;
+      const notes = el("new-ex-notes").value.trim() || null;
       if (!name || !muscle || !typeChip) {
         alert("Rellena el nombre, el grupo muscular, y elige empuje o tirón.");
         return;
@@ -552,6 +606,7 @@
             assisted,
             weight_step: 5,
             sort_order: catalog.length,
+            notes,
           })
           .select()
           .single();
@@ -584,7 +639,7 @@
           : " · sin historial";
         const badgeTxt = ex.movement_type === "push" ? "Empuje" : ex.movement_type === "pull" ? "Tirón" : "Cardio";
         const div = document.createElement("div");
-        div.className = "exercise-item";
+        div.className = "exercise-item " + ex.movement_type;
         const notesTxt = ex.notes ? ` · ${ex.notes}` : "";
         div.innerHTML = `
           <div>
@@ -602,18 +657,32 @@
       }
     }
 
+    function renderCardioButtons() {
+      const started = !!state.cardioStartedAt;
+      el("btn-start-cardio").hidden = started;
+      el("btn-cardio-done").hidden = !started;
+    }
+
     function startCardioFromList(ex, opts = {}) {
       const resuming = !!(opts.resume && state.cardioExerciseId === ex.id && state.cardioStartedAt);
       if (!resuming) {
         abandonInProgressExercise();
         state.cardioExerciseId = ex.id;
-        state.cardioStartedAt = new Date().toISOString();
+        state.cardioStartedAt = null;
       }
       saveState();
       el("cardio-title").textContent = cardioTitle(ex);
       el("cardio-minutes").textContent = state.cardioMinutesSuggested || 15;
-      el("cardio-hint").textContent = "Repites cardio cuando quieras — marca \"Cardio terminado\" al acabar.";
+      el("cardio-hint").textContent = "Repites cardio cuando quieras — pulsa Start cuando te subas.";
+      renderCardioButtons();
       showScreen("cardio");
+    }
+
+    function beginCardio() {
+      state.cardioStartedAt = new Date().toISOString();
+      saveState();
+      renderCardioButtons();
+      tick();
     }
 
     function goToListWithoutFinishing() {
@@ -637,6 +706,18 @@
       state.currentWeightDraft = Math.max(0, current + dir * step);
       saveState();
       renderWeightDisplay();
+    }
+
+    async function saveExerciseNotes() {
+      const ex = catalog.find((e) => e.id === state.currentExerciseId);
+      if (!ex) return;
+      const notes = el("ex-notes-input").value.trim() || null;
+      const { error } = await client.from(T.exercises).update({ notes }).eq("id", ex.id);
+      if (error) {
+        alert("No se pudo guardar la nota: " + error.message);
+        return;
+      }
+      ex.notes = notes;
     }
 
     function startExercise(ex, opts = {}) {
@@ -675,21 +756,24 @@
       } else {
         el("ex-recommendation").textContent = "Sin historial todavía — ajusta el peso con el que vas a empezar.";
       }
-      el("ex-notes").textContent = ex.notes || "";
-      el("ex-notes").hidden = !ex.notes;
+      el("ex-notes-input").value = ex.notes || "";
+      el("ex-description").textContent = ex.description || DEFAULT_DESCRIPTION;
 
+      renderExerciseButtons();
+      showScreen("exercise");
+    }
+
+    function renderExerciseButtons() {
       const started = !!state.currentExerciseStartedAt;
       el("btn-start-exercise").hidden = started;
+      el("btn-save-weight-only").hidden = started;
       el("btn-finish-exercise").hidden = !started;
-
-      showScreen("exercise");
     }
 
     function beginExercise() {
       state.currentExerciseStartedAt = new Date().toISOString();
       saveState();
-      el("btn-start-exercise").hidden = true;
-      el("btn-finish-exercise").hidden = false;
+      renderExerciseButtons();
       tick();
     }
 
@@ -859,11 +943,12 @@
       if (!ex) return;
       abandonInProgressExercise();
       state.cardioExerciseId = ex.id;
-      state.cardioStartedAt = new Date().toISOString();
+      state.cardioStartedAt = null;
       saveState();
       el("cardio-title").textContent = cardioTitle(ex);
       el("cardio-minutes").textContent = state.cardioMinutesSuggested;
-      el("cardio-hint").textContent = `Para una sesión de ${state.plannedDuration} min, esto deja tiempo de sobra para las máquinas.`;
+      el("cardio-hint").textContent = `Para una sesión de ${state.plannedDuration} min, esto deja tiempo de sobra para las máquinas. Pulsa Start cuando te subas.`;
+      renderCardioButtons();
       showScreen("cardio");
     }
 
@@ -910,6 +995,7 @@
         const cardioEx = catalog.find((e) => e.id === state.cardioExerciseId);
         el("cardio-title").textContent = cardioEx ? cardioTitle(cardioEx) : "🚴 Cardio";
         el("cardio-minutes").textContent = state.cardioMinutesSuggested || 15;
+        renderCardioButtons();
         showScreen("cardio");
       } else {
         showScreen(target);
@@ -918,6 +1004,7 @@
 
     function wireEvents() {
       el("top-bar-title").addEventListener("click", goHome);
+      el("top-bar-tag").addEventListener("click", goToCurrentActivity);
       el("btn-continue-session").addEventListener("click", () => restoreScreen(state.lastActiveScreen));
 
       el("btn-start").addEventListener("click", () => {
@@ -933,12 +1020,15 @@
       document.querySelectorAll("#screen-cardio-pick .chip").forEach((chip) => {
         chip.addEventListener("click", () => pickCardio(chip.dataset.cardio));
       });
+      el("btn-start-cardio").addEventListener("click", beginCardio);
       el("btn-cardio-done").addEventListener("click", finishCardio);
       el("btn-back-cardio").addEventListener("click", goToListWithoutFinishing);
 
       el("ex-weight-minus").addEventListener("click", () => adjustWeight(-1));
       el("ex-weight-plus").addEventListener("click", () => adjustWeight(1));
+      el("btn-save-notes").addEventListener("click", saveExerciseNotes);
       el("btn-start-exercise").addEventListener("click", beginExercise);
+      el("btn-save-weight-only").addEventListener("click", finishExercise);
       el("btn-finish-exercise").addEventListener("click", finishExercise);
       el("btn-back-exercise").addEventListener("click", goToListWithoutFinishing);
 
@@ -946,6 +1036,7 @@
         el("new-ex-name").value = "";
         el("new-ex-muscle").value = "";
         el("new-ex-assisted").checked = false;
+        el("new-ex-notes").value = "";
         document.querySelectorAll("#screen-add-exercise .chip").forEach((c) => c.classList.remove("selected"));
         showScreen("add-exercise");
       });
