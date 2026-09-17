@@ -42,7 +42,18 @@ self.addEventListener("fetch", (event) => {
   // Nunca cachear llamadas a Supabase: siempre queremos datos frescos.
   if (request.url.includes(".supabase.co")) return;
 
+  // Red primero, caché como respaldo solo si no hay conexión. Con
+  // "caché primero" (la estrategia anterior), reabrir la app podía seguir
+  // sirviendo una versión vieja hasta que el navegador decidiera comprobar
+  // si había una actualización — con datos, esto la evita: siempre que hay
+  // señal, ves la última versión desplegada al instante.
   event.respondWith(
-    caches.match(request).then((cached) => cached || fetch(request))
+    fetch(request)
+      .then((response) => {
+        const copy = response.clone();
+        caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+        return response;
+      })
+      .catch(() => caches.match(request))
   );
 });
