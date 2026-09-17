@@ -139,6 +139,16 @@
     .badge.push { background: var(--push); }
     .badge.pull { background: var(--pull); }
     .badge.cardio { background: var(--muted); }
+    .stepper {
+      display: flex; align-items: center; justify-content: center; gap: 20px;
+      margin-top: 8px;
+    }
+    .stepper-btn {
+      width: 3rem; height: 3rem; border-radius: 50%;
+      font-size: 1.6rem; font-weight: 800; padding: 0; flex: none;
+      line-height: 1;
+    }
+    .stepper-value { font-size: 2.4rem; font-weight: 800; min-width: 5rem; text-align: center; }
     .stat { text-align: center; }
     .stat .value { font-size: 1.8rem; font-weight: 800; }
     .stat .label { font-size: 0.75rem; color: var(--muted); }
@@ -269,12 +279,17 @@
 
       <div class="card">
         <p class="hint" id="ex-recommendation"></p>
-        <label for="ex-weight">Peso (kg)</label>
-        <input id="ex-weight" type="number" step="0.5" min="0" />
+        <label style="text-align:center;">Peso (kg)</label>
+        <div class="stepper">
+          <button type="button" id="ex-weight-minus" class="stepper-btn">−</button>
+          <div class="stepper-value" id="ex-weight-display">0</div>
+          <button type="button" id="ex-weight-plus" class="stepper-btn">+</button>
+        </div>
       </div>
 
       <p class="hint" style="text-align:center;">3 series × 8 repeticiones — busca el fallo en la última</p>
-      <button id="btn-finish-exercise">Finalizar ejercicio</button>
+      <button id="btn-start-exercise">Start</button>
+      <button id="btn-finish-exercise" hidden>Finalizar ejercicio</button>
     </section>
 
     <!-- FEEDBACK -->
@@ -376,8 +391,10 @@
       } else {
         tag.hidden = true;
       }
-      if (state.screen === "exercise" && state.currentExerciseStartedAt) {
-        el("ex-elapsed").textContent = "⏱ " + formatElapsed(state.currentExerciseStartedAt);
+      if (state.screen === "exercise") {
+        el("ex-elapsed").textContent = state.currentExerciseStartedAt
+          ? "⏱ " + formatElapsed(state.currentExerciseStartedAt)
+          : "⏱ sin empezar";
       }
     }
 
@@ -543,14 +560,29 @@
       showScreen("cardio");
     }
 
+    function renderWeightDisplay() {
+      const val = parseFloat(state.currentWeightDraft);
+      el("ex-weight-display").textContent = isNaN(val) ? "0" : val;
+    }
+
+    function adjustWeight(dir) {
+      const ex = catalog.find((e) => e.id === state.currentExerciseId);
+      const step = ex && Number(ex.weight_step) > 0 ? Number(ex.weight_step) : 2.5;
+      const current = parseFloat(state.currentWeightDraft) || 0;
+      state.currentWeightDraft = Math.max(0, current + dir * step);
+      saveState();
+      renderWeightDisplay();
+    }
+
     function startExercise(ex, opts = {}) {
+      // Seleccionar un ejercicio solo prepara la pantalla (peso sugerido,
+      // recomendación); el cronómetro del ejercicio no arranca hasta que
+      // se pulsa "Start" (ver beginExercise), para poder ajustar el peso
+      // con calma antes de empezar de verdad la serie.
       const resuming = !!(opts.resume && state.currentExerciseId === ex.id && state.currentWeightDraft != null);
       if (!resuming) {
         state.currentExerciseId = ex.id;
-        state.currentWeightDraft = null;
-        state.currentExerciseStartedAt = new Date().toISOString();
-      } else if (!state.currentExerciseStartedAt) {
-        state.currentExerciseStartedAt = new Date().toISOString();
+        state.currentExerciseStartedAt = null;
       }
       saveState();
 
@@ -562,28 +594,37 @@
 
       const last = historyByExercise[ex.id];
       const suggested = suggestWeight(ex, last);
-      const weightInput = el("ex-weight");
-      if (resuming) {
-        weightInput.value = state.currentWeightDraft;
-      } else if (suggested != null) {
-        weightInput.value = suggested;
-      } else {
-        weightInput.value = "";
+      if (!resuming) {
+        state.currentWeightDraft = suggested != null ? suggested : 0;
+        saveState();
       }
+      renderWeightDisplay();
 
       if (suggested != null) {
         const dirTxt = last.next_time === "mas" ? "subiendo" : last.next_time === "menos" ? "bajando" : "manteniendo";
         el("ex-recommendation").textContent = `Última vez: ${last.weight_used} kg. Sugerido hoy (${dirTxt}): ${suggested} kg.`;
       } else {
-        el("ex-recommendation").textContent = "Sin historial todavía — pon el peso con el que vas a empezar.";
+        el("ex-recommendation").textContent = "Sin historial todavía — ajusta el peso con el que vas a empezar.";
       }
+
+      const started = !!state.currentExerciseStartedAt;
+      el("btn-start-exercise").hidden = started;
+      el("btn-finish-exercise").hidden = !started;
 
       showScreen("exercise");
     }
 
+    function beginExercise() {
+      state.currentExerciseStartedAt = new Date().toISOString();
+      saveState();
+      el("btn-start-exercise").hidden = true;
+      el("btn-finish-exercise").hidden = false;
+      tick();
+    }
+
     async function finishExercise() {
       const ex = catalog.find((e) => e.id === state.currentExerciseId);
-      const weightUsed = parseFloat(el("ex-weight").value) || 0;
+      const weightUsed = parseFloat(state.currentWeightDraft) || 0;
       state.pendingExercise = { exercise: ex, weightUsed };
       saveState();
       el("fb-name").textContent = ex.name;
@@ -820,10 +861,9 @@
       });
       el("btn-cardio-done").addEventListener("click", finishCardio);
 
-      el("ex-weight").addEventListener("input", () => {
-        state.currentWeightDraft = el("ex-weight").value;
-        saveState();
-      });
+      el("ex-weight-minus").addEventListener("click", () => adjustWeight(-1));
+      el("ex-weight-plus").addEventListener("click", () => adjustWeight(1));
+      el("btn-start-exercise").addEventListener("click", beginExercise);
       el("btn-finish-exercise").addEventListener("click", finishExercise);
 
       el("btn-add-exercise").addEventListener("click", () => {
