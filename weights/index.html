@@ -280,7 +280,7 @@
     <!-- PICK EXERCISE -->
     <section id="screen-pick" hidden>
       <h2>Siguiente ejercicio</h2>
-      <p class="sub">Ordenados por preferencia (alternar empuje/tirón hoy + tiempo desde la última vez). Puedes repetir uno que ya hayas hecho.</p>
+      <p class="sub">Ordenados por preferencia: combino alternar empuje/tirón con cuánto llevas sin hacer cada uno (mirando tu historial reciente). Puedes repetir uno que ya hayas hecho.</p>
       <div id="exercise-list"></div>
       <button id="btn-add-exercise" class="secondary">+ Añadir máquina nueva</button>
       <button id="btn-finish-session" class="secondary">Terminar entrenamiento</button>
@@ -548,11 +548,29 @@
       return (Date.now() - new Date(iso).getTime()) / (1000 * 60 * 60 * 24);
     }
 
-    // Orden de preferencia: prioriza (1) lo no hecho todavía hoy, (2) el tipo
-    // opuesto (empuje/tirón) al último ejercicio de la sesión, para descansar
-    // mejor, y (3) cuánto tiempo hace que no se hace (basado en el historial
-    // de los últimos días) — nunca oculta nada, solo lo ordena. Se puede
-    // repetir cualquier ejercicio ya hecho hoy.
+    // Orden de preferencia: una puntuación combinada, no una jerarquía
+    // estricta de empuje/tirón por delante de todo lo demás.
+    //   - hecho hoy: penalización fuerte (pero nunca se oculta, se puede
+    //     repetir si de verdad quieres).
+    //   - tipo opuesto (empuje/tirón) al último ejercicio de la sesión: un
+    //     empujón moderado, para favorecer alternar y descansar mejor.
+    //   - días desde la última vez que se hizo (mirando el historial real
+    //     de los últimos días/semana, no solo esta sesión): cuanto más
+    //     tiempo lleva sin tocarse, más puntos — y si nunca se ha hecho,
+    //     puntúa alto también, para que aparezcan cosas nuevas.
+    // Con esto, un ejercicio que llevas una semana sin hacer puede superar
+    // a uno del tipo "opuesto" que hiciste ayer, en vez de que el
+    // empuje/tirón mande siempre por encima de todo.
+    function exerciseScore(ex, doneToday, opposite) {
+      let score = 0;
+      if (doneToday) score -= 1000;
+      if (ex.movement_type === opposite) score += 30;
+      const last = historyByExercise[ex.id];
+      const days = last ? daysSince(last.completed_at) : null;
+      score += days == null ? 80 : Math.min(days, 14) * 5;
+      return score;
+    }
+
     function orderExercises() {
       // El cardio también aparece aquí (no solo en el paso inicial
       // obligatorio) para poder repetirlo o cambiar de elíptica a
@@ -560,15 +578,11 @@
       const opposite = state.lastMovementType === "push" ? "pull" : state.lastMovementType === "pull" ? "push" : null;
 
       return catalog
-        .map((ex) => ({ ex, doneToday: state.doneExerciseIds.includes(ex.id) }))
-        .sort((a, b) => {
-          const scoreA = (a.doneToday ? 0 : 100) + (a.ex.movement_type === opposite ? 50 : 0);
-          const scoreB = (b.doneToday ? 0 : 100) + (b.ex.movement_type === opposite ? 50 : 0);
-          if (scoreA !== scoreB) return scoreB - scoreA;
-          const daysA = historyByExercise[a.ex.id] ? daysSince(historyByExercise[a.ex.id].completed_at) : Infinity;
-          const daysB = historyByExercise[b.ex.id] ? daysSince(historyByExercise[b.ex.id].completed_at) : Infinity;
-          return daysB - daysA;
-        });
+        .map((ex) => {
+          const doneToday = state.doneExerciseIds.includes(ex.id);
+          return { ex, doneToday, score: exerciseScore(ex, doneToday, opposite) };
+        })
+        .sort((a, b) => b.score - a.score);
     }
 
     function slugify(name) {
