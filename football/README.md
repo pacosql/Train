@@ -1,7 +1,7 @@
 # Math Games 🧠
 
-PWA (sin build, HTML/CSS/JS puro) con **123 ejercicios de matemáticas**,
-cada uno numerado (#1-#123) para poder referirse a ellos sin ambigüedad.
+PWA (sin build, HTML/CSS/JS puro) con **129 ejercicios de matemáticas**,
+cada uno numerado (#1-#129) para poder referirse a ellos sin ambigüedad.
 Cálculo mental, geometría, álgebra, estadística, fracciones, dinero,
 probabilidad, coordenadas, tiempo y más. Nace como banco de pruebas
 rápido para sacar ideas de mecánicas (tipo Duolingo Math, Synthesis,
@@ -385,15 +385,66 @@ de los platillos en #122, la posición del marcador de origen en #123)
 comprobó que fallar #121 a propósito resta una vida con el mensaje
 correcto.
 
+## Ejercicios #124-#129 (séptima tanda, 17-09-2026 noche) — tramo único
+
+### Tramo único — [`css/pack-r.css`](./css/pack-r.css)
+
+Antes de investigar se revisó el único ejercicio marcado con 🔧
+(**#6 Equilibra la balanza**, marcado por tercera vez sin nota) —
+ver la sección "Vuelta del 17-09-2026 (noche)" más abajo, donde se
+explica el fallo VISUAL que se encontró y se corrigió (v4) antes de
+tocar nada nuevo.
+
+| # | Juego | Tema | Mecánica | De dónde sale |
+|---|---|---|---|---|
+| 124 | 🎨 Fábrica de colores primos | Factores primos | Reconstruye un número tocando chips de colores (uno por primo pequeño) cuyo producto dé el objetivo | Prime Climb (Math for Love), familia 5 |
+| 125 | 🎲 Elige tu categoría | Combinatoria y patrones de dados | Tras una tirada de 5 dados, elige entre varias categorías de puntuación la que da MÁS puntos con esa tirada concreta | Yahtzee, familia 5 |
+| 126 | 🀄 Escalera de mosaicos | Números triangulares y reparto | Con una bolsa de fichas de colores en cantidades limitadas, calcula cuántas filas de una escalera 1-2-3-4-5 puedes completar como máximo | Azul (Plan B Games), familia 5 |
+| 127 | 🔢 Grupos y escaleras | Secuencias y valores iguales | De una mano de fichas numeradas y coloreadas, encuentra el conjunto válido más largo: un grupo (mismo valor, colores distintos) o una escalera (mismo color, consecutivos) | Rummikub, familia 5 |
+| 128 | 🎬 Sesión de cine | Combinatoria | Cuenta de cuántas formas se pueden sentar unos amigos en fila (permutaciones) o elegir una pareja de butacas (combinaciones) | Inventado: terna *combinatoria + ordenar + cine* |
+| 129 | 👀 ¿Cuál es más grande? | Estimación visual de ángulos | Ordena tres ángulos de menor a mayor solo a golpe de vista, sin transportador ni números en pantalla | Inventado: restricción 4.4 (sin números en pantalla) |
+
+Tanda modesta a propósito (6 ejercicios, 1 tramo): el Mastermind
+numérico que salió de investigar "Wordle/Mastermind digital" se
+descartó al comprobar que `game-codigo.js` (#91) ya es exactamente esa
+mecánica — recordatorio de revisar el catálogo real antes de dar una
+idea de investigación por buena, no solo confiar en que "suena nueva".
+
+Verificación antes de publicar: `verify_colorprimos.mjs` sobre 5.000
+rondas de #124 (por fuerza bruta sobre los ≤2^8 subconjuntos del
+banco, 0 soluciones alternativas con un multiset de primos distinto
+al real — la factorización prima es única, así que no puede haberlas);
+`test_categorias.mjs` sobre 20.000 rondas de #125 con las 5 fórmulas
+de puntuación recalculadas desde cero en el test (0 desajustes, 0
+rondas sin ninguna opción real); `test_mosaico.mjs` sobre 5.000 rondas
+de #126 con el máximo recalculado por una fuerza bruta independiente
+distinta a la del generador (0 discrepancias, distribución de
+respuestas no sesgada hacia 0 ni al techo); `test_combina.mjs` sobre
+5.000 rondas de #127 verificando por fuerza bruta que el tamaño máximo
+real de la mano coincide siempre con el declarado; `test_butacas.mjs`
+sobre 20.000 rondas de #128 recalculando N! y C(N,2) de forma
+independiente; `sim_vistazo.mjs` sobre 200.000 rondas de #129
+comprobando rango 15-165°, separación mínima de 12° entre ángulos
+consecutivos y que los tres son siempre distintos. Los 129 ejercicios
+cargan sin error de consola, y los 6 nuevos se jugaron de verdad en el
+navegador calculando la respuesta correcta de forma independiente sin
+acceder al estado interno del módulo — incluyendo #129, donde el
+"ángulo correcto" se dedujo leyendo las coordenadas reales de las
+líneas SVG del DOM y calculando el ángulo con trigonometría, nunca
+mirando un número en pantalla (no lo hay) — confirmando que el
+marcador sube +10 en cada acierto, y que fallar a propósito en #124
+resta una vida con el mensaje correcto.
+
 ## Versiones (v2) y bandeja "Revisar"
 
 Cuando un ejercicio recibe una vuelta de mejoras, se marca con un
-distintivo **v2** en su tarjeta y en la cabecera de la partida. Al
-publicarse una tanda de mejoras, la app sube su `REWORK_GENERATION`
-(ver [`js/ratings.js`](./js/ratings.js)) y, la primera vez que se abre
-después, **vacía la bandeja "🔧 Revisar"**: esos ejercicios vuelven a
-"🆕 Nuevos" para poder juzgarlos otra vez desde cero, con un aviso en
-el menú diciendo cuáles han vuelto. Las valoraciones 👍 y 👎 no se
+distintivo **v2**, **v3**... en su tarjeta y en la cabecera de la
+partida. Al publicarlo, quien hace la vuelta **borra su fila** de
+`football_ratings` (`DELETE .../football_ratings?game=eq.<id>`): así
+ese ejercicio vuelve a "🆕 Nuevos" para poder juzgarlo otra vez desde
+cero. El menú además muestra un aviso con la nota de `last_rework`
+(ver [`js/ratings.js`](./js/ratings.js), función `fetchReworkNote`)
+diciendo qué se ha tocado y por qué. Las valoraciones 👍 y 👎 no se
 tocan.
 
 ### Vuelta de la generación 2
@@ -629,17 +680,17 @@ Una vez publicado, esta app queda en:
 
 ## Qué hace la app
 
-- Menú con los 123 ejercicios numerados, organizados en pestañas
+- Menú con los 129 ejercicios numerados, organizados en pestañas
   🆕/👍/👎/🔧; cada uno abre en su propia pantalla (`#/game/<id>`), sin
   recargar la página.
 - Motor de preguntas compartido (`js/quiz-engine.js`) para los 18
   ejercicios de "pregunta + opciones o teclado" (`js/games-data.js` y
-  `js/games-data-2.js`); los otros 105 (`js/game-*.js` y
+  `js/games-data-2.js`); los otros 111 (`js/game-*.js` y
   `js/balloons-game.js`) tienen cada uno su propia mecánica de
   interacción (arrastrar, tocar en orden, emparejar, construir,
   escribir, clasificar, recorrer…).
 - Los estilos de cada tanda viven en su propio `css/pack-<letra>.css`
-  (de `pack-a.css` a `pack-q.css`, uno por tramo temático), para que
+  (de `pack-a.css` a `pack-r.css`, uno por tramo temático), para que
   tocar una tanda no arrastre a las demás.
 - Guarda cada partida en `football_scores` y muestra las últimas en el
   menú.

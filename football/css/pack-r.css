@@ -1,0 +1,394 @@
+/* Pack R — séptima tanda (17-09-2026, noche): #124-#129
+   Prefijos: .cp- (colorprimos), .cat- (categorias), .mos- (mosaico),
+   .cmb- (combina), .but- (butacas), .vst- (vistazo).
+   Verificados sin colisión con el resto del catálogo. */
+
+/* --- colorprimos --- */
+/* ---------- Fábrica de colores primos ---------- */
+.cp-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  justify-content: center;
+  margin: -10px 0 16px;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+.cp-legend-item { white-space: nowrap; }
+
+.cp-bank {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  max-width: 360px;
+  margin-bottom: 8px;
+}
+.cp-chip {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  font-weight: 800;
+  padding: 0;
+  border: 3px solid var(--border);
+  background: var(--bg);
+  color: #fff;
+}
+.cp-chip.cp-orange { background: #f5a623; border-color: #d98c0f; }
+.cp-chip.cp-green { background: #2fb35c; border-color: #218a45; }
+.cp-chip.cp-blue { background: #3b82f6; border-color: #2b63c4; }
+.cp-chip.cp-purple { background: #9b5de5; border-color: #7b3fc4; }
+.cp-chip.cp-red { background: #e5484d; border-color: #c53237; font-size: 1rem; }
+.cp-chip.cp-selected {
+  outline: 3px solid var(--text);
+  outline-offset: 2px;
+  transform: scale(0.94);
+}
+
+.cp-product {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--muted);
+  margin: 4px 0 10px;
+}
+
+/* --- categorias --- */
+/* Estilos exclusivos de "Elige tu categoría" (Math Games).
+   Prefijo EXCLUSIVO `cat-` — verificado libre con
+   grep -rn "\.cat-" football/css/*.css antes de crear este archivo. */
+
+.cat-dice-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 22px;
+}
+
+.cat-die {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: 12px;
+}
+
+.cat-die-face {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.cat-die-num {
+  font-size: 0.65rem;
+  color: var(--muted);
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+.cat-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 360px;
+}
+
+.cat-option-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  text-align: left;
+  padding: 12px 14px;
+}
+
+.cat-option-label {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.cat-option-desc {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.cat-option-btn.correct .cat-option-desc,
+.cat-option-btn.wrong .cat-option-desc {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* --- mosaico --- */
+/* ---------- Escalera de mosaicos (prefijo exclusivo: mos-) ---------- */
+/* Reutiliza las variables de tema (--bg, --card, --border, --accent,
+   --accent-2, --text, --muted, --good, --danger) y las clases
+   compartidas .prompt / .choices / .choice-btn / .feedback / .end-card
+   ya definidas en css/style.css; aquí solo se añade lo propio de este
+   ejercicio: la escalera de filas y los "chips" de la bolsa de fichas. */
+
+.mos-ladder {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto 16px;
+}
+.mos-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.mos-row-label {
+  width: 18px;
+  flex: 0 0 18px;
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--muted);
+  font-family: ui-monospace, monospace;
+}
+.mos-row-cells {
+  display: flex;
+  gap: 4px;
+  flex: 1;
+}
+.mos-cell {
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  background: var(--bg);
+  border: 2px dashed var(--border);
+}
+
+.mos-bag {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+.mos-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-weight: 800;
+}
+.mos-chip-emoji { font-size: 1.3rem; line-height: 1; }
+.mos-chip-count { font-size: 0.95rem; color: var(--text); }
+
+/* Nº de opciones varía con la bolsa (de 0..3 a 0..5): en flex-wrap en
+   vez de la grilla fija de 2 columnas de .choices, para que se
+   reparta bien tanto con 4 como con 6 botones. */
+.mos-choices {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 320px;
+  gap: 8px;
+}
+.mos-choice {
+  flex: 1 1 64px;
+  padding: 12px 4px;
+  font-size: 1.1rem;
+}
+
+/* --- combina --- */
+/* Grupos y escaleras — prefijo exclusivo cmb- (verificado libre en football/css/*.css) */
+
+.cmb-hand {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  max-width: 380px;
+  margin: 0 auto;
+}
+
+.cmb-tile {
+  width: 52px;
+  height: 68px;
+  border-radius: 10px;
+  border: 3px solid var(--border);
+  background: var(--bg);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  cursor: pointer;
+  font-weight: 800;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.15);
+}
+.cmb-tile:active { transform: scale(0.96); }
+
+.cmb-tile-shape { font-size: 1.05rem; line-height: 1; }
+.cmb-tile-value { font-size: 1.15rem; line-height: 1; }
+
+/* Cada color lleva fondo real distinto + estilo de borde distinto, para que
+   se reconozca aunque no se distingan bien los colores. */
+.cmb-color-rojo {
+  background: #e5484d;
+  border-style: solid;
+}
+.cmb-color-azul {
+  background: repeating-linear-gradient(
+    135deg,
+    #2f6fed 0px, #2f6fed 6px,
+    #2a63d1 6px, #2a63d1 12px
+  );
+  border-style: dashed;
+}
+.cmb-color-amarillo {
+  background:
+    radial-gradient(circle, rgba(0, 0, 0, 0.18) 22%, transparent 23%) 0 0/12px 12px,
+    #e6b800;
+  color: #2a2200;
+  border-style: dotted;
+}
+.cmb-color-negro {
+  background: repeating-linear-gradient(
+    45deg,
+    #23262e 0px, #23262e 5px,
+    #32363f 5px, #32363f 10px
+  );
+  border-style: double;
+  border-width: 5px;
+}
+
+.cmb-tile.cmb-selected {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+  transform: translateY(-4px);
+}
+
+.cmb-done-btn {
+  margin-top: 18px;
+  width: 100%;
+  max-width: 260px;
+}
+
+@media (max-width: 400px) {
+  .cmb-tile { width: 44px; height: 60px; }
+  .cmb-tile-value { font-size: 1rem; }
+}
+
+/* --- butacas --- */
+/* Estilos exclusivos del ejercicio "butacas" (Sesión de cine).
+   Prefijo `but-` verificado libre en football/css/*.css. */
+
+.but-scene {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 18px;
+}
+
+.but-friends {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  max-width: 340px;
+}
+
+.but-friend {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  font-size: 0.72rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.but-friend-emoji {
+  font-style: normal;
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+.but-seats {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+
+.but-seat {
+  font-size: 1.9rem;
+  line-height: 1;
+  padding: 6px;
+  border-radius: 10px;
+  background: var(--card);
+  border: 1px solid var(--border);
+}
+
+.but-seat-empty {
+  opacity: 0.85;
+}
+
+/* --- vistazo --- */
+/* ---------- "¿Cuál es más grande?" (vistazo) — prefijo exclusivo vst- ---------- */
+.vst-row { display: flex; gap: 10px; width: 100%; max-width: 360px; justify-content: center; }
+.vst-slot {
+  flex: 1 1 0;
+  min-width: 0;
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 8px 4px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+}
+.vst-slot:active { transform: scale(0.97); }
+.vst-slot.vst-tapped { border-color: var(--vst-c, var(--accent)); background: var(--card); }
+.vst-row.vst-locked .vst-slot { pointer-events: none; }
+
+.vst-svg { width: 100%; height: auto; aspect-ratio: 1 / 1; display: block; }
+.vst-svg line { stroke-width: 5; stroke-linecap: round; }
+.vst-arc { stroke-width: 3; opacity: 0.85; }
+.vst-base-ray { stroke: var(--muted); stroke-width: 4; stroke-linecap: round; opacity: 0.6; }
+
+.vst-label { margin-top: 4px; font-size: 0.72rem; font-weight: 700; color: var(--muted); }
+
+.vst-badge {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--vst-c, var(--accent));
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.vst-badge.vst-show { display: flex; }
+
+.vst-overlay { width: 100%; max-width: 300px; margin-top: 14px; text-align: center; }
+.vst-overlay[hidden] { display: none; }
+.vst-overlay-title { font-size: 0.74rem; color: var(--muted); margin: 0 0 6px; }
+.vst-overlay-svg { width: 160px; height: 160px; margin: 0 auto; display: block; }
+.vst-legend { display: flex; gap: 12px; justify-content: center; margin-top: 6px; font-size: 0.78rem; font-weight: 700; }
+.vst-legend-item { display: inline-flex; align-items: center; gap: 3px; }
+
