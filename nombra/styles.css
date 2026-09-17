@@ -23,6 +23,9 @@
   }
 }
 * { box-sizing: border-box; }
+/* Sin esto, cualquier regla con display: (p. ej. .error-banner) gana al
+   atributo hidden y el elemento se ve igualmente. */
+[hidden] { display: none !important; }
 html { font-size: 19px; }
 body {
   margin: 0;
@@ -36,14 +39,115 @@ body {
 header { text-align: center; margin-bottom: 6px; }
 h1 { font-size: 1.7rem; margin: 4px 0; }
 h2 { font-size: 1.2rem; margin: 0; display: inline; }
+.sec-title { font-size: 1.2rem; font-weight: 700; }
+.count { color: var(--muted); font-weight: 500; font-size: 1rem; }
 .sub { color: var(--muted); font-size: 0.9rem; margin: 0 0 8px; }
-.cola-sub { text-align: center; }
+.cola-sub { text-align: center; color: var(--muted); font-size: 0.9rem; margin: 0 0 10px; }
 
 section { margin: 20px 0; }
 section > details > summary { list-style: none; }
 section > details > summary::-webkit-details-marker { display: none; }
-section > details > summary h2::before { content: "▸ "; }
-section > details[open] > summary h2::before { content: "▾ "; }
+section > details > summary .sec-title::before { content: "▸ "; }
+section > details[open] > summary .sec-title::before { content: "▾ "; }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+summary:focus-visible {
+  outline: 3px solid var(--accent-2);
+  outline-offset: 2px;
+}
+button[disabled] { opacity: 0.55; cursor: progress; }
+
+.error-banner {
+  background: rgba(229, 72, 77, 0.12);
+  border: 1px solid var(--bad);
+  color: var(--bad);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+  font-size: 0.92rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.error-banner button {
+  border: 1px solid var(--bad);
+  background: transparent;
+  color: var(--bad);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.undo-row { text-align: center; min-height: 34px; margin-top: 10px; }
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.sugerencia-box {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px 16px;
+}
+.sug-label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.95rem; }
+.add-form { display: flex; gap: 8px; }
+.add-form input {
+  flex: 1;
+  min-width: 0;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 1rem;
+}
+.add-form button {
+  border: none;
+  border-radius: 10px;
+  padding: 12px 18px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  background: var(--accent);
+  color: #06231a;
+}
+.sug-msg { color: var(--ok); font-size: 0.88rem; margin: 10px 0 0; }
+.sug-lista { margin: 8px 0 0; padding-left: 20px; font-size: 0.9rem; color: var(--muted); }
+.sug-lista li { margin-bottom: 4px; }
+
+.btn-mini {
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.btn-mini-star { border-color: var(--accent-2); color: var(--accent-2); }
+.btn-mini-like { border-color: var(--ok); color: var(--ok); }
 
 .info-collapse {
   margin: 14px 0 20px;
@@ -52,19 +156,6 @@ section > details[open] > summary h2::before { content: "▾ "; }
 }
 .info-collapse summary { cursor: pointer; }
 .info-collapse p { margin: 8px 0 0; line-height: 1.45; }
-
-.btn-save,
-.btn-link {
-  border: none;
-  border-radius: 10px;
-  padding: 10px 14px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  background: var(--accent);
-  color: #06231a;
-}
-.btn-save { background: var(--accent-2); color: #fff; margin-top: 10px; }
 
 .name-list { display: flex; flex-direction: column; gap: 10px; margin-top: 10px; }
 .name-card {
@@ -78,6 +169,7 @@ section > details[open] > summary h2::before { content: "▾ "; }
   align-items: center;
   justify-content: space-between;
   gap: 10px;
+  flex-wrap: wrap;
 }
 .name-text { font-weight: 700; font-size: 1.15rem; text-transform: lowercase; }
 
@@ -97,6 +189,7 @@ section > details[open] > summary h2::before { content: "▾ "; }
 .btn-link {
   background: transparent;
   border: 1px solid var(--border);
+  border-radius: 10px;
   color: var(--text);
   text-decoration: none;
   font-weight: 500;
