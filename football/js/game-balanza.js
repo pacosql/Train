@@ -1,18 +1,30 @@
-// #6 "Equilibra la balanza" (Igualdad y pesos) — REHECHO.
-// Antes: pesas de +1/+2/+5/+10 que se acumulaban hasta llegar a un peso
-// objetivo — o sea el mismo juego que "Llena el vaso" con kg, y con el +1
-// disponible no había nada que pensar. Además contaba una "ronda" por cada
-// pesa tocada y dejaba setTimeout sin limpiar al salir al menú.
-// Ahora es álgebra de verdad: hay sacos idénticos de peso desconocido y
-// pesas conocidas en los platos, y el dedo mueve LA INCÓGNITA (cuánto pesa
-// un saco). La balanza sólo dice qué lado pesa más, nunca los totales, así
-// que hay que resolver k·x + a = m·x + b; y los ajustes están contados,
-// para que tantear a lo loco no llegue.
+// #6 "Equilibra la balanza" (Igualdad y pesos) — REHECHO dos veces.
+// v2: pasó de acumular pesas +1/+2/+5/+10 (== "Llena el vaso" con kg) a
+// álgebra de verdad: sacos idénticos de peso desconocido y pesas conocidas
+// en los platos; el dedo mueve LA INCÓGNITA y la balanza sólo dice qué lado
+// pesa más, nunca los totales, así que hay que resolver k·x + a = m·x + b.
+// v3 (marcado 🔧 otra vez tras jugarlo de verdad leyendo los platos y
+// calculando x): el presupuesto de ajustes iba fijo a 8 en TODAS las
+// rondas, así que las fáciles (coste óptimo real de 1-2 ajustes) sobraban
+// hasta 6-7 de margen — justo el tanteo a ciegas que el diseño decía
+// evitar, y sin relación entre nivel y dificultad real. Ahora el
+// presupuesto se ata al coste óptimo de cada ronda con un margen que se
+// estrecha con el nivel (slackFor): +3 al empezar, +1 en el nivel avanzado.
 import { randInt, pick, clamp, saveScore } from "./utils.js";
 
 const MIN_X = 1;
-const MAX_X = 18;  // recorrido del control
-const MOVES = 8;   // ajustes por ronda: con ±1 y ±5 basta si se razona
+const MAX_X = 18;      // recorrido del control
+const MAX_START_COST = 8; // tope al elegir el punto de partida del dial, para no alargar la ronda de más
+
+// El presupuesto de ajustes iba fijo a 8 pase lo que pase: en las rondas
+// fáciles (coste óptimo 1-2 ajustes) sobraba tanto margen que tantear a
+// ciegas seguía siendo viable — justo lo que este diseño dice evitar. Ahora
+// el presupuesto se ata al coste real de la ronda, con un margen que se
+// estrecha con el nivel (más red de seguridad al empezar, casi ninguna en
+// el nivel avanzado).
+function slackFor(level) {
+  return level === 0 ? 3 : level === 1 ? 2 : 1;
+}
 
 export function balanzaLevelFor(streak) {
   return streak >= 5 ? 2 : streak >= 2 ? 1 : 0;
@@ -63,25 +75,28 @@ function tryBalanza(level) {
   if (k * x + a <= 0) return null;               // platos con peso positivo
   if (k + m > 6) return null;                    // caben dibujados
 
-  // Arranque del control: nunca la solución, nunca pegado a ella, y siempre
-  // alcanzable con los ajustes disponibles.
+  // Arranque del control: nunca la solución, nunca pegado a ella, y con un
+  // coste óptimo acotado para que la ronda no se alargue de más.
   const cands = [];
   for (let v = MIN_X; v <= MAX_X; v++) {
-    if (Math.abs(v - x) >= 3 && moveCost(v - x) <= MOVES) cands.push(v);
+    if (Math.abs(v - x) >= 3 && moveCost(v - x) <= MAX_START_COST) cands.push(v);
   }
   if (!cands.length) return null;
 
+  const x0 = pick(cands);
   const flip = randInt(0, 1) === 1; // de qué lado están los sacos
   return {
     level, k, m, a, b, x,
-    x0: pick(cands),
+    x0,
+    moves: moveCost(x0 - x) + slackFor(level),
     flip,
     key: `${k}|${a}|${m}|${b}`,
   };
 }
 
 function fallbackBalanza(level) {
-  return { level, k: 3, m: 0, a: 0, b: 12, x: 4, x0: 9, flip: false, key: "reserva" };
+  const x0 = 9, x = 4;
+  return { level, k: 3, m: 0, a: 0, b: 12, x, x0, moves: moveCost(x0 - x) + slackFor(level), flip: false, key: "reserva" };
 }
 
 export function makeBalanzaRound(streak, lastKey) {
@@ -115,7 +130,7 @@ export function mountBalanzaGame(container, { client, onExit }) {
   let timers = [];
   let round = null;
   let value = 0;   // lo que el jugador cree que pesa un saco
-  let movesLeft = MOVES;
+  let movesLeft = 0; // se fija al arrancar cada ronda, según su coste real
   let locked = false;
   let barEl, ropeLEl, ropeREl, panLEl, panREl, tiltEl, valueEl, movesEl;
 
@@ -168,7 +183,7 @@ export function mountBalanzaGame(container, { client, onExit }) {
   function nextRound() {
     round = makeBalanzaRound(streak, round ? round.key : "");
     value = round.x0;
-    movesLeft = MOVES;
+    movesLeft = round.moves;
     locked = false;
 
     body.innerHTML = `
@@ -195,7 +210,7 @@ export function mountBalanzaGame(container, { client, onExit }) {
           <button class="bz-step" data-adj="1">+1</button>
           <button class="bz-step" data-adj="5">+5</button>
         </div>
-        <div class="bz-moves">Ajustes que te quedan: <b data-moves>${MOVES}</b></div>
+        <div class="bz-moves">Ajustes que te quedan: <b data-moves>${round.moves}</b></div>
         <div class="feedback" data-feedback></div>
         <div class="bz-why" data-why></div>
         <button class="primary bz-confirm" data-confirm>¡Listo!</button>
