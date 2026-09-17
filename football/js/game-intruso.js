@@ -143,23 +143,23 @@ function generarCandidato(propiedad) {
   return { numeros: shuffle([...cumplen, intruso]), intrusoValor: intruso };
 }
 
-// Combinación de reserva fija, verificada a mano (y con el propio
-// `construirBanco` en un script de comprobación) para el caso — muy
-// improbable — de que 500 intentos no basten: propiedad "múltiplo de 4"
-// con 8, 12, 20 (múltiplos de 4) y 15 como intruso. Se comprobó que
-// ninguna otra propiedad del banco aísla, ella sola, a un número distinto
-// de 15: por ejemplo "impar" rompe con 8,12,20 (3 números, no 1); "suma
-// de cifras par" rompe con 12(1+2=3 impar) y 15(1+5=6 par no rompe)... en
-// conjunto ninguna otra combinación dejaba un único roto distinto de 15.
+// Combinación de reserva fija para el caso — muy improbable — de que 500
+// intentos no basten: propiedad "son números primos" con 23, 29, 31
+// (primos) y 44 como intruso (44 = 4×11, no primo). Verificada a mano
+// contra las ~50 propiedades del banco (script de comprobación aparte):
+// "primo" aísla exactamente a 44; otras dos propiedades ("impar" y
+// "menor que 40") también aíslan un único número, pero ambas señalan al
+// MISMO 44, así que refuerzan la respuesta en vez de crear ambigüedad;
+// ninguna propiedad del banco aísla, ella sola, a 23, 29 o 31.
 const RONDA_RESERVA = {
   propiedad: {
-    id: "multiplo-4",
-    check: (n) => n % 4 === 0,
-    describe: "son múltiplos de 4",
-    breakReason: (n) => `${n} no es múltiplo de 4`,
+    id: "primo",
+    check: esPrimo,
+    describe: "son números primos",
+    breakReason: (n) => `${n} no es primo`,
   },
-  numeros: [8, 12, 20, 15],
-  intrusoValor: 15,
+  numeros: [23, 29, 31, 44],
+  intrusoValor: 44,
 };
 
 // Genera una ronda completa e inequívoca:
