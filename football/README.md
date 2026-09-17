@@ -1,7 +1,7 @@
 # Math Games 🧠
 
-PWA (sin build, HTML/CSS/JS puro) con **118 ejercicios de matemáticas**,
-cada uno numerado (#1-#118) para poder referirse a ellos sin ambigüedad.
+PWA (sin build, HTML/CSS/JS puro) con **123 ejercicios de matemáticas**,
+cada uno numerado (#1-#123) para poder referirse a ellos sin ambigüedad.
 Cálculo mental, geometría, álgebra, estadística, fracciones, dinero,
 probabilidad, coordenadas, tiempo y más. Nace como banco de pruebas
 rápido para sacar ideas de mecánicas (tipo Duolingo Math, Synthesis,
@@ -350,6 +350,41 @@ filas, columnas y jaulas cuadren para que la rejilla sea correcta) y se
 verificó con un test dedicado que, sobre una ronda con dos soluciones
 reales, ambas quedan aceptadas.
 
+## Ejercicios #119-#123 (sexta tanda) — tramo 2 (último)
+
+### Tramo 2 — [`css/pack-q.css`](./css/pack-q.css)
+
+| # | Juego | Tema | Mecánica | De dónde sale |
+|---|---|---|---|---|
+| 119 | 🍳 Ajusta la receta | Fracciones y proporción | Escala los ingredientes de una receta al cambiar el número de raciones, multiplicando todos por el mismo factor sencillo (num/den) | Cooking with Fractions |
+| 120 | 🚉 El horario de trenes | Tiempo y horarios | Lee una tabla de horarios con varios trenes y estaciones; según la pregunta, lee un hueco de la tabla, elige el mejor tren dentro de un límite o calcula cuánto hay que esperar | NRICH Train Timetable |
+| 121 | 🏬 Apila cajas | Volumen | Rellena un almacén con el volumen exacto eligiendo el subconjunto correcto de cajas candidatas, calculando cada volumen antes de sumar | Inventado: terna *volumen + apilar + almacén* |
+| 122 | 🤝 El trueque | Ecuaciones | Resuelve una ecuación lineal disfrazada de mercado: dos platillos con cestas (incógnita) y sacos (valor fijo) deben quedar igualados | Inventado: terna *ecuaciones + negociar + mercado* |
+| 123 | 🔁 Conversión deslizante | Unidades | Arrastra un marcador sobre una regla de destino hasta la marca que coincide con la conversión exacta de la cantidad de origen | Inventado: terna *unidades + deslizar + laboratorio* |
+
+Con este tramo se cierran los 10 ejercicios nuevos de la sexta tanda.
+Verificación antes de publicar: simulación de 20.000 rondas de #119
+(`sim_receta.mjs`, ninguna cantidad escalada sale con decimales
+periódicos, nunca cantidad 0 ni factor 1); 12.000 rondas de #120
+(`sim_horario.mjs`, coherencia horaria siempre, sin empates en las
+rondas de "elige el mejor tren", espera siempre positiva); 5.000 rondas
+de #121 (`verify_almacen.mjs`, por fuerza bruta sobre todos los
+subconjuntos: siempre exactamente una combinación de cajas suma el
+objetivo); 20.000 rondas de #122 (`test_trueque.mjs`, la incógnita
+recalculada desde cero con la fórmula de la ecuación coincide siempre
+con la generada, y siempre es un entero positivo); 20.000 rondas de
+#123 (`sim_conversion.mjs`, el valor de destino cae siempre exacto en
+una marca discreta de la regla, nunca hay que interpolar). Los 123
+ejercicios cargan sin error de consola, y los 5 nuevos se jugaron de
+verdad en el navegador calculando la respuesta correcta de forma
+independiente sin acceder al estado interno del módulo — leyendo solo
+el DOM (factor y cantidad mostrada en #119, la propia tabla de
+horarios en #120, las dimensiones de las cajas en #121, el contenido
+de los platillos en #122, la posición del marcador de origen en #123)
+— y confirmando que el marcador sube +10 en cada acierto; también se
+comprobó que fallar #121 a propósito resta una vida con el mensaje
+correcto.
+
 ## Versiones (v2) y bandeja "Revisar"
 
 Cuando un ejercicio recibe una vuelta de mejoras, se marca con un
@@ -569,17 +604,17 @@ Una vez publicado, esta app queda en:
 
 ## Qué hace la app
 
-- Menú con los 118 ejercicios numerados, organizados en pestañas
+- Menú con los 123 ejercicios numerados, organizados en pestañas
   🆕/👍/👎/🔧; cada uno abre en su propia pantalla (`#/game/<id>`), sin
   recargar la página.
 - Motor de preguntas compartido (`js/quiz-engine.js`) para los 18
   ejercicios de "pregunta + opciones o teclado" (`js/games-data.js` y
-  `js/games-data-2.js`); los otros 100 (`js/game-*.js` y
+  `js/games-data-2.js`); los otros 105 (`js/game-*.js` y
   `js/balloons-game.js`) tienen cada uno su propia mecánica de
   interacción (arrastrar, tocar en orden, emparejar, construir,
   escribir, clasificar, recorrer…).
 - Los estilos de cada tanda viven en su propio `css/pack-<letra>.css`
-  (de `pack-a.css` a `pack-p.css`, uno por tramo temático), para que
+  (de `pack-a.css` a `pack-q.css`, uno por tramo temático), para que
   tocar una tanda no arrastre a las demás.
 - Guarda cada partida en `football_scores` y muestra las últimas en el
   menú.
