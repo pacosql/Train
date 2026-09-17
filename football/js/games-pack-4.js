@@ -1,4 +1,4 @@
-// Cuarta tanda: ejercicios #66-#75. Se AÑADEN al final del array GAMES
+// Cuarta tanda: ejercicios #66-#80. Se AÑADEN al final del array GAMES
 // de app.js — nunca se insertan en medio, porque el número de cada
 // ejercicio es su posición y tiene que ser estable para siempre.
 // Agrupados por tramo temático, que es también su fichero CSS.
@@ -14,6 +14,12 @@ import { mountInventaGame } from "./game-inventa.js";
 import { mountCribaGame } from "./game-criba.js";
 import { mountNimGame } from "./game-nim.js";
 
+import { mountBarras2Game } from "./game-barras2.js";
+import { mountDoblecesGame } from "./game-dobleces.js";
+import { mountProbetasGame } from "./game-probetas.js";
+import { mountLupaGame } from "./game-lupa.js";
+import { mountRebajasGame } from "./game-rebajas.js";
+
 export const GAMES_PACK_4 = [
   // Puzzles de lápiz y papel
   { id: "pentominos", title: "Pentominós", emoji: "🟧", topic: "Área y teselado", custom: mountPentominosGame },
@@ -28,4 +34,11 @@ export const GAMES_PACK_4 = [
   { id: "inventa", title: "Inventa la regla", emoji: "🪛", topic: "Patrones", custom: mountInventaGame },
   { id: "criba", title: "Criba de primos", emoji: "🧹", topic: "Primos", custom: mountCribaGame },
   { id: "nim", title: "Nim de palillos", emoji: "🎋", topic: "Paridad y restos", custom: mountNimGame },
+
+  // Manipulativos y proporción
+  { id: "barras2", title: "La misma cantidad", emoji: "🥖", topic: "Fracciones equivalentes", custom: mountBarras2Game },
+  { id: "dobleces", title: "Dobleces de masa", emoji: "🥐", topic: "Potencias de 2", custom: mountDoblecesGame },
+  { id: "probetas", title: "Mezcla las probetas", emoji: "🧪", topic: "Media ponderada", custom: mountProbetasGame },
+  { id: "lupa", title: "La lupa decimal", emoji: "🔬", topic: "Decimales", custom: mountLupaGame },
+  { id: "rebajas", title: "Rebajas", emoji: "💸", topic: "Porcentajes", custom: mountRebajasGame },
 ];

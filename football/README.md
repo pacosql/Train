@@ -1,6 +1,6 @@
 # Math Games 🧠
 
-PWA (sin build, HTML/CSS/JS puro) con **75 ejercicios de matemáticas**,
+PWA (sin build, HTML/CSS/JS puro) con **80 ejercicios de matemáticas**,
 cada uno numerado (#1-#40) para poder referirse a ellos sin ambigüedad.
 Cálculo mental, geometría, álgebra, estadística, fracciones, dinero,
 probabilidad, coordenadas, tiempo y más. Nace como banco de pruebas
@@ -110,7 +110,7 @@ el resto termina a las 3 vidas o al completar el objetivo. Todos
 guardan la puntuación final en Supabase y el menú principal muestra las
 últimas partidas jugadas.
 
-## Ejercicios #66-#75 (cuarta tanda) — 🔧 revisados aparte, 10 mecánicas nuevas
+## Ejercicios #66-#80 (cuarta tanda) — 🔧 revisados aparte, 15 mecánicas nuevas
 
 La columna **de dónde sale** dice si la mecánica viene de una fuente
 concreta de ahí fuera o es inventada, y con qué proceso (la terna de
@@ -136,6 +136,17 @@ combinación forzada, la inversión o la restricción).
 | 73 | 🪛 Inventa la regla | Patrones | Inversión de «¿qué número sigue?»: te dan la serie y construyes la regla que la genera | Inventado: inversión 4.3 |
 | 74 | 🧹 Criba de primos | Primos | Tachas los múltiplos de 2, 3, 5, 7 fase a fase y al final quedan los primos: el algoritmo ES el gesto | Clásico: criba de Eratóstenes (familia 3) |
 | 75 | 🎋 Nim de palillos | Paridad y restos | Quitas 1, 2 o 3 palillos y pierde quien coge el último; no se gana sin la aritmética modular | Gardner / juegos de patio (familias 3 y 10) |
+
+
+### Tramo «Manipulativos y proporción» — [`css/pack-i.css`](./css/pack-i.css)
+
+| # | Juego | Tema | Mecánica | De dónde sale |
+|---|---|---|---|---|
+| 76 | 🥖 La misma cantidad | Fracciones equivalentes | Dos barras del mismo largo partidas en distinto número de trozos: marcas el punto equivalente, así que 2/3 = 4/6 se ve como longitud | Manipulativos de aula / barras de fracciones (familia 7) |
+| 77 | 🥐 Dobleces de masa | Potencias de 2 | Cada doblez duplica las capas y la pila duplica su altura; se ven los dobleces pero **no** las capas | Inventado: terna *potencias + doblar + panadería* |
+| 78 | 🧪 Mezcla las probetas | Media ponderada | Viertes arrastrando y el color del matraz sale interpolado: verter ES promediar | Inventado: terna *media + verter + laboratorio* |
+| 79 | 🔬 La lupa decimal | Decimales | Tocas el trozo de recta y se amplía ×10: cada zoom parte el anterior en 10, que es lo que significa la cifra siguiente | Inventado: terna *decimales + deslizar + laboratorio* |
+| 80 | 💸 Rebajas | Porcentajes | Inversión: estiras una barra sobre el precio hasta dar con el descuento que cuadra; la parte sombreada es a la vez el % y el dinero | Inventado: terna *porcentajes + estirar + mercado* |
 
 
 ## Versiones (v2) y bandeja "Revisar"
@@ -328,7 +339,7 @@ Una vez publicado, esta app queda en:
 
 ## Qué hace la app
 
-- Menú con los 75 ejercicios numerados, organizados en pestañas
+- Menú con los 80 ejercicios numerados, organizados en pestañas
   🆕/👍/👎/🔧; cada uno abre en su propia pantalla (`#/game/<id>`), sin
   recargar la página.
 - Motor de preguntas compartido (`js/quiz-engine.js`) para los 18
