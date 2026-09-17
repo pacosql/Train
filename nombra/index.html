@@ -20,37 +20,60 @@
       <h1>🎾 Nombra 🏓</h1>
     </header>
 
-    <p class="sub cola-sub"><span id="cola-count">0</span> por decidir</p>
-    <div id="swipe-area"></div>
+    <p class="cola-sub"><span id="cola-count">…</span> por decidir</p>
 
-    <details class="info-collapse">
-      <summary>ℹ️ cómo funciona</summary>
-      <p>
-        Cada nombre que ves ya tiene el <strong>.com comprobado libre</strong>
-        y un cribado de colisión con marcas/empresas de España y EEUU antes
-        de llegarte — nunca hay que darle a ningún botón para comprobarlo.
-        No es un certificado legal, solo un filtro serio.
-      </p>
-    </details>
+    <div id="error-banner" class="error-banner" hidden>
+      <span id="error-texto"></span>
+      <button type="button" id="btn-reintentar">Reintentar</button>
+    </div>
+
+    <div id="swipe-area" aria-live="polite"></div>
+
+    <div class="undo-row">
+      <button type="button" id="btn-deshacer" class="btn-ghost" hidden>↩️ Deshacer</button>
+    </div>
+
+    <section class="sugerencia-box">
+      <label for="input-sugerencia" class="sug-label">💡 Sugiéreme un estilo o un nombre y te busco parecidos</label>
+      <form id="form-sugerencia" class="add-form">
+        <input id="input-sugerencia" type="text" maxlength="120" placeholder="p. ej. Paco Play" autocomplete="off" />
+        <button type="submit">Enviar</button>
+      </form>
+      <p id="sug-msg" class="sug-msg" hidden></p>
+      <details id="sug-lista-wrap" hidden>
+        <summary class="sub">sugerencias enviadas (<span id="sug-count">0</span>)</summary>
+        <ul id="sug-lista" class="sug-lista"></ul>
+      </details>
+    </section>
 
     <section>
-      <h2>⭐ Definitivos</h2>
+      <h2 class="sec-title">⭐ Definitivos <span id="count-definitivos" class="count"></span></h2>
       <div id="lista-definitivos" class="name-list"></div>
     </section>
 
     <section>
       <details>
-        <summary><h2>👍 Me gusta</h2></summary>
+        <summary><span class="sec-title">👍 Me gusta <span id="count-megusta" class="count"></span></span></summary>
         <div id="lista-me-gusta" class="name-list"></div>
       </details>
     </section>
 
     <section>
       <details>
-        <summary><h2>👎 Descartados</h2></summary>
+        <summary><span class="sec-title">👎 Descartados <span id="count-descartados" class="count"></span></span></summary>
         <div id="lista-descartados" class="name-list"></div>
       </details>
     </section>
+
+    <details class="info-collapse">
+      <summary>ℹ️ cómo funciona</summary>
+      <p>
+        Cada nombre que ves ya tiene el <strong>.com comprobado libre</strong>
+        y un cribado de colisión con marcas y empresas de España y EEUU antes
+        de llegar aquí. No es un certificado legal, es un filtro serio: antes
+        de registrar nada conviene una búsqueda de marca profesional.
+      </p>
+    </details>
 
     <div class="build-id">build __BUILD_ID__</div>
   </div>
@@ -58,7 +81,8 @@
   <template id="tpl-swipe-card">
     <div class="swipe-card">
       <div class="name-text"></div>
-      <input class="nota-input" type="text" maxlength="200" placeholder="comentario (opcional)" />
+      <label class="visually-hidden" for="nota-actual">Comentario sobre este nombre</label>
+      <input class="nota-input" id="nota-actual" type="text" maxlength="200" placeholder="comentario (opcional)" autocomplete="off" />
       <div class="swipe-actions">
         <button class="btn-dislike" type="button">👎 No</button>
         <button class="btn-star" type="button">⭐ Definitivo</button>
@@ -67,7 +91,7 @@
       <details class="mas-info">
         <summary>más información</summary>
         <div class="checks"></div>
-        <div class="colision-info sub"></div>
+        <div class="colision-info"></div>
       </details>
     </div>
   </template>
@@ -82,7 +106,7 @@
       <details class="mas-info">
         <summary>más información</summary>
         <div class="checks"></div>
-        <div class="colision-info sub"></div>
+        <div class="colision-info"></div>
         <div class="official-links"></div>
       </details>
     </div>
