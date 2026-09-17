@@ -186,16 +186,10 @@ export function kkFindIssue(grid, puzzle) {
       };
     }
   }
-  for (let i = 0; i < N * N; i++) {
-    if (grid[i] !== puzzle.solution[i]) {
-      const r = Math.floor(i / N);
-      const c = i % N;
-      return {
-        cell: i,
-        text: `La fila ${r + 1}, columna ${c + 1} no es el número que buscamos: prueba otro.`,
-      };
-    }
-  }
+  // Si filas, columnas y todas las jaulas cuadran, la rejilla es una
+  // solución válida del puzzle — no hace falta que coincida celda a celda
+  // con la que generó el enunciado, porque algunos repartos de jaulas
+  // admiten más de un cuadrado latino que las satisfaga igual de bien.
   return null;
 }
 
