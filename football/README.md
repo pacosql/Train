@@ -1,7 +1,7 @@
 # Math Games 🧠
 
-PWA (sin build, HTML/CSS/JS puro) con **145 ejercicios de matemáticas**,
-cada uno numerado (#1-#145) para poder referirse a ellos sin ambigüedad.
+PWA (sin build, HTML/CSS/JS puro) con **149 ejercicios de matemáticas**,
+cada uno numerado (#1-#149) para poder referirse a ellos sin ambigüedad.
 Cálculo mental, geometría, álgebra, estadística, fracciones, dinero,
 probabilidad, coordenadas, tiempo y más. Nace como banco de pruebas
 rápido para sacar ideas de mecánicas (tipo Duolingo Math, Synthesis,
@@ -601,6 +601,51 @@ solapar temáticamente con `game-puja.js` (#pack-9), aunque su mecánica
 concreta —búsqueda binaria con pistas de más/menos— difiera; se
 sustituyó por "la oca numérica" (#145).
 
+## Ejercicios #146-#149 (undécima tanda, 17-09-2026 noche) — tramo único
+
+### Tramo único — [`css/pack-v.css`](./css/pack-v.css)
+
+Sin filas `review` pendientes, se saltó el paso de revisión. Familias
+usadas: 3 (libros y divulgación), 5 (juegos de mesa) y 6 (mecánicas de
+videojuego) — las 3 únicas que quedaban fuera de la unión de familias
+de las 3 rondas anteriores. Tanda más modesta (4 ideas, no 5-6): la
+auditoría previa descartó 4 falsos positivos antes de escribir código
+(ver más abajo), y se prioriza calidad sobre forzar una quinta idea
+calcada.
+
+| # | Juego | Tema | Mecánica | De dónde sale |
+|---|---|---|---|---|
+| 146 | ⚖️ Pesas de Bachet | Numeración en base 3 | Con pesas de 1, 3, 9 y 27 que pueden ir al plato izquierdo (resta), al derecho (suma) o quedarse sin usar, pesa el objetivo exacto — es la representación en ternario equilibrado, única por construcción matemática | Problema de Bachet de Méziriac (Martin Gardner), familia 3 — aparcada en el backlog desde la primera ronda del día |
+| 147 | 🧮 La fila que cuadra | Múltiplos | Una fila de fichas fijas más un hueco; dada una clave (3, 4 o 5), toca la única ficha de un banco de 4 que hace que la suma total sea múltiplo de la clave | Sumoku (Blue Orange Games), familia 5 |
+| 148 | 🪜 La hilera que sube | Secuencias y puntuación | Dada una fila con números ya marcados en orden creciente y un número nuevo, decide si se podría marcar (solo si es mayor que el último) y cuántos puntos daría (su posición en la fila) | Qwixx (regla de orden estricto + puntuación posicional), familia 5 |
+| 149 | 🐢 Lineal contra exponencial | Crecimiento exponencial | Dos secuencias arrancan con la exponencial por detrás; calcula en qué paso la exponencial adelanta a la lineal por primera vez | Inventado, inspirado en la matemática de los juegos idle/incremental, familia 6 |
+
+Verificación antes de publicar: `verify_bachet.mjs` sobre los 40
+valores posibles de #146 (fuerza bruta exhaustiva sobre las 3⁴=81
+combinaciones de {-1,0,1}⁴ para cada objetivo, confirmando solución
+única en los 40 casos); `verify_sumafila.mjs` sobre 10.000 rondas de
+#147 (exactamente una candidata válida y las 4 distintas entre sí);
+`verify_hilera.mjs` sobre 10.000 rondas de #148 (orden estrictamente
+creciente y respuesta recalculada de forma independiente, con cobertura
+real de los casos válido/inválido); `verify_crecimiento.mjs` sobre
+10.000 rondas de #149 (paso de cruce recalculado por simulación paso a
+paso, nunca con logaritmos, y siempre en el rango 2-9). Los 149
+ejercicios cargan sin error de consola, y los 4 nuevos se jugaron de
+verdad en el navegador calculando la respuesta correcta de forma
+independiente, confirmando que el marcador sube +10 en cada acierto; se
+comprobó además en #148 que fallar a propósito resta una vida con el
+mensaje correcto.
+
+**Hallazgo de auditoría (sin cambio de código):** antes de programar,
+se descartaron 4 ideas por duplicar mecánicas ya existentes: Prime
+Climb (colores por factores primos) ya es `game-colorprimos.js`
+(#pack-11); Set (atributos todos-iguales-o-todos-distintos) ya es
+`game-trio.js` (#pack-5); Rummikub (grupos y escaleras) ya es
+`game-combina.js` (#pack-11); Yahtzee (elegir la categoría que más
+puntúa) ya es `game-categorias.js` (#pack-11). También se descartó una
+variante de dominó "que suma un número fijo" por ser la misma mecánica
+de complemento a un total que `game-amigos10.js`, solo con otro disfraz.
+
 ## Versiones (v2) y bandeja "Revisar"
 
 Cuando un ejercicio recibe una vuelta de mejoras, se marca con un
@@ -846,17 +891,17 @@ Una vez publicado, esta app queda en:
 
 ## Qué hace la app
 
-- Menú con los 145 ejercicios numerados, organizados en pestañas
+- Menú con los 149 ejercicios numerados, organizados en pestañas
   🆕/👍/👎/🔧; cada uno abre en su propia pantalla (`#/game/<id>`), sin
   recargar la página.
 - Motor de preguntas compartido (`js/quiz-engine.js`) para los 18
   ejercicios de "pregunta + opciones o teclado" (`js/games-data.js` y
-  `js/games-data-2.js`); los otros 127 (`js/game-*.js` y
+  `js/games-data-2.js`); los otros 131 (`js/game-*.js` y
   `js/balloons-game.js`) tienen cada uno su propia mecánica de
   interacción (arrastrar, tocar en orden, emparejar, construir,
   escribir, clasificar, recorrer…).
 - Los estilos de cada tanda viven en su propio `css/pack-<letra>.css`
-  (de `pack-a.css` a `pack-u.css`, uno por tramo temático), para que
+  (de `pack-a.css` a `pack-v.css`, uno por tramo temático), para que
   tocar una tanda no arrastre a las demás.
 - Guarda cada partida en `football_scores` y muestra las últimas en el
   menú.
