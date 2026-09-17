@@ -1,7 +1,7 @@
 # Math Games 🧠
 
-PWA (sin build, HTML/CSS/JS puro) con **85 ejercicios de matemáticas**,
-cada uno numerado (#1-#40) para poder referirse a ellos sin ambigüedad.
+PWA (sin build, HTML/CSS/JS puro) con **90 ejercicios de matemáticas**,
+cada uno numerado (#1-#90) para poder referirse a ellos sin ambigüedad.
 Cálculo mental, geometría, álgebra, estadística, fracciones, dinero,
 probabilidad, coordenadas, tiempo y más. Nace como banco de pruebas
 rápido para sacar ideas de mecánicas (tipo Duolingo Math, Synthesis,
@@ -110,7 +110,7 @@ el resto termina a las 3 vidas o al completar el objetivo. Todos
 guardan la puntuación final en Supabase y el menú principal muestra las
 últimas partidas jugadas.
 
-## Ejercicios #66-#85 (cuarta tanda) — 🔧 revisados aparte, 20 mecánicas nuevas
+## Ejercicios #66-#90 (cuarta tanda) — 🔧 revisados aparte, 25 mecánicas nuevas
 
 La columna **de dónde sale** dice si la mecánica viene de una fuente
 concreta de ahí fuera o es inventada, y con qué proceso (la terna de
@@ -158,6 +158,17 @@ combinación forzada, la inversión o la restricción).
 | 83 | 🚢 Hundir la flota | Coordenadas y deducción | Tablero 6×6 con contadores por fila y columna: se deduce, no se adivina | Juegos populares / puzzles de deducción (familia 10) |
 | 84 | 🪣 El pintor | Área | Mides la pared (rectángulos pegados) y compras los botes justos; el área **no** se dice | Inventado: terna *área + pintar + obra* |
 | 85 | ⚙️ Engranajes | Mínimo común múltiplo | Haces rodar la rueda y paras cuando las marcas vuelven a coincidir: eso pasa a las vueltas del m.c.m. | Inventado: terna *múltiplos + rodar + taller* |
+
+
+### Tramo «Riesgo, visual y sin palabras» — [`css/pack-k.css`](./css/pack-k.css)
+
+| # | Juego | Tema | Mecánica | De dónde sale |
+|---|---|---|---|---|
+| 86 | ✖️ Tachones | Probabilidad y orden | Tiras dos dados y tachas solo hacia delante: lo que saltas lo pierdes. Al decidir se ven cuántas de las 36 combinaciones caen a cada lado | Juego de mesa *Qwixx* / valor esperado (familia 5) |
+| 87 | ♠️ Sin pasarse | Cálculo y riesgo | Cada carta trae una operación que se aplica a tu total y decides cuándo pararte, sin pasarte del objetivo | Blackjack matemático de aula + *El Precio Justo* (familia 10) |
+| 88 | 🐧 El puente | Complementos sin palabras | **Ni una palabra ni una cifra en pantalla**: tocas la pieza que encaja en el hueco y al fallar la animación muestra al pingüino cayendo | Diseño de puzles de **ST Math** (familia 1) + restricción 4.4 |
+| 89 | 🌈 Colorea el mapa | Lógica y grafos | Coloreas sin que dos vecinas compartan color y con el mínimo de colores posible | Divulgación de **Clara Grima**: grafos y los cuatro colores (familia 2) |
+| 90 | 🤿 Buceo | Enteros | Llevas al buzo a la cota exacta con saltos de un solo uso: enteros con signo como desplazamiento vertical real | Inventado: terna *negativos + apilar + fondo del mar* |
 
 
 ## Versiones (v2) y bandeja "Revisar"
@@ -350,7 +361,7 @@ Una vez publicado, esta app queda en:
 
 ## Qué hace la app
 
-- Menú con los 85 ejercicios numerados, organizados en pestañas
+- Menú con los 90 ejercicios numerados, organizados en pestañas
   🆕/👍/👎/🔧; cada uno abre en su propia pantalla (`#/game/<id>`), sin
   recargar la página.
 - Motor de preguntas compartido (`js/quiz-engine.js`) para los 18

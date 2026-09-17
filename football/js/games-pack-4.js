@@ -1,4 +1,4 @@
-// Cuarta tanda: ejercicios #66-#85. Se AÑADEN al final del array GAMES
+// Cuarta tanda: ejercicios #66-#90. Se AÑADEN al final del array GAMES
 // de app.js — nunca se insertan en medio, porque el número de cada
 // ejercicio es su posición y tiene que ser estable para siempre.
 // Agrupados por tramo temático, que es también su fichero CSS.
@@ -25,6 +25,12 @@ import { mountConjuntosGame } from "./game-conjuntos.js";
 import { mountFlotaGame } from "./game-flota.js";
 import { mountPintorGame } from "./game-pintor.js";
 import { mountEngranajesGame } from "./game-engranajes.js";
+
+import { mountTachonesGame } from "./game-tachones.js";
+import { mountVeintiunoGame } from "./game-veintiuno.js";
+import { mountPuenteGame } from "./game-puente.js";
+import { mountMapaGame } from "./game-mapa.js";
+import { mountBuceoGame } from "./game-buceo.js";
 
 export const GAMES_PACK_4 = [
   // Puzzles de lápiz y papel
@@ -54,4 +60,11 @@ export const GAMES_PACK_4 = [
   { id: "flota", title: "Hundir la flota", emoji: "🚢", topic: "Coordenadas y deducción", custom: mountFlotaGame },
   { id: "pintor", title: "El pintor", emoji: "🪣", topic: "Área", custom: mountPintorGame },
   { id: "engranajes", title: "Engranajes", emoji: "⚙️", topic: "Mínimo común múltiplo", custom: mountEngranajesGame },
+
+  // Riesgo, visual y sin palabras
+  { id: "tachones", title: "Tachones", emoji: "✖️", topic: "Probabilidad y orden", custom: mountTachonesGame },
+  { id: "veintiuno", title: "Sin pasarse", emoji: "♠️", topic: "Cálculo y riesgo", custom: mountVeintiunoGame },
+  { id: "puente", title: "El puente", emoji: "🐧", topic: "Complementos sin palabras", custom: mountPuenteGame },
+  { id: "mapa", title: "Colorea el mapa", emoji: "🌈", topic: "Lógica y grafos", custom: mountMapaGame },
+  { id: "buceo", title: "Buceo", emoji: "🤿", topic: "Enteros", custom: mountBuceoGame },
 ];
