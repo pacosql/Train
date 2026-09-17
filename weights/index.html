@@ -6,7 +6,7 @@
   <title>Weights</title>
 
   <link rel="manifest" href="manifest.json" />
-  <meta name="theme-color" content="#3ecf8e" />
+  <meta name="theme-color" content="#0a0d0c" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Weights" />
@@ -21,32 +21,26 @@
       font-size: 150%;
     }
     :root {
-      color-scheme: light dark;
-      --bg: #f2f5f3;
-      --card: #ffffff;
-      --text: #10231a;
-      --muted: #5b6b63;
+      /* Diseño oscuro de forma deliberada (no un simple prefers-color-scheme):
+         look de app de entrenamiento profesional, un solo acento vivo sobre
+         negro, en vez de tarjetas blancas. */
+      color-scheme: dark;
+      --bg: #0a0d0c;
+      --card: #141a17;
+      --card-border: rgba(255, 255, 255, 0.07);
+      --card-hi: rgba(255, 255, 255, 0.03);
+      --text: #f2f6f3;
+      --muted: #8b9a92;
       --accent: #3ecf8e;
-      --accent-dark: #249d68;
-      --stop: #ff8a3d;
-      --stop-dark: #e06a1a;
-      --danger: #e5484d;
-      --border: #e2e8e5;
-      --push: #5b8def;
-      --pull: #f2994a;
-      --shadow: 0 2px 10px rgba(16, 35, 26, 0.06);
+      --accent-dark: #2bb377;
+      --stop: #ff6b4a;
+      --stop-dark: #e5522f;
+      --danger: #ff5470;
+      --border: rgba(255, 255, 255, 0.09);
+      --push: #6ea8fe;
+      --pull: #f0b429;
       padding-top: env(safe-area-inset-top, 0px);
       padding-bottom: env(safe-area-inset-bottom, 0px);
-    }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #0c1310;
-        --card: #17221c;
-        --text: #eaf3ee;
-        --muted: #93a69c;
-        --border: #263229;
-        --shadow: 0 2px 14px rgba(0, 0, 0, 0.35);
-      }
     }
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
     body {
@@ -54,58 +48,70 @@
       background: var(--bg);
       color: var(--text);
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      padding: 20px 16px 40px;
+      padding: 20px 16px 48px;
+      -webkit-font-smoothing: antialiased;
     }
     .wrap { max-width: 480px; margin: 0 auto; }
     .top-bar {
       display: flex; align-items: center; justify-content: space-between;
       margin-bottom: 10px;
     }
-    .top-bar-title { font-weight: 800; cursor: pointer; font-size: 1rem; }
+    .top-bar-title { font-weight: 800; cursor: pointer; font-size: 1rem; letter-spacing: 0.2px; }
     .top-bar-tag {
-      font-size: 0.75rem; font-weight: 800; color: var(--accent-dark);
-      background: rgba(62,207,142,0.15); padding: 5px 12px; border-radius: 999px;
-      cursor: pointer; transition: transform 0.1s ease, background 0.15s ease;
-      border: 1px solid rgba(62,207,142,0.3);
+      font-size: 0.75rem; font-weight: 800; color: #06231a;
+      background: var(--accent);
+      padding: 5px 12px; border-radius: 999px;
+      cursor: pointer; transition: transform 0.1s ease;
     }
-    .top-bar-tag:active { transform: scale(0.96); }
-    h1 { font-size: 1.4rem; margin: 0 0 4px; display: flex; align-items: center; gap: 8px; }
-    h2 { font-size: 1.1rem; margin: 0 0 4px; }
-    .sub { color: var(--muted); margin: 0 0 20px; font-size: 0.9rem; }
+    .top-bar-tag:active { transform: scale(0.95); }
+    h1 { font-size: 1.4rem; margin: 0 0 4px; display: flex; align-items: center; gap: 8px; letter-spacing: -0.2px; }
+    h2 { font-size: 1.15rem; margin: 0 0 4px; letter-spacing: -0.1px; }
+    h3 { font-size: 0.95rem; margin: 18px 0 6px; color: var(--accent); }
+    .sub { color: var(--muted); margin: 0 0 20px; font-size: 0.9rem; line-height: 1.4; }
     .card {
       background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 18px;
+      border: 1px solid var(--card-border);
+      border-top-color: var(--card-hi);
+      border-radius: 20px;
       padding: 18px;
       margin-bottom: 14px;
-      box-shadow: var(--shadow);
     }
     button {
       background: var(--accent);
       color: #06231a;
       border: none;
-      border-radius: 14px;
+      border-radius: 16px;
       padding: 15px 18px;
       font-size: 1rem;
       font-weight: 800;
+      letter-spacing: 0.1px;
       cursor: pointer;
       width: 100%;
       margin-bottom: 10px;
       transition: transform 0.08s ease, opacity 0.15s ease, box-shadow 0.15s ease;
-      box-shadow: 0 3px 0 rgba(0,0,0,0.08);
+      box-shadow: 0 6px 18px rgba(62, 207, 142, 0.22);
     }
     button:last-child { margin-bottom: 0; }
-    button:active { transform: translateY(2px); box-shadow: none; }
-    button.stop { background: var(--stop); color: #2a1400; }
+    button:active { transform: translateY(1px) scale(0.99); box-shadow: 0 2px 8px rgba(62, 207, 142, 0.18); }
+    button.stop { background: var(--stop); box-shadow: 0 6px 18px rgba(255, 107, 74, 0.22); }
     button.secondary {
-      background: transparent;
+      background: var(--card);
       color: var(--text);
       border: 1.5px solid var(--border);
       font-weight: 700;
       box-shadow: none;
     }
+    button.tertiary {
+      background: transparent;
+      color: var(--muted);
+      border: none;
+      font-weight: 700;
+      box-shadow: none;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
     button.small { width: auto; padding: 10px 16px; margin: 0; flex-shrink: 0; }
-    button:disabled { opacity: 0.4; cursor: default; }
+    button:disabled { opacity: 0.35; cursor: default; box-shadow: none; }
     .chip-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
     .chip {
       flex: 1;
@@ -114,13 +120,13 @@
       padding: 12px 8px;
       border-radius: 14px;
       border: 1.5px solid var(--border);
-      background: var(--bg);
+      background: var(--card);
       color: var(--text);
       font-weight: 700;
       cursor: pointer;
       transition: border-color 0.15s ease, background 0.15s ease;
     }
-    .chip.selected { border-color: var(--accent); background: rgba(62,207,142,0.15); }
+    .chip.selected { border-color: var(--accent); background: rgba(62, 207, 142, 0.16); color: var(--accent); }
     .row { display: flex; gap: 10px; align-items: stretch; }
     .row input { flex: 1; width: auto; }
     input[type="number"], input[type="text"] {
@@ -128,44 +134,54 @@
       padding: 12px;
       border-radius: 12px;
       border: 1.5px solid var(--border);
-      background: var(--bg);
+      background: #0e1613;
       color: var(--text);
       font-size: 1rem;
     }
-    label { font-size: 0.8rem; color: var(--muted); display: block; margin-bottom: 6px; }
+    input::placeholder { color: var(--muted); opacity: 0.7; }
+    label { font-size: 0.8rem; color: var(--muted); display: block; margin-bottom: 6px; font-weight: 600; }
+    .group-header {
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--muted);
+      margin: 20px 0 10px;
+    }
+    .group-header:first-child { margin-top: 4px; }
     .exercise-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 14px 16px;
-      border-radius: 14px;
-      border: 1px solid var(--border);
-      border-left: 5px solid var(--muted);
+      border-radius: 16px;
+      border: 1px solid var(--card-border);
+      border-left: 4px solid var(--muted);
       margin-bottom: 10px;
       cursor: pointer;
       background: var(--card);
-      box-shadow: var(--shadow);
-      transition: transform 0.08s ease;
+      transition: transform 0.08s ease, background 0.1s ease;
     }
-    .exercise-item:active { transform: scale(0.98); }
+    .exercise-item:active { transform: scale(0.98); background: #182019; }
     .exercise-item.push { border-left-color: var(--push); }
     .exercise-item.pull { border-left-color: var(--pull); }
     .exercise-item.cardio { border-left-color: var(--muted); }
     .exercise-item .name { font-weight: 800; }
     .exercise-item .muscle { color: var(--muted); font-size: 0.8rem; margin-top: 2px; }
     .badge {
-      font-size: 0.68rem;
+      font-size: 0.65rem;
       font-weight: 800;
       padding: 4px 10px;
       border-radius: 999px;
       text-transform: uppercase;
-      color: white;
+      letter-spacing: 0.4px;
+      color: #06231a;
       flex-shrink: 0;
       margin-left: 10px;
     }
     .badge.push { background: var(--push); }
     .badge.pull { background: var(--pull); }
-    .badge.cardio { background: var(--muted); }
+    .badge.cardio { background: var(--muted); color: #0a0d0c; }
     .stepper {
       display: flex; align-items: center; justify-content: center; gap: 20px;
       margin-top: 8px;
@@ -178,8 +194,8 @@
     .stepper-value { font-size: 2.4rem; font-weight: 800; min-width: 5rem; text-align: center; }
     .stat { text-align: center; }
     .stat .value { font-size: 1.8rem; font-weight: 800; }
-    .stat .label { font-size: 0.75rem; color: var(--muted); }
-    .hint { font-size: 0.85rem; color: var(--muted); margin-top: 4px; }
+    .stat .label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.4px; margin-top: 2px; }
+    .hint { font-size: 0.85rem; color: var(--muted); margin-top: 4px; line-height: 1.4; }
     .status-bar {
       display: flex; align-items: center; gap: 6px;
       font-size: 0.75rem; color: var(--muted);
@@ -195,8 +211,10 @@
       font-size: 0.85rem;
     }
     .history-list li:last-child { border-bottom: none; }
-    .notes-note { background: rgba(242,153,74,0.12); border: 1px dashed var(--pull); border-radius: 12px; padding: 10px 14px; font-size: 0.85rem; margin-bottom: 14px; }
-    .description-note { text-align: center; margin-top: 14px; font-style: italic; }
+    .detail-section { margin-top: 10px; }
+    .detail-section p { line-height: 1.5; color: var(--text); font-size: 0.92rem; margin: 0 0 4px; }
+    .description-note { text-align: center; margin-top: 14px; }
+    .divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
     .build-id { text-align: center; font-size: 0.7rem; color: var(--muted); margin-top: 20px; font-family: ui-monospace, monospace; }
     [hidden] { display: none !important; }
   </style>
@@ -223,9 +241,54 @@
       <div class="card" id="start-new-card">
         <button id="btn-start">Start</button>
       </div>
-      <div class="card" id="history-card" hidden>
+
+      <button id="btn-browse-catalog" class="secondary">📋 Ver ejercicios y pesos</button>
+
+      <div class="card" id="history-card" hidden style="margin-top: 14px;">
         <h2>Últimas sesiones</h2>
         <ul id="history-list" class="history-list"></ul>
+      </div>
+    </section>
+
+    <!-- CATALOG LIST (sin sesión activa) -->
+    <section id="screen-catalog-list" hidden>
+      <h2>📋 Ejercicios y pesos</h2>
+      <p class="sub">Repasa el catálogo completo y ajusta el peso de referencia de cada máquina cuando quieras, sin tener que empezar un entrenamiento.</p>
+      <div id="catalog-list"></div>
+      <button id="btn-catalog-back-home" class="secondary">← Volver a Inicio</button>
+    </section>
+
+    <!-- CATALOG DETAIL -->
+    <section id="screen-catalog-detail" hidden>
+      <h2 id="cd-name">—</h2>
+      <p class="sub"><span id="cd-badge" class="badge"></span> <span id="cd-muscle"></span></p>
+
+      <div class="card" id="cd-weight-card">
+        <p class="hint" id="cd-last-used"></p>
+        <label style="text-align:center;">Peso de referencia (kg)</label>
+        <div class="stepper">
+          <button type="button" id="cd-weight-minus" class="stepper-btn">−</button>
+          <div class="stepper-value" id="cd-weight-display">0</div>
+          <button type="button" id="cd-weight-plus" class="stepper-btn">+</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <label for="cd-notes-input">📝 Notas de la máquina (opcional)</label>
+        <div class="row">
+          <input id="cd-notes-input" type="text" placeholder="p. ej. asiento en posición 3" />
+          <button id="btn-cd-save-notes" class="small secondary">Guardar</button>
+        </div>
+      </div>
+
+      <button id="btn-catalog-back-list" class="secondary">← Volver a la lista</button>
+
+      <hr class="divider" />
+      <div class="detail-section">
+        <h3>Cómo entrenarlo</h3>
+        <p id="cd-description"></p>
+        <h3>Sobre este grupo muscular</h3>
+        <p id="cd-muscle-info"></p>
       </div>
     </section>
 
@@ -348,7 +411,14 @@
       <button id="btn-save-weight-only" class="secondary">💾 Guardar peso sin cronometrar</button>
       <button id="btn-finish-exercise" class="stop" hidden>Stop</button>
       <button id="btn-back-exercise" class="secondary">← Ver lista de ejercicios</button>
-      <p class="hint description-note" id="ex-description"></p>
+
+      <hr class="divider" />
+      <div class="detail-section">
+        <h3>Cómo entrenarlo</h3>
+        <p id="ex-description"></p>
+        <h3>Sobre este grupo muscular</h3>
+        <p id="ex-muscle-info"></p>
+      </div>
     </section>
 
     <!-- FEEDBACK -->
@@ -392,13 +462,37 @@
     }
     const DEFAULT_DESCRIPTION = "3 series × 8 repeticiones. Busca llegar al fallo (o cerca) en la última serie.";
 
+    // Contenido educativo por grupo muscular — coincidencia por palabra
+    // clave, así que sirve aunque el texto exacto del grupo muscular varíe
+    // ("Pecho", "Pecho / Tríceps", etc. lo detectan igual).
+    const MUSCLE_INFO = [
+      { match: /pecho/i, text: "El pectoral es un músculo grande que responde bien tanto a series pesadas de pocas repeticiones como a series más largas de aislamiento. Controla la bajada, aprieta arriba y evita que los hombros hagan todo el trabajo por ti." },
+      { match: /espalda/i, text: "La espalda es un grupo grande y resistente que tolera bien el volumen. Piensa en \"tirar con los codos\", no solo con las manos, para implicar más el dorsal y menos el brazo." },
+      { match: /hombro|deltoides/i, text: "El deltoides tiene tres cabezas (delantera, lateral y posterior) — merece la pena variar el ángulo con el tiempo. Es un músculo relativamente pequeño, así que suele responder mejor a series algo más ligeras y controladas que a cargas máximas." },
+      { match: /pierna|cuádriceps|cuadriceps|glúteo|gluteo/i, text: "Las piernas son el grupo muscular más grande del cuerpo y toleran mucho volumen — por eso suelen ir mejor con rangos más altos de repeticiones (10-15) que el tren superior. Evita bloquear la rodilla del todo arriba del movimiento." },
+      { match: /bíceps|biceps|tríceps|triceps/i, text: "Son músculos más pequeños que se fatigan rápido y son fáciles de \"hacer trampa\" balanceando el cuerpo — prioriza el rango completo de movimiento controlado sobre subir el peso a toda costa." },
+      { match: /cardio/i, text: "El cardio antes de la fuerza sube la frecuencia cardiaca, activa las articulaciones y mejora tu recuperación entre series — además cuenta para tu salud cardiovascular a largo plazo. Mantén un ritmo constante que puedas sostener todo el tiempo previsto." },
+    ];
+    function muscleInfo(muscleGroup) {
+      const matches = MUSCLE_INFO.filter((m) => m.match.test(muscleGroup || ""));
+      if (matches.length) return matches.map((m) => m.text).join(" ");
+      return "Un grupo muscular importante dentro de tu rutina — prioriza la forma correcta en cada repetición por encima del peso.";
+    }
+
     const el = (id) => document.getElementById(id);
-    const screens = ["home", "setup", "cardio-pick", "cardio", "pick", "exercise", "add-exercise", "feedback", "summary"];
+    const screens = [
+      "home", "catalog-list", "catalog-detail",
+      "setup", "cardio-pick", "cardio", "pick", "exercise", "add-exercise", "feedback", "summary",
+    ];
+    // Solo estas pantallas cuentan como "dónde retomar" un entrenamiento —
+    // navegar al catálogo (con o sin sesión activa) nunca debe sobrescribir
+    // el punto de retorno de la sesión en marcha.
+    const WORKOUT_SCREENS = new Set(["setup", "cardio-pick", "cardio", "pick", "exercise", "add-exercise", "feedback"]);
 
     function showScreen(name) {
       for (const s of screens) el(`screen-${s}`).hidden = s !== name;
       state.screen = name;
-      if (name !== "home") state.lastActiveScreen = name;
+      if (WORKOUT_SCREENS.has(name)) state.lastActiveScreen = name;
       if (name === "home") {
         const hasActive = !!(state.sessionId && state.lastActiveScreen);
         el("active-session-banner").hidden = !hasActive;
@@ -427,6 +521,10 @@
     let client = null;
     let catalog = [];
     let historyByExercise = {}; // exercise_id -> {weight_used, next_time, completed_at}
+    // Estado efímero de "explorar catálogo" (sin sesión) — no se persiste,
+    // no forma parte del entrenamiento en marcha.
+    let currentCatalogExerciseId = null;
+    let catalogWeightDraft = 0;
 
     const STORAGE_KEY = "weights_app_state_v1";
     let state = loadState() || freshState();
@@ -671,6 +769,105 @@
       }
     }
 
+    // ---- Explorar catálogo sin sesión activa ----
+
+    function renderCatalogList() {
+      const container = el("catalog-list");
+      container.innerHTML = "";
+      const groups = [
+        { key: "push", label: "💪 Empuje" },
+        { key: "pull", label: "🔙 Tirón" },
+        { key: "cardio", label: "❤️ Cardio" },
+      ];
+      for (const g of groups) {
+        const items = catalog.filter((e) => e.movement_type === g.key).sort((a, b) => a.sort_order - b.sort_order);
+        if (!items.length) continue;
+        const h = document.createElement("div");
+        h.className = "group-header";
+        h.textContent = g.label;
+        container.appendChild(h);
+        for (const ex of items) {
+          const last = historyByExercise[ex.id];
+          const isCardio = ex.movement_type === "cardio";
+          const weightTxt = isCardio
+            ? ""
+            : last && last.weight_used != null
+            ? ` · último: ${last.weight_used} kg`
+            : ex.default_weight != null
+            ? ` · referencia: ${ex.default_weight} kg`
+            : " · sin peso guardado";
+          const div = document.createElement("div");
+          div.className = "exercise-item " + ex.movement_type;
+          div.innerHTML = `
+            <div>
+              <div class="name">${ex.name}</div>
+              <div class="muscle">${ex.muscle_group}${weightTxt}</div>
+            </div>
+          `;
+          div.addEventListener("click", () => showCatalogDetail(ex));
+          container.appendChild(div);
+        }
+      }
+    }
+
+    function renderCatalogWeightDisplay() {
+      el("cd-weight-display").textContent = catalogWeightDraft;
+    }
+
+    async function adjustCatalogWeight(dir) {
+      const ex = catalog.find((e) => e.id === currentCatalogExerciseId);
+      if (!ex) return;
+      const step = Number(ex.weight_step) > 0 ? Number(ex.weight_step) : 2.5;
+      catalogWeightDraft = Math.max(0, catalogWeightDraft + dir * step);
+      renderCatalogWeightDisplay();
+      const { error } = await client.from(T.exercises).update({ default_weight: catalogWeightDraft }).eq("id", ex.id);
+      if (!error) ex.default_weight = catalogWeightDraft;
+    }
+
+    function showCatalogDetail(ex) {
+      currentCatalogExerciseId = ex.id;
+      el("cd-name").textContent = ex.name;
+      el("cd-muscle").textContent = ex.muscle_group;
+      const badge = el("cd-badge");
+      badge.className = "badge " + ex.movement_type;
+      badge.textContent = ex.movement_type === "push" ? "Empuje" : ex.movement_type === "pull" ? "Tirón" : "Cardio";
+
+      const isCardio = ex.movement_type === "cardio";
+      el("cd-weight-card").hidden = isCardio;
+      if (!isCardio) {
+        const last = historyByExercise[ex.id];
+        el("cd-last-used").textContent =
+          last && last.weight_used != null
+            ? `Último registrado en un entrenamiento: ${last.weight_used} kg.`
+            : "Todavía no lo has hecho en ningún entrenamiento — deja aquí tu peso de referencia inicial.";
+        catalogWeightDraft =
+          ex.default_weight != null
+            ? Number(ex.default_weight)
+            : last && last.weight_used != null
+            ? Number(last.weight_used)
+            : 0;
+        renderCatalogWeightDisplay();
+      }
+      el("cd-notes-input").value = ex.notes || "";
+      el("cd-description").textContent = ex.description || (isCardio ? "Mantén un ritmo constante que puedas sostener todo el tiempo previsto." : DEFAULT_DESCRIPTION);
+      el("cd-muscle-info").textContent = muscleInfo(ex.muscle_group);
+      showScreen("catalog-detail");
+    }
+
+    async function saveCatalogNotes() {
+      const ex = catalog.find((e) => e.id === currentCatalogExerciseId);
+      if (!ex) return;
+      const notes = el("cd-notes-input").value.trim() || null;
+      const { error } = await client.from(T.exercises).update({ notes }).eq("id", ex.id);
+      if (error) {
+        alert("No se pudo guardar la nota: " + error.message);
+        return;
+      }
+      ex.notes = notes;
+    }
+
+    // ---- Cardio ----
+
     function renderCardioButtons() {
       const started = !!state.cardioStartedAt;
       el("btn-start-cardio").hidden = started;
@@ -772,6 +969,7 @@
       }
       el("ex-notes-input").value = ex.notes || "";
       el("ex-description").textContent = ex.description || DEFAULT_DESCRIPTION;
+      el("ex-muscle-info").textContent = muscleInfo(ex.muscle_group);
 
       renderExerciseButtons();
       showScreen("exercise");
@@ -1025,6 +1223,19 @@
         if (state.sessionId && !confirm("Ya tienes una sesión activa. ¿Seguro que quieres empezar una nueva?")) return;
         startNewSession();
       });
+
+      el("btn-browse-catalog").addEventListener("click", () => {
+        renderCatalogList();
+        showScreen("catalog-list");
+      });
+      el("btn-catalog-back-home").addEventListener("click", goHome);
+      el("btn-catalog-back-list").addEventListener("click", () => {
+        renderCatalogList();
+        showScreen("catalog-list");
+      });
+      el("cd-weight-minus").addEventListener("click", () => adjustCatalogWeight(-1));
+      el("cd-weight-plus").addEventListener("click", () => adjustCatalogWeight(1));
+      el("btn-cd-save-notes").addEventListener("click", saveCatalogNotes);
 
       document.querySelectorAll("#screen-setup .chip").forEach((chip) => {
         chip.addEventListener("click", () => selectDurationChip(Number(chip.dataset.min)));
