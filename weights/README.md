@@ -25,6 +25,21 @@ general.
    próxima sesión.
 7. Vuelves al paso 3 hasta que pulsas "Terminar entrenamiento".
 
+## Historial
+
+- Desde **inicio**, cada entrenamiento de la lista es navegable: al entrar
+  ves qué hiciste ese día, en qué orden, con qué peso y qué marcaste para
+  la próxima vez. Desde ahí puedes saltar a la ficha de cualquier máquina.
+- La ficha de cada máquina (tanto en el catálogo como durante el
+  entrenamiento) incluye una **gráfica de progreso** con los pesos que has
+  ido usando a lo largo del tiempo — minutos en el caso del cardio. Es una
+  sola serie, así que no lleva leyenda: solo se etiquetan el primer y el
+  último punto, y tocando cualquier punto se ve su fecha exacta.
+
+La columna `description` de `weights_exercises` guarda el texto de "cómo
+entrenarlo" de cada máquina (colocación, ejecución, errores típicos y
+esquema de series). Si está vacía, la app usa un texto genérico.
+
 Para las máquinas asistidas (dominadas/fondos asistidos), la lógica de
 peso está invertida: menos peso en la pila = más difícil (menos
 ayuda), así que "más difícil la próxima vez" baja el número en vez de
