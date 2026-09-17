@@ -1,0 +1,613 @@
+/* Pack L — tanda del 17-09-2026 (tarde), tramo 1 de nuevos ejercicios.
+   Prefijos: .cg- (código) .tr- (trío) .dp- (desplegable) .s10- (suma10) .jr- (jarras) .gv- (golpe de vista).
+   Un bloque por juego, copiados tal cual del CSS de scratch de cada subagente. */
+
+/* #91 🔑 Rompe el código (.cg-) */
+/* Rompe el código — Mastermind numérico (valor posicional).
+   Prefijo exclusivo .cg- para no chocar con el CSS de otras apps/juegos. */
+
+.cg-slots {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 4px 0 10px;
+}
+
+.cg-slot {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  border: 2px solid var(--border);
+  background: var(--card);
+  color: var(--muted);
+  font-size: 1.5rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cg-slot-filled {
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.cg-attempts-left {
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.cg-keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  max-width: 320px;
+  margin: 0 auto 10px;
+}
+
+.cg-key {
+  min-height: 52px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  padding: 0;
+}
+
+.cg-key-back {
+  color: var(--danger);
+}
+
+.cg-key-submit {
+  font-size: 1rem;
+}
+
+.cg-key:disabled {
+  opacity: 0.35;
+}
+
+.cg-history {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 6px;
+  max-height: 38vh;
+  overflow-y: auto;
+}
+
+.cg-attempt {
+  display: grid;
+  grid-template-columns: 22px auto 1fr;
+  align-items: center;
+  gap: 8px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 6px 10px;
+  font-size: 0.85rem;
+}
+
+.cg-attempt-num {
+  color: var(--muted);
+  font-weight: 700;
+  text-align: center;
+}
+
+.cg-attempt-code {
+  font-family: monospace;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: var(--accent-2);
+  white-space: nowrap;
+}
+
+.cg-attempt-hint {
+  color: var(--text);
+  text-align: right;
+}
+
+@media (max-width: 400px) {
+  .cg-slot { width: 44px; height: 44px; font-size: 1.3rem; }
+  .cg-key { min-height: 48px; font-size: 1.05rem; }
+}
+
+/* #92 🎴 Trío (.tr-) */
+/* Trío — cuadrícula 3×3 estilo Set. Prefijo exclusivo .tr- */
+:root {
+  --tr-color-0: #d6336c; /* rojo/magenta, buen contraste en claro y oscuro */
+  --tr-color-1: #1c7ed6; /* azul */
+  --tr-color-2: #7048e8; /* morado */
+  --tr-card-bg: #ffffff;
+  --tr-card-border: #d0d4da;
+  --tr-card-selected: #1c7ed6;
+  --tr-card-fail: #e03131;
+  --tr-card-shadow: rgba(15, 23, 42, 0.08);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --tr-color-0: #ff6b9d;
+    --tr-color-1: #4dabf7;
+    --tr-color-2: #b197fc;
+    --tr-card-bg: #1e2229;
+    --tr-card-border: #3a3f47;
+    --tr-card-selected: #4dabf7;
+    --tr-card-fail: #ff8787;
+    --tr-card-shadow: rgba(0, 0, 0, 0.35);
+  }
+}
+
+:root[data-theme="dark"] {
+  --tr-color-0: #ff6b9d;
+  --tr-color-1: #4dabf7;
+  --tr-color-2: #b197fc;
+  --tr-card-bg: #1e2229;
+  --tr-card-border: #3a3f47;
+  --tr-card-selected: #4dabf7;
+  --tr-card-fail: #ff8787;
+  --tr-card-shadow: rgba(0, 0, 0, 0.35);
+}
+
+.tr-board {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  max-width: 380px;
+  margin: 12px auto;
+}
+
+.tr-card {
+  aspect-ratio: 4 / 3;
+  min-height: 84px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--tr-card-bg);
+  border: 2px solid var(--tr-card-border);
+  border-radius: 12px;
+  box-shadow: 0 2px 6px var(--tr-card-shadow);
+  padding: 6px;
+  transition: transform 0.12s ease, border-color 0.12s ease, box-shadow 0.12s ease;
+  touch-action: manipulation;
+}
+
+.tr-card:active {
+  transform: scale(0.96);
+}
+
+.tr-card.tr-selected {
+  border-color: var(--tr-card-selected);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--tr-card-selected) 35%, transparent);
+}
+
+.tr-card.tr-fail {
+  border-color: var(--tr-card-fail);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--tr-card-fail) 35%, transparent);
+  animation: tr-shake 0.32s ease;
+}
+
+.tr-card:disabled {
+  opacity: 0.85;
+}
+
+@keyframes tr-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+.tr-figs {
+  font-size: clamp(20px, 6vw, 30px);
+  line-height: 1;
+  letter-spacing: 2px;
+  white-space: nowrap;
+}
+
+@media (max-width: 420px) {
+  .tr-board {
+    gap: 6px;
+    max-width: 100%;
+  }
+  .tr-card {
+    min-height: 72px;
+  }
+}
+
+/* #93 📦 ¿Qué cubo sale? (.dp-) */
+/* Ejercicio "¿Qué cubo sale?" (id: desplegable) — geometría espacial.
+   Desarrollo plano de un cubo en cruz + 3 cubos plegados en pseudo-3D
+   entre los que hay que elegir el resultado correcto.
+   Prefijo exclusivo de este fichero: .dp- (no toca clases sin prefijo). */
+
+:root {
+  --dp-face-border: rgba(0, 0, 0, 0.28);
+  --dp-label-bg: rgba(255, 255, 255, 0.9);
+  --dp-label-text: #171321;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --dp-face-border: rgba(0, 0, 0, 0.55);
+    --dp-label-bg: rgba(20, 17, 42, 0.82);
+    --dp-label-text: #f1efff;
+  }
+}
+/* Soporte para el toggle manual de tema que ya usan otras apps del repo. */
+:root[data-theme="dark"] {
+  --dp-face-border: rgba(0, 0, 0, 0.55);
+  --dp-label-bg: rgba(20, 17, 42, 0.82);
+  --dp-label-text: #f1efff;
+}
+:root[data-theme="light"] {
+  --dp-face-border: rgba(0, 0, 0, 0.28);
+  --dp-label-bg: rgba(255, 255, 255, 0.9);
+  --dp-label-text: #171321;
+}
+
+/* ---------- Desarrollo plano (cruz fija) ---------- */
+.dp-net {
+  display: grid;
+  grid-template-columns: repeat(4, 52px);
+  grid-auto-rows: 52px;
+  gap: 4px;
+  margin: 0 auto 18px;
+  justify-content: center;
+}
+.dp-net-empty { background: transparent; }
+.dp-net-face {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  border-radius: 8px;
+  border: 2px solid var(--dp-face-border);
+  font-size: 0.6rem;
+  font-weight: 800;
+  line-height: 1.05;
+  color: var(--dp-label-text);
+  padding: 2px;
+  text-shadow: 0 0 5px var(--dp-label-bg), 0 0 5px var(--dp-label-bg), 0 0 5px var(--dp-label-bg);
+}
+
+/* ---------- Opciones: cubos ya plegados en pseudo-3D ---------- */
+.dp-opciones {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 360px;
+}
+.dp-cube-btn {
+  background: transparent;
+  border: 2px solid transparent;
+  padding: 4px;
+  margin: 0;
+  cursor: pointer;
+  border-radius: 12px;
+  flex: 0 0 auto;
+  -webkit-tap-highlight-color: transparent;
+}
+.dp-cube-btn:active { transform: scale(0.96); }
+.dp-cube-btn.dp-correct {
+  border-color: var(--good, #16a34a);
+  background: rgba(22, 163, 74, 0.14);
+}
+.dp-cube-btn.dp-wrong {
+  border-color: var(--danger, #e5484d);
+  background: rgba(229, 72, 77, 0.14);
+}
+.dp-cube-btn:disabled { cursor: default; }
+
+.dp-cube-scene {
+  width: 92px;
+  height: 96px;
+  perspective: 340px;
+  margin: 0 auto;
+}
+.dp-cube {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  margin: 20px auto 0;
+  transform-style: preserve-3d;
+  transform: rotateX(-28deg) rotateY(37deg);
+}
+.dp-face {
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 0.55rem;
+  font-weight: 800;
+  line-height: 1.05;
+  color: var(--dp-label-text);
+  border: 1px solid var(--dp-face-border);
+  padding: 2px;
+  text-shadow: 0 0 5px var(--dp-label-bg), 0 0 5px var(--dp-label-bg), 0 0 5px var(--dp-label-bg);
+}
+.dp-face-top { transform: rotateX(90deg) translateZ(28px); }
+.dp-face-front { transform: translateZ(28px); }
+.dp-face-right { transform: rotateY(90deg) translateZ(28px); }
+
+/* Ajuste fino para caber cómodo con el pulgar a partir de 360-400px. */
+@media (max-width: 380px) {
+  .dp-net { grid-template-columns: repeat(4, 44px); grid-auto-rows: 44px; }
+  .dp-cube-scene { width: 80px; height: 86px; }
+  .dp-cube, .dp-face { width: 48px; height: 48px; }
+  .dp-face-top { transform: rotateX(90deg) translateZ(24px); }
+  .dp-face-front { transform: translateZ(24px); }
+  .dp-face-right { transform: rotateY(90deg) translateZ(24px); }
+}
+
+/* #94 🧲 Caen diez (.s10-) */
+/* Estilos exclusivos de "Caen diez" (suma10) — prefijo obligatorio .s10- */
+:root {
+  --s10-bg: var(--card, #ffffff);
+  --s10-border: var(--border, #e3e0f5);
+  --s10-text: var(--text, #201a3a);
+  --s10-accent: var(--accent, #5b3ecc);
+  --s10-accent-dark: var(--accent-dark, #4830a0);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --s10-bg: var(--card, #1e1a3d);
+    --s10-border: var(--border, #322c5c);
+    --s10-text: var(--text, #f1efff);
+  }
+}
+
+.s10-board {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+  max-width: 360px;
+  margin: 12px auto 0;
+}
+
+.s10-cell {
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  border: 2px solid var(--s10-border);
+  background: var(--s10-bg);
+  color: var(--s10-text);
+  font-size: 1.5rem;
+  font-weight: 700;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: transform 0.12s ease, background 0.12s ease, color 0.12s ease, border-color 0.12s ease;
+}
+
+.s10-cell:active {
+  transform: scale(0.92);
+}
+
+.s10-cell.s10-selected {
+  background: var(--s10-accent);
+  border-color: var(--s10-accent-dark);
+  color: #fff;
+  transform: scale(1.06);
+}
+
+.s10-cell.s10-new {
+  animation: s10-pop 0.25s ease;
+}
+
+@keyframes s10-pop {
+  from {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* #95 🫙 Las jarras (.jr-) */
+/* Estilos exclusivos del juego "Las jarras" (id: jarras). Prefijo .jr-
+   obligatorio en todo selector nuevo; no se toca ninguna clase del
+   núcleo (.game-topbar, .feedback, .end-card, .choice-btn, etc.). */
+:root {
+  --jr-jarra-bg: #eef0fb;
+  --jr-jarra-border: #b9b6e6;
+  --jr-liquid: #2ea3c4;
+  --jr-liquid-2: #5b3ecc;
+  --jr-text-soft: #6a6684;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --jr-jarra-bg: #1e1a3d;
+    --jr-jarra-border: #4830a0;
+    --jr-liquid: #2ea3c4;
+    --jr-liquid-2: #7a5cf0;
+    --jr-text-soft: #b3aee0;
+  }
+}
+
+:root[data-theme="dark"] {
+  --jr-jarra-bg: #1e1a3d;
+  --jr-jarra-border: #4830a0;
+  --jr-liquid: #2ea3c4;
+  --jr-liquid-2: #7a5cf0;
+  --jr-text-soft: #b3aee0;
+}
+
+.jr-root {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.jr-jarras {
+  display: flex;
+  justify-content: center;
+  gap: 24px;
+  margin: 6px 0 2px;
+}
+
+.jr-jarra-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.jr-jarra {
+  position: relative;
+  width: 74px;
+  height: 140px;
+  border: 3px solid var(--jr-jarra-border);
+  border-radius: 0 0 14px 14px;
+  background: var(--jr-jarra-bg);
+  overflow: hidden;
+}
+
+.jr-liquid {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, var(--jr-liquid-2), var(--jr-liquid));
+  transition: height 0.25s ease;
+}
+
+.jr-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--jr-text-soft);
+}
+
+.jr-moves {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--jr-text-soft);
+}
+
+.jr-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.jr-btn {
+  font-size: 0.92rem;
+  padding: 12px 6px;
+  line-height: 1.2;
+}
+
+@media (max-width: 400px) {
+  .jr-jarras {
+    gap: 16px;
+  }
+  .jr-jarra {
+    width: 64px;
+    height: 120px;
+  }
+  .jr-btn {
+    font-size: 0.85rem;
+    padding: 10px 4px;
+  }
+}
+
+/* #96 👁️ Golpe de vista (.gv-) */
+/* Estilos exclusivos de "Golpe de vista" (id: golpevista).
+   Prefijo obligatorio .gv- para no chocar con el núcleo ni con otras apps.
+   Usa las variables de :root del tema global (--bg, --card, --text,
+   --muted, --accent, --accent-2, --danger, --good, --border), que ya
+   tienen su variante oscura definida en css/style.css. */
+
+.gv-ready-btn {
+  min-width: 140px;
+  padding: 16px 28px;
+  font-size: 1.1rem;
+}
+
+.gv-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.gv-flash-area {
+  position: relative;
+  width: 260px;
+  max-width: 100%;
+  height: 200px;
+  background: var(--bg);
+  border: 2px dashed var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.gv-flash-area.gv-empty {
+  border-style: solid;
+}
+
+.gv-dot {
+  position: absolute;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+
+.gv-grouped {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.gv-row {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.gv-dot-static {
+  position: static;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+
+.gv-keypad {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  width: 100%;
+  max-width: 320px;
+}
+
+.gv-key-btn {
+  font-size: 1.2rem;
+  font-weight: 700;
+  padding: 14px 0;
+}
+
+@media (max-width: 400px) {
+  .gv-flash-area {
+    width: 100%;
+    height: 170px;
+  }
+  .gv-keypad {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+  }
+  .gv-key-btn {
+    padding: 12px 0;
+    font-size: 1.05rem;
+  }
+}
