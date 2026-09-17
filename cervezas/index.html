@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Cervezas</title>
+
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#1a120b" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Cervezas" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" href="icons/icon-192.png" />
+
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #1a120b;
+      --surface: #241a10;
+      --surface-2: #2e2114;
+      --line: rgba(255, 255, 255, 0.08);
+      --line-strong: rgba(255, 255, 255, 0.14);
+      --text: #fbf3e7;
+      --text-2: #b7a691;
+      --accent: #f5a623;
+      --accent-soft: rgba(245, 166, 35, 0.16);
+      --accent-ink: #2b1a02;
+      --minus: #ff6b6b;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      padding: 20px 16px 40px;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.4;
+    }
+    .wrap { max-width: 480px; margin: 0 auto; }
+
+    h1 { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.4px; margin: 0 0 2px; display: flex; align-items: center; gap: 8px; }
+    .sub { color: var(--text-2); font-size: 0.88rem; margin: 0 0 20px; }
+
+    .total-card {
+      background: linear-gradient(180deg, var(--surface-2), var(--surface));
+      border: 1px solid var(--line-strong);
+      border-radius: 20px;
+      padding: 18px 20px;
+      text-align: center;
+      margin-bottom: 18px;
+    }
+    .total-label { font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.9px; color: var(--text-2); }
+    .total-value { font-size: 2.6rem; font-weight: 900; color: var(--accent); line-height: 1.1; }
+
+    .players { display: grid; gap: 14px; }
+    .player-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .player-name { font-size: 1.15rem; font-weight: 800; }
+    .player-count {
+      font-size: 3.6rem;
+      font-weight: 900;
+      font-variant-numeric: tabular-nums;
+      color: var(--accent);
+      transition: transform 0.15s ease;
+    }
+    .player-count.bump { transform: scale(1.12); }
+
+    .btn-row { display: flex; gap: 12px; width: 100%; }
+    .btn-count {
+      flex: 1;
+      border: none;
+      border-radius: 16px;
+      font-size: 2rem;
+      font-weight: 800;
+      padding: 14px 0;
+      cursor: pointer;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+    }
+    .btn-count:active { transform: scale(0.96); }
+    .btn-count:disabled { opacity: 0.5; cursor: default; }
+    .btn-plus { background: var(--accent); color: var(--accent-ink); }
+    .btn-minus { background: var(--surface-2); color: var(--minus); border: 1px solid var(--line-strong); }
+
+    .status {
+      margin-top: 18px;
+      font-size: 0.82rem;
+      color: var(--text-2);
+      text-align: center;
+      min-height: 1.2em;
+    }
+    .status.error { color: var(--minus); }
+
+    .build-id {
+      text-align: center;
+      font-size: 0.68rem;
+      color: var(--text-2);
+      margin-top: 28px;
+      font-family: ui-monospace, monospace;
+      opacity: 0.6;
+    }
+
+    a.back-link {
+      display: inline-block;
+      color: var(--text-2);
+      text-decoration: none;
+      font-size: 0.82rem;
+      margin-bottom: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <a class="back-link" href="../">&larr; Train</a>
+    <h1>🍺 Cervezas</h1>
+    <p class="sub">Cada vez que te tomes una, dale al más. Se sincroniza al momento entre los dos móviles.</p>
+
+    <div class="total-card">
+      <div class="total-label">Entre los dos</div>
+      <div class="total-value" id="total">0</div>
+    </div>
+
+    <div class="players" id="players"></div>
+
+    <div class="status" id="status"></div>
+    <div class="build-id">build __BUILD_ID__</div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="config.js"></script>
+  <script>
+    const { url, anonKey, personas } = window.CERVEZAS_CONFIG;
+
+    let client = null;
+    const counts = Object.fromEntries(personas.map((p) => [p, 0]));
+    const pending = Object.fromEntries(personas.map((p) => [p, false]));
+
+    const playersEl = document.getElementById("players");
+    const totalEl = document.getElementById("total");
+    const statusEl = document.getElementById("status");
+
+    function showStatus(msg, isError) {
+      statusEl.textContent = msg || "";
+      statusEl.classList.toggle("error", !!isError);
+    }
+
+    function renderPlayers() {
+      playersEl.innerHTML = personas
+        .map(
+          (persona) => `
+        <div class="player-card">
+          <div class="player-name">${persona}</div>
+          <div class="player-count" id="count-${persona}">${counts[persona]}</div>
+          <div class="btn-row">
+            <button class="btn-count btn-minus" data-persona="${persona}" data-delta="-1" ${
+              counts[persona] <= 0 ? "disabled" : ""
+            }>&minus;</button>
+            <button class="btn-count btn-plus" data-persona="${persona}" data-delta="1">+</button>
+          </div>
+        </div>`
+        )
+        .join("");
+
+      playersEl.querySelectorAll(".btn-count").forEach((btn) => {
+        btn.addEventListener("click", () =>
+          applyDelta(btn.dataset.persona, Number(btn.dataset.delta))
+        );
+      });
+    }
+
+    function renderTotal() {
+      totalEl.textContent = personas.reduce((sum, p) => sum + counts[p], 0);
+    }
+
+    function setCount(persona, value, animate) {
+      counts[persona] = value;
+      const el = document.getElementById(`count-${persona}`);
+      if (el) {
+        el.textContent = value;
+        if (animate) {
+          el.classList.remove("bump");
+          void el.offsetWidth;
+          el.classList.add("bump");
+        }
+      }
+      const minusBtn = playersEl.querySelector(
+        `.btn-minus[data-persona="${persona}"]`
+      );
+      if (minusBtn) minusBtn.disabled = value <= 0;
+      renderTotal();
+    }
+
+    async function applyDelta(persona, delta) {
+      if (pending[persona]) return;
+      pending[persona] = true;
+
+      // Optimista: refleja el cambio al instante, la respuesta del
+      // servidor (o el evento realtime) confirma el valor real.
+      setCount(persona, Math.max(0, counts[persona] + delta), true);
+
+      try {
+        const { data, error } = await client.rpc("cervezas_sumar", {
+          p_persona: persona,
+          p_delta: delta,
+        });
+        if (error) throw error;
+        setCount(persona, data, false);
+        showStatus("");
+      } catch (err) {
+        showStatus("Sin conexión con Supabase: " + err.message, true);
+      } finally {
+        pending[persona] = false;
+      }
+    }
+
+    async function loadInitial() {
+      const { data, error } = await client
+        .from("cervezas_contador")
+        .select("persona, cantidad")
+        .in("persona", personas);
+      if (error) throw error;
+      data.forEach((row) => setCount(row.persona, row.cantidad, false));
+    }
+
+    function subscribeRealtime() {
+      client
+        .channel("cervezas_contador_changes")
+        .on(
+          "postgres_changes",
+          { event: "*", schema: "public", table: "cervezas_contador" },
+          (payload) => {
+            const row = payload.new;
+            if (row && personas.includes(row.persona)) {
+              setCount(row.persona, row.cantidad, true);
+            }
+          }
+        )
+        .subscribe();
+    }
+
+    async function init() {
+      renderPlayers();
+      renderTotal();
+      if (!url || !anonKey) {
+        showStatus("Faltan credenciales en config.js", true);
+        return;
+      }
+      client = supabase.createClient(url, anonKey);
+      try {
+        await loadInitial();
+        showStatus("");
+      } catch (err) {
+        showStatus("Sin conexión con Supabase: " + err.message, true);
+      }
+      subscribeRealtime();
+    }
+
+    init();
+
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () =>
+        navigator.serviceWorker.register("sw.js").catch(() => {})
+      );
+    }
+  </script>
+</body>
+</html>

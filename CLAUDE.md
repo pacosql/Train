@@ -95,6 +95,7 @@ Al crear una app nueva `<app>/`:
 | 🎬 Cartelera Cine | `cartelera/` | `cartelera_` |
 | 🎾 Nombra | `nombra/` | `nombra_` |
 | 📚 Vocabulary | `vocab/` | `vocab_` |
+| 🍺 Cervezas | `cervezas/` | `cervezas_` |
 
 (Actualiza esta tabla al añadir una app nueva.)
 
