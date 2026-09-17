@@ -17,54 +17,37 @@
 <body>
   <div class="wrap">
     <header>
-      <div class="badge-row">
-        <span>🎾</span><span>🏓</span>
-      </div>
-      <h1>Nombra</h1>
-      <p class="tagline">
-        Ve diciendo qué nombres te gustan para una empresa/marca de
-        tenis y pádel. Con cada "me gusta" se generan variantes
-        parecidas. Marca los mejores como <strong>definitivos</strong>.
-      </p>
+      <h1>🎾 Nombra 🏓</h1>
     </header>
 
-    <section class="callout">
-      <strong>Todo nombre que ves aquí ya ha pasado un cribado antes de llegarte:</strong>
-      <ul>
-        <li>✅ <strong>.com libre</strong>: comprobado en vivo vía RDAP desde una función de Supabase antes de insertarlo en la cola — nunca ves un nombre con el .com ocupado.</li>
-        <li>🔎 <strong>Cribado de colisión (marca/empresa, España + EEUU)</strong>: búsqueda previa para descartar coincidencias evidentes con negocios o marcas existentes. Importante ser honestos: no existe una API oficial de OEPM/USPTO/Registro Mercantil, así que esto es un filtro de "no hay nada obvio", no un certificado legal — antes de registrar nada de verdad, una búsqueda de marca profesional siempre es recomendable.</li>
-        <li>🚫 <strong>.es</strong>: sigue sin poder comprobarse en automático desde ningún sitio (registro español sin RDAP público). Enlace manual disponible en cada nombre.</li>
-      </ul>
-    </section>
+    <p class="sub cola-sub"><span id="cola-count">0</span> por decidir</p>
+    <div id="swipe-area"></div>
 
-    <section>
-      <h2>¿Te gusta este nombre?</h2>
-      <p class="sub"><span id="cola-count">0</span> por decidir — todos ya verificados.</p>
-      <div id="swipe-area"></div>
-    </section>
+    <details class="info-collapse">
+      <summary>ℹ️ cómo funciona</summary>
+      <p>
+        Cada nombre que ves ya tiene el <strong>.com comprobado libre</strong>
+        y un cribado de colisión con marcas/empresas de España y EEUU antes
+        de llegarte — nunca hay que darle a ningún botón para comprobarlo.
+        No es un certificado legal, solo un filtro serio.
+      </p>
+    </details>
 
     <section>
       <h2>⭐ Definitivos</h2>
-      <p class="sub">La shortlist final — de aquí sale el nombre.</p>
       <div id="lista-definitivos" class="name-list"></div>
     </section>
 
     <section>
-      <h2>👍 Me gusta</h2>
-      <p class="sub">Marca los mejores como definitivos cuando lo tengas claro.</p>
-      <div id="lista-me-gusta" class="name-list"></div>
-    </section>
-
-    <section>
-      <h2>🔍 Para revisar</h2>
-      <p class="sub">Ni te convencen ni los descartas — para volver a mirarlos con calma.</p>
-      <div id="lista-revisar" class="name-list"></div>
-    </section>
-
-    <section>
-      <h2>👎 Descartados</h2>
       <details>
-        <summary class="sub">ver los que no gustaron</summary>
+        <summary><h2>👍 Me gusta</h2></summary>
+        <div id="lista-me-gusta" class="name-list"></div>
+      </details>
+    </section>
+
+    <section>
+      <details>
+        <summary><h2>👎 Descartados</h2></summary>
         <div id="lista-descartados" class="name-list"></div>
       </details>
     </section>
@@ -75,14 +58,17 @@
   <template id="tpl-swipe-card">
     <div class="swipe-card">
       <div class="name-text"></div>
-      <div class="checks"></div>
-      <div class="colision-info sub"></div>
-      <input class="nota-input" type="text" maxlength="200" placeholder="nota opcional si te gusta (para inspirar los siguientes)" />
+      <input class="nota-input" type="text" maxlength="200" placeholder="comentario (opcional)" />
       <div class="swipe-actions">
         <button class="btn-dislike" type="button">👎 No</button>
-        <button class="btn-revisar" type="button">🔍 Revisar</button>
+        <button class="btn-star" type="button">⭐ Definitivo</button>
         <button class="btn-like" type="button">👍 Me gusta</button>
       </div>
+      <details class="mas-info">
+        <summary>más información</summary>
+        <div class="checks"></div>
+        <div class="colision-info sub"></div>
+      </details>
     </div>
   </template>
 
@@ -93,9 +79,12 @@
         <div class="head-actions"></div>
       </div>
       <div class="nota-guardada"></div>
-      <div class="checks"></div>
-      <div class="colision-info sub"></div>
-      <div class="official-links"></div>
+      <details class="mas-info">
+        <summary>más información</summary>
+        <div class="checks"></div>
+        <div class="colision-info sub"></div>
+        <div class="official-links"></div>
+      </details>
     </div>
   </template>
 

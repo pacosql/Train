@@ -7,12 +7,13 @@
 // viene verificado. El vetado lo hace Claude con WebSearch + la función
 // de Supabase "check-dominio" antes de insertar cada fila.
 //
-// Flujo: swipe me_gusta / no_me_gusta / revisar sobre la cola
-// "pendiente". Al dar "me gusta" se puede añadir una nota opcional que
-// queda guardada para inspirar las siguientes rondas. "favorito" es la
-// shortlist definitiva. Todo el estado vive en nombra_ideas
-// (PostgREST directo, sin SDK) para seguir la partida desde cualquier
-// dispositivo.
+// Flujo deliberadamente mínimo: swipe me_gusta / no_me_gusta /
+// definitivo sobre la cola "pendiente" — el comentario está siempre
+// visible y se guarda pase lo que pase, para inspirar las siguientes
+// rondas. El resto de información (checks, colisión, enlaces) vive
+// plegada bajo "más información", nunca en primer plano. Todo el
+// estado vive en nombra_ideas (PostgREST directo, sin SDK) para seguir
+// la partida desde cualquier dispositivo.
 
 const REST = `${window.NOMBRA_CONFIG.url}/rest/v1`;
 const TABLE = `${window.NOMBRA_CONFIG.tablePrefix}ideas`;
@@ -98,22 +99,15 @@ function pintaSiguienteSwipe() {
   renderColision(node.querySelector(".colision-info"), item);
 
   const notaInput = node.querySelector(".nota-input");
+  const decide = (status) => async () => {
+    await updateIdea(item.id, { status, nota: notaInput.value.trim() || null });
+    cola.shift();
+    await recargarTodo();
+  };
 
-  node.querySelector(".btn-like").addEventListener("click", async () => {
-    await updateIdea(item.id, { status: "me_gusta", nota: notaInput.value.trim() || null });
-    cola.shift();
-    await recargarTodo();
-  });
-  node.querySelector(".btn-dislike").addEventListener("click", async () => {
-    await updateIdea(item.id, { status: "no_me_gusta" });
-    cola.shift();
-    await recargarTodo();
-  });
-  node.querySelector(".btn-revisar").addEventListener("click", async () => {
-    await updateIdea(item.id, { status: "revisar" });
-    cola.shift();
-    await recargarTodo();
-  });
+  node.querySelector(".btn-like").addEventListener("click", decide("me_gusta"));
+  node.querySelector(".btn-dislike").addEventListener("click", decide("no_me_gusta"));
+  node.querySelector(".btn-star").addEventListener("click", decide("favorito"));
 
   area.appendChild(node);
 }
@@ -161,11 +155,10 @@ function renderCard(container, row, opts) {
 }
 
 async function recargarTodo() {
-  const [pendientes, meGusta, favoritos, revisar, descartados] = await Promise.all([
+  const [pendientes, meGusta, favoritos, descartados] = await Promise.all([
     fetchIdeas("pendiente"),
     fetchIdeas("me_gusta"),
     fetchIdeas("favorito"),
-    fetchIdeas("revisar"),
     fetchIdeas("no_me_gusta"),
   ]);
 
@@ -181,11 +174,6 @@ async function recargarTodo() {
   listaDefinitivos.innerHTML = "";
   if (favoritos.length === 0) listaDefinitivos.innerHTML = '<p class="empty">Todavía no hay ningún definitivo.</p>';
   for (const row of favoritos) renderCard(listaDefinitivos, row, { marcarDefinitivo: false });
-
-  const listaRevisar = document.getElementById("lista-revisar");
-  listaRevisar.innerHTML = "";
-  if (revisar.length === 0) listaRevisar.innerHTML = '<p class="empty">Nada pendiente de revisar.</p>';
-  for (const row of revisar) renderCard(listaRevisar, row, { marcarDefinitivo: true });
 
   const listaDescartados = document.getElementById("lista-descartados");
   listaDescartados.innerHTML = "";
