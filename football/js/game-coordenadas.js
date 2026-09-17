@@ -1,19 +1,29 @@
-// "Plano cartesiano": ya no se toca la celda que te dictan (eso era un test
-// con decorado). Ahora se ven tres vértices seguidos A-B-C de un rectángulo
-// o de un paralelogramo y hay que CERRAR la figura colocando D: la x y la y
-// hay que deducirlas de los puntos que ya están, no leerlas del enunciado.
-// El plano tiene los cuatro cuadrantes.
+// "Plano cartesiano" — REHECHO dos veces.
+// v2: ya no se toca la celda que te dictan (eso era un test con decorado).
+// Ahora se ven tres vértices seguidos A-B-C de un rectángulo o de un
+// paralelogramo y hay que CERRAR la figura colocando D: la x y la y hay que
+// deducirlas de los puntos que ya están, no leerlas del enunciado. El plano
+// tiene los cuatro cuadrantes.
+// v3 (marcado 🔧 otra vez, verificado jugándolo de verdad — calculando D con
+// D = A + C − B en las 4 dificultades, sin encontrar rondas degeneradas ni
+// fallos): el nivel más difícil (oblicuo, sin coordenadas escritas) seguía
+// teniendo SIEMPRE un lado en escuadra (horizontal o vertical), así que
+// siempre había una "pata gratis" de la que copiar una coordenada sin sumar
+// ningún vector. Ahora ese nivel (`bothOblique`) tiene los DOS lados
+// inclinados: no hay atajo, hay que sumar el vector (dx, dy) completo.
 import { randInt, pick, saveScore } from "./utils.js";
 
 const R = 4; // el plano va de -4 a 4 en los dos ejes
 
 // oblique: el segundo lado va inclinado (paralelogramo) en vez de en escuadra
 // show: si se escriben las coordenadas de A, B y C al lado de cada punto
+// bothOblique: ningún lado queda en escuadra — los dos hay que sumarlos
+// como vector completo (dx, dy), no solo "copiar" una de las coordenadas
 const LEVELS = [
   { oblique: false, show: true, maxSide: 3 },
   { oblique: false, show: false, maxSide: 4 },
   { oblique: true, show: true, maxSide: 3 },
-  { oblique: true, show: false, maxSide: 3 },
+  { oblique: true, show: false, maxSide: 3, bothOblique: true },
 ];
 
 export function levelFor(streak) {
@@ -37,7 +47,13 @@ export function makeRound(level, lastKey) {
     const s1 = pick([-1, 1]);
     const s2 = pick([-1, 1]);
     const vertFirst = randInt(0, 1) === 1;
-    if (level.oblique) {
+    if (level.bothOblique) {
+      // Los DOS lados inclinados: no hay ninguna pata en escuadra de la que
+      // "copiar" una coordenada gratis, así que hay que sumar el vector
+      // completo (dx, dy) de B→A y repetirlo desde C.
+      u = { x: s1 * randInt(1, level.maxSide), y: pick([-2, -1, 1, 2]) };
+      v = { x: s2 * pick([1, 2]), y: pick([-2, -1, 1, 2]) };
+    } else if (level.oblique) {
       // Un lado recto y el otro inclinado: el rectángulo ya no vale, hay que
       // repetir el desplazamiento de B→A partiendo de C.
       u = vertFirst

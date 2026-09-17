@@ -199,6 +199,27 @@ tocan.
   rondas de mediana, ya ordenados — la pregunta era más de lectura
   apelotonada que de estadística.
 
+### Vuelta del 17-09-2026 (tarde) — los 2 marcados con 🔧 otra vez
+
+Tras la vuelta de la mañana, el usuario volvió a marcar **#6 Equilibra la
+balanza** y **#36 Plano cartesiano** para revisar — sin nota escrita (la
+casilla de texto para explicar el motivo se añadió esa misma tarde; ver
+más abajo). Sin una queja concreta, esta vuelta se dedicó a **jugarlos de
+verdad**: leer el estado del juego, calcular la respuesta correcta a mano
+y confirmar que puntúa, además de simular sus generadores 20-30 mil veces
+cada uno. Ninguno tenía rondas degeneradas ni fallos de puntuación — pero
+jugándolos aparecieron dos defectos de diseño reales, no cosméticos:
+
+| # | Juego | Qué chirriaba (encontrado jugando, no solo leyendo) | Qué hace ahora |
+|---|---|---|---|
+| 6 | 🏋️ Equilibra la balanza | El presupuesto de "ajustes" era fijo (8) en **todas** las rondas. Jugando de verdad: el coste óptimo real ronda 2-3 ajustes de media (máx. 5), así que sobraban hasta 6-7 de margen — justo el tanteo a ciegas que el propio diseño decía evitar, y sin relación entre nivel y dificultad real | El presupuesto se ata al coste óptimo de cada ronda (`moveCost`) con un margen que se estrecha con el nivel: +3 al empezar, +1 en el nivel avanzado. Simulado (30k rondas/nivel): presupuesto medio pasa de 5,7 → 4,7 → 3,7 al subir de nivel, siempre ≥ coste real |
+| 36 | 🗺️ Plano cartesiano | En el nivel más difícil (oblicuo, sin coordenadas escritas) uno de los dos lados seguía en escuadra (horizontal o vertical) — siempre había una "pata gratis" de la que copiar una coordenada sin sumar ningún vector completo | Ese nivel (`bothOblique`) tiene ahora los **dos** lados inclinados: no hay atajo, hay que sumar el vector (dx, dy) completo desde C igual que desde B |
+
+Ambos suben a **v3** y vuelven a "🆕 Nuevos". Verificación: generador
+simulado sin degenerados en los dos casos, y partida jugada de principio a
+fin calculando la respuesta correcta en cada ronda (incluidas las rondas
+del nivel más difícil tras el cambio), confirmando que el marcador sube.
+
 ### Vuelta del 17-09-2026 — los 9 marcados con 🔧
 
 Los nueve ejercicios que estaban en la bandeja "🔧 Revisar" se han
@@ -267,12 +288,20 @@ Las clases viejas que estos nueve ya no usan se han dejado intactas en
 ## Valoración (🆕 / 👍 / 👎 / 🔧)
 
 Cada pantalla de juego tiene, debajo del propio juego, tres botones fijos:
-"👎 No me gusta", "🔧 Revisar" y "👍 Me gusta". Al pulsar uno, el juego
-pasa a esa categoría y vuelves directo al menú para ver dónde ha
-aterrizado (pulsar el mismo botón otra vez, desde la pantalla del
-juego, lo devuelve a "Nuevo"). El menú principal tiene cuatro pestañas
-—🆕 Nuevos, 👍 Me gusta, 👎 No me gusta, 🔧 Revisar— que filtran la
-cuadrícula según la valoración. **"🔧 Revisar" significa "me gusta la
+"👎 No me gusta", "🔧 Revisar" y "👍 Me gusta". Al pulsar "🔧 Revisar" se
+abre un cuadro para escribir **qué falla** (opcional): ese texto se
+guarda junto con la valoración y es lo primero que lee quien mejora el
+ejercicio, en vez de tener que adivinarlo. Al pulsar "👎"/"👍", o al
+guardar la nota de "🔧", el juego pasa a esa categoría y vuelves directo
+al menú para ver dónde ha aterrizado (reabrir el ejercicio marcado con
+"🔧" deja editar la nota o quitarlo de la bandeja; pulsar "👎"/"👍" otra
+vez, desde la pantalla del juego, lo devuelve a "Nuevo"). El menú
+principal tiene cuatro pestañas —🆕 Nuevos, 👍 Me gusta, 👎 No me gusta,
+🔧 Revisar— que filtran la cuadrícula según la valoración, y en "🔧
+Revisar" cada tarjeta muestra un resumen de la nota. Esto se guarda en
+la tabla `football_ratings` de Supabase (compartido entre dispositivos,
+no es solo del navegador — así lo puede leer también el agente que
+revisa y mejora los ejercicios). **"🔧 Revisar" significa "me gusta la
 idea pero algo falla o se puede mejorar"** — es la señal para volver a
 ese ejercicio, probarlo a fondo y arreglarlo/mejorarlo antes de pasar a
 "👍 Me gusta". Esto se guarda en `localStorage` del navegador (es una
