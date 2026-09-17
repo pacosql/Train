@@ -1,45 +1,27 @@
 import { mountQuizGame } from "./quiz-engine.js";
-import { mountBalloonsGame } from "./balloons-game.js";
 import { QUIZ_GAMES } from "./games-data.js";
-import { CREATIVE_GAMES } from "./games-creative.js";
-import { QUIZ_GAMES_2 } from "./games-data-2.js";
-import { CREATIVE_GAMES_2 } from "./games-creative-2.js";
-import { GAMES_PACK_3 } from "./games-pack.js";
-import { GAMES_PACK_4 } from "./games-pack-4.js";
-import { GAMES_PACK_5 } from "./games-pack-5.js";
-import { GAMES_PACK_6 } from "./games-pack-6.js";
-import { GAMES_PACK_7 } from "./games-pack-7.js";
-import { GAMES_PACK_8 } from "./games-pack-8.js";
+import { mountGameEscena } from "./game-escena.js";
+import { mountGameCadena } from "./game-cadena.js";
+import { mountGameMemoria } from "./game-memoria.js";
 import { getRating, getRatingNote, setRating, initRatings, reloadRatings, fetchReworkNote } from "./ratings.js";
 
-// El número de cada juego (#1, #2…) es su posición en este array — para
-// que sea estable de verdad, los juegos nuevos SIEMPRE se añaden al
-// final (nunca se insertan en medio ni se reordenan los existentes).
+// El número de cada juego (#1, #2…) es su posición en este array — los
+// juegos nuevos siempre se añaden al final, igual que en Math Games.
 const GAMES = [
-  { id: "globos", title: "Globos de multiplicar", emoji: "🎈", topic: "Multiplicación", custom: mountBalloonsGame },
-  ...CREATIVE_GAMES,
   ...QUIZ_GAMES,
-  ...QUIZ_GAMES_2,
-  ...CREATIVE_GAMES_2,
-  ...GAMES_PACK_3,
-  ...GAMES_PACK_4,
-  ...GAMES_PACK_5,
-  ...GAMES_PACK_6,
-  ...GAMES_PACK_7,
-  ...GAMES_PACK_8,
+  { id: "viste-la-escena", title: "Viste la escena", emoji: "🧥", topic: "Varias palabras a la vez, en contexto", custom: mountGameEscena },
+  { id: "cadena-escena", title: "La cadena de la escena", emoji: "🎬", topic: "Palabras relacionadas, en pantallas seguidas", custom: mountGameCadena },
+  { id: "memoria-bilingue", title: "Memoria bilingüe", emoji: "🃏", topic: "Repaso y consolidación", custom: mountGameMemoria },
 ].map((g, i) => ({ ...g, num: i + 1 }));
 const GAMES_BY_ID = Object.fromEntries(GAMES.map((g) => [g.id, g]));
 
-const { url, anonKey } = window.FOOTBALL_CONFIG || {};
+const { url, anonKey } = window.VOCAB_CONFIG || {};
 const client =
   url && anonKey && window.supabase ? window.supabase.createClient(url, anonKey) : null;
 
 const root = document.getElementById("app");
 let cleanupCurrent = null;
 let activeTab = "new";
-
-// Nota de la última tanda de mejoras publicada por el agente revisor; se
-// pinta en el menú para saber qué ha cambiado desde la última vez.
 let reworkNote = null;
 
 function escapeHtml(str) {
@@ -80,8 +62,8 @@ async function renderMenu() {
   root.innerHTML = `
     <div class="menu-wrap">
       <div class="menu-header">
-        <h1>🧠 Math Games</h1>
-        <p>Elige un juego y a jugar. Puntúalo con 👍 / 👎 para organizar tus ideas.</p>
+        <h1>📚 Vocabulary</h1>
+        <p>Aprende las 1000 primeras palabras de inglés. Valora cada ejercicio con 👍 / 👎 para organizar las ideas.</p>
       </div>
       <div class="tab-bar" data-tabs>
         <button class="tab-btn" data-tab="new">🆕 Nuevos (${groups.new.length})</button>
@@ -95,7 +77,6 @@ async function renderMenu() {
         <h2>Últimas partidas</h2>
         <ul data-recent><li class="empty">Cargando…</li></ul>
       </div>
-      <div class="build-id">build __BUILD_ID__</div>
     </div>
   `;
   root.querySelectorAll("[data-tab]").forEach((btn) => {
@@ -118,12 +99,12 @@ function renderGrid(groups) {
   if (!list.length) {
     const msg =
       activeTab === "new"
-        ? "No quedan juegos nuevos — ¡los has valorado todos!"
+        ? "No quedan ejercicios nuevos — ¡los has valorado todos!"
         : activeTab === "like"
-        ? "Aún no has marcado ningún juego con 👍."
+        ? "Aún no has marcado ningún ejercicio con 👍."
         : activeTab === "dislike"
-        ? "Aún no has marcado ningún juego con 👎."
-        : "Aún no has marcado ningún juego para revisar.";
+        ? "Aún no has marcado ningún ejercicio con 👎."
+        : "Aún no has marcado ningún ejercicio para revisar.";
     grid.innerHTML = `<div class="tab-empty">${msg}</div>`;
     return;
   }
@@ -148,7 +129,7 @@ async function renderRecent() {
     return;
   }
   const { data, error } = await client
-    .from("football_scores")
+    .from("vocab_scores")
     .select("*")
     .order("created_at", { ascending: false })
     .limit(6);
@@ -200,9 +181,6 @@ function renderGame(id) {
       b.classList.toggle("active", b.dataset.rate === current);
     });
   }
-  // Marcar "🔧 Revisar" abre un cuadro para explicar qué falla — ese
-  // texto se guarda junto con la valoración y lo lee quien mejora el
-  // ejercicio, en vez de tener que adivinar por qué se marcó.
   function openReviewNote(isEditing) {
     if (root.querySelector("[data-review-box]")) return;
     const screen = root.querySelector("[data-screen]");
@@ -211,7 +189,7 @@ function renderGame(id) {
     box.setAttribute("data-review-box", "");
     box.innerHTML = `
       <label for="review-note-input">¿Qué falla? Cuéntalo y se usará para mejorarlo</label>
-      <textarea id="review-note-input" data-review-input rows="3" placeholder="Ej.: la ruleta gira muy deprisa, cuesta leer el número a tiempo..."></textarea>
+      <textarea id="review-note-input" data-review-input rows="3" placeholder="Ej.: los distractores son demasiado fáciles..."></textarea>
       <div class="review-note-actions">
         <button type="button" data-review-cancel>Cancelar</button>
         ${isEditing ? `<button type="button" class="review-note-remove" data-review-remove>Quitar de 🔧 Revisar</button>` : ""}
@@ -246,8 +224,6 @@ function renderGame(id) {
         return;
       }
       rateBar.querySelectorAll(".rate-btn").forEach((b) => (b.disabled = true));
-      // Se espera a que Supabase lo confirme antes de volver al menú, para
-      // que la pestaña de destino ya muestre el cambio al llegar.
       await setRating(id, current === value ? "new" : value);
       onExit();
     });
@@ -267,9 +243,6 @@ function route() {
 
 window.addEventListener("hashchange", route);
 
-// Se pinta ya, sin esperar a la red: si Supabase tarda o no hay conexión
-// la app tiene que arrancar igual (es una PWA). Cuando llegan las
-// valoraciones se vuelve a pintar el menú con sus cuentas.
 route();
 
 (async () => {
@@ -282,8 +255,6 @@ route();
   if (!location.hash || location.hash === "#/") route();
 })();
 
-// Al volver a la pestaña, recarga por si se ha valorado desde otro
-// dispositivo o el agente ha limpiado la bandeja de revisar.
 document.addEventListener("visibilitychange", async () => {
   if (document.visibilityState !== "visible") return;
   if (location.hash && location.hash !== "#/") return;

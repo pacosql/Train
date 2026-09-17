@@ -1,7 +1,7 @@
 # Math Games 🧠
 
-PWA (sin build, HTML/CSS/JS puro) con **90 ejercicios de matemáticas**,
-cada uno numerado (#1-#90) para poder referirse a ellos sin ambigüedad.
+PWA (sin build, HTML/CSS/JS puro) con **113 ejercicios de matemáticas**,
+cada uno numerado (#1-#113) para poder referirse a ellos sin ambigüedad.
 Cálculo mental, geometría, álgebra, estadística, fracciones, dinero,
 probabilidad, coordenadas, tiempo y más. Nace como banco de pruebas
 rápido para sacar ideas de mecánicas (tipo Duolingo Math, Synthesis,
@@ -241,6 +241,73 @@ un resultado limpio de máximo 2 decimales); generación de #102 sobre
 sin error de consola, y los 6 nuevos se jugaron de verdad (arrastrando al
 punto/ángulo/altura calculados a mano) confirmando que el marcador sube.
 
+## Ejercicios #103-#108 (quinta tanda) — tramo 3: mundo real, estimación y deducción
+
+### Tramo «Mundo real, estimación y deducción» — [`css/pack-n.css`](./css/pack-n.css)
+
+| # | Juego | Tema | Mecánica | De dónde sale |
+|---|---|---|---|---|
+| 103 | 🐔 Hueveras | División con resto | Reparte huevos en hueveras de 6 y 12; como cualquier combinación deja el mismo resto (12=2×6), se pide el resto único, no una combinación arbitraria | Inventado: terna *divisibilidad + repartir + granja* |
+| 104 | 🧾 El ticket incompleto | Resta e incógnita | Un ticket de la compra con un precio tapado; deduce cuánto costaba a partir del total y los demás precios | Vida real (la compra) |
+| 105 | 🔭 ¿De qué orden? | Estimación | Problemas de Fermi: no hay que acertar el número exacto, solo el orden de magnitud (potencia de 10) | Problemas de Fermi |
+| 106 | 💌 Reparte la paga | Porcentajes | Reparte una cantidad en 3 sobres arrastrando hasta el importe exacto que corresponde a cada porcentaje | Presupuesto en sobres (vida real) |
+| 107 | 🚂 ¿Dónde se cruzan? | Velocidad | Dos trenes salen a la vez a distinta velocidad; toca el punto exacto de la vía donde se cruzan (e = v·t) | Vida real |
+| 108 | 🕵️ El intruso | Propiedades de los números | De 4 números, tres comparten una propiedad (par, primo, múltiplo, cifra concreta...) y uno no — tócalo | Which One Doesn't Belong (wodb.ca) |
+
+**Nota sobre #108:** para que la respuesta sea siempre inequívoca, el
+generador no solo comprueba que la propiedad elegida rompe en
+exactamente 1 de los 4 números: también recorre TODO el banco de ~50
+propiedades comprobando que NINGUNA OTRA aislaría a un número distinto
+como "el raro". La simulación (5.000 rondas) registró 70.028 intentos
+totales, de los cuales 65.028 (93%) se descartaron por ambigüedad
+detectada — la verificación cruzada actúa de verdad, no es cosmética.
+
+Verificación antes de publicar: `restoHuevos` de #103 sobre 1.000+
+valores de N (siempre en [0,5]); generación de #104 sobre 20.000
+iteraciones trabajando en céntimos enteros (0 desvíos de redondeo);
+banco de 15 preguntas de #105 revisado a mano con su orden de magnitud
+documentado; `importes` de #106 sobre 2.000 rondas (siempre enteros,
+suman el total exacto); generación de #107 sobre 5.000 combinaciones
+D/Va/Vb (cruce siempre en [10%,90%] de la vía); generación de #108 sobre
+5.000 rondas con el chequeo cruzado de ambigüedad descrito arriba. Los
+108 ejercicios cargan sin error de consola, y los 6 nuevos se jugaron de
+verdad calculando la respuesta correcta (lectura del ticket, cálculo de
+la proporción, deducción de la propiedad compartida) confirmando que el
+marcador sube.
+
+## Ejercicios #109-#113 (quinta tanda) — tramo 4 (último): inventados e investigados
+
+### Tramo final — [`css/pack-o.css`](./css/pack-o.css)
+
+| # | Juego | Tema | Mecánica | De dónde sale |
+|---|---|---|---|---|
+| 109 | 🫐 Blobs de suma | Sumas | Toca varias fichas de un grupo que sumen exactamente el objetivo, dejando aparte las que sobran | Beast Academy "Sum Blobs" (familia 1) |
+| 110 | 🤔 ¿Qué prefieres? | Comparación y sentido numérico | Dos escenarios (precio por unidad, velocidad media, reparto); toca el que de verdad conviene más tras calcular | Would You Rather Math, John Stevens (familia 8) |
+| 111 | 🚀 Cohete exponencial | Potencias | Ajusta base y exponente con dos mandos para que el empuje (base^exponente) alcance justo la órbita objetivo | Inventado: terna *potencias y raíces + disparar + espacio* |
+| 112 | 🔩 Pares de tuercas | Paridad | Empareja tuerca+tornillo cuya suma sea par, hasta el máximo de parejas posible | Inventado: terna *paridad + emparejar + taller* |
+| 113 | 🤹 Malabares | Múltiplos comunes (m.c.m.) | Tres pelotas de periodos distintos; por turnos (no por reflejos), elige en qué tic exacto vuelven a coincidir las tres | Inventado: terna *múltiplos + sincronizar + circo* |
+
+Con este tramo se cierran los 23 ejercicios nuevos de la tanda. Quedan
+en el backlog de `idea_log` (Supabase), aparcados a propósito para una
+tanda futura: **Pesas de Bachet** (mismo aspecto visual de balanza que
+la #6 recién rehecha esta misma tanda — se monta más adelante, lejos de
+esa vuelta, para no repetir el golpe de vista) y **La rueda cuadrada**
+de MoMath (necesita un motor de curvas paramétricas que no compensaba
+meter deprisa).
+
+Verificación antes de publicar: `sumasPosibles` de #109 sobre 5.000
+rondas (objetivo siempre alcanzable, 0 rondas triviales); los 3
+generadores de #110 sobre 3.000 rondas con comparación por productos
+cruzados (0 empates exactos, nunca división de floats); `combinacionesValidas`
+de #111 sobre 5.000 objetivos (siempre ≥1 combinación real); `maxEmparejamientos`
+de #112 sobre 2.500 combinaciones contrastadas con fuerza bruta (0
+discrepancias); `mcm3` de #113 sobre 1.260 ternas de periodos (siempre
+divisible exacto por los tres). Los 113 ejercicios cargan sin error de
+consola, y los 5 nuevos se jugaron de verdad calculando la jugada
+correcta (subconjunto que suma, producto cruzado, combinación de
+potencia, emparejamiento por paridad, m.c.m.) confirmando que el
+marcador sube.
+
 ## Versiones (v2) y bandeja "Revisar"
 
 Cuando un ejercicio recibe una vuelta de mejoras, se marca con un
@@ -460,18 +527,18 @@ Una vez publicado, esta app queda en:
 
 ## Qué hace la app
 
-- Menú con los 90 ejercicios numerados, organizados en pestañas
+- Menú con los 113 ejercicios numerados, organizados en pestañas
   🆕/👍/👎/🔧; cada uno abre en su propia pantalla (`#/game/<id>`), sin
   recargar la página.
 - Motor de preguntas compartido (`js/quiz-engine.js`) para los 18
   ejercicios de "pregunta + opciones o teclado" (`js/games-data.js` y
-  `js/games-data-2.js`); los otros 47 (`js/game-*.js` y
+  `js/games-data-2.js`); los otros 95 (`js/game-*.js` y
   `js/balloons-game.js`) tienen cada uno su propia mecánica de
   interacción (arrastrar, tocar en orden, emparejar, construir,
   escribir, clasificar, recorrer…).
-- Los estilos de las tandas #41-#65 viven en `css/pack-a.css` …
-  `css/pack-e.css`, uno por tanda temática, para que tocar una no
-  arrastre a las demás.
+- Los estilos de cada tanda viven en su propio `css/pack-<letra>.css`
+  (de `pack-a.css` a `pack-o.css`, uno por tramo temático), para que
+  tocar una tanda no arrastre a las demás.
 - Guarda cada partida en `football_scores` y muestra las últimas en el
   menú.
 - Se puede usar sin conexión gracias a un Service Worker que cachea el
