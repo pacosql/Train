@@ -1,6 +1,6 @@
 # Math Games 🧠
 
-PWA (sin build, HTML/CSS/JS puro) con **80 ejercicios de matemáticas**,
+PWA (sin build, HTML/CSS/JS puro) con **85 ejercicios de matemáticas**,
 cada uno numerado (#1-#40) para poder referirse a ellos sin ambigüedad.
 Cálculo mental, geometría, álgebra, estadística, fracciones, dinero,
 probabilidad, coordenadas, tiempo y más. Nace como banco de pruebas
@@ -110,7 +110,7 @@ el resto termina a las 3 vidas o al completar el objetivo. Todos
 guardan la puntuación final en Supabase y el menú principal muestra las
 últimas partidas jugadas.
 
-## Ejercicios #66-#80 (cuarta tanda) — 🔧 revisados aparte, 15 mecánicas nuevas
+## Ejercicios #66-#85 (cuarta tanda) — 🔧 revisados aparte, 20 mecánicas nuevas
 
 La columna **de dónde sale** dice si la mecánica viene de una fuente
 concreta de ahí fuera o es inventada, y con qué proceso (la terna de
@@ -147,6 +147,17 @@ combinación forzada, la inversión o la restricción).
 | 78 | 🧪 Mezcla las probetas | Media ponderada | Viertes arrastrando y el color del matraz sale interpolado: verter ES promediar | Inventado: terna *media + verter + laboratorio* |
 | 79 | 🔬 La lupa decimal | Decimales | Tocas el trozo de recta y se amplía ×10: cada zoom parte el anterior en 10, que es lo que significa la cifra siguiente | Inventado: terna *decimales + deslizar + laboratorio* |
 | 80 | 💸 Rebajas | Porcentajes | Inversión: estiras una barra sobre el precio hasta dar con el descuento que cuadra; la parte sombreada es a la vez el % y el dinero | Inventado: terna *porcentajes + estirar + mercado* |
+
+
+### Tramo «Mundo real y deducción» — [`css/pack-j.css`](./css/pack-j.css)
+
+| # | Juego | Tema | Mecánica | De dónde sale |
+|---|---|---|---|---|
+| 81 | ✈️ Escalas | Tiempo y horarios | Encadenas vuelos comprobando que la conexión da; las tarjetas solo dan salida + duración, así que hay que sumar la llegada | Inventado: terna *tiempo + sincronizar + aeropuerto* |
+| 82 | 👕 Cuántos conjuntos | Combinatoria | Inversión: construyes **todas** las combinaciones distintas y al cerrarlas aparece la rejilla «2 × 3 = 6» | Inventado: terna *combinatoria + construir + sastrería* |
+| 83 | 🚢 Hundir la flota | Coordenadas y deducción | Tablero 6×6 con contadores por fila y columna: se deduce, no se adivina | Juegos populares / puzzles de deducción (familia 10) |
+| 84 | 🪣 El pintor | Área | Mides la pared (rectángulos pegados) y compras los botes justos; el área **no** se dice | Inventado: terna *área + pintar + obra* |
+| 85 | ⚙️ Engranajes | Mínimo común múltiplo | Haces rodar la rueda y paras cuando las marcas vuelven a coincidir: eso pasa a las vueltas del m.c.m. | Inventado: terna *múltiplos + rodar + taller* |
 
 
 ## Versiones (v2) y bandeja "Revisar"
@@ -339,7 +350,7 @@ Una vez publicado, esta app queda en:
 
 ## Qué hace la app
 
-- Menú con los 80 ejercicios numerados, organizados en pestañas
+- Menú con los 85 ejercicios numerados, organizados en pestañas
   🆕/👍/👎/🔧; cada uno abre en su propia pantalla (`#/game/<id>`), sin
   recargar la página.
 - Motor de preguntas compartido (`js/quiz-engine.js`) para los 18

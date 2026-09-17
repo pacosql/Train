@@ -1,4 +1,4 @@
-// Cuarta tanda: ejercicios #66-#80. Se AÑADEN al final del array GAMES
+// Cuarta tanda: ejercicios #66-#85. Se AÑADEN al final del array GAMES
 // de app.js — nunca se insertan en medio, porque el número de cada
 // ejercicio es su posición y tiene que ser estable para siempre.
 // Agrupados por tramo temático, que es también su fichero CSS.
@@ -19,6 +19,12 @@ import { mountDoblecesGame } from "./game-dobleces.js";
 import { mountProbetasGame } from "./game-probetas.js";
 import { mountLupaGame } from "./game-lupa.js";
 import { mountRebajasGame } from "./game-rebajas.js";
+
+import { mountEscalasGame } from "./game-escalas.js";
+import { mountConjuntosGame } from "./game-conjuntos.js";
+import { mountFlotaGame } from "./game-flota.js";
+import { mountPintorGame } from "./game-pintor.js";
+import { mountEngranajesGame } from "./game-engranajes.js";
 
 export const GAMES_PACK_4 = [
   // Puzzles de lápiz y papel
@@ -41,4 +47,11 @@ export const GAMES_PACK_4 = [
   { id: "probetas", title: "Mezcla las probetas", emoji: "🧪", topic: "Media ponderada", custom: mountProbetasGame },
   { id: "lupa", title: "La lupa decimal", emoji: "🔬", topic: "Decimales", custom: mountLupaGame },
   { id: "rebajas", title: "Rebajas", emoji: "💸", topic: "Porcentajes", custom: mountRebajasGame },
+
+  // Mundo real y deducción
+  { id: "escalas", title: "Escalas", emoji: "✈️", topic: "Tiempo y horarios", custom: mountEscalasGame },
+  { id: "conjuntos", title: "Cuántos conjuntos", emoji: "👕", topic: "Combinatoria", custom: mountConjuntosGame },
+  { id: "flota", title: "Hundir la flota", emoji: "🚢", topic: "Coordenadas y deducción", custom: mountFlotaGame },
+  { id: "pintor", title: "El pintor", emoji: "🪣", topic: "Área", custom: mountPintorGame },
+  { id: "engranajes", title: "Engranajes", emoji: "⚙️", topic: "Mínimo común múltiplo", custom: mountEngranajesGame },
 ];
