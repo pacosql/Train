@@ -14,6 +14,12 @@
   <link rel="icon" href="icons/icon-192.png" />
 
   <style>
+    html {
+      /* Texto grande a propósito: se usa en el gimnasio, muchas veces sin
+         gafas/lentillas puestas del todo. Todo lo demás usa rem, así que
+         esto escala toda la app de una vez. */
+      font-size: 125%;
+    }
     :root {
       color-scheme: light dark;
       --bg: #f5f7f6;
@@ -132,6 +138,7 @@
     }
     .badge.push { background: var(--push); }
     .badge.pull { background: var(--pull); }
+    .badge.cardio { background: var(--muted); }
     .stat { text-align: center; }
     .stat .value { font-size: 1.8rem; font-weight: 800; }
     .stat .label { font-size: 0.75rem; color: var(--muted); }
@@ -431,10 +438,12 @@
     // de los últimos días) — nunca oculta nada, solo lo ordena. Se puede
     // repetir cualquier ejercicio ya hecho hoy.
     function orderExercises() {
-      const strength = catalog.filter((e) => e.movement_type !== "cardio");
+      // El cardio también aparece aquí (no solo en el paso inicial
+      // obligatorio) para poder repetirlo o cambiar de elíptica a
+      // bicicleta más tarde en la sesión.
       const opposite = state.lastMovementType === "push" ? "pull" : state.lastMovementType === "pull" ? "push" : null;
 
-      return strength
+      return catalog
         .map((ex) => ({ ex, doneToday: state.doneExerciseIds.includes(ex.id) }))
         .sort((a, b) => {
           const scoreA = (a.doneToday ? 0 : 100) + (a.ex.movement_type === opposite ? 50 : 0);
@@ -504,7 +513,13 @@
       container.innerHTML = "";
       for (const { ex, doneToday } of list) {
         const last = historyByExercise[ex.id];
-        const lastTxt = last && last.weight_used != null ? " · último: " + last.weight_used + " kg" : " · sin historial";
+        const isCardio = ex.movement_type === "cardio";
+        const lastTxt = isCardio
+          ? ""
+          : last && last.weight_used != null
+          ? " · último: " + last.weight_used + " kg"
+          : " · sin historial";
+        const badgeTxt = ex.movement_type === "push" ? "Empuje" : ex.movement_type === "pull" ? "Tirón" : "Cardio";
         const div = document.createElement("div");
         div.className = "exercise-item";
         div.innerHTML = `
@@ -512,11 +527,20 @@
             <div class="name">${ex.name}${doneToday ? " ✓ hecho hoy" : ""}</div>
             <div class="muscle">${ex.muscle_group}${lastTxt}</div>
           </div>
-          <span class="badge ${ex.movement_type}">${ex.movement_type === "push" ? "Empuje" : "Tirón"}</span>
+          <span class="badge ${ex.movement_type}">${badgeTxt}</span>
         `;
-        div.addEventListener("click", () => startExercise(ex));
+        div.addEventListener("click", () => (isCardio ? startCardioFromList(ex) : startExercise(ex)));
         container.appendChild(div);
       }
+    }
+
+    function startCardioFromList(ex) {
+      state.cardioExerciseId = ex.id;
+      saveState();
+      el("cardio-title").textContent = ex.slug === "eliptica" ? "🏃 Elíptica" : "🚴 Bicicleta";
+      el("cardio-minutes").textContent = state.cardioMinutesSuggested || 15;
+      el("cardio-hint").textContent = "Repites cardio cuando quieras — marca \"Cardio terminado\" al acabar.";
+      showScreen("cardio");
     }
 
     function startExercise(ex, opts = {}) {
