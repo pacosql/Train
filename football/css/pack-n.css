@@ -1,0 +1,587 @@
+/* Pack N — tanda del 17-09-2026 (tarde), tramo 3 de nuevos ejercicios.
+   Prefijos: .cr- (corral) .tk2- (ticket) .fm- (fermi) .sv- (sobres) .vc- (velocidad)
+   .in- (intruso). */
+
+/* #103 🐔 Hueveras (.cr-) */
+/* Hueveras (game-corral) — prefijo exclusivo cr-. No redefine clases del
+   núcleo (.game-topbar, .prompt, .choice-btn, .feedback, .end-card, ...);
+   solo añade las suyas y usa las variables de tema ya definidas en :root
+   por football/css/style.css (--bg, --card, --text, --muted, --accent,
+   --accent-2, --danger, --good, --border). */
+:root {
+  --cr-egg: #f4c86b;
+  --cr-egg-shadow: #c9962f;
+  --cr-nest-bg: var(--card);
+  --cr-huevera-bg: var(--card);
+  --cr-huevera-border: var(--border);
+  --cr-dot: #e8e2ff;
+  --cr-dot-rest: var(--danger);
+  --cr-key-chosen-bg: var(--accent);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --cr-egg: #e6b95c;
+    --cr-egg-shadow: #a97a1e;
+    --cr-dot: #3a3468;
+  }
+}
+
+.cr-round { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+
+/* Pila de huevos sueltos antes de repartir */
+.cr-nest {
+  width: 100%;
+  max-width: 360px;
+  max-height: 130px;
+  overflow-y: auto;
+  background: var(--cr-nest-bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  justify-content: center;
+  align-content: flex-start;
+}
+.cr-egg { font-size: 1.05rem; line-height: 1; filter: drop-shadow(0 1px 0 var(--cr-egg-shadow)); }
+
+.cr-keypad-wrap { width: 100%; max-width: 360px; text-align: center; }
+.cr-keypad-label { margin: 0 0 8px; font-size: 0.82rem; color: var(--muted); font-weight: 600; }
+.cr-keypad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.cr-key {
+  min-height: 52px;
+  font-size: 1.3rem;
+  font-weight: 800;
+  padding: 8px;
+}
+.cr-key-chosen { background: var(--cr-key-chosen-bg); border-color: var(--cr-key-chosen-bg); color: #fff; }
+.cr-keypad[data-locked="true"] .cr-key:not(.cr-key-chosen) { opacity: 0.45; }
+
+/* Reparto animado: hueveras de 12 / 6 y la pila de sueltos */
+.cr-distribution {
+  width: 100%;
+  max-width: 380px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+.cr-huevera, .cr-sueltos {
+  background: var(--cr-huevera-bg);
+  border: 2px solid var(--cr-huevera-border);
+  border-radius: 10px;
+  padding: 6px;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  gap: 2px;
+  position: relative;
+  padding-bottom: 20px;
+  opacity: 0;
+  transform: scale(0.6);
+  animation: cr-pop 0.35s ease forwards;
+}
+.cr-huevera-12 { width: 92px; }
+.cr-huevera-6 { width: 62px; }
+.cr-sueltos {
+  width: 62px;
+  border-color: var(--danger);
+  border-style: dashed;
+  min-height: 34px;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+.cr-sueltos-cero { border-color: var(--good); color: var(--good); font-weight: 700; }
+.cr-huevera-tag {
+  position: absolute;
+  bottom: 3px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 0.58rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+.cr-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--cr-dot); }
+.cr-dot-rest { background: var(--cr-dot-rest); }
+
+@keyframes cr-pop {
+  from { opacity: 0; transform: scale(0.6); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cr-huevera, .cr-sueltos { animation: none; opacity: 1; transform: none; }
+}
+
+/* #104 🧾 El ticket incompleto (.tk2-) */
+/* Estilos exclusivos de "El ticket incompleto" (game-ticket.js).
+   Prefijo EXCLUSIVO tk2- para no chocar con ningún otro juego.
+   Pensado para pegarse dentro de football/css/style.css (por eso los
+   var() usan como fallback los mismos nombres que el núcleo: --card,
+   --border, --text, --accent, --accent-2). Si además hiciera falta
+   ajustar el tono del "precio oculto" en claro/oscuro, se controla con
+   las variables --tk2-* de más abajo. */
+
+:root {
+  --tk2-hidden-bg: #fff3cd;
+  --tk2-hidden-text: #8a6100;
+  --tk2-hidden-border: #e8c766;
+  --tk2-dash: #c9c4e8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --tk2-hidden-bg: #4a3c14;
+    --tk2-hidden-text: #ffd873;
+    --tk2-hidden-border: #7a611f;
+    --tk2-dash: #4a4478;
+  }
+}
+
+.tk2-ticket {
+  list-style: none;
+  margin: 0 0 16px;
+  padding: 14px 16px;
+  width: 100%;
+  max-width: 320px;
+  background: var(--card, #fff);
+  border: 1px dashed var(--tk2-dash);
+  border-radius: 12px;
+  font-family: ui-monospace, "SFMono-Regular", Consolas, monospace;
+}
+
+.tk2-item {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 5px 0;
+  font-size: 0.95rem;
+  color: var(--text, #201a3a);
+}
+
+.tk2-item-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tk2-price {
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.tk2-price-hidden {
+  background: var(--tk2-hidden-bg);
+  color: var(--tk2-hidden-text);
+  border: 1px solid var(--tk2-hidden-border);
+  border-radius: 6px;
+  padding: 1px 8px;
+  font-weight: 800;
+}
+
+.tk2-total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 6px;
+  padding-top: 8px;
+  border-top: 2px solid var(--border, #e3e0f5);
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--accent, #5b3ecc);
+}
+
+/* #105 🔭 ¿De qué orden? (.fm-) */
+/* Estilos exclusivos del juego "fermi" (¿De qué orden?).
+   Prefijo obligatorio .fm- — no redefine clases del núcleo sin prefijo.
+   Los colores usan las variables de :root ya definidas por el núcleo en
+   football/css/style.css (--bg, --card, --border, --accent, --good,
+   --danger, ...), que ya resuelven claro/oscuro vía
+   @media (prefers-color-scheme: dark). Aquí solo se añaden fallbacks
+   por si este fichero se usa de forma aislada. */
+:root {
+  --fm-muted: #6b6484;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fm-muted: #a79fd6;
+  }
+}
+
+.fm-question {
+  margin-bottom: 4px;
+}
+
+.fm-hint {
+  display: block;
+  color: var(--fm-muted);
+  margin-bottom: 14px;
+}
+
+/* Una sola columna de botones grandes: pensado para pulsar con el pulgar
+   en pantallas estrechas (400px), en vez de un teclado numérico. */
+.fm-choices {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 360px;
+  margin: 0 auto;
+}
+
+.fm-choice {
+  width: 100%;
+  font-size: 1.15rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  padding: 14px 10px;
+}
+
+/* #106 💌 Reparte la paga (.sv-) */
+/* Estilos exclusivos del juego "Reparte la paga" (id: sobres).
+   Prefijo EXCLUSIVO .sv- para no chocar con el núcleo ni con otros juegos.
+   Variables propias en :root (con variante oscura) para no depender de
+   que el tema global defina exactamente estos nombres. */
+:root {
+  --sv-accent: #5b3ecc;
+  --sv-accent-2: #2ea3c4;
+  --sv-track-bg: #e3e0f5;
+  --sv-track-border: #cfc9ef;
+  --sv-card: #ffffff;
+  --sv-text: #201a3a;
+  --sv-muted: #66618a;
+  --sv-good: #16a34a;
+  --sv-danger: #e5484d;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --sv-accent: #8f7cf0;
+    --sv-accent-2: #5cc4e8;
+    --sv-track-bg: #2a2452;
+    --sv-track-border: #3d3670;
+    --sv-card: #1e1a3d;
+    --sv-text: #f1efff;
+    --sv-muted: #a29ecb;
+    --sv-good: #4ade80;
+    --sv-danger: #f87171;
+  }
+}
+
+.sv-summary {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--sv-text);
+  margin: 4px 0 14px;
+}
+.sv-summary [data-remaining] { color: var(--sv-accent-2); }
+
+.sv-envelopes {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  padding: 4px 0 6px;
+}
+
+.sv-envelope {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 30%;
+  max-width: 110px;
+}
+
+.sv-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--sv-text);
+  text-align: center;
+  line-height: 1.25;
+  min-height: 2.4em;
+}
+.sv-label small {
+  font-weight: 600;
+  color: var(--sv-muted);
+}
+
+/* Barra vertical arrastrable: pointerdown/pointermove sobre esta pista
+   calcula el importe según la posición Y, como un slider vertical. */
+.sv-track {
+  position: relative;
+  width: 100%;
+  max-width: 64px;
+  height: 150px;
+  background: var(--sv-track-bg);
+  border: 2px solid var(--sv-track-border);
+  border-radius: 14px;
+  touch-action: none; /* el gesto vertical lo interpreta el juego, no el scroll */
+  cursor: grab;
+  overflow: hidden;
+}
+.sv-track:active { cursor: grabbing; }
+
+.sv-fill {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 0%;
+  background: linear-gradient(180deg, var(--sv-accent-2), var(--sv-accent));
+  transition: height 0.05s linear;
+}
+
+.sv-thumb {
+  position: absolute;
+  left: 50%;
+  bottom: 0%;
+  width: 34px;
+  height: 18px;
+  border-radius: 9px;
+  background: var(--sv-card);
+  border: 2px solid var(--sv-accent);
+  transform: translate(-50%, 50%);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+}
+
+.sv-amount {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--sv-text);
+}
+
+.sv-steppers {
+  display: flex;
+  gap: 8px;
+}
+
+.sv-step-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: 2px solid var(--sv-track-border);
+  background: var(--sv-card);
+  color: var(--sv-accent);
+  font-size: 1.1rem;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+}
+.sv-step-btn:active { transform: scale(0.94); }
+
+.sv-confirm-btn { width: 100%; }
+
+/* Ajustes para que sea cómodo con el pulgar a ~400px de ancho */
+@media (max-width: 420px) {
+  .sv-envelopes { gap: 8px; }
+  .sv-track { height: 130px; max-width: 100%; }
+  .sv-label { font-size: 0.72rem; }
+  .sv-amount { font-size: 0.95rem; }
+  .sv-step-btn { width: 30px; height: 30px; font-size: 1rem; }
+}
+
+/* #107 🚂 ¿Dónde se cruzan? (.vc-) */
+/* Estilos exclusivos del juego "¿Dónde se cruzan?" (velocidad).
+   Prefijo obligatorio .vc- — no redefine clases del núcleo sin prefijo.
+   Variables en :root para que funcione en claro y oscuro. */
+:root {
+  --vc-rail: #b0b8c4;
+  --vc-rail-dark: #4a5568;
+  --vc-track-bg: #eef1f5;
+  --vc-track-bg-dark: #232a35;
+  --vc-marker: #e0522b;
+  --vc-tick: #8a94a3;
+  --vc-endcap-bg: #1f2937;
+  --vc-endcap-fg: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --vc-track-bg: var(--vc-track-bg-dark);
+    --vc-rail-color: var(--vc-rail-dark);
+  }
+}
+
+.vc-prompt {
+  text-align: center;
+  line-height: 1.5;
+}
+
+.vc-zone {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 18px 0 6px;
+  width: 100%;
+}
+
+.vc-endcap {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  line-height: 1.1;
+  background: var(--vc-endcap-bg);
+  color: var(--vc-endcap-fg);
+  border-radius: 12px;
+  padding: 6px 8px;
+  min-width: 54px;
+}
+
+.vc-endcap span {
+  font-size: 0.62rem;
+  font-weight: 600;
+  white-space: nowrap;
+  margin-top: 2px;
+}
+
+.vc-endcap-left {
+  transform: scaleX(-1);
+}
+.vc-endcap-left span {
+  transform: scaleX(-1);
+}
+
+.vc-track {
+  position: relative;
+  flex: 1 1 auto;
+  height: 64px;
+  background: var(--vc-track-bg);
+  border-radius: 14px;
+  touch-action: none;
+  cursor: pointer;
+  user-select: none;
+}
+
+.vc-rail {
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  top: 50%;
+  height: 6px;
+  transform: translateY(-50%);
+  background: var(--vc-rail);
+  border-radius: 3px;
+}
+
+.vc-ticks {
+  position: absolute;
+  left: 4%;
+  right: 4%;
+  top: 50%;
+  height: 22px;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.vc-ticks span {
+  position: absolute;
+  top: 0;
+  width: 2px;
+  height: 22px;
+  background: var(--vc-tick);
+  transform: translateX(-50%);
+}
+
+.vc-ticks span i {
+  position: absolute;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-style: normal;
+  font-size: 0.62rem;
+  color: var(--vc-tick);
+  white-space: nowrap;
+}
+
+.vc-marker {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -60%);
+  font-size: 1.7rem;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35));
+  pointer-events: none;
+  transition: left 0.05s linear;
+}
+
+.vc-value {
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin-top: 8px;
+}
+
+/* #108 🕵️ El intruso (.in-) */
+/* Estilos exclusivos del juego "El intruso" (football/js/game-intruso.js).
+   Prefijo EXCLUSIVO .in- en todas las clases propias; no se redefine
+   ninguna clase del núcleo sin prefijo. Reutiliza .choice-btn / .feedback
+   / .end-card del núcleo (football/css/style.css) tal cual.
+   Variables propias en :root, con su variante para modo oscuro, que
+   simplemente remiten a los tokens ya definidos por el núcleo. */
+:root {
+  --in-card-bg: var(--card, #ffffff);
+  --in-card-border: var(--border, #e3e0f5);
+  --in-muted: var(--muted, #66618a);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --in-card-bg: var(--card, #1e1a3d);
+    --in-card-border: var(--border, #322c5c);
+    --in-muted: var(--muted, #a29ecb);
+  }
+}
+
+.in-prompt {
+  margin: 0 0 16px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: center;
+  color: var(--in-muted);
+}
+.in-prompt b {
+  color: inherit;
+}
+
+/* Rejilla 2x2 de tarjetas numéricas: cómoda con el pulgar incluso a
+   400px de ancho (cada tarjeta ronda los 150px de alto máximo). */
+.in-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  max-width: 360px;
+  margin: 0 auto;
+}
+
+.in-card {
+  aspect-ratio: 1.3 / 1;
+  min-height: 84px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  font-weight: 800;
+  background: var(--in-card-bg);
+  border: 2px solid var(--in-card-border);
+  border-radius: 16px;
+  transition: transform 0.12s ease;
+}
+.in-card:active {
+  transform: scale(0.96);
+}
