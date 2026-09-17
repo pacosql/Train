@@ -1,0 +1,290 @@
+/* Pack W — duodécima tanda (17-09-2026 noche) — tramo único de ejercicios nuevos.
+   Prefijos: cnx- (conexion), slt- (saltos), sfr- (sumafrac) */
+
+/* --- conexion --- */
+/* "Conexión numérica" (game-conexion.js) — prefijo exclusivo: cnx-
+   Verificado sin colisión: grep -rn "\.cnx-" football/css/*.css → vacío */
+
+.cnx-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  width: 100%;
+  max-width: 340px;
+  margin: 0 auto 16px;
+}
+
+.cnx-number {
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  color: var(--text);
+  font-size: 1.5rem;
+  font-weight: 800;
+  font-family: ui-monospace, "SFMono-Regular", monospace;
+  cursor: pointer;
+  transition: transform 0.08s ease, border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.cnx-number:active:not(:disabled) {
+  transform: scale(0.94);
+}
+
+.cnx-number:disabled {
+  cursor: default;
+}
+
+.cnx-number-selected {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 22%, var(--card));
+}
+
+.cnx-number.cnx-group-a {
+  border-color: var(--accent-2);
+  background: color-mix(in srgb, var(--accent-2) 26%, var(--card));
+}
+
+.cnx-number.cnx-group-b {
+  border-color: var(--good);
+  background: color-mix(in srgb, var(--good) 26%, var(--card));
+}
+
+.cnx-check-btn {
+  display: block;
+  margin: 0 auto 4px;
+}
+
+@media (max-width: 420px) {
+  .cnx-grid {
+    max-width: 300px;
+    gap: 8px;
+  }
+  .cnx-number {
+    font-size: 1.3rem;
+    border-radius: 12px;
+  }
+}
+
+/* --- saltos --- */
+/* "Salta a la decena" (game-saltos.js) — prefijo exclusivo: slt-
+   Verificado sin colisión: grep -rn "\.slt-" football/css/*.css → vacío.
+   Usa las variables de tema ya definidas en :root por el núcleo
+   (--bg, --card, --text, --muted, --accent, --accent-2, --good, --danger,
+   --border) — no redefine ninguna, y no toca .prompt, .keypad*,
+   .choice-btn, .feedback ni .end-card. */
+
+.slt-equation {
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--text);
+  font-family: ui-monospace, "SFMono-Regular", monospace;
+  margin: 0 0 18px;
+}
+
+/* Recta numérica vacía: solo una línea horizontal simple, sin marcas ni
+   números, con un punto que da contexto visual de dónde está `a`. */
+.slt-line {
+  position: relative;
+  width: 100%;
+  max-width: 340px;
+  height: 46px;
+  margin: 0 auto 18px;
+}
+
+.slt-track {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 4px;
+  transform: translateY(-50%);
+  background: var(--border);
+  border-radius: 999px;
+}
+
+.slt-track::before,
+.slt-track::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--border);
+  transform: translate(-50%, -50%);
+}
+
+.slt-track::before {
+  left: 0;
+}
+
+.slt-track::after {
+  left: 100%;
+}
+
+.slt-point {
+  position: absolute;
+  top: 50%;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 3px solid var(--card);
+  box-shadow: 0 0 0 2px var(--accent);
+  transform: translate(-50%, -50%);
+}
+
+.slt-point-label {
+  position: absolute;
+  top: calc(50% + 16px);
+  transform: translateX(-50%);
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+
+@media (max-width: 420px) {
+  .slt-equation {
+    font-size: 1.4rem;
+  }
+  .slt-line {
+    max-width: 280px;
+  }
+}
+
+/* --- sumafrac --- */
+/* "Suma de fracciones circulares" (game-sumafrac.js) — prefijo exclusivo: sfr-
+   Verificado sin colisión: grep -rn "\.sfr-" football/css/*.css → vacío */
+
+.sfr-operands {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin: 0 auto 22px;
+}
+
+.sfr-operand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.sfr-plus {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--muted);
+  flex: 0 0 auto;
+}
+
+.sfr-frac-label {
+  font-size: 1rem;
+  font-weight: 800;
+  font-family: ui-monospace, "SFMono-Regular", monospace;
+  color: var(--text);
+}
+
+.sfr-pie {
+  display: block;
+  line-height: 0;
+}
+
+.sfr-pie svg {
+  display: block;
+  overflow: visible;
+}
+
+.sfr-pie-small svg {
+  filter: drop-shadow(0 1px 2px rgb(0 0 0 / 0.15));
+}
+
+.sfr-ref-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin: 0 auto 18px;
+}
+
+.sfr-pie-ref svg {
+  filter: drop-shadow(0 2px 4px rgb(0 0 0 / 0.18));
+}
+
+.sfr-ref-count {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+/* Sectores: por defecto vacíos (color de fondo de tarjeta con borde). */
+.sfr-slice {
+  fill: var(--card);
+  stroke: var(--border);
+  stroke-width: 1.5;
+  transition: fill 0.12s ease;
+}
+
+/* Sectores tocables (los de la tarta de referencia): cursor de dedo y
+   ligera respuesta visual al tocar. Los de las tartas pequeñas no llevan
+   data-index, así que :active no les afecta a través de este selector. */
+.sfr-pie-ref .sfr-slice {
+  cursor: pointer;
+}
+
+.sfr-pie-ref .sfr-slice:active {
+  fill: color-mix(in srgb, var(--accent) 35%, var(--card));
+}
+
+.sfr-slice-filled {
+  fill: var(--accent);
+  stroke: var(--accent);
+}
+
+/* Al fallar, se resalta el patrón correcto encima (sustituye el color de
+   "coloreado por el jugador" para que quede claro cuál era la solución). */
+.sfr-slice-correct {
+  fill: var(--good);
+  stroke: var(--good);
+}
+
+.sfr-slice-disabled {
+  cursor: default;
+  pointer-events: none;
+}
+
+.sfr-check-btn {
+  display: block;
+  margin: 0 auto 4px;
+}
+
+@media (max-width: 420px) {
+  .sfr-operands {
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .sfr-frac-label {
+    font-size: 0.9rem;
+  }
+  .sfr-plus {
+    font-size: 1.2rem;
+  }
+  .sfr-ref-wrap {
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .sfr-ref-count {
+    font-size: 0.78rem;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .sfr-slice {
+    stroke-width: 1.25;
+  }
+}
