@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Nombra — nombres para tu empresa de tenis y pádel</title>
+
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0e1512" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Nombra" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="badge-row">
+        <span>🎾</span><span>🏓</span>
+      </div>
+      <h1>Nombra</h1>
+      <p class="tagline">
+        Ve diciendo qué nombres te gustan para una empresa/marca de
+        tenis y pádel. Con cada "me gusta" se generan variantes
+        parecidas. Marca los mejores como <strong>definitivos</strong>.
+      </p>
+    </header>
+
+    <section class="callout">
+      <strong>Qué comprueba esta app y qué no (verificado de verdad, no supuesto):</strong>
+      <ul>
+        <li>✅ <strong>.com</strong>: comprobación en vivo vía RDAP, ejecutada desde una función de Supabase — funciona, verificado con dominios reales.</li>
+        <li>🚫 <strong>.es</strong>: verificado que <u>no hay forma automática de comprobarlo</u> desde ningún sitio (ni navegador, ni Supabase, ni esta función): el registro español no tiene RDAP público, y el whois por puerto 43 exige una IP autorizada por Red.es que no tenemos. Se deja el enlace oficial para comprobarlo a mano.</li>
+        <li>ℹ️ <strong>Marca/nombre de empresa (España y EEUU)</strong>: sin API pública. Enlaces directos a OEPM, Registro Mercantil y USPTO — ninguna comprobación aquí sustituye a una búsqueda de marca profesional.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>¿Te gusta este nombre?</h2>
+      <p class="sub"><span id="cola-count">0</span> por decidir.</p>
+      <div id="swipe-area"></div>
+    </section>
+
+    <section>
+      <h2>⭐ Definitivos</h2>
+      <p class="sub">La shortlist final — de aquí sale el nombre.</p>
+      <div id="lista-definitivos" class="name-list"></div>
+    </section>
+
+    <section>
+      <h2>👍 Me gusta</h2>
+      <p class="sub">Marca los mejores como definitivos cuando lo tengas claro.</p>
+      <div id="lista-me-gusta" class="name-list"></div>
+    </section>
+
+    <section>
+      <h2>Añade un nombre a la cola</h2>
+      <form id="form-nuevo" class="add-form">
+        <input id="input-nombre" type="text" maxlength="40" placeholder="p. ej. padelium, smashly..." autocomplete="off" />
+        <button type="submit">Añadir</button>
+      </form>
+    </section>
+
+    <section>
+      <h2>👎 Descartados</h2>
+      <details>
+        <summary class="sub">ver los que no gustaron</summary>
+        <div id="lista-descartados" class="name-list"></div>
+      </details>
+    </section>
+
+    <div class="build-id">build __BUILD_ID__</div>
+  </div>
+
+  <template id="tpl-swipe-card">
+    <div class="swipe-card">
+      <div class="name-text"></div>
+      <div class="nota sub"></div>
+      <div class="swipe-actions">
+        <button class="btn-dislike" type="button">👎 No me gusta</button>
+        <button class="btn-like" type="button">👍 Me gusta</button>
+      </div>
+    </div>
+  </template>
+
+  <template id="tpl-nombre-card">
+    <div class="name-card">
+      <div class="name-head">
+        <span class="name-text"></span>
+        <div class="head-actions"></div>
+      </div>
+      <div class="checks"></div>
+      <div class="official-links"></div>
+    </div>
+  </template>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -3,15 +3,32 @@
 import { randInt, pick, buildChoices, shuffle } from "./utils.js";
 
 // ---------- 1. Comparador mayor / menor (contrarreloj) ----------
+// v2: los dos números ya no se leen sueltos sobre una balanza decorativa;
+// se sitúan sobre una recta numérica compartida, que es lo que de verdad
+// explica por qué uno es mayor que otro (y sostiene los negativos).
+function compareLineSvg(a, b) {
+  const min = -50, max = 99;
+  const pos = (v) => ((v - min) / (max - min)) * 100;
+  const zero = pos(0);
+  return `
+    <svg class="cmp-line" viewBox="0 0 100 34" preserveAspectRatio="none">
+      <line x1="0" y1="20" x2="100" y2="20" stroke="var(--border)" stroke-width="1.2"/>
+      <line x1="${zero}" y1="15" x2="${zero}" y2="25" stroke="var(--muted)" stroke-width="0.8"/>
+      <circle cx="${pos(a)}" cy="20" r="3.4" fill="var(--accent)"/>
+      <circle cx="${pos(b)}" cy="20" r="3.4" fill="var(--accent-2)"/>
+      <text x="${pos(a)}" y="11" font-size="7" text-anchor="middle" fill="var(--accent)">${a}</text>
+      <text x="${pos(b)}" y="32" font-size="7" text-anchor="middle" fill="var(--accent-2)">${b}</text>
+    </svg>`;
+}
 function compareQuestion() {
   const a = randInt(-50, 99);
   const b = randInt(-50, 99);
   const symbol = a === b ? "=" : a > b ? ">" : "<";
-  const labels = { ">": "Mayor (>)", "<": "Menor (<)", "=": "Igual (=)" };
+  const labels = { ">": "A es mayor", "<": "B es mayor", "=": "Son iguales" };
   const correctLabel = labels[symbol];
   const choices = shuffle([labels[">"], labels["<"], labels["="]]);
   return {
-    prompt: `${a} &nbsp;⚖️&nbsp; ${b}`,
+    prompt: `${compareLineSvg(a, b)}<br><span class="cmp-a">A = ${a}</span> &nbsp; <span class="cmp-b">B = ${b}</span>`,
     sub: "¿Qué relación es correcta?",
     choices,
     correctIndex: choices.indexOf(correctLabel),
@@ -95,15 +112,32 @@ function statsQuestion() {
     const sorted = [...nums].sort((a, b) => a - b);
     correct = sorted[Math.floor(n / 2)];
   } else {
-    nums[3] = nums[0]; // garantiza una moda clara
+    // Fuerza una moda inequívoca: nums[0] repetido dos veces y el resto de
+    // valores pairwise distintos entre sí (si no, con nums al azar hay ~15%
+    // de rondas donde dos números "de relleno" coinciden por casualidad y
+    // crean un empate de moda ambiguo).
+    nums[3] = nums[0];
+    for (let i = 1; i < n; i++) {
+      if (i === 3) continue;
+      let guard = 0;
+      while (nums.some((v, j) => j !== i && v === nums[i]) && guard < 50) {
+        nums[i] = randInt(1, 20);
+        guard++;
+      }
+    }
     const counts = {};
     nums.forEach((v) => (counts[v] = (counts[v] || 0) + 1));
     correct = Number(Object.entries(counts).sort((a, b) => b[1] - a[1])[0][0]);
   }
   const choices = buildChoices(correct, () => Math.max(1, correct + pick([-3, -2, -1, 1, 2, 3]))).map(String);
+  // v2: los datos se presentan como fichas y, en las rondas de mediana,
+  // ordenados de menor a mayor — leerlos en fila apelotonados hacía la
+  // pregunta más de lectura que de estadística.
+  const shownNums = stat === "mediana" ? [...nums].sort((a, b) => a - b) : nums;
+  const cards = shownNums.map((v) => `<span class="data-chip">${v}</span>`).join("");
   return {
-    prompt: `Datos: ${nums.join(", ")}`,
-    sub: `¿Cuál es la ${stat}?`,
+    prompt: `<span class="data-row">${cards}</span>`,
+    sub: `¿Cuál es la ${stat}?${stat === "mediana" ? " (ya están ordenados)" : ""}`,
     choices,
     correctIndex: choices.indexOf(String(correct)),
   };
@@ -117,14 +151,22 @@ function distanceQuestion() {
     { name: "m", toM: 1 },
     { name: "km", toM: 1000 },
   ];
-  const from = pick(units);
-  let to = pick(units);
-  while (to === from) to = pick(units);
-  const value = randInt(1, 20) * (from.name === "km" ? 1 : from.name === "m" ? 10 : 1);
-  const meters = value * from.toM;
-  let correct = meters / to.toM;
-  correct = Math.round(correct * 1000) / 1000;
-  const correctStr = Number.isInteger(correct) ? String(correct) : correct.toFixed(correct < 1 ? 3 : 1);
+  // Saltos de magnitud grandes (p.ej. mm → km) hacen que el resultado
+  // redondeado a 3 decimales colapse a "0" — una pregunta rota con una
+  // única opción posible. Regenera la ronda hasta obtener un resultado
+  // real y no degenerado.
+  let from, to, value, correct, correctStr;
+  let guard = 0;
+  do {
+    from = pick(units);
+    to = pick(units);
+    while (to === from) to = pick(units);
+    value = randInt(1, 20) * (from.name === "km" ? 1 : from.name === "m" ? 10 : 1);
+    const meters = value * from.toM;
+    correct = Math.round((meters / to.toM) * 1000) / 1000;
+    correctStr = Number.isInteger(correct) ? String(correct) : correct.toFixed(correct < 1 ? 3 : 1);
+    guard++;
+  } while (correct === 0 && guard < 30);
   const choices = buildChoices(correctStr, () => {
     const factor = pick([0.1, 0.5, 2, 10]);
     const d = correct * factor;
@@ -144,14 +186,20 @@ function weightQuestion() {
     { name: "kg", toKg: 1 },
     { name: "t", toKg: 1000 },
   ];
-  const from = pick(units);
-  let to = pick(units);
-  while (to === from) to = pick(units);
-  const value = randInt(1, 20) * (from.name === "g" ? 100 : 1);
-  const kg = value * from.toKg;
-  let correct = kg / to.toKg;
-  correct = Math.round(correct * 1000) / 1000;
-  const correctStr = Number.isInteger(correct) ? String(correct) : correct.toFixed(3);
+  // Mismo problema que en distancias: g → t con valores pequeños puede
+  // redondear a "0". Regenera hasta obtener un resultado no degenerado.
+  let from, to, value, correct, correctStr;
+  let guard = 0;
+  do {
+    from = pick(units);
+    to = pick(units);
+    while (to === from) to = pick(units);
+    value = randInt(1, 20) * (from.name === "g" ? 100 : 1);
+    const kg = value * from.toKg;
+    correct = Math.round((kg / to.toKg) * 1000) / 1000;
+    correctStr = Number.isInteger(correct) ? String(correct) : correct.toFixed(3);
+    guard++;
+  } while (correct === 0 && guard < 30);
   const choices = buildChoices(correctStr, () => {
     const factor = pick([0.1, 0.5, 2, 10]);
     const d = correct * factor;
@@ -181,12 +229,20 @@ function pieSvg(total, shaded) {
 }
 function gcd(a, b) { return b === 0 ? a : gcd(b, a % b); }
 function fractionsQuestion() {
-  const total = pick([3, 4, 5, 6, 8]);
+  // total=3 solo admite 2 fracciones distintas posibles (1/3, 2/3) y
+  // total=4 solo 3 (1/4, 1/2, 3/4) — con menos de 4 opciones reales,
+  // buildChoices no puede rellenar el cuadro de 4 respuestas y la ronda
+  // sale con menos botones de los que debería. Se excluyen ambos.
+  const total = pick([5, 6, 8, 10, 12]);
   const shaded = randInt(1, total - 1);
   const g = gcd(shaded, total);
   const correct = `${shaded / g}/${total / g}`;
+  // Un offset estrecho (±1/±2) no siempre alcanza a "ver" las 3 fracciones
+  // distintas que hacen falta desde algunos valores de shaded (p.ej. desde
+  // 1/5 solo se alcanzaban 2/5 y 3/5, nunca 4/5) — sorteando en todo el
+  // rango [1, total-1] sí se garantizan 4 opciones distintas siempre.
   const choices = buildChoices(correct, () => {
-    const s = Math.max(1, Math.min(total - 1, shaded + pick([-2, -1, 1, 2])));
+    const s = randInt(1, total - 1);
     const gg = gcd(s, total);
     return `${s / gg}/${total / gg}`;
   }).map(String);
@@ -227,11 +283,11 @@ function sequenceQuestion() {
 }
 
 export const QUIZ_GAMES = [
-  { id: "comparador", title: "Mayor o menor", emoji: "⚖️", topic: "Comparación", mode: "timeAttack", timeLimit: 30, generateQuestion: compareQuestion },
-  { id: "calculo", title: "Cálculo veloz", emoji: "🧮", topic: "Cálculo mental", mode: "timeAttack", timeLimit: 30, generateQuestion: mentalMathQuestion },
+  { id: "comparador", title: "Mayor o menor", emoji: "⚖️", topic: "Comparación", mode: "timeAttack", timeLimit: 30, v: 2, generateQuestion: compareQuestion },
+  { id: "calculo", title: "Cálculo veloz", emoji: "🧮", topic: "Cálculo mental", mode: "timeAttack", timeLimit: 30, v: 2, input: "keypad", generateQuestion: mentalMathQuestion },
   { id: "geometria", title: "Formas", emoji: "🔺", topic: "Geometría", mode: "lives", lives: 3, generateQuestion: geometryQuestion },
   { id: "algebra", title: "Encuentra la x", emoji: "🧩", topic: "Álgebra", mode: "lives", lives: 3, generateQuestion: algebraQuestion },
-  { id: "estadistica", title: "Media y moda", emoji: "📊", topic: "Estadística", mode: "lives", lives: 3, generateQuestion: statsQuestion },
+  { id: "estadistica", title: "Media y moda", emoji: "📊", topic: "Estadística", mode: "lives", lives: 3, v: 2, generateQuestion: statsQuestion },
   { id: "distancias", title: "Distancias", emoji: "📏", topic: "Medidas", mode: "lives", lives: 3, generateQuestion: distanceQuestion },
   { id: "pesos", title: "Pesos", emoji: "🐘", topic: "Medidas", mode: "lives", lives: 3, generateQuestion: weightQuestion },
   { id: "fracciones", title: "La tarta", emoji: "🍕", topic: "Fracciones", mode: "lives", lives: 3, generateQuestion: fractionsQuestion },

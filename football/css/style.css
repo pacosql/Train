@@ -38,9 +38,9 @@ body {
 .menu-header { text-align: center; margin-bottom: 20px; }
 .menu-header h1 { font-size: 1.7rem; margin: 6px 0 2px; }
 .menu-header p { color: var(--muted); margin: 0; font-size: 0.9rem; }
-.tab-bar { display: flex; gap: 8px; margin-top: 4px; }
+.tab-bar { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
 .tab-btn {
-  flex: 1;
+  flex: 1 1 45%;
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 12px;
@@ -52,6 +52,7 @@ body {
   text-align: center;
 }
 .tab-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.tab-btn.active[data-tab="review"] { background: var(--accent-2); border-color: var(--accent-2); }
 .tab-empty {
   grid-column: 1 / -1;
   text-align: center;
@@ -85,7 +86,30 @@ body {
   transition: transform 0.12s ease;
 }
 .game-card:active { transform: scale(0.96); }
+.game-card { position: relative; }
+.game-card .num-badge {
+  position: absolute; top: 6px; left: 8px;
+  font-size: 0.62rem; font-weight: 800; color: var(--muted);
+  font-family: ui-monospace, monospace;
+}
+.game-card .v-badge {
+  position: absolute; top: 6px; right: 8px;
+  font-size: 0.58rem; font-weight: 800; color: #fff;
+  background: var(--accent-2); border-radius: 6px; padding: 1px 4px;
+}
 .game-card .emoji { font-size: 2.1rem; line-height: 1; }
+.rework-note {
+  margin-top: 14px;
+  background: var(--card);
+  border: 1px solid var(--accent-2);
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--muted);
+}
+.rework-note b { color: var(--text); }
+.rework-note .rework-sum { display: block; margin-top: 4px; font-size: 0.74rem; opacity: 0.9; }
 .game-card .name { font-weight: 700; font-size: 0.85rem; }
 .game-card .topic { font-size: 0.68rem; color: var(--muted); }
 .recent {
@@ -116,22 +140,81 @@ body {
 
 /* ---------- Pantalla de juego ---------- */
 .game-screen { flex: 1; display: flex; flex-direction: column; max-width: 640px; margin: 0 auto; width: 100%; padding: 0 16px 24px; }
+.game-num-header {
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--muted);
+  padding: 10px 0 0;
+  font-family: ui-monospace, monospace;
+}
 .game-mount { flex: 1; display: flex; flex-direction: column; min-height: 0; }
 
-.rate-bar { display: flex; gap: 10px; margin-top: 14px; }
+.rate-bar { display: flex; gap: 8px; margin-top: 14px; }
 .rate-btn {
   flex: 1;
   background: var(--card);
   border: 2px solid var(--border);
   border-radius: 12px;
-  padding: 12px 10px;
-  font-size: 0.88rem;
+  padding: 12px 6px;
+  font-size: 0.8rem;
   font-weight: 700;
   color: var(--text);
   cursor: pointer;
 }
 .rate-btn.active.like { background: var(--good); border-color: var(--good); color: #fff; }
 .rate-btn.active.dislike { background: var(--danger); border-color: var(--danger); color: #fff; }
+.rate-btn.active.review { background: var(--accent-2); border-color: var(--accent-2); color: #fff; }
+
+.review-note-box {
+  margin-top: 12px;
+  background: var(--card);
+  border: 2px solid var(--accent-2);
+  border-radius: 12px;
+  padding: 12px;
+}
+.review-note-box label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.review-note-box textarea {
+  width: 100%;
+  resize: vertical;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font: inherit;
+  font-size: 0.85rem;
+  color: var(--text);
+  background: var(--bg);
+}
+.review-note-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.review-note-actions button {
+  flex: 1 1 auto;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  background: var(--card);
+  color: var(--text);
+  cursor: pointer;
+}
+.review-note-actions .review-note-save { background: var(--accent-2); border-color: var(--accent-2); color: #fff; }
+.review-note-actions .review-note-remove { color: var(--danger); border-color: var(--danger); }
+
+.game-card .note-hint {
+  font-size: 0.66rem;
+  color: var(--muted);
+  line-height: 1.3;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
 .game-topbar {
   display: flex; align-items: center; justify-content: space-between;
   padding: 14px 0 10px;
@@ -146,6 +229,21 @@ body {
 .game-stats .lives { color: var(--danger); }
 .game-stats .score { color: var(--accent); }
 .game-stats .timer { color: var(--accent-2); font-variant-numeric: tabular-nums; }
+.game-stats .streak { color: #f5a623; }
+
+/* Quiz v2: recta numérica del comparador y fichas de datos */
+.cmp-line { width: 100%; max-width: 320px; height: 44px; display: block; margin: 0 auto 6px; }
+.cmp-a { color: var(--accent); font-weight: 800; }
+.cmp-b { color: var(--accent-2); font-weight: 800; }
+.data-row { display: inline-flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+.data-chip {
+  background: var(--bg); border: 2px solid var(--border); border-radius: 8px;
+  padding: 6px 10px; font-size: 1rem; font-weight: 800;
+}
+.keypad-sign {
+  margin-top: 8px; width: 100%; max-width: 260px;
+  padding: 10px 8px; font-size: 0.85rem;
+}
 
 .game-body {
   flex: 1;
@@ -363,3 +461,72 @@ button.secondary {
 }
 .dot-point.used { background: var(--good); }
 .dot-point.wrong { background: var(--danger); }
+
+/* ---------- Ruleta de probabilidad ---------- */
+.wheel-wrap { position: relative; width: 160px; height: 160px; margin: 0 auto; }
+.wheel-pointer { position: absolute; top: -6px; left: 50%; transform: translateX(-50%); font-size: 1.3rem; z-index: 2; color: var(--text); }
+.wheel-svg { display: block; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15)); }
+
+/* ---------- Clasifica los números ---------- */
+.sort-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; max-width: 340px; margin-bottom: 16px; }
+.sort-chip.picked { outline: 3px solid var(--accent); }
+.sort-baskets { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+.sort-basket { min-width: 120px; }
+
+/* ---------- Teclado numérico ---------- */
+.keypad-display {
+  font-size: 1.8rem; font-weight: 800; color: var(--accent);
+  min-height: 2.4rem; margin-bottom: 14px; font-family: ui-monospace, monospace;
+}
+.keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: 100%; max-width: 260px; }
+.keypad-key { padding: 14px 8px; }
+
+/* ---------- Compara fracciones ---------- */
+.frac-compare { display: flex; gap: 18px; justify-content: center; width: 100%; max-width: 340px; margin-bottom: 8px; }
+.frac-compare > div { flex: 1; text-align: center; font-weight: 700; font-size: 0.85rem; }
+.frac-bar-wrap { margin-top: 6px; }
+.frac-bar { background: var(--bg); border: 2px solid var(--border); border-radius: 8px; height: 28px; overflow: hidden; }
+.frac-bar-fill { height: 100%; background: var(--accent); }
+.frac-bar-label { margin-top: 4px; font-size: 0.8rem; color: var(--muted); }
+
+/* ---------- Cuenta las monedas ---------- */
+.money-total { font-size: 1.6rem; font-weight: 800; color: var(--accent); margin-bottom: 14px; }
+.money-coins { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+.coin-btn { min-width: 62px; line-height: 1.3; }
+
+/* ---------- Cuadrícula (coordenadas / área / laberinto) ---------- */
+.coord-grid { display: grid; gap: 4px; width: 100%; max-width: 300px; margin: 0 auto; }
+.coord-cell {
+  aspect-ratio: 1; background: var(--bg); border: 2px solid var(--border);
+  border-radius: 6px; cursor: pointer; font-weight: 700; font-size: 0.8rem; color: var(--text);
+}
+.coord-cell.correct { background: var(--good); border-color: var(--good); }
+.coord-cell.wrong { background: var(--danger); border-color: var(--danger); }
+.coord-cell.filled { background: var(--accent); border-color: var(--accent); }
+.coord-cell:disabled { opacity: 0.6; }
+.maze-cell.maze-current { background: var(--accent-2); border-color: var(--accent-2); }
+
+/* ---------- Simetría ---------- */
+.sym-grid { display: grid; gap: 4px; width: 100%; max-width: 280px; margin: 0 auto; }
+.sym-cell { aspect-ratio: 1; background: var(--bg); border: 2px solid var(--border); border-radius: 6px; cursor: pointer; }
+.sym-cell.filled { background: var(--accent); border-color: var(--accent); }
+.sym-cell.correct { background: var(--good); border-color: var(--good); }
+.sym-cell.wrong { background: var(--danger); border-color: var(--danger); }
+.sym-cell.sym-axis-edge { border-color: var(--accent-2); }
+
+/* ---------- Amigos del 10 (number bonds) ---------- */
+.bond-diagram { display: flex; flex-direction: column; align-items: center; margin-bottom: 10px; }
+.bond-total {
+  width: 56px; height: 56px; border-radius: 50%; background: var(--accent);
+  color: #fff; font-weight: 800; font-size: 1.2rem;
+  display: flex; align-items: center; justify-content: center;
+}
+.bond-lines { display: flex; gap: 40px; height: 20px; }
+.bond-line { width: 2px; background: var(--border); }
+.bond-parts { display: flex; gap: 20px; }
+.bond-part {
+  width: 46px; height: 46px; border-radius: 50%; background: var(--card);
+  border: 2px solid var(--border); display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 1rem;
+}
+.bond-missing { border-color: var(--accent-2); color: var(--accent-2); }

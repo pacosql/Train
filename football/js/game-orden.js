@@ -2,8 +2,7 @@
 // o descendente). Mecánica de secuencia por toques, no de elegir opción.
 import { randInt, shuffle, saveScore } from "./utils.js";
 
-function buildRound() {
-  const count = 5;
+function buildRound(count) {
   const set = new Set();
   while (set.size < count) set.add(randInt(1, 60));
   const nums = Array.from(set);
@@ -20,6 +19,7 @@ export function mountOrdenGame(container, { client, onExit }) {
   let finished = false;
   let round = null;
   let nextIdx = 0;
+  let completed = 0; // rondas completadas de verdad — sube la dificultad
 
   container.innerHTML = `
     <div class="game-topbar">
@@ -44,7 +44,8 @@ export function mountOrdenGame(container, { client, onExit }) {
   }
 
   function nextRound() {
-    round = buildRound();
+    const count = Math.min(4 + Math.floor(completed / 2), 8);
+    round = buildRound(count);
     nextIdx = 0;
     body.innerHTML = `
       <p class="prompt">Toca los números de ${round.asc ? "menor a mayor" : "mayor a menor"}<small>Empieza por ${round.order[0]}</small></p>
@@ -69,13 +70,12 @@ export function mountOrdenGame(container, { client, onExit }) {
       el.disabled = true;
       el.classList.add("correct");
       nextIdx++;
-      score += 5;
-      renderScore();
       if (nextIdx >= round.order.length) {
-        feedback.textContent = "¡Orden completo!";
-        feedback.className = "feedback ok";
+        completed++;
         score += 10;
         renderScore();
+        feedback.textContent = "¡Orden completo!";
+        feedback.className = "feedback ok";
         setTimeout(nextRound, 600);
       } else {
         feedback.textContent = `Bien — ahora el ${round.order[nextIdx]}`;
@@ -93,7 +93,10 @@ export function mountOrdenGame(container, { client, onExit }) {
   }
 
   function finish(userExited) {
-    if (finished) return;
+    // Con el end-card en pantalla la partida ya está terminada, pero el
+    // botón "← Menú" de la barra tiene que seguir llevando al menú: la
+    // guarda solo debe frenar los remates automáticos, no la salida.
+    if (finished) return userExited ? onExit() : undefined;
     finished = true;
     if (userExited) return onExit();
     saveScore(client, "orden", { score, rounds });
@@ -116,6 +119,7 @@ export function mountOrdenGame(container, { client, onExit }) {
     lives = startLives;
     score = 0;
     rounds = 0;
+    completed = 0;
     finished = false;
     renderLives();
     renderScore();

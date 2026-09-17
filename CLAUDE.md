@@ -93,6 +93,7 @@ Al crear una app nueva `<app>/`:
 | 🧠 Math Games | `football/` (carpeta/prefijo heredados de un prototipo anterior) | `football_` |
 | 🎾 Pistas | `pistas/` | `pistas_` |
 | 🎬 Cartelera Cine | `cartelera/` | `cartelera_` |
+| 🎾 Nombra | `nombra/` | `nombra_` |
 
 (Actualiza esta tabla al añadir una app nueva.)
 

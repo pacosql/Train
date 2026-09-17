@@ -10,18 +10,37 @@ const SHAPES = [
 ];
 
 function buildPairs() {
+  // Sin control de duplicados, ~11% de las partidas generaban dos cartas
+  // con el mismo texto (p.ej. dos "6 × 7" pertenecientes a parejas
+  // distintas, o un resultado de suma igual a uno de multiplicación) —
+  // el jugador las ve idénticas pero solo una realmente empareja,
+  // resultado confuso. "used" fuerza que las 12 caras sean todas únicas.
   const pairs = [];
+  const used = new Set();
   const usedShapes = shuffle(SHAPES).slice(0, 2);
-  usedShapes.forEach(([name, sides]) => pairs.push([name, sides]));
-  while (pairs.length < 6) {
+  usedShapes.forEach(([name, sides]) => {
+    pairs.push([name, sides]);
+    used.add(name);
+    used.add(sides);
+  });
+  let guard = 0;
+  while (pairs.length < 6 && guard < 200) {
+    guard++;
     const type = pick(["mult", "add"]);
+    let op, ans;
     if (type === "mult") {
       const a = randInt(2, 9), b = randInt(2, 9);
-      pairs.push([`${a} × ${b}`, String(a * b)]);
+      op = `${a} × ${b}`;
+      ans = String(a * b);
     } else {
       const a = randInt(5, 40), b = randInt(5, 40);
-      pairs.push([`${a} + ${b}`, String(a + b)]);
+      op = `${a} + ${b}`;
+      ans = String(a + b);
     }
+    if (used.has(op) || used.has(ans)) continue;
+    used.add(op);
+    used.add(ans);
+    pairs.push([op, ans]);
   }
   return pairs;
 }
@@ -30,6 +49,7 @@ export function mountMemoriaGame(container, { client, onExit }) {
   let score = 0;
   let attempts = 0;
   let matchedPairs = 0;
+  let misses = 0;
   let finished = false;
   let flipped = [];
   let busy = false;
@@ -39,6 +59,7 @@ export function mountMemoriaGame(container, { client, onExit }) {
       <button class="back-btn" data-exit>← Menú</button>
       <div class="game-stats">
         <span data-progress>0/6 parejas</span>
+        <span class="lives" data-misses>❌ 0</span>
         <span class="score" data-score>⭐ 0</span>
       </div>
     </div>
@@ -46,18 +67,21 @@ export function mountMemoriaGame(container, { client, onExit }) {
   `;
   container.querySelector("[data-exit]").addEventListener("click", () => finish(true));
   const progressEl = container.querySelector("[data-progress]");
+  const missesEl = container.querySelector("[data-misses]");
   const scoreEl = container.querySelector("[data-score]");
   const body = container.querySelector("[data-body]");
 
   function renderScore() {
     scoreEl.textContent = `⭐ ${score}`;
     progressEl.textContent = `${matchedPairs}/6 parejas`;
+    missesEl.textContent = `❌ ${misses}`;
   }
 
   function start() {
     score = 0;
     attempts = 0;
     matchedPairs = 0;
+    misses = 0;
     finished = false;
     flipped = [];
     busy = false;
@@ -99,6 +123,8 @@ export function mountMemoriaGame(container, { client, onExit }) {
       busy = false;
       if (matchedPairs >= 6) setTimeout(() => finish(false), 400);
     } else {
+      misses++;
+      renderScore();
       setTimeout(() => {
         first.el.classList.remove("open");
         second.el.classList.remove("open");
@@ -109,7 +135,10 @@ export function mountMemoriaGame(container, { client, onExit }) {
   }
 
   function finish(userExited) {
-    if (finished) return;
+    // Con el end-card en pantalla la partida ya está terminada, pero el
+    // botón "← Menú" de la barra tiene que seguir llevando al menú: la
+    // guarda solo debe frenar los remates automáticos, no la salida.
+    if (finished) return userExited ? onExit() : undefined;
     finished = true;
     if (userExited) return onExit();
     saveScore(client, "memoria", { score, rounds: attempts });
@@ -117,7 +146,7 @@ export function mountMemoriaGame(container, { client, onExit }) {
       <div class="end-card">
         <div>🃏</div>
         <div class="big-score">${score} pts</div>
-        <p>${attempts} intentos para las 6 parejas</p>
+        <p>${attempts} intentos para las 6 parejas (${misses} fallos)</p>
         <div class="end-actions">
           <button class="primary" data-retry>Jugar otra vez</button>
           <button class="secondary" data-menu>Volver al menú</button>

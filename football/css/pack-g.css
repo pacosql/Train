@@ -1,0 +1,432 @@
+/* Pack G — puzzles de lápiz y papel: pentominós, mayor que (futoshiki),
+   kakuro, shikaku y cuadrado mágico. Todo cuelga de las variables de
+   style.css, así el modo claro/oscuro sale solo; solo se añade una paleta
+   de colores de pieza con su propia versión oscura.
+   Prefijos: .pt- pentominós, .fu- futoshiki, .kk- kakuro, .sk- shikaku,
+   .mg- cuadrado mágico. Diseñado para 400 px de ancho y dedo gordo. */
+
+:root {
+  --g-p0: #5b3ecc;
+  --g-p1: #2ea3c4;
+  --g-p2: #e07a1f;
+  --g-p3: #16a34a;
+  --g-p4: #c9327f;
+  --g-p5: #7a5cff;
+  --g-soft: rgba(91, 62, 204, 0.1);
+  --g-cellbg: var(--bg);
+  /* Relleno de las casillas negras del kakuro: tiene que contrastar de
+     verdad con las blancas, si no la rejilla no se lee. */
+  --g-block: #b4accf;
+  --g-blockline: #ffffff;
+  --g-clue: #241d4d;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --g-p0: #8a74ff;
+    --g-p1: #3fc0e0;
+    --g-p2: #f2963c;
+    --g-p3: #35c26b;
+    --g-p4: #ec5c9e;
+    --g-p5: #a48bff;
+    --g-soft: rgba(138, 116, 255, 0.16);
+    --g-cellbg: #100d24;
+    --g-block: #423a73;
+    --g-blockline: #16112e;
+    --g-clue: #f1efff;
+  }
+}
+
+/* ================= Pentominós ================= */
+.pt-board {
+  display: grid;
+  grid-template-columns: repeat(var(--pt-cols), 1fr);
+  gap: 3px;
+  width: 100%;
+  max-width: calc(var(--pt-cols) * 56px);
+  margin: 0 auto 12px;
+  touch-action: manipulation;
+}
+.pt-cell {
+  aspect-ratio: 1;
+  padding: 0;
+  border: 2px dashed var(--border);
+  border-radius: 8px;
+  background: var(--g-cellbg);
+  cursor: pointer;
+  transition: background 0.12s ease;
+}
+.pt-cell.full {
+  border-style: solid;
+  border-color: transparent;
+}
+.pt-cell.orphan {
+  border: 2px solid var(--danger);
+  background: rgba(229, 72, 77, 0.22);
+  animation: pt-blink 0.45s ease-in-out 3;
+}
+@keyframes pt-blink {
+  50% { background: rgba(229, 72, 77, 0.5); }
+}
+.pt-cell.reveal { opacity: 0.95; border-color: rgba(255, 255, 255, 0.35); }
+
+.pt-tools {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.pt-tools .pt-rot,
+.pt-tools .pt-give {
+  padding: 8px 12px;
+  font-size: 0.78rem;
+}
+.pt-tray {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 8px;
+  width: 100%;
+  min-height: 56px;
+}
+.pt-piece {
+  display: grid;
+  grid-template-columns: repeat(var(--pw), 14px);
+  grid-template-rows: repeat(var(--ph), 14px);
+  gap: 2px;
+  padding: 6px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  background: var(--card);
+  cursor: pointer;
+}
+.pt-piece.sel {
+  border-color: var(--accent);
+  background: var(--g-soft);
+  transform: translateY(-2px);
+}
+.pt-piece i {
+  border-radius: 3px;
+  background: transparent;
+}
+.pt-piece i.on { background: currentColor; }
+.pt-piece i.on.anchor {
+  box-shadow: inset 0 0 0 2px var(--card);
+  border-radius: 999px;
+}
+.pt-tray-empty { font-size: 0.8rem; color: var(--muted); }
+
+/* Paleta de piezas: el color va en `color`, así lo heredan las celdas del
+   tablero (background) y los cuadraditos de la bandeja (currentColor). */
+.pt-c0 { color: var(--g-p0); }
+.pt-c1 { color: var(--g-p1); }
+.pt-c2 { color: var(--g-p2); }
+.pt-c3 { color: var(--g-p3); }
+.pt-c4 { color: var(--g-p4); }
+.pt-c5 { color: var(--g-p5); }
+.pt-cell.full.pt-c0,
+.pt-cell.full.pt-c1,
+.pt-cell.full.pt-c2,
+.pt-cell.full.pt-c3,
+.pt-cell.full.pt-c4,
+.pt-cell.full.pt-c5 { background: currentColor; }
+
+/* ================= Mayor que (futoshiki) ================= */
+.fu-grid {
+  display: grid;
+  grid-template-columns: 54px 20px 54px 20px 54px 20px 54px;
+  grid-template-rows: 54px 20px 54px 20px 54px 20px 54px;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 14px;
+}
+.fu-cell {
+  width: 54px;
+  height: 54px;
+  padding: 0;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  background: var(--g-cellbg);
+  color: var(--text);
+  font-size: 1.5rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+.fu-cell:active { transform: scale(0.95); }
+.fu-cell.given {
+  background: var(--g-soft);
+  border-color: var(--accent);
+  color: var(--accent);
+  cursor: default;
+}
+.fu-cell.bad {
+  background: var(--danger);
+  border-color: var(--danger);
+  color: #fff;
+}
+.fu-cell.reveal {
+  background: var(--good);
+  border-color: var(--good);
+  color: #fff;
+}
+.fu-sign {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--accent-2);
+  line-height: 1;
+}
+/* El signo vertical es el mismo carácter girado: la boca abierta mira
+   siempre al número mayor. */
+.fu-sign.fu-v { transform: rotate(90deg); }
+.fu-gap { display: block; }
+.fu-tools {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.fu-tools .fu-tool { padding: 8px 12px; font-size: 0.78rem; }
+.fu-check, .kk-check, .mg-check {
+  margin-top: 10px;
+  min-width: 170px;
+  padding: 12px 18px;
+}
+.fu-check:disabled, .kk-check:disabled, .mg-check:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+/* ================= Kakuro ================= */
+.kk-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--kk-d), 1fr);
+  gap: 2px;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto 12px;
+}
+.kk-cell,
+.kk-clue,
+.kk-block {
+  aspect-ratio: 1;
+  border-radius: 6px;
+}
+.kk-cell {
+  padding: 0;
+  border: 2px solid var(--g-block);
+  background: var(--g-cellbg);
+  color: var(--text);
+  font-size: 1.25rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+.kk-cell.sel { border-color: var(--accent); background: var(--g-soft); box-shadow: 0 0 0 2px var(--accent); }
+.kk-cell.given { border-color: var(--accent); color: var(--accent); background: var(--g-soft); cursor: default; }
+.kk-cell.bad { background: var(--danger); border-color: var(--danger); color: #fff; }
+.kk-cell.reveal { background: var(--good); border-color: var(--good); color: #fff; }
+.kk-block { background: var(--g-block); }
+/* Casilla de pista: la raya separa la suma de la fila (arriba, a la derecha)
+   de la suma de la columna (abajo, a la izquierda). */
+.kk-clue {
+  position: relative;
+  display: block;
+  background: var(--g-block);
+  background-image: linear-gradient(
+    to bottom right,
+    transparent calc(50% - 1.5px),
+    var(--g-blockline) calc(50% - 1.5px),
+    var(--g-blockline) calc(50% + 1.5px),
+    transparent calc(50% + 1.5px)
+  );
+}
+.kk-clue i {
+  position: absolute;
+  font-size: 0.74rem;
+  font-weight: 800;
+  font-style: normal;
+  color: var(--g-clue);
+  line-height: 1;
+}
+.kk-clue .kk-a { top: 3px; right: 4px; }
+.kk-clue .kk-d { bottom: 3px; left: 4px; }
+
+.kk-pad {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto 10px;
+}
+.kk-key {
+  padding: 11px 0;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  background: var(--card);
+  color: var(--text);
+  font-size: 1.05rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+.kk-key:active { transform: scale(0.94); }
+.kk-key.kk-del { color: var(--danger); border-color: var(--danger); }
+.kk-tools { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.kk-tools .kk-tool { padding: 8px 12px; font-size: 0.78rem; }
+
+/* ================= Shikaku ================= */
+.sk-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--sk-n), 1fr);
+  gap: 0;
+  width: 100%;
+  max-width: 306px;
+  margin: 0 auto 6px;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.sk-cell {
+  position: relative;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset 0 0 0 1px var(--border);
+  background: var(--g-cellbg);
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text);
+}
+.sk-cell b { position: relative; z-index: 1; pointer-events: none; }
+.sk-cell.prev { background: var(--g-soft); box-shadow: inset 0 0 0 2px var(--accent); }
+/* El relleno del rectángulo es una capa del color de la pieza a media
+   opacidad: así el número se sigue leyendo en claro y en oscuro. */
+.sk-cell.own::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: currentColor;
+  opacity: 0.22;
+  pointer-events: none;
+}
+/* Los bordes marcan el contorno de cada rectángulo ya dibujado. */
+.sk-cell.own.et { border-top: 3px solid currentColor; }
+.sk-cell.own.eb { border-bottom: 3px solid currentColor; }
+.sk-cell.own.el { border-left: 3px solid currentColor; }
+.sk-cell.own.er { border-right: 3px solid currentColor; }
+.sk-cell.guilty {
+  background: rgba(229, 72, 77, 0.28);
+  box-shadow: inset 0 0 0 3px var(--danger);
+  animation: pt-blink 0.45s ease-in-out 3;
+}
+.sk-cell.reveal::after { opacity: 0.34; }
+.sk-c0 { color: var(--g-p0); }
+.sk-c1 { color: var(--g-p1); }
+.sk-c2 { color: var(--g-p2); }
+.sk-c3 { color: var(--g-p3); }
+.sk-c4 { color: var(--g-p4); }
+.sk-c5 { color: var(--g-p5); }
+
+.sk-live {
+  min-height: 1.5rem;
+  margin-bottom: 8px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--accent-2);
+  font-variant-numeric: tabular-nums;
+}
+.sk-tools { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.sk-tools .sk-tool { padding: 8px 12px; font-size: 0.78rem; }
+
+/* ================= Cuadrado mágico ================= */
+.mg-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 66px);
+  gap: 6px;
+  justify-content: center;
+  margin: 0 auto 16px;
+}
+.mg-cell {
+  width: 66px;
+  height: 66px;
+  padding: 0;
+  border-radius: 12px;
+  font-size: 1.6rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+.mg-cell.given {
+  border: 2px solid var(--accent);
+  background: var(--g-soft);
+  color: var(--accent);
+  cursor: default;
+}
+.mg-cell.hole {
+  border: 2px dashed var(--accent-2);
+  background: var(--g-cellbg);
+  color: var(--text);
+}
+.mg-cell.hole.filled { border-style: solid; }
+.mg-cell.bad { background: var(--danger); border-color: var(--danger); color: #fff; }
+.mg-cell.reveal { background: var(--good); border-color: var(--good); color: #fff; }
+
+.mg-bank {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 52px;
+  margin-bottom: 10px;
+}
+.mg-tile {
+  min-width: 48px;
+  padding: 11px 4px;
+  border: 2px solid var(--border);
+  border-radius: 12px;
+  background: var(--card);
+  box-shadow: 0 2px 0 var(--border);
+  color: var(--text);
+  font-size: 1.25rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+.mg-tile:active { transform: translateY(2px); box-shadow: none; }
+.mg-tile.sel {
+  border-color: var(--accent);
+  background: var(--g-soft);
+  color: var(--accent);
+  transform: translateY(-2px);
+}
+.mg-tile.used,
+.mg-tile:disabled { opacity: 0.28; box-shadow: none; cursor: default; }
+.mg-tools { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.mg-tools .mg-tool { padding: 8px 12px; font-size: 0.78rem; }
+
+/* ================= Móviles estrechos ================= */
+@media (max-width: 400px) {
+  .pt-board { max-width: calc(var(--pt-cols) * 50px); }
+  .pt-piece { grid-template-columns: repeat(var(--pw), 12px); grid-template-rows: repeat(var(--ph), 12px); padding: 5px; }
+  .fu-grid {
+    grid-template-columns: 46px 17px 46px 17px 46px 17px 46px;
+    grid-template-rows: 46px 17px 46px 17px 46px 17px 46px;
+  }
+  .fu-cell { width: 46px; height: 46px; font-size: 1.3rem; }
+  .kk-grid { max-width: 270px; }
+  .kk-cell { font-size: 1.05rem; }
+  .kk-clue i { font-size: 0.66rem; }
+  .kk-pad { max-width: 270px; gap: 5px; }
+  .kk-key { padding: 10px 0; font-size: 0.95rem; }
+  .sk-grid { max-width: 270px; }
+  .sk-cell { font-size: 0.95rem; }
+  .mg-grid { grid-template-columns: repeat(3, 58px); }
+  .mg-cell { width: 58px; height: 58px; font-size: 1.4rem; }
+  .mg-tile { min-width: 42px; font-size: 1.1rem; }
+}
