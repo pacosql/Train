@@ -35,6 +35,7 @@
 .tc-odds b { color: var(--accent); font-size: 0.95rem; }
 .tc-actions { display: flex; gap: 10px; margin-top: 6px; }
 .tc-btn { min-width: 128px; }
+.tc-actions button:disabled { opacity: 0.45; }
 .tc-why {
   font-size: 0.85rem; line-height: 1.45; text-align: center;
   max-width: 330px; margin-bottom: 14px;
@@ -99,6 +100,7 @@
 }
 .vu-actions { display: flex; gap: 10px; margin-top: 4px; }
 .vu-btn { min-width: 132px; }
+.vu-actions button:disabled { opacity: 0.45; }
 .vu-steps {
   display: flex; flex-wrap: wrap; gap: 4px; align-items: center;
   justify-content: center; max-width: 330px; margin-bottom: 12px; font-size: 0.8rem;
@@ -115,34 +117,39 @@
 }
 .pu-deck {
   position: absolute; top: 54px; height: 26px;
-  background: linear-gradient(180deg, #b0763d, #8a5726);
-  border-radius: 3px; box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.22);
+  background: linear-gradient(180deg, #8a5726, #6d4318);
+  border-radius: 3px; box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.25);
 }
 .pu-flag { position: absolute; top: 28px; font-size: 18px; }
-.pu-gap { position: absolute; top: 54px; height: 26px; display: flex; }
+/* El hueco entero (el "todo"): marco marcado con línea discontinua. */
+.pu-gap {
+  position: absolute; top: 54px; height: 26px; display: flex;
+  outline: 2px dashed rgba(0, 0, 0, 0.28); outline-offset: 3px; border-radius: 2px;
+}
 .pu-cell {
   width: 26px; height: 26px; box-sizing: border-box;
-  border: 2px dashed rgba(127, 127, 127, 0.55); border-radius: 4px;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(0, 0, 0, 0.16);
 }
-.pu-cell.is-faded { border-color: rgba(127, 127, 127, 0.18); }
+.pu-cell.is-faded { border-color: transparent; }
 .pu-cell.is-plank {
-  background: linear-gradient(180deg, #b0763d, #8a5726);
-  border: 2px solid rgba(0, 0, 0, 0.18); border-radius: 3px;
+  background: linear-gradient(180deg, #c98a4b, #9a6329);
+  border: 1px solid rgba(0, 0, 0, 0.22); border-radius: 2px;
 }
 .pu-cell.is-miss {
-  background: rgba(229, 72, 77, 0.28); border: 2px solid var(--danger);
+  background: rgba(229, 72, 77, 0.35); border: 2px solid var(--danger);
   animation: pu-flash 0.5s ease-in-out infinite alternate;
 }
-@keyframes pu-flash { to { background: rgba(229, 72, 77, 0.6); } }
+@keyframes pu-flash { to { background: rgba(229, 72, 77, 0.7); } }
 .pu-piece {
   display: block; height: 26px; border-radius: 4px;
   background: linear-gradient(180deg, #c98a4b, #9a6329);
   box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.2);
 }
+/* La trama de cuadraditos va DELANTE del degradado (primera capa). */
 .pu-piece.is-divided {
-  background-image: linear-gradient(180deg, #c98a4b, #9a6329),
-    repeating-linear-gradient(90deg, transparent 0 24px, rgba(0, 0, 0, 0.3) 24px 26px);
-  background-blend-mode: normal;
+  background-image: repeating-linear-gradient(90deg, transparent 0 24px, rgba(0, 0, 0, 0.32) 24px 26px),
+    linear-gradient(180deg, #c98a4b, #9a6329);
 }
 .pu-placed {
   position: absolute; top: 54px; width: 0;
@@ -151,6 +158,12 @@
 .pu-placed.is-drop { animation: pu-drop 0.35s ease-out; }
 @keyframes pu-drop { from { transform: translateY(-46px); opacity: 0.3; } }
 .pu-placed.is-tilt { transform: rotate(16deg) translateY(4px); }
+/* Lo que sobra de la pieza se marca en rojo: el error se ve medido. */
+.pu-placed.is-over::after {
+  content: ""; position: absolute; right: 0; top: 0; height: 100%;
+  width: var(--pu-over, 0px); box-sizing: border-box;
+  background: rgba(229, 72, 77, 0.45); border: 2px solid var(--danger); border-radius: 4px;
+}
 .pu-peng {
   position: absolute; top: 30px; left: 6px; font-size: 22px; line-height: 1;
   transition: left 0.55s linear, transform 0.45s ease, opacity 0.45s ease;
@@ -215,11 +228,10 @@
 .bu-tick { stroke: var(--border); stroke-width: 1.5; }
 .bu-lbl { fill: var(--muted); font-size: 8px; font-weight: 700; text-anchor: end; }
 .bu-goal { stroke: var(--good); stroke-width: 2; stroke-dasharray: 4 3; }
-.bu-goal-txt { fill: var(--good); font-size: 8px; font-weight: 800; text-anchor: end; }
-.bu-goal-ico { font-size: 11px; }
+.bu-goal-ico { font-size: 13px; text-anchor: middle; }
 .bu-trail { fill: none; stroke: var(--accent); stroke-width: 2; stroke-dasharray: 3 3; opacity: 0.85; }
 .bu-diver { transition: transform 0.45s ease; }
-.bu-diver-ico { font-size: 15px; }
+.bu-diver-ico { font-size: 17px; }
 .bu-side { flex: 1 1 0; min-width: 0; }
 .bu-now { font-size: 0.78rem; color: var(--muted); margin-bottom: 10px; }
 .bu-now b { font-size: 1.35rem; color: var(--accent); }
@@ -245,8 +257,9 @@
    contraste contra el fondo de la tarjeta. */
 @media (prefers-color-scheme: dark) {
   .mp-glyph { fill: rgba(0, 0, 0, 0.6); }
-  .pu-cell { border-color: rgba(190, 190, 210, 0.45); }
-  .pu-cell.is-faded { border-color: rgba(190, 190, 210, 0.16); }
+  .pu-cell { background: rgba(10, 20, 40, 0.45); border-color: rgba(190, 190, 210, 0.35); }
+  .pu-cell.is-faded { border-color: transparent; }
+  .pu-gap { outline-color: rgba(220, 220, 240, 0.45); }
   .tc-tcell.is-good { background: rgba(22, 163, 74, 0.3); color: #7ee2a3; }
   .tc-tcell.is-bad { background: rgba(229, 72, 77, 0.28); color: #ff9da0; }
 }

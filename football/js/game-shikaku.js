@@ -7,7 +7,7 @@
 // BRUTA que la partición es ÚNICA; si no, se recoloca los números o se
 // vuelve a trocear.
 // Al fallar se dice qué número se ha quedado sin sitio.
-import { randInt, shuffle, saveScore } from "./utils.js";
+import { randInt, saveScore } from "./utils.js";
 
 // `minRects`/`maxRects` mantienen la ronda por debajo del minuto: son los
 // rectángulos que habrá que dibujar con el dedo.
@@ -449,7 +449,7 @@ export function mountShikakuGame(container, { client, onExit }) {
       : "Con ese rectángulo, el resto de números ya no se puede repartir";
     strikes++;
     renderGrid(homeless ? homeless.i : null);
-    if (strikes >= 3) return loseRound(reason);
+    if (strikes >= 3) return loseRound(reason, homeless ? homeless.i : null);
     say(`${reason} (fallo ${strikes} de 3)`, "bad");
     locked = true;
     later(() => {
@@ -507,16 +507,24 @@ export function mountShikakuGame(container, { client, onExit }) {
     later(nextRound, 900);
   }
 
-  function loseRound(reason) {
+  function loseRound(reason, guiltyIdx) {
     locked = true;
     rounds++;
     streak = 0;
     lives--;
     renderLives();
-    showSolution();
     say(`${reason}. Así era el reparto bueno.`, "bad");
-    if (lives <= 0) return later(() => finish(false), 2600);
-    later(nextRound, 2600);
+    // Primero parpadea el número que se quedó sin sitio y luego se pinta el
+    // reparto bueno: si se pintara de golpe no se vería el fallo.
+    if (guiltyIdx !== null && guiltyIdx !== undefined) {
+      renderGrid(guiltyIdx);
+      later(showSolution, 1400);
+    } else {
+      showSolution();
+    }
+    const wait = guiltyIdx !== null && guiltyIdx !== undefined ? 3600 : 2600;
+    if (lives <= 0) return later(() => finish(false), wait);
+    later(nextRound, wait);
   }
 
   function finish(userExited) {

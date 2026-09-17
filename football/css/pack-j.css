@@ -365,6 +365,15 @@
   position: absolute;
   inset: -7px;
   border-radius: 50%;
+}
+/* La máscara va sólo en el pseudoelemento de los dientes: si se pusiera en
+   .en-gear-inner también recortaría la marca pintada, que es lo que hay
+   que mirar para saber cuándo coinciden. */
+.en-gear-inner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
   background: repeating-conic-gradient(from calc(var(--step) / -4),
     var(--pj-tooth) 0 calc(var(--step) / 2),
     transparent calc(var(--step) / 2) var(--step));

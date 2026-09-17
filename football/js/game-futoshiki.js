@@ -6,7 +6,7 @@
 // que no hace falta, sin perder nunca la unicidad.
 // Al fallar se dice exactamente qué se incumple (la fila que repite, o los
 // dos números que no respetan el signo).
-import { randInt, shuffle, saveScore } from "./utils.js";
+import { shuffle, saveScore } from "./utils.js";
 
 const N = 4;
 

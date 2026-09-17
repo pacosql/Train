@@ -5,7 +5,7 @@
 // siempre. Luego se cuentan las soluciones por FUERZA BRUTA y se destapa un
 // dígito cada vez hasta que la solución es ÚNICA (y se poda lo que sobra).
 // Al fallar se señala el bloque que no cuadra, con su suma real.
-import { randInt, shuffle, saveScore } from "./utils.js";
+import { shuffle, saveScore } from "./utils.js";
 
 // Patrones de rejilla: '.' casilla blanca, '#' negra. Todos los bloques
 // tienen 2 casillas o más, tanto en filas como en columnas.

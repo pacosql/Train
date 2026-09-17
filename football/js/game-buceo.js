@@ -56,6 +56,7 @@ export function makeBuceoRound(level) {
     const target = randInt(MIN_D, MAX_D);
     if (target === start) continue;
     const delta = target - start;
+    if (Math.abs(delta) < 3) continue; // nada de rondas casi resueltas
 
     const sol = [];
     let ok = true;
@@ -149,21 +150,20 @@ export function mountBuceoGame(container, { client, onExit }) {
     for (let d = 0; d >= FLOOR; d--) {
       const y = yOf(d);
       const long = d % 2 === 0;
-      ticks += `<line x1="${long ? 40 : 46}" y1="${y}" x2="54" y2="${y}" class="bu-tick"/>`;
-      if (long && d < 0) ticks += `<text x="36" y="${y + 3.5}" class="bu-lbl">${d}</text>`;
+      ticks += `<line x1="${long ? 34 : 42}" y1="${y}" x2="48" y2="${y}" class="bu-tick"/>`;
+      if (long && d < 0) ticks += `<text x="31" y="${y + 3.5}" class="bu-lbl">−${Math.abs(d)}</text>`;
     }
     return `
-      <svg class="bu-svg" viewBox="0 0 150 ${yOf(FLOOR) + 24}" aria-hidden="true">
-        <rect x="0" y="${yOf(0)}" width="150" height="${yOf(FLOOR) - yOf(0) + 24}" class="bu-water"/>
-        <rect x="0" y="${yOf(FLOOR) + 6}" width="150" height="18" class="bu-sand"/>
+      <svg class="bu-svg" viewBox="0 0 150 ${yOf(FLOOR) + 26}" aria-hidden="true">
+        <rect x="0" y="${yOf(0)}" width="150" height="${yOf(FLOOR) - yOf(0) + 26}" class="bu-water"/>
+        <rect x="0" y="${yOf(FLOOR) + 8}" width="150" height="18" class="bu-sand"/>
         <line x1="0" y1="${yOf(0)}" x2="150" y2="${yOf(0)}" class="bu-surface"/>
-        <line x1="54" y1="${yOf(0)}" x2="54" y2="${yOf(FLOOR)}" class="bu-axis"/>
+        <line x1="48" y1="${yOf(0)}" x2="48" y2="${yOf(FLOOR)}" class="bu-axis"/>
         ${ticks}
-        <line x1="54" y1="${yOf(round.target)}" x2="140" y2="${yOf(round.target)}" class="bu-goal"/>
-        <text x="128" y="${yOf(round.target) - 5}" class="bu-goal-txt">${depth(round.target)}</text>
-        <text x="118" y="${yOf(round.target) + 6}" class="bu-goal-ico">🧰</text>
+        <line x1="48" y1="${yOf(round.target)}" x2="132" y2="${yOf(round.target)}" class="bu-goal"/>
+        <text x="134" y="${yOf(round.target) + 5}" class="bu-goal-ico">🧰</text>
         <polyline points="" class="bu-trail" data-trail/>
-        <g class="bu-diver" data-diver><text x="62" y="0" class="bu-diver-ico">🤿</text></g>
+        <g class="bu-diver" data-diver><text x="58" y="0" class="bu-diver-ico">🤿</text></g>
       </svg>`;
   }
 
@@ -173,7 +173,7 @@ export function mountBuceoGame(container, { client, onExit }) {
     diver.style.transition = animate ? "transform .45s ease" : "none";
     diver.style.transform = `translateY(${yOf(pos)}px)`;
     const poly = body.querySelector("[data-trail]");
-    poly.setAttribute("points", trail.map((d) => `92,${yOf(d)}`).join(" "));
+    poly.setAttribute("points", trail.map((d) => `88,${yOf(d)}`).join(" "));
     const now = body.querySelector("[data-now]");
     if (now) now.textContent = depth(pos);
   }
