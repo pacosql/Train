@@ -1,0 +1,889 @@
+/* Pack M — tanda del 17-09-2026 (tarde), tramo 2 de nuevos ejercicios.
+   Prefijos: .ag- (agujas) .tl- (tela) .vl- (valla) .rbt- (rebote, no ".rb-": ya
+   la usa "rebajas" en pack-i.css) .es2- (escala) .sb- (sombra). */
+
+/* #97 🕰️ El ángulo de las agujas (.ag-) */
+/* Estilos exclusivos del juego "agujas" (El ángulo de las agujas).
+   Prefijo obligatorio .ag- para no chocar con el resto de football/css. */
+
+:root {
+  --ag-face-bg: #ffffff;
+  --ag-face-border: #d8dee9;
+  --ag-tick: #8a94a6;
+  --ag-base: #a0a8b8;
+  --ag-needle: #e0554f;
+  --ag-knob: #e0554f;
+  --ag-arc: rgba(224, 85, 79, 0.28);
+  --ag-center: #2f3542;
+  --ag-text: #2f3542;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ag-face-bg: #1e2430;
+    --ag-face-border: #3a4256;
+    --ag-tick: #7d8aa3;
+    --ag-base: #5b6478;
+    --ag-needle: #ff7a70;
+    --ag-knob: #ff7a70;
+    --ag-arc: rgba(255, 122, 112, 0.32);
+    --ag-center: #e8ecf5;
+    --ag-text: #e8ecf5;
+  }
+}
+
+:root[data-theme="dark"] {
+  --ag-face-bg: #1e2430;
+  --ag-face-border: #3a4256;
+  --ag-tick: #7d8aa3;
+  --ag-base: #5b6478;
+  --ag-needle: #ff7a70;
+  --ag-knob: #ff7a70;
+  --ag-arc: rgba(255, 122, 112, 0.32);
+  --ag-center: #e8ecf5;
+  --ag-text: #e8ecf5;
+}
+
+.ag-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.ag-clock-wrap {
+  display: flex;
+  justify-content: center;
+  margin: 14px 0 6px;
+}
+
+.ag-clock {
+  position: relative;
+  width: 250px;
+  height: 250px;
+  max-width: 78vw;
+  max-height: 78vw;
+  touch-action: none;
+  user-select: none;
+}
+
+.ag-face {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--ag-face-bg);
+  border: 3px solid var(--ag-face-border);
+  box-shadow: inset 0 0 0 6px rgba(0, 0, 0, 0.03);
+}
+
+.ag-arc-fill {
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.ag-number {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ag-tick);
+  white-space: nowrap;
+  transform-origin: 0 0;
+  pointer-events: none;
+}
+
+.ag-base-line {
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  width: 3px;
+  height: 42%;
+  background: var(--ag-base);
+  transform: translateX(-50%);
+  transform-origin: 50% 100%;
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+.ag-needle {
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  width: 4px;
+  height: 42%;
+  background: var(--ag-needle);
+  transform-origin: 50% 100%;
+  transform: translateX(-50%) rotate(0deg);
+  border-radius: 3px;
+  cursor: grab;
+  touch-action: none;
+}
+.ag-needle:active {
+  cursor: grabbing;
+}
+
+.ag-knob {
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--ag-knob);
+  transform: translateX(-50%);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+.ag-center-dot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--ag-center);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.ag-current-angle {
+  margin-top: 8px;
+  font-weight: 700;
+  color: var(--ag-text);
+}
+
+/* #98 🧣 Dobla la tela (.tl-) */
+/* ==========================================================================
+   🧣 Dobla la tela — juego de simetría (game-tela.js).
+   Prefijo EXCLUSIVO .tl- para no chocar con style.css ni con otros packs.
+   Reutiliza las variables globales del sitio: --bg --card --text --muted
+   --accent --accent-2 --accent-dark --danger --good --border.
+   Solo define una variable propia (--tl-gold) para el 4º color del
+   estampado, con su variante para modo oscuro.
+   ========================================================================== */
+
+:root {
+  --tl-gold: #c98a00;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --tl-gold: #e0a930;
+  }
+}
+:root[data-theme="dark"] {
+  --tl-gold: #e0a930;
+}
+:root[data-theme="light"] {
+  --tl-gold: #c98a00;
+}
+
+/* ---------- Contenedor de la tela ---------- */
+.tl-wrap {
+  position: relative;
+  width: min(240px, 68vw);
+  aspect-ratio: 1 / 1;
+  margin: 18px auto 26px;
+}
+
+.tl-grid {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(var(--tl-n), 1fr);
+  grid-template-rows: repeat(var(--tl-n), 1fr);
+  gap: 2px;
+  background: var(--border);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  will-change: transform;
+}
+
+.tl-cell {
+  background: var(--card);
+}
+.tl-cell.tl-c1 { background: var(--danger); }
+.tl-cell.tl-c2 { background: var(--accent-2); }
+.tl-cell.tl-c3 { background: var(--tl-gold); }
+.tl-cell.tl-c4 { background: var(--good); }
+
+/* ---------- Líneas de doblez candidatas ---------- */
+.tl-axes {
+  position: absolute;
+  inset: -14px;
+  pointer-events: none;
+}
+
+.tl-axis-btn {
+  position: absolute;
+  pointer-events: auto;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.tl-axis-btn:disabled { cursor: default; }
+
+.tl-axis-btn.tl-axis-v {
+  top: 0;
+  bottom: 0;
+  width: 30px;
+  transform: translateX(-50%);
+}
+.tl-axis-btn.tl-axis-h {
+  left: 0;
+  right: 0;
+  height: 30px;
+  transform: translateY(-50%);
+}
+
+.tl-axis-line {
+  position: absolute;
+  background: var(--accent);
+  opacity: 0.5;
+  border-radius: 4px;
+  transition: opacity 0.15s ease, background-color 0.15s ease, transform 0.15s ease;
+}
+.tl-axis-v .tl-axis-line {
+  left: 50%;
+  top: 14px;
+  bottom: 14px;
+  width: 4px;
+  transform: translateX(-50%);
+}
+.tl-axis-h .tl-axis-line {
+  top: 50%;
+  left: 14px;
+  right: 14px;
+  height: 4px;
+  transform: translateY(-50%);
+}
+.tl-axis-btn:not(:disabled):active .tl-axis-line,
+.tl-axis-btn:not(:disabled):focus-visible .tl-axis-line {
+  opacity: 0.95;
+}
+
+.tl-axis-btn.tl-axis-correct .tl-axis-line {
+  background: var(--good);
+  opacity: 1;
+}
+.tl-axis-btn.tl-axis-wrong .tl-axis-line {
+  background: var(--danger);
+  opacity: 1;
+  animation: tl-shake 0.4s ease;
+}
+
+@keyframes tl-shake {
+  0%, 100% { transform: translateX(-50%); }
+  25% { transform: translateX(-65%); }
+  75% { transform: translateX(-35%); }
+}
+.tl-axis-h.tl-axis-wrong .tl-axis-line {
+  animation: tl-shake-h 0.4s ease;
+}
+@keyframes tl-shake-h {
+  0%, 100% { transform: translateY(-50%); }
+  25% { transform: translateY(-65%); }
+  75% { transform: translateY(-35%); }
+}
+
+/* ---------- Animación del "doblez" al acertar ---------- */
+.tl-grid.tl-fold-v {
+  animation: tl-fold-v 0.65s ease;
+}
+.tl-grid.tl-fold-h {
+  animation: tl-fold-h 0.65s ease;
+}
+@keyframes tl-fold-v {
+  0% { transform: scaleX(1); }
+  45% { transform: scaleX(0.12); }
+  100% { transform: scaleX(1); }
+}
+@keyframes tl-fold-h {
+  0% { transform: scaleY(1); }
+  45% { transform: scaleY(0.12); }
+  100% { transform: scaleY(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tl-grid.tl-fold-v,
+  .tl-grid.tl-fold-h,
+  .tl-axis-btn.tl-axis-wrong .tl-axis-line {
+    animation: none;
+  }
+}
+
+/* #99 🐑 La valla del huerto (.vl-) */
+/* Estilos exclusivos del juego "La valla del huerto" (id: valla).
+   Prefijo obligatorio .vl- — no redefine clases del núcleo (.prompt,
+   .feedback, .primary, .end-card, etc. ya existen en football/css/style.css). */
+
+:root {
+  --vl-ground: #a9d98c;
+  --vl-ground-dark: #4f7a3a;
+  --vl-fence: #8a5a2b;
+  --vl-fence-dark: #c98f4e;
+  --vl-plot-fill: rgba(91, 62, 204, 0.16);
+  --vl-plot-border: #5b3ecc;
+  --vl-handle-bg: #5b3ecc;
+  --vl-handle-fg: #ffffff;
+  --vl-readout-bg: #ffffff;
+  --vl-readout-text: #201a3a;
+  --vl-readout-muted: #66618a;
+  --vl-readout-border: #e3e0f5;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --vl-ground: #2f4a24;
+    --vl-fence: #c98f4e;
+    --vl-plot-fill: rgba(140, 120, 255, 0.22);
+    --vl-plot-border: #8c78ff;
+    --vl-handle-bg: #8c78ff;
+    --vl-handle-fg: #14112a;
+    --vl-readout-bg: #1e1a3d;
+    --vl-readout-text: #f1efff;
+    --vl-readout-muted: #a29ecb;
+    --vl-readout-border: #322c5c;
+  }
+}
+
+/* Escenario: "suelo" del huerto donde se dibuja el rectángulo. Altura fija
+   para que el alto máximo (S-1 m) siempre quepa a escala. */
+.vl-stage {
+  position: relative;
+  width: 100%;
+  max-width: 280px;
+  height: 210px;
+  margin: 14px auto 10px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  background: linear-gradient(to top, var(--vl-ground) 0 6px, transparent 6px);
+  background-color: transparent;
+  border-bottom: 4px solid var(--vl-fence);
+  border-radius: 4px;
+  touch-action: none; /* el arrastre del tirador controla el gesto, no el scroll */
+}
+
+/* El rectángulo del huerto: su ancho/alto en px se fijan desde JS según la
+   escala (px por metro) de la ronda actual. Crece desde la esquina
+   inferior izquierda del escenario. */
+.vl-rect {
+  position: relative;
+  min-width: 14px;
+  min-height: 14px;
+  background: var(--vl-plot-fill);
+  border: 3px solid var(--vl-plot-border);
+  border-radius: 3px;
+  box-sizing: border-box;
+  transition: width 0.03s linear, height 0.03s linear;
+}
+
+/* Tirador arrastrable, anclado al borde derecho del rectángulo a media
+   altura. Área táctil generosa para jugar con el pulgar. */
+.vl-handle {
+  position: absolute;
+  right: -18px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--vl-handle-bg);
+  border: 3px solid var(--vl-readout-bg);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  cursor: grab;
+  touch-action: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.vl-handle::after {
+  content: "↔";
+  color: var(--vl-handle-fg);
+  font-size: 1.1rem;
+  font-weight: 700;
+  pointer-events: none;
+}
+.vl-handle:active {
+  cursor: grabbing;
+  transform: translateY(-50%) scale(1.08);
+}
+
+/* Lectura en vivo de ancho / alto / área mientras se arrastra. */
+.vl-readout {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  background: var(--vl-readout-bg);
+  border: 1px solid var(--vl-readout-border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  margin: 4px 0 14px;
+  font-size: 0.82rem;
+  color: var(--vl-readout-muted);
+}
+.vl-readout b {
+  display: block;
+  color: var(--vl-readout-text);
+  font-size: 1rem;
+  margin-top: 2px;
+}
+
+/* #100 🎱 Tiro con rebote (.rbt-) */
+/* "Tiro con rebote" — estilos con prefijo EXCLUSIVO rbt- (borrador de scratch,
+   NO va en football/css/: no redefine ninguna clase del núcleo sin prefijo,
+   solo añade variables propias en :root para claro/oscuro con fallback a las
+   variables ya existentes del sitio). */
+:root {
+  --rbt-accent: var(--accent, #5b3ecc);
+  --rbt-accent-2: var(--accent-2, #2ea3c4);
+  --rbt-good: var(--good, #16a34a);
+  --rbt-danger: var(--danger, #e5484d);
+  --rbt-border: var(--border, #e3e0f5);
+  --rbt-card: var(--card, #ffffff);
+  --rbt-muted: var(--muted, #66618a);
+  --rbt-marker: #ffb703;
+  --rbt-marker-stroke: #7a4a00;
+  --rbt-wall-bg: rgba(91, 62, 204, 0.14);
+  --rbt-wall-border: rgba(91, 62, 204, 0.45);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --rbt-wall-bg: rgba(46, 163, 196, 0.2);
+    --rbt-wall-border: rgba(46, 163, 196, 0.55);
+    --rbt-marker: #ffca3a;
+    --rbt-marker-stroke: #4a2e00;
+  }
+}
+
+.rbt-table {
+  position: relative;
+  width: 100%;
+  max-width: 380px;
+  margin: 14px auto 0;
+  aspect-ratio: 100 / 62;
+  background: var(--rbt-card);
+  border: 1px solid var(--rbt-border);
+  border-radius: 14px;
+  overflow: hidden;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.rbt-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.rbt-base {
+  stroke: var(--rbt-muted);
+  stroke-width: 1;
+  stroke-dasharray: 2 2;
+  opacity: 0.6;
+}
+
+.rbt-wallline {
+  stroke: var(--rbt-accent);
+  stroke-width: 1.6;
+  stroke-dasharray: 3 2;
+}
+
+.rbt-dot { fill: var(--rbt-muted); }
+.rbt-dot-origin { fill: var(--rbt-accent-2); }
+.rbt-dot-target { fill: var(--rbt-accent); }
+.rbt-dot-correct { fill: none; stroke: var(--rbt-good); stroke-width: 1.4; }
+
+.rbt-marker {
+  fill: var(--rbt-marker);
+  stroke: var(--rbt-marker-stroke);
+  stroke-width: 0.6;
+}
+
+.rbt-line { stroke-width: 1.4; fill: none; stroke-linecap: round; }
+.rbt-line-preview { stroke: var(--rbt-accent); stroke-dasharray: 2.5 2; opacity: 0.85; }
+.rbt-line-ok { stroke: var(--rbt-good); }
+.rbt-line-bad { stroke: var(--rbt-danger); }
+.rbt-line-correct { stroke: var(--rbt-good); stroke-dasharray: 3 2; opacity: 0.9; }
+
+.rbt-wall {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 46px;
+  transform: translateY(-50%);
+  background: var(--rbt-wall-bg);
+  border-top: 2px dashed var(--rbt-wall-border);
+  border-bottom: 2px dashed var(--rbt-wall-border);
+  cursor: grab;
+  touch-action: none;
+}
+.rbt-wall:active { cursor: grabbing; }
+
+.rbt-emoji {
+  position: absolute;
+  bottom: 2%;
+  transform: translate(-50%, 0);
+  font-size: 1.5rem;
+  line-height: 1;
+  pointer-events: none;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.25));
+}
+
+@media (max-width: 420px) {
+  .rbt-emoji { font-size: 1.3rem; }
+  .rbt-wall { height: 40px; }
+}
+
+/* Añadido en la vuelta de revisión: pedestales de altura distinta para
+   lanzador y objetivo (antes estaban los dos al ras del suelo). */
+.rbt-pedestal {
+  stroke: var(--rbt-muted);
+  stroke-width: 1;
+  stroke-dasharray: 1.5 1.5;
+  opacity: 0.5;
+}
+
+/* #101 🗾 La escala del mapa (.es2-) */
+/* Estilos exclusivos del juego "La escala del mapa" (id: escala).
+   Prefijo EXCLUSIVO .es2- para no chocar con ningún otro juego.
+   No redefine ninguna clase del núcleo (.prompt, .keypad, .feedback,
+   .end-card, .choice-btn...); solo añade lo propio del tablero de
+   escala/mapa. Variables en :root para tema claro/oscuro. */
+
+:root {
+  --es2-panel: var(--card, #ffffff);
+  --es2-border: var(--border, #e3e0f5);
+  --es2-grid-bg: #eef3fb;
+  --es2-grid-line: #d7e3f5;
+  --es2-tick: #9fb3d6;
+  --es2-tick-major: #3f5f9e;
+  --es2-line: #2c3e6b;
+  --es2-label: var(--muted, #66618a);
+  --es2-accent: var(--accent, #5b3ecc);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --es2-panel: var(--card, #1e1a3d);
+    --es2-border: var(--border, #322c5c);
+    --es2-grid-bg: #1a2338;
+    --es2-grid-line: #2c3958;
+    --es2-tick: #5f76a3;
+    --es2-tick-major: #a9c2f2;
+    --es2-line: #cfe0ff;
+    --es2-label: var(--muted, #a29ecb);
+    --es2-accent: var(--accent, #8f7bf0);
+  }
+}
+
+.es2-board {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 16px;
+}
+
+.es2-scalebox,
+.es2-mapbox {
+  background: var(--es2-grid-bg);
+  border: 1px solid var(--es2-border);
+  border-radius: 14px;
+  padding: 12px 12px 10px;
+  /* textura ligera de "mapa" (cuadrícula muy tenue de fondo) */
+  background-image:
+    linear-gradient(var(--es2-grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--es2-grid-line) 1px, transparent 1px);
+  background-size: 14px 14px;
+}
+
+.es2-box-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--es2-label);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.es2-track-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: 2px;
+}
+
+.es2-track {
+  position: relative;
+  height: 30px;
+  min-width: 24px;
+}
+
+.es2-ruler-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 14px;
+  height: 3px;
+  background: var(--es2-line);
+  border-radius: 2px;
+}
+
+.es2-tick {
+  position: absolute;
+  top: 6px;
+  width: 1px;
+  height: 10px;
+  background: var(--es2-tick);
+}
+.es2-tick-major {
+  top: 2px;
+  width: 2px;
+  height: 18px;
+  background: var(--es2-tick-major);
+}
+.es2-tick-label {
+  position: absolute;
+  top: 20px;
+  transform: translateX(-50%);
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: var(--es2-label);
+  white-space: nowrap;
+}
+
+.es2-scale-caption {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  color: var(--es2-label);
+  text-align: center;
+}
+.es2-scale-caption b {
+  color: var(--es2-accent);
+}
+
+.es2-map-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.es2-map-row .es2-track-scroll {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.es2-point {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--es2-line);
+}
+.es2-point b {
+  font-size: 0.85rem;
+}
+
+.es2-display-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.es2-display-row .keypad-display {
+  flex: 1 1 auto;
+  max-width: 220px;
+}
+.es2-comma-btn {
+  flex: 0 0 auto;
+  width: 44px;
+  padding: 10px 0;
+  font-weight: 800;
+}
+
+@media (max-width: 380px) {
+  .es2-point { font-size: 0.95rem; }
+  .es2-box-label { font-size: 0.72rem; }
+}
+
+/* #102 🕶️ La sombra (.sb-) */
+/* Estilos exclusivos del juego "🕶️ La sombra" (id: sombra).
+   Prefijo obligatorio .sb- — no redefine clases del núcleo sin prefijo.
+   STAGE_PX en game-sombra.js debe coincidir con --sb-stage-h de aquí. */
+:root {
+  --sb-sky: #eef1fb;
+  --sb-ground: #cdbf9a;
+  --sb-ground-dark: #ffffff;
+  --sb-pole: #8a5a34;
+  --sb-tree: #2f9e57;
+  --sb-trunk: #6b4226;
+  --sb-shadow: #4b4560;
+  --sb-shadow-bg: #d9d5ee;
+  --sb-handle: #5b3ecc;
+  --sb-handle-text: #ffffff;
+  --sb-card: #ffffff;
+  --sb-border: #e3e0f5;
+  --sb-text: #201a3a;
+  --sb-muted: #66618a;
+  --sb-stage-h: 200px;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --sb-sky: #1b1d33;
+    --sb-ground: #4a4130;
+    --sb-ground-dark: #d8d2ff;
+    --sb-pole: #b98a50;
+    --sb-tree: #3fbf72;
+    --sb-trunk: #8a5a34;
+    --sb-shadow: #cfcbe8;
+    --sb-shadow-bg: #2a2650;
+    --sb-handle: #8f7ae8;
+    --sb-handle-text: #14112a;
+    --sb-card: #1e1a3d;
+    --sb-border: #322c5c;
+    --sb-text: #f1efff;
+    --sb-muted: #a29ecb;
+  }
+}
+
+.sb-prompt small { display: block; font-weight: 400; margin-top: 2px; }
+
+.sb-data {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 10px 0 14px;
+}
+.sb-fact {
+  background: var(--sb-card);
+  border: 1px solid var(--sb-border);
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-size: 0.82rem;
+  color: var(--sb-text);
+}
+.sb-fact b { color: var(--sb-handle); }
+
+.sb-scene {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  align-items: flex-end;
+  background: var(--sb-sky);
+  border-radius: 14px;
+  padding: 12px 10px 8px;
+}
+.sb-col {
+  flex: 1 1 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 150px;
+}
+.sb-stage {
+  position: relative;
+  width: 100%;
+  height: var(--sb-stage-h);
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  touch-action: none;
+}
+.sb-ground {
+  width: 100%;
+  height: 3px;
+  background: var(--sb-ground-dark);
+  border-radius: 2px;
+  opacity: 0.5;
+}
+.sb-pole {
+  width: 8px;
+  background: var(--sb-pole);
+  border-radius: 3px 3px 0 0;
+  transition: height 0.05s linear;
+}
+.sb-tree {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 64px;
+  transform: translateX(-50%);
+  background: var(--sb-tree);
+  clip-path: polygon(50% 0%, 4% 100%, 96% 100%);
+}
+.sb-trunk {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 10px;
+  height: 12px;
+  background: var(--sb-trunk);
+  border-radius: 0 0 2px 2px;
+}
+.sb-handle {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, 50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--sb-handle);
+  color: var(--sb-handle-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: 800;
+  cursor: grab;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+  touch-action: none;
+  user-select: none;
+  z-index: 2;
+}
+.sb-handle:active { cursor: grabbing; }
+
+.sb-shadow-row {
+  width: 100%;
+  min-height: 10px;
+  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+}
+.sb-shadow {
+  height: 8px;
+  background: var(--sb-shadow);
+  border-radius: 0 4px 4px 0;
+  transition: width 0.05s linear;
+}
+.sb-shadow-pole { background: var(--sb-shadow); }
+.sb-shadow-tree { background: var(--sb-shadow); }
+
+.sb-col-label {
+  margin-top: 4px;
+  font-size: 0.72rem;
+  color: var(--sb-muted);
+  font-weight: 700;
+}
+
+.sb-readout {
+  text-align: center;
+  margin-top: 14px;
+  font-size: 0.95rem;
+  color: var(--sb-text);
+}
+.sb-readout b { color: var(--sb-handle); font-size: 1.1rem; }
