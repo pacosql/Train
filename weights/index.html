@@ -106,6 +106,7 @@
     button:active { transform: scale(0.985); filter: brightness(1.08); }
     button.stop { background: var(--stop); color: #2b0a02; }
     button.secondary { background: var(--surface-2); color: var(--text); border: 1px solid var(--line); }
+    button.danger { background: transparent; color: var(--danger); border: 1px solid rgba(255, 84, 112, 0.35); }
     button.ghost { background: transparent; color: var(--text-2); border: none; font-weight: 700; font-size: 0.9rem; padding: 12px; }
     button.small { width: auto; padding: 12px 16px; margin: 0; flex-shrink: 0; }
     button:disabled { opacity: 0.32; cursor: default; }
@@ -150,6 +151,8 @@
     .pill.push { background: var(--push); color: #04142e; }
     .pill.pull { background: var(--pull); color: #2b1d00; }
     .pill.cardio { background: var(--cardio); color: #1b0b33; }
+    .item.otro { border-left-color: var(--line-strong); }
+    .pill.otro { background: var(--surface-2); color: var(--text-2); border: 1px solid var(--line-strong); }
     .chev { color: var(--text-2); font-size: 1.1rem; font-weight: 800; flex-shrink: 0; }
     .tag { font-size: 0.62rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.4px; padding: 3px 8px; border-radius: 999px; background: var(--surface-2); color: var(--text-2); border: 1px solid var(--line); flex-shrink: 0; }
     .tag.mas { color: var(--accent); border-color: rgba(67, 211, 145, 0.35); }
@@ -308,7 +311,8 @@
 
       <div class="group-header">En este orden</div>
       <div id="sd-list"></div>
-      <button id="btn-sd-back" class="ghost">← Volver a inicio</button>
+      <button id="btn-sd-back" class="secondary" style="margin-top:6px;">← Volver a inicio</button>
+      <button id="btn-sd-delete" class="danger">🗑 Borrar este entrenamiento</button>
     </section>
 
     <!-- CATÁLOGO -->
@@ -316,6 +320,7 @@
       <h2>Ejercicios y pesos</h2>
       <p class="sub">Todo el catálogo. Entra en cualquier máquina para dejar preparado su peso de referencia y sus notas, sin necesidad de empezar un entrenamiento.</p>
       <div id="catalog-list"></div>
+      <button id="btn-catalog-add" class="secondary" style="margin-top:6px;">+ Añadir máquina nueva</button>
       <button id="btn-catalog-back-home" class="ghost">← Volver a inicio</button>
     </section>
 
@@ -362,6 +367,22 @@
 
         <h3>Sobre este grupo muscular</h3>
         <p id="cd-muscle-info"></p>
+
+        <h3>Ficha de la máquina</h3>
+        <label for="cd-muscle-input">Grupo muscular</label>
+        <input id="cd-muscle-input" type="text" placeholder="p. ej. Bíceps" />
+
+        <label style="margin-top:16px;">Tipo de movimiento</label>
+        <div class="chip-row" id="cd-type-chips">
+          <div class="chip" data-type="push">Empuje</div>
+          <div class="chip" data-type="pull">Tirón</div>
+          <div class="chip" data-type="cardio">Cardio</div>
+        </div>
+
+        <label style="display:flex; align-items:center; gap:10px; margin:2px 0 14px;">
+          <input id="cd-assisted" type="checkbox" style="width:auto;" /> Máquina asistida
+        </label>
+        <button id="btn-cd-save-info" class="secondary">Guardar ficha</button>
       </details>
     </section>
 
@@ -431,29 +452,35 @@
     <!-- ADD EXERCISE -->
     <section id="screen-add-exercise" hidden>
       <h2>Nueva máquina</h2>
-      <p class="sub">Se guarda en el catálogo para siempre, no solo para hoy.</p>
+      <p class="sub">Con el nombre me vale. Todo lo demás es opcional y lo puedes rellenar luego desde su ficha.</p>
       <div class="card">
         <label for="new-ex-name">Nombre (como pone en la máquina)</label>
-        <input id="new-ex-name" type="text" placeholder="p. ej. Curl de bíceps" />
-        <label for="new-ex-muscle" style="margin-top:14px;">Grupo muscular</label>
-        <input id="new-ex-muscle" type="text" placeholder="p. ej. Bíceps" />
-      </div>
-      <div class="card">
-        <label>Tipo de movimiento</label>
-        <div class="chip-row">
-          <div class="chip" data-type="push">Empuje</div>
-          <div class="chip" data-type="pull">Tirón</div>
-        </div>
-        <label style="display:flex; align-items:center; gap:10px; margin:2px 0 0;">
-          <input id="new-ex-assisted" type="checkbox" style="width:auto;" /> Máquina asistida
-        </label>
-      </div>
-      <div class="card">
-        <label for="new-ex-notes">Notas de configuración (opcional)</label>
-        <input id="new-ex-notes" type="text" placeholder="p. ej. asiento en posición 3" />
+        <input id="new-ex-name" type="text" placeholder="p. ej. Curl de bíceps" autocomplete="off" />
       </div>
       <button id="btn-save-new-exercise">Guardar máquina</button>
       <button id="btn-cancel-new-exercise" class="ghost">Cancelar</button>
+
+      <details class="detail">
+        <summary>Añadir detalles ahora</summary>
+        <div class="card">
+          <label for="new-ex-muscle">Grupo muscular</label>
+          <input id="new-ex-muscle" type="text" placeholder="p. ej. Bíceps" />
+
+          <label style="margin-top:16px;">Tipo de movimiento</label>
+          <div class="chip-row">
+            <div class="chip" data-type="push">Empuje</div>
+            <div class="chip" data-type="pull">Tirón</div>
+            <div class="chip" data-type="cardio">Cardio</div>
+          </div>
+
+          <label style="display:flex; align-items:center; gap:10px; margin:2px 0 16px;">
+            <input id="new-ex-assisted" type="checkbox" style="width:auto;" /> Máquina asistida
+          </label>
+
+          <label for="new-ex-notes">Notas de configuración</label>
+          <input id="new-ex-notes" type="text" placeholder="p. ej. asiento en posición 3" />
+        </div>
+      </details>
     </section>
 
     <!-- EJERCICIO ACTIVO -->
@@ -599,6 +626,8 @@
     let seriesByExercise = {};    // exercise_id -> [{at, weight, minutes}] en orden cronológico
     let recentSessions = [];      // sesiones terminadas con nº de ejercicios
     let catalogReturn = "catalog-list";  // a dónde vuelve el detalle del catálogo
+    let addExerciseReturn = "pick";      // a dónde vuelve "nueva máquina"
+    let currentSessionDetail = null;     // entrenamiento pasado que se está viendo
     let currentCatalogExerciseId = null;
     let catalogWeightDraft = 0;
 
@@ -765,7 +794,31 @@
     }
 
     // ---------- detalle de un entrenamiento pasado ----------
+    async function deleteSessionDetail() {
+      const session = currentSessionDetail;
+      if (!session) return;
+      const ok = confirm(
+        `¿Borrar el entrenamiento del ${dayLabel(session.started_at)}?\n\n` +
+        "También se borran los ejercicios que registraste ese día, y la gráfica " +
+        "de progreso de esas máquinas dejará de contarlos. No se puede deshacer.");
+      if (!ok) return;
+      // weights_session_exercises tiene ON DELETE CASCADE, así que con borrar
+      // la sesión desaparecen también sus ejercicios.
+      const { error } = await client.from(T.sessions).delete().eq("id", session.id);
+      if (error) { showError("No se pudo borrar el entrenamiento: " + error.message); return; }
+      showError("");
+      currentSessionDetail = null;
+      try {
+        const perSession = await loadCatalogAndHistory();
+        await loadSessions(perSession);
+      } catch (e) {
+        showError("Borrado, pero no se pudo refrescar el historial: " + e.message);
+      }
+      goHome();
+    }
+
     async function showSessionDetail(session) {
+      currentSessionDetail = session;
       el("sd-when").textContent = relativeDay(session.started_at);
       el("sd-title").textContent = dayLabel(session.started_at);
       el("sd-sub").textContent = "Cargando…";
@@ -982,14 +1035,20 @@
     }
 
     function badgeLabel(type) {
-      return type === "push" ? "Empuje" : type === "pull" ? "Tirón" : "Cardio";
+      return type === "push" ? "Empuje" : type === "pull" ? "Tirón" : type === "cardio" ? "Cardio" : "Otro";
     }
+    // El grupo muscular es opcional: una máquina puede añadirse solo con el
+    // nombre y clasificarse más tarde (o nunca).
+    function muscleLabel(ex) { return (ex.muscle_group || "").trim() || "Sin clasificar"; }
     // "Empuje · Pecho", pero solo "Cardio" cuando el grupo muscular repetiría
     // la misma palabra que el tipo de movimiento.
     function headerLine(ex) {
       const badge = badgeLabel(ex.movement_type);
       const group = (ex.muscle_group || "").trim();
       return group && group.toLowerCase() !== badge.toLowerCase() ? `${badge} · ${group}` : badge;
+    }
+    function movementLabel(type) {
+      return type === "push" ? "Empuje" : type === "pull" ? "Tirón" : type === "cardio" ? "Cardio" : "Sin clasificar";
     }
 
     function renderPickScreen() {
@@ -1011,7 +1070,7 @@
         div.innerHTML =
           `<div class="item-main">
              <div class="name">${ex.name}${doneToday ? " ✓" : ""}</div>
-             <div class="meta">${ex.muscle_group}${weightTxt}</div>
+             <div class="meta">${muscleLabel(ex)}${weightTxt}</div>
              <div class="reason">${i === 0 && !doneToday ? "⭐ Recomendado · " : ""}${reason}</div>
            </div>
            <span class="pill ${ex.movement_type}">${badgeLabel(ex.movement_type)}</span>`;
@@ -1032,6 +1091,7 @@
         { key: "push", label: "💪 Empuje" },
         { key: "pull", label: "🔙 Tirón" },
         { key: "cardio", label: "❤️ Cardio" },
+        { key: "otro", label: "🔧 Sin clasificar" },
       ];
       for (const g of groups) {
         const items = catalog.filter((e) => e.movement_type === g.key).sort((a, b) => a.sort_order - b.sort_order);
@@ -1055,7 +1115,7 @@
           div.innerHTML =
             `<div class="item-main">
                <div class="name">${ex.name}</div>
-               <div class="meta">${ex.muscle_group}${ex.notes ? ` · ${ex.notes}` : ""}</div>
+               <div class="meta">${muscleLabel(ex)}${ex.notes ? ` · ${ex.notes}` : ""}</div>
              </div>
              <span class="det" style="color:var(--text-2);font-size:0.78rem;font-weight:700;">${weightTxt}</span>`;
           div.addEventListener("click", () => showCatalogDetail(ex));
@@ -1100,10 +1160,33 @@
         renderCatalogWeightDisplay();
       }
       el("cd-notes-input").value = ex.notes || "";
+      el("cd-muscle-input").value = ex.muscle_group || "";
+      el("cd-assisted").checked = !!ex.assisted;
+      document.querySelectorAll("#cd-type-chips .chip").forEach((c) =>
+        c.classList.toggle("selected", c.dataset.type === ex.movement_type));
       el("cd-description").textContent = ex.description || (isCardio ? CARDIO_DESCRIPTION : DEFAULT_DESCRIPTION);
       el("cd-muscle-info").textContent = muscleInfo(ex.muscle_group);
       renderProgressChart("cd", ex);
       showScreen("catalog-detail");
+    }
+
+    async function saveCatalogInfo() {
+      const ex = catalog.find((e) => e.id === currentCatalogExerciseId);
+      if (!ex) return;
+      const chip = document.querySelector("#cd-type-chips .chip.selected");
+      const patch = {
+        muscle_group: el("cd-muscle-input").value.trim() || null,
+        movement_type: chip ? chip.dataset.type : "otro",
+        assisted: el("cd-assisted").checked,
+      };
+      const { error } = await client.from(T.exercises).update(patch).eq("id", ex.id);
+      if (error) { showError("No se pudo guardar la ficha: " + error.message); return; }
+      showError("");
+      Object.assign(ex, patch);
+      el("cd-header").textContent = headerLine(ex);
+      el("cd-muscle-info").textContent = muscleInfo(ex.muscle_group);
+      el("cd-weight-card").hidden = ex.movement_type === "cardio";
+      renderProgressChart("cd", ex);
     }
 
     async function saveCatalogNotes() {
@@ -1388,30 +1471,64 @@
       showScreen("cardio");
     }
 
+    // Chips de selección única que además se pueden deseleccionar: el tipo de
+    // movimiento es opcional, así que hay que poder dejarlo en blanco.
+    function wireChipGroup(selector) {
+      const chips = document.querySelectorAll(`${selector} .chip`);
+      chips.forEach((chip) =>
+        chip.addEventListener("click", () => {
+          const wasSelected = chip.classList.contains("selected");
+          chips.forEach((c) => c.classList.remove("selected"));
+          if (!wasSelected) chip.classList.add("selected");
+        }));
+    }
+
+    function openAddExercise(from) {
+      addExerciseReturn = from;
+      // Añadir una máquina desde el catálogo no debe pisar el punto de
+      // retorno de un entrenamiento que esté en marcha.
+      const keepResumePoint = from === "catalog-list" ? state.lastActiveScreen : null;
+      el("new-ex-name").value = "";
+      el("new-ex-muscle").value = "";
+      el("new-ex-assisted").checked = false;
+      el("new-ex-notes").value = "";
+      document.querySelectorAll("#screen-add-exercise .chip").forEach((c) => c.classList.remove("selected"));
+      showScreen("add-exercise");
+      if (from === "catalog-list") { state.lastActiveScreen = keepResumePoint; saveState(); }
+      el("new-ex-name").focus();
+    }
+
     function slugify(name) {
       return (name.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "")
         .replace(/[^a-z0-9]+/g, "_").replace(/^_+|_+$/g, "")) || "maquina";
     }
     async function saveNewExercise() {
       const name = el("new-ex-name").value.trim();
-      const muscle = el("new-ex-muscle").value.trim();
-      const typeChip = document.querySelector("#screen-add-exercise .chip.selected");
-      if (!name || !muscle || !typeChip) { showError("Rellena nombre, grupo muscular y tipo de movimiento."); return; }
+      if (!name) { showError("Ponle un nombre a la máquina."); return; }
       showError("");
+      // Todo lo demás es opcional: sin tipo de movimiento la máquina queda
+      // como "otro" y se puede clasificar más tarde desde su ficha.
+      const typeChip = document.querySelector("#screen-add-exercise .chip.selected");
       const base = slugify(name);
       for (let attempt = 0; attempt < 3; attempt++) {
         const { data, error } = await client.from(T.exercises).insert({
           slug: attempt === 0 ? base : `${base}_${attempt}`,
-          name, muscle_group: muscle,
-          movement_type: typeChip.dataset.type,
+          name,
+          muscle_group: el("new-ex-muscle").value.trim() || null,
+          movement_type: typeChip ? typeChip.dataset.type : "otro",
           assisted: el("new-ex-assisted").checked,
           weight_step: 5, sort_order: catalog.length,
           notes: el("new-ex-notes").value.trim() || null,
         }).select().single();
-        if (!error) { catalog.push(data); renderPickScreen(); showScreen("pick"); return; }
+        if (!error) {
+          catalog.push(data);
+          if (addExerciseReturn === "catalog-list") { renderCatalogList(); showScreen("catalog-list"); }
+          else { renderPickScreen(); showScreen("pick"); }
+          return;
+        }
         if (error.code !== "23505") { showError("No se pudo guardar: " + error.message); return; }
       }
-      showError("Ese nombre ya existe — prueba con otro.");
+      showError("Ya tienes una máquina con ese nombre — prueba con otro.");
     }
 
     // ---------- carga ----------
@@ -1478,6 +1595,10 @@
       el("cd-weight-minus").addEventListener("click", () => adjustCatalogWeight(-1));
       el("cd-weight-plus").addEventListener("click", () => adjustCatalogWeight(1));
       el("btn-cd-save-notes").addEventListener("click", saveCatalogNotes);
+      el("btn-cd-save-info").addEventListener("click", saveCatalogInfo);
+      wireChipGroup("#cd-type-chips");
+      el("btn-catalog-add").addEventListener("click", () => openAddExercise("catalog-list"));
+      el("btn-sd-delete").addEventListener("click", deleteSessionDetail);
 
       document.querySelectorAll("#screen-setup .chip").forEach((chip) =>
         chip.addEventListener("click", () => selectDurationChip(Number(chip.dataset.min))));
@@ -1497,18 +1618,12 @@
       el("btn-finish-exercise").addEventListener("click", finishExercise);
       el("btn-back-exercise").addEventListener("click", goToListWithoutFinishing);
 
-      el("btn-add-exercise").addEventListener("click", () => {
-        el("new-ex-name").value = ""; el("new-ex-muscle").value = "";
-        el("new-ex-assisted").checked = false; el("new-ex-notes").value = "";
-        document.querySelectorAll("#screen-add-exercise .chip").forEach((c) => c.classList.remove("selected"));
-        showScreen("add-exercise");
+      el("btn-add-exercise").addEventListener("click", () => openAddExercise("pick"));
+      el("btn-cancel-new-exercise").addEventListener("click", () => {
+        if (addExerciseReturn === "catalog-list") { renderCatalogList(); showScreen("catalog-list"); }
+        else showScreen("pick");
       });
-      el("btn-cancel-new-exercise").addEventListener("click", () => showScreen("pick"));
-      document.querySelectorAll("#screen-add-exercise .chip").forEach((chip) =>
-        chip.addEventListener("click", () => {
-          document.querySelectorAll("#screen-add-exercise .chip").forEach((c) => c.classList.remove("selected"));
-          chip.classList.add("selected");
-        }));
+      wireChipGroup("#screen-add-exercise .chip-row");
       el("btn-save-new-exercise").addEventListener("click", saveNewExercise);
 
       document.querySelectorAll("#screen-feedback .fb-option").forEach((opt) =>

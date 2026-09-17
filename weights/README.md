@@ -36,6 +36,19 @@ general.
   sola serie, así que no lleva leyenda: solo se etiquetan el primer y el
   último punto, y tocando cualquier punto se ve su fecha exacta.
 
+- Cada entrenamiento se puede **borrar** desde su propia pantalla. El
+  FK de `weights_session_exercises` tiene `ON DELETE CASCADE`, así que
+  al borrar la fila de `weights_sessions` desaparecen con ella los
+  ejercicios de ese día (y dejan de contar en las gráficas).
+
+## Añadir una máquina
+
+Solo el **nombre** es obligatorio. El grupo muscular es opcional
+(`muscle_group` es nullable) y el tipo de movimiento tiene un cuarto
+valor, `otro`, que es el que se usa por defecto: la máquina aparece en
+el grupo "Sin clasificar" del catálogo y se puede clasificar más tarde
+desde su ficha, sin frenar el entrenamiento para rellenar formularios.
+
 La columna `description` de `weights_exercises` guarda el texto de "cómo
 entrenarlo" de cada máquina (colocación, ejecución, errores típicos y
 esquema de series). Si está vacía, la app usa un texto genérico.
@@ -48,8 +61,8 @@ subirlo.
 ## Esquema de datos (Supabase, prefijo `weights_`)
 
 - `weights_exercises`: catálogo de máquinas/ejercicios (nombre, grupo
-  muscular, tipo de movimiento push/pull/cardio, si es asistida, y el
-  incremento de peso típico).
+  muscular opcional, tipo de movimiento push/pull/cardio/otro, si es
+  asistida, y el incremento de peso típico).
 - `weights_sessions`: una fila por entrenamiento (duración planeada,
   minutos de cardio, inicio/fin).
 - `weights_session_exercises`: una fila por ejercicio hecho dentro de
