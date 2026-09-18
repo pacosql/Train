@@ -15,38 +15,31 @@ compra desasistida y valor con un solo cliente.
 
 ## Pendientes (en orden)
 
-1. **Mostrar los campos nuevos en la ficha**: `venta` (desasistida /
-   asistida / mixta), `efecto_red` (individual / red), `ltv_eur` junto al
-   CAC con el ratio LTV/CAC, `payback_meses`, `uso_ia` (barra 1-10) y
-   `etiquetas` como chips. Mostrar "–" cuando falten.
-2. **Puntuación alineada con los criterios del usuario**: penalizar
-   `venta = 'asistida'` y `efecto_red = 'red'`, usar LTV/CAC en lugar de
-   ticket/CAC cuando exista LTV, y explicar el cálculo en un desplegable
-   "Cómo se calcula". Documentar la fórmula nueva en `README.md`.
-3. **Vista "Explorar"** (nueva pestaña o botón): lista de TODAS las fichas
+1. **Vista "Explorar"** (nueva pestaña o botón): lista de TODAS las fichas
    (pendientes y decididas) con filtros combinables por sector, modelo
    (B2C/B2B…), tipo, venta, efecto de red, impacto de la IA y decisión.
-4. **Filtros numéricos** en Explorar: éxito mínimo, inversión máxima, CAC
+2. **Filtros numéricos** en Explorar: éxito mínimo, inversión máxima, CAC
    máximo, LTV/CAC mínimo, payback máximo, uso de IA mínimo. Con
    deslizadores o botones de rango, y contador de resultados.
-5. **Ordenar** Explorar por puntuación, éxito, inversión, CAC, LTV/CAC,
+3. **Ordenar** Explorar por puntuación, éxito, inversión, CAC, LTV/CAC,
    payback, fecha. Recordar filtros y orden en `localStorage`.
-6. **Buscador de texto** (nombre, resumen, etiquetas, sector).
-7. **Comparar**: seleccionar 2-3 fichas y verlas en una tabla lado a lado
+4. **Buscador de texto** (nombre, resumen, etiquetas, sector).
+5. **Comparar**: seleccionar 2-3 fichas y verlas en una tabla lado a lado
    con las métricas clave.
-8. **Resumen por sector**: pequeño panel con nº de ideas y puntuación media
+6. **Resumen por sector**: pequeño panel con nº de ideas y puntuación media
    por sector y por tipo de venta, tocable para filtrar.
-9. **Estado de las rutinas**: sección al pie que muestre las últimas
+7. **Estado de las rutinas**: sección al pie que muestre las últimas
    ejecuciones de `negocios_rutinas` (fecha, rutina, resumen) para saber
    que siguen vivas.
-10. **Fichas nuevas destacadas**: marcar como "nueva" las insertadas desde
+8. **Fichas nuevas destacadas**: marcar como "nueva" las insertadas desde
     la última visita (fecha en `localStorage`) y avisar con un contador.
-11. **Editar decisión con motivo rápido**: al etiquetar, ofrecer 3-4 motivos
+9. **Editar decisión con motivo rápido**: al etiquetar, ofrecer 3-4 motivos
     frecuentes en un toque ("venta humana", "efecto de red", "poco margen",
     "no es para mí") que se guardan como comentario de texto.
-12. **Exportar** las fichas filtradas a CSV para Power BI.
+10. **Exportar** las fichas filtradas a CSV para Power BI.
 
 ## Hechas
 
+- 2026-09-18 · (este commit) · Puntuación = probabilidad de éxito para el usuario (venta, efecto de red, inversión, LTV/CAC, viralidad, éxito); ficha muestra venta, efecto de red, LTV con ratio, retorno, uso de IA, viralidad, etiquetas y "Cómo se calcula"; bloque "He tenido en cuenta" de la rutina de revisión; dictado por voz y transcripción en el navegador.
 - 2026-09-18 · `615e8a7` · Etiquetas gusta / no_gusta / definitivo y comentarios por texto y audio.
 - 2026-09-18 · `373b7dc` · Primera versión: fichas ordenadas por puntuación, decidir y deshacer.

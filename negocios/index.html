@@ -211,6 +211,18 @@
     .decision-tag.definitivo { color: var(--accent); }
     .helper { font-size: 0.8rem; color: var(--text-2); margin-top: 8px; }
 
+    /* revisión */
+    .revision { border: 1px solid rgba(114, 169, 255, 0.45); background: rgba(114, 169, 255, 0.1); border-radius: 14px; padding: 10px 12px; margin: 0 0 12px; font-size: 0.9rem; }
+    .revision .t { font-family: var(--display); font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--blue); margin-bottom: 3px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 5px; margin: 8px 0 0; }
+    .tag { font-size: 0.72rem; color: var(--text-2); border: 1px solid var(--line); border-radius: 999px; padding: 2px 8px; }
+    .calc { font-size: 0.85rem; color: var(--text-2); }
+    .calc b { color: var(--text); }
+    button.dictate { background: rgba(114, 169, 255, 0.12); color: var(--blue); border: 1px solid rgba(114, 169, 255, 0.45); box-shadow: none; }
+    button.dictate.on { background: linear-gradient(135deg, #a9c8ff, var(--blue) 55%, #3f7fe0); color: #051233; animation: rec-pulse 1.2s ease-in-out infinite; }
+    .rec-row.three { grid-template-columns: 1fr 1fr 1fr; }
+    .rec-row.three button { padding: 12px 6px; font-size: 0.95rem; white-space: nowrap; }
+
     /* comentarios (texto y audio) */
     .comment { border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; margin-bottom: 8px; background: rgba(255, 255, 255, 0.03); font-size: 0.9rem; }
     .comment .head { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-family: var(--display); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-2); margin-bottom: 4px; }
@@ -273,7 +285,7 @@
     let comentarios = []; // todos, de todas las fichas
     const state = { tab: "pendiente", index: 0, detailId: null };
     let lastChange = null; // { id, prev: {decision, decidido_en} }
-    const rec = { recorder: null, stream: null, chunks: [], blob: null, mime: "", startedAt: 0, timer: null, url: "" };
+    const rec = { recorder: null, stream: null, chunks: [], blob: null, mime: "", startedAt: 0, timer: null, url: "", sr: null, texto: [] };
     let toastTimer = null;
 
     const el = (id) => document.getElementById(id);
@@ -281,36 +293,49 @@
     const money = (n) => n == null ? "–" : (Math.abs(n) >= 1000 ? (Math.round(n / 100) / 10).toLocaleString("es-ES") + " k€" : n.toLocaleString("es-ES") + " €");
     const rango = (a, b) => (a == null && b == null) ? "–" : (a != null && b != null ? `${money(a)} – ${money(b)}` : money(a ?? b));
 
-    // ---------- puntuación (0-100) ----------
-    // Pesos: éxito 25, encaje con tu perfil 25, durabilidad 15, economía
-    // unitaria (ticket / CAC) 15, impacto de la IA 10, inversión 10.
+    // ---------- puntuación (0-100): "probabilidad de éxito para ti" ----------
+    // Lo que el usuario entiende por éxito: compra desasistida (×2), cliente
+    // individual sin efecto de red (×1,5), poca inversión (×2), LTV muy por
+    // encima del CAC (×2), viralidad (×1) y la probabilidad de éxito de
+    // mercado que estima el analista (×1,5). El encaje con el perfil y la
+    // durabilidad se muestran pero no puntúan.
     const IA_SCORE = { palanca: 10, neutral: 6, amenaza: 2 };
+    const VENTA_SCORE = { desasistida: 10, mixta: 5, asistida: 1 };
+    const RED_SCORE = { individual: 10, red: 2 };
     const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
-    function economia(i) {
-      if (!i.ticket_medio_eur || !i.cac_eur) return 5;
-      return clamp(5 * Math.log10(i.ticket_medio_eur / i.cac_eur) + 2.5, 0, 10);
+    function ltvCac(i) {
+      const ltv = i.ltv_eur ?? i.ticket_medio_eur;
+      if (!ltv || !i.cac_eur) return 5;
+      return clamp(5 * Math.log10(ltv / i.cac_eur) + 2.5, 0, 10);
     }
     function inversion(i) {
       const max = i.inversion_max_eur ?? i.inversion_min_eur;
       if (!max) return 5;
-      return clamp(10 - 3 * Math.log10(max / 20000), 0, 10);
+      return clamp(10 - 4 * Math.log10(max / 10000), 0, 10);
     }
+    const parts = (i) => ({
+      venta: VENTA_SCORE[i.venta] ?? 5, red: RED_SCORE[i.efecto_red] ?? 6, inversion: inversion(i),
+      ltvcac: ltvCac(i), viralidad: i.viralidad ?? 5, exito: i.exito,
+    });
     function score(i) {
-      const s = i.exito * 2.5 + i.encaje_perfil * 2.5 + i.durabilidad * 1.5 + economia(i) * 1.5 + (IA_SCORE[i.impacto_ia] ?? 6) * 1.0 + inversion(i) * 1.0;
-      return Math.round(s);
+      const p = parts(i);
+      return Math.round(p.venta * 2 + p.red * 1.5 + p.inversion * 2 + p.ltvcac * 2 + p.viralidad * 1 + p.exito * 1.5);
     }
     function verdict(s) {
-      if (s >= 70) return ["Candidata seria", "var(--good)"];
-      if (s >= 55) return ["Con potencial, con reservas", "var(--mid)"];
-      if (s >= 40) return ["Floja para tu perfil", "var(--accent)"];
+      if (s >= 75) return ["Alta probabilidad para ti", "var(--good)"];
+      if (s >= 60) return ["Buena, con reservas", "var(--mid)"];
+      if (s >= 45) return ["Floja para ti", "var(--accent)"];
       return ["Descartable", "var(--bad)"];
     }
+    const f1 = (n) => (Math.round(n * 10) / 10).toLocaleString("es-ES");
     const barColor = (v) => v >= 7 ? "var(--good)" : v >= 5 ? "var(--mid)" : "var(--bad)";
     const IA_LABEL = { palanca: ["🚀 Palanca", "good"], neutral: ["⚖️ Neutral", ""], amenaza: ["⚠️ Amenaza", "bad"] };
     const MODELO_LABEL = { B2C: "B2C · a consumidor", B2B: "B2B · a empresas", B2B2C: "B2B2C · vía empresas al consumidor", B2G: "B2G · a administración" };
     const TIPO_LABEL = { innovador: "Innovador", tradicional: "Tradicional", hibrido: "Híbrido" };
     const DECISION_LABEL = { gusta: "👍 Me gusta", no_gusta: "👎 No me gusta", definitivo: "⭐ Definitivo" };
-    const ESTADO_LABEL = { pendiente: "Pendiente de procesar", transcrito: "Transcrito", procesado: "Procesado" };
+    const VENTA_LABEL = { desasistida: ["🛒 Compra desasistida", "good"], asistida: ["🤝 Venta humana", "bad"], mixta: ["🛒/🤝 Venta mixta", ""] };
+    const RED_LABEL = { individual: ["👤 Cliente individual", "good"], red: ["👥 Necesita masa crítica", "bad"] };
+    const ESTADO_LABEL = { pendiente: "Pendiente de procesar", transcrito: "Transcrito · pendiente", procesado: "Procesado" };
 
     // ---------- datos ----------
     async function load() {
@@ -357,22 +382,28 @@
       for (const d of ["gusta", "no_gusta", "definitivo"]) el("n-" + d).textContent = byDecision(d).length;
     }
 
-    function metric(label, v, note) {
+    function metric(label, v) {
+      const n = typeof v === "number" ? v : 0;
       return `<div class="metric"><div class="l">${label}</div><div class="v">${v}<small>/10</small></div>
-        <div class="bar" style="--bar-color:${barColor(v)}"><i style="width:${v * 10}%"></i></div></div>`;
+        <div class="bar" style="--bar-color:${barColor(n)}"><i style="width:${n * 10}%"></i></div></div>`;
     }
     function list(arr, cls) { return arr && arr.length ? `<ul class="${cls}">${arr.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>` : `<p class="note">—</p>`; }
 
     function cardHTML(i) {
-      const s = i._score, [v, color] = verdict(s);
+      const s = i._score, [v, color] = verdict(s), p = parts(i);
       const ia = IA_LABEL[i.impacto_ia] || ["–", ""];
+      const venta = VENTA_LABEL[i.venta], red = RED_LABEL[i.efecto_red];
+      const ltv = i.ltv_eur ?? null, ratio = ltv && i.cac_eur ? ltv / i.cac_eur : null;
       return `
       <div class="card">
         ${i.decision ? `<div class="decision-tag ${i.decision}">${DECISION_LABEL[i.decision]}${i.decidido_en ? " · " + new Date(i.decidido_en).toLocaleDateString("es-ES") : ""}</div>` : ""}
+        ${i.revision_nota ? `<div class="revision"><div class="t">🔁 Revisada${i.revisado_en ? " el " + new Date(i.revisado_en).toLocaleDateString("es-ES") : ""} · versión ${i.version || 2}</div>${esc(i.revision_nota)}</div>` : ""}
         <div class="chips">
           <span class="chip accent">${esc(i.sector)}</span>
           <span class="chip blue">${esc(MODELO_LABEL[i.modelo] || i.modelo)}</span>
           <span class="chip">${esc(TIPO_LABEL[i.tipo] || i.tipo)}</span>
+          ${venta ? `<span class="chip ${venta[1]}">${venta[0]}</span>` : ""}
+          ${red ? `<span class="chip ${red[1]}">${red[0]}</span>` : ""}
           ${i.fuente && i.fuente !== "manual" ? `<span class="chip">🤖 ${esc(i.fuente)}</span>` : ""}
         </div>
         <h1>${esc(i.nombre)}</h1>
@@ -382,12 +413,14 @@
           <div class="ring" style="--pct:${s};--ring-color:${color}"><div class="v">${s}</div><div class="l">de 100</div></div>
           <div class="score-text">
             <div class="verdict" style="color:${color}">${v}</div>
-            <div class="why">Éxito y encaje con tu perfil pesan la mitad; el resto: durabilidad, economía unitaria, IA e inversión.</div>
+            <div class="why">Probabilidad de éxito para ti: compra desasistida, cliente individual, poca inversión, LTV frente a CAC, viralidad y éxito de mercado.</div>
           </div>
         </div>
 
         <div class="metrics">
-          ${metric("Probabilidad de éxito", i.exito)}
+          ${metric("Éxito de mercado", i.exito)}
+          ${metric("Viralidad", i.viralidad ?? "–")}
+          ${metric("Uso de la IA", i.uso_ia ?? "–")}
           ${metric("Encaje con tu perfil", i.encaje_perfil)}
           ${metric("Aguanta con el tiempo", i.durabilidad)}
           <div class="metric"><div class="l">Impacto de la IA</div><div class="v" style="font-size:1.25rem;margin-top:6px"><span class="chip ${ia[1]}" style="font-size:0.95rem">${ia[0]}</span></div></div>
@@ -395,10 +428,16 @@
 
         <div class="facts">
           <div class="fact"><span class="l">Inversión inicial</span><span class="v">${rango(i.inversion_min_eur, i.inversion_max_eur)}</span></div>
+          <div class="fact"><span class="l">Retorno de la inversión</span><span class="v">${i.payback_meses != null ? i.payback_meses + " meses" : "–"}</span></div>
           <div class="fact"><span class="l">Coste de adquisición</span><span class="v">${money(i.cac_eur)}</span></div>
+          <div class="fact"><span class="l">LTV por cliente${ratio ? " · " + f1(ratio) + "× el CAC" : ""}</span><span class="v">${money(ltv)}</span></div>
           <div class="fact"><span class="l">Ticket medio / cliente / año</span><span class="v">${money(i.ticket_medio_eur)}</span></div>
           <div class="fact"><span class="l">Primeros ingresos</span><span class="v">${i.meses_hasta_ingresos != null ? i.meses_hasta_ingresos + " meses" : "–"}</span></div>
         </div>
+        ${i.etiquetas && i.etiquetas.length ? `<div class="tags">${i.etiquetas.map((t) => `<span class="tag">${esc(t)}</span>`).join("")}</div>` : ""}
+        <details><summary>Cómo se calcula el ${s}</summary><div class="body calc">
+          Compra desasistida <b>${f1(p.venta)}</b> ×2 · Cliente individual <b>${f1(p.red)}</b> ×1,5 · Poca inversión <b>${f1(p.inversion)}</b> ×2 · LTV/CAC <b>${f1(p.ltvcac)}</b> ×2 · Viralidad <b>${f1(p.viralidad)}</b> ×1 · Éxito de mercado <b>${f1(p.exito)}</b> ×1,5. Cada factor va de 0 a 10; el total es de 0 a 100. El encaje con tu perfil y la durabilidad se muestran pero no puntúan.
+        </div></details>
 
         <h3>La ficha</h3>
         <details open><summary>Qué sería el negocio</summary><div class="body">${esc(i.descripcion)}</div></details>
@@ -422,13 +461,14 @@
 
         <h3>Mis comentarios</h3>
         <div id="comments">${commentsHTML(i)}</div>
-        <textarea id="nota" placeholder="Escribe una nota sobre este negocio…"></textarea>
-        <div class="rec-row">
-          <button class="secondary" id="btn-nota" type="button">📝 Guardar nota</button>
-          <button class="rec" id="btn-rec" type="button">🎤 Grabar audio</button>
+        <textarea id="nota" placeholder="Escribe o dicta una nota sobre este negocio…"></textarea>
+        <div class="rec-row three">
+          <button class="dictate" id="btn-dictar" type="button">🎙️ Dictar</button>
+          <button class="rec" id="btn-rec" type="button">🎤 Grabar</button>
+          <button class="secondary" id="btn-nota" type="button">📝 Guardar</button>
         </div>
         <div id="rec-preview"></div>
-        <p class="helper">Los audios y notas quedan guardados como pendientes; una rutina los transcribirá y procesará más adelante.</p>
+        <p class="helper">Dictar convierte tu voz en texto aquí mismo (revísalo y pulsa Guardar). Grabar guarda el audio tal cual. Cada hora una rutina lee tus notas, modifica la ficha o crea ideas nuevas y la devuelve a Pendientes con un «He tenido en cuenta…» arriba.</p>
       </div>`;
     }
 
@@ -439,7 +479,7 @@
         <div class="comment">
           <div class="head"><span>${c.tipo === "audio" ? "🎤 Audio" : "📝 Nota"} · ${new Date(c.created_at).toLocaleString("es-ES", { dateStyle: "short", timeStyle: "short" })}${c.duracion_seg ? " · " + c.duracion_seg + " s" : ""}</span><span class="estado ${c.estado}">${ESTADO_LABEL[c.estado] || c.estado}</span></div>
           ${c.tipo === "texto" ? `<div>${esc(c.texto)}</div>` : `<audio controls preload="none" src="${audioUrl(c.audio_path)}"></audio>`}
-          ${c.transcripcion ? `<div class="trans">“${esc(c.transcripcion)}”</div>` : ""}
+          ${c.transcripcion ? `<div class="trans">“${esc(c.transcripcion)}”</div>` : (c.tipo === "audio" && c.estado === "pendiente" ? `<div class="trans">Sin transcripción: la rutina no puede oírlo. Para que lo procese, usa Dictar o escribe la idea.</div>` : "")}
         </div>`).join("");
     }
     const audioUrl = (path) => `${url}/storage/v1/object/public/${BUCKET}/${path}`;
@@ -454,6 +494,43 @@
       el("nota").value = "";
       el("comments").innerHTML = commentsHTML(idea);
       showToast("📝 Nota guardada");
+    }
+
+    // ---------- reconocimiento de voz (dictado) ----------
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition || null;
+    const dict = { rec: null, on: false, finals: [], target: null };
+    function startSR(onFinal, onEnd) {
+      if (!SR) return null;
+      const r = new SR();
+      r.lang = "es-ES"; r.continuous = true; r.interimResults = true;
+      r.onresult = (e) => {
+        let interim = "";
+        for (let k = e.resultIndex; k < e.results.length; k++) {
+          const t = e.results[k][0].transcript;
+          if (e.results[k].isFinal) onFinal(t.trim()); else interim += t;
+        }
+        if (dict.target && interim) dict.target.dataset.interim = interim;
+      };
+      r.onerror = () => {};
+      r.onend = () => onEnd && onEnd();
+      try { r.start(); } catch { return null; }
+      return r;
+    }
+    function toggleDictate() {
+      if (dict.on) return stopDictate();
+      if (!SR) { showMsg("Este navegador no permite dictar; usa Grabar o escribe."); return; }
+      const ta = el("nota"); dict.target = ta; dict.finals = [];
+      const base = ta.value.trim();
+      dict.rec = startSR((t) => { dict.finals.push(t); ta.value = (base ? base + " " : "") + dict.finals.join(" "); }, () => { if (dict.on) { try { dict.rec.start(); } catch {} } });
+      if (!dict.rec) { showMsg("No se pudo iniciar el dictado."); return; }
+      dict.on = true;
+      const b = el("btn-dictar"); b.classList.add("on"); b.textContent = "⏹ Parar dictado";
+      showMsg("");
+    }
+    function stopDictate() {
+      dict.on = false;
+      if (dict.rec) { try { dict.rec.stop(); } catch {} dict.rec = null; }
+      const b = el("btn-dictar"); if (b) { b.classList.remove("on"); b.textContent = "🎙️ Dictar"; }
     }
 
     // ---------- comentarios: audio ----------
@@ -483,6 +560,10 @@
       };
       rec.startedAt = Date.now();
       rec.recorder.start(1000);
+      // Intento de transcripción simultánea con el reconocimiento del navegador
+      // (funciona en Chrome/Android; si el sistema no lo permite, falla en silencio).
+      rec.texto = [];
+      rec.sr = startSR((t) => rec.texto.push(t), () => { if (rec.recorder && rec.recorder.state === "recording" && rec.sr) { try { rec.sr.start(); } catch {} } });
       const b = el("btn-rec"); b.classList.add("on");
       rec.timer = setInterval(() => { const sec = Math.round((Date.now() - rec.startedAt) / 1000); b.textContent = `⏹ Parar · ${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, "0")}`; }, 250);
       b.textContent = "⏹ Parar · 0:00";
@@ -490,10 +571,12 @@
     }
     function stopRec() {
       clearInterval(rec.timer);
+      if (rec.sr) { const r = rec.sr; rec.sr = null; try { r.stop(); } catch {} }
       const b = el("btn-rec"); if (b) { b.classList.remove("on"); b.textContent = "🎤 Grabar audio"; }
       if (rec.recorder && rec.recorder.state !== "inactive") rec.recorder.stop();
     }
     function resetRec() {
+      stopDictate();
       stopRec();
       if (rec.url) URL.revokeObjectURL(rec.url);
       Object.assign(rec, { recorder: null, stream: null, chunks: [], blob: null, url: "" });
@@ -514,17 +597,19 @@
       const path = `${idea.id}/${new Date().toISOString().replace(/[:.]/g, "-")}.${extOf(rec.mime)}`;
       const up = await client.storage.from(BUCKET).upload(path, rec.blob, { contentType: rec.mime || "audio/webm", upsert: false });
       if (up.error) { showMsg("No se pudo subir el audio: " + up.error.message); btn.disabled = false; btn.textContent = "💾 Guardar audio"; return; }
-      const { data, error } = await client.from(T_COMENTARIOS).insert({ idea_id: idea.id, tipo: "audio", audio_path: path, audio_mime: rec.mime, duracion_seg: sec }).select().single();
+      const transcripcion = rec.texto.join(" ").trim() || null;
+      const { data, error } = await client.from(T_COMENTARIOS).insert({ idea_id: idea.id, tipo: "audio", audio_path: path, audio_mime: rec.mime, duracion_seg: sec, transcripcion, estado: transcripcion ? "transcrito" : "pendiente" }).select().single();
       if (error) { showMsg("Audio subido pero no se pudo registrar: " + error.message); btn.disabled = false; btn.textContent = "💾 Guardar audio"; return; }
       comentarios.push(data);
       resetRec();
       el("comments").innerHTML = commentsHTML(idea);
       showMsg("");
-      showToast("🎤 Audio guardado · pendiente de transcribir");
+      showToast(transcripcion ? "🎤 Audio guardado con transcripción" : "🎤 Audio guardado (sin transcripción)");
     }
     function wireComments(idea) {
-      el("btn-nota").onclick = () => saveText(idea);
-      el("btn-rec").onclick = () => toggleRec(idea);
+      el("btn-nota").onclick = () => { stopDictate(); saveText(idea); };
+      el("btn-rec").onclick = () => { stopDictate(); toggleRec(idea); };
+      el("btn-dictar").onclick = toggleDictate;
     }
 
     function render() {
