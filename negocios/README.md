@@ -11,6 +11,12 @@ código.
 
 URL: `https://pacosql.github.io/Train/negocios/`
 
+Botón **Explorar**: lista de todas las fichas con filtros (etiqueta, sector,
+modelo, tipo, venta, cliente individual/red, impacto de la IA, éxito
+mínimo, inversión máxima, IA Score mínimo, LTV/CAC mínimo), buscador,
+orden y exportación a CSV (separador `;`, UTF-8 con BOM, listo para Power
+BI). Los filtros se recuerdan en el navegador.
+
 ## Tablas (prefijo `negocios_`)
 
 ### `negocios_perfil` — una fila (`id = 'yo'`) con el perfil del usuario

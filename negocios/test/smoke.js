@@ -74,6 +74,25 @@ const server = http.createServer((req, res) => {
       await page.waitForSelector("#btn-reabrir"); console.log("detalle OK en pestaña", tab); break;
     }
   }
+  // vista Explorar: filtros, búsqueda, orden y detalle
+  await page.click("#btn-explore");
+  await page.waitForSelector("#ex-list .item, #ex-list .empty");
+  const total = await t("#ex-count");
+  await page.selectOption('select[data-f="venta"]', "desasistida");
+  await page.waitForTimeout(100);
+  const filtrado = await t("#ex-count");
+  await page.fill('input[data-f="q"]', "zzzz-no-existe");
+  await page.waitForSelector("#ex-list .empty");
+  await page.fill('input[data-f="q"]', "");
+  await page.selectOption('select[data-f="sort"]', "claude");
+  await page.waitForSelector("#ex-list .item");
+  await page.click("#ex-list .item");
+  await page.waitForSelector("#back");
+  await page.click("#back");
+  await page.waitForSelector("#ex-list");
+  await page.click("#ex-reset");
+  await page.waitForSelector("#ex-list .item");
+  console.log("explorar OK:", total, "→ venta desasistida:", filtrado);
   await page.screenshot({ path: path.join(dir, "smoke.png"), fullPage: true });
   console.log("captura:", path.join(dir, "smoke.png"));
   await browser.close(); server.close();

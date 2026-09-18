@@ -182,6 +182,25 @@
     .actions button.final { background: linear-gradient(135deg, var(--accent-2), var(--accent) 55%, #d99a1e); color: var(--accent-ink); }
     .actions.hidden { display: none; }
 
+    /* explorar */
+    .explore-btn { width: 100%; margin: -6px 0 12px; padding: 11px 12px; font-size: 1rem; }
+    .explore-btn.active { border-color: rgba(242, 184, 64, 0.5); background: var(--accent-soft); color: var(--accent); }
+    .explore-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin: 0 0 8px; }
+    .explore-head .eyebrow { margin: 0; }
+    .explore-head button { width: auto; margin: 0; padding: 7px 10px; font-size: 0.85rem; }
+    .filters { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 12px; }
+    .filters .full { grid-column: 1 / -1; }
+    .filters label { display: block; font-family: var(--display); font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-2); margin: 0 0 2px 4px; }
+    .filters select, .filters input {
+      width: 100%; font-family: var(--body); font-size: 0.88rem; color: var(--text);
+      background: rgba(255, 255, 255, 0.05); border: 1px solid var(--line-strong); border-radius: 10px; padding: 8px 10px;
+      -webkit-appearance: none; appearance: none;
+    }
+    .filters select { background-image: linear-gradient(45deg, transparent 50%, var(--text-2) 50%), linear-gradient(135deg, var(--text-2) 50%, transparent 50%); background-position: calc(100% - 16px) 55%, calc(100% - 11px) 55%; background-size: 5px 5px; background-repeat: no-repeat; padding-right: 26px; }
+    .filters select.set { border-color: rgba(242, 184, 64, 0.55); color: var(--accent-2); }
+    .filters select:focus, .filters input:focus { outline: none; border-color: var(--accent); }
+    .item .d { font-size: 0.95rem; flex-shrink: 0; }
+
     /* listas */
     .item {
       display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 18px; border: 1px solid var(--line);
@@ -265,6 +284,8 @@
       <div class="tab" data-tab="revisar"><span class="n" id="n-revisar">–</span>A revisar</div>
     </div>
 
+    <button class="secondary explore-btn" id="btn-explore" type="button">🔎 Explorar y filtrar todas las fichas</button>
+
     <div id="view"></div>
 
     <div class="build-id">build __BUILD_ID__</div>
@@ -292,6 +313,11 @@
     let ideas = [];
     let comentarios = []; // todos, de todas las fichas
     const state = { tab: "pendiente", index: 0, detailId: null };
+    const EXPLORE_KEY = "negocios.explorar";
+    const DEF_FILTERS = { q: "", decision: "", sector: "", modelo: "", tipo: "", venta: "", efecto_red: "", impacto_ia: "", exito_min: "", inv_max: "", claude_min: "", ltvcac_min: "", sort: "score" };
+    let filters = loadFilters();
+    function loadFilters() { try { return { ...DEF_FILTERS, ...JSON.parse(localStorage.getItem(EXPLORE_KEY) || "{}") }; } catch { return { ...DEF_FILTERS }; } }
+    function saveFilters() { try { localStorage.setItem(EXPLORE_KEY, JSON.stringify(filters)); } catch {} }
     let lastChange = null; // { id, prev: {decision, decidido_en} }
     const rec = { recorder: null, stream: null, chunks: [], blob: null, mime: "", startedAt: 0, timer: null, url: "", sr: null, texto: [] };
     let toastTimer = null;
@@ -385,6 +411,93 @@
       lastChange = null;
       hideToast();
       render();
+    }
+
+    // ---------- explorar: filtros, orden, búsqueda, CSV ----------
+    const ratioOf = (i) => (i.ltv_eur && i.cac_eur) ? i.ltv_eur / i.cac_eur : null;
+    const SORTS = {
+      score: (a, b) => b._score - a._score,
+      claude: (a, b) => (b.claude_pct ?? -1) - (a.claude_pct ?? -1),
+      exito: (a, b) => b.exito - a.exito,
+      inversion: (a, b) => (a.inversion_max_eur ?? a.inversion_min_eur ?? 1e12) - (b.inversion_max_eur ?? b.inversion_min_eur ?? 1e12),
+      cac: (a, b) => (a.cac_eur ?? 1e12) - (b.cac_eur ?? 1e12),
+      ltvcac: (a, b) => (ratioOf(b) ?? -1) - (ratioOf(a) ?? -1),
+      payback: (a, b) => (a.payback_meses ?? 1e9) - (b.payback_meses ?? 1e9),
+      fecha: (a, b) => b.created_at.localeCompare(a.created_at),
+      nombre: (a, b) => a.nombre.localeCompare(b.nombre, "es"),
+    };
+    const SORT_LABELS = [["score", "Puntuación"], ["claude", "IA Score"], ["exito", "Éxito de mercado"], ["inversion", "Menor inversión"], ["cac", "Menor CAC"], ["ltvcac", "Mayor LTV/CAC"], ["payback", "Retorno más rápido"], ["fecha", "Más recientes"], ["nombre", "Nombre"]];
+    function applyFilters() {
+      const q = (filters.q || "").trim().toLowerCase();
+      const arr = ideas.filter((i) => {
+        if (filters.decision === "pendiente") { if (i.decision) return false; }
+        else if (filters.decision && i.decision !== filters.decision) return false;
+        for (const k of ["sector", "modelo", "tipo", "venta", "efecto_red", "impacto_ia"]) if (filters[k] && i[k] !== filters[k]) return false;
+        if (filters.exito_min && i.exito < +filters.exito_min) return false;
+        if (filters.inv_max && (i.inversion_max_eur ?? i.inversion_min_eur ?? 0) > +filters.inv_max) return false;
+        if (filters.claude_min && (i.claude_pct ?? -1) < +filters.claude_min) return false;
+        if (filters.ltvcac_min && (ratioOf(i) ?? -1) < +filters.ltvcac_min) return false;
+        if (q) { const hay = [i.nombre, i.resumen, i.sector, ...(i.etiquetas || [])].join(" ").toLowerCase(); if (!hay.includes(q)) return false; }
+        return true;
+      });
+      return arr.sort(SORTS[filters.sort] || SORTS.score);
+    }
+    const DECISION_ICON = { gusta: "👍", no_gusta: "👎", definitivo: "⭐", revisar: "🔁" };
+    function itemHTML(i, idx, showDecision) {
+      const r = ratioOf(i);
+      return `
+        <div class="item" data-id="${i.id}" style="--i:${idx}">
+          <div class="s" style="color:${verdict(i._score)[1]}">${i._score}</div>
+          <div class="m"><div class="name">${esc(i.nombre)}</div><div class="meta">${i.claude_pct != null ? "🤖 " + i.claude_pct + " % · " : ""}${esc(i.sector)} · ${esc(i.modelo)}${showDecision ? (r ? " · LTV/CAC " + f1(r) + "×" : "") + (i.inversion_max_eur != null ? " · " + money(i.inversion_max_eur) : "") : " · " + (i.decidido_en ? new Date(i.decidido_en).toLocaleDateString("es-ES") : "")}${commentsOf(i.id).length ? " · 💬 " + commentsOf(i.id).length : ""}</div></div>
+          ${showDecision ? `<div class="d">${i.decision ? DECISION_ICON[i.decision] || "" : "·"}</div>` : ""}
+          <div class="arrow">›</div>
+        </div>`;
+    }
+    function wireItems(root) { root.querySelectorAll(".item").forEach((n) => n.onclick = () => { state.detailId = n.dataset.id; render(); }); }
+    function renderExplore(view) {
+      const opts = (k) => [...new Set(ideas.map((i) => i[k]).filter(Boolean))].sort((a, b) => a.localeCompare(b, "es"));
+      const sel = (k, label, options, labels = {}) => `<div><label>${label}</label><select data-f="${k}" class="${filters[k] ? "set" : ""}"><option value="">Todas</option>${options.map((o) => `<option value="${esc(o)}" ${filters[k] === String(o) ? "selected" : ""}>${esc(labels[o] || o)}</option>`).join("")}</select></div>`;
+      view.innerHTML = `
+        <div class="explore-head"><p class="eyebrow">Explorar · <span id="ex-count">–</span></p><div><button class="ghost" id="ex-csv" type="button">⬇ CSV</button> <button class="ghost" id="ex-reset" type="button">Limpiar</button></div></div>
+        <div class="filters">
+          <div class="full"><input type="search" data-f="q" placeholder="Buscar por nombre, resumen, sector o etiqueta…" value="${esc(filters.q)}"></div>
+          ${sel("decision", "Etiqueta", ["pendiente", "gusta", "no_gusta", "definitivo", "revisar"], { pendiente: "Pendiente", gusta: "👍 Me gusta", no_gusta: "👎 No me gusta", definitivo: "⭐ Definitivo", revisar: "🔁 A revisar" })}
+          ${sel("sector", "Sector", opts("sector"))}
+          ${sel("modelo", "Modelo", opts("modelo"))}
+          ${sel("tipo", "Tipo", opts("tipo"), TIPO_LABEL)}
+          ${sel("venta", "Venta", ["desasistida", "mixta", "asistida"], { desasistida: "Desasistida", mixta: "Mixta", asistida: "Asistida (humana)" })}
+          ${sel("efecto_red", "Cliente", ["individual", "red"], { individual: "Individual", red: "Necesita masa crítica" })}
+          ${sel("impacto_ia", "Impacto de la IA", ["palanca", "neutral", "amenaza"], { palanca: "Palanca", neutral: "Neutral", amenaza: "Amenaza" })}
+          ${sel("exito_min", "Éxito mínimo", ["4", "6", "8"], { 4: "≥ 4", 6: "≥ 6", 8: "≥ 8" })}
+          ${sel("inv_max", "Inversión máxima", ["10000", "25000", "50000", "100000"], { 10000: "≤ 10 k€", 25000: "≤ 25 k€", 50000: "≤ 50 k€", 100000: "≤ 100 k€" })}
+          ${sel("claude_min", "IA Score mínimo", ["50", "80", "95"], { 50: "≥ 50 %", 80: "≥ 80 %", 95: "≥ 95 %" })}
+          ${sel("ltvcac_min", "LTV/CAC mínimo", ["3", "5", "10"], { 3: "≥ 3×", 5: "≥ 5×", 10: "≥ 10×" })}
+          <div class="full"><label>Ordenar por</label><select data-f="sort">${SORT_LABELS.map(([v, l]) => `<option value="${v}" ${filters.sort === v ? "selected" : ""}>${l}</option>`).join("")}</select></div>
+        </div>
+        <div id="ex-list"></div>`;
+      const update = () => {
+        const arr = applyFilters();
+        el("ex-count").textContent = `${arr.length} de ${ideas.length} fichas`;
+        el("ex-list").innerHTML = arr.length ? arr.map((i, idx) => itemHTML(i, idx, true)).join("") : `<div class="empty"><div class="big">🔎</div><div>Ninguna ficha cumple los filtros.</div></div>`;
+        wireItems(el("ex-list"));
+      };
+      view.querySelectorAll("[data-f]").forEach((n) => n.addEventListener(n.tagName === "INPUT" ? "input" : "change", () => {
+        filters[n.dataset.f] = n.value; saveFilters();
+        if (n.tagName === "SELECT") n.classList.toggle("set", !!n.value && n.dataset.f !== "sort");
+        update();
+      }));
+      el("ex-reset").onclick = () => { filters = { ...DEF_FILTERS }; saveFilters(); renderExplore(view); };
+      el("ex-csv").onclick = exportCSV;
+      update();
+    }
+    function exportCSV() {
+      const cols = ["nombre", "_score", "claude_pct", "decision", "sector", "modelo", "tipo", "venta", "efecto_red", "exito", "viralidad", "durabilidad", "uso_ia", "impacto_ia", "encaje_perfil", "inversion_min_eur", "inversion_max_eur", "cac_eur", "ltv_eur", "ticket_medio_eur", "payback_meses", "meses_hasta_ingresos", "fuente", "version", "created_at", "resumen"];
+      const head = cols.map((c) => c === "_score" ? "puntuacion" : c);
+      const cell = (v) => { if (v == null) return ""; const t = Array.isArray(v) ? v.join(" | ") : String(v); return /[;"\n]/.test(t) ? '"' + t.replace(/"/g, '""') + '"' : t; };
+      const rows = [head.join(";"), ...applyFilters().map((i) => cols.map((c) => cell(i[c])).join(";"))];
+      const blob = new Blob(["\ufeff" + rows.join("\r\n")], { type: "text/csv;charset=utf-8" });
+      const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `negocios-${new Date().toISOString().slice(0, 10)}.csv`; a.click();
+      setTimeout(() => URL.revokeObjectURL(a.href), 2000);
     }
 
     // ---------- render ----------
@@ -634,6 +747,7 @@
     function render() {
       counts();
       document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("active", t.dataset.tab === state.tab));
+      el("btn-explore").classList.toggle("active", state.tab === "explorar");
       const view = el("view");
       const actions = el("actions");
 
@@ -685,18 +799,15 @@
         return;
       }
 
-      // listas de decididas
       actions.classList.add("hidden");
+      if (state.tab === "explorar") { renderExplore(view); return; }
+
+      // listas de decididas
       const arr = byDecision(state.tab);
       const titles = { gusta: "Las que me gustan", no_gusta: "Las que no me gustan", definitivo: "Definitivo: las que voy a hacer", revisar: "A revisar: la rutina ampliará la información y las devolverá a Pendientes" };
       if (!arr.length) { view.innerHTML = `<div class="empty"><div class="big">📭</div><div>Nada por aquí todavía.</div></div>`; return; }
-      view.innerHTML = `<p class="eyebrow">${titles[state.tab]}</p>` + arr.map((i, idx) => `
-        <div class="item" data-id="${i.id}" style="--i:${idx}">
-          <div class="s" style="color:${verdict(i._score)[1]}">${i._score}</div>
-          <div class="m"><div class="name">${esc(i.nombre)}</div><div class="meta">${i.claude_pct != null ? "🤖 " + i.claude_pct + " % · " : ""}${esc(i.sector)} · ${esc(i.modelo)} · ${i.decidido_en ? new Date(i.decidido_en).toLocaleDateString("es-ES") : ""}${commentsOf(i.id).length ? " · 💬 " + commentsOf(i.id).length : ""}</div></div>
-          <div class="arrow">›</div>
-        </div>`).join("");
-      view.querySelectorAll(".item").forEach((n) => n.onclick = () => { state.detailId = n.dataset.id; render(); });
+      view.innerHTML = `<p class="eyebrow">${titles[state.tab]}</p>` + arr.map((i, idx) => itemHTML(i, idx, false)).join("");
+      wireItems(view);
     }
 
     // ---------- utilidades UI ----------
@@ -720,6 +831,7 @@
     async function init() {
       document.querySelectorAll(".tab").forEach((t) => t.addEventListener("click", () => { resetRec(); state.tab = t.dataset.tab; state.detailId = null; state.index = 0; render(); }));
       el("btn-refresh").addEventListener("click", (e) => refresh(e.currentTarget));
+      el("btn-explore").addEventListener("click", () => { resetRec(); state.tab = state.tab === "explorar" ? "pendiente" : "explorar"; state.detailId = null; state.index = 0; render(); });
       el("toast-undo").addEventListener("click", undo);
       if (!url || !anonKey) { showMsg("Faltan credenciales en config.js"); return; }
       client = supabase.createClient(url, anonKey);
