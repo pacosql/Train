@@ -356,7 +356,10 @@
       comentarios = c.data || [];
     }
     const commentsOf = (id) => comentarios.filter((c) => c.idea_id === id);
-    const pending = () => ideas.filter((i) => !i.decision).sort((a, b) => b._score - a._score || a.created_at.localeCompare(b.created_at));
+    // Pendientes: primero las que la rutina ha revisado (para que el usuario
+    // vea el "He tenido en cuenta" y vuelva a etiquetar), luego por puntuación.
+    const isRevised = (i) => !!i.revision_nota;
+    const pending = () => ideas.filter((i) => !i.decision).sort((a, b) => (isRevised(b) - isRevised(a)) || (b._score - a._score) || a.created_at.localeCompare(b.created_at));
     const byDecision = (d) => ideas.filter((i) => i.decision === d).sort((a, b) => (b.decidido_en || "").localeCompare(a.decidido_en || ""));
 
     async function decide(idea, decision) {
@@ -666,7 +669,7 @@
         view.innerHTML = `
           <div class="pager">
             <button class="ghost" id="prev" ${state.index === 0 ? "disabled" : ""}>‹</button>
-            <span>Ficha ${state.index + 1} de ${p.length} · ordenadas por puntuación</span>
+            <span>${isRevised(i) ? "🔁 Revisada · " : ""}Ficha ${state.index + 1} de ${p.length}${p.filter(isRevised).length ? " · " + p.filter(isRevised).length + " revisadas primero" : " · por puntuación"}</span>
             <button class="ghost" id="next" ${state.index >= p.length - 1 ? "disabled" : ""}>›</button>
           </div>
           ${cardHTML(i)}`;
