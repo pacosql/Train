@@ -173,6 +173,18 @@ function countGridsMatchingCages(cages) {
   return count;
 }
 
+// Comprueba que ninguna jaula tenga dos celdas con el mismo dígito en la
+// solución elegida — condición del Killer Sudoku real que la partición en
+// jaulas debe respetar (una jaula solo puede sumar bien con dígitos
+// repetidos si esos dígitos caen en filas/columnas/cajas distintas, cosa
+// que el sudoku de base no impide por sí solo).
+function cagesHaveNoInternalRepeat(cages, solution) {
+  return cages.every((cage) => {
+    const vals = cage.cells.map((i) => solution[i]);
+    return new Set(vals).size === vals.length;
+  });
+}
+
 // Genera una ronda: elige una solución de las 288, la parte en jaulas y
 // verifica a fuerza bruta que esas sumas de jaula solo la cumplen ella
 // (nunca otra de las 288). Si no, prueba otra partición con la misma
@@ -189,6 +201,11 @@ export function generateAsesinoRound() {
         rawCages = buildCages();
       }
       if (!rawCages) continue;
+      // Una jaula con dos celdas del mismo dígito en la solución elegida
+      // rompería la regla de "no repetir dentro de la jaula" que exige
+      // asnFindIssue — esa ronda sería irresoluble aunque las sumas
+      // encajen, así que se descarta ANTES de comprobar unicidad.
+      if (!cagesHaveNoInternalRepeat(rawCages, solution)) continue;
       const cages = rawCages.map((cage) => {
         const cells = cage.cells.slice().sort((x, y) => x - y);
         const target = cells.reduce((sum, i) => sum + solution[i], 0);

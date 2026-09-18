@@ -1,0 +1,231 @@
+/* Pack Y — decimocuarta tanda (18-09-2026) — tramo único de ejercicios nuevos.
+   Prefijos: asn- (asesino), cls- (clasificacion) */
+
+/* --- asesino --- */
+/* 🔪 Sudoku asesino mini (id: asesino) — prefijo exclusivo ".asn-".
+   Solo usa variables ya definidas en style.css (--bg, --card, --text,
+   --muted, --accent, --accent-2, --accent-dark, --danger, --good,
+   --border), así que claro y oscuro funcionan solos sin tocar nada más.
+   Pensado para 400px de ancho y dedo gordo.
+
+   Dos rejillas de bordes superpuestas sobre las mismas celdas:
+   - Jaulas (killer): fondo de color suave, alternando 6 tonos por índice
+     de jaula (.asn-cage-c0..c5), + borde grueso de color entre jaulas
+     vecinas (.asn-edge-*).
+   - Cajas de sudoku 2x2: borde grueso neutro (var(--text)) en las líneas
+     internas que separan las 4 cajas (.asn-box-top / .asn-box-left),
+     como las cajas de un sudoku real. */
+
+:root {
+  --asn-cage-0: color-mix(in srgb, var(--accent) 14%, var(--card));
+  --asn-cage-1: color-mix(in srgb, var(--accent-2) 14%, var(--card));
+  --asn-cage-2: color-mix(in srgb, var(--good) 16%, var(--card));
+  --asn-cage-3: color-mix(in srgb, #f5a623 20%, var(--card));
+  --asn-cage-4: color-mix(in srgb, var(--danger) 12%, var(--card));
+  --asn-cage-5: color-mix(in srgb, var(--accent-dark) 16%, var(--card));
+  --asn-cage-border-0: var(--accent);
+  --asn-cage-border-1: var(--accent-2);
+  --asn-cage-border-2: var(--good);
+  --asn-cage-border-3: #c9860a;
+  --asn-cage-border-4: var(--danger);
+  --asn-cage-border-5: var(--accent-dark);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --asn-cage-0: color-mix(in srgb, var(--accent) 26%, var(--card));
+    --asn-cage-1: color-mix(in srgb, var(--accent-2) 26%, var(--card));
+    --asn-cage-2: color-mix(in srgb, var(--good) 28%, var(--card));
+    --asn-cage-3: color-mix(in srgb, #f5a623 32%, var(--card));
+    --asn-cage-4: color-mix(in srgb, var(--danger) 24%, var(--card));
+    --asn-cage-5: color-mix(in srgb, var(--accent-dark) 30%, var(--card));
+  }
+}
+
+.asn-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3px;
+  max-width: 320px;
+  margin: 14px auto;
+  background: var(--border);
+  padding: 3px;
+  border-radius: 10px;
+}
+
+.asn-cell {
+  position: relative;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--text);
+  cursor: pointer;
+  padding: 0;
+}
+.asn-cell:active { transform: scale(0.95); }
+
+/* Fondo suave por jaula (6 tonos que se alternan por índice de jaula). */
+.asn-cell.asn-cage-c0 { background: var(--asn-cage-0); }
+.asn-cell.asn-cage-c1 { background: var(--asn-cage-1); }
+.asn-cell.asn-cage-c2 { background: var(--asn-cage-2); }
+.asn-cell.asn-cage-c3 { background: var(--asn-cage-3); }
+.asn-cell.asn-cage-c4 { background: var(--asn-cage-4); }
+.asn-cell.asn-cage-c5 { background: var(--asn-cage-5); }
+
+/* Borde de color entre celdas de jaulas distintas (usa el color de la
+   jaula de la celda actual, así el límite se ve nítido desde ambos lados). */
+.asn-cell.asn-cage-c0.asn-edge-top { border-top: 3px solid var(--asn-cage-border-0); }
+.asn-cell.asn-cage-c0.asn-edge-bottom { border-bottom: 3px solid var(--asn-cage-border-0); }
+.asn-cell.asn-cage-c0.asn-edge-left { border-left: 3px solid var(--asn-cage-border-0); }
+.asn-cell.asn-cage-c0.asn-edge-right { border-right: 3px solid var(--asn-cage-border-0); }
+.asn-cell.asn-cage-c1.asn-edge-top { border-top: 3px solid var(--asn-cage-border-1); }
+.asn-cell.asn-cage-c1.asn-edge-bottom { border-bottom: 3px solid var(--asn-cage-border-1); }
+.asn-cell.asn-cage-c1.asn-edge-left { border-left: 3px solid var(--asn-cage-border-1); }
+.asn-cell.asn-cage-c1.asn-edge-right { border-right: 3px solid var(--asn-cage-border-1); }
+.asn-cell.asn-cage-c2.asn-edge-top { border-top: 3px solid var(--asn-cage-border-2); }
+.asn-cell.asn-cage-c2.asn-edge-bottom { border-bottom: 3px solid var(--asn-cage-border-2); }
+.asn-cell.asn-cage-c2.asn-edge-left { border-left: 3px solid var(--asn-cage-border-2); }
+.asn-cell.asn-cage-c2.asn-edge-right { border-right: 3px solid var(--asn-cage-border-2); }
+.asn-cell.asn-cage-c3.asn-edge-top { border-top: 3px solid var(--asn-cage-border-3); }
+.asn-cell.asn-cage-c3.asn-edge-bottom { border-bottom: 3px solid var(--asn-cage-border-3); }
+.asn-cell.asn-cage-c3.asn-edge-left { border-left: 3px solid var(--asn-cage-border-3); }
+.asn-cell.asn-cage-c3.asn-edge-right { border-right: 3px solid var(--asn-cage-border-3); }
+.asn-cell.asn-cage-c4.asn-edge-top { border-top: 3px solid var(--asn-cage-border-4); }
+.asn-cell.asn-cage-c4.asn-edge-bottom { border-bottom: 3px solid var(--asn-cage-border-4); }
+.asn-cell.asn-cage-c4.asn-edge-left { border-left: 3px solid var(--asn-cage-border-4); }
+.asn-cell.asn-cage-c4.asn-edge-right { border-right: 3px solid var(--asn-cage-border-4); }
+.asn-cell.asn-cage-c5.asn-edge-top { border-top: 3px solid var(--asn-cage-border-5); }
+.asn-cell.asn-cage-c5.asn-edge-bottom { border-bottom: 3px solid var(--asn-cage-border-5); }
+.asn-cell.asn-cage-c5.asn-edge-left { border-left: 3px solid var(--asn-cage-border-5); }
+.asn-cell.asn-cage-c5.asn-edge-right { border-right: 3px solid var(--asn-cage-border-5); }
+
+/* Bordes gruesos neutros extra que marcan las 4 cajas 2x2 del sudoku (línea
+   central de la rejilla), superpuestos a los bordes de jaula de arriba. */
+.asn-cell.asn-box-top { border-top: 3px solid var(--text); }
+.asn-cell.asn-box-left { border-left: 3px solid var(--text); }
+
+.asn-cell.selected {
+  outline: 3px solid var(--accent);
+  outline-offset: -3px;
+  z-index: 1;
+}
+.asn-cell.bad {
+  background: var(--danger) !important;
+  border-color: var(--danger);
+  color: #fff;
+}
+
+.asn-cage-label {
+  position: absolute;
+  top: 2px;
+  left: 4px;
+  font-size: 0.62rem;
+  font-weight: 800;
+  color: var(--text);
+  opacity: 0.75;
+  line-height: 1;
+}
+.asn-cell.bad .asn-cage-label { color: #fff; opacity: 1; }
+
+.asn-cell-value { pointer-events: none; }
+
+.asn-keypad {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  max-width: 320px;
+  margin: 0 auto 12px;
+}
+.asn-key {
+  padding: 12px 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  border-radius: 8px;
+  border: 2px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  cursor: pointer;
+}
+.asn-key:active { transform: scale(0.94); }
+
+.asn-tools { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 10px; }
+.asn-tools .asn-tool { padding: 8px 12px; font-size: 0.78rem; }
+
+.asn-check { display: block; margin: 0 auto; }
+
+@media (max-width: 380px) {
+  .asn-grid { max-width: 270px; }
+  .asn-cell { font-size: 1.1rem; }
+  .asn-cage-label { font-size: 0.56rem; }
+  .asn-keypad { max-width: 270px; gap: 6px; }
+  .asn-key { padding: 10px 0; font-size: 1.05rem; }
+}
+
+/* --- clasificacion --- */
+/* "La clasificación" (game-clasificacion.js) — prefijo exclusivo: cls-
+   Verificado sin colisión: grep -rn "\.cls-" football/css/*.css → vacío.
+   Usa las variables de tema ya definidas en :root por el núcleo
+   (--bg, --card, --text, --muted, --accent, --accent-2, --good, --danger,
+   --border) — no redefine ninguna, y no toca .prompt, .keypad*,
+   .choice-btn, .feedback ni .end-card. */
+
+.cls-results {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto 14px;
+}
+
+.cls-result-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 auto;
+  font-size: 1.3rem;
+  line-height: 1;
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+}
+
+.cls-rule {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-align: center;
+  max-width: 340px;
+  margin: 0 auto 14px;
+  line-height: 1.4;
+}
+
+@media (max-width: 420px) {
+  .cls-results {
+    max-width: 320px;
+    gap: 6px;
+  }
+  .cls-result-icon {
+    width: 32px;
+    height: 32px;
+    font-size: 1.1rem;
+    border-radius: 8px;
+  }
+  .cls-rule {
+    font-size: 0.78rem;
+    max-width: 300px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .cls-result-icon {
+    border-color: color-mix(in srgb, var(--border) 70%, white 8%);
+  }
+}
