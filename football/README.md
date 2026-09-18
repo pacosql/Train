@@ -1,7 +1,7 @@
 # Math Games 🧠
 
-PWA (sin build, HTML/CSS/JS puro) con **152 ejercicios de matemáticas**,
-cada uno numerado (#1-#152) para poder referirse a ellos sin ambigüedad.
+PWA (sin build, HTML/CSS/JS puro) con **154 ejercicios de matemáticas**,
+cada uno numerado (#1-#154) para poder referirse a ellos sin ambigüedad.
 Cálculo mental, geometría, álgebra, estadística, fracciones, dinero,
 probabilidad, coordenadas, tiempo y más. Nace como banco de pruebas
 rápido para sacar ideas de mecánicas (tipo Duolingo Math, Synthesis,
@@ -689,6 +689,38 @@ se descartaron 2 ideas más por duplicar mecánicas ya existentes:
 (worked examples + detección de error) ya es exactamente
 `game-error.js`.
 
+## Ejercicios #153-#154 (decimotercera tanda, 18-09-2026) — tramo único
+
+### Tramo único — [`css/pack-x.css`](./css/pack-x.css)
+
+Sin filas `review` pendientes. Familias usadas: 1 (apps edtech), 8
+(retos) y 9 (museos) — las 3 únicas fuera de la unión de familias de
+las 3 rondas anteriores. Tanda pequeña (2 ideas): el catálogo (152
+ejercicios) sigue muy saturado. "La rueda cuadrada" (familia 9, aparcada
+desde la primera ronda) volvió a estar disponible por rotación pero
+sigue aparcada: rediseñando la mecánica, la lección matemática real se
+reduce a "la separación entre baches debe igualar el lado del cuadrado",
+demasiado trivial para el motor de curvas paramétricas que exigiría
+dibujar bien. También se descartó "apila cajas por volumen en un
+almacén" al descubrir que ya es exactamente `game-almacen.js`.
+
+| # | Juego | Tema | Mecánica | De dónde sale |
+|---|---|---|---|---|
+| 153 | 🌱 El patrón que crece | Patrones crecientes | Un patrón visual de fichas crece paso a paso (se ven los pasos 1-3); hay que contar y deducir la regla para calcular un paso LEJANO (5-8) que no está dibujado | Visual Patterns (Fawn Nguyen / Kent Haines, rutina de aula), familia 8 |
+| 154 | 🏃 Esquiva a tiempo | Velocidad y tiempo | Un obstáculo se acerca a una distancia y velocidad dadas; decide con un solo toque si te da tiempo a cruzar tu propia distancia a tu propia velocidad antes de que llegue | Inventado (combinación forzada: velocidad+esquivar+videojuego retro) |
+
+Verificación antes de publicar: `verify_patronfiguras.mjs` sobre 10.000
+rondas de #153 (respuesta recalculada de forma independiente a partir
+de la regla lineal, rango de paso lejano y parámetros siempre dentro de
+lo esperado); `verify_esquiva.mjs` sobre 10.000 rondas de #154 (ambos
+tiempos recalculados de forma independiente por división exacta, nunca
+un empate entre el tiempo disponible y el necesario, cobertura
+equilibrada de ambos veredictos). Los 154 ejercicios cargan sin error
+de consola, y los 2 nuevos se jugaron de verdad en el navegador
+calculando la respuesta correcta de forma independiente, confirmando
+que el marcador sube +10 en cada acierto; se comprobó además en #154
+que fallar a propósito resta una vida con el mensaje correcto.
+
 ## Versiones (v2) y bandeja "Revisar"
 
 Cuando un ejercicio recibe una vuelta de mejoras, se marca con un
@@ -934,17 +966,17 @@ Una vez publicado, esta app queda en:
 
 ## Qué hace la app
 
-- Menú con los 152 ejercicios numerados, organizados en pestañas
+- Menú con los 154 ejercicios numerados, organizados en pestañas
   🆕/👍/👎/🔧; cada uno abre en su propia pantalla (`#/game/<id>`), sin
   recargar la página.
 - Motor de preguntas compartido (`js/quiz-engine.js`) para los 18
   ejercicios de "pregunta + opciones o teclado" (`js/games-data.js` y
-  `js/games-data-2.js`); los otros 134 (`js/game-*.js` y
+  `js/games-data-2.js`); los otros 136 (`js/game-*.js` y
   `js/balloons-game.js`) tienen cada uno su propia mecánica de
   interacción (arrastrar, tocar en orden, emparejar, construir,
   escribir, clasificar, recorrer…).
 - Los estilos de cada tanda viven en su propio `css/pack-<letra>.css`
-  (de `pack-a.css` a `pack-w.css`, uno por tramo temático), para que
+  (de `pack-a.css` a `pack-x.css`, uno por tramo temático), para que
   tocar una tanda no arrastre a las demás.
 - Guarda cada partida en `football_scores` y muestra las últimas en el
   menú.
