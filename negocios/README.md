@@ -38,13 +38,20 @@ primero para evaluar `encaje_perfil` y `encaje_nota` contra ese perfil.
 | `encaje_perfil`, `encaje_nota` | 1-10, text | encaje con el perfil de `negocios_perfil` |
 | `fortalezas`, `riesgos` | text[] | listas cortas |
 | `primer_paso` | text | cómo validarla barato |
+| `venta` | text | `desasistida` (el cliente compra solo) · `asistida` (hace falta un comercial) · `mixta`. **Criterio clave del usuario: prefiere desasistida** |
+| `efecto_red` | text | `individual` (un cliente ya obtiene todo el valor) · `red` (necesita masa crítica, p. ej. un ladder de tenis) |
+| `ltv_eur` | numeric | valor de vida del cliente (ingresos totales esperados por cliente) |
+| `payback_meses` | integer | meses hasta recuperar la inversión inicial |
+| `uso_ia` | 1-10 | cuánto se apoya el negocio (producto y operación) en IA |
+| `etiquetas` | text[] | etiquetas libres cortas en minúsculas (`b2c`, `suscripción`, `self-service`…) |
 | `fuente` | text | `manual` por defecto; la rutina debe poner p. ej. `rutina` |
 | `decision`, `decidido_en` | | los rellena la app: `gusta` · `no_gusta` · `definitivo` |
 
 La **puntuación 0-100** la calcula la app a partir de los campos (no se
 guarda): éxito ×2,5 + encaje ×2,5 + durabilidad ×1,5 + economía unitaria
 (ticket/CAC) ×1,5 + IA (palanca 10 / neutral 6 / amenaza 2) ×1 +
-inversión (menos es mejor) ×1.
+inversión (menos es mejor) ×1. Pendiente (ver `ROADMAP.md`): incorporar
+`venta`, `efecto_red` y LTV/CAC.
 
 ### `negocios_comentarios` — notas y audios del usuario sobre cada ficha
 
@@ -61,6 +68,23 @@ inversión (menos es mejor) ×1.
 Los audios viven en el bucket público `negocios-audios` (la anon key puede
 subir y leer, no borrar). URL de descarga:
 `https://dzlhsdpgyxnjwudmrnul.supabase.co/storage/v1/object/public/negocios-audios/<audio_path>`.
+
+### `negocios_rutinas` — registro de ejecuciones de las rutinas
+
+`ejecutada_en`, `rutina` (`ideas` · `mejora-app` · `transcripcion`…),
+`resumen` (una o dos frases), `idea_id` (si aplica), `commit` (si aplica).
+Cada rutina inserta una fila al terminar; así se ve que siguen vivas.
+
+## Rutinas activas
+
+- **`ideas`** (cada hora, sesión nueva): lee el perfil y los criterios
+  (`negocios_perfil`), las fichas existentes y los comentarios del usuario,
+  investiga y genera al menos una idea nueva bien evaluada, la inserta con
+  `fuente = 'rutina'` y registra la ejecución.
+- **`mejora-app`** (cada 2 horas durante 2 días): implementa la siguiente
+  mejora de [`ROADMAP.md`](./ROADMAP.md), la prueba con
+  `node negocios/test/smoke.js`, la fusiona en `main` y registra la
+  ejecución.
 
 ## Rutina de transcripción / procesado (pendiente de crear)
 
@@ -85,10 +109,14 @@ curl -s -X POST "https://dzlhsdpgyxnjwudmrnul.supabase.co/rest/v1/negocios_ideas
   -H "apikey: $ANON" -H "Authorization: Bearer $ANON" \
   -H "Content-Type: application/json" -H "Prefer: return=representation" \
   -d '{"fuente":"rutina","nombre":"...","resumen":"...","descripcion":"...",
-       "modelo":"B2B","tipo":"tradicional","sector":"...",
-       "exito":6,"durabilidad":7,"impacto_ia":"palanca","encaje_perfil":8,
-       "inversion_min_eur":20000,"inversion_max_eur":50000,"cac_eur":800,
-       "ticket_medio_eur":12000,"meses_hasta_ingresos":3,
+       "modelo":"B2C","tipo":"hibrido","sector":"...",
+       "venta":"desasistida","efecto_red":"individual",
+       "exito":6,"durabilidad":7,"impacto_ia":"palanca","encaje_perfil":8,"uso_ia":8,
+       "inversion_min_eur":20000,"inversion_max_eur":50000,"cac_eur":30,
+       "ticket_medio_eur":90,"ltv_eur":150,"meses_hasta_ingresos":3,"payback_meses":12,
+       "mercado":"...","competencia":"...","modelo_ingresos":"...","cac_nota":"...",
+       "exito_nota":"...","durabilidad_nota":"...","impacto_ia_nota":"...","encaje_nota":"...",
+       "etiquetas":["b2c","suscripción"],
        "fortalezas":["..."],"riesgos":["..."],"primer_paso":"..."}'
 ```
 
