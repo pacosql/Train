@@ -1,0 +1,62 @@
+/* Pack AD — primer juego grande multipantalla (18-09-2026).
+   Prefijo: azr- (azar, "Laboratorio del azar"). */
+
+.azr-cover { text-align: center; }
+.azr-cover-emoji { font-size: 3rem; margin: 6px 0 4px; }
+.azr-cta { display: block; width: 100%; max-width: 320px; margin: 10px auto 0; padding: 14px; }
+.azr-progress { color: var(--muted); font-size: 0.9rem; text-align: center; margin: 4px 0 14px; }
+
+.azr-badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--accent);
+  border: 1.5px solid var(--accent);
+  border-radius: 999px;
+  padding: 3px 10px;
+  margin: 0 0 12px;
+}
+
+.azr-wrap { display: flex; justify-content: center; margin: 12px 0; }
+.azr-spinner { max-width: 100%; height: auto; }
+.azr-sector { stroke: var(--card); stroke-width: 2; }
+.azr-sector-tap { cursor: pointer; }
+.azr-sector-marked { stroke: var(--text); stroke-width: 4; }
+.azr-sector-label { font-size: 16px; fill: #fff; text-anchor: middle; pointer-events: none; }
+.azr-pointer { fill: var(--text); }
+
+.azr-formula { text-align: center; font-size: 1.2rem; margin: 6px 0 10px; }
+.azr-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin: 10px 0; }
+
+.azr-tally { max-width: 340px; margin: 10px auto; }
+.azr-tally-row { display: grid; grid-template-columns: 90px 1fr auto; gap: 8px; align-items: center; font-size: 0.85rem; margin: 6px 0; }
+.azr-tally-bar { height: 12px; background: var(--bg); border-radius: 6px; overflow: hidden; border: 1px solid var(--border); }
+.azr-tally-bar > div { height: 100%; background: #e5484d; }
+.azr-tally-bar-ref > div { background: var(--accent); }
+
+.azr-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; max-width: 320px; margin: 0 auto; }
+.azr-frac { font-size: 1.25rem; padding: 14px; }
+
+.azr-events { display: flex; flex-direction: column; gap: 10px; max-width: 360px; margin: 0 auto; }
+.azr-event { display: flex; align-items: center; gap: 12px; text-align: left; padding: 10px 12px; }
+.azr-event-text { font-size: 0.9rem; font-weight: 600; }
+.azr-die { font-size: 1.4rem; font-weight: 800; min-width: 90px; text-align: center; }
+.azr-bag { display: flex; flex-wrap: wrap; gap: 4px; width: 90px; }
+.azr-ball { width: 14px; height: 14px; border-radius: 50%; border: 1px solid rgba(0, 0, 0, 0.15); }
+
+.azr-dice { display: flex; flex-direction: column; gap: 10px; max-width: 360px; margin: 0 auto; }
+.azr-die-card { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 10px; }
+.azr-die-card > span { font-weight: 700; }
+.azr-bars { max-width: 100%; height: auto; }
+.azr-bar { fill: var(--accent); }
+.azr-bar-num { font-size: 11px; font-weight: 700; fill: var(--text); text-anchor: middle; }
+.azr-bar-face { font-size: 11px; fill: var(--muted); text-anchor: middle; }
+
+.azr-learned { font-size: 0.9rem; color: var(--muted); background: var(--bg); border-radius: 10px; padding: 10px 12px; margin: 0 0 12px; }
+.azr-errors { text-align: left; font-size: 0.88rem; padding-left: 18px; margin: 0 0 12px; }
+.azr-errors li { margin: 6px 0; }
+
+@media (max-width: 420px) {
+  .azr-tally-row { grid-template-columns: 76px 1fr auto; font-size: 0.8rem; }
+  .azr-event-text { font-size: 0.84rem; }
+}
