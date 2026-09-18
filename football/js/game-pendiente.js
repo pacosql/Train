@@ -90,7 +90,7 @@ function gridSvg({ lines = [], points = [], rings = [], marks = [], tappable = f
   }
   lines.forEach(({ m, n, cls = "" }, idx) => {
     const y1 = m * -R + n, y2 = m * R + n;
-    out += `<line x1="${toPx(-R)}" y1="${toPy(y1)}" x2="${toPx(R)}" y2="${toPy(y2)}" class="pnd-line ${cls}" data-line="${idx}" data-m="${m}" data-n="${n}" />`;
+    out += `<line x1="${toPx(-R)}" y1="${toPy(y1)}" x2="${toPx(R)}" y2="${toPy(y2)}" class="pnd-line ${cls}" data-line="${idx}" />`;
   });
   if (stairs) {
     const { m, n, steps } = stairs;

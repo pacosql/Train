@@ -1,7 +1,7 @@
 # Math Games 🧠
 
-PWA (sin build, HTML/CSS/JS puro) con **167 ejercicios de matemáticas**,
-cada uno numerado (#1-#167) para poder referirse a ellos sin ambigüedad.
+PWA (sin build, HTML/CSS/JS puro) con **168 ejercicios de matemáticas**,
+cada uno numerado (#1-#168) para poder referirse a ellos sin ambigüedad.
 Cálculo mental, geometría, álgebra, estadística, fracciones, dinero,
 probabilidad, coordenadas, tiempo y más. Nace como banco de pruebas
 rápido para sacar ideas de mecánicas (tipo Duolingo Math, Synthesis,
@@ -1162,6 +1162,39 @@ completo jugado dos veces en Chromium a 400 px leyendo el problema del
 enunciado y recalculando: partida perfecta (5 cinturones, 340 pts) y
 partida con fallo deliberado (vida perdida, error listado, repaso).
 
+## Ejercicio #168 (sexto juego grande, noche del 18-09-2026)
+
+### Tramo — [`css/pack-aj.css`](./css/pack-aj.css)
+
+De la `cola` de `work_state` (hueco "gráficas de funciones lineales,
+pendiente", sin ningún juego). `grafica` (#pack-e) dibuja la gráfica
+proporcional de un enunciado arrastrando puntos en una ronda; aquí se
+lee, se escribe y se cruza y = m·x + n con pendientes negativas y cortes
+con el eje.
+
+| # | Juego | Tema | Pantallas | De dónde sale |
+|---|---|---|---|---|
+| 168 | 🎢 La cuesta de la recta | Funciones lineales | Tutorial "la escalera" (avanza 1 y mira cuánto sube: m y n aparecen sobre la recta manipulada) → tramo 1 leer la pendiente → tramo 2 leer la ecuación (opciones con los errores clásicos: signo de m, m y n intercambiados, n ± 1) → tramo 3 trazar la recta tocando dos puntos que la cumplan → tramo 4 "pasa por los aros" (ajustar m y n con botones hasta que la montaña rusa pase por dos aros: solución única) → reto "el corte" (tocar la intersección de dos rectas) → resultados y repaso | Inventado: montaña rusa + hallazgo Desmos Marbleslides (meta física que invita a iterar) |
+
+**Ciclo de aprendizaje**: concreteness fading — la pendiente nace como
+escalera dibujada sobre la recta y solo después se nombra m; leer →
+escribir → construir → invertir (dado el objetivo físico, hallar los
+parámetros) → componer (dos rectas). Progreso persistente en
+`localStorage` y `football_progress`.
+
+**Generadores** (todos por propiedades, `verify_pendiente.mjs`, 20.000
+rondas por tramo, 0 fallos): pendientes enteras en −3..3 sin 0 y n en
+−4..4 con al menos 3 puntos de retícula visibles; opciones de ecuación
+siempre 4 pares distintos con una sola correcta; aros con pendiente y
+ordenada enteras dentro del rango de los botones (solución única
+recalculada desde los dos puntos); corte de dos rectas no paralelas en
+un punto entero dentro de la rejilla (x recalculada). Flujo completo
+jugado dos veces en Chromium a 400 px leyendo m y n de la GEOMETRÍA de
+la línea (px → retícula), no de ningún atributo — de hecho la línea ya
+no lleva `data-m`/`data-n`: se quitaron al ver que delataban la
+respuesta en el DOM. Partida perfecta (16 aciertos, 160 pts) y partida
+con fallo deliberado (vida perdida, error listado, repaso).
+
 ## Versiones (v2) y bandeja "Revisar"
 
 Cuando un ejercicio recibe una vuelta de mejoras, se marca con un
@@ -1407,12 +1440,12 @@ Una vez publicado, esta app queda en:
 
 ## Qué hace la app
 
-- Menú con los 167 ejercicios numerados, organizados en pestañas
+- Menú con los 168 ejercicios numerados, organizados en pestañas
   🆕/👍/👎/🔧; cada uno abre en su propia pantalla (`#/game/<id>`), sin
   recargar la página.
 - Motor de preguntas compartido (`js/quiz-engine.js`) para los 18
   ejercicios de "pregunta + opciones o teclado" (`js/games-data.js` y
-  `js/games-data-2.js`); los otros 149 (`js/game-*.js` y
+  `js/games-data-2.js`); los otros 150 (`js/game-*.js` y
   `js/balloons-game.js`) tienen cada uno su propia mecánica de
   interacción (arrastrar, tocar en orden, emparejar, construir,
   escribir, clasificar, recorrer…).
