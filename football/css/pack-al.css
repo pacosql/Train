@@ -1,0 +1,48 @@
+/* Pack AL — juego grande "Microscopio y telescopio" (noche 18/19-09-2026). Prefijo: pot- (potencias de 10). */
+
+.pot-cover { text-align: center; width: 100%; }
+.pot-cover-emoji { font-size: 2.6rem; margin: 6px 0 4px; letter-spacing: 4px; }
+.pot-cta { display: block; width: 100%; max-width: 320px; margin: 10px auto 0; padding: 14px; }
+.pot-progress { color: var(--muted); font-size: 0.9rem; text-align: center; margin: 8px 0 12px; }
+.pot-badge { display: inline-block; font-size: 0.78rem; font-weight: 700; color: var(--accent); border: 1.5px solid var(--accent); border-radius: 999px; padding: 3px 10px; margin: 0 0 12px; }
+.pot-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin: 10px 0; }
+
+/* Tutorial: slider de exponente */
+.pot-slider { display: grid; grid-template-columns: 48px 1fr 48px; align-items: center; gap: 8px; width: 100%; max-width: 340px; margin: 0 auto 10px; }
+.pot-slide { padding: 12px 0; font-size: 1.1rem; }
+.pot-track { display: flex; justify-content: space-between; align-items: center; height: 24px; padding: 0 4px; border-radius: 999px; background: var(--bg); border: 1px solid var(--border); }
+.pot-tick { width: 8px; height: 8px; border-radius: 50%; background: var(--border); }
+.pot-tick-on { background: var(--accent); transform: scale(1.9); box-shadow: 0 0 0 3px rgba(91, 62, 204, 0.2); }
+.pot-scale { text-align: center; background: var(--bg); border: 1px solid var(--border); border-radius: 14px; padding: 12px; width: 100%; max-width: 340px; margin: 0 auto; }
+.pot-scale-emoji { font-size: 3rem; line-height: 1.1; }
+.pot-scale-name { font-weight: 700; margin-top: 4px; }
+.pot-scale-exp { font-size: 1.6rem; font-weight: 800; color: var(--accent); margin: 2px 0; }
+.pot-scale-num { font-size: 0.82rem; color: var(--muted); word-break: break-all; }
+
+/* Nivel 1: opciones */
+.pot-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; max-width: 320px; margin: 0 auto; }
+.pot-opt { font-size: 1.2rem; padding: 14px 6px; font-variant-numeric: tabular-nums; }
+
+/* Nivel 2: diales */
+.pot-dials { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 4px 0 8px; }
+.pot-dial { display: flex; flex-direction: column; align-items: center; gap: 6px; background: var(--bg); border: 1px solid var(--border); border-radius: 14px; padding: 8px 10px; min-width: 88px; }
+.pot-dial-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+.pot-dial-btn { width: 56px; padding: 8px 0; font-size: 1.2rem; line-height: 1; }
+.pot-dial-val { font-size: 1.7rem; font-weight: 800; color: var(--accent); min-width: 2ch; text-align: center; font-variant-numeric: tabular-nums; }
+.pot-dial-exp .pot-dial-val { font-size: 1.4rem; }
+.pot-dial-times { font-size: 1.2rem; font-weight: 700; color: var(--muted); }
+.pot-built { text-align: center; font-size: 1.05rem; margin: 4px 0; word-break: break-all; }
+.pot-built b { color: var(--accent); }
+
+/* Reto: ordenar objetos */
+.pot-objs { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; max-width: 340px; margin: 0 auto; }
+.pot-obj { position: relative; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 12px 8px 10px; min-height: 96px; }
+.pot-obj-emoji { font-size: 2rem; line-height: 1.1; }
+.pot-obj-name { font-size: 0.8rem; font-weight: 600; text-align: center; line-height: 1.2; }
+.pot-obj-num { position: absolute; top: 6px; right: 8px; font-size: 0.8rem; font-weight: 800; color: #fff; }
+.pot-picked { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+/* Resultados */
+.pot-learned { font-size: 0.9rem; color: var(--muted); background: var(--bg); border-radius: 10px; padding: 10px 12px; margin: 0 0 12px; }
+.pot-errors { text-align: left; font-size: 0.88rem; padding-left: 18px; margin: 0 0 12px; }
+.pot-errors li { margin: 6px 0; }
