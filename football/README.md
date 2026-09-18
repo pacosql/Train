@@ -1,7 +1,7 @@
 # Math Games 🧠
 
-PWA (sin build, HTML/CSS/JS puro) con **157 ejercicios de matemáticas**,
-cada uno numerado (#1-#157) para poder referirse a ellos sin ambigüedad.
+PWA (sin build, HTML/CSS/JS puro) con **159 ejercicios de matemáticas**,
+cada uno numerado (#1-#159) para poder referirse a ellos sin ambigüedad.
 Cálculo mental, geometría, álgebra, estadística, fracciones, dinero,
 probabilidad, coordenadas, tiempo y más. Nace como banco de pruebas
 rápido para sacar ideas de mecánicas (tipo Duolingo Math, Synthesis,
@@ -807,6 +807,71 @@ se comprobó además que fallar a propósito (respondiendo el valor SIN
 fusionar, el error típico de no darse cuenta de que el hueco se cierra)
 resta una vida con el mensaje correcto.
 
+## Ejercicios #158-#159 (decimosexta tanda, 18-09-2026) — tramo único
+
+### Tramo único — [`css/pack-aa.css`](./css/pack-aa.css)
+
+Sin filas `review` pendientes. Familias elegidas: 2 (prensa), 7
+(manipulativos de aula) y 12 (investigación educativa) — las 3 únicas
+fuera de la unión de familias de las 3 rondas anteriores. Investigación
+completamente estéril esta vez (12 consultas, cero ideas
+aprovechables): "NYT Connections 3x3" (bonus puzzle de sept-2026) es el
+mismo núcleo que `conexion` (#150, agrupar números por propiedad
+compartida) con una rejilla más grande — descartado por duplicado real.
+La balanza de dos platos para álgebra (PhET Equality Explorer), los
+bloques base-10 para valor posicional y las fichas Numicon de
+número-bonos ya existen en el catálogo como `balanza`, `bloques` y
+`bonos10` respectivamente; el geoboard digital también ya existe como
+`geoclavos`. La familia 12 solo devolvió principios de diseño
+instructivo (retrieval practice, spaced repetition, productive
+failure), no una mecánica de un solo ejercicio, igual que en rondas
+anteriores. Con la investigación vacía, tanda 100% inventada mediante
+el proceso 4.1-4.5 (concepto+verbo+contexto forzados, gesto que
+encarna las matemáticas, inversión, restricción arbitraria):
+
+- **`pitagoras`** (teorema de Pitágoras): una escalera apoyada en una
+  pared forma un triángulo rectángulo con el suelo. Se usan solo ternas
+  pitagóricas enteras (3,4,5 / 6,8,10 / 9,12,15 / 5,12,13 / 8,15,17 /
+  7,24,25) para que la respuesta sea siempre un entero exacto sin
+  ambigüedad. El lado que falta rota entre la hipotenusa (la escalera)
+  y cada cateto, obligando a aplicar la fórmula en ambos sentidos
+  (a²+b²=c² y c²−a²=b²) en vez de memorizar solo "sumar catetos". Tema
+  geométrico completamente ausente del catálogo hasta ahora — se
+  comprobó que ningún ejercicio existente enseña el teorema (los únicos
+  usos de `Math.sqrt` en el resto del catálogo son distancias internas
+  de colisión, sin relación pedagógica).
+- **`caminos`** (combinatoria, regla de Pascal): cuenta caminos
+  monótonos (solo derecha o solo abajo) en una cuadrícula. Cada ronda
+  muestra ya rellenos los dos vecinos (izquierda y arriba) de la celda
+  objetivo y solo pide esa celda, para que el gesto real sea aplicar la
+  regla aditiva "izquierda + arriba", no memorizar la fórmula
+  combinatoria C(n,k). Se comprobó que `laberinto` es un recorrido por
+  regla de divisibilidad, sin relación con contar caminos, así que no
+  hay solape de mecánica.
+
+| # | Juego | Tema | Mecánica | De dónde sale |
+|---|---|---|---|---|
+| 158 | 📐 Escalera y pared | Teorema de Pitágoras | Escalera apoyada en una pared: dados dos lados del triángulo rectángulo (ternas pitagóricas enteras), halla el tercero — el lado desconocido rota entre hipotenusa y catetos | Inventado (proceso 4.1-4.5), geometría ausente del catálogo |
+| 159 | 🧩 Cuadrícula de caminos | Combinatoria | Cuenta caminos monótonos (derecha/abajo) hasta una celda de una cuadrícula, sumando el valor de su vecina izquierda más el de su vecina de arriba (regla de Pascal) | Inventado (proceso 4.1-4.5), triángulo de Pascal |
+
+Verificación antes de publicar: `verify_pitagoras.mjs` y
+`verify_caminos.mjs`, cada uno sobre 20.000 rondas generadas,
+reimplementando la comprobación desde cero (nunca reutilizando las
+funciones internas del juego) — 0 fallos en ambos. Para `caminos` se
+confirmó además, mediante fuerza bruta con programación dinámica
+independiente sobre toda la rejilla, que "vecino-izquierda +
+vecino-arriba" coincide siempre con el recuento real de caminos hasta
+esa celda, incluida la celda de máximo valor posible en la rejilla
+(70). Los 159 ejercicios cargan sin error de consola en Chromium a
+400px de ancho, y los dos nuevos se jugaron de verdad en el navegador
+(8 rondas correctas seguidas cada uno, deduciendo la respuesta
+únicamente a partir del DOM —nunca del estado interno del juego—,
+confirmando que el marcador sube +10 en cada acierto); se comprobó
+además que fallar a propósito en ambos resta una vida con el mensaje
+de feedback correcto. Se agotó la numeración de pack de una sola letra
+(`pack-a.css` a `pack-z.css`); este tramo estrena `pack-aa.css` y la
+convención de dos letras para los packs siguientes.
+
 ## Versiones (v2) y bandeja "Revisar"
 
 Cuando un ejercicio recibe una vuelta de mejoras, se marca con un
@@ -1052,18 +1117,19 @@ Una vez publicado, esta app queda en:
 
 ## Qué hace la app
 
-- Menú con los 157 ejercicios numerados, organizados en pestañas
+- Menú con los 159 ejercicios numerados, organizados en pestañas
   🆕/👍/👎/🔧; cada uno abre en su propia pantalla (`#/game/<id>`), sin
   recargar la página.
 - Motor de preguntas compartido (`js/quiz-engine.js`) para los 18
   ejercicios de "pregunta + opciones o teclado" (`js/games-data.js` y
-  `js/games-data-2.js`); los otros 139 (`js/game-*.js` y
+  `js/games-data-2.js`); los otros 141 (`js/game-*.js` y
   `js/balloons-game.js`) tienen cada uno su propia mecánica de
   interacción (arrastrar, tocar en orden, emparejar, construir,
   escribir, clasificar, recorrer…).
-- Los estilos de cada tanda viven en su propio `css/pack-<letra>.css`
-  (de `pack-a.css` a `pack-z.css`, uno por tramo temático), para que
-  tocar una tanda no arrastre a las demás.
+- Los estilos de cada tanda viven en su propio `css/pack-<letra(s)>.css`
+  (de `pack-a.css` a `pack-z.css`, y de `pack-aa.css` en adelante una
+  vez agotado el alfabeto de una sola letra, uno por tramo temático),
+  para que tocar una tanda no arrastre a las demás.
 - Guarda cada partida en `football_scores` y muestra las últimas en el
   menú.
 - Se puede usar sin conexión gracias a un Service Worker que cachea el
