@@ -1,7 +1,7 @@
 # Math Games 🧠
 
-PWA (sin build, HTML/CSS/JS puro) con **154 ejercicios de matemáticas**,
-cada uno numerado (#1-#154) para poder referirse a ellos sin ambigüedad.
+PWA (sin build, HTML/CSS/JS puro) con **156 ejercicios de matemáticas**,
+cada uno numerado (#1-#156) para poder referirse a ellos sin ambigüedad.
 Cálculo mental, geometría, álgebra, estadística, fracciones, dinero,
 probabilidad, coordenadas, tiempo y más. Nace como banco de pruebas
 rápido para sacar ideas de mecánicas (tipo Duolingo Math, Synthesis,
@@ -721,6 +721,60 @@ calculando la respuesta correcta de forma independiente, confirmando
 que el marcador sube +10 en cada acierto; se comprobó además en #154
 que fallar a propósito resta una vida con el mensaje correcto.
 
+## Ejercicios #155-#156 (decimocuarta tanda, 18-09-2026) — tramo único
+
+### Tramo único — [`css/pack-y.css`](./css/pack-y.css)
+
+Sin filas `review` pendientes. Familias usadas: 4 (puzzles de lápiz y
+papel), 10 (concursos de TV y juegos populares) y 11 (vida real) — las
+3 únicas fuera de la unión de familias de las 3 rondas anteriores.
+Tanda pequeña (2 ideas): "lotería/bingo mexicana" (familia 10) se
+descartó por no encarnar una mecánica matemática concreta (es
+principalmente emparejar por azar); "reparte la cuenta con propina"
+(familia 11) se descartó por combinar dos habilidades ya cubiertas por
+separado (porcentajes en `rebajas`, reparto igualitario en
+`compra`/`trueque`) sin mecánica nueva.
+
+| # | Juego | Tema | Mecánica | De dónde sale |
+|---|---|---|---|---|
+| 155 | 🔪 Sudoku asesino mini | Sudoku con jaulas | Sudoku 4×4 real (filas, columnas y cajas 2×2 sin repetir) sin pistas de partida: solo se ven jaulas con la suma de sus celdas (sin operador, sin repetir dígito dentro de la jaula) | Killer Sudoku, familia 4 — distinto de KenKen (cuadrado latino con operadores, sin restricción de caja) |
+| 156 | ⚽ La clasificación | Puntos por resultado | Una racha de resultados (victoria/empate/derrota) de un equipo; suma los puntos totales con la regla victoria=3, empate=1, derrota=0 | Tablas de clasificación deportivas reales, familia 11 |
+
+Verificación antes de publicar: `verify_asesino.mjs` (enumera por
+fuerza bruta las 288 rejillas 4×4 válidas de sudoku, confirmadas todas
+distintas y válidas; sobre 500 rondas de #155 comprueba que las jaulas
+cubren las 16 celdas, que exactamente 1 de las 288 rejillas cumple
+todas las sumas de jaula, y —tras el fix descrito abajo— que ninguna
+jaula repite un dígito en la solución elegida); `verify_clasificacion.mjs`
+sobre 10.000 rondas de #156 (puntos recalculados de forma
+independiente contando victorias/empates/derrotas). Los 156 ejercicios
+cargan sin error de consola, y los 2 nuevos se jugaron de verdad en el
+navegador calculando la respuesta correcta de forma independiente,
+confirmando que el marcador sube +10 en cada acierto; se comprobó
+además en #156 que fallar a propósito resta una vida con el mensaje
+correcto.
+
+**Fallo real encontrado y corregido en #155 antes de publicar:** al
+jugarlo de verdad varias veces seguidas, en aproximadamente 1 de cada 3
+partidas la rejilla objetivamente correcta (reconstruida de forma
+independiente resolviendo el puzzle desde las sumas de jaula visibles
+en el DOM, sin tocar el estado interno del juego) se marcaba como
+fallo. La causa: `generateAsesinoRound()` solo comprobaba que las sumas
+de jaula tuvieran una única rejilla compatible entre las 288 posibles,
+pero nunca comprobaba que, dentro de cada jaula, la solución elegida no
+repitiera un dígito — algo que el propio sudoku de base NO impide,
+porque una jaula puede cruzar filas, columnas y cajas sin restricción
+alguna entre sí. El resultado: algunas rondas generaban una jaula cuya
+ÚNICA solución posible (la correcta) repetía un dígito, violando la
+regla de "sin repetidos en la jaula" que el propio juego exige al
+comprobar la respuesta — la ronda era irresoluble incluso jugando
+perfectamente. Corregido añadiendo `cagesHaveNoInternalRepeat()`: la
+partición en jaulas se descarta y se reintenta si algún par de celdas
+de una misma jaula comparte dígito en la solución, antes incluso de
+comprobar la unicidad por sumas. Reproducido el fallo antes del cambio
+(fallaba en 2 de 3 partidas jugadas de verdad en Chromium) y confirmado
+que desaparece después (8 de 8 partidas correctas tras el fix).
+
 ## Versiones (v2) y bandeja "Revisar"
 
 Cuando un ejercicio recibe una vuelta de mejoras, se marca con un
@@ -966,17 +1020,17 @@ Una vez publicado, esta app queda en:
 
 ## Qué hace la app
 
-- Menú con los 154 ejercicios numerados, organizados en pestañas
+- Menú con los 156 ejercicios numerados, organizados en pestañas
   🆕/👍/👎/🔧; cada uno abre en su propia pantalla (`#/game/<id>`), sin
   recargar la página.
 - Motor de preguntas compartido (`js/quiz-engine.js`) para los 18
   ejercicios de "pregunta + opciones o teclado" (`js/games-data.js` y
-  `js/games-data-2.js`); los otros 136 (`js/game-*.js` y
+  `js/games-data-2.js`); los otros 138 (`js/game-*.js` y
   `js/balloons-game.js`) tienen cada uno su propia mecánica de
   interacción (arrastrar, tocar en orden, emparejar, construir,
   escribir, clasificar, recorrer…).
 - Los estilos de cada tanda viven en su propio `css/pack-<letra>.css`
-  (de `pack-a.css` a `pack-x.css`, uno por tramo temático), para que
+  (de `pack-a.css` a `pack-y.css`, uno por tramo temático), para que
   tocar una tanda no arrastre a las demás.
 - Guarda cada partida en `football_scores` y muestra las últimas en el
   menú.
