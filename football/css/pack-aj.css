@@ -1,0 +1,40 @@
+/* Pack AJ — juego grande "La cuesta de la recta" (noche 18/19-09-2026). Prefijo: pnd- (pendiente). */
+
+.pnd-badge { display: inline-block; font-size: 0.78rem; font-weight: 700; color: var(--accent); border: 1.5px solid var(--accent); border-radius: 999px; padding: 3px 10px; margin: 0 0 12px; }
+.pnd-progress { color: var(--muted); font-size: 0.9rem; text-align: center; margin: 8px 0 12px; }
+
+.pnd-map { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; max-width: 360px; margin: 12px auto; }
+.pnd-node { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 2px; border-radius: 12px; border: 2px solid var(--accent); background: var(--card); color: var(--text); font: inherit; cursor: pointer; }
+.pnd-node[disabled] { opacity: 0.4; border-style: dashed; cursor: default; }
+.pnd-node-done { background: var(--accent); color: #fff; }
+.pnd-node-num { font-size: 1.1rem; font-weight: 800; }
+.pnd-node-name { font-size: 0.62rem; font-weight: 600; text-align: center; line-height: 1.15; }
+
+.pnd-wrap { display: flex; justify-content: center; margin: 8px 0; }
+.pnd-svg { max-width: 100%; height: auto; }
+.pnd-grid { stroke: var(--border); stroke-width: 1; }
+.pnd-axis { stroke: var(--muted); stroke-width: 1.5; }
+.pnd-tick { font-size: 8px; fill: var(--muted); text-anchor: middle; }
+.pnd-tick-y { text-anchor: end; }
+.pnd-line { stroke: var(--accent); stroke-width: 3; stroke-linecap: round; }
+.pnd-line-b { stroke: #e5484d; }
+.pnd-line-soft { stroke-dasharray: 6 4; opacity: 0.7; }
+.pnd-point { fill: var(--accent); }
+.pnd-stair { fill: none; stroke: #f5a623; stroke-width: 2.5; stroke-dasharray: 4 3; }
+.pnd-stair-label { font-size: 8px; font-weight: 700; fill: #b8770f; }
+.pnd-ring { fill: none; stroke: #f5a623; stroke-width: 3; }
+.pnd-mark { fill: #3fb950; stroke: #fff; stroke-width: 2; }
+.pnd-tap { fill: transparent; cursor: pointer; }
+.pnd-tap:hover { fill: rgba(91, 62, 204, 0.15); }
+
+.pnd-options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; max-width: 320px; margin: 0 auto 10px; }
+.pnd-opt { padding: 12px; font-size: 1.05rem; }
+.pnd-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin: 10px 0; }
+.pnd-formula { text-align: center; font-size: 1.05rem; margin: 6px 0 10px; }
+.pnd-steppers { display: flex; flex-direction: column; gap: 8px; max-width: 320px; margin: 0 auto; }
+.pnd-stepper { display: grid; grid-template-columns: 56px 1fr 56px; align-items: center; gap: 8px; text-align: center; font-size: 1.1rem; }
+.pnd-stepper .choice-btn { padding: 8px 0; font-size: 1.2rem; }
+
+.pnd-learned { font-size: 0.9rem; color: var(--muted); background: var(--bg); border-radius: 10px; padding: 10px 12px; margin: 0 0 12px; }
+.pnd-errors { text-align: left; font-size: 0.88rem; padding-left: 18px; margin: 0 0 12px; }
+.pnd-errors li { margin: 6px 0; }
