@@ -1,0 +1,39 @@
+/* Pack AE — segundo juego grande (18-09-2026). Prefijo: ecu- (ecuacion). */
+
+.ecu-badge { display: inline-block; font-size: 0.78rem; font-weight: 700; color: var(--accent); border: 1.5px solid var(--accent); border-radius: 999px; padding: 3px 10px; margin: 0 0 12px; }
+.ecu-progress { color: var(--muted); font-size: 0.9rem; text-align: center; margin: 8px 0 12px; }
+
+.ecu-map { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px; margin: 14px 0; }
+.ecu-node { display: flex; flex-direction: column; align-items: center; gap: 2px; width: 64px; padding: 8px 4px; border-radius: 14px; border: 2px solid var(--accent); background: var(--card); color: var(--text); font: inherit; cursor: pointer; }
+.ecu-node-num { font-size: 1.2rem; font-weight: 800; color: var(--accent); }
+.ecu-node-name { font-size: 0.7rem; font-weight: 600; }
+.ecu-node-done { background: var(--accent); color: #fff; }
+.ecu-node-done .ecu-node-num { color: #fff; }
+.ecu-node-locked { opacity: 0.4; border-style: dashed; cursor: default; }
+.ecu-path { width: 10px; height: 2px; background: var(--border); }
+
+.ecu-stage { display: flex; justify-content: center; margin: 8px 0; }
+.ecu-balance { max-width: 100%; height: auto; }
+.ecu-post, .ecu-beam { stroke: var(--text); stroke-width: 4; stroke-linecap: round; }
+.ecu-rope { stroke: var(--muted); stroke-width: 2; }
+.ecu-pan { fill: var(--text); }
+.ecu-sack { fill: #c98a3a; stroke: #8a5a20; }
+.ecu-sack-x { font-size: 11px; font-weight: 700; fill: #fff; text-anchor: middle; }
+.ecu-weight { fill: #6b6b80; stroke: #3d3d4d; }
+.ecu-side-label { font-size: 13px; font-weight: 700; fill: var(--text); text-anchor: middle; }
+
+.ecu-eq { text-align: center; margin: 8px 0 12px; }
+.ecu-eq-line { font-size: 1.05rem; color: var(--muted); margin: 2px 0; }
+.ecu-eq-current { color: var(--text); font-weight: 800; font-size: 1.35rem; }
+.ecu-eq-big { font-size: 1.7rem; }
+.ecu-arrow { color: var(--muted); }
+
+.ecu-ops { display: flex; flex-direction: column; gap: 8px; max-width: 320px; margin: 0 auto 10px; }
+.ecu-op, .ecu-judge { padding: 12px; }
+.ecu-op.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+.ecu-keypad[hidden] { display: none; }
+.ecu-keypad { display: flex; flex-direction: column; align-items: center; }
+
+.ecu-learned { font-size: 0.9rem; color: var(--muted); background: var(--bg); border-radius: 10px; padding: 10px 12px; margin: 0 0 12px; }
+.ecu-errors { text-align: left; font-size: 0.88rem; padding-left: 18px; margin: 0 0 12px; }
+.ecu-errors li { margin: 6px 0; }
