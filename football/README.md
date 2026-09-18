@@ -1,7 +1,7 @@
 # Math Games 🧠
 
-PWA (sin build, HTML/CSS/JS puro) con **156 ejercicios de matemáticas**,
-cada uno numerado (#1-#156) para poder referirse a ellos sin ambigüedad.
+PWA (sin build, HTML/CSS/JS puro) con **157 ejercicios de matemáticas**,
+cada uno numerado (#1-#157) para poder referirse a ellos sin ambigüedad.
 Cálculo mental, geometría, álgebra, estadística, fracciones, dinero,
 probabilidad, coordenadas, tiempo y más. Nace como banco de pruebas
 rápido para sacar ideas de mecánicas (tipo Duolingo Math, Synthesis,
@@ -775,6 +775,38 @@ comprobar la unicidad por sumas. Reproducido el fallo antes del cambio
 (fallaba en 2 de 3 partidas jugadas de verdad en Chromium) y confirmado
 que desaparece después (8 de 8 partidas correctas tras el fix).
 
+## Ejercicio #157 (decimoquinta tanda, 18-09-2026) — tramo único
+
+### Tramo único — [`css/pack-z.css`](./css/pack-z.css)
+
+Sin filas `review` pendientes. Familias usadas: 3 (libros), 5 (juegos
+de mesa) y 6 (mecánicas de videojuego) — las 3 únicas fuera de la
+unión de familias de las 3 rondas anteriores. Tanda mínima (1 idea):
+Mancala se descartó de nuevo (la captura real exige un tablero de dos
+filas enfrentadas, y una versión de solo-siembra-circular se parecería
+demasiado a `oca`); "dominó Matador" (suma fija de 7 en los extremos
+abiertos) se descartó por depender de estado de un tablero multi-turno
+difícil de comprimir en una sola ronda; Blokus se descartó de nuevo
+(piezas geométricas ya cubiertas por pentominós/tangram-like).
+
+| # | Juego | Tema | Mecánica | De dónde sale |
+|---|---|---|---|---|
+| 157 | 🎮 Fusiona como en 2048 | Potencias de 2 | Una fila con fichas y huecos; al deslizar hacia la izquierda los huecos se cierran y dos fichas iguales que queden entonces juntas se fusionan duplicando su valor — calcula el mayor valor resultante | 2048 (Gabriele Cirulli), familia 6 |
+
+Verificación antes de publicar: `verify_fusiona.mjs` sobre 20.000
+rondas (simulación de deslizar+fusionar reimplementada de forma
+independiente, confirmando que el máximo recalculado coincide siempre
+con el valor fusionado, que ese máximo es siempre único —sin empates—,
+y que la ficha "extra" opcional es siempre menor que el valor
+fusionado para que la pregunta no se pueda responder sin simular la
+fusión de verdad). Los 157 ejercicios cargan sin error de consola, y
+el nuevo se jugó de verdad en el navegador (4 partidas con distintas
+combinaciones generadas) calculando la respuesta correcta de forma
+independiente, confirmando que el marcador sube +10 en cada acierto;
+se comprobó además que fallar a propósito (respondiendo el valor SIN
+fusionar, el error típico de no darse cuenta de que el hueco se cierra)
+resta una vida con el mensaje correcto.
+
 ## Versiones (v2) y bandeja "Revisar"
 
 Cuando un ejercicio recibe una vuelta de mejoras, se marca con un
@@ -1020,17 +1052,17 @@ Una vez publicado, esta app queda en:
 
 ## Qué hace la app
 
-- Menú con los 156 ejercicios numerados, organizados en pestañas
+- Menú con los 157 ejercicios numerados, organizados en pestañas
   🆕/👍/👎/🔧; cada uno abre en su propia pantalla (`#/game/<id>`), sin
   recargar la página.
 - Motor de preguntas compartido (`js/quiz-engine.js`) para los 18
   ejercicios de "pregunta + opciones o teclado" (`js/games-data.js` y
-  `js/games-data-2.js`); los otros 138 (`js/game-*.js` y
+  `js/games-data-2.js`); los otros 139 (`js/game-*.js` y
   `js/balloons-game.js`) tienen cada uno su propia mecánica de
   interacción (arrastrar, tocar en orden, emparejar, construir,
   escribir, clasificar, recorrer…).
 - Los estilos de cada tanda viven en su propio `css/pack-<letra>.css`
-  (de `pack-a.css` a `pack-y.css`, uno por tramo temático), para que
+  (de `pack-a.css` a `pack-z.css`, uno por tramo temático), para que
   tocar una tanda no arrastre a las demás.
 - Guarda cada partida en `football_scores` y muestra las últimas en el
   menú.
