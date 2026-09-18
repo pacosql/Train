@@ -1,0 +1,47 @@
+/* Pack AB — decimoséptima tanda (18-09-2026).
+   Prefijo: rac- (raciones). */
+
+.rac-wrap {
+  display: flex;
+  justify-content: center;
+  margin: 18px 0;
+  overflow-x: auto;
+}
+
+.rac-svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.rac-axis {
+  stroke: var(--text);
+  stroke-width: 2;
+}
+
+.rac-tick {
+  stroke: var(--muted);
+  stroke-width: 1.5;
+}
+
+.rac-tick-whole {
+  stroke: var(--text);
+  stroke-width: 2.5;
+}
+
+.rac-num {
+  font-size: 13px;
+  font-weight: 700;
+  fill: var(--text);
+  text-anchor: middle;
+}
+
+.rac-served {
+  fill: var(--accent);
+  opacity: 0.25;
+}
+
+@media (max-width: 420px) {
+  .rac-num {
+    font-size: 11px;
+  }
+}

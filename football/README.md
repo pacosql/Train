@@ -1,7 +1,7 @@
 # Math Games 🧠
 
-PWA (sin build, HTML/CSS/JS puro) con **159 ejercicios de matemáticas**,
-cada uno numerado (#1-#159) para poder referirse a ellos sin ambigüedad.
+PWA (sin build, HTML/CSS/JS puro) con **160 ejercicios de matemáticas**,
+cada uno numerado (#1-#160) para poder referirse a ellos sin ambigüedad.
 Cálculo mental, geometría, álgebra, estadística, fracciones, dinero,
 probabilidad, coordenadas, tiempo y más. Nace como banco de pruebas
 rápido para sacar ideas de mecánicas (tipo Duolingo Math, Synthesis,
@@ -872,6 +872,67 @@ de feedback correcto. Se agotó la numeración de pack de una sola letra
 (`pack-a.css` a `pack-z.css`); este tramo estrena `pack-aa.css` y la
 convención de dos letras para los packs siguientes.
 
+## Ejercicio #160 (decimoséptima tanda, 18-09-2026) — tramo único
+
+### Tramo único — [`css/pack-ab.css`](./css/pack-ab.css)
+
+Sin filas `review` pendientes. Familias elegidas: 1 (apps edtech), 8
+(retos) y 9 (museos) — las 3 únicas fuera de la unión de familias de
+las 3 rondas anteriores. Investigación de nuevo mayormente estéril (10
+consultas): Duolingo Math, Khan Academy Kids, SplashLearn, Math
+Playground/Coolmath4Kids no dieron ninguna mecánica nueva concreta;
+olimpiadas/AMC 8 confirman temas ya cubiertos sin aportar mecánica de
+un solo ejercicio; Exploratorium/MoMath no dieron detalle de mecánica
+nueva. Se evaluó "lanzar fichas para estimar π" (Exploratorium,
+Monte Carlo) y se descartó: para tener una única respuesta exacta
+habría que fijar de antemano cuántos puntos caen dentro/fuera, lo que
+lo convierte en un ejercicio de contar+dividir ya cubierto en espíritu
+por `estima`/`fermi`, sin mecánica realmente nueva que compense la
+complejidad visual de dibujar puntos dentro/fuera de un arco de forma
+creíble.
+
+Una idea sí pasó el filtro, de Zearn (tape diagrams, familia 1):
+**`raciones`** — división de fracciones como MEDIDA REPETIDA (cuántas
+raciones de tamaño 1/d caben en W litros enteros), en vez de como
+reparto proporcional. Auditoría previa: `tiras` (tanda anterior) ya usa
+un diagrama de tira para REPARTO PROPORCIONAL a:b de un total (dividir
+como "compartir desigualmente según una razón"); aquí el concepto es
+distinto — división como "cuántas veces cabe una fracción unitaria en
+un entero" — así que se implementa con una RECTA NUMÉRICA de marcas
+iguales, no una barra segmentada de dos partes, diferenciando también
+el aspecto visual de `tiras` y de `recta` (arrastre continuo 0-20, sin
+fracciones). La ronda rota entre pedir el número de raciones dado el
+total (N = W×d) y pedir el total entero dadas las raciones ya servidas
+(inversión 4.3, W = N/d), ambas derivadas del mismo par (W, d) para que
+la respuesta sea siempre un entero exacto.
+
+**Fallo real encontrado y corregido antes de publicar** (durante la
+captura de pantalla de verificación a 400 px, no durante la simulación
+en Node): en la dirección inversa, la recta dibujaba igualmente las
+marcas de litro entero CON SU NÚMERO IMPRESO (0, 1, 2…) hasta el propio
+límite W — como el ancho del dibujo coincide exactamente con la
+respuesta, el último número impreso en el eje ERA la respuesta, así que
+se podía acertar sin dividir nada, solo leyendo el eje. Corregido: en
+la dirección inversa las marcas nunca distinguen "entero" de
+"fracción" ni llevan número impreso — todas miden igual, así que hay
+que contar las N marcas de verdad y dividir entre d de cabeza, tal
+como pide el enunciado.
+
+| # | Juego | Tema | Mecánica | De dónde sale |
+|---|---|---|---|---|
+| 160 | 💊 Raciones de jarabe | División de fracciones | Recta numérica marcada en trozos de 1/d: halla cuántas raciones caben en W litros, o cuántos litros enteros son N raciones ya servidas | Zearn (tape diagrams), adaptado a recta para no solapar con `tiras` |
+
+Verificación antes de publicar: `verify_raciones.mjs` sobre 20.000
+rondas generadas (reimplementado desde cero), confirmando que
+N = W×d siempre exactamente y que ambas direcciones dan un entero
+sin resto, además de que el máximo N (90) cabe en el teclado de 2
+dígitos. Los 141 ejercicios cargan sin error de consola en Chromium a
+400 px de ancho. El nuevo se jugó de verdad en el navegador (10 rondas
+correctas seguidas, forzando ambas direcciones, deduciendo la
+respuesta únicamente del DOM, confirmando +10 en cada acierto tras
+corregir el fallo de arriba); se comprobó además que fallar a
+propósito resta una vida con el mensaje de feedback correcto.
+
 ## Versiones (v2) y bandeja "Revisar"
 
 Cuando un ejercicio recibe una vuelta de mejoras, se marca con un
@@ -1117,12 +1178,12 @@ Una vez publicado, esta app queda en:
 
 ## Qué hace la app
 
-- Menú con los 159 ejercicios numerados, organizados en pestañas
+- Menú con los 160 ejercicios numerados, organizados en pestañas
   🆕/👍/👎/🔧; cada uno abre en su propia pantalla (`#/game/<id>`), sin
   recargar la página.
 - Motor de preguntas compartido (`js/quiz-engine.js`) para los 18
   ejercicios de "pregunta + opciones o teclado" (`js/games-data.js` y
-  `js/games-data-2.js`); los otros 141 (`js/game-*.js` y
+  `js/games-data-2.js`); los otros 142 (`js/game-*.js` y
   `js/balloons-game.js`) tienen cada uno su propia mecánica de
   interacción (arrastrar, tocar en orden, emparejar, construir,
   escribir, clasificar, recorrer…).
