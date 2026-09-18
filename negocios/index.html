@@ -1,0 +1,492 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Negocios</title>
+
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0b0d10" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Negocios" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" href="icons/icon-192.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&display=swap" />
+
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b0d10;
+      --glass: linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.025));
+      --surface-2: rgba(255, 255, 255, 0.08);
+      --line: rgba(255, 255, 255, 0.08);
+      --line-strong: rgba(255, 255, 255, 0.16);
+      --text: #f4f5f7;
+      --text-2: #9aa3ad;
+      --accent: #f2b840;
+      --accent-2: #ffd66e;
+      --accent-soft: rgba(242, 184, 64, 0.14);
+      --accent-glow: rgba(242, 184, 64, 0.32);
+      --accent-ink: #241700;
+      --good: #43d391;
+      --mid: #f2b840;
+      --bad: #ff5470;
+      --blue: #72a9ff;
+      --display: "Barlow Condensed", "Arial Narrow", "Helvetica Neue", -apple-system, sans-serif;
+      --body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --lift: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 12px 32px rgba(0, 0, 0, 0.35);
+      padding-top: env(safe-area-inset-top, 0px);
+    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0; background: var(--bg); color: var(--text); font-family: var(--body);
+      padding: 16px 16px calc(112px + env(safe-area-inset-bottom, 0px));
+      -webkit-font-smoothing: antialiased; line-height: 1.45;
+    }
+    body::before {
+      content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background:
+        radial-gradient(70% 42% at 50% -6%, rgba(242, 184, 64, 0.16), transparent 70%),
+        radial-gradient(45% 30% at 105% 25%, rgba(114, 169, 255, 0.06), transparent 70%);
+    }
+    .wrap { max-width: 520px; margin: 0 auto; }
+
+    h1, h2 { font-family: var(--display); text-transform: uppercase; letter-spacing: 0.3px; line-height: 0.98; margin: 0 0 6px; }
+    h1 { font-size: 2rem; font-weight: 800; }
+    h3 { font-family: var(--display); font-size: 0.95rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.3px; color: var(--accent); margin: 18px 0 6px; }
+    .eyebrow { font-family: var(--display); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.4px; color: var(--text-2); margin: 0 0 4px; }
+    .sub { color: var(--text-2); font-size: 0.95rem; margin: 0 0 14px; }
+    p { margin: 0 0 8px; }
+
+    /* barra superior */
+    .top-bar { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
+    .brand { display: flex; align-items: center; gap: 8px; font-family: var(--display); font-size: 1.25rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; }
+    .brand-mark {
+      width: 1.6rem; height: 1.6rem; border-radius: 9px; display: grid; place-items: center; font-size: 0.85rem;
+      background: linear-gradient(135deg, var(--accent-2), var(--accent));
+      box-shadow: 0 0 18px var(--accent-glow), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    }
+    .icon-btn { background: rgba(255, 255, 255, 0.06); border: 1px solid var(--line-strong); color: var(--text); border-radius: 12px; width: 40px; height: 40px; font-size: 1.1rem; cursor: pointer; display: grid; place-items: center; }
+    .icon-btn:active { transform: scale(0.94); }
+    .icon-btn.spin { animation: spin 0.8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* pestañas */
+    .tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 14px; }
+    .tab {
+      font-family: var(--display); font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px;
+      color: var(--text-2); background: rgba(255, 255, 255, 0.04); border: 1px solid var(--line); border-radius: 12px;
+      padding: 9px 4px; text-align: center; cursor: pointer; line-height: 1.1;
+    }
+    .tab .n { display: block; font-size: 1.2rem; color: var(--text); }
+    .tab.active { border-color: rgba(242, 184, 64, 0.5); background: var(--accent-soft); color: var(--accent); }
+    .tab.active .n { color: var(--accent-2); }
+
+    /* tarjetas */
+    .card {
+      background: var(--glass); border: 1px solid var(--line); border-radius: 22px; padding: 18px; margin-bottom: 12px; box-shadow: var(--lift);
+      animation: card-in 0.3s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    }
+    @keyframes card-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 10px; }
+    .chip { font-family: var(--display); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.9px; padding: 4px 9px; border-radius: 999px; border: 1px solid var(--line-strong); color: var(--text-2); }
+    .chip.accent { color: var(--accent); border-color: rgba(242, 184, 64, 0.45); background: var(--accent-soft); }
+    .chip.blue { color: var(--blue); border-color: rgba(114, 169, 255, 0.45); }
+    .chip.good { color: var(--good); border-color: rgba(67, 211, 145, 0.45); }
+    .chip.bad { color: var(--bad); border-color: rgba(255, 84, 112, 0.45); }
+
+    /* puntuación */
+    .score-row { display: flex; align-items: center; gap: 16px; margin: 14px 0 12px; }
+    .ring { position: relative; width: 92px; height: 92px; flex-shrink: 0; border-radius: 50%; display: grid; place-items: center;
+      background: conic-gradient(var(--ring-color, var(--accent)) calc(var(--pct, 0) * 1%), rgba(255, 255, 255, 0.07) 0); }
+    .ring::before { content: ""; position: absolute; inset: 8px; border-radius: 50%; background: #14171c; }
+    .ring .v { position: relative; font-family: var(--display); font-size: 2rem; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; }
+    .ring .l { position: relative; font-family: var(--display); font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-2); }
+    .score-text { flex: 1; min-width: 0; }
+    .score-text .verdict { font-family: var(--display); font-size: 1.35rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.4px; line-height: 1.05; }
+    .score-text .why { color: var(--text-2); font-size: 0.82rem; margin-top: 4px; }
+
+    /* métricas 1-10 */
+    .metrics { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 8px; }
+    .metric { background: rgba(255, 255, 255, 0.04); border: 1px solid var(--line); border-radius: 16px; padding: 10px 12px; }
+    .metric .l { font-family: var(--display); font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-2); }
+    .metric .v { font-family: var(--display); font-size: 1.6rem; font-weight: 800; line-height: 1.05; font-variant-numeric: tabular-nums; margin: 2px 0 6px; }
+    .metric .v small { font-size: 0.9rem; color: var(--text-2); font-weight: 700; }
+    .bar { height: 5px; background: rgba(255, 255, 255, 0.07); border-radius: 999px; overflow: hidden; }
+    .bar i { display: block; height: 100%; width: 0%; border-radius: 999px; background: var(--bar-color, var(--accent)); box-shadow: 0 0 10px var(--bar-color, var(--accent)); }
+
+    /* datos económicos */
+    .facts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 4px; }
+    .fact { display: flex; flex-direction: column; padding: 8px 12px; border-left: 3px solid var(--accent); background: rgba(255, 255, 255, 0.03); border-radius: 0 12px 12px 0; }
+    .fact .l { font-family: var(--display); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-2); }
+    .fact .v { font-family: var(--display); font-size: 1.25rem; font-weight: 800; line-height: 1.1; font-variant-numeric: tabular-nums; }
+
+    /* secciones desplegables */
+    details { border-top: 1px solid var(--line); padding: 10px 0; }
+    details:last-of-type { border-bottom: 1px solid var(--line); }
+    summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-family: var(--display); font-size: 1.05rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.9px; color: var(--text); }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: "+"; color: var(--accent); font-size: 1.3rem; font-weight: 800; }
+    details[open] summary::after { content: "–"; }
+    details .body { padding-top: 8px; font-size: 0.93rem; color: #d6dbe1; }
+    details .body .note { color: var(--text-2); font-size: 0.85rem; margin-top: 2px; }
+    ul.pros, ul.cons { margin: 4px 0 0; padding: 0; list-style: none; }
+    ul.pros li, ul.cons li { position: relative; padding-left: 20px; margin-bottom: 5px; font-size: 0.9rem; }
+    ul.pros li::before { content: "✓"; position: absolute; left: 0; color: var(--good); font-weight: 800; }
+    ul.cons li::before { content: "!"; position: absolute; left: 4px; color: var(--bad); font-weight: 800; }
+    .kv { display: grid; grid-template-columns: 1fr; gap: 6px; }
+    .kv .k { font-family: var(--display); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--accent); }
+
+    textarea {
+      width: 100%; min-height: 72px; resize: vertical; font-family: var(--body); font-size: 0.95rem; color: var(--text);
+      background: rgba(255, 255, 255, 0.05); border: 1px solid var(--line-strong); border-radius: 14px; padding: 10px 12px; margin-top: 6px;
+    }
+    textarea:focus { outline: none; border-color: var(--accent); }
+
+    /* navegación entre pendientes */
+    .pager { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 4px 0 10px; color: var(--text-2); font-family: var(--display); font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+    .pager button { width: auto; margin: 0; padding: 8px 14px; font-size: 1rem; }
+
+    /* botones */
+    button {
+      font-family: var(--display); font-size: 1.2rem; font-weight: 700; letter-spacing: 0.7px; text-transform: uppercase;
+      background: linear-gradient(135deg, var(--accent-2), var(--accent) 55%, #d99a1e); color: var(--accent-ink);
+      border: none; border-radius: 16px; padding: 14px 16px; width: 100%; cursor: pointer;
+      box-shadow: 0 8px 24px var(--accent-glow), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+      transition: transform 0.08s ease, filter 0.15s ease;
+    }
+    button:active { transform: scale(0.97); filter: brightness(1.06); }
+    button.secondary { background: rgba(255, 255, 255, 0.06); color: var(--text); border: 1px solid var(--line-strong); box-shadow: none; }
+    button.ghost { background: transparent; color: var(--text-2); border: 1px solid var(--line); box-shadow: none; font-size: 1rem; }
+    button:disabled { opacity: 0.32; cursor: default; box-shadow: none; }
+
+    .actions {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+      padding: 10px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+      background: linear-gradient(180deg, rgba(11, 13, 16, 0), rgba(11, 13, 16, 0.92) 30%, var(--bg));
+    }
+    .actions .inner { max-width: 520px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr 1.3fr; gap: 8px; }
+    .actions button { padding: 13px 8px; font-size: 1.05rem; }
+    .actions button.like { background: linear-gradient(135deg, #7af0b8, var(--good) 55%, #2fb877); color: #04200f; box-shadow: 0 8px 24px rgba(67, 211, 145, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.3); }
+    .actions button.dislike { background: rgba(255, 84, 112, 0.12); color: var(--bad); border: 1px solid rgba(255, 84, 112, 0.45); box-shadow: none; }
+    .actions button.discard { background: rgba(255, 255, 255, 0.06); color: var(--text-2); border: 1px solid var(--line-strong); box-shadow: none; }
+    .actions.hidden { display: none; }
+
+    /* listas */
+    .item {
+      display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 18px; border: 1px solid var(--line);
+      background: var(--glass); margin-bottom: 8px; cursor: pointer; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      animation: card-in 0.3s both; animation-delay: calc(var(--i, 0) * 30ms);
+    }
+    .item:active { background: var(--surface-2); }
+    .item .s { font-family: var(--display); font-size: 1.5rem; font-weight: 800; width: 44px; text-align: center; flex-shrink: 0; font-variant-numeric: tabular-nums; }
+    .item .m { flex: 1; min-width: 0; }
+    .item .name { font-family: var(--display); font-size: 1.15rem; font-weight: 700; line-height: 1.05; }
+    .item .meta { color: var(--text-2); font-size: 0.78rem; margin-top: 3px; }
+    .item .arrow { color: var(--text-2); }
+    .empty { text-align: center; color: var(--text-2); padding: 36px 12px; }
+    .empty .big { font-size: 2.4rem; margin-bottom: 8px; }
+
+    .msg { color: var(--bad); font-size: 0.85rem; margin: 0 0 10px; min-height: 1em; }
+    .toast {
+      position: fixed; left: 50%; bottom: calc(96px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); z-index: 30;
+      background: #1c2027; border: 1px solid var(--line-strong); color: var(--text); padding: 10px 14px; border-radius: 999px; font-size: 0.9rem;
+      display: flex; gap: 12px; align-items: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); opacity: 0; pointer-events: none; transition: opacity 0.2s;
+    }
+    .toast.show { opacity: 1; pointer-events: auto; }
+    .toast button { width: auto; padding: 4px 10px; font-size: 0.9rem; background: transparent; color: var(--accent); box-shadow: none; }
+    .build-id { text-align: center; font-size: 0.7rem; color: var(--text-2); margin-top: 24px; font-family: ui-monospace, monospace; }
+    .back { display: inline-flex; align-items: center; gap: 6px; color: var(--text-2); font-family: var(--display); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem; cursor: pointer; margin-bottom: 10px; }
+    .decision-tag { font-family: var(--display); font-weight: 800; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem; margin-bottom: 8px; }
+    .decision-tag.gusta { color: var(--good); }
+    .decision-tag.no_gusta { color: var(--bad); }
+    .decision-tag.descartar { color: var(--text-2); }
+    .helper { font-size: 0.8rem; color: var(--text-2); margin-top: 8px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top-bar">
+      <div class="brand"><span class="brand-mark">📈</span> Negocios</div>
+      <button class="icon-btn" id="btn-refresh" title="Buscar fichas nuevas">↻</button>
+    </div>
+    <p class="msg" id="msg"></p>
+
+    <div class="tabs" id="tabs">
+      <div class="tab active" data-tab="pendiente"><span class="n" id="n-pendiente">–</span>Pendientes</div>
+      <div class="tab" data-tab="gusta"><span class="n" id="n-gusta">–</span>Me gustan</div>
+      <div class="tab" data-tab="no_gusta"><span class="n" id="n-no_gusta">–</span>No</div>
+      <div class="tab" data-tab="descartar"><span class="n" id="n-descartar">–</span>Descartadas</div>
+    </div>
+
+    <div id="view"></div>
+
+    <div class="build-id">build __BUILD_ID__</div>
+  </div>
+
+  <div class="actions hidden" id="actions">
+    <div class="inner">
+      <button class="discard" id="btn-descartar">🗑️ Descartar</button>
+      <button class="dislike" id="btn-no_gusta">👎 No</button>
+      <button class="like" id="btn-gusta">👍 Me gusta</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"><span id="toast-text"></span><button id="toast-undo">Deshacer</button></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="config.js"></script>
+  <script>
+    const { url, anonKey, tablePrefix } = window.NEGOCIOS_CONFIG;
+    const T_IDEAS = tablePrefix + "ideas";
+    let client = null;
+    let ideas = [];
+    const state = { tab: "pendiente", index: 0, detailId: null };
+    let lastChange = null; // { id, prev: {decision, decidido_en, notas_usuario} }
+    let toastTimer = null;
+
+    const el = (id) => document.getElementById(id);
+    const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    const money = (n) => n == null ? "–" : (Math.abs(n) >= 1000 ? (Math.round(n / 100) / 10).toLocaleString("es-ES") + " k€" : n.toLocaleString("es-ES") + " €");
+    const rango = (a, b) => (a == null && b == null) ? "–" : (a != null && b != null ? `${money(a)} – ${money(b)}` : money(a ?? b));
+
+    // ---------- puntuación (0-100) ----------
+    // Pesos: éxito 25, encaje con tu perfil 25, durabilidad 15, economía
+    // unitaria (ticket / CAC) 15, impacto de la IA 10, inversión 10.
+    const IA_SCORE = { palanca: 10, neutral: 6, amenaza: 2 };
+    const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+    function economia(i) {
+      if (!i.ticket_medio_eur || !i.cac_eur) return 5;
+      return clamp(5 * Math.log10(i.ticket_medio_eur / i.cac_eur) + 2.5, 0, 10);
+    }
+    function inversion(i) {
+      const max = i.inversion_max_eur ?? i.inversion_min_eur;
+      if (!max) return 5;
+      return clamp(10 - 3 * Math.log10(max / 20000), 0, 10);
+    }
+    function score(i) {
+      const s = i.exito * 2.5 + i.encaje_perfil * 2.5 + i.durabilidad * 1.5 + economia(i) * 1.5 + (IA_SCORE[i.impacto_ia] ?? 6) * 1.0 + inversion(i) * 1.0;
+      return Math.round(s);
+    }
+    function verdict(s) {
+      if (s >= 70) return ["Candidata seria", "var(--good)"];
+      if (s >= 55) return ["Con potencial, con reservas", "var(--mid)"];
+      if (s >= 40) return ["Floja para tu perfil", "var(--accent)"];
+      return ["Descartable", "var(--bad)"];
+    }
+    const barColor = (v) => v >= 7 ? "var(--good)" : v >= 5 ? "var(--mid)" : "var(--bad)";
+    const IA_LABEL = { palanca: ["🚀 Palanca", "good"], neutral: ["⚖️ Neutral", ""], amenaza: ["⚠️ Amenaza", "bad"] };
+    const MODELO_LABEL = { B2C: "B2C · a consumidor", B2B: "B2B · a empresas", B2B2C: "B2B2C · vía empresas al consumidor", B2G: "B2G · a administración" };
+    const TIPO_LABEL = { innovador: "Innovador", tradicional: "Tradicional", hibrido: "Híbrido" };
+    const DECISION_LABEL = { gusta: "👍 Me gusta", no_gusta: "👎 No me gusta", descartar: "🗑️ Descartada" };
+
+    // ---------- datos ----------
+    async function load() {
+      const { data, error } = await client.from(T_IDEAS).select("*").order("created_at", { ascending: true });
+      if (error) throw error;
+      ideas = data || [];
+      ideas.forEach((i) => { i._score = score(i); });
+    }
+    const pending = () => ideas.filter((i) => !i.decision).sort((a, b) => b._score - a._score || a.created_at.localeCompare(b.created_at));
+    const byDecision = (d) => ideas.filter((i) => i.decision === d).sort((a, b) => (b.decidido_en || "").localeCompare(a.decidido_en || ""));
+
+    async function decide(idea, decision) {
+      const notas = el("notas") ? el("notas").value.trim() : idea.notas_usuario;
+      lastChange = { id: idea.id, prev: { decision: idea.decision, decidido_en: idea.decidido_en, notas_usuario: idea.notas_usuario } };
+      const patch = { decision, decidido_en: decision ? new Date().toISOString() : null, notas_usuario: notas || null };
+      const { error } = await client.from(T_IDEAS).update(patch).eq("id", idea.id);
+      if (error) { showMsg("No se pudo guardar: " + error.message); return; }
+      Object.assign(idea, patch);
+      showMsg("");
+      showToast(decision ? `${DECISION_LABEL[decision]} · ${idea.nombre}` : `Devuelta a pendientes · ${idea.nombre}`);
+      if (state.tab === "pendiente") { state.index = Math.min(state.index, Math.max(0, pending().length - 1)); }
+      state.detailId = null;
+      render();
+    }
+    async function undo() {
+      if (!lastChange) return;
+      const idea = ideas.find((i) => i.id === lastChange.id);
+      if (!idea) return;
+      const { error } = await client.from(T_IDEAS).update(lastChange.prev).eq("id", idea.id);
+      if (error) { showMsg("No se pudo deshacer: " + error.message); return; }
+      Object.assign(idea, lastChange.prev);
+      lastChange = null;
+      hideToast();
+      render();
+    }
+
+    // ---------- render ----------
+    function counts() {
+      el("n-pendiente").textContent = pending().length;
+      for (const d of ["gusta", "no_gusta", "descartar"]) el("n-" + d).textContent = byDecision(d).length;
+    }
+
+    function metric(label, v, note) {
+      return `<div class="metric"><div class="l">${label}</div><div class="v">${v}<small>/10</small></div>
+        <div class="bar" style="--bar-color:${barColor(v)}"><i style="width:${v * 10}%"></i></div></div>`;
+    }
+    function list(arr, cls) { return arr && arr.length ? `<ul class="${cls}">${arr.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>` : `<p class="note">—</p>`; }
+
+    function cardHTML(i, { showNotes }) {
+      const s = i._score, [v, color] = verdict(s);
+      const ia = IA_LABEL[i.impacto_ia] || ["–", ""];
+      return `
+      <div class="card">
+        ${i.decision ? `<div class="decision-tag ${i.decision}">${DECISION_LABEL[i.decision]}${i.decidido_en ? " · " + new Date(i.decidido_en).toLocaleDateString("es-ES") : ""}</div>` : ""}
+        <div class="chips">
+          <span class="chip accent">${esc(i.sector)}</span>
+          <span class="chip blue">${esc(MODELO_LABEL[i.modelo] || i.modelo)}</span>
+          <span class="chip">${esc(TIPO_LABEL[i.tipo] || i.tipo)}</span>
+          ${i.fuente && i.fuente !== "manual" ? `<span class="chip">🤖 ${esc(i.fuente)}</span>` : ""}
+        </div>
+        <h1>${esc(i.nombre)}</h1>
+        <p class="sub">${esc(i.resumen)}</p>
+
+        <div class="score-row">
+          <div class="ring" style="--pct:${s};--ring-color:${color}"><div class="v">${s}</div><div class="l">de 100</div></div>
+          <div class="score-text">
+            <div class="verdict" style="color:${color}">${v}</div>
+            <div class="why">Éxito y encaje con tu perfil pesan la mitad; el resto: durabilidad, economía unitaria, IA e inversión.</div>
+          </div>
+        </div>
+
+        <div class="metrics">
+          ${metric("Probabilidad de éxito", i.exito)}
+          ${metric("Encaje con tu perfil", i.encaje_perfil)}
+          ${metric("Aguanta con el tiempo", i.durabilidad)}
+          <div class="metric"><div class="l">Impacto de la IA</div><div class="v" style="font-size:1.25rem;margin-top:6px"><span class="chip ${ia[1]}" style="font-size:0.95rem">${ia[0]}</span></div></div>
+        </div>
+
+        <div class="facts">
+          <div class="fact"><span class="l">Inversión inicial</span><span class="v">${rango(i.inversion_min_eur, i.inversion_max_eur)}</span></div>
+          <div class="fact"><span class="l">Coste de adquisición</span><span class="v">${money(i.cac_eur)}</span></div>
+          <div class="fact"><span class="l">Ticket medio / cliente / año</span><span class="v">${money(i.ticket_medio_eur)}</span></div>
+          <div class="fact"><span class="l">Primeros ingresos</span><span class="v">${i.meses_hasta_ingresos != null ? i.meses_hasta_ingresos + " meses" : "–"}</span></div>
+        </div>
+
+        <h3>La ficha</h3>
+        <details open><summary>Qué sería el negocio</summary><div class="body">${esc(i.descripcion)}</div></details>
+        <details><summary>Mercado y competencia</summary><div class="body kv">
+          <div><div class="k">Mercado</div>${esc(i.mercado || "—")}</div>
+          <div><div class="k">Competencia</div>${esc(i.competencia || "—")}</div>
+          <div><div class="k">Cómo se cobra</div>${esc(i.modelo_ingresos || "—")}</div>
+          <div><div class="k">Coste de adquisición</div>${esc(i.cac_nota || "—")}</div>
+        </div></details>
+        <details><summary>Por qué esas notas</summary><div class="body kv">
+          <div><div class="k">Éxito · ${i.exito}/10</div>${esc(i.exito_nota || "—")}</div>
+          <div><div class="k">Durabilidad · ${i.durabilidad}/10</div>${esc(i.durabilidad_nota || "—")}</div>
+          <div><div class="k">IA · ${esc(i.impacto_ia)}</div>${esc(i.impacto_ia_nota || "—")}</div>
+          <div><div class="k">Encaje con tu perfil · ${i.encaje_perfil}/10</div>${esc(i.encaje_nota || "—")}</div>
+        </div></details>
+        <details><summary>A favor / en contra</summary><div class="body">
+          <div class="k" style="font-family:var(--display);font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--good)">A favor</div>${list(i.fortalezas, "pros")}
+          <div class="k" style="font-family:var(--display);font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--bad);margin-top:10px">Riesgos</div>${list(i.riesgos, "cons")}
+        </div></details>
+        <details open><summary>Primer paso para validarla</summary><div class="body">${esc(i.primer_paso || "—")}</div></details>
+
+        ${showNotes ? `<h3>Mis notas</h3><textarea id="notas" placeholder="Lo que pienses al decidir (opcional)">${esc(i.notas_usuario || "")}</textarea>` : ""}
+      </div>`;
+    }
+
+    function render() {
+      counts();
+      document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("active", t.dataset.tab === state.tab));
+      const view = el("view");
+      const actions = el("actions");
+
+      // detalle de una ficha ya decidida
+      if (state.detailId) {
+        const i = ideas.find((x) => x.id === state.detailId);
+        if (!i) { state.detailId = null; return render(); }
+        actions.classList.add("hidden");
+        view.innerHTML = `<div class="back" id="back">← Volver</div>${cardHTML(i, { showNotes: true })}
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <button class="secondary" id="btn-reabrir">↩ A pendientes</button>
+            ${i.decision !== "gusta" ? `<button id="btn-cambiar-gusta">👍 Me gusta</button>` : `<button class="ghost" id="btn-cambiar-no">👎 No me gusta</button>`}
+          </div>`;
+        el("back").onclick = () => { state.detailId = null; render(); };
+        el("btn-reabrir").onclick = () => decide(i, null);
+        if (el("btn-cambiar-gusta")) el("btn-cambiar-gusta").onclick = () => decide(i, "gusta");
+        if (el("btn-cambiar-no")) el("btn-cambiar-no").onclick = () => decide(i, "no_gusta");
+        window.scrollTo(0, 0);
+        return;
+      }
+
+      if (state.tab === "pendiente") {
+        const p = pending();
+        if (!p.length) {
+          actions.classList.add("hidden");
+          view.innerHTML = `<div class="empty"><div class="big">✅</div><div>No queda ninguna ficha pendiente.</div><div class="helper">Cuando la rutina añada ideas nuevas aparecerán aquí. Pulsa ↻ para comprobarlo.</div></div>`;
+          return;
+        }
+        state.index = clamp(state.index, 0, p.length - 1);
+        const i = p[state.index];
+        view.innerHTML = `
+          <div class="pager">
+            <button class="ghost" id="prev" ${state.index === 0 ? "disabled" : ""}>‹</button>
+            <span>Ficha ${state.index + 1} de ${p.length} · ordenadas por puntuación</span>
+            <button class="ghost" id="next" ${state.index >= p.length - 1 ? "disabled" : ""}>›</button>
+          </div>
+          ${cardHTML(i, { showNotes: true })}`;
+        el("prev").onclick = () => { state.index--; render(); };
+        el("next").onclick = () => { state.index++; render(); };
+        actions.classList.remove("hidden");
+        el("btn-gusta").onclick = () => decide(i, "gusta");
+        el("btn-no_gusta").onclick = () => decide(i, "no_gusta");
+        el("btn-descartar").onclick = () => decide(i, "descartar");
+        window.scrollTo(0, 0);
+        return;
+      }
+
+      // listas de decididas
+      actions.classList.add("hidden");
+      const arr = byDecision(state.tab);
+      const titles = { gusta: "Las que me gustan", no_gusta: "Las que no me gustan", descartar: "Descartadas" };
+      if (!arr.length) { view.innerHTML = `<div class="empty"><div class="big">📭</div><div>Nada por aquí todavía.</div></div>`; return; }
+      view.innerHTML = `<p class="eyebrow">${titles[state.tab]}</p>` + arr.map((i, idx) => `
+        <div class="item" data-id="${i.id}" style="--i:${idx}">
+          <div class="s" style="color:${verdict(i._score)[1]}">${i._score}</div>
+          <div class="m"><div class="name">${esc(i.nombre)}</div><div class="meta">${esc(i.sector)} · ${esc(i.modelo)} · ${i.decidido_en ? new Date(i.decidido_en).toLocaleDateString("es-ES") : ""}</div></div>
+          <div class="arrow">›</div>
+        </div>`).join("");
+      view.querySelectorAll(".item").forEach((n) => n.onclick = () => { state.detailId = n.dataset.id; render(); });
+    }
+
+    // ---------- utilidades UI ----------
+    function showMsg(t) { el("msg").textContent = t; }
+    function showToast(t) {
+      el("toast-text").textContent = t;
+      el("toast").classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(hideToast, 6000);
+    }
+    function hideToast() { el("toast").classList.remove("show"); }
+
+    async function refresh(btn) {
+      btn && btn.classList.add("spin");
+      try { await load(); showMsg(""); render(); }
+      catch (err) { showMsg("Sin conexión con Supabase: " + err.message); }
+      finally { btn && btn.classList.remove("spin"); }
+    }
+
+    async function init() {
+      document.querySelectorAll(".tab").forEach((t) => t.addEventListener("click", () => { state.tab = t.dataset.tab; state.detailId = null; state.index = 0; render(); }));
+      el("btn-refresh").addEventListener("click", (e) => refresh(e.currentTarget));
+      el("toast-undo").addEventListener("click", undo);
+      if (!url || !anonKey) { showMsg("Faltan credenciales en config.js"); return; }
+      client = supabase.createClient(url, anonKey);
+      await refresh(null);
+    }
+    init();
+
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+    }
+  </script>
+</body>
+</html>
