@@ -1,0 +1,33 @@
+/* Pack AI — juego grande "Escuela de cálculo mental" (noche 18/19-09-2026). Prefijo: cmt- (calculista). */
+
+.cmt-badge { display: inline-block; font-size: 0.78rem; font-weight: 700; color: var(--accent); border: 1.5px solid var(--accent); border-radius: 999px; padding: 3px 10px; margin: 0 0 12px; }
+.cmt-progress { color: var(--muted); font-size: 0.9rem; text-align: center; margin: 8px 0 12px; }
+
+.cmt-belts { display: flex; flex-direction: column; gap: 8px; max-width: 340px; margin: 12px auto; }
+.cmt-belt { display: grid; grid-template-columns: 34px 1fr; grid-template-rows: auto auto; column-gap: 12px; align-items: center; text-align: left; padding: 10px 14px; border-radius: 14px; border: 2px solid var(--border); background: var(--card); color: var(--text); font: inherit; cursor: pointer; }
+.cmt-belt[disabled] { opacity: 0.4; border-style: dashed; cursor: default; }
+.cmt-belt-done { border-color: var(--accent); }
+.cmt-belt-band { grid-row: 1 / 3; width: 34px; height: 14px; border-radius: 4px; border: 1px solid rgba(0, 0, 0, 0.2); }
+.cmt-belt-name { font-weight: 800; }
+.cmt-belt-sub { font-size: 0.8rem; color: var(--muted); }
+
+.cmt-example { text-align: center; margin: 12px 0; min-height: 60px; }
+.cmt-line { font-size: 1.15rem; color: var(--muted); margin: 3px 0; }
+.cmt-line-current { color: var(--text); font-weight: 800; font-size: 1.5rem; }
+.cmt-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin: 10px 0; }
+
+.cmt-steps { text-align: left; max-width: 300px; margin: 0 auto 12px; padding-left: 24px; font-size: 1.05rem; color: var(--muted); }
+.cmt-steps li { margin: 3px 0; }
+
+.cmt-timer { height: 8px; background: var(--bg); border: 1px solid var(--border); border-radius: 4px; max-width: 300px; margin: 0 auto 12px; overflow: hidden; }
+.cmt-timer-bar { height: 100%; background: var(--accent); transition: width 0.1s linear; }
+
+.cmt-strats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; max-width: 340px; margin: 0 auto 12px; }
+.cmt-strat { display: flex; align-items: center; gap: 8px; padding: 10px; font-size: 0.85rem; text-align: left; }
+.cmt-strat .cmt-belt-band { width: 22px; height: 10px; }
+.cmt-keypad-wrap[hidden] { display: none; }
+.cmt-keypad-wrap { display: flex; flex-direction: column; align-items: center; }
+
+.cmt-learned { font-size: 0.9rem; color: var(--muted); background: var(--bg); border-radius: 10px; padding: 10px 12px; margin: 0 0 12px; }
+.cmt-errors { text-align: left; font-size: 0.88rem; padding-left: 18px; margin: 0 0 12px; }
+.cmt-errors li { margin: 6px 0; }
