@@ -1,10 +1,13 @@
 # 📈 Negocios — evaluador de ideas de negocio
 
 Fichas de ideas de negocio evaluadas para el perfil del usuario. La app
-muestra una ficha cada vez, ordenadas por puntuación, y el usuario decide:
-**👍 Me gusta**, **👎 No me gusta** o **🗑️ Descartar** (todo se puede
-deshacer o cambiar después). Está pensada para que una rutina externa vaya
-**insertando fichas nuevas** en Supabase y aparezcan aquí sin tocar código.
+muestra una ficha cada vez, ordenadas por puntuación, y el usuario la
+etiqueta: **👍 Me gusta**, **👎 No me gusta** o **⭐ Definitivo** (todo se
+puede deshacer o cambiar después). En cada ficha puede además **escribir
+notas o grabar audios** que quedan guardados como pendientes para que una
+rutina los transcriba y procese. Está pensada para que una rutina externa
+vaya **insertando fichas nuevas** en Supabase y aparezcan aquí sin tocar
+código.
 
 URL: `https://pacosql.github.io/Train/negocios/`
 
@@ -36,12 +39,41 @@ primero para evaluar `encaje_perfil` y `encaje_nota` contra ese perfil.
 | `fortalezas`, `riesgos` | text[] | listas cortas |
 | `primer_paso` | text | cómo validarla barato |
 | `fuente` | text | `manual` por defecto; la rutina debe poner p. ej. `rutina` |
-| `decision`, `decidido_en`, `notas_usuario` | | los rellena la app: `gusta` · `no_gusta` · `descartar` |
+| `decision`, `decidido_en` | | los rellena la app: `gusta` · `no_gusta` · `definitivo` |
 
 La **puntuación 0-100** la calcula la app a partir de los campos (no se
 guarda): éxito ×2,5 + encaje ×2,5 + durabilidad ×1,5 + economía unitaria
 (ticket/CAC) ×1,5 + IA (palanca 10 / neutral 6 / amenaza 2) ×1 +
 inversión (menos es mejor) ×1.
+
+### `negocios_comentarios` — notas y audios del usuario sobre cada ficha
+
+| Columna | Tipo | Notas |
+|---|---|---|
+| `idea_id` | uuid | referencia a `negocios_ideas.id` |
+| `tipo` | text | `texto` · `audio` |
+| `texto` | text | la nota, si `tipo = 'texto'` |
+| `audio_path`, `audio_mime`, `duracion_seg` | text, text, int | si `tipo = 'audio'`: ruta dentro del bucket `negocios-audios` (`<idea_id>/<fecha>.webm` o `.m4a` en iPhone) |
+| `estado` | text | `pendiente` (por defecto) · `transcrito` · `procesado` |
+| `transcripcion` | text | la rellena la rutina de transcripción |
+| `procesado_en` | timestamptz | |
+
+Los audios viven en el bucket público `negocios-audios` (la anon key puede
+subir y leer, no borrar). URL de descarga:
+`https://dzlhsdpgyxnjwudmrnul.supabase.co/storage/v1/object/public/negocios-audios/<audio_path>`.
+
+## Rutina de transcripción / procesado (pendiente de crear)
+
+1. Leer `negocios_comentarios` con `estado = 'pendiente'`
+   (`?estado=eq.pendiente&order=created_at`).
+2. Para cada `tipo = 'audio'`, descargar el fichero por la URL pública,
+   transcribirlo y hacer `PATCH` con `{"transcripcion": "...", "estado":
+   "transcrito"}`.
+3. Cuando el comentario (texto o transcripción) ya se haya usado para lo
+   que sea (resumen, actualizar la ficha…), marcarlo `estado = 'procesado'`
+   y `procesado_en = now()`.
+
+La app muestra la transcripción debajo del audio en cuanto existe.
 
 ## Insertar una ficha desde una rutina
 

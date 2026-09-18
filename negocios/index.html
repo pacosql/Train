@@ -170,11 +170,11 @@
       padding: 10px 16px calc(12px + env(safe-area-inset-bottom, 0px));
       background: linear-gradient(180deg, rgba(11, 13, 16, 0), rgba(11, 13, 16, 0.92) 30%, var(--bg));
     }
-    .actions .inner { max-width: 520px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr 1.3fr; gap: 8px; }
-    .actions button { padding: 13px 8px; font-size: 1.05rem; }
+    .actions .inner { max-width: 520px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.15fr 1.15fr; gap: 8px; }
+    .actions button { padding: 13px 6px; font-size: 1rem; white-space: nowrap; letter-spacing: 0.4px; }
     .actions button.like { background: linear-gradient(135deg, #7af0b8, var(--good) 55%, #2fb877); color: #04200f; box-shadow: 0 8px 24px rgba(67, 211, 145, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.3); }
     .actions button.dislike { background: rgba(255, 84, 112, 0.12); color: var(--bad); border: 1px solid rgba(255, 84, 112, 0.45); box-shadow: none; }
-    .actions button.discard { background: rgba(255, 255, 255, 0.06); color: var(--text-2); border: 1px solid var(--line-strong); box-shadow: none; }
+    .actions button.final { background: linear-gradient(135deg, var(--accent-2), var(--accent) 55%, #d99a1e); color: var(--accent-ink); }
     .actions.hidden { display: none; }
 
     /* listas */
@@ -197,7 +197,10 @@
       position: fixed; left: 50%; bottom: calc(96px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); z-index: 30;
       background: #1c2027; border: 1px solid var(--line-strong); color: var(--text); padding: 10px 14px; border-radius: 999px; font-size: 0.9rem;
       display: flex; gap: 12px; align-items: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); opacity: 0; pointer-events: none; transition: opacity 0.2s;
+      max-width: calc(100vw - 32px); width: max-content;
     }
+    .toast span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .toast.no-undo button { display: none; }
     .toast.show { opacity: 1; pointer-events: auto; }
     .toast button { width: auto; padding: 4px 10px; font-size: 0.9rem; background: transparent; color: var(--accent); box-shadow: none; }
     .build-id { text-align: center; font-size: 0.7rem; color: var(--text-2); margin-top: 24px; font-family: ui-monospace, monospace; }
@@ -205,8 +208,27 @@
     .decision-tag { font-family: var(--display); font-weight: 800; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem; margin-bottom: 8px; }
     .decision-tag.gusta { color: var(--good); }
     .decision-tag.no_gusta { color: var(--bad); }
-    .decision-tag.descartar { color: var(--text-2); }
+    .decision-tag.definitivo { color: var(--accent); }
     .helper { font-size: 0.8rem; color: var(--text-2); margin-top: 8px; }
+
+    /* comentarios (texto y audio) */
+    .comment { border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; margin-bottom: 8px; background: rgba(255, 255, 255, 0.03); font-size: 0.9rem; }
+    .comment .head { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-family: var(--display); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-2); margin-bottom: 4px; }
+    .comment .estado { padding: 2px 8px; border-radius: 999px; border: 1px solid var(--line-strong); }
+    .comment .estado.pendiente { color: var(--accent); border-color: rgba(242, 184, 64, 0.45); }
+    .comment .estado.transcrito { color: var(--blue); border-color: rgba(114, 169, 255, 0.45); }
+    .comment .estado.procesado { color: var(--good); border-color: rgba(67, 211, 145, 0.45); }
+    .comment audio { width: 100%; height: 36px; margin-top: 4px; }
+    .comment .trans { color: var(--text-2); font-size: 0.85rem; margin-top: 4px; font-style: italic; }
+    .rec-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
+    .rec-row button { margin: 0; padding: 12px 10px; font-size: 1.05rem; }
+    button.rec { background: rgba(255, 84, 112, 0.12); color: var(--bad); border: 1px solid rgba(255, 84, 112, 0.45); box-shadow: none; }
+    button.rec.on { background: linear-gradient(135deg, #ff8fa3, var(--bad) 55%, #d92e50); color: #fff; animation: rec-pulse 1.2s ease-in-out infinite; }
+    @keyframes rec-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(255, 84, 112, 0.5); } 50% { box-shadow: 0 0 0 10px rgba(255, 84, 112, 0); } }
+    .rec-preview { margin-top: 8px; padding: 10px 12px; border: 1px dashed rgba(242, 184, 64, 0.5); border-radius: 14px; }
+    .rec-preview audio { width: 100%; height: 36px; }
+    .rec-preview .row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
+    .rec-preview .row button { margin: 0; padding: 11px 10px; font-size: 1rem; }
   </style>
 </head>
 <body>
@@ -221,7 +243,7 @@
       <div class="tab active" data-tab="pendiente"><span class="n" id="n-pendiente">–</span>Pendientes</div>
       <div class="tab" data-tab="gusta"><span class="n" id="n-gusta">–</span>Me gustan</div>
       <div class="tab" data-tab="no_gusta"><span class="n" id="n-no_gusta">–</span>No</div>
-      <div class="tab" data-tab="descartar"><span class="n" id="n-descartar">–</span>Descartadas</div>
+      <div class="tab" data-tab="definitivo"><span class="n" id="n-definitivo">–</span>Definitivo</div>
     </div>
 
     <div id="view"></div>
@@ -231,9 +253,9 @@
 
   <div class="actions hidden" id="actions">
     <div class="inner">
-      <button class="discard" id="btn-descartar">🗑️ Descartar</button>
       <button class="dislike" id="btn-no_gusta">👎 No</button>
       <button class="like" id="btn-gusta">👍 Me gusta</button>
+      <button class="final" id="btn-definitivo">⭐ Definitivo</button>
     </div>
   </div>
 
@@ -244,10 +266,14 @@
   <script>
     const { url, anonKey, tablePrefix } = window.NEGOCIOS_CONFIG;
     const T_IDEAS = tablePrefix + "ideas";
+    const T_COMENTARIOS = tablePrefix + "comentarios";
+    const BUCKET = "negocios-audios";
     let client = null;
     let ideas = [];
+    let comentarios = []; // todos, de todas las fichas
     const state = { tab: "pendiente", index: 0, detailId: null };
-    let lastChange = null; // { id, prev: {decision, decidido_en, notas_usuario} }
+    let lastChange = null; // { id, prev: {decision, decidido_en} }
+    const rec = { recorder: null, stream: null, chunks: [], blob: null, mime: "", startedAt: 0, timer: null, url: "" };
     let toastTimer = null;
 
     const el = (id) => document.getElementById(id);
@@ -283,7 +309,8 @@
     const IA_LABEL = { palanca: ["🚀 Palanca", "good"], neutral: ["⚖️ Neutral", ""], amenaza: ["⚠️ Amenaza", "bad"] };
     const MODELO_LABEL = { B2C: "B2C · a consumidor", B2B: "B2B · a empresas", B2B2C: "B2B2C · vía empresas al consumidor", B2G: "B2G · a administración" };
     const TIPO_LABEL = { innovador: "Innovador", tradicional: "Tradicional", hibrido: "Híbrido" };
-    const DECISION_LABEL = { gusta: "👍 Me gusta", no_gusta: "👎 No me gusta", descartar: "🗑️ Descartada" };
+    const DECISION_LABEL = { gusta: "👍 Me gusta", no_gusta: "👎 No me gusta", definitivo: "⭐ Definitivo" };
+    const ESTADO_LABEL = { pendiente: "Pendiente de procesar", transcrito: "Transcrito", procesado: "Procesado" };
 
     // ---------- datos ----------
     async function load() {
@@ -291,19 +318,23 @@
       if (error) throw error;
       ideas = data || [];
       ideas.forEach((i) => { i._score = score(i); });
+      const c = await client.from(T_COMENTARIOS).select("*").order("created_at", { ascending: true });
+      if (c.error) throw c.error;
+      comentarios = c.data || [];
     }
+    const commentsOf = (id) => comentarios.filter((c) => c.idea_id === id);
     const pending = () => ideas.filter((i) => !i.decision).sort((a, b) => b._score - a._score || a.created_at.localeCompare(b.created_at));
     const byDecision = (d) => ideas.filter((i) => i.decision === d).sort((a, b) => (b.decidido_en || "").localeCompare(a.decidido_en || ""));
 
     async function decide(idea, decision) {
-      const notas = el("notas") ? el("notas").value.trim() : idea.notas_usuario;
-      lastChange = { id: idea.id, prev: { decision: idea.decision, decidido_en: idea.decidido_en, notas_usuario: idea.notas_usuario } };
-      const patch = { decision, decidido_en: decision ? new Date().toISOString() : null, notas_usuario: notas || null };
+      lastChange = { id: idea.id, prev: { decision: idea.decision, decidido_en: idea.decidido_en } };
+      const patch = { decision, decidido_en: decision ? new Date().toISOString() : null };
       const { error } = await client.from(T_IDEAS).update(patch).eq("id", idea.id);
       if (error) { showMsg("No se pudo guardar: " + error.message); return; }
       Object.assign(idea, patch);
+      resetRec();
       showMsg("");
-      showToast(decision ? `${DECISION_LABEL[decision]} · ${idea.nombre}` : `Devuelta a pendientes · ${idea.nombre}`);
+      showToast(decision ? `${DECISION_LABEL[decision]} · ${idea.nombre}` : `Devuelta a pendientes · ${idea.nombre}`, true);
       if (state.tab === "pendiente") { state.index = Math.min(state.index, Math.max(0, pending().length - 1)); }
       state.detailId = null;
       render();
@@ -323,7 +354,7 @@
     // ---------- render ----------
     function counts() {
       el("n-pendiente").textContent = pending().length;
-      for (const d of ["gusta", "no_gusta", "descartar"]) el("n-" + d).textContent = byDecision(d).length;
+      for (const d of ["gusta", "no_gusta", "definitivo"]) el("n-" + d).textContent = byDecision(d).length;
     }
 
     function metric(label, v, note) {
@@ -332,7 +363,7 @@
     }
     function list(arr, cls) { return arr && arr.length ? `<ul class="${cls}">${arr.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>` : `<p class="note">—</p>`; }
 
-    function cardHTML(i, { showNotes }) {
+    function cardHTML(i) {
       const s = i._score, [v, color] = verdict(s);
       const ia = IA_LABEL[i.impacto_ia] || ["–", ""];
       return `
@@ -389,8 +420,111 @@
         </div></details>
         <details open><summary>Primer paso para validarla</summary><div class="body">${esc(i.primer_paso || "—")}</div></details>
 
-        ${showNotes ? `<h3>Mis notas</h3><textarea id="notas" placeholder="Lo que pienses al decidir (opcional)">${esc(i.notas_usuario || "")}</textarea>` : ""}
+        <h3>Mis comentarios</h3>
+        <div id="comments">${commentsHTML(i)}</div>
+        <textarea id="nota" placeholder="Escribe una nota sobre este negocio…"></textarea>
+        <div class="rec-row">
+          <button class="secondary" id="btn-nota" type="button">📝 Guardar nota</button>
+          <button class="rec" id="btn-rec" type="button">🎤 Grabar audio</button>
+        </div>
+        <div id="rec-preview"></div>
+        <p class="helper">Los audios y notas quedan guardados como pendientes; una rutina los transcribirá y procesará más adelante.</p>
       </div>`;
+    }
+
+    function commentsHTML(i) {
+      const cs = commentsOf(i.id);
+      if (!cs.length) return `<p class="helper" style="margin:0 0 6px">Todavía no has dicho nada sobre esta idea.</p>`;
+      return cs.map((c) => `
+        <div class="comment">
+          <div class="head"><span>${c.tipo === "audio" ? "🎤 Audio" : "📝 Nota"} · ${new Date(c.created_at).toLocaleString("es-ES", { dateStyle: "short", timeStyle: "short" })}${c.duracion_seg ? " · " + c.duracion_seg + " s" : ""}</span><span class="estado ${c.estado}">${ESTADO_LABEL[c.estado] || c.estado}</span></div>
+          ${c.tipo === "texto" ? `<div>${esc(c.texto)}</div>` : `<audio controls preload="none" src="${audioUrl(c.audio_path)}"></audio>`}
+          ${c.transcripcion ? `<div class="trans">“${esc(c.transcripcion)}”</div>` : ""}
+        </div>`).join("");
+    }
+    const audioUrl = (path) => `${url}/storage/v1/object/public/${BUCKET}/${path}`;
+
+    // ---------- comentarios: texto ----------
+    async function saveText(idea) {
+      const texto = el("nota").value.trim();
+      if (!texto) return;
+      const { data, error } = await client.from(T_COMENTARIOS).insert({ idea_id: idea.id, tipo: "texto", texto }).select().single();
+      if (error) { showMsg("No se pudo guardar la nota: " + error.message); return; }
+      comentarios.push(data);
+      el("nota").value = "";
+      el("comments").innerHTML = commentsHTML(idea);
+      showToast("📝 Nota guardada");
+    }
+
+    // ---------- comentarios: audio ----------
+    function pickMime() {
+      if (!window.MediaRecorder) return "";
+      for (const m of ["audio/webm;codecs=opus", "audio/webm", "audio/mp4", "audio/ogg;codecs=opus", "audio/ogg"]) {
+        if (MediaRecorder.isTypeSupported(m)) return m;
+      }
+      return "";
+    }
+    const extOf = (mime) => mime.includes("webm") ? "webm" : mime.includes("mp4") ? "m4a" : mime.includes("ogg") ? "ogg" : "bin";
+    async function toggleRec(idea) {
+      if (rec.recorder && rec.recorder.state === "recording") return stopRec();
+      if (!navigator.mediaDevices || !window.MediaRecorder) { showMsg("Este navegador no permite grabar audio."); return; }
+      try { rec.stream = await navigator.mediaDevices.getUserMedia({ audio: true }); }
+      catch (err) { showMsg("Sin acceso al micrófono: " + err.message); return; }
+      rec.mime = pickMime();
+      rec.chunks = [];
+      rec.recorder = new MediaRecorder(rec.stream, rec.mime ? { mimeType: rec.mime } : undefined);
+      rec.recorder.ondataavailable = (e) => { if (e.data && e.data.size) rec.chunks.push(e.data); };
+      rec.recorder.onstop = () => {
+        rec.stream.getTracks().forEach((t) => t.stop());
+        rec.blob = new Blob(rec.chunks, { type: rec.recorder.mimeType || rec.mime || "audio/webm" });
+        rec.mime = rec.blob.type;
+        rec.url = URL.createObjectURL(rec.blob);
+        showPreview(idea);
+      };
+      rec.startedAt = Date.now();
+      rec.recorder.start(1000);
+      const b = el("btn-rec"); b.classList.add("on");
+      rec.timer = setInterval(() => { const sec = Math.round((Date.now() - rec.startedAt) / 1000); b.textContent = `⏹ Parar · ${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, "0")}`; }, 250);
+      b.textContent = "⏹ Parar · 0:00";
+      el("rec-preview").innerHTML = "";
+    }
+    function stopRec() {
+      clearInterval(rec.timer);
+      const b = el("btn-rec"); if (b) { b.classList.remove("on"); b.textContent = "🎤 Grabar audio"; }
+      if (rec.recorder && rec.recorder.state !== "inactive") rec.recorder.stop();
+    }
+    function resetRec() {
+      stopRec();
+      if (rec.url) URL.revokeObjectURL(rec.url);
+      Object.assign(rec, { recorder: null, stream: null, chunks: [], blob: null, url: "" });
+      const pv = el("rec-preview"); if (pv) pv.innerHTML = "";
+    }
+    function showPreview(idea) {
+      const sec = Math.max(1, Math.round((Date.now() - rec.startedAt) / 1000));
+      el("rec-preview").innerHTML = `<div class="rec-preview">
+        <div class="eyebrow">Audio grabado · ${sec} s</div>
+        <audio controls src="${rec.url}"></audio>
+        <div class="row"><button class="ghost" id="btn-rec-discard" type="button">Descartar</button><button id="btn-rec-save" type="button">💾 Guardar audio</button></div>
+      </div>`;
+      el("btn-rec-discard").onclick = resetRec;
+      el("btn-rec-save").onclick = () => saveAudio(idea, sec);
+    }
+    async function saveAudio(idea, sec) {
+      const btn = el("btn-rec-save"); btn.disabled = true; btn.textContent = "Subiendo…";
+      const path = `${idea.id}/${new Date().toISOString().replace(/[:.]/g, "-")}.${extOf(rec.mime)}`;
+      const up = await client.storage.from(BUCKET).upload(path, rec.blob, { contentType: rec.mime || "audio/webm", upsert: false });
+      if (up.error) { showMsg("No se pudo subir el audio: " + up.error.message); btn.disabled = false; btn.textContent = "💾 Guardar audio"; return; }
+      const { data, error } = await client.from(T_COMENTARIOS).insert({ idea_id: idea.id, tipo: "audio", audio_path: path, audio_mime: rec.mime, duracion_seg: sec }).select().single();
+      if (error) { showMsg("Audio subido pero no se pudo registrar: " + error.message); btn.disabled = false; btn.textContent = "💾 Guardar audio"; return; }
+      comentarios.push(data);
+      resetRec();
+      el("comments").innerHTML = commentsHTML(idea);
+      showMsg("");
+      showToast("🎤 Audio guardado · pendiente de transcribir");
+    }
+    function wireComments(idea) {
+      el("btn-nota").onclick = () => saveText(idea);
+      el("btn-rec").onclick = () => toggleRec(idea);
     }
 
     function render() {
@@ -404,15 +538,17 @@
         const i = ideas.find((x) => x.id === state.detailId);
         if (!i) { state.detailId = null; return render(); }
         actions.classList.add("hidden");
-        view.innerHTML = `<div class="back" id="back">← Volver</div>${cardHTML(i, { showNotes: true })}
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-            <button class="secondary" id="btn-reabrir">↩ A pendientes</button>
-            ${i.decision !== "gusta" ? `<button id="btn-cambiar-gusta">👍 Me gusta</button>` : `<button class="ghost" id="btn-cambiar-no">👎 No me gusta</button>`}
-          </div>`;
-        el("back").onclick = () => { state.detailId = null; render(); };
+        const others = ["no_gusta", "gusta", "definitivo"].filter((d) => d !== i.decision);
+        view.innerHTML = `<div class="back" id="back">← Volver</div>${cardHTML(i)}
+          <p class="eyebrow">Cambiar etiqueta</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px">
+            ${others.map((d) => `<button class="${d === "definitivo" ? "" : "secondary"}" data-d="${d}" style="padding:12px 6px;font-size:1rem">${DECISION_LABEL[d]}</button>`).join("")}
+          </div>
+          <button class="ghost" id="btn-reabrir">↩ Devolver a pendientes</button>`;
+        el("back").onclick = () => { resetRec(); state.detailId = null; render(); };
         el("btn-reabrir").onclick = () => decide(i, null);
-        if (el("btn-cambiar-gusta")) el("btn-cambiar-gusta").onclick = () => decide(i, "gusta");
-        if (el("btn-cambiar-no")) el("btn-cambiar-no").onclick = () => decide(i, "no_gusta");
+        view.querySelectorAll("button[data-d]").forEach((b) => b.onclick = () => decide(i, b.dataset.d));
+        wireComments(i);
         window.scrollTo(0, 0);
         return;
       }
@@ -432,13 +568,14 @@
             <span>Ficha ${state.index + 1} de ${p.length} · ordenadas por puntuación</span>
             <button class="ghost" id="next" ${state.index >= p.length - 1 ? "disabled" : ""}>›</button>
           </div>
-          ${cardHTML(i, { showNotes: true })}`;
-        el("prev").onclick = () => { state.index--; render(); };
-        el("next").onclick = () => { state.index++; render(); };
+          ${cardHTML(i)}`;
+        el("prev").onclick = () => { resetRec(); state.index--; render(); };
+        el("next").onclick = () => { resetRec(); state.index++; render(); };
+        wireComments(i);
         actions.classList.remove("hidden");
         el("btn-gusta").onclick = () => decide(i, "gusta");
         el("btn-no_gusta").onclick = () => decide(i, "no_gusta");
-        el("btn-descartar").onclick = () => decide(i, "descartar");
+        el("btn-definitivo").onclick = () => decide(i, "definitivo");
         window.scrollTo(0, 0);
         return;
       }
@@ -446,12 +583,12 @@
       // listas de decididas
       actions.classList.add("hidden");
       const arr = byDecision(state.tab);
-      const titles = { gusta: "Las que me gustan", no_gusta: "Las que no me gustan", descartar: "Descartadas" };
+      const titles = { gusta: "Las que me gustan", no_gusta: "Las que no me gustan", definitivo: "Definitivo: las que voy a hacer" };
       if (!arr.length) { view.innerHTML = `<div class="empty"><div class="big">📭</div><div>Nada por aquí todavía.</div></div>`; return; }
       view.innerHTML = `<p class="eyebrow">${titles[state.tab]}</p>` + arr.map((i, idx) => `
         <div class="item" data-id="${i.id}" style="--i:${idx}">
           <div class="s" style="color:${verdict(i._score)[1]}">${i._score}</div>
-          <div class="m"><div class="name">${esc(i.nombre)}</div><div class="meta">${esc(i.sector)} · ${esc(i.modelo)} · ${i.decidido_en ? new Date(i.decidido_en).toLocaleDateString("es-ES") : ""}</div></div>
+          <div class="m"><div class="name">${esc(i.nombre)}</div><div class="meta">${esc(i.sector)} · ${esc(i.modelo)} · ${i.decidido_en ? new Date(i.decidido_en).toLocaleDateString("es-ES") : ""}${commentsOf(i.id).length ? " · 💬 " + commentsOf(i.id).length : ""}</div></div>
           <div class="arrow">›</div>
         </div>`).join("");
       view.querySelectorAll(".item").forEach((n) => n.onclick = () => { state.detailId = n.dataset.id; render(); });
@@ -459,8 +596,9 @@
 
     // ---------- utilidades UI ----------
     function showMsg(t) { el("msg").textContent = t; }
-    function showToast(t) {
+    function showToast(t, undoable = false) {
       el("toast-text").textContent = t;
+      el("toast").classList.toggle("no-undo", !undoable);
       el("toast").classList.add("show");
       clearTimeout(toastTimer);
       toastTimer = setTimeout(hideToast, 6000);
@@ -475,7 +613,7 @@
     }
 
     async function init() {
-      document.querySelectorAll(".tab").forEach((t) => t.addEventListener("click", () => { state.tab = t.dataset.tab; state.detailId = null; state.index = 0; render(); }));
+      document.querySelectorAll(".tab").forEach((t) => t.addEventListener("click", () => { resetRec(); state.tab = t.dataset.tab; state.detailId = null; state.index = 0; render(); }));
       el("btn-refresh").addEventListener("click", (e) => refresh(e.currentTarget));
       el("toast-undo").addEventListener("click", undo);
       if (!url || !anonKey) { showMsg("Faltan credenciales en config.js"); return; }
