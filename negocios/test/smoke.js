@@ -93,6 +93,27 @@ const server = http.createServer((req, res) => {
   await page.click("#ex-reset");
   await page.waitForSelector("#ex-list .item");
   console.log("explorar OK:", total, "→ venta desasistida:", filtrado);
+  // comparar: seleccionar 2 fichas y abrir la tabla
+  const sels = await page.locator("#ex-list .sel").count();
+  if (sels >= 2) {
+    await page.locator("#ex-list .sel").nth(0).click();
+    await page.locator("#ex-list .sel").nth(1).click();
+    await page.waitForSelector("#cmp-go:not([disabled])");
+    await page.click("#cmp-go");
+    await page.waitForSelector("table.cmp");
+    const cols = await page.locator("table.cmp thead th[data-id]").count();
+    const filas = await page.locator("table.cmp tbody tr").count();
+    await page.screenshot({ path: path.join(dir, "compare.png"), fullPage: true });
+    await page.click("table.cmp thead th[data-id]");
+    await page.waitForSelector("#btn-reabrir, #btn-gusta");   // detalle de la ficha
+    await page.click("#back");                                // vuelve a la tabla
+    await page.waitForSelector("table.cmp");
+    await page.click("#back");                                // vuelve a Explorar
+    await page.waitForSelector("#ex-list");
+    await page.click("#cmp-clear");
+    await page.waitForFunction(() => !document.querySelector("#cmp-go"));
+    console.log("comparar OK:", cols, "columnas,", filas, "filas");
+  }
   await page.screenshot({ path: path.join(dir, "smoke.png"), fullPage: true });
   console.log("captura:", path.join(dir, "smoke.png"));
   await browser.close(); server.close();

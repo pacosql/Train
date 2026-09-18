@@ -200,6 +200,20 @@
     .filters select.set { border-color: rgba(242, 184, 64, 0.55); color: var(--accent-2); }
     .filters select:focus, .filters input:focus { outline: none; border-color: var(--accent); }
     .item .d { font-size: 0.95rem; flex-shrink: 0; }
+    .item .sel { width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--line-strong); background: transparent; flex-shrink: 0; margin: 0; padding: 0; display: grid; place-items: center; font-size: 0.85rem; color: var(--accent-ink); box-shadow: none; }
+    .item .sel.on { background: linear-gradient(135deg, var(--accent-2), var(--accent)); border-color: var(--accent); }
+    .cmp-bar { position: sticky; top: 8px; z-index: 10; display: flex; justify-content: space-between; align-items: center; gap: 8px; margin: 0 0 10px; padding: 8px 10px 8px 14px; border-radius: 14px; background: #1c2027; border: 1px solid rgba(242, 184, 64, 0.45); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45); font-family: var(--display); font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; font-size: 0.9rem; }
+    .cmp-bar button { width: auto; margin: 0; padding: 8px 12px; font-size: 0.95rem; }
+    .cmp-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 -16px; padding: 0 16px 8px; }
+    table.cmp { border-collapse: separate; border-spacing: 0; min-width: 100%; font-size: 0.85rem; }
+    table.cmp th, table.cmp td { padding: 8px 8px; border-bottom: 1px solid var(--line); vertical-align: top; text-align: left; }
+    table.cmp th { font-family: var(--display); font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-2); position: sticky; left: 0; background: var(--bg); min-width: 96px; max-width: 120px; }
+    table.cmp thead th { position: sticky; top: 0; left: auto; background: var(--bg); color: var(--text); font-size: 0.95rem; text-transform: none; letter-spacing: 0; min-width: 150px; max-width: 200px; cursor: pointer; line-height: 1.15; }
+    table.cmp thead th:first-child { left: 0; z-index: 2; min-width: 96px; }
+    table.cmp td { min-width: 150px; max-width: 200px; }
+    table.cmp td.big { font-family: var(--display); font-size: 1.4rem; font-weight: 800; }
+    table.cmp td.best { color: var(--good); font-weight: 700; }
+    table.cmp tr.sep td, table.cmp tr.sep th { border-bottom: 2px solid var(--line-strong); }
 
     /* listas */
     .item {
@@ -316,6 +330,15 @@
     const EXPLORE_KEY = "negocios.explorar";
     const DEF_FILTERS = { q: "", decision: "", sector: "", modelo: "", tipo: "", venta: "", efecto_red: "", impacto_ia: "", exito_min: "", inv_max: "", claude_min: "", ltvcac_min: "", sort: "score" };
     let filters = loadFilters();
+    const COMPARE_KEY = "negocios.comparar";
+    let compare = (() => { try { return JSON.parse(localStorage.getItem(COMPARE_KEY) || "[]").slice(0, 3); } catch { return []; } })();
+    function saveCompare() { try { localStorage.setItem(COMPARE_KEY, JSON.stringify(compare)); } catch {} }
+    function toggleCompare(id) {
+      if (compare.includes(id)) compare = compare.filter((x) => x !== id);
+      else if (compare.length >= 3) { showToast("Máximo 3 fichas para comparar"); return; }
+      else compare.push(id);
+      saveCompare();
+    }
     function loadFilters() { try { return { ...DEF_FILTERS, ...JSON.parse(localStorage.getItem(EXPLORE_KEY) || "{}") }; } catch { return { ...DEF_FILTERS }; } }
     function saveFilters() { try { localStorage.setItem(EXPLORE_KEY, JSON.stringify(filters)); } catch {} }
     let lastChange = null; // { id, prev: {decision, decidido_en} }
@@ -447,13 +470,17 @@
       const r = ratioOf(i);
       return `
         <div class="item" data-id="${i.id}" style="--i:${idx}">
+          ${showDecision ? `<button class="sel ${compare.includes(i.id) ? "on" : ""}" data-sel="${i.id}" type="button" title="Comparar">${compare.includes(i.id) ? "✓" : ""}</button>` : ""}
           <div class="s" style="color:${verdict(i._score)[1]}">${i._score}</div>
           <div class="m"><div class="name">${esc(i.nombre)}</div><div class="meta">${i.claude_pct != null ? "🤖 " + i.claude_pct + " % · " : ""}${esc(i.sector)} · ${esc(i.modelo)}${showDecision ? (r ? " · LTV/CAC " + f1(r) + "×" : "") + (i.inversion_max_eur != null ? " · " + money(i.inversion_max_eur) : "") : " · " + (i.decidido_en ? new Date(i.decidido_en).toLocaleDateString("es-ES") : "")}${commentsOf(i.id).length ? " · 💬 " + commentsOf(i.id).length : ""}</div></div>
           ${showDecision ? `<div class="d">${i.decision ? DECISION_ICON[i.decision] || "" : "·"}</div>` : ""}
           <div class="arrow">›</div>
         </div>`;
     }
-    function wireItems(root) { root.querySelectorAll(".item").forEach((n) => n.onclick = () => { state.detailId = n.dataset.id; render(); }); }
+    function wireItems(root, onSelect) {
+      root.querySelectorAll(".item").forEach((n) => n.onclick = () => { state.detailId = n.dataset.id; render(); });
+      root.querySelectorAll(".sel").forEach((b) => b.onclick = (e) => { e.stopPropagation(); toggleCompare(b.dataset.sel); b.classList.toggle("on", compare.includes(b.dataset.sel)); b.textContent = compare.includes(b.dataset.sel) ? "✓" : ""; onSelect && onSelect(); });
+    }
     function renderExplore(view) {
       const opts = (k) => [...new Set(ideas.map((i) => i[k]).filter(Boolean))].sort((a, b) => a.localeCompare(b, "es"));
       const sel = (k, label, options, labels = {}) => `<div><label>${label}</label><select data-f="${k}" class="${filters[k] ? "set" : ""}"><option value="">Todas</option>${options.map((o) => `<option value="${esc(o)}" ${filters[k] === String(o) ? "selected" : ""}>${esc(labels[o] || o)}</option>`).join("")}</select></div>`;
@@ -474,12 +501,22 @@
           ${sel("ltvcac_min", "LTV/CAC mínimo", ["3", "5", "10"], { 3: "≥ 3×", 5: "≥ 5×", 10: "≥ 10×" })}
           <div class="full"><label>Ordenar por</label><select data-f="sort">${SORT_LABELS.map(([v, l]) => `<option value="${v}" ${filters.sort === v ? "selected" : ""}>${l}</option>`).join("")}</select></div>
         </div>
+        <div id="cmp-bar"></div>
         <div id="ex-list"></div>`;
+      const updateBar = () => {
+        const sel = compare.map((id) => ideas.find((i) => i.id === id)).filter(Boolean);
+        el("cmp-bar").innerHTML = sel.length ? `<div class="cmp-bar"><span>⚖️ ${sel.length} de 3 seleccionadas</span><div><button class="ghost" id="cmp-clear" type="button">Quitar</button> <button id="cmp-go" type="button" ${sel.length < 2 ? "disabled" : ""}>Comparar</button></div></div>` : `<p class="helper" style="margin:0 0 8px">Marca el círculo de 2 o 3 fichas para compararlas lado a lado.</p>`;
+        if (sel.length) {
+          el("cmp-clear").onclick = () => { compare = []; saveCompare(); update(); };
+          el("cmp-go").onclick = () => { state.tab = "comparar"; render(); };
+        }
+      };
       const update = () => {
         const arr = applyFilters();
         el("ex-count").textContent = `${arr.length} de ${ideas.length} fichas`;
         el("ex-list").innerHTML = arr.length ? arr.map((i, idx) => itemHTML(i, idx, true)).join("") : `<div class="empty"><div class="big">🔎</div><div>Ninguna ficha cumple los filtros.</div></div>`;
-        wireItems(el("ex-list"));
+        wireItems(el("ex-list"), updateBar);
+        updateBar();
       };
       view.querySelectorAll("[data-f]").forEach((n) => n.addEventListener(n.tagName === "INPUT" ? "input" : "change", () => {
         filters[n.dataset.f] = n.value; saveFilters();
@@ -489,6 +526,48 @@
       el("ex-reset").onclick = () => { filters = { ...DEF_FILTERS }; saveFilters(); renderExplore(view); };
       el("ex-csv").onclick = exportCSV;
       update();
+    }
+    function renderCompare(view) {
+      const sel = compare.map((id) => ideas.find((i) => i.id === id)).filter(Boolean);
+      if (sel.length < 2) { state.tab = "explorar"; return render(); }
+      const num = (v, suf = "") => v == null ? "–" : v + suf;
+      const bestOf = (vals, higher = true) => { const ok = vals.filter((v) => typeof v === "number"); if (ok.length < 2) return null; return higher ? Math.max(...ok) : Math.min(...ok); };
+      const rows = [
+        ["Puntuación", sel.map((i) => i._score), (i) => i._score, true, "big"],
+        ["Veredicto", sel.map((i) => verdict(i._score)[0])],
+        ["IA Score", sel.map((i) => num(i.claude_pct, " %")), (i) => i.claude_pct, true],
+        ["Etiqueta", sel.map((i) => i.decision ? DECISION_LABEL[i.decision] : "Pendiente"), null, null, null, true],
+        ["Venta", sel.map((i) => VENTA_LABEL[i.venta] ? VENTA_LABEL[i.venta][0] : "–")],
+        ["Cliente", sel.map((i) => RED_LABEL[i.efecto_red] ? RED_LABEL[i.efecto_red][0] : "–")],
+        ["Sector", sel.map((i) => i.sector)],
+        ["Modelo · tipo", sel.map((i) => `${i.modelo} · ${TIPO_LABEL[i.tipo] || i.tipo}`), null, null, null, true],
+        ["Éxito de mercado", sel.map((i) => num(i.exito, "/10")), (i) => i.exito, true],
+        ["Viralidad", sel.map((i) => num(i.viralidad, "/10")), (i) => i.viralidad, true],
+        ["Aguanta con el tiempo", sel.map((i) => num(i.durabilidad, "/10")), (i) => i.durabilidad, true],
+        ["Uso de la IA", sel.map((i) => num(i.uso_ia, "/10")), (i) => i.uso_ia, true],
+        ["Impacto de la IA", sel.map((i) => (IA_LABEL[i.impacto_ia] || ["–"])[0])],
+        ["Encaje con tu perfil", sel.map((i) => num(i.encaje_perfil, "/10")), (i) => i.encaje_perfil, true, null, true],
+        ["Inversión inicial", sel.map((i) => rango(i.inversion_min_eur, i.inversion_max_eur)), (i) => i.inversion_max_eur ?? i.inversion_min_eur, false],
+        ["Coste de adquisición", sel.map((i) => money(i.cac_eur)), (i) => i.cac_eur, false],
+        ["LTV por cliente", sel.map((i) => money(i.ltv_eur)), (i) => i.ltv_eur, true],
+        ["LTV / CAC", sel.map((i) => ratioOf(i) ? f1(ratioOf(i)) + "×" : "–"), (i) => ratioOf(i), true],
+        ["Ticket medio / año", sel.map((i) => money(i.ticket_medio_eur)), (i) => i.ticket_medio_eur, true],
+        ["Retorno de la inversión", sel.map((i) => num(i.payback_meses, " meses")), (i) => i.payback_meses, false],
+        ["Primeros ingresos", sel.map((i) => num(i.meses_hasta_ingresos, " meses")), (i) => i.meses_hasta_ingresos, false, null, true],
+        ["Primer paso", sel.map((i) => i.primer_paso || "–")],
+      ];
+      const body = rows.map(([label, cells, getter, higher, cls, sep]) => {
+        const best = getter ? bestOf(sel.map(getter), higher) : null;
+        return `<tr class="${sep ? "sep" : ""}"><th>${label}</th>${cells.map((c, k) => `<td class="${cls || ""} ${best != null && getter(sel[k]) === best ? "best" : ""}">${esc(c)}</td>`).join("")}</tr>`;
+      }).join("");
+      view.innerHTML = `<div class="back" id="back">← Volver a Explorar</div>
+        <p class="eyebrow">Comparar ${sel.length} fichas · en verde, la mejor de cada fila</p>
+        <div class="cmp-wrap"><table class="cmp"><thead><tr><th></th>${sel.map((i) => `<th data-id="${i.id}">${esc(i.nombre)}</th>`).join("")}</tr></thead><tbody>${body}</tbody></table></div>
+        <button class="ghost" id="cmp-clear2" type="button">Quitar selección</button>`;
+      el("back").onclick = () => { state.tab = "explorar"; render(); };
+      el("cmp-clear2").onclick = () => { compare = []; saveCompare(); state.tab = "explorar"; render(); };
+      view.querySelectorAll("thead th[data-id]").forEach((h) => h.onclick = () => { state.detailId = h.dataset.id; render(); });
+      window.scrollTo(0, 0);
     }
     function exportCSV() {
       const cols = ["nombre", "_score", "claude_pct", "decision", "sector", "modelo", "tipo", "venta", "efecto_red", "exito", "viralidad", "durabilidad", "uso_ia", "impacto_ia", "encaje_perfil", "inversion_min_eur", "inversion_max_eur", "cac_eur", "ltv_eur", "ticket_medio_eur", "payback_meses", "meses_hasta_ingresos", "fuente", "version", "created_at", "resumen"];
@@ -747,7 +826,7 @@
     function render() {
       counts();
       document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("active", t.dataset.tab === state.tab));
-      el("btn-explore").classList.toggle("active", state.tab === "explorar");
+      el("btn-explore").classList.toggle("active", state.tab === "explorar" || state.tab === "comparar");
       const view = el("view");
       const actions = el("actions");
 
@@ -801,6 +880,7 @@
 
       actions.classList.add("hidden");
       if (state.tab === "explorar") { renderExplore(view); return; }
+      if (state.tab === "comparar") { renderCompare(view); return; }
 
       // listas de decididas
       const arr = byDecision(state.tab);
@@ -831,7 +911,7 @@
     async function init() {
       document.querySelectorAll(".tab").forEach((t) => t.addEventListener("click", () => { resetRec(); state.tab = t.dataset.tab; state.detailId = null; state.index = 0; render(); }));
       el("btn-refresh").addEventListener("click", (e) => refresh(e.currentTarget));
-      el("btn-explore").addEventListener("click", () => { resetRec(); state.tab = state.tab === "explorar" ? "pendiente" : "explorar"; state.detailId = null; state.index = 0; render(); });
+      el("btn-explore").addEventListener("click", () => { resetRec(); state.tab = (state.tab === "explorar" || state.tab === "comparar") ? "pendiente" : "explorar"; state.detailId = null; state.index = 0; render(); });
       el("toast-undo").addEventListener("click", undo);
       if (!url || !anonKey) { showMsg("Faltan credenciales en config.js"); return; }
       client = supabase.createClient(url, anonKey);
