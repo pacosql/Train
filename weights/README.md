@@ -81,6 +81,21 @@ Cada fila enseña en una línea la razón de estar donde está ("descansas
 del tirón de Remo", "hoy ya has trabajado pecho", "9 días sin
 hacerlo"), en verde si empuja hacia arriba y en ámbar si la frena.
 
+## Misma máquina, varios ejercicios (estaciones)
+
+La columna `station` de `weights_exercises` agrupa filas que son la misma
+máquina física. Ahora mismo `asistida` une **Ascenso Asistido** (dominadas)
+y **Extensora Asistida** (fondos): una sola pila de pesos para las dos.
+Los compañeros de estación:
+
+- van siempre **pegados** en la lista de ejercicios (el mejor puntuado
+  arrastra a los demás justo detrás, dentro de su misma cesta);
+- reciben un **empujón** para encadenarse: si acabas de hacer uno, el
+  otro sube al primer puesto con la razón "misma máquina que…";
+- **heredan el peso**: al entrar en uno, si el último uso de la máquina
+  fue con su compañero, se propone ese mismo peso tal cual; y el peso de
+  referencia que fijas en el catálogo se escribe en todos a la vez.
+
 Para las máquinas asistidas (dominadas/fondos asistidos), la lógica de
 peso está invertida: menos peso en la pila = más difícil (menos
 ayuda), así que "más difícil la próxima vez" baja el número en vez de

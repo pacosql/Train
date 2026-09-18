@@ -1001,6 +1001,31 @@
       return out;
     }
     function isStrength(ex) { return ex.movement_type === "push" || ex.movement_type === "pull"; }
+
+    // Varias filas del catálogo pueden ser la misma máquina física (p. ej. la
+    // asistida hace dominadas y fondos con la misma pila). Comparten estación:
+    // van siempre juntas en la lista y heredan el peso una de otra.
+    function stationMates(ex) {
+      if (!ex.station) return [];
+      return catalog.filter((e) => e.id !== ex.id && e.station === ex.station);
+    }
+    function stationLabel(ex) {
+      const mates = stationMates(ex);
+      return mates.length ? `🔗 con ${mates.map((m) => m.name).join(" y ")}` : "";
+    }
+    // El último uso de la MÁQUINA, sea con este ejercicio o con un compañero
+    // de estación; "own" dice si fue este mismo ejercicio.
+    function lastOnStation(ex) {
+      const own = historyByExercise[ex.id];
+      let best = own ? { ...own, own: true } : null;
+      for (const mate of stationMates(ex)) {
+        const h = historyByExercise[mate.id];
+        if (h && (!best || new Date(h.completed_at) > new Date(best.completed_at))) {
+          best = { ...h, own: false, mateName: mate.name };
+        }
+      }
+      return best;
+    }
     function movementWord(type) { return type === "push" ? "empuje" : type === "pull" ? "tirón" : "cardio"; }
 
     // "Hecho hoy" cuenta lo de esta sesión y también lo de cualquier otra
@@ -1048,6 +1073,7 @@
       const last = lastStrengthDone();
       return {
         musclesToday,
+        lastEx: last ? last.ex : null,
         lastType: last ? last.ex.movement_type : null,
         lastName: last ? last.ex.name : null,
         lastToday: last ? calendarDaysAgo(last.at) === 0 : false,
@@ -1092,7 +1118,13 @@
         score += alt;
       }
 
-      return { bucket, score, running, done, days, overlap, load, alt };
+      // Si acabas de usar un compañero de estación, este va a continuación:
+      // ya estás en la máquina y con el peso puesto.
+      const chain = !done && !cardio && ctx.lastToday && ctx.lastEx && ctx.lastEx.id !== ex.id
+        && !!ex.station && ctx.lastEx.station === ex.station;
+      if (chain) score += 40;
+
+      return { bucket, score, running, done, days, overlap, load, alt, chain };
     }
 
     function rateReason(ex, r, ctx) {
@@ -1109,7 +1141,9 @@
       // Solo se avisa del solapamiento cuando pisa de verdad el músculo
       // principal; que compartan un ayudante no merece una advertencia.
       const heavy = r.overlap.filter((o) => o.load >= 0.75).map((o) => o.tag);
-      if (heavy.length) {
+      if (r.chain) {
+        bits.push(`misma máquina que ${ctx.lastEx.name}: encadénalo`);
+      } else if (heavy.length) {
         bits.push(`hoy ya has trabajado ${heavy.join(" y ")}`);
         tone = "warn";
       } else if (r.alt > 0) {
@@ -1265,9 +1299,23 @@
 
     function renderPickScreen() {
       const ctx = pickContext();
-      const rated = catalog
+      const sorted = catalog
         .map((ex) => ({ ex, r: rateExercise(ex, ctx) }))
         .sort((a, b) => a.r.bucket - b.r.bucket || b.r.score - a.r.score);
+
+      // Los de la misma estación van pegados: el mejor puntuado arrastra a
+      // sus compañeros justo detrás, siempre que estén en su misma cesta.
+      const rated = [];
+      const placed = new Set();
+      for (const entry of sorted) {
+        if (placed.has(entry.ex.id)) continue;
+        rated.push(entry); placed.add(entry.ex.id);
+        if (!entry.ex.station) continue;
+        for (const mate of sorted) {
+          if (placed.has(mate.ex.id) || mate.ex.station !== entry.ex.station || mate.r.bucket !== entry.r.bucket) continue;
+          rated.push(mate); placed.add(mate.ex.id);
+        }
+      }
 
       const box = el("exercise-list");
       box.innerHTML = "";
@@ -1296,6 +1344,8 @@
           ? ` · ref. ${fmtNum(ex.default_weight)} kg`
           : "";
 
+        const link = stationLabel(ex);
+
         const isTop = r.bucket === 0 && !starred;
         if (isTop) starred = true;
         const reason = rateReason(ex, r, ctx);
@@ -1306,7 +1356,7 @@
         div.innerHTML =
           `<div class="item-main">
              <div class="name">${ex.name}${r.done && !r.running ? " ✓" : ""}</div>
-             <div class="meta">${muscleLabel(ex)}${weightTxt}</div>
+             <div class="meta">${muscleLabel(ex)}${weightTxt}${link ? ` · ${link}` : ""}</div>
              <div class="reason ${reason.tone}">${isTop ? "⭐ Recomendado · " : ""}${reason.text}</div>
            </div>
            <span class="pill ${ex.movement_type}">${badgeLabel(ex.movement_type)}</span>`;
@@ -1352,7 +1402,7 @@
           div.innerHTML =
             `<div class="item-main">
                <div class="name">${ex.name}</div>
-               <div class="meta">${muscleLabel(ex)}${ex.notes ? ` · ${ex.notes}` : ""}</div>
+               <div class="meta">${muscleLabel(ex)}${ex.notes ? ` · ${ex.notes}` : ""}${stationLabel(ex) ? ` · ${stationLabel(ex)}` : ""}</div>
              </div>
              <span class="det" style="color:var(--text-2);font-size:0.78rem;font-weight:700;">${weightTxt}</span>`;
           div.addEventListener("click", () => showCatalogDetail(ex));
@@ -1376,9 +1426,12 @@
       catalogWeightDraft = Math.max(0, catalogWeightDraft + dir * step);
       renderCatalogWeightDisplay();
       bump("cd-weight-display");
-      const { error } = await client.from(T.exercises).update({ default_weight: catalogWeightDraft }).eq("id", ex.id);
+      const group = [ex, ...stationMates(ex)];
+      const { error } = await client.from(T.exercises)
+        .update({ default_weight: catalogWeightDraft })
+        .in("id", group.map((e) => e.id));
       if (error) showError("No se pudo guardar el peso: " + error.message);
-      else { ex.default_weight = catalogWeightDraft; showError(""); }
+      else { for (const e of group) e.default_weight = catalogWeightDraft; showError(""); }
     }
 
     function showCatalogDetail(ex, opts = {}) {
@@ -1549,14 +1602,21 @@
       el("ex-header").className = `eyebrow ${ex.movement_type}`;
 
       const last = historyByExercise[ex.id];
-      const suggested = suggestWeight(ex, last);
+      let suggested = suggestWeight(ex, last);
+      // Si el último uso de la máquina fue con un compañero de estación, se
+      // hereda ese peso tal cual: es la misma pila y ya está puesta.
+      const shared = lastOnStation(ex);
+      const inherit = shared && !shared.own && shared.weight_used != null;
+      if (inherit) suggested = Number(shared.weight_used);
       if (!resuming) {
         state.currentWeightDraft = suggested != null ? suggested : ex.default_weight != null ? Number(ex.default_weight) : 0;
       }
       saveState();
       renderWeightDisplay();
 
-      if (suggested != null) {
+      if (inherit) {
+        el("ex-recommendation").textContent = `Misma máquina que ${shared.mateName}: te dejo sus ${fmtNum(suggested)} kg (${relativeDay(shared.completed_at)}).`;
+      } else if (suggested != null) {
         const dirTxt = last.next_time === "mas" ? "subiendo" : last.next_time === "menos" ? "bajando" : "manteniendo";
         el("ex-recommendation").textContent = `Última vez ${fmtNum(last.weight_used)} kg (${relativeDay(last.completed_at)}). Hoy te sugiero ${fmtNum(suggested)} kg, ${dirTxt}.`;
       } else if (ex.default_weight != null) {
