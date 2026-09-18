@@ -1,7 +1,7 @@
 # Math Games 🧠
 
-PWA (sin build, HTML/CSS/JS puro) con **162 ejercicios de matemáticas**,
-cada uno numerado (#1-#162) para poder referirse a ellos sin ambigüedad.
+PWA (sin build, HTML/CSS/JS puro) con **163 ejercicios de matemáticas**,
+cada uno numerado (#1-#163) para poder referirse a ellos sin ambigüedad.
 Cálculo mental, geometría, álgebra, estadística, fracciones, dinero,
 probabilidad, coordenadas, tiempo y más. Nace como banco de pruebas
 rápido para sacar ideas de mecánicas (tipo Duolingo Math, Synthesis,
@@ -985,6 +985,48 @@ respuesta únicamente del DOM, confirmando +10 en cada acierto); se
 comprobó además que fallar a propósito en ambos resta una vida con el
 mensaje de feedback correcto.
 
+## Ejercicio #163 (primer juego grande multipantalla, 18-09-2026)
+
+### Tramo único — [`css/pack-ad.css`](./css/pack-ad.css)
+
+Primera tanda en **modo juego grande**: con 97 ejercicios sin valorar,
+el encargo pasa de micro-ejercicios de una pantalla a juegos completos
+con ciclo de aprendizaje. El tema sale del mapa de cobertura
+(`work_state.cobertura` en Supabase): estadística y probabilidad era el
+bloque más flojo (7 micro-ejercicios, y `ruleta` es el único que toca
+probabilidad, en una sola vuelta sin frecuencias).
+
+| # | Juego | Tema | Pantallas | De dónde sale |
+|---|---|---|---|---|
+| 163 | 🧿 Laboratorio del azar | Probabilidad y frecuencia | Portada con progreso → tutorial interactivo (toca los sectores rojos, gira 20 veces y compara frecuencia con probabilidad) → nivel 1 fracción de la ruleta → nivel 2 diseña la ruleta (inversión) → nivel 3 ¿qué es más probable? (ruleta/dado/bolsa) → nivel 4 caza el dado trucado (60 tiradas) → casino (5 apuestas) → resultados con explicación de cada fallo y repaso | Inventado: ley de los grandes números + inversión 5.3 + "el fallo enseña" 5.6 |
+
+**Ciclo de aprendizaje**: el tutorial es un ejemplo resuelto que se
+manipula (no se lee); el nivel 1 lleva andamiaje (los sectores del
+color van marcados) que desaparece en el repaso; los niveles cambian la
+REPRESENTACIÓN (leer una fracción → construirla → compararla entre
+dispositivos distintos → inferirla de frecuencias); el casino no quita
+vidas y simula el resultado real para enseñar que el suceso más
+probable también pierde a veces; la pantalla de resultados lista cada
+error con su explicación y lo re-pregunta hasta acertar una vez. El
+progreso (nivel máximo, fallos por tipo, partidas) se guarda en
+`localStorage` y en la tabla `football_progress` (clave `game, player`,
+creada con la Management API), y la portada ofrece "Continuar en el
+nivel N".
+
+**Generadores con solución única garantizada**: nivel 1, exactamente
+una de las 4 fracciones coincide con el recuento de sectores; nivel 3 y
+casino, los sucesos van separados al menos 8 puntos porcentuales y de
+dispositivos distintos; nivel 4, el dado justo tiene todas las caras
+entre 6 y 14 y el trucado una cara ≥ 22 con el resto ≤ 12 (60 tiradas
+cada uno). Verificado con `verify_azar.mjs`: 20.000 rondas por
+generador, recalculando las propiedades desde cero, 0 fallos. Los 144
+ficheros de juego cargan sin error de consola, y el juego se recorrió
+entero dos veces en Chromium a 400 px deduciendo cada jugada del DOM:
+partida perfecta (17 aciertos, 170 pts) y partida con un fallo
+deliberado en el nivel 1 (pierde una vida, el error aparece en
+resultados, el repaso lo re-pregunta) — después la portada ya ofrece
+"Continuar" con el progreso guardado.
+
 ## Versiones (v2) y bandeja "Revisar"
 
 Cuando un ejercicio recibe una vuelta de mejoras, se marca con un
@@ -1230,12 +1272,12 @@ Una vez publicado, esta app queda en:
 
 ## Qué hace la app
 
-- Menú con los 162 ejercicios numerados, organizados en pestañas
+- Menú con los 163 ejercicios numerados, organizados en pestañas
   🆕/👍/👎/🔧; cada uno abre en su propia pantalla (`#/game/<id>`), sin
   recargar la página.
 - Motor de preguntas compartido (`js/quiz-engine.js`) para los 18
   ejercicios de "pregunta + opciones o teclado" (`js/games-data.js` y
-  `js/games-data-2.js`); los otros 144 (`js/game-*.js` y
+  `js/games-data-2.js`); los otros 145 (`js/game-*.js` y
   `js/balloons-game.js`) tienen cada uno su propia mecánica de
   interacción (arrastrar, tocar en orden, emparejar, construir,
   escribir, clasificar, recorrer…).
