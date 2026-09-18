@@ -1,0 +1,397 @@
+/* Pack AH — revisiones de la noche del 18-09-2026: balanza v5 (bz-), regla v3 (rg-), calendario v3 (cl-).
+   Carga después de pack-f.css y sobrescribe a propósito las reglas antiguas de estos tres juegos. */
+
+/* --- balanza v5 --- */
+/* ---------- ⚖️ Predice la balanza (v5, .bz-) ----------
+   Carga DESPUÉS de pack-f.css: las reglas .bz- de allí (dial v2-v4) quedan
+   huérfanas salvo .bz-wrap/.bz-prompt, que aquí se redefinen. La balanza
+   es un SVG: la viga rota ±8° sobre el pivote y cada plato (cuerdas en V +
+   bandeja + carga) se desplaza lo que baja/sube el extremo de la viga. */
+:root {
+  --bz-sack: #b5793f;
+  --bz-sack-dark: #7a4a1e;
+  --bz-disc: #c3c7d1;
+  --bz-disc-5: #a4a9b6;
+  --bz-disc-10: #6f7686;
+  --bz-disc-edge: #5b6170;
+  --bz-rope: #4830a0;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bz-sack: #b0702f;
+    --bz-sack-dark: #5c3512;
+    --bz-disc: #8b91a1;
+    --bz-disc-5: #6d7385;
+    --bz-disc-10: #4a5062;
+    --bz-disc-edge: #d3d7e0;
+    --bz-rope: #b9adf5;
+  }
+}
+
+.bz-wrap {
+  width: 100%;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+.bz-wrap .bz-prompt { font-size: 1.05rem; margin: 0 0 2px; }
+.bz-wrap .bz-prompt small { margin-top: 4px; }
+
+/* ---- cada pesada: tarjeta con leyenda + SVG ---- */
+.bz-fig {
+  width: 100%;
+  margin: 0;
+  padding: 4px 6px 2px;
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  background: var(--card);
+  box-sizing: border-box;
+}
+.bz-fig[data-test] { border-color: var(--accent); }
+.bz-fig.bz-locked { border-style: dashed; }
+.bz-cap {
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--muted);
+  margin-bottom: 2px;
+}
+.bz-fig[data-test] .bz-cap { color: var(--accent); }
+.bz-svg { display: block; width: 100%; height: auto; overflow: visible; }
+
+/* soporte */
+.bz-stand-base, .bz-stand-mast { fill: var(--muted); opacity: 0.45; }
+
+/* viga: rota sobre el pivote (180,30 en unidades del viewBox) */
+.bz-beam {
+  transform-origin: 180px 30px;
+  transition: transform 0.7s cubic-bezier(0.34, 1.3, 0.64, 1);
+}
+.bz-beam line { stroke: var(--bz-rope); stroke-width: 7; stroke-linecap: round; }
+.bz-pivot { fill: var(--card); stroke: var(--bz-rope); stroke-width: 3; }
+
+/* platos: cuerdas en V sólidas (3px), anilla en el extremo y bandeja.
+   (Nombres sin colisión con las reglas .bz-rope/.bz-mast/.bz-base de
+   pack-f: sus width/height en CSS pisarían la geometría del SVG.) */
+.bz-pan-g { transition: transform 0.7s cubic-bezier(0.34, 1.3, 0.64, 1); }
+.bz-cord { stroke: var(--bz-rope); stroke-width: 3; stroke-linecap: round; }
+.bz-ring { fill: var(--bz-rope); }
+.bz-tray { fill: var(--accent); }
+
+.bz-tilt-left .bz-beam { transform: rotate(-8deg); }
+.bz-tilt-left .bz-pan-l { transform: translateY(17px); }
+.bz-tilt-left .bz-pan-r { transform: translateY(-17px); }
+.bz-tilt-right .bz-beam { transform: rotate(8deg); }
+.bz-tilt-right .bz-pan-l { transform: translateY(-17px); }
+.bz-tilt-right .bz-pan-r { transform: translateY(17px); }
+.bz-tilt-equal .bz-beam, .bz-tilt-equal .bz-pan-g { transform: none; }
+
+/* carga: sacos marrones con "x", pesas de 1 / 5 / 10 kg en gris */
+.bz-sack rect { fill: var(--bz-sack); stroke: var(--bz-sack-dark); stroke-width: 1.5; }
+.bz-sack .bz-sack-tie { fill: var(--bz-sack-dark); stroke: none; }
+.bz-sack text, .bz-disc text {
+  font-family: inherit;
+  font-weight: 800;
+  text-anchor: middle;
+  pointer-events: none;
+}
+.bz-sack text { font-size: 12px; fill: #fff; }
+.bz-disc circle { fill: var(--bz-disc); stroke: var(--bz-disc-edge); stroke-width: 1.5; }
+.bz-disc-5 circle { fill: var(--bz-disc-5); }
+.bz-disc-10 circle { fill: var(--bz-disc-10); }
+.bz-disc text { font-size: 8.5px; fill: var(--text); }
+.bz-disc-10 text { font-size: 7.5px; fill: #fff; }
+
+/* candado sobre el pivote: se abre (desaparece) al predecir */
+.bz-lock {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  transform-origin: 180px 20px;
+}
+.bz-lock path { fill: none; stroke: var(--text); stroke-width: 2.5; stroke-linecap: round; }
+.bz-lock rect { fill: var(--accent-2); stroke: var(--text); stroke-width: 1.5; }
+.bz-fig:not(.bz-locked) .bz-lock { opacity: 0; transform: translateY(-8px) scale(0.8); }
+
+/* ---- botones: predicción (niveles 1-3) o candidato de x (nivel 4) ---- */
+.bz-preds, .bz-xs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  width: 100%;
+  margin-top: 2px;
+}
+.bz-pred, .bz-xbtn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  min-height: 64px;
+  padding: 8px 4px;
+  border: 2px solid var(--accent);
+  border-radius: 14px;
+  background: var(--card);
+  color: var(--accent);
+  font-family: inherit;
+  font-weight: 800;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform 0.1s ease, background 0.2s ease;
+}
+.bz-pred b { font-size: 1.35rem; }
+.bz-pred span { font-size: 0.72rem; line-height: 1.15; color: var(--text); }
+.bz-xbtn b { font-size: 1.55rem; font-variant-numeric: tabular-nums; }
+.bz-xbtn span { font-size: 0.64rem; color: var(--muted); }
+.bz-pred:active, .bz-xbtn:active { transform: scale(0.96); }
+.bz-pred:disabled, .bz-xbtn:disabled { cursor: default; opacity: 0.7; }
+.bz-pred.bz-correct, .bz-xbtn.bz-correct { background: var(--good); border-color: var(--good); opacity: 1; }
+.bz-pred.bz-wrong, .bz-xbtn.bz-wrong { background: var(--danger); border-color: var(--danger); opacity: 1; }
+.bz-correct, .bz-correct b, .bz-correct span, .bz-wrong, .bz-wrong b, .bz-wrong span { color: #fff; }
+
+/* ---- feedback con la cuenta ---- */
+.bz-wrap .bz-feedback {
+  width: 100%;
+  min-height: 2.6rem;
+  margin-top: 6px;
+  text-align: center;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--muted);
+}
+.bz-wrap .bz-feedback b { display: block; margin-bottom: 2px; font-size: 0.92rem; }
+.bz-wrap .bz-feedback.ok b { color: var(--good); }
+.bz-wrap .bz-feedback.bad b { color: var(--danger); }
+
+@media (max-width: 380px) {
+  .bz-pred span { font-size: 0.66rem; }
+  .bz-pred b { font-size: 1.2rem; }
+  .bz-xbtn b { font-size: 1.35rem; }
+}
+
+/* --- regla v3 --- */
+/* ---------- 📏 Mide de verdad (#50, v3, .rg-) ----------
+   El objeto es rígido y quieto; la regla se arrastra. Todo el dibujo es un
+   SVG con viewBox fijo (360 unidades = 20 cm de escena), así que a 400 px
+   escala solo. Sólo variables ya existentes en style.css (--bg --card
+   --text --muted --accent --accent-2 --danger --good --border): claro y
+   oscuro salen solos. Los colores fijos son los de los propios objetos
+   (metal, madera, goma…) y el cuerpo claro de la regla, que se ven igual
+   de bien sobre fondo claro u oscuro.
+   Nota: pisa a propósito .rg-wrap/.rg-prompt de pack-f.css (v2); el resto
+   de clases .rg- de pack-f ya no las usa nadie. */
+.rg-wrap {
+  width: 100%;
+  max-width: 340px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.rg-wrap .rg-prompt { font-size: 1.02rem; margin-bottom: 10px; }
+
+/* Toda la escena es arrastrable: touch-action none para que el dedo mueva
+   la regla en vez de hacer scroll. */
+.rg-scene {
+  width: 100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 6px 4px 2px;
+  box-sizing: border-box;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: grab;
+}
+.rg-scene.rg-dragging { cursor: grabbing; }
+.rg-svg { display: block; width: 100%; height: auto; overflow: hidden; }
+.rg-svg text { pointer-events: none; }
+
+/* -- objeto -- */
+.rg-obj-metal { fill: #b3b8c6; stroke: #6f7587; stroke-width: 1; }
+.rg-obj-hole { fill: var(--bg); stroke: #6f7587; stroke-width: 1; }
+.rg-obj-shine { fill: #e6e9f0; opacity: 0.9; }
+.rg-obj-line { stroke: #6f7587; stroke-width: 1.2; stroke-linecap: round; }
+.rg-obj-band { fill: #e0862f; }
+.rg-obj-text { font-size: 8px; font-weight: 800; fill: #3a3f4d; text-anchor: middle; font-family: system-ui, sans-serif; }
+.rg-obj-wire { fill: none; stroke: #8b90a1; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.rg-obj-chalk { fill: #f6f3ec; stroke: #a9a4b8; stroke-width: 1.5; }
+.rg-obj-chalk-end { fill: #ded9d0; }
+.rg-obj-handle { fill: var(--accent-2); }
+.rg-obj-handle-dark { fill: #1f7f9a; }
+.rg-obj-bristle { stroke: #f4f4f4; stroke-width: 2; stroke-linecap: round; }
+.rg-obj-eraser { fill: #f28ba8; }
+.rg-obj-wood-paint { fill: #f4c542; stroke: #b98d1c; stroke-width: 0.8; }
+.rg-obj-pencil-line { stroke: #d9a92b; stroke-width: 1.2; }
+.rg-obj-wood { fill: #e2b98a; stroke: #b98d1c; stroke-width: 0.8; }
+.rg-obj-graphite { fill: #3b3b3b; }
+.rg-obj-name {
+  font-size: 9.5px; font-weight: 700; fill: var(--muted);
+  text-anchor: middle; font-family: system-ui, sans-serif;
+}
+
+/* Guías perpendiculares desde los extremos del objeto hasta la regla. */
+.rg-guide { stroke: var(--accent); stroke-width: 1; stroke-dasharray: 3 3; opacity: 0.7; }
+
+/* -- regla -- */
+.rg-rule-body { fill: #fdf6d3; stroke: #b7a45a; stroke-width: 1.2; }
+.rg-rule-tick { stroke: #2e2a45; stroke-width: 1; }
+.rg-rule-tick-cm { stroke-width: 1.4; }
+.rg-rule-tick-mm { stroke-width: 0.7; opacity: 0.8; }
+.rg-rule-num {
+  font-size: 9.5px; font-weight: 700; fill: #2e2a45;
+  text-anchor: middle; font-family: system-ui, sans-serif;
+}
+.rg-rule-unit { font-size: 7px; font-weight: 700; fill: #8a7d4a; text-anchor: middle; font-family: system-ui, sans-serif; }
+.rg-rule-grip { font-size: 10px; fill: #b7a45a; text-anchor: middle; font-family: system-ui, sans-serif; }
+
+/* Lecturas rotuladas al resolver. */
+.rg-reveal-num { font-size: 9.5px; font-weight: 800; text-anchor: middle; font-family: system-ui, sans-serif; }
+.rg-reveal-good { fill: var(--good); }
+.rg-reveal-bad { fill: var(--danger); }
+
+.rg-drag-hint { font-size: 0.74rem; color: var(--muted); margin: 6px 0 8px; }
+.rg-wrap .keypad-display { margin-bottom: 8px; }
+
+@media (max-width: 400px) {
+  .rg-wrap .rg-prompt { font-size: 0.96rem; }
+}
+
+/* --- calendario v3 --- */
+/* ---- Calendario v3 "Salta de fecha" (.cl-) ----
+   Se carga DESPUÉS de pack-f.css, así que las reglas .cl- de allí siguen
+   valiendo (envoltorio, cabecera, celda base) y aquí solo se añaden o
+   ajustan las de la v3: nivel, "hoy", camino del salto, destino, dos
+   rejillas apiladas y los siete botones de día de la semana. Solo usa las
+   variables de style.css (--bg --card --text --muted --accent --border,
+   más --good/--danger/--accent-2), así que claro y oscuro salen solos.
+   Legible a 400px con el pulgar; en el nivel 3 caben dos meses. */
+
+.cl-level {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 3px 10px;
+  margin-bottom: 8px;
+}
+.cl-wrap .cl-prompt {
+  font-size: 1.06rem;
+  margin-bottom: 10px;
+}
+.cl-wrap .cl-prompt b { color: var(--accent); }
+
+.cl-months {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.cl-mes {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.cl-mes .cl-month { margin-bottom: 4px; }
+.cl-grid { max-width: 330px; gap: 3px; }
+.cl-cell.cl-day { transition: background 0.15s, color 0.15s; }
+button.cl-cell.cl-day:hover { border-color: var(--accent); }
+
+/* La rejilla del nivel 2 se ve pero no se toca: sirve para comprobar. */
+.cl-mes.cl-dim .cl-cell.cl-day { opacity: 0.55; }
+.cl-mes.cl-dim .cl-cell.cl-today { opacity: 1; }
+
+/* "Hoy": la casilla desde la que se salta. */
+.cl-cell.cl-today {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+  font-weight: 800;
+  box-shadow: 0 0 0 2px var(--card), 0 0 0 4px var(--accent);
+}
+/* Camino del salto (feedback): los días que se cuentan. */
+.cl-cell.cl-path {
+  background: var(--accent-2);
+  border-color: var(--accent-2);
+  color: #fff;
+  opacity: 0.85;
+}
+/* Destino: en la pregunta (nivel 4) con borde, en el feedback en verde. */
+.cl-cell.cl-target {
+  background: var(--good);
+  border-color: var(--good);
+  color: #fff;
+  font-weight: 800;
+  box-shadow: 0 0 0 2px var(--card), 0 0 0 4px var(--good);
+}
+.cl-cell.cl-bad {
+  background: var(--danger);
+  border-color: var(--danger);
+  color: #fff;
+  text-decoration: line-through;
+}
+
+/* Dos meses apilados (nivel 3 y "cuántos faltan" cruzando mes): celdas
+   más bajas para que quepan los dos sin hacer scroll en un móvil. */
+.cl-months.cl-two .cl-grid { gap: 2px; }
+.cl-months.cl-two .cl-cell { aspect-ratio: 1.45; font-size: 0.76rem; border-radius: 6px; }
+.cl-months.cl-two .cl-cell.cl-today,
+.cl-months.cl-two .cl-cell.cl-target { box-shadow: 0 0 0 2px var(--card), 0 0 0 3px currentColor; }
+
+/* Zona de respuesta: 7 botones de día de la semana o el teclado. */
+.cl-answer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 12px;
+}
+.cl-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  width: 100%;
+  max-width: 330px;
+}
+.cl-wd {
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 12px 0;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  cursor: pointer;
+}
+.cl-wd:active { transform: scale(0.94); }
+.cl-wd:disabled { opacity: 0.6; cursor: default; }
+.cl-wd.cl-wd-ok { background: var(--good); border-color: var(--good); color: #fff; opacity: 1; }
+.cl-wd.cl-wd-bad { background: var(--danger); border-color: var(--danger); color: #fff; opacity: 1; }
+.cl-answer .keypad { margin-top: 4px; }
+
+.cl-note {
+  margin-top: 10px;
+  min-height: 2.4em;
+  max-width: 330px;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+.cl-note b { color: var(--accent); }
+.cl-wrap .feedback { margin-top: 6px; }
+
+@media (max-width: 380px) {
+  .cl-grid { max-width: 300px; }
+  .cl-weekdays { max-width: 300px; gap: 3px; }
+  .cl-wd { font-size: 0.72rem; padding: 10px 0; }
+  .cl-note { max-width: 300px; }
+}
