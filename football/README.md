@@ -1,7 +1,7 @@
 # Math Games 🧠
 
-PWA (sin build, HTML/CSS/JS puro) con **165 ejercicios de matemáticas**,
-cada uno numerado (#1-#165) para poder referirse a ellos sin ambigüedad.
+PWA (sin build, HTML/CSS/JS puro) con **166 ejercicios de matemáticas**,
+cada uno numerado (#1-#166) para poder referirse a ellos sin ambigüedad.
 Cálculo mental, geometría, álgebra, estadística, fracciones, dinero,
 probabilidad, coordenadas, tiempo y más. Nace como banco de pruebas
 rápido para sacar ideas de mecánicas (tipo Duolingo Math, Synthesis,
@@ -1100,6 +1100,36 @@ lo cierra). Pulido pendiente: el dibujo de capacidad es poco legible
 (recipiente bajo y ancho con hueco arriba) — merece un recipiente con
 forma y una escala vertical.
 
+## Ejercicio #166 (cuarto juego grande, 18-09-2026)
+
+### Tramo único — [`css/pack-ag.css`](./css/pack-ag.css)
+
+Cuarto y último juego grande de la tanda manual, del hueco "geometría:
+nada de transformaciones encadenadas".
+
+| # | Juego | Tema | Pantallas | De dónde sale |
+|---|---|---|---|---|
+| 166 | 🗝️ Taller de transformaciones | Transformaciones geométricas | Mapa de 5 salas cerradas → salas 1-4 (traslación · giro · espejo · mezcla): llevar la figura hasta la silueta punteada encadenando ↑↓←→, giro de 90° horario alrededor del centro y espejo respecto a la línea vertical central, con presupuesto de movimientos → sala 5 (inversión): decir qué transformación ÚNICA convierte la figura en la silueta → resultados con la secuencia solución de cada sala fallada y repaso | Inventado: composición de isometrías en cuadrícula + inversión 5.3 |
+
+**Ciclo de aprendizaje**: cada sala añade una transformación y sube el
+presupuesto; las figuras son quirales (L, J, P), así que giro y espejo
+nunca se confunden y ningún giro deshace un espejo; el fallo enseña la
+secuencia solución sobre la silueta; la sala final invierte el reto.
+Progreso (salas abiertas) en `localStorage` y `football_progress`.
+
+**Generadores**: la silueta se obtiene aplicando una secuencia
+aleatoria de movimientos permitidos (2-4 según la sala) y el presupuesto
+es esa longitud + 1; `verify_transforma.mjs` (5.000 salas por nivel)
+comprueba con un BFS propio que la silueta es alcanzable dentro del
+presupuesto, que la secuencia declarada llega de verdad y que en la sala
+5 exactamente una de las tres transformaciones convierte la figura en la
+silueta — 0 fallos. Los 147 ficheros de juego cargan sin error de
+consola; flujo completo jugado dos veces en Chromium a 400 px con un
+resolutor BFS independiente que lee la figura y la silueta del DOM y
+pulsa los botones: partida perfecta (11 aciertos, 110 pts) y partida con
+fallo deliberado (agotar el presupuesto: pierde vida, se enseña la
+solución, el error va a resultados y el repaso lo cierra).
+
 ## Versiones (v2) y bandeja "Revisar"
 
 Cuando un ejercicio recibe una vuelta de mejoras, se marca con un
@@ -1345,12 +1375,12 @@ Una vez publicado, esta app queda en:
 
 ## Qué hace la app
 
-- Menú con los 165 ejercicios numerados, organizados en pestañas
+- Menú con los 166 ejercicios numerados, organizados en pestañas
   🆕/👍/👎/🔧; cada uno abre en su propia pantalla (`#/game/<id>`), sin
   recargar la página.
 - Motor de preguntas compartido (`js/quiz-engine.js`) para los 18
   ejercicios de "pregunta + opciones o teclado" (`js/games-data.js` y
-  `js/games-data-2.js`); los otros 147 (`js/game-*.js` y
+  `js/games-data-2.js`); los otros 148 (`js/game-*.js` y
   `js/balloons-game.js`) tienen cada uno su propia mecánica de
   interacción (arrastrar, tocar en orden, emparejar, construir,
   escribir, clasificar, recorrer…).
