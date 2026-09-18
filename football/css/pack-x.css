@@ -1,0 +1,161 @@
+/* Pack X — decimotercera tanda (18-09-2026) — tramo único de ejercicios nuevos.
+   Prefijos: pfg- (patronfiguras), esq- (esquiva) */
+
+/* --- patronfiguras --- */
+/* "El patrón que crece" (game-patronfiguras.js) — prefijo exclusivo: pfg-
+   Verificado sin colisión: grep -rn "\.pfg-" football/css/*.css → vacío.
+   Usa las variables de tema ya definidas en :root por el núcleo
+   (--bg, --card, --text, --muted, --accent, --accent-2, --good, --danger,
+   --border) — no redefine ninguna, y no toca .prompt, .keypad*,
+   .choice-btn, .feedback ni .end-card. */
+
+.pfg-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto 18px;
+}
+
+.pfg-step {
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 10px 12px;
+}
+
+.pfg-step-label {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin: 0 0 8px;
+}
+
+/* Rejilla de fichas: columnas fijas y pequeñas para que, incluso con
+   ~13 fichas en el paso 3, se puedan contar sin ambigüedad y sin
+   desbordar a 400px de ancho. */
+.pfg-tiles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.pfg-tile {
+  width: 22px;
+  height: 22px;
+  flex: 0 0 auto;
+  border-radius: 6px;
+  background: var(--accent);
+  border: 2px solid color-mix(in srgb, var(--accent) 60%, black 20%);
+}
+
+@media (max-width: 420px) {
+  .pfg-steps {
+    max-width: 300px;
+    gap: 10px;
+  }
+  .pfg-step {
+    padding: 8px 10px;
+  }
+  .pfg-step-label {
+    font-size: 0.78rem;
+    margin-bottom: 6px;
+  }
+  .pfg-tiles {
+    gap: 5px;
+  }
+  .pfg-tile {
+    width: 18px;
+    height: 18px;
+    border-radius: 5px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .pfg-tile {
+    border-color: color-mix(in srgb, var(--accent) 55%, white 12%);
+  }
+}
+
+/* --- esquiva --- */
+/* "Esquiva a tiempo" (game-esquiva.js) — prefijo exclusivo: esq-
+   Verificado sin colisión: grep -rn "\.esq-" football/css/*.css → vacío.
+   Usa las variables de tema ya definidas en :root por el núcleo
+   (--bg, --card, --text, --muted, --accent, --accent-2, --good, --danger,
+   --border) — no redefine ninguna, y no toca .prompt, .choices,
+   .choice-btn, .feedback ni .end-card (los reutiliza tal cual). */
+
+.esq-scenario {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 360px;
+  margin: 0 auto 22px;
+}
+
+.esq-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--card);
+  border: 2px solid var(--border);
+  border-radius: 14px;
+  padding: 12px 14px;
+  text-align: left;
+}
+
+.esq-row-obstacle {
+  border-color: color-mix(in srgb, var(--danger) 45%, var(--border));
+}
+
+.esq-row-player {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+}
+
+.esq-emoji {
+  font-size: 1.6rem;
+  flex: 0 0 auto;
+  line-height: 1;
+}
+
+.esq-text {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.35;
+}
+
+.esq-text strong {
+  font-weight: 800;
+}
+
+.esq-choice-btn {
+  font-size: 1rem;
+}
+
+@media (max-width: 420px) {
+  .esq-scenario {
+    max-width: 320px;
+    gap: 10px;
+  }
+  .esq-row {
+    padding: 10px 12px;
+    gap: 10px;
+  }
+  .esq-emoji {
+    font-size: 1.4rem;
+  }
+  .esq-text {
+    font-size: 0.88rem;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .esq-row {
+    background: var(--card);
+  }
+}
