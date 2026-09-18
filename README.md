@@ -35,7 +35,6 @@ reglas para no interferir con las demás:
 | 🎬 Cartelera Cine | [`cartelera/`](./cartelera) | `/Train/cartelera/` | `cartelera_` |
 | 🎾 Nombra | [`nombra/`](./nombra) | `/Train/nombra/` | `nombra_` |
 | 📚 Vocabulary | [`vocab/`](./vocab) | `/Train/vocab/` | `vocab_` |
-| 🍺 Cervezas | [`cervezas/`](./cervezas) | `/Train/cervezas/` | `cervezas_` |
 
 ## Añadir una app nueva
 
