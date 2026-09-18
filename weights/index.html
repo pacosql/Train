@@ -13,28 +13,38 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="icon" href="icons/icon-192.png" />
 
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&display=swap" />
+
   <style>
     /* Texto grande a propósito: se usa en el gimnasio, a menudo de pie y
        sin gafas. Todo lo demás va en rem y escala desde aquí. */
-    html { font-size: 150%; }
+    html { font-size: 150%; -webkit-text-size-adjust: 100%; }
 
     :root {
       color-scheme: dark;
-      --bg: #080b0a;
-      --surface: #111614;
-      --surface-2: #19211d;
+      --bg: #070908;
+      --surface: #121715;            /* sólido: lo usa también la gráfica para recortar puntos */
+      --surface-2: rgba(255, 255, 255, 0.08);
+      --glass: linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.025));
       --line: rgba(255, 255, 255, 0.08);
-      --line-strong: rgba(255, 255, 255, 0.14);
-      --text: #f4f7f5;
-      --text-2: #97a49d;
+      --line-strong: rgba(255, 255, 255, 0.16);
+      --text: #f5f8f6;
+      --text-2: #98a69f;
       --accent: #43d391;
+      --accent-2: #7af0b8;
       --accent-soft: rgba(67, 211, 145, 0.14);
+      --accent-glow: rgba(67, 211, 145, 0.35);
       --accent-ink: #04200f;
       --stop: #ff6b4a;
       --danger: #ff5470;
       --push: #72a9ff;
       --pull: #f5b544;
       --cardio: #b98cff;
+      --display: "Barlow Condensed", "Arial Narrow", "Helvetica Neue", -apple-system, sans-serif;
+      --body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --lift: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 12px 32px rgba(0, 0, 0, 0.35);
       padding-top: env(safe-area-inset-top, 0px);
       padding-bottom: env(safe-area-inset-bottom, 0px);
     }
@@ -45,118 +55,156 @@
       margin: 0;
       background: var(--bg);
       color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-family: var(--body);
       padding: 16px 16px 48px;
       -webkit-font-smoothing: antialiased;
       line-height: 1.45;
     }
+    /* Luz de fondo fija: un halo del acento arriba y otro azul muy tenue a
+       la derecha. Como pseudo-elemento fijo funciona también en iOS, donde
+       background-attachment: fixed no. */
+    body::before {
+      content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background:
+        radial-gradient(70% 42% at 50% -6%, rgba(67, 211, 145, 0.17), transparent 70%),
+        radial-gradient(45% 30% at 105% 25%, rgba(114, 169, 255, 0.06), transparent 70%);
+    }
     .wrap { max-width: 480px; margin: 0 auto; }
 
     /* ---------- tipografía ---------- */
-    h1 { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.4px; margin: 0 0 2px; }
-    h2 { font-size: 1.25rem; font-weight: 800; letter-spacing: -0.3px; margin: 0 0 2px; }
-    h3 { font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.7px; color: var(--accent); margin: 18px 0 6px; }
+    h1, h2 { font-family: var(--display); text-transform: uppercase; letter-spacing: 0.3px; line-height: 0.98; margin: 0 0 6px; }
+    h1 { font-size: 2.2rem; font-weight: 800; }
+    h2 { font-size: 1.85rem; font-weight: 800; }
+    h3 { font-family: var(--display); font-size: 0.95rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.3px; color: var(--accent); margin: 22px 0 8px; }
+    h1.hero {
+      font-size: 2.3rem;
+      background: linear-gradient(90deg, #ffffff 15%, var(--accent-2) 85%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
     .sub { color: var(--text-2); font-size: 0.88rem; margin: 0 0 18px; }
-    .eyebrow { font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.9px; color: var(--text-2); margin: 0 0 4px; }
+    .eyebrow { font-family: var(--display); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.4px; color: var(--text-2); margin: 0 0 4px; }
+    .eyebrow.push { color: var(--push); }
+    .eyebrow.pull { color: var(--pull); }
+    .eyebrow.cardio { color: var(--cardio); }
 
     /* ---------- barra superior ---------- */
-    .top-bar { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
-    .brand { display: flex; align-items: center; gap: 7px; font-weight: 800; cursor: pointer; font-size: 0.95rem; }
-    .brand-mark { width: 1.35rem; height: 1.35rem; border-radius: 7px; background: var(--accent); color: var(--accent-ink);
-      display: grid; place-items: center; font-size: 0.75rem; }
+    .top-bar { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 16px; }
+    .brand { display: flex; align-items: center; gap: 8px; cursor: pointer; font-family: var(--display); font-size: 1.25rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; }
+    .brand-mark {
+      width: 1.45rem; height: 1.45rem; border-radius: 9px; display: grid; place-items: center; font-size: 0.8rem;
+      background: linear-gradient(135deg, var(--accent-2), var(--accent));
+      box-shadow: 0 0 18px var(--accent-glow), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    }
     .live-pill {
-      display: flex; align-items: center; gap: 6px;
-      font-size: 0.78rem; font-weight: 800; font-variant-numeric: tabular-nums;
-      color: var(--accent-ink); background: var(--accent);
-      padding: 6px 12px; border-radius: 999px; cursor: pointer;
+      display: flex; align-items: center; gap: 7px; cursor: pointer;
+      font-family: var(--display); font-size: 1.05rem; font-weight: 800; letter-spacing: 0.6px; font-variant-numeric: tabular-nums;
+      color: var(--accent-ink);
+      background: linear-gradient(135deg, var(--accent-2), var(--accent));
+      padding: 6px 13px; border-radius: 999px;
+      box-shadow: 0 6px 20px var(--accent-glow), inset 0 1px 0 rgba(255, 255, 255, 0.4);
       transition: transform 0.1s ease;
     }
     .live-pill:active { transform: scale(0.95); }
-    .live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-ink); animation: pulse 1.8s ease-in-out infinite; }
-    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+    .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent-ink); animation: pulse 1.6s ease-in-out infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.35; transform: scale(0.75); } }
 
     /* ---------- tarjetas ---------- */
     .card {
-      background: var(--surface);
+      background: var(--glass);
       border: 1px solid var(--line);
-      border-radius: 20px;
+      border-radius: 22px;
       padding: 18px;
       margin-bottom: 12px;
+      box-shadow: var(--lift);
     }
     .card.flush { padding: 14px 18px; }
-    .card.accent { border-color: rgba(67, 211, 145, 0.35); background: linear-gradient(180deg, var(--accent-soft), var(--surface) 70%); }
+    .card.accent {
+      border-color: rgba(67, 211, 145, 0.4);
+      background: linear-gradient(135deg, rgba(67, 211, 145, 0.2), rgba(255, 255, 255, 0.03) 60%);
+      box-shadow: 0 0 0 1px rgba(67, 211, 145, 0.12), 0 14px 40px rgba(67, 211, 145, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
 
     /* ---------- botones ---------- */
     button {
-      font-family: inherit;
-      background: var(--accent);
+      font-family: var(--display);
+      font-size: 1.3rem; font-weight: 700; letter-spacing: 0.7px; text-transform: uppercase;
+      background: linear-gradient(135deg, var(--accent-2), var(--accent) 55%, #2fb877);
       color: var(--accent-ink);
-      border: none;
-      border-radius: 16px;
-      padding: 16px 18px;
-      font-size: 1rem;
-      font-weight: 800;
-      letter-spacing: 0.1px;
+      border: none; border-radius: 18px;
+      padding: 15px 18px; width: 100%; margin-bottom: 10px;
       cursor: pointer;
-      width: 100%;
-      margin-bottom: 10px;
-      transition: transform 0.08s ease, filter 0.15s ease;
+      box-shadow: 0 8px 24px var(--accent-glow), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+      transition: transform 0.08s ease, filter 0.15s ease, box-shadow 0.15s ease;
     }
     button:last-child { margin-bottom: 0; }
-    button:active { transform: scale(0.985); filter: brightness(1.08); }
-    button.stop { background: var(--stop); color: #2b0a02; }
-    button.secondary { background: var(--surface-2); color: var(--text); border: 1px solid var(--line); }
-    button.danger { background: transparent; color: var(--danger); border: 1px solid rgba(255, 84, 112, 0.35); }
-    button.ghost { background: transparent; color: var(--text-2); border: none; font-weight: 700; font-size: 0.9rem; padding: 12px; }
-    button.small { width: auto; padding: 12px 16px; margin: 0; flex-shrink: 0; }
-    button:disabled { opacity: 0.32; cursor: default; }
+    button:active { transform: scale(0.98); filter: brightness(1.06); }
+    button.stop {
+      background: linear-gradient(135deg, #ff9270, var(--stop) 55%, #e5522f); color: #2b0a02;
+      box-shadow: 0 8px 24px rgba(255, 107, 74, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    }
+    button.secondary { background: rgba(255, 255, 255, 0.06); color: var(--text); border: 1px solid var(--line-strong); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05); }
+    button.danger { background: transparent; color: var(--danger); border: 1px solid rgba(255, 84, 112, 0.4); box-shadow: none; }
+    button.ghost { background: transparent; color: var(--text-2); border: none; box-shadow: none; font-family: var(--body); text-transform: none; letter-spacing: 0; font-weight: 700; font-size: 0.9rem; padding: 12px; }
+    button.small { width: auto; padding: 12px 16px; margin: 0; flex-shrink: 0; font-size: 1.05rem; }
+    button:disabled { opacity: 0.32; cursor: default; box-shadow: none; }
 
-    /* ---------- estadísticas de inicio ---------- */
+    /* ---------- estadísticas ---------- */
     .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
-    .tile { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 12px 6px; text-align: center; }
-    .tile .n { font-size: 1.45rem; font-weight: 800; line-height: 1.1; font-variant-numeric: tabular-nums; }
-    .tile .l { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-2); margin-top: 3px; }
+    .tile { background: var(--glass); border: 1px solid var(--line); border-radius: 18px; padding: 14px 6px 12px; text-align: center; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05); }
+    .tile .n { font-family: var(--display); font-size: 2.1rem; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; }
+    .tile .l { font-family: var(--display); font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-2); margin-top: 5px; }
 
     /* ---------- progreso de sesión ---------- */
-    .strip { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 10px 14px; margin-bottom: 14px; }
-    .strip-row { display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 700; color: var(--text-2); margin-bottom: 7px; font-variant-numeric: tabular-nums; }
-    .progress { height: 5px; background: var(--surface-2); border-radius: 999px; overflow: hidden; }
-    .progress i { display: block; height: 100%; width: 0%; background: var(--accent); border-radius: 999px; transition: width 0.4s ease; }
+    .strip { background: var(--glass); border: 1px solid var(--line); border-radius: 16px; padding: 10px 14px; margin-bottom: 14px; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04); }
+    .strip-row { display: flex; justify-content: space-between; font-family: var(--display); font-size: 0.9rem; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--text-2); margin-bottom: 8px; font-variant-numeric: tabular-nums; }
+    .progress { height: 6px; background: rgba(255, 255, 255, 0.07); border-radius: 999px; overflow: hidden; }
+    .progress i { display: block; height: 100%; width: 0%; border-radius: 999px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); box-shadow: 0 0 12px var(--accent-glow); transition: width 0.4s ease; }
 
-    /* ---------- lista de ejercicios ---------- */
-    .group-header { font-size: 0.68rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-2); margin: 18px 0 8px; }
+    /* ---------- listas de máquinas / entrenamientos ---------- */
+    .group-header { display: flex; align-items: center; gap: 10px; font-family: var(--display); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.3px; color: var(--text-2); margin: 20px 0 10px; }
+    .group-header::after { content: ""; flex: 1; height: 1px; background: var(--line); }
     .group-header:first-child { margin-top: 0; }
     .item {
       display: flex; align-items: center; gap: 12px;
-      padding: 14px 16px;
-      border-radius: 16px;
+      position: relative; overflow: hidden;
+      padding: 14px 16px 14px 18px;
+      border-radius: 18px;
       border: 1px solid var(--line);
-      border-left: 3px solid var(--text-2);
+      background: var(--glass);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
       margin-bottom: 8px;
       cursor: pointer;
-      background: var(--surface);
       transition: transform 0.08s ease, background 0.12s ease;
+      animation: item-in 0.32s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+      animation-delay: calc(var(--i, 0) * 28ms);
     }
+    @keyframes item-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+    /* franja de color por tipo de movimiento, con un poco de luz propia */
+    .item::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--type, var(--line-strong)); box-shadow: 0 0 16px var(--type, transparent); }
+    .item.push { --type: var(--push); }
+    .item.pull { --type: var(--pull); }
+    .item.cardio { --type: var(--cardio); }
+    .item.otro { --type: var(--line-strong); }
     .item:active { transform: scale(0.985); background: var(--surface-2); }
-    .item.push { border-left-color: var(--push); }
-    .item.pull { border-left-color: var(--pull); }
-    .item.cardio { border-left-color: var(--cardio); }
-    .item.top { border-color: rgba(67, 211, 145, 0.4); background: linear-gradient(180deg, var(--accent-soft), var(--surface) 60%); }
+    .item.top {
+      border-color: rgba(67, 211, 145, 0.45);
+      background: linear-gradient(135deg, rgba(67, 211, 145, 0.17), rgba(255, 255, 255, 0.03) 55%);
+      box-shadow: 0 0 0 1px rgba(67, 211, 145, 0.14), 0 10px 30px rgba(67, 211, 145, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
     .item-main { flex: 1; min-width: 0; }
-    .item .name { font-weight: 800; font-size: 0.98rem; }
-    .item .meta { color: var(--text-2); font-size: 0.75rem; margin-top: 2px; }
-    .item .reason { font-size: 0.72rem; font-weight: 700; color: var(--accent); margin-top: 3px; }
+    .item .name { font-family: var(--display); font-size: 1.3rem; font-weight: 700; letter-spacing: 0.2px; line-height: 1.05; }
+    .item .meta { color: var(--text-2); font-size: 0.75rem; margin-top: 3px; }
+    .item .reason { font-size: 0.72rem; font-weight: 700; color: var(--accent); margin-top: 4px; }
     .item .reason.warn { color: var(--pull); }
     .item .reason.muted { color: var(--text-2); }
     .item.done .name { color: var(--text-2); }
-    .pill { font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; padding: 4px 9px; border-radius: 999px; flex-shrink: 0; }
-    .pill.push { background: var(--push); color: #04142e; }
-    .pill.pull { background: var(--pull); color: #2b1d00; }
-    .pill.cardio { background: var(--cardio); color: #1b0b33; }
-    .item.otro { border-left-color: var(--line-strong); }
+    .pill { font-family: var(--display); font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; padding: 4px 10px; border-radius: 999px; flex-shrink: 0; }
+    .pill.push { background: var(--push); color: #04142e; box-shadow: 0 0 14px rgba(114, 169, 255, 0.35); }
+    .pill.pull { background: var(--pull); color: #2b1d00; box-shadow: 0 0 14px rgba(245, 181, 68, 0.35); }
+    .pill.cardio { background: var(--cardio); color: #1b0b33; box-shadow: 0 0 14px rgba(185, 140, 255, 0.35); }
     .pill.otro { background: var(--surface-2); color: var(--text-2); border: 1px solid var(--line-strong); }
-    .chev { color: var(--text-2); font-size: 1.1rem; font-weight: 800; flex-shrink: 0; }
-    .tag { font-size: 0.62rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.4px; padding: 3px 8px; border-radius: 999px; background: var(--surface-2); color: var(--text-2); border: 1px solid var(--line); flex-shrink: 0; }
+    .chev { color: var(--text-2); font-size: 1.2rem; font-weight: 800; flex-shrink: 0; }
+    .tag { font-family: var(--display); font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; padding: 3px 9px; border-radius: 999px; background: var(--surface-2); color: var(--text-2); border: 1px solid var(--line); flex-shrink: 0; }
     .tag.mas { color: var(--accent); border-color: rgba(67, 211, 145, 0.35); }
     .tag.menos { color: var(--stop); border-color: rgba(255, 107, 74, 0.35); }
 
@@ -164,92 +212,101 @@
     .chip-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
     .chip {
       flex: 1; min-width: 72px; text-align: center;
-      padding: 14px 8px; border-radius: 14px;
-      border: 1px solid var(--line); background: var(--surface);
-      color: var(--text); font-weight: 800; font-size: 0.92rem; cursor: pointer;
-      transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
+      padding: 14px 8px; border-radius: 16px;
+      border: 1px solid var(--line); background: var(--glass);
+      color: var(--text); cursor: pointer;
+      font-family: var(--display); font-size: 1.2rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
     }
-    .chip.selected { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+    .chip.selected { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); box-shadow: 0 0 0 1px rgba(67, 211, 145, 0.25), 0 6px 20px rgba(67, 211, 145, 0.18); }
 
     /* ---------- opciones de feedback ---------- */
     .fb-option {
-      display: flex; align-items: center; gap: 14px; width: 100%;
-      text-align: left; background: var(--surface); border: 1px solid var(--line);
-      color: var(--text); border-radius: 16px; padding: 14px 16px; margin-bottom: 10px;
-      cursor: pointer; font-weight: 700; transition: border-color 0.15s ease, background 0.15s ease;
+      display: flex; align-items: center; gap: 14px; width: 100%; text-align: left;
+      background: var(--glass); border: 1px solid var(--line); color: var(--text);
+      border-radius: 18px; padding: 14px 16px; margin-bottom: 10px; cursor: pointer;
+      font-family: var(--body); text-transform: none; letter-spacing: 0; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
     }
-    .fb-option.selected { border-color: var(--accent); background: var(--accent-soft); }
-    .fb-icon { font-size: 1.4rem; flex-shrink: 0; }
-    .fb-text b { display: block; font-size: 0.98rem; }
-    .fb-text span { display: block; font-size: 0.75rem; color: var(--text-2); font-weight: 600; margin-top: 1px; }
+    .fb-option.selected { border-color: var(--accent); background: var(--accent-soft); box-shadow: 0 0 0 1px rgba(67, 211, 145, 0.25), 0 8px 24px rgba(67, 211, 145, 0.16); }
+    .fb-icon { font-size: 1.7rem; flex-shrink: 0; }
+    .fb-text b { display: block; font-family: var(--display); font-size: 1.35rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; line-height: 1; }
+    .fb-text span { display: block; font-size: 0.75rem; color: var(--text-2); font-weight: 600; margin-top: 3px; }
 
     /* ---------- formularios ---------- */
     .row { display: flex; gap: 10px; align-items: stretch; }
     .row input { flex: 1; width: auto; }
     input[type="number"], input[type="text"] {
-      width: 100%; padding: 13px; border-radius: 13px;
-      border: 1px solid var(--line); background: #0c120f; color: var(--text); font-size: 1rem;
-      font-family: inherit;
+      width: 100%; padding: 13px 14px; border-radius: 14px;
+      border: 1px solid var(--line-strong); background: rgba(0, 0, 0, 0.35); color: var(--text); font-size: 1rem;
+      font-family: inherit; transition: border-color 0.15s ease, box-shadow 0.15s ease;
     }
-    input:focus { outline: none; border-color: var(--accent); }
+    input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(67, 211, 145, 0.18); }
     input::placeholder { color: var(--text-2); opacity: 0.6; }
-    label { font-size: 0.75rem; color: var(--text-2); display: block; margin-bottom: 7px; font-weight: 700; }
+    label { font-family: var(--display); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-2); display: block; margin-bottom: 8px; }
 
     /* ---------- stepper de peso ---------- */
     .weight-block { text-align: center; }
-    .stepper { display: flex; align-items: center; justify-content: center; gap: 22px; margin-top: 6px; }
+    .stepper { display: flex; align-items: center; justify-content: center; gap: 20px; margin-top: 8px; }
     .stepper-btn {
-      width: 3.1rem; height: 3.1rem; border-radius: 50%; flex: none;
-      font-size: 1.55rem; font-weight: 800; padding: 0; margin: 0; line-height: 1;
-      background: var(--surface-2); color: var(--text); border: 1px solid var(--line-strong);
+      width: 3.2rem; height: 3.2rem; border-radius: 50%; flex: none;
+      font-size: 1.7rem; font-weight: 700; padding: 0; margin: 0; line-height: 1;
+      background: rgba(255, 255, 255, 0.06); color: var(--text); border: 1px solid var(--line-strong);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
     }
-    .stepper-value { font-size: 2.6rem; font-weight: 800; min-width: 4.6rem; font-variant-numeric: tabular-nums; letter-spacing: -1px; }
-    .stepper-unit { font-size: 0.7rem; color: var(--text-2); text-transform: uppercase; letter-spacing: 0.8px; margin-top: -2px; }
+    .stepper-btn:active { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+    .stepper-value { font-family: var(--display); font-size: 3.6rem; font-weight: 800; line-height: 1; min-width: 4.6rem; font-variant-numeric: tabular-nums; letter-spacing: 0.5px; }
+    .stepper-value.bump { animation: bump 0.2s ease; }
+    @keyframes bump { 45% { transform: scale(1.1); color: var(--accent); text-shadow: 0 0 22px var(--accent-glow); } }
+    .stepper-unit { font-family: var(--display); font-size: 0.8rem; font-weight: 700; color: var(--text-2); text-transform: uppercase; letter-spacing: 1.2px; margin-top: 2px; }
 
     /* ---------- cronómetro ---------- */
     .timer { text-align: center; padding: 6px 0 2px; }
-    .timer .t { font-size: 2.2rem; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -0.5px; }
-    .timer .t.idle { color: var(--text-2); font-size: 1.3rem; }
-    .timer .l { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-2); }
+    .timer .t { font-family: var(--display); font-size: 3rem; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; letter-spacing: 0.5px; color: var(--accent); text-shadow: 0 0 28px var(--accent-glow); }
+    .timer .t.idle { color: var(--text-2); font-size: 1.5rem; text-shadow: none; }
+    .timer .l { font-family: var(--display); font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--text-2); margin-top: 6px; }
 
     /* ---------- detalle plegable ---------- */
-    details.detail { border-top: 1px solid var(--line); margin-top: 20px; padding-top: 4px; }
-    details.detail summary { list-style: none; cursor: pointer; padding: 14px 0 6px; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.7px; color: var(--text-2); }
+    details.detail { border-top: 1px solid var(--line); margin-top: 22px; padding-top: 4px; }
+    details.detail summary { list-style: none; cursor: pointer; padding: 14px 0 6px; font-family: var(--display); font-size: 0.95rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.3px; color: var(--text-2); }
     details.detail summary::-webkit-details-marker { display: none; }
     details.detail summary::after { content: " ▾"; }
     details.detail[open] summary::after { content: " ▴"; }
     details.detail p { font-size: 0.9rem; color: var(--text); margin: 0 0 10px; }
-    .note-line { font-size: 0.85rem; color: var(--pull); background: rgba(245, 181, 68, 0.1); border: 1px solid rgba(245, 181, 68, 0.25); border-radius: 12px; padding: 10px 14px; margin-bottom: 12px; }
+    details.detail p b { font-family: var(--display); font-size: 1.05rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--accent-2); }
+    .note-line { font-size: 0.85rem; color: var(--pull); background: rgba(245, 181, 68, 0.1); border: 1px solid rgba(245, 181, 68, 0.25); border-radius: 14px; padding: 10px 14px; margin-bottom: 12px; }
 
-    /* ---------- listas de historial ---------- */
+    /* ---------- listas de resumen ---------- */
     .hist { margin: 0; padding: 0; list-style: none; }
     .hist li { display: flex; justify-content: space-between; align-items: center; padding: 11px 0; border-bottom: 1px solid var(--line); font-size: 0.85rem; }
     .hist li:last-child { border-bottom: none; }
-    .hist .when { font-weight: 700; }
+    .hist .when { font-family: var(--display); font-size: 1.15rem; font-weight: 700; }
     .hist .det { color: var(--text-2); font-size: 0.78rem; font-variant-numeric: tabular-nums; }
 
     /* ---------- gráfica de progreso ---------- */
     .chart-card { padding: 16px 14px 12px; }
     .chart-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 6px; }
-    .chart-head .title { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.7px; color: var(--text-2); }
-    .chart-head .delta { font-size: 0.8rem; font-weight: 800; font-variant-numeric: tabular-nums; }
-    .delta.up { color: var(--accent); }
+    .chart-head .title { font-family: var(--display); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--text-2); }
+    .chart-head .delta { font-family: var(--display); font-size: 1.1rem; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: 0.4px; }
+    .delta.up { color: var(--accent); text-shadow: 0 0 16px var(--accent-glow); }
     .delta.flat { color: var(--text-2); }
     .delta.down { color: var(--stop); }
     .chart svg { display: block; width: 100%; height: auto; overflow: visible; }
     .chart-caption { font-size: 0.7rem; color: var(--text-2); text-align: center; margin-top: 6px; min-height: 1.1rem; font-variant-numeric: tabular-nums; }
 
     /* ---------- varios ---------- */
-    .error-bar { background: rgba(255, 84, 112, 0.12); border: 1px solid rgba(255, 84, 112, 0.4); color: var(--danger); border-radius: 12px; padding: 10px 14px; font-size: 0.82rem; margin-bottom: 14px; }
+    .error-bar { background: rgba(255, 84, 112, 0.12); border: 1px solid rgba(255, 84, 112, 0.4); color: var(--danger); border-radius: 14px; padding: 10px 14px; font-size: 0.82rem; margin-bottom: 14px; }
     .empty { color: var(--text-2); font-size: 0.85rem; text-align: center; padding: 18px 0; }
     .build-id { text-align: center; font-size: 0.65rem; color: var(--text-2); opacity: 0.5; margin-top: 26px; font-family: ui-monospace, monospace; }
     [hidden] { display: none !important; }
 
-    section[id^="screen-"]:not([hidden]) { animation: screen-in 0.22s ease both; }
-    @keyframes screen-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+    section[id^="screen-"]:not([hidden]) { animation: screen-in 0.26s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+    @keyframes screen-in { from { opacity: 0; transform: translateY(14px) scale(0.985); } to { opacity: 1; transform: none; } }
     @media (prefers-reduced-motion: reduce) {
-      section[id^="screen-"]:not([hidden]) { animation: none; }
+      section[id^="screen-"]:not([hidden]), .item, .stepper-value.bump { animation: none; }
       button:active, .item:active { transform: none; }
+      .live-dot { animation: none; }
     }
   </style>
 </head>
@@ -271,7 +328,7 @@
     <!-- HOME -->
     <section id="screen-home">
       <p class="eyebrow">Tu tutor de gimnasio</p>
-      <h1>Hola 👋</h1>
+      <h1 id="home-greeting">Hola 👋</h1>
       <p class="sub" id="home-sub">Listo para entrenar.</p>
 
       <div class="stats">
@@ -291,7 +348,7 @@
         <button id="btn-start">Empezar entrenamiento</button>
       </div>
 
-      <button id="btn-browse-catalog" class="secondary">📋 Ver ejercicios y pesos</button>
+      <button id="btn-browse-catalog" class="secondary">📋 Máquinas y pesos</button>
 
       <div id="history-card" hidden style="margin-top:20px;">
         <div class="group-header">Últimos entrenamientos</div>
@@ -368,7 +425,7 @@
         </div>
 
         <h3>Sobre este grupo muscular</h3>
-        <p id="cd-muscle-info"></p>
+        <div id="cd-muscle-info"></div>
 
         <h3>Ficha de la máquina</h3>
         <label for="cd-muscle-input">Grupo muscular</label>
@@ -532,7 +589,7 @@
         </div>
 
         <h3>Sobre este grupo muscular</h3>
-        <p id="ex-muscle-info"></p>
+        <div id="ex-muscle-info"></div>
         <h3>Notas de la máquina</h3>
         <div class="row">
           <input id="ex-notes-input" type="text" placeholder="p. ej. asiento en posición 3" />
@@ -565,7 +622,8 @@
 
     <!-- RESUMEN -->
     <section id="screen-summary" hidden>
-      <h1>💪 ¡Entrenamiento terminado!</h1>
+      <p class="eyebrow">💪 Hecho</p>
+      <h1 class="hero" id="summary-title">¡Buen trabajo!</h1>
       <p class="sub" id="summary-headline">Buen trabajo.</p>
 
       <div class="stats">
@@ -602,18 +660,34 @@
     // Contenido educativo por grupo muscular — coincidencia por palabra clave,
     // así funciona aunque el texto del grupo varíe ("Pecho", "Pecho / Tríceps"…).
     const MUSCLE_INFO = [
-      { match: /pecho/i, text: "El pectoral es un músculo grande que responde bien tanto a series pesadas de pocas repeticiones como a series más largas de aislamiento. Controla la bajada, aprieta arriba y evita que los hombros hagan todo el trabajo por ti." },
-      { match: /espalda/i, text: "La espalda es un grupo grande y resistente que tolera bien el volumen. Piensa en \"tirar con los codos\", no solo con las manos, para implicar más el dorsal y menos el brazo." },
-      { match: /hombro|deltoides/i, text: "El deltoides tiene tres cabezas (delantera, lateral y posterior), así que merece la pena variar el ángulo con el tiempo. Es un músculo pequeño: suele responder mejor a series algo más ligeras y controladas que a cargas máximas." },
-      { match: /pierna|cuádriceps|cuadriceps|glúteo|gluteo/i, text: "Las piernas son el grupo muscular más grande del cuerpo y toleran mucho volumen — por eso funcionan mejor con rangos más altos de repeticiones (10-15) que el tren superior. Evita bloquear del todo la rodilla arriba del movimiento." },
-      { match: /bíceps|biceps|tríceps|triceps/i, text: "Son músculos pequeños que se fatigan rápido y en los que es fácil hacer trampa balanceando el cuerpo. Prioriza el rango completo de movimiento controlado por encima de subir el peso." },
-      { match: /cardio/i, text: "El cardio antes de la fuerza sube la frecuencia cardiaca, activa las articulaciones y mejora tu recuperación entre series, además de sumar para tu salud cardiovascular a largo plazo." },
+      { match: /pecho/i, title: "Pecho", text: "El pectoral es un músculo grande que responde bien tanto a series pesadas de pocas repeticiones como a series más largas de aislamiento. Controla la bajada, aprieta arriba y evita que los hombros hagan todo el trabajo por ti." },
+      { match: /espalda/i, title: "Espalda", text: "La espalda es un grupo grande y resistente que tolera bien el volumen. Piensa en \"tirar con los codos\", no solo con las manos, para implicar más el dorsal y menos el brazo." },
+      { match: /hombro|deltoides/i, title: "Hombro", text: "El deltoides tiene tres cabezas (delantera, lateral y posterior), así que merece la pena variar el ángulo con el tiempo. Es un músculo pequeño: suele responder mejor a series algo más ligeras y controladas que a cargas máximas." },
+      { match: /pierna|cuádriceps|cuadriceps|glúteo|gluteo/i, title: "Piernas", text: "Las piernas son el grupo muscular más grande del cuerpo y toleran mucho volumen — por eso funcionan mejor con rangos más altos de repeticiones (10-15) que el tren superior. Evita bloquear del todo la rodilla arriba del movimiento." },
+      { match: /bíceps|biceps|tríceps|triceps/i, title: "Brazos", text: "Son músculos pequeños que se fatigan rápido y en los que es fácil hacer trampa balanceando el cuerpo. Prioriza el rango completo de movimiento controlado por encima de subir el peso." },
+      { match: /cardio/i, title: "Cardio", text: "El cardio antes de la fuerza sube la frecuencia cardiaca, activa las articulaciones y mejora tu recuperación entre series, además de sumar para tu salud cardiovascular a largo plazo." },
     ];
     function muscleInfo(group) {
       const hits = MUSCLE_INFO.filter((m) => m.match.test(group || ""));
       return hits.length
-        ? hits.map((m) => m.text).join(" ")
-        : "Un grupo muscular importante dentro de tu rutina — prioriza la técnica correcta en cada repetición por encima del peso.";
+        ? hits.map((m) => ({ title: m.title, text: m.text }))
+        : [{ title: null, text: "Un grupo muscular importante dentro de tu rutina — prioriza la técnica correcta en cada repetición por encima del peso." }];
+    }
+    // Un párrafo por músculo implicado, con su nombre delante, en vez de un
+    // solo bloque de texto cuando la máquina toca tres grupos.
+    function renderMuscleInfo(id, group) {
+      const box = el(id);
+      box.innerHTML = "";
+      for (const part of muscleInfo(group)) {
+        const p = document.createElement("p");
+        if (part.title) {
+          const b = document.createElement("b");
+          b.textContent = part.title + " · ";
+          p.appendChild(b);
+        }
+        p.appendChild(document.createTextNode(part.text));
+        box.appendChild(p);
+      }
     }
 
     const el = (id) => document.getElementById(id);
@@ -707,6 +781,14 @@
       const today = new Date(n.getFullYear(), n.getMonth(), n.getDate());
       return Math.round((today - then) / 86400000);
     }
+    // Versión corta para las cajas de estadísticas: "Hoy", "Ayer", "3 d".
+    function shortRelative(iso) {
+      const d = calendarDaysAgo(iso);
+      if (d == null) return "—";
+      if (d <= 0) return "Hoy";
+      if (d === 1) return "Ayer";
+      return d < 30 ? `${d} d` : `${Math.round(d / 30)} m`;
+    }
     function relativeDay(iso) {
       const d = calendarDaysAgo(iso);
       if (d == null) return "—";
@@ -746,7 +828,13 @@
     }
 
     // ---------- inicio ----------
+    function greeting() {
+      const h = new Date().getHours();
+      return h < 6 ? "Buenas noches" : h < 14 ? "Buenos días" : h < 21 ? "Buenas tardes" : "Buenas noches";
+    }
+
     function renderHome() {
+      el("home-greeting").textContent = `${greeting()} 👋`;
       const hasActive = !!(state.sessionId && state.lastActiveScreen);
       el("active-session-banner").hidden = !hasActive;
       el("start-new-card").hidden = hasActive;
@@ -762,7 +850,7 @@
       el("stat-total").textContent = real.length || "0";
       const weekAgo = Date.now() - 7 * 24 * 3600 * 1000;
       el("stat-week").textContent = real.filter((s) => new Date(s.started_at).getTime() >= weekAgo).length;
-      el("stat-last").textContent = real.length ? relativeDay(real[0].started_at) : "—";
+      el("stat-last").textContent = real.length ? shortRelative(real[0].started_at) : "—";
       el("home-sub").textContent = real.length
         ? `Llevas ${real.length} ${real.length === 1 ? "entrenamiento" : "entrenamientos"} registrados.`
         : "Aún no tienes entrenamientos registrados. ¡Vamos con el primero!";
@@ -771,10 +859,11 @@
       list.innerHTML = "";
       const shown = real.slice(0, 8);
       el("history-card").hidden = shown.length === 0;
-      for (const s of shown) {
+      shown.forEach((s, i) => {
         const mins = sessionMinutes(s);
         const div = document.createElement("div");
         div.className = "item";
+        div.style.setProperty("--i", i);
         div.innerHTML =
           `<div class="item-main">
              <div class="name">${dayLabel(s.started_at)}</div>
@@ -783,7 +872,7 @@
            <span class="chev">›</span>`;
         div.addEventListener("click", () => showSessionDetail(s));
         list.appendChild(div);
-      }
+      });
     }
 
     function capitalize(txt) { return txt.charAt(0).toUpperCase() + txt.slice(1); }
@@ -846,7 +935,7 @@
       const box = el("sd-list");
       box.innerHTML = "";
       if (!rows.length) { box.innerHTML = '<p class="empty">No se registró ningún ejercicio.</p>'; return; }
-      for (const r of rows) {
+      rows.forEach((r, i) => {
         const ex = catalog.find((e) => e.id === r.exercise_id);
         const name = ex ? ex.name : "Ejercicio";
         const type = ex ? ex.movement_type : "cardio";
@@ -855,6 +944,7 @@
           : `${fmtNum(r.weight_used || 0)} kg · ${r.sets || 3}×${r.reps || 8}`;
         const div = document.createElement("div");
         div.className = "item " + type;
+        div.style.setProperty("--i", i);
         div.innerHTML =
           `<div class="item-main">
              <div class="name">${name}</div>
@@ -864,7 +954,7 @@
           `<span class="chev">›</span>`;
         if (ex) div.addEventListener("click", () => showCatalogDetail(ex, { from: "session-detail" }));
         box.appendChild(div);
-      }
+      });
     }
 
     // ---------- recomendación ----------
@@ -1183,6 +1273,7 @@
       box.innerHTML = "";
       let bucket = null;
       let starred = false;
+      let i = 0;
 
       for (const { ex, r } of rated) {
         if (r.bucket !== bucket) {
@@ -1200,9 +1291,9 @@
         const weightTxt = isCardio
           ? ""
           : last && last.weight_used != null
-          ? ` · ${last.weight_used} kg`
+          ? ` · ${fmtNum(last.weight_used)} kg`
           : ex.default_weight != null
-          ? ` · ref. ${ex.default_weight} kg`
+          ? ` · ref. ${fmtNum(ex.default_weight)} kg`
           : "";
 
         const isTop = r.bucket === 0 && !starred;
@@ -1211,6 +1302,7 @@
 
         const div = document.createElement("div");
         div.className = `item ${ex.movement_type}${isTop || r.running ? " top" : ""}${r.done && !r.running ? " done" : ""}`;
+        div.style.setProperty("--i", Math.min(i++, 12));
         div.innerHTML =
           `<div class="item-main">
              <div class="name">${ex.name}${r.done && !r.running ? " ✓" : ""}</div>
@@ -1244,18 +1336,19 @@
         h.className = "group-header";
         h.textContent = `${g.label} · ${items.length}`;
         box.appendChild(h);
-        for (const ex of items) {
+        items.forEach((ex, i) => {
           const last = historyByExercise[ex.id];
           const isCardio = ex.movement_type === "cardio";
           const weightTxt = isCardio
             ? "—"
             : last && last.weight_used != null
-            ? `${last.weight_used} kg`
+            ? `${fmtNum(last.weight_used)} kg`
             : ex.default_weight != null
-            ? `ref. ${ex.default_weight} kg`
+            ? `ref. ${fmtNum(ex.default_weight)} kg`
             : "sin peso";
           const div = document.createElement("div");
           div.className = "item " + ex.movement_type;
+          div.style.setProperty("--i", Math.min(i, 8));
           div.innerHTML =
             `<div class="item-main">
                <div class="name">${ex.name}</div>
@@ -1264,11 +1357,17 @@
              <span class="det" style="color:var(--text-2);font-size:0.78rem;font-weight:700;">${weightTxt}</span>`;
           div.addEventListener("click", () => showCatalogDetail(ex));
           box.appendChild(div);
-        }
+        });
       }
     }
 
-    function renderCatalogWeightDisplay() { el("cd-weight-display").textContent = catalogWeightDraft; }
+    function bump(id) {
+      const node = el(id);
+      node.classList.remove("bump");
+      void node.offsetWidth;   // reinicia la animación aunque se pulse rápido
+      node.classList.add("bump");
+    }
+    function renderCatalogWeightDisplay() { el("cd-weight-display").textContent = fmtNum(catalogWeightDraft); }
 
     async function adjustCatalogWeight(dir) {
       const ex = catalog.find((e) => e.id === currentCatalogExerciseId);
@@ -1276,6 +1375,7 @@
       const step = Number(ex.weight_step) > 0 ? Number(ex.weight_step) : 2.5;
       catalogWeightDraft = Math.max(0, catalogWeightDraft + dir * step);
       renderCatalogWeightDisplay();
+      bump("cd-weight-display");
       const { error } = await client.from(T.exercises).update({ default_weight: catalogWeightDraft }).eq("id", ex.id);
       if (error) showError("No se pudo guardar el peso: " + error.message);
       else { ex.default_weight = catalogWeightDraft; showError(""); }
@@ -1288,6 +1388,7 @@
       currentCatalogExerciseId = ex.id;
       el("cd-name").textContent = ex.name;
       el("cd-header").textContent = headerLine(ex);
+      el("cd-header").className = `eyebrow ${ex.movement_type}`;
 
       const isCardio = ex.movement_type === "cardio";
       el("cd-weight-card").hidden = isCardio;
@@ -1297,7 +1398,7 @@
       } else {
         el("cd-last-used").textContent =
           last && last.weight_used != null
-            ? `Último entrenamiento: ${last.weight_used} kg, ${relativeDay(last.completed_at)}.`
+            ? `Último entrenamiento: ${fmtNum(last.weight_used)} kg, ${relativeDay(last.completed_at)}.`
             : "Todavía no lo has hecho — deja aquí tu peso de referencia.";
         catalogWeightDraft = ex.default_weight != null ? Number(ex.default_weight)
           : last && last.weight_used != null ? Number(last.weight_used) : 0;
@@ -1309,7 +1410,7 @@
       document.querySelectorAll("#cd-type-chips .chip").forEach((c) =>
         c.classList.toggle("selected", c.dataset.type === ex.movement_type));
       el("cd-description").textContent = ex.description || (isCardio ? CARDIO_DESCRIPTION : DEFAULT_DESCRIPTION);
-      el("cd-muscle-info").textContent = muscleInfo(ex.muscle_group);
+      renderMuscleInfo("cd-muscle-info", ex.muscle_group);
       renderProgressChart("cd", ex);
       showScreen("catalog-detail");
     }
@@ -1328,7 +1429,7 @@
       showError("");
       Object.assign(ex, patch);
       el("cd-header").textContent = headerLine(ex);
-      el("cd-muscle-info").textContent = muscleInfo(ex.muscle_group);
+      renderMuscleInfo("cd-muscle-info", ex.muscle_group);
       el("cd-weight-card").hidden = ex.movement_type === "cardio";
       renderProgressChart("cd", ex);
     }
@@ -1404,7 +1505,7 @@
 
     function renderWeightDisplay() {
       const v = parseFloat(state.currentWeightDraft);
-      el("ex-weight-display").textContent = isNaN(v) ? "0" : v;
+      el("ex-weight-display").textContent = isNaN(v) ? "0" : fmtNum(v);
     }
     function adjustWeight(dir) {
       const ex = catalog.find((e) => e.id === state.currentExerciseId);
@@ -1412,6 +1513,7 @@
       state.currentWeightDraft = Math.max(0, (parseFloat(state.currentWeightDraft) || 0) + dir * step);
       saveState();
       renderWeightDisplay();
+      bump("ex-weight-display");
     }
     async function saveExerciseNotes() {
       const ex = catalog.find((e) => e.id === state.currentExerciseId);
@@ -1444,6 +1546,7 @@
 
       el("ex-name").textContent = ex.name;
       el("ex-header").textContent = headerLine(ex);
+      el("ex-header").className = `eyebrow ${ex.movement_type}`;
 
       const last = historyByExercise[ex.id];
       const suggested = suggestWeight(ex, last);
@@ -1455,9 +1558,9 @@
 
       if (suggested != null) {
         const dirTxt = last.next_time === "mas" ? "subiendo" : last.next_time === "menos" ? "bajando" : "manteniendo";
-        el("ex-recommendation").textContent = `Última vez ${last.weight_used} kg (${relativeDay(last.completed_at)}). Hoy te sugiero ${suggested} kg, ${dirTxt}.`;
+        el("ex-recommendation").textContent = `Última vez ${fmtNum(last.weight_used)} kg (${relativeDay(last.completed_at)}). Hoy te sugiero ${fmtNum(suggested)} kg, ${dirTxt}.`;
       } else if (ex.default_weight != null) {
-        el("ex-recommendation").textContent = `Sin historial todavía. Tu peso de referencia son ${ex.default_weight} kg.`;
+        el("ex-recommendation").textContent = `Sin historial todavía. Tu peso de referencia son ${fmtNum(ex.default_weight)} kg.`;
       } else {
         el("ex-recommendation").textContent = "Sin historial todavía — ajusta el peso con el que vas a empezar.";
       }
@@ -1466,7 +1569,7 @@
       el("ex-note-line").hidden = !ex.notes;
       el("ex-notes-input").value = ex.notes || "";
       el("ex-description").textContent = ex.description || DEFAULT_DESCRIPTION;
-      el("ex-muscle-info").textContent = muscleInfo(ex.muscle_group);
+      renderMuscleInfo("ex-muscle-info", ex.muscle_group);
       renderProgressChart("ex", ex);
 
       renderExerciseButtons();
@@ -1535,8 +1638,9 @@
       el("sum-count").textContent = state.summary.length;
       el("sum-time").textContent = totalMin;
       el("sum-volume").textContent = Math.round(strength.reduce((acc, i) => acc + (Number(i.weight) || 0), 0));
+      el("summary-title").textContent = state.summary.length ? "¡Buen trabajo!" : "Sesión cerrada";
       el("summary-headline").textContent = state.summary.length
-        ? "Todo guardado en tu historial."
+        ? "Entrenamiento guardado en tu historial."
         : "Esta vez no se registró ningún ejercicio.";
 
       const list = el("summary-list");
@@ -1545,7 +1649,7 @@
         const li = document.createElement("li");
         li.innerHTML = item.minutes != null
           ? `<span class="when">${item.name}</span><span class="det">${item.minutes} min</span>`
-          : `<span class="when">${item.name}</span><span class="det">${item.weight} kg · ${item.next_time}</span>`;
+          : `<span class="when">${item.name}</span><span class="det">${fmtNum(item.weight)} kg · ${feedbackLabel(item.next_time)}</span>`;
         list.appendChild(li);
       }
       if (!state.summary.length) list.innerHTML = '<li class="empty">Sin ejercicios registrados.</li>';
