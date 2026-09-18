@@ -1,7 +1,7 @@
 # Math Games 🧠
 
-PWA (sin build, HTML/CSS/JS puro) con **129 ejercicios de matemáticas**,
-cada uno numerado (#1-#129) para poder referirse a ellos sin ambigüedad.
+PWA (sin build, HTML/CSS/JS puro) con **162 ejercicios de matemáticas**,
+cada uno numerado (#1-#162) para poder referirse a ellos sin ambigüedad.
 Cálculo mental, geometría, álgebra, estadística, fracciones, dinero,
 probabilidad, coordenadas, tiempo y más. Nace como banco de pruebas
 rápido para sacar ideas de mecánicas (tipo Duolingo Math, Synthesis,
@@ -435,6 +435,556 @@ mirando un número en pantalla (no lo hay) — confirmando que el
 marcador sube +10 en cada acierto, y que fallar a propósito en #124
 resta una vida con el mensaje correcto.
 
+## Ejercicios #130-#135 (octava tanda, 17-09-2026 tarde) — tramo único
+
+### Tramo único — [`css/pack-s.css`](./css/pack-s.css)
+
+Sin filas `review` pendientes, se saltó el paso de revisión. Familia 7
+(manipulativos de aula) llevaba 3 rondas sin tocarse, así que se
+priorizó ahí, junto con prensa (NYT) e investigación educativa
+(subitizing).
+
+| # | Juego | Tema | Mecánica | De dónde sale |
+|---|---|---|---|---|
+| 130 | 🟧 Regletas relativas | Fracciones equivalentes | Con dos regletas Cuisenaire (una declarada "la unidad"), di qué fracción de la unidad representa la más corta — el mismo color/longitud vale distinto según qué se elija como entero | Cuisenaire rods, familia 7 |
+| 131 | 🔵 Bonos de agujeros | Number bonds / subitizing | Toca dos fichas con patrones de agujeros (sin ningún dígito impreso) cuya suma iguale la ficha objetivo, también mostrada como figura de agujeros | Numicon, familia 7 |
+| 132 | 🎯 Da en el número | Operaciones combinadas | Combina números de una bolsa con +, −, ×, ÷ (cada uno usable una vez, sin fracciones ni negativos) hasta alcanzar exacto el objetivo | NYT Digits, familia 2 |
+| 133 | ⚡ Vistazo relámpago | Subitizing | Un patrón de puntos aparece solo 500-900ms y desaparece; teclea cuántos había sin haber podido contarlos | Investigación en subitizing, familia 12 |
+| 134 | 📐 Encierra el perímetro | Perímetro | En un geoplano, construye una figura tocando clavos en orden hasta que su perímetro real coincida con el objetivo — al revés que #39, que da la figura y pide calcular | Geoboard, familia 7 — inversión 4.3 |
+| 135 | ⚽ Estadísticas de fútbol | Media, mediana y moda | Calcula la media o mediana de goles de 3 jugadores para decidir a cuál fichar — el cálculo es el medio para decidir, no la pregunta directa | Inventado: terna *media/mediana/moda + apostar + fútbol* |
+
+Verificación antes de publicar: `verify_regletas.mjs` sobre 200.000
+rondas de #130 (fracción siempre simplificada, longitudes siempre en
+1-10); `verify_bonos10.mjs` sobre 20.000 rondas de #131 (por fuerza
+bruta independiente: el banco tiene siempre EXACTAMENTE un par que
+suma el objetivo); `verify_objetivo.mjs` sobre 5.000 rondas de #132
+(cada paso de la solución de ejemplo recalculado desde cero, sin
+fracciones ni negativos, ningún número de partida reutilizado);
+`sim_flash.mjs` sobre 8.000 rondas de #133 (cantidad de puntos 3-9,
+distancia mínima entre puntos siempre respetada, exposición siempre
+en 500-900ms); `verify_geoclavos.mjs` sobre 20.000 rondas de #134
+(el rectángulo generador siempre cabe en la rejilla 6×6 y el objetivo
+es siempre par y alcanzable); `test_estadisticas.mjs` sobre 20.000
+rondas de #135 (media y mediana recalculadas de forma independiente,
+0 empates en la estadística preguntada). Los 135 ejercicios cargan sin
+error de consola, y los 6 nuevos se jugaron de verdad en el navegador
+calculando la respuesta correcta de forma independiente — incluyendo
+#134, donde el generador de la prueba eligió su propio rectángulo
+válido (no el de la ronda) para demostrar que cualquier figura
+correcta se acepta — confirmando que el marcador sube +10 en cada
+acierto, y que fallar a propósito en #134 resta una vida con el
+mensaje correcto.
+
+**Fallo real encontrado y corregido en #134 antes de publicar:** al
+jugarlo de verdad, el clic para cerrar la figura sobre el primer clavo
+fallaba de forma intermitente — el lado recién dibujado (una línea
+SVG) se pintaba encima del clavo y le robaba el evento de clic,
+porque solo los clavos ya tocados (`.gcv-nail`) tenían
+`pointer-events: none`, pero los LADOS (`.gcv-side`) no. Añadido
+`pointer-events: none` también a `.gcv-side`; reproducido el fallo
+antes del cambio y confirmado que desaparece después, en Chromium real
+(no fue un artefacto de la prueba).
+
+## Ejercicios #136-#140 (novena tanda, 17-09-2026 tarde) — tramo único
+
+### Tramo único — [`css/pack-t.css`](./css/pack-t.css)
+
+Sin filas `review` pendientes, se saltó el paso de revisión. Familias
+usadas: 1 (apps edtech, tape diagrams de Zearn), 5 (juegos de mesa /
+código César), 6 (mecánicas de videojuego, panel "mayor/menor" tipo
+puzle numérico), 11 (vida real, calidad/control) y 8 (retos lógicos,
+secuencias con intruso).
+
+| # | Juego | Tema | Mecánica | De dónde sale |
+|---|---|---|---|---|
+| 136 | 📊 Diagrama de tiras | Razones y reparto proporcional | Dos tiras formadas por segmentos iguales representan un total repartido; sin ver el valor de cada segmento, deduce cuánto vale 1 segmento o cuánto tiene una persona | Tape diagrams (Zearn/Singapore Math), familia 1 |
+| 137 | 🔐 Máquina de cifrado | Aritmética modular | Dada una letra, un desplazamiento k y si toca cifrar o descifrar, calcula la letra resultante en un alfabeto circular de 27 símbolos (con envoltura) | Cifrado César, familia 5 |
+| 138 | ✈️ Panel de vuelos | Valor posicional | Con 4 dígitos sueltos, colócalos en orden para formar el mayor o el menor número posible — el caso "menor" con un 0 en el banco obliga a razonar que el 0 nunca puede ir primero | Puzles de valor posicional tipo "Number Sequencer", familia 6 |
+| 139 | 🎚️ Iguala el relleno | Porcentajes | Sin ver ningún número, arrastra una barra hasta que su relleno iguale a ojo (con tolerancia) el de una barra de referencia marcada con un porcentaje objetivo oculto | Inventado: terna *porcentaje + arrastrar + comparar a ciegas* |
+| 140 | 🥐 La hornada con un fallo | Secuencias | De una fila de bandejas con cantidades que siguen un patrón (aritmético, geométrico o cíclico), toca la única que rompe el patrón | Control de calidad / detección de intrusos en secuencias, familia 8 — inversión 4.3 sobre "completa la secuencia" |
+
+Verificación antes de publicar: `verify_tiras.mjs` sobre 20.000 rondas
+de #136 (unidad y reparto siempre recalculados de forma independiente,
+sin restos); `test_enigma.mjs` sobre 20.000 rondas de #137 (cifrado y
+descifrado comprobados con la fórmula modular reimplementada desde
+cero, ~70% de los casos con envoltura del alfabeto); `test_maxmin.mjs`
+sobre 8.000 rondas de #138 (mayor y menor recalculados por fuerza
+bruta independiente, con el caso especial del 0 en primera posición
+verificado en más de 2.800 rondas); `verify_iguala.mjs` sobre 10.000
+generaciones de #139 (objetivo siempre múltiplo de 5 entre 10 y 90);
+`test_hornada.mjs` sobre 20.000 rondas de #140 (la bandeja fallona
+detectada de forma independiente por un solucionador que prueba los
+tres patrones posibles, nunca reutilizando la lógica interna del
+juego). Los 140 ejercicios cargan sin error de consola, y los 5 nuevos
+se jugaron de verdad en el navegador calculando la respuesta correcta
+de forma independiente, confirmando que el marcador sube +10 en cada
+acierto; además se comprobó en #137 que fallar a propósito resta una
+vida con el mensaje correcto.
+
+**Hallazgo de auditoría (sin cambio de código):** al investigar la
+familia de "Fermi" se confirmó que ya existe como ejercicio (#pack-7,
+"¿De qué orden?"), así que se descartó antes de construir nada. Más
+importante: comparando el código de #132 "Da en el número" (tanda
+anterior, inspirado en NYT Digits) con [`game-cifras.js`](./js/game-cifras.js)
+(#pack-4, ya existente) se confirmó que **ambos comparten el mismo
+núcleo mecánico** — combinar números con +/−/×/÷ persiguiendo un
+objetivo, estilo "Cifras y Letras"/Countdown Numbers. No se detectó
+la tanda pasada porque solo se comprobó contra `game-codigo.js`
+(Mastermind). Se documenta aquí en vez de reescribir #132 sin que
+nadie lo haya pedido: no está marcado para revisar y funciona bien
+matemáticamente por sí solo — pero queda anotado para que ninguna
+tanda futura proponga un tercer ejercicio con esta misma mecánica.
+También se descartó "Which One Doesn't Belong" por solapar con el
+ya existente `game-intruso.js` (odd-one-out).
+
+## Ejercicios #141-#145 (décima tanda, 17-09-2026) — tramo único
+
+### Tramo único — [`css/pack-u.css`](./css/pack-u.css)
+
+Sin filas `review` pendientes, se saltó el paso de revisión. Familias
+usadas: 4 (puzzles de lápiz y papel), 10 (concursos de TV y juegos
+populares) y 11 (vida real) — las 3 únicas que quedaban fuera de la
+unión de familias de las 3 rondas anteriores.
+
+| # | Juego | Tema | Mecánica | De dónde sale |
+|---|---|---|---|---|
+| 141 | ▢ Nonograma mini | Lógica | Rejilla 4×4 con pistas de fila/columna (longitudes de tramos rellenos); hay que deducir qué celdas van llenas para que cuadren TODAS las pistas a la vez | Nonograma / Griddler / Picross, familia 4 |
+| 142 | 🔢 Descifra la suma | Aritmética con letras | Suma `AB + C = DE` donde cada letra es un dígito distinto; se acepta cualquier asignación que cumpla la ecuación, no solo la generada | Cryptarithm / SEND+MORE=MONEY (Henry Dudeney), familia 4 |
+| 143 | 📉 Compra y vende | Finanzas | Arrastra un marcador sobre la línea de tiempo de precios de una acción hasta el día en que más se habría ganado vendiendo | Inventado, inspirado en juegos de bolsa educativos (Stock Market Game), familia 11 |
+| 144 | 🧾 La factura por tramos | Tarifas por tramos | Una tarifa de agua o luz cobra distinto precio por tramos de consumo; hay que sumar cada tramo a su propio precio, no multiplicar todo por la tarifa más alta | Inventado, inspirado en tarifas progresivas reales, familia 11 |
+| 145 | 🦆 La oca numérica | Operaciones con reglas | Suma la tirada de dado a la posición y aplica la regla de la casilla especial (oca = salta a la siguiente oca; puente = salto fijo) para hallar la casilla final | Juego de la oca (juego popular tradicional), familia 10 |
+
+Verificación antes de publicar: `verify_nonograma.mjs` sobre 2.000
+rondas de #141 (solución única confirmada por fuerza bruta exhaustiva
+sobre las 65.536 rejillas 4×4 posibles; un bug real en la rejilla de
+reserva —con 3 soluciones en vez de 1— se detectó y corrigió antes de
+publicar); `verify_criptaritmo.mjs` sobre 2.000 rondas de #142 (unicidad
+canónica comprobada por fuerza bruta sobre las 5!=120 permutaciones de
+cada ronda, tras confirmar por fuerza bruta global que la forma
+`AB+C=DE` tiene una simetría B↔C inevitable — dos letras con el mismo
+peso en la suma — por lo que "exactamente una solución" solo tiene
+sentido salvo ese intercambio; la corrección se hace sobre la propiedad
+aritmética, nunca comparando con la solución generada, la misma lección
+del bug de `game-kenken.js`); `verify_bolsa.mjs` sobre 10.000 rondas de
+#143 (mejor día y ganancia máxima recalculados de forma independiente,
+siempre estrictamente positiva); `verify_factura.mjs` sobre 10.000
+rondas de #144 (importe recalculado tramo a tramo, tarifas siempre
+estrictamente crecientes, sin huecos ni solapes entre tramos);
+`verify_oca.mjs` sobre 10.000 rondas de #145 (destino final recalculado
+de forma independiente, la regla nunca se encadena más de una vez, sin
+solapes entre casillas especiales). Los 145 ejercicios cargan sin error
+de consola, y los 5 nuevos se jugaron de verdad en el navegador
+calculando la respuesta correcta de forma independiente, confirmando
+que el marcador sube +10 en cada acierto.
+
+**Fallo real encontrado y corregido en #143 antes de publicar:** al
+jugarlo de verdad, arrastrar el marcador no movía nada — el marcador
+visual (`.bls-marker`) se dibuja encima de la zona de arrastre real
+(`.bls-hit`, más grande para poder tocarla con el pulgar) y, al nacer
+centrado exactamente sobre ella, le robaba todos los eventos de puntero
+desde el primer fotograma. Mismo bug que `.gcv-side`/`.gcv-nail` en
+`game-geoclavos.js` de una tanda anterior: añadido `pointer-events: none`
+a `.bls-marker`; reproducido el fallo antes del cambio (el día mostrado
+nunca cambiaba al arrastrar) y confirmado que desaparece después, en
+Chromium real.
+
+**Hallazgo de auditoría (sin cambio de código):** al investigar la
+familia 5 (juegos de mesa) para una idea de "múltiplos y sincronizar en
+un circo" se descubrió que `game-malabares.js` (#pack-8, ya existente)
+YA es exactamente esa mecánica (m.c.m. de periodos); descartada antes de
+construir nada. También se descartó "reparte el presupuesto en
+categorías por porcentaje" al descubrir que `game-sobres.js` (#pack-7,
+"Reparte la paga") ya es esa mecánica, y "pinta una pared calculando el
+área" al descubrir que `game-pintor.js` (#pack-4) ya la cubre. Una
+cuarta idea ("el precio justo": pujar sin pasarse) se descartó por
+solapar temáticamente con `game-puja.js` (#pack-9), aunque su mecánica
+concreta —búsqueda binaria con pistas de más/menos— difiera; se
+sustituyó por "la oca numérica" (#145).
+
+## Ejercicios #146-#149 (undécima tanda, 17-09-2026 noche) — tramo único
+
+### Tramo único — [`css/pack-v.css`](./css/pack-v.css)
+
+Sin filas `review` pendientes, se saltó el paso de revisión. Familias
+usadas: 3 (libros y divulgación), 5 (juegos de mesa) y 6 (mecánicas de
+videojuego) — las 3 únicas que quedaban fuera de la unión de familias
+de las 3 rondas anteriores. Tanda más modesta (4 ideas, no 5-6): la
+auditoría previa descartó 4 falsos positivos antes de escribir código
+(ver más abajo), y se prioriza calidad sobre forzar una quinta idea
+calcada.
+
+| # | Juego | Tema | Mecánica | De dónde sale |
+|---|---|---|---|---|
+| 146 | ⚖️ Pesas de Bachet | Numeración en base 3 | Con pesas de 1, 3, 9 y 27 que pueden ir al plato izquierdo (resta), al derecho (suma) o quedarse sin usar, pesa el objetivo exacto — es la representación en ternario equilibrado, única por construcción matemática | Problema de Bachet de Méziriac (Martin Gardner), familia 3 — aparcada en el backlog desde la primera ronda del día |
+| 147 | 🧮 La fila que cuadra | Múltiplos | Una fila de fichas fijas más un hueco; dada una clave (3, 4 o 5), toca la única ficha de un banco de 4 que hace que la suma total sea múltiplo de la clave | Sumoku (Blue Orange Games), familia 5 |
+| 148 | 🪜 La hilera que sube | Secuencias y puntuación | Dada una fila con números ya marcados en orden creciente y un número nuevo, decide si se podría marcar (solo si es mayor que el último) y cuántos puntos daría (su posición en la fila) | Qwixx (regla de orden estricto + puntuación posicional), familia 5 |
+| 149 | 🐢 Lineal contra exponencial | Crecimiento exponencial | Dos secuencias arrancan con la exponencial por detrás; calcula en qué paso la exponencial adelanta a la lineal por primera vez | Inventado, inspirado en la matemática de los juegos idle/incremental, familia 6 |
+
+Verificación antes de publicar: `verify_bachet.mjs` sobre los 40
+valores posibles de #146 (fuerza bruta exhaustiva sobre las 3⁴=81
+combinaciones de {-1,0,1}⁴ para cada objetivo, confirmando solución
+única en los 40 casos); `verify_sumafila.mjs` sobre 10.000 rondas de
+#147 (exactamente una candidata válida y las 4 distintas entre sí);
+`verify_hilera.mjs` sobre 10.000 rondas de #148 (orden estrictamente
+creciente y respuesta recalculada de forma independiente, con cobertura
+real de los casos válido/inválido); `verify_crecimiento.mjs` sobre
+10.000 rondas de #149 (paso de cruce recalculado por simulación paso a
+paso, nunca con logaritmos, y siempre en el rango 2-9). Los 149
+ejercicios cargan sin error de consola, y los 4 nuevos se jugaron de
+verdad en el navegador calculando la respuesta correcta de forma
+independiente, confirmando que el marcador sube +10 en cada acierto; se
+comprobó además en #148 que fallar a propósito resta una vida con el
+mensaje correcto.
+
+**Hallazgo de auditoría (sin cambio de código):** antes de programar,
+se descartaron 4 ideas por duplicar mecánicas ya existentes: Prime
+Climb (colores por factores primos) ya es `game-colorprimos.js`
+(#pack-11); Set (atributos todos-iguales-o-todos-distintos) ya es
+`game-trio.js` (#pack-5); Rummikub (grupos y escaleras) ya es
+`game-combina.js` (#pack-11); Yahtzee (elegir la categoría que más
+puntúa) ya es `game-categorias.js` (#pack-11). También se descartó una
+variante de dominó "que suma un número fijo" por ser la misma mecánica
+de complemento a un total que `game-amigos10.js`, solo con otro disfraz.
+
+## Ejercicios #150-#152 (duodécima tanda, 17-09-2026 noche) — tramo único
+
+### Tramo único — [`css/pack-w.css`](./css/pack-w.css)
+
+Sin filas `review` pendientes, se saltó el paso de revisión. Familias
+usadas: 2 (prensa), 7 (manipulativos de aula) y 12 (investigación
+educativa) — las 3 únicas que quedaban fuera de la unión de familias de
+las 3 rondas anteriores. Tanda modesta (3 ideas): el catálogo (149
+ejercicios antes de esta tanda) está ya muy saturado y la auditoría
+previa a programar descartó 2 ideas más por duplicado (ver más abajo);
+la familia 12 se investigó pero no dio ninguna mecánica nueva
+transferible a un solo ejercicio (spaced retrieval es una propiedad del
+reparto de rondas de toda la app, no de un ejercicio individual, y
+productive struggle es un principio de diseño, no una mecánica).
+
+| # | Juego | Tema | Mecánica | De dónde sale |
+|---|---|---|---|---|
+| 150 | 🔗 Conexión numérica | Propiedades de los números | 6 números se reparten en secreto en 2 grupos de 3 que comparten una propiedad matemática cada uno; toca los 3 que crees que van juntos, sin que se diga cuál es la regla | NYT Connections (agrupar por categoría compartida sin decirla), familia 2 |
+| 151 | 🦵 Salta a la decena | Estrategias de suma | Para sumar dos números por la estrategia de la recta numérica vacía, primero se salta hasta la siguiente decena; calcula el tamaño de ESE primer salto, no el resultado final | Recta numérica vacía / bridging through ten (Zearn, DreamBox, Singapore Math), familia 7 |
+| 152 | 🥧 Suma de fracciones circulares | Fracciones con denominador común | Dos fracciones de denominador distinto se muestran como porciones de tarta; toca, en una tarta de referencia dividida en el mínimo común múltiplo, el número de porciones que representa la suma | Fracciones circulares (manipulativo de aula), adaptado para trabajar la suma con denominador común, familia 7 |
+
+Verificación antes de publicar: `verify_conexion.mjs` sobre 3.000
+rondas de #150 (fuerza bruta sobre las 10 particiones posibles de 6
+números en 2 grupos de 3, confirmando que exactamente una es
+"doblemente coherente" bajo el catálogo completo de 8 propiedades, no
+solo las 2 usadas para generar la ronda); `verify_saltos.mjs` sobre
+10.000 rondas de #151 (primer salto, aterrizaje y suma final
+recalculados de forma independiente); `verify_sumafrac.mjs` sobre
+10.000 rondas de #152 (mínimo común múltiplo y conversión de ambas
+fracciones recalculados desde cero, suma siempre entera y sin pasarse
+de una tarta completa). Los 152 ejercicios cargan sin error de consola,
+y los 3 nuevos se jugaron de verdad en el navegador calculando la
+respuesta correcta de forma independiente, confirmando que el marcador
+sube +10 en cada acierto; se comprobó además en #151 que fallar a
+propósito resta una vida con el mensaje correcto.
+
+**Hallazgo de auditoría (sin cambio de código):** antes de programar,
+se descartaron 2 ideas más por duplicar mecánicas ya existentes:
+"construir un ángulo dado su valor arrastrando" ya es exactamente
+`game-angulo.js`; "encontrar el paso que falla en un cálculo resuelto"
+(worked examples + detección de error) ya es exactamente
+`game-error.js`.
+
+## Ejercicios #153-#154 (decimotercera tanda, 18-09-2026) — tramo único
+
+### Tramo único — [`css/pack-x.css`](./css/pack-x.css)
+
+Sin filas `review` pendientes. Familias usadas: 1 (apps edtech), 8
+(retos) y 9 (museos) — las 3 únicas fuera de la unión de familias de
+las 3 rondas anteriores. Tanda pequeña (2 ideas): el catálogo (152
+ejercicios) sigue muy saturado. "La rueda cuadrada" (familia 9, aparcada
+desde la primera ronda) volvió a estar disponible por rotación pero
+sigue aparcada: rediseñando la mecánica, la lección matemática real se
+reduce a "la separación entre baches debe igualar el lado del cuadrado",
+demasiado trivial para el motor de curvas paramétricas que exigiría
+dibujar bien. También se descartó "apila cajas por volumen en un
+almacén" al descubrir que ya es exactamente `game-almacen.js`.
+
+| # | Juego | Tema | Mecánica | De dónde sale |
+|---|---|---|---|---|
+| 153 | 🌱 El patrón que crece | Patrones crecientes | Un patrón visual de fichas crece paso a paso (se ven los pasos 1-3); hay que contar y deducir la regla para calcular un paso LEJANO (5-8) que no está dibujado | Visual Patterns (Fawn Nguyen / Kent Haines, rutina de aula), familia 8 |
+| 154 | 🏃 Esquiva a tiempo | Velocidad y tiempo | Un obstáculo se acerca a una distancia y velocidad dadas; decide con un solo toque si te da tiempo a cruzar tu propia distancia a tu propia velocidad antes de que llegue | Inventado (combinación forzada: velocidad+esquivar+videojuego retro) |
+
+Verificación antes de publicar: `verify_patronfiguras.mjs` sobre 10.000
+rondas de #153 (respuesta recalculada de forma independiente a partir
+de la regla lineal, rango de paso lejano y parámetros siempre dentro de
+lo esperado); `verify_esquiva.mjs` sobre 10.000 rondas de #154 (ambos
+tiempos recalculados de forma independiente por división exacta, nunca
+un empate entre el tiempo disponible y el necesario, cobertura
+equilibrada de ambos veredictos). Los 154 ejercicios cargan sin error
+de consola, y los 2 nuevos se jugaron de verdad en el navegador
+calculando la respuesta correcta de forma independiente, confirmando
+que el marcador sube +10 en cada acierto; se comprobó además en #154
+que fallar a propósito resta una vida con el mensaje correcto.
+
+## Ejercicios #155-#156 (decimocuarta tanda, 18-09-2026) — tramo único
+
+### Tramo único — [`css/pack-y.css`](./css/pack-y.css)
+
+Sin filas `review` pendientes. Familias usadas: 4 (puzzles de lápiz y
+papel), 10 (concursos de TV y juegos populares) y 11 (vida real) — las
+3 únicas fuera de la unión de familias de las 3 rondas anteriores.
+Tanda pequeña (2 ideas): "lotería/bingo mexicana" (familia 10) se
+descartó por no encarnar una mecánica matemática concreta (es
+principalmente emparejar por azar); "reparte la cuenta con propina"
+(familia 11) se descartó por combinar dos habilidades ya cubiertas por
+separado (porcentajes en `rebajas`, reparto igualitario en
+`compra`/`trueque`) sin mecánica nueva.
+
+| # | Juego | Tema | Mecánica | De dónde sale |
+|---|---|---|---|---|
+| 155 | 🔪 Sudoku asesino mini | Sudoku con jaulas | Sudoku 4×4 real (filas, columnas y cajas 2×2 sin repetir) sin pistas de partida: solo se ven jaulas con la suma de sus celdas (sin operador, sin repetir dígito dentro de la jaula) | Killer Sudoku, familia 4 — distinto de KenKen (cuadrado latino con operadores, sin restricción de caja) |
+| 156 | ⚽ La clasificación | Puntos por resultado | Una racha de resultados (victoria/empate/derrota) de un equipo; suma los puntos totales con la regla victoria=3, empate=1, derrota=0 | Tablas de clasificación deportivas reales, familia 11 |
+
+Verificación antes de publicar: `verify_asesino.mjs` (enumera por
+fuerza bruta las 288 rejillas 4×4 válidas de sudoku, confirmadas todas
+distintas y válidas; sobre 500 rondas de #155 comprueba que las jaulas
+cubren las 16 celdas, que exactamente 1 de las 288 rejillas cumple
+todas las sumas de jaula, y —tras el fix descrito abajo— que ninguna
+jaula repite un dígito en la solución elegida); `verify_clasificacion.mjs`
+sobre 10.000 rondas de #156 (puntos recalculados de forma
+independiente contando victorias/empates/derrotas). Los 156 ejercicios
+cargan sin error de consola, y los 2 nuevos se jugaron de verdad en el
+navegador calculando la respuesta correcta de forma independiente,
+confirmando que el marcador sube +10 en cada acierto; se comprobó
+además en #156 que fallar a propósito resta una vida con el mensaje
+correcto.
+
+**Fallo real encontrado y corregido en #155 antes de publicar:** al
+jugarlo de verdad varias veces seguidas, en aproximadamente 1 de cada 3
+partidas la rejilla objetivamente correcta (reconstruida de forma
+independiente resolviendo el puzzle desde las sumas de jaula visibles
+en el DOM, sin tocar el estado interno del juego) se marcaba como
+fallo. La causa: `generateAsesinoRound()` solo comprobaba que las sumas
+de jaula tuvieran una única rejilla compatible entre las 288 posibles,
+pero nunca comprobaba que, dentro de cada jaula, la solución elegida no
+repitiera un dígito — algo que el propio sudoku de base NO impide,
+porque una jaula puede cruzar filas, columnas y cajas sin restricción
+alguna entre sí. El resultado: algunas rondas generaban una jaula cuya
+ÚNICA solución posible (la correcta) repetía un dígito, violando la
+regla de "sin repetidos en la jaula" que el propio juego exige al
+comprobar la respuesta — la ronda era irresoluble incluso jugando
+perfectamente. Corregido añadiendo `cagesHaveNoInternalRepeat()`: la
+partición en jaulas se descarta y se reintenta si algún par de celdas
+de una misma jaula comparte dígito en la solución, antes incluso de
+comprobar la unicidad por sumas. Reproducido el fallo antes del cambio
+(fallaba en 2 de 3 partidas jugadas de verdad en Chromium) y confirmado
+que desaparece después (8 de 8 partidas correctas tras el fix).
+
+## Ejercicio #157 (decimoquinta tanda, 18-09-2026) — tramo único
+
+### Tramo único — [`css/pack-z.css`](./css/pack-z.css)
+
+Sin filas `review` pendientes. Familias usadas: 3 (libros), 5 (juegos
+de mesa) y 6 (mecánicas de videojuego) — las 3 únicas fuera de la
+unión de familias de las 3 rondas anteriores. Tanda mínima (1 idea):
+Mancala se descartó de nuevo (la captura real exige un tablero de dos
+filas enfrentadas, y una versión de solo-siembra-circular se parecería
+demasiado a `oca`); "dominó Matador" (suma fija de 7 en los extremos
+abiertos) se descartó por depender de estado de un tablero multi-turno
+difícil de comprimir en una sola ronda; Blokus se descartó de nuevo
+(piezas geométricas ya cubiertas por pentominós/tangram-like).
+
+| # | Juego | Tema | Mecánica | De dónde sale |
+|---|---|---|---|---|
+| 157 | 🎮 Fusiona como en 2048 | Potencias de 2 | Una fila con fichas y huecos; al deslizar hacia la izquierda los huecos se cierran y dos fichas iguales que queden entonces juntas se fusionan duplicando su valor — calcula el mayor valor resultante | 2048 (Gabriele Cirulli), familia 6 |
+
+Verificación antes de publicar: `verify_fusiona.mjs` sobre 20.000
+rondas (simulación de deslizar+fusionar reimplementada de forma
+independiente, confirmando que el máximo recalculado coincide siempre
+con el valor fusionado, que ese máximo es siempre único —sin empates—,
+y que la ficha "extra" opcional es siempre menor que el valor
+fusionado para que la pregunta no se pueda responder sin simular la
+fusión de verdad). Los 157 ejercicios cargan sin error de consola, y
+el nuevo se jugó de verdad en el navegador (4 partidas con distintas
+combinaciones generadas) calculando la respuesta correcta de forma
+independiente, confirmando que el marcador sube +10 en cada acierto;
+se comprobó además que fallar a propósito (respondiendo el valor SIN
+fusionar, el error típico de no darse cuenta de que el hueco se cierra)
+resta una vida con el mensaje correcto.
+
+## Ejercicios #158-#159 (decimosexta tanda, 18-09-2026) — tramo único
+
+### Tramo único — [`css/pack-aa.css`](./css/pack-aa.css)
+
+Sin filas `review` pendientes. Familias elegidas: 2 (prensa), 7
+(manipulativos de aula) y 12 (investigación educativa) — las 3 únicas
+fuera de la unión de familias de las 3 rondas anteriores. Investigación
+completamente estéril esta vez (12 consultas, cero ideas
+aprovechables): "NYT Connections 3x3" (bonus puzzle de sept-2026) es el
+mismo núcleo que `conexion` (#150, agrupar números por propiedad
+compartida) con una rejilla más grande — descartado por duplicado real.
+La balanza de dos platos para álgebra (PhET Equality Explorer), los
+bloques base-10 para valor posicional y las fichas Numicon de
+número-bonos ya existen en el catálogo como `balanza`, `bloques` y
+`bonos10` respectivamente; el geoboard digital también ya existe como
+`geoclavos`. La familia 12 solo devolvió principios de diseño
+instructivo (retrieval practice, spaced repetition, productive
+failure), no una mecánica de un solo ejercicio, igual que en rondas
+anteriores. Con la investigación vacía, tanda 100% inventada mediante
+el proceso 4.1-4.5 (concepto+verbo+contexto forzados, gesto que
+encarna las matemáticas, inversión, restricción arbitraria):
+
+- **`pitagoras`** (teorema de Pitágoras): una escalera apoyada en una
+  pared forma un triángulo rectángulo con el suelo. Se usan solo ternas
+  pitagóricas enteras (3,4,5 / 6,8,10 / 9,12,15 / 5,12,13 / 8,15,17 /
+  7,24,25) para que la respuesta sea siempre un entero exacto sin
+  ambigüedad. El lado que falta rota entre la hipotenusa (la escalera)
+  y cada cateto, obligando a aplicar la fórmula en ambos sentidos
+  (a²+b²=c² y c²−a²=b²) en vez de memorizar solo "sumar catetos". Tema
+  geométrico completamente ausente del catálogo hasta ahora — se
+  comprobó que ningún ejercicio existente enseña el teorema (los únicos
+  usos de `Math.sqrt` en el resto del catálogo son distancias internas
+  de colisión, sin relación pedagógica).
+- **`caminos`** (combinatoria, regla de Pascal): cuenta caminos
+  monótonos (solo derecha o solo abajo) en una cuadrícula. Cada ronda
+  muestra ya rellenos los dos vecinos (izquierda y arriba) de la celda
+  objetivo y solo pide esa celda, para que el gesto real sea aplicar la
+  regla aditiva "izquierda + arriba", no memorizar la fórmula
+  combinatoria C(n,k). Se comprobó que `laberinto` es un recorrido por
+  regla de divisibilidad, sin relación con contar caminos, así que no
+  hay solape de mecánica.
+
+| # | Juego | Tema | Mecánica | De dónde sale |
+|---|---|---|---|---|
+| 158 | 📐 Escalera y pared | Teorema de Pitágoras | Escalera apoyada en una pared: dados dos lados del triángulo rectángulo (ternas pitagóricas enteras), halla el tercero — el lado desconocido rota entre hipotenusa y catetos | Inventado (proceso 4.1-4.5), geometría ausente del catálogo |
+| 159 | 🧩 Cuadrícula de caminos | Combinatoria | Cuenta caminos monótonos (derecha/abajo) hasta una celda de una cuadrícula, sumando el valor de su vecina izquierda más el de su vecina de arriba (regla de Pascal) | Inventado (proceso 4.1-4.5), triángulo de Pascal |
+
+Verificación antes de publicar: `verify_pitagoras.mjs` y
+`verify_caminos.mjs`, cada uno sobre 20.000 rondas generadas,
+reimplementando la comprobación desde cero (nunca reutilizando las
+funciones internas del juego) — 0 fallos en ambos. Para `caminos` se
+confirmó además, mediante fuerza bruta con programación dinámica
+independiente sobre toda la rejilla, que "vecino-izquierda +
+vecino-arriba" coincide siempre con el recuento real de caminos hasta
+esa celda, incluida la celda de máximo valor posible en la rejilla
+(70). Los 159 ejercicios cargan sin error de consola en Chromium a
+400px de ancho, y los dos nuevos se jugaron de verdad en el navegador
+(8 rondas correctas seguidas cada uno, deduciendo la respuesta
+únicamente a partir del DOM —nunca del estado interno del juego—,
+confirmando que el marcador sube +10 en cada acierto); se comprobó
+además que fallar a propósito en ambos resta una vida con el mensaje
+de feedback correcto. Se agotó la numeración de pack de una sola letra
+(`pack-a.css` a `pack-z.css`); este tramo estrena `pack-aa.css` y la
+convención de dos letras para los packs siguientes.
+
+## Ejercicio #160 (decimoséptima tanda, 18-09-2026) — tramo único
+
+### Tramo único — [`css/pack-ab.css`](./css/pack-ab.css)
+
+Sin filas `review` pendientes. Familias elegidas: 1 (apps edtech), 8
+(retos) y 9 (museos) — las 3 únicas fuera de la unión de familias de
+las 3 rondas anteriores. Investigación de nuevo mayormente estéril (10
+consultas): Duolingo Math, Khan Academy Kids, SplashLearn, Math
+Playground/Coolmath4Kids no dieron ninguna mecánica nueva concreta;
+olimpiadas/AMC 8 confirman temas ya cubiertos sin aportar mecánica de
+un solo ejercicio; Exploratorium/MoMath no dieron detalle de mecánica
+nueva. Se evaluó "lanzar fichas para estimar π" (Exploratorium,
+Monte Carlo) y se descartó: para tener una única respuesta exacta
+habría que fijar de antemano cuántos puntos caen dentro/fuera, lo que
+lo convierte en un ejercicio de contar+dividir ya cubierto en espíritu
+por `estima`/`fermi`, sin mecánica realmente nueva que compense la
+complejidad visual de dibujar puntos dentro/fuera de un arco de forma
+creíble.
+
+Una idea sí pasó el filtro, de Zearn (tape diagrams, familia 1):
+**`raciones`** — división de fracciones como MEDIDA REPETIDA (cuántas
+raciones de tamaño 1/d caben en W litros enteros), en vez de como
+reparto proporcional. Auditoría previa: `tiras` (tanda anterior) ya usa
+un diagrama de tira para REPARTO PROPORCIONAL a:b de un total (dividir
+como "compartir desigualmente según una razón"); aquí el concepto es
+distinto — división como "cuántas veces cabe una fracción unitaria en
+un entero" — así que se implementa con una RECTA NUMÉRICA de marcas
+iguales, no una barra segmentada de dos partes, diferenciando también
+el aspecto visual de `tiras` y de `recta` (arrastre continuo 0-20, sin
+fracciones). La ronda rota entre pedir el número de raciones dado el
+total (N = W×d) y pedir el total entero dadas las raciones ya servidas
+(inversión 4.3, W = N/d), ambas derivadas del mismo par (W, d) para que
+la respuesta sea siempre un entero exacto.
+
+**Fallo real encontrado y corregido antes de publicar** (durante la
+captura de pantalla de verificación a 400 px, no durante la simulación
+en Node): en la dirección inversa, la recta dibujaba igualmente las
+marcas de litro entero CON SU NÚMERO IMPRESO (0, 1, 2…) hasta el propio
+límite W — como el ancho del dibujo coincide exactamente con la
+respuesta, el último número impreso en el eje ERA la respuesta, así que
+se podía acertar sin dividir nada, solo leyendo el eje. Corregido: en
+la dirección inversa las marcas nunca distinguen "entero" de
+"fracción" ni llevan número impreso — todas miden igual, así que hay
+que contar las N marcas de verdad y dividir entre d de cabeza, tal
+como pide el enunciado.
+
+| # | Juego | Tema | Mecánica | De dónde sale |
+|---|---|---|---|---|
+| 160 | 💊 Raciones de jarabe | División de fracciones | Recta numérica marcada en trozos de 1/d: halla cuántas raciones caben en W litros, o cuántos litros enteros son N raciones ya servidas | Zearn (tape diagrams), adaptado a recta para no solapar con `tiras` |
+
+Verificación antes de publicar: `verify_raciones.mjs` sobre 20.000
+rondas generadas (reimplementado desde cero), confirmando que
+N = W×d siempre exactamente y que ambas direcciones dan un entero
+sin resto, además de que el máximo N (90) cabe en el teclado de 2
+dígitos. Los 141 ejercicios cargan sin error de consola en Chromium a
+400 px de ancho. El nuevo se jugó de verdad en el navegador (10 rondas
+correctas seguidas, forzando ambas direcciones, deduciendo la
+respuesta únicamente del DOM, confirmando +10 en cada acierto tras
+corregir el fallo de arriba); se comprobó además que fallar a
+propósito resta una vida con el mensaje de feedback correcto.
+
+## Ejercicios #161-#162 (decimoctava tanda, 18-09-2026) — tramo único
+
+### Tramo único — [`css/pack-ac.css`](./css/pack-ac.css)
+
+Sin filas `review` pendientes. Familias elegidas: 4 (puzzles de lápiz y
+papel), 10 (concursos TV y juegos populares) y 11 (vida real) — las 3
+únicas fuera de la unión de familias de las 3 rondas anteriores.
+Familia 11 estéril de nuevo: precio por unidad se parece demasiado a
+`rebajas`; tarifa de taxi es la misma estructura lineal que
+`bolsa`/`horario`; conversión de divisas sería la misma mecánica de
+arrastrar-hasta-la-conversión que ya hace `conversion` (solo cambia la
+tasa). Familias 4 y 10 sí dieron ideas nuevas:
+
+- **`rascacielos`** (familia 4, puzzle Skyscrapers/Torres de Nikoli):
+  implementar el puzzle completo de deducción con pistas de borde
+  exigiría resolver sobre las 576 combinaciones de un cuadrado latino
+  4×4 — demasiado para una sola ronda de respuesta rápida. En su lugar
+  se aísla el núcleo matemático real: contar cuántos edificios se ven
+  desde un extremo de una fila de alturas distintas (un edificio se ve
+  si es más alto que TODOS los anteriores — "máximos por prefijo",
+  nunca contado antes en el catálogo). El skyline de barras ES la
+  cuenta: no hace falta ningún paso intermedio, solo mirar qué barras
+  destacan. También se consultaron Slitherlink, Masyu, Tents and Trees,
+  Fillomino y Kurodoko, descartados por exigir una interfaz de dibujo
+  de líneas/regiones que no encaja en una ronda de respuesta rápida.
+- **`dardos`** (familia 10, dardos 501): elegir, entre varias tiradas
+  candidatas (sencillo/doble/triple con su valor ya calculado), cuál
+  deja el marcador EXACTAMENTE en 0. La resta sola no basta: si una
+  tirada vale más de lo que queda, la partida real de dardos la anula
+  ("bust"), así que hay que aplicar también esa restricción, no solo
+  comparar números — la parte que un quiz de resta plano no tiene.
+  También se consultaron Countdown numbers round (ya cubierto por
+  `cifras`/`objetivo`) y Only Connect wall (ya cubierto por `conexion`).
+
+| # | Juego | Tema | Mecánica | De dónde sale |
+|---|---|---|---|---|
+| 161 | 🏙️ Skyline de rascacielos | Visibilidad y máximos | Cuenta cuántos edificios se ven desde un extremo de una fila de alturas distintas (un edificio se ve si es más alto que todos los anteriores) | Skyscrapers/Torres (Nikoli), núcleo aislado del puzzle completo |
+| 162 | 🎯 Cierra la partida | Resta con restricción | Elige, entre varias tiradas de dardos, cuál deja el marcador restante exactamente en 0 sin pasarse (bust) | Dardos 501 |
+
+Verificación antes de publicar: `verify_rascacielos.mjs` y
+`verify_dardos.mjs`, cada uno sobre 20.000 rondas generadas
+(reimplementando la comprobación desde cero) — 0 fallos en ambos. Para
+`dardos` se confirmó además que las 4 opciones son siempre valores
+distintos, que exactamente una coincide con el marcador restante y que
+siempre hay al menos una opción que se pasaría de verdad (bust real,
+no decorativo). Los 143 ejercicios cargan sin error de consola en
+Chromium a 400 px de ancho, y los dos nuevos se jugaron de verdad en el
+navegador (8 rondas correctas seguidas cada uno, deduciendo la
+respuesta únicamente del DOM, confirmando +10 en cada acierto); se
+comprobó además que fallar a propósito en ambos resta una vida con el
+mensaje de feedback correcto.
+
 ## Versiones (v2) y bandeja "Revisar"
 
 Cuando un ejercicio recibe una vuelta de mejoras, se marca con un
@@ -680,18 +1230,19 @@ Una vez publicado, esta app queda en:
 
 ## Qué hace la app
 
-- Menú con los 129 ejercicios numerados, organizados en pestañas
+- Menú con los 162 ejercicios numerados, organizados en pestañas
   🆕/👍/👎/🔧; cada uno abre en su propia pantalla (`#/game/<id>`), sin
   recargar la página.
 - Motor de preguntas compartido (`js/quiz-engine.js`) para los 18
   ejercicios de "pregunta + opciones o teclado" (`js/games-data.js` y
-  `js/games-data-2.js`); los otros 111 (`js/game-*.js` y
+  `js/games-data-2.js`); los otros 144 (`js/game-*.js` y
   `js/balloons-game.js`) tienen cada uno su propia mecánica de
   interacción (arrastrar, tocar en orden, emparejar, construir,
   escribir, clasificar, recorrer…).
-- Los estilos de cada tanda viven en su propio `css/pack-<letra>.css`
-  (de `pack-a.css` a `pack-r.css`, uno por tramo temático), para que
-  tocar una tanda no arrastre a las demás.
+- Los estilos de cada tanda viven en su propio `css/pack-<letra(s)>.css`
+  (de `pack-a.css` a `pack-z.css`, y de `pack-aa.css` en adelante una
+  vez agotado el alfabeto de una sola letra, uno por tramo temático),
+  para que tocar una tanda no arrastre a las demás.
 - Guarda cada partida en `football_scores` y muestra las últimas en el
   menú.
 - Se puede usar sin conexión gracias a un Service Worker que cachea el

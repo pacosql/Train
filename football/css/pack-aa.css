@@ -1,0 +1,84 @@
+/* Pack AA — decimosexta tanda (18-09-2026).
+   Prefijos: ptg- (pitagoras), cmg- (caminos).
+   Se agota la numeracion de una sola letra (pack-a.css .. pack-z.css) y
+   arranca la convencion de dos letras para los packs siguientes. */
+
+.ptg-wrap,
+.cmg-wrap {
+  display: flex;
+  justify-content: center;
+  margin: 18px 0;
+}
+
+.ptg-svg,
+.cmg-svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.ptg-wall,
+.ptg-ground {
+  stroke: var(--border);
+  stroke-width: 4;
+}
+
+.ptg-ladder {
+  stroke: var(--accent);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+
+.ptg-corner {
+  fill: var(--border);
+}
+
+.ptg-label {
+  font-size: 15px;
+  font-weight: 700;
+  fill: var(--text);
+  text-anchor: middle;
+}
+
+.cmg-gridline {
+  stroke: var(--border);
+  stroke-width: 1.5;
+}
+
+.cmg-cell {
+  fill: var(--card);
+  stroke: var(--border);
+  stroke-width: 2;
+}
+
+.cmg-cell-known {
+  stroke: var(--accent);
+}
+
+.cmg-cell-target {
+  fill: var(--accent);
+  stroke: var(--accent);
+}
+
+.cmg-num {
+  font-size: 13px;
+  font-weight: 700;
+  fill: var(--text);
+  text-anchor: middle;
+}
+
+.cmg-cell-target + .cmg-num {
+  fill: #fff;
+}
+
+.cmg-start {
+  fill: var(--text);
+}
+
+@media (max-width: 420px) {
+  .ptg-label {
+    font-size: 13px;
+  }
+  .cmg-num {
+    font-size: 11px;
+  }
+}
