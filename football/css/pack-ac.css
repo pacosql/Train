@@ -1,0 +1,60 @@
+/* Pack AC — decimoctava tanda (18-09-2026).
+   Prefijos: rsc- (rascacielos), dtb- (dardos). */
+
+.rsc-wrap {
+  display: flex;
+  justify-content: center;
+  margin: 18px 0;
+  overflow-x: auto;
+}
+
+.rsc-svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.rsc-bar {
+  fill: var(--accent);
+  opacity: 0.85;
+}
+
+.rsc-arrow {
+  font-size: 16px;
+  fill: var(--text);
+}
+
+.dtb-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+}
+
+.dtb-option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18px;
+}
+
+.dtb-label {
+  font-weight: 700;
+}
+
+.dtb-value {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.dtb-option.correct .dtb-value,
+.dtb-option.wrong .dtb-value {
+  color: #fff;
+}
+
+@media (max-width: 420px) {
+  .dtb-option {
+    padding: 12px 14px;
+  }
+}

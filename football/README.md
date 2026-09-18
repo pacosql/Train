@@ -1,7 +1,7 @@
 # Math Games 🧠
 
-PWA (sin build, HTML/CSS/JS puro) con **160 ejercicios de matemáticas**,
-cada uno numerado (#1-#160) para poder referirse a ellos sin ambigüedad.
+PWA (sin build, HTML/CSS/JS puro) con **162 ejercicios de matemáticas**,
+cada uno numerado (#1-#162) para poder referirse a ellos sin ambigüedad.
 Cálculo mental, geometría, álgebra, estadística, fracciones, dinero,
 probabilidad, coordenadas, tiempo y más. Nace como banco de pruebas
 rápido para sacar ideas de mecánicas (tipo Duolingo Math, Synthesis,
@@ -933,6 +933,58 @@ respuesta únicamente del DOM, confirmando +10 en cada acierto tras
 corregir el fallo de arriba); se comprobó además que fallar a
 propósito resta una vida con el mensaje de feedback correcto.
 
+## Ejercicios #161-#162 (decimoctava tanda, 18-09-2026) — tramo único
+
+### Tramo único — [`css/pack-ac.css`](./css/pack-ac.css)
+
+Sin filas `review` pendientes. Familias elegidas: 4 (puzzles de lápiz y
+papel), 10 (concursos TV y juegos populares) y 11 (vida real) — las 3
+únicas fuera de la unión de familias de las 3 rondas anteriores.
+Familia 11 estéril de nuevo: precio por unidad se parece demasiado a
+`rebajas`; tarifa de taxi es la misma estructura lineal que
+`bolsa`/`horario`; conversión de divisas sería la misma mecánica de
+arrastrar-hasta-la-conversión que ya hace `conversion` (solo cambia la
+tasa). Familias 4 y 10 sí dieron ideas nuevas:
+
+- **`rascacielos`** (familia 4, puzzle Skyscrapers/Torres de Nikoli):
+  implementar el puzzle completo de deducción con pistas de borde
+  exigiría resolver sobre las 576 combinaciones de un cuadrado latino
+  4×4 — demasiado para una sola ronda de respuesta rápida. En su lugar
+  se aísla el núcleo matemático real: contar cuántos edificios se ven
+  desde un extremo de una fila de alturas distintas (un edificio se ve
+  si es más alto que TODOS los anteriores — "máximos por prefijo",
+  nunca contado antes en el catálogo). El skyline de barras ES la
+  cuenta: no hace falta ningún paso intermedio, solo mirar qué barras
+  destacan. También se consultaron Slitherlink, Masyu, Tents and Trees,
+  Fillomino y Kurodoko, descartados por exigir una interfaz de dibujo
+  de líneas/regiones que no encaja en una ronda de respuesta rápida.
+- **`dardos`** (familia 10, dardos 501): elegir, entre varias tiradas
+  candidatas (sencillo/doble/triple con su valor ya calculado), cuál
+  deja el marcador EXACTAMENTE en 0. La resta sola no basta: si una
+  tirada vale más de lo que queda, la partida real de dardos la anula
+  ("bust"), así que hay que aplicar también esa restricción, no solo
+  comparar números — la parte que un quiz de resta plano no tiene.
+  También se consultaron Countdown numbers round (ya cubierto por
+  `cifras`/`objetivo`) y Only Connect wall (ya cubierto por `conexion`).
+
+| # | Juego | Tema | Mecánica | De dónde sale |
+|---|---|---|---|---|
+| 161 | 🏙️ Skyline de rascacielos | Visibilidad y máximos | Cuenta cuántos edificios se ven desde un extremo de una fila de alturas distintas (un edificio se ve si es más alto que todos los anteriores) | Skyscrapers/Torres (Nikoli), núcleo aislado del puzzle completo |
+| 162 | 🎯 Cierra la partida | Resta con restricción | Elige, entre varias tiradas de dardos, cuál deja el marcador restante exactamente en 0 sin pasarse (bust) | Dardos 501 |
+
+Verificación antes de publicar: `verify_rascacielos.mjs` y
+`verify_dardos.mjs`, cada uno sobre 20.000 rondas generadas
+(reimplementando la comprobación desde cero) — 0 fallos en ambos. Para
+`dardos` se confirmó además que las 4 opciones son siempre valores
+distintos, que exactamente una coincide con el marcador restante y que
+siempre hay al menos una opción que se pasaría de verdad (bust real,
+no decorativo). Los 143 ejercicios cargan sin error de consola en
+Chromium a 400 px de ancho, y los dos nuevos se jugaron de verdad en el
+navegador (8 rondas correctas seguidas cada uno, deduciendo la
+respuesta únicamente del DOM, confirmando +10 en cada acierto); se
+comprobó además que fallar a propósito en ambos resta una vida con el
+mensaje de feedback correcto.
+
 ## Versiones (v2) y bandeja "Revisar"
 
 Cuando un ejercicio recibe una vuelta de mejoras, se marca con un
@@ -1178,12 +1230,12 @@ Una vez publicado, esta app queda en:
 
 ## Qué hace la app
 
-- Menú con los 160 ejercicios numerados, organizados en pestañas
+- Menú con los 162 ejercicios numerados, organizados en pestañas
   🆕/👍/👎/🔧; cada uno abre en su propia pantalla (`#/game/<id>`), sin
   recargar la página.
 - Motor de preguntas compartido (`js/quiz-engine.js`) para los 18
   ejercicios de "pregunta + opciones o teclado" (`js/games-data.js` y
-  `js/games-data-2.js`); los otros 142 (`js/game-*.js` y
+  `js/games-data-2.js`); los otros 144 (`js/game-*.js` y
   `js/balloons-game.js`) tienen cada uno su propia mecánica de
   interacción (arrastrar, tocar en orden, emparejar, construir,
   escribir, clasificar, recorrer…).
