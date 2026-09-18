@@ -25,6 +25,7 @@ import { GAMES_PACK_20 } from "./games-pack-20.js";
 import { GAMES_PACK_21 } from "./games-pack-21.js";
 import { GAMES_PACK_22 } from "./games-pack-22.js";
 import { GAMES_PACK_23 } from "./games-pack-23.js";
+import { GAMES_PACK_24 } from "./games-pack-24.js";
 import { getRating, getRatingNote, setRating, initRatings, reloadRatings, fetchReworkNote } from "./ratings.js";
 
 // El número de cada juego (#1, #2…) es su posición en este array — para
@@ -57,6 +58,7 @@ const GAMES = [
   ...GAMES_PACK_21,
   ...GAMES_PACK_22,
   ...GAMES_PACK_23,
+  ...GAMES_PACK_24,
 ].map((g, i) => ({ ...g, num: i + 1 }));
 const GAMES_BY_ID = Object.fromEntries(GAMES.map((g) => [g.id, g]));
 

@@ -1,7 +1,7 @@
 # Math Games 🧠
 
-PWA (sin build, HTML/CSS/JS puro) con **163 ejercicios de matemáticas**,
-cada uno numerado (#1-#163) para poder referirse a ellos sin ambigüedad.
+PWA (sin build, HTML/CSS/JS puro) con **164 ejercicios de matemáticas**,
+cada uno numerado (#1-#164) para poder referirse a ellos sin ambigüedad.
 Cálculo mental, geometría, álgebra, estadística, fracciones, dinero,
 probabilidad, coordenadas, tiempo y más. Nace como banco de pruebas
 rápido para sacar ideas de mecánicas (tipo Duolingo Math, Synthesis,
@@ -1027,6 +1027,43 @@ deliberado en el nivel 1 (pierde una vida, el error aparece en
 resultados, el repaso lo re-pregunta) — después la portada ya ofrece
 "Continuar" con el progreso guardado.
 
+## Ejercicio #164 (segundo juego grande, 18-09-2026)
+
+### Tramo único — [`css/pack-ae.css`](./css/pack-ae.css)
+
+Segundo juego grande de la misma tanda manual, sacado de la `cola` de
+`work_state` (álgebra era uno de los huecos: no había ningún recorrido
+de "de la balanza a la ecuación" con andamiaje que se retira).
+`balanza` (#6) y `trueque` resuelven UNA ecuación por tanteo o por
+intercambio; aquí el núcleo es la SECUENCIA de operaciones iguales en
+los dos lados, y ese andamiaje desaparece etapa a etapa.
+
+| # | Juego | Tema | Pantallas | De dónde sale |
+|---|---|---|---|---|
+| 164 | 🪝 De la balanza a la ecuación | Ecuaciones de primer grado | Mapa de 5 etapas que se desbloquean → 1 Balanza (sacos x y pesas: quitar lo mismo de los dos platos y repartir) → 2 Símbolos (mismos botones, sin dibujo) → 3 Paso falso (juzgar si un paso ajeno es válido: inversión) → 4 Despeja de un golpe → 5 Reto a ciegas (tres ecuaciones que se comprueban al final) → resultados con explicación y repaso | Inventado: PhET Equality Explorer + inversión 5.3 + restricción "a ciegas" 5.4 |
+
+**Ciclo de aprendizaje**: la balanza hace visible la regla ("lo que
+quitas a un lado lo quitas al otro") y los botones SOLO permiten
+operaciones simétricas; la etapa 2 retira el dibujo pero mantiene los
+botones; la 3 invierte el papel (detectar los tres errores clásicos:
+quitar solo a un lado, quitar sacos solo a un lado, restar en un lado y
+sumar en el otro); la 4 exige hacerlo mentalmente; el reto quita el
+feedback inmediato. El progreso (etapa máxima, fallos por tipo) se
+guarda en `localStorage` y en `football_progress`, y el mapa permite
+rejugar cualquier etapa superada.
+
+**Generadores**: `a·x + c = b·x + d` con `a > b`, `x ∈ [1, 9]`,
+`d ≤ 20`; `verify_ecuacion.mjs` (20.000 rondas por generador, 0 fallos)
+comprueba que la solución es la única entera en [0, 50], que el reparto
+final es exacto y que cada paso "válido" se corresponde con la misma
+operación en ambos lados mientras cada paso "falso" rompe la solución
+(sin ambigüedad). Los 145 ficheros de juego cargan sin error de
+consola; flujo completo jugado dos veces en Chromium a 400 px
+(partida perfecta: 16 aciertos, 160 pts; partida con fallo deliberado
+en la balanza: pierde vida, el error se lista y el repaso lo cierra).
+Pulido pendiente: en las etapas 1-2 el historial de pasos crece hacia
+abajo y en móvil desplaza el dibujo de la balanza.
+
 ## Versiones (v2) y bandeja "Revisar"
 
 Cuando un ejercicio recibe una vuelta de mejoras, se marca con un
@@ -1272,12 +1309,12 @@ Una vez publicado, esta app queda en:
 
 ## Qué hace la app
 
-- Menú con los 163 ejercicios numerados, organizados en pestañas
+- Menú con los 164 ejercicios numerados, organizados en pestañas
   🆕/👍/👎/🔧; cada uno abre en su propia pantalla (`#/game/<id>`), sin
   recargar la página.
 - Motor de preguntas compartido (`js/quiz-engine.js`) para los 18
   ejercicios de "pregunta + opciones o teclado" (`js/games-data.js` y
-  `js/games-data-2.js`); los otros 145 (`js/game-*.js` y
+  `js/games-data-2.js`); los otros 146 (`js/game-*.js` y
   `js/balloons-game.js`) tienen cada uno su propia mecánica de
   interacción (arrastrar, tocar en orden, emparejar, construir,
   escribir, clasificar, recorrer…).
