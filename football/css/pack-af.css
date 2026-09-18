@@ -1,0 +1,26 @@
+/* Pack AF — tercer juego grande (18-09-2026). Prefijo: mdr- (medidor). */
+
+.mdr-badge { display: inline-block; font-size: 0.78rem; font-weight: 700; color: var(--accent); border: 1.5px solid var(--accent); border-radius: 999px; padding: 3px 10px; margin: 0 0 12px; }
+.mdr-progress { color: var(--muted); font-size: 0.9rem; text-align: center; margin: 8px 0 12px; }
+
+.mdr-map { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-width: 360px; margin: 12px auto; }
+.mdr-mission { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 12px 6px; border-radius: 14px; border: 2px solid var(--accent); background: var(--card); color: var(--text); font: inherit; cursor: pointer; }
+.mdr-mission[disabled] { opacity: 0.4; border-style: dashed; cursor: default; }
+.mdr-mission-done { background: var(--accent); color: #fff; }
+.mdr-mission-emoji { font-size: 1.6rem; }
+.mdr-mission-name { font-weight: 700; font-size: 0.9rem; }
+.mdr-mission-sub { font-size: 0.7rem; opacity: 0.85; }
+
+.mdr-wrap { display: flex; justify-content: center; margin: 10px 0; }
+.mdr-svg { max-width: 100%; height: auto; }
+.mdr-object { fill: var(--accent); opacity: 0.85; }
+.mdr-object-label { font-size: 14px; font-weight: 800; fill: #fff; text-anchor: middle; }
+.mdr-unit { fill: none; stroke: #fff; stroke-width: 2; stroke-dasharray: 4 3; }
+.mdr-ref { fill: #f5a623; }
+.mdr-ref-label { font-size: 12px; font-weight: 600; fill: var(--text); }
+
+.mdr-formula { text-align: center; font-size: 1.1rem; margin: 6px 0 10px; }
+.mdr-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin: 10px 0; }
+.mdr-learned { font-size: 0.9rem; color: var(--muted); background: var(--bg); border-radius: 10px; padding: 10px 12px; margin: 0 0 12px; }
+.mdr-errors { text-align: left; font-size: 0.88rem; padding-left: 18px; margin: 0 0 12px; }
+.mdr-errors li { margin: 6px 0; }

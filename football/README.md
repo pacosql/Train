@@ -1,7 +1,7 @@
 # Math Games 🧠
 
-PWA (sin build, HTML/CSS/JS puro) con **162 ejercicios de matemáticas**,
-cada uno numerado (#1-#162) para poder referirse a ellos sin ambigüedad.
+PWA (sin build, HTML/CSS/JS puro) con **166 ejercicios de matemáticas**,
+cada uno numerado (#1-#166) para poder referirse a ellos sin ambigüedad.
 Cálculo mental, geometría, álgebra, estadística, fracciones, dinero,
 probabilidad, coordenadas, tiempo y más. Nace como banco de pruebas
 rápido para sacar ideas de mecánicas (tipo Duolingo Math, Synthesis,
@@ -985,6 +985,151 @@ respuesta únicamente del DOM, confirmando +10 en cada acierto); se
 comprobó además que fallar a propósito en ambos resta una vida con el
 mensaje de feedback correcto.
 
+## Ejercicio #163 (primer juego grande multipantalla, 18-09-2026)
+
+### Tramo único — [`css/pack-ad.css`](./css/pack-ad.css)
+
+Primera tanda en **modo juego grande**: con 97 ejercicios sin valorar,
+el encargo pasa de micro-ejercicios de una pantalla a juegos completos
+con ciclo de aprendizaje. El tema sale del mapa de cobertura
+(`work_state.cobertura` en Supabase): estadística y probabilidad era el
+bloque más flojo (7 micro-ejercicios, y `ruleta` es el único que toca
+probabilidad, en una sola vuelta sin frecuencias).
+
+| # | Juego | Tema | Pantallas | De dónde sale |
+|---|---|---|---|---|
+| 163 | 🧿 Laboratorio del azar | Probabilidad y frecuencia | Portada con progreso → tutorial interactivo (toca los sectores rojos, gira 20 veces y compara frecuencia con probabilidad) → nivel 1 fracción de la ruleta → nivel 2 diseña la ruleta (inversión) → nivel 3 ¿qué es más probable? (ruleta/dado/bolsa) → nivel 4 caza el dado trucado (60 tiradas) → casino (5 apuestas) → resultados con explicación de cada fallo y repaso | Inventado: ley de los grandes números + inversión 5.3 + "el fallo enseña" 5.6 |
+
+**Ciclo de aprendizaje**: el tutorial es un ejemplo resuelto que se
+manipula (no se lee); el nivel 1 lleva andamiaje (los sectores del
+color van marcados) que desaparece en el repaso; los niveles cambian la
+REPRESENTACIÓN (leer una fracción → construirla → compararla entre
+dispositivos distintos → inferirla de frecuencias); el casino no quita
+vidas y simula el resultado real para enseñar que el suceso más
+probable también pierde a veces; la pantalla de resultados lista cada
+error con su explicación y lo re-pregunta hasta acertar una vez. El
+progreso (nivel máximo, fallos por tipo, partidas) se guarda en
+`localStorage` y en la tabla `football_progress` (clave `game, player`,
+creada con la Management API), y la portada ofrece "Continuar en el
+nivel N".
+
+**Generadores con solución única garantizada**: nivel 1, exactamente
+una de las 4 fracciones coincide con el recuento de sectores; nivel 3 y
+casino, los sucesos van separados al menos 8 puntos porcentuales y de
+dispositivos distintos; nivel 4, el dado justo tiene todas las caras
+entre 6 y 14 y el trucado una cara ≥ 22 con el resto ≤ 12 (60 tiradas
+cada uno). Verificado con `verify_azar.mjs`: 20.000 rondas por
+generador, recalculando las propiedades desde cero, 0 fallos. Los 144
+ficheros de juego cargan sin error de consola, y el juego se recorrió
+entero dos veces en Chromium a 400 px deduciendo cada jugada del DOM:
+partida perfecta (17 aciertos, 170 pts) y partida con un fallo
+deliberado en el nivel 1 (pierde una vida, el error aparece en
+resultados, el repaso lo re-pregunta) — después la portada ya ofrece
+"Continuar" con el progreso guardado.
+
+## Ejercicio #164 (segundo juego grande, 18-09-2026)
+
+### Tramo único — [`css/pack-ae.css`](./css/pack-ae.css)
+
+Segundo juego grande de la misma tanda manual, sacado de la `cola` de
+`work_state` (álgebra era uno de los huecos: no había ningún recorrido
+de "de la balanza a la ecuación" con andamiaje que se retira).
+`balanza` (#6) y `trueque` resuelven UNA ecuación por tanteo o por
+intercambio; aquí el núcleo es la SECUENCIA de operaciones iguales en
+los dos lados, y ese andamiaje desaparece etapa a etapa.
+
+| # | Juego | Tema | Pantallas | De dónde sale |
+|---|---|---|---|---|
+| 164 | 🪝 De la balanza a la ecuación | Ecuaciones de primer grado | Mapa de 5 etapas que se desbloquean → 1 Balanza (sacos x y pesas: quitar lo mismo de los dos platos y repartir) → 2 Símbolos (mismos botones, sin dibujo) → 3 Paso falso (juzgar si un paso ajeno es válido: inversión) → 4 Despeja de un golpe → 5 Reto a ciegas (tres ecuaciones que se comprueban al final) → resultados con explicación y repaso | Inventado: PhET Equality Explorer + inversión 5.3 + restricción "a ciegas" 5.4 |
+
+**Ciclo de aprendizaje**: la balanza hace visible la regla ("lo que
+quitas a un lado lo quitas al otro") y los botones SOLO permiten
+operaciones simétricas; la etapa 2 retira el dibujo pero mantiene los
+botones; la 3 invierte el papel (detectar los tres errores clásicos:
+quitar solo a un lado, quitar sacos solo a un lado, restar en un lado y
+sumar en el otro); la 4 exige hacerlo mentalmente; el reto quita el
+feedback inmediato. El progreso (etapa máxima, fallos por tipo) se
+guarda en `localStorage` y en `football_progress`, y el mapa permite
+rejugar cualquier etapa superada.
+
+**Generadores**: `a·x + c = b·x + d` con `a > b`, `x ∈ [1, 9]`,
+`d ≤ 20`; `verify_ecuacion.mjs` (20.000 rondas por generador, 0 fallos)
+comprueba que la solución es la única entera en [0, 50], que el reparto
+final es exacto y que cada paso "válido" se corresponde con la misma
+operación en ambos lados mientras cada paso "falso" rompe la solución
+(sin ambigüedad). Los 145 ficheros de juego cargan sin error de
+consola; flujo completo jugado dos veces en Chromium a 400 px
+(partida perfecta: 16 aciertos, 160 pts; partida con fallo deliberado
+en la balanza: pierde vida, el error se lista y el repaso lo cierra).
+Pulido pendiente: en las etapas 1-2 el historial de pasos crece hacia
+abajo y en móvil desplaza el dibujo de la balanza.
+
+## Ejercicio #165 (tercer juego grande, 18-09-2026)
+
+### Tramo único — [`css/pack-af.css`](./css/pack-af.css)
+
+Tercer juego grande de la tanda manual, del hueco "medida: ningún juego
+de estimación real con calibración progresiva" (`estima` es estimación
+de orden de magnitud tipo Fermi, otra cosa).
+
+| # | Juego | Tema | Pantallas | De dónde sale |
+|---|---|---|---|---|
+| 165 | 🖐️ El medidor del cuerpo | Estimación de medidas | Mapa de misiones → Longitud (tutorial: poner palmos sobre el objeto hasta cubrirlo = medir es iterar la unidad; 4 rondas con margen 25→10 % y referente a escala solo en las dos primeras) → Capacidad (lo mismo con la botella de 1 L) → Reto sin referente (3 rondas mezcladas, ±15 %) → resultados con explicación y repaso | Estimation 180 (Andrew Stadel) + referentes corporales |
+
+**Ciclo de aprendizaje**: el tutorial hace medir con el cuerpo (cada
+toque pone un palmo; la cuenta × 20 da la longitud); las rondas
+estrechan el margen y a mitad de misión retiran el referente, así que
+hay que recordar el tamaño del palmo/botella; el reto quita el
+referente del todo. Cada respuesta, acertada o no, superpone las
+unidades sobre el objeto con el recuento exacto y la desviación en %:
+el fallo enseña. Progreso (misiones superadas, fallos por tipo) en
+`localStorage` y `football_progress`.
+
+**Generadores**: longitudes múltiplos de 5 cm en [30, 200], capacidades
+enteras en [2, 30] L; aceptación `|estimación − real|·100 ≤ % · real`
+en aritmética entera (durante la verificación se vio que con coma
+flotante el borde exacto —230 cm para 200 al 15 %— quedaba ambiguo y se
+corrigió). `verify_medidor.mjs`: 20.000 rondas por misión, 0 fallos
+(el valor exacto siempre entra, el doble y la mitad nunca, y la banda
+entera coincide con la recalculada). Los 146 ficheros de juego cargan
+sin error de consola; flujo completo jugado dos veces en Chromium a
+400 px deduciendo el valor real de la GEOMETRÍA del dibujo (ancho/1,6
+o alto/8), no de ningún atributo: partida perfecta (15 aciertos, 130
+pts) y partida con fallo deliberado (pierde vida, error listado, repaso
+lo cierra). Pulido pendiente: el dibujo de capacidad es poco legible
+(recipiente bajo y ancho con hueco arriba) — merece un recipiente con
+forma y una escala vertical.
+
+## Ejercicio #166 (cuarto juego grande, 18-09-2026)
+
+### Tramo único — [`css/pack-ag.css`](./css/pack-ag.css)
+
+Cuarto y último juego grande de la tanda manual, del hueco "geometría:
+nada de transformaciones encadenadas".
+
+| # | Juego | Tema | Pantallas | De dónde sale |
+|---|---|---|---|---|
+| 166 | 🗝️ Taller de transformaciones | Transformaciones geométricas | Mapa de 5 salas cerradas → salas 1-4 (traslación · giro · espejo · mezcla): llevar la figura hasta la silueta punteada encadenando ↑↓←→, giro de 90° horario alrededor del centro y espejo respecto a la línea vertical central, con presupuesto de movimientos → sala 5 (inversión): decir qué transformación ÚNICA convierte la figura en la silueta → resultados con la secuencia solución de cada sala fallada y repaso | Inventado: composición de isometrías en cuadrícula + inversión 5.3 |
+
+**Ciclo de aprendizaje**: cada sala añade una transformación y sube el
+presupuesto; las figuras son quirales (L, J, P), así que giro y espejo
+nunca se confunden y ningún giro deshace un espejo; el fallo enseña la
+secuencia solución sobre la silueta; la sala final invierte el reto.
+Progreso (salas abiertas) en `localStorage` y `football_progress`.
+
+**Generadores**: la silueta se obtiene aplicando una secuencia
+aleatoria de movimientos permitidos (2-4 según la sala) y el presupuesto
+es esa longitud + 1; `verify_transforma.mjs` (5.000 salas por nivel)
+comprueba con un BFS propio que la silueta es alcanzable dentro del
+presupuesto, que la secuencia declarada llega de verdad y que en la sala
+5 exactamente una de las tres transformaciones convierte la figura en la
+silueta — 0 fallos. Los 147 ficheros de juego cargan sin error de
+consola; flujo completo jugado dos veces en Chromium a 400 px con un
+resolutor BFS independiente que lee la figura y la silueta del DOM y
+pulsa los botones: partida perfecta (11 aciertos, 110 pts) y partida con
+fallo deliberado (agotar el presupuesto: pierde vida, se enseña la
+solución, el error va a resultados y el repaso lo cierra).
+
 ## Versiones (v2) y bandeja "Revisar"
 
 Cuando un ejercicio recibe una vuelta de mejoras, se marca con un
@@ -1230,12 +1375,12 @@ Una vez publicado, esta app queda en:
 
 ## Qué hace la app
 
-- Menú con los 162 ejercicios numerados, organizados en pestañas
+- Menú con los 166 ejercicios numerados, organizados en pestañas
   🆕/👍/👎/🔧; cada uno abre en su propia pantalla (`#/game/<id>`), sin
   recargar la página.
 - Motor de preguntas compartido (`js/quiz-engine.js`) para los 18
   ejercicios de "pregunta + opciones o teclado" (`js/games-data.js` y
-  `js/games-data-2.js`); los otros 144 (`js/game-*.js` y
+  `js/games-data-2.js`); los otros 148 (`js/game-*.js` y
   `js/balloons-game.js`) tienen cada uno su propia mecánica de
   interacción (arrastrar, tocar en orden, emparejar, construir,
   escribir, clasificar, recorrer…).
