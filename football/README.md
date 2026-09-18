@@ -1,7 +1,7 @@
 # Math Games 🧠
 
-PWA (sin build, HTML/CSS/JS puro) con **166 ejercicios de matemáticas**,
-cada uno numerado (#1-#166) para poder referirse a ellos sin ambigüedad.
+PWA (sin build, HTML/CSS/JS puro) con **167 ejercicios de matemáticas**,
+cada uno numerado (#1-#167) para poder referirse a ellos sin ambigüedad.
 Cálculo mental, geometría, álgebra, estadística, fracciones, dinero,
 probabilidad, coordenadas, tiempo y más. Nace como banco de pruebas
 rápido para sacar ideas de mecánicas (tipo Duolingo Math, Synthesis,
@@ -1130,6 +1130,38 @@ pulsa los botones: partida perfecta (11 aciertos, 110 pts) y partida con
 fallo deliberado (agotar el presupuesto: pierde vida, se enseña la
 solución, el error va a resultados y el repaso lo cierra).
 
+## Ejercicio #167 (quinto juego grande, noche del 18-09-2026)
+
+### Tramo — [`css/pack-ai.css`](./css/pack-ai.css)
+
+Primera tanda nocturna con Fable. El juego sale de la `cola` de
+`work_state` (hueco "no hay recorrido de estrategias de cálculo mental
+enseñadas y luego exigidas"; `saltos` cubre solo "saltar a la decena"
+en una ronda).
+
+| # | Juego | Tema | Pantallas | De dónde sale |
+|---|---|---|---|---|
+| 167 | 🥋 Escuela de cálculo mental | Estrategias de cálculo mental | Dojo con cinturones: blanco (dobles y casi dobles), amarillo (compensar), naranja (descomponer), verde (mitades y dobles: ×5, ×4, ×25) — cada uno con ejemplo manipulable (la cuenta se reescribe paso a paso al tocar), 3 rondas guiadas con los pasos a la vista y 2 a ciegas con cuenta atrás de 15 s; cinturón negro: problemas mezclados donde primero hay que ELEGIR la estrategia que encaja y luego resolver; resultados con la cuenta de cada fallo y repaso | Inventado: rutinas de "number talks" + inversión 5.3 (elegir la estrategia) |
+
+**Ciclo de aprendizaje**: enseñar una estrategia con un ejemplo que se
+manipula, practicarla con andamiaje (los pasos intermedios visibles),
+retirarlo (a ciegas y contrarreloj) y, al final, invertir: reconocer
+QUÉ estrategia pide cada problema. Progreso (cinturón máximo, fallos
+por estrategia) en `localStorage` y `football_progress`.
+
+**Generadores y clasificación excluyente**: cada problema del cinturón
+negro se genera para encajar en una sola estrategia (multiplicación →
+mitades; resta o sumando acabado en 8/9 → compensar; sumandos a
+distancia ≤ 2 → dobles; el resto → descomponer). `verify_calculista.mjs`
+(20.000 rondas por estrategia, clasificación reimplementada desde cero):
+**cazó una ambigüedad real** — "dobles" generaba 7 + 9 o 18 + 19, que
+la regla clasifica como "compensar"; corregido antes de publicar
+haciendo que dobles nunca use números acabados en 8 o 9. Después, 0
+fallos y distribución equilibrada (~25 % cada estrategia). Flujo
+completo jugado dos veces en Chromium a 400 px leyendo el problema del
+enunciado y recalculando: partida perfecta (5 cinturones, 340 pts) y
+partida con fallo deliberado (vida perdida, error listado, repaso).
+
 ## Versiones (v2) y bandeja "Revisar"
 
 Cuando un ejercicio recibe una vuelta de mejoras, se marca con un
@@ -1375,12 +1407,12 @@ Una vez publicado, esta app queda en:
 
 ## Qué hace la app
 
-- Menú con los 166 ejercicios numerados, organizados en pestañas
+- Menú con los 167 ejercicios numerados, organizados en pestañas
   🆕/👍/👎/🔧; cada uno abre en su propia pantalla (`#/game/<id>`), sin
   recargar la página.
 - Motor de preguntas compartido (`js/quiz-engine.js`) para los 18
   ejercicios de "pregunta + opciones o teclado" (`js/games-data.js` y
-  `js/games-data-2.js`); los otros 148 (`js/game-*.js` y
+  `js/games-data-2.js`); los otros 149 (`js/game-*.js` y
   `js/balloons-game.js`) tienen cada uno su propia mecánica de
   interacción (arrastrar, tocar en orden, emparejar, construir,
   escribir, clasificar, recorrer…).
