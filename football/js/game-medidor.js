@@ -33,8 +33,10 @@ export function genRound(mission, level, { showRef } = {}) {
   return { mission, value, tol, showRef: showRef !== undefined ? showRef : level < 2, objeto: pick(MISSIONS[mission].objetos) };
 }
 
+// Comparación en enteros (porcentaje × valor) para que el borde exacto de la
+// tolerancia (p. ej. 230 para 200 cm al 15 %) no dependa de la coma flotante.
 export function accepts(value, estimate, tol) {
-  return Math.abs(estimate - value) <= tol * value;
+  return Math.abs(estimate - value) * 100 <= Math.round(tol * 100) * value;
 }
 
 export function unitsIn(mission, value) {

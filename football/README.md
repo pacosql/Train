@@ -1,7 +1,7 @@
 # Math Games 🧠
 
-PWA (sin build, HTML/CSS/JS puro) con **164 ejercicios de matemáticas**,
-cada uno numerado (#1-#164) para poder referirse a ellos sin ambigüedad.
+PWA (sin build, HTML/CSS/JS puro) con **165 ejercicios de matemáticas**,
+cada uno numerado (#1-#165) para poder referirse a ellos sin ambigüedad.
 Cálculo mental, geometría, álgebra, estadística, fracciones, dinero,
 probabilidad, coordenadas, tiempo y más. Nace como banco de pruebas
 rápido para sacar ideas de mecánicas (tipo Duolingo Math, Synthesis,
@@ -1064,6 +1064,42 @@ en la balanza: pierde vida, el error se lista y el repaso lo cierra).
 Pulido pendiente: en las etapas 1-2 el historial de pasos crece hacia
 abajo y en móvil desplaza el dibujo de la balanza.
 
+## Ejercicio #165 (tercer juego grande, 18-09-2026)
+
+### Tramo único — [`css/pack-af.css`](./css/pack-af.css)
+
+Tercer juego grande de la tanda manual, del hueco "medida: ningún juego
+de estimación real con calibración progresiva" (`estima` es estimación
+de orden de magnitud tipo Fermi, otra cosa).
+
+| # | Juego | Tema | Pantallas | De dónde sale |
+|---|---|---|---|---|
+| 165 | 🖐️ El medidor del cuerpo | Estimación de medidas | Mapa de misiones → Longitud (tutorial: poner palmos sobre el objeto hasta cubrirlo = medir es iterar la unidad; 4 rondas con margen 25→10 % y referente a escala solo en las dos primeras) → Capacidad (lo mismo con la botella de 1 L) → Reto sin referente (3 rondas mezcladas, ±15 %) → resultados con explicación y repaso | Estimation 180 (Andrew Stadel) + referentes corporales |
+
+**Ciclo de aprendizaje**: el tutorial hace medir con el cuerpo (cada
+toque pone un palmo; la cuenta × 20 da la longitud); las rondas
+estrechan el margen y a mitad de misión retiran el referente, así que
+hay que recordar el tamaño del palmo/botella; el reto quita el
+referente del todo. Cada respuesta, acertada o no, superpone las
+unidades sobre el objeto con el recuento exacto y la desviación en %:
+el fallo enseña. Progreso (misiones superadas, fallos por tipo) en
+`localStorage` y `football_progress`.
+
+**Generadores**: longitudes múltiplos de 5 cm en [30, 200], capacidades
+enteras en [2, 30] L; aceptación `|estimación − real|·100 ≤ % · real`
+en aritmética entera (durante la verificación se vio que con coma
+flotante el borde exacto —230 cm para 200 al 15 %— quedaba ambiguo y se
+corrigió). `verify_medidor.mjs`: 20.000 rondas por misión, 0 fallos
+(el valor exacto siempre entra, el doble y la mitad nunca, y la banda
+entera coincide con la recalculada). Los 146 ficheros de juego cargan
+sin error de consola; flujo completo jugado dos veces en Chromium a
+400 px deduciendo el valor real de la GEOMETRÍA del dibujo (ancho/1,6
+o alto/8), no de ningún atributo: partida perfecta (15 aciertos, 130
+pts) y partida con fallo deliberado (pierde vida, error listado, repaso
+lo cierra). Pulido pendiente: el dibujo de capacidad es poco legible
+(recipiente bajo y ancho con hueco arriba) — merece un recipiente con
+forma y una escala vertical.
+
 ## Versiones (v2) y bandeja "Revisar"
 
 Cuando un ejercicio recibe una vuelta de mejoras, se marca con un
@@ -1309,12 +1345,12 @@ Una vez publicado, esta app queda en:
 
 ## Qué hace la app
 
-- Menú con los 164 ejercicios numerados, organizados en pestañas
+- Menú con los 165 ejercicios numerados, organizados en pestañas
   🆕/👍/👎/🔧; cada uno abre en su propia pantalla (`#/game/<id>`), sin
   recargar la página.
 - Motor de preguntas compartido (`js/quiz-engine.js`) para los 18
   ejercicios de "pregunta + opciones o teclado" (`js/games-data.js` y
-  `js/games-data-2.js`); los otros 146 (`js/game-*.js` y
+  `js/games-data-2.js`); los otros 147 (`js/game-*.js` y
   `js/balloons-game.js`) tienen cada uno su propia mecánica de
   interacción (arrastrar, tocar en orden, emparejar, construir,
   escribir, clasificar, recorrer…).
