@@ -77,11 +77,11 @@
     @keyframes spin { to { transform: rotate(360deg); } }
 
     /* pestañas */
-    .tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 14px; }
+    .tabs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; margin-bottom: 14px; }
     .tab {
-      font-family: var(--display); font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px;
+      font-family: var(--display); font-size: 0.74rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
       color: var(--text-2); background: rgba(255, 255, 255, 0.04); border: 1px solid var(--line); border-radius: 12px;
-      padding: 9px 4px; text-align: center; cursor: pointer; line-height: 1.1;
+      padding: 8px 2px; text-align: center; cursor: pointer; line-height: 1.1;
     }
     .tab .n { display: block; font-size: 1.2rem; color: var(--text); }
     .tab.active { border-color: rgba(242, 184, 64, 0.5); background: var(--accent-soft); color: var(--accent); }
@@ -174,8 +174,9 @@
       padding: 10px 16px calc(12px + env(safe-area-inset-bottom, 0px));
       background: linear-gradient(180deg, rgba(11, 13, 16, 0), rgba(11, 13, 16, 0.92) 30%, var(--bg));
     }
-    .actions .inner { max-width: 520px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1.15fr 1.15fr; gap: 8px; }
-    .actions button { padding: 13px 6px; font-size: 1rem; white-space: nowrap; letter-spacing: 0.4px; }
+    .actions .inner { max-width: 520px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .actions button { padding: 12px 6px; font-size: 1rem; white-space: nowrap; letter-spacing: 0.4px; }
+    .actions button.review { background: rgba(114, 169, 255, 0.12); color: var(--blue); border: 1px solid rgba(114, 169, 255, 0.45); box-shadow: none; }
     .actions button.like { background: linear-gradient(135deg, #7af0b8, var(--good) 55%, #2fb877); color: #04200f; box-shadow: 0 8px 24px rgba(67, 211, 145, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.3); }
     .actions button.dislike { background: rgba(255, 84, 112, 0.12); color: var(--bad); border: 1px solid rgba(255, 84, 112, 0.45); box-shadow: none; }
     .actions button.final { background: linear-gradient(135deg, var(--accent-2), var(--accent) 55%, #d99a1e); color: var(--accent-ink); }
@@ -213,6 +214,7 @@
     .decision-tag.gusta { color: var(--good); }
     .decision-tag.no_gusta { color: var(--bad); }
     .decision-tag.definitivo { color: var(--accent); }
+    .decision-tag.revisar { color: var(--blue); }
     .helper { font-size: 0.8rem; color: var(--text-2); margin-top: 8px; }
 
     /* revisión */
@@ -260,6 +262,7 @@
       <div class="tab" data-tab="gusta"><span class="n" id="n-gusta">–</span>Me gustan</div>
       <div class="tab" data-tab="no_gusta"><span class="n" id="n-no_gusta">–</span>No</div>
       <div class="tab" data-tab="definitivo"><span class="n" id="n-definitivo">–</span>Definitivo</div>
+      <div class="tab" data-tab="revisar"><span class="n" id="n-revisar">–</span>A revisar</div>
     </div>
 
     <div id="view"></div>
@@ -269,8 +272,9 @@
 
   <div class="actions hidden" id="actions">
     <div class="inner">
-      <button class="dislike" id="btn-no_gusta">👎 No</button>
+      <button class="dislike" id="btn-no_gusta">👎 No me gusta</button>
       <button class="like" id="btn-gusta">👍 Me gusta</button>
+      <button class="review" id="btn-revisar">🔁 A revisar</button>
       <button class="final" id="btn-definitivo">⭐ Definitivo</button>
     </div>
   </div>
@@ -336,7 +340,7 @@
     const IA_LABEL = { palanca: ["🚀 Palanca", "good"], neutral: ["⚖️ Neutral", ""], amenaza: ["⚠️ Amenaza", "bad"] };
     const MODELO_LABEL = { B2C: "B2C · a consumidor", B2B: "B2B · a empresas", B2B2C: "B2B2C · vía empresas al consumidor", B2G: "B2G · a administración" };
     const TIPO_LABEL = { innovador: "Innovador", tradicional: "Tradicional", hibrido: "Híbrido" };
-    const DECISION_LABEL = { gusta: "👍 Me gusta", no_gusta: "👎 No me gusta", definitivo: "⭐ Definitivo" };
+    const DECISION_LABEL = { gusta: "👍 Me gusta", no_gusta: "👎 No me gusta", definitivo: "⭐ Definitivo", revisar: "🔁 A revisar" };
     const VENTA_LABEL = { desasistida: ["🛒 Compra desasistida", "good"], asistida: ["🤝 Venta humana", "bad"], mixta: ["🛒/🤝 Venta mixta", ""] };
     const RED_LABEL = { individual: ["👤 Cliente individual", "good"], red: ["👥 Necesita masa crítica", "bad"] };
     const ESTADO_LABEL = { pendiente: "Pendiente de procesar", transcrito: "Transcrito · pendiente", procesado: "Procesado" };
@@ -363,7 +367,7 @@
       Object.assign(idea, patch);
       resetRec();
       showMsg("");
-      showToast(decision ? `${DECISION_LABEL[decision]} · ${idea.nombre}` : `Devuelta a pendientes · ${idea.nombre}`, true);
+      showToast(decision === "revisar" ? `🔁 A revisar · la rutina la ampliará en menos de una hora` : decision ? `${DECISION_LABEL[decision]} · ${idea.nombre}` : `Devuelta a pendientes · ${idea.nombre}`, true);
       if (state.tab === "pendiente") { state.index = Math.min(state.index, Math.max(0, pending().length - 1)); }
       state.detailId = null;
       render();
@@ -383,7 +387,7 @@
     // ---------- render ----------
     function counts() {
       el("n-pendiente").textContent = pending().length;
-      for (const d of ["gusta", "no_gusta", "definitivo"]) el("n-" + d).textContent = byDecision(d).length;
+      for (const d of ["gusta", "no_gusta", "definitivo", "revisar"]) el("n-" + d).textContent = byDecision(d).length;
     }
 
     function metric(label, v) {
@@ -635,10 +639,10 @@
         const i = ideas.find((x) => x.id === state.detailId);
         if (!i) { state.detailId = null; return render(); }
         actions.classList.add("hidden");
-        const others = ["no_gusta", "gusta", "definitivo"].filter((d) => d !== i.decision);
+        const others = ["no_gusta", "gusta", "revisar", "definitivo"].filter((d) => d !== i.decision);
         view.innerHTML = `<div class="back" id="back">← Volver</div>${cardHTML(i)}
           <p class="eyebrow">Cambiar etiqueta</p>
-          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
             ${others.map((d) => `<button class="${d === "definitivo" ? "" : "secondary"}" data-d="${d}" style="padding:12px 6px;font-size:1rem">${DECISION_LABEL[d]}</button>`).join("")}
           </div>
           <button class="ghost" id="btn-reabrir">↩ Devolver a pendientes</button>`;
@@ -673,6 +677,7 @@
         el("btn-gusta").onclick = () => decide(i, "gusta");
         el("btn-no_gusta").onclick = () => decide(i, "no_gusta");
         el("btn-definitivo").onclick = () => decide(i, "definitivo");
+        el("btn-revisar").onclick = () => decide(i, "revisar");
         window.scrollTo(0, 0);
         return;
       }
@@ -680,7 +685,7 @@
       // listas de decididas
       actions.classList.add("hidden");
       const arr = byDecision(state.tab);
-      const titles = { gusta: "Las que me gustan", no_gusta: "Las que no me gustan", definitivo: "Definitivo: las que voy a hacer" };
+      const titles = { gusta: "Las que me gustan", no_gusta: "Las que no me gustan", definitivo: "Definitivo: las que voy a hacer", revisar: "A revisar: la rutina ampliará la información y las devolverá a Pendientes" };
       if (!arr.length) { view.innerHTML = `<div class="empty"><div class="big">📭</div><div>Nada por aquí todavía.</div></div>`; return; }
       view.innerHTML = `<p class="eyebrow">${titles[state.tab]}</p>` + arr.map((i, idx) => `
         <div class="item" data-id="${i.id}" style="--i:${idx}">

@@ -48,7 +48,7 @@ primero para evaluar `encaje_perfil` y `encaje_nota` contra ese perfil.
 | `revision_nota`, `revisado_en`, `version` | text, timestamptz, int | los rellena la rutina «revisión» al incorporar comentarios del usuario: `revision_nota` empieza por "He tenido en cuenta: " y la app lo muestra arriba de la ficha; `version` sube en cada revisión |
 | `etiquetas` | text[] | etiquetas libres cortas en minúsculas (`b2c`, `suscripción`, `self-service`…) |
 | `fuente` | text | `manual` por defecto; la rutina debe poner p. ej. `rutina` |
-| `decision`, `decidido_en` | | los rellena la app: `gusta` · `no_gusta` · `definitivo` |
+| `decision`, `decidido_en` | | los rellena la app: `gusta` · `no_gusta` · `definitivo` · `revisar` (el usuario pide a la rutina «revisión» que amplíe la ficha con sus comentarios y la devuelva a Pendientes) |
 
 La **puntuación 0-100** es la «probabilidad de éxito para el usuario»
 según su propia definición, y la calcula la app (no se guarda). Cada
@@ -95,7 +95,10 @@ Cada rutina inserta una fila al terminar; así se ve que siguen vivas.
   (`negocios_perfil`), las fichas existentes y los comentarios del usuario,
   investiga y genera al menos una idea nueva bien evaluada, la inserta con
   `fuente = 'rutina'` y registra la ejecución.
-- **`revision`** (cada hora, sesión nueva): lee los comentarios pendientes
+- **`revision`** (cada hora, sesión nueva): procesa las fichas con
+  `decision = 'revisar'` (amplía la información con lo que pida el usuario
+  en sus comentarios, o profundiza en mercado, cifras y plan si no hay
+  comentarios) y los comentarios pendientes
   (texto, o audio con transcripción), modifica la ficha o crea ideas nuevas
   a partir de ellos, escribe `revision_nota` («He tenido en cuenta: …»),
   sube `version`, devuelve la ficha a Pendientes (`decision = null`) y marca
