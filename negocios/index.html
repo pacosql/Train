@@ -107,6 +107,10 @@
     .ring::before { content: ""; position: absolute; inset: 8px; border-radius: 50%; background: #14171c; }
     .ring .v { position: relative; font-family: var(--display); font-size: 2rem; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; }
     .ring .l { position: relative; font-family: var(--display); font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-2); }
+    .ring.ia { width: 72px; height: 72px; }
+    .ring.ia .v { font-size: 1.45rem; }
+    .score-row.ia { margin: 0 0 12px; }
+    .score-row.ia .verdict { font-size: 1.1rem; color: var(--blue); }
     .score-text { flex: 1; min-width: 0; }
     .score-text .verdict { font-family: var(--display); font-size: 1.35rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.4px; line-height: 1.05; }
     .score-text .why { color: var(--text-2); font-size: 0.82rem; margin-top: 4px; }
@@ -417,6 +421,14 @@
           </div>
         </div>
 
+        <div class="score-row ia">
+          <div class="ring ia" style="--pct:${i.claude_pct ?? 0};--ring-color:var(--blue)"><div class="v">${i.claude_pct != null ? i.claude_pct + "%" : "–"}</div><div class="l">IA score</div></div>
+          <div class="score-text">
+            <div class="verdict">${i.claude_pct != null ? i.claude_pct + " % del trabajo con Claude" : "IA score sin estimar"}</div>
+            <div class="why">${esc(i.claude_nota || "Qué parte de montar y operar el negocio podrías hacer tú solo con Claude.")}</div>
+          </div>
+        </div>
+
         <div class="metrics">
           ${metric("Éxito de mercado", i.exito)}
           ${metric("Viralidad", i.viralidad ?? "–")}
@@ -673,7 +685,7 @@
       view.innerHTML = `<p class="eyebrow">${titles[state.tab]}</p>` + arr.map((i, idx) => `
         <div class="item" data-id="${i.id}" style="--i:${idx}">
           <div class="s" style="color:${verdict(i._score)[1]}">${i._score}</div>
-          <div class="m"><div class="name">${esc(i.nombre)}</div><div class="meta">${esc(i.sector)} · ${esc(i.modelo)} · ${i.decidido_en ? new Date(i.decidido_en).toLocaleDateString("es-ES") : ""}${commentsOf(i.id).length ? " · 💬 " + commentsOf(i.id).length : ""}</div></div>
+          <div class="m"><div class="name">${esc(i.nombre)}</div><div class="meta">${i.claude_pct != null ? "🤖 " + i.claude_pct + " % · " : ""}${esc(i.sector)} · ${esc(i.modelo)} · ${i.decidido_en ? new Date(i.decidido_en).toLocaleDateString("es-ES") : ""}${commentsOf(i.id).length ? " · 💬 " + commentsOf(i.id).length : ""}</div></div>
           <div class="arrow">›</div>
         </div>`).join("");
       view.querySelectorAll(".item").forEach((n) => n.onclick = () => { state.detailId = n.dataset.id; render(); });

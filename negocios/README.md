@@ -44,6 +44,7 @@ primero para evaluar `encaje_perfil` y `encaje_nota` contra ese perfil.
 | `payback_meses` | integer | meses hasta recuperar la inversión inicial |
 | `uso_ia` | 1-10 | cuánto se apoya el negocio (producto y operación) en IA |
 | `viralidad` | 1-10 | cuánto trae cada cliente a otros clientes (boca a boca, compartir, referidos) |
+| `claude_pct`, `claude_nota` | 0-100, text | **IA Score**: porcentaje del trabajo de montar y operar el negocio que el usuario podría hacer él solo con Claude (Mates 10 = 100; una lavandería física = 20), y por qué. Se muestra como segundo anillo; no entra en la puntuación principal |
 | `revision_nota`, `revisado_en`, `version` | text, timestamptz, int | los rellena la rutina «revisión» al incorporar comentarios del usuario: `revision_nota` empieza por "He tenido en cuenta: " y la app lo muestra arriba de la ficha; `version` sube en cada revisión |
 | `etiquetas` | text[] | etiquetas libres cortas en minúsculas (`b2c`, `suscripción`, `self-service`…) |
 | `fuente` | text | `manual` por defecto; la rutina debe poner p. ej. `rutina` |
@@ -131,7 +132,7 @@ curl -s -X POST "https://dzlhsdpgyxnjwudmrnul.supabase.co/rest/v1/negocios_ideas
   -d '{"fuente":"rutina","nombre":"...","resumen":"...","descripcion":"...",
        "modelo":"B2C","tipo":"hibrido","sector":"...",
        "venta":"desasistida","efecto_red":"individual",
-       "exito":6,"durabilidad":7,"impacto_ia":"palanca","encaje_perfil":8,"uso_ia":8,"viralidad":6,
+       "exito":6,"durabilidad":7,"impacto_ia":"palanca","encaje_perfil":8,"uso_ia":8,"viralidad":6,"claude_pct":95,"claude_nota":"...",
        "inversion_min_eur":20000,"inversion_max_eur":50000,"cac_eur":30,
        "ticket_medio_eur":90,"ltv_eur":150,"meses_hasta_ingresos":3,"payback_meses":12,
        "mercado":"...","competencia":"...","modelo_ingresos":"...","cac_nota":"...",
