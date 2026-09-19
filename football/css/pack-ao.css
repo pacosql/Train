@@ -1,0 +1,59 @@
+/* Pack AO — juego grande "Fábrica de cajas" (noche 18/19-09-2026). Prefijo: cja- (caja). */
+
+.cja-badge { display: inline-block; font-size: 0.78rem; font-weight: 700; color: var(--accent); border: 1.5px solid var(--accent); border-radius: 999px; padding: 3px 10px; margin: 0 0 12px; }
+.cja-progress { color: var(--muted); font-size: 0.9rem; text-align: center; margin: 8px 0 12px; }
+
+.cja-map { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; max-width: 360px; margin: 12px auto; }
+.cja-node { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 2px; border-radius: 12px; border: 2px solid var(--accent); background: var(--card); color: var(--text); font: inherit; cursor: pointer; }
+.cja-node[disabled] { opacity: 0.4; border-style: dashed; cursor: default; }
+.cja-node-done { background: var(--accent); color: #fff; }
+.cja-node-num { font-size: 1.1rem; font-weight: 800; }
+.cja-node-name { font-size: 0.62rem; font-weight: 600; text-align: center; line-height: 1.15; }
+
+.cja-wrap { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 10px 18px; margin: 4px 0 8px; }
+.cja-svg { max-width: 100%; height: auto; display: block; }
+.cja-cube { margin: 0 auto; }
+.cja-order, .cja-result { display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 96px; }
+.cja-caption { font-size: 0.72rem; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+
+/* Casillas del desarrollo (colores de cartón fijos dentro del dibujo) */
+.cja-cell rect { fill: #f3e2bd; stroke: #8a6a3a; stroke-width: 1.5; transition: fill 0.2s; }
+.cja-cell-tap { cursor: pointer; }
+.cja-cell-tap:hover rect { fill: #f9edd2; }
+.cja-cell-on rect { fill: #cfe9c6; stroke: #2e7d32; }
+.cja-cell-hit rect { fill: #f8c4c4; stroke: #c62828; }
+.cja-cell-sel rect { stroke: #5b3ecc; stroke-width: 3; }
+.cja-label { font-size: 10px; font-weight: 700; fill: #5a4320; text-anchor: middle; pointer-events: none; }
+
+/* Caras del cubo isométrico */
+.cja-face { stroke: #6f5227; stroke-width: 1.2; stroke-linejoin: round; }
+.cja-face-t { fill: #f8ecd2; }
+.cja-face-f { fill: #e2c99c; }
+.cja-face-r { fill: #c6a370; }
+.cja-floor { fill: none; stroke: #b39a6e; stroke-width: 1; stroke-dasharray: 3 2; }
+.cja-side { font-size: 10px; font-weight: 700; fill: var(--muted); text-anchor: end; }
+.cja-side-r { text-anchor: start; }
+
+.cja-palette { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin: 6px 0; }
+.cja-stk { display: inline-flex; align-items: center; gap: 6px; padding: 8px 12px; font-size: 0.9rem; }
+.cja-stk-sel { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent) inset; }
+.cja-stk-done { opacity: 0.55; }
+.cja-g { font-size: 1.1em; line-height: 1; }
+.cja-chips { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; font-size: 0.75rem; color: var(--muted); max-width: 150px; }
+.cja-chip { border: 1px solid var(--border); border-radius: 999px; padding: 2px 8px; white-space: nowrap; }
+.cja-question { text-align: center; font-weight: 700; margin: 6px 0; }
+.cja-hint { font-size: 0.8rem; color: var(--muted); text-align: center; margin: 6px 0 0; }
+
+.cja-shapes { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; max-width: 340px; margin: 0 auto 10px; }
+.cja-shape { padding: 8px; display: flex; justify-content: center; align-items: center; min-height: 96px; }
+.cja-shape .cja-svg { max-height: 100px; }
+
+.cja-views { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; max-width: 300px; margin: 0 auto 10px; }
+.cja-view { padding: 8px; display: flex; justify-content: center; }
+.cja-view-cell { fill: #d9c39a; stroke: #6f5227; stroke-width: 1; }
+.cja-view-base { stroke: var(--muted); stroke-width: 1.5; }
+
+.cja-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin: 10px 0; }
+.cja-learned { font-size: 0.9rem; color: var(--muted); background: var(--bg); border-radius: 10px; padding: 10px 12px; margin: 0 0 12px; }
+.cja-errors { text-align: left; font-size: 0.88rem; padding-left: 18px; margin: 0 0 12px; }
+.cja-errors li { margin: 6px 0; }

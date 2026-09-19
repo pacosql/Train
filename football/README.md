@@ -1,7 +1,7 @@
 # Math Games 🧠
 
-PWA (sin build, HTML/CSS/JS puro) con **171 ejercicios de matemáticas**,
-cada uno numerado (#1-#171) para poder referirse a ellos sin ambigüedad.
+PWA (sin build, HTML/CSS/JS puro) con **174 ejercicios de matemáticas**,
+cada uno numerado (#1-#174) para poder referirse a ellos sin ambigüedad.
 Cálculo mental, geometría, álgebra, estadística, fracciones, dinero,
 probabilidad, coordenadas, tiempo y más. Nace como banco de pruebas
 rápido para sacar ideas de mecánicas (tipo Duolingo Math, Synthesis,
@@ -1293,6 +1293,127 @@ respuesta de los parámetros del enunciado (nunca de la respuesta):
 partida perfecta (16 aciertos, 160 pts) y partida con fallo deliberado
 (vida perdida, error listado, repaso).
 
+## Ejercicio #172 (décimo juego grande, noche del 18/19-09-2026)
+
+### Tramo — [`css/pack-an.css`](./css/pack-an.css)
+
+De la `cola` de `work_state` (hueco "decimales en la recta: valor
+posicional, orden y densidad"). `decimales` y `recta` (tandas
+anteriores) piden un decimal suelto o colocan enteros; aquí la recta se
+AMPLÍA: cada cifra decimal es literalmente un zoom.
+
+| # | Juego | Tema | Pantallas | De dónde sale |
+|---|---|---|---|---|
+| 172 | 🔎 Zoom decimal | Números decimales | Tutorial (colocar 3,7: tocar el tramo 3-4 lo amplía en décimas y se toca la séptima marca) → tramo 1 "Coloca" (1 decimal, marcas etiquetadas) → tramo 2 "Sin etiquetas" (2 decimales, dos zooms, solo se etiquetan los extremos) → tramo 3 "Entre dos" (coloca un número entre 2,5 y 2,6: hay que ampliar hasta las centésimas; los extremos no valen) → tramo 4 "Lee la marca" (inversión: 4 opciones con las trampas 3,07 frente a 3,7 y cifras intercambiadas) → reto contrarreloj de 45 s sin vidas → resultados y repaso | Motion Math Zoom (pinch para ampliar la recta), adaptado a un pulgar: toque de tramo + botón Alejar |
+
+**Ciclo de aprendizaje**: el gesto ES el concepto (ampliar un tramo =
+bajar una cifra decimal); andamiaje que se retira (etiquetas en todas
+las marcas → solo en los extremos), densidad como experiencia (entre dos
+décimas "pegadas" aparecen diez centésimas), inversión (leer en vez de
+colocar) y velocidad al final. Cada fallo dice dónde tocaste y dónde
+estaba. Progreso persistente en `localStorage` y `football_progress`
+(incluido el récord del contrarreloj).
+
+**Generadores** (`verify_zoomdec.mjs`, 20.000 rondas por tramo, 0
+fallos): valores internos en centésimas enteras; el camino de zoom es
+único (a cada nivel exactamente un tramo contiene el objetivo
+estrictamente) y la marca final nunca es un extremo; en "entre dos"
+siempre hay nueve centésimas válidas dentro de la misma unidad; en "lee
+la marca" 4 opciones distintas también como texto, con la trampa de las
+centésimas/décimas siempre presente. Flujo completo jugado tres veces en
+Chromium a 400 px deduciendo la vista de los atributos `data-lo`/`data-step`
+y la flecha de su geometría: partida perfecta (460 pts, 34 colocados en
+el contrarreloj), partida con un fallo (vida perdida, error listado,
+repaso) y partida perdiendo las tres vidas (repaso funcional).
+
+### Fallo latente encontrado al probar esta vuelta (afectaba a 7 juegos grandes)
+
+En los juegos grandes con el patrón `outcome()` +
+`loseLife()` (`ecuacion`, `medidor`, `transforma`, `calculista`,
+`pendiente`, `bola` y el nuevo `zoomdec`): al perder la tercera vida,
+`outcome()` dejaba `locked = true` y se saltaba directo a resultados; si
+el jugador pulsaba "Repasar lo fallado", las pantallas de repaso
+ignoraban todos los toques. Los play-tests anteriores solo fallaban una
+vez (quedaban vidas), así que nunca pasaron por ese camino. Corregido en
+los siete (`screenResults` desbloquea al entrar) y el play-test de
+`zoomdec` incorpora desde ahora una partida que pierde las tres vidas y
+repasa. Los juegos con máquina de estados `render()` (`azar`,
+`puertas`, `potencias`) ya desbloqueaban en cada render y no estaban
+afectados.
+
+## Ejercicio #173 (undécimo juego grande, noche del 18/19-09-2026)
+
+### Tramo — [`css/pack-ao.css`](./css/pack-ao.css)
+
+De la `cola` de `work_state` (hueco "desarrollos planos y vistas de
+cuerpos 3D"). `desplegable` (#pack-5) pide adivinar, entre tres cubos,
+cuál sale de una cruz fija; aquí el jugador PLIEGA el desarrollo y
+fabrica la caja que le piden. Construido por un subagente con el
+contrato de casa; el orquestador rehízo simulación, contrato, play-test
+y capturas antes de integrarlo.
+
+| # | Juego | Tema | Pantallas | De dónde sale |
+|---|---|---|---|---|
+| 173 | 🎁 Fábrica de cajas | Geometría espacial | Tutorial (cruz con 6 pegatinas: se tocan las casillas pegadas a una ya plegada y cada una aparece en el cubo isométrico o como cara oculta; al cerrar, ¿cuál queda opuesta a la tapa?) → tramo 1 "El pedido" (colocar 3 pegatinas en un desarrollo para que, al plegar, se vean juntas en una esquina y giren como en el pedido; el fallo distingue "quedan opuestas" de "imagen en espejo") → tramo 2 "La cara opuesta" (uno de los 11 desarrollos del cubo, orientación al azar, sin dibujo de ayuda; la explicación es geométrica: línea recta con una en medio, escalón en Z, zigzag) → tramo 3 "¿Cierra o no?" (4 hexaminós, solo uno cierra o solo uno no; al responder se pintan las dos casillas que chocan) → reto "Vistas" (montón de 3-5 cubos sobre 3×3: la vista desde el frente o la derecha entre 4, sin vidas) → resultados y repaso | NRICH "Puzzling Cube" + poliedros de Mathigon; el pedido con pegatinas y la regla de quiralidad son inventados |
+
+**Ciclo de aprendizaje**: plegar con ayuda (tutorial) → construir el
+pedido (la regla se muestra en pantalla: tres caras que se tocan en una
+esquina y giran en el mismo orden ⇔ det(n_T, n_F, n_R) = +1) → razonar
+sin plegar (cara opuesta) → juzgar desarrollos (11 válidos entre 35
+hexaminós) → cambiar de representación (vistas). Progreso persistente
+en `localStorage` y `football_progress`.
+
+**Generadores** (`verify_redes3d.mjs`, 20.000 rondas por nivel, 0
+fallos, con un plegado independiente por matrices de rotación 3×3):
+35 hexaminós libres y exactamente 11 que cierran (coinciden con los del
+juego); 280 orientaciones comparadas en validez, pares opuestos y
+quiralidad; tramo 1 con 24 colocaciones válidas de 120 y veredicto
+(ok/espejo/opuestas) igual al del juego; tramo 2 con respuesta única;
+tramo 3 con 4 formas distintas y una sola respuesta; reto con 4 vistas
+distintas, una correcta y todas las tapas visibles. Hallazgos del
+proceso: la primera versión del "dado" del verificador rodaba por la
+cara impresa y daba la imagen especular (se corrigió el verificador,
+no el juego, tras comprobarlo físicamente con la cruz); el play-test
+cazó un `foldedFaces` sin cara frontal que reventaba el tramo 2, la
+etiqueta "tapa" que tapaba la pegatina y las flechas frente/derecha del
+reto al revés. Flujo completo jugado tres veces en Chromium a 400 px
+(perfecta 130 pts; un fallo en espejo con repaso, 120 pts; tres vidas
+perdidas con repaso funcional) y capturas también en modo oscuro.
+
+## Ejercicio #174 (duodécimo juego grande, noche del 18/19-09-2026)
+
+### Tramo — [`css/pack-ap.css`](./css/pack-ap.css)
+
+De la `cola` de `work_state` (hueco "estadística: gráficos engañosos y
+honestos"). `grafico` (leer un valor) y `grafica` (continuar una gráfica
+proporcional) leen gráficos; aquí el jugador los FABRICA y ve al
+instante qué titular sugiere cada manipulación. Construido por un
+subagente con el contrato de casa; el orquestador rehízo simulación,
+contrato, play-test y capturas antes de integrarlo.
+
+| # | Juego | Tema | Pantallas | De dónde sale |
+|---|---|---|---|---|
+| 174 | 📰 La redacción | Estadística (gráficos honestos y engañosos) | Tutorial (42 y 48 helados: sube el origen del eje hasta que el periódico titule «el doble» y devuélvelo a 0) → tramo 1 "¿Engaña?" (honesto / eje truncado / escala irregular / pictograma engañoso, con pistas) → tramo 2 "Arréglalo" (mandos de origen, unidad por división e icono 2D; publicar solo cuando el gráfico es honesto, sin pistas) → tramo 3 "El titular verdadero" (tabla sin gráfico: el porcentaje real, con opciones o teclado; distractores = lo que sugerirían el eje truncado o el pictograma 2D) → reto "Dos portadas" (fabrica a propósito un gráfico que diga «el doble» y luego uno honesto, sin vidas) → resultados y repaso | MediaWatch (Universidad de Utrecht) + "fix this chart" de Polypad; el periódico en vivo es inventado |
+
+**Ciclo de aprendizaje**: la regla del titular aparente es explícita y
+se manipula (razón visual = (b − origen)/(a − origen) con escala
+uniforme, y (b/a)² en un pictograma que crece a lo ancho): detectar →
+arreglar → calcular lo verdadero → fabricar el engaño a sabiendas
+(inversión). Progreso persistente en `localStorage` y `football_progress`.
+
+**Generadores** (`verify_mediawatch.mjs`, 20.000 rondas por generador,
+0 fallos): razones reales entre 1,05 y 1,6 con datos enteros; existe y
+es único el primer origen que da «el doble»; ticks uniformes en píxeles
+y consistentes con la unidad; una sola categoría correcta y nunca
+combinaciones en el tramo 1; único estado honesto en el tramo 2;
+opciones del tramo 3 distintas con la correcta exactamente una vez. Bug
+cazado por la simulación: cuando el valor mayor caía justo en el umbral,
+la "escala irregular" no cambiaba el dibujo (guarda `b > umbral`). Flujo
+completo jugado tres veces en Chromium a 400 px: perfecta (150 pts), un
+fallo con repaso (140 pts) y las tres vidas perdidas con repaso
+funcional. Un nombre de serie duplicaba la unidad en el título del
+gráfico ("(miles) (miles de visitas)"): corregido al integrar.
+
 ## Versiones (v2) y bandeja "Revisar"
 
 Cuando un ejercicio recibe una vuelta de mejoras, se marca con un
@@ -1538,12 +1659,12 @@ Una vez publicado, esta app queda en:
 
 ## Qué hace la app
 
-- Menú con los 171 ejercicios numerados, organizados en pestañas
+- Menú con los 174 ejercicios numerados, organizados en pestañas
   🆕/👍/👎/🔧; cada uno abre en su propia pantalla (`#/game/<id>`), sin
   recargar la página.
 - Motor de preguntas compartido (`js/quiz-engine.js`) para los 18
   ejercicios de "pregunta + opciones o teclado" (`js/games-data.js` y
-  `js/games-data-2.js`); los otros 153 (`js/game-*.js` y
+  `js/games-data-2.js`); los otros 156 (`js/game-*.js` y
   `js/balloons-game.js`) tienen cada uno su propia mecánica de
   interacción (arrastrar, tocar en orden, emparejar, construir,
   escribir, clasificar, recorrer…).
