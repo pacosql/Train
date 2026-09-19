@@ -504,10 +504,11 @@
       cac: (a, b) => (a.cac_eur ?? 1e12) - (b.cac_eur ?? 1e12),
       ltvcac: (a, b) => (ratioOf(b) ?? -1) - (ratioOf(a) ?? -1),
       payback: (a, b) => (a.payback_meses ?? 1e9) - (b.payback_meses ?? 1e9),
+      fact3: (a, b) => (b.facturacion_ano3_eur ?? -1) - (a.facturacion_ano3_eur ?? -1),
       fecha: (a, b) => b.created_at.localeCompare(a.created_at),
       nombre: (a, b) => a.nombre.localeCompare(b.nombre, "es"),
     };
-    const SORT_LABELS = [["score", "Puntuación"], ["claude", "IA Score"], ["exito", "Éxito de mercado"], ["inversion", "Menor inversión"], ["cac", "Menor CAC"], ["ltvcac", "Mayor LTV/CAC"], ["payback", "Retorno más rápido"], ["fecha", "Más recientes"], ["nombre", "Nombre"]];
+    const SORT_LABELS = [["score", "Puntuación"], ["claude", "IA Score"], ["exito", "Éxito de mercado"], ["inversion", "Menor inversión"], ["cac", "Menor CAC"], ["ltvcac", "Mayor LTV/CAC"], ["payback", "Retorno más rápido"], ["fact3", "Mayor facturación año 3"], ["fecha", "Más recientes"], ["nombre", "Nombre"]];
     function applyFilters() {
       const q = (filters.q || "").trim().toLowerCase();
       const arr = ideas.filter((i) => {
@@ -546,7 +547,7 @@
         <div class="item" data-id="${i.id}" style="--i:${idx}">
           ${showDecision ? `<button class="sel ${compare.includes(i.id) ? "on" : ""}" data-sel="${i.id}" type="button" title="Comparar">${compare.includes(i.id) ? "✓" : ""}</button>` : ""}
           <div class="s" style="color:${verdict(i._score)[1]}">${i._score}</div>
-          <div class="m"><div class="name">${isNew(i) ? `<span class="nw">🆕</span>` : ""}${esc(i.nombre)}</div><div class="meta">${i.claude_pct != null ? "🤖 " + i.claude_pct + " % · " : ""}${esc(i.sector)} · ${esc(i.modelo)}${showDecision ? (r ? " · LTV/CAC " + f1(r) + "×" : "") + (i.inversion_max_eur != null ? " · " + money(i.inversion_max_eur) : "") : " · " + (i.decidido_en ? new Date(i.decidido_en).toLocaleDateString("es-ES") : "")}${commentsOf(i.id).length ? " · 💬 " + commentsOf(i.id).length : ""}</div></div>
+          <div class="m"><div class="name">${isNew(i) ? `<span class="nw">🆕</span>` : ""}${esc(i.nombre)}</div><div class="meta">${i.claude_pct != null ? "🤖 " + i.claude_pct + " % · " : ""}${esc(i.sector)} · ${esc(i.modelo)}${showDecision ? (r ? " · LTV/CAC " + f1(r) + "×" : "") + (i.facturacion_ano3_eur != null ? " · año 3: " + money(i.facturacion_ano3_eur) : "") : " · " + (i.decidido_en ? new Date(i.decidido_en).toLocaleDateString("es-ES") : "")}${commentsOf(i.id).length ? " · 💬 " + commentsOf(i.id).length : ""}</div></div>
           ${showDecision ? `<div class="d">${i.decision ? DECISION_ICON[i.decision] || "" : "·"}</div>` : ""}
           <div class="arrow">›</div>
         </div>`;
@@ -643,7 +644,9 @@
         ["LTV / CAC", sel.map((i) => ratioOf(i) ? f1(ratioOf(i)) + "×" : "–"), (i) => ratioOf(i), true],
         ["Ticket medio / año", sel.map((i) => money(i.ticket_medio_eur)), (i) => i.ticket_medio_eur, true],
         ["Retorno de la inversión", sel.map((i) => num(i.payback_meses, " meses")), (i) => i.payback_meses, false],
-        ["Primeros ingresos", sel.map((i) => num(i.meses_hasta_ingresos, " meses")), (i) => i.meses_hasta_ingresos, false, null, true],
+        ["Primeros ingresos", sel.map((i) => num(i.meses_hasta_ingresos, " meses")), (i) => i.meses_hasta_ingresos, false],
+        ["Facturación año 1", sel.map((i) => money(i.facturacion_ano1_eur)), (i) => i.facturacion_ano1_eur, true],
+        ["Facturación año 3", sel.map((i) => money(i.facturacion_ano3_eur)), (i) => i.facturacion_ano3_eur, true, null, true],
         ["Primer paso", sel.map((i) => i.primer_paso || "–")],
       ];
       const body = rows.map(([label, cells, getter, higher, cls, sep]) => {
@@ -660,7 +663,7 @@
       window.scrollTo(0, 0);
     }
     function exportCSV() {
-      const cols = ["nombre", "_score", "claude_pct", "decision", "sector", "modelo", "tipo", "venta", "efecto_red", "exito", "viralidad", "durabilidad", "uso_ia", "impacto_ia", "encaje_perfil", "inversion_min_eur", "inversion_max_eur", "cac_eur", "ltv_eur", "ticket_medio_eur", "payback_meses", "meses_hasta_ingresos", "fuente", "version", "created_at", "resumen"];
+      const cols = ["nombre", "_score", "claude_pct", "decision", "sector", "modelo", "tipo", "venta", "efecto_red", "exito", "viralidad", "durabilidad", "uso_ia", "impacto_ia", "encaje_perfil", "inversion_min_eur", "inversion_max_eur", "cac_eur", "ltv_eur", "ticket_medio_eur", "payback_meses", "meses_hasta_ingresos", "facturacion_ano1_eur", "facturacion_ano3_eur", "fuente", "version", "created_at", "resumen"];
       const head = cols.map((c) => c === "_score" ? "puntuacion" : c);
       const cell = (v) => { if (v == null) return ""; const t = Array.isArray(v) ? v.join(" | ") : String(v); return /[;"\n]/.test(t) ? '"' + t.replace(/"/g, '""') + '"' : t; };
       const rows = [head.join(";"), ...applyFilters().map((i) => cols.map((c) => cell(i[c])).join(";"))];
@@ -743,7 +746,10 @@
           <div class="fact"><span class="l">LTV por cliente${ratio ? " · " + f1(ratio) + "× el CAC" : ""}</span><span class="v">${money(ltv)}</span></div>
           <div class="fact"><span class="l">Ticket medio / cliente / año</span><span class="v">${money(i.ticket_medio_eur)}</span></div>
           <div class="fact"><span class="l">Primeros ingresos</span><span class="v">${i.meses_hasta_ingresos != null ? i.meses_hasta_ingresos + " meses" : "–"}</span></div>
+          <div class="fact" style="border-left-color:var(--good)"><span class="l">Facturación año 1</span><span class="v">${money(i.facturacion_ano1_eur)}</span></div>
+          <div class="fact" style="border-left-color:var(--good)"><span class="l">Facturación año 3</span><span class="v">${money(i.facturacion_ano3_eur)}</span></div>
         </div>
+        ${i.facturacion_nota ? `<p class="helper" style="margin:2px 0 0">${esc(i.facturacion_nota)}</p>` : ""}
         ${i.etiquetas && i.etiquetas.length ? `<div class="tags">${i.etiquetas.map((t) => `<span class="tag">${esc(t)}</span>`).join("")}</div>` : ""}
         <details><summary>Cómo se calcula el ${s}</summary><div class="body calc">
           Compra desasistida <b>${f1(p.venta)}</b> ×2 · Cliente individual <b>${f1(p.red)}</b> ×1,5 · Poca inversión <b>${f1(p.inversion)}</b> ×2 · LTV/CAC <b>${f1(p.ltvcac)}</b> ×2 · Viralidad <b>${f1(p.viralidad)}</b> ×1 · Éxito de mercado <b>${f1(p.exito)}</b> ×1,5. Cada factor va de 0 a 10; el total es de 0 a 100. El encaje con tu perfil y la durabilidad se muestran pero no puntúan.
