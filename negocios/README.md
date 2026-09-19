@@ -43,6 +43,7 @@ primero para evaluar `encaje_perfil` y `encaje_nota` contra ese perfil.
 | `inversion_min_eur`, `inversion_max_eur` | integer | inversión inicial |
 | `cac_eur`, `cac_nota` | numeric, text | coste de adquisición de un cliente |
 | `meses_hasta_ingresos` | integer | |
+| `facturacion_ano1_eur`, `facturacion_ano3_eur`, `facturacion_nota` | integer, integer, text | facturación estimada el primer y el tercer año (escenario realista, en euros) y la hipótesis en una o dos frases (nº de clientes × ticket) |
 | `exito`, `exito_nota` | 1-10, text | probabilidad de éxito |
 | `durabilidad`, `durabilidad_nota` | 1-10, text | si aguanta bien con el tiempo |
 | `impacto_ia`, `impacto_ia_nota` | text | `palanca` · `neutral` · `amenaza` |
@@ -162,6 +163,7 @@ curl -s -X POST "https://dzlhsdpgyxnjwudmrnul.supabase.co/rest/v1/negocios_ideas
        "exito":6,"durabilidad":7,"impacto_ia":"palanca","encaje_perfil":8,"uso_ia":8,"viralidad":6,"claude_pct":95,"claude_nota":"...",
        "inversion_min_eur":20000,"inversion_max_eur":50000,"cac_eur":30,
        "ticket_medio_eur":90,"ltv_eur":150,"meses_hasta_ingresos":3,"payback_meses":12,
+       "facturacion_ano1_eur":40000,"facturacion_ano3_eur":200000,"facturacion_nota":"Año 1: ~450 clientes × 90 €. Año 3: ~2.200 clientes.",
        "mercado":"...","competencia":"...","modelo_ingresos":"...","cac_nota":"...",
        "exito_nota":"...","durabilidad_nota":"...","impacto_ia_nota":"...","encaje_nota":"...",
        "etiquetas":["b2c","suscripción"],
