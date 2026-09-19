@@ -15,12 +15,13 @@ compra desasistida y valor con un solo cliente.
 
 ## Pendientes (en orden)
 
-1. **Editar decisión con motivo rápido**: al etiquetar, ofrecer 3-4 motivos
-    frecuentes en un toque ("venta humana", "efecto de red", "poco margen",
-    "no es para mí") que se guardan como comentario de texto.
+1. **Gráfico de dispersión** en Explorar: inversión (x) frente a puntuación (y), tamaño por facturación año 3, color por etiqueta; tocar un punto abre la ficha.
+2. **Resumen ejecutivo**: pantalla con las 5 mejores pendientes y las 5 mejores "me gusta" según puntuación, con una línea de por qué, para decidir en 2 minutos.
+3. **Historial de versiones**: guardar en `negocios_versiones` una copia de la ficha antes de cada revisión y mostrar "qué cambió" en el bloque "He tenido en cuenta".
 
 ## Hechas
 
+- 2026-09-19 · (este commit) · Motivo rápido al etiquetar: tras cada etiqueta aparece una tira con 3-6 motivos en un toque, que se guardan como comentario de texto (pendiente si la etiqueta es «A revisar», para que la rutina lo use; procesado en el resto).
 - 2026-09-19 · (este commit) · Fichas nuevas destacadas: sello de última visita en localStorage; las fichas insertadas o revisadas desde entonces llevan 🆕 en listas y ficha, un banner bajo las pestañas con el contador lleva a Explorar filtrado por novedad ("Solo nuevas desde mi última visita").
 - 2026-09-19 · (este commit) · Resumen por sector y por tipo de venta en Explorar (chips con puntuación media y nº de fichas, tocables para filtrar; los sectores libres se agrupan en familias por palabras clave) y estado de las rutinas al pie (última ejecución de ideas, revisión y mejora, en rojo si llevan demasiado sin ejecutar).
 - 2026-09-18 · (este commit) · Comparar: en Explorar se marcan 2 o 3 fichas y se ven lado a lado en una tabla con puntuación, IA Score, etiqueta, venta, cliente, notas 1-10, inversión, CAC, LTV, LTV/CAC, ticket, retorno y primer paso; la mejor de cada fila en verde; tocar la cabecera abre la ficha; selección recordada en localStorage.

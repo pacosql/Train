@@ -256,6 +256,19 @@
     .empty .big { font-size: 2.4rem; margin-bottom: 8px; }
 
     .msg { color: var(--bad); font-size: 0.85rem; margin: 0 0 10px; min-height: 1em; }
+    /* motivo rápido tras etiquetar */
+    .motivos {
+      position: fixed; left: 16px; right: 16px; bottom: calc(96px + env(safe-area-inset-bottom, 0px)); z-index: 25;
+      background: #1c2027; border: 1px solid var(--line-strong); border-radius: 16px; padding: 10px 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); transform: translateY(20px); opacity: 0; pointer-events: none; transition: opacity 0.2s, transform 0.2s;
+    }
+    .motivos.show { opacity: 1; transform: none; pointer-events: auto; }
+    .motivos .t { display: flex; justify-content: space-between; align-items: center; font-family: var(--display); font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-2); margin-bottom: 8px; }
+    .motivos .t button { width: auto; margin: 0; padding: 4px 8px; font-size: 0.85rem; background: transparent; color: var(--text-2); box-shadow: none; }
+    .motivos .row { display: flex; flex-wrap: wrap; gap: 6px; }
+    .motivos .row button { width: auto; margin: 0; padding: 7px 11px; font-size: 0.9rem; font-family: var(--body); text-transform: none; letter-spacing: 0; font-weight: 600; background: rgba(255, 255, 255, 0.06); color: var(--text); border: 1px solid var(--line-strong); box-shadow: none; border-radius: 999px; }
+    .motivos .row button:active { background: var(--accent-soft); border-color: var(--accent); }
+
     .toast {
       position: fixed; left: 50%; bottom: calc(96px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); z-index: 30;
       background: #1c2027; border: 1px solid var(--line-strong); color: var(--text); padding: 10px 14px; border-radius: 999px; font-size: 0.9rem;
@@ -342,6 +355,7 @@
   </div>
 
   <div class="toast" id="toast"><span id="toast-text"></span><button id="toast-undo">Deshacer</button></div>
+  <div class="motivos" id="motivos"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script src="config.js"></script>
@@ -481,6 +495,36 @@
       if (state.tab === "pendiente") { state.index = Math.min(state.index, Math.max(0, pending().length - 1)); }
       state.detailId = null;
       render();
+      if (decision) showMotivos(idea, decision);
+    }
+
+    // ---------- motivo rápido al etiquetar (se guarda como comentario) ----------
+    const MOTIVOS = {
+      no_gusta: ["Venta humana", "Efecto de red", "Poco margen", "Mucha inversión", "Mercado saturado", "No es para mí"],
+      gusta: ["Compra desasistida", "Buen LTV/CAC", "Lo hago con Claude", "Poca inversión", "Me apasiona"],
+      definitivo: ["La empiezo ya", "Poca inversión", "Lo hago con Claude"],
+      revisar: ["Amplía mercado y competencia", "Recalcula cifras", "Busca otro enfoque", "Baja la inversión"],
+    };
+    let motivosTimer = null;
+    function showMotivos(idea, decision) {
+      const box = el("motivos"); const list = MOTIVOS[decision] || [];
+      if (!list.length) return;
+      box.innerHTML = `<div class="t"><span>¿Por qué ${DECISION_LABEL[decision]}? (opcional)</span><button type="button" id="motivos-x">✕</button></div>
+        <div class="row">${list.map((m) => `<button type="button" data-m="${esc(m)}">${esc(m)}</button>`).join("")}</div>`;
+      box.classList.add("show");
+      clearTimeout(motivosTimer); motivosTimer = setTimeout(hideMotivos, 15000);
+      el("motivos-x").onclick = hideMotivos;
+      box.querySelectorAll("button[data-m]").forEach((b) => b.onclick = () => saveMotivo(idea, decision, b.dataset.m));
+    }
+    function hideMotivos() { el("motivos").classList.remove("show"); clearTimeout(motivosTimer); }
+    async function saveMotivo(idea, decision, motivo) {
+      hideMotivos();
+      // Para «A revisar» queda pendiente (la rutina lo usa); para el resto es solo un apunte ya procesado.
+      const row = { idea_id: idea.id, tipo: "texto", texto: `Motivo de ${DECISION_LABEL[decision]}: ${motivo}`, estado: decision === "revisar" ? "pendiente" : "procesado", procesado_en: decision === "revisar" ? null : new Date().toISOString() };
+      const { data, error } = await client.from(T_COMENTARIOS).insert(row).select().single();
+      if (error) { showMsg("No se pudo guardar el motivo: " + error.message); return; }
+      comentarios.push(data);
+      showToast(`Motivo guardado: ${motivo}`);
     }
     async function undo() {
       if (!lastChange) return;
@@ -1017,7 +1061,7 @@
       document.querySelectorAll(".tab").forEach((t) => t.addEventListener("click", () => { resetRec(); state.tab = t.dataset.tab; state.detailId = null; state.index = 0; render(); }));
       el("btn-refresh").addEventListener("click", (e) => refresh(e.currentTarget));
       el("btn-explore").addEventListener("click", () => { resetRec(); state.tab = (state.tab === "explorar" || state.tab === "comparar") ? "pendiente" : "explorar"; state.detailId = null; state.index = 0; render(); });
-      el("toast-undo").addEventListener("click", undo);
+      el("toast-undo").addEventListener("click", () => { hideMotivos(); undo(); });
       if (!url || !anonKey) { showMsg("Faltan credenciales en config.js"); return; }
       client = supabase.createClient(url, anonKey);
       await refresh(null);
