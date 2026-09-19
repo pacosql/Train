@@ -74,6 +74,20 @@ mano pidiéndoselo a un chat con acceso a este repo.
    mano), sin duplicados.
 6. Hacer `PATCH` a `contactos_contactos` con `{"resumen": "...",
    "etiquetas": [...], "estado_sintesis": "procesado"}`.
+7. Al terminar la pasada, insertar una fila en `contactos_rutinas`
+   (`procesados`: nº de contactos actualizados, `resumen`: una frase)
+   para dejar constancia de que la rutina sigue viva.
+
+### `contactos_rutinas` — registro de ejecuciones de la rutina
+
+`ejecutada_en` (timestamptz), `procesados` (int), `resumen` (text).
+
+## Rutinas activas
+
+- **Síntesis y etiquetado** (cada hora, sesión nueva): ejecuta los
+  pasos de arriba sobre todos los contactos `pendiente` y registra la
+  ejecución en `contactos_rutinas`, incluso si no había nada que
+  procesar (`procesados: 0`).
 
 ```bash
 # ejemplo de lectura de pendientes
