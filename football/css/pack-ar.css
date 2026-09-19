@@ -1,1 +1,53 @@
-/* Pack AR — pendiente (noche 1, tramo 5). */
+/* Pack AR — juego grande "Cerrojos de restos" (noche 18/19-09-2026). Prefijo: crj- (cerrojos). */
+
+.crj-badge { display: inline-block; font-size: 0.78rem; font-weight: 700; color: var(--accent); border: 1.5px solid var(--accent); border-radius: 999px; padding: 3px 10px; margin: 0 0 12px; }
+.crj-progress { color: var(--muted); font-size: 0.9rem; text-align: center; margin: 8px 0 12px; }
+
+.crj-map { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; max-width: 360px; margin: 12px auto; }
+.crj-node { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 2px; border-radius: 12px; border: 2px solid var(--accent); background: var(--card); color: var(--text); font: inherit; cursor: pointer; }
+.crj-node[disabled] { opacity: 0.4; border-style: dashed; cursor: default; }
+.crj-node-done { background: var(--accent); color: #fff; }
+.crj-node-num { font-size: 1.1rem; font-weight: 800; }
+.crj-node-name { font-size: 0.62rem; font-weight: 600; text-align: center; line-height: 1.15; }
+
+.crj-dial-wrap { display: flex; justify-content: center; margin: 4px 0; }
+.crj-svg { max-width: 100%; height: auto; }
+.crj-ring { fill: var(--card); stroke: var(--border); stroke-width: 3; }
+.crj-pos circle { fill: var(--bg); stroke: var(--border); stroke-width: 1.5; }
+.crj-pos text { font-size: 12px; font-weight: 700; fill: var(--text); text-anchor: middle; pointer-events: none; }
+.crj-pos-hit circle { fill: #dcebff; stroke: #2f6fd6; }
+.crj-pos-orbit circle { fill: #ffe1a8; stroke: #e0921b; }
+.crj-pos-target circle { stroke: var(--accent); stroke-width: 3; }
+.crj-pos-target text { fill: var(--accent); }
+.crj-tap { cursor: pointer; }
+.crj-tap circle:hover { stroke: var(--accent); }
+.crj-needle { stroke: var(--accent); stroke-width: 4; stroke-linecap: round; }
+.crj-hub { fill: var(--accent); }
+
+.crj-dials { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin: 4px 0; }
+.crj-dial-box { display: flex; flex-direction: column; align-items: center; width: 150px; max-width: 48%; }
+.crj-dial-label { font-size: 0.7rem; color: var(--muted); text-align: center; line-height: 1.2; margin-bottom: 4px; min-height: 2.4em; }
+
+.crj-formula { text-align: center; font-size: 0.98rem; margin: 6px 0 10px; min-height: 1.3em; }
+.crj-keys { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin: 0 0 10px; }
+.crj-key { min-width: 68px; padding: 12px 10px; font-size: 1.15rem; }
+.crj-wheel { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; max-width: 340px; margin: 0 auto 10px; }
+.crj-num { padding: 10px 0; font-size: 1rem; }
+.crj-keypad { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; max-width: 340px; margin: 0 auto 10px; }
+.crj-num-del { grid-column: span 1; }
+.crj-display { text-align: center; font-size: 1.6rem; font-weight: 800; letter-spacing: 2px; min-height: 1.4em; margin: 6px 0; color: var(--accent); }
+.crj-locks { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; max-width: 360px; margin: 8px auto 6px; }
+.crj-lock { padding: 12px 2px; font-size: 0.98rem; }
+.crj-lock-on { background: #dcebff; border-color: #2f6fd6; }
+.crj-timer { text-align: center; color: var(--muted); font-size: 0.85rem; font-weight: 700; margin: -6px 0 8px; }
+.crj-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin: 10px 0; }
+
+.crj-learned { font-size: 0.9rem; color: var(--muted); background: var(--bg); border-radius: 10px; padding: 10px 12px; margin: 0 0 12px; }
+.crj-errors { text-align: left; font-size: 0.88rem; padding-left: 18px; margin: 0 0 12px; }
+.crj-errors li { margin: 6px 0; }
+
+@media (prefers-color-scheme: dark) {
+  .crj-pos-hit circle { fill: #24407a; stroke: #7fb8ff; }
+  .crj-pos-orbit circle { fill: #6b4a10; stroke: #ffc35c; }
+  .crj-lock-on { background: #24407a; border-color: #7fb8ff; }
+}

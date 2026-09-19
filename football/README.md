@@ -1462,6 +1462,43 @@ vidas perdidas con repaso funcional. Fallos cazados por el play-test: la
 máquina podía verter más de 1 (la marca verdadera no existía) y en "qué
 vasito cayó" el nivel nuevo tapaba el anterior.
 
+## Ejercicio #176 (decimocuarto juego grande, noche del 18/19-09-2026)
+
+### Tramo — [`css/pack-ar.css`](./css/pack-ar.css)
+
+Primer juego grande del bloque de divisibilidad (`enigma` suma módulo 27
+sobre letras, `corral` reparte huevos con resto, `jarras` llega al mcd
+por trasvases, todos en una ronda). Sale de la ronda de investigación
+de esta noche (escape rooms de aula + dial de combinación como reloj
+modular). Construido por un subagente con el contrato de casa; el
+orquestador rehízo simulación, contrato, play-test y capturas antes de
+integrarlo.
+
+| # | Juego | Tema | Pantallas | De dónde sale |
+|---|---|---|---|---|
+| 176 | 🔒 Cerrojos de restos | Divisibilidad y restos | Tutorial (dial de 12 con botón +5: tres pulsaciones con rastro, "15 = 1 vuelta + 3", y predecir dónde cae con cinco) → sala 1 "El dial" (¿dónde queda tras k pulsaciones? / ¿cuántas pulsaciones mínimas para llegar a t?; el rastro solo se anima en la primera ronda) → sala 2 "La llave que no entra" (cuatro llaves +a, solo una llega a la cerradura: la que cumple mcd(a, m) | t; el fallo ilumina la órbita de la llave elegida) → sala 3 "La puerta de las cifras" (marcar exactamente los candados 2, 3, 5, 9, 10 que abren un número; en la primera ronda el dial de 9 recorre las cifras porque 10 ≡ 1 y el dial de 10 solo mira la última) → sala 4 "La caja fuerte" (reto sin vidas: "en el dial de 3 cae en 1 y en el de 5 cae en 2, ¿qué número entre 1 y 15?"; se pueden probar candidatos en las primeras rondas y a ciegas en las últimas; cronómetro de escape) → resultados y repaso | Escape room de aula (una prueba por candado) + MathCircles "Primes, Divisibility, and Modular Arithmetic"; el dial que pisa su órbita es inventado |
+
+**Ciclo de aprendizaje**: el resto se VIVE como vueltas de un dial
+antes de nombrarse; la misma representación explica después el mcd
+(órbitas), los criterios de divisibilidad (10 ≡ 1 mod 9, 10 ≡ 0 mod 10)
+y el teorema chino del resto (dos diales a la vez). Andamiaje que se
+retira (rastro animado → sin rastro; diales dibujados → solo el número;
+probar candidatos → a ciegas). Progreso persistente en `localStorage` y
+`football_progress` (con mejor tiempo de escape).
+
+**Generadores** (`verify_cerrojos.mjs`, 20.000 rondas por sala, 0
+fallos, con mcd, órbitas y teorema chino reimplementados por fuerza
+bruta): sala 1 con al menos una vuelta y, en la inversa, mcd(a, m) = 1 y
+respuesta única en 1..m; sala 2 con exactamente una llave que llega (y
+nunca en una sola pulsación) y tres que no; sala 3 con entre 1 y 3
+candados abiertos; sala 4 con solución única en 1..m₁·m₂. Flujo
+completo jugado tres veces en Chromium a 400 px (perfecta 130 pts; un
+fallo con repaso; tres vidas perdidas con repaso funcional) y capturas
+también en modo oscuro. Correcciones tras las capturas: los dos diales
+de la sala 3 se apilaban a 400 px y dejaban Comprobar bajo el pliegue;
+una llave "buena" llegaba en una sola pulsación; la vida se perdía con
+retraso al terminar la animación.
+
 ## Versiones (v2) y bandeja "Revisar"
 
 Cuando un ejercicio recibe una vuelta de mejoras, se marca con un
