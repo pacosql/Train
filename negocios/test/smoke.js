@@ -65,6 +65,11 @@ const server = http.createServer((req, res) => {
     const before = await n("pendiente"), name = await t("h1");
     await page.click("#btn-gusta");
     await page.waitForFunction((b) => parseInt(document.querySelector("#n-pendiente").textContent, 10) === b - 1, before);
+    await page.waitForSelector("#motivos.show button[data-m]");
+    const motivos = await page.locator("#motivos button[data-m]").count();
+    await page.click("#motivos-x");
+    await page.waitForFunction(() => !document.querySelector("#motivos").classList.contains("show"));
+    console.log("motivos rápidos OK:", motivos, "opciones");
     await page.click("#toast-undo");
     await page.waitForFunction((b) => parseInt(document.querySelector("#n-pendiente").textContent, 10) === b, before);
     console.log("etiquetar + deshacer OK en:", name);
