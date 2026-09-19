@@ -1,1 +1,58 @@
-/* Pack AP — pendiente (noche 1, tramo 4). */
+/* Pack AP — juego grande "La redacción" (noche 18/19-09-2026). Prefijo: rdc- (redacción). */
+
+.rdc-badge { display: inline-block; font-size: 0.78rem; font-weight: 700; color: var(--accent); border: 1.5px solid var(--accent); border-radius: 999px; padding: 3px 10px; margin: 0 0 12px; }
+.rdc-progress { color: var(--muted); font-size: 0.9rem; text-align: center; margin: 8px 0 12px; }
+
+.rdc-map { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; max-width: 340px; margin: 12px auto; }
+.rdc-node { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 2px; border-radius: 12px; border: 2px solid var(--accent); background: var(--card); color: var(--text); font: inherit; cursor: pointer; }
+.rdc-node[disabled] { opacity: 0.4; border-style: dashed; cursor: default; }
+.rdc-node-done { background: var(--accent); color: #fff; }
+.rdc-node-num { font-size: 1.1rem; font-weight: 800; }
+.rdc-node-name { font-size: 0.62rem; font-weight: 600; text-align: center; line-height: 1.15; }
+
+.rdc-tema { font-size: 0.8rem; font-weight: 700; color: var(--muted); text-align: center; margin: 0 0 2px; }
+.rdc-wrap { display: flex; justify-content: center; margin: 4px 0 6px; width: 100%; }
+.rdc-svg { max-width: 100%; height: auto; }
+.rdc-axis { stroke: var(--muted); stroke-width: 1.5; }
+.rdc-grid { stroke: var(--border); stroke-width: 1; }
+.rdc-tick { font-size: 10px; fill: var(--muted); text-anchor: end; font-variant-numeric: tabular-nums; }
+.rdc-bar-a { fill: var(--accent-2); }
+.rdc-bar-b { fill: var(--accent); }
+.rdc-icon { stroke: none; }
+.rdc-val { font-size: 12px; font-weight: 800; fill: var(--text); text-anchor: middle; }
+.rdc-name { font-size: 11px; font-weight: 600; fill: var(--text); text-anchor: middle; }
+.rdc-factor { font-size: 9.5px; fill: var(--muted); text-anchor: middle; }
+
+.rdc-paper { width: 100%; max-width: 340px; margin: 0 auto 10px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px 10px; font-family: Georgia, "Times New Roman", serif; }
+.rdc-masthead { font-size: 0.62rem; letter-spacing: 0.18em; color: var(--muted); text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 4px; margin-bottom: 6px; }
+.rdc-headline { font-size: 1.05rem; font-weight: 700; line-height: 1.25; text-align: center; color: var(--text); }
+
+.rdc-controls { width: 100%; max-width: 340px; margin: 0 auto 6px; display: flex; flex-direction: column; gap: 8px; }
+.rdc-ctrl { display: flex; flex-direction: column; gap: 6px; align-items: center; }
+.rdc-ctrl-label { font-size: 0.78rem; color: var(--muted); font-weight: 600; text-align: center; }
+.rdc-stepper { display: flex; align-items: center; gap: 12px; font-size: 1.05rem; }
+.rdc-stepper b { min-width: 3ch; text-align: center; font-variant-numeric: tabular-nums; }
+.rdc-step { padding: 6px 16px; font-size: 1.1rem; line-height: 1; }
+.rdc-range { width: 100%; max-width: 300px; accent-color: var(--accent); }
+.rdc-chips { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
+.rdc-chip { background: var(--bg); border: 2px solid var(--border); border-radius: 999px; padding: 6px 12px; font: inherit; font-size: 0.85rem; font-weight: 700; color: var(--text); cursor: pointer; }
+.rdc-chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+.rdc-formula { text-align: center; font-size: 0.88rem; color: var(--muted); font-variant-numeric: tabular-nums; margin: 2px 0 6px; }
+.rdc-hint { font-size: 0.8rem; color: var(--muted); background: var(--bg); border-radius: 8px; padding: 6px 10px; margin: 0 0 10px; text-align: center; }
+
+.rdc-options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; max-width: 340px; margin: 0 auto 6px; }
+.rdc-opt { padding: 11px 6px; font-size: 0.92rem; }
+.rdc-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin: 8px 0; }
+
+.rdc-table { border-collapse: collapse; margin: 6px auto 12px; font-size: 1rem; min-width: 220px; }
+.rdc-table th { font-size: 0.75rem; color: var(--muted); font-weight: 600; text-align: right; padding: 2px 10px; }
+.rdc-table td { border-top: 1px solid var(--border); padding: 8px 10px; }
+.rdc-table td:last-child { text-align: right; font-weight: 800; font-variant-numeric: tabular-nums; }
+.rdc-inputrow { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; margin: 0 0 6px; }
+.rdc-input { width: 90px; padding: 10px; font-size: 1.1rem; font-weight: 700; text-align: center; border: 2px solid var(--border); border-radius: 10px; background: var(--bg); color: var(--text); }
+.rdc-unit { font-weight: 700; }
+
+.rdc-learned { font-size: 0.9rem; color: var(--muted); background: var(--bg); border-radius: 10px; padding: 10px 12px; margin: 0 0 12px; }
+.rdc-errors { text-align: left; font-size: 0.88rem; padding-left: 18px; margin: 0 0 12px; }
+.rdc-errors li { margin: 6px 0; }
