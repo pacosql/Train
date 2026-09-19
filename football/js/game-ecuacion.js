@@ -218,7 +218,9 @@ export function mountEcuacionGame(container, { client, onExit }) {
       <div class="feedback" data-feedback></div>`;
     const draw = () => {
       body.querySelector("[data-stage]").innerHTML = symbolsOnly ? "" : balanceSvg(cur);
-      body.querySelector("[data-eq]").innerHTML = history.map((h, i) => `<div class="ecu-eq-line ${i === history.length - 1 ? "ecu-eq-current" : ""}">${h}</div>`).join("");
+      // Los pasos anteriores van en una sola fila de chips (antes cada paso era una línea y empujaba los botones fuera de la pantalla en móvil).
+      const prev = history.slice(0, -1);
+      body.querySelector("[data-eq]").innerHTML = `${prev.length ? `<div class="ecu-eq-hist">${prev.map((h) => `<span class="ecu-eq-chip">${h}</span>`).join('<span class="ecu-eq-sep">→</span>')}</div>` : ""}<div class="ecu-eq-line ecu-eq-current">${history[history.length - 1]}</div>`;
     };
     draw();
     const explain = () => `Quitando ${eq.b === 0 ? "nada" : (eq.b === 1 ? "x" : eq.b + "x")} y ${Math.min(eq.c, eq.d)} de los dos lados queda ${eq.a - eq.b}x = ${eq.d - Math.min(eq.c, eq.d) - (eq.c - Math.min(eq.c, eq.d))}, así que x = ${eq.x}.`;

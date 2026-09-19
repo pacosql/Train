@@ -47,7 +47,6 @@ export function unitsIn(mission, value) {
 // ---------------- dibujo ----------------
 
 const PX_PER_CM = 1.6;
-const PX_PER_L = 8;
 
 function lengthSvg(value, { units = 0, showRef = true, label = "" } = {}) {
   const W = 340;
@@ -61,16 +60,23 @@ function lengthSvg(value, { units = 0, showRef = true, label = "" } = {}) {
   return `<svg class="mdr-svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" data-object="${value}">${out}</svg>`;
 }
 
+// Capacidad: el recipiente se dibuja con ÁREA proporcional a los litros, en
+// celdas de 1 L (CELL × CELL px) dispuestas en hasta 6 columnas; así 2 L y
+// 30 L se distinguen a simple vista (antes era una columna de 8 px por litro
+// que a pocos litros quedaba como una raya). El referente es una celda de 1 L.
+const CELL = 24;
 function capacitySvg(value, { units = 0, showRef = true, label = "" } = {}) {
   const W = 340;
-  const H = 260;
-  const h = value * PX_PER_L;
-  const x0 = showRef ? 120 : 140;
-  const base = 236;
-  let out = `<rect x="${x0}" y="${base - h}" width="80" height="${h}" rx="6" class="mdr-object" />`;
-  if (label) out += `<text x="${x0 + 40}" y="${base - h - 6}" class="mdr-object-label">${label}</text>`;
-  for (let i = 0; i < units; i++) out += `<rect x="${x0 - 1}" y="${base - (i + 1) * PX_PER_L}" width="82" height="${PX_PER_L - 1}" class="mdr-unit" />`;
-  if (showRef) out += `<rect x="60" y="${base - PX_PER_L}" width="24" height="${PX_PER_L}" rx="2" class="mdr-ref" /><text x="72" y="${base + 16}" class="mdr-ref-label" text-anchor="middle">🧴 1 L</text>`;
+  const cols = Math.max(1, Math.min(6, Math.ceil(Math.sqrt(value))));
+  const rows = value / cols;
+  const w = cols * CELL, h = rows * CELL;
+  const H = Math.max(120, Math.ceil(h) + 44);
+  const x0 = showRef ? 120 : Math.round((W - w) / 2);
+  const base = H - 24;
+  let out = `<rect x="${x0}" y="${base - h}" width="${w}" height="${h}" rx="6" class="mdr-object" />`;
+  for (let i = 0; i < units; i++) { const c = i % cols, r = Math.floor(i / cols); out += `<rect x="${x0 + c * CELL + 1}" y="${base - (r + 1) * CELL + 1}" width="${CELL - 2}" height="${CELL - 2}" class="mdr-unit" />`; }
+  if (label) out += `<text x="${x0 + w / 2}" y="${base - h - 6}" class="mdr-object-label mdr-object-label-out">${label}</text>`;
+  if (showRef) out += `<rect x="60" y="${base - CELL}" width="${CELL}" height="${CELL}" rx="3" class="mdr-ref" /><text x="72" y="${base + 16}" class="mdr-ref-label" text-anchor="middle">🧴 1 L</text>`;
   return `<svg class="mdr-svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" data-object="${value}">${out}</svg>`;
 }
 

@@ -1414,6 +1414,18 @@ fallo con repaso (140 pts) y las tres vidas perdidas con repaso
 funcional. Un nombre de serie duplicaba la unidad en el título del
 gráfico ("(miles) (miles de visitas)"): corregido al integrar.
 
+### Pulidos de la noche (sin cambio de mecánica)
+
+- **#165 El medidor del cuerpo**: el recipiente de la misión Capacidad
+  se dibujaba como una columna de 8 px por litro (2 L era una raya);
+  ahora su ÁREA es proporcional a los litros, en celdas de 1 L de 24 px
+  en hasta 6 columnas, y el referente es una celda de 1 L. El play-test
+  deduce ahora los litros del área del rectángulo.
+- **#164 De la balanza a la ecuación**: el historial de pasos ocupaba
+  una línea por paso y empujaba los botones fuera de la pantalla en
+  móvil; ahora los pasos anteriores van en una fila de chips y solo la
+  ecuación actual va en grande.
+
 ## Versiones (v2) y bandeja "Revisar"
 
 Cuando un ejercicio recibe una vuelta de mejoras, se marca con un
