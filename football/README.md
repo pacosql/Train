@@ -1195,6 +1195,41 @@ no lleva `data-m`/`data-n`: se quitaron al ver que delataban la
 respuesta en el DOM. Partida perfecta (16 aciertos, 160 pts) y partida
 con fallo deliberado (vida perdida, error listado, repaso).
 
+## Ejercicio #169 (séptimo juego grande, noche del 18/19-09-2026)
+
+### Tramo — [`css/pack-ak.css`](./css/pack-ak.css)
+
+De la `cola` de `work_state` (hueco "probabilidad compuesta y diagramas
+de árbol", sin ningún juego: `probabilidad` y `ruleta` trabajan un solo
+suceso). Construido por un subagente con el contrato de casa; el
+orquestador rehízo la simulación, el contrato, el play-test y las
+capturas antes de integrarlo, y cazó un fallo que el subagente no llegó
+a resolver (ver abajo).
+
+| # | Juego | Tema | Pantallas | De dónde sale |
+|---|---|---|---|---|
+| 169 | 🚪 Pasillo de puertas | Probabilidad compuesta | Portada con progreso → tutorial (2 puertas y luego 3: al atravesar una puerta el pasillo siguiente se dibuja MÁS ESTRECHO, su anchura es la probabilidad acumulada: 1/2 × 1/3 = 1/6) → nivel 1 dos sucesos independientes seguidos (opciones con los errores clásicos: sumar en vez de multiplicar, multiplicar arriba y sumar abajo…) → nivel 2 bolsa sin reposición (se toca la bola para sacarla y se ve bajar el denominador) → nivel 3 construir el árbol asignando fichas de fracción a las cuatro ramas y al resultado → reto Monty Hall (6 partidas con el presentador abriendo una puerta vacía, tabla con los 3 casos y pregunta puntuable: cambiar gana 2/3) → resultados y repaso | Tablero de Galton + Monty Hall de Mathigon; el "embudo que se cierra" es inventado |
+
+**Ciclo de aprendizaje**: la multiplicación de probabilidades se VE
+antes de calcularse (el pasillo se estrecha), luego se calcula con
+apoyo (la fórmula se rellena al tocar la bola), después se construye el
+árbol entero sin apoyo, y el reto invierte la intuición con el caso más
+famoso de la probabilidad condicionada. Vidas solo en los niveles 1-3.
+Progreso persistente en `localStorage` y `football_progress`.
+
+**Generadores** (`verify_puertas.mjs`, 20.000 rondas por nivel, 0
+fallos): denominadores ≤ 36; opciones siempre 4 fracciones distintas
+como números (no solo como texto) con una sola correcta; en el árbol, 5
+huecos con fracciones distintas entre sí y 8 fichas (5 correctas + 3
+distractores) sin repetidos ni fuera de (0, 1). Flujo completo jugado
+dos veces en Chromium a 400 px: partida perfecta (100 pts) y partida con
+fallo deliberado en el nivel 1 (vida perdida, error listado, repaso).
+
+**Fallo cazado por el play-test**: el árbol está anidado, así que el
+orden del DOM de los huecos es 0, 2, 3, 1, 4, pero la comprobación
+indexaba por posición: el nivel 3 marcaba mal cualquier árbol correcto.
+Ahora los huecos se ordenan por `data-branch` antes de comparar.
+
 ## Ejercicio #170 (octavo juego grande, noche del 18-09-2026)
 
 ### Tramo — [`css/pack-al.css`](./css/pack-al.css)

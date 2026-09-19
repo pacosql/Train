@@ -549,7 +549,8 @@ export function mountPuertasGame(container, { client, onExit }) {
       <div class="prt-chips" data-chips>${r.chips.map((f) => `<button type="button" class="prt-chip" data-pick="${fs(f)}">${fs(f)}</button>`).join("")}</div>
       <div class="prt-actions"><button class="primary" data-check disabled>Comprobar</button></div>
       <div class="feedback" data-feedback></div>`;
-    const slots = Array.from(body.querySelectorAll("[data-branch]"));
+    // El árbol está anidado, así que el orden del DOM (0, 2, 3, 1, 4) no es el de r.slots: se ordena por data-branch.
+    const slots = Array.from(body.querySelectorAll("[data-branch]")).sort((x, y) => Number(x.getAttribute("data-branch")) - Number(y.getAttribute("data-branch")));
     const chips = Array.from(body.querySelectorAll("[data-pick]"));
     const paint = () => {
       slots.forEach((s, i) => {
