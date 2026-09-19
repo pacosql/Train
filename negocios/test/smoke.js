@@ -11,7 +11,8 @@
 // - Playwright está instalado globalmente en /opt/node22/lib/node_modules.
 //
 // La prueba NO crea comentarios ni audios; solo lee, navega, etiqueta una
-// ficha y deshace la etiqueta, dejando los datos como estaban.
+// ficha y la devuelve a pendientes (botón "Devolver a pendientes"), dejando
+// los datos como estaban.
 const fs = require("fs"), path = require("path"), http = require("http"), os = require("os");
 const { execSync } = require("child_process");
 const root = path.resolve(__dirname, "..", "..");
@@ -60,7 +61,7 @@ const server = http.createServer((req, res) => {
     await page.click(`.tab[data-tab="${tab}"]`);
     await page.waitForSelector("#view .card, #view .item, #view .empty");
   }
-  // etiquetar la primera pendiente (si la hay) y deshacer
+  // etiquetar la primera pendiente (si la hay) y devolverla a pendientes
   if ((await n("pendiente")) > 0) {
     const before = await n("pendiente"), name = await t("h1");
     await page.click("#btn-gusta");
@@ -70,9 +71,14 @@ const server = http.createServer((req, res) => {
     await page.click("#motivos-skip");
     await page.waitForFunction(() => !document.querySelector("#motivos").classList.contains("show"));
     console.log("motivos rápidos OK:", motivos, "opciones");
-    await page.click("#toast-undo");
+    await page.click(`.tab[data-tab="gusta"]`);
+    await page.waitForSelector(".item");
+    await page.click(".item"); // la recién etiquetada, primera por decidido_en desc
+    await page.waitForSelector("#btn-reabrir");
+    await page.click("#btn-reabrir");
+    await page.click(`.tab[data-tab="pendiente"]`);
     await page.waitForFunction((b) => parseInt(document.querySelector("#n-pendiente").textContent, 10) === b, before);
-    console.log("etiquetar + deshacer OK en:", name);
+    console.log("etiquetar + devolver a pendientes OK en:", name);
   }
   // abrir el detalle de una decidida (si la hay)
   for (const tab of ["gusta", "no_gusta", "definitivo"]) {
