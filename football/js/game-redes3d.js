@@ -173,9 +173,9 @@ export function checkPedido(cells, placement) {
 export function foldedFaces(cells, stickersByCell, top, front) {
   const { faces } = foldNet(cells, top);
   let normals = faces.map((f) => V[f]);
-  for (let k = 0; k < 4; k++) {
+  for (let k = 0; k < 4 && front !== undefined; k++) {
     const fk = keyOf(normals[front]);
-    if (front === undefined || fk === "F" || fk === "T" || fk === "Bo") break;
+    if (fk === "F" || fk === "T" || fk === "Bo") break;
     normals = normals.map(([x, y, z]) => [-y, x, z]);
   }
   const out = {};
@@ -280,8 +280,8 @@ function netSvg(cells, { stickers = {}, marks = {}, labels = {}, tappable = fals
     const s = stickers[i];
     return `<g class="cja-cell ${tappable ? "cja-cell-tap" : ""} ${marks[i] || ""}" data-cell="${i}" data-cx="${x}" data-cy="${y}" ${s ? `data-sym="${s.id}"` : ""}>
       <rect x="${px}" y="${py}" width="${cell}" height="${cell}" rx="${cell * 0.12}" />
-      ${s ? stickerAt(s, [cell * 0.72, 0, 0, cell * 0.72, px + cell * 0.14, py + cell * 0.14]) : ""}
-      ${labels[i] ? `<text x="${px + cell / 2}" y="${py + cell * 0.62}" class="cja-label">${labels[i]}</text>` : ""}
+      ${s ? (labels[i] ? stickerAt(s, [cell * 0.52, 0, 0, cell * 0.52, px + cell * 0.24, py + cell * 0.06]) : stickerAt(s, [cell * 0.72, 0, 0, cell * 0.72, px + cell * 0.14, py + cell * 0.14])) : ""}
+      ${labels[i] ? `<text x="${px + cell / 2}" y="${py + cell * 0.88}" class="cja-label">${labels[i]}</text>` : ""}
     </g>`;
   }).join("");
   return `<svg class="cja-svg ${cls}" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}">${body}</svg>`;
@@ -324,7 +324,7 @@ function pileSvg(heights) {
     out += `<polygon points="${pts([[x, y, z + 1], [x + 1, y, z + 1], [x + 1, y + 1, z + 1], [x, y + 1, z + 1]])}" class="cja-face cja-face-t" />`;
   }
   const fm = P(1.5, 0, 0), rm = P(3, 1.5, 0);
-  out += `<text x="${fm[0] - 8}" y="${fm[1] + 16}" class="cja-side">frente ⬉</text><text x="${rm[0] + 8}" y="${rm[1] + 16}" class="cja-side cja-side-r">⬈ derecha</text>`;
+  out += `<text x="${fm[0] - 8}" y="${fm[1] + 16}" class="cja-side">frente ⬈</text><text x="${rm[0] + 8}" y="${rm[1] + 16}" class="cja-side cja-side-r">⬉ derecha</text>`;
   const minX = P(0, 0, 0)[0] - 40, maxX = P(3, 3, 0)[0] + 40, minY = P(0, 3, 3)[1] - 4, maxY = P(3, 0, 0)[1] + 24;
   return `<svg class="cja-svg" viewBox="${minX} ${minY} ${maxX - minX} ${maxY - minY}" width="${maxX - minX}" height="${maxY - minY}" data-pile data-heights="${heights.map((r) => r.join(",")).join(";")}">${out}</svg>`;
 }
@@ -609,6 +609,9 @@ export function mountRedes3dGame(container, { client, onExit }) {
 
   // ---- resultados y repaso ----
   function screenResults() {
+    // Si se llega aquí tras perder la última vida, outcome() dejó locked = true:
+    // hay que soltarlo o las pantallas de repaso no responderían a los toques.
+    locked = false;
     const byType = {};
     errors.forEach((e) => { byType[e.tipo] = (byType[e.tipo] || 0) + 1; });
     progress = { nivelMax: Math.max(progress.nivelMax || 0, levelReached), fallosPorTipo: { ...(progress.fallosPorTipo || {}) }, partidas: (progress.partidas || 0) + 1 };

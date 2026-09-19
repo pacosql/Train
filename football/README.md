@@ -1,7 +1,7 @@
 # Math Games 🧠
 
-PWA (sin build, HTML/CSS/JS puro) con **172 ejercicios de matemáticas**,
-cada uno numerado (#1-#172) para poder referirse a ellos sin ambigüedad.
+PWA (sin build, HTML/CSS/JS puro) con **174 ejercicios de matemáticas**,
+cada uno numerado (#1-#174) para poder referirse a ellos sin ambigüedad.
 Cálculo mental, geometría, álgebra, estadística, fracciones, dinero,
 probabilidad, coordenadas, tiempo y más. Nace como banco de pruebas
 rápido para sacar ideas de mecánicas (tipo Duolingo Math, Synthesis,
@@ -1341,6 +1341,45 @@ repasa. Los juegos con máquina de estados `render()` (`azar`,
 `puertas`, `potencias`) ya desbloqueaban en cada render y no estaban
 afectados.
 
+## Ejercicio #173 (undécimo juego grande, noche del 18/19-09-2026)
+
+### Tramo — [`css/pack-ao.css`](./css/pack-ao.css)
+
+De la `cola` de `work_state` (hueco "desarrollos planos y vistas de
+cuerpos 3D"). `desplegable` (#pack-5) pide adivinar, entre tres cubos,
+cuál sale de una cruz fija; aquí el jugador PLIEGA el desarrollo y
+fabrica la caja que le piden. Construido por un subagente con el
+contrato de casa; el orquestador rehízo simulación, contrato, play-test
+y capturas antes de integrarlo.
+
+| # | Juego | Tema | Pantallas | De dónde sale |
+|---|---|---|---|---|
+| 173 | 🎁 Fábrica de cajas | Geometría espacial | Tutorial (cruz con 6 pegatinas: se tocan las casillas pegadas a una ya plegada y cada una aparece en el cubo isométrico o como cara oculta; al cerrar, ¿cuál queda opuesta a la tapa?) → tramo 1 "El pedido" (colocar 3 pegatinas en un desarrollo para que, al plegar, se vean juntas en una esquina y giren como en el pedido; el fallo distingue "quedan opuestas" de "imagen en espejo") → tramo 2 "La cara opuesta" (uno de los 11 desarrollos del cubo, orientación al azar, sin dibujo de ayuda; la explicación es geométrica: línea recta con una en medio, escalón en Z, zigzag) → tramo 3 "¿Cierra o no?" (4 hexaminós, solo uno cierra o solo uno no; al responder se pintan las dos casillas que chocan) → reto "Vistas" (montón de 3-5 cubos sobre 3×3: la vista desde el frente o la derecha entre 4, sin vidas) → resultados y repaso | NRICH "Puzzling Cube" + poliedros de Mathigon; el pedido con pegatinas y la regla de quiralidad son inventados |
+
+**Ciclo de aprendizaje**: plegar con ayuda (tutorial) → construir el
+pedido (la regla se muestra en pantalla: tres caras que se tocan en una
+esquina y giran en el mismo orden ⇔ det(n_T, n_F, n_R) = +1) → razonar
+sin plegar (cara opuesta) → juzgar desarrollos (11 válidos entre 35
+hexaminós) → cambiar de representación (vistas). Progreso persistente
+en `localStorage` y `football_progress`.
+
+**Generadores** (`verify_redes3d.mjs`, 20.000 rondas por nivel, 0
+fallos, con un plegado independiente por matrices de rotación 3×3):
+35 hexaminós libres y exactamente 11 que cierran (coinciden con los del
+juego); 280 orientaciones comparadas en validez, pares opuestos y
+quiralidad; tramo 1 con 24 colocaciones válidas de 120 y veredicto
+(ok/espejo/opuestas) igual al del juego; tramo 2 con respuesta única;
+tramo 3 con 4 formas distintas y una sola respuesta; reto con 4 vistas
+distintas, una correcta y todas las tapas visibles. Hallazgos del
+proceso: la primera versión del "dado" del verificador rodaba por la
+cara impresa y daba la imagen especular (se corrigió el verificador,
+no el juego, tras comprobarlo físicamente con la cruz); el play-test
+cazó un `foldedFaces` sin cara frontal que reventaba el tramo 2, la
+etiqueta "tapa" que tapaba la pegatina y las flechas frente/derecha del
+reto al revés. Flujo completo jugado tres veces en Chromium a 400 px
+(perfecta 130 pts; un fallo en espejo con repaso, 120 pts; tres vidas
+perdidas con repaso funcional) y capturas también en modo oscuro.
+
 ## Ejercicio #174 (duodécimo juego grande, noche del 18/19-09-2026)
 
 ### Tramo — [`css/pack-ap.css`](./css/pack-ap.css)
@@ -1620,12 +1659,12 @@ Una vez publicado, esta app queda en:
 
 ## Qué hace la app
 
-- Menú con los 172 ejercicios numerados, organizados en pestañas
+- Menú con los 174 ejercicios numerados, organizados en pestañas
   🆕/👍/👎/🔧; cada uno abre en su propia pantalla (`#/game/<id>`), sin
   recargar la página.
 - Motor de preguntas compartido (`js/quiz-engine.js`) para los 18
   ejercicios de "pregunta + opciones o teclado" (`js/games-data.js` y
-  `js/games-data-2.js`); los otros 154 (`js/game-*.js` y
+  `js/games-data-2.js`); los otros 156 (`js/game-*.js` y
   `js/balloons-game.js`) tienen cada uno su propia mecánica de
   interacción (arrastrar, tocar en orden, emparejar, construir,
   escribir, clasificar, recorrer…).
