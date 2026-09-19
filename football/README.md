@@ -1,7 +1,7 @@
 # Math Games 🧠
 
-PWA (sin build, HTML/CSS/JS puro) con **168 ejercicios de matemáticas**,
-cada uno numerado (#1-#168) para poder referirse a ellos sin ambigüedad.
+PWA (sin build, HTML/CSS/JS puro) con **171 ejercicios de matemáticas**,
+cada uno numerado (#1-#171) para poder referirse a ellos sin ambigüedad.
 Cálculo mental, geometría, álgebra, estadística, fracciones, dinero,
 probabilidad, coordenadas, tiempo y más. Nace como banco de pruebas
 rápido para sacar ideas de mecánicas (tipo Duolingo Math, Synthesis,
@@ -1195,6 +1195,104 @@ no lleva `data-m`/`data-n`: se quitaron al ver que delataban la
 respuesta en el DOM. Partida perfecta (16 aciertos, 160 pts) y partida
 con fallo deliberado (vida perdida, error listado, repaso).
 
+## Ejercicio #169 (séptimo juego grande, noche del 18/19-09-2026)
+
+### Tramo — [`css/pack-ak.css`](./css/pack-ak.css)
+
+De la `cola` de `work_state` (hueco "probabilidad compuesta y diagramas
+de árbol", sin ningún juego: `probabilidad` y `ruleta` trabajan un solo
+suceso). Construido por un subagente con el contrato de casa; el
+orquestador rehízo la simulación, el contrato, el play-test y las
+capturas antes de integrarlo, y cazó un fallo que el subagente no llegó
+a resolver (ver abajo).
+
+| # | Juego | Tema | Pantallas | De dónde sale |
+|---|---|---|---|---|
+| 169 | 🚪 Pasillo de puertas | Probabilidad compuesta | Portada con progreso → tutorial (2 puertas y luego 3: al atravesar una puerta el pasillo siguiente se dibuja MÁS ESTRECHO, su anchura es la probabilidad acumulada: 1/2 × 1/3 = 1/6) → nivel 1 dos sucesos independientes seguidos (opciones con los errores clásicos: sumar en vez de multiplicar, multiplicar arriba y sumar abajo…) → nivel 2 bolsa sin reposición (se toca la bola para sacarla y se ve bajar el denominador) → nivel 3 construir el árbol asignando fichas de fracción a las cuatro ramas y al resultado → reto Monty Hall (6 partidas con el presentador abriendo una puerta vacía, tabla con los 3 casos y pregunta puntuable: cambiar gana 2/3) → resultados y repaso | Tablero de Galton + Monty Hall de Mathigon; el "embudo que se cierra" es inventado |
+
+**Ciclo de aprendizaje**: la multiplicación de probabilidades se VE
+antes de calcularse (el pasillo se estrecha), luego se calcula con
+apoyo (la fórmula se rellena al tocar la bola), después se construye el
+árbol entero sin apoyo, y el reto invierte la intuición con el caso más
+famoso de la probabilidad condicionada. Vidas solo en los niveles 1-3.
+Progreso persistente en `localStorage` y `football_progress`.
+
+**Generadores** (`verify_puertas.mjs`, 20.000 rondas por nivel, 0
+fallos): denominadores ≤ 36; opciones siempre 4 fracciones distintas
+como números (no solo como texto) con una sola correcta; en el árbol, 5
+huecos con fracciones distintas entre sí y 8 fichas (5 correctas + 3
+distractores) sin repetidos ni fuera de (0, 1). Flujo completo jugado
+dos veces en Chromium a 400 px: partida perfecta (100 pts) y partida con
+fallo deliberado en el nivel 1 (vida perdida, error listado, repaso).
+
+**Fallo cazado por el play-test**: el árbol está anidado, así que el
+orden del DOM de los huecos es 0, 2, 3, 1, 4, pero la comprobación
+indexaba por posición: el nivel 3 marcaba mal cualquier árbol correcto.
+Ahora los huecos se ordenan por `data-branch` antes de comparar.
+
+## Ejercicio #170 (octavo juego grande, noche del 18-09-2026)
+
+### Tramo — [`css/pack-al.css`](./css/pack-al.css)
+
+De la `cola` de `work_state` (hueco "potencias de 10 y notación
+científica", sin ningún juego). Construido por un subagente con el
+mismo contrato de casa y verificado aparte (simulación, contrato,
+play-test y capturas rehechos por el orquestador antes de integrarlo).
+
+| # | Juego | Tema | Pantallas | De dónde sale |
+|---|---|---|---|---|
+| 170 | 🪐 Microscopio y telescopio | Notación científica | Tutorial "encuentra el virus" (un deslizador ◀ ▶ recorre 17 objetos reales de 10⁻⁷ m a 10⁹ m: cada paso divide o multiplica por 10) → nivel 1 "¿cuántos ceros?" (número escrito → m × 10ⁿ entre 4 opciones con los errores clásicos e ± 1 y −e) → nivel 2 "monta el número" (diales de mantisa y exponente con el decimal en vivo) → nivel 3 "salta de escala" (pasos ×10 entre dos objetos, 10ᵃ×10ᵇ y 10ᵃ÷10ᵇ con teclado) → reto "ordena sin escala" (4 objetos de menor a mayor, sin vidas) → resultados y repaso | Inventado: "Powers of Ten" (Eames) como paseo por escalas + hallazgo de concreteness fading |
+
+**Ciclo de aprendizaje**: el exponente nace como "cuántos pasos de ×10"
+entre cosas que se pueden imaginar (un virus, una hormiga, la Tierra) y
+solo después se lee y se escribe como notación; leer → construir →
+operar con exponentes → ordenar sin ayuda. Progreso persistente en
+`localStorage` y `football_progress`.
+
+**Generadores** (`verify_potencias.mjs`, 20.000 rondas por nivel, 0
+fallos): tabla de 17 objetos con exponentes únicos en −7..9 y mantisas
+enteras 1-9; m y e recalculados desde el texto del número; diferencia y
+suma de exponentes recalculadas; orden recalculado por tamaño; opciones
+siempre 4 distintas con una sola correcta. Flujo completo jugado dos
+veces en Chromium a 400 px: partida perfecta (13 aciertos, 130 pts) y
+partida con fallo deliberado en el nivel 1 (vida perdida, error listado,
+repaso superado, portada con "Has jugado 2 veces").
+
+## Ejercicio #171 (noveno juego grande, noche del 18-09-2026)
+
+### Tramo — [`css/pack-am.css`](./css/pack-am.css)
+
+De la `cola` de `work_state` (hueco "crecimiento exponencial, interés
+compuesto y porcentajes encadenados", sin ningún juego). `porcentaje`
+y `rebajas` (tandas anteriores) calculan un porcentaje suelto en una
+ronda; aquí la idea es una sola, repetida en cinco disfraces: sumar
+siempre lo mismo es una recta, multiplicar siempre por lo mismo es una
+bola de nieve.
+
+| # | Juego | Tema | Pantallas | De dónde sale |
+|---|---|---|---|---|
+| 171 | ❄️ Bola de nieve | Crecimiento exponencial | Tutorial "el arroz del tablero" (toca casilla a casilla: 1, 2, 4, … 128, y al lado lo que llevarías sumando de 1 en 1) → tramo 1 "Dobla" (sucesión geométrica dibujada como bolas crecientes; pide el término 4.º o 5.º; distractor "seguir sumando la última diferencia") → tramo 2 "La hucha" (capital al 10/20/50 % durante 1-2 años; distractor interés simple) → tramo 3 "Rebajas encadenadas" (un +20 % y un −20 % no se anulan: ×0,96; distractor "sumar los porcentajes") → tramo 4 "Lineal contra bola" (predice en qué mes la bola adelanta a la recta y luego ves crecer las barras mes a mes) → reto "¿cuántos años?" (años hasta doblar/triplicar/cuadruplicar un capital, sin vidas) → resultados y repaso | Inventado: leyenda del ajedrez y el arroz + hallazgo "feedback informativo: predecir y luego simular" |
+
+**Ciclo de aprendizaje**: concreto (granos, bolas) → numérico
+(sucesión) → dinero (interés compuesto) → trampa clásica (porcentajes
+encadenados) → comparación con lo lineal (predicción + simulación) →
+inversión (dado el objetivo, ¿cuántos pasos?). En cada fallo la
+explicación dice qué modelo mental produjo el distractor elegido
+("eso sería seguir sumando", "eso sería sumar los porcentajes").
+Progreso persistente en `localStorage` y `football_progress`.
+
+**Generadores** (`verify_bola.mjs`, 20.000 rondas por tramo, 0 fallos):
+sucesiones a₁·r^(n−1) con r ∈ {2, 3}; capitales múltiplos de 100 y
+porcentajes en {10, 20, 50} para que todo salga entero; pares de
+porcentajes encadenados que siempre dan céntimos exactos, con la trampa
+"se anulan" siempre entre las opciones cuando toca; plan lineal contra
+exponencial con mes de adelantamiento único entre 2 y 8 y sin empates;
+reto con la cadena año a año recalculada. Opciones siempre 4 distintas.
+Flujo completo jugado dos veces en Chromium a 400 px deduciendo cada
+respuesta de los parámetros del enunciado (nunca de la respuesta):
+partida perfecta (16 aciertos, 160 pts) y partida con fallo deliberado
+(vida perdida, error listado, repaso).
+
 ## Versiones (v2) y bandeja "Revisar"
 
 Cuando un ejercicio recibe una vuelta de mejoras, se marca con un
@@ -1440,12 +1538,12 @@ Una vez publicado, esta app queda en:
 
 ## Qué hace la app
 
-- Menú con los 168 ejercicios numerados, organizados en pestañas
+- Menú con los 171 ejercicios numerados, organizados en pestañas
   🆕/👍/👎/🔧; cada uno abre en su propia pantalla (`#/game/<id>`), sin
   recargar la página.
 - Motor de preguntas compartido (`js/quiz-engine.js`) para los 18
   ejercicios de "pregunta + opciones o teclado" (`js/games-data.js` y
-  `js/games-data-2.js`); los otros 150 (`js/game-*.js` y
+  `js/games-data-2.js`); los otros 153 (`js/game-*.js` y
   `js/balloons-game.js`) tienen cada uno su propia mecánica de
   interacción (arrastrar, tocar en orden, emparejar, construir,
   escribir, clasificar, recorrer…).
