@@ -51,6 +51,15 @@ La columna `description` de `weights_exercises` guarda el texto de "cómo
 entrenarlo" de cada máquina (colocación, ejecución, errores típicos y
 esquema de series). Si está vacía, la app usa un texto genérico.
 
+## Notas de la máquina
+
+El campo de "notas" (grupo muscular aparte, esto es la anotación libre
+tipo "asiento en posición 3") ocupa todo el ancho de la tarjeta y se
+guarda solo al salir del campo (o al pulsar Intro) — no hay un botón
+"Guardar" pequeño al lado compitiendo por sitio. Un "✓ Guardado" aparece
+un instante debajo y se apaga solo. Si el texto no ha cambiado no
+vuelve a llamar a Supabase.
+
 ## Iconos
 
 Cada máquina lleva un pictograma para reconocerla sin leer el nombre.
