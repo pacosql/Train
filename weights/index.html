@@ -191,10 +191,24 @@
       background: linear-gradient(135deg, rgba(67, 211, 145, 0.17), rgba(255, 255, 255, 0.03) 55%);
       box-shadow: 0 0 0 1px rgba(67, 211, 145, 0.14), 0 10px 30px rgba(67, 211, 145, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.06);
     }
-    .item .icon { width: 2.3rem; height: 2.3rem; border-radius: 14px; display: grid; place-items: center; font-size: 1.4rem; line-height: 1; flex-shrink: 0; background: rgba(255, 255, 255, 0.06); border: 1px solid var(--line); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05); }
+    /* icono: pictograma de línea (SVG) o, si el usuario puso uno propio, un
+       emoji de texto — ambos comparten el mismo chip. El color sigue al tipo
+       de movimiento (mismo --type que ya usa la franja de la izquierda). */
+    .item .icon {
+      width: 2.3rem; height: 2.3rem; border-radius: 14px; flex-shrink: 0;
+      display: grid; place-items: center; font-size: 1.3rem; line-height: 1;
+      background: rgba(255, 255, 255, 0.06); border: 1px solid var(--line);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      color: var(--type, var(--text-2));
+    }
+    .item .icon svg { width: 55%; height: 55%; stroke: currentColor; }
     .item.top .icon { background: var(--accent-soft); border-color: rgba(67, 211, 145, 0.35); }
     .item-main { flex: 1; min-width: 0; }
-    .h-icon { display: inline-block; margin-right: 6px; font-size: 0.9em; vertical-align: -2px; }
+    .h-icon { display: inline-flex; align-items: center; margin-right: 8px; font-size: 0.85em; vertical-align: -0.1em; color: var(--text-2); }
+    .h-icon svg { width: 0.95em; height: 0.95em; stroke: currentColor; }
+    .h-icon.push { color: var(--push); }
+    .h-icon.pull { color: var(--pull); }
+    .h-icon.cardio { color: var(--cardio); }
     .item .name { font-family: var(--display); font-size: 1.3rem; font-weight: 700; letter-spacing: 0.2px; line-height: 1.05; }
     .item .meta { color: var(--text-2); font-size: 0.75rem; margin-top: 3px; }
     .item .meta .type { font-family: var(--display); font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.7px; }
@@ -435,8 +449,9 @@
         <div id="cd-muscle-info"></div>
 
         <h3>Ficha de la máquina</h3>
-        <label for="cd-icon-input">Icono (un emoji)</label>
-        <input id="cd-icon-input" type="text" placeholder="p. ej. 🏋️" maxlength="8" style="width:6rem;text-align:center;font-size:1.4rem;" />
+        <label for="cd-icon-input">Icono personalizado</label>
+        <input id="cd-icon-input" type="text" placeholder="🏋️" maxlength="8" style="width:6rem;text-align:center;font-size:1.4rem;" />
+        <p class="sub" style="margin:6px 0 0;">Opcional — vacío usa el icono automático de tu tipo de máquina.</p>
 
         <label for="cd-muscle-input" style="margin-top:16px;">Grupo muscular</label>
         <input id="cd-muscle-input" type="text" placeholder="p. ej. Bíceps" />
@@ -532,8 +547,9 @@
       <details class="detail">
         <summary>Añadir detalles ahora</summary>
         <div class="card">
-          <label for="new-ex-icon">Icono (un emoji)</label>
-          <input id="new-ex-icon" type="text" placeholder="p. ej. 💪" maxlength="8" style="width:6rem;text-align:center;font-size:1.4rem;" />
+          <label for="new-ex-icon">Icono personalizado</label>
+          <input id="new-ex-icon" type="text" placeholder="💪" maxlength="8" style="width:6rem;text-align:center;font-size:1.4rem;" />
+          <p class="sub" style="margin:6px 0 0;">Opcional — vacío usa el icono automático.</p>
 
           <label for="new-ex-muscle" style="margin-top:16px;">Grupo muscular</label>
           <input id="new-ex-muscle" type="text" placeholder="p. ej. Bíceps" />
@@ -665,13 +681,38 @@
       sessionExercises: "weights_session_exercises",
     };
 
-    const CARDIO_ICONS = { eliptica: "🏃", bicicleta: "🚴", andar: "🚶" };
-    // Icono de cada máquina: el suyo, o uno por tipo si no tiene, para
-    // reconocerla de un vistazo sin leer.
-    function exIcon(ex) {
-      return ex.icon || CARDIO_ICONS[ex.slug] || (ex.movement_type === "cardio" ? "🏃" : "🏋️");
+    // Pictogramas de línea (Lucide, licencia ISC) en vez de emoji: los emoji
+    // por máquina quedaban graciosos, no serios. Solo cuatro iconos —uno por
+    // tipo de cardio y uno genérico de fuerza—, coloreados según empuje/
+    // tirón/cardio; se distinguen por el nombre, no por un dibujo literal de
+    // cada máquina. `ex.icon` sigue existiendo como override manual (un
+    // emoji propio, si alguien lo prefiere).
+    const ICON_PATHS = {
+      dumbbell: '<path d="M17.596 12.768a2 2 0 1 0 2.829-2.829l-1.768-1.767a2 2 0 0 0 2.828-2.829l-2.828-2.828a2 2 0 0 0-2.829 2.828l-1.767-1.768a2 2 0 1 0-2.829 2.829z"/><path d="m2.5 21.5 1.4-1.4"/><path d="m20.1 3.9 1.4-1.4"/><path d="M5.343 21.485a2 2 0 1 0 2.829-2.828l1.767 1.768a2 2 0 1 0 2.829-2.829l-6.364-6.364a2 2 0 1 0-2.829 2.829l1.768 1.767a2 2 0 0 0-2.828 2.829z"/><path d="m9.6 14.4 4.8-4.8"/>',
+      bike: '<circle cx="18.5" cy="17.5" r="3.5"/><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="15" cy="5" r="1"/><path d="M12 17.5V14l-3-3 4-3 2 3h2"/>',
+      footprints: '<path d="M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5.5c0 3.11-2 5.66-2 8.68V16a2 2 0 1 1-4 0Z"/><path d="M20 20v-2.38c0-2.12 1.03-3.12 1-5.62-.03-2.72-1.49-6-4.5-6C14.63 6 14 7.8 14 9.5c0 3.11 2 5.66 2 8.68V20a2 2 0 1 0 4 0Z"/><path d="M16 17h4"/><path d="M4 13h4"/>',
+      activity: '<path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/>',
+    };
+    function svgIcon(key) {
+      return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICON_PATHS[key] || ICON_PATHS.dumbbell}</svg>`;
     }
-    function cardioTitle(ex) { return `${exIcon(ex)} ${ex.name}`; }
+    function iconKeyFor(ex) {
+      if (ex.movement_type !== "cardio") return "dumbbell";
+      if (ex.slug === "bicicleta") return "bike";
+      if (ex.slug === "andar") return "footprints";
+      return "activity"; // elíptica y cualquier otro cardio futuro sin icono propio
+    }
+    // HTML del icono de una máquina: el emoji que haya puesto el usuario en
+    // su ficha, si lo hay, o si no el pictograma por defecto.
+    function exIconHtml(ex) {
+      const custom = (ex.icon || "").trim();
+      return custom || svgIcon(iconKeyFor(ex));
+    }
+    // Título de la pantalla de cardio: icono + nombre, en innerHTML porque
+    // el icono es SVG (o un emoji propio), no texto plano.
+    function cardioTitle(ex) {
+      return `<span class="h-icon cardio">${exIconHtml(ex)}</span>${ex.name}`;
+    }
     const DEFAULT_DESCRIPTION = "3 series × 8 repeticiones. Busca llegar al fallo (o cerca) en la última serie.";
     const CARDIO_DESCRIPTION = "Mantén un ritmo constante que puedas sostener durante todo el tiempo previsto.";
 
@@ -989,7 +1030,7 @@
         div.className = "item " + type;
         div.style.setProperty("--i", i);
         div.innerHTML =
-          `<div class="icon">${ex ? exIcon(ex) : "🏋️"}</div>
+          `<div class="icon">${ex ? exIconHtml(ex) : svgIcon("dumbbell")}</div>
            <div class="item-main">
              <div class="name">${name}</div>
              <div class="meta">${detail}</div>
@@ -1398,7 +1439,7 @@
         div.className = `item ${ex.movement_type}${isTop || r.running ? " top" : ""}${r.done && !r.running ? " done" : ""}`;
         div.style.setProperty("--i", Math.min(i++, 12));
         div.innerHTML =
-          `<div class="icon">${exIcon(ex)}</div>
+          `<div class="icon ${ex.movement_type}">${exIconHtml(ex)}</div>
            <div class="item-main">
              <div class="name">${ex.name}${r.done && !r.running ? " ✓" : ""}</div>
              <div class="meta"><span class="type ${ex.movement_type}">${badgeLabel(ex.movement_type)}</span> · ${muscleLabel(ex)}${weightTxt}${link ? ` · ${link}` : ""}</div>
@@ -1444,7 +1485,7 @@
           div.className = "item " + ex.movement_type;
           div.style.setProperty("--i", Math.min(i, 8));
           div.innerHTML =
-            `<div class="icon">${exIcon(ex)}</div>
+            `<div class="icon ${ex.movement_type}">${exIconHtml(ex)}</div>
              <div class="item-main">
                <div class="name">${ex.name}</div>
                <div class="meta">${muscleLabel(ex)}${ex.notes ? ` · ${ex.notes}` : ""}${stationLabel(ex) ? ` · ${stationLabel(ex)}` : ""}</div>
@@ -1484,7 +1525,7 @@
       el("btn-catalog-back-list").textContent =
         catalogReturn === "session-detail" ? "← Volver al entrenamiento" : "← Volver a la lista";
       currentCatalogExerciseId = ex.id;
-      el("cd-name").innerHTML = `<span class="h-icon">${exIcon(ex)}</span>`;
+      el("cd-name").innerHTML = `<span class="h-icon ${ex.movement_type}">${exIconHtml(ex)}</span>`;
       el("cd-name").appendChild(document.createTextNode(ex.name));
       el("cd-header").textContent = headerLine(ex);
       el("cd-header").className = `eyebrow ${ex.movement_type}`;
@@ -1529,7 +1570,7 @@
       if (error) { showError("No se pudo guardar la ficha: " + friendlyError(error)); return; }
       showError("");
       Object.assign(ex, patch);
-      el("cd-name").innerHTML = `<span class="h-icon">${exIcon(ex)}</span>`;
+      el("cd-name").innerHTML = `<span class="h-icon ${ex.movement_type}">${exIconHtml(ex)}</span>`;
       el("cd-name").appendChild(document.createTextNode(ex.name));
       el("cd-header").textContent = headerLine(ex);
       renderMuscleInfo("cd-muscle-info", ex.muscle_group);
@@ -1560,7 +1601,7 @@
         state.cardioStartedAt = null;
       }
       saveState();
-      el("cardio-title").textContent = cardioTitle(ex);
+      el("cardio-title").innerHTML = cardioTitle(ex);
       el("cardio-minutes").textContent = state.cardioMinutesSuggested || 15;
       el("cardio-hint").textContent = "Pulsa Start cuando te subas a la máquina.";
       renderCardioButtons();
@@ -1648,7 +1689,7 @@
         state.currentExerciseStartedAt = null;
       }
 
-      el("ex-name").innerHTML = `<span class="h-icon">${exIcon(ex)}</span>`;
+      el("ex-name").innerHTML = `<span class="h-icon ${ex.movement_type}">${exIconHtml(ex)}</span>`;
       el("ex-name").appendChild(document.createTextNode(ex.name));
       el("ex-header").textContent = headerLine(ex);
       el("ex-header").className = `eyebrow ${ex.movement_type}`;
@@ -1785,7 +1826,7 @@
         showScreen("feedback");
       } else if (target === "cardio") {
         const cardioEx = catalog.find((e) => e.id === state.cardioExerciseId);
-        el("cardio-title").textContent = cardioEx ? cardioTitle(cardioEx) : "Cardio";
+        el("cardio-title").innerHTML = cardioEx ? cardioTitle(cardioEx) : "Cardio";
         el("cardio-minutes").textContent = state.cardioMinutesSuggested || 15;
         renderCardioButtons();
         showScreen("cardio");
@@ -1822,7 +1863,7 @@
       state.cardioExerciseId = ex.id;
       state.cardioStartedAt = null;
       saveState();
-      el("cardio-title").textContent = cardioTitle(ex);
+      el("cardio-title").innerHTML = cardioTitle(ex);
       el("cardio-minutes").textContent = state.cardioMinutesSuggested;
       el("cardio-hint").textContent = `Para ${state.plannedDuration} min de entrenamiento, calienta unos ${state.cardioMinutesSuggested} min. Pulsa Start cuando te subas.`;
       renderCardioButtons();

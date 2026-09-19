@@ -51,6 +51,21 @@ La columna `description` de `weights_exercises` guarda el texto de "cómo
 entrenarlo" de cada máquina (colocación, ejecución, errores típicos y
 esquema de series). Si está vacía, la app usa un texto genérico.
 
+## Iconos
+
+Cada máquina lleva un pictograma para reconocerla sin leer el nombre.
+Por defecto son cuatro icono de línea (Lucide, licencia ISC, incrustados
+como SVG — sin llamada de red, funcionan offline): 🚴 para Bicicleta, 🚶
+para Andar, un pulso cardíaco para el resto del cardio (Elíptica y
+cualquier cardio futuro), y una mancuerna para todo lo demás. El color
+sigue al tipo de movimiento (azul empuje, ámbar tirón), igual que la
+franja de la izquierda de cada fila — así se agrupan de un vistazo sin
+depender de un dibujo distinto por máquina.
+
+La columna `weights_exercises.icon` sigue existiendo como override
+manual: si alguien escribe su propio emoji en la ficha de una máquina,
+ese emoji sustituye al pictograma automático solo para esa fila.
+
 ## Resiliencia de red
 
 El wifi/datos del gimnasio corta a ratos. Toda escritura a Supabase
