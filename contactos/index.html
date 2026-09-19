@@ -188,6 +188,7 @@
 
     <div id="view"></div>
 
+    <p class="helper" id="ultima-rutina" style="text-align:center"></p>
     <div class="build-id">build __BUILD_ID__</div>
   </div>
 
@@ -246,6 +247,9 @@
       const a = await client.from(T_ARCHIVOS).select("*").order("created_at", { ascending: false });
       if (a.error) throw a.error;
       archivos = a.data || [];
+      const r = await client.from(tablePrefix + "rutinas").select("*").order("ejecutada_en", { ascending: false }).limit(1);
+      const ultima = el("ultima-rutina");
+      if (ultima) ultima.textContent = !r.error && r.data && r.data[0] ? `Última síntesis automática: ${fmtDate(r.data[0].ejecutada_en)}` : "";
     }
     const notasDe = (id) => notas.filter((x) => x.contacto_id === id);
     const archivosDe = (id) => archivos.filter((x) => x.contacto_id === id);
