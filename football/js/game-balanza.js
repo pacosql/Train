@@ -1,133 +1,297 @@
-// #6 "Equilibra la balanza" (Igualdad y pesos) — REHECHO tres veces.
-// v2: pasó de acumular pesas +1/+2/+5/+10 (== "Llena el vaso" con kg) a
-// álgebra de verdad: sacos idénticos de peso desconocido y pesas conocidas
-// en los platos; el dedo mueve LA INCÓGNITA y la balanza sólo dice qué lado
-// pesa más, nunca los totales, así que hay que resolver k·x + a = m·x + b.
-// v3 (marcado 🔧 otra vez tras jugarlo de verdad leyendo los platos y
-// calculando x): el presupuesto de ajustes iba fijo a 8 en TODAS las
-// rondas, así que las fáciles (coste óptimo real de 1-2 ajustes) sobraban
-// hasta 6-7 de margen — justo el tanteo a ciegas que el diseño decía
-// evitar, y sin relación entre nivel y dificultad real. Ahora el
-// presupuesto se ata al coste óptimo de cada ronda con un margen que se
-// estrecha con el nivel (slackFor): +3 al empezar, +1 en el nivel avanzado.
-// v4 (marcado 🔧 una tercera vez, sin nota): jugadas 40 rondas óptimas de
-// verdad en Chromium a 390px de ancho, sin encontrar NINGÚN fallo numérico
-// (margen de ajustes siempre positivo). El problema resultó ser visual, no
-// matemático: una captura de pantalla mostró la cuerda de cada plato tan
-// fina (2px) y transparente (opacity 0.6, color apagado) que a simple
-// vista los platos parecían flotar sueltos, sin conexión con la viga — no
-// se leía como una balanza. Cuerda más gruesa y visible, con un punto de
-// anclaje donde entra en el plato, y una altura mínima para que nunca
-// desaparezca del todo en un desequilibrio extremo (antes podía llegar a
-// altura negativa, es decir 0 real).
-import { randInt, pick, clamp, saveScore } from "./utils.js";
+// #6 "Predice la balanza" (Igualdad y pesos) — v5, REHECHO desde la raíz.
+// v2-v4 eran variaciones de la MISMA mecánica: girar un dial (±1/±5) que
+// fija x hasta que la balanza quedara nivelada, con un presupuesto de
+// ajustes. Se marcó 🔧 cuatro veces: v3 ató el presupuesto al coste óptimo,
+// v4 engordó la cuerda de los platos… y seguía sin convencer, porque el
+// gesto de fondo era tantear un dial y mirar si la viga se movía. Además
+// "quitar lo mismo de los dos lados" ya lo cubre a fondo #164 (ecuacion).
+// v5 cambia el gesto: cada ronda son DOS pesadas con sacos idénticos de
+// peso desconocido x y un juego de pesas. La pesada 1 (equilibrada) define
+// x; la pesada 2 aparece BLOQUEADA con un candado y hay que PREDECIR qué
+// hará (cae la izquierda / equilibrada / cae la derecha) antes de soltarla.
+// Predecir obliga a razonar con la igualdad (sacar x y comparar los platos);
+// no hay nada que tantear porque la balanza no se mueve hasta que decides.
+// Nivel 4 (inversión): ninguna de las dos pesadas está equilibrada — son
+// dos desigualdades observadas — y hay que elegir el único x candidato que
+// cuadra con LAS DOS (cada distractor cuadra con una sola). Con una
+// referencia equilibrada el nivel 4 sería trivial: ella sola fija x y la
+// inclinación sobraría; por eso aquí la referencia también se inclina.
+import { randInt, pick, shuffle, saveScore } from "./utils.js";
 
-const MIN_X = 1;
-const MAX_X = 18;      // recorrido del control
-const MAX_START_COST = 8; // tope al elegir el punto de partida del dial, para no alargar la ronda de más
-
-// El presupuesto de ajustes iba fijo a 8 pase lo que pase: en las rondas
-// fáciles (coste óptimo 1-2 ajustes) sobraba tanto margen que tantear a
-// ciegas seguía siendo viable — justo lo que este diseño dice evitar. Ahora
-// el presupuesto se ata al coste real de la ronda, con un margen que se
-// estrecha con el nivel (más red de seguridad al empezar, casi ninguna en
-// el nivel avanzado).
-function slackFor(level) {
-  return level === 0 ? 3 : level === 1 ? 2 : 1;
-}
+const TILTS = ["left", "equal", "right"];
+const MIN_X = 2;
+const MAX_X = 9;
 
 export function balanzaLevelFor(streak) {
-  return streak >= 5 ? 2 : streak >= 2 ? 1 : 0;
+  return streak >= 9 ? 4 : streak >= 5 ? 3 : streak >= 2 ? 2 : 1;
 }
 
-// Coste mínimo en ajustes de ±1/±5 para recorrer una distancia.
-export function moveCost(d) {
-  const dist = Math.abs(d);
-  let best = dist;
-  for (let q = 0; q <= Math.ceil(dist / 5); q++) {
-    best = Math.min(best, q + Math.abs(dist - q * 5));
+// Inclinación de un plato "kl sacos + al kg" contra "kr sacos + ar kg" si
+// cada saco pesa x. Es LA función que el jugador reproduce de cabeza.
+export function tiltOf(test, x) {
+  const l = test.kl * x + test.al;
+  const r = test.kr * x + test.ar;
+  return l === r ? "equal" : l > r ? "left" : "right";
+}
+
+// La referencia se guarda como k sacos + a kg (izquierda) contra m sacos +
+// b kg (derecha); en los niveles 1-3 está equilibrada y k > m, así que
+// (k - m)·x = b - a tiene una única solución.
+export function refTilt(ref, x) {
+  return tiltOf({ kl: ref.k, al: ref.a, kr: ref.m, ar: ref.b }, x);
+}
+
+function makeRef(level, x) {
+  if (level === 1) {
+    const k = randInt(2, 4);
+    return { k, a: 0, m: 0, b: k * x };
   }
-  return best;
+  if (level === 2) {
+    const k = randInt(2, 4);
+    const a = randInt(1, 9);
+    return { k, a, m: 0, b: k * x + a };
+  }
+  const m = randInt(1, 2);
+  const d = randInt(1, 2);
+  const a = randInt(0, 6);
+  return { k: m + d, a, m, b: a + d * x };
 }
 
-// Una ronda es la ecuación k·x + a = m·x + b, construida desde la solución
-// para que x salga siempre entero y único (k > m, así k-m nunca es 0).
-function tryBalanza(level) {
-  let k = 0, m = 0, a = 0, b = 0, x = 0;
-  if (level === 0) {
-    // k sacos = b kg. k>=2 para que no sea leer el número del plato.
-    k = randInt(2, 3);
-    m = 0;
-    a = 0;
-    x = randInt(2, 9);
-    b = k * x;
-  } else if (level === 1) {
-    // k sacos + a kg = b kg: hay que quitar las pesas antes de dividir.
-    k = randInt(2, 4);
-    m = 0;
-    a = randInt(1, 9);
-    x = randInt(2, 9);
-    b = k * x + a;
+function samePans(t, ref) {
+  return (t.kl === ref.k && t.al === ref.a && t.kr === ref.m && t.ar === ref.b)
+    || (t.kl === ref.m && t.al === ref.b && t.kr === ref.k && t.ar === ref.a);
+}
+
+// Una pesada "interesante": los sacos y las pesas tiran en sentidos
+// opuestos (si un plato tuviera más sacos Y más pesas se vería a ojo), y el
+// resultado depende de x dentro de 2..9 (si saliera lo mismo para todo x
+// tampoco haría falta la referencia).
+function needsX(test, answer) {
+  for (let c = MIN_X; c <= MAX_X; c++) if (tiltOf(test, c) !== answer) return true;
+  return false;
+}
+
+function sampleTest(level) {
+  let kl, al, kr, ar;
+  if (level === 1) {
+    kl = randInt(1, 4); al = 0; kr = 0; ar = randInt(1, 9);
+  } else if (level === 2) {
+    kl = randInt(1, 4); al = randInt(0, 8); kr = 0; ar = randInt(al + 1, 9);
+  } else if (level === 3) {
+    kl = randInt(1, 4); kr = randInt(1, 4); al = randInt(0, 9); ar = randInt(0, 9);
   } else {
-    // Sacos en LOS DOS platos: hay que quitar sacos de los dos lados.
-    m = randInt(1, 2);
-    const d = randInt(1, 2);
-    k = m + d;
-    x = randInt(2, 9);
-    a = randInt(0, 6);
-    b = a + d * x;
+    kl = randInt(0, 4); kr = randInt(0, 4); al = randInt(0, 9); ar = randInt(0, 9);
   }
-  if (k <= m) return null;
-  if (x < 2 || x > 9) return null;
-  if (b <= 0 || b > 45 || a < 0 || a > 12) return null;
-  if ((b - a) % (k - m) !== 0) return null;      // x tiene que ser entero
-  if ((b - a) / (k - m) !== x) return null;      // y ser justo la solución
-  if (k * x + a <= 0) return null;               // platos con peso positivo
-  if (k + m > 6) return null;                    // caben dibujados
-
-  // Arranque del control: nunca la solución, nunca pegado a ella, y con un
-  // coste óptimo acotado para que la ronda no se alargue de más.
-  const cands = [];
-  for (let v = MIN_X; v <= MAX_X; v++) {
-    if (Math.abs(v - x) >= 3 && moveCost(v - x) <= MAX_START_COST) cands.push(v);
-  }
-  if (!cands.length) return null;
-
-  const x0 = pick(cands);
-  const flip = randInt(0, 1) === 1; // de qué lado están los sacos
-  return {
-    level, k, m, a, b, x,
-    x0,
-    moves: moveCost(x0 - x) + slackFor(level),
-    flip,
-    key: `${k}|${a}|${m}|${b}`,
-  };
+  if ((kl - kr) * (al - ar) >= 0) return null;
+  if (kl + al === 0 || kr + ar === 0) return null;
+  // Espejo al azar: que los sacos no estén siempre a la izquierda.
+  return randInt(0, 1) ? { kl: kr, al: ar, kr: kl, ar: al } : { kl, al, kr, ar };
 }
 
-function fallbackBalanza(level) {
-  const x0 = 9, x = 4;
-  return { level, k: 3, m: 0, a: 0, b: 12, x, x0, moves: moveCost(x0 - x) + slackFor(level), flip: false, key: "reserva" };
+function makeTest(level, x, target, ref) {
+  for (let i = 0; i < 200; i++) {
+    const t = sampleTest(level);
+    if (!t || samePans(t, ref)) continue;
+    const answer = tiltOf(t, x);
+    if (answer !== target || !needsX(t, answer)) continue;
+    return t;
+  }
+  return null;
+}
+
+function keyOf(level, ref, test) {
+  return `${level}|${ref.k},${ref.a},${ref.m},${ref.b}|${test.kl},${test.al},${test.kr},${test.ar}`;
 }
 
 export function makeBalanzaRound(streak, lastKey) {
   const level = balanzaLevelFor(streak);
-  let cand = null;
-  let guard = 0;
-  do {
-    cand = tryBalanza(level);
-    guard++;
-  } while ((!cand || cand.key === lastKey) && guard < 300);
-  return cand && cand.key !== lastKey ? cand : fallbackBalanza(level);
+  if (level === 4) return makePickXRound(lastKey);
+  for (let guard = 0; guard < 300; guard++) {
+    const x = randInt(MIN_X, MAX_X);
+    const ref = makeRef(level, x);
+    const target = pick(TILTS); // primero el resultado, luego la pesada: así salen ≈1/3 cada uno
+    const test = makeTest(level, x, target, ref);
+    if (!test) continue;
+    const key = keyOf(level, ref, test);
+    if (key === lastKey) continue;
+    return { level, ref, x, test, answer: target, key };
+  }
+  return { level, ref: { k: 3, a: 0, m: 0, b: 12 }, x: 4, test: { kl: 2, al: 5, kr: 3, ar: 0 }, answer: "left", key: "reserva" };
 }
 
-// Descompone unos kg en discos de pesas de verdad, para dibujarlos.
-function discos(kg) {
+// Nivel 4: dos pesadas observadas (referencia inclinada + pesada nueva) y
+// tres candidatos de x; sólo el verdadero cuadra con las dos. Si la pesada
+// nueva está inclinada, un distractor cuadra sólo con la referencia y el
+// otro sólo con la pesada nueva (hacen falta las dos para descartarlos); si
+// está equilibrada ella sola fija x, así que los dos distractores cuadran
+// con la referencia y hay que resolver la pesada equilibrada de verdad.
+export function makePickXRound(lastKey) {
+  // Primero el resultado de la pesada nueva (≈1/3 cada uno) y el x; luego
+  // se buscan pesadas que cuadren, y solo si no hay se cambia de x.
+  const answer = pick(TILTS);
+  for (let guard = 0; guard < 60; guard++) {
+    const x = randInt(MIN_X, MAX_X);
+    for (let tries = 0; tries < 60; tries++) {
+      const r = sampleTest(4);
+      if (!r) continue;
+      const refTiltNow = tiltOf(r, x);
+      if (refTiltNow === "equal" || !needsX(r, refTiltNow)) continue;
+      const ref = { k: r.kl, a: r.al, m: r.kr, b: r.ar, tilt: refTiltNow };
+      const test = makeTest(4, x, answer, ref);
+      if (!test) continue;
+      const fitsRef = (c) => refTilt(ref, c) === ref.tilt;
+      const fitsTest = (c) => tiltOf(test, c) === answer;
+      const onlyTest = [], onlyRef = [];
+      for (let c = MIN_X; c <= MAX_X; c++) {
+        if (c === x) continue;
+        if (fitsTest(c) && !fitsRef(c)) onlyTest.push(c);
+        if (fitsRef(c) && !fitsTest(c)) onlyRef.push(c);
+      }
+      let d1, d2;
+      if (answer === "equal") {
+        if (onlyRef.length < 2) continue;
+        [d1, d2] = shuffle(onlyRef);
+      } else {
+        if (!onlyTest.length || !onlyRef.length) continue;
+        d1 = pick(onlyTest);
+        d2 = pick(onlyRef);
+      }
+      const key = keyOf(4, ref, test);
+      if (key === lastKey) continue;
+      return { level: 4, ref, x, test, answer, candidates: shuffle([x, d1, d2]), key };
+    }
+  }
+  return {
+    level: 4,
+    ref: { k: 2, a: 1, m: 1, b: 9, tilt: "right" },
+    x: 5,
+    test: { kl: 3, al: 0, kr: 1, ar: 8 },
+    answer: "left",
+    candidates: shuffle([5, 8, 3]),
+    key: "reserva4",
+  };
+}
+
+// ---------------------------------------------------------------- dibujo
+// Geometría del SVG (viewBox 0 0 360 184): pivote arriba en el centro, viga
+// de semilongitud ARM, y de cada extremo cuelgan dos cuerdas en V hasta los
+// bordes de la bandeja. Los sacos y las pesas se apilan DENTRO de la V, en
+// filas de abajo arriba, con el ancho que deja la V a cada altura.
+const PIVOT = { x: 180, y: 30 };
+const ARM = 124;
+const ROPE_H = 92;
+const TRAY_HALF = 60;
+const SACK = { w: 18, h: 24 };
+const DISC = 14;
+const GAP = 2;
+const TILT_DEG = 8;
+export const DROP = Math.round(Math.sin((TILT_DEG * Math.PI) / 180) * ARM); // 17
+
+// Juego de pesas de 10, 5 y 1 kg: así 36 kg son 5 discos y caben dibujados.
+export function discs(kg) {
   const out = [];
   let rest = kg;
-  [10, 5, 2, 1].forEach((v) => {
-    while (rest >= v) { out.push(v); rest -= v; }
-  });
+  [10, 5, 1].forEach((v) => { while (rest >= v) { out.push(v); rest -= v; } });
   return out;
+}
+
+// Reparte sacos y pesas en filas dentro de la V; ok=false si no cabrían.
+export function layoutPan(sacks, kg) {
+  const items = [];
+  for (let i = 0; i < sacks; i++) items.push({ kind: "sack", w: SACK.w, h: SACK.h });
+  discs(kg).forEach((v) => items.push({ kind: "disc", w: DISC, h: DISC, v }));
+  const rows = [];
+  let y = 0;
+  let i = 0;
+  while (i < items.length) {
+    const rowH = items[i].h; // los sacos van primero, así el más alto abre la fila
+    const top = y + rowH;
+    const avail = (2 * TRAY_HALF * (ROPE_H - top)) / ROPE_H - 6;
+    if (avail < items[i].w) return { rows, ok: false };
+    const row = [];
+    let w = 0;
+    while (i < items.length && (w === 0 ? items[i].w : w + GAP + items[i].w) <= avail) {
+      w += (w ? GAP : 0) + items[i].w;
+      row.push(items[i]);
+      i++;
+    }
+    // Las filas de arriba se apoyan sobre los sacos de la fila de abajo (que
+    // van a la izquierda) en vez de flotar centradas sobre discos más bajos;
+    // si no caben así dentro de la V, se centran.
+    const prev = rows[rows.length - 1];
+    let x0 = -w / 2;
+    if (prev && prev.items[0].kind === "sack") x0 = Math.min(Math.max(-prev.w / 2, -avail / 2), avail / 2 - w);
+    rows.push({ y, h: rowH, items: row, w, x0 });
+    y = top;
+  }
+  return { rows, ok: true };
+}
+
+function panSVG(side, sacks, kg) {
+  const ex = side === "left" ? PIVOT.x - ARM : PIVOT.x + ARM;
+  const lay = layoutPan(sacks, kg);
+  let items = "";
+  lay.rows.forEach((row) => {
+    let x = row.x0;
+    row.items.forEach((it) => {
+      const bottom = ROPE_H - row.y;
+      if (it.kind === "sack") {
+        items += `<g class="bz-sack"><rect x="${x}" y="${bottom - it.h}" width="${it.w}" height="${it.h}" rx="4"/>`
+          + `<rect class="bz-sack-tie" x="${x + it.w / 2 - 5}" y="${bottom - it.h - 1}" width="10" height="4" rx="2"/>`
+          + `<text x="${x + it.w / 2}" y="${bottom - 8}">x</text></g>`;
+      } else {
+        const cx = x + it.w / 2;
+        const cy = bottom - it.h / 2;
+        items += `<g class="bz-disc bz-disc-${it.v}"><circle cx="${cx}" cy="${cy}" r="${it.w / 2}"/>`
+          + `<text x="${cx}" y="${cy + 2.8}">${it.v}</text></g>`;
+      }
+      x += it.w + GAP;
+    });
+  });
+  const cls = side === "left" ? "bz-pan-l" : "bz-pan-r";
+  return `<g transform="translate(${ex} ${PIVOT.y})"><g class="bz-pan-g ${cls}" data-side="${side}" data-sacks="${sacks}" data-weights="${kg}">`
+    + `<line class="bz-cord" x1="0" y1="0" x2="${-TRAY_HALF}" y2="${ROPE_H}"/>`
+    + `<line class="bz-cord" x1="0" y1="0" x2="${TRAY_HALF}" y2="${ROPE_H}"/>`
+    + `<circle class="bz-ring" cx="0" cy="0" r="4"/>`
+    + `<rect class="bz-tray" x="${-TRAY_HALF - 3}" y="${ROPE_H}" width="${2 * TRAY_HALF + 6}" height="8" rx="4"/>`
+    + items + `</g></g>`;
+}
+
+function scaleSVG(pans, locked) {
+  return `<svg class="bz-svg" viewBox="0 0 360 184" aria-hidden="true">`
+    + `<rect class="bz-stand-base" x="${PIVOT.x - 52}" y="170" width="104" height="10" rx="5"/>`
+    + `<rect class="bz-stand-mast" x="${PIVOT.x - 5}" y="${PIVOT.y}" width="10" height="142" rx="3"/>`
+    + panSVG("left", pans.kl, pans.al)
+    + panSVG("right", pans.kr, pans.ar)
+    + `<g class="bz-beam"><line x1="${PIVOT.x - ARM}" y1="${PIVOT.y}" x2="${PIVOT.x + ARM}" y2="${PIVOT.y}"/>`
+    + `<circle class="bz-pivot" cx="${PIVOT.x}" cy="${PIVOT.y}" r="6"/></g>`
+    + (locked ? `<g class="bz-lock"><path d="M${PIVOT.x - 6} 12 a6 6 0 0 1 12 0 v4"/><rect x="${PIVOT.x - 9}" y="14" width="18" height="12" rx="3"/></g>` : "")
+    + `</svg>`;
+}
+
+const TILT_TXT = { left: "cae la izquierda", equal: "equilibrada", right: "cae la derecha" };
+const TILT_ICON = { left: "⬅", equal: "⚖", right: "➡" };
+
+function sacoTxt(n) { return `${n} saco${n === 1 ? "" : "s"}`; }
+function panTxt(sacks, kg) {
+  return [sacks ? sacoTxt(sacks) : "", kg ? `${kg} kg` : ""].filter(Boolean).join(" + ") || "nada";
+}
+function panCalc(sacks, kg, x) {
+  const parts = [];
+  if (sacks) parts.push(`${sacks}·${x}`);
+  if (kg) parts.push(String(kg));
+  return `${parts.join("+") || "0"} = ${sacks * x + kg} kg`;
+}
+
+// La cuenta que hace el jugador: sacar x de la referencia y pesar los platos.
+function explainX(ref, x) {
+  if (ref.m === 0 && ref.a === 0) return `x = ${ref.b} ÷ ${ref.k} = ${x}`;
+  if (ref.m === 0) return `x = (${ref.b} − ${ref.a}) ÷ ${ref.k} = ${x}`;
+  const d = ref.k - ref.m;
+  return `quito ${sacoTxt(ref.m)} de cada lado: ${d}x + ${ref.a} = ${ref.b} → x = (${ref.b} − ${ref.a}) ÷ ${d} = ${x}`;
+}
+function explainTest(test, x, answer) {
+  return `izquierda ${panCalc(test.kl, test.al, x)}, derecha ${panCalc(test.kr, test.ar, x)} → ${TILT_TXT[answer]}`;
 }
 
 export function mountBalanzaGame(container, { client, onExit }) {
@@ -139,10 +303,7 @@ export function mountBalanzaGame(container, { client, onExit }) {
   let finished = false;
   let timers = [];
   let round = null;
-  let value = 0;   // lo que el jugador cree que pesa un saco
-  let movesLeft = 0; // se fija al arrancar cada ronda, según su coste real
   let locked = false;
-  let barEl, ropeLEl, ropeREl, panLEl, panREl, tiltEl, valueEl, movesEl;
 
   container.innerHTML = `
     <div class="game-topbar">
@@ -166,7 +327,6 @@ export function mountBalanzaGame(container, { client, onExit }) {
     timers.forEach(clearTimeout);
     timers = [];
   }
-
   function renderLives() {
     livesEl.textContent = "❤️".repeat(Math.max(lives, 0)) + "🖤".repeat(startLives - Math.max(lives, 0));
   }
@@ -174,199 +334,99 @@ export function mountBalanzaGame(container, { client, onExit }) {
     scoreEl.textContent = `⭐ ${score}`;
   }
 
-  // Sacos y pesas de cada plato: `flip` sólo cambia de lado el dibujo.
-  function ladoIzq() {
-    return round.flip ? { sacos: round.m, kg: round.b } : { sacos: round.k, kg: round.a };
-  }
-  function ladoDer() {
-    return round.flip ? { sacos: round.k, kg: round.a } : { sacos: round.m, kg: round.b };
-  }
-
-  function platoHTML(lado) {
-    let h = "";
-    for (let i = 0; i < lado.sacos; i++) h += `<span class="bz-saco">?</span>`;
-    discos(lado.kg).forEach((v) => { h += `<span class="bz-pesa">${v}</span>`; });
-    if (!h) h = `<span class="bz-vacio">vacío</span>`;
-    return h;
+  function figure(kind, pans, shown, caption) {
+    const lockedFig = shown === "locked";
+    const tilt = lockedFig ? "equal" : shown;
+    return `<figure class="bz-fig bz-tilt-${tilt}${lockedFig ? " bz-locked" : ""}" data-${kind} data-shown="${shown}">`
+      + `<figcaption class="bz-cap">${caption}</figcaption>${scaleSVG(pans, lockedFig)}</figure>`;
   }
 
   function nextRound() {
     round = makeBalanzaRound(streak, round ? round.key : "");
-    value = round.x0;
-    movesLeft = round.moves;
     locked = false;
+    const refPans = { kl: round.ref.k, al: round.ref.a, kr: round.ref.m, ar: round.ref.b };
+    const pick4 = round.level === 4;
+    const refShown = pick4 ? round.ref.tilt : "equal";
+    const prompt = pick4
+      ? `¿Cuánto pesa <b>un saco</b>?<small>Ninguna de las dos pesadas está equilibrada y ninguna lo dice sola: solo un valor cuadra con las dos</small>`
+      : `¿Qué hará la <b>pesada 2</b>?<small>Los sacos son todos iguales. La pesada 1 te dice cuánto pesa cada saco; decide antes de soltar el candado</small>`;
+    const buttons = pick4
+      ? `<div class="bz-xs">${round.candidates.map((c) => `<button class="bz-xbtn" data-x="${c}"><b>${c}</b><span>kg por saco</span></button>`).join("")}</div>`
+      : `<div class="bz-preds">${TILTS.map((t) => `<button class="bz-pred bz-pred-${t}" data-tilt="${t}"><b>${TILT_ICON[t]}</b><span>${TILT_TXT[t]}</span></button>`).join("")}</div>`;
 
     body.innerHTML = `
-      <div class="bz-wrap">
-        <p class="prompt bz-prompt">¿Cuánto pesa <b>un saco</b>?<small>los sacos son todos iguales — la balanza está en equilibrio cuando aciertas</small></p>
-        <div class="bz-scale">
-          <span class="bz-mast"></span>
-          <span class="bz-base"></span>
-          <span class="bz-bar" data-bar></span>
-          <div class="bz-side bz-side-l">
-            <span class="bz-rope" data-rope-l></span>
-            <div class="bz-pan" data-pan-l></div>
-          </div>
-          <div class="bz-side bz-side-r">
-            <span class="bz-rope" data-rope-r></span>
-            <div class="bz-pan" data-pan-r></div>
-          </div>
-        </div>
-        <div class="bz-tilt" data-tilt></div>
-        <div class="bz-dial">
-          <button class="bz-step" data-adj="-5">−5</button>
-          <button class="bz-step" data-adj="-1">−1</button>
-          <div class="bz-value">1 saco pesa<b><span data-x>0</span><i>kg</i></b></div>
-          <button class="bz-step" data-adj="1">+1</button>
-          <button class="bz-step" data-adj="5">+5</button>
-        </div>
-        <div class="bz-moves">Ajustes que te quedan: <b data-moves>${round.moves}</b></div>
-        <div class="feedback" data-feedback></div>
-        <div class="bz-why" data-why></div>
-        <button class="primary bz-confirm" data-confirm>¡Listo!</button>
+      <div class="bz-wrap bz-level-${round.level}">
+        <p class="prompt bz-prompt">${prompt}</p>
+        ${figure("ref", refPans, refShown, `Pesada 1 · ${pick4 ? TILT_TXT[round.ref.tilt] : "en equilibrio"}`)}
+        ${figure("test", round.test, pick4 ? round.answer : "locked", pick4 ? `Pesada 2 · ${TILT_TXT[round.answer]}` : "Pesada 2 · ¿qué pasará?")}
+        ${buttons}
+        <div class="feedback bz-feedback" data-feedback></div>
       </div>
     `;
-
-    barEl = body.querySelector("[data-bar]");
-    ropeLEl = body.querySelector("[data-rope-l]");
-    ropeREl = body.querySelector("[data-rope-r]");
-    panLEl = body.querySelector("[data-pan-l]");
-    panREl = body.querySelector("[data-pan-r]");
-    tiltEl = body.querySelector("[data-tilt]");
-    valueEl = body.querySelector("[data-x]");
-    movesEl = body.querySelector("[data-moves]");
-
-    panLEl.innerHTML = platoHTML(ladoIzq());
-    panREl.innerHTML = platoHTML(ladoDer());
-
-    body.querySelectorAll("[data-adj]").forEach((btn) => {
-      btn.addEventListener("click", () => ajustar(Number(btn.dataset.adj)));
+    body.querySelectorAll("[data-tilt]").forEach((btn) => {
+      btn.addEventListener("click", () => answerTilt(btn.dataset.tilt, btn));
     });
-    body.querySelector("[data-confirm]").addEventListener("click", confirmar);
-    renderScale();
-  }
-
-  function pesoIzq(x) {
-    const l = ladoIzq();
-    return l.sacos * x + l.kg;
-  }
-  function pesoDer(x) {
-    const d = ladoDer();
-    return d.sacos * x + d.kg;
-  }
-
-  function renderScale() {
-    const diff = pesoIzq(value) - pesoDer(value);
-    // El plato que pesa más baja, y la viga se inclina justo lo que da esa
-    // bajada: así el dibujo es coherente (cuerdas pegadas a los extremos) y
-    // la diferencia se lee de un vistazo sin decir los kilos.
-    const dy = clamp(diff * 2.4, -18, 18);
-    // Nunca por debajo de un mínimo visible: con dy en su extremo (±18) una
-    // cuerda podía quedar en -2px (0 real), y el plato parecía flotar
-    // pegado a la viga sin cuerda que lo sostenga.
-    ropeLEl.style.height = `${Math.max(4, 16 + dy)}px`;
-    ropeREl.style.height = `${Math.max(4, 16 - dy)}px`;
-    const semi = Math.max(barEl.getBoundingClientRect().width / 2, 40);
-    const rot = -(Math.atan2(dy, semi) * 180) / Math.PI;
-    barEl.style.transform = `rotate(${rot}deg)`;
-    valueEl.textContent = String(value);
-    movesEl.textContent = String(movesLeft);
-    // Sólo el lado que pesa más: los totales se revelan al confirmar, si no
-    // esto sería igualar dos números en vez de resolver la ecuación.
-    if (diff === 0) {
-      tiltEl.textContent = "⚖️ en equilibrio";
-      tiltEl.className = "bz-tilt bz-tilt-ok";
-    } else {
-      tiltEl.textContent = diff > 0 ? "⬅️ pesa más la izquierda" : "pesa más la derecha ➡️";
-      tiltEl.className = "bz-tilt";
-    }
-    body.querySelectorAll("[data-adj]").forEach((btn) => {
-      const n = Number(btn.dataset.adj);
-      const dest = value + n;
-      btn.disabled = locked || movesLeft <= 0 || dest < MIN_X || dest > MAX_X;
+    body.querySelectorAll("[data-x]").forEach((btn) => {
+      btn.addEventListener("click", () => answerX(Number(btn.dataset.x), btn));
     });
   }
 
-  function ajustar(n) {
-    if (finished || locked || movesLeft <= 0) return;
-    const dest = value + n;
-    if (dest < MIN_X || dest > MAX_X) return;
-    value = dest;
-    movesLeft--;
-    renderScale();
-    if (movesLeft === 0) {
-      const f = body.querySelector("[data-feedback]");
-      f.textContent = "Se te han acabado los ajustes: pulsa ¡Listo!";
-      f.className = "feedback";
-    }
+  function disableButtons() {
+    body.querySelectorAll("[data-tilt], [data-x]").forEach((b) => { b.disabled = true; });
   }
 
-  // Las líneas que explican la solución: los mismos pasos que se harían
-  // con la balanza de verdad (quitar sacos iguales, quitar pesas, repartir).
-  function pasos() {
-    const l = ladoIzq();
-    const d = ladoDer();
-    const sacoTxt = (n) => `${n} saco${n === 1 ? "" : "s"}`;
-    const lado = (o) => [o.sacos ? sacoTxt(o.sacos) : "", o.kg ? `${o.kg} kg` : ""].filter(Boolean).join(" + ") || "0";
-    const out = [`${lado(l)} = ${lado(d)}`];
-    const minSacos = Math.min(l.sacos, d.sacos);
-    let li = { sacos: l.sacos, kg: l.kg };
-    let de = { sacos: d.sacos, kg: d.kg };
-    if (minSacos > 0) {
-      li = { sacos: li.sacos - minSacos, kg: li.kg };
-      de = { sacos: de.sacos - minSacos, kg: de.kg };
-      out.push(`quito ${sacoTxt(minSacos)} de cada lado → ${lado(li)} = ${lado(de)}`);
-    }
-    const minKg = Math.min(li.kg, de.kg);
-    if (minKg > 0) {
-      li = { sacos: li.sacos, kg: li.kg - minKg };
-      de = { sacos: de.sacos, kg: de.kg - minKg };
-      out.push(`quito ${minKg} kg de cada lado → ${lado(li)} = ${lado(de)}`);
-    }
-    const sacos = Math.max(li.sacos, de.sacos);
-    const kg = Math.max(li.kg, de.kg);
-    if (sacos > 1) out.push(`${kg} entre ${sacos} → cada saco pesa ${round.x} kg`);
-    else out.push(`cada saco pesa ${round.x} kg`);
-    return out;
-  }
-
-  function confirmar() {
-    if (finished || locked) return;
+  function resolve(correct, btn, html) {
     locked = true;
     rounds++;
+    disableButtons();
     const feedback = body.querySelector("[data-feedback]");
-    const why = body.querySelector("[data-why]");
-    renderScale(); // deja los botones bloqueados
-
-    if (value === round.x) {
+    feedback.innerHTML = html;
+    feedback.className = `feedback bz-feedback ${correct ? "ok" : "bad"}`;
+    if (correct) {
+      btn.classList.add("bz-correct");
       streak++;
       score += 10;
       renderScore();
-      feedback.textContent = `¡Equilibrada! Cada saco pesa ${round.x} kg — ${pesoIzq(round.x)} kg a cada lado`;
-      feedback.className = "feedback ok";
-      later(nextRound, 1000);
+      later(nextRound, 1700);
       return;
     }
-
+    btn.classList.add("bz-wrong");
+    const good = body.querySelector(`[data-tilt="${round.answer}"], [data-x="${round.x}"]`);
+    if (good) good.classList.add("bz-correct");
     streak = 0;
     lives--;
     renderLives();
-    const diff = pesoIzq(value) - pesoDer(value);
-    feedback.textContent = `Con ${value} kg por saco quedan ${pesoIzq(value)} kg y ${pesoDer(value)} kg: `
-      + `${diff > 0 ? "sobran" : "faltan"} ${Math.abs(diff)} kg`;
-    feedback.className = "feedback bad";
+    if (lives <= 0) return later(() => finish(false), 3000);
+    later(nextRound, 3000);
+  }
 
-    // Al fallar se ve la ecuación resuelta paso a paso...
-    why.innerHTML = pasos().map((p, i) => `<span class="bz-why-line${i === 0 ? " bz-why-eq" : ""}">${p}</span>`).join("");
-    why.classList.add("on");
-    // ...y la balanza se pone sola en la solución, equilibrada.
-    later(() => {
-      value = round.x;
-      renderScale();
-    }, 900);
+  // Niveles 1-3: al predecir se abre el candado y la balanza cae hacia
+  // donde toca de verdad — la respuesta se ve, no se cuenta.
+  function answerTilt(tilt, btn) {
+    if (finished || locked) return;
+    const fig = body.querySelector("[data-test]");
+    fig.classList.remove("bz-locked", "bz-tilt-equal");
+    fig.classList.add(`bz-tilt-${round.answer}`);
+    fig.dataset.shown = round.answer;
+    const cap = fig.querySelector(".bz-cap");
+    if (cap) cap.textContent = `Pesada 2 · ${TILT_TXT[round.answer]}`;
+    const cuenta = `${explainX(round.ref, round.x)}; ${explainTest(round.test, round.x, round.answer)}`;
+    const ok = tilt === round.answer;
+    resolve(ok, btn, `<b>${ok ? "¡Eso es!" : `No: ${TILT_TXT[round.answer]}.`}</b> ${cuenta}`);
+  }
 
-    if (lives <= 0) return later(() => finish(false), 2800);
-    later(nextRound, 2800);
+  // Nivel 4: cada candidato se comprueba contra las dos pesadas.
+  function answerX(x, btn) {
+    if (finished || locked) return;
+    const ok = x === round.x;
+    const t = round.test;
+    const r = round.ref;
+    const conX = (c) => `con x = ${c}: pesada 1 → ${r.k * c + r.a} kg y ${r.m * c + r.b} kg (${TILT_TXT[refTilt(r, c)]}${refTilt(r, c) === r.tilt ? " ✓" : " ✗"}), `
+      + `pesada 2 → ${t.kl * c + t.al} kg y ${t.kr * c + t.ar} kg (${TILT_TXT[tiltOf(t, c)]}${tiltOf(t, c) === round.answer ? " ✓" : " ✗"})`;
+    const html = ok
+      ? `<b>¡Eso es!</b> ${conX(x)}`
+      : `<b>No: cada saco pesa ${round.x} kg.</b> ${conX(x)}; ${conX(round.x)}`;
+    resolve(ok, btn, html);
   }
 
   function finish(userExited) {
@@ -382,7 +442,7 @@ export function mountBalanzaGame(container, { client, onExit }) {
       <div class="end-card">
         <div>⚖️</div>
         <div class="big-score">${score} pts</div>
-        <p>${rounds} balanzas resueltas</p>
+        <p>${rounds} pesadas predichas</p>
         <div class="end-actions">
           <button class="primary" data-retry>Jugar otra vez</button>
           <button class="secondary" data-menu>Volver al menú</button>

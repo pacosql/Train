@@ -11,6 +11,17 @@ código.
 
 URL: `https://pacosql.github.io/Train/negocios/`
 
+Botón **Explorar**: lista de todas las fichas con filtros (etiqueta, sector,
+modelo, tipo, venta, cliente individual/red, impacto de la IA, éxito
+mínimo, inversión máxima, IA Score mínimo, LTV/CAC mínimo), buscador,
+orden y exportación a CSV (separador `;`, UTF-8 con BOM, listo para Power
+BI). Los filtros se recuerdan en el navegador. Arriba de la lista, chips
+por familia de sector (el campo `sector` es libre; la app lo agrupa por
+palabras clave en Formación, Software/SaaS, Servicios locales, Salud,
+Deporte, Legal y finanzas, Hogar, Marketing, Logística u Otros) y por tipo
+de venta, con la puntuación media, tocables para filtrar. Al pie, el estado
+de las rutinas (últimas ejecuciones de `negocios_rutinas`).
+
 ## Tablas (prefijo `negocios_`)
 
 ### `negocios_perfil` — una fila (`id = 'yo'`) con el perfil del usuario
@@ -32,19 +43,41 @@ primero para evaluar `encaje_perfil` y `encaje_nota` contra ese perfil.
 | `inversion_min_eur`, `inversion_max_eur` | integer | inversión inicial |
 | `cac_eur`, `cac_nota` | numeric, text | coste de adquisición de un cliente |
 | `meses_hasta_ingresos` | integer | |
+| `facturacion_ano1_eur`, `facturacion_ano3_eur`, `facturacion_nota` | integer, integer, text | facturación estimada el primer y el tercer año (escenario realista, en euros) y la hipótesis en una o dos frases (nº de clientes × ticket) |
 | `exito`, `exito_nota` | 1-10, text | probabilidad de éxito |
 | `durabilidad`, `durabilidad_nota` | 1-10, text | si aguanta bien con el tiempo |
 | `impacto_ia`, `impacto_ia_nota` | text | `palanca` · `neutral` · `amenaza` |
 | `encaje_perfil`, `encaje_nota` | 1-10, text | encaje con el perfil de `negocios_perfil` |
 | `fortalezas`, `riesgos` | text[] | listas cortas |
 | `primer_paso` | text | cómo validarla barato |
+| `venta` | text | `desasistida` (el cliente compra solo) · `asistida` (hace falta un comercial) · `mixta`. **Criterio clave del usuario: prefiere desasistida** |
+| `efecto_red` | text | `individual` (un cliente ya obtiene todo el valor) · `red` (necesita masa crítica, p. ej. un ladder de tenis) |
+| `ltv_eur` | numeric | valor de vida del cliente (ingresos totales esperados por cliente) |
+| `payback_meses` | integer | meses hasta recuperar la inversión inicial |
+| `uso_ia` | 1-10 | cuánto se apoya el negocio (producto y operación) en IA |
+| `viralidad` | 1-10 | cuánto trae cada cliente a otros clientes (boca a boca, compartir, referidos) |
+| `claude_pct`, `claude_nota` | 0-100, text | **IA Score**: porcentaje del trabajo de montar y operar el negocio que el usuario podría hacer él solo con Claude (Mates 10 = 100; una lavandería física = 20), y por qué. Se muestra como segundo anillo; no entra en la puntuación principal |
+| `revision_nota`, `revisado_en`, `version` | text, timestamptz, int | los rellena la rutina «revisión» al incorporar comentarios del usuario: `revision_nota` empieza por "He tenido en cuenta: " y la app lo muestra arriba de la ficha; `version` sube en cada revisión |
+| `etiquetas` | text[] | etiquetas libres cortas en minúsculas (`b2c`, `suscripción`, `self-service`…) |
 | `fuente` | text | `manual` por defecto; la rutina debe poner p. ej. `rutina` |
-| `decision`, `decidido_en` | | los rellena la app: `gusta` · `no_gusta` · `definitivo` |
+| `decision`, `decidido_en` | | los rellena la app: `gusta` · `no_gusta` · `definitivo` · `revisar` (el usuario pide a la rutina «revisión» que amplíe la ficha con sus comentarios y la devuelva a Pendientes) |
 
-La **puntuación 0-100** la calcula la app a partir de los campos (no se
-guarda): éxito ×2,5 + encaje ×2,5 + durabilidad ×1,5 + economía unitaria
-(ticket/CAC) ×1,5 + IA (palanca 10 / neutral 6 / amenaza 2) ×1 +
-inversión (menos es mejor) ×1.
+La **puntuación 0-100** es la «probabilidad de éxito para el usuario»
+según su propia definición, y la calcula la app (no se guarda). Cada
+factor va de 0 a 10:
+
+| Factor | Cómo se obtiene | Peso |
+|---|---|---|
+| Compra desasistida | `venta`: desasistida 10 · mixta 5 · asistida 1 | ×2 |
+| Cliente individual | `efecto_red`: individual 10 · red 2 | ×1,5 |
+| Poca inversión | `10 − 4·log10(inversion_max_eur / 10000)`, acotado 0-10 (10 k€ → 10, 40 k€ → 7,6, 100 k€ → 6, 400 k€ → 3,6) | ×2 |
+| LTV frente a CAC | `5·log10(ltv_eur / cac_eur) + 2,5`, acotado (ratio 1 → 2,5; 3 → 4,9; 10 → 7,5; 30 → 10) | ×2 |
+| Viralidad | `viralidad` | ×1 |
+| Éxito de mercado | `exito` (estimación del analista) | ×1,5 |
+
+`encaje_perfil`, `durabilidad`, `uso_ia` e `impacto_ia` se muestran pero no
+puntúan. Veredictos: ≥ 75 alta probabilidad · 60-74 buena con reservas ·
+45-59 floja · < 45 descartable.
 
 ### `negocios_comentarios` — notas y audios del usuario sobre cada ficha
 
@@ -62,20 +95,60 @@ Los audios viven en el bucket público `negocios-audios` (la anon key puede
 subir y leer, no borrar). URL de descarga:
 `https://dzlhsdpgyxnjwudmrnul.supabase.co/storage/v1/object/public/negocios-audios/<audio_path>`.
 
-## Rutina de transcripción / procesado (pendiente de crear)
+### `negocios_rutinas` — registro de ejecuciones de las rutinas
 
-1. Leer `negocios_comentarios` con `estado = 'pendiente'`
-   (`?estado=eq.pendiente&order=created_at`).
-2. Para cada `tipo = 'audio'`, descargar el fichero por la URL pública,
-   transcribirlo y hacer `PATCH` con `{"transcripcion": "...", "estado":
-   "transcrito"}`.
-3. Cuando el comentario (texto o transcripción) ya se haya usado para lo
-   que sea (resumen, actualizar la ficha…), marcarlo `estado = 'procesado'`
-   y `procesado_en = now()`.
+`ejecutada_en`, `rutina` (`ideas` · `mejora-app` · `transcripcion`…),
+`resumen` (una o dos frases), `idea_id` (si aplica), `commit` (si aplica).
+Cada rutina inserta una fila al terminar; así se ve que siguen vivas.
 
-La app muestra la transcripción debajo del audio en cuanto existe.
+## Rutinas activas
+
+- **`ideas`** (cada hora, sesión nueva): lee el perfil y los criterios
+  (`negocios_perfil`), las fichas existentes y los comentarios del usuario,
+  investiga y genera al menos una idea nueva bien evaluada, la inserta con
+  `fuente = 'rutina'` y registra la ejecución.
+- **`revision`** (cada hora, sesión nueva): procesa las fichas con
+  `decision = 'revisar'` (amplía la información con lo que pida el usuario
+  en sus comentarios, o profundiza en mercado, cifras y plan si no hay
+  comentarios) y los comentarios pendientes
+  (texto, o audio con transcripción), modifica la ficha o crea ideas nuevas
+  a partir de ellos, escribe `revision_nota` («He tenido en cuenta: …»),
+  sube `version`, devuelve la ficha a Pendientes (`decision = null`) y marca
+  los comentarios como `procesado`. Los audios sin transcripción se quedan
+  en `pendiente`: la app intenta transcribir con el reconocimiento de voz
+  del navegador mientras se graba, y además ofrece «Dictar» (voz a texto en
+  el propio móvil) para que la nota llegue como texto.
+- **`mejora-app`** (cada 2 horas durante 2 días): implementa la siguiente
+  mejora de [`ROADMAP.md`](./ROADMAP.md), la prueba con
+  `node negocios/test/smoke.js`, la fusiona en `main` y registra la
+  ejecución.
+
+## Transcripción de audios
+
+En el entorno de Claude Code en la nube no se pueden descargar modelos de
+transcripción (la red bloquea Hugging Face), así que la transcripción la
+hace el navegador: al grabar, la app arranca en paralelo el reconocimiento
+de voz (`SpeechRecognition`, es-ES) y guarda lo reconocido en
+`transcripcion` con `estado = 'transcrito'`; si el sistema no lo permite
+(algunos iPhone), el audio queda `pendiente` y el usuario puede usar
+«Dictar». Una rutina externa con acceso a un modelo de voz podría rellenar
+`transcripcion` de los audios pendientes descargándolos por la URL pública
+y hacer `PATCH` `{"transcripcion": "...", "estado": "transcrito"}`.
 
 ## Insertar una ficha desde una rutina
+
+Las rutinas deben usar el helper `negocios/tools/sb.sh`, que lee la anon
+key de `config.js` para que nunca aparezca en la línea de comandos (los
+comandos con la clave escrita pueden quedar bloqueados a la espera de
+aprobación en las sesiones automáticas):
+
+```bash
+bash negocios/tools/sb.sh GET   'negocios_ideas?select=nombre,decision&order=created_at'
+bash negocios/tools/sb.sh POST  negocios_ideas /tmp/ficha.json        # cuerpo JSON en archivo
+bash negocios/tools/sb.sh PATCH 'negocios_ideas?id=eq.<uuid>' /tmp/cambios.json
+```
+
+Equivalente con curl directo (misma cabecera `apikey` y `Authorization: Bearer`):
 
 La anon key (en `config.js`) puede leer, insertar y actualizar gracias a
 las políticas RLS; no puede borrar ni alterar tablas.
@@ -85,10 +158,15 @@ curl -s -X POST "https://dzlhsdpgyxnjwudmrnul.supabase.co/rest/v1/negocios_ideas
   -H "apikey: $ANON" -H "Authorization: Bearer $ANON" \
   -H "Content-Type: application/json" -H "Prefer: return=representation" \
   -d '{"fuente":"rutina","nombre":"...","resumen":"...","descripcion":"...",
-       "modelo":"B2B","tipo":"tradicional","sector":"...",
-       "exito":6,"durabilidad":7,"impacto_ia":"palanca","encaje_perfil":8,
-       "inversion_min_eur":20000,"inversion_max_eur":50000,"cac_eur":800,
-       "ticket_medio_eur":12000,"meses_hasta_ingresos":3,
+       "modelo":"B2C","tipo":"hibrido","sector":"...",
+       "venta":"desasistida","efecto_red":"individual",
+       "exito":6,"durabilidad":7,"impacto_ia":"palanca","encaje_perfil":8,"uso_ia":8,"viralidad":6,"claude_pct":95,"claude_nota":"...",
+       "inversion_min_eur":20000,"inversion_max_eur":50000,"cac_eur":30,
+       "ticket_medio_eur":90,"ltv_eur":150,"meses_hasta_ingresos":3,"payback_meses":12,
+       "facturacion_ano1_eur":40000,"facturacion_ano3_eur":200000,"facturacion_nota":"Año 1: ~450 clientes × 90 €. Año 3: ~2.200 clientes.",
+       "mercado":"...","competencia":"...","modelo_ingresos":"...","cac_nota":"...",
+       "exito_nota":"...","durabilidad_nota":"...","impacto_ia_nota":"...","encaje_nota":"...",
+       "etiquetas":["b2c","suscripción"],
        "fortalezas":["..."],"riesgos":["..."],"primer_paso":"..."}'
 ```
 

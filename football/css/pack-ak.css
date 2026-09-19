@@ -1,0 +1,112 @@
+/* Pack AK — juego grande "Pasillo de puertas" (18/19-09-2026).
+   Prefijo: prt- (puertas, probabilidad compuesta y árboles). */
+
+.prt-cover { text-align: center; }
+.prt-cover-emoji { font-size: 3rem; margin: 6px 0 4px; }
+.prt-cta { display: block; width: 100%; max-width: 320px; margin: 10px auto 0; padding: 14px; }
+.prt-progress { color: var(--muted); font-size: 0.9rem; text-align: center; margin: 4px 0 14px; }
+
+.prt-badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--accent);
+  border: 1.5px solid var(--accent);
+  border-radius: 999px;
+  padding: 3px 10px;
+  margin: 0 0 12px;
+}
+
+/* --- el pasillo que se estrecha (SVG) --- */
+.prt-wrap { display: flex; justify-content: center; margin: 8px 0; }
+.prt-corridor { max-width: 100%; height: auto; }
+.prt-cell { fill: var(--border); stroke: var(--card); stroke-width: 1; }
+.prt-cell-sel { fill: var(--accent); }
+.prt-cell-off { opacity: 0.3; }
+.prt-cell-tap { cursor: pointer; }
+.prt-cell-tap:hover { stroke: var(--text); stroke-width: 2; }
+.prt-ball-cell { stroke: rgba(0, 0, 0, 0.15); }
+.prt-ball-cell.prt-cell-sel { stroke: var(--text); stroke-width: 2.5; }
+.prt-knob { fill: var(--card); opacity: 0.9; }
+.prt-band { fill: var(--accent); opacity: 0.28; }
+.prt-final { fill: var(--accent); }
+.prt-lbl { font-size: 15px; font-weight: 700; fill: var(--text); }
+.prt-lbl-final { fill: var(--accent); }
+
+.prt-formula { text-align: center; font-size: 1.2rem; font-weight: 600; margin: 6px 0 10px; }
+.prt-note { color: var(--muted); font-size: 0.85rem; text-align: center; margin: 0 0 8px; }
+.prt-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin: 10px 0; }
+.prt-hidden { display: none !important; }
+
+.prt-options { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; max-width: 320px; margin: 0 auto; }
+.prt-frac { font-size: 1.25rem; padding: 14px; }
+
+/* --- bolsa sin reposición --- */
+.prt-row { display: flex; align-items: flex-start; justify-content: center; gap: 8px; flex-wrap: wrap; }
+.prt-bagwrap { flex: 0 0 auto; }
+.prt-wrap-side { flex: 1 1 200px; margin: 0; }
+.prt-bag { max-width: 100%; height: auto; }
+.prt-bag-shape { fill: var(--bg); stroke: var(--border); stroke-width: 2; }
+.prt-ball { stroke: rgba(0, 0, 0, 0.2); stroke-width: 1; }
+.prt-ball-tap { cursor: pointer; }
+.prt-ball-tap:hover { stroke: var(--text); stroke-width: 2.5; }
+
+/* --- construir el árbol --- */
+.prt-tree { max-width: 380px; margin: 0 auto 10px; text-align: left; font-size: 0.88rem; }
+.prt-tree-root { font-weight: 800; color: var(--accent); margin: 2px 0; }
+.prt-tree-sub { margin-left: 4px; margin-top: 4px; }
+.prt-branches { list-style: none; margin: 0; padding: 0 0 0 14px; border-left: 2px solid var(--border); }
+.prt-branches > li { position: relative; padding: 4px 0; }
+.prt-branches > li::before {
+  content: ""; position: absolute; left: -14px; top: 20px; width: 12px; height: 2px; background: var(--border);
+}
+.prt-branch { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.prt-branch > span { flex: 1 1 auto; }
+.prt-branch-result { margin-top: 8px; padding-top: 8px; border-top: 1px dashed var(--border); font-weight: 700; }
+.prt-slot {
+  flex: 0 0 auto; min-width: 58px; padding: 6px 8px; border-radius: 8px;
+  border: 2px dashed var(--muted); background: var(--bg); color: var(--text);
+  font-weight: 800; font-size: 0.95rem; cursor: pointer;
+}
+.prt-slot-filled { border-style: solid; border-color: var(--accent); }
+.prt-slot-active { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(91, 62, 204, 0.3); }
+.prt-slot-ok { background: var(--good); border-color: var(--good); color: #fff; }
+.prt-slot-bad { background: var(--danger); border-color: var(--danger); color: #fff; }
+.prt-chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; max-width: 380px; margin: 0 auto; }
+.prt-chip {
+  padding: 8px 12px; border-radius: 999px; border: 2px solid var(--border); background: var(--card);
+  color: var(--text); font-weight: 700; font-size: 1rem; cursor: pointer;
+}
+.prt-chip-used { opacity: 0.4; text-decoration: line-through; }
+
+/* --- Monty Hall --- */
+.prt-doors { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-width: 340px; margin: 0 auto; }
+.prt-door {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+  min-height: 110px; border-radius: 12px 12px 6px 6px; border: 3px solid var(--accent-dark);
+  background: var(--accent); color: #fff; font-weight: 800; cursor: pointer; padding: 8px 4px;
+}
+.prt-door-face { font-size: 1.9rem; line-height: 1; }
+.prt-door-num { font-size: 0.72rem; opacity: 0.9; }
+.prt-door-chosen { box-shadow: 0 0 0 4px var(--accent-2); }
+.prt-door-open { background: var(--bg); color: var(--text); border-style: dashed; }
+.prt-door:disabled { cursor: default; opacity: 0.95; }
+.prt-tally { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; font-size: 0.85rem; color: var(--muted); margin: 6px 0; }
+.prt-tally b { color: var(--text); }
+.prt-table { width: 100%; max-width: 380px; margin: 0 auto 10px; border-collapse: collapse; font-size: 0.82rem; }
+.prt-table th, .prt-table td { border: 1px solid var(--border); padding: 5px 4px; text-align: center; }
+.prt-table th { background: var(--bg); font-weight: 700; }
+.prt-win { color: var(--good); font-weight: 700; }
+.prt-lose { color: var(--danger); font-weight: 700; }
+
+/* --- resultados --- */
+.prt-learned { font-size: 0.9rem; color: var(--muted); background: var(--bg); border-radius: 10px; padding: 10px 12px; margin: 0 0 12px; }
+.prt-errors { text-align: left; font-size: 0.88rem; padding-left: 18px; margin: 0 0 12px; }
+.prt-errors li { margin: 6px 0; }
+
+@media (max-width: 420px) {
+  .prt-tree { font-size: 0.82rem; }
+  .prt-table { font-size: 0.76rem; }
+  .prt-door { min-height: 96px; }
+  .prt-formula { font-size: 1.05rem; }
+}

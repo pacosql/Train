@@ -1,0 +1,37 @@
+/* Pack AN — juego grande "Zoom decimal" (noche 18/19-09-2026). Prefijo: zdc- (zoom decimal). */
+
+.zdc-badge { display: inline-block; font-size: 0.78rem; font-weight: 700; color: var(--accent); border: 1.5px solid var(--accent); border-radius: 999px; padding: 3px 10px; margin: 0 0 12px; }
+.zdc-progress { color: var(--muted); font-size: 0.9rem; text-align: center; margin: 8px 0 12px; }
+
+.zdc-map { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; max-width: 360px; margin: 12px auto; }
+.zdc-node { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 2px; border-radius: 12px; border: 2px solid var(--accent); background: var(--card); color: var(--text); font: inherit; cursor: pointer; }
+.zdc-node[disabled] { opacity: 0.4; border-style: dashed; cursor: default; }
+.zdc-node-done { background: var(--accent); color: #fff; }
+.zdc-node-num { font-size: 1.1rem; font-weight: 800; }
+.zdc-node-name { font-size: 0.62rem; font-weight: 600; text-align: center; line-height: 1.15; }
+
+.zdc-wrap { display: flex; justify-content: center; margin: 10px 0; min-height: 84px; }
+.zdc-svg { max-width: 100%; height: auto; touch-action: manipulation; }
+.zdc-line { stroke: var(--text); stroke-width: 2.5; stroke-linecap: round; }
+.zdc-tick { stroke: var(--text); stroke-width: 1.5; }
+.zdc-tick-big { stroke-width: 2.5; }
+.zdc-label { font-size: 11px; font-weight: 700; fill: var(--text); text-anchor: middle; }
+.zdc-label-sm { font-size: 9px; }
+.zdc-int { fill: rgba(91, 62, 204, 0.06); stroke: rgba(91, 62, 204, 0.35); stroke-dasharray: 3 3; cursor: pointer; }
+.zdc-int:hover { fill: rgba(91, 62, 204, 0.18); }
+.zdc-tap { fill: rgba(63, 185, 80, 0.12); stroke: rgba(63, 185, 80, 0.6); cursor: pointer; }
+.zdc-tap:hover { fill: rgba(63, 185, 80, 0.35); }
+.zdc-marker { fill: #e5484d; }
+.zdc-band { fill: rgba(245, 166, 35, 0.35); }
+
+.zdc-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin: 10px 0; }
+.zdc-formula { text-align: center; font-size: 1rem; color: var(--muted); margin: 6px 0 10px; }
+.zdc-options { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; max-width: 320px; margin: 0 auto 10px; }
+.zdc-opt { padding: 12px; font-size: 1.1rem; }
+.zdc-timer { text-align: center; font-size: 1rem; color: var(--muted); margin: 0 0 6px; }
+.zdc-timer span { font-size: 1.4rem; font-weight: 800; color: var(--accent); }
+.zdc-target { text-align: center; font-size: 1.2rem; margin: 4px 0; }
+
+.zdc-learned { font-size: 0.9rem; color: var(--muted); background: var(--bg); border-radius: 10px; padding: 10px 12px; margin: 0 0 12px; }
+.zdc-errors { text-align: left; font-size: 0.88rem; padding-left: 18px; margin: 0 0 12px; }
+.zdc-errors li { margin: 6px 0; }

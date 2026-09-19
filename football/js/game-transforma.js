@@ -252,6 +252,7 @@ export function mountTransformaGame(container, { client, onExit }) {
   }
 
   function screenResults() {
+    locked = false; // si se llegó aquí sin vidas, outcome() dejó locked = true y el repaso quedaría bloqueado
     const byType = {};
     errors.forEach((e) => { byType[e.tipo] = (byType[e.tipo] || 0) + 1; });
     progress = { salaMax: Math.max(progress.salaMax || 0, salaReached), fallosPorTipo: { ...(progress.fallosPorTipo || {}) }, partidas: (progress.partidas || 0) + 1 };

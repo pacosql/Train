@@ -1,0 +1,624 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Contactos</title>
+
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0b0d10" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Contactos" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" href="icons/icon-192.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&display=swap" />
+
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b0d10;
+      --glass: linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.025));
+      --surface-2: rgba(255, 255, 255, 0.08);
+      --line: rgba(255, 255, 255, 0.08);
+      --line-strong: rgba(255, 255, 255, 0.16);
+      --text: #f4f5f7;
+      --text-2: #9aa3ad;
+      --accent: #5c7cfa;
+      --accent-2: #8fa4ff;
+      --accent-soft: rgba(92, 124, 250, 0.14);
+      --accent-glow: rgba(92, 124, 250, 0.32);
+      --accent-ink: #08102c;
+      --good: #43d391;
+      --mid: #f2b840;
+      --bad: #ff5470;
+      --blue: #72a9ff;
+      --display: "Barlow Condensed", "Arial Narrow", "Helvetica Neue", -apple-system, sans-serif;
+      --body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --lift: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 12px 32px rgba(0, 0, 0, 0.35);
+      padding-top: env(safe-area-inset-top, 0px);
+    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0; background: var(--bg); color: var(--text); font-family: var(--body);
+      padding: 16px 16px calc(96px + env(safe-area-inset-bottom, 0px));
+      -webkit-font-smoothing: antialiased; line-height: 1.45;
+    }
+    body::before {
+      content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background:
+        radial-gradient(70% 42% at 50% -6%, rgba(92, 124, 250, 0.16), transparent 70%),
+        radial-gradient(45% 30% at 105% 25%, rgba(114, 169, 255, 0.06), transparent 70%);
+    }
+    .wrap { max-width: 520px; margin: 0 auto; }
+
+    h1, h2 { font-family: var(--display); text-transform: uppercase; letter-spacing: 0.3px; line-height: 0.98; margin: 0 0 6px; }
+    h1 { font-size: 1.8rem; font-weight: 800; }
+    h3 { font-family: var(--display); font-size: 0.95rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.3px; color: var(--accent-2); margin: 18px 0 6px; }
+    .eyebrow { font-family: var(--display); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.4px; color: var(--text-2); margin: 0 0 4px; }
+    .sub { color: var(--text-2); font-size: 0.95rem; margin: 0 0 14px; }
+    p { margin: 0 0 8px; }
+
+    .top-bar { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 14px; }
+    .brand { display: flex; align-items: center; gap: 8px; font-family: var(--display); font-size: 1.25rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; }
+    .brand-mark {
+      width: 1.6rem; height: 1.6rem; border-radius: 9px; display: grid; place-items: center; font-size: 0.85rem;
+      background: linear-gradient(135deg, var(--accent-2), var(--accent));
+      box-shadow: 0 0 18px var(--accent-glow), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    }
+    .bar-actions { display: flex; gap: 8px; }
+    .icon-btn { background: rgba(255, 255, 255, 0.06); border: 1px solid var(--line-strong); color: var(--text); border-radius: 12px; width: 40px; height: 40px; font-size: 1.1rem; cursor: pointer; display: grid; place-items: center; flex-shrink: 0; }
+    .icon-btn:active { transform: scale(0.94); }
+    .icon-btn.spin { animation: spin 0.8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    input[type="text"], input[type="search"], textarea {
+      width: 100%; font-family: var(--body); font-size: 0.95rem; color: var(--text);
+      background: rgba(255, 255, 255, 0.05); border: 1px solid var(--line-strong); border-radius: 14px; padding: 10px 12px;
+    }
+    textarea { min-height: 72px; resize: vertical; margin-top: 6px; }
+    input:focus, textarea:focus { outline: none; border-color: var(--accent); }
+
+    .search-row { display: flex; gap: 8px; margin-bottom: 10px; }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 10px; }
+    .chip { font-family: var(--display); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.9px; padding: 4px 9px; border-radius: 999px; border: 1px solid var(--line-strong); color: var(--text-2); cursor: pointer; background: transparent; }
+    .chip.accent { color: var(--accent-2); border-color: rgba(92, 124, 250, 0.5); background: var(--accent-soft); }
+    .chip.good { color: var(--good); border-color: rgba(67, 211, 145, 0.45); }
+    .chip.mid { color: var(--mid); border-color: rgba(242, 184, 64, 0.45); }
+    .chip.rm { padding-right: 7px; }
+    .chip.rm .x { margin-left: 6px; opacity: 0.7; }
+    .chip.add-chip { color: var(--text-2); border-style: dashed; }
+
+    .card {
+      background: var(--glass); border: 1px solid var(--line); border-radius: 22px; padding: 18px; margin-bottom: 12px; box-shadow: var(--lift);
+      animation: card-in 0.3s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    }
+    @keyframes card-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+    button {
+      font-family: var(--display); font-size: 1.1rem; font-weight: 700; letter-spacing: 0.7px; text-transform: uppercase;
+      background: linear-gradient(135deg, var(--accent-2), var(--accent) 55%, #2f45b8); color: #fff;
+      border: none; border-radius: 16px; padding: 13px 16px; width: 100%; cursor: pointer;
+      box-shadow: 0 8px 24px var(--accent-glow), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+      transition: transform 0.08s ease, filter 0.15s ease;
+    }
+    button:active { transform: scale(0.97); filter: brightness(1.06); }
+    button.secondary { background: rgba(255, 255, 255, 0.06); color: var(--text); border: 1px solid var(--line-strong); box-shadow: none; }
+    button.ghost { background: transparent; color: var(--text-2); border: 1px solid var(--line); box-shadow: none; font-size: 1rem; }
+    button.danger { background: rgba(255, 84, 112, 0.12); color: var(--bad); border: 1px solid rgba(255, 84, 112, 0.45); box-shadow: none; }
+    button:disabled { opacity: 0.32; cursor: default; box-shadow: none; }
+
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+    .item {
+      display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 18px; border: 1px solid var(--line);
+      background: var(--glass); margin-bottom: 8px; cursor: pointer; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      animation: card-in 0.3s both; animation-delay: calc(var(--i, 0) * 30ms);
+    }
+    .item:active { background: var(--surface-2); }
+    .item .avatar { width: 42px; height: 42px; border-radius: 12px; background: linear-gradient(135deg, var(--accent-2), var(--accent)); display: grid; place-items: center; font-family: var(--display); font-weight: 800; font-size: 1.1rem; color: #fff; flex-shrink: 0; }
+    .item .m { flex: 1; min-width: 0; }
+    .item .name { font-family: var(--display); font-size: 1.15rem; font-weight: 700; line-height: 1.05; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .item .meta { color: var(--text-2); font-size: 0.78rem; margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .item .chips { margin: 4px 0 0; }
+    .item .arrow { color: var(--text-2); flex-shrink: 0; }
+    .empty { text-align: center; color: var(--text-2); padding: 36px 12px; }
+    .empty .big { font-size: 2.4rem; margin-bottom: 8px; }
+
+    .resumen-box { border: 1px solid var(--line); border-radius: 16px; padding: 12px 14px; background: rgba(255, 255, 255, 0.03); font-size: 0.92rem; margin-bottom: 10px; }
+    .resumen-box.pendiente { color: var(--text-2); font-style: italic; border-style: dashed; }
+    .estado-pill { display: inline-flex; align-items: center; gap: 5px; font-family: var(--display); font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; padding: 3px 9px; border-radius: 999px; border: 1px solid var(--line-strong); color: var(--text-2); margin-bottom: 10px; }
+    .estado-pill.ok { color: var(--good); border-color: rgba(67, 211, 145, 0.45); }
+    .estado-pill.pend { color: var(--mid); border-color: rgba(242, 184, 64, 0.45); }
+
+    .energia-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 10px; }
+    .energia-btn { font-family: var(--display); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; padding: 10px 4px; border-radius: 14px; border: 1px solid var(--line-strong); background: rgba(255, 255, 255, 0.03); color: var(--text-2); cursor: pointer; text-align: center; line-height: 1.2; }
+    .energia-btn .big { display: block; font-size: 1.3rem; margin-bottom: 2px; }
+    .energia-btn.on.vitamina { color: var(--good); border-color: rgba(67, 211, 145, 0.55); background: rgba(67, 211, 145, 0.12); }
+    .energia-btn.on.neutro { color: var(--mid); border-color: rgba(242, 184, 64, 0.55); background: rgba(242, 184, 64, 0.12); }
+    .energia-btn.on.toxico { color: var(--bad); border-color: rgba(255, 84, 112, 0.55); background: rgba(255, 84, 112, 0.12); }
+    .consejo-box { border-left: 3px solid var(--line-strong); border-radius: 0 14px 14px 0; padding: 10px 14px; background: rgba(255, 255, 255, 0.03); font-size: 0.88rem; margin-bottom: 14px; color: #d6dbe1; }
+    .consejo-box.vitamina { border-color: var(--good); }
+    .consejo-box.neutro { border-color: var(--mid); }
+    .consejo-box.toxico { border-color: var(--bad); }
+    .consejo-box .k { display: block; font-family: var(--display); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-2); margin-bottom: 3px; }
+
+    .stats-bar { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+    .stat-chip { font-family: var(--display); font-size: 0.78rem; font-weight: 700; padding: 5px 10px; border-radius: 999px; border: 1px solid var(--line-strong); color: var(--text-2); cursor: pointer; background: rgba(255, 255, 255, 0.03); }
+    .stat-chip.on { background: var(--surface-2); color: var(--text); }
+    .stat-chip.vitamina { color: var(--good); border-color: rgba(67, 211, 145, 0.45); }
+    .stat-chip.neutro { color: var(--mid); border-color: rgba(242, 184, 64, 0.45); }
+    .stat-chip.toxico { color: var(--bad); border-color: rgba(255, 84, 112, 0.45); }
+
+    .nota { border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; margin-bottom: 8px; background: rgba(255, 255, 255, 0.03); font-size: 0.9rem; }
+    .nota .head { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-family: var(--display); font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-2); margin-bottom: 4px; }
+    .nota .head .acts { display: flex; gap: 10px; }
+    .nota .head .acts span { cursor: pointer; opacity: 0.8; }
+    .nota textarea { margin-top: 4px; }
+    .voz-tag { color: var(--accent-2); }
+
+    button.rec { background: rgba(255, 84, 112, 0.12); color: var(--bad); border: 1px solid rgba(255, 84, 112, 0.45); box-shadow: none; }
+    button.rec.on { background: linear-gradient(135deg, #ff8fa3, var(--bad) 55%, #d92e50); color: #fff; animation: rec-pulse 1.2s ease-in-out infinite; }
+    @keyframes rec-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(255, 84, 112, 0.5); } 50% { box-shadow: 0 0 0 10px rgba(255, 84, 112, 0); } }
+
+    .file-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 14px; border: 1px solid var(--line); background: rgba(255, 255, 255, 0.03); margin-bottom: 8px; font-size: 0.88rem; }
+    .file-item .ico { font-size: 1.2rem; }
+    .file-item .m { flex: 1; min-width: 0; }
+    .file-item .fname { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .file-item .fmeta { color: var(--text-2); font-size: 0.75rem; }
+    .file-item a { color: var(--accent-2); text-decoration: none; font-family: var(--display); font-weight: 700; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.6px; }
+
+    .helper { font-size: 0.8rem; color: var(--text-2); margin-top: 8px; }
+    .msg { color: var(--bad); font-size: 0.85rem; margin: 0 0 10px; min-height: 1em; }
+    .back { display: inline-flex; align-items: center; gap: 6px; color: var(--text-2); font-family: var(--display); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem; cursor: pointer; margin-bottom: 10px; }
+
+    .fab { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; padding: 10px 16px calc(12px + env(safe-area-inset-bottom, 0px)); background: linear-gradient(180deg, rgba(11, 13, 16, 0), rgba(11, 13, 16, 0.92) 30%, var(--bg)); }
+    .fab .inner { max-width: 520px; margin: 0 auto; }
+
+    .toast {
+      position: fixed; left: 50%; bottom: calc(88px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); z-index: 30;
+      background: #1c2027; border: 1px solid var(--line-strong); color: var(--text); padding: 10px 14px; border-radius: 999px; font-size: 0.9rem;
+      display: flex; gap: 12px; align-items: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); opacity: 0; pointer-events: none; transition: opacity 0.2s;
+      max-width: calc(100vw - 32px); width: max-content;
+    }
+    .toast span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .toast.show { opacity: 1; pointer-events: auto; }
+    .build-id { text-align: center; font-size: 0.7rem; color: var(--text-2); margin-top: 24px; font-family: ui-monospace, monospace; }
+
+    .modal-back { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6); z-index: 40; display: flex; align-items: flex-end; }
+    .modal-back.hidden { display: none; }
+    .modal { background: #14171c; border: 1px solid var(--line-strong); border-radius: 22px 22px 0 0; padding: 20px 18px calc(20px + env(safe-area-inset-bottom, 0px)); width: 100%; max-width: 520px; margin: 0 auto; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top-bar">
+      <div class="brand"><span class="brand-mark">🗂️</span> Contactos</div>
+      <div class="bar-actions">
+        <button class="icon-btn" id="btn-refresh" title="Recargar">↻</button>
+      </div>
+    </div>
+    <p class="msg" id="msg"></p>
+
+    <div id="view"></div>
+
+    <p class="helper" id="ultima-rutina" style="text-align:center"></p>
+    <div class="build-id">build __BUILD_ID__</div>
+  </div>
+
+  <div class="fab" id="fab">
+    <div class="inner"><button id="btn-nuevo">＋ Nuevo contacto</button></div>
+  </div>
+
+  <div class="modal-back hidden" id="modal-back">
+    <div class="modal">
+      <p class="eyebrow">Nuevo contacto</p>
+      <input type="text" id="nuevo-nombre" placeholder="Nombre" />
+      <textarea id="nuevo-nota" placeholder="Cuéntame algo sobre esta persona para empezar (opcional)…"></textarea>
+      <p class="msg" id="modal-msg"></p>
+      <div class="row2" style="margin-top:10px">
+        <button class="secondary" id="btn-cancelar">Cancelar</button>
+        <button id="btn-crear">Crear</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"><span id="toast-text"></span></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="config.js"></script>
+  <script>
+    const { url, anonKey, tablePrefix } = window.CONTACTOS_CONFIG;
+    const T_CONTACTOS = tablePrefix + "contactos";
+    const T_NOTAS = tablePrefix + "notas";
+    const T_ARCHIVOS = tablePrefix + "archivos";
+    const BUCKET = "contactos-archivos";
+    let client = null;
+    let contactos = [];
+    let notas = [];
+    let archivos = [];
+    const state = { q: "", labelFilter: null, energiaFilter: null, detailId: null, showArchivados: false };
+    const ENERGIA = {
+      vitamina: { icon: "🔋", label: "Vitamina", cls: "vitamina" },
+      neutro: { icon: "😐", label: "Neutro", cls: "neutro" },
+      toxico: { icon: "🪫", label: "Tóxico", cls: "toxico" },
+    };
+    let toastTimer = null;
+    let recognizer = null;
+    let recognizing = false;
+
+    const el = (id) => document.getElementById(id);
+    const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    const initials = (n) => (n || "?").trim().split(/\s+/).slice(0, 2).map((w) => w[0]?.toUpperCase() || "").join("") || "?";
+    const fmtDate = (d) => d ? new Date(d).toLocaleString("es-ES", { dateStyle: "short", timeStyle: "short" }) : "";
+    const fmtSize = (b) => b == null ? "" : b < 1024 ? b + " B" : b < 1024 * 1024 ? Math.round(b / 1024) + " KB" : (b / (1024 * 1024)).toFixed(1) + " MB";
+    const fileIcon = (mime) => !mime ? "📎" : mime.startsWith("image/") ? "🖼️" : mime === "application/pdf" ? "📄" : mime.startsWith("audio/") ? "🎵" : mime.startsWith("video/") ? "🎬" : "📎";
+    const fileUrl = (path) => `${url}/storage/v1/object/public/${BUCKET}/${path}`;
+
+    // ---------- datos ----------
+    async function load() {
+      const c = await client.from(T_CONTACTOS).select("*").order("created_at", { ascending: false });
+      if (c.error) throw c.error;
+      contactos = c.data || [];
+      const n = await client.from(T_NOTAS).select("*").eq("borrado", false).order("created_at", { ascending: false });
+      if (n.error) throw n.error;
+      notas = n.data || [];
+      const a = await client.from(T_ARCHIVOS).select("*").order("created_at", { ascending: false });
+      if (a.error) throw a.error;
+      archivos = a.data || [];
+      const r = await client.from(tablePrefix + "rutinas").select("*").order("ejecutada_en", { ascending: false }).limit(1);
+      const ultima = el("ultima-rutina");
+      if (ultima) ultima.textContent = !r.error && r.data && r.data[0] ? `Última síntesis automática: ${fmtDate(r.data[0].ejecutada_en)}` : "";
+    }
+    const notasDe = (id) => notas.filter((x) => x.contacto_id === id);
+    const archivosDe = (id) => archivos.filter((x) => x.contacto_id === id);
+    const allLabels = () => {
+      const s = new Set();
+      contactos.forEach((c) => (c.etiquetas || []).forEach((l) => s.add(l)));
+      return [...s].sort((a, b) => a.localeCompare(b, "es"));
+    };
+    async function marcarPendiente(contactoId) {
+      const patch = { estado_sintesis: "pendiente", updated_at: new Date().toISOString() };
+      const { error } = await client.from(T_CONTACTOS).update(patch).eq("id", contactoId);
+      if (!error) { const c = contactos.find((x) => x.id === contactoId); if (c) Object.assign(c, patch); }
+    }
+
+    // ---------- crear contacto ----------
+    function openModal() { el("nuevo-nombre").value = ""; el("nuevo-nota").value = ""; el("modal-msg").textContent = ""; el("modal-back").classList.remove("hidden"); setTimeout(() => el("nuevo-nombre").focus(), 50); }
+    function closeModal() { el("modal-back").classList.add("hidden"); }
+    async function crearContacto() {
+      const nombre = el("nuevo-nombre").value.trim();
+      const notaInicial = el("nuevo-nota").value.trim();
+      if (!nombre) { el("modal-msg").textContent = "Ponle un nombre al contacto."; return; }
+      const btn = el("btn-crear"); btn.disabled = true; btn.textContent = "Creando…";
+      const { data, error } = await client.from(T_CONTACTOS).insert({ nombre }).select().single();
+      if (error) { el("modal-msg").textContent = "No se pudo crear: " + error.message; btn.disabled = false; btn.textContent = "Crear"; return; }
+      contactos.unshift(data);
+      if (notaInicial) {
+        const { data: nd, error: ne } = await client.from(T_NOTAS).insert({ contacto_id: data.id, texto: notaInicial, origen: "texto" }).select().single();
+        if (!ne) notas.unshift(nd);
+      }
+      btn.disabled = false; btn.textContent = "Crear";
+      closeModal();
+      state.detailId = data.id;
+      render();
+      showToast("Contacto creado · empieza a añadir notas");
+    }
+
+    // ---------- notas: crear / editar / borrar ----------
+    async function guardarNotaNueva(contacto) {
+      const ta = el("nota-nueva");
+      const texto = ta.value.trim();
+      if (!texto) return;
+      const origen = ta.dataset.origen === "voz" ? "voz" : "texto";
+      const { data, error } = await client.from(T_NOTAS).insert({ contacto_id: contacto.id, texto, origen }).select().single();
+      if (error) { showMsg("No se pudo guardar la nota: " + error.message); return; }
+      notas.unshift(data);
+      ta.value = ""; ta.dataset.origen = "texto";
+      await marcarPendiente(contacto.id);
+      render();
+      showToast("📝 Nota guardada · pendiente de sintetizar");
+    }
+    function editarNota(id) { state._editing = id; render(); }
+    async function guardarEdicionNota(id, contactoId) {
+      const ta = el("edit-" + id);
+      const texto = ta.value.trim();
+      if (!texto) return;
+      const { error } = await client.from(T_NOTAS).update({ texto, updated_at: new Date().toISOString() }).eq("id", id);
+      if (error) { showMsg("No se pudo guardar: " + error.message); return; }
+      const n = notas.find((x) => x.id === id); if (n) n.texto = texto;
+      state._editing = null;
+      await marcarPendiente(contactoId);
+      render();
+      showToast("Nota actualizada");
+    }
+    async function borrarNota(id, contactoId) {
+      if (!confirm("¿Quitar esta nota?")) return;
+      const { error } = await client.from(T_NOTAS).update({ borrado: true }).eq("id", id);
+      if (error) { showMsg("No se pudo borrar: " + error.message); return; }
+      notas = notas.filter((x) => x.id !== id);
+      await marcarPendiente(contactoId);
+      render();
+    }
+
+    // ---------- dictado por voz (Web Speech API) ----------
+    function speechSupported() { return "SpeechRecognition" in window || "webkitSpeechRecognition" in window; }
+    function toggleDictado() {
+      const btn = el("btn-mic");
+      if (recognizing) { recognizer && recognizer.stop(); return; }
+      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      recognizer = new SR();
+      recognizer.lang = "es-ES";
+      recognizer.continuous = true;
+      recognizer.interimResults = true;
+      const ta = el("nota-nueva");
+      const base = ta.value ? ta.value.replace(/\s+$/, "") + " " : "";
+      recognizer.onresult = (ev) => {
+        let finalText = "", interim = "";
+        for (let i = ev.resultIndex; i < ev.results.length; i++) {
+          const t = ev.results[i][0].transcript;
+          if (ev.results[i].isFinal) finalText += t + " "; else interim += t;
+        }
+        ta.value = (base + finalText).trim() + (interim ? " " + interim : "");
+        ta.dataset.origen = "voz";
+      };
+      recognizer.onend = () => { recognizing = false; if (btn) { btn.classList.remove("on"); btn.textContent = "🎤 Hablar"; } };
+      recognizer.onerror = () => { recognizing = false; if (btn) { btn.classList.remove("on"); btn.textContent = "🎤 Hablar"; } };
+      recognizer.start();
+      recognizing = true;
+      if (btn) { btn.classList.add("on"); btn.textContent = "⏹ Parar"; }
+    }
+
+    // ---------- archivos ----------
+    async function subirArchivos(contacto, fileList) {
+      for (const f of fileList) {
+        const path = `${contacto.id}/${Date.now()}-${f.name}`.replace(/\s+/g, "_");
+        const up = await client.storage.from(BUCKET).upload(path, f, { contentType: f.type || "application/octet-stream", upsert: false });
+        if (up.error) { showMsg("No se pudo subir " + f.name + ": " + up.error.message); continue; }
+        const { data, error } = await client.from(T_ARCHIVOS).insert({ contacto_id: contacto.id, nombre_archivo: f.name, path, mime: f.type, tamano_bytes: f.size }).select().single();
+        if (!error) archivos.unshift(data);
+      }
+      await marcarPendiente(contacto.id);
+      render();
+      showToast("📎 Archivo(s) subido(s) · pendiente de sintetizar");
+    }
+
+    // ---------- etiquetas ----------
+    async function quitarEtiqueta(contacto, label) {
+      const etiquetas = (contacto.etiquetas || []).filter((l) => l !== label);
+      const { error } = await client.from(T_CONTACTOS).update({ etiquetas }).eq("id", contacto.id);
+      if (error) { showMsg("No se pudo actualizar: " + error.message); return; }
+      contacto.etiquetas = etiquetas;
+      render();
+    }
+    async function anadirEtiqueta(contacto) {
+      const val = prompt("Nueva etiqueta (p. ej. amigo, trabajo, cliente…)");
+      const label = (val || "").trim().toLowerCase();
+      if (!label) return;
+      const etiquetas = Array.from(new Set([...(contacto.etiquetas || []), label]));
+      const { error } = await client.from(T_CONTACTOS).update({ etiquetas }).eq("id", contacto.id);
+      if (error) { showMsg("No se pudo actualizar: " + error.message); return; }
+      contacto.etiquetas = etiquetas;
+      render();
+    }
+    async function setEnergia(contacto, value) {
+      const nueva = contacto.energia === value ? null : value; // pulsar de nuevo la quita
+      const patch = { energia: nueva, energia_manual: true, estado_sintesis: "pendiente", updated_at: new Date().toISOString() };
+      const { error } = await client.from(T_CONTACTOS).update(patch).eq("id", contacto.id);
+      if (error) { showMsg("No se pudo actualizar: " + error.message); return; }
+      Object.assign(contacto, patch);
+      render();
+      showToast(nueva ? `${ENERGIA[nueva].icon} Marcado como ${ENERGIA[nueva].label.toLowerCase()}` : "Energía sin evaluar");
+    }
+    function energiaStats(arr) {
+      const s = { vitamina: 0, neutro: 0, toxico: 0, sin: 0 };
+      arr.forEach((c) => { if (c.energia && s[c.energia] != null) s[c.energia]++; else s.sin++; });
+      return s;
+    }
+    async function archivarContacto(contacto) {
+      if (!confirm(`¿Archivar a ${contacto.nombre}? Se queda guardado pero deja de aparecer en la lista.`)) return;
+      const { error } = await client.from(T_CONTACTOS).update({ archivado: !contacto.archivado }).eq("id", contacto.id);
+      if (error) { showMsg("No se pudo archivar: " + error.message); return; }
+      contacto.archivado = !contacto.archivado;
+      state.detailId = null;
+      render();
+    }
+
+    // ---------- render ----------
+    function filteredContactos() {
+      let arr = contactos.filter((c) => !!c.archivado === state.showArchivados);
+      if (state.q) { const q = state.q.toLowerCase(); arr = arr.filter((c) => c.nombre.toLowerCase().includes(q) || (c.resumen || "").toLowerCase().includes(q)); }
+      if (state.labelFilter) arr = arr.filter((c) => (c.etiquetas || []).includes(state.labelFilter));
+      if (state.energiaFilter) arr = arr.filter((c) => (state.energiaFilter === "sin" ? !c.energia : c.energia === state.energiaFilter));
+      return arr;
+    }
+
+    function contactHeaderHTML(c) {
+      const pend = c.estado_sintesis !== "procesado";
+      return `
+        <div class="estado-pill ${pend ? "pend" : "ok"}">${pend ? "⏳ Pendiente de sintetizar" : "✅ Sintetizado"}</div>
+        <h1>${esc(c.nombre)}</h1>
+        <div class="resumen-box ${pend && !c.resumen ? "pendiente" : ""}">${c.resumen ? esc(c.resumen) : "Aún no hay síntesis. Añade notas o archivos y la rutina generará un resumen y etiquetas."}</div>
+
+        <p class="eyebrow">¿Amigo vitamina o te resta energía?</p>
+        <div class="energia-row">
+          ${Object.entries(ENERGIA).map(([key, v]) => `<div class="energia-btn ${c.energia === key ? "on " + v.cls : ""}" data-energia="${key}"><span class="big">${v.icon}</span>${v.label}</div>`).join("")}
+        </div>
+        ${c.consejo ? `<div class="consejo-box ${c.energia || ""}"><span class="k">💡 Consejo</span>${esc(c.consejo)}</div>` : ""}
+
+        <div class="chips">
+          ${(c.etiquetas || []).map((l) => `<span class="chip accent rm" data-rm="${esc(l)}">${esc(l)}<span class="x">✕</span></span>`).join("")}
+          <span class="chip add-chip" id="btn-add-label">+ etiqueta</span>
+        </div>`;
+    }
+
+    function notaHTML(n, contactoId) {
+      const editing = state._editing === n.id;
+      if (editing) {
+        return `<div class="nota">
+          <textarea id="edit-${n.id}">${esc(n.texto)}</textarea>
+          <div class="row2" style="margin-top:6px">
+            <button class="secondary" data-cancel-edit="${n.id}">Cancelar</button>
+            <button data-save-edit="${n.id}" data-contacto="${contactoId}">Guardar</button>
+          </div>
+        </div>`;
+      }
+      return `<div class="nota">
+        <div class="head">
+          <span>${n.origen === "voz" ? '<span class="voz-tag">🎤 voz</span>' : "📝"} · ${fmtDate(n.created_at)}</span>
+          <span class="acts"><span data-edit="${n.id}">✏️</span><span data-del="${n.id}" data-contacto="${contactoId}">🗑️</span></span>
+        </div>
+        <div>${esc(n.texto)}</div>
+      </div>`;
+    }
+
+    function fileHTML(f) {
+      return `<div class="file-item">
+        <span class="ico">${fileIcon(f.mime)}</span>
+        <div class="m"><div class="fname">${esc(f.nombre_archivo)}</div><div class="fmeta">${fmtSize(f.tamano_bytes)} · ${fmtDate(f.created_at)}</div></div>
+        <a href="${fileUrl(f.path)}" target="_blank" rel="noopener">Ver</a>
+      </div>`;
+    }
+
+    function detailHTML(c) {
+      const ns = notasDe(c.id);
+      const fs = archivosDe(c.id);
+      return `
+        <div class="back" id="back">← Volver</div>
+        <div class="card">
+          ${contactHeaderHTML(c)}
+
+          <h3>Notas</h3>
+          <textarea id="nota-nueva" data-origen="texto" placeholder="Escribe o dicta una nota sobre esta persona…"></textarea>
+          <div class="row2" style="margin-top:8px">
+            <button class="secondary" id="btn-guardar-nota" type="button">📝 Guardar nota</button>
+            ${speechSupported() ? `<button class="rec" id="btn-mic" type="button">🎤 Hablar</button>` : `<button class="ghost" disabled type="button">Sin dictado en este navegador</button>`}
+          </div>
+          <div style="margin-top:12px">${ns.length ? ns.map((n) => notaHTML(n, c.id)).join("") : '<p class="helper">Todavía no hay notas.</p>'}</div>
+
+          <h3>Archivos</h3>
+          <input type="file" id="input-file" multiple style="padding:10px;background:rgba(255,255,255,0.05);border:1px solid var(--line-strong);border-radius:14px;color:var(--text-2)" />
+          <div style="margin-top:10px">${fs.length ? fs.map(fileHTML).join("") : '<p class="helper">Todavía no hay archivos.</p>'}</div>
+
+          <p class="helper">Cada nota o archivo nuevo deja el contacto "pendiente de sintetizar" hasta que la rutina genere el resumen y las etiquetas.</p>
+          <button class="danger" id="btn-archivar" style="margin-top:14px">${c.archivado ? "↩ Desarchivar" : "🗄 Archivar contacto"}</button>
+        </div>`;
+    }
+
+    function wireDetail(c) {
+      el("back").onclick = () => { state.detailId = null; state._editing = null; render(); };
+      el("btn-add-label").onclick = () => anadirEtiqueta(c);
+      document.querySelectorAll("[data-rm]").forEach((n) => n.onclick = () => quitarEtiqueta(c, n.dataset.rm));
+      document.querySelectorAll("[data-energia]").forEach((n) => n.onclick = () => setEnergia(c, n.dataset.energia));
+      el("btn-guardar-nota").onclick = () => guardarNotaNueva(c);
+      const mic = el("btn-mic"); if (mic) mic.onclick = toggleDictado;
+      document.querySelectorAll("[data-edit]").forEach((n) => n.onclick = () => editarNota(n.dataset.edit));
+      document.querySelectorAll("[data-cancel-edit]").forEach((n) => n.onclick = () => { state._editing = null; render(); });
+      document.querySelectorAll("[data-save-edit]").forEach((n) => n.onclick = () => guardarEdicionNota(n.dataset.saveEdit, n.dataset.contacto));
+      document.querySelectorAll("[data-del]").forEach((n) => n.onclick = () => borrarNota(n.dataset.del, n.dataset.contacto));
+      el("input-file").onchange = (e) => { if (e.target.files.length) subirArchivos(c, e.target.files); e.target.value = ""; };
+      el("btn-archivar").onclick = () => archivarContacto(c);
+    }
+
+    function itemHTML(c, i) {
+      const pend = c.estado_sintesis !== "procesado";
+      const meta = c.resumen ? c.resumen : (pend ? "Pendiente de sintetizar…" : "");
+      const ringColor = c.energia === "vitamina" ? "var(--good)" : c.energia === "toxico" ? "var(--bad)" : c.energia === "neutro" ? "var(--mid)" : "transparent";
+      return `<div class="item" data-id="${c.id}" style="--i:${i}">
+        <div class="avatar" style="box-shadow:0 0 0 2px ${ringColor}">${esc(initials(c.nombre))}</div>
+        <div class="m">
+          <div class="name">${esc(c.nombre)}</div>
+          <div class="meta">${esc(meta)}</div>
+          <div class="chips">${(c.etiquetas || []).slice(0, 4).map((l) => `<span class="chip">${esc(l)}</span>`).join("")}</div>
+        </div>
+        <div class="arrow">›</div>
+      </div>`;
+    }
+
+    function listHTML() {
+      const labels = allLabels();
+      const base = contactos.filter((c) => !!c.archivado === state.showArchivados);
+      const st = energiaStats(base);
+      const arr = filteredContactos();
+      return `
+        <div class="search-row">
+          <input type="search" id="q" placeholder="Buscar contacto…" value="${esc(state.q)}" />
+        </div>
+        <p class="eyebrow">Qué tienes</p>
+        <div class="stats-bar">
+          <span class="stat-chip vitamina ${state.energiaFilter === "vitamina" ? "on" : ""}" data-en="vitamina">🔋 ${st.vitamina} vitamina</span>
+          <span class="stat-chip neutro ${state.energiaFilter === "neutro" ? "on" : ""}" data-en="neutro">😐 ${st.neutro} neutro</span>
+          <span class="stat-chip toxico ${state.energiaFilter === "toxico" ? "on" : ""}" data-en="toxico">🪫 ${st.toxico} tóxico</span>
+          <span class="stat-chip ${state.energiaFilter === "sin" ? "on" : ""}" data-en="sin">⏳ ${st.sin} sin evaluar</span>
+        </div>
+        ${labels.length ? `<div class="chips">
+          <span class="chip ${!state.labelFilter ? "accent" : ""}" data-label="">Todas las etiquetas</span>
+          ${labels.map((l) => `<span class="chip ${state.labelFilter === l ? "accent" : ""}" data-label="${esc(l)}">${esc(l)}</span>`).join("")}
+        </div>` : ""}
+        <p class="eyebrow" id="toggle-arch" style="cursor:pointer">${state.showArchivados ? "← Ver contactos activos" : "Ver archivados →"}</p>
+        ${arr.length ? arr.map((c, i) => itemHTML(c, i)).join("") : `<div class="empty"><div class="big">${state.showArchivados ? "🗄" : "👋"}</div><div>${state.showArchivados ? "No hay contactos archivados." : "Todavía no tienes contactos. Crea el primero."}</div></div>`}
+      `;
+    }
+
+    function render() {
+      const view = el("view");
+      const fab = el("fab");
+      if (state.detailId) {
+        const c = contactos.find((x) => x.id === state.detailId);
+        if (!c) { state.detailId = null; return render(); }
+        fab.style.display = "none";
+        view.innerHTML = detailHTML(c);
+        wireDetail(c);
+        window.scrollTo(0, 0);
+        return;
+      }
+      fab.style.display = "";
+      view.innerHTML = listHTML();
+      el("q").oninput = (e) => { state.q = e.target.value; render(); };
+      el("q").focus();
+      el("q").selectionStart = el("q").selectionEnd = el("q").value.length;
+      document.querySelectorAll("[data-label]").forEach((n) => n.onclick = () => { state.labelFilter = n.dataset.label || null; render(); });
+      document.querySelectorAll("[data-en]").forEach((n) => n.onclick = () => { state.energiaFilter = state.energiaFilter === n.dataset.en ? null : n.dataset.en; render(); });
+      el("toggle-arch").onclick = () => { state.showArchivados = !state.showArchivados; state.labelFilter = null; state.energiaFilter = null; render(); };
+      document.querySelectorAll(".item").forEach((n) => n.onclick = () => { state.detailId = n.dataset.id; state._editing = null; render(); });
+    }
+
+    // ---------- utilidades UI ----------
+    function showMsg(t) { el("msg").textContent = t; }
+    function showToast(t) {
+      el("toast-text").textContent = t;
+      el("toast").classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => el("toast").classList.remove("show"), 3500);
+    }
+
+    async function refresh(btn) {
+      btn && btn.classList.add("spin");
+      try { await load(); showMsg(""); render(); }
+      catch (err) { showMsg("Sin conexión con Supabase: " + err.message); }
+      finally { btn && btn.classList.remove("spin"); }
+    }
+
+    async function init() {
+      el("btn-refresh").addEventListener("click", (e) => refresh(e.currentTarget));
+      el("btn-nuevo").addEventListener("click", openModal);
+      el("btn-cancelar").addEventListener("click", closeModal);
+      el("btn-crear").addEventListener("click", crearContacto);
+      el("modal-back").addEventListener("click", (e) => { if (e.target.id === "modal-back") closeModal(); });
+      if (!url || !anonKey) { showMsg("Faltan credenciales en config.js"); return; }
+      client = supabase.createClient(url, anonKey);
+      await refresh(null);
+    }
+    init();
+
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+    }
+  </script>
+</body>
+</html>

@@ -326,6 +326,7 @@ export function mountEcuacionGame(container, { client, onExit }) {
 
   // ---- resultados y repaso ----
   function screenResults() {
+    locked = false; // si se llegó aquí sin vidas, outcome() dejó locked = true y el repaso quedaría bloqueado
     const byType = {};
     errors.forEach((e) => { byType[e.tipo] = (byType[e.tipo] || 0) + 1; });
     progress = { nivelMax: Math.max(progress.nivelMax || 0, levelReached), fallosPorTipo: { ...(progress.fallosPorTipo || {}) }, partidas: (progress.partidas || 0) + 1 };
