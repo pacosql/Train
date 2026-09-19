@@ -263,16 +263,16 @@
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); transform: translateY(20px); opacity: 0; pointer-events: none; transition: opacity 0.2s, transform 0.2s;
     }
     .motivos.show { opacity: 1; transform: none; pointer-events: auto; }
-    .motivos .t { display: flex; justify-content: space-between; align-items: center; font-family: var(--display); font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-2); margin-bottom: 8px; }
-    .motivos .t button { width: auto; margin: 0; padding: 4px 8px; font-size: 0.85rem; background: transparent; color: var(--text-2); box-shadow: none; }
+    .motivos .t { font-family: var(--display); font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-2); margin-bottom: 8px; }
     .motivos .row { display: flex; flex-wrap: wrap; gap: 6px; }
     .motivos .row button { width: auto; margin: 0; padding: 7px 11px; font-size: 0.9rem; font-family: var(--body); text-transform: none; letter-spacing: 0; font-weight: 600; background: rgba(255, 255, 255, 0.06); color: var(--text); border: 1px solid var(--line-strong); box-shadow: none; border-radius: 999px; }
     .motivos .row button:active { background: var(--accent-soft); border-color: var(--accent); }
+    .motivos .skip { margin-top: 10px; padding: 12px 16px; font-size: 0.95rem; }
 
     .toast {
-      position: fixed; left: 50%; bottom: calc(96px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); z-index: 30;
+      position: fixed; left: 50%; bottom: calc(96px + var(--toast-lift, 0px) + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); z-index: 30;
       background: #1c2027; border: 1px solid var(--line-strong); color: var(--text); padding: 10px 14px; border-radius: 999px; font-size: 0.9rem;
-      display: flex; gap: 12px; align-items: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); opacity: 0; pointer-events: none; transition: opacity 0.2s;
+      display: flex; gap: 12px; align-items: center; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); opacity: 0; pointer-events: none; transition: opacity 0.2s, bottom 0.2s ease;
       max-width: calc(100vw - 32px); width: max-content;
     }
     .toast span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -509,14 +509,19 @@
     function showMotivos(idea, decision) {
       const box = el("motivos"); const list = MOTIVOS[decision] || [];
       if (!list.length) return;
-      box.innerHTML = `<div class="t"><span>¿Por qué ${DECISION_LABEL[decision]}? (opcional)</span><button type="button" id="motivos-x">✕</button></div>
-        <div class="row">${list.map((m) => `<button type="button" data-m="${esc(m)}">${esc(m)}</button>`).join("")}</div>`;
+      box.innerHTML = `<div class="t">¿Por qué ${DECISION_LABEL[decision]}? (opcional)</div>
+        <div class="row">${list.map((m) => `<button type="button" data-m="${esc(m)}">${esc(m)}</button>`).join("")}</div>
+        <button type="button" class="ghost skip" id="motivos-skip">No dar feedback</button>`;
       box.classList.add("show");
+      document.documentElement.style.setProperty("--toast-lift", box.offsetHeight + 12 + "px");
       clearTimeout(motivosTimer); motivosTimer = setTimeout(hideMotivos, 15000);
-      el("motivos-x").onclick = hideMotivos;
+      el("motivos-skip").onclick = hideMotivos;
       box.querySelectorAll("button[data-m]").forEach((b) => b.onclick = () => saveMotivo(idea, decision, b.dataset.m));
     }
-    function hideMotivos() { el("motivos").classList.remove("show"); clearTimeout(motivosTimer); }
+    function hideMotivos() {
+      el("motivos").classList.remove("show"); clearTimeout(motivosTimer);
+      document.documentElement.style.setProperty("--toast-lift", "0px");
+    }
     async function saveMotivo(idea, decision, motivo) {
       hideMotivos();
       // Para «A revisar» queda pendiente (la rutina lo usa); para el resto es solo un apunte ya procesado.
