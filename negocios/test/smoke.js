@@ -93,6 +93,19 @@ const server = http.createServer((req, res) => {
   await page.click("#ex-reset");
   await page.waitForSelector("#ex-list .item");
   console.log("explorar OK:", total, "→ venta desasistida:", filtrado);
+  // resumen por sector: tocar un chip filtra; tocarlo otra vez quita el filtro
+  const chips = await page.locator('#ex-summary button[data-k="familia"]').count();
+  if (chips > 1) {
+    await page.locator('#ex-summary button[data-k="familia"]').first().click();
+    await page.waitForFunction(() => document.querySelector('#ex-summary button[data-k="familia"].on'));
+    const porSector = await t("#ex-count");
+    await page.locator('#ex-summary button[data-k="familia"].on').click();
+    await page.waitForFunction(() => !document.querySelector('#ex-summary button[data-k="familia"].on'));
+    console.log("resumen por sector OK:", chips, "sectores ·", porSector);
+  }
+  // estado de las rutinas al pie
+  await page.waitForSelector("#routines details");
+  console.log("rutinas OK:", (await t("#routines summary")).slice(0, 80));
   // comparar: seleccionar 2 fichas y abrir la tabla
   const sels = await page.locator("#ex-list .sel").count();
   if (sels >= 2) {
