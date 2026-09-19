@@ -215,6 +215,24 @@
     table.cmp td.best { color: var(--good); font-weight: 700; }
     table.cmp tr.sep td, table.cmp tr.sep th { border-bottom: 2px solid var(--line-strong); }
 
+    /* resumen por sector / venta (explorar) */
+    .summary { margin: 0 0 12px; }
+    .summary .t { font-family: var(--display); font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-2); margin: 0 0 6px 2px; }
+    .summary .row { display: flex; gap: 6px; overflow-x: auto; -webkit-overflow-scrolling: touch; padding-bottom: 4px; margin: 0 -16px; padding-left: 16px; padding-right: 16px; }
+    .summary button { width: auto; margin: 0; flex-shrink: 0; padding: 6px 10px; font-size: 0.85rem; letter-spacing: 0.5px; text-transform: none; font-family: var(--body); font-weight: 600; background: rgba(255, 255, 255, 0.05); color: var(--text); border: 1px solid var(--line-strong); box-shadow: none; border-radius: 999px; display: flex; gap: 6px; align-items: center; }
+    .summary button b { font-family: var(--display); font-size: 1.05rem; font-weight: 800; }
+    .summary button small { color: var(--text-2); font-weight: 600; }
+    .summary button.on { border-color: var(--accent); background: var(--accent-soft); color: var(--accent-2); }
+
+    /* estado de las rutinas (pie) */
+    .routines { margin-top: 22px; border-top: 1px solid var(--line); padding-top: 10px; font-size: 0.82rem; color: var(--text-2); }
+    .routines summary { font-size: 0.85rem; color: var(--text-2); }
+    .routines .r { display: grid; grid-template-columns: auto 1fr; gap: 4px 10px; padding: 6px 0; border-bottom: 1px solid var(--line); }
+    .routines .r .k { font-family: var(--display); font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--accent); white-space: nowrap; }
+    .routines .r .when { color: var(--text); font-weight: 600; }
+    .routines .r .txt { grid-column: 1 / -1; color: var(--text-2); }
+    .routines .r.old .when { color: var(--bad); }
+
     /* listas */
     .item {
       display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 18px; border: 1px solid var(--line);
@@ -302,6 +320,7 @@
 
     <div id="view"></div>
 
+    <div class="routines" id="routines"></div>
     <div class="build-id">build __BUILD_ID__</div>
   </div>
 
@@ -322,13 +341,15 @@
     const { url, anonKey, tablePrefix } = window.NEGOCIOS_CONFIG;
     const T_IDEAS = tablePrefix + "ideas";
     const T_COMENTARIOS = tablePrefix + "comentarios";
+    const T_RUTINAS = tablePrefix + "rutinas";
+    let rutinas = []; // últimas ejecuciones de las rutinas
     const BUCKET = "negocios-audios";
     let client = null;
     let ideas = [];
     let comentarios = []; // todos, de todas las fichas
     const state = { tab: "pendiente", index: 0, detailId: null };
     const EXPLORE_KEY = "negocios.explorar";
-    const DEF_FILTERS = { q: "", decision: "", sector: "", modelo: "", tipo: "", venta: "", efecto_red: "", impacto_ia: "", exito_min: "", inv_max: "", claude_min: "", ltvcac_min: "", sort: "score" };
+    const DEF_FILTERS = { q: "", decision: "", familia: "", sector: "", modelo: "", tipo: "", venta: "", efecto_red: "", impacto_ia: "", exito_min: "", inv_max: "", claude_min: "", ltvcac_min: "", sort: "score" };
     let filters = loadFilters();
     const COMPARE_KEY = "negocios.comparar";
     let compare = (() => { try { return JSON.parse(localStorage.getItem(COMPARE_KEY) || "[]").slice(0, 3); } catch { return []; } })();
@@ -403,6 +424,29 @@
       const c = await client.from(T_COMENTARIOS).select("*").order("created_at", { ascending: true });
       if (c.error) throw c.error;
       comentarios = c.data || [];
+      const r = await client.from(T_RUTINAS).select("rutina,ejecutada_en,resumen,commit").order("ejecutada_en", { ascending: false }).limit(12);
+      rutinas = r.error ? [] : (r.data || []);
+      renderRoutines();
+    }
+    const RUTINA_LABEL = { ideas: "Ideas nuevas", revision: "Revisión de notas", "mejora-app": "Mejora de la app", manual: "Manual" };
+    function ago(iso) {
+      const m = Math.round((Date.now() - new Date(iso).getTime()) / 60000);
+      if (m < 1) return "ahora"; if (m < 60) return `hace ${m} min`;
+      const h = Math.round(m / 60); if (h < 48) return `hace ${h} h`;
+      return `hace ${Math.round(h / 24)} días`;
+    }
+    function renderRoutines() {
+      const box = el("routines"); if (!box) return;
+      if (!rutinas.length) { box.innerHTML = ""; return; }
+      const last = {};
+      for (const r of rutinas) if (!last[r.rutina]) last[r.rutina] = r;
+      const order = ["ideas", "revision", "mejora-app"];
+      const keys = [...order.filter((k) => last[k]), ...Object.keys(last).filter((k) => !order.includes(k))];
+      const stale = (k, r) => (Date.now() - new Date(r.ejecutada_en).getTime()) > (k === "mejora-app" ? 5 : 3) * 3600000;
+      box.innerHTML = `<details><summary>🤖 Rutinas · ideas ${last.ideas ? ago(last.ideas.ejecutada_en) : "sin ejecuciones"} · revisión ${last.revision ? ago(last.revision.ejecutada_en) : "sin ejecuciones"}</summary>
+        ${keys.map((k) => `<div class="r ${stale(k, last[k]) ? "old" : ""}"><span class="k">${esc(RUTINA_LABEL[k] || k)}</span><span class="when">${ago(last[k].ejecutada_en)} · ${new Date(last[k].ejecutada_en).toLocaleString("es-ES", { dateStyle: "short", timeStyle: "short" })}${last[k].commit ? " · " + esc(last[k].commit) : ""}</span><span class="txt">${esc(last[k].resumen)}</span></div>`).join("")}
+        <p class="helper">Ideas cada hora (5 fichas), revisión cada hora, mejora de la app cada 2 h. En rojo si llevan más tiempo del previsto sin ejecutar: suele ser que la cuota de Claude se ha agotado y se reanudan solas al resetearse.</p>
+      </details>`;
     }
     const commentsOf = (id) => comentarios.filter((c) => c.idea_id === id);
     // Pendientes: primero las que la rutina ha revisado (para que el usuario
@@ -456,6 +500,7 @@
         if (filters.decision === "pendiente") { if (i.decision) return false; }
         else if (filters.decision && i.decision !== filters.decision) return false;
         for (const k of ["sector", "modelo", "tipo", "venta", "efecto_red", "impacto_ia"]) if (filters[k] && i[k] !== filters[k]) return false;
+        if (filters.familia && familia(i) !== filters.familia) return false;
         if (filters.exito_min && i.exito < +filters.exito_min) return false;
         if (filters.inv_max && (i.inversion_max_eur ?? i.inversion_min_eur ?? 0) > +filters.inv_max) return false;
         if (filters.claude_min && (i.claude_pct ?? -1) < +filters.claude_min) return false;
@@ -466,6 +511,20 @@
       return arr.sort(SORTS[filters.sort] || SORTS.score);
     }
     const DECISION_ICON = { gusta: "👍", no_gusta: "👎", definitivo: "⭐", revisar: "🔁" };
+    // Familias de sector: el campo `sector` es texto libre (cada ficha trae el
+    // suyo), así que para resumir se agrupa por palabras clave.
+    const FAMILIAS = [
+      ["Formación", /formaci|educaci|edtech|curso|academ|certific|oposici|idioma|escuela|aprend/i],
+      ["Software / SaaS", /saas|software|app\b|apps|analytics|automatiz|herramienta|plataforma|ia generativa|inteligencia artificial/i],
+      ["Servicios locales", /local|autoservicio|lavander|lavadero|trastero|self-storage|self storage|instalaci|tienda|estudio|murcia|físic|fisic/i],
+      ["Salud y bienestar", /salud|bienestar|fitness|gimnasio|fisio|nutrici|mayores|cuidado|dolor|médic|medic/i],
+      ["Deporte", /deport|tenis|pádel|padel|bici|ciclis|piscina|golf/i],
+      ["Legal y finanzas", /legal|fintech|finanz|jubil|nómina|nomina|seguro|hipotec|inmobili|vivienda|reforma|presupuesto/i],
+      ["Hogar y familia", /hogar|familia|padres|mascota|perro|regalo|memoria|boda|beb/i],
+      ["Marketing y ventas", /marketing|adtech|publicidad|e-commerce|ecommerce|amazon|vendedor|crm|ventas/i],
+      ["Logística", /logíst|logist|transporte|reparto|última milla|flota/i],
+    ];
+    const familia = (i) => { const hay = `${i.sector || ""} ${(i.etiquetas || []).join(" ")}`; return (FAMILIAS.find(([, re]) => re.test(hay)) || ["Otros"])[0]; };
     function itemHTML(i, idx, showDecision) {
       const r = ratioOf(i);
       return `
@@ -501,8 +560,22 @@
           ${sel("ltvcac_min", "LTV/CAC mínimo", ["3", "5", "10"], { 3: "≥ 3×", 5: "≥ 5×", 10: "≥ 10×" })}
           <div class="full"><label>Ordenar por</label><select data-f="sort">${SORT_LABELS.map(([v, l]) => `<option value="${v}" ${filters.sort === v ? "selected" : ""}>${l}</option>`).join("")}</select></div>
         </div>
+        <div id="ex-summary"></div>
         <div id="cmp-bar"></div>
         <div id="ex-list"></div>`;
+      const updateSummary = () => {
+        const groups = (k) => { const g = {}; ideas.forEach((i) => { const v = k === "familia" ? familia(i) : i[k]; if (!v) return; (g[v] = g[v] || []).push(i._score); }); return Object.entries(g).map(([v, arr]) => ({ v, n: arr.length, media: Math.round(arr.reduce((a, b) => a + b, 0) / arr.length) })).sort((a, b) => b.media - a.media || b.n - a.n); };
+        const chips = (k, list, labels = {}) => list.map((g) => `<button type="button" data-k="${k}" data-v="${esc(g.v)}" class="${filters[k] === g.v ? "on" : ""}"><b style="color:${verdict(g.media)[1]}">${g.media}</b><span>${esc(labels[g.v] || g.v)}</span><small>${g.n}</small></button>`).join("");
+        const sectores = groups("familia"), ventas = groups("venta");
+        el("ex-summary").innerHTML = sectores.length > 1 ? `
+          <div class="summary"><div class="t">Por sector · puntuación media y nº de fichas · toca para filtrar</div><div class="row">${chips("familia", sectores)}</div></div>
+          <div class="summary"><div class="t">Por tipo de venta</div><div class="row">${chips("venta", ventas, { desasistida: "Desasistida", mixta: "Mixta", asistida: "Asistida" })}</div></div>` : "";
+        el("ex-summary").querySelectorAll("button[data-k]").forEach((b) => b.onclick = () => {
+          const k = b.dataset.k; filters[k] = filters[k] === b.dataset.v ? "" : b.dataset.v; saveFilters();
+          const sel = view.querySelector(`select[data-f="${k}"]`); if (sel) { sel.value = filters[k]; sel.classList.toggle("set", !!filters[k]); }
+          update();
+        });
+      };
       const updateBar = () => {
         const sel = compare.map((id) => ideas.find((i) => i.id === id)).filter(Boolean);
         el("cmp-bar").innerHTML = sel.length ? `<div class="cmp-bar"><span>⚖️ ${sel.length} de 3 seleccionadas</span><div><button class="ghost" id="cmp-clear" type="button">Quitar</button> <button id="cmp-go" type="button" ${sel.length < 2 ? "disabled" : ""}>Comparar</button></div></div>` : `<p class="helper" style="margin:0 0 8px">Marca el círculo de 2 o 3 fichas para compararlas lado a lado.</p>`;
@@ -517,6 +590,7 @@
         el("ex-list").innerHTML = arr.length ? arr.map((i, idx) => itemHTML(i, idx, true)).join("") : `<div class="empty"><div class="big">🔎</div><div>Ninguna ficha cumple los filtros.</div></div>`;
         wireItems(el("ex-list"), updateBar);
         updateBar();
+        updateSummary();
       };
       view.querySelectorAll("[data-f]").forEach((n) => n.addEventListener(n.tagName === "INPUT" ? "input" : "change", () => {
         filters[n.dataset.f] = n.value; saveFilters();
@@ -602,7 +676,7 @@
         ${i.decision ? `<div class="decision-tag ${i.decision}">${DECISION_LABEL[i.decision]}${i.decidido_en ? " · " + new Date(i.decidido_en).toLocaleDateString("es-ES") : ""}</div>` : ""}
         ${i.revision_nota ? `<div class="revision"><div class="t">🔁 Revisada${i.revisado_en ? " el " + new Date(i.revisado_en).toLocaleDateString("es-ES") : ""} · versión ${i.version || 2}</div>${esc(i.revision_nota)}</div>` : ""}
         <div class="chips">
-          <span class="chip accent">${esc(i.sector)}</span>
+          <span class="chip accent">${esc(familia(i))} · ${esc(i.sector)}</span>
           <span class="chip blue">${esc(MODELO_LABEL[i.modelo] || i.modelo)}</span>
           <span class="chip">${esc(TIPO_LABEL[i.tipo] || i.tipo)}</span>
           ${venta ? `<span class="chip ${venta[1]}">${venta[0]}</span>` : ""}

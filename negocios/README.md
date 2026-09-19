@@ -15,7 +15,12 @@ Botón **Explorar**: lista de todas las fichas con filtros (etiqueta, sector,
 modelo, tipo, venta, cliente individual/red, impacto de la IA, éxito
 mínimo, inversión máxima, IA Score mínimo, LTV/CAC mínimo), buscador,
 orden y exportación a CSV (separador `;`, UTF-8 con BOM, listo para Power
-BI). Los filtros se recuerdan en el navegador.
+BI). Los filtros se recuerdan en el navegador. Arriba de la lista, chips
+por familia de sector (el campo `sector` es libre; la app lo agrupa por
+palabras clave en Formación, Software/SaaS, Servicios locales, Salud,
+Deporte, Legal y finanzas, Hogar, Marketing, Logística u Otros) y por tipo
+de venta, con la puntuación media, tocables para filtrar. Al pie, el estado
+de las rutinas (últimas ejecuciones de `negocios_rutinas`).
 
 ## Tablas (prefijo `negocios_`)
 
