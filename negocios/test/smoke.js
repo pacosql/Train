@@ -47,6 +47,8 @@ const server = http.createServer((req, res) => {
   await page.route("**/supabase-js@2/dist/umd/supabase.js", (r) => r.fulfill({ path: supabaseJs(), contentType: "text/javascript" }));
   await page.route("https://fonts.googleapis.com/**", (r) => r.abort());
   await require("./route.js")(page, dir);
+  // "última visita" antigua para que todas las fichas cuenten como nuevas y se pueda probar el banner
+  await page.addInitScript(() => { try { localStorage.setItem("negocios.ultimaVisita", "2020-01-01T00:00:00.000Z"); } catch {} });
   await page.goto(`http://localhost:${port}/negocios/`, { waitUntil: "networkidle" });
   await page.waitForSelector("#view .card, #view .item, #view .empty", { timeout: 20000 });
   const t = async (sel) => ((await page.textContent(sel)) || "").trim();
@@ -103,6 +105,16 @@ const server = http.createServer((req, res) => {
     await page.waitForFunction(() => !document.querySelector('#ex-summary button[data-k="familia"].on'));
     console.log("resumen por sector OK:", chips, "sectores ·", porSector);
   }
+  // fichas nuevas: el banner lleva a Explorar filtrado por novedad
+  await page.click('.tab[data-tab="pendiente"]');
+  await page.waitForSelector("#btn-nuevas");
+  const bannerTxt = await t(".nuevas-bar span");
+  await page.click("#btn-nuevas");
+  await page.waitForSelector("#ex-list .item");
+  const soloNuevas = await t("#ex-count");
+  await page.click("#ex-reset");
+  await page.waitForSelector("#ex-list .item");
+  console.log("nuevas OK:", bannerTxt.slice(0, 40), "→", soloNuevas);
   // estado de las rutinas al pie
   await page.waitForSelector("#routines details");
   console.log("rutinas OK:", (await t("#routines summary")).slice(0, 80));
