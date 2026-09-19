@@ -1341,6 +1341,40 @@ repasa. Los juegos con máquina de estados `render()` (`azar`,
 `puertas`, `potencias`) ya desbloqueaban en cada render y no estaban
 afectados.
 
+## Ejercicio #174 (duodécimo juego grande, noche del 18/19-09-2026)
+
+### Tramo — [`css/pack-ap.css`](./css/pack-ap.css)
+
+De la `cola` de `work_state` (hueco "estadística: gráficos engañosos y
+honestos"). `grafico` (leer un valor) y `grafica` (continuar una gráfica
+proporcional) leen gráficos; aquí el jugador los FABRICA y ve al
+instante qué titular sugiere cada manipulación. Construido por un
+subagente con el contrato de casa; el orquestador rehízo simulación,
+contrato, play-test y capturas antes de integrarlo.
+
+| # | Juego | Tema | Pantallas | De dónde sale |
+|---|---|---|---|---|
+| 174 | 📰 La redacción | Estadística (gráficos honestos y engañosos) | Tutorial (42 y 48 helados: sube el origen del eje hasta que el periódico titule «el doble» y devuélvelo a 0) → tramo 1 "¿Engaña?" (honesto / eje truncado / escala irregular / pictograma engañoso, con pistas) → tramo 2 "Arréglalo" (mandos de origen, unidad por división e icono 2D; publicar solo cuando el gráfico es honesto, sin pistas) → tramo 3 "El titular verdadero" (tabla sin gráfico: el porcentaje real, con opciones o teclado; distractores = lo que sugerirían el eje truncado o el pictograma 2D) → reto "Dos portadas" (fabrica a propósito un gráfico que diga «el doble» y luego uno honesto, sin vidas) → resultados y repaso | MediaWatch (Universidad de Utrecht) + "fix this chart" de Polypad; el periódico en vivo es inventado |
+
+**Ciclo de aprendizaje**: la regla del titular aparente es explícita y
+se manipula (razón visual = (b − origen)/(a − origen) con escala
+uniforme, y (b/a)² en un pictograma que crece a lo ancho): detectar →
+arreglar → calcular lo verdadero → fabricar el engaño a sabiendas
+(inversión). Progreso persistente en `localStorage` y `football_progress`.
+
+**Generadores** (`verify_mediawatch.mjs`, 20.000 rondas por generador,
+0 fallos): razones reales entre 1,05 y 1,6 con datos enteros; existe y
+es único el primer origen que da «el doble»; ticks uniformes en píxeles
+y consistentes con la unidad; una sola categoría correcta y nunca
+combinaciones en el tramo 1; único estado honesto en el tramo 2;
+opciones del tramo 3 distintas con la correcta exactamente una vez. Bug
+cazado por la simulación: cuando el valor mayor caía justo en el umbral,
+la "escala irregular" no cambiaba el dibujo (guarda `b > umbral`). Flujo
+completo jugado tres veces en Chromium a 400 px: perfecta (150 pts), un
+fallo con repaso (140 pts) y las tres vidas perdidas con repaso
+funcional. Un nombre de serie duplicaba la unidad en el título del
+gráfico ("(miles) (miles de visitas)"): corregido al integrar.
+
 ## Versiones (v2) y bandeja "Revisar"
 
 Cuando un ejercicio recibe una vuelta de mejoras, se marca con un

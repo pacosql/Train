@@ -24,7 +24,7 @@ export const TRUCOS = { honesto: "Honesto", truncado: "Eje truncado", irregular:
 const CONTEXTOS = [
   { tema: "Helados vendidos en agosto", labels: ["Fresa", "Choco"], unidad: "helados", verbo: "vende" },
   { tema: "Goles de la temporada", labels: ["Leones", "Tigres"], unidad: "goles", verbo: "marca" },
-  { tema: "Visitas a la web (miles)", labels: ["Web A", "Web B"], unidad: "miles de visitas", verbo: "recibe" },
+  { tema: "Visitas a la web", labels: ["Web A", "Web B"], unidad: "miles de visitas", verbo: "recibe" },
   { tema: "Libros prestados este mes", labels: ["Biblio Norte", "Biblio Sur"], unidad: "libros", verbo: "presta" },
   { tema: "Kilómetros en bici este mes", labels: ["Ana", "Luis"], unidad: "km", verbo: "recorre" },
   { tema: "Entradas vendidas el sábado", labels: ["Cine Sol", "Cine Luna"], unidad: "entradas", verbo: "vende" },
