@@ -764,6 +764,31 @@
       bar.hidden = !msg;
     }
 
+    // ---------- resiliencia de red ----------
+    // El wifi del gimnasio corta a ratos: un fetch que falla por eso llega
+    // como TypeError ("Load failed", "Failed to fetch"...), no como un error
+    // de Supabase. Se reintenta solo, sin molestar, antes de dar la cara.
+    function sleep(ms) { return new Promise((r) => setTimeout(r, ms)); }
+    function isNetworkError(error) {
+      if (!error) return false;
+      const msg = String(error.message || error);
+      return /load failed|failed to fetch|network|timeout|ECONNRESET|ETIMEDOUT/i.test(msg);
+    }
+    function friendlyError(error) {
+      return isNetworkError(error) ? "sin conexión, inténtalo de nuevo" : error.message;
+    }
+    // makeRequest es una función que CREA la petición cada vez (no una ya
+    // lanzada): al reintentar hay que volver a construirla desde cero.
+    async function withRetry(makeRequest, attempts = 3) {
+      let last;
+      for (let i = 0; i < attempts; i++) {
+        last = await makeRequest();
+        if (!last.error || !isNetworkError(last.error)) return last;
+        if (i < attempts - 1) await sleep(400 * (i + 1));
+      }
+      return last;
+    }
+
     function showScreen(name) {
       for (const s of screens) el(`screen-${s}`).hidden = s !== name;
       state.screen = name;
@@ -909,8 +934,8 @@
       if (!ok) return;
       // weights_session_exercises tiene ON DELETE CASCADE, así que con borrar
       // la sesión desaparecen también sus ejercicios.
-      const { error } = await client.from(T.sessions).delete().eq("id", session.id);
-      if (error) { showError("No se pudo borrar el entrenamiento: " + error.message); return; }
+      const { error } = await withRetry(() => client.from(T.sessions).delete().eq("id", session.id));
+      if (error) { showError("No se pudo borrar el entrenamiento: " + friendlyError(error)); return; }
       showError("");
       currentSessionDetail = null;
       try {
@@ -933,14 +958,14 @@
       el("sd-list").innerHTML = '<p class="empty">Cargando…</p>';
       showScreen("session-detail");
 
-      const { data, error } = await client.from(T.sessionExercises)
+      const { data, error } = await withRetry(() => client.from(T.sessionExercises)
         .select("exercise_id, weight_used, sets, reps, next_time, minutes, completed_at, order_index")
         .eq("session_id", session.id)
-        .order("order_index", { ascending: true });
+        .order("order_index", { ascending: true }));
       if (error) {
         el("sd-sub").textContent = "";
         el("sd-list").innerHTML = '<p class="empty">No se pudo cargar este entrenamiento.</p>';
-        showError("No se pudo cargar el entrenamiento: " + error.message);
+        showError("No se pudo cargar el entrenamiento: " + friendlyError(error));
         return;
       }
       showError("");
@@ -1447,10 +1472,10 @@
       renderCatalogWeightDisplay();
       bump("cd-weight-display");
       const group = [ex, ...stationMates(ex)];
-      const { error } = await client.from(T.exercises)
+      const { error } = await withRetry(() => client.from(T.exercises)
         .update({ default_weight: catalogWeightDraft })
-        .in("id", group.map((e) => e.id));
-      if (error) showError("No se pudo guardar el peso: " + error.message);
+        .in("id", group.map((e) => e.id)));
+      if (error) showError("No se pudo guardar el peso: " + friendlyError(error));
       else { for (const e of group) e.default_weight = catalogWeightDraft; showError(""); }
     }
 
@@ -1500,8 +1525,8 @@
         movement_type: chip ? chip.dataset.type : "otro",
         assisted: el("cd-assisted").checked,
       };
-      const { error } = await client.from(T.exercises).update(patch).eq("id", ex.id);
-      if (error) { showError("No se pudo guardar la ficha: " + error.message); return; }
+      const { error } = await withRetry(() => client.from(T.exercises).update(patch).eq("id", ex.id));
+      if (error) { showError("No se pudo guardar la ficha: " + friendlyError(error)); return; }
       showError("");
       Object.assign(ex, patch);
       el("cd-name").innerHTML = `<span class="h-icon">${exIcon(ex)}</span>`;
@@ -1516,8 +1541,8 @@
       const ex = catalog.find((e) => e.id === currentCatalogExerciseId);
       if (!ex) return;
       const notes = el("cd-notes-input").value.trim() || null;
-      const { error } = await client.from(T.exercises).update({ notes }).eq("id", ex.id);
-      if (error) showError("No se pudo guardar la nota: " + error.message);
+      const { error } = await withRetry(() => client.from(T.exercises).update({ notes }).eq("id", ex.id));
+      if (error) showError("No se pudo guardar la nota: " + friendlyError(error));
       else { ex.notes = notes; showError(""); }
     }
 
@@ -1553,12 +1578,13 @@
         ? Math.max(1, Math.round(elapsedSeconds(state.cardioStartedAt) / 60))
         : state.cardioMinutesSuggested;
       if (state.sessionId && cardioEx) {
-        const { error } = await client.from(T.sessionExercises).insert({
+        const { error } = await withRetry(() => client.from(T.sessionExercises).insert({
           session_id: state.sessionId, exercise_id: cardioEx.id, order_index: -1,
           minutes, weight_used: null, sets: null, reps: null, next_time: null,
-        });
-        if (error) { showError("No se pudo guardar el cardio: " + error.message); return; }
-        await client.from(T.sessions).update({ cardio_minutes_done: minutes }).eq("id", state.sessionId);
+        }));
+        if (error) { showError("No se pudo guardar el cardio: " + friendlyError(error)); return; }
+        showError("");
+        await withRetry(() => client.from(T.sessions).update({ cardio_minutes_done: minutes }).eq("id", state.sessionId));
         const nowIso = new Date().toISOString();
         historyByExercise[cardioEx.id] = { weight_used: null, next_time: null, completed_at: nowIso };
         (seriesByExercise[cardioEx.id] ||= []).push({ at: nowIso, weight: null, minutes });
@@ -1597,8 +1623,8 @@
       const ex = catalog.find((e) => e.id === state.currentExerciseId);
       if (!ex) return;
       const notes = el("ex-notes-input").value.trim() || null;
-      const { error } = await client.from(T.exercises).update({ notes }).eq("id", ex.id);
-      if (error) { showError("No se pudo guardar la nota: " + error.message); return; }
+      const { error } = await withRetry(() => client.from(T.exercises).update({ notes }).eq("id", ex.id));
+      if (error) { showError("No se pudo guardar la nota: " + friendlyError(error)); return; }
       ex.notes = notes;
       el("ex-note-line").textContent = notes || "";
       el("ex-note-line").hidden = !notes;
@@ -1682,12 +1708,12 @@
 
     async function saveFeedback(nextTime) {
       const { exercise, weightUsed } = state.pendingExercise;
-      const { error } = await client.from(T.sessionExercises).insert({
+      const { error } = await withRetry(() => client.from(T.sessionExercises).insert({
         session_id: state.sessionId, exercise_id: exercise.id,
         order_index: state.doneExerciseIds.length,
         weight_used: weightUsed, sets: 3, reps: 8, next_time: nextTime,
-      });
-      if (error) { showError("No se pudo guardar: " + error.message); return; }
+      }));
+      if (error) { showError("No se pudo guardar: " + friendlyError(error)); return; }
       showError("");
       const nowIso = new Date().toISOString();
       historyByExercise[exercise.id] = { weight_used: weightUsed, next_time: nextTime, completed_at: nowIso };
@@ -1705,8 +1731,8 @@
 
     // ---------- sesión ----------
     async function startNewSession() {
-      const { data, error } = await client.from(T.sessions).insert({ status: "in_progress" }).select().single();
-      if (error) { showError("No se pudo crear la sesión: " + error.message); return; }
+      const { data, error } = await withRetry(() => client.from(T.sessions).insert({ status: "in_progress" }).select().single());
+      if (error) { showError("No se pudo crear la sesión: " + friendlyError(error)); return; }
       showError("");
       state = freshState();
       state.sessionId = data.id;
@@ -1718,7 +1744,7 @@
     async function finishSession() {
       const totalMin = state.sessionStartedAt ? Math.max(1, Math.round(elapsedSeconds(state.sessionStartedAt) / 60)) : 0;
       if (state.sessionId) {
-        await client.from(T.sessions).update({ ended_at: new Date().toISOString(), status: "done" }).eq("id", state.sessionId);
+        await withRetry(() => client.from(T.sessions).update({ ended_at: new Date().toISOString(), status: "done" }).eq("id", state.sessionId));
       }
       const strength = state.summary.filter((i) => i.minutes == null);
       el("sum-count").textContent = state.summary.length;
@@ -1783,9 +1809,9 @@
       state.cardioMinutesSuggested = suggestCardioMinutes(total);
       saveState();
       if (state.sessionId) {
-        await client.from(T.sessions)
+        await withRetry(() => client.from(T.sessions)
           .update({ planned_duration_min: total, cardio_minutes_planned: state.cardioMinutesSuggested })
-          .eq("id", state.sessionId);
+          .eq("id", state.sessionId));
       }
       showScreen("cardio-pick");
     }
@@ -1844,8 +1870,9 @@
       const typeChip = document.querySelector("#screen-add-exercise .chip.selected");
       const base = slugify(name);
       for (let attempt = 0; attempt < 3; attempt++) {
-        const { data, error } = await client.from(T.exercises).insert({
-          slug: attempt === 0 ? base : `${base}_${attempt}`,
+        const slug = attempt === 0 ? base : `${base}_${attempt}`;
+        const { data, error } = await withRetry(() => client.from(T.exercises).insert({
+          slug,
           name,
           muscle_group: el("new-ex-muscle").value.trim() || null,
           icon: el("new-ex-icon").value.trim() || null,
@@ -1853,27 +1880,27 @@
           assisted: el("new-ex-assisted").checked,
           weight_step: 5, sort_order: catalog.length,
           notes: el("new-ex-notes").value.trim() || null,
-        }).select().single();
+        }).select().single());
         if (!error) {
           catalog.push(data);
           if (addExerciseReturn === "catalog-list") { renderCatalogList(); showScreen("catalog-list"); }
           else { renderPickScreen(); showScreen("pick"); }
           return;
         }
-        if (error.code !== "23505") { showError("No se pudo guardar: " + error.message); return; }
+        if (error.code !== "23505") { showError("No se pudo guardar: " + friendlyError(error)); return; }
       }
       showError("Ya tienes una máquina con ese nombre — prueba con otro.");
     }
 
     // ---------- carga ----------
     async function loadCatalogAndHistory() {
-      const { data: exs, error: exErr } = await client.from(T.exercises).select("*").order("sort_order");
+      const { data: exs, error: exErr } = await withRetry(() => client.from(T.exercises).select("*").order("sort_order"));
       if (exErr) throw exErr;
       catalog = exs;
 
-      const { data: rows, error: histErr } = await client.from(T.sessionExercises)
+      const { data: rows, error: histErr } = await withRetry(() => client.from(T.sessionExercises)
         .select("session_id, exercise_id, weight_used, next_time, minutes, completed_at")
-        .order("completed_at", { ascending: false }).limit(400);
+        .order("completed_at", { ascending: false }).limit(400));
       if (histErr) throw histErr;
       historyByExercise = {};
       seriesByExercise = {};
@@ -1896,16 +1923,16 @@
 
     async function loadSessions(perSession) {
       const counts = perSession || (await loadCatalogAndHistory());
-      const { data, error } = await client.from(T.sessions)
+      const { data, error } = await withRetry(() => client.from(T.sessions)
         .select("id, started_at, ended_at, status")
-        .eq("status", "done").order("started_at", { ascending: false }).limit(30);
+        .eq("status", "done").order("started_at", { ascending: false }).limit(30));
       if (error) return;
       recentSessions = (data || []).map((s) => ({ ...s, count: counts[s.id] || 0 }));
     }
 
     async function hydrateSessionStart() {
       if (state.sessionId && !state.sessionStartedAt) {
-        const { data } = await client.from(T.sessions).select("started_at").eq("id", state.sessionId).single();
+        const { data } = await withRetry(() => client.from(T.sessions).select("started_at").eq("id", state.sessionId).single());
         if (data) { state.sessionStartedAt = data.started_at; saveState(); }
       }
     }

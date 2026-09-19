@@ -51,6 +51,18 @@ La columna `description` de `weights_exercises` guarda el texto de "cómo
 entrenarlo" de cada máquina (colocación, ejecución, errores típicos y
 esquema de series). Si está vacía, la app usa un texto genérico.
 
+## Resiliencia de red
+
+El wifi/datos del gimnasio corta a ratos. Toda escritura a Supabase
+(guardar peso, feedback, cardio, notas, borrar un entrenamiento…) pasa
+por `withRetry`: si el fallo es de red (`TypeError: Load failed`,
+`Failed to fetch`…) reintenta sola hasta 3 veces con una espera corta
+entre cada una, sin que el usuario vea nada. Solo si las tres fallan se
+muestra un aviso — y en lenguaje llano ("sin conexión, inténtalo de
+nuevo"), no el texto crudo del error. El estado no se pierde mientras
+tanto: si aun así falla, la pantalla se queda como estaba (con el peso o
+el feedback ya elegido) para poder pulsar "Guardar" otra vez.
+
 ## Cómo se ordena la lista de ejercicios
 
 Primero se reparten en cestas, porque el orden dentro de cada una solo
