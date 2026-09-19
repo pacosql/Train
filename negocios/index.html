@@ -215,6 +215,13 @@
     table.cmp td.best { color: var(--good); font-weight: 700; }
     table.cmp tr.sep td, table.cmp tr.sep th { border-bottom: 2px solid var(--line-strong); }
 
+    /* fichas nuevas desde la última visita */
+    .nuevas-bar { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin: -4px 0 12px; padding: 8px 12px; border-radius: 14px; border: 1px solid rgba(67, 211, 145, 0.45); background: rgba(67, 211, 145, 0.1); font-size: 0.88rem; }
+    .nuevas-bar b { color: var(--good); font-family: var(--display); font-size: 1.1rem; }
+    .nuevas-bar button { width: auto; margin: 0; padding: 7px 10px; font-size: 0.9rem; }
+    .chip.new { color: var(--good); border-color: rgba(67, 211, 145, 0.45); background: rgba(67, 211, 145, 0.1); }
+    .item .name .nw { color: var(--good); font-size: 0.85em; margin-right: 4px; }
+
     /* resumen por sector / venta (explorar) */
     .summary { margin: 0 0 12px; }
     .summary .t { font-family: var(--display); font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-2); margin: 0 0 6px 2px; }
@@ -317,6 +324,7 @@
     </div>
 
     <button class="secondary explore-btn" id="btn-explore" type="button">🔎 Explorar y filtrar todas las fichas</button>
+    <div id="nuevas"></div>
 
     <div id="view"></div>
 
@@ -348,8 +356,14 @@
     let ideas = [];
     let comentarios = []; // todos, de todas las fichas
     const state = { tab: "pendiente", index: 0, detailId: null };
+    // Última visita: lo insertado o revisado desde entonces se marca como nuevo
+    // durante toda esta apertura de la app (el sello se actualiza al cargar).
+    const VISIT_KEY = "negocios.ultimaVisita";
+    let prevVisit = null;
+    try { prevVisit = localStorage.getItem(VISIT_KEY); localStorage.setItem(VISIT_KEY, new Date().toISOString()); } catch {}
+    const isNew = (i) => !!prevVisit && (i.created_at > prevVisit || (i.revisado_en && i.revisado_en > prevVisit));
     const EXPLORE_KEY = "negocios.explorar";
-    const DEF_FILTERS = { q: "", decision: "", familia: "", sector: "", modelo: "", tipo: "", venta: "", efecto_red: "", impacto_ia: "", exito_min: "", inv_max: "", claude_min: "", ltvcac_min: "", sort: "score" };
+    const DEF_FILTERS = { q: "", decision: "", nuevas: "", familia: "", sector: "", modelo: "", tipo: "", venta: "", efecto_red: "", impacto_ia: "", exito_min: "", inv_max: "", claude_min: "", ltvcac_min: "", sort: "score" };
     let filters = loadFilters();
     const COMPARE_KEY = "negocios.comparar";
     let compare = (() => { try { return JSON.parse(localStorage.getItem(COMPARE_KEY) || "[]").slice(0, 3); } catch { return []; } })();
@@ -501,6 +515,7 @@
         else if (filters.decision && i.decision !== filters.decision) return false;
         for (const k of ["sector", "modelo", "tipo", "venta", "efecto_red", "impacto_ia"]) if (filters[k] && i[k] !== filters[k]) return false;
         if (filters.familia && familia(i) !== filters.familia) return false;
+        if (filters.nuevas && !isNew(i)) return false;
         if (filters.exito_min && i.exito < +filters.exito_min) return false;
         if (filters.inv_max && (i.inversion_max_eur ?? i.inversion_min_eur ?? 0) > +filters.inv_max) return false;
         if (filters.claude_min && (i.claude_pct ?? -1) < +filters.claude_min) return false;
@@ -531,7 +546,7 @@
         <div class="item" data-id="${i.id}" style="--i:${idx}">
           ${showDecision ? `<button class="sel ${compare.includes(i.id) ? "on" : ""}" data-sel="${i.id}" type="button" title="Comparar">${compare.includes(i.id) ? "✓" : ""}</button>` : ""}
           <div class="s" style="color:${verdict(i._score)[1]}">${i._score}</div>
-          <div class="m"><div class="name">${esc(i.nombre)}</div><div class="meta">${i.claude_pct != null ? "🤖 " + i.claude_pct + " % · " : ""}${esc(i.sector)} · ${esc(i.modelo)}${showDecision ? (r ? " · LTV/CAC " + f1(r) + "×" : "") + (i.inversion_max_eur != null ? " · " + money(i.inversion_max_eur) : "") : " · " + (i.decidido_en ? new Date(i.decidido_en).toLocaleDateString("es-ES") : "")}${commentsOf(i.id).length ? " · 💬 " + commentsOf(i.id).length : ""}</div></div>
+          <div class="m"><div class="name">${isNew(i) ? `<span class="nw">🆕</span>` : ""}${esc(i.nombre)}</div><div class="meta">${i.claude_pct != null ? "🤖 " + i.claude_pct + " % · " : ""}${esc(i.sector)} · ${esc(i.modelo)}${showDecision ? (r ? " · LTV/CAC " + f1(r) + "×" : "") + (i.inversion_max_eur != null ? " · " + money(i.inversion_max_eur) : "") : " · " + (i.decidido_en ? new Date(i.decidido_en).toLocaleDateString("es-ES") : "")}${commentsOf(i.id).length ? " · 💬 " + commentsOf(i.id).length : ""}</div></div>
           ${showDecision ? `<div class="d">${i.decision ? DECISION_ICON[i.decision] || "" : "·"}</div>` : ""}
           <div class="arrow">›</div>
         </div>`;
@@ -548,6 +563,7 @@
         <div class="filters">
           <div class="full"><input type="search" data-f="q" placeholder="Buscar por nombre, resumen, sector o etiqueta…" value="${esc(filters.q)}"></div>
           ${sel("decision", "Etiqueta", ["pendiente", "gusta", "no_gusta", "definitivo", "revisar"], { pendiente: "Pendiente", gusta: "👍 Me gusta", no_gusta: "👎 No me gusta", definitivo: "⭐ Definitivo", revisar: "🔁 A revisar" })}
+          ${sel("nuevas", "Novedad", ["1"], { 1: "🆕 Solo nuevas desde mi última visita" })}
           ${sel("sector", "Sector", opts("sector"))}
           ${sel("modelo", "Modelo", opts("modelo"))}
           ${sel("tipo", "Tipo", opts("tipo"), TIPO_LABEL)}
@@ -654,7 +670,15 @@
     }
 
     // ---------- render ----------
+    function renderNuevas() {
+      const box = el("nuevas"); if (!box) return;
+      const n = ideas.filter(isNew).length;
+      if (!n || state.tab === "explorar" || state.tab === "comparar" || state.detailId) { box.innerHTML = ""; return; }
+      box.innerHTML = `<div class="nuevas-bar"><span><b>${n}</b> ${n === 1 ? "ficha nueva o revisada" : "fichas nuevas o revisadas"} desde tu última visita (${new Date(prevVisit).toLocaleString("es-ES", { dateStyle: "short", timeStyle: "short" })})</span><button class="secondary" id="btn-nuevas" type="button">Ver</button></div>`;
+      el("btn-nuevas").onclick = () => { resetRec(); filters = { ...DEF_FILTERS, nuevas: "1", sort: "fecha" }; saveFilters(); state.tab = "explorar"; state.detailId = null; render(); };
+    }
     function counts() {
+      renderNuevas();
       el("n-pendiente").textContent = pending().length;
       for (const d of ["gusta", "no_gusta", "definitivo", "revisar"]) el("n-" + d).textContent = byDecision(d).length;
     }
@@ -676,6 +700,7 @@
         ${i.decision ? `<div class="decision-tag ${i.decision}">${DECISION_LABEL[i.decision]}${i.decidido_en ? " · " + new Date(i.decidido_en).toLocaleDateString("es-ES") : ""}</div>` : ""}
         ${i.revision_nota ? `<div class="revision"><div class="t">🔁 Revisada${i.revisado_en ? " el " + new Date(i.revisado_en).toLocaleDateString("es-ES") : ""} · versión ${i.version || 2}</div>${esc(i.revision_nota)}</div>` : ""}
         <div class="chips">
+          ${isNew(i) ? `<span class="chip new">🆕 ${i.revisado_en && i.revisado_en > prevVisit && i.created_at <= prevVisit ? "Revisada" : "Nueva"} desde tu última visita</span>` : ""}
           <span class="chip accent">${esc(familia(i))} · ${esc(i.sector)}</span>
           <span class="chip blue">${esc(MODELO_LABEL[i.modelo] || i.modelo)}</span>
           <span class="chip">${esc(TIPO_LABEL[i.tipo] || i.tipo)}</span>

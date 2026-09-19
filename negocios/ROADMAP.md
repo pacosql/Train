@@ -15,14 +15,13 @@ compra desasistida y valor con un solo cliente.
 
 ## Pendientes (en orden)
 
-1. **Fichas nuevas destacadas**: marcar como "nueva" las insertadas desde
-    la última visita (fecha en `localStorage`) y avisar con un contador.
-2. **Editar decisión con motivo rápido**: al etiquetar, ofrecer 3-4 motivos
+1. **Editar decisión con motivo rápido**: al etiquetar, ofrecer 3-4 motivos
     frecuentes en un toque ("venta humana", "efecto de red", "poco margen",
     "no es para mí") que se guardan como comentario de texto.
 
 ## Hechas
 
+- 2026-09-19 · (este commit) · Fichas nuevas destacadas: sello de última visita en localStorage; las fichas insertadas o revisadas desde entonces llevan 🆕 en listas y ficha, un banner bajo las pestañas con el contador lleva a Explorar filtrado por novedad ("Solo nuevas desde mi última visita").
 - 2026-09-19 · (este commit) · Resumen por sector y por tipo de venta en Explorar (chips con puntuación media y nº de fichas, tocables para filtrar; los sectores libres se agrupan en familias por palabras clave) y estado de las rutinas al pie (última ejecución de ideas, revisión y mejora, en rojo si llevan demasiado sin ejecutar).
 - 2026-09-18 · (este commit) · Comparar: en Explorar se marcan 2 o 3 fichas y se ven lado a lado en una tabla con puntuación, IA Score, etiqueta, venta, cliente, notas 1-10, inversión, CAC, LTV, LTV/CAC, ticket, retorno y primer paso; la mejor de cada fila en verde; tocar la cabecera abre la ficha; selección recordada en localStorage.
 - 2026-09-18 · (este commit) · Vista Explorar: todas las fichas con filtros por etiqueta, sector, modelo, tipo, venta, cliente, impacto de la IA, éxito mínimo, inversión máxima, IA Score mínimo y LTV/CAC mínimo; buscador de texto; orden por puntuación, IA Score, éxito, inversión, CAC, LTV/CAC, retorno, fecha o nombre; filtros recordados en localStorage; exportación a CSV para Power BI.
