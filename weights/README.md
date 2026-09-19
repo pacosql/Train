@@ -51,6 +51,29 @@ La columna `description` de `weights_exercises` guarda el texto de "cómo
 entrenarlo" de cada máquina (colocación, ejecución, errores típicos y
 esquema de series). Si está vacía, la app usa un texto genérico.
 
+## Cómo se usa la máquina (silueta + posición)
+
+Inspirado en la placa de las máquinas de gimnasio reales (Life
+Fitness/Technogym), que llevan un diagrama de qué músculo trabajan y un
+pictograma de cómo se usan — sin copiar su ilustración, que tiene
+derechos, con una versión propia:
+
+- **Silueta corporal** (bajo "Sobre este grupo muscular"): una misma
+  figura de bloques redondeados, en vista de frente y de espalda, con
+  la región que trabaja esa máquina encendida en el color de su tipo
+  (azul empuje, ámbar tirón) y con un halo de brillo. Frente y espalda
+  son literalmente la misma silueta — la única diferencia es qué región
+  se enciende y un detalle (ojos en la de frente, columna en la de
+  espalda). Se calcula solo del texto de `muscle_group`
+  (`bodyHighlights()`), así que funciona ya para las 13+ máquinas del
+  catálogo sin tocarlas una a una, y para cualquiera que se añada
+  después. El cardio no lleva silueta (no hay un músculo que destacar).
+- **Posición y movimiento** (bajo "Cómo entrenarlo"): dos chips con
+  icono — cómo te colocas (sentado / tumbado / de pie) y en qué plano
+  se mueve el peso (horizontal / vertical). A diferencia de la silueta,
+  esto sí está mapeado a mano por máquina en `POSITION_MOTION`, porque
+  no hay forma fiable de deducirlo del nombre.
+
 ## Gráfica de progreso — detalles
 
 - Con **0 o 1 registro** no se dibuja un sparkline: no hay tendencia que

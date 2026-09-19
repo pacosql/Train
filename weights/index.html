@@ -297,6 +297,27 @@
     details.detail p { font-size: 0.9rem; color: var(--text); margin: 0 0 10px; }
     details.detail p b { font-family: var(--display); font-size: 1.05rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--accent-2); }
     .note-line { font-size: 0.85rem; color: var(--pull); background: rgba(245, 181, 68, 0.1); border: 1px solid rgba(245, 181, 68, 0.25); border-radius: 14px; padding: 10px 14px; margin-bottom: 12px; }
+
+    /* ---------- diagrama corporal (grupo muscular) ---------- */
+    /* Silueta por bloques redondeados, a juego con el resto de la interfaz
+       (tarjetas, chips y botones ya son así de redondos) — nada de intentar
+       una anatomía realista, que a ese tamaño y sin diseñador queda peor.
+       Frente y espalda son la MISMA figura; solo cambia qué región se
+       enciende y un detalle (ojos / línea de columna) para distinguirlas. */
+    .body-pair { display: flex; gap: 20px; justify-content: center; align-items: flex-end; padding: 4px 0 14px; }
+    .body-pair[hidden] { display: none; }
+    .body-fig { width: 84px; text-align: center; }
+    .body-fig svg { width: 100%; height: auto; overflow: visible; }
+    .body-fig .bs-part { fill: var(--surface-2); stroke: var(--line-strong); stroke-width: 1.5; }
+    .body-fig .bs-part.bs-on { fill: currentColor; stroke: currentColor; stroke-width: 1.5; filter: drop-shadow(0 0 5px currentColor); }
+    .body-fig .bs-spine { stroke: var(--line-strong); stroke-width: 1.5; fill: none; }
+    .body-fig .bs-label { font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-2); margin-top: 6px; }
+
+    /* ---------- posición y movimiento (cómo se usa) ---------- */
+    .pm-row { display: flex; gap: 8px; margin-bottom: 14px; }
+    .pm-row[hidden] { display: none; }
+    .pm-chip { display: flex; align-items: center; gap: 7px; background: var(--surface-2); border: 1px solid var(--line); border-radius: 999px; padding: 7px 13px 7px 10px; font-size: 0.72rem; font-weight: 700; color: var(--text-2); }
+    .pm-chip svg { width: 1.05rem; height: 1.05rem; stroke: currentColor; flex-shrink: 0; }
     /* Confirmación de guardado automático: aparece bajo el campo y se apaga
        sola — no hace falta un botón "Guardar" aparte para una nota suelta. */
     .save-hint { min-height: 1.05rem; font-size: 0.78rem; font-weight: 700; color: var(--accent); margin: 7px 2px 0; opacity: 0; transition: opacity 0.25s ease; }
@@ -448,6 +469,7 @@
 
       <details class="detail" open>
         <summary>Cómo entrenarlo</summary>
+        <div class="pm-row" id="cd-pm-row" hidden></div>
         <p id="cd-description"></p>
 
         <h3>Tu progreso</h3>
@@ -461,6 +483,7 @@
         </div>
 
         <h3>Sobre este grupo muscular</h3>
+        <div class="body-pair" id="cd-body-diagram" hidden></div>
         <div id="cd-muscle-info"></div>
 
         <h3>Ficha de la máquina</h3>
@@ -620,6 +643,7 @@
 
       <details class="detail" open>
         <summary>Cómo entrenarlo</summary>
+        <div class="pm-row" id="ex-pm-row" hidden></div>
         <p id="ex-description"></p>
 
         <h3>Tu progreso</h3>
@@ -633,6 +657,7 @@
         </div>
 
         <h3>Sobre este grupo muscular</h3>
+        <div class="body-pair" id="ex-body-diagram" hidden></div>
         <div id="ex-muscle-info"></div>
         <h3>Notas de la máquina</h3>
         <input id="ex-notes-input" type="text" inputmode="text" placeholder="p. ej. asiento en posición 3"
@@ -706,6 +731,10 @@
       bike: '<circle cx="18.5" cy="17.5" r="3.5"/><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="15" cy="5" r="1"/><path d="M12 17.5V14l-3-3 4-3 2 3h2"/>',
       footprints: '<path d="M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5.5c0 3.11-2 5.66-2 8.68V16a2 2 0 1 1-4 0Z"/><path d="M20 20v-2.38c0-2.12 1.03-3.12 1-5.62-.03-2.72-1.49-6-4.5-6C14.63 6 14 7.8 14 9.5c0 3.11 2 5.66 2 8.68V20a2 2 0 1 0 4 0Z"/><path d="M16 17h4"/><path d="M4 13h4"/>',
       activity: '<path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/>',
+      armchair: '<path d="M19 9V6a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v3"/><path d="M3 16a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-5a2 2 0 0 0-4 0v1.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V11a2 2 0 0 0-4 0z"/><path d="M5 18v2"/><path d="M19 18v2"/>',
+      bed: '<path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/>',
+      "arrow-up-down": '<path d="m21 16-4 4-4-4"/><path d="M17 20V4"/><path d="m3 8 4-4 4 4"/><path d="M7 4v16"/>',
+      "arrow-left-right": '<path d="M8 3 4 7l4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/>',
     };
     function svgIcon(key) {
       return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICON_PATHS[key] || ICON_PATHS.dumbbell}</svg>`;
@@ -761,6 +790,102 @@
         p.appendChild(document.createTextNode(part.text));
         box.appendChild(p);
       }
+    }
+
+    // ---------- diagrama corporal ----------
+    // Misma silueta (bloques redondeados) para frente y espalda; lo único
+    // que cambia es qué región se enciende y un detalle para distinguirlas
+    // (ojos en la de frente, columna en la de espalda). Así una sola figura
+    // sirve para las dos vistas, sin dibujar dos cuerpos distintos.
+    const BODY_SHAPES = {
+      head: '<circle cx="50" cy="16" r="11"/>',
+      chest: '<rect x="30" y="30" width="40" height="30" rx="15"/>',
+      abs: '<rect x="37" y="58" width="26" height="20" rx="10"/>',
+      hips: '<rect x="33" y="76" width="34" height="16" rx="10"/>',
+      shoulders: '<circle cx="24" cy="36" r="9"/><circle cx="76" cy="36" r="9"/>',
+      arms: '<rect x="10" y="40" width="15" height="38" rx="7.5"/><rect x="75" y="40" width="15" height="38" rx="7.5"/>',
+      legs: '<rect x="34" y="90" width="15" height="44" rx="7.5"/><rect x="51" y="90" width="15" height="44" rx="7.5"/>',
+      calves: '<rect x="35" y="132" width="13" height="30" rx="6.5"/><rect x="52" y="132" width="13" height="30" rx="6.5"/>',
+    };
+    const BODY_ORDER = ["legs", "calves", "hips", "abs", "chest", "arms", "shoulders", "head"];
+    // Etiqueta de cada región según la vista, para el pie de la figura.
+    const BODY_REGION_LABEL = {
+      front: { chest: "Pecho", abs: "Abdomen", hips: "Cadera", shoulders: "Hombro", arms: "Bíceps", legs: "Cuádriceps", calves: "Gemelos" },
+      back: { chest: "Espalda", abs: "Lumbar", hips: "Glúteo", shoulders: "Deltoides post.", arms: "Tríceps", legs: "Isquios", calves: "Gemelos" },
+    };
+    function bodySilhouetteSvg(view, regions, color) {
+      const parts = BODY_ORDER.map((key) => {
+        if (key === "head") {
+          const face = view === "front" ? '<circle cx="46" cy="14" r="1.3" fill="var(--bg)"/><circle cx="54" cy="14" r="1.3" fill="var(--bg)"/>' : "";
+          return `<g class="bs-part">${BODY_SHAPES.head}</g>${face}`;
+        }
+        const on = regions.has(key);
+        return `<g class="bs-part${on ? " bs-on" : ""}" style="color:${color}">${BODY_SHAPES[key]}</g>`;
+      });
+      const spine = view === "back" ? '<path class="bs-spine" d="M50 30 L50 76"/>' : "";
+      return `<svg viewBox="0 0 100 168">${parts.join("")}${spine}</svg>`;
+    }
+    // Qué región (y en qué vista) enciende cada palabra clave del grupo
+    // muscular — mismo espíritu que MUSCLE_INFO/MUSCLE_TAGS, pero pensado
+    // para plantar la región sobre la figura en vez de un texto.
+    function bodyHighlights(group) {
+      const g = (group || "").toLowerCase();
+      const front = new Set(), back = new Set();
+      if (/pecho|pectoral/.test(g)) front.add("chest");
+      if (/espalda|dorsal/.test(g)) back.add("chest");
+      if (/hombro|deltoides/.test(g)) (/posterior/.test(g) ? back : front).add("shoulders");
+      if (/b[íi]ceps/.test(g)) front.add("arms");
+      if (/tr[íi]ceps/.test(g)) back.add("arms");
+      if (/gl[úu]teo/.test(g)) back.add("hips");
+      if (/isquio|femoral/.test(g)) back.add("legs");
+      if (/pierna|cu[áa]driceps|cuadriceps/.test(g)) front.add("legs");
+      if (/gemelo|s[óo]leo/.test(g)) front.add("calves");
+      if (/abdomen|abdominal|core|lumbar/.test(g)) front.add("abs");
+      return { front, back };
+    }
+    function renderBodyDiagram(id, ex) {
+      const box = el(id);
+      const { front, back } = bodyHighlights(ex.muscle_group);
+      if (ex.movement_type === "cardio" || (!front.size && !back.size)) { box.hidden = true; box.innerHTML = ""; return; }
+      const color = ex.movement_type === "pull" ? "var(--pull)" : "var(--push)";
+      const fig = (view, regions) => {
+        const labels = [...regions].map((r) => BODY_REGION_LABEL[view][r]).join(" · ");
+        return `<div class="body-fig">${bodySilhouetteSvg(view, regions, color)}${labels ? `<div class="bs-label">${labels}</div>` : ""}</div>`;
+      };
+      box.hidden = false;
+      box.innerHTML = fig("front", front) + fig("back", back);
+    }
+
+    // ---------- posición y movimiento ----------
+    // Cómo te colocas en la máquina y en qué plano se mueve el peso — el
+    // equivalente al pictograma de "cómo usarla" de la placa de la máquina.
+    // Mapeado a mano por máquina: no hay forma fiable de deducirlo del
+    // nombre o el grupo muscular.
+    const POSITION_MOTION = {
+      eliptica: { pos: "footprints" },
+      bicicleta: { pos: "armchair" },
+      andar: { pos: "footprints" },
+      dominadas_asistidas: { pos: "footprints", motion: "arrow-up-down" },
+      fondos_asistidos: { pos: "footprints", motion: "arrow-up-down" },
+      remo: { pos: "armchair", motion: "arrow-left-right" },
+      reverse_fly: { pos: "armchair", motion: "arrow-left-right" },
+      pectoral: { pos: "armchair", motion: "arrow-left-right" },
+      extensora_hombros: { pos: "armchair", motion: "arrow-left-right" },
+      press_pecho: { pos: "armchair", motion: "arrow-left-right" },
+      press_pierna_sentado: { pos: "armchair", motion: "arrow-left-right" },
+      extension_pierna: { pos: "armchair", motion: "arrow-up-down" },
+      press_banca: { pos: "bed", motion: "arrow-up-down" },
+      contraccion_pierna: { pos: "footprints", motion: "arrow-up-down" },
+    };
+    const POSITION_LABEL = { armchair: "Sentado", bed: "Tumbado", footprints: "De pie" };
+    const MOTION_LABEL = { "arrow-left-right": "Empuje/tirón horizontal", "arrow-up-down": "Movimiento vertical" };
+    function renderPositionMotion(id, ex) {
+      const box = el(id);
+      const pm = POSITION_MOTION[ex.slug];
+      if (!pm) { box.hidden = true; box.innerHTML = ""; return; }
+      const chip = (key, labels) => `<div class="pm-chip">${svgIcon(key)}<span>${labels[key]}</span></div>`;
+      box.hidden = false;
+      box.innerHTML = (pm.pos ? chip(pm.pos, POSITION_LABEL) : "") + (pm.motion ? chip(pm.motion, MOTION_LABEL) : "");
     }
 
     const el = (id) => document.getElementById(id);
@@ -1579,6 +1704,8 @@
       document.querySelectorAll("#cd-type-chips .chip").forEach((c) =>
         c.classList.toggle("selected", c.dataset.type === ex.movement_type));
       el("cd-description").textContent = ex.description || (isCardio ? CARDIO_DESCRIPTION : DEFAULT_DESCRIPTION);
+      renderPositionMotion("cd-pm-row", ex);
+      renderBodyDiagram("cd-body-diagram", ex);
       renderMuscleInfo("cd-muscle-info", ex.muscle_group);
       renderProgressChart("cd", ex);
       showScreen("catalog-detail");
@@ -1601,6 +1728,8 @@
       el("cd-name").innerHTML = `<span class="h-icon ${ex.movement_type}">${exIconHtml(ex)}</span>`;
       el("cd-name").appendChild(document.createTextNode(ex.name));
       el("cd-header").textContent = headerLine(ex);
+      renderPositionMotion("cd-pm-row", ex);
+      renderBodyDiagram("cd-body-diagram", ex);
       renderMuscleInfo("cd-muscle-info", ex.muscle_group);
       el("cd-weight-card").hidden = ex.movement_type === "cardio";
       renderProgressChart("cd", ex);
@@ -1765,6 +1894,8 @@
       el("ex-note-line").hidden = !ex.notes;
       el("ex-notes-input").value = ex.notes || "";
       el("ex-description").textContent = ex.description || DEFAULT_DESCRIPTION;
+      renderPositionMotion("ex-pm-row", ex);
+      renderBodyDiagram("ex-body-diagram", ex);
       renderMuscleInfo("ex-muscle-info", ex.muscle_group);
       renderProgressChart("ex", ex);
 
