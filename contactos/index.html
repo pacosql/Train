@@ -136,6 +136,25 @@
     .estado-pill.ok { color: var(--good); border-color: rgba(67, 211, 145, 0.45); }
     .estado-pill.pend { color: var(--mid); border-color: rgba(242, 184, 64, 0.45); }
 
+    .energia-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 10px; }
+    .energia-btn { font-family: var(--display); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; padding: 10px 4px; border-radius: 14px; border: 1px solid var(--line-strong); background: rgba(255, 255, 255, 0.03); color: var(--text-2); cursor: pointer; text-align: center; line-height: 1.2; }
+    .energia-btn .big { display: block; font-size: 1.3rem; margin-bottom: 2px; }
+    .energia-btn.on.vitamina { color: var(--good); border-color: rgba(67, 211, 145, 0.55); background: rgba(67, 211, 145, 0.12); }
+    .energia-btn.on.neutro { color: var(--mid); border-color: rgba(242, 184, 64, 0.55); background: rgba(242, 184, 64, 0.12); }
+    .energia-btn.on.toxico { color: var(--bad); border-color: rgba(255, 84, 112, 0.55); background: rgba(255, 84, 112, 0.12); }
+    .consejo-box { border-left: 3px solid var(--line-strong); border-radius: 0 14px 14px 0; padding: 10px 14px; background: rgba(255, 255, 255, 0.03); font-size: 0.88rem; margin-bottom: 14px; color: #d6dbe1; }
+    .consejo-box.vitamina { border-color: var(--good); }
+    .consejo-box.neutro { border-color: var(--mid); }
+    .consejo-box.toxico { border-color: var(--bad); }
+    .consejo-box .k { display: block; font-family: var(--display); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-2); margin-bottom: 3px; }
+
+    .stats-bar { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+    .stat-chip { font-family: var(--display); font-size: 0.78rem; font-weight: 700; padding: 5px 10px; border-radius: 999px; border: 1px solid var(--line-strong); color: var(--text-2); cursor: pointer; background: rgba(255, 255, 255, 0.03); }
+    .stat-chip.on { background: var(--surface-2); color: var(--text); }
+    .stat-chip.vitamina { color: var(--good); border-color: rgba(67, 211, 145, 0.45); }
+    .stat-chip.neutro { color: var(--mid); border-color: rgba(242, 184, 64, 0.45); }
+    .stat-chip.toxico { color: var(--bad); border-color: rgba(255, 84, 112, 0.45); }
+
     .nota { border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; margin-bottom: 8px; background: rgba(255, 255, 255, 0.03); font-size: 0.9rem; }
     .nota .head { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-family: var(--display); font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-2); margin-bottom: 4px; }
     .nota .head .acts { display: flex; gap: 10px; }
@@ -223,7 +242,12 @@
     let contactos = [];
     let notas = [];
     let archivos = [];
-    const state = { q: "", labelFilter: null, detailId: null, showArchivados: false };
+    const state = { q: "", labelFilter: null, energiaFilter: null, detailId: null, showArchivados: false };
+    const ENERGIA = {
+      vitamina: { icon: "🔋", label: "Vitamina", cls: "vitamina" },
+      neutro: { icon: "😐", label: "Neutro", cls: "neutro" },
+      toxico: { icon: "🪫", label: "Tóxico", cls: "toxico" },
+    };
     let toastTimer = null;
     let recognizer = null;
     let recognizing = false;
@@ -382,6 +406,20 @@
       contacto.etiquetas = etiquetas;
       render();
     }
+    async function setEnergia(contacto, value) {
+      const nueva = contacto.energia === value ? null : value; // pulsar de nuevo la quita
+      const patch = { energia: nueva, energia_manual: true, estado_sintesis: "pendiente", updated_at: new Date().toISOString() };
+      const { error } = await client.from(T_CONTACTOS).update(patch).eq("id", contacto.id);
+      if (error) { showMsg("No se pudo actualizar: " + error.message); return; }
+      Object.assign(contacto, patch);
+      render();
+      showToast(nueva ? `${ENERGIA[nueva].icon} Marcado como ${ENERGIA[nueva].label.toLowerCase()}` : "Energía sin evaluar");
+    }
+    function energiaStats(arr) {
+      const s = { vitamina: 0, neutro: 0, toxico: 0, sin: 0 };
+      arr.forEach((c) => { if (c.energia && s[c.energia] != null) s[c.energia]++; else s.sin++; });
+      return s;
+    }
     async function archivarContacto(contacto) {
       if (!confirm(`¿Archivar a ${contacto.nombre}? Se queda guardado pero deja de aparecer en la lista.`)) return;
       const { error } = await client.from(T_CONTACTOS).update({ archivado: !contacto.archivado }).eq("id", contacto.id);
@@ -396,6 +434,7 @@
       let arr = contactos.filter((c) => !!c.archivado === state.showArchivados);
       if (state.q) { const q = state.q.toLowerCase(); arr = arr.filter((c) => c.nombre.toLowerCase().includes(q) || (c.resumen || "").toLowerCase().includes(q)); }
       if (state.labelFilter) arr = arr.filter((c) => (c.etiquetas || []).includes(state.labelFilter));
+      if (state.energiaFilter) arr = arr.filter((c) => (state.energiaFilter === "sin" ? !c.energia : c.energia === state.energiaFilter));
       return arr;
     }
 
@@ -405,6 +444,13 @@
         <div class="estado-pill ${pend ? "pend" : "ok"}">${pend ? "⏳ Pendiente de sintetizar" : "✅ Sintetizado"}</div>
         <h1>${esc(c.nombre)}</h1>
         <div class="resumen-box ${pend && !c.resumen ? "pendiente" : ""}">${c.resumen ? esc(c.resumen) : "Aún no hay síntesis. Añade notas o archivos y la rutina generará un resumen y etiquetas."}</div>
+
+        <p class="eyebrow">¿Amigo vitamina o te resta energía?</p>
+        <div class="energia-row">
+          ${Object.entries(ENERGIA).map(([key, v]) => `<div class="energia-btn ${c.energia === key ? "on " + v.cls : ""}" data-energia="${key}"><span class="big">${v.icon}</span>${v.label}</div>`).join("")}
+        </div>
+        ${c.consejo ? `<div class="consejo-box ${c.energia || ""}"><span class="k">💡 Consejo</span>${esc(c.consejo)}</div>` : ""}
+
         <div class="chips">
           ${(c.etiquetas || []).map((l) => `<span class="chip accent rm" data-rm="${esc(l)}">${esc(l)}<span class="x">✕</span></span>`).join("")}
           <span class="chip add-chip" id="btn-add-label">+ etiqueta</span>
@@ -468,6 +514,7 @@
       el("back").onclick = () => { state.detailId = null; state._editing = null; render(); };
       el("btn-add-label").onclick = () => anadirEtiqueta(c);
       document.querySelectorAll("[data-rm]").forEach((n) => n.onclick = () => quitarEtiqueta(c, n.dataset.rm));
+      document.querySelectorAll("[data-energia]").forEach((n) => n.onclick = () => setEnergia(c, n.dataset.energia));
       el("btn-guardar-nota").onclick = () => guardarNotaNueva(c);
       const mic = el("btn-mic"); if (mic) mic.onclick = toggleDictado;
       document.querySelectorAll("[data-edit]").forEach((n) => n.onclick = () => editarNota(n.dataset.edit));
@@ -481,8 +528,9 @@
     function itemHTML(c, i) {
       const pend = c.estado_sintesis !== "procesado";
       const meta = c.resumen ? c.resumen : (pend ? "Pendiente de sintetizar…" : "");
+      const ringColor = c.energia === "vitamina" ? "var(--good)" : c.energia === "toxico" ? "var(--bad)" : c.energia === "neutro" ? "var(--mid)" : "transparent";
       return `<div class="item" data-id="${c.id}" style="--i:${i}">
-        <div class="avatar">${esc(initials(c.nombre))}</div>
+        <div class="avatar" style="box-shadow:0 0 0 2px ${ringColor}">${esc(initials(c.nombre))}</div>
         <div class="m">
           <div class="name">${esc(c.nombre)}</div>
           <div class="meta">${esc(meta)}</div>
@@ -494,13 +542,22 @@
 
     function listHTML() {
       const labels = allLabels();
+      const base = contactos.filter((c) => !!c.archivado === state.showArchivados);
+      const st = energiaStats(base);
       const arr = filteredContactos();
       return `
         <div class="search-row">
           <input type="search" id="q" placeholder="Buscar contacto…" value="${esc(state.q)}" />
         </div>
+        <p class="eyebrow">Qué tienes</p>
+        <div class="stats-bar">
+          <span class="stat-chip vitamina ${state.energiaFilter === "vitamina" ? "on" : ""}" data-en="vitamina">🔋 ${st.vitamina} vitamina</span>
+          <span class="stat-chip neutro ${state.energiaFilter === "neutro" ? "on" : ""}" data-en="neutro">😐 ${st.neutro} neutro</span>
+          <span class="stat-chip toxico ${state.energiaFilter === "toxico" ? "on" : ""}" data-en="toxico">🪫 ${st.toxico} tóxico</span>
+          <span class="stat-chip ${state.energiaFilter === "sin" ? "on" : ""}" data-en="sin">⏳ ${st.sin} sin evaluar</span>
+        </div>
         ${labels.length ? `<div class="chips">
-          <span class="chip ${!state.labelFilter ? "accent" : ""}" data-label="">Todos</span>
+          <span class="chip ${!state.labelFilter ? "accent" : ""}" data-label="">Todas las etiquetas</span>
           ${labels.map((l) => `<span class="chip ${state.labelFilter === l ? "accent" : ""}" data-label="${esc(l)}">${esc(l)}</span>`).join("")}
         </div>` : ""}
         <p class="eyebrow" id="toggle-arch" style="cursor:pointer">${state.showArchivados ? "← Ver contactos activos" : "Ver archivados →"}</p>
@@ -526,7 +583,8 @@
       el("q").focus();
       el("q").selectionStart = el("q").selectionEnd = el("q").value.length;
       document.querySelectorAll("[data-label]").forEach((n) => n.onclick = () => { state.labelFilter = n.dataset.label || null; render(); });
-      el("toggle-arch").onclick = () => { state.showArchivados = !state.showArchivados; state.labelFilter = null; render(); };
+      document.querySelectorAll("[data-en]").forEach((n) => n.onclick = () => { state.energiaFilter = state.energiaFilter === n.dataset.en ? null : n.dataset.en; render(); });
+      el("toggle-arch").onclick = () => { state.showArchivados = !state.showArchivados; state.labelFilter = null; state.energiaFilter = null; render(); };
       document.querySelectorAll(".item").forEach((n) => n.onclick = () => { state.detailId = n.dataset.id; state._editing = null; render(); });
     }
 
