@@ -191,9 +191,16 @@
       background: linear-gradient(135deg, rgba(67, 211, 145, 0.17), rgba(255, 255, 255, 0.03) 55%);
       box-shadow: 0 0 0 1px rgba(67, 211, 145, 0.14), 0 10px 30px rgba(67, 211, 145, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.06);
     }
+    .item .icon { width: 2.3rem; height: 2.3rem; border-radius: 14px; display: grid; place-items: center; font-size: 1.4rem; line-height: 1; flex-shrink: 0; background: rgba(255, 255, 255, 0.06); border: 1px solid var(--line); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05); }
+    .item.top .icon { background: var(--accent-soft); border-color: rgba(67, 211, 145, 0.35); }
     .item-main { flex: 1; min-width: 0; }
+    .h-icon { display: inline-block; margin-right: 6px; font-size: 0.9em; vertical-align: -2px; }
     .item .name { font-family: var(--display); font-size: 1.3rem; font-weight: 700; letter-spacing: 0.2px; line-height: 1.05; }
     .item .meta { color: var(--text-2); font-size: 0.75rem; margin-top: 3px; }
+    .item .meta .type { font-family: var(--display); font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.7px; }
+    .item .meta .type.push { color: var(--push); }
+    .item .meta .type.pull { color: var(--pull); }
+    .item .meta .type.cardio { color: var(--cardio); }
     .item .reason { font-size: 0.72rem; font-weight: 700; color: var(--accent); margin-top: 4px; }
     .item .reason.warn { color: var(--pull); }
     .item .reason.muted { color: var(--text-2); }
@@ -428,7 +435,10 @@
         <div id="cd-muscle-info"></div>
 
         <h3>Ficha de la máquina</h3>
-        <label for="cd-muscle-input">Grupo muscular</label>
+        <label for="cd-icon-input">Icono (un emoji)</label>
+        <input id="cd-icon-input" type="text" placeholder="p. ej. 🏋️" maxlength="8" style="width:6rem;text-align:center;font-size:1.4rem;" />
+
+        <label for="cd-muscle-input" style="margin-top:16px;">Grupo muscular</label>
         <input id="cd-muscle-input" type="text" placeholder="p. ej. Bíceps" />
 
         <label style="margin-top:16px;">Tipo de movimiento</label>
@@ -522,7 +532,10 @@
       <details class="detail">
         <summary>Añadir detalles ahora</summary>
         <div class="card">
-          <label for="new-ex-muscle">Grupo muscular</label>
+          <label for="new-ex-icon">Icono (un emoji)</label>
+          <input id="new-ex-icon" type="text" placeholder="p. ej. 💪" maxlength="8" style="width:6rem;text-align:center;font-size:1.4rem;" />
+
+          <label for="new-ex-muscle" style="margin-top:16px;">Grupo muscular</label>
           <input id="new-ex-muscle" type="text" placeholder="p. ej. Bíceps" />
 
           <label style="margin-top:16px;">Tipo de movimiento</label>
@@ -653,7 +666,12 @@
     };
 
     const CARDIO_ICONS = { eliptica: "🏃", bicicleta: "🚴", andar: "🚶" };
-    function cardioTitle(ex) { return `${CARDIO_ICONS[ex.slug] || "🏃"} ${ex.name}`; }
+    // Icono de cada máquina: el suyo, o uno por tipo si no tiene, para
+    // reconocerla de un vistazo sin leer.
+    function exIcon(ex) {
+      return ex.icon || CARDIO_ICONS[ex.slug] || (ex.movement_type === "cardio" ? "🏃" : "🏋️");
+    }
+    function cardioTitle(ex) { return `${exIcon(ex)} ${ex.name}`; }
     const DEFAULT_DESCRIPTION = "3 series × 8 repeticiones. Busca llegar al fallo (o cerca) en la última serie.";
     const CARDIO_DESCRIPTION = "Mantén un ritmo constante que puedas sostener durante todo el tiempo previsto.";
 
@@ -946,7 +964,8 @@
         div.className = "item " + type;
         div.style.setProperty("--i", i);
         div.innerHTML =
-          `<div class="item-main">
+          `<div class="icon">${ex ? exIcon(ex) : "🏋️"}</div>
+           <div class="item-main">
              <div class="name">${name}</div>
              <div class="meta">${detail}</div>
            </div>` +
@@ -1011,7 +1030,7 @@
     }
     function stationLabel(ex) {
       const mates = stationMates(ex);
-      return mates.length ? `🔗 con ${mates.map((m) => m.name).join(" y ")}` : "";
+      return mates.length ? "🔗 misma máquina" : "";
     }
     // El último uso de la MÁQUINA, sea con este ejercicio o con un compañero
     // de estación; "own" dice si fue este mismo ejercicio.
@@ -1354,12 +1373,12 @@
         div.className = `item ${ex.movement_type}${isTop || r.running ? " top" : ""}${r.done && !r.running ? " done" : ""}`;
         div.style.setProperty("--i", Math.min(i++, 12));
         div.innerHTML =
-          `<div class="item-main">
+          `<div class="icon">${exIcon(ex)}</div>
+           <div class="item-main">
              <div class="name">${ex.name}${r.done && !r.running ? " ✓" : ""}</div>
-             <div class="meta">${muscleLabel(ex)}${weightTxt}${link ? ` · ${link}` : ""}</div>
+             <div class="meta"><span class="type ${ex.movement_type}">${badgeLabel(ex.movement_type)}</span> · ${muscleLabel(ex)}${weightTxt}${link ? ` · ${link}` : ""}</div>
              <div class="reason ${reason.tone}">${isTop ? "⭐ Recomendado · " : ""}${reason.text}</div>
-           </div>
-           <span class="pill ${ex.movement_type}">${badgeLabel(ex.movement_type)}</span>`;
+           </div>`;
         div.addEventListener("click", () =>
           isCardio
             ? startCardioFromList(ex, { resume: ex.id === state.cardioExerciseId })
@@ -1400,7 +1419,8 @@
           div.className = "item " + ex.movement_type;
           div.style.setProperty("--i", Math.min(i, 8));
           div.innerHTML =
-            `<div class="item-main">
+            `<div class="icon">${exIcon(ex)}</div>
+             <div class="item-main">
                <div class="name">${ex.name}</div>
                <div class="meta">${muscleLabel(ex)}${ex.notes ? ` · ${ex.notes}` : ""}${stationLabel(ex) ? ` · ${stationLabel(ex)}` : ""}</div>
              </div>
@@ -1439,7 +1459,8 @@
       el("btn-catalog-back-list").textContent =
         catalogReturn === "session-detail" ? "← Volver al entrenamiento" : "← Volver a la lista";
       currentCatalogExerciseId = ex.id;
-      el("cd-name").textContent = ex.name;
+      el("cd-name").innerHTML = `<span class="h-icon">${exIcon(ex)}</span>`;
+      el("cd-name").appendChild(document.createTextNode(ex.name));
       el("cd-header").textContent = headerLine(ex);
       el("cd-header").className = `eyebrow ${ex.movement_type}`;
 
@@ -1459,6 +1480,7 @@
       }
       el("cd-notes-input").value = ex.notes || "";
       el("cd-muscle-input").value = ex.muscle_group || "";
+      el("cd-icon-input").value = ex.icon || "";
       el("cd-assisted").checked = !!ex.assisted;
       document.querySelectorAll("#cd-type-chips .chip").forEach((c) =>
         c.classList.toggle("selected", c.dataset.type === ex.movement_type));
@@ -1473,6 +1495,7 @@
       if (!ex) return;
       const chip = document.querySelector("#cd-type-chips .chip.selected");
       const patch = {
+        icon: el("cd-icon-input").value.trim() || null,
         muscle_group: el("cd-muscle-input").value.trim() || null,
         movement_type: chip ? chip.dataset.type : "otro",
         assisted: el("cd-assisted").checked,
@@ -1481,6 +1504,8 @@
       if (error) { showError("No se pudo guardar la ficha: " + error.message); return; }
       showError("");
       Object.assign(ex, patch);
+      el("cd-name").innerHTML = `<span class="h-icon">${exIcon(ex)}</span>`;
+      el("cd-name").appendChild(document.createTextNode(ex.name));
       el("cd-header").textContent = headerLine(ex);
       renderMuscleInfo("cd-muscle-info", ex.muscle_group);
       el("cd-weight-card").hidden = ex.movement_type === "cardio";
@@ -1597,7 +1622,8 @@
         state.currentExerciseStartedAt = null;
       }
 
-      el("ex-name").textContent = ex.name;
+      el("ex-name").innerHTML = `<span class="h-icon">${exIcon(ex)}</span>`;
+      el("ex-name").appendChild(document.createTextNode(ex.name));
       el("ex-header").textContent = headerLine(ex);
       el("ex-header").className = `eyebrow ${ex.movement_type}`;
 
@@ -1796,6 +1822,7 @@
       const keepResumePoint = from === "catalog-list" ? state.lastActiveScreen : null;
       el("new-ex-name").value = "";
       el("new-ex-muscle").value = "";
+      el("new-ex-icon").value = "";
       el("new-ex-assisted").checked = false;
       el("new-ex-notes").value = "";
       document.querySelectorAll("#screen-add-exercise .chip").forEach((c) => c.classList.remove("selected"));
@@ -1821,6 +1848,7 @@
           slug: attempt === 0 ? base : `${base}_${attempt}`,
           name,
           muscle_group: el("new-ex-muscle").value.trim() || null,
+          icon: el("new-ex-icon").value.trim() || null,
           movement_type: typeChip ? typeChip.dataset.type : "otro",
           assisted: el("new-ex-assisted").checked,
           weight_step: 5, sort_order: catalog.length,
