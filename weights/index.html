@@ -312,13 +312,25 @@
     /* ---------- gráfica de progreso ---------- */
     .chart-card { padding: 16px 14px 12px; }
     .chart-head { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; margin-bottom: 6px; }
-    .chart-head .title { font-family: var(--display); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--text-2); }
-    .chart-head .delta { font-family: var(--display); font-size: 1.1rem; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: 0.4px; }
+    /* nowrap + elipsis: título y delta comparten una fila muy estrecha, y
+       "sin cambios" o "MINUTOS POR SESIÓN" bastaban para partirla en dos
+       líneas que chocaban entre sí. Nunca más de una línea cada uno. */
+    .chart-head .title { font-family: var(--display); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+    .chart-head .delta { font-family: var(--display); font-size: 1.1rem; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: 0.4px; white-space: nowrap; flex-shrink: 0; }
     .delta.up { color: var(--accent); text-shadow: 0 0 16px var(--accent-glow); }
     .delta.flat { color: var(--text-2); }
     .delta.down { color: var(--stop); }
     .chart svg { display: block; width: 100%; height: auto; overflow: visible; }
     .chart-caption { font-size: 0.7rem; color: var(--text-2); text-align: center; margin-top: 6px; min-height: 1.1rem; font-variant-numeric: tabular-nums; }
+    /* Punto actual del sparkline: un halo suave para que se note que es el
+       último dato, no solo uno más de la serie. */
+    .chart svg circle.cur { filter: drop-shadow(0 0 4px var(--accent-glow)); }
+    /* Con un único registro no hay tendencia que dibujar: una cifra grande
+       en vez de una "gráfica" con un punto suelto en el vacío. */
+    .chart-first { text-align: center; padding: 14px 0 6px; }
+    .chart-first .n { font-family: var(--display); font-size: 2.4rem; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; }
+    .chart-first .n .u { font-size: 0.55em; font-weight: 700; color: var(--text-2); margin-left: 3px; }
+    .chart-first .d { font-size: 0.78rem; color: var(--text-2); margin-top: 6px; font-weight: 600; }
 
     /* ---------- varios ---------- */
     .error-bar { background: rgba(255, 84, 112, 0.12); border: 1px solid rgba(255, 84, 112, 0.4); color: var(--danger); border-radius: 14px; padding: 10px 14px; font-size: 0.82rem; margin-bottom: 14px; }
@@ -441,7 +453,7 @@
         <h3>Tu progreso</h3>
         <div class="card chart-card">
           <div class="chart-head">
-            <span class="title" id="cd-chart-title">Peso por sesión</span>
+            <span class="title" id="cd-chart-title">Peso</span>
             <span class="delta" id="cd-chart-delta"></span>
           </div>
           <div class="chart" id="cd-chart"></div>
@@ -613,7 +625,7 @@
         <h3>Tu progreso</h3>
         <div class="card chart-card">
           <div class="chart-head">
-            <span class="title" id="ex-chart-title">Peso por sesión</span>
+            <span class="title" id="ex-chart-title">Peso</span>
             <span class="delta" id="ex-chart-delta"></span>
           </div>
           <div class="chart" id="ex-chart"></div>
@@ -1273,50 +1285,53 @@
         .filter((r) => r.value != null);
     }
 
-    // Una sola serie, así que no lleva leyenda: el título dice qué es. Línea
-    // fina, una hairline de base y solo se etiquetan el primer y el último
+    // Una sola serie, así que no lleva leyenda: el título dice qué es. Rejilla
+    // suave de fondo (como un panel de máquina de gimnasio de verdad, no una
+    // línea suelta en el vacío), y solo se etiquetan el primer y el último
     // punto — el resto se consulta tocando cada punto (el pie lo cuenta).
+    // Solo se llama con 2+ puntos: con 0 o 1, renderProgressChart no dibuja
+    // gráfico, porque una tendencia no existe todavía con un solo dato.
     function sparklineSvg(points, unit, uid) {
-      const L = 16, R = 224, TOP = 20, BOT = 74, BASE = 92;
+      const L = 16, R = 224, TOP = 22, BOT = 78, BASE = 96;
       const values = points.map((p) => p.value);
       const max = Math.max(...values), min = Math.min(...values);
       const span = max - min;
       const pad = span > 0 ? span * 0.35 : Math.max(1, Math.abs(max) * 0.1);
       const lo = min - pad, hi = max + pad;
-      const single = points.length === 1;
-      const x = (i) => (single ? (L + R) / 2 : L + (i * (R - L)) / (points.length - 1));
+      const x = (i) => L + (i * (R - L)) / (points.length - 1);
       const y = (v) => BOT - ((v - lo) / (hi - lo)) * (BOT - TOP);
 
       const parts = [];
       parts.push(`<defs><linearGradient id="sparkfill-${uid}" x1="0" y1="0" x2="0" y2="1">` +
-        `<stop offset="0%" stop-color="var(--accent)" stop-opacity="0.22"/>` +
+        `<stop offset="0%" stop-color="var(--accent)" stop-opacity="0.24"/>` +
         `<stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/></linearGradient></defs>`);
-      parts.push(`<line x1="${L - 6}" y1="${BOT}" x2="${R + 6}" y2="${BOT}" stroke="var(--line)" stroke-width="1"/>`);
+      // Rejilla: tres líneas horizontales suaves, no solo la de base.
+      [TOP, (TOP + BOT) / 2, BOT].forEach((gy) => {
+        parts.push(`<line x1="${L - 6}" y1="${gy.toFixed(1)}" x2="${R + 6}" y2="${gy.toFixed(1)}" stroke="var(--line)" stroke-width="1"/>`);
+      });
 
-      if (!single) {
-        const line = points.map((p, i) => `${i ? "L" : "M"}${x(i).toFixed(1)} ${y(p.value).toFixed(1)}`).join(" ");
-        parts.push(`<path d="${line} L${x(points.length - 1).toFixed(1)} ${BOT} L${x(0).toFixed(1)} ${BOT} Z" fill="url(#sparkfill-${uid})"/>`);
-        parts.push(`<path d="${line}" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>`);
-      }
+      const line = points.map((p, i) => `${i ? "L" : "M"}${x(i).toFixed(1)} ${y(p.value).toFixed(1)}`).join(" ");
+      parts.push(`<path d="${line} L${x(points.length - 1).toFixed(1)} ${BOT} L${x(0).toFixed(1)} ${BOT} Z" fill="url(#sparkfill-${uid})"/>`);
+      parts.push(`<path d="${line}" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>`);
 
       points.forEach((p, i) => {
-        parts.push(`<circle cx="${x(i).toFixed(1)}" cy="${y(p.value).toFixed(1)}" r="3.6" ` +
+        const isLast = i === points.length - 1;
+        parts.push(`<circle class="${isLast ? "cur" : ""}" cx="${x(i).toFixed(1)}" cy="${y(p.value).toFixed(1)}" r="${isLast ? 4.4 : 3.4}" ` +
           `fill="var(--accent)" stroke="var(--surface)" stroke-width="2"/>`);
       });
 
       // Etiquetas directas solo en los extremos, para no llenar de números.
-      const labelled = single ? [0] : [0, points.length - 1];
-      labelled.forEach((i) => {
-        const anchor = single ? "middle" : i === 0 ? "start" : "end";
-        const lx = single ? x(i) : i === 0 ? x(i) - 4 : x(i) + 4;
-        parts.push(`<text x="${lx.toFixed(1)}" y="${(y(points[i].value) - 10).toFixed(1)}" text-anchor="${anchor}" ` +
+      [0, points.length - 1].forEach((i) => {
+        const anchor = i === 0 ? "start" : "end";
+        const lx = i === 0 ? x(i) - 4 : x(i) + 4;
+        parts.push(`<text x="${lx.toFixed(1)}" y="${(y(points[i].value) - 11).toFixed(1)}" text-anchor="${anchor}" ` +
           `fill="var(--text)" font-size="12" font-weight="700" font-family="inherit">${fmtNum(points[i].value)}${unit}</text>`);
-        parts.push(`<text x="${x(i).toFixed(1)}" y="${BASE}" text-anchor="${single ? "middle" : i === 0 ? "start" : "end"}" ` +
+        parts.push(`<text x="${x(i).toFixed(1)}" y="${BASE}" text-anchor="${anchor}" ` +
           `fill="var(--text-2)" font-size="10" font-weight="700" font-family="inherit">${shortDate(points[i].at)}</text>`);
       });
 
       // Zonas táctiles anchas: los puntos son pequeños para el dedo.
-      const band = single ? R - L : (R - L) / (points.length - 1);
+      const band = (R - L) / (points.length - 1);
       points.forEach((p, i) => {
         parts.push(`<rect class="hit" data-i="${i}" x="${(x(i) - band / 2).toFixed(1)}" y="0" ` +
           `width="${band.toFixed(1)}" height="${BASE}" fill="transparent" style="cursor:pointer"/>`);
@@ -1325,39 +1340,50 @@
       return `<svg viewBox="0 0 240 ${BASE + 4}" role="img">${parts.join("")}</svg>`;
     }
 
+    // Con 0 o 1 registro no hay tendencia que dibujar — una "gráfica" con un
+    // solo punto flotando en el vacío es justo lo que se veía mal (el caso
+    // real de Remo, con un único entrenamiento). Con menos de 2 puntos se
+    // muestra la cifra en grande, sin más; el sparkline solo entra en juego
+    // a partir del segundo registro, cuando ya hay algo que comparar.
     function renderProgressChart(prefix, ex) {
       const isCardio = ex.movement_type === "cardio";
       const unit = isCardio ? " min" : " kg";
       const points = progressPoints(ex);
-      el(`${prefix}-chart-title`).textContent = isCardio ? "Minutos por sesión" : "Peso por sesión";
+      el(`${prefix}-chart-title`).textContent = isCardio ? "Minutos" : "Peso";
       const box = el(`${prefix}-chart`);
       const caption = el(`${prefix}-chart-caption`);
       const delta = el(`${prefix}-chart-delta`);
+      delta.textContent = "";
+      delta.className = "delta";
 
       if (!points.length) {
         box.innerHTML = '<p class="empty" style="margin:0;">Sin registros todavía.</p>';
         caption.textContent = isCardio
           ? "Cuando termines algo de cardio, verás aquí tus minutos."
           : "Después de un par de entrenamientos verás aquí si vas levantando más.";
-        delta.textContent = "";
-        delta.className = "delta";
+        return;
+      }
+
+      if (points.length === 1) {
+        const p = points[0];
+        box.innerHTML =
+          `<div class="chart-first">
+             <div class="n">${fmtNum(p.value)}<span class="u">${unit}</span></div>
+             <div class="d">Primer registro · ${shortDate(p.at)}</div>
+           </div>`;
+        caption.textContent = isCardio
+          ? "Repite este cardio otro día para ver si vas aguantando más."
+          : "Repite este ejercicio otro día para ver si vas levantando más.";
         return;
       }
 
       const first = points[0].value, last = points[points.length - 1].value;
       const diff = last - first;
-      if (points.length < 2) {
-        delta.textContent = "1er registro";
-        delta.className = "delta flat";
-      } else {
-        delta.textContent = diff === 0 ? "sin cambios" : `${diff > 0 ? "+" : "−"}${fmtNum(Math.abs(diff))}${unit}`;
-        delta.className = `delta ${diff > 0 ? "up" : diff < 0 ? "down" : "flat"}`;
-      }
+      delta.textContent = diff === 0 ? "sin cambios" : `${diff > 0 ? "+" : "−"}${fmtNum(Math.abs(diff))}${unit}`;
+      delta.className = `delta ${diff > 0 ? "up" : diff < 0 ? "down" : "flat"}`;
 
       box.innerHTML = sparklineSvg(points, unit, prefix);
-      caption.textContent = points.length > 1
-        ? `${points.length} registros · toca un punto`
-        : `${fmtNum(last)}${unit} · ${shortDate(points[0].at)}`;
+      caption.textContent = `${points.length} registros · toca un punto`;
       box.querySelectorAll("rect.hit").forEach((r) =>
         r.addEventListener("click", () => {
           const p = points[Number(r.dataset.i)];

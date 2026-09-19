@@ -51,6 +51,22 @@ La columna `description` de `weights_exercises` guarda el texto de "cómo
 entrenarlo" de cada máquina (colocación, ejecución, errores típicos y
 esquema de series). Si está vacía, la app usa un texto genérico.
 
+## Gráfica de progreso — detalles
+
+- Con **0 o 1 registro** no se dibuja un sparkline: no hay tendencia que
+  mostrar todavía. En su lugar, una cifra grande con la fecha ("42,5 kg
+  · Primer registro · 17 sept") y una frase invitando a volver. Antes se
+  intentaba dibujar un "gráfico" de un solo punto flotando en un hueco
+  vacío, con la cabecera partiéndose en dos líneas y una leyenda que
+  repetía el mismo dato dos veces — es lo que se veía mal en Remo.
+- Con **2 o más registros**, el sparkline lleva una rejilla de tres
+  líneas horizontales (no solo la base) y el punto más reciente lleva un
+  halo — un vistazo rápido ya distingue "esto es lo de hoy".
+- El título y la variación (cabecera de la tarjeta) nunca deben partirse
+  en dos líneas por mucho texto que lleven ("sin cambios", "MINUTOS")
+  — el título va abreviado ("Peso", "Minutos") y ambos llevan
+  `white-space: nowrap`.
+
 ## Notas de la máquina
 
 El campo de "notas" (grupo muscular aparte, esto es la anotación libre
