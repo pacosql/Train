@@ -1426,6 +1426,42 @@ gráfico ("(miles) (miles de visitas)"): corregido al integrar.
   móvil; ahora los pasos anteriores van en una fila de chips y solo la
   ecuación actual va en grande.
 
+## Ejercicio #175 (decimotercer juego grande, noche del 18/19-09-2026)
+
+### Tramo — [`css/pack-aq.css`](./css/pack-aq.css)
+
+Primer juego grande del bloque de fracciones (hasta ahora solo había
+micro-ejercicios: `sumafrac` suma dos tartas en una ronda, `ritmo`
+compone compases con 1/2, 1/4 y 1/8). Sale de la ronda de investigación
+de esta noche (familia 5, juegos de mesa: Fraction Formula).
+
+| # | Juego | Tema | Pantallas | De dónde sale |
+|---|---|---|---|---|
+| 175 | 🥤 Al ras | Sumar fracciones | Tutorial (vierte 1/2 y 1/3 en una probeta de 12 marcas y elige el vasito que llena justo al ras) → tramo 1 "Llena al ras" (elegir los vasitos que suman exactamente 1; las dos primeras rondas cada vasito dice cuántas marcas son y luego no) → tramo 2 "La máquina vierte" (la máquina anuncia su total y la mitad de las veces se equivoca sumando arriba y abajo, quedándose con el denominador mayor o cruzando mal; hay que cazarla y tocar la marca verdadera) → tramo 3 "¿Vierto o me planto?" (probeta LISA: comparar el vasito con lo que falta hasta el ras) → tramo 4 "¿Qué vasito cayó?" (inversión: leer la diferencia entre dos niveles en marcas de 24) → reto "Duelo al mejor de 5" (con tres vasitos, quedarse lo más cerca del ras sin pasarse, y cazar los dos anuncios falsos de la máquina; sin vidas) → resultados y repaso | Fraction Formula (Educational Insights: llenar el cilindro sin pasarse, "hold or draw") + Slice Fractions; la máquina que se equivoca es inventada |
+
+**Ciclo de aprendizaje**: sumar fracciones ES contar marcas de la misma
+probeta (los denominadores distintos se ven como alturas); andamiaje que
+se retira (marcas escritas → solo la fracción → probeta lisa);
+detección del error ajeno (los tres errores clásicos al sumar) e
+inversión (leer la diferencia). Todo en unidades de 1/24. Progreso
+persistente en `localStorage` y `football_progress` (incluidos los
+duelos ganados).
+
+**Generadores** (`verify_alras.mjs`, 20.000 rondas por tramo, 0
+fallos): vasitos irreducibles expresables en 24-avos (los básicos en 12
+marcas); en "llena al ras" exactamente un subconjunto de 2 o más vasitos
+suma 1; los anuncios falsos de la máquina son de los tres tipos
+definidos, distintos del total verdadero y el total verdadero cabe en la
+probeta; "vierto o me planto" alterna cabe/no cabe; opciones de "qué
+vasito cayó" distintas como valor; cada mano del duelo tiene un único
+subconjunto óptimo y en exactamente 2 de 5 rondas la máquina miente con
+2 o más vasitos vertidos. Flujo completo jugado tres veces en Chromium a
+400 px deduciendo las respuestas del texto de los vasitos y de la
+geometría de la probeta: perfecta (230 pts), un fallo con repaso y tres
+vidas perdidas con repaso funcional. Fallos cazados por el play-test: la
+máquina podía verter más de 1 (la marca verdadera no existía) y en "qué
+vasito cayó" el nivel nuevo tapaba el anterior.
+
 ## Versiones (v2) y bandeja "Revisar"
 
 Cuando un ejercicio recibe una vuelta de mejoras, se marca con un
