@@ -96,6 +96,7 @@ Al crear una app nueva `<app>/`:
 | 🎾 Nombra | `nombra/` | `nombra_` |
 | 📚 Vocabulary | `vocab/` | `vocab_` |
 | 📈 Negocios | `negocios/` | `negocios_` |
+| 🗂️ Contactos | `contactos/` | `contactos_` |
 
 (Actualiza esta tabla al añadir una app nueva.)
 
