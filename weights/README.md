@@ -51,6 +51,34 @@ La columna `description` de `weights_exercises` guarda el texto de "cómo
 entrenarlo" de cada máquina (colocación, ejecución, errores típicos y
 esquema de series). Si está vacía, la app usa un texto genérico.
 
+## Ilustración de la máquina
+
+Cada máquina lleva ahora un dibujo propio de línea (el mismo estilo de
+los iconos, pero más grande y detallado), no una foto de catálogo de un
+fabricante — esas tienen derechos y no se pueden incrustar aquí, se
+haya visto en Technogym, Life Fitness o donde sea. En su lugar,
+esquemas hechos a mano con el mismo lenguaje visual del resto de la
+app: solo trazo, sin relleno, con la tinta suave del tipo de movimiento
+de fondo (azul empuje, ámbar tirón, violeta cardio).
+
+- **`MACHINE_ART`**: un dibujo por familia de máquina (asistida, remo/
+  polea, pec-deck, press de pecho, prensa de pierna, extensora de
+  pierna, banco+rack, zancada) — varias máquinas del catálogo comparten
+  familia cuando son mecánicamente la misma cosa (Pectoral y Reverse
+  Fly son las dos un "pec-deck", por ejemplo).
+- **`weightStackArt()`**: un glifo compartido (polea + columna con
+  muescas) que se repite en toda máquina de pin — así se aprende a
+  reconocerlo de un vistazo en vez de tener que descifrar cada dibujo
+  desde cero.
+- Se ve en dos sitios: el icono de la lista de ejercicios/catálogo
+  (`machineArtHtml()`) y una tarjeta grande al entrar en la máquina
+  (`renderHeroArt()`, en `#cd-hero-art`/`#ex-hero-art`). El emoji
+  personalizado de la ficha, si el usuario puso uno, gana siempre a la
+  ilustración automática, en los dos sitios.
+- Bicicleta y Andar no tienen dibujo propio en `MACHINE_ART`: su icono
+  de categoría (bici/huellas) ya es exacto, así que no hacía falta
+  redibujarlos.
+
 ## Cómo se usa la máquina (silueta + posición)
 
 Inspirado en la placa de las máquinas de gimnasio reales (Life

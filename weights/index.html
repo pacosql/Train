@@ -298,6 +298,25 @@
     details.detail p b { font-family: var(--display); font-size: 1.05rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--accent-2); }
     .note-line { font-size: 0.85rem; color: var(--pull); background: rgba(245, 181, 68, 0.1); border: 1px solid rgba(245, 181, 68, 0.25); border-radius: 14px; padding: 10px 14px; margin-bottom: 12px; }
 
+    /* ---------- ilustración de la máquina (hero) ---------- */
+    /* Misma técnica que los iconos (solo trazo, currentColor) pero a mayor
+       tamaño y con su propia tarjeta — la "foto" de la máquina que pediste,
+       dibujada a mano en vez de una foto de catálogo de un fabricante
+       (esas tienen derechos; esto no). Fondo con la tinta suave del tipo
+       de movimiento, como las tarjetas "recomendada" de la lista. */
+    .hero-art {
+      display: flex; align-items: center; justify-content: center;
+      height: 118px; margin: 4px 0 14px; border-radius: 20px;
+      background: var(--glass); border: 1px solid var(--line);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      color: var(--text-2);
+    }
+    .hero-art.push { color: var(--push); background: linear-gradient(160deg, rgba(114, 169, 255, 0.14), rgba(255, 255, 255, 0.02) 65%); border-color: rgba(114, 169, 255, 0.3); }
+    .hero-art.pull { color: var(--pull); background: linear-gradient(160deg, rgba(245, 181, 68, 0.14), rgba(255, 255, 255, 0.02) 65%); border-color: rgba(245, 181, 68, 0.3); }
+    .hero-art.cardio { color: var(--cardio); background: linear-gradient(160deg, rgba(185, 140, 255, 0.14), rgba(255, 255, 255, 0.02) 65%); border-color: rgba(185, 140, 255, 0.3); }
+    .hero-art svg { width: 62%; height: 62%; max-width: 210px; }
+    .hero-art.emoji { font-size: 3.6rem; } /* icono propio (emoji) del usuario, si lo puso */
+
     /* ---------- diagrama corporal (grupo muscular) ---------- */
     /* Silueta por bloques redondeados, a juego con el resto de la interfaz
        (tarjetas, chips y botones ya son así de redondos) — nada de intentar
@@ -444,6 +463,7 @@
     <section id="screen-catalog-detail" hidden>
       <p class="eyebrow" id="cd-header"></p>
       <h2 id="cd-name">—</h2>
+      <div class="hero-art" id="cd-hero-art"></div>
       <p class="sub" id="cd-last-used"></p>
 
       <div class="card weight-block" id="cd-weight-card">
@@ -613,6 +633,7 @@
     <section id="screen-exercise" hidden>
       <p class="eyebrow" id="ex-header"></p>
       <h2 id="ex-name">—</h2>
+      <div class="hero-art" id="ex-hero-art"></div>
       <p class="sub" id="ex-recommendation"></p>
 
       <div class="note-line" id="ex-note-line" hidden></div>
@@ -755,6 +776,58 @@
     // el icono es SVG (o un emoji propio), no texto plano.
     function cardioTitle(ex) {
       return `<span class="h-icon cardio">${exIconHtml(ex)}</span>${ex.name}`;
+    }
+
+    // ---------- ilustración de la máquina ----------
+    // Igual que los iconos (solo trazo, sin relleno), pero dibujos propios
+    // más detallados de cada máquina real — no una foto de un fabricante
+    // (esas tienen derechos), un esquema hecho a mano con el mismo
+    // lenguaje visual que el resto de la app. Un glifo compartido para la
+    // "pila de pesos" (polea + columna con muescas) se repite en toda
+    // máquina de pin, así se aprende a reconocerlo de un vistazo.
+    function weightStackArt(x, y, h) {
+      const n = Math.max(2, Math.round(h / 12));
+      let notches = "";
+      for (let i = 1; i <= n; i++) notches += `<path d="M${x + 2} ${y + (h / (n + 1)) * i}h6"/>`;
+      return `<circle cx="${x + 5}" cy="${y - 6}" r="3"/><rect x="${x}" y="${y}" width="10" height="${h}" rx="2.5"/>${notches}`;
+    }
+    const MACHINE_ART = {
+      assisted: '<path d="M28 86V16h64v14M50 16v14M90 16v14M52 54h34"/>' + weightStackArt(104, 24, 44) + '<path d="M18 86h20M88 86h20"/>',
+      cableRow: '<rect x="55" y="52" width="24" height="9" rx="4"/><path d="M28 61h70"/><path d="M96 61 102 36"/>' + weightStackArt(14, 16, 42),
+      pecMachine: '<rect x="58" y="26" width="16" height="46" rx="7"/><rect x="58" y="72" width="24" height="8" rx="4"/><path d="M66 32c-20 2-34 14-44 28M66 32c20 2 34 14 44 28"/><circle cx="22" cy="60" r="5"/><circle cx="110" cy="60" r="5"/>',
+      chestPress: '<rect x="20" y="20" width="16" height="52" rx="7"/><rect x="20" y="72" width="28" height="9" rx="4"/><path d="M50 44h48"/><circle cx="100" cy="44" r="6"/>' + weightStackArt(100, 62, 22),
+      legPress: '<path d="M22 84V52h24"/><path d="M46 52 106 20"/><path d="M90 32l16-8"/>' + weightStackArt(98, 6, 16),
+      legExtension: '<rect x="18" y="22" width="16" height="50" rx="7"/><rect x="18" y="72" width="26" height="9" rx="4"/><path d="M44 80h40"/><rect x="86" y="72" width="10" height="16" rx="3"/>' + weightStackArt(104, 16, 46),
+      bench: '<rect x="26" y="66" width="72" height="9" rx="4"/><path d="M32 75v11M92 75v11"/><path d="M18 86 26 18M114 86 104 18"/><path d="M10 86h22M100 86h22"/><path d="M18 24h94"/><circle cx="12" cy="24" r="8"/><circle cx="120" cy="24" r="8"/>',
+      lunge: '<path d="M78 86V26"/><path d="M78 40l26 12"/><rect x="100" y="44" width="11" height="18" rx="3" transform="rotate(24 105 53)"/>' + weightStackArt(52, 12, 38) + '<path d="M64 86h28"/>',
+      elliptical: '<path d="M20 76 118 50"/><ellipse cx="46" cy="69" rx="13" ry="5" transform="rotate(-13 46 69)"/><ellipse cx="94" cy="57" rx="13" ry="5" transform="rotate(-13 94 57)"/><path d="M75 62 78 22"/><rect x="64" y="8" width="28" height="16" rx="3"/><path d="M70 16h16"/>',
+    };
+    function svgMachine(key) {
+      return `<svg viewBox="0 0 140 96" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">${MACHINE_ART[key] || ""}</svg>`;
+    }
+    // Bicicleta y Andar ya tienen un icono de categoría bueno y exacto
+    // (bike/footprints); no hace falta redibujarlos aquí.
+    const MACHINE_ART_FOR = {
+      dominadas_asistidas: "assisted", fondos_asistidos: "assisted",
+      remo: "cableRow", reverse_fly: "pecMachine", pectoral: "pecMachine", extensora_hombros: "pecMachine",
+      press_pecho: "chestPress", press_pierna_sentado: "legPress", extension_pierna: "legExtension",
+      press_banca: "bench", contraccion_pierna: "lunge",
+    };
+    // El icono/ilustración que va en la lista y en la cabecera al entrar:
+    // el emoji que haya puesto el usuario manda siempre; si no, la
+    // ilustración propia de esa máquina si existe, o si no el icono de
+    // categoría de siempre (bicicleta, huellas, mancuerna...).
+    function machineArtHtml(ex) {
+      const custom = (ex.icon || "").trim();
+      if (custom) return custom;
+      const key = MACHINE_ART_FOR[ex.slug];
+      return key ? svgMachine(key) : svgIcon(iconKeyFor(ex));
+    }
+    function renderHeroArt(id, ex) {
+      const box = el(id);
+      const custom = (ex.icon || "").trim();
+      box.className = `hero-art ${ex.movement_type}${custom ? " emoji" : ""}`;
+      box.innerHTML = custom || machineArtHtml(ex);
     }
     const DEFAULT_DESCRIPTION = "3 series × 8 repeticiones. Busca llegar al fallo (o cerca) en la última serie.";
     const CARDIO_DESCRIPTION = "Mantén un ritmo constante que puedas sostener durante todo el tiempo previsto.";
@@ -1169,7 +1242,7 @@
         div.className = "item " + type;
         div.style.setProperty("--i", i);
         div.innerHTML =
-          `<div class="icon">${ex ? exIconHtml(ex) : svgIcon("dumbbell")}</div>
+          `<div class="icon">${ex ? machineArtHtml(ex) : svgIcon("dumbbell")}</div>
            <div class="item-main">
              <div class="name">${name}</div>
              <div class="meta">${detail}</div>
@@ -1592,7 +1665,7 @@
         div.className = `item ${ex.movement_type}${isTop || r.running ? " top" : ""}${r.done && !r.running ? " done" : ""}`;
         div.style.setProperty("--i", Math.min(i++, 12));
         div.innerHTML =
-          `<div class="icon ${ex.movement_type}">${exIconHtml(ex)}</div>
+          `<div class="icon ${ex.movement_type}">${machineArtHtml(ex)}</div>
            <div class="item-main">
              <div class="name">${ex.name}${r.done && !r.running ? " ✓" : ""}</div>
              <div class="meta"><span class="type ${ex.movement_type}">${badgeLabel(ex.movement_type)}</span> · ${muscleLabel(ex)}${weightTxt}${link ? ` · ${link}` : ""}</div>
@@ -1638,7 +1711,7 @@
           div.className = "item " + ex.movement_type;
           div.style.setProperty("--i", Math.min(i, 8));
           div.innerHTML =
-            `<div class="icon ${ex.movement_type}">${exIconHtml(ex)}</div>
+            `<div class="icon ${ex.movement_type}">${machineArtHtml(ex)}</div>
              <div class="item-main">
                <div class="name">${ex.name}</div>
                <div class="meta">${muscleLabel(ex)}${ex.notes ? ` · ${ex.notes}` : ""}${stationLabel(ex) ? ` · ${stationLabel(ex)}` : ""}</div>
@@ -1703,6 +1776,7 @@
       el("cd-assisted").checked = !!ex.assisted;
       document.querySelectorAll("#cd-type-chips .chip").forEach((c) =>
         c.classList.toggle("selected", c.dataset.type === ex.movement_type));
+      renderHeroArt("cd-hero-art", ex);
       el("cd-description").textContent = ex.description || (isCardio ? CARDIO_DESCRIPTION : DEFAULT_DESCRIPTION);
       renderPositionMotion("cd-pm-row", ex);
       renderBodyDiagram("cd-body-diagram", ex);
@@ -1728,6 +1802,7 @@
       el("cd-name").innerHTML = `<span class="h-icon ${ex.movement_type}">${exIconHtml(ex)}</span>`;
       el("cd-name").appendChild(document.createTextNode(ex.name));
       el("cd-header").textContent = headerLine(ex);
+      renderHeroArt("cd-hero-art", ex);
       renderPositionMotion("cd-pm-row", ex);
       renderBodyDiagram("cd-body-diagram", ex);
       renderMuscleInfo("cd-muscle-info", ex.muscle_group);
@@ -1893,6 +1968,7 @@
       el("ex-note-line").textContent = ex.notes || "";
       el("ex-note-line").hidden = !ex.notes;
       el("ex-notes-input").value = ex.notes || "";
+      renderHeroArt("ex-hero-art", ex);
       el("ex-description").textContent = ex.description || DEFAULT_DESCRIPTION;
       renderPositionMotion("ex-pm-row", ex);
       renderBodyDiagram("ex-body-diagram", ex);
