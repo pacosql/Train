@@ -1,7 +1,7 @@
 # Math Games 🧠
 
-PWA (sin build, HTML/CSS/JS puro) con **171 ejercicios de matemáticas**,
-cada uno numerado (#1-#171) para poder referirse a ellos sin ambigüedad.
+PWA (sin build, HTML/CSS/JS puro) con **172 ejercicios de matemáticas**,
+cada uno numerado (#1-#172) para poder referirse a ellos sin ambigüedad.
 Cálculo mental, geometría, álgebra, estadística, fracciones, dinero,
 probabilidad, coordenadas, tiempo y más. Nace como banco de pruebas
 rápido para sacar ideas de mecánicas (tipo Duolingo Math, Synthesis,
@@ -1293,6 +1293,54 @@ respuesta de los parámetros del enunciado (nunca de la respuesta):
 partida perfecta (16 aciertos, 160 pts) y partida con fallo deliberado
 (vida perdida, error listado, repaso).
 
+## Ejercicio #172 (décimo juego grande, noche del 18/19-09-2026)
+
+### Tramo — [`css/pack-an.css`](./css/pack-an.css)
+
+De la `cola` de `work_state` (hueco "decimales en la recta: valor
+posicional, orden y densidad"). `decimales` y `recta` (tandas
+anteriores) piden un decimal suelto o colocan enteros; aquí la recta se
+AMPLÍA: cada cifra decimal es literalmente un zoom.
+
+| # | Juego | Tema | Pantallas | De dónde sale |
+|---|---|---|---|---|
+| 172 | 🔎 Zoom decimal | Números decimales | Tutorial (colocar 3,7: tocar el tramo 3-4 lo amplía en décimas y se toca la séptima marca) → tramo 1 "Coloca" (1 decimal, marcas etiquetadas) → tramo 2 "Sin etiquetas" (2 decimales, dos zooms, solo se etiquetan los extremos) → tramo 3 "Entre dos" (coloca un número entre 2,5 y 2,6: hay que ampliar hasta las centésimas; los extremos no valen) → tramo 4 "Lee la marca" (inversión: 4 opciones con las trampas 3,07 frente a 3,7 y cifras intercambiadas) → reto contrarreloj de 45 s sin vidas → resultados y repaso | Motion Math Zoom (pinch para ampliar la recta), adaptado a un pulgar: toque de tramo + botón Alejar |
+
+**Ciclo de aprendizaje**: el gesto ES el concepto (ampliar un tramo =
+bajar una cifra decimal); andamiaje que se retira (etiquetas en todas
+las marcas → solo en los extremos), densidad como experiencia (entre dos
+décimas "pegadas" aparecen diez centésimas), inversión (leer en vez de
+colocar) y velocidad al final. Cada fallo dice dónde tocaste y dónde
+estaba. Progreso persistente en `localStorage` y `football_progress`
+(incluido el récord del contrarreloj).
+
+**Generadores** (`verify_zoomdec.mjs`, 20.000 rondas por tramo, 0
+fallos): valores internos en centésimas enteras; el camino de zoom es
+único (a cada nivel exactamente un tramo contiene el objetivo
+estrictamente) y la marca final nunca es un extremo; en "entre dos"
+siempre hay nueve centésimas válidas dentro de la misma unidad; en "lee
+la marca" 4 opciones distintas también como texto, con la trampa de las
+centésimas/décimas siempre presente. Flujo completo jugado tres veces en
+Chromium a 400 px deduciendo la vista de los atributos `data-lo`/`data-step`
+y la flecha de su geometría: partida perfecta (460 pts, 34 colocados en
+el contrarreloj), partida con un fallo (vida perdida, error listado,
+repaso) y partida perdiendo las tres vidas (repaso funcional).
+
+### Fallo latente encontrado al probar esta vuelta (afectaba a 7 juegos grandes)
+
+En los juegos grandes con el patrón `outcome()` +
+`loseLife()` (`ecuacion`, `medidor`, `transforma`, `calculista`,
+`pendiente`, `bola` y el nuevo `zoomdec`): al perder la tercera vida,
+`outcome()` dejaba `locked = true` y se saltaba directo a resultados; si
+el jugador pulsaba "Repasar lo fallado", las pantallas de repaso
+ignoraban todos los toques. Los play-tests anteriores solo fallaban una
+vez (quedaban vidas), así que nunca pasaron por ese camino. Corregido en
+los siete (`screenResults` desbloquea al entrar) y el play-test de
+`zoomdec` incorpora desde ahora una partida que pierde las tres vidas y
+repasa. Los juegos con máquina de estados `render()` (`azar`,
+`puertas`, `potencias`) ya desbloqueaban en cada render y no estaban
+afectados.
+
 ## Versiones (v2) y bandeja "Revisar"
 
 Cuando un ejercicio recibe una vuelta de mejoras, se marca con un
@@ -1538,12 +1586,12 @@ Una vez publicado, esta app queda en:
 
 ## Qué hace la app
 
-- Menú con los 171 ejercicios numerados, organizados en pestañas
+- Menú con los 172 ejercicios numerados, organizados en pestañas
   🆕/👍/👎/🔧; cada uno abre en su propia pantalla (`#/game/<id>`), sin
   recargar la página.
 - Motor de preguntas compartido (`js/quiz-engine.js`) para los 18
   ejercicios de "pregunta + opciones o teclado" (`js/games-data.js` y
-  `js/games-data-2.js`); los otros 153 (`js/game-*.js` y
+  `js/games-data-2.js`); los otros 154 (`js/game-*.js` y
   `js/balloons-game.js`) tienen cada uno su propia mecánica de
   interacción (arrastrar, tocar en orden, emparejar, construir,
   escribir, clasificar, recorrer…).
