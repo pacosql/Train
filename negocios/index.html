@@ -276,9 +276,7 @@
       max-width: calc(100vw - 32px); width: max-content;
     }
     .toast span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .toast.no-undo button { display: none; }
     .toast.show { opacity: 1; pointer-events: auto; }
-    .toast button { width: auto; padding: 4px 10px; font-size: 0.9rem; background: transparent; color: var(--accent); box-shadow: none; }
     .build-id { text-align: center; font-size: 0.7rem; color: var(--text-2); margin-top: 24px; font-family: ui-monospace, monospace; }
     .back { display: inline-flex; align-items: center; gap: 6px; color: var(--text-2); font-family: var(--display); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem; cursor: pointer; margin-bottom: 10px; }
     .decision-tag { font-family: var(--display); font-weight: 800; text-transform: uppercase; letter-spacing: 1px; font-size: 0.9rem; margin-bottom: 8px; }
@@ -354,7 +352,7 @@
     </div>
   </div>
 
-  <div class="toast" id="toast"><span id="toast-text"></span><button id="toast-undo">Deshacer</button></div>
+  <div class="toast" id="toast"><span id="toast-text"></span></div>
   <div class="motivos" id="motivos"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
@@ -390,7 +388,6 @@
     }
     function loadFilters() { try { return { ...DEF_FILTERS, ...JSON.parse(localStorage.getItem(EXPLORE_KEY) || "{}") }; } catch { return { ...DEF_FILTERS }; } }
     function saveFilters() { try { localStorage.setItem(EXPLORE_KEY, JSON.stringify(filters)); } catch {} }
-    let lastChange = null; // { id, prev: {decision, decidido_en} }
     const rec = { recorder: null, stream: null, chunks: [], blob: null, mime: "", startedAt: 0, timer: null, url: "", sr: null, texto: [] };
     let toastTimer = null;
 
@@ -484,24 +481,28 @@
     const byDecision = (d) => ideas.filter((i) => i.decision === d).sort((a, b) => (b.decidido_en || "").localeCompare(a.decidido_en || ""));
 
     async function decide(idea, decision) {
-      lastChange = { id: idea.id, prev: { decision: idea.decision, decidido_en: idea.decidido_en } };
       const patch = { decision, decidido_en: decision ? new Date().toISOString() : null };
       const { error } = await client.from(T_IDEAS).update(patch).eq("id", idea.id);
       if (error) { showMsg("No se pudo guardar: " + error.message); return; }
       Object.assign(idea, patch);
       resetRec();
       showMsg("");
-      showToast(decision === "revisar" ? `🔁 A revisar · la rutina la ampliará en menos de una hora` : decision ? `${DECISION_LABEL[decision]} · ${idea.nombre}` : `Devuelta a pendientes · ${idea.nombre}`, true);
+      // "Me gusta"/"No me gusta" no llevan aviso: se etiquetan a ritmo rápido
+      // y el toast tapaba los botones de abajo al solaparse con la ficha siguiente.
+      if (decision !== "gusta" && decision !== "no_gusta") {
+        showToast(decision === "revisar" ? `🔁 A revisar · la rutina la ampliará en menos de una hora` : decision ? `${DECISION_LABEL[decision]} · ${idea.nombre}` : `Devuelta a pendientes · ${idea.nombre}`);
+      }
       if (state.tab === "pendiente") { state.index = Math.min(state.index, Math.max(0, pending().length - 1)); }
       state.detailId = null;
       render();
-      if (decision) showMotivos(idea, decision);
+      // "Me gusta"/"No me gusta" son la mayoría de las decisiones (se toman a
+      // ritmo rápido revisando muchas fichas) y no llevan panel de motivo; solo
+      // "Definitivo" y "A revisar" lo muestran.
+      if (decision === "definitivo" || decision === "revisar") showMotivos(idea, decision);
     }
 
     // ---------- motivo rápido al etiquetar (se guarda como comentario) ----------
     const MOTIVOS = {
-      no_gusta: ["Venta humana", "Efecto de red", "Poco margen", "Mucha inversión", "Mercado saturado", "No es para mí"],
-      gusta: ["Compra desasistida", "Buen LTV/CAC", "Lo hago con Claude", "Poca inversión", "Me apasiona"],
       definitivo: ["La empiezo ya", "Poca inversión", "Lo hago con Claude"],
       revisar: ["Amplía mercado y competencia", "Recalcula cifras", "Busca otro enfoque", "Baja la inversión"],
     };
@@ -531,18 +532,6 @@
       comentarios.push(data);
       showToast(`Motivo guardado: ${motivo}`);
     }
-    async function undo() {
-      if (!lastChange) return;
-      const idea = ideas.find((i) => i.id === lastChange.id);
-      if (!idea) return;
-      const { error } = await client.from(T_IDEAS).update(lastChange.prev).eq("id", idea.id);
-      if (error) { showMsg("No se pudo deshacer: " + error.message); return; }
-      Object.assign(idea, lastChange.prev);
-      lastChange = null;
-      hideToast();
-      render();
-    }
-
     // ---------- explorar: filtros, orden, búsqueda, CSV ----------
     const ratioOf = (i) => (i.ltv_eur && i.cac_eur) ? i.ltv_eur / i.cac_eur : null;
     const SORTS = {
@@ -1046,9 +1035,8 @@
 
     // ---------- utilidades UI ----------
     function showMsg(t) { el("msg").textContent = t; }
-    function showToast(t, undoable = false) {
+    function showToast(t) {
       el("toast-text").textContent = t;
-      el("toast").classList.toggle("no-undo", !undoable);
       el("toast").classList.add("show");
       clearTimeout(toastTimer);
       toastTimer = setTimeout(hideToast, 6000);
@@ -1066,7 +1054,6 @@
       document.querySelectorAll(".tab").forEach((t) => t.addEventListener("click", () => { resetRec(); state.tab = t.dataset.tab; state.detailId = null; state.index = 0; render(); }));
       el("btn-refresh").addEventListener("click", (e) => refresh(e.currentTarget));
       el("btn-explore").addEventListener("click", () => { resetRec(); state.tab = (state.tab === "explorar" || state.tab === "comparar") ? "pendiente" : "explorar"; state.detailId = null; state.index = 0; render(); });
-      el("toast-undo").addEventListener("click", () => { hideMotivos(); undo(); });
       if (!url || !anonKey) { showMsg("Faltan credenciales en config.js"); return; }
       client = supabase.createClient(url, anonKey);
       await refresh(null);
