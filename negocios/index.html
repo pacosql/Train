@@ -487,7 +487,11 @@
       Object.assign(idea, patch);
       resetRec();
       showMsg("");
-      showToast(decision === "revisar" ? `🔁 A revisar · la rutina la ampliará en menos de una hora` : decision ? `${DECISION_LABEL[decision]} · ${idea.nombre}` : `Devuelta a pendientes · ${idea.nombre}`);
+      // "Me gusta"/"No me gusta" no llevan aviso: se etiquetan a ritmo rápido
+      // y el toast tapaba los botones de abajo al solaparse con la ficha siguiente.
+      if (decision !== "gusta" && decision !== "no_gusta") {
+        showToast(decision === "revisar" ? `🔁 A revisar · la rutina la ampliará en menos de una hora` : decision ? `${DECISION_LABEL[decision]} · ${idea.nombre}` : `Devuelta a pendientes · ${idea.nombre}`);
+      }
       if (state.tab === "pendiente") { state.index = Math.min(state.index, Math.max(0, pending().length - 1)); }
       state.detailId = null;
       render();
