@@ -491,13 +491,14 @@
       if (state.tab === "pendiente") { state.index = Math.min(state.index, Math.max(0, pending().length - 1)); }
       state.detailId = null;
       render();
-      if (decision) showMotivos(idea, decision);
+      // "Me gusta"/"No me gusta" son la mayoría de las decisiones (se toman a
+      // ritmo rápido revisando muchas fichas) y no llevan panel de motivo; solo
+      // "Definitivo" y "A revisar" lo muestran.
+      if (decision === "definitivo" || decision === "revisar") showMotivos(idea, decision);
     }
 
     // ---------- motivo rápido al etiquetar (se guarda como comentario) ----------
     const MOTIVOS = {
-      no_gusta: ["Venta humana", "Efecto de red", "Poco margen", "Mucha inversión", "Mercado saturado", "No es para mí"],
-      gusta: ["Compra desasistida", "Buen LTV/CAC", "Lo hago con Claude", "Poca inversión", "Me apasiona"],
       definitivo: ["La empiezo ya", "Poca inversión", "Lo hago con Claude"],
       revisar: ["Amplía mercado y competencia", "Recalcula cifras", "Busca otro enfoque", "Baja la inversión"],
     };

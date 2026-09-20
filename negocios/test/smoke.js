@@ -61,16 +61,13 @@ const server = http.createServer((req, res) => {
     await page.click(`.tab[data-tab="${tab}"]`);
     await page.waitForSelector("#view .card, #view .item, #view .empty");
   }
-  // etiquetar la primera pendiente (si la hay) y devolverla a pendientes
+  // etiquetar "me gusta" (sin panel de motivo) y devolverla a pendientes
   if ((await n("pendiente")) > 0) {
     const before = await n("pendiente"), name = await t("h1");
     await page.click("#btn-gusta");
     await page.waitForFunction((b) => parseInt(document.querySelector("#n-pendiente").textContent, 10) === b - 1, before);
-    await page.waitForSelector("#motivos.show button[data-m]");
-    const motivos = await page.locator("#motivos button[data-m]").count();
-    await page.click("#motivos-skip");
-    await page.waitForFunction(() => !document.querySelector("#motivos").classList.contains("show"));
-    console.log("motivos rápidos OK:", motivos, "opciones");
+    await page.waitForTimeout(200);
+    if (await page.locator("#motivos.show").count()) throw new Error("Me gusta no debería mostrar el panel de motivo");
     await page.click(`.tab[data-tab="gusta"]`);
     await page.waitForSelector(".item");
     await page.click(".item"); // la recién etiquetada, primera por decidido_en desc
@@ -78,7 +75,26 @@ const server = http.createServer((req, res) => {
     await page.click("#btn-reabrir");
     await page.click(`.tab[data-tab="pendiente"]`);
     await page.waitForFunction((b) => parseInt(document.querySelector("#n-pendiente").textContent, 10) === b, before);
-    console.log("etiquetar + devolver a pendientes OK en:", name);
+    console.log("me gusta sin panel de motivo + devolver a pendientes OK en:", name);
+  }
+  // etiquetar "a revisar" (con panel de motivo) y devolverla a pendientes
+  if ((await n("pendiente")) > 0) {
+    const before = await n("pendiente");
+    await page.click("#btn-revisar");
+    await page.waitForFunction((b) => parseInt(document.querySelector("#n-pendiente").textContent, 10) === b - 1, before);
+    await page.waitForSelector("#motivos.show button[data-m]");
+    const motivos = await page.locator("#motivos button[data-m]").count();
+    await page.click("#motivos-skip");
+    await page.waitForFunction(() => !document.querySelector("#motivos").classList.contains("show"));
+    console.log("motivos rápidos OK (a revisar):", motivos, "opciones");
+    await page.click(`.tab[data-tab="revisar"]`);
+    await page.waitForSelector(".item");
+    await page.click(".item");
+    await page.waitForSelector("#btn-reabrir");
+    await page.click("#btn-reabrir");
+    await page.click(`.tab[data-tab="pendiente"]`);
+    await page.waitForFunction((b) => parseInt(document.querySelector("#n-pendiente").textContent, 10) === b, before);
+    console.log("a revisar + devolver a pendientes OK");
   }
   // abrir el detalle de una decidida (si la hay)
   for (const tab of ["gusta", "no_gusta", "definitivo"]) {
