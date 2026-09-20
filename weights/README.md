@@ -51,6 +51,27 @@ La columna `description` de `weights_exercises` guarda el texto de "cómo
 entrenarlo" de cada máquina (colocación, ejecución, errores típicos y
 esquema de series). Si está vacía, la app usa un texto genérico.
 
+## Recomendación personal (1-5)
+
+Cada máquina puede llevar una nota de 1 (evítalo) a 5 (adelante) para
+la persona que usa la app, con un texto corto explicando el porqué —
+por ejemplo por una lesión o por lo que le haya dicho su fisio. Vive en
+`weights_exercises.recommendation` (+ `recommendation_note`) y se ve en
+tres sitios:
+
+- una tarjeta justo bajo la ilustración al entrar en la máquina (cinco
+  puntos, una palabra — Evítalo / Mejor no / Con cuidado / Bien /
+  Adelante —, la nota y un aviso de que es orientativo);
+- una etiqueta compacta (`3/5`) en la lista de ejercicios y en el
+  catálogo;
+- la lista de ejercicios baja las máquinas con 1-2 (`rateExercise`,
+  25 puntos por escalón) y lo dice en su línea de motivo, para que una
+  marcada "evítalo" no salga a la vez con la estrella de recomendada.
+
+Se edita desde la ficha de la máquina (chips 1-5). Los detalles
+médicos que motivan cada nota se quedan en la base de datos del
+usuario, no en este repo.
+
 ## Ilustración de la máquina
 
 Cada máquina lleva ahora un dibujo propio de línea (el mismo estilo de
