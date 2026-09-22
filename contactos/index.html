@@ -212,7 +212,18 @@
   </div>
 
   <div class="fab" id="fab">
-    <div class="inner"><button id="btn-nuevo">＋ Nuevo contacto</button></div>
+    <div class="inner row2">
+      <button class="rec" id="btn-voice-search" type="button">🎤 Buscar contacto</button>
+      <button id="btn-nuevo" type="button">＋ Nuevo contacto</button>
+    </div>
+  </div>
+
+  <div class="modal-back hidden" id="voice-modal-back">
+    <div class="modal">
+      <p class="eyebrow">Búsqueda por voz</p>
+      <div id="voice-modal-body"></div>
+      <button class="ghost" id="voice-modal-close" style="margin-top:12px" type="button">Cerrar</button>
+    </div>
   </div>
 
   <div class="modal-back hidden" id="modal-back">
@@ -372,6 +383,95 @@
       recognizer.start();
       recognizing = true;
       if (btn) { btn.classList.add("on"); btn.textContent = "⏹ Parar"; }
+    }
+
+    // ---------- buscar contacto por voz (di un nombre, te doy las pistas) ----------
+    let searchRecognizer = null;
+    let searchListening = false;
+    const normalizeTxt = (s) => String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().trim();
+    const capitalizar = (s) => s.replace(/\b\p{L}/gu, (c) => c.toUpperCase());
+    function hablar(texto) {
+      try {
+        if (!window.speechSynthesis) return;
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(texto);
+        u.lang = "es-ES";
+        window.speechSynthesis.speak(u);
+      } catch (e) { /* sin voz, no pasa nada */ }
+    }
+    function resumenHablado(c) {
+      const partes = [c.nombre + "."];
+      partes.push(c.resumen ? c.resumen : "Todavía no tengo notas suficientes sobre esta persona.");
+      if ((c.etiquetas || []).length) partes.push("Etiquetas: " + c.etiquetas.join(", ") + ".");
+      if (c.energia && ENERGIA[c.energia]) partes.push("Es un contacto " + ENERGIA[c.energia].label.toLowerCase() + ".");
+      if (c.consejo) partes.push(c.consejo);
+      return partes.join(" ");
+    }
+    function matchScore(nombreNorm, transcriptNorm, transcriptTokens) {
+      if (!nombreNorm) return 0;
+      if (nombreNorm === transcriptNorm) return 3;
+      const nombreTokens = nombreNorm.split(/\s+/);
+      if (nombreTokens.some((t) => transcriptTokens.includes(t))) return 2;
+      if (nombreNorm.includes(transcriptNorm) || transcriptNorm.includes(nombreNorm)) return 1;
+      return 0;
+    }
+    function buscarContactosPorVoz(transcript) {
+      const tNorm = normalizeTxt(transcript);
+      const tTokens = tNorm.split(/\s+/).filter((w) => w.length >= 2);
+      const scored = contactos
+        .filter((c) => !c.archivado)
+        .map((c) => ({ c, score: matchScore(normalizeTxt(c.nombre), tNorm, tTokens) }))
+        .filter((x) => x.score > 0)
+        .sort((a, b) => b.score - a.score);
+      if (!scored.length) return [];
+      // Si hay un ganador claro (mejor puntuación única), no lo mezcles con
+      // coincidencias más débiles: solo desambiguamos cuando hay empate arriba.
+      const top = scored.filter((x) => x.score === scored[0].score);
+      return (top.length === 1 ? top : top.slice(0, 5)).map((x) => x.c);
+    }
+    function openVoiceModal(html) { el("voice-modal-body").innerHTML = html; el("voice-modal-back").classList.remove("hidden"); }
+    function closeVoiceModal() { el("voice-modal-back").classList.add("hidden"); }
+    function procesarBusquedaVoz(transcript) {
+      const matches = buscarContactosPorVoz(transcript);
+      if (matches.length === 1) {
+        const c = matches[0];
+        hablar(resumenHablado(c));
+        state.detailId = c.id;
+        render();
+        showToast(`🎤 Encontrado: ${c.nombre}`);
+        return;
+      }
+      if (matches.length > 1) {
+        hablar(`Encontré ${matches.length} contactos parecidos a ${transcript}.`);
+        openVoiceModal(`
+          <p class="helper">Has dicho: “${esc(transcript)}” · varios contactos coinciden:</p>
+          ${matches.map((c) => `<div class="item" data-voice-id="${c.id}"><div class="avatar">${esc(initials(c.nombre))}</div><div class="m"><div class="name">${esc(c.nombre)}</div><div class="meta">${esc(c.resumen || "Sin síntesis todavía")}</div></div><div class="arrow">›</div></div>`).join("")}
+        `);
+        document.querySelectorAll("[data-voice-id]").forEach((n) => n.onclick = () => { closeVoiceModal(); state.detailId = n.dataset.voiceId; render(); });
+        return;
+      }
+      hablar(`No tengo ningún contacto llamado ${transcript}. ¿Quieres que lo cree?`);
+      openVoiceModal(`
+        <p class="helper">Has dicho: “${esc(transcript)}” · no encontré ningún contacto así.</p>
+        <button id="voice-crear" style="margin-top:10px" type="button">＋ Crear contacto “${esc(capitalizar(transcript))}”</button>
+      `);
+      el("voice-crear").onclick = () => { closeVoiceModal(); openModal(); el("nuevo-nombre").value = capitalizar(transcript); };
+    }
+    function toggleVoiceSearch() {
+      const btn = el("btn-voice-search");
+      if (searchListening) { searchRecognizer && searchRecognizer.stop(); return; }
+      if (!speechSupported()) { showMsg("Este navegador no permite buscar por voz."); return; }
+      const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+      searchRecognizer = new SR();
+      searchRecognizer.lang = "es-ES";
+      searchRecognizer.continuous = false;
+      searchRecognizer.interimResults = false;
+      searchRecognizer.onresult = (ev) => procesarBusquedaVoz(ev.results[0][0].transcript);
+      searchRecognizer.onend = () => { searchListening = false; if (btn) { btn.classList.remove("on"); btn.textContent = "🎤 Buscar contacto"; } };
+      searchRecognizer.onerror = () => { searchListening = false; if (btn) { btn.classList.remove("on"); btn.textContent = "🎤 Buscar contacto"; } };
+      searchRecognizer.start();
+      searchListening = true;
+      if (btn) { btn.classList.add("on"); btn.textContent = "⏹ Escuchando…"; }
     }
 
     // ---------- archivos ----------
@@ -610,6 +710,9 @@
       el("btn-cancelar").addEventListener("click", closeModal);
       el("btn-crear").addEventListener("click", crearContacto);
       el("modal-back").addEventListener("click", (e) => { if (e.target.id === "modal-back") closeModal(); });
+      el("btn-voice-search").addEventListener("click", toggleVoiceSearch);
+      el("voice-modal-close").addEventListener("click", closeVoiceModal);
+      el("voice-modal-back").addEventListener("click", (e) => { if (e.target.id === "voice-modal-back") closeVoiceModal(); });
       if (!url || !anonKey) { showMsg("Faltan credenciales en config.js"); return; }
       client = supabase.createClient(url, anonKey);
       await refresh(null);
