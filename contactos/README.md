@@ -25,6 +25,18 @@ Flujo: **＋ Nuevo contacto** → escribe o dicta notas sobre él/ella
 opcionalmente sube archivos → el contacto queda **"pendiente de
 sintetizar"** hasta que la rutina genera `resumen` y `etiquetas`.
 
+**🎤 Buscar contacto** (botón grande en la lista, junto a "＋ Nuevo
+contacto"): dices el nombre de alguien y la app lo busca entre tus
+contactos (por voz, Web Speech API, sin escribir nada).
+- Si encuentra un único contacto, abre su ficha directamente y **lee en
+  voz alta** (Speech Synthesis del navegador) el resumen, las
+  etiquetas, la energía y el consejo — las "pistas" de dónde salió esa
+  persona y qué tienes con ella.
+- Si hay varios que suenan parecido, muestra una lista corta para
+  elegir.
+- Si no encuentra a nadie con ese nombre, ofrece crear el contacto ahí
+  mismo con el nombre ya rellenado.
+
 URL: `https://pacosql.github.io/Train/contactos/`
 
 ## Tablas (prefijo `contactos_`)
