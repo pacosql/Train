@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Empleo</title>
+
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0b0d10" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Empleo" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" href="icons/icon-192.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&display=swap" />
+
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b0d10;
+      --glass: linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.025));
+      --line: rgba(255, 255, 255, 0.08);
+      --line-strong: rgba(255, 255, 255, 0.16);
+      --text: #f4f5f7;
+      --text-2: #9aa3ad;
+      --accent: #6ea8ff;
+      --accent-2: #a9cbff;
+      --accent-soft: rgba(110, 168, 255, 0.14);
+      --good: #43d391;
+      --good-soft: rgba(67, 211, 145, 0.14);
+      --bad: #ff5470;
+      --bad-soft: rgba(255, 84, 112, 0.12);
+      --mid: #f2b840;
+      --display: "Barlow Condensed", "Arial Narrow", "Helvetica Neue", -apple-system, sans-serif;
+      --body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      padding-top: env(safe-area-inset-top, 0px);
+    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0; background: var(--bg); color: var(--text); font-family: var(--body);
+      padding: 16px 16px calc(40px + env(safe-area-inset-bottom, 0px));
+      -webkit-font-smoothing: antialiased; line-height: 1.45;
+    }
+    body::before {
+      content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background: radial-gradient(70% 42% at 50% -6%, rgba(110, 168, 255, 0.16), transparent 70%);
+    }
+    .wrap { max-width: 560px; margin: 0 auto; }
+
+    .top-bar { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 4px; }
+    .brand { display: flex; align-items: center; gap: 8px; font-family: var(--display); font-size: 1.35rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; }
+    .brand-mark { width: 1.7rem; height: 1.7rem; border-radius: 9px; display: grid; place-items: center; font-size: 0.9rem; background: linear-gradient(135deg, var(--accent-2), var(--accent)); }
+    .sub { color: var(--text-2); font-size: 0.85rem; margin: 0 0 14px; }
+    .icon-btn { background: rgba(255, 255, 255, 0.06); border: 1px solid var(--line-strong); color: var(--text); border-radius: 12px; width: 40px; height: 40px; font-size: 1.1rem; cursor: pointer; display: grid; place-items: center; }
+    .icon-btn.spin { animation: spin 0.8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 12px; }
+    .tab {
+      font-family: var(--display); font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+      color: var(--text-2); background: rgba(255, 255, 255, 0.04); border: 1px solid var(--line); border-radius: 12px;
+      padding: 8px 2px; text-align: center; cursor: pointer; line-height: 1.1; user-select: none;
+    }
+    .tab .n { display: block; font-size: 1.3rem; color: var(--text); }
+    .tab.active { border-color: rgba(110, 168, 255, 0.5); background: var(--accent-soft); color: var(--accent); }
+    .tab.active .n { color: var(--accent-2); }
+
+    .filters { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+    .chip {
+      font-size: 0.8rem; padding: 6px 11px; border-radius: 999px; cursor: pointer; user-select: none;
+      border: 1px solid var(--line-strong); color: var(--text-2); background: rgba(255, 255, 255, 0.03);
+    }
+    .chip.on { color: var(--accent-2); background: var(--accent-soft); border-color: rgba(110, 168, 255, 0.55); }
+    .row2 { display: grid; grid-template-columns: 1fr auto; gap: 6px; margin-bottom: 12px; }
+    input[type=search], select {
+      width: 100%; background: rgba(255, 255, 255, 0.05); color: var(--text); border: 1px solid var(--line-strong);
+      border-radius: 12px; padding: 9px 12px; font-size: 0.9rem; font-family: inherit;
+    }
+    select { width: auto; }
+
+    .count { color: var(--text-2); font-size: 0.8rem; margin: 0 0 8px; }
+    .card { background: var(--glass); border: 1px solid var(--line); border-radius: 18px; padding: 14px 15px; margin-bottom: 10px; }
+    .card.new { border-color: rgba(110, 168, 255, 0.45); }
+    .card .emp { font-family: var(--display); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--accent); }
+    .card .pto { font-weight: 700; font-size: 1.05rem; margin: 2px 0 6px; line-height: 1.25; }
+    .badges { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 6px; }
+    .b { font-size: 0.72rem; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--line-strong); color: var(--text-2); white-space: nowrap; }
+    .b.remoto { color: var(--good); border-color: rgba(67, 211, 145, 0.5); background: var(--good-soft); font-weight: 700; }
+    .b.hibrido { color: var(--mid); border-color: rgba(242, 184, 64, 0.5); }
+    .b.nuevo { color: #fff; background: var(--accent); border-color: var(--accent); }
+    .meta { color: var(--text-2); font-size: 0.8rem; }
+    .resumen { font-size: 0.88rem; margin: 6px 0 0; color: #d5dae0; }
+    .acts { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 6px; margin-top: 10px; }
+    .acts a, .acts button {
+      display: grid; place-items: center; text-decoration: none; font: inherit; font-size: 0.88rem; font-weight: 600;
+      padding: 9px 6px; border-radius: 12px; cursor: pointer; border: 1px solid var(--line-strong); background: rgba(255, 255, 255, 0.05); color: var(--text);
+    }
+    .acts a { color: var(--accent-2); border-color: rgba(110, 168, 255, 0.45); }
+    .acts .like.on { background: var(--good-soft); color: var(--good); border-color: rgba(67, 211, 145, 0.6); }
+    .acts .dislike.on { background: var(--bad-soft); color: var(--bad); border-color: rgba(255, 84, 112, 0.6); }
+    .nota { margin-top: 8px; }
+    .nota textarea {
+      width: 100%; min-height: 38px; resize: vertical; background: rgba(255, 255, 255, 0.04); color: var(--text);
+      border: 1px solid var(--line); border-radius: 10px; padding: 7px 10px; font: inherit; font-size: 0.85rem;
+    }
+    .empty { text-align: center; color: var(--text-2); padding: 30px 10px; }
+    .msg { color: var(--bad); font-size: 0.85rem; min-height: 0; margin: 0 0 8px; }
+    .routines { margin-top: 18px; color: var(--text-2); font-size: 0.78rem; }
+    .routines div { padding: 3px 0; border-top: 1px solid var(--line); }
+    .build-id { text-align: center; font-size: 0.7rem; color: var(--text-2); margin-top: 20px; font-family: ui-monospace, monospace; }
+    .toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%) translateY(120px); background: #1b2230; border: 1px solid var(--line-strong); padding: 10px 14px; border-radius: 12px; font-size: 0.88rem; transition: transform 0.25s; display: flex; gap: 12px; align-items: center; }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+    .toast button { background: none; border: none; color: var(--accent-2); font: inherit; font-weight: 700; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top-bar">
+      <div class="brand"><span class="brand-mark">💼</span> Empleo</div>
+      <button class="icon-btn" id="btn-refresh" title="Recargar">↻</button>
+    </div>
+    <p class="sub">Partner Program / Partner Management en empresas de Data &amp; AI · España · remoto o híbrido</p>
+    <p class="msg" id="msg"></p>
+
+    <div class="tabs" id="tabs">
+      <div class="tab active" data-tab="pendiente"><span class="n" id="n-pendiente">–</span>Pendientes</div>
+      <div class="tab" data-tab="gusta"><span class="n" id="n-gusta">–</span>Me gustan</div>
+      <div class="tab" data-tab="no_gusta"><span class="n" id="n-no_gusta">–</span>No me gustan</div>
+      <div class="tab" data-tab="todas"><span class="n" id="n-todas">–</span>Todas</div>
+    </div>
+
+    <div class="filters" id="filters">
+      <span class="chip" data-f="remoto_claro">🟢 Remoto claro</span>
+      <span class="chip" data-f="remoto">Remoto</span>
+      <span class="chip" data-f="hibrido">Híbrido</span>
+      <span class="chip" data-f="nuevas">✨ Nuevas</span>
+    </div>
+    <div class="row2">
+      <input type="search" id="q" placeholder="Buscar empresa, puesto, ciudad…" />
+      <select id="sort">
+        <option value="encontrado">Más recientes</option>
+        <option value="empresa">Empresa A–Z</option>
+        <option value="remoto">Remoto primero</option>
+      </select>
+    </div>
+
+    <p class="count" id="count"></p>
+    <div id="list"></div>
+
+    <div class="routines" id="routines"></div>
+    <div class="build-id">build __BUILD_ID__</div>
+  </div>
+
+  <div class="toast" id="toast"><span id="toast-text"></span><button id="toast-undo">Deshacer</button></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="config.js"></script>
+  <script>
+    const { url, anonKey, tablePrefix } = window.EMPLEO_CONFIG;
+    const T_OFERTAS = tablePrefix + "ofertas";
+    const T_RUTINAS = tablePrefix + "rutinas";
+    const client = window.supabase.createClient(url, anonKey);
+    let ofertas = [];
+
+    const STATE_KEY = "empleo.estado";
+    const state = (() => {
+      const def = { tab: "pendiente", f: {}, q: "", sort: "encontrado" };
+      try { return { ...def, ...JSON.parse(localStorage.getItem(STATE_KEY) || "{}") }; } catch { return def; }
+    })();
+    const save = () => { try { localStorage.setItem(STATE_KEY, JSON.stringify(state)); } catch {} };
+
+    // Lo insertado desde la última visita se marca como nuevo durante esta apertura.
+    const VISIT_KEY = "empleo.ultimaVisita";
+    let prevVisit = null;
+    try { prevVisit = localStorage.getItem(VISIT_KEY); localStorage.setItem(VISIT_KEY, new Date().toISOString()); } catch {}
+    const isNew = (o) => !!prevVisit && o.created_at > prevVisit;
+
+    const $ = (id) => document.getElementById(id);
+    const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    const fmtDate = (d) => d ? new Date(d + (d.length === 10 ? "T00:00:00" : "")).toLocaleDateString("es-ES", { day: "numeric", month: "short", year: "numeric" }) : "";
+    const MOD = { remoto: "🏠 Remoto", hibrido: "🏢 Híbrido", presencial: "📍 Presencial", desconocido: "❔ Modalidad sin confirmar" };
+
+    async function load() {
+      $("btn-refresh").classList.add("spin");
+      $("msg").textContent = "";
+      const [{ data, error }, rut] = await Promise.all([
+        client.from(T_OFERTAS).select("*").eq("activa", true).order("encontrado_en", { ascending: false }).order("created_at", { ascending: false }),
+        client.from(T_RUTINAS).select("*").order("created_at", { ascending: false }).limit(5),
+      ]);
+      $("btn-refresh").classList.remove("spin");
+      if (error) { $("msg").textContent = "Error cargando ofertas: " + error.message; return; }
+      ofertas = data;
+      renderRoutines(rut.data || []);
+      render();
+    }
+
+    function filtered() {
+      const q = state.q.trim().toLowerCase();
+      let list = ofertas.filter((o) => state.tab === "todas" || o.decision === state.tab);
+      if (state.f.remoto_claro) list = list.filter((o) => o.remoto_claro);
+      if (state.f.remoto || state.f.hibrido) list = list.filter((o) => (state.f.remoto && o.modalidad === "remoto") || (state.f.hibrido && o.modalidad === "hibrido"));
+      if (state.f.nuevas) list = list.filter(isNew);
+      if (q) list = list.filter((o) => [o.empresa, o.puesto, o.ubicacion, o.resumen, o.fuente, o.sector, (o.etiquetas || []).join(" ")].join(" ").toLowerCase().includes(q));
+      const by = {
+        encontrado: (a, b) => (b.encontrado_en || "").localeCompare(a.encontrado_en || "") || b.created_at.localeCompare(a.created_at),
+        empresa: (a, b) => a.empresa.localeCompare(b.empresa, "es"),
+        remoto: (a, b) => (b.remoto_claro - a.remoto_claro) || ((b.modalidad === "remoto") - (a.modalidad === "remoto")) || (b.encontrado_en || "").localeCompare(a.encontrado_en || ""),
+      }[state.sort];
+      return list.sort(by);
+    }
+
+    function render() {
+      for (const k of ["pendiente", "gusta", "no_gusta"]) $("n-" + k).textContent = ofertas.filter((o) => o.decision === k).length;
+      $("n-todas").textContent = ofertas.length;
+      document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("active", t.dataset.tab === state.tab));
+      document.querySelectorAll(".chip").forEach((c) => c.classList.toggle("on", !!state.f[c.dataset.f]));
+      $("q").value = state.q; $("sort").value = state.sort;
+
+      const list = filtered();
+      $("count").textContent = `${list.length} oferta${list.length === 1 ? "" : "s"}`;
+      if (!list.length) {
+        $("list").innerHTML = `<div class="empty">${state.tab === "pendiente" ? "🎉 No hay ofertas pendientes de revisar." : "Nada por aquí con estos filtros."}</div>`;
+        return;
+      }
+      $("list").innerHTML = list.map(card).join("");
+    }
+
+    function card(o) {
+      const badges = [];
+      if (isNew(o)) badges.push(`<span class="b nuevo">Nueva</span>`);
+      if (o.remoto_claro) badges.push(`<span class="b remoto">🟢 100% REMOTO</span>`);
+      else badges.push(`<span class="b ${o.modalidad}">${MOD[o.modalidad] || o.modalidad}</span>`);
+      if (o.seniority) badges.push(`<span class="b">${esc(o.seniority)}</span>`);
+      if (o.sector) badges.push(`<span class="b">${esc(o.sector)}</span>`);
+      for (const e of o.etiquetas || []) badges.push(`<span class="b">#${esc(e)}</span>`);
+      const meta = [
+        o.ubicacion && "📍 " + esc(o.ubicacion),
+        "🔎 Encontrada " + fmtDate(o.encontrado_en),
+        o.fecha_publicacion && "Publicada " + fmtDate(o.fecha_publicacion),
+        o.fuente && "vía " + esc(o.fuente),
+      ].filter(Boolean).join(" · ");
+      return `<div class="card${isNew(o) ? " new" : ""}" data-id="${o.id}">
+        <div class="emp">${esc(o.empresa)}</div>
+        <div class="pto">${esc(o.puesto)}</div>
+        <div class="badges">${badges.join("")}</div>
+        <div class="meta">${meta}</div>
+        ${o.resumen ? `<p class="resumen">${esc(o.resumen)}</p>` : ""}
+        <div class="acts">
+          <a href="${esc(o.url)}" target="_blank" rel="noopener">Ver oferta ↗</a>
+          <button class="like${o.decision === "gusta" ? " on" : ""}" data-act="gusta">👍 Me gusta</button>
+          <button class="dislike${o.decision === "no_gusta" ? " on" : ""}" data-act="no_gusta">👎 No</button>
+        </div>
+        <div class="nota"><textarea placeholder="Nota (opcional)…" data-nota>${esc(o.nota || "")}</textarea></div>
+      </div>`;
+    }
+
+    let undo = null, toastTimer = null;
+    function toast(text, undoFn) {
+      $("toast-text").textContent = text;
+      undo = undoFn;
+      $("toast-undo").style.display = undoFn ? "" : "none";
+      $("toast").classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => $("toast").classList.remove("show"), 4000);
+    }
+    $("toast-undo").onclick = () => { if (undo) undo(); $("toast").classList.remove("show"); };
+
+    async function decide(id, decision) {
+      const o = ofertas.find((x) => x.id === id);
+      const prev = o.decision;
+      // Pulsar otra vez el mismo botón devuelve la oferta a pendientes.
+      const next = prev === decision ? "pendiente" : decision;
+      await setDecision(o, next);
+      const label = { gusta: "👍 Me gusta", no_gusta: "👎 No me gusta", pendiente: "↺ Devuelta a pendientes" }[next];
+      toast(`${label} · ${o.empresa}`, () => setDecision(o, prev));
+    }
+    async function setDecision(o, decision) {
+      const patch = { decision, decidido_en: decision === "pendiente" ? null : new Date().toISOString() };
+      Object.assign(o, patch);
+      render();
+      const { error } = await client.from(T_OFERTAS).update(patch).eq("id", o.id);
+      if (error) { $("msg").textContent = "No se pudo guardar: " + error.message; load(); }
+    }
+
+    $("list").addEventListener("click", (e) => {
+      const btn = e.target.closest("button[data-act]");
+      if (btn) decide(btn.closest(".card").dataset.id, btn.dataset.act);
+    });
+    $("list").addEventListener("change", async (e) => {
+      if (!e.target.matches("[data-nota]")) return;
+      const id = e.target.closest(".card").dataset.id;
+      const nota = e.target.value.trim() || null;
+      ofertas.find((x) => x.id === id).nota = nota;
+      const { error } = await client.from(T_OFERTAS).update({ nota }).eq("id", id);
+      toast(error ? "Error guardando nota" : "Nota guardada");
+    });
+    $("tabs").addEventListener("click", (e) => {
+      const t = e.target.closest(".tab"); if (!t) return;
+      state.tab = t.dataset.tab; save(); render(); window.scrollTo(0, 0);
+    });
+    $("filters").addEventListener("click", (e) => {
+      const c = e.target.closest(".chip"); if (!c) return;
+      state.f[c.dataset.f] = !state.f[c.dataset.f]; save(); render();
+    });
+    $("q").addEventListener("input", (e) => { state.q = e.target.value; save(); render(); });
+    $("sort").addEventListener("change", (e) => { state.sort = e.target.value; save(); render(); });
+    $("btn-refresh").onclick = load;
+
+    function renderRoutines(rows) {
+      if (!rows.length) { $("routines").innerHTML = ""; return; }
+      $("routines").innerHTML = "<div><b>Últimas búsquedas automáticas</b></div>" + rows.map((r) =>
+        `<div>${new Date(r.created_at).toLocaleString("es-ES", { dateStyle: "short", timeStyle: "short" })} · ${r.nuevas} nuevas${r.nota ? " · " + esc(r.nota) : ""}</div>`).join("");
+    }
+
+    load();
+    if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js");
+  </script>
+</body>
+</html>
