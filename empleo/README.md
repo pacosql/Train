@@ -1,47 +1,80 @@
 # 💼 Empleo
 
-Buscador personal de ofertas de **Partner Program / Partner Management**
-(Partner Manager, Partner Development, Alliances, Channel, Ecosystem,
-Partner Enablement…) en **empresas de Data & AI**, en **España**, en
-modalidad **remota o híbrida**. Cada oferta se marca como 👍 me gusta o
-👎 no me gusta y se filtra por remoto claro / remoto / híbrido / nuevas.
+Buscador personal de ofertas en España con énfasis en **remoto**:
+
+- **🤝 Partner**: Partner Program / Partner Management / Alliances /
+  Channel / Ecosystem / Partner Enablement.
+- **🧭 CTO / Dirección**: CTO, VP/Head/Director of Engineering, Data,
+  AI, Technology; Chief Data/AI Officer…
+
+Regla de selección:
+- **Remoto que admita España** → de **cualquier** empresa (todo lo que haya).
+- **Presencial / híbrido en España** → solo empresas de **Data & AI**.
+
+Cada oferta se marca 👍 me gusta, 👎 no me gusta o 🔁 revisar (con una
+nota: "el enlace no funciona", "confirmar si es remoto"…); la rutina lee
+esas notas, lo comprueba y contesta en el campo `respuesta`.
 
 URL: `https://pacosql.github.io/Train/empleo/`
 
 ## Tablas (Supabase, prefijo `empleo_`)
 
-- `empleo_ofertas`: una fila por oferta. `url` es única (evita
-  duplicados). Campos clave: `empresa`, `puesto`, `ubicacion`,
-  `modalidad` (`remoto|hibrido|presencial|desconocido`), `remoto_claro`
-  (true solo si la oferta dice explícitamente remoto para España),
-  `encontrado_en` (fecha en que se encontró), `fecha_publicacion`,
-  `fuente`, `sector`, `area`, `seniority`, `resumen`, `etiquetas`,
-  `decision` (`pendiente|gusta|no_gusta`), `nota`, `activa`.
-- `empleo_rutinas`: log de cada ejecución de la rutina (`nuevas`, `nota`).
+- `empleo_ofertas`: una fila por oferta. Campos clave: `empresa`,
+  `puesto`, `categoria` (`partner|direccion`), `empresa_data_ai`,
+  `ubicacion`, `modalidad` (`remoto|hibrido|presencial|desconocido`),
+  `remoto_claro` (dice explícitamente remoto en España), `url` (enlace 1,
+  única), `enlaces` (JSON `[{label,url}]`: enlace 1 = portal oficial si
+  existe, luego LinkedIn/agregadores), `encontrado_en`, `verificada_en`,
+  `fecha_publicacion`, `resumen`, `etiquetas`, `decision`
+  (`pendiente|gusta|no_gusta|revisar`), `nota` (del usuario),
+  `respuesta` (de la rutina), `activa`.
+- `empleo_empresas`: compañías vigiladas (`nombre`, `sector`, `data_ai`,
+  `ats`, `ats_token`, `portal_url`). Se editan en
+  `empleo/tools/empresas.json` y se sincronizan con upsert por `nombre`.
+- `empleo_rutinas`: log de cada ejecución (`nuevas`, `nota`).
 
-## Rutina de búsqueda (qué debe hacer cada ejecución)
+## Herramientas
 
-Regla de oro: **cada enlace debe ser la oferta real en el portal del
-empleador y estar abierta** (nada de agregadores ni ofertas caducadas).
+- `python3 empleo/tools/buscar.py > /tmp/candidatas.json` — portales
+  oficiales de las compañías de `empresas.json` (Greenhouse, Ashby,
+  Lever, Workable, SmartRecruiters, Workday, Microsoft, AWS) + LinkedIn
+  (España, ficha de cada oferta) + Remotive/Himalayas. Fusiona la misma
+  oferta vista en varios sitios en varios `enlaces`. Tarda ~15 min.
+- `python3 empleo/tools/guardar.py insertar /tmp/candidatas.json` —
+  inserta solo las nuevas (dedupe por URL o empresa+puesto) y añade
+  enlaces nuevos a las existentes.
+- `python3 empleo/tools/guardar.py revalidar` — desactiva las activas
+  cuyo enlace 1 ya no existe y pone `verificada_en` = hoy en las vivas.
+- `bash empleo/tools/sb.sh GET|POST|PATCH …` — REST genérico.
 
-1. Leer lo ya guardado y las decisiones tomadas:
-   `bash empleo/tools/sb.sh GET 'empleo_ofertas?select=id,empresa,puesto,url,decision,nota,activa'`.
-   Las 👍 y 👎 (y sus notas) orientan qué buscar más y qué evitar.
-2. Revalidar las activas: `curl -sL -A Mozilla/5.0 <url>`. Si da 404/410,
-   redirige a un listado o a una página de error, o ya no muestra el
-   puesto, marcarla `{"activa": false}`. Si sigue viva, actualizar
-   `verificada_en` a hoy.
-3. Buscar nuevas en los portales oficiales vía API:
-   `python3 empleo/tools/buscar.py > /tmp/candidatas.json` (Greenhouse,
-   Ashby, Lever, Workday, Microsoft y AWS de ~70 empresas de Data & AI). Leer
-   cada descripción y quedarse solo con roles de partners, alianzas,
-   canal o programa de partners en España o remotos que admitan España.
-4. Completar con búsqueda web para empresas sin API (Google Cloud, SAP,
-   Oracle, IBM, Mistral, Denodo, Nutanix, Cisco, Hitachi, consultoras de
-   datos…) y agregadores (LinkedIn, InfoJobs), pero guardar siempre la
-   URL del portal oficial tras abrirla y comprobarla.
-5. Insertar las nuevas (la `url` es única) con `encontrado_en` y
-   `verificada_en` = hoy, `decision` = `pendiente`, `remoto_claro` = true
-   solo si la oferta dice explícitamente remoto en España:
-   `bash empleo/tools/sb.sh POST empleo_ofertas /tmp/nuevas.json`.
-6. Registrar la ejecución: `POST empleo_rutinas` con `{"nuevas": N, "nota": "…"}`.
+## Rutina diaria (1:00, hora de Madrid)
+
+Regla de oro: **enlace 1 = la oferta real en el portal del empleador**
+siempre que exista; LinkedIn y agregadores como enlace 2, 3…
+
+1. `git pull` de `main` y trabajar en una rama propia.
+2. **Revisar lo que pidió el usuario**: leer
+   `empleo_ofertas?decision=eq.revisar&select=id,empresa,puesto,url,enlaces,nota`.
+   Para cada una, hacer lo que dice la nota (abrir enlaces, buscar la
+   oferta en el portal oficial, confirmar modalidad…), corregir los datos
+   (`enlaces`, `modalidad`, `activa`…), escribir en `respuesta` qué se ha
+   hecho (1-2 frases, con fecha) y devolverla a `decision=pendiente`.
+3. `python3 empleo/tools/guardar.py revalidar`.
+4. `python3 empleo/tools/buscar.py > /tmp/candidatas.json`.
+5. Completar a mano (WebSearch + curl) las compañías con `ats: "web"`
+   en `empresas.json` (Google Cloud, SAP, Oracle, IBM, Mistral, Denodo,
+   Nutanix, Cisco…) y búsquedas generales de "remoto España" para
+   Partner/Alliances/Channel y CTO/Head of Engineering/Data/AI. Añadir
+   lo encontrado al JSON de candidatas con sus `enlaces`.
+6. Leer las candidatas y descartar las que no encajen (roles de HR,
+   ingeniería individual, ventas junior, ubicación incompatible). Para las
+   que quedan, escribir `resumen` (1-2 frases en español: rol +
+   aclaraciones de ubicación/modalidad) y, si hace falta, corregir
+   `modalidad`/`remoto_claro`. Tener en cuenta los 👍/👎 y notas previos.
+7. `python3 empleo/tools/guardar.py insertar /tmp/candidatas.json`.
+8. Si se descubren compañías nuevas relevantes (Data & AI, o que
+   contratan en remoto en España), añadirlas a `empresas.json` (con su
+   ATS si lo tiene), hacer upsert en `empleo_empresas`, commit + merge a
+   `main` + push.
+9. Registrar la ejecución: `POST empleo_rutinas` con
+   `{"nuevas": N, "nota": "…"}`.
