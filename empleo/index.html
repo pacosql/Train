@@ -63,11 +63,11 @@
     .view-btn { font: inherit; font-weight: 700; font-size: 0.9rem; padding: 9px; border-radius: 12px; cursor: pointer; border: 1px solid var(--line-strong); background: rgba(255, 255, 255, 0.04); color: var(--text-2); }
     .view-btn.on { color: var(--accent-2); background: var(--accent-soft); border-color: rgba(110, 168, 255, 0.55); }
     .hidden { display: none !important; }
-    .tabs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 12px; }
+    .tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 12px; }
     .tab {
       font-family: var(--display); font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
       color: var(--text-2); background: rgba(255, 255, 255, 0.04); border: 1px solid var(--line); border-radius: 12px;
-      padding: 8px 2px; text-align: center; cursor: pointer; line-height: 1.1; user-select: none;
+      padding: 6px 2px; text-align: center; cursor: pointer; line-height: 1.1; user-select: none;
     }
     .tab .n { display: block; font-size: 1.3rem; color: var(--text); }
     .tab.active { border-color: rgba(110, 168, 255, 0.5); background: var(--accent-soft); color: var(--accent); }
@@ -101,14 +101,15 @@
     .links { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
     .links a { font-size: 0.82rem; font-weight: 600; text-decoration: none; color: var(--accent-2); border: 1px solid rgba(110, 168, 255, 0.45); border-radius: 10px; padding: 6px 10px; }
     .links a small { color: var(--text-2); font-weight: 400; }
-    .acts { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-top: 8px; }
+    .acts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; margin-top: 8px; }
     .acts a, .acts button {
-      display: grid; place-items: center; text-decoration: none; font: inherit; font-size: 0.88rem; font-weight: 600;
+      display: grid; place-items: center; text-decoration: none; font: inherit; font-size: 0.8rem; font-weight: 600; white-space: nowrap;
       padding: 9px 6px; border-radius: 12px; cursor: pointer; border: 1px solid var(--line-strong); background: rgba(255, 255, 255, 0.05); color: var(--text);
     }
     .acts a { color: var(--accent-2); border-color: rgba(110, 168, 255, 0.45); }
     .acts .like.on { background: var(--good-soft); color: var(--good); border-color: rgba(67, 211, 145, 0.6); }
     .acts .dislike.on { background: var(--bad-soft); color: var(--bad); border-color: rgba(255, 84, 112, 0.6); }
+    .acts .apply.on { background: rgba(110, 168, 255, 0.18); color: var(--accent-2); border-color: rgba(110, 168, 255, 0.7); }
     .acts .review.on { background: rgba(242, 184, 64, 0.14); color: var(--mid); border-color: rgba(242, 184, 64, 0.6); }
     .b.cat { color: var(--accent-2); border-color: rgba(110, 168, 255, 0.45); }
     .respuesta { margin-top: 6px; font-size: 0.82rem; color: var(--mid); border-left: 2px solid var(--mid); padding-left: 8px; }
@@ -152,6 +153,7 @@
       <div class="tab" data-tab="gusta"><span class="n" id="n-gusta">–</span>Me gustan</div>
       <div class="tab" data-tab="no_gusta"><span class="n" id="n-no_gusta">–</span>No me gustan</div>
       <div class="tab" data-tab="revisar"><span class="n" id="n-revisar">–</span>Revisar</div>
+      <div class="tab" data-tab="aplicada"><span class="n" id="n-aplicada">–</span>Aplicadas</div>
       <div class="tab" data-tab="todas"><span class="n" id="n-todas">–</span>Todas</div>
     </div>
 
@@ -261,7 +263,7 @@
       $("v-empresas").classList.toggle("hidden", state.view !== "empresas");
       $("n-empresas").textContent = empresas.length ? `(${empresas.length})` : "";
       renderEmpresas();
-      for (const k of ["pendiente", "gusta", "no_gusta", "revisar"]) $("n-" + k).textContent = ofertas.filter((o) => o.decision === k).length;
+      for (const k of ["pendiente", "gusta", "no_gusta", "revisar", "aplicada"]) $("n-" + k).textContent = ofertas.filter((o) => o.decision === k).length;
       $("n-todas").textContent = ofertas.length;
       document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("active", t.dataset.tab === state.tab));
       document.querySelectorAll(".chip").forEach((c) => c.classList.toggle("on", !!state.f[c.dataset.f]));
@@ -290,6 +292,7 @@
         "🔎 Encontrada " + fmtDate(o.encontrado_en),
         o.fecha_publicacion && "Publicada " + fmtDate(o.fecha_publicacion),
         o.verificada_en && "✔ abierta el " + fmtDate(o.verificada_en),
+        o.aplicada_en && "✅ Aplicada el " + fmtDate(o.aplicada_en.slice(0, 10)),
       ].filter(Boolean).join(" · ");
       return `<div class="card${isNew(o) ? " new" : ""}" data-id="${o.id}">
         <div class="emp">${esc(o.empresa)}</div>
@@ -302,6 +305,7 @@
           <button class="like${o.decision === "gusta" ? " on" : ""}" data-act="gusta">👍 Me gusta</button>
           <button class="dislike${o.decision === "no_gusta" ? " on" : ""}" data-act="no_gusta">👎 No</button>
           <button class="review${o.decision === "revisar" ? " on" : ""}" data-act="revisar">🔁 Revisar</button>
+          <button class="apply${o.decision === "aplicada" ? " on" : ""}" data-act="aplicada">✅ Aplicar</button>
         </div>
         <div class="nota"><textarea placeholder="${o.decision === "revisar" ? "¿Qué reviso? (p. ej. el enlace no funciona, confirmar si es remoto…)" : "Nota (opcional)…"}" data-nota>${esc(o.nota || "")}</textarea></div>
         ${o.respuesta ? `<div class="respuesta">🤖 ${esc(o.respuesta)}</div>` : ""}
@@ -346,14 +350,16 @@
     async function decide(id, decision) {
       const o = ofertas.find((x) => x.id === id);
       const prev = o.decision;
-      // Pulsar otra vez el mismo botón devuelve la oferta a pendientes.
-      const next = prev === decision ? "pendiente" : decision;
+      // Pulsar otra vez el mismo botón devuelve la oferta a pendientes
+      // (o a "me gusta" si se desmarca "aplicar").
+      const next = prev === decision ? (decision === "aplicada" ? "gusta" : "pendiente") : decision;
       await setDecision(o, next);
-      const label = { gusta: "👍 Me gusta", no_gusta: "👎 No me gusta", revisar: "🔁 A revisar — deja una nota y la rutina la mira", pendiente: "↺ Devuelta a pendientes" }[next];
+      const label = { gusta: "👍 Me gusta", no_gusta: "👎 No me gusta", revisar: "🔁 A revisar — deja una nota y la rutina la mira", aplicada: "✅ Aplicada", pendiente: "↺ Devuelta a pendientes" }[next];
       toast(`${label} · ${o.empresa}`, () => setDecision(o, prev));
     }
     async function setDecision(o, decision) {
-      const patch = { decision, decidido_en: decision === "pendiente" ? null : new Date().toISOString() };
+      const now = new Date().toISOString();
+      const patch = { decision, decidido_en: decision === "pendiente" ? null : now, aplicada_en: decision === "aplicada" ? (o.aplicada_en || now) : null };
       Object.assign(o, patch);
       render();
       const { error } = await client.from(T_OFERTAS).update(patch).eq("id", o.id);

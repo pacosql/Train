@@ -75,7 +75,7 @@ def get(url, data=None, headers=None, raw=False, tries=3):
 
 
 def text(s, n=4000):
-    s = re.sub(r"<[^>]+>", " ", html.unescape(s or ""))
+    s = re.sub(r"<[^>]+>", " ", html.unescape(html.unescape(s or "")))
     return re.sub(r"\s+", " ", s).strip()[:n]
 
 
