@@ -21,19 +21,27 @@ URL: `https://pacosql.github.io/Train/empleo/`
 
 ## Rutina de búsqueda (qué debe hacer cada ejecución)
 
-1. Leer las URLs y empresas ya guardadas, y las decisiones tomadas:
-   `bash empleo/tools/sb.sh GET 'empleo_ofertas?select=empresa,puesto,url,decision,nota'`.
+Regla de oro: **cada enlace debe ser la oferta real en el portal del
+empleador y estar abierta** (nada de agregadores ni ofertas caducadas).
+
+1. Leer lo ya guardado y las decisiones tomadas:
+   `bash empleo/tools/sb.sh GET 'empleo_ofertas?select=id,empresa,puesto,url,decision,nota,activa'`.
    Las 👍 y 👎 (y sus notas) orientan qué buscar más y qué evitar.
-2. Buscar ofertas nuevas en los portales oficiales (Microsoft, Google
-   Cloud, AWS, Oracle, IBM, SAP, Salesforce, NVIDIA, Anthropic, OpenAI,
-   Mistral, Cohere, Hugging Face, ElevenLabs, Databricks, Snowflake,
-   Confluent, MongoDB, Elastic, Dataiku, Informatica, Qlik, Fivetran,
-   dbt Labs, Collibra, Denodo, Stratio, Palantir, Datadog, Celonis…) y en
-   agregadores (LinkedIn, Indeed, Glassdoor, InfoJobs, Welcome to the
-   Jungle, Builtin…). Nunca inventar URLs: solo ofertas vistas de verdad.
-3. Insertar solo las que no existan (por `url`), con
-   `encontrado_en` = hoy y `decision` = `pendiente`:
-   `bash empleo/tools/sb.sh POST empleo_ofertas /tmp/oferta.json`
-   (acepta un array JSON).
-4. Si una oferta ya guardada ha cerrado, marcarla `activa=false` con PATCH.
-5. Registrar la ejecución: `POST empleo_rutinas` con `{"nuevas": N, "nota": "…"}`.
+2. Revalidar las activas: `curl -sL -A Mozilla/5.0 <url>`. Si da 404/410,
+   redirige a un listado o a una página de error, o ya no muestra el
+   puesto, marcarla `{"activa": false}`. Si sigue viva, actualizar
+   `verificada_en` a hoy.
+3. Buscar nuevas en los portales oficiales vía API:
+   `python3 empleo/tools/buscar.py > /tmp/candidatas.json` (Greenhouse,
+   Ashby, Lever, Workday, Microsoft y AWS de ~70 empresas de Data & AI). Leer
+   cada descripción y quedarse solo con roles de partners, alianzas,
+   canal o programa de partners en España o remotos que admitan España.
+4. Completar con búsqueda web para empresas sin API (Google Cloud, SAP,
+   Oracle, IBM, Mistral, Denodo, Nutanix, Cisco, Hitachi, consultoras de
+   datos…) y agregadores (LinkedIn, InfoJobs), pero guardar siempre la
+   URL del portal oficial tras abrirla y comprobarla.
+5. Insertar las nuevas (la `url` es única) con `encontrado_en` y
+   `verificada_en` = hoy, `decision` = `pendiente`, `remoto_claro` = true
+   solo si la oferta dice explícitamente remoto en España:
+   `bash empleo/tools/sb.sh POST empleo_ofertas /tmp/nuevas.json`.
+6. Registrar la ejecución: `POST empleo_rutinas` con `{"nuevas": N, "nota": "…"}`.
