@@ -242,6 +242,7 @@
         "🔎 Encontrada " + fmtDate(o.encontrado_en),
         o.fecha_publicacion && "Publicada " + fmtDate(o.fecha_publicacion),
         o.fuente && "vía " + esc(o.fuente),
+        o.verificada_en && "✔ abierta el " + fmtDate(o.verificada_en),
       ].filter(Boolean).join(" · ");
       return `<div class="card${isNew(o) ? " new" : ""}" data-id="${o.id}">
         <div class="emp">${esc(o.empresa)}</div>
