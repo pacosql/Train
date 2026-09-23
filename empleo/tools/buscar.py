@@ -39,8 +39,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 EMPRESAS = json.load(open(os.path.join(HERE, "empresas.json")))
 
 PARTNER = re.compile(r"partner|alliance|channel|ecosystem|reseller|\bGSI\b|system integrator|\bISV\b", re.I)
-PARTNER_NO = re.compile(r"business partner|people partner|hr partner|talent|recruit|\bHR\b|finance partner|payroll|design partner|accountant|counsel|legal|engineer|developer|architect|scientist|\bSDR\b|sales development rep|marketing channels?|growth marketing|channel sales representative|product manager|funding|membership|client partner|partner funding|delivery partner|partner site|partner operations analyst", re.I)
-LEAD = re.compile(r"\bCTO\b|chief technology|chief (data|ai|artificial intelligence|digital|product and technology|information) officer|\bCDO\b|\bCAIO\b|\bVP\b.{0,20}(engineering|technology|data|ai|machine learning|platform)|vice president.{0,20}(engineering|technology|data|ai)|head of (engineering|technology|data|ai|artificial intelligence|machine learning|ml|platform|r&d)|(engineering|technology|data|ai) director|director.{0,10}(of )?(engineering|technology|data|ai|machine learning)|director de (tecnolog|ingenier|datos|ia\b)|responsable de (tecnolog|ingenier|datos)", re.I)
+PARTNER_NO = re.compile(r"business partner|people partner|hr partner|talent|recruit|\bHR\b|finance partner|payroll|design partner|accountant|counsel|legal|engineer\b|developer|scientist|\bSDR\b|sales development rep|marketing channels?|growth marketing|channel sales representative|product manager|funding|membership|client partner|partner funding|delivery partner|partner site|partner operations analyst|people operations|customer success partner|client success partner|care partner|junior partner|m&a|language|resource partner|customer care|coordinator|influencer|creator|omnichannel|technical lead|health partnership|student|physicist|product success|sales partner –|staffing|sponsorship|care representative|partner success manager ii", re.I)
+LEAD = re.compile(r"\bCTO\b|chief technology|chief (data|ai|artificial intelligence|digital|product and technology|information) officer|\bCDO\b|\bCAIO\b|\bVP\b.{0,20}(engineering|technology|data|ai|machine learning|platform)|vice president.{0,20}(engineering|technology|data|ai)|head of (engineering|technology|data|ai|artificial intelligence|machine learning|ml|platform|r&d)|(engineering|technology|data|ai) director|director.{0,40}(engineering|technology|data|ai\b|machine learning|platform)|director de (tecnolog|ingenier|datos|ia\b)|responsable de (tecnolog|ingenier|datos)", re.I)
 LEAD_NO = re.compile(r"intern|becari|junior|assistant|recruit|talent|account executive|sales engineer", re.I)
 SPAIN = re.compile(r"spain|españa|espana|madrid|barcelona|valencia|m[aá]laga|sevilla|seville|bilbao|zaragoza|alicante|iberia|\bESP\b", re.I)
 EUROPE = re.compile(r"emea|europe|european union|\beu\b|southern europe|iberia|cet\b|anywhere|worldwide|global", re.I)
@@ -96,7 +96,7 @@ def modalidad(loc, desc, workplace=None):
         return "hibrido"
     if FULL_REMOTE_ES.search(desc):
         return "remoto"
-    if EUROPE.search(loc) and REMOTE.search(desc) and not HYBRID.search(desc):
+    if (EUROPE.search(loc) or SPAIN.search(loc)) and REMOTE.search(desc) and not HYBRID.search(desc):
         return "remoto"
     if HYBRID.search(desc):
         return "hibrido"
@@ -427,6 +427,8 @@ def main():
         log(f"[{nombre}] {len(r)} con título válido ({time.time() - t:.0f}s)")
         cands += r
 
+    if os.environ.get("RAW_OUT"):
+        json.dump(cands, open(os.environ["RAW_OUT"], "w"), ensure_ascii=False)
     ok = [o for o in (evaluar(dict(o)) for o in cands) if o]
     # Fusiona la misma oferta vista en varios sitios -> varios enlaces.
     merged = {}
