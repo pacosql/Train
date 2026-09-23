@@ -120,7 +120,9 @@ def evaluar(o):
     if not (remote_eu or (in_spain and data_ai)):
         return None
     o.update(categoria=cat, modalidad=mod, empresa_data_ai=bool(data_ai),
-             remoto_claro=bool(mod == "remoto" and (in_spain or re.search(r"spain|españa", desc, re.I))))
+             remoto_claro=bool(mod == "remoto" and (in_spain or re.search(r"spain|españa", desc, re.I))
+                               and (REMOTE.search(loc) or REMOTE.search(o["puesto"]) or FULL_REMOTE_ES.search(desc)
+                                    or (o.get("workplace") or "").lower() == "remote")))
     return o
 
 
