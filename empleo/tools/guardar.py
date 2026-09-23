@@ -44,26 +44,39 @@ def norm(s):
     return re.sub(r"[^a-z0-9]", "", (s or "").lower())
 
 
+def nurl(u):
+    """URL comparable: sin esquema, idioma de Workday, parámetros utm ni barra final."""
+    u = re.sub(r"^https?://(www\.)?", "", u or "").split("#")[0]
+    u = re.sub(r"[?&]utm_[^&]*", "", u).rstrip("/?&")
+    return re.sub(r"/[a-z]{2}-[A-Z]{2}/", "/", u).lower()
+
+
+def misma(a_emp, a_pto, b_emp, b_pto):
+    """Misma empresa (prefijo) y mismo puesto (uno contiene al otro)."""
+    ea, eb, pa, pb = norm(a_emp)[:6], norm(b_emp)[:6], norm(a_pto), norm(b_pto)
+    return ea == eb and len(min(pa, pb, key=len)) >= 8 and (pa.startswith(pb) or pb.startswith(pa))
+
+
 def insertar(path):
     cands = json.load(open(path))
     rows = api("GET", "empleo_ofertas?select=id,empresa,puesto,url,enlaces")
-    by_url, by_key = {}, {}
+    by_url = {}
     for r in rows:
         for l in (r.get("enlaces") or []) + [{"url": r["url"]}]:
-            by_url[l["url"]] = r
-        by_key[norm(r["empresa"])[:12] + "|" + norm(r["puesto"])[:40]] = r
+            by_url[nurl(l["url"])] = r
     nuevas, ampliadas = [], 0
     for c in cands:
         enl = c.get("enlaces") or [{"label": c.get("fuente", "Oferta"), "url": c["url"]}]
-        ex = next((by_url[l["url"]] for l in enl if l["url"] in by_url), None) \
-            or by_key.get(norm(c["empresa"])[:12] + "|" + norm(c["puesto"])[:40])
+        ex = next((by_url[nurl(l["url"])] for l in enl if nurl(l["url"]) in by_url), None) \
+            or next((r for r in rows if misma(r["empresa"], r["puesto"], c["empresa"], c["puesto"])), None)
         if ex:
-            have = {l["url"] for l in ex.get("enlaces") or []}
-            extra = [l for l in enl if l["url"] not in have and l["url"] != ex["url"]]
+            have = {nurl(l["url"]) for l in ex.get("enlaces") or []} | {nurl(ex["url"])}
+            extra = [l for l in enl if nurl(l["url"]) not in have]
             if extra:
                 ex["enlaces"] = (ex.get("enlaces") or []) + extra
-                api("PATCH", f"empleo_ofertas?id=eq.{ex['id']}", {"enlaces": ex["enlaces"]}, "return=minimal")
-                ampliadas += 1
+                if ex.get("id"):
+                    api("PATCH", f"empleo_ofertas?id=eq.{ex['id']}", {"enlaces": ex["enlaces"]}, "return=minimal")
+                    ampliadas += 1
             continue
         row = {k: c.get(k) for k in COLS if c.get(k) is not None}
         row["url"] = enl[0]["url"]
@@ -76,9 +89,17 @@ def insertar(path):
         row.update(encontrado_en=HOY, verificada_en=HOY, decision="pendiente", activa=True,
                    etiquetas=row.get("etiquetas") or [])
         nuevas.append(row)
+        rows.append(row)
         for l in enl:
-            by_url[l["url"]] = row
-        by_key[norm(row["empresa"])[:12] + "|" + norm(row["puesto"])[:40]] = row
+            by_url[nurl(l["url"])] = row
+    keys = set(COLS) | {"encontrado_en", "verificada_en", "decision", "activa"}
+    nuevas = [{k: r.get(k) for k in keys} for r in nuevas]
+    for r in nuevas:
+        r["etiquetas"] = r["etiquetas"] or []
+        r["remoto_claro"] = bool(r["remoto_claro"])
+        r["empresa_data_ai"] = r["empresa_data_ai"] if r["empresa_data_ai"] is not None else True
+        r["categoria"] = r["categoria"] or "partner"
+        r["modalidad"] = r["modalidad"] or "desconocido"
     for i in range(0, len(nuevas), 100):
         api("POST", "empleo_ofertas", nuevas[i:i + 100], "return=minimal")
     print(json.dumps({"nuevas": len(nuevas), "ampliadas": ampliadas}))

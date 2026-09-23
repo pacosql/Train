@@ -96,6 +96,8 @@ def modalidad(loc, desc, workplace=None):
         return "hibrido"
     if FULL_REMOTE_ES.search(desc):
         return "remoto"
+    if EUROPE.search(loc) and REMOTE.search(desc) and not HYBRID.search(desc):
+        return "remoto"
     if HYBRID.search(desc):
         return "hibrido"
     if w in ("onsite", "on-site") or ONSITE.search(loc):
@@ -285,23 +287,33 @@ LI_QUERIES = [
     "CTO", "chief technology officer", "VP engineering", "head of engineering", "director of engineering",
     "head of data", "head of AI", "chief data officer", "head of machine learning", "director de tecnología",
     "partner manager remote", "CTO remote", "head of engineering remote", "partnerships remote",
+    "responsable de partners", "gerente de canal", "director de alianzas", "director técnico",
+    "responsable de alianzas", "jefe de ingeniería", "director de ingeniería", "channel account manager",
+    "partner account manager", "partner sales", "alliances", "VP of engineering", "fractional CTO",
+    "head of data science", "director de datos", "head of platform",
 ]
+LI_REMOTE_EU = ["partner manager", "partnerships", "alliances", "channel manager", "CTO",
+                "head of engineering", "VP engineering", "director of engineering", "head of data", "head of AI"]
 
 
 def linkedin():
     found = {}
-    for q in LI_QUERIES:
-        for start in range(0, 200, 25):
+    busquedas = [(q, {"location": "Spain"}) for q in LI_QUERIES] + \
+                [(q, {"location": "European Union", "f_WT": "2"}) for q in LI_REMOTE_EU]
+    for q, extra in busquedas:
+        vacias = 0
+        for start in range(0, 400, 10):
             try:
                 s = get("https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?"
-                        + urllib.parse.urlencode({"keywords": q, "location": "Spain", "start": start}), raw=True)
+                        + urllib.parse.urlencode({"keywords": q, "start": start, **extra}), raw=True)
             except Exception as ex:
-                log("[aviso] LinkedIn", q, ex)
-                time.sleep(10)
-                break
+                log("[aviso] LinkedIn", q, start, ex)
+                time.sleep(20)
+                continue
             cards = s.split("<li>")[1:]
             if not cards:
                 break
+            nuevos = 0
             for c in cards:
                 t = re.search(r'base-search-card__title">\s*(.*?)\s*<', c, re.S)
                 co = re.search(r'base-search-card__subtitle">.*?>\s*(.*?)\s*<', c, re.S)
@@ -314,10 +326,17 @@ def linkedin():
                 if not categoria(title):
                     continue
                 jid = re.search(r"(\d+)$", u.group(1)).group(1)
+                if jid in found:
+                    continue
+                nuevos += 1
                 found[jid] = dict(puesto=title, empresa=html.unescape(co.group(1)).strip(),
                                   ubicacion=html.unescape(l.group(1)).strip() if l else "",
                                   url=u.group(1).replace("es.linkedin.com", "www.linkedin.com"),
                                   fecha=d.group(1) if d else None, fuente="LinkedIn", jid=jid)
+            # corta cuando varias páginas seguidas no aportan títulos válidos nuevos
+            vacias = vacias + 1 if not nuevos else 0
+            if vacias >= 4:
+                break
             time.sleep(1.2)
     log(f"[li] {len(found)} ofertas en listados; leyendo fichas…")
 
@@ -370,13 +389,20 @@ def remotive():
 
 def himalayas():
     out = []
-    for q in ("partner", "alliances", "channel", "CTO", "head of engineering", "VP engineering", "head of data"):
+    for q in ("partner", "partnerships", "alliances", "channel", "ecosystem", "CTO", "chief technology",
+              "head of engineering", "VP engineering", "director of engineering", "head of data", "head of AI"):
         try:
-            d = get("https://himalayas.app/jobs/api/search?country=ES&q=" + urllib.parse.quote(q))
+            jobs = []
+            for off in range(0, 300, 20):
+                d = get(f"https://himalayas.app/jobs/api/search?country=ES&page={off // 20 + 1}&q=" + urllib.parse.quote(q))
+                jobs += d.get("jobs", [])
+                if off + 20 >= d.get("totalCount", 0):
+                    break
+                time.sleep(0.5)
         except Exception as ex:
             log("[aviso] Himalayas", ex)
             continue
-        for j in d.get("jobs", []):
+        for j in jobs:
             locs = ", ".join(j.get("locationRestrictions") or []) or "Worldwide"
             out.append(dict(puesto=j["title"], empresa=j.get("companyName", ""), ubicacion=f"Remoto ({locs})",
                             url=j.get("applicationLink") or j.get("guid"), workplace="remote",
