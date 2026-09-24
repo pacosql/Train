@@ -6,7 +6,7 @@ cuadrado redondeado y en círculo, el favicon a 40 y 20 px y el wordmark
 «Mates 10». El usuario marca 👎 No · 👍 Me gusta · 🔁 Otra (quiere otra
 versión) · ⭐ Final, y puede **comentar escribiendo, dictando o grabando
 audio**. Cada 5 minutos una rutina mantiene **50 diseños por decidir** y
-usa los comentarios para crear versiones nuevas.
+usa los comentarios para crear versiones nuevas en unos minutos.
 
 Estilo de partida: minimalista, tipo Anthropic (tipografía geométrica
 gruesa, negro/blanco/crema, pocos elementos), a partir de las pruebas
@@ -66,11 +66,18 @@ lo enseña arriba («🧠 Lo que he aprendido de tus gustos»).
 
 - `tools/sb.sh GET|POST|PATCH <ruta> [fichero.json]`: REST de Supabase sin escribir la key.
 - `tools/estado.sh`: ¿hay trabajo? (código 0 sí, 1 no).
+- `tools/esperar.sh <fin ISO>`: espera (mirando cada minuto) hasta que haya trabajo o llegue la hora de fin.
 - `tools/generar.js specs.json > filas.json`: specs → filas (formato documentado en el propio fichero).
 - `tools/preview.js [filas.json]`: renderiza la app real en Chromium con esas filas añadidas y deja capturas en `/tmp/logos-preview/` (`sheet-N.png` = 12 tarjetas por hoja). **Mirarlas siempre antes de insertar.**
 - `test/smoke.js`: prueba de humo (vota, deshace, exporta un PNG).
 
-## Rutina «Logos: 50 por decidir» (cada 5 minutos, sesión nueva)
+## Rutina «Logos: 50 por decidir» (vigila de continuo, sesión nueva cada hora)
+
+Las rutinas no pueden dispararse más de una vez por hora, así que cada
+sesión horaria se queda **55 minutos vigilando**: tras cada pasada lanza
+`tools/esperar.sh <fin>` en segundo plano (comprueba `estado.sh` cada
+minuto) y vuelve a trabajar en cuanto haya algo. El usuario ve respuesta a
+sus votos y comentarios en 1-5 minutos.
 
 1. `bash logos/tools/estado.sh`. Si sale con código 1 (ya hay 50 por
    decidir, no hay comentarios nuevos ni 🔁, o hay otra ejecución en
