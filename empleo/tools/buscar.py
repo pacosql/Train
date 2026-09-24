@@ -44,7 +44,7 @@ def _empresas():
         cfg = open(os.path.join(HERE, "..", "config.js")).read()
         key = re.search(r'eyJ[^"]*', cfg).group(0)
         url = re.search(r"https://[a-z0-9]*\.supabase\.co", cfg).group(0)
-        req = urllib.request.Request(url + "/rest/v1/empleo_empresas?select=nombre,sector,data_ai,ats,ats_token,portal_url&activa=eq.true",
+        req = urllib.request.Request(url + "/rest/v1/empleo_empresas?select=nombre,sector,data_ai,top,ats,ats_token,portal_url&activa=eq.true",
                                      headers={"apikey": key, "Authorization": "Bearer " + key})
         with urllib.request.urlopen(req, timeout=30) as r:
             rows = json.load(r)
@@ -60,7 +60,7 @@ EMPRESAS = _empresas()
 PARTNER = re.compile(r"partner|alliance|channel|ecosystem|reseller|\bGSI\b|system integrator|\bISV\b", re.I)
 PARTNER_NO = re.compile(r"business partner|people partner|hr partner|talent|recruit|\bHR\b|finance partner|payroll|design partner|accountant|counsel|legal|engineer\b|developer|scientist|\bSDR\b|sales development rep|marketing channels?|growth marketing|channel sales representative|product manager|funding|membership|client partner|partner funding|delivery partner|partner site|partner operations analyst|people operations|customer success partner|client success partner|care partner|junior partner|m&a|language|resource partner|customer care|coordinator|influencer|creator|omnichannel|technical lead|health partnership|student|physicist|product success|sales partner –|staffing|sponsorship|care representative|partner success manager ii", re.I)
 LEAD = re.compile(r"\bCTO\b|chief technology|chief (data|ai|artificial intelligence|digital|product and technology|information) officer|\bCDO\b|\bCAIO\b|\bVP\b.{0,20}(engineering|technology|data|ai|machine learning|platform)|vice president.{0,20}(engineering|technology|data|ai)|head of (engineering|technology|data|ai|artificial intelligence|machine learning|ml|platform|r&d)|(engineering|technology|data|ai) director|director.{0,40}(engineering|technology|data|ai\b|machine learning|platform)|director de (tecnolog|ingenier|datos|ia\b)|responsable de (tecnolog|ingenier|datos)", re.I)
-LEAD_NO = re.compile(r"intern|becari|junior|assistant|recruit|talent|account executive|sales engineer", re.I)
+LEAD_NO = re.compile(r"intern|becari|junior|assistant|recruit|talent|account executive|sales engineer|data ?center|facilities|construction|operations", re.I)
 SPAIN = re.compile(r"spain|españa|espana|madrid|barcelona|valencia|m[aá]laga|sevilla|seville|bilbao|zaragoza|alicante|iberia|\bESP\b", re.I)
 EUROPE = re.compile(r"emea|europe|european union|\beu\b|southern europe|iberia|cet\b|anywhere|worldwide|global", re.I)
 REMOTE = re.compile(r"remote|remoto|teletrabajo|en remoto|work from home|distributed|home[- ]based|home office", re.I)
@@ -68,8 +68,15 @@ FULL_REMOTE_ES = re.compile(r"(remote|remoto|teletrabajo)[^.\n]{0,40}(spain|espa
 HYBRID = re.compile(r"hybrid|híbrid|hibrid", re.I)
 ONSITE = re.compile(r"on[- ]?site|in[- ]office|presencial", re.I)
 
+DEVREL = re.compile(r"developer relations|devrel|developer advocate|advocate|evangelist|developer experience|developer community|community (manager|lead).{0,20}(developer|technical)|developer marketing|technical community", re.I)
+ARQ = re.compile(r"solutions? architect|solution engineer|solutions engineer|sales engineer|customer engineer|pre-?sales|field cto|forward[- ]deployed|technical account manager|cloud solution architect|ai architect|technical specialist|solution specialist.{0,30}(technical|architect)|arquitecto de soluciones|ingeniero de preventa|preventa", re.I)
+SALES = re.compile(r"account executive|account manager|account director|enterprise sales|strategic account|sales (director|manager|executive|lead|specialist)|business development (manager|director|lead|executive)|go[- ]to[- ]market|\bGTM\b|country (manager|lead|director)|territory manager|client director|commercial (director|lead|manager)|director comercial|ejecutivo de cuentas|gerente de cuentas|digital (solution|sales)|solution (area )?specialist|specialist.{0,20}(sales|azure|ai|cloud|data)|industry (lead|director|executive)|head of sales|vp.{0,10}sales|sales leader|sales representative|adoption (lead|manager|specialist)", re.I)
+NEW_NO = re.compile(r"intern|becari|junior|graduate|trainee|\bSDR\b|\bBDR\b|sales development|inside sales|sales operations|sales ops|deal desk|enablement specialist|recruit|talent|support engineer|customer support|software engineer|site reliability|data center|technician|payroll|accounts? (payable|receivable)|finance", re.I)
+TOP_NAMES = set()
+
 UA = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/126 Safari/537.36"}
 DATA_AI_NAMES = {e["nombre"].lower() for e in EMPRESAS if e["data_ai"]}
+TOP_NAMES = {e["nombre"].lower() for e in EMPRESAS if e.get("top")}
 DATA_AI_HINT = re.compile(r"\bAI\b|artificial intelligence|inteligencia artificial|machine learning|\bdata\b|datos|analytics|\bLLM|genai|cloud", re.I)
 
 
@@ -99,10 +106,21 @@ def text(s, n=4000):
 
 
 def categoria(title):
+    """partner | direccion | devrel | arquitecto | sales (o None)."""
     if LEAD.search(title) and not LEAD_NO.search(title):
         return "direccion"
+    if re.search(r"partner solutions? architect|partner (sales|technical) (engineer|architect)", title, re.I):
+        return "partner"
     if PARTNER.search(title) and not PARTNER_NO.search(title):
         return "partner"
+    if NEW_NO.search(title):
+        return None
+    if DEVREL.search(title):
+        return "devrel"
+    if ARQ.search(title):
+        return "arquitecto"
+    if SALES.search(title):
+        return "sales"
     return None
 
 
@@ -136,9 +154,19 @@ def evaluar(o):
     data_ai = o.get("empresa_data_ai")
     if data_ai is None:
         data_ai = o["empresa"].lower() in DATA_AI_NAMES
-    if not (remote_eu or (in_spain and data_ai)):
+    top = o.get("empresa_top")
+    if top is None:
+        top = o["empresa"].lower() in TOP_NAMES
+    if cat in ("partner", "direccion"):
+        # Remoto que admita España: cualquier empresa. En España no remoto: solo Data & AI.
+        ok = remote_eu or (in_spain and data_ai)
+    else:
+        # Sales / Solution Architect / DevRel: en las TOP todo lo de España + remoto;
+        # en el resto de Data & AI, solo remoto que admita España.
+        ok = (top and (in_spain or remote_eu)) or (data_ai and remote_eu)
+    if not ok:
         return None
-    o.update(categoria=cat, modalidad=mod, empresa_data_ai=bool(data_ai),
+    o.update(categoria=cat, modalidad=mod, empresa_data_ai=bool(data_ai), empresa_top=bool(top),
              remoto_claro=bool(mod == "remoto" and (in_spain or re.search(r"spain|españa", desc, re.I))
                                and (REMOTE.search(loc) or REMOTE.search(o["puesto"]) or FULL_REMOTE_ES.search(desc)
                                     or (o.get("workplace") or "").lower() == "remote")))
@@ -219,8 +247,12 @@ def workday(e):
     host, site = e["ats_token"].split("/", 1)
     api = f"https://{host}/wday/cxs/{host.split('.')[0]}/{site}"
     out, seen = [], set()
-    for q in ["partner Spain", "partner EMEA", "partner remote", "alliances", "channel Spain", "channel EMEA",
-              "ecosystem", "CTO", "head of engineering", "director engineering Spain", "head of data", "VP engineering"]:
+    qs = ["partner Spain", "partner EMEA", "partner remote", "alliances", "channel Spain", "channel EMEA",
+          "ecosystem", "CTO", "head of engineering", "director engineering Spain", "head of data", "VP engineering"]
+    if e.get("top"):
+        qs += ["Spain", "Madrid", "Barcelona", "Spain Remote", "solutions architect", "developer relations",
+               "developer advocate", "account manager Spain", "sales Spain", "sales EMEA remote", "architect EMEA remote"]
+    for q in qs:
         body = json.dumps({"appliedFacets": {}, "limit": 20, "offset": 0, "searchText": q}).encode()
         for j in get(api + "/jobs", body, {"Content-Type": "application/json"}).get("jobPostings", []):
             url = f"https://{host}/{site}{j.get('externalPath', '')}"
@@ -241,43 +273,94 @@ def workday(e):
     return out
 
 
-def microsoft(e):
+def eightfold(e):
+    """Portales Eightfold (Microsoft, Qualcomm…): ats_token = "host|dominio".
+    Lee todas las ofertas con ubicación España paginando, más búsquedas remotas."""
+    host, dom = (e["ats_token"].split("|") + [""])[:2] if "|" in (e["ats_token"] or "") else \
+        ("apply.careers.microsoft.com", "microsoft.com")
     out, seen = [], set()
-    for q in ["partner", "alliance", "channel", "partner development", "CTO", "director engineering"]:
-        for start in (0, 10, 20):
-            time.sleep(3)
-            try:
-                d = get(f"https://apply.careers.microsoft.com/api/pcsx/search?domain=microsoft.com&query={urllib.parse.quote(q)}&location=Spain&start={start}&sort_by=relevance")
-            except Exception as ex:
-                log("[aviso] Microsoft", ex)
-                continue
-            for j in d.get("data", {}).get("positions", []):
+    for q, loc in [("", "Spain"), ("remote", "Europe"), ("partner", "Europe"), ("developer relations", "Europe")]:
+        for start in range(0, 600, 10):
+            d = None
+            for i in range(5):
+                try:
+                    d = get(f"https://{host}/api/pcsx/search?domain={dom}&query={urllib.parse.quote(q)}&location={loc}&start={start}&sort_by=timestamp")
+                    break
+                except Exception:
+                    time.sleep(15 * (i + 1))
+            if not d:
+                log(f"[aviso] {e['nombre']}: sin respuesta en {q!r} start={start}")
+                break
+            pos = d.get("data", {}).get("positions", [])
+            if not pos:
+                break
+            for j in pos:
                 if j["id"] in seen or not categoria(j["name"]):
                     continue
                 seen.add(j["id"])
-                out.append(dict(puesto=j["name"], ubicacion=" / ".join(j.get("locations", [])),
-                                url="https://apply.careers.microsoft.com" + j["positionUrl"],
+                locs = " / ".join(j.get("locations", []))
+                if loc != "Spain" and not SPAIN.search(locs) and "remote" not in (j.get("workLocationOption") or "").lower():
+                    continue
+                out.append(dict(puesto=j["name"], ubicacion=locs, url=f"https://{host}" + j["positionUrl"],
                                 workplace=j.get("workLocationOption"),
                                 fecha=time.strftime("%Y-%m-%d", time.gmtime(j["postedTs"]))))
+            time.sleep(2.5)
+            if loc != "Spain" and start >= 50:
+                break
+    return out
+
+
+def microsoft(e):
+    return eightfold(e)
+
+
+def google(e):
+    """Google Careers: los datos van incrustados en la página (AF_initDataCallback ds:1)."""
+    out = []
+    for page in range(1, 40):
+        s = get(f"https://www.google.com/about/careers/applications/jobs/results/?location=Spain&page={page}", raw=True)
+        i = s.find("AF_initDataCallback({key: 'ds:1'")
+        if i < 0:
+            break
+        j = s.find("data:", i) + 5
+        d = json.loads(s[j:s.find(", sideChannel", j)])
+        jobs = d[0] or []
+        for x in jobs:
+            title = x[1]
+            if not categoria(title):
+                continue
+            locs = " / ".join(l[0] for l in (x[9] or []))
+            remote = bool(x[16] == 1 or "remote" in json.dumps(x[18]).lower())
+            slug = re.sub(r"[^a-z0-9]+", "-", title.lower()).strip("-")
+            out.append(dict(puesto=title, ubicacion=locs + (" (Remote)" if remote else ""),
+                            url=f"https://www.google.com/about/careers/applications/jobs/results/{x[0]}-{slug}",
+                            workplace="remote" if remote else "",
+                            fecha=time.strftime("%Y-%m-%d", time.gmtime((x[12] or [0])[0])),
+                            descripcion=text((x[10] or [None, ""])[1]) + " " + text((x[3] or [None, ""])[1])))
+        if len(jobs) < 20:
+            break
+        time.sleep(1)
     return out
 
 
 def amazon(e):
-    out, seen = [], set()
-    for q in ["partner development manager", "partner manager", "alliances", "channel", "partner", "head of", "director"]:
-        d = get("https://www.amazon.jobs/en/search.json?result_limit=100&loc_query=Spain&base_query=" + urllib.parse.quote(q))
-        for j in d.get("jobs", []):
-            aws = "web services" in (j.get("company_name") or "").lower() or j.get("business_category") == "aws"
-            if j["id_icims"] in seen or not aws or not categoria(j["title"]):
+    out = []
+    for off in range(0, 1000, 100):
+        d = get(f"https://www.amazon.jobs/en/search.json?result_limit=100&offset={off}&country=ESP"
+                "&business_category%5B%5D=amazon-web-services")
+        jobs = d.get("jobs", [])
+        for j in jobs:
+            if not categoria(j["title"]):
                 continue
-            seen.add(j["id_icims"])
-            out.append(dict(puesto=j["title"], ubicacion=j.get("normalized_location") or j.get("location", ""),
+            out.append(dict(puesto=j["title"], ubicacion=(j.get("normalized_location") or j.get("location", "")) + ", Spain",
                             url="https://www.amazon.jobs" + j["job_path"], fecha_txt=j.get("posted_date"),
                             descripcion=text(j.get("description"))))
+        if off + 100 >= (d.get("hits") or 0):
+            break
     return out
 
 
-HANDLERS = dict(greenhouse=greenhouse, ashby=ashby, lever=lever, workable=workable,
+HANDLERS = dict(google=google, eightfold=eightfold, greenhouse=greenhouse, ashby=ashby, lever=lever, workable=workable,
                 smartrecruiters=smartrecruiters, workday=workday, microsoft=microsoft, amazon=amazon)
 
 
@@ -292,7 +375,7 @@ def portales():
             log(f"[aviso] {e['nombre']}: {ex}")
             return []
         for o in res:
-            o.update(empresa=e["nombre"], empresa_data_ai=e["data_ai"], sector=e["sector"],
+            o.update(empresa=e["nombre"], empresa_data_ai=e["data_ai"], empresa_top=bool(e.get("top")), sector=e["sector"],
                      fuente=f"portal oficial {e['nombre']}")
         return res
     with ThreadPoolExecutor(12) as ex:
@@ -312,9 +395,13 @@ LI_QUERIES = [
     "responsable de alianzas", "jefe de ingeniería", "director de ingeniería", "channel account manager",
     "partner account manager", "partner sales", "alliances", "VP of engineering", "fractional CTO",
     "head of data science", "director de datos", "head of platform",
+    "solutions architect", "solution architect AI", "developer relations", "developer advocate", "evangelist",
+    "sales engineer", "customer engineer", "presales AI", "preventa", "enterprise account executive AI",
+    "account executive cloud", "field CTO",
 ]
 LI_REMOTE_EU = ["partner manager", "partnerships", "alliances", "channel manager", "CTO",
-                "head of engineering", "VP engineering", "director of engineering", "head of data", "head of AI"]
+                "head of engineering", "VP engineering", "director of engineering", "head of data", "head of AI",
+                "solutions architect", "developer relations", "developer advocate", "sales engineer"]
 
 
 def linkedin():
@@ -392,7 +479,8 @@ def linkedin():
 
 def remotive():
     out = []
-    for q in ("partner", "alliances", "channel", "CTO", "head of engineering", "VP engineering", "head of data"):
+    for q in ("partner", "alliances", "channel", "CTO", "head of engineering", "VP engineering", "head of data",
+              "solutions architect", "developer relations", "developer advocate", "sales engineer"):
         try:
             d = get("https://remotive.com/api/remote-jobs?search=" + urllib.parse.quote(q))
         except Exception as ex:
@@ -411,7 +499,8 @@ def remotive():
 def himalayas():
     out = []
     for q in ("partner", "partnerships", "alliances", "channel", "ecosystem", "CTO", "chief technology",
-              "head of engineering", "VP engineering", "director of engineering", "head of data", "head of AI"):
+              "head of engineering", "VP engineering", "director of engineering", "head of data", "head of AI",
+              "solutions architect", "developer relations", "developer advocate", "evangelist", "sales engineer"):
         try:
             jobs = []
             for off in range(0, 300, 20):

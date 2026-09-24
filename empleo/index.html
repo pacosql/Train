@@ -139,7 +139,7 @@
       <div class="brand"><span class="brand-mark">💼</span> Empleo</div>
       <button class="icon-btn" id="btn-refresh" title="Recargar">↻</button>
     </div>
-    <p class="sub">Partner Program / Management y CTO/dirección · Data &amp; AI · España · énfasis en remoto</p>
+    <p class="sub">Partner · Sales · Solution Architect · DevRel/Evangelist · CTO — Data &amp; AI · España · énfasis en remoto</p>
     <p class="msg" id="msg"></p>
 
     <div class="views" id="views">
@@ -162,9 +162,13 @@
       <span class="chip" data-f="remoto">Remoto</span>
       <span class="chip" data-f="hibrido">Híbrido</span>
       <span class="chip" data-f="nuevas">✨ Nuevas</span>
-      <span class="chip" data-f="partner">🤝 Partner</span>
-      <span class="chip" data-f="direccion">🧭 CTO / Dirección</span>
+      <span class="chip" data-f="top">⭐ Top AI</span>
       <span class="chip" data-f="data_ai">🧠 Data &amp; AI</span>
+      <span class="chip" data-f="partner">🤝 Partner</span>
+      <span class="chip" data-f="sales">💼 Sales</span>
+      <span class="chip" data-f="arquitecto">🛠️ Solution Architect</span>
+      <span class="chip" data-f="devrel">📣 DevRel / Evangelist</span>
+      <span class="chip" data-f="direccion">🧭 CTO / Dirección</span>
     </div>
     <div class="row2">
       <input type="search" id="q" placeholder="Buscar empresa, puesto, ciudad…" />
@@ -180,10 +184,10 @@
     </div>
 
     <div id="v-empresas" class="hidden">
-      <p class="sub">Compañías donde busca la rutina cada noche (portal oficial de empleo). Las de Data &amp; AI se buscan también en presencial/híbrido; del resto solo remoto.</p>
+      <p class="sub">Compañías donde busca la rutina cada noche (portal oficial de empleo). ⭐ Top AI: todas las ofertas de tus perfiles en España + remoto. Resto de Data &amp; AI: Partner/CTO en España y todo lo remoto. Otras: solo remoto.</p>
       <div class="row2">
         <input type="search" id="qe" placeholder="Buscar compañía o sector…" />
-        <select id="fe"><option value="">Todas</option><option value="data">Data &amp; AI</option><option value="otras">Otras (solo remoto)</option><option value="con">Con ofertas</option></select>
+        <select id="fe"><option value="">Todas</option><option value="data">Data &amp; AI</option><option value="otras">Otras (solo remoto)</option><option value="con">Con ofertas</option><option value="top">⭐ Top AI</option></select>
       </div>
       <p class="count" id="count-e"></p>
       <div id="list-e"></div>
@@ -222,6 +226,8 @@
     const $ = (id) => document.getElementById(id);
     const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
     const fmtDate = (d) => d ? new Date(d + (d.length === 10 ? "T00:00:00" : "")).toLocaleDateString("es-ES", { day: "numeric", month: "short", year: "numeric" }) : "";
+    const CATS = ["partner", "sales", "arquitecto", "devrel", "direccion"];
+    const CAT_LABEL = { partner: "🤝 Partner", sales: "💼 Sales", arquitecto: "🛠️ Solution Architect", devrel: "📣 DevRel / Evangelist", direccion: "🧭 CTO / Dirección" };
     const MOD = { remoto: "🏠 Remoto", hibrido: "🏢 Híbrido", presencial: "📍 Presencial", desconocido: "❔ Modalidad sin confirmar" };
 
     async function load() {
@@ -246,8 +252,10 @@
       if (state.f.remoto_claro) list = list.filter((o) => o.remoto_claro);
       if (state.f.remoto || state.f.hibrido) list = list.filter((o) => (state.f.remoto && o.modalidad === "remoto") || (state.f.hibrido && o.modalidad === "hibrido"));
       if (state.f.nuevas) list = list.filter(isNew);
-      if (state.f.partner || state.f.direccion) list = list.filter((o) => (state.f.partner && o.categoria === "partner") || (state.f.direccion && o.categoria === "direccion"));
+      const cats = CATS.filter((c) => state.f[c]);
+      if (cats.length) list = list.filter((o) => cats.includes(o.categoria));
       if (state.f.data_ai) list = list.filter((o) => o.empresa_data_ai);
+      if (state.f.top) list = list.filter((o) => o.empresa_top);
       if (q) list = list.filter((o) => [o.empresa, o.puesto, o.ubicacion, o.resumen, o.fuente, o.sector, (o.etiquetas || []).join(" ")].join(" ").toLowerCase().includes(q));
       const by = {
         encontrado: (a, b) => (b.encontrado_en || "").localeCompare(a.encontrado_en || "") || b.created_at.localeCompare(a.created_at),
@@ -283,7 +291,8 @@
       if (isNew(o)) badges.push(`<span class="b nuevo">Nueva</span>`);
       if (o.remoto_claro) badges.push(`<span class="b remoto">🟢 100% REMOTO</span>`);
       else badges.push(`<span class="b ${o.modalidad}">${MOD[o.modalidad] || o.modalidad}</span>`);
-      badges.push(`<span class="b cat">${o.categoria === "direccion" ? "🧭 CTO / Dirección" : "🤝 Partner"}</span>`);
+      if (o.empresa_top) badges.push(`<span class="b cat">⭐ Top AI</span>`);
+      badges.push(`<span class="b cat">${CAT_LABEL[o.categoria] || o.categoria}</span>`);
       if (o.seniority) badges.push(`<span class="b">${esc(o.seniority)}</span>`);
       if (o.sector) badges.push(`<span class="b">${esc(o.sector)}</span>`);
       for (const e of o.etiquetas || []) badges.push(`<span class="b">#${esc(e)}</span>`);
@@ -325,12 +334,13 @@
       if (state.fe === "data") list = list.filter((e) => e.data_ai);
       if (state.fe === "otras") list = list.filter((e) => !e.data_ai);
       if (state.fe === "con") list = list.filter((e) => e.n);
+      if (state.fe === "top") list = list.filter((e) => e.top);
       if (q) list = list.filter((e) => (e.nombre + " " + (e.sector || "")).toLowerCase().includes(q));
-      list.sort((a, b) => b.n - a.n || a.nombre.localeCompare(b.nombre, "es"));
+      list.sort((a, b) => b.n - a.n || (b.top - a.top) || a.nombre.localeCompare(b.nombre, "es"));
       $("qe").value = state.qe; $("fe").value = state.fe;
       $("count-e").textContent = `${list.length} compañías`;
       $("list-e").innerHTML = list.map((e) => `<div class="comp">
-        <div><div class="n">${e.n ? `<span class="cnt">${e.n}</span>` : ""}${esc(e.nombre)}</div>
+        <div><div class="n">${e.n ? `<span class="cnt">${e.n}</span>` : ""}${e.top ? "⭐ " : ""}${esc(e.nombre)}</div>
         <div class="s">${esc(e.sector || "")}${e.data_ai ? " · 🧠 Data & AI" : " · solo remoto"}</div></div>
         ${e.portal_url ? `<a href="${esc(e.portal_url)}" target="_blank" rel="noopener">Empleo ↗</a>` : ""}
       </div>`).join("");

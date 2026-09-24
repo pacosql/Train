@@ -27,7 +27,7 @@ KEY = re.search(r'eyJ[^"]*', CFG).group(0)
 URL = re.search(r"https://[a-z0-9]*\.supabase\.co", CFG).group(0)
 HOY = datetime.date.today().isoformat()
 COLS = ("empresa", "puesto", "ubicacion", "modalidad", "remoto_claro", "url", "fuente", "sector", "area",
-        "seniority", "resumen", "fecha_publicacion", "etiquetas", "enlaces", "categoria", "empresa_data_ai")
+        "seniority", "resumen", "fecha_publicacion", "etiquetas", "enlaces", "categoria", "empresa_data_ai", "empresa_top")
 
 
 def api(method, path, body=None, prefer="return=representation"):
@@ -99,6 +99,7 @@ def insertar(path):
         r["remoto_claro"] = bool(r["remoto_claro"])
         r["empresa_data_ai"] = r["empresa_data_ai"] if r["empresa_data_ai"] is not None else True
         r["categoria"] = r["categoria"] or "partner"
+        r["empresa_top"] = bool(r.get("empresa_top"))
         r["modalidad"] = r["modalidad"] or "desconocido"
     for i in range(0, len(nuevas), 100):
         api("POST", "empleo_ofertas", nuevas[i:i + 100], "return=minimal")
