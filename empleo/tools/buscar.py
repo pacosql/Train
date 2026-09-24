@@ -36,7 +36,26 @@ import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-EMPRESAS = json.load(open(os.path.join(HERE, "empresas.json")))
+def _empresas():
+    """Lista de compañías: la tabla empleo_empresas de Supabase es la fuente de
+    verdad (la rutina añade ahí sin necesidad de hacer push); empresas.json es
+    la copia de respaldo si Supabase no responde."""
+    try:
+        cfg = open(os.path.join(HERE, "..", "config.js")).read()
+        key = re.search(r'eyJ[^"]*', cfg).group(0)
+        url = re.search(r"https://[a-z0-9]*\.supabase\.co", cfg).group(0)
+        req = urllib.request.Request(url + "/rest/v1/empleo_empresas?select=nombre,sector,data_ai,ats,ats_token,portal_url&activa=eq.true",
+                                     headers={"apikey": key, "Authorization": "Bearer " + key})
+        with urllib.request.urlopen(req, timeout=30) as r:
+            rows = json.load(r)
+        if rows:
+            return rows
+    except Exception as ex:
+        print(f"[aviso] empresas desde Supabase: {ex}; uso empresas.json", file=sys.stderr)
+    return json.load(open(os.path.join(HERE, "empresas.json")))
+
+
+EMPRESAS = _empresas()
 
 PARTNER = re.compile(r"partner|alliance|channel|ecosystem|reseller|\bGSI\b|system integrator|\bISV\b", re.I)
 PARTNER_NO = re.compile(r"business partner|people partner|hr partner|talent|recruit|\bHR\b|finance partner|payroll|design partner|accountant|counsel|legal|engineer\b|developer|scientist|\bSDR\b|sales development rep|marketing channels?|growth marketing|channel sales representative|product manager|funding|membership|client partner|partner funding|delivery partner|partner site|partner operations analyst|people operations|customer success partner|client success partner|care partner|junior partner|m&a|language|resource partner|customer care|coordinator|influencer|creator|omnichannel|technical lead|health partnership|student|physicist|product success|sales partner –|staffing|sponsorship|care representative|partner success manager ii", re.I)

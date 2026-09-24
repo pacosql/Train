@@ -29,8 +29,8 @@ URL: `https://pacosql.github.io/Train/empleo/`
   (`pendiente|gusta|no_gusta|revisar`), `nota` (del usuario),
   `respuesta` (de la rutina), `activa`.
 - `empleo_empresas`: compañías vigiladas (`nombre`, `sector`, `data_ai`,
-  `ats`, `ats_token`, `portal_url`). Se editan en
-  `empleo/tools/empresas.json` y se sincronizan con upsert por `nombre`.
+  `ats`, `ats_token`, `portal_url`). Es la fuente de verdad que
+  lee `buscar.py`; `empleo/tools/empresas.json` es solo una copia de respaldo.
 - `empleo_rutinas`: log de cada ejecución (`nuevas`, `nota`).
 
 ## Herramientas
@@ -73,8 +73,10 @@ siempre que exista; LinkedIn y agregadores como enlace 2, 3…
    `modalidad`/`remoto_claro`. Tener en cuenta los 👍/👎 y notas previos.
 7. `python3 empleo/tools/guardar.py insertar /tmp/candidatas.json`.
 8. Si se descubren compañías nuevas relevantes (Data & AI, o que
-   contratan en remoto en España), añadirlas a `empresas.json` (con su
-   ATS si lo tiene), hacer upsert en `empleo_empresas`, commit + merge a
-   `main` + push.
+   contratan en remoto en España), añadirlas **directamente a la tabla
+   `empleo_empresas`** (upsert por `nombre`, con su `ats`/`ats_token` si
+   tiene portal con API). `buscar.py` lee las compañías de esa tabla, así
+   que no hace falta hacer push. Solo si se cambia código: commit, merge
+   a `main` y push (si el push falla, anotarlo en la nota de la rutina).
 9. Registrar la ejecución: `POST empleo_rutinas` con
    `{"nuevas": N, "nota": "…"}`.
