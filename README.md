@@ -38,6 +38,7 @@ reglas para no interferir con las demás:
 | 📈 Negocios | [`negocios/`](./negocios) | `/Train/negocios/` | `negocios_` |
 | 🗂️ Contactos | [`contactos/`](./contactos) | `/Train/contactos/` | `contactos_` |
 | 💼 Empleo | [`empleo/`](./empleo) | `/Train/empleo/` | `empleo_` |
+| ✳️ Logos | [`logos/`](./logos) | `/Train/logos/` | `logos_` |
 
 ## Añadir una app nueva
 
