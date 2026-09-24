@@ -1,15 +1,24 @@
 # 💼 Empleo
 
-Buscador personal de ofertas en España con énfasis en **remoto**:
+Buscador personal de ofertas en España con énfasis en **remoto** para un
+perfil **Partner · Sales · Solution Architect · Evangelist/DevRel ·
+CTO/dirección**. Categorías (`categoria`):
 
-- **🤝 Partner**: Partner Program / Partner Management / Alliances /
-  Channel / Ecosystem / Partner Enablement.
-- **🧭 CTO / Dirección**: CTO, VP/Head/Director of Engineering, Data,
-  AI, Technology; Chief Data/AI Officer…
+- `partner`: Partner Program / Management / Alliances / Channel / Ecosystem.
+- `sales`: enterprise/strategic account executive o manager, BDM, GTM,
+  country manager, solution specialist (ventas).
+- `arquitecto`: Solutions Architect, Sales/Solutions/Customer Engineer,
+  Presales, Technical Account Manager, Field CTO.
+- `devrel`: Developer Relations, Developer Advocate, Evangelist.
+- `direccion`: CTO, VP/Head/Director of Engineering, Data, AI…
 
 Regla de selección:
-- **Remoto que admita España** → de **cualquier** empresa (todo lo que haya).
-- **Presencial / híbrido en España** → solo empresas de **Data & AI**.
+- **⭐ Top AI** (`empleo_empresas.top`, ~75: Microsoft, Google, AWS,
+  NVIDIA, OpenAI, Anthropic, Mistral…): **todas** las ofertas de las 5
+  categorías en España (cualquier modalidad) + las remotas que admitan España.
+- **Resto de Data & AI**: `partner`/`direccion` en España (cualquier
+  modalidad) + las 5 categorías si son remotas que admitan España.
+- **Otras empresas**: solo `partner`/`direccion` remotas que admitan España.
 
 Cada oferta se marca 👍 me gusta, 👎 no me gusta o 🔁 revisar (con una
 nota: "el enlace no funciona", "confirmar si es remoto"…); la rutina lee
@@ -67,7 +76,7 @@ siempre que exista; LinkedIn y agregadores como enlace 2, 3…
    Partner/Alliances/Channel y CTO/Head of Engineering/Data/AI. Añadir
    lo encontrado al JSON de candidatas con sus `enlaces`.
 6. Leer las candidatas y descartar las que no encajen (roles de HR,
-   ingeniería individual, ventas junior, ubicación incompatible). Para las
+   ingeniería individual, ventas junior/SDR, ubicación incompatible). Para las
    que quedan, escribir `resumen` (1-2 frases en español: rol +
    aclaraciones de ubicación/modalidad) y, si hace falta, corregir
    `modalidad`/`remoto_claro`. Tener en cuenta los 👍/👎 y notas previos.
