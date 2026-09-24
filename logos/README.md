@@ -103,6 +103,12 @@ sus votos y comentarios en 1-5 minutos.
    SVG, otras relaciones M/1/0, otras paletas sobrias), sin repetir lo
    que tiene 👎 ni títulos ya existentes. Estilo base: minimalista tipo
    Anthropic. Cada diseño con título y concepto claros.
+   **Si ya hay 50 o más** (`uno_mas` en `estado.sh`: la cola sigue llena y
+   no se ha creado nada en 5 min), meter **uno más** igualmente, y que sea
+   **original**: una idea nueva de verdad, no una variación de otro diseño
+   (otro concepto, otra construcción, otra forma de juntar M, 1 y 0), que
+   respete lo que ha gustado y evite lo descartado. Así siempre hay algo
+   fresco aunque no se esté clasificando.
 7. Generar con `tools/generar.js`, **mirar las hojas de
    `tools/preview.js`**, corregir o quitar lo que se vea mal (cortado,
    ilegible a 20 px, duplicado) e insertar con `sb.sh POST`.
