@@ -320,9 +320,10 @@
     const byId = (id) => disenos.find((d) => d.id === id);
     const commentsOf = (id) => comentarios.filter((c) => c.diseno_id === id);
     const pendingComments = (id) => commentsOf(id).filter((c) => c.estado !== "procesado").length;
-    // Por decidir: lo más nuevo arriba (las versiones nuevas son la respuesta a tus comentarios).
+    // Por decidir: primero las versiones que responden a tus comentarios (la más
+    // nueva arriba) y después el resto en orden de número.
     const inTab = (tab) => tab === "todos" ? disenos.slice().reverse()
-      : tab === "pendiente" ? disenos.filter((d) => !d.decision).sort((a, b) => b.numero - a.numero)
+      : tab === "pendiente" ? disenos.filter((d) => !d.decision).sort((a, b) => (!!b.revision_nota - !!a.revision_nota) || (a.revision_nota ? b.numero - a.numero : a.numero - b.numero))
       : disenos.filter((d) => d.decision === tab).sort((a, b) => (b.decidido_en || "").localeCompare(a.decidido_en || ""));
 
     function counts() {
