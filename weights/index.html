@@ -228,6 +228,30 @@
     .tag { font-family: var(--display); font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; padding: 3px 9px; border-radius: 999px; background: var(--surface-2); color: var(--text-2); border: 1px solid var(--line); flex-shrink: 0; }
     .tag.mas { color: var(--accent); border-color: rgba(67, 211, 145, 0.35); }
     .tag.menos { color: var(--stop); border-color: rgba(255, 107, 74, 0.35); }
+    /* lo que marcaste la última vez, compacto, en las listas */
+    .fb-tag { font-family: var(--display); font-weight: 800; font-size: 0.78rem; letter-spacing: 0.4px; text-transform: uppercase; white-space: nowrap; }
+    .fb-tag.mas { color: var(--accent); }
+    .fb-tag.igual { color: var(--text); }
+    .fb-tag.menos { color: var(--stop); }
+
+    /* ---------- "la última vez" (pantalla de ejercicio) ---------- */
+    /* Lo que marcaste al terminar la vez anterior, bien grande, y el peso
+       que sale de ahí para hoy — antes era una coletilla ("subiendo") al
+       final de una frase gris y no se veía. */
+    .last-card { border-radius: 18px; padding: 12px 14px; margin-bottom: 14px; border: 1px solid var(--line); background: var(--glass); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05); }
+    .last-card[hidden] { display: none; }
+    .last-card .lc-eyebrow { font-family: var(--display); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-2); }
+    .last-card .lc-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 6px; }
+    .last-card .lc-weight { font-family: var(--display); font-size: 2rem; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; }
+    .last-card .lc-weight small { font-size: 0.5em; color: var(--text-2); margin-left: 3px; }
+    .last-card .lc-fb { display: flex; align-items: center; gap: 6px; font-family: var(--display); font-size: 1.1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; padding: 6px 12px; border-radius: 999px; border: 1px solid currentColor; white-space: nowrap; }
+    .last-card .lc-today { font-size: 0.85rem; color: var(--text); margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line); }
+    .last-card .lc-today b { font-family: var(--display); font-size: 1.15rem; letter-spacing: 0.3px; }
+    .last-card.mas { border-color: rgba(67, 211, 145, 0.35); background: linear-gradient(160deg, rgba(67, 211, 145, 0.12), rgba(255, 255, 255, 0.02) 65%); }
+    .last-card.mas .lc-fb { color: var(--accent); background: var(--accent-soft); }
+    .last-card.igual .lc-fb { color: var(--text); background: rgba(255, 255, 255, 0.06); }
+    .last-card.menos { border-color: rgba(255, 107, 74, 0.35); background: linear-gradient(160deg, rgba(255, 107, 74, 0.12), rgba(255, 255, 255, 0.02) 65%); }
+    .last-card.menos .lc-fb { color: var(--stop); background: rgba(255, 107, 74, 0.12); }
 
     /* ---------- chips ---------- */
     .chip-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
@@ -668,6 +692,7 @@
       <p class="eyebrow" id="ex-header"></p>
       <h2 id="ex-name">—</h2>
       <div class="hero-art" id="ex-hero-art"></div>
+      <div class="last-card" id="ex-last-card" hidden></div>
       <div class="rec-card" id="ex-rec-card" hidden></div>
       <p class="sub" id="ex-recommendation"></p>
 
@@ -858,6 +883,34 @@
       const key = MACHINE_ART_FOR[ex.slug];
       return key ? svgMachine(key) : svgIcon(iconKeyFor(ex));
     }
+    // ---------- la última vez ----------
+    // Tarjeta con el peso de la vez anterior, lo que marcaste al terminar
+    // (más / igual / menos) y el peso que sale de ahí para hoy. `today` es
+    // null cuando el peso de hoy viene de otra fuente (el compañero de
+    // estación): entonces se enseña solo lo que marcaste.
+    function renderLastCard(ex, last, today) {
+      const box = el("ex-last-card");
+      if (ex.movement_type === "cardio" || !last || last.weight_used == null) {
+        box.hidden = true; box.innerHTML = ""; return;
+      }
+      const fb = FB_BIG[last.next_time] ? last.next_time : null;
+      box.className = `last-card${fb ? " " + fb : ""}`;
+      let todayHtml = "";
+      if (today != null) {
+        const diff = today - Number(last.weight_used);
+        const diffTxt = diff === 0 ? "el mismo peso" : `${diff > 0 ? "+" : "−"}${fmtNum(Math.abs(diff))} kg`;
+        // En las asistidas, más difícil = menos peso en la pila.
+        const assistedTxt = ex.assisted && diff !== 0 ? (diff < 0 ? " · menos ayuda" : " · más ayuda") : "";
+        todayHtml = `<div class="lc-today">Hoy: <b>${fmtNum(today)} kg</b> (${diffTxt}${assistedTxt})</div>`;
+      }
+      box.hidden = false;
+      box.innerHTML =
+        `<div class="lc-eyebrow">La última vez · ${relativeDay(last.completed_at)}</div>` +
+        `<div class="lc-row"><div class="lc-weight">${fmtNum(last.weight_used)}<small>kg</small></div>` +
+        (fb ? `<div class="lc-fb">${FB_BIG[fb]}</div>` : `<div class="lc-fb">Sin marcar</div>`) + `</div>` +
+        todayHtml;
+    }
+
     // ---------- recomendación personal ----------
     // Nota 1-5 por máquina guardada en weights_exercises.recommendation
     // (+ recommendation_note con el porqué). Es orientativa y editable
@@ -1543,6 +1596,13 @@
     function feedbackLabel(v) {
       return v === "mas" ? "subir peso" : v === "menos" ? "bajar peso" : v === "igual" ? "peso justo" : "";
     }
+    // Lo que marcaste al terminar, con los mismos emojis que la pantalla
+    // de feedback, para reconocerlo al instante.
+    const FB_BIG = { mas: "💪 Más peso", igual: "👌 Igual", menos: "😮‍💨 Menos peso" };
+    const FB_SHORT = { mas: "▲ más", igual: "= igual", menos: "▼ menos" };
+    function fbTagHtml(v) {
+      return FB_SHORT[v] ? `<span class="fb-tag ${v}">${FB_SHORT[v]}</span>` : "";
+    }
 
     // Serie de puntos de un ejercicio: kg para fuerza, minutos para cardio.
     function progressPoints(ex) {
@@ -1720,7 +1780,7 @@
         const weightTxt = isCardio
           ? ""
           : last && last.weight_used != null
-          ? ` · ${fmtNum(last.weight_used)} kg`
+          ? ` · ${fmtNum(last.weight_used)} kg${last.next_time ? ` ${fbTagHtml(last.next_time)}` : ""}`
           : ex.default_weight != null
           ? ` · ref. ${fmtNum(ex.default_weight)} kg`
           : "";
@@ -1834,7 +1894,8 @@
       } else {
         el("cd-last-used").textContent =
           last && last.weight_used != null
-            ? `Último entrenamiento: ${fmtNum(last.weight_used)} kg, ${relativeDay(last.completed_at)}.`
+            ? `Último entrenamiento: ${fmtNum(last.weight_used)} kg, ${relativeDay(last.completed_at)}.` +
+              (FB_BIG[last.next_time] ? ` Marcaste: ${FB_BIG[last.next_time]}.` : "")
             : "Todavía no lo has hecho — deja aquí tu peso de referencia.";
         catalogWeightDraft = ex.default_weight != null ? Number(ex.default_weight)
           : last && last.weight_used != null ? Number(last.weight_used) : 0;
@@ -2030,11 +2091,13 @@
       saveState();
       renderWeightDisplay();
 
+      renderLastCard(ex, last, inherit ? null : suggested);
+      el("ex-recommendation").hidden = false;
       if (inherit) {
         el("ex-recommendation").textContent = `Misma máquina que ${shared.mateName}: te dejo sus ${fmtNum(suggested)} kg (${relativeDay(shared.completed_at)}).`;
       } else if (suggested != null) {
-        const dirTxt = last.next_time === "mas" ? "subiendo" : last.next_time === "menos" ? "bajando" : "manteniendo";
-        el("ex-recommendation").textContent = `Última vez ${fmtNum(last.weight_used)} kg (${relativeDay(last.completed_at)}). Hoy te sugiero ${fmtNum(suggested)} kg, ${dirTxt}.`;
+        // Todo lo de "la última vez" ya va en su tarjeta.
+        el("ex-recommendation").hidden = true;
       } else if (ex.default_weight != null) {
         el("ex-recommendation").textContent = `Sin historial todavía. Tu peso de referencia son ${fmtNum(ex.default_weight)} kg.`;
       } else {
