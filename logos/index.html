@@ -1,0 +1,719 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Logos · Mates 10</title>
+
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Logos" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="fonts/poppins.css" />
+
+  <style>
+    :root {
+      --bg: #ffffff;
+      --paper: #f5f4ef;
+      --ink: #141413;
+      --ink-2: #6b6a66;
+      --line: #e6e4dd;
+      --blue: #2f5fe8;
+      --good: #1f9d55;
+      --bad: #d6453d;
+      --gold: #c98a12;
+      --font: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      padding-top: env(safe-area-inset-top, 0px);
+    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html { -webkit-text-size-adjust: 100%; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font); font-size: 15px; line-height: 1.45; }
+    button { font: inherit; color: inherit; cursor: pointer; }
+    .wrap { max-width: 640px; margin: 0 auto; padding: 0 16px 120px; }
+
+    header { display: flex; align-items: center; gap: 10px; padding: 18px 0 6px; }
+    header h1 { font-size: 1.35rem; font-weight: 800; letter-spacing: -0.02em; margin: 0; flex: 1; }
+    header h1 span { font-weight: 500; color: var(--ink-2); }
+    .icon-btn { border: 1px solid var(--line); background: var(--bg); border-radius: 12px; width: 40px; height: 40px; font-size: 1.1rem; }
+    .icon-btn.spin { animation: spin 0.8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .tabs { display: flex; gap: 6px; overflow-x: auto; padding: 8px 0 12px; scrollbar-width: none; position: sticky; top: 0; background: var(--bg); z-index: 5; }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab { flex: none; border: 1px solid var(--line); background: var(--bg); border-radius: 999px; padding: 6px 12px; font-size: 0.85rem; font-weight: 500; white-space: nowrap; }
+    .tab.active { background: var(--ink); border-color: var(--ink); color: #fff; }
+    .tab b { font-weight: 700; margin-left: 2px; }
+
+    .msg { color: var(--bad); font-size: 0.9rem; min-height: 0; margin: 0 0 8px; }
+    .msg:empty { display: none; }
+    .eyebrow { font-size: 0.78rem; color: var(--ink-2); margin: 4px 0 10px; }
+
+    /* petición general (sin tarjeta concreta) */
+    .general { border: 1px dashed var(--line); border-radius: 16px; padding: 12px 14px; margin: 0 0 18px; }
+    .general > summary { font-weight: 600; font-size: 0.95rem; list-style: none; cursor: pointer; }
+    .general > summary::-webkit-details-marker { display: none; }
+    .general p.helper { margin: 6px 0 10px; }
+    .prefs p { font-size: 0.86rem; margin: 8px 0 0; }
+
+    /* tarjeta de diseño: mismo formato que las pruebas previas */
+    .card { border-bottom: 1px solid var(--line); padding: 18px 0 16px; }
+    .card.fading { opacity: 0; transform: translateX(24px); transition: 0.25s; }
+    .card-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 12px; }
+    .num { font-size: 1.6rem; font-weight: 800; line-height: 1; min-width: 1.4em; }
+    .titulo { font-size: 0.98rem; color: #3b3a37; flex: 1; }
+    .badge { font-size: 0.7rem; font-weight: 600; padding: 2px 8px; border-radius: 999px; background: var(--paper); color: var(--ink-2); white-space: nowrap; }
+    .badge.gusta { background: #e3f4ea; color: var(--good); }
+    .badge.no_gusta { background: #fbe7e5; color: var(--bad); }
+    .badge.definitivo { background: #fdf1d6; color: var(--gold); }
+    .badge.revisar { background: #e6ecfd; color: var(--blue); }
+    .badge.new { background: var(--ink); color: #fff; }
+
+    .icons { display: flex; align-items: center; gap: 14px; }
+    .ic { position: relative; overflow: hidden; flex: none; }
+    .ic svg { display: block; width: 100%; height: 100%; }
+    .ic .acento, .wm .acento { fill: var(--acento); }
+    .ic .acento-trazo, .wm .acento-trazo { stroke: var(--acento); }
+    .ic .fondo, .wm .fondo { fill: var(--fondo); }
+    .ic.sq { width: clamp(92px, 28vw, 124px); aspect-ratio: 1; border-radius: 22%; }
+    .ic.ci { width: clamp(92px, 28vw, 124px); aspect-ratio: 1; border-radius: 50%; }
+    .ic.f40 { width: 40px; height: 40px; border-radius: 22%; }
+    .ic.f20 { width: 20px; height: 20px; border-radius: 22%; }
+    .ic.claro { box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.04); }
+    .favs-col { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
+    .favs { display: flex; align-items: flex-end; gap: 12px; }
+    .favs-col small { color: var(--ink-2); font-size: 0.8rem; }
+    .wm { margin: 16px 0 4px; height: clamp(34px, 10vw, 46px); }
+    .wm svg { height: 100%; width: auto; max-width: 100%; display: block; }
+
+    .concepto { font-size: 0.88rem; color: var(--ink-2); margin: 8px 0 0; }
+    .revnota { font-size: 0.85rem; background: #eef2fd; color: #23408f; border-radius: 10px; padding: 8px 10px; margin: 10px 0 0; }
+    .padre { font-size: 0.78rem; color: var(--ink-2); margin: 6px 0 0; }
+    .padre a { color: inherit; }
+
+    .acts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 12px; }
+    .acts button { border: 1px solid var(--line); background: var(--bg); border-radius: 12px; padding: 10px 2px; font-size: 0.8rem; font-weight: 600; white-space: nowrap; }
+    .acts button.on[data-d="gusta"] { background: var(--good); border-color: var(--good); color: #fff; }
+    .acts button.on[data-d="no_gusta"] { background: var(--bad); border-color: var(--bad); color: #fff; }
+    .acts button.on[data-d="definitivo"] { background: var(--gold); border-color: var(--gold); color: #fff; }
+    .acts button.on[data-d="revisar"] { background: var(--blue); border-color: var(--blue); color: #fff; }
+
+    details.more { margin-top: 10px; }
+    details.more > summary { font-size: 0.85rem; font-weight: 600; color: var(--ink-2); cursor: pointer; list-style: none; padding: 4px 0; }
+    details.more > summary::-webkit-details-marker { display: none; }
+    details.more[open] > summary { color: var(--ink); }
+    .panel { background: var(--paper); border-radius: 14px; padding: 12px; margin-top: 6px; }
+    .helper { font-size: 0.78rem; color: var(--ink-2); margin: 8px 0 0; }
+    textarea { width: 100%; min-height: 70px; border: 1px solid var(--line); border-radius: 10px; padding: 10px; font: inherit; font-size: 0.92rem; resize: vertical; background: #fff; }
+    .row { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+    .row button { flex: 1; border: 1px solid var(--line); background: #fff; border-radius: 10px; padding: 9px 6px; font-size: 0.85rem; font-weight: 600; }
+    .row button.primary { background: var(--ink); border-color: var(--ink); color: #fff; }
+    .row button.on { background: var(--bad); border-color: var(--bad); color: #fff; }
+    .row button:disabled { opacity: 0.5; }
+    .comment { background: #fff; border-radius: 10px; padding: 8px 10px; margin-bottom: 6px; font-size: 0.88rem; }
+    .comment .head { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--ink-2); margin-bottom: 2px; }
+    .comment .trans { font-style: italic; color: #3b3a37; margin-top: 4px; }
+    .comment audio, .rec-preview audio { width: 100%; height: 36px; margin-top: 4px; }
+    .estado.procesado { color: var(--good); }
+
+    /* kit / guía de marca */
+    .swatches { display: flex; gap: 8px; flex-wrap: wrap; }
+    .sw { border: 0; background: none; padding: 0; text-align: left; font-size: 0.72rem; }
+    .sw i { display: block; width: 54px; height: 40px; border-radius: 8px; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08); margin-bottom: 3px; }
+    .kit h4 { font-size: 0.8rem; margin: 12px 0 6px; }
+    .kit h4:first-child { margin-top: 0; }
+    .dl { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    .dl button { border: 1px solid var(--line); background: #fff; border-radius: 10px; padding: 8px 6px; font-size: 0.78rem; font-weight: 500; }
+    .tab-mock { display: inline-flex; align-items: center; gap: 8px; background: #fff; border-radius: 10px 10px 0 0; padding: 7px 14px 7px 10px; font-size: 0.8rem; box-shadow: 0 -1px 0 var(--line) inset; }
+    .tab-mock .ic { width: 16px; height: 16px; border-radius: 22%; }
+
+    /* galería */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 12px; }
+    .g-item { border: 0; background: none; padding: 0; text-align: left; }
+    .g-item .ic { width: 100%; aspect-ratio: 1; border-radius: 22%; }
+    .g-item div.cap { font-size: 0.75rem; margin-top: 4px; display: flex; gap: 4px; align-items: center; }
+    .g-item div.cap b { font-weight: 800; }
+    .g-item.dim { opacity: 0.45; }
+
+    .empty { text-align: center; padding: 50px 10px; color: var(--ink-2); }
+    .empty .big { font-size: 2.4rem; }
+    .back { font-weight: 600; font-size: 0.9rem; margin: 4px 0 4px; cursor: pointer; display: inline-block; }
+
+    .routines { font-size: 0.72rem; color: var(--ink-2); margin-top: 28px; }
+    .build-id { font-size: 0.7rem; color: #b5b3ac; text-align: center; margin-top: 18px; }
+
+    .toast { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 140%); background: var(--ink); color: #fff; border-radius: 14px; padding: 10px 12px 10px 16px; display: flex; gap: 12px; align-items: center; font-size: 0.88rem; transition: transform 0.25s, visibility 0.25s; visibility: hidden; max-width: calc(100% - 32px); z-index: 20; }
+    .toast.show { transform: translate(-50%, 0); visibility: visible; }
+    .toast button { background: #fff; color: var(--ink); border: 0; border-radius: 10px; padding: 6px 10px; font-weight: 600; font-size: 0.82rem; }
+    .toast button:empty { display: none; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Mates 10 <span>· logos</span></h1>
+      <button class="icon-btn" id="btn-refresh" title="Recargar">↻</button>
+    </header>
+
+    <nav class="tabs" id="tabs">
+      <button class="tab active" data-tab="pendiente">Por decidir <b id="n-pendiente">·</b></button>
+      <button class="tab" data-tab="gusta">👍 <b id="n-gusta">·</b></button>
+      <button class="tab" data-tab="definitivo">⭐ <b id="n-definitivo">·</b></button>
+      <button class="tab" data-tab="revisar">🔁 En cola <b id="n-revisar">·</b></button>
+      <button class="tab" data-tab="no_gusta">👎 <b id="n-no_gusta">·</b></button>
+      <button class="tab" data-tab="todos">Todos <b id="n-todos">·</b></button>
+    </nav>
+
+    <p class="msg" id="msg"></p>
+    <div id="view"></div>
+
+    <div class="routines" id="routines"></div>
+    <div class="build-id">build __BUILD_ID__</div>
+  </div>
+
+  <div class="toast" id="toast"><span id="toast-text"></span><button id="toast-undo"></button></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="config.js"></script>
+  <script>
+    const { url, anonKey, tablePrefix } = window.LOGOS_CONFIG;
+    const T_DISENOS = tablePrefix + "disenos";
+    const T_COMENTARIOS = tablePrefix + "comentarios";
+    const T_RUTINAS = tablePrefix + "rutinas";
+    const T_PREFS = tablePrefix + "preferencias";
+    let prefs = null;
+    const BUCKET = "logos-audios";
+    const DECISION_LABEL = { gusta: "👍 Me gusta", no_gusta: "👎 No", definitivo: "⭐ Final", revisar: "🔁 Otra", versionado: "Ya versionado", retirado: "Retirado" };
+    const ESTADO_LABEL = { pendiente: "⏳ pendiente", transcrito: "⏳ pendiente", procesado: "✅ usado" };
+    let client = null;
+    let disenos = [];
+    let comentarios = [];
+    let rutinas = [];
+    const state = { tab: "pendiente", detail: null };
+    // Última visita: lo creado desde entonces lleva la etiqueta «nuevo».
+    const VISIT_KEY = "logos.ultimaVisita";
+    let prevVisit = null;
+    try { prevVisit = localStorage.getItem(VISIT_KEY); localStorage.setItem(VISIT_KEY, new Date().toISOString()); } catch {}
+    const isNew = (d) => !!prevVisit && d.created_at > prevVisit;
+
+    const el = (id) => document.getElementById(id);
+    const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+    // ---------- SVG: saneado (las filas vienen de la base de datos) ----------
+    const svgCache = new Map();
+    const fitCache = new Map(); // svg original → viewBox ya encajado a la tinta real
+
+    // Encaje automático: los SVG con data-fit se miden ya renderizados (con la
+    // fuente cargada) y se les ajusta el viewBox a la tinta de los glifos, así
+    // la rutina no tiene que calcular anchos. Poppins: mayúsculas/dígitos 0,70 em,
+    // minúsculas 0,55 em; la caja em de cada glifo mide 1,4 em (1,05 + 0,35).
+    const CAP = 0.7, XH = 0.55, EM_BOX = 1.4;
+    function inkBox(svg) {
+      let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+      for (const t of svg.querySelectorAll("text")) {
+      const txt = t.textContent, n = t.getNumberOfChars();
+      for (let i = 0; i < n; i++) {
+        const ch = txt[i];
+        if (!ch || ch === " ") continue;
+        const e = t.getExtentOfChar(i), p = t.getStartPositionOfChar(i), sz = e.height / EM_BOX;
+        let top = p.y - CAP * sz, bot = p.y;
+        if (ch === "°") bot = p.y - 0.4 * sz;
+        else if (ch === "·") { top = p.y - 0.42 * sz; bot = p.y - 0.26 * sz; }
+        else if (/[acemnorsuvwxz]/.test(ch)) top = p.y - XH * sz;
+        else if (/[gjpqy]/.test(ch)) { top = p.y - XH * sz; bot = p.y + 0.22 * sz; }
+        x0 = Math.min(x0, e.x); x1 = Math.max(x1, e.x + e.width);
+        y0 = Math.min(y0, top); y1 = Math.max(y1, bot);
+      }
+      }
+      // formas (círculos, rectángulos, trazos…) que acompañan al texto
+      for (const sh of svg.querySelectorAll("circle,rect,path,line,polygon,polyline,ellipse")) {
+        const b = sh.getBBox(), sw = (parseFloat(sh.getAttribute("stroke-width")) || 0) / 2;
+        x0 = Math.min(x0, b.x - sw); y0 = Math.min(y0, b.y - sw); x1 = Math.max(x1, b.x + b.width + sw); y1 = Math.max(y1, b.y + b.height + sw);
+      }
+      return x0 === Infinity ? null : { x0, y0, x1, y1 };
+    }
+    function fitSvgs(root) {
+      root.querySelectorAll("svg[data-fit]").forEach((svg) => {
+        const key = svg.dataset.src;
+        if (!key || fitCache.has(key)) return;
+        let b; try { b = inkBox(svg); } catch { return; }
+        if (!b) return;
+        const w = b.x1 - b.x0, h = b.y1 - b.y0, cx = (b.x0 + b.x1) / 2, cy = (b.y0 + b.y1) / 2;
+        let vb;
+        if (svg.dataset.fit === "wordmark") { const pad = h * 0.08; vb = [b.x0 - pad, b.y0 - pad, w + 2 * pad, h + 2 * pad]; }
+        else { const side = Math.max(w, h * 1.15) / (parseFloat(svg.dataset.tam) || 0.62); vb = [cx - side / 2, cy - side / 2, side, side]; }
+        const v = vb.map((x) => +x.toFixed(2)).join(" ");
+        fitCache.set(key, v);
+        const orig = [...srcIds].find(([, id]) => id === key);
+        if (orig && svgCache.has(orig[0])) svgCache.set(orig[0], svgCache.get(orig[0]).replace(/viewBox="[^"]*"/, `viewBox="${v}"`));
+        root.querySelectorAll("svg[data-src]").forEach((s) => { if (s.dataset.src === key) s.setAttribute("viewBox", v); });
+      });
+    }
+    let srcIds = new Map();
+    const srcId = (str) => { if (!srcIds.has(str)) srcIds.set(str, "s" + srcIds.size); return srcIds.get(str); };
+    function safeSvg(str) {
+      if (!str) return "";
+      if (svgCache.has(str)) return svgCache.get(str);
+      let out = "";
+      try {
+        const doc = new DOMParser().parseFromString(str, "image/svg+xml");
+        const svg = doc.documentElement;
+        if (svg && svg.nodeName.toLowerCase() === "svg" && !doc.querySelector("parsererror")) {
+          svg.querySelectorAll("script,foreignObject,iframe,image,a,animate,set,style").forEach((n) => n.remove());
+          for (const n of [svg, ...svg.querySelectorAll("*")]) {
+            for (const a of [...n.attributes]) {
+              const name = a.name.toLowerCase();
+              if (name.startsWith("on")) n.removeAttribute(a.name);
+              else if ((name === "href" || name === "xlink:href") && !a.value.startsWith("#")) n.removeAttribute(a.name);
+            }
+          }
+          svg.removeAttribute("width"); svg.removeAttribute("height");
+          if (svg.hasAttribute("data-fit")) { svg.setAttribute("data-src", srcId(str)); if (fitCache.has(srcId(str))) svg.setAttribute("viewBox", fitCache.get(srcId(str))); }
+          if (!svg.getAttribute("preserveAspectRatio")) svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+          out = new XMLSerializer().serializeToString(svg);
+        }
+      } catch {}
+      svgCache.set(str, out);
+      return out;
+    }
+    const C = (d) => ({ icono_fondo: "#141413", icono_tinta: "#FFFFFF", acento: "#2F5FE8", wordmark: "#141413", ...(d.colores || {}) });
+    const isLight = (hex) => { const h = (hex || "").replace("#", ""); if (h.length < 6) return false; const [r, g, b] = [0, 2, 4].map((i) => parseInt(h.substr(i, 2), 16)); return (0.299 * r + 0.587 * g + 0.114 * b) > 225; };
+    function icon(d, cls, fav = false) {
+      const c = C(d);
+      return `<div class="ic ${cls} ${isLight(c.icono_fondo) ? "claro" : ""}" style="background:${esc(c.icono_fondo)};color:${esc(c.icono_tinta)};--acento:${esc(c.acento)};--fondo:${esc(c.icono_fondo)}">${safeSvg(fav ? (d.svg_favicon || d.svg_marca) : d.svg_marca)}</div>`;
+    }
+    function wordmark(d) {
+      const c = C(d);
+      return `<div class="wm" style="color:${esc(c.wordmark)};--acento:${esc(c.acento)};--fondo:#ffffff">${safeSvg(d.svg_wordmark)}</div>`;
+    }
+    // Fuentes extra (Google Fonts) que pida un diseño además de Poppins, que va alojada aquí.
+    const loadedFonts = new Set();
+    function loadFonts() {
+      for (const d of disenos) for (const f of d.fuentes || []) {
+        if (!f || loadedFonts.has(f) || /^poppins/i.test(f)) continue;
+        loadedFonts.add(f);
+        const l = document.createElement("link"); l.rel = "stylesheet";
+        l.href = "https://fonts.googleapis.com/css2?family=" + encodeURIComponent(f).replace(/%20/g, "+").replace(/%3A/gi, ":").replace(/%40/g, "@").replace(/%3B/gi, ";").replace(/%2C/gi, ",") + "&display=swap";
+        document.head.appendChild(l);
+      }
+    }
+
+    // ---------- datos ----------
+    async function load() {
+      const [a, b, r] = await Promise.all([
+        client.from(T_DISENOS).select("*").order("numero", { ascending: true }),
+        client.from(T_COMENTARIOS).select("*").order("created_at", { ascending: true }),
+        client.from(T_RUTINAS).select("rutina,ejecutada_en,resumen").eq("rutina", "hecho").order("ejecutada_en", { ascending: false }).limit(5),
+      ]);
+      if (a.error) throw a.error;
+      if (b.error) throw b.error;
+      disenos = a.data || [];
+      comentarios = b.data || [];
+      rutinas = r.error ? [] : (r.data || []);
+      const pr = await client.from(T_PREFS).select("*").eq("id", "yo").maybeSingle();
+      prefs = pr.error ? null : pr.data;
+      loadFonts();
+      renderRoutines();
+    }
+    const byId = (id) => disenos.find((d) => d.id === id);
+    const commentsOf = (id) => comentarios.filter((c) => c.diseno_id === id);
+    const pendingComments = (id) => commentsOf(id).filter((c) => c.estado !== "procesado").length;
+    // Por decidir: lo más nuevo arriba (las versiones nuevas son la respuesta a tus comentarios).
+    const inTab = (tab) => tab === "todos" ? disenos.slice().reverse()
+      : tab === "pendiente" ? disenos.filter((d) => !d.decision).sort((a, b) => b.numero - a.numero)
+      : disenos.filter((d) => d.decision === tab).sort((a, b) => (b.decidido_en || "").localeCompare(a.decidido_en || ""));
+
+    function counts() {
+      for (const t of ["pendiente", "gusta", "definitivo", "revisar", "no_gusta"]) el("n-" + t).textContent = inTab(t).length;
+      el("n-todos").textContent = disenos.length;
+    }
+    function ago(iso) {
+      const m = Math.round((Date.now() - new Date(iso).getTime()) / 60000);
+      return m < 60 ? `hace ${m} min` : m < 1440 ? `hace ${Math.round(m / 60)} h` : `hace ${Math.round(m / 1440)} d`;
+    }
+    function renderRoutines() {
+      const r = rutinas[0];
+      el("routines").textContent = r ? `Última pasada de la rutina ${ago(r.ejecutada_en)}: ${r.resumen || ""}` : "La rutina todavía no ha pasado. Cada 5 minutos mantiene 50 diseños por decidir y usa tus comentarios para crear versiones nuevas.";
+    }
+
+    // ---------- tarjeta ----------
+    function cardHTML(d) {
+      const nc = commentsOf(d.id).length;
+      const padre = d.padre_id && byId(d.padre_id);
+      const hijos = disenos.filter((x) => x.padre_id === d.id);
+      return `<article class="card" id="d-${d.numero}" data-id="${d.id}">
+        <div class="card-head">
+          <span class="num">${d.numero}</span>
+          <span class="titulo">${esc(d.titulo)}</span>
+          ${isNew(d) && !d.decision ? `<span class="badge new">nuevo</span>` : ""}
+          ${d.decision && state.tab !== d.decision ? `<span class="badge ${d.decision}">${DECISION_LABEL[d.decision]}</span>` : ""}
+          ${d.version > 1 ? `<span class="badge">v${d.version}</span>` : ""}
+        </div>
+        <div class="icons">
+          ${icon(d, "sq")}
+          ${icon(d, "ci")}
+          <div class="favs-col">
+            <div class="favs">${icon(d, "f40", true)}${icon(d, "f20", true)}</div>
+            <small>favicon</small>
+          </div>
+        </div>
+        ${wordmark(d)}
+        ${d.revision_nota ? `<p class="revnota">${esc(d.revision_nota)}</p>` : ""}
+        ${padre ? `<p class="padre">Viene del <a href="#" data-go="${padre.id}">nº ${padre.numero}</a></p>` : ""}
+        ${hijos.length ? `<p class="padre">Versiones nuevas: ${hijos.map((h) => `<a href="#" data-go="${h.id}">nº ${h.numero}</a>`).join(", ")}</p>` : ""}
+        ${d.concepto ? `<p class="concepto">${esc(d.concepto)}</p>` : ""}
+        <div class="acts">
+          ${["no_gusta", "gusta", "revisar", "definitivo"].map((k) => `<button type="button" data-d="${k}" class="${d.decision === k ? "on" : ""}">${DECISION_LABEL[k]}</button>`).join("")}
+        </div>
+        <details class="more" data-panel="coment">
+          <summary>💬 Comentar${nc ? ` (${nc}${pendingComments(d.id) ? `, ${pendingComments(d.id)} por usar` : ""})` : ""}</summary>
+          <div class="panel" data-comment-box></div>
+        </details>
+        <details class="more" data-panel="kit">
+          <summary>📐 Kit y guía de marca</summary>
+          <div class="panel kit" data-kit-box></div>
+        </details>
+      </article>`;
+    }
+
+    function wireCard(card) {
+      const d = byId(card.dataset.id);
+      card.querySelectorAll(".acts button").forEach((b) => b.onclick = () => decide(d, d.decision === b.dataset.d ? null : b.dataset.d, card));
+      card.querySelectorAll("a[data-go]").forEach((a) => a.onclick = (e) => { e.preventDefault(); openDetail(a.dataset.go); });
+      card.querySelector('[data-panel="coment"]').addEventListener("toggle", (e) => { if (e.target.open) renderCommentBox(card, d); else if (rec.card === card) resetRec(); });
+      card.querySelector('[data-panel="kit"]').addEventListener("toggle", (e) => { if (e.target.open) renderKit(card, d); });
+    }
+
+    // ---------- decisiones ----------
+    let toastTimer = null;
+    async function decide(d, decision, card) {
+      const prev = { decision: d.decision, decidido_en: d.decidido_en };
+      const patch = { decision, decidido_en: decision ? new Date().toISOString() : null };
+      Object.assign(d, patch);
+      const leaves = state.tab !== "todos" && !state.detail && (state.tab === "pendiente" ? !!decision : decision !== state.tab);
+      if (leaves && card) { card.classList.add("fading"); setTimeout(render, 250); } else render();
+      const { error } = await client.from(T_DISENOS).update(patch).eq("id", d.id);
+      if (error) { Object.assign(d, prev); render(); showMsg("No se pudo guardar: " + error.message); return; }
+      showMsg("");
+      const txt = decision === "revisar" ? `🔁 Nº ${d.numero}: la rutina hará otra versión con tus comentarios` : decision ? `${DECISION_LABEL[decision]} · nº ${d.numero}` : `Nº ${d.numero} vuelve a Por decidir`;
+      showToast(txt, async () => {
+        Object.assign(d, prev); render();
+        await client.from(T_DISENOS).update(prev).eq("id", d.id);
+      });
+    }
+
+    // ---------- comentarios ----------
+    const audioUrl = (path) => `${url}/storage/v1/object/public/${BUCKET}/${path}`;
+    function commentsListHTML(id) {
+      const cs = commentsOf(id);
+      if (!cs.length) return "";
+      return cs.map((c) => `<div class="comment">
+          <div class="head"><span>${c.tipo === "audio" ? "🎤 Audio" : "📝 Nota"} · ${new Date(c.created_at).toLocaleString("es-ES", { dateStyle: "short", timeStyle: "short" })}${c.duracion_seg ? " · " + c.duracion_seg + " s" : ""}</span><span class="estado ${c.estado}">${ESTADO_LABEL[c.estado] || c.estado}</span></div>
+          ${c.tipo === "texto" ? `<div>${esc(c.texto)}</div>` : `<audio controls preload="none" src="${audioUrl(c.audio_path)}"></audio>`}
+          ${c.transcripcion ? `<div class="trans">“${esc(c.transcripcion)}”</div>` : (c.tipo === "audio" && c.estado !== "procesado" ? `<div class="trans">Sin transcripción: la rutina no puede oírlo. Usa Dictar para que llegue como texto.</div>` : "")}
+        </div>`).join("");
+    }
+    function commentBoxHTML(id, placeholder) {
+      return `<div data-list>${commentsListHTML(id)}</div>
+        <textarea data-nota placeholder="${esc(placeholder)}"></textarea>
+        <div class="row">
+          <button type="button" data-dictar>🎙️ Dictar</button>
+          <button type="button" data-rec>🎤 Grabar</button>
+          <button type="button" class="primary" data-guardar>Guardar</button>
+        </div>
+        <div data-preview></div>`;
+    }
+    function renderCommentBox(card, d) {
+      const box = card.querySelector("[data-comment-box]");
+      box.innerHTML = commentBoxHTML(d ? d.id : null, d ? "Qué cambiarías: «el 1 más inclinado», «prueba en azul», «la M más fina»…" : "Pide algo general: «más como el 6 pero con el 0 redondo», «prueba sin la M»…")
+        + `<p class="helper">Dictar convierte tu voz en texto aquí mismo. Grabar guarda el audio. Cada 5 minutos una rutina lee tus comentarios y crea versiones nuevas numeradas${d ? " a partir de esta" : ""}.</p>`;
+      const q = (s) => box.querySelector(s);
+      q("[data-guardar]").onclick = () => { stopDictate(); saveText(box, d); };
+      q("[data-dictar]").onclick = () => toggleDictate(box);
+      q("[data-rec]").onclick = () => { stopDictate(); toggleRec(box, d); };
+    }
+    function refreshComments(box, d) {
+      box.querySelector("[data-list]").innerHTML = commentsListHTML(d ? d.id : null);
+      const card = box.closest(".card");
+      if (card && d) {
+        const nc = commentsOf(d.id).length, np = pendingComments(d.id);
+        card.querySelector('[data-panel="coment"] > summary').textContent = `💬 Comentar (${nc}${np ? `, ${np} por usar` : ""})`;
+      }
+    }
+    async function saveText(box, d) {
+      const ta = box.querySelector("[data-nota]");
+      const texto = ta.value.trim();
+      if (!texto) return;
+      const { data, error } = await client.from(T_COMENTARIOS).insert({ diseno_id: d ? d.id : null, tipo: "texto", texto }).select().single();
+      if (error) { showMsg("No se pudo guardar el comentario: " + error.message); return; }
+      comentarios.push(data);
+      ta.value = "";
+      refreshComments(box, d);
+      showToast(d ? `📝 Comentario guardado en el nº ${d.numero}` : "📝 Petición guardada");
+    }
+
+    // dictado (Web Speech API)
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition || null;
+    const dict = { rec: null, on: false, box: null };
+    function startSR(onFinal, onEnd) {
+      if (!SR) return null;
+      const r = new SR();
+      r.lang = "es-ES"; r.continuous = true; r.interimResults = false;
+      r.onresult = (e) => { for (let k = e.resultIndex; k < e.results.length; k++) if (e.results[k].isFinal) onFinal(e.results[k][0].transcript.trim()); };
+      r.onerror = () => {};
+      r.onend = () => onEnd && onEnd();
+      try { r.start(); } catch { return null; }
+      return r;
+    }
+    function toggleDictate(box) {
+      if (dict.on) return stopDictate();
+      if (!SR) { showMsg("Este navegador no permite dictar; usa Grabar o escribe."); return; }
+      const ta = box.querySelector("[data-nota]");
+      dict.rec = startSR((t) => { ta.value = (ta.value.trim() ? ta.value.trim() + " " : "") + t; }, () => { if (dict.on) { try { dict.rec.start(); } catch {} } });
+      if (!dict.rec) { showMsg("No se pudo iniciar el dictado."); return; }
+      dict.on = true; dict.box = box;
+      const b = box.querySelector("[data-dictar]"); b.classList.add("on"); b.textContent = "⏹ Parar";
+      showMsg("");
+    }
+    function stopDictate() {
+      dict.on = false;
+      if (dict.rec) { try { dict.rec.stop(); } catch {} dict.rec = null; }
+      const b = dict.box && dict.box.querySelector("[data-dictar]"); if (b) { b.classList.remove("on"); b.textContent = "🎙️ Dictar"; }
+      dict.box = null;
+    }
+
+    // audio (MediaRecorder) + transcripción simultánea si el navegador puede
+    const rec = { recorder: null, stream: null, chunks: [], blob: null, url: "", mime: "", texto: [], box: null, card: null };
+    function pickMime() {
+      if (!window.MediaRecorder) return "";
+      for (const m of ["audio/webm;codecs=opus", "audio/webm", "audio/mp4", "audio/ogg;codecs=opus", "audio/ogg"]) if (MediaRecorder.isTypeSupported(m)) return m;
+      return "";
+    }
+    const extOf = (mime) => mime.includes("webm") ? "webm" : mime.includes("mp4") ? "m4a" : mime.includes("ogg") ? "ogg" : "bin";
+    async function toggleRec(box, d) {
+      if (rec.recorder && rec.recorder.state === "recording") return stopRec();
+      resetRec();
+      if (!navigator.mediaDevices || !window.MediaRecorder) { showMsg("Este navegador no permite grabar audio."); return; }
+      try { rec.stream = await navigator.mediaDevices.getUserMedia({ audio: true }); }
+      catch (err) { showMsg("Sin acceso al micrófono: " + err.message); return; }
+      rec.box = box; rec.card = box.closest(".card");
+      rec.mime = pickMime(); rec.chunks = []; rec.texto = [];
+      rec.recorder = new MediaRecorder(rec.stream, rec.mime ? { mimeType: rec.mime } : undefined);
+      rec.recorder.ondataavailable = (e) => { if (e.data && e.data.size) rec.chunks.push(e.data); };
+      rec.recorder.onstop = () => {
+        rec.stream.getTracks().forEach((t) => t.stop());
+        rec.blob = new Blob(rec.chunks, { type: rec.recorder.mimeType || rec.mime || "audio/webm" });
+        rec.mime = rec.blob.type;
+        rec.url = URL.createObjectURL(rec.blob);
+        showPreview(box, d);
+      };
+      rec.startedAt = Date.now();
+      rec.recorder.start(1000);
+      rec.sr = startSR((t) => rec.texto.push(t), () => { if (rec.recorder && rec.recorder.state === "recording" && rec.sr) { try { rec.sr.start(); } catch {} } });
+      const b = box.querySelector("[data-rec]"); b.classList.add("on"); b.textContent = "⏹ 0:00";
+      rec.timer = setInterval(() => { const s = Math.round((Date.now() - rec.startedAt) / 1000); b.textContent = `⏹ ${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`; }, 250);
+      box.querySelector("[data-preview]").innerHTML = "";
+    }
+    function stopRec() {
+      clearInterval(rec.timer);
+      if (rec.sr) { const r = rec.sr; rec.sr = null; try { r.stop(); } catch {} }
+      const b = rec.box && rec.box.querySelector("[data-rec]"); if (b) { b.classList.remove("on"); b.textContent = "🎤 Grabar"; }
+      if (rec.recorder && rec.recorder.state !== "inactive") rec.recorder.stop();
+    }
+    function resetRec() {
+      if (rec.recorder && rec.recorder.state === "recording") { rec.recorder.onstop = () => rec.stream.getTracks().forEach((t) => t.stop()); }
+      stopRec();
+      if (rec.url) URL.revokeObjectURL(rec.url);
+      const pv = rec.box && rec.box.querySelector("[data-preview]"); if (pv) pv.innerHTML = "";
+      Object.assign(rec, { recorder: null, stream: null, chunks: [], blob: null, url: "", box: null, card: null });
+    }
+    function showPreview(box, d) {
+      const sec = Math.max(1, Math.round((Date.now() - rec.startedAt) / 1000));
+      const pv = box.querySelector("[data-preview]");
+      pv.innerHTML = `<div class="rec-preview"><p class="helper">Audio grabado · ${sec} s${rec.texto.length ? " · con transcripción" : ""}</p>
+        <audio controls src="${rec.url}"></audio>
+        <div class="row"><button type="button" data-descartar>Descartar</button><button type="button" class="primary" data-subir>💾 Guardar audio</button></div></div>`;
+      pv.querySelector("[data-descartar]").onclick = resetRec;
+      pv.querySelector("[data-subir]").onclick = () => saveAudio(box, d, sec);
+    }
+    async function saveAudio(box, d, sec) {
+      const btn = box.querySelector("[data-subir]"); btn.disabled = true; btn.textContent = "Subiendo…";
+      const path = `${d ? d.id : "general"}/${new Date().toISOString().replace(/[:.]/g, "-")}.${extOf(rec.mime)}`;
+      const up = await client.storage.from(BUCKET).upload(path, rec.blob, { contentType: rec.mime || "audio/webm", upsert: false });
+      if (up.error) { showMsg("No se pudo subir el audio: " + up.error.message); btn.disabled = false; btn.textContent = "💾 Guardar audio"; return; }
+      const transcripcion = rec.texto.join(" ").trim() || null;
+      const { data, error } = await client.from(T_COMENTARIOS).insert({ diseno_id: d ? d.id : null, tipo: "audio", audio_path: path, audio_mime: rec.mime, duracion_seg: sec, transcripcion, estado: transcripcion ? "transcrito" : "pendiente" }).select().single();
+      if (error) { showMsg("Audio subido pero no se pudo registrar: " + error.message); btn.disabled = false; btn.textContent = "💾 Guardar audio"; return; }
+      comentarios.push(data);
+      resetRec();
+      refreshComments(box, d);
+      showToast(transcripcion ? "🎤 Audio guardado con transcripción" : "🎤 Audio guardado (sin transcripción)");
+    }
+
+    // ---------- kit y guía de marca ----------
+    function renderKit(card, d) {
+      const c = C(d);
+      const box = card.querySelector("[data-kit-box]");
+      const sw = (label, hex) => `<button type="button" class="sw" data-copy="${esc(hex)}"><i style="background:${esc(hex)}"></i>${esc(label)}<br><b>${esc(hex)}</b></button>`;
+      box.innerHTML = `
+        <h4>Colores</h4>
+        <div class="swatches">${sw("Fondo icono", c.icono_fondo)}${sw("Tinta icono", c.icono_tinta)}${sw("Acento", c.acento)}${sw("Texto", c.wordmark)}</div>
+        <h4>Tipografía</h4>
+        <p class="helper" style="margin:0">${esc((d.fuentes && d.fuentes.length ? d.fuentes.join(", ") : "Poppins") + " (Google Fonts, licencia libre OFL)")}</p>
+        <h4>Así se ve en una pestaña del navegador</h4>
+        <div style="background:#e9e7e1;border-radius:10px;padding:8px 8px 0"><span class="tab-mock">${icon(d, "", true)}Mates 10</span></div>
+        <h4>Descargas (con la tipografía incrustada)</h4>
+        <div class="dl">
+          <button type="button" data-png="sq:512">Icono app 512 PNG</button>
+          <button type="button" data-png="sq:180">Apple touch 180 PNG</button>
+          <button type="button" data-png="ci:512">Icono círculo 512 PNG</button>
+          <button type="button" data-png="fav:32">Favicon 32 PNG</button>
+          <button type="button" data-png="wm:1200">Wordmark PNG</button>
+          <button type="button" data-svg="sq">Icono SVG</button>
+          <button type="button" data-svg="wm">Wordmark SVG</button>
+          <button type="button" data-tokens>Copiar tokens CSS</button>
+        </div>
+        <p class="helper">Tokens y descargas son la base para la plantilla web, el favicon y el documento de diseño cuando elijas un definitivo.</p>`;
+      box.querySelectorAll("[data-copy]").forEach((b) => b.onclick = () => copy(b.dataset.copy, "Color copiado"));
+      box.querySelectorAll("[data-png]").forEach((b) => b.onclick = () => { const [k, s] = b.dataset.png.split(":"); exportPng(d, k, +s); });
+      box.querySelectorAll("[data-svg]").forEach((b) => b.onclick = () => exportSvg(d, b.dataset.svg));
+      box.querySelector("[data-tokens]").onclick = () => copy(`:root {\n  --m10-icono-fondo: ${c.icono_fondo};\n  --m10-icono-tinta: ${c.icono_tinta};\n  --m10-acento: ${c.acento};\n  --m10-texto: ${c.wordmark};\n  --m10-fuente: "Poppins", system-ui, sans-serif;\n}\n/* logo nº ${d.numero}: ${d.titulo} */`, "Tokens copiados");
+    }
+    async function copy(t, msg) { try { await navigator.clipboard.writeText(t); showToast("📋 " + msg); } catch { prompt("Copia:", t); } }
+    let fontCssCache = null;
+    async function fontCss() {
+      if (fontCssCache) return fontCssCache;
+      const files = [["700", "normal", "poppins-700"], ["800", "normal", "poppins-800"], ["900", "normal", "poppins-900"], ["700", "italic", "poppins-700i"], ["800", "italic", "poppins-800i"], ["900", "italic", "poppins-900i"], ["500", "normal", "poppins-500"], ["600", "normal", "poppins-600"]];
+      const parts = await Promise.all(files.map(async ([w, s, f]) => {
+        const buf = await (await fetch(`fonts/${f}.woff2`)).arrayBuffer();
+        let bin = ""; const u8 = new Uint8Array(buf); for (let i = 0; i < u8.length; i++) bin += String.fromCharCode(u8[i]);
+        return `@font-face{font-family:'Poppins';font-weight:${w};font-style:${s};src:url(data:font/woff2;base64,${btoa(bin)}) format('woff2');}`;
+      }));
+      return (fontCssCache = parts.join(""));
+    }
+    // SVG autónomo: colores resueltos, fondo del icono y tipografía incrustada.
+    async function standaloneSvg(d, kind) {
+      const c = C(d);
+      const src = kind === "wm" ? d.svg_wordmark : kind === "fav" ? (d.svg_favicon || d.svg_marca) : d.svg_marca;
+      const doc = new DOMParser().parseFromString(safeSvg(src), "image/svg+xml");
+      const svg = doc.documentElement;
+      const vb = (svg.getAttribute("viewBox") || "0 0 100 100").split(/[\s,]+/).map(Number);
+      const ink = kind === "wm" ? c.wordmark : c.icono_tinta;
+      const style = doc.createElementNS("http://www.w3.org/2000/svg", "style");
+      style.textContent = (await fontCss()) + `svg{color:${ink}}.acento{fill:${c.acento}}.acento-trazo{stroke:${c.acento}}.fondo{fill:${kind === "wm" ? "#ffffff" : c.icono_fondo}}`;
+      svg.insertBefore(style, svg.firstChild);
+      if (kind !== "wm") {
+        const r = doc.createElementNS("http://www.w3.org/2000/svg", kind === "ci" ? "circle" : "rect");
+        if (kind === "ci") { r.setAttribute("cx", vb[0] + vb[2] / 2); r.setAttribute("cy", vb[1] + vb[3] / 2); r.setAttribute("r", vb[2] / 2); }
+        else { r.setAttribute("x", vb[0]); r.setAttribute("y", vb[1]); r.setAttribute("width", vb[2]); r.setAttribute("height", vb[3]); r.setAttribute("rx", vb[2] * 0.22); }
+        r.setAttribute("fill", c.icono_fondo);
+        svg.insertBefore(r, style.nextSibling);
+      }
+      svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+      return { text: new XMLSerializer().serializeToString(svg), ratio: vb[2] / vb[3] };
+    }
+    function download(blob, name) { const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 2000); }
+    async function exportSvg(d, kind) {
+      const { text } = await standaloneSvg(d, kind);
+      download(new Blob([text], { type: "image/svg+xml" }), `mates10-${d.numero}-${kind === "wm" ? "wordmark" : "icono"}.svg`);
+    }
+    async function exportPng(d, kind, size) {
+      try {
+        const { text, ratio } = await standaloneSvg(d, kind);
+        const img = new Image();
+        img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(text);
+        await img.decode();
+        await new Promise((r) => setTimeout(r, 60));
+        const cv = document.createElement("canvas");
+        cv.width = kind === "wm" ? size : size; cv.height = kind === "wm" ? Math.round(size / ratio) : size;
+        cv.getContext("2d").drawImage(img, 0, 0, cv.width, cv.height);
+        cv.toBlob((b) => download(b, `mates10-${d.numero}-${kind === "wm" ? "wordmark" : kind === "fav" ? "favicon" : kind === "ci" ? "circulo" : "icono"}-${size}.png`), "image/png");
+      } catch (e) { showMsg("No se pudo exportar: " + e.message); }
+    }
+
+    // ---------- vistas ----------
+    function openDetail(id) { resetRec(); stopDictate(); state.detail = id; render(); window.scrollTo(0, 0); }
+    function render() { renderView(); fitSvgs(el("view")); }
+    function renderView() {
+      counts();
+      document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("active", !state.detail && t.dataset.tab === state.tab));
+      const view = el("view");
+      if (state.detail) {
+        const d = byId(state.detail);
+        if (!d) { state.detail = null; return renderView(); }
+        view.innerHTML = `<span class="back" id="back">← Volver</span>${cardHTML(d)}`;
+        el("back").onclick = () => { resetRec(); state.detail = null; render(); };
+        wireCard(view.querySelector(".card"));
+        return;
+      }
+      const list = inTab(state.tab);
+      if (state.tab === "todos") {
+        view.innerHTML = list.length ? `<p class="eyebrow">Todos los diseños, del más nuevo al más antiguo. Toca uno para verlo entero.</p><div class="grid">${list.map((d) => `
+          <button type="button" class="g-item ${["no_gusta", "versionado", "retirado"].includes(d.decision) ? "dim" : ""}" data-go="${d.id}">${icon(d, "")}
+            <div class="cap"><b>${d.numero}</b>${d.decision ? `<span>${DECISION_LABEL[d.decision].split(" ")[0]}</span>` : ""}</div></button>`).join("")}</div>` : emptyHTML();
+        view.querySelectorAll("[data-go]").forEach((b) => b.onclick = () => openDetail(b.dataset.go));
+        return;
+      }
+      const intro = {
+        pendiente: "Di si te gusta o no. Coméntalos (texto o voz) y la rutina hará versiones nuevas con lo que digas.",
+        gusta: "Los que te gustan. La rutina los usa como dirección para las propuestas nuevas.",
+        definitivo: "Los definitivos. Abre «Kit y guía de marca» para descargar iconos, favicon y colores.",
+        revisar: "En cola para otra versión: la rutina los rehace con tus comentarios en unos minutos.",
+        no_gusta: "Descartados. La rutina evita lo que tienen en común.",
+      }[state.tab];
+      const general = state.tab === "pendiente" ? `<details class="general card-like" id="general"><summary>💡 Pide algo general (no sobre una tarjeta concreta)</summary><div class="panel" data-comment-box style="background:none;padding:0"></div></details>` : "";
+      const learned = state.tab === "pendiente" && prefs && (prefs.gusta || prefs.no_gusta || prefs.explorando) ? `<details class="general"><summary>🧠 Lo que he aprendido de tus gustos</summary><div class="prefs">
+          ${prefs.gusta ? `<p><b>Te gusta:</b> ${esc(prefs.gusta)}</p>` : ""}
+          ${prefs.no_gusta ? `<p><b>No te gusta:</b> ${esc(prefs.no_gusta)}</p>` : ""}
+          ${prefs.explorando ? `<p><b>Explorando ahora:</b> ${esc(prefs.explorando)}</p>` : ""}
+          <p class="helper">Actualizado ${prefs.actualizado_en ? ago(prefs.actualizado_en) : ""}. Si algo no es así, dilo en «Pide algo general».</p></div></details>` : "";
+      view.innerHTML = learned + general + `<p class="eyebrow">${intro}</p>` + (list.length ? list.map(cardHTML).join("") : emptyHTML());
+      view.querySelectorAll(".card").forEach(wireCard);
+      const g = el("general");
+      if (g) g.addEventListener("toggle", () => { if (g.open) renderCommentBox(g, null); });
+    }
+    function emptyHTML() {
+      return `<div class="empty"><div class="big">${state.tab === "pendiente" ? "✅" : "📭"}</div><div>${state.tab === "pendiente" ? "No queda nada por decidir." : "Nada por aquí todavía."}</div><p class="helper">${state.tab === "pendiente" ? "Comenta alguno o pide algo general y la rutina te traerá propuestas nuevas." : ""}</p></div>`;
+    }
+
+    // ---------- utilidades ----------
+    function showMsg(t) { el("msg").textContent = t; }
+    function showToast(t, undo) {
+      el("toast-text").textContent = t;
+      const u = el("toast-undo");
+      u.textContent = undo ? "Deshacer" : "";
+      u.onclick = undo ? () => { hideToast(); undo(); } : null;
+      el("toast").classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(hideToast, 5000);
+    }
+    function hideToast() { el("toast").classList.remove("show"); }
+
+    async function refresh(btn) {
+      btn && btn.classList.add("spin");
+      try { await load(); showMsg(""); render(); }
+      catch (err) { showMsg("Sin conexión con Supabase: " + (err.message || err)); }
+      finally { btn && btn.classList.remove("spin"); }
+    }
+
+    async function init() {
+      document.querySelectorAll(".tab").forEach((t) => t.addEventListener("click", () => { resetRec(); stopDictate(); state.tab = t.dataset.tab; state.detail = null; render(); window.scrollTo(0, 0); }));
+      el("btn-refresh").addEventListener("click", (e) => refresh(e.currentTarget));
+      if (!url || !anonKey) { showMsg("Faltan credenciales en config.js"); return; }
+      client = supabase.createClient(url, anonKey);
+      // las marcas se miden con la fuente ya cargada (si no, el encaje sale mal)
+      try { await Promise.all(["500", "600", "700", "800", "900", "italic 700", "italic 800", "italic 900"].map((v) => document.fonts.load(`${v.includes("italic") ? v : "normal " + v} 40px Poppins`, "Mates10°·/"))); } catch {}
+      await refresh(null);
+      const m = location.hash.match(/^#(\d+)$/);
+      if (m) { const d = disenos.find((x) => x.numero === +m[1]); if (d) openDetail(d.id); }
+    }
+    init();
+
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+    }
+  </script>
+</body>
+</html>

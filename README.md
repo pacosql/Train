@@ -37,6 +37,7 @@ reglas para no interferir con las demás:
 | 📚 Vocabulary | [`vocab/`](./vocab) | `/Train/vocab/` | `vocab_` |
 | 📈 Negocios | [`negocios/`](./negocios) | `/Train/negocios/` | `negocios_` |
 | 🗂️ Contactos | [`contactos/`](./contactos) | `/Train/contactos/` | `contactos_` |
+| ✳️ Logos | [`logos/`](./logos) | `/Train/logos/` | `logos_` |
 
 ## Añadir una app nueva
 
