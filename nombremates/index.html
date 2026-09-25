@@ -30,10 +30,13 @@
       <button type="button" id="btn-reintentar">Reintentar</button>
     </div>
 
-    <div id="swipe-area" aria-live="polite"></div>
+    <p class="lote-ayuda">Marca 👍 o ⭐ los que te gusten. Al pulsar <strong>Siguiente 10</strong>, los que no marques pasan a descartados. Toca un nombre para ver detalles o comentar.</p>
 
-    <div class="undo-row">
-      <button type="button" id="btn-deshacer" class="btn-ghost" hidden>↩️ Deshacer</button>
+    <div id="lote-area" class="lote" aria-live="polite"></div>
+
+    <div class="lote-acciones">
+      <button type="button" id="btn-deshacer" class="btn-ghost" hidden>↩️ Deshacer lote</button>
+      <button type="button" id="btn-siguiente" class="btn-siguiente">Siguiente 10 →</button>
     </div>
 
     <section class="sugerencia-box">
@@ -88,27 +91,25 @@
     <div class="build-id">build __BUILD_ID__</div>
   </div>
 
-  <template id="tpl-swipe-card">
-    <div class="swipe-card">
-      <div class="metodo-tag"></div>
-      <div class="name-text"></div>
-      <div class="dominio"></div>
-      <p class="porque"></p>
-      <label class="visually-hidden" for="nota-actual">Comentario sobre este nombre</label>
-      <div class="nota-row">
-        <textarea class="nota-input" id="nota-actual" rows="1" maxlength="1000" placeholder="comentario (opcional)" autocomplete="off"></textarea>
-        <button type="button" class="btn-mic" data-mic-for="nota-actual" aria-label="Dictar comentario por voz">🎙️</button>
+  <template id="tpl-lote-fila">
+    <div class="lote-fila">
+      <div class="lote-linea">
+        <button type="button" class="lote-nombre" aria-expanded="false">
+          <span class="name-text"></span>
+          <span class="lote-dom">.com ✓</span>
+        </button>
+        <button type="button" class="marca marca-like" aria-pressed="false" aria-label="Me gusta">👍</button>
+        <button type="button" class="marca marca-star" aria-pressed="false" aria-label="Definitivo">⭐</button>
       </div>
-      <div class="swipe-actions">
-        <button class="btn-dislike" type="button">👎 No</button>
-        <button class="btn-star" type="button">⭐ Definitivo</button>
-        <button class="btn-like" type="button">👍 Me gusta</button>
-      </div>
-      <details class="mas-info">
-        <summary>más información</summary>
+      <div class="lote-detalle" hidden>
+        <p class="porque"></p>
+        <div class="nota-row">
+          <textarea class="nota-input" rows="1" maxlength="1000" placeholder="comentario (opcional)" autocomplete="off"></textarea>
+          <button type="button" class="btn-mic" aria-label="Dictar comentario por voz">🎙️</button>
+        </div>
         <div class="checks"></div>
         <div class="colision-info"></div>
-      </details>
+      </div>
     </div>
   </template>
 

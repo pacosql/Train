@@ -7,8 +7,9 @@
 // front-end nunca lanza esa comprobación: solo pinta lo que ya viene
 // verificado y recoge decisiones y comentarios.
 //
-// Decisiones: me_gusta / no_me_gusta / favorito, con comentario
-// opcional (escrito o dictado por voz) que alimenta la siguiente tanda.
+// Se revisa en lotes de 10: lo marcado 👍/⭐ queda como me_gusta /
+// favorito y el resto pasa a no_me_gusta. Comentario opcional por nombre
+// (escrito o dictado por voz) que alimenta la siguiente tanda.
 // Los comentarios generales van a nombremates_sugerencias.
 
 const CFG = window.NOMBREMATES_CONFIG;
@@ -32,7 +33,7 @@ const officialLinks = (row) => [
 ];
 
 let cola = [];
-let ultimaDecision = null; // { id, notaAnterior } para deshacer
+let ultimaDecision = null; // [{ id, notaAnterior }] del último lote, para deshacer
 let ocupado = false; // evita que un doble toque mande dos decisiones
 
 // ---- REST ----
@@ -174,62 +175,94 @@ function renderColision(container, row) {
     : "🔎 Notoriedad: sin detalle registrado.";
 }
 
-function pintaSiguienteSwipe() {
+// ---- Lote de 10 ----
+//
+// Se revisan de 10 en 10: lo que se marque 👍/⭐ se guarda como
+// me_gusta/favorito y el resto pasa a no_me_gusta al pulsar "Siguiente".
+
+const TAM_LOTE = 10;
+let lote = []; // [{ row, marca: null|"me_gusta"|"favorito", campo }]
+
+function pintaLote() {
   pararDictado();
-  const area = document.getElementById("swipe-area");
+  const area = document.getElementById("lote-area");
   area.innerHTML = "";
   document.getElementById("cola-count").textContent = cola.length;
+  lote = [];
+  const btn = document.getElementById("btn-siguiente");
 
   if (cola.length === 0) {
     const p = document.createElement("p");
     p.className = "empty";
     p.textContent = "No quedan nombres por decidir. Déjame un comentario aquí abajo y te busco otra tanda.";
     area.appendChild(p);
+    btn.hidden = true;
     return;
   }
+  btn.hidden = false;
+  btn.textContent = cola.length > TAM_LOTE ? `Siguiente ${TAM_LOTE} →` : "Terminar →";
 
-  const item = cola[0];
-  const node = document.getElementById("tpl-swipe-card").content.cloneNode(true);
-  const tag = node.querySelector(".metodo-tag");
-  if (item.metodo) tag.textContent = item.metodo;
-  else tag.remove();
-  node.querySelector(".name-text").textContent = item.nombre;
-  node.querySelector(".dominio").textContent = `${dominio(item)} libre`;
-  pintaPorque(node.querySelector(".porque"), item);
-  renderChecks(node.querySelector(".checks"), item);
-  renderColision(node.querySelector(".colision-info"), item);
+  for (const row of cola.slice(0, TAM_LOTE)) {
+    const node = document.getElementById("tpl-lote-fila").content.cloneNode(true);
+    const fila = node.querySelector(".lote-fila");
+    const item = { row, marca: null, campo: node.querySelector(".nota-input") };
+    fila.querySelector(".name-text").textContent = row.nombre;
+    pintaPorque(fila.querySelector(".porque"), row);
+    renderChecks(fila.querySelector(".checks"), row);
+    renderColision(fila.querySelector(".colision-info"), row);
+    enlazarMic(fila.querySelector(".btn-mic"), item.campo);
 
-  const notaInput = node.querySelector(".nota-input");
-  enlazarMic(node.querySelector(".btn-mic"), notaInput);
-  const botones = [...node.querySelectorAll(".swipe-actions button")];
+    const detalle = fila.querySelector(".lote-detalle");
+    const toggle = fila.querySelector(".lote-nombre");
+    toggle.addEventListener("click", () => {
+      detalle.hidden = !detalle.hidden;
+      toggle.setAttribute("aria-expanded", String(!detalle.hidden));
+    });
 
-  const decidir = (status) => async () => {
-    if (ocupado) return;
-    pararDictado();
-    ocupado = true;
-    botones.forEach((b) => (b.disabled = true));
-    try {
-      await apiPatch(`${TABLE}?id=eq.${item.id}`, {
-        status,
-        nota: notaInput.value.trim() || null,
-        decidido_at: new Date().toISOString(),
-      });
-      ultimaDecision = { id: item.id, notaAnterior: item.nota ?? null };
-      ocultarError();
-      await recargarTodo();
-    } catch (err) {
-      mostrarError(err);
-      botones.forEach((b) => (b.disabled = false));
-    } finally {
-      ocupado = false;
+    const bLike = fila.querySelector(".marca-like");
+    const bStar = fila.querySelector(".marca-star");
+    const pinta = () => {
+      bLike.setAttribute("aria-pressed", String(item.marca === "me_gusta"));
+      bStar.setAttribute("aria-pressed", String(item.marca === "favorito"));
+      fila.classList.toggle("gusta", item.marca === "me_gusta");
+      fila.classList.toggle("star", item.marca === "favorito");
+    };
+    bLike.addEventListener("click", () => { item.marca = item.marca === "me_gusta" ? null : "me_gusta"; pinta(); });
+    bStar.addEventListener("click", () => { item.marca = item.marca === "favorito" ? null : "favorito"; pinta(); });
+
+    lote.push(item);
+    area.appendChild(node);
+  }
+}
+
+async function siguienteLote() {
+  if (ocupado || lote.length === 0) return;
+  pararDictado();
+  ocupado = true;
+  const btn = document.getElementById("btn-siguiente");
+  btn.disabled = true;
+  const ahora = new Date().toISOString();
+  try {
+    const grupos = { me_gusta: [], favorito: [], no_me_gusta: [] };
+    for (const it of lote) {
+      const nota = it.campo.value.trim();
+      const status = it.marca || "no_me_gusta";
+      if (nota) await apiPatch(`${TABLE}?id=eq.${it.row.id}`, { status, nota, decidido_at: ahora });
+      else grupos[status].push(it.row.id);
     }
-  };
-
-  node.querySelector(".btn-dislike").addEventListener("click", decidir("no_me_gusta"));
-  node.querySelector(".btn-star").addEventListener("click", decidir("favorito"));
-  node.querySelector(".btn-like").addEventListener("click", decidir("me_gusta"));
-
-  area.appendChild(node);
+    for (const [status, ids] of Object.entries(grupos)) {
+      if (ids.length) await apiPatch(`${TABLE}?id=in.(${ids.join(",")})`, { status, decidido_at: ahora });
+    }
+    ultimaDecision = lote.map((it) => ({ id: it.row.id, notaAnterior: it.row.nota ?? null }));
+    ocultarError();
+    await recargarTodo();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  } catch (err) {
+    mostrarError(err);
+  } finally {
+    btn.disabled = false;
+    ocupado = false;
+  }
 }
 
 function botonAccion(texto, clase, alPulsar) {
@@ -345,7 +378,7 @@ async function recargarTodo() {
     const total = decididos + pendientes.length;
     document.getElementById("decididos-count").textContent = decididos;
     document.getElementById("barra-progreso").style.width = total ? `${(100 * decididos) / total}%` : "0%";
-    pintaSiguienteSwipe();
+    pintaLote();
 
     pintaLista("lista-definitivos", "count-definitivos", favoritos, "Todavía no hay ningún definitivo.", [
       { texto: "👍 Bajar a me gusta", clase: "btn-mini", status: "me_gusta" },
@@ -396,11 +429,13 @@ async function deshacer() {
   const btn = document.getElementById("btn-deshacer");
   btn.disabled = true;
   try {
-    await apiPatch(`${TABLE}?id=eq.${ultimaDecision.id}`, {
-      status: "pendiente",
-      nota: ultimaDecision.notaAnterior,
-      decidido_at: null,
-    });
+    const sinNota = ultimaDecision.filter((d) => d.notaAnterior === null).map((d) => d.id);
+    if (sinNota.length) {
+      await apiPatch(`${TABLE}?id=in.(${sinNota.join(",")})`, { status: "pendiente", nota: null, decidido_at: null });
+    }
+    for (const d of ultimaDecision.filter((d) => d.notaAnterior !== null)) {
+      await apiPatch(`${TABLE}?id=eq.${d.id}`, { status: "pendiente", nota: d.notaAnterior, decidido_at: null });
+    }
     ultimaDecision = null;
     await recargarTodo();
   } catch (err) {
@@ -414,6 +449,7 @@ async function deshacer() {
 function init() {
   document.getElementById("form-sugerencia").addEventListener("submit", enviarSugerencia);
   document.getElementById("btn-deshacer").addEventListener("click", deshacer);
+  document.getElementById("btn-siguiente").addEventListener("click", siguienteLote);
   document.getElementById("btn-reintentar").addEventListener("click", recargarTodo);
   enlazarMic(
     document.querySelector('[data-mic-for="input-sugerencia"]'),
