@@ -7,7 +7,8 @@
 // front-end nunca lanza esa comprobación: solo pinta lo que ya viene
 // verificado y recoge decisiones y comentarios.
 //
-// Al entrar se elige revisar de 1 en 1 o de 10 en 10. En lotes, lo
+// Al entrar se elige revisar de 1 en 1 o de 10 en 10 (numerados; con el
+// modo conversación se dicen los números y «siguiente»). En lotes, lo
 // marcado 👍/⭐ queda como me_gusta / favorito y el resto pasa a
 // no_me_gusta con un solo botón. Comentario opcional por nombre
 // (escrito o dictado por voz) que alimenta la siguiente tanda.
@@ -105,6 +106,7 @@ function enlazarMic(btn, campo) {
       return;
     }
     pararDictado();
+    pararConversacion();
     const rec = new Reconocimiento();
     rec.lang = "es-ES";
     rec.continuous = true;
@@ -131,6 +133,162 @@ function enlazarMic(btn, campo) {
     btn.classList.add("escuchando");
     rec.start();
   });
+}
+
+
+// ---- Modo conversación (lotes de 10 sin tocar la pantalla) ----
+//
+// Escucha en continuo y entiende frases como «la 1 y la 3, siguiente»:
+// los números dichos se marcan 👍 (⭐ si van tras «definitiva/estrella»),
+// «ninguna» desmarca todo, «siguiente» guarda el lote y trae el siguiente,
+// «deshacer» recupera el último lote y «parar» cierra el modo. Safari en
+// iPhone corta el reconocimiento cada poco: se rearranca solo mientras el
+// modo esté activo.
+
+let conversacion = null; // { rec, parando }
+
+const PALABRAS_NUM = {
+  un: 1, uno: 1, una: 1, primera: 1, primero: 1,
+  dos: 2, segunda: 2, segundo: 2,
+  tres: 3, tercera: 3, tercero: 3,
+  cuatro: 4, cuarta: 4, cuarto: 4,
+  cinco: 5, quinta: 5, quinto: 5,
+  seis: 6, sexta: 6, sexto: 6,
+  siete: 7, septima: 7, septimo: 7,
+  ocho: 8, octava: 8, octavo: 8,
+  nueve: 9, novena: 9, noveno: 9,
+  diez: 10, decima: 10, decimo: 10,
+};
+
+function convEstado(texto, aviso = false) {
+  const el = document.getElementById("conv-estado");
+  el.textContent = texto;
+  el.classList.toggle("aviso", aviso);
+  el.hidden = !conversacion && !aviso;
+}
+
+// Devuelve { marcas: Map(num -> "me_gusta"|"favorito"|null), ninguna, todas, siguiente, deshacer, parar }
+function interpretaFrase(frase) {
+  const limpio = frase
+    .toLowerCase()
+    .normalize("NFD").replace(/[̀-ͯ]/g, "")
+    .replace(/[^a-z0-9 ]+/g, " ");
+  const orden = { marcas: new Map(), ninguna: false, todas: false, siguiente: false, deshacer: false, parar: false, entendido: false };
+  let modoMarca = "me_gusta";
+  for (const tok of limpio.split(/\s+/).filter(Boolean)) {
+    let nums = [];
+    if (/^\d+$/.test(tok)) {
+      const v = Number(tok);
+      if (v >= 1 && v <= 10) nums = [v];
+      // «1 y 3» a veces llega como «13»: si son cifras del 1 al 9, las separo
+      else if (v > 10 && !tok.includes("0")) nums = tok.split("").map(Number);
+    } else if (PALABRAS_NUM[tok]) {
+      nums = [PALABRAS_NUM[tok]];
+    } else if (/^(definitiv\w*|estrella\w*|favorit\w*|fija\w*)$/.test(tok)) {
+      modoMarca = "favorito";
+    } else if (/^(quita\w*|desmarca\w*|no)$/.test(tok)) {
+      modoMarca = null;
+    } else if (/^(gusta\w*|marca\w*)$/.test(tok)) {
+      if (modoMarca === null) modoMarca = "me_gusta";
+    } else if (/^(ningun\w*|nada)$/.test(tok)) {
+      orden.ninguna = true; orden.entendido = true;
+    } else if (/^tod[ao]s$/.test(tok)) {
+      orden.todas = true; orden.entendido = true;
+    } else if (/^(siguiente\w*|pasa\w*|vale|listo)$/.test(tok)) {
+      orden.siguiente = true; orden.entendido = true;
+    } else if (/^(deshacer|deshaz|atras|vuelve)$/.test(tok)) {
+      orden.deshacer = true; orden.entendido = true;
+    } else if (/^(parar|stop|apaga\w*|termina\w*|cierra\w*)$/.test(tok)) {
+      orden.parar = true; orden.entendido = true;
+    }
+    for (const n of nums) { orden.marcas.set(n, modoMarca); orden.entendido = true; }
+  }
+  return orden;
+}
+
+async function ejecutaFrase(frase) {
+  const o = interpretaFrase(frase);
+  if (!o.entendido) {
+    convEstado(`No he entendido «${frase.trim()}». Di p. ej. «la 1 y la 3, siguiente».`, true);
+    return;
+  }
+  if (o.parar) { pararConversacion(); return; }
+  if (o.deshacer) { convEstado("Deshaciendo el último lote…"); await deshacer(); return; }
+  if (o.ninguna) for (const it of lote) it.marcar(null);
+  if (o.todas) for (const it of lote) it.marcar("me_gusta");
+  const resumen = [];
+  for (const [n, m] of o.marcas) {
+    const it = lote[n - 1];
+    if (!it) { resumen.push(`${n}?`); continue; }
+    it.marcar(m);
+    resumen.push(m === "favorito" ? `⭐${n}` : m === "me_gusta" ? `👍${n}` : `✕${n}`);
+  }
+  const marcados = lote.filter((it) => it.marca).length;
+  if (o.siguiente) {
+    if (ocupado) { convEstado("Espera, todavía guardando el lote anterior…", true); return; }
+    convEstado(`Guardando: ${marcados} 👍/⭐ y ${lote.length - marcados} 👎…`);
+    await siguienteLote();
+  } else {
+    convEstado(`Oído: ${resumen.join(" ") || (o.ninguna ? "ninguna" : "todas")} · marcados ${marcados}. Di «siguiente» para guardar.`);
+  }
+}
+
+function iniciarConversacion() {
+  if (!Reconocimiento || conversacion) return;
+  pararDictado();
+  const rec = new Reconocimiento();
+  rec.lang = "es-ES";
+  rec.continuous = true;
+  rec.interimResults = false;
+  rec.maxAlternatives = 1;
+  let pendiente = Promise.resolve();
+  rec.onresult = (ev) => {
+    for (let i = ev.resultIndex; i < ev.results.length; i++) {
+      if (!ev.results[i].isFinal) continue;
+      const frase = ev.results[i][0].transcript;
+      pendiente = pendiente.then(() => ejecutaFrase(frase)).catch(mostrarError);
+    }
+  };
+  rec.onerror = (ev) => {
+    if (ev.error === "not-allowed" || ev.error === "service-not-allowed") {
+      pararConversacion();
+      convEstado("Sin permiso de micrófono: actívalo en los ajustes del navegador.", true);
+    }
+    // «no-speech», «network», «aborted»… → onend rearranca solo
+  };
+  rec.onend = () => {
+    if (!conversacion || conversacion.rec !== rec || conversacion.parando) return;
+    setTimeout(() => {
+      if (!conversacion || conversacion.rec !== rec || conversacion.parando) return;
+      try { rec.start(); } catch { pararConversacion(); convEstado("El micrófono se ha cerrado. Vuelve a activar el modo conversación.", true); }
+    }, 300);
+  };
+  conversacion = { rec, parando: false };
+  const btn = document.getElementById("btn-conversacion");
+  btn.setAttribute("aria-pressed", "true");
+  btn.textContent = "🔴 Oyendo";
+  document.body.classList.add("conversando");
+  convEstado("Escuchando. Di los números que te gustan («la 1 y la 3») y «siguiente».");
+  try { rec.start(); } catch (err) { pararConversacion(); mostrarError(err); }
+}
+
+function pararConversacion() {
+  if (!conversacion) return;
+  conversacion.parando = true;
+  try { conversacion.rec.stop(); } catch {}
+  conversacion = null;
+  const btn = document.getElementById("btn-conversacion");
+  btn.setAttribute("aria-pressed", "false");
+  btn.textContent = "🎙️ Hablar";
+  document.body.classList.remove("conversando");
+  const el = document.getElementById("conv-estado");
+  el.hidden = true;
+  el.classList.remove("aviso");
+}
+
+function alternarConversacion() {
+  if (conversacion) pararConversacion();
+  else iniciarConversacion();
 }
 
 // ---- Errores visibles ----
@@ -202,6 +360,9 @@ function eligeModo(m) {
   document.getElementById("modo-uno").hidden = m !== "uno";
   document.getElementById("modo-lote").hidden = m !== "lote";
   document.getElementById("modo-texto").textContent = m === "uno" ? "Revisando de 1 en 1" : "Revisando de 10 en 10";
+  document.body.classList.toggle("en-lote", m === "lote");
+  document.getElementById("btn-conversacion").hidden = m !== "lote" || !Reconocimiento;
+  if (m !== "lote") pararConversacion();
   if (m) pintaRevision();
 }
 
@@ -296,10 +457,11 @@ function pintaLote() {
       : `Guardar ${marcados} 👍 y descartar ${n - marcados} →`;
   };
 
-  for (const row of cola.slice(0, TAM_LOTE)) {
+  cola.slice(0, TAM_LOTE).forEach((row, idx) => {
     const node = document.getElementById("tpl-lote-fila").content.cloneNode(true);
     const fila = node.querySelector(".lote-fila");
-    const item = { row, marca: null, campo: node.querySelector(".nota-input") };
+    const item = { row, num: idx + 1, marca: null, campo: node.querySelector(".nota-input"), marcar: null };
+    fila.querySelector(".lote-num").textContent = String(idx + 1);
     fila.querySelector(".name-text").textContent = row.nombre;
     pintaPorque(fila.querySelector(".porque"), row);
     renderChecks(fila.querySelector(".checks"), row);
@@ -331,11 +493,13 @@ function pintaLote() {
     gLike.addEventListener("click", alterna("me_gusta"));
     bStar.addEventListener("click", alterna("favorito"));
     gStar.addEventListener("click", alterna("favorito"));
+    item.marcar = (m) => { item.marca = m; pinta(); };
 
     lote.push(item);
     area.appendChild(node);
-  }
+  });
   pintaBoton();
+  if (conversacion) convEstado(`Lote nuevo (${n}). Di los números que te gustan y «siguiente».`);
 }
 
 async function siguienteLote() {
@@ -564,6 +728,7 @@ function init() {
   document.getElementById("form-sugerencia").addEventListener("submit", enviarSugerencia);
   document.getElementById("btn-deshacer").addEventListener("click", deshacer);
   document.getElementById("btn-siguiente").addEventListener("click", siguienteLote);
+  document.getElementById("btn-conversacion").addEventListener("click", alternarConversacion);
   for (const b of document.querySelectorAll(".btn-modo")) {
     b.addEventListener("click", () => eligeModo(b.dataset.modo));
   }

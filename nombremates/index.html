@@ -44,11 +44,13 @@
       </div>
 
       <div id="modo-lote" hidden>
-        <p class="lote-ayuda">Si alguno te gusta, tócalo y dale a 👍. Luego pulsa el botón de abajo: el resto van a «no me gusta».</p>
+        <p class="lote-ayuda">Toca un nombre para ver por qué, marca 👍/⭐ y pulsa «Siguiente»: el resto van a «no me gusta». O activa el modo conversación y di «la 1 y la 3, siguiente».</p>
         <div id="lote-area" class="lote" aria-live="polite"></div>
         <div class="lote-acciones">
+          <button type="button" id="btn-conversacion" class="btn-conv" aria-pressed="false" hidden title="Modo conversación">🎙️ Hablar</button>
           <button type="button" id="btn-siguiente" class="btn-siguiente">👎 No me gustan los 10</button>
         </div>
+        <p id="conv-estado" class="conv-estado" hidden></p>
       </div>
 
       <div class="undo-row">
@@ -108,6 +110,13 @@
         registrar, búsqueda profesional de marca.
       </p>
       <p>
+        En «10 en 10», el botón 🎙️ <strong>Modo conversación</strong> escucha
+        seguido: di los números que te gustan («la 1 y la 3»), «definitiva la 5»
+        para marcar ⭐, y «siguiente» para guardar y pasar al lote siguiente
+        («ninguna, siguiente» descarta los 10). «Deshacer» recupera el último
+        lote y «parar» cierra el modo.
+      </p>
+      <p>
         Los comentarios (por nombre o generales) se guardan y los reviso para
         buscarte la siguiente tanda. El 🎙️ convierte tu voz en texto; si tu
         navegador no lo permite, usa el micrófono del teclado.
@@ -144,6 +153,7 @@
     <div class="lote-fila">
       <div class="lote-linea">
         <button type="button" class="lote-nombre" aria-expanded="false">
+          <span class="lote-num"></span>
           <span class="name-text"></span>
           <span class="lote-dom">.com ✓</span>
         </button>

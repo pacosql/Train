@@ -32,6 +32,16 @@ const ok = (cond, msg) => { if (!cond) throw new Error(msg); };
   page.on("console", (m) => { if (m.type() === "error") errors.push("console: " + m.text()); });
   const escrituras = [];
   await require("./route.js")(page, dir, escrituras);
+  // SpeechRecognition falso: window.__oir(texto) simula una frase final.
+  await page.addInitScript(() => {
+    class FakeRec {
+      constructor() { window.__rec = this; }
+      start() { this.arrancado = true; }
+      stop() { this.arrancado = false; this.onend && this.onend(); }
+    }
+    window.SpeechRecognition = FakeRec;
+    window.__oir = (t) => window.__rec.onresult({ resultIndex: 0, results: [Object.assign([{ transcript: t }], { isFinal: true })] });
+  });
   await page.goto(`http://localhost:${port}/nombremates/`, { waitUntil: "networkidle" });
 
   // Al entrar se elige el modo
@@ -64,6 +74,45 @@ const ok = (cond, msg) => { if (!cond) throw new Error(msg); };
   const noIds = cuerpo("no_me_gusta").url.match(/in\.\(([^)]*)\)/)[1].split(",");
   ok(noIds.length === n - 2, `se esperaban ${n - 2} descartes y hay ${noIds.length}`);
   console.log(`lote OK: 1 👍, 1 ⭐, ${noIds.length} 👎 (no enviados, solo lectura)`);
+
+  // --- Numeración y que los 10 quepan en un iPhone (390x844) ---
+  await page.waitForTimeout(800);
+  const nums = await filas.locator(".lote-num").allTextContents();
+  ok(nums.join(",") === Array.from({ length: n }, (_, i) => String(i + 1)).join(","), `numeración 1..${n} incorrecta: ${nums}`);
+  const caja = await page.locator("#btn-siguiente").boundingBox();
+  ok(caja && caja.y + caja.height <= 844, `el lote no cabe en pantalla: botón termina en ${caja && caja.y + caja.height}`);
+  console.log(`caben los ${n} en pantalla (botón termina en ${Math.round(caja.y + caja.height)}px)`);
+
+  // --- Modo conversación ---
+  escrituras.length = 0;
+  await page.click("#btn-conversacion");
+  ok((await page.getAttribute("#btn-conversacion", "aria-pressed")) === "true", "el modo conversación no se ha activado");
+  await page.evaluate(() => window.__oir("la 1 y la 3"));
+  await page.waitForTimeout(200);
+  ok((await page.textContent("#btn-siguiente")).includes("Guardar 2"), "por voz: deberían estar marcados 2");
+  await page.evaluate(() => window.__oir("definitiva la 5"));
+  await page.waitForTimeout(200);
+  ok((await filas.nth(4).getAttribute("class")).includes("star"), "por voz: la 5 debería ser ⭐");
+  await page.evaluate(() => window.__oir("quita la 3"));
+  await page.waitForTimeout(200);
+  ok((await page.textContent("#btn-siguiente")).includes("Guardar 2"), "por voz: tras quitar la 3 deben quedar 2");
+  await page.evaluate(() => window.__oir("siguiente"));
+  await page.waitForTimeout(1500);
+  const pv = escrituras.filter((e) => e.method === "PATCH");
+  const cv = (st) => pv.find((p) => JSON.parse(p.body).status === st);
+  ok(cv("me_gusta") && cv("favorito") && cv("no_me_gusta"), "por voz: faltan PATCH");
+  ok(cv("no_me_gusta").url.match(/in\.\(([^)]*)\)/)[1].split(",").length === n - 2, "por voz: deberían descartarse N-2");
+  ok((await page.getAttribute("#btn-conversacion", "aria-pressed")) === "true", "el modo conversación debe seguir activo tras «siguiente»");
+  // «ninguna, siguiente» descarta los 10; «parar» cierra el modo
+  escrituras.length = 0;
+  await page.evaluate(() => window.__oir("ninguna siguiente"));
+  await page.waitForTimeout(1500);
+  const todos = escrituras.filter((e) => e.method === "PATCH");
+  ok(todos.length === 1 && JSON.parse(todos[0].body).status === "no_me_gusta", "«ninguna, siguiente» debe mandar un solo PATCH no_me_gusta");
+  await page.evaluate(() => window.__oir("parar"));
+  await page.waitForTimeout(600);
+  ok((await page.getAttribute("#btn-conversacion", "aria-pressed")) === "false", "«parar» debe cerrar el modo");
+  console.log("modo conversación OK (voz simulada, nada enviado)");
 
   // --- Cambiar a 1 en 1 ---
   escrituras.length = 0;
