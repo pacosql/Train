@@ -54,7 +54,7 @@ lo que ha marcado. Todo se hace desde la raíz del repo `Train`.
 ## Cerrojo y exploración aleatoria
 
 - **Cerrojo**: antes de generar/cribar, comprueba que no hay otra criba
-  en marcha (`pgrep -f cribar.py`). Si la hay, no arranques otra: puntúa
+  en marcha (`pgrep -f "[c]ribar.py"` (con los corchetes, si no se detecta a sí mismo)). Si la hay, no arranques otra: puntúa
   lo que haya, reprograma y sal. Así los ciclos de 5 min no se pisan.
 - **Exploración aleatoria**: en cada ciclo que genere tanda, elige una
   técnica al azar de [`tools/tecnicas.txt`](./tools/tecnicas.txt)
