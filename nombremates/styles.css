@@ -340,24 +340,26 @@ body.en-lote.conversando .lote-ayuda { display: none; }
 .grande-star.activo { background: rgba(59, 111, 224, 0.2); border-color: var(--accent-2); color: var(--accent-2); }
 .btn-siguiente.con-marcas { background: var(--ok); color: #fff; }
 
-/* Modo conversación: el lote ocupa la pantalla entera (sin scroll): botón
-   arriba, los 10 nombres reparten la altura que haya y el estado abajo. */
+/* Modo conversación: el lote ocupa la pantalla entera (sin scroll): arriba
+   solo un «parar» pequeño, los 10 nombres reparten la altura que haya lo
+   más grandes posible, y abajo una sola línea con lo oído y «siguiente». */
 body.conversando { overflow: hidden; }
 body.conversando #modo-lote {
   position: fixed; inset: 0; z-index: 50; background: var(--bg);
   display: flex; flex-direction: column;
-  padding: calc(env(safe-area-inset-top, 0px) + 6px) 10px calc(env(safe-area-inset-bottom, 0px) + 6px);
+  padding: calc(env(safe-area-inset-top, 0px) + 4px) 8px calc(env(safe-area-inset-bottom, 0px) + 4px);
 }
-body.conversando .btn-conv { margin-bottom: 4px; padding: 9px; font-size: 0.95rem; }
-body.conversando .lote { flex: 1; min-height: 0; gap: 3px; margin: 4px 0; }
-body.conversando .lote-fila { flex: 1; min-height: 0; display: flex; align-items: center; padding: 0 8px; }
-body.conversando .lote-linea { width: 100%; }
-body.conversando .lote-nombre { padding: 0; }
-body.conversando .lote-nombre .name-text { font-size: 1.05rem; line-height: 1.1; }
-body.conversando .lote-num { width: 30px; height: 30px; font-size: 1rem; }
+body.conversando .btn-conv { width: auto; align-self: flex-end; margin: 0; padding: 3px 12px; font-size: 0.75rem; font-weight: 600; border-radius: 999px; animation: none; box-shadow: none; }
+body.conversando .lote-ayuda { display: none; }
+body.conversando .lote { flex: 1; min-height: 0; gap: 4px; margin: 4px 0; }
+body.conversando .lote-fila { flex: 1; min-height: 0; display: flex; align-items: center; padding: 0 10px; border-radius: 12px; }
+body.conversando .lote-linea { width: 100%; gap: 10px; }
+body.conversando .lote-nombre { padding: 0; gap: 12px; }
+body.conversando .lote-nombre .name-text { font-size: clamp(1.15rem, 4.6vh, 2.1rem); line-height: 1.05; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+body.conversando .lote-num { width: clamp(28px, 4.6vh, 40px); height: clamp(28px, 4.6vh, 40px); font-size: clamp(0.9rem, 2.4vh, 1.2rem); }
 body.conversando .marca, body.conversando .lote-detalle, body.conversando .lote-dom { display: none !important; }
-body.conversando .lote-fila.gusta .lote-linea::after { content: "👍"; font-size: 1.2rem; }
-body.conversando .lote-fila.star .lote-linea::after { content: "⭐"; font-size: 1.2rem; }
-body.conversando .lote-acciones { position: static; margin: 0; gap: 4px; }
-body.conversando .conv-estado { margin: 0; font-size: 0.78rem; line-height: 1.25; }
-body.conversando .btn-siguiente { padding: 9px; font-size: 0.95rem; box-shadow: none; }
+body.conversando .lote-fila.gusta .lote-linea::after { content: "👍"; font-size: clamp(1.1rem, 3.6vh, 1.7rem); }
+body.conversando .lote-fila.star .lote-linea::after { content: "⭐"; font-size: clamp(1.1rem, 3.6vh, 1.7rem); }
+body.conversando .lote-acciones { position: static; margin: 0; gap: 8px; flex-wrap: nowrap; align-items: center; }
+body.conversando .conv-estado { flex: 1; min-width: 0; margin: 0; font-size: 0.78rem; line-height: 1.2; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+body.conversando .btn-siguiente { flex: 0 0 auto; padding: 5px 12px; font-size: 0.8rem; border-radius: 999px; box-shadow: none; }

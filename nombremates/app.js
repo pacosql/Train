@@ -229,7 +229,7 @@ async function ejecutaFrase(frase) {
     convEstado(`Guardando: ${marcados} 👍/⭐ y ${lote.length - marcados} 👎…`);
     await siguienteLote();
   } else {
-    convEstado(`Oído: ${resumen.join(" ") || (o.ninguna ? "ninguna" : "todas")} · marcados ${marcados}. Di «siguiente» para guardar.`);
+    convEstado(`Oído: ${resumen.join(" ") || (o.ninguna ? "ninguna" : "todas")} · ${marcados} marcados`);
   }
 }
 
@@ -266,9 +266,10 @@ function iniciarConversacion() {
   conversacion = { rec, parando: false };
   const btn = document.getElementById("btn-conversacion");
   btn.setAttribute("aria-pressed", "true");
-  btn.textContent = "🔴 Escuchando · toca para parar";
+  btn.textContent = "🔴 escuchando · parar";
   document.body.classList.add("conversando");
-  convEstado("Escuchando. Di los números que te gustan («la 1 y la 3») y «siguiente».");
+  pintaBotonLote();
+  convEstado("Escuchando. Di p. ej. «el 3 y el 5, siguiente».");
   try { rec.start(); } catch (err) { pararConversacion(); mostrarError(err); }
 }
 
@@ -281,6 +282,7 @@ function pararConversacion() {
   btn.setAttribute("aria-pressed", "false");
   btn.textContent = "🎙️ Modo conversación";
   document.body.classList.remove("conversando");
+  pintaBotonLote();
   const el = document.getElementById("conv-estado");
   el.hidden = true;
   el.classList.remove("aviso");
@@ -430,7 +432,8 @@ function pintaUno() {
 // me_gusta/favorito y el resto pasa a no_me_gusta al pulsar "Siguiente".
 
 const TAM_LOTE = 10;
-let lote = []; // [{ row, marca: null|"me_gusta"|"favorito", campo }]
+let lote = []; // [{ row, num, marca: null|"me_gusta"|"favorito", campo, marcar }]
+let pintaBotonLote = () => {}; // repinta el texto del botón «siguiente» del lote actual
 
 function pintaLote() {
   pararDictado();
@@ -452,9 +455,11 @@ function pintaLote() {
   const pintaBoton = () => {
     const marcados = lote.filter((it) => it.marca).length;
     btn.classList.toggle("con-marcas", marcados > 0);
-    btn.textContent = marcados === 0
-      ? `👎 No me gustan los ${n}`
-      : `Guardar ${marcados} 👍 y descartar ${n - marcados} →`;
+    btn.textContent = conversacion
+      ? (marcados === 0 ? `👎 ${n} · siguiente` : `👍 ${marcados} · siguiente`)
+      : marcados === 0
+        ? `👎 No me gustan los ${n}`
+        : `Guardar ${marcados} 👍 y descartar ${n - marcados} →`;
   };
 
   cola.slice(0, TAM_LOTE).forEach((row, idx) => {
@@ -498,8 +503,9 @@ function pintaLote() {
     lote.push(item);
     area.appendChild(node);
   });
+  pintaBotonLote = pintaBoton;
   pintaBoton();
-  if (conversacion) convEstado(`Lote nuevo (${n}). Di los números que te gustan y «siguiente».`);
+  if (conversacion) convEstado(`Lote nuevo. Di los números que te gustan y «siguiente».`);
 }
 
 async function siguienteLote() {
