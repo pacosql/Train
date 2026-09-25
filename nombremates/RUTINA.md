@@ -43,6 +43,18 @@ lo que ha marcado. Todo se hace desde la raíz del repo `Train`.
 
 ## Cómo generar bien (lo que ya sabemos del usuario)
 
+- **Criterio de marca** (pedido por el usuario): piensa como una agencia de
+  naming para un producto educativo online de éxito (Duolingo, Babbel,
+  Busuu, Preply, Smartick, Kahoot, Lingokids). Pregunta clave para cada
+  candidato: ¿funcionaría en «descárgate X», en un icono de app y dicho
+  una vez en la radio? Corto (≤ 10 letras ideal), 2-3 sílabas, se escribe
+  como suena, distintivo, evoca progreso/diversión/confianza.
+- **Ordena el fichero por ese criterio**: puntúa mentalmente cada nombre
+  de 1 a 10 y escribe primero los de 8-10, luego 5-7; los de ≤ 4 mejor no
+  incluirlos. El orden del fichero es el orden en que los verá.
+- `Mates7`, `Mates3`, `Mates365`… (Mates + número) valen; solo choca
+  `Mates` con `10/diez` (marca PROFESOR 10 DE MATES).
+
 - Le gustan los **cortos, modernos y con empuje**: `Matesgo`, `Matesflash`,
   `Rumboal10`, `Directoal10`. Sensación de dirección, meta, velocidad,
   logro; sonido de marca de app, 2–3 sílabas, ≤ 10–12 letras.
