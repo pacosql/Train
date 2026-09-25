@@ -477,7 +477,7 @@ async function pintaSugerencias() {
 async function recargarTodo() {
   try {
     const [pendientes, meGusta, favoritos, descartados, vetados] = await Promise.all([
-      fetchIdeas("pendiente", "id.asc", TAM_LOTE),
+      fetchIdeas("pendiente", "orden.asc.nullslast,id.asc", TAM_LOTE),
       fetchIdeas("me_gusta", "decidido_at.desc.nullslast"),
       fetchIdeas("favorito", "decidido_at.desc.nullslast"),
       fetchIdeas("no_me_gusta", "decidido_at.desc.nullslast", 100),

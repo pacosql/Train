@@ -68,6 +68,11 @@ y que un niño de 7 años lo pueda decir.
 
 ## 4. Revisión y siguiente tanda
 
+Hay una rutina cada 15 minutos que sigue [`RUTINA.md`](./RUTINA.md) con
+las herramientas de [`tools/`](./tools): si quedan < 200 pendientes buenos,
+genera y criba otra tanda (hasta 400). La cola va por la columna `orden`
+(los mejores como marca primero; los flojos, con orden ≥ 100000, al final).
+
 La app enseña lotes de 10: lo marcado 👍/⭐ se guarda y el resto pasa a
 descartados al pulsar «Siguiente 10».
 
