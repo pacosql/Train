@@ -52,6 +52,7 @@ multiplo divisor modulo indice rango dominio dimension segmento paralela diagona
 omicron epsilon lambda theta sigma omega gamma delta beta alfa zeta phi tau mu nu xi quantum numerus summa ratio""".split())
 INGLES = set("boost next king player power town vip full flash go top max jump click smart crack pro up kid kids junior byte bit bot".split())
 FAMOSOS = set("gauss pitagoras fibonacci euler newton".split())
+VACIAS = "del por con en mas otro otros nuevo nueva primer buen buena al el la un una los las mi tu su soy somos ese esa este esta todo todos sin para hasta desde sobre entre muy tan ya hoy cada".split()
 DESCRIPTIVOS = set("mates matematicas calculo algebra geometria aritmetica operaciones numeros examen cole clase profe".split())
 
 def silabas(p):
@@ -81,6 +82,7 @@ def rubrica(nombre):
     if m and m.group(1) not in ("10",): pts -= 12; por.append(f"el número {m.group(1)} no es la nota soñada: diluye la marca «10»")
     if re.search(r"(100|1000|mil)$", n): pts -= 3
     base = re.sub(r"\d+$", "", n)
+    if re.search(r"\d", base): pts -= 8; por.append("número en medio del nombre")
     if base.startswith("mates") and len(base) > 5:
         resto = base[5:]
         pts += 2; por.append("Mates + palabra: dice qué es, pero solo sirve para mates")
@@ -97,7 +99,8 @@ def rubrica(nombre):
         elif base in FAMOSOS: pts -= 4; por.append("matemático famoso: muy usado por academias, poco distintivo")
         elif base in DESCRIPTIVOS: pts -= 6; por.append("descriptivo (dice la materia), difícil de registrar")
         elif base in INGLES: pts -= 4; por.append("anglicismo")
-        else: pts += 5; por.append("palabra + 10")
+        elif re.match("^(" + "|".join(VACIAS) + ")([a-z]|$)", base) or base in VACIAS: pts -= 15; por.append("frase o palabra vacía + 10: no es una marca")
+        else: pts += 2; por.append("palabra + 10")
     else:
         pts += 6; por.append("nombre inventado o sin 10: distintivo, pero hay que explicarlo")
     if base in DESCRIPTIVOS and not base.startswith("mates"): pass
