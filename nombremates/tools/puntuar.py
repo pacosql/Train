@@ -32,7 +32,7 @@ def api(method, path, body=None, headers=None):
 def todos(sel):
     out, off = [], 0
     while True:
-        page = api("GET", f"?select={sel}&status=in.(pendiente,me_gusta,favorito)&order=id.asc&limit=1000&offset={off}")
+        page = api("GET", f"?select={sel}&status=in.(pendiente,me_gusta,favorito,vetado)&order=id.asc&limit=1000&offset={off}")
         out += page
         if len(page) < 1000: return out
         off += 1000
@@ -128,6 +128,7 @@ def main():
     cambios = []
     for f in filas:
         k = norm(f["nombre"])
+        if f["status"] == "vetado" and k not in man: continue  # vetados: solo si hay opinión a mano (referencia)
         if k in man:
             score, motivo = man[k]; motivo = "Claude: " + motivo
         else:

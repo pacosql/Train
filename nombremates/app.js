@@ -659,7 +659,8 @@ async function recargarTodo() {
     ]);
 
     cola = pendientes;
-    gustados = [...favoritos, ...meGusta];
+    const referencias = await apiGet(`${TABLE}?status=eq.vetado&score=not.is.null&select=*`);
+    gustados = [...favoritos, ...meGusta, ...referencias];
     if (!document.getElementById("vista-ranking").hidden) pintaRanking();
     const decididos = meGusta.total + favoritos.total + descartados.total;
     const total = decididos + pendientes.total;
@@ -728,16 +729,18 @@ function pintaRanking() {
     const fila = node.querySelector(".rk-fila");
     if (i < 3) fila.classList.add("top");
     fila.querySelector(".rk-pos").textContent = `${i + 1}.`;
-    fila.querySelector(".rk-estado").textContent = row.status === "favorito" ? "⭐" : "👍";
+    fila.querySelector(".rk-estado").textContent = row.status === "favorito" ? "⭐" : row.status === "vetado" ? "🚫" : "👍";
+    if (row.status === "vetado") fila.classList.add("referencia");
     fila.querySelector(".name-text").textContent = row.nombre;
     const sc = fila.querySelector(".rk-score");
     sc.textContent = Math.round(row.score);
     sc.classList.add(claseScore(row.score));
     fila.querySelector(".rk-motivo").textContent = (row.score_motivo || "").replace(/^(Claude|Rúbrica):\s*/, "");
-    const acciones = row.status === "favorito"
-      ? [{ texto: "👍 Bajar a me gusta", clase: "btn-mini", status: "me_gusta" }]
-      : [{ texto: "⭐ Definitivo", clase: "btn-mini btn-mini-star", status: "favorito" }];
-    acciones.push({ texto: "👎 Descartar", clase: "btn-mini", status: "no_me_gusta" });
+    const acciones = row.status === "vetado"
+      ? [{ texto: "↩️ Rescatar", clase: "btn-mini", status: "pendiente" }]
+      : row.status === "favorito"
+        ? [{ texto: "👍 Bajar a me gusta", clase: "btn-mini", status: "me_gusta" }, { texto: "👎 Descartar", clase: "btn-mini", status: "no_me_gusta" }]
+        : [{ texto: "⭐ Definitivo", clase: "btn-mini btn-mini-star", status: "favorito" }, { texto: "👎 Descartar", clase: "btn-mini", status: "no_me_gusta" }];
     const zona = fila.querySelector(".head-actions");
     for (const a of acciones) {
       zona.appendChild(botonAccion(a.texto, a.clase, () =>
