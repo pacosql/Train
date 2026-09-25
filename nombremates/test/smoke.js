@@ -25,6 +25,8 @@ const server = http.createServer((req, res) => {
   res.writeHead(200, { "content-type": ct }); fs.createReadStream(f).pipe(res);
 }).listen(0);
 
+let guardado = false; // si la prueba falla tras guardar un lote, se deshace igualmente
+let paginaGlobal = null;
 (async () => {
   const port = server.address().port;
   const { chromium } = playwright();
@@ -34,6 +36,7 @@ const server = http.createServer((req, res) => {
   page.on("pageerror", (e) => errors.push("pageerror: " + e.message));
   page.on("console", (m) => { if (m.type() === "error") errors.push("console: " + m.text()); });
   await require("./route.js")(page, dir);
+  paginaGlobal = page;
   await page.goto(`http://localhost:${port}/nombremates/`, { waitUntil: "networkidle" });
   await page.waitForSelector(".lote-fila, #lote-area .empty", { timeout: 20000 });
   const cola = () => page.textContent("#cola-count").then((x) => parseInt(x, 10));
@@ -52,6 +55,7 @@ const server = http.createServer((req, res) => {
     await filas.nth(0).locator(".nota-input").fill("prueba automática");
     await filas.nth(1).locator(".marca-star").click();
     await page.click("#btn-siguiente");
+    guardado = true;
     await page.waitForFunction((b) => parseInt(document.querySelector("#cola-count").textContent, 10) === b, antes - n);
     if (!(await page.locator("#lista-me-gusta .name-text", { hasText: nombreLike }).count())) throw new Error(`${nombreLike} no está en Me gusta`);
     if (!(await page.locator("#lista-definitivos .name-text", { hasText: nombreStar }).count())) throw new Error(`${nombreStar} no está en Definitivos`);
@@ -59,6 +63,7 @@ const server = http.createServer((req, res) => {
     console.log("lote guardado:", nombreLike, "👍,", nombreStar, "⭐, descartados", desc);
     await page.click("#btn-deshacer");
     await page.waitForFunction((b) => parseInt(document.querySelector("#cola-count").textContent, 10) === b, antes);
+    guardado = false;
     const vuelve = (await page.locator(".lote-fila .name-text").first().textContent()).trim();
     if (vuelve !== nombreLike) throw new Error(`tras deshacer se esperaba ${nombreLike} y sale ${vuelve}`);
     console.log("deshacer lote OK");
@@ -68,4 +73,16 @@ const server = http.createServer((req, res) => {
   if (errors.length) throw new Error(errors.join("\n"));
   await browser.close(); server.close();
   console.log("OK");
-})().catch((e) => { console.error("FALLO:", e.message); process.exit(1); });
+})().catch(async (e) => {
+  console.error("FALLO:", e.message);
+  if (guardado && paginaGlobal) {
+    try {
+      await paginaGlobal.click("#btn-deshacer", { timeout: 10000 });
+      await paginaGlobal.waitForTimeout(3000);
+      console.error("lote de prueba deshecho tras el fallo");
+    } catch (err) {
+      console.error("NO se pudo deshacer el lote de prueba:", err.message);
+    }
+  }
+  process.exit(1);
+});
