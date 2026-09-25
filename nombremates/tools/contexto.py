@@ -39,6 +39,10 @@ for i in ideas:
 print("\n== DESCARTADOS (últimos 300, más reciente al final) ==")
 des = sorted([i for i in ideas if i["status"] == "no_me_gusta"], key=lambda i: i["decidido_at"] or "")
 print("  " + " ".join(i["nombre"] for i in des[-300:]))
+log = sb("nombremates_rutina_log?select=created_at,modelo,tanda,cargados,vetados,com_ocupado,familias&order=id.desc&limit=8")
+print("\n== ÚLTIMAS EJECUCIONES DE LA RUTINA (más reciente primero) ==")
+for l in log or []:
+    print(f"  {l['created_at'][:16]} tanda {l['tanda']} · {l['modelo'] or '?'} · cargados {l['cargados']}, vetados {l['vetados']}, .com ocupado {l['com_ocupado']} · {l['familias']}")
 sug = sb("nombremates_sugerencias?select=id,texto,atendida,created_at&order=created_at")
 print("\n== COMENTARIOS GENERALES DEL USUARIO ==")
 for s in sug: print(f"  {'✓' if s['atendida'] else '●'} {s['texto']}")

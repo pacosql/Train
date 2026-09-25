@@ -181,9 +181,13 @@ def main():
     ap.add_argument("fichero"); ap.add_argument("--tanda", type=int, required=True)
     ap.add_argument("--max", type=int, default=400, help="cargar como mucho tantos nombres que pasen")
     ap.add_argument("--solo-probar", action="store_true", help="no escribe nada en Supabase")
+    ap.add_argument("--modelo", default="", help="modelo que generó los candidatos (para el registro de ejecuciones)")
     ap.add_argument("--primero", action="store_true", help="colocar estos nombres al principio de la cola (p. ej. los que salen de una sugerencia del usuario)")
     a = ap.parse_args()
     cands = leer_candidatos(a.fichero)
+    n_cands = len(cands)
+    pend_antes = sb("nombremates_ideas?select=id&status=eq.pendiente&orden=lt.100000&limit=1000")
+    pend_antes = len(pend_antes) if pend_antes is not None else None
     # Se salta lo que ya está en ideas (con cualquier estado) y lo que se
     # comprobó alguna vez con el .com ocupado. Un nombre comprobado libre pero
     # que nunca llegó a ideas se vuelve a cribar (es barato y así aparece).
@@ -226,6 +230,11 @@ def main():
             sb("nombremates_ideas?on_conflict=nombre", "POST", filas[i:i+200], "resolution=ignore-duplicates,return=minimal")
         for i in range(0, len(comprobados), 200):
             sb("nombremates_comprobados?on_conflict=nombre", "POST", comprobados[i:i+200], "resolution=merge-duplicates,return=minimal")
+    fams = sorted({c["metodo"] for c in cands}) or sorted({c["metodo"] for c in leer_candidatos(a.fichero)})
+    if not a.solo_probar:
+        sb("nombremates_rutina_log", "POST", [{"modelo": a.modelo, "tanda": a.tanda, "pendientes_antes": pend_antes, "candidatos": n_cands,
+            "cargados": res["cargados"], "vetados": res["vetados"], "com_ocupado": res["com_ocupado"], "familias": "; ".join(fams),
+            "resumen": f"primero={a.primero} max={a.max} errores={res['errores']} fichero={a.fichero}"}], "return=minimal")
     print(json.dumps(res))
 
 if __name__ == "__main__":

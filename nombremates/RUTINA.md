@@ -22,7 +22,7 @@ lo que ha marcado. Todo se hace desde la raíz del repo `Train`.
    `Pascal`…; si pide «potenciamates», la familia de operaciones y
    potencias), bajo cabeceras `# familia: Sugerencia: <texto>`. Cárgalo
    con `--primero` para que salga el primero en la app:
-   `python3 nombremates/tools/cribar.py /tmp/sugerencias.txt --tanda <N> --max 200 --primero`.
+   `python3 nombremates/tools/cribar.py /tmp/sugerencias.txt --tanda <N> --max 200 --primero --modelo <tu modelo>`.
    Esto se hace SIEMPRE, aunque haya ≥ 200 pendientes.
 3. **Genera candidatos nuevos** (la parte creativa la haces tú, no un
    script). Escribe `/tmp/candidatos.txt` con líneas `Nombre|por qué evoca`
@@ -31,7 +31,11 @@ lo que ha marcado. Todo se hace desde la raíz del repo `Train`.
    por marca parecida). **Los mejores primero**: el orden del fichero es el
    orden en que se le enseñarán.
 4. `python3 nombremates/tools/cribar.py /tmp/candidatos.txt --tanda <N> --max 400`
-   con N = tanda máxima + 1 (la imprime contexto.py). El script comprueba
+   con N = tanda máxima + 1 (la imprime contexto.py). Añade siempre
+   `--modelo <tu modelo, p. ej. claude-fable-5-1>`: cada ejecución queda en
+   `nombremates_rutina_log` y contexto.py enseña las últimas.
+   Si la criba deja 0 cargados o falla, dilo en el resumen final con el error
+   literal. El script comprueba
    el .com, criba marcas parecidas (YouTube, App Store, Google Play), salta
    repetidos y carga los que pasan. Tarda ~1 s por nombre.
 5. Termina con un resumen de una línea: cuántos cargados, cuántos vetados y
@@ -49,7 +53,7 @@ lo que ha marcado. Todo se hace desde la raíz del repo `Train`.
   (`Pulpocho`, `Sumasaurio`). No insistas en esos estilos salvo que un
   comentario nuevo diga lo contrario.
 - **Cada tanda prueba 3–4 familias creativas nuevas** que no se hayan
-  probado (mira `metodo` de tandas anteriores en contexto.py) y repite las
+  probado (mira las familias de las últimas ejecuciones en contexto.py) y repite las
   que estén dando 👍. Ideas de veta: raíces latinas/griegas
   (numerus, mathema, logos), palabras de otros idiomas que un español lee
   bien (nórdico, italiano, japonés corto), verbos en imperativo cortos,
@@ -57,6 +61,10 @@ lo que ha marcado. Todo se hace desde la raíz del repo `Train`.
   con `go/up/pro/max/flash/turbo/click` tras una raíz de mates, palabras
   reales poco usadas con buen sonido (`Numen`, `Ábaco`→`Abak`), acrónimos
   pronunciables, nombres de estrellas y montañas, colores y minerales…
+- **Cupo de compuestos**: como mucho 1 de cada 4 candidatos puede ser una
+  palabra de mates pegada a otra (`…mates`, `…cifras`, `…suma`, `…cuenta`,
+  `…calculo`, `…numeros`). El resto: nombres con entidad propia que no
+  digan «mates» (inventados, palabras reales evocadoras, metáforas, raíces).
 - Reglas duras: sin ñ ni tildes en el nombre, sin mezclar «mates» con
   «10/diez» (choca con la marca PROFESOR 10 DE MATES), sin marcas conocidas
   dentro (Smartick, Kumon, Pitagorín, Duolingo…), sin dobles sentidos feos,
