@@ -1,15 +1,11 @@
 // Prueba de humo de Nombre Mates en Chromium (Playwright) contra el
-// Supabase real. Uso, desde la raíz del repo:
+// Supabase real, SOLO LECTURA: las escrituras se interceptan (route.js) y
+// se comprueba qué se habría enviado, así nunca altera las decisiones del
+// usuario. Uso, desde la raíz del repo:
 //
 //   node nombremates/test/smoke.js
 //
-// En el entorno de Claude Code en la nube el navegador no verifica la CA
-// del proxy para *.supabase.co, así que las llamadas a Supabase se
-// encaminan por curl (route.js). Playwright está instalado globalmente.
-//
-// Marca el primer nombre del lote como 👍 con comentario y el segundo como
-// ⭐, pasa al siguiente lote (el resto queda descartado), comprueba las
-// listas y deshace el lote, dejando los datos como estaban.
+// Playwright está instalado globalmente en el entorno de Claude Code.
 const fs = require("fs"), path = require("path"), http = require("http"), os = require("os");
 const root = path.resolve(__dirname, "..", "..");
 const dir = fs.mkdtempSync(path.join(os.tmpdir(), "nombremates-smoke-"));
@@ -24,9 +20,8 @@ const server = http.createServer((req, res) => {
   const ct = { ".html": "text/html", ".js": "text/javascript", ".json": "application/json", ".png": "image/png", ".css": "text/css" }[path.extname(f)] || "application/octet-stream";
   res.writeHead(200, { "content-type": ct }); fs.createReadStream(f).pipe(res);
 }).listen(0);
+const ok = (cond, msg) => { if (!cond) throw new Error(msg); };
 
-let guardado = false; // si la prueba falla tras guardar un lote, se deshace igualmente
-let paginaGlobal = null;
 (async () => {
   const port = server.address().port;
   const { chromium } = playwright();
@@ -35,54 +30,57 @@ let paginaGlobal = null;
   const errors = [];
   page.on("pageerror", (e) => errors.push("pageerror: " + e.message));
   page.on("console", (m) => { if (m.type() === "error") errors.push("console: " + m.text()); });
-  await require("./route.js")(page, dir);
-  paginaGlobal = page;
+  const escrituras = [];
+  await require("./route.js")(page, dir, escrituras);
   await page.goto(`http://localhost:${port}/nombremates/`, { waitUntil: "networkidle" });
-  await page.waitForSelector(".lote-fila, #lote-area .empty", { timeout: 20000 });
-  const cola = () => page.textContent("#cola-count").then((x) => parseInt(x, 10));
-  const antes = await cola();
-  console.log("por decidir:", antes);
-  if (!(await page.locator("#error-banner").isHidden())) throw new Error("banner de error visible");
 
-  if (antes > 0) {
-    const filas = page.locator(".lote-fila");
-    const n = await filas.count();
-    if (n !== Math.min(10, antes)) throw new Error(`se esperaban ${Math.min(10, antes)} filas y hay ${n}`);
-    const nombreLike = (await filas.nth(0).locator(".name-text").textContent()).trim();
-    const nombreStar = (await filas.nth(1).locator(".name-text").textContent()).trim();
-    await filas.nth(0).locator(".marca-like").click();
-    await filas.nth(0).locator(".lote-nombre").click();
-    await filas.nth(0).locator(".nota-input").fill("prueba automática");
-    await filas.nth(1).locator(".marca-star").click();
-    await page.click("#btn-siguiente");
-    guardado = true;
-    await page.waitForFunction((b) => parseInt(document.querySelector("#cola-count").textContent, 10) === b, antes - n);
-    if (!(await page.locator("#lista-me-gusta .name-text", { hasText: nombreLike }).count())) throw new Error(`${nombreLike} no está en Me gusta`);
-    if (!(await page.locator("#lista-definitivos .name-text", { hasText: nombreStar }).count())) throw new Error(`${nombreStar} no está en Definitivos`);
-    const desc = await page.textContent("#count-descartados");
-    console.log("lote guardado:", nombreLike, "👍,", nombreStar, "⭐, descartados", desc);
-    await page.click("#btn-deshacer");
-    await page.waitForFunction((b) => parseInt(document.querySelector("#cola-count").textContent, 10) === b, antes);
-    guardado = false;
-    const vuelve = (await page.locator(".lote-fila .name-text").first().textContent()).trim();
-    if (vuelve !== nombreLike) throw new Error(`tras deshacer se esperaba ${nombreLike} y sale ${vuelve}`);
-    console.log("deshacer lote OK");
-  }
+  // Al entrar se elige el modo
+  await page.waitForSelector("#elige-modo:not([hidden])");
+  ok(await page.locator("#zona-revision").isHidden(), "la revisión no debe verse antes de elegir modo");
+  const cola = parseInt(await page.textContent("#cola-count"), 10);
+  console.log("por decidir:", cola);
+  ok(await page.locator("#error-banner").isHidden(), "banner de error visible");
+
+  // --- De 10 en 10 ---
+  await page.click('.btn-modo[data-modo="lote"]');
+  await page.waitForSelector(".lote-fila");
+  const filas = page.locator(".lote-fila");
+  const n = await filas.count();
+  ok(n === Math.min(10, cola), `se esperaban ${Math.min(10, cola)} filas y hay ${n}`);
+  ok((await page.textContent("#btn-siguiente")).includes(`No me gustan los ${n}`), "botón inicial debe ser «No me gustan los N»");
+  await filas.nth(2).locator(".lote-nombre").click();           // toco un nombre…
+  await filas.nth(2).locator(".grande-like").click();           // …y le doy a me gusta
+  ok((await page.textContent("#btn-siguiente")).includes("Guardar 1"), "el botón debe indicar 1 marcado");
+  await filas.nth(2).locator(".grande-like").click();           // desmarcar
+  ok((await page.textContent("#btn-siguiente")).includes(`No me gustan los ${n}`), "al desmarcar vuelve a «No me gustan»");
+  await filas.nth(2).locator(".grande-like").click();
+  await filas.nth(5).locator(".marca-star").click();
+  const ids = [];
+  await page.click("#btn-siguiente");
+  await page.waitForTimeout(1500);
+  const patches = escrituras.filter((e) => e.method === "PATCH");
+  const cuerpo = (st) => patches.find((p) => JSON.parse(p.body).status === st);
+  ok(cuerpo("me_gusta") && cuerpo("favorito") && cuerpo("no_me_gusta"), "faltan PATCH de me_gusta / favorito / no_me_gusta");
+  const noIds = cuerpo("no_me_gusta").url.match(/in\.\(([^)]*)\)/)[1].split(",");
+  ok(noIds.length === n - 2, `se esperaban ${n - 2} descartes y hay ${noIds.length}`);
+  console.log(`lote OK: 1 👍, 1 ⭐, ${noIds.length} 👎 (no enviados, solo lectura)`);
+
+  // --- Cambiar a 1 en 1 ---
+  escrituras.length = 0;
+  await page.click("#btn-cambiar-modo");
+  await page.click('.btn-modo[data-modo="uno"]');
+  await page.waitForSelector(".swipe-card .name-text");
+  const nombre = (await page.textContent(".swipe-card .name-text")).trim();
+  await page.fill(".swipe-card .nota-input", "prueba");
+  await page.click(".swipe-card .btn-like");
+  await page.waitForTimeout(1500);
+  const p1 = escrituras.find((e) => e.method === "PATCH");
+  ok(p1 && JSON.parse(p1.body).status === "me_gusta" && JSON.parse(p1.body).nota === "prueba", "1 en 1: PATCH me_gusta con nota");
+  console.log("1 en 1 OK:", nombre);
+
   await page.screenshot({ path: path.join(dir, "nombremates.png"), fullPage: true });
   console.log("captura:", path.join(dir, "nombremates.png"));
   if (errors.length) throw new Error(errors.join("\n"));
   await browser.close(); server.close();
   console.log("OK");
-})().catch(async (e) => {
-  console.error("FALLO:", e.message);
-  if (guardado && paginaGlobal) {
-    try {
-      await paginaGlobal.click("#btn-deshacer", { timeout: 10000 });
-      await paginaGlobal.waitForTimeout(3000);
-      console.error("lote de prueba deshecho tras el fallo");
-    } catch (err) {
-      console.error("NO se pudo deshacer el lote de prueba:", err.message);
-    }
-  }
-  process.exit(1);
-});
+})().catch((e) => { console.error("FALLO:", e.message); process.exit(1); });

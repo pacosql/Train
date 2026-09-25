@@ -30,13 +30,30 @@
       <button type="button" id="btn-reintentar">Reintentar</button>
     </div>
 
-    <p class="lote-ayuda">Marca 👍 o ⭐ los que te gusten. Al pulsar <strong>Siguiente 10</strong>, los que no marques pasan a descartados. Toca un nombre para ver detalles o comentar.</p>
+    <section id="elige-modo" class="elige-modo" hidden>
+      <p class="elige-titulo">¿Cómo quieres revisar?</p>
+      <button type="button" class="btn-modo" data-modo="uno">☝️ De 1 en 1<small>un nombre cada vez, con su explicación</small></button>
+      <button type="button" class="btn-modo" data-modo="lote">🔟 De 10 en 10<small>descarta 10 de golpe y marca solo los que te gusten</small></button>
+    </section>
 
-    <div id="lote-area" class="lote" aria-live="polite"></div>
+    <div id="zona-revision" hidden>
+      <p class="modo-actual"><span id="modo-texto"></span> · <button type="button" id="btn-cambiar-modo" class="link">cambiar</button></p>
 
-    <div class="lote-acciones">
-      <button type="button" id="btn-deshacer" class="btn-ghost" hidden>↩️ Deshacer lote</button>
-      <button type="button" id="btn-siguiente" class="btn-siguiente">Siguiente 10 →</button>
+      <div id="modo-uno" hidden>
+        <div id="swipe-area" aria-live="polite"></div>
+      </div>
+
+      <div id="modo-lote" hidden>
+        <p class="lote-ayuda">Si alguno te gusta, tócalo y dale a 👍. Luego pulsa el botón de abajo: el resto van a «no me gusta».</p>
+        <div id="lote-area" class="lote" aria-live="polite"></div>
+        <div class="lote-acciones">
+          <button type="button" id="btn-siguiente" class="btn-siguiente">👎 No me gustan los 10</button>
+        </div>
+      </div>
+
+      <div class="undo-row">
+        <button type="button" id="btn-deshacer" class="btn-ghost" hidden>↩️ Deshacer</button>
+      </div>
     </div>
 
     <section class="sugerencia-box">
@@ -100,6 +117,29 @@
     <div class="build-id">build __BUILD_ID__</div>
   </div>
 
+  <template id="tpl-swipe-card">
+    <div class="swipe-card">
+      <div class="metodo-tag"></div>
+      <div class="name-text"></div>
+      <div class="dominio"></div>
+      <p class="porque"></p>
+      <div class="nota-row">
+        <textarea class="nota-input" rows="1" maxlength="1000" placeholder="comentario (opcional)" autocomplete="off" aria-label="Comentario sobre este nombre"></textarea>
+        <button type="button" class="btn-mic" aria-label="Dictar comentario por voz">🎙️</button>
+      </div>
+      <div class="swipe-actions">
+        <button class="btn-dislike" type="button">👎 No</button>
+        <button class="btn-star" type="button">⭐ Definitivo</button>
+        <button class="btn-like" type="button">👍 Me gusta</button>
+      </div>
+      <details class="mas-info">
+        <summary>más información</summary>
+        <div class="checks"></div>
+        <div class="colision-info"></div>
+      </details>
+    </div>
+  </template>
+
   <template id="tpl-lote-fila">
     <div class="lote-fila">
       <div class="lote-linea">
@@ -112,6 +152,10 @@
       </div>
       <div class="lote-detalle" hidden>
         <p class="porque"></p>
+        <div class="lote-grandes">
+          <button type="button" class="grande grande-like">👍 Me gusta</button>
+          <button type="button" class="grande grande-star">⭐ Definitivo</button>
+        </div>
         <div class="nota-row">
           <textarea class="nota-input" rows="1" maxlength="1000" placeholder="comentario (opcional)" autocomplete="off"></textarea>
           <button type="button" class="btn-mic" aria-label="Dictar comentario por voz">🎙️</button>

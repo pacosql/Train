@@ -7,8 +7,9 @@
 // front-end nunca lanza esa comprobación: solo pinta lo que ya viene
 // verificado y recoge decisiones y comentarios.
 //
-// Se revisa en lotes de 10: lo marcado 👍/⭐ queda como me_gusta /
-// favorito y el resto pasa a no_me_gusta. Comentario opcional por nombre
+// Al entrar se elige revisar de 1 en 1 o de 10 en 10. En lotes, lo
+// marcado 👍/⭐ queda como me_gusta / favorito y el resto pasa a
+// no_me_gusta con un solo botón. Comentario opcional por nombre
 // (escrito o dictado por voz) que alimenta la siguiente tanda.
 // Los comentarios generales van a nombremates_sugerencias.
 
@@ -188,6 +189,80 @@ function renderColision(container, row) {
     : "🔎 Notoriedad: sin detalle registrado.";
 }
 
+// ---- Modo de revisión: de 1 en 1 o de 10 en 10 ----
+//
+// Al entrar se pregunta siempre; se puede cambiar en cualquier momento.
+
+let modo = null; // "uno" | "lote"
+
+function eligeModo(m) {
+  modo = m;
+  document.getElementById("elige-modo").hidden = m !== null;
+  document.getElementById("zona-revision").hidden = m === null;
+  document.getElementById("modo-uno").hidden = m !== "uno";
+  document.getElementById("modo-lote").hidden = m !== "lote";
+  document.getElementById("modo-texto").textContent = m === "uno" ? "Revisando de 1 en 1" : "Revisando de 10 en 10";
+  if (m) pintaRevision();
+}
+
+function pintaRevision() {
+  document.getElementById("cola-count").textContent = cola.total ?? cola.length;
+  if (modo === "uno") pintaUno();
+  else if (modo === "lote") pintaLote();
+}
+
+function pintaUno() {
+  pararDictado();
+  const area = document.getElementById("swipe-area");
+  area.innerHTML = "";
+  if (cola.length === 0) {
+    const p = document.createElement("p");
+    p.className = "empty";
+    p.textContent = "No quedan nombres por decidir. Déjame un comentario aquí abajo y te busco otra tanda.";
+    area.appendChild(p);
+    return;
+  }
+  const item = cola[0];
+  const node = document.getElementById("tpl-swipe-card").content.cloneNode(true);
+  const tag = node.querySelector(".metodo-tag");
+  if (item.metodo) tag.textContent = item.metodo;
+  else tag.remove();
+  node.querySelector(".name-text").textContent = item.nombre;
+  node.querySelector(".dominio").textContent = `${dominio(item)} libre`;
+  pintaPorque(node.querySelector(".porque"), item);
+  renderChecks(node.querySelector(".checks"), item);
+  renderColision(node.querySelector(".colision-info"), item);
+  const notaInput = node.querySelector(".nota-input");
+  enlazarMic(node.querySelector(".btn-mic"), notaInput);
+  const botones = [...node.querySelectorAll(".swipe-actions button")];
+
+  const decidir = (status) => async () => {
+    if (ocupado) return;
+    pararDictado();
+    ocupado = true;
+    botones.forEach((b) => (b.disabled = true));
+    try {
+      await apiPatch(`${TABLE}?id=eq.${item.id}`, {
+        status,
+        nota: notaInput.value.trim() || item.nota || null,
+        decidido_at: new Date().toISOString(),
+      });
+      ultimaDecision = [{ id: item.id, notaAnterior: item.nota ?? null }];
+      ocultarError();
+      await recargarTodo();
+    } catch (err) {
+      mostrarError(err);
+      botones.forEach((b) => (b.disabled = false));
+    } finally {
+      ocupado = false;
+    }
+  };
+  node.querySelector(".btn-dislike").addEventListener("click", decidir("no_me_gusta"));
+  node.querySelector(".btn-star").addEventListener("click", decidir("favorito"));
+  node.querySelector(".btn-like").addEventListener("click", decidir("me_gusta"));
+  area.appendChild(node);
+}
+
 // ---- Lote de 10 ----
 //
 // Se revisan de 10 en 10: lo que se marque 👍/⭐ se guarda como
@@ -200,7 +275,6 @@ function pintaLote() {
   pararDictado();
   const area = document.getElementById("lote-area");
   area.innerHTML = "";
-  document.getElementById("cola-count").textContent = cola.total ?? cola.length;
   lote = [];
   const btn = document.getElementById("btn-siguiente");
 
@@ -213,7 +287,14 @@ function pintaLote() {
     return;
   }
   btn.hidden = false;
-  btn.textContent = (cola.total ?? cola.length) > TAM_LOTE ? `Siguiente ${TAM_LOTE} →` : "Terminar →";
+  const n = Math.min(TAM_LOTE, cola.length);
+  const pintaBoton = () => {
+    const marcados = lote.filter((it) => it.marca).length;
+    btn.classList.toggle("con-marcas", marcados > 0);
+    btn.textContent = marcados === 0
+      ? `👎 No me gustan los ${n}`
+      : `Guardar ${marcados} 👍 y descartar ${n - marcados} →`;
+  };
 
   for (const row of cola.slice(0, TAM_LOTE)) {
     const node = document.getElementById("tpl-lote-fila").content.cloneNode(true);
@@ -234,18 +315,27 @@ function pintaLote() {
 
     const bLike = fila.querySelector(".marca-like");
     const bStar = fila.querySelector(".marca-star");
+    const gLike = fila.querySelector(".grande-like");
+    const gStar = fila.querySelector(".grande-star");
     const pinta = () => {
       bLike.setAttribute("aria-pressed", String(item.marca === "me_gusta"));
       bStar.setAttribute("aria-pressed", String(item.marca === "favorito"));
+      gLike.classList.toggle("activo", item.marca === "me_gusta");
+      gStar.classList.toggle("activo", item.marca === "favorito");
       fila.classList.toggle("gusta", item.marca === "me_gusta");
       fila.classList.toggle("star", item.marca === "favorito");
+      pintaBoton();
     };
-    bLike.addEventListener("click", () => { item.marca = item.marca === "me_gusta" ? null : "me_gusta"; pinta(); });
-    bStar.addEventListener("click", () => { item.marca = item.marca === "favorito" ? null : "favorito"; pinta(); });
+    const alterna = (m) => () => { item.marca = item.marca === m ? null : m; pinta(); };
+    bLike.addEventListener("click", alterna("me_gusta"));
+    gLike.addEventListener("click", alterna("me_gusta"));
+    bStar.addEventListener("click", alterna("favorito"));
+    gStar.addEventListener("click", alterna("favorito"));
 
     lote.push(item);
     area.appendChild(node);
   }
+  pintaBoton();
 }
 
 async function siguienteLote() {
@@ -399,7 +489,7 @@ async function recargarTodo() {
     const total = decididos + pendientes.total;
     document.getElementById("decididos-count").textContent = decididos;
     document.getElementById("barra-progreso").style.width = total ? `${(100 * decididos) / total}%` : "0%";
-    pintaLote();
+    pintaRevision();
 
     pintaLista("lista-definitivos", "count-definitivos", favoritos, "Todavía no hay ningún definitivo.", [
       { texto: "👍 Bajar a me gusta", clase: "btn-mini", status: "me_gusta" },
@@ -474,6 +564,11 @@ function init() {
   document.getElementById("form-sugerencia").addEventListener("submit", enviarSugerencia);
   document.getElementById("btn-deshacer").addEventListener("click", deshacer);
   document.getElementById("btn-siguiente").addEventListener("click", siguienteLote);
+  for (const b of document.querySelectorAll(".btn-modo")) {
+    b.addEventListener("click", () => eligeModo(b.dataset.modo));
+  }
+  document.getElementById("btn-cambiar-modo").addEventListener("click", () => eligeModo(null));
+  eligeModo(null);
   document.getElementById("btn-reintentar").addEventListener("click", recargarTodo);
   enlazarMic(
     document.querySelector('[data-mic-for="input-sugerencia"]'),
