@@ -142,6 +142,11 @@ def cribar(nombre):
     ct = tok(words) or {cj}
     for b in FUERTES:
         if b in cj or difflib.SequenceMatcher(None, cj, b).ratio() >= 0.88: r["choque"].append(f"parecido a la marca conocida «{b}»")
+    # Regla dura: «mates/matemáticas» junto a «10/diez» choca con la marca
+    # registrada PROFESOR 10 DE MATES y su canal (689.000 suscriptores).
+    toks = {NUM.get(w, w) for w in words}
+    if ("mate" in cj or "matematic" in cj) and ("10" in toks or "diez" in cj):
+        r["choque"].append("mezcla «mates» con «10/diez»: marca registrada PROFESOR 10 DE MATES (ES, clases 16 y 41) y canal profesor10demates")
     ch = youtube(spaced)
     if ch is None: r["errores"].append("youtube")
     for name, subs in (ch or {}).items():
