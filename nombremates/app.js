@@ -62,8 +62,17 @@ async function apiPost(path, body) {
   if (!res.ok) throw new Error(`POST ${path} → ${res.status}`);
 }
 
-const fetchIdeas = (status, orden = "id.asc") =>
-  apiGet(`${TABLE}?status=eq.${status}&order=${orden}&select=*`);
+// PostgREST devuelve como mucho 1000 filas por consulta: se piden solo las
+// que se pintan y el total se saca con un recuento exacto (Content-Range).
+async function fetchIdeas(status, orden = "id.asc", limite = 1000) {
+  const path = `${TABLE}?status=eq.${status}&order=${orden}&select=*&limit=${limite}`;
+  const res = await fetch(`${REST}/${path}`, { headers: { ...HEADERS, Prefer: "count=exact" } });
+  if (!res.ok) throw new Error(`GET ${path} → ${res.status}`);
+  const filas = await res.json();
+  const total = parseInt((res.headers.get("content-range") || "").split("/")[1], 10);
+  filas.total = Number.isFinite(total) ? total : filas.length;
+  return filas;
+}
 
 // ---- Dictado por voz (Web Speech API) ----
 //
@@ -170,6 +179,10 @@ function pintaPorque(el, row) {
 }
 
 function renderColision(container, row) {
+  if (row.status === "vetado" && row.veto_motivo) {
+    container.textContent = `🚫 Vetado: ${row.veto_motivo}`;
+    return;
+  }
   container.textContent = row.colision_detalle
     ? `🔎 Notoriedad: ${row.colision_detalle}`
     : "🔎 Notoriedad: sin detalle registrado.";
@@ -187,7 +200,7 @@ function pintaLote() {
   pararDictado();
   const area = document.getElementById("lote-area");
   area.innerHTML = "";
-  document.getElementById("cola-count").textContent = cola.length;
+  document.getElementById("cola-count").textContent = cola.total ?? cola.length;
   lote = [];
   const btn = document.getElementById("btn-siguiente");
 
@@ -200,7 +213,7 @@ function pintaLote() {
     return;
   }
   btn.hidden = false;
-  btn.textContent = cola.length > TAM_LOTE ? `Siguiente ${TAM_LOTE} →` : "Terminar →";
+  btn.textContent = (cola.total ?? cola.length) > TAM_LOTE ? `Siguiente ${TAM_LOTE} →` : "Terminar →";
 
   for (const row of cola.slice(0, TAM_LOTE)) {
     const node = document.getElementById("tpl-lote-fila").content.cloneNode(true);
@@ -339,7 +352,8 @@ function renderCard(container, row, acciones) {
 function pintaLista(idContenedor, idContador, filas, vacio, acciones) {
   const contenedor = document.getElementById(idContenedor);
   contenedor.innerHTML = "";
-  document.getElementById(idContador).textContent = filas.length ? `(${filas.length})` : "";
+  const n = filas.total ?? filas.length;
+  document.getElementById(idContador).textContent = n ? `(${n})` : "";
   if (filas.length === 0) {
     const p = document.createElement("p");
     p.className = "empty";
@@ -348,6 +362,12 @@ function pintaLista(idContenedor, idContador, filas, vacio, acciones) {
     return;
   }
   for (const row of filas) renderCard(contenedor, row, acciones);
+  if (n > filas.length) {
+    const p = document.createElement("p");
+    p.className = "empty";
+    p.textContent = `Se muestran los ${filas.length} más recientes de ${n}.`;
+    contenedor.appendChild(p);
+  }
 }
 
 async function pintaSugerencias() {
@@ -366,16 +386,17 @@ async function pintaSugerencias() {
 
 async function recargarTodo() {
   try {
-    const [pendientes, meGusta, favoritos, descartados] = await Promise.all([
-      fetchIdeas("pendiente"),
+    const [pendientes, meGusta, favoritos, descartados, vetados] = await Promise.all([
+      fetchIdeas("pendiente", "id.asc", TAM_LOTE),
       fetchIdeas("me_gusta", "decidido_at.desc.nullslast"),
       fetchIdeas("favorito", "decidido_at.desc.nullslast"),
-      fetchIdeas("no_me_gusta", "decidido_at.desc.nullslast"),
+      fetchIdeas("no_me_gusta", "decidido_at.desc.nullslast", 100),
+      fetchIdeas("vetado", "id.desc", 200),
     ]);
 
     cola = pendientes;
-    const decididos = meGusta.length + favoritos.length + descartados.length;
-    const total = decididos + pendientes.length;
+    const decididos = meGusta.total + favoritos.total + descartados.total;
+    const total = decididos + pendientes.total;
     document.getElementById("decididos-count").textContent = decididos;
     document.getElementById("barra-progreso").style.width = total ? `${(100 * decididos) / total}%` : "0%";
     pintaLote();
@@ -390,6 +411,9 @@ async function recargarTodo() {
     pintaLista("lista-descartados", "count-descartados", descartados, "Ninguno todavía.", [
       { texto: "👍 Me gusta", clase: "btn-mini btn-mini-like", status: "me_gusta" },
       { texto: "↩️ A la cola", clase: "btn-mini", status: "pendiente" },
+    ]);
+    pintaLista("lista-vetados", "count-vetados", vetados, "Ninguno.", [
+      { texto: "↩️ Rescatar", clase: "btn-mini", status: "pendiente" },
     ]);
 
     document.getElementById("btn-deshacer").hidden = ultimaDecision === null;
