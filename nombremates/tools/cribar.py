@@ -2,7 +2,7 @@
 
 Uso, desde la raíz del repo:
 
-    python3 nombremates/tools/cribar.py candidatos.txt --tanda 3 [--max 400] [--solo-probar]
+    python3 nombremates/tools/cribar.py candidatos.txt --tanda 3 [--max 400] [--solo-probar] [--primero]
 
 Formato de candidatos.txt: líneas `Nombre|por qué evoca` agrupadas bajo
 cabeceras `# familia: <nombre>`. Los mejores primero: el orden del fichero
@@ -34,9 +34,12 @@ def sb(path, method="GET", body=None, prefer=None):
     h = dict(H)
     if prefer: h["Prefer"] = prefer
     req = urllib.request.Request(f"{URL}/{path}", data=json.dumps(body).encode() if body is not None else None, method=method, headers=h)
-    with urllib.request.urlopen(req, timeout=60) as r:
-        t = r.read()
-        return json.loads(t) if t else None
+    try:
+        with urllib.request.urlopen(req, timeout=60) as r:
+            t = r.read()
+            return json.loads(t) if t else None
+    except urllib.error.HTTPError as e:
+        raise SystemExit(f"Supabase {method} {path} → {e.code}: {e.read().decode('utf8', 'replace')[:500]}")
 
 def sb_all(path):
     out = []
@@ -173,16 +176,25 @@ def main():
     ap.add_argument("fichero"); ap.add_argument("--tanda", type=int, required=True)
     ap.add_argument("--max", type=int, default=400, help="cargar como mucho tantos nombres que pasen")
     ap.add_argument("--solo-probar", action="store_true", help="no escribe nada en Supabase")
+    ap.add_argument("--primero", action="store_true", help="colocar estos nombres al principio de la cola (p. ej. los que salen de una sugerencia del usuario)")
     a = ap.parse_args()
     cands = leer_candidatos(a.fichero)
-    ya = {r["nombre"] for r in sb_all("nombremates_comprobados?select=nombre")}
+    # Se salta lo que ya está en ideas (con cualquier estado) y lo que se
+    # comprobó alguna vez con el .com ocupado. Un nombre comprobado libre pero
+    # que nunca llegó a ideas se vuelve a cribar (es barato y así aparece).
+    ocupados = {r["nombre"] for r in sb_all("nombremates_comprobados?select=nombre,com_libre&com_libre=eq.false")}
     en_ideas = {slug(r["nombre"]) for r in sb_all("nombremates_ideas?select=nombre")}
-    cands = [c for c in cands if slug(c["nombre"]) not in ya and slug(c["nombre"]) not in en_ideas]
+    cands = [c for c in cands if slug(c["nombre"]) not in ocupados and slug(c["nombre"]) not in en_ideas]
     print(f"candidatos nuevos a comprobar: {len(cands)}", file=sys.stderr)
     # Los nombres nuevos van detrás de los pendientes buenos pero delante de
     # los flojos (orden ≥ 100000, la cola de reserva).
-    ult = sb("nombremates_ideas?select=orden&orden=lt.100000&order=orden.desc&limit=1")
-    orden = (ult[0]["orden"] or 0) if ult else 0
+    if a.primero:
+        # Delante de todo: orden negativo decreciente desde el mínimo actual.
+        ult = sb("nombremates_ideas?select=orden&status=eq.pendiente&order=orden.asc.nullslast&limit=1")
+        orden = min(0, (ult[0]["orden"] or 0) if ult else 0) - 1000
+    else:
+        ult = sb("nombremates_ideas?select=orden&orden=lt.100000&order=orden.desc&limit=1")
+        orden = (ult[0]["orden"] or 0) if ult else 0
     now = datetime.now(timezone.utc).isoformat()
     res = {"com_ocupado": 0, "vetados": 0, "cargados": 0, "errores": 0}
     filas, comprobados = [], []
@@ -196,7 +208,7 @@ def main():
             det = "Registro de marcas (OEPM/EUIPO): se comprueba uno a uno cuando lo marques 👍 o ⭐. YouTube/App Store/Google Play: " + ("; ".join(r["leve"]) if r["leve"] else "nada con ese nombre o parecido") + "."
             orden += 1
             fila = {"nombre": c["nombre"], "status": "pendiente", "tanda": a.tanda, "metodo": c["metodo"], "porque": c["porque"], "com_libre": True,
-                    "dominio_comprobado_at": now, "otros_tld": tld, "notoriedad": 1 if r["leve"] else 0, "colision_detalle": det, "orden": orden}
+                    "dominio_comprobado_at": now, "otros_tld": tld, "notoriedad": 1 if r["leve"] else 0, "colision_detalle": det, "orden": orden, "veto_motivo": None}
             if r["choque"]:
                 fila.update(status="vetado", veto_motivo="; ".join(r["choque"]), notoriedad=2, colision_detalle="Choque: " + "; ".join(r["choque"]) + ". " + det)
                 res["vetados"] += 1
@@ -205,10 +217,10 @@ def main():
             filas.append(fila)
             print(("VETADO " if r["choque"] else "OK     ") + c["nombre"] + ("  ← " + r["choque"][0] if r["choque"] else ""), file=sys.stderr)
     if not a.solo_probar:
+        for i in range(0, len(filas), 200):
+            sb("nombremates_ideas?on_conflict=nombre", "POST", filas[i:i+200], "resolution=ignore-duplicates,return=minimal")
         for i in range(0, len(comprobados), 200):
             sb("nombremates_comprobados?on_conflict=nombre", "POST", comprobados[i:i+200], "resolution=merge-duplicates,return=minimal")
-        for i in range(0, len(filas), 200):
-            sb("nombremates_ideas", "POST", filas[i:i+200], "return=minimal")
     print(json.dumps(res))
 
 if __name__ == "__main__":

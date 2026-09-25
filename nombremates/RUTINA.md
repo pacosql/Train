@@ -7,21 +7,34 @@ lo que ha marcado. Todo se hace desde la raíz del repo `Train`.
 ## Pasos
 
 1. `python3 nombremates/tools/contexto.py --atender`
-   - Si **PENDIENTES ≥ 200 → no hagas nada más** y termina. (Cuenta solo
-     los buenos; la «reserva» de flojos no cuenta.)
+   - Si **PENDIENTES ≥ 200 y no hay sugerencias «●» sin atender → no hagas
+     nada más** y termina. (Cuenta solo los buenos; la «reserva» de flojos
+     no cuenta.) Si hay sugerencias sin atender, haz solo el paso 2.
    - Si no, sigue. Lee con atención los 👍/⭐, los comentarios (por nombre y
      generales) y los descartados: son la guía de gusto.
-2. **Genera candidatos nuevos** (la parte creativa la haces tú, no un
+2. **Sugerencias del usuario = prioridad máxima.** Si contexto.py muestra
+   comentarios generales marcados con «●» (sin atender), cada uno es una
+   orden directa: escribe primero un fichero aparte `/tmp/sugerencias.txt`
+   con **30–60 variaciones por sugerencia** (el nombre tal cual si tiene
+   sentido, y su familia: si dice «suma10», prueba `Suma10`, `Sumadiez`,
+   `Resta10`, `Sumaal10`, `Suma100`, `Sumax10`…; si dice «gauss», prueba
+   `Gauss` + variantes y otros matemáticos: `Euler`, `Hypatia`, `Fermat`,
+   `Pascal`…; si pide «potenciamates», la familia de operaciones y
+   potencias), bajo cabeceras `# familia: Sugerencia: <texto>`. Cárgalo
+   con `--primero` para que salga el primero en la app:
+   `python3 nombremates/tools/cribar.py /tmp/sugerencias.txt --tanda <N> --max 200 --primero`.
+   Esto se hace SIEMPRE, aunque haya ≥ 200 pendientes.
+3. **Genera candidatos nuevos** (la parte creativa la haces tú, no un
    script). Escribe `/tmp/candidatos.txt` con líneas `Nombre|por qué evoca`
    bajo cabeceras `# familia: …`. Apunta a **~600 candidatos** para que
    queden ≥ 400 tras la criba (más o menos un tercio cae por .com ocupado o
    por marca parecida). **Los mejores primero**: el orden del fichero es el
    orden en que se le enseñarán.
-3. `python3 nombremates/tools/cribar.py /tmp/candidatos.txt --tanda <N> --max 400`
+4. `python3 nombremates/tools/cribar.py /tmp/candidatos.txt --tanda <N> --max 400`
    con N = tanda máxima + 1 (la imprime contexto.py). El script comprueba
    el .com, criba marcas parecidas (YouTube, App Store, Google Play), salta
    repetidos y carga los que pasan. Tarda ~1 s por nombre.
-4. Termina con un resumen de una línea: cuántos cargados, cuántos vetados y
+5. Termina con un resumen de una línea: cuántos cargados, cuántos vetados y
    qué familias nuevas has probado. No hace falta tocar la app ni desplegar.
 
 ## Cómo generar bien (lo que ya sabemos del usuario)
