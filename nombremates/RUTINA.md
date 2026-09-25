@@ -61,7 +61,14 @@ lo que ha marcado. Todo se hace desde la raíz del repo `Train`.
   con `go/up/pro/max/flash/turbo/click` tras una raíz de mates, palabras
   reales poco usadas con buen sonido (`Numen`, `Ábaco`→`Abak`), acrónimos
   pronunciables, nombres de estrellas y montañas, colores y minerales…
-- **Cupo de compuestos**: como mucho 1 de cada 4 candidatos puede ser una
+- **Familia fija «Mates + pegadizo»** (pedida por el usuario): en CADA
+  tanda, ~25 % de los candidatos son `Mates` + una palabra corta y
+  pegadiza (`Matesgo`, `Matesflash`, `Matesmax`, `Jaquemates`…): sonidos
+  de acierto, velocidad, juego, espacio, chuches, mitología, letras
+  griegas, jerga infantil española (chachi, chuli, flipa)… Van los primeros
+  del fichero. Esta familia está exenta del cupo de compuestos. Nunca
+  `Mates` + `10/diez`.
+- **Cupo de compuestos** (para el resto): como mucho 1 de cada 4 candidatos puede ser una
   palabra de mates pegada a otra (`…mates`, `…cifras`, `…suma`, `…cuenta`,
   `…calculo`, `…numeros`). El resto: nombres con entidad propia que no
   digan «mates» (inventados, palabras reales evocadoras, metáforas, raíces).
