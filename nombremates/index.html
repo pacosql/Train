@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Nombre Mates — nombres para una app de mates para niños</title>
+
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#15120e" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Nombre Mates" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>➕ Nombre Mates 🔟</h1>
+    </header>
+
+    <div class="progreso">
+      <span id="cola-count">…</span> por decidir · <span id="decididos-count">0</span> decididos
+      <div class="barra"><i id="barra-progreso" style="width:0%"></i></div>
+    </div>
+
+    <div id="error-banner" class="error-banner" hidden>
+      <span id="error-texto"></span>
+      <button type="button" id="btn-reintentar">Reintentar</button>
+    </div>
+
+    <div id="swipe-area" aria-live="polite"></div>
+
+    <div class="undo-row">
+      <button type="button" id="btn-deshacer" class="btn-ghost" hidden>↩️ Deshacer</button>
+    </div>
+
+    <section class="sugerencia-box">
+      <label for="input-sugerencia" class="sug-label">💬 Comentario general (por voz o texto): qué estilo te gusta, qué no, ideas…</label>
+      <form id="form-sugerencia" class="add-form con-mic">
+        <textarea id="input-sugerencia" rows="2" maxlength="1000" placeholder="p. ej. me gustan los que suenan a juego, nada de inglés" autocomplete="off"></textarea>
+        <button type="button" class="btn-mic" data-mic-for="input-sugerencia" aria-label="Dictar por voz">🎙️</button>
+        <button type="submit">Enviar</button>
+      </form>
+      <p id="sug-msg" class="sug-msg" hidden></p>
+      <details id="sug-lista-wrap" hidden>
+        <summary class="sub">comentarios enviados (<span id="sug-count">0</span>)</summary>
+        <ul id="sug-lista" class="sug-lista"></ul>
+      </details>
+    </section>
+
+    <section>
+      <h2 class="sec-title">⭐ Definitivos <span id="count-definitivos" class="count"></span></h2>
+      <div id="lista-definitivos" class="name-list"></div>
+    </section>
+
+    <section>
+      <details>
+        <summary><span class="sec-title">👍 Me gusta <span id="count-megusta" class="count"></span></span></summary>
+        <div id="lista-me-gusta" class="name-list"></div>
+      </details>
+    </section>
+
+    <section>
+      <details>
+        <summary><span class="sec-title">👎 Descartados <span id="count-descartados" class="count"></span></span></summary>
+        <div id="lista-descartados" class="name-list"></div>
+      </details>
+    </section>
+
+    <details class="info-collapse">
+      <summary>ℹ️ cómo funciona</summary>
+      <p>
+        Cada nombre que ves ya tiene el <strong>.com comprobado libre</strong>
+        en el registro oficial (RDAP de Verisign) y un cribado de notoriedad:
+        apps con ese nombre en el App Store de España, artículos de Wikipedia
+        y si alguien tiene ya el .net / .org. No es un certificado legal: antes
+        de registrar nada conviene una búsqueda de marca en OEPM/EUIPO.
+      </p>
+      <p>
+        Los comentarios (por nombre o generales) se guardan y los reviso para
+        buscarte la siguiente tanda. El 🎙️ convierte tu voz en texto; si tu
+        navegador no lo permite, usa el micrófono del teclado.
+      </p>
+    </details>
+
+    <div class="build-id">build __BUILD_ID__</div>
+  </div>
+
+  <template id="tpl-swipe-card">
+    <div class="swipe-card">
+      <div class="metodo-tag"></div>
+      <div class="name-text"></div>
+      <div class="dominio"></div>
+      <p class="porque"></p>
+      <label class="visually-hidden" for="nota-actual">Comentario sobre este nombre</label>
+      <div class="nota-row">
+        <textarea class="nota-input" id="nota-actual" rows="1" maxlength="1000" placeholder="comentario (opcional)" autocomplete="off"></textarea>
+        <button type="button" class="btn-mic" data-mic-for="nota-actual" aria-label="Dictar comentario por voz">🎙️</button>
+      </div>
+      <div class="swipe-actions">
+        <button class="btn-dislike" type="button">👎 No</button>
+        <button class="btn-star" type="button">⭐ Definitivo</button>
+        <button class="btn-like" type="button">👍 Me gusta</button>
+      </div>
+      <details class="mas-info">
+        <summary>más información</summary>
+        <div class="checks"></div>
+        <div class="colision-info"></div>
+      </details>
+    </div>
+  </template>
+
+  <template id="tpl-nombre-card">
+    <div class="name-card">
+      <div class="name-head">
+        <span class="name-text"></span>
+        <div class="head-actions"></div>
+      </div>
+      <p class="porque"></p>
+      <div class="nota-guardada"></div>
+      <details class="mas-info">
+        <summary>más información / comentar</summary>
+        <div class="checks"></div>
+        <div class="colision-info"></div>
+        <div class="nota-row nota-edit">
+          <textarea class="nota-input" rows="1" maxlength="1000" placeholder="añadir comentario" autocomplete="off"></textarea>
+          <button type="button" class="btn-mic" aria-label="Dictar comentario por voz">🎙️</button>
+          <button type="button" class="btn-mini btn-guardar-nota">Guardar</button>
+        </div>
+        <div class="official-links"></div>
+      </details>
+    </div>
+  </template>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
