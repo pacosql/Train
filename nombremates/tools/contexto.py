@@ -5,7 +5,7 @@
     python3 nombremates/tools/contexto.py --probados # además lista todos los nombres ya probados
 (cribar.py salta solo los repetidos, así que la lista completa es opcional)
 """
-import json, sys, urllib.request
+import os, json, sys, urllib.request
 URL = "https://dzlhsdpgyxnjwudmrnul.supabase.co/rest/v1"
 ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR6bGhzZHBneXhuand1ZG1ybnVsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk0MzEzMjgsImV4cCI6MjEwNTAwNzMyOH0.B572twWEEJjnNr1SZDrUCHBG9VgIEo9RXyZXyszjhrM"
 H = {"apikey": ANON, "Authorization": "Bearer " + ANON, "Content-Type": "application/json"}
@@ -33,6 +33,13 @@ print("PENDIENTES:", buenos, "(buenos, los que cuentan para el umbral de 200) ·
 print("\n== ME GUSTA / DEFINITIVOS (con comentario si lo hay) ==")
 for i in ideas:
     if i["status"] in ("me_gusta", "favorito"): print(f"  {'⭐' if i['status']=='favorito' else '👍'} {i['nombre']} [{i['metodo']}]" + (f" — «{i['nota']}»" if i["nota"] else ""))
+import unicodedata as _u
+_norm = lambda t: _u.normalize("NFD", t.lower()).encode("ascii", "ignore").decode()
+_sc = os.path.join(os.path.dirname(os.path.abspath(__file__)), "scores.txt")
+_man = {_norm(l.split("|")[0]) for l in open(_sc, encoding="utf-8") if l.strip() and not l.startswith("#")} if os.path.exists(_sc) else set()
+sin_mano = [i["nombre"] for i in ideas if i["status"] in ("me_gusta", "favorito") and _norm(i["nombre"]) not in _man]
+print("\n== ME GUSTA SIN PUNTUAR A MANO (añádelos a tools/scores.txt y ejecuta puntuar.py) ==")
+print("  " + (" ".join(sin_mano) if sin_mano else "ninguno"))
 print("\n== DESCARTADOS CON COMENTARIO ==")
 for i in ideas:
     if i["status"] == "no_me_gusta" and i["nota"]: print(f"  👎 {i['nombre']} — «{i['nota']}»")
