@@ -14,7 +14,7 @@ lo que ha marcado. Todo se hace desde la raíz del repo `Train`.
      generales) y los descartados: son la guía de gusto.
 2. **Sugerencias del usuario = prioridad máxima.** Si contexto.py muestra
    comentarios generales marcados con «●» (sin atender), cada uno es una
-   orden directa: escribe primero un fichero aparte `/tmp/sugerencias.txt`
+   orden directa: escribe primero un fichero aparte `nombremates/tools/out/sugerencias.txt`
    con **30–60 variaciones por sugerencia** (el nombre tal cual si tiene
    sentido, y su familia: si dice «suma10», prueba `Suma10`, `Sumadiez`,
    `Resta10`, `Sumaal10`, `Suma100`, `Sumax10`…; si dice «gauss», prueba
@@ -22,15 +22,15 @@ lo que ha marcado. Todo se hace desde la raíz del repo `Train`.
    `Pascal`…; si pide «potenciamates», la familia de operaciones y
    potencias), bajo cabeceras `# familia: Sugerencia: <texto>`. Cárgalo
    con `--primero` para que salga el primero en la app:
-   `python3 nombremates/tools/cribar.py /tmp/sugerencias.txt --tanda <N> --max 200 --primero --modelo <tu modelo>`.
+   `python3 nombremates/tools/cribar.py nombremates/tools/out/sugerencias.txt --tanda <N> --max 200 --primero --modelo <tu modelo>`.
    Esto se hace SIEMPRE, aunque haya ≥ 200 pendientes.
 3. **Genera candidatos nuevos** (la parte creativa la haces tú, no un
-   script). Escribe `/tmp/candidatos.txt` con líneas `Nombre|por qué evoca`
+   script). Escribe `nombremates/tools/out/candidatos.txt` con líneas `Nombre|por qué evoca`
    bajo cabeceras `# familia: …`. Apunta a **~600 candidatos** para que
    queden ≥ 400 tras la criba (más o menos un tercio cae por .com ocupado o
    por marca parecida). **Los mejores primero**: el orden del fichero es el
    orden en que se le enseñarán.
-4. `python3 nombremates/tools/cribar.py /tmp/candidatos.txt --tanda <N> --max 400`
+4. `python3 nombremates/tools/cribar.py nombremates/tools/out/candidatos.txt --tanda <N> --max 400`
    con N = tanda máxima + 1 (la imprime contexto.py). Añade siempre
    `--modelo <tu modelo, p. ej. claude-fable-5-1>`: cada ejecución queda en
    `nombremates_rutina_log` y contexto.py enseña las últimas.
@@ -71,6 +71,16 @@ lo que ha marcado. Todo se hace desde la raíz del repo `Train`.
   y que un niño de 7 años lo pueda decir y escribir.
 - Explica cada nombre en la línea `por qué` en una frase corta y concreta,
   en español; es lo que ve el usuario al tocarlo.
+
+## Registro obligatorio (aunque falle)
+
+Cada ejecución tiene que dejar rastro en `nombremates_rutina_log`:
+- Si llegas a `cribar.py`, ya lo deja él (con `--modelo`).
+- Si terminas ANTES de cribar (umbral ≥ 200, error, permiso denegado, no
+  encuentras el repo…), ejecuta al final, sin excepción:
+  `python3 nombremates/tools/log.py --modelo <tu modelo> "<qué pasó, con el error literal si lo hubo>"`.
+- Escribe los ficheros de candidatos con la herramienta Write, no con
+  heredocs largos en Bash.
 
 ## Qué NO hacer
 
