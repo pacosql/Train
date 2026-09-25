@@ -38,7 +38,17 @@ lo que ha marcado. Todo se hace desde la raíz del repo `Train`.
    literal. El script comprueba
    el .com, criba marcas parecidas (YouTube, App Store, Google Play), salta
    repetidos y carga los que pasan. Tarda ~1 s por nombre.
-5. Termina con un resumen de una línea: cuántos cargados, cuántos vetados y
+5. **Puntúa y ordena**: `python3 nombremates/tools/puntuar.py`. Pone a cada
+   nombre nuevo (pendiente / me gusta / definitivo) un `score` 0-100 de
+   marca con su motivo y reordena la cola de pendientes por score (mejor
+   marca primero). La rúbrica está en el propio script; encima mandan las
+   puntuaciones a mano de `nombremates/tools/scores.txt`
+   (`nombre|score|motivo`). **Cada vez que el usuario marque nuevos me
+   gusta / definitivos, añade una línea a mano en scores.txt con tu
+   opinión razonada** (contexto.py lista los que te gustan; los que no
+   estén en scores.txt llevan solo la rúbrica) y vuelve a ejecutar
+   `puntuar.py`. La app enseña este ranking en «🏆 Ranking de Claude».
+6. Termina con un resumen de una línea: cuántos cargados, cuántos vetados y
    qué familias nuevas has probado. No hace falta tocar la app ni desplegar.
 
 ## Cómo generar bien (lo que ya sabemos del usuario)

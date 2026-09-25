@@ -81,7 +81,18 @@ Antes de generar otra tanda se leen las notas y sugerencias sin atender,
 se marcan como `atendida` y se generan nombres parecidos a los
 `me_gusta`/`favorito`, evitando el estilo de los descartados.
 
-## 5. Lo que el cribado NO es
+## 5. Ranking de marca
+
+Cada nombre lleva un `score` (0-100) con `score_motivo`: la opinión de
+Claude sobre lo buena marca que sería para salir al mercado (que se diga y
+escriba bien al oírlo, corto, emoción positiva, distintivo y registrable,
+extensible a otras asignaturas, sin marcas parecidas). Lo calcula
+[`tools/puntuar.py`](./tools/puntuar.py): una rúbrica automática y, por
+encima, las puntuaciones a mano de [`tools/scores.txt`](./tools/scores.txt).
+La app lo enseña en «🏆 Ranking de Claude» (me gusta + definitivos) y la
+cola de pendientes va en ese mismo orden.
+
+## 6. Lo que el cribado NO es
 
 No es un certificado legal. Antes de registrar: búsqueda de marca en
 OEPM y EUIPO (TMview) en clases 9, 16, 28 y 41.

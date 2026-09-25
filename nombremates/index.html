@@ -18,6 +18,7 @@
   <div class="wrap">
     <header>
       <h1>➕ Nombre Mates 🔟</h1>
+      <button type="button" id="btn-ranking" class="btn-ranking">🏆 Ranking de Claude</button>
     </header>
 
     <div class="progreso">
@@ -125,6 +126,36 @@
 
     <div class="build-id">build __BUILD_ID__</div>
   </div>
+
+  <section id="vista-ranking" class="vista-ranking" hidden>
+    <div class="ranking-cab">
+      <button type="button" id="btn-volver" class="btn-ghost">← Volver</button>
+      <h2>🏆 Ranking de marca</h2>
+    </div>
+    <p class="sub">
+      Mi puntuación (0-100) de cada nombre que te gusta como <strong>marca</strong>
+      para salir al mercado con una app de mates para niños: que se diga y se
+      escriba bien al oírlo, corto, con emoción positiva, distintivo (registrable,
+      no solo descriptivo), que pueda crecer a otras asignaturas y sin marcas
+      parecidas conocidas. La cola de nombres nuevos también te llega en este orden.
+    </p>
+    <div id="lista-ranking" class="ranking"></div>
+  </section>
+
+  <template id="tpl-ranking-fila">
+    <div class="rk-fila">
+      <div class="rk-pos"></div>
+      <div class="rk-cuerpo">
+        <div class="rk-linea">
+          <span class="rk-estado"></span>
+          <span class="name-text"></span>
+          <span class="rk-score"></span>
+        </div>
+        <p class="rk-motivo"></p>
+        <div class="head-actions"></div>
+      </div>
+    </div>
+  </template>
 
   <template id="tpl-swipe-card">
     <div class="swipe-card">

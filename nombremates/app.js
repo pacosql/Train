@@ -35,6 +35,7 @@ const officialLinks = (row) => [
 ];
 
 let cola = [];
+let gustados = []; // me_gusta + favorito, para el ranking de marca
 let ultimaDecision = null; // [{ id, notaAnterior }] del último lote, para deshacer
 let ocupado = false; // evita que un doble toque mande dos decisiones
 
@@ -393,6 +394,7 @@ function pintaUno() {
   node.querySelector(".name-text").textContent = item.nombre;
   node.querySelector(".dominio").textContent = `${dominio(item)} libre`;
   pintaPorque(node.querySelector(".porque"), item);
+  { const ts = textoScore(item); if (ts) { const p = document.createElement("p"); p.className = "marca-score"; p.textContent = ts; node.querySelector(".porque").after(p); } }
   renderChecks(node.querySelector(".checks"), item);
   renderColision(node.querySelector(".colision-info"), item);
   const notaInput = node.querySelector(".nota-input");
@@ -469,6 +471,8 @@ function pintaLote() {
     fila.querySelector(".lote-num").textContent = String(idx + 1);
     fila.querySelector(".name-text").textContent = row.nombre;
     pintaPorque(fila.querySelector(".porque"), row);
+    const ts = textoScore(row);
+    if (ts) { const p = document.createElement("p"); p.className = "marca-score"; p.textContent = ts; fila.querySelector(".porque").after(p); }
     renderChecks(fila.querySelector(".checks"), row);
     renderColision(fila.querySelector(".colision-info"), row);
     enlazarMic(fila.querySelector(".btn-mic"), item.campo);
@@ -655,6 +659,8 @@ async function recargarTodo() {
     ]);
 
     cola = pendientes;
+    gustados = [...favoritos, ...meGusta];
+    if (!document.getElementById("vista-ranking").hidden) pintaRanking();
     const decididos = meGusta.total + favoritos.total + descartados.total;
     const total = decididos + pendientes.total;
     document.getElementById("decididos-count").textContent = decididos;
@@ -681,6 +687,70 @@ async function recargarTodo() {
     ocultarError();
   } catch (err) {
     mostrarError(err);
+  }
+}
+
+
+// ---- Ranking de marca (puntuación de Claude, columna score) ----
+
+function claseScore(v) {
+  return v >= 75 ? "alto" : v >= 55 ? "medio" : "bajo";
+}
+
+function textoScore(row) {
+  if (row.score === null || row.score === undefined) return null;
+  const motivo = (row.score_motivo || "").replace(/^(Claude|Rúbrica):\s*/, "");
+  return `🏆 marca ${Math.round(row.score)}/100${motivo ? " · " + motivo : ""}`;
+}
+
+function abrirRanking(abrir) {
+  document.getElementById("vista-ranking").hidden = !abrir;
+  document.querySelector(".wrap").hidden = abrir;
+  if (abrir) { pararConversacion(); pintaRanking(); window.scrollTo(0, 0); }
+}
+
+function pintaRanking() {
+  const cont = document.getElementById("lista-ranking");
+  cont.innerHTML = "";
+  const filas = gustados
+    .filter((r) => r.score !== null && r.score !== undefined)
+    .sort((a, b) => b.score - a.score || a.nombre.localeCompare(b.nombre));
+  const sinScore = gustados.length - filas.length;
+  if (filas.length === 0) {
+    const p = document.createElement("p");
+    p.className = "empty";
+    p.textContent = "Todavía no hay puntuaciones. Las pone Claude en la siguiente pasada.";
+    cont.appendChild(p);
+    return;
+  }
+  filas.forEach((row, i) => {
+    const node = document.getElementById("tpl-ranking-fila").content.cloneNode(true);
+    const fila = node.querySelector(".rk-fila");
+    if (i < 3) fila.classList.add("top");
+    fila.querySelector(".rk-pos").textContent = `${i + 1}.`;
+    fila.querySelector(".rk-estado").textContent = row.status === "favorito" ? "⭐" : "👍";
+    fila.querySelector(".name-text").textContent = row.nombre;
+    const sc = fila.querySelector(".rk-score");
+    sc.textContent = Math.round(row.score);
+    sc.classList.add(claseScore(row.score));
+    fila.querySelector(".rk-motivo").textContent = (row.score_motivo || "").replace(/^(Claude|Rúbrica):\s*/, "");
+    const acciones = row.status === "favorito"
+      ? [{ texto: "👍 Bajar a me gusta", clase: "btn-mini", status: "me_gusta" }]
+      : [{ texto: "⭐ Definitivo", clase: "btn-mini btn-mini-star", status: "favorito" }];
+    acciones.push({ texto: "👎 Descartar", clase: "btn-mini", status: "no_me_gusta" });
+    const zona = fila.querySelector(".head-actions");
+    for (const a of acciones) {
+      zona.appendChild(botonAccion(a.texto, a.clase, () =>
+        apiPatch(`${TABLE}?id=eq.${row.id}`, { status: a.status, decidido_at: new Date().toISOString() })
+      ));
+    }
+    cont.appendChild(node);
+  });
+  if (sinScore > 0) {
+    const p = document.createElement("p");
+    p.className = "empty";
+    p.textContent = `${sinScore} sin puntuar todavía.`;
+    cont.appendChild(p);
   }
 }
 
@@ -735,6 +805,8 @@ function init() {
   document.getElementById("btn-deshacer").addEventListener("click", deshacer);
   document.getElementById("btn-siguiente").addEventListener("click", siguienteLote);
   document.getElementById("btn-conversacion").addEventListener("click", alternarConversacion);
+  document.getElementById("btn-ranking").addEventListener("click", () => abrirRanking(true));
+  document.getElementById("btn-volver").addEventListener("click", () => abrirRanking(false));
   for (const b of document.querySelectorAll(".btn-modo")) {
     b.addEventListener("click", () => eligeModo(b.dataset.modo));
   }
