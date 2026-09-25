@@ -94,7 +94,7 @@ def rubrica(nombre):
         if resto in TECNICOS: pts -= 6; por.append("término técnico, frío para niños y padres")
         if resto in FAMOSOS: pts -= 6; por.append("nombre de matemático, muy usado por academias")
     elif m and m.group(1):
-        if base in VERBOS_POSITIVOS: pts += 12; por.append("verbo positivo + 10: llamada a la acción, memorable y sirve para más asignaturas")
+        if base in VERBOS_POSITIVOS: pts += 8; por.append("verbo positivo + 10: llamada a la acción, memorable")
         elif base in TECNICOS: pts -= 6; por.append("término técnico + 10, frío para niños y padres")
         elif base in FAMOSOS: pts -= 4; por.append("matemático famoso: muy usado por academias, poco distintivo")
         elif base in DESCRIPTIVOS: pts -= 6; por.append("descriptivo (dice la materia), difícil de registrar")
@@ -103,7 +103,7 @@ def rubrica(nombre):
         else: pts += 2; por.append("palabra + 10")
     else:
         pts += 6; por.append("nombre inventado o sin 10: distintivo, pero hay que explicarlo")
-    if base in DESCRIPTIVOS and not base.startswith("mates"): pass
+    if re.search(r"mates|numer|cuent|calcul|suma|cifra|diez", n): pts += 6; por.append("dice mates: el mensaje es mates")
     return max(0, min(100, pts)), "; ".join(por) or "sin observaciones"
 
 def manuales():
