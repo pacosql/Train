@@ -266,7 +266,7 @@ function iniciarConversacion() {
   conversacion = { rec, parando: false };
   const btn = document.getElementById("btn-conversacion");
   btn.setAttribute("aria-pressed", "true");
-  btn.textContent = "🔴 Oyendo";
+  btn.textContent = "🔴 Escuchando · toca para parar";
   document.body.classList.add("conversando");
   convEstado("Escuchando. Di los números que te gustan («la 1 y la 3») y «siguiente».");
   try { rec.start(); } catch (err) { pararConversacion(); mostrarError(err); }
@@ -279,7 +279,7 @@ function pararConversacion() {
   conversacion = null;
   const btn = document.getElementById("btn-conversacion");
   btn.setAttribute("aria-pressed", "false");
-  btn.textContent = "🎙️ Hablar";
+  btn.textContent = "🎙️ Modo conversación";
   document.body.classList.remove("conversando");
   const el = document.getElementById("conv-estado");
   el.hidden = true;

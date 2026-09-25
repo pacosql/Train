@@ -26,7 +26,7 @@ const ok = (cond, msg) => { if (!cond) throw new Error(msg); };
   const port = server.address().port;
   const { chromium } = playwright();
   const browser = await chromium.launch();
-  const page = await (await browser.newContext({ viewport: { width: 390, height: 844 } })).newPage();
+  const page = await (await browser.newContext({ viewport: { width: 390, height: 664 } })).newPage();
   const errors = [];
   page.on("pageerror", (e) => errors.push("pageerror: " + e.message));
   page.on("console", (m) => { if (m.type() === "error") errors.push("console: " + m.text()); });
@@ -79,14 +79,15 @@ const ok = (cond, msg) => { if (!cond) throw new Error(msg); };
   await page.waitForTimeout(800);
   const nums = await filas.locator(".lote-num").allTextContents();
   ok(nums.join(",") === Array.from({ length: n }, (_, i) => String(i + 1)).join(","), `numeración 1..${n} incorrecta: ${nums}`);
-  const caja = await page.locator("#btn-siguiente").boundingBox();
-  ok(caja && caja.y + caja.height <= 844, `el lote no cabe en pantalla: botón termina en ${caja && caja.y + caja.height}`);
-  console.log(`caben los ${n} en pantalla (botón termina en ${Math.round(caja.y + caja.height)}px)`);
 
-  // --- Modo conversación ---
+  // --- Modo conversación: pantalla completa, los 10 y el botón sin scroll (Safari iPhone ≈ 390x664) ---
   escrituras.length = 0;
   await page.click("#btn-conversacion");
   ok((await page.getAttribute("#btn-conversacion", "aria-pressed")) === "true", "el modo conversación no se ha activado");
+  const caja = await page.locator("#btn-siguiente").boundingBox();
+  const ultima = await filas.nth(n - 1).boundingBox();
+  ok(caja && caja.y + caja.height <= 664 && ultima.y + ultima.height <= caja.y, `el lote no cabe en pantalla: fila ${n} termina en ${ultima && ultima.y + ultima.height}, botón en ${caja && caja.y + caja.height}`);
+  console.log(`conversación: caben los ${n} sin scroll (fila ${n} termina en ${Math.round(ultima.y + ultima.height)}px, botón en ${Math.round(caja.y + caja.height)}px de 664)`);
   await page.evaluate(() => window.__oir("la 1 y la 3"));
   await page.waitForTimeout(200);
   ok((await page.textContent("#btn-siguiente")).includes("Guardar 2"), "por voz: deberían estar marcados 2");

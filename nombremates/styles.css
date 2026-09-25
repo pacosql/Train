@@ -318,11 +318,11 @@ body.en-lote.conversando .lote-ayuda { display: none; }
 .lote-detalle .porque { margin: 0 0 8px; font-size: 0.88rem; }
 .lote-detalle .nota-row { margin-bottom: 8px; }
 .lote-detalle .colision-info { color: var(--muted); margin-top: 6px; line-height: 1.4; }
-.lote-acciones { display: flex; gap: 8px; justify-content: space-between; align-items: center; margin-top: 8px; position: sticky; bottom: 8px; }
-.btn-conv { flex: 0 0 auto; white-space: nowrap; border: 1px solid var(--border); border-radius: 14px; padding: 12px; font-size: 1rem; font-weight: 700; background: var(--card); color: var(--text); cursor: pointer; box-shadow: 0 4px 14px rgba(0,0,0,0.15); }
+.lote-acciones { display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; align-items: center; margin-top: 8px; position: sticky; bottom: 8px; }
+.btn-conv { display: block; width: 100%; margin: 0 0 8px; white-space: nowrap; border: 1px solid var(--border); border-radius: 14px; padding: 12px; font-size: 1rem; font-weight: 700; background: var(--card); color: var(--text); cursor: pointer; }
 .btn-conv[aria-pressed="true"] { background: var(--bad); border-color: var(--bad); color: #fff; animation: latido 1.6s ease-in-out infinite; }
 @keyframes latido { 0%, 100% { box-shadow: 0 0 0 0 rgba(229, 72, 77, 0.5); } 50% { box-shadow: 0 0 0 10px rgba(229, 72, 77, 0); } }
-.conv-estado { text-align: center; font-size: 0.85rem; color: var(--muted); margin: 6px 0 0; min-height: 1.2em; }
+.conv-estado { flex-basis: 100%; text-align: center; font-size: 0.85rem; color: var(--muted); margin: 0 0 6px; min-height: 1.2em; }
 .conv-estado.aviso { color: var(--bad); }
 .btn-siguiente { flex: 1; border: none; border-radius: 14px; padding: 12px; font-size: 1.1rem; font-weight: 800; background: var(--accent); color: #2a1300; cursor: pointer; box-shadow: 0 4px 14px rgba(0,0,0,0.15); }
 .lote-acciones .btn-ghost { background: var(--card); }
@@ -339,3 +339,25 @@ body.en-lote.conversando .lote-ayuda { display: none; }
 .grande-like.activo { background: rgba(47, 158, 68, 0.2); border-color: var(--ok); color: var(--ok); }
 .grande-star.activo { background: rgba(59, 111, 224, 0.2); border-color: var(--accent-2); color: var(--accent-2); }
 .btn-siguiente.con-marcas { background: var(--ok); color: #fff; }
+
+/* Modo conversación: el lote ocupa la pantalla entera (sin scroll): botón
+   arriba, los 10 nombres reparten la altura que haya y el estado abajo. */
+body.conversando { overflow: hidden; }
+body.conversando #modo-lote {
+  position: fixed; inset: 0; z-index: 50; background: var(--bg);
+  display: flex; flex-direction: column;
+  padding: calc(env(safe-area-inset-top, 0px) + 6px) 10px calc(env(safe-area-inset-bottom, 0px) + 6px);
+}
+body.conversando .btn-conv { margin-bottom: 4px; padding: 9px; font-size: 0.95rem; }
+body.conversando .lote { flex: 1; min-height: 0; gap: 3px; margin: 4px 0; }
+body.conversando .lote-fila { flex: 1; min-height: 0; display: flex; align-items: center; padding: 0 8px; }
+body.conversando .lote-linea { width: 100%; }
+body.conversando .lote-nombre { padding: 0; }
+body.conversando .lote-nombre .name-text { font-size: 1.05rem; line-height: 1.1; }
+body.conversando .lote-num { width: 30px; height: 30px; font-size: 1rem; }
+body.conversando .marca, body.conversando .lote-detalle, body.conversando .lote-dom { display: none !important; }
+body.conversando .lote-fila.gusta .lote-linea::after { content: "👍"; font-size: 1.2rem; }
+body.conversando .lote-fila.star .lote-linea::after { content: "⭐"; font-size: 1.2rem; }
+body.conversando .lote-acciones { position: static; margin: 0; gap: 4px; }
+body.conversando .conv-estado { margin: 0; font-size: 0.78rem; line-height: 1.25; }
+body.conversando .btn-siguiente { padding: 9px; font-size: 0.95rem; box-shadow: none; }
