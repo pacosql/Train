@@ -110,6 +110,7 @@ const ok = (cond, msg) => { if (!cond) throw new Error(msg); };
   await page.waitForTimeout(1500);
   const todos = escrituras.filter((e) => e.method === "PATCH");
   ok(todos.length === 1 && JSON.parse(todos[0].body).status === "no_me_gusta", "«ninguna, siguiente» debe mandar un solo PATCH no_me_gusta");
+  await page.waitForFunction(() => document.querySelector("#conv-estado").textContent.startsWith("Lote nuevo"), null, { timeout: 8000 }).catch(() => {});
   await page.evaluate(() => window.__oir("parar"));
   await page.waitForTimeout(600);
   ok((await page.getAttribute("#btn-conversacion", "aria-pressed")) === "false", "«parar» debe cerrar el modo");
