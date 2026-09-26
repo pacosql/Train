@@ -21,7 +21,7 @@ def sb_all(path):
         p = sb(f"{path}&limit=1000&offset={off}"); out += p
         if len(p) < 1000: break
     return out
-ideas = sb_all("nombremates_ideas?select=nombre,status,nota,tanda,metodo,decidido_at,orden&order=id")
+ideas = sb_all("nombremates_ideas?select=nombre,status,nota,tanda,metodo,decidido_at,orden,score&order=id")
 cnt = {}
 for i in ideas: cnt[i["status"]] = cnt.get(i["status"], 0) + 1
 print("== ESTADO ==", json.dumps(cnt, ensure_ascii=False), "| tanda máxima:", max((i["tanda"] or 0) for i in ideas) if ideas else 0)
@@ -29,7 +29,7 @@ print("== ESTADO ==", json.dumps(cnt, ensure_ascii=False), "| tanda máxima:", m
 # flojo como marca tienen orden >= 100000 (reserva) y no cuentan como
 # pendientes "de verdad" para decidir si hace falta otra tanda.
 buenos = sum(1 for i in ideas if i["status"] == "pendiente" and (i["orden"] or 0) < 100000)
-print("PENDIENTES:", buenos, "(buenos, los que cuentan para el umbral de 200) · en reserva flojos:", cnt.get("pendiente", 0) - buenos)
+print("PENDIENTES:", buenos, "(buenos, score >= 70) · de ellos >= 75:", sum(1 for i in ideas if i["status"] == "pendiente" and (i.get("score") or 0) >= 75), "· en reserva flojos:", cnt.get("pendiente", 0) - buenos)
 print("\n== ME GUSTA / DEFINITIVOS (con comentario si lo hay) ==")
 for i in ideas:
     if i["status"] in ("me_gusta", "favorito"): print(f"  {'⭐' if i['status']=='favorito' else '👍'} {i['nombre']} [{i['metodo']}]" + (f" — «{i['nota']}»" if i["nota"] else ""))

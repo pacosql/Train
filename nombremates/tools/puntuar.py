@@ -117,13 +117,22 @@ def manuales():
         out[norm(nombre)] = (float(score), motivo)
     return out
 
+# Umbral de "buen nombre": a Paco solo se le presentan primero los que
+# puntúan 70 o más (el objetivo es 75-90). Los demás pendientes van a la
+# reserva (orden >= 100000): siguen en la cola, pero detrás de los buenos.
+UMBRAL_BUENO = 70
+
+def orden_para(score):
+    base = round((100 - score) * 10)
+    return base if score >= UMBRAL_BUENO else 100000 + base
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--solo-probar", action="store_true")
     ap.add_argument("--todo", action="store_true", help="repuntuar también los que ya tienen score")
     a = ap.parse_args()
     man = manuales()
-    filas = todos("id,nombre,status,score,orden")
+    filas = todos("id,nombre,status,score,orden,score_motivo")
     ahora = datetime.now(timezone.utc).isoformat()
     cambios = []
     for f in filas:
@@ -134,9 +143,11 @@ def main():
         else:
             if f["score"] is not None and not a.todo: continue
             score, motivo = rubrica(f["nombre"]); motivo = "Rúbrica: " + motivo
-        if f["score"] is not None and float(f["score"]) == score and not a.todo and k not in man: continue
+        orden = orden_para(score) if f["status"] == "pendiente" else f["orden"]
+        mismo = f["score"] is not None and float(f["score"]) == score and f["orden"] == orden
+        if mismo and (k not in man or f.get("score_motivo") == motivo) and not a.todo: continue
         body = {"score": score, "score_motivo": motivo, "score_at": ahora}
-        if f["status"] == "pendiente": body["orden"] = round((100 - score) * 10)
+        if f["status"] == "pendiente": body["orden"] = orden
         cambios.append((f, body))
     print(f"{len(filas)} nombres, {len(cambios)} a actualizar ({len(man)} manuales)", file=sys.stderr)
     for f, body in sorted(cambios, key=lambda x: -x[1]["score"])[:40]:
