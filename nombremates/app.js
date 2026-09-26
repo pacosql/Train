@@ -392,6 +392,7 @@ function pintaUno() {
   if (item.metodo) tag.textContent = item.metodo;
   else tag.remove();
   node.querySelector(".name-text").textContent = item.nombre;
+  { const ps = pastillaScore(item); if (ps) node.querySelector(".name-text").after(ps); }
   node.querySelector(".dominio").textContent = `${dominio(item)} libre`;
   pintaPorque(node.querySelector(".porque"), item);
   { const ts = textoScore(item); if (ts) { const p = document.createElement("p"); p.className = "marca-score"; p.textContent = ts; node.querySelector(".porque").after(p); } }
@@ -470,6 +471,7 @@ function pintaLote() {
     const item = { row, num: idx + 1, marca: null, campo: node.querySelector(".nota-input"), marcar: null };
     fila.querySelector(".lote-num").textContent = String(idx + 1);
     fila.querySelector(".name-text").textContent = row.nombre;
+    { const ps = pastillaScore(row); if (ps) fila.querySelector(".name-text").after(ps); }
     pintaPorque(fila.querySelector(".porque"), row);
     const ts = textoScore(row);
     if (ts) { const p = document.createElement("p"); p.className = "marca-score"; p.textContent = ts; fila.querySelector(".porque").after(p); }
@@ -569,6 +571,7 @@ function renderCard(container, row, acciones) {
   const node = document.getElementById("tpl-nombre-card").content.cloneNode(true);
   const card = node.querySelector(".name-card");
   card.querySelector(".name-text").textContent = row.nombre;
+  { const ps = pastillaScore(row); if (ps) card.querySelector(".name-text").after(ps); }
   pintaPorque(card.querySelector(".porque"), row);
 
   const notaEl = card.querySelector(".nota-guardada");
@@ -652,8 +655,8 @@ async function recargarTodo() {
   try {
     const [pendientes, meGusta, favoritos, descartados, vetados] = await Promise.all([
       fetchIdeas("pendiente", "orden.asc.nullslast,id.asc", TAM_LOTE),
-      fetchIdeas("me_gusta", "decidido_at.desc.nullslast"),
-      fetchIdeas("favorito", "decidido_at.desc.nullslast"),
+      fetchIdeas("me_gusta", "score.desc.nullslast,decidido_at.desc.nullslast"),
+      fetchIdeas("favorito", "score.desc.nullslast,decidido_at.desc.nullslast"),
       fetchIdeas("no_me_gusta", "decidido_at.desc.nullslast", 100),
       fetchIdeas("vetado", "id.desc", 200),
     ]);
@@ -696,6 +699,17 @@ async function recargarTodo() {
 
 function claseScore(v) {
   return v >= 75 ? "alto" : v >= 55 ? "medio" : "bajo";
+}
+
+// Pastilla con la puntuación de marca de Claude, siempre al lado del nombre.
+function pastillaScore(row) {
+  if (row.score === null || row.score === undefined) return null;
+  const sp = document.createElement("span");
+  sp.className = `rk-score pill-score ${claseScore(row.score)}`;
+  sp.textContent = Math.round(row.score);
+  const motivo = (row.score_motivo || "").replace(/^(Claude|Rúbrica):\s*/, "");
+  sp.title = `Marca ${Math.round(row.score)}/100${motivo ? " · " + motivo : ""}`;
+  return sp;
 }
 
 function textoScore(row) {
@@ -826,6 +840,7 @@ function explicaFila(cont, row, textoBuscado) {
   n.className = "name-text";
   n.textContent = row.nombre;
   cab.appendChild(n);
+  { const ps = pastillaScore(row); if (ps) cab.appendChild(ps); }
   cont.appendChild(cab);
   parrafo(cont, ESTADOS[row.status] || row.status, "res-estado");
   const porque = [];

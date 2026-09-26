@@ -138,8 +138,13 @@ const ok = (cond, msg) => { if (!cond) throw new Error(msg); };
   await page.click("#form-buscar .btn-primary");
   await page.waitForSelector("#resultado-buscar .res-caja");
   const res1 = await page.textContent("#resultado-buscar");
-  ok(res1.includes("Mates10") && res1.includes("Vetado") && res1.includes("PROFESOR 10 DE MATES"), "buscar «mates 10» debe explicar el veto de Mates10");
-  ok(res1.includes("marca 55"), "debe mostrar la puntuación de marca de Mates10");
+  ok(res1.includes("Mates10") && res1.includes("Definitivo") && res1.includes("PROFESOR 10 DE MATES"), "buscar «mates 10» debe explicar que Mates10 es la referencia y su conflicto de marca");
+  ok(res1.includes("marca 90") && (await page.textContent("#resultado-buscar .res-cab .pill-score")) === "90", "debe mostrar la puntuación 90 de Mates10 al lado del nombre");
+  // Listas ordenadas por puntuación, con la pastilla al lado del nombre
+  const primerDef = page.locator("#lista-definitivos .name-card").first();
+  ok((await primerDef.locator(".name-text").textContent()) === "Mates10" && (await primerDef.locator(".pill-score").textContent()) === "90", "el primer definitivo debe ser Mates10 (90), ordenado por puntuación");
+  const pillsLote = await page.locator("#lote-area .lote-nombre .pill-score").count();
+  ok(pillsLote > 0, "las filas del lote deben llevar la pastilla de puntuación al lado del nombre");
   await page.fill("#input-buscar", "mates club");
   await page.click("#form-buscar .btn-primary");
   await page.waitForFunction(() => /ocupado/.test(document.querySelector("#resultado-buscar").textContent));

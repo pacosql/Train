@@ -401,3 +401,11 @@ body.en-lote .btn-ranking { padding: 3px 10px; font-size: 0.75rem; margin: 0 0 2
 .res-titulo { margin: 14px 0 6px; font-size: 0.85rem; color: var(--muted); font-weight: 700; }
 .res-parecidos { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 6px; }
 .res-parecidos li { border: 1px solid var(--border); background: var(--card); border-radius: 999px; padding: 4px 10px; font-size: 0.85rem; cursor: pointer; }
+
+/* Puntuación de marca al lado del nombre (todas las listas) */
+.pill-score { margin-left: 6px; font-size: 0.8rem; padding: 1px 8px; vertical-align: middle; }
+.lote-nombre .pill-score { margin-left: 0; }
+body.conversando .lote-nombre .pill-score { font-size: clamp(0.8rem, 2.4vh, 1.1rem); padding: 2px 10px; }
+.swipe-card .pill-score { display: inline-block; margin-left: 8px; font-size: 0.95rem; }
+.res-cab { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.res-cab .pill-score { font-size: 1rem; }
