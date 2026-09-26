@@ -18,7 +18,10 @@
   <div class="wrap">
     <header>
       <h1>➕ Nombre Mates 🔟</h1>
-      <button type="button" id="btn-ranking" class="btn-ranking">🏆 Ranking de Claude</button>
+      <div class="cab-botones">
+        <button type="button" id="btn-ranking" class="btn-ranking">🏆 Ranking de Claude</button>
+        <button type="button" id="btn-buscar" class="btn-ranking">🔍 Buscar</button>
+      </div>
     </header>
 
     <div class="progreso">
@@ -141,6 +144,23 @@
       Los 🚫 son referencias (como mates10) que están vetados por marca pero puntúo igual.
     </p>
     <div id="lista-ranking" class="ranking"></div>
+  </section>
+
+  <section id="vista-buscar" class="vista-ranking vista-buscar" hidden>
+    <div class="ranking-cab">
+      <button type="button" id="btn-volver-buscar" class="btn-ghost">← Volver</button>
+      <h2>🔍 Buscar un nombre</h2>
+    </div>
+    <p class="sub">
+      Escribe o dicta un nombre (por ejemplo «mates 10») y te digo si lo he
+      probado, en qué estado está y por qué no ha entrado en tu cola.
+    </p>
+    <form id="form-buscar" class="buscar-form" autocomplete="off">
+      <input id="input-buscar" type="search" placeholder="mates 10" aria-label="Nombre a buscar" enterkeyhint="search" />
+      <button type="button" class="btn-mic" data-mic-for="input-buscar" aria-label="Dictar el nombre">🎙️</button>
+      <button type="submit" class="btn-primary">Buscar</button>
+    </form>
+    <div id="resultado-buscar" class="resultado-buscar" aria-live="polite"></div>
   </section>
 
   <template id="tpl-ranking-fila">

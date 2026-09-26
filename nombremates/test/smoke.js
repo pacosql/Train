@@ -129,6 +129,33 @@ const ok = (cond, msg) => { if (!cond) throw new Error(msg); };
   ok(p1 && JSON.parse(p1.body).status === "me_gusta" && JSON.parse(p1.body).nota === "prueba", "1 en 1: PATCH me_gusta con nota");
   console.log("1 en 1 OK:", nombre);
 
+  // --- Buscador ---
+  escrituras.length = 0;
+  await page.click("#btn-buscar");
+  await page.waitForSelector("#vista-buscar:not([hidden])");
+  ok(await page.locator(".wrap").isHidden(), "al buscar se oculta la revisión");
+  await page.fill("#input-buscar", "mates 10");
+  await page.click("#form-buscar .btn-primary");
+  await page.waitForSelector("#resultado-buscar .res-caja");
+  const res1 = await page.textContent("#resultado-buscar");
+  ok(res1.includes("Mates10") && res1.includes("Vetado") && res1.includes("PROFESOR 10 DE MATES"), "buscar «mates 10» debe explicar el veto de Mates10");
+  ok(res1.includes("marca 55"), "debe mostrar la puntuación de marca de Mates10");
+  await page.fill("#input-buscar", "mates club");
+  await page.click("#form-buscar .btn-primary");
+  await page.waitForFunction(() => /ocupado/.test(document.querySelector("#resultado-buscar").textContent));
+  const res2 = await page.textContent("#resultado-buscar");
+  ok(res2.includes(".com está ocupado") && res2.includes("Parecidos"), "«mates club» debe explicar el .com ocupado y listar parecidos");
+  await page.fill("#input-buscar", "zzqqxx diez");
+  await page.click("#form-buscar .btn-primary");
+  await page.waitForFunction(() => /Nunca lo he probado/.test(document.querySelector("#resultado-buscar").textContent));
+  await page.click("#resultado-buscar .btn-mini");
+  await page.waitForTimeout(1200);
+  const post = escrituras.find((e) => e.method === "POST" && e.url.includes("nombremates_ideas"));
+  ok(post && JSON.parse(post.body).nombre === "Zzqqxxdiez" && JSON.parse(post.body).status === "pendiente" && JSON.parse(post.body).orden === -1, "añadir desde el buscador debe insertar pendiente el primero");
+  await page.click("#btn-volver-buscar");
+  await page.waitForSelector(".wrap:not([hidden])");
+  console.log("buscador OK (nada enviado, solo lectura)");
+
   await page.screenshot({ path: path.join(dir, "nombremates.png"), fullPage: true });
   console.log("captura:", path.join(dir, "nombremates.png"));
   if (errors.length) throw new Error(errors.join("\n"));

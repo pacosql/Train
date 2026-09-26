@@ -388,3 +388,16 @@ body.en-lote .btn-ranking { padding: 3px 10px; font-size: 0.75rem; margin: 0 0 2
 .rk-fila .head-actions { margin-top: 2px; }
 .lote-detalle .marca-score, .swipe-card .marca-score { font-size: 0.85rem; color: var(--muted); margin: 0 0 8px; line-height: 1.35; }
 .rk-fila.referencia { border-style: dashed; opacity: 0.9; }
+
+/* Buscador */
+.cab-botones { display: flex; gap: 8px; flex-wrap: wrap; }
+.buscar-form { display: flex; gap: 8px; margin: 0 0 14px; }
+.buscar-form input { flex: 1; min-width: 0; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-size: 1.05rem; font-family: inherit; }
+.buscar-form .btn-primary { border: none; background: var(--accent); color: #fff; border-radius: 10px; padding: 0 16px; font-weight: 700; font-size: 1rem; cursor: pointer; }
+.res-caja { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; margin-bottom: 12px; }
+.res-cab .name-text { font-size: 1.5rem; font-weight: 800; }
+.res-estado { margin: 6px 0 4px; font-weight: 700; }
+.res-motivo { margin: 4px 0; font-size: 0.9rem; line-height: 1.45; }
+.res-titulo { margin: 14px 0 6px; font-size: 0.85rem; color: var(--muted); font-weight: 700; }
+.res-parecidos { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.res-parecidos li { border: 1px solid var(--border); background: var(--card); border-radius: 999px; padding: 4px 10px; font-size: 0.85rem; cursor: pointer; }

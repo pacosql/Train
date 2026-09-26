@@ -707,7 +707,7 @@ function textoScore(row) {
 function abrirRanking(abrir) {
   document.getElementById("vista-ranking").hidden = !abrir;
   document.querySelector(".wrap").hidden = abrir;
-  if (abrir) { pararConversacion(); pintaRanking(); window.scrollTo(0, 0); }
+  if (abrir) { pararConversacion(); document.getElementById("vista-buscar").hidden = true; pintaRanking(); window.scrollTo(0, 0); }
 }
 
 function pintaRanking() {
@@ -754,6 +754,172 @@ function pintaRanking() {
     p.className = "empty";
     p.textContent = `${sinScore} sin puntuar todavía.`;
     cont.appendChild(p);
+  }
+}
+
+
+// ---- Buscador: ¿he probado este nombre? ¿por qué no está en la cola? ----
+
+const slugNombre = (t) => t.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z0-9]/g, "");
+const capitaliza = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+
+const ESTADOS = {
+  pendiente: "⏳ En tu cola, sin decidir",
+  me_gusta: "👍 Te gusta",
+  favorito: "⭐ Definitivo",
+  no_me_gusta: "👎 Lo descartaste tú",
+  vetado: "🚫 Vetado por Claude",
+};
+
+function abrirBuscar(abrir) {
+  document.getElementById("vista-buscar").hidden = !abrir;
+  document.querySelector(".wrap").hidden = abrir;
+  if (abrir) {
+    pararConversacion();
+    document.getElementById("vista-ranking").hidden = true;
+    window.scrollTo(0, 0);
+    document.getElementById("input-buscar").focus();
+  }
+}
+
+function fechaCorta(iso) {
+  return iso ? new Date(iso).toLocaleDateString("es-ES", { day: "numeric", month: "short" }) : "";
+}
+
+function parrafo(cont, texto, clase = "") {
+  const p = document.createElement("p");
+  if (clase) p.className = clase;
+  p.textContent = texto;
+  cont.appendChild(p);
+  return p;
+}
+
+// Botón que ejecuta una escritura y vuelve a buscar, para ver el estado nuevo.
+function botonBuscar(texto, alPulsar, texto2) {
+  const b = document.createElement("button");
+  b.type = "button";
+  b.className = "btn-mini";
+  b.textContent = texto;
+  b.addEventListener("click", async () => {
+    if (ocupado) return;
+    ocupado = true;
+    b.disabled = true;
+    try {
+      await alPulsar();
+      ocultarError();
+      await recargarTodo();
+      await buscarNombre(texto2);
+    } catch (err) {
+      mostrarError(err);
+      b.disabled = false;
+    } finally {
+      ocupado = false;
+    }
+  });
+  return b;
+}
+
+function explicaFila(cont, row, textoBuscado) {
+  const cab = document.createElement("div");
+  cab.className = "res-cab";
+  const n = document.createElement("span");
+  n.className = "name-text";
+  n.textContent = row.nombre;
+  cab.appendChild(n);
+  cont.appendChild(cab);
+  parrafo(cont, ESTADOS[row.status] || row.status, "res-estado");
+  const porque = [];
+  if (row.status === "vetado") porque.push(`No entró en la cola porque ${(row.veto_motivo || "choca con una marca conocida").replace(/[.\s]+$/, "")}.`);
+  if (row.status === "no_me_gusta") porque.push(`Lo descartaste${row.decidido_at ? " el " + fechaCorta(row.decidido_at) : ""}${row.nota ? " con el comentario «" + row.nota + "»" : ""}.`);
+  if (row.status === "pendiente") porque.push("Está en la cola: te saldrá cuando le toque por su puntuación de marca.");
+  if (row.status === "me_gusta" || row.status === "favorito") porque.push(`Lo decidiste${row.decidido_at ? " el " + fechaCorta(row.decidido_at) : ""}; está en el ranking de marca.`);
+  if (row.porque) porque.push(`Por qué lo propuse: ${row.porque}`);
+  if (row.metodo) porque.push(`Familia: ${row.metodo}${row.tanda ? " (tanda " + row.tanda + ")" : ""}.`);
+  if (row.com_libre === false) porque.push(`El ${dominio(row)} está ocupado.`);
+  else if (row.com_libre === true) porque.push(`El ${dominio(row)} estaba libre cuando lo comprobé.`);
+  if (row.colision_detalle) porque.push(row.colision_detalle);
+  for (const t of porque) parrafo(cont, t, "res-motivo");
+  const sc = textoScore(row);
+  if (sc) parrafo(cont, sc, "marca-score");
+  const zona = document.createElement("div");
+  zona.className = "head-actions";
+  const patch = (fields) => () => apiPatch(`${TABLE}?id=eq.${row.id}`, { ...fields, decidido_at: new Date().toISOString() });
+  if (row.status === "vetado" || row.status === "no_me_gusta") zona.appendChild(botonBuscar("↩️ A la cola, el primero", patch({ status: "pendiente", orden: -1 }), textoBuscado));
+  if (row.status !== "favorito") zona.appendChild(botonBuscar("⭐ Definitivo", patch({ status: "favorito" }), textoBuscado));
+  if (row.status !== "me_gusta" && row.status !== "favorito") zona.appendChild(botonBuscar("👍 Me gusta", patch({ status: "me_gusta" }), textoBuscado));
+  if (row.status === "pendiente") zona.appendChild(botonBuscar("⬆️ Ponerlo el primero", () => apiPatch(`${TABLE}?id=eq.${row.id}`, { orden: -1 }), textoBuscado));
+  cont.appendChild(zona);
+}
+
+async function buscarNombre(texto) {
+  const cont = document.getElementById("resultado-buscar");
+  cont.innerHTML = "";
+  const palabras = texto.trim().split(/\s+/).filter(Boolean);
+  const s = slugNombre(texto);
+  if (s.length < 2) return;
+  const variantes = [...new Set([s, slugNombre(palabras.slice().reverse().join(""))])];
+  parrafo(cont, "Buscando…", "empty");
+  try {
+    const lista = variantes.map((v) => `nombre.ilike.${v}`).join(",");
+    const [exactas, parecidas, comprobadas] = await Promise.all([
+      apiGet(`${TABLE}?or=(${lista})&select=*`),
+      apiGet(`${TABLE}?nombre=ilike.*${s}*&select=nombre,status,score&order=score.desc.nullslast&limit=12`),
+      apiGet(`${CFG.tablePrefix}comprobados?nombre=in.(${variantes.join(",")})&select=*`),
+    ]);
+    cont.innerHTML = "";
+    const exactasSet = new Set(exactas.map((r) => r.nombre.toLowerCase()));
+    if (exactas.length) {
+      for (const row of exactas) {
+        const caja = document.createElement("div");
+        caja.className = "res-caja";
+        explicaFila(caja, row, texto);
+        cont.appendChild(caja);
+      }
+    } else {
+      const caja = document.createElement("div");
+      caja.className = "res-caja";
+      const nombre = capitaliza(s);
+      const cab = document.createElement("div");
+      cab.className = "res-cab";
+      const n = document.createElement("span");
+      n.className = "name-text";
+      n.textContent = nombre;
+      cab.appendChild(n);
+      caja.appendChild(cab);
+      const ocupadoCom = comprobadas.find((c) => c.com_libre === false);
+      if (ocupadoCom) {
+        parrafo(caja, "🌐 Probado: el .com está ocupado", "res-estado");
+        parrafo(caja, `Comprobé ${ocupadoCom.nombre}.com el ${fechaCorta(ocupadoCom.checked_at)} y ya tiene dueño, así que no lo metí en la cola (solo cargo nombres con el .com libre).`, "res-motivo");
+      } else {
+        parrafo(caja, "🆕 Nunca lo he probado", "res-estado");
+        parrafo(caja, "No está en ninguna tanda ni lo he comprobado. Si lo añades, entra el primero de tu cola y en la siguiente pasada compruebo el .com y le pongo puntuación de marca.", "res-motivo");
+      }
+      const zona = document.createElement("div");
+      zona.className = "head-actions";
+      zona.appendChild(botonBuscar("➕ Añadir a la cola, el primero", () => apiPost(TABLE, {
+        nombre, status: "pendiente", tanda: 0, metodo: "Buscador: lo pediste tú",
+        porque: `Lo escribiste en el buscador («${texto.trim()}»).`, com_libre: ocupadoCom ? false : null, orden: -1,
+      }), texto));
+      caja.appendChild(zona);
+      cont.appendChild(caja);
+    }
+    const otras = parecidas.filter((r) => !exactasSet.has(r.nombre.toLowerCase()));
+    if (otras.length) {
+      parrafo(cont, "Parecidos que sí he probado:", "res-titulo");
+      const ul = document.createElement("ul");
+      ul.className = "res-parecidos";
+      for (const r of otras) {
+        const li = document.createElement("li");
+        li.textContent = `${(ESTADOS[r.status] || r.status).slice(0, 2)} ${r.nombre}${r.score !== null && r.score !== undefined ? " · " + Math.round(r.score) : ""}`;
+        li.title = ESTADOS[r.status] || r.status;
+        li.addEventListener("click", () => { document.getElementById("input-buscar").value = r.nombre; buscarNombre(r.nombre); });
+        ul.appendChild(li);
+      }
+      cont.appendChild(ul);
+    }
+  } catch (err) {
+    cont.innerHTML = "";
+    mostrarError(err);
   }
 }
 
@@ -810,6 +976,17 @@ function init() {
   document.getElementById("btn-conversacion").addEventListener("click", alternarConversacion);
   document.getElementById("btn-ranking").addEventListener("click", () => abrirRanking(true));
   document.getElementById("btn-volver").addEventListener("click", () => abrirRanking(false));
+  document.getElementById("btn-buscar").addEventListener("click", () => abrirBuscar(true));
+  document.getElementById("btn-volver-buscar").addEventListener("click", () => abrirBuscar(false));
+  document.getElementById("form-buscar").addEventListener("submit", (ev) => {
+    ev.preventDefault();
+    pararDictado();
+    buscarNombre(document.getElementById("input-buscar").value);
+  });
+  enlazarMic(
+    document.querySelector('[data-mic-for="input-buscar"]'),
+    document.getElementById("input-buscar")
+  );
   for (const b of document.querySelectorAll(".btn-modo")) {
     b.addEventListener("click", () => eligeModo(b.dataset.modo));
   }
