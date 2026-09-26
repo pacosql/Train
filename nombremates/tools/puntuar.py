@@ -141,7 +141,12 @@ def main():
         if k in man:
             score, motivo = man[k]; motivo = "Claude: " + motivo
         else:
-            if f["score"] is not None and not a.todo: continue
+            if f["score"] is not None and not a.todo:
+                # Ya puntuado: solo recolocar en la cola si cambió el umbral
+                # (no se tocan los que se pusieron los primeros a propósito).
+                if f["status"] == "pendiente" and (f["orden"] or 0) >= 0 and f["orden"] != orden_para(float(f["score"])):
+                    cambios.append((f, {"orden": orden_para(float(f["score"]))}))
+                continue
             score, motivo = rubrica(f["nombre"]); motivo = "Rúbrica: " + motivo
         orden = orden_para(score) if f["status"] == "pendiente" else f["orden"]
         mismo = f["score"] is not None and float(f["score"]) == score and f["orden"] == orden
@@ -150,7 +155,7 @@ def main():
         if f["status"] == "pendiente": body["orden"] = orden
         cambios.append((f, body))
     print(f"{len(filas)} nombres, {len(cambios)} a actualizar ({len(man)} manuales)", file=sys.stderr)
-    for f, body in sorted(cambios, key=lambda x: -x[1]["score"])[:40]:
+    for f, body in sorted([c for c in cambios if "score" in c[1]], key=lambda x: -x[1]["score"])[:40]:
         print(f"{body['score']:5.0f}  {f['nombre']:<18} {body['score_motivo'][:90]}")
     if a.solo_probar: return
     for f, body in cambios:
