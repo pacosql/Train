@@ -21,6 +21,7 @@
       <div class="cab-botones">
         <button type="button" id="btn-ranking" class="btn-ranking">🏆 Ranking de Claude</button>
         <button type="button" id="btn-buscar" class="btn-ranking">🔍 Buscar</button>
+        <button type="button" id="btn-referencias" class="btn-ranking">📐 Buen nombre</button>
       </div>
     </header>
 
@@ -144,6 +145,34 @@
       Los 🚫 son referencias (como mates10) que están vetados por marca pero puntúo igual.
     </p>
     <div id="lista-ranking" class="ranking"></div>
+  </section>
+
+  <section id="vista-referencias" class="vista-ranking vista-referencias" hidden>
+    <div class="ranking-cab">
+      <button type="button" id="btn-volver-referencias" class="btn-ghost">← Volver</button>
+      <h2>📐 ¿Qué es un buen nombre?</h2>
+    </div>
+    <p class="sub">
+      Antes de buscar más nombres, fijemos juntos qué es un buen nombre. Aquí
+      tienes 25 marcas conocidas que para mí lo son, cada una con su nota en
+      seis medidas y el porqué. Dime si estás de acuerdo o no, y si quieres,
+      por qué. Con tus respuestas ajusto la vara de medir para cualquier tipo
+      de empresa.
+    </p>
+    <details class="criterios">
+      <summary>Las 6 medidas (0-10 cada una; el total es sobre 100)</summary>
+      <ul>
+        <li><strong>Corto</strong>: pocas letras y sílabas; cabe en un icono y se dice de un tirón.</li>
+        <li><strong>Fácil</strong>: al oírlo lo escribes bien a la primera, y al leerlo lo dices bien (el «test del teléfono»).</li>
+        <li><strong>Memorable</strong>: crea una imagen o una emoción (una manzana, un toro rojo, una sonrisa).</li>
+        <li><strong>Sugiere</strong>: dice o insinúa qué hace sin ser una descripción aburrida.</li>
+        <li><strong>Distintivo</strong>: no se parece a nadie, se puede registrar como marca y no provoca polémica ni significa algo feo en otros idiomas.</li>
+        <li><strong>Búsqueda</strong>: quien lo busca te encuentra, y quien busca el servicio (por ejemplo «cerrajería Murcia») puede llegar a ti.</li>
+      </ul>
+      <p>Me baso en el test SMILE y SCRATCH de Alexandra Watkins (libro «Hello, My Name Is Awesome»). Un buen nombre hace sonreír: sugiere, se recuerda, crea imagen, da juego y emociona. Uno malo hace rascarse la cabeza: cuesta escribirlo, copia a otro, te limita, cansa, es soso, solo lo entiendes tú o es difícil de pronunciar.</p>
+    </details>
+    <p id="ref-progreso" class="ref-progreso"></p>
+    <div id="lista-referencias" class="lista-referencias"></div>
   </section>
 
   <section id="vista-buscar" class="vista-ranking vista-buscar" hidden>

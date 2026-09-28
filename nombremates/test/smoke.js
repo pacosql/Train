@@ -161,6 +161,24 @@ const ok = (cond, msg) => { if (!cond) throw new Error(msg); };
   await page.waitForSelector(".wrap:not([hidden])");
   console.log("buscador OK (nada enviado, solo lectura)");
 
+
+  // --- ¿Qué es un buen nombre? ---
+  escrituras.length = 0;
+  await page.click("#btn-referencias");
+  await page.waitForSelector("#vista-referencias:not([hidden]) .ref-card");
+  const nRef = await page.locator("#lista-referencias .ref-card").count();
+  ok(nRef === 25, `debe haber 25 marcas de referencia (hay ${nRef})`);
+  ok((await page.locator("#lista-referencias .ref-card").first().locator(".ref-medida").count()) === 6, "cada ficha debe tener 6 medidas");
+  ok(/Apple/.test(await page.textContent("#lista-referencias")), "debe salir Apple");
+  await page.locator("#lista-referencias .ref-card").first().locator(".nota-input").fill("prueba");
+  await page.locator("#lista-referencias .ref-card").first().locator(".grande-like").click();
+  await page.waitForTimeout(800);
+  const pr = escrituras.find((e) => e.method === "PATCH" && e.url.includes("nombremates_referencias"));
+  ok(pr && JSON.parse(pr.body).decision === "de_acuerdo" && JSON.parse(pr.body).nota === "prueba", "👍 debe guardar decision de_acuerdo con la nota");
+  await page.click("#btn-volver-referencias");
+  await page.waitForSelector(".wrap:not([hidden])");
+  console.log("buen nombre OK (nada enviado, solo lectura)");
+
   await page.screenshot({ path: path.join(dir, "nombremates.png"), fullPage: true });
   console.log("captura:", path.join(dir, "nombremates.png"));
   if (errors.length) throw new Error(errors.join("\n"));

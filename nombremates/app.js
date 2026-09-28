@@ -721,7 +721,7 @@ function textoScore(row) {
 function abrirRanking(abrir) {
   document.getElementById("vista-ranking").hidden = !abrir;
   document.querySelector(".wrap").hidden = abrir;
-  if (abrir) { pararConversacion(); document.getElementById("vista-buscar").hidden = true; pintaRanking(); window.scrollTo(0, 0); }
+  if (abrir) { pararConversacion(); document.getElementById("vista-buscar").hidden = true; document.getElementById("vista-referencias").hidden = true; pintaRanking(); window.scrollTo(0, 0); }
 }
 
 function pintaRanking() {
@@ -791,9 +791,141 @@ function abrirBuscar(abrir) {
   if (abrir) {
     pararConversacion();
     document.getElementById("vista-ranking").hidden = true;
+    document.getElementById("vista-referencias").hidden = true;
     window.scrollTo(0, 0);
     document.getElementById("input-buscar").focus();
   }
+}
+
+// ---- ¿Qué es un buen nombre? (25 marcas de referencia para calibrar) ----
+const TABLE_REF = `${CFG.tablePrefix}referencias`;
+const MEDIDAS = [
+  ["corto", "Corto"], ["facil", "Fácil"], ["memorable", "Memorable"],
+  ["sugiere", "Sugiere"], ["distintivo", "Distintivo"], ["busqueda", "Búsqueda"],
+];
+
+function abrirReferencias(abrir) {
+  document.getElementById("vista-referencias").hidden = !abrir;
+  document.querySelector(".wrap").hidden = abrir;
+  if (abrir) {
+    pararConversacion();
+    document.getElementById("vista-ranking").hidden = true;
+    document.getElementById("vista-buscar").hidden = true;
+    window.scrollTo(0, 0);
+    pintaReferencias();
+  }
+}
+
+async function pintaReferencias() {
+  const cont = document.getElementById("lista-referencias");
+  try {
+    const filas = await apiGet(`${TABLE_REF}?select=*&order=orden.asc`);
+    const hechas = filas.filter((r) => r.decision).length;
+    const deAcuerdo = filas.filter((r) => r.decision === "de_acuerdo").length;
+    document.getElementById("ref-progreso").textContent =
+      `${hechas} de ${filas.length} revisadas · ${deAcuerdo} 👍 de acuerdo · ${hechas - deAcuerdo} 👎 no`;
+    cont.innerHTML = "";
+    for (const r of filas) cont.appendChild(fichaReferencia(r));
+    ocultarError();
+  } catch (err) {
+    mostrarError(err);
+  }
+}
+
+function fichaReferencia(r) {
+  const card = document.createElement("div");
+  card.className = "ref-card" + (r.decision ? " " + r.decision : "");
+  const cab = document.createElement("div");
+  cab.className = "ref-cab";
+  const n = document.createElement("span");
+  n.className = "ref-nombre";
+  n.textContent = r.nombre;
+  const t = document.createElement("span");
+  t.className = `rk-score ${claseScore(r.total)}`;
+  t.textContent = r.total;
+  cab.append(n, t);
+  card.appendChild(cab);
+  parrafo(card, `${r.sector} · ${r.tipo}`, "ref-sector");
+  parrafo(card, r.por_que, "ref-porque");
+
+  const tabla = document.createElement("div");
+  tabla.className = "ref-medidas";
+  for (const [k, etiqueta] of MEDIDAS) {
+    const m = (r.medidas || {})[k];
+    if (!m) continue;
+    const fila = document.createElement("div");
+    fila.className = "ref-medida";
+    const lab = document.createElement("span");
+    lab.className = "ref-lab";
+    lab.textContent = etiqueta;
+    const barra = document.createElement("span");
+    barra.className = "ref-barra";
+    const relleno = document.createElement("i");
+    relleno.style.width = `${m.nota * 10}%`;
+    relleno.className = m.nota >= 8 ? "alto" : m.nota >= 5 ? "medio" : "bajo";
+    barra.appendChild(relleno);
+    const num = document.createElement("span");
+    num.className = "ref-num";
+    num.textContent = m.nota;
+    const pq = document.createElement("span");
+    pq.className = "ref-pq";
+    pq.textContent = m.por_que;
+    fila.append(lab, barra, num, pq);
+    tabla.appendChild(fila);
+  }
+  card.appendChild(tabla);
+
+  if (r.decision) {
+    parrafo(card, r.decision === "de_acuerdo" ? "👍 Estás de acuerdo: es un buen nombre" : "👎 No te convence", "ref-estado");
+  }
+  if (r.nota) parrafo(card, `📝 ${r.nota}`, "ref-nota");
+
+  const fila = document.createElement("div");
+  fila.className = "nota-row";
+  const campo = document.createElement("textarea");
+  campo.className = "nota-input";
+  campo.rows = 1;
+  campo.maxLength = 1000;
+  campo.placeholder = "¿por qué? (opcional)";
+  const mic = document.createElement("button");
+  mic.type = "button";
+  mic.className = "btn-mic";
+  mic.setAttribute("aria-label", "Dictar comentario por voz");
+  mic.textContent = "🎙️";
+  fila.append(campo, mic);
+  card.appendChild(fila);
+  enlazarMic(mic, campo);
+
+  const acciones = document.createElement("div");
+  acciones.className = "ref-acciones";
+  const decide = (decision) => async () => {
+    if (ocupado) return;
+    ocupado = true;
+    pararDictado();
+    try {
+      const nuevo = campo.value.trim();
+      const nota = nuevo ? (r.nota ? `${r.nota} · ${nuevo}` : nuevo) : r.nota;
+      await apiPatch(`${TABLE_REF}?id=eq.${r.id}`, { decision, nota: nota || null, decidido_at: new Date().toISOString() });
+      await pintaReferencias();
+    } catch (err) {
+      mostrarError(err);
+    } finally {
+      ocupado = false;
+    }
+  };
+  const si = document.createElement("button");
+  si.type = "button";
+  si.className = "grande grande-like";
+  si.textContent = "👍 De acuerdo";
+  si.addEventListener("click", decide("de_acuerdo"));
+  const no = document.createElement("button");
+  no.type = "button";
+  no.className = "grande ref-no";
+  no.textContent = "👎 No me convence";
+  no.addEventListener("click", decide("no"));
+  acciones.append(si, no);
+  card.appendChild(acciones);
+  return card;
 }
 
 function fechaCorta(iso) {
@@ -993,6 +1125,8 @@ function init() {
   document.getElementById("btn-volver").addEventListener("click", () => abrirRanking(false));
   document.getElementById("btn-buscar").addEventListener("click", () => abrirBuscar(true));
   document.getElementById("btn-volver-buscar").addEventListener("click", () => abrirBuscar(false));
+  document.getElementById("btn-referencias").addEventListener("click", () => abrirReferencias(true));
+  document.getElementById("btn-volver-referencias").addEventListener("click", () => abrirReferencias(false));
   document.getElementById("form-buscar").addEventListener("submit", (ev) => {
     ev.preventDefault();
     pararDictado();

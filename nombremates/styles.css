@@ -409,3 +409,33 @@ body.conversando .lote-nombre .pill-score { font-size: clamp(0.8rem, 2.4vh, 1.1r
 .swipe-card .pill-score { display: inline-block; margin-left: 8px; font-size: 0.95rem; }
 .res-cab { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .res-cab .pill-score { font-size: 1rem; }
+
+/* ¿Qué es un buen nombre? (marcas de referencia) */
+.criterios { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 10px 14px; margin: 0 0 12px; font-size: 0.9rem; line-height: 1.45; }
+.criterios summary { cursor: pointer; font-weight: 700; }
+.criterios ul { padding-left: 18px; margin: 8px 0; }
+.criterios p { margin: 6px 0 0; color: var(--muted); }
+.ref-progreso { font-weight: 700; margin: 0 0 10px; }
+.lista-referencias { display: flex; flex-direction: column; gap: 12px; }
+.ref-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; }
+.ref-card.de_acuerdo { border-color: var(--ok); }
+.ref-card.no { border-color: var(--bad); opacity: 0.85; }
+.ref-cab { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.ref-nombre { font-size: 1.5rem; font-weight: 800; overflow-wrap: anywhere; }
+.ref-sector { margin: 2px 0 6px; color: var(--muted); font-size: 0.85rem; }
+.ref-porque { margin: 0 0 10px; font-size: 0.92rem; line-height: 1.45; }
+.ref-medidas { display: flex; flex-direction: column; gap: 6px; margin-bottom: 10px; }
+.ref-medida { display: grid; grid-template-columns: 82px 1fr 22px; grid-template-rows: auto auto; column-gap: 8px; align-items: center; font-size: 0.85rem; }
+.ref-lab { font-weight: 700; }
+.ref-barra { height: 8px; background: var(--border); border-radius: 999px; overflow: hidden; }
+.ref-barra i { display: block; height: 100%; border-radius: 999px; }
+.ref-barra i.alto { background: var(--ok); }
+.ref-barra i.medio { background: var(--warn); }
+.ref-barra i.bajo { background: var(--bad); }
+.ref-num { font-weight: 800; text-align: right; }
+.ref-pq { grid-column: 1 / -1; color: var(--muted); font-size: 0.8rem; line-height: 1.3; }
+.ref-estado { font-weight: 700; margin: 4px 0; }
+.ref-nota { font-size: 0.88rem; margin: 4px 0; }
+.ref-acciones { display: flex; gap: 8px; margin-top: 8px; }
+.ref-acciones .grande { flex: 1; }
+.ref-no { background: var(--bg); border: 1px solid var(--border); color: var(--text); }
