@@ -727,48 +727,47 @@ function abrirRanking(abrir) {
 function pintaRanking() {
   const cont = document.getElementById("lista-ranking");
   cont.innerHTML = "";
+  // Solo los nombres puntuados con la metodología de las 6 medidas
+  // (la misma de «📐 Buen nombre»), de mayor a menor.
   const filas = gustados
-    .filter((r) => r.score !== null && r.score !== undefined)
+    .filter((r) => r.medidas && r.score !== null && r.score !== undefined)
     .sort((a, b) => b.score - a.score || a.nombre.localeCompare(b.nombre));
-  const sinScore = gustados.length - filas.length;
   if (filas.length === 0) {
-    const p = document.createElement("p");
-    p.className = "empty";
-    p.textContent = "Todavía no hay puntuaciones. Las pone Claude en la siguiente pasada.";
-    cont.appendChild(p);
+    parrafo(cont, "Todavía no hay nombres puntuados con las 6 medidas.", "empty");
     return;
   }
   filas.forEach((row, i) => {
-    const node = document.getElementById("tpl-ranking-fila").content.cloneNode(true);
-    const fila = node.querySelector(".rk-fila");
-    if (i < 3) fila.classList.add("top");
-    fila.querySelector(".rk-pos").textContent = `${i + 1}.`;
-    fila.querySelector(".rk-estado").textContent = row.status === "favorito" ? "⭐" : row.status === "vetado" ? "🚫" : "👍";
-    if (row.status === "vetado") fila.classList.add("referencia");
-    fila.querySelector(".name-text").textContent = row.nombre;
-    const sc = fila.querySelector(".rk-score");
-    sc.textContent = Math.round(row.score);
-    sc.classList.add(claseScore(row.score));
-    fila.querySelector(".rk-motivo").textContent = (row.score_motivo || "").replace(/^(Claude|Rúbrica):\s*/, "");
+    const card = document.createElement("div");
+    card.className = "ref-card rk-ficha";
+    const cab = document.createElement("div");
+    cab.className = "ref-cab";
+    const n = document.createElement("span");
+    n.className = "ref-nombre";
+    n.textContent = `${i + 1}. ${row.nombre}`;
+    const t = document.createElement("span");
+    t.className = `rk-score ${claseScore(row.score)}`;
+    t.textContent = Math.round(row.score);
+    cab.append(n, t);
+    card.appendChild(cab);
+    const estado = row.status === "favorito" ? "⭐ Definitivo" : row.status === "vetado" ? "🚫 Vetado" : "👍 Me gusta";
+    parrafo(card, [estado, row.medidas.tipo].filter(Boolean).join(" · "), "ref-sector");
+    parrafo(card, (row.score_motivo || "").replace(/^(Claude|Rúbrica):\s*/, ""), "ref-porque");
+    card.appendChild(bloqueMedidas(row.medidas));
     const acciones = row.status === "vetado"
       ? [{ texto: "↩️ Rescatar", clase: "btn-mini", status: "pendiente" }]
       : row.status === "favorito"
         ? [{ texto: "👍 Bajar a me gusta", clase: "btn-mini", status: "me_gusta" }, { texto: "👎 Descartar", clase: "btn-mini", status: "no_me_gusta" }]
         : [{ texto: "⭐ Definitivo", clase: "btn-mini btn-mini-star", status: "favorito" }, { texto: "👎 Descartar", clase: "btn-mini", status: "no_me_gusta" }];
-    const zona = fila.querySelector(".head-actions");
+    const zona = document.createElement("div");
+    zona.className = "head-actions";
     for (const a of acciones) {
       zona.appendChild(botonAccion(a.texto, a.clase, () =>
         apiPatch(`${TABLE}?id=eq.${row.id}`, { status: a.status, decidido_at: new Date().toISOString() })
       ));
     }
-    cont.appendChild(node);
+    card.appendChild(zona);
+    cont.appendChild(card);
   });
-  if (sinScore > 0) {
-    const p = document.createElement("p");
-    p.className = "empty";
-    p.textContent = `${sinScore} sin puntuar todavía.`;
-    cont.appendChild(p);
-  }
 }
 
 
@@ -832,26 +831,11 @@ async function pintaReferencias() {
   }
 }
 
-function fichaReferencia(r) {
-  const card = document.createElement("div");
-  card.className = "ref-card" + (r.decision ? " " + r.decision : "");
-  const cab = document.createElement("div");
-  cab.className = "ref-cab";
-  const n = document.createElement("span");
-  n.className = "ref-nombre";
-  n.textContent = r.nombre;
-  const t = document.createElement("span");
-  t.className = `rk-score ${claseScore(r.total)}`;
-  t.textContent = r.total;
-  cab.append(n, t);
-  card.appendChild(cab);
-  parrafo(card, `${r.sector} · ${r.tipo}`, "ref-sector");
-  parrafo(card, r.por_que, "ref-porque");
-
+function bloqueMedidas(medidas) {
   const tabla = document.createElement("div");
   tabla.className = "ref-medidas";
   for (const [k, etiqueta] of MEDIDAS) {
-    const m = (r.medidas || {})[k];
+    const m = (medidas || {})[k];
     if (!m) continue;
     const fila = document.createElement("div");
     fila.className = "ref-medida";
@@ -873,7 +857,26 @@ function fichaReferencia(r) {
     fila.append(lab, barra, num, pq);
     tabla.appendChild(fila);
   }
-  card.appendChild(tabla);
+  return tabla;
+}
+
+function fichaReferencia(r) {
+  const card = document.createElement("div");
+  card.className = "ref-card" + (r.decision ? " " + r.decision : "");
+  const cab = document.createElement("div");
+  cab.className = "ref-cab";
+  const n = document.createElement("span");
+  n.className = "ref-nombre";
+  n.textContent = r.nombre;
+  const t = document.createElement("span");
+  t.className = `rk-score ${claseScore(r.total)}`;
+  t.textContent = r.total;
+  cab.append(n, t);
+  card.appendChild(cab);
+  parrafo(card, `${r.sector} · ${r.tipo}`, "ref-sector");
+  parrafo(card, r.por_que, "ref-porque");
+
+  card.appendChild(bloqueMedidas(r.medidas));
 
   if (r.decision) {
     parrafo(card, r.decision === "de_acuerdo" ? "👍 Estás de acuerdo: es un buen nombre" : "👎 No te convence", "ref-estado");

@@ -132,11 +132,12 @@ def main():
     ap.add_argument("--todo", action="store_true", help="repuntuar también los que ya tienen score")
     a = ap.parse_args()
     man = manuales()
-    filas = todos("id,nombre,status,score,orden,score_motivo")
+    filas = todos("id,nombre,status,score,orden,score_motivo,medidas")
     ahora = datetime.now(timezone.utc).isoformat()
     cambios = []
     for f in filas:
         k = norm(f["nombre"])
+        if f.get("medidas"): continue  # ficha de 6 medidas (tools/fichas.py): manda sobre todo lo demás
         if f["status"] == "vetado" and k not in man: continue  # vetados: solo si hay opinión a mano (referencia)
         if k in man:
             score, motivo = man[k]; motivo = "Claude: " + motivo
