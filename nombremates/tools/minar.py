@@ -12,7 +12,7 @@ Pasos:
   4. A los que quedan cargados les añade su ficha (fichas.json + fichas.py)
      y la cola se ordena por nota.
 Salida: resumen con cuántos nuevos ≥ 80 se han cargado.
-Uso: python3 nombremates/tools/minar.py candidatos.json [--umbral 78]
+Uso: python3 nombremates/tools/minar.py candidatos.json [--umbral 65]
 """
 import argparse, json, os, re, subprocess, sys, unicodedata, urllib.request, urllib.error
 import concurrent.futures as cf
@@ -37,7 +37,7 @@ def com_libre(s):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("candidatos"); ap.add_argument("--umbral", type=int, default=78)
+    ap.add_argument("candidatos"); ap.add_argument("--umbral", type=int, default=65)
     a = ap.parse_args()
     cands = json.load(open(a.candidatos, encoding="utf-8"))
     for c in cands: c["_total"] = total({k: c["medidas"][k][0] for k in MEDIDAS})
@@ -77,6 +77,8 @@ def main():
     json.dump(fichas, open(fj, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     subprocess.run([sys.executable, os.path.join(AQUI, "fichas.py")], check=True, stdout=subprocess.DEVNULL)
     buenos = sorted((c for c in nuevos if c["_total"] >= 80), key=lambda c: -c["_total"])
+    altos = [c for c in buenos if c["_total"] >= 88]
+    if altos: print("ALTOS (≥ 88): " + ", ".join(f"{c['nombre']} {c['_total']}" for c in altos))
     print(f"RESULTADO: tanda {tanda} · cargados {len(nuevos)} · nuevos ≥ 80: {len(buenos)} → " + ", ".join(f"{c['nombre']} {c['_total']}" for c in buenos))
 
 if __name__ == "__main__":
