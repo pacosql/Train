@@ -32,6 +32,16 @@ const ok = (cond, msg) => { if (!cond) throw new Error(msg); };
   page.on("console", (m) => { if (m.type() === "error") errors.push("console: " + m.text()); });
   const escrituras = [];
   await require("./route.js")(page, dir, escrituras);
+  // Si la cola está vacía (Paco lo ha revisado todo), se prueba con nombres ya descartados.
+  {
+    const cfg = fs.readFileSync(path.join(root, "nombremates", "config.js"), "utf8");
+    const url = cfg.match(/https:\/\/[a-z0-9]+\.supabase\.co/)[0], key = cfg.match(/eyJ[\w.-]+/)[0];
+    const n = require("child_process").execFileSync("curl", ["-s", `${url}/rest/v1/nombremates_ideas?status=eq.pendiente&select=id&limit=1`, "-H", `apikey: ${key}`]).toString();
+    if (n.trim() === "[]") {
+      console.log("(cola vacía: pruebo con nombres ya descartados)");
+      await page.route(/nombremates_ideas.*status=eq\.pendiente/, (r) => r.fallback({ url: r.request().url().replace("status=eq.pendiente", "status=eq.no_me_gusta") }));
+    }
+  }
   // La letra de Google Fonts no se descarga en el entorno de pruebas (CA del proxy): hoja vacía.
   await page.route(/fonts\.(googleapis|gstatic)\.com/, (r) => r.fulfill({ status: 200, contentType: "text/css", body: "" }));
   // SpeechRecognition falso: window.__oir(texto) simula una frase final.
