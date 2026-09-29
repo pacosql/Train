@@ -12,6 +12,9 @@
   <meta name="apple-mobile-web-app-title" content="Nombre Mates" />
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="icon" href="icons/icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@500;600&display=swap" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
@@ -49,7 +52,12 @@
       </div>
 
       <div id="modo-lote" hidden>
-        <button type="button" id="btn-conversacion" class="btn-conv" aria-pressed="false" hidden>🎙️ Modo conversación</button>
+        <div class="lote-top">
+          <button type="button" id="btn-atras-lote" class="btn-atras">← Atrás</button>
+          <span class="lote-quedan"><span id="lote-quedan">…</span> por decidir</span>
+          <span id="hueco-deshacer"></span>
+          <button type="button" id="btn-conversacion" class="btn-conv" aria-pressed="false" hidden>🎙️ Conversación</button>
+        </div>
         <p class="lote-ayuda">Toca un nombre para ver por qué, marca 👍/⭐ y pulsa «Siguiente»: el resto van a «no me gusta». O activa el modo conversación y di «el 3 y el 5, siguiente».</p>
         <div id="lote-area" class="lote" aria-live="polite"></div>
         <div class="lote-acciones">
@@ -234,8 +242,7 @@
         <button type="button" class="lote-nombre" aria-expanded="false">
           <span class="lote-num"></span>
           <span class="name-text"></span>
-          <span class="lote-dom">.com ✓</span>
-        </button>
+                  </button>
         <button type="button" class="marca marca-like" aria-pressed="false" aria-label="Me gusta">👍</button>
         <button type="button" class="marca marca-star" aria-pressed="false" aria-label="Definitivo">⭐</button>
       </div>

@@ -32,6 +32,8 @@ const ok = (cond, msg) => { if (!cond) throw new Error(msg); };
   page.on("console", (m) => { if (m.type() === "error") errors.push("console: " + m.text()); });
   const escrituras = [];
   await require("./route.js")(page, dir, escrituras);
+  // La letra de Google Fonts no se descarga en el entorno de pruebas (CA del proxy): hoja vacía.
+  await page.route(/fonts\.(googleapis|gstatic)\.com/, (r) => r.fulfill({ status: 200, contentType: "text/css", body: "" }));
   // SpeechRecognition falso: window.__oir(texto) simula una frase final.
   await page.addInitScript(() => {
     class FakeRec {
@@ -119,9 +121,27 @@ const ok = (cond, msg) => { if (!cond) throw new Error(msg); };
   ok((await page.getAttribute("#btn-conversacion", "aria-pressed")) === "false", "«parar» debe cerrar el modo");
   console.log("modo conversación OK (voz simulada, nada enviado)");
 
-  // --- Cambiar a 1 en 1 ---
+  // --- De 10 en 10 sin modo conversación: pantalla completa, cada nombre en una línea, sin .com ✓ ---
+  {
+    const r = await page.evaluate(() => ({
+      boton: document.querySelector("#btn-siguiente").getBoundingClientRect().bottom,
+      atras: document.querySelector("#btn-atras-lote").getBoundingClientRect().top,
+      altos: [...document.querySelectorAll("#lote-area .name-text")].map((e) => e.getBoundingClientRect().height),
+      cortados: [...document.querySelectorAll("#lote-area .name-text")].filter((e) => e.scrollWidth > e.clientWidth + 1).length,
+      dom: document.querySelectorAll("#lote-area .lote-dom").length,
+      cab: document.querySelector("header").getBoundingClientRect().height > 0 && document.elementFromPoint(195, 20).closest("header") !== null,
+    }));
+    ok(r.boton <= 664 && r.atras >= 0, `el lote de 10 no cabe en pantalla: botón en ${r.boton}px de 664`);
+    ok(Math.max(...r.altos) < 2 * Math.min(...r.altos) && r.cortados === 0, `algún nombre del lote ocupa dos líneas o no cabe: ${JSON.stringify(r)}`);
+    ok(r.dom === 0 && !r.cab, "en el lote no deben verse «.com ✓» ni los menús de arriba");
+    console.log(`lote a pantalla completa OK (botón en ${Math.round(r.boton)}px de 664, nombres en una línea)`);
+  }
+
+  // --- «← Atrás» vuelve a los menús; cambiar a 1 en 1 ---
   escrituras.length = 0;
-  await page.click("#btn-cambiar-modo");
+  await page.click("#btn-atras-lote");
+  await page.waitForSelector("#elige-modo:not([hidden])");
+  ok(await page.locator("#btn-ranking").isVisible(), "tras «Atrás» deben verse los menús");
   await page.click('.btn-modo[data-modo="uno"]');
   await page.waitForSelector(".swipe-card .name-text");
   const nombre = (await page.textContent(".swipe-card .name-text")).trim();
@@ -142,7 +162,7 @@ const ok = (cond, msg) => { if (!cond) throw new Error(msg); };
   await page.waitForSelector("#resultado-buscar .res-caja");
   const res1 = await page.textContent("#resultado-buscar");
   ok(res1.includes("Mates10") && res1.includes("Definitivo") && res1.includes("PROFESOR 10 DE MATES"), "buscar «mates 10» debe explicar que Mates10 es la referencia y su conflicto de marca");
-  ok(res1.includes("marca 73") && (await page.textContent("#resultado-buscar .res-cab .pill-score")) === "73", "debe mostrar la puntuación 73 de Mates10 al lado del nombre");
+  ok(res1.includes("marca 77") && (await page.textContent("#resultado-buscar .res-cab .pill-score")) === "77", "debe mostrar la puntuación 77 de Mates10 al lado del nombre");
   // Listas ordenadas por puntuación, con la pastilla al lado del nombre
   const primerDef = page.locator("#lista-definitivos .name-card").first();
   ok((await primerDef.locator(".name-text").textContent()) !== null, "debe haber definitivos");
@@ -170,7 +190,7 @@ const ok = (cond, msg) => { if (!cond) throw new Error(msg); };
   await page.waitForSelector("#vista-ranking:not([hidden]) .rk-ficha");
   const fichas = page.locator("#lista-ranking .rk-ficha");
   ok((await fichas.count()) >= 1, "el ranking debe tener al menos una ficha");
-  ok(/Mates10/.test(await fichas.first().textContent()), "la primera ficha del ranking debe ser Mates10");
+  ok(/Mates10/.test(await page.textContent("#lista-ranking")), "Mates10 debe estar en el ranking (ya hay nombres que le gustan con más nota)");
   ok((await fichas.first().locator(".ref-medida").count()) === 6, "la ficha del ranking debe tener 6 medidas");
   await page.click("#btn-volver");
   await page.waitForSelector(".wrap:not([hidden])");

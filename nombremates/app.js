@@ -267,9 +267,10 @@ function iniciarConversacion() {
   conversacion = { rec, parando: false };
   const btn = document.getElementById("btn-conversacion");
   btn.setAttribute("aria-pressed", "true");
-  btn.textContent = "🔴 escuchando · parar";
+  btn.textContent = "🔴 parar";
   document.body.classList.add("conversando");
   pintaBotonLote();
+  ajustaNombresLote();
   convEstado("Escuchando. Di p. ej. «el 3 y el 5, siguiente».");
   try { rec.start(); } catch (err) { pararConversacion(); mostrarError(err); }
 }
@@ -281,9 +282,10 @@ function pararConversacion() {
   conversacion = null;
   const btn = document.getElementById("btn-conversacion");
   btn.setAttribute("aria-pressed", "false");
-  btn.textContent = "🎙️ Modo conversación";
+  btn.textContent = "🎙️ Conversación";
   document.body.classList.remove("conversando");
   pintaBotonLote();
+  ajustaNombresLote();
   const el = document.getElementById("conv-estado");
   el.hidden = true;
   el.classList.remove("aviso");
@@ -366,11 +368,16 @@ function eligeModo(m) {
   document.body.classList.toggle("en-lote", m === "lote");
   document.getElementById("btn-conversacion").hidden = m !== "lote" || !Reconocimiento;
   if (m !== "lote") pararConversacion();
+  // En el lote el «deshacer» va en la barra de arriba (pantalla completa, sin scroll).
+  const deshacerBtn = document.getElementById("btn-deshacer");
+  (m === "lote" ? document.getElementById("hueco-deshacer") : document.querySelector(".undo-row")).appendChild(deshacerBtn);
   if (m) pintaRevision();
+  else window.scrollTo(0, 0);
 }
 
 function pintaRevision() {
   document.getElementById("cola-count").textContent = cola.total ?? cola.length;
+  document.getElementById("lote-quedan").textContent = cola.total ?? cola.length;
   if (modo === "uno") pintaUno();
   else if (modo === "lote") pintaLote();
 }
@@ -513,8 +520,21 @@ function pintaLote() {
   });
   pintaBotonLote = pintaBoton;
   pintaBoton();
+  requestAnimationFrame(ajustaNombresLote);
   if (conversacion) convEstado(`Lote nuevo. Di los números que te gustan y «siguiente».`);
 }
+
+// Cada nombre en una sola línea: si no cabe al tamaño grande, se reduce
+// la letra de ese nombre lo justo (sin cortar ni partir en dos líneas).
+function ajustaNombresLote() {
+  for (const el of document.querySelectorAll("#lote-area .lote-nombre .name-text")) {
+    el.style.fontSize = "";
+    let tam = parseFloat(getComputedStyle(el).fontSize);
+    while (el.scrollWidth > el.clientWidth + 1 && tam > 13) { tam -= 1; el.style.fontSize = tam + "px"; }
+  }
+}
+window.addEventListener("resize", () => { if (modo === "lote") ajustaNombresLote(); });
+if (document.fonts) document.fonts.ready.then(() => { if (modo === "lote") ajustaNombresLote(); });
 
 async function siguienteLote() {
   if (ocupado || lote.length === 0) return;
@@ -1145,6 +1165,7 @@ function init() {
     b.addEventListener("click", () => eligeModo(b.dataset.modo));
   }
   document.getElementById("btn-cambiar-modo").addEventListener("click", () => eligeModo(null));
+  document.getElementById("btn-atras-lote").addEventListener("click", () => eligeModo(null));
   eligeModo(null);
   document.getElementById("btn-reintentar").addEventListener("click", recargarTodo);
   enlazarMic(
