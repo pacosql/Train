@@ -60,3 +60,5 @@ nombre que pondrías al lado de BlaBlaCar o Nike.
   canales parecidos (Matespal, Matespop, Matesfest, Matesbeat…).
 - 29/9 (primera ejecución de la rutina): animal + mates/cifra/suma/cuenta da muchos ≥ 80 con .com libre (Loromates, Leonmates 85; Aguilamates, Cuervomates, Lincemates 84). Vetados por parecidos: Grillomates, Ratonmates, Patomates, Matesturbo, Matessquad, Matesrun, Pingpongmates… Ojo con animales infantiles (Dino): bajan a 76.
 - Hay ya muchos animal + palabra de mates en la cola: en las próximas rondas busca familias nuevas para no repetir el mismo patrón.
+- 29/9: de los 51 primeros (animales, coloquiales, repeticiones) Paco descartó 49 y solo le gustaron Matesrock y Matesninja: «Mates» delante + palabra corta con actitud en inglés (rock, ninja). Priorizar esa familia (Mates + palabra con carácter) y no insistir en animal + palabra de mates hasta ver qué opina de los que ya hay en cola.
+- 29/9: la rutina funciona en sesión nueva (cargó 14 ≥ 80: Punkmates 84, Piratamates 83, Zeusmates 83…), pero allí el push puede fallar: las fichas quedan igualmente en la base de datos.
