@@ -18,4 +18,6 @@ for f in json.load(open(os.path.join(AQUI, "fichas.json"), encoding="utf-8")):
     total = round(sum(m["nota"] for m in medidas.values()) / (10 * len(M)) * 100)
     medidas["tipo"] = f["tipo"]
     filas = req("PATCH", f"{BASE}?nombre=ilike.{f['nombre']}", {"medidas": medidas, "score": total, "score_motivo": "Claude: " + f["por_que"]})
+    # Los pendientes, en la cola por puntuación (los mejores primero).
+    req("PATCH", f"{BASE}?nombre=ilike.{f['nombre']}&status=eq.pendiente", {"orden": round((100 - total) * 10)})
     print(total, f["nombre"], "→", len(filas), "fila(s)")

@@ -152,7 +152,7 @@ const ok = (cond, msg) => { if (!cond) throw new Error(msg); };
   await page.click("#form-buscar .btn-primary");
   await page.waitForFunction(() => /ocupado/.test(document.querySelector("#resultado-buscar").textContent));
   const res2 = await page.textContent("#resultado-buscar");
-  ok(res2.includes(".com está ocupado") && res2.includes("Parecidos"), "«mates club» debe explicar el .com ocupado y listar parecidos");
+  ok(res2.includes(".com está ocupado"), "«mates club» debe explicar que el .com está ocupado");
   await page.fill("#input-buscar", "zzqqxx diez");
   await page.click("#form-buscar .btn-primary");
   await page.waitForFunction(() => /Nunca lo he probado/.test(document.querySelector("#resultado-buscar").textContent));

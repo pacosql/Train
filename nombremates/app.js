@@ -396,6 +396,7 @@ function pintaUno() {
   node.querySelector(".dominio").textContent = `${dominio(item)} libre`;
   pintaPorque(node.querySelector(".porque"), item);
   { const ts = textoScore(item); if (ts) { const p = document.createElement("p"); p.className = "marca-score"; p.textContent = ts; node.querySelector(".porque").after(p); } }
+  if (item.medidas) node.querySelector(".nota-row").before(bloqueMedidas(item.medidas));
   renderChecks(node.querySelector(".checks"), item);
   renderColision(node.querySelector(".colision-info"), item);
   const notaInput = node.querySelector(".nota-input");
@@ -475,6 +476,7 @@ function pintaLote() {
     pintaPorque(fila.querySelector(".porque"), row);
     const ts = textoScore(row);
     if (ts) { const p = document.createElement("p"); p.className = "marca-score"; p.textContent = ts; fila.querySelector(".porque").after(p); }
+    if (row.medidas) fila.querySelector(".porque").parentNode.insertBefore(bloqueMedidas(row.medidas), fila.querySelector(".lote-grandes"));
     renderChecks(fila.querySelector(".checks"), row);
     renderColision(fila.querySelector(".colision-info"), row);
     enlazarMic(fila.querySelector(".btn-mic"), item.campo);
