@@ -440,11 +440,11 @@ body.conversando .lote-nombre .pill-score { font-size: clamp(0.8rem, 2.4vh, 1.1r
 .ref-acciones .grande { flex: 1; }
 .ref-no { background: var(--bg); border: 1px solid var(--border); color: var(--text); }
 
-/* Revisión de 10 en 10 a pantalla completa: arriba «← Atrás» (los menús
-   quedan detrás), los 10 nombres reparten la altura en una sola línea cada
-   uno, y abajo el botón de guardar, todo sin hacer scroll. Letra Atkinson
-   Hyperlegible (diseñada para leerse sin esfuerzo), en seminegrita y con
-   la mayúscula inicial tal cual está escrito el nombre. */
+/* Revisión de 10 en 10 a pantalla completa: los 10 nombres (una línea
+   cada uno) y el botón de guardar llenan la pantalla sin scroll; «← Atrás»,
+   deshacer, conversación y lo que queda por decidir van debajo, a un
+   scroll. Letra Atkinson Hyperlegible (diseñada para leerse sin esfuerzo),
+   en seminegrita y con la mayúscula inicial tal cual está el nombre. */
 body.en-lote { overflow: hidden; }
 body.en-lote #modo-lote {
   position: fixed; inset: 0; z-index: 50; background: var(--bg);
@@ -452,12 +452,18 @@ body.en-lote #modo-lote {
   max-width: 560px; margin: 0 auto;
   padding: calc(env(safe-area-inset-top, 0px) + 6px) 10px calc(env(safe-area-inset-bottom, 0px) + 8px);
 }
-.lote-top { display: flex; align-items: center; gap: 8px; margin: 0 0 6px; }
-.btn-atras { flex: 0 0 auto; border: 1px solid var(--border); background: var(--card); color: var(--text); border-radius: 999px; padding: 6px 14px; font-size: 0.85rem; font-weight: 700; cursor: pointer; }
-.lote-quedan { flex: 1; min-width: 0; text-align: center; font-size: 0.75rem; color: var(--muted); white-space: nowrap; }
-.lote-top #btn-deshacer { padding: 5px 10px; font-size: 0.75rem; }
-.lote-top .btn-conv, body.conversando .lote-top .btn-conv { flex: 0 0 auto; width: auto; margin: 0; padding: 5px 12px; font-size: 0.75rem; font-weight: 600; border-radius: 999px; animation: none; box-shadow: none; align-self: center; }
-body.en-lote .lote-ayuda { display: none; }
+.lote-pantalla { display: flex; flex-direction: column; }
+body.en-lote .lote-pantalla {
+  flex: 0 0 auto;
+  min-height: calc(100vh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 14px);
+  min-height: calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 14px);
+}
+.lote-extra { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; margin: 14px 0 6px; }
+.btn-atras { flex: 0 0 auto; border: 1px solid var(--border); background: var(--card); color: var(--text); border-radius: 999px; padding: 8px 16px; font-size: 0.9rem; font-weight: 700; cursor: pointer; }
+.lote-extra #btn-deshacer { padding: 8px 14px; font-size: 0.9rem; }
+.lote-extra .btn-conv, body.conversando .lote-extra .btn-conv { flex: 0 0 auto; width: auto; margin: 0; padding: 8px 16px; font-size: 0.9rem; font-weight: 700; border-radius: 999px; animation: none; box-shadow: none; }
+.lote-quedan { text-align: center; font-size: 0.8rem; color: var(--muted); margin: 4px 0; }
+body.en-lote .lote-ayuda, body.conversando .lote-ayuda { display: block; margin: 4px 0 10px; }
 body.en-lote .lote { flex: 1 0 auto; gap: 5px; }
 body.en-lote .lote-fila { flex: 1 0 auto; display: flex; flex-direction: column; justify-content: center; padding: 2px 6px 2px 10px; border-radius: 12px; }
 body.en-lote .lote-linea { width: 100%; gap: 8px; }
@@ -473,8 +479,9 @@ body.en-lote .lote-nombre .pill-score { flex: 0 0 auto; }
 body.en-lote .lote-num { width: clamp(26px, 4.2vh, 36px); height: clamp(26px, 4.2vh, 36px); font-size: clamp(0.85rem, 2.2vh, 1.05rem); }
 body.en-lote .marca { width: 46px; height: clamp(36px, 5.4vh, 46px); }
 body.en-lote .lote-acciones { position: static; margin: 8px 0 0; }
-body.en-lote .btn-siguiente { padding: 14px; }
+body.en-lote .btn-siguiente { padding: 14px 10px; white-space: nowrap; font-size: clamp(0.9rem, 4.8vw, 1.1rem); }
 body.conversando .lote-nombre .name-text { font-size: clamp(1.15rem, min(8vw, 4.8vh), 2.2rem); }
+body.conversando .lote { flex: 1 0 auto; min-height: 0; }
 @media (max-height: 600px) {
   body.en-lote .marca { height: 32px; }
   body.en-lote .lote { gap: 3px; }

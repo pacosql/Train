@@ -269,6 +269,7 @@ function iniciarConversacion() {
   btn.setAttribute("aria-pressed", "true");
   btn.textContent = "🔴 parar";
   document.body.classList.add("conversando");
+  document.getElementById("modo-lote").scrollTop = 0; // el botón está debajo: se vuelve arriba a ver los 10
   pintaBotonLote();
   ajustaNombresLote();
   convEstado("Escuchando. Di p. ej. «el 3 y el 5, siguiente».");
@@ -520,6 +521,7 @@ function pintaLote() {
   });
   pintaBotonLote = pintaBoton;
   pintaBoton();
+  document.getElementById("modo-lote").scrollTop = 0; // cada lote nuevo empieza arriba, con los 10 y el botón a la vista
   requestAnimationFrame(ajustaNombresLote);
   if (conversacion) convEstado(`Lote nuevo. Di los números que te gustan y «siguiente».`);
 }

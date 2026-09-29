@@ -52,18 +52,20 @@
       </div>
 
       <div id="modo-lote" hidden>
-        <div class="lote-top">
+        <div class="lote-pantalla">
+          <div id="lote-area" class="lote" aria-live="polite"></div>
+          <div class="lote-acciones">
+            <p id="conv-estado" class="conv-estado" hidden></p>
+            <button type="button" id="btn-siguiente" class="btn-siguiente">👎 No me gustan los 10</button>
+          </div>
+        </div>
+        <div class="lote-extra">
           <button type="button" id="btn-atras-lote" class="btn-atras">← Atrás</button>
-          <span class="lote-quedan"><span id="lote-quedan">…</span> por decidir</span>
           <span id="hueco-deshacer"></span>
           <button type="button" id="btn-conversacion" class="btn-conv" aria-pressed="false" hidden>🎙️ Conversación</button>
         </div>
-        <p class="lote-ayuda">Toca un nombre para ver por qué, marca 👍/⭐ y pulsa «Siguiente»: el resto van a «no me gusta». O activa el modo conversación y di «el 3 y el 5, siguiente».</p>
-        <div id="lote-area" class="lote" aria-live="polite"></div>
-        <div class="lote-acciones">
-          <p id="conv-estado" class="conv-estado" hidden></p>
-          <button type="button" id="btn-siguiente" class="btn-siguiente">👎 No me gustan los 10</button>
-        </div>
+        <p class="lote-quedan"><span id="lote-quedan">…</span> por decidir</p>
+        <p class="lote-ayuda">Toca un nombre para ver por qué, marca 👍/⭐ y pulsa el botón: el resto van a «no me gusta». Con 🎙️ Conversación di «el 3 y el 5, siguiente».</p>
       </div>
 
       <div class="undo-row">

@@ -131,7 +131,7 @@ const ok = (cond, msg) => { if (!cond) throw new Error(msg); };
       dom: document.querySelectorAll("#lote-area .lote-dom").length,
       cab: document.querySelector("header").getBoundingClientRect().height > 0 && document.elementFromPoint(195, 20).closest("header") !== null,
     }));
-    ok(r.boton <= 664 && r.atras >= 0, `el lote de 10 no cabe en pantalla: botón en ${r.boton}px de 664`);
+    ok(r.boton <= 664 && r.atras >= r.boton, `el lote de 10 no cabe en pantalla o «Atrás» no va debajo: botón en ${r.boton}px de 664, atrás en ${r.atras}`);
     ok(Math.max(...r.altos) < 2 * Math.min(...r.altos) && r.cortados === 0, `algún nombre del lote ocupa dos líneas o no cabe: ${JSON.stringify(r)}`);
     ok(r.dom === 0 && !r.cab, "en el lote no deben verse «.com ✓» ni los menús de arriba");
     console.log(`lote a pantalla completa OK (botón en ${Math.round(r.boton)}px de 664, nombres en una línea)`);
