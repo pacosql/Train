@@ -5,7 +5,9 @@ o insinúa qué hace), distintivo (registrable, sin choques ni polémica) y
 busqueda (SEO: que te encuentren y que buscarlo lleve a ti).
 Uso: SUPABASE_ACCESS_TOKEN=… python3 nombremates/tools/referencias.py
 """
-import json, os, urllib.request
+import json, os, sys, urllib.request
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from medidas import total as total_ponderado
 
 M = ["corto", "facil", "memorable", "sugiere", "distintivo", "busqueda"]
 R = [
@@ -88,7 +90,7 @@ R = [
 filas = []
 for i, (n, sector, tipo, pq, med) in enumerate(R, 1):
     medidas = {k: {"nota": s, "por_que": t} for k, (s, t) in zip(M, med)}
-    total = round(sum(s for s, _ in med) / (10 * len(M)) * 100)
+    total = total_ponderado({k: s for k, (s, _) in zip(M, med)})
     filas.append({"orden": i, "nombre": n, "sector": sector, "tipo": tipo, "por_que": pq, "medidas": medidas, "total": total})
 sql = "insert into public.nombremates_referencias (orden,nombre,sector,tipo,por_que,medidas,total) select orden,nombre,sector,tipo,por_que,medidas,total from json_populate_recordset(null::public.nombremates_referencias, $J$" + json.dumps(filas, ensure_ascii=False) + "$J$) on conflict (nombre) do update set orden=excluded.orden, sector=excluded.sector, tipo=excluded.tipo, por_que=excluded.por_que, medidas=excluded.medidas, total=excluded.total;"
 req = urllib.request.Request("https://api.supabase.com/v1/projects/dzlhsdpgyxnjwudmrnul/database/query",
