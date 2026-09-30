@@ -179,8 +179,7 @@ def cmul(z, w):
 @generador("t3_complejo_01")
 def gen_complejo_01(rng, d):
     if d == 1:
-        n = rng.randint(2, 15)
-        m = rng.randint(1, 3)
+        n = rng.randint(2, 20)
         pasos = [(f"√−{n * n}", f"{n}i", f"√−{n * n} = √{n * n} · √−1 = {n} · i = {n}i.")]
         return mk(f"Calcula √−{n * n}.", f"{n}i", "t3_c_raizneg", {"n": n * n},
                   [(f"−{n}", "E01"), (f"{n}", None), (f"−{n}i", None), (f"{n * n}i", None)], pasos,

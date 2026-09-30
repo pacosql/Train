@@ -16,6 +16,18 @@ from .fracdec import ff
 # ---------------------------------------------------------------- utilidades
 
 
+def gen6(nombre):
+    """Como @generador, pero si `tipo` o `formato` llega como lista se elige uno al azar en cada ejercicio."""
+    def deco(f):
+        def envoltura(rng, d, **kw):
+            kw = {k: (rng.choice(v) if isinstance(v, list) and k in ("tipo", "formato") else v) for k, v in kw.items()}
+            return f(rng, d, **kw)
+        envoltura.__doc__ = f.__doc__
+        generador(nombre)(envoltura)
+        return f
+    return deco
+
+
 def dec(x, nd=2):
     """Decimal con coma, redondeado a nd cifras, sin ceros sobrantes."""
     v = round(float(x), nd)
@@ -101,13 +113,20 @@ DEPORTES = ["fútbol", "baloncesto", "natación", "tenis", "atletismo", "balonma
 COLORES_F = ["rojas", "azules", "verdes", "amarillas", "negras", "blancas"]
 
 
+FEMENINOS = {"manzanas", "peras", "naranjas", "fresas", "flores rosas", "rosas", "margaritas", "cometas", "entradas", "bolas"}
+
+
+def fem(c):
+    return c in FEMENINOS
+
+
 def sing(c):
     return c[:-1] if c.endswith("s") else c
 
 
 # ================================================================ DATOS
 
-@generador("t6_recuento")
+@gen6("t6_recuento")
 def g_recuento(rng, d, tipo="cuantos"):
     """EST.DATOS.01. Claves: cuenta_dos_veces, se_salta, cuenta_todos, confunde_parecidos."""
     ncat = {1: 2, 2: 3, 3: 4}[d]
@@ -128,34 +147,41 @@ def g_recuento(rng, d, tipo="cuantos"):
     rng.shuffle(objs)
     filas = "\n".join(" ".join(objs[i:i + 6]) for i in range(0, len(objs), 6))
     i = 0 if par else rng.randrange(len(cats))
+    if tipo == "mixto":
+        tipo = "mas_menos" if rng.random() < 0.35 else "cuantos"
     if tipo == "mas_menos" and not par:
         mas = rng.random() < 0.5
         j = cuentas.index(max(cuentas) if mas else min(cuentas))
         otro = cuentas.index(min(cuentas) if mas else max(cuentas))
         pal = "más" if mas else "menos"
-        dis = [(cats[otro][1], "cuenta_todos" and None)] + [(c[1], None) for k, c in enumerate(cats) if k not in (j, otro)]
+        dis = [(cats[otro][1], None)] + [(c[1], None) for k, c in enumerate(cats) if k not in (j, otro)]
         return hacer(f"Mira los dibujos:\n{filas}\n¿De qué hay {pal}?", cats[j][1], "recuento_mas", {"cuentas": cuentas},
                      dis, [("contar", str(cuentas[j]), " ".join(f"{c[1].capitalize()}: {k}." for c, k in zip(cats, cuentas))
                             + f" Hay {pal} {cats[j][1]} ({cuentas[j]}).")],
                      "Contar cada categoría por separado (tachando o con palotes) y comparar los números.",
-                     gen=["hay los mismos de todos"], datos={"opciones_fijas": False})
+                     gen=["hay los mismos de todos", "no se puede saber"])
     k = cuentas[i]
     dis = [(k + 1, "cuenta_dos_veces"), (k - 1 if k > 1 else k + 2, "se_salta"), (sum(cuentas), "cuenta_todos")]
     if par:
         dis.insert(2, (cuentas[0] + cuentas[1], "confunde_parecidos"))
-    return hacer(f"Mira los dibujos:\n{filas}\n¿Cuántos {cats[i][0]} ({cats[i][1]}) hay?", fmt(k), "recuento", {"cuentas": cuentas, "i": i}, dis,
+    cu = "Cuántas" if fem(cats[i][1]) else "Cuántos"
+    return hacer(f"Mira los dibujos:\n{filas}\n¿{cu} {cats[i][1]} ({cats[i][0]}) hay?", fmt(k), "recuento", {"cuentas": cuentas, "i": i}, dis,
                  [("contar", fmt(k), f"Busco solo {cats[i][1]} ({cats[i][0]}) y los voy tachando mientras cuento: hay {k}.")],
                  "Contar solo la categoría pedida, tachando cada objeto contado para no repetir ni saltar ninguno.",
                  gen=cerca(k, rng, minimo=1))
 
 
-@generador("t6_tabla_doble")
+@gen6("t6_tabla_doble")
 def g_tabla_doble(rng, d):
     """EST.DATOS.02. Claves: fila_de_al_lado, cambia_fila_columna, total_fila."""
     nf = {1: 2, 2: 3, 3: 4}[d]
     vmax = {1: 10, 2: 20, 3: 100}[d]
-    ctx = rng.choice([("Libros leídos", "libros leyó", MESES), ("Goles marcados", "goles marcó", ["1.ª jornada", "2.ª jornada", "3.ª jornada", "4.ª jornada"]),
-                      ("Cromos conseguidos", "cromos consiguió", DIAS[:5])])
+    if d < 3:
+        ctx = rng.choice([("Libros leídos", "libros leyó", MESES, "en"), ("Goles marcados", "goles marcó", ["la 1.ª jornada", "la 2.ª jornada", "la 3.ª jornada", "la 4.ª jornada"], "en"),
+                          ("Cromos conseguidos", "cromos consiguió", DIAS[:5], "el")])
+    else:
+        ctx = rng.choice([("Puntos en un videojuego", "puntos consiguió", ["la 1.ª partida", "la 2.ª partida", "la 3.ª partida", "la 4.ª partida"], "en"),
+                          ("Páginas leídas", "páginas leyó", DIAS[:5], "el")])
     filas = rng.sample(NOMBRES, nf)
     cols = ctx[2][:nf] if ctx[2] is not MESES else MESES[rng.randint(0, len(MESES) - nf):][:nf]
     for _ in range(100):
@@ -168,9 +194,10 @@ def g_tabla_doble(rng, d):
     i, j = rng.randrange(nf), rng.randrange(nf)
     if i == j and nf > 1:
         j = (j + 1) % nf
-    cab = "Nombre | " + " | ".join(cols)
+    cab = "Nombre | " + " | ".join(c.replace("la ", "") for c in cols)
     cuerpo = "\n".join(f"{filas[r]} | " + " | ".join(str(v) for v in t[r]) for r in range(nf))
-    enun = f"{ctx[0]}:\n{cab}\n{cuerpo}\n¿Cuántos {ctx[1]} {filas[i]} en {cols[j]}?"
+    cu = "Cuántas" if ctx[1].startswith("páginas") else "Cuántos"
+    enun = f"{ctx[0]}:\n{cab}\n{cuerpo}\n¿{cu} {ctx[1]} {filas[i]} {ctx[3]} {cols[j]}?"
     ii = i + 1 if i + 1 < nf else i - 1
     dis = [(t[ii][j], "fila_de_al_lado"), (t[j][i], "cambia_fila_columna"), (sum(t[i]), "total_fila"), (t[i][(j + 1) % nf], None)]
     return hacer(enun, fmt(t[i][j]), "tabla_doble", {"tabla": t, "i": i, "j": j}, dis,
@@ -179,7 +206,7 @@ def g_tabla_doble(rng, d):
                  gen=cerca(t[i][j], rng))
 
 
-@generador("t6_frec_abs")
+@gen6("t6_frec_abs")
 def g_frec_abs(rng, d, tipo="frecuencia"):
     """EST.DATOS.03. Claves: valor_por_frecuencia, pierde_dato, olvida_cero."""
     if d == 1:
@@ -225,7 +252,7 @@ def g_frec_abs(rng, d, tipo="frecuencia"):
                  gen=cerca(f, rng))
 
 
-@generador("t6_frec_rel")
+@gen6("t6_frec_rel")
 def g_frec_rel(rng, d, formato="fraccion"):
     """EST.DATOS.05. Claves: divide_al_reves, divide_entre_categorias, decimal_porcentaje."""
     N = rng.choice({1: [10, 20], 2: [20, 25, 40, 50], 3: [40, 50, 80, 100]}[d])
@@ -258,7 +285,7 @@ def g_frec_rel(rng, d, formato="fraccion"):
         enun = base + f"¿Qué porcentaje de los alumnos eligió «{cats[i]}»?"
         resp = pc(h, 2)
         dis = [(dec(h, 4) + " %", "decimal_porcentaje"), (pc(F(f, k), 1) if F(f, k) <= 1 else pc(F(1, k), 1), "divide_entre_categorias"),
-               (dec(F(N, f) * 100, 0) + " %" if F(N, f) * 100 < 10000 else f"{f} %", "divide_al_reves"), (f"{f} %", None)]
+               (dec(F(N, f), 2) + " %", "divide_al_reves"), (f"{f} %", None)]
         gen = [pc(F(f + 1, N), 2), pc(F(f, N) / 2, 2)]
     return hacer(enun, resp, "frec_rel", {"f": f, "N": N, "formato": formato}, dis,
                  [("f / N", f"{f}/{N}", f"La frecuencia relativa es la frecuencia entre el total: {f}/{N}."),
@@ -266,41 +293,46 @@ def g_frec_rel(rng, d, formato="fraccion"):
                  "h = f/N (entre el total de datos, no entre el número de categorías). Todas las h suman 1, es decir, el 100 %.", gen=gen)
 
 
+CTX_DISC = [("Nota del examen", 3, 10, "sacaron un {v} o menos", "sacaron al menos un {v}"),
+            ("Número de hermanos", 0, 4, "tienen {v} hermanos o menos", "tienen al menos {v} hermanos"),
+            ("Goles marcados en el partido del fin de semana", 0, 5, "marcaron {v} goles o menos", "marcaron al menos {v} goles"),
+            ("Horas de deporte a la semana", 1, 7, "hacen {v} horas o menos", "hacen al menos {v} horas")]
+
+
 def _tabla_discreta(rng, d, N):
-    vals = list(range(rng.choice([0, 1, 4, 5]), 0))
-    lo = rng.choice([0, 1]) if d < 3 else rng.choice([4, 5])
-    k = rng.randint(4, 6)
+    ctx = rng.choice(CTX_DISC)
+    k = rng.randint(4, min(6, ctx[2] - ctx[1] + 1))
+    lo = rng.randint(ctx[1], ctx[2] - k + 1)
     vals = list(range(lo, lo + k))
     for _ in range(200):
         cortes = sorted(rng.sample(range(1, N), k - 1))
         fs = [b - a for a, b in zip([0] + cortes, cortes + [N])]
         if min(fs) >= 1:
-            return vals, fs
-    return None, None
+            return ctx, vals, fs
+    return ctx, None, None
 
 
-@generador("t6_frec_acum")
+@gen6("t6_frec_acum")
 def g_frec_acum(rng, d, tipo="como_mucho"):
     """EST.DATOS.08. Claves: acumula_al_reves, al_menos_como_mucho, relativa_como_absoluta."""
     N = rng.choice({1: [20, 25], 2: [30, 40, 50], 3: [40, 50, 80, 100, 200]}[d])
-    vals, fs = _tabla_discreta(rng, d, N)
+    ctx, vals, fs = _tabla_discreta(rng, d, N)
     if not vals:
         return None
-    ctx = rng.choice(["Nota del examen", "Número de hermanos", "Goles por partido", "Horas de deporte a la semana"])
-    tabla = f"{ctx} (x): " + "  ".join(str(v) for v in vals) + "\nFrecuencia (f): " + "  ".join(str(f) for f in fs)
+    tabla = f"{ctx[0]} (x): " + "  ".join(str(v) for v in vals) + "\nFrecuencia (f): " + "  ".join(str(f) for f in fs)
     j = rng.randrange(1, len(vals) - 1)
     Fj = sum(fs[:j + 1])
     Fant = sum(fs[:j])
     arriba = sum(fs[j:])
     base = f"Se ha preguntado a {N} personas.\n{tabla}\n"
     if tipo == "como_mucho":
-        enun = base + f"¿Cuántas personas tienen un valor de {vals[j]} o menos?"
+        enun = base + f"¿Cuántas personas {ctx[3].format(v=vals[j])}?"
         return hacer(enun, fmt(Fj), "frec_acum", {"vals": vals, "fs": fs, "j": j}, [(arriba, "acumula_al_reves"), (fs[j], None), (Fant, None)],
                      [("F", fmt(Fj), f"Acumulo desde el valor más pequeño: {' + '.join(map(str, fs[:j + 1]))} = {Fj}. Es F({vals[j]}).")],
                      "Frecuencia absoluta acumulada F(x): suma de las f de los valores menores o iguales que x, acumulando de menor a mayor.",
                      gen=cerca(Fj, rng))
     if tipo == "al_menos":
-        enun = base + f"¿Cuántas personas tienen un valor de al menos {vals[j]}?"
+        enun = base + f"¿Cuántas personas {ctx[4].format(v=vals[j])}?"
         return hacer(enun, fmt(arriba), "frec_acum_sup", {"vals": vals, "fs": fs, "j": j}, [(Fj, "al_menos_como_mucho"), (N - Fj, None), (fs[j], None)],
                      [("N − F", fmt(arriba), f"«Al menos {vals[j]}» es {vals[j]} o más: N − F({vals[j - 1]}) = {N} − {Fant} = {arriba}.")],
                      "«Al menos x» = x o más = N − F(valor anterior). «Como mucho x» = F(x).", gen=cerca(arriba, rng))
@@ -312,7 +344,7 @@ def g_frec_acum(rng, d, tipo="como_mucho"):
                  "H(x) = F(x)/N; siempre está entre 0 y 1 y la última vale 1.", gen=[dec(F(Fj + 1, N), 4), dec(F(Fant, N), 4)])
 
 
-@generador("t6_intervalos")
+@gen6("t6_intervalos")
 def g_intervalos(rng, d, tipo="marca"):
     """EST.DATOS.09. Claves: extremo_mal, marca_extremo, amplitud_mal."""
     if tipo == "marca":
@@ -339,6 +371,31 @@ def g_intervalos(rng, d, tipo="marca"):
                      [("[a, b)", cl(clases[i]), f"Con el convenio [a, b) el extremo izquierdo entra y el derecho no: {x} va en {cl(clases[i])}.")],
                      "Convenio [a, b): cada dato va en una sola clase; un dato que coincide con un extremo va a la clase que empieza en él.",
                      gen=["no se puede saber"])
+    if tipo == "frecuencia":
+        w = F(5, 100)
+        a0 = F(rng.randint(28, 32) * 5, 100)
+        k = 5
+        lim = [a0 + i * w for i in range(k + 1)]
+        c = rng.randrange(1, k - 1)
+        a, b = lim[c], lim[c + 1]
+        for _ in range(200):
+            datos = [F(rng.randint(int(a0 * 100), int(lim[-1] * 100) - 1), 100) for _ in range(rng.randint(10, 14))]
+            dentro = sum(1 for x in datos if a <= x < b)
+            bord_b = sum(1 for x in datos if x == b)
+            bord_a = sum(1 for x in datos if x == a)
+            if bord_a + bord_b >= 1 and dentro >= 2:
+                break
+        else:
+            return None
+        s2 = lambda x: f"{float(x):.2f}".replace(".", ",")
+        izq = sum(1 for x in datos if a < x <= b)
+        ambos = sum(1 for x in datos if a <= x <= b)
+        enun = (f"Alturas (en m) de un grupo: {'; '.join(s2(x) for x in datos)}.\nSe agrupan en clases de 5 cm: "
+                + ", ".join(f"[{s2(lim[i])}; {s2(lim[i + 1])})" for i in range(k)) + f".\n¿Cuál es la frecuencia de la clase [{s2(a)}; {s2(b)})?")
+        return hacer(enun, fmt(dentro), "frec_clase", {"a": str(a), "b": str(b)}, [(izq, "extremo_mal"), (ambos, "extremo_mal"), (dentro + 1, None), (dentro - 1, None)],
+                     [("contar", fmt(dentro), f"Cuento los datos con {s2(a)} ≤ x < {s2(b)}: {dentro}. " +
+                       (f"El dato {s2(b)} no entra: va a la clase siguiente. " if bord_b else "") + (f"El dato {s2(a)} sí entra. " if bord_a else ""))],
+                     "Con el convenio [a, b), el extremo inferior pertenece a la clase y el superior no.", gen=cerca(dentro, rng))
     # amplitud
     k = rng.choice([4, 5, 6, 8])
     w = rng.choice([2, 3, 4, 5, 10])
@@ -352,7 +409,7 @@ def g_intervalos(rng, d, tipo="marca"):
 
 # ================================================================ GRÁFICOS
 
-@generador("t6_pictograma")
+@gen6("t6_pictograma")
 def g_pictograma(rng, d, tipo="cuantos"):
     """EST.GRAF.01. Claves: fila_de_al_lado, mas_por_menos."""
     nc = {1: rng.randint(2, 3), 2: 4, 3: 5}[d]
@@ -388,7 +445,7 @@ def g_pictograma(rng, d, tipo="cuantos"):
                  "Contar los iconos de cada fila (no fiarse de la longitud) y comparar.", gen=["todos igual"])
 
 
-@generador("t6_picto_valor")
+@gen6("t6_picto_valor")
 def g_picto_valor(rng, d):
     """EST.GRAF.04. Claves: ignora_leyenda, medio_vale_uno, medio_mal."""
     val = {1: 2, 2: rng.choice([5, 10]), 3: rng.choice([2, 10])}[d]
@@ -410,7 +467,7 @@ def g_picto_valor(rng, d):
                  gen=cerca(v, rng, val))
 
 
-@generador("t6_barras_escala")
+@gen6("t6_barras_escala")
 def g_barras_escala(rng, d):
     """EST.GRAF.05. Claves: cuenta_marcas, entre_mas_uno, marca_cercana."""
     s = {1: 2, 2: rng.choice([5, 10]), 3: rng.choice([2, 10])}[d]
@@ -434,7 +491,7 @@ def g_barras_escala(rng, d):
                  "Leer la graduación del eje: cada marca vale la escala, no 1. Entre dos marcas, la mitad del salto.", gen=cerca(v, rng, s))
 
 
-@generador("t6_barras_dobles")
+@gen6("t6_barras_dobles")
 def g_barras_dobles(rng, d, tipo="bajo"):
     """EST.GRAF.06. Claves: confunde_series, compara_categorias, barra_mas_alta."""
     k = {1: 3, 2: 4, 3: rng.randint(5, 6)}[d]
@@ -484,7 +541,7 @@ def g_barras_dobles(rng, d, tipo="bajo"):
                  "Mirar la leyenda para saber qué color es cada serie antes de leer las barras.")
 
 
-@generador("t6_lineas")
+@gen6("t6_lineas")
 def g_lineas(rng, d, tipo="valor"):
     """EST.GRAF.07. Claves: mas_alto_por_mayor_subida, eje_equivocado."""
     k = {1: 5, 2: 6, 3: 7}[d]

@@ -392,3 +392,292 @@ def g_cont12(rng, d, modos=("p1000", "p100", "cruce")):
     dist += [(ult + s * (10 if abs(paso) != 10 else 1), None), (ult - paso, None), (sig + paso, None)]
     return _serie_ej(serie, paso, dist, "Con números de cuatro cifras, mira qué cifra cambia en cada salto; al pasar de 9 en una posición, se cambia también la de la izquierda.",
                      genericos=[sig + paso, sig + s])
+
+
+# ================================================================ NUM.DESC
+
+NOM = ["unidades", "decenas", "centenas", "unidades de millar", "decenas de millar", "centenas de millar", "unidades de millón",
+       "decenas de millón", "centenas de millón"]
+NOM1 = ["unidad", "decena", "centena", "unidad de millar", "decena de millar", "centena de millar", "unidad de millón",
+        "decena de millón", "centena de millón"]
+
+
+def _cant(k, pos):
+    return f"{k} {NOM1[pos] if k == 1 else NOM[pos]}"
+
+
+def _partes(n):
+    s = str(n)
+    return [int(c) * 10 ** (len(s) - 1 - j) for j, c in enumerate(s) if c != "0"]
+
+
+def _num_con_ceros(rng, cifras, prob=0.3):
+    s = [str(rng.randint(1, 9))] + [("0" if rng.random() < prob else str(rng.randint(1, 9))) for _ in range(cifras - 1)]
+    return int("".join(s))
+
+
+ADULTO_POS = "El valor de una cifra depende del lugar que ocupa. Una tabla de columnas (U, D, C, UM…) o bloques de base 10 ayudan mucho."
+
+
+@generador("t1_desc01")
+def g_desc01(rng, d, modos=("du_a_numero",)):
+    m = modo(rng, modos, "du_a_numero")
+    dd = rng.randint(1, 9)
+    u = rng.randint(1, 9) if d < 3 or rng.random() < 0.6 else 0
+    n = 10 * dd + u
+    if m == "numero_a_du":
+        resp = f"{_cant(dd, 1)} y {_cant(u, 0)}"
+        dist = [(f"{_cant(u, 1)} y {_cant(dd, 0)}" if u != dd and u else None, "E01"), (f"{_cant(dd, 1)} y {_cant(n, 0)}", None),
+                (f"{_cant(dd + 1, 1)} y {_cant(u, 0)}" if dd < 9 else None, None), (f"{_cant(dd - 1, 1)} y {_cant(u + 10, 0)}", None)]
+        return mk(f"¿Cuántas decenas y unidades tiene el número {n}?", resp, dist, "du", f"En {n}, el {dd} está en las decenas y el {u} en las unidades: {resp}.",
+                  ADULTO_POS, genericos=[f"{_cant(dd, 1)} y {_cant(u + 1, 0)}"], n=n)
+    if m == "bloques":
+        dib = "▮" * dd + ("  " + "▪" * u if u else "")
+        enun = f"Cada barra ▮ vale 10 y cada cubito ▪ vale 1.\n{dib}\n¿Qué número es?"
+    else:
+        enun = f"¿Qué número tiene {_cant(dd, 1)} y {_cant(u, 0)}?" if u else f"¿Qué número tiene {_cant(dd, 1)} y ninguna unidad?"
+    dist = [(10 * u + dd if u and u != dd else None, "E01"), (dd + u if dd + u != n else None, "E02"), (dd if u == 0 else None, "E03"),
+            (n + 10 if n < 90 else n - 10, None), (n + 1, None)]
+    return mk(enun, n, dist, "du", f"{_cant(dd, 1)} son {10 * dd}" + (f", y {_cant(u, 0)} más: {10 * dd} + {u} = {n}." if u else f". Como no hay unidades, se escribe un 0: {n}."),
+              ADULTO_POS, genericos=[n - 1, n + 2], n=n)
+
+
+@generador("t1_desc02")
+def g_desc02(rng, d, modos=("componer", "descomponer", "valor")):
+    m = modo(rng, modos, "componer")
+    dd, u = rng.randint(1, 9), rng.randint(1, 9)
+    n = 10 * dd + u
+    if m == "componer":
+        return mk(f"¿Qué número es {10 * dd} + {u}?", n, [(cifras_concat(10 * dd, u), "E03"), (10 * u + dd if u != dd else None, None), (dd + u, None)],
+                  "componer", f"{10 * dd} son {dd} decenas y {u} son {u} unidades: juntos forman {n}.", ADULTO_POS, genericos=[n + 10, n - 1], n=n)
+    if m == "descomponer":
+        resp = f"{10 * dd} + {u}"
+        return mk(f"¿Cómo se descompone {n}?", resp, [(f"{dd} + {u}", "E02"), (f"{dd} + {10 * u}", None), (f"{10 * dd} + {10 * u}", None)],
+                  "descomponer", f"El {dd} de {n} está en las decenas y vale {10 * dd}; el {u} vale {u}. Así, {n} = {resp}.", ADULTO_POS,
+                  genericos=[f"{10 * (dd + 1)} + {u}", f"{10 * dd} + {u + 1}"], n=n)
+    cual = rng.choice(["d", "u"])
+    c, val = (dd, 10 * dd) if cual == "d" else (u, u)
+    if dd == u:
+        return None
+    if cual == "d":
+        dist = [(c, "E01"), (100 * c, None), (n, None)]
+    else:
+        dist = [(10 * c, None), (n, None), (c + 1, None)]
+    return mk(f"¿Cuánto vale el {c} en el número {n}?", val, dist, "valor_cifra",
+              f"El {c} está en las {'decenas' if cual == 'd' else 'unidades'}, así que vale {val}.", ADULTO_POS, genericos=[c * 100 + 1], n=n)
+
+
+@generador("t1_desc03")
+def g_desc03(rng, d, modos=("cdu_a_numero", "valor", "desordenado", "numero_a_cdu")):
+    m = modo(rng, modos, "cdu_a_numero")
+    ceros = d == 3
+    n = _num_con_ceros(rng, 3, 0.35 if ceros else 0)
+    c, dd, u = (int(x) for x in str(n))
+    if m in ("cdu_a_numero", "desordenado"):
+        piezas = [(c, 2), (dd, 1), (u, 0)]
+        if m == "desordenado":
+            orden = piezas[:]
+            while orden == piezas:
+                rng.shuffle(orden)
+        else:
+            orden = piezas
+        txt = ", ".join(_cant(k, p) for k, p in orden[:-1]) + " y " + _cant(*orden[-1])
+        dist = [(sin_ceros(n) if "0" in str(n) else None, "E01"), (cifras_concat(*[k for k, _ in orden]) if orden != piezas and orden[0][0] else None, "E03"),
+                (int(str(n)[::-1]) if n % 10 else None, None), (n + 10 if dd < 9 else n - 10, None), (n + 100 if c < 9 else n - 100, None)]
+        return mk(f"¿Qué número tiene {txt}?", n, dist, "cdu",
+                  f"Coloco cada cantidad en su columna: {c} en las centenas, {dd} en las decenas y {u} en las unidades. Es el {n}." +
+                  (" Donde no hay nada se escribe un 0." if "0" in str(n) else ""), ADULTO_POS, n=n)
+    if m == "numero_a_cdu":
+        resp = f"{c} c, {dd} d y {u} u"
+        dist = [(f"{u} c, {dd} d y {c} u" if u != c else None, None), (f"{c} c, {10 * c + dd} d y {u} u", None), (f"{c} c, {u} d y {dd} u" if u != dd else None, None),
+                (f"{c + 1} c, {dd} d y {u} u" if c < 9 else f"{c - 1} c, {dd} d y {u} u", None)]
+        return mk(f"¿Cuántas centenas (c), decenas (d) y unidades (u) tiene {n}?", resp, dist, "cdu", f"En {n}: {c} en las centenas, {dd} en las decenas y {u} en las unidades.",
+                  ADULTO_POS, n=n)
+    pos = rng.choice([p for p, k in ((2, c), (1, dd)) if k])
+    k = int(str(n)[2 - pos])
+    if str(n).count(str(k)) > 1:
+        return None
+    val = k * 10 ** pos
+    dist = [(k, "E02"), (k * 10 if pos == 2 else None, "E02"), (k * 100 if pos == 1 else None, None), (n, None)]
+    return mk(f"¿Cuánto vale el {k} en el número {n}?", val, dist, "valor_cifra", f"El {k} está en las {NOM[pos]}: vale {val}.", ADULTO_POS, n=n)
+
+
+@generador("t1_desc04")
+def g_desc04(rng, d, modos=("d_a_u", "c_a_d", "doble")):
+    m = modo(rng, modos, "d_a_u")
+    if m == "d_a_u":
+        dd, u = rng.randint(1, 8), rng.randint(10, 19)
+        n = 10 * dd + u
+        txt = f"{_cant(dd, 1)} y {_cant(u, 0)}"
+        dist = [(cifras_concat(dd, u), "E01"), (10 * dd + u % 10, "E02"), (dd + u, None), (n + 10, None)]
+        exp = f"{u} unidades son 1 decena y {u - 10} unidades. Entonces hay {dd + 1} decenas y {u - 10} unidades: {n}."
+    elif m == "c_a_d":
+        c, dd, u = rng.randint(1, 8), rng.randint(10, 19), rng.randint(0, 9)
+        n = 100 * c + 10 * dd + u
+        txt = f"{_cant(c, 2)}, {_cant(dd, 1)} y {_cant(u, 0)}" if u else f"{_cant(c, 2)} y {_cant(dd, 1)}"
+        dist = [(cifras_concat(c, dd, u) if u else cifras_concat(c, dd, 0), "E01"), (100 * c + 10 * (dd % 10) + u, "E02"), (n + 100, None), (n - 10, None)]
+        exp = f"{dd} decenas son 1 centena y {dd - 10} decenas. Hay {c + 1} centenas, {dd - 10} decenas y {u} unidades: {n}."
+    else:
+        c, dd, u = rng.randint(1, 7), rng.randint(10, 19), rng.randint(10, 19)
+        n = 100 * c + 10 * dd + u
+        txt = f"{_cant(c, 2)}, {_cant(dd, 1)} y {_cant(u, 0)}"
+        dist = [(cifras_concat(c, dd, u), "E01"), (100 * c + 10 * (dd % 10) + u % 10, "E02"), (n - 10, None), (n + 100, None)]
+        exp = f"{u} unidades son 1 decena y {u - 10} unidades; {dd} decenas son 1 centena y {dd - 10} decenas. En total: {n}."
+    return mk(f"¿Qué número forman {txt}?", n, dist, "canje", exp,
+              "Canjear 10 unidades por 1 decena (y al revés) es justo lo que se hace al «llevar» en la suma y la resta. Con bloques o monedas se entiende enseguida.", n=n)
+
+
+@generador("t1_desc05")
+def g_desc05(rng, d, modos=("descomponer", "componer", "desordenado")):
+    m = modo(rng, modos, "descomponer")
+    n = _num_con_ceros(rng, 3, 0 if m == "descomponer" and d == 1 else 0.35)
+    partes = _partes(n)
+    if m == "descomponer":
+        resp = " + ".join(fmt(p) for p in partes)
+        s = str(n)
+        mal1 = " + ".join(ch for ch in s if ch != "0")
+        mal2 = " + ".join(fmt(p // 10 if p >= 100 else p) for p in partes)
+        mal3 = " + ".join(fmt(p * 10 if p < 100 else p) for p in partes)
+        return mk(f"¿Cómo se descompone {n}?", resp, [(mal1, None), (mal2, None), (mal3, None)], "descomponer",
+                  f"Cada cifra vale según su lugar: {resp} = {n}.", ADULTO_POS, n=n)
+    if len(partes) < 2:
+        return None
+    orden = partes[:]
+    if m == "desordenado":
+        while orden == partes:
+            rng.shuffle(orden)
+    enun = f"¿Qué número es {' + '.join(fmt(p) for p in orden)}?"
+    dist = [(cifras_concat(*orden) if cifras_concat(*orden) < 10 ** 7 else None, "E01"),
+            (cifras_concat(*[str(p)[0] for p in orden]) if orden != partes else None, "E02"),
+            (sin_ceros(n) if "0" in str(n) else None, "E03"), (n + 10 if n % 100 < 90 else n - 10, None), (n + 100 if n < 900 else n - 100, None)]
+    return mk(enun, n, dist, "componer", f"Pongo cada sumando en su columna (centenas, decenas, unidades): {' + '.join(fmt(p) for p in partes)} = {n}." +
+              (" El lugar vacío se rellena con un 0." if "0" in str(n) else ""), ADULTO_POS, n=n)
+
+
+def _valor_cifra(rng, n, E_menos, E_mas, E_cifra):
+    s = str(n)
+    posibles = [i for i, ch in enumerate(s) if ch != "0" and s.count(ch) == 1 and len(s) - 1 - i >= 1]
+    if not posibles:
+        return None
+    i = rng.choice(posibles)
+    pos = len(s) - 1 - i
+    k = int(s[i])
+    val = k * 10 ** pos
+    dist = [(k, E_cifra), (val // 10 if pos >= 2 else None, E_menos), (val * 10, E_mas)]
+    return mk(f"¿Cuánto vale el {k} en el número {fmt(n)}?", val, dist, "valor_cifra",
+              f"El {k} está en las {NOM[pos]}, así que vale {fmt(val)}.", ADULTO_POS, genericos=[val // 100 if pos >= 3 else None, n], n=n, pos=pos)
+
+
+def _componer_grande(rng, n, E_concat, E_ceros):
+    partes = _partes(n)
+    if len(partes) < 2:
+        return None
+    orden = partes[:]
+    if rng.random() < 0.3:
+        rng.shuffle(orden)
+    enun = f"¿Qué número es {' + '.join(fmt(p) for p in orden)}?"
+    conc = cifras_concat(*partes)
+    dist = [(conc, E_concat), (sin_ceros(n) if "0" in str(n) else None, E_ceros),
+            (n + 10 ** (len(str(n)) - 2), None), (n - 10 ** (len(str(n)) - 1) if n >= 2 * 10 ** (len(str(n)) - 1) else None, None),
+            (int(str(n)[:-1] + "0" + str(n)[-1]) if len(str(n)) < 9 else None, None)]
+    return mk(enun, n, dist, "componer", f"Coloco cada sumando en su columna y relleno con ceros los lugares vacíos: {' + '.join(fmt(p) for p in partes)} = {fmt(n)}.",
+              ADULTO_POS, n=n)
+
+
+def _descomponer_grande(rng, n):
+    partes = _partes(n)
+    resp = " + ".join(fmt(p) for p in partes)
+    mal_menos = " + ".join(fmt(p // 10 if p >= 10 else p) for p in partes)
+    mal_mas = " + ".join(fmt(p * 10 if p >= 10 else p) for p in partes)
+    mal_cifras = " + ".join(str(p)[0] for p in partes)
+    return mk(f"¿Cómo se descompone {fmt(n)}?", resp, [(mal_menos, None), (mal_mas, None), (mal_cifras, None)], "descomponer",
+              f"Cada cifra vale según su lugar: {fmt(n)} = {resp}.", ADULTO_POS, n=n)
+
+
+@generador("t1_desc06")
+def g_desc06(rng, d, modos=("descomponer", "valor", "componer")):
+    m = modo(rng, modos, "valor")
+    n = _num_con_ceros(rng, 4, 0.1 if d == 1 else 0.35)
+    if m == "valor":
+        return _valor_cifra(rng, n, "E01", None, "E01")
+    if m == "componer":
+        return _componer_grande(rng, n, "E02", "E03")
+    return _descomponer_grande(rng, n)
+
+
+@generador("t1_desc07")
+def g_desc07(rng, d, modos=("total", "equivalencia", "billetes")):
+    m = modo(rng, modos, "total")
+    if m == "total":
+        pos = rng.choice([1, 2]) if d < 3 else rng.choice([1, 2, 3])
+        n = rng.randint(100 if pos == 1 else 10, 999) * 10 ** pos if d < 3 else rng.randint(1000, 9999)
+        if n > 9999 or n < 1000 and d == 3:
+            return None
+        n = n - n % 10 ** pos if d < 3 else n
+        tot = n // 10 ** pos
+        cif = int(str(n)[len(str(n)) - 1 - pos])
+        dist = [(cif, "E01"), (n // 10 ** (pos + 1), "E02"), (n // 10 ** (pos - 1) if pos > 1 else n, "E02")]
+        enun = f"¿Cuántas {NOM[pos]} hay en total en {fmt(n)}?" if n % 10 ** pos == 0 else f"¿Cuántas {NOM[pos]} completas hay en {fmt(n)}?"
+        return mk(enun, tot, dist, "equivalencia", f"Tapo las {pos} últimas cifras y leo lo que queda: en {fmt(n)} hay {fmt(tot)} {NOM[pos]}.",
+                  "1 millar = 10 centenas = 100 decenas = 1 000 unidades. Es la base de la división por 10, 100 y 1 000.", n=n, pos=pos)
+    if m == "equivalencia":
+        pos = rng.choice([1, 2, 3])
+        k = rng.randint(2, 99 if pos < 3 else 9) if d == 1 else rng.randint(11, 99)
+        val = k * 10 ** pos
+        if val > 9999:
+            return None
+        dist = [(k, "E03"), (k * 10 ** (pos - 1) if pos > 1 else None, "E03"), (k * 10 ** (pos + 1) if k * 10 ** (pos + 1) <= 99999 else None, None), (k + 10 ** pos, None)]
+        return mk(f"¿Cuántas unidades son {k} {NOM[pos]}?", val, dist, "equivalencia",
+                  f"Cada {NOM1[pos]} son {fmt(10 ** pos)} unidades: {k} × {fmt(10 ** pos)} = {fmt(val)}.",
+                  "1 millar = 10 centenas = 100 decenas = 1 000 unidades.", k=k, pos=pos)
+    b = rng.choice([10, 100])
+    tot = rng.randint(2, 99) * b if b == 10 else rng.randint(2, 99) * 100
+    if tot > 9999:
+        return None
+    q = tot // b
+    dist = [(int(str(tot)[-2 if b == 10 else -3]), "E01"), (q // 10 if q >= 10 else None, "E02"), (tot // (b // 10), "E02"), (q + 1, None)]
+    nom = rng.choice(NINAS + NINOS)
+    return mk(f"{nom} quiere pagar {fmt(tot)} € solo con billetes de {b} €. ¿Cuántos billetes necesita?", q, dist, "billetes",
+              f"Cada billete es {b} €. En {fmt(tot)} hay {fmt(q)} {'decenas' if b == 10 else 'centenas'}, así que hacen falta {fmt(q)} billetes.",
+              "Pagar con billetes de 10 o de 100 es una forma muy práctica de ver cuántas decenas o centenas tiene un número.", tot=tot, b=b)
+
+
+@generador("t1_desc08")
+def g_desc08(rng, d, modos=("valor", "componer", "descomponer")):
+    m = modo(rng, modos, "valor")
+    n = _num_con_ceros(rng, rng.choice([5, 6]), 0.3)
+    if m == "valor":
+        return _valor_cifra(rng, n, "E01", "E01", None)
+    if m == "componer":
+        return _componer_grande(rng, n, "E02", "E02")
+    return _descomponer_grande(rng, n)
+
+
+SUP = str.maketrans("0123456789", "⁰¹²³⁴⁵⁶⁷⁸⁹")
+
+
+def _pot(k, e):
+    return str(k) if e == 0 else f"{k}·10" if e == 1 else f"{k}·10{str(e).translate(SUP)}"
+
+
+@generador("t1_desc09")
+def g_desc09(rng, d, modos=("descomponer", "componer"), cifras=(4, 6)):
+    m = modo(rng, modos, "descomponer")
+    n = _num_con_ceros(rng, rng.randint(*cifras), 0.35)
+    s = str(n)
+    terms = [(int(ch), len(s) - 1 - j) for j, ch in enumerate(s) if ch != "0"]
+    if len(terms) < 2:
+        return None
+    expr = " + ".join(_pot(k, e) for k, e in terms)
+    if m == "descomponer":
+        mal1 = " + ".join(_pot(k, e + 1) for k, e in terms)
+        mal2 = " + ".join(_pot(k, e - 1) if e else str(k) for k, e in terms)
+        mal3 = " + ".join(f"{k}·{10 ** e}" if e else str(k) for k, e in terms[:1]) + " + " + " + ".join(_pot(k, len(terms) - 1 - i) for i, (k, e) in enumerate(terms[1:], 1))
+        return mk(f"Escribe {fmt(n)} con potencias de 10.", expr, [(mal1, "E01"), (mal2, None), (mal3 if mal3 != expr else None, None)], "polinomica",
+                  f"Cada cifra se multiplica por la potencia de 10 de su lugar (el exponente es el número de cifras que tiene a su derecha): {fmt(n)} = {expr}.",
+                  "10² = 100, 10³ = 1 000… El exponente cuenta los ceros. El error típico es poner como exponente el número de cifras.", n=n)
+    mal_e1 = sum(k * 10 ** (e - 1) if e else k for k, e in terms)
+    mal_e2 = sum(k * 10 * e if e else k for k, e in terms)
+    return mk(f"¿Qué número es {expr}?", n, [(sin_ceros(n), "E03"), (mal_e2, "E02"), (mal_e1, "E01"), (n * 10, None)], "polinomica",
+              f"Calculo cada término y los junto: {' + '.join(fmt(k * 10 ** e) for k, e in terms)} = {fmt(n)}. Los lugares vacíos llevan 0.",
+              "10ⁿ es un 1 seguido de n ceros; no es 10 · n.", n=n)

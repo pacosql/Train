@@ -105,6 +105,7 @@ POS = {
     "volumen": {"km³": 0, "hm³": 1, "dam³": 2, "m³": 3, "dm³": 4, "cm³": 5, "mm³": 6},
 }
 BASE = {"longitud": 10, "masa": 10, "capacidad": 10, "superficie": 100, "volumen": 1000}
+NOMBRE_UD = {"ha": "hectáreas", "a": "áreas", "ca": "centiáreas"}
 GEMELAS = {"dam": "dm", "dm": "dam", "dal": "dl", "dl": "dal", "dam²": "dm²", "dm²": "dam²", "dam³": "dm³", "dm³": "dam³", "dag": "dg", "dg": "dag"}
 
 
@@ -152,7 +153,9 @@ def gen_conv(rng, d, magnitud="longitud", unidades=None, pares=None, pasos_min=1
     else:
         return None
     resp = u(r, u2)
-    if pregunta == "expresa":
+    if u2 in NOMBRE_UD:
+        enun = f"¿Cuántas {NOMBRE_UD[u2]} son {u(v, u1)}?"
+    elif pregunta == "expresa":
         enun = f"Expresa {u(v, u1)} en {u2}."
     else:
         enun = f"¿Cuántos {u2} son {u(v, u1)}?"
@@ -319,3 +322,298 @@ def gen_mil_fraccion(rng, d, grande="kg", peque="g", nombre="kilo"):
              (f"+ {extra}", fmt(total), ({None: "", "medio": "Medio", "cuarto": "Un cuarto", "tres cuartos": "Tres cuartos"}[q] + f" de {nombre} = {extra} {peque}. Total: {fmt(total)} {peque}.") if q else f"Total: {fmt(total)} {peque}.")]
     adulto = f"1 {grande} = 1000 {peque}; medio = 500, cuarto = 250, tres cuartos = 750. Confundirlo con 100 (como el metro y el centímetro) es el error típico."
     return mk(enun, resp, "t4_mil_fraccion", {"a": a, "fraccion": q}, dist, pasos, adulto, genericos=[f"{fmt(total + 1000)} {peque}", f"{fmt(total + 100)} {peque}"])
+
+
+# ---------------------------------------------------------------- comparar y operar medidas en unidades distintas
+
+ESCALA = {
+    "longitud": {"km": 10 ** 6, "hm": 10 ** 5, "dam": 10 ** 4, "m": 1000, "dm": 100, "cm": 10, "mm": 1},
+    "masa": {"t": 10 ** 9, "kg": 10 ** 6, "hg": 10 ** 5, "dag": 10 ** 4, "g": 1000, "dg": 100, "cg": 10, "mg": 1},
+    "capacidad": {"kl": 10 ** 6, "hl": 10 ** 5, "dal": 10 ** 4, "l": 1000, "dl": 100, "cl": 10, "ml": 1},
+    "superficie": {"km²": 10 ** 12, "hm²": 10 ** 10, "dam²": 10 ** 8, "m²": 10 ** 6, "dm²": 10 ** 4, "cm²": 100, "mm²": 1,
+                   "ha": 10 ** 10, "a": 10 ** 8, "ca": 10 ** 6},
+    "volumen": {"m³": 10 ** 6, "dm³": 1000, "cm³": 1, "kl": 10 ** 6, "hl": 10 ** 5, "dal": 10 ** 4, "l": 1000, "dl": 100, "cl": 10, "ml": 1},
+}
+NOM_MAG = {"longitud": ("longitud", "longitudes", "más larga", "más corta"), "masa": ("masa", "masas", "más pesada", "más ligera"),
+           "capacidad": ("capacidad", "capacidades", "mayor", "menor"), "superficie": ("superficie", "superficies", "mayor", "menor"),
+           "volumen": ("cantidad", "cantidades", "mayor", "menor")}
+
+
+RANGO = {"longitud": (1000, 5 * 10 ** 6), "masa": (10 ** 5, 5 * 10 ** 7), "capacidad": (100, 5 * 10 ** 4),
+         "superficie": (10 ** 6, 10 ** 11), "volumen": (10 ** 3, 10 ** 7)}
+
+
+def _objetivo(rng, magnitud):
+    lo, hi = RANGO[magnitud]
+    return _sig(D(10 ** rng.uniform(math.log10(lo), math.log10(hi))), 2)
+
+
+def _sig(x, cifras):
+    x = D(x)
+    if x == 0:
+        return x
+    e = x.adjusted()
+    return x.quantize(Decimal(1).scaleb(e - cifras + 1), rounding=ROUND_HALF_UP).normalize()
+
+
+def _termino(rng, esc, unidades, objetivo, cifras, dec_max):
+    for _ in range(50):
+        un = rng.choice(unidades)
+        v = _sig(D(objetivo) / D(esc[un]), cifras)
+        if v < D("0.1") or ndec(v) > dec_max or v >= 10 ** 5:
+            continue
+        return un, v
+    return None
+
+
+@generador("t4_comparar_uds")
+def gen_comparar_uds(rng, d, magnitud="longitud", unidades=None, ref="m", n=3, tipo="mayor", cifras=2, dec_max=3):
+    """tipo: mayor | menor | ordenar (de menor a mayor)."""
+    esc = ESCALA[magnitud]
+    uds = unidades or list(esc)
+    tipo = rng.choice(tipo) if isinstance(tipo, list) else tipo
+    if tipo == "ordenar":
+        n = 3
+    for _ in range(200):
+        base = _objetivo(rng, magnitud)
+        items, vistos = [], set()
+        for i in range(n):
+            t = _termino(rng, esc, uds, base * D(rng.randint(60, 140)) / 100, cifras, dec_max)
+            if not t:
+                break
+            un, v = t
+            val = v * esc[un]
+            if val in vistos or un in [x[0] for x in items] and len(uds) >= n:
+                break
+            vistos.add(val)
+            items.append((un, v, val))
+        if len(items) < n:
+            continue
+        crudo = sorted(items, key=lambda x: x[1])
+        real = sorted(items, key=lambda x: x[2])
+        if [x[1] for x in crudo] == [x[1] for x in real] or len({x[1] for x in items}) < n:
+            continue  # el orden por los números sueltos debe engañar
+        break
+    else:
+        return None
+    txt = lambda it: u(it[1], it[0])
+    nm = NOM_MAG[magnitud]
+    lista = ", ".join(txt(x) for x in items)
+    if tipo in ("mayor", "menor"):
+        ok = real[-1] if tipo == "mayor" else real[0]
+        enun = f"¿Cuál es la {nm[2] if tipo == 'mayor' else nm[3]} de estas {nm[1]}: {lista}?"
+        resp = txt(ok)
+        num_ok = crudo[-1] if tipo == "mayor" else crudo[0]
+        inv = real[0] if tipo == "mayor" else real[-1]
+        dist = [(txt(num_ok), "compara_numeros"), (txt(inv), "orden_invertido")] + [(txt(x), None) for x in items]
+        gen = []
+    else:
+        enun = f"Ordena de menor a mayor: {lista}."
+        resp = " < ".join(txt(x) for x in real)
+        dist = [(" < ".join(txt(x) for x in reversed(real)), "orden_invertido"), (" < ".join(txt(x) for x in crudo), "compara_numeros")]
+        perms = [[real[1], real[0], real[2]], [real[0], real[2], real[1]], [real[2], real[0], real[1]]]
+        gen = [" < ".join(txt(x) for x in p) for p in perms]
+    comun = min((x[0] for x in items), key=lambda k: esc[k])
+    conv = ", ".join(f"{txt(x)} = {u(x[2] / esc[comun], comun)}" for x in items)
+    pasos = [("misma unidad", conv, f"Paso todas a la misma unidad ({comun}): {conv}."),
+             ("comparar", resp, f"Ahora ya puedo comparar los números: {resp}.")]
+    adulto = "Antes de comparar medidas hay que expresarlas en la misma unidad; comparar solo los números (980 m > 1,2 km porque 980 > 1,2) es el error típico."
+    return mk(enun, resp, "t4_comparar_uds", {"items": [[x[0], str(x[1])] for x in items], "tipo": tipo}, dist, pasos, adulto, genericos=gen)
+
+
+@generador("t4_operar_uds")
+def gen_operar_uds(rng, d, magnitud="longitud", unidades=None, resultado=None, terminos=2, ops=("+", "-"), cifras=2, dec_max=3,
+                   dec_res=3, compleja=None, p_comparar=0, p_compleja_dec=0, pares_compleja=None):
+    """Suma/resta de 2–3 medidas en unidades distintas; resultado en la unidad pedida.
+    compleja: [grande, peque] para que el primer término vaya en forma compleja (2 m³ 350 dm³)."""
+    x = rng.random()
+    if x < p_comparar:
+        return gen_comparar_uds(rng, d, magnitud=magnitud, unidades=unidades, ref=(resultado or unidades)[0], n=4,
+                                tipo=["mayor", "menor"] if d < 3 else ["ordenar", "mayor"], cifras=2 if d < 3 else 3)
+    if x < p_comparar + p_compleja_dec:
+        return gen_compleja_dec(rng, d, magnitud=magnitud, pares=pares_compleja)
+    esc = ESCALA[magnitud]
+    uds = unidades or list(esc)
+    res_opts = resultado or uds
+    nt = rng.choice(terminos) if isinstance(terminos, list) else terminos
+    for _ in range(300):
+        R = rng.choice(res_opts)
+        objetivo = _objetivo(rng, magnitud)
+        ts = []
+        for i in range(nt):
+            t = _termino(rng, esc, uds, objetivo * D(rng.randint(15, 100)) / 100, cifras, dec_max)
+            if not t:
+                break
+            ts.append(t)
+        if len(ts) < nt or len({t[0] for t in ts}) < 2:
+            continue
+        signos = ["+"] + [rng.choice(ops) for _ in range(nt - 1)]
+        comp = None
+        if compleja:
+            g, p = compleja
+            a = rng.randint(1, 9)
+            ratio = esc[g] // esc[p]
+            b = rng.randint(1, ratio - 1) if d > 1 else rng.choice([x for x in range(1, ratio) if x % max(1, ratio // 10) == 0])
+            comp = (g, p, a, b)
+            ts[0] = (g, D(a) + D(b) * esc[p] / D(esc[g]))
+        vals = [t[1] * esc[t[0]] for t in ts]
+        if "-" in signos:
+            orden = sorted(range(nt), key=lambda i: -vals[i])
+            if comp and orden[0] != 0:
+                continue
+            ts = [ts[i] for i in orden]
+            vals = [vals[i] for i in orden]
+        tot = sum(v if s == "+" else -v for v, s in zip(vals, signos))
+        if tot <= 0:
+            continue
+        r = tot / D(esc[R])
+        if ndec(r) > dec_res or r >= 10 ** 7 or r < D("0.1"):
+            continue
+        break
+    else:
+        return None
+
+    def txt(i):
+        if comp and i == 0:
+            return f"{comp[2]} {comp[0]} {comp[3]} {comp[1]}"
+        return u(ts[i][1], ts[i][0])
+    expr = txt(0) + "".join(f" {'+' if s == '+' else '−'} {txt(i + 1)}" for i, s in enumerate(signos[1:]))
+    enun = f"Calcula y da el resultado en {R}: {expr}"
+    resp = u(r, R)
+    crudo = sum((D(comp[2] + comp[3]) if (comp and i == 0) else ts[i][1]) * (1 if s == "+" else -1) for i, s in enumerate(signos))
+    dist = [(u(crudo, R) if crudo > 0 else None, "sin_igualar")]
+    otras = [t[0] for t in ts if t[0] != R and esc[t[0]] != esc[R]]
+    if otras:
+        U = rng.choice(otras)
+        dist.append((u(tot / D(esc[U]), R), "otra_unidad"))
+    if comp:
+        g, p, a, b = comp
+        mal = (D(a) + D(b) / D(10 ** len(str(b)))) * esc[g]
+        tot2 = tot - vals[0] + mal
+        if tot2 > 0 and ndec(tot2 / D(esc[R])) <= 6:
+            dist.append((u(tot2 / D(esc[R]), R), "compleja_una_cifra"))
+    comun = min((t[0] for t in ts), key=lambda k: esc[k])
+    conv = ", ".join(f"{txt(i)} = {u(vals[i] / esc[comun], comun)}" for i in range(nt))
+    tot_c = tot / D(esc[comun])
+    pasos = [("misma unidad", conv, f"Paso todo a {comun}: {conv}."),
+             ("operar", u(tot_c, comun), f"Opero: {' '.join((('' if i == 0 else ('+ ' if s == '+' else '− ')) + fx(vals[i] / esc[comun])) for i, s in enumerate(signos))} = {u(tot_c, comun)}."),
+             (f"{comun} → {R}", resp, f"Lo expreso en {R}: {resp}." if comun != R else f"Ya está en {R}: {resp}.")]
+    adulto = "Solo se pueden sumar o restar medidas expresadas en la misma unidad; al final se pasa a la unidad pedida."
+    return mk(enun, resp, "t4_operar_uds", {"expr": expr, "R": R}, dist, pasos, adulto, genericos=var_rel(r, R, 3))
+
+
+@generador("t4_compleja_dec")
+def gen_compleja_dec(rng, d, magnitud="superficie", pares=(("m²", "dm²"),)):
+    """Forma compleja de dos unidades ↔ forma incompleja decimal en la unidad mayor (3 m² 5 dm² = 3,05 m²)."""
+    esc = ESCALA[magnitud]
+    g, p = rng.choice([tuple(x) for x in pares])
+    ratio = esc[g] // esc[p]
+    cif = len(str(ratio)) - 1
+    a = rng.randint(1, 20)
+    b = rng.randint(1, 9) if d == 3 else rng.randint(10 ** (cif - 1), ratio - 1)
+    val = D(a) + D(b) / D(ratio)
+    if rng.random() < 0.5:
+        enun = f"Expresa {a} {g} {b} {p} en {g}."
+        resp = u(val, g)
+        dist = [(u(D(a) + D(b) / D(10 ** len(str(b))), g), "compleja_una_cifra"), (u(D(a) * ratio + b, g), "otra_unidad"),
+                (u(D(a) + D(b) / D(ratio * 10), g), "factor_mal"), (u(D(a) + D(b) / D(ratio // 10), g) if ratio >= 100 else None, "factor_mal")]
+        pasos = [(f"{b} {p} = {fx(D(b) / ratio)} {g}", fx(D(b) / ratio), f"1 {g} = {fmt(ratio)} {p}, así que {b} {p} = {b} : {fmt(ratio)} = {fx(D(b) / ratio)} {g}."),
+                 (f"{a} + {fx(D(b) / ratio)}", fx(val), f"Sumo: {a} + {fx(D(b) / ratio)} = {resp}.")]
+    else:
+        enun = f"Expresa {u(val, g)} en {g} y {p}."
+        resp = f"{a} {g} {b} {p}"
+        dec = format(val.normalize(), "f").split(".")[1]
+        b_mal = int(dec) if int(dec) != b else b * 10
+        dist = [(f"{a} {g} {b_mal} {p}", "compleja_una_cifra"), (f"{a} {g} {b * 10} {p}" if b * 10 < ratio * 10 and b * 10 != b_mal else None, "factor_mal"),
+                (f"{a} {g} {b // 10 if b >= 10 else b + 1} {p}", None), (f"{a + 1} {g} {b} {p}", None)]
+        pasos = [(f"0,{dec} {g} × {fmt(ratio)}", f"{b} {p}", f"La parte entera son {a} {g}. La parte decimal: {fx(val - a)} × {fmt(ratio)} = {b} {p} (cada escalón vale {fmt(ratio)}, {cif} cifras)."),
+                 ("", resp, f"Resultado: {resp}.")]
+    adulto = f"En {magnitud} cada escalón de unidades ocupa {cif} cifras decimales: {b} {p} son {fx(D(b) / ratio)} {g}, no {fx(D(b) / D(10 ** len(str(b))))} {g}."
+    return mk(enun, resp, "t4_compleja_dec", {"a": a, "b": b, "g": g, "p": p}, dist, pasos, adulto,
+              genericos=var_num(val, g, pasos=(1, -1, 2)) if "Expresa" in enun and resp.endswith(g) else [f"{a + 2} {g} {b} {p}", f"{max(a - 1, 1)} {g} {b + 1} {p}"])
+
+
+# ---------------------------------------------------------------- volumen ↔ capacidad ↔ masa de agua
+
+@generador("t4_vol_cap")
+def gen_vol_cap(rng, d, agua=True):
+    casos = [("m³", "l", 1000), ("dm³", "l", 1), ("cm³", "ml", 1), ("l", "dm³", 1), ("ml", "cm³", 1), ("l", "cm³", 1000), ("m³", "l", 1000)]
+    if d >= 2:
+        casos += [("l", "m³", Decimal("0.001")), ("cm³", "l", Decimal("0.001")), ("dm³", "ml", 1000), ("cm³", "cl", Decimal("0.1"))]
+    if agua and d >= 2:
+        casos += [("dm³", "kg", 1), ("m³", "kg", 1000), ("l", "kg", 1)]
+    u1, u2, f = rng.choice(casos)
+    f = D(f)
+    for _ in range(100):
+        v = D(rng.randint(2, 99)) if d == 1 else _sig(D(rng.randint(11, 999)) / D(rng.choice([1, 10, 100])), 2)
+        r = v * f
+        if ndec(r) <= 3 and r < 10 ** 7:
+            break
+    if u2 == "kg":
+        enun = f"¿Cuántos kg pesa el agua que cabe en un depósito de {u(v, u1)}?"
+    else:
+        enun = f"¿Cuántos {u2} son {u(v, u1)}?"
+    resp = u(r, u2)
+    dist = [(u(v / f if f != 1 else v * 1000, u2), "sentido_contrario")]
+    if "m³" in (u1, u2):
+        dist.insert(0, (u(v, u2), "m3_litro"))
+    if "cm³" in (u1, u2) and "cl" not in (u1, u2):
+        cl = {"ml": v, "l": v / 100 if u1 == "cm³" else v * 100}.get(u2 if u1 == "cm³" else u1)
+        if u2 == "ml":
+            dist.insert(0, (u(v / 10, u2), "cm3_cl"))
+        elif u1 == "ml":
+            dist.insert(0, (u(v * 10, u2), "cm3_cl"))
+        elif u1 == "l" and u2 == "cm³":
+            dist.insert(0, (u(v * 100, u2), "cm3_cl"))
+        elif u1 == "cm³" and u2 == "l":
+            dist.insert(0, (u(v / 100, u2), "cm3_cl"))
+    if (u1, u2) == ("cm³", "cl"):
+        dist.insert(0, (u(v, u2), "cm3_cl"))
+    dist += [(u(r * 10, u2), None), (u(r / 10, u2), None), (u(r * 1000, u2) if f == 1 else None, None)]
+    eq = {("m³", "l"): "1 m³ = 1000 l", ("dm³", "l"): "1 dm³ = 1 l", ("cm³", "ml"): "1 cm³ = 1 ml", ("l", "dm³"): "1 l = 1 dm³",
+          ("ml", "cm³"): "1 ml = 1 cm³", ("l", "cm³"): "1 l = 1 dm³ = 1000 cm³", ("l", "m³"): "1000 l = 1 m³", ("cm³", "l"): "1000 cm³ = 1 dm³ = 1 l",
+          ("dm³", "ml"): "1 dm³ = 1 l = 1000 ml", ("cm³", "cl"): "1 cm³ = 1 ml = 0,1 cl", ("dm³", "kg"): "1 dm³ de agua = 1 l = 1 kg",
+          ("m³", "kg"): "1 m³ de agua = 1000 l = 1000 kg", ("l", "kg"): "1 l de agua pesa 1 kg"}[(u1, u2)]
+    pasos = [("equivalencia", eq, f"Uso que {eq}."), (f"{fx(v)} × {fx(f)}" if f >= 1 else f"{fx(v)} : {fx(1 / f)}", fx(r), f"Entonces {u(v, u1)} = {resp}.")]
+    adulto = "Claves: 1 dm³ = 1 l, 1 cm³ = 1 ml, 1 m³ = 1000 l; un litro de agua pesa 1 kg. Confundir el litro con el m³ o el cm³ con el cl son los errores típicos."
+    return mk(enun, resp, "t4_vol_cap", {"v": str(v), "de": u1, "a": u2}, dist, pasos, adulto, genericos=var_rel(r, u2, 3))
+
+
+# ---------------------------------------------------------------- comparar longitudes con unidades no convencionales
+
+COLORES = ["roja", "azul", "verde", "amarilla", "naranja", "morada", "blanca", "negra"]
+
+
+@generador("t4_comparar_nc")
+def gen_comparar_nc(rng, d, max_medida=20):
+    obj = rng.choice([("cuerda", "cuerdas", "palmos", "larga", "corta"), ("cinta", "cintas", "palmos", "larga", "corta"),
+                      ("torre", "torres", "cubos", "alta", "baja"), ("serpiente de plastilina", "serpientes de plastilina", "clips", "larga", "corta"),
+                      ("mesa", "mesas", "palmos", "larga", "corta")])
+    cols = rng.sample(COLORES, 3)
+    for _ in range(100):
+        ms = rng.sample(range(3 if d == 1 else 6, max_medida + 1), 3)
+        por_unidad = sorted(range(3), key=lambda i: ms[i] % 10)
+        if d == 1 or len({m % 10 for m in ms}) == 3:
+            break
+    orden = sorted(range(3), key=lambda i: ms[i])
+    nom = lambda i: f"la {cols[i]}"
+    datos = f"La {obj[0]} {cols[0]} mide {ms[0]} {obj[2]}, la {cols[1]} mide {ms[1]} y la {cols[2]} mide {ms[2]}."
+    tipo = "mas" if d == 1 else rng.choice(["mas", "menos"]) if d == 2 else "ordenar"
+    if tipo == "mas":
+        enun = f"{datos} ¿Cuál es la más {obj[3]}?"
+        resp = nom(orden[2])
+        dist = [(nom(orden[0]), "orden_invertido"), (nom(por_unidad[2]), "ultima_cifra"), (nom(orden[1]), None)]
+    elif tipo == "menos":
+        enun = f"{datos} ¿Cuál es la más {obj[4]}?"
+        resp = nom(orden[0])
+        dist = [(nom(orden[2]), "orden_invertido"), (nom(por_unidad[0]), "ultima_cifra"), (nom(orden[1]), None)]
+    else:
+        enun = f"{datos} Ordénalas de la más {obj[4]} a la más {obj[3]}."
+        resp = ", ".join(nom(i) for i in orden)
+        dist = [(", ".join(nom(i) for i in reversed(orden)), "orden_invertido"), (", ".join(nom(i) for i in por_unidad), "ultima_cifra"),
+                (", ".join(nom(i) for i in [orden[1], orden[0], orden[2]]), None), (", ".join(nom(i) for i in [orden[0], orden[2], orden[1]]), None)]
+    pasos = [("comparar", resp, f"Todas se miden con la misma unidad ({obj[2]}), así que basta comparar los números: {', '.join(str(ms[i]) for i in orden)} de menor a mayor."),
+             ("", resp, f"Respuesta: {resp}.")]
+    adulto = "Con la misma unidad, más unidades significa más longitud. Hay que comparar el número entero (12 > 9), no solo la última cifra, y respetar el orden que se pide."
+    return mk(enun, resp, "t4_comparar_nc", {"medidas": ms, "colores": cols}, dist, pasos, adulto,
+              genericos=["miden lo mismo"] if tipo != "ordenar" else [])

@@ -1,0 +1,208 @@
+{
+ "OPER.MULT.01": {
+  "gen": "t2_mult_sentido",
+  "errores": {
+   "suma": "E01",
+   "cuenta_mal": "E02",
+   "grupos_cambiados": "E03",
+   "uno_mas": "E04"
+  },
+  "plantilla": "Suma repetida ↔ multiplicación, 'veces', filas × columnas"
+ },
+ "OPER.MULT.02": {
+  "gen": "t2_tabla",
+  "kw": {
+   "frases": 1
+  },
+  "errores": {
+   "vecino": "E01",
+   "suma": "E02",
+   "cruza": "E03",
+   "por0": "E04"
+  },
+  "plantilla": "Tablas mezcladas: a × b con factores de 0 a 10"
+ },
+ "OPER.MULT.03": {
+  "gen": "t2_mult1",
+  "errores": {
+   "sin_llevada": "E01",
+   "llevada_antes": "E02",
+   "escribe_todo": "E03",
+   "salta_cero": "E04",
+   "tabla": "E05"
+  },
+  "plantilla": "Número de 2–4 cifras × una cifra"
+ },
+ "OPER.MULT.04": {
+  "gen": "t2_mult10",
+  "errores": {
+   "ceros": "E01",
+   "no_cuenta": "E02",
+   "suma": "E03"
+  },
+  "plantilla": "Natural × 10, 100 o 1000"
+ },
+ "OPER.MULT.05": {
+  "gen": "t2_mult_decenas",
+  "errores": {
+   "olvida_ceros": "E01",
+   "come_cero": "E02",
+   "solo_cifras": "E03"
+  },
+  "plantilla": "Natural × cifra seguida de ceros"
+ },
+ "OPER.MULT.06": {
+  "gen": "t2_mult2",
+  "kw": {
+   "cifras_b": 2
+  },
+  "errores": {
+   "sin_desplazar": "E01",
+   "cifra_a_cifra": "E02",
+   "mezcla_llevadas": "E03",
+   "suma_mal": "E04"
+  },
+  "plantilla": "Número de 2–4 cifras × número de 2 cifras"
+ },
+ "OPER.MULT.07": {
+  "gen": "t2_mult2",
+  "kw": {
+   "cifras_b": 3
+  },
+  "errores": {
+   "desplaza_poco": "E01",
+   "cero_medio": "E02",
+   "suma_mal": "E03"
+  },
+  "plantilla": "Número de hasta 4 cifras × número de 3 cifras"
+ },
+ "OPER.MULT.08": {
+  "gen": "t2_mult_prop",
+  "errores": {
+   "distribuye_primero": "E01",
+   "conmuta_resta": "E02",
+   "nombre": "E03"
+  },
+  "plantilla": "Propiedades conmutativa, asociativa, neutro y distributiva"
+ },
+ "OPER.TABLA.01": {
+  "gen": "t2_tabla",
+  "kw": {
+   "tabla": 1
+  },
+  "errores": {
+   "vecino": "E01",
+   "por1": "E03",
+   "por0": "E04"
+  },
+  "secundarias": [],
+  "plantilla": "Hechos de la tabla del 1 (orden salteado e inverso)"
+ },
+ "OPER.TABLA.02": {
+  "gen": "t2_tabla",
+  "kw": {
+   "tabla": 2
+  },
+  "errores": {
+   "vecino": "E01",
+   "suma": "E03"
+  },
+  "secundarias": [],
+  "plantilla": "Hechos de la tabla del 2 (orden salteado e inverso)"
+ },
+ "OPER.TABLA.03": {
+  "gen": "t2_tabla",
+  "kw": {
+   "tabla": 3
+  },
+  "errores": {
+   "vecino": "E01",
+   "otra_tabla": "E03"
+  },
+  "secundarias": [],
+  "plantilla": "Hechos de la tabla del 3 (orden salteado e inverso)"
+ },
+ "OPER.TABLA.04": {
+  "gen": "t2_tabla",
+  "kw": {
+   "tabla": 4
+  },
+  "errores": {
+   "vecino": "E01",
+   "dobla_una_vez": "E03"
+  },
+  "secundarias": [],
+  "plantilla": "Hechos de la tabla del 4 (orden salteado e inverso)"
+ },
+ "OPER.TABLA.05": {
+  "gen": "t2_tabla",
+  "kw": {
+   "tabla": 5
+  },
+  "errores": {
+   "vecino": "E01"
+  },
+  "secundarias": [],
+  "plantilla": "Hechos de la tabla del 5 (orden salteado e inverso)"
+ },
+ "OPER.TABLA.06": {
+  "gen": "t2_tabla",
+  "kw": {
+   "tabla": 6
+  },
+  "errores": {
+   "vecino": "E01",
+   "cruza": "E03"
+  },
+  "secundarias": [],
+  "plantilla": "Hechos de la tabla del 6 (orden salteado e inverso)"
+ },
+ "OPER.TABLA.07": {
+  "gen": "t2_tabla",
+  "kw": {
+   "tabla": 7
+  },
+  "errores": {
+   "vecino": "E01",
+   "cruza": "E03"
+  },
+  "secundarias": [],
+  "plantilla": "Hechos de la tabla del 7 (orden salteado e inverso)"
+ },
+ "OPER.TABLA.08": {
+  "gen": "t2_tabla",
+  "kw": {
+   "tabla": 8
+  },
+  "errores": {
+   "vecino": "E01",
+   "cruza": "E03"
+  },
+  "secundarias": [],
+  "plantilla": "Hechos de la tabla del 8 (orden salteado e inverso)"
+ },
+ "OPER.TABLA.09": {
+  "gen": "t2_tabla",
+  "kw": {
+   "tabla": 9
+  },
+  "errores": {
+   "vecino": "E01",
+   "truco9": "E03"
+  },
+  "secundarias": [],
+  "plantilla": "Hechos de la tabla del 9 (orden salteado e inverso)"
+ },
+ "OPER.TABLA.10": {
+  "gen": "t2_tabla",
+  "kw": {
+   "tabla": 10
+  },
+  "errores": {
+   "vecino": "E01",
+   "ceros": "E03"
+  },
+  "secundarias": [],
+  "plantilla": "Hechos de la tabla del 10 (orden salteado e inverso)"
+ }
+}
