@@ -1,0 +1,1236 @@
+{
+ "habilidad": "PROB.ESTRAT.02",
+ "generado_por": "claude (skill mates10-generar-ejercicios v1)",
+ "ejercicios": [
+  {
+   "dificultad": 1,
+   "enunciado": "Jon tiene 7 monedas, unas de 1 € y otras de 2 €. En total tiene 9 €. ¿Cuántas monedas tiene de cada clase?",
+   "respuesta": "5 de 1 € y 2 de 2 €",
+   "distractores": [
+    {
+     "valor": "7 de 1 € y 1 de 2 €",
+     "error": "E02"
+    },
+    {
+     "valor": "2 de 1 € y 5 de 2 €",
+     "error": null
+    },
+    {
+     "valor": "No se puede resolver: faltan datos",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "PROB.UNA.12",
+    "OPER.MULT.02"
+   ],
+   "explicacion_nino": "Entiende: hay dos condiciones y las dos tienen que cumplirse (7 en total y 9 €). Tantea con orden, cambiando de uno en uno: con 0 monedas grandes (y 7 de la otra clase) salen 7 €; con 1 moneda grande (y 6 de la otra clase) salen 8 €; con 2 monedas grandes (y 5 de la otra clase) salen 9 €. Cada moneda grande más sube 1 €, así que ajustas hasta llegar justo a 9 €. Solución: 5 de 1 € y 2 de 2 €. Comprueba: 5 + 2 = 7 y 5 × 1 + 2 × 2 = 9.",
+   "explicacion_adulto": "Está aprendiendo a tantear de forma ordenada: probar un valor, comprobar TODAS las condiciones y ajustar (si me paso, pruebo con menos; si me quedo corto, con más). Los errores típicos son probar al azar sin mirar si se acerca, quedarse con una respuesta que cumple solo una de las condiciones, o rendirse tras el primer intento. Anímele a apuntar cada prueba en una tablita (lo que prueba y lo que sale) y a comprobar al final las dos condiciones; no hace falta que conozca ecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "5 + 2",
+     "resultado": "7",
+     "texto": "Compruebo el número total."
+    },
+    {
+     "paso": 2,
+     "operacion": "5 × 1 + 2 × 2",
+     "resultado": "9",
+     "texto": "Compruebo la segunda condición."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Mateo tiene 8 monedas, unas de 1 € y otras de 2 €. En total tiene 13 €. ¿Cuántas monedas tiene de cada clase?",
+   "respuesta": "3 de 1 € y 5 de 2 €",
+   "distractores": [
+    {
+     "valor": "5 de 1 € y 4 de 2 €",
+     "error": "E02"
+    },
+    {
+     "valor": "5 de 1 € y 3 de 2 €",
+     "error": null
+    },
+    {
+     "valor": "No se puede resolver: faltan datos",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "PROB.UNA.12",
+    "OPER.MULT.02"
+   ],
+   "explicacion_nino": "Entiende: hay dos condiciones y las dos tienen que cumplirse (8 en total y 13 €). Tantea con orden, cambiando de uno en uno: con 3 monedas grandes (y 5 de la otra clase) salen 11 €; con 4 monedas grandes (y 4 de la otra clase) salen 12 €; con 5 monedas grandes (y 3 de la otra clase) salen 13 €. Cada moneda grande más sube 1 €, así que ajustas hasta llegar justo a 13 €. Solución: 3 de 1 € y 5 de 2 €. Comprueba: 3 + 5 = 8 y 3 × 1 + 5 × 2 = 13.",
+   "explicacion_adulto": "Está aprendiendo a tantear de forma ordenada: probar un valor, comprobar TODAS las condiciones y ajustar (si me paso, pruebo con menos; si me quedo corto, con más). Los errores típicos son probar al azar sin mirar si se acerca, quedarse con una respuesta que cumple solo una de las condiciones, o rendirse tras el primer intento. Anímele a apuntar cada prueba en una tablita (lo que prueba y lo que sale) y a comprobar al final las dos condiciones; no hace falta que conozca ecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "3 + 5",
+     "resultado": "8",
+     "texto": "Compruebo el número total."
+    },
+    {
+     "paso": 2,
+     "operacion": "3 × 1 + 5 × 2",
+     "resultado": "13",
+     "texto": "Compruebo la segunda condición."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Inés tiene 5 monedas, unas de 1 € y otras de 2 €. En total tiene 7 €. ¿Cuántas monedas tiene de cada clase?",
+   "respuesta": "3 de 1 € y 2 de 2 €",
+   "distractores": [
+    {
+     "valor": "5 de 1 € y 1 de 2 €",
+     "error": "E02"
+    },
+    {
+     "valor": "2 de 1 € y 3 de 2 €",
+     "error": null
+    },
+    {
+     "valor": "No se puede resolver: faltan datos",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "PROB.UNA.12",
+    "OPER.MULT.02"
+   ],
+   "explicacion_nino": "Entiende: hay dos condiciones y las dos tienen que cumplirse (5 en total y 7 €). Tantea con orden, cambiando de uno en uno: con 0 monedas grandes (y 5 de la otra clase) salen 5 €; con 1 moneda grande (y 4 de la otra clase) salen 6 €; con 2 monedas grandes (y 3 de la otra clase) salen 7 €. Cada moneda grande más sube 1 €, así que ajustas hasta llegar justo a 7 €. Solución: 3 de 1 € y 2 de 2 €. Comprueba: 3 + 2 = 5 y 3 × 1 + 2 × 2 = 7.",
+   "explicacion_adulto": "Está aprendiendo a tantear de forma ordenada: probar un valor, comprobar TODAS las condiciones y ajustar (si me paso, pruebo con menos; si me quedo corto, con más). Los errores típicos son probar al azar sin mirar si se acerca, quedarse con una respuesta que cumple solo una de las condiciones, o rendirse tras el primer intento. Anímele a apuntar cada prueba en una tablita (lo que prueba y lo que sale) y a comprobar al final las dos condiciones; no hace falta que conozca ecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "3 + 2",
+     "resultado": "5",
+     "texto": "Compruebo el número total."
+    },
+    {
+     "paso": 2,
+     "operacion": "3 × 1 + 2 × 2",
+     "resultado": "7",
+     "texto": "Compruebo la segunda condición."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Vega tiene 9 monedas, unas de 2 € y otras de 5 €. En total tiene 33 €. ¿Cuántas monedas tiene de cada clase?",
+   "respuesta": "4 de 2 € y 5 de 5 €",
+   "distractores": [
+    {
+     "valor": "9 de 2 € y 3 de 5 €",
+     "error": "E02"
+    },
+    {
+     "valor": "5 de 2 € y 4 de 5 €",
+     "error": null
+    },
+    {
+     "valor": "No se puede resolver: faltan datos",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "PROB.UNA.12",
+    "OPER.MULT.02"
+   ],
+   "explicacion_nino": "Entiende: hay dos condiciones y las dos tienen que cumplirse (9 en total y 33 €). Tantea con orden, cambiando de uno en uno: con 3 monedas grandes (y 6 de la otra clase) salen 27 €; con 4 monedas grandes (y 5 de la otra clase) salen 30 €; con 5 monedas grandes (y 4 de la otra clase) salen 33 €. Cada moneda grande más sube 3 €, así que ajustas hasta llegar justo a 33 €. Solución: 4 de 2 € y 5 de 5 €. Comprueba: 4 + 5 = 9 y 4 × 2 + 5 × 5 = 33.",
+   "explicacion_adulto": "Está aprendiendo a tantear de forma ordenada: probar un valor, comprobar TODAS las condiciones y ajustar (si me paso, pruebo con menos; si me quedo corto, con más). Los errores típicos son probar al azar sin mirar si se acerca, quedarse con una respuesta que cumple solo una de las condiciones, o rendirse tras el primer intento. Anímele a apuntar cada prueba en una tablita (lo que prueba y lo que sale) y a comprobar al final las dos condiciones; no hace falta que conozca ecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "4 + 5",
+     "resultado": "9",
+     "texto": "Compruebo el número total."
+    },
+    {
+     "paso": 2,
+     "operacion": "4 × 2 + 5 × 5",
+     "resultado": "33",
+     "texto": "Compruebo la segunda condición."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Iker tiene 10 monedas, unas de 2 € y otras de 5 €. En total tiene 26 €. ¿Cuántas monedas tiene de cada clase?",
+   "respuesta": "8 de 2 € y 2 de 5 €",
+   "distractores": [
+    {
+     "valor": "3 de 2 € y 4 de 5 €",
+     "error": "E02"
+    },
+    {
+     "valor": "2 de 2 € y 8 de 5 €",
+     "error": null
+    },
+    {
+     "valor": "No se puede resolver: faltan datos",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "PROB.UNA.12",
+    "OPER.MULT.02"
+   ],
+   "explicacion_nino": "Entiende: hay dos condiciones y las dos tienen que cumplirse (10 en total y 26 €). Tantea con orden, cambiando de uno en uno: con 0 monedas grandes (y 10 de la otra clase) salen 20 €; con 1 moneda grande (y 9 de la otra clase) salen 23 €; con 2 monedas grandes (y 8 de la otra clase) salen 26 €. Cada moneda grande más sube 3 €, así que ajustas hasta llegar justo a 26 €. Solución: 8 de 2 € y 2 de 5 €. Comprueba: 8 + 2 = 10 y 8 × 2 + 2 × 5 = 26.",
+   "explicacion_adulto": "Está aprendiendo a tantear de forma ordenada: probar un valor, comprobar TODAS las condiciones y ajustar (si me paso, pruebo con menos; si me quedo corto, con más). Los errores típicos son probar al azar sin mirar si se acerca, quedarse con una respuesta que cumple solo una de las condiciones, o rendirse tras el primer intento. Anímele a apuntar cada prueba en una tablita (lo que prueba y lo que sale) y a comprobar al final las dos condiciones; no hace falta que conozca ecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "8 + 2",
+     "resultado": "10",
+     "texto": "Compruebo el número total."
+    },
+    {
+     "paso": 2,
+     "operacion": "8 × 2 + 2 × 5",
+     "resultado": "26",
+     "texto": "Compruebo la segunda condición."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Yusuf tiene 12 monedas, unas de 1 € y otras de 5 €. En total tiene 48 €. ¿Cuántas monedas tiene de cada clase?",
+   "respuesta": "3 de 1 € y 9 de 5 €",
+   "distractores": [
+    {
+     "valor": "8 de 1 € y 8 de 5 €",
+     "error": "E02"
+    },
+    {
+     "valor": "9 de 1 € y 3 de 5 €",
+     "error": null
+    },
+    {
+     "valor": "No se puede resolver: faltan datos",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "PROB.UNA.12",
+    "OPER.MULT.02"
+   ],
+   "explicacion_nino": "Entiende: hay dos condiciones y las dos tienen que cumplirse (12 en total y 48 €). Tantea con orden, cambiando de uno en uno: con 7 monedas grandes (y 5 de la otra clase) salen 40 €; con 8 monedas grandes (y 4 de la otra clase) salen 44 €; con 9 monedas grandes (y 3 de la otra clase) salen 48 €. Cada moneda grande más sube 4 €, así que ajustas hasta llegar justo a 48 €. Solución: 3 de 1 € y 9 de 5 €. Comprueba: 3 + 9 = 12 y 3 × 1 + 9 × 5 = 48.",
+   "explicacion_adulto": "Está aprendiendo a tantear de forma ordenada: probar un valor, comprobar TODAS las condiciones y ajustar (si me paso, pruebo con menos; si me quedo corto, con más). Los errores típicos son probar al azar sin mirar si se acerca, quedarse con una respuesta que cumple solo una de las condiciones, o rendirse tras el primer intento. Anímele a apuntar cada prueba en una tablita (lo que prueba y lo que sale) y a comprobar al final las dos condiciones; no hace falta que conozca ecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "3 + 9",
+     "resultado": "12",
+     "texto": "Compruebo el número total."
+    },
+    {
+     "paso": 2,
+     "operacion": "3 × 1 + 9 × 5",
+     "resultado": "48",
+     "texto": "Compruebo la segunda condición."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En el corral de Noa hay gallinas y conejos. Se cuentan 7 cabezas y 26 patas. ¿Cuántos animales hay de cada clase?",
+   "respuesta": "1 gallina y 6 conejos",
+   "distractores": [
+    {
+     "valor": "5 gallinas y 4 conejos",
+     "error": "E02"
+    },
+    {
+     "valor": "6 gallinas y 1 conejo",
+     "error": null
+    },
+    {
+     "valor": "No se puede resolver: faltan datos",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "PROB.UNA.12",
+    "OPER.MULT.02"
+   ],
+   "explicacion_nino": "Entiende: hay dos condiciones y las dos tienen que cumplirse (7 en total y 26 patas). Tantea con orden, cambiando de uno en uno: con 4 conejos (y 3 de la otra clase) salen 22 patas; con 5 conejos (y 2 de la otra clase) salen 24 patas; con 6 conejos (y 1 de la otra clase) salen 26 patas. Cada conejo más sube 2 patas, así que ajustas hasta llegar justo a 26 patas. Solución: 1 gallina y 6 conejos. Comprueba: 1 + 6 = 7 y 1 × 2 + 6 × 4 = 26.",
+   "explicacion_adulto": "Está aprendiendo a tantear de forma ordenada: probar un valor, comprobar TODAS las condiciones y ajustar (si me paso, pruebo con menos; si me quedo corto, con más). Los errores típicos son probar al azar sin mirar si se acerca, quedarse con una respuesta que cumple solo una de las condiciones, o rendirse tras el primer intento. Anímele a apuntar cada prueba en una tablita (lo que prueba y lo que sale) y a comprobar al final las dos condiciones; no hace falta que conozca ecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1 + 6",
+     "resultado": "7",
+     "texto": "Compruebo el número total."
+    },
+    {
+     "paso": 2,
+     "operacion": "1 × 2 + 6 × 4",
+     "resultado": "26",
+     "texto": "Compruebo la segunda condición."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En el corral de Unai hay gallinas y conejos. Se cuentan 6 cabezas y 22 patas. ¿Cuántos animales hay de cada clase?",
+   "respuesta": "1 gallina y 5 conejos",
+   "distractores": [
+    {
+     "valor": "5 gallinas y 3 conejos",
+     "error": "E02"
+    },
+    {
+     "valor": "5 gallinas y 1 conejo",
+     "error": null
+    },
+    {
+     "valor": "No se puede resolver: faltan datos",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "PROB.UNA.12",
+    "OPER.MULT.02"
+   ],
+   "explicacion_nino": "Entiende: hay dos condiciones y las dos tienen que cumplirse (6 en total y 22 patas). Tantea con orden, cambiando de uno en uno: con 3 conejos (y 3 de la otra clase) salen 18 patas; con 4 conejos (y 2 de la otra clase) salen 20 patas; con 5 conejos (y 1 de la otra clase) salen 22 patas. Cada conejo más sube 2 patas, así que ajustas hasta llegar justo a 22 patas. Solución: 1 gallina y 5 conejos. Comprueba: 1 + 5 = 6 y 1 × 2 + 5 × 4 = 22.",
+   "explicacion_adulto": "Está aprendiendo a tantear de forma ordenada: probar un valor, comprobar TODAS las condiciones y ajustar (si me paso, pruebo con menos; si me quedo corto, con más). Los errores típicos son probar al azar sin mirar si se acerca, quedarse con una respuesta que cumple solo una de las condiciones, o rendirse tras el primer intento. Anímele a apuntar cada prueba en una tablita (lo que prueba y lo que sale) y a comprobar al final las dos condiciones; no hace falta que conozca ecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1 + 5",
+     "resultado": "6",
+     "texto": "Compruebo el número total."
+    },
+    {
+     "paso": 2,
+     "operacion": "1 × 2 + 5 × 4",
+     "resultado": "22",
+     "texto": "Compruebo la segunda condición."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En el corral de Unai hay gallinas y conejos. Se cuentan 10 cabezas y 24 patas. ¿Cuántos animales hay de cada clase?",
+   "respuesta": "8 gallinas y 2 conejos",
+   "distractores": [
+    {
+     "valor": "4 gallinas y 4 conejos",
+     "error": "E02"
+    },
+    {
+     "valor": "2 gallinas y 8 conejos",
+     "error": null
+    },
+    {
+     "valor": "No se puede resolver: faltan datos",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "PROB.UNA.12",
+    "OPER.MULT.02"
+   ],
+   "explicacion_nino": "Entiende: hay dos condiciones y las dos tienen que cumplirse (10 en total y 24 patas). Tantea con orden, cambiando de uno en uno: con 0 conejos (y 10 de la otra clase) salen 20 patas; con 1 conejo (y 9 de la otra clase) salen 22 patas; con 2 conejos (y 8 de la otra clase) salen 24 patas. Cada conejo más sube 2 patas, así que ajustas hasta llegar justo a 24 patas. Solución: 8 gallinas y 2 conejos. Comprueba: 8 + 2 = 10 y 8 × 2 + 2 × 4 = 24.",
+   "explicacion_adulto": "Está aprendiendo a tantear de forma ordenada: probar un valor, comprobar TODAS las condiciones y ajustar (si me paso, pruebo con menos; si me quedo corto, con más). Los errores típicos son probar al azar sin mirar si se acerca, quedarse con una respuesta que cumple solo una de las condiciones, o rendirse tras el primer intento. Anímele a apuntar cada prueba en una tablita (lo que prueba y lo que sale) y a comprobar al final las dos condiciones; no hace falta que conozca ecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "8 + 2",
+     "resultado": "10",
+     "texto": "Compruebo el número total."
+    },
+    {
+     "paso": 2,
+     "operacion": "8 × 2 + 2 × 4",
+     "resultado": "24",
+     "texto": "Compruebo la segunda condición."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En el corral de Óscar hay gallinas y conejos. Se cuentan 9 cabezas y 20 patas. ¿Cuántos animales hay de cada clase?",
+   "respuesta": "8 gallinas y 1 conejo",
+   "distractores": [
+    {
+     "valor": "4 gallinas y 3 conejos",
+     "error": "E02"
+    },
+    {
+     "valor": "1 gallina y 8 conejos",
+     "error": null
+    },
+    {
+     "valor": "No se puede resolver: faltan datos",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "PROB.UNA.12",
+    "OPER.MULT.02"
+   ],
+   "explicacion_nino": "Entiende: hay dos condiciones y las dos tienen que cumplirse (9 en total y 20 patas). Tantea con orden, cambiando de uno en uno: con 0 conejos (y 9 de la otra clase) salen 18 patas; con 1 conejo (y 8 de la otra clase) salen 20 patas. Cada conejo más sube 2 patas, así que ajustas hasta llegar justo a 20 patas. Solución: 8 gallinas y 1 conejo. Comprueba: 8 + 1 = 9 y 8 × 2 + 1 × 4 = 20.",
+   "explicacion_adulto": "Está aprendiendo a tantear de forma ordenada: probar un valor, comprobar TODAS las condiciones y ajustar (si me paso, pruebo con menos; si me quedo corto, con más). Los errores típicos son probar al azar sin mirar si se acerca, quedarse con una respuesta que cumple solo una de las condiciones, o rendirse tras el primer intento. Anímele a apuntar cada prueba en una tablita (lo que prueba y lo que sale) y a comprobar al final las dos condiciones; no hace falta que conozca ecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "8 + 1",
+     "resultado": "9",
+     "texto": "Compruebo el número total."
+    },
+    {
+     "paso": 2,
+     "operacion": "8 × 2 + 1 × 4",
+     "resultado": "20",
+     "texto": "Compruebo la segunda condición."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "En el corral de Julia hay gallinas y conejos. Se cuentan 18 cabezas y 50 patas. ¿Cuántos animales hay de cada clase?",
+   "respuesta": "11 gallinas y 7 conejos",
+   "distractores": [
+    {
+     "valor": "15 gallinas y 5 conejos",
+     "error": "E02"
+    },
+    {
+     "valor": "7 gallinas y 11 conejos",
+     "error": null
+    },
+    {
+     "valor": "No se puede resolver: faltan datos",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "PROB.UNA.12",
+    "OPER.MULT.02"
+   ],
+   "explicacion_nino": "Entiende: hay dos condiciones y las dos tienen que cumplirse (18 en total y 50 patas). Tantea con orden, cambiando de uno en uno: con 5 conejos (y 13 de la otra clase) salen 46 patas; con 6 conejos (y 12 de la otra clase) salen 48 patas; con 7 conejos (y 11 de la otra clase) salen 50 patas. Cada conejo más sube 2 patas, así que ajustas hasta llegar justo a 50 patas. Solución: 11 gallinas y 7 conejos. Comprueba: 11 + 7 = 18 y 11 × 2 + 7 × 4 = 50.",
+   "explicacion_adulto": "Está aprendiendo a tantear de forma ordenada: probar un valor, comprobar TODAS las condiciones y ajustar (si me paso, pruebo con menos; si me quedo corto, con más). Los errores típicos son probar al azar sin mirar si se acerca, quedarse con una respuesta que cumple solo una de las condiciones, o rendirse tras el primer intento. Anímele a apuntar cada prueba en una tablita (lo que prueba y lo que sale) y a comprobar al final las dos condiciones; no hace falta que conozca ecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "11 + 7",
+     "resultado": "18",
+     "texto": "Compruebo el número total."
+    },
+    {
+     "paso": 2,
+     "operacion": "11 × 2 + 7 × 4",
+     "resultado": "50",
+     "texto": "Compruebo la segunda condición."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Para el museo, la entrada infantil cuesta 3 € y la de adulto 5 €. El grupo de Thiago compra 5 entradas y paga 23 €. ¿Cuántas de cada tipo compran?",
+   "respuesta": "1 infantil y 4 de adulto",
+   "distractores": [
+    {
+     "valor": "6 infantiles y 1 de adulto",
+     "error": "E02"
+    },
+    {
+     "valor": "4 infantiles y 1 de adulto",
+     "error": null
+    },
+    {
+     "valor": "No se puede resolver: faltan datos",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "PROB.UNA.12",
+    "OPER.MULT.02"
+   ],
+   "explicacion_nino": "Entiende: hay dos condiciones y las dos tienen que cumplirse (5 en total y 23 €). Tantea con orden, cambiando de uno en uno: con 2 entradas de adulto (y 3 de la otra clase) salen 19 €; con 3 entradas de adulto (y 2 de la otra clase) salen 21 €; con 4 entradas de adulto (y 1 de la otra clase) salen 23 €. Cada entrada de adulto más sube 2 €, así que ajustas hasta llegar justo a 23 €. Solución: 1 infantil y 4 de adulto. Comprueba: 1 + 4 = 5 y 1 × 3 + 4 × 5 = 23.",
+   "explicacion_adulto": "Está aprendiendo a tantear de forma ordenada: probar un valor, comprobar TODAS las condiciones y ajustar (si me paso, pruebo con menos; si me quedo corto, con más). Los errores típicos son probar al azar sin mirar si se acerca, quedarse con una respuesta que cumple solo una de las condiciones, o rendirse tras el primer intento. Anímele a apuntar cada prueba en una tablita (lo que prueba y lo que sale) y a comprobar al final las dos condiciones; no hace falta que conozca ecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1 + 4",
+     "resultado": "5",
+     "texto": "Compruebo el número total."
+    },
+    {
+     "paso": 2,
+     "operacion": "1 × 3 + 4 × 5",
+     "resultado": "23",
+     "texto": "Compruebo la segunda condición."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Para el museo, la entrada infantil cuesta 3 € y la de adulto 5 €. El grupo de Nil compra 7 entradas y paga 25 €. ¿Cuántas de cada tipo compran?",
+   "respuesta": "5 infantiles y 2 de adulto",
+   "distractores": [
+    {
+     "valor": "6 infantiles y 1 de adulto",
+     "error": "E02"
+    },
+    {
+     "valor": "2 infantiles y 5 de adulto",
+     "error": null
+    },
+    {
+     "valor": "No se puede resolver: faltan datos",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "PROB.UNA.12",
+    "OPER.MULT.02"
+   ],
+   "explicacion_nino": "Entiende: hay dos condiciones y las dos tienen que cumplirse (7 en total y 25 €). Tantea con orden, cambiando de uno en uno: con 0 entradas de adulto (y 7 de la otra clase) salen 21 €; con 1 entrada de adulto (y 6 de la otra clase) salen 23 €; con 2 entradas de adulto (y 5 de la otra clase) salen 25 €. Cada entrada de adulto más sube 2 €, así que ajustas hasta llegar justo a 25 €. Solución: 5 infantiles y 2 de adulto. Comprueba: 5 + 2 = 7 y 5 × 3 + 2 × 5 = 25.",
+   "explicacion_adulto": "Está aprendiendo a tantear de forma ordenada: probar un valor, comprobar TODAS las condiciones y ajustar (si me paso, pruebo con menos; si me quedo corto, con más). Los errores típicos son probar al azar sin mirar si se acerca, quedarse con una respuesta que cumple solo una de las condiciones, o rendirse tras el primer intento. Anímele a apuntar cada prueba en una tablita (lo que prueba y lo que sale) y a comprobar al final las dos condiciones; no hace falta que conozca ecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "5 + 2",
+     "resultado": "7",
+     "texto": "Compruebo el número total."
+    },
+    {
+     "paso": 2,
+     "operacion": "5 × 3 + 2 × 5",
+     "resultado": "25",
+     "texto": "Compruebo la segunda condición."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Para el museo, la entrada infantil cuesta 4 € y la de adulto 7 €. El grupo de Omar compra 8 entradas y paga 38 €. ¿Cuántas de cada tipo compran?",
+   "respuesta": "6 infantiles y 2 de adulto",
+   "distractores": [
+    {
+     "valor": "7 infantiles y 1 de adulto",
+     "error": "E02"
+    },
+    {
+     "valor": "2 infantiles y 6 de adulto",
+     "error": null
+    },
+    {
+     "valor": "No se puede resolver: faltan datos",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "PROB.UNA.12",
+    "OPER.MULT.02"
+   ],
+   "explicacion_nino": "Entiende: hay dos condiciones y las dos tienen que cumplirse (8 en total y 38 €). Tantea con orden, cambiando de uno en uno: con 0 entradas de adulto (y 8 de la otra clase) salen 32 €; con 1 entrada de adulto (y 7 de la otra clase) salen 35 €; con 2 entradas de adulto (y 6 de la otra clase) salen 38 €. Cada entrada de adulto más sube 3 €, así que ajustas hasta llegar justo a 38 €. Solución: 6 infantiles y 2 de adulto. Comprueba: 6 + 2 = 8 y 6 × 4 + 2 × 7 = 38.",
+   "explicacion_adulto": "Está aprendiendo a tantear de forma ordenada: probar un valor, comprobar TODAS las condiciones y ajustar (si me paso, pruebo con menos; si me quedo corto, con más). Los errores típicos son probar al azar sin mirar si se acerca, quedarse con una respuesta que cumple solo una de las condiciones, o rendirse tras el primer intento. Anímele a apuntar cada prueba en una tablita (lo que prueba y lo que sale) y a comprobar al final las dos condiciones; no hace falta que conozca ecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "6 + 2",
+     "resultado": "8",
+     "texto": "Compruebo el número total."
+    },
+    {
+     "paso": 2,
+     "operacion": "6 × 4 + 2 × 7",
+     "resultado": "38",
+     "texto": "Compruebo la segunda condición."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Para el museo, la entrada infantil cuesta 4 € y la de adulto 7 €. El grupo de Samuel compra 6 entradas y paga 27 €. ¿Cuántas de cada tipo compran?",
+   "respuesta": "5 infantiles y 1 de adulto",
+   "distractores": [
+    {
+     "valor": "4 infantiles y 2 de adulto",
+     "error": "E02"
+    },
+    {
+     "valor": "1 infantil y 5 de adulto",
+     "error": null
+    },
+    {
+     "valor": "No se puede resolver: faltan datos",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "PROB.UNA.12",
+    "OPER.MULT.02"
+   ],
+   "explicacion_nino": "Entiende: hay dos condiciones y las dos tienen que cumplirse (6 en total y 27 €). Tantea con orden, cambiando de uno en uno: con 0 entradas de adulto (y 6 de la otra clase) salen 24 €; con 1 entrada de adulto (y 5 de la otra clase) salen 27 €. Cada entrada de adulto más sube 3 €, así que ajustas hasta llegar justo a 27 €. Solución: 5 infantiles y 1 de adulto. Comprueba: 5 + 1 = 6 y 5 × 4 + 1 × 7 = 27.",
+   "explicacion_adulto": "Está aprendiendo a tantear de forma ordenada: probar un valor, comprobar TODAS las condiciones y ajustar (si me paso, pruebo con menos; si me quedo corto, con más). Los errores típicos son probar al azar sin mirar si se acerca, quedarse con una respuesta que cumple solo una de las condiciones, o rendirse tras el primer intento. Anímele a apuntar cada prueba en una tablita (lo que prueba y lo que sale) y a comprobar al final las dos condiciones; no hace falta que conozca ecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "5 + 1",
+     "resultado": "6",
+     "texto": "Compruebo el número total."
+    },
+    {
+     "paso": 2,
+     "operacion": "5 × 4 + 1 × 7",
+     "resultado": "27",
+     "texto": "Compruebo la segunda condición."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Para el museo, la entrada infantil cuesta 6 € y la de adulto 9 €. El grupo de Candela compra 12 entradas y paga 105 €. ¿Cuántas de cada tipo compran?",
+   "respuesta": "1 infantil y 11 de adulto",
+   "distractores": [
+    {
+     "valor": "10 infantiles y 5 de adulto",
+     "error": "E02"
+    },
+    {
+     "valor": "11 infantiles y 1 de adulto",
+     "error": null
+    },
+    {
+     "valor": "No se puede resolver: faltan datos",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "PROB.UNA.12",
+    "OPER.MULT.02"
+   ],
+   "explicacion_nino": "Entiende: hay dos condiciones y las dos tienen que cumplirse (12 en total y 105 €). Tantea con orden, cambiando de uno en uno: con 9 entradas de adulto (y 3 de la otra clase) salen 99 €; con 10 entradas de adulto (y 2 de la otra clase) salen 102 €; con 11 entradas de adulto (y 1 de la otra clase) salen 105 €. Cada entrada de adulto más sube 3 €, así que ajustas hasta llegar justo a 105 €. Solución: 1 infantil y 11 de adulto. Comprueba: 1 + 11 = 12 y 1 × 6 + 11 × 9 = 105.",
+   "explicacion_adulto": "Está aprendiendo a tantear de forma ordenada: probar un valor, comprobar TODAS las condiciones y ajustar (si me paso, pruebo con menos; si me quedo corto, con más). Los errores típicos son probar al azar sin mirar si se acerca, quedarse con una respuesta que cumple solo una de las condiciones, o rendirse tras el primer intento. Anímele a apuntar cada prueba en una tablita (lo que prueba y lo que sale) y a comprobar al final las dos condiciones; no hace falta que conozca ecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1 + 11",
+     "resultado": "12",
+     "texto": "Compruebo el número total."
+    },
+    {
+     "paso": 2,
+     "operacion": "1 × 6 + 11 × 9",
+     "resultado": "105",
+     "texto": "Compruebo la segunda condición."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En la tienda de Unai hay bicicletas y triciclos. Hay 5 vehículos y 14 ruedas en total. ¿Cuántos hay de cada clase?",
+   "respuesta": "1 bicicleta y 4 triciclos",
+   "distractores": [
+    {
+     "valor": "4 bicicletas y 2 triciclos",
+     "error": "E02"
+    },
+    {
+     "valor": "4 bicicletas y 1 triciclo",
+     "error": null
+    },
+    {
+     "valor": "No se puede resolver: faltan datos",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "PROB.UNA.12",
+    "OPER.MULT.02"
+   ],
+   "explicacion_nino": "Entiende: hay dos condiciones y las dos tienen que cumplirse (5 en total y 14 ruedas). Tantea con orden, cambiando de uno en uno: con 2 triciclos (y 3 de la otra clase) salen 12 ruedas; con 3 triciclos (y 2 de la otra clase) salen 13 ruedas; con 4 triciclos (y 1 de la otra clase) salen 14 ruedas. Cada triciclo más sube 1 ruedas, así que ajustas hasta llegar justo a 14 ruedas. Solución: 1 bicicleta y 4 triciclos. Comprueba: 1 + 4 = 5 y 1 × 2 + 4 × 3 = 14.",
+   "explicacion_adulto": "Está aprendiendo a tantear de forma ordenada: probar un valor, comprobar TODAS las condiciones y ajustar (si me paso, pruebo con menos; si me quedo corto, con más). Los errores típicos son probar al azar sin mirar si se acerca, quedarse con una respuesta que cumple solo una de las condiciones, o rendirse tras el primer intento. Anímele a apuntar cada prueba en una tablita (lo que prueba y lo que sale) y a comprobar al final las dos condiciones; no hace falta que conozca ecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1 + 4",
+     "resultado": "5",
+     "texto": "Compruebo el número total."
+    },
+    {
+     "paso": 2,
+     "operacion": "1 × 2 + 4 × 3",
+     "resultado": "14",
+     "texto": "Compruebo la segunda condición."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En la tienda de Mateo hay bicicletas y triciclos. Hay 4 vehículos y 11 ruedas en total. ¿Cuántos hay de cada clase?",
+   "respuesta": "1 bicicleta y 3 triciclos",
+   "distractores": [
+    {
+     "valor": "4 bicicletas y 1 triciclo",
+     "error": "E02"
+    },
+    {
+     "valor": "3 bicicletas y 1 triciclo",
+     "error": null
+    },
+    {
+     "valor": "No se puede resolver: faltan datos",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "PROB.UNA.12",
+    "OPER.MULT.02"
+   ],
+   "explicacion_nino": "Entiende: hay dos condiciones y las dos tienen que cumplirse (4 en total y 11 ruedas). Tantea con orden, cambiando de uno en uno: con 1 triciclo (y 3 de la otra clase) salen 9 ruedas; con 2 triciclos (y 2 de la otra clase) salen 10 ruedas; con 3 triciclos (y 1 de la otra clase) salen 11 ruedas. Cada triciclo más sube 1 ruedas, así que ajustas hasta llegar justo a 11 ruedas. Solución: 1 bicicleta y 3 triciclos. Comprueba: 1 + 3 = 4 y 1 × 2 + 3 × 3 = 11.",
+   "explicacion_adulto": "Está aprendiendo a tantear de forma ordenada: probar un valor, comprobar TODAS las condiciones y ajustar (si me paso, pruebo con menos; si me quedo corto, con más). Los errores típicos son probar al azar sin mirar si se acerca, quedarse con una respuesta que cumple solo una de las condiciones, o rendirse tras el primer intento. Anímele a apuntar cada prueba en una tablita (lo que prueba y lo que sale) y a comprobar al final las dos condiciones; no hace falta que conozca ecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1 + 3",
+     "resultado": "4",
+     "texto": "Compruebo el número total."
+    },
+    {
+     "paso": 2,
+     "operacion": "1 × 2 + 3 × 3",
+     "resultado": "11",
+     "texto": "Compruebo la segunda condición."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En la tienda de Emma hay bicicletas y triciclos. Hay 10 vehículos y 28 ruedas en total. ¿Cuántos hay de cada clase?",
+   "respuesta": "2 bicicletas y 8 triciclos",
+   "distractores": [
+    {
+     "valor": "5 bicicletas y 6 triciclos",
+     "error": "E02"
+    },
+    {
+     "valor": "8 bicicletas y 2 triciclos",
+     "error": null
+    },
+    {
+     "valor": "No se puede resolver: faltan datos",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "PROB.UNA.12",
+    "OPER.MULT.02"
+   ],
+   "explicacion_nino": "Entiende: hay dos condiciones y las dos tienen que cumplirse (10 en total y 28 ruedas). Tantea con orden, cambiando de uno en uno: con 6 triciclos (y 4 de la otra clase) salen 26 ruedas; con 7 triciclos (y 3 de la otra clase) salen 27 ruedas; con 8 triciclos (y 2 de la otra clase) salen 28 ruedas. Cada triciclo más sube 1 ruedas, así que ajustas hasta llegar justo a 28 ruedas. Solución: 2 bicicletas y 8 triciclos. Comprueba: 2 + 8 = 10 y 2 × 2 + 8 × 3 = 28.",
+   "explicacion_adulto": "Está aprendiendo a tantear de forma ordenada: probar un valor, comprobar TODAS las condiciones y ajustar (si me paso, pruebo con menos; si me quedo corto, con más). Los errores típicos son probar al azar sin mirar si se acerca, quedarse con una respuesta que cumple solo una de las condiciones, o rendirse tras el primer intento. Anímele a apuntar cada prueba en una tablita (lo que prueba y lo que sale) y a comprobar al final las dos condiciones; no hace falta que conozca ecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "2 + 8",
+     "resultado": "10",
+     "texto": "Compruebo el número total."
+    },
+    {
+     "paso": 2,
+     "operacion": "2 × 2 + 8 × 3",
+     "resultado": "28",
+     "texto": "Compruebo la segunda condición."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "En la tienda de Hugo hay bicicletas y triciclos. Hay 17 vehículos y 50 ruedas en total. ¿Cuántos hay de cada clase?",
+   "respuesta": "1 bicicleta y 16 triciclos",
+   "distractores": [
+    {
+     "valor": "4 bicicletas y 14 triciclos",
+     "error": "E02"
+    },
+    {
+     "valor": "16 bicicletas y 1 triciclo",
+     "error": null
+    },
+    {
+     "valor": "No se puede resolver: faltan datos",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "PROB.UNA.12",
+    "OPER.MULT.02"
+   ],
+   "explicacion_nino": "Entiende: hay dos condiciones y las dos tienen que cumplirse (17 en total y 50 ruedas). Tantea con orden, cambiando de uno en uno: con 14 triciclos (y 3 de la otra clase) salen 48 ruedas; con 15 triciclos (y 2 de la otra clase) salen 49 ruedas; con 16 triciclos (y 1 de la otra clase) salen 50 ruedas. Cada triciclo más sube 1 ruedas, así que ajustas hasta llegar justo a 50 ruedas. Solución: 1 bicicleta y 16 triciclos. Comprueba: 1 + 16 = 17 y 1 × 2 + 16 × 3 = 50.",
+   "explicacion_adulto": "Está aprendiendo a tantear de forma ordenada: probar un valor, comprobar TODAS las condiciones y ajustar (si me paso, pruebo con menos; si me quedo corto, con más). Los errores típicos son probar al azar sin mirar si se acerca, quedarse con una respuesta que cumple solo una de las condiciones, o rendirse tras el primer intento. Anímele a apuntar cada prueba en una tablita (lo que prueba y lo que sale) y a comprobar al final las dos condiciones; no hace falta que conozca ecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1 + 16",
+     "resultado": "17",
+     "texto": "Compruebo el número total."
+    },
+    {
+     "paso": 2,
+     "operacion": "1 × 2 + 16 × 3",
+     "resultado": "50",
+     "texto": "Compruebo la segunda condición."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Pienso dos números. Si los sumo me da 8 y si los multiplico me da 12. ¿Qué números son?",
+   "respuesta": "2 y 6",
+   "distractores": [
+    {
+     "valor": "1 y 7",
+     "error": "E02"
+    },
+    {
+     "valor": "1 y 12",
+     "error": "E02"
+    },
+    {
+     "valor": "No se puede resolver: faltan datos",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "PROB.UNA.12",
+    "OPER.MULT.02"
+   ],
+   "explicacion_nino": "Entiende: los dos números tienen que sumar 8 Y multiplicados dar 12. Prueba parejas que sumen 8, en orden: 1 y 7 → 7; 2 y 6 → 12. Cuando el producto es 12, ¡ya está! Solución: 2 y 6. Comprueba: 2 + 6 = 8 y 2 × 6 = 12.",
+   "explicacion_adulto": "Está aprendiendo a tantear de forma ordenada: probar un valor, comprobar TODAS las condiciones y ajustar (si me paso, pruebo con menos; si me quedo corto, con más). Los errores típicos son probar al azar sin mirar si se acerca, quedarse con una respuesta que cumple solo una de las condiciones, o rendirse tras el primer intento. Anímele a apuntar cada prueba en una tablita (lo que prueba y lo que sale) y a comprobar al final las dos condiciones; no hace falta que conozca ecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "2 + 6",
+     "resultado": "8",
+     "texto": "Cumple la suma."
+    },
+    {
+     "paso": 2,
+     "operacion": "2 × 6",
+     "resultado": "12",
+     "texto": "Cumple el producto."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Pienso dos números. Si los sumo me da 13 y si los multiplico me da 40. ¿Qué números son?",
+   "respuesta": "5 y 8",
+   "distractores": [
+    {
+     "valor": "4 y 9",
+     "error": "E02"
+    },
+    {
+     "valor": "1 y 40",
+     "error": "E02"
+    },
+    {
+     "valor": "No se puede resolver: faltan datos",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "PROB.UNA.12",
+    "OPER.MULT.02"
+   ],
+   "explicacion_nino": "Entiende: los dos números tienen que sumar 13 Y multiplicados dar 40. Prueba parejas que sumen 13, en orden: 3 y 10 → 30; 4 y 9 → 36; 5 y 8 → 40. Cuando el producto es 40, ¡ya está! Solución: 5 y 8. Comprueba: 5 + 8 = 13 y 5 × 8 = 40.",
+   "explicacion_adulto": "Está aprendiendo a tantear de forma ordenada: probar un valor, comprobar TODAS las condiciones y ajustar (si me paso, pruebo con menos; si me quedo corto, con más). Los errores típicos son probar al azar sin mirar si se acerca, quedarse con una respuesta que cumple solo una de las condiciones, o rendirse tras el primer intento. Anímele a apuntar cada prueba en una tablita (lo que prueba y lo que sale) y a comprobar al final las dos condiciones; no hace falta que conozca ecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "5 + 8",
+     "resultado": "13",
+     "texto": "Cumple la suma."
+    },
+    {
+     "paso": 2,
+     "operacion": "5 × 8",
+     "resultado": "40",
+     "texto": "Cumple el producto."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Pienso dos números. Si los sumo me da 14 y si los multiplico me da 45. ¿Qué números son?",
+   "respuesta": "5 y 9",
+   "distractores": [
+    {
+     "valor": "4 y 10",
+     "error": "E02"
+    },
+    {
+     "valor": "1 y 45",
+     "error": "E02"
+    },
+    {
+     "valor": "No se puede resolver: faltan datos",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "PROB.UNA.12",
+    "OPER.MULT.02"
+   ],
+   "explicacion_nino": "Entiende: los dos números tienen que sumar 14 Y multiplicados dar 45. Prueba parejas que sumen 14, en orden: 3 y 11 → 33; 4 y 10 → 40; 5 y 9 → 45. Cuando el producto es 45, ¡ya está! Solución: 5 y 9. Comprueba: 5 + 9 = 14 y 5 × 9 = 45.",
+   "explicacion_adulto": "Está aprendiendo a tantear de forma ordenada: probar un valor, comprobar TODAS las condiciones y ajustar (si me paso, pruebo con menos; si me quedo corto, con más). Los errores típicos son probar al azar sin mirar si se acerca, quedarse con una respuesta que cumple solo una de las condiciones, o rendirse tras el primer intento. Anímele a apuntar cada prueba en una tablita (lo que prueba y lo que sale) y a comprobar al final las dos condiciones; no hace falta que conozca ecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "5 + 9",
+     "resultado": "14",
+     "texto": "Cumple la suma."
+    },
+    {
+     "paso": 2,
+     "operacion": "5 × 9",
+     "resultado": "45",
+     "texto": "Cumple el producto."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Pienso dos números. Si los sumo me da 17 y si los multiplico me da 70. ¿Qué números son?",
+   "respuesta": "7 y 10",
+   "distractores": [
+    {
+     "valor": "6 y 11",
+     "error": "E02"
+    },
+    {
+     "valor": "2 y 35",
+     "error": "E02"
+    },
+    {
+     "valor": "No se puede resolver: faltan datos",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "PROB.UNA.12",
+    "OPER.MULT.02"
+   ],
+   "explicacion_nino": "Entiende: los dos números tienen que sumar 17 Y multiplicados dar 70. Prueba parejas que sumen 17, en orden: 5 y 12 → 60; 6 y 11 → 66; 7 y 10 → 70. Cuando el producto es 70, ¡ya está! Solución: 7 y 10. Comprueba: 7 + 10 = 17 y 7 × 10 = 70.",
+   "explicacion_adulto": "Está aprendiendo a tantear de forma ordenada: probar un valor, comprobar TODAS las condiciones y ajustar (si me paso, pruebo con menos; si me quedo corto, con más). Los errores típicos son probar al azar sin mirar si se acerca, quedarse con una respuesta que cumple solo una de las condiciones, o rendirse tras el primer intento. Anímele a apuntar cada prueba en una tablita (lo que prueba y lo que sale) y a comprobar al final las dos condiciones; no hace falta que conozca ecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "7 + 10",
+     "resultado": "17",
+     "texto": "Cumple la suma."
+    },
+    {
+     "paso": 2,
+     "operacion": "7 × 10",
+     "resultado": "70",
+     "texto": "Cumple el producto."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Pienso dos números. Si los sumo me da 14 y si los multiplico me da 33. ¿Qué números son?",
+   "respuesta": "3 y 11",
+   "distractores": [
+    {
+     "valor": "2 y 12",
+     "error": "E02"
+    },
+    {
+     "valor": "1 y 33",
+     "error": "E02"
+    },
+    {
+     "valor": "No se puede resolver: faltan datos",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "PROB.UNA.12",
+    "OPER.MULT.02"
+   ],
+   "explicacion_nino": "Entiende: los dos números tienen que sumar 14 Y multiplicados dar 33. Prueba parejas que sumen 14, en orden: 1 y 13 → 13; 2 y 12 → 24; 3 y 11 → 33. Cuando el producto es 33, ¡ya está! Solución: 3 y 11. Comprueba: 3 + 11 = 14 y 3 × 11 = 33.",
+   "explicacion_adulto": "Está aprendiendo a tantear de forma ordenada: probar un valor, comprobar TODAS las condiciones y ajustar (si me paso, pruebo con menos; si me quedo corto, con más). Los errores típicos son probar al azar sin mirar si se acerca, quedarse con una respuesta que cumple solo una de las condiciones, o rendirse tras el primer intento. Anímele a apuntar cada prueba en una tablita (lo que prueba y lo que sale) y a comprobar al final las dos condiciones; no hace falta que conozca ecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "3 + 11",
+     "resultado": "14",
+     "texto": "Cumple la suma."
+    },
+    {
+     "paso": 2,
+     "operacion": "3 × 11",
+     "resultado": "33",
+     "texto": "Cumple el producto."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Pienso dos números. Si los sumo me da 12 y si los multiplico me da 35. ¿Qué números son?",
+   "respuesta": "5 y 7",
+   "distractores": [
+    {
+     "valor": "4 y 8",
+     "error": "E02"
+    },
+    {
+     "valor": "1 y 35",
+     "error": "E02"
+    },
+    {
+     "valor": "No se puede resolver: faltan datos",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "PROB.UNA.12",
+    "OPER.MULT.02"
+   ],
+   "explicacion_nino": "Entiende: los dos números tienen que sumar 12 Y multiplicados dar 35. Prueba parejas que sumen 12, en orden: 3 y 9 → 27; 4 y 8 → 32; 5 y 7 → 35. Cuando el producto es 35, ¡ya está! Solución: 5 y 7. Comprueba: 5 + 7 = 12 y 5 × 7 = 35.",
+   "explicacion_adulto": "Está aprendiendo a tantear de forma ordenada: probar un valor, comprobar TODAS las condiciones y ajustar (si me paso, pruebo con menos; si me quedo corto, con más). Los errores típicos son probar al azar sin mirar si se acerca, quedarse con una respuesta que cumple solo una de las condiciones, o rendirse tras el primer intento. Anímele a apuntar cada prueba en una tablita (lo que prueba y lo que sale) y a comprobar al final las dos condiciones; no hace falta que conozca ecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "5 + 7",
+     "resultado": "12",
+     "texto": "Cumple la suma."
+    },
+    {
+     "paso": 2,
+     "operacion": "5 × 7",
+     "resultado": "35",
+     "texto": "Cumple el producto."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Nerea tiene el doble de años que su primo. Entre los dos suman 9 años. ¿Qué edad tiene cada uno?",
+   "respuesta": "Nerea 6 y su primo 3",
+   "distractores": [
+    {
+     "valor": "Nerea 4 y su primo 5",
+     "error": "E02"
+    },
+    {
+     "valor": "Nerea 8 y su primo 4",
+     "error": "E02"
+    },
+    {
+     "valor": "No se puede resolver: faltan datos",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "PROB.UNA.12",
+    "OPER.MULT.02"
+   ],
+   "explicacion_nino": "Entiende: dos condiciones: Nerea tiene el doble que su primo, y juntos suman 9. Tantea con la edad del primo: primo 1 → Nerea 2, suman 3; primo 2 → Nerea 4, suman 6; primo 3 → Nerea 6, suman 9. Si te pasas de 9, prueba con menos; si no llegas, con más. Con barras: la barra del primo es 1 trozo y la de Nerea 2 trozos; 3 trozos son 9. Comprueba: 6 = 2 × 3 y 6 + 3 = 9.",
+   "explicacion_adulto": "Está aprendiendo a tantear de forma ordenada: probar un valor, comprobar TODAS las condiciones y ajustar (si me paso, pruebo con menos; si me quedo corto, con más). Los errores típicos son probar al azar sin mirar si se acerca, quedarse con una respuesta que cumple solo una de las condiciones, o rendirse tras el primer intento. Anímele a apuntar cada prueba en una tablita (lo que prueba y lo que sale) y a comprobar al final las dos condiciones; no hace falta que conozca ecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "2 × 3",
+     "resultado": "6",
+     "texto": "La edad de Nerea."
+    },
+    {
+     "paso": 2,
+     "operacion": "6 + 3",
+     "resultado": "9",
+     "texto": "Suman lo que dice el problema."
+    }
+   ],
+   "plantilla": "P06"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Emma tiene el triple de años que su primo. Entre los dos suman 24 años. ¿Qué edad tiene cada uno?",
+   "respuesta": "Emma 18 y su primo 6",
+   "distractores": [
+    {
+     "valor": "Emma 16 y su primo 8",
+     "error": "E02"
+    },
+    {
+     "valor": "Emma 21 y su primo 7",
+     "error": "E02"
+    },
+    {
+     "valor": "No se puede resolver: faltan datos",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "PROB.UNA.12",
+    "OPER.MULT.02"
+   ],
+   "explicacion_nino": "Entiende: dos condiciones: Emma tiene el triple que su primo, y juntos suman 24. Tantea con la edad del primo: primo 4 → Emma 12, suman 16; primo 5 → Emma 15, suman 20; primo 6 → Emma 18, suman 24. Si te pasas de 24, prueba con menos; si no llegas, con más. Con barras: la barra del primo es 1 trozo y la de Emma 3 trozos; 4 trozos son 24. Comprueba: 18 = 3 × 6 y 18 + 6 = 24.",
+   "explicacion_adulto": "Está aprendiendo a tantear de forma ordenada: probar un valor, comprobar TODAS las condiciones y ajustar (si me paso, pruebo con menos; si me quedo corto, con más). Los errores típicos son probar al azar sin mirar si se acerca, quedarse con una respuesta que cumple solo una de las condiciones, o rendirse tras el primer intento. Anímele a apuntar cada prueba en una tablita (lo que prueba y lo que sale) y a comprobar al final las dos condiciones; no hace falta que conozca ecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "3 × 6",
+     "resultado": "18",
+     "texto": "La edad de Emma."
+    },
+    {
+     "paso": 2,
+     "operacion": "18 + 6",
+     "resultado": "24",
+     "texto": "Suman lo que dice el problema."
+    }
+   ],
+   "plantilla": "P06"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Maite tiene el doble de años que su primo. Entre los dos suman 24 años. ¿Qué edad tiene cada uno?",
+   "respuesta": "Maite 16 y su primo 8",
+   "distractores": [
+    {
+     "valor": "Maite 14 y su primo 10",
+     "error": "E02"
+    },
+    {
+     "valor": "Maite 18 y su primo 9",
+     "error": "E02"
+    },
+    {
+     "valor": "No se puede resolver: faltan datos",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "PROB.UNA.12",
+    "OPER.MULT.02"
+   ],
+   "explicacion_nino": "Entiende: dos condiciones: Maite tiene el doble que su primo, y juntos suman 24. Tantea con la edad del primo: primo 6 → Maite 12, suman 18; primo 7 → Maite 14, suman 21; primo 8 → Maite 16, suman 24. Si te pasas de 24, prueba con menos; si no llegas, con más. Con barras: la barra del primo es 1 trozo y la de Maite 2 trozos; 3 trozos son 24. Comprueba: 16 = 2 × 8 y 16 + 8 = 24.",
+   "explicacion_adulto": "Está aprendiendo a tantear de forma ordenada: probar un valor, comprobar TODAS las condiciones y ajustar (si me paso, pruebo con menos; si me quedo corto, con más). Los errores típicos son probar al azar sin mirar si se acerca, quedarse con una respuesta que cumple solo una de las condiciones, o rendirse tras el primer intento. Anímele a apuntar cada prueba en una tablita (lo que prueba y lo que sale) y a comprobar al final las dos condiciones; no hace falta que conozca ecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "2 × 8",
+     "resultado": "16",
+     "texto": "La edad de Maite."
+    },
+    {
+     "paso": 2,
+     "operacion": "16 + 8",
+     "resultado": "24",
+     "texto": "Suman lo que dice el problema."
+    }
+   ],
+   "plantilla": "P06"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Óscar tiene el triple de años que su primo. Entre los dos suman 32 años. ¿Qué edad tiene cada uno?",
+   "respuesta": "Óscar 24 y su primo 8",
+   "distractores": [
+    {
+     "valor": "Óscar 22 y su primo 10",
+     "error": "E02"
+    },
+    {
+     "valor": "Óscar 27 y su primo 9",
+     "error": "E02"
+    },
+    {
+     "valor": "No se puede resolver: faltan datos",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "PROB.UNA.12",
+    "OPER.MULT.02"
+   ],
+   "explicacion_nino": "Entiende: dos condiciones: Óscar tiene el triple que su primo, y juntos suman 32. Tantea con la edad del primo: primo 6 → Óscar 18, suman 24; primo 7 → Óscar 21, suman 28; primo 8 → Óscar 24, suman 32. Si te pasas de 32, prueba con menos; si no llegas, con más. Con barras: la barra del primo es 1 trozo y la de Óscar 3 trozos; 4 trozos son 32. Comprueba: 24 = 3 × 8 y 24 + 8 = 32.",
+   "explicacion_adulto": "Está aprendiendo a tantear de forma ordenada: probar un valor, comprobar TODAS las condiciones y ajustar (si me paso, pruebo con menos; si me quedo corto, con más). Los errores típicos son probar al azar sin mirar si se acerca, quedarse con una respuesta que cumple solo una de las condiciones, o rendirse tras el primer intento. Anímele a apuntar cada prueba en una tablita (lo que prueba y lo que sale) y a comprobar al final las dos condiciones; no hace falta que conozca ecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "3 × 8",
+     "resultado": "24",
+     "texto": "La edad de Óscar."
+    },
+    {
+     "paso": 2,
+     "operacion": "24 + 8",
+     "resultado": "32",
+     "texto": "Suman lo que dice el problema."
+    }
+   ],
+   "plantilla": "P06"
+  }
+ ]
+}

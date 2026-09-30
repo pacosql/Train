@@ -12,11 +12,20 @@ NINOS = ["Hugo", "Mateo", "Leo", "Daniel", "Álvaro", "Pablo", "Manuel", "Adriá
          "Nicolás", "Samuel", "Omar", "Yeray"]
 
 
+def _ordena(dist, semilla):
+    """Distractores con clave de error primero (en orden aleatorio, para que salgan todos los errores), luego el resto."""
+    import random as _r
+    con = [x for x in dist if x[1]]
+    sin = [x for x in dist if not x[1]]
+    _r.Random(semilla).shuffle(con)
+    return con + sin
+
+
 def mk(enun, resp, dist, op, texto, adulto, genericos=None, pasos=None, datos=None, **params):
     """Ejercicio de un paso. resp y valores de dist pueden ser int o str; dist = [(valor, clave)]."""
     r = resp if isinstance(resp, str) else fmt(resp)
     ej = Ejercicio(enunciado=enun, respuesta=r, parametros=dict(op=op, **params), datos=datos)
-    ej.distractores = [(v, k) for v, k in dist if v is not None and (isinstance(v, str) or v >= 0)]
+    ej.distractores = _ordena([(v, k) for v, k in dist if v is not None and (isinstance(v, str) or v >= 0)], enun)
     ej.genericos = [g for g in (genericos or []) if g is not None and (isinstance(g, str) or g >= 0)]
     ej.pasos = pasos or [{"paso": 1, "operacion": op, "resultado": r, "texto": texto}]
     ej.explicacion_nino = texto
@@ -37,6 +46,14 @@ def iconos_filas(n, ic, por_fila=5, desordenado=False, rng=None):
         filas.append((" " * rng.randint(0, 4)) + "  ".join([ic] * k))
         quedan -= k
     return "\n".join(filas)
+
+
+FEM = {"canica", "pegatina", "galleta", "manzana", "flor", "concha", "piedra"}
+
+
+def cuantos(obj, mayus=True):
+    w = "cuántas" if obj[0] in FEM else "cuántos"
+    return w.capitalize() if mayus else w
 
 
 def cifras_concat(*xs):
@@ -708,7 +725,7 @@ def g_lect01(rng, d, modos=("cantidad", "nombre_a_cifra", "cifra_a_nombre")):
     if m == "cantidad":
         if n == 0:
             obj = rng.choice(OBJETOS)
-            return mk(f"En el plato no queda ninguna {obj[0]}. ¿Qué número dice cuántas {obj[1]} hay?" if obj[0][-1] == "a" else
+            return mk(f"En la caja no queda ninguna {obj[0]}. ¿Qué número dice cuántas {obj[1]} hay?" if obj[0] in FEM else
                       f"En la caja no queda ningún {obj[0]}. ¿Qué número dice cuántos {obj[1]} hay?", 0, [(1, "E03"), (10, None), (2, None)], "leer",
                       "Cuando no hay ninguno, el número es el 0 (cero).", "El cero como «ninguno» no es evidente para un niño pequeño: jugad a quitar objetos hasta que no quede nada.", n=0)
         ic = rng.choice(ICONOS)
@@ -1681,7 +1698,7 @@ def g_rom01(rng, d, maximo=39, modos=("a_decimal", "a_romano")):
     if d >= 2 and rng.random() < 0.6:
         n = rng.choice([x for x in range(1, maximo + 1) if x % 10 in (4, 9)])
     r = romano(n)
-    dd = [(rom_suma_todo(r) if rom_suma_todo(r) != n else None, "E02"), (rom_valor(r[::-1]) if r[::-1] != r and rom_valor(r[::-1]) != n else None, None), (n + 10, None), (n - 1, None)]
+    dd = [(rom_suma_todo(r) if rom_suma_todo(r) != n else None, "E02"), (n + 5 if n + 5 <= 39 else n - 5, None), (n + 10, None), (n - 1, None)]
     inv = None
     for a, b in (("IV", "VI"), ("IX", "XI"), ("VI", "IV"), ("XI", "IX")):
         if r.endswith(a):
@@ -1760,3 +1777,1105 @@ def g_rom04(rng, d, modos=("a_decimal", "a_romano")):
                (raya(romano(a + 1)) + (romano(b) if b else ""), None), (raya(romano(a)) + romano(b + 1) if b < 999 else None, None)], "romano",
               f"{fmt(n)} = {fmt(a)} × 1000" + (f" + {b}" if b else "") + f". {fmt(a)} es {romano(a)} y le pongo raya encima" + (f"; {b} es {romano(b)}" if b else "") + f": {rr_}.",
               "La raya encima multiplica por 1000 solo las letras que la llevan.", n=n)
+
+
+# ================================================================ OPER.SUMA
+
+from .aritmetica import suma_escribe_todo, pasos_suma, pasos_suma_abn, pasos_resta, pasos_resta_abn, hay_llevada, hay_prestamo  # noqa: E402
+
+
+def cols(n, k):
+    return [int(c) for c in str(n).zfill(k)][::-1]   # unidades primero
+
+
+def suma_sim(nums, lleva_desde=None, lleva_uno=False):
+    """Suma por columnas. lleva_desde: conjunto de columnas desde las que SÍ se lleva (None = todas).
+    lleva_uno: lleva 1 aunque la columna pase de 19."""
+    k = max(len(str(n)) for n in nums)
+    cs = [cols(n, k) for n in nums]
+    out, acc = 0, 0
+    for i in range(k):
+        t = sum(c[i] for c in cs) + acc
+        if i == k - 1:
+            out += t * 10 ** i
+            break
+        out += (t % 10) * 10 ** i
+        acc = (t // 10) if (lleva_desde is None or i in lleva_desde) else 0
+        if lleva_uno and acc:
+            acc = 1
+    return out
+
+
+def alinea_izq(a, b):
+    la, lb = len(str(a)), len(str(b))
+    if la == lb:
+        return None
+    x, y = (a, b) if la > lb else (b, a)
+    return x + y * 10 ** (abs(la - lb))
+
+
+ADULTO_SUMA = ("Comprueba que coloca cada cifra en su columna y que, cuando una columna pasa de 9, suma la «llevada» a la siguiente. "
+               "El error más común es olvidarla o escribir el número entero.")
+
+
+def _suma_ej(nums, dist, adulto=ADULTO_SUMA, enun=None, genericos=None, datos=None, abn=True):
+    s = sum(nums)
+    op = " + ".join(fmt(n) for n in nums)
+    ej = Ejercicio(enunciado=enun or f"Calcula: {op}", respuesta=fmt(s), parametros={"op": "suma", "sumandos": nums, "a": nums[0], "b": nums[1]}, datos=datos)
+    ej.distractores = _ordena([(v, k) for v, k in dist if v is not None and (isinstance(v, str) or v >= 0)], ej.enunciado)
+    ej.genericos = genericos if genericos is not None else [s + 10, s - 10, s + 1, s - 1, s + 100]
+    if max(nums) < 10 and len(nums) == 2:
+        a, b = nums
+        mayor, menor = max(a, b), min(a, b)
+        if s > 10:
+            falta = 10 - mayor
+            ej.pasos = [{"paso": 1, "operacion": f"{mayor} + {falta}", "resultado": "10", "texto": f"Empiezo por el {mayor}. Para llegar a 10 le faltan {falta}."},
+                        {"paso": 2, "operacion": f"{menor} = {falta} + {menor - falta}", "resultado": str(menor - falta), "texto": f"Parto el {menor} en {falta} y {menor - falta}."},
+                        {"paso": 3, "operacion": f"10 + {menor - falta}", "resultado": str(s), "texto": f"10 + {menor - falta} = {s}."}]
+            ej.explicacion_nino = f"Completa el 10: {mayor} + {falta} = 10, y te quedan {menor - falta}. 10 + {menor - falta} = {s}."
+        else:
+            ej.pasos = [{"paso": 1, "operacion": f"{mayor} + {menor}", "resultado": str(s), "texto": f"Empiezo en el {mayor} y cuento {menor} más" +
+                         (": " + ", ".join(str(mayor + i) for i in range(1, menor + 1)) if menor else "") + f". Llego a {s}."}]
+            ej.explicacion_nino = f"Empieza en el número mayor, {mayor}, y cuenta {menor} más: llegas a {s}." if menor else f"Sumar 0 no cambia nada: {mayor} + 0 = {mayor}."
+        ej.explicacion_adulto = ("Si cuenta con los dedos desde el primer número, enséñale a empezar por el mayor y, si pasa de 10, a completar primero la decena.")
+    else:
+        ej.pasos = pasos_suma(nums)
+        ej.explicacion_nino = "Coloca los números uno debajo de otro, unidades con unidades. " + " ".join(p["texto"] for p in ej.pasos) + f" Resultado: {fmt(s)}."
+        ej.explicacion_adulto = adulto
+        if len(nums) == 2 and abn:
+            pa = pasos_suma_abn(*nums)
+            ej.explicaciones_extra["abn"] = {"nino": " ".join(p["texto"] for p in pa) + f" Total: {fmt(s)}.", "pasos": pa,
+                                             "adulto": "En ABN se suma por partes, de las cantidades grandes a las pequeñas, sin columnas ni llevadas."}
+    return ej
+
+
+def _contexto_suma(rng, a, b):
+    nom = rng.choice(NINAS + NINOS)
+    obj = rng.choice(OBJETOS)
+    return rng.choice([f"{nom} tiene {a} {obj[1] if a != 1 else obj[0]} y le dan {b} más. ¿Cuántos tiene ahora?".replace("Cuántos", cuantos(obj)),
+                       f"En una caja hay {a} {obj[1] if a != 1 else obj[0]} y en otra hay {b}. ¿Cuántos hay en total?".replace("Cuántos", cuantos(obj))])
+
+
+@generador("t1_suma01")
+def g_suma01(rng, d, contexto=False):
+    for _ in range(100):
+        a, b = rng.randint(0 if d == 3 else 1, 9), rng.randint(0 if d == 3 else 1, 9)
+        if a + b > 10 or (d == 1 and a + b > 6) or (d == 2 and a + b < 5) or (d == 3 and a + b < 8 and 0 not in (a, b)):
+            continue
+        break
+    s = a + b
+    dist = [(s - 1 if b else None, "E01"), (abs(a - b) if a != b else None, "E02"), (s + 1, "E03"), (0 if b == 0 and a else None, "E04"), (s + 2, None), (s - 2, None)]
+    if b == 0:
+        dist[2] = (s + 1, "E04")
+    enun = _contexto_suma(rng, a, b) if contexto and rng.random() < 0.5 and a and b else None
+    return _suma_ej([a, b], dist, enun=enun, genericos=[s + 2, s - 2, 10])
+
+
+@generador("t1_suma02")
+def g_suma02(rng, d, modos=("hueco", "falta", "marco", "pareja")):
+    m = modo(rng, modos, "hueco")
+    a = rng.randint(1, 9) if d > 1 else rng.randint(4, 9)
+    r = 10 - a
+    dist = [(a + 10, "E01"), (a if a != r else None, "E02"), (r + 1, "E03"), (r - 1 if r > 1 else None, None), (r + 2, None)]
+    if m == "hueco":
+        enun = rng.choice([f"Calcula el número que falta: {a} + ? = 10", f"Calcula el número que falta: ? + {a} = 10"])
+    elif m == "falta":
+        nom = rng.choice(NINAS + NINOS)
+        obj = rng.choice(OBJETOS)
+        enun = f"{nom} tiene {a} {obj[1] if a > 1 else obj[0]} y quiere tener 10. ¿Cuántos le faltan?".replace("Cuántos", cuantos(obj))
+    elif m == "marco":
+        enun = f"¿Cuántos huecos blancos faltan por llenar para tener 10?\n{marco10(a, rng.choice(['🔴', '🔵', '🟢']))}"
+    else:
+        resp = f"{a} y {r}"
+        dist = [(f"{a} y {a + 10 - 10 + (1 if r != a + 1 else 2)}" if False else f"{a} y {r + 1}", "E03"), (f"{a} y {r - 1}" if r > 1 else f"{a} y {r + 2}", None),
+                (f"{a} y {a}" if a != r else f"{a} y {a + 2}", "E02"), (f"{a} y 10", "E01")]
+        return mk(f"¿Qué pareja de números suma 10?", resp, dist, "pareja10", f"{a} + {r} = 10: son «amigos del 10».",
+                  "Las parejas que suman 10 (1-9, 2-8, 3-7, 4-6, 5-5) son la base de las sumas y restas con llevada. Tienen que salir sin pensar.",
+                  datos={"opciones_fijas": True}, a=a)
+    return mk(enun, r, dist, "complemento10", f"Del {a} al 10 faltan {r}: {a} + {r} = 10. Puedes contar desde el {a}: " +
+              ", ".join(str(a + i) for i in range(1, r + 1)) + f" ({r} saltos).",
+              "Las parejas que suman 10 (1-9, 2-8, 3-7, 4-6, 5-5) son la base de las sumas y restas con llevada. Tienen que salir sin pensar.", a=a)
+
+
+@generador("t1_suma03")
+def g_suma03(rng, d, contexto=False):
+    for _ in range(100):
+        a, b = rng.randint(2, 9), rng.randint(2, 9)
+        s = a + b
+        if not 11 <= s <= 18:
+            continue
+        if d == 1 and s > 13 or d == 2 and not 12 <= s <= 16 or d == 3 and s < 14:
+            continue
+        break
+    dist = [(s - 1, "E01"), (s - 10, "E02"), (s + 1, "E04"), (s + 10, None), (s - 2, None)]
+    enun = _contexto_suma(rng, a, b) if contexto and rng.random() < 0.4 else None
+    return _suma_ej([a, b], dist, enun=enun, genericos=[s + 2, s - 2])
+
+
+@generador("t1_suma04")
+def g_suma04(rng, d):
+    for _ in range(300):
+        a = rng.randint(10, 98)
+        b = rng.randint(1, 9) if d == 1 or (d == 2 and rng.random() < 0.3) else rng.randint(10, 89)
+        if d == 3 and rng.random() < 0.4:
+            b = rng.randint(10, 89)
+        if a + b > 99 or hay_llevada([a, b]):
+            continue
+        break
+    else:
+        return None
+    s = a + b
+    digs = sum(int(c) for c in str(a) + str(b))
+    solo_u = (a // 10) * 10 + (a % 10 + b % 10)
+    solo_d = (a // 10 + b // 10) * 10 + a % 10 if b >= 10 else None
+    dist = [(a + 10 * b if b < 10 else None, "E01"), (digs if b >= 10 else None, "E02"), (solo_u if solo_u != s else None, "E03"), (solo_d, "E03"), (s + 10, None), (s + 1, None)]
+    return _suma_ej([a, b], dist)
+
+
+@generador("t1_suma05")
+def g_suma05(rng, d):
+    for _ in range(300):
+        a = rng.randint(10, 89 if d < 3 else 98)
+        b = rng.randint(2, 9)
+        if a + b > 99 or not hay_llevada([a, b]):
+            continue
+        break
+    else:
+        return None
+    s = a + b
+    dist = [(suma_sim([a, b], lleva_desde=set()), "E01"), (str(suma_escribe_todo([a, b])), "E02"), (a + 10 * b, "E03"), (s - 1, "E04"), (s + 10, None)]
+    return _suma_ej([a, b], dist)
+
+
+@generador("t1_suma06")
+def g_suma06(rng, d, modos=("hueco", "igualdad")):
+    m = modo(rng, modos, "hueco")
+    a, b = (rng.randint(2, 9), rng.randint(2, 9)) if d == 1 else (rng.randint(10, 99), rng.randint(10, 99))
+    if a == b:
+        return None
+    if m == "hueco":
+        forma = rng.randint(0, 1)
+        enun = f"Completa sin hacer la suma: {a} + {b} = {b} + ?" if forma == 0 else f"Completa sin hacer la suma: {a} + {b} = ? + {a}"
+        r = a if forma == 0 else b
+        otro = b if forma == 0 else a
+        dist = [(a + b, "E01"), (otro, None), (abs(a - b) if abs(a - b) not in (a, b) else None, None), (r + 1, None)]
+        return mk(enun, r, dist, "conmutativa", f"El orden de los sumandos no cambia el resultado: {a} + {b} = {b} + {a}. El número que falta es {r}.",
+                  "Propiedad conmutativa: sirve para empezar a contar por el número mayor y para ahorrar cálculos.", a=a, b=b)
+    x, y = max(a, b), min(a, b)
+    resp = f"{a} + {b} = {b} + {a}"
+    dist = [(f"{x} − {y} = {y} − {x}", "E03"), (f"{a} + {b} = {a} + {b + 1}", None), (f"{a} + {b} = {b} − {a}" if b > a else f"{a} + {b} = {a} − {b}", None),
+            (f"{a} + {b} = {a + 1} + {b - 1} + 1", None)]
+    return mk("¿Cuál de estas igualdades es verdadera?", resp, dist, "conmutativa",
+              f"En la suma, cambiar el orden no cambia el resultado: {resp}. En la resta no pasa lo mismo ({x} − {y} no es igual que {y} − {x}).",
+              "Propiedad conmutativa: vale para la suma (y la multiplicación), pero no para la resta.", a=a, b=b)
+
+
+@generador("t1_suma07")
+def g_suma07(rng, d):
+    for _ in range(300):
+        a, b = rng.randint(10, 99), rng.randint(10, 99)
+        s = a + b
+        if not hay_llevada([a, b]) or s > 198:
+            continue
+        if (a % 10 + b % 10) < 10:
+            continue
+        if d == 1 and s > 99 or d == 3 and s < 100:
+            continue
+        break
+    else:
+        return None
+    s = a + b
+    dist = [(suma_sim([a, b], lleva_desde=set()), "E01"), (str(suma_escribe_todo([a, b])), "E02"), (suma_sim([a, b], lleva_desde=set()) + 1, "E03"), (s + 10, None), (s - 1, None)]
+    return _suma_ej([a, b], dist)
+
+
+@generador("t1_suma08")
+def g_suma08(rng, d):
+    for _ in range(300):
+        a = rng.randint(100, 899)
+        cb = 3 if d == 3 or (d == 2 and rng.random() < 0.5) else rng.choice([1, 2])
+        b = rng.randint(10 ** (cb - 1), 10 ** cb - 1)
+        if a + b > 999 or hay_llevada([a, b]):
+            continue
+        break
+    else:
+        return None
+    s = a + b
+    sin_c = a % 100 + b % 100 if b >= 100 else None
+    copia = (a // 100) * 100 + (a % 100 + b % 100) if b >= 100 else None
+    dist = [(alinea_izq(a, b) if alinea_izq(a, b) and alinea_izq(a, b) <= 99999 else None, "E01"), (sin_c, "E02"), (copia, "E02"), (s + 100, None), (s + 10, None), (s - 10, None)]
+    return _suma_ej([a, b], dist)
+
+
+@generador("t1_suma09")
+def g_suma09(rng, d):
+    for _ in range(400):
+        a = rng.randint(100, 899)
+        b = rng.randint(10, 99) if d == 1 or (d == 2 and rng.random() < 0.4) else rng.randint(100, 899)
+        s = a + b
+        if s > 999:
+            continue
+        cu = a % 10 + b % 10 >= 10
+        cd = (a // 10 % 10 + b // 10 % 10 + (1 if cu else 0)) >= 10
+        if not (cu or cd):
+            continue
+        if d == 3 and not (cu and cd):
+            continue
+        break
+    else:
+        return None
+    dist = [(suma_sim([a, b], lleva_desde=set()), "E01"), (str(suma_escribe_todo([a, b])), "E02"), (suma_sim([a, b], lleva_desde={0}) if cu and cd else None, "E03"),
+            (alinea_izq(a, b), "E04"), (s + 10, None), (s - 10, None)]
+    return _suma_ej([a, b], dist)
+
+
+@generador("t1_suma10")
+def g_suma10(rng, d, sumandos=(3, 3)):
+    for _ in range(500):
+        k = rng.randint(*sumandos)
+        nums = [rng.randint(10, 99) if d == 1 else rng.randint(10, 399) for _ in range(k)]
+        s = sum(nums)
+        if s > 999:
+            continue
+        # alguna columna con llevada ≥ 2
+        kk = max(len(str(n)) for n in nums)
+        cs = [cols(n, kk) for n in nums]
+        acc, grande = 0, False
+        for i in range(kk):
+            t = sum(c[i] for c in cs) + acc
+            acc = t // 10
+            if acc >= 2:
+                grande = True
+        if grande:
+            break
+    else:
+        return None
+    dist = [(suma_sim(nums, lleva_uno=True), "E01"), (s - nums[-1], "E02"), (suma_sim(nums, lleva_desde=set()), "E03"), (s + 10, None), (s - 10, None)]
+    return _suma_ej(nums, dist, abn=False)
+
+
+@generador("t1_suma11")
+def g_suma11(rng, d):
+    for _ in range(500):
+        k = 3 if d == 3 else 2
+        nums = [rng.randint(1000, 7999)] + [rng.randint(100 if d == 1 else 10, 999 if d < 3 else 4999) for _ in range(k - 1)]
+        if d == 2:
+            nums[1] = rng.randint(1000, 5999)
+        s = sum(nums)
+        if s > 9999 or not hay_llevada(nums):
+            continue
+        kk = 4
+        cs = [cols(n, kk) for n in nums]
+        acc = 0
+        c2 = False
+        for i in range(kk):
+            t = sum(c[i] for c in cs) + acc
+            acc = t // 10
+            if i == 2 and acc:
+                c2 = True
+        if d >= 2 and not c2:
+            continue
+        break
+    else:
+        return None
+    dist = [(alinea_izq(nums[0], nums[1]) if len(nums) == 2 else None, "E01"), (suma_sim(nums, lleva_desde=set()), "E02"),
+            (suma_sim(nums, lleva_desde={0, 1}) if c2 else None, "E03"), (s + 100, None), (s - 10, None), (s + 1000, None)]
+    return _suma_ej(nums, dist, abn=len(nums) == 2)
+
+
+@generador("t1_suma12")
+def g_suma12(rng, d, modos=("elegir", "hueco", "resta")):
+    m = modo(rng, modos, "elegir")
+    if m == "elegir":
+        for _ in range(200):
+            a = rng.randint(11, 89)
+            c = (100 if d > 1 else 10 * (a // 10 + 1)) - a
+            b = rng.randint(11, 89)
+            if c <= 0 or b in (a, c) or (b + a) % 10 == 0 or (b + c) % 10 == 0:
+                continue
+            break
+        else:
+            return None
+        terms = [a, b, c]
+        # los dos que conviene juntar no van seguidos al principio
+        resp = f"{a} + {c}"
+        dist = [(f"{a} + {b}", "E01"), (f"{b} + {c}", None), ("ninguno: hay que sumar en el orden escrito", "E01")]
+        return mk(f"Para calcular {a} + {b} + {c} de cabeza, ¿qué dos números conviene sumar primero?", resp, dist, "asociativa",
+                  f"{a} + {c} = {a + c}, un número redondo. Después es fácil: {a + c} + {b} = {a + b + c}.",
+                  "En una suma se pueden cambiar el orden y los grupos (propiedades conmutativa y asociativa). Buscar parejas que den decenas o centenas exactas ahorra mucho.",
+                  a=a, b=b, c=c)
+    if m == "hueco":
+        a, b, c = rng.randint(11, 99), rng.randint(11, 99), rng.randint(2, 99)
+        dist = [(b + c, None), (a + b + c, None), (a, None), (a + b, None)]
+        return mk(f"Calcula el número que falta: ({a} + {b}) + {c} = {a} + ({b} + ?)", c, dist, "asociativa",
+                  f"Se pueden agrupar los sumandos como se quiera sin que cambie el resultado: el número que falta es {c}.",
+                  "Propiedad asociativa: (a + b) + c = a + (b + c).", a=a, b=b, c=c)
+    a = rng.randint(20, 99)
+    b, c = rng.randint(2, 15), rng.randint(2, 15)
+    if b <= c or b + c > a:
+        return None
+    r = a - b - c
+    return mk(f"Calcula: {a} − {b} − {c}", r, [(a - (b - c), "E03"), (a - b + c, None), (r + 1, None), (r - 10, None)], "resta_encadenada",
+              f"Resto en orden: {a} − {b} = {a - b}, y {a - b} − {c} = {r}. (En la resta no se puede agrupar como en la suma: {a} − ({b} − {c}) daría otra cosa.)",
+              "La asociativa vale para la suma, no para la resta. Restar dos números seguidos es como restar su suma.", a=a, b=b, c=c)
+
+
+# ================================================================ OPER.RESTA
+
+ADULTO_RESTA = ("El error más frecuente es restar la cifra pequeña de la grande en cada columna, sin importar cuál está arriba. "
+                "Pídele que diga en voz alta «¿a este número le puedo quitar ese?» antes de cada columna, y que compruebe sumando.")
+
+
+def resta_sim(a, b, modo="normal"):
+    """Resta por columnas con distintos errores:
+    normal | menor_mayor | olvida_devolver | cero_si_no | devuelve_arriba | sin_ultima (no lleva a los millares) |
+    cero_escribe_s | cero_da_cero | salta_cero."""
+    k = len(str(a))
+    ma, sb = cols(a, k), cols(b, k)
+    out, lleva = [], 0
+    if modo == "salta_cero":
+        ma = ma[:]
+        res = []
+        for i in range(k):
+            m, s = ma[i], sb[i]
+            if m == 0 and i > 0 and res and getattr(resta_sim, "_prestado", False):
+                res.append(abs(0 - s))
+                continue
+            if m < s:
+                j = i + 1
+                while j < k and ma[j] == 0:
+                    j += 1
+                if j >= k:
+                    return None
+                ma[j] -= 1
+                resta_sim._prestado = j > i + 1
+                res.append(m + 10 - s)
+            else:
+                res.append(m - s)
+        resta_sim._prestado = False
+        v = sum(d * 10 ** i for i, d in enumerate(res))
+        return v
+    for i in range(k):
+        m, s = ma[i], sb[i]
+        if modo == "devuelve_arriba":
+            m += lleva
+        else:
+            s += lleva
+        lleva = 0
+        if modo in ("cero_escribe_s", "cero_da_cero") and ma[i] == 0 and sb[i] > 0:
+            out.append(sb[i] if modo == "cero_escribe_s" else 0)
+            continue
+        if modo == "menor_mayor":
+            out.append(abs(m - s))
+            continue
+        if m < s:
+            if modo == "cero_si_no":
+                out.append(0)
+                continue
+            out.append(m + 10 - s)
+            if modo == "olvida_devolver" or (modo == "sin_ultima" and i == 2):
+                continue
+            lleva = 1
+        else:
+            out.append(m - s)
+    if any(x < 0 or x > 9 for x in out[:-1]) or out[-1] < 0:
+        return None
+    return sum(d * 10 ** i for i, d in enumerate(out))
+
+
+def _resta_ej(a, b, dist, enun=None, datos=None, genericos=None, adulto=ADULTO_RESTA):
+    r = a - b
+    ej = Ejercicio(enunciado=enun or f"Calcula: {fmt(a)} − {fmt(b)}", respuesta=fmt(r), parametros={"op": "resta", "a": a, "b": b}, datos=datos)
+    ej.distractores = _ordena([(v, k) for v, k in dist if v is not None and (isinstance(v, str) or v >= 0)], ej.enunciado)
+    ej.genericos = genericos if genericos is not None else [r + 10, r - 10, r + 1, r - 1, r + 100]
+    if a <= 20 and b < 10:
+        ej.pasos = [{"paso": 1, "operacion": f"{a} − {b}", "resultado": str(r), "texto": f"Empiezo en {a} y cuento hacia atrás {b}" +
+                     (": " + ", ".join(str(a - i) for i in range(1, b + 1)) if b else "") + "."}]
+        ej.explicacion_nino = (f"Empieza en {a} y cuenta {b} hacia atrás. Llegas a {r}. Comprueba: {r} + {b} = {a}." if b else f"Si no quitas nada, se queda igual: {a} − 0 = {a}.")
+        ej.explicacion_adulto = "Está aprendiendo a quitar. Si falla, que compruebe sumando: el resultado más lo que quitas tiene que dar el número del principio."
+    else:
+        ej.pasos = pasos_resta(a, b)
+        ej.explicacion_nino = ("Coloca el número mayor arriba y ve columna por columna desde las unidades. " + " ".join(p["texto"] for p in ej.pasos) +
+                               f" Resultado: {fmt(r)}. Compruébalo: {fmt(r)} + {fmt(b)} = {fmt(a)}.")
+        ej.explicacion_adulto = adulto
+        pa = pasos_resta_abn(a, b)
+        ej.explicaciones_extra["abn"] = {"nino": " ".join(p["texto"] for p in pa) + f" Quedan {fmt(r)}.", "pasos": pa,
+                                         "adulto": "En ABN se resta quitando por partes (primero las decenas o centenas enteras), sin «llevadas»."}
+    return ej
+
+
+def _contexto_resta(rng, a, b):
+    nom = rng.choice(NINAS + NINOS)
+    obj = rng.choice(OBJETOS)
+    f = obj[0] in FEM
+    return rng.choice([f"{nom} tiene {a} {obj[1]} y regala {b}. ¿{'Cuántas' if f else 'Cuántos'} le quedan?",
+                       f"En una bolsa hay {a} {obj[1]}. Se sacan {b}. ¿{'Cuántas' if f else 'Cuántos'} quedan en la bolsa?"])
+
+
+@generador("t1_resta01")
+def g_resta01(rng, d, contexto=False):
+    a = rng.randint(2, 6) if d == 1 else rng.randint(3, 10)
+    b = rng.randint(1, a - 1) if d < 3 else rng.choice([0, a, rng.randint(1, a)])
+    r = a - b
+    dist = [(a + b if b else None, "E01"), (r + 1, "E02"), (r - 1 if r else None, "E03"), (0 if b == 0 else None, "E04"), (a if a == b else None, "E04"), (r + 2, None)]
+    if b == 0 or a == b:
+        dist = [x for x in dist if x[1] == "E04"] + [(r + 1, "E02"), (a + b if b else r + 2, "E01" if b else None), (r + 3, None)]
+    enun = _contexto_resta(rng, a, b) if contexto and b and rng.random() < 0.5 else None
+    return _resta_ej(a, b, dist, enun=enun, genericos=[r + 2, r + 3, 10])
+
+
+@generador("t1_resta02")
+def g_resta02(rng, d, contexto=False):
+    for _ in range(100):
+        a = rng.randint(11, 20)
+        b = 10 if (d == 3 and rng.random() < 0.3) else rng.randint(1, 9)
+        if b == 10 and a < 10 or a - b < 10:
+            continue
+        break
+    else:
+        return None
+    r = a - b
+    dist = [((a % 10) - b if b < 10 and (a % 10) - b >= 0 and (a % 10) - b != r else None, "E01"), (r + 1, "E02"), (a + b, "E03"), (r - 1, None), (r + 10, None)]
+    enun = _contexto_resta(rng, a, b) if contexto and rng.random() < 0.4 else None
+    return _resta_ej(a, b, dist, enun=enun, genericos=[r + 2, r - 2])
+
+
+@generador("t1_resta04")
+def g_resta04(rng, d, contexto=False):
+    for _ in range(100):
+        a = rng.randint(11, 18)
+        b = rng.randint(2, 9)
+        if b <= a % 10 or a - b > 9:
+            continue
+        if d == 1 and a > 13 or d == 3 and b < 7:
+            continue
+        break
+    else:
+        return None
+    r = a - b
+    u = a % 10
+    dist = [(10 + abs(u - b), "E01"), (r - 1, "E02"), (r + 1, "E03"), (abs(u - b), "E04"), (r + 10, None)]
+    enun = _contexto_resta(rng, a, b) if contexto and rng.random() < 0.4 else None
+    ej = _resta_ej(a, b, dist, enun=enun, genericos=[r + 2, r - 2])
+    ej.pasos = [{"paso": 1, "operacion": f"{a} − {u}", "resultado": "10", "texto": f"Primero bajo hasta el 10: {a} − {u} = 10."},
+                {"paso": 2, "operacion": f"10 − {b - u}", "resultado": str(r), "texto": f"Me quedan por quitar {b - u}: 10 − {b - u} = {r}."}]
+    ej.explicacion_nino = f"Parte el {b} en {u} y {b - u}. {a} − {u} = 10, y 10 − {b - u} = {r}."
+    ej.explicacion_adulto = "Restar pasando por el 10 (13 − 5 = 13 − 3 − 2) es la estrategia clave. También se puede contar hacia delante desde el número pequeño."
+    return ej
+
+
+@generador("t1_resta05")
+def g_resta05(rng, d):
+    for _ in range(300):
+        a = rng.randint(11, 99)
+        b = rng.randint(1, 9) if d == 1 else rng.randint(10, a) if d == 3 else rng.choice([rng.randint(1, 9), rng.randint(10, 99)])
+        if b > a or hay_prestamo(a, b):
+            continue
+        break
+    else:
+        return None
+    r = a - b
+    e02 = (a // 10 + b // 10) * 10 + (a % 10 - b % 10) if b >= 10 else None
+    e03 = a - b % 10 if b >= 10 else None
+    dist = [(a - 10 * b if b < 10 and a - 10 * b >= 0 else None, "E01"), (e02 if e02 and e02 < 1000 else None, "E02"), (e03, "E03"), (r + 10, None), (r + 1, None), (a + b, None)]
+    return _resta_ej(a, b, dist)
+
+
+@generador("t1_resta03")
+def g_resta03(rng, d):
+    for _ in range(500):
+        ca, cb = rng.choice([(2, 1), (2, 2)]) if d == 1 else rng.choice([(3, 2), (3, 3), (2, 2)]) if d == 2 else rng.choice([(3, 2), (3, 3)])
+        a = rng.randint(10 ** (ca - 1), 10 ** ca - 1)
+        b = rng.randint(10 ** (cb - 1) if cb > 1 else 2, 10 ** cb - 1)
+        if b >= a or a < 20 or not hay_prestamo(a, b):
+            continue
+        k = len(str(a))
+        ma, sb = cols(a, k), cols(b, k)
+        # sin cero intermedio con llevada encadenada
+        lleva, cadena, n_llevadas = 0, False, 0
+        for i in range(k):
+            s = sb[i] + lleva
+            if ma[i] < s:
+                n_llevadas += 1
+                if i > 0 and ma[i] == 0 and lleva:
+                    cadena = True
+                lleva = 1
+            else:
+                lleva = 0
+        if cadena or n_llevadas > 2 or (0 < k - 1 and ma[1] == 0 and ma[0] < sb[0] and k == 3):
+            continue
+        if d == 3 and n_llevadas < 2 and rng.random() < 0.7:
+            continue
+        break
+    else:
+        return None
+    dist = [(resta_sim(a, b, "menor_mayor"), "E01"), (resta_sim(a, b, "olvida_devolver"), "E02"), (resta_sim(a, b, "cero_si_no"), "E03"),
+            (resta_sim(a, b, "devuelve_arriba"), "E04")]
+    return _resta_ej(a, b, dist)
+
+
+@generador("t1_resta06")
+def g_resta06(rng, d, modos=("sumando", "minuendo", "sustraendo", "familia")):
+    m = modo(rng, modos, "sumando")
+    top = 20 if d == 1 else 99
+    if m == "familia":
+        a, b = rng.randint(2, 9 if d == 1 else 50), rng.randint(2, 9 if d == 1 else 49)
+        if a == b:
+            return None
+        c = a + b
+        resp = f"{c} − {b} = {a}"
+        dist = [(f"{b} − {a} = {c}" if b > a else f"{a} − {b} = {c}", None), (f"{c} − {a} = {c - a + 1}", None), (f"{c} + {b} = {a}", None), (f"{a} − {c} = {b}", None)]
+        return mk(f"Si sabes que {a} + {b} = {c}, ¿qué resta también es verdad?", resp, dist, "familia",
+                  f"La suma y la resta son operaciones inversas: si {a} + {b} = {c}, entonces {c} − {b} = {a} y {c} − {a} = {b}.",
+                  "Ver juntas la suma y sus restas («familia de operaciones») ayuda a comprobar y a encontrar números que faltan.", a=a, b=b)
+    for _ in range(100):
+        a, b = rng.randint(2, top // 2), rng.randint(2, top // 2)
+        if a != b:
+            break
+    c = a + b
+    if m == "sumando":
+        enun = rng.choice([f"Calcula el número que falta: {a} + ? = {c}", f"Calcula el número que falta: ? + {a} = {c}"])
+        r = b
+        dist = [(a + c, "E01"), (c, "E03"), (r + 1, None), (r - 1, None), (r + 10, None)]
+        txt = f"Busco cuánto hay que añadir a {a} para llegar a {c}: {c} − {a} = {b}. Compruebo: {a} + {b} = {c}."
+    elif m == "minuendo":
+        enun = f"Calcula el número que falta: ? − {a} = {b}"
+        r = c
+        dist = [(abs(b - a) if a != b else None, "E02"), (b, "E03"), (r + 1, None), (r - 1, None), (r + 10, None)]
+        txt = f"Si al número le quito {a} y quedan {b}, el número era {b} + {a} = {c}. Compruebo: {c} − {a} = {b}."
+    else:
+        enun = f"Calcula el número que falta: {c} − ? = {b}"
+        r = a
+        dist = [(c + b, "E01"), (b, "E03"), (r + 1, None), (r - 1, None), (r + 10, None)]
+        txt = f"Busco cuánto hay que quitar a {c} para que queden {b}: {c} − {b} = {a}. Compruebo: {c} − {a} = {b}."
+    return mk(enun, r, dist, "termino_desconocido", txt,
+              "La suma y la resta son inversas. Pregúntale «¿qué número pondrías para que salga bien?» y que lo compruebe sustituyendo.", a=a, b=b, m=m)
+
+
+@generador("t1_resta07")
+def g_resta07(rng, d):
+    for _ in range(300):
+        a = rng.randint(100, 999)
+        cb = rng.choice([1, 2]) if d == 1 else rng.choice([2, 3]) if d == 2 else 3
+        b = rng.randint(10 ** (cb - 1), 10 ** cb - 1)
+        if d == 3 and rng.random() < 0.6:
+            s = str(a)
+            b = int(s[0] + rng.choice([s[1], "0"]) + rng.choice([s[2], "0"]))  # restos con ceros
+        if b >= a or hay_prestamo(a, b):
+            continue
+        break
+    else:
+        return None
+    r = a - b
+    izq = a - b * 10 ** (3 - len(str(b))) if len(str(b)) < 3 and a - b * 10 ** (3 - len(str(b))) >= 0 else None
+    sin0 = sin_ceros(r) if "0" in str(r) and sin_ceros(r) != r else None
+    dist = [(izq, "E01"), (sin0, "E02"), (r + 100, None), (r + 10, None), (r - 10 if r >= 10 else None, None)]
+    return _resta_ej(a, b, dist)
+
+
+@generador("t1_resta08")
+def g_resta08(rng, d, modos=("nombrar", "prueba", "comprobar")):
+    m = modo(rng, modos, "nombrar")
+    for _ in range(100):
+        a = rng.randint(100, 999)
+        b = rng.randint(10, a - 10)
+        if hay_prestamo(a, b) or d == 1:
+            break
+    r = a - b
+    if m == "nombrar":
+        term = rng.choice(["minuendo", "sustraendo", "diferencia"])
+        val = {"minuendo": a, "sustraendo": b, "diferencia": r}[term]
+        dist = [(b if term == "minuendo" else a, "E02" if term in ("minuendo", "sustraendo") else None), (r if term != "diferencia" else b, None),
+                (a + b if term != "minuendo" else a + r, None), (a if term == "diferencia" else None, None)]
+        return mk(f"En la resta {a} − {b} = {r}, ¿cuál es el {term}?", val, dist, "terminos",
+                  f"El minuendo es el número del que se quita ({a}), el sustraendo lo que se quita ({b}) y la diferencia lo que queda ({r}). El {term} es {val}.",
+                  "Minuendo − sustraendo = diferencia. Nombrar los términos ayuda a entender la prueba de la resta.", a=a, b=b)
+    if m == "prueba":
+        resp = f"{r} + {b} = {a}"
+        dist = [(f"{a} + {r} = {a + r}", "E01"), (f"{a} + {b} = {a + b}", None), (f"{a} − {r} = {b}", None)]
+        return mk(f"¿Qué suma sirve para comprobar que {a} − {b} = {r} está bien?", resp, dist, "prueba",
+                  f"Prueba de la resta: diferencia + sustraendo = minuendo. {r} + {b} = {a}, así que está bien.",
+                  "Comprobar las restas sumando evita muchos errores; que se acostumbre a hacerlo siempre.", a=a, b=b)
+    fallo = rng.choice([10, -10, 1, 100]) if rng.random() < 0.7 else 0
+    rr_ = r + fallo
+    if rr_ < 0:
+        return None
+    if fallo:
+        resp = f"No, porque {rr_} + {b} = {rr_ + b}"
+        dist = [(f"Sí, porque {rr_} + {b} = {a}", None), (f"Sí, porque {a} + {rr_} = {a + rr_}", "E01"), (f"No, porque {a} + {b} = {a + b}", None)]
+    else:
+        resp = f"Sí, porque {rr_} + {b} = {a}"
+        dist = [(f"No, porque {a} + {rr_} = {a + rr_}", "E01"), (f"No, porque {rr_} + {b} = {a + 10}", None), (f"No, porque {a} + {b} = {a + b}", None)]
+    return mk(f"¿Está bien hecha esta resta? {a} − {b} = {rr_}", resp, dist, "comprobar",
+              f"Sumo la diferencia y el sustraendo: {rr_} + {b} = {rr_ + b}. " + ("Da el minuendo, así que está bien." if not fallo else f"No da {a}, así que está mal (lo correcto es {r})."),
+              "Prueba de la resta: diferencia + sustraendo = minuendo.", a=a, b=b)
+
+
+@generador("t1_resta09")
+def g_resta09(rng, d):
+    for _ in range(500):
+        a = rng.randint(1000, 9999)
+        b = rng.randint(100, 999) if d == 1 else rng.randint(1000, a)
+        if b >= a or not hay_prestamo(a, b):
+            continue
+        k = 4
+        ma, sb = cols(a, k), cols(b, k)
+        lleva, cadena, n = 0, False, 0
+        for i in range(k):
+            s = sb[i] + lleva
+            if ma[i] < s:
+                n += 1
+                if ma[i] == 0 and lleva:
+                    cadena = True
+                lleva = 1
+            else:
+                lleva = 0
+        if cadena or 0 in ma[1:3]:
+            continue
+        if d >= 2 and n < 2 or d == 3 and n < 3:
+            continue
+        break
+    else:
+        return None
+    su = resta_sim(a, b, "sin_ultima")
+    dist = [(resta_sim(a, b, "menor_mayor"), "E01"), (resta_sim(a, b, "olvida_devolver"), "E02"), (su if su != a - b else None, "E03")]
+    return _resta_ej(a, b, dist)
+
+
+@generador("t1_resta10")
+def g_resta10(rng, d):
+    for _ in range(500):
+        if d == 1:
+            a = rng.randint(1, 9) * 100 + rng.choice([0, rng.randint(1, 9)])       # 400, 402
+            b = rng.randint(100, a - 1) if a > 110 else None
+        elif d == 2:
+            a = rng.randint(1, 9) * 1000 + rng.choice([0, rng.randint(1, 9), rng.randint(1, 9) * 10])
+            b = rng.randint(100, a - 1)
+        else:
+            a = rng.randint(1, 9) * 1000 + rng.choice([0, 0, rng.randint(1, 9)])
+            b = rng.randint(1000, a - 1) if a > 2000 else rng.randint(100, a - 1)
+        if not b or b >= a:
+            continue
+        ma, sb = cols(a, len(str(a))), cols(b, len(str(a)))
+        if ma[0] >= sb[0]:
+            continue
+        break
+    else:
+        return None
+    dist = [(resta_sim(a, b, "cero_escribe_s"), "E01"), (resta_sim(a, b, "cero_da_cero"), "E02"), (resta_sim(a, b, "salta_cero"), "E03"), (a - b + 100, None), (a - b - 10, None)]
+    dist = [(v, k) for v, k in dist if v != a - b]
+    return _resta_ej(a, b, dist, adulto="Con ceros en el minuendo hay que «pedir» a la primera cifra que no sea 0, y los ceros intermedios se convierten en 9. "
+                                        "Con dinero se entiende: para pagar 7 € con un billete de 100 hay que cambiarlo.")
+
+
+# ================================================================ OPER.CALCMENT
+
+def _m(expr, r, dist, texto, adulto, op, enun=None, genericos=None, **params):
+    return mk(enun or f"Calcula de cabeza: {expr}", r, dist, op, texto, adulto,
+              genericos=genericos if genericos is not None else [r + 10, r - 10, r + 1, r - 1, r + 100], expr=expr, **params)
+
+
+def _pm(a, b, signo):
+    """Parámetros de recálculo para suma/resta."""
+    return {"sumandos": [a, b], "a": a, "b": b} if signo == "+" else {"a": a, "b": b}
+
+
+def _contexto_doble(rng, a):
+    nom = rng.choice(NINAS + NINOS)
+    obj = rng.choice(OBJETOS)
+    f = obj[0] in FEM
+    return rng.choice([f"{nom} tiene {a} {obj[1] if a > 1 else obj[0]} y su hermano tiene el doble. ¿{'Cuántas' if f else 'Cuántos'} tiene su hermano?",
+                       f"En cada mano tengo {a} {obj[1] if a > 1 else obj[0]}. ¿{'Cuántas' if f else 'Cuántos'} tengo en total?"])
+
+
+@generador("t1_cm01")
+def g_cm01(rng, d, modos=("suma", "doble", "contexto")):
+    m = modo(rng, modos, "suma")
+    a = rng.randint(1, 5) if d == 1 else rng.randint(3, 10)
+    r = 2 * a
+    dist = [(r + 1, "E01"), (r - 1, "E01"), (a + 1, "E02"), (int(f"{a}{a}") if a < 10 else 1010, "E03"), (a * a if a * a != r else None, "E03")]
+    txt = f"El doble de {a} es {a} + {a} = {r}."
+    ad = "Los dobles se aprenden de memoria y son la base de muchas estrategias (6 + 7 es el doble de 6 más 1)."
+    if m == "suma":
+        return _m(f"{a} + {a}", r, dist, txt, ad, "suma", sumandos=[a, a], a=a, b=a)
+    if m == "doble":
+        return _m("", r, dist, txt, ad, "doble", enun=f"¿Cuál es el doble de {a}?", a=a)
+    return _m("", r, dist, txt, ad, "doble", enun=_contexto_doble(rng, a), a=a)
+
+
+@generador("t1_cm02")
+def g_cm02(rng, d):
+    sg = rng.choice(["+", "−"])
+    a = rng.randint(10, 89) if sg == "+" else rng.randint(20, 99)
+    if d == 1:
+        a = a - a % 10 + rng.randint(1, 8)
+    if d == 3:
+        a = rng.randint(80, 89) if sg == "+" else rng.randint(10, 19) + 0 * a
+        if sg == "−":
+            a = rng.choice([rng.randint(10, 19), rng.randint(90, 99)])
+    r = a + 10 if sg == "+" else a - 10
+    if not 0 <= r <= 99:
+        return None
+    s = 1 if sg == "+" else -1
+    dist = [(a + s, "E01"), (a + 11 * s, "E02"), (a - 10 * s, "E03"), (r + 1, None)]
+    return _m(f"{a} {sg} 10", r, dist, f"{'Sumar' if s > 0 else 'Restar'} 10 solo cambia la cifra de las decenas: {a // 10} → {r // 10}. Las unidades se quedan igual: {r}.",
+              "Sumar y restar 10 cambiando solo las decenas es la base del cálculo mental. Una tabla del 100 ayuda a verlo (bajar o subir una fila).",
+              "suma" if s > 0 else "resta", **_pm(a, 10, sg))
+
+
+@generador("t1_cm03")
+def g_cm03(rng, d):
+    dif = 1 if d < 3 else rng.choice([1, 2])
+    a = rng.randint(1, 9 - dif) if d == 2 else rng.randint(2, 5) if d == 1 else rng.randint(5, 9 - dif)
+    b = a + dif
+    if a + b > 19:
+        return None
+    x, y = (a, b) if rng.random() < 0.5 else (b, a)
+    r = a + b
+    dist = [(2 * a, "E01"), (2 * a - 1, "E02"), (2 * b + 1, "E03"), (r + 1, None), (2 * b if dif == 1 else None, None)]
+    txt = (f"{a} + {b} es el doble de {a} y {dif} más: {a} + {a} = {2 * a}, y {2 * a} + {dif} = {r}." if dif == 1 else
+           f"{a} + {b} es como {a + 1} + {a + 1} (paso 1 de uno al otro): el doble de {a + 1} es {r}.")
+    return _m(f"{x} + {y}", r, dist, txt, "Casi dobles: se apoyan en un doble conocido y se ajusta. Si no sabe los dobles de memoria, empezad por ahí.",
+              "suma", sumandos=[x, y], a=x, b=y)
+
+
+@generador("t1_cm04")
+def g_cm04(rng, d):
+    sg = rng.choice(["+", "−"])
+    exactas = d == 1 or (d == 2 and rng.random() < 0.4)
+    for _ in range(100):
+        a = rng.randint(1, 9) * 10 if exactas else rng.randint(11, 99)
+        b = rng.randint(1, 9) * 10
+        if sg == "−" and b > a or sg == "+" and a + b > 99:
+            continue
+        break
+    else:
+        return None
+    r = a + b if sg == "+" else a - b
+    s = 1 if sg == "+" else -1
+    dist = [((a + s * b) // 10 if exactas else None, "E01"), (a + s * (b // 10), "E02"), ((a + s * b) * 10 if exactas else None, "E03"), (r + 10, None), (r - 10 if r >= 10 else None, None)]
+    txt = (f"Pienso en decenas: {a // 10} decenas {sg} {b // 10} decenas = {r // 10} decenas, que son {r}." if exactas else
+           f"Solo cambian las decenas: {a // 10} decenas {sg} {b // 10} decenas = {r // 10} decenas; las {a % 10} unidades se quedan. Resultado: {r}.")
+    return _m(f"{a} {sg} {b}", r, dist, txt, "Sumar decenas es como sumar unidades pero contando «decenas». Que no pierda ni añada ceros.",
+              "suma" if s > 0 else "resta", **_pm(a, b, sg))
+
+
+@generador("t1_cm05")
+def g_cm05(rng, d):
+    n = rng.choice([9, 11])
+    sg = rng.choice(["+", "−"])
+    a = rng.randint(12, 89) if sg == "+" else rng.randint(20, 99)
+    if d == 1:
+        n, sg = 9, "+"
+    r = a + n if sg == "+" else a - n
+    if not 0 <= r <= 108:
+        return None
+    if n == 9 and sg == "+":
+        dist = [(a + 11, "E01"), (a + 10, "E02"), (a + 8, None)]
+        txt = f"Sumar 9 es sumar 10 y quitar 1: {a} + 10 = {a + 10}, y {a + 10} − 1 = {r}."
+    elif n == 9:
+        dist = [(a - 11, "E03"), (a - 10, "E02"), (a - 8, None), (a + 9, None)]
+        txt = f"Restar 9 es restar 10 y devolver 1: {a} − 10 = {a - 10}, y {a - 10} + 1 = {r}."
+    elif sg == "+":
+        dist = [(a + 9, "E01"), (a + 10, "E02"), (a + 12, None)]
+        txt = f"Sumar 11 es sumar 10 y 1 más: {a} + 10 = {a + 10}, y {a + 10} + 1 = {r}."
+    else:
+        dist = [(a - 9, "E01"), (a - 10, "E02"), (a - 12, None)]
+        txt = f"Restar 11 es restar 10 y 1 más: {a} − 10 = {a - 10}, y {a - 10} − 1 = {r}."
+    return _m(f"{a} {sg} {n}", r, dist, txt, "Compensar: se suma o resta 10 (fácil) y se ajusta 1. Lo difícil es acordarse de hacia dónde ajustar.",
+              "suma" if sg == "+" else "resta", **_pm(a, n, sg))
+
+
+@generador("t1_cm06")
+def g_cm06(rng, d):
+    sg = "+" if d == 1 else rng.choice(["+", "−"]) if d == 2 else "−"
+    for _ in range(100):
+        a, b = rng.randint(11, 99), rng.randint(11, 99)
+        if sg == "−" and b >= a:
+            continue
+        if sg == "+" and a + b > 198:
+            continue
+        break
+    r = a + b if sg == "+" else a - b
+    db, ub = b // 10 * 10, b % 10
+    if sg == "+":
+        dist = [(a + db, "E01"), (a + ub, None), (r + 10, None), (r - 10, None), (r + 1, None)]
+        txt = f"Sumo por partes: {a} + {db} = {a + db}, y {a + db} + {ub} = {r}."
+    else:
+        cifra = int(f"{abs(a // 10 - b // 10)}{abs(a % 10 - b % 10)}")
+        dist = [(a - db, "E01"), (a - db + ub, "E02"), (cifra if cifra != r else None, "E03"), (r + 10, None), (r - 1, None)]
+        txt = f"Resto por partes: {a} − {db} = {a - db}, y {a - db} − {ub} = {r}."
+    return _m(f"{a} {sg} {b}", r, dist, txt, "Descomponer el segundo número en decenas y unidades es la estrategia más segura de cálculo mental.",
+              "suma" if sg == "+" else "resta", **_pm(a, b, sg))
+
+
+@generador("t1_cm07")
+def g_cm07(rng, d, modos=("hueco", "falta")):
+    m = modo(rng, modos, "hueco")
+    a = rng.randint(1, 9) * 10 if d == 1 else rng.randint(11, 99)
+    if d > 1 and a % 10 == 0:
+        return None
+    r = 100 - a
+    dd, u = divmod(a, 10)
+    dist = [((10 - dd) * 10 + (10 - u) if u else None, "E01"), ((10 - dd) * 10 if u else None, "E02"), (a + 100, "E03"), (r + 10, None), (r - 10 if r > 10 else None, None), (r + 1, None)]
+    txt = (f"Del {a} al 100: pienso en decenas, {dd} + {10 - dd} = 10, así que faltan {r}." if not u else
+           f"Del {a} a la decena siguiente ({(dd + 1) * 10}) faltan {10 - u}; de {(dd + 1) * 10} a 100 faltan {100 - (dd + 1) * 10}. En total, {10 - u} + {100 - (dd + 1) * 10} = {r}.")
+    enun = f"Calcula el número que falta: {a} + ? = 100" if m == "hueco" else f"¿Cuánto le falta a {a} para llegar a 100?"
+    return _m("", r, dist, txt, "Completar a 100 se apoya en las parejas del 10: las decenas suman 9 y las unidades 10 (38 + 62).", "complemento100", enun=enun, a=a)
+
+
+@generador("t1_cm08")
+def g_cm08(rng, d):
+    sg = rng.choice(["+", "−"])
+    exactas = d == 1
+    for _ in range(100):
+        a = rng.randint(1, 9) * 100 if exactas else rng.randint(101, 999)
+        b = rng.randint(1, 9) * 100
+        if sg == "−" and b > a or sg == "+" and a + b > 999:
+            continue
+        break
+    else:
+        return None
+    r = a + b if sg == "+" else a - b
+    s = 1 if sg == "+" else -1
+    dist = [(a + s * b // 10, "E01"), ((a + s * b) // 10 if exactas else None, "E02"), ((a + s * b) * 10 if exactas else None, "E02"), (r + 10, None), (r + 100, None)]
+    return _m(f"{a} {sg} {b}", r, dist, f"Solo cambia la cifra de las centenas: {a // 100} {sg} {b // 100} = {r // 100}. Resultado: {r}.",
+              "Sumar o restar centenas exactas solo cambia una cifra: la de las centenas.", "suma" if s > 0 else "resta", **_pm(a, b, sg))
+
+
+@generador("t1_cm09")
+def g_cm09(rng, d):
+    for _ in range(100):
+        if d == 1:
+            b = rng.randint(11, 89)
+        else:
+            b = rng.randint(101 if d == 3 else 20, 980 if d == 3 else 99)
+        dif = rng.randint(3, 15 if d < 3 else 30)
+        a = b + dif
+        dec = (b // 10 + 1) * 10
+        if a <= dec or a > 999 or b % 10 == 0:
+            continue
+        break
+    else:
+        return None
+    r = a - b
+    cifra = int("".join(str(abs(int(x) - int(y))) for x, y in zip(str(a).zfill(3), str(b).zfill(3))).lstrip("0") or "0")
+    dist = [(a - dec, "E01"), (r + 1, "E02"), (cifra if cifra != r else None, "E03"), (r - 1, None), (r + 10, None)]
+    return _m(f"{a} − {b}", r, dist, f"Cuento cuánto falta desde {b} hasta {a}: de {b} a {dec} van {dec - b}, y de {dec} a {a} van {a - dec}. En total, {dec - b} + {a - dec} = {r}.",
+              "Cuando los dos números están cerca, es más fácil «completar» desde el pequeño hasta el grande que quitar.", "resta", a=a, b=b)
+
+
+@generador("t1_cm10")
+def g_cm10(rng, d):
+    sg = rng.choice(["+", "−"])
+    for _ in range(100):
+        if d == 1:
+            k = rng.choice([1, 2]); R = rng.randint(2, 9) * 10; a = rng.randint(20, 99)
+        elif d == 2:
+            k = rng.choice([1, 2]); R = rng.randint(2, 9) * (10 if rng.random() < 0.5 else 100); a = rng.randint(100, 999)
+        else:
+            k = rng.choice([1, 2]); R = rng.randint(2, 9) * 100 + rng.choice([0, 1000]); a = rng.randint(1000, 9999)
+        b = R - k
+        r = a + b if sg == "+" else a - b
+        if sg == "−" and b >= a or r > 9999:
+            continue
+        break
+    else:
+        return None
+    if sg == "+":
+        dist = [(a + R + k, "E01"), (a + R, "E02"), (r + 10, None), (r - 10, None)]
+        txt = f"{b} es casi {R}: sumo {R} y quito los {k} que he puesto de más. {a} + {R} = {a + R}, y {a + R} − {k} = {r}."
+    else:
+        dist = [(a - R, "E02"), (a - R - k, "E03"), (r + 10, None), (r - 10, None)]
+        txt = f"{b} es casi {R}: resto {R} y devuelvo los {k} que he quitado de más. {a} − {R} = {a - R}, y {a - R} + {k} = {r}."
+    return _m(f"{fmt(a)} {sg} {fmt(b)}", r, dist, txt, "Compensación: redondear el número que termina en 8 o 9 y ajustar al final. La dificultad está en ajustar en el sentido correcto.",
+              "suma" if sg == "+" else "resta", **_pm(a, b, sg))
+
+
+@generador("t1_cm11")
+def g_cm11(rng, d, modos=("doble", "mitad")):
+    m = modo(rng, modos, "doble")
+    if m == "doble":
+        a = rng.randint(11, 49) if d == 1 else rng.randint(15, 99)
+        r = 2 * a
+        dd, u = divmod(a, 10)
+        conc = int(f"{2 * dd}{2 * u}")
+        sin_ll = (2 * dd) * 10 + (2 * u) % 10
+        dist = [(conc if conc != r else None, "E02"), (sin_ll if sin_ll != r else None, "E02"), (a // 2 if a % 2 == 0 else None, "E03"), (r + 10, None), (r - 2, None)]
+        return _m("", r, dist, f"Doblo por partes: el doble de {dd * 10} es {2 * dd * 10} y el doble de {u} es {2 * u}. {2 * dd * 10} + {2 * u} = {r}.",
+                  "Doble y mitad por partes (decenas y unidades) es una estrategia muy útil. El fallo típico es olvidar que 2 × 6 = 12 «se lleva» una decena.",
+                  "doble", enun=f"¿Cuál es el doble de {a}?", a=a)
+    a = rng.randint(6, 49) * 2 if d < 3 else rng.randint(50, 499) * 2
+    r = a // 2
+    cifra = int("".join(str(int(c) // 2) for c in str(a)).lstrip("0") or "0")
+    dist = [(cifra if cifra != r else None, "E01"), (2 * a, "E03"), (r + 5, None), (r - 1, None), (r + 10, None)]
+    s = str(a)
+    txt = f"Parto {a} en partes fáciles de dividir entre 2 y hago la mitad de cada una. La mitad de {a} es {r} (comprueba: {r} + {r} = {a})."
+    return _m("", r, dist, txt, "Hacer la mitad de números con decenas impares (58, 170) exige partir bien: 58 = 50 + 8 → 25 + 4 = 29.",
+              "div", enun=f"¿Cuál es la mitad de {a}?", a=a, b=2)
+
+
+@generador("t1_cm12")
+def g_cm12(rng, d, modos=("millares", "complemento")):
+    m = modo(rng, modos, "millares")
+    if m == "complemento":
+        a = rng.randint(1, 9) * 100 if d == 1 else rng.randint(1, 99) * 10 if d == 2 else rng.randint(101, 999)
+        if a % 10 == 0 and d == 3:
+            return None
+        r = 1000 - a
+        s = str(a).zfill(3)
+        cada = int("".join(str((10 - int(c)) % 10) for c in s))
+        dist = [(cada if cada != r else None, "E01"), (a + 1000, None), (r + 100, None), (r - 10, None), (r + 10, None)]
+        return _m("", r, dist, f"Del {a} al 1000 faltan {r}: {a} + {r} = 1000. (Las centenas y decenas suman 9 y las unidades 10.)",
+                  "Completar a 1000 es como completar a 100: primero a la decena, luego a la centena y luego al millar.", "complemento1000",
+                  enun=f"Calcula el número que falta: {a} + ? = 1000", a=a)
+    sg = rng.choice(["+", "−"])
+    for _ in range(100):
+        a = rng.randint(1, 9) * 1000 if d == 1 else rng.randint(1000, 9999)
+        b = rng.randint(1, 8) * 1000
+        if sg == "−" and b > a or sg == "+" and a + b > 9999:
+            continue
+        break
+    else:
+        return None
+    r = a + b if sg == "+" else a - b
+    s = 1 if sg == "+" else -1
+    dist = [(a + s * b // 10, "E02"), ((a + s * b) // 10 if d == 1 else None, None), (r + 100, None), (r + 1000, None), (r - 100, None)]
+    return _m(f"{fmt(a)} {sg} {fmt(b)}", r, dist, f"Solo cambia la cifra de los millares: {a // 1000} {sg} {b // 1000} = {r // 1000}. Resultado: {fmt(r)}.",
+              "Sumar o restar millares exactos solo cambia la cifra de los millares.", "suma" if s > 0 else "resta", **_pm(a, b, sg))
+
+
+@generador("t1_cm13")
+def g_cm13(rng, d):
+    u = 10 if d == 1 else rng.choice([10, 100])
+    k = rng.randint(2, 9)
+    a = k * u
+    b = rng.randint(2, 9) if d > 1 else rng.randint(2, 5)
+    if d == 3:
+        k, b = rng.randint(5, 9), rng.randint(5, 9)
+        a = k * u
+    p = a * b
+    dist = [(k * b, "E01"), (p // 10, "E02"), (p * 10, "E02"), (a + b, "E03")]
+    x, y = (a, b) if rng.random() < 0.7 else (b, a)
+    return mk(f"Calcula de cabeza: {x} × {y}", p, dist, "mult",
+              f"Uso la tabla y añado los ceros: {k} × {b} = {k * b}, y como {a} tiene {len(str(u)) - 1} cero{'s' if u == 100 else ''}, {a} × {b} = {fmt(p)}.",
+              "Multiplicar decenas o centenas: la tabla y luego tantos ceros como tenga el número. Que no se le pierdan ni se le dupliquen ceros.",
+              genericos=[p + a, p - a], a=x, b=y)
+
+
+@generador("t1_cm14")
+def g_cm14(rng, d):
+    a = rng.randint(11, 49) if d == 1 else rng.randint(21, 99)
+    b = rng.randint(2, 5) if d == 1 else rng.randint(3, 9)
+    p = a * b
+    dd, u = divmod(a, 10)
+    if u == 0:
+        return None
+    dist = [(dd * 10 * b + u, "E01"), (int(f"{dd * b}{u * b}"), "E02"), (dd * b + u * b, "E03"), (p + 10, None), (p - b, None)]
+    return mk(f"Calcula de cabeza: {a} × {b}", p, dist, "mult",
+              f"Descompongo {a} = {dd * 10} + {u}. {dd * 10} × {b} = {dd * 10 * b} y {u} × {b} = {u * b}. Lo sumo: {dd * 10 * b} + {u * b} = {p}.",
+              "Multiplicar por partes (propiedad distributiva): cada parte del número se multiplica y luego se suman los resultados.", a=a, b=b)
+
+
+@generador("t1_cm15")
+def g_cm15(rng, d):
+    for _ in range(100):
+        dv = rng.randint(2, 9)
+        q0 = rng.randint(1, 9)
+        ceros = 1 if d == 1 else rng.choice([1, 2]) if d == 2 else rng.choice([2, 3])
+        D = dv * q0 * 10 ** ceros
+        if D > 99999:
+            continue
+        break
+    q = D // dv
+    base = q0 if q0 * dv >= 10 else q0
+    dist = [(q // 10, "E01"), (q * 10, "E01"), (q0 if q0 != q // 10 else None, "E02"), (q + 10 ** ceros, None), (q // 100 if q >= 100 else None, None)]
+    return mk(f"Calcula de cabeza: {fmt(D)} : {dv}", q, dist, "div",
+              f"Divido la parte de la tabla y añado los ceros que sobran: {dv * q0} : {dv} = {q0}. Resultado: {fmt(q)}. Compruebo: {fmt(q)} × {dv} = {fmt(D)}.",
+              "Dividir números con ceros: se usa la tabla con la parte significativa y se añaden los ceros. Comprobar multiplicando evita perder ceros.",
+              a=D, b=dv)
+
+
+@generador("t1_cm16")
+def g_cm16(rng, d):
+    a = rng.randint(4, 40) * 2 if d == 1 else rng.randint(11, 99) if d == 2 else rng.randint(100, 999)
+    p = a * 5
+    dist = [(a * 10, "E01"), (a // 2 if a % 2 == 0 else None, "E02"), (a + 5, None), (p + 5, None), (p - 10, None)]
+    txt = (f"Multiplicar por 5 es multiplicar por 10 y hacer la mitad: {a} × 10 = {fmt(a * 10)}, y la mitad de {fmt(a * 10)} es {fmt(p)}." if a % 2 or rng.random() < 0.5 else
+           f"Como {a} es par, hago primero la mitad y luego × 10: la mitad de {a} es {a // 2}, y {a // 2} × 10 = {fmt(p)}.")
+    return mk(f"Calcula de cabeza: {a} × 5", p, dist, "mult", txt, "Estrategia: × 5 = × 10 y la mitad (o la mitad y × 10).", a=a, b=5)
+
+
+@generador("t1_cm17")
+def g_cm17(rng, d):
+    n = rng.choice([9, 11])
+    a = rng.randint(2, 9) if d == 1 else rng.randint(11, 49) if d == 2 else rng.randint(50, 99)
+    p = a * n
+    s = -1 if n == 9 else 1
+    dist = [(a * 10 + s, "E01"), (a * 10 - s * a, "E02"), (a * 10, None), (p + 10, None)]
+    return mk(f"Calcula de cabeza: {a} × {n}", p, dist, "mult",
+              f"{a} × {n} = {a} × 10 {'−' if s < 0 else '+'} {a} = {a * 10} {'−' if s < 0 else '+'} {a} = {p}.",
+              f"× 9 = × 10 menos una vez el número; × 11 = × 10 más una vez el número. El error típico es restar o sumar 1 en vez del número.", a=a, b=n)
+
+
+@generador("t1_cm18")
+def g_cm18(rng, d, modos=("por25", "por50", "entre5", "entre25", "entre50")):
+    m = modo(rng, modos, "por50")
+    if m in ("por25", "por50"):
+        k = 25 if m == "por25" else 50
+        a = rng.randint(2, 20) * (4 if k == 25 else 2) if d == 1 else rng.randint(3, 99)
+        p = a * k
+        if p > 9999 or (k == 25 and a % 4 and d < 3):
+            return None
+        if k == 25:
+            dist = [(a * 50, "E01"), (a // 4 if a % 4 == 0 else None, "E02"), (a + 25, None), (p + 100, None), (p // 10 if p % 10 == 0 else None, None)]
+            txt = f"× 25 es × 100 y dividir entre 4: {a} × 100 = {fmt(a * 100)}, y {fmt(a * 100)} : 4 = {fmt(p)}."
+        else:
+            dist = [(a * 25, None), (a // 2 if a % 2 == 0 else None, "E02"), (a * 100, None), (a + 50, None), (p + 100, None)]
+            txt = f"× 50 es × 100 y la mitad: {a} × 100 = {fmt(a * 100)}, y la mitad es {fmt(p)}."
+        return mk(f"Calcula de cabeza: {a} × {k}", p, dist, "mult", txt, "25 es la cuarta parte de 100 y 50 es la mitad de 100: se usa × 100 y luego se divide.", a=a, b=k)
+    k = {"entre5": 5, "entre25": 25, "entre50": 50}[m]
+    q = rng.randint(2, 99) if k == 5 else rng.randint(2, 99)
+    D = q * k
+    if D > 9999 or D % 10 and k != 5:
+        return None
+    mult = {5: 2, 25: 4, 50: 2}[k]
+    dist = [(D * mult, None), (q * 10 if q * 10 <= 99999 else None, None), (q + 1, None), (D // 10 if D % 10 == 0 else None, None), (q * 2, None)]
+    txt = (f": {k} es {100 // k if k != 5 else 10} veces… mejor: {fmt(D)} × {mult} = {fmt(D * mult)} y luego : {100 if k != 5 else 10} = {q}.")
+    txt = f"Dividir entre {k} es multiplicar por {mult} y dividir entre {10 if k == 5 else 100}: {fmt(D)} × {mult} = {fmt(D * mult)}, y {fmt(D * mult)} : {10 if k == 5 else 100} = {q}."
+    return mk(f"Calcula de cabeza: {fmt(D)} : {k}", q, dist, "div", txt, "Dividir entre 5, 25 o 50 se hace con el camino inverso: multiplicar por 2 o por 4 y dividir entre 10 o 100.",
+              a=D, b=k)
+
+
+@generador("t1_cm19")
+def g_cm19(rng, d, modos=("factor_comun", "asociativa", "compensacion")):
+    m = modo(rng, modos, "factor_comun")
+    if m == "factor_comun":
+        a = rng.randint(11, 99)
+        b = rng.randint(11, 89)
+        tot = rng.choice([100, 100, 1000]) if d > 1 else 100
+        c = tot - b
+        r = a * tot
+        expr = f"{a} · {b} + {a} · {c}"
+        dist = [(2 * a * tot, "E01"), (a * b * c if a * b * c < 10 ** 7 else None, "E01"), (a + tot, None), (r + a, None)]
+        txt = f"Saco factor común el {a}: {a} · ({b} + {c}) = {a} · {tot} = {fmt(r)}."
+    elif m == "asociativa":
+        a = rng.randint(12, 99)
+        par = rng.choice([(25, 4), (4, 25), (5, 20), (2, 50), (50, 2), (20, 5)])
+        orden = [par[0], a, par[1]]
+        r = par[0] * par[1] * a
+        expr = " · ".join(str(x) for x in orden)
+        mal = (par[0] * a) * par[1] + 100
+        dist = [(mal, "E03"), (par[0] * par[1] + a, None), (r * 10, None), (r - 100, None)]
+        txt = f"Cambio el orden y agrupo: {par[0]} · {par[1]} = {par[0] * par[1]}, y {par[0] * par[1]} · {a} = {fmt(r)}."
+    else:
+        k = rng.choice([1, 2])
+        R = rng.choice([100, 1000]) if d == 3 else 100
+        b = R - k
+        a = rng.randint(3, 9) if d < 3 else rng.randint(11, 25)
+        r = a * b
+        expr = f"{b} · {a}"
+        dist = [(R * a - k, "E02"), (R * a + k * a, None), (R * a, None), (r + 10, None)]
+        txt = f"{b} = {R} − {k}, así que {b} · {a} = {R} · {a} − {k} · {a} = {fmt(R * a)} − {k * a} = {fmt(r)}."
+    return mk(f"Calcula de la forma más cómoda: {expr}", r, dist, "jerarquia", txt,
+              "Las propiedades (conmutativa, asociativa, distributiva) permiten reorganizar el cálculo para que sea mental y seguro.", expresion=expr)

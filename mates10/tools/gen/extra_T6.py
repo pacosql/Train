@@ -120,8 +120,11 @@ def fem(c):
     return c in FEMENINOS
 
 
+SINGULAR = {"rojas": "roja", "azules": "azul", "verdes": "verde", "amarillas": "amarilla", "negras": "negra", "blancas": "blanca"}
+
+
 def sing(c):
-    return c[:-1] if c.endswith("s") else c
+    return SINGULAR.get(c, c[:-1] if c.endswith("s") else c)
 
 
 # ================================================================ DATOS
@@ -765,7 +768,7 @@ def g_caja(rng, d, tipo="ric"):
         if min(b - a for a, b in zip(v, v[1:])) >= 2:
             break
     mn, q1, me, q3, mx = v
-    ctx = rng.choice(["notas (sobre 40) de un examen", "minutos que se tarda en llegar al instituto", "puntos conseguidos en un juego"])
+    ctx = rng.choice(["notas de un examen, sobre 40", "minutos que se tarda en llegar al instituto", "puntos conseguidos en un juego"])
     desc = f"El bigote izquierdo empieza en {mn}; la caja va de {q1} a {q3} con una raya dentro en {me}; el bigote derecho llega a {mx}."
     base = f"Diagrama de caja y bigotes ({ctx}). {desc}\n"
     if tipo == "ric":
@@ -1299,3 +1302,812 @@ def g_cv(rng, d, tipo="calcular"):
                   (f"los {grupos[1]}, porque su media es mayor", None)],
                  [("CV", pc(cv1, 1), f"CV de {grupos[0]} = {dec(s1, 2)}/{dec(m1, 2)} = {pc(cv1, 1)}; CV de {grupos[1]} = {fmt(int(s2))}/{fmt(int(m2))} = {pc(cv2, 1)}. Mayor CV, más dispersión relativa.")],
                  "Con medias o unidades distintas no se comparan las σ directamente, sino el coeficiente de variación σ/x̄.")
+
+
+# ================================================================ AZAR Y PROBABILIDAD
+
+def _bolsa_txt(cs):
+    partes = [f"{n} {'bola' if n == 1 else 'bolas'} {sing(c) if n == 1 else c}" for c, n in cs if n]
+    return lista(partes)
+
+
+@gen6("t6_suceso_tipo")
+def g_suceso_tipo(rng, d):
+    """EST.AZAR.02. Claves: probable_es_seguro, poco_probable_imposible."""
+    disp = rng.choice(["bolsa", "dado", "ruleta", "moneda"] if d > 1 else ["bolsa", "dado"])
+    clave_seg = clave_imp = None
+    if disp == "bolsa":
+        cols = rng.sample(COLORES_F, 3)
+        caso = rng.choice(["seguro", "posible_mucho", "posible_poco", "imposible"])
+        if caso == "seguro":
+            cs = [(cols[0], rng.randint(2, 8))]
+            suc = f"sacar una bola {sing(cols[0])}"
+        elif caso == "imposible":
+            cs = [(cols[0], rng.randint(1, 6)), (cols[1], rng.randint(1, 6))]
+            suc = f"sacar una bola {sing(cols[2])}"
+        else:
+            a, b = rng.randint(4, 9), 1
+            cs = [(cols[0], a), (cols[1], b)]
+            suc = f"sacar una bola {sing(cols[0])}" if caso == "posible_mucho" else f"sacar una bola {sing(cols[1])}"
+            clave_seg = "probable_es_seguro" if caso == "posible_mucho" else None
+            clave_imp = "poco_probable_imposible" if caso == "posible_poco" else None
+        situ = f"En una bolsa hay {_bolsa_txt(cs)}. Se saca una bola sin mirar."
+    elif disp == "dado":
+        k = rng.randint(1, 6)
+        opciones = [("sacar un número menor que 7", "seguro"), ("sacar un número del 1 al 6", "seguro"), (f"sacar un {k}", "posible"),
+                    ("sacar un 7", "imposible"), ("sacar un 0", "imposible"), ("sacar un número par", "posible"), ("sacar un número mayor que 6", "imposible"),
+                    ("sacar un número menor que 6", "posible_mucho"), ("sacar un número mayor que 1", "posible_mucho")]
+        suc, caso = rng.choice(opciones)
+        if caso == "posible_mucho":
+            clave_seg = "probable_es_seguro"
+        if suc == f"sacar un {k}":
+            clave_imp = "poco_probable_imposible"
+        situ = "Se lanza un dado normal de seis caras."
+    elif disp == "ruleta":
+        cols = rng.sample(["roja", "azul", "verde", "amarilla"], 3)
+        n = rng.choice([4, 6, 8])
+        a = rng.randint(1, n)
+        if a == n:
+            situ = f"Una ruleta tiene {n} sectores iguales, todos de color {cols[0]}."
+            suc, caso = rng.choice([(f"que salga {cols[0]}", "seguro"), (f"que salga {cols[1]}", "imposible")])
+        else:
+            situ = f"Una ruleta tiene {n} sectores iguales: {a} de color {cols[0]} y {n - a} de color {cols[1]}."
+            suc, caso = rng.choice([(f"que salga {cols[0]}", "posible"), (f"que salga {cols[2]}", "imposible"), (f"que salga {cols[1]}", "posible")])
+            if caso == "posible":
+                mayor = a if cols[0] in suc else n - a
+                if mayor * 2 > n:
+                    clave_seg = "probable_es_seguro"
+                elif mayor == 1:
+                    clave_imp = "poco_probable_imposible"
+    else:
+        situ = "Se lanza una moneda al aire."
+        suc, caso = rng.choice([("que salga cara o cruz", "seguro"), ("que salga cara", "posible"), ("que salga cruz", "posible"), ("que salga un 5", "imposible")])
+    caso_r = "posible" if caso.startswith("posible") else caso
+    enun = f"{situ} ¿Cómo es el suceso «{suc}»?"
+    dis = []
+    for c in ("seguro", "posible", "imposible"):
+        if c == caso_r:
+            continue
+        k = clave_seg if c == "seguro" else clave_imp if c == "imposible" else None
+        dis.append((c, k))
+    expl = {"seguro": "Ocurre siempre, salga lo que salga: es seguro.", "imposible": "No puede ocurrir nunca: es imposible.",
+            "posible": "Puede ocurrir y puede no ocurrir: es posible (aunque sea muy probable o poco probable, no es seguro ni imposible)."}[caso_r]
+    return hacer(enun, caso_r, "suceso_tipo", {"caso": caso_r}, dis, [("", caso_r, expl)],
+                 "Seguro: ocurre siempre; imposible: nunca; posible: a veces. «Muy probable» sigue siendo posible, y «poco probable» no es imposible.",
+                 gen=["no se puede saber"], datos={"opciones_fijas": True})
+
+
+@gen6("t6_comparar_azar")
+def g_comparar_azar(rng, d, tipo="mismo"):
+    """EST.AZAR.03. Claves: solo_favorables, todo_igual."""
+    c1, c2 = rng.sample(COLORES_F, 2)
+    if tipo == "mismo":
+        a, b = rng.randint(1, 9), rng.randint(1, 9)
+        if rng.random() < 0.2:
+            b = a
+        enun = f"En una bolsa hay {_bolsa_txt([(c1, a), (c2, b)])}. Si sacas una sin mirar, ¿qué es más probable?"
+        opts = [f"sacar una bola {sing(c1)}", f"sacar una bola {sing(c2)}", "las dos cosas son igual de probables"]
+        resp = opts[0] if a > b else opts[1] if b > a else opts[2]
+        dis = [(o, "todo_igual" if o == opts[2] else None) for o in opts if o != resp]
+        return hacer(enun, resp, "azar_cmp", {"a": a, "b": b}, dis,
+                     [("comparar", resp, f"Hay {a} {c1} y {b} {c2}. " + ("Cuantas más bolas de un color, más fácil es que salga." if a != b else "Hay las mismas de cada color: es igual de probable."))],
+                     "En un mismo experimento, es más probable el suceso con más casos favorables.", gen=["no se puede saber, es cuestión de suerte"],
+                     datos={"opciones_fijas": True})
+    igual = rng.choice(["fav", "desf"])
+    x = rng.randint(2, 6)
+    y1, y2 = rng.sample(range(1, 9), 2)
+    if igual == "fav":
+        A, B = [(c1, x), (c2, y1)], [(c1, x), (c2, y2)]
+        mejor = "la bolsa A" if y1 < y2 else "la bolsa B"
+        razon = f"En las dos hay {x} {c1}, pero en {mejor} hay menos bolas {c2} que estorben."
+    else:
+        A, B = [(c1, y1), (c2, x)], [(c1, y2), (c2, x)]
+        mejor = "la bolsa A" if y1 > y2 else "la bolsa B"
+        razon = f"En las dos hay {x} {c2}, pero en {mejor} hay más bolas {c1}."
+    enun = f"Bolsa A: {_bolsa_txt(A)}. Bolsa B: {_bolsa_txt(B)}.\n¿En qué bolsa es más fácil sacar una bola {sing(c1)}?"
+    otra = "la bolsa B" if mejor == "la bolsa A" else "la bolsa A"
+    dis = [("en las dos igual", "solo_favorables" if igual == "fav" else "todo_igual"), (otra, None), ("no se puede saber, es cuestión de suerte", "todo_igual")]
+    return hacer(enun, mejor, "azar_cmp_bolsas", {"A": A, "B": B}, dis, [("comparar", mejor, razon)],
+                 "Si los casos favorables son iguales, gana la bolsa con menos desfavorables; si los desfavorables son iguales, la que tiene más favorables.",
+                 datos={"opciones_fijas": True})
+
+
+ESCALA = ["imposible", "poco probable", "igual de probable que no", "muy probable", "seguro"]
+RECTA = ["en el 0", "entre 0 y 1/2", "en 1/2", "entre 1/2 y 1", "en el 1"]
+
+
+@gen6("t6_escala")
+def g_escala(rng, d, tipo="verbal"):
+    """EST.AZAR.04. Claves: igual_por_posible, escala_invertida, poco_imposible."""
+    n = rng.choice([4, 6, 8, 10])
+    col, otro = rng.sample(["verde", "rojo", "azul", "amarillo", "blanco"], 2)
+    a = rng.randint(0, n)
+    if rng.random() < 0.3:
+        a = rng.choice([0, n, n // 2])
+    situ = (f"Una ruleta tiene {n} sectores iguales: {a} de color {col} y {n - a} de color {otro}." if 0 < a < n else
+            f"Una ruleta tiene {n} sectores iguales, todos de color {col if a == n else otro}.")
+    i = 0 if a == 0 else 4 if a == n else 2 if 2 * a == n else 1 if 2 * a < n else 3
+    if tipo == "verbal":
+        enun = f"{situ} ¿Cómo es que salga {col}?"
+        resp = ESCALA[i]
+        dis = []
+        if i == 1:
+            dis.append(("imposible", "poco_imposible"))
+        if i in (1, 3):
+            dis.append(("igual de probable que no", "igual_por_posible"))
+        dis += [(e, None) for e in ESCALA if e != resp and e not in [x for x, _ in dis]]
+        dis = dis[:3]
+        return hacer(enun, resp, "escala_verbal", {"a": a, "n": n}, dis,
+                     [("comparar con la mitad", resp, f"Salen {a} sectores de {n}; " + ["ninguno: imposible.", "menos de la mitad: poco probable.", "justo la mitad: igual de probable que no.",
+                                                                                      "más de la mitad: muy probable.", "todos: seguro."][i])],
+                     "Escala: imposible (0) – poco probable – igual (1/2) – muy probable – seguro (1). Se compara lo favorable con la mitad del total.",
+                     datos={"opciones_fijas": True})
+    enun = f"{situ} En una recta de probabilidad del 0 al 1, ¿dónde situarías «que salga {col}»?"
+    resp = RECTA[i]
+    dis = [(RECTA[4 - i], "escala_invertida")] if i != 2 else []
+    if i == 1:
+        dis.append((RECTA[0], "poco_imposible"))
+    dis += [(r, None) for r in RECTA if r != resp and r not in [x for x, _ in dis]]
+    return hacer(enun, resp, "escala_recta", {"a": a, "n": n}, dis[:3],
+                 [("", resp, "0 es imposible, 1/2 igual de probable que no y 1 seguro. " + ["Ningún sector: en el 0.", "Menos de la mitad de sectores: entre 0 y 1/2.",
+                                                                                            "La mitad de sectores: en 1/2.", "Más de la mitad: entre 1/2 y 1.", "Todos los sectores: en el 1."][i])],
+                 "En la recta de probabilidad, lo imposible está en 0 y lo seguro en 1; cuanto más probable, más a la derecha.", datos={"opciones_fijas": True})
+
+
+BARAJA = {"un oro": (10, "oros"), "una copa": (10, "copas"), "una figura (sota, caballo o rey)": (12, "figuras"), "un as": (4, "ases"), "un rey": (4, "reyes"),
+          "un número menor que 4 (as, 2 o 3)": (12, "cartas menores que 4")}
+
+
+@gen6("t6_laplace")
+def g_laplace(rng, d, tipo="simple"):
+    """EST.PROB.01 (op laplace). Claves: favorables_entre_desfavorables, solo_favorables."""
+    if tipo == "comparar":
+        for _ in range(200):
+            a1, t1 = rng.randint(2, 8), rng.randint(4, 12)
+            a2, t2 = rng.randint(2, 10), rng.randint(4, 15)
+            if a1 < t1 and a2 < t2 and a2 > a1 and F(a1, t1) > F(a2, t2) and F(a1, t1) != F(a2, t2):
+                break
+        else:
+            return None
+        c1, c2 = rng.sample(COLORES_F, 2)
+        A, B = ("A", a1, t1), ("B", a2, t2)
+        if rng.random() < 0.5:
+            A, B = ("A", a2, t2), ("B", a1, t1)
+        mejor = A if F(A[1], A[2]) > F(B[1], B[2]) else B
+        peor = B if mejor is A else A
+        enun = (f"Bolsa A: {A[1]} bolas {c1} y {A[2] - A[1]} {c2}. Bolsa B: {B[1]} bolas {c1} y {B[2] - B[1]} {c2}.\n"
+                f"¿En qué bolsa es más probable sacar una bola {sing(c1)}?")
+        resp = f"en la bolsa {mejor[0]} ({mejor[1]}/{mejor[2]} frente a {peor[1]}/{peor[2]})"
+        return hacer(enun, resp, "laplace_comparar", {"A": list(A[1:]), "B": list(B[1:])},
+                     [(f"en la bolsa {peor[0]}, porque tiene más bolas {c1}", "solo_favorables"), ("en las dos igual", None),
+                      (f"en la bolsa {peor[0]} ({peor[1]}/{peor[2] - peor[1]} frente a {mejor[1]}/{mejor[2] - mejor[1]})", "favorables_entre_desfavorables")],
+                     [("Laplace", resp, f"P en A = {A[1]}/{A[2]} ≈ {dec(F(A[1], A[2]), 2)}; P en B = {B[1]}/{B[2]} ≈ {dec(F(B[1], B[2]), 2)}. Es mayor en la bolsa {mejor[0]}.")],
+                     "Para comparar bolsas con totales distintos hay que comparar las fracciones favorables/posibles, no solo los favorables.",
+                     datos={"opciones_fijas": True})
+    exp = rng.choice(["bolsa", "dado", "ruleta"] if d == 1 else ["bolsa", "ruleta", "baraja", "dado"])
+    if exp == "bolsa":
+        cs = rng.sample(COLORES_F, 3)
+        ns = [rng.randint(1, 8), rng.randint(1, 8), rng.randint(0, 6) if d > 1 else 0]
+        fav, tot = ns[0], sum(ns)
+        situ = f"En una bolsa hay {_bolsa_txt(list(zip(cs, ns)))}."
+        q = f"sacar una bola {sing(cs[0])}"
+    elif exp == "dado":
+        suc = rng.choice([("un número par", 3), ("un múltiplo de 3", 2), ("un número mayor que 4", 2), ("un número menor que 3", 2), ("un 5", 1), ("un número primo", 3)])
+        situ, q, fav, tot = "Se lanza un dado de seis caras.", f"sacar {suc[0]}", suc[1], 6
+    elif exp == "ruleta":
+        n = rng.choice([8, 10, 12, 20])
+        k = rng.choice([2, 3, 4, 5])
+        fav = n // k
+        situ, q, tot = f"Una ruleta tiene {n} sectores iguales numerados del 1 al {n}.", f"que salga un múltiplo de {k}", n
+    else:
+        nom, (fav, _) = rng.choice(list(BARAJA.items()))
+        situ, q, tot = "Se saca una carta de una baraja española de 40 cartas.", f"sacar {nom}", 40
+    if fav == 0 or fav == tot:
+        return None
+    enun = f"{situ} ¿Qué probabilidad hay de {q}?"
+    p = F(fav, tot)
+    return hacer(enun, ff(p), "laplace", {"fav": fav, "tot": tot},
+                 [(ff(F(fav, tot - fav)), "favorables_entre_desfavorables"), (ff(F(1, tot)), None), (ff(F(tot - fav, tot)), None), (f"{fav}", None)],
+                 [("favorables / posibles", ff(p), f"Casos favorables: {fav}. Casos posibles: {tot}. P = {fav}/{tot}" + (f" = {ff(p)}." if ff(p) != f"{fav}/{tot}" else "."))],
+                 "Regla de Laplace (resultados igual de probables): P = casos favorables / casos posibles.", gen=[ff(F(fav + 1, tot)), ff(F(fav, tot + 1))])
+
+
+@gen6("t6_espacio")
+def g_espacio(rng, d, tipo="suceso"):
+    """EST.PROB.02. Claves: solo_favorables, olvida_resultado, imposible_mal."""
+    conj = lambda xs: "{" + ", ".join(map(str, xs)) + "}"
+    if tipo == "suceso":
+        n = rng.choice([6, 8, 9, 10, 12, 15])
+        exp = "Se lanza un dado de seis caras." if n == 6 else f"Se gira una ruleta con los números del 1 al {n}."
+        k = rng.randint(2, n - 2)
+        suc = rng.choice([("sacar par", lambda x: x % 2 == 0), ("sacar impar", lambda x: x % 2 == 1), ("sacar múltiplo de 3", lambda x: x % 3 == 0),
+                          (f"sacar un número mayor que {k}", lambda x: x > k), (f"sacar un número menor que {k}", lambda x: x < k),
+                          ("sacar un número primo", lambda x: x in (2, 3, 5, 7, 11, 13)), ("sacar múltiplo de 4", lambda x: x % 4 == 0)])
+        xs = [x for x in range(1, n + 1) if suc[1](x)]
+        if not xs or len(xs) == n:
+            return None
+        falta = xs[:-1] if len(xs) > 1 else xs + [xs[0] + 1]
+        otro = [x for x in range(1, n + 1) if not suc[1](x)]
+        return hacer(f"{exp} Escribe el suceso A = «{suc[0]}» como conjunto.", conj(xs), "suceso_conjunto", {"n": n},
+                     [(conj(falta), "olvida_resultado"), (conj(otro), None), (conj(range(1, n + 1)), None)],
+                     [("elegir resultados", conj(xs), f"De los resultados 1 a {n}, cumplen «{suc[0]}»: {conj(xs)}.")],
+                     "Un suceso es el conjunto de resultados del espacio muestral que lo cumplen.")
+    if tipo == "espacio":
+        exp = rng.choice(["monedas", "ruleta", "moneda_dado", "ruleta"] if d > 1 else ["ruleta"])
+        if exp == "monedas":
+            E = ["CC", "CX", "XC", "XX"]
+            return hacer("Se lanzan dos monedas (C = cara, X = cruz). ¿Cuál es el espacio muestral?", conj(E), "espacio", {},
+                         [(conj(["CC", "CX", "XX"]), "olvida_resultado"), (conj(["C", "X"]), None), (conj(["CC", "XX"]), None)],
+                         [("árbol", conj(E), "Primera moneda C o X; para cada una, la segunda C o X: CC, CX, XC y XX (CX y XC son distintos).")],
+                         "Espacio muestral: todos los resultados posibles; con un árbol no se olvida ninguno.")
+        if exp == "moneda_dado":
+            k = rng.choice([3, 4, 5, 6])
+            E = [f"{m}{i}" for m in "CX" for i in range(1, k + 1)]
+            return hacer(f"Se lanza una moneda (C o X) y se gira una ruleta con los números del 1 al {k}. ¿Cuál es el espacio muestral?", conj(E), "espacio", {"k": k},
+                         [(conj(E[:k] + E[k:-1]), "olvida_resultado"), (conj(["C", "X"] + list(range(1, k + 1))), None), (conj(E[:k]), None)],
+                         [("árbol", conj(E), f"Para cada cara de la moneda hay {k} números: {2 * k} resultados.")],
+                         "Espacio muestral de un experimento compuesto: todas las parejas posibles.")
+        n = rng.randint(5, 12)
+        k = rng.choice([2, 3, 4])
+        A = [x for x in range(1, n + 1) if x % k == 0]
+        return hacer(f"Se gira una ruleta con los números del 1 al {n}. Nos interesa el suceso A = «múltiplo de {k}». ¿Cuál es el espacio muestral E?",
+                     conj(range(1, n + 1)), "espacio", {"n": n},
+                     [(conj(A), "solo_favorables"), (conj(range(1, n)), "olvida_resultado"), (conj(range(0, n + 1)), None)],
+                     [("todos los resultados", conj(range(1, n + 1)), f"E contiene todos los resultados posibles del experimento, no solo los de A: del 1 al {n}.")],
+                     "El espacio muestral son todos los resultados posibles; el suceso es una parte de él.")
+    n = rng.choice([6, 8, 9, 10, 12])
+    exp = "Se lanza un dado de seis caras." if n == 6 else f"Se gira una ruleta con los números del 1 al {n}."
+    if rng.random() < 0.6:
+        m = n + rng.randint(1, 5)
+        return hacer(f"{exp} ¿Cómo se escribe el suceso «sacar un {m}»?", "∅ (suceso imposible)", "imposible_conjunto", {"n": n},
+                     [(conj([m]), "imposible_mal"), ("{0}", "imposible_mal"), (conj(range(1, n + 1)), None)],
+                     [("", "∅", f"Ningún resultado del 1 al {n} es {m}: el suceso no tiene elementos, es el conjunto vacío ∅ (imposible).")],
+                     "Suceso imposible = conjunto vacío ∅; suceso seguro = el espacio muestral completo E.")
+    return hacer(f"{exp} ¿Cómo se escribe el suceso «sacar un número menor que {n + 1}»?", f"{conj(range(1, n + 1))} = E (suceso seguro)", "seguro_conjunto", {"n": n},
+                 [("∅ (suceso imposible)", None), (conj(range(1, n)), "olvida_resultado"), (conj([n + 1]), "imposible_mal")],
+                 [("", "E", f"Todos los resultados del 1 al {n} son menores que {n + 1}: es el espacio muestral completo, el suceso seguro.")],
+                 "Suceso seguro = E (todos los resultados); suceso imposible = ∅.")
+
+
+@gen6("t6_contrario")
+def g_contrario(rng, d, tipo="describir"):
+    """EST.PROB.03. Claves: otro_suceso, olvida_frontera, inverso."""
+    if tipo == "describir":
+        n = rng.choice([6, 8, 10])
+        exp = "Se lanza un dado de seis caras." if n == 6 else f"Se gira una ruleta con los números del 1 al {n}."
+        k = rng.randint(2, n - 2)
+        tip = rng.choice(["mayor", "menor", "par"])
+        if tip == "mayor":
+            suc, resp = f"sacar un número mayor que {k}", f"sacar un número menor o igual que {k}"
+            dis = [(f"sacar un número menor que {k}", "olvida_frontera"), (f"sacar un {k + 1}", "otro_suceso"), (f"sacar un número mayor que {k + 1}", None)]
+        elif tip == "menor":
+            suc, resp = f"sacar un número menor que {k}", f"sacar un número mayor o igual que {k}"
+            dis = [(f"sacar un número mayor que {k}", "olvida_frontera"), (f"sacar un {k - 1}", "otro_suceso"), (f"sacar un número menor que {k - 1}", None)]
+        else:
+            suc, resp = "sacar un número par", "sacar un número impar"
+            dis = [("sacar un 1", "otro_suceso"), ("sacar un múltiplo de 3", "otro_suceso"), ("sacar un número par mayor que 2", None)]
+        return hacer(f"{exp} ¿Cuál es el suceso contrario de «{suc}»?", resp, "contrario", {"n": n, "k": k}, dis,
+                     [("", resp, f"El contrario de A ocurre exactamente cuando A no ocurre: todos los demás resultados. Contrario de «{suc}»: «{resp}».")],
+                     "El contrario de A contiene todos los resultados que no están en A; ojo con el valor frontera (mayor que 4 ↔ menor o igual que 4).")
+    if tipo == "fraccion":
+        den = rng.randint(3, 12)
+        num = rng.randint(1, den - 1)
+        p = F(num, den)
+        ctx = rng.choice(["llueva mañana", "gane el equipo local", "salga premio en una rifa", "el autobús llegue tarde"])
+        enun = f"La probabilidad de que {ctx} es {ff(p)}. ¿Cuál es la probabilidad de que no {ctx.replace('llueva', 'llueva') }?"
+        r = 1 - p
+        return hacer(enun, ff(r), "contrario_p", {"p": str(p)}, [(ff(1 / p), "inverso"), (ff(p), None), (ff(F(1, p.denominator)), None)],
+                     [("1 − p", ff(r), f"P(no A) = 1 − P(A) = 1 − {ff(p)} = {ff(r)}.")],
+                     "P(A) + P(contrario de A) = 1, así que P(no A) = 1 − P(A).", gen=[ff(F(num + 1, den + 1)), ff(F(den - num, den + 1))])
+    # al menos: contar lo contrario
+    exp = rng.choice(["dado", "decimal"])
+    if exp == "decimal":
+        p = F(rng.randint(5, 95), 100)
+        ctx = rng.choice(["un tren llegue puntual", "un aparato funcione un año sin averías", "un alumno apruebe el examen"])
+        enun = f"La probabilidad de que {ctx} es {dec(p, 2)}. ¿Cuál es la probabilidad del suceso contrario?"
+        r = 1 - p
+        return hacer(enun, dec(r, 2), "contrario_p", {"p": str(p)}, [(dec(1 / p, 2), "inverso"), (dec(p, 2), None), (dec(r + F(1, 10), 2) if r < F(9, 10) else dec(r - F(1, 10), 2), None)],
+                     [("1 − p", dec(r, 2), f"P(contrario) = 1 − {dec(p, 2)} = {dec(r, 2)}.")], "P(no A) = 1 − P(A).")
+    k = rng.randint(2, 5)
+    enun = f"Se lanza un dado de seis caras. ¿Qué probabilidad hay de NO sacar un número mayor que {k}? (Piensa en el contrario.)"
+    r = F(k, 6)
+    return hacer(enun, ff(r), "contrario_p", {"k": k}, [(ff(F(6 - k, 6)), None), (ff(F(6, 6 - k)), "inverso"), (ff(F(k - 1, 6)), "olvida_frontera")],
+                 [("contrario", ff(F(6 - k, 6)), f"P(mayor que {k}) = {6 - k}/6."), ("1 − p", ff(r), f"P(no) = 1 − {6 - k}/6 = {k}/6 = {ff(r)}.")],
+                 "P(no A) = 1 − P(A); «no mayor que k» es «menor o igual que k».")
+
+
+@gen6("t6_frecuencial")
+def g_frecuencial(rng, d, tipo="estimar"):
+    """EST.PROB.04. Claves: uno_entre_n, pocos_ensayos_exacto, divide_al_reves."""
+    if tipo == "estimar":
+        n = rng.choice([100, 200, 250, 400, 500, 1000] if d > 1 else [100, 200, 50])
+        obj = rng.choice([("una chincheta", "caiga con la punta hacia arriba", 2), ("un vaso de plástico", "caiga de pie", 3), ("un dado trucado", "salga un 6", 6)])
+        for _ in range(100):
+            k = rng.randint(int(n * 0.15), int(n * 0.8))
+            if (F(k, n) * 100).denominator == 1 and F(k, n) != F(1, obj[2]):
+                break
+        enun = f"Se ha lanzado {obj[0]} {n} veces y en {k} de ellas ha ocurrido que {obj[1]}. ¿Qué probabilidad estimas para ese suceso?"
+        p = F(k, n)
+        return hacer(enun, dec(p, 2), "frecuencial", {"k": k, "n": n}, [(dec(F(1, obj[2]), 2), "uno_entre_n"), (dec(F(n, k), 2), "divide_al_reves"), (dec(F(k, n - k), 2), None)],
+                     [("f/N", dec(p, 2), f"Frecuencia relativa = {k}/{n} = {dec(p, 2)}. Con muchos lanzamientos es una buena estimación de la probabilidad.")],
+                     "Si los resultados no son equiprobables, la probabilidad se estima con la frecuencia relativa de muchos ensayos.", gen=[dec(p + F(1, 10), 2)])
+    if tipo == "laplace_si":
+        ok = rng.choice(["sacar un 3 con un dado normal", "que salga cara en una moneda normal", "sacar una bola roja de una bolsa con bolas iguales de varios colores",
+                         "que salga el 7 en una ruleta de 10 sectores iguales"])
+        malos = [("que una chincheta caiga con la punta hacia arriba", "uno_entre_n"), ("que un dado trucado saque un 6", None),
+                 ("que salga rojo en una ruleta con un sector rojo de media rueda y dos sectores pequeños", "uno_entre_n"),
+                 ("que un vaso de plástico caiga de pie", "uno_entre_n"), ("que mañana llueva", None)]
+        rng.shuffle(malos)
+        return hacer("¿En cuál de estas situaciones se puede calcular la probabilidad con la regla de Laplace?", ok, "laplace_si", {}, malos[:3],
+                     [("", ok, "Laplace solo vale si todos los resultados son igual de probables; en las otras hay resultados más probables que otros y hay que experimentar.")],
+                     "Regla de Laplace: solo con resultados equiprobables. Si no, probabilidad frecuencial (experimentar muchas veces).")
+    n = rng.choice([10, 12, 20])
+    k = rng.randint(n // 2 + 1, n - 1)
+    enun = f"Lanzamos una chincheta {n} veces y cae de punta hacia arriba {k} veces. ¿Qué podemos decir de la probabilidad de ese suceso?"
+    resp = f"que es aproximadamente {dec(F(k, n), 2)}, pero con tan pocos lanzamientos la estimación es poco fiable"
+    return hacer(enun, resp, "pocos_ensayos", {"k": k, "n": n},
+                 [(f"que es exactamente {dec(F(k, n), 2)}", "pocos_ensayos_exacto"), ("que es 1/2, porque hay dos posiciones", "uno_entre_n"),
+                  (f"que es {dec(F(n, k), 2)}", "divide_al_reves")],
+                 [("", resp, "La frecuencia relativa se acerca a la probabilidad cuando el número de ensayos es grande; con pocos solo da una idea.")],
+                 "Ley de los grandes números: la estimación frecuencial mejora al aumentar el número de ensayos.")
+
+
+@gen6("t6_union")
+def g_union(rng, d, tipo="union"):
+    """EST.PROB.05. Claves: sin_restar_interseccion, y_por_o, incompatibles_multiplica."""
+    if d == 3:
+        for _ in range(100):
+            pa, pb = F(rng.randint(2, 7), 10), F(rng.randint(2, 7), 10)
+            pi = F(rng.randint(1, 5), 20)
+            if pi < min(pa, pb) and pa + pb - pi <= 1 and pa * pb != pi:
+                break
+        u = pa + pb - pi
+        enun = f"P(A) = {dec(pa, 2)}, P(B) = {dec(pb, 2)} y P(A ∩ B) = {dec(pi, 2)}. Calcula P(A ∪ B)."
+        return hacer(enun, dec(u, 2), "union", {"pa": str(pa), "pb": str(pb), "pi": str(pi)},
+                     [(dec(pa + pb, 2), "sin_restar_interseccion"), (dec(pi, 2), "y_por_o"), (dec(pa * pb, 2), "incompatibles_multiplica")],
+                     [("P(A)+P(B)−P(A∩B)", dec(u, 2), f"P(A ∪ B) = {dec(pa, 2)} + {dec(pb, 2)} − {dec(pi, 2)} = {dec(u, 2)}.")],
+                     "P(A ∪ B) = P(A) + P(B) − P(A ∩ B): la intersección se ha contado dos veces.", gen=[dec(u + F(1, 10), 2)])
+    if d == 1 or rng.random() < 0.4:
+        n = rng.choice([6, 8, 9, 10, 12, 15, 20])
+        exp = "Se lanza un dado de seis caras." if n == 6 else f"Se gira una ruleta con los números del 1 al {n}."
+        k = rng.choice([3, 4, 5])
+        m = rng.randint(2, n - 2)
+        evs = [("sacar par", {x for x in range(1, n + 1) if x % 2 == 0}), ("sacar impar", {x for x in range(1, n + 1) if x % 2}),
+               (f"sacar múltiplo de {k}", {x for x in range(1, n + 1) if x % k == 0}), (f"sacar más de {m}", {x for x in range(m + 1, n + 1)}),
+               (f"sacar menos de {m}", set(range(1, m)))]
+        (nA, A), (nB, B) = rng.sample(evs, 2)
+        if not A or not B:
+            return None
+        tot = n
+    else:
+        exp = "Se saca una carta de una baraja española de 40 cartas (4 palos de 10: as, 2 a 7, sota, caballo y rey)."
+        cartas = [(p, v) for p in ["oros", "copas", "espadas", "bastos"] for v in range(1, 11)]
+        evs = [(f"sacar {p}", {c for c in cartas if c[0] == p}) for p in ["oros", "copas", "espadas", "bastos"]]
+        evs2 = [("sacar figura (sota, caballo o rey)", {c for c in cartas if c[1] >= 8}), ("sacar as", {c for c in cartas if c[1] == 1}),
+                ("sacar una carta menor que 4", {c for c in cartas if c[1] <= 3}), ("sacar rey", {c for c in cartas if c[1] == 10}),
+                ("sacar un 2, 4 o 6", {c for c in cartas if c[1] in (2, 4, 6)}), ("sacar sota o caballo", {c for c in cartas if c[1] in (8, 9)})]
+        nA, A = rng.choice(evs)
+        nB, B = rng.choice(evs2)
+        tot = 40
+    I = A & B
+    U = A | B
+    if tipo == "interseccion":
+        enun = f"{exp} ¿Qué probabilidad hay de «{nA}» y a la vez «{nB}»?"
+        return hacer(enun, ff(F(len(I), tot)), "interseccion", {"nA": len(A), "nB": len(B), "nI": len(I), "tot": tot},
+                     [(ff(F(len(U), tot)), "y_por_o"), (ff(F(len(A), tot) * F(len(B), tot)), "incompatibles_multiplica"), (ff(F(len(A) + len(B), tot)), None)],
+                     [("contar A ∩ B", ff(F(len(I), tot)), f"Resultados que cumplen las dos cosas: {len(I)}. P(A ∩ B) = {len(I)}/{tot}.")],
+                     "A ∩ B: se cumplen A y B a la vez; A ∪ B: se cumple al menos uno de los dos.", gen=[ff(F(len(I) + 1, tot))])
+    enun = f"{exp} ¿Qué probabilidad hay de «{nA}» o «{nB}»?"
+    return hacer(enun, ff(F(len(U), tot)), "union", {"nA": len(A), "nB": len(B), "nI": len(I), "tot": tot},
+                 [(ff(F(len(A) + len(B), tot)), "sin_restar_interseccion"), (ff(F(len(I), tot)), "y_por_o"), (ff(F(len(A), tot) * F(len(B), tot)), "incompatibles_multiplica")],
+                 [("P(A) + P(B) − P(A∩B)", ff(F(len(U), tot)), f"P(A ∪ B) = {len(A)}/{tot} + {len(B)}/{tot} − {len(I)}/{tot} = {len(U)}/{tot}" + (f" = {ff(F(len(U), tot))}." if ff(F(len(U), tot)) != f"{len(U)}/{tot}" else "."))],
+                 "P(A ∪ B) = P(A) + P(B) − P(A ∩ B); si A y B son incompatibles, P(A ∩ B) = 0.", gen=[ff(F(len(U) + 1, tot))])
+
+
+@gen6("t6_compuesto")
+def g_compuesto(rng, d, tipo="moneda_dado"):
+    """EST.PROB.06. Claves: suma_en_rama, olvida_ramas, no_equiprobables."""
+    if tipo == "moneda_dado":
+        k = rng.randint(1, 6)
+        cara = rng.choice(["cara", "cruz"])
+        suc = rng.choice([(f"un {k}", 1), ("un número par", 3), ("un número mayor que 4", 2), ("un múltiplo de 3", 2)])
+        p = F(1, 2) * F(suc[1], 6)
+        enun = f"Se lanza una moneda y un dado. ¿Qué probabilidad hay de sacar {cara} y {suc[0]}?"
+        return hacer(enun, ff(p), "compuesto", {"p": str(p)}, [(ff(F(1, 2) + F(suc[1], 6)), "suma_en_rama"), (ff(F(suc[1], 8)), "no_equiprobables"), (ff(F(1, 2)), None)],
+                     [("producto en la rama", ff(p), f"P({cara}) = 1/2; P({suc[0]}) = {ff(F(suc[1], 6))}. Son independientes: 1/2 · {ff(F(suc[1], 6))} = {ff(p)}.")],
+                     "En un árbol de etapas independientes se multiplica a lo largo de la rama.", gen=[ff(F(suc[1], 12) + F(1, 12)), ff(F(1, 6))])
+    if tipo == "dos_dados":
+        s = rng.choice([2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])
+        fav = sum(1 for i in range(1, 7) for j in range(1, 7) if i + j == s)
+        p = F(fav, 36)
+        enun = f"Se lanzan dos dados y se suman los puntos. ¿Qué probabilidad hay de que la suma sea {s}?"
+        return hacer(enun, ff(p), "dos_dados", {"s": s}, [(ff(F(1, 11)), "no_equiprobables"), (ff(F(fav, 36) / 2) if fav > 1 else ff(F(2, 36)), "olvida_ramas"), (ff(F(fav, 12)), None)],
+                     [("tabla 6 × 6", ff(p), f"Hay 36 resultados igual de probables. Suman {s}: {fav}. P = {fav}/36 = {ff(p)}.")],
+                     "Con dos dados hay 36 parejas equiprobables; las 11 sumas posibles no son igual de probables.", gen=[ff(F(1, 6)), ff(F(1, 36))])
+    if tipo == "monedas":
+        n = 3
+        k = rng.choice([1, 2])
+        cara = rng.choice(["caras", "cruces"])
+        fav = math.comb(n, k)
+        p = F(fav, 2 ** n)
+        enun = f"Se lanzan tres monedas. ¿Qué probabilidad hay de obtener exactamente {k} {cara if k > 1 else cara[:-1] if cara == 'caras' else 'cruz'}?"
+        return hacer(enun, ff(p), "monedas", {"k": k}, [(ff(F(1, 8)), "olvida_ramas"), (ff(F(1, 4)), "no_equiprobables"), (ff(F(1, 2) + F(1, 2) + F(1, 2)) if False else ff(F(1, 2)), None)],
+                     [("árbol", ff(p), f"Hay 8 ramas igual de probables (1/2 · 1/2 · 1/2 = 1/8 cada una). Con exactamente {k}: {fav} ramas. P = {fav}/8 = {ff(p)}.")],
+                     "Se multiplica a lo largo de cada rama y se suman las ramas que dan el suceso.", gen=[ff(F(1, 3)), ff(F(5, 8))])
+    c1, c2 = rng.sample(COLORES_F, 2)
+    a, b = rng.randint(1, 6), rng.randint(1, 6)
+    t = a + b
+    bolsa = f"En una bolsa hay {a} bolas {c1} y {b} {c2}. Se saca una bola, se mira y se devuelve; después se saca otra."
+    if tipo == "reemplazo_igual":
+        p = F(a, t) ** 2
+        return hacer(f"{bolsa} ¿Qué probabilidad hay de que las dos sean {c1}?", ff(p), "reemplazo", {"a": a, "b": b},
+                     [(ff(F(2 * a, t)) if 2 * a < t else ff(F(a, t)), "suma_en_rama"), (ff(F(a, t)), None), (ff(F(a * (a - 1), t * (t - 1))) if a > 1 else ff(F(1, t * t)), None)],
+                     [("producto", ff(p), f"Con devolución la bolsa no cambia: {a}/{t} · {a}/{t} = {ff(p)}.")],
+                     "Con reemplazamiento las extracciones son independientes: se multiplican las probabilidades.",
+                     gen=[ff(F(a, 2 * t)), ff(F(a, t * t)), ff(F(a + 1, t + 1) ** 2), ff(F(b, t) ** 2)])
+    p = 2 * F(a, t) * F(b, t)
+    return hacer(f"{bolsa} ¿Qué probabilidad hay de sacar una de cada color?", ff(p), "reemplazo", {"a": a, "b": b},
+                 [(ff(F(a * b, t * t)), "olvida_ramas"), (ff(F(a, t) + F(b, t)) if F(a, t) + F(b, t) < 1 else ff(F(a + b, 2 * t) + F(1, 10)), "suma_en_rama"), (ff(F(1, 2)), None)],
+                 [("dos ramas", ff(p), f"{c1} y luego {c2}: {a}/{t} · {b}/{t}; {c2} y luego {c1}: {b}/{t} · {a}/{t}. Sumo las dos ramas: {ff(p)}.")],
+                 "Cada rama se multiplica; las ramas que dan el mismo suceso se suman.", gen=[ff(F(a * b, t * t) + F(1, t * t))])
+
+
+@gen6("t6_sin_reemplazo")
+def g_sin_reemplazo(rng, d, tipo="dos_iguales"):
+    """EST.PROB.07. Claves: no_actualiza, actualiza_solo_total, olvida_orden."""
+    c1, c2 = rng.sample(COLORES_F, 2)
+    a, b = rng.randint(2, 7), rng.randint(2, 7)
+    t = a + b
+    bolsa = f"En una bolsa hay {a} bolas {c1} y {b} {c2}. Se sacan"
+    if tipo == "dos_iguales":
+        p = F(a * (a - 1), t * (t - 1))
+        return hacer(f"{bolsa} dos bolas sin devolver la primera. ¿Qué probabilidad hay de que las dos sean {c1}?", ff(p), "sin_reemplazo", {"a": a, "b": b},
+                     [(ff(F(a, t) ** 2), "no_actualiza"), (ff(F(a * a, t * (t - 1))), "actualiza_solo_total"), (ff(F(a - 1, t - 1)), None)],
+                     [("1.ª", f"{a}/{t}", f"Primera {sing(c1)}: {a}/{t}."), ("2.ª", f"{a - 1}/{t - 1}", f"Queda una {sing(c1)} menos y una bola menos: {a - 1}/{t - 1}."),
+                      ("producto", ff(p), f"{a}/{t} · {a - 1}/{t - 1} = {ff(p)}.")],
+                     "Sin devolución, la segunda extracción depende de la primera: se actualizan el color y el total.", gen=[ff(F(a, t))])
+    if tipo == "una_de_cada":
+        p = F(2 * a * b, t * (t - 1))
+        return hacer(f"{bolsa} dos bolas sin devolver la primera. ¿Qué probabilidad hay de sacar una de cada color?", ff(p), "sin_reemplazo", {"a": a, "b": b},
+                     [(ff(F(a * b, t * (t - 1))), "olvida_orden"), (ff(2 * F(a, t) * F(b, t)), "no_actualiza"), (ff(F(a * b, t * t)), None)],
+                     [("rama 1", ff(F(a * b, t * (t - 1))), f"{c1} y luego {c2}: {a}/{t} · {b}/{t - 1}."), ("rama 2", ff(F(a * b, t * (t - 1))), f"{c2} y luego {c1}: {b}/{t} · {a}/{t - 1}."),
+                      ("sumar", ff(p), f"Sumo las dos ramas: {ff(p)}.")],
+                     "Hay dos órdenes posibles (A-B y B-A); cada rama se multiplica actualizando la bolsa y luego se suman.", gen=[ff(F(1, 2))])
+    if a < 3:
+        a = 3
+        t = a + b
+        bolsa = f"En una bolsa hay {a} bolas {c1} y {b} {c2}. Se sacan"
+    p = F(a * (a - 1) * (a - 2), t * (t - 1) * (t - 2))
+    return hacer(f"{bolsa} tres bolas, una tras otra, sin devolverlas. ¿Qué probabilidad hay de que las tres sean {c1}?", ff(p), "sin_reemplazo3", {"a": a, "b": b},
+                 [(ff(F(a, t) ** 3), "no_actualiza"), (ff(F(a ** 3, t * (t - 1) * (t - 2))), "actualiza_solo_total"), (ff(F(a - 2, t - 2)), None)],
+                 [("producto", ff(p), f"{a}/{t} · {a - 1}/{t - 1} · {a - 2}/{t - 2} = {ff(p)}.")],
+                 "En cada extracción sin devolución quedan una bola menos de ese color y una menos en total.", gen=[ff(F(a, t))])
+
+
+def _tabla_cont(rng, d):
+    filas = ["chicas", "chicos"]
+    cols = rng.sample(["fútbol", "baloncesto", "natación", "tenis"], 2 if d < 3 else 3)
+    t = [[rng.randint(5, 60) for _ in cols] for _ in filas]
+    return filas, cols, t
+
+
+@gen6("t6_prob_tabla")
+def g_prob_tabla(rng, d, tipo="celda"):
+    """EST.PROB.08. Claves: divide_total, divide_fila, interseccion_por_union."""
+    for _ in range(100):
+        filas, cols, t = _tabla_cont(rng, d)
+        N = sum(map(sum, t))
+        fr = [sum(r) for r in t]
+        cc = [sum(t[i][j] for i in range(2)) for j in range(len(cols))]
+        if len({N, *fr, *cc}) == 1 + 2 + len(cols):
+            break
+    tabla = "Deporte | " + " | ".join(cols) + " | total\n" + "\n".join(f"{filas[i]} | " + " | ".join(map(str, t[i])) + f" | {fr[i]}" for i in range(2)) + \
+        "\ntotal | " + " | ".join(map(str, cc)) + f" | {N}"
+    i, j = rng.randrange(2), rng.randrange(len(cols))
+    base = f"Deporte favorito de {N} alumnos:\n{tabla}\nSe elige un alumno al azar.\n"
+    c = t[i][j]
+    if tipo == "celda":
+        return hacer(base + f"¿Qué probabilidad hay de que sea {filas[i][:-1]} y prefiera {cols[j]}?", ff(F(c, N)), "tabla_celda", {"c": c, "N": N},
+                     [(ff(F(c, fr[i])), "divide_fila"), (ff(F(c, cc[j])), None), (ff(F(fr[i] + cc[j] - c, N)), None)],
+                     [("celda / total", ff(F(c, N)), f"Casos favorables: la casilla {filas[i]}–{cols[j]} = {c}. Posibles: {N}. P = {c}/{N}" + (f" = {ff(F(c, N))}." if ff(F(c, N)) != f"{c}/{N}" else "."))],
+                     "En una tabla de contingencia, P(A y B) = casilla / total general.")
+    if tipo == "restringida":
+        enun = base.replace("Se elige un alumno al azar.\n", "") + f"Entre los alumnos que prefieren {cols[j]} se elige uno al azar. ¿Qué probabilidad hay de que sea {filas[i][:-1]}?"
+        return hacer(enun, ff(F(c, cc[j])), "tabla_restringida", {"c": c, "col": cc[j]},
+                     [(ff(F(c, N)), "divide_total"), (ff(F(c, fr[i])), "divide_fila"), (ff(F(cc[j], N)), None)],
+                     [("casilla / total de columna", ff(F(c, cc[j])), f"Ahora solo cuentan los de {cols[j]}: {cc[j]}. De ellos, {c} son {filas[i]}. P = {c}/{cc[j]}.")],
+                     "«De entre los que…» restringe los casos posibles a esa fila o columna.")
+    u = fr[i] + cc[j] - c
+    enun = base + f"¿Qué probabilidad hay de que sea {filas[i][:-1]} o prefiera {cols[j]}?"
+    return hacer(enun, ff(F(u, N)), "tabla_union", {"u": u, "N": N},
+                 [(ff(F(c, N)), "interseccion_por_union"), (ff(F(fr[i] + cc[j], N)) if fr[i] + cc[j] < N else ff(F(fr[i], N)), None), (ff(F(c, fr[i])), "divide_fila")],
+                 [("fila + columna − casilla", ff(F(u, N)), f"{fr[i]} + {cc[j]} − {c} = {u} alumnos cumplen al menos una. P = {u}/{N}.")],
+                 "«A o B» incluye a los que cumplen al menos una condición: fila + columna − casilla común.")
+
+
+def _pares_prob(rng, indep=None):
+    """P(A), P(B), P(A∩B) con 2 decimales como mucho (P(A∩B)/P(B) exacto a 2 decimales)."""
+    for _ in range(2000):
+        pa = F(rng.randint(2, 18), 20)
+        pb = F(rng.choice([2, 3, 4, 5, 6, 8]), 10) if rng.random() < 0.8 else F(rng.choice([1, 3]), 4)
+        if indep is True:
+            pi = pa * pb
+            if (pi * 100).denominator != 1:
+                continue
+        else:
+            pi = F(rng.randint(2, 60), 100)
+            if indep is False and pi == pa * pb:
+                continue
+        if not (0 < pi < min(pa, pb)) or pa + pb - pi > 1:
+            continue
+        if ((pi / pb) * 100).denominator != 1:
+            continue
+        return pa, pb, pi
+    return None
+
+
+@gen6("t6_condicionada")
+def g_condicionada(rng, d, tipo="formula"):
+    """EST.PROB.10. Claves: invierte_condicion, interseccion_por_condicionada, multiplica_sin_independencia."""
+    if tipo == "tabla":
+        filas = ["usa gafas", "no usa gafas"]
+        cols = ["practica deporte", "no practica deporte"]
+        t = [[rng.randint(5, 60) for _ in range(2)] for _ in range(2)]
+        N = sum(map(sum, t))
+        i, j = rng.randrange(2), rng.randrange(2)
+        fr, cc = sum(t[i]), t[0][j] + t[1][j]
+        tabla = " | " + " | ".join(cols) + "\n" + "\n".join(f"{filas[r]} | " + " | ".join(map(str, t[r])) for r in range(2))
+        A, B = filas[i], cols[j]
+        enun = f"Datos de {N} personas:\n{tabla}\nSe elige una persona al azar. A = «{A}», B = «{B}». Calcula P(A | B)."
+        r = F(t[i][j], cc)
+        return hacer(enun, ff(r), "condicionada_tabla", {"t": t, "i": i, "j": j},
+                     [(ff(F(t[i][j], fr)), "invierte_condicion"), (ff(F(t[i][j], N)), "interseccion_por_condicionada"), (ff(F(fr, N)), "multiplica_sin_independencia")],
+                     [("P(A∩B)/P(B)", ff(r), f"Solo cuentan los que cumplen B ({B}): {cc}. De ellos cumplen A: {t[i][j]}. P(A | B) = {t[i][j]}/{cc}" + (f" = {ff(r)}." if ff(r) != f"{t[i][j]}/{cc}" else "."))],
+                     "P(A | B) = P(A ∩ B)/P(B): se restringe el espacio a los casos de B.", gen=[ff(F(cc, N))])
+    got = _pares_prob(rng, indep=False)
+    if not got:
+        return None
+    pa, pb, pi = got
+    if tipo == "producto":
+        pab = pi / pb
+        enun = f"P(B) = {dec(pb, 2)} y P(A | B) = {dec(pab, 2)}. Calcula P(A ∩ B)."
+        return hacer(enun, dec(pi, 4), "producto_cond", {"pb": str(pb), "pab": str(pab)},
+                     [(dec(pab / pb, 4) if pab / pb <= 1 else dec(pab + pb, 2), "invierte_condicion"), (dec(pab, 2), "interseccion_por_condicionada"), (dec(pb + pab - pb * pab, 4), None)],
+                     [("P(B)·P(A|B)", dec(pi, 4), f"Regla del producto: P(A ∩ B) = P(B) · P(A | B) = {dec(pb, 2)} · {dec(pab, 2)} = {dec(pi, 4)}.")],
+                     "Regla del producto: P(A ∩ B) = P(B)·P(A | B).", gen=[dec(pi + F(1, 20), 4)])
+    pu = pa + pb - pi
+    enun = f"P(A) = {dec(pa, 2)}, P(B) = {dec(pb, 2)} y P(A ∪ B) = {dec(pu, 2)}. Calcula P(A | B)."
+    r = pi / pb
+    return hacer(enun, dec(r, 2), "condicionada", {"pa": str(pa), "pb": str(pb), "pu": str(pu)},
+                 [(dec(pi / pa, 3), "invierte_condicion"), (dec(pi, 2), "interseccion_por_condicionada"), (dec(pa * pb / pb, 2), "multiplica_sin_independencia")],
+                 [("P(A∩B)", dec(pi, 2), f"P(A ∩ B) = P(A) + P(B) − P(A ∪ B) = {dec(pa, 2)} + {dec(pb, 2)} − {dec(pu, 2)} = {dec(pi, 2)}."),
+                  ("÷ P(B)", dec(r, 2), f"P(A | B) = P(A ∩ B)/P(B) = {dec(pi, 2)}/{dec(pb, 2)} = {dec(r, 2)}.")],
+                 "P(A | B) = P(A ∩ B)/P(B); no confundir con P(B | A) = P(A ∩ B)/P(A).", gen=[dec(r + F(1, 10), 2), dec(pu, 2)])
+
+
+@gen6("t6_independencia")
+def g_independencia(rng, d, tipo="decidir"):
+    """EST.PROB.11. Claves: incompatibles_independientes, comprueba_union, intuicion."""
+    if tipo == "decidir":
+        ind = rng.random() < 0.5
+        got = _pares_prob(rng, indep=ind)
+        if not got:
+            return None
+        pa, pb, pi = got
+        pu = pa + pb - pi
+        enun = f"P(A) = {dec(pa, 2)}, P(B) = {dec(pb, 2)} y P(A ∪ B) = {dec(pu, 2)}. ¿Son A y B independientes?"
+        prod = pa * pb
+        if ind:
+            resp = f"sí, porque P(A ∩ B) = {dec(pi, 4)} = P(A)·P(B)"
+            dis = [(f"no, porque P(A ∪ B) ≠ P(A)·P(B)", "comprueba_union"), ("no, porque pueden ocurrir a la vez", "incompatibles_independientes"),
+                   (f"no, porque P(A ∩ B) = {dec(pi, 4)} ≠ P(A) + P(B)", None)]
+        else:
+            resp = f"no, porque P(A ∩ B) = {dec(pi, 4)} y P(A)·P(B) = {dec(prod, 4)}"
+            dis = [(f"sí, porque P(A ∪ B) = {dec(pu, 2)} es menor que 1", "comprueba_union"), ("sí, porque no tienen nada que ver", "intuicion"),
+                   (f"sí, porque P(A ∩ B) = {dec(pi, 4)} no es 0", "incompatibles_independientes")]
+        return hacer(enun, resp, "independencia", {"pa": str(pa), "pb": str(pb), "pu": str(pu)}, dis,
+                     [("P(A∩B)", dec(pi, 4), f"P(A ∩ B) = {dec(pa, 2)} + {dec(pb, 2)} − {dec(pu, 2)} = {dec(pi, 4)}."),
+                      ("comparar", dec(prod, 4), f"P(A)·P(B) = {dec(pa, 2)} · {dec(pb, 2)} = {dec(prod, 4)}. " + ("Coinciden: independientes." if ind else "No coinciden: dependientes."))],
+                     "A y B son independientes si P(A ∩ B) = P(A)·P(B). Incompatibles (P(A ∩ B) = 0) no es lo mismo que independientes.")
+    pa = F(rng.randint(1, 9), 10)
+    pb = F(rng.randint(1, 9), 10)
+    pi = pa * pb
+    if tipo == "interseccion":
+        enun = f"A y B son independientes, con P(A) = {dec(pa, 2)} y P(B) = {dec(pb, 2)}. Calcula P(A ∩ B)."
+        return hacer(enun, dec(pi, 4), "indep_inter", {"pa": str(pa), "pb": str(pb)},
+                     [("0", "incompatibles_independientes"), (dec(pa + pb, 2) if pa + pb <= 1 else dec(pa + pb - pi, 4), None), (dec(min(pa, pb), 2), None)],
+                     [("P(A)·P(B)", dec(pi, 4), f"Por ser independientes: P(A ∩ B) = {dec(pa, 2)} · {dec(pb, 2)} = {dec(pi, 4)}.")],
+                     "Si A y B son independientes, P(A ∩ B) = P(A)·P(B). Solo si son incompatibles es P(A ∩ B) = 0.", gen=[dec(pi / 2, 4)])
+    pu = pa + pb - pi
+    enun = f"A y B son independientes, con P(A) = {dec(pa, 2)} y P(B) = {dec(pb, 2)}. Calcula P(A ∪ B)."
+    return hacer(enun, dec(pu, 4), "indep_union", {"pa": str(pa), "pb": str(pb)},
+                 [(dec(pa + pb, 2), "incompatibles_independientes"), (dec(pi, 4), None), (dec(pa * pb + pb, 4) if pa * pb + pb != pu else dec(pu + F(1, 10), 4), None)],
+                 [("P(A∩B)", dec(pi, 4), f"Independientes: P(A ∩ B) = {dec(pa, 2)} · {dec(pb, 2)} = {dec(pi, 4)}."),
+                  ("unión", dec(pu, 4), f"P(A ∪ B) = {dec(pa, 2)} + {dec(pb, 2)} − {dec(pi, 4)} = {dec(pu, 4)}.")],
+                 "Con independencia, P(A ∩ B) = P(A)·P(B), y luego P(A ∪ B) = P(A) + P(B) − P(A ∩ B).", gen=[dec(pu + F(1, 20), 4)])
+
+
+# ================================================================ COMBINATORIA
+
+@gen6("t6_recuento_sistematico")
+def g_recuento_sist(rng, d, tipo="cifras"):
+    """EST.COMB.01. Claves: olvida_casos, repetidos_no_permitidos, orden_duplicado, suma_opciones."""
+    if tipo == "cifras":
+        k = rng.randint(3, 4) if d < 3 else rng.randint(3, 5)
+        digs = sorted(rng.sample(range(1, 10), k))
+        rep = d > 1 and rng.random() < 0.35
+        r = k * k if rep else k * (k - 1)
+        enun = f"¿Cuántos números de dos cifras {'(pueden repetirse)' if rep else 'distintas'} se pueden formar con las cifras {lista(digs)}?"
+        ejemplo = [f"{a}{b}" for a in digs for b in digs if rep or a != b]
+        dis = [(k * (k - 1) if rep else k * k, None if rep else "repetidos_no_permitidos"), (r - 1, "olvida_casos"), (k * (k - 1) // 2, "orden_duplicado"), (2 * k, "suma_opciones")]
+        return hacer(enun, fmt(r), "recuento_cifras", {"digs": digs, "rep": rep}, dis,
+                     [("lista ordenada", fmt(r), "Los escribo en orden, empezando por cada cifra: " + ", ".join(ejemplo[:8]) + ("…" if len(ejemplo) > 8 else "") + f" En total {r}.")],
+                     "Contar con una lista ordenada (o un árbol) para no olvidar ni repetir casos; 12 y 21 son números distintos.", gen=cerca(r, rng, 2, minimo=1))
+    if tipo == "parejas":
+        n = rng.randint(3, 5) if d == 1 else rng.randint(4, 8)
+        nombres = rng.sample(NOMBRES, n)
+        r = n * (n - 1) // 2
+        enun = f"{lista(nombres)} quieren jugar partidas por parejas. ¿Cuántas parejas distintas se pueden formar?"
+        return hacer(enun, fmt(r), "parejas", {"n": n}, [(n * (n - 1), "orden_duplicado"), (r - 1, "olvida_casos"), (n * n, "repetidos_no_permitidos"), (2 * n, None)],
+                     [("lista", fmt(r), f"{nombres[0]} puede ir con {n - 1}; el siguiente con {n - 2} más (sin repetir la pareja anterior)… {' + '.join(str(x) for x in range(n - 1, 0, -1))} = {r}.")],
+                     "En una pareja no importa el orden (Ana-Luis = Luis-Ana); se cuenta con una lista ordenada.", gen=cerca(r, rng, 1, minimo=1))
+    # tres cifras distintas
+    k = rng.randint(3, 4)
+    digs = sorted(rng.sample(range(1, 10), k))
+    r = k * (k - 1) * (k - 2)
+    enun = f"¿Cuántos números de tres cifras distintas se pueden formar con las cifras {lista(digs)}?"
+    return hacer(enun, fmt(r), "recuento_cifras3", {"digs": digs}, [(k ** 3, "repetidos_no_permitidos"), (r - 2, "olvida_casos"), (3 * k, "suma_opciones"), (r // 6 if r >= 6 else r + 1, "orden_duplicado")],
+                 [("árbol", fmt(r), f"Primera cifra: {k} opciones; segunda: {k - 1}; tercera: {k - 2}. En el árbol salen {k} · {k - 1} · {k - 2} = {r} números.")],
+                 "Un árbol ordenado muestra todos los casos; sin repetir cifras, cada nivel tiene una opción menos.", gen=cerca(r, rng, 1, minimo=1))
+
+
+@gen6("t6_multiplicativo")
+def g_multiplicativo(rng, d):
+    """EST.COMB.02. Claves: suma_en_vez, arbol_incompleto."""
+    k = {1: 2, 2: 3, 3: rng.choice([3, 4])}[d]
+    ctx = rng.choice([("menú", ["primeros", "segundos", "postres", "bebidas"], "menús distintos"),
+                      ("ropa", ["camisetas", "pantalones", "pares de zapatillas", "gorras"], "conjuntos distintos"),
+                      ("viaje", ["caminos de A a B", "caminos de B a C", "caminos de C a D", "caminos de D a E"], "rutas distintas de principio a fin")])
+    ns = [rng.randint(2, 6) for _ in range(k)]
+    r = math.prod(ns)
+    if ctx[0] == "menú":
+        enun = f"Un restaurante ofrece un menú con " + lista([f"{n} {c}" for n, c in zip(ns, ctx[1])]) + f". Si se elige uno de cada, ¿cuántos {ctx[2]} hay?"
+    elif ctx[0] == "ropa":
+        enun = f"{rng.choice(NOMBRES)} tiene " + lista([f"{n} {c}" for n, c in zip(ns, ctx[1])]) + f". Si se pone una prenda de cada tipo, ¿cuántos {ctx[2]} puede formar?"
+    else:
+        enun = "Hay " + lista([f"{n} {c}" for n, c in zip(ns, ctx[1])]) + f". ¿Cuántas {ctx[2]} hay?"
+    parcial = math.prod(ns[:-1])
+    return hacer(enun, fmt(r), "multiplicativo", {"ns": ns}, [(sum(ns), "suma_en_vez"), (parcial if parcial != r else r - ns[0], "arbol_incompleto"), (r + ns[-1], None)],
+                 [("árbol", fmt(r), f"Cada elección se combina con todas las siguientes: {' · '.join(map(str, ns))} = {r}.")],
+                 "Principio multiplicativo: si una elección tiene n1 opciones, otra n2…, el total es n1·n2·…", gen=cerca(r, rng, 2))
+
+
+@gen6("t6_vr")
+def g_vr(rng, d):
+    """EST.COMB.03. Claves: k_a_la_n, n_por_k, sin_repeticion."""
+    ctx = rng.choice(["digitos", "letras", "quiniela", "banderas"] if d > 1 else ["digitos", "banderas", "letras"])
+    if ctx == "digitos":
+        n = 10 if d > 1 else rng.choice([2, 3, 4, 5])
+        k = rng.randint(2, 4) if d < 3 else rng.randint(4, 6)
+        cjto = "los dígitos del 0 al 9" if n == 10 else f"las cifras {lista(range(1, n + 1))}"
+        enun = f"¿Cuántas claves de {k} cifras se pueden formar con {cjto}, pudiendo repetir cifras?"
+    elif ctx == "letras":
+        n = rng.randint(3, 6)
+        k = rng.randint(3, 5)
+        letras_ = "ABCDEFG"[:n]
+        enun = f"¿Cuántos códigos de {k} letras se pueden formar con las letras {lista(letras_)}, si las letras se pueden repetir?"
+    elif ctx == "quiniela":
+        n = 3
+        k = rng.randint(4, 14) if d == 3 else rng.randint(3, 6)
+        enun = f"En una quiniela de {k} partidos, cada uno se rellena con 1, X o 2. ¿Cuántas quinielas distintas se pueden rellenar?"
+    else:
+        n = rng.randint(2, 5)
+        k = rng.randint(2, 4)
+        enun = f"Queremos pintar una bandera de {k} franjas con {n} colores disponibles; dos franjas pueden ser del mismo color. ¿Cuántas banderas distintas hay?"
+    if n == k:
+        k += 1
+        return g_vr(rng, d)
+    r = n ** k
+    return hacer(enun, fmt(r), "vr", {"n": n, "k": k}, [(fmt(k ** n), "k_a_la_n"), (fmt(n * k), "n_por_k"), (fmt(math.perm(n, k)), "sin_repeticion") if k <= n else (fmt(n ** (k - 1)), None)],
+                 [("VR(n,k) = n^k", fmt(r), f"Cada una de las {k} posiciones puede ser cualquiera de las {n} opciones: {' · '.join([str(n)] * k)} = {n}^{k} = {fmt(r)}.")],
+                 "Variaciones con repetición: importa el orden y se puede repetir, VR(n,k) = n^k (n opciones en cada una de las k posiciones).",
+                 gen=[fmt(r + n), fmt(n ** (k + 1))])
+
+
+@gen6("t6_variaciones")
+def g_variaciones(rng, d, tipo="variaciones"):
+    """EST.COMB.04. Claves: con_repeticion, divide_k_factorial."""
+    if tipo == "factorial":
+        n = rng.randint(4, 8)
+        r = math.factorial(n)
+        return hacer(f"Calcula {n}!", fmt(r), "factorial", {"n": n}, [(fmt(n * (n - 1)), None), (fmt(sum(range(1, n + 1))), None), (fmt(n ** n), "con_repeticion"), (fmt(math.factorial(n - 1)), None)],
+                     [("n!", fmt(r), f"{n}! = {' · '.join(str(x) for x in range(n, 0, -1))} = {fmt(r)}.")],
+                     "n! = n·(n − 1)·…·2·1: número de formas de ordenar n elementos distintos.")
+    if tipo == "permutaciones":
+        n = rng.randint(3, 7)
+        cosa = rng.choice([("personas", "sentarse en una fila de", "sillas"), ("libros distintos", "colocarse en una estantería con", "huecos"),
+                           ("corredores", "ocupar las calles de una pista con", "calles")])
+        enun = f"¿De cuántas formas pueden {n} {cosa[0]} {cosa[1]} {n} {cosa[2]}?"
+        r = math.factorial(n)
+        return hacer(enun, fmt(r), "permutaciones", {"n": n}, [(fmt(n ** n), "con_repeticion"), (fmt(n * (n - 1)), None), (fmt(math.factorial(n - 1)), None)],
+                     [("P(n) = n!", fmt(r), f"Primera posición {n} opciones, segunda {n - 1}… {n}! = {fmt(r)}.")],
+                     "Permutaciones: ordenar n elementos distintos, P(n) = n!.", gen=[fmt(r * 2)])
+    n = rng.randint(5, 10)
+    k = rng.randint(2, 4)
+    ctx = rng.choice([f"En una carrera con {n} corredores, ¿de cuántas formas se pueden repartir " + {2: "el oro y la plata", 3: "el oro, la plata y el bronce", 4: "los cuatro primeros puestos"}[k] + "?",
+                      f"En un club de {n} socios hay que elegir " + {2: "presidente y secretario", 3: "presidente, secretario y tesorero", 4: "presidente, vicepresidente, secretario y tesorero"}[k] + ". ¿De cuántas formas se puede hacer?"])
+    r = math.perm(n, k)
+    return hacer(ctx, fmt(r), "variaciones", {"n": n, "k": k},
+                 [(fmt(n ** k), "con_repeticion"), (fmt(math.factorial(n) // math.factorial(k)), "divide_k_factorial"), (fmt(math.comb(n, k)), None)],
+                 [("V(n,k)", fmt(r), f"Importa el orden y no se repite: {' · '.join(str(n - i) for i in range(k))} = {fmt(r)}, es decir, {n}!/{n - k}!.")],
+                 "Variaciones sin repetición: V(n,k) = n!/(n − k)! = n·(n − 1)·…(k factores).", gen=[fmt(n * k), fmt(r + n)])
+
+
+@gen6("t6_combinaciones")
+def g_combinaciones(rng, d, tipo="contexto"):
+    """EST.COMB.05. Claves: no_divide_k, divide_mal."""
+    if tipo == "numero":
+        n = rng.randint(5, 12)
+        k = rng.randint(2, n - 2)
+        if d == 3 and k < n / 2:
+            k = n - k
+        r = math.comb(n, k)
+        V = math.perm(n, k)
+        return hacer(f"Calcula el número combinatorio C({n}, {k}).", fmt(r), "combinatorio", {"n": n, "k": k},
+                     [(fmt(V), "no_divide_k"), (fmt(V // k) if V % k == 0 else fmt(math.factorial(n) // math.factorial(n - k) // 2), "divide_mal"), (fmt(n * k), None)],
+                     [("n!/(k!(n−k)!)", fmt(r), f"C({n}, {k}) = {n}!/({k}!·{n - k}!) = {fmt(r)}" + (f" (igual que C({n}, {n - k}))." if k > n / 2 else "."))],
+                     "C(n,k) = n!/(k!(n − k)!) y C(n,k) = C(n, n − k).", gen=[fmt(r + n)])
+    n = rng.randint(5, 12)
+    k = rng.randint(2, 4)
+    ctx = rng.choice([f"Hay que elegir {k} delegados entre {n} alumnos (todos con el mismo cargo). ¿De cuántas formas?",
+                      f"{rng.choice(NOMBRES)} tiene {n} amigos y puede invitar a {k} al cine. ¿Cuántos grupos distintos de invitados puede formar?",
+                      f"De {n} sabores de helado se eligen {k} distintos para una copa (el orden no importa). ¿Cuántas copas distintas hay?"])
+    r = math.comb(n, k)
+    V = math.perm(n, k)
+    return hacer(ctx, fmt(r), "combinaciones", {"n": n, "k": k},
+                 [(fmt(V), "no_divide_k"), (fmt(V // k) if V % k == 0 else fmt(V // 2), "divide_mal"), (fmt(n ** k), None)],
+                 [("C(n,k)", fmt(r), f"No importa el orden: C({n}, {k}) = {fmt(V)} : {k}! = {fmt(r)}.")],
+                 "Combinaciones: grupos sin orden ni repetición, C(n,k) = V(n,k)/k!.", gen=[fmt(r + k)])
+
+
+PALABRAS = ["CASA", "PAPA", "SALSA", "CARRO", "PERRO", "PATATA", "BANANA", "TOMATE", "TETERA", "CACAO", "COCO", "ALA", "OSO", "MAMA", "PELOTA", "CARACOL", "ARENA"]
+
+
+@gen6("t6_perm_rep")
+def g_perm_rep(rng, d, tipo="anagrama"):
+    """EST.COMB.07. Claves: no_divide_repeticiones, resta_en_vez."""
+    if tipo == "anagrama":
+        for _ in range(50):
+            w = rng.choice(PALABRAS)
+            c = Counter(w)
+            reps = [v for v in c.values() if v > 1]
+            if reps and (d > 1 or len(w) <= 5):
+                break
+        n = len(w)
+        den = math.prod(math.factorial(v) for v in reps)
+        r = math.factorial(n) // den
+        den_txt = "·".join(f"{v}!" for v in reps)
+        resta = math.factorial(n) - sum(math.factorial(v) for v in reps)
+        return hacer(f"¿Cuántas ordenaciones distintas (anagramas, tengan o no sentido) tienen las letras de la palabra {w}?", fmt(r), "perm_rep", {"w": w},
+                     [(fmt(math.factorial(n)), "no_divide_repeticiones"), (fmt(resta), "resta_en_vez"), (fmt(math.factorial(n) // max(reps)), None)],
+                     [("n!/(a!·b!…)", fmt(r), f"{n} letras, con repeticiones " + ", ".join(f"{l} {v} veces" for l, v in c.items() if v > 1) + f": {n}!/({den_txt}) = {fmt(r)}.")],
+                     "Permutaciones con repetición: n!/(a!·b!·…), dividiendo por las ordenaciones de las letras iguales.",
+                     gen=[fmt(r * 2), fmt(r + n), fmt(math.factorial(n - 1)), fmt(r * 3)])
+    if tipo == "bolas":
+        a, b = rng.randint(2, 5), rng.randint(2, 4)
+        c1, c2 = rng.sample(COLORES_F, 2)
+        n = a + b
+        r = math.comb(n, a)
+        return hacer(f"Se colocan en fila {a} bolas {c1} iguales y {b} bolas {c2} iguales. ¿Cuántas filas distintas se pueden formar?", fmt(r), "perm_rep_bolas", {"a": a, "b": b},
+                     [(fmt(math.factorial(n)), "no_divide_repeticiones"), (fmt(math.factorial(n) - math.factorial(a) - math.factorial(b)), "resta_en_vez"), (fmt(a * b), None)],
+                     [("n!/(a!·b!)", fmt(r), f"{n}!/({a}!·{b}!) = {fmt(r)}.")],
+                     "Objetos iguales entre sí: se divide n! por las ordenaciones de cada grupo de iguales.", gen=[fmt(r + 1)])
+    n = rng.randint(4, 7)
+    nombres = rng.sample(NOMBRES, 2)
+    r = 2 * math.factorial(n - 1)
+    return hacer(f"{n} amigos, entre ellos {nombres[0]} y {nombres[1]}, se sientan en fila. ¿De cuántas formas pueden sentarse si {nombres[0]} y {nombres[1]} quieren estar juntos?",
+                 fmt(r), "restriccion_juntos", {"n": n},
+                 [(fmt(math.factorial(n - 1)), None), (fmt(math.factorial(n)), None), (fmt(math.factorial(n) - 2), "resta_en_vez")],
+                 [("bloque", fmt(math.factorial(n - 1)), f"Los dos juntos forman un bloque: se ordenan {n - 1} elementos, {n - 1}! = {fmt(math.factorial(n - 1))}."),
+                  ("× 2", fmt(r), f"Dentro del bloque pueden ir de 2 formas: 2 · {fmt(math.factorial(n - 1))} = {fmt(r)}.")],
+                 "Restricción «juntos»: se trata el grupo como un bloque y se multiplica por sus ordenaciones internas.")

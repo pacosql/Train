@@ -288,6 +288,48 @@
   },
   "plantilla": "Operaciones combinadas con paréntesis y corchetes"
  },
+ "OPER.JERARQ.03": {
+  "gen": "t2_jerarq_pot",
+  "errores": {
+   "op_antes_pot": "E01",
+   "pot_producto": "E02",
+   "raiz_suma": "E03",
+   "olvida_pot": "E04"
+  },
+  "plantilla": "Jerarquía con potencias y raíces cuadradas exactas"
+ },
+ "OPER.JERARQ.04": {
+  "gen": "t2_jerarq_ent",
+  "errores": {
+   "menos_parentesis": "E01",
+   "regla_signos_suma": "E02",
+   "izq_der": "E03",
+   "menos_cuadrado": "E04"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Operaciones combinadas con enteros"
+ },
+ "OPER.JERARQ.05": {
+  "gen": "t2_jerarq_frac",
+  "errores": {
+   "suma_antes": "E01",
+   "suma_nd": "E02",
+   "divide_sin_invertir": "E03",
+   "entero_nd": "E04"
+  },
+  "plantilla": "Operaciones combinadas con fracciones"
+ },
+ "OPER.JERARQ.06": {
+  "gen": "t2_jerarq_potfrac",
+  "errores": {
+   "exp_neg_negativo": "E01",
+   "solo_numerador": "E02",
+   "cero_da_cero": "E03",
+   "pierde_signo": "E04"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Operaciones combinadas con racionales y potencias de exponente entero"
+ },
  "OPER.MULT.01": {
   "gen": "t2_mult_sentido",
   "errores": {
@@ -373,6 +415,121 @@
    "nombre": "E03"
   },
   "plantilla": "Propiedades conmutativa, asociativa, neutro y distributiva"
+ },
+ "OPER.POT.01": {
+  "gen": "t2_potencia",
+  "errores": {
+   "base_por_exp": "E01",
+   "factor_de_mas": "E03",
+   "base_exp_cambiados": "E04"
+  },
+  "plantilla": "Potencias de base natural"
+ },
+ "OPER.POT.02": {
+  "gen": "t2_pot_prop",
+  "errores": {
+   "multiplica_exp": "E01",
+   "multiplica_bases": "E02",
+   "suma_exp_potpot": "E03",
+   "misma_base_distintas": "E04",
+   "divide_exp": "E05"
+  },
+  "plantilla": "Propiedades de las potencias (exponente natural)"
+ },
+ "OPER.POT.03": {
+  "gen": "t2_pot10",
+  "errores": {
+   "cero_mas_menos": "E01",
+   "diez_por_exp": "E02",
+   "ceros_propios": "E03"
+  },
+  "plantilla": "Potencias de base 10"
+ },
+ "OPER.POT.04": {
+  "gen": "t2_pot_entera",
+  "errores": {
+   "menos_fuera": "E01",
+   "signo_fijo": "E02",
+   "base_por_exp": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Potencias de base entera y exponente natural"
+ },
+ "OPER.POT.05": {
+  "gen": "t2_pot_negativa",
+  "errores": {
+   "exp_neg_da_neg": "E01",
+   "cero_da_cero_o_base": "E02",
+   "pierde_signo_base": "E03",
+   "base_por_exp": "E04"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Potencias con exponente cero y negativo"
+ },
+ "OPER.POT.06": {
+  "gen": "t2_pot_prop",
+  "kw": {
+   "enteros": true
+  },
+  "errores": {
+   "resta_neg_mal": "E01",
+   "multiplica_exp": "E02",
+   "sin_base_comun": "E03",
+   "pierde_signo_potpot": "E04"
+  },
+  "plantilla": "Propiedades de las potencias con exponente entero"
+ },
+ "OPER.RAIZ.01": {
+  "gen": "t2_raiz_exacta",
+  "errores": {
+   "divide_dos": "E01",
+   "cercano": "E02",
+   "cualquiera_exacta": "E03",
+   "quita_cero": "E04"
+  },
+  "plantilla": "Raíz cuadrada exacta"
+ },
+ "OPER.RAIZ.02": {
+  "gen": "t2_raiz_entera",
+  "errores": {
+   "por_exceso": "E01",
+   "se_queda_corto": "E02",
+   "resto_sin_cuadrado": "E03",
+   "decimal": "E04"
+  },
+  "plantilla": "Raíz cuadrada entera por tanteo, con resto"
+ },
+ "OPER.RAIZ.03": {
+  "gen": "t2_raiz_entera",
+  "kw": {
+   "algoritmo": true
+  },
+  "errores": {
+   "agrupa_izquierda": "E01",
+   "no_duplica": "E02",
+   "salta_cero": "E03"
+  },
+  "plantilla": "Algoritmo de la raíz cuadrada"
+ },
+ "OPER.RAIZ.04": {
+  "gen": "t2_raiz_enteros",
+  "errores": {
+   "solo_positiva": "E01",
+   "raiz_negativo": "E02",
+   "confunde_menos": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Raíz cuadrada de enteros (dos raíces opuestas)"
+ },
+ "OPER.RAIZ.05": {
+  "gen": "t2_raiz_fracdec",
+  "errores": {
+   "coma_mal": "E01",
+   "solo_numerador": "E02",
+   "por_exceso": "E03",
+   "termino_a_termino": "E04"
+  },
+  "plantilla": "Raíz de fracciones y decimales; aproximación"
  },
  "OPER.TABLA.01": {
   "gen": "t2_tabla",

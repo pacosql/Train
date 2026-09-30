@@ -1,0 +1,1566 @@
+{
+ "habilidad": "PROB.DOS.07",
+ "generado_por": "claude (skill mates10-generar-ejercicios v1)",
+ "ejercicios": [
+  {
+   "dificultad": 1,
+   "enunciado": "La familia de Candela va al cine: 1 adulto y 4 niños. La entrada de adulto cuesta 11 € y la de niño 9 €. Compran 3 menús de palomitas a 6 € cada uno. Pagan con un billete de 100 €. ¿Cuánto les devuelven?",
+   "respuesta": "35 €",
+   "distractores": [
+    {
+     "valor": "53 €",
+     "error": "E01"
+    },
+    {
+     "valor": "65 €",
+     "error": "E02"
+    },
+    {
+     "valor": "27 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "100 − (1 × 11 + 4 × 9 + 3 × 6)",
+   "secundarias": [
+    "PROB.DOS.04",
+    "PROB.DOS.05",
+    "PROB.UNA.19"
+   ],
+   "explicacion_nino": "Entiende: te devuelven lo que sobra del billete después de pagar todo. Datos: 1 adultos a 11 €, 4 niños a 9 €, 3 menús a 6 €, billete de 100 €. Adultos: 1 × 11 = 11 €. Niños: 4 × 9 = 36 €. Palomitas: 3 × 6 = 18 €. Todo junto: 65 €. Cambio: 100 − 65 = 35 €. Con barras: la barra de 100 € tiene tres trozos (adultos, niños, palomitas) y lo que sobra es el cambio. Comprueba: 65 + 35 = 100.",
+   "explicacion_adulto": "Está aprendiendo a planificar un problema largo: separar las partes, calcular cada una por separado y juntarlas al final. Los errores típicos son olvidar un dato (por ejemplo, lo que se compra aparte), contestar con un resultado intermedio (lo que gastan en vez de lo que les devuelven) o aplicar un mismo precio a todos. Ayúdele a hacer una lista de «lo que me dan» y «lo que me preguntan», y a escribir al lado de cada cuenta qué significa su resultado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1 × 11",
+     "resultado": "11",
+     "texto": "Entradas de adulto."
+    },
+    {
+     "paso": 2,
+     "operacion": "4 × 9",
+     "resultado": "36",
+     "texto": "Entradas de niño."
+    },
+    {
+     "paso": 3,
+     "operacion": "3 × 6",
+     "resultado": "18",
+     "texto": "Palomitas."
+    },
+    {
+     "paso": 4,
+     "operacion": "11 + 36 + 18",
+     "resultado": "65",
+     "texto": "Lo que gastan."
+    },
+    {
+     "paso": 5,
+     "operacion": "100 − 65",
+     "resultado": "35",
+     "texto": "Lo que les devuelven."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "La familia de Irene va al cine: 2 adultos y 2 niños. La entrada de adulto cuesta 10 € y la de niño 8 €. Compran 1 menú de palomitas a 5 € cada uno. Pagan con un billete de 50 €. ¿Cuánto les devuelven?",
+   "respuesta": "9 €",
+   "distractores": [
+    {
+     "valor": "14 €",
+     "error": "E01"
+    },
+    {
+     "valor": "41 €",
+     "error": "E02"
+    },
+    {
+     "valor": "5 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "50 − (2 × 10 + 2 × 8 + 1 × 5)",
+   "secundarias": [
+    "PROB.DOS.04",
+    "PROB.DOS.05",
+    "PROB.UNA.19"
+   ],
+   "explicacion_nino": "Entiende: te devuelven lo que sobra del billete después de pagar todo. Datos: 2 adultos a 10 €, 2 niños a 8 €, 1 menús a 5 €, billete de 50 €. Adultos: 2 × 10 = 20 €. Niños: 2 × 8 = 16 €. Palomitas: 1 × 5 = 5 €. Todo junto: 41 €. Cambio: 50 − 41 = 9 €. Con barras: la barra de 50 € tiene tres trozos (adultos, niños, palomitas) y lo que sobra es el cambio. Comprueba: 41 + 9 = 50.",
+   "explicacion_adulto": "Está aprendiendo a planificar un problema largo: separar las partes, calcular cada una por separado y juntarlas al final. Los errores típicos son olvidar un dato (por ejemplo, lo que se compra aparte), contestar con un resultado intermedio (lo que gastan en vez de lo que les devuelven) o aplicar un mismo precio a todos. Ayúdele a hacer una lista de «lo que me dan» y «lo que me preguntan», y a escribir al lado de cada cuenta qué significa su resultado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "2 × 10",
+     "resultado": "20",
+     "texto": "Entradas de adulto."
+    },
+    {
+     "paso": 2,
+     "operacion": "2 × 8",
+     "resultado": "16",
+     "texto": "Entradas de niño."
+    },
+    {
+     "paso": 3,
+     "operacion": "1 × 5",
+     "resultado": "5",
+     "texto": "Palomitas."
+    },
+    {
+     "paso": 4,
+     "operacion": "20 + 16 + 5",
+     "resultado": "41",
+     "texto": "Lo que gastan."
+    },
+    {
+     "paso": 5,
+     "operacion": "50 − 41",
+     "resultado": "9",
+     "texto": "Lo que les devuelven."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "La familia de Aitana va al cine: 3 adultos y 2 niños. La entrada de adulto cuesta 12 € y la de niño 9 €. Compran 2 menús de palomitas a 5 € cada uno. Pagan con un billete de 100 €. ¿Cuánto les devuelven?",
+   "respuesta": "36 €",
+   "distractores": [
+    {
+     "valor": "46 €",
+     "error": "E01"
+    },
+    {
+     "valor": "64 €",
+     "error": "E02"
+    },
+    {
+     "valor": "30 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "100 − (3 × 12 + 2 × 9 + 2 × 5)",
+   "secundarias": [
+    "PROB.DOS.04",
+    "PROB.DOS.05",
+    "PROB.UNA.19"
+   ],
+   "explicacion_nino": "Entiende: te devuelven lo que sobra del billete después de pagar todo. Datos: 3 adultos a 12 €, 2 niños a 9 €, 2 menús a 5 €, billete de 100 €. Adultos: 3 × 12 = 36 €. Niños: 2 × 9 = 18 €. Palomitas: 2 × 5 = 10 €. Todo junto: 64 €. Cambio: 100 − 64 = 36 €. Con barras: la barra de 100 € tiene tres trozos (adultos, niños, palomitas) y lo que sobra es el cambio. Comprueba: 64 + 36 = 100.",
+   "explicacion_adulto": "Está aprendiendo a planificar un problema largo: separar las partes, calcular cada una por separado y juntarlas al final. Los errores típicos son olvidar un dato (por ejemplo, lo que se compra aparte), contestar con un resultado intermedio (lo que gastan en vez de lo que les devuelven) o aplicar un mismo precio a todos. Ayúdele a hacer una lista de «lo que me dan» y «lo que me preguntan», y a escribir al lado de cada cuenta qué significa su resultado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "3 × 12",
+     "resultado": "36",
+     "texto": "Entradas de adulto."
+    },
+    {
+     "paso": 2,
+     "operacion": "2 × 9",
+     "resultado": "18",
+     "texto": "Entradas de niño."
+    },
+    {
+     "paso": 3,
+     "operacion": "2 × 5",
+     "resultado": "10",
+     "texto": "Palomitas."
+    },
+    {
+     "paso": 4,
+     "operacion": "36 + 18 + 10",
+     "resultado": "64",
+     "texto": "Lo que gastan."
+    },
+    {
+     "paso": 5,
+     "operacion": "100 − 64",
+     "resultado": "36",
+     "texto": "Lo que les devuelven."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "La familia de Julia va al cine: 1 adulto y 4 niños. La entrada de adulto cuesta 8 € y la de niño 4 €. Compran 3 menús de palomitas a 7 € cada uno. Pagan con un billete de 50 €. ¿Cuánto les devuelven?",
+   "respuesta": "5 €",
+   "distractores": [
+    {
+     "valor": "26 €",
+     "error": "E01"
+    },
+    {
+     "valor": "45 €",
+     "error": "E02"
+    },
+    {
+     "valor": "9 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "50 − (1 × 8 + 4 × 4 + 3 × 7)",
+   "secundarias": [
+    "PROB.DOS.04",
+    "PROB.DOS.05",
+    "PROB.UNA.19"
+   ],
+   "explicacion_nino": "Entiende: te devuelven lo que sobra del billete después de pagar todo. Datos: 1 adultos a 8 €, 4 niños a 4 €, 3 menús a 7 €, billete de 50 €. Adultos: 1 × 8 = 8 €. Niños: 4 × 4 = 16 €. Palomitas: 3 × 7 = 21 €. Todo junto: 45 €. Cambio: 50 − 45 = 5 €. Con barras: la barra de 50 € tiene tres trozos (adultos, niños, palomitas) y lo que sobra es el cambio. Comprueba: 45 + 5 = 50.",
+   "explicacion_adulto": "Está aprendiendo a planificar un problema largo: separar las partes, calcular cada una por separado y juntarlas al final. Los errores típicos son olvidar un dato (por ejemplo, lo que se compra aparte), contestar con un resultado intermedio (lo que gastan en vez de lo que les devuelven) o aplicar un mismo precio a todos. Ayúdele a hacer una lista de «lo que me dan» y «lo que me preguntan», y a escribir al lado de cada cuenta qué significa su resultado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1 × 8",
+     "resultado": "8",
+     "texto": "Entradas de adulto."
+    },
+    {
+     "paso": 2,
+     "operacion": "4 × 4",
+     "resultado": "16",
+     "texto": "Entradas de niño."
+    },
+    {
+     "paso": 3,
+     "operacion": "3 × 7",
+     "resultado": "21",
+     "texto": "Palomitas."
+    },
+    {
+     "paso": 4,
+     "operacion": "8 + 16 + 21",
+     "resultado": "45",
+     "texto": "Lo que gastan."
+    },
+    {
+     "paso": 5,
+     "operacion": "50 − 45",
+     "resultado": "5",
+     "texto": "Lo que les devuelven."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "La familia de Rubén va al cine: 1 adulto y 3 niños. La entrada de adulto cuesta 7 € y la de niño 4 €. Compran 1 menú de palomitas a 3 € cada uno. Pagan con un billete de 50 €. ¿Cuánto les devuelven?",
+   "respuesta": "28 €",
+   "distractores": [
+    {
+     "valor": "31 €",
+     "error": "E01"
+    },
+    {
+     "valor": "22 €",
+     "error": "E02"
+    },
+    {
+     "valor": "19 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "50 − (1 × 7 + 3 × 4 + 1 × 3)",
+   "secundarias": [
+    "PROB.DOS.04",
+    "PROB.DOS.05",
+    "PROB.UNA.19"
+   ],
+   "explicacion_nino": "Entiende: te devuelven lo que sobra del billete después de pagar todo. Datos: 1 adultos a 7 €, 3 niños a 4 €, 1 menús a 3 €, billete de 50 €. Adultos: 1 × 7 = 7 €. Niños: 3 × 4 = 12 €. Palomitas: 1 × 3 = 3 €. Todo junto: 22 €. Cambio: 50 − 22 = 28 €. Con barras: la barra de 50 € tiene tres trozos (adultos, niños, palomitas) y lo que sobra es el cambio. Comprueba: 22 + 28 = 50.",
+   "explicacion_adulto": "Está aprendiendo a planificar un problema largo: separar las partes, calcular cada una por separado y juntarlas al final. Los errores típicos son olvidar un dato (por ejemplo, lo que se compra aparte), contestar con un resultado intermedio (lo que gastan en vez de lo que les devuelven) o aplicar un mismo precio a todos. Ayúdele a hacer una lista de «lo que me dan» y «lo que me preguntan», y a escribir al lado de cada cuenta qué significa su resultado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1 × 7",
+     "resultado": "7",
+     "texto": "Entradas de adulto."
+    },
+    {
+     "paso": 2,
+     "operacion": "3 × 4",
+     "resultado": "12",
+     "texto": "Entradas de niño."
+    },
+    {
+     "paso": 3,
+     "operacion": "1 × 3",
+     "resultado": "3",
+     "texto": "Palomitas."
+    },
+    {
+     "paso": 4,
+     "operacion": "7 + 12 + 3",
+     "resultado": "22",
+     "texto": "Lo que gastan."
+    },
+    {
+     "paso": 5,
+     "operacion": "50 − 22",
+     "resultado": "28",
+     "texto": "Lo que les devuelven."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "La familia de Iker va al cine: 1 adulto y 2 niños. La entrada de adulto cuesta 9 € y la de niño 6 €. Compran 1 menú de palomitas a 5,50 € cada uno. Pagan con un billete de 50 €. ¿Cuánto les devuelven?",
+   "respuesta": "23,50 €",
+   "distractores": [
+    {
+     "valor": "29 €",
+     "error": "E01"
+    },
+    {
+     "valor": "26,50 €",
+     "error": "E02"
+    },
+    {
+     "valor": "17,50 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "50 − (1 × 9 + 2 × 6 + 1 × 5,5)",
+   "secundarias": [
+    "PROB.DOS.04",
+    "PROB.DOS.05",
+    "PROB.UNA.19"
+   ],
+   "explicacion_nino": "Entiende: te devuelven lo que sobra del billete después de pagar todo. Datos: 1 adultos a 9 €, 2 niños a 6 €, 1 menús a 5,50 €, billete de 50 €. Adultos: 1 × 9 = 9 €. Niños: 2 × 6 = 12 €. Palomitas: 1 × 5,5 = 5,50 €. Todo junto: 26,50 €. Cambio: 50 − 26,5 = 23,50 €. Con barras: la barra de 50 € tiene tres trozos (adultos, niños, palomitas) y lo que sobra es el cambio. Comprueba: 26,5 + 23,5 = 50.",
+   "explicacion_adulto": "Está aprendiendo a planificar un problema largo: separar las partes, calcular cada una por separado y juntarlas al final. Los errores típicos son olvidar un dato (por ejemplo, lo que se compra aparte), contestar con un resultado intermedio (lo que gastan en vez de lo que les devuelven) o aplicar un mismo precio a todos. Ayúdele a hacer una lista de «lo que me dan» y «lo que me preguntan», y a escribir al lado de cada cuenta qué significa su resultado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1 × 9",
+     "resultado": "9",
+     "texto": "Entradas de adulto."
+    },
+    {
+     "paso": 2,
+     "operacion": "2 × 6",
+     "resultado": "12",
+     "texto": "Entradas de niño."
+    },
+    {
+     "paso": 3,
+     "operacion": "1 × 5,5",
+     "resultado": "5,5",
+     "texto": "Palomitas."
+    },
+    {
+     "paso": 4,
+     "operacion": "9 + 12 + 5,5",
+     "resultado": "26,5",
+     "texto": "Lo que gastan."
+    },
+    {
+     "paso": 5,
+     "operacion": "50 − 26,5",
+     "resultado": "23,5",
+     "texto": "Lo que les devuelven."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "La familia de Noa va al cine: 1 adulto y 4 niños. La entrada de adulto cuesta 7 € y la de niño 5 €. Compran 2 menús de palomitas a 4,50 € cada uno. Pagan con un billete de 50 €. ¿Cuánto les devuelven?",
+   "respuesta": "14 €",
+   "distractores": [
+    {
+     "valor": "23 €",
+     "error": "E01"
+    },
+    {
+     "valor": "36 €",
+     "error": "E02"
+    },
+    {
+     "valor": "6 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "50 − (1 × 7 + 4 × 5 + 2 × 4,5)",
+   "secundarias": [
+    "PROB.DOS.04",
+    "PROB.DOS.05",
+    "PROB.UNA.19"
+   ],
+   "explicacion_nino": "Entiende: te devuelven lo que sobra del billete después de pagar todo. Datos: 1 adultos a 7 €, 4 niños a 5 €, 2 menús a 4,50 €, billete de 50 €. Adultos: 1 × 7 = 7 €. Niños: 4 × 5 = 20 €. Palomitas: 2 × 4,5 = 9 €. Todo junto: 36 €. Cambio: 50 − 36 = 14 €. Con barras: la barra de 50 € tiene tres trozos (adultos, niños, palomitas) y lo que sobra es el cambio. Comprueba: 36 + 14 = 50.",
+   "explicacion_adulto": "Está aprendiendo a planificar un problema largo: separar las partes, calcular cada una por separado y juntarlas al final. Los errores típicos son olvidar un dato (por ejemplo, lo que se compra aparte), contestar con un resultado intermedio (lo que gastan en vez de lo que les devuelven) o aplicar un mismo precio a todos. Ayúdele a hacer una lista de «lo que me dan» y «lo que me preguntan», y a escribir al lado de cada cuenta qué significa su resultado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1 × 7",
+     "resultado": "7",
+     "texto": "Entradas de adulto."
+    },
+    {
+     "paso": 2,
+     "operacion": "4 × 5",
+     "resultado": "20",
+     "texto": "Entradas de niño."
+    },
+    {
+     "paso": 3,
+     "operacion": "2 × 4,5",
+     "resultado": "9",
+     "texto": "Palomitas."
+    },
+    {
+     "paso": 4,
+     "operacion": "7 + 20 + 9",
+     "resultado": "36",
+     "texto": "Lo que gastan."
+    },
+    {
+     "paso": 5,
+     "operacion": "50 − 36",
+     "resultado": "14",
+     "texto": "Lo que les devuelven."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En el obrador de Alba hornean 29 panecillos cada hora durante 5 horas. Por la mañana venden 60. El resto lo guardan en bolsas de 5. ¿Cuántas bolsas llenan?",
+   "respuesta": "17",
+   "distractores": [
+    {
+     "valor": "29",
+     "error": "E01"
+    },
+    {
+     "valor": "85",
+     "error": "E02"
+    },
+    {
+     "valor": "22",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(29 × 5 − 60) : 5",
+   "secundarias": [
+    "PROB.DOS.04",
+    "PROB.DOS.05",
+    "PROB.UNA.19"
+   ],
+   "explicacion_nino": "Entiende: hay que saber cuántos panecillos sobran y luego meterlos en bolsas. Datos: 29 por hora, 5 horas, venden 60, bolsas de 5. Horneados: 29 × 5 = 145. Sobran: 145 − 60 = 85. Bolsas: 85 : 5 = 17. Comprueba: 17 × 5 + 60 = 145.",
+   "explicacion_adulto": "Está aprendiendo a planificar un problema largo: separar las partes, calcular cada una por separado y juntarlas al final. Los errores típicos son olvidar un dato (por ejemplo, lo que se compra aparte), contestar con un resultado intermedio (lo que gastan en vez de lo que les devuelven) o aplicar un mismo precio a todos. Ayúdele a hacer una lista de «lo que me dan» y «lo que me preguntan», y a escribir al lado de cada cuenta qué significa su resultado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "29 × 5",
+     "resultado": "145",
+     "texto": "Panecillos horneados."
+    },
+    {
+     "paso": 2,
+     "operacion": "145 − 60",
+     "resultado": "85",
+     "texto": "Los que sobran."
+    },
+    {
+     "paso": 3,
+     "operacion": "85 : 5",
+     "resultado": "17",
+     "texto": "Bolsas que se llenan."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En el obrador de Elena hornean 26 panecillos cada hora durante 6 horas. Por la mañana venden 66. El resto lo guardan en bolsas de 6. ¿Cuántas bolsas llenan?",
+   "respuesta": "15",
+   "distractores": [
+    {
+     "valor": "26",
+     "error": "E01"
+    },
+    {
+     "valor": "90",
+     "error": "E02"
+    },
+    {
+     "valor": "21",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(26 × 6 − 66) : 6",
+   "secundarias": [
+    "PROB.DOS.04",
+    "PROB.DOS.05",
+    "PROB.UNA.19"
+   ],
+   "explicacion_nino": "Entiende: hay que saber cuántos panecillos sobran y luego meterlos en bolsas. Datos: 26 por hora, 6 horas, venden 66, bolsas de 6. Horneados: 26 × 6 = 156. Sobran: 156 − 66 = 90. Bolsas: 90 : 6 = 15. Comprueba: 15 × 6 + 66 = 156.",
+   "explicacion_adulto": "Está aprendiendo a planificar un problema largo: separar las partes, calcular cada una por separado y juntarlas al final. Los errores típicos son olvidar un dato (por ejemplo, lo que se compra aparte), contestar con un resultado intermedio (lo que gastan en vez de lo que les devuelven) o aplicar un mismo precio a todos. Ayúdele a hacer una lista de «lo que me dan» y «lo que me preguntan», y a escribir al lado de cada cuenta qué significa su resultado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "26 × 6",
+     "resultado": "156",
+     "texto": "Panecillos horneados."
+    },
+    {
+     "paso": 2,
+     "operacion": "156 − 66",
+     "resultado": "90",
+     "texto": "Los que sobran."
+    },
+    {
+     "paso": 3,
+     "operacion": "90 : 6",
+     "resultado": "15",
+     "texto": "Bolsas que se llenan."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En el obrador de Iván hornean 16 panecillos cada hora durante 6 horas. Por la mañana venden 24. El resto lo guardan en bolsas de 6. ¿Cuántas bolsas llenan?",
+   "respuesta": "12",
+   "distractores": [
+    {
+     "valor": "16",
+     "error": "E01"
+    },
+    {
+     "valor": "72",
+     "error": "E02"
+    },
+    {
+     "valor": "18",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(16 × 6 − 24) : 6",
+   "secundarias": [
+    "PROB.DOS.04",
+    "PROB.DOS.05",
+    "PROB.UNA.19"
+   ],
+   "explicacion_nino": "Entiende: hay que saber cuántos panecillos sobran y luego meterlos en bolsas. Datos: 16 por hora, 6 horas, venden 24, bolsas de 6. Horneados: 16 × 6 = 96. Sobran: 96 − 24 = 72. Bolsas: 72 : 6 = 12. Comprueba: 12 × 6 + 24 = 96.",
+   "explicacion_adulto": "Está aprendiendo a planificar un problema largo: separar las partes, calcular cada una por separado y juntarlas al final. Los errores típicos son olvidar un dato (por ejemplo, lo que se compra aparte), contestar con un resultado intermedio (lo que gastan en vez de lo que les devuelven) o aplicar un mismo precio a todos. Ayúdele a hacer una lista de «lo que me dan» y «lo que me preguntan», y a escribir al lado de cada cuenta qué significa su resultado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "16 × 6",
+     "resultado": "96",
+     "texto": "Panecillos horneados."
+    },
+    {
+     "paso": 2,
+     "operacion": "96 − 24",
+     "resultado": "72",
+     "texto": "Los que sobran."
+    },
+    {
+     "paso": 3,
+     "operacion": "72 : 6",
+     "resultado": "12",
+     "texto": "Bolsas que se llenan."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En el obrador de Samuel hornean 16 panecillos cada hora durante 4 horas. Por la mañana venden 32. El resto lo guardan en bolsas de 8. ¿Cuántas bolsas llenan?",
+   "respuesta": "4",
+   "distractores": [
+    {
+     "valor": "8",
+     "error": "E01"
+    },
+    {
+     "valor": "32",
+     "error": "E02"
+    },
+    {
+     "valor": "12",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(16 × 4 − 32) : 8",
+   "secundarias": [
+    "PROB.DOS.04",
+    "PROB.DOS.05",
+    "PROB.UNA.19"
+   ],
+   "explicacion_nino": "Entiende: hay que saber cuántos panecillos sobran y luego meterlos en bolsas. Datos: 16 por hora, 4 horas, venden 32, bolsas de 8. Horneados: 16 × 4 = 64. Sobran: 64 − 32 = 32. Bolsas: 32 : 8 = 4. Comprueba: 4 × 8 + 32 = 64.",
+   "explicacion_adulto": "Está aprendiendo a planificar un problema largo: separar las partes, calcular cada una por separado y juntarlas al final. Los errores típicos son olvidar un dato (por ejemplo, lo que se compra aparte), contestar con un resultado intermedio (lo que gastan en vez de lo que les devuelven) o aplicar un mismo precio a todos. Ayúdele a hacer una lista de «lo que me dan» y «lo que me preguntan», y a escribir al lado de cada cuenta qué significa su resultado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "16 × 4",
+     "resultado": "64",
+     "texto": "Panecillos horneados."
+    },
+    {
+     "paso": 2,
+     "operacion": "64 − 32",
+     "resultado": "32",
+     "texto": "Los que sobran."
+    },
+    {
+     "paso": 3,
+     "operacion": "32 : 8",
+     "resultado": "4",
+     "texto": "Bolsas que se llenan."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "En el obrador de Pablo hornean 77 panecillos cada hora durante 8 horas. Por la mañana venden 224. El resto lo guardan en bolsas de 8. ¿Cuántas bolsas llenan?",
+   "respuesta": "49",
+   "distractores": [
+    {
+     "valor": "77",
+     "error": "E01"
+    },
+    {
+     "valor": "392",
+     "error": "E02"
+    },
+    {
+     "valor": "57",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(77 × 8 − 224) : 8",
+   "secundarias": [
+    "PROB.DOS.04",
+    "PROB.DOS.05",
+    "PROB.UNA.19"
+   ],
+   "explicacion_nino": "Entiende: hay que saber cuántos panecillos sobran y luego meterlos en bolsas. Datos: 77 por hora, 8 horas, venden 224, bolsas de 8. Horneados: 77 × 8 = 616. Sobran: 616 − 224 = 392. Bolsas: 392 : 8 = 49. Comprueba: 49 × 8 + 224 = 616.",
+   "explicacion_adulto": "Está aprendiendo a planificar un problema largo: separar las partes, calcular cada una por separado y juntarlas al final. Los errores típicos son olvidar un dato (por ejemplo, lo que se compra aparte), contestar con un resultado intermedio (lo que gastan en vez de lo que les devuelven) o aplicar un mismo precio a todos. Ayúdele a hacer una lista de «lo que me dan» y «lo que me preguntan», y a escribir al lado de cada cuenta qué significa su resultado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "77 × 8",
+     "resultado": "616",
+     "texto": "Panecillos horneados."
+    },
+    {
+     "paso": 2,
+     "operacion": "616 − 224",
+     "resultado": "392",
+     "texto": "Los que sobran."
+    },
+    {
+     "paso": 3,
+     "operacion": "392 : 8",
+     "resultado": "49",
+     "texto": "Bolsas que se llenan."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "En el obrador de Samuel hornean 66 panecillos cada hora durante 9 horas. Por la mañana venden 186. El resto lo guardan en bolsas de 6. ¿Cuántas bolsas llenan?",
+   "respuesta": "68",
+   "distractores": [
+    {
+     "valor": "99",
+     "error": "E01"
+    },
+    {
+     "valor": "408",
+     "error": "E02"
+    },
+    {
+     "valor": "74",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(66 × 9 − 186) : 6",
+   "secundarias": [
+    "PROB.DOS.04",
+    "PROB.DOS.05",
+    "PROB.UNA.19"
+   ],
+   "explicacion_nino": "Entiende: hay que saber cuántos panecillos sobran y luego meterlos en bolsas. Datos: 66 por hora, 9 horas, venden 186, bolsas de 6. Horneados: 66 × 9 = 594. Sobran: 594 − 186 = 408. Bolsas: 408 : 6 = 68. Comprueba: 68 × 6 + 186 = 594.",
+   "explicacion_adulto": "Está aprendiendo a planificar un problema largo: separar las partes, calcular cada una por separado y juntarlas al final. Los errores típicos son olvidar un dato (por ejemplo, lo que se compra aparte), contestar con un resultado intermedio (lo que gastan en vez de lo que les devuelven) o aplicar un mismo precio a todos. Ayúdele a hacer una lista de «lo que me dan» y «lo que me preguntan», y a escribir al lado de cada cuenta qué significa su resultado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "66 × 9",
+     "resultado": "594",
+     "texto": "Panecillos horneados."
+    },
+    {
+     "paso": 2,
+     "operacion": "594 − 186",
+     "resultado": "408",
+     "texto": "Los que sobran."
+    },
+    {
+     "paso": 3,
+     "operacion": "408 : 6",
+     "resultado": "68",
+     "texto": "Bolsas que se llenan."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Yusuf tiene 35 € en la hucha y ahorra 11 € cada semana durante 7 semanas. Quiere comprarse una bicicleta de 230 €. ¿Cuánto dinero le falta todavía?",
+   "respuesta": "118 €",
+   "distractores": [
+    {
+     "valor": "153 €",
+     "error": "E01"
+    },
+    {
+     "valor": "112 €",
+     "error": "E02"
+    },
+    {
+     "valor": "184 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "230 − (35 + 11 × 7)",
+   "secundarias": [
+    "PROB.DOS.04",
+    "PROB.DOS.05",
+    "PROB.UNA.19"
+   ],
+   "explicacion_nino": "Entiende: le falta la diferencia entre el precio y todo lo que tendrá. Datos: 35 € ya ahorrados, 11 € por semana, 7 semanas, bici de 230 €. Ahorro nuevo: 11 × 7 = 77 €. Tendrá: 35 + 77 = 112 €. Le falta: 230 − 112 = 118 €. Con barras: la barra de la bici (230 €) tiene un trozo de 35, otro de 77 y el trozo que falta. Comprueba: 35 + 77 + 118 = 230.",
+   "explicacion_adulto": "Está aprendiendo a planificar un problema largo: separar las partes, calcular cada una por separado y juntarlas al final. Los errores típicos son olvidar un dato (por ejemplo, lo que se compra aparte), contestar con un resultado intermedio (lo que gastan en vez de lo que les devuelven) o aplicar un mismo precio a todos. Ayúdele a hacer una lista de «lo que me dan» y «lo que me preguntan», y a escribir al lado de cada cuenta qué significa su resultado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "11 × 7",
+     "resultado": "77",
+     "texto": "Lo que ahorra en esas semanas."
+    },
+    {
+     "paso": 2,
+     "operacion": "35 + 77",
+     "resultado": "112",
+     "texto": "Todo lo que tendrá."
+    },
+    {
+     "paso": 3,
+     "operacion": "230 − 112",
+     "resultado": "118",
+     "texto": "Lo que le falta."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Martina tiene 21 € en la hucha y ahorra 12 € cada semana durante 8 semanas. Quiere comprarse una bicicleta de 240 €. ¿Cuánto dinero le falta todavía?",
+   "respuesta": "123 €",
+   "distractores": [
+    {
+     "valor": "144 €",
+     "error": "E01"
+    },
+    {
+     "valor": "117 €",
+     "error": "E02"
+    },
+    {
+     "valor": "207 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "240 − (21 + 12 × 8)",
+   "secundarias": [
+    "PROB.DOS.04",
+    "PROB.DOS.05",
+    "PROB.UNA.19"
+   ],
+   "explicacion_nino": "Entiende: le falta la diferencia entre el precio y todo lo que tendrá. Datos: 21 € ya ahorrados, 12 € por semana, 8 semanas, bici de 240 €. Ahorro nuevo: 12 × 8 = 96 €. Tendrá: 21 + 96 = 117 €. Le falta: 240 − 117 = 123 €. Con barras: la barra de la bici (240 €) tiene un trozo de 21, otro de 96 y el trozo que falta. Comprueba: 21 + 96 + 123 = 240.",
+   "explicacion_adulto": "Está aprendiendo a planificar un problema largo: separar las partes, calcular cada una por separado y juntarlas al final. Los errores típicos son olvidar un dato (por ejemplo, lo que se compra aparte), contestar con un resultado intermedio (lo que gastan en vez de lo que les devuelven) o aplicar un mismo precio a todos. Ayúdele a hacer una lista de «lo que me dan» y «lo que me preguntan», y a escribir al lado de cada cuenta qué significa su resultado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "12 × 8",
+     "resultado": "96",
+     "texto": "Lo que ahorra en esas semanas."
+    },
+    {
+     "paso": 2,
+     "operacion": "21 + 96",
+     "resultado": "117",
+     "texto": "Todo lo que tendrá."
+    },
+    {
+     "paso": 3,
+     "operacion": "240 − 117",
+     "resultado": "123",
+     "texto": "Lo que le falta."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Pablo tiene 42 € en la hucha y ahorra 11 € cada semana durante 8 semanas. Quiere comprarse una bicicleta de 175 €. ¿Cuánto dinero le falta todavía?",
+   "respuesta": "45 €",
+   "distractores": [
+    {
+     "valor": "87 €",
+     "error": "E01"
+    },
+    {
+     "valor": "130 €",
+     "error": "E02"
+    },
+    {
+     "valor": "122 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "175 − (42 + 11 × 8)",
+   "secundarias": [
+    "PROB.DOS.04",
+    "PROB.DOS.05",
+    "PROB.UNA.19"
+   ],
+   "explicacion_nino": "Entiende: le falta la diferencia entre el precio y todo lo que tendrá. Datos: 42 € ya ahorrados, 11 € por semana, 8 semanas, bici de 175 €. Ahorro nuevo: 11 × 8 = 88 €. Tendrá: 42 + 88 = 130 €. Le falta: 175 − 130 = 45 €. Con barras: la barra de la bici (175 €) tiene un trozo de 42, otro de 88 y el trozo que falta. Comprueba: 42 + 88 + 45 = 175.",
+   "explicacion_adulto": "Está aprendiendo a planificar un problema largo: separar las partes, calcular cada una por separado y juntarlas al final. Los errores típicos son olvidar un dato (por ejemplo, lo que se compra aparte), contestar con un resultado intermedio (lo que gastan en vez de lo que les devuelven) o aplicar un mismo precio a todos. Ayúdele a hacer una lista de «lo que me dan» y «lo que me preguntan», y a escribir al lado de cada cuenta qué significa su resultado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "11 × 8",
+     "resultado": "88",
+     "texto": "Lo que ahorra en esas semanas."
+    },
+    {
+     "paso": 2,
+     "operacion": "42 + 88",
+     "resultado": "130",
+     "texto": "Todo lo que tendrá."
+    },
+    {
+     "paso": 3,
+     "operacion": "175 − 130",
+     "resultado": "45",
+     "texto": "Lo que le falta."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Fátima tiene 60 € en la hucha y ahorra 11 € cada semana durante 5 semanas. Quiere comprarse una bicicleta de 225 €. ¿Cuánto dinero le falta todavía?",
+   "respuesta": "110 €",
+   "distractores": [
+    {
+     "valor": "170 €",
+     "error": "E01"
+    },
+    {
+     "valor": "115 €",
+     "error": "E02"
+    },
+    {
+     "valor": "154 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "225 − (60 + 11 × 5)",
+   "secundarias": [
+    "PROB.DOS.04",
+    "PROB.DOS.05",
+    "PROB.UNA.19"
+   ],
+   "explicacion_nino": "Entiende: le falta la diferencia entre el precio y todo lo que tendrá. Datos: 60 € ya ahorrados, 11 € por semana, 5 semanas, bici de 225 €. Ahorro nuevo: 11 × 5 = 55 €. Tendrá: 60 + 55 = 115 €. Le falta: 225 − 115 = 110 €. Con barras: la barra de la bici (225 €) tiene un trozo de 60, otro de 55 y el trozo que falta. Comprueba: 60 + 55 + 110 = 225.",
+   "explicacion_adulto": "Está aprendiendo a planificar un problema largo: separar las partes, calcular cada una por separado y juntarlas al final. Los errores típicos son olvidar un dato (por ejemplo, lo que se compra aparte), contestar con un resultado intermedio (lo que gastan en vez de lo que les devuelven) o aplicar un mismo precio a todos. Ayúdele a hacer una lista de «lo que me dan» y «lo que me preguntan», y a escribir al lado de cada cuenta qué significa su resultado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "11 × 5",
+     "resultado": "55",
+     "texto": "Lo que ahorra en esas semanas."
+    },
+    {
+     "paso": 2,
+     "operacion": "60 + 55",
+     "resultado": "115",
+     "texto": "Todo lo que tendrá."
+    },
+    {
+     "paso": 3,
+     "operacion": "225 − 115",
+     "resultado": "110",
+     "texto": "Lo que le falta."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Wei tiene 59 € en la hucha y ahorra 12 € cada semana durante 7 semanas. Quiere comprarse una bicicleta de 215 €. ¿Cuánto dinero le falta todavía?",
+   "respuesta": "72 €",
+   "distractores": [
+    {
+     "valor": "131 €",
+     "error": "E01"
+    },
+    {
+     "valor": "143 €",
+     "error": "E02"
+    },
+    {
+     "valor": "144 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "215 − (59 + 12 × 7)",
+   "secundarias": [
+    "PROB.DOS.04",
+    "PROB.DOS.05",
+    "PROB.UNA.19"
+   ],
+   "explicacion_nino": "Entiende: le falta la diferencia entre el precio y todo lo que tendrá. Datos: 59 € ya ahorrados, 12 € por semana, 7 semanas, bici de 215 €. Ahorro nuevo: 12 × 7 = 84 €. Tendrá: 59 + 84 = 143 €. Le falta: 215 − 143 = 72 €. Con barras: la barra de la bici (215 €) tiene un trozo de 59, otro de 84 y el trozo que falta. Comprueba: 59 + 84 + 72 = 215.",
+   "explicacion_adulto": "Está aprendiendo a planificar un problema largo: separar las partes, calcular cada una por separado y juntarlas al final. Los errores típicos son olvidar un dato (por ejemplo, lo que se compra aparte), contestar con un resultado intermedio (lo que gastan en vez de lo que les devuelven) o aplicar un mismo precio a todos. Ayúdele a hacer una lista de «lo que me dan» y «lo que me preguntan», y a escribir al lado de cada cuenta qué significa su resultado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "12 × 7",
+     "resultado": "84",
+     "texto": "Lo que ahorra en esas semanas."
+    },
+    {
+     "paso": 2,
+     "operacion": "59 + 84",
+     "resultado": "143",
+     "texto": "Todo lo que tendrá."
+    },
+    {
+     "paso": 3,
+     "operacion": "215 − 143",
+     "resultado": "72",
+     "texto": "Lo que le falta."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Omar tiene 45 € en la hucha y ahorra 12 € cada semana durante 9 semanas. Quiere comprarse una bicicleta de 175 €. ¿Cuánto dinero le falta todavía?",
+   "respuesta": "22 €",
+   "distractores": [
+    {
+     "valor": "67 €",
+     "error": "E01"
+    },
+    {
+     "valor": "153 €",
+     "error": "E02"
+    },
+    {
+     "valor": "118 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "175 − (45 + 12 × 9)",
+   "secundarias": [
+    "PROB.DOS.04",
+    "PROB.DOS.05",
+    "PROB.UNA.19"
+   ],
+   "explicacion_nino": "Entiende: le falta la diferencia entre el precio y todo lo que tendrá. Datos: 45 € ya ahorrados, 12 € por semana, 9 semanas, bici de 175 €. Ahorro nuevo: 12 × 9 = 108 €. Tendrá: 45 + 108 = 153 €. Le falta: 175 − 153 = 22 €. Con barras: la barra de la bici (175 €) tiene un trozo de 45, otro de 108 y el trozo que falta. Comprueba: 45 + 108 + 22 = 175.",
+   "explicacion_adulto": "Está aprendiendo a planificar un problema largo: separar las partes, calcular cada una por separado y juntarlas al final. Los errores típicos son olvidar un dato (por ejemplo, lo que se compra aparte), contestar con un resultado intermedio (lo que gastan en vez de lo que les devuelven) o aplicar un mismo precio a todos. Ayúdele a hacer una lista de «lo que me dan» y «lo que me preguntan», y a escribir al lado de cada cuenta qué significa su resultado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "12 × 9",
+     "resultado": "108",
+     "texto": "Lo que ahorra en esas semanas."
+    },
+    {
+     "paso": 2,
+     "operacion": "45 + 108",
+     "resultado": "153",
+     "texto": "Todo lo que tendrá."
+    },
+    {
+     "paso": 3,
+     "operacion": "175 − 153",
+     "resultado": "22",
+     "texto": "Lo que le falta."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Óscar compra 5 cuadernos a 4 € cada uno y 3 bolígrafos a 2,50 € cada uno. Paga con 50 €. ¿Cuánto le devuelven?",
+   "respuesta": "22,50 €",
+   "distractores": [
+    {
+     "valor": "30 €",
+     "error": "E01"
+    },
+    {
+     "valor": "27,50 €",
+     "error": "E02"
+    },
+    {
+     "valor": "18 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "50 − (5 × 4 + 3 × 2,5)",
+   "secundarias": [
+    "PROB.DOS.04",
+    "PROB.DOS.05",
+    "PROB.UNA.19"
+   ],
+   "explicacion_nino": "Entiende: el cambio es lo que sobra tras pagar cuadernos y bolígrafos. Datos: 5 × 4 €, 3 × 2,50 €, paga 50 €. Cuadernos: 5 × 4 = 20 €. Bolígrafos: 3 × 2,5 = 7,50 €. Total: 27,50 €. Cambio: 50 − 27,5 = 22,50 €. Comprueba: 27,5 + 22,5 = 50.",
+   "explicacion_adulto": "Está aprendiendo a planificar un problema largo: separar las partes, calcular cada una por separado y juntarlas al final. Los errores típicos son olvidar un dato (por ejemplo, lo que se compra aparte), contestar con un resultado intermedio (lo que gastan en vez de lo que les devuelven) o aplicar un mismo precio a todos. Ayúdele a hacer una lista de «lo que me dan» y «lo que me preguntan», y a escribir al lado de cada cuenta qué significa su resultado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "5 × 4",
+     "resultado": "20",
+     "texto": "Cuadernos."
+    },
+    {
+     "paso": 2,
+     "operacion": "3 × 2,5",
+     "resultado": "7,5",
+     "texto": "Bolígrafos."
+    },
+    {
+     "paso": 3,
+     "operacion": "20 + 7,5",
+     "resultado": "27,5",
+     "texto": "Lo que gasta."
+    },
+    {
+     "paso": 4,
+     "operacion": "50 − 27,5",
+     "resultado": "22,5",
+     "texto": "Lo que le devuelven."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Jon compra 5 cuadernos a 5 € cada uno y 3 bolígrafos a 0,50 € cada uno. Paga con 50 €. ¿Cuánto le devuelven?",
+   "respuesta": "23,50 €",
+   "distractores": [
+    {
+     "valor": "25 €",
+     "error": "E01"
+    },
+    {
+     "valor": "26,50 €",
+     "error": "E02"
+    },
+    {
+     "valor": "10 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "50 − (5 × 5 + 3 × 0,5)",
+   "secundarias": [
+    "PROB.DOS.04",
+    "PROB.DOS.05",
+    "PROB.UNA.19"
+   ],
+   "explicacion_nino": "Entiende: el cambio es lo que sobra tras pagar cuadernos y bolígrafos. Datos: 5 × 5 €, 3 × 0,50 €, paga 50 €. Cuadernos: 5 × 5 = 25 €. Bolígrafos: 3 × 0,5 = 1,50 €. Total: 26,50 €. Cambio: 50 − 26,5 = 23,50 €. Comprueba: 26,5 + 23,5 = 50.",
+   "explicacion_adulto": "Está aprendiendo a planificar un problema largo: separar las partes, calcular cada una por separado y juntarlas al final. Los errores típicos son olvidar un dato (por ejemplo, lo que se compra aparte), contestar con un resultado intermedio (lo que gastan en vez de lo que les devuelven) o aplicar un mismo precio a todos. Ayúdele a hacer una lista de «lo que me dan» y «lo que me preguntan», y a escribir al lado de cada cuenta qué significa su resultado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "5 × 5",
+     "resultado": "25",
+     "texto": "Cuadernos."
+    },
+    {
+     "paso": 2,
+     "operacion": "3 × 0,5",
+     "resultado": "1,5",
+     "texto": "Bolígrafos."
+    },
+    {
+     "paso": 3,
+     "operacion": "25 + 1,5",
+     "resultado": "26,5",
+     "texto": "Lo que gasta."
+    },
+    {
+     "paso": 4,
+     "operacion": "50 − 26,5",
+     "resultado": "23,5",
+     "texto": "Lo que le devuelven."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Carmen compra 4 cuadernos a 2,50 € cada uno y 2 bolígrafos a 1,10 € cada uno. Paga con 20 €. ¿Cuánto le devuelven?",
+   "respuesta": "7,80 €",
+   "distractores": [
+    {
+     "valor": "10 €",
+     "error": "E01"
+    },
+    {
+     "valor": "12,20 €",
+     "error": "E02"
+    },
+    {
+     "valor": "5 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "20 − (4 × 2,5 + 2 × 1,1)",
+   "secundarias": [
+    "PROB.DOS.04",
+    "PROB.DOS.05",
+    "PROB.UNA.19"
+   ],
+   "explicacion_nino": "Entiende: el cambio es lo que sobra tras pagar cuadernos y bolígrafos. Datos: 4 × 2,50 €, 2 × 1,10 €, paga 20 €. Cuadernos: 4 × 2,5 = 10 €. Bolígrafos: 2 × 1,1 = 2,20 €. Total: 12,20 €. Cambio: 20 − 12,2 = 7,80 €. Comprueba: 12,2 + 7,8 = 20.",
+   "explicacion_adulto": "Está aprendiendo a planificar un problema largo: separar las partes, calcular cada una por separado y juntarlas al final. Los errores típicos son olvidar un dato (por ejemplo, lo que se compra aparte), contestar con un resultado intermedio (lo que gastan en vez de lo que les devuelven) o aplicar un mismo precio a todos. Ayúdele a hacer una lista de «lo que me dan» y «lo que me preguntan», y a escribir al lado de cada cuenta qué significa su resultado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "4 × 2,5",
+     "resultado": "10",
+     "texto": "Cuadernos."
+    },
+    {
+     "paso": 2,
+     "operacion": "2 × 1,1",
+     "resultado": "2,2",
+     "texto": "Bolígrafos."
+    },
+    {
+     "paso": 3,
+     "operacion": "10 + 2,2",
+     "resultado": "12,2",
+     "texto": "Lo que gasta."
+    },
+    {
+     "paso": 4,
+     "operacion": "20 − 12,2",
+     "resultado": "7,8",
+     "texto": "Lo que le devuelven."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Lucía compra 4 cuadernos a 3,20 € cada uno y 2 bolígrafos a 0,80 € cada uno. Paga con 20 €. ¿Cuánto le devuelven?",
+   "respuesta": "5,60 €",
+   "distractores": [
+    {
+     "valor": "7,20 €",
+     "error": "E01"
+    },
+    {
+     "valor": "14,40 €",
+     "error": "E02"
+    },
+    {
+     "valor": "0,80 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "20 − (4 × 3,2 + 2 × 0,8)",
+   "secundarias": [
+    "PROB.DOS.04",
+    "PROB.DOS.05",
+    "PROB.UNA.19"
+   ],
+   "explicacion_nino": "Entiende: el cambio es lo que sobra tras pagar cuadernos y bolígrafos. Datos: 4 × 3,20 €, 2 × 0,80 €, paga 20 €. Cuadernos: 4 × 3,2 = 12,80 €. Bolígrafos: 2 × 0,8 = 1,60 €. Total: 14,40 €. Cambio: 20 − 14,4 = 5,60 €. Comprueba: 14,4 + 5,6 = 20.",
+   "explicacion_adulto": "Está aprendiendo a planificar un problema largo: separar las partes, calcular cada una por separado y juntarlas al final. Los errores típicos son olvidar un dato (por ejemplo, lo que se compra aparte), contestar con un resultado intermedio (lo que gastan en vez de lo que les devuelven) o aplicar un mismo precio a todos. Ayúdele a hacer una lista de «lo que me dan» y «lo que me preguntan», y a escribir al lado de cada cuenta qué significa su resultado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "4 × 3,2",
+     "resultado": "12,8",
+     "texto": "Cuadernos."
+    },
+    {
+     "paso": 2,
+     "operacion": "2 × 0,8",
+     "resultado": "1,6",
+     "texto": "Bolígrafos."
+    },
+    {
+     "paso": 3,
+     "operacion": "12,8 + 1,6",
+     "resultado": "14,4",
+     "texto": "Lo que gasta."
+    },
+    {
+     "paso": 4,
+     "operacion": "20 − 14,4",
+     "resultado": "5,6",
+     "texto": "Lo que le devuelven."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Pablo compra 4 cuadernos a 1,75 € cada uno y 4 bolígrafos a 1,35 € cada uno. Paga con 20 €. ¿Cuánto le devuelven?",
+   "respuesta": "7,60 €",
+   "distractores": [
+    {
+     "valor": "13 €",
+     "error": "E01"
+    },
+    {
+     "valor": "12,40 €",
+     "error": "E02"
+    },
+    {
+     "valor": "6 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "20 − (4 × 1,75 + 4 × 1,35)",
+   "secundarias": [
+    "PROB.DOS.04",
+    "PROB.DOS.05",
+    "PROB.UNA.19"
+   ],
+   "explicacion_nino": "Entiende: el cambio es lo que sobra tras pagar cuadernos y bolígrafos. Datos: 4 × 1,75 €, 4 × 1,35 €, paga 20 €. Cuadernos: 4 × 1,75 = 7 €. Bolígrafos: 4 × 1,35 = 5,40 €. Total: 12,40 €. Cambio: 20 − 12,4 = 7,60 €. Comprueba: 12,4 + 7,6 = 20.",
+   "explicacion_adulto": "Está aprendiendo a planificar un problema largo: separar las partes, calcular cada una por separado y juntarlas al final. Los errores típicos son olvidar un dato (por ejemplo, lo que se compra aparte), contestar con un resultado intermedio (lo que gastan en vez de lo que les devuelven) o aplicar un mismo precio a todos. Ayúdele a hacer una lista de «lo que me dan» y «lo que me preguntan», y a escribir al lado de cada cuenta qué significa su resultado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "4 × 1,75",
+     "resultado": "7",
+     "texto": "Cuadernos."
+    },
+    {
+     "paso": 2,
+     "operacion": "4 × 1,35",
+     "resultado": "5,4",
+     "texto": "Bolígrafos."
+    },
+    {
+     "paso": 3,
+     "operacion": "7 + 5,4",
+     "resultado": "12,4",
+     "texto": "Lo que gasta."
+    },
+    {
+     "paso": 4,
+     "operacion": "20 − 12,4",
+     "resultado": "7,6",
+     "texto": "Lo que le devuelven."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Rocío compra 3 cuadernos a 2,50 € cada uno y 3 bolígrafos a 0,60 € cada uno. Paga con 20 €. ¿Cuánto le devuelven?",
+   "respuesta": "10,70 €",
+   "distractores": [
+    {
+     "valor": "12,50 €",
+     "error": "E01"
+    },
+    {
+     "valor": "9,30 €",
+     "error": "E02"
+    },
+    {
+     "valor": "5 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "20 − (3 × 2,5 + 3 × 0,6)",
+   "secundarias": [
+    "PROB.DOS.04",
+    "PROB.DOS.05",
+    "PROB.UNA.19"
+   ],
+   "explicacion_nino": "Entiende: el cambio es lo que sobra tras pagar cuadernos y bolígrafos. Datos: 3 × 2,50 €, 3 × 0,60 €, paga 20 €. Cuadernos: 3 × 2,5 = 7,50 €. Bolígrafos: 3 × 0,6 = 1,80 €. Total: 9,30 €. Cambio: 20 − 9,3 = 10,70 €. Comprueba: 9,3 + 10,7 = 20.",
+   "explicacion_adulto": "Está aprendiendo a planificar un problema largo: separar las partes, calcular cada una por separado y juntarlas al final. Los errores típicos son olvidar un dato (por ejemplo, lo que se compra aparte), contestar con un resultado intermedio (lo que gastan en vez de lo que les devuelven) o aplicar un mismo precio a todos. Ayúdele a hacer una lista de «lo que me dan» y «lo que me preguntan», y a escribir al lado de cada cuenta qué significa su resultado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "3 × 2,5",
+     "resultado": "7,5",
+     "texto": "Cuadernos."
+    },
+    {
+     "paso": 2,
+     "operacion": "3 × 0,6",
+     "resultado": "1,8",
+     "texto": "Bolígrafos."
+    },
+    {
+     "paso": 3,
+     "operacion": "7,5 + 1,8",
+     "resultado": "9,3",
+     "texto": "Lo que gasta."
+    },
+    {
+     "paso": 4,
+     "operacion": "20 − 9,3",
+     "resultado": "10,7",
+     "texto": "Lo que le devuelven."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "La familia de Omar viaja a casa de sus abuelos, a 374 km. En coche recorren 112 km cada hora durante 2 horas. Después hacen 42 km más en autobús. ¿Cuántos kilómetros les quedan?",
+   "respuesta": "108 km",
+   "distractores": [
+    {
+     "valor": "150 km",
+     "error": "E01"
+    },
+    {
+     "valor": "266 km",
+     "error": "E02"
+    },
+    {
+     "valor": "220 km",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "374 − (112 × 2 + 42)",
+   "secundarias": [
+    "PROB.DOS.04",
+    "PROB.DOS.05",
+    "PROB.UNA.19"
+   ],
+   "explicacion_nino": "Entiende: les queda lo que falta hasta los 374 km. Datos: 112 km por hora, 2 horas, 42 km en autobús. En coche: 112 × 2 = 224 km. Recorrido: 224 + 42 = 266 km. Quedan: 374 − 266 = 108 km. Con barras: la barra de 374 km tiene el trozo del coche, el del autobús y lo que queda. Comprueba: 224 + 42 + 108 = 374.",
+   "explicacion_adulto": "Está aprendiendo a planificar un problema largo: separar las partes, calcular cada una por separado y juntarlas al final. Los errores típicos son olvidar un dato (por ejemplo, lo que se compra aparte), contestar con un resultado intermedio (lo que gastan en vez de lo que les devuelven) o aplicar un mismo precio a todos. Ayúdele a hacer una lista de «lo que me dan» y «lo que me preguntan», y a escribir al lado de cada cuenta qué significa su resultado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "112 × 2",
+     "resultado": "224",
+     "texto": "Kilómetros en coche."
+    },
+    {
+     "paso": 2,
+     "operacion": "224 + 42",
+     "resultado": "266",
+     "texto": "Kilómetros recorridos."
+    },
+    {
+     "paso": 3,
+     "operacion": "374 − 266",
+     "resultado": "108",
+     "texto": "Kilómetros que quedan."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "La familia de Iván viaja a casa de sus abuelos, a 411 km. En coche recorren 81 km cada hora durante 3 horas. Después hacen 49 km más en autobús. ¿Cuántos kilómetros les quedan?",
+   "respuesta": "119 km",
+   "distractores": [
+    {
+     "valor": "168 km",
+     "error": "E01"
+    },
+    {
+     "valor": "292 km",
+     "error": "E02"
+    },
+    {
+     "valor": "281 km",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "411 − (81 × 3 + 49)",
+   "secundarias": [
+    "PROB.DOS.04",
+    "PROB.DOS.05",
+    "PROB.UNA.19"
+   ],
+   "explicacion_nino": "Entiende: les queda lo que falta hasta los 411 km. Datos: 81 km por hora, 3 horas, 49 km en autobús. En coche: 81 × 3 = 243 km. Recorrido: 243 + 49 = 292 km. Quedan: 411 − 292 = 119 km. Con barras: la barra de 411 km tiene el trozo del coche, el del autobús y lo que queda. Comprueba: 243 + 49 + 119 = 411.",
+   "explicacion_adulto": "Está aprendiendo a planificar un problema largo: separar las partes, calcular cada una por separado y juntarlas al final. Los errores típicos son olvidar un dato (por ejemplo, lo que se compra aparte), contestar con un resultado intermedio (lo que gastan en vez de lo que les devuelven) o aplicar un mismo precio a todos. Ayúdele a hacer una lista de «lo que me dan» y «lo que me preguntan», y a escribir al lado de cada cuenta qué significa su resultado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "81 × 3",
+     "resultado": "243",
+     "texto": "Kilómetros en coche."
+    },
+    {
+     "paso": 2,
+     "operacion": "243 + 49",
+     "resultado": "292",
+     "texto": "Kilómetros recorridos."
+    },
+    {
+     "paso": 3,
+     "operacion": "411 − 292",
+     "resultado": "119",
+     "texto": "Kilómetros que quedan."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "La familia de Wei viaja a casa de sus abuelos, a 241 km. En coche recorren 60 km cada hora durante 3 horas. Después hacen 42 km más en autobús. ¿Cuántos kilómetros les quedan?",
+   "respuesta": "19 km",
+   "distractores": [
+    {
+     "valor": "61 km",
+     "error": "E01"
+    },
+    {
+     "valor": "222 km",
+     "error": "E02"
+    },
+    {
+     "valor": "139 km",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "241 − (60 × 3 + 42)",
+   "secundarias": [
+    "PROB.DOS.04",
+    "PROB.DOS.05",
+    "PROB.UNA.19"
+   ],
+   "explicacion_nino": "Entiende: les queda lo que falta hasta los 241 km. Datos: 60 km por hora, 3 horas, 42 km en autobús. En coche: 60 × 3 = 180 km. Recorrido: 180 + 42 = 222 km. Quedan: 241 − 222 = 19 km. Con barras: la barra de 241 km tiene el trozo del coche, el del autobús y lo que queda. Comprueba: 180 + 42 + 19 = 241.",
+   "explicacion_adulto": "Está aprendiendo a planificar un problema largo: separar las partes, calcular cada una por separado y juntarlas al final. Los errores típicos son olvidar un dato (por ejemplo, lo que se compra aparte), contestar con un resultado intermedio (lo que gastan en vez de lo que les devuelven) o aplicar un mismo precio a todos. Ayúdele a hacer una lista de «lo que me dan» y «lo que me preguntan», y a escribir al lado de cada cuenta qué significa su resultado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "60 × 3",
+     "resultado": "180",
+     "texto": "Kilómetros en coche."
+    },
+    {
+     "paso": 2,
+     "operacion": "180 + 42",
+     "resultado": "222",
+     "texto": "Kilómetros recorridos."
+    },
+    {
+     "paso": 3,
+     "operacion": "241 − 222",
+     "resultado": "19",
+     "texto": "Kilómetros que quedan."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "La familia de Valeria viaja a casa de sus abuelos, a 439 km. En coche recorren 102 km cada hora durante 3 horas. Después hacen 45 km más en autobús. ¿Cuántos kilómetros les quedan?",
+   "respuesta": "88 km",
+   "distractores": [
+    {
+     "valor": "133 km",
+     "error": "E01"
+    },
+    {
+     "valor": "351 km",
+     "error": "E02"
+    },
+    {
+     "valor": "292 km",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "439 − (102 × 3 + 45)",
+   "secundarias": [
+    "PROB.DOS.04",
+    "PROB.DOS.05",
+    "PROB.UNA.19"
+   ],
+   "explicacion_nino": "Entiende: les queda lo que falta hasta los 439 km. Datos: 102 km por hora, 3 horas, 45 km en autobús. En coche: 102 × 3 = 306 km. Recorrido: 306 + 45 = 351 km. Quedan: 439 − 351 = 88 km. Con barras: la barra de 439 km tiene el trozo del coche, el del autobús y lo que queda. Comprueba: 306 + 45 + 88 = 439.",
+   "explicacion_adulto": "Está aprendiendo a planificar un problema largo: separar las partes, calcular cada una por separado y juntarlas al final. Los errores típicos son olvidar un dato (por ejemplo, lo que se compra aparte), contestar con un resultado intermedio (lo que gastan en vez de lo que les devuelven) o aplicar un mismo precio a todos. Ayúdele a hacer una lista de «lo que me dan» y «lo que me preguntan», y a escribir al lado de cada cuenta qué significa su resultado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "102 × 3",
+     "resultado": "306",
+     "texto": "Kilómetros en coche."
+    },
+    {
+     "paso": 2,
+     "operacion": "306 + 45",
+     "resultado": "351",
+     "texto": "Kilómetros recorridos."
+    },
+    {
+     "paso": 3,
+     "operacion": "439 − 351",
+     "resultado": "88",
+     "texto": "Kilómetros que quedan."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "La familia de Aya viaja a casa de sus abuelos, a 435 km. En coche recorren 99 km cada hora durante 3 horas. Después hacen 57 km más en autobús. ¿Cuántos kilómetros les quedan?",
+   "respuesta": "81 km",
+   "distractores": [
+    {
+     "valor": "138 km",
+     "error": "E01"
+    },
+    {
+     "valor": "354 km",
+     "error": "E02"
+    },
+    {
+     "valor": "279 km",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "435 − (99 × 3 + 57)",
+   "secundarias": [
+    "PROB.DOS.04",
+    "PROB.DOS.05",
+    "PROB.UNA.19"
+   ],
+   "explicacion_nino": "Entiende: les queda lo que falta hasta los 435 km. Datos: 99 km por hora, 3 horas, 57 km en autobús. En coche: 99 × 3 = 297 km. Recorrido: 297 + 57 = 354 km. Quedan: 435 − 354 = 81 km. Con barras: la barra de 435 km tiene el trozo del coche, el del autobús y lo que queda. Comprueba: 297 + 57 + 81 = 435.",
+   "explicacion_adulto": "Está aprendiendo a planificar un problema largo: separar las partes, calcular cada una por separado y juntarlas al final. Los errores típicos son olvidar un dato (por ejemplo, lo que se compra aparte), contestar con un resultado intermedio (lo que gastan en vez de lo que les devuelven) o aplicar un mismo precio a todos. Ayúdele a hacer una lista de «lo que me dan» y «lo que me preguntan», y a escribir al lado de cada cuenta qué significa su resultado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "99 × 3",
+     "resultado": "297",
+     "texto": "Kilómetros en coche."
+    },
+    {
+     "paso": 2,
+     "operacion": "297 + 57",
+     "resultado": "354",
+     "texto": "Kilómetros recorridos."
+    },
+    {
+     "paso": 3,
+     "operacion": "435 − 354",
+     "resultado": "81",
+     "texto": "Kilómetros que quedan."
+    }
+   ],
+   "plantilla": "P05"
+  }
+ ]
+}

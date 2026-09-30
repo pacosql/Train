@@ -549,5 +549,436 @@
    "usa_varianza": "E03"
   },
   "plantilla": "Coeficiente de variación σ/x̄ y comparación de la dispersión relativa"
+ },
+ "EST.AZAR.02": {
+  "gen": "t6_suceso_tipo",
+  "kw": {},
+  "errores": {
+   "probable_es_seguro": "E01",
+   "poco_probable_imposible": "E02"
+  },
+  "plantilla": "Clasificar un suceso (bolsa, dado, ruleta, moneda) como seguro, posible o imposible"
+ },
+ "EST.AZAR.03": {
+  "gen": "t6_comparar_azar",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "mismo"
+   },
+   "2": {
+    "tipo": [
+     "bolsas",
+     "mismo"
+    ]
+   },
+   "3": {
+    "tipo": "bolsas"
+   }
+  },
+  "errores": {
+   "solo_favorables": "E01",
+   "todo_igual": "E02"
+  },
+  "plantilla": "Comparar intuitivamente dos sucesos o dos bolsas con un recuento igual"
+ },
+ "EST.AZAR.04": {
+  "gen": "t6_escala",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "verbal"
+   },
+   "2": {
+    "tipo": [
+     "verbal",
+     "recta"
+    ]
+   },
+   "3": {
+    "tipo": "recta"
+   }
+  },
+  "errores": {
+   "igual_por_posible": "E01",
+   "escala_invertida": "E02",
+   "poco_imposible": "E03"
+  },
+  "plantilla": "Situar un suceso en la escala imposible–seguro y en la recta de 0 a 1"
+ },
+ "EST.PROB.01": {
+  "gen": "t6_laplace",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "simple"
+   },
+   "2": {
+    "tipo": "simple"
+   },
+   "3": {
+    "tipo": [
+     "comparar",
+     "simple"
+    ]
+   }
+  },
+  "errores": {
+   "favorables_entre_desfavorables": "E01",
+   "solo_favorables": "E02"
+  },
+  "plantilla": "Regla de Laplace en un experimento simple (bolsa, dado, ruleta, baraja) y comparación de dos bolsas"
+ },
+ "EST.PROB.02": {
+  "gen": "t6_espacio",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "suceso"
+   },
+   "2": {
+    "tipo": [
+     "espacio",
+     "suceso"
+    ]
+   },
+   "3": {
+    "tipo": [
+     "imposible",
+     "espacio"
+    ]
+   }
+  },
+  "errores": {
+   "solo_favorables": "E01",
+   "olvida_resultado": "E02",
+   "imposible_mal": "E03"
+  },
+  "plantilla": "Espacio muestral y sucesos como conjuntos (incluidos ∅ y E)"
+ },
+ "EST.PROB.03": {
+  "gen": "t6_contrario",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "describir"
+   },
+   "2": {
+    "tipo": "fraccion"
+   },
+   "3": {
+    "tipo": [
+     "almenos",
+     "describir"
+    ]
+   }
+  },
+  "errores": {
+   "otro_suceso": "E01",
+   "olvida_frontera": "E02",
+   "inverso": "E03"
+  },
+  "plantilla": "Suceso contrario y p(no A) = 1 − p(A)"
+ },
+ "EST.PROB.04": {
+  "gen": "t6_frecuencial",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "estimar"
+   },
+   "2": {
+    "tipo": [
+     "estimar",
+     "laplace_si"
+    ]
+   },
+   "3": {
+    "tipo": [
+     "pocos",
+     "estimar"
+    ]
+   }
+  },
+  "errores": {
+   "uno_entre_n": "E01",
+   "pocos_ensayos_exacto": "E02",
+   "divide_al_reves": "E03"
+  },
+  "plantilla": "Probabilidad frecuencial (frecuencia relativa) y cuándo se puede usar Laplace"
+ },
+ "EST.PROB.05": {
+  "gen": "t6_union",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": [
+     "union",
+     "interseccion"
+    ]
+   },
+   "2": {
+    "tipo": [
+     "union",
+     "interseccion"
+    ]
+   },
+   "3": {
+    "tipo": "union"
+   }
+  },
+  "errores": {
+   "sin_restar_interseccion": "E01",
+   "y_por_o": "E02",
+   "incompatibles_multiplica": "E03"
+  },
+  "plantilla": "p(A ∪ B) = p(A) + p(B) − p(A ∩ B) en experimentos simples (dado, ruleta, baraja española)"
+ },
+ "EST.PROB.06": {
+  "gen": "t6_compuesto",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "moneda_dado"
+   },
+   "2": {
+    "tipo": [
+     "dos_dados",
+     "reemplazo_igual",
+     "moneda_dado"
+    ]
+   },
+   "3": {
+    "tipo": [
+     "monedas",
+     "reemplazo_dist",
+     "dos_dados"
+    ]
+   }
+  },
+  "errores": {
+   "suma_en_rama": "E01",
+   "olvida_ramas": "E02",
+   "no_equiprobables": "E03"
+  },
+  "plantilla": "Experimentos compuestos independientes: regla del producto y suma de ramas"
+ },
+ "EST.PROB.07": {
+  "gen": "t6_sin_reemplazo",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "dos_iguales"
+   },
+   "2": {
+    "tipo": "una_de_cada"
+   },
+   "3": {
+    "tipo": [
+     "tres",
+     "una_de_cada"
+    ]
+   }
+  },
+  "errores": {
+   "no_actualiza": "E01",
+   "actualiza_solo_total": "E02",
+   "olvida_orden": "E03"
+  },
+  "plantilla": "Extracciones sucesivas sin reemplazamiento (dos o tres etapas)"
+ },
+ "EST.PROB.08": {
+  "gen": "t6_prob_tabla",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "celda"
+   },
+   "2": {
+    "tipo": "restringida"
+   },
+   "3": {
+    "tipo": [
+     "union",
+     "restringida"
+    ]
+   }
+  },
+  "errores": {
+   "divide_total": "E01",
+   "divide_fila": "E02",
+   "interseccion_por_union": "E03"
+  },
+  "plantilla": "Probabilidades a partir de una tabla de contingencia: casilla, restringida a una columna, unión"
+ },
+ "EST.PROB.10": {
+  "gen": "t6_condicionada",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "tabla"
+   },
+   "2": {
+    "tipo": [
+     "producto",
+     "tabla"
+    ]
+   },
+   "3": {
+    "tipo": "formula"
+   }
+  },
+  "errores": {
+   "invierte_condicion": "E01",
+   "interseccion_por_condicionada": "E02",
+   "multiplica_sin_independencia": "E03"
+  },
+  "plantilla": "Probabilidad condicionada P(A|B) = P(A∩B)/P(B) desde tablas o datos, y regla del producto"
+ },
+ "EST.PROB.11": {
+  "gen": "t6_independencia",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "interseccion"
+   },
+   "2": {
+    "tipo": [
+     "decidir",
+     "union"
+    ]
+   },
+   "3": {
+    "tipo": "decidir"
+   }
+  },
+  "errores": {
+   "incompatibles_independientes": "E01",
+   "comprueba_union": "E02",
+   "intuicion": "E03"
+  },
+  "plantilla": "Independencia de sucesos: comprobar P(A∩B) = P(A)·P(B) y usarla para calcular"
+ },
+ "EST.COMB.01": {
+  "gen": "t6_recuento_sistematico",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": [
+     "parejas",
+     "cifras"
+    ]
+   },
+   "2": {
+    "tipo": [
+     "cifras",
+     "parejas"
+    ]
+   },
+   "3": {
+    "tipo": [
+     "tres",
+     "parejas",
+     "cifras"
+    ]
+   }
+  },
+  "errores": {
+   "olvida_casos": "E01",
+   "repetidos_no_permitidos": "E02",
+   "orden_duplicado": "E03",
+   "suma_opciones": "E04"
+  },
+  "plantilla": "Recuento sistemático de casos pequeños (≤ 30): números con cifras dadas, parejas"
+ },
+ "EST.COMB.02": {
+  "gen": "t6_multiplicativo",
+  "kw": {},
+  "errores": {
+   "suma_en_vez": "E01",
+   "arbol_incompleto": "E02"
+  },
+  "plantilla": "Principio multiplicativo en elecciones de 2 a 4 etapas (menús, ropa, rutas)"
+ },
+ "EST.COMB.03": {
+  "gen": "t6_vr",
+  "kw": {},
+  "errores": {
+   "k_a_la_n": "E01",
+   "n_por_k": "E02"
+  },
+  "plantilla": "Variaciones con repetición VR(n,k) = n^k (claves, códigos, quinielas, banderas)"
+ },
+ "EST.COMB.04": {
+  "gen": "t6_variaciones",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": [
+     "factorial",
+     "permutaciones"
+    ]
+   },
+   "2": {
+    "tipo": "permutaciones"
+   },
+   "3": {
+    "tipo": "variaciones"
+   }
+  },
+  "errores": {
+   "con_repeticion": "E01",
+   "divide_k_factorial": "E02"
+  },
+  "plantilla": "Factoriales, permutaciones n! y variaciones sin repetición n!/(n−k)!"
+ },
+ "EST.COMB.05": {
+  "gen": "t6_combinaciones",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "numero"
+   },
+   "2": {
+    "tipo": "contexto"
+   },
+   "3": {
+    "tipo": [
+     "numero",
+     "contexto"
+    ]
+   }
+  },
+  "errores": {
+   "no_divide_k": "E01",
+   "divide_mal": "E02"
+  },
+  "plantilla": "Combinaciones y números combinatorios C(n,k), incluida C(n,k) = C(n,n−k)"
+ },
+ "EST.COMB.07": {
+  "gen": "t6_perm_rep",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "anagrama"
+   },
+   "2": {
+    "tipo": [
+     "bolas",
+     "anagrama"
+    ]
+   },
+   "3": {
+    "tipo": [
+     "juntos",
+     "anagrama"
+    ]
+   }
+  },
+  "errores": {
+   "no_divide_repeticiones": "E01",
+   "resta_en_vez": "E02"
+  },
+  "plantilla": "Permutaciones con repetición (anagramas, objetos iguales) y recuentos con una restricción"
  }
 }

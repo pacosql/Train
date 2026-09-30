@@ -169,8 +169,9 @@ def gen_mult_sentido(rng, d):
     hi = 5 if d == 1 else 7 if d == 2 else 9
     tipo = rng.choice({1: ["suma_a_mult", "veces"], 2: ["suma_a_mult", "cuadricula", "grupos_suma"], 3: ["cuadricula", "grupos_suma", "suma_a_mult", "veces"]}[d])
     n, a = rng.randint(2, hi), rng.randint(2, hi)
+    if tipo in ("suma_a_mult", "grupos_suma"):
+        n = min(max(n, 3), 6)
     if tipo == "suma_a_mult":
-        n = max(n, 3)
         suma = " + ".join([str(a)] * n)
         return mk(f"¿Qué multiplicación es {suma}?", f"{n} × {a}", "t2_sentido", {"a": n, "b": a, "tipo": tipo},
                   [(f"{n - 1} × {a}", "cuenta_mal"), (f"{n} + {a}", "suma"), (f"{n + 1} × {a}", "cuenta_mal")],
@@ -300,6 +301,7 @@ def gen_mult1(rng, d):
     dist = [(mult_salta_cero(a, b), "salta_cero"), (mult_sin_llevada(a, b), "sin_llevada"), (mult_llevada_antes(a, b), "llevada_antes"),
             (mult_escribe_todo(a, b), "escribe_todo"), (p + b * 10 ** i if int(str(a)[::-1][i]) else p - b, "tabla")]
     dist = [(v, k) for v, k in dist if v is not None and v != p]
+    rng.shuffle(dist)
     pasos = texto_columnas(a, b)
     pasos.append((f"{fmt(a)} × {b}", fmt(p), f"Resultado: {fmt(a)} × {b} = {fmt(p)}."))
     return mk(f"Calcula: {fmt(a)} × {b}", fmt(p), "mult", {"a": a, "b": b}, dist, pasos,
@@ -1007,7 +1009,7 @@ PRIMOS_100 = [p for p in range(2, 100) if es_primo(p)]
 def gen_primos(rng, d):
     """Primos y compuestos. Claves: impar_primo (todo impar es primo), uno_primo, dos_no_primo, sin_2_3_5 (da por primo un número
     sin divisor 2, 3 ni 5: 49, 77, 91)."""
-    tipo = rng.choice({1: ["cual"], 2: ["cual", "es"], 3: ["es", "es", "cual"]}[d])
+    tipo = rng.choice({1: ["cual", "es"], 2: ["cual", "es"], 3: ["es", "es", "cual"]}[d])
     adulto = ("Primo = exactamente dos divisores (1 y él mismo). El 1 no es primo ni compuesto; el 2 es el único primo par. Ser impar no basta: "
               "49 = 7 × 7, 77 = 7 × 11, 91 = 7 × 13.")
     tope = 30 if d == 1 else 100
@@ -1024,7 +1026,7 @@ def gen_primos(rng, d):
                                                      f"Los demás tienen más divisores (o, en el caso del 1, uno solo).")],
                   adulto, datos={"opciones_fijas": True})
     cand = [2, 1] + [49, 77, 91, 51, 57, 87, 39, 63, 27, 33, 21] + PRIMOS_100[3:]
-    n = rng.choice(cand if d == 3 else [x for x in range(2, 100) if x % 2])
+    n = rng.choice(cand if d == 3 else [1, 2] + [x for x in range(3, 30 if d == 1 else 100) if x % 2])
     if n == 1:
         ok = "Ni primo ni compuesto: solo tiene un divisor"
         dist = [("Sí, es primo", "uno_primo"), ("No, es compuesto", None), ("Sí, porque es impar", "impar_primo")]
@@ -1254,7 +1256,7 @@ def gen_ent_recta(rng, d):
     """Enteros en la recta numérica (descrita con palabras). Claves: lado_contrario (negativos a la derecha),
     cuenta_desde_uno (cuenta una marca de más), ignora_escala."""
     esc = 1 if d == 1 else rng.choice([2, 5]) if d == 2 else rng.choice([5, 10, 2])
-    k = rng.randint(1, 5 if d < 3 else 5)
+    k = rng.randint(1, 9 if d == 1 else 5)
     lado = "izquierda" if rng.random() < 0.75 else "derecha"
     v = -k * esc if lado == "izquierda" else k * esc
     adulto = ("En la recta los negativos están a la izquierda del 0 y cada marca vale lo que diga la escala. Que cuente saltos (no marcas) "
@@ -1340,7 +1342,8 @@ def gen_ent_abs(rng, d):
               "y dos números (a y −a) tienen el mismo valor absoluto.")
     if tipo in ("abs", "abs_pos"):
         x = -a if tipo == "abs" else a
-        return mk(f"Calcula: |{fmt(x)}|", fmt(a), "t2_ent_abs", {"tipo": tipo, "x": x},
+        enun = f"Calcula: |{fmt(x)}|" if x < 0 else f"¿Cuál es el valor absoluto de {fmt(x)}?"
+        return mk(enun, fmt(a), "t2_ent_abs", {"tipo": tipo, "x": x},
                   [(fmt(-a), "abs_cambia_signo"), (fmt(a + 1), None), ("0", None)],
                   [(f"|{fmt(x)}|", fmt(a), f"El valor absoluto es la distancia de {fmt(x)} al 0, que es {fmt(a)}. Siempre sale positivo.")], adulto)
     if tipo == "op":
@@ -1411,7 +1414,7 @@ def gen_ent_variacion(rng, d):
     if rng.random() < 0.3:
         a, b = -rng.randint(R // 2, R), -rng.randint(1, R // 2 - 1 if R > 4 else 1)
     v = b - a
-    frase = {"temp": f"A las 6 h hace {fmt(a)} °C y a mediodía {fmt(b)} °C. ¿Cuántos grados ha subido la temperatura?",
+    frase = {"temp": f"A las 6 h el termómetro marcaba {fmt(a)} °C y a mediodía, {fmt(b)} °C. ¿Cuánto ha aumentado la temperatura?",
              "planta": f"Un ascensor sube desde la planta {fmt(a)} hasta la planta {fmt(b)}. ¿Cuántas plantas ha subido?",
              "saldo": f"Una cuenta pasa de un saldo de {fmt(a)} € a {fmt(b)} €. ¿Cuántos euros ha aumentado?"}[ctx]
     mal = abs(b) - abs(a) if b > 0 else abs(a) + abs(b)
@@ -1537,10 +1540,11 @@ def gen_ent_cadena(rng, d):
     pos = [x for x in planos if x > 0]
     neg = [x for x in planos if x < 0]
     olvido = v - planos[-1]
+    plano_txt = " ".join(("+ " if x > 0 else "− ") + fmt(abs(x)) for x in planos)
+    plano_txt = plano_txt[2:] if plano_txt.startswith("+ ") else "−" + plano_txt[2:]
     return mk(f"Calcula: {expr}", fmt(v), "jerarquia", {"expresion": expr}, [(e1, "solo_primero"), (e2, "pierde_signo"), (olvido, "agrupa_mal")],
-              [("quitar paréntesis", " ".join(("+ " if x > 0 else "− ") + fmt(abs(x)) for x in planos).lstrip("+ "),
-                "Quito los paréntesis: si delante hay un −, cambian de signo TODOS los términos de dentro. Queda "
-                + " ".join(("+ " if x > 0 else "− ") + fmt(abs(x)) for x in planos).lstrip("+ ") + "."),
+              [("quitar paréntesis", plano_txt,
+                "Quito los paréntesis: si delante hay un −, cambian de signo TODOS los términos de dentro. Queda " + plano_txt + "."),
                ("agrupar", f"{fmt(sum(pos))} y {fmt(sum(neg))}", f"Sumo los positivos ({fmt(sum(pos))}) y los negativos ({fmt(sum(neg))})."),
                ("total", fmt(v), f"{fmt(sum(pos))} {'−' if sum(neg) < 0 else '+'} {fmt(abs(sum(neg)))} = {fmt(v)}.")],
               "Un − delante de un paréntesis cambia el signo de todo lo de dentro, no solo del primero. Otra opción segura: resolver primero "
@@ -1578,7 +1582,7 @@ def gen_ent_mult(rng, d):
         D = a * b
         v = a
         expr = f"{z(D)} : {z(b)}"
-        dist = [(-v, "regla_suma" if (D < 0 and b < 0) else None), (abs(v) * (1 if D > 0 else -1) if (v > 0) != (D > 0) else None, "signo_primero"), (D * b if abs(D * b) < 10000 else v + 1, None)]
+        dist = [(-v, "signo_primero" if b < 0 else None), (D * b if abs(D * b) < 10000 else v + 1, None)]
         return mk(f"Calcula: {expr}", fmt(v), "ent_div", {"a": D, "b": b}, dist,
                   [(f"{fmt(abs(D))} : {abs(b)}", fmt(abs(v)), f"Divido sin signos: {fmt(abs(D))} : {abs(b)} = {abs(v)}."),
                    ("signo", fmt(v), f"Signos {'iguales → +' if D * b > 0 else 'distintos → −'}: {fmt(v)}.")],
@@ -1594,3 +1598,981 @@ def gen_ent_mult(rng, d):
                ("signo", fmt(v), f"Signos {'iguales → +' if a * b > 0 else 'distintos → −'}: {fmt(v)}.")],
               "Signos iguales dan +, distintos dan −. La regla de la suma (se pone el signo del mayor) no sirve para multiplicar.",
               genericos=[v + 1, v - 1, v + 10])
+
+
+# ================================================================ JERARQUÍA CON POTENCIAS Y RAÍCES (naturales)
+
+from .jerarquia import ev_lista as _ev_lista, texto as _texto, pasos_explicacion as _pasos_jer  # noqa: E402
+
+CUADRADOS = [4, 9, 16, 25, 36, 49, 64, 81, 100]
+
+
+def _mapa(toks, f):
+    """Aplica f a cada operando (recursivo en grupos); f devuelve el operando transformado."""
+    out = []
+    for t in toks:
+        if isinstance(t, tuple) and t[0] == "grupo":
+            t = ("grupo", _mapa(t[1], f), t[2])
+        out.append(f(t) if not isinstance(t, str) else t)
+    return out
+
+
+def _olvida(toks):
+    def f(t):
+        if isinstance(t, tuple) and t[0] == "pot":
+            return t[1]
+        if isinstance(t, tuple) and t[0] == "raiz":
+            return t[1]
+        return t
+    return _mapa(toks, f)
+
+
+def _raiz_suma(toks):
+    def f(t):
+        if isinstance(t, tuple) and t[0] == "raiz" and isinstance(t[1], tuple) and t[1][0] == "grupo":
+            g = t[1][1]
+            if len(g) == 3 and all(isinstance(x, int) and int(x ** 0.5) ** 2 == x for x in (g[0], g[2])):
+                return ("grupo", [("raiz", g[0]), g[1], ("raiz", g[2])], "()")
+        return t
+    return _mapa(toks, f)
+
+
+def _op_antes_pot(toks):
+    """a + b^n → (a + b)^n ; a · b^n → (a · b)^n (primera aparición, nivel superior o dentro de grupos)."""
+    out = list(toks)
+    for i in range(0, len(out) - 2, 2):
+        if isinstance(out[i], int) and out[i + 1] in (SUM, MUL) and isinstance(out[i + 2], tuple) and out[i + 2][0] == "pot" and isinstance(out[i + 2][1], int):
+            nuevo = ("pot", ("grupo", [out[i], out[i + 1], out[i + 2][1]], "()"), out[i + 2][2])
+            return out[:i] + [nuevo] + out[i + 3:]
+    for i, t in enumerate(out):
+        if isinstance(t, tuple) and t[0] == "grupo":
+            g = _op_antes_pot(t[1])
+            if g != t[1]:
+                return out[:i] + [("grupo", g, t[2])] + out[i + 1:]
+    return toks
+
+
+def _valor(toks, modo="ok"):
+    try:
+        v = _ev_lista(toks, modo)
+        if v.denominator == 1 and v >= 0:
+            return int(v)
+    except (ZeroDivisionError, ValueError, TypeError):
+        pass
+    return None
+
+
+def _natural_todo(toks):
+    """Comprueba que todos los resultados parciales (grupos, potencias, raíces, operaciones) sean naturales."""
+    def ok_operando(t):
+        if isinstance(t, int):
+            return True
+        if t[0] == "grupo":
+            return ok_lista(t[1])
+        if t[0] == "pot":
+            return ok_operando(t[1])
+        if t[0] == "raiz":
+            return ok_operando(t[1]) and _valor([t]) is not None
+        return False
+
+    def ok_lista(ts):
+        if not all(ok_operando(t) for t in ts[0::2]):
+            return False
+        pasos = []
+        try:
+            v = _ev_lista(ts, "ok", pasos)
+        except (ZeroDivisionError, ValueError):
+            return False
+        return v >= 0 and v.denominator == 1 and all(r >= 0 and r.denominator == 1 for *_, r in pasos)
+    return ok_lista(toks)
+
+
+@generador("t2_jerarq_pot")
+def gen_jerarq_pot(rng, d):
+    """Jerarquía con potencias y raíces (naturales). Claves: op_antes_pot (suma o multiplica antes que la potencia: 2 + 3² = 25),
+    pot_producto (8³ = 24), raiz_suma (√(9 + 16) = 3 + 4), olvida_pot (olvida la potencia o la raíz al sustituir)."""
+    hi = 12 if d == 1 else 20
+    n = lambda: rng.randint(2, hi)  # noqa: E731
+    for _ in range(500):
+        sq = rng.choice(CUADRADOS)
+        formas = {
+            1: [lambda: [n(), SUM, ("pot", rng.randint(2, 5), 2), MUL, n()],
+                lambda: [n(), MUL, ("pot", rng.randint(2, 4), rng.choice([2, 3]))],
+                lambda: [n(), SUM, ("pot", rng.randint(2, 6), 2)],
+                lambda: [("raiz", sq), MUL, n(), SUM, ("pot", rng.randint(2, 3), 3)],
+                lambda: [n() * 4, RES, ("pot", rng.randint(2, 5), 2)]],
+            2: [lambda: [("pot", rng.randint(2, 5), 3), DIV, ("grupo", [("raiz", rng.choice(CUADRADOS)), SUM, rng.randint(1, 5)], "()"), RES, ("raiz", rng.choice(CUADRADOS))],
+                lambda: [n(), MUL, ("grupo", [n(), SUM, ("pot", rng.randint(2, 4), 2)], "()")],
+                lambda: [("pot", ("grupo", [n(), RES, rng.randint(1, 9)], "()"), 2), SUM, ("raiz", rng.choice(CUADRADOS))],
+                lambda: [n(), SUM, rng.randint(2, 5), MUL, ("pot", rng.randint(2, 4), 2)]],
+            3: [lambda: [("pot", rng.randint(2, 8), 3), DIV, ("grupo", [("raiz", rng.choice(CUADRADOS)), SUM, rng.randint(1, 9)], "()"), RES, ("raiz", rng.choice(CUADRADOS))],
+                lambda: [("raiz", ("grupo", [a, SUM, b], "()")), MUL, ("grupo", [n(), RES, ("pot", 2, rng.randint(2, 4))], "()")],
+                lambda: [n(), MUL, ("grupo", [("pot", rng.randint(2, 5), 2), RES, ("raiz", rng.choice(CUADRADOS))], "[]"), SUM, ("pot", 2, rng.randint(3, 6))],
+                lambda: [("grupo", [n(), SUM, ("pot", 3, 2), MUL, rng.randint(2, 4)], "[]"), DIV, rng.choice([2, 3, 5])]],
+        }[d]
+        a, b = rng.choice([(9, 16), (36, 64), (144, 256), (25, 144), (16, 9), (64, 36)])
+        if d == 2 and rng.random() < 0.2:
+            toks = [("raiz", ("grupo", [a, SUM, b], "()")), MUL, n()]
+        else:
+            toks = rng.choice(formas)()
+        if not _natural_todo(toks):
+            continue
+        v = _valor(toks)
+        if v is None or v > 5000:
+            continue
+        errs = []
+        for modo, clave in (("e06", "pot_producto"),):
+            x = _valor(toks, modo)
+            if x is not None and x != v:
+                errs.append((x, clave))
+        for tr, clave in ((_op_antes_pot, "op_antes_pot"), (_raiz_suma, "raiz_suma"), (_olvida, "olvida_pot")):
+            t2 = tr(toks)
+            if t2 != toks:
+                x = _valor(t2)
+                if x is not None and x != v:
+                    errs.append((x, clave))
+        if len({e[0] for e in errs}) >= 2:
+            break
+    expr = _texto(toks, "·")
+    errs.sort(key=lambda e: {"op_antes_pot": 0, "raiz_suma": 1, "pot_producto": 2, "olvida_pot": 3}[e[1]])
+    ej = mk(f"Calcula: {expr}", fmt(v), "jerarquia", {"expresion": expr}, errs, [],
+            "El orden es: paréntesis (de dentro afuera), potencias y raíces, multiplicaciones y divisiones de izquierda a derecha, y al final sumas y "
+            "restas. La potencia se aplica solo a su base (2 + 3² = 2 + 9) y la raíz de una suma no es la suma de las raíces. Reescribir la "
+            "expresión entera tras cada paso evita 'perder' una potencia.",
+            genericos=[v + 1, v - 1, v + 10, v * 2])
+    ej.pasos = _pasos_jer(toks, "·")
+    ej.explicacion_nino = " ".join(p["texto"] for p in ej.pasos) + f" Resultado: {fmt(v)}."
+    return ej
+
+
+# ================================================================ JERARQUÍA CON ENTEROS
+
+class N:
+    """Nodo de expresión con enteros: ('n', v) | ('g', [toks], '()'|'[]') | ('p', nodo, exp) | ('neg', nodo)."""
+
+
+def _ev(t, modo):
+    k = t[0]
+    if k == "n":
+        return t[1]
+    if k == "g":
+        return _evl(t[1], modo)
+    if k == "p":
+        b = _ev(t[1], modo)
+        return b ** t[2]
+    if k == "neg":
+        if modo == "e04" and t[1][0] == "p":
+            return (-_ev(t[1][1], modo)) ** t[1][2]
+        return -_ev(t[1], modo)
+    raise ValueError(t)
+
+
+def _ap(a, op, b, modo):
+    if op == SUM:
+        if modo == "e02" and a < 0 and b < 0:
+            return -(a + b)
+        return a + b
+    if op == RES:
+        if modo == "e02" and a < 0 and b > 0:
+            return -a + b
+        return a - b
+    if op == MUL:
+        return a * b
+    if b == 0 or a % b:
+        raise ValueError("no exacta")
+    return a // b
+
+
+def _evl(toks, modo="ok"):
+    toks = list(toks)
+    if modo == "e01":
+        nuevo = [toks[0]]
+        for i in range(1, len(toks), 2):
+            op, t = toks[i], toks[i + 1]
+            if op == RES and t[0] == "g" and "[" not in t[2] and all(o in (SUM, RES) for o in t[1][1::2]):
+                g = t[1]
+                nuevo += [RES, g[0]] + list(g[1:])
+            else:
+                nuevo += [op, t]
+        toks = nuevo
+    vals = [_ev(t, modo) for t in toks[0::2]]
+    ops = list(toks[1::2])
+    niveles = [[SUM, RES, MUL, DIV]] if modo == "e03" else [[MUL, DIV], [SUM, RES]]
+    for nivel in niveles:
+        i = 0
+        while i < len(ops):
+            if ops[i] in nivel:
+                vals[i:i + 2] = [_ap(vals[i], ops[i], vals[i + 1], modo)]
+                ops.pop(i)
+            else:
+                i += 1
+    return vals[0]
+
+
+def _txt(t, primero=False):
+    k = t[0]
+    if k == "n":
+        return fmt(t[1]) if (t[1] >= 0 or primero) else f"({fmt(t[1])})"
+    if k == "g":
+        a, b = ("(", ")") if t[2] == "()" else ("[", "]")
+        return a + _txtl(t[1]) + b
+    if k == "p":
+        base = t[1]
+        bt = f"({fmt(base[1])})" if base[0] == "n" and base[1] < 0 else _txt(base)
+        return bt + sup(t[2])
+    if k == "neg":
+        return "−" + _txt(t[1])
+
+
+def _txtl(toks):
+    s = _txt(toks[0], primero=True)
+    for i in range(1, len(toks), 2):
+        s += f" {'·' if toks[i] == MUL else toks[i]} {_txt(toks[i + 1])}"
+    return s
+
+
+def _pasos_ent(toks):
+    """Pasos: grupos, potencias, productos/cocientes, sumas/restas (con sustitución)."""
+    pasos = []
+
+    def red_operando(t):
+        if t[0] == "g":
+            return ("n", _evl(t[1])), _txt(t)
+        if t[0] in ("p", "neg"):
+            return ("n", _ev(t, "ok")), _txt(t)
+        return t, None
+
+    actual = list(toks)
+    # 1) grupos y potencias
+    for i in range(0, len(actual), 2):
+        if actual[i][0] != "n":
+            nuevo, op = red_operando(actual[i])
+            pasos.append((op, fmt(nuevo[1]), f"{'Resuelvo el paréntesis' if actual[i][0] == 'g' else 'Calculo la potencia'}: {op} = {fmt(nuevo[1])}."))
+            actual[i] = nuevo
+    if pasos:
+        pasos[-1] = (pasos[-1][0], pasos[-1][1], pasos[-1][2] + f" Queda {_txtl(actual)}.")
+    # 2) · y :
+    for nivel, why in (((MUL, DIV), "Multiplicaciones y divisiones, de izquierda a derecha"), ((SUM, RES), "Sumas y restas, de izquierda a derecha")):
+        i = 1
+        while i < len(actual):
+            if actual[i] in nivel:
+                a, b = actual[i - 1][1], actual[i + 1][1]
+                r = _ap(a, actual[i], b, "ok")
+                op = f"{zn(a)} {'·' if actual[i] == MUL else actual[i]} {zn(b)}"
+                actual[i - 1:i + 2] = [("n", r)]
+                pasos.append((op, fmt(r), f"{why}: {op} = {fmt(r)}." + (f" Queda {_txtl(actual)}." if len(actual) > 1 else "")))
+            else:
+                i += 2
+    return pasos
+
+
+def _n(rng, lo, hi, neg=0.5):
+    v = rng.randint(lo, hi)
+    return ("n", -v if rng.random() < neg else v)
+
+
+@generador("t2_jerarq_ent")
+def gen_jerarq_ent(rng, d):
+    """Operaciones combinadas con enteros. Claves: menos_parentesis (quita un paréntesis precedido de − sin cambiar los signos de
+    dentro), regla_signos_suma ('menos con menos, más' al sumar), izq_der (ignora la jerarquía), menos_cuadrado (−3² = 9)."""
+    R = 9 if d == 1 else 12
+    for _ in range(800):
+        p = lambda lo, hi: ("n", rng.randint(lo, hi))  # noqa: E731
+        m = lambda: _n(rng, 1, R)  # noqa: E731
+        formas = {
+            1: [lambda: [p(2, 20), RES, ("g", [p(1, 9), RES, p(2, 15)], "()"), SUM, m(), MUL, m()],
+                lambda: [("n", -rng.randint(2, 9)), SUM, m(), MUL, m()],
+                lambda: [("neg", ("p", ("n", rng.randint(2, 5)), 2)), SUM, m(), MUL, m()],
+                lambda: [m(), MUL, ("g", [p(1, 9), RES, p(2, 12)], "()"), RES, m()]],
+            2: [lambda: [("n", -rng.randint(2, 9)), MUL, ("g", [p(1, 9), RES, p(2, 12)], "()"), SUM, m(), DIV, m()],
+                lambda: [("p", ("n", -rng.randint(2, 4)), rng.choice([2, 3])), RES, m(), MUL, ("g", [m(), RES, p(1, 9)], "()")],
+                lambda: [p(5, 30), RES, ("g", [m(), RES, p(2, 12)], "()"), MUL, m(), SUM, ("neg", ("p", ("n", rng.randint(2, 4)), 2))],
+                lambda: [m(), SUM, m(), MUL, m(), RES, ("g", [m(), SUM, m()], "()")]],
+            3: [lambda: [("n", -rng.randint(2, 9)), MUL, ("g", [p(1, 9), RES, p(2, 12)], "()"), SUM, m(), DIV, m(), RES, ("p", ("n", -rng.randint(2, 3)), 3)],
+                lambda: [m(), RES, ("g", [("g", [m(), RES, p(1, 9)], "()"), MUL, m(), SUM, ("p", ("n", -2), rng.choice([2, 3]))], "[]"), DIV, m()],
+                lambda: [("neg", ("p", ("n", rng.randint(2, 5)), 2)), SUM, ("g", [m(), RES, p(2, 9)], "()"), MUL, ("g", [m(), SUM, m()], "()")],
+                lambda: [p(2, 20), RES, ("g", [m(), RES, p(2, 12)], "()"), SUM, ("p", ("n", -rng.randint(2, 3)), rng.choice([2, 3])), DIV, m()]],
+        }[d]
+        toks = rng.choice(formas)()
+        try:
+            v = _evl(toks)
+        except (ValueError, ZeroDivisionError):
+            continue
+        if abs(v) > 300:
+            continue
+        errs = []
+        for modo, clave in (("e01", "menos_parentesis"), ("e02", "regla_signos_suma"), ("e03", "izq_der"), ("e04", "menos_cuadrado")):
+            try:
+                x = _evl(toks, modo)
+            except (ValueError, ZeroDivisionError):
+                continue
+            if x != v and x not in [e[0] for e in errs]:
+                errs.append((x, clave))
+        if len(errs) >= 2:
+            break
+    expr = _txtl(toks)
+    ej = mk(f"Calcula: {expr}", fmt(v), "jerarquia", {"expresion": expr}, errs, _pasos_ent(toks),
+            "Mismo orden que con naturales (paréntesis, potencias, · y :, + y −) y además las reglas de los signos. Un − delante de un paréntesis "
+            "cambia el signo de todo lo de dentro; −3² es −(3²) = −9, pero (−3)² = 9; y 'menos por menos, más' es solo para multiplicar y dividir.",
+            genericos=[v + 1, v - 1, -v if v else 2, v + 10])
+    return ej
+
+
+# ================================================================ JERARQUÍA CON FRACCIONES
+
+F = Fraction
+
+
+def _fev(t, modo):
+    if t[0] == "f":
+        return t[1]
+    if t[0] == "g":
+        return _fevl(t[1], modo)
+    if t[0] == "p":
+        b = _fev(t[1], modo)
+        e = t[2]
+        if modo == "e03p" and e == 0:
+            return F(0)
+        if modo == "e02p" and t[1][0] in ("f",) and b.denominator != 1:
+            r = F(b.numerator ** e if e >= 0 else b.denominator ** -e, b.denominator if e >= 0 else abs(b.numerator))
+            return r if e >= 0 else r * (1 if b > 0 or e % 2 == 0 else 1)
+        if modo == "e04p" and b < 0 and e % 2:
+            b = -b
+        r = b ** e
+        if modo == "e01p" and e < 0:
+            return -abs(r)
+        return r
+    raise ValueError(t)
+
+
+def _fap(a, op, b, modo, ta, tb):
+    if op == SUM:
+        if modo == "e02" and (a.denominator != 1 or b.denominator != 1) and a.denominator != b.denominator:
+            return F(a.numerator + b.numerator, a.denominator + b.denominator)
+        return a + b
+    if op == RES:
+        return a - b
+    if op == MUL:
+        if modo == "e04" and ((ta == "int" and b.denominator != 1) or (tb == "int" and a.denominator != 1)):
+            return a if a.denominator != 1 else b
+        return a * b
+    if b == 0:
+        raise ZeroDivisionError
+    if modo == "e03":
+        return a * b
+    return a / b
+
+
+def _fevl(toks, modo="ok"):
+    vals = [_fev(t, modo) for t in toks[0::2]]
+    tipos = ["int" if t[0] == "f" and t[1].denominator == 1 else "frac" for t in toks[0::2]]
+    ops = list(toks[1::2])
+    niveles = [[SUM, RES], [MUL, DIV]] if modo == "e01" else [[MUL, DIV], [SUM, RES]]
+    for nivel in niveles:
+        i = 0
+        while i < len(ops):
+            if ops[i] in nivel:
+                vals[i:i + 2] = [_fap(vals[i], ops[i], vals[i + 1], modo, tipos[i], tipos[i + 1])]
+                tipos[i:i + 2] = ["frac"]
+                ops.pop(i)
+            else:
+                i += 1
+    return vals[0]
+
+
+def _ftxt(t, primero=False):
+    if t[0] == "f":
+        v = t[1]
+        s = fr(v)
+        if v < 0 and not primero:
+            return f"({s})"
+        return s
+    if t[0] == "g":
+        a, b = ("(", ")") if t[2] == "()" else ("[", "]")
+        return a + _ftxtl(t[1]) + b
+    if t[0] == "p":
+        base = t[1]
+        bt = _ftxt(base, True)
+        if base[0] == "f" and (base[1].denominator != 1 or base[1] < 0):
+            bt = f"({bt})"
+        return bt + sup(t[2])
+
+
+def _ftxtl(toks):
+    s = _ftxt(toks[0], True)
+    for i in range(1, len(toks), 2):
+        s += f" {'·' if toks[i] == MUL else toks[i]} {_ftxt(toks[i + 1])}"
+    return s
+
+
+def _fpasos(toks):
+    pasos = []
+    actual = list(toks)
+    for i in range(0, len(actual), 2):
+        if actual[i][0] != "f":
+            v = _fev(actual[i], "ok")
+            pasos.append((_ftxt(actual[i]), fr(v), f"{'Resuelvo el paréntesis' if actual[i][0] == 'g' else 'Calculo la potencia'}: {_ftxt(actual[i])} = {fr(v)}."))
+            actual[i] = ("f", v)
+    for nivel, why in (((MUL, DIV), "Multiplicaciones y divisiones, de izquierda a derecha"), ((SUM, RES), "Sumas y restas, de izquierda a derecha")):
+        i = 1
+        while i < len(actual):
+            if actual[i] in nivel:
+                a, b = actual[i - 1][1], actual[i + 1][1]
+                r = _fap(a, actual[i], b, "ok", None, None)
+                op = f"{_ftxt(actual[i - 1], True)} {'·' if actual[i] == MUL else actual[i]} {_ftxt(actual[i + 1])}"
+                extra = ""
+                if actual[i] == DIV:
+                    extra = f" (dividir es multiplicar por la inversa: {fr(a)} · {fr(1 / b)})"
+                elif actual[i] in (SUM, RES) and a.denominator != b.denominator:
+                    m = a.denominator * b.denominator // math.gcd(a.denominator, b.denominator)
+                    extra = f" (común denominador {m})"
+                actual[i - 1:i + 2] = [("f", r)]
+                pasos.append((op, fr(r), f"{why}: {op} = {fr(r)}{extra}." + (f" Queda {_ftxtl(actual)}." if len(actual) > 1 else "")))
+            else:
+                i += 2
+    return pasos
+
+
+def _fr(rng, dmax=12, entero=0.0):
+    if rng.random() < entero:
+        return ("f", F(rng.randint(2, 5)))
+    den = rng.randint(2, dmax)
+    num = rng.randint(1, den * 2)
+    while F(num, den).denominator == 1:
+        num += 1
+    return ("f", F(num, den))
+
+
+@generador("t2_jerarq_frac")
+def gen_jerarq_frac(rng, d):
+    """Operaciones combinadas con fracciones (sin potencias). Claves: suma_antes (suma antes que multiplicar), suma_nd (suma
+    numeradores y denominadores), divide_sin_invertir, entero_nd (multiplica el entero por numerador y denominador)."""
+    for _ in range(1000):
+        f = lambda: _fr(rng, 8 if d == 1 else 12)  # noqa: E731
+        k = lambda: ("f", F(rng.randint(2, 5)))  # noqa: E731
+        formas = {
+            1: [lambda: [f(), SUM, f(), MUL, f()], lambda: [f(), MUL, k(), RES, f()], lambda: [f(), DIV, f(), SUM, f()], lambda: [f(), SUM, f(), MUL, k()]],
+            2: [lambda: [("g", [f(), RES, f()], "()"), MUL, f()], lambda: [f(), SUM, f(), DIV, f()], lambda: [k(), MUL, ("g", [f(), SUM, f()], "()"), RES, f()],
+                lambda: [f(), RES, f(), MUL, k()]],
+            3: [lambda: [("g", [f(), RES, f()], "()"), DIV, f(), SUM, f(), MUL, k()], lambda: [f(), SUM, f(), MUL, ("g", [f(), RES, f()], "()")],
+                lambda: [("g", [f(), SUM, f()], "()"), DIV, ("g", [f(), RES, f()], "()")]],
+        }[d]
+        toks = rng.choice(formas)()
+        try:
+            v = _fevl(toks)
+        except ZeroDivisionError:
+            continue
+        # resultados parciales positivos y de tamaño razonable
+        if v <= 0 or v.denominator > 60 or v.numerator > 200:
+            continue
+        if any(t[0] == "g" and _fevl(t[1]) <= 0 for t in toks[0::2]):
+            continue
+        errs = []
+        for modo, clave in (("e01", "suma_antes"), ("e02", "suma_nd"), ("e03", "divide_sin_invertir"), ("e04", "entero_nd")):
+            try:
+                x = _fevl(toks, modo)
+            except ZeroDivisionError:
+                continue
+            if x != v and x > 0 and fr(x) not in [e[0] for e in errs]:
+                errs.append((fr(x), clave))
+        if len(errs) >= 2:
+            break
+    expr = _ftxtl(toks)
+    return mk(f"Calcula y simplifica: {expr}", fr(v), "t2_jerarq_frac", {"expresion": expr}, errs, _fpasos(toks),
+              "Con fracciones la jerarquía es la misma: paréntesis, luego · y :, luego + y −. Para sumar hace falta común denominador (nunca sumar "
+              "numeradores y denominadores); para dividir se multiplica por la inversa; un entero por una fracción multiplica solo al numerador. "
+              "El resultado se da simplificado.",
+              genericos=[fr(v + 1), fr(v * 2), fr(v / 2), fr(1 / v) if v != 1 else "2"])
+
+
+@generador("t2_jerarq_potfrac")
+def gen_jerarq_potfrac(rng, d):
+    """Operaciones combinadas con racionales y potencias de exponente entero. Claves: exp_neg_negativo ((1/3)⁻¹ = −1/3),
+    solo_numerador ((2/3)² = 4/3), cero_da_cero (2⁰ = 0), pierde_signo ((−1/3)³ = 1/27)."""
+    for _ in range(1500):
+        fq = lambda: ("f", F(rng.choice([1, 2, 3, 4, 5]), rng.choice([2, 3, 4, 5])))  # noqa: E731
+        fqs = lambda: ("f", F(rng.choice([-1, 1]) * rng.choice([1, 2, 3]), rng.choice([2, 3, 4])))  # noqa: E731
+        z0 = lambda: ("p", ("f", F(rng.randint(2, 9))), 0)  # noqa: E731
+        formas = {
+            1: [lambda: [("p", fq(), 2), SUM, z0()], lambda: [("p", fq(), -1), RES, fq()], lambda: [("p", fqs(), 3), SUM, fq()],
+                lambda: [("p", fq(), 2), MUL, ("p", fq(), -1)]],
+            2: [lambda: [("p", fq(), 2), MUL, ("p", fqs(), -1), SUM, z0()], lambda: [("p", fqs(), 3), DIV, ("p", fq(), -2)],
+                lambda: [("g", [fq(), RES, fqs()], "()"), MUL, ("p", fq(), -2)], lambda: [("p", fqs(), 2), RES, ("p", fq(), -1), MUL, fq()]],
+            3: [lambda: [("g", [("p", fq(), 2), RES, ("f", F(1))], "[]"), DIV, ("p", fqs(), -1), SUM, z0()],
+                lambda: [("p", fqs(), -2), MUL, ("g", [("p", fq(), 3), RES, fq()], "[]")],
+                lambda: [("p", fqs(), 3), SUM, ("p", ("f", F(2)), -3), DIV, ("p", fq(), 2)],
+                lambda: [("g", [fq(), SUM, ("p", fqs(), -1)], "[]"), MUL, ("p", fq(), 2), RES, z0()]],
+        }[d]
+        toks = rng.choice(formas)()
+        try:
+            v = _fevl(toks)
+        except ZeroDivisionError:
+            continue
+        if v.denominator > 400 or abs(v.numerator) > 400 or v == 0:
+            continue
+        errs = []
+        for modo, clave in (("e01p", "exp_neg_negativo"), ("e02p", "solo_numerador"), ("e03p", "cero_da_cero"), ("e04p", "pierde_signo")):
+            try:
+                x = _fevl(toks, modo)
+            except ZeroDivisionError:
+                continue
+            if x != v and fr(x) not in [e[0] for e in errs]:
+                errs.append((fr(x), clave))
+        if len(errs) >= 2:
+            break
+    expr = _ftxtl(toks)
+    return mk(f"Calcula y da el resultado como fracción irreducible: {expr}", fr(v), "t2_jerarq_potfrac", {"expresion": expr}, errs, _fpasos(toks),
+              "Recordad: a⁰ = 1; un exponente negativo invierte la base (no la hace negativa): (2/3)⁻¹ = 3/2; la potencia afecta a numerador y "
+              "denominador; y una base negativa con exponente impar da negativo. Después, la jerarquía de siempre.",
+              genericos=[fr(-v), fr(v + 1), fr(1 / v), fr(v * 2)])
+
+
+# ================================================================ POTENCIAS
+
+def _pb(b):
+    """Base con paréntesis si es negativa."""
+    return f"({fmt(b)})" if b < 0 else fmt(b)
+
+
+@generador("t2_potencia")
+def gen_potencia(rng, d):
+    """Potencias de base natural. Claves: base_por_exp (5³ = 15, también 5 + 5 + 5), factor_de_mas (un factor de más o de menos),
+    base_exp_cambiados (2³ = 9)."""
+    for _ in range(300):
+        if d == 1:
+            b, e = rng.randint(2, 10), rng.choice([1, 2, 2, 3])
+        elif d == 2:
+            b, e = rng.randint(2, 12), rng.choice([2, 3, 3, 4])
+        else:
+            b, e = rng.choice([(2, rng.randint(5, 10)), (3, rng.randint(4, 7)), (rng.randint(11, 20), 2), (rng.randint(5, 20), 3), (rng.randint(4, 9), 4)])
+        v = b ** e
+        if v <= 10000 and not (e == 1 and d > 1):
+            break
+    tipo = "calcular" if d == 3 or rng.random() < 0.75 else "escribir"
+    adulto = "La potencia es una multiplicación repetida: el exponente dice cuántas veces se repite la base como factor. El error típico es multiplicar base por exponente."
+    if tipo == "escribir" and e > 1:
+        prod = " · ".join([str(b)] * e)
+        return mk(f"Escribe como potencia: {prod}", f"{b}{sup(e)}", "t2_pot_escribir", {"b": b, "e": e},
+                  [(f"{e}{sup(b)}", "base_exp_cambiados"), (f"{b}{sup(e + 1)}", "factor_de_mas"), (f"{b} · {e}", "base_por_exp")],
+                  [("contar factores", str(e), f"El {b} se repite {e} veces como factor: base {b}, exponente {e}: {b}{sup(e)}.")], adulto)
+    dist = [(b * e, "base_por_exp"), (b ** (e + 1) if b ** (e + 1) < 10 ** 6 else None, "factor_de_mas"), (b ** (e - 1) if e > 1 else None, "factor_de_mas"),
+            (e ** b if e > 1 and e ** b < 10 ** 6 else None, "base_exp_cambiados")]
+    dist.sort(key=lambda x: {"base_por_exp": 0, "base_exp_cambiados": 1, "factor_de_mas": 2}[x[1]])
+    prod = " · ".join([str(b)] * e) if e <= 10 else f"{b} · {b} · … · {b}"
+    pasos = [(prod, fmt(v), f"{b}{sup(e)} es multiplicar el {b} por sí mismo {e} {'vez' if e == 1 else 'veces'}: {prod} = {fmt(v)}.")]
+    return mk(f"Calcula: {b}{sup(e)}", fmt(v), "pot", {"a": b, "n": e}, dist, pasos, adulto, genericos=[v + b, v - 1, v + 10])
+
+
+@generador("t2_pot_prop")
+def gen_pot_prop(rng, d, enteros=False):
+    """Propiedades de las potencias (reducir a una sola potencia). Claves: multiplica_exp (en producto de misma base), multiplica_bases,
+    suma_exp_potpot (potencia de potencia sumando), misma_base_distintas (aplica la regla a bases distintas), divide_exp (en el cociente).
+    Con enteros=True (exponentes enteros): resta_neg_mal, sin_base_comun, pierde_signo_potpot."""
+    if not enteros:
+        tipo = rng.choice({1: ["producto", "cociente", "potpot"], 2: ["producto", "cociente", "potpot", "mismo_exp"], 3: ["combinada", "mismo_exp", "potpot", "combinada"]}[d])
+        b = rng.randint(2, 9)
+        m, n = rng.randint(2, 9), rng.randint(2, 9)
+        if tipo == "producto":
+            enun, r = f"{b}{sup(m)} · {b}{sup(n)}", f"{b}{sup(m + n)}"
+            dist = [(f"{b}{sup(m * n)}", "multiplica_exp"), (f"{b * b}{sup(m + n)}", "multiplica_bases"), (f"{b * b}{sup(m * n)}", None)]
+            regla = "Producto de potencias de la misma base: se deja la base y se suman los exponentes"
+        elif tipo == "cociente":
+            m = n * rng.randint(2, 3) if rng.random() < 0.6 else max(m, n) + rng.randint(1, 4)
+            enun, r = f"{b}{sup(m)} : {b}{sup(n)}", f"{b}{sup(m - n)}"
+            dist = [(f"{b}{sup(m // n)}" if m % n == 0 else f"{b}{sup(m + n)}", "divide_exp" if m % n == 0 else None), (f"1{sup(m - n)}", None), (f"{b}{sup(m + n)}", None)]
+            regla = "Cociente de potencias de la misma base: se deja la base y se restan los exponentes"
+        elif tipo == "potpot":
+            enun, r = f"({b}{sup(m)}){sup(n)}", f"{b}{sup(m * n)}"
+            dist = [(f"{b}{sup(m + n)}", "suma_exp_potpot"), (f"{b}{sup(m ** n)}" if m ** n < 100 else f"{b}{sup(m * n + 1)}", None), (f"{b * n}{sup(m)}", None)]
+            regla = "Potencia de una potencia: se deja la base y se multiplican los exponentes"
+        elif tipo == "mismo_exp":
+            a, c = rng.randint(2, 7), rng.randint(2, 7)
+            if rng.random() < 0.5:
+                enun, r = f"{a}{sup(m)} · {c}{sup(m)}", f"{a * c}{sup(m)}"
+                dist = [(f"{a * c}{sup(2 * m)}", "misma_base_distintas"), (f"{a + c}{sup(m)}", None), (f"{a * c}{sup(m * m)}", None)]
+                regla = "Producto de potencias con el mismo exponente: se multiplican las bases y se deja el exponente"
+            else:
+                enun, r = f"{a * c}{sup(m)} : {c}{sup(m)}", f"{a}{sup(m)}"
+                dist = [(f"{a}{sup(0)}" if False else f"{a * c - c}{sup(m)}", None), (f"{a}{sup(2 * m)}", "misma_base_distintas"), (f"{a}{sup(1)}", None)]
+                regla = "Cociente de potencias con el mismo exponente: se dividen las bases y se deja el exponente"
+        else:
+            c = rng.randint(2, 4)
+            a = rng.randint(2, 4)
+            B = a * c
+            p1, p2 = rng.randint(2, 8), rng.randint(2, 8)
+            q1 = rng.randint(2, p1 + p2 - 2)
+            q2 = p1 + p2 - q1
+            enun = f"({B}{sup(p1)} · {B}{sup(p2)}) : ({c}{sup(q1)} · {c}{sup(q2)})"
+            r = f"{a}{sup(p1 + p2)}"
+            dist = [(f"{a}{sup(p1 * p2 - q1 * q2)}" if p1 * p2 - q1 * q2 > 0 else f"{a}{sup(p1 * p2)}", None), (f"{B - c}{sup(p1 + p2)}", None),
+                    (f"{a}{sup(0)}", None)]
+            regla = (f"Misma base: {B}{sup(p1)} · {B}{sup(p2)} = {B}{sup(p1 + p2)} y {c}{sup(q1)} · {c}{sup(q2)} = {c}{sup(q1 + q2)}. "
+                     f"Mismo exponente: {B}{sup(p1 + p2)} : {c}{sup(p1 + p2)} = ({B} : {c}){sup(p1 + p2)}")
+        return mk(f"Escribe como una sola potencia: {enun}", r, "t2_pot_prop", {"tipo": tipo}, dist,
+                  [(enun, r, f"{regla}: {r}.")],
+                  "Tres reglas que se confunden entre sí: misma base multiplicando → se suman exponentes; potencia de potencia → se multiplican; "
+                  "mismo exponente → se opera con las bases. Escribir el desarrollo una vez (2³ · 2² = 2·2·2 · 2·2) ayuda a ver por qué.",
+                  genericos=[r.replace(sup(1), "") + "", f"{b}{sup(1)}"])
+    # exponentes enteros
+    tipo = rng.choice({1: ["producto", "cociente"], 2: ["cociente", "potpot", "base_comun"], 3: ["base_comun", "combinada", "potpot"]}[d])
+    b = rng.choice([2, 3, 5, 7, 10])
+    m, n = rng.choice([-1, 1]) * rng.randint(1, 6), rng.choice([-1, 1]) * rng.randint(1, 6)
+    if tipo == "producto":
+        if m > 0 and n > 0:
+            m = -m
+        enun, e = f"{b}{sup(m)} · {b}{sup(n)}", m + n
+        dist = [(f"{b}{sup(m * n)}", "multiplica_exp"), (f"{b}{sup(m - n)}" if m - n != e else None, None), (f"{b * b}{sup(e)}", None)]
+        regla = f"Misma base multiplicando: se suman los exponentes, {m} + ({n}) = {e}" if n < 0 else f"Misma base multiplicando: se suman los exponentes, {m} + {n} = {e}"
+    elif tipo == "cociente":
+        if n > 0:
+            n = -n
+        enun, e = f"{b}{sup(m)} : {b}{sup(n)}", m - n
+        dist = [(f"{b}{sup(m + n)}", "resta_neg_mal"), (f"{b}{sup(n - m)}", None), (f"{b}{sup(m * n)}", None)]
+        regla = f"Misma base dividiendo: se restan los exponentes, {m} − ({n}) = {e}"
+    elif tipo == "potpot":
+        m = -abs(m) if rng.random() < 0.7 else abs(m)
+        n = rng.choice([-1, 1]) * rng.randint(2, 3)
+        enun, e = f"({b}{sup(m)}){sup(n)}", m * n
+        dist = [(f"{b}{sup(-e)}", "pierde_signo_potpot"), (f"{b}{sup(m + n)}", None), (f"{b}{sup(abs(m) * abs(n)) if e < 0 else sup(-e)}", None)]
+        regla = f"Potencia de potencia: se multiplican los exponentes con su signo, ({m}) · ({n}) = {e}"
+    elif tipo == "base_comun":
+        b = rng.choice([2, 3])
+        k = rng.choice([2, 3])
+        B = b ** k
+        m = rng.randint(2, 4) * rng.choice([1, -1])
+        n = rng.randint(1, 5)
+        e = k * m + n
+        enun = f"{B}{sup(m)} · {b}{sup(n)}"
+        dist = [(f"{B * b}{sup(m + n)}", "sin_base_comun"), (f"{b}{sup(m + n)}", "sin_base_comun"), (f"{b}{sup(k * m * n)}", None)]
+        regla = f"Paso a base común: {B} = {b}{sup(k)}, así que {B}{sup(m)} = {b}{sup(k * m)}. Misma base: {k * m} + {n} = {e}"
+    else:
+        b = rng.choice([2, 3])
+        p = rng.randint(2, 4)
+        B = b ** 2
+        C = b ** 3
+        m = -rng.randint(1, 3)
+        e = m + 2 * p - 3
+        enun = f"{b}{sup(m)} · {B}{sup(p)} : {C}"
+        dist = [(f"{b}{sup(m * 2 * p - 3)}", "multiplica_exp"), (f"{B * b}{sup(m + p - 1)}", "sin_base_comun"), (f"{b}{sup(e + 6)}", None)]
+        regla = f"Base común: {B}{sup(p)} = {b}{sup(2 * p)} y {C} = {b}{sup(3)}. Exponentes: {m} + {2 * p} − 3 = {e}"
+    r = f"{b}{sup(e)}"
+    return mk(f"Escribe como una sola potencia: {enun}", r, "t2_pot_prop", {"tipo": tipo, "enteros": True}, dist,
+              [(enun, r, f"{regla}. Queda {r}.")],
+              "Las mismas reglas que con exponentes naturales, pero cuidando los signos: restar un exponente negativo es sumar, y en la potencia de "
+              "potencia se multiplican los signos. Antes de aplicar las reglas, todas las bases tienen que ser iguales (4 = 2², 27 = 3³).",
+              genericos=[f"{b}{sup(e + 1)}", f"{b}{sup(e - 1)}", f"{b}{sup(-e) if e else sup(1)}"])
+
+
+@generador("t2_pot10")
+def gen_pot10(rng, d):
+    """Potencias de base 10. Claves: cero_mas_menos (un cero de más o de menos), diez_por_exp (10³ = 30), ceros_propios (no cuenta los
+    ceros que ya tenía el número)."""
+    tipo = rng.choice({1: ["calcular", "escribir"], 2: ["producto", "calcular", "escribir"], 3: ["producto", "producto", "escribir"]}[d])
+    n = rng.randint(1, 9) if d == 1 else rng.randint(3, 12)
+    adulto = "10ⁿ es un 1 seguido de n ceros. Para multiplicar un número por 10ⁿ se le añaden n ceros, además de los que ya tuviera."
+    if tipo == "calcular":
+        v = 10 ** n
+        return mk(f"Calcula: 10{sup(n)}", fmt(v), "pot", {"a": 10, "n": n},
+                  [(fmt(v * 10), "cero_mas_menos"), (fmt(v // 10), "cero_mas_menos"), (fmt(10 * n), "diez_por_exp")],
+                  [("ceros", str(n), f"10{sup(n)} es un 1 seguido de {n} ceros: {fmt(v)}.")], adulto)
+    if tipo == "escribir":
+        v = 10 ** n
+        return mk(f"Escribe {fmt(v)} como potencia de 10.", f"10{sup(n)}", "t2_pot10", {"n": n, "tipo": tipo},
+                  [(f"10{sup(n + 1)}", "cero_mas_menos"), (f"10{sup(n - 1)}", "cero_mas_menos"), (f"{n}{sup(10)}", None)],
+                  [("contar ceros", str(n), f"Cuento los ceros de {fmt(v)}: hay {n}. Por tanto es 10{sup(n)}.")], adulto)
+    a = rng.randint(2, 99) if d == 2 else rng.choice([rng.randint(2, 999), rng.randint(2, 99) * 10, rng.randint(101, 999)])
+    if d == 3 and rng.random() < 0.4:
+        a = rng.randint(1, 9) * 10 ** rng.randint(1, 2)
+    n = rng.randint(2, 6 if d == 2 else 8)
+    v = a * 10 ** n
+    t, c = sin_ceros(a)
+    dist = []
+    if c:
+        dist.append((fmt(t * 10 ** n), "ceros_propios"))
+    dist += [(fmt(v * 10), "cero_mas_menos"), (fmt(v // 10), "cero_mas_menos"), (fmt(a * 10 * n), "diez_por_exp")]
+    return mk(f"Calcula: {fmt(a)} · 10{sup(n)}", fmt(v), "mult", {"a": a, "b": 10 ** n}, dist,
+              [("añadir ceros", fmt(v), f"Multiplicar por 10{sup(n)} es añadir {n} ceros a {fmt(a)}: {fmt(v)}" + (f" (los {c} cero{'s' if c > 1 else ''} que ya tenía se quedan)." if c else "."))],
+              adulto)
+
+
+@generador("t2_pot_entera")
+def gen_pot_entera(rng, d):
+    """Potencias de base entera y exponente natural. Claves: menos_fuera (−a^n como (−a)^n), signo_fijo (siempre positivo o siempre
+    negativo), base_por_exp."""
+    tipo = rng.choice({1: ["calc", "menos"], 2: ["calc", "menos"], 3: ["mixta", "menos", "calc"]}[d])
+    adulto = ("(−2)⁴ = 16 porque se multiplican cuatro (−2); −2⁴ = −16 porque la potencia solo afecta al 2. Base negativa: exponente par → +, impar → −.")
+    if tipo == "mixta":
+        a, b, c = rng.randint(2, 3), rng.randint(2, 3), rng.randint(2, 3)
+        e1, e2, e3 = rng.choice([2, 4]), rng.choice([2, 4]), 3
+        expr = f"−{a}{sup(e1)} + (−{b}){sup(e2)} − (−{c}){sup(e3)}"
+        v = -(a ** e1) + (-b) ** e2 - (-c) ** e3
+        mal1 = (a ** e1) + (-b) ** e2 - (-c) ** e3
+        mal2 = -(a ** e1) + (-b) ** e2 - (c ** e3)
+        return mk(f"Calcula: {expr}", fmt(v), "jerarquia", {"expresion": expr},
+                  [(mal1, "menos_fuera"), (mal2, "signo_fijo"), (-(a * e1) + b * e2 + c * e3, "base_por_exp")],
+                  [(f"−{a}{sup(e1)}", fmt(-(a ** e1)), f"−{a}{sup(e1)} = −({a}{sup(e1)}) = {fmt(-(a ** e1))}: la potencia solo afecta al {a}."),
+                   (f"(−{b}){sup(e2)}", fmt((-b) ** e2), f"(−{b}){sup(e2)} = {fmt((-b) ** e2)} (exponente par → positivo)."),
+                   (f"(−{c}){sup(e3)}", fmt((-c) ** e3), f"(−{c}){sup(e3)} = {fmt((-c) ** e3)} (exponente impar → negativo)."),
+                   ("sumar", fmt(v), f"{fmt(-(a ** e1))} + {fmt((-b) ** e2)} − ({fmt((-c) ** e3)}) = {fmt(v)}.")], adulto,
+                  genericos=[v + 1, v - 1, -v])
+    b = rng.randint(2, 12 if d > 1 else 5)
+    e = rng.randint(2, 6 if d > 1 else 4)
+    if b ** e > 100000:
+        e = 2 if b > 6 else 3
+    if tipo == "menos":
+        v = -(b ** e)
+        return mk(f"Calcula: −{b}{sup(e)}", fmt(v), "jerarquia", {"expresion": f"−{b}{sup(e)}"},
+                  [(fmt(b ** e), "menos_fuera"), (fmt(-b * e), "base_por_exp"), (fmt(-(b ** (e - 1))), None)],
+                  [(f"{b}{sup(e)}", fmt(b ** e), f"La potencia solo afecta al {b}: {b}{sup(e)} = {fmt(b ** e)}."),
+                   ("signo", fmt(v), f"Y el signo − de delante se queda: −{fmt(b ** e)}.")], adulto)
+    v = (-b) ** e
+    return mk(f"Calcula: (−{b}){sup(e)}", fmt(v), "pot", {"a": -b, "n": e},
+              [(fmt(-v), "signo_fijo"), (fmt(-b * e), "base_por_exp"), (fmt(b * e), "base_por_exp")],
+              [(" · ".join([f"(−{b})"] * e), fmt(v), f"Multiplico {e} veces (−{b}): el valor es {b}{sup(e)} = {fmt(b ** e)} y, como el exponente es "
+                                                     f"{'par' if e % 2 == 0 else 'impar'}, el signo es {'+' if e % 2 == 0 else '−'}: {fmt(v)}.")], adulto,
+              genericos=[fmt(v + 1), fmt(v - 1)])
+
+
+@generador("t2_pot_negativa")
+def gen_pot_negativa(rng, d):
+    """Exponente cero y negativo. Claves: exp_neg_da_neg (2⁻³ = −8), cero_da_cero_o_base (5⁰ = 0 o 5), pierde_signo_base
+    ((−2)⁻³ = 1/8), base_por_exp (3⁻² = −6)."""
+    tipo = rng.choice({1: ["cero", "neg"], 2: ["neg", "neg_base_neg", "escribir"], 3: ["neg_base_neg", "escribir", "neg"]}[d])
+    adulto = "a⁰ = 1 (si a ≠ 0). Un exponente negativo significa 'dar la vuelta': a⁻ⁿ = 1/aⁿ; el signo del exponente no hace negativo el resultado."
+    if tipo == "cero":
+        b = rng.choice([-1, 1]) * rng.randint(2, 10)
+        return mk(f"Calcula: {_pb(b)}{sup(0)}" if b < 0 else f"¿Cuánto vale {b}{sup(0)}?", "1", "pot", {"a": b, "n": 0},
+                  [("0", "cero_da_cero_o_base"), (fmt(b), "cero_da_cero_o_base"), (fmt(-1) if b > 0 else fmt(-b), None)],
+                  [("a⁰", "1", f"Cualquier número distinto de 0 elevado a 0 da 1: {_pb(b)}{sup(0)} = 1.")], adulto)
+    if tipo == "escribir":
+        b = rng.randint(2, 6)
+        n = rng.randint(2, 4 if b > 3 else 6)
+        return mk(f"Escribe 1/{fmt(b ** n)} como potencia de base {b}.", f"{b}{sup(-n)}", "t2_pot_neg", {"b": b, "n": -n},
+                  [(f"−{b}{sup(n)}", "exp_neg_da_neg"), (f"{b}{sup(n)}", None), (f"{b}{sup(-(n + 1))}", None)],
+                  [("1/aⁿ", f"{b}{sup(-n)}", f"{fmt(b ** n)} = {b}{sup(n)}, y 1/{b}{sup(n)} = {b}{sup(-n)}.")], adulto)
+    b = rng.randint(2, 10 if d > 1 else 5)
+    if tipo == "neg_base_neg":
+        b = -rng.randint(2, 5)
+    n = rng.randint(1, 3 if abs(b) > 3 else 5)
+    v = F(b) ** (-n)
+    dist = [("−" + fmt(abs(b) ** n), "exp_neg_da_neg"), (fmt(b * -n), "base_por_exp"), ("0", None)]
+    if v < 0:
+        dist.insert(0, (fr(-v), "pierde_signo_base"))
+    enun = f"Calcula y da el resultado como fracción: {_pb(b)}{sup(-n)}" if b > 0 else f"Calcula y expresa como fracción con su signo: {_pb(b)}{sup(-n)}"
+    return mk(enun, fr(v), "pot", {"a": b, "n": -n}, dist,
+              [("inversa", f"1/{_pb(b)}{sup(n)}", f"{_pb(b)}{sup(-n)} = 1/{_pb(b)}{sup(n)}."),
+               (f"{_pb(b)}{sup(n)}", fmt(b ** n), f"{_pb(b)}{sup(n)} = {fmt(b ** n)}" + (" (base negativa, exponente impar → negativo)." if b < 0 and n % 2 else ".")),
+               ("resultado", fr(v), f"Resultado: {fr(v)}.")], adulto, genericos=[fr(-v), fr(1 / v) if v != 0 else "1"])
+
+
+# ================================================================ RAÍCES
+
+@generador("t2_raiz_exacta")
+def gen_raiz_exacta(rng, d):
+    """Raíz cuadrada exacta. Claves: divide_dos (√64 = 32), cercano (√961 = 30 o 32), cualquiera_exacta (cree que todo número tiene raíz
+    exacta), quita_cero (√4 900 = 700 o 7)."""
+    tipo = "calc" if rng.random() < 0.8 else "es"
+    if d == 1:
+        r = rng.randint(2, 15)
+    elif d == 2:
+        r = rng.randint(11, 30) if rng.random() < 0.7 else rng.randint(2, 9) * 10
+    else:
+        r = rng.randint(31, 99) if rng.random() < 0.7 else rng.randint(1, 9) * 10
+    n = r * r
+    adulto = "√n es el número que multiplicado por sí mismo da n. Para cuadrados grandes: mirar la última cifra y el orden de magnitud (30² = 900 < 961 < 1600 = 40²)."
+    if tipo == "es":
+        m = rng.randint(max(2, r - 3), r + 3) ** 2 + rng.randint(1, 2 * r - 1)
+        k = int(m ** 0.5)
+        return mk(f"¿Es {fmt(m)} un cuadrado perfecto?", f"No, está entre {k}² = {fmt(k * k)} y {k + 1}² = {fmt((k + 1) ** 2)}", "t2_raiz_es", {"m": m},
+                  [(f"Sí, √{fmt(m)} = {fmt(m // 2)}", "cualquiera_exacta"), (f"Sí, √{fmt(m)} = {k}", "cualquiera_exacta"),
+                   (f"No, porque es {'par' if m % 2 == 0 else 'impar'}", None)],
+                  [("cuadrados", f"{k}² y {k + 1}²", f"{k}² = {fmt(k * k)} y {k + 1}² = {fmt((k + 1) ** 2)}. {fmt(m)} está en medio, así que no es el cuadrado de ningún natural.")],
+                  adulto)
+    dist = [(n // 2, "divide_dos"), (r + 1, "cercano"), (r - 1, "cercano")]
+    if r % 10 == 0:
+        dist.insert(0, (r * 10, "quita_cero"))
+        dist.insert(1, (r // 10, "quita_cero"))
+    return mk(f"Calcula: √{fmt(n)}", fmt(r), "raiz", {"n": n}, dist,
+              [(f"{r}²", fmt(n), f"Busco el número que al cuadrado da {fmt(n)}: {r} × {r} = {fmt(n)}. Así que √{fmt(n)} = {r}.")], adulto,
+              genericos=[r + 2, r * 2, r - 2])
+
+
+def _raiz_alg(n, factor=2):
+    """Algoritmo de la raíz cuadrada. factor=2 correcto; factor=1 no duplica la raíz. Devuelve (raíz, resto)."""
+    s = str(n)
+    if len(s) % 2:
+        s = "0" + s
+    grupos = [int(s[i:i + 2]) for i in range(0, len(s), 2)]
+    raiz, resto = 0, 0
+    for g in grupos:
+        cur = resto * 100 + g
+        x = 0
+        while x < 9 and (factor * raiz * 10 + x + 1) * (x + 1) <= cur:
+            x += 1
+        resto = cur - (factor * raiz * 10 + x) * x
+        raiz = raiz * 10 + x
+    return raiz, resto
+
+
+def rr_txt(r, s):
+    return f"raíz {fmt(r)}, resto {fmt(s)}"
+
+
+@generador("t2_raiz_entera")
+def gen_raiz_entera(rng, d, algoritmo=False):
+    """Raíz cuadrada entera con resto. Claves: por_exceso, se_queda_corto (resto demasiado grande), resto_sin_cuadrado (resta la raíz, no su
+    cuadrado), decimal (da una raíz decimal). Con algoritmo=True: agrupa_izquierda (separa de dos en dos desde la izquierda), no_duplica,
+    salta_cero."""
+    for _ in range(500):
+        if not algoritmo:
+            n = rng.randint(*{1: (10, 200), 2: (200, 5000), 3: (5000, 99999)}[d])
+        else:
+            n = rng.randint(*{1: (1000, 9999), 2: (10000, 999999), 3: (100000, 9999999)}[d])
+        r = math.isqrt(n)
+        s = n - r * r
+        if s == 0:
+            continue
+        if algoritmo and d == 3 and "0" not in str(r) and rng.random() < 0.6:
+            continue
+        break
+    adulto = ("La raíz entera es el mayor número cuyo cuadrado no se pasa del radicando; el resto es radicando − raíz². Prueba: radicando = "
+              "raíz² + resto, con resto ≤ 2 · raíz.")
+    if not algoritmo:
+        dist = [(rr_txt(r + 1, (r + 1) ** 2 - n), "por_exceso"), (rr_txt(r - 1, n - (r - 1) ** 2), "se_queda_corto"), (rr_txt(r, n - r), "resto_sin_cuadrado"),
+                (fmt(round(n ** 0.5, 2)).replace(".", ","), "decimal")]
+        rng.shuffle(dist)
+        pasos = [(f"{r}² ≤ {fmt(n)} < {r + 1}²", str(r), f"{r}² = {fmt(r * r)} cabe en {fmt(n)} y {r + 1}² = {fmt((r + 1) ** 2)} ya se pasa: la raíz entera es {r}."),
+                 (f"{fmt(n)} − {fmt(r * r)}", fmt(s), f"Resto: {fmt(n)} − {fmt(r * r)} = {fmt(s)}. Prueba: {fmt(r * r)} + {fmt(s)} = {fmt(n)} y {fmt(s)} ≤ {2 * r}.")]
+        return mk(f"Calcula la raíz cuadrada entera de {fmt(n)} y su resto.", rr_txt(r, s), "t2_raiz_entera", {"n": n}, dist, pasos, adulto,
+                  genericos=[rr_txt(r, s + 1), rr_txt(r, s - 1) if s > 1 else rr_txt(r + 2, 0)])
+    dist = []
+    if len(str(n)) % 2:
+        s2 = str(n)
+        m = int(s2 + "0")  # 32 491 → 32 | 49 | 1(0): grupos desde la izquierda
+        grupos = [int(s2[i:i + 2]) for i in range(0, len(s2), 2)]
+        mal = 0
+        for g in grupos:
+            mal = mal * 100 + g
+        rm = math.isqrt(mal)
+        dist.append((rr_txt(rm, mal - rm * rm), "agrupa_izquierda"))
+    rn, sn = _raiz_alg(n, factor=1)
+    if (rn, sn) != (r, s) and sn >= 0:
+        dist.append((rr_txt(rn, sn), "no_duplica"))
+    sc = sin_cero_interior(r) if "0" in str(r)[1:] else None
+    if "0" in str(r):
+        rc = int(str(r).replace("0", "")) if str(r).replace("0", "") else None
+        if rc and rc != r:
+            dist.append((rr_txt(rc, s), "salta_cero"))
+    dist.append((rr_txt(r + 1, (r + 1) ** 2 - n), None))
+    dist.append((rr_txt(r, s + r), None))
+    sn_ = str(n)
+    if len(sn_) % 2:
+        sn_ = " " + sn_
+    grupos_txt = " | ".join(sn_[i:i + 2].strip() for i in range(0, len(sn_), 2))
+    pasos = [("grupos", grupos_txt, f"Separo las cifras de dos en dos empezando por la derecha: {grupos_txt}.")]
+    s_ = str(n)
+    if len(s_) % 2:
+        s_ = "0" + s_
+    gs = [int(s_[i:i + 2]) for i in range(0, len(s_), 2)]
+    raiz, resto = 0, 0
+    for i, g in enumerate(gs):
+        cur = resto * 100 + g
+        x = 0
+        while x < 9 and (2 * raiz * 10 + x + 1) * (x + 1) <= cur:
+            x += 1
+        if i == 0:
+            pasos.append((f"√{g}", str(x), f"Primer grupo {g}: la mayor cifra cuyo cuadrado cabe es {x} ({x}² = {x * x}); resto {g - x * x}."))
+        else:
+            pasos.append((f"{2 * raiz}{x} × {x}", str((2 * raiz * 10 + x) * x),
+                          f"Bajo el grupo: {cur}. Duplico la raíz ({2 * raiz}) y busco la cifra x con {2 * raiz}x × x ≤ {cur}: x = {x} "
+                          f"({2 * raiz * 10 + x} × {x} = {(2 * raiz * 10 + x) * x}); resto {cur - (2 * raiz * 10 + x) * x}."))
+        resto = cur - (2 * raiz * 10 + x) * x
+        raiz = raiz * 10 + x
+    pasos.append(("prueba", fmt(n), f"Raíz {fmt(r)}, resto {fmt(s)}. Prueba: {fmt(r)}² + {fmt(s)} = {fmt(r * r)} + {fmt(s)} = {fmt(n)}."))
+    return mk(f"Calcula con el algoritmo la raíz cuadrada de {fmt(n)} (raíz entera y resto).", rr_txt(r, s), "t2_raiz_alg", {"n": n}, dist, pasos,
+              adulto + " En el algoritmo, los grupos de dos cifras se hacen desde la derecha y en cada paso se duplica la raíz obtenida.",
+              genericos=[rr_txt(r - 1, n - (r - 1) ** 2), rr_txt(r, s + 1)])
+
+
+@generador("t2_raiz_enteros")
+def gen_raiz_enteros(rng, d):
+    """Raíces de enteros. Claves: solo_positiva (da una sola raíz), raiz_negativo (da raíz a un negativo), confunde_menos (−√a con √(−a))."""
+    r = rng.randint(2, 20)
+    n = r * r
+    tipo = rng.choice({1: ["raices", "menos"], 2: ["raices", "negativo", "menos"], 3: ["negativo", "menos", "doble", "cero"]}[d])
+    adulto = ("Un positivo tiene dos raíces cuadradas opuestas (±7 para 49); el 0, una sola; un negativo no tiene raíz cuadrada real, porque ningún "
+              "número al cuadrado da negativo. −√9 es 'el opuesto de √9' = −3, que sí existe.")
+    if tipo == "raices":
+        return mk(f"¿Cuáles son las raíces cuadradas de {n}?", f"{r} y −{r}", "t2_raiz_ent", {"n": n, "tipo": tipo},
+                  [(f"Solo {r}", "solo_positiva"), (f"Solo −{r}", "solo_positiva"), (f"{n // 2} y −{n // 2}", None)],
+                  [("±", f"±{r}", f"{r}² = {n} y también (−{r})² = {n}. Las dos raíces son {r} y −{r}.")], adulto)
+    if tipo == "negativo":
+        return mk(f"Calcula, si existe: √(−{n})", "No existe (ningún número al cuadrado da negativo)", "t2_raiz_ent", {"n": -n, "tipo": tipo},
+                  [(f"−{r}", "raiz_negativo"), (f"{r} y −{r}", "raiz_negativo"), (f"{r}", None)],
+                  [("cuadrados", "≥ 0", f"Cualquier número al cuadrado da positivo o 0 ({r}² = {n}, (−{r})² = {n}). Ninguno da −{n}: la raíz no existe.")], adulto)
+    if tipo == "cero":
+        return mk("¿Cuántas raíces cuadradas tiene el 0?", "Una sola: el 0", "t2_raiz_ent", {"n": 0, "tipo": tipo},
+                  [("Dos: 0 y −0", None), ("Ninguna", "raiz_negativo"), ("Dos: 1 y −1", None)],
+                  [("0²", "0", "Solo 0² = 0; +0 y −0 son el mismo número. El 0 tiene una única raíz cuadrada.")], adulto)
+    if tipo == "doble":
+        return mk(f"¿Qué vale −√{n} y qué vale √(−{n})?", f"−{r}; no existe", "t2_raiz_ent", {"n": n, "tipo": tipo},
+                  [(f"No existe; −{r}", "confunde_menos"), (f"−{r}; −{r}", "raiz_negativo"), (f"{r}; −{r}", None)],
+                  [(f"−√{n}", f"−{r}", f"−√{n}: primero √{n} = {r} y luego el signo: −{r}."),
+                   (f"√(−{n})", "no existe", f"√(−{n}): ningún número al cuadrado da −{n}, no existe.")], adulto)
+    return mk(f"Calcula: −√{n}", f"−{r}", "t2_raiz_ent", {"n": n, "tipo": tipo},
+              [("No existe", "confunde_menos"), (f"{r}", None), (f"{r} y −{r}", None)],
+              [(f"√{n}", str(r), f"Primero la raíz: √{n} = {r}."), ("signo", f"−{r}", f"El − de fuera cambia el signo: −{r}.")], adulto)
+
+
+def dec(x, nd):
+    s = f"{x:.{nd}f}"
+    return s.replace(".", ",")
+
+
+@generador("t2_raiz_fracdec")
+def gen_raiz_fracdec(rng, d):
+    """Raíz de fracciones y decimales; aproximación. Claves: coma_mal (√0,81 = 0,09), solo_numerador (√(49/64) = 7/64), por_exceso
+    (aproxima por exceso o redondea mal), termino_a_termino (√(a + b) = √a + √b)."""
+    tipo = rng.choice({1: ["fraccion", "decimal"], 2: ["decimal", "aprox", "fraccion"], 3: ["aprox", "suma", "decimal"]}[d])
+    adulto = ("√(a/b) = √a/√b (raíz de numerador y denominador). En decimales, el radicando tiene el doble de cifras decimales que la raíz "
+              "(0,81 → 0,9). Aproximar por defecto es quedarse con el mayor valor cuyo cuadrado no se pasa. La raíz de una suma NO es la suma de raíces.")
+    if tipo == "fraccion":
+        a, b = rng.randint(1, 12), rng.randint(2, 15)
+        while math.gcd(a, b) != 1 or a == b:
+            a, b = rng.randint(1, 12), rng.randint(2, 15)
+        return mk(f"Calcula: √({a * a}/{b * b})", f"{a}/{b}", "t2_raiz_frac", {"a": a, "b": b},
+                  [(f"{a}/{b * b}", "solo_numerador"), (f"{a * a}/{b}", "solo_numerador"), (fr(F(a, b) + F(1, b)), None)],
+                  [(f"√{a * a} y √{b * b}", f"{a} y {b}", f"Raíz del numerador: √{a * a} = {a}. Raíz del denominador: √{b * b} = {b}. Resultado: {a}/{b}.")], adulto,
+                  genericos=[f"{a + 1}/{b}", f"{a}/{b + 1}"])
+    if tipo == "decimal":
+        r = rng.choice([rng.randint(1, 9), rng.randint(11, 30)])
+        k = rng.choice([1, 2]) if r < 10 else 1
+        rv = r / 10 ** k
+        nv = r * r / 10 ** (2 * k)
+        return mk(f"Calcula: √{dec(nv, 2 * k)}", dec(rv, k), "t2_raiz_dec", {"r": r, "k": k},
+                  [(dec(rv / 10, k + 1), "coma_mal"), (dec(rv * 10, max(k - 1, 0)) if k > 1 else fmt(r), "coma_mal"), (dec(rv + 2 / 10 ** k, k), None)],
+                  [(f"{r}²", fmt(r * r), f"Sin la coma: √{r * r} = {r}."),
+                   ("coma", dec(rv, k), f"{dec(nv, 2 * k)} tiene {2 * k} decimales, así que la raíz tiene {k}: {dec(rv, k)}. Compruebo: {dec(rv, k)}² = {dec(nv, 2 * k)}.")],
+                  adulto, genericos=[dec(rv + 1 / 10 ** k, k), dec(abs(rv - 1 / 10 ** k), k)])
+    if tipo == "aprox":
+        for _ in range(100):
+            n = rng.randint(2, 99)
+            if math.isqrt(n) ** 2 != n:
+                break
+        nd = 1 if d == 2 else rng.choice([1, 2])
+        paso = 10 ** nd
+        v = math.isqrt(n * paso * paso)  # truncado
+        vd = v / paso
+        nombre = "las décimas" if nd == 1 else "las centésimas"
+        return mk(f"Aproxima √{n} por defecto hasta {nombre}.", dec(vd, nd), "t2_raiz_aprox", {"n": n, "nd": nd},
+                  [(dec((v + 1) / paso, nd), "por_exceso"), (dec((v - 1) / paso, nd), None), (dec((v + 2) / paso, nd), None)],
+                  [("cuadrados", f"{dec(vd, nd)}² y {dec((v + 1) / paso, nd)}²",
+                    f"{dec(vd, nd)}² = {dec(vd * vd, 2 * nd)} ≤ {n} y {dec((v + 1) / paso, nd)}² = {dec(((v + 1) / paso) ** 2, 2 * nd)} > {n}."),
+                   ("por defecto", dec(vd, nd), f"Por defecto me quedo con el menor: √{n} ≈ {dec(vd, nd)}.")], adulto)
+    a, b, c = rng.choice([(3, 4, 5), (6, 8, 10), (5, 12, 13), (8, 6, 10), (4, 3, 5), (12, 5, 13)])
+    den = rng.choice([2, 3, 4, 7, 9, 11])
+    D = den * den
+    return mk(f"Calcula: √({a * a}/{D} + {b * b}/{D})", fr(F(c, den)), "t2_raiz_frac", {"a": a, "b": b, "den": den},
+              [(fr(F(a + b, den)), "termino_a_termino"), (fr(F(c, D)), "solo_numerador"), (fr(F(c * c, den)), None)],
+              [("sumar", f"{c * c}/{D}", f"Primero la suma de dentro: {a * a}/{D} + {b * b}/{D} = {c * c}/{D}."),
+               ("raíz", fr(F(c, den)), f"√({c * c}/{D}) = √{c * c}/√{D} = {c}/{den}.")], adulto)

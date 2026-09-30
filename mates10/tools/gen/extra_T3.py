@@ -1436,3 +1436,1431 @@ def gen_frac_16(rng, d):
     return mk(f"Ordena de menor a mayor: {', '.join(fr(x) for x in fs)}.", resp, "t3_racional_ord", {"fracs": [fr(x) for x in fs]},
               [(e01 if e01 != resp else None, "E01"), (" < ".join(fr(x) for x in sorted(fs, key=abs)), None), (" < ".join(fr(x) for x in sorted(fs, reverse=True)), None)], pasos,
               "En la recta, los negativos más alejados del 0 son los menores: −5/6 < −3/4 < −2/3.")
+
+
+# ---------------------------------------------------------------- OPERACIONES CON FRACCIONES
+
+def expr_txt(terms, ops):
+    s = terms[0]
+    for o, t in zip(ops, terms[1:]):
+        s += f" {o} {t}"
+    return s
+
+
+@generador("t3_ofrac_01")
+def gen_ofrac_01(rng, d):
+    den = rng.randint(3, 12)
+    k = 2 if d < 3 else 3
+    for _ in range(100):
+        nums = [rng.randint(1, den - 1 if d == 1 else den + 2) for _ in range(k)]
+        ops = [rng.choice(["+", "−"]) for _ in range(k - 1)] if d > 1 else [rng.choice(["+", "+", "−"])]
+        tot = nums[0]
+        for o, n in zip(ops, nums[1:]):
+            tot += n if o == "+" else -n
+        parcial_ok = all(nums[0] + sum((n if o == "+" else -n) for o, n in zip(ops[:i], nums[1:i + 1])) >= 0 for i in range(k))
+        if tot > 0 and tot != den and parcial_ok:
+            break
+    else:
+        return None
+    terms = [f"{n}/{den}" for n in nums]
+    resp = f"{tot}/{den}"
+    dsum = den
+    for o in ops:
+        dsum += den if o == "+" else -den
+    e01 = f"{tot}/{dsum}" if dsum > 0 and dsum != den else None
+    e02 = str(tot) if "−" in ops else None
+    e03 = f"{tot}/{den ** k}"
+    pasos = [("mismo denominador", resp, f"Tienen el mismo denominador ({den}): se deja igual y se opera con los numeradores: {expr_txt([str(n) for n in nums], ops)} = {tot}. Resultado: {resp}.")]
+    return mk(f"Calcula: {expr_txt(terms, ops)}", resp, "t3_ofrac_hom", {"nums": nums, "ops": ops, "d": den},
+              [(e01 or (f"{tot}/{2 * den}" if "+" in ops else None), "E01"), (e02, "E02"), (e03, "E03")], pasos,
+              "Con el mismo denominador se suman o restan solo los numeradores; el denominador (tamaño de las partes) no cambia.",
+              genericos=[f"{tot + 1}/{den}", f"{max(tot - 1, 1)}/{den}" if tot > 1 else f"{tot + 2}/{den}", f"{den}/{tot}"])
+
+
+@generador("t3_ofrac_02")
+def gen_ofrac_02(rng, d):
+    for _ in range(100):
+        den = rng.randint(2, 12)
+        m = rng.randint(1, den - 1)
+        if math.gcd(m, den) == 1:
+            break
+    a = 1 if d == 1 else rng.randint(1, 10)
+    op = "−" if d == 1 else rng.choice(["+", "−"])
+    orden = "nat_primero" if (op == "−" or rng.random() < 0.6) else "frac_primero"
+    if op == "+":
+        num = a * den + m
+        enun = f"Calcula: {a} + {m}/{den}" if orden == "nat_primero" else f"Calcula: {m}/{den} + {a}"
+        e01 = f"{a + m}/{den}"
+        e02 = f"{a + m}/{1 + den}"
+        e03 = None
+    else:
+        num = a * den - m
+        enun = f"Calcula: {a} − {m}/{den}"
+        e01 = f"{abs(m - a)}/{den}" if m != a else f"{a}/{den}"
+        e02 = f"{a - m}/{den - 1}" if a > m and den > 1 else f"{m - a}/{den - 1}" if m > a else None
+        e03 = f"−{num}/{den}"
+    resp = f"{num}/{den}"
+    pasos = [(f"{a} = {a * den}/{den}", f"{a * den}/{den}", f"Escribo {a} como fracción con denominador {den}: {a} = {a * den}/{den}."),
+             ("operar numeradores", resp, f"{a * den}/{den} {op} {m}/{den} = {resp}" + (f" (= {mixto(F(num, den))})." if num > den else "."))]
+    return mk(enun, resp, "t3_ofrac_natfrac", {"a": a, "m": m, "d": den, "op": op},
+              [(e01, "E01"), (e02, "E02"), (e03, "E03")], pasos,
+              "Un natural se escribe como fracción con el mismo denominador (1 = n/n, 3 = 3n/n) antes de sumar o restar.",
+              genericos=[f"{num + 1}/{den}", f"{num}/{den + 1}", f"{a * m}/{den}"])
+
+
+@generador("t3_ofrac_03")
+def gen_ofrac_03(rng, d):
+    den = rng.randint(2, 12)
+    m = rng.randint(1, den - 1 if d < 3 else den + 3)
+    a = rng.randint(2, 5 if d == 1 else 12)
+    resp = f"{a * m}/{den}"
+    pasos = [(f"{a} · {m}/{den}", resp, f"Multiplico el natural por el numerador y dejo el denominador: {a} · {m} = {a * m}, así que {resp}. Es como sumar {a} veces {m}/{den}.")]
+    return mk(f"Calcula: {a} · {m}/{den}", resp, "t3_ofrac_natmult", {"a": a, "m": m, "d": den},
+              [(f"{a * m}/{a * den}", "E01"), (f"{m}/{a * den}", "E02"), (f"{a + m}/{den}", "E03")], pasos,
+              "a · m/n = (a·m)/n: el denominador no se multiplica (se suman trozos del mismo tamaño).",
+              genericos=[f"{a * m}/{den + a}", f"{a * m + 1}/{den}"])
+
+
+def _fracs(rng, k, dmax, nmax=None, distintos=True):
+    for _ in range(200):
+        fs = []
+        for _ in range(k):
+            den = rng.randint(2, dmax)
+            n = rng.randint(1, nmax or den - 1)
+            fs.append((n, den))
+        if all(math.gcd(n, x) == 1 for n, x in fs) and (not distintos or len({x for _, x in fs}) == k):
+            return fs
+    return None
+
+
+@generador("t3_ofrac_04")
+def gen_ofrac_04(rng, d):
+    k = 2 if d < 3 else rng.choice([2, 3])
+    for _ in range(100):
+        fs = _fracs(rng, k, 10 if d == 1 else 20 if d == 2 else 12)
+        ops = ["+"] * (k - 1) if d == 1 else [rng.choice(["+", "−"]) for _ in range(k - 1)]
+        vals = [F(*f) for f in fs]
+        tot = vals[0]
+        for o, v in zip(ops, vals[1:]):
+            tot = tot + v if o == "+" else tot - v
+        if tot > 0 and math.lcm(*[f[1] for f in fs]) <= 120:
+            break
+    else:
+        return None
+    mix = d == 3 and k == 2 and rng.random() < 0.5
+    if mix:
+        e = rng.randint(1, 3)
+        vals[0] = vals[0] + e
+        tot = tot + e
+        terms = [f"{e} {fs[0][0]}/{fs[0][1]}"] + [fr_raw(*f) for f in fs[1:]]
+    else:
+        terms = [fr_raw(*f) for f in fs]
+    m = math.lcm(*[f[1] for f in fs])
+    sgn = [1] + [1 if o == "+" else -1 for o in ops]
+    nsum = sum(s * f[0] for s, f in zip(sgn, fs))
+    dsum = sum(f[1] for f in fs)
+    e01 = fr_raw(nsum, dsum) if nsum > 0 and not mix else None
+    e02 = fr(F(nsum, m)) if nsum > 0 and F(nsum, m) != tot and not mix else None
+    e03 = fr(F(nsum, math.prod(f[1] for f in fs))) if nsum > 0 and not mix and k == 2 else None
+    e04 = None
+    if k == 2 and not mix:
+        (a, b), (c, dd) = fs
+        cruz = a * dd + sgn[1] * c * b
+        if cruz > 0 and F(cruz, b + dd) != tot:
+            e04 = fr_raw(cruz, b + dd)
+    conv = [fr_raw(int(v * m), m) for v in vals]
+    pasos = [("mcm", str(m), f"Denominador común: mcm({', '.join(str(f[1]) for f in fs)}) = {m}."),
+             ("equivalentes", expr_txt(conv, ops), ("Paso el número mixto a fracción y " if mix else "") + f"escribo cada fracción con denominador {m}: {expr_txt(conv, ops)}."),
+             ("operar y simplificar", fr(tot), f"Opero los numeradores: {fr_raw(int(tot * m), m)}" + (f" = {fr(tot)} simplificando." if F(int(tot * m), m).denominator != m else "."))]
+    return mk(f"Calcula y simplifica: {expr_txt(terms, ops)}", fr(tot), "t3_ofrac_het", {"terms": terms, "ops": ops},
+              [(e01, "E01"), (e02, "E02"), (e03, "E03"), (e04, "E04")], pasos,
+              "Solo se pueden sumar partes del mismo tamaño: primero común denominador (y ajustar numeradores), después operar numeradores.",
+              genericos=[fr(tot + F(1, m)), fr(tot * 2), fr(abs(tot - F(1, m))) if tot > F(1, m) else fr(tot + F(2, m))])
+
+
+@generador("t3_ofrac_05")
+def gen_ofrac_05(rng, d):
+    k = 2 if d < 3 else 3
+    for _ in range(200):
+        fs = _fracs(rng, k, 10 if d == 1 else 20, nmax=None if d == 1 else 20, distintos=False)
+        if not fs:
+            continue
+        r = math.prod((F(*f) for f in fs), start=F(1))
+        sin = (math.prod(f[0] for f in fs), math.prod(f[1] for f in fs))
+        if d >= 2 and F(*sin) == F(sin[0], sin[1]) and math.gcd(*sin) == 1:
+            continue  # queremos que haya que simplificar
+        if d == 1 and math.gcd(*sin) != 1:
+            continue
+        if all(f[0] < 21 and f[1] < 21 for f in fs):
+            break
+    else:
+        return None
+    terms = [fr_raw(*f) for f in fs]
+    enun = "Calcula y simplifica: " + " · ".join(f"({t})" if k == 3 else t for t in terms)
+    dist = []
+    if k == 2:
+        (a, b), (c, dd) = fs
+        M = math.lcm(b, dd)
+        e01 = F(a * (M // b) * c * (M // dd), M)
+        dist = [(fr(e01) if e01 != r else None, "E01"), (fr(F(a * dd, b * c)) if F(a * dd, b * c) != r else None, "E02"), (fr_raw(a + c, b + dd) if F(a + c, b + dd) != r else None, "E03")]
+    else:
+        nsum, dsum = sum(f[0] for f in fs), sum(f[1] for f in fs)
+        dist = [(fr_raw(nsum, dsum), "E03"), (fr(F(sin[0], fs[0][1])) if F(sin[0], fs[0][1]) != r else None, None)]
+    dist.append((fr_raw(*sin) if F(*sin) == r and math.gcd(*sin) != 1 and False else None, None))
+    pasos = [("multiplicar en línea", fr_raw(*sin), f"Numerador por numerador y denominador por denominador: {fr_raw(*sin)}."),
+             ("simplificar", fr(r), f"Simplifico: {fr(r)}." if math.gcd(*sin) != 1 else "Ya es irreducible.")]
+    return mk(enun, fr(r), "t3_ofrac_mult", {"terms": terms},
+              dist, pasos, "Multiplicar fracciones: en línea recta (arriba con arriba, abajo con abajo); conviene simplificar antes de multiplicar.",
+              genericos=[fr(r * 2), fr(1 / r) if r != 1 else "2", fr(r + 1)])
+
+
+@generador("t3_ofrac_06")
+def gen_ofrac_06(rng, d):
+    for _ in range(200):
+        fs = _fracs(rng, 2, 10 if d == 1 else 20, nmax=None if d == 1 else 20, distintos=False)
+        if not fs:
+            continue
+        (a, b), (c, dd) = fs
+        if d == 3 and rng.random() < 0.5:
+            c, dd = rng.randint(2, 9), 1
+        r = F(a, b) / F(c, dd)
+        if r.numerator < 400 and r.denominator < 400 and F(a, b) != F(c, dd):
+            break
+    else:
+        return None
+    tb = str(c) if dd == 1 else f"{c}/{dd}"
+    ta = f"{a}/{b}"
+    pasos = [("inversa de la segunda", f"{ta} · {dd}/{c}", f"Dividir es multiplicar por la inversa de la segunda: {ta} : {tb} = {ta} · {dd}/{c}."),
+             ("multiplicar", fr_raw(a * dd, b * c), f"= {fr_raw(a * dd, b * c)}"),
+             ("simplificar", fr(r), f"Simplifico: {fr(r)}.")]
+    return mk(f"Calcula y simplifica: {ta} : {tb}", fr(r), "frac_div", {"a": ta, "b": tb},
+              [(fr(F(b, a) * F(c, dd)), "E02"), (fr(F(a * c, b * dd)), "E03"), (fr(1 / r), "E04")], pasos,
+              "Se invierte la SEGUNDA fracción (el divisor) y se multiplica. Equivale a los productos cruzados: (a·d)/(b·c).",
+              genericos=[fr(r * 2), fr(r + 1)])
+
+
+@generador("t3_ofrac_07")
+def gen_ofrac_07(rng, d):
+    for _ in range(100):
+        a, b = rng.randint(1, 6 if d == 1 else 10), rng.randint(2, 10)
+        n = rng.randint(2, 3) if d == 1 else rng.randint(2, 5)
+        if math.gcd(a, b) == 1 and a != b and b ** n <= 10000 and a ** n <= 10000:
+            break
+    else:
+        return None
+    base = F(a, b)
+    if d == 1:
+        txt, val = f"({a}/{b}){sup(n)}", base ** n
+        e03 = None
+    elif d == 2:
+        txt, val = f"(−{a}/{b}){sup(n)}", (-base) ** n
+        e03 = fr(-val)
+    else:
+        if rng.random() < 0.5:
+            txt, val = f"−({a}/{b}){sup(n)}", -(base ** n)
+        else:
+            txt, val = f"(−{a}/{b}){sup(n)}", (-base) ** n
+        e03 = fr(-val)
+    sg = -1 if val < 0 else 1
+    pasos = [("(a/b)ⁿ = aⁿ/bⁿ", fr(val), f"Elevo numerador y denominador: {a}{sup(n)} = {a ** n} y {b}{sup(n)} = {b ** n}."),
+             ("signo", fr(val), ("El resultado es positivo." if sg > 0 else "El resultado es negativo.") +
+              (f" (Base negativa con exponente {'par' if n % 2 == 0 else 'impar'}.)" if "(−" in txt else " (El menos está fuera del paréntesis: no se eleva.)" if txt.startswith("−") else "") + f" {txt} = {fr(val)}.")]
+    return mk(f"Calcula: {txt}", fr(val), "t3_ofrac_pot", {"a": a, "b": b, "n": n, "expr": txt},
+              [(fr(sg * F(a ** n, b)), "E01"), (fr_raw(sg * a * n, b * n), "E02"), (e03, "E03")], pasos,
+              "Se elevan numerador y denominador. Base negativa: exponente par → positivo; impar → negativo. −(a/b)ⁿ siempre es negativo.",
+              genericos=[fr(sg * F(a * n, b ** n)), fr(sg * F(b ** n, a ** n)), fr(sg * F(a ** n, b ** (n - 1)))])
+
+
+@generador("t3_ofrac_08")
+def gen_ofrac_08(rng, d):
+    for _ in range(200):
+        k = 2 if d < 3 else 3
+        fs = _fracs(rng, k, 12 if d < 3 else 20, distintos=False)
+        if not fs:
+            continue
+        vals = [F(n, x) * rng.choice([-1, 1]) for n, x in fs]
+        if all(v > 0 for v in vals):
+            vals[0] = -vals[0]
+        if d == 2:
+            op = rng.choice(["·", ":"])
+            r = vals[0] * vals[1] if op == "·" else vals[0] / vals[1]
+            if r.numerator > 400 or r.denominator > 400:
+                continue
+            t1 = fr(vals[0])
+            t2 = f"({fr(vals[1])})" if vals[1] < 0 else fr(vals[1])
+            enun = f"Calcula y simplifica: ({t1}) {op} {t2}" if vals[0] < 0 else f"Calcula y simplifica: {t1} {op} {t2}"
+            pasos = [("signo", "−" if r < 0 else "+", f"Regla de los signos: {'distinto signo → negativo' if r < 0 else 'mismo signo → positivo'}."),
+                     ("valor", fr(r), f"{'Multiplico en línea' if op == '·' else 'Multiplico por la inversa de la segunda'}: {fr(abs(r))}. Resultado: {fr(r)}.")]
+            return mk(enun, fr(r), "frac_mult" if op == "·" else "frac_div", {"a": fr(vals[0]).replace("−", "-"), "b": fr(vals[1]).replace("−", "-")},
+                      [(fr(-r), "E03"), (fr(1 / r) if abs(r) != 1 else None, None), (fr(-1 / r) if abs(r) != 1 else fr(2 * r), None)], pasos,
+                      "Producto y cociente: mismo signo → positivo; distinto → negativo.",
+                      genericos=[fr(r * 2), fr(r + 1), fr(r - 1)])
+        ops = [rng.choice(["+", "−"]) for _ in range(k - 1)]
+        tot = vals[0]
+        for o, v in zip(ops, vals[1:]):
+            tot = tot + v if o == "+" else tot - v
+        if tot == 0 or math.lcm(*[v.denominator for v in vals]) > 120:
+            continue
+        break
+    else:
+        return None
+    terms = [fr(vals[0])] + [f"({fr(v)})" if v < 0 else fr(v) for v in vals[1:]]
+    # E01: pierde el signo del primer término al reducir
+    t1 = -vals[0]
+    for o, v in zip(ops, vals[1:]):
+        t1 = t1 + v if o == "+" else t1 - v
+    # E02: − (−x) se trata como − x
+    t2 = vals[0]
+    hay_e02 = False
+    for o, v in zip(ops, vals[1:]):
+        if o == "−" and v < 0:
+            t2 = t2 + v
+            hay_e02 = True
+        else:
+            t2 = t2 + v if o == "+" else t2 - v
+    m = math.lcm(*[v.denominator for v in vals])
+    pasos = [("quitar paréntesis", expr_txt([fr(vals[0])] + [fr(v if o == "+" else -v) for o, v in zip(ops, vals[1:])], ["+"] * len(ops)).replace("+ −", "− "),
+              "Quito paréntesis: restar un negativo es sumar; sumar un negativo es restar."),
+             ("común denominador", str(m), f"Denominador común {m}: " + ", ".join(f"{fr(v)} = {fr_raw(int(v * m), m)}" for v in vals) + "."),
+             ("operar", fr(tot), f"Opero los numeradores con su signo y simplifico: {fr(tot)}.")]
+    return mk(f"Calcula y simplifica: {expr_txt(terms, ops)}", fr(tot), "t3_ofrac_signo", {"vals": [fr(v) for v in vals], "ops": ops},
+              [(fr(t1) if t1 != tot else None, "E01"), (fr(t2) if hay_e02 and t2 != tot else None, "E02"), (fr(-tot), None)], pasos,
+              "Primero los signos (quitar paréntesis), después común denominador. El signo del numerador no se pierde al ampliar.",
+              genericos=[fr(tot + F(1, m)), fr(tot - F(1, m)), fr(tot * 2)])
+
+
+# ---------------------------------------------------------------- OPERACIONES CON DECIMALES
+
+def sin_coma(x):
+    return int(str(D(x)).replace(",", "").replace("−", "").replace(" ", "").replace(" ", ""))
+
+
+def partes(x, nd):
+    x = F(x)
+    ent = int(x)
+    dec = int(round((x - ent) * 10 ** nd))
+    return ent, dec
+
+
+@generador("t3_odec_01")
+def gen_odec_01(rng, d):
+    nd = 1 if d < 3 else 2
+    for _ in range(200):
+        a = F(rng.randint(10 ** nd, (100 if d < 3 else 500) * 10 ** nd), 10 ** nd)
+        b = F(rng.randint(10 ** nd, (100 if d < 3 else 500) * 10 ** nd), 10 ** nd)
+        if ndec(a) != nd or ndec(b) != nd:
+            continue
+        op = rng.choice(["+", "−"]) if d > 1 else "+"
+        if op == "−" and a < b:
+            a, b = b, a
+        if a == b:
+            continue
+        ea, da = partes(a, nd)
+        eb, db = partes(b, nd)
+        lleva = (da + db >= 10 ** nd) if op == "+" else (da < db)
+        if d == 1 and lleva:
+            continue
+        if d >= 2 and not lleva:
+            continue
+        r = a + b if op == "+" else a - b
+        if r > 1000:
+            continue
+        break
+    else:
+        return None
+    resp = D(r, nd)
+    e01 = fmt(sin_coma(F(round(r * 10 ** nd), 10 ** nd)))
+    e02 = e03 = e04 = None
+    if op == "+":
+        mal = f"{ea + eb},{da + db}"
+        if nd == 1:
+            e02 = mal
+        else:
+            e03 = mal
+    else:
+        sa, sb = D(a, nd).replace(",", "").rjust(8, "0"), D(b, nd).replace(",", "").rjust(8, "0")
+        cols = "".join(str(abs(int(x) - int(y))) for x, y in zip(sa, sb))
+        v = F(int(cols), 10 ** nd)
+        if v != r:
+            e04 = D(v, nd)
+    euros = d == 3 and rng.random() < 0.5
+    u = " €" if euros else ""
+    enun = f"Calcula: {D(a, nd)} {op} {D(b, nd)}" if not euros else (f"Calcula: {D(a, nd)} € {op} {D(b, nd)} €")
+    pasos = [("coma bajo coma", "", "Coloco los números con la coma debajo de la coma."),
+             ("operar", resp, f"{'Sumo' if op == '+' else 'Resto'} como con naturales" + (", llevando de las décimas a las unidades" if op == "+" and nd == 1 else ", con las llevadas" if op == "+" else ", pidiendo prestado cuando haga falta") + f", y bajo la coma: {resp}{u}.")]
+    return mk(enun, resp + u, "t3_odec_suma1", {"a": D(a), "b": D(b), "op": op},
+              [(e01 + u, "E01"), ((e02 + u) if e02 else None, "E02"), ((e03 + u) if e03 else None, "E03"), ((e04 + u) if e04 else None, "E04")], pasos,
+              "Coma debajo de coma; se opera como con naturales y las llevadas pasan de décimas a unidades igual que de unidades a decenas.",
+              genericos=[D(r + F(1, 10), nd) + u, D(r + 1, nd) + u, D(abs(r - F(1, 10)), nd) + u])
+
+
+@generador("t3_odec_02")
+def gen_odec_02(rng, d):
+    for _ in range(200):
+        if d == 3 or (d == 2 and rng.random() < 0.4):
+            a = F(rng.randint(2, 50))
+            b = F(rng.randint(1, int(a) * 1000 - 1), 1000 if d == 3 else 100)
+            if b.denominator == 1:
+                continue
+            op = "−"
+        else:
+            na, nb = rng.sample([1, 2, 3] if d == 2 else [1, 2], 2)
+            a = F(rng.randint(1, 60 * 10 ** na), 10 ** na)
+            b = F(rng.randint(1, 60 * 10 ** nb), 10 ** nb)
+            if ndec(a) != na or ndec(b) != nb:
+                continue
+            op = rng.choice(["+", "−"])
+            if op == "−" and a <= b:
+                a, b = b, a
+            if a == b:
+                continue
+        r = a + b if op == "+" else a - b
+        if r <= 0:
+            continue
+        break
+    else:
+        return None
+    resp = D(r)
+    sa, sb = D(a), D(b)
+    da_, db_ = ndec(a), ndec(b)
+    m = max(da_, db_)
+    ia, ib = sin_coma(a), sin_coma(b)
+    e01 = None
+    if da_ != db_:
+        v = F(ia + ib if op == "+" else ia - ib, 10 ** m)
+        if v > 0 and v != r:
+            e01 = D(v)
+    e02 = D(a - int(b) + (b - int(b))) if op == "−" and a.denominator == 1 and a - int(b) > 0 else None
+    e03 = None
+    if op == "−" and da_ < db_:
+        A, B = D(a, m).replace(",", ""), D(b, m).replace(",", "")
+        A = D(a).replace(",", "") + "_" * (db_ - da_)
+        B = B.rjust(len(A), "0")
+        out = ""
+        for x, y in zip(A, B):
+            out += y if x == "_" else str(abs(int(x) - int(y)))
+        v = F(int(out), 10 ** m)
+        if v != r:
+            e03 = D(v)
+    e04 = None
+    if op == "+" and int(a) == 0 and int(b) == 0:
+        v = F(ia + ib, 10 ** m)
+        if v != r:
+            e04 = D(v)
+    pasos = [("igualar decimales", f"{D(a, m)} {op} {D(b, m)}", f"Coloco coma bajo coma y completo con ceros: {D(a, m)} {op} {D(b, m)}."),
+             ("operar", resp, f"{'Sumo' if op == '+' else 'Resto'} como con naturales y bajo la coma: {resp}.")]
+    return mk(f"Calcula: {sa} {op} {sb}", resp, "t3_odec_suma2", {"a": sa, "b": sb, "op": op},
+              [(e01, "E01"), (e02, "E02"), (e03, "E03"), (e04, "E04")], pasos,
+              "Coma bajo coma y rellenar con ceros: 10 − 3,75 = 10,00 − 3,75. Alinear por la derecha como con naturales es el error típico.",
+              genericos=[D(r + F(1, 10)), D(r + 1), D(r * 10), D(abs(r - F(1, 10))) if r > F(1, 10) else D(r + F(2, 10))])
+
+
+@generador("t3_odec_03")
+def gen_odec_03(rng, d):
+    nd = 1 if d == 1 else rng.randint(2, 3) if d == 3 else rng.randint(1, 2)
+    for _ in range(100):
+        a = F(rng.randint(10 ** nd + 1, 50 * 10 ** nd), 10 ** nd)
+        if ndec(a) == nd:
+            break
+    n = rng.randint(2, 9) if d < 3 else rng.randint(11, 99)
+    r = a * n
+    ea, da = partes(a, nd)
+    digs = sin_coma(a) * n
+    pasos = [("sin coma", fmt(digs), f"Multiplico sin coma: {fmt(sin_coma(a))} × {n} = {fmt(digs)}."),
+             ("colocar la coma", D(r), f"{D(a)} tiene {nd} cifra{'s' if nd > 1 else ''} decimal{'es' if nd > 1 else ''}: separo {nd} en el resultado → {D(F(digs, 10 ** nd), nd)} = {D(r)}.")]
+    return mk(f"Calcula: {D(a)} × {n}", D(r), "t3_odec_multnat", {"a": D(a), "n": n},
+              [(D(r * 10), "E01"), (f"{ea * n},{da * n}" if F(f"{ea * n}.{da * n}") != r else None, "E02"), (fmt(digs), "E03")], pasos,
+              "Decimal × natural: se multiplica sin coma y se separan tantas cifras decimales como tenía el decimal.",
+              genericos=[D(r / 10), D(r + n), D(r + 1)])
+
+
+@generador("t3_odec_04")
+def gen_odec_04(rng, d):
+    p = rng.choice([10, 100] if d == 1 else [10, 100, 1000])
+    nd = rng.randint(0, 1) if d == 1 else rng.randint(1, 3)
+    a = F(rng.randint(1, 999 * 10 ** nd if d > 1 else 99 * 10 ** nd), 10 ** nd)
+    if a.denominator == 1 and nd > 0:
+        a += F(1, 10 ** nd)
+    div = rng.random() < (0.3 if d == 1 else 0.5 if d == 2 else 0.8)
+    r = a / p if div else a * p
+    k = len(str(p)) - 1
+    s = D(a)
+    e01 = (s + "0" * k if "," in s else None) if not div else None
+    e02 = D(a * p if div else a / p)
+    e03 = (D(r * 10) if D(r * 10) != D(r) else None) if div else D(r / 10)
+    pasos = [("mover la coma", D(r), f"{'Dividir' if div else 'Multiplicar'} por {fmt(p)} es mover la coma {k} lugar{'es' if k > 1 else ''} a la {'izquierda' if div else 'derecha'}" +
+              (", completando con ceros" if (div and ndec(r) > ndec(a) + 0 and int(a) < p) or (not div and ndec(a) < k) else "") + f": {D(r)}.")]
+    return mk(f"Calcula: {s} {':' if div else '×'} {fmt(p)}", D(r), "t3_odec_pot10", {"a": s, "p": p, "div": div},
+              [(e01, "E01"), (e02, "E02"), (e03, "E03"), (D(r * 100) if div else D(r / 100), None)], pasos,
+              "×10, ×100, ×1000: la coma se mueve a la derecha tantos lugares como ceros; al dividir, a la izquierda. Si faltan cifras, se ponen ceros.")
+
+
+@generador("t3_odec_05")
+def gen_odec_05(rng, d):
+    for _ in range(200):
+        na = 1
+        nb = 1 if d == 1 else rng.randint(1, 2)
+        a = F(rng.randint(11, 99 if d == 1 else 999), 10 ** na)
+        b = F(rng.randint(2, 99 if d < 3 else 999), 10 ** nb)
+        if ndec(a) != na or ndec(b) != nb or na + nb > 3:
+            continue
+        if d == 3 and b > 1 and rng.random() < 0.6:
+            continue
+        break
+    else:
+        return None
+    r = a * b
+    tot = na + nb
+    digs = sin_coma(a) * sin_coma(b)
+    ea, da = partes(a, na)
+    eb, db = partes(b, nb)
+    e03 = f"{ea * eb},{da * db}" if (ea or eb) else None
+    pasos = [("sin comas", fmt(digs), f"Multiplico sin comas: {sin_coma(a)} × {sin_coma(b)} = {fmt(digs)}."),
+             ("colocar la coma", D(r), f"Entre los dos factores hay {na} + {nb} = {tot} cifras decimales: separo {tot} → {D(F(digs, 10 ** tot), tot)} = {D(r)}.")]
+    return mk(f"Calcula: {D(a)} × {D(b)}", D(r), "t3_odec_multdec", {"a": D(a), "b": D(b)},
+              [(D(F(digs, 10 ** max(na, nb))) if na != nb or True else None, "E01"), (D(F(digs, 10)) if tot > 1 and max(na, nb) != 1 else D(F(digs, 10 ** (tot + 1))), "E02" if tot > 1 and max(na, nb) != 1 else None),
+               (e03 if e03 and F(e03.replace(",", ".")) != r else None, "E03")], pasos,
+              "Se multiplica sin comas y se separan tantas cifras decimales como sumen los dos factores. Multiplicar por un número menor que 1 da un resultado menor.",
+              genericos=[D(r * 10), D(r / 10), D(r + 1)])
+
+
+@generador("t3_odec_06")
+def gen_odec_06(rng, d):
+    for _ in range(200):
+        b = rng.randint(2, 9) if d < 3 else rng.randint(11, 25)
+        ndq = rng.randint(1, 2) if d < 3 else rng.randint(2, 3)
+        q = F(rng.randint(1, 30 * 10 ** ndq), 10 ** ndq)
+        if ndec(q) != ndq:
+            continue
+        a = q * b
+        if ndec(a) > 3 or ndec(a) == 0:
+            continue
+        s = D(q)
+        if d == 3 and "0" not in s.split(",")[1][:-1] and rng.random() < 0.7:
+            continue
+        break
+    else:
+        return None
+    s = D(q)
+    ent, dec = s.split(",")
+    e03 = None
+    if "0" in dec.rstrip("0")[:-1] or (dec.startswith("0") and len(dec) > 1):
+        e03 = ent + "," + dec.replace("0", "", 1)
+    pasos = [("dividir", D(q), f"Divido {D(a)} entre {b} como si fueran naturales; al bajar la primera cifra decimal pongo la coma en el cociente: {D(q)}."),
+             ("comprobar", D(a), f"Compruebo: {D(q)} × {b} = {D(a)}.")]
+    return mk(f"Calcula: {D(a)} : {b}", D(q), "t3_odec_divnat", {"a": D(a), "b": b},
+              [(fmt(sin_coma(q)), "E01"), (D(q * 10), "E02"), (e03, "E03"), (D(q / 10), None)], pasos,
+              "La coma del cociente se pone al bajar la primera cifra decimal del dividendo; si una cifra no llega al divisor, se pone un 0 en el cociente.")
+
+
+@generador("t3_odec_07")
+def gen_odec_07(rng, d):
+    for _ in range(200):
+        b = rng.choice([2, 4, 5, 8, 20, 25, 16, 40])
+        if d == 1:
+            b = rng.choice([2, 4, 5])
+        a = rng.randint(1, 99 if d < 3 else 999)
+        if d == 2 and a > b:
+            a = rng.randint(1, b - 1)
+        if a % b == 0:
+            continue
+        q = F(a, b)
+        if ndec(q) > 3:
+            continue
+        break
+    else:
+        return None
+    qq, rr_ = divmod(a, b)
+    e02 = D(truncar(F(b, a), 2)) if a < b else None
+    pasos = [("cociente entero", str(qq), f"{a} : {b} = {qq} y sobra {rr_}" + (" (el dividendo es menor: el cociente empieza por 0)." if a < b else ".")),
+             ("seguir con decimales", D(q), f"Pongo la coma en el cociente, añado un 0 al resto y sigo dividiendo hasta que el resto sea 0: {D(q)}.")]
+    return mk(f"Calcula con decimales hasta que la división sea exacta: {a} : {b}", D(q), "div", {"a": a, "b": b},
+              [(f"{qq},{rr_}" if F(f"{qq}.{rr_}") != q else None, "E01"), (e02, "E02"), (fmt(sin_coma(q)), "E03"), (D(q * 10), None)], pasos,
+              "El resto no es la parte decimal: se sigue dividiendo añadiendo ceros y poniendo la coma en el cociente.",
+              genericos=[D(q + F(1, 10)), D(q / 10)])
+
+
+@generador("t3_odec_08")
+def gen_odec_08(rng, d):
+    for _ in range(300):
+        nb = 1 if d == 1 else rng.randint(1, 2)
+        b = F(rng.randint(2, 99), 10 ** nb)
+        if ndec(b) != nb or b.denominator == 1:
+            continue
+        q = F(rng.randint(2, 60 if d == 1 else 400), rng.choice([1, 1, 10] if d < 3 else [1, 10, 100]))
+        a = q * b
+        if ndec(a) > 3 or ndec(q) > 2:
+            continue
+        break
+    else:
+        return None
+    k = ndec(b)
+    e01 = a / (b * 10 ** k)
+    e02 = F(sin_coma(a), sin_coma(b))
+    pasos = [("divisor natural", f"{D(a * 10 ** k)} : {D(b * 10 ** k)}", f"Multiplico dividendo y divisor por {10 ** k} para que el divisor no tenga coma: {D(a)} : {D(b)} = {D(a * 10 ** k)} : {D(b * 10 ** k)}."),
+             ("dividir", D(q), f"{D(a * 10 ** k)} : {D(b * 10 ** k)} = {D(q)}.")]
+    return mk(f"Calcula: {D(a)} : {D(b)}", D(q), "t3_odec_divdec", {"a": D(a), "b": D(b)},
+              [(D(e01) if es_dec(e01, 4) else D(e01, 2), "E01"), ((D(e02) if es_dec(e02, 4) else D(e02, 2)) if e02 != q else None, "E02"), (D(q * 10), None)], pasos,
+              "Si el divisor es decimal, se multiplican dividendo y divisor por la misma potencia de 10. Dividir entre un número menor que 1 da un resultado mayor.",
+              genericos=[D(q / 100), D(q + 1), D(q * 100)])
+
+
+@generador("t3_odec_09")
+def gen_odec_09(rng, d):
+    f_, fv = rng.choice([("0,1", F(1, 10)), ("0,01", F(1, 100)), ("0,001", F(1, 1000)), ("0,5", F(1, 2)), ("0,25", F(1, 4))])
+    div = rng.random() < 0.5
+    N = F(rng.randint(2, 400)) if d < 3 else F(rng.randint(11, 999), 10)
+    if f_ == "0,25" and not div and N.numerator % 4 and d < 3:
+        N = F(4 * rng.randint(1, 50))
+    if d == 3 and rng.random() < 0.5:
+        N = F(rng.randint(2, 99))
+        mayor = div
+        resp = f"Mayor que {D(N)}" if mayor else f"Menor que {D(N)}"
+        otro = f"Menor que {D(N)}" if mayor else f"Mayor que {D(N)}"
+        pasos = [("predecir", resp, f"{'Dividir entre' if div else 'Multiplicar por'} un número menor que 1 da un resultado {'mayor' if div else 'menor'}: {D(N)} {':' if div else '×'} {f_} = {D(N / fv if div else N * fv)}.")]
+        return mk(f"Sin calcular: el resultado de {D(N)} {':' if div else '×'} {f_}, ¿será mayor o menor que {D(N)}?", resp, "t3_odec_prediccion", {"N": D(N), "f": f_, "div": div},
+                  [(otro, "E03" if not div else None), (f"Igual a {D(N)}", None), ("Depende de si es par o impar", None)], pasos,
+                  "Multiplicar por un número entre 0 y 1 achica; dividir entre él agranda.", datos={"opciones_fijas": True})
+    r = N / fv if div else N * fv
+    equiv = {"0,1": 10, "0,01": 100, "0,001": 1000, "0,5": 2, "0,25": 4}[f_]
+    if div:
+        e01 = D(N / equiv) if f_ in ("0,1", "0,01", "0,001") else None
+        e02 = D(N / equiv) if f_ in ("0,5", "0,25") else None
+        txt = f"Dividir entre {f_} es lo mismo que multiplicar por {equiv}: {D(N)} × {equiv} = {D(r)}."
+    else:
+        e01 = D(N * equiv) if f_ in ("0,1", "0,01", "0,001") else None
+        e02 = None
+        txt = f"Multiplicar por {f_} es lo mismo que dividir entre {equiv}: {D(N)} : {equiv} = {D(r)}."
+    if not es_dec(r, 6):
+        return None
+    pasos = [("equivalencia", D(r), txt)]
+    return mk(f"Calcula de cabeza: {D(N)} {':' if div else '×'} {f_}", D(r), "t3_odec_notables", {"N": D(N), "f": f_, "div": div},
+              [(e01, "E01"), (e02, "E02"), (D(N * equiv) if not div and f_ in ("0,5", "0,25") else None, "E03"), (D(r * 10), None), (D(r / 10), None)], pasos,
+              "×0,1 = :10; ×0,5 = :2; :0,5 = ×2; :0,25 = ×4. Multiplicar por menos de 1 achica y dividir agranda.")
+
+
+# ---------------------------------------------------------------- PORCENTAJES
+
+def pct(x, nd=None):
+    return (D(x) if nd is None else D(x, nd)) + " %"
+
+
+def dnum(x, nd=2):
+    """Decimal exacto si tiene ≤ nd cifras; si no, redondeado a nd."""
+    return D(x) if es_dec(x, nd) else D(x, nd)
+
+
+@generador("t3_porc_01")
+def gen_porc_01(rng, d):
+    p = rng.randint(11, 99) if d == 1 else rng.randint(2, 99) if d == 2 else rng.choice([1, 2, 3, 4, 5, 6, 7, 8, 9, 100, 100, 1])
+    if p % 10 == 0 and d < 3:
+        p += 3
+    t = rng.choice(["frac", "cuad"] if d == 1 else ["dec", "dec", "frac"] if d == 2 else ["dec", "ambos"])
+    if t == "frac":
+        pasos = [("n de cada 100", f"{p}/100", f"{p} % significa {p} de cada 100: {p}/100.")]
+        return mk(f"Escribe el {p} % como fracción de denominador 100.", f"{p}/100", "t3_porc_sig", {"p": p, "forma": "fraccion"},
+                  [(str(p), "E02"), (f"{p}/10", "E01" if p < 10 else None), (f"100/{p}", None), (f"{100 - p}/100", None)], pasos,
+                  "El símbolo % significa «de cada 100»: n % = n/100.")
+    if t == "cuad":
+        pasos = [("contar", f"{p} %", f"De 100 cuadritos hay {p} coloreados: {p} de cada 100, es decir, el {p} %.")]
+        return mk(f"En una cuadrícula de 100 cuadritos se colorean {p}. ¿Qué porcentaje de la cuadrícula está coloreado?", f"{p} %", "t3_porc_sig", {"p": p, "forma": "cuadricula"},
+                  [(f"{100 - p} %", None), (pct(F(p, 10)), "E01"), (pct(F(p, 100)), None)], pasos,
+                  "En una cuadrícula de 100, cada cuadrito es el 1 %.")
+    if t == "dec" or p == 100:
+        resp = D(F(p, 100))
+        pasos = [("n/100", resp, f"{p} % = {p}/100 = {resp} (dividir entre 100 es correr la coma dos lugares a la izquierda).")]
+        return mk(f"Escribe el {p} % como número decimal.", resp, "t3_porc_sig", {"p": p, "forma": "decimal"},
+                  [(D(F(p, 10)), "E01" if p < 10 else None), (str(p), "E02"), (D(F(p, 10000)) if p != 100 else "0,01", "E03" if p == 100 else None), (D(F(p, 1000)), None)], pasos,
+                  "n % = n/100: el 7 % es 0,07 (siete centésimas), no 0,7. El 100 % es 1, el total.")
+    resp = f"{p}/100 = {D(F(p, 100))}"
+    pasos = [("n/100", resp, f"{p} % = {p}/100; como decimal, {p} centésimas = {D(F(p, 100))}.")]
+    return mk(f"¿Qué fracción y qué decimal corresponden al {p} %?", resp, "t3_porc_sig", {"p": p, "forma": "ambos"},
+              [(f"{p}/100 = {D(F(p, 10))}", "E01"), (f"{p}/10 = {D(F(p, 10))}", None), (f"{p}/100 = {p}", "E02")], pasos,
+              "n % = n/100 = n centésimas: el 7 % es 0,07.")
+
+
+PORC_NOT = [(F(1, 2), 50), (F(1, 4), 25), (F(3, 4), 75), (F(1, 10), 10), (F(1, 5), 20), (F(1, 100), 1), (F(2, 5), 40), (F(3, 10), 30), (F(1, 20), 5), (F(1, 1), 100)]
+
+
+@generador("t3_porc_02")
+def gen_porc_02(rng, d):
+    if d == 1:
+        f_, p = rng.choice(PORC_NOT[:9])
+        pasos = [("a denominador 100", f"{p} %", f"{fr(f_)} = {p}/100 = {p} %.")]
+        return mk(f"¿Qué porcentaje es {fr(f_)} de una cantidad?", f"{p} %", "t3_porc_equiv", {"f": fr(f_), "p": p},
+                  [(f"{f_.denominator} %", "E01"), ("1 %" if p == 10 else "50 %" if p == 20 else None, "E02"), (f"{f_.numerator + f_.denominator} %" if f_.numerator > 1 else f"{100 // f_.denominator + 10} %", None),
+                   (f"{100 - p} %" if p != 50 else "5 %", None)], pasos,
+                  "Porcentajes notables: 50 % = 1/2, 25 % = 1/4, 75 % = 3/4, 10 % = 1/10, 20 % = 1/5, 1 % = 1/100.",
+                  genericos=[f"{p * 2} %", f"{p // 2} %"])
+    if d == 2:
+        f_, p = rng.choice(PORC_NOT)
+        if rng.random() < 0.5:
+            pasos = [("simplificar", fr(f_), f"{p} % = {p}/100 = {fr(f_)} simplificando.")]
+            return mk(f"¿Qué fracción irreducible equivale al {p} %?", fr(f_), "t3_porc_equiv", {"p": p, "f": fr(f_)},
+                      [(f"1/{p}" if p not in (1, 100) else "1/10", "E01"), ("1/100" if p == 10 else "1/2" if p == 20 else None, "E02"), (f"{p}/10" if p < 10 else fr(F(p, 10)) if p != 100 else "100", None),
+                       (fr(1 - f_) if f_ != 1 else "1/100", None)], pasos,
+                      "n % = n/100 y después se simplifica: 20 % = 20/100 = 1/5.", genericos=[fr(f_ * 2), fr(f_ / 2)])
+        resp = D(F(p, 100))
+        pasos = [("n/100", resp, f"{p} % = {p}/100 = {resp}.")]
+        return mk(f"¿Qué número decimal equivale al {p} %?", resp, "t3_porc_equiv", {"p": p},
+                  [(D(F(p, 10)), None), (str(p), None), ("0,01" if p == 10 else "0,5" if p == 20 else D(F(p, 1000)), "E02" if p in (10, 20) else None)], pasos,
+                  "n % = n centésimas.", genericos=[D(F(p, 1000)), D(F(100 - p, 100)) if p != 100 else "10"])
+    den = rng.choice([4, 5, 10, 20, 25, 50])
+    n = rng.randint(1, den - 1)
+    if math.gcd(n, den) != 1:
+        n = 1
+    p = n * 100 // den
+    k = 100 // den
+    pasos = [(f"× {k}", f"{p}/100", f"Amplifico para que el denominador sea 100: {n}/{den} = {n}·{k}/{den}·{k} = {p}/100."),
+             ("porcentaje", f"{p} %", f"{p}/100 = {p} %.")]
+    return mk(f"Expresa {n}/{den} como porcentaje.", f"{p} %", "t3_porc_equiv", {"n": n, "d": den},
+              [(f"{n + den} %", "E03"), (f"{den} %", "E01"), (f"{n * den} %" if n * den != p else f"{n} %", None)], pasos,
+              "Para pasar una fracción a porcentaje se busca una equivalente con denominador 100 (o se multiplica por 100).",
+              genericos=[f"{p + 5} %", f"{100 - p} %"])
+
+
+@generador("t3_porc_03")
+def gen_porc_03(rng, d):
+    for _ in range(100):
+        if d == 1:
+            p = rng.choice([50, 25, 10])
+            N = rng.randint(2, 60) * (100 // math.gcd(p, 100)) // (1 if p != 10 else 1)
+        elif d == 2:
+            p = rng.choice([5, 15, 20, 30, 40, 60, 75, 12, 35, 45, 80, 90])
+            N = rng.randint(2, 50) * (100 // math.gcd(p, 100))
+        else:
+            p = rng.randint(3, 97)
+            N = rng.randint(100, 10000)
+            if (N * p) % 100:
+                N -= N % (100 // math.gcd(p, 100))
+        r = F(N * p, 100)
+        if N <= 10000 and N > 0 and r.denominator == 1 and N != p:
+            break
+    r = int(r)
+    e01 = F(N, p)
+    pasos = [(f"{fmt(N)} × {p} : 100", fmt(r), f"El {p} % es {p} de cada 100: {fmt(N)} × {p} = {fmt(N * p)}; y : 100 = {fmt(r)}." if d > 1 or p == 10 else
+              f"El {p} % es {'la mitad' if p == 50 else 'la cuarta parte'}: {fmt(N)} : {100 // p} = {fmt(r)}.")]
+    return mk(f"Calcula el {p} % de {fmt(N)}.", fmt(r), "porc", {"p": p, "N": N},
+              [(dnum(e01) if e01 != r else None, "E01"), (fmt(N * p), "E02"), (fmt(N - r) if N - r != r else None, "E03"), (fmt(N - p) if N - p != r else None, "E04")], pasos,
+              "r % de N = N · r / 100. El 50 % es la mitad; el 25 %, la cuarta parte; el 10 %, dividir entre 10.",
+              genericos=[fmt(r + 10), fmt(r * 2), fmt(r // 2) if r > 1 else "2"])
+
+
+CONT_VAR = [("Un abrigo de {N} € tiene un {p} % de descuento. ¿Cuánto cuesta ahora?", -1), ("Unas zapatillas de {N} € se rebajan un {p} %. ¿Cuál es el precio rebajado?", -1),
+            ("Una suscripción anual de {N} € sube un {p} %. ¿Cuánto cuesta ahora?", 1), ("Una bici cuesta {N} € y le suben el precio un {p} %. ¿Cuánto cuesta ahora?", 1),
+            ("A una factura de {N} € se le añade un {p} % de impuestos. ¿Cuánto se paga en total?", 1), ("Un juego de {N} € está rebajado un {p} %. ¿Cuánto hay que pagar?", -1)]
+
+
+@generador("t3_porc_04")
+def gen_porc_04(rng, d):
+    for _ in range(100):
+        p = rng.choice([10, 20, 25, 50]) if d == 1 else rng.choice([5, 15, 30, 40, 12, 35, 60]) if d == 2 else rng.choice([21, 8, 17, 35, 45, 4, 3])
+        N = rng.randint(2, 60) * (100 // math.gcd(p, 100)) if d < 3 else rng.randint(20, 900)
+        dif = F(N * p, 100)
+        if d < 3 and dif.denominator != 1:
+            continue
+        if d == 3 and ndec(dif) > 2:
+            continue
+        break
+    plant, s = rng.choice(CONT_VAR)
+    r = N + s * dif
+    pasos = [(f"{p} % de {N}", eur(dif), f"Calculo el {p} % de {N} €: {N} × {p} : 100 = {eur(dif)}."),
+             (f"{N} {'+' if s > 0 else '−'} {eur(dif)}", eur(r), f"{'Lo sumo' if s > 0 else 'Lo resto'} al precio inicial: {eur(r)}.")]
+    return mk(plant.format(N=fmt(N), p=p), eur(r), "t3_porc_var2", {"N": N, "p": p, "sentido": s},
+              [(eur(dif), "E01"), (eur(N + s * p) if N + s * p != r else None, "E02"), (eur(N - s * dif), "E03")], pasos,
+              "En dos pasos: primero el porcentaje (la rebaja o el aumento) y después restarlo o sumarlo a la cantidad inicial.",
+              genericos=[eur(r + 1), eur(r - 1), eur(r + dif)])
+
+
+CONT_PARTE = ["{P} de {T} alumnos aprueban el examen. ¿Qué porcentaje aprueba?", "En una bolsa hay {T} caramelos y {P} son de fresa. ¿Qué porcentaje son de fresa?",
+              "Un equipo ha ganado {P} de sus {T} partidos. ¿Qué porcentaje de partidos ha ganado?", "De {T} socios de un club, {P} practican natación. ¿Qué porcentaje practica natación?",
+              "¿Qué porcentaje representa {P} de {T}?"]
+
+
+@generador("t3_porc_05")
+def gen_porc_05(rng, d):
+    for _ in range(200):
+        T = rng.choice([20, 25, 40, 50, 80, 200, 250, 400, 500]) if d == 1 else rng.randint(12, 120) if d == 2 else rng.randint(6, 90)
+        P = rng.randint(1, T - 1)
+        v = F(P * 100, T)
+        if d < 3 and v.denominator != 1:
+            continue
+        if d == 3 and es_dec(v, 1):
+            continue
+        break
+    else:
+        return None
+    resp = pct(v) if d < 3 else pct(v, 1)
+    enun = rng.choice(CONT_PARTE).format(P=P, T=T)
+    if d == 3:
+        enun += " (Redondea a las décimas.)"
+    inv = F(T * 100, P)
+    pasos = [(f"{P}/{T} · 100", resp, f"Divido la parte entre el total y multiplico por 100: {P}/{T} · 100 = {D(v) if d < 3 else puntos(v, 3)}" + ("." if d < 3 else f" ≈ {resp}."))]
+    return mk(enun, resp, "t3_porc_que", {"P": P, "T": T},
+              [(pct(inv, 1) if not es_dec(inv, 1) else pct(inv), "E01"), (D(F(P, T), 2) + " %", "E02"), (f"{T - P} %", "E03")], pasos,
+              "Porcentaje = parte / total · 100. Primero la fracción que representa, después se pasa a porcentaje.",
+              genericos=[pct(v + 10) if d < 3 else pct(v + 10, 1), pct(100 - v) if d < 3 else pct(100 - v, 1)])
+
+
+@generador("t3_porc_06")
+def gen_porc_06(rng, d):
+    if d == 1:
+        p = rng.choice([110, 120, 125, 150, 200, 250, 300])
+        N = rng.randint(2, 40) * (100 // math.gcd(p, 100))
+        r = F(N * p, 100)
+        pasos = [(f"{fmt(N)} × {p} : 100", fmt(r), f"El {p} % es más que el total: {fmt(N)} × {p} : 100 = {fmt(r)}.")]
+        return mk(f"Calcula el {p} % de {fmt(N)}.", fmt(r), "porc", {"p": p, "N": N},
+                  [("No se puede: un porcentaje no pasa de 100", "E01"), (fmt(r - N) if r - N != N else fmt(N * p), None), (dnum(F(N * p, 1000)), None)], pasos,
+                  "Un porcentaje mayor que 100 da más que la cantidad: el 150 % de N es N y su mitad.")
+    if d == 2:
+        p = rng.choice([F(1, 2), F(1, 4), F(3, 4), F(2, 10), F(4, 10), F(8, 10), F(1, 10)])
+        N = rng.randint(2, 50) * 100 * (p.denominator // math.gcd(p.denominator, 100) or 1)
+        r = N * p / 100
+        if r.denominator != 1:
+            N *= r.denominator
+            r = N * p / 100
+        pasos = [(f"{fmt(N)} × {D(p)} : 100", dnum(r), f"{D(p)} % = {D(p)}/100 = {D(p / 100)}. {fmt(N)} × {D(p / 100)} = {dnum(r)}.")]
+        return mk(f"Calcula el {D(p)} % de {fmt(N)}.", dnum(r), "porc", {"p": D(p).replace(",", "."), "N": N},
+                  [(dnum(r * 10), "E02"), (dnum(r * 100), "E02"), (dnum(r / 10), None)], pasos,
+                  "Un porcentaje menor que 1 es menos de una centésima: el 0,5 % es la mitad del 1 %.")
+    if rng.random() < 0.5:
+        p = rng.choice([120, 125, 150, 175, 250, 300, 340, 210, 105])
+        resp = D(F(p, 100))
+        pasos = [("n/100", resp, f"{p} % = {p}/100 = {resp}.")]
+        return mk(f"Escribe el {p} % como número decimal.", resp, "t3_porc_dec", {"p": p},
+                  [(D(F(p, 1000)), "E03"), (D(F(p, 10)), "E03"), (str(p), None)], pasos, "n % = n/100 también para n > 100: 250 % = 2,5.")
+    p = rng.choice([F(4, 10), F(5, 10), F(8, 10), F(25, 100), F(3, 10), F(15, 10), F(75, 100)])
+    resp = D(p / 100)
+    pasos = [("n/100", resp, f"{D(p)} % = {D(p)}/100 = {resp}.")]
+    return mk(f"Escribe el {D(p)} % como número decimal.", resp, "t3_porc_dec", {"p": D(p)},
+              [(D(p / 10), "E03"), (D(p), "E03"), (D(p / 1000), None)], pasos, "n % = n/100 también para n < 1: 0,4 % = 0,004.")
+
+
+@generador("t3_porc_07")
+def gen_porc_07(rng, d):
+    for _ in range(100):
+        p = rng.choice([10, 20, 25, 50]) if d == 1 else rng.choice([5, 15, 30, 40, 60, 75, 12, 35]) if d == 2 else rng.randint(3, 95)
+        X = rng.randint(2, 80) * (100 // math.gcd(p, 100)) if d < 3 else rng.randint(20, 2000)
+        P = F(X * p, 100)
+        if P.denominator == 1:
+            break
+    P = int(P)
+    pasos = [(f"{P} : {p}", dnum(F(P, p)), f"Si el {p} % son {P}, el 1 % es {P} : {p} = {dnum(F(P, p))}."),
+             (f"× 100", fmt(X), f"El 100 % es 100 veces más: {fmt(X)}.")]
+    return mk(f"El {p} % de un número es {fmt(P)}. ¿Cuál es el número?", fmt(X), "t3_porc_total", {"p": p, "P": P},
+              [(dnum(F(P * p, 100)), "E01"), (fmt(P * p), "E02"), (fmt(P + p), "E03")], pasos,
+              "Problema inverso: total = parte · 100 / porcentaje (o reducir al 1 % y multiplicar por 100).",
+              genericos=[fmt(X + P), fmt(X * 2), fmt(X - P) if X > P else fmt(X + 10)])
+
+
+@generador("t3_porc_08")
+def gen_porc_08(rng, d):
+    if d == 1:
+        p = rng.choice([5, 8, 12, 15, 20, 25, 30, 35, 40, 3, 7, 21, 16, 45])
+        up = rng.random() < 0.5
+        idx = 1 + F(p, 100) if up else 1 - F(p, 100)
+        pasos = [("índice", D(idx), f"{'Aumentar' if up else 'Disminuir'} un {p} % es quedarse con el {100 + p if up else 100 - p} %: multiplicar por {D(idx)}.")]
+        return mk(f"¿Por qué número hay que multiplicar una cantidad para {'aumentarla' if up else 'disminuirla'} un {p} %?", D(idx), "t3_porc_indice", {"p": p, "sube": up},
+                  [(D(F(p, 100)), "E01"), (D(1 + F(p, 10)) if up and p < 10 else D(1 + F(p, 100)) if not up else D(F(100 + p, 10)), "E02" if up and p < 10 else None), (D(1 - F(p, 100)) if up else D(F(p, 10)), None),
+                   (str(100 + p if up else 100 - p), None)], pasos,
+                  "Índice de variación: 1 + r/100 al aumentar, 1 − r/100 al disminuir.")
+    if d == 2:
+        for _ in range(100):
+            p = rng.choice([F(35, 10), F(3), F(4), F(15), F(12), F(8), F(25, 10), F(21), F(6)])
+            N = rng.randint(40, 3000)
+            up = rng.random() < 0.5
+            idx = 1 + p / 100 if up else 1 - p / 100
+            r = N * idx
+            if ndec(r) <= 2:
+                break
+        pasos = [("índice", D(idx), f"Índice de variación: 1 {'+' if up else '−'} {D(p / 100)} = {D(idx)}."),
+                 ("multiplicar", eur(r), f"{fmt(N)} · {D(idx)} = {eur(r)}.")]
+        return mk(f"Una cantidad de {fmt(N)} € {'aumenta' if up else 'disminuye'} un {D(p)} %. Calcula la cantidad final multiplicando por el índice de variación.", eur(r), "t3_porc_indice",
+                  {"N": N, "p": D(p), "sube": up},
+                  [(eur(N * p / 100), "E01"), (eur(N * (1 + p / 10)) if up and p < 10 else eur(N * (1 - p / 100 + F(2 * p, 100))), "E02" if up and p < 10 else None), (eur(N * (1 - p / 100) if up else N * (1 + p / 100)), None)], pasos,
+                  "Cantidad final = cantidad inicial · índice (1 ± r/100). Un 3,5 % de subida es multiplicar por 1,035.",
+                  genericos=[eur(r + 1), eur(r + 10)])
+    for _ in range(100):
+        A = rng.randint(20, 400)
+        p = rng.choice([5, 10, 20, 25, 40, 50, 15, 30, 60, 75])
+        up = rng.random() < 0.6
+        B = F(A * (100 + p if up else 100 - p), 100)
+        if B.denominator == 1:
+            break
+    B = int(B)
+    e03 = F(abs(B - A) * 100, B)
+    pasos = [("variación", fmt(abs(B - A)), f"La cantidad pasa de {A} a {B}: {'sube' if up else 'baja'} {abs(B - A)}."),
+             ("respecto a la inicial", f"{p} %", f"{abs(B - A)}/{A} · 100 = {p} %: {'sube' if up else 'baja'} un {p} %.")]
+    return mk(f"Un precio pasa de {A} € a {B} €. ¿Qué porcentaje ha {'subido' if up else 'bajado'}?", f"{p} %", "t3_porc_varpct", {"A": A, "B": B},
+              [(pct(e03, 1) if not es_dec(e03, 1) else pct(e03), "E03"), (f"{abs(B - A)} %", None), (f"{100 + p if up else 100 - p} %", None)], pasos,
+              "El porcentaje de variación se calcula siempre sobre la cantidad INICIAL.")
+
+
+@generador("t3_porc_09")
+def gen_porc_09(rng, d):
+    if d == 2:
+        p = rng.choice([10, 20, 25, 30, 40, 50, 5, 15])
+        q = p if rng.random() < 0.6 else rng.choice([10, 20, 25, 30])
+        idx = (1 + F(p, 100)) * (1 - F(q, 100))
+        v = (idx - 1) * 100
+        resp = ("Sube un " if v > 0 else "Baja un ") + pct(abs(v)) if v != 0 else "Queda igual"
+        pasos = [("índices", f"{D(1 + F(p, 100))} · {D(1 - F(q, 100))}", f"Multiplico los índices: {D(1 + F(p, 100))} · {D(1 - F(q, 100))} = {D(idx)}."),
+                 ("variación total", resp, f"{D(idx)} {'< 1' if idx < 1 else '> 1'}: {resp.lower()}.")]
+        s = p - q
+        e01 = "Queda igual" if s == 0 else ("Sube un " if s > 0 else "Baja un ") + pct(abs(s))
+        return mk(f"Un precio sube un {p} % y después baja un {q} %. ¿Cuál es la variación total?", resp, "t3_porc_encad", {"p": p, "q": q},
+                  [(e01 if e01 != resp else None, "E01"), (f"Sube un {pct((1 + F(p, 100) + 1 - F(q, 100) - 1) * 100)}", "E02"), (("Baja un " if v > 0 else "Sube un ") + pct(abs(v)) if v != 0 else "Baja un 1 %", None)], pasos,
+                  "Las variaciones encadenadas se multiplican (índices), no se suman: subir y bajar un 20 % deja un 96 %.",
+                  genericos=[f"Baja un {pct(p * q // 10 or 1)}", f"Sube un {pct(p + q)}"], datos=None)
+    for _ in range(100):
+        k = 2 if d == 1 else 3
+        N = rng.choice([100, 200, 400, 500, 800, 1000, 1200, 2000, 250, 50, 80])
+        vs = [rng.choice([10, 20, 25, 50, 5]) * rng.choice([1, -1]) for _ in range(k)]
+        if all(v == vs[0] for v in vs):
+            continue
+        idx = [1 + F(v, 100) for v in vs]
+        r = N * math.prod(idx)
+        if ndec(r) <= 2:
+            break
+    txt = ", ".join(("sube un " if v > 0 else "baja un ") + f"{abs(v)} %" for v in vs[:-1]) + " y después " + ("sube un " if vs[-1] > 0 else "baja un ") + f"{abs(vs[-1])} %"
+    e01 = N * (1 + F(sum(vs), 100))
+    e02 = N * sum(idx)
+    e03 = N * idx[0] + N * F(vs[1], 100) if k == 2 else N * idx[0] * idx[1] + N * F(vs[2], 100)
+    pasos = [("índices", " · ".join(D(i) for i in idx), "Cada variación es un índice: " + ", ".join(D(i) for i in idx) + "."),
+             ("multiplicar", eur(r), f"{fmt(N)} · " + " · ".join(D(i) for i in idx) + f" = {eur(r)}.")]
+    return mk(f"Un artículo de {fmt(N)} € {txt}. ¿Cuál es el precio final?", eur(r), "t3_porc_encad", {"N": N, "vs": vs},
+              [(eur(e01) if e01 != r else None, "E01"), (eur(e02), "E02"), (eur(e03) if e03 != r and e03 != e01 else None, "E03")], pasos,
+              "Cada porcentaje se aplica sobre la cantidad que hay en ese momento: se multiplican los índices.",
+              genericos=[eur(r + 10), eur(r * F(11, 10))])
+
+
+@generador("t3_porc_10")
+def gen_porc_10(rng, d):
+    for _ in range(200):
+        tipo = rng.choice(["desc", "iva", "sube"] if d > 1 else ["desc", "sube"])
+        p = 21 if tipo == "iva" else rng.choice([10, 15, 20, 25, 30, 40]) if d < 3 else rng.choice([12, 35, 8, 16, 18, 22])
+        I = rng.randint(10, 300) if d < 3 else rng.randint(20, 900)
+        idx = 1 + F(p, 100) if tipo != "desc" else 1 - F(p, 100)
+        Fi = I * idx
+        if ndec(Fi) <= 2:
+            break
+    if tipo == "desc":
+        enun = f"Tras una rebaja del {p} % se pagan {eur(Fi)}. ¿Cuál era el precio antes de la rebaja?"
+        e01 = Fi * (1 + F(p, 100))
+    elif tipo == "iva":
+        enun = f"Un producto cuesta {eur(Fi)} con el 21 % de IVA incluido. ¿Cuál es su precio sin IVA?"
+        e01 = Fi * F(79, 100)
+    else:
+        enun = f"Tras subir un {p} %, una entrada cuesta {eur(Fi)}. ¿Cuánto costaba antes de la subida?"
+        e01 = Fi * (1 - F(p, 100))
+    pasos = [("índice", D(idx), f"Índice de variación: {D(idx)}. Final = inicial · {D(idx)}."),
+             ("dividir", eur(I), f"Inicial = final : índice = {D(Fi)} : {D(idx)} = {eur(I)}.")]
+    return mk(enun, eur(I), "t3_porc_inicial", {"F": D(Fi), "p": p, "tipo": tipo},
+              [(eur(redondear(e01, 2)), "E01"), (eur(redondear(Fi * idx, 2)), "E02"), (eur(redondear(Fi - Fi * F(p, 100) if tipo != "desc" else Fi + Fi * F(p, 100), 2)) if tipo == "iva" or True else None, "E03" if tipo == "iva" else None)], pasos,
+              "Para volver a la cantidad inicial se DIVIDE la final entre el índice de variación; aplicar el porcentaje contrario al final no sirve.",
+              genericos=[eur(I + 5), eur(I - 5)])
+
+
+@generador("t3_porc_11")
+def gen_porc_11(rng, d):
+    for _ in range(200):
+        C = rng.choice([500, 1000, 1200, 1500, 2000, 2500, 3000, 4000, 5000, 6000, 8000, 10000, 12000, 20000])
+        r = rng.choice([F(2), F(3), F(4), F(5), F(25, 10), F(35, 10), F(6), F(15, 10)])
+        if d == 1:
+            t, u, tt = rng.randint(1, 6), "años", None
+            ta = F(t)
+        elif rng.random() < 0.6 or d == 3:
+            t, u = rng.choice([3, 4, 6, 8, 9, 10, 18]), "meses"
+            ta = F(t, 12)
+        else:
+            t, u = rng.choice([30, 45, 60, 90, 120, 180, 240]), "días"
+            ta = F(t, 360)
+        I = C * r * ta / 100
+        if ndec(I) > 2:
+            continue
+        break
+    else:
+        return None
+    ttxt = f"{t} {u}" if not (t == 1 and u == "años") else "1 año"
+    conv = "" if u == "años" else f" (el tiempo en años: {t}/{12 if u == 'meses' else 360})"
+    if d < 3:
+        pregunta_final = rng.random() < 0.3
+        resp = eur(C + I) if pregunta_final else eur(I)
+        pasos = [("I = C·r·t/100", eur(I), f"I = {fmt(C)} · {D(r)} · {fr(ta)} / 100 = {eur(I)}{conv}.")] + ([("capital final", eur(C + I), f"Capital final = {fmt(C)} + {D(I)} = {eur(C + I)}.")] if pregunta_final else [])
+        enun = f"Se depositan {fmt(C)} € al {D(r)} % de interés simple anual durante {ttxt}. " + ("¿Cuál es el capital final?" if pregunta_final else "¿Qué interés se obtiene?")
+        e01 = C * r * t / 100
+        return mk(enun, resp, "t3_interes_simple", {"C": C, "r": D(r), "t": t, "u": u},
+                  [(eur(e01 + (C if pregunta_final else 0)) if u != "años" else None, "E01"), (eur(C * r * ta + (C if pregunta_final else 0)), "E02"), (eur(I) if pregunta_final else eur(C + I), "E03")], pasos,
+                  "Interés simple: I = C · r · t / 100 con t en años (meses/12, días/360). El capital final es C + I.",
+                  genericos=[eur(I * 2), eur(I + 10)])
+    I = C * r * ta / 100
+    pasos = [("despejar C", eur(C), f"De I = C · r · t / 100: C = 100 · I / (r · t) = 100 · {D(I)} / ({D(r)} · {fr(ta)}) = {eur(C)}{conv}.")]
+    e01 = 100 * I / (r * t)
+    return mk(f"¿Qué capital, al {D(r)} % de interés simple anual, produce {eur(I)} de intereses en {ttxt}?", eur(C), "t3_interes_simple", {"I": D(I), "r": D(r), "t": t, "u": u, "pide": "C"},
+              [(eur(redondear(e01, 2)), "E01"), (eur(redondear(I / (r * ta), 2)), "E02"), (eur(C + I), "E03")], pasos,
+              "Se despeja C de I = C·r·t/100, con t en años.", genericos=[eur(C * 2), eur(C + 100)])
+
+
+@generador("t3_porc_12")
+def gen_porc_12(rng, d):
+    C = rng.choice([1000, 2000, 3000, 4000, 5000, 6000, 8000, 10000, 15000, 20000])
+    r = rng.choice([2, 3, 4, 5, 6, F(25, 10), F(35, 10)])
+    t = rng.randint(2, 8)
+    k, nom = (1, "anual") if d == 1 else rng.choice([(2, "semestral"), (4, "trimestral")]) if d == 2 else rng.choice([(12, "mensual"), (4, "trimestral"), (2, "semestral")])
+    i = F(r) / 100 / k
+    Cf = C * (1 + i) ** (k * t)
+    e01 = C * (1 + F(r) / 100 * t)
+    e02 = C * (1 + F(r) / 100) ** (k * t)
+    e03 = C * (1 + F(r) / 100) * t
+    cap = "" if k == 1 else f" con capitalización {nom}"
+    pasos = [("rédito por periodo", D(i * 100) + " %", f"El {D(r)} % anual{cap} da un rédito por periodo de {D(r)}/{k} = {D(i * 100)} %." if k > 1 else f"Rédito anual: {D(r)} %."),
+             ("periodos", str(k * t), f"Número de periodos: {k} · {t} = {k * t}."),
+             ("Cf = C(1 + i)ⁿ", eur(redondear(Cf, 2)), f"Cf = {fmt(C)} · {D(1 + i)}^{k * t} ≈ {eur(redondear(Cf, 2))}.")]
+    return mk(f"Se invierten {fmt(C)} € al {D(r)} % anual de interés compuesto{cap} durante {t} años. ¿Cuál es el capital final?", eur(redondear(Cf, 2)), "t3_interes_compuesto",
+              {"C": C, "r": D(r), "t": t, "k": k},
+              [(eur(redondear(e01, 2)), "E01"), (eur(redondear(e02, 2)) if k > 1 else None, "E02"), (eur(redondear(e03, 2)), "E03")], pasos,
+              "Interés compuesto: Cf = C·(1 + i)ⁿ, con i el rédito de cada periodo (anual/k) y n el número de periodos (k·años).",
+              genericos=[eur(redondear(Cf - C, 2)), eur(redondear(Cf * F(101, 100), 2))])
+
+
+@generador("t3_porc_13")
+def gen_porc_13(rng, d):
+    k, nom = (2, "semestral") if d == 1 else (4, "trimestral") if d == 2 else (12, "mensual")
+    r = rng.choice([F(x, 10) for x in range(15, 121, 5)])
+    i = r / 100
+    tae = ((1 + i / k) ** k - 1) * 100
+    e03 = ((1 + i) ** k - 1) * 100
+    pasos = [("rédito por periodo", D(r / k, 4) if not es_dec(r / k, 4) else D(r / k), f"Cada periodo: {D(r)} % / {k} = {D(r / k) if es_dec(r / k, 4) else D(r / k, 4)} %."),
+             ("TAE = (1 + i/k)^k − 1", pct(tae, 2), f"TAE = (1 + {D(i / k) if es_dec(i / k, 6) else D(i / k, 6)})^{k} − 1 ≈ {D(tae / 100, 4)} → {pct(tae, 2)}.")]
+    return mk(f"Un depósito ofrece un interés nominal del {D(r)} % anual con capitalización {nom}. ¿Cuál es su TAE?", pct(tae, 2), "t3_tae", {"r": D(r), "k": k},
+              [(pct(r, 2), "E01"), (pct(tae + 100, 2), "E02"), (pct(e03, 2), "E03")], pasos,
+              "La TAE es el interés anual equivalente: (1 + i/k)^k − 1. Siempre es algo mayor que el nominal si hay capitalización fraccionada.",
+              genericos=[pct(tae + F(1, 10), 2), pct(tae - F(1, 10), 2)])
+
+
+@generador("t3_porc_14")
+def gen_porc_14(rng, d):
+    C = rng.choice([3000, 5000, 6000, 8000, 10000, 12000, 15000, 18000, 20000, 25000, 30000])
+    r = rng.choice([3, 4, 5, 6, 7, 8, F(45, 10), F(55, 10)])
+    anios = rng.randint(2, 5) if d < 3 else rng.randint(5, 15)
+    k = 1 if d == 1 else 12
+    i = float(F(r) / 100 / k)
+    n = anios * k
+    a = C * i / (1 - (1 + i) ** -n)
+    e01 = C * float(F(r) / 100) / (1 - (1 + float(F(r) / 100)) ** -n)
+    e02 = C / n
+    e03 = C * i / ((1 + i) ** n - 1)
+    f2 = lambda x: eur(redondear(F(x).limit_denominator(10 ** 9), 2))
+    per = "anuales" if k == 1 else "mensuales"
+    pasos = [("i y n por periodo", f"i = {D(F(r) / 100 / k, 6) if not es_dec(F(r) / 100 / k, 6) else D(F(r) / 100 / k)}; n = {n}",
+              f"Rédito por periodo i = {D(r)}/100" + (f"/12" if k == 12 else "") + f"; número de cuotas n = {n}."),
+             ("a = C·i / (1 − (1 + i)^−n)", f2(a), f"a = {fmt(C)} · i / (1 − (1 + i)^−{n}) ≈ {f2(a)}.")]
+    return mk(f"Se pide un préstamo de {fmt(C)} € al {D(r)} % anual, a devolver en {anios} años con cuotas {per} constantes. ¿Cuál es la cuota?", f2(a), "t3_prestamo",
+              {"C": C, "r": D(r), "anios": anios, "k": k},
+              [(f2(e01) if k > 1 else None, "E01"), (f2(e02), "E02"), (f2(e03), "E03"), (f2(a * 1.1), None)], pasos,
+              "Cuota del sistema francés: a = C·i / (1 − (1 + i)^−n), con i y n referidos al mismo periodo que las cuotas.")
+
+
+# ---------------------------------------------------------------- PROPORCIONALIDAD
+
+def tabla_txt(pares):
+    return "; ".join(f"{dnum(x)} → {dnum(y)}" for x, y in pares)
+
+
+SIT_PROP = [("Los kilos de naranjas que compras y lo que pagas (a precio fijo por kilo)", "d"), ("El número de entradas de cine y su precio total", "d"),
+            ("Los litros de gasolina y lo que cuestan", "d"), ("Las horas trabajadas y el sueldo, cobrando lo mismo por hora", "d"),
+            ("Los metros de tela y su precio", "d"), ("Los huevos de una receta y los comensales", "d"),
+            ("La edad de una persona y su altura", "n"), ("Los kilómetros de un taxi y lo que cuesta, con bajada de bandera", "n1"),
+            ("El número de hermanos y el número de zapatos que hay en casa, con tus padres", "n1"), ("La tarifa de un gimnasio con cuota de inscripción y los meses que vas", "n1"),
+            ("El número de obreros y los días que tardan en hacer una obra", "i"), ("La velocidad de un coche y el tiempo que tarda en un mismo viaje", "i"),
+            ("El peso de un bebé y su edad en meses", "n"), ("La nota de un examen y las horas que has dormido", "n")]
+
+
+@generador("t3_prop_01")
+def gen_prop_01(rng, d):
+    SI = "Sí, es de proporcionalidad directa"
+    NO = "No es de proporcionalidad directa"
+    if d == 3:
+        sit, t = rng.choice(SIT_PROP)
+        OPC = {"d": "Sí, son directamente proporcionales", "i": "No: son inversamente proporcionales", "n": "No son proporcionales",
+               "n1": "No son proporcionales", "falso": "Sí, porque cuando una aumenta, la otra también"}
+        resp = OPC[t]
+        if t == "d":
+            dist = [(OPC["i"], "E03"), (OPC["n"], None), ("No se puede saber sin una tabla", None)]
+            txt = "Al doble de una, doble de la otra: el cociente es constante."
+        elif t == "i":
+            dist = [("Sí, son directamente proporcionales", "E03"), (OPC["n"], None), (OPC["falso"], None)]
+            txt = "Cuando una se duplica, la otra se reduce a la mitad: es proporcionalidad inversa, no directa."
+        else:
+            dist = [(OPC["falso"], "E01"), (OPC["d"], "E01" if t == "n1" else None), (OPC["i"], None)]
+            txt = "Aunque las dos crezcan, al doble de una no le corresponde el doble de la otra." if t == "n1" else "No hay una relación fija: al doble de una no le corresponde el doble de la otra."
+        pasos = [("¿al doble, doble?", resp, txt)]
+        return mk(f"¿Son directamente proporcionales estas magnitudes? {sit}.", resp, "t3_prop_reconocer", {"situacion": sit}, dist, pasos,
+                  "Directa: al doble, doble; al triple, triple (cociente constante). Que las dos crezcan no basta.", datos={"opciones_fijas": True})
+    k = rng.choice([F(2), F(3), F(5), F(4), F(25, 10), F(15, 10), F(6), F(12)])
+    xs = sorted(rng.sample(range(1, 12), 3))
+    prop = rng.random() < 0.5
+    if prop:
+        ys = [x * k for x in xs]
+        pasos = [("cocientes", D(k), "Divido cada valor de abajo entre el de arriba: " + ", ".join(f"{dnum(y)} : {x} = {D(k)}" for x, y in zip(xs, ys)) + ". Siempre igual: es proporcional.")]
+        return mk(f"¿Es de proporcionalidad directa esta tabla? {tabla_txt(zip(xs, ys))}", f"{SI} (constante {D(k)})", "t3_prop_reconocer", {"xs": xs, "ys": [D(y) for y in ys]},
+                  [(f"{NO}: las diferencias no son iguales", "E02"), ("No: es de proporcionalidad inversa", "E03"), (f"{SI} (constante {D(k + 1)})", None)], pasos,
+                  "Se comprueba que el cociente y/x es siempre el mismo (la constante de proporcionalidad).", datos={"opciones_fijas": True})
+    c = rng.choice([1, 2, 3, 5])
+    ys = [x * k + c for x in xs]
+    step = xs[1] - xs[0]
+    if d == 1:
+        xs = [xs[0], xs[0] + step, xs[0] + 2 * step]
+        ys = [x * k + c for x in xs]
+    pasos = [("cocientes", NO, "Divido cada valor de abajo entre el de arriba: " + ", ".join(f"{dnum(y)} : {x} = {dnum(F(y) / x)}" for x, y in zip(xs, ys)) + ". No son iguales: no es proporcional.")]
+    return mk(f"¿Es de proporcionalidad directa esta tabla? {tabla_txt(zip(xs, ys))}", NO, "t3_prop_reconocer", {"xs": xs, "ys": [D(y) for y in ys]},
+              [(f"Sí: siempre suma {dnum(ys[1] - ys[0])}" if d == 1 else f"{SI}: cuando una crece, la otra también", "E02" if d == 1 else "E01"),
+               (f"{SI}: cuando una crece, la otra también", "E01") if d == 1 else ("No: es de proporcionalidad inversa", "E03"), (f"{SI} (constante {dnum(F(ys[0]) / xs[0])})", None)], pasos,
+              "Para que sea directa, el cociente tiene que ser constante; que aumente siempre lo mismo (diferencia constante) no basta.", datos={"opciones_fijas": True})
+
+
+OBJ_PRECIO = [("cuadernos", "cuestan"), ("kilos de manzanas", "cuestan"), ("bolígrafos", "cuestan"), ("entradas", "cuestan"), ("litros de zumo", "cuestan"), ("metros de cable", "cuestan")]
+
+
+@generador("t3_prop_02")
+def gen_prop_02(rng, d):
+    for _ in range(100):
+        a = rng.randint(2, 12)
+        u = F(rng.randint(2, 30)) if d == 1 else F(rng.randint(105, 995), 100) if d == 2 else F(rng.randint(12, 250), 10)
+        c = rng.randint(2, 20)
+        if c == a:
+            continue
+        b, r = a * u, c * u
+        if ndec(b) <= 2 and ndec(r) <= 2:
+            break
+    if d == 3:
+        xs = sorted(rng.sample(range(1, 15), 3))
+        if c in xs:
+            c = max(xs) + 1
+        pares = [(x, x * u) for x in xs]
+        r = c * u
+        pasos = [("constante", dnum(u), f"Constante de proporcionalidad: {dnum(pares[0][1])} : {xs[0]} = {dnum(u)}."),
+                 (f"{c} × {dnum(u)}", dnum(r), f"El valor que falta: {c} × {dnum(u)} = {dnum(r)}.")]
+        return mk(f"Completa la tabla de proporcionalidad directa: {tabla_txt(pares)}; {c} → ?", dnum(r), "t3_prop_tabla", {"pares": [[x, D(y)] for x, y in pares], "x": c},
+                  [(dnum(pares[-1][1] + (c - xs[-1])), "E01"), (dnum(u), "E03"), (dnum(r + u), None)], pasos,
+                  "En una tabla de proporcionalidad directa todos los pares tienen el mismo cociente: se halla y se multiplica.",
+                  genericos=[dnum(r - u), dnum(r * 2)])
+    o, v = rng.choice(OBJ_PRECIO)
+    pasos = [("valor unitario", eur(u), f"Reduzco a la unidad: {eur(b)} : {a} = {eur(u)} cada uno."),
+             (f"{c} × {dnum(u)}", eur(r), f"Para {c}: {c} × {dnum(u)} = {eur(r)}.")]
+    return mk(f"Si {a} {o} {v} {eur(b)}, ¿cuánto {v} {c} {o}?", eur(r), "t3_prop_unidad", {"a": a, "b": D(b), "c": c},
+              [(eur(b + (c - a)) if b + (c - a) > 0 else None, "E01"), (eur(redondear(F(a) / b * c, 2)), "E02"), (eur(u), "E03")], pasos,
+              "Reducción a la unidad: primero lo que corresponde a 1 (dividiendo) y después se multiplica.",
+              genericos=[eur(r + u), eur(r - u)])
+
+
+@generador("t3_prop_03")
+def gen_prop_03(rng, d):
+    if d == 1:
+        E = rng.choice([50, 100, 200, 250, 500, 1000])
+        pl = rng.randint(2, 20)
+        real = F(pl * E, 100)
+        pasos = [("× escala", f"{fmt(pl * E)} cm", f"Cada cm del plano son {E} cm reales: {pl} × {E} = {fmt(pl * E)} cm."),
+                 ("a metros", f"{dnum(real)} m", f"{fmt(pl * E)} cm = {dnum(real)} m.")]
+        return mk(f"En un plano a escala 1:{fmt(E)}, una pared mide {pl} cm. ¿Cuánto mide en la realidad?", f"{dnum(real)} m", "t3_escala", {"E": E, "plano": pl},
+                  [(f"{dnum(F(pl, E) / 100)} m", "E01"), (f"{fmt(pl * E)} m", "E02"), (f"{dnum(real / 10)} m", None)], pasos,
+                  "Escala 1:n: 1 cm del plano son n cm reales. Después se cambia de unidad.", genericos=[f"{dnum(real * 10)} m"])
+    if d == 2:
+        E = rng.choice([10000, 20000, 25000, 50000, 100000, 200000, 250000, 500000, 1000000])
+        pl = F(rng.randint(10, 150), 10)
+        km = pl * E / 100000
+        if ndec(km) > 3:
+            return None
+        pasos = [("× escala", f"{D(pl * E)} cm", f"{D(pl)} cm × {fmt(E)} = {D(pl * E)} cm reales."),
+                 ("a km", f"{D(km)} km", f"1 km = 100 000 cm: {D(pl * E)} cm = {D(km)} km.")]
+        return mk(f"En un mapa a escala 1:{fmt(E)}, dos pueblos están a {D(pl)} cm. ¿Qué distancia real los separa?", f"{D(km)} km", "t3_escala", {"E": E, "plano": D(pl)},
+                  [(f"{D(pl * E)} km", "E02"), (f"{D(km * 10)} km", "E02"), (f"{D(pl / E, 8) if False else dnum(pl * E / 1000)} km", None)], pasos,
+                  "Distancia real = distancia en el mapa × escala; después se pasa de cm a km (÷ 100 000).", genericos=[f"{D(km / 10)} km"])
+    E = rng.choice([50, 100, 200, 500, 1000, 2000, 5000])
+    pl = rng.randint(2, 15)
+    real_m = F(pl * E, 100)
+    pasos = [("a cm", f"{fmt(pl * E)} cm", f"Paso la medida real a cm: {dnum(real_m)} m = {fmt(pl * E)} cm."),
+             ("escala", f"1:{fmt(E)}", f"{pl} cm del plano son {fmt(pl * E)} cm reales: 1 cm son {fmt(pl * E)} : {pl} = {fmt(E)} cm. Escala 1:{fmt(E)}.")]
+    return mk(f"En un plano, {pl} cm representan {dnum(real_m)} m reales. ¿Cuál es la escala?", f"1:{fmt(E)}", "t3_escala", {"plano": pl, "real_m": D(real_m)},
+              [(f"{fmt(E)}:1", "E03"), (f"1:{dnum(F(E, 100))}", "E02"), (f"1:{fmt(pl * E)}", None)], pasos,
+              "Para hallar la escala, las dos medidas en la misma unidad; escala = 1 : (real/plano).", genericos=[f"1:{fmt(E * 10)}"])
+
+
+@generador("t3_prop_04")
+def gen_prop_04(rng, d):
+    if d == 1:
+        for _ in range(100):
+            a, b = rng.randint(2, 30), rng.randint(2, 30)
+            if a != b and math.gcd(a, b) > 1:
+                break
+        g = math.gcd(a, b)
+        grupo = rng.choice([("chicos", "chicas", "clase"), ("perros", "gatos", "refugio"), ("rojas", "azules", "caja")])
+        resp = f"{a // g}/{b // g}"
+        pasos = [("razón a/b", f"{a}/{b}", f"Razón de {grupo[0]} a {grupo[1]}: {a}/{b} (primero lo que se nombra primero)."),
+                 ("simplificar", resp, f"Simplifico: {resp}.")]
+        return mk(f"En una {grupo[2]} hay {a} {grupo[0]} y {b} {grupo[1]}. ¿Cuál es la razón (simplificada) entre {grupo[0]} y {grupo[1]}?", resp, "t3_razon", {"a": a, "b": b},
+                  [(f"{b // g}/{a // g}", "E01"), (f"{a // g}/{(a + b) // g}" if (a + b) % g == 0 else f"{a}/{a + b}", None), (f"{a - b}/{b}" if a > b else f"{a}/{b - a}", None)], pasos,
+                  "La razón a/b compara la primera cantidad con la segunda, en ese orden.")
+    if d == 2:
+        a, b = rng.randint(2, 12), rng.randint(2, 12)
+        k = rng.randint(2, 5)
+        es = rng.random() < 0.5
+        c, dd = (a * k, b * k) if es else (a + k, b + k)
+        OP = {True: f"Sí, porque {a} · {dd} = {b} · {c}", False: f"No, porque {a} · {dd} ≠ {b} · {c}"}
+        if a == b:
+            return None
+        resp = OP[es]
+        pasos = [("productos cruzados", resp, f"{a} · {dd} = {a * dd} y {b} · {c} = {b * c}: {'iguales, forman proporción' if es else 'distintos, no forman proporción'}.")]
+        return mk(f"¿Forman proporción {a}/{b} y {c}/{dd}?", resp, "t3_proporcion", {"a": a, "b": b, "c": c, "d": dd},
+                  [(OP[not es], None), (f"Sí, porque {b} − {a} = {dd} − {c}" if not es else f"No, porque {b} − {a} ≠ {dd} − {c}", "E03" if not es else None), ("Solo si los cuatro números son pares", None)], pasos,
+                  "a/b = c/d forman proporción si a·d = b·c (productos cruzados). Las diferencias no sirven.", datos={"opciones_fijas": True})
+    for _ in range(100):
+        b = F(rng.randint(2, 20)) if rng.random() < 0.6 else F(rng.randint(15, 95), 10)
+        c, dd = rng.randint(2, 30), rng.randint(2, 30)
+        x = b * c / dd
+        if c != dd and ndec(x) <= 2 and x.denominator != 3:
+            break
+    pasos = [("productos cruzados", f"x · {dd} = {dnum(b)} · {c}", f"x/{dnum(b)} = {c}/{dd} → x · {dd} = {dnum(b)} · {c} = {dnum(b * c)}."),
+             ("despejar", dnum(x), f"x = {dnum(b * c)} : {dd} = {dnum(x)}.")]
+    return mk(f"Calcula x en la proporción x/{dnum(b)} = {c}/{dd}.", dnum(x), "t3_proporcion", {"b": D(b), "c": c, "d": dd},
+              [(dnum(b * dd / c), "E02"), (dnum(F(c * dd) / b), None), (dnum(b + c - dd) if b + c - dd > 0 else dnum(x + 1), None)], pasos,
+              "Cuarto proporcional: productos cruzados (a·d = b·c) y se despeja.", genericos=[dnum(x * 2), dnum(x + 1)])
+
+
+CTX_DIR = [("Si {a} kg de {o} cuestan {b} €, ¿cuánto cuestan {c} kg?", "€", ["peras", "fresas", "queso", "café"]),
+           ("Un coche recorre {b} km en {a} horas a velocidad constante. ¿Cuántos km recorre en {c} horas?", "km", [""]),
+           ("Una receta para {a} personas lleva {b} g de harina. ¿Cuánta harina hace falta para {c} personas?", "g", [""]),
+           ("Un grifo echa {b} litros en {a} minutos. ¿Cuántos litros echa en {c} minutos?", "l", [""])]
+
+
+@generador("t3_prop_05")
+def gen_prop_05(rng, d):
+    if d == 3:
+        for _ in range(100):
+            tasa = rng.choice([F(108, 100), F(112, 100), F(85, 100), F(125, 100), F(150, 100), F(90, 100)])
+            X = rng.randint(20, 600)
+            eu = X / tasa
+            if ndec(redondear(eu, 2)) <= 2:
+                break
+        mon = "$" if tasa > 1 else "£"
+        eu2 = redondear(eu, 2)
+        pasos = [("regla de tres", f"x = {X} · 1 / {D(tasa)}", f"1 € → {D(tasa)} {mon}; x € → {X} {mon}. x = {X} : {D(tasa)}."),
+                 ("resultado", eur(eu2), f"x ≈ {eur(eu2)}.")]
+        return mk(f"Si 1 € = {D(tasa)} {mon}, ¿cuántos euros son {X} {mon}? (Redondea a los céntimos.)", eur(eu2), "t3_regla3_directa", {"tasa": D(tasa), "X": X},
+                  [(eur(redondear(X * tasa, 2)), "E03"), (eur(redondear(eu * 10, 2)), None), (eur(X), None)], pasos,
+                  "Con divisas, se plantea la regla de tres y se comprueba el sentido: si 1 € vale más de 1 $, habrá menos euros que dólares.",
+                  genericos=[eur(eu2 + 1), eur(eu2 - 1)])
+    for _ in range(100):
+        a = rng.randint(2, 12)
+        u = F(rng.randint(2, 40)) if d == 1 else F(rng.randint(15, 95), 10)
+        c = rng.randint(2, 20)
+        b, r = a * u, c * u
+        if c != a and ndec(b) <= 2 and ndec(r) <= 2 and ndec(F(a * c) / b) <= 6:
+            break
+    plant, un, objs = rng.choice(CTX_DIR)
+    enun = plant.format(a=a, b=dnum(b), c=c, o=rng.choice(objs))
+    e01 = F(a * c) / b
+    e02 = b * a / c
+    pasos = [("proporción", f"{a}/{dnum(b)} = {c}/x", f"Es directa (más cantidad, más {un}): {a} → {dnum(b)}; {c} → x."),
+             ("x = b·c/a", f"{dnum(r)} {un}", f"x = {dnum(b)} · {c} / {a} = {dnum(r)} {un}.")]
+    return mk(enun, f"{dnum(r)} {un}", "t3_regla3_directa", {"a": a, "b": D(b), "c": c},
+              [(f"{dnum(e01)} {un}", "E01"), (f"{dnum(e02)} {un}" if e02 != r else None, "E02"), (f"{dnum(b + c - a)} {un}" if b + c - a > 0 else None, None)], pasos,
+              "Regla de tres directa: x = b · c / a. Se comprueba que el resultado tiene sentido (más cantidad → más precio).",
+              genericos=[f"{dnum(r + u)} {un}", f"{dnum(r * 2)} {un}"])
+
+
+@generador("t3_prop_06")
+def gen_prop_06(rng, d):
+    for _ in range(100):
+        K = rng.choice([12, 24, 36, 48, 60, 72, 120, 180, 240, 360])
+        divs = [x for x in range(1, K + 1) if K % x == 0 and x <= 30]
+        xs = sorted(rng.sample(divs, 3))
+        if len(set(xs)) == 3:
+            break
+    pares = [(x, K // x) for x in xs]
+    if d == 1:
+        inv = rng.random() < 0.5
+        if inv:
+            pasos = [("productos", str(K), "Multiplico cada pareja: " + ", ".join(f"{x} · {y} = {x * y}" for x, y in pares) + f". El producto es constante ({K}): inversa.")]
+            return mk(f"¿Qué tipo de relación hay en esta tabla? {tabla_txt(pares)}", "Proporcionalidad inversa", "t3_prop_inv", {"pares": pares},
+                      [("Proporcionalidad directa", None), ("No son proporcionales", None), ("Proporcionalidad inversa solo en los dos primeros valores", None)], pasos,
+                      "Inversa: el producto x·y es constante (al doble, la mitad).", datos={"opciones_fijas": True})
+        a0 = rng.randint(1, 3)
+        y0 = rng.randint(12, 30)
+        st = rng.randint(1, 3)
+        pares = [(a0 + i, y0 - st * 2 * i) for i in range(3)]
+        pasos = [("productos", "No", "Multiplico cada pareja: " + ", ".join(f"{x} · {y} = {x * y}" for x, y in pares) + ". No es constante: no es inversa (disminuye, pero restando siempre lo mismo).")]
+        return mk(f"¿Qué tipo de relación hay en esta tabla? {tabla_txt(pares)}", "No son proporcionales", "t3_prop_inv", {"pares": pares},
+                  [("Proporcionalidad inversa", "E01"), ("Proporcionalidad directa", None), ("Proporcionalidad inversa solo en los dos primeros valores", None)], pasos,
+                  "Que una magnitud baje cuando la otra sube no basta: en la inversa el producto es constante.", datos={"opciones_fijas": True})
+    x0, y0 = pares[0]
+    nuevo = rng.choice([x for x in range(1, 61) if K % x == 0 and x not in xs and K // x > 0] or [None])
+    if nuevo is None:
+        return None
+    r = K // nuevo
+    base = pares[:2] if d == 2 else pares
+    pasos = [("constante", str(K), f"El producto es constante: {x0} · {y0} = {K}."),
+             (f"{K} : {nuevo}", str(r), f"Para {nuevo}: {K} : {nuevo} = {r}.")]
+    return mk(f"Completa la tabla de proporcionalidad inversa: {tabla_txt(base)}; {nuevo} → ?", str(r), "t3_prop_inv", {"pares": base, "x": nuevo},
+              [(dnum(F(y0 * nuevo, x0)), "E02"), (str(y0 - (nuevo - x0)) if y0 - (nuevo - x0) > 0 and y0 - (nuevo - x0) != r else None, "E03"), (str(r + 1), None), (str(r * 2), None)], pasos,
+              "En la proporcionalidad inversa se multiplica cada pareja: siempre da lo mismo. El valor que falta es constante : x.")
+
+
+CTX_INV = [("{a} obreros tardan {b} días en hacer una obra. ¿Cuántos días tardarían {c} obreros?", "días"),
+           ("{a} grifos iguales llenan un depósito en {b} horas. ¿Cuántas horas tardarían {c} grifos?", "horas"),
+           ("Con {a} máquinas iguales se hace un pedido en {b} horas. ¿Cuántas horas se tarda con {c} máquinas?", "horas"),
+           ("Un pienso alcanza para {a} caballos durante {b} días. ¿Para cuántos días alcanza si hay {c} caballos?", "días")]
+
+
+@generador("t3_prop_07")
+def gen_prop_07(rng, d):
+    if d == 3:
+        for _ in range(200):
+            v1, v2 = rng.choice([60, 72, 80, 90, 100, 120]), rng.choice([60, 72, 80, 90, 100, 120])
+            mins = rng.choice([75, 90, 105, 135, 150, 165, 45, 100])
+            dist_ = F(v1 * mins, 60)
+            t2 = dist_ / v2 * 60
+            if v1 != v2 and t2.denominator == 1 and t2 > 0:
+                break
+        else:
+            return None
+        h1 = f"{mins // 60} h {mins % 60} min" if mins % 60 else f"{mins // 60} h"
+        t2 = int(t2)
+        h2 = f"{t2 // 60} h {t2 % 60} min" if t2 % 60 else f"{t2 // 60} h"
+        if t2 < 60:
+            h2 = f"{t2} min"
+        if mins < 60:
+            h1 = f"{mins} min"
+        mal = F(mins // 60) + F(mins % 60, 100)
+        e02 = mal * v1 / v2
+        e02t = f"{D(e02, 2)} h"
+        pasos = [("a minutos", f"{mins} min", f"Paso el tiempo a minutos: {h1} = {mins} min."),
+                 ("inversa", f"{mins} · {v1} / {v2}", f"A más velocidad, menos tiempo (inversa): t = {mins} · {v1} / {v2} = {t2} min."),
+                 ("resultado", h2, f"{t2} min = {h2}.")]
+        return mk(f"A {v1} km/h, un viaje dura {h1}. ¿Cuánto dura a {v2} km/h?", h2, "t3_regla3_inversa", {"v1": v1, "v2": v2, "min": mins},
+                  [(e02t, "E02"), ((lambda t: f"{t // 60} h {t % 60} min" if t % 60 else f"{t // 60} h")(int(round(mins * v2 / v1))) if (mins * v2) % v1 == 0 else None, "E01"),
+                   ((lambda t: f"{t // 60} h {t % 60} min" if t % 60 else f"{t // 60} h")(mins + 15), None)], pasos,
+                  "Velocidad y tiempo son inversamente proporcionales; conviene pasar horas y minutos a minutos antes de operar.",
+                  genericos=[(lambda t: f"{t // 60} h {t % 60} min" if t % 60 else f"{t // 60} h")(t2 + 10)])
+    for _ in range(100):
+        a = rng.randint(2, 12)
+        c = rng.randint(2, 15)
+        b = rng.randint(2, 30)
+        r = F(a * b, c)
+        if c != a and r.denominator == 1:
+            break
+    plant, un = rng.choice(CTX_INV)
+    e01 = F(b * c, a)
+    e03 = F(a, b) * c
+    pasos = [("¿directa o inversa?", "inversa", "Más " + ("obreros" if "obreros" in plant else "caballos" if "caballos" in plant else "grifos" if "grifos" in plant else "máquinas") + f" → menos {un}: es inversa."),
+             ("x = a·b/c", f"{fmt(int(r))} {un}", f"Multiplico los datos de la misma fila y divido: x = {a} · {b} / {c} = {fmt(int(r))} {un}.")]
+    return mk(plant.format(a=a, b=b, c=c), f"{fmt(int(r))} {un}", "t3_regla3_inversa", {"a": a, "b": b, "c": c},
+              [(f"{dnum(e01)} {un}", "E01"), (f"{dnum(e03)} {un}" if e03 != r and ndec(e03) <= 2 else None, "E03"), (f"{b + a - c} {un}" if b + a - c > 0 and b + a - c != r else None, None)], pasos,
+              "Regla de tres inversa: x = a · b / c (se multiplican los datos de la misma fila).",
+              genericos=[f"{fmt(int(r) + 1)} {un}", f"{fmt(int(r) * 2)} {un}", f"{fmt(b)} {un}"])
+
+
+def reparto_txt(vals, un="€"):
+    vs = [dnum(v) for v in vals]
+    return (", ".join(vs[:-1]) + " y " + vs[-1]) + (f" {un}" if un else "")
+
+
+@generador("t3_prop_08")
+def gen_prop_08(rng, d):
+    k = 2 if d == 1 else 3 if d == 2 else rng.choice([3, 4])
+    for _ in range(200):
+        ps = [rng.randint(1, 9) for _ in range(k)]
+        if len(set(ps)) < k:
+            continue
+        u = rng.randint(2, 60) * (5 if d > 1 else 1)
+        N = u * sum(ps)
+        break
+    partes_ = [u * p for p in ps]
+    rev = [u * p for p in sorted(ps, reverse=True)]
+    orden_ps = sorted(range(k), key=lambda i: ps[i])
+    rev = [0] * k
+    srt = sorted(ps)
+    for i, idx in enumerate(orden_ps):
+        rev[idx] = u * srt[k - 1 - i]
+    e02 = [F(N, p) for p in ps]
+    quien = rng.choice(["tres amigos" if k == 3 else "dos hermanas" if k == 2 else "cuatro socios"])
+    pasos = [("suma", str(sum(ps)), f"Sumo los números: {' + '.join(map(str, ps))} = {sum(ps)}."),
+             ("parte unitaria", str(u), f"{fmt(N)} : {sum(ps)} = {u} € por cada unidad."),
+             ("multiplicar", reparto_txt(partes_), "Multiplico por cada número: " + ", ".join(f"{u} · {p} = {u * p}" for p in ps) + ".")]
+    return mk(f"Reparte {fmt(N)} € entre {quien} de forma directamente proporcional a {reparto_txt(ps, '')}.", reparto_txt(partes_), "t3_reparto_directo", {"N": N, "ps": ps},
+              [(reparto_txt([F(N, k)] * k) if N % k == 0 else reparto_txt([redondear(F(N, k), 2)] * k), "E01"), (reparto_txt(e02) if all(ndec(x) <= 2 for x in e02) else reparto_txt([redondear(x, 2) for x in e02]), "E02"),
+               (reparto_txt(rev), "E03")], pasos,
+              "Reparto directo: se divide la cantidad entre la suma de los números y se multiplica por cada uno. Quien tiene más, recibe más.",
+              genericos=[reparto_txt([x + 10 for x in partes_])])
+
+
+@generador("t3_prop_09")
+def gen_prop_09(rng, d):
+    k = 2 if d == 1 else 3
+    for _ in range(300):
+        ps = sorted(rng.sample(range(2, 13), k))
+        m = math.lcm(*ps)
+        ws = [m // p for p in ps]
+        u = rng.randint(2, 40) * (10 if d == 3 else 5)
+        N = u * sum(ws)
+        if N <= 20000:
+            break
+    partes_ = [u * w for w in ws]
+    sd = sum(ps)
+    directo = [F(N * p, sd) for p in ps]
+    e02 = list(reversed(sorted(directo)))
+    inv_sum_mal = F(k, sum(ps))  # suma de inversos mal (1/a + 1/b = 2/(a+b))
+    pasos = [("inversos", " + ".join(f"1/{p}" for p in ps), f"Reparto inverso a {reparto_txt(ps, '')} = reparto directo a sus inversos " + ", ".join(f"1/{p}" for p in ps) + "."),
+             ("común denominador", ", ".join(f"{w}/{m}" for w in ws), f"Con denominador {m}: " + ", ".join(f"{w}/{m}" for w in ws) + f". Reparto directo a {reparto_txt(ws, '')}."),
+             ("repartir", reparto_txt(partes_), f"{fmt(N)} : {sum(ws)} = {u}; partes: " + ", ".join(f"{u} · {w} = {u * w}" for w in ws) + ".")]
+    return mk(f"Reparte {fmt(N)} € en partes inversamente proporcionales a {reparto_txt(ps, '')}.", reparto_txt(partes_), "t3_reparto_inverso", {"N": N, "ps": ps},
+              [(reparto_txt([redondear(x, 2) for x in directo]), "E01"), (reparto_txt([redondear(x, 2) for x in e02]) if e02 != directo and [redondear(x, 2) for x in e02] != partes_ else None, "E02"),
+               (reparto_txt([redondear(N * F(1, p) / inv_sum_mal, 2) for p in ps]) if k == 3 else None, "E03"), (reparto_txt([F(N, k)] * k) if N % k == 0 else None, None)], pasos,
+              "Inverso: al número más pequeño le toca más. Se reparte directamente proporcional a los inversos 1/a, 1/b…",
+              genericos=[reparto_txt([x + 10 for x in partes_])])
+
+
+CTX_COMP = [("{m1} máquinas iguales, trabajando {h1} horas, fabrican {p1} piezas. ¿Cuántas piezas fabrican {m2} máquinas en {h2} horas?", ("d", "d"), "piezas"),
+            ("{m1} obreros, trabajando {h1} horas al día, tardan {p1} días en una obra. ¿Cuántos días tardarán {m2} obreros trabajando {h2} horas al día?", ("i", "i"), "días"),
+            ("{m1} grifos abiertos {h1} horas echan {p1} litros. ¿Cuántos litros echan {m2} grifos en {h2} horas?", ("d", "d"), "litros"),
+            ("{m1} personas consumen {p1} kg de comida en {h1} días. ¿Cuántos kg consumirán {m2} personas en {h2} días?", ("d", "d"), "kg"),
+            ("{m1} impresoras imprimen un lote en {p1} minutos imprimiendo {h1} páginas por minuto cada una... ", None, None)]
+
+
+@generador("t3_prop_10")
+def gen_prop_10(rng, d):
+    for _ in range(300):
+        plant, rel, un = rng.choice(CTX_COMP[:4])
+        m1, m2 = rng.randint(2, 12), rng.randint(2, 12)
+        h1, h2 = rng.randint(2, 10), rng.randint(2, 10)
+        if m1 == m2 or h1 == h2:
+            continue
+        p1 = rng.randint(2, 60) * (5 if rel == ("d", "d") else 1)
+        if rel == ("d", "d"):
+            x = F(p1 * m2 * h2, m1 * h1)
+            todas_dir = x
+            inv_una = F(p1 * m1 * h2, m2 * h1)
+            suma = F(p1 * m2, m1) + F(p1 * h2, h1)
+        else:
+            x = F(p1 * m1 * h1, m2 * h2)
+            todas_dir = F(p1 * m2 * h2, m1 * h1)
+            inv_una = F(p1 * m2 * h1, m1 * h2)
+            suma = F(p1 * m1, m2) + F(p1 * h1, h2)
+        if x.denominator == 1 and x > 0:
+            break
+    else:
+        return None
+    enun = plant.format(m1=m1, h1=h1, p1=p1, m2=m2, h2=h2)
+    if rel == ("d", "d"):
+        pasos = [("relaciones", "directa, directa", f"Más {'máquinas/grifos/personas'.split('/')[0] if 'máquinas' in plant else 'grifos' if 'grifos' in plant else 'personas'} → más {un}; más tiempo → más {un}: las dos directas."),
+                 ("reducción a la unidad", dnum(F(p1, m1 * h1)), f"1 en 1: {p1} : ({m1} · {h1}) = {dnum(F(p1, m1 * h1)) if es_dec(F(p1, m1 * h1), 4) else fr(F(p1, m1 * h1))}."),
+                 ("multiplicar", f"{fmt(int(x))} {un}", f"Para {m2} y {h2}: × {m2} × {h2} = {fmt(int(x))} {un}.")]
+    else:
+        pasos = [("relaciones", "inversa, inversa", "Más obreros → menos días; más horas al día → menos días: las dos inversas."),
+                 ("días totales de 1 obrero a 1 h", str(p1 * m1 * h1), f"{m1} · {h1} · {p1} = {p1 * m1 * h1} (horas de trabajo en total)."),
+                 ("dividir", f"{fmt(int(x))} {un}", f"{p1 * m1 * h1} : ({m2} · {h2}) = {fmt(int(x))} {un}.")]
+    f_ = lambda v: f"{dnum(v) if ndec(v) <= 2 else D(v, 2)} {un}"
+    return mk(enun, f"{fmt(int(x))} {un}", "t3_regla3_compuesta", {"m1": m1, "h1": h1, "p1": p1, "m2": m2, "h2": h2},
+              [(f_(todas_dir) if todas_dir != x else None, "E01"), (f_(suma), "E02"), (f_(inv_una) if inv_una != x else None, "E03")], pasos,
+              "Regla de tres compuesta: se analiza cada magnitud con la incógnita por separado (directa o inversa) y se combinan por reducción a la unidad.",
+              genericos=[f_(x + 1), f_(x * 2)])

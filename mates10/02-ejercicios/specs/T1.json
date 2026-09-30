@@ -1096,5 +1096,572 @@
    "E02": "E02"
   },
   "plantilla": "Romanos con raya (mayores que 3999)"
+ },
+ "OPER.SUMA.01": {
+  "gen": "t1_suma01",
+  "kw_por_dificultad": {
+   "2": {
+    "contexto": true
+   }
+  },
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03",
+   "E04": "E04"
+  },
+  "plantilla": "Sumas con resultado hasta 10"
+ },
+ "OPER.SUMA.02": {
+  "gen": "t1_suma02",
+  "kw_por_dificultad": {
+   "1": {
+    "modos": [
+     "hueco",
+     "marco"
+    ]
+   },
+   "2": {
+    "modos": [
+     "hueco",
+     "falta",
+     "marco"
+    ]
+   },
+   "3": {
+    "modos": [
+     "pareja",
+     "falta",
+     "hueco"
+    ]
+   }
+  },
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Completar a 10"
+ },
+ "OPER.SUMA.03": {
+  "gen": "t1_suma03",
+  "kw_por_dificultad": {
+   "2": {
+    "contexto": true
+   }
+  },
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E04": "E04"
+  },
+  "plantilla": "Sumas de una cifra con paso de la decena"
+ },
+ "OPER.SUMA.04": {
+  "gen": "t1_suma04",
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Suma de dos cifras sin llevada"
+ },
+ "OPER.SUMA.05": {
+  "gen": "t1_suma05",
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03",
+   "E04": "E04"
+  },
+  "plantilla": "Dos cifras más una cifra con llevada"
+ },
+ "OPER.SUMA.06": {
+  "gen": "t1_suma06",
+  "kw_por_dificultad": {
+   "1": {
+    "modos": [
+     "hueco"
+    ]
+   },
+   "3": {
+    "modos": [
+     "igualdad",
+     "hueco"
+    ]
+   }
+  },
+  "errores": {
+   "E01": "E01",
+   "E03": "E03"
+  },
+  "plantilla": "Propiedad conmutativa de la suma"
+ },
+ "OPER.SUMA.07": {
+  "gen": "t1_suma07",
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Dos cifras más dos cifras con llevada"
+ },
+ "OPER.SUMA.08": {
+  "gen": "t1_suma08",
+  "errores": {
+   "E01": "E01",
+   "E02": "E02"
+  },
+  "plantilla": "Suma de tres cifras sin llevada"
+ },
+ "OPER.SUMA.09": {
+  "gen": "t1_suma09",
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03",
+   "E04": "E04"
+  },
+  "plantilla": "Suma de tres cifras con llevada"
+ },
+ "OPER.SUMA.10": {
+  "gen": "t1_suma10",
+  "kw_por_dificultad": {
+   "1": {
+    "sumandos": [
+     3,
+     3
+    ]
+   },
+   "2": {
+    "sumandos": [
+     3,
+     4
+    ]
+   },
+   "3": {
+    "sumandos": [
+     3,
+     4
+    ]
+   }
+  },
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Suma de tres o cuatro sumandos"
+ },
+ "OPER.SUMA.11": {
+  "gen": "t1_suma11",
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Suma de hasta cuatro cifras con llevadas"
+ },
+ "OPER.SUMA.12": {
+  "gen": "t1_suma12",
+  "kw_por_dificultad": {
+   "1": {
+    "modos": [
+     "hueco",
+     "elegir"
+    ]
+   },
+   "2": {
+    "modos": [
+     "elegir",
+     "hueco"
+    ]
+   },
+   "3": {
+    "modos": [
+     "elegir",
+     "resta"
+    ]
+   }
+  },
+  "errores": {
+   "E01": "E01",
+   "E03": "E03"
+  },
+  "plantilla": "Propiedad asociativa de la suma"
+ },
+ "OPER.RESTA.01": {
+  "gen": "t1_resta01",
+  "kw_por_dificultad": {
+   "2": {
+    "contexto": true
+   }
+  },
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03",
+   "E04": "E04"
+  },
+  "plantilla": "Restas hasta 10"
+ },
+ "OPER.RESTA.02": {
+  "gen": "t1_resta02",
+  "kw_por_dificultad": {
+   "2": {
+    "contexto": true
+   }
+  },
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Restas hasta 20 sin pasar por la decena"
+ },
+ "OPER.RESTA.03": {
+  "gen": "t1_resta03",
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03",
+   "E04": "E04"
+  },
+  "plantilla": "Resta de 2 y 3 cifras con llevada"
+ },
+ "OPER.RESTA.04": {
+  "gen": "t1_resta04",
+  "kw_por_dificultad": {
+   "2": {
+    "contexto": true
+   }
+  },
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03",
+   "E04": "E04"
+  },
+  "plantilla": "Restas hasta 20 pasando por la decena"
+ },
+ "OPER.RESTA.05": {
+  "gen": "t1_resta05",
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Resta de dos cifras sin llevada"
+ },
+ "OPER.RESTA.06": {
+  "gen": "t1_resta06",
+  "kw_por_dificultad": {
+   "1": {
+    "modos": [
+     "sumando",
+     "familia"
+    ]
+   },
+   "2": {
+    "modos": [
+     "sumando",
+     "sustraendo",
+     "minuendo"
+    ]
+   },
+   "3": {
+    "modos": [
+     "minuendo",
+     "sustraendo",
+     "familia"
+    ]
+   }
+  },
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "El número que falta en sumas y restas"
+ },
+ "OPER.RESTA.07": {
+  "gen": "t1_resta07",
+  "errores": {
+   "E01": "E01",
+   "E02": "E02"
+  },
+  "plantilla": "Resta de tres cifras sin llevada"
+ },
+ "OPER.RESTA.08": {
+  "gen": "t1_resta08",
+  "kw_por_dificultad": {
+   "1": {
+    "modos": [
+     "nombrar"
+    ]
+   },
+   "2": {
+    "modos": [
+     "prueba",
+     "nombrar"
+    ]
+   },
+   "3": {
+    "modos": [
+     "comprobar",
+     "prueba"
+    ]
+   }
+  },
+  "errores": {
+   "E01": "E01",
+   "E02": "E02"
+  },
+  "plantilla": "Términos y prueba de la resta"
+ },
+ "OPER.RESTA.09": {
+  "gen": "t1_resta09",
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Resta de hasta cuatro cifras con llevadas"
+ },
+ "OPER.RESTA.10": {
+  "gen": "t1_resta10",
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Resta con ceros en el minuendo"
+ },
+ "OPER.CALCMENT.01": {
+  "gen": "t1_cm01",
+  "kw_por_dificultad": {
+   "1": {
+    "modos": [
+     "suma",
+     "doble"
+    ]
+   },
+   "2": {
+    "modos": [
+     "suma",
+     "doble",
+     "contexto"
+    ]
+   },
+   "3": {
+    "modos": [
+     "doble",
+     "contexto"
+    ]
+   }
+  },
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Dobles hasta 10 + 10"
+ },
+ "OPER.CALCMENT.02": {
+  "gen": "t1_cm02",
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Sumar y restar 10"
+ },
+ "OPER.CALCMENT.03": {
+  "gen": "t1_cm03",
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Casi dobles"
+ },
+ "OPER.CALCMENT.04": {
+  "gen": "t1_cm04",
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Sumar y restar decenas exactas"
+ },
+ "OPER.CALCMENT.05": {
+  "gen": "t1_cm05",
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Sumar y restar 9 y 11 compensando"
+ },
+ "OPER.CALCMENT.06": {
+  "gen": "t1_cm06",
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Sumar y restar dos cifras por partes"
+ },
+ "OPER.CALCMENT.07": {
+  "gen": "t1_cm07",
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Completar a 100"
+ },
+ "OPER.CALCMENT.08": {
+  "gen": "t1_cm08",
+  "errores": {
+   "E01": "E01",
+   "E02": "E02"
+  },
+  "plantilla": "Sumar y restar centenas exactas"
+ },
+ "OPER.CALCMENT.09": {
+  "gen": "t1_cm09",
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Restar contando hacia delante"
+ },
+ "OPER.CALCMENT.10": {
+  "gen": "t1_cm10",
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Compensación con números cercanos a decenas y centenas"
+ },
+ "OPER.CALCMENT.11": {
+  "gen": "t1_cm11",
+  "kw_por_dificultad": {
+   "1": {
+    "modos": [
+     "doble"
+    ]
+   },
+   "2": {
+    "modos": [
+     "doble",
+     "mitad"
+    ]
+   },
+   "3": {
+    "modos": [
+     "mitad",
+     "doble"
+    ]
+   }
+  },
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Doble y mitad"
+ },
+ "OPER.CALCMENT.12": {
+  "gen": "t1_cm12",
+  "errores": {
+   "E01": "E01",
+   "E02": "E02"
+  },
+  "plantilla": "Millares exactos y completar a 1000"
+ },
+ "OPER.CALCMENT.13": {
+  "gen": "t1_cm13",
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Decenas y centenas por una cifra"
+ },
+ "OPER.CALCMENT.14": {
+  "gen": "t1_cm14",
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Multiplicar por partes"
+ },
+ "OPER.CALCMENT.15": {
+  "gen": "t1_cm15",
+  "errores": {
+   "E01": "E01",
+   "E02": "E02"
+  },
+  "plantilla": "Dividir números con ceros entre una cifra"
+ },
+ "OPER.CALCMENT.16": {
+  "gen": "t1_cm16",
+  "errores": {
+   "E01": "E01",
+   "E02": "E02"
+  },
+  "plantilla": "Multiplicar por 5"
+ },
+ "OPER.CALCMENT.17": {
+  "gen": "t1_cm17",
+  "errores": {
+   "E01": "E01",
+   "E02": "E02"
+  },
+  "plantilla": "Multiplicar por 9 y por 11"
+ },
+ "OPER.CALCMENT.18": {
+  "gen": "t1_cm18",
+  "kw_por_dificultad": {
+   "1": {
+    "modos": [
+     "por50",
+     "entre5"
+    ]
+   },
+   "2": {
+    "modos": [
+     "por25",
+     "por50",
+     "entre5"
+    ]
+   },
+   "3": {
+    "modos": [
+     "por25",
+     "entre25",
+     "entre50"
+    ]
+   }
+  },
+  "errores": {
+   "E01": "E01",
+   "E02": "E02"
+  },
+  "plantilla": "Multiplicar y dividir por 25 y 50"
+ },
+ "OPER.CALCMENT.19": {
+  "gen": "t1_cm19",
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Propiedades para calcular de forma eficiente"
  }
 }

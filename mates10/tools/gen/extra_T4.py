@@ -1403,3 +1403,1316 @@ def gen_grados_ref(rng, d):
     pasos = [("referencias", resp, "Recto = 90°, llano = 180° (dos rectos), completo = 360° (cuatro rectos). " + f"Por tanto, la respuesta es {resp}.")]
     adulto = "Referencias: recto 90°, llano 180°, completo 360°. Los grados no van de 100 en 100."
     return mk(enun, resp, "t4_grados_ref", {"clave": clave}, dist, pasos, adulto)
+
+
+# ---------------------------------------------------------------- orientación y cuadrículas
+
+def _desc_mov(x, y):
+    partes = []
+    if x:
+        partes.append(f"{abs(x)} a la {'derecha' if x > 0 else 'izquierda'}")
+    if y:
+        partes.append(f"{abs(y)} {'arriba' if y > 0 else 'abajo'}")
+    if not partes:
+        return "en la misma casilla de salida"
+    return " y ".join(partes)
+
+
+@generador("t4_recorrido")
+def gen_recorrido(rng, d, movimientos_max=4):
+    nm = {1: 2, 2: 3, 3: movimientos_max}[d]
+    DIRS = {"derecha": (1, 0), "izquierda": (-1, 0), "arriba": (0, 1), "abajo": (0, -1)}
+    for _ in range(100):
+        movs = []
+        for i in range(nm):
+            dr = rng.choice([k for k in DIRS if not movs or k != movs[-1][0]])
+            movs.append((dr, rng.randint(1, 5)))
+        x = sum(DIRS[dr][0] * k for dr, k in movs)
+        y = sum(DIRS[dr][1] * k for dr, k in movs)
+        if (x, y) != (0, 0):
+            break
+    txt = ", ".join(f"{k} {'a la ' + dr if dr in ('derecha', 'izquierda') else dr}" for dr, k in movs)
+    enun = f"Sales de una casilla de la cuadrícula y te mueves: {txt}. ¿Dónde acabas respecto a la casilla de salida?"
+    resp = _desc_mov(x, y)
+    xs = sum(DIRS[dr][0] * (k - 1) for dr, k in movs)
+    ys = sum(DIRS[dr][1] * (k - 1) for dr, k in movs)
+    vert = [i for i, (dr, k) in enumerate(movs) if dr in ("arriba", "abajo")]
+    if vert:
+        i = vert[0]
+        dr, k = movs[i]
+        xc = x + (k if dr == "arriba" else -k)
+        yc = y - DIRS[dr][1] * k
+    else:
+        xc, yc = y, x
+    dist = [(_desc_mov(xs, ys), "cuenta_salida"), (_desc_mov(xc, yc), "confunde_ejes"), (_desc_mov(-x, y), None), (_desc_mov(x, -y), None), (_desc_mov(y, x), None)]
+    pasos = [("horizontal", str(x), "Sumo los pasos a la derecha y resto los de la izquierda: " + (f"{abs(x)} a la {'derecha' if x > 0 else 'izquierda'}." if x else "quedo en la misma columna.")),
+             ("vertical", str(y), "Sumo los pasos hacia arriba y resto los de abajo: " + (f"{abs(y)} {'arriba' if y > 0 else 'abajo'}." if y else "quedo en la misma fila.")),
+             ("", resp, f"Acabo {resp}.")]
+    adulto = "Cada paso lleva a la casilla vecina: la casilla de salida no cuenta como paso. Conviene separar los movimientos horizontales de los verticales."
+    return mk(enun, resp, "t4_recorrido", {"movs": movs}, dist, pasos, adulto)
+
+
+LETRAS = "ABCDEFGHIJ"
+
+
+@generador("t4_casillas")
+def gen_casillas(rng, d):
+    for _ in range(100):
+        c, f = rng.randrange(10), rng.randint(1, 10)
+        dx, dy = rng.randint(-4, 4), rng.randint(-4, 4)
+        if d == 1:
+            dx, dy = (rng.choice([-1, 1]) * rng.randint(1, 3), 0) if rng.random() < 0.5 else (0, rng.choice([-1, 1]) * rng.randint(1, 3))
+        if dx == 0 and dy == 0 or not (0 <= c + dx < 10 and 1 <= f + dy <= 10) or (d > 1 and (dx == 0 or dy == 0)):
+            continue
+        if d > 1 and not (0 <= c - dx < 10 and 1 <= f - dy <= 10):
+            continue
+        break
+    ini = f"{LETRAS[c]}{f}"
+    fin = f"{LETRAS[c + dx]}{f + dy}"
+    mv = []
+    if dy:
+        mv.append(f"{'subes' if dy > 0 else 'bajas'} {abs(dy)}")
+    if dx:
+        mv.append(f"vas {abs(dx)} a la {'derecha' if dx > 0 else 'izquierda'}")
+    if d == 3 and rng.random() < 0.5:
+        enun = f"¿Qué movimiento lleva de la casilla {ini} a la casilla {fin}?"
+        resp = _desc_mov(dx, dy)
+        dist = [(_desc_mov(-dx, dy), "letras_al_reves"), (_desc_mov(dy, dx), "invierte"), (_desc_mov(dx, -dy), None), (_desc_mov(-dx, -dy), None)]
+    else:
+        enun = f"Estás en la casilla {ini}, {' y '.join(mv)}. ¿En qué casilla acabas?"
+        resp = fin
+        cands = []
+        if 0 <= c - dx < 10 and dx:
+            cands.append((f"{LETRAS[c - dx]}{f + dy}", "letras_al_reves"))
+        if 1 <= f + dy <= 10 and f + dy - 1 < 10 and 1 <= c + dx + 1 <= 10:
+            cands.append((f"{LETRAS[f + dy - 1]}{c + dx + 1}", "invierte"))
+        if 1 <= f - dy <= 10 and dy:
+            cands.append((f"{LETRAS[c + dx]}{f - dy}", None))
+        for ex, ey in ((1, 0), (0, 1), (-1, 0), (0, -1)):
+            if 0 <= c + dx + ex < 10 and 1 <= f + dy + ey <= 10:
+                cands.append((f"{LETRAS[c + dx + ex]}{f + dy + ey}", None))
+        dist = cands
+    pasos = [("columna", LETRAS[c + dx], f"La letra indica la columna: de {LETRAS[c]} " + (f"me muevo {abs(dx)} {'hacia la derecha (letras siguientes)' if dx > 0 else 'hacia la izquierda (letras anteriores)'} y llego a {LETRAS[c + dx]}." if dx else "no me muevo de columna.")),
+             ("fila", str(f + dy), f"El número indica la fila: de {f} " + (f"{'subo' if dy > 0 else 'bajo'} {abs(dy)} y llego a {f + dy}." if dy else "no cambio de fila.")),
+             ("", resp, f"Respuesta: {resp}.")]
+    adulto = "En la cuadrícula primero se nombra la columna (letra) y luego la fila (número). A la derecha las letras avanzan (A, B, C…) y hacia arriba los números crecen."
+    return mk(enun, resp, "t4_casillas", {"ini": ini, "dx": dx, "dy": dy}, dist, pasos, adulto)
+
+
+ROSA = ["norte", "noreste", "este", "sureste", "sur", "suroeste", "oeste", "noroeste"]
+GIRO = {"a tu derecha": 2, "a tu izquierda": -2, "media vuelta": 4}
+
+
+def _eo(x):
+    return {"este": "oeste", "oeste": "este", "noreste": "noroeste", "noroeste": "noreste", "sureste": "suroeste", "suroeste": "sureste"}.get(x, x)
+
+
+@generador("t4_cardinales")
+def gen_cardinales(rng, d):
+    inicial = rng.choice([0, 2, 4, 6] if d < 3 else list(range(8)))
+    ng = 1 if d == 1 else 2
+    giros = [rng.choice(list(GIRO)) for _ in range(ng)]
+    pos = inicial
+    contra = inicial
+    for g in giros:
+        pos = (pos + GIRO[g]) % 8
+        contra = (contra - GIRO[g]) % 8
+    if d == 1 and rng.random() < 0.4:
+        lado = rng.choice(["derecha", "izquierda"])
+        enun = f"Si miras hacia el {ROSA[inicial]}, ¿qué punto cardinal tienes a tu {lado}?"
+        pos = (inicial + (2 if lado == "derecha" else -2)) % 8
+        contra = (inicial - (2 if lado == "derecha" else -2)) % 8
+    else:
+        enun = f"Miras hacia el {ROSA[inicial]} y giras " + " y luego ".join(("" if g == "media vuelta" else "") + g.replace("a tu", "a tu") for g in giros) + ". ¿Hacia dónde miras ahora?"
+        enun = enun.replace("giras media vuelta", "das media vuelta").replace("luego media vuelta", "luego das media vuelta")
+    resp = ROSA[pos]
+    dist = [(_eo(resp) if _eo(resp) != resp else None, "este_oeste"), (ROSA[contra] if contra != pos else None, "gira_contrario"),
+            (ROSA[(pos + 4) % 8], None), (ROSA[(pos + 2) % 8], None), (ROSA[(pos - 2) % 8], None), (ROSA[inicial] if inicial != pos else None, None)]
+    pasos = [("rosa de los vientos", resp, "En el sentido de las agujas del reloj van: norte, este, sur y oeste (con noreste, sureste, suroeste y noroeste entre ellos). "
+              "Girar a la derecha es avanzar un cuarto de vuelta en ese sentido; a la izquierda, al revés; media vuelta, al punto opuesto. "
+              f"Termino mirando al {resp}.")]
+    adulto = "Mirando al norte, el este queda a la derecha y el oeste a la izquierda. Dibujar la rosa de los vientos y girar sobre ella evita confundir este y oeste."
+    return mk(enun, resp, "t4_cardinales", {"inicial": inicial, "giros": giros}, dist, pasos, adulto)
+
+
+# ---------------------------------------------------------------- ángulos
+
+@generador("t4_clasif_angulo")
+def gen_clasif_angulo(rng, d):
+    if d == 1:
+        a = rng.choice([rng.randint(10, 80), rng.randint(100, 170), 90, 180])
+    elif d == 2:
+        a = rng.choice([89, 91, 179, rng.randint(81, 89), rng.randint(91, 99), rng.randint(171, 179), 90, 180])
+    else:
+        a = rng.choice([rng.randint(181, 359), 360, 0, rng.randint(181, 270), 179, 1])
+    tipo = ("nulo" if a == 0 else "agudo" if a < 90 else "recto" if a == 90 else "obtuso" if a < 180 else "llano" if a == 180
+            else "cóncavo" if a < 360 else "completo")
+    enun = f"¿Cómo se llama un ángulo que mide {a}°?"
+    resp = tipo
+    swap = {"agudo": "obtuso", "obtuso": "agudo"}
+    lim = {"recto": "agudo", "llano": "obtuso", "obtuso": "llano" if a > 170 else "recto", "agudo": "recto", "cóncavo": "llano" if a < 200 else "completo",
+           "completo": "llano", "nulo": "agudo"}
+    dist = [(swap.get(tipo), "agudo_obtuso"), (lim.get(tipo), "limites"), ("obtuso" if tipo in ("recto", "llano") else None, "limites")]
+    otros = [x for x in ("agudo", "recto", "obtuso", "llano", "cóncavo") if x != tipo]
+    rng.shuffle(otros)
+    dist += [(x, None) for x in otros]
+    pasos = [("comparar con 90° y 180°", resp, "Agudo: menos de 90°. Recto: 90°. Obtuso: entre 90° y 180°. Llano: 180°. Cóncavo: más de 180°. Completo: 360°. "
+              f"Como mide {a}°, es {resp}.")]
+    adulto = "Las referencias son el recto (90°) y el llano (180°); los ángulos justo en esos valores son recto y llano, no agudo ni obtuso."
+    return mk(enun, resp, "t4_clasif_angulo", {"a": a}, dist, pasos, adulto)
+
+
+@generador("t4_comp_sup")
+def gen_comp_sup(rng, d):
+    tipo = rng.choice(["complementario", "suplementario"])
+    ref = 90 if tipo == "complementario" else 180
+    a = rng.randint(5, ref - 5) if d > 1 else rng.choice(range(10, ref, 10))
+    r = ref - a
+    otro = 180 if ref == 90 else 90
+    if d == 3 and rng.random() < 0.5:
+        rel = "adyacentes" if ref == 180 else "complementarios"
+        enun = f"Dos ángulos son {rel} y uno de ellos mide {a}°. ¿Cuánto mide el otro?"
+    else:
+        enun = f"¿Cuánto mide el {tipo} de un ángulo de {a}°?"
+    resp = f"{r}°"
+    dist = [(f"{otro - a}°" if otro - a > 0 else None, "confunde"), (f"{ref + a}°", "suma"), (f"{r + 10}°", None), (f"{r - 10}°" if r > 10 else None, None), (f"{a}°", None)]
+    pasos = [(f"{ref} − {a}", str(r), f"{'Complementarios: suman 90°' if ref == 90 else 'Suplementarios (o adyacentes): suman 180°'}. {ref}° − {a}° = {r}°.")]
+    adulto = "Complementarios suman 90° (un recto); suplementarios suman 180° (un llano). Se calcula restando, no sumando."
+    return mk(enun, resp, "t4_comp_sup", {"a": a, "ref": ref}, dist, pasos, adulto)
+
+
+@generador("t4_opuestos")
+def gen_opuestos(rng, d):
+    a = rng.randint(20, 160)
+    while a == 90:
+        a = rng.randint(20, 160)
+    b = 180 - a
+    tipo = rng.choice(["opuesto", "contiguo"]) if d == 1 else "tres" if d == 3 else rng.choice(["contiguo", "tres"])
+    if tipo == "opuesto":
+        enun = f"Dos rectas se cortan y uno de los ángulos que forman mide {a}°. ¿Cuánto mide su ángulo opuesto por el vértice?"
+        resp = f"{a}°"
+        dist = [(f"{b}°", None), (f"{90 - a}°" if a < 90 else f"{a - 90}°", "complementario"), (f"{360 - a}°", None), (f"{a * 2}°" if a * 2 < 360 else None, None)]
+    elif tipo == "contiguo":
+        enun = f"Dos rectas se cortan y uno de los ángulos que forman mide {a}°. ¿Cuánto mide cada uno de los ángulos contiguos a él?"
+        resp = f"{b}°"
+        dist = [(f"{a}°", "todos_iguales"), (f"{90 - a}°" if a < 90 else None, "complementario"), (f"{360 - a}°", None), (f"{b + 10}°", None), (f"{b - 10}°", None)]
+    else:
+        enun = f"Dos rectas se cortan y uno de los cuatro ángulos mide {a}°. ¿Cuánto miden los otros tres, en orden alrededor del vértice?"
+        resp = f"{b}°, {a}° y {b}°"
+        dist = [(f"{a}°, {a}° y {a}°", "todos_iguales"), (f"{abs(90 - a)}°, {a}° y {abs(90 - a)}°", "complementario"), (f"{a}°, {b}° y {a}°", None),
+                (f"{b}°, {b}° y {b}°", None)]
+    pasos = [("opuestos", f"{a}°", f"Los ángulos opuestos por el vértice son iguales: el opuesto al de {a}° también mide {a}°."),
+             ("contiguos", f"{b}°", f"Dos ángulos contiguos forman un llano, así que suman 180°: 180° − {a}° = {b}°."),
+             ("", resp, f"Respuesta: {resp}.")]
+    adulto = "Dos rectas secantes forman dos parejas de ángulos iguales (opuestos por el vértice); cada par de contiguos suma 180°."
+    return mk(enun, resp, "t4_opuestos", {"a": a, "tipo": tipo}, dist, pasos, adulto)
+
+
+@generador("t4_inscrito")
+def gen_inscrito(rng, d):
+    tipo = rng.choice(["central_a_inscrito", "inscrito_a_central"] + (["semicircunferencia"] if d == 3 else []))
+    if tipo == "central_a_inscrito":
+        c = rng.randint(20, 170) * 2 if d > 1 else rng.choice(range(40, 360, 20))
+        c = min(c, 340)
+        r = c // 2
+        enun = f"Un ángulo inscrito en una circunferencia abarca el mismo arco que un ángulo central de {c}°. ¿Cuánto mide el inscrito?"
+        dist = [(f"{c * 2}°" if c * 2 <= 720 else None, "duplica"), (f"{c}°", "iguala"), (f"{180 - r}°" if 180 - r > 0 and 180 - r != r else None, None), (f"{r + 10}°", None)]
+        pasos = [(f"{c} : 2", str(r), f"El inscrito mide la mitad del central que abarca el mismo arco: {c}° : 2 = {r}°.")]
+    elif tipo == "inscrito_a_central":
+        i = rng.randint(15, 85) if d > 1 else rng.choice(range(20, 90, 10))
+        r = 2 * i
+        enun = f"Un ángulo inscrito mide {i}°. ¿Cuánto mide el ángulo central que abarca el mismo arco?"
+        dist = [(f"{fx(D(i) / 2)}°", "duplica"), (f"{i}°", "iguala"), (f"{180 - i}°", None), (f"{r + 10}°", None)]
+        pasos = [(f"{i} × 2", str(r), f"El central mide el doble del inscrito que abarca el mismo arco: {i}° × 2 = {r}°.")]
+    else:
+        enun = "Un triángulo tiene un lado que es un diámetro de la circunferencia y el vértice opuesto sobre la circunferencia. ¿Cuánto mide el ángulo de ese vértice?"
+        r = 90
+        dist = [("180°", "iguala"), ("360°", "duplica"), ("45°", None), ("60°", None)]
+        pasos = [("180 : 2", "90", "Ese ángulo es inscrito y abarca media circunferencia (central de 180°): mide 180° : 2 = 90°.")]
+    resp = f"{r}°"
+    adulto = "Ángulo inscrito = mitad del central que abarca el mismo arco. Un inscrito que abarca una semicircunferencia es recto."
+    return mk(enun, resp, "t4_inscrito", {"tipo": tipo}, dist, pasos, adulto)
+
+
+# ---------------------------------------------------------------- polígonos
+
+NOMBRES_POL = {3: "triángulo", 4: "cuadrilátero", 5: "pentágono", 6: "hexágono", 7: "heptágono", 8: "octógono", 9: "eneágono",
+               10: "decágono", 11: "endecágono", 12: "dodecágono"}
+ADJ = {3: "triangular", 4: "cuadrangular", 5: "pentagonal", 6: "hexagonal", 7: "heptagonal", 8: "octogonal", 9: "eneagonal", 10: "decagonal"}
+
+
+@generador("t4_nombres_pol")
+def gen_nombres_pol(rng, d):
+    pool = {1: [3, 4, 5, 6], 2: [5, 6, 7, 8, 10], 3: [7, 8, 9, 10, 11, 12]}[d]
+    n = rng.choice(pool)
+    if rng.random() < 0.5:
+        enun = f"¿Cuántos lados tiene un {NOMBRES_POL[n]}?"
+        resp = f"{n} lados"
+        dist = [(f"{n + 1} lados", "hex_hept" if n in (6, 7) else None), (f"{n - 1} lados", "hex_hept" if n in (7, 8) else None),
+                ("6 lados" if n == 5 else "8 lados" if n == 6 else None, "penta" if n == 5 else "hex_hept"), (f"{n + 2} lados", None)]
+    else:
+        enun = f"¿Cómo se llama un polígono de {n} lados?"
+        resp = NOMBRES_POL[n]
+        dist = [(NOMBRES_POL.get(n + 1), "hex_hept" if n in (6, 7) else None), (NOMBRES_POL.get(n - 1), "hex_hept" if n in (7, 8) else "penta" if n == 6 else None),
+                ("hexágono" if n == 5 else None, "penta"), (NOMBRES_POL.get(n + 2), None), (NOMBRES_POL.get(n - 2), None)]
+    pasos = [("prefijo", resp, f"El prefijo griego indica el número de lados: tri-3, cuadri-4, penta-5, hexa-6, hepta-7, octo-8, enea-9, deca-10, endeca-11, dodeca-12. Un {NOMBRES_POL[n]} tiene {n} lados.")]
+    adulto = "Los nombres vienen de los números griegos: penta = 5, hexa = 6, hepta = 7, octo = 8. Relacionarlos con palabras conocidas (pentagrama, hexágono de la colmena, octópodo) ayuda."
+    return mk(enun, resp, "t4_nombres_pol", {"n": n}, dist, pasos, adulto)
+
+
+@generador("t4_angulos_pol")
+def gen_angulos_pol(rng, d):
+    tipo = rng.choice(["suma"] if d == 1 else ["suma", "interior"] if d == 2 else ["interior", "central", "interior"])
+    if tipo == "suma":
+        n = rng.randint(4, 12 if d == 1 else 20)
+        r = 180 * (n - 2)
+        nom = NOMBRES_POL.get(n, f"polígono de {n} lados")
+        enun = f"¿Cuánto suman los ángulos interiores de un {nom}?"
+        dist = [(f"{fmt(180 * n)}°", "180n"), (f"{fmt(360 * (n - 2))}°", None), (f"{fmt(180 * (n - 1))}°", None), (f"{fmt(r // n)}°" if r % n == 0 else None, None)]
+        pasos = [(f"180 · ({n} − 2)", fmt(r), f"Desde un vértice se divide en {n} − 2 = {n - 2} triángulos, cada uno de 180°: 180 · {n - 2} = {fmt(r)}°.")]
+    else:
+        n = rng.choice([5, 6, 8, 9, 10, 12] if d == 2 else [5, 6, 8, 9, 10, 12, 15, 18, 20])
+        suma = 180 * (n - 2)
+        ai = suma // n
+        ac = 360 // n
+        nom = (NOMBRES_POL[n] + " regular") if n in NOMBRES_POL else f"polígono regular de {n} lados"
+        if tipo == "interior":
+            enun = f"¿Cuánto mide cada ángulo interior de un {nom}?"
+            r = ai
+            dist = [(f"{fmt(suma)}°", "suma_en_vez"), (f"{ac}°", "central"), (f"{fmt(180 * n)}°", "180n"), (f"{ai + 10}°", None), (f"{ai - 10}°", None)]
+            pasos = [(f"180 · ({n} − 2)", fmt(suma), f"Suma de los ángulos interiores: 180° · ({n} − 2) = {fmt(suma)}°."),
+                     (f"{fmt(suma)} : {n}", str(ai), f"Como es regular, los {n} ángulos son iguales: {fmt(suma)}° : {n} = {ai}°.")]
+        else:
+            enun = f"¿Cuánto mide el ángulo central de un {nom}?"
+            r = ac
+            dist = [(f"{ai}°", "central"), (f"{fmt(suma)}°", None), (f"{fx(D(180) / n)}°", None), (f"{ac * 2}°", None)]
+            pasos = [(f"360 : {n}", str(ac), f"Los {n} ángulos centrales completan una vuelta: 360° : {n} = {ac}°.")]
+    resp = f"{fmt(r)}°"
+    adulto = "Suma de interiores = 180° · (n − 2). En un polígono regular, cada interior = suma : n y cada central = 360° : n (interior + central = 180°)."
+    return mk(enun, resp, "t4_angulos_pol", {"tipo": tipo}, dist, pasos, adulto, genericos=var_num(r, "°", pasos=(10, -10, 20)))
+
+
+@generador("t4_diagonales")
+def gen_diagonales(rng, d):
+    if d == 3 and rng.random() < 0.5:
+        n = rng.randint(5, 12)
+        D_ = n * (n - 3) // 2
+        enun = f"Un polígono tiene {D_} diagonales en total. ¿Cuántos lados tiene?"
+        resp = f"{n} lados"
+        dist = [(f"{n + 1} lados", None), (f"{n - 1} lados", None), (f"{n + 3} lados", None), (f"{D_ // 2} lados" if D_ // 2 not in (n, n + 1, n - 1) else None, None)]
+        pasos = [("probar", resp, f"Busco n con n · (n − 3) : 2 = {D_}: con n = {n}, {n} · {n - 3} : 2 = {D_}.")]
+    else:
+        n = rng.randint(4, 8 if d == 1 else 20)
+        r = n * (n - 3) // 2
+        nom = NOMBRES_POL.get(n, f"polígono de {n} lados")
+        enun = f"¿Cuántas diagonales tiene un {nom}?"
+        resp = str(r)
+        dist = [(str(n * (n - 3)), "no_divide"), (str(n * (n - 2) // 2), "n_menos_2"), (str(n * (n - 1) // 2), "n_menos_2"), (str(n - 3), None), (str(r + n), None)]
+        pasos = [(f"{n} · ({n} − 3)", str(n * (n - 3)), f"Desde cada vértice salen {n} − 3 = {n - 3} diagonales (no a sí mismo ni a sus dos vecinos): {n} · {n - 3} = {n * (n - 3)}."),
+                 (f"{n * (n - 3)} : 2", str(r), f"Cada diagonal se ha contado dos veces (una desde cada extremo): {n * (n - 3)} : 2 = {r}.")]
+    adulto = "Diagonales = n · (n − 3) / 2: de cada vértice salen n − 3 y cada una se cuenta dos veces."
+    return mk(enun, resp, "t4_diagonales", {}, dist, pasos, adulto)
+
+
+# ---------------------------------------------------------------- triángulos
+
+@generador("t4_tri_lados")
+def gen_tri_lados(rng, d):
+    tipo = rng.choice(["equilátero", "isósceles", "escaleno"])
+    a = rng.randint(3, 15)
+    if tipo == "equilátero":
+        ls = [a, a, a]
+    elif tipo == "isósceles":
+        b = rng.randint(max(1, a // 2), 2 * a - 1)
+        while b == a:
+            b = rng.randint(max(1, a // 2), 2 * a - 1)
+        ls = [a, a, b]
+        if d == 3:
+            ls = [D(a), D(a), D(a) + D("0.1") * rng.choice([1, -1, 2])]
+    else:
+        ls = sorted(rng.sample(range(3, 20), 3))
+        while ls[2] >= ls[0] + ls[1]:
+            ls = sorted(rng.sample(range(3, 20), 3))
+        if d == 3:
+            ls = [D(a), D(a) + D("0.2"), D(a) + D("0.5")]
+    rng.shuffle(ls)
+    enun = f"Un triángulo tiene lados de {fx(ls[0])} cm, {fx(ls[1])} cm y {fx(ls[2])} cm. ¿Cómo es según sus lados?"
+    resp = tipo
+    casi = d == 3 and tipo != "equilátero"
+    dist = [({"isósceles": "escaleno", "escaleno": "isósceles", "equilátero": None}[tipo], "iso_esc"), ("equilátero" if casi else None, "a_ojo"),
+            ("rectángulo", None), ("equilátero" if tipo != "equilátero" else "isósceles", None), ("escaleno" if tipo == "equilátero" else None, None)]
+    iguales = 3 if tipo == "equilátero" else 2 if tipo == "isósceles" else 0
+    pasos = [("comparar lados", resp, f"Comparo las medidas exactas: {'los tres lados son iguales' if iguales == 3 else 'exactamente dos lados son iguales' if iguales == 2 else 'no hay dos lados iguales'}. Es {resp}.")]
+    adulto = "Equilátero: 3 lados iguales; isósceles: exactamente 2; escaleno: ninguno. Hay que mirar las medidas, no la apariencia (7 y 7,1 no son iguales)."
+    return mk(enun, resp, "t4_tri_lados", {"lados": [str(x) for x in ls]}, dist, pasos, adulto)
+
+
+@generador("t4_tri_angulos")
+def gen_tri_angulos(rng, d):
+    tipo = rng.choice(["acutángulo", "rectángulo", "obtusángulo"])
+    for _ in range(200):
+        if tipo == "rectángulo":
+            a = rng.randint(15, 75)
+            angs = [90, a, 90 - a]
+        elif tipo == "obtusángulo":
+            o = rng.randint(95, 150)
+            a = rng.randint(5, 180 - o - 5)
+            angs = [o, a, 180 - o - a]
+        else:
+            a, b = rng.randint(35, 85), rng.randint(35, 85)
+            angs = [a, b, 180 - a - b]
+        if d == 3 and rng.random() < 0.5:
+            # isósceles
+            if tipo == "rectángulo":
+                angs = [90, 45, 45]
+            elif tipo == "obtusángulo":
+                o = rng.choice(range(100, 160, 2))
+                angs = [o, (180 - o) // 2, (180 - o) // 2]
+            else:
+                b = rng.choice([x for x in range(46, 89, 2) if x != 60])
+                angs = [180 - 2 * b, b, b]
+        if all(0 < x < 180 for x in angs) and (tipo != "acutángulo" or max(angs) < 90):
+            break
+    rng.shuffle(angs)
+    lados = "equilátero" if len(set(angs)) == 1 else "isósceles" if len(set(angs)) == 2 else "escaleno"
+    txt = f"{angs[0]}°, {angs[1]}° y {angs[2]}°"
+    if d == 3:
+        enun = f"Los ángulos de un triángulo miden {txt}. ¿Cómo es según sus ángulos y según sus lados?"
+        resp = f"{tipo} {lados}"
+        otros_t = [t for t in ("acutángulo", "rectángulo", "obtusángulo") if t != tipo]
+        otro_l = "escaleno" if lados != "escaleno" else "isósceles"
+        dist = [("acutángulo " + lados if tipo == "obtusángulo" else None, "por_menor"), (f"{tipo} {otro_l}", None),
+                (f"{otros_t[0]} {lados}", None), (f"{otros_t[1]} {lados}", None), (f"{otros_t[0]} {otro_l}", None)]
+    else:
+        enun = f"Los ángulos de un triángulo miden {txt}. ¿Cómo es según sus ángulos?"
+        resp = tipo
+        dist = [("acutángulo" if tipo == "obtusángulo" else None, "por_menor"), (lados if lados != "escaleno" else "isósceles", "mezcla_criterios")] + \
+               [(t, None) for t in ("acutángulo", "rectángulo", "obtusángulo") if t != tipo]
+    pasos = [("mayor ángulo", f"{max(angs)}°", f"Miro el ángulo mayor: {max(angs)}°. " + ("Es recto, así que es rectángulo." if tipo == "rectángulo" else
+                                                                                     "Es obtuso, así que es obtusángulo." if tipo == "obtusángulo" else "Es agudo, así que los tres son agudos: acutángulo.")
+              + (f" Además tiene {'tres ángulos iguales' if lados == 'equilátero' else 'dos ángulos iguales (y por tanto dos lados iguales)' if lados == 'isósceles' else 'los tres ángulos distintos'}: {lados}." if d == 3 else ""))]
+    adulto = "Basta mirar el ángulo mayor: si es recto, rectángulo; si es obtuso, obtusángulo; si es agudo, acutángulo. La clasificación por lados es otro criterio distinto."
+    return mk(enun, resp, "t4_tri_angulos", {"angulos": angs}, dist, pasos, adulto)
+
+
+@generador("t4_tercer_angulo")
+def gen_tercer_angulo(rng, d):
+    if d == 3 and rng.random() < 0.5:
+        a, b = rng.randint(30, 90), rng.randint(30, 80)
+        c = rng.choice([180 - a - b, 180 - a - b + rng.choice([-10, 10, 20])])
+        if c <= 0:
+            c = 180 - a - b + 20
+        s = a + b + c
+        enun = f"¿Pueden ser {a}°, {b}° y {c}° los tres ángulos de un triángulo?"
+        ok = s == 180
+        resp = f"Sí, porque suman 180°" if ok else f"No, porque suman {s}° y no 180°"
+        dist = [("No, porque tendrían que sumar 360°" if ok else "Sí, porque suman menos de 360°", "usa_360"), ("No, porque ninguno es recto" if ok else f"Sí, porque suman {s}°", None),
+                ("Sí, porque todos son menores de 180°", None), ("No, porque no hay ningún ángulo recto", None)]
+        pasos = [(f"{a} + {b} + {c}", str(s), f"Sumo: {a}° + {b}° + {c}° = {s}°. Los ángulos de un triángulo tienen que sumar exactamente 180°.")]
+        return mk(enun, resp, "t4_tercer_angulo", {"a": a, "b": b, "c": c}, dist, pasos,
+                  "Los tres ángulos de cualquier triángulo suman 180°. Si no suman 180°, no forman un triángulo.")
+    a = rng.choice([90, rng.randint(20, 100)]) if d > 1 else rng.choice(range(30, 100, 10))
+    b = rng.randint(15, 170 - a) if d > 1 else rng.choice(range(20, 170 - a, 10))
+    r = 180 - a - b
+    enun = f"Dos ángulos de un triángulo miden {a}° y {b}°. ¿Cuánto mide el tercero?"
+    resp = f"{r}°"
+    dist = [(f"{360 - a - b}°", "usa_360"), (f"{180 - a}°", "resta_uno"), (f"{180 - b}°", "resta_uno"), (f"{a + b}°", None), (f"{r + 10}°", None)]
+    pasos = [(f"180 − {a} − {b}", str(r), f"Los tres ángulos de un triángulo suman 180°: 180° − {a}° − {b}° = {r}°.")]
+    adulto = "Triángulo: 180°; cuadrilátero: 360°. Hay que restar los dos ángulos conocidos."
+    return mk(enun, resp, "t4_tercer_angulo", {"a": a, "b": b}, dist, pasos, adulto)
+
+
+@generador("t4_desig_tri")
+def gen_desig_tri(rng, d):
+    caso = rng.choice(["si", "no", "igual"] if d > 1 else ["si", "no"])
+    for _ in range(100):
+        a, b = sorted(rng.sample(range(2, 15), 2))
+        if caso == "si":
+            c = rng.randint(b, a + b - 1)
+        elif caso == "igual":
+            c = a + b
+        else:
+            c = a + b + rng.randint(1, 8)
+        if c >= b:
+            break
+    ls = [a, b, c]
+    rng.shuffle(ls)
+    enun = f"¿Se puede construir un triángulo con lados de {ls[0]} cm, {ls[1]} cm y {ls[2]} cm?"
+    if caso == "si":
+        resp = f"Sí, porque {c} es menor que {a} + {b} = {a + b}"
+        dist = [(f"No, porque {c} es mayor que {a}" if c > a else None, None), (f"No, porque {a} + {b} no es igual a {c}", None),
+                ("No, porque los tres lados son distintos" if len({a, b, c}) == 3 else "No, porque tiene dos lados iguales", None),
+                (f"No, porque {c} es mayor que {b}" if c > b else None, None), (f"No, porque {a} + {b} + {c} es mayor que {c}", None)]
+    else:
+        resp = f"No, porque {c} no es menor que {a} + {b} = {a + b}"
+        dist = [(f"Sí, porque {c} es igual a {a} + {b}" if caso == "igual" else None, "admite_igualdad"), (f"Sí, porque {a} es menor que {b} + {c} = {b + c}", "lado_menor"),
+                (f"Sí, porque {b} es menor que {a} + {c} = {a + c}", "lado_menor"), (f"Sí, porque {a} + {b} + {c} es mayor que {c}", None)]
+    pasos = [("lado mayor", str(c), f"Basta comprobar el lado mayor ({c} cm): tiene que ser menor que la suma de los otros dos, {a} + {b} = {a + b}."),
+             ("", resp, f"{resp}.")]
+    adulto = "Desigualdad triangular: el lado mayor debe ser estrictamente menor que la suma de los otros dos. Si es igual, los segmentos quedan tumbados y no hay triángulo."
+    return mk(enun, resp, "t4_desig_tri", {"lados": [a, b, c]}, dist, pasos, adulto)
+
+
+@generador("t4_isosceles")
+def gen_isosceles(rng, d):
+    tipo = rng.choice(["desigual", "base"] if d == 1 else ["desigual", "base", "equilatero", "exterior"] if d == 2 else ["exterior", "desigual", "base"])
+    if tipo == "desigual":
+        x = rng.choice(range(20, 160, 2))
+        r = (180 - x) // 2
+        enun = f"En un triángulo isósceles, el ángulo desigual mide {x}°. ¿Cuánto mide cada uno de los ángulos iguales?"
+        dist = [(f"{180 - x}°", "no_divide"), (f"{180 - 2 * x}°" if 180 - 2 * x > 0 else None, "dato_base"), (f"{x}°", None), (f"{r + 10}°", None)]
+        pasos = [(f"180 − {x}", str(180 - x), f"Los tres ángulos suman 180°: a los dos iguales les quedan 180° − {x}° = {180 - x}°."),
+                 (f"{180 - x} : 2", str(r), f"Como son iguales, cada uno mide {180 - x}° : 2 = {r}°.")]
+    elif tipo == "base":
+        b = rng.randint(20, 85)
+        r = 180 - 2 * b
+        enun = f"En un triángulo isósceles, cada uno de los dos ángulos iguales mide {b}°. ¿Cuánto mide el ángulo desigual?"
+        dist = [(f"{180 - b}°", "no_divide"), (f"{fx(D(180 - b) / 2)}°", "dato_base"), (f"{b}°", None), (f"{r + 10}°", None)]
+        pasos = [(f"180 − 2 · {b}", str(r), f"Los dos ángulos iguales suman 2 · {b}° = {2 * b}°; el desigual es 180° − {2 * b}° = {r}°.")]
+    elif tipo == "equilatero":
+        enun = "¿Cuánto mide cada ángulo interior de un triángulo equilátero?" if rng.random() < 0.5 else "¿Cuánto mide cada ángulo exterior de un triángulo equilátero?"
+        r = 60 if "interior" in enun else 120
+        dist = [("180°", None), ("90°", None), (f"{180 - r}°", "exterior_supl"), ("45°", None)]
+        pasos = [("180 : 3", "60", "Los tres ángulos son iguales y suman 180°: 180° : 3 = 60°." + (" El exterior es el suplementario: 180° − 60° = 120°." if r == 120 else ""))]
+    else:
+        a, b = rng.randint(25, 80), rng.randint(25, 80)
+        r = a + b
+        enun = f"Dos ángulos interiores de un triángulo miden {a}° y {b}°. ¿Cuánto mide el ángulo exterior del tercer vértice?"
+        dist = [(f"{180 - a}°", "exterior_supl"), (f"{180 - a - b}°", None), (f"{360 - a - b}°", None), (f"{180 - b}°", "exterior_supl")]
+        pasos = [(f"{a} + {b}", str(r), f"El ángulo exterior mide lo mismo que la suma de los dos interiores no contiguos: {a}° + {b}° = {r}°. (También: el interior es 180° − {r}° = {180 - r}° y su suplementario, {r}°.)")]
+    resp = f"{r}°"
+    adulto = "Isósceles: los dos ángulos de la base son iguales. Equilátero: tres de 60°. Ángulo exterior = suma de los dos interiores no contiguos."
+    return mk(enun, resp, "t4_isosceles", {"tipo": tipo}, dist, pasos, adulto)
+
+
+# ---------------------------------------------------------------- cuadriláteros
+
+@generador("t4_paralelogramo")
+def gen_paralelogramo(rng, d):
+    tipo = rng.choice(["cuadrado", "rectángulo", "rombo", "romboide"])
+    a = rng.randint(3, 12)
+    b = rng.randint(3, 12)
+    while b == a:
+        b = rng.randint(3, 12)
+    ang = rng.choice([x for x in range(40, 140, 5) if x != 90])
+    if d == 3 and rng.random() < 0.5:
+        desc = {"cuadrado": "tiene los cuatro lados iguales y los cuatro ángulos rectos",
+                "rectángulo": "tiene los cuatro ángulos rectos pero no todos los lados iguales",
+                "rombo": "tiene los cuatro lados iguales pero ningún ángulo recto",
+                "romboide": "tiene los lados iguales dos a dos y ningún ángulo recto"}[tipo]
+        enun = f"¿Qué paralelogramo {desc}?"
+    else:
+        lados = f"los cuatro lados de {a} cm" if tipo in ("cuadrado", "rombo") else f"dos lados de {a} cm y otros dos de {b} cm"
+        angulo = "un ángulo de 90°" if tipo in ("cuadrado", "rectángulo") else f"un ángulo de {ang}°"
+        enun = f"Un paralelogramo tiene {lados} y {angulo}. ¿Qué tipo de paralelogramo es?"
+    resp = tipo
+    dist = [({"rombo": "romboide", "romboide": "rombo"}.get(tipo), "rombo_romboide"), ("rombo" if tipo == "cuadrado" else None, "cuadrado_rombo")] + \
+           [(t, None) for t in ("cuadrado", "rectángulo", "rombo", "romboide", "trapecio") if t != tipo]
+    pasos = [("lados y ángulos", resp, "Con lados iguales y ángulos rectos, cuadrado; ángulos rectos y lados distintos, rectángulo; lados iguales sin ángulos rectos, rombo; "
+              f"ni lados iguales ni ángulos rectos, romboide. Aquí: {resp}.")]
+    adulto = "Dos preguntas bastan: ¿tiene los cuatro lados iguales? ¿tiene ángulos rectos? El cuadrado es a la vez rombo y rectángulo, pero se nombra como cuadrado."
+    return mk(enun, resp, "t4_paralelogramo", {"tipo": tipo}, dist, pasos, adulto)
+
+
+@generador("t4_cuadrilatero")
+def gen_cuadrilatero(rng, d):
+    if d == 1 or rng.random() < 0.5:
+        for _ in range(100):
+            a, b, c = rng.randint(50, 150), rng.randint(50, 150), rng.randint(50, 150)
+            if d == 1:
+                a, b, c = (rng.choice(range(60, 150, 10)) for _ in range(3))
+            r = 360 - a - b - c
+            if 20 < r < 180:
+                break
+        enun = f"Tres ángulos de un cuadrilátero miden {a}°, {b}° y {c}°. ¿Cuánto mide el cuarto?"
+        resp = f"{r}°"
+        dist = [(f"{180 - a - b - c}°" if 180 - a - b - c > 0 else "No se puede", "usa_180"), (f"{a + b + c}°", None), (f"{r + 10}°", None), (f"{abs(r - 20)}°", None)]
+        pasos = [(f"360 − {a} − {b} − {c}", str(r), f"Los cuatro ángulos de un cuadrilátero suman 360°: 360° − {a}° − {b}° − {c}° = {r}°.")]
+    else:
+        x = rng.choice([v for v in range(40, 140) if v != 90])
+        y = 180 - x
+        fig = rng.choice(["romboide", "rombo"])
+        enun = f"Un {fig} tiene un ángulo de {x}°. ¿Cuánto miden los otros tres, en orden?"
+        resp = f"{y}°, {x}° y {y}°"
+        dist = [(f"{x}°, {x}° y {x}°", "iguala_contiguos"), (f"{abs(90 - x)}°, {x}° y {abs(90 - x)}°", None), (f"{x}°, {y}° y {x}°", None), (f"{360 - x}°, {x}° y {360 - x}°", None)]
+        pasos = [("opuestos", f"{x}°", f"En un paralelogramo los ángulos opuestos son iguales: el opuesto mide {x}°."),
+                 ("contiguos", f"{y}°", f"Los contiguos suman 180°: 180° − {x}° = {y}°."), ("", resp, f"Respuesta: {resp}.")]
+    adulto = "Los ángulos de cualquier cuadrilátero suman 360°. En un paralelogramo, opuestos iguales y contiguos suplementarios."
+    return mk(enun, resp, "t4_cuadrilatero", {}, dist, pasos, adulto)
+
+
+# ---------------------------------------------------------------- circunferencia
+
+@generador("t4_radio_diam")
+def gen_radio_diam(rng, d):
+    v = D(rng.randint(2, 20)) if d == 1 else D(rng.randint(11, 199)) / 10 if d == 3 else D(rng.randint(2, 60))
+    if rng.random() < 0.5:
+        enun = f"Una circunferencia tiene {fx(v)} cm de radio. ¿Cuánto mide su diámetro?"
+        r = v * 2
+        dist = [(u(v / 2, "cm"), "operacion_invertida"), (u(v, "cm"), "iguala"), (u(v * 4, "cm"), None), (u(v + 2, "cm"), None)]
+        pasos = [(f"{fx(v)} × 2", fx(r), f"El diámetro es el doble del radio: {fx(v)} × 2 = {fx(r)} cm.")]
+    else:
+        if d > 1 and ndec(v / 2) > 2:
+            v = v + 1
+        enun = f"Una circunferencia tiene {fx(v)} cm de diámetro. ¿Cuánto mide su radio?"
+        r = v / 2
+        dist = [(u(v * 2, "cm"), "operacion_invertida"), (u(v, "cm"), "iguala"), (u(v / 4, "cm"), None), (u(v - 2, "cm") if v > 2 else None, None)]
+        pasos = [(f"{fx(v)} : 2", fx(r), f"El radio es la mitad del diámetro: {fx(v)} : 2 = {fx(r)} cm.")]
+    resp = u(r, "cm")
+    adulto = "El diámetro atraviesa la circunferencia pasando por el centro: mide dos radios (d = 2r)."
+    return mk(enun, resp, "t4_radio_diam", {"v": str(v)}, dist, pasos, adulto, genericos=var_num(r, "cm", pasos=(1, -1, 3)))
+
+
+@generador("t4_pi_estima")
+def gen_pi_estima(rng, d):
+    tipo = rng.choice(["diametro"] if d == 1 else ["diametro", "radio"] if d == 2 else ["radio", "inverso", "razon"])
+    obj = rng.choice(["Una rueda", "Un aro", "Una tapa redonda", "Un plato"])
+    if tipo == "diametro":
+        dd = rng.choice(range(10, 90, 5))
+        r = 3 * dd
+        enun = f"{obj} tiene {dd} cm de diámetro. Usando π ≈ 3, ¿cuánto mide aproximadamente su borde?"
+        dist = [(f"unos {2 * dd} cm", "doble"), (f"unos {3 * dd // 2} cm" if dd % 2 == 0 else f"unos {dd} cm", "radio_diametro"), (f"unos {dd} cm", None), (f"unos {4 * dd} cm", None)]
+        pasos = [(f"3 × {dd}", str(r), f"La longitud de una circunferencia es algo más de 3 veces su diámetro (π ≈ 3,14): 3 × {dd} = {r} cm, un poco más en realidad.")]
+        resp = f"unos {r} cm"
+    elif tipo == "radio":
+        rad = rng.choice(range(5, 50, 5))
+        r = 6 * rad
+        enun = f"{obj} tiene {rad} cm de radio. Usando π ≈ 3, ¿cuánto mide aproximadamente su borde?"
+        dist = [(f"unos {3 * rad} cm", "radio_diametro"), (f"unos {4 * rad} cm", "doble"), (f"unos {9 * rad} cm", None), (f"unos {2 * rad} cm", None)]
+        pasos = [(f"2 × {rad}", str(2 * rad), f"Primero el diámetro: 2 × {rad} = {2 * rad} cm."), (f"3 × {2 * rad}", str(r), f"El borde mide unas 3 veces el diámetro: 3 × {2 * rad} = {r} cm.")]
+        resp = f"unos {r} cm"
+    elif tipo == "inverso":
+        dd = rng.choice(range(10, 60, 5))
+        L = D(dd) * D("3.14")
+        enun = f"Una circunferencia mide {fx(L)} cm de longitud. Usando π = 3,14, ¿cuánto mide su diámetro?"
+        resp = f"{dd} cm"
+        dist = [(f"{fx(L / 2)} cm", "doble"), (f"{fx(D(dd) / 2)} cm", "radio_diametro"), (f"{fx(L * D('3.14'), 2)} cm", None), (f"{dd + 5} cm", None)]
+        pasos = [(f"{fx(L)} : 3,14", str(dd), f"La longitud es π veces el diámetro, así que divido: {fx(L)} : 3,14 = {dd} cm.")]
+    else:
+        enun = "Si divides la longitud de cualquier circunferencia entre su diámetro, ¿qué obtienes siempre?"
+        resp = "π, algo más de 3 (≈ 3,14)"
+        dist = [("2, porque el borde es el doble del diámetro", "doble"), ("Depende del tamaño de la circunferencia", None), ("π, algo más de 6 (≈ 6,28)", "radio_diametro"), ("Exactamente 3", None)]
+        pasos = [("L : d", "π", "Para cualquier circunferencia, longitud : diámetro = π ≈ 3,14, algo más de 3.")]
+    adulto = "π es la razón entre la longitud de la circunferencia y su diámetro (≈ 3,14). Para estimar basta multiplicar el diámetro por 3; si se da el radio, hay que doblarlo antes."
+    return mk(enun, resp, "t4_pi_estima", {"tipo": tipo}, dist, pasos, adulto)
+
+
+@generador("t4_pos_circ")
+def gen_pos_circ(rng, d):
+    if d == 1 or (d == 2 and rng.random() < 0.3):
+        r = rng.randint(3, 12)
+        caso = rng.choice(["exterior", "tangente", "secante"])
+        dd = {"exterior": r + rng.randint(1, 6), "tangente": r, "secante": rng.randint(0, r - 1)}[caso]
+        enun = f"Una circunferencia tiene {r} cm de radio y la distancia de su centro a una recta es {dd} cm. ¿Cuál es la posición de la recta?"
+        resp = caso
+        dist = [({"exterior": "secante", "secante": "exterior", "tangente": None}[caso], "invierte")] + [(x, None) for x in ("exterior", "tangente", "secante", "interior") if x != caso]
+        pasos = [("comparar d y r", resp, f"Comparo la distancia ({dd}) con el radio ({r}): mayor → exterior; igual → tangente; menor → secante. Es {resp}.")]
+    else:
+        r1, r2 = sorted(rng.sample(range(2, 12), 2), reverse=True)
+        caso = rng.choice(["exteriores", "tangentes exteriores", "secantes", "tangentes interiores", "interiores", "concéntricas"])
+        s, df = r1 + r2, r1 - r2
+        dd = {"exteriores": s + rng.randint(1, 5), "tangentes exteriores": s, "secantes": rng.randint(df + 1, s - 1),
+              "tangentes interiores": df, "interiores": rng.randint(1, df - 1) if df > 1 else None, "concéntricas": 0}[caso]
+        if dd is None:
+            caso, dd = "secantes", rng.randint(df + 1, s - 1)
+        enun = f"Dos circunferencias tienen radios de {r1} cm y {r2} cm, y la distancia entre sus centros es {dd} cm. ¿Cuál es su posición relativa?"
+        resp = caso
+        solo_suma = "secantes" if dd < s else "tangentes exteriores" if dd == s else "exteriores"
+        inv = {"exteriores": "interiores", "interiores": "exteriores", "tangentes exteriores": "tangentes interiores", "tangentes interiores": "tangentes exteriores", "secantes": None, "concéntricas": None}[caso]
+        dist = [(solo_suma if solo_suma != caso else None, "solo_suma"), (inv, "invierte")] + \
+               [(x, None) for x in ("secantes", "exteriores", "interiores", "tangentes exteriores", "tangentes interiores") if x != caso]
+        pasos = [("suma y diferencia", f"{s} y {df}", f"Suma de radios: {r1} + {r2} = {s}; diferencia: {r1} − {r2} = {df}."),
+                 ("comparar", resp, f"Distancia {dd}: si es mayor que {s}, exteriores; igual a {s}, tangentes exteriores; entre {df} y {s}, secantes; igual a {df}, tangentes interiores; "
+                  f"menor que {df}, interiores (0: concéntricas). Son {resp}.")]
+    adulto = "Recta: se compara la distancia al centro con el radio. Dos circunferencias: se compara la distancia entre centros con la suma y con la diferencia de radios."
+    return mk(enun, resp, "t4_pos_circ", {}, dist, pasos, adulto)
+
+
+# ---------------------------------------------------------------- cuerpos
+
+@generador("t4_nombre_cuerpo")
+def gen_nombre_cuerpo(rng, d):
+    n = rng.randint(3, 8 if d < 3 else 10)
+    cuerpo = rng.choice(["prisma", "pirámide"])
+    nombre = f"{cuerpo} {ADJ[n]}"
+    otro = "pirámide" if cuerpo == "prisma" else "prisma"
+    if d == 1:
+        if cuerpo == "prisma":
+            enun = f"Un cuerpo tiene dos bases iguales y paralelas con forma de {NOMBRES_POL[n]} y sus caras laterales son rectángulos. ¿Cómo se llama?"
+        else:
+            enun = f"Un cuerpo tiene una sola base con forma de {NOMBRES_POL[n]} y caras laterales triangulares que se juntan en un vértice. ¿Cómo se llama?"
+        dist = [(f"{otro} {ADJ[n]}", None), ("pirámide triangular" if cuerpo == "pirámide" and n != 3 else None, "por_caras_laterales"),
+                (f"{cuerpo} {(ADJ[n + 1] if n + 1 in ADJ else ADJ[n - 1])}", None), (f"{otro} {(ADJ[n + 1] if n + 1 in ADJ else ADJ[n - 1])}", None)]
+        pasos = [("bases", nombre, f"{'Dos bases iguales y paralelas: es un prisma' if cuerpo == 'prisma' else 'Una base y caras triangulares con un vértice común: es una pirámide'}. Se nombra por el polígono de la base ({NOMBRES_POL[n]}): {nombre}.")]
+    else:
+        caras = n + 2 if cuerpo == "prisma" else n + 1
+        enun = f"Un{'a' if cuerpo == 'pirámide' else ''} {cuerpo} tiene {caras} caras en total. ¿Cómo se llama?"
+        mal = caras if cuerpo == "pirámide" else caras
+        dist = [(f"{cuerpo} {ADJ[caras]}" if caras in ADJ else None, "cuenta_base"), ("pirámide triangular" if cuerpo == "pirámide" and n != 3 else None, "por_caras_laterales"),
+                (f"{cuerpo} {ADJ[caras - 1]}" if cuerpo == "prisma" and caras - 1 in ADJ else None, "cuenta_base"), (f"{otro} {ADJ[n]}", None),
+                (f"{cuerpo} {ADJ.get(n - 1, ADJ.get(n + 2))}", None)]
+        pasos = [("caras", str(n), (f"Un prisma tiene 2 bases más tantas caras laterales como lados de la base: {caras} − 2 = {n}." if cuerpo == "prisma"
+                                    else f"Una pirámide tiene 1 base más tantas caras laterales como lados de la base: {caras} − 1 = {n}.")
+                  + f" La base es un {NOMBRES_POL[n]}: {nombre}.")]
+    resp = nombre
+    adulto = "Prismas y pirámides se nombran por el polígono de la base. Para contar lados de la base a partir de las caras hay que descontar las bases (2 en el prisma, 1 en la pirámide)."
+    return mk(enun, resp, "t4_nombre_cuerpo", {"n": n, "cuerpo": cuerpo}, dist, pasos, adulto)
+
+
+@generador("t4_euler")
+def gen_euler(rng, d):
+    tipo = rng.choice(["elemento"] if d == 1 else ["elemento", "todos"] if d == 2 else ["todos", "euler"])
+    n = rng.randint(3, 10 if d == 1 else 20)
+    cuerpo = rng.choice(["prisma", "pirámide"])
+    C, A, V = (n + 2, 3 * n, 2 * n) if cuerpo == "prisma" else (n + 1, 2 * n, n + 1)
+    Cm, Am, Vm = (n + 1, 2 * n, n + 1) if cuerpo == "prisma" else (n + 2, 3 * n, 2 * n)
+    base = NOMBRES_POL.get(n, f"polígono de {n} lados")
+    art = "Una" if cuerpo == "pirámide" else "Un"
+    if tipo == "elemento":
+        el = rng.choice(["caras", "aristas", "vértices"])
+        val, mal = {"caras": (C, Cm), "aristas": (A, Am), "vértices": (V, Vm)}[el]
+        enun = f"¿Cuántas {el} tiene {art.lower()} {cuerpo} cuya base es un {base}?" if el != "vértices" else f"¿Cuántos vértices tiene {art.lower()} {cuerpo} cuya base es un {base}?"
+        resp = str(val)
+        dist = [(str(mal), "formulas_otro_cuerpo"), (str(n), None), (str(val + 1), None), (str(val - 1), None), (str(val + 2), None)]
+    elif tipo == "todos":
+        enun = f"{art} {cuerpo} tiene como base un {base}. ¿Cuántas caras, aristas y vértices tiene?"
+        resp = f"{C} caras, {A} aristas y {V} vértices"
+        dist = [(f"{Cm} caras, {Am} aristas y {Vm} vértices", "formulas_otro_cuerpo"), (f"{C} caras, {V} aristas y {A} vértices", None),
+                (f"{C - 1} caras, {A} aristas y {V} vértices", None), (f"{C} caras, {A + n} aristas y {V} vértices", None)]
+    else:
+        caras, vert = C, V
+        enun = f"Un poliedro convexo tiene {caras} caras y {vert} vértices. ¿Cuántas aristas tiene?"
+        resp = str(A)
+        dist = [(str(vert + 2 - caras) if vert + 2 - caras > 0 else str(caras + 2 - vert), "euler_signo"), (str(caras + vert + 2), None), (str(caras + vert), None), (str(A + 1), None)]
+    pasos = [("fórmulas", resp, (f"Prisma de base con {n} lados: {n} + 2 = {C} caras, 3 · {n} = {A} aristas y 2 · {n} = {V} vértices." if cuerpo == "prisma"
+                                 else f"Pirámide de base con {n} lados: {n} + 1 = {C} caras, 2 · {n} = {A} aristas y {n} + 1 = {V} vértices.")
+              + (f" Euler: C + V = A + 2 → A = {C} + {V} − 2 = {A}." if tipo == "euler" else f" Compruebo Euler: {C} + {V} = {A} + 2."))]
+    adulto = "Prisma: n + 2 caras, 3n aristas, 2n vértices. Pirámide: n + 1 caras, 2n aristas, n + 1 vértices. En todo poliedro convexo, C + V = A + 2."
+    return mk(enun, resp, "t4_euler", {"n": n, "cuerpo": cuerpo, "tipo": tipo}, dist, pasos, adulto)
+
+
+# ---------------------------------------------------------------- simetría y movimientos
+
+@generador("t4_ejes")
+def gen_ejes(rng, d):
+    figs = {1: [("un cuadrado", 4), ("un rectángulo que no es cuadrado", 2), ("un triángulo equilátero", 3), ("un círculo", None), ("un triángulo escaleno", 0)],
+            2: [("un rombo que no es cuadrado", 2), ("un triángulo isósceles no equilátero", 1), ("un pentágono regular", 5), ("un hexágono regular", 6), ("un rectángulo que no es cuadrado", 2)],
+            3: [("un octógono regular", 8), ("un romboide", 0), ("un trapecio isósceles", 1), ("un decágono regular", 10), ("un rombo que no es cuadrado", 2), ("un heptágono regular", 7)]}[d]
+    fig, n = rng.choice(figs)
+    enun = f"¿Cuántos ejes de simetría tiene {fig}?"
+    txt = lambda k: "infinitos" if k is None else f"{k} {'eje' if k == 1 else 'ejes'}" if k else "ninguno"
+    resp = txt(n)
+    dist = []
+    if "rectángulo" in fig or "rombo" in fig:
+        dist.append((txt(4), "diagonales_rect"))
+    if "regular" in fig and n and n % 2 == 0:
+        dist.append((txt(n // 2), "mitad_lados"))
+    if "regular" in fig:
+        dist.append((txt(2 * n), None))
+    dist += [(txt(k), None) for k in (1, 2, 4, 0, 3) if k != n]
+    pasos = [("doblar", resp, f"Un eje de simetría divide la figura en dos mitades que coinciden al doblar. {fig[0].upper() + fig[1:]} tiene {resp}."
+              + (" En un polígono regular hay tantos ejes como lados." if "regular" in fig else "")
+              + (" Las diagonales del rectángulo no son ejes: al doblar por ellas las mitades no coinciden." if "rectángulo" in fig else ""))]
+    adulto = "Polígono regular de n lados: n ejes. Rectángulo y rombo: 2. Cuadrado: 4. Isósceles: 1. Escaleno y romboide: ninguno. Círculo: infinitos."
+    return mk(enun, resp, "t4_ejes", {"figura": fig}, dist, pasos, adulto)
+
+
+def pt(x, y):
+    f = lambda v: fx(v) if not isinstance(v, int) else (("−" + str(-v)) if v < 0 else str(v))
+    return f"({f(x)}, {f(y)})"
+
+
+@generador("t4_mov_coord")
+def gen_mov_coord(rng, d):
+    x, y = rng.randint(-9, 9), rng.randint(-9, 9)
+    while x == 0 or y == 0 or abs(x) == abs(y):
+        x, y = rng.randint(-9, 9), rng.randint(-9, 9)
+    tipo = rng.choice(["traslacion", "eje_x", "eje_y"] if d < 3 else ["traslacion", "origen", "eje_y", "eje_x"])
+    if tipo == "traslacion":
+        a, b = rng.randint(-6, 6), rng.randint(-6, 6)
+        while a == 0 or b == 0:
+            a, b = rng.randint(-6, 6), rng.randint(-6, 6)
+        enun = f"Traslada el punto {pt(x, y)} según el vector {pt(a, b)}. ¿Dónde queda?"
+        r = (x + a, y + b)
+        dist = [(pt(x - a, y - b), "resta_vector"), (pt(x + b, y + a), None), (pt(x + a, y - b), None), (pt(a, b), None)]
+        pasos = [(f"({x} + {a}, {y} + {b})".replace("+ -", "− "), pt(*r), f"Sumo el vector a las coordenadas: x = {x} + ({a}) = {r[0]}, y = {y} + ({b}) = {r[1]}.")]
+    else:
+        nom = {"eje_x": "al eje de abscisas (eje X)", "eje_y": "al eje de ordenadas (eje Y)", "origen": "al origen de coordenadas"}[tipo]
+        enun = f"¿Cuál es el simétrico del punto {pt(x, y)} respecto {nom}?"
+        r = {"eje_x": (x, -y), "eje_y": (-x, y), "origen": (-x, -y)}[tipo]
+        equivocada = {"eje_x": (-x, y), "eje_y": (x, -y), "origen": (-x, y)}[tipo]
+        dist = [(pt(*equivocada), "coord_equivocada"), (pt(-x, -y) if tipo != "origen" else pt(x, -y), None), (pt(y, x), None), (pt(-y, -x), None)]
+        regla = {"eje_x": "respecto al eje X se conserva la x y cambia de signo la y", "eje_y": "respecto al eje Y se conserva la y y cambia de signo la x",
+                 "origen": "respecto al origen cambian de signo las dos coordenadas"}[tipo]
+        pasos = [("regla", pt(*r), f"En la simetría {regla}: {pt(x, y)} → {pt(*r)}.")]
+    resp = pt(*r)
+    adulto = "Traslación de vector (a, b): (x + a, y + b). Simetría eje X: (x, −y); eje Y: (−x, y); origen: (−x, −y)."
+    return mk(enun, resp, "t4_mov_coord", {"x": x, "y": y, "tipo": tipo}, dist, pasos, adulto)
+
+
+@generador("t4_giros")
+def gen_giros(rng, d):
+    x, y = rng.randint(-8, 8), rng.randint(-8, 8)
+    while x == 0 or y == 0 or abs(x) == abs(y):
+        x, y = rng.randint(-8, 8), rng.randint(-8, 8)
+    if d == 1:
+        x, y = abs(x), abs(y)
+    ang = rng.choice([90, 180] if d == 1 else [90, 270, 180] if d == 2 else [90, 270, "90h", "dos_simetrias"])
+    if ang == 90:
+        r, contra = (-y, x), (y, -x)
+        txt = "90° en sentido antihorario"
+    elif ang == 270:
+        r, contra = (y, -x), (-y, x)
+        txt = "270° en sentido antihorario"
+    elif ang == "90h":
+        r, contra = (y, -x), (-y, x)
+        txt = "90° en sentido horario"
+    elif ang == 180:
+        r, contra = (-x, -y), None
+        txt = "180°"
+    else:
+        r, contra = (-x, -y), None
+    if ang == "dos_simetrias":
+        enun = f"Al punto {pt(x, y)} le aplicas una simetría respecto al eje X y después otra respecto al eje Y. ¿Dónde queda?"
+        dist = [(pt(x, -y), None), (pt(-x, y), None), (pt(y, x), "intercambia"), (pt(-y, x), None)]
+        pasos = [("eje X", pt(x, -y), f"Simetría respecto al eje X: {pt(x, y)} → {pt(x, -y)}."), ("eje Y", pt(-x, -y), f"Simetría respecto al eje Y: {pt(x, -y)} → {pt(-x, -y)}. Equivale a un giro de 180° con centro el origen.")]
+    else:
+        enun = f"Gira el punto {pt(x, y)} {txt} con centro en el origen. ¿Dónde queda?"
+        dist = [(pt(y, x), "intercambia"), (pt(*contra) if contra else pt(-y, x), "sentido" if contra else None), (pt(-x, y), None), (pt(x, -y), None), (pt(-y, -x), None)]
+        regla = {90: "(x, y) → (−y, x)", 270: "(x, y) → (y, −x)", "90h": "(x, y) → (y, −x) (igual que 270° antihorario)", 180: "(x, y) → (−x, −y)"}[ang]
+        pasos = [("regla", pt(*r), f"Giro de {txt}: {regla}. Así, {pt(x, y)} → {pt(*r)}.")]
+    resp = pt(*r)
+    adulto = "Con centro en el origen: 90° antihorario (x, y) → (−y, x); 180° (x, y) → (−x, −y); 270° antihorario (o 90° horario) (x, y) → (y, −x). Conviene comprobarlo dibujando."
+    return mk(enun, resp, "t4_giros", {"x": x, "y": y, "ang": str(ang)}, dist, pasos, adulto)
+
+
+# ---------------------------------------------------------------- coordenadas
+
+@generador("t4_coord1")
+def gen_coord1(rng, d):
+    if d == 1:
+        x, y = rng.randint(1, 9), rng.randint(1, 9)
+        while x == y:
+            y = rng.randint(1, 9)
+        enun = f"Desde el origen (0, 0) avanzas {x} unidades hacia la derecha y {y} hacia arriba. ¿En qué punto estás?"
+        resp = pt(x, y)
+        dist = [(pt(y, x), "invierte"), (pt(x + 1, y + 1), "cuenta_desde_1"), (pt(x, y + 1), None), (pt(x - 1, y), None), (pt(x + y, 0), None)]
+        pasos = [("(x, y)", resp, f"La primera coordenada es el desplazamiento horizontal ({x}) y la segunda el vertical ({y}): {resp}.")]
+    else:
+        for _ in range(100):
+            x, y = rng.randint(0, 10), rng.randint(0, 10)
+            dx, dy = rng.randint(-5, 5), rng.randint(-5, 5)
+            if dx and dy and 0 <= x + dx <= 10 and 0 <= y + dy <= 10 and x != y:
+                break
+        mv = f"{abs(dx)} a la {'derecha' if dx > 0 else 'izquierda'} y {abs(dy)} hacia {'arriba' if dy > 0 else 'abajo'}"
+        if d == 3 and rng.random() < 0.5:
+            enun = f"¿Qué desplazamiento lleva del punto {pt(x, y)} al punto {pt(x + dx, y + dy)}?"
+            resp = mv
+            dist = [(f"{abs(dy)} a la {'derecha' if dy > 0 else 'izquierda'} y {abs(dx)} hacia {'arriba' if dx > 0 else 'abajo'}", "invierte"),
+                    (f"{abs(dx)} a la {'izquierda' if dx > 0 else 'derecha'} y {abs(dy)} hacia {'abajo' if dy > 0 else 'arriba'}", None),
+                    (f"{abs(dx)} a la {'derecha' if dx > 0 else 'izquierda'} y {abs(dy)} hacia {'abajo' if dy > 0 else 'arriba'}", None),
+                    (f"{x + dx} a la derecha y {y + dy} hacia arriba", None)]
+        else:
+            enun = f"Desde el punto {pt(x, y)} te mueves {mv}. ¿A qué punto llegas?"
+            resp = pt(x + dx, y + dy)
+            dist = [(pt(y + dy, x + dx), "invierte"), (pt(x + dy, y + dx), None), (pt(x - dx, y - dy), None), (pt(x + dx, y - dy), None), (pt(x - dx, y + dy), None)]
+        pasos = [("x", str(x + dx), f"La x cambia con los movimientos horizontales: {x} {'+' if dx > 0 else '−'} {abs(dx)} = {x + dx}."),
+                 ("y", str(y + dy), f"La y cambia con los verticales: {y} {'+' if dy > 0 else '−'} {abs(dy)} = {y + dy}."), ("", resp, f"Respuesta: {resp}.")]
+    adulto = "En (x, y), la primera coordenada es horizontal y la segunda vertical; se cuenta desde el 0 (el origen), no desde el 1."
+    return mk(enun, resp, "t4_coord1", {}, dist, pasos, adulto)
+
+
+CUAD = {1: "el primer cuadrante", 2: "el segundo cuadrante", 3: "el tercer cuadrante", 4: "el cuarto cuadrante"}
+
+
+@generador("t4_cuadrantes")
+def gen_cuadrantes(rng, d):
+    if d == 3 and rng.random() < 0.6:
+        v = rng.randint(1, 9) * rng.choice([1, -1])
+        eje = rng.choice(["x", "y"])
+        x, y = (v, 0) if eje == "x" else (0, v)
+        resp = "sobre el eje de abscisas (eje X)" if eje == "x" else "sobre el eje de ordenadas (eje Y)"
+        q = {(True, True): 1, (False, True): 2, (False, False): 3, (True, False): 4}
+        mal = q[(v > 0, True)] if eje == "x" else q[(True, v > 0)]
+        dist = [(CUAD[mal], "eje_en_cuadrante"), ("sobre el eje de ordenadas (eje Y)" if eje == "x" else "sobre el eje de abscisas (eje X)", None),
+                (CUAD[(mal % 4) + 1], "eje_en_cuadrante"), ("en el origen", None)]
+    else:
+        x = rng.randint(1, 9) * rng.choice([1, -1])
+        y = rng.randint(1, 9) * rng.choice([1, -1])
+        if d >= 2 and rng.random() < 0.5:
+            x = D(x) + D(rng.choice([5, -5])) / 10
+        cu = {(True, True): 1, (False, True): 2, (False, False): 3, (True, False): 4}[(x > 0, y > 0)]
+        resp = CUAD[cu]
+        swap = {2: 4, 4: 2, 1: 3, 3: 1}[cu]
+        dist = [(CUAD[swap], "numera_mal" if cu in (2, 4) else None)] + [(CUAD[k], None) for k in (1, 2, 3, 4) if k not in (cu, swap)] + [("sobre el eje de abscisas (eje X)", None)]
+    enun = f"¿Dónde está el punto {pt(x, y)}?"
+    pasos = [("signos", resp, "Miro los signos: (+, +) primer cuadrante; (−, +) segundo; (−, −) tercero; (+, −) cuarto. Si una coordenada es 0, el punto está sobre un eje. "
+              f"El punto {pt(x, y)} está {resp.replace('el ', 'en el ', 1) if resp.startswith('el ') else resp}.")]
+    adulto = "Los cuadrantes se numeran en sentido antihorario empezando por arriba a la derecha. Los puntos con alguna coordenada 0 están sobre los ejes, no en un cuadrante."
+    resp_txt = ("en " + resp) if resp.startswith("el ") else resp
+    dist = [(("en " + v) if v and v.startswith("el ") else v, k) for v, k in dist]
+    return mk(enun, resp_txt, "t4_cuadrantes", {"x": str(x), "y": str(y)}, dist, pasos, adulto)
+
+
+TERNAS = [(3, 4, 5), (6, 8, 10), (5, 12, 13), (8, 15, 17), (9, 12, 15), (7, 24, 25), (12, 16, 20), (20, 21, 29), (9, 40, 41), (12, 5, 13), (15, 20, 25), (10, 24, 26)]
+
+
+@generador("t4_distancia")
+def gen_distancia(rng, d):
+    x1, y1 = rng.randint(-6, 6), rng.randint(-6, 6)
+    if d < 3 and rng.random() < 0.7 or d == 1:
+        hor = rng.random() < 0.5
+        L = rng.randint(2, 10)
+        if d > 1:
+            x1 = rng.randint(-8, -1) if hor else x1
+            y1 = rng.randint(-8, -1) if not hor else y1
+            L = rng.randint(max(2, abs(x1 if hor else y1) + 1), 14)
+        x2, y2 = (x1 + L, y1) if hor else (x1, y1 + L)
+        r = L
+        a1, a2 = (x1, x2) if hor else (y1, y2)
+        dist = [(str(abs(abs(a2) - abs(a1))) if abs(abs(a2) - abs(a1)) != L else None, "signo_mal"), (str(abs(a1) + abs(a2)) if abs(a1) + abs(a2) != L else None, None),
+                (str(L + 1), None), (str(L - 1), None), (str(L + 2), None)]
+        pasos = [("restar", str(r), f"Los dos puntos están en la misma {'horizontal' if hor else 'vertical'}: resto las coordenadas que cambian, {a2} − ({a1}) = {r}.")]
+    else:
+        a, b, c = rng.choice(TERNAS[:8])
+        if rng.random() < 0.5:
+            a, b = b, a
+        sx_, sy_ = rng.choice([1, -1]), rng.choice([1, -1])
+        x2, y2 = x1 + sx_ * a, y1 + sy_ * b
+        r = c
+        dist = [(str(a + b), "sin_pitag"), (str(a * a + b * b), None), (str(abs(b - a)) if a != b else None, None), (str(c + 1), None)]
+        pasos = [("diferencias", f"{a} y {b}", f"Diferencia horizontal: |{x2} − ({x1})| = {a}; vertical: |{y2} − ({y1})| = {b}."),
+                 ("Pitágoras", str(c), f"Son los catetos de un triángulo rectángulo: d = √({a}² + {b}²) = √{a * a + b * b} = {c}.")]
+    enun = f"¿Cuál es la distancia entre los puntos {pt(x1, y1)} y {pt(x2, y2)}?"
+    resp = str(r)
+    adulto = "En la misma horizontal o vertical, se restan las coordenadas (con su signo). En general, las diferencias son catetos y se aplica Pitágoras: sumarlas sin más es el error típico."
+    return mk(enun, resp, "t4_distancia", {"p1": [x1, y1], "p2": [x2, y2]}, dist, pasos, adulto)
+
+
+@generador("t4_poligono_coords")
+def gen_poligono_coords(rng, d):
+    fig = rng.choice(["rect_perim", "rect_area"] if d == 1 else ["rect_area", "triangulo", "rect_perim"] if d == 2 else ["triangulo", "trapecio", "rect_area"])
+    x1, y1 = rng.randint(-3, 5), rng.randint(-3, 5)
+    if fig.startswith("rect"):
+        w, h = rng.randint(2, 9), rng.randint(2, 9)
+        while w == h:
+            h = rng.randint(2, 9)
+        vs = [(x1, y1), (x1 + w, y1), (x1 + w, y1 + h), (x1, y1 + h)]
+        if fig == "rect_perim":
+            enun = f"Calcula el perímetro del rectángulo de vértices {', '.join(pt(*v) for v in vs)}."
+            r = 2 * (w + h)
+            dist = [(str(2 * (abs(x1 + w) + abs(y1 + h))) if 2 * (abs(x1 + w) + abs(y1 + h)) != r else None, "coordenada_longitud"), (str(w * h), None), (str(w + h), None), (str(r + 2), None)]
+            pasos = [("lados", f"{w} y {h}", f"Base: {x1 + w} − ({x1}) = {w}; altura: {y1 + h} − ({y1}) = {h}."), ("2 · (b + h)", str(r), f"Perímetro = 2 · ({w} + {h}) = {r}.")]
+        else:
+            enun = f"Calcula el área del rectángulo de vértices {', '.join(pt(*v) for v in vs)}."
+            r = w * h
+            dist = [(str(abs(x1 + w) * abs(y1 + h)) if abs(x1 + w) * abs(y1 + h) != r else None, "coordenada_longitud"), (str(2 * (w + h)), None), (str(r // 2) if r % 2 == 0 else str(r + 1), "olvida_mitad_inv"), (str(r + w), None)]
+            pasos = [("lados", f"{w} y {h}", f"Base: {x1 + w} − ({x1}) = {w}; altura: {y1 + h} − ({y1}) = {h}."), ("b · h", str(r), f"Área = {w} · {h} = {r}.")]
+    elif fig == "triangulo":
+        b = rng.choice(range(2, 13, 2))
+        h = rng.randint(2, 9)
+        xa = x1 + rng.randint(0, b)
+        vs = [(x1, y1), (x1 + b, y1), (xa, y1 + h)]
+        enun = f"Calcula el área del triángulo de vértices {', '.join(pt(*v) for v in vs)}."
+        r = b * h // 2
+        dist = [(str(b * h), "olvida_mitad"), (str(abs(x1 + b) * h // 2) if abs(x1 + b) * h % 2 == 0 and abs(x1 + b) != b else None, "coordenada_longitud"), (str(b + h), None), (str(r + h), None)]
+        pasos = [("base", str(b), f"La base es horizontal: {x1 + b} − ({x1}) = {b}."), ("altura", str(h), f"La altura es la distancia vertical del tercer vértice a la base: {y1 + h} − ({y1}) = {h}."),
+                 ("b · h : 2", str(r), f"Área = {b} · {h} : 2 = {r}.")]
+    else:
+        B, bb, h = rng.randint(6, 12), rng.randint(2, 5), rng.randint(2, 8)
+        while (B + bb) * h % 2:
+            h += 1
+        off = rng.randint(0, B - bb)
+        vs = [(x1, y1), (x1 + B, y1), (x1 + off + bb, y1 + h), (x1 + off, y1 + h)]
+        enun = f"Calcula el área del trapecio de vértices {', '.join(pt(*v) for v in vs)}."
+        r = (B + bb) * h // 2
+        dist = [((B + bb) * h, "olvida_mitad"), (B * bb * h // 2 if B * bb * h % 2 == 0 else None, None), (B * h, None), (r + h, None)]
+        dist = [(str(v) if v is not None else None, k) for v, k in dist]
+        pasos = [("bases", f"{B} y {bb}", f"Bases horizontales: {B} y {bb}; altura: {h}."), ("(B + b) · h : 2", str(r), f"Área = ({B} + {bb}) · {h} : 2 = {r}.")]
+    resp = str(r)
+    adulto = "Con lados paralelos a los ejes, las longitudes se obtienen restando coordenadas; no se usa una coordenada suelta como longitud."
+    return mk(enun, resp, "t4_poligono_coords", {"fig": fig, "vertices": [list(v) for v in vs]}, dist, pasos, adulto)
+
+
+# ---------------------------------------------------------------- Pitágoras: reconocer y clasificar
+
+@generador("t4_pitag_tipo")
+def gen_pitag_tipo(rng, d, modo="rectangulo"):
+    for _ in range(200):
+        if modo == "rectangulo" or rng.random() < 0.34:
+            if rng.random() < 0.5:
+                a, b, c = rng.choice(TERNAS)
+            else:
+                a, b = rng.randint(3, 15), rng.randint(3, 15)
+                c = rng.choice([int(math.isqrt(a * a + b * b)) + 1, int(math.isqrt(a * a + b * b))])
+        else:
+            a, b = rng.randint(3, 15), rng.randint(3, 15)
+            c = rng.randint(max(a, b), a + b - 1)
+        ls = sorted([a, b, c])
+        if ls[2] < ls[0] + ls[1] and len(set(ls)) >= 2:
+            break
+    a, b, c = ls
+    tipo = "rectángulo" if c * c == a * a + b * b else "obtusángulo" if c * c > a * a + b * b else "acutángulo"
+    orden = [a, b, c]
+    rng.shuffle(orden)
+    enun = (f"¿Es rectángulo un triángulo de lados {orden[0]}, {orden[1]} y {orden[2]}?" if modo == "rectangulo"
+            else f"Un triángulo tiene lados {orden[0]}, {orden[1]} y {orden[2]}. ¿Es acutángulo, rectángulo u obtusángulo?")
+    comp = f"{c}² = {c * c} y {a}² + {b}² = {a * a + b * b}"
+    if modo == "rectangulo":
+        si = tipo == "rectángulo"
+        resp = f"Sí, porque {c}² = {a}² + {b}²" if si else f"No, porque {c}² ≠ {a}² + {b}²"
+        mal_nomayor = (a * a == b * b + c * c)
+        dist = [(("No, porque " + f"{a} + {b} ≠ {c}") if si and a + b != c else None, "suma_sin_cuadrados"),
+                (f"No, porque {a}² ≠ {b}² + {c}²" if si else None, "no_lado_mayor"),
+                (f"Sí, porque {a} + {b} > {c}" if not si else None, "suma_sin_cuadrados"),
+                (f"Sí, porque {c}² = {a}² + {b}²" if not si else f"No, porque {c}² > {a}² + {b}²", None),
+                ("Solo si tiene dos lados iguales", None), (f"No, porque {c}² < {a}² + {b}²" if si else None, None)]
+    else:
+        resp = tipo
+        inv = {"acutángulo": "obtusángulo", "obtusángulo": "acutángulo", "rectángulo": None}[tipo]
+        a2 = a * a
+        otro = "obtusángulo" if a2 > b * b + c * c else "rectángulo" if a2 == b * b + c * c else "acutángulo"
+        dist = [(inv, "invierte"), (otro if otro != tipo else None, "no_lado_mayor")] + [(t, None) for t in ("acutángulo", "rectángulo", "obtusángulo", "isósceles") if t != tipo]
+    pasos = [("lado mayor", str(c), f"El lado mayor es {c}: comparo su cuadrado con la suma de los cuadrados de los otros dos. {comp}."),
+             ("", resp, "Si son iguales, es rectángulo; si el cuadrado del mayor es menor, acutángulo; si es mayor, obtusángulo. " + f"Respuesta: {resp}.")]
+    adulto = "Se compara c² (c = lado mayor) con a² + b²: igual → rectángulo; menor → acutángulo; mayor → obtusángulo. Hay que elevar al cuadrado y usar el lado mayor."
+    return mk(enun, resp, "t4_pitag_tipo", {"lados": [a, b, c]}, dist, pasos, adulto)
+
+
+# ---------------------------------------------------------------- perímetros
+
+PI = Decimal("3.14")
+
+
+def _dec(rng, d, lo=2, hi=20):
+    if d == 1:
+        return D(rng.randint(lo, hi))
+    if d == 2:
+        return D(rng.randint(lo, hi)) if rng.random() < 0.5 else D(rng.randint(lo * 10, hi * 10)) / 10
+    return D(rng.randint(lo * 10, hi * 10)) / 10
+
+
+@generador("t4_perim_suma")
+def gen_perim_suma(rng, d):
+    n = rng.choice([3, 4] if d == 1 else [4, 5] if d == 2 else [5, 6])
+    ls = [rng.randint(3, 20) for _ in range(n)]
+    r = sum(ls)
+    nom = NOMBRES_POL[n]
+    enun = f"Un {nom} tiene lados de " + ", ".join(f"{x}" for x in ls[:-1]) + f" y {ls[-1]} cm. ¿Cuál es su perímetro?"
+    resp = f"{r} cm"
+    dist = [(f"{r - ls[-1]} cm", "olvida_lado"), (f"{r - ls[0]} cm", "olvida_lado"), (f"{ls[0] * ls[1]} cm", "multiplica"), (f"{r + 10} cm", None)]
+    pasos = [(" + ".join(map(str, ls)), str(r), f"El perímetro es la suma de todos los lados ({n}): {' + '.join(map(str, ls))} = {r} cm.")]
+    adulto = "Perímetro = longitud del borde = suma de todos los lados. Conviene tachar cada lado al sumarlo para no olvidar ninguno."
+    return mk(enun, resp, "t4_perim_suma", {"lados": ls}, dist, pasos, adulto)
+
+
+@generador("t4_perim_rect")
+def gen_perim_rect(rng, d):
+    fig = rng.choice(["cuadrado", "rectángulo", "rectángulo"])
+    if d == 3 and fig == "rectángulo":
+        a = D(rng.randint(12, 60)) / 10
+        bcm = rng.randint(15, 95)
+        b = D(bcm) / 100
+        r = 2 * (a + b)
+        enun = f"Un rectángulo mide {fx(a)} m de largo y {bcm} cm de ancho. ¿Cuál es su perímetro en metros?"
+        resp = u(r, "m")
+        dist = [(u(2 * a + 2 * bcm, "m"), "no_iguala"), (u(a + b, "m"), "suma_dos"), (u(a * b, "m"), "area"), (u(2 * a + b, "m"), None)]
+        pasos = [(f"{bcm} cm = {fx(b)} m", fx(b), f"Primero igualo unidades: {bcm} cm = {fx(b)} m."),
+                 (f"2 · {fx(a)} + 2 · {fx(b)}", fx(r), f"Perímetro = 2 · {fx(a)} + 2 · {fx(b)} = {resp}.")]
+    elif fig == "cuadrado":
+        a = _dec(rng, d, 2, 25)
+        r = 4 * a
+        enun = f"¿Cuál es el perímetro de un cuadrado de {fx(a)} cm de lado?"
+        resp = u(r, "cm")
+        dist = [(u(a * a, "cm"), "area"), (u(2 * a, "cm"), "suma_dos"), (u(a + 4, "cm"), None), (u(3 * a, "cm"), None)]
+        pasos = [(f"4 · {fx(a)}", fx(r), f"El cuadrado tiene 4 lados iguales: 4 · {fx(a)} = {resp}.")]
+    else:
+        a, b = _dec(rng, d, 3, 25), _dec(rng, d, 2, 15)
+        if a == b:
+            a += 1
+        r = 2 * (a + b)
+        enun = f"Un rectángulo mide {fx(a)} cm de largo y {fx(b)} cm de ancho. ¿Cuál es su perímetro?"
+        resp = u(r, "cm")
+        dist = [(u(a + b, "cm"), "suma_dos"), (u(a * b, "cm"), "area"), (u(2 * a + b, "cm"), None), (u(r + 2, "cm"), None)]
+        pasos = [(f"2 · {fx(a)} + 2 · {fx(b)}", fx(r), f"Hay dos lados de {fx(a)} y dos de {fx(b)}: 2 · {fx(a)} + 2 · {fx(b)} = {resp}.")]
+    adulto = "Perímetro del rectángulo = 2 · largo + 2 · ancho; del cuadrado = 4 · lado. Si las medidas vienen en unidades distintas, primero hay que igualarlas."
+    return mk(enun, resp, "t4_perim_rect", {"fig": fig}, dist, pasos, adulto)
+
+
+@generador("t4_perim_regular")
+def gen_perim_regular(rng, d):
+    n = rng.choice([3, 4, 5, 6] if d == 1 else [5, 6, 7, 8] if d == 2 else [7, 8, 9, 10, 11, 12])
+    a = _dec(rng, d, 2, 20)
+    r = n * a
+    nom = NOMBRES_POL[n] if n > 4 else ("triángulo equilátero" if n == 3 else "cuadrado")
+    enun = f"¿Cuál es el perímetro de un {nom}{' regular' if n > 4 else ''} de {fx(a)} cm de lado?"
+    resp = u(r, "cm")
+    vecino = {5: 6, 6: 8, 7: 6, 8: 6, 9: 10, 10: 9, 11: 12, 12: 11, 3: 4, 4: 3}[n]
+    dist = [(u(vecino * a, "cm"), "lados_mal"), (u(a + n, "cm"), "suma"), (u((n - 1) * a, "cm"), "lados_mal"), (u(a * a, "cm"), None)]
+    pasos = [(f"{n} · {fx(a)}", fx(r), f"Un {NOMBRES_POL[n]} tiene {n} lados iguales: {n} · {fx(a)} = {resp}.")]
+    adulto = "Perímetro de un polígono regular = número de lados · lado. Hay que saber cuántos lados indica el nombre."
+    return mk(enun, resp, "t4_perim_regular", {"n": n, "a": str(a)}, dist, pasos, adulto)
+
+
+@generador("t4_lado_perim")
+def gen_lado_perim(rng, d):
+    caso = rng.choice(["regular", "rectangulo"] if d < 3 else ["rectangulo", "faltante", "regular"])
+    if caso == "regular":
+        n = rng.choice([3, 4, 5, 6, 8])
+        l = _dec(rng, d, 2, 15)
+        P = n * l
+        nom = NOMBRES_POL[n] + " regular" if n > 4 else ("triángulo equilátero" if n == 3 else "cuadrado")
+        enun = f"Un {nom} tiene {fx(P)} cm de perímetro. ¿Cuánto mide cada lado?"
+        resp = u(l, "cm")
+        dist = [(u(P / 2, "cm"), None), (u(P - n, "cm"), None), (u(P / (n + 1), "cm", 2) if ndec(P / (n + 1)) <= 2 else None, None), (u(P / (n - 1), "cm") if ndec(P / (n - 1)) <= 2 else None, None), (u(l + 1, "cm"), None)]
+        pasos = [(f"{fx(P)} : {n}", fx(l), f"Tiene {n} lados iguales: {fx(P)} : {n} = {resp}.")]
+    elif caso == "rectangulo":
+        a = rng.randint(4, 25)
+        b = rng.randint(2, a - 1)
+        P = 2 * (a + b)
+        enun = f"Un rectángulo tiene {P} cm de perímetro y {a} cm de largo. ¿Cuánto mide de ancho?"
+        resp = f"{b} cm"
+        dist = [(f"{P - a} cm", "resta_un_largo"), (f"{P - 2 * a} cm", "no_divide"), (f"{P // 4} cm" if P // 4 != b else None, None), (f"{b + 1} cm", None)]
+        pasos = [(f"{P} − 2 · {a}", str(P - 2 * a), f"Los dos largos suman 2 · {a} = {2 * a} cm; para los dos anchos quedan {P} − {2 * a} = {P - 2 * a} cm."),
+                 (f"{P - 2 * a} : 2", str(b), f"Cada ancho mide {P - 2 * a} : 2 = {b} cm.")]
+    else:
+        n = rng.choice([4, 5, 6])
+        ls = [rng.randint(3, 15) for _ in range(n)]
+        P = sum(ls)
+        nom = NOMBRES_POL[n]
+        enun = f"Un {nom} tiene {P} cm de perímetro. {plural(n - 1, 'Un lado mide', 'Sus lados conocidos miden')} " + ", ".join(map(str, ls[:-2])) + f" y {ls[-2]} cm. ¿Cuánto mide el lado que falta?"
+        resp = f"{ls[-1]} cm"
+        dist = [(f"{P - ls[-2]} cm", "resta_un_largo"), (f"{P + sum(ls[:-1])} cm", None), (f"{sum(ls[:-1])} cm", None), (f"{ls[-1] + 2} cm", None)]
+        pasos = [(" + ".join(map(str, ls[:-1])), str(sum(ls[:-1])), f"Sumo los lados conocidos: {' + '.join(map(str, ls[:-1]))} = {sum(ls[:-1])} cm."),
+                 (f"{P} − {sum(ls[:-1])}", str(ls[-1]), f"El que falta es {P} − {sum(ls[:-1])} = {ls[-1]} cm.")]
+    adulto = "Para hallar un lado a partir del perímetro se deshace la suma: en el rectángulo, P : 2 − largo (o (P − 2·largo) : 2)."
+    return mk(enun, resp, "t4_lado_perim", {"caso": caso}, dist, pasos, adulto)
+
+
+@generador("t4_long_circ")
+def gen_long_circ(rng, d):
+    tipo = rng.choice(["r", "d"] if d < 3 else ["r", "d", "inversa"])
+    rad = D(rng.randint(1, 15)) if d == 1 else D(rng.randint(1, 30)) if d == 2 else _dec(rng, 2, 1, 20)
+    L = 2 * PI * rad
+    if tipo == "inversa":
+        enun = f"Una circunferencia mide {fx(L)} cm. ¿Cuánto mide su radio? (usa π = 3,14)"
+        resp = u(rad, "cm")
+        dist = [(u(rad * 2, "cm"), "usa_d"), (u(L / PI, "cm"), "olvida_2"), (u(r2(L / 2)), None), (u(rad + 1, "cm"), None)]
+        dist[2] = (u(r2(L / 2), "cm"), None)
+        pasos = [(f"{fx(L)} : (2 · 3,14)", fx(rad), f"L = 2 · π · r, así que r = L : (2 · π) = {fx(L)} : 6,28 = {resp}.")]
+    else:
+        dato = f"{fx(rad)} cm de radio" if tipo == "r" else f"{fx(2 * rad)} cm de diámetro"
+        enun = f"Calcula la longitud de una circunferencia de {dato} (usa π = 3,14)."
+        resp = u(r2(L), "cm")
+        dist = [(u(r2(2 * PI * 2 * rad), "cm"), "usa_d"), (u(r2(PI * rad * rad), "cm"), "area"), (u(r2(PI * rad), "cm"), "olvida_2"), (u(r2(L) + 1, "cm"), None)]
+        pasos = [(f"2 · 3,14 · {fx(rad)}", fx(r2(L)), (f"El radio es la mitad del diámetro: {fx(rad)} cm. " if tipo == "d" else "") + f"L = 2 · π · r = 2 · 3,14 · {fx(rad)} = {fx(r2(L))} cm (o π · d).")]
+    adulto = "L = 2 · π · r = π · d. Si se da el diámetro, no se multiplica además por 2. πr² es el área, no la longitud."
+    return mk(enun, resp, "t4_long_circ", {"r": str(rad), "tipo": tipo}, dist, pasos, adulto, genericos=var_rel(r2(L), "cm"))
+
+
+@generador("t4_arco")
+def gen_arco(rng, d):
+    n = rng.choice([90, 180, 60, 45, 30, 120] if d < 3 else [36, 40, 72, 150, 135, 270, 20, 100])
+    rad = D(rng.randint(2, 20))
+    L = r2(2 * PI * rad * n / 360)
+    enun = f"Calcula la longitud de un arco de {n}° en una circunferencia de {fx(rad)} cm de radio (usa π = 3,14)."
+    resp = u(L, "cm")
+    dist = [(u(r2(2 * PI * rad * n / 180), "cm"), "divide_180"), (u(r2(rad * n / 360), "cm"), "fraccion_radio"), (u(r2(2 * PI * rad), "cm"), None), (u(r2(PI * rad * rad * n / 360), "cm"), None)]
+    pasos = [(f"2 · 3,14 · {fx(rad)}", fx(r2(2 * PI * rad)), f"Longitud de la circunferencia entera: 2 · 3,14 · {fx(rad)} = {fx(r2(2 * PI * rad))} cm."),
+             (f"· {n}/360", fx(L), f"El arco es la fracción {n}/360 de la circunferencia: {fx(r2(2 * PI * rad))} · {n} : 360 = {resp}.")]
+    adulto = "Arco de n° = 2πr · n/360: la vuelta completa son 360°, no 180°."
+    return mk(enun, resp, "t4_arco", {"n": n, "r": str(rad)}, dist, pasos, adulto, genericos=var_rel(L, "cm"))
+
+
+# ---------------------------------------------------------------- áreas
+
+@generador("t4_area_rect")
+def gen_area_rect(rng, d):
+    fig = rng.choice(["cuadrado", "rectángulo"])
+    if d == 3 and fig == "rectángulo":
+        a = D(rng.randint(12, 60)) / 10
+        bcm = rng.choice(range(20, 100, 5))
+        b = D(bcm) / 100
+        r = a * b
+        enun = f"Un rectángulo mide {fx(a)} m de largo y {bcm} cm de ancho. ¿Cuál es su área en m²?"
+        resp = u(r, "m²")
+        dist = [(u(a * bcm, "m²"), None), (u(2 * (a + b), "m²"), "perimetro"), (u(r, "m"), "unidad_lineal"), (u(r * 10, "m²"), None)]
+        pasos = [(f"{bcm} cm = {fx(b)} m", fx(b), f"Igualo unidades: {bcm} cm = {fx(b)} m."), (f"{fx(a)} · {fx(b)}", fx(r), f"Área = largo · ancho = {fx(a)} · {fx(b)} = {resp}.")]
+    elif fig == "cuadrado":
+        a = _dec(rng, d, 2, 15)
+        r = a * a
+        enun = f"¿Cuál es el área de un cuadrado de {fx(a)} cm de lado?"
+        resp = u(r, "cm²")
+        dist = [(u(2 * a, "cm²"), "lado_por_2"), (u(4 * a, "cm²"), "perimetro"), (u(r, "cm"), "unidad_lineal"), (u(r + a, "cm²"), None)]
+        pasos = [(f"{fx(a)} · {fx(a)}", fx(r), f"Área del cuadrado = lado · lado = {fx(a)} · {fx(a)} = {resp}.")]
+    else:
+        a, b = _dec(rng, d, 3, 20), _dec(rng, d, 2, 12)
+        r = a * b
+        enun = f"¿Cuál es el área de un rectángulo de {fx(a)} cm de base y {fx(b)} cm de altura?"
+        resp = u(r, "cm²")
+        dist = [(u(2 * (a + b), "cm²"), "perimetro"), (u(r, "cm"), "unidad_lineal"), (u(a + b, "cm²"), None), (u(r / 2, "cm²"), None)]
+        pasos = [(f"{fx(a)} · {fx(b)}", fx(r), f"Área del rectángulo = base · altura = {fx(a)} · {fx(b)} = {resp}.")]
+    adulto = "El área se mide en unidades cuadradas: rectángulo = base · altura; cuadrado = lado² (lado · lado, no lado · 2)."
+    return mk(enun, resp, "t4_area_rect", {"fig": fig}, dist, pasos, adulto)
+
+
+@generador("t4_area_tri")
+def gen_area_tri(rng, d):
+    for _ in range(100):
+        b = D(rng.randint(2, 20))
+        h = D(rng.randint(2, 15))
+        if d == 2:
+            b = _dec(rng, 2, 2, 20)
+        if (b * h) % 2 == 0 or d > 1:
+            break
+    r = b * h / 2
+    if d == 3:
+        mitad = b / 2
+        lado = r2(D(math.sqrt(float(mitad * mitad + h * h))), 1)
+        if lado == h:
+            lado += D("0.1")
+        enun = f"Un triángulo isósceles tiene lados de {fx(lado)} cm, {fx(lado)} cm y {fx(b)} cm, y la altura sobre el lado de {fx(b)} cm mide {fx(h)} cm. ¿Cuál es su área?"
+        dist = [(u(b * h, "cm²"), "no_divide"), (u(b * lado / 2, "cm²"), "lado_en_vez_altura"), (u(lado * h / 2, "cm²"), None), (u(b + h, "cm²"), None)]
+    else:
+        enun = f"Un triángulo tiene {fx(b)} cm de base y {fx(h)} cm de altura. ¿Cuál es su área?"
+        dist = [(u(b * h, "cm²"), "no_divide"), (u(b + h, "cm²"), None), (u(r + b, "cm²"), None), (u(r / 2, "cm²"), None)]
+    resp = u(r, "cm²")
+    pasos = [(f"{fx(b)} · {fx(h)} : 2", fx(r), f"Área del triángulo = base · altura : 2 = {fx(b)} · {fx(h)} : 2 = {resp}" + (". Los otros lados no se usan: hace falta la altura." if d == 3 else "."))]
+    adulto = "Área del triángulo = base · altura / 2, con la altura perpendicular a esa base. Los lados oblicuos no sirven como altura."
+    return mk(enun, resp, "t4_area_tri", {"b": str(b), "h": str(h)}, dist, pasos, adulto)
+
+
+@generador("t4_area_romb")
+def gen_area_romb(rng, d):
+    if rng.random() < 0.5:
+        D1, D2 = rng.randint(4, 20), rng.randint(3, 16)
+        while D1 == D2 or (D1 * D2) % 2:
+            D1, D2 = rng.randint(4, 20), rng.randint(3, 16)
+        r = D1 * D2 // 2
+        enun = f"¿Cuál es el área de un rombo cuyas diagonales miden {D1} cm y {D2} cm?"
+        resp = f"{r} cm²"
+        dist = [(f"{D1 * D2} cm²", "no_divide"), (f"{D1 + D2} cm²", None), (f"{2 * (D1 + D2)} cm²", None), (f"{r // 2} cm²" if r % 2 == 0 else f"{r + 1} cm²", None)]
+        pasos = [(f"{D1} · {D2} : 2", str(r), f"Área del rombo = diagonal mayor · diagonal menor : 2 = {D1} · {D2} : 2 = {r} cm².")]
+    else:
+        b, h = rng.randint(4, 20), rng.randint(2, 12)
+        lado = h + rng.randint(1, 5)
+        r = b * h
+        enun = f"Un romboide tiene {b} cm de base, {lado} cm de lado oblicuo y {h} cm de altura. ¿Cuál es su área?"
+        resp = f"{r} cm²"
+        dist = [(f"{b * lado} cm²", "lados"), (f"{b * h // 2} cm²" if b * h % 2 == 0 else f"{b * h + b} cm²", None), (f"{2 * (b + lado)} cm²", None), (f"{b * lado * h} cm²", None)]
+        pasos = [(f"{b} · {h}", str(r), f"Área del romboide = base · altura = {b} · {h} = {r} cm². El lado oblicuo no es la altura.")]
+    adulto = "Romboide: base · altura (no base · lado). Rombo: D · d / 2 (es la mitad del rectángulo que forman sus diagonales)."
+    return mk(enun, resp, "t4_area_romb", {}, dist, pasos, adulto)
+
+
+@generador("t4_area_poli_reg")
+def gen_area_poli_reg(rng, d):
+    n = rng.choice([5, 6, 8] if d < 3 else [5, 6, 7, 8, 9, 10, 12])
+    tabla = {5: Decimal("0.688"), 6: Decimal("0.866"), 7: Decimal("1.038"), 8: Decimal("1.207"), 9: Decimal("1.374"), 10: Decimal("1.539"), 12: Decimal("1.866")}
+    l = D(rng.randint(2, 20))
+    ap = r2(l * tabla[n], 1)
+    P = n * l
+    r = P * ap / 2
+    nom = NOMBRES_POL[n]
+    enun = f"Un {nom} regular tiene {fx(l)} cm de lado y {fx(ap)} cm de apotema. ¿Cuál es su área?"
+    if d == 1:
+        enun = f"Un {nom} regular tiene {fx(P)} cm de perímetro y {fx(ap)} cm de apotema. ¿Cuál es su área?"
+    resp = u(r, "cm²")
+    dist = [(u(l * ap / 2, "cm²"), "usa_lado"), (u(P * ap, "cm²"), "no_divide"), (u(l * l, "cm²"), None), (u(P * l / 2, "cm²"), None)]
+    pasos = ([] if d == 1 else [(f"{n} · {fx(l)}", fx(P), f"Perímetro: {n} · {fx(l)} = {fx(P)} cm.")]) + \
+            [(f"{fx(P)} · {fx(ap)} : 2", fx(r), f"Área = perímetro · apotema : 2 = {fx(P)} · {fx(ap)} : 2 = {resp}.")]
+    adulto = "Área de un polígono regular = perímetro · apotema / 2 (son n triángulos de base el lado y altura la apotema)."
+    return mk(enun, resp, "t4_area_poli_reg", {"n": n, "l": str(l), "ap": str(ap)}, dist, pasos, adulto)
+
+
+@generador("t4_area_circ")
+def gen_area_circ(rng, d):
+    rad = D(rng.randint(1, 10 if d == 1 else 20))
+    if d == 3:
+        rad = _dec(rng, 3, 1, 12)
+    usa_d = rng.random() < (0.3 if d == 1 else 0.5)
+    A = r2(PI * rad * rad)
+    dato = f"{fx(2 * rad)} cm de diámetro" if usa_d else f"{fx(rad)} cm de radio"
+    enun = f"Calcula el área de un círculo de {dato} (usa π = 3,14)."
+    resp = u(A, "cm²")
+    dist = [(u(r2(PI * 4 * rad * rad), "cm²"), "usa_diametro") if usa_d else (None, None), (u(r2(PI * 2 * rad), "cm²"), "dos_r"), (u(r2(2 * PI * rad), "cm²"), "longitud"),
+            (u(r2(PI * rad), "cm²"), None), (u(A + 1, "cm²"), None)]
+    pasos = [(f"3,14 · {fx(rad)}²", fx(A), (f"El radio es la mitad del diámetro: {fx(rad)} cm. " if usa_d else "") + f"Área = π · r² = 3,14 · {fx(rad)} · {fx(rad)} = {resp}.")]
+    adulto = "Área del círculo = π · r² (r² = r · r, no 2 · r). Si el dato es el diámetro, primero se halla el radio."
+    return mk(enun, resp, "t4_area_circ", {"r": str(rad), "da_diametro": usa_d}, dist, pasos, adulto, genericos=var_rel(A, "cm²"))
+
+
+@generador("t4_trapecio")
+def gen_trapecio(rng, d):
+    B = _dec(rng, d, 5, 20)
+    b = _dec(rng, d, 2, 12)
+    while b >= B:
+        b = _dec(rng, d, 2, 12)
+    h = _dec(rng, 1 if d < 3 else 2, 2, 12)
+    r = (B + b) * h / 2
+    enun = f"Un trapecio tiene bases de {fx(B)} cm y {fx(b)} cm y una altura de {fx(h)} cm. ¿Cuál es su área?"
+    resp = u(r, "cm²")
+    dist = [(u(B * b * h / 2, "cm²"), "multiplica_bases"), (u((B + b) * h, "cm²"), "no_divide"), (u(B * h, "cm²"), None), (u(r + h, "cm²"), None)]
+    pasos = [(f"{fx(B)} + {fx(b)}", fx(B + b), f"Sumo las bases: {fx(B)} + {fx(b)} = {fx(B + b)} cm."), (f"{fx(B + b)} · {fx(h)} : 2", fx(r), f"Área = (B + b) · h : 2 = {fx(B + b)} · {fx(h)} : 2 = {resp}.")]
+    adulto = "Área del trapecio = (base mayor + base menor) · altura / 2: es como un rectángulo con la base media."
+    return mk(enun, resp, "t4_trapecio", {"B": str(B), "b": str(b), "h": str(h)}, dist, pasos, adulto)
+
+
+@generador("t4_sector_corona")
+def gen_sector_corona(rng, d):
+    if rng.random() < 0.5:
+        R = rng.randint(3, 12)
+        rr_ = rng.randint(1, R - 1)
+        A = r2(PI * (R * R - rr_ * rr_))
+        enun = f"Calcula el área de una corona circular de radios {R} cm y {rr_} cm (usa π = 3,14)."
+        resp = u(A, "cm²")
+        dist = [(u(r2(PI * (R - rr_) ** 2), "cm²"), "diferencia_al_cuadrado"), (u(r2(PI * R * R), "cm²"), None), (u(r2(PI * (R * R + rr_ * rr_)), "cm²"), None), (u(r2(2 * PI * (R - rr_)), "cm²"), None)]
+        pasos = [(f"{R}² − {rr_}²", str(R * R - rr_ * rr_), f"Corona = círculo grande − círculo pequeño: π · ({R}² − {rr_}²) = 3,14 · ({R * R} − {rr_ * rr_}) = 3,14 · {R * R - rr_ * rr_}."),
+                 ("", fx(A), f"Resultado: {resp}.")]
+    else:
+        n = rng.choice([90, 60, 45, 120, 30, 180] if d < 3 else [72, 40, 150, 135, 36, 270])
+        rad = rng.randint(2, 12)
+        A = r2(PI * rad * rad * n / 360)
+        enun = f"Calcula el área de un sector circular de {n}° y {rad} cm de radio (usa π = 3,14)."
+        resp = u(A, "cm²")
+        dist = [(u(r2(PI * rad * rad * n / 180), "cm²"), "divide_180"), (u(r2(PI * rad * rad), "cm²"), None), (u(r2(2 * PI * rad * n / 360), "cm²"), None), (u(r2(PI * rad * n / 360), "cm²"), None)]
+        pasos = [(f"3,14 · {rad}²", fx(r2(PI * rad * rad)), f"Área del círculo entero: 3,14 · {rad}² = {fx(r2(PI * rad * rad))} cm²."),
+                 (f"· {n}/360", fx(A), f"El sector es la fracción {n}/360: {fx(r2(PI * rad * rad))} · {n} : 360 = {resp}.")]
+    adulto = "Sector = π r² · n/360. Corona = π (R² − r²), que no es lo mismo que π (R − r)²."
+    return mk(enun, resp, "t4_sector_corona", {}, dist, pasos, adulto, genericos=var_rel(A, "cm²"))
+
+
+@generador("t4_dim_area")
+def gen_dim_area(rng, d):
+    fig = rng.choice(["cuadrado", "rectangulo"] if d == 1 else ["cuadrado", "rectangulo", "triangulo"] if d == 2 else ["triangulo", "circulo", "cuadrado"])
+    if fig == "cuadrado":
+        l = rng.randint(3, 20)
+        A = l * l
+        enun = f"Un cuadrado tiene {A} cm² de área. ¿Cuánto mide su lado?"
+        resp = f"{l} cm"
+        dist = [(f"{fx(D(A) / 2)} cm", "cuadrado_divide"), (f"{fx(D(A) / 4)} cm", "cuadrado_divide"), (f"{l + 1} cm", None), (f"{l * 2} cm", None)]
+        pasos = [(f"√{A}", str(l), f"Lado · lado = {A}: el lado es la raíz cuadrada, √{A} = {l} cm (porque {l} · {l} = {A}).")]
+    elif fig == "rectangulo":
+        b, h = rng.randint(3, 15), rng.randint(2, 12)
+        A = b * h
+        enun = f"Un rectángulo tiene {A} cm² de área y {b} cm de base. ¿Cuánto mide su altura?"
+        resp = f"{h} cm"
+        dist = [(f"{A - b} cm", None), (f"{fx(D(A) / b / 2)} cm", None), (f"{A * b} cm", None), (f"{h + 1} cm", None)]
+        pasos = [(f"{A} : {b}", str(h), f"Área = base · altura, así que altura = área : base = {A} : {b} = {h} cm.")]
+    elif fig == "triangulo":
+        b = rng.randint(2, 16)
+        h = rng.randint(2, 14)
+        A = D(b * h) / 2
+        enun = f"Un triángulo tiene {fx(A)} cm² de área y {b} cm de base. ¿Cuánto mide su altura?"
+        resp = f"{h} cm"
+        dist = [(u(A / b, "cm"), "olvida_mitad"), (u(A * b / 2, "cm"), None), (u(A - b, "cm") if A > b else None, None), (f"{h + 2} cm", None)]
+        pasos = [(f"2 · {fx(A)} : {b}", str(h), f"Área = base · altura : 2, así que altura = 2 · área : base = 2 · {fx(A)} : {b} = {h} cm.")]
+    else:
+        rad = rng.randint(2, 15)
+        A = PI * rad * rad
+        enun = f"Un círculo tiene {fx(A)} cm² de área. ¿Cuánto mide su radio? (usa π = 3,14)"
+        resp = f"{rad} cm"
+        dist = [(u(r2(A / PI / 2), "cm"), "cuadrado_divide"), (u(rad * rad, "cm"), None), (u(r2(A / (2 * PI)), "cm"), None), (f"{rad * 2} cm", None)]
+        pasos = [(f"{fx(A)} : 3,14", str(rad * rad), f"r² = área : π = {fx(A)} : 3,14 = {rad * rad}."), (f"√{rad * rad}", str(rad), f"r = √{rad * rad} = {rad} cm.")]
+    adulto = "Para hallar una dimensión se deshace la fórmula: en el triángulo, h = 2A/b; en el cuadrado, lado = √A (no A/2 ni A/4)."
+    return mk(enun, resp, "t4_dim_area", {"fig": fig}, dist, pasos, adulto)
