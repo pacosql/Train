@@ -2331,3 +2331,494 @@ def g_condicionadas_dep(rng, d, tipo="porcentaje"):
                  [("condicionadas", pc(p1, 0), f"Porcentajes condicionados: {a1}/{n1} = {pc(p1, 0)} y {a2}/{n2} = {pc(p2, 0)}. " +
                    ("Son distintos: hay dependencia estadística (no necesariamente causal)." if dep else "Son iguales: no hay dependencia."))],
                  "Se comparan las distribuciones condicionadas (porcentajes), no las frecuencias absolutas; dependencia no implica causalidad.")
+
+
+# ================================================================ DISTRIBUCIONES
+
+@gen6("t6_va_discreta")
+def g_va_discreta(rng, d, tipo="media"):
+    """EST.DISTR.01. Claves: media_sin_ponderar, no_suma_uno."""
+    for _ in range(500):
+        k = rng.randint(3, 5)
+        xs = sorted(rng.sample(range(-5, 11) if tipo == "juego" else range(0, 8), k))
+        cs = sorted(rng.sample(range(1, 20), k - 1))
+        ps = [F(b - a, 20) for a, b in zip([0] + cs, cs + [20])]
+        mu = sum(x * p for x, p in zip(xs, ps))
+        if tipo == "juego" and (mu == 0 or min(xs) >= 0):
+            continue
+        if F(sum(xs), k) != mu:
+            break
+    else:
+        return None
+    tabla = "x: " + "  ".join(fmt(x) for x in xs) + "\nP(X = x): " + "  ".join(dec(p, 2) for p in ps)
+    if tipo == "falta":
+        j = rng.randrange(k)
+        tabla = "x: " + "  ".join(fmt(x) for x in xs) + "\nP(X = x): " + "  ".join("?" if i == j else dec(p, 2) for i, p in enumerate(ps))
+        otros = 1 - ps[j]
+        return hacer(f"Función de probabilidad de una variable aleatoria X:\n{tabla}\n¿Qué valor falta?", dec(ps[j], 2), "va_falta", {"ps": [str(p) for p in ps], "j": j},
+                     [(dec(ps[j] + F(1, 10), 2), "no_suma_uno"), (dec(otros, 2), None), (dec(F(1, k), 2), None)],
+                     [("1 − suma", dec(ps[j], 2), f"Las probabilidades suman 1: 1 − {dec(otros, 2)} = {dec(ps[j], 2)}.")],
+                     "En una función de probabilidad, Σ pi = 1.", gen=[dec(ps[j] + F(1, 20), 2)])
+    if tipo == "sigma":
+        var = sum(x * x * p for x, p in zip(xs, ps)) - mu * mu
+        sg = math.sqrt(var)
+        return hacer(f"Función de probabilidad de X:\n{tabla}\nCalcula la desviación típica σ (redondea a las centésimas).", dec(sg, 2), "va_sigma", {"xs": xs, "ps": [str(p) for p in ps]},
+                     [(dec(var, 2), None), (dec(math.sqrt(sum(x * x * p for x, p in zip(xs, ps))), 2), None), (dec(math.sqrt(F(sum((x - F(sum(xs), k)) ** 2 for x in xs), k)), 2), "media_sin_ponderar")],
+                     [("μ", dec(mu, 2), f"μ = Σ x·p = {dec(mu, 2)}."), ("σ²", dec(var, 4), f"σ² = Σ x²·p − μ² = {dec(var, 4)}."), ("σ", dec(sg, 2), f"σ = √{dec(var, 4)} ≈ {dec(sg, 2)}.")],
+                     "σ² = Σ xi²·pi − μ²; σ = √σ².", gen=[dec(sg + F(1, 2), 2)])
+    if tipo == "juego":
+        enun = f"En un juego, X es la ganancia en euros (negativa si se pierde):\n{tabla}\n¿Cuál es la ganancia esperada y conviene jugar?"
+        resp = f"μ = {dec(mu, 2)} €; {'sí conviene' if mu > 0 else 'no conviene'}"
+        mal = F(sum(xs), k)
+        return hacer(enun, resp, "va_juego", {"xs": xs, "ps": [str(p) for p in ps]},
+                     [(f"μ = {dec(mal, 2)} €; {'sí conviene' if mal > 0 else 'no conviene'}", "media_sin_ponderar"), (f"μ = {dec(mu, 2)} €; {'no conviene' if mu > 0 else 'sí conviene'}", None),
+                      (f"μ = {dec(-mu, 2)} €; {'sí conviene' if -mu > 0 else 'no conviene'}", None)],
+                     [("Σ x·p", dec(mu, 2), "μ = " + " + ".join(f"({fmt(x)})·{dec(p, 2)}" for x, p in zip(xs, ps)) + f" = {dec(mu, 2)} €. " + ("Positiva: a la larga se gana." if mu > 0 else "Negativa: a la larga se pierde."))],
+                     "La esperanza μ = Σ xi·pi es la ganancia media a la larga; un juego es justo si μ = 0.")
+    return hacer(f"Función de probabilidad de X:\n{tabla}\nCalcula la media (esperanza) μ.", dec(mu, 2), "va_media", {"xs": xs, "ps": [str(p) for p in ps]},
+                 [(dec(F(sum(xs), k), 2), "media_sin_ponderar"), (dec(sum(xs), 2), None), (dec(mu + 1, 2), None)],
+                 [("Σ x·p", dec(mu, 2), "μ = " + " + ".join(f"{x}·{dec(p, 2)}" for x, p in zip(xs, ps)) + f" = {dec(mu, 2)}.")],
+                 "Esperanza de una variable discreta: μ = Σ xi·pi (media ponderada por las probabilidades).", gen=[dec(mu - F(1, 2), 2)])
+
+
+PBIN = [F(1, 10), F(1, 5), F(1, 4), F(3, 10), F(2, 5), F(1, 2), F(3, 5), F(7, 10), F(4, 5)]
+
+
+def _pbin(n, p, k):
+    return math.comb(n, k) * float(p) ** k * float(1 - p) ** (n - k)
+
+
+@gen6("t6_binomial")
+def g_binomial(rng, d, tipo="calculo"):
+    """EST.DISTR.02. Claves: olvida_combinatorio, exponentes_cambiados, sin_independencia."""
+    if tipo == "identificar":
+        ok = rng.choice(["Se lanza un dado 8 veces y X = número de seises.", "Un examen tipo test de 10 preguntas con 4 opciones se contesta al azar; X = número de aciertos.",
+                         "Se sacan 5 bolas, devolviendo cada una, de una urna con 3 rojas y 7 azules; X = número de rojas.",
+                         "El 5 % de las piezas de una fábrica sale defectuoso; se revisan 20 piezas y X = número de defectuosas."])
+        malos = [("Se sacan 3 bolas sin devolverlas de una urna con 4 rojas y 3 azules; X = número de rojas.", "sin_independencia"),
+                 ("Se lanza un dado hasta que sale un 6; X = número de lanzamientos.", None), ("X = estatura en cm de un alumno elegido al azar.", None),
+                 ("Se reparten 5 cartas de una baraja de 40 sin devolución; X = número de oros.", "sin_independencia")]
+        rng.shuffle(malos)
+        return hacer("¿Cuál de estas variables sigue una distribución binomial?", ok, "binomial_id", {}, malos[:3],
+                     [("", ok, "Binomial: número fijo de pruebas independientes, cada una con dos resultados (éxito/fracaso) y la misma probabilidad de éxito.")],
+                     "Sin reemplazamiento la probabilidad cambia de una extracción a otra: no es binomial.")
+    n = rng.randint(3, 6) if d == 1 else rng.randint(5, 12)
+    p = rng.choice(PBIN)
+    k = rng.randint(1, n - 1)
+    r = _pbin(n, p, k)
+    if tipo == "contexto":
+        ctx = rng.choice([(f"Un examen tipo test tiene {n} preguntas con 4 opciones y se contesta al azar.", F(1, 4), "acertar exactamente {k}"),
+                          (f"Un jugador encesta el {pc(p, 0)} de sus tiros libres y lanza {n}.", p, "encestar exactamente {k}"),
+                          (f"Se lanza una moneda {n} veces.", F(1, 2), "obtener exactamente {k} caras")])
+        p = ctx[1]
+        r = _pbin(n, p, k)
+        enun = f"{ctx[0]} ¿Qué probabilidad hay de {ctx[2].format(k=k)}? (4 decimales)"
+    else:
+        enun = f"X ~ B({n}; {dec(p, 2)}). Calcula P(X = {k}) (4 decimales)."
+    sin_c = float(p) ** k * float(1 - p) ** (n - k)
+    camb = math.comb(n, k) * float(p) ** (n - k) * float(1 - p) ** k
+    return hacer(enun, p4(r), "binomial", {"n": n, "p": str(p), "k": k}, [(p4(sin_c), "olvida_combinatorio"), (p4(camb), "exponentes_cambiados"), (p4(math.comb(n, k) * float(p) ** k), None)],
+                 [("C(n,k)·p^k·q^(n−k)", p4(r), f"P(X = {k}) = C({n},{k})·{dec(p, 2)}^{k}·{dec(1 - p, 2)}^{n - k} = {math.comb(n, k)}·{p4(float(p) ** k)}·{p4(float(1 - p) ** (n - k))} ≈ {p4(r)}.")],
+                 "Binomial B(n,p): P(X = k) = C(n,k)·p^k·q^(n−k), con q = 1 − p.", gen=[p4(r / 2), p4(min(1, r * 1.5))])
+
+
+@gen6("t6_binomial_acum")
+def g_binomial_acum(rng, d, tipo="parametros"):
+    """EST.DISTR.03. Claves: al_menos_uno_mal, frontera_mal, sigma_npq."""
+    n = rng.randint(5, 20)
+    p = rng.choice(PBIN)
+    q = 1 - p
+    if tipo == "parametros":
+        mu, var = n * p, n * p * q
+        return hacer(f"X ~ B({n}; {dec(p, 2)}). Calcula la desviación típica σ (2 decimales).", dec(math.sqrt(var), 2), "binomial_sigma", {"n": n, "p": str(p)},
+                     [(dec(var, 2), "sigma_npq"), (dec(mu, 2), None), (dec(math.sqrt(mu), 2), None)],
+                     [("μ = np", dec(mu, 2), f"μ = {n}·{dec(p, 2)} = {dec(mu, 2)}."), ("σ = √(npq)", dec(math.sqrt(var), 2), f"σ = √({n}·{dec(p, 2)}·{dec(q, 2)}) = √{dec(var, 4)} ≈ {dec(math.sqrt(var), 2)}.")],
+                     "En B(n,p): μ = np y σ = √(npq).", gen=[dec(math.sqrt(var) + 1, 2)])
+    if tipo == "al_menos_uno":
+        r = 1 - float(q) ** n
+        return hacer(f"X ~ B({n}; {dec(p, 2)}). Calcula P(X ≥ 1) (4 decimales).", p4(r), "binomial_almenos1", {"n": n, "p": str(p)},
+                     [(p4(1 - _pbin(n, p, 1)), "al_menos_uno_mal"), (p4(float(q) ** n), None), (p4(1 - float(p) ** n), None)],
+                     [("contrario", p4(float(q) ** n), f"El contrario de «al menos 1» es «ninguno»: P(X = 0) = {dec(q, 2)}^{n} ≈ {p4(float(q) ** n)}."),
+                      ("1 − P(X=0)", p4(r), f"P(X ≥ 1) = 1 − {p4(float(q) ** n)} = {p4(r)}.")],
+                     "P(X ≥ 1) = 1 − P(X = 0) = 1 − qⁿ.")
+    n = rng.randint(5, 10)
+    k = rng.randint(1, 3)
+    acum = lambda m: sum(_pbin(n, p, i) for i in range(m + 1))
+    r = 1 - acum(k)
+    return hacer(f"X ~ B({n}; {dec(p, 2)}). Calcula P(X > {k}) (4 decimales).", p4(r), "binomial_mayor", {"n": n, "p": str(p), "k": k},
+                 [(p4(1 - acum(k - 1)), "frontera_mal"), (p4(1 - acum(k + 1)), "frontera_mal"), (p4(acum(k)), None)],
+                 [("P(X ≤ k)", p4(acum(k)), "P(X ≤ " + str(k) + ") = " + " + ".join(f"P(X={i})" for i in range(k + 1)) + f" ≈ {p4(acum(k))}."),
+                  ("1 − P(X ≤ k)", p4(r), f"P(X > {k}) = 1 − {p4(acum(k))} = {p4(r)}.")],
+                 f"P(X > k) = 1 − P(X ≤ k): «mayor que k» no incluye k.")
+
+
+@gen6("t6_normal_tabla")
+def g_normal_tabla(rng, d, tipo="menor"):
+    """EST.DISTR.04. Claves: mayor_leida_directa, negativo_mal."""
+    a = round(rng.randint(10, 250) / 100, 2)
+    A = Phi(a)
+    fa = lambda x: dec(x, 2)
+    if tipo == "menor":
+        return hacer(f"Z ~ N(0, 1). Calcula P(Z ≤ {fa(a)}).", p4(A), "normal_menor", {"a": a}, [(p4(1 - A), None), (p4(A - 0.5), None), (p4(Phi(a + 0.1)), None)],
+                     [("tabla", p4(A), f"Se lee directamente en la tabla: P(Z ≤ {fa(a)}) = {p4(A)}.")],
+                     "La tabla de N(0,1) da P(Z ≤ a) para a ≥ 0.")
+    if tipo == "mayor":
+        return hacer(f"Z ~ N(0, 1). Calcula P(Z ≥ {fa(a)}).", p4(1 - A), "normal_mayor", {"a": a}, [(p4(A), "mayor_leida_directa"), (p4(A - 0.5), None), (p4(1 - Phi(a + 0.1)), None)],
+                     [("1 − tabla", p4(1 - A), f"P(Z ≥ {fa(a)}) = 1 − P(Z ≤ {fa(a)}) = 1 − {p4(A)} = {p4(1 - A)}.")],
+                     "P(Z ≥ a) = 1 − P(Z ≤ a).")
+    if tipo == "negativo":
+        if rng.random() < 0.5:
+            return hacer(f"Z ~ N(0, 1). Calcula P(Z ≤ −{fa(a)}).", p4(1 - A), "normal_neg", {"a": -a}, [(p4(A), "negativo_mal"), (p4(0.5 - A / 2), None), (p4(A - 0.5), None)],
+                         [("simetría", p4(1 - A), f"Por simetría, P(Z ≤ −{fa(a)}) = P(Z ≥ {fa(a)}) = 1 − {p4(A)} = {p4(1 - A)}.")],
+                         "Simetría de la normal: P(Z ≤ −a) = 1 − P(Z ≤ a).")
+        return hacer(f"Z ~ N(0, 1). Calcula P(Z ≥ −{fa(a)}).", p4(A), "normal_neg", {"a": -a}, [(p4(1 - A), "negativo_mal"), (p4(A - 0.5), None), (p4(0.5 + A / 2), None)],
+                     [("simetría", p4(A), f"P(Z ≥ −{fa(a)}) = P(Z ≤ {fa(a)}) = {p4(A)}.")],
+                     "Simetría: P(Z ≥ −a) = P(Z ≤ a).")
+    if tipo == "intervalo":
+        b = round(rng.randint(10, 250) / 100, 2)
+        B = Phi(b)
+        r = B - (1 - A)
+        return hacer(f"Z ~ N(0, 1). Calcula P(−{fa(a)} ≤ Z ≤ {fa(b)}).", p4(r), "normal_intervalo", {"a": -a, "b": b},
+                     [(p4(abs(B - A)), "negativo_mal"), (p4(B + A - 0.5) if B + A - 0.5 < 1 else p4(B), None), (p4(B - A / 2), None)],
+                     [("P(Z ≤ b)", p4(B), f"P(Z ≤ {fa(b)}) = {p4(B)}."), ("P(Z ≤ −a)", p4(1 - A), f"P(Z ≤ −{fa(a)}) = 1 − {p4(A)} = {p4(1 - A)}."),
+                      ("restar", p4(r), f"P = {p4(B)} − {p4(1 - A)} = {p4(r)}.")],
+                     "P(a ≤ Z ≤ b) = P(Z ≤ b) − P(Z ≤ a), usando la simetría para los negativos.")
+    return hacer(f"Z ~ N(0, 1). Halla el valor k tal que P(Z ≤ k) = {p4(A)}.", fa(a), "normal_inversa", {"p": A}, [(p4(A), None), (fa(-a), "negativo_mal"), (fa(a + 0.1), None)],
+                 [("tabla al revés", fa(a), f"Busco {p4(A)} dentro de la tabla: corresponde a k = {fa(a)}.")],
+                 "Problema inverso: se busca la probabilidad dentro de la tabla y se lee el valor de z.")
+
+
+@gen6("t6_tipificar")
+def g_tipificar(rng, d, tipo="z"):
+    """EST.DISTR.05. Claves: divide_varianza, no_resta_media, prob_como_z."""
+    ctx = rng.choice([("La estatura de un grupo", 170, 8, "cm"), ("Las notas de un examen", 6, 1.5, "puntos"), ("El tiempo de un trayecto", 40, 5, "min"),
+                      ("El peso de unas manzanas", 180, 20, "g")])
+    mu, sg = ctx[1], ctx[2]
+    for _ in range(100):
+        z = round(rng.choice([-1, 1]) * rng.randint(10, 220) / 100, 2)
+        x = mu + z * sg
+        if abs(x * 10 - round(x * 10)) < 1e-9:
+            x = round(x, 1)
+            break
+    base = f"{ctx[0]} sigue una N({dec(mu, 2)}; {dec(sg, 2)}) (en {ctx[3]}).\n"
+    if tipo == "z":
+        return hacer(base + f"¿Qué valor z corresponde a x = {dec(x, 2)}?", dec(z, 2), "tipificar", {"mu": mu, "sg": sg, "x": x},
+                     [(dec((x - mu) / sg ** 2, 2), "divide_varianza"), (dec(x / sg, 2), "no_resta_media"), (dec(-z, 2), None)],
+                     [("(x − μ)/σ", dec(z, 2), f"z = ({dec(x, 2)} − {dec(mu, 2)}) / {dec(sg, 2)} = {dec(z, 2)}.")],
+                     "Tipificar: Z = (X − μ)/σ.", gen=[dec(z + 0.5, 2)])
+    if tipo == "prob":
+        mayor = rng.random() < 0.5
+        P = Phi(z) if not mayor else 1 - Phi(z)
+        z1 = round((x - mu) / sg ** 2, 2)
+        z2 = round(x / sg, 2)
+        f_ = (lambda t: 1 - Phi(t)) if mayor else Phi
+        return hacer(base + f"Calcula P(X {'>' if mayor else '<'} {dec(x, 2)}).", p4(P), "normal_prob", {"mu": mu, "sg": sg, "x": x},
+                     [(p4(f_(z1)), "divide_varianza"), (p4(f_(z2)) if abs(z2) < 4 else p4(1 - P), "no_resta_media" if abs(z2) < 4 else None), (p4(1 - P), None)],
+                     [("tipificar", dec(z, 2), f"z = ({dec(x, 2)} − {dec(mu, 2)}) / {dec(sg, 2)} = {dec(z, 2)}."),
+                      ("tabla", p4(P), f"P(Z {'>' if mayor else '<'} {dec(z, 2)}) = {p4(P)}.")],
+                     "Se tipifica y se usa la tabla de N(0,1), con 1 − … y simetría cuando haga falta.")
+    top = rng.choice([(10, 1.28), (5, 1.645), (20, 0.84), (25, 0.67), (1, 2.33)])
+    v = mu + top[1] * sg
+    return hacer(base + f"¿Qué valor mínimo hay que superar para estar en el {top[0]} % superior?", dec(v, 2), "normal_inversa_x", {"mu": mu, "sg": sg, "p": top[0]},
+                 [(dec(mu + (1 - top[0] / 100) * sg, 2), "prob_como_z"), (dec(mu + top[1] * sg ** 2, 2), "divide_varianza"), (dec(mu - top[1] * sg, 2), None)],
+                 [("z de la tabla", dec(top[1], 3), f"Hay que dejar por debajo el {100 - top[0]} %: P(Z ≤ z) = {dec(1 - top[0] / 100, 2)} → z ≈ {dec(top[1], 3)}."),
+                  ("destipificar", dec(v, 2), f"x = μ + z·σ = {dec(mu, 2)} + {dec(top[1], 3)}·{dec(sg, 2)} = {dec(v, 2)}.")],
+                 "Problema inverso: se busca z en la tabla y se deshace la tipificación, x = μ + z·σ.")
+
+
+@gen6("t6_aprox_normal")
+def g_aprox_normal(rng, d, tipo="parametros"):
+    """EST.DISTR.06. Claves: sin_correccion, correccion_al_reves, sigma_npq."""
+    for _ in range(100):
+        n = rng.choice([50, 60, 80, 100, 120, 150, 200, 300])
+        p = rng.choice([F(1, 5), F(1, 4), F(3, 10), F(2, 5), F(1, 2), F(3, 5)])
+        mu, var = n * p, n * p * (1 - p)
+        if mu >= 5 and n * (1 - p) >= 5 and mu.denominator == 1:
+            break
+    sg = round(math.sqrt(var), 2)
+    if tipo == "parametros":
+        resp = f"N({dec(mu, 2)}; {dec(sg, 2)})"
+        return hacer(f"X ~ B({n}; {dec(p, 2)}). ¿Por qué normal se puede aproximar?", resp, "aprox_param", {"n": n, "p": str(p)},
+                     [(f"N({dec(mu, 2)}; {dec(var, 2)})", "sigma_npq"), (f"N({dec(mu, 2)}; {dec(math.sqrt(mu), 2)})", None), (f"N({n}; {dec(p, 2)})", None)],
+                     [("np, nq ≥ 5", dec(mu, 2), f"np = {dec(mu, 2)} ≥ 5 y nq = {dec(n * (1 - p), 2)} ≥ 5: se puede aproximar."),
+                      ("σ = √(npq)", dec(sg, 2), f"μ = {dec(mu, 2)}, σ = √{dec(var, 2)} ≈ {dec(sg, 2)}.")],
+                     "Si np ≥ 5 y nq ≥ 5, B(n,p) ≈ N(np, √(npq)).")
+    k = int(mu) + rng.choice([-8, -6, -5, -4, -3, 3, 4, 5, 6, 8])
+    if tipo == "menor":
+        zc, zs, zr = (k + 0.5 - float(mu)) / sg, (k - float(mu)) / sg, (k - 0.5 - float(mu)) / sg
+        P = Phi(zc)
+        return hacer(f"X ~ B({n}; {dec(p, 2)}). Aproximando por la normal, calcula P(X ≤ {k}).", p4(P), "aprox_menor", {"n": n, "p": str(p), "k": k},
+                     [(p4(Phi(zs)), "sin_correccion"), (p4(Phi(zr)), "correccion_al_reves"), (p4(Phi((k + 0.5 - float(mu)) / float(var))), "sigma_npq")],
+                     [("N(μ, σ)", f"N({dec(mu, 2)}; {dec(sg, 2)})", f"μ = {dec(mu, 2)}, σ ≈ {dec(sg, 2)}."),
+                      ("corrección", f"{dec(k + 0.5, 2)}", f"Corrección de continuidad: P(X ≤ {k}) ≈ P(X' ≤ {dec(k + 0.5, 2)})."),
+                      ("tipificar", p4(P), f"z = ({dec(k + 0.5, 2)} − {dec(mu, 2)})/{dec(sg, 2)} ≈ {dec(round(zc, 2), 2)} → P ≈ {p4(P)}.")],
+                     "Aproximación normal de la binomial con corrección de continuidad: P(X ≤ k) ≈ P(Y ≤ k + 0,5).")
+    zc, zs, zr = (k - 0.5 - float(mu)) / sg, (k - float(mu)) / sg, (k + 0.5 - float(mu)) / sg
+    P = 1 - Phi(zc)
+    return hacer(f"X ~ B({n}; {dec(p, 2)}). Aproximando por la normal, calcula P(X ≥ {k}).", p4(P), "aprox_mayor", {"n": n, "p": str(p), "k": k},
+                 [(p4(1 - Phi(zs)), "sin_correccion"), (p4(1 - Phi(zr)), "correccion_al_reves"), (p4(1 - Phi((k - 0.5 - float(mu)) / float(var))), "sigma_npq")],
+                 [("N(μ, σ)", f"N({dec(mu, 2)}; {dec(sg, 2)})", f"μ = {dec(mu, 2)}, σ ≈ {dec(sg, 2)}."),
+                  ("corrección", f"{dec(k - 0.5, 2)}", f"P(X ≥ {k}) ≈ P(X' ≥ {dec(k - 0.5, 2)})."),
+                  ("tipificar", p4(P), f"z = ({dec(k - 0.5, 2)} − {dec(mu, 2)})/{dec(sg, 2)} ≈ {dec(round(zc, 2), 2)} → P ≈ {p4(P)}.")],
+                 "Corrección de continuidad: P(X ≥ k) ≈ P(Y ≥ k − 0,5).")
+
+
+# ================================================================ INFERENCIA
+
+ZC = {90: 1.645, 95: 1.96, 99: 2.575}
+
+
+@gen6("t6_muestreo")
+def g_muestreo(rng, d, tipo="estratificado"):
+    """EST.INFER.02. Claves: reparto_igual, sistematico_por_simple."""
+    if tipo == "tipo":
+        casos = [("Se numeran los 800 alumnos y se sortean 40 números con un programa.", "aleatorio simple"),
+                 ("De la lista de 600 socios se elige uno al azar entre los 10 primeros y luego uno de cada 10.", "sistemático"),
+                 ("Se toma de cada curso un número de alumnos proporcional a su tamaño, elegidos al azar.", "estratificado"),
+                 ("Se sortean 3 de las 20 aulas del centro y se encuesta a todos los alumnos de esas aulas.", "por conglomerados")]
+        desc, resp = rng.choice(casos)
+        tipos = ["aleatorio simple", "sistemático", "estratificado", "por conglomerados"]
+        dis = [(t, "sistematico_por_simple" if (resp == "sistemático" and t == "aleatorio simple") else None) for t in tipos if t != resp]
+        return hacer(f"¿Qué tipo de muestreo es? «{desc}»", resp, "muestreo_tipo", {}, dis,
+                     [("", resp, {"aleatorio simple": "Todos tienen la misma probabilidad y se eligen por sorteo directo.", "sistemático": "Se elige un arranque al azar y luego a intervalos fijos.",
+                                  "estratificado": "Se divide la población en grupos (estratos) y se toma de cada uno una parte proporcional.",
+                                  "por conglomerados": "Se sortean grupos enteros y se estudia a todos sus miembros."}[resp])],
+                     "Simple: sorteo directo; sistemático: 1 de cada k; estratificado: por grupos proporcionales; conglomerados: grupos enteros.",
+                     datos={"opciones_fijas": True})
+    for _ in range(300):
+        k = 3 if d < 3 else 4
+        n = rng.choice([30, 40, 50, 60, 80, 100, 120])
+        tams = [rng.randint(5, 40) * 10 for _ in range(k)]
+        N = sum(tams)
+        parts = [F(n * t, N) for t in tams]
+        if all(p.denominator == 1 for p in parts) and len(set(tams)) == k:
+            break
+    else:
+        return None
+    parts = [int(p) for p in parts]
+    nombres = ["1.º", "2.º", "3.º", "4.º"][:k]
+    enun = (f"Un instituto tiene " + lista([f"{t} alumnos en {c}" for t, c in zip(tams, nombres)]) + f". Se quiere una muestra estratificada proporcional de {n} alumnos. ")
+    if tipo == "estratificado":
+        resp = lista(parts)
+        return hacer(enun + "¿Cuántos se eligen de cada curso?", resp, "estratificado", {"tams": tams, "n": n},
+                     [(lista([n // k] * k) if n % k == 0 else lista([round(n / k)] * k), "reparto_igual"), (lista(list(reversed(parts))), None),
+                      (lista([p + (1 if i == 0 else -1 if i == 1 else 0) for i, p in enumerate(parts)]), None)],
+                     [("n·Ni/N", resp, f"Total N = {N}. Cada curso aporta n·Ni/N: " + ", ".join(f"{n}·{t}/{N} = {p}" for t, p in zip(tams, parts)) + ".")],
+                     "Afijación proporcional: ni = n·Ni/N, cada estrato en la misma proporción que en la población.")
+    i = rng.randrange(k)
+    return hacer(enun + f"¿Cuántos alumnos de {nombres[i]} habrá en la muestra?", fmt(parts[i]), "estratificado_uno", {"tams": tams, "n": n, "i": i},
+                 [(dec(F(n, k), 1), "reparto_igual"), (fmt(tams[i] // 10), None), (fmt(parts[i] + 2), None)],
+                 [("n·Ni/N", fmt(parts[i]), f"{n} · {tams[i]} / {N} = {parts[i]}.")],
+                 "Afijación proporcional: ni = n·Ni/N.", gen=[fmt(parts[i] + 1)])
+
+
+@gen6("t6_estimacion")
+def g_estimacion(rng, d, tipo="proporcion"):
+    """EST.INFER.03. Claves: parametro_estadistico, divide_n."""
+    if tipo == "proporcion":
+        n = rng.choice([100, 200, 250, 400, 500, 800, 1000])
+        k = rng.randint(n // 10, n * 9 // 10)
+        if (F(k, n) * 1000).denominator != 1:
+            k = k // 2 * 2
+        ctx = rng.choice(["votarían al partido A", "usan el transporte público", "han leído un libro este mes", "practican deporte a diario"])
+        return hacer(f"En una muestra aleatoria de {n} personas, {k} {ctx}. ¿Cuál es la estimación puntual de la proporción en la población?", dec(F(k, n), 4), "p_gorro", {"k": k, "n": n},
+                     [(dec(F(n, k), 4), None), (dec(F(k, n - k), 4), None), (f"{k}", None)],
+                     [("k/n", dec(F(k, n), 4), f"p̂ = {k}/{n} = {dec(F(k, n), 4)}.")],
+                     "La proporción muestral p̂ = k/n estima la proporción poblacional p.", gen=[dec(F(k, n) + F(1, 100), 4)])
+    if tipo == "concepto":
+        v = dec(F(rng.randint(20, 80), 100), 2)
+        resp = f"una estimación de la proporción de la población, calculada en la muestra (estadístico)"
+        return hacer(f"En una encuesta a una muestra de votantes, la proporción que votaría a A es {v}. ¿Qué es {v}?", resp, "estimador_concepto", {},
+                     [(f"la proporción exacta de toda la población (parámetro)", "parametro_estadistico"), (f"la probabilidad de que la población vote a A con seguridad", None),
+                      (f"el error de la encuesta", None)],
+                     [("", resp, "Un estadístico se calcula en la muestra y varía de una muestra a otra; el parámetro (de la población) es fijo y desconocido.")],
+                     "Parámetro: valor de la población (μ, p, σ). Estadístico: valor de la muestra (x̄, p̂, s) que lo estima.")
+    for _ in range(500):
+        n = rng.randint(4, 6)
+        datos = [rng.randint(2, 20) for _ in range(n)]
+        m = F(sum(datos), n)
+        ss = sum((x - m) ** 2 for x in datos)
+        if m.denominator == 1 and ss > 0:
+            break
+    s = math.sqrt(ss / (n - 1))
+    sg = math.sqrt(ss / n)
+    return hacer(f"Muestra: {', '.join(map(str, datos))}. Estima la desviación típica de la población con la cuasidesviación típica s (2 decimales).", dec(s, 2), "cuasidesviacion",
+                 {"datos": datos}, [(dec(sg, 2), "divide_n"), (dec(ss / (n - 1), 2), None), (dec(m, 2), None)],
+                 [("media", fmt(m), f"x̄ = {m}."), ("Σ(x − x̄)²", dec(ss, 2), f"Σ(x − x̄)² = {dec(ss, 2)}."), ("÷ (n − 1) y raíz", dec(s, 2), f"s = √({dec(ss, 2)}/{n - 1}) ≈ {dec(s, 2)}.")],
+                 "El estimador de σ es la cuasidesviación s, que divide entre n − 1.", gen=[dec(s + 1, 2)])
+
+
+@gen6("t6_media_muestral")
+def g_media_muestral(rng, d, tipo="error_tipico"):
+    """EST.INFER.04. Claves: usa_sigma, divide_n."""
+    mu = rng.choice([50, 100, 170, 250, 500, 1000])
+    sg = rng.choice([5, 8, 10, 12, 15, 20, 30, 40, 60, 100])
+    n = rng.choice([16, 25, 36, 49, 64, 100, 144])
+    se = F(sg, math.isqrt(n))
+    base = f"Una población sigue N({mu}; {sg}). Se toman muestras de tamaño {n}.\n"
+    if tipo == "error_tipico":
+        return hacer(base + "¿Cuál es la desviación típica de la media muestral x̄?", dec(se, 4), "error_tipico", {"sg": sg, "n": n},
+                     [(fmt(sg), "usa_sigma"), (dec(F(sg, n), 4), "divide_n"), (dec(sg * math.sqrt(n), 2), None)],
+                     [("σ/√n", dec(se, 4), f"x̄ ~ N({mu}; σ/√n) con σ/√n = {sg}/√{n} = {sg}/{math.isqrt(n)} = {dec(se, 4)}.")],
+                     "Teorema central del límite: x̄ ~ N(μ, σ/√n).")
+    for _ in range(100):
+        z = round(rng.choice([-1, 1]) * rng.randint(20, 250) / 100, 2)
+        a = mu + z * float(se)
+        if abs(a * 100 - round(a * 100)) < 1e-6:
+            a = round(a, 2)
+            break
+    mayor = rng.random() < 0.5
+    f_ = (lambda t: 1 - Phi(t)) if mayor else Phi
+    P = f_(z)
+    return hacer(base + f"Calcula P(x̄ {'>' if mayor else '<'} {dec(a, 2)}).", p4(P), "media_muestral_p", {"mu": mu, "sg": sg, "n": n, "a": a},
+                 [(p4(f_((a - mu) / sg)), "usa_sigma"), (p4(f_((a - mu) / (sg / n))), "divide_n"), (p4(1 - P), None)],
+                 [("σ/√n", dec(se, 4), f"x̄ ~ N({mu}; {dec(se, 4)})."), ("tipificar", dec(z, 2), f"z = ({dec(a, 2)} − {mu}) / {dec(se, 4)} = {dec(z, 2)}."),
+                  ("tabla", p4(P), f"P ≈ {p4(P)}.")],
+                 "Para probabilidades sobre x̄ se tipifica con σ/√n, no con σ.")
+
+
+@gen6("t6_prop_muestral")
+def g_prop_muestral(rng, d, tipo="sigma"):
+    """EST.INFER.05. Claves: sin_dividir_n, mezcla_recuentos."""
+    p = rng.choice([F(1, 5), F(1, 4), F(3, 10), F(2, 5), F(1, 2), F(3, 5), F(7, 10)])
+    n = rng.choice([100, 150, 200, 300, 400, 500, 600])
+    s = math.sqrt(float(p * (1 - p)) / n)
+    base = f"En una población, la proporción de personas con cierta característica es p = {dec(p, 2)}. Se toman muestras de {n} personas.\n"
+    if tipo == "sigma":
+        return hacer(base + "¿Cuál es la desviación típica de la proporción muestral p̂? (4 decimales)", p4(s), "sigma_p", {"p": str(p), "n": n},
+                     [(p4(math.sqrt(float(p * (1 - p)))), "sin_dividir_n"), (p4(float(p * (1 - p)) / n), None), (p4(math.sqrt(n * float(p * (1 - p)))), "mezcla_recuentos")],
+                     [("√(pq/n)", p4(s), f"σ = √({dec(p, 2)}·{dec(1 - p, 2)}/{n}) ≈ {p4(s)}.")],
+                     "Para n grande, p̂ ~ N(p, √(p(1 − p)/n)).")
+    a = round(float(p) + rng.choice([-1, 1]) * rng.randint(2, 8) / 100, 2)
+    z = round((a - float(p)) / s, 2)
+    mayor = rng.random() < 0.5
+    f_ = (lambda t: 1 - Phi(t)) if mayor else Phi
+    P = f_(z)
+    z_mal = (a - float(p)) / math.sqrt(float(p * (1 - p)))
+    return hacer(base + f"Calcula P(p̂ {'>' if mayor else '<'} {dec(a, 2)}).", p4(P), "prop_muestral_p", {"p": str(p), "n": n, "a": a},
+                 [(p4(f_(z_mal)), "sin_dividir_n"), (p4(1 - P), None), (p4(f_(z / 2)), None)],
+                 [("σ", p4(s), f"σ = √({dec(p, 2)}·{dec(1 - p, 2)}/{n}) ≈ {p4(s)}."), ("tipificar", dec(z, 2), f"z = ({dec(a, 2)} − {dec(p, 2)}) / {p4(s)} ≈ {dec(z, 2)}."),
+                  ("tabla", p4(P), f"P ≈ {p4(P)}.")],
+                 "Se tipifica p̂ con √(pq/n).")
+
+
+def _ic(c, s):
+    return f"({c[0]}; {c[1]})".replace("(", "(").replace("; ", "; ") if s is None else s
+
+
+@gen6("t6_ic_media")
+def g_ic_media(rng, d, tipo="intervalo"):
+    """EST.INFER.06. Claves: critico_mal, interpretacion_probabilistica, confianza_estrecha."""
+    if tipo == "critico":
+        nv = rng.choice([90, 95, 99])
+        otros = {90: [("1,96", None), ("0,9", None), ("1,28", "critico_mal")], 95: [("1,645", "critico_mal"), ("0,95", None), ("2,575", None)],
+                 99: [("1,96", "critico_mal"), ("0,99", None), ("2,33", "critico_mal")]}[nv]
+        return hacer(f"¿Qué valor crítico z_α/2 se usa para un intervalo de confianza del {nv} %?", dec(ZC[nv], 3), "critico", {"nivel": nv}, otros,
+                     [("tabla", dec(ZC[nv], 3), f"Nivel {nv} %: α = {dec(1 - nv / 100, 2)}, α/2 = {dec((1 - nv / 100) / 2, 3)}; P(Z ≤ z) = {dec(1 - (1 - nv / 100) / 2, 3)} → z ≈ {dec(ZC[nv], 3)}.")],
+                     "Valores críticos habituales: 1,645 (90 %), 1,96 (95 %), 2,575 (99 %).")
+    if tipo == "concepto":
+        if rng.random() < 0.5:
+            return hacer("Si con los mismos datos se pasa de un nivel de confianza del 95 % al 99 %, el intervalo para la media…", "se hace más ancho", "ic_nivel", {},
+                         [("se hace más estrecho", "confianza_estrecha"), ("no cambia", None), ("se desplaza hacia la derecha", None)],
+                         [("", "más ancho", "Más confianza exige un valor crítico mayor (2,575 frente a 1,96): el margen de error crece.")],
+                         "A más confianza, intervalo más ancho; a mayor n, intervalo más estrecho.")
+        return hacer("Un intervalo de confianza del 95 % para μ es (70,04; 73,96). ¿Cuál es la interpretación correcta?",
+                     "el 95 % de los intervalos construidos así contendrían a μ", "ic_interp", {},
+                     [("hay un 95 % de probabilidad de que μ esté en (70,04; 73,96)", "interpretacion_probabilistica"), ("el 95 % de los datos está entre 70,04 y 73,96", None),
+                      ("μ vale exactamente 72", None)],
+                     [("", "", "μ es un número fijo: está o no está en ese intervalo concreto. El 95 % se refiere al método: 95 de cada 100 intervalos así construidos contienen a μ.")],
+                     "La confianza es una propiedad del procedimiento, no una probabilidad sobre un intervalo ya calculado.")
+    nv = rng.choice([90, 95, 99])
+    xb = rng.randint(20, 200)
+    sg = rng.choice([4, 5, 6, 8, 10, 12, 15, 20])
+    n = rng.choice([25, 36, 49, 64, 100, 144, 225])
+    E = ZC[nv] * sg / math.sqrt(n)
+    iv = lambda e: f"({dec(xb - e, 2)}; {dec(xb + e, 2)})"
+    otro = 1.645 if nv != 90 else 1.96
+    return hacer(f"En una muestra de {n} datos, x̄ = {xb}. Se sabe que σ = {sg}. Calcula el intervalo de confianza para μ al {nv} %.", iv(E), "ic_media", {"xb": xb, "sg": sg, "n": n, "nivel": nv},
+                 [(iv(otro * sg / math.sqrt(n)), "critico_mal"), (iv(ZC[nv] * sg), None), (iv(ZC[nv] * sg / n), None)],
+                 [("z", dec(ZC[nv], 3), f"Al {nv} %, z_α/2 = {dec(ZC[nv], 3)}."), ("error", dec(E, 2), f"E = {dec(ZC[nv], 3)} · {sg}/√{n} = {dec(E, 2)}."),
+                  ("intervalo", iv(E), f"x̄ ± E = {xb} ± {dec(E, 2)} = {iv(E)}.")],
+                 "IC para μ con σ conocida: x̄ ± z_α/2·σ/√n.")
+
+
+@gen6("t6_ic_prop")
+def g_ic_prop(rng, d, tipo="margen"):
+    """EST.INFER.07. Claves: sin_dividir_n, porcentaje_por_proporcion."""
+    n = rng.choice([100, 200, 400, 500, 625, 800, 1000])
+    k = rng.randint(n // 5, n * 4 // 5)
+    ph = F(k, n)
+    if (ph * 100).denominator != 1:
+        ph = F(round(ph * 100), 100)
+        k = int(ph * n)
+    nv = rng.choice([90, 95, 99])
+    z = ZC[nv]
+    E = z * math.sqrt(float(ph * (1 - ph)) / n)
+    base = f"En una muestra de {n} personas, la proporción que responde «sí» es p̂ = {dec(ph, 2)}.\n"
+    if tipo == "margen":
+        return hacer(base + f"Calcula el margen de error del intervalo al {nv} % (4 decimales).", p4(E), "ic_prop_E", {"ph": str(ph), "n": n, "nivel": nv},
+                     [(p4(z * math.sqrt(float(ph * (1 - ph)))), "sin_dividir_n"), (dec(z * math.sqrt(float(ph * 100) * float((1 - ph) * 100) / n), 4), "porcentaje_por_proporcion"),
+                      (p4(z * float(ph * (1 - ph)) / n), None)],
+                     [("z", dec(z, 3), f"z_α/2 = {dec(z, 3)}."), ("E", p4(E), f"E = {dec(z, 3)}·√({dec(ph, 2)}·{dec(1 - ph, 2)}/{n}) ≈ {p4(E)}.")],
+                     "IC para una proporción: p̂ ± z_α/2·√(p̂(1 − p̂)/n), con p̂ como proporción (no porcentaje).")
+    lo, hi = float(ph) - E, float(ph) + E
+    if tipo == "intervalo":
+        iv = f"({dec(lo, 4)}; {dec(hi, 4)})"
+        Em = z * math.sqrt(float(ph * (1 - ph)))
+        return hacer(base + f"Calcula el intervalo de confianza al {nv} % para la proporción (4 decimales).", iv, "ic_prop", {"ph": str(ph), "n": n, "nivel": nv},
+                     [(f"({dec(max(0, float(ph) - Em), 4)}; {dec(min(1, float(ph) + Em), 4)})", "sin_dividir_n"), (f"({dec(float(ph) - E / 2, 4)}; {dec(float(ph) + E / 2, 4)})", None),
+                      (f"({dec(float(ph) - E * 2, 4)}; {dec(float(ph) + E * 2, 4)})", None)],
+                     [("E", p4(E), f"E = {dec(z, 3)}·√({dec(ph, 2)}·{dec(1 - ph, 2)}/{n}) ≈ {p4(E)}."), ("p̂ ± E", iv, f"{dec(ph, 2)} ± {p4(E)} = {iv}.")],
+                     "IC para p: p̂ ± z_α/2·√(p̂(1 − p̂)/n).")
+    dentro = rng.random() < 0.5
+    v = round(rng.uniform(lo + 0.002, hi - 0.002), 2) if dentro else round(hi + rng.uniform(0.01, 0.05), 2)
+    if lo < v < hi:
+        resp = f"sí, porque {dec(v, 2)} está dentro del intervalo ({dec(lo, 4)}; {dec(hi, 4)})"
+        dis = [(f"no, porque {dec(v, 2)} es distinto de {dec(ph, 2)}", None), ("no se puede saber sin conocer p", None), (f"no, porque el margen es {p4(E)}", None)]
+    else:
+        resp = f"no, porque {dec(v, 2)} queda fuera del intervalo ({dec(lo, 4)}; {dec(hi, 4)})"
+        dis = [(f"sí, porque {dec(v, 2)} está cerca de {dec(ph, 2)}", None), ("no se puede saber sin conocer p", None),
+               (f"sí, porque el intervalo sin dividir entre n lo contiene", "sin_dividir_n")]
+    return hacer(base + f"Al {nv} % de confianza, ¿es compatible con estos datos que la proporción real sea {dec(v, 2)}?", resp, "ic_prop_compat", {"ph": str(ph), "n": n, "v": v}, dis,
+                 [("intervalo", f"({dec(lo, 4)}; {dec(hi, 4)})", f"E ≈ {p4(E)}; intervalo ({dec(lo, 4)}; {dec(hi, 4)}). Se mira si {dec(v, 2)} cae dentro.")],
+                 "Un valor de p es compatible con los datos (a ese nivel) si está dentro del intervalo de confianza.")
+
+
+@gen6("t6_tamano_muestra")
+def g_tamano_muestra(rng, d, tipo="n_media"):
+    """EST.INFER.08. Claves: redondea_abajo, olvida_cuadrado."""
+    nv = rng.choice([90, 95, 99])
+    z = ZC[nv]
+    if tipo == "error":
+        sg = rng.choice([4, 5, 6, 8, 10, 12, 15, 20])
+        n = rng.choice([16, 25, 36, 49, 64, 100])
+        E = z * sg / math.sqrt(n)
+        return hacer(f"σ = {sg}, n = {n}, confianza del {nv} %. ¿Cuál es el error máximo admisible E? (2 decimales)", dec(E, 2), "error_max", {"sg": sg, "n": n, "nivel": nv},
+                     [(dec(z * sg / n, 2), None), (dec(z * sg, 2), None), (dec((1.645 if nv != 90 else 1.96) * sg / math.sqrt(n), 2), None)],
+                     [("z·σ/√n", dec(E, 2), f"E = {dec(z, 3)} · {sg}/√{n} = {dec(E, 2)}.")],
+                     "Error máximo: E = z_α/2·σ/√n.")
+    if tipo == "n_media":
+        for _ in range(100):
+            sg = rng.choice([5, 8, 10, 12, 15, 20, 25, 30])
+            E = rng.choice([1, 2, 3, 4, 5])
+            val = (z * sg / E) ** 2
+            if abs(val - round(val)) > 0.05 and val > 5:
+                break
+        n = math.ceil(val)
+        return hacer(f"Se quiere estimar μ con σ = {sg}, un error menor que {E} y confianza del {nv} %. ¿Cuál es el tamaño mínimo de la muestra?", fmt(n), "n_media",
+                     {"sg": sg, "E": E, "nivel": nv},
+                     [(fmt(math.floor(val)), "redondea_abajo"), (fmt(math.ceil(z * sg / E)), "olvida_cuadrado"), (fmt(math.ceil((1.645 if nv != 90 else 1.96) * sg / E) ** 2), None)],
+                     [("despejar", dec(val, 2), f"n ≥ (z·σ/E)² = ({dec(z, 3)}·{sg}/{E})² = {dec(val, 2)}."), ("redondear arriba", fmt(n), f"n = {n} (siempre hacia arriba).")],
+                     "n ≥ (z_α/2·σ/E)², redondeando siempre hacia arriba.", gen=[fmt(n + 1), fmt(n * 2)])
+    for _ in range(100):
+        E = rng.choice([0.01, 0.02, 0.03, 0.04, 0.05])
+        ph = rng.choice([0.5, 0.3, 0.4, 0.2, 0.35])
+        val = z * z * ph * (1 - ph) / E ** 2
+        if abs(val - round(val)) > 0.05:
+            break
+    n = math.ceil(val)
+    return hacer(f"Se quiere estimar una proporción con un error máximo de {dec(E, 2)} y confianza del {nv} %, suponiendo p = {dec(ph, 2)}. ¿Cuál es el tamaño mínimo de la muestra?",
+                 fmt(n), "n_prop", {"E": E, "p": ph, "nivel": nv},
+                 [(fmt(math.floor(val)), "redondea_abajo"), (fmt(math.ceil(z * math.sqrt(ph * (1 - ph)) / E)), "olvida_cuadrado"), (fmt(math.ceil(z * ph * (1 - ph) / E ** 2)), None)],
+                 [("despejar", dec(val, 2), f"n ≥ z²·p(1 − p)/E² = {dec(z, 3)}²·{dec(ph, 2)}·{dec(1 - ph, 2)}/{dec(E, 2)}² = {dec(val, 2)}."), ("redondear arriba", fmt(n), f"n = {fmt(n)}.")],
+                 "Para proporciones: n ≥ z²·p(1 − p)/E² (p = 0,5 si no se conoce), redondeando hacia arriba.", gen=[fmt(n + 1)])

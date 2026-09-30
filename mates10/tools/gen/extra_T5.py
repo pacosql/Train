@@ -2720,7 +2720,8 @@ def gen_sist_resolver(rng, d, metodo="sustitucion"):
         e2 = f"y = {P({1: F(-d_, e), 0: F(f, e)})}"
         enun = f"Resuelve por igualación: {{{e1}; {e2}}}"
     else:
-        enun = f"Resuelve por {metodo}: {{{_eq2(a, b, c)}; {_eq2(d_, e, f)}}}"
+        nom = {"sustitucion": "sustitución", "igualacion": "igualación", "reduccion": "reducción"}[metodo]
+        enun = f"Resuelve por {nom}: {{{_eq2(a, b, c)}; {_eq2(d_, e, f)}}}"
     resp = _sxy(x, y)
     dist = []
     if metodo == "sustitucion":
@@ -2729,7 +2730,8 @@ def gen_sist_resolver(rng, d, metodo="sustitucion"):
         if den:
             y2 = F(c - a * f, den)
             x2 = f - e * y2
-            dist.append((_sxy(x2, y2), "parentesis"))
+            if abs(x2) <= 40 and abs(y2) <= 40:
+                dist.append((_sxy(x2, y2), "parentesis"))
         dist.append((f"y = {N(y)}", "olvida_incognita"))
         dist.append(("Infinitas soluciones", "misma_ecuacion"))
     elif metodo == "igualacion":
@@ -2931,9 +2933,10 @@ def gen_gauss_clasificar(rng, d):
     enun = "Clasifica el sistema: {" + "; ".join(_eq3(f, bb) for f, bb in ((f1, b1), (f2, b2), (f3, b3))) + "}"
     TXT = {"SCD": "Compatible determinado", "SCI": "Compatible indeterminado", "SI": "Incompatible"}
     resp = TXT[caso]
-    dist = [(TXT["SI"], "cero_cero_incompatible") if caso == "SCI" else (TXT["SCI"], None) if caso == "SI" else (TXT["SCI"], None)]
-    dist.append(("Compatible determinado con z = 0" if caso == "SI" else TXT["SI"] if caso == "SCD" else TXT["SCD"], "cero_k_solucion" if caso == "SI" else None))
-    dist.append((TXT["SCD"] if caso != "SCD" else "Compatible determinado con z = 0", None))
+    Z0 = "Compatible determinado con z = 0"
+    dist = {"SCI": [(TXT["SI"], "cero_cero_incompatible"), (TXT["SCD"], None), (Z0, None)],
+            "SI": [(Z0, "cero_k_solucion"), (TXT["SCI"], None), (TXT["SCD"], None)],
+            "SCD": [(TXT["SCI"], None), (TXT["SI"], None), (Z0, None)]}[caso]
     return mk(enun, resp, "t5_gauss", dist, [TXT[k] for k in TXT if k != caso],
               ["Escalono por Gauss.", {"SCD": "Quedan tres ecuaciones con pivote: solución única.",
                                          "SCI": "La última fila se anula entera (0 = 0): sobra una ecuación y hay infinitas soluciones (un parámetro).",
@@ -3146,13 +3149,13 @@ def gen_det_propiedades(rng, d):
     k = rng.choice([2, 3, -1, -2])
     op = rng.choice(["kA", "inv", "tras", "kinv", "AB", "fila", "cambio"]) if d == 2 else rng.choice(["kA", "tras", "fila", "cambio"])
     if op == "kA":
-        enun, r, mal = f"|{k}A|", F(k) ** n * D0, F(k) * D0
+        enun, r, mal = f"|{N(k)}A|", F(k) ** n * D0, F(k) * D0
     elif op == "inv":
         enun, r, mal = "|A⁻¹|", F(1, D0), F(-D0)
     elif op == "tras":
         enun, r, mal = "|Aᵗ|", F(D0), F(-D0)
     elif op == "kinv":
-        enun, r, mal = f"|{k}A⁻¹|", F(k) ** n / D0, F(k) / D0
+        enun, r, mal = f"|{N(k)}A⁻¹|", F(k) ** n / D0, F(k) / D0
     elif op == "AB":
         E = nz(rng, -5, 5)
         enun, r, mal = f"|A·B| sabiendo que |B| = {N(E)}", F(D0 * E), F(D0 + E)
@@ -3329,9 +3332,10 @@ def gen_sistema_matricial(rng, d):
 @generador("t5_rouche")
 def gen_rouche(rng, d):
     if d == 1:
+        ne = rng.choice([2, 3, 4])
         n = rng.choice([2, 3, 4])
-        rA = rng.randint(1, min(3, n))
-        rAs = rA + (1 if rng.random() < 0.35 and rA < 3 else 0)
+        rA = rng.randint(1, min(ne, n))
+        rAs = rA + (1 if rng.random() < 0.35 and rA < ne else 0)
     else:
         caso = rng.choice(["SCD", "SCI", "SI"])
         for _ in range(300):
@@ -3360,7 +3364,8 @@ def gen_rouche(rng, d):
         resp = "Compatible determinado"
     else:
         resp = f"Compatible indeterminado ({n - rA} parámetro{'s' if n - rA > 1 else ''})"
-    ne = 3
+    if d > 1:
+        ne = 3
     dist = []
     if rA != rAs:
         dist.append((f"Compatible indeterminado ({max(1, n - rA)} parámetro{'s' if n - rA > 1 else ''})", "distintos_sci"))
@@ -3372,7 +3377,7 @@ def gen_rouche(rng, d):
         if t != resp:
             dist.append((t, None))
     if d == 1:
-        enun = f"Un sistema de 3 ecuaciones con {n} incógnitas tiene rg(A) = {rA} y rg(A*) = {rAs}. ¿Qué tipo de sistema es?"
+        enun = f"Un sistema de {ne} ecuaciones con {n} incógnitas tiene rg(A) = {rA} y rg(A*) = {rAs}. ¿Qué tipo de sistema es?"
     else:
         enun = "Discute el sistema: {" + "; ".join(_eq3(A[i], b[i]) for i in range(3)) + "}"
     return mk(enun, resp, "t5_rouche", dist, [],

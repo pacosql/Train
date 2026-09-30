@@ -454,6 +454,8 @@ def gen_operar_uds(rng, d, magnitud="longitud", unidades=None, resultado=None, t
             a = rng.randint(1, 9)
             ratio = esc[g] // esc[p]
             b = rng.randint(1, ratio - 1) if d > 1 else rng.choice([x for x in range(1, ratio) if x % max(1, ratio // 10) == 0])
+            if d > 1 and rng.random() < 0.6:
+                b = rng.randint(1, max(1, ratio // 10 - 1))
             comp = (g, p, a, b)
             ts[0] = (g, D(a) + D(b) * esc[p] / D(esc[g]))
         vals = [t[1] * esc[t[0]] for t in ts]
@@ -510,7 +512,7 @@ def gen_compleja_dec(rng, d, magnitud="superficie", pares=(("m²", "dm²"),)):
     ratio = esc[g] // esc[p]
     cif = len(str(ratio)) - 1
     a = rng.randint(1, 20)
-    b = rng.randint(1, 9) if d == 3 else rng.randint(10 ** (cif - 1), ratio - 1)
+    b = rng.randint(1, 9) if (d == 3 or rng.random() < 0.5) else rng.randint(10 ** (cif - 1), ratio - 1)
     val = D(a) + D(b) / D(ratio)
     if rng.random() < 0.5:
         enun = f"Expresa {a} {g} {b} {p} en {g}."
@@ -524,7 +526,7 @@ def gen_compleja_dec(rng, d, magnitud="superficie", pares=(("m²", "dm²"),)):
         resp = f"{a} {g} {b} {p}"
         dec = format(val.normalize(), "f").split(".")[1]
         b_mal = int(dec) if int(dec) != b else b * 10
-        dist = [(f"{a} {g} {b_mal} {p}", "compleja_una_cifra"), (f"{a} {g} {b * 10} {p}" if b * 10 < ratio * 10 and b * 10 != b_mal else None, "factor_mal"),
+        dist = [(f"{a} {g} {b_mal} {p}", None), (f"{a} {g} {b * 10} {p}" if b * 10 < ratio * 10 and b * 10 != b_mal else None, "factor_mal"),
                 (f"{a} {g} {b // 10 if b >= 10 else b + 1} {p}", None), (f"{a + 1} {g} {b} {p}", None)]
         pasos = [(f"0,{dec} {g} × {fmt(ratio)}", f"{b} {p}", f"La parte entera son {a} {g}. La parte decimal: {fx(val - a)} × {fmt(ratio)} = {b} {p} (cada escalón vale {fmt(ratio)}, {cif} cifras)."),
                  ("", resp, f"Resultado: {resp}.")]
