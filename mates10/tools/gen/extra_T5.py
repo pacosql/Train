@@ -6546,7 +6546,7 @@ def gen_razones_notables(rng, d):
         clave = "sen30_sen60" if "tg" not in (f1 + f2) else "tg30_tg60"
         dist = [(m.txt() if m != v else None, clave), ((v + Q(1)).txt(), None), ((v * 2).txt() if not v.es_cero() else "1", None), ((-v).txt() if not v.es_cero() else "2", None)]
         pasos = [f"{f1} {a1}° = {val(f1, a1).txt()} y {f2} {a2}° = {val(f2, a2).txt()}.", f"Opero con los valores exactos: {v.txt()}."]
-    return mk(enun, v.txt(), "t5_notables", dist, [], pasos,
+    return mk(enun, v.txt(), "t5_notables", dist, [(v * 2).txt(), (v + Q(1)).txt(), (-v).txt(), (v * 3).txt()], pasos,
               "sen 30° = cos 60° = 1/2; sen 60° = cos 30° = √3/2; sen 45° = cos 45° = √2/2; tg 30° = √3/3, tg 45° = 1, tg 60° = √3.")
 
 
@@ -6609,10 +6609,12 @@ def gen_triangulo_rectangulo(rng, d):
 def gen_reduccion_cuadrante(rng, d):
     for _ in range(100):
         base = rng.choice([30, 45, 60])
-        cuad = rng.choice([2, 3, 4])
-        ang = {2: 180 - base, 3: 180 + base, 4: 360 - base}[cuad]
+        cuad = rng.choice([2, 3, 4]) if d == 1 else rng.choice([1, 2, 3, 4])
+        ang = {1: base, 2: 180 - base, 3: 180 + base, 4: 360 - base}[cuad]
+        if d == 2:
+            ang += 360 * rng.choice([1, 2])
         if d == 3:
-            ang = ang + 360 * rng.choice([1, 2]) if rng.random() < 0.5 else -(360 - ang)
+            ang = ang + 360 * rng.choice([1, 2, 3]) if rng.random() < 0.4 else -(360 - ang)
         fn = rng.choice(["sen", "cos", "tg"])
         v = trig(fn, ang)
         if v is not None:
@@ -6620,7 +6622,7 @@ def gen_reduccion_cuadrante(rng, d):
     ref_val = trig(fn, base)
     otro = {30: 60, 60: 30, 45: 45}[base]
     m2 = trig(fn, otro) * (1 if (v.fl() > 0) else -1)
-    return mk(f"Calcula el valor exacto de {fn} {ang}°", v.txt(), "t5_reduccion",
+    return mk(f"Calcula el valor exacto de {fn} ({N(ang)}°)" if ang < 0 else f"Calcula el valor exacto de {fn} {ang}°", v.txt(), "t5_reduccion",
               [((-v).txt(), "signo_cuadrante"), (m2.txt() if m2 != v else (v * 2).txt(), "angulo_equivocado"), (ref_val.txt() if ref_val != v and ref_val != -v else (v + Q(1)).txt(), None)], [],
               [f"{ang}° corresponde a un ángulo del {cuad}.º cuadrante con ángulo de referencia {base}°" + (" (quitando vueltas completas)." if d == 3 else "."),
                f"{fn} {base}° = {ref_val.txt()}; el signo en ese cuadrante es {'positivo' if v.fl() > 0 else 'negativo'}: {v.txt()}."],
@@ -6660,12 +6662,11 @@ def gen_seno_coseno(rng, d):
         return mk(f"En un triángulo, a = {a}, A = {A_}° y B = {B_}°. Calcula el lado b.", f"b = {b.txt()}", "t5_seno_coseno",
                   [(f"b = {(Q(a) * trig('sen', A_)).conj_div(trig('sen', B_)).txt()}", None), (f"b = {(Q(a) * trig('cos', B_)).conj_div(trig('cos', A_)).txt() if trig('cos', A_).fl() else a}", None), (f"b = {(b * 2).txt()}", None)], [],
                   ["Teorema del seno: a/sen A = b/sen B.", f"b = a·sen B/sen A = {a}·{trig('sen', B_).txt()}/({trig('sen', A_).txt()}) = {b.txt()}."], "Cada lado va con el seno del ángulo OPUESTO.")
-    # caso ambiguo: A = 30°, sen B = b·sen A/a con valor notable
-    sB, (B1, B2) = rng.choice([(Q({3: F(1, 2)}), (60, 120)), (Q({2: F(1, 2)}), (45, 135))])
-    a = rng.randint(2, 8)
-    # b = a·sen B/sen 30 = 2a·sen B
-    b = Q(2 * a) * sB
-    return mk(f"En un triángulo, a = {a}, b = {b.txt()} y A = 30°. Halla el ángulo B.", f"B = {B1}° o B = {B2}°", "t5_seno_coseno",
+    # caso ambiguo: sen B = b·sen A/a con valor notable y dos soluciones válidas
+    A_, sB, (B1, B2) = rng.choice([(30, Q({3: F(1, 2)}), (60, 120)), (30, Q({2: F(1, 2)}), (45, 135)), (45, Q({3: F(1, 2)}), (60, 120))])
+    a = rng.randint(2, 12)
+    b = (Q(a) * sB).conj_div(trig("sen", A_)) if A_ == 30 else Q({6: F(a, 2)})
+    return mk(f"En un triángulo, a = {a}, b = {b.txt()} y A = {A_}°. Halla el ángulo B.", f"B = {B1}° o B = {B2}°", "t5_seno_coseno",
               [(f"B = {B1}°", "caso_ambiguo"), (f"B = {B2}°", "caso_ambiguo"), (f"B = {90 - B1}° o B = {90 + B1}°", None)], [],
               [f"sen B = b·sen A/a = {sB.txt()}.", f"Hay dos ángulos con ese seno: {B1}° y {B2}°; los dos son válidos porque A + B < 180°."],
               "Con el teorema del seno puede haber dos soluciones (B y 180° − B): caso ambiguo.")
@@ -6674,9 +6675,14 @@ def gen_seno_coseno(rng, d):
 @generador("t5_formulas_trig")
 def gen_formulas_trig(rng, d):
     if d < 3:
-        combos = [(45, 30, "+"), (60, 45, "+"), (45, 30, "−"), (60, 45, "−"), (90, 15, "+") if False else (30, 45, "+"), (120, 45, "−"), (135, 30, "−"), (45, 60, "+")]
-        a, b, op = rng.choice(combos)
-        fn = rng.choice(["sen", "cos"]) if d == 1 else rng.choice(["sen", "cos", "tg"])
+        for _ in range(100):
+            a = rng.choice([45, 60, 30] if d == 1 else [30, 45, 60, 120, 135, 150, 210, 225, 240, 300, 315, 330])
+            b = rng.choice([30, 45, 60])
+            op = rng.choice(["+", "−"])
+            r_ = a + b if op == "+" else a - b
+            if r_ > 0 and r_ % 30 and r_ % 45:
+                break
+        fn = rng.choice(["sen", "cos", "tg"])
         ang = a + b if op == "+" else a - b
         if fn == "sen":
             v = trig("sen", a) * trig("cos", b) + (trig("cos", a) * trig("sen", b) if op == "+" else -(trig("cos", a) * trig("sen", b)))
@@ -6719,7 +6725,7 @@ def _angs(xs):
 
 def _sols_trig(fn, v):
     """Soluciones en [0, 360) de fn x = v (v valor notable como Q)."""
-    return [a for a in range(0, 360, 15) if trig(fn, a) is not None and trig(fn, a) == v]
+    return [a for a in sorted(set(range(0, 360, 30)) | set(range(0, 360, 45))) if trig(fn, a) is not None and trig(fn, a) == v]
 
 
 @generador("t5_ecuacion_trig")
@@ -6748,8 +6754,22 @@ def gen_ecuacion_trig(rng, d):
         return mk(enun, _angs(xs), "t5_ecuacion_trig", [(_angs(_sols_trig(fn, Q(r1))), "una_solucion"), (_angs(_sols_trig(fn, Q(r2))), "una_solucion"), (_angs(xs[:1] + _sols_trig(fn, Q(r2))[:1]), None)], [],
                   [f"Cambio t = {fn} x: {terms([(A, 't²'), (B, 't'), (C, '')])} = 0 → t = {N(r1)} o t = {N(r2)}.", f"Resuelvo {fn} x = {N(r1)} y {fn} x = {N(r2)}: {_angs(xs)}."],
                   "Tras el cambio de variable hay que resolver cada ecuación elemental y juntar todas las soluciones.")
+    if rng.random() < 0.4:
+        fn = rng.choice(["sen", "cos", "tg"])
+        vq = rng.choice([x for x in vals[fn] if not x.es_cero()])
+        m = 3 if fn == "tg" else 2
+        xs = _sols_trig(fn, vq)
+        return mk(f"Resuelve en [0°, 360°): {m}{fn} x = {(vq * m).txt()}", _angs(xs), "t5_ecuacion_trig",
+                  [(_angs(xs[:1]), "una_solucion"), (_angs(_sols_trig(fn, -vq)), None), (_angs([x + 90 for x in xs]), None)], [_angs([(360 - x) for x in xs])],
+                  [f"Despejo: {fn} x = {vq.txt()}.", f"Busco los ángulos de [0°, 360°) con ese valor: {_angs(xs)}."], "Hay que dar todas las soluciones de la vuelta, no solo la de la calculadora.")
     v = rng.choice([F(1, 2), F(-1, 2)])
     k = int(1 / v)
+    if rng.random() < 0.5:
+        xs = [90, 270] + _sols_trig("sen", Q(v))
+        enun = f"Resuelve en [0°, 360°): sen 2x = {'' if k == 2 else '−'}cos x"
+        return mk(enun, _angs(xs), "t5_ecuacion_trig", [(_angs(_sols_trig("sen", Q(v))), "divide_sen"), (_angs([90, 270]), "una_solucion"), (_angs([90] + _sols_trig("sen", Q(v))), None)], [],
+                  [f"2 sen x cos x {'−' if k == 2 else '+'} cos x = 0 → cos x (2sen x {'−' if k == 2 else '+'} 1) = 0.", f"cos x = 0 → x = 90°, 270°; sen x = {N(v)} → {_angs(_sols_trig('sen', Q(v)))}."],
+                  "No se divide entre cos x (se perderían las soluciones cos x = 0): se saca factor común.")
     xs = [0, 180] + _sols_trig("cos", Q(v))
     enun = f"Resuelve en [0°, 360°): sen 2x = {'' if k == 2 else '−'}sen x"
     return mk(enun, _angs(xs), "t5_ecuacion_trig", [(_angs(_sols_trig("cos", Q(v))), "divide_sen"), (_angs([0, 180]), "una_solucion"), (_angs([0] + _sols_trig("cos", Q(v))), None)], [],

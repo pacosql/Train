@@ -1646,7 +1646,7 @@ def gen_opuestos(rng, d):
         resp = f"{a}°"
         dist = [(f"{b}°", None), (f"{90 - a}°" if a < 90 else f"{a - 90}°", "complementario"), (f"{360 - a}°", None), (f"{a * 2}°" if a * 2 < 360 else None, None)]
     elif tipo == "contiguo":
-        enun = f"Dos rectas se cortan y uno de los ángulos que forman mide {a}°. ¿Cuánto mide cada uno de los ángulos contiguos a él?"
+        enun = f"Dos rectas se cortan y uno de los ángulos que forman mide {a}°. ¿Qué medida tiene cada ángulo contiguo a él?"
         resp = f"{b}°"
         dist = [(f"{a}°", "todos_iguales"), (f"{90 - a}°" if a < 90 else None, "complementario"), (f"{360 - a}°", None), (f"{b + 10}°", None), (f"{b - 10}°", None)]
     else:
@@ -1668,13 +1668,13 @@ def gen_inscrito(rng, d):
         c = rng.randint(20, 170) * 2 if d > 1 else rng.choice(range(40, 360, 20))
         c = min(c, 340)
         r = c // 2
-        enun = f"Un ángulo inscrito en una circunferencia abarca el mismo arco que un ángulo central de {c}°. ¿Cuánto mide el inscrito?"
+        enun = f"Un ángulo inscrito en una circunferencia comparte arco con un ángulo central de {c}°. ¿Cuánto mide el inscrito?"
         dist = [(f"{c * 2}°" if c * 2 <= 720 else None, "duplica"), (f"{c}°", "iguala"), (f"{180 - r}°" if 180 - r > 0 and 180 - r != r else None, None), (f"{r + 10}°", None)]
         pasos = [(f"{c} : 2", str(r), f"El inscrito mide la mitad del central que abarca el mismo arco: {c}° : 2 = {r}°.")]
     elif tipo == "inscrito_a_central":
         i = rng.randint(15, 85) if d > 1 else rng.choice(range(20, 90, 10))
         r = 2 * i
-        enun = f"Un ángulo inscrito mide {i}°. ¿Cuánto mide el ángulo central que abarca el mismo arco?"
+        enun = f"Un ángulo inscrito mide {i}°. ¿Cuánto mide el ángulo central que comparte arco con él?"
         dist = [(f"{fx(D(i) / 2)}°", "duplica"), (f"{i}°", "iguala"), (f"{180 - i}°", None), (f"{r + 10}°", None)]
         pasos = [(f"{i} × 2", str(r), f"El central mide el doble del inscrito que abarca el mismo arco: {i}° × 2 = {r}°.")]
     else:
@@ -1720,7 +1720,7 @@ def gen_angulos_pol(rng, d):
         n = rng.randint(4, 12 if d == 1 else 20)
         r = 180 * (n - 2)
         nom = NOMBRES_POL.get(n, f"polígono de {n} lados")
-        enun = rng.choice([f"¿Cuánto suman los ángulos interiores de un {nom}?", f"Halla la suma de los ángulos interiores de un {nom}."])
+        enun = rng.choice([f"Calcula cuánto suman los ángulos interiores de un {nom}.", f"Calcula la suma de todos los ángulos interiores de un {nom}."])
         dist = [(f"{fmt(180 * n)}°", "180n"), (f"{fmt(360 * (n - 2))}°", None), (f"{fmt(180 * (n - 1))}°", None), (f"{fmt(r // n)}°" if r % n == 0 else None, None)]
         pasos = [(f"180 · ({n} − 2)", fmt(r), f"Desde un vértice se divide en {n} − 2 = {n - 2} triángulos, cada uno de 180°: 180 · {n - 2} = {fmt(r)}°.")]
     else:
@@ -1912,7 +1912,7 @@ def gen_isosceles(rng, d):
     if tipo == "desigual":
         x = rng.choice(range(20, 160, 2))
         r = (180 - x) // 2
-        enun = f"En un triángulo isósceles, el ángulo desigual mide {x}°. ¿Cuánto mide cada uno de los ángulos iguales?"
+        enun = f"En un triángulo isósceles, el ángulo desigual mide {x}°. ¿Cuál es la medida de cada ángulo igual?"
         dist = [(f"{180 - x}°", "no_divide"), (f"{180 - 2 * x}°" if 180 - 2 * x > 0 else None, "dato_base"), (f"{x}°", None), (f"{r + 10}°", None)]
         pasos = [(f"180 − {x}", str(180 - x), f"Los tres ángulos suman 180°: a los dos iguales les quedan 180° − {x}° = {180 - x}°."),
                  (f"{180 - x} : 2", str(r), f"Como son iguales, cada uno mide {180 - x}° : 2 = {r}°.")]
@@ -2200,7 +2200,7 @@ def gen_mov_coord(rng, d):
         dist = [(pt(x - a, y - b), "resta_vector"), (pt(x + b, y + a), None), (pt(x + a, y - b), None), (pt(a, b), None)]
         pasos = [(f"({x} + {a}, {y} + {b})".replace("+ -", "− "), pt(*r), f"Sumo el vector a las coordenadas: x = {x} + ({a}) = {r[0]}, y = {y} + ({b}) = {r[1]}.")]
     else:
-        nom = {"eje_x": "al eje de abscisas (eje X)", "eje_y": "al eje de ordenadas (eje Y)", "origen": "al origen de coordenadas"}[tipo]
+        nom = {"eje_x": "del eje X (eje de abscisas)", "eje_y": "del eje Y (eje de ordenadas)", "origen": "del origen de coordenadas"}[tipo]
         enun = f"¿Cuál es el simétrico del punto {pt(x, y)} respecto {nom}?"
         r = {"eje_x": (x, -y), "eje_y": (-x, y), "origen": (-x, -y)}[tipo]
         equivocada = {"eje_x": (-x, y), "eje_y": (x, -y), "origen": (-x, y)}[tipo]
@@ -2257,7 +2257,7 @@ def gen_coord1(rng, d):
         x, y = rng.randint(1, 9), rng.randint(1, 9)
         while x == y:
             y = rng.randint(1, 9)
-        enun = f"Desde el origen (0, 0) avanzas {x} unidades hacia la derecha y {y} hacia arriba. ¿En qué punto estás?"
+        enun = f"Partes del origen (0, 0), recorres {x} en horizontal hacia la derecha y después {y} en vertical hacia arriba. ¿Qué punto alcanzas?"
         resp = pt(x, y)
         dist = [(pt(y, x), "invierte"), (pt(x + 1, y + 1), "cuenta_desde_1"), (pt(x, y + 1), None), (pt(x - 1, y), None), (pt(x + y, 0), None)]
         pasos = [("(x, y)", resp, f"La primera coordenada es el desplazamiento horizontal ({x}) y la segunda el vertical ({y}): {resp}.")]
@@ -2347,7 +2347,7 @@ def gen_distancia(rng, d):
         dist = [(str(a + b), "sin_pitag"), (str(a * a + b * b), None), (str(abs(b - a)) if a != b else None, None), (str(c + 1), None)]
         pasos = [("diferencias", f"{a} y {b}", f"Diferencia horizontal: |{x2} − ({x1})| = {a}; vertical: |{y2} − ({y1})| = {b}."),
                  ("Pitágoras", str(c), f"Son los catetos de un triángulo rectángulo: d = √({a}² + {b}²) = √{a * a + b * b} = {c}.")]
-    enun = f"¿Cuál es la distancia entre los puntos {pt(x1, y1)} y {pt(x2, y2)}?"
+    enun = f"Calcula la distancia que separa los puntos {pt(x1, y1)} y {pt(x2, y2)}."
     resp = str(r)
     adulto = "En la misma horizontal o vertical, se restan las coordenadas (con su signo). En general, las diferencias son catetos y se aplica Pitágoras: sumarlas sin más es el error típico."
     return mk(enun, resp, "t4_distancia", {"p1": [x1, y1], "p2": [x2, y2]}, dist, pasos, adulto)
@@ -2419,8 +2419,8 @@ def gen_pitag_tipo(rng, d, modo="rectangulo"):
     tipo = "rectángulo" if c * c == a * a + b * b else "obtusángulo" if c * c > a * a + b * b else "acutángulo"
     orden = [a, b, c]
     rng.shuffle(orden)
-    enun = (f"¿Es rectángulo un triángulo de lados {orden[0]}, {orden[1]} y {orden[2]}?" if modo == "rectangulo"
-            else f"Un triángulo tiene lados {orden[0]}, {orden[1]} y {orden[2]}. ¿Es acutángulo, rectángulo u obtusángulo?")
+    enun = (f"¿Es rectángulo un triángulo cuyos lados miden {orden[0]}, {orden[1]} y {orden[2]} cm?" if modo == "rectangulo"
+            else f"Los lados de un triángulo miden {orden[0]}, {orden[1]} y {orden[2]} cm. ¿Es acutángulo, rectángulo u obtusángulo?")
     comp = f"{c}² = {c * c} y {a}² + {b}² = {a * a + b * b}"
     if modo == "rectangulo":
         si = tipo == "rectángulo"
@@ -2488,7 +2488,7 @@ def gen_perim_rect(rng, d):
     elif fig == "cuadrado":
         a = _dec(rng, d, 2, 25)
         r = 4 * a
-        enun = f"¿Cuál es el perímetro de un cuadrado de {fx(a)} cm de lado?"
+        enun = f"Calcula el perímetro de un cuadrado de {fx(a)} cm de lado."
         resp = u(r, "cm")
         dist = [(u(a * a, "cm"), "area"), (u(2 * a, "cm"), "suma_dos"), (u(a + 4, "cm"), None), (u(3 * a, "cm"), None)]
         pasos = [(f"4 · {fx(a)}", fx(r), f"El cuadrado tiene 4 lados iguales: 4 · {fx(a)} = {resp}.")]
@@ -2497,7 +2497,7 @@ def gen_perim_rect(rng, d):
         if a == b:
             a += 1
         r = 2 * (a + b)
-        enun = f"Un rectángulo mide {fx(a)} cm de largo y {fx(b)} cm de ancho. ¿Cuál es su perímetro?"
+        enun = f"Calcula el perímetro de un rectángulo de {fx(a)} cm de largo y {fx(b)} cm de ancho."
         resp = u(r, "cm")
         dist = [(u(a + b, "cm"), "suma_dos"), (u(a * b, "cm"), "area"), (u(2 * a + b, "cm"), None), (u(r + 2, "cm"), None)]
         pasos = [(f"2 · {fx(a)} + 2 · {fx(b)}", fx(r), f"Hay dos lados de {fx(a)} y dos de {fx(b)}: 2 · {fx(a)} + 2 · {fx(b)} = {resp}.")]
@@ -2608,14 +2608,14 @@ def gen_area_rect(rng, d):
     elif fig == "cuadrado":
         a = _dec(rng, d, 2, 15)
         r = a * a
-        enun = f"¿Cuál es el área de un cuadrado de {fx(a)} cm de lado?"
+        enun = f"Calcula el área de un cuadrado de {fx(a)} cm de lado."
         resp = u(r, "cm²")
         dist = [(u(2 * a, "cm²"), "lado_por_2"), (u(4 * a, "cm²"), "perimetro"), (u(r, "cm"), "unidad_lineal"), (u(r + a, "cm²"), None)]
         pasos = [(f"{fx(a)} · {fx(a)}", fx(r), f"Área del cuadrado = lado · lado = {fx(a)} · {fx(a)} = {resp}.")]
     else:
         a, b = _dec(rng, d, 3, 20), _dec(rng, d, 2, 12)
         r = a * b
-        enun = f"¿Cuál es el área de un rectángulo de {fx(a)} cm de base y {fx(b)} cm de altura?"
+        enun = f"Calcula el área de un rectángulo de {fx(a)} cm de base y {fx(b)} cm de altura."
         resp = u(r, "cm²")
         dist = [(u(2 * (a + b), "cm²"), "perimetro"), (u(r, "cm"), "unidad_lineal"), (u(a + b, "cm²"), None), (u(r / 2, "cm²"), None)]
         pasos = [(f"{fx(a)} · {fx(b)}", fx(r), f"Área del rectángulo = base · altura = {fx(a)} · {fx(b)} = {resp}.")]
@@ -2641,7 +2641,7 @@ def gen_area_tri(rng, d):
         enun = f"Un triángulo isósceles tiene lados de {fx(lado)} cm, {fx(lado)} cm y {fx(b)} cm, y la altura sobre el lado de {fx(b)} cm mide {fx(h)} cm. ¿Cuál es su área?"
         dist = [(u(b * h, "cm²"), "no_divide"), (u(b * lado / 2, "cm²"), "lado_en_vez_altura"), (u(lado * h / 2, "cm²"), None), (u(b + h, "cm²"), None)]
     else:
-        enun = f"Un triángulo tiene {fx(b)} cm de base y {fx(h)} cm de altura. ¿Cuál es su área?"
+        enun = f"Calcula el área de un triángulo de {fx(b)} cm de base y {fx(h)} cm de altura."
         dist = [(u(b * h, "cm²"), "no_divide"), (u(b + h, "cm²"), None), (u(r + b, "cm²"), None), (u(r / 2, "cm²"), None)]
     resp = u(r, "cm²")
     pasos = [(f"{fx(b)} · {fx(h)} : 2", fx(r), f"Área del triángulo = base · altura : 2 = {fx(b)} · {fx(h)} : 2 = {resp}" + (". Los otros lados no se usan: hace falta la altura." if d == 3 else "."))]
@@ -2717,7 +2717,7 @@ def gen_trapecio(rng, d):
         b = _dec(rng, d, 2, 12)
     h = _dec(rng, 1 if d < 3 else 2, 2, 12)
     r = (B + b) * h / 2
-    enun = f"Un trapecio tiene bases de {fx(B)} cm y {fx(b)} cm y una altura de {fx(h)} cm. ¿Cuál es su área?"
+    enun = f"Calcula el área de un trapecio cuyas bases miden {fx(B)} cm y {fx(b)} cm y cuya altura mide {fx(h)} cm."
     resp = u(r, "cm²")
     dist = [(u(B * b * h / 2, "cm²"), "multiplica_bases"), (u((B + b) * h, "cm²"), "no_divide"), (u(B * h, "cm²"), None), (u(r + h, "cm²"), None)]
     pasos = [(f"{fx(B)} + {fx(b)}", fx(B + b), f"Sumo las bases: {fx(B)} + {fx(b)} = {fx(B + b)} cm."), (f"{fx(B + b)} · {fx(h)} : 2", fx(r), f"Área = (B + b) · h : 2 = {fx(B + b)} · {fx(h)} : 2 = {resp}.")]
@@ -2792,7 +2792,7 @@ def gen_vol_orto(rng, d):
     if rng.random() < 0.35:
         a = _dec(rng, 1 if d < 3 else 2, 2, 12)
         r = a ** 3
-        enun = f"¿Cuál es el volumen de un cubo de {fx(a)} cm de arista?"
+        enun = f"Calcula el volumen de un cubo de {fx(a)} cm de arista."
         resp = u(r, "cm³")
         dist = [(u(3 * a, "cm³"), "arista_3"), (u(a * a, "cm³"), "area_cara"), (u(6 * a * a, "cm³"), None), (u(3 * a * a, "cm³"), None)]
         pasos = [(f"{fx(a)} · {fx(a)} · {fx(a)}", fx(r), f"Volumen del cubo = arista³ = {fx(a)} · {fx(a)} · {fx(a)} = {resp}.")]
@@ -2808,7 +2808,7 @@ def gen_vol_orto(rng, d):
             pasos = [(f"{fx(a)} · {fx(b)} · {fx(c)}", fx(r), f"Volumen = largo · ancho · alto = {fx(a)} · {fx(b)} · {fx(c)} = {fx(r)} cm³."),
                      (f"{fx(r)} : 1000", fx(r / 1000), f"1 l = 1 dm³ = 1000 cm³: {fx(r)} cm³ = {resp}.")]
         else:
-            enun = f"¿Cuál es el volumen de un ortoedro de {fx(a)} cm de largo, {fx(b)} cm de ancho y {fx(c)} cm de alto?"
+            enun = f"Calcula el volumen de un ortoedro de {fx(a)} cm de largo, {fx(b)} cm de ancho y {fx(c)} cm de alto."
             resp = u(r, "cm³")
             dist = [(u(a + b + c, "cm³"), "suma"), (u(a * b, "cm³"), "area_cara"), (u(2 * (a * b + a * c + b * c), "cm³"), None), (u(r / 2, "cm³"), None)]
             pasos = [(f"{fx(a)} · {fx(b)} · {fx(c)}", fx(r), f"Volumen = largo · ancho · alto = {fx(a)} · {fx(b)} · {fx(c)} = {resp}.")]
@@ -3025,7 +3025,7 @@ def gen_hipotenusa(rng, d):
         if exacta:
             c = D(math.isqrt(a * a + b * b))
     s = a * a + b * b
-    enun = f"Los catetos de un triángulo rectángulo miden {a} cm y {b} cm. ¿Cuánto mide la hipotenusa?" + ("" if exacta else " (redondea a las décimas)")
+    enun = f"Calcula la hipotenusa de un triángulo rectángulo cuyos catetos miden {a} cm y {b} cm" + ("." if exacta else " (redondea a las décimas).")
     resp = f"{fx(c)} cm" if exacta else f"≈ {fx(c)} cm"
     pre = "" if exacta else "≈ "
     dist = [(f"{pre}{fx(D(a + b))} cm" if exacta else f"{a + b} cm", "suma_raices"), (f"{fmt(s)} cm", "olvida_raiz"), (f"≈ {fx(_raiz(2 * a + 2 * b))} cm", "por_2"),
@@ -3064,14 +3064,14 @@ def gen_pitag_figuras(rng, d):
     fig = rng.choice(["rectangulo", "cuadrado", "isosceles"] if d == 1 else ["isosceles", "rombo", "equilatero", "rectangulo"] if d == 2 else ["rombo", "trapecio", "hexagono", "equilatero"])
     if fig == "rectangulo":
         a, b, c = rng.choice(TERNAS)
-        enun = f"¿Cuánto mide la diagonal de un rectángulo de {a} cm × {b} cm?"
+        enun = f"Calcula la diagonal de un rectángulo de {a} cm × {b} cm."
         r = D(c)
         dist = [(f"{a + b} cm", None), (f"{fmt(a * a + b * b)} cm", None), (f"≈ {fx(_raiz(abs(b * b - a * a)))} cm", None), (f"{c + 1} cm", None)]
         pasos = [(f"√({a}² + {b}²)", str(c), f"La diagonal es la hipotenusa de un triángulo de catetos {a} y {b}: √({a * a} + {b * b}) = √{a * a + b * b} = {c} cm.")]
     elif fig == "cuadrado":
         l = rng.randint(2, 12)
         r = _raiz(2 * l * l)
-        enun = f"¿Cuánto mide la diagonal de un cuadrado de {l} cm de lado? (redondea a las décimas)"
+        enun = f"Calcula la diagonal de un cuadrado de {l} cm de lado (redondea a las décimas)."
         dist = [(f"{2 * l} cm", None), (f"{2 * l * l} cm", None), (f"≈ {fx(_raiz(l * l))} cm" if False else f"≈ {fx(r + 1)} cm", None), (f"≈ {fx(r - D('0.5'))} cm", None)]
         pasos = [(f"√({l}² + {l}²)", fx(r), f"d = √({l}² + {l}²) = √{2 * l * l} ≈ {fx(r)} cm.")]
     elif fig == "isosceles":
@@ -3085,7 +3085,7 @@ def gen_pitag_figuras(rng, d):
     elif fig == "equilatero":
         l = rng.choice(range(2, 21, 2))
         r = _raiz(l * l - (l // 2) ** 2)
-        enun = f"¿Cuánto mide la altura de un triángulo equilátero de {l} cm de lado? (redondea a las décimas)"
+        enun = f"Calcula la altura de un triángulo equilátero de {l} cm de lado (redondea a las décimas)."
         dist = [(f"≈ {fx(_raiz(l * l - l * l // 1 + 1))} cm" if False else f"{l} cm", None), (f"≈ {fx(_raiz(l * l + (l // 2) ** 2))} cm", None), (f"{l // 2} cm", "no_mitad_base"), (f"≈ {fx(r + 1)} cm", None)]
         pasos = [(f"√({l}² − {l // 2}²)", fx(r), f"La altura cae en el punto medio del lado: h = √({l}² − {l // 2}²) = √{l * l - (l // 2) ** 2} ≈ {fx(r)} cm.")]
     elif fig == "rombo":
@@ -3107,7 +3107,7 @@ def gen_pitag_figuras(rng, d):
     else:
         l = rng.choice(range(2, 21, 2))
         r = _raiz(l * l - (l // 2) ** 2)
-        enun = f"¿Cuánto mide la apotema de un hexágono regular de {l} cm de lado? (redondea a las décimas)"
+        enun = f"Calcula la apotema de un hexágono regular de {l} cm de lado (redondea a las décimas)."
         dist = [(f"{l} cm", None), (f"≈ {fx(_raiz(l * l + (l // 2) ** 2))} cm", None), (f"{l // 2} cm", "no_mitad_base"), (f"≈ {fx(r + 1)} cm", None)]
         pasos = [("radio = lado", str(l), f"En el hexágono regular el radio mide lo mismo que el lado ({l} cm) y la apotema cae en el punto medio del lado ({l // 2} cm)."),
                  (f"√({l}² − {l // 2}²)", fx(r), f"ap = √({l * l} − {(l // 2) ** 2}) ≈ {fx(r)} cm.")]
@@ -3125,7 +3125,7 @@ def gen_pitag_espacio(rng, d):
     cu = rng.choice(["ortoedro", "cubo"] if d == 1 else ["ortoedro", "cono", "piramide"] if d == 2 else ["piramide", "cono", "ortoedro", "cubo"])
     if cu == "ortoedro":
         a, b, c, D_ = rng.choice(CUADRUPLAS)
-        enun = f"¿Cuánto mide la diagonal de un ortoedro de {a} cm × {b} cm × {c} cm?"
+        enun = f"Calcula la diagonal de un ortoedro de {a} cm × {b} cm × {c} cm."
         resp = f"{D_} cm"
         base = a * a + b * b
         dist = [(f"≈ {fx(_raiz(base))} cm" if math.isqrt(base) ** 2 != base else f"{math.isqrt(base)} cm", "dos_dimensiones"), (f"{a + b + c} cm", None), (f"{fmt(D_ * D_)} cm", None), (f"{D_ + 1} cm", None)]
@@ -3133,7 +3133,7 @@ def gen_pitag_espacio(rng, d):
     elif cu == "cubo":
         a = rng.randint(2, 12)
         r = _raiz(3 * a * a)
-        enun = f"¿Cuánto mide la diagonal de un cubo de {a} cm de arista? (redondea a las décimas)"
+        enun = f"Calcula la diagonal de un cubo de {a} cm de arista (redondea a las décimas)."
         resp = f"≈ {fx(r)} cm"
         dist = [(f"≈ {fx(_raiz(2 * a * a))} cm", "dos_dimensiones"), (f"{3 * a} cm", None), (f"{3 * a * a} cm", None), (f"≈ {fx(r + 1)} cm", None)]
         pasos = [(f"√(3 · {a}²)", fx(r), f"Diagonal = √({a}² + {a}² + {a}²) = √{3 * a * a} ≈ {fx(r)} cm.")]
@@ -3247,7 +3247,7 @@ def gen_criterio_semej(rng, d):
         rng.shuffle(mostrados)
         while mostrados == otros:
             rng.shuffle(mostrados)
-    enun = f"¿Son semejantes un triángulo de lados {fx(a)}, {fx(b)} y {fx(c)} cm y otro de lados {', '.join(fx(x) for x in mostrados[:2])} y {fx(mostrados[2])} cm?"
+    enun = f"¿Son semejantes un triángulo cuyos lados miden {fx(a)}, {fx(b)} y {fx(c)} cm y otro cuyos lados miden {', '.join(fx(x) for x in mostrados[:2])} y {fx(mostrados[2])} cm?"
     if caso == "diferencias":
         resp = "No, porque los cocientes entre lados no son iguales"
         dist = [(f"Sí, porque cada lado aumenta {sum_} cm", "diferencias"), ("Sí, porque los dos son escalenos", None), ("Sí, con razón " + fx(r2(otros[0] / a, 2)), None), ("No se puede saber sin los ángulos", None)]

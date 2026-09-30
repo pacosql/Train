@@ -231,7 +231,7 @@ def g_frec_abs(rng, d, tipo="frecuencia"):
         break
     txt = ", ".join(str(x) for x in datos)
     if tipo == "total":
-        enun = f"{ctx}: {txt}.\nSi haces la tabla de frecuencias absolutas, ¿cuánto deben sumar todas las frecuencias?"
+        enun = f"Calcula cuánto deben sumar todas las frecuencias absolutas de la tabla de estos datos.\n{ctx}: {txt}."
         return hacer(enun, fmt(n), "frec_total", {"datos": datos}, [(n - 1, "pierde_dato"), (n + 1, "pierde_dato"), (len(vals), None)],
                      [("contar datos", fmt(n), f"Las frecuencias cuentan cada dato una vez, así que suman el número total de datos: {n}.")],
                      "La suma de las frecuencias absolutas es el número total de datos N: sirve para comprobar la tabla.", gen=cerca(n, rng, 2))
@@ -241,8 +241,8 @@ def g_frec_abs(rng, d, tipo="frecuencia"):
     else:
         v = rng.choice(vals)
     f = c[v]
-    q = f"¿qué frecuencia absoluta tiene el valor {v}?" if d > 1 else f"¿qué frecuencia absoluta tiene el color {v}?"
-    enun = f"{ctx}: {txt}.\nEn la tabla de frecuencias, {q}"
+    q = f"del valor {v}" if d > 1 else f"del color {v}"
+    enun = f"Calcula la frecuencia absoluta {q} en estos datos.\n{ctx}: {txt}."
     dis = []
     if isinstance(v, int) and v != f:
         dis.append((v, "valor_por_frecuencia"))
@@ -831,7 +831,7 @@ def g_moda(rng, d, tipo="lista"):
             return None
         m, fm = c[0]
         ctx = rng.choice(["Número de hermanos de unos alumnos", "Goles marcados en varios partidos", "Número de mascotas de unos niños"])
-        enun = f"{ctx}: {', '.join(map(str, datos))}.\n¿Cuál es la moda?"
+        enun = f"¿Cuál es la moda de estos datos?\n{ctx}: {', '.join(map(str, datos))}."
         return hacer(enun, fmt(m), "moda", {"datos": datos}, [(fm, "frecuencia_por_valor"), (max(datos), "mayor_valor"), (sorted(datos)[n // 2], None)],
                      [("contar", fmt(m), "Cuento cuántas veces sale cada valor: " + ", ".join(f"el {v}, {k} veces" for v, k in sorted(Counter(datos).items())) + f". La moda es {m}.")],
                      "La moda es el valor (no la frecuencia) que más se repite.", gen=cerca(m, rng))
@@ -882,7 +882,7 @@ def g_media(rng, d):
         return None
     txt = "; ".join(dec(x, 1) for x in datos) if any(x.denominator != 1 for x in datos) else ", ".join(fmt(int(x)) for x in datos)
     ctx = rng.choice(["Notas de un alumno", "Puntos en varias partidas", "Litros de lluvia recogidos varios días", "Kilómetros recorridos cada día"])
-    enun = f"{ctx}: {txt}.\nCalcula la media."
+    enun = f"Calcula la media de estos datos.\n{ctx}: {txt}."
     nz = sum(1 for x in datos if x != 0)
     divm = (sum(datos) / nz) if 0 in datos and nz else sum(datos) / (n - 1 if n > 2 else n + 1)
     dis = [(dec(sum(datos), 1), "olvida_dividir"), (dec(divm, 2), "divide_mal"), (dec(cen, 1), "dato_central")]
@@ -916,7 +916,7 @@ def g_rango(rng, d):
         return None
     sfmt = lambda x: dec(x, 1) if isinstance(x, F) else fmt(x)
     ctx = "Temperaturas mínimas (°C) de varios días" if d == 3 else rng.choice(["Alturas de unas plantas (cm)", "Puntos obtenidos", "Minutos de lectura"])
-    enun = f"{ctx}: {'; '.join(sfmt(x) for x in datos)}.\nCalcula el rango."
+    enun = f"Calcula el rango de estos datos.\n{ctx}: {'; '.join(sfmt(x) for x in datos)}."
     dis = [(sfmt(abs(datos[-1] - datos[0])), "ultimo_menos_primero"), (sfmt(max(datos)), "maximo")]
     if d == 3:
         dis.insert(0, (sfmt(max(datos) + min(datos)) if max(datos) + min(datos) > 0 else sfmt(max(datos) - 1), "negativos_mal"))
@@ -1134,13 +1134,13 @@ def g_cuartiles(rng, d, tipo="lista"):
     Q = f"Q{q}"
     if tipo == "tabla":
         Fa = [sum(fs[:i + 1]) for i in range(len(fs))]
-        enun = "Valor (x): " + "  ".join(map(str, xs)) + "\nFrecuencia (f): " + "  ".join(map(str, fs)) + f"\nCalcula el cuartil {Q}."
+        enun = f"Calcula el cuartil {Q} de esta tabla.\nValor (x): " + "  ".join(map(str, xs)) + "\nFrecuencia (f): " + "  ".join(map(str, fs))
         dis = [(fmt(pos_txt), "posicion_por_valor"), (fmt(xs[fs.index(max(fs))]) if xs[fs.index(max(fs))] != val else fmt(val + 1), None),
                (fmt(s[min(N - 1, math.ceil(pos))]) if s[min(N - 1, math.ceil(pos))] != val else fmt(val - 1), None)]
         pas = [("posición", dec(pos, 2), f"{q}·N/4 = {q}·{N}/4 = {dec(pos, 2)}. Acumuladas: {', '.join(map(str, Fa))}."),
                ("leer", dec(val, 1), f"El primer valor cuya F supera (o alcanza) {dec(pos, 2)} da {Q} = {dec(val, 1)}.")]
     else:
-        enun = f"Datos: {', '.join(map(str, datos))}.\nCalcula el cuartil {Q} (posición {q}·N/4; si sale exacta, media de ese dato y el siguiente)."
+        enun = f"Calcula el cuartil {Q} de estos datos (posición {q}·N/4; si sale exacta, media de ese dato y el siguiente): {', '.join(map(str, datos))}."
         dis = [(dec(nosort, 1), "sin_ordenar"), (fmt(pos_txt), "posicion_por_valor"), (fmt(s[math.ceil(pos)]) if s[math.ceil(pos)] != val else fmt(val + 1), None)]
         pas = [("ordenar", ", ".join(map(str, s)), f"Ordeno los datos: {', '.join(map(str, s))}."),
                ("posición", dec(pos, 2), f"{q}·N/4 = {q}·{N}/4 = {dec(pos, 2)}" + (f": es exacta, tomo la media de los datos {int(pos)}.º y {int(pos) + 1}.º." if pos.denominator == 1 else f": tomo el dato {math.ceil(pos)}.º.")),
@@ -1236,7 +1236,7 @@ def g_varianza(rng, d, tipo="varianza"):
         else:
             return None
         sp = F(sum((x - m) ** 2 for x in xs), len(xs))
-        enun = "Valor (x): " + "  ".join(map(str, xs)) + "\nFrecuencia (f): " + "  ".join(map(str, fs)) + "\nCalcula la desviación típica."
+        enun = "Calcula la desviación típica de esta tabla.\nValor (x): " + "  ".join(map(str, xs)) + "\nFrecuencia (f): " + "  ".join(map(str, fs))
         sx2 = F(sum(f * x * x for x, f in zip(xs, fs)), N)
         return hacer(enun, fmt(r), "desviacion_tabla", {"xs": xs, "fs": fs}, [(fmt(int(var)), "varianza_por_desviacion"), (dec(sp, 2), "sin_ponderar"),
                                                                             (dec(math.sqrt(sx2), 2), "sin_restar_media2")],
@@ -1252,13 +1252,13 @@ def g_varianza(rng, d, tipo="varianza"):
     desv = " + ".join(f"({x} − {m})²" for x in datos)
     pasos = [("media", fmt(m), f"Media = {sum(datos)}/{n} = {m}."),
              ("varianza", fmt(int(var)), f"Varianza = [{desv}] / {n} = {int(var)}.")]
-    base = f"Datos: {', '.join(map(str, datos))}.\n"
+    base = f"Datos: {', '.join(map(str, datos))}."
     if tipo == "varianza":
-        return hacer(base + "Calcula la varianza.", fmt(int(var)), "varianza", {"datos": datos},
+        return hacer("Calcula la varianza de estos datos. " + base, fmt(int(var)), "varianza", {"datos": datos},
                      [("0", "sin_cuadrado"), (dec(sx2, 2), "sin_restar_media2"), (dec(math.sqrt(var), 2), None), (dec(F(sum(abs(x - m) for x in datos), n), 2), None)],
                      pasos, "Varianza: media de los cuadrados de las desviaciones respecto a la media (o Σx²/N − x̄²).", gen=[fmt(int(var) + 1), fmt(int(var) * 2)])
     r = math.isqrt(int(var))
-    return hacer(base + "Calcula la desviación típica.", fmt(r), "desviacion", {"datos": datos},
+    return hacer("Calcula la desviación típica de estos datos. " + base, fmt(r), "desviacion", {"datos": datos},
                  [(fmt(int(var)), "varianza_por_desviacion"), ("0", "sin_cuadrado"), (dec(math.sqrt(sx2), 2), "sin_restar_media2")],
                  pasos + [("raíz", fmt(r), f"Desviación típica = √{int(var)} = {r}.")],
                  "σ es la raíz cuadrada de la varianza; mide cuánto se separan los datos de la media, en las mismas unidades.", gen=[fmt(r + 1), fmt(r + 2)])
@@ -2209,7 +2209,7 @@ def g_correlacion(rng, d, tipo="r"):
         xs, ys, mx, my, sxy = got
         n = len(xs)
         sp = F(sum(x * y for x, y in zip(xs, ys)), n)
-        enun = f"Datos (x, y): " + ", ".join(f"({x}, {y})" for x, y in zip(xs, ys)) + ".\nCalcula la covarianza σxy."
+        enun = "Calcula la covarianza σxy de los datos (x, y): " + ", ".join(f"({x}, {y})" for x, y in zip(xs, ys)) + "."
         return hacer(enun, dec(sxy, 2), "covarianza", {"xs": xs, "ys": ys}, [(dec(sp, 2), "olvida_medias"), (dec(sxy * n / (n - 1), 2), None), (dec(-sxy, 2), None)],
                      [("medias", f"{mx}, {my}", f"x̄ = {mx}, ȳ = {my}."), ("Σxy/N", dec(sp, 2), f"Σxy/N = {sum(x * y for x, y in zip(xs, ys))}/{n} = {dec(sp, 2)}."),
                       ("− x̄ȳ", dec(sxy, 2), f"σxy = {dec(sp, 2)} − {mx}·{my} = {dec(sxy, 2)}.")],
@@ -2643,7 +2643,7 @@ def g_estimacion(rng, d, tipo="proporcion"):
             break
     s = math.sqrt(ss / (n - 1))
     sg = math.sqrt(ss / n)
-    return hacer(f"Muestra: {', '.join(map(str, datos))}. Estima la desviación típica de la población con la cuasidesviación típica s (2 decimales).", dec(s, 2), "cuasidesviacion",
+    return hacer(f"Calcula la cuasidesviación típica s (2 decimales) de la muestra {', '.join(map(str, datos))}, como estimación de la desviación típica de la población.", dec(s, 2), "cuasidesviacion",
                  {"datos": datos}, [(dec(sg, 2), "divide_n"), (dec(ss / (n - 1), 2), None), (dec(m, 2), None)],
                  [("media", fmt(m), f"x̄ = {m}."), ("Σ(x − x̄)²", dec(ss, 2), f"Σ(x − x̄)² = {dec(ss, 2)}."), ("÷ (n − 1) y raíz", dec(s, 2), f"s = √({dec(ss, 2)}/{n - 1}) ≈ {dec(s, 2)}.")],
                  "El estimador de σ es la cuasidesviación s, que divide entre n − 1.", gen=[dec(s + 1, 2)])

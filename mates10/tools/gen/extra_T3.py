@@ -43,7 +43,7 @@ def D(x, nd=None):
         nd = 0
         while (x * 10 ** nd).denominator != 1:
             nd += 1
-            if nd > 14:
+            if nd > 30:
                 raise ValueError(f"{x} no es decimal exacto")
     else:
         x = redondear(x, nd)
@@ -191,8 +191,10 @@ def gen_complejo_01(rng, d):
                   "√−a = √a · i: la raíz de un negativo no es un número real negativo, es un imaginario puro.")
     if d == 2:
         a, b = rng.choice([x for x in range(-9, 10) if x]), rng.choice([x for x in range(-9, 10) if x])
+        pide_im = rng.random() < 0.5
+        a, b = (abs(a), b) if pide_im else (a, abs(b))
         z = cx(a, b)
-        if rng.random() < 0.5:
+        if pide_im:
             pasos = [("a + bi", f"{fmt(b)}", f"En {z} la parte real es {fmt(a)} y la parte imaginaria es el número que acompaña a la i: {fmt(b)} (sin la i).")]
             return mk(f"¿Cuál es la parte imaginaria de z = {z}?", fmt(b), "t3_c_partes", {"a": a, "b": b, "parte": "im"},
                       [(im_txt(b), "E02"), (fmt(a), None), (fmt(-b), None)], pasos,
@@ -232,7 +234,7 @@ def gen_complejo_02(rng, d):
     ntxt = f"({fmt(n)})" if n < 0 else str(n)
     pasos = [(f"{fmt(n)} = 4 · {n // 4} + {r}", str(r), f"Las potencias de i se repiten cada 4 (i, −1, −i, 1). Divido {fmt(n)} entre 4: el resto es {r}."),
              (f"i^{r}", resp, f"Así que i^{ntxt} = i^{r} = {resp}.")]
-    return mk(f"Calcula i^{ntxt}.", resp, "t3_c_poti", {"n": n},
+    return mk(f"Calcula i^{ntxt}." if n >= 0 else f"Calcula i^{ntxt} (exponente negativo).", resp, "t3_c_poti", {"n": n},
               [(e03, "E03"), (e01, "E01"), (e02, "E02")], pasos,
               "i^n solo depende del resto de n entre 4 (con exponente negativo, el resto positivo: −23 = 4·(−6) + 1).",
               genericos=[v for v in I_POT.values()])
@@ -264,7 +266,7 @@ def gen_complejo_03(rng, d):
                   "Se distribuye como con binomios y se sustituye i² por −1.")
     # potencia pequeña o combinación
     n = rng.choice([2, 2, 3])
-    a, b = rng.choice([x for x in range(-4, 5) if x]), rng.choice([x for x in range(-4, 5) if x])
+    a, b = rng.randint(1, 5), rng.choice([x for x in range(-5, 6) if x])
     r = (1, 0)
     for _ in range(n):
         r = cmul(r, (a, b))
@@ -413,7 +415,7 @@ def gen_complejo_07(rng, d):
                   "Para dividir: se dividen los módulos y se restan los argumentos.")
     if rng.random() < 0.35:
         n = rng.choice([4, 6, 8, 10, 12])
-        ang = rng.choice([45, 135, 225, 315])
+        ang = rng.choice([45, 135]) if n % 4 else 45
         z = cx(1 if ang in (45, 315) else -1, 1 if ang < 180 else -1)
         r = 2 ** (n // 2)
         res = (n * ang) % 360
@@ -699,7 +701,7 @@ def gen_dec_04(rng, d):
     e04 = " < ".join(sorted(txt, key=lambda s: (float("0." + dec_part(s).replace("0", "")), len(s))))
     pasos = [("comparar", resp, "Completo con ceros para que todos tengan tres decimales y comparo como números naturales: " +
               ", ".join(f"{D(n)} → {D(n, 3)}" for n in sorted(nums)) + f". Orden: {resp}.")]
-    return mk(f"Ordena de menor a mayor: {'; '.join(txt)}.", resp, "t3_dec_ordenar", {"nums": txt},
+    return mk(f"¿Cómo quedan ordenados de menor a mayor estos números: {'; '.join(txt)}?", resp, "t3_dec_ordenar", {"nums": txt},
               [(e01 if e01 != resp else None, "E01"), (e02 if e02 != resp else None, "E02"), (e04 if e04 != resp else None, "E04")], pasos,
               "Truco: igualar el número de decimales con ceros (0,5 = 0,500) y comparar como naturales.",
               genericos=[" < ".join(reversed(resp.split(" < "))), " < ".join(sorted(txt))])
@@ -877,7 +879,7 @@ def gen_dec_09(rng, d):
             e03 = s[:-2] + str(int(s[-2]) + 1) + "0"
     fuera = b + (b - a) * rng.choice([2, 5, 10])
     pasos = [("añadir cifras", D(m), f"Añado una cifra decimal a los dos: {D(a, ndec(m))} y {D(b, ndec(m))}. Entre ellos está {D(m)}.")]
-    return mk(f"¿Qué número decimal está comprendido entre {D(a)} y {D(b)}?", D(m), "t3_dec_entre", {"a": D(a), "b": D(b)},
+    return mk(f"Busca un número decimal mayor que {D(a)} y menor que {D(b)}.", D(m), "t3_dec_entre", {"a": D(a), "b": D(b)},
               [("No hay ninguno", "E01"), (D(fuera), "E02"), (e03 if e03 and e03 != D(m) else None, "E03"), (D(a - (b - a) / 2), None)], pasos,
               "Entre dos decimales distintos siempre hay otros: basta añadir una cifra decimal (entre 2,3 y 2,4 está 2,35).",
               datos={"opciones_fijas": True})
@@ -1083,7 +1085,7 @@ def gen_frac_04(rng, d):
     otro2 = sorted(nums)
     otro2[0], otro2[1] = otro2[1], otro2[0]
     pasos = [("ordenar numeradores", resp, f"Todas son {DEN_NOMBRE[den][1]}: las ordeno por el numerador, de menor a mayor: {resp}.")]
-    return mk(f"Ordena de menor a mayor: {', '.join(txt)}.", resp, "t3_frac_ord_hom", {"nums": nums, "d": den},
+    return mk(f"¿Cómo quedan ordenados de menor a mayor estos números: {', '.join(txt)}?", resp, "t3_frac_ord_hom", {"nums": nums, "d": den},
               [(e03, "E03"), (" < ".join(f"{x}/{den}" for x in otro), None), (" < ".join(f"{x}/{den}" for x in otro2), None)], pasos,
               "Mismo denominador: el orden de las fracciones es el de sus numeradores.")
 
@@ -1229,7 +1231,7 @@ def gen_frac_11(rng, d):
     o2 = sorted(dens)
     o2[1], o2[2] = o2[2], o2[1]
     pasos = [("mismo numerador", resp, f"Mismo numerador: cuanto menor es el denominador, mayor es la fracción. De mayor a menor: {resp}.")]
-    return mk(f"Ordena de mayor a menor: {', '.join(txt)}.", resp, "t3_frac_ord_num", {"n": n, "dens": dens},
+    return mk(f"¿Cómo quedan ordenados de mayor a menor estos números: {', '.join(txt)}?", resp, "t3_frac_ord_num", {"n": n, "dens": dens},
               [(mal, "E01"), (" > ".join(f"{n}/{x}" for x in o), None), (" > ".join(f"{n}/{x}" for x in o2), None)], pasos,
               "Con el mismo numerador, la fracción es mayor cuanto menor es el denominador.")
 
@@ -1311,7 +1313,7 @@ def gen_frac_13(rng, d):
     m = math.lcm(*[f[1] for f in fs])
     pasos = [("denominador común", str(m), f"Reduzco a denominador común {m}: " + ", ".join(f"{fr_raw(*f)} = {f[0] * m // f[1]}/{m}" for f in fs) + "."),
              ("ordenar", resp, f"Ordeno por los numeradores: {resp}.")]
-    return mk(f"Ordena de menor a mayor: {txt}.", resp, "t3_frac_ord", {"fracs": [fr_raw(*f) for f in fs]},
+    return mk(f"¿Cómo quedan ordenados de menor a mayor estos números: {txt}?", resp, "t3_frac_ord", {"fracs": [fr_raw(*f) for f in fs]},
               [(e01 if e01 != resp else None, "E01"), (e02 if e02 != resp else None, "E02"), (e03 if e03 != resp else None, "E03")], pasos,
               "Para ordenar fracciones cualesquiera, lo más seguro es pasarlas a común denominador (o a decimal).",
               genericos=[" < ".join(reversed(resp.split(" < ")))])
@@ -1407,7 +1409,7 @@ def gen_frac_16(rng, d):
     if d == 2 and rng.random() < 0.5:
         k = rng.randint(2, 6)
         N, Dn = a * k, b * k
-        signo = rng.choice(["num", "den", "delante"])
+        signo = ["num", "den", "delante"][(N + Dn) % 3]
         txt = f"(−{N})/{Dn}" if signo == "num" else f"{N}/(−{Dn})" if signo == "den" else f"−{N}/{Dn}"
         pasos = [("mcd", str(k), f"mcd({N}, {Dn}) = {k}. Divido los dos términos entre {k} y mantengo el signo (uno solo, negativo): −{a}/{b}.")]
         return mk(f"Simplifica: {txt}", f"−{a}/{b}", "t3_racional_simpl", {"expr": txt},
@@ -1438,7 +1440,7 @@ def gen_frac_16(rng, d):
     resp = " < ".join(fr(x) for x in sorted(fs))
     e01 = " < ".join(fr(x) for x in sorted(fs, key=lambda v: (v < 0, abs(v)) if False else abs(v) if v < 0 else 10 + v))
     pasos = [("ordenar", resp, "Primero los negativos: el que tiene mayor valor absoluto es el menor. Después los positivos. " + f"Orden: {resp}.")]
-    return mk(f"Ordena de menor a mayor: {', '.join(fr(x) for x in fs)}.", resp, "t3_racional_ord", {"fracs": [fr(x) for x in fs]},
+    return mk(f"¿Cómo quedan ordenados de menor a mayor estos números: {', '.join(fr(x) for x in fs)}?", resp, "t3_racional_ord", {"fracs": [fr(x) for x in fs]},
               [(e01 if e01 != resp else None, "E01"), (" < ".join(fr(x) for x in sorted(fs, key=abs)), None), (" < ".join(fr(x) for x in sorted(fs, reverse=True)), None)], pasos,
               "En la recta, los negativos más alejados del 0 son los menores: −5/6 < −3/4 < −2/3.")
 
@@ -1670,7 +1672,8 @@ def gen_ofrac_07(rng, d):
     pasos = [("(a/b)ⁿ = aⁿ/bⁿ", fr(val), f"Elevo numerador y denominador: {a}{sup(n)} = {a ** n} y {b}{sup(n)} = {b ** n}."),
              ("signo", fr(val), ("El resultado es positivo." if sg > 0 else "El resultado es negativo.") +
               (f" (Base negativa con exponente {'par' if n % 2 == 0 else 'impar'}.)" if "(−" in txt else " (El menos está fuera del paréntesis: no se eleva.)" if txt.startswith("−") else "") + f" {txt} = {fr(val)}.")]
-    return mk(f"Calcula: {txt}", fr(val), "t3_ofrac_pot", {"a": a, "b": b, "n": n, "expr": txt},
+    enun = f"Calcula: {txt}" if d == 1 else f"Calcula la potencia de base negativa: {txt}" if txt.startswith("(−") else f"Calcula (el signo menos está fuera del paréntesis): {txt}"
+    return mk(enun, fr(val), "t3_ofrac_pot", {"a": a, "b": b, "n": n, "expr": txt},
               [(fr(sg * F(a ** n, b)), "E01"), (fr_raw(sg * a * n, b * n), "E02"), (e03, "E03")], pasos,
               "Se elevan numerador y denominador. Base negativa: exponente par → positivo; impar → negativo. −(a/b)ⁿ siempre es negativo.",
               genericos=[fr(sg * F(a * n, b ** n)), fr(sg * F(b ** n, a ** n)), fr(sg * F(a ** n, b ** (n - 1)))])
@@ -2475,13 +2478,13 @@ def tabla_txt(pares):
     return "; ".join(f"{dnum(x)} → {dnum(y)}" for x, y in pares)
 
 
-SIT_PROP = [("Los kilos de naranjas que compras y lo que pagas (a precio fijo por kilo)", "d"), ("El número de entradas de cine y su precio total", "d"),
-            ("Los litros de gasolina y lo que cuestan", "d"), ("Las horas trabajadas y el sueldo, cobrando lo mismo por hora", "d"),
-            ("Los metros de tela y su precio", "d"), ("Los huevos de una receta y los comensales", "d"),
-            ("La edad de una persona y su altura", "n"), ("Los kilómetros de un taxi y lo que cuesta, con bajada de bandera", "n1"),
-            ("El número de hermanos y el número de zapatos que hay en casa, con tus padres", "n1"), ("La tarifa de un gimnasio con cuota de inscripción y los meses que vas", "n1"),
-            ("El número de obreros y los días que tardan en hacer una obra", "i"), ("La velocidad de un coche y el tiempo que tarda en un mismo viaje", "i"),
-            ("El peso de un bebé y su edad en meses", "n"), ("La nota de un examen y las horas que has dormido", "n")]
+SIT_PROP = [("Kilos de naranjas comprados en una frutería con precio fijo por kilo y euros pagados", "d"), ("Número de entradas de cine compradas y dinero total gastado", "d"),
+            ("Litros de gasolina echados al depósito y euros que cuestan", "d"), ("Horas trabajadas y dinero cobrado, si se paga siempre lo mismo por hora", "d"),
+            ("Metros de tela comprados y precio que se paga", "d"), ("Número de comensales y gramos de arroz de una paella", "d"),
+            ("Altura de un niño y años que tiene", "n"), ("Kilómetros recorridos en taxi y precio, con bajada de bandera", "n1"),
+            ("Meses de gimnasio y dinero pagado, si hay una cuota de inscripción", "n1"), ("Minutos hablados y factura del móvil, con una cuota fija mensual", "n1"),
+            ("Número de pintores y días que tardan en pintar una casa", "i"), ("Velocidad de una moto y tiempo que tarda en un mismo recorrido", "i"),
+            ("Peso de un bebé y meses de vida", "n"), ("Nota de un examen y horas de sueño la noche anterior", "n")]
 
 
 @generador("t3_prop_01")
@@ -2503,7 +2506,7 @@ def gen_prop_01(rng, d):
             dist = [(OPC["falso"], "E01"), (OPC["d"], "E01" if t == "n1" else None), (OPC["i"], None)]
             txt = "Aunque las dos crezcan, al doble de una no le corresponde el doble de la otra." if t == "n1" else "No hay una relación fija: al doble de una no le corresponde el doble de la otra."
         pasos = [("¿al doble, doble?", resp, txt)]
-        return mk(f"¿Son directamente proporcionales estas magnitudes? {sit}.", resp, "t3_prop_reconocer", {"situacion": sit}, dist, pasos,
+        return mk(f"Magnitudes: {sit[0].lower() + sit[1:]}. ¿Son directamente proporcionales?", resp, "t3_prop_reconocer", {"situacion": sit}, dist, pasos,
                   "Directa: al doble, doble; al triple, triple (cociente constante). Que las dos crezcan no basta.", datos={"opciones_fijas": True})
     k = rng.choice([F(2), F(3), F(5), F(4), F(25, 10), F(15, 10), F(6), F(12)])
     xs = sorted(rng.sample(range(1, 12), 3))
@@ -3112,7 +3115,7 @@ def num_clasificar(rng, d):
         if math.gcd(a, b) != 1 or a == b:
             a = 1
         opts = [(puntos(F(a, b), 5), "Q", "E01"), (f"√({(a * a)}/{b * b})" if a != b else "√(1/4)", "Q", "E02"), (D(F(rng.randint(1, 99), 100)), "Q", None),
-                (f"−{a}/{b}", "Q", None), (dec_periodico(F(a, b))[0], "Q", "E01")]
+                (f"−{rng.choice([1, 2, 4, 5])}/{rng.choice([3, 7, 11, 13])}", "Q", None), (dec_periodico(F(a, b))[0], "Q", "E01")]
         return rng.choice(opts)
     k = rng.choice([2, 3, 5, 6, 7, 8, 10, 11, 12, 13])
     return rng.choice([(f"√{k}", "I", None), ("π", "I", "E03"), (f"{rng.randint(2, 5)}π", "I", "E03"), (f"1 + √{k}", "I", None), ("0,101001000100001…", "I", None),
@@ -3136,6 +3139,7 @@ def gen_real_06(rng, d):
         if d == 1 and err is not None and rng.random() < 0.5:
             continue
         break
+    x = ("la raíz " if x.lstrip("−").startswith("√") else "el número ") + x
     resp = CONJ[t]
     dist = []
     if err == "E01":
@@ -3890,7 +3894,8 @@ def gen_radic_06(rng, d):
 def gen_radic_07(rng, d):
     if d == 1:
         n1, n2 = rng.choice([2, 3, 4, 5]), rng.choice([2, 3, 4])
-        v = rng.choice(["a", "x", "2", "3", "5", "7"])
+        n1, n2 = max(n1, n2), min(n1, n2)
+        v = rng.choice(["a", "x", "2", "3", "5", "7", "b", "6", "10", "11"])
         resp = rtxt(v, n1 * n2)
         pasos = [("raíz de raíz", resp, f"La raíz de una raíz es otra raíz con el producto de los índices: {n1}·{n2} = {n1 * n2}. Resultado: {resp}.")]
         inner = rtxt(v, n2)
@@ -3904,7 +3909,7 @@ def gen_radic_07(rng, d):
             m = math.lcm(n1, n2)
             R = a ** (m // n1) * b ** (m // n2)
             c, k = extraer(R, m)
-            if R < 10 ** 6 and m <= 12:
+            if R < 10 ** 6 and m <= 12 and a != b:
                 break
         op = rng.choice(["·", ":"])
         if op == ":":
