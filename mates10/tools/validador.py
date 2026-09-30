@@ -184,7 +184,7 @@ def validar(ej, indice=None, huellas=None, habilidad=None):
     # 1. esquema
     if not ej.get("enunciado") or not ej.get("respuesta"):
         return False, ("esquema", "falta enunciado o respuesta")
-    if "<" in ej["enunciado"] and ">" in ej["enunciado"]:
+    if re.search(r"<\s*/?\s*[a-zA-Z][a-zA-Z0-9]*[^<>]*>", ej["enunciado"]):  # etiquetas reales, no desigualdades
         return False, ("esquema", "el enunciado contiene HTML")
     ds = [d[0] if isinstance(d, (list, tuple)) else d for d in ej.get("distractores") or []]
     if ej.get("formato", "opcion_multiple") == "opcion_multiple":

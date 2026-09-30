@@ -16,7 +16,7 @@ Banco de contenidos de matemáticas para España (1º de primaria a 2º de bachi
 | Mapa curricular | 14 984 filas de sistema (con 832 contradicciones entre decreto y referencia registradas) + capa editorial de SM, Santillana, Anaya y Edebé |
 | Colegios | 636 centros de la Región de Murcia (Registro Estatal de Centros) |
 | Métodos / técnicas / enganche | 183 métodos (tradicional, ABN, Singapur, genérico), 43 técnicas y algoritmos, 26 mecanismos de enganche (9 retirados por riesgo con menores) |
-| Ejercicios | ≈ 27 000 validados (por código y por IA), 4 opciones y distractores ligados a errores típicos; ≈ 2000 publicados provisionalmente (5 por habilidad de primaria) a la espera del revisor |
+| Ejercicios | 29 779 validados (por código y por IA) para las 792 habilidades, 4 opciones y distractores ligados a errores típicos; 2000 publicados provisionalmente (5 por habilidad de primaria) a la espera del revisor |
 | Fuentes | ≈ 240, todas archivadas con hash |
 
 ## Las aplicaciones
@@ -55,7 +55,7 @@ python3 mates10/tools/excel.py                     # excel/mates10.xlsx
 
 - **Revisión humana**: ningún ejercicio está revisado; los publicados son provisionales (5 por habilidad de primaria). Con el revisor aprobando plantillas, se publican en bloque.
 - ESO y bachillerato tienen ejercicios validados pero **sin publicar** (no se muestran hasta revisarlos).
-- Unas 70 habilidades de ESO y bachillerato que necesitan texto (problemas, geometría descriptiva) aún no tienen ejercicios de IA; 3 de primaria tampoco (lectura de gráficos de barras y criterios de igualdad de triángulos).
+- Algunas respuestas redondeadas (trigonometría, Bayes, redondeos por contexto) no las recalcula el validador; conviene revisarlas.
 - Solo la mecánica OPCIONES; el resto del catálogo está especificado, no construido.
 - Colegios solo de Murcia (un comando por comunidad).
 - Sin datos de Kumon, Rubio ni fotos de libros (Paco los aportará).
