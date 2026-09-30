@@ -1,0 +1,1494 @@
+{
+ "habilidad": "ALG.PROGLIN.01",
+ "generado_por": "claude (skill mates10-generar-ejercicios v1)",
+ "ejercicios": [
+  {
+   "dificultad": 1,
+   "enunciado": "Calcula los vértices de la región factible definida por {4x + y ≤ 8; 4x + 2y ≤ 12; x ≥ 0; y ≥ 0}.",
+   "respuesta": "(0, 0), (2, 0), (1, 4), (0, 6)",
+   "distractores": [
+    {
+     "valor": "(0, 0), (2, 0), (0, 6), (0, 8)",
+     "error": "E01"
+    },
+    {
+     "valor": "(0, 0), (2, 0), (0, 6)",
+     "error": null
+    },
+    {
+     "valor": "(0, 0), (2, 0), (1, 4), (0, 6), (3, 0)",
+     "error": "E01"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Dibuja cada recta frontera y el semiplano de cada restricción (prueba el origen). La región factible es la parte común. Sus vértices son los cortes de rectas contiguas que cumplen todas las restricciones: (0, 0), (2, 0), (1, 4), (0, 6). Ojo: (0, 8) es un corte de dos rectas pero no cumple todas las restricciones, así que no es vértice.",
+   "explicacion_adulto": "Está aprendiendo a dibujar la región factible de un problema de programación lineal: cada restricción es un semiplano y la región es su intersección. Los vértices se obtienen resolviendo sistemas 2×2 de rectas contiguas, y solo valen los cortes que cumplen todas las restricciones. Los errores típicos son dar como vértice un corte no factible (por ejemplo (10, 0)) y olvidar x ≥ 0, y ≥ 0. Pídale que compruebe cada vértice en todas las restricciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "4x + y = 8; 4x + 2y = 12; x = 0; y = 0",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Elegimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "sistemas 2×2",
+     "resultado": "(0, 0), (2, 0), (1, 4), (0, 6)",
+     "texto": "Cortamos rectas contiguas y comprobamos cada corte."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Calcula los vértices de la región factible definida por {3x + 3y ≤ 18; 4x + y ≤ 12; x ≥ 0; y ≥ 0}.",
+   "respuesta": "(0, 0), (3, 0), (2, 4), (0, 6)",
+   "distractores": [
+    {
+     "valor": "(0, 0), (3, 0), (0, 6), (6, 0)",
+     "error": "E01"
+    },
+    {
+     "valor": "(0, 0), (3, 0), (0, 6)",
+     "error": null
+    },
+    {
+     "valor": "(0, 0), (3, 0), (2, 4), (0, 6), (0, 12)",
+     "error": "E01"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Dibuja cada recta frontera y el semiplano de cada restricción (prueba el origen). La región factible es la parte común. Sus vértices son los cortes de rectas contiguas que cumplen todas las restricciones: (0, 0), (3, 0), (2, 4), (0, 6). Ojo: (6, 0) es un corte de dos rectas pero no cumple todas las restricciones, así que no es vértice.",
+   "explicacion_adulto": "Está aprendiendo a dibujar la región factible de un problema de programación lineal: cada restricción es un semiplano y la región es su intersección. Los vértices se obtienen resolviendo sistemas 2×2 de rectas contiguas, y solo valen los cortes que cumplen todas las restricciones. Los errores típicos son dar como vértice un corte no factible (por ejemplo (10, 0)) y olvidar x ≥ 0, y ≥ 0. Pídale que compruebe cada vértice en todas las restricciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "3x + 3y = 18; 4x + y = 12; x = 0; y = 0",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Elegimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "sistemas 2×2",
+     "resultado": "(0, 0), (3, 0), (2, 4), (0, 6)",
+     "texto": "Cortamos rectas contiguas y comprobamos cada corte."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Calcula los vértices de la región factible definida por {2x + y ≤ 10; 2x + 2y ≤ 16; x ≥ 0; y ≥ 0}.",
+   "respuesta": "(0, 0), (5, 0), (2, 6), (0, 8)",
+   "distractores": [
+    {
+     "valor": "(0, 0), (5, 0), (0, 8), (0, 10)",
+     "error": "E01"
+    },
+    {
+     "valor": "(0, 0), (5, 0), (0, 8)",
+     "error": null
+    },
+    {
+     "valor": "(0, 0), (5, 0), (2, 6), (0, 8), (8, 0)",
+     "error": "E01"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Dibuja cada recta frontera y el semiplano de cada restricción (prueba el origen). La región factible es la parte común. Sus vértices son los cortes de rectas contiguas que cumplen todas las restricciones: (0, 0), (5, 0), (2, 6), (0, 8). Ojo: (0, 10) es un corte de dos rectas pero no cumple todas las restricciones, así que no es vértice.",
+   "explicacion_adulto": "Está aprendiendo a dibujar la región factible de un problema de programación lineal: cada restricción es un semiplano y la región es su intersección. Los vértices se obtienen resolviendo sistemas 2×2 de rectas contiguas, y solo valen los cortes que cumplen todas las restricciones. Los errores típicos son dar como vértice un corte no factible (por ejemplo (10, 0)) y olvidar x ≥ 0, y ≥ 0. Pídale que compruebe cada vértice en todas las restricciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "2x + y = 10; 2x + 2y = 16; x = 0; y = 0",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Elegimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "sistemas 2×2",
+     "resultado": "(0, 0), (5, 0), (2, 6), (0, 8)",
+     "texto": "Cortamos rectas contiguas y comprobamos cada corte."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Calcula los vértices de la región factible definida por {x + 4y ≤ 12; 3x + 3y ≤ 18; x ≥ 0; y ≥ 0}.",
+   "respuesta": "(0, 0), (6, 0), (4, 2), (0, 3)",
+   "distractores": [
+    {
+     "valor": "(0, 0), (6, 0), (0, 3), (12, 0)",
+     "error": "E01"
+    },
+    {
+     "valor": "(0, 0), (6, 0), (0, 3)",
+     "error": null
+    },
+    {
+     "valor": "(0, 0), (6, 0), (4, 2), (0, 3), (0, 6)",
+     "error": "E01"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Dibuja cada recta frontera y el semiplano de cada restricción (prueba el origen). La región factible es la parte común. Sus vértices son los cortes de rectas contiguas que cumplen todas las restricciones: (0, 0), (6, 0), (4, 2), (0, 3). Ojo: (12, 0) es un corte de dos rectas pero no cumple todas las restricciones, así que no es vértice.",
+   "explicacion_adulto": "Está aprendiendo a dibujar la región factible de un problema de programación lineal: cada restricción es un semiplano y la región es su intersección. Los vértices se obtienen resolviendo sistemas 2×2 de rectas contiguas, y solo valen los cortes que cumplen todas las restricciones. Los errores típicos son dar como vértice un corte no factible (por ejemplo (10, 0)) y olvidar x ≥ 0, y ≥ 0. Pídale que compruebe cada vértice en todas las restricciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "x + 4y = 12; 3x + 3y = 18; x = 0; y = 0",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Elegimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "sistemas 2×2",
+     "resultado": "(0, 0), (6, 0), (4, 2), (0, 3)",
+     "texto": "Cortamos rectas contiguas y comprobamos cada corte."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Calcula los vértices de la región factible definida por {x + 3y ≤ 12; 2x + 3y ≤ 18; x ≥ 0; y ≥ 0}.",
+   "respuesta": "(0, 0), (9, 0), (6, 2), (0, 4)",
+   "distractores": [
+    {
+     "valor": "(0, 0), (9, 0), (0, 4), (12, 0)",
+     "error": "E01"
+    },
+    {
+     "valor": "(0, 0), (9, 0), (0, 4)",
+     "error": null
+    },
+    {
+     "valor": "(0, 0), (9, 0), (6, 2), (0, 4), (0, 6)",
+     "error": "E01"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Dibuja cada recta frontera y el semiplano de cada restricción (prueba el origen). La región factible es la parte común. Sus vértices son los cortes de rectas contiguas que cumplen todas las restricciones: (0, 0), (9, 0), (6, 2), (0, 4). Ojo: (12, 0) es un corte de dos rectas pero no cumple todas las restricciones, así que no es vértice.",
+   "explicacion_adulto": "Está aprendiendo a dibujar la región factible de un problema de programación lineal: cada restricción es un semiplano y la región es su intersección. Los vértices se obtienen resolviendo sistemas 2×2 de rectas contiguas, y solo valen los cortes que cumplen todas las restricciones. Los errores típicos son dar como vértice un corte no factible (por ejemplo (10, 0)) y olvidar x ≥ 0, y ≥ 0. Pídale que compruebe cada vértice en todas las restricciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "x + 3y = 12; 2x + 3y = 18; x = 0; y = 0",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Elegimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "sistemas 2×2",
+     "resultado": "(0, 0), (9, 0), (6, 2), (0, 4)",
+     "texto": "Cortamos rectas contiguas y comprobamos cada corte."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Calcula los vértices de la región factible definida por {2x + 4y ≤ 20; x + y ≤ 6; x ≥ 0; y ≥ 0}.",
+   "respuesta": "(0, 0), (6, 0), (2, 4), (0, 5)",
+   "distractores": [
+    {
+     "valor": "(0, 0), (6, 0), (0, 5), (10, 0)",
+     "error": "E01"
+    },
+    {
+     "valor": "(0, 0), (6, 0), (0, 5)",
+     "error": null
+    },
+    {
+     "valor": "(0, 0), (6, 0), (2, 4), (0, 5), (0, 6)",
+     "error": "E01"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Dibuja cada recta frontera y el semiplano de cada restricción (prueba el origen). La región factible es la parte común. Sus vértices son los cortes de rectas contiguas que cumplen todas las restricciones: (0, 0), (6, 0), (2, 4), (0, 5). Ojo: (10, 0) es un corte de dos rectas pero no cumple todas las restricciones, así que no es vértice.",
+   "explicacion_adulto": "Está aprendiendo a dibujar la región factible de un problema de programación lineal: cada restricción es un semiplano y la región es su intersección. Los vértices se obtienen resolviendo sistemas 2×2 de rectas contiguas, y solo valen los cortes que cumplen todas las restricciones. Los errores típicos son dar como vértice un corte no factible (por ejemplo (10, 0)) y olvidar x ≥ 0, y ≥ 0. Pídale que compruebe cada vértice en todas las restricciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "2x + 4y = 20; x + y = 6; x = 0; y = 0",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Elegimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "sistemas 2×2",
+     "resultado": "(0, 0), (6, 0), (2, 4), (0, 5)",
+     "texto": "Cortamos rectas contiguas y comprobamos cada corte."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Calcula los vértices de la región factible definida por {4x + 2y ≤ 20; x + y ≤ 8; x ≥ 0; y ≥ 0}.",
+   "respuesta": "(0, 0), (5, 0), (2, 6), (0, 8)",
+   "distractores": [
+    {
+     "valor": "(0, 0), (5, 0), (0, 8), (0, 10)",
+     "error": "E01"
+    },
+    {
+     "valor": "(0, 0), (5, 0), (0, 8)",
+     "error": null
+    },
+    {
+     "valor": "(0, 0), (5, 0), (2, 6), (0, 8), (8, 0)",
+     "error": "E01"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Dibuja cada recta frontera y el semiplano de cada restricción (prueba el origen). La región factible es la parte común. Sus vértices son los cortes de rectas contiguas que cumplen todas las restricciones: (0, 0), (5, 0), (2, 6), (0, 8). Ojo: (0, 10) es un corte de dos rectas pero no cumple todas las restricciones, así que no es vértice.",
+   "explicacion_adulto": "Está aprendiendo a dibujar la región factible de un problema de programación lineal: cada restricción es un semiplano y la región es su intersección. Los vértices se obtienen resolviendo sistemas 2×2 de rectas contiguas, y solo valen los cortes que cumplen todas las restricciones. Los errores típicos son dar como vértice un corte no factible (por ejemplo (10, 0)) y olvidar x ≥ 0, y ≥ 0. Pídale que compruebe cada vértice en todas las restricciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "4x + 2y = 20; x + y = 8; x = 0; y = 0",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Elegimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "sistemas 2×2",
+     "resultado": "(0, 0), (5, 0), (2, 6), (0, 8)",
+     "texto": "Cortamos rectas contiguas y comprobamos cada corte."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Calcula los vértices de la región factible definida por {2x + 2y ≤ 16; 2x + 4y ≤ 24; x ≥ 0; y ≥ 0}.",
+   "respuesta": "(0, 0), (8, 0), (4, 4), (0, 6)",
+   "distractores": [
+    {
+     "valor": "(0, 0), (8, 0), (0, 6), (0, 8)",
+     "error": "E01"
+    },
+    {
+     "valor": "(0, 0), (8, 0), (0, 6)",
+     "error": null
+    },
+    {
+     "valor": "(0, 0), (8, 0), (4, 4), (0, 6), (12, 0)",
+     "error": "E01"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Dibuja cada recta frontera y el semiplano de cada restricción (prueba el origen). La región factible es la parte común. Sus vértices son los cortes de rectas contiguas que cumplen todas las restricciones: (0, 0), (8, 0), (4, 4), (0, 6). Ojo: (0, 8) es un corte de dos rectas pero no cumple todas las restricciones, así que no es vértice.",
+   "explicacion_adulto": "Está aprendiendo a dibujar la región factible de un problema de programación lineal: cada restricción es un semiplano y la región es su intersección. Los vértices se obtienen resolviendo sistemas 2×2 de rectas contiguas, y solo valen los cortes que cumplen todas las restricciones. Los errores típicos son dar como vértice un corte no factible (por ejemplo (10, 0)) y olvidar x ≥ 0, y ≥ 0. Pídale que compruebe cada vértice en todas las restricciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "2x + 2y = 16; 2x + 4y = 24; x = 0; y = 0",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Elegimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "sistemas 2×2",
+     "resultado": "(0, 0), (8, 0), (4, 4), (0, 6)",
+     "texto": "Cortamos rectas contiguas y comprobamos cada corte."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Calcula los vértices de la región factible definida por {x + 3y ≤ 9; x + y ≤ 7; x ≥ 0; y ≥ 0}.",
+   "respuesta": "(0, 0), (7, 0), (6, 1), (0, 3)",
+   "distractores": [
+    {
+     "valor": "(0, 0), (7, 0), (0, 3), (9, 0)",
+     "error": "E01"
+    },
+    {
+     "valor": "(0, 0), (7, 0), (0, 3)",
+     "error": null
+    },
+    {
+     "valor": "(0, 0), (7, 0), (6, 1), (0, 3), (0, 7)",
+     "error": "E01"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Dibuja cada recta frontera y el semiplano de cada restricción (prueba el origen). La región factible es la parte común. Sus vértices son los cortes de rectas contiguas que cumplen todas las restricciones: (0, 0), (7, 0), (6, 1), (0, 3). Ojo: (9, 0) es un corte de dos rectas pero no cumple todas las restricciones, así que no es vértice.",
+   "explicacion_adulto": "Está aprendiendo a dibujar la región factible de un problema de programación lineal: cada restricción es un semiplano y la región es su intersección. Los vértices se obtienen resolviendo sistemas 2×2 de rectas contiguas, y solo valen los cortes que cumplen todas las restricciones. Los errores típicos son dar como vértice un corte no factible (por ejemplo (10, 0)) y olvidar x ≥ 0, y ≥ 0. Pídale que compruebe cada vértice en todas las restricciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "x + 3y = 9; x + y = 7; x = 0; y = 0",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Elegimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "sistemas 2×2",
+     "resultado": "(0, 0), (7, 0), (6, 1), (0, 3)",
+     "texto": "Cortamos rectas contiguas y comprobamos cada corte."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Calcula los vértices de la región factible definida por {2x + 3y ≤ 20; x + 4y ≤ 20; x ≥ 0; y ≥ 0}.",
+   "respuesta": "(0, 0), (10, 0), (4, 4), (0, 5)",
+   "distractores": [
+    {
+     "valor": "(0, 0), (10, 0), (0, 5), (0, 20/3)",
+     "error": "E01"
+    },
+    {
+     "valor": "(0, 0), (10, 0), (0, 5)",
+     "error": null
+    },
+    {
+     "valor": "(0, 0), (10, 0), (4, 4), (0, 5), (20, 0)",
+     "error": "E01"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Dibuja cada recta frontera y el semiplano de cada restricción (prueba el origen). La región factible es la parte común. Sus vértices son los cortes de rectas contiguas que cumplen todas las restricciones: (0, 0), (10, 0), (4, 4), (0, 5). Ojo: (0, 20/3) es un corte de dos rectas pero no cumple todas las restricciones, así que no es vértice.",
+   "explicacion_adulto": "Está aprendiendo a dibujar la región factible de un problema de programación lineal: cada restricción es un semiplano y la región es su intersección. Los vértices se obtienen resolviendo sistemas 2×2 de rectas contiguas, y solo valen los cortes que cumplen todas las restricciones. Los errores típicos son dar como vértice un corte no factible (por ejemplo (10, 0)) y olvidar x ≥ 0, y ≥ 0. Pídale que compruebe cada vértice en todas las restricciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "2x + 3y = 20; x + 4y = 20; x = 0; y = 0",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Elegimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "sistemas 2×2",
+     "resultado": "(0, 0), (10, 0), (4, 4), (0, 5)",
+     "texto": "Cortamos rectas contiguas y comprobamos cada corte."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Restricciones: {x + 2y ≤ 10; x + 3y ≤ 11; y ≤ 3; x ≥ 0; y ≥ 0}. Estas restricciones encierran un polígono. ¿Cuál de estos puntos es una de sus esquinas (vértices)?",
+   "respuesta": "(2, 3)",
+   "distractores": [
+    {
+     "valor": "(4, 3)",
+     "error": "E01"
+    },
+    {
+     "valor": "(0, 5)",
+     "error": "E01"
+    },
+    {
+     "valor": "(4, 7/5)",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Dibuja cada recta frontera y el semiplano de cada restricción (prueba el origen). La región factible es la parte común. Sus vértices son los cortes de rectas contiguas que cumplen todas las restricciones: (0, 0), (10, 0), (8, 1), (2, 3), (0, 3). Ojo: (4, 3) es un corte de dos rectas pero no cumple todas las restricciones, así que no es vértice.",
+   "explicacion_adulto": "Está aprendiendo a dibujar la región factible de un problema de programación lineal: cada restricción es un semiplano y la región es su intersección. Los vértices se obtienen resolviendo sistemas 2×2 de rectas contiguas, y solo valen los cortes que cumplen todas las restricciones. Los errores típicos son dar como vértice un corte no factible (por ejemplo (10, 0)) y olvidar x ≥ 0, y ≥ 0. Pídale que compruebe cada vértice en todas las restricciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "x + 2y = 10; x + 3y = 11; y = 3; x = 0; y = 0",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Elegimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "sistemas 2×2",
+     "resultado": "(0, 0), (10, 0), (8, 1), (2, 3), (0, 3)",
+     "texto": "Cortamos rectas contiguas y comprobamos cada corte."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Restricciones: {2x + 4y ≤ 20; 3x + 2y ≤ 18; x ≥ 0; y ≥ 0}. Estas restricciones encierran un polígono. ¿Cuál de estos puntos es una de sus esquinas (vértices)?",
+   "respuesta": "(4, 3)",
+   "distractores": [
+    {
+     "valor": "(10, 0)",
+     "error": "E01"
+    },
+    {
+     "valor": "(0, 9)",
+     "error": "E01"
+    },
+    {
+     "valor": "(5/2, 2)",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Dibuja cada recta frontera y el semiplano de cada restricción (prueba el origen). La región factible es la parte común. Sus vértices son los cortes de rectas contiguas que cumplen todas las restricciones: (0, 0), (6, 0), (4, 3), (0, 5). Ojo: (10, 0) es un corte de dos rectas pero no cumple todas las restricciones, así que no es vértice.",
+   "explicacion_adulto": "Está aprendiendo a dibujar la región factible de un problema de programación lineal: cada restricción es un semiplano y la región es su intersección. Los vértices se obtienen resolviendo sistemas 2×2 de rectas contiguas, y solo valen los cortes que cumplen todas las restricciones. Los errores típicos son dar como vértice un corte no factible (por ejemplo (10, 0)) y olvidar x ≥ 0, y ≥ 0. Pídale que compruebe cada vértice en todas las restricciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "2x + 4y = 20; 3x + 2y = 18; x = 0; y = 0",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Elegimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "sistemas 2×2",
+     "resultado": "(0, 0), (6, 0), (4, 3), (0, 5)",
+     "texto": "Cortamos rectas contiguas y comprobamos cada corte."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Restricciones: {x + y ≤ 14; x + 3y ≤ 22; y ≤ 5; x ≥ 0; y ≥ 0}. Estas restricciones encierran un polígono. ¿Cuál de estos puntos es una de sus esquinas (vértices)?",
+   "respuesta": "(10, 4)",
+   "distractores": [
+    {
+     "valor": "(9, 5)",
+     "error": "E01"
+    },
+    {
+     "valor": "(0, 14)",
+     "error": "E01"
+    },
+    {
+     "valor": "(31/5, 14/5)",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Dibuja cada recta frontera y el semiplano de cada restricción (prueba el origen). La región factible es la parte común. Sus vértices son los cortes de rectas contiguas que cumplen todas las restricciones: (0, 0), (14, 0), (10, 4), (7, 5), (0, 5). Ojo: (9, 5) es un corte de dos rectas pero no cumple todas las restricciones, así que no es vértice.",
+   "explicacion_adulto": "Está aprendiendo a dibujar la región factible de un problema de programación lineal: cada restricción es un semiplano y la región es su intersección. Los vértices se obtienen resolviendo sistemas 2×2 de rectas contiguas, y solo valen los cortes que cumplen todas las restricciones. Los errores típicos son dar como vértice un corte no factible (por ejemplo (10, 0)) y olvidar x ≥ 0, y ≥ 0. Pídale que compruebe cada vértice en todas las restricciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "x + y = 14; x + 3y = 22; y = 5; x = 0; y = 0",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Elegimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "sistemas 2×2",
+     "resultado": "(0, 0), (14, 0), (10, 4), (7, 5), (0, 5)",
+     "texto": "Cortamos rectas contiguas y comprobamos cada corte."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Restricciones: {x + 2y ≤ 20; x + 4y ≤ 24; y ≤ 5; x ≥ 0; y ≥ 0}. Estas restricciones encierran un polígono. ¿Cuál de estos puntos es una de sus esquinas (vértices)?",
+   "respuesta": "(16, 2)",
+   "distractores": [
+    {
+     "valor": "(10, 5)",
+     "error": "E01"
+    },
+    {
+     "valor": "(0, 10)",
+     "error": "E01"
+    },
+    {
+     "valor": "(8, 12/5)",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Dibuja cada recta frontera y el semiplano de cada restricción (prueba el origen). La región factible es la parte común. Sus vértices son los cortes de rectas contiguas que cumplen todas las restricciones: (0, 0), (20, 0), (16, 2), (4, 5), (0, 5). Ojo: (10, 5) es un corte de dos rectas pero no cumple todas las restricciones, así que no es vértice.",
+   "explicacion_adulto": "Está aprendiendo a dibujar la región factible de un problema de programación lineal: cada restricción es un semiplano y la región es su intersección. Los vértices se obtienen resolviendo sistemas 2×2 de rectas contiguas, y solo valen los cortes que cumplen todas las restricciones. Los errores típicos son dar como vértice un corte no factible (por ejemplo (10, 0)) y olvidar x ≥ 0, y ≥ 0. Pídale que compruebe cada vértice en todas las restricciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "x + 2y = 20; x + 4y = 24; y = 5; x = 0; y = 0",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Elegimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "sistemas 2×2",
+     "resultado": "(0, 0), (20, 0), (16, 2), (4, 5), (0, 5)",
+     "texto": "Cortamos rectas contiguas y comprobamos cada corte."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Restricciones: {x + y ≤ 14; x + 2y ≤ 16; y ≤ 7; x ≥ 0; y ≥ 0}. Estas restricciones encierran un polígono. ¿Cuál de estos puntos es una de sus esquinas (vértices)?",
+   "respuesta": "(12, 2)",
+   "distractores": [
+    {
+     "valor": "(7, 7)",
+     "error": "E01"
+    },
+    {
+     "valor": "(0, 14)",
+     "error": "E01"
+    },
+    {
+     "valor": "(28/5, 16/5)",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Dibuja cada recta frontera y el semiplano de cada restricción (prueba el origen). La región factible es la parte común. Sus vértices son los cortes de rectas contiguas que cumplen todas las restricciones: (0, 0), (14, 0), (12, 2), (2, 7), (0, 7). Ojo: (7, 7) es un corte de dos rectas pero no cumple todas las restricciones, así que no es vértice.",
+   "explicacion_adulto": "Está aprendiendo a dibujar la región factible de un problema de programación lineal: cada restricción es un semiplano y la región es su intersección. Los vértices se obtienen resolviendo sistemas 2×2 de rectas contiguas, y solo valen los cortes que cumplen todas las restricciones. Los errores típicos son dar como vértice un corte no factible (por ejemplo (10, 0)) y olvidar x ≥ 0, y ≥ 0. Pídale que compruebe cada vértice en todas las restricciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "x + y = 14; x + 2y = 16; y = 7; x = 0; y = 0",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Elegimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "sistemas 2×2",
+     "resultado": "(0, 0), (14, 0), (12, 2), (2, 7), (0, 7)",
+     "texto": "Cortamos rectas contiguas y comprobamos cada corte."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Restricciones: {x + y ≤ 8; x + 3y ≤ 12; y ≤ 3; x ≥ 0; y ≥ 0}. Estas restricciones encierran un polígono. ¿Cuál de estos puntos es una de sus esquinas (vértices)?",
+   "respuesta": "(6, 2)",
+   "distractores": [
+    {
+     "valor": "(5, 3)",
+     "error": "E01"
+    },
+    {
+     "valor": "(0, 8)",
+     "error": "E01"
+    },
+    {
+     "valor": "(17/5, 8/5)",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Dibuja cada recta frontera y el semiplano de cada restricción (prueba el origen). La región factible es la parte común. Sus vértices son los cortes de rectas contiguas que cumplen todas las restricciones: (0, 0), (8, 0), (6, 2), (3, 3), (0, 3). Ojo: (5, 3) es un corte de dos rectas pero no cumple todas las restricciones, así que no es vértice.",
+   "explicacion_adulto": "Está aprendiendo a dibujar la región factible de un problema de programación lineal: cada restricción es un semiplano y la región es su intersección. Los vértices se obtienen resolviendo sistemas 2×2 de rectas contiguas, y solo valen los cortes que cumplen todas las restricciones. Los errores típicos son dar como vértice un corte no factible (por ejemplo (10, 0)) y olvidar x ≥ 0, y ≥ 0. Pídale que compruebe cada vértice en todas las restricciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "x + y = 8; x + 3y = 12; y = 3; x = 0; y = 0",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Elegimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "sistemas 2×2",
+     "resultado": "(0, 0), (8, 0), (6, 2), (3, 3), (0, 3)",
+     "texto": "Cortamos rectas contiguas y comprobamos cada corte."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Restricciones: {2x + 4y ≤ 12; 2x + 2y ≤ 10; x ≥ 0; y ≥ 0}. Estas restricciones encierran un polígono. ¿Cuál de estos puntos es una de sus esquinas (vértices)?",
+   "respuesta": "(4, 1)",
+   "distractores": [
+    {
+     "valor": "(6, 0)",
+     "error": "E01"
+    },
+    {
+     "valor": "(0, 5)",
+     "error": "E01"
+    },
+    {
+     "valor": "(9/4, 1)",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Dibuja cada recta frontera y el semiplano de cada restricción (prueba el origen). La región factible es la parte común. Sus vértices son los cortes de rectas contiguas que cumplen todas las restricciones: (0, 0), (5, 0), (4, 1), (0, 3). Ojo: (6, 0) es un corte de dos rectas pero no cumple todas las restricciones, así que no es vértice.",
+   "explicacion_adulto": "Está aprendiendo a dibujar la región factible de un problema de programación lineal: cada restricción es un semiplano y la región es su intersección. Los vértices se obtienen resolviendo sistemas 2×2 de rectas contiguas, y solo valen los cortes que cumplen todas las restricciones. Los errores típicos son dar como vértice un corte no factible (por ejemplo (10, 0)) y olvidar x ≥ 0, y ≥ 0. Pídale que compruebe cada vértice en todas las restricciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "2x + 4y = 12; 2x + 2y = 10; x = 0; y = 0",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Elegimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "sistemas 2×2",
+     "resultado": "(0, 0), (5, 0), (4, 1), (0, 3)",
+     "texto": "Cortamos rectas contiguas y comprobamos cada corte."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "La región factible {2x + y ≤ 10; 2x + 2y ≤ 14; y ≤ 6; x ≥ 0; y ≥ 0}, ¿está acotada? ¿Cuántos vértices tiene?",
+   "respuesta": "Acotada, con 5 vértices",
+   "distractores": [
+    {
+     "valor": "No acotada, con 5 vértices",
+     "error": null
+    },
+    {
+     "valor": "Acotada, con 9 vértices",
+     "error": "E01"
+    },
+    {
+     "valor": "Acotada, con 3 vértices",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Todas las restricciones son del tipo ≤ junto con x ≥ 0, y ≥ 0: la región queda encerrada en un polígono. Sus vértices son (0, 0), (5, 0), (3, 4), (1, 6), (0, 6).",
+   "explicacion_adulto": "Está aprendiendo a dibujar la región factible de un problema de programación lineal: cada restricción es un semiplano y la región es su intersección. Los vértices se obtienen resolviendo sistemas 2×2 de rectas contiguas, y solo valen los cortes que cumplen todas las restricciones. Los errores típicos son dar como vértice un corte no factible (por ejemplo (10, 0)) y olvidar x ≥ 0, y ≥ 0. Pídale que compruebe cada vértice en todas las restricciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "2x + y = 10; 2x + 2y = 14; y = 6; x = 0; y = 0",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Elegimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "sistemas 2×2",
+     "resultado": "(0, 0), (5, 0), (3, 4), (1, 6), (0, 6)",
+     "texto": "Cortamos rectas contiguas y comprobamos cada corte."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "La región factible {2x + y ≥ 12; x + y ≥ 10; x ≥ 0; y ≥ 0}, ¿está acotada? ¿Cuántos vértices tiene?",
+   "respuesta": "No acotada, con 3 vértices",
+   "distractores": [
+    {
+     "valor": "Acotada, con 3 vértices",
+     "error": null
+    },
+    {
+     "valor": "Acotada, con 4 vértices",
+     "error": null
+    },
+    {
+     "valor": "No acotada, con 6 vértices",
+     "error": "E01"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Las restricciones son del tipo ≥: la región se extiende sin fin hacia arriba y a la derecha, así que no está acotada. Sus vértices son (0, 12), (2, 8), (10, 0).",
+   "explicacion_adulto": "Está aprendiendo a dibujar la región factible de un problema de programación lineal: cada restricción es un semiplano y la región es su intersección. Los vértices se obtienen resolviendo sistemas 2×2 de rectas contiguas, y solo valen los cortes que cumplen todas las restricciones. Los errores típicos son dar como vértice un corte no factible (por ejemplo (10, 0)) y olvidar x ≥ 0, y ≥ 0. Pídale que compruebe cada vértice en todas las restricciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "2x + y = 12; x + y = 10; x = 0; y = 0",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Elegimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "sistemas 2×2",
+     "resultado": "(0, 12), (2, 8), (10, 0)",
+     "texto": "Cortamos rectas contiguas y comprobamos cada corte."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "La región factible {2x + 4y ≤ 20; x + 3y ≤ 12; x + y ≤ 9; x ≥ 0; y ≥ 0}, ¿está acotada? ¿Cuántos vértices tiene?",
+   "respuesta": "Acotada, con 5 vértices",
+   "distractores": [
+    {
+     "valor": "No acotada, con 5 vértices",
+     "error": null
+    },
+    {
+     "valor": "Acotada, con 10 vértices",
+     "error": "E01"
+    },
+    {
+     "valor": "Acotada, con 3 vértices",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Todas las restricciones son del tipo ≤ junto con x ≥ 0, y ≥ 0: la región queda encerrada en un polígono. Sus vértices son (0, 0), (9, 0), (8, 1), (6, 2), (0, 4).",
+   "explicacion_adulto": "Está aprendiendo a dibujar la región factible de un problema de programación lineal: cada restricción es un semiplano y la región es su intersección. Los vértices se obtienen resolviendo sistemas 2×2 de rectas contiguas, y solo valen los cortes que cumplen todas las restricciones. Los errores típicos son dar como vértice un corte no factible (por ejemplo (10, 0)) y olvidar x ≥ 0, y ≥ 0. Pídale que compruebe cada vértice en todas las restricciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "2x + 4y = 20; x + 3y = 12; x + y = 9; x = 0; y = 0",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Elegimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "sistemas 2×2",
+     "resultado": "(0, 0), (9, 0), (8, 1), (6, 2), (0, 4)",
+     "texto": "Cortamos rectas contiguas y comprobamos cada corte."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "La región factible {2x + y ≥ 8; 3x + y ≥ 10; x ≥ 0; y ≥ 0}, ¿está acotada? ¿Cuántos vértices tiene?",
+   "respuesta": "No acotada, con 3 vértices",
+   "distractores": [
+    {
+     "valor": "Acotada, con 3 vértices",
+     "error": null
+    },
+    {
+     "valor": "Acotada, con 4 vértices",
+     "error": null
+    },
+    {
+     "valor": "No acotada, con 6 vértices",
+     "error": "E01"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Las restricciones son del tipo ≥: la región se extiende sin fin hacia arriba y a la derecha, así que no está acotada. Sus vértices son (0, 10), (2, 4), (4, 0).",
+   "explicacion_adulto": "Está aprendiendo a dibujar la región factible de un problema de programación lineal: cada restricción es un semiplano y la región es su intersección. Los vértices se obtienen resolviendo sistemas 2×2 de rectas contiguas, y solo valen los cortes que cumplen todas las restricciones. Los errores típicos son dar como vértice un corte no factible (por ejemplo (10, 0)) y olvidar x ≥ 0, y ≥ 0. Pídale que compruebe cada vértice en todas las restricciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "2x + y = 8; 3x + y = 10; x = 0; y = 0",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Elegimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "sistemas 2×2",
+     "resultado": "(0, 10), (2, 4), (4, 0)",
+     "texto": "Cortamos rectas contiguas y comprobamos cada corte."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "La región factible {2x + 4y ≤ 18; 2x + y ≤ 12; y ≤ 3; x ≥ 0; y ≥ 0}, ¿está acotada? ¿Cuántos vértices tiene?",
+   "respuesta": "Acotada, con 5 vértices",
+   "distractores": [
+    {
+     "valor": "No acotada, con 5 vértices",
+     "error": null
+    },
+    {
+     "valor": "Acotada, con 9 vértices",
+     "error": "E01"
+    },
+    {
+     "valor": "Acotada, con 3 vértices",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Todas las restricciones son del tipo ≤ junto con x ≥ 0, y ≥ 0: la región queda encerrada en un polígono. Sus vértices son (0, 0), (6, 0), (5, 2), (3, 3), (0, 3).",
+   "explicacion_adulto": "Está aprendiendo a dibujar la región factible de un problema de programación lineal: cada restricción es un semiplano y la región es su intersección. Los vértices se obtienen resolviendo sistemas 2×2 de rectas contiguas, y solo valen los cortes que cumplen todas las restricciones. Los errores típicos son dar como vértice un corte no factible (por ejemplo (10, 0)) y olvidar x ≥ 0, y ≥ 0. Pídale que compruebe cada vértice en todas las restricciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "2x + 4y = 18; 2x + y = 12; y = 3; x = 0; y = 0",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Elegimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "sistemas 2×2",
+     "resultado": "(0, 0), (6, 0), (5, 2), (3, 3), (0, 3)",
+     "texto": "Cortamos rectas contiguas y comprobamos cada corte."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "La región factible {3x + 3y ≥ 18; x + 2y ≥ 9; x ≥ 0; y ≥ 0}, ¿está acotada? ¿Cuántos vértices tiene?",
+   "respuesta": "No acotada, con 3 vértices",
+   "distractores": [
+    {
+     "valor": "Acotada, con 3 vértices",
+     "error": null
+    },
+    {
+     "valor": "Acotada, con 4 vértices",
+     "error": null
+    },
+    {
+     "valor": "No acotada, con 6 vértices",
+     "error": "E01"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Las restricciones son del tipo ≥: la región se extiende sin fin hacia arriba y a la derecha, así que no está acotada. Sus vértices son (0, 6), (3, 3), (9, 0).",
+   "explicacion_adulto": "Está aprendiendo a dibujar la región factible de un problema de programación lineal: cada restricción es un semiplano y la región es su intersección. Los vértices se obtienen resolviendo sistemas 2×2 de rectas contiguas, y solo valen los cortes que cumplen todas las restricciones. Los errores típicos son dar como vértice un corte no factible (por ejemplo (10, 0)) y olvidar x ≥ 0, y ≥ 0. Pídale que compruebe cada vértice en todas las restricciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "3x + 3y = 18; x + 2y = 9; x = 0; y = 0",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Elegimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "sistemas 2×2",
+     "resultado": "(0, 6), (3, 3), (9, 0)",
+     "texto": "Cortamos rectas contiguas y comprobamos cada corte."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "La región factible {2x + 2y ≤ 12; 3x + y ≤ 12; y ≤ 4; x ≥ 0; y ≥ 0}, ¿está acotada? ¿Cuántos vértices tiene?",
+   "respuesta": "Acotada, con 5 vértices",
+   "distractores": [
+    {
+     "valor": "No acotada, con 5 vértices",
+     "error": null
+    },
+    {
+     "valor": "Acotada, con 9 vértices",
+     "error": "E01"
+    },
+    {
+     "valor": "Acotada, con 3 vértices",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Todas las restricciones son del tipo ≤ junto con x ≥ 0, y ≥ 0: la región queda encerrada en un polígono. Sus vértices son (0, 0), (4, 0), (3, 3), (2, 4), (0, 4).",
+   "explicacion_adulto": "Está aprendiendo a dibujar la región factible de un problema de programación lineal: cada restricción es un semiplano y la región es su intersección. Los vértices se obtienen resolviendo sistemas 2×2 de rectas contiguas, y solo valen los cortes que cumplen todas las restricciones. Los errores típicos son dar como vértice un corte no factible (por ejemplo (10, 0)) y olvidar x ≥ 0, y ≥ 0. Pídale que compruebe cada vértice en todas las restricciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "2x + 2y = 12; 3x + y = 12; y = 4; x = 0; y = 0",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Elegimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "sistemas 2×2",
+     "resultado": "(0, 0), (4, 0), (3, 3), (2, 4), (0, 4)",
+     "texto": "Cortamos rectas contiguas y comprobamos cada corte."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "La región factible {x + y ≥ 6; x + 2y ≥ 9; x ≥ 0; y ≥ 0}, ¿está acotada? ¿Cuántos vértices tiene?",
+   "respuesta": "No acotada, con 3 vértices",
+   "distractores": [
+    {
+     "valor": "Acotada, con 3 vértices",
+     "error": null
+    },
+    {
+     "valor": "Acotada, con 4 vértices",
+     "error": null
+    },
+    {
+     "valor": "No acotada, con 6 vértices",
+     "error": "E01"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Las restricciones son del tipo ≥: la región se extiende sin fin hacia arriba y a la derecha, así que no está acotada. Sus vértices son (0, 6), (3, 3), (9, 0).",
+   "explicacion_adulto": "Está aprendiendo a dibujar la región factible de un problema de programación lineal: cada restricción es un semiplano y la región es su intersección. Los vértices se obtienen resolviendo sistemas 2×2 de rectas contiguas, y solo valen los cortes que cumplen todas las restricciones. Los errores típicos son dar como vértice un corte no factible (por ejemplo (10, 0)) y olvidar x ≥ 0, y ≥ 0. Pídale que compruebe cada vértice en todas las restricciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "x + y = 6; x + 2y = 9; x = 0; y = 0",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Elegimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "sistemas 2×2",
+     "resultado": "(0, 6), (3, 3), (9, 0)",
+     "texto": "Cortamos rectas contiguas y comprobamos cada corte."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Calcula los vértices de la región factible definida por {2x + y ≤ 20; 2x + 2y ≤ 22; y ≤ 3; x ≥ 0; y ≥ 0}.",
+   "respuesta": "(0, 0), (10, 0), (9, 2), (8, 3), (0, 3)",
+   "distractores": [
+    {
+     "valor": "(0, 0), (10, 0), (9, 2), (8, 3), (17/2, 3)",
+     "error": "E01"
+    },
+    {
+     "valor": "(0, 0), (10, 0), (0, 20), (8, 3), (0, 3)",
+     "error": "E01"
+    },
+    {
+     "valor": "(0, 0), (10, 0), (9, 2), (8, 3)",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Dibuja cada recta frontera y el semiplano de cada restricción (prueba el origen). La región factible es la parte común. Sus vértices son los cortes de rectas contiguas que cumplen todas las restricciones: (0, 0), (10, 0), (9, 2), (8, 3), (0, 3). Ojo: (17/2, 3) es un corte de dos rectas pero no cumple todas las restricciones, así que no es vértice.",
+   "explicacion_adulto": "Está aprendiendo a dibujar la región factible de un problema de programación lineal: cada restricción es un semiplano y la región es su intersección. Los vértices se obtienen resolviendo sistemas 2×2 de rectas contiguas, y solo valen los cortes que cumplen todas las restricciones. Los errores típicos son dar como vértice un corte no factible (por ejemplo (10, 0)) y olvidar x ≥ 0, y ≥ 0. Pídale que compruebe cada vértice en todas las restricciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "2x + y = 20; 2x + 2y = 22; y = 3; x = 0; y = 0",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Elegimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "sistemas 2×2",
+     "resultado": "(0, 0), (10, 0), (9, 2), (8, 3), (0, 3)",
+     "texto": "Cortamos rectas contiguas y comprobamos cada corte."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Calcula los vértices de la región factible definida por {4x + y ≤ 20; 4x + 2y ≤ 24; y ≤ 8; x ≥ 0; y ≥ 0}.",
+   "respuesta": "(0, 0), (5, 0), (4, 4), (2, 8), (0, 8)",
+   "distractores": [
+    {
+     "valor": "(0, 0), (5, 0), (4, 4), (2, 8), (3, 8)",
+     "error": "E01"
+    },
+    {
+     "valor": "(0, 0), (5, 0), (0, 20), (2, 8), (0, 8)",
+     "error": "E01"
+    },
+    {
+     "valor": "(0, 0), (5, 0), (4, 4), (2, 8)",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Dibuja cada recta frontera y el semiplano de cada restricción (prueba el origen). La región factible es la parte común. Sus vértices son los cortes de rectas contiguas que cumplen todas las restricciones: (0, 0), (5, 0), (4, 4), (2, 8), (0, 8). Ojo: (3, 8) es un corte de dos rectas pero no cumple todas las restricciones, así que no es vértice.",
+   "explicacion_adulto": "Está aprendiendo a dibujar la región factible de un problema de programación lineal: cada restricción es un semiplano y la región es su intersección. Los vértices se obtienen resolviendo sistemas 2×2 de rectas contiguas, y solo valen los cortes que cumplen todas las restricciones. Los errores típicos son dar como vértice un corte no factible (por ejemplo (10, 0)) y olvidar x ≥ 0, y ≥ 0. Pídale que compruebe cada vértice en todas las restricciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "4x + y = 20; 4x + 2y = 24; y = 8; x = 0; y = 0",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Elegimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "sistemas 2×2",
+     "resultado": "(0, 0), (5, 0), (4, 4), (2, 8), (0, 8)",
+     "texto": "Cortamos rectas contiguas y comprobamos cada corte."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Calcula los vértices de la región factible definida por {x + y ≤ 18; x + 3y ≤ 22; y ≤ 4; x ≥ 0; y ≥ 0}.",
+   "respuesta": "(0, 0), (18, 0), (16, 2), (10, 4), (0, 4)",
+   "distractores": [
+    {
+     "valor": "(0, 0), (18, 0), (16, 2), (10, 4), (14, 4)",
+     "error": "E01"
+    },
+    {
+     "valor": "(0, 0), (18, 0), (0, 18), (10, 4), (0, 4)",
+     "error": "E01"
+    },
+    {
+     "valor": "(0, 0), (18, 0), (16, 2), (10, 4)",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Dibuja cada recta frontera y el semiplano de cada restricción (prueba el origen). La región factible es la parte común. Sus vértices son los cortes de rectas contiguas que cumplen todas las restricciones: (0, 0), (18, 0), (16, 2), (10, 4), (0, 4). Ojo: (14, 4) es un corte de dos rectas pero no cumple todas las restricciones, así que no es vértice.",
+   "explicacion_adulto": "Está aprendiendo a dibujar la región factible de un problema de programación lineal: cada restricción es un semiplano y la región es su intersección. Los vértices se obtienen resolviendo sistemas 2×2 de rectas contiguas, y solo valen los cortes que cumplen todas las restricciones. Los errores típicos son dar como vértice un corte no factible (por ejemplo (10, 0)) y olvidar x ≥ 0, y ≥ 0. Pídale que compruebe cada vértice en todas las restricciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "x + y = 18; x + 3y = 22; y = 4; x = 0; y = 0",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Elegimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "sistemas 2×2",
+     "resultado": "(0, 0), (18, 0), (16, 2), (10, 4), (0, 4)",
+     "texto": "Cortamos rectas contiguas y comprobamos cada corte."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Calcula los vértices de la región factible definida por {2x + 2y ≤ 18; 2x + 4y ≤ 24; y ≤ 4; x ≥ 0; y ≥ 0}.",
+   "respuesta": "(0, 0), (9, 0), (6, 3), (4, 4), (0, 4)",
+   "distractores": [
+    {
+     "valor": "(0, 0), (9, 0), (6, 3), (4, 4), (5, 4)",
+     "error": "E01"
+    },
+    {
+     "valor": "(0, 0), (9, 0), (0, 9), (4, 4), (0, 4)",
+     "error": "E01"
+    },
+    {
+     "valor": "(0, 0), (9, 0), (6, 3), (4, 4)",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Dibuja cada recta frontera y el semiplano de cada restricción (prueba el origen). La región factible es la parte común. Sus vértices son los cortes de rectas contiguas que cumplen todas las restricciones: (0, 0), (9, 0), (6, 3), (4, 4), (0, 4). Ojo: (5, 4) es un corte de dos rectas pero no cumple todas las restricciones, así que no es vértice.",
+   "explicacion_adulto": "Está aprendiendo a dibujar la región factible de un problema de programación lineal: cada restricción es un semiplano y la región es su intersección. Los vértices se obtienen resolviendo sistemas 2×2 de rectas contiguas, y solo valen los cortes que cumplen todas las restricciones. Los errores típicos son dar como vértice un corte no factible (por ejemplo (10, 0)) y olvidar x ≥ 0, y ≥ 0. Pídale que compruebe cada vértice en todas las restricciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "2x + 2y = 18; 2x + 4y = 24; y = 4; x = 0; y = 0",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Elegimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "sistemas 2×2",
+     "resultado": "(0, 0), (9, 0), (6, 3), (4, 4), (0, 4)",
+     "texto": "Cortamos rectas contiguas y comprobamos cada corte."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Calcula los vértices de la región factible definida por {2x + 2y ≤ 20; x + 3y ≤ 24; 3x + y ≤ 24; x ≥ 0; y ≥ 0}.",
+   "respuesta": "(0, 0), (8, 0), (7, 3), (3, 7), (0, 8)",
+   "distractores": [
+    {
+     "valor": "(0, 0), (8, 0), (7, 3), (3, 7), (0, 10)",
+     "error": "E01"
+    },
+    {
+     "valor": "(0, 0), (8, 0), (10, 0), (3, 7), (0, 8)",
+     "error": "E01"
+    },
+    {
+     "valor": "(0, 0), (8, 0), (7, 3), (3, 7)",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Dibuja cada recta frontera y el semiplano de cada restricción (prueba el origen). La región factible es la parte común. Sus vértices son los cortes de rectas contiguas que cumplen todas las restricciones: (0, 0), (8, 0), (7, 3), (3, 7), (0, 8). Ojo: (0, 10) es un corte de dos rectas pero no cumple todas las restricciones, así que no es vértice.",
+   "explicacion_adulto": "Está aprendiendo a dibujar la región factible de un problema de programación lineal: cada restricción es un semiplano y la región es su intersección. Los vértices se obtienen resolviendo sistemas 2×2 de rectas contiguas, y solo valen los cortes que cumplen todas las restricciones. Los errores típicos son dar como vértice un corte no factible (por ejemplo (10, 0)) y olvidar x ≥ 0, y ≥ 0. Pídale que compruebe cada vértice en todas las restricciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "2x + 2y = 20; x + 3y = 24; 3x + y = 24; x = 0; y = 0",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Elegimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "sistemas 2×2",
+     "resultado": "(0, 0), (8, 0), (7, 3), (3, 7), (0, 8)",
+     "texto": "Cortamos rectas contiguas y comprobamos cada corte."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Calcula los vértices de la región factible definida por {x + 4y ≤ 22; x + y ≤ 16; y ≤ 3; x ≥ 0; y ≥ 0}.",
+   "respuesta": "(0, 0), (16, 0), (14, 2), (10, 3), (0, 3)",
+   "distractores": [
+    {
+     "valor": "(0, 0), (16, 0), (14, 2), (10, 3), (0, 11/2)",
+     "error": "E01"
+    },
+    {
+     "valor": "(0, 0), (16, 0), (22, 0), (10, 3), (0, 3)",
+     "error": "E01"
+    },
+    {
+     "valor": "(0, 0), (16, 0), (14, 2), (10, 3)",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Dibuja cada recta frontera y el semiplano de cada restricción (prueba el origen). La región factible es la parte común. Sus vértices son los cortes de rectas contiguas que cumplen todas las restricciones: (0, 0), (16, 0), (14, 2), (10, 3), (0, 3). Ojo: (0, 11/2) es un corte de dos rectas pero no cumple todas las restricciones, así que no es vértice.",
+   "explicacion_adulto": "Está aprendiendo a dibujar la región factible de un problema de programación lineal: cada restricción es un semiplano y la región es su intersección. Los vértices se obtienen resolviendo sistemas 2×2 de rectas contiguas, y solo valen los cortes que cumplen todas las restricciones. Los errores típicos son dar como vértice un corte no factible (por ejemplo (10, 0)) y olvidar x ≥ 0, y ≥ 0. Pídale que compruebe cada vértice en todas las restricciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "x + 4y = 22; x + y = 16; y = 3; x = 0; y = 0",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Elegimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "sistemas 2×2",
+     "resultado": "(0, 0), (16, 0), (14, 2), (10, 3), (0, 3)",
+     "texto": "Cortamos rectas contiguas y comprobamos cada corte."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Calcula los vértices de la región factible definida por {2x + y ≤ 10; x + 2y ≤ 11; y ≤ 5; x ≥ 0; y ≥ 0}.",
+   "respuesta": "(0, 0), (5, 0), (3, 4), (1, 5), (0, 5)",
+   "distractores": [
+    {
+     "valor": "(0, 0), (5, 0), (3, 4), (1, 5), (5/2, 5)",
+     "error": "E01"
+    },
+    {
+     "valor": "(0, 0), (5, 0), (0, 10), (1, 5), (0, 5)",
+     "error": "E01"
+    },
+    {
+     "valor": "(0, 0), (5, 0), (3, 4), (1, 5)",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Dibuja cada recta frontera y el semiplano de cada restricción (prueba el origen). La región factible es la parte común. Sus vértices son los cortes de rectas contiguas que cumplen todas las restricciones: (0, 0), (5, 0), (3, 4), (1, 5), (0, 5). Ojo: (5/2, 5) es un corte de dos rectas pero no cumple todas las restricciones, así que no es vértice.",
+   "explicacion_adulto": "Está aprendiendo a dibujar la región factible de un problema de programación lineal: cada restricción es un semiplano y la región es su intersección. Los vértices se obtienen resolviendo sistemas 2×2 de rectas contiguas, y solo valen los cortes que cumplen todas las restricciones. Los errores típicos son dar como vértice un corte no factible (por ejemplo (10, 0)) y olvidar x ≥ 0, y ≥ 0. Pídale que compruebe cada vértice en todas las restricciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "2x + y = 10; x + 2y = 11; y = 5; x = 0; y = 0",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Elegimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "sistemas 2×2",
+     "resultado": "(0, 0), (5, 0), (3, 4), (1, 5), (0, 5)",
+     "texto": "Cortamos rectas contiguas y comprobamos cada corte."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Calcula los vértices de la región factible definida por {x + 4y ≤ 20; 2x + 2y ≤ 22; y ≤ 4; x ≥ 0; y ≥ 0}.",
+   "respuesta": "(0, 0), (11, 0), (8, 3), (4, 4), (0, 4)",
+   "distractores": [
+    {
+     "valor": "(0, 0), (11, 0), (8, 3), (4, 4), (0, 5)",
+     "error": "E01"
+    },
+    {
+     "valor": "(0, 0), (11, 0), (20, 0), (4, 4), (0, 4)",
+     "error": "E01"
+    },
+    {
+     "valor": "(0, 0), (11, 0), (8, 3), (4, 4)",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Dibuja cada recta frontera y el semiplano de cada restricción (prueba el origen). La región factible es la parte común. Sus vértices son los cortes de rectas contiguas que cumplen todas las restricciones: (0, 0), (11, 0), (8, 3), (4, 4), (0, 4). Ojo: (0, 5) es un corte de dos rectas pero no cumple todas las restricciones, así que no es vértice.",
+   "explicacion_adulto": "Está aprendiendo a dibujar la región factible de un problema de programación lineal: cada restricción es un semiplano y la región es su intersección. Los vértices se obtienen resolviendo sistemas 2×2 de rectas contiguas, y solo valen los cortes que cumplen todas las restricciones. Los errores típicos son dar como vértice un corte no factible (por ejemplo (10, 0)) y olvidar x ≥ 0, y ≥ 0. Pídale que compruebe cada vértice en todas las restricciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "x + 4y = 20; 2x + 2y = 22; y = 4; x = 0; y = 0",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Elegimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "sistemas 2×2",
+     "resultado": "(0, 0), (11, 0), (8, 3), (4, 4), (0, 4)",
+     "texto": "Cortamos rectas contiguas y comprobamos cada corte."
+    }
+   ],
+   "plantilla": "P04"
+  }
+ ]
+}

@@ -1,0 +1,1540 @@
+{
+ "habilidad": "ALG.PROGLIN.03",
+ "generado_por": "claude (skill mates10-generar-ejercicios v1)",
+ "ejercicios": [
+  {
+   "dificultad": 1,
+   "enunciado": "Una pastelería fabrica tartas (x) y bizcochos (y). Cada unidad de tartas necesita 2 horas de horno y 3 kg de harina; cada unidad de bizcochos necesita 5 horas de horno y 1 kg de harina. Se dispone como máximo de 110 horas de horno y 60 kg de harina. El beneficio es de 35 € por unidad de tartas y 45 € por unidad de bizcochos. ¿Qué restricción corresponde a los kg de harina?",
+   "respuesta": "3x + y ≤ 60",
+   "distractores": [
+    {
+     "valor": "x + 3y ≤ 60",
+     "error": "E02"
+    },
+    {
+     "valor": "3x + y ≥ 60",
+     "error": "E01"
+    },
+    {
+     "valor": "3x + 2y ≤ 60",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Haz una tabla: filas = productos, columnas = recursos y beneficio. Los kg de harina usados son 3 por cada unidad de tartas y 1 por cada una de bizcochos: 3x + 1y, y no pueden superar 60.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado a un modelo de programación lineal: variables, restricciones y función objetivo. Los errores típicos son poner la desigualdad al revés ('como mínimo' es ≥, 'como máximo' o 'se dispone de' es ≤) y cruzar los coeficientes de x e y. Pídale que construya una tabla con una fila por producto y una columna por recurso antes de escribir nada.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y",
+     "texto": "x = unidades de tartas, y = unidades de bizcochos."
+    },
+    {
+     "paso": 2,
+     "operacion": "tabla",
+     "resultado": "",
+     "texto": "Recursos por unidad y disponibles."
+    },
+    {
+     "paso": 3,
+     "operacion": "traducir",
+     "resultado": "3x + y ≤ 60",
+     "texto": "Los kg de harina usados son 3 por cada unidad de tartas y 1 por cada una de bizcochos: 3x + 1y, y no pueden superar 60."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un taller de cerámica fabrica jarrones (x) y cuencos (y). Cada unidad de jarrones necesita 5 horas de torno y 2 kg de arcilla; cada unidad de cuencos necesita 1 horas de torno y 3 kg de arcilla. Se dispone como máximo de 100 horas de torno y 110 kg de arcilla. El beneficio es de 15 € por unidad de jarrones y 45 € por unidad de cuencos. ¿Cuál es la función objetivo?",
+   "respuesta": "Maximizar F(x, y) = 15x + 45y",
+   "distractores": [
+    {
+     "valor": "Maximizar F(x, y) = 45x + 15y",
+     "error": "E02"
+    },
+    {
+     "valor": "Minimizar F(x, y) = 15x + 45y",
+     "error": null
+    },
+    {
+     "valor": "Maximizar F(x, y) = 100x + 110y",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Haz una tabla: filas = productos, columnas = recursos y beneficio. Se quiere el mayor beneficio: 15 € por cada unidad de jarrones (x) y 45 € por cada una de cuencos (y), así que F = 15x + 45y y se maximiza.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado a un modelo de programación lineal: variables, restricciones y función objetivo. Los errores típicos son poner la desigualdad al revés ('como mínimo' es ≥, 'como máximo' o 'se dispone de' es ≤) y cruzar los coeficientes de x e y. Pídale que construya una tabla con una fila por producto y una columna por recurso antes de escribir nada.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y",
+     "texto": "x = unidades de jarrones, y = unidades de cuencos."
+    },
+    {
+     "paso": 2,
+     "operacion": "tabla",
+     "resultado": "",
+     "texto": "Recursos por unidad y disponibles."
+    },
+    {
+     "paso": 3,
+     "operacion": "traducir",
+     "resultado": "Maximizar F(x, y) = 15x + 45y",
+     "texto": "Se quiere el mayor beneficio: 15 € por cada unidad de jarrones (x) y 45 € por cada una de cuencos (y), así que F = 15x + 45y y se maximiza."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Una cooperativa textil fabrica chaquetas (x) y pantalones (y). Cada unidad de chaquetas necesita 1 horas de corte y 2 horas de costura; cada unidad de pantalones necesita 3 horas de corte y 4 horas de costura. Se dispone como máximo de 40 horas de corte y 70 horas de costura. El beneficio es de 10 € por unidad de chaquetas y 20 € por unidad de pantalones. Además, hay que fabricar como mínimo 4 unidades de pantalones. ¿Cuál es el conjunto de restricciones?",
+   "respuesta": "{x + 3y ≤ 40; 2x + 4y ≤ 70; y ≥ 4; x ≥ 0}",
+   "distractores": [
+    {
+     "valor": "{x + 3y ≤ 40; 2x + 4y ≤ 70; y ≤ 4; x ≥ 0}",
+     "error": "E01"
+    },
+    {
+     "valor": "{x + 2y ≤ 40; 3x + 4y ≤ 70; y ≥ 4; x ≥ 0}",
+     "error": "E02"
+    },
+    {
+     "valor": "{x + 3y ≤ 40; 2x + 4y ≤ 70; x ≥ 4; y ≥ 0}",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Haz una tabla: filas = productos, columnas = recursos y beneficio. Una restricción por recurso (1x + 3y ≤ 40 y 2x + 4y ≤ 70), la de 'como mínimo 4' con ≥ (y ≥ 4) y la no negatividad de x.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado a un modelo de programación lineal: variables, restricciones y función objetivo. Los errores típicos son poner la desigualdad al revés ('como mínimo' es ≥, 'como máximo' o 'se dispone de' es ≤) y cruzar los coeficientes de x e y. Pídale que construya una tabla con una fila por producto y una columna por recurso antes de escribir nada.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y",
+     "texto": "x = unidades de chaquetas, y = unidades de pantalones."
+    },
+    {
+     "paso": 2,
+     "operacion": "tabla",
+     "resultado": "",
+     "texto": "Recursos por unidad y disponibles."
+    },
+    {
+     "paso": 3,
+     "operacion": "traducir",
+     "resultado": "{x + 3y ≤ 40; 2x + 4y ≤ 70; y ≥ 4; x ≥ 0}",
+     "texto": "Una restricción por recurso (1x + 3y ≤ 40 y 2x + 4y ≤ 70), la de 'como mínimo 4' con ≥ (y ≥ 4) y la no negatividad de x."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Una empresa de muebles fabrica armarios (x) y cómodas (y). Cada unidad de armarios necesita 4 horas de carpintería y 3 horas de barnizado; cada unidad de cómodas necesita 3 horas de carpintería y 2 horas de barnizado. Se dispone como máximo de 70 horas de carpintería y 80 horas de barnizado. El beneficio es de 30 € por unidad de armarios y 25 € por unidad de cómodas. ¿Qué restricción corresponde a los horas de barnizado?",
+   "respuesta": "3x + 2y ≤ 80",
+   "distractores": [
+    {
+     "valor": "2x + 3y ≤ 80",
+     "error": "E02"
+    },
+    {
+     "valor": "3x + 2y ≥ 80",
+     "error": "E01"
+    },
+    {
+     "valor": "3x + 4y ≤ 80",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Haz una tabla: filas = productos, columnas = recursos y beneficio. Los horas de barnizado usados son 3 por cada unidad de armarios y 2 por cada una de cómodas: 3x + 2y, y no pueden superar 80.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado a un modelo de programación lineal: variables, restricciones y función objetivo. Los errores típicos son poner la desigualdad al revés ('como mínimo' es ≥, 'como máximo' o 'se dispone de' es ≤) y cruzar los coeficientes de x e y. Pídale que construya una tabla con una fila por producto y una columna por recurso antes de escribir nada.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y",
+     "texto": "x = unidades de armarios, y = unidades de cómodas."
+    },
+    {
+     "paso": 2,
+     "operacion": "tabla",
+     "resultado": "",
+     "texto": "Recursos por unidad y disponibles."
+    },
+    {
+     "paso": 3,
+     "operacion": "traducir",
+     "resultado": "3x + 2y ≤ 80",
+     "texto": "Los horas de barnizado usados son 3 por cada unidad de armarios y 2 por cada una de cómodas: 3x + 2y, y no pueden superar 80."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Una granja fabrica quesos curados (x) y quesos frescos (y). Cada unidad de quesos curados necesita 1 litros de leche y 2 horas de trabajo; cada unidad de quesos frescos necesita 3 litros de leche y 4 horas de trabajo. Se dispone como máximo de 50 litros de leche y 80 horas de trabajo. El beneficio es de 30 € por unidad de quesos curados y 45 € por unidad de quesos frescos. ¿Cuál es la función objetivo?",
+   "respuesta": "Maximizar F(x, y) = 30x + 45y",
+   "distractores": [
+    {
+     "valor": "Maximizar F(x, y) = 45x + 30y",
+     "error": "E02"
+    },
+    {
+     "valor": "Minimizar F(x, y) = 30x + 45y",
+     "error": null
+    },
+    {
+     "valor": "Maximizar F(x, y) = 50x + 80y",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Haz una tabla: filas = productos, columnas = recursos y beneficio. Se quiere el mayor beneficio: 30 € por cada unidad de quesos curados (x) y 45 € por cada una de quesos frescos (y), así que F = 30x + 45y y se maximiza.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado a un modelo de programación lineal: variables, restricciones y función objetivo. Los errores típicos son poner la desigualdad al revés ('como mínimo' es ≥, 'como máximo' o 'se dispone de' es ≤) y cruzar los coeficientes de x e y. Pídale que construya una tabla con una fila por producto y una columna por recurso antes de escribir nada.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y",
+     "texto": "x = unidades de quesos curados, y = unidades de quesos frescos."
+    },
+    {
+     "paso": 2,
+     "operacion": "tabla",
+     "resultado": "",
+     "texto": "Recursos por unidad y disponibles."
+    },
+    {
+     "paso": 3,
+     "operacion": "traducir",
+     "resultado": "Maximizar F(x, y) = 30x + 45y",
+     "texto": "Se quiere el mayor beneficio: 30 € por cada unidad de quesos curados (x) y 45 € por cada una de quesos frescos (y), así que F = 30x + 45y y se maximiza."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un obrador de pan fabrica hogazas (x) y barras integrales (y). Cada unidad de hogazas necesita 3 kg de masa madre y 4 horas de horno; cada unidad de barras integrales necesita 2 kg de masa madre y 2 horas de horno. Se dispone como máximo de 80 kg de masa madre y 120 horas de horno. El beneficio es de 25 € por unidad de hogazas y 30 € por unidad de barras integrales. Además, hay que fabricar como mínimo 3 unidades de barras integrales. ¿Cuál es el conjunto de restricciones?",
+   "respuesta": "{3x + 2y ≤ 80; 4x + 2y ≤ 120; y ≥ 3; x ≥ 0}",
+   "distractores": [
+    {
+     "valor": "{3x + 2y ≤ 80; 4x + 2y ≤ 120; y ≤ 3; x ≥ 0}",
+     "error": "E01"
+    },
+    {
+     "valor": "{3x + 4y ≤ 80; 2x + 2y ≤ 120; y ≥ 3; x ≥ 0}",
+     "error": "E02"
+    },
+    {
+     "valor": "{3x + 2y ≤ 80; 4x + 2y ≤ 120; x ≥ 3; y ≥ 0}",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Haz una tabla: filas = productos, columnas = recursos y beneficio. Una restricción por recurso (3x + 2y ≤ 80 y 4x + 2y ≤ 120), la de 'como mínimo 3' con ≥ (y ≥ 3) y la no negatividad de x.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado a un modelo de programación lineal: variables, restricciones y función objetivo. Los errores típicos son poner la desigualdad al revés ('como mínimo' es ≥, 'como máximo' o 'se dispone de' es ≤) y cruzar los coeficientes de x e y. Pídale que construya una tabla con una fila por producto y una columna por recurso antes de escribir nada.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y",
+     "texto": "x = unidades de hogazas, y = unidades de barras integrales."
+    },
+    {
+     "paso": 2,
+     "operacion": "tabla",
+     "resultado": "",
+     "texto": "Recursos por unidad y disponibles."
+    },
+    {
+     "paso": 3,
+     "operacion": "traducir",
+     "resultado": "{3x + 2y ≤ 80; 4x + 2y ≤ 120; y ≥ 3; x ≥ 0}",
+     "texto": "Una restricción por recurso (3x + 2y ≤ 80 y 4x + 2y ≤ 120), la de 'como mínimo 3' con ≥ (y ≥ 3) y la no negatividad de x."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Una fábrica de bicicletas fabrica bicis urbanas (x) y bicis de montaña (y). Cada unidad de bicis urbanas necesita 4 horas de montaje y 2 horas de pintura; cada unidad de bicis de montaña necesita 3 horas de montaje y 1 horas de pintura. Se dispone como máximo de 50 horas de montaje y 120 horas de pintura. El beneficio es de 20 € por unidad de bicis urbanas y 30 € por unidad de bicis de montaña. ¿Qué restricción corresponde a los horas de montaje?",
+   "respuesta": "4x + 3y ≤ 50",
+   "distractores": [
+    {
+     "valor": "3x + 4y ≤ 50",
+     "error": "E02"
+    },
+    {
+     "valor": "4x + 3y ≥ 50",
+     "error": "E01"
+    },
+    {
+     "valor": "4x + 2y ≤ 50",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Haz una tabla: filas = productos, columnas = recursos y beneficio. Los horas de montaje usados son 4 por cada unidad de bicis urbanas y 3 por cada una de bicis de montaña: 4x + 3y, y no pueden superar 50.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado a un modelo de programación lineal: variables, restricciones y función objetivo. Los errores típicos son poner la desigualdad al revés ('como mínimo' es ≥, 'como máximo' o 'se dispone de' es ≤) y cruzar los coeficientes de x e y. Pídale que construya una tabla con una fila por producto y una columna por recurso antes de escribir nada.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y",
+     "texto": "x = unidades de bicis urbanas, y = unidades de bicis de montaña."
+    },
+    {
+     "paso": 2,
+     "operacion": "tabla",
+     "resultado": "",
+     "texto": "Recursos por unidad y disponibles."
+    },
+    {
+     "paso": 3,
+     "operacion": "traducir",
+     "resultado": "4x + 3y ≤ 50",
+     "texto": "Los horas de montaje usados son 4 por cada unidad de bicis urbanas y 3 por cada una de bicis de montaña: 4x + 3y, y no pueden superar 50."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Una imprenta fabrica carteles (x) y folletos (y). Cada unidad de carteles necesita 2 horas de máquina y 2 litros de tinta; cada unidad de folletos necesita 5 horas de máquina y 5 litros de tinta. Se dispone como máximo de 60 horas de máquina y 70 litros de tinta. El beneficio es de 30 € por unidad de carteles y 40 € por unidad de folletos. ¿Cuál es la función objetivo?",
+   "respuesta": "Maximizar F(x, y) = 30x + 40y",
+   "distractores": [
+    {
+     "valor": "Maximizar F(x, y) = 40x + 30y",
+     "error": "E02"
+    },
+    {
+     "valor": "Minimizar F(x, y) = 30x + 40y",
+     "error": null
+    },
+    {
+     "valor": "Maximizar F(x, y) = 60x + 70y",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Haz una tabla: filas = productos, columnas = recursos y beneficio. Se quiere el mayor beneficio: 30 € por cada unidad de carteles (x) y 40 € por cada una de folletos (y), así que F = 30x + 40y y se maximiza.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado a un modelo de programación lineal: variables, restricciones y función objetivo. Los errores típicos son poner la desigualdad al revés ('como mínimo' es ≥, 'como máximo' o 'se dispone de' es ≤) y cruzar los coeficientes de x e y. Pídale que construya una tabla con una fila por producto y una columna por recurso antes de escribir nada.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y",
+     "texto": "x = unidades de carteles, y = unidades de folletos."
+    },
+    {
+     "paso": 2,
+     "operacion": "tabla",
+     "resultado": "",
+     "texto": "Recursos por unidad y disponibles."
+    },
+    {
+     "paso": 3,
+     "operacion": "traducir",
+     "resultado": "Maximizar F(x, y) = 30x + 40y",
+     "texto": "Se quiere el mayor beneficio: 30 € por cada unidad de carteles (x) y 40 € por cada una de folletos (y), así que F = 30x + 40y y se maximiza."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Una pastelería fabrica tartas (x) y bizcochos (y). Cada unidad de tartas necesita 3 horas de horno y 3 kg de harina; cada unidad de bizcochos necesita 2 horas de horno y 2 kg de harina. Se dispone como máximo de 70 horas de horno y 100 kg de harina. El beneficio es de 45 € por unidad de tartas y 35 € por unidad de bizcochos. Además, hay que fabricar como mínimo 7 unidades de bizcochos. ¿Cuál es el conjunto de restricciones?",
+   "respuesta": "{3x + 2y ≤ 70; 3x + 2y ≤ 100; y ≥ 7; x ≥ 0}",
+   "distractores": [
+    {
+     "valor": "{3x + 2y ≤ 70; 3x + 2y ≤ 100; y ≤ 7; x ≥ 0}",
+     "error": "E01"
+    },
+    {
+     "valor": "{3x + 3y ≤ 70; 2x + 2y ≤ 100; y ≥ 7; x ≥ 0}",
+     "error": "E02"
+    },
+    {
+     "valor": "{3x + 2y ≤ 70; 3x + 2y ≤ 100; x ≥ 7; y ≥ 0}",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Haz una tabla: filas = productos, columnas = recursos y beneficio. Una restricción por recurso (3x + 2y ≤ 70 y 3x + 2y ≤ 100), la de 'como mínimo 7' con ≥ (y ≥ 7) y la no negatividad de x.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado a un modelo de programación lineal: variables, restricciones y función objetivo. Los errores típicos son poner la desigualdad al revés ('como mínimo' es ≥, 'como máximo' o 'se dispone de' es ≤) y cruzar los coeficientes de x e y. Pídale que construya una tabla con una fila por producto y una columna por recurso antes de escribir nada.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y",
+     "texto": "x = unidades de tartas, y = unidades de bizcochos."
+    },
+    {
+     "paso": 2,
+     "operacion": "tabla",
+     "resultado": "",
+     "texto": "Recursos por unidad y disponibles."
+    },
+    {
+     "paso": 3,
+     "operacion": "traducir",
+     "resultado": "{3x + 2y ≤ 70; 3x + 2y ≤ 100; y ≥ 7; x ≥ 0}",
+     "texto": "Una restricción por recurso (3x + 2y ≤ 70 y 3x + 2y ≤ 100), la de 'como mínimo 7' con ≥ (y ≥ 7) y la no negatividad de x."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un taller de cerámica fabrica jarrones (x) y cuencos (y). Cada unidad de jarrones necesita 1 horas de torno y 1 kg de arcilla; cada unidad de cuencos necesita 5 horas de torno y 5 kg de arcilla. Se dispone como máximo de 80 horas de torno y 70 kg de arcilla. El beneficio es de 15 € por unidad de jarrones y 40 € por unidad de cuencos. ¿Qué restricción corresponde a los kg de arcilla?",
+   "respuesta": "x + 5y ≤ 70",
+   "distractores": [
+    {
+     "valor": "5x + y ≤ 70",
+     "error": "E02"
+    },
+    {
+     "valor": "x + 5y ≥ 70",
+     "error": "E01"
+    },
+    {
+     "valor": "x + y ≤ 70",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Haz una tabla: filas = productos, columnas = recursos y beneficio. Los kg de arcilla usados son 1 por cada unidad de jarrones y 5 por cada una de cuencos: 1x + 5y, y no pueden superar 70.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado a un modelo de programación lineal: variables, restricciones y función objetivo. Los errores típicos son poner la desigualdad al revés ('como mínimo' es ≥, 'como máximo' o 'se dispone de' es ≤) y cruzar los coeficientes de x e y. Pídale que construya una tabla con una fila por producto y una columna por recurso antes de escribir nada.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y",
+     "texto": "x = unidades de jarrones, y = unidades de cuencos."
+    },
+    {
+     "paso": 2,
+     "operacion": "tabla",
+     "resultado": "",
+     "texto": "Recursos por unidad y disponibles."
+    },
+    {
+     "paso": 3,
+     "operacion": "traducir",
+     "resultado": "x + 5y ≤ 70",
+     "texto": "Los kg de arcilla usados son 1 por cada unidad de jarrones y 5 por cada una de cuencos: 1x + 5y, y no pueden superar 70."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Una cooperativa textil fabrica chaquetas (x) y pantalones (y). Cada unidad de chaquetas necesita 2 horas de corte y 2 horas de costura; cada unidad de pantalones necesita 5 horas de corte y 4 horas de costura. Se dispone como máximo de 100 horas de corte y 80 horas de costura. El beneficio es de 45 € por unidad de chaquetas y 40 € por unidad de pantalones. ¿Cuál es la función objetivo?",
+   "respuesta": "Maximizar F(x, y) = 45x + 40y",
+   "distractores": [
+    {
+     "valor": "Maximizar F(x, y) = 40x + 45y",
+     "error": "E02"
+    },
+    {
+     "valor": "Minimizar F(x, y) = 45x + 40y",
+     "error": null
+    },
+    {
+     "valor": "Maximizar F(x, y) = 100x + 80y",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Haz una tabla: filas = productos, columnas = recursos y beneficio. Se quiere el mayor beneficio: 45 € por cada unidad de chaquetas (x) y 40 € por cada una de pantalones (y), así que F = 45x + 40y y se maximiza.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado a un modelo de programación lineal: variables, restricciones y función objetivo. Los errores típicos son poner la desigualdad al revés ('como mínimo' es ≥, 'como máximo' o 'se dispone de' es ≤) y cruzar los coeficientes de x e y. Pídale que construya una tabla con una fila por producto y una columna por recurso antes de escribir nada.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y",
+     "texto": "x = unidades de chaquetas, y = unidades de pantalones."
+    },
+    {
+     "paso": 2,
+     "operacion": "tabla",
+     "resultado": "",
+     "texto": "Recursos por unidad y disponibles."
+    },
+    {
+     "paso": 3,
+     "operacion": "traducir",
+     "resultado": "Maximizar F(x, y) = 45x + 40y",
+     "texto": "Se quiere el mayor beneficio: 45 € por cada unidad de chaquetas (x) y 40 € por cada una de pantalones (y), así que F = 45x + 40y y se maximiza."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Una empresa de muebles fabrica armarios (x) y cómodas (y). Cada unidad de armarios necesita 1 horas de carpintería y 1 horas de barnizado; cada unidad de cómodas necesita 3 horas de carpintería y 3 horas de barnizado. Se dispone como máximo de 50 horas de carpintería y 80 horas de barnizado. El beneficio es de 35 € por unidad de armarios y 30 € por unidad de cómodas. Además, hay que fabricar como mínimo 7 unidades de cómodas. ¿Cuál es el conjunto de restricciones?",
+   "respuesta": "{x + 3y ≤ 50; x + 3y ≤ 80; y ≥ 7; x ≥ 0}",
+   "distractores": [
+    {
+     "valor": "{x + 3y ≤ 50; x + 3y ≤ 80; y ≤ 7; x ≥ 0}",
+     "error": "E01"
+    },
+    {
+     "valor": "{x + y ≤ 50; 3x + 3y ≤ 80; y ≥ 7; x ≥ 0}",
+     "error": "E02"
+    },
+    {
+     "valor": "{x + 3y ≤ 50; x + 3y ≤ 80; x ≥ 7; y ≥ 0}",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Haz una tabla: filas = productos, columnas = recursos y beneficio. Una restricción por recurso (1x + 3y ≤ 50 y 1x + 3y ≤ 80), la de 'como mínimo 7' con ≥ (y ≥ 7) y la no negatividad de x.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado a un modelo de programación lineal: variables, restricciones y función objetivo. Los errores típicos son poner la desigualdad al revés ('como mínimo' es ≥, 'como máximo' o 'se dispone de' es ≤) y cruzar los coeficientes de x e y. Pídale que construya una tabla con una fila por producto y una columna por recurso antes de escribir nada.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y",
+     "texto": "x = unidades de armarios, y = unidades de cómodas."
+    },
+    {
+     "paso": 2,
+     "operacion": "tabla",
+     "resultado": "",
+     "texto": "Recursos por unidad y disponibles."
+    },
+    {
+     "paso": 3,
+     "operacion": "traducir",
+     "resultado": "{x + 3y ≤ 50; x + 3y ≤ 80; y ≥ 7; x ≥ 0}",
+     "texto": "Una restricción por recurso (1x + 3y ≤ 50 y 1x + 3y ≤ 80), la de 'como mínimo 7' con ≥ (y ≥ 7) y la no negatividad de x."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un veterinario prepara pienso mezclando dos preparados, A (x kg) y B (y kg). Cada unidad de A aporta 1 unidades de proteínas y 1 de fibra; cada unidad de B, 4 y 6. Se necesitan como mínimo 60 unidades de proteínas y 70 de fibra. A cuesta 5 € y B 7 € la unidad; se quiere gastar lo menos posible. ¿Qué restricción garantiza el mínimo de proteínas?",
+   "respuesta": "x + 4y ≥ 60",
+   "distractores": [
+    {
+     "valor": "x + 4y ≤ 60",
+     "error": "E01"
+    },
+    {
+     "valor": "4x + y ≥ 60",
+     "error": "E02"
+    },
+    {
+     "valor": "x + 4y ≥ 70",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Organiza los datos en una tabla. 'Como mínimo' se traduce con ≥: 1x + 4y ≥ 60.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado a un modelo de programación lineal: variables, restricciones y función objetivo. Los errores típicos son poner la desigualdad al revés ('como mínimo' es ≥, 'como máximo' o 'se dispone de' es ≤) y cruzar los coeficientes de x e y. Pídale que construya una tabla con una fila por producto y una columna por recurso antes de escribir nada.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y",
+     "texto": "Cantidades de A y de B."
+    },
+    {
+     "paso": 2,
+     "operacion": "traducir",
+     "resultado": "x + 4y ≥ 60",
+     "texto": "'Como mínimo' se traduce con ≥: 1x + 4y ≥ 60."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Una nutricionista combina dos batidos, A (x vasos) y B (y vasos). Cada unidad de A aporta 2 unidades de vitamina C y 4 de calcio; cada unidad de B, 3 y 6. Se necesitan como mínimo 40 unidades de vitamina C y 50 de calcio. A cuesta 5 € y B 5 € la unidad; se quiere gastar lo menos posible. ¿Cuál es la función objetivo?",
+   "respuesta": "Minimizar C(x, y) = 5x + 5y",
+   "distractores": [
+    {
+     "valor": "Maximizar C(x, y) = 5x + 5y",
+     "error": null
+    },
+    {
+     "valor": "Minimizar C(x, y) = 7x + 5y",
+     "error": null
+    },
+    {
+     "valor": "Minimizar C(x, y) = 40x + 50y",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Organiza los datos en una tabla. El objetivo es el coste: 5 € por unidad de A y 5 € por unidad de B; como se quiere gastar poco, se minimiza.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado a un modelo de programación lineal: variables, restricciones y función objetivo. Los errores típicos son poner la desigualdad al revés ('como mínimo' es ≥, 'como máximo' o 'se dispone de' es ≤) y cruzar los coeficientes de x e y. Pídale que construya una tabla con una fila por producto y una columna por recurso antes de escribir nada.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y",
+     "texto": "Cantidades de A y de B."
+    },
+    {
+     "paso": 2,
+     "operacion": "traducir",
+     "resultado": "Minimizar C(x, y) = 5x + 5y",
+     "texto": "El objetivo es el coste: 5 € por unidad de A y 5 € por unidad de B; como se quiere gastar poco, se minimiza."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un jardinero mezcla dos abonos, A (x sacos) y B (y sacos). Cada unidad de A aporta 2 unidades de nitrógeno y 5 de potasio; cada unidad de B, 1 y 4. Se necesitan como mínimo 30 unidades de nitrógeno y 80 de potasio. A cuesta 5 € y B 6 € la unidad; se quiere gastar lo menos posible. ¿Qué restricción garantiza el mínimo de potasio?",
+   "respuesta": "5x + 4y ≥ 80",
+   "distractores": [
+    {
+     "valor": "5x + 4y ≤ 80",
+     "error": "E01"
+    },
+    {
+     "valor": "4x + 5y ≥ 80",
+     "error": "E02"
+    },
+    {
+     "valor": "5x + 4y ≥ 30",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Organiza los datos en una tabla. 'Como mínimo' se traduce con ≥: 5x + 4y ≥ 80.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado a un modelo de programación lineal: variables, restricciones y función objetivo. Los errores típicos son poner la desigualdad al revés ('como mínimo' es ≥, 'como máximo' o 'se dispone de' es ≤) y cruzar los coeficientes de x e y. Pídale que construya una tabla con una fila por producto y una columna por recurso antes de escribir nada.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y",
+     "texto": "Cantidades de A y de B."
+    },
+    {
+     "paso": 2,
+     "operacion": "traducir",
+     "resultado": "5x + 4y ≥ 80",
+     "texto": "'Como mínimo' se traduce con ≥: 5x + 4y ≥ 80."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un club de montaña compra dos tipos de barritas, A (x cajas) y B (y cajas). Cada unidad de A aporta 6 unidades de hidratos y 2 de proteínas; cada unidad de B, 5 y 1. Se necesitan como mínimo 40 unidades de hidratos y 80 de proteínas. A cuesta 9 € y B 3 € la unidad; se quiere gastar lo menos posible. ¿Cuál es la función objetivo?",
+   "respuesta": "Minimizar C(x, y) = 9x + 3y",
+   "distractores": [
+    {
+     "valor": "Maximizar C(x, y) = 9x + 3y",
+     "error": null
+    },
+    {
+     "valor": "Minimizar C(x, y) = 3x + 9y",
+     "error": "E02"
+    },
+    {
+     "valor": "Minimizar C(x, y) = 40x + 80y",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Organiza los datos en una tabla. El objetivo es el coste: 9 € por unidad de A y 3 € por unidad de B; como se quiere gastar poco, se minimiza.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado a un modelo de programación lineal: variables, restricciones y función objetivo. Los errores típicos son poner la desigualdad al revés ('como mínimo' es ≥, 'como máximo' o 'se dispone de' es ≤) y cruzar los coeficientes de x e y. Pídale que construya una tabla con una fila por producto y una columna por recurso antes de escribir nada.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y",
+     "texto": "Cantidades de A y de B."
+    },
+    {
+     "paso": 2,
+     "operacion": "traducir",
+     "resultado": "Minimizar C(x, y) = 9x + 3y",
+     "texto": "El objetivo es el coste: 9 € por unidad de A y 3 € por unidad de B; como se quiere gastar poco, se minimiza."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Una granja de peces combina dos piensos, A (x kg) y B (y kg). Cada unidad de A aporta 5 unidades de grasas y 5 de proteínas; cada unidad de B, 1 y 1. Se necesitan como mínimo 30 unidades de grasas y 40 de proteínas. A cuesta 4 € y B 9 € la unidad; se quiere gastar lo menos posible. ¿Qué restricción garantiza el mínimo de grasas?",
+   "respuesta": "5x + y ≥ 30",
+   "distractores": [
+    {
+     "valor": "5x + y ≤ 30",
+     "error": "E01"
+    },
+    {
+     "valor": "x + 5y ≥ 30",
+     "error": "E02"
+    },
+    {
+     "valor": "5x + y ≥ 40",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Organiza los datos en una tabla. 'Como mínimo' se traduce con ≥: 5x + 1y ≥ 30.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado a un modelo de programación lineal: variables, restricciones y función objetivo. Los errores típicos son poner la desigualdad al revés ('como mínimo' es ≥, 'como máximo' o 'se dispone de' es ≤) y cruzar los coeficientes de x e y. Pídale que construya una tabla con una fila por producto y una columna por recurso antes de escribir nada.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y",
+     "texto": "Cantidades de A y de B."
+    },
+    {
+     "paso": 2,
+     "operacion": "traducir",
+     "resultado": "5x + y ≥ 30",
+     "texto": "'Como mínimo' se traduce con ≥: 5x + 1y ≥ 30."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un comedor escolar combina dos menús, A (x raciones) y B (y raciones). Cada unidad de A aporta 3 unidades de hierro y 3 de fibra; cada unidad de B, 6 y 6. Se necesitan como mínimo 60 unidades de hierro y 80 de fibra. A cuesta 4 € y B 2 € la unidad; se quiere gastar lo menos posible. ¿Cuál es la función objetivo?",
+   "respuesta": "Minimizar C(x, y) = 4x + 2y",
+   "distractores": [
+    {
+     "valor": "Maximizar C(x, y) = 4x + 2y",
+     "error": null
+    },
+    {
+     "valor": "Minimizar C(x, y) = 2x + 4y",
+     "error": "E02"
+    },
+    {
+     "valor": "Minimizar C(x, y) = 60x + 80y",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Organiza los datos en una tabla. El objetivo es el coste: 4 € por unidad de A y 2 € por unidad de B; como se quiere gastar poco, se minimiza.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado a un modelo de programación lineal: variables, restricciones y función objetivo. Los errores típicos son poner la desigualdad al revés ('como mínimo' es ≥, 'como máximo' o 'se dispone de' es ≤) y cruzar los coeficientes de x e y. Pídale que construya una tabla con una fila por producto y una columna por recurso antes de escribir nada.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y",
+     "texto": "Cantidades de A y de B."
+    },
+    {
+     "paso": 2,
+     "operacion": "traducir",
+     "resultado": "Minimizar C(x, y) = 4x + 2y",
+     "texto": "El objetivo es el coste: 4 € por unidad de A y 2 € por unidad de B; como se quiere gastar poco, se minimiza."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Una ganadera mezcla dos forrajes, A (x fardos) y B (y fardos). Cada unidad de A aporta 2 unidades de energía y 2 de minerales; cada unidad de B, 6 y 5. Se necesitan como mínimo 70 unidades de energía y 40 de minerales. A cuesta 3 € y B 5 € la unidad; se quiere gastar lo menos posible. ¿Qué restricción garantiza el mínimo de minerales?",
+   "respuesta": "2x + 5y ≥ 40",
+   "distractores": [
+    {
+     "valor": "2x + 5y ≤ 40",
+     "error": "E01"
+    },
+    {
+     "valor": "5x + 2y ≥ 40",
+     "error": "E02"
+    },
+    {
+     "valor": "2x + 5y ≥ 70",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Organiza los datos en una tabla. 'Como mínimo' se traduce con ≥: 2x + 5y ≥ 40.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado a un modelo de programación lineal: variables, restricciones y función objetivo. Los errores típicos son poner la desigualdad al revés ('como mínimo' es ≥, 'como máximo' o 'se dispone de' es ≤) y cruzar los coeficientes de x e y. Pídale que construya una tabla con una fila por producto y una columna por recurso antes de escribir nada.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y",
+     "texto": "Cantidades de A y de B."
+    },
+    {
+     "paso": 2,
+     "operacion": "traducir",
+     "resultado": "2x + 5y ≥ 40",
+     "texto": "'Como mínimo' se traduce con ≥: 2x + 5y ≥ 40."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un taller produce x mesas e y sillas al día. Una condición del contrato dice que el número de sillas debe ser al menos el doble que el de mesas. ¿Qué inecuación la expresa?",
+   "respuesta": "y ≥ 2x",
+   "distractores": [
+    {
+     "valor": "y ≤ 2x",
+     "error": "E01"
+    },
+    {
+     "valor": "x ≥ 2y",
+     "error": "E02"
+    },
+    {
+     "valor": "2y ≥ x",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Traduce palabra a palabra con las variables: x son las mesas e y las sillas. 'el número de sillas debe ser al menos el doble que el de mesas' se escribe y ≥ 2x. Comprueba con números: elige valores que cumplan la frase y mira si cumplen la inecuación.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado a un modelo de programación lineal: variables, restricciones y función objetivo. Los errores típicos son poner la desigualdad al revés ('como mínimo' es ≥, 'como máximo' o 'se dispone de' es ≤) y cruzar los coeficientes de x e y. Pídale que construya una tabla con una fila por producto y una columna por recurso antes de escribir nada.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x = mesas, y = sillas",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "traducir",
+     "resultado": "y ≥ 2x",
+     "texto": "Cuidado con 'al menos', 'como máximo' y quién es el doble de quién."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "ejemplo numérico",
+     "texto": "Probamos con valores concretos."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un taller produce x macetas e y jardineras al día. Una condición del contrato dice que no se pueden fabricar más macetas que jardineras. ¿Qué inecuación la expresa?",
+   "respuesta": "x ≤ y",
+   "distractores": [
+    {
+     "valor": "x ≥ y",
+     "error": "E01"
+    },
+    {
+     "valor": "x ≤ 2y",
+     "error": null
+    },
+    {
+     "valor": "x + y ≥ 1",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Traduce palabra a palabra con las variables: x son las macetas e y las jardineras. 'no se pueden fabricar más macetas que jardineras' se escribe x ≤ y. Comprueba con números: elige valores que cumplan la frase y mira si cumplen la inecuación.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado a un modelo de programación lineal: variables, restricciones y función objetivo. Los errores típicos son poner la desigualdad al revés ('como mínimo' es ≥, 'como máximo' o 'se dispone de' es ≤) y cruzar los coeficientes de x e y. Pídale que construya una tabla con una fila por producto y una columna por recurso antes de escribir nada.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x = macetas, y = jardineras",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "traducir",
+     "resultado": "x ≤ y",
+     "texto": "Cuidado con 'al menos', 'como máximo' y quién es el doble de quién."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "ejemplo numérico",
+     "texto": "Probamos con valores concretos."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un taller produce x camisetas e y sudaderas al día. Una condición del contrato dice que entre camisetas y sudaderas deben ser como mínimo 47 unidades. ¿Qué inecuación la expresa?",
+   "respuesta": "x + y ≥ 47",
+   "distractores": [
+    {
+     "valor": "x + y ≤ 47",
+     "error": "E01"
+    },
+    {
+     "valor": "x ≥ 47",
+     "error": null
+    },
+    {
+     "valor": "xy ≥ 47",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Traduce palabra a palabra con las variables: x son las camisetas e y las sudaderas. 'entre camisetas y sudaderas deben ser como mínimo 47 unidades' se escribe x + y ≥ 47. Comprueba con números: elige valores que cumplan la frase y mira si cumplen la inecuación.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado a un modelo de programación lineal: variables, restricciones y función objetivo. Los errores típicos son poner la desigualdad al revés ('como mínimo' es ≥, 'como máximo' o 'se dispone de' es ≤) y cruzar los coeficientes de x e y. Pídale que construya una tabla con una fila por producto y una columna por recurso antes de escribir nada.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x = camisetas, y = sudaderas",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "traducir",
+     "resultado": "x + y ≥ 47",
+     "texto": "Cuidado con 'al menos', 'como máximo' y quién es el doble de quién."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "ejemplo numérico",
+     "texto": "Probamos con valores concretos."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un taller produce x lámparas e y apliques al día. Una condición del contrato dice que las lámparas deben ser como máximo el triple que las apliques. ¿Qué inecuación la expresa?",
+   "respuesta": "x ≤ 3y",
+   "distractores": [
+    {
+     "valor": "x ≥ 3y",
+     "error": "E01"
+    },
+    {
+     "valor": "y ≤ 3x",
+     "error": "E02"
+    },
+    {
+     "valor": "3x ≤ y",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Traduce palabra a palabra con las variables: x son las lámparas e y las apliques. 'las lámparas deben ser como máximo el triple que las apliques' se escribe x ≤ 3y. Comprueba con números: elige valores que cumplan la frase y mira si cumplen la inecuación.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado a un modelo de programación lineal: variables, restricciones y función objetivo. Los errores típicos son poner la desigualdad al revés ('como mínimo' es ≥, 'como máximo' o 'se dispone de' es ≤) y cruzar los coeficientes de x e y. Pídale que construya una tabla con una fila por producto y una columna por recurso antes de escribir nada.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x = lámparas, y = apliques",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "traducir",
+     "resultado": "x ≤ 3y",
+     "texto": "Cuidado con 'al menos', 'como máximo' y quién es el doble de quién."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "ejemplo numérico",
+     "texto": "Probamos con valores concretos."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un taller produce x cajas e y bandejas al día. Una condición del contrato dice que las bandejas no pueden superar en más de 27 unidades a las cajas. ¿Qué inecuación la expresa?",
+   "respuesta": "y − x ≤ 27",
+   "distractores": [
+    {
+     "valor": "y − x ≥ 27",
+     "error": "E01"
+    },
+    {
+     "valor": "x − y ≤ 27",
+     "error": "E02"
+    },
+    {
+     "valor": "y ≤ 27",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Traduce palabra a palabra con las variables: x son las cajas e y las bandejas. 'las bandejas no pueden superar en más de 27 unidades a las cajas' se escribe y − x ≤ 27. Comprueba con números: elige valores que cumplan la frase y mira si cumplen la inecuación.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado a un modelo de programación lineal: variables, restricciones y función objetivo. Los errores típicos son poner la desigualdad al revés ('como mínimo' es ≥, 'como máximo' o 'se dispone de' es ≤) y cruzar los coeficientes de x e y. Pídale que construya una tabla con una fila por producto y una columna por recurso antes de escribir nada.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x = cajas, y = bandejas",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "traducir",
+     "resultado": "y − x ≤ 27",
+     "texto": "Cuidado con 'al menos', 'como máximo' y quién es el doble de quién."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "ejemplo numérico",
+     "texto": "Probamos con valores concretos."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un taller produce x maletas e y mochilas al día. Una condición del contrato dice que el número de mochilas debe ser al menos el doble que el de maletas. ¿Qué inecuación la expresa?",
+   "respuesta": "y ≥ 2x",
+   "distractores": [
+    {
+     "valor": "y ≤ 2x",
+     "error": "E01"
+    },
+    {
+     "valor": "x ≥ 2y",
+     "error": "E02"
+    },
+    {
+     "valor": "2y ≥ x",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Traduce palabra a palabra con las variables: x son las maletas e y las mochilas. 'el número de mochilas debe ser al menos el doble que el de maletas' se escribe y ≥ 2x. Comprueba con números: elige valores que cumplan la frase y mira si cumplen la inecuación.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado a un modelo de programación lineal: variables, restricciones y función objetivo. Los errores típicos son poner la desigualdad al revés ('como mínimo' es ≥, 'como máximo' o 'se dispone de' es ≤) y cruzar los coeficientes de x e y. Pídale que construya una tabla con una fila por producto y una columna por recurso antes de escribir nada.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x = maletas, y = mochilas",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "traducir",
+     "resultado": "y ≥ 2x",
+     "texto": "Cuidado con 'al menos', 'como máximo' y quién es el doble de quién."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "ejemplo numérico",
+     "texto": "Probamos con valores concretos."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un taller produce x tazas e y platos al día. Una condición del contrato dice que no se pueden fabricar más tazas que platos. ¿Qué inecuación la expresa?",
+   "respuesta": "x ≤ y",
+   "distractores": [
+    {
+     "valor": "x ≥ y",
+     "error": "E01"
+    },
+    {
+     "valor": "x ≤ 2y",
+     "error": null
+    },
+    {
+     "valor": "x + y ≥ 1",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Traduce palabra a palabra con las variables: x son las tazas e y las platos. 'no se pueden fabricar más tazas que platos' se escribe x ≤ y. Comprueba con números: elige valores que cumplan la frase y mira si cumplen la inecuación.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado a un modelo de programación lineal: variables, restricciones y función objetivo. Los errores típicos son poner la desigualdad al revés ('como mínimo' es ≥, 'como máximo' o 'se dispone de' es ≤) y cruzar los coeficientes de x e y. Pídale que construya una tabla con una fila por producto y una columna por recurso antes de escribir nada.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x = tazas, y = platos",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "traducir",
+     "resultado": "x ≤ y",
+     "texto": "Cuidado con 'al menos', 'como máximo' y quién es el doble de quién."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "ejemplo numérico",
+     "texto": "Probamos con valores concretos."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un taller produce x velas e y jabones al día. Una condición del contrato dice que entre velas y jabones deben ser como mínimo 13 unidades. ¿Qué inecuación la expresa?",
+   "respuesta": "x + y ≥ 13",
+   "distractores": [
+    {
+     "valor": "x + y ≤ 13",
+     "error": "E01"
+    },
+    {
+     "valor": "x ≥ 13",
+     "error": null
+    },
+    {
+     "valor": "xy ≥ 13",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Traduce palabra a palabra con las variables: x son las velas e y las jabones. 'entre velas y jabones deben ser como mínimo 13 unidades' se escribe x + y ≥ 13. Comprueba con números: elige valores que cumplan la frase y mira si cumplen la inecuación.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado a un modelo de programación lineal: variables, restricciones y función objetivo. Los errores típicos son poner la desigualdad al revés ('como mínimo' es ≥, 'como máximo' o 'se dispone de' es ≤) y cruzar los coeficientes de x e y. Pídale que construya una tabla con una fila por producto y una columna por recurso antes de escribir nada.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x = velas, y = jabones",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "traducir",
+     "resultado": "x + y ≥ 13",
+     "texto": "Cuidado con 'al menos', 'como máximo' y quién es el doble de quién."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "ejemplo numérico",
+     "texto": "Probamos con valores concretos."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un taller produce x mesas e y sillas al día. Una condición del contrato dice que las mesas deben ser como máximo el triple que las sillas. ¿Qué inecuación la expresa?",
+   "respuesta": "x ≤ 3y",
+   "distractores": [
+    {
+     "valor": "x ≥ 3y",
+     "error": "E01"
+    },
+    {
+     "valor": "y ≤ 3x",
+     "error": "E02"
+    },
+    {
+     "valor": "3x ≤ y",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Traduce palabra a palabra con las variables: x son las mesas e y las sillas. 'las mesas deben ser como máximo el triple que las sillas' se escribe x ≤ 3y. Comprueba con números: elige valores que cumplan la frase y mira si cumplen la inecuación.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado a un modelo de programación lineal: variables, restricciones y función objetivo. Los errores típicos son poner la desigualdad al revés ('como mínimo' es ≥, 'como máximo' o 'se dispone de' es ≤) y cruzar los coeficientes de x e y. Pídale que construya una tabla con una fila por producto y una columna por recurso antes de escribir nada.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x = mesas, y = sillas",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "traducir",
+     "resultado": "x ≤ 3y",
+     "texto": "Cuidado con 'al menos', 'como máximo' y quién es el doble de quién."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "ejemplo numérico",
+     "texto": "Probamos con valores concretos."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un taller produce x macetas e y jardineras al día. Una condición del contrato dice que las jardineras no pueden superar en más de 46 unidades a las macetas. ¿Qué inecuación la expresa?",
+   "respuesta": "y − x ≤ 46",
+   "distractores": [
+    {
+     "valor": "y − x ≥ 46",
+     "error": "E01"
+    },
+    {
+     "valor": "x − y ≤ 46",
+     "error": "E02"
+    },
+    {
+     "valor": "y ≤ 46",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Traduce palabra a palabra con las variables: x son las macetas e y las jardineras. 'las jardineras no pueden superar en más de 46 unidades a las macetas' se escribe y − x ≤ 46. Comprueba con números: elige valores que cumplan la frase y mira si cumplen la inecuación.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado a un modelo de programación lineal: variables, restricciones y función objetivo. Los errores típicos son poner la desigualdad al revés ('como mínimo' es ≥, 'como máximo' o 'se dispone de' es ≤) y cruzar los coeficientes de x e y. Pídale que construya una tabla con una fila por producto y una columna por recurso antes de escribir nada.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x = macetas, y = jardineras",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "traducir",
+     "resultado": "y − x ≤ 46",
+     "texto": "Cuidado con 'al menos', 'como máximo' y quién es el doble de quién."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "ejemplo numérico",
+     "texto": "Probamos con valores concretos."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un veterinario prepara pienso mezclando dos preparados, A (x kg) y B (y kg). Cada unidad de A aporta 2 unidades de proteínas y 6 de fibra; cada unidad de B, 1 y 5. Hacen falta como mínimo 80 de proteínas y 40 de fibra, y no se pueden usar más de 16 unidades de A. ¿Cuáles son las restricciones?",
+   "respuesta": "{2x + y ≥ 80; 6x + 5y ≥ 40; x ≤ 16; x ≥ 0; y ≥ 0}",
+   "distractores": [
+    {
+     "valor": "{2x + y ≤ 80; 6x + 5y ≤ 40; x ≤ 16; x ≥ 0; y ≥ 0}",
+     "error": "E01"
+    },
+    {
+     "valor": "{2x + 6y ≥ 80; x + 5y ≥ 40; x ≤ 16; x ≥ 0; y ≥ 0}",
+     "error": "E02"
+    },
+    {
+     "valor": "{2x + y ≥ 80; 6x + 5y ≥ 40; x ≥ 16; x ≥ 0; y ≥ 0}",
+     "error": "E01"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Una restricción por nutriente con ≥ (son mínimos), la del tope de A con ≤, y la no negatividad. Los coeficientes de cada fila salen de la columna de cada nutriente: 2x + y ≥ 80 y 6x + 5y ≥ 40.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado a un modelo de programación lineal: variables, restricciones y función objetivo. Los errores típicos son poner la desigualdad al revés ('como mínimo' es ≥, 'como máximo' o 'se dispone de' es ≤) y cruzar los coeficientes de x e y. Pídale que construya una tabla con una fila por producto y una columna por recurso antes de escribir nada.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "tabla",
+     "resultado": "",
+     "texto": "Nutrientes por unidad de A y B."
+    },
+    {
+     "paso": 2,
+     "operacion": "mínimos",
+     "resultado": "≥",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "tope",
+     "resultado": "x ≤ 16",
+     "texto": ""
+    },
+    {
+     "paso": 4,
+     "operacion": "no negatividad",
+     "resultado": "x ≥ 0, y ≥ 0",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Una nutricionista combina dos batidos, A (x vasos) y B (y vasos). Cada unidad de A aporta 1 unidades de vitamina C y 6 de calcio; cada unidad de B, 5 y 2. Hacen falta como mínimo 40 de vitamina C y 60 de calcio, y no se pueden usar más de 19 unidades de A. ¿Cuáles son las restricciones?",
+   "respuesta": "{x + 5y ≥ 40; 6x + 2y ≥ 60; x ≤ 19; x ≥ 0; y ≥ 0}",
+   "distractores": [
+    {
+     "valor": "{x + 5y ≤ 40; 6x + 2y ≤ 60; x ≤ 19; x ≥ 0; y ≥ 0}",
+     "error": "E01"
+    },
+    {
+     "valor": "{x + 6y ≥ 40; 5x + 2y ≥ 60; x ≤ 19; x ≥ 0; y ≥ 0}",
+     "error": "E02"
+    },
+    {
+     "valor": "{x + 5y ≥ 40; 6x + 2y ≥ 60; x ≥ 19; x ≥ 0; y ≥ 0}",
+     "error": "E01"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Una restricción por nutriente con ≥ (son mínimos), la del tope de A con ≤, y la no negatividad. Los coeficientes de cada fila salen de la columna de cada nutriente: x + 5y ≥ 40 y 6x + 2y ≥ 60.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado a un modelo de programación lineal: variables, restricciones y función objetivo. Los errores típicos son poner la desigualdad al revés ('como mínimo' es ≥, 'como máximo' o 'se dispone de' es ≤) y cruzar los coeficientes de x e y. Pídale que construya una tabla con una fila por producto y una columna por recurso antes de escribir nada.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "tabla",
+     "resultado": "",
+     "texto": "Nutrientes por unidad de A y B."
+    },
+    {
+     "paso": 2,
+     "operacion": "mínimos",
+     "resultado": "≥",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "tope",
+     "resultado": "x ≤ 19",
+     "texto": ""
+    },
+    {
+     "paso": 4,
+     "operacion": "no negatividad",
+     "resultado": "x ≥ 0, y ≥ 0",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un jardinero mezcla dos abonos, A (x sacos) y B (y sacos). Cada unidad de A aporta 2 unidades de nitrógeno y 4 de potasio; cada unidad de B, 6 y 2. Hacen falta como mínimo 80 de nitrógeno y 90 de potasio, y no se pueden usar más de 17 unidades de A. ¿Cuáles son las restricciones?",
+   "respuesta": "{2x + 6y ≥ 80; 4x + 2y ≥ 90; x ≤ 17; x ≥ 0; y ≥ 0}",
+   "distractores": [
+    {
+     "valor": "{2x + 6y ≤ 80; 4x + 2y ≤ 90; x ≤ 17; x ≥ 0; y ≥ 0}",
+     "error": "E01"
+    },
+    {
+     "valor": "{2x + 4y ≥ 80; 6x + 2y ≥ 90; x ≤ 17; x ≥ 0; y ≥ 0}",
+     "error": "E02"
+    },
+    {
+     "valor": "{2x + 6y ≥ 80; 4x + 2y ≥ 90; x ≥ 17; x ≥ 0; y ≥ 0}",
+     "error": "E01"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Una restricción por nutriente con ≥ (son mínimos), la del tope de A con ≤, y la no negatividad. Los coeficientes de cada fila salen de la columna de cada nutriente: 2x + 6y ≥ 80 y 4x + 2y ≥ 90.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado a un modelo de programación lineal: variables, restricciones y función objetivo. Los errores típicos son poner la desigualdad al revés ('como mínimo' es ≥, 'como máximo' o 'se dispone de' es ≤) y cruzar los coeficientes de x e y. Pídale que construya una tabla con una fila por producto y una columna por recurso antes de escribir nada.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "tabla",
+     "resultado": "",
+     "texto": "Nutrientes por unidad de A y B."
+    },
+    {
+     "paso": 2,
+     "operacion": "mínimos",
+     "resultado": "≥",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "tope",
+     "resultado": "x ≤ 17",
+     "texto": ""
+    },
+    {
+     "paso": 4,
+     "operacion": "no negatividad",
+     "resultado": "x ≥ 0, y ≥ 0",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un club de montaña compra dos tipos de barritas, A (x cajas) y B (y cajas). Cada unidad de A aporta 4 unidades de hidratos y 1 de proteínas; cada unidad de B, 2 y 5. Hacen falta como mínimo 50 de hidratos y 70 de proteínas, y no se pueden usar más de 25 unidades de A. ¿Cuáles son las restricciones?",
+   "respuesta": "{4x + 2y ≥ 50; x + 5y ≥ 70; x ≤ 25; x ≥ 0; y ≥ 0}",
+   "distractores": [
+    {
+     "valor": "{4x + 2y ≤ 50; x + 5y ≤ 70; x ≤ 25; x ≥ 0; y ≥ 0}",
+     "error": "E01"
+    },
+    {
+     "valor": "{4x + y ≥ 50; 2x + 5y ≥ 70; x ≤ 25; x ≥ 0; y ≥ 0}",
+     "error": "E02"
+    },
+    {
+     "valor": "{4x + 2y ≥ 50; x + 5y ≥ 70; x ≥ 25; x ≥ 0; y ≥ 0}",
+     "error": "E01"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Una restricción por nutriente con ≥ (son mínimos), la del tope de A con ≤, y la no negatividad. Los coeficientes de cada fila salen de la columna de cada nutriente: 4x + 2y ≥ 50 y x + 5y ≥ 70.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado a un modelo de programación lineal: variables, restricciones y función objetivo. Los errores típicos son poner la desigualdad al revés ('como mínimo' es ≥, 'como máximo' o 'se dispone de' es ≤) y cruzar los coeficientes de x e y. Pídale que construya una tabla con una fila por producto y una columna por recurso antes de escribir nada.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "tabla",
+     "resultado": "",
+     "texto": "Nutrientes por unidad de A y B."
+    },
+    {
+     "paso": 2,
+     "operacion": "mínimos",
+     "resultado": "≥",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "tope",
+     "resultado": "x ≤ 25",
+     "texto": ""
+    },
+    {
+     "paso": 4,
+     "operacion": "no negatividad",
+     "resultado": "x ≥ 0, y ≥ 0",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Una granja de peces combina dos piensos, A (x kg) y B (y kg). Cada unidad de A aporta 6 unidades de grasas y 2 de proteínas; cada unidad de B, 3 y 4. Hacen falta como mínimo 70 de grasas y 50 de proteínas, y no se pueden usar más de 14 unidades de A. ¿Cuáles son las restricciones?",
+   "respuesta": "{6x + 3y ≥ 70; 2x + 4y ≥ 50; x ≤ 14; x ≥ 0; y ≥ 0}",
+   "distractores": [
+    {
+     "valor": "{6x + 3y ≤ 70; 2x + 4y ≤ 50; x ≤ 14; x ≥ 0; y ≥ 0}",
+     "error": "E01"
+    },
+    {
+     "valor": "{6x + 2y ≥ 70; 3x + 4y ≥ 50; x ≤ 14; x ≥ 0; y ≥ 0}",
+     "error": "E02"
+    },
+    {
+     "valor": "{6x + 3y ≥ 70; 2x + 4y ≥ 50; x ≥ 14; x ≥ 0; y ≥ 0}",
+     "error": "E01"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Una restricción por nutriente con ≥ (son mínimos), la del tope de A con ≤, y la no negatividad. Los coeficientes de cada fila salen de la columna de cada nutriente: 6x + 3y ≥ 70 y 2x + 4y ≥ 50.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado a un modelo de programación lineal: variables, restricciones y función objetivo. Los errores típicos son poner la desigualdad al revés ('como mínimo' es ≥, 'como máximo' o 'se dispone de' es ≤) y cruzar los coeficientes de x e y. Pídale que construya una tabla con una fila por producto y una columna por recurso antes de escribir nada.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "tabla",
+     "resultado": "",
+     "texto": "Nutrientes por unidad de A y B."
+    },
+    {
+     "paso": 2,
+     "operacion": "mínimos",
+     "resultado": "≥",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "tope",
+     "resultado": "x ≤ 14",
+     "texto": ""
+    },
+    {
+     "paso": 4,
+     "operacion": "no negatividad",
+     "resultado": "x ≥ 0, y ≥ 0",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un comedor escolar combina dos menús, A (x raciones) y B (y raciones). Cada unidad de A aporta 6 unidades de hierro y 4 de fibra; cada unidad de B, 1 y 1. Hacen falta como mínimo 70 de hierro y 50 de fibra, y no se pueden usar más de 30 unidades de A. ¿Cuáles son las restricciones?",
+   "respuesta": "{6x + y ≥ 70; 4x + y ≥ 50; x ≤ 30; x ≥ 0; y ≥ 0}",
+   "distractores": [
+    {
+     "valor": "{6x + y ≤ 70; 4x + y ≤ 50; x ≤ 30; x ≥ 0; y ≥ 0}",
+     "error": "E01"
+    },
+    {
+     "valor": "{6x + 4y ≥ 70; x + y ≥ 50; x ≤ 30; x ≥ 0; y ≥ 0}",
+     "error": "E02"
+    },
+    {
+     "valor": "{6x + y ≥ 70; 4x + y ≥ 50; x ≥ 30; x ≥ 0; y ≥ 0}",
+     "error": "E01"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Una restricción por nutriente con ≥ (son mínimos), la del tope de A con ≤, y la no negatividad. Los coeficientes de cada fila salen de la columna de cada nutriente: 6x + y ≥ 70 y 4x + y ≥ 50.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado a un modelo de programación lineal: variables, restricciones y función objetivo. Los errores típicos son poner la desigualdad al revés ('como mínimo' es ≥, 'como máximo' o 'se dispone de' es ≤) y cruzar los coeficientes de x e y. Pídale que construya una tabla con una fila por producto y una columna por recurso antes de escribir nada.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "tabla",
+     "resultado": "",
+     "texto": "Nutrientes por unidad de A y B."
+    },
+    {
+     "paso": 2,
+     "operacion": "mínimos",
+     "resultado": "≥",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "tope",
+     "resultado": "x ≤ 30",
+     "texto": ""
+    },
+    {
+     "paso": 4,
+     "operacion": "no negatividad",
+     "resultado": "x ≥ 0, y ≥ 0",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P05"
+  }
+ ]
+}
