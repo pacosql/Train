@@ -21,6 +21,9 @@
     .op:disabled { opacity: 1; }
     .enunciado { font-size: 1.6rem; line-height: 1.35; white-space: pre-wrap; margin: 18px 0 6px; font-family: var(--sans); }
     .enunciado.largo { font-size: 1.2rem; }
+    /* Dibujos con caracteres (cuadrículas, rectas, barras): fuente de ancho fijo para que se alineen. */
+    .enunciado.dibujo { font-family: ui-monospace, "SF Mono", Menlo, Consolas, "Noto Color Emoji", monospace; font-size: 1.1rem; line-height: 1.25; overflow-x: auto; }
+    .op.dibujo { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 0.95rem; white-space: pre-wrap; }
     .alumnos button { display: block; width: 100%; text-align: left; font-size: 1.2rem; padding: 16px; margin: 8px 0; }
     .grande { font-size: 1.2rem; padding: 16px 22px; width: 100%; }
     .fb { border-radius: 14px; padding: 14px 16px; margin: 12px 0; }
@@ -128,14 +131,17 @@
       let primera = null, cambios = 0, sel = null;
       const largo = r.opciones.some((o) => String(o).length > 10);
       const enunLargo = r.enunciado.length > 70;
+      const DIB = /[─│├┤┼┌┐└┘●■□▇🟦🟥⬜🟩🟨]/;
+      const dibujo = DIB.test(r.enunciado) && r.enunciado.includes("\n");
+      const opDibujo = r.opciones.some((o) => DIB.test(String(o)));
       const cab = tipo === "prueba_nivel"
         ? `<div class="prog"><div class="bar"><i style="width:${r.progreso || 0}%"></i></div><span class="small muted">prueba</span></div>`
         : `<div class="prog"><div class="bar"><i style="width:${Math.min(100, n * 100 / 15)}%"></i></div><span class="small muted">${n}</span></div>`;
       app.innerHTML = `${cab}
         <div class="row" style="justify-content:space-between;margin-top:10px"><span class="pill">${M.esc(r.habilidad.nombre_padres || r.habilidad.nombre)}</span>
           <button class="oir" id="oir" title="Leer en voz alta">🔊</button></div>
-        <div class="enunciado ${enunLargo ? "largo" : ""}">${M.esc(r.enunciado)}</div>
-        <div class="op-grid">${r.opciones.map((o, i) => `<button class="op ${largo ? "largo" : ""}" data-i="${i}">${M.esc(o)}</button>`).join("")}</div>
+        <div class="enunciado ${enunLargo ? "largo" : ""} ${dibujo ? "dibujo" : ""}">${M.esc(r.enunciado)}</div>
+        <div class="op-grid">${r.opciones.map((o, i) => `<button class="op ${largo ? "largo" : ""} ${opDibujo ? "dibujo" : ""}" data-i="${i}">${M.esc(o)}</button>`).join("")}</div>
         <button class="primary grande" id="ok" disabled>Comprobar</button>
         <div id="fb"></div>`;
       M.$("#oir").onclick = () => hablar((r.datos && r.datos.lectura) || r.enunciado.replace(/×/g, " por ").replace(/:/g, " entre ").replace(/−/g, " menos "));
