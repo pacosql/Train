@@ -57,6 +57,8 @@ Las respuestas de Paco se anotan como tales. Formato: `D-NNN · fecha · área`.
 - **D-019 · 30 sep · decretos.** Se archivan del boletín oficial; cuando el boletín corta la conexión desde el entorno (Asturias, Cantabria, La Rioja), se archiva una copia íntegra del PDF oficial alojada por terceros (conserva firma/CSV) con la URL oficial en `notas`. Galicia se archiva en HTML (sus PDF superan 25 MB). Un decreto que cubre dos etapas (Canarias ESO+BAC, Cantabria ESO+BAC) se archiva una vez o con dos códigos, según el agente; ambos casos están en `notas`. Ceuta y Melilla: órdenes EFP/678, 754 y 755/2022 del Ministerio, archivadas una vez (`ORD-MEFP-*`) y usadas por los dos sistemas.
 - **D-020 · 30 sep · códigos de suma y resta.** El documento usa `NUM.SUMA.*` en un ejemplo y `OPER` en la lista de bloques; como la suma es del bloque operaciones, el código es `OPER.SUMA.*` (y `OPER.RESTA.*`).
 - **D-021 · 30 sep · taxonomía.** Se genera por grupos de familias (T1–T6, `01-contenido/taxonomia/familias.md`) de 1º de primaria a 2º de bachillerato, con el decreto de Murcia como referencia de curso (`curso_ref`) y el estatal donde Murcia no reparte por curso. Errores típicos, prerrequisitos, importancia, carga y secuencia de referencia dentro del curso son criterio del modelo y apuntan a las fuentes `CRIT-TAX-T*` (D-010).
+- **D-031 · 30 sep · nivel en la familia.** `nivel_familia` se calcula al cargar como el orden de enseñanza dentro de la familia (curso de referencia, trimestre, orden), no desde el número del código: los códigos fijados por el anexo (p. ej. OPER.POT.02 en 1.º ESO) no siempre siguen ese orden. Es lo que usan la prueba de nivel y el mensaje "va por el nivel X de N".
+- **D-032 · 30 sep · tablas de multiplicar.** Familia propia OPER.TABLA con OPER.TABLA.01 … .10 (una por tabla; el número es el de la tabla), para que el informe diga "domina la tabla del 7". OPER.MULT.02 (anexo) queda como fluidez con todas las tablas mezcladas, con las diez como prerrequisito.
 - **D-022 · 30 sep · saberes de los decretos.** Los resúmenes `01-contenido/decretos/*.json` conservan el texto literal de cada saber (son disposiciones legales, sin propiedad intelectual: art. 13 LPI), con página y anexo.
 - **D-023 · 30 sep · colegios.** Registro Estatal de Centros Docentes no Universitarios (RCD, Ministerio). Murcia: 636 centros con primaria, ESO o bachillerato (508 públicos, 116 concertados, 12 privados). Se incluyen centros de educación especial y aulas hospitalarias que el registro da con primaria. `python3 mates10/tools/cargar_colegios.py ES-XX` carga cualquier otra comunidad.
 
@@ -93,6 +95,17 @@ Las respuestas de Paco se anotan como tales. Formato: `D-NNN · fecha · área`.
 
 - **Seguridad.** Prototipo sin autenticación: todas las tablas `mates10_*` tienen RLS con una política permisiva para `anon` (lectura y escritura). Cualquiera con la URL puede leer y modificar datos, incluidos alumnos. Se cambiará con autenticación y políticas por rol (alumno, padre, revisor). La clave de servicio no está en el frontend.
 - **Archivo de fuentes en el repo** en vez de bucket privado (D-003).
+
+## Preguntas abiertas para Paco (o un maestro)
+
+Fronteras dudosas que la mina ha decidido provisionalmente; cambiarlas es editar la habilidad o el mapa.
+
+- **Tablas y multiplicación:** el decreto de Murcia y el estatal las ponen en 3.º–4.º; están en 3.º. Muchos libros empiezan al final de 2.º.
+- **Paréntesis (OPER.JERARQ.02):** en 1.º ESO (anexo y decreto de Murcia), aunque muchos libros de 5.º–6.º ya usan paréntesis sencillos.
+- **Raíz cuadrada:** toda en 1.º ESO (Murcia no la nombra en primaria). ¿Se sigue enseñando el algoritmo (OPER.RAIZ.03) con la LOMLOE? Tiene importancia 2.
+- **Factorización y criterios del 4, 6, 9, 11, 25:** en 1.º ESO por el decreto; muchos libros de 6.º los adelantan.
+- **Enteros en primaria:** en contexto y recta al final de 6.º; lo formal, en 1.º ESO.
+- **OPER.DIV.01** (anexo) incluye a la vez las divisiones de la tabla y el algoritmo exacto de divisor de una cifra; con granularidad fina serían dos.
 
 ## Propuestas
 

@@ -33,6 +33,16 @@ def leer():
             if h["codigo"] in habs:
                 print(f"DUPLICADO {h['codigo']} en {g} y {habs[h['codigo']]['_grupo']}")
             habs[h["codigo"]] = h
+    # nivel_familia = orden de enseñanza dentro de la familia (curso, trimestre, orden), no el número del código:
+    # algunos códigos los fija el anexo y no siguen ese orden (D-031).
+    fams = {}
+    for h in habs.values():
+        fams.setdefault(h.get("familia") or ".".join(h["codigo"].split(".")[:2]), []).append(h)
+    for hs in fams.values():
+        hs.sort(key=lambda h: (CURSOS.index(h["curso_ref"]) if h.get("curso_ref") in CURSOS else 99,
+                               int(h.get("trimestre_ref") or 1), float(h.get("orden_ref") or 0), h["codigo"]))
+        for i, h in enumerate(hs, 1):
+            h["nivel_familia"] = i
     return habs
 
 
