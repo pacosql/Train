@@ -99,6 +99,7 @@ Al crear una app nueva `<app>/`:
 | 🗂️ Contactos | `contactos/` | `contactos_` |
 | 💼 Empleo | `empleo/` | `empleo_` |
 | ✳️ Logos | `logos/` | `logos_` |
+| ➗ Mates10 | `mates10/` | `mates10_` |
 
 (Actualiza esta tabla al añadir una app nueva.)
 

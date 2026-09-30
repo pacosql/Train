@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Mates10</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#1f1e1d" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="comun.css" />
+</head>
+<body>
+  <div class="wrap">
+    <h1>Mates10</h1>
+    <p class="muted">Matemáticas de 1º de primaria a 2º de bachillerato. Sigue el temario del colegio, practica lo que toca y enseña al padre lo que aprende de verdad.</p>
+
+    <a class="card acceso" href="alumno/">
+      <div class="t">Alumno</div>
+      <div class="d">Elige tu nombre o crea uno nuevo y juega.</div>
+    </a>
+    <a class="card acceso" href="padre/">
+      <div class="t">Padre</div>
+      <div class="d">Ficha, informe y objetivos de cada alumno.</div>
+    </a>
+    <a class="card acceso" href="revisor/">
+      <div class="t">Revisor</div>
+      <div class="d">Aprobar o rechazar ejercicios, plantillas y habilidades.</div>
+    </a>
+    <a class="card acceso" href="explorar/">
+      <div class="t">Explorar datos</div>
+      <div class="d">Navega todas las tablas, sus relaciones y tablas dinámicas.</div>
+    </a>
+
+    <h3>Estado del banco</h3>
+    <div class="card small" id="estado">Cargando…</div>
+    <p class="small"><a href="excel/mates10.xlsx">Descargar Excel</a></p>
+
+    <footer class="build">build __BUILD_ID__</footer>
+  </div>
+  <script src="vendor/supabase.min.js"></script>
+  <script src="config.js"></script>
+  <script src="comun.js"></script>
+  <script>
+    (async () => {
+      const tablas = [["habilidad", "habilidades"], ["mapa_curricular", "filas de mapa"], ["ejercicio", "ejercicios"],
+        ["fuente", "fuentes"], ["colegio", "colegios"], ["alumno", "alumnos"]];
+      const partes = await Promise.all(tablas.map(async ([t, n]) => {
+        const { count, error } = await M.t(t).select("*", { count: "exact" }).limit(1);
+        return error ? `${n}: error` : `<b>${count}</b> ${n}`;
+      }));
+      const { count: pub } = await M.t("ejercicio").select("*", { count: "exact" }).limit(1).eq("publicado", true);
+      M.$("#estado").innerHTML = partes.join(" · ") + ` · <b>${pub ?? 0}</b> publicados`;
+    })().catch((e) => (M.$("#estado").innerHTML = `<span class="err">${M.esc(e.message)}</span>`));
+  </script>
+</body>
+</html>

@@ -30,6 +30,11 @@ jobs:
           find . -type f \( -name "index.html" -o -name "sw.js" \) \
             -not -path "./.git/*" \
             -exec sed -i "s/__BUILD_ID__/${BUILD_ID}/g" {} +
+      - name: Exclude internal archives
+        run: |
+          # mates10/fuentes es el archivo interno de fuentes (material con
+          # derechos de terceros): vive en el repo privado, nunca en la web.
+          rm -rf mates10/fuentes mates10/tools
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
