@@ -25,6 +25,7 @@ import subprocess
 import sys
 import tempfile
 import urllib.parse
+import urllib.error
 import urllib.request
 
 sys.path.insert(0, os.path.dirname(__file__))
@@ -88,9 +89,37 @@ def captura_pdf(url, dest):
         return False
 
 
+BUCKET = "mates10-fuentes"
+
+
+def _anon_key():
+    txt = open(os.path.join(ROOT, "config.js"), encoding="utf-8").read()
+    return re.search(r'"(eyJ[^"]+)"', txt).group(1)
+
+
+def subir_bucket(path, b):
+    """Sube un original al bucket privado mates10-fuentes (solo escritura con la anon key; D-003)."""
+    rel = os.path.relpath(path, RAW).replace(os.sep, "/")
+    key = _anon_key()
+    ctype = mimetypes.guess_type(path)[0] or "application/octet-stream"
+    req = urllib.request.Request(f"https://dzlhsdpgyxnjwudmrnul.supabase.co/storage/v1/object/{BUCKET}/{urllib.parse.quote(rel)}",
+                                 data=b, method="POST", headers={"apikey": key, "Authorization": f"Bearer {key}",
+                                                                 "Content-Type": ctype, "x-upsert": "false"})
+    try:
+        with urllib.request.urlopen(req, timeout=300) as r:
+            r.read()
+    except urllib.error.HTTPError as e:
+        if e.code not in (400, 409):  # 409/400 Duplicate: ya estaba subido
+            raise
+    return f"storage:{BUCKET}/{rel}"
+
+
 def _archivo(fid, path, tipo, pagina=None, derivado=None, orden=0):
     b = open(path, "rb").read()
-    ruta = os.path.relpath(path, os.path.dirname(ROOT))
+    if os.path.abspath(path).startswith(RAW):
+        ruta = subir_bucket(path, b)
+    else:
+        ruta = os.path.relpath(path, os.path.dirname(ROOT))
     r = q(f"""insert into mates10_fuente_archivo (fuente_id, ruta, tipo_archivo, pagina_o_seccion,
               hash_sha256, tamano_bytes, derivado_de, orden)
               values ({lit(fid)}, {lit(ruta)}, {lit(tipo)}, {lit(pagina)}, {lit(sha256(b))},

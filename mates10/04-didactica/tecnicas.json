@@ -1,0 +1,1642 @@
+{
+ "generado": "2026-09-30",
+ "version": 1,
+ "nota": "Base de conocimiento de técnicas de práctica y adaptatividad de Mates10 (módulos 04 y 05). Cada fila cita una fuente archivada en mates10_fuente (campo fuente_codigo). 'criterio': true marca decisiones de diseño que no salen literalmente de la fuente.",
+ "tecnicas": [
+  {
+   "codigo": "CONMUTATIVA",
+   "nombre": "Hecho conmutado",
+   "tipo": "tecnica_practica",
+   "origen": "documento",
+   "disparador": "tras_fallo",
+   "ambito": "habilidad",
+   "fuente_codigo": "ART-BAROODY-2012-SREE",
+   "fuentes_adicionales": [
+    "GUIA-IES-RTI-MATH-2009"
+   ],
+   "descripcion": "Si falla a×b (o a+b), se pregunta b×a (b+a). Aprovecha que el niño suele dominar uno de los dos órdenes y le hace ver que son el mismo hecho, lo que reduce a la mitad lo que hay que memorizar. Baroody y colaboradores describen la fluidez con hechos como un paso de contar a razonar con relaciones (p. ej. n+1 = 1+n = siguiente de n) y de ahí a recuperar de memoria; las relaciones entre hechos, no la repetición aislada, son las que dan fluidez. La guía IES de intervención en matemáticas recomienda dedicar tiempo específico a la recuperación fluida de hechos básicos.",
+   "regla": {
+    "intercambiar": [
+     "a",
+     "b"
+    ],
+    "operaciones": [
+     "suma",
+     "multiplicacion"
+    ],
+    "si_a_igual_b": "saltar",
+    "max_por_hecho_y_sesion": 1,
+    "luego": "reintentar_original"
+   },
+   "criterio": false
+  },
+  {
+   "codigo": "VECINO",
+   "nombre": "Hecho vecino",
+   "tipo": "tecnica_practica",
+   "origen": "documento",
+   "disparador": "tras_fallo",
+   "ambito": "habilidad",
+   "fuente_codigo": "ART-BAROODY-2012-SREE",
+   "fuentes_adicionales": [
+    "WEB-KUMON-ES-METODO"
+   ],
+   "descripcion": "Si falla 7×8, se preguntan 7×7 y 7×9 (variando un operando ±1). Sirve para dos cosas: detectar si el fallo es del hecho concreto o de toda la tabla, y dar un apoyo (hecho conocido) desde el que derivar el desconocido (7×8 = 7×7 + 7). Es la fase 'razonar desde hechos conocidos' de Baroody. Kumon trabaja con el mismo principio de pasos muy pequeños entre ejercicios consecutivos.",
+   "regla": {
+    "variar": "b",
+    "delta": [
+     -1,
+     1
+    ],
+    "n": 2,
+    "rango_b": [
+     0,
+     10
+    ],
+    "orden": "primero_el_mas_facil",
+    "luego": "reintentar_original"
+   },
+   "criterio": true,
+   "nota_criterio": "Que VECINO ayude a derivar el hecho fallado es una aplicación nuestra de las estrategias de razonamiento; no hay un estudio que evalúe esta regla exacta."
+  },
+  {
+   "codigo": "FAMILIA_HECHOS",
+   "nombre": "Familia de hechos (operación inversa)",
+   "tipo": "tecnica_practica",
+   "origen": "documento",
+   "disparador": "tras_acierto",
+   "ambito": "habilidad",
+   "fuente_codigo": "ART-BAROODY-2012-SREE",
+   "fuentes_adicionales": [],
+   "descripcion": "Tras acertar 7×8 = 56 se pregunta 56:7 (o tras 5+3, 8−3). Conecta cada hecho con su inversa para que suma/resta y multiplicación/división se aprendan como una sola 'familia' y no como hechos sueltos; el trabajo de Baroody y colaboradores se centra en la fluidez con familias aritméticas.",
+   "regla": {
+    "inversa": true,
+    "operacion_inversa": {
+     "suma": "resta",
+     "multiplicacion": "division"
+    },
+    "probabilidad": 0.3,
+    "solo_si_inversa_en_techo": true
+   },
+   "criterio": false
+  },
+  {
+   "codigo": "DESCOMPONER",
+   "nombre": "Descomponer el hecho",
+   "tipo": "tecnica_practica",
+   "origen": "documento",
+   "disparador": "tras_fallo",
+   "ambito": "habilidad",
+   "fuente_codigo": "ART-BAROODY-2012-SREE",
+   "fuentes_adicionales": [
+    "ART-CAVIOLA-2018-ESTRATEGIAS"
+   ],
+   "descripcion": "Tras un fallo se presenta el mismo cálculo partido en pasos que el niño ya domina: 7×8 = 7×5 + 7×3; 8+7 = 8+2+5 (completar a diez). Es una estrategia de razonamiento (fase 2 de Baroody) y las estrategias de descomposición aparecen con frecuencia en el repertorio variado que los niños usan en la resta de varias cifras (Caviola et al. 2018, modelo de olas superpuestas de Siegler).",
+   "regla": {
+    "partir": "b",
+    "en": [
+     5,
+     "resto"
+    ],
+    "alternativa_suma": "completar_10",
+    "mostrar_pasos": true,
+    "luego": "reintentar_original"
+   },
+   "criterio": false
+  },
+  {
+   "codigo": "MISMO_ERROR",
+   "nombre": "Otro ejercicio que provoca el mismo error",
+   "tipo": "tecnica_practica",
+   "origen": "documento",
+   "disparador": "error_repetido",
+   "ambito": "habilidad",
+   "fuente_codigo": "ART-SHUTE-2008",
+   "fuentes_adicionales": [
+    "ART-HATTIE-TIMPERLEY-2007"
+   ],
+   "descripcion": "Cuando se detecta un error típico (vía ejercicio_error) y se ha dado la explicación correctora, se presentan otros ejercicios diseñados para provocar ese mismo error, para comprobar que se ha corregido y no solo que se ha acertado uno. Shute y Hattie y Timperley muestran que el feedback funciona cuando es específico sobre la tarea y el proceso; reexponer el error comprueba que el feedback se ha usado.",
+   "regla": {
+    "error_tipico_id": "<detectado>",
+    "n": 2,
+    "tras_explicacion": true,
+    "si_vuelve_a_fallar": "metodo_remedio"
+   },
+   "criterio": true,
+   "nota_criterio": "La regla de presentar n=2 ejercicios del mismo error es criterio de diseño; la fuente respalda el feedback específico, no este número."
+  },
+  {
+   "codigo": "BAJAR_PRERREQUISITO",
+   "nombre": "Bajar al prerrequisito",
+   "tipo": "tecnica_practica",
+   "origen": "documento",
+   "disparador": "error_repetido",
+   "ambito": "universal",
+   "fuente_codigo": "ART-CORBETT-ANDERSON-1994",
+   "fuentes_adicionales": [
+    "DOC-ALEKS-KST",
+    "ART-BLOOM-1984",
+    "ART-SLAVIN-1987"
+   ],
+   "descripcion": "Tras varios fallos seguidos en una habilidad, se practica su prerrequisito imprescindible con menor p_dominio y se vuelve cuando está dominado. Es la esencia del aprendizaje para el dominio: Corbett y Anderson hacen que el alumno no avance hasta dominar cada regla (criterio 0,95), y ALEKS solo propone lo que está en la 'frontera exterior' (lo que el alumno está preparado para aprender dados sus conocimientos). Bloom observó ≈ +1 desviación típica con mastery learning frente a clase convencional; la revisión crítica de Slavin (1987) rebaja ese efecto en pruebas estandarizadas, así que conviene medirlo.",
+   "regla": {
+    "tras_fallos": 3,
+    "ir_a": "prerrequisito_imprescindible",
+    "elegir": "menor_p_dominio",
+    "volver_cuando": {
+     "p_dominio_prerrequisito": 0.85,
+     "o_aciertos_seguidos": 3
+    }
+   },
+   "criterio": false
+  },
+  {
+   "codigo": "EJEMPLO_RESUELTO",
+   "nombre": "Ejemplo resuelto con desvanecimiento",
+   "tipo": "tecnica_practica",
+   "origen": "documento",
+   "disparador": "tras_fallo",
+   "ambito": "habilidad",
+   "fuente_codigo": "ART-ATKINSON-2000",
+   "fuentes_adicionales": [
+    "ART-REISSLEIN-ATKINSON-2006",
+    "GUIA-IES-PASHLER-2007"
+   ],
+   "descripcion": "Tras un fallo en un procedimiento largo o un problema, se muestra un ejemplo resuelto del mismo tipo y a continuación uno igual para resolver; en los siguientes se van ocultando pasos empezando por el último (desvanecimiento hacia atrás), hasta que lo resuelve entero. Los ejemplos resueltos reducen la carga cognitiva en novatos (Atkinson et al. 2000); la guía IES recomienda alternar ejemplos resueltos y problemas; el desvanecimiento hacia atrás mejora el aprendizaje, y con alumnos que ya saben los ejemplos dejan de ayudar (efecto de inversión por pericia, Reisslein et al. 2006).",
+   "regla": {
+    "mostrar_resuelto": true,
+    "luego": "mismo_tipo",
+    "fading": "hacia_atras",
+    "pasos_ocultos_incremento": 1,
+    "no_usar_si": {
+     "p_dominio_min": 0.7
+    }
+   },
+   "criterio": false
+  },
+  {
+   "codigo": "INTERCALAR",
+   "nombre": "Intercalar habilidades",
+   "tipo": "tecnica_practica",
+   "origen": "documento",
+   "disparador": "siempre",
+   "ambito": "universal",
+   "fuente_codigo": "ART-ROHRER-TAYLOR-2007",
+   "fuentes_adicionales": [
+    "ART-NEMETH-2019-INTERCALADO",
+    "ART-DUNLOSKY-2013"
+   ],
+   "descripcion": "No se ponen más de 3 ejercicios seguidos de la misma habilidad; se mezclan con habilidades parecidas ya vistas. En Rohrer y Taylor (2007) el grupo que mezcló tipos de problema sacó 63 % frente a 20 % del grupo en bloques a la semana (d = 1,34), aunque durante la práctica le fue peor. En primaria, Nemeth et al. (2019) vieron que intercalar hace que los niños usen más atajos de cálculo en la resta. Funciona sobre todo porque obliga a elegir estrategia.",
+   "regla": {
+    "max_seguidos_misma_habilidad": 3,
+    "mezclar_con": "habilidades_similares_vistas",
+    "proporcion_nueva": 0.5,
+    "excepto": "primera_presentacion"
+   },
+   "criterio": false
+  },
+  {
+   "codigo": "ESPACIAR",
+   "nombre": "Repaso espaciado",
+   "tipo": "tecnica_practica",
+   "origen": "documento",
+   "disparador": "repaso_vencido",
+   "ambito": "universal",
+   "fuente_codigo": "ART-CEPEDA-2006",
+   "fuentes_adicionales": [
+    "ART-CEPEDA-2008",
+    "DOC-FSRS-ALGORITHM",
+    "GUIA-IES-PASHLER-2007",
+    "BLOG-DUOLINGO-SPACED"
+   ],
+   "descripcion": "Cada habilidad dominada vuelve cuando su probabilidad de recuerdo cae hasta la retención objetivo (0,9), con intervalos que se alargan con cada acierto y se acortan al fallar. El efecto de espaciado es de los más sólidos (Cepeda et al. 2006, 317 experimentos); el hueco óptimo crece con el tiempo que se quiere retener (Cepeda et al. 2008: 20–40 % del plazo para una semana, 5–10 % para un año). El calendario lo calcula FSRS (ver algoritmo FSRS).",
+   "regla": {
+    "algoritmo": "fsrs",
+    "version": "FSRS-5",
+    "retencion_objetivo": 0.9,
+    "intervalo_max_dias": 365,
+    "prioridad": "mayor_importancia_menor_R"
+   },
+   "criterio": false
+  },
+  {
+   "codigo": "SUBIR_DIFICULTAD",
+   "nombre": "Subir un escalón",
+   "tipo": "tecnica_practica",
+   "origen": "documento",
+   "disparador": "tras_acierto",
+   "ambito": "universal",
+   "fuente_codigo": "ART-BJORK-2011",
+   "fuentes_adicionales": [
+    "WEB-KUMON-ES-METODO",
+    "DOC-KUMON-BROCHURE"
+   ],
+   "descripcion": "Tras 3 aciertos seguidos se sube un nivel de dificultad (siguiente plantilla o nivel_familia). Bjork: cuando algo ya sale sin esfuerzo, practicarlo más aporta poco; las dificultades 'deseables' son las que el alumno puede superar. Kumon sube la dificultad en pasos muy pequeños para que el avance sea fluido.",
+   "regla": {
+    "tras_aciertos": 3,
+    "dificultad": "+1",
+    "solo_si_tiempo": "<= mediana_habilidad",
+    "tope": "techo_mapa"
+   },
+   "criterio": false
+  },
+  {
+   "codigo": "PISTA_ESCALONADA",
+   "nombre": "Pistas y andamiaje por pasos",
+   "tipo": "tecnica_practica",
+   "origen": "nueva",
+   "disparador": "tras_fallo",
+   "ambito": "habilidad",
+   "fuente_codigo": "ART-ROSCHELLE-2016-ASSISTMENTS",
+   "fuentes_adicionales": [
+    "ART-VANLEHN-2011-SLIDES"
+   ],
+   "descripcion": "Tras un fallo, antes de dar la solución, se ofrecen pistas en escalera (general → específica → paso resuelto) o se parte el problema en subpreguntas (andamiaje). Es lo que hace ASSISTments; en un ensayo aleatorizado con 2 850 alumnos de 7.º subió la nota en una prueba estandarizada (g = 0,18), más en alumnos con bajo nivel previo. VanLehn (2011) encontró que los tutores que dan ayuda paso a paso (d ≈ 0,76) casi igualan a un tutor humano (0,79), frente a 0,31 de los que solo corrigen la respuesta final.",
+   "regla": {
+    "pistas": [
+     "general",
+     "especifica",
+     "paso_resuelto"
+    ],
+    "subpreguntas_si_multipaso": true,
+    "credito": "acierto_con_pista_cuenta_como_dificil",
+    "max_pistas": 3
+   },
+   "criterio": false
+  },
+  {
+   "codigo": "FLUIDEZ_CRONOMETRADA",
+   "nombre": "Fluidez con tiempo objetivo",
+   "tipo": "tecnica_practica",
+   "origen": "nueva",
+   "disparador": "tras_acierto",
+   "ambito": "habilidad",
+   "fuente_codigo": "BLOG-KUMON-SCT",
+   "fuentes_adicionales": [
+    "GUIA-IES-RTI-MATH-2009",
+    "ART-PELANEK-2016-ELO"
+   ],
+   "descripcion": "Cuando un hecho ya se acierta, se practica con un tiempo de referencia hasta que sale rápido y sin esfuerzo. Kumon usa un tiempo estándar por hoja para decidir si se repite; la guía IES recomienda unos 10 minutos por sesión de recuperación fluida de hechos; Math Garden puntúa más un acierto rápido y penaliza más un fallo rápido. Solo para habilidades ya dominadas en precisión (nunca en 'introduce').",
+   "regla": {
+    "condicion": {
+     "p_dominio_min": 0.85,
+     "estado_mapa_no": "introduce"
+    },
+    "mecanica": "con_tiempo",
+    "tiempo_objetivo_ms": "percentil_50_habilidad",
+    "max_minutos_por_sesion": 10
+   },
+   "criterio": false
+  },
+  {
+   "codigo": "AUTOEXPLICACION",
+   "nombre": "Pregunta de '¿por qué?'",
+   "tipo": "tecnica_practica",
+   "origen": "nueva",
+   "disparador": "tras_acierto",
+   "ambito": "habilidad",
+   "fuente_codigo": "ART-RITTLE-JOHNSON-2006",
+   "fuentes_adicionales": [
+    "ART-DUNLOSKY-2013",
+    "GUIA-IES-PASHLER-2007"
+   ],
+   "descripcion": "De vez en cuando, tras un acierto (o tras ver un ejemplo resuelto) se pide elegir o escribir por qué es correcto ('¿qué regla has usado?'). En niños de 8–11 años la autoexplicación mejoró el aprendizaje y la transferencia del procedimiento (Rittle-Johnson 2006). Dunlosky et al. la califican de utilidad moderada; la guía IES recomienda hacer y responder preguntas profundas.",
+   "regla": {
+    "cada_n_aciertos": 5,
+    "formato": "opcion_multiple_justificacion",
+    "tambien_tras": "EJEMPLO_RESUELTO",
+    "no_en": "FLUIDEZ_CRONOMETRADA"
+   },
+   "criterio": false
+  },
+  {
+   "codigo": "PRODUCCION_ANTES_QUE_RECONOCIMIENTO",
+   "nombre": "Producir en vez de elegir",
+   "tipo": "tecnica_practica",
+   "origen": "nueva",
+   "disparador": "siempre",
+   "ambito": "universal",
+   "fuente_codigo": "ART-ROEDIGER-KARPICKE-2006",
+   "fuentes_adicionales": [
+    "ART-KARPICKE-2016-NINOS",
+    "ART-BJORK-2011"
+   ],
+   "descripcion": "Siempre que la habilidad lo permita se pide escribir la respuesta (recuperar) en vez de elegirla. Recuperar de memoria enseña más que volver a estudiar (Roediger y Karpicke 2006, prueba a la semana) y el efecto se da también en niños de 10 años con independencia de su comprensión lectora (Karpicke et al. 2016). Bjork lo relaciona con el efecto de generación: generar una respuesta deja más huella que verla. Las opciones solo al principio o si el alumno adivina.",
+   "regla": {
+    "preferir": "produccion",
+    "reconocimiento_si": {
+     "p_dominio_max": 0.3,
+     "o_senal": "adivinando"
+    },
+    "peso_acierto": {
+     "produccion": 1.0,
+     "opciones": "segun_n_opciones"
+    }
+   },
+   "criterio": false
+  },
+  {
+   "codigo": "REPASO_DE_ERRORES",
+   "nombre": "Repaso de mis errores",
+   "tipo": "tecnica_practica",
+   "origen": "nueva",
+   "disparador": "repaso_vencido",
+   "ambito": "universal",
+   "fuente_codigo": "BLOG-DUOLINGO-PRACTICEHUB",
+   "fuentes_adicionales": [
+    "ART-CEPEDA-2006"
+   ],
+   "descripcion": "Los ejercicios fallados en los últimos días vuelven (con otros números) al principio de una sesión posterior, fuera del calendario de FSRS. Duolingo ofrece una práctica específica de 'Errores' para repasar lo que se falló. Es recuperación espaciada aplicada a lo que peor sale.",
+   "regla": {
+    "cola": "intentos_fallados",
+    "ventana_dias": 7,
+    "retraso_min_dias": 1,
+    "max_por_sesion": 2,
+    "mismo_ejercicio": false,
+    "misma_plantilla": true
+   },
+   "criterio": true,
+   "nota_criterio": "Ventana y máximo por sesión son criterio; Duolingo no publica sus valores."
+  },
+  {
+   "codigo": "INICIO_COMODO",
+   "nombre": "Empezar por debajo",
+   "tipo": "tecnica_practica",
+   "origen": "nueva",
+   "disparador": "introduccion",
+   "ambito": "universal",
+   "fuente_codigo": "WEB-KUMON-ES-METODO",
+   "fuentes_adicionales": [
+    "DOC-KUMON-BROCHURE"
+   ],
+   "descripcion": "Al empezar una familia (o tras la prueba de nivel) se arranca uno o dos niveles por debajo del nivel situado, para que los primeros ejercicios salgan bien y el niño coja confianza y ritmo antes de subir. Es el punto de partida 'cómodo' de Kumon; el documento ya aplica la misma idea al arranque a ciegas ('equivocarse por abajo es barato').",
+   "regla": {
+    "bajar_niveles": 1,
+    "hasta_aciertos": 3,
+    "luego": "SUBIR_DIFICULTAD"
+   },
+   "criterio": false
+  },
+  {
+   "codigo": "PREGUNTA_PREVIA",
+   "nombre": "Pregunta antes de explicar",
+   "tipo": "tecnica_practica",
+   "origen": "nueva",
+   "disparador": "introduccion",
+   "ambito": "habilidad",
+   "fuente_codigo": "GUIA-IES-PASHLER-2007",
+   "fuentes_adicionales": [],
+   "descripcion": "Antes de la primera explicación de una habilidad nueva se plantea un ejercicio de ella sin ayuda; el fallo no cuenta para p_dominio. La guía IES recomienda hacer preguntas previas antes de introducir un tema. En su versión fuerte es el 'fracaso productivo' de Kapur (ver PROBLEMA_ANTES_DE_INSTRUCCION).",
+   "regla": {
+    "n": 1,
+    "cuenta_para_modelo": false,
+    "luego": "explicacion_metodo_principal",
+    "sin_tiempo": true
+   },
+   "criterio": false
+  },
+  {
+   "codigo": "PROBLEMA_ANTES_DE_INSTRUCCION",
+   "nombre": "Fracaso productivo",
+   "tipo": "tecnica_practica",
+   "origen": "nueva",
+   "disparador": "introduccion",
+   "ambito": "habilidad",
+   "fuente_codigo": "ART-KAPUR-UNH",
+   "fuentes_adicionales": [
+    "WEB-KAPUR-HOME"
+   ],
+   "descripcion": "Para conceptos (no hechos), se deja al alumno explorar un problema rico antes de enseñarle el método; lo normal es que no llegue a la solución, pero activa lo que sabe y le hace ver qué le falta, y la explicación posterior se aprovecha más. El metaanálisis de Sinha y Kapur (2021; más de 12 000 participantes, 166 comparaciones) halló mejor comprensión conceptual y transferencia sin perder fluidez procedimental, con efectos mayores desde secundaria y solo si el diseño es fiel (problema rico, varias soluciones posibles, instrucción después que compare las soluciones). Con hechos numéricos y niños pequeños no está probado.",
+   "regla": {
+    "solo_para_patron": [
+     "razonamiento",
+     "problemas"
+    ],
+    "edad_min": 12,
+    "intentos": 1,
+    "prerrequisitos_dominados": true,
+    "luego": "EJEMPLO_RESUELTO"
+   },
+   "criterio": true,
+   "nota_criterio": "Fuente: resumen de Kapur publicado por la UNH (los artículos originales no fueron descargables). Fijar 12 años (secundaria) sigue la indicación del metaanálisis; restringirlo a conceptos es criterio."
+  },
+  {
+   "codigo": "FRONTERA_APRENDIBLE",
+   "nombre": "Siguiente habilidad en la frontera",
+   "tipo": "tecnica_practica",
+   "origen": "nueva",
+   "disparador": "introduccion",
+   "ambito": "universal",
+   "fuente_codigo": "DOC-ALEKS-KST",
+   "fuentes_adicionales": [
+    "ART-FALMAGNE-2015-KST",
+    "WEB-ALEKS-KST"
+   ],
+   "descripcion": "La siguiente habilidad nueva se elige solo entre las que están en la 'frontera exterior' del estado de conocimiento: no dominadas y con todos sus prerrequisitos dominados. Es el criterio de ALEKS (teoría de espacios de conocimiento de Doignon y Falmagne), que propone lo que el alumno está 'preparado para aprender'. Refina la regla 4 (Avance) de la cascada.",
+   "regla": {
+    "candidatas": "no_dominadas_con_todos_prerrequisitos_dominados",
+    "ordenar": [
+     "mapa_mes",
+     "importancia"
+    ],
+    "umbral_prerrequisito": 0.85
+   },
+   "criterio": false
+  },
+  {
+   "codigo": "DIFICULTAD_OBJETIVO",
+   "nombre": "Ejercicio a la dificultad justa",
+   "tipo": "tecnica_practica",
+   "origen": "nueva",
+   "disparador": "siempre",
+   "ambito": "universal",
+   "fuente_codigo": "ART-PELANEK-2016-ELO",
+   "fuentes_adicionales": [
+    "BLOG-DUOLINGO-BIRDBRAIN",
+    "ART-WILSON-2019-85"
+   ],
+   "descripcion": "Entre los ejercicios candidatos se elige el que tiene una probabilidad de acierto predicha (Elo o BKT) más cercana al objetivo (≈ 0,8). Sistemas basados en Elo eligen preguntas para mantener una tasa de éxito objetivo (p. ej. 75 %); Duolingo usa Birdbrain para dar a su generador de sesiones los ejercicios 'a la dificultad justa' y vio más aprendizaje y más enganche en pruebas A/B. Es la versión por ejercicio del termostato por sesión.",
+   "regla": {
+    "p_objetivo": 0.8,
+    "tolerancia": 0.1,
+    "modelo": "elo",
+    "desempate": "menos_visto"
+   },
+   "criterio": false
+  },
+  {
+   "codigo": "CONFIRMAR_DOMINIO_MIXTO",
+   "nombre": "Confirmar el dominio en mezcla",
+   "tipo": "tecnica_practica",
+   "origen": "nueva",
+   "disparador": "repaso_vencido",
+   "ambito": "universal",
+   "fuente_codigo": "WEB-EDSURGE-KHAN-2020",
+   "fuentes_adicionales": [
+    "BLOG-KHAN-MASTERY",
+    "ART-ROHRER-TAYLOR-2007"
+   ],
+   "descripcion": "Una habilidad solo pasa a 'dominada' cuando además de superar el umbral se acierta en un repaso posterior mezclada con otras (otro día). Khan Academy pone el aprendizaje para el dominio en el centro y exige demostrarlo en evaluaciones que mezclan habilidades; así se evita dar por dominado lo que solo se sabe en bloque.",
+   "regla": {
+    "requisitos": {
+     "p_dominio_min": 0.85,
+     "acierto_en_sesion_mixta": true,
+     "dias_despues_min": 1
+    },
+    "si_falla": "volver_a_en_curso"
+   },
+   "criterio": true,
+   "nota_criterio": "La página de ayuda de Khan con los niveles (Familiar/Proficient/Mastered) bloquea la descarga; el detalle de la regla es criterio."
+  },
+  {
+   "codigo": "BKT",
+   "nombre": "Bayesian Knowledge Tracing",
+   "tipo": "algoritmo_tutor",
+   "origen": "nueva",
+   "disparador": "siempre",
+   "ambito": "universal",
+   "fuente_codigo": "ART-CORBETT-ANDERSON-1994",
+   "fuentes_adicionales": [
+    "ART-PYBKT-2021",
+    "ART-PELANEK-2017-OVERVIEW"
+   ],
+   "descripcion": "Modelo oculto de dos estados (sabe / no sabe) por habilidad con 4 parámetros: p(L0) probabilidad inicial de saberla, p(T) de aprenderla en cada oportunidad, p(G) de acertar sin saber (adivinar) y p(S) de fallar sabiendo (despiste). Tras cada intento se actualiza por Bayes y luego se suma la probabilidad de aprender. Corbett y Anderson usaban 0,95 como criterio de dominio. Es lo que el documento llama p_dominio. Encaja con habilidades de comprensión de grano fino; para hechos que se automatizan poco a poco, Pelánek recomienda modelos logísticos o Elo.",
+   "regla": {
+    "entrada": [
+     "correcto",
+     "formato"
+    ],
+    "actualiza": "alumno_habilidad.p_dominio",
+    "posterior_acierto": "pL*(1-pS) / (pL*(1-pS) + (1-pL)*pG)",
+    "posterior_fallo": "pL*pS / (pL*pS + (1-pL)*(1-pG))",
+    "transicion": "pL_nuevo = post + (1-post)*pT",
+    "olvido": 0,
+    "parametros": "parametros_tutor.bkt"
+   },
+   "criterio": false
+  },
+  {
+   "codigo": "FSRS",
+   "nombre": "Free Spaced Repetition Scheduler (FSRS-5)",
+   "tipo": "algoritmo_tutor",
+   "origen": "nueva",
+   "disparador": "repaso_vencido",
+   "ambito": "universal",
+   "fuente_codigo": "DOC-FSRS-ALGORITHM",
+   "fuentes_adicionales": [
+    "DOC-PYFSRS-SCHEDULER",
+    "DOC-ANKI-FAQ-ALGORITMO",
+    "DOC-ANKI-DECK-OPTIONS",
+    "DOC-FSRS4ANKI-README"
+   ],
+   "descripcion": "Modelo de memoria de tres variables (dificultad D, estabilidad S, recuperabilidad R) que calcula cuándo repasar para que la probabilidad de recordar sea la retención objetivo. Nace del modelo DHP de MaiMemo (Ye, Su y Cao 2022, KDD) y es el algoritmo opcional de Anki desde la versión 23.10. Con cada repaso la estabilidad crece más cuanto menor es R (efecto de espaciado), menor es D y menor es S; tras un fallo cae. Fórmulas exactas en parametros_tutor.fsrs.",
+   "regla": {
+    "entrada": "calificacion_1_4",
+    "actualiza": [
+     "alumno_habilidad.estabilidad_dias",
+     "alumno_habilidad.dificultad_fsrs",
+     "alumno_habilidad.proximo_repaso"
+    ],
+    "parametros": "parametros_tutor.fsrs",
+    "mapeo_calificacion": {
+     "1": "fallo",
+     "2": "acierto con pista, con cambio de respuesta o lento (> p75 del tiempo)",
+     "3": "acierto normal",
+     "4": "acierto en producción y rápido (< p25 del tiempo)"
+    }
+   },
+   "criterio": true,
+   "nota_criterio": "FSRS se diseñó para tarjetas (un ítem); aplicarlo a una habilidad con muchos ejercicios y el mapeo de calificaciones son criterio."
+  },
+  {
+   "codigo": "SM2",
+   "nombre": "SuperMemo SM-2",
+   "tipo": "algoritmo_tutor",
+   "origen": "nueva",
+   "disparador": "repaso_vencido",
+   "ambito": "universal",
+   "fuente_codigo": "DOC-SM2-WOZNIAK-1990",
+   "fuentes_adicionales": [
+    "DOC-ANKI-FAQ-ALGORITMO"
+   ],
+   "descripcion": "Algoritmo clásico de Woźniak (1987): intervalos 1 día, 6 días y luego el anterior × factor de facilidad EF (inicial 2,5, mínimo 1,3), que se ajusta con la calidad de la respuesta (0–5). Si la calidad es < 3 se reinicia la serie. Es el origen del algoritmo por defecto de Anki. Sirve de alternativa simple y de referencia para comparar con FSRS.",
+   "regla": {
+    "I1": 1,
+    "I2": 6,
+    "In": "I(n-1)*EF",
+    "EF_inicial": 2.5,
+    "EF_min": 1.3,
+    "EF_nuevo": "EF + (0.1 - (5-q)*(0.08 + (5-q)*0.02))",
+    "si_q_menor_3": "reiniciar_serie_sin_cambiar_EF"
+   },
+   "criterio": false
+  },
+  {
+   "codigo": "HLR",
+   "nombre": "Half-Life Regression (Duolingo)",
+   "tipo": "algoritmo_tutor",
+   "origen": "nueva",
+   "disparador": "repaso_vencido",
+   "ambito": "universal",
+   "fuente_codigo": "ART-SETTLES-MEEDER-2016",
+   "fuentes_adicionales": [
+    "BLOG-DUOLINGO-HOWWELEARN",
+    "ART-HLR-REVISITED-2026"
+   ],
+   "descripcion": "Modelo de Duolingo (Settles y Meeder 2016): la probabilidad de recordar cae como p = 2^(−Δ/h), con Δ días desde la última práctica y h la vida media, que se predice con una regresión sobre rasgos del alumno y del ítem: h = 2^(Θ·x) (x incluye √(1+aciertos), √(1+fallos) y rasgos del ítem). Redujo el error frente a Leitner y Pimsleur y subió un 12 % el enganche diario en una prueba operativa. Útil cuando haya muchos datos: aprende pesos por rasgo (tipo de mecánica, familia).",
+   "regla": {
+    "p": "2^(-dias/h)",
+    "h": "2^(theta · x)",
+    "x": [
+     "sqrt(1+aciertos)",
+     "sqrt(1+fallos)",
+     "sesgo",
+     "rasgos_habilidad"
+    ],
+    "ajuste": "descenso_gradiente_sobre_intentos",
+    "min_intentos_para_ajustar": 10000
+   },
+   "criterio": false
+  },
+  {
+   "codigo": "LEITNER",
+   "nombre": "Cajas de Leitner",
+   "tipo": "algoritmo_tutor",
+   "origen": "nueva",
+   "disparador": "repaso_vencido",
+   "ambito": "universal",
+   "fuente_codigo": "WEB-WIKI-LEITNER",
+   "fuentes_adicionales": [
+    "ART-SETTLES-MEEDER-2016"
+   ],
+   "descripcion": "Sistema en papel (1972): cada tarjeta está en una caja; acierto → sube a la caja siguiente (se repasa con menos frecuencia), fallo → vuelve a la primera. Duolingo lo usó al principio y lo sustituyó por HLR. Útil solo como línea base o como explicación visual para el niño ('esta tabla está en la caja 4').",
+   "regla": {
+    "cajas_dias": [
+     1,
+     2,
+     4,
+     8,
+     16,
+     32
+    ],
+    "acierto": "caja+1",
+    "fallo": "caja=1"
+   },
+   "criterio": true,
+   "nota_criterio": "Los días por caja son un ejemplo habitual, no un estándar."
+  },
+  {
+   "codigo": "ELO",
+   "nombre": "Elo alumno–ejercicio",
+   "tipo": "algoritmo_tutor",
+   "origen": "nueva",
+   "disparador": "siempre",
+   "ambito": "universal",
+   "fuente_codigo": "ART-PELANEK-2016-ELO",
+   "fuentes_adicionales": [
+    "ART-KLINKENBERG-2011",
+    "ART-PELANEK-2017-OVERVIEW"
+   ],
+   "descripcion": "Cada alumno tiene una habilidad θ y cada ejercicio una dificultad d; la probabilidad de acierto es la logística de θ − d, y tras cada intento ambos se ajustan en sentido contrario por el error de predicción. Calibra la dificultad de los ejercicios sobre la marcha, sin pilotaje previo, y con unas 10 respuestas ya da estimaciones razonables. Lo usa Math Garden (Rekentuin, Klinkenberg et al. 2011) para aritmética infantil, añadiendo el tiempo de respuesta.",
+   "regla": {
+    "p": "1/(1+exp(-(theta - d)))",
+    "p_opciones_k": "1/k + (1-1/k)/(1+exp(-(theta-d)))",
+    "theta_nuevo": "theta + K*(correcto - p)",
+    "d_nuevo": "d - K*(correcto - p)",
+    "K": "U(n) = a/(1+b*n)",
+    "parametros": "parametros_tutor.elo"
+   },
+   "criterio": false
+  },
+  {
+   "codigo": "PUNTUACION_VELOCIDAD",
+   "nombre": "Puntuación 'high speed, high stakes'",
+   "tipo": "algoritmo_tutor",
+   "origen": "nueva",
+   "disparador": "siempre",
+   "ambito": "habilidad",
+   "fuente_codigo": "ART-PELANEK-2016-ELO",
+   "fuentes_adicionales": [
+    "ART-KLINKENBERG-2011"
+   ],
+   "descripcion": "Regla de Math Garden para combinar acierto y tiempo: S = (2·correcto − 1)·(a·d_lim − a·t). Un acierto rápido vale mucho, un fallo rápido resta mucho y, al acercarse al límite de tiempo, ambos tienden a cero. Solo tiene sentido si el tiempo límite se ve en pantalla (mecánicas con cronómetro), como en Math Garden.",
+   "regla": {
+    "S": "(2*correcto - 1) * (a*d_lim - a*t)",
+    "a": 1,
+    "d_lim_s": 20,
+    "solo_mecanicas_con_tiempo": true
+   },
+   "criterio": true,
+   "nota_criterio": "a=1 y d_lim=20 s son ejemplos; Math Garden ajusta el límite por juego."
+  },
+  {
+   "codigo": "PFA",
+   "nombre": "Performance Factors Analysis",
+   "tipo": "algoritmo_tutor",
+   "origen": "nueva",
+   "disparador": "siempre",
+   "ambito": "universal",
+   "fuente_codigo": "ART-PELANEK-2017-OVERVIEW",
+   "fuentes_adicionales": [],
+   "descripcion": "Modelo logístico (Pavlik et al. 2009): la probabilidad de acierto es la logística de la dificultad de la habilidad más γ·(nº de aciertos) + δ·(nº de fallos) previos. Cambia de forma gradual, por lo que encaja mejor que BKT con hechos que se automatizan poco a poco; alternativa a BKT para las familias de hechos numéricos.",
+   "regla": {
+    "m": "beta_k + gamma_k*aciertos + delta_k*fallos",
+    "p": "1/(1+exp(-m))",
+    "ajuste": "regresion_logistica_por_familia"
+   },
+   "criterio": false
+  },
+  {
+   "codigo": "KST",
+   "nombre": "Espacios de conocimiento (ALEKS)",
+   "tipo": "algoritmo_tutor",
+   "origen": "nueva",
+   "disparador": "introduccion",
+   "ambito": "universal",
+   "fuente_codigo": "ART-FALMAGNE-2015-KST",
+   "fuentes_adicionales": [
+    "DOC-ALEKS-KST",
+    "WEB-ALEKS-KST"
+   ],
+   "descripcion": "Teoría de Doignon y Falmagne: el estado del alumno es el conjunto de ítems que domina, restringido a los estados coherentes con los prerrequisitos. Con pocas preguntas se estima el estado y se resume con la frontera interior (lo último aprendido) y la frontera exterior (lo que está preparado para aprender). ALEKS lo usa para la prueba de nivel, el aprendizaje y reevaluaciones periódicas. En Mates10 el grafo habilidad_prerrequisito ya define la estructura.",
+   "regla": {
+    "estado": "conjunto_habilidades_dominadas",
+    "frontera_exterior": "no_dominadas_con_prerrequisitos_en_estado",
+    "frontera_interior": "dominadas_sin_dependientes_dominados",
+    "uso": [
+     "prueba_nivel",
+     "FRONTERA_APRENDIBLE",
+     "informe_padre"
+    ]
+   },
+   "criterio": false
+  },
+  {
+   "codigo": "CAT_IRT",
+   "nombre": "Test adaptativo por teoría de respuesta al ítem",
+   "tipo": "algoritmo_tutor",
+   "origen": "nueva",
+   "disparador": "introduccion",
+   "ambito": "universal",
+   "fuente_codigo": "WEB-WIKI-CAT",
+   "fuentes_adicionales": [
+    "ART-PELANEK-2017-OVERVIEW"
+   ],
+   "descripcion": "En un test adaptativo cada pregunta se elige para que sea la más informativa dada la habilidad estimada (en el modelo de Rasch, la de dificultad ≈ habilidad, p ≈ 0,5) y el test para cuando el error de la estimación baja de un umbral. Consigue la misma precisión con muchas menos preguntas. Para la prueba de nivel de Mates10 es la versión probabilística de la búsqueda binaria por familia que propone el documento; las dificultades pueden salir del Elo.",
+   "regla": {
+    "modelo": "rasch",
+    "siguiente": "max_informacion (d ≈ theta)",
+    "parada": {
+     "error_tipico_max": 0.5,
+     "items_max_familia": 4
+    },
+    "dificultades_desde": "ELO"
+   },
+   "criterio": true,
+   "nota_criterio": "Umbrales de parada son criterio."
+  },
+  {
+   "codigo": "BIRDBRAIN",
+   "nombre": "Modelo conjunto alumno–ejercicio (Duolingo Birdbrain)",
+   "tipo": "algoritmo_tutor",
+   "origen": "nueva",
+   "disparador": "siempre",
+   "ambito": "universal",
+   "fuente_codigo": "BLOG-DUOLINGO-BIRDBRAIN",
+   "fuentes_adicionales": [
+    "BLOG-DUOLINGO-HOWWELEARN"
+   ],
+   "descripcion": "Modelo de Duolingo que estima a la vez cuánto sabe cada alumno y cuán difícil es cada ejercicio, y predice si acertará; el generador de sesiones lo usa para elegir ejercicios a la dificultad justa. Duolingo informa de más aprendizaje y más enganche en pruebas A/B. Por lo publicado, es conceptualmente un Elo/IRT a gran escala; en Mates10 el ELO cumple ese papel.",
+   "regla": {
+    "equivalente_mates10": "ELO + DIFICULTAD_OBJETIVO"
+   },
+   "criterio": false
+  },
+  {
+   "codigo": "DKT",
+   "nombre": "Deep Knowledge Tracing",
+   "tipo": "algoritmo_tutor",
+   "origen": "nueva",
+   "disparador": "siempre",
+   "ambito": "universal",
+   "fuente_codigo": "ART-PIECH-2015-DKT",
+   "fuentes_adicionales": [
+    "ART-PELANEK-2017-OVERVIEW"
+   ],
+   "descripcion": "Red neuronal recurrente que predice el siguiente acierto a partir de toda la secuencia de intentos (Piech et al. 2015). Mejora la predicción sobre BKT en grandes volúmenes de datos, pero no es interpretable y necesita muchos datos; no es para la primera versión. Se deja como referencia para cuando haya histórico masivo.",
+   "regla": {
+    "no_implementar_hasta": "100000_intentos",
+    "uso": "evaluacion_fuera_de_linea"
+   },
+   "criterio": false
+  },
+  {
+   "codigo": "TASA_85",
+   "nombre": "La regla del 85 %",
+   "tipo": "principio",
+   "origen": "nueva",
+   "disparador": "siempre",
+   "ambito": "universal",
+   "fuente_codigo": "ART-WILSON-2019-85",
+   "fuentes_adicionales": [
+    "ART-BJORK-2011",
+    "ART-PELANEK-2016-ELO"
+   ],
+   "descripcion": "Wilson et al. (2019) demuestran que, para algoritmos que aprenden por gradiente (y en modelos de aprendizaje perceptivo animal), el aprendizaje es más rápido con una tasa de error de ≈ 15,87 %, es decir ≈ 85 % de aciertos. Da base teórica al termostato del documento (objetivo 80–85 %); ojo: no está probado con niños aprendiendo matemáticas, por eso el valor se ajusta con datos propios.",
+   "regla": {
+    "acierto_objetivo_sesion": 0.85,
+    "bajar_si": "<0.70",
+    "subir_si": ">0.90",
+    "ventana_intentos": 10
+   },
+   "criterio": false
+  },
+  {
+   "codigo": "DIFICULTAD_DESEABLE",
+   "nombre": "Dificultades deseables",
+   "tipo": "principio",
+   "origen": "nueva",
+   "disparador": "siempre",
+   "ambito": "universal",
+   "fuente_codigo": "ART-BJORK-2011",
+   "fuentes_adicionales": [
+    "ART-DUNLOSKY-2013"
+   ],
+   "descripcion": "Espaciar, intercalar, generar y examinarse hacen la práctica más difícil y con peor rendimiento inmediato, pero mejor retención y transferencia (Bjork y Bjork 2011). Implica que el rendimiento en la sesión no es una buena medida de aprendizaje: el tutor y el informe al padre deben medir retención (aciertos en repasos días después).",
+   "regla": {
+    "medir_aprendizaje_por": "acierto_en_repaso_diferido",
+    "no_por": "acierto_en_bloque"
+   },
+   "criterio": false
+  },
+  {
+   "codigo": "RECUPERACION",
+   "nombre": "La práctica es examinarse",
+   "tipo": "principio",
+   "origen": "nueva",
+   "disparador": "siempre",
+   "ambito": "universal",
+   "fuente_codigo": "ART-ROEDIGER-KARPICKE-2006",
+   "fuentes_adicionales": [
+    "ART-DUNLOSKY-2013",
+    "ART-KARPICKE-2016-NINOS",
+    "GUIA-IES-PASHLER-2007"
+   ],
+   "descripcion": "Recuperar de memoria es en sí un acto de aprendizaje, no solo de evaluación (efecto test). Dunlosky et al. (2013) dan 'alta utilidad' solo a dos técnicas: la práctica de recuperación y la práctica espaciada. Probado también en niños de primaria (Karpicke et al. 2016). Justifica que la unidad de la app sea el ejercicio y no la lección.",
+   "regla": {
+    "explicacion_max_seguida_seg": 60,
+    "tras_explicacion": "ejercicio"
+   },
+   "criterio": true,
+   "nota_criterio": "El límite de 60 s de explicación seguida es criterio."
+  },
+  {
+   "codigo": "FEEDBACK_ESPECIFICO",
+   "nombre": "Feedback específico e inmediato sobre la tarea",
+   "tipo": "principio",
+   "origen": "nueva",
+   "disparador": "tras_fallo",
+   "ambito": "universal",
+   "fuente_codigo": "ART-HATTIE-TIMPERLEY-2007",
+   "fuentes_adicionales": [
+    "ART-SHUTE-2008"
+   ],
+   "descripcion": "El feedback es de lo que más influye en el aprendizaje (efecto medio 0,79 en la síntesis de Hattie y Timperley), pero depende del nivel: funciona sobre la tarea, el proceso y la autorregulación, y apenas cuando se dirige a la persona ('¡qué listo eres!'). Shute recomienda feedback elaborado (qué está mal y por qué), en trozos manejables y sin comparar con otros. En Mates10: explicar el error típico detectado, no solo dar la solución.",
+   "regla": {
+    "contenido": [
+     "que_error",
+     "por_que",
+     "como_seguir"
+    ],
+    "evitar": [
+     "elogio_personal",
+     "comparar_con_otros"
+    ],
+    "momento": "inmediato"
+   },
+   "criterio": false
+  },
+  {
+   "codigo": "DOMINIO",
+   "nombre": "Aprendizaje para el dominio",
+   "tipo": "principio",
+   "origen": "nueva",
+   "disparador": "siempre",
+   "ambito": "universal",
+   "fuente_codigo": "ART-BLOOM-1984",
+   "fuentes_adicionales": [
+    "ART-SLAVIN-1987",
+    "ART-CORBETT-ANDERSON-1994",
+    "WEB-EDSURGE-KHAN-2020"
+   ],
+   "descripcion": "No avanzar hasta dominar lo anterior, con evaluación formativa y corrección. Bloom observó que el alumno medio con mastery learning superaba a ≈ 84 % del grupo convencional y con tutoría individual a ≈ 98 % (el problema de las '2 sigmas'). Slavin (1987) encontró poco efecto en pruebas estandarizadas cuando se aplica en grupo; la versión individual y adaptativa (tutores cognitivos, Khan) es la que conserva el efecto.",
+   "regla": {
+    "umbral_dominio": 0.85,
+    "umbral_estricto": 0.95,
+    "avanzar_si": "prerrequisitos_dominados"
+   },
+   "criterio": false
+  },
+  {
+   "codigo": "TUTOR_POR_PASOS",
+   "nombre": "Ayuda a nivel de paso",
+   "tipo": "principio",
+   "origen": "nueva",
+   "disparador": "tras_fallo",
+   "ambito": "universal",
+   "fuente_codigo": "ART-VANLEHN-2011-SLIDES",
+   "fuentes_adicionales": [
+    "ART-KOEDINGER-1997",
+    "ART-ITS-SURVEY-2018"
+   ],
+   "descripcion": "VanLehn (2011) comparó tutores: los que corrigen solo la respuesta final (d ≈ 0,31) rinden mucho menos que los que ayudan en cada paso (0,76), casi como un tutor humano (0,79); bajar a un grano aún más fino (0,40) no mejora. Koedinger et al. (1997) llevaron un tutor cognitivo a institutos de Pittsburgh con +15 % en pruebas estandarizadas. Implica que las plantillas de procedimientos largos deben poder corregirse paso a paso.",
+   "regla": {
+    "procedimientos_largos": "entrada_por_pasos",
+    "feedback_por_paso": true
+   },
+   "criterio": false
+  },
+  {
+   "codigo": "INVERSION_POR_PERICIA",
+   "nombre": "Lo que ayuda al novato estorba al experto",
+   "tipo": "principio",
+   "origen": "nueva",
+   "disparador": "siempre",
+   "ambito": "universal",
+   "fuente_codigo": "ART-REISSLEIN-ATKINSON-2006",
+   "fuentes_adicionales": [
+    "ART-ATKINSON-2000"
+   ],
+   "descripcion": "Los ejemplos resueltos y las explicaciones detalladas ayudan al principio pero se vuelven redundantes cuando el alumno ya sabe (efecto de inversión por pericia). El apoyo debe retirarse a medida que sube p_dominio (desvanecimiento).",
+   "regla": {
+    "retirar_apoyo_si": {
+     "p_dominio_min": 0.7
+    }
+   },
+   "criterio": true,
+   "nota_criterio": "El umbral 0,7 es criterio."
+  },
+  {
+   "codigo": "ESPACIADO_PROPORCIONAL",
+   "nombre": "El hueco óptimo depende del plazo",
+   "tipo": "principio",
+   "origen": "nueva",
+   "disparador": "repaso_vencido",
+   "ambito": "universal",
+   "fuente_codigo": "ART-CEPEDA-2008",
+   "fuentes_adicionales": [
+    "ART-CEPEDA-2006"
+   ],
+   "descripcion": "Para recordar dentro de una semana conviene repasar a los 1–3 días; para dentro de un año, a las 3–5 semanas (el hueco óptimo es ≈ 20–40 % del plazo para una semana y ≈ 5–10 % para un año). Útil para el modo 'examen': con fecha de examen, los repasos se planifican hacia atrás desde esa fecha, además de FSRS.",
+   "regla": {
+    "modo_examen": {
+     "hueco": "0.2 * dias_hasta_examen",
+     "min_dias": 1
+    }
+   },
+   "criterio": false
+  },
+  {
+   "codigo": "VARIEDAD_DE_ESTRATEGIAS",
+   "nombre": "Varias estrategias conviven",
+   "tipo": "principio",
+   "origen": "nueva",
+   "disparador": "siempre",
+   "ambito": "habilidad",
+   "fuente_codigo": "ART-CAVIOLA-2018-ESTRATEGIAS",
+   "fuentes_adicionales": [
+    "ART-NEMETH-2019-INTERCALADO"
+   ],
+   "descripcion": "Los niños usan a la vez varias estrategias para el mismo tipo de cálculo y eligen según el problema; con la edad cambia la mezcla, no se sustituye una por otra de golpe (modelo de olas superpuestas de Siegler). El tutor no debe exigir una única estrategia ni penalizar la correcta del método del colegio (ABN, tradicional).",
+   "regla": {
+    "aceptar_estrategias_correctas": "todas",
+    "registrar_estrategia": true
+   },
+   "criterio": false
+  },
+  {
+   "codigo": "SESION_CORTA_DIARIA",
+   "nombre": "Poco y todos los días",
+   "tipo": "principio",
+   "origen": "nueva",
+   "disparador": "siempre",
+   "ambito": "universal",
+   "fuente_codigo": "WEB-SMARTICK-HOME",
+   "fuentes_adicionales": [
+    "DOC-KUMON-BROCHURE",
+    "GUIA-IES-RTI-MATH-2009",
+    "ART-CEPEDA-2006"
+   ],
+   "descripcion": "Los productos de referencia coinciden: Smartick, una sesión diaria de 15 minutos generada para cada niño tras 2–3 sesiones de nivel; Kumon, estudio diario en pasos pequeños; la guía IES, unos 10 minutos por sesión de fluidez con hechos. La práctica distribuida en días rinde más que la concentrada (Cepeda 2006).",
+   "regla": {
+    "sesion_min": {
+     "6_anios": 5,
+     "12_anios": 15
+    },
+    "frecuencia": "diaria",
+    "cierre": "en_acierto"
+   },
+   "criterio": false
+  }
+ ],
+ "asignacion_por_familia": [
+  {
+   "familia_patron": "hechos numéricos",
+   "familias": [
+    "OPER.SUMA",
+    "OPER.RESTA",
+    "OPER.MULT",
+    "OPER.DIV",
+    "OPER.CALCMENT",
+    "OPER.POT",
+    "OPER.RAIZ",
+    "NUM.CONT"
+   ],
+   "nota": "Habilidades cuyo objetivo final es recuperar el resultado de memoria (tablas, sumas y restas básicas, cuadrados y raíces exactas).",
+   "tecnicas": [
+    {
+     "codigo": "CONMUTATIVA",
+     "prioridad": 1,
+     "parametros": {
+      "a": "parametros.a",
+      "b": "parametros.b",
+      "excluir_familias": [
+       "OPER.RESTA",
+       "OPER.DIV",
+       "OPER.POT",
+       "OPER.RAIZ",
+       "NUM.CONT"
+      ]
+     }
+    },
+    {
+     "codigo": "VECINO",
+     "prioridad": 2,
+     "parametros": {
+      "variar": "b",
+      "delta": [
+       -1,
+       1
+      ],
+      "rango_b": [
+       0,
+       10
+      ]
+     }
+    },
+    {
+     "codigo": "DESCOMPONER",
+     "prioridad": 3,
+     "parametros": {
+      "partir": "b",
+      "en": [
+       5,
+       "resto"
+      ],
+      "suma": "completar_10"
+     }
+    },
+    {
+     "codigo": "PISTA_ESCALONADA",
+     "prioridad": 4,
+     "parametros": {
+      "pistas": [
+       "hecho_conocido_cercano",
+       "descomposicion",
+       "resultado"
+      ]
+     }
+    },
+    {
+     "codigo": "FAMILIA_HECHOS",
+     "prioridad": 1,
+     "parametros": {
+      "probabilidad": 0.3,
+      "excluir_familias": [
+       "NUM.CONT"
+      ]
+     }
+    },
+    {
+     "codigo": "FLUIDEZ_CRONOMETRADA",
+     "prioridad": 2,
+     "parametros": {
+      "max_minutos_por_sesion": 10
+     }
+    },
+    {
+     "codigo": "SUBIR_DIFICULTAD",
+     "prioridad": 3,
+     "parametros": {
+      "tras_aciertos": 3
+     }
+    },
+    {
+     "codigo": "PRODUCCION_ANTES_QUE_RECONOCIMIENTO",
+     "prioridad": 1,
+     "parametros": {}
+    },
+    {
+     "codigo": "BAJAR_PRERREQUISITO",
+     "prioridad": 5,
+     "parametros": {
+      "tras_fallos": 4
+     }
+    }
+   ],
+   "modelo_alumno": {
+    "principal": "ELO",
+    "dominio": "BKT",
+    "alternativa": "PFA",
+    "calendario": "FSRS",
+    "puntuacion": "PUNTUACION_VELOCIDAD solo en mecánicas con cronómetro"
+   }
+  },
+  {
+   "familia_patron": "razonamiento",
+   "familias": [
+    "NUM.FRAC",
+    "NUM.PORC",
+    "NUM.PROP",
+    "NUM.REAL",
+    "GEO.LINEA",
+    "GEO.ANG",
+    "GEO.POLI",
+    "GEO.TRIANG",
+    "GEO.CUAD",
+    "GEO.CIRC",
+    "GEO.CUERPO",
+    "GEO.MOV",
+    "GEO.SEMEJ",
+    "ALG.PATRON",
+    "ALG.COMPUT",
+    "ALG.EXPR",
+    "FUN.CONC",
+    "FUN.SUCES",
+    "FUN.LINEAL",
+    "FUN.CUADR",
+    "FUN.ELEM",
+    "FUN.PROPS",
+    "ANA.CONT",
+    "EST.DATOS",
+    "EST.GRAF",
+    "EST.AZAR",
+    "EST.PROB"
+   ],
+   "nota": "Conceptos y relaciones (fracciones, proporcionalidad, geometría, funciones, probabilidad) donde el fallo suele venir de una idea errónea.",
+   "tecnicas": [
+    {
+     "codigo": "MISMO_ERROR",
+     "prioridad": 1,
+     "parametros": {
+      "n": 2
+     }
+    },
+    {
+     "codigo": "EJEMPLO_RESUELTO",
+     "prioridad": 2,
+     "parametros": {
+      "fading": "hacia_atras"
+     }
+    },
+    {
+     "codigo": "PISTA_ESCALONADA",
+     "prioridad": 3,
+     "parametros": {}
+    },
+    {
+     "codigo": "BAJAR_PRERREQUISITO",
+     "prioridad": 4,
+     "parametros": {
+      "tras_fallos": 3
+     }
+    },
+    {
+     "codigo": "AUTOEXPLICACION",
+     "prioridad": 1,
+     "parametros": {
+      "cada_n_aciertos": 4
+     }
+    },
+    {
+     "codigo": "SUBIR_DIFICULTAD",
+     "prioridad": 2,
+     "parametros": {
+      "tras_aciertos": 3
+     }
+    },
+    {
+     "codigo": "PREGUNTA_PREVIA",
+     "prioridad": 1,
+     "parametros": {
+      "n": 1
+     }
+    },
+    {
+     "codigo": "PROBLEMA_ANTES_DE_INSTRUCCION",
+     "prioridad": 2,
+     "parametros": {
+      "edad_min": 12
+     }
+    }
+   ],
+   "modelo_alumno": {
+    "principal": "BKT",
+    "dificultad_ejercicio": "ELO",
+    "calendario": "FSRS"
+   }
+  },
+  {
+   "familia_patron": "posicion_orden",
+   "familias": [
+    "NUM.LECT",
+    "NUM.ORD",
+    "NUM.DESC",
+    "NUM.REDON",
+    "NUM.ORDINAL",
+    "NUM.PARIDAD",
+    "NUM.ROM",
+    "NUM.DEC",
+    "NUM.ENT",
+    "GEO.COORD",
+    "GEO.POS",
+    "MED.LONG",
+    "MED.MASA",
+    "MED.CAP",
+    "MED.SUP",
+    "MED.VOL",
+    "MED.DINERO"
+   ],
+   "nota": "Valor posicional, orden, recta numérica y conversiones de unidades (que son desplazamientos de posición).",
+   "tecnicas": [
+    {
+     "codigo": "VECINO",
+     "prioridad": 1,
+     "parametros": {
+      "variar": "posicion_o_numero",
+      "delta": [
+       -1,
+       1
+      ],
+      "nota": "mismo número con la cifra en otra posición, o número anterior/siguiente"
+     }
+    },
+    {
+     "codigo": "MISMO_ERROR",
+     "prioridad": 2,
+     "parametros": {
+      "n": 2
+     }
+    },
+    {
+     "codigo": "PISTA_ESCALONADA",
+     "prioridad": 3,
+     "parametros": {
+      "pistas": [
+       "tabla_de_posiciones",
+       "recta_numerica",
+       "resultado"
+      ]
+     }
+    },
+    {
+     "codigo": "BAJAR_PRERREQUISITO",
+     "prioridad": 4,
+     "parametros": {
+      "tras_fallos": 3
+     }
+    },
+    {
+     "codigo": "SUBIR_DIFICULTAD",
+     "prioridad": 1,
+     "parametros": {
+      "tras_aciertos": 3,
+      "dificultad": "+1 cifra"
+     }
+    },
+    {
+     "codigo": "AUTOEXPLICACION",
+     "prioridad": 2,
+     "parametros": {
+      "cada_n_aciertos": 6
+     }
+    },
+    {
+     "codigo": "INICIO_COMODO",
+     "prioridad": 1,
+     "parametros": {}
+    }
+   ],
+   "modelo_alumno": {
+    "principal": "BKT",
+    "dificultad_ejercicio": "ELO",
+    "calendario": "FSRS"
+   }
+  },
+  {
+   "familia_patron": "procedimiento_largo",
+   "familias": [
+    "OPER.FRAC",
+    "OPER.DEC",
+    "OPER.ENT",
+    "OPER.JERARQ",
+    "OPER.RADIC",
+    "OPER.LOG",
+    "NUM.DIVIS",
+    "ALG.POLI",
+    "ALG.IDENT",
+    "ALG.FRACALG",
+    "ALG.EC1",
+    "ALG.EC2",
+    "ALG.SIST",
+    "ALG.INEC",
+    "ALG.MATRIZ",
+    "ALG.SISTLIN",
+    "ALG.PROGLIN",
+    "ANA.LIM",
+    "ANA.DER",
+    "ANA.APLDER",
+    "ANA.INT",
+    "GEO.PERIM",
+    "GEO.AREA",
+    "GEO.VOLCUERPO",
+    "GEO.TRIG",
+    "GEO.VECT",
+    "GEO.ANALIT",
+    "GEO.ESPACIO",
+    "GEO.PITAG",
+    "EST.MEDIDAS",
+    "EST.COMB",
+    "EST.BIDIM",
+    "EST.DISTR",
+    "EST.INFER",
+    "NUM.COMPLEJO",
+    "MED.TIEMPO",
+    "MED.ANG"
+   ],
+   "nota": "Algoritmos de varios pasos (operar fracciones, jerarquía, ecuaciones, derivadas, áreas…).",
+   "tecnicas": [
+    {
+     "codigo": "PISTA_ESCALONADA",
+     "prioridad": 1,
+     "parametros": {
+      "subpreguntas_si_multipaso": true
+     }
+    },
+    {
+     "codigo": "EJEMPLO_RESUELTO",
+     "prioridad": 2,
+     "parametros": {
+      "fading": "hacia_atras",
+      "pasos_ocultos_incremento": 1
+     }
+    },
+    {
+     "codigo": "MISMO_ERROR",
+     "prioridad": 3,
+     "parametros": {
+      "n": 2
+     }
+    },
+    {
+     "codigo": "BAJAR_PRERREQUISITO",
+     "prioridad": 4,
+     "parametros": {
+      "tras_fallos": 3
+     }
+    },
+    {
+     "codigo": "DESCOMPONER",
+     "prioridad": 5,
+     "parametros": {
+      "partir": "pasos",
+      "en": "subpreguntas",
+      "nota": "parte el procedimiento, no los números"
+     }
+    },
+    {
+     "codigo": "AUTOEXPLICACION",
+     "prioridad": 1,
+     "parametros": {
+      "cada_n_aciertos": 5
+     }
+    },
+    {
+     "codigo": "SUBIR_DIFICULTAD",
+     "prioridad": 2,
+     "parametros": {
+      "tras_aciertos": 3
+     }
+    }
+   ],
+   "modelo_alumno": {
+    "principal": "BKT",
+    "dificultad_ejercicio": "ELO",
+    "calendario": "FSRS",
+    "nota": "corrección paso a paso (TUTOR_POR_PASOS) cuando la mecánica lo permita"
+   }
+  },
+  {
+   "familia_patron": "problemas",
+   "familias": [
+    "PROB.UNA",
+    "PROB.DOS",
+    "PROB.COMB",
+    "PROB.DATOS",
+    "PROB.MED",
+    "PROB.FRAC",
+    "PROB.PROP",
+    "PROB.EC",
+    "PROB.GEO",
+    "PROB.ESTRAT"
+   ],
+   "nota": "Enunciados verbales: el reto es elegir la operación o el modelo, no calcular.",
+   "tecnicas": [
+    {
+     "codigo": "EJEMPLO_RESUELTO",
+     "prioridad": 1,
+     "parametros": {
+      "fading": "hacia_atras",
+      "representacion": "modelo_de_barras_si_metodo_singapur"
+     }
+    },
+    {
+     "codigo": "PISTA_ESCALONADA",
+     "prioridad": 2,
+     "parametros": {
+      "pistas": [
+       "que_se_pregunta",
+       "que_datos_hay",
+       "que_operacion",
+       "resultado"
+      ]
+     }
+    },
+    {
+     "codigo": "MISMO_ERROR",
+     "prioridad": 3,
+     "parametros": {
+      "n": 2,
+      "nota": "misma estructura semántica, otro contexto"
+     }
+    },
+    {
+     "codigo": "BAJAR_PRERREQUISITO",
+     "prioridad": 4,
+     "parametros": {
+      "tras_fallos": 3,
+      "ir_a": "operacion_implicada"
+     }
+    },
+    {
+     "codigo": "AUTOEXPLICACION",
+     "prioridad": 1,
+     "parametros": {
+      "cada_n_aciertos": 3,
+      "formato": "elegir_por_que_esta_operacion"
+     }
+    },
+    {
+     "codigo": "SUBIR_DIFICULTAD",
+     "prioridad": 2,
+     "parametros": {
+      "tras_aciertos": 3
+     }
+    },
+    {
+     "codigo": "PROBLEMA_ANTES_DE_INSTRUCCION",
+     "prioridad": 1,
+     "parametros": {
+      "edad_min": 12
+     }
+    }
+   ],
+   "modelo_alumno": {
+    "principal": "BKT",
+    "dificultad_ejercicio": "ELO",
+    "calendario": "FSRS"
+   }
+  }
+ ],
+ "parametros_tutor": {
+  "bkt": {
+   "p_L0": {
+    "valor": 0.1,
+    "si_prueba_nivel": {
+     "niveles_por_debajo_del_situado": 0.9,
+     "nivel_situado": 0.6,
+     "por_encima": 0.1
+    },
+    "fuente_codigo": "ART-PYBKT-2021",
+    "criterio": true,
+    "nota": "pyBKT muestra un ajuste real con prior 0,17 y usa 0,08 en su simulación; 0,1 y los valores tras la prueba de nivel son criterio."
+   },
+   "p_T": {
+    "valor": 0.15,
+    "fuente_codigo": "ART-PYBKT-2021",
+    "criterio": true,
+    "nota": "Ajuste de ejemplo de pyBKT: learn 0,134; simulación: 0,3."
+   },
+   "p_G": {
+    "valor": {
+     "produccion": 0.05,
+     "opcion_multiple": "1/k (k = nº de opciones)",
+     "verdadero_falso": 0.5
+    },
+    "fuente_codigo": "ART-PELANEK-2016-ELO",
+    "criterio": true,
+    "nota": "1/k es el suelo por azar (Pelánek, logística desplazada); 0,05 en producción es criterio. pyBKT: ajuste real 0,255, simulación 0,15."
+   },
+   "p_S": {
+    "valor": 0.1,
+    "fuente_codigo": "ART-PYBKT-2021",
+    "criterio": true,
+    "nota": "Simulación de pyBKT: 0,05; 0,1 da margen a despistes infantiles (criterio)."
+   },
+   "umbral_dominio": {
+    "valor": 0.85,
+    "estricto": 0.95,
+    "fuente_codigo": "ART-CORBETT-ANDERSON-1994",
+    "nota": "Corbett y Anderson usan 0,95; el documento fija 0,85. Propuesta: 0,85 para salir de práctica y 0,95 (o CONFIRMAR_DOMINIO_MIXTO) para 'dominada'."
+   },
+   "olvido": {
+    "valor": 0,
+    "nota": "BKT estándar no modela olvido; el olvido lo lleva FSRS por separado.",
+    "fuente_codigo": "ART-PYBKT-2021"
+   },
+   "formulas": "post = acierto ? pL(1−pS)/(pL(1−pS)+(1−pL)pG) : pL·pS/(pL·pS+(1−pL)(1−pG)); pL' = post + (1−post)·pT; P(acierto) = pL(1−pS) + (1−pL)pG",
+   "ajuste": "Reestimar pT, pG, pS por familia con EM (pyBKT) cada mes a partir de mates10_intento.",
+   "fuente_codigo": "ART-CORBETT-ANDERSON-1994"
+  },
+  "fsrs": {
+   "version": "FSRS-5",
+   "w": [
+    0.40255,
+    1.18385,
+    3.173,
+    15.69105,
+    7.1949,
+    0.5345,
+    1.4604,
+    0.0046,
+    1.54575,
+    0.1192,
+    1.01925,
+    1.9395,
+    0.11,
+    0.29605,
+    2.2698,
+    0.2315,
+    2.9898,
+    0.51655,
+    0.6621
+   ],
+   "retencion_objetivo": 0.9,
+   "decay": -0.5,
+   "factor": 0.2345679012345679,
+   "intervalo_min_dias": 1,
+   "intervalo_max_dias": 365,
+   "dificultad_rango": [
+    1,
+    10
+   ],
+   "calificaciones": {
+    "1": "Again (fallo)",
+    "2": "Hard",
+    "3": "Good",
+    "4": "Easy"
+   },
+   "formulas": "R(t,S) = (1 + (19/81)·t/S)^(−0.5)  [t = días desde el último repaso; R(S,S)=0,9]. I(r,S) = (S/(19/81))·(r^(1/−0.5) − 1) = (81/19)·S·(r^−2 − 1)  [con r=0,9 → I=S]; redondear, mínimo 1 día. Primer repaso: S0(G) = w[G−1]; D0(G) = w4 − e^(w5·(G−1)) + 1, limitado a [1,10]. Dificultad tras repaso: ΔD = −w6·(G−3); D' = D + ΔD·(10−D)/9; D'' = w7·D0(4) + (1−w7)·D'; limitar a [1,10]. Estabilidad tras acierto (G≥2): S'r = S·(1 + e^w8·(11−D)·S^(−w9)·(e^(w10·(1−R)) − 1)·(G=2 ? w15 : 1)·(G=4 ? w16 : 1)). Estabilidad tras fallo (G=1): S'f = w11·D^(−w12)·((S+1)^w13 − 1)·e^(w14·(1−R)). Repaso el mismo día: S' = S·e^(w17·(G−3+w18)). Orden: calcular R con S y t actuales → S' con la D anterior → D''. Nota de implementación (criterio, como hace py-fsrs en FSRS-6): acotar S'f ≤ S y S ≥ 0,001.",
+   "sql_ejemplo": "-- R y próximo intervalo\nselect power(1 + (19.0/81) * t / s, -0.5) as r, greatest(1, round((81.0/19) * s * (power(0.9, -2) - 1))) as intervalo;\n-- estabilidad tras acierto con w[] (índices base 1 en SQL: w[9]=w8)\ns * (1 + exp(w[9]) * (11 - d) * power(s, -w[10]) * (exp(w[11] * (1 - r)) - 1) * case when g = 2 then w[16] else 1 end * case when g = 4 then w[17] else 1 end)",
+   "alternativas": {
+    "FSRS-4.5": [
+     0.4872,
+     1.4003,
+     3.7145,
+     13.8206,
+     5.1618,
+     1.2298,
+     0.8975,
+     0.031,
+     1.6474,
+     0.1367,
+     1.0461,
+     2.1072,
+     0.0793,
+     0.3246,
+     1.587,
+     0.2272,
+     2.8755
+    ],
+    "FSRS-6": {
+     "w": [
+      0.212,
+      1.2931,
+      2.3065,
+      8.2956,
+      6.4133,
+      0.8334,
+      3.0194,
+      0.001,
+      1.8722,
+      0.1666,
+      0.796,
+      1.4835,
+      0.0614,
+      0.2629,
+      1.6483,
+      0.6014,
+      1.8729,
+      0.5425,
+      0.0912,
+      0.0658,
+      0.1542
+     ],
+     "diferencias": "decay entrenable (w20): R = (1 + factor·t/S)^(−w20), factor = 0,9^(−1/w20) − 1; mismo día S' = S·e^(w17·(G−3+w18))·S^(−w19); tras fallo min(S'f, S/e^(w17·w18))",
+     "fuente_codigo": "DOC-PYFSRS-SCHEDULER"
+    }
+   },
+   "retencion_nota": "Anki usa 0,9 por defecto: por encima de 0,9 la carga de repasos crece muy deprisa (DOC-ANKI-DECK-OPTIONS).",
+   "fuente_codigo": "DOC-FSRS-ALGORITHM",
+   "criterio_aplicacion": "Los w por defecto salen de tarjetas de Anki de adultos; con > 1000 repasos por familia conviene reoptimizarlos (py-fsrs incluye optimizador)."
+  },
+  "elo": {
+   "theta_inicial": 0.0,
+   "d_inicial": {
+    "regla": "(nivel_familia − nivel_esperado_curso) · 0,5",
+    "criterio": true
+   },
+   "K": {
+    "funcion": "U(n) = a/(1+b·n)",
+    "a": 1.0,
+    "b": 0.05,
+    "n": "nº de respuestas previas del alumno (o del ejercicio)",
+    "fuente_codigo": "ART-PELANEK-2016-ELO",
+    "nota": "Valores de Pelánek (2016); también cita K fijo = 0,4 en trabajos previos."
+   },
+   "K_klinkenberg": {
+    "regla": "U inicial 1; tras cada respuesta U := U − 1/40 + D/30 (D = días desde el intento anterior)",
+    "fuente_codigo": "ART-PELANEK-2016-ELO"
+   },
+   "p_acierto": "1/(1+e^−(θ−d)); con k opciones: 1/k + (1−1/k)/(1+e^−(θ−d))",
+   "actualizacion": "θ := θ + K·(correcto − p); d := d − K·(correcto − p)",
+   "puntuacion_tiempo": {
+    "regla": "S = (2·correcto − 1)·(a·d_lim − a·t)",
+    "uso": "solo mecánicas con cronómetro visible",
+    "fuente_codigo": "ART-PELANEK-2016-ELO"
+   },
+   "p_objetivo": {
+    "valor": 0.8,
+    "nota": "Pelánek cita 75 % en Outline Maps; Wilson et al. 85 %; el documento 80–85 %.",
+    "fuente_codigo": "ART-WILSON-2019-85"
+   },
+   "fuente_codigo": "ART-PELANEK-2016-ELO"
+  },
+  "termostato": {
+   "acierto_objetivo": 0.85,
+   "bajar_si_menor": 0.7,
+   "subir_si_mayor": 0.9,
+   "fuente_codigo": "ART-WILSON-2019-85"
+  }
+ }
+}

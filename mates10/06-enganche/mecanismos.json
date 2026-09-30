@@ -1,0 +1,1022 @@
+{
+ "mecanismos": [
+  {
+   "codigo": "PROGRESO_CERCANO",
+   "nombre": "Progreso visible y cercano (goal gradient)",
+   "descripcion": "Mostrar cuánto falta para una meta concreta y cercana; el esfuerzo aumenta a medida que la meta se acerca.",
+   "origen": "Psicología conductual (Hull) retomada en fidelización de clientes; juegos; Duolingo",
+   "fuente_codigo": "ART-KIVETZ-URMINSKY-ZHENG-2006",
+   "fuente_id": "f4c0cf9e-5e08-463f-a090-23f2e19dfdab",
+   "fuentes_adicionales": [
+    "MATES10-DOC-UNIFICADO-1.1",
+    "ART-RYAN-DECI-2000",
+    "NORM-AEPD-PATRONES-ADICTIVOS-2024"
+   ],
+   "evidencia": "fuerte",
+   "riesgo_menores": "bajo",
+   "uso_en_mates10": "Barra de dominio por habilidad y por familia, calculada con p_dominio real; mensaje del tipo \"te faltan 2 para dominar la tabla del 7\". Nunca progreso ilusorio (sellos regalados de Kivetz) ni barras que empujen a seguir cuando la sesión ya ha cumplido. La AEPD cita las barras de progreso dentro del patrón de persistencia: por eso solo se muestran como información, sin presión temporal.",
+   "parametros": {
+    "umbral_cercania_ejercicios": 3,
+    "mostrar_por": [
+     "habilidad",
+     "familia"
+    ],
+    "progreso_ilusorio": false,
+    "visible_para_padre": true
+   },
+   "edad_desde": 6,
+   "edad_hasta": 17,
+   "estado": "activo",
+   "metricas": {
+    "regla": "Regla de dos columnas (módulo 06 §5): sube enganche y aprendizaje → se queda; sube enganche sin subir aprendizaje → revisión, y si al mes sigue igual se retira; baja enganche → se retira.",
+    "enganche": [
+     "tasa de vuelta al día siguiente cuando la habilidad quedó a ≤3 del dominio",
+     "retención D1/D7/D30 (con vs. sin el mecanismo)",
+     "sesiones por semana",
+     "% de sesiones iniciadas por el niño (no por el padre)"
+    ],
+    "aprendizaje": [
+     "tiempo hasta dominio de habilidades con barra visible",
+     "crecimiento semanal de p_dominio",
+     "retención a 30 días de habilidades dominadas"
+    ],
+    "guardia": [
+     "sesiones/día por alumno (>3 sostenido → aviso al padre)"
+    ]
+   },
+   "criterio": false,
+   "notas_evidencia": "Kivetz et al. (2006): aceleración cerca de la meta en experimentos de campo con adultos (tarjeta de café). Aplicación a niños y a aprendizaje = extrapolación."
+  },
+  {
+   "codigo": "FIN_EN_ACIERTO",
+   "nombre": "Terminar en acierto (regla pico-final)",
+   "descripcion": "El recuerdo de una experiencia lo dominan su peor momento y su final; una sesión que acaba bien se recuerda mejor y se quiere repetir.",
+   "origen": "Psicología (Kahneman y Redelmeier)",
+   "fuente_codigo": "ART-KAHNEMAN-ET-AL-1993",
+   "fuente_id": "3173c784-06e7-4f0a-aef9-a1db879cac6a",
+   "fuentes_adicionales": [
+    "MATES10-DOC-UNIFICADO-1.1"
+   ],
+   "evidencia": "media",
+   "riesgo_menores": "ninguno",
+   "uso_en_mates10": "La sesión se cierra siempre con uno o dos ejercicios de una habilidad ya dominada (o en su suelo) que el alumno acierta con alta probabilidad; nunca termina tras un fallo. El cierre no oculta los fallos: el padre los ve igual.",
+   "parametros": {
+    "ejercicios_cierre": 2,
+    "p_acierto_min_cierre": 0.85,
+    "origen_cierre": "habilidad_dominada_o_suelo"
+   },
+   "edad_desde": 6,
+   "edad_hasta": 17,
+   "estado": "activo",
+   "metricas": {
+    "regla": "Regla de dos columnas (módulo 06 §5): sube enganche y aprendizaje → se queda; sube enganche sin subir aprendizaje → revisión, y si al mes sigue igual se retira; baja enganche → se retira.",
+    "enganche": [
+     "ganas declaradas de volver (emoji al cierre)",
+     "retención D1 tras sesiones que acaban en acierto vs. en fallo (histórico)",
+     "retención D1/D7/D30 (con vs. sin el mecanismo)",
+     "sesiones por semana",
+     "% de sesiones iniciadas por el niño (no por el padre)"
+    ],
+    "aprendizaje": [
+     "que el cierre no consuma tiempo de práctica útil: % de tiempo de sesión en cierre",
+     "crecimiento semanal de p_dominio",
+     "retención a 30 días de habilidades dominadas"
+    ],
+    "guardia": [
+     "sesiones/día por alumno (>3 sostenido → aviso al padre)"
+    ]
+   },
+   "criterio": true,
+   "notas_evidencia": "Efecto robusto en laboratorio (Kahneman et al. 1993, adultos, dolor por agua fría). Que mejore la vuelta a una app de aprendizaje infantil no está probado: evidencia 'media' es criterio propio."
+  },
+  {
+   "codigo": "SESION_CORTA",
+   "nombre": "Sesión corta con final claro",
+   "descripcion": "La sesión tiene una duración objetivo corta y un final explícito; se puede pausar en cualquier momento sin perder el progreso.",
+   "origen": "Kumon, Smartick (15 min diarios), Duolingo (5 min); ICO estándar 5; directrices CE art. 28",
+   "fuente_codigo": "DOC-SMARTICK-WEB",
+   "fuente_id": "cfdf888a-4213-450a-a569-4878ea52fb28",
+   "fuentes_adicionales": [
+    "MATES10-DOC-UNIFICADO-1.1",
+    "BLOG-DUOLINGO-RACHA-HABITO-2022",
+    "NORM-ICO-AADC-05-DETRIMENTAL",
+    "NORM-CE-DIRECTRICES-MENORES-DSA-2025"
+   ],
+   "evidencia": "media",
+   "riesgo_menores": "ninguno",
+   "uso_en_mates10": "Objetivo de 10 minutos (ajustable por alumno; 5–8 si cuesta sostener la atención, módulo 04 A.4). Al llegar, cierre con FIN_EN_ACIERTO y pantalla de fin — sin \"una más\". Botón de pausa siempre visible que guarda el estado. Si el niño quiere seguir, se le ofrece de forma neutra, sin sugerir que pierde algo si para (ICO estándar 5).",
+   "parametros": {
+    "duracion_objetivo_min": 10,
+    "duracion_min_tdah_min": 5,
+    "duracion_max_min": 15,
+    "pausa_sin_perdida": true,
+    "ofrecer_seguir": "neutro",
+    "max_sesiones_dia_sin_aviso": 3
+   },
+   "edad_desde": 6,
+   "edad_hasta": 17,
+   "estado": "activo",
+   "metricas": {
+    "regla": "Regla de dos columnas (módulo 06 §5): sube enganche y aprendizaje → se queda; sube enganche sin subir aprendizaje → revisión, y si al mes sigue igual se retira; baja enganche → se retira.",
+    "enganche": [
+     "duración media frente a objetivo",
+     "abandono intra-sesión",
+     "retención D1",
+     "retención D1/D7/D30 (con vs. sin el mecanismo)",
+     "sesiones por semana",
+     "% de sesiones iniciadas por el niño (no por el padre)"
+    ],
+    "aprendizaje": [
+     "aciertos por minuto de práctica",
+     "p_dominio por sesión",
+     "crecimiento semanal de p_dominio",
+     "retención a 30 días de habilidades dominadas"
+    ],
+    "guardia": [
+     "sesiones/día por alumno (>3 sostenido → aviso al padre)"
+    ]
+   },
+   "criterio": true,
+   "notas_evidencia": "Las fuentes archivadas son de producto (Smartick, Duolingo) y normativas (ICO, CE); no hay ensayo archivado que compare duraciones. Evidencia 'media' = criterio propio."
+  },
+  {
+   "codigo": "RACHA",
+   "nombre": "Racha diaria con escudos",
+   "descripcion": "Contador de días seguidos practicando; los escudos perdonan días sueltos.",
+   "origen": "Duolingo, Snapchat",
+   "fuente_codigo": "BLOG-DUOLINGO-RACHA-HABITO-2022",
+   "fuente_id": "29649ed2-6f95-4322-867d-50fcf083f4f2",
+   "fuentes_adicionales": [
+    "MATES10-DOC-UNIFICADO-1.1",
+    "NORM-AEPD-PATRONES-ADICTIVOS-2024",
+    "NORM-CE-DIRECTRICES-MENORES-DSA-2025",
+    "NORM-5RIGHTS-DISRUPTED-CHILDHOOD"
+   ],
+   "evidencia": "media",
+   "riesgo_menores": "medio",
+   "uso_en_mates10": "Solo si el padre la activa (desactivada por defecto, como recomiendan las directrices de la CE para las rachas). Con escudos que perdonan días; romperla no quita nada (ni progreso ni colección), no hay mensajes de culpa ni cuenta atrás. Se muestra en días practicados por semana antes que como número creciente sin fin.",
+   "parametros": {
+    "activa_por_defecto": false,
+    "la_activa": "padre",
+    "escudos_iniciales": 2,
+    "escudos_max": 2,
+    "dias_semana_objetivo": 5,
+    "mensaje_al_romper": "neutro",
+    "perder_progreso_al_romper": false
+   },
+   "edad_desde": 8,
+   "edad_hasta": 17,
+   "estado": "idea",
+   "metricas": {
+    "regla": "Regla de dos columnas (módulo 06 §5): sube enganche y aprendizaje → se queda; sube enganche sin subir aprendizaje → revisión, y si al mes sigue igual se retira; baja enganche → se retira.",
+    "enganche": [
+     "racha media",
+     "sesiones iniciadas por el niño con racha activa vs. sin racha",
+     "retención D1/D7/D30 (con vs. sin el mecanismo)",
+     "sesiones por semana",
+     "% de sesiones iniciadas por el niño (no por el padre)"
+    ],
+    "aprendizaje": [
+     "p_dominio semanal con racha vs. sin racha",
+     "señales de ansiedad: sesiones de 1 ejercicio solo para no romper racha",
+     "crecimiento semanal de p_dominio",
+     "retención a 30 días de habilidades dominadas"
+    ],
+    "guardia": [
+     "sesiones/día por alumno (>3 sostenido → aviso al padre)"
+    ]
+   },
+   "criterio": true,
+   "notas_evidencia": "Duolingo publica datos internos (+1,7 % de nuevos usuarios activos a 7 días con la animación de la racha) sin revisión por pares y en adultos. La AEPD clasifica las 'recompensas periódicas' y rachas como patrón adictivo; la CE (directrices art. 28) recomienda rachas desactivadas por defecto para menores. Edad desde 8 = criterio propio."
+  },
+  {
+   "codigo": "SORPRESA",
+   "nombre": "Sorpresa positiva no ligada a rendimiento",
+   "descripcion": "Forma mínima y controlada de recompensa variable: algo inesperado y agradable que no depende de cuánto se juega ni de acertar más.",
+   "origen": "Máquinas tragaperras y redes sociales (recompensa variable), rebajada",
+   "fuente_codigo": "NORM-CE-DIRECTRICES-MENORES-DSA-2025",
+   "fuente_id": "022e5817-a694-4e6b-ac6c-c9c569a92fdc",
+   "fuentes_adicionales": [
+    "MATES10-DOC-UNIFICADO-1.1",
+    "ART-DECI-KOESTNER-RYAN-1999",
+    "NORM-AEPD-PATRONES-ADICTIVOS-2024"
+   ],
+   "evidencia": "debil",
+   "riesgo_menores": "medio",
+   "uso_en_mates10": "Solo como aparición ocasional de un personaje o escena del mundo, no programada para maximizar vueltas, no acumulable, no canjeable y nunca ligada a dinero. Las directrices de la CE piden no exponer a menores a recompensas intermitentes o aleatorias que lleven a conductas adictivas: por eso queda en 'idea' y requiere revisión antes de probarse.",
+   "parametros": {
+    "frecuencia_max_por_semana": 1,
+    "ligada_a_rendimiento": false,
+    "ligada_a_tiempo_de_uso": false,
+    "canjeable": false
+   },
+   "edad_desde": 6,
+   "edad_hasta": 10,
+   "estado": "idea",
+   "metricas": {
+    "regla": "Regla de dos columnas (módulo 06 §5): sube enganche y aprendizaje → se queda; sube enganche sin subir aprendizaje → revisión, y si al mes sigue igual se retira; baja enganche → se retira.",
+    "enganche": [
+     "retención D7 con vs. sin sorpresa",
+     "retención D1/D7/D30 (con vs. sin el mecanismo)",
+     "sesiones por semana",
+     "% de sesiones iniciadas por el niño (no por el padre)"
+    ],
+    "aprendizaje": [
+     "sin cambio o mejora en p_dominio (si baja, fuera)",
+     "crecimiento semanal de p_dominio",
+     "retención a 30 días de habilidades dominadas"
+    ],
+    "guardia": [
+     "sesiones/día por alumno (>3 sostenido → aviso al padre)"
+    ]
+   },
+   "criterio": true,
+   "notas_evidencia": "No hay fuente archivada que muestre efecto sobre aprendizaje; la evidencia de recompensa variable es sobre uso, no aprendizaje. Criterio propio."
+  },
+  {
+   "codigo": "AUTONOMIA_ELECCION",
+   "nombre": "Autonomía: elegir",
+   "descripcion": "Dar opciones reales (qué practicar primero, personaje, mecánica) para que el niño sienta que la actividad es suya.",
+   "origen": "Teoría de la autodeterminación (Deci y Ryan); motivación en videojuegos",
+   "fuente_codigo": "ART-RYAN-DECI-2000",
+   "fuente_id": "4d4a00f1-c29e-4fa2-92ba-a0045ce9a525",
+   "fuentes_adicionales": [
+    "ART-RYAN-RIGBY-PRZYBYLSKI-2006",
+    "MATES10-DOC-UNIFICADO-1.1"
+   ],
+   "evidencia": "fuerte",
+   "riesgo_menores": "ninguno",
+   "uso_en_mates10": "Elegir personaje, el orden de los bloques del día y la mecánica cuando hay varias con afinidad similar para la misma habilidad. El tutor sigue decidiendo QUÉ habilidades tocan; el niño elige CÓMO y en qué orden.",
+   "parametros": {
+    "opciones_por_eleccion": 2,
+    "puntos_de_eleccion_por_sesion": 2,
+    "elegir": [
+     "personaje",
+     "orden",
+     "mecanica"
+    ]
+   },
+   "edad_desde": 6,
+   "edad_hasta": 17,
+   "estado": "idea",
+   "metricas": {
+    "regla": "Regla de dos columnas (módulo 06 §5): sube enganche y aprendizaje → se queda; sube enganche sin subir aprendizaje → revisión, y si al mes sigue igual se retira; baja enganche → se retira.",
+    "enganche": [
+     "% de sesiones iniciadas por el niño",
+     "retención D1/D7/D30 (con vs. sin el mecanismo)",
+     "sesiones por semana",
+     "% de sesiones iniciadas por el niño (no por el padre)"
+    ],
+    "aprendizaje": [
+     "p_dominio con elección vs. asignación",
+     "crecimiento semanal de p_dominio",
+     "retención a 30 días de habilidades dominadas"
+    ],
+    "guardia": [
+     "sesiones/día por alumno (>3 sostenido → aviso al padre)"
+    ]
+   },
+   "criterio": false,
+   "notas_evidencia": "Ryan, Rigby y Przybylski (2006): la autonomía y competencia percibidas en el juego se asocian con disfrute y bienestar."
+  },
+  {
+   "codigo": "COMPETENCIA_VISIBLE",
+   "nombre": "Competencia: sentir que mejora",
+   "descripcion": "Mostrar al niño, en sus palabras, lo que ahora sabe y antes no.",
+   "origen": "Teoría de la autodeterminación",
+   "fuente_codigo": "ART-RYAN-DECI-2000",
+   "fuente_id": "4d4a00f1-c29e-4fa2-92ba-a0045ce9a525",
+   "fuentes_adicionales": [
+    "ART-RYAN-RIGBY-PRZYBYLSKI-2006",
+    "ART-DECI-KOESTNER-RYAN-1999",
+    "MATES10-DOC-UNIFICADO-1.1"
+   ],
+   "evidencia": "fuerte",
+   "riesgo_menores": "ninguno",
+   "uso_en_mates10": "Informe semanal al niño: \"hace dos semanas no sabías esto\", con 1–3 habilidades nuevas dominadas y una que aún cuesta. Basado en datos reales; nada de medallas genéricas.",
+   "parametros": {
+    "frecuencia": "semanal",
+    "habilidades_mostradas_max": 3,
+    "incluye_pendiente": true
+   },
+   "edad_desde": 6,
+   "edad_hasta": 17,
+   "estado": "idea",
+   "metricas": {
+    "regla": "Regla de dos columnas (módulo 06 §5): sube enganche y aprendizaje → se queda; sube enganche sin subir aprendizaje → revisión, y si al mes sigue igual se retira; baja enganche → se retira.",
+    "enganche": [
+     "apertura del informe por el niño",
+     "retención D7 tras informe",
+     "retención D1/D7/D30 (con vs. sin el mecanismo)",
+     "sesiones por semana",
+     "% de sesiones iniciadas por el niño (no por el padre)"
+    ],
+    "aprendizaje": [
+     "correlación informe → práctica de la habilidad pendiente",
+     "crecimiento semanal de p_dominio",
+     "retención a 30 días de habilidades dominadas"
+    ],
+    "guardia": [
+     "sesiones/día por alumno (>3 sostenido → aviso al padre)"
+    ]
+   },
+   "criterio": false
+  },
+  {
+   "codigo": "RELACION_ADULTO",
+   "nombre": "Relación: alguien lo ve",
+   "descripcion": "El niño sabe que un adulto de referencia ve su progreso y lo comenta.",
+   "origen": "Teoría de la autodeterminación (necesidad de relación)",
+   "fuente_codigo": "ART-RYAN-DECI-2000",
+   "fuente_id": "4d4a00f1-c29e-4fa2-92ba-a0045ce9a525",
+   "fuentes_adicionales": [
+    "MATES10-DOC-UNIFICADO-1.1"
+   ],
+   "evidencia": "fuerte",
+   "riesgo_menores": "bajo",
+   "uso_en_mates10": "El padre recibe el progreso (apéndice B) y puede dejar un mensaje o felicitación que el niño ve al abrir. Opcional: un profesor. Nunca otros niños ni público.",
+   "parametros": {
+    "quien_ve": [
+     "padre",
+     "profesor_opcional"
+    ],
+    "mensajes_padre": true,
+    "visible_a_otros_ninos": false
+   },
+   "edad_desde": 6,
+   "edad_hasta": 17,
+   "estado": "idea",
+   "metricas": {
+    "regla": "Regla de dos columnas (módulo 06 §5): sube enganche y aprendizaje → se queda; sube enganche sin subir aprendizaje → revisión, y si al mes sigue igual se retira; baja enganche → se retira.",
+    "enganche": [
+     "sesiones del niño en los 2 días siguientes a un mensaje del padre",
+     "retención D1/D7/D30 (con vs. sin el mecanismo)",
+     "sesiones por semana",
+     "% de sesiones iniciadas por el niño (no por el padre)"
+    ],
+    "aprendizaje": [
+     "p_dominio en habilidades comentadas por el padre",
+     "crecimiento semanal de p_dominio",
+     "retención a 30 días de habilidades dominadas"
+    ],
+    "guardia": [
+     "sesiones/día por alumno (>3 sostenido → aviso al padre)"
+    ]
+   },
+   "criterio": false,
+   "notas_evidencia": "La relación como necesidad básica está bien fundada en SDT (Ryan y Deci 2000); el efecto concreto de 'el padre comenta' no está medido en fuentes archivadas."
+  },
+  {
+   "codigo": "COLECCIONABLE",
+   "nombre": "Coleccionables y avatar ligados a dominio",
+   "descripcion": "Objetos, cosméticos o piezas de avatar que se desbloquean.",
+   "origen": "Juegos infantiles (Prodigy, Khan Kids)",
+   "fuente_codigo": "NORM-AEPD-PATRONES-ADICTIVOS-2024",
+   "fuente_id": "1e820285-85af-417e-9392-df299733ce5d",
+   "fuentes_adicionales": [
+    "MATES10-DOC-UNIFICADO-1.1",
+    "NORM-CE-DIRECTRICES-MENORES-DSA-2025",
+    "DOC-KHAN-KIDS-APPSTORE",
+    "ART-DECI-KOESTNER-RYAN-1999"
+   ],
+   "evidencia": "media",
+   "riesgo_menores": "medio",
+   "uso_en_mates10": "Cada pieza se gana dominando una habilidad concreta (queda registrado en alumno_enganche.coleccion con la habilidad), nunca por tiempo de uso, por días seguidos ni pagando. Sin rarezas, sin colección 'incompleta' destacada, sin moneda virtual. La AEPD clasifica 'completar la colección' como patrón adictivo y la CE desaconseja recompensas virtuales por acciones repetidas: por eso solo por dominio.",
+   "parametros": {
+    "ligado_a": "dominio_habilidad",
+    "por_tiempo_de_uso": false,
+    "moneda_virtual": false,
+    "rarezas": false,
+    "mostrar_huecos": false
+   },
+   "edad_desde": 6,
+   "edad_hasta": 12,
+   "estado": "idea",
+   "metricas": {
+    "regla": "Regla de dos columnas (módulo 06 §5): sube enganche y aprendizaje → se queda; sube enganche sin subir aprendizaje → revisión, y si al mes sigue igual se retira; baja enganche → se retira.",
+    "enganche": [
+     "retención D30 (el efecto se desgasta)",
+     "retención D1/D7/D30 (con vs. sin el mecanismo)",
+     "sesiones por semana",
+     "% de sesiones iniciadas por el niño (no por el padre)"
+    ],
+    "aprendizaje": [
+     "¿el niño elige practicar habilidades por su pieza en vez de por lo que toca? (efecto distorsionador)",
+     "crecimiento semanal de p_dominio",
+     "retención a 30 días de habilidades dominadas"
+    ],
+    "guardia": [
+     "sesiones/día por alumno (>3 sostenido → aviso al padre)"
+    ]
+   },
+   "criterio": true,
+   "notas_evidencia": "Deci, Koestner y Ryan (1999): las recompensas tangibles esperadas reducen la motivación intrínseca, más en niños; por eso son reconocimiento de dominio, no pago por tarea."
+  },
+  {
+   "codigo": "PUNTOS_PROPIOS",
+   "nombre": "Puntos como progreso propio",
+   "descripcion": "Puntos o estrellas que solo se comparan con uno mismo.",
+   "origen": "Duolingo, juegos; gamificación educativa",
+   "fuente_codigo": "ART-HAMARI-KOIVISTO-SARSA-2014",
+   "fuente_id": "208ac6d5-1087-497b-89b8-4d6c22ca7f95",
+   "fuentes_adicionales": [
+    "ART-SAILER-HOMNER-2020-RESUMEN",
+    "ART-DETERDING-ET-AL-2011-RESUMEN",
+    "MATES10-DOC-UNIFICADO-1.1"
+   ],
+   "evidencia": "debil",
+   "riesgo_menores": "bajo",
+   "uso_en_mates10": "Preferimos la barra de dominio (PROGRESO_CERCANO). Si se usan puntos, son 'ejercicios dominados esta semana' frente a la semana anterior del propio niño; nunca frente a otros, nunca canjeables.",
+   "parametros": {
+    "comparar_con": "uno_mismo",
+    "canjeables": false,
+    "unidad": "habilidades_dominadas"
+   },
+   "edad_desde": 6,
+   "edad_hasta": 17,
+   "estado": "idea",
+   "metricas": {
+    "regla": "Regla de dos columnas (módulo 06 §5): sube enganche y aprendizaje → se queda; sube enganche sin subir aprendizaje → revisión, y si al mes sigue igual se retira; baja enganche → se retira.",
+    "enganche": [
+     "retención D7 con vs. sin puntos",
+     "retención D1/D7/D30 (con vs. sin el mecanismo)",
+     "sesiones por semana",
+     "% de sesiones iniciadas por el niño (no por el padre)"
+    ],
+    "aprendizaje": [
+     "p_dominio con vs. sin puntos",
+     "crecimiento semanal de p_dominio",
+     "retención a 30 días de habilidades dominadas"
+    ],
+    "guardia": [
+     "sesiones/día por alumno (>3 sostenido → aviso al padre)"
+    ]
+   },
+   "criterio": false,
+   "notas_evidencia": "Hamari et al. (2014): efectos positivos pero muy dependientes del contexto y de los usuarios. Sailer y Homner (2020): efectos pequeños en aprendizaje; los motivacionales, menos estables."
+  },
+  {
+   "codigo": "RANKING_ENTRE_NINOS",
+   "nombre": "Ligas y rankings entre niños",
+   "descripcion": "Clasificaciones semanales con ascensos y descensos comparando a usuarios entre sí.",
+   "origen": "Duolingo (ligas desde 2018), juegos",
+   "fuente_codigo": "BLOG-DUOLINGO-LIGAS",
+   "fuente_id": "c6836337-774b-45ae-9da1-7e7ee6f725ea",
+   "fuentes_adicionales": [
+    "MATES10-DOC-UNIFICADO-1.1",
+    "NORM-CE-DIRECTRICES-MENORES-DSA-2025",
+    "NORM-AEPD-PATRONES-ADICTIVOS-2024",
+    "ART-SAILER-HOMNER-2020-RESUMEN"
+   ],
+   "evidencia": "debil",
+   "riesgo_menores": "alto",
+   "uso_en_mates10": "No se usa. No hay comparación pública entre niños (principio 2 del módulo 06). La AEPD incluye la 'competencia guiada' y la presión social entre los patrones adictivos. Sailer y Homner encuentran útil la competición combinada con colaboración, pero en contextos de aula con adultos que la gestionan; aquí no aplica.",
+   "parametros": {},
+   "edad_desde": null,
+   "edad_hasta": null,
+   "estado": "retirado",
+   "metricas": {
+    "regla": "No se implementa (riesgo alto con menores). Métrica de vigilancia: auditoría de diseño antes de cada entrega — el mecanismo no aparece en ninguna pantalla ni mensaje.",
+    "enganche": [],
+    "aprendizaje": [],
+    "guardia": [
+     "sesiones/día por alumno (>3 sostenido → aviso al padre)"
+    ]
+   },
+   "criterio": false,
+   "notas_evidencia": "Duolingo informa que funcionan para el uso (blog, sin datos de aprendizaje)."
+  },
+  {
+   "codigo": "NOTIFICACION_DIARIA",
+   "nombre": "Recordatorio diario (una como máximo)",
+   "descripcion": "Aviso push para que el niño vuelva a practicar.",
+   "origen": "Redes sociales; Duolingo (optimización de recordatorios)",
+   "fuente_codigo": "ART-YANCEY-SETTLES-2020",
+   "fuente_id": "a095517f-d9cf-4577-9690-c1446c5ab2a2",
+   "fuentes_adicionales": [
+    "MATES10-DOC-UNIFICADO-1.1",
+    "NORM-CE-DIRECTRICES-MENORES-DSA-2025",
+    "NORM-AEPD-PATRONES-ADICTIVOS-2024",
+    "WEB-COMMONSENSE-CONSTANT-COMPANION-2023",
+    "NORM-5RIGHTS-DISRUPTED-CHILDHOOD"
+   ],
+   "evidencia": "media",
+   "riesgo_menores": "medio",
+   "uso_en_mates10": "Desactivada por defecto; la activa el padre (alumno_enganche.notificaciones_permitidas). Una al día como máximo, a la hora habitual del niño, con contenido concreto (\"hoy toca la tabla del 7\"); ninguna si ya ha jugado, ninguna en horario escolar ni de sueño, sin culpa ni urgencia, sin plantillas rotadas para explotar la novedad. Mejor aún: al móvil del padre, no al del niño.",
+   "parametros": {
+    "activa_por_defecto": false,
+    "la_activa": "padre",
+    "max_por_dia": 1,
+    "hora": "hora_habitual",
+    "silencio_si_ya_jugo": true,
+    "franja_prohibida": [
+     "horario_escolar",
+     "21:00-08:00"
+    ],
+    "destinatario": "padre",
+    "tono": "concreto_sin_culpa"
+   },
+   "edad_desde": 6,
+   "edad_hasta": 17,
+   "estado": "idea",
+   "metricas": {
+    "regla": "Regla de dos columnas (módulo 06 §5): sube enganche y aprendizaje → se queda; sube enganche sin subir aprendizaje → revisión, y si al mes sigue igual se retira; baja enganche → se retira.",
+    "enganche": [
+     "tasa de vuelta tras notificación",
+     "desactivaciones por el padre",
+     "retención D1/D7/D30 (con vs. sin el mecanismo)",
+     "sesiones por semana",
+     "% de sesiones iniciadas por el niño (no por el padre)"
+    ],
+    "aprendizaje": [
+     "p_dominio de sesiones tras notificación vs. espontáneas",
+     "crecimiento semanal de p_dominio",
+     "retención a 30 días de habilidades dominadas"
+    ],
+    "guardia": [
+     "sesiones/día por alumno (>3 sostenido → aviso al padre)"
+    ]
+   },
+   "criterio": false,
+   "notas_evidencia": "Yancey y Settles (2020): la optimización de recordatorios en Duolingo subió un 0,5 % los usuarios activos diarios y un 2 % la retención de nuevos usuarios (adultos; mide uso, no aprendizaje). Common Sense (2023): mediana de 237 notificaciones/día en 11–17 años, un 23 % en horario escolar."
+  },
+  {
+   "codigo": "FEED_INFINITO",
+   "nombre": "Bucle de recompensa inmediata (feed infinito)",
+   "descripcion": "Contenido que se carga sin fin, sin punto de parada natural.",
+   "origen": "Instagram, TikTok",
+   "fuente_codigo": "NORM-CE-DIRECTRICES-MENORES-DSA-2025",
+   "fuente_id": "022e5817-a694-4e6b-ac6c-c9c569a92fdc",
+   "fuentes_adicionales": [
+    "MATES10-DOC-UNIFICADO-1.1",
+    "NORM-ICO-AADC-05-DETRIMENTAL",
+    "NORM-AEPD-PATRONES-ADICTIVOS-2024",
+    "NORM-5RIGHTS-DISRUPTED-CHILDHOOD"
+   ],
+   "evidencia": "negativa",
+   "riesgo_menores": "alto",
+   "uso_en_mates10": "No se usa. La sesión tiene fin (SESION_CORTA). La CE cita el scroll indefinido como diseño persuasivo a evitar con menores; el ICO lo incluye entre las 'sticky features'.",
+   "parametros": {},
+   "edad_desde": null,
+   "edad_hasta": null,
+   "estado": "retirado",
+   "metricas": {
+    "regla": "No se implementa (riesgo alto con menores). Métrica de vigilancia: auditoría de diseño antes de cada entrega — el mecanismo no aparece en ninguna pantalla ni mensaje.",
+    "enganche": [],
+    "aprendizaje": [],
+    "guardia": [
+     "sesiones/día por alumno (>3 sostenido → aviso al padre)"
+    ]
+   },
+   "criterio": false,
+   "notas_evidencia": "Muy fuerte para uso, nula para aprendizaje (módulo 06); 'negativa' por el daño documentado en normativa."
+  },
+  {
+   "codigo": "CAMBIO_ACTIVIDAD",
+   "nombre": "Cambio de actividad frecuente",
+   "descripcion": "Alternar formatos y mecánicas para sostener la atención.",
+   "origen": "Juegos casuales; práctica con TDAH",
+   "fuente_codigo": "MATES10-DOC-UNIFICADO-1.1",
+   "fuente_id": "a43b4b89-d7ad-4ebf-9247-c3824becb7ad",
+   "fuentes_adicionales": [
+    "DOC-DRAGONBOX-WEB"
+   ],
+   "evidencia": "media",
+   "riesgo_menores": "ninguno",
+   "uso_en_mates10": "Alternancia de mecánicas dentro de la sesión (ya prevista en el tutor, módulo 05); nunca cambiar de habilidad solo para entretener si eso rompe la práctica.",
+   "parametros": {
+    "ejercicios_max_misma_mecanica": 5,
+    "alternar_mecanica": true
+   },
+   "edad_desde": 6,
+   "edad_hasta": 17,
+   "estado": "idea",
+   "metricas": {
+    "regla": "Regla de dos columnas (módulo 06 §5): sube enganche y aprendizaje → se queda; sube enganche sin subir aprendizaje → revisión, y si al mes sigue igual se retira; baja enganche → se retira.",
+    "enganche": [
+     "abandono intra-sesión",
+     "retención D1/D7/D30 (con vs. sin el mecanismo)",
+     "sesiones por semana",
+     "% de sesiones iniciadas por el niño (no por el padre)"
+    ],
+    "aprendizaje": [
+     "aciertos por minuto; p_dominio frente a sesiones sin alternancia",
+     "crecimiento semanal de p_dominio",
+     "retención a 30 días de habilidades dominadas"
+    ],
+    "guardia": [
+     "sesiones/día por alumno (>3 sostenido → aviso al padre)"
+    ]
+   },
+   "criterio": true,
+   "notas_evidencia": "Solo respaldado por el documento del proyecto (módulo 04 A.4) y por productos; no se ha archivado estudio específico. Hueco."
+  },
+  {
+   "codigo": "NARRATIVA_PERSONAJES",
+   "nombre": "Narrativa y personajes",
+   "descripcion": "Un mundo o historia que se descubre a medida que se domina.",
+   "origen": "Juegos infantiles (Prodigy, DragonBox, Khan Kids)",
+   "fuente_codigo": "ART-SAILER-HOMNER-2020-RESUMEN",
+   "fuente_id": "2b366a04-4a86-42ad-899d-a54b127d8e0e",
+   "fuentes_adicionales": [
+    "DOC-DRAGONBOX-WEB",
+    "DOC-KHAN-KIDS-APPSTORE",
+    "DOC-PRODIGY-WEB",
+    "MATES10-DOC-UNIFICADO-1.1"
+   ],
+   "evidencia": "media",
+   "riesgo_menores": "bajo",
+   "uso_en_mates10": "Un mundo que se descubre con el dominio (proyecto de diseño). Personajes guía como Kodi en Khan Kids. Sin tienda, sin personajes de pago, sin ventajas que parezcan saber más matemáticas (crítica a Prodigy).",
+   "parametros": {
+    "desbloqueo_por": "dominio_habilidad",
+    "personajes_de_pago": false
+   },
+   "edad_desde": 6,
+   "edad_hasta": 10,
+   "estado": "idea",
+   "metricas": {
+    "regla": "Regla de dos columnas (módulo 06 §5): sube enganche y aprendizaje → se queda; sube enganche sin subir aprendizaje → revisión, y si al mes sigue igual se retira; baja enganche → se retira.",
+    "enganche": [
+     "retención D30 en 6–10 años",
+     "retención D1/D7/D30 (con vs. sin el mecanismo)",
+     "sesiones por semana",
+     "% de sesiones iniciadas por el niño (no por el padre)"
+    ],
+    "aprendizaje": [
+     "p_dominio con narrativa vs. sin ella",
+     "crecimiento semanal de p_dominio",
+     "retención a 30 días de habilidades dominadas"
+    ],
+    "guardia": [
+     "sesiones/día por alumno (>3 sostenido → aviso al padre)"
+    ]
+   },
+   "criterio": false,
+   "notas_evidencia": "Sailer y Homner (2020): incluir ficción de juego modera positivamente los resultados conductuales del aprendizaje gamificado. Franja 6–10 según el documento."
+  },
+  {
+   "codigo": "INACABADO_ZEIGARNIK",
+   "nombre": "Lo inacabado (efecto Zeigarnik/Ovsiankina)",
+   "descripcion": "Las tareas interrumpidas tienden a retomarse.",
+   "origen": "Psicología (Zeigarnik, Ovsiankina)",
+   "fuente_codigo": "ART-GHIBELLINI-MEIER-2025",
+   "fuente_id": "e8aa1ec6-2dc9-4262-b623-0c684f9cbd75",
+   "fuentes_adicionales": [
+    "MATES10-DOC-UNIFICADO-1.1",
+    "NORM-AEPD-PATRONES-ADICTIVOS-2024"
+   ],
+   "evidencia": "debil",
+   "riesgo_menores": "medio",
+   "uso_en_mates10": "Solo como información al abrir la app (\"te queda una habilidad para terminar este bloque\"), nunca en notificaciones, nunca como interrupción deliberada al final de la sesión (contradice FIN_EN_ACIERTO). La AEPD lo lista como patrón adictivo de persistencia.",
+   "parametros": {
+    "donde": "pantalla_inicio",
+    "en_notificaciones": false,
+    "interrupcion_deliberada": false
+   },
+   "edad_desde": 8,
+   "edad_hasta": 17,
+   "estado": "idea",
+   "metricas": {
+    "regla": "Regla de dos columnas (módulo 06 §5): sube enganche y aprendizaje → se queda; sube enganche sin subir aprendizaje → revisión, y si al mes sigue igual se retira; baja enganche → se retira.",
+    "enganche": [
+     "% de bloques retomados",
+     "retención D1/D7/D30 (con vs. sin el mecanismo)",
+     "sesiones por semana",
+     "% de sesiones iniciadas por el niño (no por el padre)"
+    ],
+    "aprendizaje": [
+     "compleción de bloques con prerrequisitos listos",
+     "crecimiento semanal de p_dominio",
+     "retención a 30 días de habilidades dominadas"
+    ],
+    "guardia": [
+     "sesiones/día por alumno (>3 sostenido → aviso al padre)"
+    ]
+   },
+   "criterio": false,
+   "notas_evidencia": "Metaanálisis Ghibellini y Meier (2025): sin ventaja de memoria para lo inacabado, pero sí tendencia general a retomarlo (Ovsiankina)."
+  },
+  {
+   "codigo": "FEEDBACK_INFORMATIVO",
+   "nombre": "Retroalimentación inmediata e informativa",
+   "descripcion": "Decir al momento si está bien y por qué, sin elogios vacíos.",
+   "origen": "Metaanálisis sobre recompensas y motivación intrínseca (Deci, Koestner y Ryan 1999)",
+   "fuente_codigo": "ART-DECI-KOESTNER-RYAN-1999",
+   "fuente_id": "9989a136-d842-4d99-aca4-310fb514b017",
+   "fuentes_adicionales": [
+    "ART-RYAN-DECI-2000",
+    "MATES10-DOC-UNIFICADO-1.1"
+   ],
+   "evidencia": "media",
+   "riesgo_menores": "ninguno",
+   "uso_en_mates10": "Tras cada respuesta: acierto/fallo con la explicación del error típico (módulo 02). Elogio concreto (\"has llevado bien las decenas\"), no genérico ni controlador.",
+   "parametros": {
+    "inmediato": true,
+    "tipo_elogio": "concreto_informativo"
+   },
+   "edad_desde": 6,
+   "edad_hasta": 17,
+   "estado": "idea",
+   "metricas": {
+    "regla": "Regla de dos columnas (módulo 06 §5): sube enganche y aprendizaje → se queda; sube enganche sin subir aprendizaje → revisión, y si al mes sigue igual se retira; baja enganche → se retira.",
+    "enganche": [
+     "abandono tras fallo",
+     "retención D1/D7/D30 (con vs. sin el mecanismo)",
+     "sesiones por semana",
+     "% de sesiones iniciadas por el niño (no por el padre)"
+    ],
+    "aprendizaje": [
+     "repetición del mismo error típico",
+     "crecimiento semanal de p_dominio",
+     "retención a 30 días de habilidades dominadas"
+    ],
+    "guardia": [
+     "sesiones/día por alumno (>3 sostenido → aviso al padre)"
+    ]
+   },
+   "criterio": false,
+   "notas_evidencia": "Deci et al. (1999): el feedback positivo aumenta la motivación intrínseca en universitarios, pero en los 7 estudios con niños el efecto no fue significativo. Por eso 'media' y orientado a informar, no a premiar."
+  },
+  {
+   "codigo": "GUARDIA_SOBREUSO",
+   "nombre": "Guardia de sobreuso y herramientas de tiempo",
+   "descripcion": "Medir y limitar el uso excesivo e informar al padre; herramientas de gestión del tiempo visibles.",
+   "origen": "Directrices CE art. 28 (herramientas de gestión del tiempo); módulo 06 §5",
+   "fuente_codigo": "NORM-CE-DIRECTRICES-MENORES-DSA-2025",
+   "fuente_id": "022e5817-a694-4e6b-ac6c-c9c569a92fdc",
+   "fuentes_adicionales": [
+    "MATES10-DOC-UNIFICADO-1.1",
+    "NORM-ICO-AADC-05-DETRIMENTAL"
+   ],
+   "evidencia": "debil",
+   "riesgo_menores": "ninguno",
+   "uso_en_mates10": "Si un niño hace más de 3 sesiones al día de forma sostenida, se avisa al padre. El padre puede fijar un máximo diario. El niño ve cuánto ha practicado hoy.",
+   "parametros": {
+    "umbral_sesiones_dia": 3,
+    "dias_sostenido": 3,
+    "limite_diario_padre_min": null
+   },
+   "edad_desde": 6,
+   "edad_hasta": 17,
+   "estado": "idea",
+   "metricas": {
+    "regla": "Regla de dos columnas (módulo 06 §5): sube enganche y aprendizaje → se queda; sube enganche sin subir aprendizaje → revisión, y si al mes sigue igual se retira; baja enganche → se retira.",
+    "enganche": [
+     "nº de avisos al padre",
+     "retención D1/D7/D30 (con vs. sin el mecanismo)",
+     "sesiones por semana",
+     "% de sesiones iniciadas por el niño (no por el padre)"
+    ],
+    "aprendizaje": [
+     "p_dominio de alumnos con aviso vs. sin",
+     "crecimiento semanal de p_dominio",
+     "retención a 30 días de habilidades dominadas"
+    ],
+    "guardia": [
+     "sesiones/día por alumno (>3 sostenido → aviso al padre)"
+    ]
+   },
+   "criterio": false,
+   "notas_evidencia": "Requisito normativo y de diseño; no hay evidencia empírica archivada de su efecto."
+  },
+  {
+   "codigo": "RECOMPENSA_ESPERADA_POR_TAREA",
+   "nombre": "Premio anunciado por completar tareas",
+   "descripcion": "\"Haz 10 ejercicios y ganas X\": recompensa tangible esperada contingente a hacer o completar.",
+   "origen": "Economía de fichas, gamificación de puntos",
+   "fuente_codigo": "ART-DECI-KOESTNER-RYAN-1999",
+   "fuente_id": "9989a136-d842-4d99-aca4-310fb514b017",
+   "fuentes_adicionales": [],
+   "evidencia": "negativa",
+   "riesgo_menores": "medio",
+   "uso_en_mates10": "No se usa como motor: socava la motivación intrínseca, más en niños. Los reconocimientos (COLECCIONABLE, COMPETENCIA_VISIBLE) se ligan a dominio y no se anuncian como pago por tarea.",
+   "parametros": {
+    "usar": false
+   },
+   "edad_desde": 6,
+   "edad_hasta": 17,
+   "estado": "idea",
+   "metricas": {
+    "regla": "Regla de dos columnas (módulo 06 §5): sube enganche y aprendizaje → se queda; sube enganche sin subir aprendizaje → revisión, y si al mes sigue igual se retira; baja enganche → se retira.",
+    "enganche": [
+     "retención D1/D7/D30 (con vs. sin el mecanismo)",
+     "sesiones por semana",
+     "% de sesiones iniciadas por el niño (no por el padre)"
+    ],
+    "aprendizaje": [
+     "si alguna vez se prueba: interés libre del niño tras retirar el premio",
+     "crecimiento semanal de p_dominio",
+     "retención a 30 días de habilidades dominadas"
+    ],
+    "guardia": [
+     "sesiones/día por alumno (>3 sostenido → aviso al padre)"
+    ]
+   },
+   "criterio": false,
+   "notas_evidencia": "Deci et al. (1999): recompensas contingentes a participar, completar o rendir reducen la motivación intrínseca en libre elección (d = −0,40, −0,36 y −0,28); las tangibles, más dañinas en niños."
+  },
+  {
+   "codigo": "RECOMPENSA_VARIABLE_LIGADA",
+   "nombre": "Recompensa variable ligada a rendimiento, tiempo o dinero",
+   "descripcion": "Premios intermitentes o aleatorios cuya probabilidad depende de jugar más, acertar más o pagar.",
+   "origen": "Máquinas tragaperras, videojuegos",
+   "fuente_codigo": "NORM-CE-DIRECTRICES-MENORES-DSA-2025",
+   "fuente_id": "022e5817-a694-4e6b-ac6c-c9c569a92fdc",
+   "fuentes_adicionales": [
+    "NORM-AEPD-PATRONES-ADICTIVOS-2024",
+    "NORM-ICO-AADC-05-DETRIMENTAL",
+    "MATES10-DOC-UNIFICADO-1.1"
+   ],
+   "evidencia": "negativa",
+   "riesgo_menores": "alto",
+   "uso_en_mates10": "No se usa. Solo existe la versión rebajada SORPRESA.",
+   "parametros": {},
+   "edad_desde": null,
+   "edad_hasta": null,
+   "estado": "retirado",
+   "metricas": {
+    "regla": "No se implementa (riesgo alto con menores). Métrica de vigilancia: auditoría de diseño antes de cada entrega — el mecanismo no aparece en ninguna pantalla ni mensaje.",
+    "enganche": [],
+    "aprendizaje": [],
+    "guardia": [
+     "sesiones/día por alumno (>3 sostenido → aviso al padre)"
+    ]
+   },
+   "criterio": false
+  },
+  {
+   "codigo": "CAJA_BOTIN",
+   "nombre": "Cajas botín (loot boxes)",
+   "descripcion": "Objetos de contenido aleatorio que se obtienen con dinero real o moneda virtual.",
+   "origen": "Videojuegos comerciales",
+   "fuente_codigo": "ART-ZENDLE-CAIRNS-2018",
+   "fuente_id": "933b7128-a8b5-47a3-8eea-f89263c672a8",
+   "fuentes_adicionales": [
+    "NORM-CE-DIRECTRICES-MENORES-DSA-2025",
+    "NORM-5RIGHTS-DISRUPTED-CHILDHOOD",
+    "NORM-OCDE-DARK-PATTERNS-2022"
+   ],
+   "evidencia": "negativa",
+   "riesgo_menores": "alto",
+   "uso_en_mates10": "No se usa. No hay moneda virtual ni nada aleatorio que se compre.",
+   "parametros": {},
+   "edad_desde": null,
+   "edad_hasta": null,
+   "estado": "retirado",
+   "metricas": {
+    "regla": "No se implementa (riesgo alto con menores). Métrica de vigilancia: auditoría de diseño antes de cada entrega — el mecanismo no aparece en ninguna pantalla ni mensaje.",
+    "enganche": [],
+    "aprendizaje": [],
+    "guardia": [
+     "sesiones/día por alumno (>3 sostenido → aviso al padre)"
+    ]
+   },
+   "criterio": false,
+   "notas_evidencia": "Zendle y Cairns (2018, n = 7.422): el gasto en cajas botín se asocia con la gravedad del juego problemático."
+  },
+  {
+   "codigo": "VENTAJA_DE_PAGO",
+   "nombre": "Compras por impulso y ventajas de pago dentro del juego",
+   "descripcion": "Mostrar al niño recompensas o avances que solo tiene si su familia paga; presión para pedir la compra.",
+   "origen": "Prodigy (membresía Premium)",
+   "fuente_codigo": "NORM-FAIRPLAY-FTC-PRODIGY-2021",
+   "fuente_id": "de2410e5-d764-4e14-aa74-fe0d126d70f2",
+   "fuentes_adicionales": [
+    "NORM-CE-DIRECTRICES-MENORES-DSA-2025",
+    "NORM-OCDE-DARK-PATTERNS-2022",
+    "DOC-PRODIGY-WEB"
+   ],
+   "evidencia": "negativa",
+   "riesgo_menores": "alto",
+   "uso_en_mates10": "No se usa. Nada que el niño vea depende de pagar; la relación comercial es solo con el padre y fuera de la experiencia del niño.",
+   "parametros": {},
+   "edad_desde": null,
+   "edad_hasta": null,
+   "estado": "retirado",
+   "metricas": {
+    "regla": "No se implementa (riesgo alto con menores). Métrica de vigilancia: auditoría de diseño antes de cada entrega — el mecanismo no aparece en ninguna pantalla ni mensaje.",
+    "enganche": [],
+    "aprendizaje": [],
+    "guardia": [
+     "sesiones/día por alumno (>3 sostenido → aviso al padre)"
+    ]
+   },
+   "criterio": false,
+   "notas_evidencia": "Queja de Fairplay/CCFC ante la FTC (2021): anuncios constantes de Premium en el juego, recompensas virtuales solo con membresía, niños Premium que avanzan más rápido dando la falsa impresión de saber más. Es una denuncia, no una resolución."
+  },
+  {
+   "codigo": "URGENCIA_CUENTA_ATRAS",
+   "nombre": "Urgencia artificial y cuentas atrás",
+   "descripcion": "Temporizadores, ofertas por tiempo limitado o avisos de escasez para forzar una acción inmediata.",
+   "origen": "Comercio electrónico, videojuegos, redes sociales",
+   "fuente_codigo": "NORM-AEPD-PATRONES-ADICTIVOS-2024",
+   "fuente_id": "1e820285-85af-417e-9392-df299733ce5d",
+   "fuentes_adicionales": [
+    "NORM-CE-DIRECTRICES-MENORES-DSA-2025",
+    "NORM-OCDE-DARK-PATTERNS-2022",
+    "MATES10-DOC-UNIFICADO-1.1"
+   ],
+   "evidencia": "negativa",
+   "riesgo_menores": "alto",
+   "uso_en_mates10": "No se usa. Ningún temporizador de presión (ni siquiera para no perder racha); los ejercicios con tiempo, si los hay, son de fluidez y sin pérdida.",
+   "parametros": {},
+   "edad_desde": null,
+   "edad_hasta": null,
+   "estado": "retirado",
+   "metricas": {
+    "regla": "No se implementa (riesgo alto con menores). Métrica de vigilancia: auditoría de diseño antes de cada entrega — el mecanismo no aparece en ninguna pantalla ni mensaje.",
+    "enganche": [],
+    "aprendizaje": [],
+    "guardia": [
+     "sesiones/día por alumno (>3 sostenido → aviso al padre)"
+    ]
+   },
+   "criterio": false
+  },
+  {
+   "codigo": "CASTIGO_POR_AUSENCIA",
+   "nombre": "Castigo o culpa por no volver",
+   "descripcion": "Perder progreso, mensajes de culpa (\"te echamos de menos\"), mascota triste, confirmshaming.",
+   "origen": "Videojuegos ('jugar con cita'), redes sociales, Duolingo",
+   "fuente_codigo": "NORM-AEPD-PATRONES-ADICTIVOS-2024",
+   "fuente_id": "1e820285-85af-417e-9392-df299733ce5d",
+   "fuentes_adicionales": [
+    "NORM-ICO-AADC-05-DETRIMENTAL",
+    "NORM-CE-DIRECTRICES-MENORES-DSA-2025",
+    "MATES10-DOC-UNIFICADO-1.1"
+   ],
+   "evidencia": "negativa",
+   "riesgo_menores": "alto",
+   "uso_en_mates10": "No se usa. El progreso nunca se pierde; al volver tras días sin jugar, bienvenida neutra y repaso.",
+   "parametros": {},
+   "edad_desde": null,
+   "edad_hasta": null,
+   "estado": "retirado",
+   "metricas": {
+    "regla": "No se implementa (riesgo alto con menores). Métrica de vigilancia: auditoría de diseño antes de cada entrega — el mecanismo no aparece en ninguna pantalla ni mensaje.",
+    "enganche": [],
+    "aprendizaje": [],
+    "guardia": [
+     "sesiones/día por alumno (>3 sostenido → aviso al padre)"
+    ]
+   },
+   "criterio": false
+  },
+  {
+   "codigo": "CONTINUACION_AUTOMATICA",
+   "nombre": "Continuación automática (autoplay)",
+   "descripcion": "Arrancar el siguiente contenido sin que el usuario lo elija.",
+   "origen": "Plataformas de vídeo y redes sociales",
+   "fuente_codigo": "NORM-ICO-AADC-05-DETRIMENTAL",
+   "fuente_id": "2e15114c-349c-45bb-acf7-f0501b389a3a",
+   "fuentes_adicionales": [
+    "NORM-CE-DIRECTRICES-MENORES-DSA-2025",
+    "NORM-AEPD-PATRONES-ADICTIVOS-2024"
+   ],
+   "evidencia": "negativa",
+   "riesgo_menores": "alto",
+   "uso_en_mates10": "No se usa. Tras la sesión, pantalla de fin; seguir requiere una elección activa.",
+   "parametros": {},
+   "edad_desde": null,
+   "edad_hasta": null,
+   "estado": "retirado",
+   "metricas": {
+    "regla": "No se implementa (riesgo alto con menores). Métrica de vigilancia: auditoría de diseño antes de cada entrega — el mecanismo no aparece en ninguna pantalla ni mensaje.",
+    "enganche": [],
+    "aprendizaje": [],
+    "guardia": [
+     "sesiones/día por alumno (>3 sostenido → aviso al padre)"
+    ]
+   },
+   "criterio": false
+  },
+  {
+   "codigo": "EXPOSICION_PUBLICA",
+   "nombre": "Logros o actividad del niño visibles a terceros",
+   "descripcion": "Compartir rachas, perfiles o actividad del menor con otros usuarios o redes sociales.",
+   "origen": "Snapchat (rachas), redes sociales",
+   "fuente_codigo": "NORM-CE-DIRECTRICES-MENORES-DSA-2025",
+   "fuente_id": "022e5817-a694-4e6b-ac6c-c9c569a92fdc",
+   "fuentes_adicionales": [
+    "NORM-5RIGHTS-DISRUPTED-CHILDHOOD",
+    "NORM-ICO-AADC"
+   ],
+   "evidencia": "negativa",
+   "riesgo_menores": "alto",
+   "uso_en_mates10": "No se usa. Lo que hace el niño lo ven él y su padre (y, si se añade, su profesor).",
+   "parametros": {},
+   "edad_desde": null,
+   "edad_hasta": null,
+   "estado": "retirado",
+   "metricas": {
+    "regla": "No se implementa (riesgo alto con menores). Métrica de vigilancia: auditoría de diseño antes de cada entrega — el mecanismo no aparece en ninguna pantalla ni mensaje.",
+    "enganche": [],
+    "aprendizaje": [],
+    "guardia": [
+     "sesiones/día por alumno (>3 sostenido → aviso al padre)"
+    ]
+   },
+   "criterio": false
+  }
+ ]
+}

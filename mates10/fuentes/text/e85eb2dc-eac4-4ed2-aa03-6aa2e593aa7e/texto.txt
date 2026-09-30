@@ -1,0 +1,1353 @@
+Computerized adaptive testing - Wikipedia
+
+Jump to content
+
+Main menu
+
+Main menu
+
+move to sidebar
+
+hide
+
+		Navigation
+
+Main page
+Contents
+Current events
+Random article
+About Wikipedia
+Contact us
+
+		Contribute
+
+Help
+Learn to edit
+Community portal
+Recent changes
+Upload file
+Special pages
+
+Search
+
+Search
+
+Appearance
+
+Donate
+
+Create account
+
+Log in
+
+Personal tools
+
+Donate
+
+Create account
+
+Log in
+
+Contents
+
+move to sidebar
+
+hide
+
+(Top)
+
+1
+
+Description
+
+2
+
+Examples
+
+3
+
+Advantages
+
+4
+
+Disadvantages
+
+5
+
+Components
+
+Toggle Components subsection
+
+5.1
+
+Calibrated item pool
+
+5.2
+
+Starting point
+
+5.3
+
+Item selection algorithm
+
+5.4
+
+Scoring procedure
+
+5.5
+
+Termination criterion
+
+6
+
+Other issues
+
+Toggle Other issues subsection
+
+6.1
+
+Pass-fail
+
+6.2
+
+Practical constraints of adaptivity
+
+6.3
+
+Multidimensional
+
+7
+
+See also
+
+8
+
+References
+
+Toggle References subsection
+
+8.1
+
+Additional sources
+
+9
+
+Further reading
+
+10
+
+External links
+
+Toggle the table of contents
+
+Computerized adaptive testing
+
+7 languages
+
+Čeština
+Deutsch
+עברית
+日本語
+Português
+Тоҷикӣ
+Українська
+
+Edit links
+
+Article
+
+Talk
+
+English
+
+Read
+
+Edit
+
+View history
+
+Tools
+
+Tools
+
+move to sidebar
+
+hide
+
+		Actions
+
+Read
+
+Edit
+
+View history
+
+		General
+
+What links here
+Related changes
+Upload file
+Permanent link
+Page information
+Cite this page
+Get shortened URL
+Switch to legacy parser
+
+		Print/export
+
+Download as PDF
+Printable version
+
+		In other projects
+
+Wikidata item
+
+Appearance
+
+move to sidebar
+
+hide
+
+From Wikipedia, the free encyclopedia
+
+Form of computer-based test that adapts to the examinee's ability level
+
+Computerized adaptive testing
+ (
+CAT
+) is a form of 
+computer-based
+ test that adapts to the examinee's ability level. 
+[
+1
+]
+ For this reason, it has also been called 
+tailored testing
+. In other words, it is a form of computer-administered 
+test
+ in which the next item or set of items selected to be administered depends on the correctness of the test taker's responses to the most recent items administered.
+[
+2
+]
+
+Description
+[
+edit
+]
+
+CAT successively selects questions (
+test items
+) for the purpose of maximizing the precision of the exam based on what is known about the examinee from previous questions.
+[
+3
+]
+ From the examinee's perspective, the difficulty of the exam seems to tailor itself to their level of ability. For example, if an examinee performs well on an item of intermediate difficulty, they will then be presented with a more difficult question. Or, if they performed poorly, they would be presented with a simpler question. Compared to static tests that nearly everyone has experienced, with a fixed set of items administered to all examinees, computer-adaptive tests require fewer test items to arrive at equally accurate scores.
+[
+3
+]
+
+The basic computer-adaptive testing method is an 
+iterative
+
+algorithm
+ with the following steps:
+[
+4
+]
+
+The pool of available items is searched for the optimal item, based on the current estimate of the examinee's ability
+
+The chosen item is presented to the examinee, who then answers it correctly or incorrectly
+
+The ability estimate is updated, based on all prior answers
+
+Steps 1–3 are repeated until a termination criterion is met
+
+Nothing is known about the examinee prior to the administration of the first item, so the algorithm is generally started by selecting an item of medium, or medium-easy, difficulty as the first item.
+[
+5
+]
+
+As a result of adaptive administration, different examinees receive quite different tests.
+[
+6
+]
+  Although examinees are typically administered different tests, their ability scores are comparable to one another (i.e., as if they had received the same test, as is common in tests designed using 
+classical test theory
+). The psychometric technology that allows equitable scores to be computed across different sets of items is 
+item response theory
+ (IRT). IRT is also the preferred methodology for selecting optimal items which are typically selected on the basis of 
+information
+ rather than difficulty, per se.
+[
+4
+]
+
+A related methodology called 
+multistage testing
+ (MST) or 
+CAST
+ is used in the 
+Uniform Certified Public Accountant Examination
+. MST avoids or reduces some of the disadvantages of CAT as described below.
+[
+7
+]
+
+Examples
+[
+edit
+]
+
+This section 
+does not 
+cite
+ any 
+sources
+.
+ Please help 
+improve this section
+ by 
+adding citations to reliable sources
+. Unsourced material may be challenged and 
+removed
+.
+Find sources:
+
+"Computerized adaptive testing"
+
+–
+
+news
+
+·
+
+newspapers
+
+·
+
+books
+
+·
+
+scholar
+
+·
+
+JSTOR
+
+(
+February 2024
+)
+ (
+Learn how and when to remove this message
+)
+
+CAT has existed since the 1970s, and there are now many 
+assessments
+ that utilize it.
+
+Graduate Management Admission Test
+
+MAP test from 
+NWEA
+
+SAT
+ (beginning outside of the US in 2023 and in the US in 2024)
+[
+8
+]
+
+National Council Licensure Examination
+
+Armed Services Vocational Aptitude Battery
+
+Additionally, a list of active CAT exams is found at International Association for Computerized Adaptive Testing,
+[
+9
+]
+ along with a list of current CAT research programs and a near-inclusive bibliography of all published CAT research.
+
+Advantages
+[
+edit
+]
+
+Adaptive tests can provide uniformly precise scores for most test-takers.
+[
+4
+]
+ In contrast, standard fixed tests almost always provide the best precision for test-takers of medium ability and increasingly poorer precision for test-takers with more extreme test scores. 
+[
+citation needed
+]
+
+An adaptive test can typically be shortened by 50% and still maintain a higher level of 
+precision
+ than a fixed version.
+[
+3
+]
+ This translates into time savings for the test-taker. Test-takers do not waste their time attempting items that are too hard or trivially easy. Additionally, the testing organization benefits from the time savings; the cost of examinee seat time is substantially reduced.  However, because the development of a CAT involves much more expense than a standard fixed-form test, a large population is necessary for a CAT testing program to be financially fruitful.
+[
+citation needed
+]
+
+Large target populations can generally be exhibited in scientific and research-based fields. CAT testing in these aspects may be used to catch early onset of disabilities or diseases. The growth of CAT testing in these fields has increased greatly in the past 10 years. Once not accepted in medical facilities and laboratories, CAT testing is now encouraged in the scope of diagnostics.
+[
+citation needed
+]
+
+Like any 
+computer-based test
+, adaptive tests may show results immediately after testing. 
+[
+citation needed
+]
+
+Adaptive testing, depending on the item selection 
+algorithm
+, may reduce exposure of some items because examinees typically receive different sets of items rather than the whole population being administered a single set. However, it may increase the exposure of others (namely the medium or medium/easy items presented to most examinees at the beginning of the test). 
+[
+4
+]
+
+Disadvantages
+[
+edit
+]
+
+The first issue encountered in CAT is the calibration of the item pool. In order to model the characteristics of the items (e.g., to pick the optimal item), all the items of the test must be pre-administered to a sizable sample and then analyzed. To achieve this, new items must be mixed into the operational items of an exam (the responses are recorded but do not contribute to the test-takers' scores), called "pilot testing", "pre-testing", or "seeding".
+[
+4
+]
+   This presents logistical, 
+ethical
+, and security issues. For example, it is impossible to field an operational adaptive test with brand-new, unseen items;
+[
+5
+]
+  all items must be pretested with a large enough sample to obtain stable item 
+statistics
+.  This sample may be required to be as large as 1,000 examinees.
+[
+5
+]
+ Each program must decide what percentage of the test can reasonably be composed of unscored pilot test items.
+[
+citation needed
+]
+
+Although adaptive tests have 
+exposure control
+ algorithms to prevent overuse of a few items,
+[
+4
+]
+  the exposure conditioned upon ability is often not controlled and can easily become close to 1.  That is, it is common for some items to become very common on tests for people of the same ability.  This is a serious security concern because groups sharing items may well have a similar functional ability level.  In fact, a completely randomized exam is the most secure (but also least efficient).
+[
+citation needed
+]
+
+Review of past items is generally disallowed, as adaptive tests tend to administer easier items after a person answers incorrectly. Supposedly, an astute test-taker could use such clues to detect incorrect answers and correct them. Or, test-takers could be coached to deliberately pick a greater number of wrong answers leading to an increasingly easier test.  After tricking the adaptive test into building a maximally easy exam, they could then review the items and answer them correctly—possibly achieving a very high score.  Test-takers frequently complain about the inability to review.
+[
+10
+]
+
+Because of the sophistication, the development of a CAT has a number of prerequisites.
+[
+11
+]
+ The large sample sizes (typically hundreds of examinees) required by IRT calibrations must be present. Items must be scorable in real time if a new item is to be selected instantaneously. 
+Psychometricians
+ experienced with IRT calibrations and CAT simulation research are necessary to provide 
+validity
+ documentation. Finally, a 
+software system
+ capable of true IRT-based CAT must be available.
+[
+citation needed
+]
+
+In a CAT with a time limit it is impossible for the examinee to accurately budget the time they can spend on each test item and to determine if they are on pace to complete a timed test section. Test takers may thus be penalized for spending too much time on a difficult question which is presented early in a section and then failing to complete enough questions to accurately gauge their proficiency in areas which are left untested when time expires.
+[
+12
+]
+ While untimed CATs are excellent tools for 
+formative assessments
+ which guide subsequent instruction, timed CATs are unsuitable for high-stakes 
+summative assessments
+ used to measure aptitude for jobs and educational programs.
+[
+citation needed
+]
+
+Components
+[
+edit
+]
+
+There are five technical components in building a CAT (the following is adapted from Weiss & Kingsbury, 1984
+[
+3
+]
+). This list does not include practical issues, such as item pretesting or live field release.
+
+Calibrated item pool
+
+Starting point or entry level
+
+Item selection 
+algorithm
+
+Scoring procedure
+
+Termination criterion
+
+Calibrated item pool
+[
+edit
+]
+
+A pool of items must be available for the CAT to choose from.
+[
+3
+]
+ Such items can be created in the traditional way (i.e., manually) or through 
+automatic item generation
+. The pool must be calibrated with a psychometric model, which is used as a basis for the remaining four components. Typically, 
+item response theory
+ is employed as the psychometric model.
+[
+3
+]
+ One reason item response theory is popular is because it places persons and items on the same metric (denoted by the Greek letter 
+theta
+), which is helpful for issues in item selection (see below).
+[
+citation needed
+]
+
+Starting point
+[
+edit
+]
+
+In CAT, items are selected based on the examinee's performance up to a given point in the test. However, the CAT is obviously not able to make any specific estimate of examinee ability when no items have been administered. So some other initial estimate of examinee ability is necessary. If some previous information regarding the examinee is known, it can be used,
+[
+3
+]
+ but often the CAT just assumes that the examinee is of average ability – hence the first item often being of medium difficulty level.
+[
+citation needed
+]
+
+Item selection algorithm
+[
+edit
+]
+
+As mentioned previously, item response theory places examinees and items on the same metric. Therefore, if the CAT has an estimate of examinee ability, it is able to select an item that is most appropriate for that estimate.
+[
+5
+]
+ Technically, this is done by selecting the item with the greatest 
+information
+ at that point.
+[
+3
+]
+
+Information
+ is a function of the discrimination parameter of the item, as well as the conditional variance and pseudo-guessing parameter (if used).
+[
+citation needed
+]
+
+Scoring procedure
+[
+edit
+]
+
+After an item is administered, the CAT updates its estimate of the examinee's ability level. If the examinee answered the item correctly, the CAT will likely estimate their ability to be somewhat higher, and vice versa. This is done by using the item response function from item response theory to obtain a 
+likelihood function
+ of the examinee's ability. Two methods for this are called 
+maximum likelihood estimation
+ and 
+Bayesian estimation
+. The latter assumes an 
+a priori
+ distribution of examinee ability, and has two commonly used estimators: 
+expectation a posteriori
+ and 
+maximum a posteriori
+. 
+Maximum likelihood
+ is equivalent to a Bayes maximum a posteriori estimate if a uniform (
+f
+(x)=1) prior is assumed.
+[
+5
+]
+ Maximum likelihood is asymptotically unbiased, but cannot provide a theta estimate for an unmixed (all correct or incorrect) response vector, in which case a Bayesian method may have to be used temporarily.
+[
+3
+]
+
+Termination criterion
+[
+edit
+]
+
+The CAT 
+algorithm
+ is designed to repeatedly administer items and update the estimate of examinee ability. This will continue until the item pool is exhausted unless a termination criterion is incorporated into the CAT. Often, the test is terminated when the examinee's standard error of measurement falls below a certain user-specified value, hence the statement above that an advantage is that examinee scores will be uniformly precise or "equiprecise."
+[
+3
+]
+ Other termination criteria exist for different purposes of the test, such as if the test is designed only to determine if the examinee should "Pass" or "Fail" the test, rather than obtaining a precise estimate of their ability.
+[
+3
+]
+[
+13
+]
+
+Other issues
+[
+edit
+]
+
+Pass-fail
+[
+edit
+]
+
+In many situations, the purpose of the test is to classify examinees into two or more 
+mutually exclusive
+ and 
+exhaustive
+ categories.  This includes the common "mastery test" where the two classifications are "pass" and "fail", but also includes situations where there are three or more classifications, such as "Insufficient", "Basic", and "Advanced" levels of knowledge or competency. The kind of "item-level adaptive" CAT described in this article is most appropriate for tests that are not "pass/fail" or for pass/fail tests where providing good feedback is extremely important. Some modifications are necessary for a pass/fail CAT, also known as a 
+computerized classification test (CCT)
+.
+[
+13
+]
+ For examinees with true scores very close to the passing score, computerized classification tests will result in long tests while those with true scores far above or below the passing score will have the shortest exams.
+[
+citation needed
+]
+
+For example, a new termination criterion and scoring algorithm must be applied that classifies the examinee into a category rather than providing a point estimate of ability. There are two primary methodologies available for this. The more prominent of the two is the 
+sequential probability ratio test
+ (SPRT).
+[
+14
+]
+[
+15
+]
+ This formulates the examinee classification problem as a 
+hypothesis test
+ that the examinee's ability is equal to either some specified point above the 
+cutscore
+ or another specified point below the cutscore.  Note that this is a point hypothesis formulation rather than a composite hypothesis formulation
+[
+16
+]
+ that is more conceptually appropriate. A composite hypothesis formulation would be that the examinee's ability is in the region above the cutscore or the region below the cutscore.
+[
+citation needed
+]
+
+A 
+confidence interval
+ approach is also used, where after each item is administered, the algorithm determines the probability that the examinee's true-score is above or below the passing score.
+[
+17
+]
+[
+18
+]
+ For example, the algorithm may continue until the 95% 
+confidence interval
+ for the true score no longer contains the passing score. At that point, no further items are needed because the pass-fail decision is already 95% accurate, assuming that the psychometric models underlying the adaptive testing fit the examinee and test. This approach was originally called "adaptive mastery testing"
+[
+17
+]
+ but it can be applied to non-adaptive item selection and classification situations of two or more cutscores (the typical mastery test has a single cutscore).
+[
+18
+]
+
+As a practical matter, the algorithm is generally programmed to have a minimum and a maximum test length (or a minimum and maximum administration time). Otherwise, it would be possible for an examinee with ability very close to the cutscore to be administered every item in the bank without the algorithm making a decision.
+[
+citation needed
+]
+
+The item 
+selection algorithm
+ utilized depends on the termination criterion.  Maximizing information at the cutscore is more appropriate for the SPRT because it maximizes the difference in the probabilities used in the 
+likelihood ratio
+.
+[
+19
+]
+ Maximizing information at the ability estimate is more appropriate for the confidence interval approach because it minimizes the conditional standard error of measurement, which decreases the width of the confidence interval needed to make a classification.
+[
+18
+]
+
+Practical constraints of adaptivity
+[
+edit
+]
+
+ETS
+ researcher Martha Stocking has quipped that most adaptive tests are actually 
+barely adaptive tests
+ (BATs) because, in practice, many constraints are imposed upon item choice. For example, CAT exams must usually meet content specifications;
+[
+4
+]
+ a verbal exam may need to be composed of equal numbers of analogies, fill-in-the-blank and synonym item types. CATs typically have some form of item exposure constraints,
+[
+4
+]
+ to prevent the most informative items from being over-exposed.  Also, on some tests, an attempt is made to balance surface characteristics of the items such as 
+gender
+ of the people in the items or the ethnicities implied by their names. Thus CAT exams are frequently constrained in which items it may choose and for some exams the constraints may be substantial and require complex search strategies (e.g., 
+linear programming
+) to find suitable items.
+[
+citation needed
+]
+
+A simple method for controlling item exposure is the "randomesque" or 
+strata
+ method. Rather than selecting the most informative item at each point in the test, the algorithm randomly selects the next item from the next five or ten most informative items. This can be used throughout the test, or only at the beginning.
+[
+4
+]
+ Another method is the Sympson-Hetter method,
+[
+20
+]
+ in which a random number is drawn from U(0,1), and compared to a 
+k
+i
+ parameter determined for each item by the test user. If the random number is greater than 
+k
+i
+, the next most informative item is considered.
+[
+4
+]
+
+Wim van der Linden and colleagues
+[
+21
+]
+ have advanced an alternative approach called 
+shadow testing
+ which involves creating entire 
+shadow tests
+ as part of selecting items. Selecting items from shadow tests helps adaptive tests meet selection criteria by focusing on globally optimal choices (as opposed to choices that are optimal 
+for a given item
+).
+[
+citation needed
+]
+
+Multidimensional
+[
+edit
+]
+
+Given a set of items, a multidimensional computer adaptive test (MCAT) selects those items from the bank according to the estimated abilities of the student, resulting in an individualized test. MCATs seek to maximize the test's accuracy, based on multiple simultaneous examination abilities (unlike a computer adaptive test – CAT – which evaluates a single ability) using the sequence of items previously answered 
+(
+Piton-Gonçalves 
+&
+ Aluísio 2012
+)
+.
+[
+citation needed
+]
+
+See also
+[
+edit
+]
+
+Bayesian knowledge tracing
+
+Electronic assessment
+, also known as computer-based test
+
+– Use of information technology in assessment
+
+Computerized classification test
+
+Educational technology
+
+– Use of technology in education to enhance learning and teaching
+
+Linear-on-the-fly testing
+
+NIH Toolbox
+
+– Neurological assessment tool
+
+Active learning
+
+Elo system
+
+References
+[
+edit
+]
+
+↑
+
+"Computer-Adapted Testing | Computer Science | Research Starters | EBSCO Research"
+. 
+EBSCO
+. Retrieved 
+2026-04-26
+.
+
+↑
+
+"National Council on Measurement in Education"
+. Archived from 
+the original
+ on 2017-07-22.
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+11
+
+Weiss, D. J.
+; Kingsbury, G. G. (1984). 
+"Application of computerized adaptive testing to educational problems"
+. 
+Journal of Educational Measurement
+. 
+21
+ (4): 
+361–
+375. 
+doi
+:
+10.1111/j.1745-3984.1984.tb01040.x
+.
+
+1
+
+2
+
+3
+
+4
+
+5
+
+6
+
+7
+
+8
+
+9
+
+10
+
+Thissen, D.; Mislevy, R.J. (2000). "Testing Algorithms". In Wainer, H. (ed.). 
+Computerized Adaptive Testing: A Primer
+. Mahwah, NJ: Lawrence Erlbaum Associates.
+
+1
+
+2
+
+3
+
+4
+
+5
+
+Wainer, H.; Mislevy, R.J. (2000). "Item response theory, calibration, and estimation". In Wainer, H. (ed.). 
+Computerized Adaptive Testing: A Primer
+. Mahwah, NJ: Lawrence Erlbaum Associates.
+
+↑
+
+Green, B.F. (2000). "System design and operation". In Wainer, H. (ed.). 
+Computerized Adaptive Testing: A Primer
+. Mahwah, NJ: Lawrence Erlbaum Associates.
+
+↑
+
+See the 
+"2006 special issue of Applied Measurement in Education"
+.
+ or 
+"Computerized Multistage Testing"
+.
+ for more information on MST.
+[
+citation needed
+]
+
+↑
+
+Knox, Liam (5 March 2024). 
+"College Board launches digital SAT"
+. 
+Inside Higher Ed
+. Retrieved 
+10 March
+ 2024
+.
+
+↑
+
+"International Association for Computerized Adaptive Testing (IACAT)"
+. 
+Archived
+ from the original on 2009-12-03.
+
+↑
+
+Lawrence M. Rudner. 
+"An On-line, Interactive, Computer Adaptive Testing Tutorial"
+. 
+EdRes.org/scripts/cat
+. Archived from 
+the original
+ on 2005-03-22
+. Retrieved 
+2025-01-13
+.
+
+↑
+
+"Requirements of Computerized Adaptive Testing"
+
+(PDF)
+. 
+FastTEST Web
+. Archived from 
+the original
+
+(PDF)
+ on April 25, 2012.
+
+↑
+
+"GMAT Tip: Adapting to a Computer-Adaptive Test"
+. 
+Bloomberg
+. April 3, 2013. Archived from 
+the original
+ on April 6, 2013.
+
+1
+
+2
+
+Lin, C.-J.; Spray, J.A. (2000), 
+Effects of item-selection criteria on classification testing with the sequential probability ratio test. (Research Report 2000-8)
+
+(PDF)
+, Iowa City, IA: ACT, Inc., 
+archived
+
+(PDF)
+ from the original on 21 April 2015
+
+↑
+
+Wald, A. (1947). 
+Sequential analysis
+. New York: Wiley.
+
+↑
+
+Reckase, M. D. (1983). "A procedure for decision making using tailored testing". In Weiss, D. J. (ed.). 
+New horizons in testing: Latent trait theory and computerized adaptive testing
+. New York: Academic Press. pp.
+
+237
+–255. 
+ISBN
+
+0-12-742780-5
+.
+
+↑
+
+Weitzman, R. A. (1982). 
+"Sequential testing for selection"
+. 
+Applied Psychological Measurement
+. 
+6
+ (3): 
+337–
+351. 
+CiteSeerX
+
+10.1.1.1030.6828
+. 
+doi
+:
+10.1177/014662168200600310
+. 
+S2CID
+
+122365749
+.
+
+{{
+cite journal
+}}
+: 
+Cite uses deprecated parameter 
+|
+citeseerx=
+ (
+help
+)
+
+1
+
+2
+
+Kingsbury, G. G.; Weiss, D. J. (1983). "A procedure for decision making using tailored testing". In Weiss, D. J. (ed.). 
+A comparison of IRT-based adaptive mastery testing and a sequential mastery testing procedure
+. New York: Academic Press. pp.
+
+257
+–283. 
+ISBN
+
+0-12-742780-5
+.
+
+1
+
+2
+
+3
+
+Eggen, T. J. H. M; Straetmans, G. J. J. M. (2000). 
+"Computerized adaptive testing for classifying examinees into three categories"
+. 
+Educational and Psychological Measurement
+. 
+60
+ (5): 
+713–
+734. 
+doi
+:
+10.1177/00131640021970862
+. 
+S2CID
+
+64632296
+.
+
+↑
+
+Spray, J. A.; Reckase, M. D. (5–7 April 1994). 
+The selection of test items for decision making with a computerized adaptive test
+
+(PDF)
+. Annual Meeting of the National Council for Measurement in Education. New Orleans, LA. 
+Archived
+
+(PDF)
+ from the original on 30 April 2015.
+
+↑
+
+Sympson, B.J.; Hetter, R.D. (1985). 
+Controlling item-exposure rates in computerized adaptive testing
+. Annual conference of the Military Testing Association. San Diego.
+
+↑
+
+van der Linden, W. J.; Veldkamp, B. P. (2004). 
+"Constraining item exposure in computerized adaptive testing with shadow tests"
+. 
+Journal of Educational and Behavioral Statistics
+. 
+29
+ (3): 
+273–
+291. 
+doi
+:
+10.3102/10769986029003273
+. 
+S2CID
+
+381707
+.
+
+Additional sources
+[
+edit
+]
+
+Drasgow, F.; Olson-Buchanan, J. B., eds. (1999). 
+Innovations in computerized assessment
+. Hillsdale, NJ: Erlbaum.
+
+Piton-Gonçalves, J.; Aluísio, S. M. (2015). 
+"Teste Adaptativo Computadorizado Multidimensional com propósitos educacionais: princípios e métodos"
+. 
+Ensaio: Avaliação e Políticas Públicas em Educação
+. 
+23
+ (87): 
+389–
+414. 
+doi
+:
+10.1590/S0104-40362015000100016
+.
+
+Piton-Gonçalves, J.; Aluísio, S. M. (2012). 
+An architecture for multidimensional computer adaptive test with educational purposes
+. New York, NY, USA: ACM. pp.
+
+17–
+24. 
+doi
+:
+10.1145/2382636.2382644
+.
+
+Piton-Gonçalves, J. (2020). 
+"Testes adaptativos para o Enade: uma aplicação metodológica"
+. 
+Meta: Avaliação
+ (in Portuguese). 
+12
+ (36): 
+665–
+688. 
+doi
+:
+10.22347/2175-2753v12i36.2735
+.
+
+Van der Linden, W. J.; Glas, C.A.W., eds. (2000). 
+Computerized adaptive testing: Theory and practice
+. Boston, MA: Kluwer.
+
+Wainer, H.
+, ed. (2000). 
+Computerized adaptive testing: A Primer
+ (2nd
+
+ed.). Mahwah, NJ: Lawrence Erlbaum Associates.
+
+Weiss, D.J., ed. (1983). 
+New horizons in testing: Latent trait theory and computerized adaptive testing
+. New York: Academic Press. pp.
+
+237–
+254.
+
+Further reading
+[
+edit
+]
+
+"First Adaptive Test: Binet's IQ Test"
+. 
+International Association for Computerized Adaptive Testing (IACAT)
+.
+
+Adaptive Testing and Performance Analysis
+. Procedia Computer Science, International Conference on Advanced Computing Technologies and Applications (ICACTA).
+
+Sands, William A.; Waters, Brian K.; McBride, James R., eds. (1997). 
+Computerized adaptive testing: From inquiry to operation
+. Washington, DC, US: American Psychological Association. pp.
+
+xvii 292. 
+doi
+:
+10.1037/10244-000
+.
+
+Zara, Anthony R (1999). "Using Computerized Adaptive Testing to Evaluate Nurse Competence for Licensure: Some History and Forward Look". 
+Advances in Health Sciences Education
+. 
+4
+ (1): 
+39–
+48. 
+doi
+:
+10.1023/A:1009866321381
+. 
+PMID
+
+12386434
+. 
+S2CID
+
+27771858
+.
+
+External links
+[
+edit
+]
+
+"International Association for Computerized Adaptive Testing"
+. 
+Archived
+ from the original on 2009-12-03.
+
+"Concerto: Open-source CAT Platform"
+. 
+University of Cambridge
+.
+
+"FastTest: CAT platform with free version available"
+. ASC.
+
+Weiss, David J. 
+"CAT Central"
+. University of Minnesota. Archived from 
+the original
+ on 11 July 2006.
+
+"Frequently Asked Questions about Computer-Adaptive Testing (CAT)"
+. University of Minnesota
+. Retrieved 
+15 April
+ 2005
+.
+
+Rudner, Lawrence L. (November 1998). 
+"An On-line, Interactive, Computer Adaptive Testing Tutorial"
+. Archived from 
+the original
+ on 11 June 2005
+. Retrieved 
+15 April
+ 2005
+.
+
+"Special issue: An introduction to multistage testing"
+. 
+Applied Measurement in Education
+. 
+19
+ (3). Archived from 
+the original
+ on 15 March 2022.
+
+"Computerized Adaptive Tests"
+. Washington, DC: 
+Education Resources Information Center
+ Clearinghouse on Tests Measurement and Evaluation. Archived from 
+the original
+ on 4 December 2021.
+
+Retrieved from "
+https://en.wikipedia.org/w/index.php?title=Computerized_adaptive_testing&oldid=1372808054
+"
+
+Categories
+: 
+Psychometrics
+School examinations
+Computer-based testing
+Hidden categories: 
+Articles with short description
+Short description is different from Wikidata
+All articles with unsourced statements
+Articles with unsourced statements from February 2024
+Articles needing additional references from February 2024
+All articles needing additional references
+CS1 errors: deprecated parameters
+CS1 Portuguese-language sources (pt)
+
+ This page was last edited on 2 September 2026, at 10:51
+ (UTC)
+.
+
+Page was rendered with 
+Parsoid
+.
+
+Text is available under the 
+Creative Commons Attribution-ShareAlike 4.0 License
+;
+additional terms may apply. By using this site, you agree to the 
+Terms of Use
+ and 
+Privacy Policy
+. Wikipedia® is a registered trademark of the 
+Wikimedia Foundation, Inc.
+, a non-profit organization.
+
+Privacy policy
+
+About Wikipedia
+
+Disclaimers
+
+Contact Wikipedia
+
+Legal & safety contacts
+
+Code of Conduct
+
+Developers
+
+Statistics
+
+Cookie statement
+
+Mobile view
+
+Search
+
+Search
+
+Toggle the table of contents
+
+Computerized adaptive testing
+
+7 languages
+
+Add topic

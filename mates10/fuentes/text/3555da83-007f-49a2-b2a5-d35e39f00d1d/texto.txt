@@ -1,0 +1,611 @@
+                                             Learning and Instruction 16 (2006) 92e103
+                                                                                                      www.elsevier.com/locate/learninstruc
+
+
+
+
+  Encountering the expertise reversal effect with a computer-based
+             environment on electrical circuit analysis
+        Jana Reisslein a, Robert K. Atkinson a,*, Patrick Seeling b, Martin Reisslein b
+               a
+                   Division of Psychology in Education, Arizona State University, P.O. Box 870611, Tempe, AZ 85287-0611, USA
+                          b
+                            Department of Electrical Engineering, Arizona State University, Tempe, AZ 85287-0611, USA
+
+
+
+
+Abstract
+
+    This study examined the effectiveness of a computer-based environment employing three example-based instructional proce-
+dures (exampleeproblem, problemeexample, and fading) to teach series and parallel electrical circuit analysis to learners classi-
+fied by two levels of prior knowledge (low and high). Although no differences between the instructional procedures were observed,
+low prior knowledge learners benefited most from traditional exampleeproblem pairs while their high prior knowledge counter-
+parts benefited most from problemeexample pairs. Overall, this study provides empirical support for the expertise reversal effect,
+which suggests that the effectiveness of certain instruction procedures in example-based learning environments depends upon the
+learners’ level of prior knowledge.
+Ó 2006 Elsevier Ltd. All rights reserved.
+
+Keywords: Worked-out examples; Fading; Expertise reversal effect; Engineering education
+
+
+
+
+    Computer-based instructional modules teaching electrical circuit analysis techniques have received a significant
+amount of interest over the last decade, see for instance (Ahmed & Bayoumi, 1994; Al-Holou & Abdallah, 1996;
+Al-Holou & Clum, 1999; de Coulon, Forte, & Rivera, 1993; Doering, 1996; Hanrahan & Caetano, 1989; Harris &
+Black, 1995; Jones & Conner, 1994; Nahvi, 1990; Oakley, 1993, 1994, 1996; Pota, 1997; Shaffer & Mabry, 2000;
+Shannon, 1994; Yoshikawa, Shintani, & Ohba, 1992). This literature contains a wide variety of computer-based in-
+structional modules that are designed to teach circuit analysis techniques.
+    Both worked examples and practice problems are commonly employed in these modules. A worked example is
+a fully solved example problem that allows the students to examine the full sequence of steps leading to the solution
+of a problem. A practice problem, on the other hand, provides the students with the problem statement and it is the
+students’ responsibility to fill in the individual solution steps. In some computer-based implementations, upon filling
+in the individual solution steps, the learners are given feedback on the accuracy of their input. The study by Trafton
+and Reiser (1993) indicates that learning is improved when worked examples are paired with practice problems com-
+pared to when only worked examples are provided to the learners. Similarly, the study by Sweller and Cooper (1985)
+has found that the pairing of worked examples with practice problems is more effective than providing the learners
+
+
+ * Corresponding author.
+   E-mail address: robert.atkinson@asu.edu (R.K. Atkinson).
+
+0959-4752/$ - see front matter Ó 2006 Elsevier Ltd. All rights reserved.
+doi:10.1016/j.learninstruc.2006.02.008
+                                  J. Reisslein et al. / Learning and Instruction 16 (2006) 92e103                        93
+
+only with practice problems. Overall, a significant number of studies performed by Sweller and his colleagues (for an
+overview see Sweller, Van Merrienboer, & Paas, 1998) have established strong empirical support for this type of exam-
+pleeproblem pairing, where isomorphic worked examples and practice problems are paired in an instructional activity.
+    Although learning from worked examples is effective, research indicates that this approach is critical when learners
+are in the preliminary stages of acquiring a cognitive skill in well-structured domains such as mathematics, physics,
+and computer programming (Anderson, Fincham, & Douglass 1997; VanLehn, 1996). In particular, Anderson and his
+colleagues proposed that the importance of learning from examples was limited to the first stage and the beginning of
+the second stage within a cognitive skill acquisition framework consisting of four overlapping stages (Anderson et al.,
+1997). According to this framework, learners in the initial stage solve problems by referring to specific examples and
+attempting to relate them to the problem to be solved. Learners in the second stage begin to develop abstract declar-
+ative rulesdverbal knowledge that guides their problem solvingdthrough problem-solving practice. After sustained
+practice, learners move to the third stage where proceduralised rules begin to form and problem-solving performance
+becomes more efficient, requiring fewer attentional resources. Finally, by the fourth stage, learners have encountered
+many different types of problems, often committing to memory specific examples that they can retrieve quickly and di-
+rectly from memory. Although learning from examples is critical in the initial stages of cognitive skill acquisition, it is
+not the ideal instructional approach when learners are in the third stage, where problem-solving practice is paramount.
+    In light of this cognitive skill acquisition framework, a hybrid approach has recently been proposed that lies be-
+tween the use of worked examples and practice problems referred to as the completion strategy (Van Merriënboer,
+1990), or the fading approach (Atkinson, Renkl, & Merrill, 2003; Renkl, Atkinson, & Große, 2004; Renkl, Atkinson,
+& Maier, 2000; Renkl, Atkinson, Maier, & Staley, 2002), which has received virtually no attention so far in engineer-
+ing education. In the fading approach, the learner is initially presented with a fully worked example while in the next
+example all but one of the problem subgoals are worked out and the learner is required to independently solve (an-
+ticipate) the solution of the missing problem subgoal. In the subsequent example, all but two problem subgoals are
+worked out and the learner is required to anticipate the solutions to the two missing problem subgoals, and so on, until
+the learner is required to anticipate the solutions for all problem subgoals (independent problem solving). More spe-
+cifically, with the backward-fading design, the last solution step is omitted first, then the last two, and so on. Recent
+studies conducted for the knowledge domain of elementary probability theory and statistics found indications that
+backward fading has a positive effect on learning (Atkinson et al., 2003; Renkl et al., 2002, 2004).
+    Considering the fading approach in light of the stages of cognitive skill acquisition, it is clear that this type of in-
+structional procedure is designed to ensure a smooth transition from example study (in the initial stages of skill ac-
+quisition) to working on incomplete examples (in the early-to-middle stages of skill acquisition) to problem solving
+(in the middle-to-final stages of skill acquisition). Accordingly, the fading approach, with its reliance on worked ex-
+amples at the outset of instruction, is most relevant for learners with little domain expertise since they are likely in the
+initial stages of cognitive skill acquisition.
+    On the other hand, both the traditional exampleeproblem approach and the fading approach to example-based in-
+struction are not well-suited for learners with sufficient domain expertise since these learners are in the latter stages of
+cognitive skill acquisition where examples have less utility. In fact, recent research indicates that learning by solving
+problems is superior to studying examples when learners have amassed a reasonable degree of domain expertise as
+denoted by the learners’ relative level of domain knowledge (Kalyuga, Ayres, Chandler, & Sweller, 2003; Kalyuga,
+Chandler, & Sweller, 2000; Kalyuga, Chandler, Tuovinen, & Sweller, 2001). Kalyuga et al. (2001) analysed mechan-
+ical trade apprentices’ learning about relay circuits and their programming over an extended training experience.
+While they found that learning from examples was superior to problem solving for inexperienced learners in the initial
+stages of cognitive skill acquisition, this advantage disappeared over time as the participants developed more content
+expertise and moved into the latter stages of cognitive skill acquisition. Hence, there was a reversal of the worked-
+example effect when learners have substantial prior knowledge, a phenomenon referred to as the expertise reversal
+effect (Kalyuga et al., 2003). In sum, while learners with low prior knowledgedthat is, in the initial stages of skill
+acquisition as evidenced by little-to-no domain expertisedbenefit from worked examples, learners with high prior
+knowledgedthat is, in the middle-to-final stages of skill acquisition as evidenced by moderate-to-high domain exper-
+tisedno longer benefit from studying examples and, instead, profit from solving practice problems. In light of the
+expertise reversal effect, it seems prudent to consider an instructional procedure that is sensitive to high prior knowl-
+edge learners, one where practice problems are provided first with an accompanying worked example for reference if
+needed, which we refer to as a problemeexample pairing.
+94                                J. Reisslein et al. / Learning and Instruction 16 (2006) 92e103
+
+   Against this background, we conducted a study where we systematically examined the impact of the instructional
+procedure, that is, the arrangement of worked examples and practice problems, in a computer-based instructional
+module for electrical circuit analysis under two levels of prior knowledge (i.e., expertise) on the learner performance
+and attitudes. In particular, we compared the following three example-based instructional procedures: (a) examplee
+problem: the learner is first presented with a worked example, followed by an isomorphic practice problem; (b) prob-
+lemeexample: the learner is first presented with a practice problem, followed by an isomorphic worked example; and
+(c) fading: the learner is presented with backward faded solution steps.
+   In sum, our study entailed a 3  2 design with instructional procedure as the first independent variable (examplee
+problem, problemeexample, and fading) and prior knowledge (low and high) as the second independent variable.
+Against this background, our study was designed to explore several hypotheses. First, we predicted that learners pro-
+vided with a fading instructional procedure would outperform their peers provided with exampleeproblem pairs on
+performance measures. Second, we predicted that learners with high prior knowledge would outperform their low
+prior knowledge peers on performance measures. Third, we also expected an interaction between instructional pro-
+cedure and level of prior knowledge. Specifically, we predicted that learners in the early stages of cognitive skill ac-
+quisition, that is, with low prior knowledge, would benefit more from the exampleeproblem and fading instructional
+procedures than from the problemeexample pairs and that learners in the latter stages of cognitive skill acquisition,
+that is, with high prior knowledge, would benefit more from problemeexample pairs than from exampleeproblem and
+fading instructional procedures.
+
+
+1. Method
+
+1.1. Participants
+
+   The participants of this study were 185 students from the ECE100 introductory engineering courses at Arizona
+State University. The experimental sample consisted of 20% females and 80% males. The average age of the partic-
+ipants was 20.77 years (SD ¼ 4.85). The participants had a mean grade point average (GPA) of 3.26 (SD ¼ .54) out of
+a maximum of 4.0. Approximately 60% of the participants had been exposed to some form of instruction on electrical
+circuits before participating in this study. Based on a pretest administered one week prior to the learning phase, the
+participants were blocked by prior knowledge and were randomly assigned to one of the three treatment conditions:
+(1) exampleeproblem instructional procedure, where participants encounter a worked example first followed by
+a practice problem; (2) problemeexample instructional procedure, where the participants first encountered a practice
+problem followed by a worked example; and (3) fading instructional procedure, where the solution steps were back-
+ward faded. Each condition contained identical instructional content, but varied in the structure in which the content
+was delivered.
+
+1.2. Apparatus and materials
+
+1.2.1. Computer-based learning environment
+   The computer-based learning environment (see Fig. 1) was developed using Director MX (Macromedia, 2002)
+software, which is an authoring tool for creating rich multimedia programs. The learning environment was originally
+developed by Renkl (1997), modified by Stark (1999), modified for a second time by Renkl et al. (2002) before finally
+being adapted to the present needs by the first author. The module was programmed to operate in one of three modes
+that corresponded to the three treatment conditions of the current study, namely, exampleeproblem, problemeexample,
+and backward fading.
+   The goal of the computer-based learning environment was to deliver instruction on the principles of calculating the
+resistance in the two fundamental types of electrical circuits, namely, parallel and series electrical circuits. The envi-
+ronment presented these two types (parallel and series) of electrical circuit analysis, each with four worked examples/
+practice problems, constituting a total of eight instructional items. Each item for a given type of circuit analysis had the
+same underlying structure (i.e., solution rationale), and all items differed in their surface features (i.e., cover stories,
+values). The following is the cover story from one of the instructional examples that were shown to the participants on
+the computer screens during the learning phase:
+                                       J. Reisslein et al. / Learning and Instruction 16 (2006) 92e103                                      95
+
+
+
+
+Fig. 1. Screen shot of computer-based learning environment showing a faded example with first two steps worked out and last step awaiting a so-
+lution attempt by the learner.
+
+
+
+       To operate an aquarium you wire the pump with a resistance of Rp ¼ 20 U and the aquarium light with a re-
+       sistance of Rl ¼ 40 U in parallel. You connect this parallel circuit to a battery with a voltage of Vb ¼ 5 V. What
+       is the total resistance Rtot of this parallel circuit?
+   For each type of circuit analysis, the learning environment provided two exampleeproblem pairs in the examplee
+problem condition, two problemeexample pairs for the problemeexample condition, and one set of four examples
+with backward faded solution steps for the fading condition.
+   All the worked examples and practice problems consisted of exactly three solution steps or subgoals. Each step was
+clearly labelled and visually distinguished from the other steps. The computer module revealed one step at a time after
+the participants clicked the ‘‘Next’’ button, thus allowing the participants to control the pace of their learning. For each
+unsolved solution step the students entered their solution. The computer-based learning environment then revealed the
+correct solution for the solution step. The participants were given a single attempt at solving each missing step. The
+solved step(s) remained visible on the screen after the final answer was presented, allowing the participants to study
+the entire solution (worked example). The participants proceeded through the module by clicking on the ‘‘Next Prob-
+lem’’ buttons after inspecting all three steps in each problem. The navigation was linear and the participants could not
+return to previous steps and problems once they finalized their answers.
+   The computer-based learning module automatically recorded the en route practice (accuracy of solving the missing
+steps or problems depending on the treatment group) and instructional time during the learning (computer) phase.
+There were a total of 12 unsolved steps in each condition in the computer-based learning environment. Each question
+could only be answered once before the solution was automatically revealed (single solution attempt or anticipation).
+For each correctly solved step, one point was awarded, thus producing a maximum score of 12.
+96                                J. Reisslein et al. / Learning and Instruction 16 (2006) 92e103
+
+1.2.2. Pencilepaper materials
+   The participants were administered a set of pencilepaper materials consisting of a demographic questionnaire,
+a pretest, an overview of parallel and series electrical circuits, and a posttest.
+
+1.2.2.1. Demographic questionnaire. The questionnaire collected basic demographic data (grade level, gender, eth-
+nicity). It also asked the participants whether they had ever learned about electrical circuit analysis before.
+
+1.2.2.2. Pretest. The pretest was designed to assess the participants’ prior knowledge in the area of electrical circuit
+analysis. It was composed of two parts, with each part consisting of six questions, resulting in a maximum achievable
+total pretest score of 12 points. The first part contained six multiple-choice questions relating to the basic physical
+meaning of electrical current, voltage, and resistance, and elementary properties of electrical circuits. The participants
+could select from four response choices for each question. For instance, the participants were asked ‘‘What is elec-
+trical current?’’ and were offered the choices (a) flow of electrical particles in a wire, (b) speed of electrical particles
+in a wire, (c) total number of electrical particles in a wire, (d) density of electrical particles in a wire, whereby (a) was
+the correct solution. The second part consisted of six open-response elementary circuit problems that required a single
+application of Ohm’s Law or the basic principles of current and voltage in parallel and series circuits, i.e., a single
+solution step. For instance, the participants were given the problem ‘‘You connect a lamp with a resistance of
+Rl ¼ 5 U to a 9 V battery. How large is the current flow through the lamp?’’. The maximum obtainable score for
+the pretest was 12, one point for each correctly answered question.
+
+1.2.2.3. Introductory overview. The four-page overview of parallel and series electrical circuits introduced the par-
+ticipants to (i) the physical meaning and units of electrical current and voltage, (ii) electrical circuit elements and their
+graphical representations, such as light bulbs and batteries, and the way circuit elements are connected with wires in
+the two main forms of electrical circuits, namely parallel and series circuits, (iii) the physical meaning and units of
+resistance as well as Ohm’s Law, (iv) the calculation of the resistance of a parallel circuit, and (v) the calculation of the
+resistance in a series circuit.
+    The participants were taught to calculate the total resistance from basic principles, namely Ohm’s Law and the
+properties of current and voltage in the electrical circuits. In particular, for the series circuit, the participants were
+presented with the resistance values of the individual resistors in the circuit and with the value of the current emitted
+by the battery into the circuit. The participants were then instructed to abide by the following three steps in the cal-
+culation of the total resistance of the series circuit. First, the participants studied that the current flowing through each
+of the circuit elements is equal to the current emitted by the battery and the calculation of the voltage over each in-
+dividual resistor is done using Ohm’s Law. Second, the participants were shown examples where the calculation of the
+total voltage over the series arrangement of resistors is carried out by summing up the voltages of the individual re-
+sistors. Third, the examples presented the calculation of the total resistance of the series circuit by applying Ohm’s
+Law to the entire circuit, i.e., the calculation of the total resistance of the series circuit as the sum of the voltages de-
+termined in step 2 divided by the current emitted by the battery.
+    For the parallel circuit, the participants were presented with the voltage provided by the battery and resistance values
+of the individual resistors. For the calculation of the total resistance of the parallel circuit, the participants were in-
+structed to proceed through the following three steps. First, the participants observed that the voltage is the same
+over each individual resistor and were presented with the calculation of the value of the current flowing through
+each individual resistor using Ohm’s Law. Second, an example showed the calculation of the total current flowing in
+the circuit by summing up the currents flowing through the individual resistors. Third, the total resistance of the parallel
+circuit was calculated by dividing the voltage provided by the battery by the sum of the currents determined in step 2.
+    Note that these last two sections on calculating the resistance of series and parallel circuits were not focused on
+deriving the formulas for calculating the total resistance of the circuit from the resistance values of the individual cir-
+cuit elements (i.e., Rtot ¼ R1 þ R2 þ . for series circuit and 1/Rtot ¼ 1/R1 þ 1/R2 þ . for parallel circuit).
+
+1.2.2.4. Posttest. The posttest contained eight complex problems; more specifically, four problems (two for each type
+of the electrical circuits, parallel and series) were designed to measure near-transfer performance and four problems
+(two for each type of the electrical circuits, parallel and series) to assess the far-transfer learning.
+   The near-transfer problems had the same underlying structure as the practice problems encountered during the
+learning (computer) phase but different surface characteristics. Specifically, they required the participants to perform
+                                   J. Reisslein et al. / Learning and Instruction 16 (2006) 92e103                         97
+
+the same tasks (e.g., calculating the individual voltage or current, respectively, determining the total voltage or current,
+respectively, and finally computing the total resistance) as they have learned in the computer-based module. The near-
+transfer problems provided the participants with the battery current and the individual resistance values for the series
+circuit problems. For the parallel circuit problems, the participants were given the battery voltage and the individual
+resistance values. For all of the near-transfer problems, the participants were expected to calculate the total resistance
+of the electrical circuit. Despite having the same structure and requiring the same solution steps as the practice prob-
+lems from the learning phase, the near-transfer problems appeared different since they had different cover stories and
+current, voltage, and resistance values.
+   The far-transfer problems had different underlying structure and surface features as compared to the computer-
+based practice problems. In particular, in the far-transfer series circuit problem, the participants were given the
+individual resistance values and the voltage over one of the resistors. The far-transfer series circuit problem asked
+the participants to calculate the battery voltage. The following is one of the far-transfer series circuit posttest
+problems:
+      To make your bicycle safe for riding at night, you equip it with a front light that has a resistance of Rf ¼ 5 U
+      and a rear light with a resistance of Rr ¼ 5 U. You wire the two lights in series and connect the series circuit to
+      a battery. To ensure sufficient front lighting, the voltage over the front light must be at least Vf ¼ 5 V. How
+      much voltage Vb must the battery at least provide to ensure sufficient lighting?
+   To solve this problem, the participants had first to use Ohm’s Law to calculate the current in the series circuit from
+the resistance value of the one resistor for which the voltage was given (If ¼ Vf/Rf ¼ 6 V/5 U ¼ 1.2 A). The partici-
+pants then had to notice that the current is the same in all resistors and had to calculate the voltages over the other
+resistors in the circuit from the current determined in the first step and the values of the individual resistors using again
+Ohm’s Law (Vr ¼ If  Rr ¼ 1.2 A  10 U ¼ 12 V). In the third and final solution step, the participants had to sum
+up the voltages over the individual resistors to obtain the total voltage (battery voltage) over the circuit
+(Vb ¼ Vf þ Vr ¼ 6 V þ 12 V ¼ 18 V). In the far-transfer parallel circuit problems, the participants were provided
+with the resistance values of the individual resistors and the current flow through one of the resistors and were asked
+to calculate the total current in the parallel circuit (battery current). To solve this problem, the participants first had to
+apply Ohm’s Law to the resistor for which the current was provided to determine the voltage over the resistor. The
+participants then had to observe that the voltage is the same over all resistors and had to calculate the currents through
+the other resistors by applying Ohm’s Law to each individual resistor. Finally, the participants had to sum up the in-
+dividual currents to determine the battery current.
+   In summary, the far-transfer problems required the participants to apply the same basic principles (Ohm’s Law,
+basic properties of voltages, and currents in parallel and series circuits) as in the practice problems, but the sequence
+in which these principles were applied and the circuit element to which Ohm’s Law was applied differed from those of
+the practice problems (and the solution steps presented in the introductory overview).
+   The eight posttest problems had three distinctive solution steps each, thus resulting in a maximum score of three
+points for each correctly solved problem. Therefore, a maximum total score of 24 (12 points each were associated with
+the performance on the near- and far-transfer problems) was attainable on the posttest.
+
+
+1.3. Procedure
+
+   Experimental sessions were held during regular class time. This resulted in groups consisting of 30e45 student
+participants in each of the experimental sessions. The pretest and the demographic questionnaire were administered
+one week before to the learning phase of the experiment. The average duration of each of the second sessions was
+approximately 60 min. The participants took part in the study in a computerized classroom or a computer lab at Ari-
+zona State University. Each participant was seated in front of a Windows-based desktop computer. The experimenter
+instructed the participants to work independently of their peers. The participants proceeded to study the introductory
+overview on electrical circuits. After studying the introductory instructional text, the participants worked through the
+problems in the computer-based learning environment. During this phase the experimental variation took place. Im-
+mediately after completing the computer-based instructional program, the participants were administered the posttest.
+Finally, they indicated their responses on the attitudinal survey.
+98                               J. Reisslein et al. / Learning and Instruction 16 (2006) 92e103
+
+2. Results
+
+   This section presents the results for the pretest, en route practice in the computer-based learning module, instruc-
+tional time, and achievement (posttest performance on near- and far-transfer problems). Unless otherwise noted, a 3
+(exampleeproblem, or problemeexample, or backward-fading instructional procedure)  2 (low or high prior knowl-
+edge) analysis of variance (ANOVA) with a significance level of .05 was used in the analyses. For the ANOVAs, Co-
+hen’s f statistic was used as an effect size index where f values of .10, .25, and .40 correspond to small, medium, and
+large values, respectively (Cohen, 1988).
+
+2.1. Pretest
+
+   As previously mentioned, the pretestda content specific measure of the participants’ prior knowledgedwas ad-
+ministered to all participants one week prior to learning phase with the goal of creating two levels of prior knowledge
+(low and high) before randomly assigning the participants at each level to one of the three instructional procedures.
+Out of a possible 12 points, participants’ average score was 7.17 (SD ¼ 3.07) on the pretest with a median score of
+seven. In light of these measures of central tendency, we elected to use seven as a cut-off and categorized participants
+as either high prior knowledge (pretest score seven points and higher) or low prior knowledge (pretest score below
+seven points). This permitted us to create two groups of approximately equal size but with statistically significant dif-
+ferences in their levels of prior knowledge. The high prior knowledge participants (N ¼ 93) scored M ¼ 9.78
+(SD ¼ 1.82) on the pretest, while their low prior knowledge counterparts (N ¼ 92) achieved an average score
+M ¼ 4.53 (SD ¼ 1.30). The resulting independent samples t test was significant, t(183) ¼ 22.61, p < .001. Cohen’s
+d statistic for these data yields an effect size estimate of 3.33, which can be interpreted in terms of the percent of
+non-overlap between the two distributions of scores associated with the groups. According to Cohen (1988), a d of
+3.33 indicates a non-overlap of approximately 95% in the two distributions, which suggests that the distribution of
+scores for the low prior knowledge participants displayed virtually no overlap with distribution of scores for the
+high prior knowledge participants.
+   There was no statistically significant difference between the average pretest scores of the participants assigned to
+the three treatment groups, F(2,179) ¼ .45, MSE ¼ 2.50, p > .05. No statistically significant interaction was observed
+between prior knowledge and instructional procedure factors, F(2,179) ¼ 1.37, MSE ¼ 2.50, p > .05.
+
+2.2. Practice
+
+   Participants’ performance on the practice problems presented within the computer-based learning environment was
+tracked automatically by the program. The mean scores and standard deviations for the accuracy of solving the prac-
+tice problems are reported by treatment group and participant prior knowledge in Table 1. There were no statistically
+significant differences in the ability to solve the practice problems among the three different treatment groups,
+F(2,179) ¼ 1.31, MSE ¼ 1.98, p > .05, or by prior knowledge, F(1,179) ¼ .86, p > .05, and there was no statistically
+significant interaction between the two variables, F(2,179) ¼ .05, p > .05
+
+2.2.1. Instructional time
+   Table 1 reports the mean and standard deviation of the instructional times by treatment group and participant prior
+knowledge. The overall average time the participants spent on the initial paper-based training was 13.89 min
+(SD ¼ 6.17). An ANOVA found a main effect on the prior knowledge factor, F(1,179) ¼ 19.90, MSE ¼ 34.86,
+p < .01. Cohen’s f statistics for these data yields an effect size estimate of .33, which corresponds to a medium effect.
+The high prior knowledge participants spent significantly less time on the initial knowledge acquisition than their low
+prior knowledge counterparts. There was no significant main effect for the instructional procedure on the time spent
+studying the paper-based introductory training packet, F(2,179) ¼ .97, p > .05 and no significant interaction of the
+two factors, F(2,179) ¼ .08, p > .05.
+   An ANOVA revealed that the high prior knowledge participants were able to learn statistically significantly faster
+from the examples presented by the computer-based module than their low prior knowledge counterparts,
+F(1,179) ¼ 3.83, MSE ¼ 52.29, p < .05. Cohen’s f statistics for these data yields an effect size estimate of .15, which
+corresponds to a small effect. No statistically significant differences were found on the instructional procedure factor,
+                                          J. Reisslein et al. / Learning and Instruction 16 (2006) 92e103                                 99
+
+Table 1
+Time spent on the initial knowledge acquisition (studying the introductory overview), practice performance on computer-based module, and time
+spent in the computer environment by treatment group and participant prior knowledge
+Condition                      Prior                                   Study time             Computer performance            Computer time
+                               knowledge                               (minutes)              (max. 12)                       (minutes)
+Exampleeproblem                Low                      M              16.12                  10.73                           18.88
+                               (N ¼ 33)                 SD              4.87                   1.07                            9.70
+                               High                     M              12.04                  10.86                           15.54
+                               (N ¼ 28)                 SD              7.46                   1.04                            6.05
+                               Total                    M              14.25                  10.79                           17.34
+                               (N ¼ 61)                 SD              6.47                   1.05                            8.33
+Problemeexample                Low                      M              16.62                  10.55                           18.34
+                               (N ¼ 29)                 SD              5.79                   1.48                            6.18
+                               High                     M              12.47                  10.72                           16.81
+                               (N ¼ 32)                 SD              6.63                   2.02                            8.83
+                               Total                    M              14.44                  10.64                           17.54
+                               (N ¼ 61)                 SD              6.54                   1.77                            7.66
+Fading                         Low                      M              14.80                  10.90                           17.87
+                               (N ¼ 30)                 SD              5.28                   1.19                            6.08
+                               High                     M              11.39                  11.18                           16.48
+                               (N ¼ 33)                 SD              5.22                   1.38                            5.01
+                               Total                    M              13.02                  11.05                           17.14
+                               (N ¼ 63)                 SD              5.48                   1.29                            5.55
+Total                          Low                      M              15.85                  10.73                           18.38
+                               (N ¼ 92)                 SD              5.30                   1.24                            7.54
+                               High                     M              11.96*                 10.92                           16.31*
+                               (N ¼ 93)                 SD              6.39                   1.55                            6.78
+                               Total                    M              13.89                  10.83                           17.34
+                               (N ¼ 185)                SD              6.17                   1.40                            7.22
+*Denotes statistically significant difference at p < .01 level between high and low prior knowledge learners.
+
+
+
+F(2,179) ¼ .06, p > .05. The interaction between prior knowledge and instructional procedure was also non-
+significant, F(2,179) ¼ .35, p > .05.
+
+
+2.3. Near-transfer posttest achievement
+
+   Participant achievement on the posttest is reported in Table 2, which shows the mean scores and standard deviations
+for each treatment condition and prior knowledge on near- and far-transfer posttest problems. While there was no main
+effect for instructional procedure on near transfer, F(2,179) ¼ .06, MSE ¼ 2.30, p > .05, participants with higher
+levels of prior knowledge scored statistically significantly better than the low prior knowledge participants,
+F(1,179) ¼ 5.36, p < .05. Cohen’s f statistics for these data yields an effect size estimate of .17, which corresponds
+to a small effect. More importantly, there was a significant prior knowledge by instructional procedure interaction
+on the near-transfer posttest problems, F(2,179) ¼ 3.24, p < .05. This interaction is shown in Fig. 2. The prior knowl-
+edge by instructional procedure interaction effect was analysed using a simple main effect analysis. The participant
+prior knowledge level influenced the performance on the near-transfer problems for the problemeexample instruc-
+tional procedure, F(1,59) ¼ 6.63, MSE ¼ 2.70, p < .01, where the high knowledge participants outperformed their
+low knowledge counterparts. However, the prior knowledge factor did not influence the participants performance
+for the exampleeproblem structure, F(1,59) ¼ .60, MSE ¼ 1.79, p > .05 and the fading structure, F(1,61) ¼ 3.50,
+MSE ¼ 2.41, p > .05.
+   To explore for the possibility that the interaction was due to fluctuations in initial levels of knowledge among
+learners assigned to each instructional procedure rather than due to the instructional procedures themselves, we con-
+ducted an analysis of covariance (ANCOVA) with prior knowledge (pretest scores) as a covariate. The results of the
+ANOCOVA confirm the presence of the interaction, F(2,178) ¼ 3.19, p < .05, and the same pattern of results.
+100                                     J. Reisslein et al. / Learning and Instruction 16 (2006) 92e103
+
+Table 2
+Near- and far-transfer posttest scores by treatment group and prior knowledge
+Condition                                Prior                                                     Near transfer   Far transfer
+                                         knowledge                                                 (max. 12)       (max. 12)
+Exampleeproblem                          Low                             M                         11.52           5.64
+                                         (N ¼ 33)                        SD                         1.06           4.80
+                                         High                            M                         11.25           9.21
+                                         (N ¼ 28)                        SD                         1.60           3.92
+                                         Total                           M                         11.39           7.28
+                                         (N ¼ 61)                        SD                         1.33           4.74
+Problemeexample                          Low                             M                         10.76           5.10
+                                         (N ¼ 29)                        SD                         2.33           4.32
+                                         High                            M                         11.84           8.63
+                                         (N ¼ 32)                        SD                          .52           4.13
+                                         Total                           M                         11.33           6.95
+                                         (N ¼ 61)                        SD                         1.72           4.55
+Fading                                   Low                             M                         10.93           3.70
+                                         (N ¼ 30)                        SD                         2.08           3.47
+                                         High                            M                         11.67           7.97
+                                         (N ¼ 33)                        SD                          .82           4.37
+                                         Total                           M                         11.32           5.94
+                                         (N ¼ 63)                        SD                         1.58           4.48
+Total                                    Low                             M                         11.09           4.84
+                                         (N ¼ 92)                        SD                         1.89           4.29
+                                         High                            M                         11.60*          8.57*
+                                         (N ¼ 93)                        SD                         1.07           4.14
+                                         Total                           M                         11.35           6.71
+                                         (N ¼ 185)                       SD                         1.55           4.60
+*Denotes statistically significant difference at p < .01 level between high and low prior knowledge learners.
+
+
+2.4. Far-transfer posttest achievement
+
+   The better achievement of high prior knowledge participants was also found in the analysis of the far-transfer post-
+test performance, wherein the high prior knowledge participants achieved statistically significantly higher scores than
+the low prior knowledge participants, F(1,179) ¼ 37.43, MSE ¼ 17.68, p < .01. Cohen’s f statistics for these data
+yields an effect size estimate of .46, which corresponds to a large effect. There was no statistically significant differ-
+ence among the three different instructional procedures on the far transfer, F(2,179) ¼ 2.28, p > .05, and no interac-
+tion between prior knowledge and instructional procedure, F(2,179) ¼ .15, p > .05.
+
+
+3. Discussion
+
+   This study focused on the impact of the instructional proceduredthat is, the arrangement of worked examples and
+practice problemsdin a computer-based learning environment on electrical circuit analysis. In particular, it explored
+the influence of presenting worked examples and practice problems in three different instructional procedures (exam-
+pleeproblem, problemeexample, and fading) on the performance and attitudes of learners with two different levels of
+prior knowledge (low and high), as assessed by a content-specific pretest one week prior to the learning phase of the
+experiment.
+   Although we predicted that learners provided with a fading instructional procedure would outperform their peers
+provided with exampleeproblem pairs on performance measures, we did not find any significant differences between
+the participants who had been exposed to either the exampleeproblem, problemeexample, or fading structure in the
+computer-based learning environment. More specifically, there was no difference in learning time spent in the com-
+puter-based learning environment, neither the near-transfer, nor the far-transfer posttest problem performance. This
+result is in contrast to previous studies (Atkinson et al., 2003; Renkl et al., 2002, 2004), which were conducted in
+                                   J. Reisslein et al. / Learning and Instruction 16 (2006) 92e103                    101
+
+
+
+
+                            Fig. 2. Illustration of prior knowledge by instructional procedure interaction.
+
+the content domain of elementary probability theory and found backward fading to result in statistically significantly
+higher posttest performance on both near- and far-transfer problems, without increasing the instructional time.
+    We also predicted that learners with high prior knowledge would outperform their low prior knowledge peers on
+performance measures. This prediction was confirmed. We did observe that high prior knowledge learners spent less
+time studying the introductory overview on electrical circuits and the computer-based learning environment than their
+low prior knowledge peers. We also found a statistically significant difference (small-to-medium sized effect) for the
+near-transfer performance when comparing all lower prior knowledge participants with all high prior knowledge par-
+ticipants. For the far-transfer problems, the mean score of all low prior knowledge participants was 4.84 (out of a max-
+imum of 12 points) and the mean score for all high prior knowledge participants was 8.57. This statistically significant
+difference corresponds to a large effect, one of with unequivocal practical relevance. Overall, these results for the dif-
+ferent prior knowledge levels of the participants indicate that higher prior knowledge participants, that is, participants
+with a higher level of prior knowledge and skills in circuit analysis, need less time to complete the instructional mod-
+ule and achieve higher posttest scores compared to learners with a lower level of prior knowledge.
+    We also predicted an interaction between the three levels of the instructional procedure factor and the two levels of
+prior knowledge. Specifically, we expected that the two instructional procedures with worked-out examples providing
+guidance at the outset (exampleeproblem pairs and fading) would be more beneficial to low prior knowledge learners
+than problemeexample pairs. We also expected the opposite outcome for high prior knowledge: the instructional pro-
+cedure that emphasized practice problem solving (problemeexample pairs) would be more beneficial to high prior
+knowledge learners than procedures that emphasize the use of examples (exampleeproblem and fading). This pro-
+posed interaction was partially confirmed for the near-transfer problems. Interestingly, we found that low prior knowl-
+edge learners provided with exampleeproblem pairs performed comparably to their high knowledge counterparts
+assigned to the same instructional procedure. The virtually equivalent performance we observed between the learners
+with low and high prior knowledge provides evidence that exampleeproblem pairs were more beneficial to those with
+low prior knowledge, particularly since their high knowledge peers in general produced more conceptually accurate
+answers on this measure. Not surprisingly, we also observed that high prior knowledge learners benefited significantly
+more from the problemeexample pairs procedure than their low prior knowledge peers. While we predicted that high
+prior knowledge learners would benefit most from this type of instructional procedure, we also expected their low
+prior knowledge peers to benefit least from it.
+102                                      J. Reisslein et al. / Learning and Instruction 16 (2006) 92e103
+
+    Several caveats remain, however, regarding this interaction. As Fig. 1 indicates, high prior knowledge participants
+in the fading condition produced more accurate responses to the near-transfer items than their low prior knowledge
+counterparts despite the fact that this instructional approach is more comparable to the exampleeproblem approach
+than the problemeexample instructional procedure. Thus, one would expect that the low prior knowledge participants
+assigned to the fading condition would to produce more conceptually accurate solutions to transfer problem than their
+high prior knowledge peers. Oddly enough, the low prior knowledge participants assigned to this condition performed
+worse than their counterparts in the exampleeproblem approach. This unforeseen finding clearly needs to be ad-
+dressed in future research. In particular, it seems prudent to explore whether the pace at which the fading occurred
+in this particular implementation was detrimental to learners with low prior knowledge. Perhaps the fading occurred
+before the low prior learners were able to transition out of the initial stages of cognitive skill acquisition.
+    Another aspect of this significant interaction that remains challenging to explain is why the particular pattern of
+results observed for near transfer did not also appear on the far-transfer measure. In other words, the interaction effect
+was observed only for the posttest items with same underlying structure but difference surface stories than the practice
+problems presented during the learning phase, whereas the far-transfer items differed from the practice problems in
+terms of both underlying structure and surface characteristics. Arguably, only learners who have progressed to the
+fourth and final stage of cognitive skills acquisition can solve these items that appear structurally and superficially
+unfamiliar. As evidence, we did observe a large, statistically significant effect in favour of the high prior knowledge
+learners on far transfer. Perhaps the learners’ level of prior knowledge was more critical to solving these items than the
+particular instructional procedure they encountered, particularly since the solutions to these items required a more
+flexible representation of knowledge, one where many examples are stored and can quickly be retrieved.
+    This study has opened up several other questions involving the effectiveness of the different structures of computer-
+based learning environments, which should be addressed in future research. Especially relevant for electrical engi-
+neering education is the issue of investigating the unique characteristics of this knowledge domain in contrast to
+the knowledge domains typically considered in studies of educational strategies, e.g., elementary probability theory,
+in order to uncover the design principles of highly effective electrical engineering instructional modules. Are there any
+inherent underlying differences between these two knowledge domains that would give rise to the observed differ-
+ences in the results? Future research needs to carefully address the impact of the specific characteristics of the various
+knowledge domains on the effectiveness of the different learning environment structures.
+    In summary, this study replicates and extends the growing literature documenting the existence of an expertise re-
+versal effect in example-based instruction by capturing this effect among learners interacting with a computer-based
+learning environment electric circuit analysis, which presented instruction on how to conduct series and parallel elec-
+trical circuit analysis. This effect was evident in a significant interaction found on the near-transfer measure where the
+low prior knowledge participants benefited more from exampleeproblem pairs than from the other instructional pro-
+cedures. In accordance with this effect, this pattern of results reversed itself on the problemeexample instructional
+procedure where the high prior knowledge participants appeared to benefit most, particularly in relationship to their
+low prior knowledge peers provided with the same instructional procedure.
+
+
+References
+
+Ahmed, M., & Bayoumi, M. M. (1994). An artificial intelligent instructor for electrical circuits. In Magdy A. Bayoumi, & W. Ken Jenkins (Eds.),
+   Proceedings of the 37th Midwest symposium on Circuits and Systems (pp. 1362e1365). Piscataway, N.J.: IEEE Standards Office.
+Al-Holou, N., & Abdallah, M. M. (1996). Teaching introduction to electric circuits using computer-based instruction for manufacturing engineer-
+   ing students. In Magdy F. Iskander (Ed.), Proceedings of the ASEE/IEEE Frontiers in Education (FIE) conference (pp. 23e26). Piscataway,
+   N.J.: IEEE Standards Office.
+Al-Holou, N., & Clum, J. A. (1999). Teaching electroscience using computer-based instruction. In Dan Budny (Ed.), Proceedings of the ASEE/
+   IEEE Frontiers in Education (FIE) conference (pp. 13C13/24e13C13/29). Piscataway, N.J.: IEEE Standards Office.
+Anderson, J. R., Fincham, J. M., & Douglass, S. (1997). The role of examples and rules in the acquisition of a cognitive skill. Journal of Exper-
+   imental Psychology: Learning, Memory, and Cognition, 23, 932e945.
+Atkinson, R. K., Renkl, A., & Merrill, M. M. (2003). Transitioning from studying examples to solving problems: Effects of self-explanation
+   prompts and fading worked-out steps. Journal of Educational Psychology, 95, 774e783.
+Cohen, J. (1988). Statistical power analysis for the behavioral sciences (2nd ed.). Hillsdale, NJ: Erlbaum.
+de Coulon, F., Forte, E., & Rivera, J. M. (1993). Kirchhoff: An educational software for learning the basic principles and methodology in electrical
+   circuits modeling. IEEE Transactions on Education, 36, 19e22.
+                                        J. Reisslein et al. / Learning and Instruction 16 (2006) 92e103                                        103
+
+Doering, E. D. (1996). Circuit viz: A new method for visualizing the dynamic behavior of electric circuits. IEEE Transactions on Education, 39,
+    297e303.
+Hanrahan, H. E., & Caetano, S. S. (1989). A knowledge-based aid for dc circuit analysis. IEEE Transactions on Education, 32, 448e453.
+Harris, J. G., & Black, B. (1995). Six tutorial computer modules for non-linear circuit analysis and design. In Dan Budny (Ed.), Proceedings of the
+    ASEE/IEEE Frontiers in Education (FIE) conference (pp. 2a6.24e2a6.26). Piscataway, N.J.: IEEE Standards Office.
+Jones, J. R., & Conner, D. A. (1994). The development of interactive tutorials for introductory circuits. In M. Aldeen (Ed.), Proceedings of the
+    IEEE first international conference on Multi-Media Engineering Education (pp. 108e114). Piscataway, N.J.: IEEE Standards Office.
+Kalyuga, S., Ayres, P., Chandler, P., & Sweller, J. (2003). The expertise reversal effect. Educational Psychologist, 38, 23e31.
+Kalyuga, S., Chandler, P., & Sweller, J. (2000). Incorporating learner experience into the design of multimedia instruction. Journal of Educational
+    Psychology, 92, 126e136.
+Kalyuga, S., Chandler, P., Tuovinen, J., & Sweller, J. (2001). When problem solving is superior to studying worked examples. Journal of Edu-
+    cational Psychology, 93, 579e588.
+Macromedia (2002). Director MX. San Francisco, CA: Macromedia.
+Nahvi, M. (1990). A computer based intelligent synthetic tutoretester for electrical engineering. In M. Aldeen (Ed.), Proceedings of the IEEE
+    international conference on Systems, Man and Cybernetics (pp. 742e744). Piscataway, N.J.: IEEE Standards Office.
+Oakley, B., II. (1993). Use of the Internet in an introductory circuit analysis course. In Lawrence P. Grayson (Ed.), Proceedings of the ASEE/IEEE
+    Frontiers in Education (FIE) conference (pp. 602e606). Piscataway, N.J.: IEEE Standards Office.
+Oakley, B., II. (1994). Implementation of a virtual classroom for an introductory circuit analysis course. In Lawrence P. Grayson (Ed.), Proceed-
+    ings of the ASEE/IEEE Frontiers in Education (FIE) conference (pp. 279e283). Piscataway, N.J.: IEEE Standards Office.
+Oakley, B., II. (1996). A virtual classroom approach to teaching circuit analysis. IEEE Transactions on Education, 39, 287e296.
+Pota, H. R. (1997). Computer-aided analog electronics teaching. IEEE Transactions on Education, 40, 22e35.
+Renkl, A. (1997). Learning from worked-out examples: A study on individual differences. Cognitive Science, 21, 1e29.
+Renkl, A., Atkinson, R. K., & Große, C. S. (2004). How fading worked solution steps works: A cognitive load perspective. Instructional Science,
+    32, 59e82.
+Renkl, A., Atkinson, R. K., & Maier, U. H. (2000). From studying examples to solving problems: Fading worked-out solution steps helps learning.
+    In Lila R. Gleitman, & Aravind K. Joshi (Eds.), Proceedings of the 22nd annual conference of the Cognitive Science Society (pp. 393e398).
+    Mahwah, N.J.: Lawrence Erlbaum Associates.
+Renkl, A., Atkinson, R. K., Maier, U. H., & Staley, R. (2002). From example study to problem solving: Smooth transitions help learning. The
+    Journal of Experimental Education, 70, 293e315.
+Shaffer, E. C., & Mabry, F. J. (2000). A student designed, web-based learning program for circuit analysis. In Dan Budny (Ed.), Proceedings of the
+    ASEE/IEEE Frontiers in Education (FIE) conference (pp. T2D/17eT2D/22). Piscataway, N.J.: IEEE Standards Office.
+Shannon, G. F. (1994). Multi-media computer based teachingdA case study. In M. Aldeen (Ed.), Proceedings of the IEEE first international con-
+    ference on Multi-Media Engineering Education (pp. 398e402). Piscataway, N.J.: IEEE Standards Office.
+Stark, R. (1999). Lernen mit Loesungsbeispielen. Der Einfluss unvollstaendiger Loesungsschritte auf Beispeilelaboration, Motivation und Lerner-
+    folg. [Learning by worked-out examples. The impact of incomplete solution steps on example elaboration, motivation, and learning outcomes].
+    Bern, CH: Huber.
+Sweller, J., & Cooper, G. A. (1985). The use of worked examples as a substitute for problem solving in learning algebra. Cognition and Instruc-
+    tion, 2, 59e89.
+Sweller, J., Van Merrienboer, J. J. G., & Paas, F. (1998). Cognitive architecture and instructional design. Educational Psychology Review, 10,
+    251e296.
+Trafton, J. G., & Reiser, B. J. (1993). The contributions of studying examples and solving problems to skill acquisition. In Cognitive Science
+    Society (Ed.), Proceedings of the 15th annual conference of the Cognitive Science Society (pp. 1017e1022). Mahwah, N.J.: Lawrence
+    Erlbaum Associates.
+VanLehn, K. (1996). Cognitive skill acquisition. Annual Review of Psychology, 47, 513e539.
+Van Merriënboer, J. J. G. (1990). Strategies for programming instruction in high school: Program completion vs. program generation. Journal of
+    Educational Computing Research, 6, 265e285.
+Yoshikawa, A., Shintani, M., & Ohba, Y. (1992). Intelligent tutoring system for electric circuit exercising. IEEE Transactions on Education, 35,
+    222e225.
+

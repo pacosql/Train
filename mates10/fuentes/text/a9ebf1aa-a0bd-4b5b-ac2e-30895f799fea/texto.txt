@@ -1,0 +1,471 @@
+                                                   pyBKT: An Accessible Python Library of Bayesian
+                                                             Knowledge Tracing Models
+
+                                                      Anirudhan Badrinath                         Frederic Wang                          Zachary Pardos
+                                                       University of California,               University of California,               University of California,
+                                                        Berkeley, CA, USA                       Berkeley, CA, USA                       Berkeley, CA, USA
+                                                   abadrinath@berkeley.edu                 fredwang@berkeley.edu                    pardos@berkeley.edu
+arXiv:2105.00385v2 [cs.MS] 29 May 2021
+
+
+
+
+                                         ABSTRACT                                                             In spite of its growing popularity in the research community,
+                                         Bayesian Knowledge Tracing, a model used for cognitive               accessible and easy to use implementations of the model and
+                                         mastery estimation, has been a hallmark of adaptive learn-           its many variants from the literature have remained elusive.
+                                         ing research and an integral component of deployed intelli-          In this paper, we introduce pyBKT1 , a modernized Python-
+                                         gent tutoring systems (ITS). In this paper, we provide a brief       based library, making BKT models and respective adaptive
+                                         history of knowledge tracing model research and introduce            learning research more accessible to the community. The
+                                         pyBKT, an accessible and computationally efficient library           library’s interface and underlying data representations are
+                                         of model extensions from the literature. The library provides        expressive enough to replicate past BKT variants and allow
+                                         data generation, fitting, prediction, and cross-validation rou-      for new models to be proposed. The library is designed with
+                                         tines, as well as a simple to use data helper interface to ingest    data helpers and model definition functions, allowing for
+                                         typical tutor log dataset formats. We evaluate the runtime           convenient replication and comparison to BKT model vari-
+                                         with various dataset sizes and compare to past implementa-           ants and subsequently better scientific progression and eval-
+                                         tions. Additionally, we conduct sanity checks of the model           uation of new state-of-the-art knowledge tracing approaches.
+                                         using experiments with simulated data to evaluate the accu-
+                                         racy of its EM parameter learning and use real-world data            The Bayesian Knowledge Tracing model can be described
+                                         to validate its predictions, comparing pyBKT’s supported             as a Hidden Markov Model (HMM) with observable nodes
+                                         model variants with results from the papers in which they            representing students’ known binary problem response se-
+                                         were originally introduced. The library is open source and           quences obst and hidden nodes representing students’ latent
+                                         open license for the purpose of making knowledge tracing             knowledge state at a particular time step t. Using expecta-
+                                         more accessible to communities of research and practice and          tion maximization, pyBKT fits the learn (transmission pa-
+                                         to facilitate progress in the field through easier replication       rameter), and guess, and slip (emission) parameters from
+                                         of past approaches.                                                  historical response logs, with the parameters defined below.
+                                                                                                                                         prior = P (L0 )
+                                         Keywords
+                                         Bayesian Knowledge Tracing; Intelligent Tutoring Systems;                         learn = P (T ) = P (Lt+1 = 1|Lt = 0)
+                                         Educational Software; Python Library
+                                                                                                                            guess = P (G) = P (obst = 1|Lt = 0)
+
+                                         1.   INTRODUCTION                                                                   slip = P (S) = P (obst = 0|Lt = 1)
+                                         Knowledge Tracing [6] has been a well researched approach            Note that while P (L0 ) denotes the prior parameter, we also
+                                         to estimating students’ cognitive mastery in the context of          define P (Lt ) as the probability that the student has mas-
+                                         computer tutoring systems [23]. Tutoring systems take a              tered the skill at time step t. Bayesian Knowledge Tracing
+                                         problem-solving, or active approach to learning [2, 1] that          updates P (Lt ) given an observed correct or incorrect re-
+                                         often resembles the personalized mastery learning approach           sponse to calculate the posterior with:
+                                         researched by Bloom [4]. The model was not originally de-
+                                                                                                                                                  P (Lt )(1 − P (S))
+                                         scribed using a particular statistical framework; however,               P (Lt |obst = 1) =
+                                         the mathematical expressions in the original work are consis-                                 P (Lt )(1 − P (S)) + (1 − P (Lt ))P (G)
+                                         tent with Bayes Theorem [26], and the canonical model was
+                                                                                                                                                P (Lt )P (S)
+                                         subsequently coined Bayesian Knowledge Tracing (BKT).                    P (Lt |obst = 0) =
+                                                                                                                                  P (Lt )P (S) + (1 − P (Lt ))(1 − P (G))
+                                                                                                              The updated prior for the following time step, which incor-
+                                                                                                              porates the probability of learning from immediate feedback
+                                                                                                              and any other instructional support, is defined by:
+                                                                                                                      P (Lt+1 ) = P (Lt |obst ) + (1 − P (Lt |obst ))P (T )
+                                                                                                              The standard BKT model assumes no forgetting:
+                                                                                                                             P (F ) = P (Lt+1 = 0|Lt = 1) = 0
+                                                                                                              1
+                                                                                                                  https://github.com/CAHLR/pyBKT
+2.     RELATED WORK                                               primarily utilizing NumPy [28] for computation. It is avail-
+Since the introduction of the standard BKT model by Cor-          able on the Python PyPi repository, with installation ac-
+bett and Anderson [6], many variants of BKT have been             complished through a pip one-liner: pip install pyBKT. To
+proposed which multiplex, or condition the four parameters        increase performance, we additionally supply routines which
+of prior, learn, guess, and slip on different factors such as     utilize C++ libraries and Eigen/LAPACK, which is an op-
+question type or student. KT-IDEM (Item Difficulty Ef-            timized linear algebra package with OpenMP support. This
+fect) [20] captured item performance variance within skill        accelerated version requires a C++ compiler and is currently
+by allowing different guess and slip values to be fit per item.   only tested on Linux and macOS.
+Baker et al. [3] proposed a hybrid model using regression to
+help determine if a student’s response was a guess or a slip      We created a Scikit-learn style [22] Model class abstraction
+based on context.                                                 and accompanying data helpers that further facilitate the
+                                                                  accessibility and expressive power of pyBKT. With one-line
+Other modifications focused on conditioning the learn rate        fit, predict, evaluate, parameter initialization, and cross-
+and prior knowledge parameter [19]. Yudelson et al. [30]          validate methods, pyBKT offers ease of use in ingesting re-
+explored student-level parameter individualization, finding       sponse data and applying BKT models and supported vari-
+that the learn rate provided better predictive performance        ants. We explore the interface to these methods in the next
+than prior when individualized to each student. Learn rate        subsection. We then detail the internal data structures,
+has also been conditioned based on the item [17], educational     computations, and motivations behind the development of
+resource (e.g., a video in an online course) [21], or type of     the two implementations of pyBKT, in pure Python and the
+instructional intervention seen by the student at each oppor-     accelerated C++/Python, along with runtime evaluation.
+tunity [13] or order in which items or resources were seen
+[18]. The assumption of no forgetting was relaxed in Qiu
+et al. [25], finding that response correctness decreased based    3.1   Interface
+on time elapsed since the last response. This decrease was        pyBKT’s interface is modeled after Scikit-learn’s accessible
+better modeled in BKT with conditional forget rates than          frontend interface for machine learning models [22]. The
+with increased slip rates. González-Brenes et al. [9] created    ease-of-use in the pyBKT Model class abstraction allows for
+a hybrid BKT model that factored in a variety of features,        increasingly expressive BKT code without the usability sac-
+including response time. An overview of other variations of       rifices of past BKT libraries. We aim for the library to
+BKT and logistic approaches to learner response prediction        be easy to learn for beginners while still useful for experi-
+can be found in Pelánek [23].                                    enced users conducting knowledge tracing research. Further,
+                                                                  it provides a gateway into exploring multiple model exten-
+Neural network approaches to knowledge tracing have gained        sions from the literature, which have been shown to be capa-
+in momentum since the introduction of Deep Knowledge              ble competitors to DKT [11] and able to address inequities
+Tracing (DKT; [24]). Some have explored the reasons for           in unmodeled differences in learning and prior ability be-
+DKT’s apparent accuracy improvement as compared to BKT            tween students [7]. Supported BKT extensions include: KT-
+and have attributed its success to its high dimensional hid-      IDEM [20], KT-PPS (Prior Per Student) [19], BKT+Forget
+den space and ability to observe interleaved skills in a single   [11], Item Order Effect [18] and Item Learning Effect [17,
+model [14]. However, most papers using neural approaches          21]. These model extensions are referred to as multigs,
+compare only to the standard BKT model proposed in the            multiprior, forgets, multipair, and multilearn, respec-
+1990s and not to the more modern variants. A notewor-             tively, in the model interface.
+thy result of caution was reported in Khajah et al. [11], in
+which it was found that simply enabling the forget parame-        The Model class abstraction supports creating, fitting, pre-
+ter of standard BKT led to performance on par with DKT            dicting, cross-validating and evaluating BKT models using
+on several datasets.                                              any combination of supported extensions. Additional fea-
+                                                                  tures include specifying model parameter initialization be-
+There has been a brief history of BKT implementation frame-       fore fitting, custom cross-validation fold assignment, and
+works. Several BKT variants have used Kevin Murphy’s              multiple accuracy and error metrics - including support for
+Bayes Net Toolbox (BNT) for MATLAB [15], with a subse-            generic user-defined or Scikit-learn imported metrics. Com-
+quent wrapper for that toolbox releases catering to knowl-        mon dataset formats are made easier to ingest through auto-
+edge tracing [5]. Yudelson et al. [30] produced a C++ im-         matic detection of familiar column headers seen in Cognitive
+plementation2 of BKT with a command line interface that           Tutor [12] and ASSISTments datasets [10]. Defaults for all
+included support for individualized parameters. Finally, Xu       customizable parameters such as random seed, paralleliza-
+et al. [29] created a C++ implementation of BKT with a            tion, model variants, and evaluation metric(s) are provided
+MATLAB interface and support for parallelization and con-         when they are not specified.
+ditioning of all parameters based on both problems and pas-
+sive resources (e.g., a learning rate for a video).               We demonstrate a few of the library’s basic capabilities in
+                                                                  parameter initialization, fitting, and parameter output in
+                                                                  the below code snippet using the learned parameters of the
+3.     PYBKT LIBRARY DETAILS                                      ”Polynomial Factors” skill from the 2009-2010 ASSISTments
+The pyBKT library builds off of xBKT developed by Xu              dataset3 . Note that all parameters of all skills found in the
+et al. [29] and is released under an MIT license. The library     dataset are fit unless otherwise specified.
+is compatible with all platforms (Linux, Windows, Mac OS),
+                                                                  3
+                                                                    https://sites.google.com/site/assistmentsdata/
+2
+    https://github.com/myudelson/hmm-scalable                     home/assistment-2009-2010-data
+>>> from pyBKT.models import Model                                      Initial and fit BKT model parameters are represented using
+>>> model = Model()                                                     a Python dictionary. Inside of this dictionary, we store A,
+>>> model.fit(data path = ’assistments.csv’)                            which is a collection of matrices with each 2x2 matrix cor-
+>>> model.params().loc[(’Polynomial Factors’)]                          responding to the learning and forgetting probabilities for
+param class       value                                                 each learn class in order to aid in efficient matrix multipli-
+prior   default 0.17452                                                 cation during fitting. A has the format where m is the total
+learns default 0.13378                                                  number of learn rates:
+guesses default 0.25502                                                                                                     
+                                                                                 P (¬T1 ) P (F1 )             P (¬Tm ) P (Fm )
+# ...                                                                                                ,··· ,
+                                                                                  P (T1 ) P (¬F1 )             P (Tm ) P (¬Fm )
+
+The internal data helper functionality converts any response-           We define α as a set of 2-length vectors each corresponding
+per-row comma or tab separated file into the internal py-               to [P (¬Lt ), P (Lt )] for all time steps for a specific student.
+BKT data format. It is designed to convert input columns                Similarly, π0 stores information about the prior, in the for-
+using default column mappings for skill name, student iden-             mat of P (¬L0 ), P (L0 ).
+tifiers, correctness, etc. automatically for Cognitive Tu-
+tor/ASSISTments data and configurable with one line for                 3.2.2       EM and BKT Algorithm
+any other dataset. It provides increased flexibility to the             We use Expectation Maximization to fit model parameters,
+user, allowing for consistency across fit and predict/evalu-            shown to provide desirable convergence properties, given
+ate phases.                                                             plausible initial parameter values [16]. Inside the EM and
+                                                                        inference algorithms, we use several intermediate data struc-
+The included evaluation metrics are root-mean squared error             tures and vectorization to improve computational efficiency
+(RMSE), accuracy with a threshold of 0.5, and area under                in fitting the models. To calculate α[t + 1] given α[t], we
+the ROC curve (AUC). Custom metrics in the format of two-               multiply it by the part of the learn/forget transition ma-
+parameter Python functions are supported for evaluation                 trix A corresponding to the learn class of time step t. We
+and cross-validation, such as the regression or classification          element-wise multiply by the vector likelihoods which con-
+metrics from sklearn.metrics or keras.metrics.                          sists of [P (G), P (¬S)] or [P (¬G), P (S)] for the correspond-
+                                                                        ing guess class of time step t, depending on whether the
+The cross-validate function provides a one-line interface for           student answers correctly or not, respectively. Finally, nor-
+fitting and evaluating any combination of model variants                malizing this vector results in α[t + 1]. We demonstrate the
+with one or more error metrics. For the following exam-                 algorithm for an example iteration of the BKT algorithm
+ple, we specify a particular column to use for the multilearn           with learn class 1, guess class 1, and an incorrect response
+(answer type) along with a multigs model trained on the de-             observed (obs = 0) at time step t.
+fault template ID for ASSISTments. A skill or combination
+of skills can be specified along with the seed and number of
+folds (optional).                                                                                                             
+                                                                            P (¬Lt+1 )    P (¬T1 ) P (F1 )      P (¬Lt )    P (¬G1 )
+>>> model = Model(seed = 42, parallel = True)                                           =                    (            ◦            )
+                                                                             P (Lt+1 )     P (T1 ) P (¬F1 )      P (Lt )     P (S1 )
+>>> model.crossvalidate(data path = ’assistments.csv’,
+      skills = [’ Circle Graph’, ’Box and Whisker’],                                                                                   
+      multigs = True, multilearn = ’answer type’, metric =                           P (¬T1 ) ∗ P (¬Lt |obst ) + P (F1 ) ∗ P (Lt |obst )
+                                                                                =
+       [’auc’ , sklearn .metrics.mean absolute error])                               P (T1 ) ∗ P (¬Lt |obst ) + P (¬F1 ) ∗ P (Lt |obst )
+skill               mean absolute error      auc
+Circle Graph                     0.41565 0.72782                        At the end of this α calculation, we perform the E-step of
+Box and Whisker                  0.33906 0.67991                        the EM algorithm by recursively calculating an expectation
+                                                                        γ for each time step by backtracking through the learned
+                                                                        latent states. We can then take the global average of the ex-
+3.2     Internal Implementation Details                                 pectations of the learn/forget transition matrices, guess/slip
+The pure Python and C++/Python implementations of py-                   vectors, and priors during the M-step and use these as the
+BKT both make use of optimized programmatic methods, ef-                parameters for the next iteration of EM. In terms of the
+ficient internal data and model representation, multithreaded           number of students S and the typical sequence length for
+model fitting, and optimized linear algebra libraries. The              each student T , the model fitting algorithm’s asymptotic
+model fitting consists of a typical Expectation Maximiza-               time complexity for standard BKT is Θ(T S).
+tion (EM) function for a Hidden Markov Model performing
+forward and backward passes over the sequential data to
+continuously update BKT parameters. We implement these                  3.2.3       C++/Python Implementation Details
+passes using a parallelized iterative dynamic programming               We use a C++ extension to perform the EM iterative up-
+approach on the input data.                                             dates and matrix multiplication for the model fit and pre-
+                                                                        diction process. This allows us to use efficient linear algebra
+                                                                        libraries in C++4 and benefit from greater support for mul-
+3.2.1     Model Representation
+                                                                        tithreading through OpenMP.
+In the context of model variants with multiple learn, guess,
+slip, or forget rates, a subscript P (Ti ), P (Gi ), P (Si ), P (Fi )   4
+                                                                         Boost was previously used as a connector between Python
+denotes the corresponding probability, or rate, for class i =           and the C++ extension, but it has been deprecated since
+1...m, respectively.                                                    pyBKT 1.2.2, resulting in a 3-5x performance increase.
+We use Eigen to perform the matrix operations. There are         tasks. The speedup is defined as the ratio of the runtime
+many technical advantages of using Eigen with a linear al-       of our C++/Python implementation to our pure Python
+gebra heavy model such as pyBKT. Eigen provides efficient,       implementation.
+thread-safe matrices and arrays, while being a relatively
+portable package distributed along with pyBKT. It allows         The first four tasks perform synthetic data generation for
+for lazy evaluation, expression templates and compiler opti-     500 students and 5,000 students respectively with a sequence
+mizations.                                                       length fixed at 100 followed by prediction or fitting. These
+                                                                 tasks illustrate a typical medium and large workload for
+We use OpenMP for parallelizing the demanding model fit-         model fitting and prediction tasks. The generated synthetic
+ting process. OpenMP is a universally accepted multithread-      data is fit or predicted using a standard BKT model. It is
+ing library for C/C++ that exploits multicore processors         clear that as the number of students scales, the pure Python
+with low overhead. With a shared memory space for forked         implementation of pyBKT performs and scales more poorly
+threads, OpenMP avoids overhead for inter-process com-           with the number of students. The C++/Python implemen-
+munication (IPC) unlike Python’s multiprocessing. With           tation shows a nearly 150-600x speedup for fitting and 15-
+Eigen’s explicit support for OpenMP-based multithreading,        30x speedup for prediction as compared to the pure Python
+heavy matrix operations and iterative processes are further      version. In comparison to its predecessor xBKT (MAT-
+optimized in pyBKT.                                              LAB), the C++/Python version of pyBKT gains a 3-4x
+                                                                 speedup across all fitting and prediction tasks. In Xu et al.
+3.2.4    Pure Python Implementation Details                      [29], it is noted that xBKT outperforms BNT by 10,000x,
+We wish to maintain the accessibility of pyBKT across all        which suggests a 30,000-40,000x speedup of pyBKT as com-
+platforms while maintaining as much efficiency as possible.      pared to BNT.
+To do this, a pure Python implementation, without C++
+extensions, is included. This implementation provides quick      The final task performs a cross-validated prediction task for
+access to any user, including on Windows, wishing to run         a selected skill in the Cognitive Tutor dataset. We use a vari-
+a BKT model without the hassles of compilation and com-          ety of models (standard, multigs, multiprior) to test predic-
+plex dependencies. We relax this version of the library’s        tive accuracy and measure its runtime. This task is around
+requirements to include mostly native modules along with         65x slower in the pure Python implementation.
+the widely supported NumPy.
+                                                                 While the runtimes and the overall scaling of the pure Python
+NumPy is used for the matrix operations in the pure Python       port with respect to the size of input data are significantly
+build of pyBKT as it is the most efficient and widely used       poorer for each task, that is an expected trade-off with re-
+numeric computational library in Python. Technically, it         gards to accessibility and portability. For an end-user that is
+provides impressive single-threaded performance. Similarly       training and testing moderately-sized BKT models or eval-
+to other optimized mathematical libraries such as Eigen,         uating models, they would benefit from a portable and uni-
+NumPy employs code vectorization, efficient memory map-          versal BKT model which can handle a moderate input size
+ping techniques for sparse matrices, and compiler optimiza-      with relative efficiency. For heavier research-oriented or
+tions.                                                           production-oriented tasks, the C++/Python implementa-
+                                                                 tion is recommended since it generally performs much more
+Since NumPy is primarily a single-threaded application with      efficiently.
+little support for multicore scaling, we use Python’s native
+multiprocessing library for parallelizing the model fitting.
+It provides native CPython support for multicore scaling to
+                                                                 4.   DATA SUFFICIENCY ANALYSIS
+                                                                 We examine the data sufficiency requirements of the stan-
+bypass the Global Interpreter Lock (GIL), which allows only
+                                                                 dard BKT model by exploring trade-offs between input size
+one running thread of execution within a process. Although
+                                                                 and parameter error and mastery estimation accuracy. We
+different Python implementations (i.e JPython) exist to dis-
+                                                                 define the input size as the magnitude of the number of stu-
+able the GIL or remove the memory overhead, we use a
+                                                                 dents and the average sequence length. Through the first
+native module for simplicity and speed.
+                                                                 analysis, practitioners may gain an intuition for the min-
+                                                                 imum cohort size and minimum number of questions an-
+3.3     Runtime Evaluation                                       swered per student per skill to effectively apply BKT. Our
+We compare the runtime performance of the pure Python            second analysis in this section focuses on mastery estimation
+and C++/Python implementations of pyBKT on five typi-            accuracy, also using synthetic data. This analysis depicts
+cal model fitting and prediction tasks. We present two sets      how the worst-case expected mastery estimation accuracy
+of tasks, fitting and prediction on synthetic data, that addi-   decreases as a function of sequence length for a given set of
+tionally showcases the way in which the runtimes scale with      prior, guess, and slip parameters.
+the size of input data for both implementations of pyBKT.
+Each of the tasks are averaged over several runs for both        For the following analyses, we generate synthetic data, both
+implementations of pyBKT on a machine with 2 x Intel(R)          responses and mastery states, from pyBKT using ground
+Xeon(R) CPU E5-2620 v3 CPUs at 2.4Ghz with 256GB of              truth parameter values set to common values seen for Alge-
+system RAM. The results are shown in Table 1.                    bra skills5 . In doing so, we are able to calculate the error of
+                                                                 the fit parameters and accuracy of the mastery estimation.
+We evaluate the runtimes using two metrics. The scaling
+factor is defined as the ratio of the runtime of the larger      5
+                                                                   prior=0.08, guess=0.15, slip=0.05, forget=0 and learn=0.3
+input and the smaller input for a set of prediction or fitting   for the first analysis and variable for the second
+  Table 1: Comparison of runtimes, scale factor and speedup between Python and C++/Python implementations of pyBKT.
+     Test Description                                                Pure Python       C++/Python       Speedup
+                                                                  Runtime Scaling Runtime Scaling
+     Synthetic Data Generation, Model Fit (500 students)          160.12s           1.07s               149.64x
+     Synthetic Data Generation, Model Fit (5,000 students)        1,596.30s 9.97x   2.62s      2.45x    609.27x
+     Synthetic Data Generation, Model Predict (500 students)      8.02s             0.50s               16.04x
+     Synthetic Data Generation, Model Predict (5,000 students) 67.08s        8.36x  2.42s      4.84x    27.71x
+     Cross-validation, Cognitive Tutor                            320.28s       -   4.79s         -     66.86x
+
+
+4.1    Synthetic Model Fit Accuracy                                4.2   Synthetic Mastery Estimation Accuracy
+The synthetic generation of data is performed for input sizes      We look to evaluate the worst-case accuracy of the standard
+from 10 to 200 students for all sequence lengths from 2 to         BKT model’s mastery estimation, its most common task
+35. While 200 is not an uncommon number of students to             within a computer tutoring system, using a mastery thresh-
+have in a cohort, more than 30 responses to a single skill         old of P (Lt ) ≥ 0.95 on simulated problem solving sequences.
+would be unusual for a student. Each combination of input          We use the same predetermined ground truth BKT param-
+size is averaged over five fits, each of which includes the best   eters and data generation methodology as in the previous
+model over 20 random EM fit initializations.                       subsection with the exception of the learn rate, which is set
+                                                                   dynamically in this analysis.
+The error of the model’s fit parameters are analyzed using
+the mean absolute percentage error (MAPE) in relation to           It is known that the probability of mastery will converge to
+predefined ground truth generating parameters. We plot the         1 − f orgets in a finite number of time steps given a learn
+fitting error of the learn, slip, guess, and prior parameters as   rate > 0 [27]. This means that cognitive mastery estimation
+a function of the number of synthesized students (Figure 1,        accuracy will increase with respect to sequence length, as
+left) and length of synthesized response sequences for each        student mastery state becomes more homogeneous.
+student (Figure 1, right). While all data points cannot be
+visualized on a single plot, we show the data points for the       In order to model the worst-case mastery estimation of the
+prior parameter as an example.                                     model, we find the learn rate that will produce an average
+                                                                   probability of mastery close to 0.5 across students at the
+For all parameters, there is a clear negative and exponential      final time step τ for all our chosen sequence lengths, thus
+error decay with respect to the number of students. This           preventing a trivial estimation of a majority mastery state.
+is consistent with an expected asymptotic behaviour when           We find the learn rate via grid search with a granularity of
+increasing the number of students in the fitting procedure.        0.001 since this cannot be solved analytically [27].
+Learn and slip parameters asymptote at around 50 students
+while guess and prior do so after 100, given a sequence length     The mastery estimation accuracy exponentially decays up-
+of 10.                                                             ward with respect to sequence length with a Pearson cor-
+                                                                   relation Rlog(acc) = 0.73 as shown in Figure 2. The mas-
+There seems to be a slowly decreasing linear relationship          tery estimation accuracy in our analysis can be observed to
+between the typical sequence length and parameter fit er-          asymptote around a sequence length of 15. This suggests
+ror, with the prior parameter showing the greatest improve-        that the worst-case mastery estimation accuracy scenario
+ment in MAPE. These analyses show that there is not nearly         can be mitigated, given our chosen predefined parameter
+as much benefit to fitting error by increasing the sequence        values, with an average response sequence length per skill of
+length (i.e., giving students more problems) as there is by        15 or greater.
+increasing the number of students.
+
+                                                                   Figure 2: Worst-case accuracy of mastery estimation as a
+Figure 1: Mean absolute percentage error (MAPE) of fit pa-         function of sequence length for the standard BKT model.
+rameters as a function of number of students (left) and se-
+quence length (right).
+5.     EVALUATION OF PYBKT MODELS                                 the second to the low prior, and the third corresponding
+To gauge the validity of the BKT models and extensions            to the standard P (T ) applied between all subsequent time
+supported by pyBKT, we perform predictive model evalua-           steps. The initial values of these virtual priors were set to
+tions replicating those found in prior literature. Models were    the ad-hoc values from [19]; however, since pyBKT does not
+evaluated by performing five-fold cross-validation on the AS-     support parameter fixing as of this writing, these parame-
+SISTments 2009-2010 Skill Builder dataset, the Cognitive          ters were learnable. With these settings, pyBKT’s KT-PPS
+Tutor 2006-2007 Bridge to Algebra dataset6 , and special-         performs better than standard BKT on 27 out of 42 of the
+ized datasets from Feng et al. [8] and Piech et al. [24] in or-   problem sets. The small difference in prediction accuracy
+der to validate more specific model extensions. While there       of this model may be attributable to the difference in the
+are slight differences between our results and the results of     algorithm regarding fixed parameters, but the similarity in
+other papers, we believe this is due to our random parameter      performance is promising.
+initialization and small differences in fitting methods. Our
+complete model evaluations, data, and results are located in
+a pyBKT examples repository7 .
+                                                                  5.4    Item Order and Item Learning Effect
+                                                                  Results from the Item Order Effect [18] and Item Learning
+                                                                  Effect [17] papers were not focused on response prediction
+5.1     Standard BKT and BKT+Forget                               improvement. In fact, no prediction accuracy results were
+In general, the predictive accuracy of the models generated       provided. Instead, the purpose of the models was to com-
+by pyBKT are in line with what others have observed from          pare the learn rates of classes to flag effective and ineffective
+BKT. For instance, in Khajah et al. [11], they found that         items and orders. The examples repo of pyBKT depicts
+by fitting the basic BKT model on the train/test split pro-       such differences. Nevertheless, a modest 0.01 RMSE im-
+vided by Piech et al. [24] from the 2009-2010 ASSISTments         provement for both model variants was obtained compared
+dataset for each skill, they obtained an AUC of 0.73, whereas     to the standard BKT model.
+pyBKT predicts with an AUC of 0.76. Similarly, when Kha-
+jah et al. [11] added the forgets parameter into their model,
+they achieved an AUC of 0.83, exactly the same AUC we             6.    CONCLUSIONS
+achieve using pyBKT.                                              We introduced pyBKT as a seamlessly installable, efficient,
+                                                                  and portable Python library with model extensions such as
+                                                                  KT-IDEM, KT-PPS, BKT+Forgets, Item Order Effect and
+5.2     KT-IDEM                                                   Item Learning Effect. The Model class abstraction in py-
+When using the KT-IDEM model on the ASSISTments 2009-
+                                                                  BKT provides an expressive way to interact with the BKT
+2010 Skill Builder dataset, pyBKT achieves an average AUC
+                                                                  model extensions with ease, with one-line methods to create,
+increase of 0.01932, which is very close to the 0.021 average
+                                                                  initialize, fit, predict, evaluate, and cross-validate any com-
+increase reported in Pardos and Heffernan [20]. While the
+                                                                  bination of BKT model extensions. We measured the run-
+exact subset of data was not exactly specified in that paper,
+                                                                  time of pyBKT to be nearly 3x-4x faster than its predeces-
+we used the ten skills with the most responses, using differ-
+                                                                  sor, xBKT, and nearly 30,000x faster than BNT, a standard
+ent template ids as the guess/slip classes as prescribed in
+                                                                  BKT implementation. Through the analyses presented, we
+[20]. Since the ASSISTments data has a very high average
+                                                                  established 50 as a reasonable number of students to achieve
+response to template ratio (∼1,000), the KT-IDEM model
+                                                                  convergence to canonical parameter values with any average
+performs very well compared to the standard BKT model
+                                                                  student sequence length and 15 as a reasonable sequence
+using RMSE as the metric of comparison, being lower or
+                                                                  length to mitigate worst-case mastery estimation accuracy.
+equal in nine of the ten skills selected.
+                                                                  Lastly, through real-world dataset analyses, we showed the
+                                                                  validity of the model implementation through its agreement
+5.3     KT-PPS                                                    with past results using established software.
+The Prior Per Student model was applied to the ASSIST-
+ments’ Groups of Learning Opportunities dataset [8] con-
+sisting of 42 problem sets. In Pardos and Heffernan, it was       Acknowledgments
+found that the KT-PPS model performed better than the             We recognize Matthew J. Johnson, who co-developed xBKT,
+standard BKT model on 30 out of the 42 problems sets, as          the predecessor to pyBKT, and Cristian Garay, who devel-
+evaluated on the predictions of the last response of each stu-    oped the initial Python and Boost adaptation of xBKT.
+dent’s response sequence. This was achieved using a variant
+of KT-PPS that models a high and low prior and assigns            References
+students to the high prior if they answer correctly on the         [1] Vincent AWMM Aleven and Kenneth R Koedinger. An
+first problem of the problem set, and to the low prior other-          effective metacognitive strategy: Learning by doing and
+wise. The high prior was set to an ad-hoc value of 0.90 and            explaining with a computer-based cognitive tutor. Cog-
+the low prior to 0.15 in that work.                                    nitive science, 26(2):147–179, 2002.
+
+                                                                   [2] Yuichiro Anzai and Herbert A Simon. The theory
+The pyBKT replication of this model is done without true               of learning by doing. Psychological review, 86(2):124,
+multiple prior modeling. Instead, when the multiprior op-              1979.
+tion is set to True, P (L0 ) is set to 0 and a dummy time step
+is created at the beginning of the sequence. Three learn           [3] Ryan SJ Baker, Albert T Corbett, and Vincent Aleven.
+rates are created, the first corresponding to the high prior,          More accurate student modeling through contextual
+6
+                                                                       estimation of slip and guess probabilities in bayesian
+    https://pslcdatashop.web.cmu.edu/KDDCup                            knowledge tracing. In International conference on intel-
+7
+    https://github.com/CAHLR/pyBKT-examples                            ligent tutoring systems, pages 406–415. Springer, 2008.
+ [4] Benjamin S Bloom. The 2 sigma problem: The search             [19] Zachary A Pardos and Neil T Heffernan. Modeling in-
+     for methods of group instruction as effective as one-to-           dividualization in a bayesian networks implementation
+     one tutoring. Educational researcher, 13(6):4–16, 1984.            of knowledge tracing. In International Conference on
+                                                                        User Modeling, Adaptation, and Personalization, pages
+ [5] Kai-min Chang, Joseph Beck, Jack Mostow, and Albert                255–266. Springer, 2010.
+     Corbett. A bayes net toolkit for student modeling in
+     intelligent tutoring systems. In International Confer-        [20] Zachary A Pardos and Neil T Heffernan. Kt-idem:
+     ence on Intelligent Tutoring Systems, pages 104–113.               Introducing item difficulty to the knowledge tracing
+     Springer, 2006.                                                    model. In International conference on user model-
+                                                                        ing, adaptation, and personalization, pages 243–254.
+ [6] Albert T Corbett and John R Anderson. Knowledge                    Springer, 2011.
+     tracing: Modeling the acquisition of procedural knowl-        [21] Zachary A Pardos, Yoav Bergner, Daniel T Seaton, and
+     edge. User modeling and user-adapted interaction, 4(4):            David E Pritchard. Adapting bayesian knowledge trac-
+     253–278, 1994.                                                     ing to a massive open online course in edx. EDM, 13:
+                                                                        137–144, 2013.
+ [7] Shayan Doroudi and Emma Brunskill. Fairer but not
+     fair enough on the equitability of knowledge tracing.         [22] Fabian Pedregosa, Gaël Varoquaux, Alexandre Gram-
+     In Proceedings of the 9th International Conference on              fort, Vincent Michel, Bertrand Thirion, Olivier Grisel,
+     Learning Analytics & Knowledge, pages 335–339, 2019.               Mathieu Blondel, Peter Prettenhofer, Ron Weiss, Vin-
+                                                                        cent Dubourg, et al. Scikit-learn: Machine learning in
+ [8] Mingyu Feng, Neil T Heffernan, Joseph E Beck, and                  python. the Journal of machine Learning research, 12:
+     Kenneth R Koedinger. Can we predict which groups                   2825–2830, 2011.
+     of questions students will learn from?. In EDM, pages
+     218–225, 2008.                                                [23] Radek Pelánek. Bayesian knowledge tracing, logistic
+                                                                        models, and beyond: an overview of learner modeling
+ [9] José González-Brenes, Yun Huang, and Peter                       techniques. User Modeling and User-Adapted Interac-
+     Brusilovsky.    General features in knowledge trac-                tion, 27(3-5):313–350, 2017.
+     ing to model multiple subskills, temporal item response
+     theory, and expert knowledge. In EDM, pages 84–91.            [24] Chris Piech, Jonathan Bassen, Jonathan Huang, Surya
+     University of Pittsburgh, 2014.                                    Ganguli, Mehran Sahami, Leonidas J Guibas, and
+                                                                        Jascha Sohl-Dickstein. Deep knowledge tracing. In Ad-
+[10] Neil T Heffernan and Cristina Lindquist Heffernan. The             vances in neural information processing systems, pages
+     assistments ecosystem: Building a platform that brings             505–513, 2015.
+     scientists and teachers together for minimally invasive       [25] Yumeng Qiu, Yingmei Qi, Hanyuan Lu, Zachary A Par-
+     research on human learning and teaching. International             dos, and Neil T Heffernan. Does time matter? modeling
+     Journal of Artificial Intelligence in Education, 24(4):            the effect of time with bayesian knowledge tracing. In
+     470–497, 2014.                                                     EDM, pages 139–148, 2011.
+[11] Mohammad Khajah, Robert V Lindsey, and Michael C              [26] Jim Reye. Student modelling based on belief networks.
+     Mozer. How deep is knowledge tracing? arXiv preprint               International Journal of Artificial Intelligence in Edu-
+     arXiv:1604.02416, 2016.                                            cation, 14(1):63–96, 2004.
+[12] Kenneth R Koedinger, John R Anderson, William H               [27] Brett van De Sande. Properties of the bayesian knowl-
+     Hadley, and Mary A Mark. Intelligent tutoring goes to              edge tracing model. EDM, 5(2):1–10, 2013.
+     school in the big city. International Journal of Artificial
+     Intelligence in Education, 1997.                              [28] Stéfan van der Walt, S Chris Colbert, and Gael Varo-
+                                                                        quaux. The numpy array: a structure for efficient nu-
+[13] Chen Lin and Min Chi. Intervention-bkt: incorporat-                merical computation. Computing in science & engi-
+     ing instructional interventions into bayesian knowledge            neering, 13(2):22–30, 2011.
+     tracing. In International conference on intelligent tu-       [29] Y Xu, M J Johnson, and Z A Pardos. Scaling cognitive
+     toring systems, pages 208–218. Springer, 2016.                     modeling to massive open environments. In Proceedings
+                                                                        of the Workshop on Machine Learning for Education at
+[14] Shirly Montero, Akshit Arora, Sean Kelly, Brent Milne,             the 32nd International Conference on Machine Learn-
+     and Michael Mozer. Does deep knowledge tracing model               ing (ICML), 2015.
+     interactions among skills? In EDM, 2018.
+                                                                   [30] Michael V Yudelson, Kenneth R Koedinger, and Ge-
+[15] Kevin Murphy et al. The bayes net toolbox for mat-                 offrey J Gordon. Individualized bayesian knowledge
+     lab. Computing science and statistics, 33(2):1024–1034,            tracing models. In International conference on artifi-
+     2001.                                                              cial intelligence in education, pages 171–180. Springer,
+                                                                        2013.
+[16] Zachary Pardos and Neil Heffernan. Navigating the
+     parameter space of bayesian knowledge tracing mod-
+     els: Visualizations of the convergence of the expecta-
+     tion maximization algorithm. In EDM, pages 161–170,
+     2010.
+
+[17] Zachary A Pardos and Neil T Heffernan. Detecting the
+     learning value of items in a randomized problem set. In
+     AIED, pages 499–506, 2009.
+
+[18] Zachary A. Pardos and Neil T. Heffernan. Determining
+     the significance of item order in randomized problem
+     sets. In EDM, pages 111–120, 2009.
+

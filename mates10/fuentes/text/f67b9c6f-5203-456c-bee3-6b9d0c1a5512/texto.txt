@@ -1,0 +1,109 @@
+Revisiting Half-Life Regression for Explainable and Personalized Spaced Repetition in Duolingo
+
+    Proceedings of Machine Learning Research
+
+Volume 339
+JMLR
+
+DMLR
+
+TMLR
+
+MLOSS
+
+FAQ
+
+Submission Format
+
+[
+edit
+]
+
+Revisiting Half-Life Regression for Explainable and Personalized Spaced Repetition in Duolingo
+Pedro Ilídio, Achilleas Ghinis, Sameh Said Metwaly, Celine Vens, Frederik Cornillie, Alireza Gharahighehi
+
+Proceedings of the Impactful and Responsible AI Systems for Education Workshop
+, PMLR 339:217-227, 2026.
+
+Abstract
+
+    Spaced repetition is a technique widely used in digital learning applications (notably for language practice) that determines the frequency with which concepts need to be reviewed by learners in order to boost long-term retention, scheduling reviews at increasing intervals. Research in the area of AI in education investigates how data from digital learning applications can be leveraged to develop predictive models that enable personalization of spaced repetition, and as such maximize learning efficiency. Previous research on Duolingo’s digital platform for language practice developed a personalized model (the Half-Life Regression model) that predicts when lexemes (abstract units of mearning) are likely to be forgotten by individual learners. A limitation of previous research is its reliance on a small set of features, which restricts the performance of the original model. Moreover, attempts to improve this performance often rely on deep learning methods, which in turn reduce the model’s explainability. In the current study, we propose an alternative approach (combining psychometrics with machine learning) that incorporates relevant learner, lexeme and contextual features (e.g., time interval since the lexeme was last shown) aimed at improving both the performance and explainability of earlier Half-Life Regression models. More specifically, we introduce a mixed-effects version of Half-Life Regression, and use the estimated random effects as input to a Random Forest. In comparison with the original model, our results show improvements in predictive performance across a range of measures. SHAP analysis of the best-performing method (the Random Forest) indicates the importance of contextual features and random-effects features that are likely to reflect aspects like lexeme difficulty and learner ability. By achieving both explainability and higher predictive performance than the earlier models, our work contributes to more impactful and responsible use of AI for personalized spaced repetition in language learning. \begin{keywords} spaced repetition, half-life regression, language learning, AI in education\end{keywords}
+
+Cite this Paper
+
+    BibTeX
+
+@InProceedings{pmlr-v339-ilidio26a,
+  title = 	 {Revisiting Half-Life Regression for Explainable and Personalized Spaced Repetition in Duolingo},
+  author =       {Il\'idio, Pedro and Ghinis, Achilleas and Said Metwaly, Sameh and Vens, Celine and Cornillie, Frederik and Gharahighehi, Alireza},
+  booktitle = 	 {Proceedings of the Impactful and Responsible AI Systems for Education Workshop},
+  pages = 	 {217--227},
+  year = 	 {2026},
+  editor = 	 {Basu Mallick, Debshila and Woodhead, Simon and Wang, Zichao and Ananda, Muktha and Burstein, Jill and Murphy, April},
+  volume = 	 {339},
+  series = 	 {Proceedings of Machine Learning Research},
+  month = 	 {28 Jun},
+  publisher =    {PMLR},
+  pdf = 	 {https://raw.githubusercontent.com/mlresearch/v339/main/assets/ilidio26a/ilidio26a.pdf},
+  url = 	 {https://proceedings.mlr.press/v339/ilidio26a.html},
+  abstract = 	 {Spaced repetition is a technique widely used in digital learning applications (notably for language practice) that determines the frequency with which concepts need to be reviewed by learners in order to boost long-term retention, scheduling reviews at increasing intervals. Research in the area of AI in education investigates how data from digital learning applications can be leveraged to develop predictive models that enable personalization of spaced repetition, and as such maximize learning efficiency. Previous research on Duolingo’s digital platform for language practice developed a personalized model (the Half-Life Regression model) that predicts when lexemes (abstract units of mearning) are likely to be forgotten by individual learners. A limitation of previous research is its reliance on a small set of features, which restricts the performance of the original model. Moreover, attempts to improve this performance often rely on deep learning methods, which in turn reduce the model’s explainability. In the current study, we propose an alternative approach (combining psychometrics with machine learning) that incorporates relevant learner, lexeme and contextual features (e.g., time interval since the lexeme was last shown) aimed at improving both the performance and explainability of earlier Half-Life Regression models. More specifically, we introduce a mixed-effects version of Half-Life Regression, and use the estimated random effects as input to a Random Forest. In comparison with the original model, our results show improvements in predictive performance across a range of measures. SHAP analysis of the best-performing method (the Random Forest) indicates the importance of contextual features and random-effects features that are likely to reflect aspects like lexeme difficulty and learner ability. By achieving both explainability and higher predictive performance than the earlier models, our work contributes to more impactful and responsible use of AI for personalized spaced repetition in language learning. \begin{keywords} spaced repetition, half-life regression, language learning, AI in education\end{keywords}}
+}
+
+Copy to Clipboard
+
+Download
+
+    Endnote
+
+%0 Conference Paper
+%T Revisiting Half-Life Regression for Explainable and Personalized Spaced Repetition in Duolingo
+%A Pedro Ilídio
+%A Achilleas Ghinis
+%A Sameh Said Metwaly
+%A Celine Vens
+%A Frederik Cornillie
+%A Alireza Gharahighehi
+%B Proceedings of the Impactful and Responsible AI Systems for Education Workshop
+%C Proceedings of Machine Learning Research
+%D 2026
+%E Debshila Basu Mallick
+%E Simon Woodhead
+%E Zichao Wang
+%E Muktha Ananda
+%E Jill Burstein
+%E April Murphy	
+%F pmlr-v339-ilidio26a
+%I PMLR
+%P 217--227
+%U https://proceedings.mlr.press/v339/ilidio26a.html
+%V 339
+%X Spaced repetition is a technique widely used in digital learning applications (notably for language practice) that determines the frequency with which concepts need to be reviewed by learners in order to boost long-term retention, scheduling reviews at increasing intervals. Research in the area of AI in education investigates how data from digital learning applications can be leveraged to develop predictive models that enable personalization of spaced repetition, and as such maximize learning efficiency. Previous research on Duolingo’s digital platform for language practice developed a personalized model (the Half-Life Regression model) that predicts when lexemes (abstract units of mearning) are likely to be forgotten by individual learners. A limitation of previous research is its reliance on a small set of features, which restricts the performance of the original model. Moreover, attempts to improve this performance often rely on deep learning methods, which in turn reduce the model’s explainability. In the current study, we propose an alternative approach (combining psychometrics with machine learning) that incorporates relevant learner, lexeme and contextual features (e.g., time interval since the lexeme was last shown) aimed at improving both the performance and explainability of earlier Half-Life Regression models. More specifically, we introduce a mixed-effects version of Half-Life Regression, and use the estimated random effects as input to a Random Forest. In comparison with the original model, our results show improvements in predictive performance across a range of measures. SHAP analysis of the best-performing method (the Random Forest) indicates the importance of contextual features and random-effects features that are likely to reflect aspects like lexeme difficulty and learner ability. By achieving both explainability and higher predictive performance than the earlier models, our work contributes to more impactful and responsible use of AI for personalized spaced repetition in language learning. \begin{keywords} spaced repetition, half-life regression, language learning, AI in education\end{keywords}
+
+Copy to Clipboard
+
+Download
+
+    APA
+
+Ilídio, P., Ghinis, A., Said Metwaly, S., Vens, C., Cornillie, F. & Gharahighehi, A.. (2026). Revisiting Half-Life Regression for Explainable and Personalized Spaced Repetition in Duolingo. 
+Proceedings of the Impactful and Responsible AI Systems for Education Workshop
+, in 
+Proceedings of Machine Learning Research
+ 339:217-227 Available from https://proceedings.mlr.press/v339/ilidio26a.html.
+
+Copy to Clipboard
+
+Download
+
+Related Material
+
+Download PDF
+
+This site last compiled Mon, 10 Aug 2026 07:31:03 +0000
+
+Github Account
+
+Copyright © 
+The authors and PMLR
+ 2026.
+ MLResearchPress

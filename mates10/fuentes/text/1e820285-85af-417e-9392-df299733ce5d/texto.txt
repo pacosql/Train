@@ -1,0 +1,2430 @@
+Patrones adictivos
+en el tratamiento
+de datos personales
+Implicaciones para
+la protección de datos
+
+Julio 2024
+Informe publicado
+en julio 2024
+Informe sobre las implicaciones de los patrones adictivos en el tratamiento de datos personales
+
+
+
+
+ÍNDICE
+1. INTRODUCCIÓN                                                                                   5
+
+    A. REGULACIÓN SOBRE PATRONES ENGAÑOSOS Y ADICTIVOS                                            6
+
+    B. PROYECTO REALIZADO POR LA AEPD                                                             8
+
+2. PATRONES ADICTIVOS: DEFINICIÓN Y CONTEXTO                                                      8
+
+    A. PATRONES ENGAÑOSOS Y ADICTIVOS                                                             10
+
+    B. FOCALIZACIÓN (ADDRESSABILITY)                                                              11
+
+    C. MODELO DE FUNCIONAMIENTO DE LOS PATRONES ADICTIVOS                                         11
+
+
+3. CLASIFICACIÓN DE PATRONES ADICTIVOS                                                            14
+
+    A. ACCIÓN FORZADA                                                                             16
+
+      Continuidad forzada                                                                         17
+      Gamificación                                                                                18
+      Captura de la atención                                                                      20
+
+    B. INGENIERÍA SOCIAL                                                                          20
+
+      Escasez                                                                                     21
+      Aprobación social                                                                           21
+      Urgencia                                                                                    22
+      Culpa                                                                                       23
+      Miedo a perderse algo                                                                       24
+      Personalización                                                                             25
+
+    C. INTERFERENCIA EN LA INTERFAZ                                                               27
+
+      Manipulación estética                                                                       27
+      Manipulación de las emociones                                                               28
+
+    D. PERSISTENCIA                                                                               28
+
+      Efecto Zeĭgarnik/Efecto Ovsiankina                                                          29
+
+
+
+
+3                                                                                                 Índice
+Informe sobre las implicaciones de los patrones adictivos en el tratamiento de datos personales
+
+
+
+
+4. IMPLICACIONES PARA LA PROTECCIÓN DE DATOS                                                      29
+
+    A. RESPONSABILIDAD PROACTIVA (ACCOUNTABILITY)                                                 33
+
+    B. PROTECCIÓN DE DATOS DESDE EL DISEÑO Y POR DEFECTO                                          35
+
+    C. TRANSPARENCIA                                                                              35
+
+    D. LICITUD                                                                                    36
+
+    E. LEALTAD                                                                                    38
+
+    F. LIMITACIÓN DE LA FINALIDAD                                                                 39
+
+    G. MINIMIZACIÓN DE DATOS                                                                      39
+
+    H. TRATAMIENTO DE CATEGORÍAS ESPECIALES DE DATOS                                              39
+
+    I. DECISIONES INDIVIDUALES AUTOMATIZADAS, INCLUIDA LA ELABORACIÓN DE PERFILES                 40
+
+
+5. CONCLUSIÓN                                                                                     41
+
+
+
+
+4                                                                                                 Índice
+    Informe sobre las implicaciones de los patrones adictivos en el tratamiento de datos personales
+
+
+
+
+1.             INTRODUCCIÓN
+               DEL INFORME
+Las entidades que utilizan Internet para propor-                       personales recogidos tanto del propio sujeto
+cionar plataformas, aplicaciones y servicios                           como de su red de contactos personales. Una
+tratan datos personales. Dicho tratamiento de                          mejora de dichos factores puede incrementar
+datos personales debe tener una base jurídica,                         el retorno de la inversión ya que permite refinar
+normalmente se trata de la ejecución de un                             la segmentación de usuarios para marketing
+contrato establecido en las condiciones del                            y anuncios, aumentar su lealtad o encon-
+servicio. El tratamiento de datos personales                           trar nuevas formas de monetizar los datos
+puede tener otras bases, en este contexto suelen                       personales.
+ser el consentimiento del interesado o la satis-
+facción de los intereses legítimos del proveedor                       Por este motivo algunos proveedores de
+(en relación con la seguridad, por ejemplo).                           Internet intentan mantener a los usuarios en
+                                                                       la plataforma, aplicación o servicio el mayor
+Según el Comité Europeo de Protección de                               tiempo posible, e influyen o manipulan su
+Datos (CEPD) “Aunque los usuarios reciben                              comportamiento incluyendo operaciones
+algunos de estos servicios previo abono de una                         adicionales al tratamiento de datos personales
+tarifa, otros se ofrecen sin necesidad de que                          basadas en patrones de diseño engañosos y
+el consumidor realice ningún pago, ya que se                           adictivos.
+financian mediante la venta de servicios publi-
+citarios en línea que permiten dirigir publicidad                      Los patrones engañosos se consideran interfa-
+específica a los interesados. El seguimiento de                        ces y experiencias de usuario que llevan a los
+la conducta del usuario, con vistas a ofrecerle                        usuarios a tomar decisiones no intencionadas,
+este tipo de publicidad, suele llevarse a cabo                         involuntarias y potencialmente dañinas con
+por vías de las que el usuario no suele ser cons-                      respecto al tratamiento de sus datos persona-
+ciente y que quizá no resulten inmediatamen-                           les2. Los patrones adictivos se definirán más
+te obvias teniendo en cuenta la naturaleza del                         adelante en este documento como caracte-
+servicio prestado, lo que, en la práctica, hace                        rísticas, atributos o prácticas de diseño que
+que al interesado le resulte casi imposible elegir                     determinan una forma particular de utilizar las
+con conocimiento de causa sobre el uso de sus                          plataformas, aplicaciones y servicios digitales
+datos”1.                                                               destinados a que los usuarios dediquen mucho
+                                                                       más tiempo a su uso o con un mayor grado de
+Con este modelo, los beneficios económicos                             compromiso del esperado, conveniente o salu-
+de los proveedores dependen, en gran medida,                           dable para ellos. Ambas características de un
+de la cantidad de tiempo que el usuario está                           patrón, su carácter engañoso y adictivo, están
+utilizando sus productos, la participación o                           muy relacionadas entre sí, aunque no son exac-
+compromiso del usuario y la cantidad de datos                          tamente lo mismo.
+
+
+
+1
+  Párrafo 4 de las Directrices 2/2019 del CEPD sobre el tratamiento de datos personales en virtud del artículo 6, apartado 1, letra b),
+   del RGPD en el contexto de la prestación de servicios en línea a los interesados. Versión 2.0 8 de octubre de 2019
+   https://www.edpb.europa.eu/our-work-tools/our-documents/guidelines/guidelines-22019-processing-personal-data-under-ar-
+   ticle-61b_en
+2
+  EDPB Guidelines 03/2022 on Deceptive design patterns in social media platform interfaces: how to recognise and avoid them.
+   Version 2.0. Adopted on 14 February 2023 https://www.edpb.europa.eu/system/files/2023-02/edpb_03-2022_guidelines_on_
+   deceptive_design_patterns_in_social_media_platform_interfaces_v2_en_0.pdf
+
+
+
+
+    5                                                                                                                 Introducción
+    Informe sobre las implicaciones de los patrones adictivos en el tratamiento de datos personales
+
+
+
+La adición de operaciones que implementan                            En cuanto a este principio de responsabili-
+patrones adictivos a los tratamientos de datos                       dad, el uso de tales patrones genera preocu-
+personales tiene implicaciones para diferentes                       pación por el desconocimiento del riesgo para
+aspectos de la protección de datos personales,                       los derechos y libertades de los usuarios que
+como la licitud del tratamiento (en particular, en                   implican tales operaciones.
+relación con las condiciones de consentimiento
+o con la prohibición de tratar categorías espe-                      Su impacto puede ser particularmente grave
+ciales de datos), la lealtad y la transparencia,                     en el derecho a la integridad física y psíquica
+la limitación del propósito, la minimización de                      de la infancia y de los usuarios más jóvenes,
+datos, las obligaciones de protección de datos                       afectando a su forma de tomar de decisiones,
+desde el diseño y por defecto y, en general, en                      de relacionarse en sociedad o a su equilibrio
+la aplicación del principio de responsabilidad                       mental.
+proactiva.
+
+
+A. REGULACIÓN SOBRE PATRONES ENGAÑOSOS Y ADICTIVOS
+En la Unión Europea (UE) existe una preocupa-                        (scrolling) infinito o la reproducción automática
+ción creciente por los patrones de diseño enga-                      que fomentan la conexión prolongada, pasar
+ñosos y adictivos en los servicios en línea.                         de la economía de la atención al diseño ético,
+                                                                     introducir un derecho digital a “no ser moles-
+El CEPD abordó el tema de los patrones enga-                         tado” y empoderar a los usuarios para contro-
+ñosos en el documento “Guidelines 03/2022                            lar sus experiencias en línea y garantizar que
+on deceptive design patterns in social media                         todas las plataformas, aplicaciones y servicios
+platform interfaces: how to recognise and avoid                      en línea sean seguros para la infancia, así como
+them”2. Estas directrices se centran únicamente                      la introducción de nueva legislación para la
+en patrones engañosos para unos determina-                           protección de los consumidores dirigida especí-
+dos casos de uso en redes sociales, y abordan                        ficamente a las prácticas adictivas.
+sus implicaciones para la lealtad, la transparen-
+cia, la responsabilidad, la protección de datos                      Fuera de la UE, diferentes países y organismos
+desde el diseño y el cumplimiento del RGPD.                          internacionales han reconocido también el
+Además, en dicha guía el CEPD establece que                          impacto de las prácticas adictivas. Por ejemplo,
+las autoridades de protección de datos son                           las Naciones Unidas han destacado la necesi-
+responsables de sancionar el uso de patrones                         dad de abordar la adicción digital y proteger
+de diseño engañosos si estos incumplen los                           los derechos de la infancia en el entorno
+requisitos del RGPD.                                                 digital4. Sin embargo, las regulaciones varían
+                                                                     y son específicas según el país. Algunos han
+El Parlamento Europeo adoptó una resolu-                             implementado directrices o leyes relacionadas
+ción en diciembre de 2023 que aborda explí-                          con las características adictivas de la tecnolo-
+citamente el diseño adictivo de los servicios                        gía, mientras que otros todavía están exploran-
+y la protección del consumidor en el mercado                         do enfoques prácticos. Por ejemplo, la ley Stop
+único de la UE3. La resolución exige prohibir                        Addictive Feeds Exploitation (SAFE) for Kids5,
+prácticas adictivas como el desplazamiento                           aprobada por la Legislatura de Nueva York en
+
+
+3
+  European Parliament resolution of 12 December 2023 on addictive design of online services and consumer protection in the EU
+   single market (2023/2043(INI)) https://www.europarl.europa.eu/doceo/document/TA-9-2023-0459_EN.html
+4
+  Child and Youth Safety Online https://www.un.org/en/global-issues/child-and-youth-safety-online
+5
+  Senate Bill S7694A, 2023-2024 Legislative Session, Establishes the Stop Addictive Feeds Exploitation (SAFE) for Kids act prohibi-
+   ting the provision of addictive feeds to minors https://www.nysenate.gov/legislation/bills/2023/S7694/amendment/A
+
+
+
+    6                                                                                                             Introducción
+    Informe sobre las implicaciones de los patrones adictivos en el tratamiento de datos personales
+
+
+
+junio de 2024, prohibirá que las plataformas de                     aborda diversos aspectos de los servicios digi-
+redes sociales ofrezcan contenido a usuarios                        tales y su impacto en los usuarios.
+menores de 18 años basándose en algoritmos
+de recomendación cuando se den unas circuns-
+tancias concretas. Estas plataformas tendrán                              Esta norma recoge la necesidad de
+que proporcionar feeds cronológicos inversos6                             regular ciertas prácticas que pueden
+en esas circunstancias.                                                   conducir a conductas adictivas8 o
+                                                                          dañar a los usuarios, y el uso de
+A medida que la tecnología evoluciona, los regu-                          patrones engañosos9.
+ladores de todo el mundo intentan encontrar el
+equilibrio adecuado entre innovación, expe-
+riencia del usuario y salud. En la UE se están                      La propuesta de Reglamento de Inteligencia
+discutiendo activamente medidas adicionales                         Artificial también puede desempeñar un papel
+para regular el diseño adictivo y proteger a los                    en la configuración del panorama digital con
+usuarios como consumidores, específicamente                         relación a los patrones adictivos cuando estén
+a aquellos más vulnerables a estos patrones7.                       implementados mediante sistemas y modelos
+                                                                    de inteligencia artificial.
+Sin embargo, el concepto de vulnerabilidad
+no debe limitarse a los grupos más protegi-                         Este tipo de sistemas puede ser la base de
+dos tradicionalmente. Debe incluir a todos los                      algunos patrones adictivos y, por tanto, estarían
+consumidores, porque los patrones de diseño                         sometidos a las prohibiciones establecidas en
+adictivos se han vuelto tan sofisticados que son                    su Artículo 5, en cuanto estuvieran relaciona-
+capaces de encontrar y explotar las debilidades                     das con técnicas subliminales, manipulativas,
+o vulnerabilidades de cualquier persona.                            engañosas o que exploten vulnerabilidades de
+                                                                    personas físicas o grupos de personas, espe-
+El Reglamento (UE) 2022/2065 del Parlamen-                          cialmente debido a su edad, con el objeto de
+to Europeo y del Consejo, de 19 de octubre de                       afectar las decisiones o el comportamiento de
+2022, relativo a un mercado único de servicios                      una persona y provocarle un perjuicio.
+digitales y por el que se modifica la Directiva
+2000/31/CE (Ley de Servicios Digitales o DSA),
+
+
+
+
+6
+  Un feed es un flujo de contenido por el que el usuario se puede desplazar. Puede ser personalizado por un recomendador o pura-
+   mente cronológico, de manera que muestre el contenido nuevo. En este segundo caso, el contenido nuevo puede mostrarse al
+   principio del feed (orden inverso) o al final, obligando al usuario a desplazarse por él de manera continua para tener acceso a
+   las últimas publicaciones.
+7
+  Ya hay antecedentes de sanciones impuestas por autoridades de consumo, como ésta reciente de la autoridad de Países:
+   https://www.acm.nl/en/publications/acm-imposes-fine-epic-unfair-commercial-practices-aimed-children-fortnite-game
+8
+  Considerando 81: “Tales riesgos pueden surgir, por ejemplo, con interfaces en línea que estén diseñadas de manera que exploten
+   intencionada o involuntariamente las debilidades y la inexperiencia de los menores o que puedan generar un comportamiento
+   adictivo” y Considerando 83: “Estos riesgos también pueden derivarse de campañas coordinadas de desinformación relaciona-
+   das con la salud pública, o del diseño de interfaces en línea que puedan estimular adicciones comportamentales de los desti-
+   natarios del servicio”. Los artículos 27 y 38 implican además obligaciones para los sistemas de recomendación, normalmente
+   estrechamente relacionadas con conductas adictivas.
+9
+  Considerando 67: “Las interfaces engañosas de las plataformas en línea son prácticas que distorsionan o merman sustancial-
+   mente, de forma deliberada o efectiva, la capacidad de los destinatarios del servicio de tomar decisiones autónomas y con
+   conocimiento de causa. Estas prácticas pueden utilizarse para persuadir a los destinatarios del servicio de que adopten compor-
+   tamientos no deseados o decisiones no deseadas que tienen consecuencias negativas para ellos” y Artículo 25: “Los prestadores
+   de plataformas en línea no diseñarán, organizarán ni gestionarán sus interfaces en línea de manera que engañen o manipulen
+   a los destinatarios del servicio o de manera que distorsionen u obstaculicen sustancialmente de otro modo la capacidad de los
+   destinatarios de su servicio de tomar decisiones libres e informadas”.
+
+
+
+
+    7                                                                                                             Introducción
+     Informe sobre las implicaciones de los patrones adictivos en el tratamiento de datos personales
+
+
+
+
+B. PROYECTO REALIZADO POR LA AEPD
+El CEPD ha analizado los patrones engañosos,                        mente. Las secciones II y III de este documen-
+desde la perspectiva del RGPD, para una serie                       to muestran un resumen de los resultados del
+de casos de uso determinados. La AEPD, en el                        proyecto desarrollado.
+marco de sus obligaciones de realizar estudios
+de prospección tecnológica10, ha realizado                          Este proyecto permite realizar un análisis
+actividades internas basadas en una revisión                        completo de las implicaciones que tiene para la
+sistemática de la evidencia científica existente                    protección de datos incluir patrones engañosos
+acerca de los patrones adictivos (siguiendo el                      y adictivos en el tratamiento de datos persona-
+método PRISMA-ScR11), lo que supone abordar                         les. Gracias a él se han podido extraer conclu-
+nuevos casos de uso. De esta forma, se comple-                      siones a diferentes niveles sobre las implicacio-
+tan las directrices del CEPD y se obtiene una                       nes de estos patrones en la protección de datos
+comprensión unificada de dichos patrones,                           y en los derechos y libertades de los individuos,
+porque algunos de ellos podrían tener carac-                        que se recogen en la sección IV.
+terísticas engañosas y adictivas simultánea-
+
+
+
+
+2.
+                  PATRONES ADICTIVOS:
+                  DEFINICIÓN Y CONTEXTO
+El desarrollo de los patrones adictivos comienza                    grado en videojuegos, redes sociales y apli-
+con el concepto de tecnología persuasiva12 que                      caciones móviles. Esta evolución ha estado
+se promovió en los años 90. La idea era apro-                       motivada principalmente por la necesidad
+vechar aspectos específicos de los avances                          de las empresas tecnológicas de prolongar el
+tecnológicos para influir positivamente en                          tiempo que los usuarios pasan en sus platafor-
+los usuarios, concretamente en sus actitudes                        mas y servicios (monetización indirecta a través
+y comportamientos cotidianos: salud, sueño,                         de marketing y publicidad digital) y de invo-
+estudio, etc. La definición dada por Fogg en                        lucrarlos con un mayor nivel de compromiso
+aquel entonces fue “sistemas informáticos inte-                     (monetización directa a través de compras de
+ractivos diseñados para cambiar las actitudes y                     diferentes bienes y servicios). Por tanto, la defi-
+comportamientos de las personas sin recurrir a                      nición de tecnología persuasiva ha cambiado.
+la coerción ni al engaño”.                                          Por ejemplo, se puede definir como “cualquier
+                                                                    sistema de información que afecte proactiva-
+Con el paso de los años, la tecnología persua-                      mente el comportamiento humano, en favor o
+siva se ha vuelto omnipresente y se ha inte-                        en contra de los intereses de sus usuarios”13.
+
+
+
+10
+   Artículo 31(c) del Real Decreto 389/2021, de 1 de junio, por el que se aprueba el Estatuto de la Agencia Española de Protección
+   de Datos.
+11
+   Tricco, A. C. et al. (2018). PRISMA extension for scoping reviews (PRISMA-ScR): checklist and explanation. Annals of internal
+   medicine, 169(7), 467-473.
+12
+   Fogg, B. J. (1998). Persuasive computers: perspectives and research directions. In Proceedings of the SIGCHI conference on
+   Human factors in computing systems (pp. 225-232).
+13
+   Kampik, T., Nieves, J. C., & Lindgren, H. (2018). Coercion and deception in persuasive technologies. In Proceedings of the 20th
+   International Trust Workshop (co-located with AAMAS/IJCAI/ECAI/ICML 2018) (pp. 38-49).
+
+
+
+     8                                                                              Patrones adictivos: definición y contexto
+     Informe sobre las implicaciones de los patrones adictivos en el tratamiento de datos personales
+
+
+
+Trabajos anteriores han identificado diferentes                       En este documento se define un patrón adictivo
+características relacionadas con la tecnología                        como:
+persuasiva14, como el establecimiento de obje-
+tivos, retroalimentación, recordatorios, alertas,
+disparadores, recompensas, puntos, créditos,                                Una característica, atributo o
+seguimiento, monitorización o apoyo social,                                 práctica de diseño que determina
+intercambio y comparación. La mayoría de                                    una manera concreta de utilizar
+estas características deben personalizarse para                             plataformas, aplicaciones o servi-
+funcionar adecuadamente, por lo que el provee-                              cios digitales que persigue que
+dor debe recoger y tratar los datos personales                              los usuarios dediquen mucho más
+de los usuarios. Por este motivo, entre otros                               tiempo a utilizarlos o con un mayor
+como la escalabilidad o la reducción de costes,                             grado de compromiso del esperado,
+todas estas características tienen en común su                              conveniente o saludable para ellos.
+autonomía y su alto grado de automatización.
+Los avances en paradigmas como el aprendizaje
+automático o la inteligencia artificial han favo-                     Y es que, los patrones adictivos provocan más
+recido mucho ambos aspectos.                                          efectos en los usuarios que únicamente un
+                                                                      mayor tiempo de uso de las plataformas, apli-
+El diseño persuasivo, cuando se aplica a las                          caciones o servicios.
+plataformas, aplicaciones y servicios, convierte
+a estos en adictivos15. Un conjunto reducido de                       Estos patrones pueden generar un mayor grado
+características persuasivas dedicadas a mani-                         de compromiso, llegando a la dependencia,
+pular la atención de los usuarios se está inclu-                      que implica que los usuarios prefieran su uso
+yendo de manera habitual en muchas platafor-                          en lugar de realizar otras actividades, incluso
+mas, aplicaciones y servicios como un modelo o                        esenciales, como comer, dormir o relacionarse
+guía de diseño, lo que las convierte en patrones.                     con otras personas, fomentando, por ejemplo,
+Patrones adictivos, para ser exactos.                                 realizar un gasto financiero desproporcionado o
+                                                                      compartir información sensible.
+
+                                                                      Se pueden observar problemas para estable-
+                                                                      cer relaciones personales, fragmentación de
+                                                                      la atención, alteración en los mecanismos
+                                                                      mentales de toma de decisiones o una percep-
+                                                                      ción negativa de la satisfacción vital, efectos
+                                                                      que son especialmente graves en la infancia y la
+                                                                      adolescencia.
+
+                                                                      En casi todos los escenarios los usuarios no
+                                                                      pueden desactivar estas características,
+                                                                      incluso cuando ellos mismos perciben su
+                                                                      influencia o impactos negativos.
+
+
+
+
+14
+   Orji, R., & Moffatt, K. (2018). Persuasive technology for health and wellness: State-of-the-art and emerging trends. Health infor-
+   matics journal, 24(1), 66-91.
+15
+   Chen, X., Hedman, A., Distler, V., & Koenig, V. (2023). Do persuasive designs make smartphones more addictive? A mixed-methods
+   study on Chinese university students. Computers in Human Behavior Reports, 10, 100299.
+
+
+
+     9                                                                                Patrones adictivos: definición y contexto
+     Informe sobre las implicaciones de los patrones adictivos en el tratamiento de datos personales
+
+
+
+
+A. PATRONES ENGAÑOSOS Y ADICTIVOS
+Existe un cierto grado de intersección entre                          Y la tercera es la definición proporcionada por
+el concepto de interfaz engañosa (o patrón                            la Ley de Servicios Digitales en su preámbulo
+oscuro si se traduce directamente del término                         (considerando 67): “Las interfaces engañosas
+en inglés dark pattern) y el de patrón adictivo                       de las plataformas en línea son prácticas que
+que conviene aclarar en este momento. Consi-                          distorsionan o merman sustancialmente, de
+deremos, por ejemplo, tres definiciones que                           forma deliberada o efectiva, la capacidad de
+pueden servir para proporcionar cierto contexto                       los destinatarios del servicio de tomar decisio-
+inicial.                                                              nes autónomas y con conocimiento de causa.
+                                                                      Estas prácticas pueden utilizarse para persuadir
+La primera de ellas es la que ya se ha mencio-                        a los destinatarios del servicio de que adopten
+nado, la que se proporciona en las directrices                        comportamientos no deseados o decisiones no
+del CEPD2: “Los patrones de diseño engañosos                          deseadas que tienen consecuencias negativas
+son interfaces y experiencias de usuario imple-                       para ello”.
+mentadas en plataformas de redes sociales
+que llevan a los usuarios a tomar decisiones                          Investigaciones que se han realizado en el
+no intencionadas, involuntarias y potencial-                          pasado proporcionan definiciones muy simila-
+mente dañinas con respecto al tratamiento                             res a estas tres17 y que se centran en los mismos
+de sus datos personales. Pretenden influir en                         aspectos: engaño, manipulación, influencia,
+el comportamiento de los usuarios y pueden                            toma de decisiones en contra de los propios
+obstaculizar su capacidad de proteger eficaz-                         intereses, daño o consecuencias negativas
+mente sus datos personales y tomar decisiones                         potenciales, falta de alternativas e información,
+conscientes”.                                                         etc.
+
+La segunda es la definición de la OCDE del                            Por tanto, podemos concluir que todos los
+término patrón oscuro. Patrón oscuro es un                            patrones adictivos se pueden considerar
+término general que se refiere a una amplia                           patrones engañosos, pero no todos los patrones
+variedad de prácticas que se encuentran                               oscuros son adictivos.
+comúnmente en las interfaces de usuario y que
+llevan a los consumidores a tomar decisiones
+que a menudo no son las mejores para sus inte-
+reses16. La definición dada por la OCDE es: “Los                                          Patrones engañosos
+patrones oscuros son prácticas comerciales
+que emplean elementos de la arquitectura para
+la toma de decisiones en el ámbito digital, en
+particular en interfaces de usuario en línea, que
+subvierten o perjudican la autonomía, la toma
+de decisiones o la elección del consumidor. A                                              Patrones adictivos
+menudo engañan, coaccionan o manipulan a
+los consumidores y es probable que les causen
+perjuicios directos o indirectos de diversas
+maneras, aunque en muchos casos puede ser
+difícil o imposible medir ese perjuicio”.                                                                               Figura 1
+
+
+
+16
+   OECD Digital Economy Papers, n336 (2022). Dark commercial patterns.
+   https://one.oecd.org/document/DSTI/CP(2021)12/FINAL/en/pdf
+17
+   Cara, C. (2019). Dark patterns in the media: A systematic review. Network Intelligence Studies, 7(14), 105-113.
+Figura 1. Relación considerada entre los patrones engañosos y los patrones adictivos.
+
+
+
+     10                                                                               Patrones adictivos: definición y contexto
+ Informe sobre las implicaciones de los patrones adictivos en el tratamiento de datos personales
+
+
+
+
+B. FOCALIZACIÓN (ADDRESSABILITY)
+Muchas plataformas de redes sociales ofrecen                                   so. En este documento utilizaremos la palabra
+servicios de segmentación y targeting como                                     focalización (addressability) para referirnos a
+parte de su modelo de negocio. Estos servicios                                 estas estrategias ultrapersonalizadas, desarro-
+permiten a individuos u organizaciones (“targe-                                lladas con fines adictivos en lugar de políticos o
+ters”) transmitir mensajes específicos a los                                   comerciales.
+usuarios de redes sociales para promover inte-
+reses políticos o comerciales. El aspecto crítico                              La focalización, como el targeting, hace que
+de la segmentación y el targeting es la alineación                             los usuarios sean directamente accesibles
+entre el individuo o grupo objetivo y el mensaje                               para atraerlos o influenciarlos. En este caso, a
+transmitido. El concepto que subyace es que,                                   través de sus debilidades o vulnerabilidades,
+cuanto mejor sea esta alineación, mayor será la                                como individuos o como miembros de un grupo
+tasa de recepción (conversión), lo que conducirá                               dinámico y reducido. Pero las técnicas utiliza-
+a una campaña más eficaz (retorno de la inver-                                 das, y el tratamiento de datos personales invo-
+sión)18. En el caso de los patrones adictivos,                                 lucrado, son similares a los del targeting político
+los “targeters” son los propios proveedores de                                 o comercial mucho más analizados hasta ahora.
+plataformas, aplicaciones y servicios digitales,                               El CEPD, en su documento “Directrices 8/2020
+no un tercero. Su estrategia no busca entregar                                 del CEPD sobre la focalización de los usuarios
+un mensaje político o comercial específico a                                   de medios sociales” proporciona directrices
+una persona o grupo concretos, sino asegurar                                   que son de utilidad en el contexto de la focali-
+que el usuario permanezca conectado por más                                    zación realizada por las operaciones que imple-
+tiempo o con un mayor grado de compromi-                                       mentan los patrones adictivos.
+
+
+
+
+C. MODELO DE FUNCIONAMIENTO DE LOS PATRONES ADICTIVOS
+El marco de trabajo que se muestra en la                                       su modelo de negocio específico. El Comité
+Figura 2 está basado en modelos ya validados19                                 Stigler20 concluyó en 2019 que el modelo de
+e incluye los diferentes elementos que se rela-                                negocio de las principales plataformas en línea
+cionan con los patrones adictivos y su contexto.                               se basa en interfaces de usuario adictivas dise-
+Las plataformas, aplicaciones y servicios están                                ñadas para mantener la atención de dichos
+diseñados para maximizar sus beneficios según                                  usuarios.
+
+
+                                         Datos personales
+
+
+
+                USUARIOS                                    PLATAFORMAS, APLICACIONES                   PROPIETARIOS, SOCIOS,
+                                                                   Y SERVICIOS                        ACCIONISTAS, INVERSORES...
+                  QUIÉN
+      ¿Género, edad, vulnerabilidades?
+                                                                      DISEÑO                                   BENEFICIOS
+                                                                 ¿Patrones adictivos?                       ¿Modelo de negocio?
+                POR QUÉ                                                                                    ¿Política de privacidad,
+        ¿Motivación, gratificación,                                                                       términos y condiciones?
+        autoestima, presión social?
+                                                                   CONTENIDOS
+                  CÓMO
+      ¿Tiempo, grado de compromiso?
+
+
+                                            Impactos
+
+
+
+
+ 11                                                                                         Patrones adictivos: definición y contexto
+     Informe sobre las implicaciones de los patrones adictivos en el tratamiento de datos personales
+
+
+
+Estos patrones adictivos pueden alimentar-                            En resumen, los datos representan dos tipos
+se con los datos personales de los usuarios y                         de valor diferente en este contexto:
+pueden tener un impacto en su salud y bienes-
+tar. Qué datos específicos se podrían recoger                         1. Permiten a los proveedores cuantificar su
+y cuáles serían estos impactos depende de                             rendimiento a través de métricas estandariza-
+quiénes sean estos usuarios, del motivo por                           das y reclamar así el pago correspondiente a los
+el que usan las plataformas, aplicaciones y                           anunciantes: medición de audiencia (usuarios
+servicios, y de cómo los usan. Los usuarios con                       únicos, visitas, tiempo invertido).
+diferentes antecedentes mentales, sociales,
+tecnológicos y de comportamiento pueden                               2. Permiten a los proveedores optimizar su
+reaccionar de manera diferente ante una                               rendimiento mediante el conocimiento preciso
+misma característica de diseño21.                                     de qué tienen que ofrecer a cada usuario para
+                                                                      que permanezca conectado el mayor tiempo
+Los proveedores de plataformas, aplicacio-                            posible con el mayor grado de compromiso
+nes y servicios tienen incentivos para diseñar                        posible. En este caso no existen métricas estan-
+sus productos de manera que funcionen bien                            darizadas. Los proveedores pueden necesitar
+en términos de beneficios y métricas relevan-                         conocer o inferir, mediante métodos diferen-
+tes para su modelo de negocio. Según estas                            tes, datos como:
+métricas, y dada la presión actual del mercado,
+pueden obtener mejores resultados al emplear
+patrones adictivos22.                                                 ◤ Datos del usuario: Nombre de cuenta, direc-
+                                                                        ción de email, identificadores persistentes o
+Todos estos proveedores monetizan la parti-                             seudónimos, idioma, edad/fecha de naci-
+cipación de los usuarios (tiempo y compromi-                            miento, género, etc.
+so), principalmente a través de publicidad. Por
+tanto, las métricas relevantes para su modelo                         ◤ Huella única de conexión (fingerprint):
+de negocio son las métricas estandariza-                                Características del dispositivo (procesador,
+das dentro del mercado de la publicidad o el                            memoria y tarjeta gráfica, configuración de
+marketing digital23. Estas métricas identifican                         pantalla, configuración de audio, versión del
+las medidas que los proveedores deben hacer                             sistema operativo, zona horaria), caracterís-
+para certificar que un anuncio se ha mostrado                           ticas del navegador (versión, lista de plugins,
+a un usuario y que se debería facturar por él.                          lista de idiomas, user-agent, información
+También permiten a los proveedores explorar                             sobre bloqueo de publicidad, mecanismos
+aspectos relativos al diseño y a los contenidos                         de almacenamiento web, resolución de pan-
+que optimicen los valores de estas métricas.                            talla), dirección IP, geolocalización, etc.
+
+
+
+
+18
+   Directrices 8/2020 del CEPD sobre la focalización de los usuarios de medios sociales Versión 2.0 Adoptadas el 13 de abril de 2021.
+   https://www.edpb.europa.eu/our-work-tools/our-documents/guidelines/guidelines-82020-targeting-social-media-users_en
+19
+   Montag, C., Yang, H., & Elhai, J. D. (2021). On the psychology of TikTok use: A first glimpse from empirical findings. Frontiers in
+   public health, 9, 641673.
+20
+   Comité independiente y no partidista compuesto por más de treinta académicos, legisladores y expertos en Estados
+   Unidos que pasó más de un año estudiando cómo las plataformas digitales como Google y Facebook tienen impacto en la
+   economía y las leyes antimonopolio, protección de datos, el sistema político y la industria de los medios de comunicación:
+   https://www.chicagobooth.edu/research/stigler/news-and-media/committee-on-digital-platforms-final-report
+21
+   Sindermann, C., Montag, C., & Elhai, J. D. (2022). The Design of Social Media Platforms—Initial Evidence on Relations Between
+   Personality, Fear of Missing Out, Design Element-Driven Increased Social Media Use, and Problematic Social Media Use.
+22
+   Narayanan, A., Mathur, A., Chetty, M., & Kshirsagar, M. (2020). Dark Patterns: Past, Present, and Future: The evolution of tricky
+   user interfaces. Queue, 18(2), 67-92.
+23
+   Interactive Advertising Bureau (IAB) https://www.iab.com/
+
+
+
+
+     12                                                                                Patrones adictivos: definición y contexto
+     Informe sobre las implicaciones de los patrones adictivos en el tratamiento de datos personales
+
+
+
+◤ Comportamiento del usuario: ¿Cómo se                                Las investigaciones disponibles señalan debili-
+  relaciona el usuario con la plataforma, apli-                       dades o vulnerabilidades psicológicas y sesgos
+  cación o servicio? ¿Cuál es el viaje del usua-                      cognitivos persistentes y generalizados que
+  rio? ¿Qué funcionalidades consume el usua-                          suelen ser explotados por los patrones adicti-
+  rio más a menudo? ¿Cómo lo hace?                                    vos para conseguir este objetivo como (esta no
+                                                                      es una lista exhaustiva):
+◤ Hábitos y preferencias del usuario:
+  ¿Cuánto tiempo se conecta en media el
+                                                                      ◤ Heurística del afecto: El contenido que pro-
+  usuario? ¿A qué hora lo hace? ¿Qué tipo de
+                                                                        voca emociones positivas influye significati-
+  contenidos suele preferir? ¿En qué momento
+                                                                        vamente en las decisiones del usuario.
+  de un vídeo suele compartirlo, decidir que le
+  gusta o abandonarlo? ¿Suele interactuar el
+                                                                      ◤ Anclaje: Los usuarios dependen demasiado
+  usuario con otros? ¿Con cuáles? ¿Y con los
+                                                                        de la primera información ofrecida (el ancla)
+  anuncios y la publicidad?
+                                                                        al tomar decisiones.
+
+Los beneficios que obtienen los proveedo-                             ◤ Sesgo de automatización: Los usuarios
+res dependen, en gran medida, de la cantidad                            tienden a confiar excesivamente en sistemas
+de usuarios, la cantidad de tiempo que cada                             automatizados o algorítmicos.
+usuario pasa conectado y su grado de compro-
+miso, y la cantidad de datos que un usuario                           ◤ Efecto predeterminado: Es poco probable
+comparte, directa o indirectamente. Investiga-                          que los usuarios cambien las configuracio-
+ciones recientes acuñan el término “imperati-                           nes y ajustes predeterminados para anular
+vo de atención a los datos”24. Este imperativo                          la selección de una casilla de verificación
+ocurre en ambas direcciones. Por un lado, los                           preseleccionada, etc.
+proveedores acumulan y utilizan datos para
+diseñar experiencias más atractivas y adictivas                       ◤ Justificación del esfuerzo: Los usuarios
+para los usuarios. Por otro lado, se ven impul-                         atribuyen un valor más alto a un resultado si
+sados a aumentar el compromiso y la atención                            han tenido que esforzarse para lograrlo.
+para conseguir más datos y generar beneficios.
+                                                                      ◤ Efecto de encuadre: Los usuarios sacan
+                                                                        conclusiones diferentes de la misma infor-
+          El papel de los datos, en este contexto,
+                                                                        mación dependiendo de cómo se presenta
+          es transformar la atención y el
+                                                                        esa información.
+          comportamiento de los usuarios en
+          un bien monetizable dentro de un
+                                                                      ◤ Ilusión de control: Los usuarios tienden a
+          proceso cíclico: los datos que se
+                                                                        sobreestimar su grado de influencia sobre
+          recogen durante la interacción de los
+                                                                        eventos externos.
+          usuarios con las plataformas pueden
+          comercializarse directamente, por
+                                                                      ◤ Gratificación instantánea: Los usuarios
+          ejemplo, a los anunciantes.
+                                                                        tienden a sacrificar ganancias futuras por un
+                                                                        placer o ganancia inmediata.
+Pero también pueden usarse para explotar                              ◤ Inversión: Si el usuario está comprometido
+las vulnerabilidades de los usuarios, ganar su
+                                                                        con la tarea, quiere ver el resultado o el final.
+atención y compromiso, y hacer que pasen más
+tiempo en línea.
+
+
+24
+     Bietti, E. (2024). The Data-Attention Imperative. Available at SSRN 4729500 http://dx.doi.org/10.2139/ssrn.4729500
+
+
+
+     13                                                                               Patrones adictivos: definición y contexto
+     Informe sobre las implicaciones de los patrones adictivos en el tratamiento de datos personales
+
+
+
+◤ Aversión a la pérdida: Los usuarios sienten                        ◤ Problemas de autoevaluación: Los usua-
+  el impacto de una pérdida dos veces más                              rios pueden sobrestimar su propia capaci-
+  intensamente que el placer equivalente de                            dad (por ejemplo, la capacidad de detectar
+  una ganancia.                                                        diseños engañosos o manipuladores), sub-
+                                                                       estimar la influencia de los impulsos visce-
+◤ Efecto avestruz: Los usuarios tienden a                              rales en sus comportamientos, creer que tie-
+  ignorar situaciones negativas obvias.                                nen el control total y que son autónomos...
+
+◤ Sesgo pro-innovación: Los usuarios tien-                           ◤ Normas sociales: Los usuarios se sienten
+  den a mostrar un optimismo excesivo hacia                            constreñidos o guiados por reglas no escri-
+  las nuevas plataformas, aplicaciones y ser-                          tas y estándares sociales comprendidos por
+  vicios y a menudo no logran identificar sus                          el resto de los usuarios del grupo.
+  limitaciones y debilidades.
+                                                                     ◤ Status quo: Los usuarios suelen preferir una
+                                                                       opción que no provoca ningún cambio, la
+                                                                       tradicional.
+
+
+
+
+3.
+                   CLASIFICACIÓN DE
+                   PATRONES ADICTIVOS
+En esta sección se propone una clasificación de                      Los patrones de nivel medio describen
+patrones adictivos siguiendo la ontología de                         enfoques más específicos para seguir estas
+tres niveles (alto, medio, bajo) más reciente                        estrategias, explotando las debilidades o vulne-
+en la literatura que permite crear un vocabula-                      rabilidades psicológicas de usuarios específi-
+rio compartido sobre este tema25. En la clasifi-                     cos, pero aún son independientes del contexto
+cación propuesta, los denominados patrones                           y de la aplicación.
+de alto nivel corresponden al conocimiento
+más abstracto, refiriéndose a estrategias gene-                      Finalmente, los patrones de bajo nivel
+rales de forma independiente del contexto y de                       corresponden a la ejecución específica de los
+la aplicación.                                                       diferentes enfoques y, a menudo, son espe-
+                                                                     cíficos del contexto o de la aplicación. Estos
+                                                                     últimos pueden detectarse mediante métodos
+          Se han identificado cuatro patrones                        algorítmicos, manuales u otros medios técnicos.
+          de alto nivel:                                             Esta clasificación se resume, junto con otros
+                                                                     aspectos en la Tabla 1 de la sección IV de este
+          Acción Forzada                                             documento.
+          Ingeniería Social
+                                                                     Estos patrones podrían necesitar datos perso-
+          Interferencia en la interfaz                               nales como entrada, recoger o generar nuevos
+          Persistencia                                               datos personales, o influir en el comportamien-
+                                                                     to del usuario en el marco de un tratamiento de
+                                                                     datos personales.
+
+
+25
+     Gray, C. M., Santos, C., & Bielova, N. (2023, April). Towards a Preliminary Ontology of Dark Patterns Knowledge. In Extended
+     Abstracts of the 2023 CHI Conference on Human Factors in Computing Systems (pp. 1-9).
+
+
+     14                                                                                   Clasificación de patrones adictivos
+     Informe sobre las implicaciones de los patrones adictivos en el tratamiento de datos personales
+
+
+
+La clasificación considera patrones identifica-                           nuevos patrones (sobre todo de bajo nivel, ya
+dos y analizados en investigaciones previas26,27,                         que son muy dependientes del contexto y de la
+,28,29,30,31,32,33,34,35 centrándose en su tendencia                      plataforma, aplicación o servicio) o se podrían
+adictiva dada la evidencia disponible (analiza-                           crear otros diferentes.
+da realizando una revisión sistemática siguien-
+do el método PRISMA-ScR11), limitándose a                                 Además, los patrones ya identificados evolu-
+aquellos patrones que han demostrado mani-                                cionarán en el futuro. Es decir, se espera que se
+pular a los usuarios para que dediquen mucho                              trate de una clasificación viva que se revise a lo
+más tiempo a utilizar plataformas, aplicaciones                           largo del tiempo.
+y servicios, o con un mayor grado de compro-
+miso del esperado. Para la clasificación se han                           También hay que señalar que algunos patrones
+fusionado o dividido diferentes patrones para                             suelen aparecer juntos, o que el mismo patrón
+evitar redundancias o lagunas, y se ha tratado                            podría aparecer en dos categorías diferentes
+de unificar la nomenclatura.                                              de alto nivel. Se ha intentado hacerlos lo más
+                                                                          independientes posible entre sí y clasificarlos
+La clasificación que se proporciona es lo más                             siempre en una categoría principal con la que
+completa posible, pero se podrían encontrar                               estén más relacionados.
+
+
+
+
+26
+   Zagal, J. P., Björk, S., & Lewis, C. (2013). Dark patterns in the design of games. In Foundations of Digital Games 2013.
+27
+   Gray, C. M., Kou, Y., Battles, B., Hoggatt, J., & Toombs, A. L. (2018, April). The dark (patterns) side of UX design. In Proceedings of
+   the 2018 CHI conference on human factors in computing systems (pp. 1-14).
+28
+   Montag, C., Lachmann, B., Herrlich, M., & Zweig, K. (2019). Addictive features of social media/messenger platforms and freemium
+   games against the background of psychological and economic theories. International journal of environmental research and
+   public health, 16(14), 2612.29 Apdo. 3 Opinion 9/2014 on the application of Directive 2002/58/EC to device fingerprinting
+29
+   Mathur, A., Acar, G., Friedman, M. J., Lucherini, E., Mayer, J., Chetty, M., & Narayanan, A. (2019). Dark patterns at scale: Findings
+   from a crawl of 11K shopping websites. Proceedings of the ACM on Human-Computer Interaction, 3 (CSCW), 1-32.
+30
+   Gray, C. M., Chivukula, S. S., & Lee, A. (2020, July). What Kind of Work Do” Asshole Designers” Create? Describing Properties of
+   Ethical Concern on Reddit. In Proceedings of the 2020 ACM designing interactive systems conference (pp. 61-73).
+31
+   Gray, C. M., Santos, C., & Bielova, N. (2023, April). Towards a Preliminary Ontology of Dark Patterns Knowledge. In Extended
+   Abstracts of the 2023 CHI Conference on Human Factors in Computing Systems (pp. 1-9).
+32
+    Mildner, T., Savino, G. L., Doyle, P. R., Cowan, B. R., & Malaka, R. (2023, April). About Engaging and Governing Strategies: A
+   Thematic Analysis of Dark Patterns in Social Networking Services. In Proceedings of the 2023 CHI Conference on Human Factors
+   in Computing Systems (pp. 1-15).
+33
+   Flayelle, M., Brevers, D., King, D. L., Maurage, P., Perales, J. C., & Billieux, J. (2023). A taxonomy of technology design features that
+   promote potentially addictive online behaviours. Nature Reviews Psychology, 2(3), 136-150.
+34
+   OECD Digital Economy Papers, n336 (2022). Dark commercial patterns.
+   https://www.oecd.org/digital/dark-commercial-patterns-44f5e846-en.htm
+35
+   EDPB Guidelines 03/2022 on Deceptive design patterns in social media platform interfaces: how to recognise and avoid them.
+   Version 2.0 adopted on 14 February 2023. https://www.edpb.europa.eu/system/files/2023-02/edpb_03-2022_guidelines_on_
+   deceptive_design_patterns_in_social_media_platform_interfaces_v2_en_0.pdf
+
+
+
+
+     15                                                                                          Clasificación de patrones adictivos
+ Informe sobre las implicaciones de los patrones adictivos en el tratamiento de datos personales
+
+
+
+
+A. ACCIÓN FORZADA
+Esta categoría de alto nivel consiste en ofrecer               hagan de una manera que pueda causarles un
+a los usuarios algo que desean, exigirles que                  perjuicio, ya sean conscientes o no.
+hagan algo a cambio o engañarlos para que lo
+
+
+
+
+                                                                               Pull to refresh
+
+
+
+                                                                             Scrolling infinito
+
+
+                            Continuidad
+                                                                            Streaming infinito
+                              forzada
+  ACCIÓN FORZADA
+
+
+
+
+                                                                             Temporizadores
+
+
+
+                                                                               Jugar con cita
+
+
+
+                                                                           Competición guiada
+
+
+
+                                                                   Grinding y exposición innecesaria
+
+
+
+                            Gamificación                                          Dotación
+
+
+
+                                                                        Recompensas periódicas
+
+
+
+                                                                         Completar la colección
+
+
+
+                      Captura de la atención                           Reproducción automática
+
+
+
+
+ 16                                                                                Clasificación de patrones adictivos
+ Informe sobre las implicaciones de los patrones adictivos en el tratamiento de datos personales
+
+
+
+□ Continuidad forzada
+
+Este enfoque está directamente relaciona-                           Ejemplo de temporizadores:
+do con que los usuarios pasen más tiempo                            Imaginemos un videojuego de fantasía.
+del esperado conectados o que lo hagan en                           El jugador quiere forjar una espada
+momentos que no son los mejores para ellos:                         legendaria y el juego le permite crearla,
+aunque exista coerción o presión, los usuarios                      pero esta tarea tardará 4 horas en
+deben percibir la prolongación de su sesión                         completarse. El jugador no puede
+como algo natural y fluido, libremente decidido.                    acelerar el proceso; sólo esperar.
+◤ Pull to refresh: Se basa en un gesto que con-
+  siste en tocar la pantalla con un dedo, y luego                   Durante estas 4 horas, el jugador se
+  levantarlo, como señal a la aplicación para                       mantiene conectado al juego. Puede
+  que actualice el contenido de la pantalla en                      que se esté ejecutando en segundo
+                                                                    plano, pero es probable que el jugador
+  tiempo real. Suele combinarse con el patrón
+                                                                    realice comprobaciones periódicas del
+  de recomendaciones algorítmicas para ofre-
+                                                                    progreso del proceso.
+  cer al usuario contenido personalizado des-
+  pués de cada actualización que tenga más
+                                                                    El jugador necesitará 1 día para actua-
+  probabilidades de captar su atención.
+                                                                    lizar el castillo. Para entrenar tropas,
+                                                                    2 días. Y así sucesivamente para otros
+◤ Scrolling infinito: Los usuarios pueden                           recursos valiosos.
+  desplazarse sin limitaciones por el conte-
+  nido, y siempre hay más, en lugar de hacer
+                                                                    Esto es eficaz porque garantiza la reten-
+  clic en diferentes páginas. Generalmente se
+                                                                    ción. Una vez que finalice el tempori-
+  combina con el patrón de recomendaciones
+                                                                    zador, los jugadores interactuarán con
+  algorítmicas para ofrecer al usuario conte-                       el juego para reclamar los resultados
+  nido personalizado con más probabilidades                         (la espada, el nuevo castillo, etc.). En
+  de atraer su atención.                                            algunos casos, este patrón permite la
+                                                                    monetización. Por ejemplo, el jugador
+◤ Streaming infinito: Cuando termina una                            puede omitir el tiempo de espera
+  canción o un vídeo, el siguiente comienza sin                     usando la moneda del juego (gemas,
+  interacción del usuario (un contenido simi-                       monedas). En este caso, el patrón
+  lar, el siguiente episodio, etc.). También se                     fomenta el compromiso.
+  suele combinar con recomendaciones algo-
+  rítmicas para ofrecer al usuario contenido                        Si los temporizadores son demasia-
+  personalizado con más probabilidades de                           do largos, demasiado frecuentes o
+  atraer su atención.                                               están relacionados con recursos que
+                                                                    los jugadores perciben como de “bajo
+◤ Temporizadores: Este patrón se basa en                            valor”, estos pueden sentirse frustra-
+  hacer que los usuarios esperen algo durante                       dos o perder el interés. Los diseñado-
+  un plazo arbitrario. Por ejemplo, algunos                         res de juegos deben lograr un equili-
+  juegos en línea hacen que los usuarios                            brio entre la anticipación y la molestia.
+  esperen una cantidad de tiempo antes de                           Perfilan a los jugadores según sus
+  completar una tarea. Las redes sociales a                         hábitos (duración de la sesión de juego,
+                                                                    momento de juego, frecuencia de
+  menudo también recompensan la partici-
+                                                                    juego, preferencias de juego, historial
+  pación constante: se anima a los usuarios a
+                                                                    de gastos, etc.) para optimizar todas
+  iniciar sesión durante un período de tiempo                       estas características.
+  arbitrario específico para ganar recompen-
+  sas o completar desafíos.
+
+
+
+ 17                                                                                Clasificación de patrones adictivos
+ Informe sobre las implicaciones de los patrones adictivos en el tratamiento de datos personales
+
+
+
+◤ Jugar con cita: Los usuarios no deciden                      □ Gamificación
+  cuándo conectarse o jugar, otros usuarios o
+  el proveedor deciden por ellos. Si un usua-                  Este enfoque está directamente relacionado
+  rio no se conecta o juega según esta “cita”                  con el compromiso, ya que se basa en ofrecer al
+  podría ser penalizado. Este patrón, como su                  usuario la posibilidad de jugar o competir, algo
+  nombre indica, suele encontrarse en video-                   habitualmente agradable para su cerebro.
+  juegos online. Pero las plataformas de con-
+  tenido para adultos pueden hacer que los                     ◤ Competencia guiada: Este patrón se basa
+  usuarios esperen a un nuevo contenido, las                     en el mecanismo fundamental de la gami-
+  redes sociales a una publicación específica                    ficación, fomentar la competencia contra
+  de un perfil destacado o al anuncio de una                     uno mismo, contra otros usuarios o contra
+  promoción. Los lanzamientos de contenido                       el algoritmo (competidor automatizado)
+  programados, transmisiones en vivo o even-                     para fomentar la sensación de logro o
+  tos especiales tienen efectos similares a las                  recompensa. En muchos casos, se plan-
+  citas para jugar: ventas flash, transmisiones                  tean objetivos muy difíciles que requieren
+  en directo de influencers, etc.                                a los usuarios estar conectados durante un
+                                                                 tiempo considerable para poder ganar las
+                                                                 competiciones propuestas o el juego en sí.
+      Ejemplo de jugar con cita:                                 O pagar por algún tipo de ayuda o ventaja.
+      Imaginemos una marca que realiza una                       Las redes sociales suelen proponer compe-
+      venta flash de 1 hora en una red social                    ticiones y retos. Pero este es un patrón muy
+      donde los usuarios pueden acceder a                        extendido en todos los productos digitales.
+      productos y descuentos exclusivos.
+      Los usuarios han tenido que interac-                        Los juegos de rol también son un patrón
+      tuar lo suficiente con la red social que                    extendido dentro de esta categoría, cuando
+      aloja la venta para conocer el horario                      los usuarios no compiten como ellos mismos
+      concreto de la promoción y conectarse                       sino como personajes ficticios o avatares.
+      durante ese tiempo para tener acceso a
+      los beneficios prometidos de antemano.
+      Si las ventas flash no se difunden lo sufi-                   Ejemplo de competencia
+      ciente entre su público objetivo y este                       guiada:
+      no se entera de que se producen, o tiene                      Imaginemos una plataforma de apren-
+      la información, pero el horario no les                        dizaje en línea que dispone de una
+      conviene en absoluto o no les motiva lo                       tabla de clasificación que muestra a
+      suficiente, las métricas de rendimiento                       los usuarios con mejor rendimiento en
+      de este patrón serán pobres.                                  función de puntos, insignias o tasas de
+      Los diseñadores de campañas deben                             finalización.
+      encontrar la manera de garantizar                             Se anima a los usuarios a competir por
+      suficiente compromiso, determinan-                            clasificaciones más altas, lo que puede
+      do cuándo y a quién se muestran                               motivarlos a participar con mayor
+      determinados contenidos. Perfilan a                           frecuencia o con mayor compromiso.
+      los usuarios de las redes sociales en                         También se pueden ofrecer recompen-
+      función de sus hábitos y preferencias                         sas económicas, directas (en forma
+      para optimizar todas esas característi-                       de dinero) o indirectas (en forma de
+      cas relativas a la difusión (quién recibe                     tarjetas regalo, premios materiales,
+      la información, cómo y cuándo) y a la                         dinero virtual). Los diseñadores de estas
+      propia campaña (cuánto dura y a qué                           plataformas deben lograr un equilibrio
+      hora, con qué frecuencia se hace, qué                         entre la competencia y la presión por
+      productos o descuentos se ofrecen y                           obtener un buen rendimiento. Perfilan
+      cómo se ofrecen).
+
+
+
+ 18                                                                                Clasificación de patrones adictivos
+ Informe sobre las implicaciones de los patrones adictivos en el tratamiento de datos personales
+
+
+
+                                                               ◤ Dotación (endowment): Cada vez que los
+      a los estudiantes según sus hábitos                        usuarios visitan la plataforma o utilizan la
+      (duración de la sesión, horario de                         aplicación o servicio, invirtiendo tiempo en
+      aprendizaje, frecuencia de aprendizaje,                    ella, mejoran su situación o reputación (pun-
+      preferencias, historial de rendimiento,                    tos, seguidores, trofeos, nivel, etc.). Esto les
+      etc.) y nivel de conocimiento para opti-
+                                                                 dificulta mucho desconectarse de la aplica-
+      mizar todas estas características.
+                                                                 ción o servicio, o incluso eliminar su cuenta,
+                                                                 porque perderían todo lo que han ganado
+                                                                 hasta el momento. Por ejemplo, si eliminas
+◤ Grinding y exposición innecesaria:                             tu cuenta en una red social, tendrás que
+  Se requiere que los usuarios realicen                          empezar de cero si vuelves a iniciar sesión
+  tareas fáciles o repetitivas, incluso sólo                     en el futuro. Muchos juegos tienen puntos
+  para estar conectados o expuestos a                            o ubicaciones específicas que los jugado-
+  algún contenido, para obtener puntos,                          res deben alcanzar antes de poder guardar
+  créditos o algún tipo de recompensa.                           de forma segura su progreso (sin perder sus
+  Por ejemplo, se pueden dar vidas                               logros) y dejar de jugar (a veces se le llama
+  extra a los usuarios si ven anuncios.                          patrón “No se puede parar ni guardar” en
+  Muchos juegos tienen un modo automati-                         este contexto).
+  zado que se puede jugar sin la intervención
+  del usuario y que mejora la situación o repu-                ◤ Recompensas periódicas: Algunas platafor-
+  tación del jugador (a través de recompen-                      mas, aplicaciones y servicios proporcionan
+  sas) simplemente manteniendo el juego en                       una recompensa la primera vez que se uti-
+  ejecución en el dispositivo.                                   lizan cada hora, día o semana, por ejemplo.
+                                                                 En cambio, si un usuario no se conecta en un
+                                                                 periodo concreto, se le penaliza. En algunos
+      Ejemplo de grinding:                                       casos, se establecen rachas y recompensas.
+      Imaginemos un videojuego de rol en                         Por ejemplo, la “semana perfecta” si se usa
+      una granja. El jugador, que hace de                        la aplicación todos los días durante una
+      granjero, necesita alimentar a los                         semana.
+      animales de la granja repetidamen-
+      te para progresar, aparentemente por
+      razones arbitrarias.                                     ◤ Completar la colección: Este patrón se
+                                                                 basa en ofrecer a los usuarios algo para
+      Cada nivel del juego obliga al jugador                     coleccionar, por ejemplo, insignias, tro-
+      a completar más ciclos de alimenta-
+                                                                 feos, skins. En general, diferentes tipos de
+      ción antes de poder avanzar hacia otras
+      tareas más divertidas que se proponen
+                                                                 objetos o personajes suelen tener diferen-
+      en el juego.                                               tes valores asociados. Obtener el 100% de
+                                                                 los artículos coleccionables implica un alto
+      Si la cantidad de tareas repetitivas
+                                                                 grado de compromiso con la aplicación o
+      requeridas es demasiado grande o se
+                                                                 servicio. En ocasiones se asocian los obje-
+      solicitan con demasiada frecuencia, los
+                                                                 tos coleccionables a programas de puntos,
+      jugadores pueden sentirse frustrados
+      o perder interés. Los diseñadores de                       que una vez obtenidos se pueden canjear.
+      juegos deben lograr un equilibrio entre                    Este patrón se utiliza a menudo en video-
+      el enganche y el aburrimiento. Perfilan                    juegos online pero también en aplicaciones
+      a los jugadores según sus hábitos                          de aprendizaje o de salud. Por ejemplo,
+      (duración de la sesión de juego, horario                   cuando los usuarios completan una deter-
+      de juego, frecuencia de juego, preferen-                   minada actividad obtienen una insignia.
+      cias de juego, etc.) para optimizar todas
+      estas características.
+
+
+
+
+ 19                                                                                Clasificación de patrones adictivos
+ Informe sobre las implicaciones de los patrones adictivos en el tratamiento de datos personales
+
+
+
+
+□ Captura de la atención
+
+Este enfoque está directamente relacionado                        usuarios. Normalmente, la reproducción
+con el tiempo, prolongando las sesiones de los                    automática comienza en el momento en
+usuarios, de manera que se capture su atención                    que el usuario se detiene el tiempo sufi-
+mediante diferentes métodos.                                      ciente en la página, fotograma, enlace, etc.
+
+◤ Reproducción automática: Este patrón                            Por ejemplo, esto sucede en muchas pla-
+  se basa en reproducir canciones o vídeos,
+                                                                  taformas de streaming de vídeo y en redes
+  o al menos versiones cortas que mues-
+                                                                  sociales.
+  tren un resumen, sin la intervención de los
+
+
+
+
+B. INGENIERÍA SOCIAL
+Esta categoría de alto nivel consiste en ofrecer a             llevarlos a tomar decisiones no intencionadas,
+los usuarios algo basado en sus sesgos cogniti-                involuntarias o incluso potencialmente dañinas
+vos o tendencias de comportamiento (anclaje,                   para ellos.
+aversión a la pérdida, etc.) para manipularlos y
+
+
+                               Escasez                                         Alta demanda
+
+                                                               Respaldo, reacción y recompensa social
+  INGENIERÍA SOCIAL
+
+
+
+
+                         Aprobación social                           Presión social o comparación
+
+                                                                       Notificaciones de actividad
+
+                                                               Mensajes de alerta y notificaciones push
+                              Urgencia
+                                                                               Cuenta atrás
+
+                                Culpa                                Mensajes por tiempo limitado
+
+                                                                          Regresión a la media
+                      Miedo a perderse algo
+                            (FOMO)
+                                                                       Refresco de la información
+
+                                                                             Confirmshaming
+
+                          Personalización                                  Conectores sociales
+
+                                                                    Recomendaciones algorítmicas
+
+
+ 20                                                                                Clasificación de patrones adictivos
+ Informe sobre las implicaciones de los patrones adictivos en el tratamiento de datos personales
+
+
+
+
+□ Escasez                                                      □ Aprobación social
+
+Este enfoque está relacionado con el tiempo y                  Este enfoque está relacionado con el tiempo y
+el compromiso, basado en crear una sensación                   el compromiso, basado en crear ilusiones de
+de disponibilidad limitada, lo que motiva a los                popularidad, credibilidad, consenso, respaldo
+usuarios a tomar medidas inmediatas.                           o cualquier indicio de que otros usuarios
+                                                               encuentran valor o importancia en lo que una
+◤ Alta demanda: Este patrón se basa en mos-                    persona hace o comparte.
+  trar una necesidad o deseo sustancial por
+  algo por parte de otros usuarios. El objetivo                ◤ Respaldo, reacción y recompensa social:
+  es fomentar decisiones apresuradas y una                       Este patrón se basa en estímulos que pro-
+  mayor participación al obligar a los usuarios                  vocan experiencias positivas que involu-
+  a intervenir en algo que a muchos otros les                    cran a otros usuarios, incluyendo una gran
+  gusta: los usuarios tienden a seguir lo que                    variedad de expresiones o gestos verbales
+  hacen los demás. Muchas redes sociales                         y no verbales como un elogio, una sonrisa,
+  muestran mensajes de disponibilidad limi-                      un pulgar hacia arriba, un aplauso, la buena
+  tada u ofrecen contenido sólo disponible                       reputación y todos sus equivalentes digi-
+  mediante invitación.                                           tales. Por ejemplo, el botón “Me gusta”, los
+                                                                 botones “Volver a publicar” y “Corazón”, etc.
+                                                                 Los usuarios también pueden enviar reac-
+      Ejemplo de alta demanda:                                   ciones al contenido, responder con mensa-
+                                                                 jes o imágenes, o hacer comentarios en casi
+      Imaginemos una red social que ofrece
+      un contenido exclusivo a un número                         todas las redes sociales. O hacerse seguido-
+      limitado de usuarios. Algunos usuarios                     res. También se pueden clasificar dentro de
+      pueden sentirse obligados a registrarse                    este patrón las lentes y filtros que se ofrecen
+      en cuanto vean cómo el número de invi-                     como herramienta o funcionalidad que per-
+      taciones disponibles disminuye rápi-                       mite alterar la apariencia, editar fotografías
+      damente a medida que pasa el tiempo,                       y videos, generar “máscaras” para persona-
+      aunque inicialmente no estuvieran inte-                    jes, etc.
+      resados.
+      Los diseñadores deben encontrar la
+                                                               ◤ Presión social o comparación: Este patrón
+      manera de garantizar suficiente partici-
+                                                                 está relacionado con el anterior, pero en este
+      pación. Perfilan a los usuarios de la red
+      social en función de sus hábitos y prefe-                  caso, se apela al aspecto negativo del ele-
+      rencias para optimizar todas aquellas                      mento social. Se basa en una competencia
+      características relativas a la difusión                    implícita, no propuesta directamente por el
+      (quién recibe la información, cómo y                       proveedor (como en la Competencia guiada)
+      cuándo) y al contenido exclusivo en sí                     sino provocada por la competitividad que se
+      (con qué frecuencia se ofrece, qué tipo                    puede generar entre los usuarios por tener
+      de contenido).                                             mejores estadísticas sociales (más Me gusta,
+                                                                 seguidores, etc.). En casi todas las redes
+                                                                 sociales los usuarios pueden ver, ya que sue-
+                                                                 len ser datos públicos por defecto, los segui-
+                                                                 dores que tienen otras cuentas o perfiles, los
+                                                                 comentarios e interacción que generan, etc.
+
+
+
+
+ 21                                                                                Clasificación de patrones adictivos
+ Informe sobre las implicaciones de los patrones adictivos en el tratamiento de datos personales
+
+
+
+◤ Notificaciones de actividad: Este patrón
+  se basa en mostrar anuncios de la activi-                         usuarios específicos (nuevos usuarios,
+  dad de los usuarios. Por ejemplo, “Alicia                         jóvenes, etc.). Pero otros usuarios
+                                                                    pueden sentirse molestos cuando ven
+  tiene una publicación nueva” en casi todas
+                                                                    muchas notificaciones.
+  las redes sociales, o “A Alicia le gustó esta
+  publicación”. En este caso, el patrón está                        Los diseñadores analizan los datos del
+                                                                    usuario que muestran el comporta-
+  directamente relacionado con el primero
+                                                                    miento, las preferencias, el uso habitual
+  de esta categoría, ya que lo que se suele                         o la ubicación, por ejemplo, para perso-
+  notificar es la recepción de algún tipo de                        nalizar el contenido y frecuencia de las
+  recompensa social, en tiempo real, de modo                        notificaciones y obtener los resultados
+  que se amplifica su impacto. Pero las noti-                       deseados en todos los casos.
+  ficaciones también se pueden utilizar para
+  comparar rachas de actividad con otros
+  usuarios (“Bob está publicando mucho esta
+  semana”) o para mostrar a los usuarios su
+                                                               □ Urgencia
+  falta de participación (“No has publicado en
+  mucho tiempo...”). Un tipo diferente de noti-
+                                                               Este enfoque está relacionado con el tiempo
+  ficación de actividad es la que se muestra
+                                                               y el compromiso, se basa en la generación de
+  en tiempo real dentro de las aplicaciones de
+                                                               falsa urgencia y aversión a la pérdida, con
+  mensajería notificando a los usuarios que su                 un impacto en la toma de decisiones de los
+  contacto está escribiendo (“…”, “está escri-                 usuarios bajo el pretexto de la emergencia.
+  biendo”). Aplicaciones de mensajería utili-
+  zan este patrón para mantener a los usuarios
+                                                               ◤ Mensajes de alerta y notificaciones push:
+  en la pantalla esperando una respuesta, por                    Este patrón se basa en proponer acciones
+  ejemplo.                                                       urgentes o mostrar advertencias que exage-
+                                                                 ran las consecuencias de no hacer algo para
+                                                                 presionar a los usuarios a realizar acciones
+      Ejemplo de notificaciones por                              específicas. Casi todas las redes sociales uti-
+      actividad:                                                 lizan este tipo de mensajes para alertar a los
+      Imaginemos una red social diseñada                         usuarios cuando reciben una comunicación
+      para producir notificaciones de activi-                    directa, por ejemplo.
+      dad sólo para actualizaciones de conte-
+      nido en las cuentas favoritas de los
+      usuarios, o sólo para actualizaciones
+      de contenido importantes (con interac-                        Ejemplo de mensajes de alerta:
+      ción por encima de un umbral). Pero,                          Imaginemos una red social diseñada
+      quizás, hay usuarios a los que les puede                      para producir, automáticamente, un
+      interesar conocer algún ligero cambio                         mensaje de alerta como recordatorio
+      en el perfil de alguien a quien siguen,                       del cumpleaños de un amigo.
+      en todos los contenidos nuevos, etc.
+      o desean una notificación “resumen”                           Los diseñadores analizan los contac-
+      cada cierto tiempo.                                           tos de los usuarios, recogen su fecha
+                                                                    de nacimiento y deciden el mejor
+      Los usuarios pueden personalizar, en
+                                                                    momento para producir el mensaje
+      algunos aspectos, el tipo de notifica-
+      ción que desean recibir. El resto de la
+                                                                    de alerta para este usuario específico.
+      configuración se realiza de forma auto-                       Si la alerta se repite porque el usuario
+      mática. Una frecuencia de notificación                        la ignora la primera vez, en ese caso
+      alta puede generar un mayor tiempo de                         deciden el texto que se incluye en las
+      conexión o compromiso entre grupos de                         siguientes alertas, etc.
+
+
+
+
+ 22                                                                                Clasificación de patrones adictivos
+ Informe sobre las implicaciones de los patrones adictivos en el tratamiento de datos personales
+
+
+
+◤ Cuenta atrás: Este patrón se basa en los mis-
+                                                               □ Culpa
+  mos principios que el anterior, pero muestra
+  una cuenta regresiva en unidades fijas a
+                                                               Este enfoque está relacionado con el tiempo y el
+  partir de un número inicial arbitrario para
+                                                               compromiso, se basa en inducir sentimientos
+  marcar el tiempo que queda antes de un
+                                                               de culpa o vergüenza en los usuarios.
+  evento. Diferentes plataformas, aplicaciones
+  y servicios utilizan este tipo de temporizado-
+                                                               ◤ Mensajes por tiempo limitado: Este patrón
+  res antes de una venta flash, un directo o el
+                                                                 se basa en ofrecer a los usuarios una ven-
+  vencimiento de una fecha límite como una
+                                                                 tana de oportunidad limitada para realizar
+  racha que se rompe si el usuario no inicia
+                                                                 acciones específicas. Puede estar relacio-
+  sesión o no completa una tarea.
+                                                                 nado con Alta demanda, Mensajes de alerta,
+                                                                 Cuenta atrás o patrones dentro de la cate-
+                                                                 goría Miedo a perderse algo. Pero, en este
+      Ejemplo de cuenta atrás:                                   caso, cuando no se aprovecha la ventana
+      Imaginemos una plataforma de apren-                        de oportunidad, se utiliza principalmente
+      dizaje diseñada para mostrar a los                         la culpa con mensajes como “Tus amigos te
+      usuarios un cronómetro de cuenta                           han echado de menos”, “Tus seguidores han
+      atrás con el tiempo que les queda                          estado esperando tu respuesta”, “Te perdiste
+      para completar una lección o aprobar                       algo importante”, etc.
+      un examen si no quieren perder una
+      insignia o cualquier otra recompensa
+      en juego.
+      Una alta frecuencia de uso de este                            Ejemplo de mensajes por
+      patrón puede generar un mayor                                 tiempo limitado:
+      tiempo de conexión o compromiso
+                                                                    Imaginemos una red social donde los
+      entre grupos de usuarios específicos
+      (nuevos usuarios, estudiantes compro-                         mensajes y el contenido compartido
+      metidos, etc.). Pero otros usuarios                           sólo están disponibles durante un breve
+      pueden sentirse molestos cuando ven                           periodo de tiempo antes de volverse
+      los temporizadores de cuenta atrás con                        inaccesibles.
+      demasiada frecuencia.                                         Si el destinatario de este tipo de
+      Los diseñadores analizan los datos del                        mensajes efímeros no los lee o los abre
+      usuario mostrando comportamiento,                             a tiempo, el emisor, creador o remitente
+      preferencia, uso habitual o ubicación,                        lo sabrá.
+      por ejemplo, para personalizar el uso
+                                                                    Los diseñadores analizan los datos del
+      de este patrón y obtener los resultados
+      deseados en todos los casos.                                  usuario que muestran el comporta-
+                                                                    miento, las preferencias, el uso habitual
+                                                                    o la ubicación, por ejemplo, para perso-
+                                                                    nalizar el uso de este patrón y obtener
+                                                                    los resultados deseados en todos los
+                                                                    casos.
+                                                                    La decisión principal en este patrón
+                                                                    es la longitud óptima de la ventana de
+                                                                    tiempo para cada usuario/contenido.
+
+
+
+
+ 23                                                                                Clasificación de patrones adictivos
+ Informe sobre las implicaciones de los patrones adictivos en el tratamiento de datos personales
+
+
+
+
+□ Miedo a perderse algo
+
+Este enfoque (FOMO en inglés, Fear Of Missing                  ◤ Refresco de la información: Este patrón
+Out) se basa en explotar la ansiedad o malestar                  se basa en la actualización constante de los
+causado por el miedo de que otros estén expe-                    contenidos, en tiempo real o streaming. El
+rimentando algo más interesante en otro lugar.                   usuario percibe que en el tiempo que pase
+Este miedo lleva a los usuarios a permanecer                     desconectado perderá todas aquellas actua-
+conectados constantemente (enfoque relacio-                      lizaciones entre las que seguramente habrá
+nado con el tiempo), por temor a perderse algo                   alguna interesante o importante. Casi todas
+importante.                                                      las redes sociales utilizan este patrón, com-
+                                                                 binado con recomendaciones algorítmicas
+◤ Regresión a la media: Este patrón se basa                      para ofrecer el contenido adecuado a cada
+  en ofrecer a los usuarios el contenido más                     usuario.
+  popular o viral en diferentes momentos y
+  ubicaciones, de modo que, aunque lo con-
+  suman repetidamente, les parezca positivo
+                                                                    Ejemplo de refresco de la infor-
+  porque así tienen la garantía de no perdér-
+                                                                    mación:
+  selo. Casi todas las redes sociales utilizan
+  este patrón, repitiendo contenidos específi-                      Imaginemos una red social donde la
+  cos para asegurarse de que los usuarios ten-                      línea de tiempo de los usuarios se actua-
+  gan la oportunidad de verlos y prestarles la                      liza automáticamente cada minuto y un
+                                                                    contador indica la cantidad de publica-
+  suficiente atención.
+                                                                    ciones nuevas o contenidos que no han
+                                                                    sido vistos aún.
+
+    Ejemplo regresión a la media:                                   Un buen uso de este patrón puede
+                                                                    conllevar un mayor tiempo de conexión
+    Imaginemos una red social donde se                              o compromiso entre grupos de usuarios
+    ofrece el contenido más popular entre                           específicos. Pero otros usuarios pueden
+    el resto de los contenidos, pero se                             sentirse abrumados por la velocidad de
+    repite periódicamente, por ejemplo, a                           actualización de la información. Incluso
+    lo largo de 24 horas. Siempre etiqueta-                         mediante la actualización automática,
+    do como “tendencia”. Además, existe                             porque si es demasiado rápida puede
+    una pestaña específica para este tipo de                        interrumpirlos a la hora de disfrutar de
+    contenidos que resume lo que es más                             algún contenido.
+    popular en esta red en este momento.
+                                                                    Los diseñadores analizan los datos del
+    Un buen uso de este patrón puede                                usuario mostrando comportamiento,
+    conllevar un mayor tiempo de conexión                           preferencia, uso habitual o ubicación,
+    o compromiso entre grupos de usuarios                           por ejemplo, para personalizar el uso
+    específicos. Pero otros usuarios pueden                         de este patrón y obtener los resultados
+    sentirse molestos o aburridos si ven                            deseados en todos los casos. Las prin-
+    el mismo contenido con demasiada                                cipales decisiones en este caso son la
+    frecuencia.                                                     frecuencia de refresco y la configuración
+    Los diseñadores analizan los datos del                          del refresco automático por defecto.
+    usuario mostrando comportamiento,                               Además, la inclusión de contadores o
+    preferencia, uso habitual o ubicación,                          etiquetas llamando la atención sobre
+    por ejemplo, para personalizar el uso                           contenidos nuevos o no vistos.
+    de este patrón y obtener los resultados
+    deseados en todos los casos.
+
+
+
+
+ 24                                                                                Clasificación de patrones adictivos
+ Informe sobre las implicaciones de los patrones adictivos en el tratamiento de datos personales
+
+
+
+
+□ Personalización
+
+El éxito de la mayoría de los patrones que                     ◤ Conectores sociales: Este patrón se basa
+dependen de datos personales está en perso-                      en hacer más agradables las experiencias
+nalizar la configuración de ese patrón para                      online compartiéndolas con amigos o fami-
+encontrar el equilibrio perfecto que haga que                    liares. Además, algunos proveedores ofre-
+el usuario permanezca conectado el mayor                         cen a los usuarios una recompensa cuando
+tiempo posible con el mayor grado de compro-                     invitan a nuevos usuarios o se vinculan con
+miso posible sin sentirse molesto por estos                      ellos desde sus cuentas (esquemas pirami-
+patrones. La personalización se puede ofrecer                    dales sociales). Además, la conexión social
+de diferentes formas.                                            amplifica el impacto de los patrones en las
+                                                                 categorías de Aprobación social, Culpa y
+◤ Confirmshaming: Este patrón está fuerte-                       Miedo a perderse algo (FOMO). Casi todas las
+  mente relacionado con la categoría Culpa,                      redes sociales ofrecen la funcionalidad de
+  pero se ha incluido aquí porque se basa en                     recuperar los contactos de los usuarios de
+  la personalización manipulativa, en el uso                     sus libretas de direcciones y de otras redes
+  del lenguaje emocional (a menudo combi-                        o repositorios. También para localizarlos
+  nado con el patrón de Lenguaje persuasivo)                     en la red, e invitarlos si aún no tienen una
+  y la presión psicológica sobre un usuario                      cuenta. Todas estas funciones se ofrecen
+  específico que confirma una acción o tarea                     periódicamente para que los contactos en
+  específica en un contexto específico. Dife-                    línea se actualicen al mismo ritmo que las
+  rentes aplicaciones de aprendizaje y salud                     relaciones en la vida real. Combinado con
+  utilizan este patrón, por ejemplo “¿Te vas                     recomendaciones algorítmicas, este patrón
+  tan pronto?” cuando la sesión del usuario es                   ofrece nuevos contactos. Con Mensajes de
+  más corta de lo habitual. Las redes sociales                   alerta y Notificaciones push, avisa cuando
+  y los juegos online también se basan en este                   un contacto que puede interesar al usuario
+  patrón.                                                        se une a la red, por ejemplo.
+
+
+
+      Ejemplo de confirmshaming:                                    Ejemplo de conectores
+      Imaginemos un videojuego diseñado                             sociales:
+      para hacer que el jugador se sienta                           Imaginemos una red social diseñada
+      culpable o avergonzado al rechazar                            para mantener a los usuarios en
+      la invitación de otros jugadores para                         contacto con sus amigos y familiares,
+      unirse a ellos en una partida.                                de manera que se pueda compartir
+      Los diseñadores analizan los datos del                        con todos ellos el día a día, los eventos
+      usuario que muestran el comporta-                             importantes, etc.
+      miento, las preferencias, el uso habitual                     Para ello, tanto en la creación de la
+      o la ubicación, por ejemplo, para perso-                      cuenta como después de ese momento,
+      nalizar el uso de este patrón y obtener                       ofrece multitud de mecanismos estáti-
+      los resultados deseados en todos los                          cos y dinámicos que permiten obtener
+      casos. La decisión principal es en qué                        datos para localizar a amigos y familia-
+      acciones o tareas está indicado utilizar                      res en esa misma red.
+      el patrón y cómo combinarlo con otros,
+                                                                    Los datos necesarios para localizar a
+      como el relacionado con el uso del
+                                                                    los contactos más cercanos de cada
+      lenguaje, para amplificar sus efectos.
+                                                                    usuario y permitir su conexión en la red.
+
+
+
+
+ 25                                                                                Clasificación de patrones adictivos
+     Informe sobre las implicaciones de los patrones adictivos en el tratamiento de datos personales
+
+
+
+◤ Recomendaciones algorítmicas:
+      Este patrón suele combinarse con muchos                         Diferentes algoritmos de recomendación
+      de los ya mencionados, porque se basa en                        intentan optimizar distintas métricas36:
+      personalizar las experiencias de los usuarios                   medias ponderadas de todos los tipos de
+      para aumentar su participación. Por tanto, las                  interacción que puede tener un contenido;
+      recomendaciones algorítmicas refuerzan el                       el tiempo de visualización esperado, una
+      comportamiento del usuario, amplificando                        combinación de Me gusta, comentarios y
+      el impacto del resto de patrones adictivos.                     tiempo de reproducción, etc. Por ejemplo,
+      Las recomendaciones suelen basarse en                           el recomendador puede centrarse en
+      comportamientos pasados, perfiles de los                        recomendar contenidos que se predice que
+      usuarios (hábitos, preferencias) y temas                        será muy probable que le gusten al usuario
+      de actualidad. Su objetivo es recomendar                        en el momento en que se prevé que va a
+      contenidos,     conexiones     sociales      o                  cerrar sesión, intentando así extender su
+      actividades específicas.                                        duración.
+
+      Antes de la introducción de las recomen-
+      daciones algorítmicas, los usuarios tenían
+      que explorar de forma autónoma plataformas,
+                                                                        Ejemplo de recomendaciones
+                                                                        algorítmicas:
+      aplicaciones y servicios, encontrando por
+      sí mismos las funcionalidades, contactos                          Imaginemos una red social donde los
+      o contenidos que más les gustaban. Las                            usuarios ven publicaciones y conte-
+      recomendaciones algorítmicas influyen                             nido recomendado por un algoritmo,
+      mucho en la toma de decisiones de los                             predicho como el contenido que más
+      usuarios, con un énfasis específico en el                         les gustará.
+      tiempo y el compromiso.                                           Los diseñadores definen una métrica
+                                                                        de engagement e intentan optimizar
+      Este es el patrón que hace un uso más                             su valor ofreciendo a cada usuario, con
+      intensivo de los datos personales, ya que                         todo el conocimiento posible acumu-
+      cuanto más conozcan los proveedores                               lado sobre él, aquellos contenidos que
+      sobre el usuario, en todas las dimensiones                        predicen el máximo compromiso en
+      posibles, más adaptadas (a su gusto) serán                        cada momento.
+      las recomendaciones y más efectivas serán
+      para aumentar el tiempo de conexión y
+      grado de compromiso. Todas las redes
+      sociales utilizan este tipo de recomendación
+      algorítmica, también plataformas de
+      streaming, servicios de aprendizaje en
+      línea, etc.
+
+
+
+
+36
+     Narayanan, A. (2023). Understanding Social Media Recommendation Algorithms
+     https://academiccommons.columbia.edu/doi/10.7916/khdk-m460
+
+
+
+
+     26                                                                                Clasificación de patrones adictivos
+ Informe sobre las implicaciones de los patrones adictivos en el tratamiento de datos personales
+
+
+
+
+C. INTERFERENCIA EN LA INTERFAZ
+Esta categoría de alto nivel consiste en manipu-               la atención del usuario sobre contenidos o acti-
+lar la interfaz de usuario para promover unas                  vidades específicas.
+acciones específicas sobre otras o para llamar
+
+
+
+
+                           Manipulación
+                                                                                Misdirection
+                             estética
+ INTERFERENCIA
+ DE LA INTERFAZ
+
+
+
+
+                                                                           Lenguaje persuasivo
+
+
+
+                          Manipulación
+                                                                          Sobrecarga cognitiva
+                         de las emociones
+
+
+
+                                                                         Reducción de la fricción
+
+
+
+
+□ Manipulación estética
+
+Este enfoque se basa en alterar el diseño visual               ◤ Misdirection: Este patrón se basa en el uso
+para engañar a los usuarios, enfatizando ciertos                 de colores, fuentes o diseños para mani-
+elementos y restando importancia a otros.                        pular el comportamiento de los usuarios,
+Esto se puede utilizar para mantener a los                       centrando su atención en un elemento muy
+usuarios conectados por más tiempo o para                        específico en cada momento. Se usa habi-
+aumentar su compromiso.                                          tualmente para ayudar a otros patrones a
+                                                                 tener éxito, llamando la atención del usuario
+                                                                 sobre elementos relacionados con FOMO,
+                                                                 Personalización, etc. Es habitual modificar el
+                                                                 diseño de la interfaz con alta frecuencia para
+                                                                 que el usuario preste atención a nuevas fun-
+                                                                 cionalidades o aquellas que más le intere-
+                                                                 san al proveedor en ese momento. Además,
+                                                                 muchos proveedores omiten intencionada-
+                                                                 mente el concepto de hora/tiempo cuando
+                                                                 los usuarios están conectados a sus platafor-
+                                                                 mas, aplicaciones o servicios, por ejemplo,
+                                                                 no mostrando relojes o la fecha.
+
+
+ 27                                                                                Clasificación de patrones adictivos
+ Informe sobre las implicaciones de los patrones adictivos en el tratamiento de datos personales
+
+
+
+
+□ Manipulación de las emociones
+
+Este enfoque se basa en explotar las vulnerabi-                ◤ Sobrecarga cognitiva: Este patrón se basa
+lidades psicológicas del usuario con respecto a                  en abrumar al usuario con demasiada infor-
+sus sentimientos y emociones. Puede estar rela-                  mación, contenidos y distracciones, con
+cionado con el tiempo o con el compromiso.                       demasiadas opciones simultáneamente,
+                                                                 influyendo en su capacidad cognitiva. Esto
+◤ Lenguaje persuasivo: Este patrón se basa                       le facilita perder la noción del tiempo o la
+  en el uso de palabras, frases o técnicas de                    capacidad de evaluar las consecuencias
+  comunicación conocidas por su capacidad                        de sus decisiones. Por ejemplo, casi todas
+  de influir en los pensamientos, emociones o                    las redes sociales ofrecen efectos visuales
+  acciones de los individuos. Ejemplos de len-                   como filtros, lentes, stickers, etc. Se puede
+  guaje persuasivo incluyen presión emocional                    considerar Personalización también, pero
+  (“¡Conéctate ahora!”), promesas engañosas                      para la mayoría de los usuarios el tiempo de
+  (“Esto te convierte en una mejor persona”)                     conexión se prolonga por este otro efecto de
+  o manipulación de alternativas (“Publicar                      sobrecarga cognitiva.
+  ahora” frente a “Continuar sin publicar”).
+                                                               ◤ Reducción de la fricción: Este patrón se
+                                                                 basa en hacer que el uso de plataformas,
+                                                                 aplicaciones y servicios sea fácil y fluido.
+                                                                 En concreto, en relación con los procesos
+                                                                 que mantienen conectados a los usuarios o
+                                                                 aumentan su compromiso.
+
+
+
+D. PERSISTENCIA
+Esta categoría de alto nivel consiste en explotar
+el impulso humano innato de terminar las
+tareas iniciadas.
+    PERSISTENCIA
+
+
+
+
+                                                                             Previsualización
+
+
+
+                         Efecto Zeĭgarnik /
+                                                                            Barras de progreso
+                         Efecto Ovsiankina
+
+
+
+                                                                           Microinterrupciones
+
+
+
+
+ 28                                                                                Clasificación de patrones adictivos
+ Informe sobre las implicaciones de los patrones adictivos en el tratamiento de datos personales
+
+
+
+
+□ Efecto Zeĭgarnik / Efecto Ovsiankina
+
+Este enfoque se basa en el que el usuario perciba              ◤ Barras de progreso: Este patrón se basa
+que tiene tareas sin terminar, en ayudar a                       en permitir a los usuarios saber cuánto les
+generar en el usuario cierto malestar porque                     falta para completar una tarea. Una vez que
+estas tareas permanecen en su cerebro por más                    saben que algo está “a medio hacer”, es más
+tiempo que en el caso de las tareas terminadas.                  probable que dediquen el tiempo necesario
+Estos efectos pueden explotarse para aumentar                    para terminarlo.
+el tiempo de conexión y el compromiso de los
+usuarios.                                                      ◤ Microinterrupciones: Este patrón se basa
+                                                                 en el uso de anuncios, mensajes, pop-ups,
+◤ Lenguaje persuasivo: Este patrón se basa                       etc. que pueden provocar que los usua-
+  en permitir que los usuarios comiencen a                       rios sufran microinterrupciones durante su
+  consumir el contenido o el artículo. Luego,                    conexión que les hagan saltar de un sitio o
+  desean completar la tarea, se genera en ellos                  contenido a otro. En algún momento, será
+  cierta tensión hasta que no lo realizan.                       necesario recuperar el camino seguido para
+                                                                 terminar de consumir todo el contenido o las
+                                                                 tareas que quedaron inconclusas.
+
+
+
+
+4.
+              IMPLICACIONES PARA
+              LA PROTECCIÓN DE DATOS
+El análisis realizado en las secciones anterio-                realizados para proveer servicios o productos
+res muestra cómo los tratamientos de los datos                 digitales) podría resultar en recoger más datos
+personales de los usuarios en numerosas plata-                 personales o en tratarlos con un alcance mayor.
+formas, aplicaciones y servicios incluyen opera-               El tratamiento de datos personales que realiza
+ciones específicas para aumentar su tiempo de                  el proveedor de la plataforma, aplicación o
+conexión o su nivel de compromiso, de manera                   servicio se especifica en los términos y condi-
+que se influya en sus decisiones y que se utilicen             ciones del servicio o en su política de priva-
+sus datos personales con este fin o para generar               cidad, y tiene una o varias bases jurídicas que
+nuevos datos y realizar focalización. Todas estas              lo legitiman. Pero las operaciones relaciona-
+operaciones tienen diferentes implicaciones                    das con los patrones adictivos se producen
+para la protección de datos que se discuten en                 dentro del marco de dicho tratamiento. El
+esta sección.                                                  patrón adictivo no se ejecuta de forma aislada,
+                                                               sino que implica operaciones adicionales que
+Como ya se ha comentado con anterioridad, a                    determinan la forma en la que se ejecuta el
+mayor tiempo de conexión y nivel de compro-                    tratamiento, de manera que se prolongue en
+miso, más datos personales puede recoger el                    el tiempo, que genere más datos, que condicio-
+proveedor. Esto significa que, además de que                   ne las decisiones del usuario, etc. Y, entre sus
+algunos patrones adictivos se alimentan con                    consecuencias, se generan nuevos riesgos para
+datos personales, el resultado de incluir este                 los derechos y libertades de los usuarios o los
+tipo de operaciones en los tratamientos (los                   ya existentes se agravan.
+
+
+
+
+ 29                                                                         Implicaciones para la protección de datos
+ Informe sobre las implicaciones de los patrones adictivos en el tratamiento de datos personales
+
+
+
+En la Tabla 1 se resume la clasificación de                    ◤ Proporcionados por fuentes externas:
+patrones adictivos propuesta en la sección                       Datos del usuario, Comportamiento del
+anterior. Para cada patrón, se proporciona una                   usuario o Hábitos y preferencias del usuario
+estimación de la intensidad del consumo de                       provenientes de terceros fuera de la plata-
+datos personales, de su capacidad para recoger                   forma, por ejemplo, intermediarios de datos
+o generar datos personales y de los potenciales                  o proveedores de gestión de datos.
+incumplimientos del RGPD.
+                                                               ◤ Inferidos por el proveedor: Asunciones e
+Al elaborar esta tabla, se ha introducido el                     interpretaciones derivadas de las tres cate-
+concepto de “Intensidad de consumo de datos                      gorías de datos anteriores con métodos de
+personales” como el grado o extensión en el                      inferencia estadística, aprendizaje automá-
+que un patrón específico depende de datos                        tico o Inteligencia Artificial, por ejemplo.
+personales para lograr sus objetivos. NA signifi-
+ca No Aplica, porque en principio ese patrón no
+                                                               Pero hay que tener en cuenta que algunos de
+necesita consumir datos personales para funcio-
+                                                               estos tipos no sólo se tratan como entrada de
+nar correctamente, los símbolos +, ++ y +++ se
+                                                               los patrones adictivos, sino que se pueden
+han empleado para indicar intensidad baja,
+                                                               producir como salida o resultado de dichos
+media alta respectivamente. Se puede observar
+                                                               patrones. Gracias a las reacciones observadas
+que los patrones dentro de las categorías Acción
+                                                               en el usuario ante ciertas características de
+Forzada e Ingeniería Social consumen datos
+                                                               diseño o a un tiempo de conexión o un grado de
+personales de los usuarios para lograr sus obje-
+                                                               compromiso mayor el proveedor podría recoger
+tivos. Algunos de ellos de forma intensiva, como
+                                                               o inferir datos que de otra manera no hubiera
+es el caso, por ejemplo, de las recomendaciones
+                                                               podido recoger o inferir. Es un resultado directo
+algorítmicas.
+                                                               de la utilización de patrones adictivos.
+Los datos personales tratados en este contexto
+                                                               La columna “Capacidad de recogida o genera-
+de patrones adictivos pueden ser de cuatro
+                                                               ción de datos personales” de la Tabla 1 refleja
+tipos:
+                                                               justo este tipo de salida o resultado.
+◤ Proporcionados activa o directamente por
+  el usuario: Datos del usuario mencionados                    Por ejemplo, si se analizan los patrones de
+  en la sección II, información proporcionada                  Acción forzada, un usuario puede proporcionar
+  al crear una cuenta, al escribir un perfil, a                directamente datos personales al proveedor
+  través de un formulario de contacto, etc.                    para participar en una venta flash, recibir una
+  como nombre, edad, género o dirección de                     recompensa periódica o completar una colec-
+  correo electrónico.                                          ción.
+
+◤ Proporcionados pasiva o indirectamente                       También puede proporcionarlos indirectamen-
+  por el usuario: Huella única de conexión                     te; por ejemplo, el proveedor puede recoger su
+  mencionada en la sección II, información                     velocidad de lectura analizando su forma de
+  proporcionada durante la interacción con la                  interactuar con un patrón Pull to refresh o Scro-
+  plataforma, aplicación o servicio relativa a                 lling infinito. Una fuente externa puede propor-
+  dispositivos, navegadores, direcciones IP o                  cionar datos a un proveedor, por ejemplo,
+  geolocalización. Pero también, el Comporta-                  gracias a un patrón de Reproducción automáti-
+  miento del usuario y los Hábitos y preferen-                 ca, acerca de los contenidos que más interesan
+  cias del usuario, como el contenido creado,                  al usuario o acerca de los horarios en los que
+  compartido o que le gusta, contactos reali-                  está más dispuesto a consumir cierto tipo de
+  zados o consentimientos otorgados, dura-                     contenidos.
+  ción de las sesiones, días y horas a las que se
+  conecta, etc.
+
+
+ 30                                                                         Implicaciones para la protección de datos
+ Informe sobre las implicaciones de los patrones adictivos en el tratamiento de datos personales
+
+
+
+En cuanto al proveedor, un patrón basado en                    El tratamiento de los datos personales de un
+Temporizadores puede permitirle hacer infe-                    sujeto por parte del proveedor de una platafor-
+rencias acerca de su paciencia o de su capaci-                 ma, aplicación o servicio del que es usuario para
+dad para la frustración, uno de Competencia                    aumentar la probabilidad de éxito de patrones
+guiada, acerca de su agresividad o competiti-                  adictivos se debe enmarcar en el tratamiento
+vidad. Mientras que un contenido programa-                     global de datos personales que ese proveedor
+do (Jugar con cita) puede permitirle inferir los               realiza dentro de la relación que tengan esta-
+horarios en los que tiene mayor disponibilidad.                blecida. Las operaciones que alimentan a los
+                                                               patrones adictivos con datos personales, o que
+Los aspectos incluidos en la columna “Posibles                 recogen o infieren datos gracias a ellos, son sólo
+incumplimientos del RGPD” se desarrollan a                     un subconjunto de todas las que forman parte
+continuación de manera detallada e individual.                 de dicho tratamiento global.
+
+En general, la normativa en materia de protec-                 Estas operaciones en concreto no tienen un
+ción de datos, en concreto el RGPD, establece                  propósito legítimo porque implican vulnerar
+que los fines para los que se tratan los datos                 derechos y libertades fundamentales de los
+personales deben ser explícitos y legítimos y                  usuarios, como la dignidad humana o la integri-
+determinados en el momento de la recogida de                   dad de la persona (tanto física como psíquica).
+los datos personales.
+
+
+
+
+                                                               Hay que considerar que el tratamiento de datos
+                                                               personales en patrones adictivos puede socavar
+                                                               la autonomía, la capacidad de obrar y la libertad
+                                                               individual.
+
+
+
+
+ 31                                                                         Implicaciones para la protección de datos
+ Informe sobre las implicaciones de los patrones adictivos en el tratamiento de datos personales
+
+
+
+                                                                Intensidad
+                                                                             Capacidad de recogida      Posibles
+Patrones            Patrones             Patrones               de consumo
+                                                                             o generación de datos      inclumplimientos
+a alto nivel        a nivel medio        a bajo nivel           de datos
+                                                                             personales                 de RGPD
+                                                                personales
+
+                                         Pull to refresh        NA           Proporcionados activa      Responsabilidad proacti-
+                                                                             o directamente por el      va (accountability)
+                                         Scrolling infinito     NA           usuario
+
+                    Continuidad                                                                         Protección de datos
+                                         Streaming infinito     NA           Proporcionados pasiva      desde el diseño y por
+                    forzada
+                                                                             o indirectamente por el    defecto
+                                         Temporizadores         +            usuario
+
+                                         Jugar con cita         +                                       Transparencia
+                                                                             Proporcionados por
+                                         Competición guiada     +            fuentes externas
+ACCIÓN                                                                                                  Licitud
+FORZADA                                  Grinding y exposi-
+                                                                +            Inferidos por el provee-
+                                         ción innecesaria
+                                                                             dor                        Lealtad
+                    Gamificación         Dotación               NA
+
+                                         Recompensas                                                    Limitación de la finalidad
+                                                                NA
+                                         periódicas
+                                         Completar la                                                   Minimización de datos
+                                                                NA
+                                         colección
+                    Captura de           Reproducción                                                   Tratamiento de categorías
+                                                                NA
+                    la atención          automática                                                     especiales de datos
+                    Escasez              Alta demanda           ++
+                                                                                                        Decisiones individuales
+                                         Respaldo, reacción y                                           automatizadas, incluida
+                                                                NA
+                                         recompensa social                                              la elaboración de perfiles
+                                         Presión social o
+                    Aprobación social                           NA
+                                         comparación
+                                         Notificaciones
+                                                                ++
+                                         de actividad
+                                         Mensajes de alerta y
+                                                                ++
+                    Urgencia             notificaciones push
+INGENIERÍA                               Cuenta atrás           ++
+SOCIAL                                   Mensajes por tiempo
+                    Culpa                                       ++
+                                         limitado
+
+                                         Regresión a la media   ++
+                    Miedo a perderse
+                    algo (FOMO)          Refresco de la
+                                                                ++
+                                         información
+
+                                         Confirmshaming         ++
+
+                    Personalización      Conectores sociales    ++
+                                         Recomendaciones
+                                                                +++
+                                         algorítmicas
+                    Manipulación
+                                         Misdirection           NA
+                    estética
+
+                                         Lenguaje persuasivo    NA
+INTERFERENCIA
+EN LA INTERFAZ      Manipulación de      Sobrecarga cognitiva   NA
+                    las emociones
+                                         Reducción de
+                                                                NA
+                                         la fricción
+                                         Previsualización       NA
+                    Efecto Zeĭgarnik /                                                                                 Tabla 1
+PERSISTENCIA        Efecto Ovsiankina
+                                         Barras de progreso     NA
+                                                                                Clasificación de patrones adictivos y aspectos
+                                         Microinterrupciones    NA                           relativos a la protección de datos
+
+
+
+
+32                                                                             Implicaciones para la protección de datos
+     Informe sobre las implicaciones de los patrones adictivos en el tratamiento de datos personales
+
+
+
+
+A. RESPONSABILIDAD PROACTIVA ( ACCOUNTABILITY )
+Según el artículo 24, apartado 1 del RGPD, los                        niños y también en otros grupos vulnerables de
+responsables del tratamiento deben aplicar                            personas39. La revisión sistemática de la eviden-
+medidas técnicas y organizativas apropiadas a                         cia científica existente realizada por la AEPD
+fin de garantizar y poder demostrar que el trata-                     sobre patrones adictivos concluye la existen-
+miento es conforme con el Reglamento, estas                           cia del riesgo que, para los derechos y liberta-
+medidas deben tener en cuenta los riesgos                             des de las personas físicas, podrían implicar
+de diversa probabilidad y gravedad para los                           los patrones adictivos, que podría ser mucho
+derechos y libertades de las personas físicas.                        más alto para colectivos concretos como la
+                                                                      infancia. Estos riesgos deben abordarse y difí-
+El CEPD ya estableció que “la referencia a «los                       cilmente pueden superar con éxito la evalua-
+derechos y libertades» de los interesados atañe                       ción requerida de necesidad y proporcionalidad
+principalmente a los derechos a la protección                         establecida en el artículo 35, apartado 7, letra b)
+de datos y a la intimidad, pero también puede                         del RGPD.
+implicar otros derechos fundamentales como
+la libertad de expresión, la libertad de pensa-                       Los riesgos para el derecho a la integridad
+miento, la libertad de circulación, la prohibición                    física y psíquica son los más obvios, pero no
+de discriminación, el derecho a la libertad y la                      son los únicos. Otros derechos podrían estar en
+libertad de conciencia y de religión”37. A su vez,                    riesgo por la focalización (addressability) nece-
+que “El enfoque basado en el riesgo va más allá                       saria para el funcionamiento de los patrones
+de un estrecho «enfoque basado en el daño» que                        adictivos.
+se concentra únicamente en el perjuicio produ-
+cido y debe tener en cuenta todos los efectos                         Las Directrices 8/2020 sobre la focalización de
+adversos potenciales y reales, evaluados a una                        los usuarios de medios sociales del CEPD40 ya
+escala muy amplia que va desde un impacto                             hacían un primer análisis de los posibles riesgos
+en la persona afectada por el tratamiento en                          para los derechos y libertades de las personas
+cuestión hasta un impacto social general (por                         sin pretender ofrecer una lista exhaustiva en
+ejemplo, pérdida de confianza social)”.38                             su apartado 3. La guía establecía que la foca-
+                                                                      lización de usuarios de redes sociales puede
+El CEPD señaló además en sus directrices2 los                         implicar usos de los datos personales que van
+riesgos que suponen todos los patrones enga-                          en contra o más allá de las expectativas razo-
+ñosos para los derechos y libertades de los                           nables de las personas y, por tanto, infringe
+interesados. En concreto, el CEPD afirmó que                          los principios y las normas de protección de
+es esencial tener en cuenta que los patrones                          datos, pudiendo implicar una inferencia de
+de diseño engañosos plantean preocupacio-                             intereses u otras características, socavando el
+nes adicionales sobre el posible impacto en los                       control sobre sus datos personales, además
+
+
+
+37
+   Capítulo II de las Directrices del Grupo de trabajo sobre Protección de Datos del Artículo 29 sobre la evaluación de impacto
+   relativa a la protección de datos (EIPD) y para determinar si el tratamiento «entraña probablemente un alto riesgo» a efectos del
+   Reglamento (UE) 2016/679. Adoptadas el 4 de abril de 2017. https://ec.europa.eu/newsroom/article29/items/611236
+38
+   Párrafo 11 del Article 29 Data Protection Working Party “Statement on the role of a risk-based approach in data protection legal
+   frameworks”. Adopted on 30 May 2014. https://ec.europa.eu/justice/article-29/documentation/opinion-recommendation/
+   files/2014/wp218_en.pdf
+39
+   EDPB Guidelines 03/2022 on Deceptive design patterns in social media platform interfaces: how to recognise and avoid them.
+   Version 2.0. Adopted on 14 February 2023 https://www.edpb.europa.eu/system/files/2023-02/edpb_03-2022_guidelines_on_
+   deceptive_design_patterns_in_social_media_platform_interfaces_v2_en_0.pdf
+40
+   Directrices 8/2020 del CEPD sobre la focalización de los usuarios de medios sociales Versión 2.0 Adoptadas el 13 de abril de 2021.
+   https://www.edpb.europa.eu/our-work-tools/our-documents/guidelines/guidelines-82020-targeting-social-media-users_en
+
+
+
+     33                                                                             Implicaciones para la protección de datos
+     Informe sobre las implicaciones de los patrones adictivos en el tratamiento de datos personales
+
+
+
+de socavar, complicar o dificultar el ejercicio
+de los derechos de los interesados. Detallaba
+la posibilidad de discriminación y exclusión                                   La focalización de usuarios de medios
+con efectos discriminatorios relacionados con                                  sociales sobre la base de la informa-
+el origen racial o étnico, el estado de salud                                  ción relativa a su comportamiento de
+o la orientación sexual de una persona, u                                      navegación u otras actividades fuera
+otras cualidades protegidas de la persona en                                   de la plataforma de medios sociales
+cuestión.                                                                      puede dar a las personas la sensa-
+                                                                               ción de que su comportamiento está
+También se refería a la posible manipulación                                   siendo sistemáticamente vigilado.
+de los usuarios, ya que los mecanismos de foca-
+lización se utilizan, por definición, para influir
+en el comportamiento y las elecciones de las                            Esto puede tener un efecto desincentivador en
+personas, desde decisiones de compra como                               la libertad de expresión, incluido el acceso a la
+consumidores o en términos de sus decisiones                            información y puede dar lugar a la autocensu-
+políticas.                                                              ra. El posible impacto adverso de la focalización
+                                                                        puede ser considerablemente mayor cuando
+Señala que incluso algunas estrategias de foca-                         se trata de categorías vulnerables de personas,
+lización pueden llegar a socavar la autonomía                           como los niños. La focalización puede influir en
+individual y la libertad y que podría utilizarse                        la configuración de las preferencias e intereses
+para dirigir a la persona mensajes específicos                          personales de los menores y afectar en última
+y en momentos concretos a los que se espera                             instancia a su autonomía y a su derecho al
+que sea más receptiva e influir así subrepti-                           desarrollo.
+ciamente en su proceso de pensamiento, sus
+emociones y su comportamiento, pudiendo                                 En el mismo artículo 24(1) se exige, no sólo
+utilizarse para influir indebidamente en las                            garantizar, sino poder demostrar el cumpli-
+personas cuando se trata del discurso político                          miento. Los proveedores que ofrecen platafor-
+y los procesos electorales democráticos,                                mas, aplicaciones y servicios digitales tienen
+incluso implicar actividades de desinforma-                             toda la información necesaria para comprender
+ción o mensajes.                                                        los patrones adictivos, cómo funcionan, qué
+                                                                        datos personales utilizan, recogen o generan y
+En la misma línea, el uso de algoritmos para                            cuál es su potencial impacto en los usuarios.
+determinar qué información se muestra a qué
+personas puede afectar negativamente a la                               Sin embargo, habitualmente no facilitan toda
+posibilidad de acceder a fuentes de informa-                            la información41, obligando a los reguladores,
+ción diversificadas en relación con un tema                             autoridades y a los investigadores a encontrar
+concreto. Esto puede tener a su vez conse-                              soluciones alternativas para identificar, analizar
+cuencias negativas para el pluralismo del                               y comprender estos patrones preguntando a los
+debate público y el acceso a la información,                            usuarios, instrumentando productos reales (a
+con relación a los riesgos relacionados con los                         menudo a través de APIs cerradas) o imitando
+llamados «filtros burbuja», y a los de «exceso                          estos productos utilizando configuraciones
+de información».                                                        experimentales controladas.
+
+
+
+
+37
+     Con lo que implica para el responsable con relación a los artículos 58(1)(a) y 83(5)(e) del RGPD.
+
+
+
+
+     34                                                                                Implicaciones para la protección de datos
+     Informe sobre las implicaciones de los patrones adictivos en el tratamiento de datos personales
+
+
+
+
+B. PROTECCIÓN DE DATOS DESDE EL DISEÑO Y POR DEFECTO
+Los proveedores que emplean patrones adic-                                de protección de datos desde el diseño y por
+tivos no cumplen con su obligación de protec-                             defecto. En consecuencia, los proveedores
+ción de datos desde el diseño y por defecto,                              no estarían cumpliendo con su obligación de
+como se describe en el artículo 25 del RGPD.                              incorporar las medidas técnicas y organizativas
+Este artículo establece que el responsable del                            apropiadas concebidas para aplicar de forma
+tratamiento aplicará medidas técnicas y orga-                             efectiva los principios de protección de datos
+nizativas apropiadas a fin de garantizar y poder                          e integrar las garantías necesarias en el trata-
+demostrar que el tratamiento es conforme con                              miento a fin de proteger los derechos de los
+el presente Reglamento.                                                   interesados desde el diseño y por defecto.
+
+Para ello debe tener en cuenta los riesgos                                El posible impacto negativo de la focalización
+de diversa probabilidad y gravedad para los                               puede ser considerablemente más signifi-
+derechos y libertades de las personas físicas,                            cativo cuando se trata de grupos que deben
+así como otras circunstancias como el contexto                            ser protegidos específicamente, como niños,
+y el alcance, por ejemplo, si dicho tratamiento                           ancianos o personas con discapacidad42.
+afecta a niños.
+                                                                          Todos estos colectivos podrían ver sus derechos
+La implementación de patrones engañosos                                   vulnerados en mayor medida por el tratamiento
+y adictivos en un tratamiento de datos es una                             de datos personales involucrado en los patrones
+decisión de diseño contraria la obligación                                adictivos.
+
+
+
+C. TRANSPARENCIA
+El principio de transparencia está establecido                            nes automatizada, incluida la elaboración de
+en el artículo 5, apartado 1, letra a), del RGPD.                         perfiles, de la lógica implicada, así como de la
+Sin embargo, los proveedores a menudo no                                  importancia y las consecuencias previstas de
+son transparentes, abiertos o claros43 con                                dicho tratamiento para el interesado (artículo
+los usuarios sobre cómo tratarán sus datos                                13, apartado 2, letra f y artículo 14, apartado 2,
+personales para mejorar el rendimiento de los                             letra g del RGPD).
+patrones adictivos o cómo realizarán focaliza-
+ción utilizando dichos patrones.                                          Como resultado, es posible que los usuarios no
+                                                                          comprendan plenamente las implicaciones de
+Normalmente no se informa al usuario de los                               dicho tratamiento y que no puedan ejercer sus
+fines adicionales del tratamiento (para alimen-                           derechos consagrados en los artículos 15 a 22
+tar patrones adictivos o para obtener benefi-                             del RGPD y cumplir las condiciones de consen-
+cios de ellos), de los riesgos potenciales para                           timiento, principalmente cuando son niños o
+sus derechos y libertades (considerando 39 del                            jóvenes.
+RGPD), de la existencia de una toma de decisio-
+
+
+42
+     Artículos 24, 25 y 26 de la Carta de los derechos fundamentales de la Unión Europea.
+43
+     Sentencia TJUE. Asunto C-634/21 (SCHUFA Holding (Scoring)): El Tribunal señala que el titular debe informar al interesado sobre
+     la lógica general del tratamiento (art. 15, par. 2 letra h)). Pero el Tribunal guarda silencio sobre la posible conciliación entre el
+     derecho a la información y los secretos comerciales y/o la propiedad intelectual, al tiempo que especifica que la información
+     debe limitarse a ofrecer una comprensión de esa lógica y no un conocimiento completo (circunstancia que impediría viceversa
+     accesibilidad propia del tratamiento).
+
+
+
+     35                                                                                  Implicaciones para la protección de datos
+     Informe sobre las implicaciones de los patrones adictivos en el tratamiento de datos personales
+
+
+
+La distinción entre los diferentes tipos de                           transparencia, los proveedores deben imple-
+datos que un proveedor puede recoger o inferir                        mentar mecanismos para que los interesados
+es importante a la hora de determinar los roles                       verifiquen todos sus datos personales, incluidos
+en cada tratamiento (responsable, encargado)                          los proporcionados por fuentes externas o infe-
+y por tanto las obligaciones que dichos roles                         ridos, las fuentes y los métodos. El interesado
+implican en términos de transparencia o ejerci-                       tiene derecho de acceso a los datos utilizados
+cio de los derechos de protección de datos. Por                       como entrada de los diferentes patrones adicti-
+ejemplo, para cumplir los requisitos del artículo                     vos, así como al resto de información requerida
+15, apartado 1 del RGPD y garantizar la total                         por el artículo 15 del RGPD.
+
+
+
+D. LICITUD
+                                                                      del RGPD sobre las condiciones aplicables al
+        El tratamiento de datos persona-                              consentimiento del niño en relación con los
+        les debe ser lícito para cumplir con                          servicios de la sociedad de la información.
+        el RGPD.
+                                                                      Si el tratamiento se realiza en el marco de la
+                                                                      ejecución de un contrato para proporcionar
+Esto significa que los datos personales deben                         un servicio, en el que se alega que los patrones
+tratarse sobre alguna de las bases legítimas                          adictivos son parte consustancial del mismo.
+establecidas en el artículo 6 del RGPD. De
+entre las numeradas en dicho artículo, aquellas                       En ese sentido, el artículo 6(1)(b) del RGPD
+que podrían inicialmente considerarse para                            solo aplica cuando el tratamiento en cuestión
+la licitud de inclusión de patrones adictivos                         es objetivamente necesario para la ejecución
+en tratamientos de datos personales son el                            del contrato con el interesado o el tratamiento
+consentimiento del interesado, la ejecución de                        debe ser objetivamente necesario para la apli-
+un contrato o bien el interés legítimo.                               cación45.
+
+El consentimiento del interesado, sin embargo,                        Dicho artículo no cubre los tratamientos que
+no sería válido si no está debidamente informa-                       resulten útiles, pero no sean objetivamente
+do, si el consentimiento para las operaciones de                      necesarios para ejecutar el servicio objeto del
+tratamiento adicionales (como las operaciones                         contrato o para aplicar las medidas precontrac-
+adictivas) no se proporciona mediante un acto                         tuales pertinentes a petición del interesado,
+afirmativo claro (considerando 32 del Regla-                          incluso si resultan necesarios para los demás
+mento), si la ejecución del contrato incluida la                      fines comerciales del responsable del trata-
+prestación del servicio se supedita al consen-                        miento46. La expresión «necesario para la ejecu-
+timiento al tratamiento de datos personales                           ción» indica claramente que no basta una mera
+que no son necesarios para la ejecución de                            cláusula contractual47.
+dicho contrato44, o no se cumplen el artículo 8
+
+
+
+44
+   Artículo 7.4 del RGPD.
+45
+   Párrafo 22 de las Directrices 2/2019 del CEPD sobre el tratamiento de datos personales en virtud del artículo 6, apartado 1, letra
+   b), del RGPD en el contexto de la prestación de servicios en línea a los interesados. Versión 2.0 8 de octubre de 2019
+   https://www.edpb.europa.eu/our-work-tools/our-documents/guidelines/guidelines-22019-processing-personal-data-under-ar-
+   ticle-61b_en
+46
+   Párrafo 25 de las mismas directrices.
+47
+   Párrafo 27 de las mismas directrices.
+
+
+
+     36                                                                             Implicaciones para la protección de datos
+     Informe sobre las implicaciones de los patrones adictivos en el tratamiento de datos personales
+
+
+
+En la medida que dichas operaciones no sean                           resado promedio, no solo a la luz de las condi-
+necesarias, o infrinjan la normativa de protec-                       ciones del servicio, sino también a la vista del
+ción de datos, no podrían considerarse lícitas48.                     modo en que se promociona el servicio entre
+Los contratos de servicios digitales pueden                           los usuarios, y de la posibilidad de prestar el
+incorporar cláusulas que impongan expresa-                            servicio sin personalizarlo.
+mente condiciones adicionales sobre la publici-
+dad, los pagos o las cookies, entre otras cues-                       Cuando la personalización del contenido no sea
+tiones. Sin embargo, los contratos no pueden                          necesaria, desde el punto de vista objetivo, para
+ampliar artificialmente las categorías de datos                       los fines del contrato subyacente (por ejemplo,
+personales o los tipos de operaciones de trata-                       cuando el contenido personalizado ofrecido
+miento que el responsable del tratamiento                             tenga por objeto incrementar el uso del servicio
+necesita llevar a cabo para la ejecución del                          por el usuario, pero no forme parte esencial del
+contrato49.                                                           uso del servicio), los responsables del trata-
+                                                                      miento de los datos deberán examinar la posi-
+Un factor relevante podría ser, por ejemplo, que                      bilidad de usar un fundamento jurídico alterna-
+el interesado fuera un menor. En este caso (y al                      tivo, cuando proceda51.
+margen del cumplimiento de los requisitos esta-
+blecidos en el RGPD, incluidas las «protecciones                      Por último, se podría considerar que el trata-
+específicas» que se aplican a los menores), el                        miento es necesario para los intereses legíti-
+responsable del tratamiento debe asegurarse                           mos perseguidos por el responsable del trata-
+de que cumple la normativa nacional pertinen-                         miento. Dichos intereses legítimos existen, por
+te sobre la capacidad del menor para celebrar                         ejemplo, cuando hay una relación relevante y
+contratos50.                                                          adecuada entre el interesado y el responsable
+                                                                      del tratamiento, como cuando el interesado es
+El CEPD confirma que la personalización de                            un cliente del responsable del tratamiento. Sin
+contenidos puede (aunque no siempre) cons-                            embargo, los intereses y derechos fundamen-
+tituir un elemento intrínseco y previsible de                         tales del interesado prevalecerían sobre los
+determinados servicios en línea y, por tanto,                         intereses del responsable del tratamiento.
+puede en determinados casos considerarse
+necesaria para la ejecución del contrato con                          El tratamiento de datos personales con fines
+el usuario del servicio. Que dicho tratamiento                        adictivos o como resultado de comportamien-
+pueda considerarse un aspecto intrínseco de un                        tos adictivos provocados por el propio provee-
+servicio en línea dependerá de la naturaleza del                      dor no podría considerarse un interés legítimo.
+servicio prestado, de las expectativas del inte-
+
+
+
+
+48
+   Según el párrafo 13 de las mismas directrices, en el caso de los contratos celebrados con consumidores, puede resultar aplicable
+   la Directiva 93/13/CEE del Consejo, de 5 de abril de 1993, sobre las cláusulas abusivas en los contratos celebrados con consumi-
+   dores. De conformidad con esta Directiva, las cláusulas contractuales que no se hayan negociado individualmente se considera-
+   rán abusivas «si, pese a las exigencias de la buena fe, causan en detrimento del consumidor un desequilibrio importante entre
+   los derechos y obligaciones de las partes que se derivan del contrato». Al igual que la obligación de transparencia del RGPD, la
+   Directiva sobre cláusulas abusivas en los contratos exige el uso de un lenguaje claro y comprensible. El tratamiento de datos
+   personales basado en lo que, con arreglo a la Directiva sobre cláusulas abusivas en los contratos, se considere una cláusula
+   abusiva no cumplirá por lo general el requisito de licitud y lealtad previsto en el artículo 5, apartado 1, letra a), del RGPD.
+49
+   Párrafo 31 de las mismas directrices.
+50
+   Párrafo 13 de las mismas directrices.
+51
+   Párrafo 57 de las Directrices 2/2019 del CEPD sobre el tratamiento de datos personales en virtud del artículo 6, apartado 1, letra
+   b), del RGPD en el contexto de la prestación de servicios en línea a los interesados. Versión 2.0 8 de octubre de 2019
+   https://www.edpb.europa.eu/our-work-tools/our-documents/guidelines/guidelines-22019-processing-personal-data-under-ar-
+   ticle-61b_en
+
+
+
+
+     37                                                                             Implicaciones para la protección de datos
+     Informe sobre las implicaciones de los patrones adictivos en el tratamiento de datos personales
+
+
+
+
+E. LEALTAD
+El principio de lealtad establecido en el artículo                    Como interesados, a menudo no se les da sufi-
+5, apartado 1, letra a), del RGPD es el punto de                      ciente autonomía o capacidad de decisión
+partida para evaluar la existencia de patrones                        para determinar cómo se utilizan sus datos
+de diseño adictivos.                                                  personales, o el alcance y las condiciones del
+                                                                      tratamiento de estos datos.
+
+          La lealtad es un principio general que                      En algunos casos, los usuarios pueden verse
+          exige que los datos personales no se                        obligados a utilizar plataformas, aplicaciones
+          traten de forma perjudicial, discri-                        y servicios que emplean patrones adictivos, al
+          minatoria, inesperada o engañosa                            no existir opciones en el mercado digital libre
+          para el interesado52, como ya afirmó                        de ellos.
+          el CEPD.
+                                                                      Como se ya se ha mencionado, el tratamiento
+                                                                      de datos personales involucrado en patrones
+El principio de lealtad incluye, entre otros, el                      adictivos puede implicar fusionar datos perso-
+reconocimiento de unas expectativas razona-                           nales de fuentes externas con datos proporcio-
+bles de los interesados, la consideración de las                      nados por el usuario a la plataforma, aplicación
+posibles consecuencias adversas que el trata-                         o servicio del proveedor y permitir la realización
+miento pueda tener sobre estos y la conside-                          de inferencias.
+ración de la relación y los posibles efectos del
+desequilibrio entre estos y el responsable del                        Como resultado, los datos personales podrían
+tratamiento53.                                                        utilizarse para fines que van más allá del original
+                                                                      y de maneras que los individuos no podrían
+Los proveedores suelen utilizar prácticas adic-                       haber previsto razonablemente.
+tivas para tratar los datos de los usuarios de
+maneras que contradicen sus expectativas                              El principio de lealtad tiene una función general
+razonables y pueden implicar usos inespera-                           y todos los patrones adictivos son incapaces
+dos o no deseados de datos personales. Esto                           de cumplirlo, independientemente del cumpli-
+puede incluir lenguaje o diseños manipulati-                          miento de otros principios de protección de
+vos. Además, los patrones adictivos podrían                           datos55.
+tener efectos perjudiciales y nocivos para los
+usuarios, en particular en lo que respecta al
+riesgo para el derecho fundamental a la integri-
+dad física y psíquica54.
+
+
+
+
+52
+   Directrices 4/2019 del CEPD relativas al artículo 25 Protección de datos desde el diseño y por defecto Versión 2.0. Adoptadas el 20
+   de octubre de 2020. https://www.edpb.europa.eu/our-work-tools/our-documents/guidelines/guidelines-42019-article-25-da-
+   ta-protection-design-and_en
+53
+   Párrafo 12 de las Directrices 2/2019 del CEPD sobre el tratamiento de datos personales en virtud del artículo 6, apartado 1, letra
+   b), del RGPD en el contexto de la prestación de servicios en línea a los interesados. Versión 2.0 8 de octubre de 2019
+   https://www.edpb.europa.eu/our-work-tools/our-documents/guidelines/guidelines-22019-processing-personal-data-under-ar-
+   ticle-61b_en
+54
+   Carta de los derechos fundamentales de la Unión Europea, artículo 3, Derecho a la integridad de la persona 1) Toda persona
+   tiene derecho a su integridad física y psíquica.
+55
+   Con el mismo razonamiento que el empleado en las EDPB Guidelines 03/2022 on Deceptive design patterns in social media
+   platform interfaces: how to recognise and avoid them.
+
+
+
+
+     38                                                                              Implicaciones para la protección de datos
+     Informe sobre las implicaciones de los patrones adictivos en el tratamiento de datos personales
+
+
+
+
+F. LIMITACIÓN DE LA FINALIDAD
+La finalidad de la recogida de datos debe iden-                     de seguridad informática» o «investigaciones
+tificarse de manera clara y concreta: debe estar                    futuras», normalmente no satisfacen ―si no se
+lo suficientemente detallada como para deter-                       aporta un mayor grado de detalle― el criterio
+minar qué tratamientos se incluyen y cuáles no                      de «especificidad»56.
+se incluyen en la finalidad especificada y para
+permitir la evaluación del cumplimiento de la                       Por lo tanto, el principio de limitación de la
+normativa y la aplicación de las garantías relati-                  finalidad del artículo 5, apartado 1, letra b) del
+vas a la protección de datos. Por estos motivos,                    RGPD no podría cumplirse en el contexto de los
+las finalidades imprecisas o generales, como,                       patrones adictivos ya que los datos personales
+por ejemplo, «mejorar la experiencia de los                         tratados no se recogen para fines determina-
+usuarios», «fines de comercialización», «fines                      dos, explícitos o legítimos.
+
+
+
+G. MINIMIZACIÓN DE DATOS
+Por la misma razón, es muy difícil cumplir el                       de los principales objetivos de los proveedores
+principio de minimización de datos del artículo                     cuando utilizan estos patrones, es mantener a
+5, apartado 1, letra c), ya que los datos que se                    los usuarios conectados por más tiempo o con
+tratan realmente muchas veces no son adecua-                        un grado de compromiso mayor para recoger
+dos, pertinentes o no se limitan a lo necesario                     más datos personales sobre ellos.
+para el fin declarado. Hay que recordar que, uno
+
+
+
+H. TRATAMIENTO DE CATEGORÍAS ESPECIALES DE DATOS
+El tratamiento de datos personales que revelen                      La mayor parte de los patrones adictivos inclui-
+el origen étnico o racial, las opiniones políti-                    dos en tratamientos de datos personales se
+cas, las convicciones religiosas o filosóficas, o                   basan en explotar debilidades o vulnerabili-
+la afiliación sindical, y el tratamiento de datos                   dades de los usuarios que tienen que ver con
+genéticos, datos biométricos dirigidos a iden-                      su estado y salud mental, sin que se cumpla
+tificar de manera unívoca a una persona física,                     ninguna de las condiciones requeridas para
+datos relativos a la salud o datos relativos a                      levantar esta prohibición.
+la vida sexual o la orientación sexual de una
+persona física está prohibido por el artículo 9,                    Además, el artículo 9, apartado 2, no reconoce
+apartado 1 del RGPD y dicha prohibición solo                        la circunstancia de «necesario para la ejecución
+podría levantarse en determinadas circunstan-                       de un contrato» como una excepción a la prohi-
+cias establecidas en el artículo 9, apartado 2,                     bición general de tratar categorías especiales de
+del RGPD.                                                           datos57.
+
+
+
+
+56
+   Páginas 15 y 16 del Article 29 Data Protection Working Party “Opinion 03/2013 on purpose limitation”. Adopted on 2 April 2013.
+   https://ec.europa.eu/justice/article-29/documentation/opinion-recommendation/files/2013/wp203_en.pdf
+57
+   Página 22 de las Article 29 Data Protection Working Party “Guidelines on consent under Regulation 2016/679”. Adopted on 28
+   November 2017. As last Revised and Adopted on 10 April 2018. https://ec.europa.eu/newsroom/article29/items/623051/en
+
+
+
+     39                                                                           Implicaciones para la protección de datos
+     Informe sobre las implicaciones de los patrones adictivos en el tratamiento de datos personales
+
+
+
+En la medida en que las operaciones que                               El artículo 9, apartado 2, letra e) del RGPD
+permiten incluir patrones adictivos en los trata-                     permite el tratamiento de categorías especiales
+mientos infieran datos relativos a la salud, por                      de datos en los casos en los que el tratamiento
+ejemplo, trastornos alimentarios, también                             se refiera a datos personales que el interesado
+implicaría tratamientos de categorías espe-                           haya hecho manifiestamente públicos. El CEPD
+ciales de datos. Este tratamiento se produciría                       establece que “La palabra «manifiestamente»
+independientemente del método empleado                                implica que debe haber un umbral alto para
+para realizar la inferencia o de si esa inferencia                    acogerse a esta exención” y proporciona orien-
+fuese correcta o no, en el último caso implica-                       tación sobre los elementos que deben tenerse
+ría además un problema sobre la exactitud del                         en cuenta para que los responsables del trata-
+dato. Eso mismo se podría concluir con relación                       miento demuestren que el interesado ha mani-
+a cualquier categoría especial de datos.                              festado claramente la intención de hacer los
+                                                                      datos públicos58.
+
+
+
+
+I. DECISIONES INDIVIDUALES AUTOMATIZADAS, INCLUIDA LA
+ELABORACIÓN DE PERFILES
+La toma de decisiones automatizada también                            En otras palabras, la decisión debe tener el
+debería evaluarse cuidadosamente en este                              potencial de:
+contexto, dado que, según el artículo 22 del
+RGPD el interesado tiene derecho “a no ser                            ◤ afectar significativamente a las circunstan-
+objeto de una decisión basada únicamente en                             cias, al comportamiento o a las elecciones
+el tratamiento automatizado, incluida la elabo-                         de las personas afectadas;
+ración de perfiles, que produzca efectos jurídi-
+cos en él o le afecte significativamente de modo                      ◤ tener un impacto prolongado o permanente
+similar”.                                                               en el interesado; o
+
+Incluso si el proceso de toma de decisiones no                        ◤ en los casos más extremos, provocar la
+afecta a los derechos jurídicos de las personas,                        exclusión o discriminación de personas59.
+este aún podría ajustarse al ámbito de aplica-
+ción del artículo 22 si produce un efecto equiva-                     Como ya se ha mencionado en este documento,
+lente o significativamente similar en sus conse-                      la escala a la que se aplican los patrones adicti-
+cuencias.                                                             vos obliga a los proveedores a automatizarlos.
+
+Para que el tratamiento de datos afecte signi-                        Además, como también se ha señalado, existen
+ficativamente a una persona, los efectos del                          impactos a la integridad física y mental o pueden
+tratamiento deben ser suficientemente impor-                          provocar discriminación, exclusión, manipula-
+tantes como para ser dignos de atención.                              ción, socavar la autonomía individual, influir en
+
+
+
+
+58
+   Directrices 8/2020 del CEPD sobre la focalización de los usuarios de medios sociales Versión 2.0 Adoptadas el 13 de abril de 2021.
+   https://www.edpb.europa.eu/our-work-tools/our-documents/guidelines/guidelines-82020-targeting-social-media-users_en
+59
+   Apartado IV.B de las Directrices del Grupo de trabajo sobre Protección de Datos del Artículo 29 sobre decisiones individuales
+   automatizadas y elaboración de perfiles a los efectos del Reglamento 2016/679. Adoptadas el 3 de octubre de 2017.
+   https://ec.europa.eu/newsroom/article29/items/612053/en
+
+
+
+
+     40                                                                             Implicaciones para la protección de datos
+     Informe sobre las implicaciones de los patrones adictivos en el tratamiento de datos personales
+
+
+
+su proceso de pensamiento, sus emociones, su                            al señalar que “Tal medida no debe afectar a un
+comportamiento, limitar su libertad de informa-                         menor”.
+ción y expresión, generar autocensura y afectar
+a la autonomía y desarrollo de los menores60.                           En ese sentido, el incumplimiento de lo esta-
+                                                                        blecido en el artículo 22, y en su caso, de lo
+A este respecto, hay que destacar el conside-                           establecido en los artículos 13(2)(f) y 14(2)(g),
+rando 71 del RGPD con relación a las decisiones                         podría suponer que el tratamiento incumpliera
+individuales automatizadas, ya que es explícito                         los principios de licitud, lealtad y transparencia.
+
+
+
+
+5. CONCLUSIÓN
+Los proveedores que ofrecen plataformas, apli-                          how to recognise and avoid them”. Estas direc-
+caciones y servicios, tratan datos personales                           trices se centraron en dichos patrones enga-
+de sus usuarios.                                                        ñosos para una serie de casos de uso en redes
+                                                                        sociales.
+En muchos casos, el modelo de negocio de
+estas entidades los llevan a intentar alargar las                       La AEPD, en el marco de sus obligaciones, ha
+sesiones de los usuarios cuando utilizan sus                            llevado a cabo una revisión sistemática de la
+productos, o a incrementar su nivel de compro-                          evidencia científica existente acerca de los
+miso y la cantidad de datos personales que se                           patrones adictivos en diferentes plataformas,
+recogen sobre ellos.                                                    aplicaciones y servicios (redes sociales, pero
+                                                                        también plataformas de vídeo o música, de
+Todos estos factores tendrían un impacto                                contenido para adultos, juegos, entornos de
+positivo en el retorno de la inversión realizada                        aprendizaje, aplicaciones de salud y bienestar,
+en el desarrollo y mantenimiento de aplicacio-                          etc.) lo que supone abordar, desde una perspec-
+nes y servicios que teóricamente se ofrecen                             tiva complementaria, nuevos casos de uso. De
+de forma gratuita o a un coste muy reducido.                            esta forma, se pueden completar las directrices
+Por este motivo algunos proveedores añaden                              del CEPD mediante un enfoque unificado de los
+operaciones adicionales al tratamiento de                               patrones engañosos y adictivos.
+datos personales de sus usuarios, para imple-
+mentar patrones de diseño engañosos y adic-                             Los patrones adictivos se han definido en este
+tivos cuyo objetivo es manipular las acciones y                         informe como características, atributos o prác-
+decisiones de los usuarios.                                             ticas de diseño que determinan una manera
+                                                                        concreta de utilizar plataformas, aplicaciones o
+El Comité Europeo de Protección de Datos ya                             servicios digitales que persigue que los usuarios
+abordó los patrones engañosos en el documen-                            dediquen mucho más tiempo a utilizarlos o con
+to “Guidelines 03/2022 on deceptive design                              un mayor grado de compromiso del esperado,
+patterns in social media platform interfaces:                           conveniente o saludable para ellos.
+
+
+60
+     Párrafos del 9 al 18 de las Directrices 8/2020 del CEPD sobre la focalización de los usuarios de medios sociales Versión 2.0 Adop-
+     tadas el 13 de abril de 2021. https://www.edpb.europa.eu/our-work-tools/our-documents/guidelines/guidelines-82020-targe-
+     ting-social-media-users_en
+
+
+
+
+     41                                                                                                                 Conclusión
+ Informe sobre las implicaciones de los patrones adictivos en el tratamiento de datos personales
+
+
+
+El análisis realizado muestra cómo los trata-                  La incorporación de operaciones que imple-
+mientos de los datos personales de los usuarios                mentan patrones adictivos a los tratamientos
+en numerosas plataformas, aplicaciones y servi-                de datos personales tiene importantes implica-
+cios incluyen operaciones específicas, todas                   ciones para diferentes aspectos relativos a la
+ellas engañosas, para aumentar su tiempo de                    protección de datos, como la responsabilidad
+conexión o su nivel de compromiso, de manera                   proactiva (accountability), la aplicación efectiva
+que se influya en sus decisiones y que se utilicen             de las obligaciones de protección de datos
+sus datos personales con este fin o para generar               desde el diseño y por defecto, la transparencia,
+nuevos datos y realizar focalización (que                      la licitud, la lealtad, la limitación de la finalidad,
+permite personalizar con un grado muy fino las                 la minimización de datos, las decisiones auto-
+estrategias adictivas).                                        matizadas que afectan significativamente a los
+                                                               usuarios o el tratamiento de categorías espe-
+En este documento se ha propuesto una clasi-                   ciales de datos.
+ficación de patrones adictivos siguiendo una
+ontología de tres niveles (alto, medio, bajo).                 También implica un riesgo para los derechos y
+                                                               libertades de todos los usuarios. En particular,
+Los denominados patrones de alto nivel son                     para el derecho a su integridad física y psíquica,
+estrategias generales de forma independiente                   pero también pueden provocar discriminación,
+del contexto y de la aplicación y se han identifi-             exclusión, manipulación, socavar la autonomía
+cado cuatro: Acción Forzada, Ingeniería Social,                individual, influir en su proceso de pensamien-
+Interferencia en la interfaz y Persistencia.                   to, sus emociones, su comportamiento, limitar
+                                                               su libertad de información y expresión, generar
+Los patrones de nivel medio describen                          autocensura y afectar a la autonomía y desa-
+enfoques más específicos explotando las debi-                  rrollo. Estas consecuencias pueden ser espe-
+lidades o vulnerabilidades psicológicas de                     cialmente graves para la infancia y los usuarios
+usuarios específicos.                                          más jóvenes.
+
+Finalmente, los patrones de bajo nivel corres-                 Los patrones descritos en este documen-
+ponden a la ejecución específica de los diferen-               to no tienen carácter exhaustivo, se podrían
+tes enfoques y, a menudo, son específicos del                  encontrar nuevos patrones dependientes
+contexto o de la aplicación.                                   del contexto y de la plataforma, aplicación o
+                                                               servicio, o se podrían crear otros diferentes.
+                                                               Además, los patrones ya identificados evolu-
+                                                               cionarán en el futuro. Por lo tanto, es necesario
+      Todos estos patrones podrían                             seguir desarrollando este tipo de revisiones de
+      necesitar datos personales como                          la evidencia disponible y análisis posteriores
+      entrada, recoger o generar nuevos                        para la protección efectiva de los usuarios en el
+      datos personales, o influir en el                        entorno digital.
+      comportamiento y la toma de deci-
+      siones del usuario en el marco de un
+      tratamiento de datos personales.
+
+
+
+
+ 42                                                                                                     Conclusión
+www.aepd.es   AEPD_es   AEPD   @aepd.es
+

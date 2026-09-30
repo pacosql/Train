@@ -8,13 +8,167 @@
   <meta name="theme-color" content="#1f1e1d" />
   <link rel="icon" href="../icons/icon-192.png" />
   <link rel="stylesheet" href="../comun.css" />
+  <style>
+    .tabs { display: flex; gap: 6px; margin: 10px 0 4px; flex-wrap: wrap; }
+    .tabs button.on { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+    .kv { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; font-size: 0.95rem; }
+    .kv div:nth-child(odd) { color: var(--muted); }
+    .linea { display: flex; justify-content: space-between; gap: 10px; font-size: 0.92rem; margin: 10px 0 4px; }
+    .delta { font-size: 0.8rem; }
+    .delta.up { color: var(--ok); } .delta.down { color: var(--bad); }
+    .frase { font-family: var(--serif); font-size: 1.15rem; line-height: 1.45; }
+    #sugerencias { max-height: 220px; overflow: auto; }
+    #sugerencias div { padding: 8px; border-bottom: 1px solid var(--line); cursor: pointer; font-size: 0.9rem; }
+    .chk label { display: flex; gap: 8px; align-items: flex-start; color: var(--text); font-size: 0.9rem; margin: 6px 0; }
+    .chk input { width: auto; margin-top: 3px; }
+  </style>
 </head>
 <body>
   <div class="wrap">
     <div class="top"><a href="../">← Mates10</a><span class="pill">padre</span></div>
-    <h1>Padre</h1>
-    <p class="muted">En construcción: esta pantalla llega en la fase 6.</p>
+    <div id="app">Cargando…</div>
     <footer class="build">build __BUILD_ID__</footer>
   </div>
+  <script src="../vendor/supabase.min.js"></script>
+  <script src="../config.js"></script>
+  <script src="../comun.js"></script>
+  <script>
+  (() => {
+    const app = M.$("#app");
+    let alumno = null, tab = "informe";
+    const EDITORIALES = ["SM", "Santillana", "Anaya", "Edelvives", "Edebé", "Otra"];
+    const ESCUELAS = [["", "No lo sé"], ["tradicional", "Tradicional (sumas y restas «llevándose», en columna)"], ["abn", "ABN (sumas en rejilla, sin llevadas)"], ["singapur", "Singapur (modelo de barras)"], ["montessori", "Montessori"]];
+
+    async function lista() {
+      const al = M.must(await M.t("alumno").select("id,nombre,creado_en").order("creado_en", { ascending: false }).limit(100));
+      app.innerHTML = `<h1>Padres</h1><p class="muted">Elige a tu hijo o hija. Si no aparece, créalo desde la app del alumno con su nombre.</p>
+        ${al.map((a) => `<a class="card acceso" href="#" data-id="${a.id}"><div class="t">${M.esc(a.nombre)}</div><div class="d">desde ${new Date(a.creado_en).toLocaleDateString("es-ES")}</div></a>`).join("") || '<p class="muted">No hay alumnos todavía.</p>'}`;
+      M.$$("a[data-id]").forEach((a) => (a.onclick = (e) => { e.preventDefault(); abrir(a.dataset.id); }));
+    }
+
+    async function abrir(id) {
+      alumno = M.must(await M.t("alumno").select("*, curso:curso_id(codigo,nombre_local), inferido:curso_inferido(codigo,nombre_local), colegio:colegio_id(nombre,municipio,tipo), sistema:sistema_id(codigo,nombre)").eq("id", id).single());
+      pintar();
+    }
+
+    function pintar() {
+      app.innerHTML = `<div class="row" style="justify-content:space-between"><h1 style="margin:0">${M.esc(alumno.nombre)}</h1><a href="#" id="volver" class="small">cambiar</a></div>
+        <div class="tabs">${[["informe", "Informe"], ["ficha", "Ficha"], ["objetivo", "Objetivo"]].map(([k, n]) => `<button data-t="${k}" class="${tab === k ? "on" : ""}">${n}</button>`).join("")}</div>
+        <div id="cuerpo">Cargando…</div>`;
+      M.$("#volver").onclick = (e) => { e.preventDefault(); lista(); };
+      M.$$(".tabs button").forEach((b) => (b.onclick = () => { tab = b.dataset.t; pintar(); }));
+      ({ informe, ficha, objetivo })[tab]().catch((e) => (M.$("#cuerpo").innerHTML = `<p class="err">${M.esc(e.message)}</p>`));
+    }
+
+    // ---------------------------------------------------------------- informe
+    async function informe() {
+      const inf = M.must(await M.rpc("informe", { p_alumno: alumno.id }));
+      const a = inf.alumno || {};
+      const delta = (x, y) => { const d = Math.round(((x || 0) - (y || 0)) * 100); return d ? `<span class="delta ${d > 0 ? "up" : "down"}">${d > 0 ? "+" : ""}${d} en 2 semanas</span>` : ""; };
+      const act = inf.actividad || {};
+      M.$("#cuerpo").innerHTML = `
+        ${!a.prueba_nivel_hecha ? `<div class="card">Todavía no ha hecho la prueba de nivel. Se hace sola la primera vez que entra en la app del alumno.</div>` : ""}
+        ${!a.curso_declarado && a.curso ? `<div class="card">Por lo que ha respondido, parece que va por <b>${M.esc(a.curso)}</b> (confianza ${M.pct(a.confianza)}). <a href="#" id="conf">Confirma su curso</a> para que la app siga exactamente su temario.</div>` : ""}
+        <div class="card"><h3 style="margin-top:0">Esta semana</h3><p class="frase">${M.esc(inf.frase_semana || "")}</p>
+          <p class="small muted">${act.sesiones_7d || 0} sesiones · ${act.minutos_7d || 0} minutos · ${act.aciertos_7d || 0} de ${act.intentos_7d || 0} aciertos en 7 días</p></div>
+        <h3>Dominio por área</h3>
+        ${(inf.bloques || []).map((b) => `<div class="linea"><span>${M.esc(b.nombre)}</span><span>${M.pct(b.dominio)} ${delta(b.dominio, b.dominio_hace_2_semanas)}</span></div><div class="bar"><i style="width:${M.pct(b.dominio)}"></i></div>`).join("") || '<p class="muted">Sin datos todavía.</p>'}
+        <h3>Por temas</h3>
+        ${(inf.familias || []).map((f) => `<div class="linea"><span>${M.esc(f.nombre || f.familia)}</span><span class="muted">va por el nivel ${f.nivel} de ${f.de}</span></div><div class="bar"><i style="width:${M.pct(f.dominio)}"></i></div>`).join("") || '<p class="muted">Sin datos todavía.</p>'}
+        <h3>Errores que repite</h3>
+        ${(inf.errores || []).map((e) => `<div class="card"><b>${M.esc(e.nombre)}</b> <span class="pill">${e.veces} veces</span><div class="small muted">${M.esc(e.habilidad)}</div><p class="small">${M.esc(e.que_hacer)}</p></div>`).join("") || '<p class="muted">Ninguno que se repita en los últimos 30 días.</p>'}
+        <h3>Lo que viene en clase</h3>
+        ${(inf.proxima_leccion || []).map((p) => `<div class="linea"><span>Para <b>${M.esc(p.viene)}</b> necesita ${M.esc(p.necesita)}</span><span>${M.pct(p.dominio)}</span></div>`).join("") || '<p class="muted">Sin datos del mes que viene (confirma su curso en la ficha).</p>'}
+        <h3>Próximos repasos</h3>
+        ${(inf.repasos || []).map((r) => `<div class="linea"><span>${M.esc(r.habilidad)}</span><span class="muted">${new Date(r.fecha).toLocaleDateString("es-ES")}</span></div>`).join("") || '<p class="muted">Cuando domine algo, aquí verás cuándo toca repasarlo para no olvidarlo.</p>'}
+        <p class="small muted">El dominio es la probabilidad de que sepa hacerlo, calculada con cada respuesta. Los repasos se programan justo antes de que lo olvide.</p>`;
+      const c = M.$("#conf"); if (c) c.onclick = (e) => { e.preventDefault(); tab = "ficha"; pintar(); };
+    }
+
+    // ---------------------------------------------------------------- ficha
+    async function ficha() {
+      const sistemas = M.must(await M.t("sistema_educativo").select("id,codigo,nombre").order("nombre"));
+      const cursos = M.must(await M.t("curso").select("id,codigo,nombre_local,orden").eq("sistema_id", alumno.sistema_id).order("orden"));
+      const edad = alumno.fecha_nacimiento ? Math.floor((Date.now() - new Date(alumno.fecha_nacimiento)) / 3.156e10) : null;
+      M.$("#cuerpo").innerHTML = `
+        <div class="card kv">
+          <div>Curso</div><div>${alumno.curso ? M.esc(alumno.curso.nombre_local) + " (declarado)" : alumno.inferido ? M.esc(alumno.inferido.nombre_local) + ` (inferido, confianza ${M.pct(alumno.confianza_inferencia)})` : "sin datos"}</div>
+          <div>Edad</div><div>${edad ?? (alumno.edad_estimada ? alumno.edad_estimada + " (estimada)" : "—")}</div>
+          <div>Colegio</div><div>${alumno.colegio ? M.esc(alumno.colegio.nombre) + ", " + M.esc(alumno.colegio.municipio || "") : "—"}</div>
+        </div>
+        <label>Nombre</label><input id="f_nombre" value="${M.esc(alumno.nombre)}" />
+        <label>Fecha de nacimiento</label><input id="f_nac" type="date" value="${alumno.fecha_nacimiento || ""}" />
+        <label>Comunidad autónoma</label><select id="f_sis">${sistemas.map((s) => `<option value="${s.id}" ${s.id === alumno.sistema_id ? "selected" : ""}>${M.esc(s.nombre)}</option>`).join("")}</select>
+        <label>Curso</label><select id="f_curso"><option value="">No lo sé / que lo deduzca la app</option>${cursos.map((c) => `<option value="${c.id}" ${c.id === alumno.curso_id ? "selected" : ""}>${M.esc(c.nombre_local)}</option>`).join("")}</select>
+        <label>Colegio (busca por nombre o municipio)</label><input id="f_col" placeholder="${alumno.colegio ? M.esc(alumno.colegio.nombre) : "Escribe al menos 3 letras"}" /><div id="sugerencias"></div>
+        <label>Editorial del libro de matemáticas</label><select id="f_ed"><option value="">No lo sé</option>${EDITORIALES.map((e) => `<option ${e === alumno.editorial_mates ? "selected" : ""}>${e}</option>`).join("")}</select>
+        <label>¿Cómo les enseñan a sumar en el cole?</label><select id="f_esc">${ESCUELAS.map(([v, n]) => `<option value="${v}" ${v === (alumno.escuela_metodo || "") ? "selected" : ""}>${n}</option>`).join("")}</select>
+        <label>¿Por qué mes del temario van? (vacío = el mes actual)</label><select id="f_mes"><option value="">El mes actual</option>${[9, 10, 11, 12, 1, 2, 3, 4, 5, 6].map((m) => `<option value="${m}" ${m === alumno.posicion_mes ? "selected" : ""}>${new Date(2026, m - 1, 1).toLocaleDateString("es-ES", { month: "long" })}</option>`).join("")}</select>
+        <label>Duración de cada sesión</label><select id="f_ses">${[180, 300, 420, 600, 900].map((s) => `<option value="${s}" ${s === alumno.sesion_seg ? "selected" : ""}>${s / 60} minutos</option>`).join("")}</select>
+        <p></p><button class="primary" id="guardar">Guardar</button> <span id="msg" class="small muted"></span>
+        <p class="small muted">Al cambiar curso, colegio, editorial o mes, la app recalcula al momento qué puede preguntarle (nunca le pregunta lo que aún no ha dado en clase).</p>`;
+      let colegioId = alumno.colegio_id;
+      let tBus;
+      M.$("#f_sis").onchange = () => { M.$("#f_curso").innerHTML = '<option value="">(guarda para ver los cursos de esta comunidad)</option>'; };
+      M.$("#f_col").oninput = () => {
+        clearTimeout(tBus);
+        const v = M.$("#f_col").value.trim();
+        if (v.length < 3) return (M.$("#sugerencias").innerHTML = "");
+        tBus = setTimeout(async () => {
+          const r = M.must(await M.t("colegio").select("id,nombre,municipio,tipo").eq("sistema_id", M.$("#f_sis").value).or(`nombre.ilike.%${v}%,municipio.ilike.%${v}%`).limit(30));
+          M.$("#sugerencias").innerHTML = r.map((c) => `<div data-id="${c.id}">${M.esc(c.nombre)} <span class="muted">· ${M.esc(c.municipio || "")} · ${c.tipo}</span></div>`).join("") || '<div class="muted">Sin resultados</div>';
+          M.$$("#sugerencias div[data-id]").forEach((d) => (d.onclick = () => { colegioId = d.dataset.id; M.$("#f_col").value = d.textContent; M.$("#sugerencias").innerHTML = ""; }));
+        }, 250);
+      };
+      M.$("#guardar").onclick = async () => {
+        const sis = M.$("#f_sis").value;
+        const upd = {
+          nombre: M.$("#f_nombre").value.trim() || alumno.nombre,
+          fecha_nacimiento: M.$("#f_nac").value || null,
+          sistema_id: sis,
+          curso_id: sis === alumno.sistema_id ? M.$("#f_curso").value || null : null,
+          colegio_id: sis === alumno.sistema_id ? colegioId || null : null,
+          editorial_mates: M.$("#f_ed").value || null,
+          escuela_metodo: M.$("#f_esc").value || null,
+          posicion_mes: M.$("#f_mes").value ? +M.$("#f_mes").value : null,
+          posicion_fuente: M.$("#f_mes").value ? "declarado" : "calendario",
+          sesion_seg: +M.$("#f_ses").value,
+        };
+        M.must(await M.t("alumno").update(upd).eq("id", alumno.id));
+        M.$("#msg").textContent = "Guardado.";
+        await abrir(alumno.id);
+      };
+    }
+
+    // ---------------------------------------------------------------- objetivo
+    async function objetivo() {
+      const perm = M.must(await M.rpc("permitidas_alumno", { p_alumno: alumno.id, p_con_objetivo: false }));
+      const ids = perm.map((p) => p.habilidad_id);
+      const habs = ids.length ? await M.all(() => M.t("habilidad").select("id,codigo,nombre_padres,familia,bloque:bloque_id(nombre_padres,orden),curso_ref").in("id", ids.slice(0, 900))) : [];
+      const est = Object.fromEntries(perm.map((p) => [p.habilidad_id, p.estado]));
+      const obj = alumno.objetivo || {};
+      const marcadas = new Set(obj.habilidades || []);
+      const porBloque = {};
+      habs.sort((a, b) => (a.bloque?.orden || 0) - (b.bloque?.orden || 0) || a.codigo.localeCompare(b.codigo)).forEach((h) => (porBloque[h.bloque?.nombre_padres || "Otros"] ||= []).push(h));
+      M.$("#cuerpo").innerHTML = `
+        ${obj.tipo ? `<div class="card">Objetivo actual: <b>${obj.tipo === "examen" ? "examen" : "próxima lección"}</b>${obj.fecha ? " el " + new Date(obj.fecha).toLocaleDateString("es-ES") : ""}, ${marcadas.size} habilidades. <a href="#" id="quitar">Quitar</a></div>` : ""}
+        <p class="small muted">Marca lo que entra en el examen o en la lección que viene. En modo examen la app solo practica eso (siempre dentro de lo que ya ha dado en clase).</p>
+        <label>Tipo</label><select id="o_tipo"><option value="examen" ${obj.tipo === "examen" ? "selected" : ""}>Examen</option><option value="leccion" ${obj.tipo === "leccion" ? "selected" : ""}>Próxima lección</option></select>
+        <label>Fecha</label><input id="o_fecha" type="date" value="${obj.fecha || ""}" />
+        <div class="chk">${Object.entries(porBloque).map(([b, hs]) => `<h3>${M.esc(b)}</h3>${hs.map((h) => `<label><input type="checkbox" value="${h.id}" ${marcadas.has(h.id) ? "checked" : ""}/> <span>${M.esc(h.nombre_padres)} <span class="muted small">${est[h.id] === "introduce" ? "· nuevo este mes" : ""}</span></span></label>`).join("")}`).join("") || '<p class="muted">Todavía no hay habilidades permitidas (¿falta el curso?).</p>'}</div>
+        <p></p><button class="primary" id="guardar">Guardar objetivo</button> <span id="msg" class="small muted"></span>`;
+      const q = M.$("#quitar"); if (q) q.onclick = async (e) => { e.preventDefault(); M.must(await M.t("alumno").update({ objetivo: null }).eq("id", alumno.id)); await abrir(alumno.id); };
+      M.$("#guardar").onclick = async () => {
+        const hs = M.$$(".chk input:checked").map((i) => i.value);
+        const o = hs.length ? { tipo: M.$("#o_tipo").value, fecha: M.$("#o_fecha").value || null, habilidades: hs } : null;
+        M.must(await M.t("alumno").update({ objetivo: o }).eq("id", alumno.id));
+        M.$("#msg").textContent = "Guardado.";
+        await abrir(alumno.id);
+      };
+    }
+
+    lista().catch((e) => (app.innerHTML = `<p class="err">${M.esc(e.message)}</p>`));
+  })();
+  </script>
 </body>
 </html>

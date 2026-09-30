@@ -1,0 +1,582 @@
+   Does Gamification Work? — A Literature Review of Empirical Studies on
+                              Gamification
+         Juho Hamari                              Jonna Koivisto                             Harri Sarsa
+School of Information Sciences,           School of Information Sciences,                School of Science,
+    University of Tampere                     University of Tampere                       Aalto University
+     juho.hamari@uta.fi                       jonna.koivisto@uta.fi                      harri.sarsa@aalto.fi
+
+
+Hamari, J., Koivisto, J., & Sarsa, H. (2014). Does Gamification Work? – A Literature Review of
+Empirical Studies on Gamification. In proceedings of the 47th Hawaii International Conference
+on System Sciences, Hawaii, USA, January 6-9, 2014.
+
+
+                      Abstract                              increasing user activity, social interaction, or quality
+    This paper reviews peer-reviewed empirical studies      and productivity of actions [25]. These desired use
+on gamification. We create a framework for examining        patterns are considered to emerge as a result of
+the effects of gamification by drawing from the             positive, intrinsically motivating [35], “gameful”
+definitions of gamification and the discussion on           experiences [31] brought about by game/motivational
+motivational affordances. The literature review covers      affordances implemented into a service.
+results, independent variables (examined motivational           As a result, gamification is touted as a next
+affordances),     dependent      variables     (examined    generation method for marketing and customer
+psychological/behavioral outcomes from gamification),       engagement in popular discussion (e.g. [45]). For
+the contexts of gamification, and types of studies          instance, Gartner [19] estimates that over 50% of
+performed on the gamified systems. The paper                organizations managing innovation processes will
+examines the state of current research on the topic and     gamify aspects of their business by 2015. Furthermore,
+points out gaps in existing literature. The review          there is an increasing number of successful startups
+indicates that gamification provides positive effects,      whose entire service is focused on adding a gamified
+however, the effects are greatly dependent on the           layer to a core activity (e.g. Codecademy, a service that
+context in which the gamification is being                  uses game-like elements to help teach users how to
+implemented, as well as on the users using it. The          code), or who assist more traditional companies in
+findings of the review provide insight for further          gamifying their existing services (e.g. Badgeville).
+studies as well as for the design of gamified systems.          The popular interest in gamification is also
+                                                            reflected in an academic context: the number of papers
+                                                            published on gamification is growing. Figure 1 gives
+1. Introduction                                             an overview of the increase of writings on the topic. It
+                                                            is especially noteworthy that the appearance of the
+    During the last couple of years, gamification           term “gamification” in paper titles has been increasing
+[9][28][31] has been a trending topic and a subject to      even more rapidly than general search hits. This
+much hype as a means of supporting user engagement          suggests that gamification is becoming a more popular
+and enhancing positive patterns in service use, such as     subject for academic inquiry.
+    Despite the large amount of hits on the topic, there    implemented motivational affordances, 2) the resulting
+is a dearth of coherent understanding on what kind of       psychological outcomes, and 3) the further behavioral
+studies have been conducted under the term                  outcomes. Therefore, in this review we focus on
+gamification, with which methods, what kinds of             examining 1) what motivational affordances the
+results they yield, and under which circumstances.          reviewed studies have implemented as dependent
+    Understanding whether gamification is effective is      variables, 2) what psychological outcomes have been
+also a pertinent practical issue. A remarkably large        measured as possibly both independent and dependent
+number of firms now provide gamification services,          variables, as well as 3) what behavioral outcomes have
+and investments are being made into gamification-           been measured as dependent variables. Furthermore,
+related efforts. As any other hot marketing topic,          we will investigate what services have been gamified,
+gamification is discussed in length, for example, in the    and which methodologies have been used to study the
+industry chatter, largely based on anecdotal and            effects.
+intuitive presumptions ranging from extremely
+negative to extremely positive perceptions. Thus,           3. Literature review
+empirical results on the effectiveness of gamification
+are in demand.
+    This paper contributes to the understanding of          3.1. Step 1: General database search
+gamification by reviewing the existing body of
+empirical research on the topic.                                Searches were made in the following databases:
+                                                            Scopus, ScienceDirect, EBSCOHost, Web of Science,
+                                                            ACM Digital library, AISel, Google Scholar, and
+2. Conceptualizing gamification                             Proquest. The search terms gamification, gamif*,
+                                                            gameful and “motivational affordance” were used on
+    Gamification has been defined as a process of           all databases. The search terms were used for all fields
+enhancing services with (motivational) affordances in       (including title, abstract, keywords and full text), and
+order to invoke gameful experiences and further             all result types were included (Table 1). The middle
+behavioral     outcomes      [31][25].    In    defining    column in Table 1 contains all results, including non-
+gamification, Huotari and Hamari [31] highlight the         scientific writings such as magazine articles, trade
+role of gamification in invoking the same                   publications etc. Thus, the figures in the column
+psychological experiences as games (generally) do.          merely indicate the popularity of the subject.
+Deterding et al. [9], on the other hand, emphasize that
+the affordances implemented in gamification have to              Table 1. Results from searched databases
+be the same as the ones used in games, regardless of         Library              Total number Peer-
+the outcomes (Figure 2). However, it is unclear which                             of results       reviewed
+affordances are unique to games as well as which                                                   papers*
+psychological outcomes can be strictly considered to         EBSCOHost            399              17
+stem from games. From the perspective of these               Proquest             3423             124
+definitions, there is room for a large variety of studies    Web of Science 56                     56
+that could be framed as gamification. Therefore, one         Scopus               330              293
+goal of this review is to explore what the actual
+                                                             ScienceDirect        93               93
+empirical works on gamification have been studying as
+                                                             Google Scholar       3480             N/A
+motivational affordances and psychological outcomes
+                                                             ACM Digital          239              196
+(as well as behavioral outcomes).
+                                                             library
+    Nevertheless, conceptualizing gamification [31] in
+the manner presented here allows us to connect the           AISel                30               30
+concept to the literature on motivational affordances in     * The true number of peer-reviewed papers in some
+IS research (see [44]), and further, break down the          of the databases is lower than reported, as the
+studies reviewed herein (Figure 2).                          results contain in some cases, for example, non-
+                                                             peer-reviewed short articles published in academic
+                                                             journals.
+
+               Figure 2. Gamification
+                                                            3.2. Step 2: Focused searches
+
+   According to this conceptualization, gamification           After the initial database searches to determine
+can be seen to have three main parts: 1) the                which databases provide results, focused searches in
+the databases were conducted. Focused searches were          3.4. Step 4: Analysis
+performed with the following preliminary criterion:
+    1) peer-reviewed full paper published in an                  In order to incorporate our discussion on the
+        international venue                                  definition of gamification into our results, we combine
+    After narrowing down the results to peer-reviewed        the model of motivational affordances in ICT [44] with
+studies, the following criteria were implemented and         a modified version of the concept matrix presented by
+the search further refined by going through the results:     Webster and Watson [40] as a way of systematically
+    2) empirical study included                              collecting and analyzing the different motivational
+    3) research methods are explicated                       affordances and resulting outcomes.
+    4) paper studies clearly identifiable motivational           The papers were analyzed and categorized based on
+        affordances                                          the provided framework on gamification. The results of
+    5) the study was on gamification rather than on          the analysis were gathered into a table (Appendix A).
+        full games
+    The literature search proceeded with a screening of
+the different databases in the following order (the          4. Results
+number in brackets indicates how many non-identical,
+new papers were found from each library): 1) ACM                 Altogether 24 empirical studies were examined in
+Library (13), 2) Scopus (5), 3) ScienceDirect (2), 4)        the literature review. Though not always explicitly
+AISel (2), and 5) Google Scholar (1). The rest of the        stated, the high-level research question shared between
+databases provided previously found results. Most            the papers was: Does gamification work? The
+papers were published in various computer                    gamification implementations varied between the
+science/HCI conference proceedings. A few studies            studies in terms of what game-like motivational
+were specifically on gamifying learning and were             affordances had been implemented (section 4.1.).
+published in venues such as Computer in Human                Moreover, the measurement of effectiveness also
+Behavior and Computers and Education. Also, a few            varied from motivation and engagement-related
+papers had been published in management information          psychological outcomes to use behavior-related
+systems venues, such as Electronic Commerce                  outcomes (section 4.2.), and the studies yielded both
+Research and Applications, European Conference on            positive and negative results (section 4.3.) in a wide
+Information Systems, and Management Science.                 variety of contexts (section 4.4.). The results were
+                                                             achieved using both quantitative and qualitative
+3.3. Step 3: Additional searches through                     methods (section 4.5.). For a complete list on the
+                                                             details of reviewed studies, see Appendix A, where
+references
+                                                             studies are further grouped based on the motivational
+                                                             affordance [44] categories.
+     We further investigated the references of the
+initially found papers and the references made to those
+papers. With this method, 1 paper not covered in the         4.1. Motivational affordances
+databases, yet highly relevant for the literature review,
+was discovered.                                                  In accordance with Webster and Watson [40], we
+     The papers in the literature search (Steps 3.2. and     collected and combined the different motivational
+3.3.) that did not satisfy the set criteria mostly divided   affordances found in the studies into 10 different
+into the following four categories:                          motivational affordance categories, based on the
+     1) conceptual papers                                    terminology used in the reviewed papers.
+     2) engineering papers describing a system being             Table 2 indicates the relatively large variety of
+          engineered (without evaluation)                    different elements tested in the empirical studies,
+     3) gamification was mentioned in the text in            although points, leaderboards, and badges [26] were
+          passing and the actual substance was not           clearly the most commonly found variants.
+          gamification-related
+     4) short       papers/research-in-progress/extended         Table 2. Tested motivational affordances
+          abstracts                                           Affordance        Included in the study
+     After performing the three steps of the literature       Points            [4][13][15][16][23][27][34]
+search, 24 peer-reviewed, empirical research papers on                          [37][41]
+gamification were identified for the review. The full         Leaderboards      [4][10][13][15][16][21][23]
+list of the chosen papers can be found in Appendix A.                           [27][37][41]
+                                                              Achievements/     [2][8][10][17][20][22][25][27]
+                                                              Badges            [34]
+ Levels                [11][15][16][21][27][37]                  Complementary to the above findings, some studies
+ Story/Theme           [12][18][21][23][33][36]              showed that the results of gamification may not be
+ Clear goals           [11][27][33][32]                      long-term [25][15][16], but instead could be caused
+ Feedback              [4][11][21][27][32][33]               due to a novelty effect. However, it also seems that
+ Rewards               [12][18][33][36]                      removing gamification might have detrimental effects
+ Progress              [14][18][27][33]                      [37] to those users who are still engaged by
+ Challenge             [4][13][18][21][23][27][33]           gamification, possibly due to loss aversion from losing
+                                                             e.g. earned badges and points [24].
+                                                                 The findings of the fully qualitative studies as well
+4.2. Psychological and behavioral outcomes                   as the qualitative results of the mixed methods papers
+                                                             consisted of both positive and negative perceptions
+    Table 3 shows that most of the studies examined          regarding the studied gamification implementations.
+behavioral outcomes. These studies mainly used               Positive experiences from gamification (e.g. on
+experiments or statistical analyses from existing            engagement and enjoyment [34][11][33]) were
+services or implementations designed by the                  reported in all of the studies. At the same time,
+researchers. Furthermore, use intentions were                however, the same aspects were most often disliked by
+investigated through survey methods.                         some respondents in the study.
+    Studies investigating psychological outcomes
+mostly focused on aspects such as motivation, attitude        Table 4. Effects reported in quantitative studies
+and enjoyment. These studies used either evaluative           Results            Paper
+interviews or questionnaires. Currently, only one study       All tests positive [13][37]
+[27] has used validated psychometric measurements.
+                                                              Part of the tests  [8][10][12][14][15][16][18]
+                                                              positive           [22][23][25][27][32][33]
+            Table 3. Studied outcomes
+                                                              All tests not      -
+ Dependent         Paper
+                                                              significant
+ variable
+                                                              Only descriptive   [2][4][17][20][21][36][41]
+ Psychological     [4][8][10][11][12][17][18][21]
+                                                              statistics
+ outcomes          [27][33][34][41]
+ Behavioral        [2][4][8][10][11][13][14][15]
+ outcomes          [16][17][18][20][21][22][23]              4.4. Contexts of gamification
+                   [25][27][32][33][36][37]
+                                                                 Context of gamification refers to the core service or
+4.3. Reported results                                        an activity being gamified. As shown in Table 5, the
+                                                             range of contexts where the studies were performed
+    According to a majority of the reviewed studies,         was wide. Gamification of education or learning was
+gamification does produce positive effects and               the most common context for the implementations.
+benefits. Table 4 displays the reported findings of the      Most of the papers gamifying work were conducted in
+quantitative studies. Most of the reviewed papers            crowdsourcing systems.
+reported positive results for some of the motivational           All of the studies in education/learning contexts
+affordances of the gamification implementations              considered the learning outcomes of gamification as
+studied. Only two studies found all of the tests positive.   mostly positive, for example, in terms of increased
+    Many of the quantitative papers were descriptive in      motivation and engagement in the learning tasks as
+nature. Naturally, descriptive papers are not inferential    well as enjoyment over them. However, at the same
+and, therefore, not able to infer about the effect of        time, the studies pointed to negative outcomes which
+gamification per se. Thus, even though the                   need to be paid attention to, such as the effects of
+implementations might have been received positively          increased competition [22], task evaluation difficulties
+by the users, no actual effects are reported.                [10], and design features [11][10].
+    Regarding the partially positive results, studies did        Three out of four studies which studied intra-
+discuss why some of the expected results could not be        organizational systems, investigated the gamification
+established. For instance, the largest studies in the        of the same IBM’s Beehive system at different stages
+review ([25][32]) reported that gamification might not       [15][16][37]. The main results from these studies
+be effective in a utilitarian service setting, but instead   indicate that gamification has a positive effect on some
+engagement by gamification can depend on several             users for a short time [16].
+factors, such as the motivations of users (see [29]) or          Surprisingly, none of the studies were explicitly
+the nature of the gamified system.                           conducted in a marketing context (perhaps excluding
+[25][12]), although gamification has been especially         5. Discussion
+touted as a potential marketing strategy. However, if
+we look at the dependent variables across the studies,           In this paper, the current efforts in empirical study
+they largely pertain to the increase in and quality of the   of gamification have been broken down into
+service/system use, which are considered as highly           components in order to structurally analyze the results
+important marketing metrics. Thus, the results of the        and state of the research. A conceptual framework for
+studies suggest implications for managerial and              gamification based upon the 1) motivational
+business purposes regarding effects on engagement and        affordances, 2) psychological outcomes, and 3) further
+use activity. However, no paper seemed to infer about        behavioral outcomes was provided and the studies
+the relationship between gamification and purchase           categorized on the basis of the framework.
+behavior.                                                        Answering the question posed in title of the paper,
+                                                             Does gamification work?, the literature review
+Table 5. Contexts of the studied implementations             suggests that, indeed, gamification does work, but
+ Context              Paper                                  some caveats exist. The majority of the reviewed
+ Commerce             [25]                                   studies did yield positive effects/results from
+ Education/learning   [4][8][10][11][17][22][23]             gamification. However, as can be seen from Table 4,
+                      [33][36]                               most of the quantitative studies concluded positive
+ Health/exercise      [27]                                   effects to exist only in part of the considered
+ Intra-organizational [14][15][16][37]                       relationships between the gamification elements and
+ systems                                                     studied outcomes. Further, the studies that investigated
+ Sharing              [34]                                   gamification qualitatively revealed that gamification as
+ Sustainable          [21]                                   a phenomenon is more manifold than the studies often
+ consumption                                                 assumed. These observations suggest that some
+ Work                 [2][13][18][20]                        underlying confounding factors exist. Most
+ Innovation/ideation [32][41]                                prominently, the studies bring forth two main aspects:
+ Data gathering       [12]                                   1) the role of the context being gamified, and the 2)
+                                                             qualities of the users. We discuss these issues in more
+4.5. Types of studies                                        detail in the sub-section on further research avenues
+                                                             (section 5.2.).
+                                                                 The literature review also revealed that more
+   Table 6 reports the types of studies based on the
+                                                             rigorous methodologies ought to be used in further
+methodology used in the study. As indicated in Table
+                                                             research on gamification. Methodological limitations
+6, most of the studies were quantitative. Fully
+                                                             and suggestions for avoiding the pitfalls of current
+qualitative studies were in the minority. The review
+                                                             studies in future research are presented (section 5.1.).
+indicates that the research on gamification has
+                                                                 The limitations of this review are also considered in
+currently focused on using usage data and inferring
+                                                             section 5.3.
+about user behavior directly.
+
+              Table 6. Types of studies                      5.1. Methodological limitations in the reviewed
+ Method              Paper                                   studies
+ Qualitative*        [11][34]
+ Quantitative**      [2][4][8][10][12][13][14][17]               Several shortcomings could be identified during the
+                     [18][20][22][25][27][32][36]            literature review: 1) the sample sizes were small in
+                     [37][41]                                some studies (around N=20), 2) proper, validated
+ Mixed               [15][16][21][23][33]                    psychometric measurements were not used (when
+ methods***                                                  surveying experiences and attitudes), 3) some
+ * including interviews and other qualitative                experiments lacked control groups and relied solely on
+ observations                                                user evaluation, 4) controls between implemented
+ ** including experiments, log data analyses and             motivational affordances were often lacking and
+ quantitative questionnaires.                                multiple affordances were investigated as a whole (i.e.
+ *** usually include a larger quantitative part and,         no effects from individual motivational affordances
+ for example, user interviews or forum discussion            could be established), 5) many presented only
+ analyses                                                    descriptive statistics although they could have easily
+                                                             also inferred about the relationship between constructs,
+                                                             6) experiment timeframes were in most cases very
+short (novelty might have skewed the test subjects'         crowdsourced relevance assessments. In addition, the
+experiences in a significant way), and 7) there was a       series of studies done on gamifying IBM's Beehive
+lack of clarity in reporting the results. 8) No single      social networking service [15][16][37] also note that
+study used multi-level measurement models including         the users fell into distinct behavioral patterns: for
+all motivational affordances, psychological outcomes,       example, some users wanted to be at the very top of the
+and behavioral outcomes. Further studies should             leaderboard, while for others it was enough to simply
+especially try to avoid these pitfalls in order to refine   appear on the leaderboard, regardless of ranking.
+the research on gamification.                                   Hamari [25] suggests that sporadic nature of usage
+                                                            might not be compatible with persistent gameful
+5.2. Avenues for future research                            affordances as the users might not spend enough time
+                                                            within the service in order to become interested in
+     The present studies on gamification and                them.
+motivational affordances suggest that the context of the        Furthermore, the freeform feedback collected from
+service might be an essential antecedent for engaging       the participants in several of the studies contained
+gamification. In some of the reviewed studies, similar      isolated comments where certain motivational
+considerations were expressed (e.g. [37][34][25]). For      affordances (which otherwise received positive
+example, Hamari [25] suggested that services oriented       comments) were felt as negative (such as ones
+towards strictly rational behavior, such as e-commerce      encouraging competition), lending credence to the idea
+sites, might prove to be challenging systems to be          that different player types experience the same
+gamified as the users could be geared towards               affordances differently [31].
+optimizing economic exchanges.
+     Triangulating from self-determination theory [7] as    5.3. Limitations of this literature review
+well as from the traditional definitions of games [3],
+both suggest that outside pressures (such as extrinsic          Gamification as an academic topic of study is
+rewards) undermine intrinsic motivations (see e.g. [6])     relatively young, and there are few well-established
+and hence would in essence undermine gamification           theoretical frameworks or unified discourses. In this
+which is an attempt to afford for the emergence of          literature review, only studies explicitly concerned
+intrinsic motivations.                                      with gamification and motivational affordances were
+     The understanding of the contextual factors would      included. Thus, the paper is limited with regards to
+benefit from considering the following theoretical          reporting research that has been done on other subjects
+perspectives: (1) the social environment: theory of         conceptually or theoretically close to gamification (e.g.
+planned behavior [1] states that the voluntariness of       studies on intrinsic motivations) or similar with regards
+carrying out a task is one of the main antecedents for      to measured outcomes. Also, there are potentially
+attitude formation and behavior; (2) the nature of the      studies that investigate similar phenomena, but discuss
+system: is the system in question utilitarian or hedonic    it with different terms, and thus, were difficult to find.
+in nature [5][39]; and (3) the involvement of the user:     Here we relied on the selection criteria where the
+is it cognitive or affective in nature [43].                empirical papers were clearly studying the effects of
+     The impact of the context of the gamified system       implementation of game-like mechanics. Therefore, the
+could be examined by experimental conditions. By            present paper provides a close look on the research
+implementing certain motivational affordances and           being done on the topic of gamification particularly.
+holding them constant while varying the nature of the           Since       the       motivational       affordances,
+underlying service could give insight into how the          behavioral/psychological outcomes as well as the
+context affects the outcomes of the gamification.           methodologies varied greatly between the studies,
+     Furthermore, in many of the reviewed papers, user      formal meta-analysis [30] could not be conducted.
+qualities were believed to have an effect on attitudes      Furthermore, many of the studies used qualitative
+towards gamification [25][13][27][34], thus explaining      methods. As the research on gamification progresses,
+why in certain environment or only with certain users,      care should be taken to ensure that future results are
+gamification had significant effects. As previous works     more comparable. This can partly be ensured if future
+on player motivations suggest, people in fact interact      studies will build upon the previously well executed
+with game-like systems in different manners, and for        inferential studies with either proper experiments or
+different reasons [29][42][38]. Thus, the experiences       proper psychometric measurements and adequate
+created by the gamifying motivational affordances are       samples, such as [25][15][27][32][8].
+also likely to vary [31].
+     Eickhoff et al. [13] mention the emergence of          Acknowledgements
+distinct "worker types" in their service, which gamified
+                                                               crowdsourced relevance assessments”, In Proceedings of the
+   This study was supported by the Finnish Cultural            35th international ACM SIGIR conference on Research and
+                                                               development in information retrieval, August 12-16, 2012,
+Foundation as well as carried out as part of a research
+                                                               Portland, Oregon, USA, ACM, pp. 871-880.
+project (40311/12) funded by the Finnish Funding               [14] R. Farzan, and P. Brusilovsky, "Encouraging user
+Agency for Technology and Innovation (TEKES).                  participation in a course recommender system: An impact on
+                                                               user behavior", Computers in Human Behavior, 27(1), 2011,
+                                                               pp. 276-284.
+                                                               [15] R. Farzan, J.M. DiMicco, D.R. Millen, B. Brownholtz,
+References                                                     W. Geyer, and C. Dugan, “When the experiment is over:
+                                                               Deploying an incentive system to all the users”, In
+[1] I. Ajzen, “The theory of planned behavior”,                Symposium on Persuasive Technology, 2008.
+Organizational behavior and human decision processes,          [16] R. Farzan, J.M. DiMicco, D.R. Millen, B. Brownholtz,
+50(2), 1991, pp. 179-211.                                      W. Geyer, and C. Dugan, “Results from deploying a
+[2] A. Anderson, D. Huttenlocher, J. Kleinberg, and J.         participation incentive mechanism within the enterprise”, In
+Leskovec, "Steering user behavior with badges", In             Proceedings of the twenty-sixth annual SIGCHI conference
+Proceedings of the 22nd international conference on World      on Human factors in computing systems, April 5-10, 2008,
+Wide Web, May 13-17, 2013, Rio de Janeiro, Brazil, pp. 95-     Florence, Italy, ACM, pp. 563-572.
+106.                                                           [17] Z. Fitz-Walter, D. Tjondronegoro, and P. Wyeth,
+[3] R. Caillois, Man, Play and Games, Urbana/Chicago,          “Orientation passport: using gamification to engage
+University of Illinois Press, 2001.                            university students”, In Proceedings of the 23rd Australian
+[4] C. Cheong, F. Cheong, and J. Filippou, "Quick Quiz: A      Computer-Human Interaction Conference, November 28 -
+Gamified Approach for Enhancing Learning", In Proceedings      December 2, 2011, Canberra, Australia, ACM, pp. 122-125.
+of Pacific Asia Conference on Information Systems, June 18-    [18] D.R. Flatla, C. Gutwin, L.E. Nacke, S. Bateman, and
+22, 2013, Jeju Island, Korea.                                  R.L. Mandryk, “Calibration games: making calibration tasks
+[5] F.D. Davis, R.P. Bagozzi, and P.R. Warshaw, “Extrinsic     enjoyable by adding motivating game elements”, In
+and intrinsic motivation to use computers in the workplace”,   Proceedings of the 24th annual ACM symposium on User
+Journal of Applied Social Psychology, 22(14), 1992, pp.        interface software and technology, October 16-19, 2011,
+1111-1132.                                                     Santa Barbara, CA, USA, ACM, pp. 403-412.
+[6] E.L. Deci, R. Koestner, and R.M. Ryan, “A meta-analytic    [19] Gartner, “Gartner says by 2015, more than 50 percent of
+review of experiments examining the effects of extrinsic       organizations that manage innovation processes will gamify
+rewards on intrinsic motivation”, Psychological bulletin,      those                                             processes”,
+125(6), 1999, pp. 627-668.                                     http://www.gartner.com/newsroom/id/1629214, April 12,
+[7] E.L. Deci, and R.M. Ryan, Self‐Determination, New          2011.
+Jersey, John Wiley & Sons Inc, 1985.                           [20] S. Grant, and B. Betts, "Encouraging User Behaviour
+[8] P. Denny, “The Effect of Virtual Achievements on           with Achievements: An Empirical Study", In Proceedings of
+Student Engagement”, In Proceedings of CHI 2013:               the 10th Working Conference on Mining Software
+Changing Perspectives, April 27–May 2, 2013, Paris, France,    Repositories, May 18-19, 2013, San Francisco, CA, USA, pp.
+pp. 763-772.                                                   65-68.
+[9] S. Deterding, D. Dixon, R. Khaled, and L. Nacke, “From     [21] A. Gustafsson, and M. Bång, “Evaluation of a pervasive
+game design elements to gamefulness: defining                  game for domestic energy engagement among teenagers”, In
+gamification”, In Proceedings of the 15th International        Proceedings of the 2008 International Conference on
+Academic MindTrek Conference: Envisioning Future Media         Advances in Computer Entertainment Technology,
+Environments, September 28-30, 2011, Tampere, Finland,         December, 2008, Yokohama, Japan, ACM, pp. 232-239.
+ACM, pp. 9-15.                                                 [22] L. Hakulinen, T. Auvinen, and A. Korhonen, "Empirical
+[10] A. Domínguez, J. Saenz-de-Navarrete, L. de-Marcos, L.     Study on the Effect of Achievement Badges in TRAKLA2
+Fernández-Sanz, C. Pagés, and J.-J. Martínez-Herráiz,          Online Learning Environment", In Proceedings of Learning
+"Gamifying learning experiences: Practical implications and    and Teaching in Computing and Engineering (LaTiCE)
+outcomes", Computers & Education, 63, 2013, pp. 380–392.       conference, March 21-24, 2013, Macau, pp. 47-54.
+[11] T. Dong, M. Dontcheva, D. Joseph, K. Karahalios,          [23] S. Halan, B. Rossen, J. Cendan, and B. Lok, “High
+M.W. Newman, and M.S. Ackerman, “Discovery-based               Score!-Motivation Strategies for User Participation in Virtual
+games for learning software”, In Proceedings of the 2012       Human Development”, In Proceedings of the international
+ACM annual conference on Human Factors in Computing            conference on Intelligent Virtual Agents, 2010, Springer
+Systems, May 5-10, 2012, Austin, Texas, USA, ACM, pp.          Berlin/Heidelberg, pp. 482-488.
+2083-2086.                                                     [24] J. Hamari, “Perspectives from behavioral economics to
+[12] T. Downes-Le Guin, R. Baker, J. Mechling, and E.          analyzing game design patterns: loss aversion in social
+Ruylea, "Myths and realities of respondent engagement in       games”, In the CHI 2011 Social Games Workshop, May 7-
+online surveys", International Journal of Market Research,     12, 2011, Vancouver, BC, Canada, ACM.
+54(5), 2012, 1-21.                                             [25] J. Hamari, “Transforming Homo Economicus into
+[13] C. Eickhoff, C.G. Harris, A.P. de Vries, and P.           Homo Ludens: A Field Experiment on Gamification in a
+Srinivasan, “Quality through flow and immersion: gamifying     Utilitarian Peer-To-Peer Trading Service”, Electronic
+Commerce Research and Applications, 12(4), 2013, pp. 236-              [35] R.M. Ryan, and E.L. Deci, “Self-determination theory
+245.                                                                   and the facilitation of intrinsic motivation, social
+[26] J. Hamari, and V. Eranti, “Framework for designing and            development, and well-being”, American psychologist,
+evaluating game achievements”, In Proceedings of DiGRA                 55(1), 2000, pp. 68-78.
+2011: Think Design Play, September 14-17, 2011,                        [36] A.-L. Smith, and L. Baker, "Getting a clue: creating
+Hilversum, The Netherlands, pp. 122-134.                               student detectives and dragon slayers in your library",
+[27] J. Hamari, and J. Koivisto, ”Social motivations to use            Reference Services Review, 39(4), 2011, pp. 628-642.
+gamification: an empirical study of gamifying exercise”, In            [37] J. Thom, D. Millen, and J. DiMicco, “Removing
+Proceedings of the European Conference on Information                  gamification from an enterprise SNS”, In Proceedings of the
+Systems, June 5-8, 2013, Utrecht, The Netherlands.                     ACM 2012 conference on Computer Supported Cooperative
+[28] J. Hamari, and V. Lehdonvirta, “Game design as                    Work, February 11-15, 2012, Seattle, Washington, USA,
+marketing: How game mechanics create demand for virtual                ACM, pp. 1067-1070.
+goods”, International journal of business science and applied          [38] J. Tuunanen, and J. Hamari, “Meta-Synthesis of Player
+management, 5(1), 2010, pp. 14-29.                                     Typologies”, In Proceedings of Nordic Digra 2012
+[29] J. Hamari, and J. Tuunanen, ”Player Types: A Meta-                Conference: Local and Global – Games in Culture and
+synthesis”, Transactions of the Digital Games Research                 Society, June 6-8, 2012, Tampere, Finland.
+Association, 1(2), 2013.                                               [39] H. van der Heijden, “User acceptance of hedonic
+[30] J.E. Hunter, F.L. Schmidt, and G.B. Jackson, Meta-                information systems”, MIS Quarterly, 28(4), 2004, pp. 695-
+analysis: Cumulating research findings across studies,                 704.
+Beverly Hills, California, Sage publications, 1982.                    [40] J. Webster, and R.T. Watson, “Analyzing the past to
+[31] K. Huotari, and J. Hamari, “Defining gamification: a              prepare for the future: writing a literature review”, MIS
+service marketing perspective”, In Proceedings of the 16th             Quarterly, 26(2), 2002, xiii-xxiii.
+International Academic MindTrek Conference, October 3-5,               [41] M. Witt, C. Scheiner, and S. Robra-Bissantz,
+2012, Tampere, Finland, ACM, pp. 17-22.                                “Gamification of Online Idea Competitions: Insights from an
+[32] J.H. Jung, C. Schneider, and J. Valacich, “Enhancing the          Explorative Case”, INFORMATIK 2011 - Informatik schafft
+motivational affordance of information systems: The effects            Communities 41. Jahrestagung der Gesellschaft für
+of real-time performance feedback and goal setting in group            Informatik, October 4-7, 2011, Berlin, Germany.
+collaboration environments”, Management Science, 56(4),                [42] N. Yee, “Motivations for play in online games”,
+2010, pp. 724-742.                                                     CyberPsychology & Behavior, 9(6), 2006, pp. 772-775.
+[33] W. Li, T. Grossman, and G. Fitzmaurice, “GamiCAD: a               [43] J.L. Zaichkowsky, “The personal involvement
+gamified tutorial system for first time autocad users”, In             inventory: Reduction, revision, and application to
+Proceedings of the 25th annual ACM symposium on User                   advertising”, Journal of Advertising, 23(4), 1994, pp. 59-70.
+interface software and technology, October 7-10, 2012,                 [44] P. Zhang, “Motivational affordances: reasons for ICT
+Cambridge, Massachusetts, USA, ACM, pp. 103-112.                       design and use”, Communications of the ACM, 51(11), 2008,
+[34] M. Montola, T. Nummenmaa, A. Lucero, M. Boberg,                   pp. 145-147.
+and H. Korhonen, “Applying game achievement systems to                 [45] G. Zichermann, and C. Cunningham, Gamification by
+enhance user experience in a photo sharing service”, In                design: Implementing game mechanics in web and mobile
+Proceedings of the 13th International MindTrek Conference:             apps, Sebastopol, CA, O'Reilly Media, 2011.
+Everyday Life in the Ubiquitous Era, September 30 - October
+2, 2009, Tampere, Finland, ACM, pp. 94-97.
+
+Appendix
+
+            Appendix A. Studied motivational affordances and psychological/behavioral outcomes
+Paper Core service / Motivational Motivational Psychological Behavioral Results Type of            Methods used      N      Source
+      activity       category     affordances outcomes       outcomes                 study        in study
+[2]   Question and Cognitive      Badges                     Site           -         Quantitative Statistical       n/a    ACM
+      answer                                                 participation,                        analysis
+      website                                                steering
+                                                             behavior
+[4]   Multiple       Cognitive,   Points,      Enjoyment,    Impact on      -         Quantitative Implementation,   76     AISel
+      choice quiz    social,      feedback,    engagement learning                                 questionnaire
+      software tool emotional     leaderboard,               (usefulness)
+                                  time
+                                  constraints
+                                  (challenge)
+[8]   Online         Cognitive    Badges       Enjoyment,    Level of       Partially Quantitative Implementation,   1031   ACM
+      learning tool                            attitude      participation positive                experiment,
+                                               towards       and quality                           questionnaire
+                                               badges        of
+                                                             participation
+[10] E-learning      Cognitive,   Leaderboard, Attitude      Learning       Partially Quantitative Implementation,   195    ScienceDirect
+       platform      emotional,   badges            towards      outcomes     positive             experiment
+                     social                         gamification
+[11]   Learning to   Cognitive    Clear goals,      Engagement, Effectiveness -        Qualitative Implementation, 11           ACM
+       use Adobe                  challenge,        fun          of learning                       interviews
+       Photoshop                  feedback,
+                                  levels,
+                                  story/theme
+[12]   Survey        Cognitive,   Narrative,        Satisfaction,   Response      Partially Quantitative Implementation, 1007   ScienceDirect
+                     emotional    avatars           engagement      patterns      positive               experiment,
+                                  (story/theme),                                                         survey
+                                  rewards
+[13]   Crowdsourced Cognitive,    Points,           Intrinsic vs.   Quality of    Positive Quantitative Implementation, 795     ACM
+       document     social        leaderboard,      extrinsic       completed                           experiment,
+       relevance                  challenge         motivation to   tasks, task                         analysis of use
+       assessments                                  complete        completion                          data
+                                                    tasks           speed
+[14]   Community- Cognitive       Progress                          Amount of     Partially Quantitative Implementation, 161    Scopus
+       based course                                                 content       positive               experiment
+       recommender                                                  contributed
+       system
+[15]   A company's Cognitive,     Points, levels,                   Amount of Partially Mixed          Implementation, 421      Through
+       internal social social     leaderboards                      content       positive methods     experiment,              references
+       networking                                                   contributed /                      analysis of use
+       system                                                       users                              data, forum
+                                                                    contributing                       discussion
+                                                                                                       analysis
+[16]   A company's Cognitive,     Points, levels,             Amount of Partially Mixed                Implementation, 6/n/a    ACM
+       internal social social     leaderboards                content        positive methods          experiment,
+       networking                                             contributed,                             analysis of use
+       system                                                 type of                                  data, interviews
+                                                              content
+                                                              distributed
+                                                              (in relation
+                                                              to their point
+                                                              value),
+                                                              individual
+                                                              users'
+                                                              contribution
+                                                              amounts
+[17]   A mobile      Cognitive,   Achievements, Perceived     Exploration -            Quantitative Implementation, 26          ACM
+       information   emotional    clear goals   added value of the                                  questionnaire
+       application                              of            campus
+       for new                                  gamification, while
+       university                               fun           interacting
+       students                                               with the
+                                                              application
+[18]   Various       Cognitive    Challenge,    Enjoyment of Quality of      Partially Quantitative Implementations, 12         ACM
+       calibration                progress bar, gamified      collected      positive               survey
+       tasks                      story/theme, activity       calibration
+                                  levels,                     data
+                                  rewards
+[20]   Question and Cognitive     Badges                      Behavior       -         Quantitative Statistical      4/n/a      ACM
+       answer                                                 change due                            analysis
+       website                                                to receiving
+                                                              badges
+[21]   Conserving    Cognitive,   Story/theme, Social         Change in      -         Mixed        Implementation, 6           ACM
+       energy in     social       challenge,    motivation    relative                 methods      analysis of use
+       homes                      levels,                     energy                                data, interviews
+                                  feedback,                   consumption
+                                  leaderboards
+[22]   Online        Cognitive    Badges                      Impact on      -         Quantitative Implementation, 281         Scopus
+       learning                                               time                                  experiment
+       environment                                            management,
+                                                              carefulness
+                                                              and
+                                                              achieving
+                                                              learning
+                                                              goals
+[23]   Virtual human Cognitive,    Leaderboard,  Difference in Number and Partially Mixed             Implementation, 20, 10 ACM
+       patients for  emotional     narrative     users’          duration of positive methods         experiment,       in
+       training                    (story/theme),approach to     interactions                         examination of control
+       healthcare                  deadline      virtual patient with virtual                         initial responses group
+       students                    (challenge)   interaction     patients,
+                                                                 likelihood of
+                                                                 voluntary
+                                                                 participation
+                                                                 to a virtual
+                                                                 patient
+                                                                 interaction
+[25]   Peer-to-peer   Cognitive,   Badges, clear Social          Amount and Partially Quantitative Implementation, 3234 Scopus
+       trading        social       goals         comparison, quality of        positive               experiment, 2x2-
+       service                                   clear goals     user                                 design, analysis
+                                                                 activities                           of use data
+[27]   Gamified       Social,      Badges,       Network         Intentions to Partially Quantitative Survey,           107   AISel
+       exercise       emotional    leaderboards, effects, social use,          positive               psychometric
+       social                      levels        influence,      intentions to                        and econometric
+       networking                                recognition, recommend                               measurement,
+       service                                   reciprocal                                           structural
+                                                 benefits,                                            equation
+                                                 attitude                                             modelling
+                                                 towards the
+                                                 service
+[32]   Computer-     Cognitive     Goals,                        Performance Partially Quantitative Implementation, 260       Scopus
+       mediated idea               feedback                      (in idea      positive               experiment, 2x2-
+       generation                                                generation)                          design
+       environment
+[33]   Learning to   Cognitive     Story/theme, Engagement, Task        Partially Mixed             Implementation, 14       ACM
+       use AutoCAD                 clear goals,  enjoyment  performance positive methods            analysis of use
+                                   feedback,                                                        data, interviews
+                                   challenge,
+                                   rewards
+[34]   Mobile photo Cognitive      Achievements, Motivation             -         Qualitative        Implementation, 20      ACM
+       sharing                     points                                                            experiment,
+       service                                                                                       interviews
+[36]   Library      Cognitive      Story/theme,                 Increasing    Partially Quantitative 2                388/52 Scopus
+       service and                 rewards                      knowledge     positive               implementations,
+       library                                                  about the                            surveys
+       orientation                                              library, its
+                                                                services and
+                                                                resources,
+                                                                teaching
+                                                                library skills
+[37]   A company's Cognitive,      Removal of                   Total          Positive Quantitative Implementation, 3486    ACM
+       internal social social,     game elements                number of                            experiment,
+       networking      emotional   (points,                     contributions                        analysis of use
+       system                      leaderboard,                 of various                           data
+                                   levels)                      content types
+[41]   Online idea    Cognitive,   Points,       Motivation,                   -        Quantitative Implementation, 30      Google
+       competition    social       leaderboards degree of                                            online survey           Scholar
+                                                 happiness,
+                                                 flow,
+                                                 enjoyment,
+                                                 task
+                                                 involvement
+
