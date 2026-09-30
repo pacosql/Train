@@ -94,12 +94,12 @@ def g_cont02(rng, d, modos=("dado", "marco10")):
               genericos=[n + 2, n - 2], datos={"lectura": "¿Cuántos puntos de color hay en el marco?", "sin_lectura": True}, n=n)
 
 
-def _serie_ej(serie, paso, dist, adulto, genericos=None, mas="más"):
+def _serie_ej(serie, paso, dist, adulto, genericos=None):
     ult = serie[-1]
     sig = ult + paso
     txt = f"Cada número es {abs(paso)} {'más' if paso > 0 else 'menos'} que el anterior: {fmt(ult)} {'+' if paso > 0 else '−'} {abs(paso)} = {fmt(sig)}."
     return mk(f"¿Qué número sigue? {', '.join(fmt(x) for x in serie)}, …", sig, dist, "serie", txt, adulto,
-              genericos=genericos if genericos is not None else genericos_num(sig, __import__('random').Random(sig)), serie=serie, paso=paso)
+              genericos=genericos if genericos is not None else [sig + 1, sig - 1, sig + 2], serie=serie, paso=paso)
 
 
 @generador("t1_cont03")

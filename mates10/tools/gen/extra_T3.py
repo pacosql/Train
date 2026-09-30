@@ -224,9 +224,7 @@ def gen_complejo_02(rng, d):
     q_ = abs(n) // 4
     e01 = I_POT[q_ % 4]
     e02 = "i" if n % 2 else "1"          # i² = 1
-    e03 = ("−" + I_POT[abs(n) % 4]).replace("−−", "") if n < 0 else None
-    if e03 == "−1" and I_POT[abs(n) % 4] == "−1":
-        e03 = "1"
+    e03 = {"1": "−1", "i": "−i", "−1": "1", "−i": "i"}[I_POT[abs(n) % 4]] if n < 0 else None
     ntxt = f"({fmt(n)})" if n < 0 else str(n)
     pasos = [(f"{fmt(n)} = 4 · {n // 4} + {r}", str(r), f"Las potencias de i se repiten cada 4 (i, −1, −i, 1). Divido {fmt(n)} entre 4: el resto es {r}."),
              (f"i^{r}", resp, f"Así que i^{ntxt} = i^{r} = {resp}.")]
@@ -421,7 +419,7 @@ def gen_complejo_07(rng, d):
                  ("Moivre", P(r, res), f"(√2)^{n} = {r} y {n} · {ang}° = {n * ang}° → {res}°."),
                  ("binómica", fin, f"Resultado: {P(r, res)} = {fin}.")]
         return mk(f"Calcula ({z})^{n} con la fórmula de Moivre.", f"{P(r, res)} = {fin}", "t3_c_moivre", {"z": z, "n": n},
-                  [(f"{P(r, n * ang)}", "E03"), (f"{P(rad(n, 2) if False else n, res)}", "E04"), (f"{P(r, (ang + res) % 360)}", None), (f"{P(2 ** n, res)}", None)], pasos,
+                  [(f"{P(r, n * ang)}", "E03"), (P(rad(n, 2), res), "E04"), (f"{P(r, (ang + res) % 360)}", None), (f"{P(2 ** n, res)}", None)], pasos,
                   "(r_α)^n = (r^n)_(nα): el módulo se ELEVA y el argumento se MULTIPLICA; después se reduce el ángulo.")
     r = rng.randint(2, 3)
     n = rng.randint(2, 5) if r == 2 else rng.randint(2, 4)
