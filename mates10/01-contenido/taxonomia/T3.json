@@ -1,0 +1,1071 @@
+{
+ "grupo": "T3",
+ "habilidades": [
+  {
+   "codigo": "NUM.FRAC.01",
+   "familia": "NUM.FRAC",
+   "nivel_familia": 1,
+   "bloque": "NUM",
+   "curso_ref": "PRI2",
+   "trimestre_ref": 3,
+   "orden_ref": 1,
+   "nota_curso": "Ni el decreto de Murcia ni el estatal citan fracciones en el primer ciclo (aparecen en el segundo, 'fracciones propias con denominador hasta 12'); se adelanta a 2.º como nivel intuitivo (mitad, cuarto) porque los libros de 2.º lo trabajan junto al doble y la mitad. Criterio: revisar.",
+   "nombre": "Mitad y cuarto de una figura o de una colección pequeña",
+   "nombre_padres": "La mitad y la cuarta parte",
+   "definicion": "Reconocer si una figura está partida en 2 o en 4 partes IGUALES y señalar la mitad (1/2) o un cuarto (1/4); hallar la mitad de una colección par de hasta 20 objetos. Solo medios y cuartos, se nombran con palabras (\"la mitad\", \"un cuarto\") y el símbolo 1/2 o 1/4 puede aparecer como apoyo. No entran tercios ni otras fracciones, ni fracciones no unitarias (3/4), ni la fracción de un número escrita como operación.",
+   "parametros": {
+    "denominadores": [
+     2,
+     4
+    ],
+    "numerador": 1,
+    "soporte": [
+     "figura",
+     "coleccion"
+    ],
+    "max_coleccion": 20
+   },
+   "ejemplo_frontera": "Un rectángulo partido en 4 trozos iguales con uno coloreado: es un cuarto",
+   "ejemplo_fuera": "Un círculo en 3 partes iguales con 2 coloreadas (2/3 → NUM.FRAC.02)",
+   "importancia": 3,
+   "carga_alumno": 2,
+   "calculable": false,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, segundo ciclo, A. Sentido numérico, 2. Cantidad (pág. 40071)",
+   "fuentes_extra": [],
+   "prerrequisitos": [
+    {
+     "codigo": "NUM.CONT.02",
+     "peso": "recomendable"
+    },
+    {
+     "codigo": "OPER.DIV.01",
+     "peso": "recomendable"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Acepta partes desiguales",
+     "descripcion": "Dice que un círculo cortado en dos trozos de distinto tamaño está partido 'por la mitad'.",
+     "explicacion_nino": "La mitad son dos trozos IGUALES. Si un trozo es más grande, no es la mitad.",
+     "indicacion_padres": "Al partir una pizza o un bocadillo, pregúntale si los dos trozos son iguales; si no, no es la mitad.",
+     "regla": "elige la figura con 2 (o 4) partes de distinto tamaño"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Cuenta partes coloreadas, no el total",
+     "descripcion": "Ve 1 de 4 partes coloreadas y dice 'un medio' o 'uno'.",
+     "explicacion_nino": "Mira en cuántas partes iguales está cortada. Si son 4, cada parte es un cuarto.",
+     "indicacion_padres": "Pídele que cuente primero TODAS las partes y luego las pintadas.",
+     "regla": "responde 1/2 cuando la figura tiene 4 partes y 1 pintada (confunde el nombre de la fracción)"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Mitad de una colección = quitar uno",
+     "descripcion": "La mitad de 8 canicas: dice 7 o 4+… cuenta mal el reparto.",
+     "explicacion_nino": "La mitad es repartir en dos grupos iguales. Haz dos montones con el mismo número.",
+     "indicacion_padres": "Que reparta de verdad los objetos en dos platos, uno a uno.",
+     "regla": "n − 1 o n − 2 en vez de n : 2"
+    }
+   ]
+  },
+  {
+   "codigo": "NUM.FRAC.02",
+   "familia": "NUM.FRAC",
+   "nivel_familia": 2,
+   "bloque": "NUM",
+   "curso_ref": "PRI3",
+   "trimestre_ref": 2,
+   "orden_ref": 1,
+   "nota_curso": "Murcia sitúa las fracciones propias con denominador hasta 12 en el segundo ciclo; se introduce en 3.º (criterio: primer contacto formal).",
+   "nombre": "Fracción que representa la parte coloreada de una figura o colección",
+   "nombre_padres": "Qué fracción está pintada",
+   "definicion": "Escribir la fracción propia (numerador menor que el denominador, denominador hasta 12) que corresponde a la parte señalada de una figura dividida en partes iguales o de una colección de objetos, y a la inversa, identificar la figura que representa una fracción dada. Conoce los términos numerador (partes que se toman) y denominador (partes iguales en que se divide). No entran fracciones mayores que la unidad, figuras con partes desiguales que haya que subdividir, ni la recta numérica.",
+   "parametros": {
+    "denominador_max": 12,
+    "propia": true,
+    "soporte": [
+     "figura",
+     "coleccion"
+    ]
+   },
+   "ejemplo_frontera": "Una colección de 12 lápices con 5 rojos: los rojos son 5/12",
+   "ejemplo_fuera": "Dos pizzas enteras y media coloreadas (5/2, mayor que la unidad → NUM.FRAC.07)",
+   "importancia": 5,
+   "carga_alumno": 2,
+   "calculable": false,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, segundo ciclo, A. Sentido numérico, 2. Cantidad (pág. 40071)",
+   "fuentes_extra": [],
+   "prerrequisitos": [
+    {
+     "codigo": "NUM.FRAC.01",
+     "peso": "imprescindible"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Invierte numerador y denominador",
+     "descripcion": "3 partes pintadas de 8 → escribe 8/3.",
+     "explicacion_nino": "Abajo va en cuántas partes está cortado todo. Arriba, cuántas partes coges.",
+     "indicacion_padres": "Pregúntale qué número dice 'en cuántas partes' y cuál 'cuántas cojo'. Abajo siempre el total.",
+     "regla": "d/n en lugar de n/d"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Pone en el denominador las partes no coloreadas",
+     "descripcion": "3 pintadas y 5 sin pintar → escribe 3/5 en vez de 3/8.",
+     "explicacion_nino": "El número de abajo cuenta TODAS las partes, pintadas y sin pintar.",
+     "indicacion_padres": "Si sale un denominador más pequeño de lo esperado, que cuente otra vez todas las partes.",
+     "regla": "n/(d − n)"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Escribe la parte no coloreada",
+     "descripcion": "3 pintadas de 8 → escribe 5/8.",
+     "explicacion_nino": "Fíjate en qué parte te preguntan: la pintada, no la blanca.",
+     "indicacion_padres": "Que subraye en el enunciado qué parte se pide antes de contar.",
+     "regla": "(d − n)/d"
+    },
+    {
+     "sufijo": "E04",
+     "nombre": "Ignora que las partes deben ser iguales",
+     "descripcion": "Figura con partes desiguales: cuenta trozos y dice 1/3 aunque la parte ocupe la mitad.",
+     "explicacion_nino": "Para usar fracciones, todas las partes tienen que ser iguales de grandes.",
+     "indicacion_padres": "Muéstrale dos figuras, una con partes iguales y otra no, y pregúntale cuál vale.",
+     "regla": "cuenta trozos sin comprobar que son iguales"
+    }
+   ]
+  },
+  {
+   "codigo": "NUM.FRAC.03",
+   "familia": "NUM.FRAC",
+   "nivel_familia": 3,
+   "bloque": "NUM",
+   "curso_ref": "PRI3",
+   "trimestre_ref": 2,
+   "orden_ref": 2,
+   "nota_curso": "Segundo ciclo en Murcia (fracciones propias con denominador hasta 12); se sitúa en 3.º.",
+   "nombre": "Lectura y escritura de fracciones",
+   "nombre_padres": "Leer y escribir fracciones",
+   "definicion": "Pasar una fracción propia de cifras a palabras y de palabras a cifras (\"tres quintos\" ↔ 3/5), con denominadores de 2 a 12: medios, tercios, cuartos, quintos, sextos, séptimos, octavos, novenos, décimos, onceavos, doceavos. No entran denominadores mayores de 12 (tampoco 'centésimos'), ni fracciones impropias, ni la representación gráfica.",
+   "parametros": {
+    "denominador_min": 2,
+    "denominador_max": 12,
+    "propia": true
+   },
+   "ejemplo_frontera": "7/11 = siete onceavos",
+   "ejemplo_fuera": "3/100 (tres centésimos → NUM.DEC.06)",
+   "importancia": 3,
+   "carga_alumno": 1,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, segundo ciclo, A. Sentido numérico, 2. Cantidad (pág. 40071)",
+   "fuentes_extra": [],
+   "prerrequisitos": [
+    {
+     "codigo": "NUM.FRAC.02",
+     "peso": "recomendable"
+    },
+    {
+     "codigo": "NUM.ORDINAL.02",
+     "peso": "recomendable"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Lee el denominador como número cardinal",
+     "descripcion": "3/5 → 'tres cinco' o 'tres de cinco'.",
+     "explicacion_nino": "El número de abajo se dice con otra palabra: 5 es 'quintos', 4 es 'cuartos'.",
+     "indicacion_padres": "Si dice 'tres cinco', pregúntale cómo se llaman las partes cuando partes algo en cinco.",
+     "regla": "lee n/d como 'n d'"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Confunde medios/tercios/cuartos",
+     "descripcion": "1/3 → 'un medio'; 2/4 → 'dos tercios'.",
+     "explicacion_nino": "Medios es partir en 2, tercios en 3, cuartos en 4.",
+     "indicacion_padres": "Repasad con una tableta de chocolate: en 2 medios, en 3 tercios, en 4 cuartos.",
+     "regla": "usa el nombre del denominador d − 1 o d + 1"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Invierte al escribir",
+     "descripcion": "'Dos novenos' → escribe 9/2.",
+     "explicacion_nino": "Primero dices cuántas partes tomas (arriba) y luego cómo se llaman (abajo).",
+     "indicacion_padres": "Que diga en voz alta 'arriba el primero, abajo el segundo'.",
+     "regla": "d/n"
+    },
+    {
+     "sufijo": "E04",
+     "nombre": "Usa ordinal incorrecto para 11 y 12",
+     "descripcion": "5/12 → 'cinco duodécimos' o 'cinco doces'; acepta 'onceavo' y 'doceavo'.",
+     "explicacion_nino": "A partir de 11 se añade '-avos': onceavos, doceavos.",
+     "indicacion_padres": "Si duda con 11 o 12, recuérdale la terminación '-avos'.",
+     "regla": "nombre de denominador ≥ 11 mal formado"
+    }
+   ]
+  },
+  {
+   "codigo": "NUM.FRAC.04",
+   "familia": "NUM.FRAC",
+   "nivel_familia": 4,
+   "bloque": "NUM",
+   "curso_ref": "PRI3",
+   "trimestre_ref": 3,
+   "orden_ref": 3,
+   "nota_curso": "Murcia: 'fracciones homogéneas menores de la unidad: comparación y ordenación' en segundo ciclo; final de 3.º.",
+   "nombre": "Comparar fracciones con el mismo denominador (menores que la unidad)",
+   "nombre_padres": "Qué fracción es mayor si las partes son iguales",
+   "definicion": "Comparar dos fracciones propias homogéneas (mismo denominador, hasta 12) con <, > o =, u ordenar hasta cuatro de ellas: es mayor la que tiene mayor numerador. Puede apoyarse en dibujo. No entran fracciones con distinto denominador, ni mayores que la unidad, ni fracciones con el mismo numerador y distinto denominador.",
+   "parametros": {
+    "homogeneas": true,
+    "denominador_max": 12,
+    "propia": true,
+    "max_fracciones": 4
+   },
+   "ejemplo_frontera": "Ordena de menor a mayor: 7/12, 2/12, 11/12, 5/12",
+   "ejemplo_fuera": "2/3 y 3/4 (distinto denominador → NUM.FRAC.13)",
+   "importancia": 4,
+   "carga_alumno": 2,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, segundo ciclo, A. Sentido numérico, 4. Relaciones (pág. 40072)",
+   "fuentes_extra": [],
+   "prerrequisitos": [
+    {
+     "codigo": "NUM.FRAC.02",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "NUM.ORD.01",
+     "peso": "recomendable"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Compara al revés",
+     "descripcion": "3/8 > 5/8 porque 'cuantas menos partes, más grande'.",
+     "explicacion_nino": "Si los trozos son del mismo tamaño, gana quien tiene más trozos: 5 trozos es más que 3.",
+     "indicacion_padres": "Dibujad dos tabletas iguales y colorea 3 y 5 trozos: que vea cuál es más.",
+     "regla": "elige la de menor numerador"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Compara también el denominador y se lía",
+     "descripcion": "Dice que 4/7 y 4/9 no se pueden… (o compara denominadores iguales como distintos).",
+     "explicacion_nino": "Abajo pone lo mismo, así que solo mira el número de arriba.",
+     "indicacion_padres": "Pregúntale primero: ¿los trozos son iguales? Si sí, basta con contar.",
+     "regla": "responde '=' porque los denominadores coinciden"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Ordena en sentido contrario al pedido",
+     "descripcion": "Pide de menor a mayor y lo da de mayor a menor.",
+     "explicacion_nino": "Lee bien: 'de menor a mayor' empieza por la más pequeña.",
+     "indicacion_padres": "Que subraye 'menor' o 'mayor' en el enunciado.",
+     "regla": "orden invertido"
+    }
+   ]
+  },
+  {
+   "codigo": "NUM.FRAC.05",
+   "familia": "NUM.FRAC",
+   "nivel_familia": 5,
+   "bloque": "NUM",
+   "curso_ref": "PRI3",
+   "trimestre_ref": 3,
+   "orden_ref": 4,
+   "nota_curso": "Segundo ciclo de Murcia (cálculo con fracciones en contextos cotidianos); se pone al final de 3.º, cuando ya dividen con tablas.",
+   "nombre": "Fracción unitaria de un número (mitad, tercio, cuarto… de una cantidad)",
+   "nombre_padres": "La mitad, la tercera parte… de un número",
+   "definicion": "Calcular 1/n de un número natural N (n entre 2 y 10, N múltiplo de n, N hasta 100) dividiendo entre el denominador: 1/4 de 28 = 7. No entran fracciones con numerador mayor que 1 (3/4 de 28), ni divisiones con resto.",
+   "parametros": {
+    "numerador": 1,
+    "denominador_max": 10,
+    "max_N": 100,
+    "division_exacta": true
+   },
+   "ejemplo_frontera": "1/9 de 81 = 9",
+   "ejemplo_fuera": "3/4 de 28 (numerador distinto de 1 → NUM.FRAC.06)",
+   "importancia": 4,
+   "carga_alumno": 2,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, segundo ciclo, A. Sentido numérico, 3. Sentido de las operaciones (pág. 40071)",
+   "fuentes_extra": [],
+   "prerrequisitos": [
+    {
+     "codigo": "NUM.FRAC.03",
+     "peso": "recomendable"
+    },
+    {
+     "codigo": "OPER.DIV.01",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "OPER.MULT.02",
+     "peso": "imprescindible"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Multiplica en vez de dividir",
+     "descripcion": "1/4 de 28 = 112.",
+     "explicacion_nino": "Coger la cuarta parte es repartir en 4. Repartir hace el número más pequeño: 28 : 4 = 7.",
+     "indicacion_padres": "Si el resultado sale mayor que el número inicial, pregúntale si la cuarta parte puede ser más que el todo.",
+     "regla": "N · n"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Resta el denominador",
+     "descripcion": "1/4 de 28 = 24.",
+     "explicacion_nino": "La cuarta parte no es quitar 4, es partir en 4 trozos iguales.",
+     "indicacion_padres": "Con 28 objetos reales, que haga 4 montones iguales.",
+     "regla": "N − n"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Divide entre otro número",
+     "descripcion": "1/3 de 24 = 12 (divide entre 2 por costumbre de 'la mitad').",
+     "explicacion_nino": "Mira el número de abajo: dice entre cuánto repartes.",
+     "indicacion_padres": "Pregúntale '¿en cuántos trozos partes?' antes de calcular.",
+     "regla": "N : 2 independientemente de n"
+    }
+   ]
+  },
+  {
+   "codigo": "NUM.FRAC.06",
+   "familia": "NUM.FRAC",
+   "nivel_familia": 6,
+   "bloque": "NUM",
+   "curso_ref": "PRI4",
+   "trimestre_ref": 2,
+   "orden_ref": 1,
+   "nota_curso": "Murcia: fracciones propias en segundo ciclo; la fracción de una cantidad es clásica de 4.º.",
+   "nombre": "Fracción no unitaria de un número",
+   "nombre_padres": "Tres cuartos de un número",
+   "definicion": "Calcular m/n de un número natural N (fracción propia, denominador hasta 12, N múltiplo de n, N hasta 1000): se divide N entre el denominador y se multiplica por el numerador (o al revés si da exacto). No entran resultados no naturales, fracciones impropias ni el problema inverso (hallar el total conociendo la parte).",
+   "parametros": {
+    "propia": true,
+    "denominador_max": 12,
+    "max_N": 1000,
+    "resultado": "natural"
+   },
+   "ejemplo_frontera": "7/12 de 480 = 280",
+   "ejemplo_fuera": "Si 3/5 de un número es 12, ¿cuál es el número? (problema inverso → NUM.FRAC.15)",
+   "importancia": 5,
+   "carga_alumno": 3,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, segundo ciclo, A. Sentido numérico, 3. Sentido de las operaciones (pág. 40071)",
+   "fuentes_extra": [],
+   "prerrequisitos": [
+    {
+     "codigo": "NUM.FRAC.05",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "OPER.MULT.03",
+     "peso": "imprescindible"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Solo divide",
+     "descripcion": "3/4 de 28 = 7 (se queda en la cuarta parte).",
+     "explicacion_nino": "7 es UNA cuarta parte. Te piden TRES cuartas partes: 7 · 3 = 21.",
+     "indicacion_padres": "Que diga en voz alta qué es cada número: 'entre 4, un cuarto; por 3, tres cuartos'.",
+     "regla": "N : n"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Solo multiplica",
+     "descripcion": "3/4 de 28 = 84.",
+     "explicacion_nino": "Primero hay que repartir en 4, y luego coger 3 trozos.",
+     "indicacion_padres": "Si sale un resultado más grande que el número, algo falla: 3/4 es menos que el todo.",
+     "regla": "N · m"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Divide entre el numerador y multiplica por el denominador",
+     "descripcion": "3/4 de 24 = 32.",
+     "explicacion_nino": "El de abajo dice en cuántos trozos partes (divides); el de arriba cuántos coges (multiplicas).",
+     "indicacion_padres": "Pídele que explique qué significa cada número de la fracción antes de operar.",
+     "regla": "N : m · n"
+    },
+    {
+     "sufijo": "E04",
+     "nombre": "Resta la fracción del número",
+     "descripcion": "3/4 de 28 = 28 − 3 − 4 o 28 − 21 = 7 (calcula lo que queda).",
+     "explicacion_nino": "Te preguntan cuánto son los 3/4, no cuánto sobra.",
+     "indicacion_padres": "Que relea la pregunta: '¿cuánto es la parte o cuánto queda?'.",
+     "regla": "N − N·m/n"
+    }
+   ]
+  },
+  {
+   "codigo": "NUM.FRAC.07",
+   "familia": "NUM.FRAC",
+   "nivel_familia": 7,
+   "bloque": "NUM",
+   "curso_ref": "PRI5",
+   "trimestre_ref": 1,
+   "orden_ref": 1,
+   "nota_curso": "Murcia introduce las fracciones mayores que la unidad en el tercer ciclo; se sitúa a principio de 5.º.",
+   "nombre": "Fracciones menores, iguales o mayores que la unidad",
+   "nombre_padres": "Fracciones que son más de un entero",
+   "definicion": "Clasificar una fracción de términos naturales como propia (menor que 1), igual a la unidad o impropia (mayor que 1) comparando numerador y denominador, y reconocer su representación con varias unidades dibujadas. No entran la conversión a número mixto ni la comparación entre fracciones distintas.",
+   "parametros": {
+    "clasificacion": [
+     "propia",
+     "unidad",
+     "impropia"
+    ],
+    "denominador_max": 12
+   },
+   "ejemplo_frontera": "9/9 es igual a la unidad; 10/9 es mayor",
+   "ejemplo_fuera": "7/4 = 1 y 3/4 (número mixto → NUM.FRAC.08)",
+   "importancia": 3,
+   "carga_alumno": 2,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, tercer ciclo, A. Sentido numérico, 4. Relaciones (págs. 40077-40078)",
+   "fuentes_extra": [],
+   "prerrequisitos": [
+    {
+     "codigo": "NUM.FRAC.04",
+     "peso": "imprescindible"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Cree que el denominador mayor hace la fracción mayor que 1",
+     "descripcion": "Dice que 3/8 es mayor que 1 porque '8 es grande'.",
+     "explicacion_nino": "Si el de arriba es más pequeño que el de abajo, no llegas a completar la unidad.",
+     "indicacion_padres": "Pregúntale: si partes una pizza en 8 y coges 3, ¿te comes la pizza entera?",
+     "regla": "impropia si d > n"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "No reconoce n/n como 1",
+     "descripcion": "Clasifica 6/6 como propia o impropia.",
+     "explicacion_nino": "Si coges todos los trozos, tienes la pizza entera: 6/6 = 1.",
+     "indicacion_padres": "Que coloree una figura entera partida en 6 y diga qué fracción es.",
+     "regla": "n = d → propia o impropia"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Cree que una fracción no puede superar la unidad",
+     "descripcion": "Dice que 7/4 'no existe' o está mal escrita.",
+     "explicacion_nino": "Puedes tener más de una pizza: 7 cuartos son una pizza entera y 3 cuartos más.",
+     "indicacion_padres": "Dibujad dos pizzas partidas en 4 y colorea 7 cuartos.",
+     "regla": "rechaza n > d"
+    }
+   ]
+  },
+  {
+   "codigo": "NUM.FRAC.08",
+   "familia": "NUM.FRAC",
+   "nivel_familia": 8,
+   "bloque": "NUM",
+   "curso_ref": "PRI5",
+   "trimestre_ref": 1,
+   "orden_ref": 2,
+   "nota_curso": "Tercer ciclo de Murcia (fracciones mayores que la unidad); 5.º.",
+   "nombre": "Fracción impropia y número mixto",
+   "nombre_padres": "Pasar de fracción a número mixto y al revés",
+   "definicion": "Convertir una fracción impropia en número mixto (parte entera + fracción propia) dividiendo el numerador entre el denominador, y un número mixto en fracción impropia (entero · denominador + numerador). Denominador hasta 12, parte entera hasta 10. No entran fracciones negativas ni operar con números mixtos.",
+   "parametros": {
+    "denominador_max": 12,
+    "entero_max": 10,
+    "sentidos": [
+     "impropia_a_mixto",
+     "mixto_a_impropia"
+    ]
+   },
+   "ejemplo_frontera": "3 5/12 = 41/12",
+   "ejemplo_fuera": "3 1/2 + 1 3/4 (operar con mixtos → OPER.FRAC.04)",
+   "importancia": 3,
+   "carga_alumno": 3,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, tercer ciclo, A. Sentido numérico, 4. Relaciones (págs. 40077-40078)",
+   "fuentes_extra": [],
+   "prerrequisitos": [
+    {
+     "codigo": "NUM.FRAC.07",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "OPER.DIV.02",
+     "peso": "imprescindible"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Suma en vez de multiplicar el entero",
+     "descripcion": "2 3/4 = (2 + 3)/4 = 5/4.",
+     "explicacion_nino": "Cada entero son 4 cuartos. Dos enteros son 8 cuartos, más 3: 11/4.",
+     "indicacion_padres": "Que dibuje los enteros partidos en cuartos y los cuente.",
+     "regla": "(e + n)/d"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Multiplica todo y olvida sumar el numerador",
+     "descripcion": "2 3/4 = 8/4.",
+     "explicacion_nino": "Te faltan los 3 cuartos que había además de los enteros.",
+     "indicacion_padres": "Pregunta: ¿dónde han quedado los 3/4?",
+     "regla": "e·d/d"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Pone el cociente como numerador",
+     "descripcion": "11/4 = 2 2/4 o 2 4/3 (coloca mal cociente y resto).",
+     "explicacion_nino": "Al dividir 11 entre 4: el cociente (2) son los enteros, el resto (3) va arriba y el 4 se queda abajo.",
+     "indicacion_padres": "Que haga la división aparte y señale cociente y resto.",
+     "regla": "q r'/d con r' mal colocado (q d/r o q q/d)"
+    },
+    {
+     "sufijo": "E04",
+     "nombre": "Junta entero y numerador como cifras",
+     "descripcion": "2 3/4 = 23/4.",
+     "explicacion_nino": "El 2 y el 3 no forman el número 23: el 2 son enteros.",
+     "indicacion_padres": "Lee el número mixto en voz alta: 'dos enteros y tres cuartos'.",
+     "regla": "(10e + n)/d"
+    }
+   ]
+  },
+  {
+   "codigo": "NUM.FRAC.09",
+   "familia": "NUM.FRAC",
+   "nivel_familia": 9,
+   "bloque": "NUM",
+   "curso_ref": "PRI5",
+   "trimestre_ref": 2,
+   "orden_ref": 3,
+   "nota_curso": "Tercer ciclo (comparación de fracciones heterogéneas, que exige equivalencia); 5.º.",
+   "nombre": "Fracciones equivalentes: amplificar y simplificar",
+   "nombre_padres": "Fracciones que valen lo mismo",
+   "definicion": "Reconocer si dos fracciones son equivalentes (productos cruzados o multiplicando/dividiendo ambos términos por el mismo número) y obtener fracciones equivalentes a una dada por amplificación o simplificación, incluido completar el término que falta (2/3 = ?/12). Términos hasta 100. No entra obtener la fracción irreducible por factorización (NUM.FRAC.14) ni reducir varias a común denominador.",
+   "parametros": {
+    "metodos": [
+     "amplificacion",
+     "simplificacion",
+     "productos_cruzados"
+    ],
+    "max_termino": 100
+   },
+   "ejemplo_frontera": "18/24 = ?/4 → 3",
+   "ejemplo_fuera": "Reducir 3/4 y 5/6 a común denominador (→ NUM.FRAC.12)",
+   "importancia": 5,
+   "carga_alumno": 3,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, tercer ciclo, A. Sentido numérico, 4. Relaciones (págs. 40077-40078)",
+   "fuentes_extra": [],
+   "prerrequisitos": [
+    {
+     "codigo": "NUM.FRAC.07",
+     "peso": "recomendable"
+    },
+    {
+     "codigo": "OPER.MULT.02",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "OPER.DIV.01",
+     "peso": "imprescindible"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Suma el mismo número a los dos términos",
+     "descripcion": "2/3 = 4/5 (suma 2 arriba y abajo).",
+     "explicacion_nino": "Para que la fracción valga lo mismo hay que MULTIPLICAR (o dividir) los dos por el mismo número, no sumar.",
+     "indicacion_padres": "Dibujad 2/3 y 4/5: se ve que no ocupan lo mismo.",
+     "regla": "(n + k)/(d + k)"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Multiplica solo un término",
+     "descripcion": "2/3 = ?/12 → 8 correcto pero en amplificar escribe 2/12 o 8/3.",
+     "explicacion_nino": "Si multiplicas el de abajo por 4, el de arriba también por 4.",
+     "indicacion_padres": "Que escriba el '×4' encima y debajo con flechas.",
+     "regla": "n/(d·k) o (n·k)/d"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Completa con la diferencia en lugar del factor",
+     "descripcion": "2/3 = ?/12 → 11 (como 3 + 9 → 2 + 9).",
+     "explicacion_nino": "De 3 a 12 no se suma 9: se multiplica por 4. Haz lo mismo arriba: 2 · 4 = 8.",
+     "indicacion_padres": "Pregúntale '¿por cuánto multiplico 3 para que dé 12?'.",
+     "regla": "n + (d' − d)"
+    },
+    {
+     "sufijo": "E04",
+     "nombre": "Cree que números más grandes = fracción mayor",
+     "descripcion": "Dice que 6/8 es mayor que 3/4.",
+     "explicacion_nino": "6/8 y 3/4 ocupan lo mismo: los trozos son más pequeños pero hay más.",
+     "indicacion_padres": "Cortad una tableta en 4 y otra igual en 8 y comparad 3 trozos con 6.",
+     "regla": "declara no equivalentes fracciones equivalentes con términos mayores"
+    }
+   ]
+  },
+  {
+   "codigo": "NUM.FRAC.10",
+   "familia": "NUM.FRAC",
+   "nivel_familia": 10,
+   "bloque": "NUM",
+   "curso_ref": "PRI5",
+   "trimestre_ref": 2,
+   "orden_ref": 4,
+   "nota_curso": "Tercer ciclo de Murcia: representación en la recta de naturales y decimales, y fracciones en ESO1; se pone en 5.º como apoyo de la comparación.",
+   "nombre": "Fracciones en la recta numérica",
+   "nombre_padres": "Colocar fracciones en una recta",
+   "definicion": "Situar una fracción (propia o impropia, denominador hasta 10) en una recta numérica graduada, o leer la fracción que marca un punto, contando las divisiones de cada unidad. No entran fracciones negativas ni decimales.",
+   "parametros": {
+    "denominador_max": 10,
+    "impropias": true,
+    "negativas": false
+   },
+   "ejemplo_frontera": "Recta de 0 a 3 dividida en tercios: punto en 7/3",
+   "ejemplo_fuera": "−2/3 en la recta (fracción negativa → NUM.FRAC.16)",
+   "importancia": 3,
+   "carga_alumno": 3,
+   "calculable": false,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, tercer ciclo, A. Sentido numérico, 2. Cantidad (pág. 40077)",
+   "fuentes_extra": [],
+   "prerrequisitos": [
+    {
+     "codigo": "NUM.FRAC.07",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "NUM.ORD.01",
+     "peso": "recomendable"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Cuenta marcas en lugar de espacios",
+     "descripcion": "Entre 0 y 1 hay 4 espacios (5 marcas) y cree que son quintos.",
+     "explicacion_nino": "Cuenta los trozos entre 0 y 1, no las rayitas.",
+     "indicacion_padres": "Que pinte con colores cada trozo entre 0 y 1 y los cuente.",
+     "regla": "usa denominador = marcas incluidas los extremos"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Usa toda la recta como unidad",
+     "descripcion": "En una recta de 0 a 2 con 8 divisiones, coloca 3/8 en la marca 3 (que es 3/4).",
+     "explicacion_nino": "La fracción se cuenta desde 0 hasta 1, no hasta el final de la recta.",
+     "indicacion_padres": "Que marque dónde está el 1 antes de contar.",
+     "regla": "divisiones totales de la recta como denominador"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Empieza a contar en la primera marca",
+     "descripcion": "Coloca 2/5 una división más a la derecha.",
+     "explicacion_nino": "El 0 es el punto de partida: el primer salto te lleva a 1/5.",
+     "indicacion_padres": "Que dé 'saltos' con el dedo desde el 0.",
+     "regla": "posición n + 1"
+    }
+   ]
+  },
+  {
+   "codigo": "NUM.FRAC.11",
+   "familia": "NUM.FRAC",
+   "nivel_familia": 11,
+   "bloque": "NUM",
+   "curso_ref": "PRI5",
+   "trimestre_ref": 2,
+   "orden_ref": 5,
+   "nota_curso": "Murcia: fracciones heterogéneas en tercer ciclo; 5.º.",
+   "nombre": "Comparar fracciones con el mismo numerador",
+   "nombre_padres": "Qué fracción es mayor si se coge el mismo número de trozos",
+   "definicion": "Comparar dos fracciones con igual numerador y distinto denominador (hasta 12): es mayor la de menor denominador porque sus partes son más grandes. Incluye las unitarias (1/3 > 1/5). No entran fracciones con numerador y denominador distintos (requieren común denominador).",
+   "parametros": {
+    "mismo_numerador": true,
+    "denominador_max": 12
+   },
+   "ejemplo_frontera": "5/7 y 5/12: es mayor 5/7",
+   "ejemplo_fuera": "3/4 y 5/6 (→ NUM.FRAC.13)",
+   "importancia": 4,
+   "carga_alumno": 2,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, tercer ciclo, A. Sentido numérico, 4. Relaciones (págs. 40077-40078)",
+   "fuentes_extra": [],
+   "prerrequisitos": [
+    {
+     "codigo": "NUM.FRAC.04",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "NUM.FRAC.02",
+     "peso": "imprescindible"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Denominador mayor, fracción mayor",
+     "descripcion": "1/8 > 1/4 porque 8 > 4.",
+     "explicacion_nino": "Si partes una pizza en 8 trozos, cada trozo es más pequeño que si la partes en 4.",
+     "indicacion_padres": "Es el error más común con fracciones: usad la pizza real o dibujos.",
+     "regla": "elige la de mayor denominador"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Las declara iguales por tener igual numerador",
+     "descripcion": "3/5 = 3/7 porque 'las dos son tres'.",
+     "explicacion_nino": "Tienes 3 trozos en las dos, pero los trozos no son del mismo tamaño.",
+     "indicacion_padres": "Que dibuje ambas fracciones en barras iguales.",
+     "regla": "responde '='"
+    }
+   ]
+  },
+  {
+   "codigo": "NUM.FRAC.12",
+   "familia": "NUM.FRAC",
+   "nivel_familia": 12,
+   "bloque": "NUM",
+   "curso_ref": "PRI6",
+   "trimestre_ref": 1,
+   "orden_ref": 1,
+   "nota_curso": "Murcia añade mcm y mcd explícitos en tercer ciclo; la reducción a común denominador es de 6.º.",
+   "nombre": "Reducir fracciones a común denominador",
+   "nombre_padres": "Poner fracciones con el mismo número abajo",
+   "definicion": "Transformar dos o tres fracciones en otras equivalentes con el mismo denominador, usando preferentemente el mínimo común múltiplo de los denominadores (denominadores hasta 20). Vale el producto de denominadores si el ejercicio no pide el mínimo. No entra operar con ellas.",
+   "parametros": {
+    "n_fracciones": [
+     2,
+     3
+    ],
+    "denominador_max": 20,
+    "metodo": "mcm"
+   },
+   "ejemplo_frontera": "3/4, 5/6, 7/10 → 45/60, 50/60, 42/60",
+   "ejemplo_fuera": "3/4 + 5/6 (sumar → OPER.FRAC.04)",
+   "importancia": 5,
+   "carga_alumno": 3,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, tercer ciclo, A. Sentido numérico, 4. Relaciones (págs. 40077-40078)",
+   "fuentes_extra": [],
+   "prerrequisitos": [
+    {
+     "codigo": "NUM.FRAC.09",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "NUM.DIVIS.06",
+     "peso": "imprescindible"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Cambia solo el denominador",
+     "descripcion": "3/4 y 5/6 → 3/12 y 5/12.",
+     "explicacion_nino": "Si multiplicas el de abajo, tienes que multiplicar el de arriba por lo mismo.",
+     "indicacion_padres": "Que compruebe si la nueva fracción sigue valiendo lo mismo que la vieja.",
+     "regla": "n/m (numerador sin cambiar)"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Suma en lugar de multiplicar para ajustar",
+     "descripcion": "3/4 → ?/12: suma 8 al numerador → 11/12.",
+     "explicacion_nino": "Para pasar de 4 a 12 se multiplica por 3: 3 · 3 = 9.",
+     "indicacion_padres": "Pregúntale por cuánto se multiplicó el denominador.",
+     "regla": "n + (m − d)"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Toma un denominador común que no es múltiplo",
+     "descripcion": "3/4 y 5/6 → denominador 10 (suma de denominadores).",
+     "explicacion_nino": "El denominador común tiene que ser múltiplo de los dos: 12 lo es, 10 no.",
+     "indicacion_padres": "Que escriba la lista de múltiplos de cada denominador.",
+     "regla": "m = d1 + d2"
+    },
+    {
+     "sufijo": "E04",
+     "nombre": "Multiplica el numerador por el nuevo denominador",
+     "descripcion": "3/4 → 36/12.",
+     "explicacion_nino": "Arriba multiplicas por lo mismo que abajo (3), no por 12.",
+     "indicacion_padres": "Que escriba el factor encima de la fracción antes de operar.",
+     "regla": "n · m"
+    }
+   ]
+  },
+  {
+   "codigo": "NUM.FRAC.13",
+   "familia": "NUM.FRAC",
+   "nivel_familia": 13,
+   "bloque": "NUM",
+   "curso_ref": "PRI6",
+   "trimestre_ref": 1,
+   "orden_ref": 2,
+   "nota_curso": "Murcia: 'fracciones homogéneas y heterogéneas menores y mayores de la unidad: comparación y ordenación' en tercer ciclo; 6.º.",
+   "nombre": "Comparar y ordenar fracciones cualesquiera",
+   "nombre_padres": "Ordenar fracciones distintas",
+   "definicion": "Comparar dos fracciones positivas cualesquiera (denominadores hasta 20) u ordenar hasta cuatro, reduciendo a común denominador, por productos cruzados o pasando a decimal; incluye fracciones impropias y números mixtos. No entran fracciones negativas.",
+   "parametros": {
+    "max_fracciones": 4,
+    "denominador_max": 20,
+    "impropias": true,
+    "negativas": false
+   },
+   "ejemplo_frontera": "Ordena: 5/6, 7/9, 3/4, 11/12",
+   "ejemplo_fuera": "−3/4 y −2/3 (negativas → NUM.FRAC.16)",
+   "importancia": 5,
+   "carga_alumno": 3,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, tercer ciclo, A. Sentido numérico, 4. Relaciones (págs. 40077-40078)",
+   "fuentes_extra": [],
+   "prerrequisitos": [
+    {
+     "codigo": "NUM.FRAC.12",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "NUM.FRAC.11",
+     "peso": "recomendable"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Compara solo numeradores",
+     "descripcion": "3/4 < 5/8 porque 3 < 5.",
+     "explicacion_nino": "Si los trozos son de distinto tamaño, no basta con contar. Ponlas con el mismo denominador: 6/8 y 5/8.",
+     "indicacion_padres": "Pregúntale si los trozos son del mismo tamaño antes de comparar.",
+     "regla": "compara n1 y n2"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Compara solo denominadores",
+     "descripcion": "2/3 > 3/4 porque 'los tercios son más grandes'.",
+     "explicacion_nino": "Los tercios son más grandes, pero en 3/4 coges más trozos. Hay que igualar denominadores.",
+     "indicacion_padres": "Que las pase a doceavos y compare.",
+     "regla": "elige la de menor denominador"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Compara la diferencia entre términos",
+     "descripcion": "5/6 = 7/8 porque a las dos 'les falta 1'.",
+     "explicacion_nino": "No importa cuánto falta en trozos, importa lo grande que es cada trozo. 1/6 es más que 1/8.",
+     "indicacion_padres": "Con dos barras iguales, que vea que a 7/8 le falta un trozo más pequeño.",
+     "regla": "compara d − n"
+    },
+    {
+     "sufijo": "E04",
+     "nombre": "Cruza mal los productos",
+     "descripcion": "Para 3/4 y 5/7 compara 3·4 con 5·7.",
+     "explicacion_nino": "Se multiplica en cruz: 3 · 7 frente a 4 · 5.",
+     "indicacion_padres": "Que dibuje las flechas en X antes de multiplicar.",
+     "regla": "compara n1·d1 con n2·d2"
+    }
+   ]
+  },
+  {
+   "codigo": "NUM.FRAC.14",
+   "familia": "NUM.FRAC",
+   "nivel_familia": 14,
+   "bloque": "NUM",
+   "curso_ref": "ESO1",
+   "trimestre_ref": 1,
+   "orden_ref": 1,
+   "nota_curso": "1.º ESO en Murcia (factorización, mcd y operaciones con fracciones); en primaria se simplifica por tanteo (NUM.FRAC.09).",
+   "nombre": "Fracción irreducible",
+   "nombre_padres": "Simplificar una fracción al máximo",
+   "definicion": "Obtener la fracción irreducible equivalente a una dada dividiendo numerador y denominador por su máximo común divisor (o factorizando y tachando factores comunes), y reconocer si una fracción ya es irreducible. Términos hasta 1000, positivos. No entran fracciones algebraicas ni negativas.",
+   "parametros": {
+    "max_termino": 1000,
+    "metodo": [
+     "mcd",
+     "factorizacion"
+    ]
+   },
+   "ejemplo_frontera": "252/360 = 7/10",
+   "ejemplo_fuera": "(6x)/(9x²) (fracción algebraica → ALG.FRACALG)",
+   "importancia": 4,
+   "carga_alumno": 3,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-ESO",
+   "fuente_ref": "Anexo III, Matemáticas 1.º ESO, A. Sentido numérico, 3. Relaciones (págs. 42902-42903)",
+   "fuentes_extra": [],
+   "prerrequisitos": [
+    {
+     "codigo": "NUM.FRAC.09",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "NUM.DIVIS.07",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "NUM.DIVIS.05",
+     "peso": "recomendable"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Simplifica una sola vez y para",
+     "descripcion": "252/360 → 126/180 y la da por irreducible.",
+     "explicacion_nino": "Mira si arriba y abajo aún se pueden dividir entre el mismo número. Si sí, sigue.",
+     "indicacion_padres": "Pregúntale siempre '¿se puede dividir más?' al final.",
+     "regla": "divide solo por un factor común que no es el mcd"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Resta o tacha cifras iguales",
+     "descripcion": "16/64 = 1/4 tachando los 6; 25/35 = 2/3 tachando 5.",
+     "explicacion_nino": "No se pueden tachar cifras: se divide el número entero. 25 : 5 = 5 y 35 : 5 = 7.",
+     "indicacion_padres": "Si 'tacha números', pídele que lo compruebe dividiendo.",
+     "regla": "elimina cifras repetidas"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Divide por distinto número arriba y abajo",
+     "descripcion": "12/18 → 6/6 = 1 (divide entre 2 y entre 3).",
+     "explicacion_nino": "El número por el que divides tiene que ser el mismo en los dos términos.",
+     "indicacion_padres": "Que escriba el ':k' en ambos términos.",
+     "regla": "n/k1 / d/k2 con k1 ≠ k2"
+    }
+   ]
+  },
+  {
+   "codigo": "NUM.FRAC.15",
+   "familia": "NUM.FRAC",
+   "nivel_familia": 15,
+   "bloque": "NUM",
+   "curso_ref": "ESO1",
+   "trimestre_ref": 2,
+   "orden_ref": 2,
+   "nota_curso": "1.º ESO (operaciones con fracciones en contexto); algunos libros lo ven en 6.º.",
+   "nombre": "Calcular el total conociendo una fracción de él",
+   "nombre_padres": "Si 3/5 de algo son 12, ¿cuánto es todo?",
+   "definicion": "Dada la fracción m/n de una cantidad desconocida y el valor de esa parte (natural), calcular la cantidad total: se divide la parte entre el numerador y se multiplica por el denominador. También la parte restante (lo que queda tras quitar la fracción). Enunciado mínimo, sin contexto elaborado. No entran encadenamientos de fracciones sobre lo que queda (problemas de 'fracción de lo que queda', PROB.FRAC).",
+   "parametros": {
+    "propia": true,
+    "denominador_max": 12,
+    "resultado": "natural"
+   },
+   "ejemplo_frontera": "Los 5/8 de un número son 40: el número es 64",
+   "ejemplo_fuera": "Gasta 1/3 y luego 1/4 de lo que le queda (→ PROB.FRAC)",
+   "importancia": 4,
+   "carga_alumno": 3,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-ESO",
+   "fuente_ref": "Anexo III, Matemáticas 1.º ESO, A. Sentido numérico, 2. Sentido de las operaciones (pág. 42902)",
+   "fuentes_extra": [],
+   "prerrequisitos": [
+    {
+     "codigo": "NUM.FRAC.06",
+     "peso": "imprescindible"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Calcula la fracción del dato",
+     "descripcion": "5/8 de un número es 40 → responde 25 (5/8 de 40).",
+     "explicacion_nino": "40 no es el total, es una parte. El total es más grande que 40.",
+     "indicacion_padres": "Pregúntale si el total puede ser menor que una de sus partes.",
+     "regla": "P · m/n"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Divide entre el denominador y multiplica por el numerador",
+     "descripcion": "40 : 8 · 5 = 25.",
+     "explicacion_nino": "40 son 5 trozos. Un trozo es 40 : 5 = 8. El total son 8 trozos: 8 · 8 = 64.",
+     "indicacion_padres": "Que dibuje una barra de 8 trozos y rellene 5 con el 40.",
+     "regla": "P : n · m"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Da el trozo unitario como total",
+     "descripcion": "40 : 5 = 8 y responde 8.",
+     "explicacion_nino": "8 es lo que vale UN trozo. El total son todos los trozos.",
+     "indicacion_padres": "Que relea qué se pregunta.",
+     "regla": "P : m"
+    }
+   ]
+  },
+  {
+   "codigo": "NUM.FRAC.16",
+   "familia": "NUM.FRAC",
+   "nivel_familia": 16,
+   "bloque": "NUM",
+   "curso_ref": "ESO2",
+   "trimestre_ref": 1,
+   "orden_ref": 1,
+   "nota_curso": "Murcia centra el número racional en 2.º ESO (en 1.º conviven enteros y fracciones por separado).",
+   "nombre": "Fracciones con signo: el número racional",
+   "nombre_padres": "Fracciones negativas",
+   "definicion": "Interpretar, simplificar, comparar y ordenar fracciones con signo (números racionales), situarlas aproximadamente en la recta, y reconocer que −a/b = a/(−b) = −(a/b). Denominadores hasta 20. No entra operar con ellas (OPER.FRAC.08).",
+   "parametros": {
+    "signo": true,
+    "denominador_max": 20
+   },
+   "ejemplo_frontera": "Ordena: −3/4, −5/6, 1/2, −2/3",
+   "ejemplo_fuera": "−3/4 + 5/6 (operar → OPER.FRAC.08)",
+   "importancia": 4,
+   "carga_alumno": 3,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-ESO",
+   "fuente_ref": "Anexo III, Matemáticas 2.º ESO, A. Sentido numérico, 3. Relaciones (pág. 42907)",
+   "fuentes_extra": [],
+   "prerrequisitos": [
+    {
+     "codigo": "NUM.FRAC.13",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "NUM.ENT.02",
+     "peso": "imprescindible"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Ordena negativas como si fueran positivas",
+     "descripcion": "−3/4 < −2/3 lo invierte: dice −2/3 < −3/4.",
+     "explicacion_nino": "Con negativos, cuanto más grande es la parte sin signo, más a la izquierda está: −3/4 es menor.",
+     "indicacion_padres": "Que las sitúe en una recta antes de ordenar.",
+     "regla": "ordena por valor absoluto"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Cambia el signo al simplificar",
+     "descripcion": "−6/9 = 2/3.",
+     "explicacion_nino": "Al simplificar solo cambian los números, el signo se queda.",
+     "indicacion_padres": "Que rodee el signo antes de simplificar.",
+     "regla": "pierde el signo"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Cree que −a/b y a/−b son distintos",
+     "descripcion": "Dice que 3/(−4) es positivo o distinto de −3/4.",
+     "explicacion_nino": "Un signo menos, esté arriba, abajo o delante, hace la fracción negativa.",
+     "indicacion_padres": "Que aplique la regla de los signos de la división.",
+     "regla": "trata a/(−b) como positivo"
+    }
+   ]
+  }
+ ]
+}

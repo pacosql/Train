@@ -1,0 +1,535 @@
+{
+ "grupo": "T5",
+ "habilidades": [
+  {
+   "codigo": "ALG.PATRON.01",
+   "familia": "ALG.PATRON",
+   "nivel_familia": 1,
+   "bloque": "ALG",
+   "curso_ref": "PRI1",
+   "trimestre_ref": 1,
+   "orden_ref": 1,
+   "nota_curso": "Murcia no reparte por curso dentro del primer ciclo (pág. 40069); se sitúa en 1.º, primer trimestre por criterio (secuencia típica de los libros).",
+   "nombre": "Patrones de repetición con figuras o colores: continuar la serie",
+   "nombre_padres": "Series que se repiten (rojo, azul, rojo, azul…)",
+   "definicion": "Dada una serie de figuras, colores o símbolos que se repite con un núcleo de 2 o 3 elementos (AB, AAB, ABB, ABC) y al menos dos repeticiones completas visibles, elegir el elemento que va a continuación. No entran huecos en medio (ALG.PATRON.02) ni series que crecen (ALG.PATRON.05) ni números.",
+   "parametros": {
+    "tipo": "repeticion",
+    "nucleo_max": 3,
+    "repeticiones_visibles_min": 2,
+    "posicion_pregunta": "siguiente"
+   },
+   "ejemplo_frontera": "▲ ● ● ▲ ● ● ▲ ● ● ▲ … → ●",
+   "ejemplo_fuera": "▲ ● ? ▲ ● ● (hueco en medio → ALG.PATRON.02)",
+   "importancia": 4,
+   "carga_alumno": 1,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, primer ciclo, D. Sentido algebraico > 1. Patrones (pág. 40069)",
+   "fuentes_extra": [
+    {
+     "fuente": "DEC-ES-PRI",
+     "ref": "Anexo II, Matemáticas, primer ciclo, D. Sentido algebraico (págs. 24491-24494)",
+     "rol": "situa"
+    }
+   ],
+   "prerrequisitos": [],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Repite solo el último",
+     "descripcion": "Tras A B B A B B elige B porque 'va otra B' sin mirar el núcleo completo",
+     "explicacion_nino": "Mira el trozo que se repite: A B B. Después de B B vuelve a empezar con A.",
+     "indicacion_padres": "Si siempre copia el último elemento, pídale que diga en voz alta la serie y dé una palmada cuando empiece otra vez.",
+     "regla": "respuesta = último elemento visible"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Núcleo mal delimitado",
+     "descripcion": "En A A B A A B toma el núcleo como A B y responde B tras A",
+     "explicacion_nino": "Busca dónde empieza a repetirse todo igual. Aquí el trozo es A A B, de tres.",
+     "indicacion_padres": "Que rodee con el dedo cada 'trozo' que se repite; si los trozos no son iguales, ha cortado mal.",
+     "regla": "respuesta = elemento según núcleo de longitud núcleo−1"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Alterna sin mirar",
+     "descripcion": "Responde siempre alternando dos elementos aunque el núcleo tenga tres (ABC ABC → responde A tras B)",
+     "explicacion_nino": "No todas las series son de dos. Cuenta cuántas cosas hay antes de que se repita.",
+     "indicacion_padres": "Aparece cuando solo ha visto series AB. Juegue con collares de tres colores.",
+     "regla": "respuesta = alternancia AB aplicada al último elemento"
+    }
+   ],
+   "_o": 10
+  },
+  {
+   "codigo": "ALG.PATRON.02",
+   "familia": "ALG.PATRON",
+   "nivel_familia": 2,
+   "bloque": "ALG",
+   "curso_ref": "PRI1",
+   "trimestre_ref": 2,
+   "orden_ref": 2,
+   "nota_curso": "Murcia no reparte por curso dentro del primer ciclo (pág. 40069); se sitúa en 1.º, segundo trimestre por criterio (secuencia típica de los libros).",
+   "nombre": "Elemento oculto en un patrón de repetición",
+   "nombre_padres": "Descubrir qué falta en una serie que se repite",
+   "definicion": "En una serie de repetición (núcleo de 2 a 4 elementos, figuras, colores o letras) falta un elemento en cualquier posición (inicio, medio o final); hay que elegir el que falta identificando el núcleo. No hay números ni crecimiento.",
+   "parametros": {
+    "tipo": "repeticion",
+    "nucleo_max": 4,
+    "posicion_pregunta": "cualquiera"
+   },
+   "ejemplo_frontera": "A B C D A ? C D A B C D → B",
+   "ejemplo_fuera": "2, 4, ?, 8 (serie numérica → ALG.PATRON.03)",
+   "importancia": 3,
+   "carga_alumno": 2,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, primer ciclo, D. Sentido algebraico > 1. Patrones (pág. 40069)",
+   "fuentes_extra": [
+    {
+     "fuente": "DEC-ES-PRI",
+     "ref": "Anexo II, Matemáticas, primer ciclo, D. Sentido algebraico (págs. 24491-24494)",
+     "rol": "situa"
+    }
+   ],
+   "prerrequisitos": [
+    {
+     "codigo": "ALG.PATRON.01",
+     "peso": "imprescindible"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Copia el vecino",
+     "descripcion": "Rellena el hueco con el elemento que tiene a la izquierda o a la derecha",
+     "explicacion_nino": "Mira la serie entera, no solo al lado del hueco. ¿Qué trozo se repite?",
+     "indicacion_padres": "Pídale que tape el hueco y lea la serie desde el principio diciendo los nombres.",
+     "regla": "respuesta = elemento adyacente al hueco"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Cuenta desde el final",
+     "descripcion": "Identifica bien el núcleo pero lo aplica desde el final y se desplaza una posición",
+     "explicacion_nino": "Empieza a contar el trozo desde el principio de la serie.",
+     "indicacion_padres": "Que marque con número 1, 2, 3 cada elemento del trozo desde el principio.",
+     "regla": "respuesta = elemento del núcleo desplazado una posición"
+    }
+   ],
+   "_o": 20
+  },
+  {
+   "codigo": "ALG.PATRON.03",
+   "familia": "ALG.PATRON",
+   "nivel_familia": 3,
+   "bloque": "ALG",
+   "curso_ref": "PRI1",
+   "trimestre_ref": 3,
+   "orden_ref": 3,
+   "nota_curso": "Murcia no reparte por curso dentro del primer ciclo (pág. 40069); se sitúa en 1.º, tercer trimestre por criterio (secuencia típica de los libros).",
+   "nombre": "Series numéricas de 1 en 1, de 2 en 2, de 5 en 5 y de 10 en 10 hasta 99",
+   "nombre_padres": "Seguir series de números contando de 2 en 2, de 5 en 5…",
+   "definicion": "Continuar o completar (hueco en cualquier posición) una serie numérica ascendente o descendente con salto constante de 1, 2, 5 o 10, con números hasta 99. El salto no se da: hay que deducirlo. No entran saltos de otros tamaños (ALG.PATRON.04).",
+   "parametros": {
+    "tipo": "numerica_aritmetica",
+    "saltos": [
+     1,
+     2,
+     5,
+     10
+    ],
+    "max": 99,
+    "sentido": [
+     "ascendente",
+     "descendente"
+    ]
+   },
+   "ejemplo_frontera": "95, 85, 75, ?, 55 → 65",
+   "ejemplo_fuera": "12, 15, 18, ? (salto 3 → ALG.PATRON.04)",
+   "importancia": 4,
+   "carga_alumno": 2,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, primer ciclo, D. Sentido algebraico > 1. Patrones (pág. 40069)",
+   "fuentes_extra": [
+    {
+     "fuente": "DEC-ES-PRI",
+     "ref": "Anexo II, Matemáticas, primer ciclo, D. Sentido algebraico (págs. 24491-24494)",
+     "rol": "situa"
+    }
+   ],
+   "prerrequisitos": [
+    {
+     "codigo": "ALG.PATRON.01",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "NUM.CONT.03",
+     "peso": "imprescindible"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Salto de 1 por defecto",
+     "descripcion": "En 10, 20, 30, ? responde 31",
+     "explicacion_nino": "Mira cuánto sube de un número al otro: de 10 a 20 sube 10. Entonces después de 30 viene 40.",
+     "indicacion_padres": "Si siempre suma 1, pregúntele '¿cuánto ha subido de este a este?' antes de responder.",
+     "regla": "respuesta = último + 1 (o −1 si desciende)"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Confunde el sentido",
+     "descripcion": "En una serie descendente 50, 45, 40, ? responde 45",
+     "explicacion_nino": "Los números van bajando. El siguiente es más pequeño: 35.",
+     "indicacion_padres": "Que diga si la serie 'sube' o 'baja' antes de contestar.",
+     "regla": "respuesta = último + salto cuando la serie desciende"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Error en el cambio de decena",
+     "descripcion": "En 26, 28, ?, 32 responde 20 o 210",
+     "explicacion_nino": "Después de 28, contando de 2 en 2: 29, 30. El 30 es la respuesta.",
+     "indicacion_padres": "Practiquen el conteo de 2 en 2 cruzando la decena con una tira numérica.",
+     "regla": "respuesta = decena mal formada al cruzar (p. ej. 2 y 10 → 210)"
+    }
+   ],
+   "_o": 30
+  },
+  {
+   "codigo": "ALG.PATRON.04",
+   "familia": "ALG.PATRON",
+   "nivel_familia": 4,
+   "bloque": "ALG",
+   "curso_ref": "PRI2",
+   "trimestre_ref": 2,
+   "orden_ref": 1,
+   "nota_curso": "Murcia no reparte por curso en el primer ciclo; en 2.º se amplía a números hasta 999 (pág. 40067).",
+   "nombre": "Series numéricas con cualquier salto constante hasta 999",
+   "nombre_padres": "Descubrir de cuánto en cuánto va una serie de números",
+   "definicion": "Continuar o completar una serie numérica ascendente o descendente con salto constante cualquiera de 1 a 9, o de decenas o centenas exactas, con números hasta 999; deducir el salto y aplicarlo. No entran saltos que cambian (ALG.PATRON.06).",
+   "parametros": {
+    "tipo": "numerica_aritmetica",
+    "salto_max": 900,
+    "max": 999
+   },
+   "ejemplo_frontera": "703, 694, 685, ? → 676",
+   "ejemplo_fuera": "3, 6, 12, 24 (se duplica → ALG.PATRON.06)",
+   "importancia": 4,
+   "carga_alumno": 2,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, primer ciclo, D. Sentido algebraico > 1. Patrones (pág. 40069)",
+   "fuentes_extra": [
+    {
+     "fuente": "DEC-ES-PRI",
+     "ref": "Anexo II, Matemáticas, primer ciclo, D. Sentido algebraico (págs. 24491-24494)",
+     "rol": "situa"
+    }
+   ],
+   "prerrequisitos": [
+    {
+     "codigo": "ALG.PATRON.03",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "OPER.SUMA.03",
+     "peso": "recomendable"
+    },
+    {
+     "codigo": "OPER.RESTA.03",
+     "peso": "recomendable"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Aplica el salto de las unidades solo",
+     "descripcion": "En 703, 694, 685 resta 9 solo a las unidades y obtiene 686 u otro número con error de llevada",
+     "explicacion_nino": "Restar 9 a 685: 685 − 10 = 675 y le sumas 1: 676.",
+     "indicacion_padres": "Suele ser un fallo de resta, no de patrón: que compruebe haciendo la resta en papel.",
+     "regla": "respuesta = resultado con error de llevada en la resta"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Salto mal calculado",
+     "descripcion": "Calcula la diferencia entre el primer y el tercer término como salto",
+     "explicacion_nino": "Mira dos números seguidos para saber el salto, no uno de cada dos.",
+     "indicacion_padres": "Que escriba el salto encima de cada par de números vecinos.",
+     "regla": "salto = t3 − t1"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Sentido invertido",
+     "descripcion": "Suma cuando la serie baja",
+     "explicacion_nino": "Si los números se hacen más pequeños, hay que restar.",
+     "indicacion_padres": "Pregúntele si los números crecen o decrecen.",
+     "regla": "respuesta = último + |salto| en serie descendente"
+    }
+   ],
+   "_o": 20
+  },
+  {
+   "codigo": "ALG.PATRON.05",
+   "familia": "ALG.PATRON",
+   "nivel_familia": 5,
+   "bloque": "ALG",
+   "curso_ref": "PRI3",
+   "trimestre_ref": 2,
+   "orden_ref": 1,
+   "nota_curso": "Murcia fija los patrones en el segundo ciclo sin reparto por curso (pág. 40074); se sitúa en 3.º, segundo trimestre por criterio.",
+   "nombre": "Patrones de crecimiento con figuras",
+   "nombre_padres": "Series de dibujos que van creciendo",
+   "definicion": "Dada una secuencia de 3 o 4 figuras que crecen de forma regular (palillos, cuadrados, puntos) con regla aditiva constante, elegir cuántos elementos tendrá la figura siguiente o la de una posición cercana (hasta la 6.ª) contando o sumando. No se pide la regla general ni posiciones lejanas (ALG.PATRON.07).",
+   "parametros": {
+    "tipo": "crecimiento_figural",
+    "regla": "aditiva",
+    "posicion_max": 6
+   },
+   "ejemplo_frontera": "Figuras con 4, 7, 10 palillos: la 5.ª tiene 16",
+   "ejemplo_fuera": "La figura 20.ª (posición lejana → ALG.PATRON.07)",
+   "importancia": 3,
+   "carga_alumno": 3,
+   "calculable": false,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, segundo ciclo, D. Sentido algebraico > 1. Patrones (pág. 40074)",
+   "fuentes_extra": [
+    {
+     "fuente": "DEC-ES-PRI",
+     "ref": "Anexo II, Matemáticas, segundo ciclo, D. Sentido algebraico (págs. 24495-24498)",
+     "rol": "situa"
+    }
+   ],
+   "prerrequisitos": [
+    {
+     "codigo": "ALG.PATRON.04",
+     "peso": "imprescindible"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Cuenta solo lo nuevo",
+     "descripcion": "Da como respuesta el aumento (3) en vez del total (13)",
+     "explicacion_nino": "Te piden cuántos palillos tiene la figura entera, no cuántos se añaden.",
+     "indicacion_padres": "Pregúntele '¿cuántos hay en total?' y que cuente la figura dibujada.",
+     "regla": "respuesta = incremento"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Proporcionalidad falsa",
+     "descripcion": "Si la 1.ª tiene 4, la 5.ª tiene 4 × 5 = 20",
+     "explicacion_nino": "No se multiplica: cada figura añade 3 palillos más que la anterior.",
+     "indicacion_padres": "Que dibuje la figura siguiente para comprobar su idea.",
+     "regla": "respuesta = t1 × n"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Se salta una posición",
+     "descripcion": "Calcula la 4.ª cuando piden la 5.ª",
+     "explicacion_nino": "Cuenta las figuras: 1.ª, 2.ª, 3.ª… hasta llegar a la que te piden.",
+     "indicacion_padres": "Que numere las figuras debajo antes de calcular.",
+     "regla": "respuesta = término n−1"
+    }
+   ],
+   "_o": 20
+  },
+  {
+   "codigo": "ALG.PATRON.06",
+   "familia": "ALG.PATRON",
+   "nivel_familia": 6,
+   "bloque": "ALG",
+   "curso_ref": "PRI4",
+   "trimestre_ref": 2,
+   "orden_ref": 1,
+   "nota_curso": "Murcia fija los patrones en el segundo ciclo sin reparto por curso (pág. 40074); se sitúa en 4.º, segundo trimestre por criterio.",
+   "nombre": "Series numéricas con regla multiplicativa o con dos saltos alternos",
+   "nombre_padres": "Series que se duplican o que suben y bajan",
+   "definicion": "Continuar o completar series numéricas cuya regla es multiplicar/dividir por un número pequeño (×2, ×3, ×10, :2) o alternar dos operaciones (+3, −1, +3, −1…), con números hasta 10 000. Hay que descubrir la regla y aplicarla. No se pide expresarla con letras.",
+   "parametros": {
+    "tipo": "numerica_no_aritmetica",
+    "reglas": [
+     "multiplicativa",
+     "alterna"
+    ],
+    "max": 10000
+   },
+   "ejemplo_frontera": "5, 8, 7, 10, 9, ? → 12",
+   "ejemplo_fuera": "3, 5, 7… término 50 (→ ALG.PATRON.07)",
+   "importancia": 3,
+   "carga_alumno": 3,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, segundo ciclo, D. Sentido algebraico > 1. Patrones (pág. 40074)",
+   "fuentes_extra": [
+    {
+     "fuente": "DEC-ES-PRI",
+     "ref": "Anexo II, Matemáticas, segundo ciclo, D. Sentido algebraico (págs. 24495-24498)",
+     "rol": "situa"
+    }
+   ],
+   "prerrequisitos": [
+    {
+     "codigo": "ALG.PATRON.04",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "OPER.MULT.02",
+     "peso": "imprescindible"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Busca siempre una suma",
+     "descripcion": "En 3, 6, 12, 24 responde 36 (suma el último salto 12)",
+     "explicacion_nino": "El salto no es siempre igual: aquí cada número es el doble del anterior. 24 × 2 = 48.",
+     "indicacion_padres": "Si solo prueba con sumas, pregúntele si cada número es 'el doble' o 'el triple' del anterior.",
+     "regla": "respuesta = último + (último − penúltimo) cuando la regla es multiplicativa"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Ignora la alternancia",
+     "descripcion": "En 5, 8, 7, 10, 9 aplica solo el último salto (−1) y responde 8",
+     "explicacion_nino": "Mira los saltos: +3, −1, +3, −1… ahora toca +3.",
+     "indicacion_padres": "Que escriba los saltos entre números; verá el patrón de los saltos.",
+     "regla": "respuesta = último + último salto"
+    }
+   ],
+   "_o": 20
+  },
+  {
+   "codigo": "ALG.PATRON.07",
+   "familia": "ALG.PATRON",
+   "nivel_familia": 7,
+   "bloque": "ALG",
+   "curso_ref": "PRI5",
+   "trimestre_ref": 2,
+   "orden_ref": 1,
+   "nota_curso": "Murcia fija los patrones en el tercer ciclo sin reparto por curso (pág. 40079); se sitúa en 5.º, segundo trimestre por criterio.",
+   "nombre": "Predecir un término lejano de un patrón con una tabla posición–valor",
+   "nombre_padres": "Adivinar el término 20 de una serie sin escribirlos todos",
+   "definicion": "Organizar un patrón aditivo (numérico o de figuras) en una tabla posición → valor y predecir un término lejano (posición 10 a 100) razonando la regla ('cada vez 3 más, empezando en 1'), sin necesidad de notación algebraica. No se pide escribir la expresión con letra (ALG.PATRON.08).",
+   "parametros": {
+    "tipo": "prediccion",
+    "regla": "lineal",
+    "posicion": [
+     10,
+     100
+    ]
+   },
+   "ejemplo_frontera": "4, 7, 10, 13… término 25 → 76",
+   "ejemplo_fuera": "Escribir 'término n = 3n + 1' (→ ALG.PATRON.08)",
+   "importancia": 3,
+   "carga_alumno": 4,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, tercer ciclo, D. Sentido algebraico > 1. Patrones (pág. 40079)",
+   "fuentes_extra": [
+    {
+     "fuente": "DEC-ES-PRI",
+     "ref": "Anexo II, Matemáticas, tercer ciclo, D. Sentido algebraico (págs. 24499-24502)",
+     "rol": "situa"
+    }
+   ],
+   "prerrequisitos": [
+    {
+     "codigo": "ALG.PATRON.05",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "OPER.MULT.03",
+     "peso": "imprescindible"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Multiplica por la posición",
+     "descripcion": "Término 25 = 25 × 3 = 75 (olvida el valor inicial)",
+     "explicacion_nino": "Cada término es 3 veces la posición más 1. No olvides ese 1 que había al principio.",
+     "indicacion_padres": "Que compruebe su regla con el primer término: si no da 4, está mal.",
+     "regla": "respuesta = salto × n"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Proporcionalidad desde un término",
+     "descripcion": "Si el 5.º es 16, el 25.º es 16 × 5 = 80",
+     "explicacion_nino": "No se puede multiplicar el término: la serie no empieza en 0.",
+     "indicacion_padres": "Pídale que compruebe con el término 10.º dibujado o escrito.",
+     "regla": "respuesta = t_k × (n/k)"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Un salto de más o de menos",
+     "descripcion": "Calcula 4 + 3·25 = 79 en vez de 4 + 3·24",
+     "explicacion_nino": "Del 1.º al 25.º hay 24 saltos, no 25.",
+     "indicacion_padres": "Pensar en 'saltos entre postes' ayuda: 25 postes, 24 huecos.",
+     "regla": "respuesta = t1 + salto × n"
+    }
+   ],
+   "_o": 20
+  },
+  {
+   "codigo": "ALG.PATRON.08",
+   "familia": "ALG.PATRON",
+   "nivel_familia": 8,
+   "bloque": "ALG",
+   "curso_ref": "PRI6",
+   "trimestre_ref": 2,
+   "orden_ref": 1,
+   "nota_curso": "Murcia fija los patrones en el tercer ciclo sin reparto por curso (pág. 40079); se sitúa en 6.º, segundo trimestre por criterio.",
+   "nombre": "Expresar la regla de un patrón con palabras o con una letra",
+   "nombre_padres": "Escribir la regla de una serie con una letra",
+   "definicion": "Elegir, entre varias, la expresión (verbal, con notación inventada o con una letra) que describe un patrón lineal dado por figuras o por tabla ('el número de la figura por 2, más 3' / 2·n + 3), y usarla para un término concreto. La expresión formal de sucesiones es FUN.SUCES.",
+   "parametros": {
+    "tipo": "generalizacion",
+    "regla": "lineal",
+    "notacion": [
+     "verbal",
+     "letra"
+    ]
+   },
+   "ejemplo_frontera": "Figuras con 5, 9, 13 cuadrados → 4·n + 1",
+   "ejemplo_fuera": "Término general de una progresión con an = a1 + (n−1)d (→ FUN.SUCES.04)",
+   "importancia": 3,
+   "carga_alumno": 4,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, tercer ciclo, D. Sentido algebraico > 1. Patrones (pág. 40079)",
+   "fuentes_extra": [
+    {
+     "fuente": "DEC-ES-PRI",
+     "ref": "Anexo II, Matemáticas, tercer ciclo, D. Sentido algebraico (págs. 24499-24502)",
+     "rol": "situa"
+    }
+   ],
+   "prerrequisitos": [
+    {
+     "codigo": "ALG.PATRON.07",
+     "peso": "imprescindible"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Usa el salto como constante",
+     "descripcion": "Para 5, 9, 13 escribe n + 4",
+     "explicacion_nino": "El 4 es lo que se suma cada vez, así que va multiplicando a n: 4·n. Luego ajusta con +1.",
+     "indicacion_padres": "Que compruebe la fórmula con n = 1, 2 y 3.",
+     "regla": "expresión = n + d"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Pone el primer término como coeficiente",
+     "descripcion": "Escribe 5·n + 4 mezclando primer término y salto",
+     "explicacion_nino": "Comprueba: con n = 1 te daría 9, pero la primera figura tiene 5.",
+     "indicacion_padres": "Enseñe a comprobar siempre con la primera figura.",
+     "regla": "expresión = t1·n + d"
+    }
+   ],
+   "_o": 20
+  }
+ ]
+}

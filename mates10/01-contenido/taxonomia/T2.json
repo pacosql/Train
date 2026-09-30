@@ -1,0 +1,642 @@
+{
+ "grupo": "T2",
+ "habilidades": [
+  {
+   "codigo": "OPER.MULT.01",
+   "familia": "OPER.MULT",
+   "nivel_familia": 1,
+   "bloque": "OPER",
+   "curso_ref": "PRI3",
+   "trimestre_ref": 1,
+   "orden_ref": 10,
+   "nota_curso": "El decreto de Murcia (como el estatal) sitúa la multiplicación en el segundo ciclo (3.º–4.º) sin repartir por curso; criterio: se introduce al empezar 3.º. Muchos libros la presentan ya en el 3.er trimestre de 2.º: lo fijará el mapa por editorial.",
+   "nombre": "Sentido de la multiplicación: suma de sumandos iguales y producto",
+   "nombre_padres": "Entender qué es multiplicar (sumar varias veces lo mismo)",
+   "definicion": "Pasar de una suma de sumandos iguales a una multiplicación y al revés (4 + 4 + 4 = 3 × 4), leer el signo × como 'veces', reconocer grupos iguales o filas y columnas de una cuadrícula como una multiplicación, y nombrar factores y producto. Los factores son de una cifra y el producto se puede obtener contando o sumando. No se pide saber la tabla de memoria (eso es OPER.TABLA.* y OPER.MULT.02) ni multiplicar números de dos cifras.",
+   "parametros": {
+    "factores": 2,
+    "cifras_factor": 1,
+    "representaciones": [
+     "suma_repetida",
+     "grupos",
+     "cuadricula"
+    ],
+    "memoria": false
+   },
+   "ejemplo_frontera": "¿Qué multiplicación es 6 + 6 + 6 + 6 + 6? → 5 × 6 (o 6 × 5) = 30",
+   "ejemplo_fuera": "7 × 8 = ? sin apoyo de suma ni dibujo (es un hecho de la tabla → OPER.TABLA.07/08)",
+   "importancia": 5,
+   "carga_alumno": 2,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, segundo ciclo, A. Sentido numérico, 3. Sentido de las operaciones (pág. 40072): construcción de las tablas apoyándose en número de veces, suma repetida o cuadrículas",
+   "fuentes_extra": [
+    {
+     "fuente": "DEC-ES-PRI",
+     "ref": "Anexo II, segundo ciclo, A.3 (pág. 24495)",
+     "rol": "situa"
+    }
+   ],
+   "prerrequisitos": [
+    {
+     "codigo": "OPER.SUMA.05",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "NUM.CONT.03",
+     "peso": "recomendable"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Suma los dos números en vez de multiplicar",
+     "descripcion": "3 veces 4 → 3 + 4 = 7",
+     "explicacion_nino": "Multiplicar no es juntar los dos números. 3 × 4 son 3 grupos de 4: 4 + 4 + 4 = 12.",
+     "indicacion_padres": "Si ante '3 × 4' contesta 7, dibujad juntos 3 platos con 4 galletas cada uno y contadlas. Repetid con otros números.",
+     "regla": "a + b"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Cuenta mal el número de sumandos",
+     "descripcion": "6 + 6 + 6 + 6 + 6 → 4 × 6 (se deja un sumando)",
+     "explicacion_nino": "Cuenta los seises uno a uno, tocándolos con el dedo. Hay 5 seises: 5 × 6.",
+     "indicacion_padres": "Pasa cuando hay muchos sumandos. Pídele que tache cada sumando al contarlo.",
+     "regla": "(n − 1) × a, o (n + 1) × a, siendo n el número real de sumandos"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Confunde el número de grupos con el tamaño del grupo al pasar a suma",
+     "descripcion": "3 × 4 → 3 + 3 + 3 + 3 cuando se pide 'tres grupos de cuatro'",
+     "explicacion_nino": "Da el mismo resultado, ¡bien! Pero 'tres grupos de cuatro' es 4 + 4 + 4. Primero cuántos grupos, luego cuántos hay en cada uno.",
+     "indicacion_padres": "No es grave (el producto sale igual), pero en problemas de reparto le hará fallar. Pregúntale: '¿cuántos grupos hay?, ¿cuántos en cada grupo?'.",
+     "regla": "escribe b sumado a veces en lugar de a sumado b veces (solo se detecta en ítems que piden la suma, no el producto)"
+    },
+    {
+     "sufijo": "E04",
+     "nombre": "Multiplica por el número de grupos más uno o suma de más",
+     "descripcion": "Cuadrícula de 4 filas y 5 columnas → 4 × 5 + 5 = 25",
+     "explicacion_nino": "Cuenta las filas y las columnas sin repetir. 4 filas de 5 son 4 × 5 = 20.",
+     "indicacion_padres": "Si al contar cuadrículas o grupos le sobra un grupo, que marque cada fila al contarla.",
+     "regla": "a × b + b"
+    }
+   ]
+  },
+  {
+   "codigo": "OPER.MULT.02",
+   "familia": "OPER.MULT",
+   "nivel_familia": 2,
+   "bloque": "OPER",
+   "curso_ref": "PRI3",
+   "trimestre_ref": 3,
+   "orden_ref": 90,
+   "nota_curso": "El decreto de Murcia (como el estatal) sitúa la multiplicación en el segundo ciclo (3.º–4.º) sin repartir por curso; criterio: tras construir las tablas una a una (OPER.TABLA.*) se trabaja la fluidez mezclada al final de 3.º y se mantiene en 4.º–6.º. Murcia añade expresamente 'memorización de las tablas'.",
+   "nombre": "Tablas de multiplicar hasta 10: fluidez (todas mezcladas)",
+   "nombre_padres": "Saberse las tablas de multiplicar de memoria y rápido",
+   "definicion": "Dar de memoria y sin contar el producto de dos factores de 0 a 10, con las tablas mezcladas y en orden aleatorio, en unos 3 segundos por hecho. Incluye el orden inverso (7 × 3 y 3 × 7) y los productos por 0 y por 1. No incluye el factor desconocido (7 × ? = 56, que es división: OPER.DIV.01) ni productos con un factor mayor que 10. La habilidad se da por dominada cuando todas las OPER.TABLA.* lo están y además se responde con fluidez a hechos mezclados.",
+   "parametros": {
+    "factor_min": 0,
+    "factor_max": 10,
+    "mezcladas": true,
+    "tiempo_objetivo_s": 3,
+    "orden_inverso": true
+   },
+   "ejemplo_frontera": "7 × 8 = 56 (mezclado con otros, a ritmo de 3 s)",
+   "ejemplo_fuera": "12 × 7 (factor de dos cifras → OPER.MULT.03)",
+   "importancia": 5,
+   "carga_alumno": 2,
+   "calculable": true,
+   "fuente": "MATES10-DOC-UNIFICADO-1.1",
+   "fuente_ref": "Anexo, 2.2 (OPER.MULT.02, tablas hasta 10, fluidez)",
+   "fuentes_extra": [
+    {
+     "fuente": "DEC-ES-MC-PRI",
+     "ref": "Anexo III, Matemáticas, segundo ciclo, A. Sentido numérico, 3. Sentido de las operaciones (pág. 40072): memorización de las tablas de multiplicar",
+     "rol": "situa"
+    },
+    {
+     "fuente": "DEC-ES-PRI",
+     "ref": "Anexo II, segundo ciclo, A.3 (pág. 24495)",
+     "rol": "situa",
+     "nota": "El estatal habla de construir las tablas; la memorización es añadido de Murcia."
+    }
+   ],
+   "prerrequisitos": [
+    {
+     "codigo": "OPER.TABLA.01",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "OPER.TABLA.02",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "OPER.TABLA.03",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "OPER.TABLA.04",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "OPER.TABLA.05",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "OPER.TABLA.06",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "OPER.TABLA.07",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "OPER.TABLA.08",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "OPER.TABLA.09",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "OPER.TABLA.10",
+     "peso": "imprescindible"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Resultado de la tabla vecina (se equivoca de fila)",
+     "descripcion": "7 × 8 = 48 (da 6 × 8) o 7 × 8 = 63 (da 7 × 9)",
+     "explicacion_nino": "Casi. Has dado el de al lado. 7 × 8: si sabes 7 × 7 = 49, suma otro 7: 56.",
+     "indicacion_padres": "Es el error más común con las tablas mezcladas. Si pasa siempre en los mismos, anotad esos hechos y repasadlos a diario unos minutos.",
+     "regla": "(a ± 1) × b o a × (b ± 1)"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Suma en vez de multiplicar",
+     "descripcion": "6 × 4 = 10",
+     "explicacion_nino": "Mira el signo: × es 'veces'. 6 veces 4 es 24.",
+     "indicacion_padres": "Suele salir con prisa o cuando se mezclan sumas y multiplicaciones. Pídele que lea en voz alta el signo antes de responder.",
+     "regla": "a + b"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Confunde hechos que se parecen al decirlos",
+     "descripcion": "6 × 8 = 42 (mezcla con 6 × 7) ; 8 × 7 = 54",
+     "explicacion_nino": "Ese número es de otra multiplicación. 8 × 7 = 56. Truco: 5, 6, 7, 8 → 56 = 7 × 8.",
+     "indicacion_padres": "Los hechos 6×7, 6×8, 7×8, 8×8 y 6×9 son los que más se cruzan. Practicadlos aparte, con trucos o canciones.",
+     "regla": "producto de otro hecho de la zona 6–9 de la tabla (típicamente 42, 48, 54, 56, 63 intercambiados)"
+    },
+    {
+     "sufijo": "E04",
+     "nombre": "Multiplicar por 0 da el otro número",
+     "descripcion": "5 × 0 = 5",
+     "explicacion_nino": "Si tienes 5 cajas y no hay nada en ninguna, ¿cuánto tienes? Nada: 5 × 0 = 0.",
+     "indicacion_padres": "Confunde multiplicar por 0 con sumar 0. Recuérdale: 'cero veces algo es nada'.",
+     "regla": "si un factor es 0, responde el otro factor"
+    }
+   ]
+  },
+  {
+   "codigo": "OPER.MULT.03",
+   "familia": "OPER.MULT",
+   "nivel_familia": 3,
+   "bloque": "OPER",
+   "curso_ref": "PRI3",
+   "trimestre_ref": 2,
+   "orden_ref": 60,
+   "nota_curso": "El decreto de Murcia (como el estatal) sitúa la multiplicación en el segundo ciclo (3.º–4.º) sin repartir por curso; criterio: el algoritmo por una cifra se enseña en 3.º, en cuanto se conocen varias tablas.",
+   "nombre": "Multiplicación de un número de 2–4 cifras por un número de una cifra",
+   "nombre_padres": "Multiplicaciones por un número (una sola cifra abajo)",
+   "definicion": "Calcular el producto de un natural de 2 a 4 cifras por un factor de una cifra, con o sin llevadas, por el algoritmo en columna o mentalmente descomponiendo (36 × 2 = 30 × 2 + 6 × 2). Incluye ceros intermedios en el primer factor (406 × 3). No incluye factores de dos o más cifras (OPER.MULT.06) ni multiplicar por 10, 100 o 1000 como regla (OPER.MULT.04).",
+   "parametros": {
+    "cifras_factor1": [
+     2,
+     4
+    ],
+    "cifras_factor2": 1,
+    "llevada": true,
+    "ceros_intermedios": true
+   },
+   "ejemplo_frontera": "4 087 × 9 = 36 783",
+   "ejemplo_fuera": "36 × 12 (segundo factor de dos cifras → OPER.MULT.06)",
+   "importancia": 5,
+   "carga_alumno": 2,
+   "calculable": true,
+   "fuente": "MATES10-DOC-UNIFICADO-1.1",
+   "fuente_ref": "Anexo, 3 (ejercicio D: 36 · 2 y 40 · 4 como OPER.MULT.03)",
+   "fuentes_extra": [
+    {
+     "fuente": "DEC-ES-MC-PRI",
+     "ref": "Anexo III, Matemáticas, segundo ciclo, A. Sentido numérico, 3. Sentido de las operaciones (pág. 40072): multiplicación de naturales con estrategias y herramientas",
+     "rol": "situa"
+    }
+   ],
+   "prerrequisitos": [
+    {
+     "codigo": "OPER.TABLA.05",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "OPER.TABLA.02",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "OPER.MULT.01",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "NUM.DESC.03",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "OPER.SUMA.05",
+     "peso": "recomendable"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "No suma la llevada",
+     "descripcion": "36 × 2 = 62 (6 × 2 = 12, escribe 2 y olvida llevar 1)",
+     "explicacion_nino": "6 × 2 = 12. Escribes el 2 y te llevas 1. Luego 3 × 2 = 6, y le sumas la que llevabas: 7. Resultado: 72.",
+     "indicacion_padres": "Que escriba la llevada pequeñita encima de la siguiente cifra. Si el resultado le sale 'raro' de pequeño, suele ser esto.",
+     "regla": "producto columna a columna descartando las llevadas"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Suma la llevada antes de multiplicar",
+     "descripcion": "36 × 2: lleva 1, hace (3 + 1) × 2 = 8 → 82",
+     "explicacion_nino": "La llevada se suma después de multiplicar, no antes. 3 × 2 = 6, y 6 + 1 = 7.",
+     "indicacion_padres": "Mírale cómo lo hace en voz alta: '3 más 1, 4, por 2, 8' es el error. Tiene que decir '3 por 2, 6, más 1, 7'.",
+     "regla": "en cada columna calcula (cifra + llevada) × b en vez de cifra × b + llevada"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Escribe el producto parcial entero sin llevar",
+     "descripcion": "36 × 2 = 612 (escribe 6 y 12 uno al lado del otro)",
+     "explicacion_nino": "Debajo de cada cifra solo cabe una cifra. De 12 escribes el 2 y el 1 va a la siguiente columna.",
+     "indicacion_padres": "Si salen números muy largos, está copiando cada producto entero. Usad papel cuadriculado: una cifra por cuadro.",
+     "regla": "concatena los productos de cada columna"
+    },
+    {
+     "sufijo": "E04",
+     "nombre": "Se salta el cero intermedio",
+     "descripcion": "406 × 3 = 1 218 → escribe 128 (ignora 0 × 3)",
+     "explicacion_nino": "El 0 también se multiplica: 0 × 3 = 0 (más lo que te llevabas). No te lo saltes.",
+     "indicacion_padres": "Con ceros en medio del número, pídele que diga en voz alta cada cifra que multiplica.",
+     "regla": "omite la columna cuya cifra es 0 al construir el resultado"
+    },
+    {
+     "sufijo": "E05",
+     "nombre": "Error en un hecho de la tabla",
+     "descripcion": "47 × 8 = 366 (usa 7 × 8 = 54)",
+     "explicacion_nino": "El método está bien. Revisa 7 × 8: es 56.",
+     "indicacion_padres": "Si el procedimiento está bien pero el resultado falla por poco, el problema es la tabla, no la multiplicación: repasad las tablas.",
+     "regla": "sustituye un producto parcial por el de un hecho vecino (a × (b ± 1))"
+    }
+   ]
+  },
+  {
+   "codigo": "OPER.MULT.04",
+   "familia": "OPER.MULT",
+   "nivel_familia": 4,
+   "bloque": "OPER",
+   "curso_ref": "PRI3",
+   "trimestre_ref": 3,
+   "orden_ref": 80,
+   "nota_curso": "El decreto de Murcia (como el estatal) sitúa la multiplicación en el segundo ciclo (3.º–4.º) sin repartir por curso; criterio: multiplicar por 10 y 100 aparece en 3.º; por 1000 y la generalización, en 4.º.",
+   "nombre": "Multiplicar un natural por 10, 100 o 1000",
+   "nombre_padres": "Multiplicar por 10, 100 y 1000 (añadir ceros)",
+   "definicion": "Multiplicar un natural por 10, 100 o 1000 añadiendo uno, dos o tres ceros, entendiendo que cada cifra pasa a un orden superior. Incluye números que ya acaban en cero (340 × 100). No incluye multiplicar por decenas o centenas completas distintas de la unidad seguida de ceros (30, 400: OPER.MULT.05) ni decimales por la unidad seguida de ceros (OPER.DEC.*).",
+   "parametros": {
+    "multiplicador": [
+     10,
+     100,
+     1000
+    ],
+    "factor_max": 99999,
+    "decimales": false
+   },
+   "ejemplo_frontera": "3 050 × 1 000 = 3 050 000",
+   "ejemplo_fuera": "4,7 × 100 (decimal → OPER.DEC)",
+   "importancia": 4,
+   "carga_alumno": 1,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, segundo ciclo, A. Sentido numérico, 4. Relaciones: sistema de numeración de base diez aplicado a las operaciones (pág. 40072)",
+   "prerrequisitos": [
+    {
+     "codigo": "NUM.DESC.04",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "OPER.MULT.01",
+     "peso": "imprescindible"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Añade un número de ceros equivocado",
+     "descripcion": "45 × 100 = 450 ; 45 × 1000 = 45 000 0",
+     "explicacion_nino": "Cuenta los ceros del 100: son dos. Añade dos ceros: 4 500.",
+     "indicacion_padres": "Pídele que cuente en voz alta los ceros del 10, 100 o 1000 antes de escribirlos.",
+     "regla": "a × 10^(k ± 1)"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "No cuenta los ceros que ya tenía el número",
+     "descripcion": "340 × 100 = 3 400",
+     "explicacion_nino": "El 340 ya tenía un cero. Ahora añades dos más: 34 000.",
+     "indicacion_padres": "Pasa con números que acaban en cero: cree que ya 'tiene' ceros. Que escriba primero el número tal cual y luego los ceros nuevos.",
+     "regla": "a × 10^k omitiendo los ceros finales propios de a (o fusionándolos)"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Suma el 10 (o el 100) en vez de multiplicar",
+     "descripcion": "45 × 10 = 55",
+     "explicacion_nino": "Multiplicar por 10 es hacerlo 10 veces más grande, no sumarle 10. 45 × 10 = 450.",
+     "indicacion_padres": "Si da resultados cercanos al número original, está sumando. Preguntadle: '¿10 veces 45 es poco o mucho?'.",
+     "regla": "a + 10^k"
+    }
+   ]
+  },
+  {
+   "codigo": "OPER.MULT.05",
+   "familia": "OPER.MULT",
+   "nivel_familia": 5,
+   "bloque": "OPER",
+   "curso_ref": "PRI4",
+   "trimestre_ref": 1,
+   "orden_ref": 10,
+   "nota_curso": "El decreto de Murcia (como el estatal) sitúa la multiplicación en el segundo ciclo (3.º–4.º) sin repartir por curso; criterio: 4.º, como paso previo a la multiplicación por dos cifras.",
+   "nombre": "Multiplicar por decenas, centenas o millares completos (× 30, × 400, × 2 000)",
+   "nombre_padres": "Multiplicar por números acabados en ceros (30, 400…)",
+   "definicion": "Multiplicar un natural por un número formado por una cifra seguida de ceros (20, 300, 4 000), multiplicando por la cifra y añadiendo los ceros. Incluye que ambos factores acaben en cero (60 × 700). No incluye factores con dos o más cifras significativas (34 × 23: OPER.MULT.06).",
+   "parametros": {
+    "multiplicador": "d·10^k",
+    "k": [
+     1,
+     3
+    ],
+    "cifras_factor1": [
+     1,
+     3
+    ]
+   },
+   "ejemplo_frontera": "60 × 700 = 42 000",
+   "ejemplo_fuera": "60 × 750 (el segundo factor tiene dos cifras significativas → OPER.MULT.06)",
+   "importancia": 3,
+   "carga_alumno": 2,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, segundo ciclo, A. Sentido numérico, 3. Sentido de las operaciones (pág. 40072): multiplicación de naturales con flexibilidad, estrategias y propiedades",
+   "prerrequisitos": [
+    {
+     "codigo": "OPER.MULT.04",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "OPER.MULT.02",
+     "peso": "imprescindible"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Olvida los ceros de uno de los factores",
+     "descripcion": "60 × 700 = 4 200",
+     "explicacion_nino": "Cuenta todos los ceros: uno del 60 y dos del 700. Son tres. 6 × 7 = 42 y tres ceros: 42 000.",
+     "indicacion_padres": "Que tape los ceros con el dedo, multiplique lo que queda y luego cuente todos los ceros tapados.",
+     "regla": "(cifras significativas) × 10^(ceros de un solo factor)"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Suma de más un cero cuando el producto de las cifras acaba en cero",
+     "descripcion": "50 × 40 = 20 000 → escribe 2 000 (se come el cero de 5 × 4 = 20)",
+     "explicacion_nino": "5 × 4 = 20. Ese 20 ya tiene su cero. Luego añades los dos ceros: 2 000.",
+     "indicacion_padres": "Aparece con 5 × 2, 5 × 4, 5 × 6, 5 × 8. Pídele que escriba primero el producto de las cifras completo.",
+     "regla": "confunde el cero del producto de cifras con los ceros añadidos (±1 cero)"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Multiplica solo las cifras y no añade ceros",
+     "descripcion": "30 × 4 = 12",
+     "explicacion_nino": "30 son 3 decenas. 3 × 4 = 12 decenas, que son 120.",
+     "indicacion_padres": "Si el resultado es mucho más pequeño de lo razonable, preguntadle si cabe: '30 cuatro veces, ¿son solo 12?'.",
+     "regla": "producto de las cifras significativas sin ceros"
+    }
+   ]
+  },
+  {
+   "codigo": "OPER.MULT.06",
+   "familia": "OPER.MULT",
+   "nivel_familia": 6,
+   "bloque": "OPER",
+   "curso_ref": "PRI4",
+   "trimestre_ref": 1,
+   "orden_ref": 20,
+   "nota_curso": "El decreto de Murcia (como el estatal) sitúa la multiplicación en el segundo ciclo (3.º–4.º) sin repartir por curso; criterio: el algoritmo por dos cifras es contenido típico del primer trimestre de 4.º.",
+   "nombre": "Multiplicación por un número de dos cifras",
+   "nombre_padres": "Multiplicaciones con dos cifras abajo",
+   "definicion": "Multiplicar un natural de 2 a 4 cifras por uno de dos cifras con el algoritmo en columna: dos productos parciales, el segundo desplazado un lugar a la izquierda (o con un 0 al final), y su suma. Incluye llevadas y ceros en cualquiera de los factores. No incluye segundos factores de tres cifras (OPER.MULT.07) ni decimales.",
+   "parametros": {
+    "cifras_factor1": [
+     2,
+     4
+    ],
+    "cifras_factor2": 2,
+    "llevada": true
+   },
+   "ejemplo_frontera": "3 407 × 86 = 293 002",
+   "ejemplo_fuera": "347 × 125 (tres cifras → OPER.MULT.07)",
+   "importancia": 5,
+   "carga_alumno": 3,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, segundo ciclo, A. Sentido numérico, 3. Sentido de las operaciones (pág. 40072): multiplicación de naturales, estrategias y herramientas de resolución",
+   "prerrequisitos": [
+    {
+     "codigo": "OPER.MULT.03",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "OPER.MULT.05",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "OPER.SUMA.06",
+     "peso": "recomendable"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "No desplaza el segundo producto parcial",
+     "descripcion": "34 × 23: 102 + 68 = 170 (en vez de 102 + 680 = 782)",
+     "explicacion_nino": "El 2 de 23 vale 20. Por eso su producto se escribe una casilla a la izquierda (o con un 0 al final). 102 + 680 = 782.",
+     "indicacion_padres": "Es el error clásico. Que ponga siempre un 0 (o una x) al empezar la segunda fila, antes de nada.",
+     "regla": "a × u + a × d (sin multiplicar por 10 el segundo parcial), siendo el segundo factor 10d + u"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Multiplica solo cifra a cifra en columna",
+     "descripcion": "34 × 23 = 6 12 → 612 (3 × 2 y 4 × 3)",
+     "explicacion_nino": "No se multiplica cada cifra solo con la de debajo. Cada cifra de abajo multiplica a TODO el número de arriba.",
+     "indicacion_padres": "Si el resultado tiene tan pocas cifras como los factores, está multiplicando 'en columna' como si fuera una suma.",
+     "regla": "concatena el producto de las decenas con el de las unidades"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Mezcla las llevadas de los dos productos parciales",
+     "descripcion": "47 × 36: arrastra la llevada de la primera fila a la segunda",
+     "explicacion_nino": "Cada fila empieza sin llevadas. Borra las que usaste en la fila de arriba antes de empezar la de abajo.",
+     "indicacion_padres": "Que tache las llevadas de la primera fila al terminarla. Si no, las suma otra vez en la segunda.",
+     "regla": "en el segundo parcial suma las llevadas del primero"
+    },
+    {
+     "sufijo": "E04",
+     "nombre": "Se equivoca al sumar los productos parciales",
+     "descripcion": "34 × 23: 102 + 680 = 772",
+     "explicacion_nino": "Los dos productos están bien. Repasa la suma del final con cuidado, columna a columna.",
+     "indicacion_padres": "Si los parciales están bien y el total falla, es un error de suma: revisad la alineación de las columnas.",
+     "regla": "producto correcto ± 10^k (error de una llevada en la suma final)"
+    }
+   ]
+  },
+  {
+   "codigo": "OPER.MULT.07",
+   "familia": "OPER.MULT",
+   "nivel_familia": 7,
+   "bloque": "OPER",
+   "curso_ref": "PRI4",
+   "trimestre_ref": 2,
+   "orden_ref": 30,
+   "nota_curso": "El decreto de Murcia (como el estatal) sitúa la multiplicación en el segundo ciclo (3.º–4.º) sin repartir por curso; criterio: tras dominar dos cifras, 4.º (algunos libros la dejan para 5.º).",
+   "nombre": "Multiplicación por un número de tres cifras",
+   "nombre_padres": "Multiplicaciones con tres cifras abajo",
+   "definicion": "Multiplicar un natural de hasta 4 cifras por uno de tres cifras: tres productos parciales desplazados y su suma. Incluye ceros en el segundo factor (305), donde el producto parcial del 0 puede omitirse desplazando dos lugares. No incluye más de tres cifras en el segundo factor ni decimales.",
+   "parametros": {
+    "cifras_factor1": [
+     2,
+     4
+    ],
+    "cifras_factor2": 3,
+    "cero_en_multiplicador": true
+   },
+   "ejemplo_frontera": "2 346 × 305 = 715 530",
+   "ejemplo_fuera": "2,5 × 305 (decimal → OPER.DEC)",
+   "importancia": 3,
+   "carga_alumno": 3,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, segundo ciclo, A. Sentido numérico, 3. Sentido de las operaciones (pág. 40072): multiplicación de naturales, estrategias y herramientas de resolución",
+   "prerrequisitos": [
+    {
+     "codigo": "OPER.MULT.06",
+     "peso": "imprescindible"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Desplazamiento mal hecho en el tercer producto",
+     "descripcion": "Desplaza la tercera fila solo un lugar",
+     "explicacion_nino": "La cifra de las centenas vale cientos: su fila empieza dos casillas a la izquierda (dos ceros).",
+     "indicacion_padres": "Que escriba los ceros de relleno (0 en la 2.ª fila, 00 en la 3.ª) antes de multiplicar.",
+     "regla": "suma a·u + 10·a·d + 10·a·c (tercer parcial desplazado de menos)"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Con un 0 en medio del multiplicador, no desplaza el siguiente producto",
+     "descripcion": "234 × 305 = 234 × 35 = 8 190",
+     "explicacion_nino": "Aunque no escribas la fila del 0, la fila del 3 va dos casillas a la izquierda porque ese 3 vale 300.",
+     "indicacion_padres": "Con multiplicadores tipo 305, 408, pídele que escriba la fila de ceros al principio; cuando lo domine, podrá saltársela.",
+     "regla": "a × (multiplicador sin el cero intermedio)"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Error en la suma de tres productos parciales",
+     "descripcion": "Llevadas mal sumadas al sumar tres filas",
+     "explicacion_nino": "Sumar tres filas es más largo. Ve columna por columna y apunta lo que te llevas.",
+     "indicacion_padres": "Si todas las filas están bien, repasad la suma: con tres sumandos las llevadas pueden ser 2.",
+     "regla": "producto correcto ± 10^k"
+    }
+   ]
+  },
+  {
+   "codigo": "OPER.MULT.08",
+   "familia": "OPER.MULT",
+   "nivel_familia": 8,
+   "bloque": "OPER",
+   "curso_ref": "PRI4",
+   "trimestre_ref": 2,
+   "orden_ref": 40,
+   "nota_curso": "El decreto de Murcia (como el estatal) sitúa la multiplicación en el segundo ciclo (3.º–4.º) sin repartir por curso; criterio: conmutativa y asociativa se usan desde 3.º; la distributiva se formaliza en 4.º–5.º. Se sitúa en 4.º.",
+   "nombre": "Propiedades de la multiplicación: conmutativa, asociativa y distributiva",
+   "nombre_padres": "Trucos que cumple la multiplicación (cambiar el orden, repartir)",
+   "definicion": "Reconocer y usar las propiedades conmutativa (a·b = b·a), asociativa ((a·b)·c = a·(b·c)), elemento neutro (1) y distributiva respecto de la suma y la resta (a·(b + c) = a·b + a·c) con naturales: identificar qué propiedad se aplica, completar la igualdad y usarla para calcular más fácil (25 × 7 × 4 = 25 × 4 × 7). No incluye sacar factor común con letras (ALG.EXPR) ni la jerarquía de operaciones en expresiones largas (OPER.JERARQ).",
+   "parametros": {
+    "propiedades": [
+     "conmutativa",
+     "asociativa",
+     "neutro",
+     "distributiva"
+    ],
+    "numeros": "naturales"
+   },
+   "ejemplo_frontera": "7 × (10 + 3) = 7 × 10 + 7 × 3 = 91",
+   "ejemplo_fuera": "3 · (x + 2) = 3x + 6 (con letras → ALG.EXPR)",
+   "importancia": 3,
+   "carga_alumno": 2,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, segundo ciclo, A. Sentido numérico, 3. Sentido de las operaciones (pág. 40072): suma, resta, multiplicación y división ... estrategias y herramientas de resolución y propiedades",
+   "fuentes_extra": [
+    {
+     "fuente": "DEC-ES-MC-ESO",
+     "ref": "Anexo III, 1.º ESO, A.2 Propiedades de las operaciones (pág. 42902)",
+     "rol": "afina"
+    }
+   ],
+   "prerrequisitos": [
+    {
+     "codigo": "OPER.MULT.02",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "OPER.MULT.03",
+     "peso": "imprescindible"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Distribuye solo sobre el primer sumando",
+     "descripcion": "7 × (10 + 3) = 7 × 10 + 3 = 73",
+     "explicacion_nino": "El 7 multiplica a todo lo del paréntesis: al 10 y también al 3. 70 + 21 = 91.",
+     "indicacion_padres": "Que dibuje una flecha del número de fuera a cada número de dentro del paréntesis.",
+     "regla": "a·b + c"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Cree que la conmutativa vale para la resta y la división",
+     "descripcion": "Marca 12 − 5 = 5 − 12 o 12 : 4 = 4 : 12 como ciertas",
+     "explicacion_nino": "Cambiar el orden solo vale para sumar y multiplicar. 12 : 4 = 3, pero 4 : 12 no es 3.",
+     "indicacion_padres": "Pruébalo con cosas: 12 caramelos entre 4 niños no es lo mismo que 4 caramelos entre 12 niños.",
+     "regla": "acepta a ∘ b = b ∘ a con ∘ ∈ {−, :}"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Confunde el nombre de la propiedad",
+     "descripcion": "Llama asociativa a 3 × 5 = 5 × 3",
+     "explicacion_nino": "Si solo cambias el orden, es la conmutativa. Si cambias cómo agrupas con paréntesis, es la asociativa.",
+     "indicacion_padres": "Es un error de vocabulario, no de cálculo. Un truco: con-muta = cambia de sitio; asocia = junta en grupos.",
+     "regla": "intercambia las etiquetas conmutativa/asociativa"
+    }
+   ]
+  }
+ ]
+}
