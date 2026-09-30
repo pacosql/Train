@@ -21,6 +21,17 @@ def _ordena(dist, semilla):
     return con + sin
 
 
+NOMBRE_IC = {"🍎": ("manzana", "manzanas"), "⭐": ("estrella", "estrellas"), "🐟": ("pez", "peces"), "🌸": ("flor", "flores"),
+             "⚽": ("balón", "balones"), "🐞": ("mariquita", "mariquitas"), "🍓": ("fresa", "fresas"), "🚗": ("coche", "coches"),
+             "🎈": ("globo", "globos"), "🐥": ("pollito", "pollitos")}
+FEM_IC = {"🍎", "⭐", "🌸", "🐞", "🍓"}
+COLORES = {"🔴": "rojos", "🔵": "azules", "🟢": "verdes", "🟡": "amarillos"}
+
+
+def cuantos_ic(ic):
+    return f"¿{'Cuántas' if ic in FEM_IC else 'Cuántos'} {NOMBRE_IC[ic][1]} hay?"
+
+
 def mk(enun, resp, dist, op, texto, adulto, genericos=None, pasos=None, datos=None, **params):
     """Ejercicio de un paso. resp y valores de dist pueden ser int o str; dist = [(valor, clave)]."""
     r = resp if isinstance(resp, str) else fmt(resp)
@@ -74,10 +85,10 @@ def g_cont01(rng, d, desordenado=False):
     ic = rng.choice(ICONOS)
     dib = iconos_filas(n, ic, 5, desordenado, rng)
     azar = rng.randint(1, max(1, n - 2))
-    return mk(f"¿Cuántos hay?\n{dib}", n, [(n + 1, "E01"), (n - 1, "E02"), (azar, "E04")], "contar",
+    return mk(f"{cuantos_ic(ic)}\n{dib}", n, [(n + 1, "E01"), (n - 1, "E02"), (azar, "E04")], "contar",
               f"Toca cada dibujo una sola vez mientras cuentas: {', '.join(str(i) for i in range(1, n + 1))}. El último número que dices es cuántos hay: {n}.",
               "Contar bien exige tocar cada objeto una vez y solo una, y saber que el último número dicho es el total. Si se equivoca, que tache o mueva cada objeto al contarlo.",
-              genericos=[n + 2, n - 2], datos={"lectura": "¿Cuántos hay?", "sin_lectura": True}, n=n)
+              genericos=[n + 2, n - 2], datos={"lectura": cuantos_ic(ic), "sin_lectura": True}, n=n)
 
 
 def marco10(n, lleno="🔴", vacio="⚪"):
@@ -91,10 +102,20 @@ DADO = {1: "⚀", 2: "⚁", 3: "⚂", 4: "⚃", 5: "⚄", 6: "⚅"}
 @generador("t1_cont02")
 def g_cont02(rng, d, modos=("dado", "marco10")):
     m = modo(rng, modos, "dado")
+    if m == "dos_dados":
+        a, b = rng.randint(1, 5), rng.randint(1, 5)
+        n = a + b
+        return mk(f"Mira los dos dados sin contar los puntos uno a uno. ¿Cuántos puntos hay entre los dos?\n{DADO[a]} {DADO[b]}", n,
+                  [(n + 1, "E01"), (n - 1, "E01"), (max(a, b), None), (n + 2, None)], "subitizar",
+                  f"Reconozco cada cara sin contar: {a} y {b}. Juntos son {n}.",
+                  "Reconocer caras de dado y juntarlas («5 y 2 son 7») es el paso de la subitización al cálculo.",
+                  genericos=[n - 2], datos={"lectura": "¿Cuántos puntos hay entre los dos dados?", "sin_lectura": True}, n=n)
     if m == "dado":
         n = rng.randint(1, 6)
         ic = rng.choice(["🎲", "🟥", "🟦"])
-        return mk(f"Mira el dado sin contar los puntos uno a uno. ¿Cuántos puntos tiene?\n{DADO[n]}", n,
+        frase = rng.choice(["Mira el dado sin contar los puntos uno a uno. ¿Cuántos puntos tiene?", "¿Qué número sale en este dado? Míralo de un vistazo.",
+                            "Sin contar uno a uno: ¿cuántos puntos ves en el dado?"])
+        return mk(f"{frase}\n{DADO[n]}", n,
                   [(n + 1, "E01"), (n - 1 if n > 1 else None, "E01"), (n + 2, None)], "subitizar",
                   f"Es la cara del {n} del dado. Esa forma se aprende de memoria y se reconoce de un vistazo.",
                   "Reconocer cantidades pequeñas sin contar (subitización) agiliza todo el cálculo. Jugad a enseñar caras de dado un segundo y decir el número.",
@@ -106,7 +127,7 @@ def g_cont02(rng, d, modos=("dado", "marco10")):
     texto = (f"La fila de arriba tiene 5. Abajo hay {n - 5} más: 5 y {n - 5} son {n}." if n > 5 else f"En la fila de arriba hay {n}: se ve sin contar.")
     if n > 5:
         texto += f" También: faltan {10 - n} para 10, así que hay {n}."
-    return mk(f"Marco de 10: cuenta los puntos de color (los blancos están vacíos).\n{marco10(n, lleno)}", n, dist, "subitizar", texto,
+    return mk(f"Marco de 10: ¿cuántos puntos {COLORES[lleno]} hay? (los blancos están vacíos)\n{marco10(n, lleno)}", n, dist, "subitizar", texto,
               "El marco de 10 enseña a ver los números como «5 y algo» o «10 menos algo», clave para sumar y restar con la decena.",
               genericos=[n + 2, n - 2], datos={"lectura": "¿Cuántos puntos de color hay en el marco?", "sin_lectura": True}, n=n)
 
@@ -125,10 +146,10 @@ def g_cont03(rng, d, modos=("contar", "siguiente")):
     if m == "contar":
         n = rng.randint(11, 15 if d == 1 else 20)
         ic = rng.choice(ICONOS)
-        return mk(f"¿Cuántos hay?\n{iconos_filas(n, ic, 5)}", n, [(n + 1, "E01"), (n - 1, None), (n + 2, "E01")], "contar",
+        return mk(f"{cuantos_ic(ic)}\n{iconos_filas(n, ic, 5)}", n, [(n + 1, "E01"), (n - 1, None), (n + 2, "E01")], "contar",
                   f"Cuenta de 5 en 5 las filas completas y luego los sueltos: llegas a {n} ({letras(n)}).",
                   "De 11 a 15 los nombres son irregulares (once… quince): conviene contar en voz alta a menudo.",
-                  genericos=[n - 2, n + 3], datos={"lectura": "¿Cuántos hay?", "sin_lectura": True}, n=n)
+                  genericos=[n - 2, n + 3], datos={"lectura": cuantos_ic(ic), "sin_lectura": True}, n=n)
     n = rng.randint(10, 17) if d < 3 else rng.choice([18, 19, 19, 16, 17])
     s = n + 1
     if rng.random() < 0.5:
@@ -254,7 +275,7 @@ def g_cont08(rng, d, modos=("adelante", "atras")):
         ult = serie[-1]
         dist = [(ult - 1, "E01"), (ult - 10, "E02"), (ult + 5, "E03")]
     else:
-        top = 10 if d == 1 else 20
+        top = 12 if d == 1 else 20
         ini = rng.randint(0, top - k) * 5
         serie = [ini + 5 * i for i in range(k)]
         paso = 5
@@ -345,7 +366,7 @@ def g_cont11(rng, d, modos=("adelante",)):
     m = modo(rng, modos, "adelante")
     p = rng.choice([3, 4])
     otro = 4 if p == 3 else 3
-    k = 3
+    k = rng.choice([3, 4])
     maxm = 40 // p
     if m == "atras":
         i0 = rng.randint(k, maxm)
@@ -1283,7 +1304,7 @@ def g_paridad01(rng, d, modos=("parejas", "elegir")):
         resp = frase(q, r)
         dist = [(frase(q, 1 - r), "E02"), (frase(q + 1, 0) if r else (frase(q - 1, 1) if q > 1 else None), "E02"), (frase(q + 1, r), None), (frase(q - 1, r) if q > 1 else None, None)]
         dist = [(v, k) for v, k in dist if v != resp]
-        return mk(f"Haz parejas con estos dibujos:\n{dib}\n¿Qué pasa?", resp, dist, "parejas",
+        return mk(f"Haz parejas con estos {NOMBRE_IC[ic][1]}:\n{dib}\n¿Qué pasa?", resp, dist, "parejas",
                   f"Salen {q} parejas y {'no sobra ninguno' if r == 0 else 'sobra 1'}. Si no sobra ninguno el número es par; si sobra uno, impar. {n} es {'par' if r == 0 else 'impar'}.",
                   "Par es lo que se puede repartir entre dos sin que sobre nada. Hacer parejas con objetos reales es la mejor manera de entenderlo.",
                   genericos=[frase(q + 1, 1), frase(q, 2)], n=n)
@@ -1436,7 +1457,7 @@ def g_redon01(rng, d):
         return None
     lo, hi = min(opciones), max(opciones)
     dist = [(f"unos {v}", "E02" if v == lo else "E01" if v == hi else None) for v in opciones if v != x]
-    return mk(f"Sin contar uno a uno: ¿cuántos {ic} hay, más o menos? (en cada fila hay unos 10)\n" + "\n".join(filas), f"unos {x}", dist, "estimar_coleccion",
+    return mk(f"Sin contar uno a uno: {cuantos_ic(ic)[1:-5].lower()} hay, más o menos? (en cada fila hay unos 10)\n" + "\n".join(filas), f"unos {x}", dist, "estimar_coleccion",
               f"Hay unas {len(filas)} filas y en cada fila hay unos 10: {len(filas)} × 10 son unos {x}.",
               "Estimar con un grupo de referencia (una fila de 10) es una habilidad muy útil. Después se puede contar para comprobar cuánto nos hemos acercado.",
               datos={"opciones_fijas": True}, n=x)
@@ -1860,7 +1881,7 @@ def _contexto_suma(rng, a, b):
 def g_suma01(rng, d, contexto=False):
     for _ in range(100):
         a, b = rng.randint(0 if d == 3 else 1, 9), rng.randint(0 if d == 3 else 1, 9)
-        if a + b > 10 or (d == 1 and a + b > 6) or (d == 2 and a + b < 5) or (d == 3 and a + b < 8 and 0 not in (a, b)):
+        if a + b > 10 or (d == 1 and a + b > 7) or (d == 2 and a + b < 5) or (d == 3 and a + b < 8 and 0 not in (a, b)):
             continue
         break
     s = a + b
@@ -1884,7 +1905,8 @@ def g_suma02(rng, d, modos=("hueco", "falta", "marco", "pareja")):
         obj = rng.choice(OBJETOS)
         enun = f"{nom} tiene {a} {obj[1] if a > 1 else obj[0]} y quiere tener 10. ¿Cuántos le faltan?".replace("Cuántos", cuantos(obj))
     elif m == "marco":
-        enun = f"¿Cuántos huecos blancos faltan por llenar para tener 10?\n{marco10(a, rng.choice(['🔴', '🔵', '🟢']))}"
+        col = rng.choice(["🔴", "🔵", "🟢", "🟡"])
+        enun = f"En el marco hay {a} puntos {COLORES[col]}. ¿Cuántos huecos blancos faltan por llenar para tener 10?\n{marco10(a, col)}"
     else:
         resp = f"{a} y {r}"
         dist = [(f"{a} y {a + 10 - 10 + (1 if r != a + 1 else 2)}" if False else f"{a} y {r + 1}", "E03"), (f"{a} y {r - 1}" if r > 1 else f"{a} y {r + 2}", None),
@@ -2111,8 +2133,9 @@ def g_suma12(rng, d, modos=("elegir", "hueco", "resta")):
                   f"Se pueden agrupar los sumandos como se quiera sin que cambie el resultado: el número que falta es {c}.",
                   "Propiedad asociativa: (a + b) + c = a + (b + c).", a=a, b=b, c=c)
     a = rng.randint(20, 99)
-    b, c = rng.randint(2, 15), rng.randint(2, 15)
-    if b <= c or b + c > a:
+    c = rng.randint(2, 9)
+    b = rng.randint(c + 1, 15)
+    if b + c > a:
         return None
     r = a - b - c
     return mk(f"Calcula: {a} − {b} − {c}", r, [(a - (b - c), "E03"), (a - b + c, None), (r + 1, None), (r - 10, None)], "resta_encadenada",
@@ -2214,7 +2237,7 @@ def _contexto_resta(rng, a, b):
 
 @generador("t1_resta01")
 def g_resta01(rng, d, contexto=False):
-    a = rng.randint(2, 6) if d == 1 else rng.randint(3, 10)
+    a = rng.randint(2, 7) if d == 1 else rng.randint(3, 10)
     b = rng.randint(1, a - 1) if d < 3 else rng.choice([0, a, rng.randint(1, a)])
     r = a - b
     dist = [(a + b if b else None, "E01"), (r + 1, "E02"), (r - 1 if r else None, "E03"), (0 if b == 0 else None, "E04"), (a if a == b else None, "E04"), (r + 2, None)]
@@ -2535,7 +2558,8 @@ def g_cm03(rng, d):
     dist = [(2 * a, "E01"), (2 * a - 1, "E02"), (2 * b + 1, "E03"), (r + 1, None), (2 * b if dif == 1 else None, None)]
     txt = (f"{a} + {b} es el doble de {a} y {dif} más: {a} + {a} = {2 * a}, y {2 * a} + {dif} = {r}." if dif == 1 else
            f"{a} + {b} es como {a + 1} + {a + 1} (paso 1 de uno al otro): el doble de {a + 1} es {r}.")
-    return _m(f"{x} + {y}", r, dist, txt, "Casi dobles: se apoyan en un doble conocido y se ajusta. Si no sabe los dobles de memoria, empezad por ahí.",
+    enun = rng.choice([None, f"Usa un doble para calcular: {x} + {y}"])
+    return _m(f"{x} + {y}", r, dist, txt, enun=enun, adulto="Casi dobles: se apoyan en un doble conocido y se ajusta. Si no sabe los dobles de memoria, empezad por ahí.",
               "suma", sumandos=[x, y], a=x, b=y)
 
 

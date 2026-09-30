@@ -2396,6 +2396,8 @@ def _dec(rng, d, lo=2, hi=20):
 def gen_perim_suma(rng, d):
     n = rng.choice([3, 4] if d == 1 else [4, 5] if d == 2 else [5, 6])
     ls = [rng.randint(3, 20) for _ in range(n)]
+    while max(ls) >= sum(ls) - max(ls):
+        ls = [rng.randint(3, 20) for _ in range(n)]
     r = sum(ls)
     nom = NOMBRES_POL[n]
     enun = f"Un {nom} tiene lados de " + ", ".join(f"{x}" for x in ls[:-1]) + f" y {ls[-1]} cm. ¿Cuál es su perímetro?"
@@ -2478,6 +2480,8 @@ def gen_lado_perim(rng, d):
     else:
         n = rng.choice([4, 5, 6])
         ls = [rng.randint(3, 15) for _ in range(n)]
+        while max(ls) >= sum(ls) - max(ls):
+            ls = [rng.randint(3, 15) for _ in range(n)]
         P = sum(ls)
         nom = NOMBRES_POL[n]
         enun = f"Un {nom} tiene {P} cm de perímetro. {plural(n - 1, 'Un lado mide', 'Sus lados conocidos miden')} " + ", ".join(map(str, ls[:-2])) + f" y {ls[-2]} cm. ¿Cuánto mide el lado que falta?"
@@ -2497,8 +2501,7 @@ def gen_long_circ(rng, d):
     if tipo == "inversa":
         enun = f"Una circunferencia mide {fx(L)} cm. ¿Cuánto mide su radio? (usa π = 3,14)"
         resp = u(rad, "cm")
-        dist = [(u(rad * 2, "cm"), "usa_d"), (u(L / PI, "cm"), "olvida_2"), (u(r2(L / 2)), None), (u(rad + 1, "cm"), None)]
-        dist[2] = (u(r2(L / 2), "cm"), None)
+        dist = [(u(L / PI, "cm"), "olvida_2"), (u(rad * 2, "cm"), None), (u(r2(L / 2), "cm"), None), (u(rad + 1, "cm"), None)]
         pasos = [(f"{fx(L)} : (2 · 3,14)", fx(rad), f"L = 2 · π · r, así que r = L : (2 · π) = {fx(L)} : 6,28 = {resp}.")]
     else:
         dato = f"{fx(rad)} cm de radio" if tipo == "r" else f"{fx(2 * rad)} cm de diámetro"
