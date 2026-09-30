@@ -4,7 +4,7 @@ busqueda) y total = media ponderada × 10 (tools/medidas.py; distintivo pesa la 
 Lee tools/fichas.json y guarda en nombremates_ideas: medidas, score (total)
 y score_motivo (el porqué). Uso: python3 nombremates/tools/fichas.py
 """
-import json, os, re, urllib.request
+import json, os, re, urllib.parse, urllib.request
 AQUI = os.path.dirname(os.path.abspath(__file__))
 import sys; sys.path.insert(0, AQUI)
 from medidas import MEDIDAS as M, total as total_ponderado
@@ -24,7 +24,8 @@ for f in json.load(open(os.path.join(AQUI, "fichas.json"), encoding="utf-8")):
     medidas = {k: {"nota": f["medidas"][k][0], "por_que": f["medidas"][k][1]} for k in M}
     total = total_ponderado({k: medidas[k]["nota"] for k in M})
     medidas["tipo"] = f["tipo"]
-    filas = req("PATCH", f"{BASE}?nombre=ilike.{f['nombre']}", {"medidas": medidas, "score": total, "score_motivo": "Claude: " + f["por_que"]})
+    n = urllib.parse.quote(f["nombre"])  # tildes y eñes en la URL
+    filas = req("PATCH", f"{BASE}?nombre=ilike.{n}", {"medidas": medidas, "score": total, "score_motivo": "Claude: " + f["por_que"]})
     # Los pendientes, en la cola por puntuación (los mejores primero).
-    req("PATCH", f"{BASE}?nombre=ilike.{f['nombre']}&status=eq.pendiente", {"orden": round((100 - total) * 10)})
+    req("PATCH", f"{BASE}?nombre=ilike.{n}&status=eq.pendiente", {"orden": round((100 - total) * 10)})
     print(total, f["nombre"], "→", len(filas), "fila(s)")

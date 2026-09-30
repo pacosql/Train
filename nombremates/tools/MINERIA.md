@@ -31,8 +31,11 @@ no se confunde con nada y en Google sale solo él.
    (también si algo falla).
 1. `git pull origin main`. Lee `tools/fichas.json`, este fichero entero y
    las decisiones de Paco (`nombremates_ideas` con `decidido_at` reciente;
-   me_gusta / favorito / no_me_gusta). **Aprende de ellas** y apunta la
-   lección en «Lecciones».
+   me_gusta / favorito / no_me_gusta). Lee también las lecciones de las
+   ejecuciones anteriores: `python3 nombremates/tools/lecciones.py leer`.
+   **Aprende de todo ello** y, al acabar, guarda lo aprendido con
+   `python3 nombremates/tools/lecciones.py anotar "<lección>" <sesión>`
+   (se guarda en la base de datos, así no se pierde aunque falle el push).
 2. **Ronda de exploración**: 150-300 candidatos NUEVOS con ficha completa en
    `tools/out/cand.json` (formato de `fichas.json`), repartidos en familias
    distintas, incluidas familias que nadie ha probado aún (ver «Ideas para
