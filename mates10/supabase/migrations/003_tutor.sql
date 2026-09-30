@@ -332,7 +332,7 @@ create or replace function public.mates10_registrar_intento(
 returns jsonb language plpgsql as $$
 declare
   v_ej mates10_ejercicio; v_hab uuid; v_ok boolean; v_err uuid; v_ah mates10_alumno_habilidad; v_p numeric;
-  v_mec uuid; v_tec uuid; v_int uuid; v_t numeric; v_g int; v_fs record; v_repetido boolean; v_expl jsonb; v_errinfo jsonb;
+  v_mec uuid; v_tec uuid; v_int uuid; v_t numeric; v_g int; v_s numeric; v_d numeric; v_repetido boolean; v_expl jsonb; v_errinfo jsonb;
   v_estado text; v_prueba boolean; v_primer_hoy boolean;
 begin
   select * into v_ej from mates10_ejercicio where id = p_ejercicio;
@@ -372,19 +372,19 @@ begin
       actualizado_en = now() where alumno_id = p_alumno and habilidad_id = v_hab;
   else
     if v_primer_hoy then
-      select * into v_fs from mates10_fsrs(case when v_ah.estabilidad_dias > 0 then v_ah.estabilidad_dias end, v_ah.dificultad_fsrs, v_t, v_g);
+      select f.s, f.d into v_s, v_d from mates10_fsrs(case when v_ah.estabilidad_dias > 0 then v_ah.estabilidad_dias end, v_ah.dificultad_fsrs, v_t, v_g) f;
     else
-      v_fs := row(v_ah.estabilidad_dias, v_ah.dificultad_fsrs);
+      v_s := v_ah.estabilidad_dias; v_d := v_ah.dificultad_fsrs;
     end if;
     v_estado := case when v_p >= mates10_param('umbral_dominio') then 'dominada'
                      when v_ah.estado = 'dominada' and not v_ok then 'olvidada'
                      else 'en_curso' end;
     update mates10_alumno_habilidad set
       p_dominio = v_p,
-      estabilidad_dias = coalesce(v_fs.s, estabilidad_dias),
-      dificultad_fsrs = coalesce(v_fs.d, dificultad_fsrs),
+      estabilidad_dias = coalesce(v_s, estabilidad_dias),
+      dificultad_fsrs = coalesce(v_d, dificultad_fsrs),
       -- intervalo para la retención objetivo 0,9: I = S (FSRS-4.5); mínimo 1 día; sin dominar, repaso mañana
-      proximo_repaso = case when v_p >= mates10_param('umbral_dominio') then current_date + greatest(1, round(coalesce(v_fs.s, 1)))::int
+      proximo_repaso = case when v_p >= mates10_param('umbral_dominio') then current_date + greatest(1, round(coalesce(v_s, 1)))::int
                             else current_date + 1 end,
       intentos = intentos + 1, aciertos = aciertos + v_ok::int,
       aciertos_seguidos = case when v_ok then aciertos_seguidos + 1 else 0 end,
@@ -533,8 +533,8 @@ begin
     insert into m10_sit values (v_f->>'familia', v_lo, v_f->'niveles');
     insert into mates10_alumno_habilidad (alumno_id, habilidad_id, p_dominio, estado, origen, proximo_repaso, estabilidad_dias)
     select p_alumno, h.id,
-           case when h.nivel_familia <= coalesce((v_f->'niveles'->>(v_lo - 1))::int, -1) then 0.9 else 0.2 end,
-           case when h.nivel_familia <= coalesce((v_f->'niveles'->>(v_lo - 1))::int, -1) then 'dominada' else 'no_vista' end,
+           case when h.nivel_familia <= case when v_lo > 0 then (v_f->'niveles'->>(v_lo - 1))::int else -1 end then 0.9 else 0.2 end,
+           case when h.nivel_familia <= case when v_lo > 0 then (v_f->'niveles'->>(v_lo - 1))::int else -1 end then 'dominada' else 'no_vista' end,
            'prueba_nivel', current_date + 7, 7
     from mates10_habilidad h where h.familia = v_f->>'familia'
     on conflict (alumno_id, habilidad_id) do update set p_dominio = excluded.p_dominio, estado = excluded.estado, origen = 'prueba_nivel',
@@ -546,7 +546,7 @@ begin
   where v_nf > 0 and (select count(*) from m10_sit s where not exists (
           select 1 from mates10_habilidad h join mates10_curso cc on cc.codigo = h.curso_ref and cc.sistema_id = v_alu.sistema_id
           where h.familia = s.familia and cc.orden <= c.orden
-            and h.nivel_familia > coalesce((s.niveles->>(s.lo - 1))::int, -1))) * 2 > v_nf;
+            and h.nivel_familia > case when s.lo > 0 then (s.niveles->>(s.lo - 1))::int else -1 end)) * 2 > v_nf;
   v_curso_orden := coalesce(v_curso_orden, 1);
   select id into v_curso from mates10_curso where sistema_id = v_alu.sistema_id and orden = v_curso_orden;
   v_conf := round(least(0.9, 0.3 + 0.08 * v_nf), 2);

@@ -20,12 +20,12 @@ import sys
 
 sys.path.insert(0, os.path.dirname(__file__))
 from gen.nucleo import REGISTRY, completar  # noqa: E402
-import gen.aritmetica  # noqa: E402,F401
-import gen.numeracion  # noqa: E402,F401
-import gen.jerarquia  # noqa: E402,F401
-import gen.fracdec  # noqa: E402,F401
-import gen.medida_geo  # noqa: E402,F401
-import gen.algebra  # noqa: E402,F401
+import importlib  # noqa: E402
+
+# Carga todos los módulos de gen/ (los agentes de specs pueden añadir gen/extra_<grupo>.py).
+for _m in sorted(glob.glob(os.path.join(os.path.dirname(__file__), "gen", "*.py"))):
+    if not os.path.basename(_m).startswith("_"):
+        importlib.import_module("gen." + os.path.basename(_m)[:-3])
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 SPECS = os.path.join(ROOT, "02-ejercicios", "specs")

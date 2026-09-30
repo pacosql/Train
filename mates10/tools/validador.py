@@ -32,23 +32,61 @@ def huella(enunciado, respuesta):
     return hashlib.sha1((" ".join(normaliza(enunciado)) + "|" + respuesta).encode()).hexdigest()[:20]
 
 
+def _h(gram):
+    return int.from_bytes(hashlib.blake2b(gram.encode(), digest_size=8).digest(), "little", signed=True)
+
+
 class IndiceCopia:
-    """Índice de n-gramas de todos los textos extraídos del archivo de fuentes."""
+    """Índice de n-gramas de todos los textos extraídos del archivo de fuentes.
+
+    Array ordenado de hashes de 64 bits (≈ 8 bytes por n-grama), cacheado en tools/.cache/ y reconstruido si cambia
+    algún texto; así varios procesos lo pueden usar a la vez sin agotar la memoria."""
 
     def __init__(self):
-        self.grams = {}
-        for f in glob.glob(os.path.join(ROOT, "fuentes", "text", "*", "*.txt")):
-            fid = f.split(os.sep)[-2]
-            w = normaliza(open(f, encoding="utf-8", errors="replace").read())
+        from array import array
+        textos = sorted(glob.glob(os.path.join(ROOT, "fuentes", "text", "*", "*.txt")))
+        firma = f"{len(textos)}-{max((os.path.getmtime(t) for t in textos), default=0):.0f}"
+        cache_dir = os.path.join(os.path.dirname(__file__), ".cache")
+        os.makedirs(cache_dir, exist_ok=True)
+        cache = os.path.join(cache_dir, f"ngramas-{N_GRAMA}-{firma}.bin")
+        self.textos = textos
+        self.grams = array("q")
+        if os.path.exists(cache):
+            with open(cache, "rb") as f:
+                self.grams.frombytes(f.read())
+            return
+        hs = set()
+        for t in textos:
+            w = normaliza(open(t, encoding="utf-8", errors="replace").read())
             for i in range(len(w) - N_GRAMA + 1):
-                self.grams.setdefault(hash(" ".join(w[i:i + N_GRAMA])), fid)
+                hs.add(_h(" ".join(w[i:i + N_GRAMA])))
+        self.grams = array("q", sorted(hs))
+        tmp = cache + f".{os.getpid()}"
+        with open(tmp, "wb") as f:
+            self.grams.tofile(f)
+        os.replace(tmp, cache)
+        for viejo in glob.glob(os.path.join(cache_dir, f"ngramas-{N_GRAMA}-*.bin")):
+            if viejo != cache:
+                try:
+                    os.remove(viejo)
+                except OSError:
+                    pass
+
+    def _esta(self, h):
+        from bisect import bisect_left
+        i = bisect_left(self.grams, h)
+        return i < len(self.grams) and self.grams[i] == h
 
     def coincide(self, texto):
         w = normaliza(texto)
         for i in range(len(w) - N_GRAMA + 1):
-            fid = self.grams.get(hash(" ".join(w[i:i + N_GRAMA])))
-            if fid:
-                return fid, " ".join(w[i:i + N_GRAMA])
+            g = " ".join(w[i:i + N_GRAMA])
+            if self._esta(_h(g)):
+                # localizar la fuente (solo en caso de coincidencia, que es raro)
+                for t in self.textos:
+                    if g in " ".join(normaliza(open(t, encoding="utf-8", errors="replace").read())):
+                        return t.split(os.sep)[-2], g
+                return "?", g
         return None
 
 
