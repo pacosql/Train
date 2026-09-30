@@ -32,6 +32,25 @@ def cuantos_ic(ic):
     return f"¿{'Cuántas' if ic in FEM_IC else 'Cuántos'} {NOMBRE_IC[ic][1]} hay?"
 
 
+_VISTOS = {}
+
+
+def _repetido(tag, ej):
+    """True si ya salió un ejercicio con la misma huella normalizada (el validador ignora emojis y signos)."""
+    if ej is None:
+        return True
+    try:
+        from validador import huella
+    except ImportError:
+        return False
+    h = huella(ej.enunciado, ej.respuesta)
+    vistos = _VISTOS.setdefault(tag, set())
+    if h in vistos:
+        return True
+    vistos.add(h)
+    return False
+
+
 def mk(enun, resp, dist, op, texto, adulto, genericos=None, pasos=None, datos=None, **params):
     """Ejercicio de un paso. resp y valores de dist pueden ser int o str; dist = [(valor, clave)]."""
     r = resp if isinstance(resp, str) else fmt(resp)
@@ -79,13 +98,22 @@ def sin_ceros(n):
 # ================================================================ NUM.CONT
 
 @generador("t1_cont01")
-def g_cont01(rng, d, desordenado=False):
+def g_cont01(rng, d, **kw):
+    for _ in range(30):
+        ej = _g_cont01(rng, d, **kw)
+        if not _repetido("g_cont01", ej):
+            return ej
+    return None
+
+
+def _g_cont01(rng, d, desordenado=False):
     lo, hi = {1: (2, 5), 2: (4, 8), 3: (7, 10)}[d]
     n = rng.randint(lo, hi)
     ic = rng.choice(ICONOS)
     dib = iconos_filas(n, ic, 5, desordenado, rng)
     azar = rng.randint(1, max(1, n - 2))
-    return mk(f"{cuantos_ic(ic)}\n{dib}", n, [(n + 1, "E01"), (n - 1, "E02"), (azar, "E04")], "contar",
+    pre = rng.choice(["", "Cuenta despacio. ", "Toca cada dibujo al contar. "])
+    return mk(f"{pre}{cuantos_ic(ic)}\n{dib}", n, [(n + 1, "E01"), (n - 1, "E02"), (azar, "E04")], "contar",
               f"Toca cada dibujo una sola vez mientras cuentas: {', '.join(str(i) for i in range(1, n + 1))}. El último número que dices es cuántos hay: {n}.",
               "Contar bien exige tocar cada objeto una vez y solo una, y saber que el último número dicho es el total. Si se equivoca, que tache o mueva cada objeto al contarlo.",
               genericos=[n + 2, n - 2], datos={"lectura": cuantos_ic(ic), "sin_lectura": True}, n=n)
@@ -100,7 +128,15 @@ DADO = {1: "⚀", 2: "⚁", 3: "⚂", 4: "⚃", 5: "⚄", 6: "⚅"}
 
 
 @generador("t1_cont02")
-def g_cont02(rng, d, modos=("dado", "marco10")):
+def g_cont02(rng, d, **kw):
+    for _ in range(30):
+        ej = _g_cont02(rng, d, **kw)
+        if not _repetido("g_cont02", ej):
+            return ej
+    return None
+
+
+def _g_cont02(rng, d, modos=("dado", "marco10")):
     m = modo(rng, modos, "dado")
     if m == "dos_dados":
         a, b = rng.randint(1, 5), rng.randint(1, 5)
@@ -127,7 +163,9 @@ def g_cont02(rng, d, modos=("dado", "marco10")):
     texto = (f"La fila de arriba tiene 5. Abajo hay {n - 5} más: 5 y {n - 5} son {n}." if n > 5 else f"En la fila de arriba hay {n}: se ve sin contar.")
     if n > 5:
         texto += f" También: faltan {10 - n} para 10, así que hay {n}."
-    return mk(f"Marco de 10: ¿cuántos puntos {COLORES[lleno]} hay? (los blancos están vacíos)\n{marco10(n, lleno)}", n, dist, "subitizar", texto,
+    frase = rng.choice([f"Marco de 10: ¿cuántos puntos {COLORES[lleno]} hay? (los blancos están vacíos)",
+                        f"Mira el marco de 10 de un vistazo. ¿Cuántos puntos {COLORES[lleno]} tiene?"])
+    return mk(f"{frase}\n{marco10(n, lleno)}", n, dist, "subitizar", texto,
               "El marco de 10 enseña a ver los números como «5 y algo» o «10 menos algo», clave para sumar y restar con la decena.",
               genericos=[n + 2, n - 2], datos={"lectura": "¿Cuántos puntos de color hay en el marco?", "sin_lectura": True}, n=n)
 
@@ -729,12 +767,13 @@ ADULTO_LECT = "Leer y escribir números exige saber que los ceros no se dicen pe
 def _lect(rng, n, sentido, dist_cifras, dist_letras, extra=""):
     """dist_*: [(valor_int_o_str, clave)] para cada sentido."""
     if sentido == "letras_a_cifras":
-        enun = rng.choice([f"¿Cómo se escribe con cifras «{letras(n)}»?", f"Escribe con cifras: {letras(n)}."])
+        enun = rng.choice([f"¿Cómo se escribe con cifras «{letras(n)}»?", f"Escribe con cifras: {letras(n)}.", f"¿Qué número es «{letras(n)}»?"])
         dist = [(v if isinstance(v, str) else fmt(v), k) for v, k in dist_cifras if v is not None and v != n]
         return mk(enun, fmt(n), dist, "leer", f"«{letras(n)}» se escribe {fmt(n)}.{extra}", ADULTO_LECT,
                   genericos=[fmt(n + 1), fmt(n + 10), fmt(max(0, n - 10))], n=n)
     dist = [(v if isinstance(v, str) else letras(v), k) for v, k in dist_letras if v is not None and v != n]
-    return mk(f"¿Cómo se lee {fmt(n)}?", letras(n), dist, "leer", f"{fmt(n)} se lee «{letras(n)}».{extra}", ADULTO_LECT,
+    return mk(rng.choice([f"¿Cómo se lee {fmt(n)}?", f"¿Cómo se dice con palabras el número {fmt(n)}?", f"Escribe con letras el número {fmt(n)}."]),
+              letras(n), dist, "leer", f"{fmt(n)} se lee «{letras(n)}».{extra}", ADULTO_LECT,
               genericos=[letras(n + 1), letras(n + 10), letras(max(0, n - 10))], n=n)
 
 
@@ -1440,7 +1479,15 @@ def _texto_red(n, a):
 
 
 @generador("t1_redon01")
-def g_redon01(rng, d):
+def g_redon01(rng, d, **kw):
+    for _ in range(30):
+        ej = _g_redon01(rng, d, **kw)
+        if not _repetido("g_redon01", ej):
+            return ej
+    return None
+
+
+def _g_redon01(rng, d):
     x = rng.choice([20, 30, 40, 50, 60, 80, 100, 120, 150]) if d > 1 else rng.choice([20, 30, 40, 50])
     x = min(x, 150 if d == 3 else 100)
     ic = rng.choice(ICONOS)
@@ -1457,8 +1504,9 @@ def g_redon01(rng, d):
         return None
     lo, hi = min(opciones), max(opciones)
     dist = [(f"unos {v}", "E02" if v == lo else "E01" if v == hi else None) for v in opciones if v != x]
-    return mk(f"Sin contar uno a uno: {cuantos_ic(ic)[1:-5].lower()} hay, más o menos? (en cada fila hay unos 10)\n" + "\n".join(filas), f"unos {x}", dist, "estimar_coleccion",
-              f"Hay unas {len(filas)} filas y en cada fila hay unos 10: {len(filas)} × 10 son unos {x}.",
+    return mk(rng.choice([f"Sin contar uno a uno, {cuantos_ic(ic)[:-5]} hay más o menos? (en cada fila hay unos 10)\n",
+                          f"Estima sin contar: {cuantos_ic(ic)[:-5].lower()} hay aproximadamente? Cada fila tiene unos 10.\n".replace(": ¿", ": ¿")]) + "\n".join(filas), f"unos {x}", dist, "estimar_coleccion",
+              f"Hay {len(filas)} filas y en cada una hay unos 10, así que hay más o menos {10 * len(filas)}. De las opciones, la más razonable es unos {x}.",
               "Estimar con un grupo de referencia (una fila de 10) es una habilidad muy útil. Después se puede contar para comprobar cuánto nos hemos acercado.",
               datos={"opciones_fijas": True}, n=x)
 
@@ -1624,10 +1672,10 @@ def g_redon08(rng, d, modos=("producto", "contexto", "descartar")):
         # aproximación de una cifra significativa del producto
         p = x * y
         k = 10 ** (len(str(p)) - 1)
-        est = round(p / k) * k
+        est = e
         return mk(f"¿Cuál es la estimación razonable de {fmt(x)} × {y}?", est, [(est // 10, "E01"), (est * 10, "E01"), (est * 100, None)], "estimar",
                   f"{fmt(x)} es más o menos {fmt(red(x, 10 ** (len(str(x)) - 1)))} y {y} es más o menos {red(y, 10)}: {fmt(red(x, 10 ** (len(str(x)) - 1)))} × {red(y, 10)} = {fmt(e)}. "
-                  f"El resultado anda por {fmt(est)}.", "Antes de hacer una cuenta larga, estimar el orden de magnitud evita errores de ceros.",
+                  f"El resultado anda por ahí.", "Antes de hacer una cuenta larga, estimar el orden de magnitud evita errores de ceros.",
                   datos={"opciones_fijas": True}, x=x, y=y)
     x = rng.randint(120, 980)
     y = rng.randint(21, 98)
@@ -1893,7 +1941,15 @@ def g_suma01(rng, d, contexto=False):
 
 
 @generador("t1_suma02")
-def g_suma02(rng, d, modos=("hueco", "falta", "marco", "pareja")):
+def g_suma02(rng, d, **kw):
+    for _ in range(30):
+        ej = _g_suma02(rng, d, **kw)
+        if not _repetido("g_suma02", ej):
+            return ej
+    return None
+
+
+def _g_suma02(rng, d, modos=("hueco", "falta", "marco", "pareja")):
     m = modo(rng, modos, "hueco")
     a = rng.randint(1, 9) if d > 1 else rng.randint(4, 9)
     r = 10 - a
@@ -1906,7 +1962,8 @@ def g_suma02(rng, d, modos=("hueco", "falta", "marco", "pareja")):
         enun = f"{nom} tiene {a} {obj[1] if a > 1 else obj[0]} y quiere tener 10. ¿Cuántos le faltan?".replace("Cuántos", cuantos(obj))
     elif m == "marco":
         col = rng.choice(["🔴", "🔵", "🟢", "🟡"])
-        enun = f"En el marco hay {a} puntos {COLORES[col]}. ¿Cuántos huecos blancos faltan por llenar para tener 10?\n{marco10(a, col)}"
+        enun = rng.choice([f"En el marco hay {a} puntos {COLORES[col]}. ¿Cuántos huecos blancos faltan por llenar para tener 10?",
+                           f"¿Cuántos puntos faltan para llenar este marco de 10? Ya hay {a} {COLORES[col]}."]) + f"\n{marco10(a, col)}"
     else:
         resp = f"{a} y {r}"
         dist = [(f"{a} y {a + 10 - 10 + (1 if r != a + 1 else 2)}" if False else f"{a} y {r + 1}", "E03"), (f"{a} y {r - 1}" if r > 1 else f"{a} y {r + 2}", None),
@@ -2560,7 +2617,7 @@ def g_cm03(rng, d):
            f"{a} + {b} es como {a + 1} + {a + 1} (paso 1 de uno al otro): el doble de {a + 1} es {r}.")
     enun = rng.choice([None, f"Usa un doble para calcular: {x} + {y}"])
     return _m(f"{x} + {y}", r, dist, txt, enun=enun, adulto="Casi dobles: se apoyan en un doble conocido y se ajusta. Si no sabe los dobles de memoria, empezad por ahí.",
-              "suma", sumandos=[x, y], a=x, b=y)
+              op="suma", sumandos=[x, y], a=x, b=y)
 
 
 @generador("t1_cm04")
@@ -2708,10 +2765,10 @@ def g_cm10(rng, d):
         return None
     if sg == "+":
         dist = [(a + R + k, "E01"), (a + R, "E02"), (r + 10, None), (r - 10, None)]
-        txt = f"{b} es casi {R}: sumo {R} y quito los {k} que he puesto de más. {a} + {R} = {a + R}, y {a + R} − {k} = {r}."
+        txt = f"{b} es casi {R}: sumo {R} y quito {'el 1' if k == 1 else f'los {k}'} que he puesto de más. {a} + {R} = {a + R}, y {a + R} − {k} = {r}."
     else:
         dist = [(a - R, "E02"), (a - R - k, "E03"), (r + 10, None), (r - 10, None)]
-        txt = f"{b} es casi {R}: resto {R} y devuelvo los {k} que he quitado de más. {a} − {R} = {a - R}, y {a - R} + {k} = {r}."
+        txt = f"{b} es casi {R}: resto {R} y devuelvo {'el 1' if k == 1 else f'los {k}'} que he quitado de más. {a} − {R} = {a - R}, y {a - R} + {k} = {r}."
     return _m(f"{fmt(a)} {sg} {fmt(b)}", r, dist, txt, "Compensación: redondear el número que termina en 8 o 9 y ajustar al final. La dificultad está en ajustar en el sentido correcto.",
               "suma" if sg == "+" else "resta", **_pm(a, b, sg))
 

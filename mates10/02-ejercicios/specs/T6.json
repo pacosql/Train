@@ -960,7 +960,10 @@
   "kw": {},
   "kw_por_dificultad": {
    "1": {
-    "tipo": "anagrama"
+    "tipo": [
+     "anagrama",
+     "bolas"
+    ]
    },
    "2": {
     "tipo": [
@@ -980,5 +983,129 @@
    "resta_en_vez": "E02"
   },
   "plantilla": "Permutaciones con repetición (anagramas, objetos iguales) y recuentos con una restricción"
+ },
+ "EST.BIDIM.01": {
+  "gen": "t6_marginal",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "marginal"
+   },
+   "2": {
+    "tipo": [
+     "fila",
+     "marginal"
+    ]
+   },
+   "3": {
+    "tipo": "porcentaje"
+   }
+  },
+  "errores": {
+   "marginal_por_casilla": "E01",
+   "porcentaje_mal": "E02"
+  },
+  "plantilla": "Tabla de contingencia: distribuciones marginales y porcentajes por fila"
+ },
+ "EST.BIDIM.03": {
+  "gen": "t6_regresion_uso",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "prediccion"
+   },
+   "2": {
+    "tipo": [
+     "pendiente",
+     "prediccion"
+    ]
+   },
+   "3": {
+    "tipo": [
+     "extrap",
+     "pendiente"
+    ]
+   }
+  },
+  "errores": {
+   "extrapola": "E01",
+   "sustituye_mal": "E02"
+  },
+  "plantilla": "Recta de regresión dada: predicción, interpretación de la pendiente y fiabilidad al extrapolar"
+ },
+ "EST.BIDIM.04": {
+  "gen": "t6_correlacion",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "r"
+   },
+   "2": {
+    "tipo": "covarianza"
+   },
+   "3": {
+    "tipo": [
+     "interpretar",
+     "covarianza"
+    ]
+   }
+  },
+  "errores": {
+   "olvida_medias": "E01",
+   "divide_varianzas": "E02",
+   "causalidad": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Covarianza σxy = Σxy/N − x̄ȳ, coeficiente r = σxy/(σxσy) e interpretación"
+ },
+ "EST.BIDIM.05": {
+  "gen": "t6_recta_regresion",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "pendiente"
+   },
+   "2": {
+    "tipo": [
+     "estimar",
+     "r2"
+    ]
+   },
+   "3": {
+    "tipo": [
+     "estimar_x",
+     "estimar"
+    ]
+   }
+  },
+  "errores": {
+   "usa_recta_yx_para_x": "E01",
+   "pendiente_r": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Rectas de regresión de y sobre x y de x sobre y a partir de los parámetros; R² = r²"
+ },
+ "EST.BIDIM.06": {
+  "gen": "t6_condicionadas_dep",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "porcentaje"
+   },
+   "2": {
+    "tipo": [
+     "dependencia",
+     "porcentaje"
+    ]
+   },
+   "3": {
+    "tipo": "dependencia"
+   }
+  },
+  "errores": {
+   "compara_absolutas": "E01",
+   "dependencia_causalidad": "E02"
+  },
+  "plantilla": "Distribuciones condicionadas (porcentajes por grupo) y dependencia estadística"
  }
 }

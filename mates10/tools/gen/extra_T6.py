@@ -2111,3 +2111,223 @@ def g_perm_rep(rng, d, tipo="anagrama"):
                  [("bloque", fmt(math.factorial(n - 1)), f"Los dos juntos forman un bloque: se ordenan {n - 1} elementos, {n - 1}! = {fmt(math.factorial(n - 1))}."),
                   ("× 2", fmt(r), f"Dentro del bloque pueden ir de 2 formas: 2 · {fmt(math.factorial(n - 1))} = {fmt(r)}.")],
                  "Restricción «juntos»: se trata el grupo como un bloque y se multiplica por sus ordenaciones internas.")
+
+
+# ================================================================ BIDIMENSIONAL
+
+@gen6("t6_marginal")
+def g_marginal(rng, d, tipo="marginal"):
+    """EST.BIDIM.01. Claves: marginal_por_casilla, porcentaje_mal."""
+    filas = ["chicas", "chicos"]
+    cols = rng.sample(["fútbol", "baloncesto", "natación", "tenis", "atletismo"], 3)
+    for _ in range(200):
+        t = [[rng.randint(4, 40) for _ in cols] for _ in filas]
+        fr = [sum(r) for r in t]
+        cc = [t[0][j] + t[1][j] for j in range(3)]
+        N = sum(fr)
+        i, j = rng.randrange(2), rng.randrange(3)
+        if tipo != "porcentaje" or (F(t[i][j] * 100, fr[i]).denominator == 1 and F(t[i][j] * 100, N) != F(t[i][j] * 100, fr[i])):
+            break
+    else:
+        return None
+    tabla = "Sexo \\ deporte | " + " | ".join(cols) + "\n" + "\n".join(f"{filas[r]} | " + " | ".join(map(str, t[r])) for r in range(2))
+    base = f"Encuesta sobre el deporte favorito:\n{tabla}\n"
+    if tipo == "marginal":
+        return hacer(base + f"¿Cuál es la frecuencia marginal de «{cols[j]}»?", fmt(cc[j]), "marginal", {"t": t, "j": j},
+                     [(t[i][j], "marginal_por_casilla"), (fr[i], None), (N, None)],
+                     [("total de columna", fmt(cc[j]), f"La marginal de «{cols[j]}» es el total de su columna: {t[0][j]} + {t[1][j]} = {cc[j]}.")],
+                     "Distribución marginal: totales de fila o de columna (una variable sola, sin mirar la otra).", gen=cerca(cc[j], rng))
+    if tipo == "fila":
+        return hacer(base + f"¿Cuál es la frecuencia marginal de las {filas[i]}?" if i == 0 else base + f"¿Cuál es la frecuencia marginal de los {filas[i]}?",
+                     fmt(fr[i]), "marginal", {"t": t, "i": i},
+                     [(t[i][j], "marginal_por_casilla"), (cc[j], None), (N, None)],
+                     [("total de fila", fmt(fr[i]), f"Sumo la fila: {' + '.join(map(str, t[i]))} = {fr[i]}.")],
+                     "Marginal de una fila: suma de sus casillas.", gen=cerca(fr[i], rng))
+    p = F(t[i][j] * 100, fr[i])
+    enun = base + f"¿Qué porcentaje de {'las' if i == 0 else 'los'} {filas[i]} prefiere {cols[j]}?"
+    return hacer(enun, dec(p, 1) + " %", "porcentaje_fila", {"t": t, "i": i, "j": j},
+                 [(dec(F(t[i][j] * 100, N), 1) + " %", "porcentaje_mal"), (dec(F(t[i][j] * 100, cc[j]), 1) + " %", None), (dec(F(fr[i] * 100, N), 1) + " %", None)],
+                 [("casilla / total de fila", dec(p, 1) + " %", f"De {fr[i]} {filas[i]}, {t[i][j]} prefieren {cols[j]}: {t[i][j]}/{fr[i]} = {dec(p, 1)} %.")],
+                 "Un porcentaje por filas se calcula sobre el total de esa fila, no sobre el total general.")
+
+
+@gen6("t6_regresion_uso")
+def g_regresion_uso(rng, d, tipo="prediccion"):
+    """EST.BIDIM.03. Claves: extrapola, sustituye_mal."""
+    a = F(rng.randint(3, 30), 2) / 5 if rng.random() < 0.5 else F(rng.randint(1, 8))
+    b = rng.randint(5, 50)
+    lo, hi = rng.randint(1, 3), rng.randint(8, 12)
+    ctx = rng.choice([("horas de estudio", "nota (sobre 100)", "h"), ("temperatura (°C)", "helados vendidos", "°C"), ("años de antigüedad", "sueldo (cientos de €)", "años")])
+    recta = f"ŷ = {'' if a == 1 else dec(a, 2)}x + {b}"
+    base = (f"Se han tomado datos de dos variables: x = {ctx[0]} (entre {lo} y {hi}) e y = {ctx[1]}. "
+            f"La calculadora da la recta de regresión {recta} (r = {dec(rng.uniform(0.8, 0.97), 2)}).\n")
+    if tipo == "prediccion":
+        x0 = rng.randint(lo, hi)
+        y0 = a * x0 + b
+        return hacer(base + f"¿Qué valor de y se estima para x = {x0}?", dec(y0, 2), "regresion_pred", {"a": str(a), "b": b, "x": x0},
+                     [(dec((x0 - b) / a, 2), "sustituye_mal") if (x0 - b) / a > 0 else (dec(a + b, 2), None), (dec(a * x0, 2), None), (dec(b + x0, 2), None)],
+                     [("sustituir", dec(y0, 2), f"Sustituyo x = {x0} en la recta: {dec(a, 2)} · {x0} + {b} = {dec(y0, 2)}.")],
+                     "Para estimar y se sustituye el valor de x en ŷ = ax + b (sin despejar x).", gen=[dec(y0 + 1, 2)])
+    if tipo == "pendiente":
+        resp = f"por cada unidad más de x, y aumenta en promedio {dec(a, 2)}"
+        return hacer(base + f"¿Qué significa la pendiente {dec(a, 2)}?", resp, "regresion_pend", {"a": str(a)},
+                     [(f"que y vale {dec(a, 2)} cuando x = 0", None), (f"que por cada unidad más de y, x aumenta {dec(a, 2)}", "sustituye_mal"),
+                      (f"que la correlación es {dec(a, 2)}", None)],
+                     [("", resp, f"La pendiente es el cambio medio de y por cada unidad que aumenta x; {b} es el valor estimado para x = 0.")],
+                     "Pendiente de la recta de regresión: variación media de y por unidad de x.")
+    x0 = hi * rng.randint(3, 5)
+    y0 = a * x0 + b
+    resp = f"no es fiable: x = {x0} está muy fuera de los datos ({lo} a {hi})"
+    return hacer(base + f"¿Es fiable usar la recta para estimar y cuando x = {x0}?", resp, "regresion_extrap", {"x": x0},
+                 [(f"sí, se estima y = {dec(y0, 2)}", "extrapola"), ("sí, porque r es alto", "extrapola"), ("no, porque la pendiente es positiva", None)],
+                 [("", resp, "Aunque r sea alto, la recta solo describe bien la relación dentro del rango de datos observados; fuera (extrapolación) puede fallar.")],
+                 "Las predicciones son fiables si r está cerca de ±1 y se interpola dentro del rango de los datos, no al extrapolar lejos.")
+
+
+def _datos_biv(rng):
+    for _ in range(2000):
+        n = rng.choice([4, 5])
+        xs = rng.sample(range(1, 11), n)
+        ys = [rng.randint(1, 12) for _ in range(n)]
+        if sum(xs) % n or sum(ys) % n:
+            continue
+        mx, my = sum(xs) // n, sum(ys) // n
+        sxy = F(sum(x * y for x, y in zip(xs, ys)), n) - mx * my
+        if sxy != 0 and (sxy * 100).denominator == 1 and F(sum(x * y for x, y in zip(xs, ys)), n) != sxy:
+            return xs, ys, mx, my, sxy
+    return None
+
+
+@gen6("t6_correlacion")
+def g_correlacion(rng, d, tipo="r"):
+    """EST.BIDIM.04. Claves: olvida_medias, divide_varianzas, causalidad."""
+    if tipo == "covarianza":
+        got = _datos_biv(rng)
+        if not got:
+            return None
+        xs, ys, mx, my, sxy = got
+        n = len(xs)
+        sp = F(sum(x * y for x, y in zip(xs, ys)), n)
+        enun = f"Datos (x, y): " + ", ".join(f"({x}, {y})" for x, y in zip(xs, ys)) + ".\nCalcula la covarianza σxy."
+        return hacer(enun, dec(sxy, 2), "covarianza", {"xs": xs, "ys": ys}, [(dec(sp, 2), "olvida_medias"), (dec(sxy * n / (n - 1), 2), None), (dec(-sxy, 2), None)],
+                     [("medias", f"{mx}, {my}", f"x̄ = {mx}, ȳ = {my}."), ("Σxy/N", dec(sp, 2), f"Σxy/N = {sum(x * y for x, y in zip(xs, ys))}/{n} = {dec(sp, 2)}."),
+                      ("− x̄ȳ", dec(sxy, 2), f"σxy = {dec(sp, 2)} − {mx}·{my} = {dec(sxy, 2)}.")],
+                     "σxy = Σxiyi/N − x̄·ȳ; su signo indica si la relación es creciente o decreciente.", gen=[dec(sxy + 1, 2)])
+    if tipo == "r":
+        for _ in range(200):
+            sx, sy = rng.randint(2, 9), rng.randint(2, 9)
+            r = F(rng.choice([-9, -8, -7, -6, -5, -4, -3, 3, 4, 5, 6, 7, 8, 9]), 10)
+            sxy = r * sx * sy
+            if (sxy * 10).denominator == 1 and sxy.denominator == 1:
+                break
+        enun = f"σxy = {dec(sxy, 2)}, σx = {sx} y σy = {sy}. Calcula el coeficiente de correlación r."
+        return hacer(enun, dec(r, 2), "r", {"sxy": str(sxy), "sx": sx, "sy": sy},
+                     [(dec(sxy / (sx * sx * sy * sy), 4), "divide_varianzas"), (dec(sxy / (sx + sy), 2), None), (dec(-r, 2), None)],
+                     [("σxy/(σx·σy)", dec(r, 2), f"r = {dec(sxy, 2)} / ({sx} · {sy}) = {dec(r, 2)}.")],
+                     "r = σxy/(σx·σy), siempre entre −1 y 1.", gen=[dec(r / 2, 2)])
+    r = rng.choice([F(9, 10), F(-9, 10), F(85, 100), F(-8, 10), F(2, 10), F(-15, 100)])
+    ctx = rng.choice([("el número de bomberos que acuden a un incendio", "los daños causados"), ("las ventas de helados", "los ahogamientos en playas"),
+                      ("las horas de estudio", "la nota"), ("la altura", "el peso")])
+    fuerza = "fuerte" if abs(r) >= F(7, 10) else "débil"
+    signo = "positiva" if r > 0 else "negativa"
+    resp = f"relación lineal {fuerza} y {signo}, lo que no prueba que una cause la otra"
+    return hacer(f"Entre {ctx[0]} y {ctx[1]} se obtiene r = {dec(r, 2)}. ¿Qué se puede concluir?", resp, "r_interpretar", {"r": str(r)},
+                 [(f"que {ctx[0]} causa {ctx[1]}", "causalidad"), (f"relación lineal {'débil' if fuerza == 'fuerte' else 'fuerte'} y {signo}", None),
+                  (f"relación lineal {fuerza} y {'negativa' if signo == 'positiva' else 'positiva'}", None)],
+                 [("", resp, f"|r| = {dec(abs(r), 2)} indica relación {fuerza}; el signo, que es {signo}. La correlación no implica causalidad (puede haber una tercera variable).")],
+                 "El signo de r da el sentido y |r| la fuerza de la relación lineal; correlación no es causalidad.")
+
+
+@gen6("t6_recta_regresion")
+def g_recta_regresion(rng, d, tipo="estimar"):
+    """EST.BIDIM.05. Claves: usa_recta_yx_para_x, pendiente_r."""
+    for _ in range(500):
+        mx, my = rng.randint(2, 20), rng.randint(10, 80)
+        vx, vy = rng.choice([4, 8, 9, 16, 25]), rng.choice([16, 25, 36, 64, 100])
+        sxy = rng.choice([-1, 1]) * rng.randint(2, 20)
+        r = F(sxy) / F(math.isqrt(vx) * math.isqrt(vy))
+        if abs(r) >= 1 or abs(r) < F(3, 10):
+            continue
+        byx, bxy = F(sxy, vx), F(sxy, vy)
+        if (byx * 100).denominator == 1 and (bxy * 100).denominator == 1:
+            break
+    else:
+        return None
+    datos = f"x̄ = {mx}, ȳ = {my}, σx² = {vx}, σy² = {vy}, σxy = {fmt(sxy)}."
+    if tipo == "pendiente":
+        return hacer(f"{datos}\n¿Cuál es la pendiente de la recta de regresión de y sobre x?", dec(byx, 2), "pendiente_reg", {"sxy": sxy, "vx": vx},
+                     [(dec(r, 4), "pendiente_r"), (dec(bxy, 2), "usa_recta_yx_para_x"), (dec(F(sxy, math.isqrt(vx)), 2), None)],
+                     [("σxy/σx²", dec(byx, 2), f"Pendiente = σxy/σx² = {sxy}/{vx} = {dec(byx, 2)}.")],
+                     "Recta de y sobre x: y − ȳ = (σxy/σx²)(x − x̄). La pendiente no es r.", gen=[dec(byx * 2, 2)])
+    if tipo == "estimar":
+        x0 = mx + rng.choice([-3, -2, -1, 1, 2, 3])
+        y0 = my + byx * (x0 - mx)
+        return hacer(f"{datos}\nUsa la recta de regresión de y sobre x para estimar y cuando x = {x0}.", dec(y0, 2), "estimar_reg", {"x": x0},
+                     [(dec(my + r * (x0 - mx), 2), "pendiente_r"), (dec(my + bxy * (x0 - mx), 2), None), (dec(my + byx * x0, 2), None)],
+                     [("pendiente", dec(byx, 2), f"b = σxy/σx² = {sxy}/{vx} = {dec(byx, 2)}."),
+                      ("sustituir", dec(y0, 2), f"ŷ = {my} + {dec(byx, 2)}·({x0} − {mx}) = {dec(y0, 2)}.")],
+                     "ŷ = ȳ + (σxy/σx²)(x − x̄).", gen=[dec(y0 + 1, 2)])
+    if tipo == "r2":
+        R2 = r * r
+        return hacer(f"{datos}\nCalcula el coeficiente de determinación R².", dec(R2, 4), "R2", {"sxy": sxy, "vx": vx, "vy": vy},
+                     [(dec(r, 4), None), (dec(F(sxy * sxy, vx * vx * vy * vy), 4) if vx * vy > 1 else "1", None), (dec(abs(r) * 2, 4) if abs(r) * 2 < 1 else dec(1 - R2, 4), None)],
+                     [("r", dec(r, 4), f"r = σxy/(σx·σy) = {sxy}/({math.isqrt(vx)}·{math.isqrt(vy)}) = {dec(r, 4)}."), ("r²", dec(R2, 4), f"R² = r² = {dec(R2, 4)}.")],
+                     "R² = r² indica la proporción de variabilidad de y explicada por la recta.", gen=[dec(R2 / 2, 4)])
+    y0 = my + rng.choice([-6, -4, -2, 2, 4, 6])
+    x_bien = mx + bxy * (y0 - my)
+    x_mal = mx + (y0 - my) / byx
+    if x_bien == x_mal:
+        return None
+    return hacer(f"{datos}\nEstima x cuando y = {y0} (usa la recta adecuada).", dec(x_bien, 2), "estimar_x", {"y": y0},
+                 [(dec(x_mal, 2), "usa_recta_yx_para_x"), (dec(mx + r * (y0 - my), 2), "pendiente_r"), (dec(mx + bxy * y0, 2), None)],
+                 [("recta x sobre y", dec(bxy, 2), f"Para estimar x se usa la recta de x sobre y: pendiente σxy/σy² = {sxy}/{vy} = {dec(bxy, 2)}."),
+                  ("sustituir", dec(x_bien, 2), f"x̂ = {mx} + {dec(bxy, 2)}·({y0} − {my}) = {dec(x_bien, 2)}.")],
+                 "Para estimar x se usa la recta de regresión de x sobre y, no se despeja x de la de y sobre x.", gen=[dec(x_bien + 1, 2)])
+
+
+@gen6("t6_condicionadas_dep")
+def g_condicionadas_dep(rng, d, tipo="porcentaje"):
+    """EST.BIDIM.06. Claves: compara_absolutas, dependencia_causalidad."""
+    ctx = rng.choice([("desayunan", "no desayunan", "aprueba", "aprueban"), ("hacen deporte", "no hacen deporte", "duerme más de 8 horas", "duermen más de 8 horas"),
+                      ("leen a diario", "no leen a diario", "saca notable o más", "sacan notable o más")])
+    if tipo == "porcentaje":
+        for _ in range(300):
+            n1, n2 = rng.randint(20, 200), rng.randint(20, 200)
+            a1, a2 = rng.randint(5, n1 - 5), rng.randint(5, n2 - 5)
+            if F(a1 * 100, n1).denominator == 1 and F(a2 * 100, n2).denominator == 1:
+                break
+        else:
+            return None
+        g = rng.choice([0, 1])
+        a, n = (a1, n1) if g == 0 else (a2, n2)
+        enun = (f"Alumnos que {ctx[0]}: {n1}, de los que {a1} {ctx[3]} y {n1 - a1} no.\nAlumnos que {ctx[1]}: {n2}, de los que {a2} {ctx[3]} y {n2 - a2} no.\n"
+                f"¿Qué porcentaje de los que {ctx[g]} {ctx[2]}?")
+        p = F(a * 100, n)
+        return hacer(enun, pc(F(a, n), 1), "condicionada_pct", {"a": a, "n": n}, [(pc(F(a, n1 + n2), 1), "compara_absolutas"), (pc(F(a, a1 + a2), 1), None), (pc(F(n - a, n), 1), None)],
+                     [("a / total del grupo", pc(F(a, n), 1), f"Distribución condicionada: {a} de {n} = {dec(p, 1)} %.")],
+                     "Una distribución condicionada se calcula sobre el total del grupo (fila o columna), no sobre el total general.")
+    dep = rng.random() < 0.5
+    for _ in range(300):
+        n1, n2 = rng.randint(60, 300), rng.randint(15, 60)
+        p1 = F(rng.randint(3, 8), 10) if dep else F(rng.randint(3, 8), 10)
+        p2 = p1 if not dep else p1 - F(rng.randint(2, 3), 10)
+        a1, a2 = p1 * n1, p2 * n2
+        if a1.denominator == 1 and a2.denominator == 1 and a2 > 0 and n1 > 2 * n2:
+            break
+    else:
+        return None
+    a1, a2 = int(a1), int(a2)
+    enun = (f"Alumnos que {ctx[0]}: {n1}, de los que {a1} {ctx[3]}.\nAlumnos que {ctx[1]}: {n2}, de los que {a2} {ctx[3]}.\n"
+            "¿Hay dependencia entre las dos variables?")
+    if dep:
+        resp = f"sí: el porcentaje cambia ({pc(p1, 0)} frente a {pc(p2, 0)}), aunque eso no prueba que una cause la otra"
+        dis = [("sí, y demuestra que una variable es la causa de la otra", "dependencia_causalidad"), ("no, porque son grupos de distinto tamaño", None),
+               (f"sí, porque {a1} es mucho más que {a2}", "compara_absolutas")]
+    else:
+        resp = f"no: el porcentaje es el mismo en los dos grupos ({pc(p1, 0)})"
+        dis = [(f"sí, porque {a1} es mucho más que {a2}", "compara_absolutas"), ("sí, y demuestra que una variable es la causa de la otra", "dependencia_causalidad"),
+               ("no se puede saber sin más datos", None)]
+    return hacer(enun, resp, "dependencia", {"n1": n1, "a1": a1, "n2": n2, "a2": a2}, dis,
+                 [("condicionadas", pc(p1, 0), f"Porcentajes condicionados: {a1}/{n1} = {pc(p1, 0)} y {a2}/{n2} = {pc(p2, 0)}. " +
+                   ("Son distintos: hay dependencia estadística (no necesariamente causal)." if dep else "Son iguales: no hay dependencia."))],
+                 "Se comparan las distribuciones condicionadas (porcentajes), no las frecuencias absolutas; dependencia no implica causalidad.")
