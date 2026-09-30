@@ -589,7 +589,7 @@ begin
                  from mates10_alumno_habilidad ah join mates10_habilidad h on h.id = ah.habilidad_id
                  where ah.alumno_id = p_alumno and ah.estado <> 'no_vista' group by h.bloque_id) x on x.bloque_id = b.id),
     'familias', (select jsonb_agg(jsonb_build_object('familia', f.familia, 'nombre', f.nombre, 'nivel', f.nivel, 'de', f.total, 'dominio', round(f.dom, 2)) order by f.dom desc)
-               from (select h.familia, min(h.nombre_padres) filter (where h.nivel_familia = 1) nombre,
+               from (select h.familia, (select h1.nombre_padres from mates10_habilidad h1 where h1.familia = h.familia order by h1.nivel_familia limit 1) nombre,
                        coalesce(max(h.nivel_familia) filter (where ah.p_dominio >= mates10_param('umbral_dominio')), 0) nivel,
                        (select count(*) from mates10_habilidad h2 where h2.familia = h.familia) total, avg(ah.p_dominio) dom
                      from mates10_alumno_habilidad ah join mates10_habilidad h on h.id = ah.habilidad_id

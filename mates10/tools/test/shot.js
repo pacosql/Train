@@ -26,6 +26,7 @@ const { chromium } = require("/opt/node22/lib/node_modules/playwright");
         const body = Buffer.from(await res.arrayBuffer());
         const hh = Object.fromEntries(res.headers); delete hh["content-encoding"]; delete hh["content-length"];
         hh["access-control-allow-origin"] = "*";
+        if (res.status >= 400) console.log("HTTP", res.status, r.url().slice(0, 400), body.toString().slice(0, 300));
         return route.fulfill({ status: res.status, headers: hh, body });
       } catch (e) { await new Promise((z) => setTimeout(z, 500 * (i + 1))); }
     }

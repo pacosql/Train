@@ -84,7 +84,7 @@
         </div><p class="small muted" id="info">Cargando…</p><div id="lista"></div>`;
       const on = (id, k) => (M.$(id).onchange = (e) => { filtro[k] = e.target.value; if (k !== "habilidad") filtro.habilidad = k === "habilidad" ? filtro.habilidad : filtro.habilidad; cola(); });
       on("#f_curso", "curso"); on("#f_bloque", "bloque"); on("#f_hab", "habilidad"); on("#f_formato", "formato"); on("#f_gen", "generador");
-      let q = M.t("ejercicio").select("id,enunciado,respuesta,dificultad,formato,generado_por,publicado,revision_tipo,ejercicio_habilidad!inner(habilidad_id,rol,habilidad:habilidad_id(codigo,curso_ref,bloque_id))", { count: "exact" })
+      let q = M.t("ejercicio").select("id,enunciado,respuesta,dificultad,formato,generado_por,publicado,revision_tipo,ejercicio_habilidad:mates10_ejercicio_habilidad!inner(habilidad_id,rol,habilidad:habilidad_id(codigo,curso_ref,bloque_id))", { count: "exact" })
         .eq("validado_automatico", true).is("revisado_por", null).eq("rechazado", false).eq("ejercicio_habilidad.rol", "principal");
       if (filtro.habilidad) q = q.eq("ejercicio_habilidad.habilidad_id", filtro.habilidad);
       else if (filtro.curso || filtro.bloque) q = q.in("ejercicio_habilidad.habilidad_id", habs.map((h) => h.id).slice(0, 400));

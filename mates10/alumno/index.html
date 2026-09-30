@@ -177,8 +177,10 @@
         const ex = res.explicacion || {};
         const pasos = Array.isArray(ex.pasos) ? ex.pasos : [];
         M.$("#fb").innerHTML = `<div class="fb ko">
-            ${res.error ? `<p><b>${M.esc(res.error.explicacion_nino)}</b></p>` : `<p>La respuesta era <b>${M.esc(res.respuesta_correcta)}</b>.</p>`}
+            ${res.error ? `<p>Te ha pasado esto: <b>${M.esc(res.error.nombre)}</b>.</p>` : ""}
+            <p>La respuesta era <b>${M.esc(res.respuesta_correcta)}</b>.</p>
             ${pasos.length ? `<div id="pasos"></div><button id="masPaso">Ver cómo se hace</button>` : `<p>${M.esc(ex.nino || "")}</p>`}
+            ${res.error ? `<details class="small" style="margin-top:10px"><summary>Otro ejemplo de este error</summary><p>${M.esc(res.error.explicacion_nino)}</p></details>` : ""}
           </div>
           <button class="primary grande" id="otra">Probar otra parecida</button>`;
         let k = 0;
