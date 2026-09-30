@@ -1107,5 +1107,310 @@
    "dependencia_causalidad": "E02"
   },
   "plantilla": "Distribuciones condicionadas (porcentajes por grupo) y dependencia estadística"
+ },
+ "EST.DISTR.01": {
+  "gen": "t6_va_discreta",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "falta"
+   },
+   "2": {
+    "tipo": "media"
+   },
+   "3": {
+    "tipo": [
+     "juego",
+     "sigma"
+    ]
+   }
+  },
+  "errores": {
+   "media_sin_ponderar": "E01",
+   "no_suma_uno": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Variable aleatoria discreta: completar la función de probabilidad, μ = Σxp, σ y juego justo"
+ },
+ "EST.DISTR.02": {
+  "gen": "t6_binomial",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "calculo"
+   },
+   "2": {
+    "tipo": "contexto"
+   },
+   "3": {
+    "tipo": [
+     "identificar",
+     "contexto",
+     "calculo"
+    ]
+   }
+  },
+  "errores": {
+   "olvida_combinatorio": "E01",
+   "exponentes_cambiados": "E02",
+   "sin_independencia": "E03"
+  },
+  "plantilla": "Binomial: identificarla y calcular P(X = k) = C(n,k)·p^k·q^(n−k)"
+ },
+ "EST.DISTR.03": {
+  "gen": "t6_binomial_acum",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "parametros"
+   },
+   "2": {
+    "tipo": "al_menos_uno"
+   },
+   "3": {
+    "tipo": [
+     "mayor",
+     "al_menos_uno"
+    ]
+   }
+  },
+  "errores": {
+   "al_menos_uno_mal": "E01",
+   "frontera_mal": "E02",
+   "sigma_npq": "E03"
+  },
+  "plantilla": "Binomial: σ = √(npq), P(X ≥ 1) = 1 − qⁿ y P(X > k) = 1 − P(X ≤ k)"
+ },
+ "EST.DISTR.04": {
+  "gen": "t6_normal_tabla",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": [
+     "menor",
+     "mayor"
+    ]
+   },
+   "2": {
+    "tipo": "negativo"
+   },
+   "3": {
+    "tipo": [
+     "intervalo",
+     "inversa"
+    ]
+   }
+  },
+  "errores": {
+   "mayor_leida_directa": "E01",
+   "negativo_mal": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Tabla de N(0,1): P(Z ≤ a), P(Z ≥ a), valores negativos, intervalos y problema inverso"
+ },
+ "EST.DISTR.05": {
+  "gen": "t6_tipificar",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "z"
+   },
+   "2": {
+    "tipo": "prob"
+   },
+   "3": {
+    "tipo": [
+     "inversa",
+     "prob"
+    ]
+   }
+  },
+  "errores": {
+   "divide_varianza": "E01",
+   "no_resta_media": "E02",
+   "prob_como_z": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "N(μ,σ): tipificar, calcular probabilidades y problema inverso (valor que deja un porcentaje)"
+ },
+ "EST.DISTR.06": {
+  "gen": "t6_aprox_normal",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "parametros"
+   },
+   "2": {
+    "tipo": "menor"
+   },
+   "3": {
+    "tipo": "mayor"
+   }
+  },
+  "errores": {
+   "sin_correccion": "E01",
+   "correccion_al_reves": "E02",
+   "sigma_npq": "E03"
+  },
+  "plantilla": "Aproximación de B(n,p) por N(np, √(npq)) con corrección de continuidad"
+ },
+ "EST.INFER.02": {
+  "gen": "t6_muestreo",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": [
+     "tipo",
+     "estratificado"
+    ]
+   },
+   "2": {
+    "tipo": "estratificado"
+   },
+   "3": {
+    "tipo": [
+     "uno",
+     "estratificado"
+    ]
+   }
+  },
+  "errores": {
+   "reparto_igual": "E01",
+   "sistematico_por_simple": "E02"
+  },
+  "plantilla": "Tipos de muestreo y muestreo estratificado con afijación proporcional"
+ },
+ "EST.INFER.03": {
+  "gen": "t6_estimacion",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "proporcion"
+   },
+   "2": {
+    "tipo": [
+     "concepto",
+     "proporcion"
+    ]
+   },
+   "3": {
+    "tipo": "cuasi"
+   }
+  },
+  "errores": {
+   "parametro_estadistico": "E01",
+   "divide_n": "E02"
+  },
+  "plantilla": "Estimación puntual: proporción muestral, parámetro/estadístico y cuasidesviación típica"
+ },
+ "EST.INFER.04": {
+  "gen": "t6_media_muestral",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "error_tipico"
+   },
+   "2": {
+    "tipo": "prob"
+   },
+   "3": {
+    "tipo": "prob"
+   }
+  },
+  "errores": {
+   "usa_sigma": "E01",
+   "divide_n": "E02"
+  },
+  "plantilla": "Distribución de la media muestral N(μ, σ/√n) y probabilidades sobre x̄"
+ },
+ "EST.INFER.05": {
+  "gen": "t6_prop_muestral",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "sigma"
+   },
+   "2": {
+    "tipo": "prob"
+   },
+   "3": {
+    "tipo": "prob"
+   }
+  },
+  "errores": {
+   "sin_dividir_n": "E01",
+   "mezcla_recuentos": "E02"
+  },
+  "plantilla": "Distribución de la proporción muestral N(p, √(pq/n)) y probabilidades sobre p̂"
+ },
+ "EST.INFER.06": {
+  "gen": "t6_ic_media",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": [
+     "critico",
+     "intervalo"
+    ]
+   },
+   "2": {
+    "tipo": "intervalo"
+   },
+   "3": {
+    "tipo": [
+     "concepto",
+     "intervalo"
+    ]
+   }
+  },
+  "errores": {
+   "critico_mal": "E01",
+   "interpretacion_probabilistica": "E02",
+   "confianza_estrecha": "E03"
+  },
+  "plantilla": "Intervalo de confianza para μ con σ conocida: valor crítico, intervalo e interpretación"
+ },
+ "EST.INFER.07": {
+  "gen": "t6_ic_prop",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "margen"
+   },
+   "2": {
+    "tipo": "intervalo"
+   },
+   "3": {
+    "tipo": [
+     "compat",
+     "intervalo"
+    ]
+   }
+  },
+  "errores": {
+   "sin_dividir_n": "E01",
+   "porcentaje_por_proporcion": "E02"
+  },
+  "plantilla": "Intervalo de confianza para una proporción: margen, intervalo y compatibilidad de un valor"
+ },
+ "EST.INFER.08": {
+  "gen": "t6_tamano_muestra",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "error"
+   },
+   "2": {
+    "tipo": "n_media"
+   },
+   "3": {
+    "tipo": "n_prop"
+   }
+  },
+  "errores": {
+   "redondea_abajo": "E01",
+   "olvida_cuadrado": "E02"
+  },
+  "plantilla": "Error máximo admisible y tamaño mínimo de muestra (redondeando hacia arriba)"
  }
 }
