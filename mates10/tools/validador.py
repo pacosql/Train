@@ -100,7 +100,7 @@ SUPS = str.maketrans("⁰¹²³⁴⁵⁶⁷⁸⁹", "0123456789")
 
 def num(s):
     s = str(s).replace(" ", "").replace(" ", "").replace("−", "-").replace(",", ".")
-    s = re.sub(r"[a-zA-Z²³°€%]+$", "", s)
+    s = re.sub(r"(?<=\d)[^\d]+$", "", s)  # unidad final (días, km/h, cm², €, %…)
     if "/" in s:
         a, b = s.split("/")
         return Fraction(int(a), int(b))
