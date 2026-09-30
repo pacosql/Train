@@ -2417,7 +2417,7 @@ def g_binomial(rng, d, tipo="calculo"):
         enun = f"X ~ B({n}; {dec(p, 2)}). Calcula P(X = {k}) (4 decimales)."
     sin_c = float(p) ** k * float(1 - p) ** (n - k)
     camb = math.comb(n, k) * float(p) ** (n - k) * float(1 - p) ** k
-    return hacer(enun, p4(r), "binomial", {"n": n, "p": str(p), "k": k}, [(p4(sin_c), "olvida_combinatorio"), (p4(camb), "exponentes_cambiados"), (p4(math.comb(n, k) * float(p) ** k), None)],
+    return hacer(enun, p4(r), "binomial", {"n": n, "p": str(p), "k": k}, [(p4(sin_c), "olvida_combinatorio"), (p4(camb), "exponentes_cambiados"), (p4(_pbin(n, p, k + 1)), None), (p4(_pbin(n, p, k - 1)), None)],
                  [("C(n,k)·p^k·q^(n−k)", p4(r), f"P(X = {k}) = C({n},{k})·{dec(p, 2)}^{k}·{dec(1 - p, 2)}^{n - k} = {math.comb(n, k)}·{p4(float(p) ** k)}·{p4(float(1 - p) ** (n - k))} ≈ {p4(r)}.")],
                  "Binomial B(n,p): P(X = k) = C(n,k)·p^k·q^(n−k), con q = 1 − p.", gen=[p4(r / 2), p4(min(1, r * 1.5))])
 
@@ -2440,7 +2440,7 @@ def g_binomial_acum(rng, d, tipo="parametros"):
                      [(p4(1 - _pbin(n, p, 1)), "al_menos_uno_mal"), (p4(float(q) ** n), None), (p4(1 - float(p) ** n), None)],
                      [("contrario", p4(float(q) ** n), f"El contrario de «al menos 1» es «ninguno»: P(X = 0) = {dec(q, 2)}^{n} ≈ {p4(float(q) ** n)}."),
                       ("1 − P(X=0)", p4(r), f"P(X ≥ 1) = 1 − {p4(float(q) ** n)} = {p4(r)}.")],
-                     "P(X ≥ 1) = 1 − P(X = 0) = 1 − qⁿ.")
+                     "P(X ≥ 1) = 1 − P(X = 0) = 1 − qⁿ.", gen=[p4(1 - _pbin(n, p, 0) - _pbin(n, p, 1)), p4(float(p) * n) if float(p) * n < 1 else p4(r / 2), p4(1 - float(q) ** (n - 1))])
     n = rng.randint(5, 10)
     k = rng.randint(1, 3)
     acum = lambda m: sum(_pbin(n, p, i) for i in range(m + 1))
@@ -2491,8 +2491,8 @@ def g_normal_tabla(rng, d, tipo="menor"):
 @gen6("t6_tipificar")
 def g_tipificar(rng, d, tipo="z"):
     """EST.DISTR.05. Claves: divide_varianza, no_resta_media, prob_como_z."""
-    ctx = rng.choice([("La estatura de un grupo", 170, 8, "cm"), ("Las notas de un examen", 6, 1.5, "puntos"), ("El tiempo de un trayecto", 40, 5, "min"),
-                      ("El peso de unas manzanas", 180, 20, "g")])
+    ctx = rng.choice([("La estatura de un grupo sigue", 170, 8, "cm"), ("Las notas de un examen siguen", 6, 1.5, "puntos"), ("El tiempo de un trayecto sigue", 40, 5, "min"),
+                      ("El peso de unas manzanas sigue", 180, 20, "g"), ("La duración de unas pilas sigue", 300, 25, "h")])
     mu, sg = ctx[1], ctx[2]
     for _ in range(100):
         z = round(rng.choice([-1, 1]) * rng.randint(10, 220) / 100, 2)
@@ -2500,7 +2500,7 @@ def g_tipificar(rng, d, tipo="z"):
         if abs(x * 10 - round(x * 10)) < 1e-9:
             x = round(x, 1)
             break
-    base = f"{ctx[0]} sigue una N({dec(mu, 2)}; {dec(sg, 2)}) (en {ctx[3]}).\n"
+    base = f"{ctx[0]} una N({dec(mu, 2)}; {dec(sg, 2)}) (en {ctx[3]}).\n"
     if tipo == "z":
         return hacer(base + f"¿Qué valor z corresponde a x = {dec(x, 2)}?", dec(z, 2), "tipificar", {"mu": mu, "sg": sg, "x": x},
                      [(dec((x - mu) / sg ** 2, 2), "divide_varianza"), (dec(x / sg, 2), "no_resta_media"), (dec(-z, 2), None)],
@@ -2513,10 +2513,10 @@ def g_tipificar(rng, d, tipo="z"):
         z2 = round(x / sg, 2)
         f_ = (lambda t: 1 - Phi(t)) if mayor else Phi
         return hacer(base + f"Calcula P(X {'>' if mayor else '<'} {dec(x, 2)}).", p4(P), "normal_prob", {"mu": mu, "sg": sg, "x": x},
-                     [(p4(f_(z1)), "divide_varianza"), (p4(f_(z2)) if abs(z2) < 4 else p4(1 - P), "no_resta_media" if abs(z2) < 4 else None), (p4(1 - P), None)],
+                     [(p4(f_(z1)), "divide_varianza"), (p4(f_(z2)), "no_resta_media") if abs(z2) < 3.5 else (p4(f_(z + 0.1)), None), (p4(1 - P), None)],
                      [("tipificar", dec(z, 2), f"z = ({dec(x, 2)} − {dec(mu, 2)}) / {dec(sg, 2)} = {dec(z, 2)}."),
                       ("tabla", p4(P), f"P(Z {'>' if mayor else '<'} {dec(z, 2)}) = {p4(P)}.")],
-                     "Se tipifica y se usa la tabla de N(0,1), con 1 − … y simetría cuando haga falta.")
+                     "Se tipifica y se usa la tabla de N(0,1), con 1 − … y simetría cuando haga falta.", gen=[p4(f_(z - 0.1)), p4(abs(Phi(z) - 0.5))])
     top = rng.choice([(10, 1.28), (5, 1.645), (20, 0.84), (25, 0.67), (1, 2.33)])
     v = mu + top[1] * sg
     return hacer(base + f"¿Qué valor mínimo hay que superar para estar en el {top[0]} % superior?", dec(v, 2), "normal_inversa_x", {"mu": mu, "sg": sg, "p": top[0]},

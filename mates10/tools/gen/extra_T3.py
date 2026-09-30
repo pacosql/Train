@@ -60,10 +60,13 @@ def es_dec(x, maxnd=6):
 
 
 def ndec(x):
+    """Número de cifras decimales (99 si no es un decimal exacto)."""
     x = F(x)
     k = 0
     while (x * 10 ** k).denominator != 1:
         k += 1
+        if k > 14:
+            return 99
     return k
 
 
@@ -2356,7 +2359,7 @@ def gen_porc_10(rng, d):
     pasos = [("índice", D(idx), f"Índice de variación: {D(idx)}. Final = inicial · {D(idx)}."),
              ("dividir", eur(I), f"Inicial = final : índice = {D(Fi)} : {D(idx)} = {eur(I)}.")]
     return mk(enun, eur(I), "t3_porc_inicial", {"F": D(Fi), "p": p, "tipo": tipo},
-              [(eur(redondear(e01, 2)), "E01"), (eur(redondear(Fi * idx, 2)), "E02"), (eur(redondear(Fi - Fi * F(p, 100) if tipo != "desc" else Fi + Fi * F(p, 100), 2)) if tipo == "iva" or True else None, "E03" if tipo == "iva" else None)], pasos,
+              [(eur(redondear(e01, 2)), "E03" if tipo == "iva" else "E01"), (eur(redondear(Fi * idx, 2)), "E02"), (eur(redondear(Fi + I * F(p, 100), 2)) if tipo == "iva" else None, None)], pasos,
               "Para volver a la cantidad inicial se DIVIDE la final entre el índice de variación; aplicar el porcentaje contrario al final no sirve.",
               genericos=[eur(I + 5), eur(I - 5)])
 
@@ -2413,9 +2416,10 @@ def gen_porc_12(rng, d):
     e02 = C * (1 + F(r) / 100) ** (k * t)
     e03 = C * (1 + F(r) / 100) * t
     cap = "" if k == 1 else f" con capitalización {nom}"
-    pasos = [("rédito por periodo", D(i * 100) + " %", f"El {D(r)} % anual{cap} da un rédito por periodo de {D(r)}/{k} = {D(i * 100)} %." if k > 1 else f"Rédito anual: {D(r)} %."),
+    ip = dnum(i * 100, 4)
+    pasos = [("rédito por periodo", ip + " %", f"El {D(r)} % anual{cap} da un rédito por periodo de {D(r)}/{k} = {ip} %." if k > 1 else f"Rédito anual: {D(r)} %."),
              ("periodos", str(k * t), f"Número de periodos: {k} · {t} = {k * t}."),
-             ("Cf = C(1 + i)ⁿ", eur(redondear(Cf, 2)), f"Cf = {fmt(C)} · {D(1 + i)}^{k * t} ≈ {eur(redondear(Cf, 2))}.")]
+             ("Cf = C(1 + i)ⁿ", eur(redondear(Cf, 2)), f"Cf = {fmt(C)} · (1 + {dnum(i, 6)})^{k * t} ≈ {eur(redondear(Cf, 2))}.")]
     return mk(f"Se invierten {fmt(C)} € al {D(r)} % anual de interés compuesto{cap} durante {t} años. ¿Cuál es el capital final?", eur(redondear(Cf, 2)), "t3_interes_compuesto",
               {"C": C, "r": D(r), "t": t, "k": k},
               [(eur(redondear(e01, 2)), "E01"), (eur(redondear(e02, 2)) if k > 1 else None, "E02"), (eur(redondear(e03, 2)), "E03")], pasos,
@@ -2507,15 +2511,12 @@ def gen_prop_01(rng, d):
                   [(f"{NO}: las diferencias no son iguales", "E02"), ("No: es de proporcionalidad inversa", "E03"), (f"{SI} (constante {D(k + 1)})", None)], pasos,
                   "Se comprueba que el cociente y/x es siempre el mismo (la constante de proporcionalidad).", datos={"opciones_fijas": True})
     c = rng.choice([1, 2, 3, 5])
-    ys = [x * k + c for x in xs]
     step = xs[1] - xs[0]
-    if d == 1:
-        xs = [xs[0], xs[0] + step, xs[0] + 2 * step]
-        ys = [x * k + c for x in xs]
+    xs = [xs[0], xs[0] + step, xs[0] + 2 * step]
+    ys = [x * k + c for x in xs]
     pasos = [("cocientes", NO, "Divido cada valor de abajo entre el de arriba: " + ", ".join(f"{dnum(y)} : {x} = {dnum(F(y) / x)}" for x, y in zip(xs, ys)) + ". No son iguales: no es proporcional.")]
     return mk(f"¿Es de proporcionalidad directa esta tabla? {tabla_txt(zip(xs, ys))}", NO, "t3_prop_reconocer", {"xs": xs, "ys": [D(y) for y in ys]},
-              [(f"Sí: siempre suma {dnum(ys[1] - ys[0])}" if d == 1 else f"{SI}: cuando una crece, la otra también", "E02" if d == 1 else "E01"),
-               (f"{SI}: cuando una crece, la otra también", "E01") if d == 1 else ("No: es de proporcionalidad inversa", "E03"), (f"{SI} (constante {dnum(F(ys[0]) / xs[0])})", None)], pasos,
+              [(f"Sí: siempre suma {dnum(ys[1] - ys[0])}", "E02"), (f"{SI}: cuando una crece, la otra también", "E01"), (f"{SI} (constante {dnum(F(ys[0]) / xs[0])})", None)], pasos,
               "Para que sea directa, el cociente tiene que ser constante; que aumente siempre lo mismo (diferencia constante) no basta.", datos={"opciones_fijas": True})
 
 
@@ -2526,7 +2527,7 @@ OBJ_PRECIO = [("cuadernos", "cuestan"), ("kilos de manzanas", "cuestan"), ("bol�
 def gen_prop_02(rng, d):
     for _ in range(100):
         a = rng.randint(2, 12)
-        u = F(rng.randint(2, 30)) if d == 1 else F(rng.randint(105, 995), 100) if d == 2 else F(rng.randint(12, 250), 10)
+        u = F(rng.randint(2, 9)) if d == 1 else F(rng.randint(105, 995), 100) if d == 2 else F(rng.randint(12, 250), 10)
         c = rng.randint(2, 20)
         if c == a:
             continue
@@ -2563,7 +2564,7 @@ def gen_prop_03(rng, d):
         pasos = [("× escala", f"{fmt(pl * E)} cm", f"Cada cm del plano son {E} cm reales: {pl} × {E} = {fmt(pl * E)} cm."),
                  ("a metros", f"{dnum(real)} m", f"{fmt(pl * E)} cm = {dnum(real)} m.")]
         return mk(f"En un plano a escala 1:{fmt(E)}, una pared mide {pl} cm. ¿Cuánto mide en la realidad?", f"{dnum(real)} m", "t3_escala", {"E": E, "plano": pl},
-                  [(f"{dnum(F(pl, E) / 100)} m", "E01"), (f"{fmt(pl * E)} m", "E02"), (f"{dnum(real / 10)} m", None)], pasos,
+                  [(f"{D(F(pl, E) / 100)} m", "E01"), (f"{fmt(pl * E)} m", "E02"), (f"{dnum(real / 10)} m", None)], pasos,
                   "Escala 1:n: 1 cm del plano son n cm reales. Después se cambia de unidad.", genericos=[f"{dnum(real * 10)} m"])
     if d == 2:
         E = rng.choice([10000, 20000, 25000, 50000, 100000, 200000, 250000, 500000, 1000000])
@@ -2652,7 +2653,7 @@ def gen_prop_05(rng, d):
                   genericos=[eur(eu2 + 1), eur(eu2 - 1)])
     for _ in range(100):
         a = rng.randint(2, 12)
-        u = F(rng.randint(2, 40)) if d == 1 else F(rng.randint(15, 95), 10)
+        u = F(rng.randint(2, 12)) if d == 1 else F(rng.randint(15, 95), 10)
         c = rng.randint(2, 20)
         b, r = a * u, c * u
         if c != a and ndec(b) <= 2 and ndec(r) <= 2 and ndec(F(a * c) / b) <= 6:

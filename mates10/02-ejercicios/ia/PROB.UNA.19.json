@@ -4,7 +4,7 @@
  "ejercicios": [
   {
    "dificultad": 1,
-   "enunciado": "Un kilo de manzanas cuesta 5 €. ¿Cuánto cuestan 5 kilos?",
+   "enunciado": "Un kilo de queso cuesta 5 €. ¿Cuánto cuestan 5 kilos?",
    "respuesta": "25 €",
    "distractores": [
     {
@@ -96,7 +96,7 @@
   },
   {
    "dificultad": 1,
-   "enunciado": "Un autobús recorre 3 km cada hora. ¿Cuántos km recorre en 4 horas?",
+   "enunciado": "Adam camina y recorre 3 km cada hora. ¿Cuántos km recorre en 4 horas?",
    "respuesta": "12 km",
    "distractores": [
     {
@@ -142,45 +142,45 @@
   },
   {
    "dificultad": 1,
-   "enunciado": "Una entrada del teatro cuesta 3 €. ¿Cuánto pagan 5 amigos por sus entradas?",
-   "respuesta": "15 €",
+   "enunciado": "Una entrada del zoo cuesta 3 €. ¿Cuánto pagan 3 amigos por sus entradas?",
+   "respuesta": "9 €",
    "distractores": [
     {
-     "valor": "8 €",
+     "valor": "6 €",
      "error": "E01"
     },
     {
-     "valor": "16 €",
-     "error": null
+     "valor": "1 €",
+     "error": "E03"
     },
     {
-     "valor": "14 €",
+     "valor": "10 €",
      "error": null
     }
    ],
-   "expresion_calculo": "3 × 5",
+   "expresion_calculo": "3 × 3",
    "secundarias": [
     "OPER.MULT.02"
    ],
-   "explicacion_nino": "Entiende: cada unidad vale 3 y hay 5 unidades; se repite 3 5 veces. Multiplicamos: 3 × 5 = 15 €. Comprueba que la respuesta va en €.",
+   "explicacion_nino": "Entiende: cada unidad vale 3 y hay 3 unidades; se repite 3 3 veces. Multiplicamos: 3 × 3 = 9 €. Comprueba que la respuesta va en €.",
    "explicacion_adulto": "Está aprendiendo a multiplicar un valor por unidad (precio de un kilo, páginas al día, kilómetros por hora) por el número de unidades. Las dos cantidades son de distinta clase, y la respuesta tiene la unidad del valor por unidad (euros, páginas, kilómetros). Pregúntele: «¿qué se repite y cuántas veces?».",
    "explicacion_pasos": [
     {
      "paso": 1,
      "operacion": "datos",
-     "resultado": "3 por unidad, 5 unidades",
+     "resultado": "3 por unidad, 3 unidades",
      "texto": "Buscamos los datos que nos da el problema."
     },
     {
      "paso": 2,
-     "operacion": "3 × 5",
-     "resultado": "15 €",
+     "operacion": "3 × 3",
+     "resultado": "9 €",
      "texto": "Hacemos la operación."
     },
     {
      "paso": 3,
      "operacion": "comprobar",
-     "resultado": "15 : 5 = 3",
+     "resultado": "9 : 3 = 3",
      "texto": "Comprobamos que la respuesta tiene sentido."
     }
    ],
@@ -234,7 +234,7 @@
   },
   {
    "dificultad": 1,
-   "enunciado": "Un kilo de naranjas cuesta 4 €. ¿Cuánto cuestan 3 kilos?",
+   "enunciado": "Un kilo de cerezas cuesta 4 €. ¿Cuánto cuestan 3 kilos?",
    "respuesta": "12 €",
    "distractores": [
     {
@@ -326,7 +326,7 @@
   },
   {
    "dificultad": 1,
-   "enunciado": "Un tren recorre 3 km cada hora. ¿Cuántos km recorre en 3 horas?",
+   "enunciado": "Lucía camina y recorre 3 km cada hora. ¿Cuántos km recorre en 3 horas?",
    "respuesta": "9 km",
    "distractores": [
     {
@@ -464,91 +464,45 @@
   },
   {
    "dificultad": 1,
-   "enunciado": "Un kilo de uvas cuesta 5 €. ¿Cuánto cuestan 5 kilos?",
-   "respuesta": "25 €",
+   "enunciado": "Thiago lee 5 páginas cada día. ¿Cuántas páginas lee en 2 días?",
+   "respuesta": "10",
    "distractores": [
     {
-     "valor": "10 €",
+     "valor": "7",
      "error": "E01"
     },
     {
-     "valor": "25 kg",
-     "error": "E02"
+     "valor": "11",
+     "error": null
     },
     {
-     "valor": "1 €",
-     "error": "E03"
+     "valor": "9",
+     "error": null
     }
    ],
-   "expresion_calculo": "5 × 5",
+   "expresion_calculo": "5 × 2",
    "secundarias": [
     "OPER.MULT.02"
    ],
-   "explicacion_nino": "Entiende: cada unidad vale 5 y hay 5 unidades; se repite 5 5 veces. Multiplicamos: 5 × 5 = 25 €. Comprueba que la respuesta va en €.",
+   "explicacion_nino": "Entiende: cada unidad vale 5 y hay 2 unidades; se repite 5 2 veces. Multiplicamos: 5 × 2 = 10. Comprueba que la respuesta va en la misma unidad que el valor de cada una.",
    "explicacion_adulto": "Está aprendiendo a multiplicar un valor por unidad (precio de un kilo, páginas al día, kilómetros por hora) por el número de unidades. Las dos cantidades son de distinta clase, y la respuesta tiene la unidad del valor por unidad (euros, páginas, kilómetros). Pregúntele: «¿qué se repite y cuántas veces?».",
    "explicacion_pasos": [
     {
      "paso": 1,
      "operacion": "datos",
-     "resultado": "5 por unidad, 5 unidades",
+     "resultado": "5 por unidad, 2 unidades",
      "texto": "Buscamos los datos que nos da el problema."
     },
     {
      "paso": 2,
-     "operacion": "5 × 5",
-     "resultado": "25 €",
+     "operacion": "5 × 2",
+     "resultado": "10",
      "texto": "Hacemos la operación."
     },
     {
      "paso": 3,
      "operacion": "comprobar",
-     "resultado": "25 : 5 = 5",
-     "texto": "Comprobamos que la respuesta tiene sentido."
-    }
-   ],
-   "plantilla": "P01"
-  },
-  {
-   "dificultad": 1,
-   "enunciado": "Paula lee 3 páginas cada día. ¿Cuántas páginas lee en 5 días?",
-   "respuesta": "15",
-   "distractores": [
-    {
-     "valor": "8",
-     "error": "E01"
-    },
-    {
-     "valor": "16",
-     "error": null
-    },
-    {
-     "valor": "14",
-     "error": null
-    }
-   ],
-   "expresion_calculo": "3 × 5",
-   "secundarias": [
-    "OPER.MULT.02"
-   ],
-   "explicacion_nino": "Entiende: cada unidad vale 3 y hay 5 unidades; se repite 3 5 veces. Multiplicamos: 3 × 5 = 15. Comprueba que la respuesta va en la misma unidad que el valor de cada una.",
-   "explicacion_adulto": "Está aprendiendo a multiplicar un valor por unidad (precio de un kilo, páginas al día, kilómetros por hora) por el número de unidades. Las dos cantidades son de distinta clase, y la respuesta tiene la unidad del valor por unidad (euros, páginas, kilómetros). Pregúntele: «¿qué se repite y cuántas veces?».",
-   "explicacion_pasos": [
-    {
-     "paso": 1,
-     "operacion": "datos",
-     "resultado": "3 por unidad, 5 unidades",
-     "texto": "Buscamos los datos que nos da el problema."
-    },
-    {
-     "paso": 2,
-     "operacion": "3 × 5",
-     "resultado": "15",
-     "texto": "Hacemos la operación."
-    },
-    {
-     "paso": 3,
-     "operacion": "comprobar",
-     "resultado": "15 : 5 = 3",
+     "resultado": "10 : 2 = 5",
      "texto": "Comprobamos que la respuesta tiene sentido."
     }
    ],
@@ -556,7 +510,7 @@
   },
   {
    "dificultad": 1,
-   "enunciado": "Un coche recorre 3 km cada hora. ¿Cuántos km recorre en 4 horas?",
+   "enunciado": "Gael camina y recorre 3 km cada hora. ¿Cuántos km recorre en 4 horas?",
    "respuesta": "12 km",
    "distractores": [
     {
@@ -601,46 +555,46 @@
    "plantilla": "P03"
   },
   {
-   "dificultad": 2,
-   "enunciado": "Una entrada del teatro cuesta 8 €. ¿Cuánto pagan 6 amigos por sus entradas?",
-   "respuesta": "48 €",
+   "dificultad": 1,
+   "enunciado": "Una entrada del teatro cuesta 4 €. ¿Cuánto pagan 5 amigos por sus entradas?",
+   "respuesta": "20 €",
    "distractores": [
     {
-     "valor": "14 €",
+     "valor": "9 €",
      "error": "E01"
     },
     {
-     "valor": "49 €",
+     "valor": "21 €",
      "error": null
     },
     {
-     "valor": "47 €",
+     "valor": "19 €",
      "error": null
     }
    ],
-   "expresion_calculo": "8 × 6",
+   "expresion_calculo": "4 × 5",
    "secundarias": [
     "OPER.MULT.02"
    ],
-   "explicacion_nino": "Entiende: cada unidad vale 8 y hay 6 unidades; se repite 8 6 veces. Multiplicamos: 8 × 6 = 48 €. Comprueba que la respuesta va en €.",
+   "explicacion_nino": "Entiende: cada unidad vale 4 y hay 5 unidades; se repite 4 5 veces. Multiplicamos: 4 × 5 = 20 €. Comprueba que la respuesta va en €.",
    "explicacion_adulto": "Está aprendiendo a multiplicar un valor por unidad (precio de un kilo, páginas al día, kilómetros por hora) por el número de unidades. Las dos cantidades son de distinta clase, y la respuesta tiene la unidad del valor por unidad (euros, páginas, kilómetros). Pregúntele: «¿qué se repite y cuántas veces?».",
    "explicacion_pasos": [
     {
      "paso": 1,
      "operacion": "datos",
-     "resultado": "8 por unidad, 6 unidades",
+     "resultado": "4 por unidad, 5 unidades",
      "texto": "Buscamos los datos que nos da el problema."
     },
     {
      "paso": 2,
-     "operacion": "8 × 6",
-     "resultado": "48 €",
+     "operacion": "4 × 5",
+     "resultado": "20 €",
      "texto": "Hacemos la operación."
     },
     {
      "paso": 3,
      "operacion": "comprobar",
-     "resultado": "48 : 6 = 8",
+     "resultado": "20 : 5 = 4",
      "texto": "Comprobamos que la respuesta tiene sentido."
     }
    ],
@@ -694,7 +648,7 @@
   },
   {
    "dificultad": 2,
-   "enunciado": "Un kilo de naranjas cuesta 8 €. ¿Cuánto cuestan 8 kilos?",
+   "enunciado": "Un kilo de cerezas cuesta 8 €. ¿Cuánto cuestan 8 kilos?",
    "respuesta": "64 €",
    "distractores": [
     {
@@ -786,7 +740,7 @@
   },
   {
    "dificultad": 2,
-   "enunciado": "Un tren recorre 9 km cada hora. ¿Cuántos km recorre en 6 horas?",
+   "enunciado": "Una ciclista recorre 9 km cada hora. ¿Cuántos km recorre en 6 horas?",
    "respuesta": "54 km",
    "distractores": [
     {
@@ -829,6 +783,52 @@
     }
    ],
    "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Una entrada del teatro cuesta 8 €. ¿Cuánto pagan 6 amigos por sus entradas?",
+   "respuesta": "48 €",
+   "distractores": [
+    {
+     "valor": "14 €",
+     "error": "E01"
+    },
+    {
+     "valor": "49 €",
+     "error": null
+    },
+    {
+     "valor": "47 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "8 × 6",
+   "secundarias": [
+    "OPER.MULT.02"
+   ],
+   "explicacion_nino": "Entiende: cada unidad vale 8 y hay 6 unidades; se repite 8 6 veces. Multiplicamos: 8 × 6 = 48 €. Comprueba que la respuesta va en €.",
+   "explicacion_adulto": "Está aprendiendo a multiplicar un valor por unidad (precio de un kilo, páginas al día, kilómetros por hora) por el número de unidades. Las dos cantidades son de distinta clase, y la respuesta tiene la unidad del valor por unidad (euros, páginas, kilómetros). Pregúntele: «¿qué se repite y cuántas veces?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "8 por unidad, 6 unidades",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "8 × 6",
+     "resultado": "48 €",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "48 : 6 = 8",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P04"
   },
   {
    "dificultad": 2,
@@ -970,7 +970,7 @@
   },
   {
    "dificultad": 2,
-   "enunciado": "Una furgoneta recorre 6 km cada hora. ¿Cuántos km recorre en 4 horas?",
+   "enunciado": "Un corredor recorre 6 km cada hora. ¿Cuántos km recorre en 4 horas?",
    "respuesta": "24 km",
    "distractores": [
     {
@@ -1016,19 +1016,65 @@
   },
   {
    "dificultad": 2,
-   "enunciado": "Una entrada del cine cuesta 3 €. ¿Cuánto pagan 8 amigos por sus entradas?",
-   "respuesta": "24 €",
+   "enunciado": "Una entrada del zoo cuesta 9 €. ¿Cuánto pagan 9 amigos por sus entradas?",
+   "respuesta": "81 €",
    "distractores": [
     {
-     "valor": "11 €",
+     "valor": "18 €",
      "error": "E01"
     },
     {
-     "valor": "25 €",
-     "error": null
+     "valor": "1 €",
+     "error": "E03"
     },
     {
-     "valor": "23 €",
+     "valor": "82 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "9 × 9",
+   "secundarias": [
+    "OPER.MULT.02"
+   ],
+   "explicacion_nino": "Entiende: cada unidad vale 9 y hay 9 unidades; se repite 9 9 veces. Multiplicamos: 9 × 9 = 81 €. Comprueba que la respuesta va en €.",
+   "explicacion_adulto": "Está aprendiendo a multiplicar un valor por unidad (precio de un kilo, páginas al día, kilómetros por hora) por el número de unidades. Las dos cantidades son de distinta clase, y la respuesta tiene la unidad del valor por unidad (euros, páginas, kilómetros). Pregúntele: «¿qué se repite y cuántas veces?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "9 por unidad, 9 unidades",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "9 × 9",
+     "resultado": "81 €",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "81 : 9 = 9",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un grifo echa 3 litros de agua cada minuto. ¿Cuántos litros echa en 8 minutos?",
+   "respuesta": "24 litros",
+   "distractores": [
+    {
+     "valor": "11 litros",
+     "error": "E01"
+    },
+    {
+     "valor": "24 minutos",
+     "error": "E02"
+    },
+    {
+     "valor": "25 litros",
      "error": null
     }
    ],
@@ -1036,7 +1082,7 @@
    "secundarias": [
     "OPER.MULT.02"
    ],
-   "explicacion_nino": "Entiende: cada unidad vale 3 y hay 8 unidades; se repite 3 8 veces. Multiplicamos: 3 × 8 = 24 €. Comprueba que la respuesta va en €.",
+   "explicacion_nino": "Entiende: cada unidad vale 3 y hay 8 unidades; se repite 3 8 veces. Multiplicamos: 3 × 8 = 24 litros. Comprueba que la respuesta va en litros.",
    "explicacion_adulto": "Está aprendiendo a multiplicar un valor por unidad (precio de un kilo, páginas al día, kilómetros por hora) por el número de unidades. Las dos cantidades son de distinta clase, y la respuesta tiene la unidad del valor por unidad (euros, páginas, kilómetros). Pregúntele: «¿qué se repite y cuántas veces?».",
    "explicacion_pasos": [
     {
@@ -1048,7 +1094,7 @@
     {
      "paso": 2,
      "operacion": "3 × 8",
-     "resultado": "24 €",
+     "resultado": "24 litros",
      "texto": "Hacemos la operación."
     },
     {
@@ -1058,95 +1104,49 @@
      "texto": "Comprobamos que la respuesta tiene sentido."
     }
    ],
-   "plantilla": "P04"
-  },
-  {
-   "dificultad": 2,
-   "enunciado": "Un grifo echa 5 litros de agua cada minuto. ¿Cuántos litros echa en 7 minutos?",
-   "respuesta": "35 litros",
-   "distractores": [
-    {
-     "valor": "12 litros",
-     "error": "E01"
-    },
-    {
-     "valor": "35 minutos",
-     "error": "E02"
-    },
-    {
-     "valor": "36 litros",
-     "error": null
-    }
-   ],
-   "expresion_calculo": "5 × 7",
-   "secundarias": [
-    "OPER.MULT.02"
-   ],
-   "explicacion_nino": "Entiende: cada unidad vale 5 y hay 7 unidades; se repite 5 7 veces. Multiplicamos: 5 × 7 = 35 litros. Comprueba que la respuesta va en litros.",
-   "explicacion_adulto": "Está aprendiendo a multiplicar un valor por unidad (precio de un kilo, páginas al día, kilómetros por hora) por el número de unidades. Las dos cantidades son de distinta clase, y la respuesta tiene la unidad del valor por unidad (euros, páginas, kilómetros). Pregúntele: «¿qué se repite y cuántas veces?».",
-   "explicacion_pasos": [
-    {
-     "paso": 1,
-     "operacion": "datos",
-     "resultado": "5 por unidad, 7 unidades",
-     "texto": "Buscamos los datos que nos da el problema."
-    },
-    {
-     "paso": 2,
-     "operacion": "5 × 7",
-     "resultado": "35 litros",
-     "texto": "Hacemos la operación."
-    },
-    {
-     "paso": 3,
-     "operacion": "comprobar",
-     "resultado": "35 : 7 = 5",
-     "texto": "Comprobamos que la respuesta tiene sentido."
-    }
-   ],
    "plantilla": "P05"
   },
   {
    "dificultad": 3,
-   "enunciado": "Un kilo de manzanas cuesta 6 €. ¿Cuánto cuestan 3 kilos?",
-   "respuesta": "18 €",
+   "enunciado": "Un kilo de cerezas cuesta 4 €. ¿Cuánto cuestan 5 kilos?",
+   "respuesta": "20 €",
    "distractores": [
     {
      "valor": "9 €",
      "error": "E01"
     },
     {
-     "valor": "18 kg",
+     "valor": "20 kg",
      "error": "E02"
     },
     {
-     "valor": "2 €",
-     "error": "E03"
+     "valor": "21 €",
+     "error": null
     }
    ],
-   "expresion_calculo": "6 × 3",
+   "expresion_calculo": "4 × 5",
    "secundarias": [
     "OPER.MULT.02"
    ],
-   "explicacion_nino": "Entiende: cada unidad vale 6 y hay 3 unidades; se repite 6 3 veces. Multiplicamos: 6 × 3 = 18 €. Comprueba que la respuesta va en €.",
+   "explicacion_nino": "Entiende: cada unidad vale 4 y hay 5 unidades; se repite 4 5 veces. Multiplicamos: 4 × 5 = 20 €. Comprueba que la respuesta va en €.",
    "explicacion_adulto": "Está aprendiendo a multiplicar un valor por unidad (precio de un kilo, páginas al día, kilómetros por hora) por el número de unidades. Las dos cantidades son de distinta clase, y la respuesta tiene la unidad del valor por unidad (euros, páginas, kilómetros). Pregúntele: «¿qué se repite y cuántas veces?».",
    "explicacion_pasos": [
     {
      "paso": 1,
      "operacion": "datos",
-     "resultado": "6 por unidad, 3 unidades",
+     "resultado": "4 por unidad, 5 unidades",
      "texto": "Buscamos los datos que nos da el problema."
     },
     {
      "paso": 2,
-     "operacion": "6 × 3",
-     "resultado": "18 €",
+     "operacion": "4 × 5",
+     "resultado": "20 €",
      "texto": "Hacemos la operación."
     },
     {
      "paso": 3,
      "operacion": "comprobar",
-     "resultado": "18 : 3 = 6",
+     "resultado": "20 : 5 = 4",
      "texto": "Comprobamos que la respuesta tiene sentido."
     }
    ],
@@ -1154,45 +1154,45 @@
   },
   {
    "dificultad": 3,
-   "enunciado": "Daniel lee 40 páginas cada día. ¿Cuántas páginas lee en 6 días?",
-   "respuesta": "240",
+   "enunciado": "Nerea lee 30 páginas cada día. ¿Cuántas páginas lee en 4 días?",
+   "respuesta": "120",
    "distractores": [
     {
-     "valor": "46",
+     "valor": "34",
      "error": "E01"
     },
     {
-     "valor": "241",
+     "valor": "121",
      "error": null
     },
     {
-     "valor": "239",
+     "valor": "119",
      "error": null
     }
    ],
-   "expresion_calculo": "40 × 6",
+   "expresion_calculo": "30 × 4",
    "secundarias": [
     "OPER.MULT.03"
    ],
-   "explicacion_nino": "Entiende: cada unidad vale 40 y hay 6 unidades; se repite 40 6 veces. Multiplicamos: 40 × 6 = 240. Comprueba que la respuesta va en la misma unidad que el valor de cada una.",
+   "explicacion_nino": "Entiende: cada unidad vale 30 y hay 4 unidades; se repite 30 4 veces. Multiplicamos: 30 × 4 = 120. Comprueba que la respuesta va en la misma unidad que el valor de cada una.",
    "explicacion_adulto": "Está aprendiendo a multiplicar un valor por unidad (precio de un kilo, páginas al día, kilómetros por hora) por el número de unidades. Las dos cantidades son de distinta clase, y la respuesta tiene la unidad del valor por unidad (euros, páginas, kilómetros). Pregúntele: «¿qué se repite y cuántas veces?».",
    "explicacion_pasos": [
     {
      "paso": 1,
      "operacion": "datos",
-     "resultado": "40 por unidad, 6 unidades",
+     "resultado": "30 por unidad, 4 unidades",
      "texto": "Buscamos los datos que nos da el problema."
     },
     {
      "paso": 2,
-     "operacion": "40 × 6",
-     "resultado": "240",
+     "operacion": "30 × 4",
+     "resultado": "120",
      "texto": "Hacemos la operación."
     },
     {
      "paso": 3,
      "operacion": "comprobar",
-     "resultado": "240 : 6 = 40",
+     "resultado": "120 : 4 = 30",
      "texto": "Comprobamos que la respuesta tiene sentido."
     }
    ],
@@ -1200,11 +1200,11 @@
   },
   {
    "dificultad": 3,
-   "enunciado": "Una furgoneta recorre 70 km cada hora. ¿Cuántos km recorre en 6 horas?",
+   "enunciado": "Una furgoneta recorre 60 km cada hora. ¿Cuántos km recorre en 7 horas?",
    "respuesta": "420 km",
    "distractores": [
     {
-     "valor": "76 km",
+     "valor": "67 km",
      "error": "E01"
     },
     {
@@ -1216,29 +1216,29 @@
      "error": null
     }
    ],
-   "expresion_calculo": "70 × 6",
+   "expresion_calculo": "60 × 7",
    "secundarias": [
     "OPER.MULT.03"
    ],
-   "explicacion_nino": "Entiende: cada unidad vale 70 y hay 6 unidades; se repite 70 6 veces. Multiplicamos: 70 × 6 = 420 km. Comprueba que la respuesta va en km.",
+   "explicacion_nino": "Entiende: cada unidad vale 60 y hay 7 unidades; se repite 60 7 veces. Multiplicamos: 60 × 7 = 420 km. Comprueba que la respuesta va en km.",
    "explicacion_adulto": "Está aprendiendo a multiplicar un valor por unidad (precio de un kilo, páginas al día, kilómetros por hora) por el número de unidades. Las dos cantidades son de distinta clase, y la respuesta tiene la unidad del valor por unidad (euros, páginas, kilómetros). Pregúntele: «¿qué se repite y cuántas veces?».",
    "explicacion_pasos": [
     {
      "paso": 1,
      "operacion": "datos",
-     "resultado": "70 por unidad, 6 unidades",
+     "resultado": "60 por unidad, 7 unidades",
      "texto": "Buscamos los datos que nos da el problema."
     },
     {
      "paso": 2,
-     "operacion": "70 × 6",
+     "operacion": "60 × 7",
      "resultado": "420 km",
      "texto": "Hacemos la operación."
     },
     {
      "paso": 3,
      "operacion": "comprobar",
-     "resultado": "420 : 6 = 70",
+     "resultado": "420 : 7 = 60",
      "texto": "Comprobamos que la respuesta tiene sentido."
     }
    ],
@@ -1246,45 +1246,45 @@
   },
   {
    "dificultad": 3,
-   "enunciado": "Una entrada del zoo cuesta 20 €. ¿Cuánto pagan 3 amigos por sus entradas?",
-   "respuesta": "60 €",
+   "enunciado": "Una entrada del teatro cuesta 25 €. ¿Cuánto pagan 8 amigos por sus entradas?",
+   "respuesta": "200 €",
    "distractores": [
     {
-     "valor": "23 €",
+     "valor": "33 €",
      "error": "E01"
     },
     {
-     "valor": "61 €",
+     "valor": "201 €",
      "error": null
     },
     {
-     "valor": "59 €",
+     "valor": "199 €",
      "error": null
     }
    ],
-   "expresion_calculo": "20 × 3",
+   "expresion_calculo": "25 × 8",
    "secundarias": [
     "OPER.MULT.03"
    ],
-   "explicacion_nino": "Entiende: cada unidad vale 20 y hay 3 unidades; se repite 20 3 veces. Multiplicamos: 20 × 3 = 60 €. Comprueba que la respuesta va en €.",
+   "explicacion_nino": "Entiende: cada unidad vale 25 y hay 8 unidades; se repite 25 8 veces. Multiplicamos: 25 × 8 = 200 €. Comprueba que la respuesta va en €.",
    "explicacion_adulto": "Está aprendiendo a multiplicar un valor por unidad (precio de un kilo, páginas al día, kilómetros por hora) por el número de unidades. Las dos cantidades son de distinta clase, y la respuesta tiene la unidad del valor por unidad (euros, páginas, kilómetros). Pregúntele: «¿qué se repite y cuántas veces?».",
    "explicacion_pasos": [
     {
      "paso": 1,
      "operacion": "datos",
-     "resultado": "20 por unidad, 3 unidades",
+     "resultado": "25 por unidad, 8 unidades",
      "texto": "Buscamos los datos que nos da el problema."
     },
     {
      "paso": 2,
-     "operacion": "20 × 3",
-     "resultado": "60 €",
+     "operacion": "25 × 8",
+     "resultado": "200 €",
      "texto": "Hacemos la operación."
     },
     {
      "paso": 3,
      "operacion": "comprobar",
-     "resultado": "60 : 3 = 20",
+     "resultado": "200 : 8 = 25",
      "texto": "Comprobamos que la respuesta tiene sentido."
     }
    ],
@@ -1292,45 +1292,45 @@
   },
   {
    "dificultad": 3,
-   "enunciado": "Un grifo echa 25 litros de agua cada minuto. ¿Cuántos litros echa en 4 minutos?",
-   "respuesta": "100 litros",
+   "enunciado": "Un grifo echa 60 litros de agua cada minuto. ¿Cuántos litros echa en 4 minutos?",
+   "respuesta": "240 litros",
    "distractores": [
     {
-     "valor": "29 litros",
+     "valor": "64 litros",
      "error": "E01"
     },
     {
-     "valor": "100 minutos",
+     "valor": "240 minutos",
      "error": "E02"
     },
     {
-     "valor": "101 litros",
-     "error": null
+     "valor": "15 litros",
+     "error": "E03"
     }
    ],
-   "expresion_calculo": "25 × 4",
+   "expresion_calculo": "60 × 4",
    "secundarias": [
     "OPER.MULT.03"
    ],
-   "explicacion_nino": "Entiende: cada unidad vale 25 y hay 4 unidades; se repite 25 4 veces. Multiplicamos: 25 × 4 = 100 litros. Comprueba que la respuesta va en litros.",
+   "explicacion_nino": "Entiende: cada unidad vale 60 y hay 4 unidades; se repite 60 4 veces. Multiplicamos: 60 × 4 = 240 litros. Comprueba que la respuesta va en litros.",
    "explicacion_adulto": "Está aprendiendo a multiplicar un valor por unidad (precio de un kilo, páginas al día, kilómetros por hora) por el número de unidades. Las dos cantidades son de distinta clase, y la respuesta tiene la unidad del valor por unidad (euros, páginas, kilómetros). Pregúntele: «¿qué se repite y cuántas veces?».",
    "explicacion_pasos": [
     {
      "paso": 1,
      "operacion": "datos",
-     "resultado": "25 por unidad, 4 unidades",
+     "resultado": "60 por unidad, 4 unidades",
      "texto": "Buscamos los datos que nos da el problema."
     },
     {
      "paso": 2,
-     "operacion": "25 × 4",
-     "resultado": "100 litros",
+     "operacion": "60 × 4",
+     "resultado": "240 litros",
      "texto": "Hacemos la operación."
     },
     {
      "paso": 3,
      "operacion": "comprobar",
-     "resultado": "100 : 4 = 25",
+     "resultado": "240 : 4 = 60",
      "texto": "Comprobamos que la respuesta tiene sentido."
     }
    ],
@@ -1338,45 +1338,45 @@
   },
   {
    "dificultad": 3,
-   "enunciado": "Un kilo de naranjas cuesta 4 €. ¿Cuánto cuestan 6 kilos?",
-   "respuesta": "24 €",
+   "enunciado": "Un kilo de queso cuesta 8 €. ¿Cuánto cuestan 8 kilos?",
+   "respuesta": "64 €",
    "distractores": [
     {
-     "valor": "10 €",
+     "valor": "16 €",
      "error": "E01"
     },
     {
-     "valor": "24 kg",
+     "valor": "64 kg",
      "error": "E02"
     },
     {
-     "valor": "25 €",
-     "error": null
+     "valor": "1 €",
+     "error": "E03"
     }
    ],
-   "expresion_calculo": "4 × 6",
+   "expresion_calculo": "8 × 8",
    "secundarias": [
     "OPER.MULT.02"
    ],
-   "explicacion_nino": "Entiende: cada unidad vale 4 y hay 6 unidades; se repite 4 6 veces. Multiplicamos: 4 × 6 = 24 €. Comprueba que la respuesta va en €.",
+   "explicacion_nino": "Entiende: cada unidad vale 8 y hay 8 unidades; se repite 8 8 veces. Multiplicamos: 8 × 8 = 64 €. Comprueba que la respuesta va en €.",
    "explicacion_adulto": "Está aprendiendo a multiplicar un valor por unidad (precio de un kilo, páginas al día, kilómetros por hora) por el número de unidades. Las dos cantidades son de distinta clase, y la respuesta tiene la unidad del valor por unidad (euros, páginas, kilómetros). Pregúntele: «¿qué se repite y cuántas veces?».",
    "explicacion_pasos": [
     {
      "paso": 1,
      "operacion": "datos",
-     "resultado": "4 por unidad, 6 unidades",
+     "resultado": "8 por unidad, 8 unidades",
      "texto": "Buscamos los datos que nos da el problema."
     },
     {
      "paso": 2,
-     "operacion": "4 × 6",
-     "resultado": "24 €",
+     "operacion": "8 × 8",
+     "resultado": "64 €",
      "texto": "Hacemos la operación."
     },
     {
      "paso": 3,
      "operacion": "comprobar",
-     "resultado": "24 : 6 = 4",
+     "resultado": "64 : 8 = 8",
      "texto": "Comprobamos que la respuesta tiene sentido."
     }
    ],
@@ -1384,45 +1384,45 @@
   },
   {
    "dificultad": 3,
-   "enunciado": "Aisha lee 40 páginas cada día. ¿Cuántas páginas lee en 5 días?",
-   "respuesta": "200",
+   "enunciado": "Hugo lee 20 páginas cada día. ¿Cuántas páginas lee en 4 días?",
+   "respuesta": "80",
    "distractores": [
     {
-     "valor": "45",
+     "valor": "24",
      "error": "E01"
     },
     {
-     "valor": "8",
+     "valor": "5",
      "error": "E03"
     },
     {
-     "valor": "201",
+     "valor": "81",
      "error": null
     }
    ],
-   "expresion_calculo": "40 × 5",
+   "expresion_calculo": "20 × 4",
    "secundarias": [
     "OPER.MULT.03"
    ],
-   "explicacion_nino": "Entiende: cada unidad vale 40 y hay 5 unidades; se repite 40 5 veces. Multiplicamos: 40 × 5 = 200. Comprueba que la respuesta va en la misma unidad que el valor de cada una.",
+   "explicacion_nino": "Entiende: cada unidad vale 20 y hay 4 unidades; se repite 20 4 veces. Multiplicamos: 20 × 4 = 80. Comprueba que la respuesta va en la misma unidad que el valor de cada una.",
    "explicacion_adulto": "Está aprendiendo a multiplicar un valor por unidad (precio de un kilo, páginas al día, kilómetros por hora) por el número de unidades. Las dos cantidades son de distinta clase, y la respuesta tiene la unidad del valor por unidad (euros, páginas, kilómetros). Pregúntele: «¿qué se repite y cuántas veces?».",
    "explicacion_pasos": [
     {
      "paso": 1,
      "operacion": "datos",
-     "resultado": "40 por unidad, 5 unidades",
+     "resultado": "20 por unidad, 4 unidades",
      "texto": "Buscamos los datos que nos da el problema."
     },
     {
      "paso": 2,
-     "operacion": "40 × 5",
-     "resultado": "200",
+     "operacion": "20 × 4",
+     "resultado": "80",
      "texto": "Hacemos la operación."
     },
     {
      "paso": 3,
      "operacion": "comprobar",
-     "resultado": "200 : 5 = 40",
+     "resultado": "80 : 4 = 20",
      "texto": "Comprobamos que la respuesta tiene sentido."
     }
    ],
@@ -1430,45 +1430,45 @@
   },
   {
    "dificultad": 3,
-   "enunciado": "Un coche recorre 80 km cada hora. ¿Cuántos km recorre en 7 horas?",
-   "respuesta": "560 km",
+   "enunciado": "Un coche recorre 80 km cada hora. ¿Cuántos km recorre en 3 horas?",
+   "respuesta": "240 km",
    "distractores": [
     {
-     "valor": "87 km",
+     "valor": "83 km",
      "error": "E01"
     },
     {
-     "valor": "560 horas",
+     "valor": "240 horas",
      "error": "E02"
     },
     {
-     "valor": "561 km",
+     "valor": "241 km",
      "error": null
     }
    ],
-   "expresion_calculo": "80 × 7",
+   "expresion_calculo": "80 × 3",
    "secundarias": [
     "OPER.MULT.03"
    ],
-   "explicacion_nino": "Entiende: cada unidad vale 80 y hay 7 unidades; se repite 80 7 veces. Multiplicamos: 80 × 7 = 560 km. Comprueba que la respuesta va en km.",
+   "explicacion_nino": "Entiende: cada unidad vale 80 y hay 3 unidades; se repite 80 3 veces. Multiplicamos: 80 × 3 = 240 km. Comprueba que la respuesta va en km.",
    "explicacion_adulto": "Está aprendiendo a multiplicar un valor por unidad (precio de un kilo, páginas al día, kilómetros por hora) por el número de unidades. Las dos cantidades son de distinta clase, y la respuesta tiene la unidad del valor por unidad (euros, páginas, kilómetros). Pregúntele: «¿qué se repite y cuántas veces?».",
    "explicacion_pasos": [
     {
      "paso": 1,
      "operacion": "datos",
-     "resultado": "80 por unidad, 7 unidades",
+     "resultado": "80 por unidad, 3 unidades",
      "texto": "Buscamos los datos que nos da el problema."
     },
     {
      "paso": 2,
-     "operacion": "80 × 7",
-     "resultado": "560 km",
+     "operacion": "80 × 3",
+     "resultado": "240 km",
      "texto": "Hacemos la operación."
     },
     {
      "paso": 3,
      "operacion": "comprobar",
-     "resultado": "560 : 7 = 80",
+     "resultado": "240 : 3 = 80",
      "texto": "Comprobamos que la respuesta tiene sentido."
     }
    ],

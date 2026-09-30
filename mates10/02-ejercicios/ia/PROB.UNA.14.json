@@ -96,7 +96,7 @@
   },
   {
    "dificultad": 1,
-   "enunciado": "Un balón cuesta 33 €, que son 4 € menos que unas zapatillas. ¿Cuánto cuestan unas zapatillas?",
+   "enunciado": "Un balón cuesta 33 €, que son 4 € menos que unas zapatillas. ¿Cuánto cuestan las zapatillas?",
    "respuesta": "37",
    "distractores": [
     {
@@ -326,7 +326,7 @@
   },
   {
    "dificultad": 1,
-   "enunciado": "Un balón cuesta 44 €, que son 4 € más que unas zapatillas. ¿Cuánto cuestan unas zapatillas?",
+   "enunciado": "Un balón cuesta 44 €, que son 4 € más que unas zapatillas. ¿Cuánto cuestan las zapatillas?",
    "respuesta": "40",
    "distractores": [
     {
@@ -556,7 +556,7 @@
   },
   {
    "dificultad": 1,
-   "enunciado": "Una mochila cuesta 30 €, que son 6 € menos que un abrigo. ¿Cuánto cuesta un abrigo?",
+   "enunciado": "Una mochila cuesta 30 €, que son 6 € menos que un abrigo. ¿Cuánto cuesta el abrigo?",
    "respuesta": "36",
    "distractores": [
     {
@@ -740,53 +740,7 @@
   },
   {
    "dificultad": 2,
-   "enunciado": "Rocío tiene 21 cuentos, que son 21 menos que Lucas. ¿Cuántos cuentos tiene Lucas?",
-   "respuesta": "42",
-   "distractores": [
-    {
-     "valor": "21",
-     "error": "E02"
-    },
-    {
-     "valor": "43",
-     "error": null
-    },
-    {
-     "valor": "41",
-     "error": null
-    }
-   ],
-   "expresion_calculo": "21 + 21",
-   "secundarias": [
-    "OPER.SUMA.11"
-   ],
-   "explicacion_nino": "Entiende: el primero tiene 21, que son 21 menos que el otro. Entonces el otro tiene más: 21 + 21 = 42. Comprueba: 42 − 21 = 21, y la frase se cumple.",
-   "explicacion_adulto": "Es el problema aditivo más difícil: la frase «tiene 16 más que Luis» habla de la otra persona, así que para hallar lo de Luis hay que restar (y con «menos que», sumar). Si opera con la palabra clave, pídale que diga quién tiene más y que compruebe su respuesta leyendo de nuevo el enunciado con su número.",
-   "explicacion_pasos": [
-    {
-     "paso": 1,
-     "operacion": "datos",
-     "resultado": "21 y 21 menos",
-     "texto": "Buscamos los datos que nos da el problema."
-    },
-    {
-     "paso": 2,
-     "operacion": "21 + 21",
-     "resultado": "42",
-     "texto": "Hacemos la operación."
-    },
-    {
-     "paso": 3,
-     "operacion": "comprobar",
-     "resultado": "42 − 21 = 21",
-     "texto": "Comprobamos que la respuesta tiene sentido."
-    }
-   ],
-   "plantilla": "P02"
-  },
-  {
-   "dificultad": 2,
-   "enunciado": "Un balón cuesta 50 €, que son 27 € menos que unas zapatillas. ¿Cuánto cuestan unas zapatillas?",
+   "enunciado": "Enzo tiene 50 piedras, que son 27 menos que Paula. ¿Cuántas piedras tiene Paula?",
    "respuesta": "77",
    "distractores": [
     {
@@ -828,11 +782,11 @@
      "texto": "Comprobamos que la respuesta tiene sentido."
     }
    ],
-   "plantilla": "P03"
+   "plantilla": "P02"
   },
   {
    "dificultad": 2,
-   "enunciado": "La biblioteca del barrio tiene 79 libros. Tiene 14 libros más que la del pueblo. ¿Cuántos libros tiene la del pueblo?",
+   "enunciado": "Una camiseta cuesta 79 €, que son 14 € más que unos pantalones. ¿Cuánto cuestan los pantalones?",
    "respuesta": "65",
    "distractores": [
     {
@@ -874,11 +828,11 @@
      "texto": "Comprobamos que la respuesta tiene sentido."
     }
    ],
-   "plantilla": "P04"
+   "plantilla": "P03"
   },
   {
    "dificultad": 2,
-   "enunciado": "Paula ha recorrido 53 km en bici este mes. Son 23 km más de los que ha recorrido Adam. ¿Cuántos km ha recorrido Adam?",
+   "enunciado": "El colegio de Aitana tiene 53 alumnos. Tiene 23 alumnos más que el de su primo. ¿Cuántos alumnos tiene el de su primo?",
    "respuesta": "30",
    "distractores": [
     {
@@ -920,15 +874,15 @@
      "texto": "Comprobamos que la respuesta tiene sentido."
     }
    ],
-   "plantilla": "P05"
+   "plantilla": "P04"
   },
   {
    "dificultad": 2,
-   "enunciado": "Iker tiene 53 fichas. Tiene 21 fichas más que Naia. ¿Cuántas fichas tiene Naia?",
-   "respuesta": "32",
+   "enunciado": "Lucas ha recorrido 32 km en bici este mes. Son 21 km menos de los que ha recorrido Aisha. ¿Cuántos km ha recorrido Aisha?",
+   "respuesta": "53",
    "distractores": [
     {
-     "valor": "74",
+     "valor": "11",
      "error": "E01"
     },
     {
@@ -936,45 +890,45 @@
      "error": "E02"
     },
     {
-     "valor": "53",
+     "valor": "32",
      "error": "E03"
     }
    ],
-   "expresion_calculo": "53 − 21",
+   "expresion_calculo": "32 + 21",
    "secundarias": [
-    "OPER.RESTA.09"
+    "OPER.SUMA.11"
    ],
-   "explicacion_nino": "Entiende: el primero tiene 53, que son 21 más que el otro. Entonces el otro tiene menos: 53 − 21 = 32. Comprueba: 32 + 21 = 53, y la frase se cumple.",
+   "explicacion_nino": "Entiende: el primero tiene 32, que son 21 menos que el otro. Entonces el otro tiene más: 32 + 21 = 53. Comprueba: 53 − 21 = 32, y la frase se cumple.",
    "explicacion_adulto": "Es el problema aditivo más difícil: la frase «tiene 16 más que Luis» habla de la otra persona, así que para hallar lo de Luis hay que restar (y con «menos que», sumar). Si opera con la palabra clave, pídale que diga quién tiene más y que compruebe su respuesta leyendo de nuevo el enunciado con su número.",
    "explicacion_pasos": [
     {
      "paso": 1,
      "operacion": "datos",
-     "resultado": "53 y 21 más",
+     "resultado": "32 y 21 menos",
      "texto": "Buscamos los datos que nos da el problema."
     },
     {
      "paso": 2,
-     "operacion": "53 − 21",
-     "resultado": "32",
+     "operacion": "32 + 21",
+     "resultado": "53",
      "texto": "Hacemos la operación."
     },
     {
      "paso": 3,
      "operacion": "comprobar",
-     "resultado": "32 + 21 = 53",
+     "resultado": "53 − 21 = 32",
      "texto": "Comprobamos que la respuesta tiene sentido."
     }
    ],
-   "plantilla": "P01"
+   "plantilla": "P05"
   },
   {
    "dificultad": 2,
-   "enunciado": "Fátima tiene 25 canicas, que son 11 menos que Lola. ¿Cuántas canicas tiene Lola?",
-   "respuesta": "36",
+   "enunciado": "Fátima tiene 36 canicas. Tiene 11 canicas más que Lola. ¿Cuántas canicas tiene Lola?",
+   "respuesta": "25",
    "distractores": [
     {
-     "valor": "14",
+     "valor": "47",
      "error": "E01"
     },
     {
@@ -982,45 +936,45 @@
      "error": "E02"
     },
     {
-     "valor": "25",
+     "valor": "36",
      "error": "E03"
     }
    ],
-   "expresion_calculo": "25 + 11",
+   "expresion_calculo": "36 − 11",
    "secundarias": [
-    "OPER.SUMA.11"
+    "OPER.RESTA.09"
    ],
-   "explicacion_nino": "Entiende: el primero tiene 25, que son 11 menos que el otro. Entonces el otro tiene más: 25 + 11 = 36. Comprueba: 36 − 11 = 25, y la frase se cumple.",
+   "explicacion_nino": "Entiende: el primero tiene 36, que son 11 más que el otro. Entonces el otro tiene menos: 36 − 11 = 25. Comprueba: 25 + 11 = 36, y la frase se cumple.",
    "explicacion_adulto": "Es el problema aditivo más difícil: la frase «tiene 16 más que Luis» habla de la otra persona, así que para hallar lo de Luis hay que restar (y con «menos que», sumar). Si opera con la palabra clave, pídale que diga quién tiene más y que compruebe su respuesta leyendo de nuevo el enunciado con su número.",
    "explicacion_pasos": [
     {
      "paso": 1,
      "operacion": "datos",
-     "resultado": "25 y 11 menos",
+     "resultado": "36 y 11 más",
      "texto": "Buscamos los datos que nos da el problema."
     },
     {
      "paso": 2,
-     "operacion": "25 + 11",
-     "resultado": "36",
+     "operacion": "36 − 11",
+     "resultado": "25",
      "texto": "Hacemos la operación."
     },
     {
      "paso": 3,
      "operacion": "comprobar",
-     "resultado": "36 − 11 = 25",
+     "resultado": "25 + 11 = 36",
      "texto": "Comprobamos que la respuesta tiene sentido."
     }
    ],
-   "plantilla": "P02"
+   "plantilla": "P01"
   },
   {
    "dificultad": 2,
-   "enunciado": "Una camiseta cuesta 48 €, que son 14 € más que unos pantalones. ¿Cuánto cuestan unos pantalones?",
-   "respuesta": "34",
+   "enunciado": "Adam tiene 34 cuentos, que son 14 menos que Daniela. ¿Cuántos cuentos tiene Daniela?",
+   "respuesta": "48",
    "distractores": [
     {
-     "valor": "62",
+     "valor": "20",
      "error": "E01"
     },
     {
@@ -1028,33 +982,79 @@
      "error": "E02"
     },
     {
-     "valor": "48",
+     "valor": "34",
      "error": "E03"
     }
    ],
-   "expresion_calculo": "48 − 14",
+   "expresion_calculo": "34 + 14",
    "secundarias": [
-    "OPER.RESTA.09"
+    "OPER.SUMA.11"
    ],
-   "explicacion_nino": "Entiende: el primero tiene 48, que son 14 más que el otro. Entonces el otro tiene menos: 48 − 14 = 34. Comprueba: 34 + 14 = 48, y la frase se cumple.",
+   "explicacion_nino": "Entiende: el primero tiene 34, que son 14 menos que el otro. Entonces el otro tiene más: 34 + 14 = 48. Comprueba: 48 − 14 = 34, y la frase se cumple.",
    "explicacion_adulto": "Es el problema aditivo más difícil: la frase «tiene 16 más que Luis» habla de la otra persona, así que para hallar lo de Luis hay que restar (y con «menos que», sumar). Si opera con la palabra clave, pídale que diga quién tiene más y que compruebe su respuesta leyendo de nuevo el enunciado con su número.",
    "explicacion_pasos": [
     {
      "paso": 1,
      "operacion": "datos",
-     "resultado": "48 y 14 más",
+     "resultado": "34 y 14 menos",
      "texto": "Buscamos los datos que nos da el problema."
     },
     {
      "paso": 2,
-     "operacion": "48 − 14",
-     "resultado": "34",
+     "operacion": "34 + 14",
+     "resultado": "48",
      "texto": "Hacemos la operación."
     },
     {
      "paso": 3,
      "operacion": "comprobar",
-     "resultado": "34 + 14 = 48",
+     "resultado": "48 − 14 = 34",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un libro cuesta 64 €, que son 21 € menos que un juego de mesa. ¿Cuánto cuesta el juego de mesa?",
+   "respuesta": "85",
+   "distractores": [
+    {
+     "valor": "43",
+     "error": "E01"
+    },
+    {
+     "valor": "21",
+     "error": "E02"
+    },
+    {
+     "valor": "64",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "64 + 21",
+   "secundarias": [
+    "OPER.SUMA.11"
+   ],
+   "explicacion_nino": "Entiende: el primero tiene 64, que son 21 menos que el otro. Entonces el otro tiene más: 64 + 21 = 85. Comprueba: 85 − 21 = 64, y la frase se cumple.",
+   "explicacion_adulto": "Es el problema aditivo más difícil: la frase «tiene 16 más que Luis» habla de la otra persona, así que para hallar lo de Luis hay que restar (y con «menos que», sumar). Si opera con la palabra clave, pídale que diga quién tiene más y que compruebe su respuesta leyendo de nuevo el enunciado con su número.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "64 y 21 menos",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "64 + 21",
+     "resultado": "85",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "85 − 21 = 64",
      "texto": "Comprobamos que la respuesta tiene sentido."
     }
    ],
@@ -1062,149 +1062,11 @@
   },
   {
    "dificultad": 2,
-   "enunciado": "La biblioteca del barrio tiene 44 libros. Tiene 22 libros más que la del pueblo. ¿Cuántos libros tiene la del pueblo?",
-   "respuesta": "22",
+   "enunciado": "La biblioteca del barrio tiene 47 libros. Tiene 15 libros más que la del pueblo. ¿Cuántos libros tiene la del pueblo?",
+   "respuesta": "32",
    "distractores": [
     {
-     "valor": "66",
-     "error": "E01"
-    },
-    {
-     "valor": "44",
-     "error": "E03"
-    },
-    {
-     "valor": "23",
-     "error": null
-    }
-   ],
-   "expresion_calculo": "44 − 22",
-   "secundarias": [
-    "OPER.RESTA.09"
-   ],
-   "explicacion_nino": "Entiende: el primero tiene 44, que son 22 más que el otro. Entonces el otro tiene menos: 44 − 22 = 22. Comprueba: 22 + 22 = 44, y la frase se cumple.",
-   "explicacion_adulto": "Es el problema aditivo más difícil: la frase «tiene 16 más que Luis» habla de la otra persona, así que para hallar lo de Luis hay que restar (y con «menos que», sumar). Si opera con la palabra clave, pídale que diga quién tiene más y que compruebe su respuesta leyendo de nuevo el enunciado con su número.",
-   "explicacion_pasos": [
-    {
-     "paso": 1,
-     "operacion": "datos",
-     "resultado": "44 y 22 más",
-     "texto": "Buscamos los datos que nos da el problema."
-    },
-    {
-     "paso": 2,
-     "operacion": "44 − 22",
-     "resultado": "22",
-     "texto": "Hacemos la operación."
-    },
-    {
-     "paso": 3,
-     "operacion": "comprobar",
-     "resultado": "22 + 22 = 44",
-     "texto": "Comprobamos que la respuesta tiene sentido."
-    }
-   ],
-   "plantilla": "P04"
-  },
-  {
-   "dificultad": 3,
-   "enunciado": "Thiago ha recorrido 103 km en bici este mes. Son 58 km menos de los que ha recorrido Pol. ¿Cuántos km ha recorrido Pol?",
-   "respuesta": "161",
-   "distractores": [
-    {
-     "valor": "45",
-     "error": "E01"
-    },
-    {
-     "valor": "58",
-     "error": "E02"
-    },
-    {
-     "valor": "103",
-     "error": "E03"
-    }
-   ],
-   "expresion_calculo": "103 + 58",
-   "secundarias": [
-    "OPER.SUMA.11"
-   ],
-   "explicacion_nino": "Entiende: el primero tiene 103, que son 58 menos que el otro. Entonces el otro tiene más: 103 + 58 = 161. Comprueba: 161 − 58 = 103, y la frase se cumple.",
-   "explicacion_adulto": "Es el problema aditivo más difícil: la frase «tiene 16 más que Luis» habla de la otra persona, así que para hallar lo de Luis hay que restar (y con «menos que», sumar). Si opera con la palabra clave, pídale que diga quién tiene más y que compruebe su respuesta leyendo de nuevo el enunciado con su número.",
-   "explicacion_pasos": [
-    {
-     "paso": 1,
-     "operacion": "datos",
-     "resultado": "103 y 58 menos",
-     "texto": "Buscamos los datos que nos da el problema."
-    },
-    {
-     "paso": 2,
-     "operacion": "103 + 58",
-     "resultado": "161",
-     "texto": "Hacemos la operación."
-    },
-    {
-     "paso": 3,
-     "operacion": "comprobar",
-     "resultado": "161 − 58 = 103",
-     "texto": "Comprobamos que la respuesta tiene sentido."
-    }
-   ],
-   "plantilla": "P05"
-  },
-  {
-   "dificultad": 3,
-   "enunciado": "Sara tiene 80 postales. Tiene 24 postales más que Paula. ¿Cuántas postales tiene Paula?",
-   "respuesta": "56",
-   "distractores": [
-    {
-     "valor": "104",
-     "error": "E01"
-    },
-    {
-     "valor": "24",
-     "error": "E02"
-    },
-    {
-     "valor": "80",
-     "error": "E03"
-    }
-   ],
-   "expresion_calculo": "80 − 24",
-   "secundarias": [
-    "OPER.RESTA.09"
-   ],
-   "explicacion_nino": "Entiende: el primero tiene 80, que son 24 más que el otro. Entonces el otro tiene menos: 80 − 24 = 56. Comprueba: 56 + 24 = 80, y la frase se cumple.",
-   "explicacion_adulto": "Es el problema aditivo más difícil: la frase «tiene 16 más que Luis» habla de la otra persona, así que para hallar lo de Luis hay que restar (y con «menos que», sumar). Si opera con la palabra clave, pídale que diga quién tiene más y que compruebe su respuesta leyendo de nuevo el enunciado con su número.",
-   "explicacion_pasos": [
-    {
-     "paso": 1,
-     "operacion": "datos",
-     "resultado": "80 y 24 más",
-     "texto": "Buscamos los datos que nos da el problema."
-    },
-    {
-     "paso": 2,
-     "operacion": "80 − 24",
-     "resultado": "56",
-     "texto": "Hacemos la operación."
-    },
-    {
-     "paso": 3,
-     "operacion": "comprobar",
-     "resultado": "56 + 24 = 80",
-     "texto": "Comprobamos que la respuesta tiene sentido."
-    }
-   ],
-   "plantilla": "P01"
-  },
-  {
-   "dificultad": 3,
-   "enunciado": "Candela tiene 95 pegatinas, que son 15 menos que Vega. ¿Cuántas pegatinas tiene Vega?",
-   "respuesta": "110",
-   "distractores": [
-    {
-     "valor": "80",
+     "valor": "62",
      "error": "E01"
     },
     {
@@ -1212,125 +1074,33 @@
      "error": "E02"
     },
     {
-     "valor": "95",
+     "valor": "47",
      "error": "E03"
     }
    ],
-   "expresion_calculo": "95 + 15",
-   "secundarias": [
-    "OPER.SUMA.11"
-   ],
-   "explicacion_nino": "Entiende: el primero tiene 95, que son 15 menos que el otro. Entonces el otro tiene más: 95 + 15 = 110. Comprueba: 110 − 15 = 95, y la frase se cumple.",
-   "explicacion_adulto": "Es el problema aditivo más difícil: la frase «tiene 16 más que Luis» habla de la otra persona, así que para hallar lo de Luis hay que restar (y con «menos que», sumar). Si opera con la palabra clave, pídale que diga quién tiene más y que compruebe su respuesta leyendo de nuevo el enunciado con su número.",
-   "explicacion_pasos": [
-    {
-     "paso": 1,
-     "operacion": "datos",
-     "resultado": "95 y 15 menos",
-     "texto": "Buscamos los datos que nos da el problema."
-    },
-    {
-     "paso": 2,
-     "operacion": "95 + 15",
-     "resultado": "110",
-     "texto": "Hacemos la operación."
-    },
-    {
-     "paso": 3,
-     "operacion": "comprobar",
-     "resultado": "110 − 15 = 95",
-     "texto": "Comprobamos que la respuesta tiene sentido."
-    }
-   ],
-   "plantilla": "P02"
-  },
-  {
-   "dificultad": 3,
-   "enunciado": "Una mochila cuesta 93 €, que son 55 € más que un abrigo. ¿Cuánto cuesta un abrigo?",
-   "respuesta": "38",
-   "distractores": [
-    {
-     "valor": "148",
-     "error": "E01"
-    },
-    {
-     "valor": "55",
-     "error": "E02"
-    },
-    {
-     "valor": "93",
-     "error": "E03"
-    }
-   ],
-   "expresion_calculo": "93 − 55",
+   "expresion_calculo": "47 − 15",
    "secundarias": [
     "OPER.RESTA.09"
    ],
-   "explicacion_nino": "Entiende: el primero tiene 93, que son 55 más que el otro. Entonces el otro tiene menos: 93 − 55 = 38. Comprueba: 38 + 55 = 93, y la frase se cumple.",
+   "explicacion_nino": "Entiende: el primero tiene 47, que son 15 más que el otro. Entonces el otro tiene menos: 47 − 15 = 32. Comprueba: 32 + 15 = 47, y la frase se cumple.",
    "explicacion_adulto": "Es el problema aditivo más difícil: la frase «tiene 16 más que Luis» habla de la otra persona, así que para hallar lo de Luis hay que restar (y con «menos que», sumar). Si opera con la palabra clave, pídale que diga quién tiene más y que compruebe su respuesta leyendo de nuevo el enunciado con su número.",
    "explicacion_pasos": [
     {
      "paso": 1,
      "operacion": "datos",
-     "resultado": "93 y 55 más",
+     "resultado": "47 y 15 más",
      "texto": "Buscamos los datos que nos da el problema."
     },
     {
      "paso": 2,
-     "operacion": "93 − 55",
-     "resultado": "38",
+     "operacion": "47 − 15",
+     "resultado": "32",
      "texto": "Hacemos la operación."
     },
     {
      "paso": 3,
      "operacion": "comprobar",
-     "resultado": "38 + 55 = 93",
-     "texto": "Comprobamos que la respuesta tiene sentido."
-    }
-   ],
-   "plantilla": "P03"
-  },
-  {
-   "dificultad": 3,
-   "enunciado": "El colegio de Aitana tiene 143 alumnos. Tiene 48 alumnos más que el de su primo. ¿Cuántos alumnos tiene el de su primo?",
-   "respuesta": "95",
-   "distractores": [
-    {
-     "valor": "191",
-     "error": "E01"
-    },
-    {
-     "valor": "48",
-     "error": "E02"
-    },
-    {
-     "valor": "143",
-     "error": "E03"
-    }
-   ],
-   "expresion_calculo": "143 − 48",
-   "secundarias": [
-    "OPER.RESTA.09"
-   ],
-   "explicacion_nino": "Entiende: el primero tiene 143, que son 48 más que el otro. Entonces el otro tiene menos: 143 − 48 = 95. Comprueba: 95 + 48 = 143, y la frase se cumple.",
-   "explicacion_adulto": "Es el problema aditivo más difícil: la frase «tiene 16 más que Luis» habla de la otra persona, así que para hallar lo de Luis hay que restar (y con «menos que», sumar). Si opera con la palabra clave, pídale que diga quién tiene más y que compruebe su respuesta leyendo de nuevo el enunciado con su número.",
-   "explicacion_pasos": [
-    {
-     "paso": 1,
-     "operacion": "datos",
-     "resultado": "143 y 48 más",
-     "texto": "Buscamos los datos que nos da el problema."
-    },
-    {
-     "paso": 2,
-     "operacion": "143 − 48",
-     "resultado": "95",
-     "texto": "Hacemos la operación."
-    },
-    {
-     "paso": 3,
-     "operacion": "comprobar",
-     "resultado": "95 + 48 = 143",
+     "resultado": "32 + 15 = 47",
      "texto": "Comprobamos que la respuesta tiene sentido."
     }
    ],
@@ -1338,45 +1108,45 @@
   },
   {
    "dificultad": 3,
-   "enunciado": "Mario ha recorrido 172 km en bici este mes. Son 44 km más de los que ha recorrido Bruno. ¿Cuántos km ha recorrido Bruno?",
-   "respuesta": "128",
+   "enunciado": "Izan ha recorrido 66 km en bici este mes. Son 17 km menos de los que ha recorrido Marcos. ¿Cuántos km ha recorrido Marcos?",
+   "respuesta": "83",
    "distractores": [
     {
-     "valor": "216",
+     "valor": "49",
      "error": "E01"
     },
     {
-     "valor": "44",
+     "valor": "17",
      "error": "E02"
     },
     {
-     "valor": "172",
+     "valor": "66",
      "error": "E03"
     }
    ],
-   "expresion_calculo": "172 − 44",
+   "expresion_calculo": "66 + 17",
    "secundarias": [
-    "OPER.RESTA.09"
+    "OPER.SUMA.11"
    ],
-   "explicacion_nino": "Entiende: el primero tiene 172, que son 44 más que el otro. Entonces el otro tiene menos: 172 − 44 = 128. Comprueba: 128 + 44 = 172, y la frase se cumple.",
+   "explicacion_nino": "Entiende: el primero tiene 66, que son 17 menos que el otro. Entonces el otro tiene más: 66 + 17 = 83. Comprueba: 83 − 17 = 66, y la frase se cumple.",
    "explicacion_adulto": "Es el problema aditivo más difícil: la frase «tiene 16 más que Luis» habla de la otra persona, así que para hallar lo de Luis hay que restar (y con «menos que», sumar). Si opera con la palabra clave, pídale que diga quién tiene más y que compruebe su respuesta leyendo de nuevo el enunciado con su número.",
    "explicacion_pasos": [
     {
      "paso": 1,
      "operacion": "datos",
-     "resultado": "172 y 44 más",
+     "resultado": "66 y 17 menos",
      "texto": "Buscamos los datos que nos da el problema."
     },
     {
      "paso": 2,
-     "operacion": "172 − 44",
-     "resultado": "128",
+     "operacion": "66 + 17",
+     "resultado": "83",
      "texto": "Hacemos la operación."
     },
     {
      "paso": 3,
      "operacion": "comprobar",
-     "resultado": "128 + 44 = 172",
+     "resultado": "83 − 17 = 66",
      "texto": "Comprobamos que la respuesta tiene sentido."
     }
    ],
@@ -1384,7 +1154,191 @@
   },
   {
    "dificultad": 3,
-   "enunciado": "Martina tiene 110 canicas. Tiene 28 canicas más que Emma. ¿Cuántas canicas tiene Emma?",
+   "enunciado": "Candela tiene 110 pegatinas. Tiene 15 pegatinas más que Vega. ¿Cuántas pegatinas tiene Vega?",
+   "respuesta": "95",
+   "distractores": [
+    {
+     "valor": "125",
+     "error": "E01"
+    },
+    {
+     "valor": "15",
+     "error": "E02"
+    },
+    {
+     "valor": "110",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "110 − 15",
+   "secundarias": [
+    "OPER.RESTA.09"
+   ],
+   "explicacion_nino": "Entiende: el primero tiene 110, que son 15 más que el otro. Entonces el otro tiene menos: 110 − 15 = 95. Comprueba: 95 + 15 = 110, y la frase se cumple.",
+   "explicacion_adulto": "Es el problema aditivo más difícil: la frase «tiene 16 más que Luis» habla de la otra persona, así que para hallar lo de Luis hay que restar (y con «menos que», sumar). Si opera con la palabra clave, pídale que diga quién tiene más y que compruebe su respuesta leyendo de nuevo el enunciado con su número.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "110 y 15 más",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "110 − 15",
+     "resultado": "95",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "95 + 15 = 110",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Rubén tiene 38 canicas, que son 55 menos que Adrián. ¿Cuántas canicas tiene Adrián?",
+   "respuesta": "93",
+   "distractores": [
+    {
+     "valor": "55",
+     "error": "E02"
+    },
+    {
+     "valor": "38",
+     "error": "E03"
+    },
+    {
+     "valor": "94",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "38 + 55",
+   "secundarias": [
+    "OPER.SUMA.11"
+   ],
+   "explicacion_nino": "Entiende: el primero tiene 38, que son 55 menos que el otro. Entonces el otro tiene más: 38 + 55 = 93. Comprueba: 93 − 55 = 38, y la frase se cumple.",
+   "explicacion_adulto": "Es el problema aditivo más difícil: la frase «tiene 16 más que Luis» habla de la otra persona, así que para hallar lo de Luis hay que restar (y con «menos que», sumar). Si opera con la palabra clave, pídale que diga quién tiene más y que compruebe su respuesta leyendo de nuevo el enunciado con su número.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "38 y 55 menos",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "38 + 55",
+     "resultado": "93",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "93 − 55 = 38",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Una camiseta cuesta 54 €, que son 46 € menos que unos pantalones. ¿Cuánto cuestan los pantalones?",
+   "respuesta": "100",
+   "distractores": [
+    {
+     "valor": "8",
+     "error": "E01"
+    },
+    {
+     "valor": "46",
+     "error": "E02"
+    },
+    {
+     "valor": "54",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "54 + 46",
+   "secundarias": [
+    "OPER.SUMA.11"
+   ],
+   "explicacion_nino": "Entiende: el primero tiene 54, que son 46 menos que el otro. Entonces el otro tiene más: 54 + 46 = 100. Comprueba: 100 − 46 = 54, y la frase se cumple.",
+   "explicacion_adulto": "Es el problema aditivo más difícil: la frase «tiene 16 más que Luis» habla de la otra persona, así que para hallar lo de Luis hay que restar (y con «menos que», sumar). Si opera con la palabra clave, pídale que diga quién tiene más y que compruebe su respuesta leyendo de nuevo el enunciado con su número.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "54 y 46 menos",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "54 + 46",
+     "resultado": "100",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "100 − 46 = 54",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "El colegio de Aitana tiene 47 alumnos. Tiene 25 alumnos menos que el de su primo. ¿Cuántos alumnos tiene el de su primo?",
+   "respuesta": "72",
+   "distractores": [
+    {
+     "valor": "22",
+     "error": "E01"
+    },
+    {
+     "valor": "25",
+     "error": "E02"
+    },
+    {
+     "valor": "47",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "47 + 25",
+   "secundarias": [
+    "OPER.SUMA.11"
+   ],
+   "explicacion_nino": "Entiende: el primero tiene 47, que son 25 menos que el otro. Entonces el otro tiene más: 47 + 25 = 72. Comprueba: 72 − 25 = 47, y la frase se cumple.",
+   "explicacion_adulto": "Es el problema aditivo más difícil: la frase «tiene 16 más que Luis» habla de la otra persona, así que para hallar lo de Luis hay que restar (y con «menos que», sumar). Si opera con la palabra clave, pídale que diga quién tiene más y que compruebe su respuesta leyendo de nuevo el enunciado con su número.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "47 y 25 menos",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "47 + 25",
+     "resultado": "72",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "72 − 25 = 47",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Mía ha recorrido 110 km en bici este mes. Son 28 km más de los que ha recorrido Sofía. ¿Cuántos km ha recorrido Sofía?",
    "respuesta": "82",
    "distractores": [
     {
@@ -1426,19 +1380,65 @@
      "texto": "Comprobamos que la respuesta tiene sentido."
     }
    ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Daniela tiene 172 piedras. Tiene 39 piedras más que Unai. ¿Cuántas piedras tiene Unai?",
+   "respuesta": "133",
+   "distractores": [
+    {
+     "valor": "211",
+     "error": "E01"
+    },
+    {
+     "valor": "39",
+     "error": "E02"
+    },
+    {
+     "valor": "172",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "172 − 39",
+   "secundarias": [
+    "OPER.RESTA.09"
+   ],
+   "explicacion_nino": "Entiende: el primero tiene 172, que son 39 más que el otro. Entonces el otro tiene menos: 172 − 39 = 133. Comprueba: 133 + 39 = 172, y la frase se cumple.",
+   "explicacion_adulto": "Es el problema aditivo más difícil: la frase «tiene 16 más que Luis» habla de la otra persona, así que para hallar lo de Luis hay que restar (y con «menos que», sumar). Si opera con la palabra clave, pídale que diga quién tiene más y que compruebe su respuesta leyendo de nuevo el enunciado con su número.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "172 y 39 más",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "172 − 39",
+     "resultado": "133",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "133 + 39 = 172",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
    "plantilla": "P01"
   },
   {
    "dificultad": 3,
-   "enunciado": "Javier tiene 69 cuentos, que son 19 menos que Mía. ¿Cuántos cuentos tiene Mía?",
-   "respuesta": "88",
+   "enunciado": "Lola tiene 69 caramelos, que son 36 menos que Diego. ¿Cuántos caramelos tiene Diego?",
+   "respuesta": "105",
    "distractores": [
     {
-     "valor": "50",
+     "valor": "33",
      "error": "E01"
     },
     {
-     "valor": "19",
+     "valor": "36",
      "error": "E02"
     },
     {
@@ -1446,29 +1446,29 @@
      "error": "E03"
     }
    ],
-   "expresion_calculo": "69 + 19",
+   "expresion_calculo": "69 + 36",
    "secundarias": [
     "OPER.SUMA.11"
    ],
-   "explicacion_nino": "Entiende: el primero tiene 69, que son 19 menos que el otro. Entonces el otro tiene más: 69 + 19 = 88. Comprueba: 88 − 19 = 69, y la frase se cumple.",
+   "explicacion_nino": "Entiende: el primero tiene 69, que son 36 menos que el otro. Entonces el otro tiene más: 69 + 36 = 105. Comprueba: 105 − 36 = 69, y la frase se cumple.",
    "explicacion_adulto": "Es el problema aditivo más difícil: la frase «tiene 16 más que Luis» habla de la otra persona, así que para hallar lo de Luis hay que restar (y con «menos que», sumar). Si opera con la palabra clave, pídale que diga quién tiene más y que compruebe su respuesta leyendo de nuevo el enunciado con su número.",
    "explicacion_pasos": [
     {
      "paso": 1,
      "operacion": "datos",
-     "resultado": "69 y 19 menos",
+     "resultado": "69 y 36 menos",
      "texto": "Buscamos los datos que nos da el problema."
     },
     {
      "paso": 2,
-     "operacion": "69 + 19",
-     "resultado": "88",
+     "operacion": "69 + 36",
+     "resultado": "105",
      "texto": "Hacemos la operación."
     },
     {
      "paso": 3,
      "operacion": "comprobar",
-     "resultado": "88 − 19 = 69",
+     "resultado": "105 − 36 = 69",
      "texto": "Comprobamos que la respuesta tiene sentido."
     }
    ],
