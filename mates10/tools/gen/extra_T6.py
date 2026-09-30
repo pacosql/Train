@@ -158,7 +158,7 @@ def g_recuento(rng, d, tipo="cuantos"):
         otro = cuentas.index(min(cuentas) if mas else max(cuentas))
         pal = "más" if mas else "menos"
         dis = [(cats[otro][1], None)] + [(c[1], None) for k, c in enumerate(cats) if k not in (j, otro)]
-        return hacer(f"Mira los dibujos:\n{filas}\n¿De qué hay {pal}?", cats[j][1], "recuento_mas", {"cuentas": cuentas},
+        return hacer(f"Mira los dibujos que ha hecho {rng.choice(NOMBRES)}:\n{filas}\n¿De qué hay {pal}?", cats[j][1], "recuento_mas", {"cuentas": cuentas},
                      dis, [("contar", str(cuentas[j]), " ".join(f"{c[1].capitalize()}: {k}." for c, k in zip(cats, cuentas))
                             + f" Hay {pal} {cats[j][1]} ({cuentas[j]}).")],
                      "Contar cada categoría por separado (tachando o con palotes) y comparar los números.",
@@ -168,7 +168,7 @@ def g_recuento(rng, d, tipo="cuantos"):
     if par:
         dis.insert(2, (cuentas[0] + cuentas[1], "confunde_parecidos"))
     cu = "Cuántas" if fem(cats[i][1]) else "Cuántos"
-    return hacer(f"Mira los dibujos:\n{filas}\n¿{cu} {cats[i][1]} ({cats[i][0]}) hay?", fmt(k), "recuento", {"cuentas": cuentas, "i": i}, dis,
+    return hacer(f"Mira los dibujos que ha hecho {rng.choice(NOMBRES)}:\n{filas}\n¿{cu} {cats[i][1]} ({cats[i][0]}) hay?", fmt(k), "recuento", {"cuentas": cuentas, "i": i}, dis,
                  [("contar", fmt(k), f"Busco solo {cats[i][1]} ({cats[i][0]}) y los voy tachando mientras cuento: hay {k}.")],
                  "Contar solo la categoría pedida, tachando cada objeto contado para no repetir ni saltar ninguno.",
                  gen=cerca(k, rng, minimo=1))
@@ -682,9 +682,9 @@ def g_histograma(rng, d, tipo="clase"):
         if len(set(fs)) >= len(fs) - 1:
             break
     k = len(fs)
-    ctx, ud = rng.choice([("tiempo en una carrera", "minutos"), ("peso de unas mochilas", "kg"), ("edad de los socios de un club", "años")])
+    ctx, ud = rng.choice([("el tiempo en una carrera", "minutos"), ("el peso de unas mochilas", "kg"), ("la edad de los socios de un club", "años")])
     graf = "\n".join(f"barra de {lims[i]} a {lims[i + 1]} {ud}: {fs[i]}" for i in range(k))
-    base = f"Histograma del {ctx} (cada barra va desde su extremo izquierdo, incluido, hasta el derecho, sin incluir):\n{graf}\n"
+    base = f"Histograma de {ctx} (cada barra va desde su extremo izquierdo, incluido, hasta el derecho, sin incluir):\n{graf}\n"
     if tipo == "clase":
         i = rng.randrange(1, k)
         x = lims[i]
@@ -722,7 +722,7 @@ def g_poligono(rng, d, tipo="vertice"):
     mc = lambda i: F(lims[i] + lims[i + 1], 2)
     ctx = rng.choice(["Peso (kg)", "Altura (cm)", "Tiempo (min)", "Edad (años)"])
     tabla = "\n".join(f"[{lims[i]}, {lims[i + 1]}): {fs[i]}" for i in range(k))
-    base = f"{ctx} agrupados en clases de igual amplitud, con su frecuencia:\n{tabla}\n"
+    base = f"Datos de {ctx[0].lower() + ctx[1:]} agrupados en clases de igual amplitud, con su frecuencia:\n{tabla}\n"
     p = lambda x, y: f"({dec(x, 1)}, {y})"
     if tipo == "vertice":
         i = rng.randrange(k)
@@ -744,7 +744,7 @@ def g_poligono(rng, d, tipo="vertice"):
             fs[fs.index(max(fs))] += 1
         j = fs.index(max(fs))
         tabla = "\n".join(f"[{lims[i]}, {lims[i + 1]}): {fs[i]}" for i in range(k))
-        base = f"{ctx} agrupados en clases de igual amplitud, con su frecuencia:\n{tabla}\n"
+        base = f"Datos de {ctx[0].lower() + ctx[1:]} agrupados en clases de igual amplitud, con su frecuencia:\n{tabla}\n"
         cl = lambda i: f"[{lims[i]}, {lims[i + 1]})"
         otras = [i for i in range(k) if i != j]
         rng.shuffle(otras)
@@ -1152,9 +1152,10 @@ def g_cuartiles(rng, d, tipo="lista"):
 @gen6("t6_agrupados")
 def g_agrupados(rng, d, tipo="media"):
     """EST.MEDIDAS.09. Claves: extremo_por_marca, modal_central, divide_clases."""
+    ctx = rng.choice([("Alturas (cm)", [5, 10], (13, 16)), ("Pesos (kg)", [4, 5, 10], (4, 6)), ("Tiempos (s)", [2, 4, 10], (1, 6)), ("Edades (años)", [5, 10], (1, 3))])
     for _ in range(300):
-        w = rng.choice([2, 4, 10, 20])
-        a0 = rng.randint(1, 10) * w
+        w = rng.choice(ctx[1])
+        a0 = rng.randint(*ctx[2]) * (10 if ctx[0].startswith("Altura") or ctx[0].startswith("Peso") else w)
         k = 5
         N = rng.choice([20, 25, 40, 50, 80, 100])
         xs, fs = _tabla_frec(rng, N, k, 0)
@@ -1175,10 +1176,9 @@ def g_agrupados(rng, d, tipo="media"):
         break
     else:
         return None
-    ctx = rng.choice(["Alturas (cm)", "Pesos (kg)", "Tiempos (s)", "Edades (años)"])
     cl = lambda i: f"[{lims[i]}, {lims[i + 1]})"
     tabla = "\n".join(f"{cl(i)}: {fs[i]}" for i in range(k))
-    base = f"{ctx} de {N} personas, agrupadas:\n{tabla}\n"
+    base = f"{ctx[0]} de {N} personas, en clases con su frecuencia:\n{tabla}\n"
     if tipo == "media":
         sm = sum(m * f for m, f in zip(ms, fs))
         return hacer(base + "Calcula la media usando las marcas de clase.", dec(media, 2), "media_agrupada", {"lims": lims, "fs": fs},
@@ -1593,8 +1593,9 @@ def g_contrario(rng, d, tipo="describir"):
         den = rng.randint(3, 12)
         num = rng.randint(1, den - 1)
         p = F(num, den)
-        ctx = rng.choice(["llueva mañana", "gane el equipo local", "salga premio en una rifa", "el autobús llegue tarde"])
-        enun = f"La probabilidad de que {ctx} es {ff(p)}. ¿Cuál es la probabilidad de que no {ctx.replace('llueva', 'llueva') }?"
+        ctx = rng.choice([("llueva mañana", "no llueva mañana"), ("gane el equipo local", "no gane el equipo local"), ("salga premio en una rifa", "no salga premio"),
+                          ("el autobús llegue tarde", "el autobús no llegue tarde")])
+        enun = f"La probabilidad de que {ctx[0]} es {ff(p)}. ¿Cuál es la probabilidad de que {ctx[1]}?"
         r = 1 - p
         return hacer(enun, ff(r), "contrario_p", {"p": str(p)}, [(ff(1 / p), "inverso"), (ff(p), None), (ff(F(1, p.denominator)), None)],
                      [("1 − p", ff(r), f"P(no A) = 1 − P(A) = 1 − {ff(p)} = {ff(r)}.")],
@@ -1992,17 +1993,17 @@ def g_vr(rng, d):
         cjto = "los dígitos del 0 al 9" if n == 10 else f"las cifras {lista(range(1, n + 1))}"
         enun = f"¿Cuántas claves de {k} cifras se pueden formar con {cjto}, pudiendo repetir cifras?"
     elif ctx == "letras":
-        n = rng.randint(3, 6)
-        k = rng.randint(3, 5)
-        letras_ = "ABCDEFG"[:n]
+        n = rng.randint(2, 8)
+        k = rng.randint(2, 5)
+        letras_ = "ABCDEFGH"[:n]
         enun = f"¿Cuántos códigos de {k} letras se pueden formar con las letras {lista(letras_)}, si las letras se pueden repetir?"
     elif ctx == "quiniela":
         n = 3
         k = rng.randint(4, 14) if d == 3 else rng.randint(3, 6)
         enun = f"En una quiniela de {k} partidos, cada uno se rellena con 1, X o 2. ¿Cuántas quinielas distintas se pueden rellenar?"
     else:
-        n = rng.randint(2, 5)
-        k = rng.randint(2, 4)
+        n = rng.randint(2, 6)
+        k = rng.randint(2, 5)
         enun = f"Queremos pintar una bandera de {k} franjas con {n} colores disponibles; dos franjas pueden ser del mismo color. ¿Cuántas banderas distintas hay?"
     if n == k:
         k += 1

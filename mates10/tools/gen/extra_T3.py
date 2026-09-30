@@ -116,7 +116,7 @@ def rad(c, k, idx=2):
     r = ("√" if idx == 2 else sup(idx) + "√") + (str(k) if k >= 0 else f"({k})")
     s = "−" if c < 0 else ""
     c = abs(c)
-    num = "" if c.numerator == 1 else str(c.numerator)
+    num = "" if c.numerator == 1 else str(c.numerator) + ("·" if idx > 2 else "")
     t = f"{num}{r}"
     if c.denominator != 1:
         t += f"/{c.denominator}"
@@ -144,6 +144,8 @@ def mk(enun, resp, op, par, dist, pasos, adulto, genericos=None, datos=None):
     ej = Ejercicio(enunciado=enun, respuesta=resp, parametros=p, datos=datos)
     ej.distractores = [(v, k) for v, k in dist if v is not None and v != ""]
     ej.genericos = [g for g in (genericos or []) if g is not None]
+    pasos = [(o, r, t.replace("….", "…").replace("-1·", "−1·").replace("(-", "(−")) for o, r, t in pasos]
+    ej.enunciado = ej.enunciado.replace("….", "…")
     ej.pasos = [{"paso": i + 1, "operacion": o, "resultado": r, "texto": t} for i, (o, r, t) in enumerate(pasos)]
     ej.explicacion_nino = " ".join(t for _, _, t in pasos)
     ej.explicacion_adulto = adulto
@@ -2090,7 +2092,9 @@ def gen_porc_02(rng, d):
     if d == 1:
         f_, p = rng.choice(PORC_NOT[:9])
         pasos = [("a denominador 100", f"{p} %", f"{fr(f_)} = {p}/100 = {p} %.")]
-        return mk(f"¿Qué porcentaje es {fr(f_)} de una cantidad?", f"{p} %", "t3_porc_equiv", {"f": fr(f_), "p": p},
+        enun = rng.choice([f"¿Qué porcentaje es {fr(f_)} de una cantidad?", f"¿A qué porcentaje equivale la fracción {fr(f_)}?",
+                           f"Coger {fr(f_)} de una tarta es coger el … % de la tarta. ¿Qué porcentaje es?"])
+        return mk(enun, f"{p} %", "t3_porc_equiv", {"f": fr(f_), "p": p},
                   [(f"{f_.denominator} %", "E01"), ("1 %" if p == 10 else "50 %" if p == 20 else None, "E02"), (f"{f_.numerator + f_.denominator} %" if f_.numerator > 1 else f"{100 // f_.denominator + 10} %", None),
                    (f"{100 - p} %" if p != 50 else "5 %", None)], pasos,
                   "Porcentajes notables: 50 % = 1/2, 25 % = 1/4, 75 % = 3/4, 10 % = 1/10, 20 % = 1/5, 1 % = 1/100.",
@@ -2223,7 +2227,7 @@ def gen_porc_06(rng, d):
             N *= r.denominator
             r = N * p / 100
         pasos = [(f"{fmt(N)} × {D(p)} : 100", dnum(r), f"{D(p)} % = {D(p)}/100 = {D(p / 100)}. {fmt(N)} × {D(p / 100)} = {dnum(r)}.")]
-        return mk(f"Calcula el {D(p)} % de {fmt(N)}.", dnum(r), "porc", {"p": D(p).replace(",", "."), "N": N},
+        return mk(f"Calcula el {D(p)} % de {fmt(N)}.", dnum(r), "t3_porc_menor1", {"p": D(p), "N": N},
                   [(dnum(r * 10), "E02"), (dnum(r * 100), "E02"), (dnum(r / 10), None)], pasos,
                   "Un porcentaje menor que 1 es menos de una centésima: el 0,5 % es la mitad del 1 %.")
     if rng.random() < 0.5:
@@ -2748,7 +2752,7 @@ def gen_prop_07(rng, d):
         c = rng.randint(2, 15)
         b = rng.randint(2, 30)
         r = F(a * b, c)
-        if c != a and r.denominator == 1:
+        if c != a and r.denominator == 1 and r > 1:
             break
     plant, un = rng.choice(CTX_INV)
     e01 = F(b * c, a)
@@ -2854,8 +2858,8 @@ def gen_prop_10(rng, d):
     enun = plant.format(m1=m1, h1=h1, p1=p1, m2=m2, h2=h2)
     if rel == ("d", "d"):
         pasos = [("relaciones", "directa, directa", f"Más {'máquinas/grifos/personas'.split('/')[0] if 'máquinas' in plant else 'grifos' if 'grifos' in plant else 'personas'} → más {un}; más tiempo → más {un}: las dos directas."),
-                 ("reducción a la unidad", dnum(F(p1, m1 * h1)), f"1 en 1: {p1} : ({m1} · {h1}) = {dnum(F(p1, m1 * h1)) if es_dec(F(p1, m1 * h1), 4) else fr(F(p1, m1 * h1))}."),
-                 ("multiplicar", f"{fmt(int(x))} {un}", f"Para {m2} y {h2}: × {m2} × {h2} = {fmt(int(x))} {un}.")]
+                 ("reducción a la unidad", dnum(F(p1, m1 * h1)), f"Reduzco a la unidad (1 y 1 unidad de tiempo): {p1} : ({m1} · {h1}) = {dnum(F(p1, m1 * h1)) if es_dec(F(p1, m1 * h1), 4) else fr(F(p1, m1 * h1))}."),
+                 ("multiplicar", f"{fmt(int(x))} {un}", f"Para {m2} y {h2}: multiplico por {m2} y por {h2} → {fmt(int(x))} {un}.")]
     else:
         pasos = [("relaciones", "inversa, inversa", "Más obreros → menos días; más horas al día → menos días: las dos inversas."),
                  ("días totales de 1 obrero a 1 h", str(p1 * m1 * h1), f"{m1} · {h1} · {p1} = {p1 * m1 * h1} (horas de trabajo en total)."),
@@ -2865,3 +2869,1222 @@ def gen_prop_10(rng, d):
               [(f_(todas_dir) if todas_dir != x else None, "E01"), (f_(suma), "E02"), (f_(inv_una) if inv_una != x else None, "E03")], pasos,
               "Regla de tres compuesta: se analiza cada magnitud con la incógnita por separado (directa o inversa) y se combinan por reducción a la unidad.",
               genericos=[f_(x + 1), f_(x * 2)])
+
+
+# ---------------------------------------------------------------- NÚMEROS REALES
+
+def sci(m, e):
+    return f"{D(m)} · 10{sup(e)}"
+
+
+def mantisa(rng, cifras):
+    while True:
+        m = F(rng.randint(10 ** (cifras - 1), 10 ** cifras - 1), 10 ** (cifras - 1))
+        if cifras == 1 or m.numerator % 10:
+            return m
+
+
+@generador("t3_real_01")
+def gen_real_01(rng, d):
+    m = mantisa(rng, rng.randint(1, 3 if d < 3 else 4))
+    if d == 1:
+        e = rng.randint(3, 12)
+    elif d == 2:
+        e = -rng.randint(2, 9)
+    else:
+        e = rng.choice([rng.randint(4, 14), -rng.randint(3, 12)])
+    x = m * F(10) ** e
+    if d < 3:
+        resp = sci(m, e)
+        if e > 0:
+            dist = [(sci(m, e - 1), "E02"), (sci(m * 10, e - 1), "E03"), (sci(m, -e), "E01")]
+            txt = f"Muevo la coma {e} lugares a la izquierda para dejar una sola cifra no nula delante: {D(x)} = {resp}."
+        else:
+            dist = [(sci(m, -e), "E01"), (sci(m, e + 1), "E04"), (sci(m * 10, e - 1), "E03")]
+            txt = f"Muevo la coma {-e} lugares a la derecha hasta la primera cifra no nula; el exponente es negativo: {D(x)} = {resp}."
+        pasos = [("mantisa entre 1 y 10", D(m), f"La mantisa debe cumplir 1 ≤ a < 10: {D(m)}."), ("exponente", str(e), txt)]
+        return mk(f"Escribe en notación científica: {D(x)}", resp, "t3_notacion_cientifica", {"x": D(x)}, dist, pasos,
+                  "a · 10ⁿ con 1 ≤ a < 10. El exponente cuenta los lugares que se mueve la coma (positivo si el número es grande, negativo si es menor que 1).",
+                  genericos=[sci(m, e + 2), sci(m / 10, e + 1)])
+    resp = D(x)
+    pasos = [("mover la coma", resp, f"10{sup(e)}: muevo la coma {abs(e)} lugares a la {'derecha' if e > 0 else 'izquierda'}: {resp}.")]
+    return mk(f"Escribe en notación decimal: {sci(m, e)}", resp, "t3_notacion_cientifica", {"m": D(m), "e": e},
+              [(D(m * F(10) ** (-e)), "E01"), (D(x * 10), "E02"), (D(x / 10), "E02")], pasos,
+              "Exponente positivo: la coma va a la derecha (número grande); negativo: a la izquierda (número pequeño).")
+
+
+def normaliza(m, e):
+    m = F(m)
+    while m >= 10:
+        m /= 10
+        e += 1
+    while m < 1:
+        m *= 10
+        e -= 1
+    return m, e
+
+
+@generador("t3_real_02")
+def gen_real_02(rng, d):
+    for _ in range(100):
+        a, b = mantisa(rng, rng.randint(1, 2)), mantisa(rng, 1 if d < 3 else rng.randint(1, 2))
+        m, n = rng.randint(-9, 12), rng.randint(-9, 12)
+        if d == 1:
+            m, n = rng.randint(2, 9), rng.randint(2, 9)
+        op = "·" if d == 1 or rng.random() < 0.5 else ":"
+        if op == ":":
+            q = a / b
+            if not es_dec(q, 3):
+                continue
+            rm, re_ = normaliza(q, m - n)
+            e01 = sci(q, m // n if n and m % n == 0 else m * n) if False else None
+            e02 = sci(q, m - n) if q != rm else None
+            e03 = sci(rm, re_ + 2 * n)
+            e01 = None
+        else:
+            pr = a * b
+            if d >= 2 and pr < 10:
+                continue
+            rm, re_ = normaliza(pr, m + n)
+            e01 = sci(rm, re_ - (m + n) + m * n)
+            e02 = sci(pr, m + n) if pr != rm else None
+            e03 = None
+        if ndec(rm) <= 4 and m != n:
+            break
+    else:
+        return None
+    resp = sci(rm, re_)
+    t = f"({sci(a, m)}) {op} ({sci(b, n)})"
+    pasos = [("mantisas", D(a * b if op == '·' else a / b), f"Opero las mantisas: {D(a)} {op} {D(b)} = {D(a * b if op == '·' else a / b)}."),
+             ("exponentes", f"10{sup(m + n if op == '·' else m - n)}", f"{'Sumo' if op == '·' else 'Resto'} los exponentes: {m} {'+' if op == '·' else '−'} ({n}) = {m + n if op == '·' else m - n}."),
+             ("ajustar", resp, f"Ajusto para que la mantisa esté entre 1 y 10: {resp}.")]
+    return mk(f"Calcula y expresa en notación científica: {t}", resp, "t3_nc_multdiv", {"a": D(a), "m": m, "b": D(b), "n": n, "op": op},
+              [(e01, "E01"), (e02, "E02"), (e03, "E03"), (sci(rm, re_ + 1), None), (sci(rm, re_ - 1), None)], pasos,
+              "Producto: mantisas por mantisas y se SUMAN exponentes; cociente: se dividen y se RESTAN. Después se ajusta la mantisa.")
+
+
+@generador("t3_real_03")
+def gen_real_03(rng, d):
+    for _ in range(100):
+        a, b = mantisa(rng, rng.randint(1, 2)), mantisa(rng, rng.randint(1, 2))
+        m = rng.randint(2, 9) if d < 3 else rng.randint(-8, 9)
+        k = rng.randint(1, 2 if d == 1 else 3)
+        n = m - k
+        op = "+" if d == 1 or rng.random() < 0.5 else "−"
+        v = a * F(10) ** m + (b if op == "+" else -b) * F(10) ** n
+        if v <= 0:
+            continue
+        rm, re_ = normaliza(v / F(10) ** m, m)
+        if ndec(rm) <= 5:
+            break
+    resp = sci(rm, re_)
+    sg = 1 if op == "+" else -1
+    e01 = normaliza(a + sg * b, m + n) if a + sg * b > 0 else None
+    e02 = normaliza(a + sg * b, m) if a + sg * b > 0 else None
+    e03 = normaliza(a + sg * b * F(10) ** k, m) if a + sg * b * F(10) ** k > 0 else None
+    bb = b / F(10) ** k
+    pasos = [("igualar exponentes", f"{D(bb)} · 10{sup(m)}", f"Escribo {sci(b, n)} con exponente {m}: {sci(bb, m)}."),
+             ("operar mantisas", D(a + sg * bb), f"{D(a)} {op} {D(bb)} = {D(a + sg * bb)}; resultado {sci(a + sg * bb, m)}."),
+             ("ajustar", resp, f"En notación científica: {resp}.")]
+    return mk(f"Calcula y expresa en notación científica: {sci(a, m)} {op} {sci(b, n)}", resp, "t3_nc_suma", {"a": D(a), "m": m, "b": D(b), "n": n, "op": op},
+              [(sci(*e01) if e01 else None, "E01"), (sci(*e02) if e02 and sci(*e02) != resp else None, "E02"), (sci(*e03) if e03 and sci(*e03) != resp else None, "E03"),
+               (sci(rm, re_ + 1), None)], pasos,
+              "Para sumar o restar hay que igualar primero los exponentes (o pasar a decimal); no se suman exponentes.")
+
+
+IRR = [("π", "3,14159265…", F(314159265, 10 ** 8)), ("√2", "1,41421356…", F(141421356, 10 ** 8)), ("√3", "1,73205080…", F(173205080, 10 ** 8)),
+       ("e", "2,71828182…", F(271828182, 10 ** 8)), ("√5", "2,23606797…", F(223606797, 10 ** 8)), ("√7", "2,64575131…", F(264575131, 10 ** 8)),
+       ("φ", "1,61803398…", F(161803398, 10 ** 8))]
+
+
+@generador("t3_real_04")
+def gen_real_04(rng, d):
+    if d == 1:
+        o = rng.randint(1, 2)
+        x = F(rng.randint(10 ** (o + 1), 10 ** (o + 3) - 1), 10 ** (o + 2))
+        if ndec(x) <= o:
+            return None
+        txt = D(x)
+    elif d == 2:
+        nom, txt, x = rng.choice(IRR)
+        o = rng.randint(1, 3)
+    else:
+        # redondeo encadenado: cifra siguiente 4 seguida de 5-9
+        o = rng.randint(1, 3)
+        base = rng.randint(1, 99) * 10 ** o + rng.randint(0, 10 ** o - 1)
+        x = F(base * 100 + 40 + rng.randint(5, 9), 10 ** (o + 2))
+        txt = D(x)
+    metodo = rng.choice(["truncamiento", "redondeo", "exceso", "defecto"] if d > 1 else ["truncamiento", "redondeo"])
+    tr, rd = truncar(x, o), redondear(x, o)
+    ex = tr + F(1, 10 ** o) if tr != x else tr
+    val = {"truncamiento": tr, "redondeo": rd, "exceso": ex, "defecto": tr}[metodo]
+    frase = {"truncamiento": "por truncamiento", "redondeo": "por redondeo", "exceso": "por exceso", "defecto": "por defecto"}[metodo]
+    resp = D(val, o)
+    dist = []
+    if metodo == "truncamiento" and rd != tr:
+        dist.append((D(rd, o), "E01"))
+    if metodo == "redondeo" and rd != tr:
+        dist.append((D(tr, o), "E01"))
+    if metodo == "exceso":
+        dist.append((D(tr, o), "E03"))
+    if metodo == "defecto":
+        dist.append((D(ex, o), "E03"))
+    if d == 3 and metodo == "redondeo":
+        enc = redondear(redondear(x, o + 1), o)
+        if enc != rd:
+            dist.insert(0, (D(enc, o), "E02"))
+    dist += [(D(val + F(1, 10 ** o), o), None), (D(val, o + 1) if False else D(redondear(x, o + 1), o + 1), None), (D(val, o - 1) if o > 1 else D(redondear(x, 0), 0), None)]
+    expl = {"truncamiento": "Truncar es cortar: se eliminan las cifras siguientes sin mirar nada.",
+            "redondeo": "Redondear: se mira SOLO la cifra siguiente; si es 5 o más, se sube.",
+            "exceso": "Por exceso: la aproximación mayor que el número (se sube la última cifra que se conserva).",
+            "defecto": "Por defecto: la aproximación menor que el número (se corta)."}[metodo]
+    pasos = [("orden", ORD_NOMBRE[o], f"Me quedo hasta {ORD_NOMBRE[o]}. {expl}"), ("resultado", resp, f"{txt} → {resp}.")]
+    enun = f"Aproxima {nom + ' = ' + txt if d == 2 else txt} a {ORD_NOMBRE[o]} {frase}."
+    return mk(enun, resp, "t3_aproximar", {"x": txt, "orden": o, "metodo": metodo}, dist, pasos,
+              "Truncar corta; redondear mira solo la cifra siguiente (sin redondear en cadena). Exceso: aproximación mayor; defecto: menor.")
+
+
+@generador("t3_real_05")
+def gen_real_05(rng, d):
+    if d == 1:
+        x = F(rng.randint(1000, 99999), 1000)
+        o = rng.randint(1, 2)
+        a = redondear(x, o)
+        if a == x:
+            return None
+        Ea = abs(x - a)
+        pasos = [("|real − aproximación|", D(Ea), f"Ea = |{D(x)} − {D(a)}| = {D(Ea)} (siempre positivo).")]
+        return mk(f"El valor real de una medida es {D(x)} y se aproxima por {D(a)}. ¿Cuál es el error absoluto?", D(Ea), "t3_error", {"x": D(x), "a": D(a), "pide": "Ea"},
+                  [("−" + D(Ea), "E01"), (D(Ea * 10), None), (D(Ea / 10), None), (D(Ea / x, 4) if ndec(Ea / x) > 4 else D(Ea / x), None)], pasos,
+                  "El error absoluto es la diferencia en valor absoluto: nunca es negativo.", genericos=[D(Ea + F(1, 1000))])
+    if d == 2:
+        for _ in range(100):
+            n, den = rng.randint(1, 30), rng.choice([3, 6, 7, 9, 11, 12])
+            x = F(n, den)
+            if x.denominator == 1:
+                continue
+            o = rng.randint(1, 2)
+            a = redondear(x, o)
+            Ea = abs(x - a)
+            if Ea == 0:
+                continue
+            Er = Ea / x * 100
+            break
+        resp = pct(redondear(Er, 2), 2)
+        pasos = [("Ea", fr(Ea), f"Ea = |{fr(x)} − {D(a)}| = {fr(Ea)} ≈ {D(Ea, 4)}."),
+                 ("Er = Ea / real", resp, f"Er = Ea / {fr(x)} = {D(Ea / x, 4)} → en %: {resp}.")]
+        return mk(f"Se aproxima {fr(x)} por {D(a)}. Calcula el error relativo en % (con dos decimales).", resp, "t3_error", {"x": fr(x), "a": D(a), "pide": "Er"},
+                  [(pct(redondear(Ea / a * 100 * 10, 2), 2) if False else pct(redondear(a / Ea, 2), 2), "E02"), (pct(redondear(Ea * 100, 2), 2) if redondear(Ea * 100, 2) != redondear(Er, 2) else None, None),
+                   (pct(redondear(Er / 100, 4), 4), None), (pct(redondear(Er * 10, 2), 2), None)], pasos,
+                  "Error relativo = error absoluto / valor real (y × 100 para darlo en %).")
+    # comparar aproximaciones
+    for _ in range(100):
+        L1 = rng.choice([1000, 2000, 5000, 10000, 500])
+        e1 = rng.choice([1, 2, 5, 10])
+        L2 = rng.choice([10, 20, 50, 5])
+        e2 = rng.choice([F(1, 10), F(5, 10), F(1), F(2)])
+        r1, r2 = F(e1, L1), F(e2, L2)
+        if r1 != r2 and e1 > e2:
+            break
+    mejor = "La del edificio" if r1 < r2 else "La de la mesa"
+    peor = "La de la mesa" if r1 < r2 else "La del edificio"
+    pasos = [("errores relativos", f"{D(r1 * 100, 3)} % y {D(r2 * 100, 3)} %", f"Edificio: {e1}/{L1} = {D(r1 * 100, 3)} %; mesa: {D(e2)}/{L2} = {D(r2 * 100, 3)} %."),
+             ("comparar", mejor, f"Es mejor la de menor error relativo: {mejor.lower()}.")]
+    return mk(f"Se mide un edificio de {fmt(L1)} cm con un error de {e1} cm y una mesa de {L2} cm con un error de {D(e2)} cm. ¿Qué medida es de más calidad?", mejor, "t3_error_comp",
+              {"L1": L1, "e1": e1, "L2": L2, "e2": D(e2)},
+              [(peor, "E03" if (e1 > e2) == (r1 < r2) else None), ("Las dos igual", None), ("No se puede saber sin el valor real exacto", None)], pasos,
+              "La calidad de una aproximación se compara con el error relativo, no con el absoluto.", datos={"opciones_fijas": True})
+
+
+CONJ = {"N": "Natural", "Z": "Entero (no natural)", "Q": "Racional (no entero)", "I": "Irracional"}
+
+
+def num_clasificar(rng, d):
+    t = rng.choice(["N", "Z", "Q", "I"])
+    if t == "N":
+        k = rng.randint(2, 15)
+        return rng.choice([(f"√{k * k}", "N", "E02"), (f"{k * rng.randint(2, 5)}/{0}", None, None), (str(k), "N", None), (f"{k * 3}/3", "N", None)])
+    if t == "Z":
+        k = rng.randint(2, 12)
+        return rng.choice([(f"−{k}", "Z", None), (f"−√{k * k}", "Z", "E02"), (f"−{k * 4}/4", "Z", None)])
+    if t == "Q":
+        a, b = rng.randint(1, 9), rng.choice([3, 7, 9, 11])
+        if math.gcd(a, b) != 1 or a == b:
+            a = 1
+        opts = [(puntos(F(a, b), 5), "Q", "E01"), (f"√({(a * a)}/{b * b})" if a != b else "√(1/4)", "Q", "E02"), (D(F(rng.randint(1, 99), 100)), "Q", None),
+                (f"−{a}/{b}", "Q", None), (dec_periodico(F(a, b))[0], "Q", "E01")]
+        return rng.choice(opts)
+    k = rng.choice([2, 3, 5, 6, 7, 8, 10, 11, 12, 13])
+    return rng.choice([(f"√{k}", "I", None), ("π", "I", "E03"), (f"{rng.randint(2, 5)}π", "I", "E03"), (f"1 + √{k}", "I", None), ("0,101001000100001…", "I", None),
+                       (f"0,{rng.randint(1, 9)}{rng.randint(1, 9)}1{rng.randint(1, 9)}11{rng.randint(1, 9)}111…".replace("…", "… (cada vez un 1 más)"), "I", None)])
+
+
+@generador("t3_real_06")
+def gen_real_06(rng, d):
+    if d == 3 and rng.random() < 0.6:
+        k = rng.randint(2, 20)
+        forma = rng.choice([f"−{k}", f"−{k * 2}/2", f"−√{k * k}"])
+        resp = "Z, Q y R"
+        pasos = [("conjuntos", resp, f"{forma} = −{k} es un entero negativo: no es natural, pero sí entero, racional (−{k} = −{k}/1) y real.")]
+        return mk(f"¿A qué conjuntos pertenece {forma}?", resp, "t3_conjuntos", {"x": forma},
+                  [("Z y R (no es racional)", "E04"), ("N, Z, Q y R", None), ("Solo a Z", None), ("I y R", None)], pasos,
+                  "N ⊂ Z ⊂ Q ⊂ R: todo entero es racional (se puede escribir como fracción con denominador 1).", datos={"opciones_fijas": True})
+    for _ in range(50):
+        x, t, err = num_clasificar(rng, d)
+        if t is None:
+            continue
+        if d == 1 and err is not None and rng.random() < 0.5:
+            continue
+        break
+    resp = CONJ[t]
+    dist = []
+    if err == "E01":
+        dist.append((CONJ["I"], "E01"))
+    if err == "E02":
+        dist.append((CONJ["I"], "E02"))
+    if err == "E03":
+        dist.append((CONJ["Q"], "E03"))
+    dist += [(v, None) for k_, v in CONJ.items() if k_ != t]
+    expl = {"N": "Es un número natural (entero positivo), aunque esté escrito como raíz o fracción.",
+            "Z": "Es un entero negativo: está en Z pero no en N.",
+            "Q": "Se puede escribir como fracción (decimal exacto o periódico) y no es entero.",
+            "I": "Tiene infinitas cifras decimales sin periodo: no se puede escribir como fracción."}[t]
+    pasos = [("clasificar", resp, f"{x}: {expl}")]
+    return mk(f"¿Cuál es el conjunto numérico más pequeño al que pertenece {x}?", resp, "t3_clasificar_real", {"x": x}, dist, pasos,
+              "Decimal periódico → racional. Raíz exacta → racional (incluso natural). π y las raíces no exactas → irracionales.",
+              datos={"opciones_fijas": True})
+
+
+INF = None
+
+
+def itxt(iv):
+    a, ca, b, cb = iv
+    L = "(−∞" if a is None else ("[" if ca else "(") + fmt(a)
+    R = "+∞)" if b is None else fmt(b) + ("]" if cb else ")")
+    return f"{L}, {R}"
+
+
+def idesig(iv):
+    a, ca, b, cb = iv
+    if a is None:
+        return f"x {'≤' if cb else '<'} {fmt(b)}"
+    if b is None:
+        return f"x {'≥' if ca else '>'} {fmt(a)}"
+    return f"{fmt(a)} {'≤' if ca else '<'} x {'≤' if cb else '<'} {fmt(b)}"
+
+
+def interseccion(p, q):
+    a1, c1, b1, d1 = p
+    a2, c2, b2, d2 = q
+    if a1 is None or (a2 is not None and a2 > a1):
+        a, ca = a2, c2
+    elif a2 is None or a1 > a2:
+        a, ca = a1, c1
+    else:
+        a, ca = a1, c1 and c2
+    if b1 is None or (b2 is not None and b2 < b1):
+        b, cb = b2, d2
+    elif b2 is None or b1 < b2:
+        b, cb = b1, d1
+    else:
+        b, cb = b1, d1 and d2
+    if a is not None and b is not None and (a > b or (a == b and not (ca and cb))):
+        return None
+    return (a, ca, b, cb)
+
+
+def union(p, q):
+    a1, c1, b1, d1 = p
+    a2, c2, b2, d2 = q
+    if a1 is None or a2 is None:
+        a, ca = None, False
+    elif a1 < a2:
+        a, ca = a1, c1
+    elif a2 < a1:
+        a, ca = a2, c2
+    else:
+        a, ca = a1, c1 or c2
+    if b1 is None or b2 is None:
+        b, cb = None, False
+    elif b1 > b2:
+        b, cb = b1, d1
+    elif b2 > b1:
+        b, cb = b2, d2
+    else:
+        b, cb = b1, d1 or d2
+    return (a, ca, b, cb)
+
+
+def rand_iv(rng, semi=None):
+    a = rng.randint(-9, 5)
+    b = a + rng.randint(2, 9)
+    ca, cb = rng.random() < 0.5, rng.random() < 0.5
+    if semi == "izq":
+        return (None, False, b, cb)
+    if semi == "der":
+        return (a, ca, None, False)
+    return (a, ca, b, cb)
+
+
+@generador("t3_real_08")
+def gen_real_08(rng, d):
+    if d == 1:
+        iv = rand_iv(rng, rng.choice([None, None, "izq", "der"]))
+        a, ca, b, cb = iv
+        resp = itxt(iv)
+        sw = itxt((a, not ca if a is not None else ca, b, not cb if b is not None else cb))
+        dist = [(sw, "E01")]
+        if a is None or b is None:
+            dist.append((resp.replace("+∞)", "+∞]").replace("(−∞", "[−∞"), "E02"))
+        else:
+            dist.append((f"{('[' if cb else '(')}{fmt(b)}, {fmt(a)}{(']' if ca else ')')}", "E03"))
+        dist.append((itxt((a, not ca, b, cb)) if a is not None else itxt((a, ca, b, not cb)), None))
+        pasos = [("extremos", resp, "Corchete [ ] si el extremo está incluido (≤, ≥); paréntesis ( ) si no lo está (<, >) y siempre en ±∞. El menor se escribe a la izquierda.")]
+        return mk(f"Escribe como intervalo o semirrecta: {idesig(iv)}", resp, "t3_intervalo", {"desig": idesig(iv)}, dist, pasos,
+                  "≤ y ≥ → corchete; < y > → paréntesis; el infinito siempre con paréntesis.")
+    if d == 2:
+        iv = rand_iv(rng, rng.choice([None, None, "izq", "der"]))
+        a, ca, b, cb = iv
+        resp = idesig(iv)
+        sw = idesig((a, not ca if a is not None else ca, b, not cb if b is not None else cb))
+        pasos = [("leer", resp, f"{itxt(iv)}: " + ("el corchete incluye el extremo (≤ o ≥), el paréntesis lo excluye (< o >)."))]
+        return mk(f"Escribe con desigualdades el conjunto {itxt(iv)}.", resp, "t3_intervalo", {"iv": itxt(iv)},
+                  [(sw, "E01"), (idesig((a, not ca, b, cb)) if a is not None else idesig((a, ca, b, not cb)), None),
+                   (idesig((a, ca, b, not cb)) if b is not None and a is not None else (f"x {'≤' if cb else '<'} {fmt(b)}".replace("x", "x", 1) if a is None else f"x {'≤' if ca else '<'} {fmt(a)}"), None)], pasos,
+                  "[a, b) ↔ a ≤ x < b. Corchete = incluido; paréntesis = excluido.")
+    for _ in range(100):
+        p = rand_iv(rng, rng.choice([None, None, "izq", "der"]))
+        q = rand_iv(rng, rng.choice([None, "izq", "der"]))
+        inter = interseccion(p, q)
+        if inter is None or inter == p or inter == q:
+            continue
+        un = union(p, q)
+        if un == p or un == q:
+            continue
+        break
+    else:
+        return None
+    op = rng.choice(["∩", "∪"])
+    resp = itxt(inter) if op == "∩" else itxt(un)
+    otro = itxt(un) if op == "∩" else itxt(inter)
+    ai, cai, bi, cbi = inter if op == "∩" else un
+    pasos = [("representar", resp, f"Represento {itxt(p)} y {itxt(q)} en la recta. " + ("La intersección es la parte común a los dos." if op == "∩" else "La unión es todo lo que está en alguno de los dos (se solapan)."
+             ) + f" Resultado: {resp}.")]
+    return mk(f"Calcula {itxt(p)} {op} {itxt(q)}.", resp, "t3_intervalo_op", {"p": itxt(p), "q": itxt(q), "op": op},
+              [(otro, "E04"), (itxt((ai, not cai, bi, cbi)) if ai is not None else itxt((ai, cai, bi, not cbi)), "E01"),
+               (itxt((ai, cai, bi, not cbi)) if bi is not None and ai is not None else None, None), (resp.replace("+∞)", "+∞]") if "+∞" in resp else None, "E02")], pasos,
+              "Intersección: lo común (∩). Unión: todo lo de uno u otro (∪). Cuidado con qué extremos quedan incluidos.")
+
+
+@generador("t3_real_09")
+def gen_real_09(rng, d):
+    if d == 1:
+        o = rng.randint(0, 3)
+        x = F(rng.randint(10 ** (o + 1), 10 ** (o + 3)), 10 ** o)
+        if ndec(x) != o and o > 0:
+            x += F(1, 10 ** o)
+        metodo = rng.choice(["redondeada", "truncada"])
+        cota = F(1, 2 * 10 ** o) if metodo == "redondeada" else F(1, 10 ** o)
+        resp = D(cota)
+        pasos = [("última cifra", ORD_NOMBRE[o], f"{D(x)} está {metodo} a {ORD_NOMBRE[o]} (una unidad de ese orden es {D(F(1, 10 ** o))})."),
+                 ("cota", resp, f"Cota del error absoluto: {'media unidad' if metodo == 'redondeada' else 'una unidad'} de ese orden = {resp}.")]
+        return mk(f"La cantidad {D(x)} está {metodo} a {ORD_NOMBRE[o]}. ¿Qué cota tiene el error absoluto?", resp, "t3_cota", {"x": D(x), "orden": o, "metodo": metodo},
+                  [(D(F(1, 10 ** o)), "E01") if metodo == "redondeada" else (D(F(1, 2 * 10 ** o)), None), (D(cota / 10), None), (D(cota * 10), None)], pasos,
+                  "Redondeo: el error es como mucho media unidad del último orden (0,005 si se redondea a centésimas). Truncamiento: una unidad.")
+    if d == 2:
+        ceros = rng.randint(0, 3)
+        sig = str(rng.randint(1, 9)) + "".join(str(rng.randint(0, 9)) for _ in range(rng.randint(0, 3)))
+        final0 = rng.random() < 0.5
+        if final0:
+            sig += "0"
+        txt = "0," + "0" * ceros + sig if ceros or rng.random() < 0.6 else sig[0] + "," + sig[1:] if len(sig) > 1 else sig
+        n = len(sig)
+        pasos = [("contar", str(n), f"En {txt} los ceros de la izquierda solo colocan la coma: no cuentan. Cuentan las cifras desde la primera no nula" + (", incluido el cero final (indica precisión)" if final0 else "") + f": {n}.")]
+        total = len(txt.replace(",", ""))
+        return mk(f"¿Cuántas cifras significativas tiene {txt}?", str(n), "t3_cifras_sig", {"x": txt},
+                  [(str(total) if total != n else None, "E02"), (str(n - 1) if final0 else str(n + 1), None), (str(n + 2), None), (str(max(n - 2, 1)) if n > 2 else str(n + 3), None)], pasos,
+                  "Cifras significativas: desde la primera cifra distinta de cero; los ceros finales tras la coma sí cuentan.")
+    o = rng.randint(1, 3)
+    x = F(rng.randint(10 ** o + 1, 10 ** (o + 2)), 10 ** o)
+    if ndec(x) != o:
+        x += F(1, 10 ** o)
+    cota = F(1, 2 * 10 ** o)
+    er = cota / x
+    resp = D(er, 5) if not es_dec(er, 5) else D(er)
+    pasos = [("cota absoluta", D(cota), f"Redondeado a {ORD_NOMBRE[o]}: Ea ≤ {D(cota)}."),
+             ("cota relativa", resp, f"Er ≤ Ea / valor = {D(cota)} / {D(x)} ≈ {resp}.")]
+    return mk(f"La medida {D(x)} está redondeada a {ORD_NOMBRE[o]}. Calcula una cota del error relativo (redondea a cinco decimales).", resp, "t3_cota", {"x": D(x), "orden": o, "pide": "Er"},
+              [(D(redondear(x / cota, 2)) if es_dec(x / cota, 2) else D(x / cota, 2), "E03"), (D(F(1, 10 ** o) / x, 5), "E01"), (D(cota), None), (D(er * 10, 5), None)], pasos,
+              "Cota del error relativo = cota del error absoluto / valor aproximado.")
+
+
+# ---------------------------------------------------------------- LOGARITMOS
+
+def logtxt(a, b):
+    return f"log{sub(a)} {b}" if isinstance(a, int) else f"log_({a}) {b}"
+
+
+@generador("t3_log_01")
+def gen_log_01(rng, d):
+    if d == 1:
+        a = rng.randint(2, 10)
+        n = rng.randint(0, 5 if a < 5 else 3)
+        b = a ** n
+        if n == 0:
+            pasos = [("a⁰ = 1", "0", f"{a}⁰ = 1, así que {logtxt(a, 1)} = 0.")]
+            return mk(f"Calcula {logtxt(a, 1)}.", "0", "t3_log_def", {"a": a, "b": 1}, [("1", "E04"), (str(a), None), ("No existe", None)], pasos,
+                      "log_a 1 = 0 siempre, porque a⁰ = 1.", genericos=["−1"])
+        pasos = [(f"{a}^? = {b}", str(n), f"Busco a qué hay que elevar {a} para obtener {fmt(b)}: {a}{sup(n)} = {fmt(b)}. El logaritmo es {n}.")]
+        return mk(f"Calcula {logtxt(a, fmt(b))}.", str(n), "t3_log_def", {"a": a, "b": b},
+                  [(fmt(b // a) if b // a != n else None, "E01"), ("0" if n == 1 else None, "E04"), (str(n + 1), None), (str(n - 1) if n > 1 else str(n + 2), None), (fmt(b // 2) if b > 4 and b // 2 != n else None, None)], pasos,
+                  "log_a b = c significa a^c = b: el logaritmo es un exponente.")
+    if d == 2:
+        a = rng.choice([2, 3, 5, 10, 4, 9, 8])
+        t = rng.choice(["neg", "neg", "frac"])
+        if t == "neg":
+            n = rng.randint(1, 4 if a < 5 else 3)
+            b = F(1, a ** n)
+            arg = f"(1/{fmt(a ** n)})" if a != 10 else D(b)
+            resp = f"−{n}"
+            pasos = [(f"{a}^? = {fr(b)}", resp, f"1/{fmt(a ** n)} = {a}{sup(-n)}: el logaritmo es −{n}.")]
+            return mk(f"Calcula {logtxt(a, arg)}.", resp, "t3_log_def", {"a": a, "b": fr(b)},
+                      [(str(n), "E02"), (f"1/{n}" if n > 1 else "−1/2", None), (f"−{n + 1}", None), (fr(b / a) if False else None, None)], pasos,
+                      "El logaritmo de un número entre 0 y 1 (con base > 1) es negativo: log₂(1/8) = −3.")
+        # raíz: log_{a^k} a = 1/k
+        base = rng.choice([2, 3, 5])
+        k = rng.randint(2, 4)
+        A = base ** k
+        if rng.random() < 0.5:
+            pasos = [(f"{A}^? = {base}", f"1/{k}", f"{base} = ᵏ√{A}: {A}^(1/{k}) = {base}. El logaritmo es 1/{k}.".replace("ᵏ", sup(k)))]
+            return mk(f"Calcula {logtxt(A, base)}.", f"1/{k}", "t3_log_def", {"a": A, "b": base},
+                      [(str(k), None), (fr(F(A, base)), "E01"), (f"−{k}", None), (f"−1/{k}", None)], pasos, "Si la base es mayor que el argumento, el logaritmo está entre 0 y 1.")
+        pasos = [(f"{base}^? = √{base}", "1/2", f"√{base} = {base}^(1/2): el logaritmo es 1/2.")]
+        return mk(f"Calcula {logtxt(base, '√' + str(base))}.", "1/2", "t3_log_def", {"a": base, "b": f"√{base}"},
+                  [("2", None), ("−1/2", None), (f"1/{base}", None), ("1", "E04")], pasos, "√a = a^(1/2), así que log_a √a = 1/2.")
+    t = rng.choice(["base", "arg", "neg", "mixto", "fracbase"])
+    if t == "base":
+        x = rng.randint(2, 6)
+        n = rng.randint(2, 4)
+        b = x ** n
+        pasos = [(f"x{sup(n)} = {b}", str(x), f"log_x {b} = {n} significa x{sup(n)} = {b}: x = {x}.")]
+        return mk(f"Halla la base x: log_x {fmt(b)} = {n}", f"x = {x}", "t3_log_def", {"b": b, "c": n, "pide": "base"},
+                  [(f"x = {fr(F(b, n))}", "E01"), (f"x = {b * n}" if b * n < 10000 else f"x = {x + 1}", None), (f"x = {n ** x if n ** x != b else x * 2}", None)], pasos,
+                  "La definición log_x b = c ⇔ x^c = b permite despejar la base.")
+    if t == "arg":
+        a = rng.randint(2, 6)
+        n = rng.choice([-3, -2, -1, 2, 3, 4])
+        v = F(a) ** n
+        pasos = [(f"{a}^{n}", fr(v), f"log{sub(a)} x = {n} significa x = {a}^{n} = {fr(v)}.")]
+        return mk(f"Halla x: {logtxt(a, 'x')} = {n}".replace("−", "−"), f"x = {fr(v)}", "t3_log_def", {"a": a, "c": n, "pide": "argumento"},
+                  [(f"x = {fr(-abs(v))}" if n < 0 else f"x = {a * n}", "E02" if n < 0 else "E01"), (f"x = {fr(F(n) ** a) if abs(n) ** a < 10000 else n * a}", None), (f"x = {a * n}" if n < 0 else f"x = {fr(1 / v)}", None)], pasos,
+                  "x = a^c. Con exponente negativo, x es una fracción positiva (nunca negativa).")
+    if t == "neg":
+        a = rng.randint(2, 5)
+        n = rng.randint(2, 4)
+        b = a ** n
+        opcion = rng.choice([f"(−{b})", "0"])
+        pasos = [("dominio", "No existe", f"No hay ningún exponente c con {a}^c = {opcion.strip('()')}: las potencias de base positiva son siempre positivas.")]
+        return mk(f"Calcula {logtxt(a, opcion)}.", "No existe", "t3_log_def", {"a": a, "b": opcion},
+                  [(f"−{n}" if opcion != "0" else "0", "E03"), (str(n) if opcion != "0" else "1", None), ("1" if opcion != "0" else f"−{n}", None)], pasos,
+                  "Solo existen logaritmos de números positivos: log(−8) y log 0 no existen.")
+    if t == "mixto":
+        a = rng.choice([2, 3])
+        k = rng.randint(1, 3)
+        v = F(2 * k + 1, 2)
+        arg = f"{a ** k}√{a}"
+        pasos = [("potencia de la base", fr(v), f"{arg} = {a}^{k} · {a}^(1/2) = {a}^({fr(v)}). El logaritmo es {fr(v)}.")]
+        return mk(f"Calcula {logtxt(a, '(' + arg + ')')}.", fr(v), "t3_log_def", {"a": a, "b": arg},
+                  [(str(k), None), (fr(v - 1), None), (fr(-v), None), (str(k + 1), None)], pasos, "Se escribe el argumento como potencia de la base y se suman exponentes.")
+    a = rng.choice([2, 3, 5])
+    n = rng.randint(2, 4)
+    b = a ** n
+    pasos = [(f"(1/{a})^? = {b}", f"−{n}", f"{b} = {a}{sup(n)} = (1/{a}){sup(-n)}: el logaritmo es −{n}.")]
+    return mk(f"Calcula log_(1/{a}) {b}.", f"−{n}", "t3_log_def", {"a": f"1/{a}", "b": b},
+              [(str(n), "E02"), (f"1/{n}", None), (f"−1/{n}", None)], pasos, "Con base entre 0 y 1, los números mayores que 1 tienen logaritmo negativo.")
+
+
+@generador("t3_log_02")
+def gen_log_02(rng, d):
+    if d == 1:
+        for _ in range(100):
+            a = rng.choice([2, 3, 5, 6, 10, 12, 15, 20])
+            n = rng.randint(2, 3)
+            T = a ** n
+            divs = [x for x in range(2, T) if T % x == 0 and T // x > 1 and x != T // x]
+            if divs:
+                break
+        x = rng.choice(divs)
+        y = T // x
+        pasos = [("log x + log y = log(xy)", logtxt(a, fmt(T)), f"{logtxt(a, x)} + {logtxt(a, y)} = {logtxt(a, f'({x} · {y})')} = {logtxt(a, fmt(T))}."),
+                 ("calcular", str(n), f"{a}{sup(n)} = {fmt(T)}: vale {n}.")]
+        return mk(f"Calcula {logtxt(a, x)} + {logtxt(a, y)}.", str(n), "t3_log_prop", {"a": a, "x": x, "y": y},
+                  [(logtxt(a, x + y), "E01"), (str(n + 1), None), (str(n * 2), None), (str(n - 1), None)], pasos,
+                  "log(a·b) = log a + log b. Pero log(a + b) no se puede descomponer.")
+    if d == 2:
+        if rng.random() < 0.5:
+            a = rng.choice([2, 3, 5, 10])
+            n = rng.randint(1, 3)
+            y = rng.randint(2, 9)
+            x = y * a ** n
+            pasos = [("log x − log y = log(x/y)", logtxt(a, x // y), f"{logtxt(a, x)} − {logtxt(a, y)} = {logtxt(a, f'({x}/{y})')} = {logtxt(a, x // y)} = {n}.")]
+            return mk(f"Calcula {logtxt(a, x)} − {logtxt(a, y)}.", str(n), "t3_log_prop", {"a": a, "x": x, "y": y},
+                      [(logtxt(a, x - y), "E01"), (fr(F(x, y)), None), (str(n + 1), None), (str(n * 2), None)], pasos, "log(a/b) = log a − log b.")
+        a = rng.choice([2, 3, 5])
+        k = rng.randint(1, 3)
+        m = rng.randint(2, 4)
+        b = a ** k
+        pasos = [("log(x^n) = n·log x", str(k * m), f"{logtxt(a, f'{b}{sup(m)}')} = {m} · {logtxt(a, b)} = {m} · {k} = {k * m}.")]
+        return mk(f"Calcula {logtxt(a, f'{b}{sup(m)}')}.", str(k * m), "t3_log_prop", {"a": a, "b": b, "m": m},
+                  [(str(k ** m), "E03") if k ** m != k * m else (str(k + m), None), (str(k + m) if k + m != k * m else str(k * m + 1), None), (str(m), None)], pasos,
+                  "log(x^n) = n · log x: el exponente baja multiplicando.")
+    p, r, q = rng.randint(2, 5), rng.randint(2, 3), rng.randint(2, 4)
+    if rng.random() < 0.5:
+        expr = f"log (x{sup(p)} · {sup(r) if r > 2 else ''}√y / z{sup(q)})"
+        resp = f"{p} log x + (1/{r}) log y − {q} log z"
+        pasos = [("producto y cociente", "log x^p + log ⁿ√y − log z^q", f"{expr} = log x{sup(p)} + log {sup(r) if r > 2 else ''}√y − log z{sup(q)}."),
+                 ("potencias", resp, f"Bajo los exponentes (la raíz es exponente 1/{r}): {resp}.")]
+        return mk(f"Desarrolla: {expr}", resp, "t3_log_desarrollar", {"p": p, "r": r, "q": q},
+                  [(f"(log x){sup(p)} + (1/{r}) log y − (log z){sup(q)}", "E03"), (f"{p} log x + log y − {q} log z", "E04"), (f"({p} log x + (1/{r}) log y) / ({q} log z)", "E02"),
+                   (f"{p} log x · (1/{r}) log y − {q} log z", None)], pasos,
+                  "log(A·B/C) = log A + log B − log C y log(Aⁿ) = n log A; una raíz de índice r es exponente 1/r.")
+    resp = f"log (a{sup(p)}·b{sup(q)} / c)" if r == 2 else f"log (a{sup(p)}·b{sup(q)} / c{sup(r)})"
+    expr = f"{p} log a + {q} log b − {'' if r == 2 else r}{' ' if r != 2 else ''}log c".replace("−  ", "− ")
+    rc = "c" if r == 2 else f"c{sup(r)}"
+    pasos = [("subir exponentes", f"log a{sup(p)} + log b{sup(q)} − log {rc}", f"Los coeficientes pasan a exponentes: log a{sup(p)} + log b{sup(q)} − log {rc}."),
+             ("agrupar", resp, f"Sumas → producto, restas → cociente: {resp}.")]
+    return mk(f"Escribe como un único logaritmo: {expr}", resp, "t3_log_agrupar", {"p": p, "q": q, "r": r},
+              [(f"log ({p}a + {q}b − {'' if r == 2 else r}c)".replace("− c", "− c"), "E01"), (f"log (a{sup(p)}·b{sup(q)}) / log {rc}", "E02"), (f"log ({p * q}ab / {'' if r == 2 else r}c)", None)], pasos,
+              "n log a = log aⁿ; log A + log B = log(AB); log A − log B = log(A/B).")
+
+
+L2, L3 = F(301, 1000), F(477, 1000)
+
+
+@generador("t3_log_03")
+def gen_log_03(rng, d):
+    if d == 1:
+        p, q = rng.choice([(1, 1), (2, 1), (1, 2), (3, 0), (0, 2), (2, 2), (3, 1), (0, 3), (1, 3), (4, 0), (2, 0), (4, 1), (3, 2), (5, 0), (0, 4), (2, 3), (5, 1), (1, 4), (6, 0)])
+        c = 0
+        rt = 1
+    elif d == 2:
+        p, q, c = rng.choice([(1, 1, -1), (-1, 0, 1), (-1, 1, 0), (1, 0, 1), (0, 1, 1), (1, 0, -1), (0, 1, -2), (1, 1, 1), (2, 0, -1), (-1, 2, 0), (-1, 1, 1), (2, 1, -1), (-2, 0, 2), (0, 2, -1), (3, 0, -2)])
+        rt = 1
+    else:
+        p, q, c = rng.choice([(2, 1, 0), (1, 2, -2), (1, 1, -1), (0, 1, -1), (2, 0, 0), (1, 2, 0), (-1, 1, 0), (3, 0, -1), (0, 3, 0), (2, 1, -1)])
+        rt = rng.choice([2, 3])
+    val = F(2) ** p * F(3) ** q * F(10) ** c
+    vtxt = D(val) if es_dec(val, 6) else fr(val)
+    arg = vtxt if rt == 1 else ("√" if rt == 2 else "∛") + (vtxt if "," not in vtxt and "/" not in vtxt else f"({vtxt})")
+    exact = (p * L2 + q * L3 + c) / rt
+    resp = D(redondear(exact, 3), 3)
+    partes_ = []
+    if p:
+        partes_.append(f"{p if p not in (1, -1) else ''}{'−' if p == -1 else ''}log 2".replace("−log", "− log") if p < 0 else f"{p if p != 1 else ''} log 2".strip())
+    if q:
+        partes_.append(f"{q if q != 1 else ''} log 3".strip() if q > 0 else f"− {abs(q) if q != -1 else ''} log 3".replace("  ", " "))
+    if c:
+        partes_.append(f"{c}" if c > 0 else f"− {abs(c)}")
+    desc = " + ".join(partes_).replace("+ −", "−").replace("+ − ", "− ")
+    pasos = [("descomponer", desc, f"{vtxt} = " + " · ".join(x for x in [f"2{sup(p)}" if p else "", f"3{sup(q)}" if q else "", f"10{sup(c)}" if c else ""] if x) + "."),
+             ("propiedades", resp, (f"log {arg} = (1/{rt}) · (" if rt > 1 else f"log {arg} = ") + f"{fmt(p)}·0,301 + {fmt(q)}·0,477 + {fmt(c)}".replace("+ −", "− ") + (")" if rt > 1 else "") + f" ≈ {resp}.")]
+    e02 = (p * L2 + q * L3 + 10 * c) / rt if c else None
+    e03 = ((L2 ** abs(p) if p else 1) * (L3 ** abs(q) if q else 1)) if p and q and c == 0 and rt == 1 else None
+    e01 = (L2 + L3) if (p, q, c) == (-1, 0, 1) else None
+    return mk(f"Sabiendo que log 2 ≈ 0,301 y log 3 ≈ 0,477, calcula log {arg}.", resp, "t3_log_conocidos", {"p": p, "q": q, "c": c, "raiz": rt},
+              [(D(redondear(e01, 3), 3) if e01 else None, "E01"), (D(redondear(e02, 3), 3) if e02 is not None else None, "E02"), (D(redondear(e03, 3), 3) if e03 else None, "E03"),
+               (D(redondear(exact * rt, 3), 3) if rt > 1 else D(redondear(exact + F(301, 1000), 3), 3), None), (D(redondear(-exact, 3), 3) if exact != 0 else "1,000", None),
+               (D(redondear(exact / 2, 3), 3), None)], pasos,
+              "Se descompone el argumento en productos, cocientes y potencias de 2, 3 y 10, y se usan las propiedades (log 10 = 1).")
+
+
+@generador("t3_log_04")
+def gen_log_04(rng, d):
+    if d < 3:
+        a = rng.choice([2, 3, 5, 7, 4, 6, 8, 1.5, 0.5]) if d == 2 else rng.choice([2, 3, 5, 7])
+        b = rng.choice([x for x in range(3, 200) if round(math.log(x, a), 6) != round(math.log(x, a))])
+        v = math.log(b) / math.log(a)
+        f3 = lambda x: D(redondear(F(x).limit_denominator(10 ** 9), 3), 3)
+        at = D(F(a).limit_denominator(10)) if a != int(a) else str(int(a))
+        pasos = [("cambio de base", f"log {b} / log {at}", f"log_{at} {b} = log {b} / log {at} (o ln {b} / ln {at})."),
+                 ("calculadora", f3(v), f"≈ {f3(math.log10(b))} / {f3(math.log10(a))} ≈ {f3(v)}.")]
+        at = at if "," not in at else f"({at})"
+        return mk(f"Calcula con la calculadora log_{at} {b} (redondea a las milésimas).", f3(v), "t3_log_cambio", {"a": at, "b": b},
+                  [(f3(1 / v), "E01"), (f3(math.log10(b) - math.log10(a)), "E02"), (f3(math.log10(b)), None), (f3(v + 1), None)], pasos,
+                  "Cambio de base: log_a b = log b / log a (el argumento arriba, la base abajo).")
+    t = rng.choice(["ln_e", "e_ln", "ln1", "lne", "ln_frac"])
+    k = rng.randint(2, 9)
+    if t == "ln_e":
+        return mk(f"Calcula ln e{sup(k)}.", str(k), "t3_log_ident", {"k": k}, [("0", "E03"), ("1", None), (f"e{sup(k)}", None)],
+                  [("ln e^x = x", str(k), f"ln e{sup(k)} = {k} · ln e = {k} · 1 = {k}.")], "ln y e^x son funciones inversas: ln e^x = x.")
+    if t == "e_ln":
+        return mk(f"Calcula e^(ln {k}).", str(k), "t3_log_ident", {"k": k}, [(f"ln {k}", "E03"), ("1", None), (f"e{sup(k)}", None)],
+                  [("e^(ln x) = x", str(k), f"e^(ln {k}) = {k}: la exponencial deshace el logaritmo.")], "e^(ln x) = x para x > 0.")
+    if t == "ln1":
+        return mk(f"Calcula {k} · ln 1 + ln e.", "1", "t3_log_ident", {"k": k}, [(str(k + 1), "E03"), ("0", None), (str(k), None)],
+                  [("ln 1 = 0, ln e = 1", "1", f"ln 1 = 0 y ln e = 1: {k} · 0 + 1 = 1.")], "ln 1 = 0 (e⁰ = 1) y ln e = 1.")
+    if t == "lne":
+        return mk(f"Calcula ln (1/e{sup(k)}).", f"−{k}", "t3_log_ident", {"k": k}, [(str(k), None), ("0", "E03"), (f"1/{k}", None)],
+                  [("ln e^x = x", f"−{k}", f"1/e{sup(k)} = e{sup(-k)}: ln e{sup(-k)} = −{k}.")], "ln e^x = x también con exponentes negativos.")
+    return mk(f"Calcula ln ∛(e{sup(k)}).", fr(F(k, 3)), "t3_log_ident", {"k": k}, [(str(k), None), (str(3 * k) if k != 1 else "3", None), ("0", "E03")],
+              [("raíz = exponente fraccionario", fr(F(k, 3)), f"∛(e{sup(k)}) = e^({k}/3): ln = {fr(F(k, 3))}.")], "Una raíz es un exponente fraccionario: ln ⁿ√(e^k) = k/n.")
+
+
+# ---------------------------------------------------------------- RADICALES
+
+def extraer(N, idx=2):
+    """N = c^idx · k con k sin factores de exponente ≥ idx → (c, k)."""
+    c, k, p = 1, N, 2
+    while p ** idx <= k:
+        while k % (p ** idx) == 0:
+            k //= p ** idx
+            c *= p
+        p += 1
+    return c, k
+
+
+def rtxt(k, idx=2):
+    """ⁿ√k (sin coeficiente)."""
+    if isinstance(k, int):
+        s = str(k) if k >= 0 else f"(−{-k})"
+    else:
+        k = k.replace("-", "−")
+        s = k if (k.isdigit() or len(k) == 1) else f"({k})"
+    return ("√" if idx == 2 else sup(idx) + "√") + s
+
+
+def surd(terms, den=1, idx=2):
+    """terms: {radicando: coef entero}; devuelve texto simplificado de (Σ coef·ⁿ√k)/den."""
+    t = {k: c for k, c in terms.items() if c}
+    if not t:
+        return "0"
+    if den < 0:
+        den = -den
+        t = {k: -c for k, c in t.items()}
+    g = den
+    for c in t.values():
+        g = math.gcd(g, abs(int(c)))
+    den //= g
+    t = {k: c // g for k, c in t.items()}
+    orden = sorted(t.items(), key=lambda kv: kv[0])
+    if den == 1:
+        return suma_txt([rad(c, k, idx) for k, c in orden])
+    if len(orden) == 1:
+        k, c = orden[0]
+        return rad(F(c, den), k, idx)
+    num = suma_txt([rad(c, k, idx) for k, c in orden])
+    return f"({num})/{den}"
+
+
+@generador("t3_radic_01")
+def gen_radic_01(rng, d):
+    if d == 1:
+        idx = rng.choice([2, 2, 3])
+        r = rng.randint(2, 15 if idx == 2 else 6)
+        N = r ** idx
+        pasos = [(f"?{sup(idx)} = {N}", str(r), f"Busco el número que elevado a {idx} da {N}: {r}{sup(idx)} = {N}.")]
+        return mk(f"Calcula {rtxt(N, idx)}.", str(r), "raiz" if idx == 2 else "t3_raiz_exacta", {"n": N, "indice": idx},
+                  [(fr(F(N, idx)), "E01"), (str(r + 1), None), (str(r * idx) if r * idx != N else str(r - 1), None), (str(N // 2), None)], pasos,
+                  "ⁿ√a es el número que elevado a n da a: no se divide a entre n.")
+    if d == 2:
+        t = rng.choice(["impar_neg", "par_neg", "cuarta"])
+        if t == "impar_neg":
+            idx = rng.choice([3, 5])
+            r = rng.randint(2, 5 if idx == 3 else 3)
+            N = r ** idx
+            pasos = [("índice impar", f"−{r}", f"Índice impar: la raíz de un negativo es negativa. (−{r}){sup(idx)} = −{N}.")]
+            return mk(f"Calcula {sup(idx)}√(−{N}).", f"−{r}", "t3_raiz_exacta", {"n": -N, "indice": idx},
+                      [(str(r), "E03"), ("No existe", "E03"), (fr(F(-N, idx)), "E01")], pasos,
+                      "Con índice impar, la raíz de un negativo existe y es negativa.")
+        if t == "par_neg":
+            idx = rng.choice([2, 4])
+            r = rng.randint(2, 9 if idx == 2 else 4)
+            N = r ** idx
+            pasos = [("índice par", "No es un número real", f"Ningún número real elevado a {idx} da negativo: {rtxt(-N, idx)} no existe en los reales.")]
+            return mk(f"Calcula {rtxt(-N, idx)}.", "No es un número real", "t3_raiz_exacta", {"n": -N, "indice": idx},
+                      [(f"−{r}", "E02"), (str(r), None), (fr(F(-N, idx)), None)], pasos,
+                      "Raíz de índice par de un negativo: no existe en los números reales.")
+        idx = rng.choice([4, 5])
+        r = rng.randint(2, 5 if idx == 4 else 3)
+        N = r ** idx
+        pasos = [(f"?{sup(idx)} = {N}", f"{'±' if idx % 2 == 0 else ''}{r}", f"{r}{sup(idx)} = {N}" + (f" y también (−{r}){sup(idx)} = {N}: dos valores opuestos." if idx % 2 == 0 else "."))]
+        resp = f"±{r}" if idx % 2 == 0 else str(r)
+        return mk(f"Calcula todas las raíces reales {sup(idx)}√{N}.", resp, "t3_raiz_exacta", {"n": N, "indice": idx},
+                  [(fr(F(N, idx)), "E01"), (str(r) if idx % 2 == 0 else f"±{r}", None), (str(r * r), None)], pasos,
+                  "La raíz de índice par de un positivo tiene dos valores opuestos.")
+    idx = rng.choice([2, 3, 3, 4, 5])
+    a, b = rng.randint(1, 5 if idx < 4 else 3), rng.randint(2, 7 if idx < 4 else 3)
+    if math.gcd(a, b) != 1:
+        a = 1
+    neg = idx % 2 == 1 and rng.random() < 0.5
+    A, B = a ** idx, b ** idx
+    val = F(a, b) * (-1 if neg else 1)
+    rad_txt = f"{'−' if neg else ''}{A}/{B}"
+    pasos = [("numerador y denominador", fr(val), f"Hago la raíz de arriba y de abajo: {rtxt(A, idx)} = {a}, {rtxt(B, idx)} = {b}" + (" y, con índice impar, el signo se mantiene." if neg else "."))]
+    return mk(f"Calcula {sup(idx) if idx > 2 else ''}√({rad_txt}).", fr(val), "t3_raiz_exacta", {"n": rad_txt, "indice": idx},
+              [(fr(F(a, B) * (-1 if neg else 1)), "E04"), (fr(-val), "E03" if neg else None), (fr(F(A, idx * B)) if A > 1 else fr(F(b, a)), "E01" if A > 1 else None)], pasos,
+              "ⁿ√(a/b) = ⁿ√a / ⁿ√b: hay que hacer la raíz del numerador Y del denominador.")
+
+
+@generador("t3_radic_02")
+def gen_radic_02(rng, d):
+    if d == 1:
+        n = rng.randint(2, 5)
+        m = rng.randint(1, 7)
+        if math.gcd(m, n) != 1 or m == n:
+            m = 1 if n != 1 else 2
+        v = rng.choice(["a", "x", "b"])
+        if rng.random() < 0.5:
+            resp = f"{v}^({m}/{n})"
+            pasos = [("ⁿ√aᵐ = a^(m/n)", resp, f"El índice va al denominador y el exponente al numerador: {rtxt(v + sup(m) if m > 1 else v, n)} = {resp}.")]
+            return mk(f"Escribe como potencia de exponente fraccionario: {rtxt(v + (sup(m) if m > 1 else ''), n)}", resp, "t3_radic_pot", {"m": m, "n": n},
+                      [(f"{v}^({n}/{m})" if m > 1 else f"{v}^{n}", "E01"), (f"{v}^{m * n}" if m > 1 else f"{v}^(−{n})", None), (f"{v}^({m}/{n + m})", None)], pasos,
+                      "ⁿ√(a^m) = a^(m/n): el índice de la raíz es el DENOMINADOR del exponente.")
+        resp = rtxt(v + (sup(m) if m > 1 else ""), n)
+        pasos = [("a^(m/n) = ⁿ√aᵐ", resp, f"El denominador ({n}) es el índice y el numerador ({m}) el exponente: {resp}.")]
+        return mk(f"Escribe como radical: {v}^({m}/{n})", resp, "t3_radic_pot", {"m": m, "n": n},
+                  [(rtxt(v + (sup(n) if n > 1 else ""), m) if m > 1 else f"{v}{sup(n)}", "E01"), (rtxt(v, m * n) if m > 1 else rtxt(v + sup(n), 2), None), (f"{m}{rtxt(v, n)}" if m > 1 else rtxt(v, n + 1), None)], pasos,
+                  "a^(m/n) = ⁿ√(a^m).")
+    if d == 2:
+        for _ in range(100):
+            b0 = rng.choice([2, 3, 5, 6, 7, 10])
+            n = rng.choice([2, 3, 4, 5])
+            m = rng.randint(1, 5)
+            if b0 ** n > 3000 or math.gcd(m, n) != 1 or m == n or m == 1 and n == 2:
+                continue
+            B = b0 ** n
+            val = b0 ** m
+            if val > 100000:
+                continue
+            break
+        resp = fmt(val)
+        c1, k1 = extraer(B ** n, m) if m > 1 else (B ** n, 1)
+        e01 = rad(c1, k1, m) if m > 1 and B ** n < 10 ** 7 else None
+        pasos = [("raíz", str(b0), f"{B}^({m}/{n}) = ({rtxt(B, n)}){sup(m)}: primero la raíz, {rtxt(B, n)} = {b0}."),
+                 ("potencia", resp, f"Después la potencia: {b0}{sup(m)} = {resp}.")]
+        return mk(f"Calcula {B}^({m}/{n}).", resp, "t3_radic_pot", {"b": B, "m": m, "n": n},
+                  [(fr(F(B * m, n)), "E02"), (e01, "E01"), (fmt(b0 * m), None), (fmt(val * b0), None)], pasos,
+                  "a^(m/n): conviene hacer primero la raíz (denominador) y después la potencia (numerador).")
+    if rng.random() < 0.5:
+        b0 = rng.choice([2, 3, 4, 5])
+        n = rng.choice([2, 3])
+        m = rng.choice([1, 2])
+        if m == n:
+            m = 1
+        B = b0 ** n
+        val = F(1, b0 ** m)
+        pasos = [("exponente negativo", f"1/{B}^({m}/{n})", f"Exponente negativo = inverso: {B}^(−{m}/{n}) = 1/{B}^({m}/{n})."),
+                 ("calcular", fr(val), f"{B}^({m}/{n}) = {b0 ** m}, así que el resultado es {fr(val)}.")]
+        return mk(f"Calcula {B}^(−{m}/{n}).", fr(val), "t3_radic_pot", {"b": B, "m": -m, "n": n},
+                  [(f"−{b0 ** m}", "E03"), (fr(-val), "E03"), (fmt(b0 ** m), None), (fr(F(-B * m, n)), "E02")], pasos,
+                  "El signo menos del exponente indica inverso (1/…), no un resultado negativo.")
+    n = rng.choice([4, 6, 8, 9, 10, 12])
+    g = rng.choice([x for x in (2, 3, 4) if n % x == 0])
+    m = g * rng.randint(1, 3)
+    if m % n == 0 or m >= n + 4:
+        m = g
+    v = rng.choice(["a", "x"])
+    n2, m2 = n // g, m // g
+    resp = rtxt(v + (sup(m2) if m2 > 1 else ""), n2) if n2 > 1 else (v + sup(m2) if m2 > 1 else v)
+    pasos = [("dividir índice y exponente", resp, f"{rtxt(v + sup(m), n)} = {v}^({m}/{n}) = {v}^({m2}/{n2}) = {resp}: divido índice y exponente entre {g}.")]
+    return mk(f"Simplifica el radical {rtxt(v + sup(m), n)}.", resp, "t3_radic_pot", {"m": m, "n": n},
+              [(rtxt(v + sup(m - (n - m) if m > n - m else m - g), n - m) if n - m > 1 and m - (n - m) > 0 else rtxt(v + sup(m), n - g), "E04"),
+               (rtxt(v + sup(m2 + 1), n2) if n2 > 1 else v + sup(m2 + 1), None), (rtxt(v + (sup(m2) if m2 > 1 else ""), n), None)], pasos,
+              "Radicales equivalentes: se pueden dividir índice y exponente por el mismo número (no restar).")
+
+
+@generador("t3_radic_03")
+def gen_radic_03(rng, d):
+    if d < 3:
+        idx = 2 if d == 1 else 3
+        for _ in range(100):
+            k = rng.choice([2, 3, 5, 6, 7, 10] if idx == 2 else [2, 3, 4, 5, 6, 7, 9])
+            c = rng.randint(2, 12 if idx == 2 else 5)
+            N = c ** idx * k
+            if N <= 2000 and extraer(N, idx) == (c, k):
+                break
+        resp = rad(c, k, idx)
+        pasos = [("factorizar", f"{c}{sup(idx)} · {k}", f"Descompongo: {N} = {c ** idx} · {k} = {c}{sup(idx)} · {k}."),
+                 ("extraer", resp, f"Saco {c} fuera de la raíz: {resp}.")]
+        parcial = None
+        for p in (2, 3, 5):
+            if c % p == 0 and c != p:
+                parcial = rad(p, N // p ** idx, idx)
+                break
+        return mk(f"Extrae factores del radical: {rtxt(N, idx)}", resp, "t3_radic_extraer", {"n": N, "indice": idx},
+                  [(rad(c ** idx, k, idx), "E01"), (parcial, None), (rad(k, c, idx) if k != c else rad(c + 1, k, idx), None), (rad(c, k * idx, idx) if False else rad(c * idx, k, idx), None)], pasos,
+                  "Se factoriza el radicando y cada factor con exponente igual al índice sale fuera SIN exponente (se le hace la raíz).")
+    idx = rng.choice([2, 3])
+    c = rng.randint(1, 5)
+    k = rng.choice([2, 3, 5]) if idx == 2 else rng.choice([2, 3, 4])
+    e1 = rng.randint(idx + 1, 3 * idx - 1)
+    e2 = rng.choice([idx, idx * 2, 1, idx + 1])
+    q1, r1 = divmod(e1, idx)
+    q2, r2 = divmod(e2, idx)
+    N = c ** idx * k
+    fuera = (str(c) if c > 1 else "") + "x" + (sup(q1) if q1 > 1 else "") + ("y" + (sup(q2) if q2 > 1 else "") if q2 else "")
+    dentro_parts = ([str(k)] if k > 1 else []) + (["x" + (sup(r1) if r1 > 1 else "")] if r1 else []) + (["y" + (sup(r2) if r2 > 1 else "")] if r2 else [])
+    dentro = "".join(dentro_parts) or "1"
+    resp = f"{fuera} {rtxt(dentro, idx)}" if dentro != "1" else fuera
+    radicando = f"{N}x{sup(e1)}y{sup(e2) if e2 > 1 else ''}"
+    mal_fuera = (str(c) if c > 1 else "") + "x" + (sup(q1) if q1 > 1 else "") + ("y" + (sup(q2) if q2 > 1 else "") if q2 else "")
+    mal_dentro = ([str(k)] if k > 1 else []) + ["x" + (sup(q1) if q1 > 1 else "")] + (["y" + (sup(q2) if q2 > 1 else "")] if q2 else [])
+    e02 = f"{mal_fuera} {rtxt(''.join(mal_dentro), idx)}" if q1 != r1 else None
+    e01 = f"{c ** idx if c > 1 else ''}x{sup(q1 * idx) if q1 * idx > 1 else ''} {rtxt(dentro, idx)}" if dentro != "1" else None
+    pasos = [("factorizar", f"{c}{sup(idx)}·{k}·x{sup(e1)}·y{sup(e2) if e2 > 1 else ''}", f"{N} = {c}{sup(idx)} · {k}; x{sup(e1)} = (x{sup(idx)}){sup(q1) if q1 > 1 else ''}·x{sup(r1) if r1 > 1 else ''}" + ("" if r1 else "") + "."),
+             ("extraer", resp, f"Divido cada exponente entre el índice: el cociente sale fuera y el resto se queda dentro. Resultado: {resp}.")]
+    return mk(f"Extrae factores del radical: {rtxt(radicando, idx)}", resp, "t3_radic_extraer", {"radicando": radicando, "indice": idx},
+              [(e02, "E02"), (e01, "E01"), ((str(c) if c > 1 else "") + "x" + sup(q1 + 1) + ("y" + (sup(q2) if q2 > 1 else "") if q2 else "") + (f" {rtxt(dentro, idx)}" if dentro != "1" else ""), None), (f"x{sup(e1 // 2) if e1 // 2 > 1 else ''} {rtxt(str(N), idx)}", None)], pasos,
+              "Para extraer: exponente : índice → el cociente sale como exponente fuera; el resto queda dentro.")
+
+
+@generador("t3_radic_04")
+def gen_radic_04(rng, d):
+    if d < 3:
+        idx = 2 if d == 1 else 3
+        a = rng.randint(2, 7 if idx == 2 else 4)
+        b = rng.choice([2, 3, 5, 6, 7, 10, 11]) if idx == 2 else rng.choice([2, 3, 4, 5, 6, 7])
+        resp = rtxt(a ** idx * b, idx)
+        pasos = [("elevar al índice", resp, f"Para meter {a} dentro lo elevo al índice: {a}{sup(idx)} = {a ** idx}. {a}{rtxt(b, idx)} = {rtxt(f'{a ** idx}·{b}', idx)} = {resp}.")]
+        e02 = rtxt(a ** (idx - 1) * b, idx) if idx == 3 else rtxt(a ** 3 * b, idx)
+        return mk(f"Introduce el factor dentro del radical: {a}{rtxt(b, idx)}", resp, "t3_radic_introducir", {"a": a, "b": b, "indice": idx},
+                  [(rtxt(a * b, idx), "E01"), (e02, "E02"), (rtxt(a + b, idx), None), (rtxt(a ** idx + b, idx), None)], pasos,
+                  "Un factor entra en la raíz elevado al índice: a·ⁿ√b = ⁿ√(aⁿ·b).")
+    t = rng.choice(["neg", "frac", "letra"])
+    if t == "neg":
+        a = rng.randint(2, 6)
+        b = rng.choice([2, 3, 5, 7])
+        resp = f"−{rtxt(a * a * b)}"
+        pasos = [("signo fuera", resp, f"El signo menos no puede entrar en una raíz de índice par: se queda fuera. −{a}√{b} = −√({a * a}·{b}) = {resp}.")]
+        return mk(f"Introduce el factor dentro del radical: −{a}√{b}", resp, "t3_radic_introducir", {"a": -a, "b": b},
+                  [(rtxt(a * a * b), "E03"), (rtxt(-a * a * b), "E03"), (f"−{rtxt(a * b)}", "E01")], pasos,
+                  "En índice par el signo negativo se queda fuera de la raíz (la raíz cuadrada es siempre positiva).")
+    if t == "frac":
+        for _ in range(100):
+            p, q = rng.randint(1, 4), rng.randint(2, 5)
+            m, n = rng.randint(2, 30), rng.randint(2, 30)
+            if math.gcd(p, q) != 1 or math.gcd(m, n) != 1:
+                continue
+            v = F(p * p * m, q * q * n)
+            if v.numerator < 100 and v.denominator < 100 and v.denominator > 1:
+                break
+        resp = f"√({fr(v)})"
+        pasos = [("elevar al cuadrado", f"{p * p}/{q * q}", f"({p}/{q})² = {p * p}/{q * q}."),
+                 ("multiplicar y simplificar", resp, f"({p}/{q})·√({m}/{n}) = √({p * p}/{q * q} · {m}/{n}) = {resp}.")]
+        return mk(f"Introduce el factor dentro del radical: ({p}/{q})·√({m}/{n})", resp, "t3_radic_introducir", {"p": p, "q": q, "m": m, "n": n},
+                  [(f"√({fr(F(p * m, q * n))})", "E01"), (f"√({fr(F(p ** 3 * m, q ** 3 * n))})", "E02"), (f"√({fr(v * 2)})", None)], pasos,
+                  "El coeficiente fraccionario entra elevado al índice: (p/q)² multiplica al radicando.")
+    idx = rng.choice([2, 3])
+    e = rng.randint(1, 3)
+    c = rng.randint(2, 4)
+    resp = rtxt(f"{c ** idx}x{sup(idx + e)}", idx)
+    pasos = [("elevar al índice", resp, f"{c}x · {rtxt('x' + (sup(e) if e > 1 else ''), idx)} = {rtxt(f'{c}{sup(idx)}x{sup(idx)}·x' + (sup(e) if e > 1 else ''), idx)} = {resp}.")]
+    return mk(f"Introduce el factor dentro del radical: {c}x·{rtxt('x' + (sup(e) if e > 1 else ''), idx)}", resp, "t3_radic_introducir", {"c": c, "e": e, "indice": idx},
+              [(rtxt(f"{c}x{sup(1 + e)}", idx), "E01"), (rtxt(f"{c ** (idx + 1)}x{sup(idx + 1 + e)}", idx), "E02"), (rtxt(f"{c * idx}x{sup(idx * e)}", idx), None)], pasos,
+              "Cada factor que entra se eleva al índice: c·x·ⁿ√(x^e) = ⁿ√(cⁿ·xⁿ⁺ᵉ).")
+
+
+@generador("t3_radic_05")
+def gen_radic_05(rng, d):
+    idx = 2 if d < 3 else rng.choice([2, 3])
+    k = rng.choice([2, 3, 5, 6, 7]) if idx == 2 else rng.choice([2, 3, 4, 5])
+    for _ in range(100):
+        nterm = 2 if d < 3 else 3
+        if d == 1:
+            cs = [rng.randint(1, 9) * rng.choice([1, 1, -1]) for _ in range(nterm)]
+            ss = [1] * nterm
+        else:
+            cs = [rng.randint(1, 5) * (1 if i == 0 else rng.choice([1, -1])) for i in range(nterm)]
+            ss = [rng.randint(1, 5) for _ in range(nterm)]
+            if all(s_ == 1 for s_ in ss) or len(set(ss)) < 2:
+                continue
+        tot = sum(c * s_ for c, s_ in zip(cs, ss))
+        if tot != 0 and cs[0] > 0:
+            break
+    else:
+        return None
+    rads = [s_ ** idx * k for s_ in ss]
+    terms_txt = [rad(c, r, idx) if True else "" for c, r in zip(cs, rads)]
+    expr = suma_txt(terms_txt)
+    resp = rad(tot, k, idx)
+    simpl = suma_txt([rad(c * s_, k, idx) for c, s_ in zip(cs, ss)])
+    pasos = ([("extraer factores", simpl, "Extraigo factores para que sean semejantes: " + ", ".join(f"{rtxt(r, idx)} = {rad(s_, k, idx)}" for r, s_ in zip(rads, ss) if s_ > 1) + f". Queda {simpl}.")] if d > 1 else []) + \
+            [("sumar coeficientes", resp, f"Son radicales semejantes ({rtxt(k, idx)}): sumo los coeficientes, {' + '.join(str(c * s_) for c, s_ in zip(cs, ss)).replace('+ -', '− ')} = {tot}. Resultado: {resp}.")]
+    sum_rad = sum(c * r for c, r in zip(cs, rads))
+    e01 = rad(1, sum_rad, idx) if sum_rad > 0 and d > 1 else None
+    e02 = rad(sum(cs), k * len(cs), idx) if d == 1 and sum(cs) > 0 else rad(tot, k * 2, idx)
+    return mk(f"Calcula y simplifica: {expr}", resp, "t3_radic_suma", {"expr": expr},
+              [(e01 if e01 != resp else None, "E01"), (e02, "E02"), ("No se puede simplificar" if d > 1 else None, "E03"), (rad(tot + 1, k, idx), None), (rad(-tot, k, idx), None)], pasos,
+              "Solo se suman radicales semejantes (mismo índice y radicando): se suman los coeficientes. A veces hay que extraer factores antes.")
+
+
+@generador("t3_radic_06")
+def gen_radic_06(rng, d):
+    if d == 1:
+        if rng.random() < 0.3:
+            a = rng.choice([2, 3, 5, 6, 7])
+            p, q = rng.randint(1, 5), rng.randint(1, 5)
+            resp = fmt(p * q * a)
+            pasos = [("√a · √a = a", resp, f"{rad(p, a)} · {rad(q, a)} = {p * q} · (√{a})² = {p * q} · {a} = {resp}.")]
+            return mk(f"Calcula {rad(p, a)} · {rad(q, a)}.", resp, "t3_radic_prod", {"a": a, "p": p, "q": q},
+                      [(rad(p * q, a), "E03"), (fmt(p * q * a * a), "E03"), (rtxt(p * q * a * a) if p * q > 1 else str(a + 1), "E02" if p * q > 1 else None)], pasos,
+                      "√a · √a = a (no √a ni a²).")
+        for _ in range(100):
+            m, n = rng.choice([2, 3, 5, 6, 7, 10]), rng.choice([2, 3, 5, 6, 7, 10])
+            p, q = rng.randint(1, 5), rng.randint(1, 5)
+            if m != n:
+                break
+        c, k = extraer(m * n)
+        resp = rad(p * q * c, k)
+        pasos = [("√a·√b = √(ab)", f"{p * q}√{m * n}", f"Multiplico coeficientes ({p}·{q} = {p * q}) y radicandos ({m}·{n} = {m * n}): {p * q}√{m * n}."),
+                 ("simplificar", resp, f"Simplifico: {resp}.")]
+        return mk(f"Calcula {rad(p, m)} · {rad(q, n)}.", resp, "t3_radic_prod", {"p": p, "m": m, "q": q, "n": n},
+                  [(rtxt(p * m * q * n) if p * q > 1 else rtxt(m + n), "E02"), (rad(p * q, m + n), None), (rad(p + q, m * n) if p + q != p * q else rad(p * q + 1, m * n), None)], pasos,
+                  "Coeficientes con coeficientes y radicandos con radicandos: p√m · q√n = pq√(mn).")
+    if d == 2:
+        for _ in range(100):
+            k = rng.choice([2, 3, 5, 6, 7])
+            s1, s2 = rng.randint(1, 6), rng.randint(1, 4)
+            idx = rng.choice([2, 2, 3])
+            A = s1 ** idx * k * s2 ** idx
+            B = k
+            if A != B and A < 3000:
+                break
+        resp = str(s1 * s2)
+        pasos = [("√a/√b = √(a/b)", f"{rtxt(A // B, idx)}", f"{rtxt(A, idx)} / {rtxt(B, idx)} = {rtxt(f'{A}/{B}', idx)} = {rtxt(A // B, idx)}."),
+                 ("calcular", resp, f"= {resp}.")]
+        return mk(f"Calcula {rtxt(A, idx)} / {rtxt(B, idx)}.", resp, "t3_radic_prod", {"a": A, "b": B, "indice": idx},
+                  [(str(A // B), None), (rtxt(A - B, idx), None), (rad(s1 * s2, k, idx), None), (str(s1 * s2 * k), None)], pasos,
+                  "Radicales del mismo índice: ⁿ√a / ⁿ√b = ⁿ√(a/b).")
+    t = rng.choice(["cuad_suma", "sumdif", "cuad_dif2"])
+    if t == "cuad_suma":
+        a = rng.choice([2, 3, 5, 6, 7])
+        b = rng.randint(1, 5)
+        sg = rng.choice([1, -1])
+        resp = surd({1: a + b * b, a: 2 * b * sg})
+        pasos = [("(x ± y)² = x² ± 2xy + y²", resp, f"(√{a} {'+' if sg > 0 else '−'} {b})² = {a} {'+' if sg > 0 else '−'} 2·{b}·√{a} + {b * b} = {resp}.")]
+        return mk(f"Calcula (√{a} {'+' if sg > 0 else '−'} {b})².", resp, "t3_radic_notable", {"a": a, "b": b, "signo": sg},
+                  [(str(a + b * b), "E01"), (surd({1: a * a + b * b, a: 2 * b * sg}) if False else surd({1: a + b * b, a: b * sg}), None), (surd({1: a - b * b, a: 2 * b * sg}), None)], pasos,
+                  "El cuadrado de un binomio tiene tres términos: no olvidar el doble producto.")
+    if t == "sumdif":
+        a, b = rng.sample([2, 3, 5, 6, 7, 10, 11], 2)
+        if a < b:
+            a, b = b, a
+        p = rng.randint(1, 3)
+        resp = fmt(p * p * a - b)
+        pasos = [("(x + y)(x − y) = x² − y²", resp, f"Suma por diferencia: ({rad(p, a)})² − (√{b})² = {p * p * a} − {b} = {resp}.")]
+        return mk(f"Calcula ({rad(p, a)} + √{b})({rad(p, a)} − √{b}).", resp, "t3_radic_notable", {"a": a, "b": b, "p": p},
+                  [(fmt(p * p * a + b), None), (surd({1: p * p * a - b, a * b: 2 * p}), None), (fmt(p * a - b) if p * a - b != p * p * a - b else fmt(p * a + b), None), (rtxt(p * p * a - b) if p * p * a - b > 0 else None, "E03")], pasos,
+                  "Suma por diferencia: (x + y)(x − y) = x² − y², y (√a)² = a.")
+    a, b = rng.sample([2, 3, 5, 6, 7], 2)
+    p = rng.randint(2, 3)
+    c, k = extraer(a * b)
+    resp = surd({1: p * p * a + b, k: -2 * p * c})
+    pasos = [("(x − y)² = x² − 2xy + y²", resp, f"({rad(p, a)} − √{b})² = {p * p * a} − 2·{p}√{a * b} + {b} = {resp}.")]
+    return mk(f"Calcula ({rad(p, a)} − √{b})².", resp, "t3_radic_notable", {"a": a, "b": b, "p": p},
+              [(str(p * p * a + b), "E01"), (str(p * p * a - b), None), (surd({1: p * p * a + b, k: 2 * p * c}), None), (surd({1: p * a + b, k: -2 * p * c}), None)], pasos,
+              "Cuadrado de una resta: x² − 2xy + y². Sin el doble producto el resultado es falso.")
+
+
+@generador("t3_radic_07")
+def gen_radic_07(rng, d):
+    if d == 1:
+        n1, n2 = rng.choice([2, 3, 4, 5]), rng.choice([2, 3, 4])
+        v = rng.choice(["a", "x", "2", "3", "5", "7"])
+        resp = rtxt(v, n1 * n2)
+        pasos = [("raíz de raíz", resp, f"La raíz de una raíz es otra raíz con el producto de los índices: {n1}·{n2} = {n1 * n2}. Resultado: {resp}.")]
+        inner = rtxt(v, n2)
+        return mk(f"Escribe como un solo radical: {rtxt(inner, n1) if n1 > 2 else '√(' + inner + ')'}", resp, "t3_radic_indices", {"n1": n1, "n2": n2, "v": v},
+                  [(rtxt(v, n1 + n2), "E02"), (rtxt(v, max(n1, n2)), None), (rtxt(v + sup(n1), n2), None)], pasos,
+                  "ⁿ√(ᵐ√a) = ⁿᵐ√a: los índices se multiplican.")
+    if d == 2:
+        for _ in range(100):
+            n1, n2 = rng.sample([2, 3, 4, 6], 2)
+            a, b = rng.choice([2, 3, 5]), rng.choice([2, 3, 5])
+            m = math.lcm(n1, n2)
+            R = a ** (m // n1) * b ** (m // n2)
+            c, k = extraer(R, m)
+            if R < 10 ** 6 and m <= 12:
+                break
+        op = rng.choice(["·", ":"])
+        if op == ":":
+            val = F(a ** (m // n1), b ** (m // n2))
+            resp = rtxt(fr(val), m) if val.denominator != 1 else (rad(*extraer(val.numerator, m), m) if True else "")
+            e03v = F(a, b)
+            pasos = [("índice común", str(m), f"mcm({n1}, {n2}) = {m}: {rtxt(a, n1)} = {rtxt(a ** (m // n1), m)} y {rtxt(b, n2)} = {rtxt(b ** (m // n2), m)}."),
+                     ("dividir", resp, f"Divido los radicandos: {resp}.")]
+            return mk(f"Calcula y escribe como un solo radical: {rtxt(a, n1)} : {rtxt(b, n2)}", resp, "t3_radic_indices", {"a": a, "n1": n1, "b": b, "n2": n2, "op": op},
+                      [(rtxt(fr(e03v), n1 + n2), "E01"), (rtxt(fr(e03v), m), "E03"), (rtxt(fr(e03v), abs(n1 - n2)) if abs(n1 - n2) > 1 else rtxt(fr(e03v), 2 * m), None)], pasos,
+                      "Para operar radicales de distinto índice se reducen a índice común (mcm), elevando cada radicando.")
+        resp = rad(c, k, m)
+        pasos = [("índice común", str(m), f"mcm({n1}, {n2}) = {m}: {rtxt(a, n1)} = {rtxt(a ** (m // n1), m)} y {rtxt(b, n2)} = {rtxt(b ** (m // n2), m)}."),
+                 ("multiplicar", resp, f"Multiplico los radicandos: {rtxt(R, m)}" + (f" = {resp}." if resp != rtxt(R, m) else "."))]
+        return mk(f"Calcula y escribe como un solo radical: {rtxt(a, n1)} · {rtxt(b, n2)}", resp, "t3_radic_indices", {"a": a, "n1": n1, "b": b, "n2": n2, "op": op},
+                  [(rtxt(a * b, n1 + n2), "E01"), (rtxt(a * b, m), "E03"), (rtxt(a * b, max(n1, n2)) if rtxt(a * b, max(n1, n2)) != resp else rtxt(a * b, n1 * n2 + 1), "E01")], pasos,
+                  "Radicales de distinto índice: primero a índice común (mcm) elevando los radicandos; después se multiplican.")
+    for _ in range(100):
+        (a, n1), (b, n2) = rng.sample([(2, 2), (3, 2), (5, 2), (3, 3), (5, 3), (2, 3), (10, 3), (4, 3), (7, 3), (3, 4), (10, 4), (6, 4)], 2)
+        if n1 == n2:
+            continue
+        m = math.lcm(n1, n2)
+        A, B = a ** (m // n1), b ** (m // n2)
+        if A != B:
+            break
+    mayor, menor = (rtxt(a, n1), rtxt(b, n2)) if A > B else (rtxt(b, n2), rtxt(a, n1))
+    pasos = [("índice común", str(m), f"Paso a índice {m}: {rtxt(a, n1)} = {rtxt(A, m)} y {rtxt(b, n2)} = {rtxt(B, m)}."),
+             ("comparar radicandos", mayor, f"Con el mismo índice, es mayor el de mayor radicando: {mayor}.")]
+    return mk(f"¿Qué número es mayor: {rtxt(a, n1)} o {rtxt(b, n2)}?", mayor, "t3_radic_comparar", {"a": a, "n1": n1, "b": b, "n2": n2},
+              [(menor, "E03" if (a > b) != (A > B) else None), ("Son iguales", None), ("No se pueden comparar", None)], pasos,
+              "Para comparar radicales de distinto índice se reducen a índice común; comparar solo los radicandos engaña.", datos={"opciones_fijas": True})
+
+
+@generador("t3_radic_08")
+def gen_radic_08(rng, d):
+    if d == 1:
+        a = rng.randint(1, 12)
+        c = rng.choice([2, 3, 5, 6, 7, 10])
+        resp = surd({c: a}, c)
+        pasos = [("× √c / √c", f"{a}√{c}/{c}", f"Multiplico arriba y abajo por √{c}: {a}·√{c} / (√{c})² = {a}√{c}/{c}."),
+                 ("simplificar", resp, f"Simplifico: {resp}.")]
+        return mk(f"Racionaliza: {a}/√{c}", resp, "t3_racionalizar", {"a": a, "c": c},
+                  [(fr(F(a, c)), "E01"), (surd({c: a}, c * c), None), (surd({c: c}, a) if a != c else surd({c: 1}, 2 * a), None)], pasos,
+                  "Para quitar √c del denominador se multiplica numerador y denominador por √c.")
+    if d == 2:
+        if rng.random() < 0.4:
+            k = rng.choice([2, 3, 5, 7])
+            m = rng.choice([2, 3, 5, 7])
+            if m == k:
+                m = 11
+            A = k * m
+            resp = rtxt(k)
+            pasos = [("√a/√b = √(a/b)", resp, f"√{A}/√{m} = √({A}/{m}) = √{k}.")]
+            return mk(f"Simplifica: √{A}/√{m}", resp, "t3_racionalizar", {"a": A, "b": m},
+                      [(str(k), "E03"), (rtxt(A - m), None), (surd({A * m: 1}, m), None)], pasos, "√a/√b = √(a/b); quitar las raíces y dividir no es válido.")
+        a = rng.randint(1, 12)
+        b = rng.randint(2, 6)
+        c = rng.choice([2, 3, 5, 6, 7])
+        resp = surd({c: a}, b * c)
+        pasos = [("× √c", f"{a}√{c}/({b}·{c})", f"Multiplico arriba y abajo por √{c}: {a}√{c} / ({b}·{c})."),
+                 ("simplificar", resp, f"Simplifico: {resp}.")]
+        return mk(f"Racionaliza: {a}/({b}√{c})", resp, "t3_racionalizar", {"a": a, "b": b, "c": c},
+                  [(fr(F(a, b * c)), "E01"), (surd({c: a}, b * c * c), None), (surd({c: a * b}, c), None)], pasos,
+                  "Solo hay que multiplicar por el radical (√c), no por todo el denominador.")
+    p = rng.choice([2, 3, 5])
+    n = rng.choice([3, 3, 4])
+    m = rng.randint(1, n - 1)
+    a = rng.randint(1, 9)
+    b = rng.randint(1, 5)
+    falta = n - m
+    resp = surd({p ** falta: a}, b * p, n)
+    pasos = [("completar la potencia", rtxt(f"{p}{sup(falta) if falta > 1 else ''}", n), f"En el denominador hay {rtxt(f'{p}' + (sup(m) if m > 1 else ''), n)}: para que salga {p} necesito {rtxt(f'{p}' + (sup(falta) if falta > 1 else ''), n)} (exponentes {m} + {falta} = {n})."),
+             ("racionalizar", resp, f"Multiplico arriba y abajo: {rtxt(p ** falta, n)} en el numerador y {p} en el denominador. Resultado: {resp}.")]
+    rd = f"{p}" + (sup(m) if m > 1 else "")
+    return mk(f"Racionaliza: {a}/({str(b) + '·' if b > 1 else ''}{rtxt(rd, n)})", resp, "t3_racionalizar", {"a": a, "b": b, "p": p, "m": m, "n": n},
+              [(surd({p ** m: a}, b * p ** m, n) if m > 0 else None, "E02"), (fr(F(a, b * p)), "E01"), (surd({p ** falta: a}, b * p ** falta, n), None)], pasos,
+              "Con raíz n-ésima se multiplica por el radical que completa el exponente hasta el índice: 1/∛4 → × ∛2.")
+
+
+@generador("t3_radic_09")
+def gen_radic_09(rng, d):
+    if d == 1:
+        for _ in range(100):
+            b = rng.choice([2, 3, 5, 6, 7, 10, 11])
+            c = rng.randint(1, 3)
+            a = rng.randint(1, 8)
+            if b != c * c:
+                break
+        sg = rng.choice([1, -1])
+        den = b - c * c
+        # a/(√b + sg·c) = a(√b − sg·c)/(b − c²)
+        resp = surd({b: a, 1: -sg * a * c}, den)
+        e01 = surd({b: a, 1: sg * a * c}, den)
+        e02 = surd({b: a, 1: -sg * a * c}, b + c * c)
+        e03 = f"{a}/√{b} {'+' if sg > 0 else '−'} {a if c == 1 else f'{a}/{c}'}"
+        pasos = [("conjugado", f"√{b} {'−' if sg > 0 else '+'} {c}", f"Multiplico arriba y abajo por el conjugado del denominador: √{b} {'−' if sg > 0 else '+'} {c}."),
+                 ("suma por diferencia", str(den), f"Abajo: (√{b})² − {c}² = {b} − {c * c} = {den}."),
+                 ("resultado", resp, f"Resultado: {resp}.")]
+        return mk(f"Racionaliza: {a}/(√{b} {'+' if sg > 0 else '−'} {c})", resp, "t3_racionalizar_bin", {"a": a, "b": b, "c": c, "signo": sg},
+                  [(e01, "E01"), (e02, "E02"), (e03, "E03")], pasos,
+                  "Con un binomio en el denominador se multiplica por su conjugado (cambiando el signo del medio) y se usa suma por diferencia.")
+    if d == 2:
+        b, c = rng.sample([2, 3, 5, 6, 7, 10, 11], 2)
+        if b < c:
+            b, c = c, b
+        a = rng.randint(1, 8)
+        sg = rng.choice([1, -1])
+        den = b - c
+        resp = surd({b: a, c: -sg * a}, den)
+        pasos = [("conjugado", f"√{b} {'−' if sg > 0 else '+'} √{c}", f"Multiplico por el conjugado √{b} {'−' if sg > 0 else '+'} √{c}."),
+                 ("suma por diferencia", str(den), f"Abajo: {b} − {c} = {den}."), ("resultado", resp, f"Resultado: {resp}.")]
+        return mk(f"Racionaliza: {a}/(√{b} {'+' if sg > 0 else '−'} √{c})", resp, "t3_racionalizar_bin", {"a": a, "b": b, "c": c, "signo": sg},
+                  [(surd({b: a, c: sg * a}, den), "E01"), (surd({b: a, c: -sg * a}, b + c), "E02"), (f"{a}/√{b} {'+' if sg > 0 else '−'} {a}/√{c}", "E03")], pasos,
+                  "a/(√b ± √c): se multiplica por √b ∓ √c y el denominador queda b − c.")
+    b, c = rng.sample([2, 3, 5, 6, 7, 10, 11], 2)
+    if b < c:
+        b, c = c, b
+    ck, kk = extraer(b * c)
+    den = b - c
+    resp = surd({1: b + c, kk: 2 * ck}, den)
+    pasos = [("conjugado", f"√{b} + √{c}", f"Multiplico arriba y abajo por √{b} + √{c}."),
+             ("numerador", f"{b + c} + 2√{b * c}", f"Arriba: (√{b} + √{c})² = {b} + {c} + 2√{b * c}" + (f" = {b + c} + {rad(2 * ck, kk)}." if ck > 1 else ".")),
+             ("denominador", str(den), f"Abajo: {b} − {c} = {den}. Simplifico: {resp}.")]
+    return mk(f"Racionaliza y simplifica: (√{b} + √{c})/(√{b} − √{c})", resp, "t3_racionalizar_bin", {"b": b, "c": c},
+              [(surd({1: b + c}, den), None), (surd({1: b + c, kk: 2 * ck}, b + c), "E02"), (surd({1: b - c, kk: 2 * ck}, den) if b - c != 0 else None, None), (surd({1: b + c, kk: ck}, den), None)], pasos,
+              "(√b + √c)/(√b − √c): multiplicando por el conjugado, el numerador es un cuadrado de binomio (con doble producto).")
+
+
+@generador("t3_radic_10")
+def gen_radic_10(rng, d):
+    t = rng.choice(["frac_raiz", "pita"] if d == 1 else ["pot_frac", "frac_raiz"] if d == 2 else ["frontera", "pot3"])
+    if t == "frac_raiz":
+        k = rng.choice([2, 3, 5])
+        a, b = rng.sample(range(1, 7), 2)
+        A, B = a * a * k, b * b * k
+        resp = str(a + b)
+        pasos = [("extraer", f"({rad(a, k)} + {rad(b, k)})/√{k}", f"√{A} = {rad(a, k)} y √{B} = {rad(b, k)}."),
+                 ("dividir", resp, f"({rad(a + b, k)})/√{k} = {a + b}.")]
+        return mk(f"Simplifica: (√{A} + √{B})/√{k}", resp, "t3_radic_comb", {"A": A, "B": B, "k": k},
+                  [(f"{rad(1, A // k)} + √{B}" if A // k > 1 else f"1 + √{B}", "E02"), (rtxt(A + B) if extraer(A + B)[1] != 1 else str(a + b + 1), None), (str(a * b), None), (fr(F(a + b, k)), None)], pasos,
+                  "Se simplifica cada radical (o se divide cada término entre √k), no solo el primero.")
+    if t == "pita":
+        p, q, r = rng.choice([(3, 4, 5), (6, 8, 10), (5, 12, 13), (8, 15, 17), (9, 12, 15), (12, 16, 20), (7, 24, 25), (20, 21, 29), (9, 40, 41), (15, 20, 25)])
+        k = rng.choice([1, 1, 2])
+        resp = str(r * k) if k == 1 else rad(r, 1)
+        pasos = [("primero dentro", str(p * p + q * q), f"Primero opero dentro de la raíz: {p}² + {q}² = {p * p} + {q * q} = {r * r}."), ("raíz", str(r), f"√{r * r} = {r}.")]
+        return mk(f"Calcula √({p}² + {q}²).", str(r), "t3_radic_comb", {"p": p, "q": q},
+                  [(str(p + q), "E01"), (str(r + 1), None), (str(p * q), None), (rtxt(p + q), None)], pasos,
+                  "La raíz no se reparte en una suma: √(a² + b²) ≠ a + b.")
+    if t == "pot_frac":
+        m, n = rng.sample([2, 3, 4, 5, 6], 2)
+        v = rng.choice(["a", "x"])
+        e = F(1, m) + F(1, n)
+        resp = f"{v}^({fr(e)})"
+        pasos = [("sumar exponentes", resp, f"{v}^(1/{m}) · {v}^(1/{n}) = {v}^(1/{m} + 1/{n}) = {v}^({fr(e)}).")]
+        return mk(f"Simplifica: {rtxt(v, m)} · {rtxt(v, n)} (exprésalo como potencia).", resp, "t3_radic_comb", {"m": m, "n": n},
+                  [(f"{v}^({fr(F(2, m + n))})", "E03"), (f"{v}^({fr(F(1, m * n))})", None), (f"{v}^({fr(F(1, m) * F(1, n) * 2)})" if F(2, m * n) != e else f"{v}^2", None)], pasos,
+                  "Con exponentes fraccionarios se suman las fracciones con común denominador: 1/2 + 1/3 = 5/6.")
+    if t == "frontera":
+        k = rng.choice([2, 3])
+        a, b = rng.sample(range(1, 6), 2)
+        c = rng.randint(1, 3)
+        mm = rng.choice([2, 3])
+        A, B = a * a * k, b * b * k
+        resp = fmt(a + b - c)
+        pasos = [("primer término", str(a + b), f"(√{A} + √{B})/√{k} = ({rad(a, k)} + {rad(b, k)})/√{k} = {a + b}."),
+                 ("segundo término", str(c), f"∛{c ** 3 * mm} · ∛(1/{mm}) = ∛{c ** 3} = {c}."),
+                 ("restar", resp, f"{a + b} − {c} = {resp}.")]
+        return mk(f"Simplifica: (√{A} + √{B})/√{k} − ∛{c ** 3 * mm} · ∛(1/{mm})", resp, "t3_radic_comb", {"A": A, "B": B, "k": k, "c": c, "m": mm},
+                  [(f"{rad(1, A // k)} + √{B} − {c}" if A // k > 1 else f"1 + √{B} − {c}", "E02"), (fmt(a + b + c), None), (fmt(a + b - c * mm), None), (fmt(a + b), None)], pasos,
+                  "Cada término se simplifica por separado; en los productos de raíces del mismo índice se multiplican los radicandos.")
+    v = rng.choice(["a", "x"])
+    m, n, p = rng.sample([2, 3, 4, 6], 3)
+    e = F(1, m) + F(1, n) - F(1, p)
+    if e <= 0:
+        return None
+    resp = rtxt(v + (sup(e.numerator) if e.numerator > 1 else ""), e.denominator) if e.denominator > 1 else v + (sup(e.numerator) if e.numerator > 1 else "")
+    pasos = [("a potencias", f"{v}^(1/{m}) · {v}^(1/{n}) / {v}^(1/{p})", f"Paso a exponentes fraccionarios: {v}^(1/{m} + 1/{n} − 1/{p})."),
+             ("operar", resp, f"1/{m} + 1/{n} − 1/{p} = {fr(e)}: {v}^({fr(e)}) = {resp}.")]
+    e3 = F(2, m + n) - F(1, p)
+    return mk(f"Simplifica y escribe como un solo radical: {rtxt(v, m)} · {rtxt(v, n)} / {rtxt(v, p)}", resp, "t3_radic_comb", {"m": m, "n": n, "p": p},
+              [(f"{v}^({fr(e3)})" if e3 > 0 else f"{v}^({fr(F(2, m + n))})", "E03"), (rtxt(v, m * n * p), None), (rtxt(v, m + n - p) if m + n - p > 1 else rtxt(v, m + n + p), None)], pasos,
+              "Pasar a exponentes fraccionarios permite combinar productos y cocientes de radicales de distinto índice.")

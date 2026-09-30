@@ -207,12 +207,28 @@ def gen_conv(rng, d, magnitud="longitud", unidades=None, pares=None, pasos_min=1
 
 # ---------------------------------------------------------------- forma compleja ↔ incompleja (dos unidades)
 
+CTX_UD = {"m": [("Una cuerda", "mide", "mide"), ("Una valla", "mide", "mide"), ("Una alfombra", "mide", "mide"), ("Un tobogán", "mide", "mide"),
+                ("Una pizarra", "mide", "mide"), ("Un banco del parque", "mide", "mide"), ("Una cinta", "mide", "mide")],
+          "kg": [("Una sandía", "pesa", "pesa"), ("Un saco de patatas", "pesa", "pesa"), ("Una maleta", "pesa", "pesa"), ("Un perro", "pesa", "pesa"),
+                 ("Una caja de libros", "pesa", "pesa"), ("Un paquete", "pesa", "pesa")],
+          "t": [("Un camión", "pesa", "pesa"), ("Un elefante", "pesa", "pesa"), ("Una ballena", "pesa", "pesa"), ("Un autobús", "pesa", "pesa"),
+                ("Un barco pequeño", "pesa", "pesa"), ("Una grúa", "pesa", "pesa")],
+          "l": [("Una garrafa", "tiene", "contiene"), ("Una pecera", "tiene", "contiene"), ("Un cubo", "tiene", "contiene"), ("Una jarra", "tiene", "contiene"),
+                ("Un bidón", "tiene", "contiene"), ("Una cantimplora", "tiene", "contiene")]}
+
+
+def _ctx_enun(rng, grande, cantidad, peque):
+    ob, v1, v2 = rng.choice(CTX_UD[grande])
+    return f"{ob} {v1} {cantidad}. ¿Cuántos {peque} {v2}?"
+
+
 @generador("t4_compleja")
 def gen_compleja(rng, d, grande="m", peque="cm", factor=100, max_grande=9, modos=("a_peque", "a_compleja"),
                  simple=False, nombre_grande=None, nombre_peque=None):
     """Pasa «a grande b peque» a peque y al revés. simple=True añade el modo «a grande → peque» (enteros)."""
     modo = rng.choice(list(modos))
-    a = rng.randint(1 if modo != "simple" else 2, max_grande)
+    a = rng.randint(1, max_grande)
+    ctx = grande in CTX_UD and rng.random() < 0.5
     cif = len(str(factor)) - 1
     if d == 1:
         b = rng.choice([x for x in range(10 ** (cif - 1), factor) if x % (10 ** (cif - 1)) == 0])
@@ -223,13 +239,13 @@ def gen_compleja(rng, d, grande="m", peque="cm", factor=100, max_grande=9, modos
     total = a * factor + b
     if modo == "simple":
         total = a * factor
-        enun = f"¿Cuántos {peque} son {a} {grande}?"
+        enun = _ctx_enun(rng, grande, f"{a} {grande}", peque) if ctx else f"¿Cuántos {peque} son {a} {grande}?"
         resp = f"{fmt(total)} {peque}"
         dist = [(f"{fmt(a * factor // 10)} {peque}", "factor_100"), (f"{a} {peque}", "mismo_numero"),
                 (f"{fmt(a * factor * 10)} {peque}", "factor_mas"), (f"{fx(D(a) / factor)} {peque}", "sentido_contrario")]
         pasos = [(f"{a} × {fmt(factor)}", fmt(total), f"1 {grande} = {fmt(factor)} {peque}, así que {a} {grande} = {a} × {fmt(factor)} = {fmt(total)} {peque}.")]
     elif modo == "a_peque":
-        enun = f"¿Cuántos {peque} son {a} {grande} y {b} {peque}?"
+        enun = _ctx_enun(rng, grande, f"{a} {grande} y {b} {peque}", peque) if ctx else f"¿Cuántos {peque} son {a} {grande} y {b} {peque}?"
         resp = f"{fmt(total)} {peque}"
         yux = int(f"{a}{b}")
         dist = [(f"{fmt(yux)} {peque}" if yux != total else None, "yuxtapone"), (f"{a + b} {peque}", "suma_como_iguales"),
@@ -263,18 +279,19 @@ def gen_compleja(rng, d, grande="m", peque="cm", factor=100, max_grande=9, modos
 @generador("t4_medios_cuartos")
 def gen_medios_cuartos(rng, d, unidad="kilo", max_u=5):
     und = {"kilo": ("kilo", "kilos", "paquete", "paquetes", "¿Cuántos"), "litro": ("litro", "litros", "botella", "botellas", "¿Cuántas")}[unidad]
+    prod = rng.choice(["arroz", "harina", "azúcar", "lentejas", "garbanzos", "sal"] if unidad == "kilo" else ["agua", "zumo", "leche", "aceite", "limonada"])
     tipo = rng.choice(["cuantos_cuartos", "cuantos_medios"] if d == 1 else ["cuantos_cuartos", "cuantos_medios", "de_piezas"] if d == 2
                       else ["de_piezas", "mezcla", "cuantos_cuartos"])
     n = rng.randint(1, max_u if d > 1 else 3)
     if tipo == "cuantos_cuartos":
         r = 4 * n
-        enun = f"{und[4]} {und[3]} de un cuarto de {und[0]} hacen falta para tener {n} {plural(n, und[0], und[1])}?"
+        enun = f"{und[4]} {und[3]} de un cuarto de {und[0]} hacen falta para tener {n} {plural(n, und[0], und[1])} de {prod}?"
         resp = str(r)
         dist = [(str(2 * n), "cuartos_2"), (str(n), "cuenta_como_enteros"), (str(n + 4), None), (str(8 * n), None)]
         pasos = [("1 = 4 cuartos", str(r), f"En 1 {und[0]} caben 4 cuartos. En {n} {plural(n, und[0], und[1])}: {n} × 4 = {r}.")]
     elif tipo == "cuantos_medios":
         r = 2 * n
-        enun = f"{und[4]} {und[3]} de medio {und[0]} hacen falta para tener {n} {plural(n, und[0], und[1])}?"
+        enun = f"{und[4]} {und[3]} de medio {und[0]} hacen falta para tener {n} {plural(n, und[0], und[1])} de {prod}?"
         resp = str(r)
         dist = [(str(n), "cuenta_como_enteros"), (str(4 * n), "cuartos_2"), (str(n + 2), None), (str(r + 1), None)]
         pasos = [("1 = 2 medios", str(r), f"En 1 {und[0]} caben 2 medios. En {n} {plural(n, und[0], und[1])}: {n} × 2 = {r}.")]
@@ -283,7 +300,7 @@ def gen_medios_cuartos(rng, d, unidad="kilo", max_u=5):
         m = rng.choice([x for x in range(q, max_u * q + 1, q)])
         r = m // q
         nom = "medio" if q == 2 else "un cuarto de"
-        enun = f"Tengo {m} {und[3]} de {nom} {und[0]}. ¿Cuántos {und[1]} tengo en total?"
+        enun = f"Tengo {m} {und[3]} de {nom} {und[0]} de {prod}. ¿Cuántos {und[1]} de {prod} tengo en total?"
         resp = f"{r} {plural(r, und[0], und[1])}"
         dist = [(f"{m} {und[1]}", "cuenta_como_enteros"), (f"{m // 2} {plural(m // 2, und[0], und[1])}" if q == 4 else f"{m // 4 if m % 4 == 0 else m + 1} {und[1]}", "cuartos_2"),
                 (f"{r + 1} {und[1]}", None), (f"{m * q} {und[1]}", None)]
@@ -291,7 +308,7 @@ def gen_medios_cuartos(rng, d, unidad="kilo", max_u=5):
     else:
         a, b = rng.randint(1, 3), rng.randint(1, 3)
         cuartos = 2 * a + b
-        enun = f"Junto {a} {plural(a, und[2], und[3])} de medio {und[0]} y {b} {plural(b, und[2], und[3])} de un cuarto de {und[0]}. ¿Cuántos cuartos de {und[0]} tengo?"
+        enun = f"Junto {a} {plural(a, und[2], und[3])} de medio {und[0]} de {prod} y {b} {plural(b, und[2], und[3])} de un cuarto de {und[0]}. ¿Cuántos cuartos de {und[0]} de {prod} tengo?"
         resp = f"{cuartos} cuartos"
         dist = [(f"{a + b} cuartos", "cuenta_como_enteros"), (f"{a + b + a} cuartos" if a + b + a != cuartos else f"{4 * a + b} cuartos", None),
                 (f"{4 * a + b} cuartos", None), (f"{cuartos + 2} cuartos", None)]
@@ -313,7 +330,11 @@ def gen_mil_fraccion(rng, d, grande="kg", peque="g", nombre="kilo"):
         txt = {"medio": f"medio {nombre}", "cuarto": f"un cuarto de {nombre}", "tres cuartos": f"tres cuartos de {nombre}"}[q]
     else:
         txt = f"{a} {grande}" + ({None: "", "medio": " y medio", "cuarto": " y cuarto", "tres cuartos": " y tres cuartos"}[q])
-    enun = f"¿Cuántos {peque} son {txt}?"
+    if rng.random() < 0.5:
+        prod = rng.choice(["naranjas", "tomates", "patatas", "harina", "arroz", "manzanas", "azúcar", "fresas"])
+        enun = f"{rng.choice(NOMBRES)} compra {txt} de {prod}. ¿Cuántos {peque} son?"
+    else:
+        enun = f"¿Cuántos {peque} son {txt}?"
     resp = f"{fmt(total)} {peque}"
     dist = [(f"{fmt(a * 100 + extra // 10)} {peque}", "factor_100"), (f"{fmt(a * 1000 + extra // 10)} {peque}", "medio_50") if q else (f"{a * 10} {peque}", None),
             (f"{fmt(a * 1000 + (500 if q == 'cuarto' else 250 if q == 'medio' else 0))} {peque}" if q else None, None),
@@ -872,6 +893,7 @@ ORD = ["primero", "segundo", "tercero", "cuarto", "quinto", "sexto", "séptimo",
 def gen_ciclico(rng, d, lista="dias", desplazamiento_max=2):
     L = DIAS if lista == "dias" else MESES
     n = len(L)
+    pre = ""
     if lista == "dias":
         frases = {-2: "¿qué día fue anteayer?", -1: "¿qué día fue ayer?", 1: "¿qué día será mañana?", 2: "¿qué día será pasado mañana?"}
         opciones = [-1, 1] if d == 1 else [-2, -1, 1, 2]
@@ -879,7 +901,15 @@ def gen_ciclico(rng, d, lista="dias", desplazamiento_max=2):
         if d == 3:
             i = rng.choice([5, 6, 0, 1])  # cerca del cambio de semana
         k = rng.choice(opciones)
-        enun = f"Si hoy es {L[i]}, {frases[k]}"
+        enun = rng.choice([f"Si hoy es {L[i]}, {frases[k]}", f"Hoy es {L[i]}. ¿{frases[k][1].upper()}{frases[k][2:]}"])
+        if d == 3 and rng.random() < 0.6:
+            ref = rng.choice([1, -1])
+            base = (i + ref) % n
+            frase_ref = "mañana es" if ref == 1 else "ayer fue"
+            k = rng.choice([x for x in (-2, -1, 0, 1, 2) if x != ref])
+            pregunta = {-2: "¿qué día fue anteayer?", -1: "¿qué día fue ayer?", 0: "¿qué día es hoy?", 1: "¿qué día será mañana?", 2: "¿qué día será pasado mañana?"}[k]
+            enun = f"Si {frase_ref} {L[base]}, {pregunta}"
+            pre = f"Si {frase_ref} {L[base]}, hoy es {L[i]}. "
     else:
         k = rng.choice([1, -1] if d == 1 else [1, -1, 2, -2, 3, -3][:2 * desplazamiento_max])
         i = rng.randrange(n)
@@ -894,7 +924,7 @@ def gen_ciclico(rng, d, lista="dias", desplazamiento_max=2):
     sgn = 1 if k > 0 else -1
     dist = [(L[(i - k) % n], "invierte"), (L[(i + k - sgn) % n] if abs(k) > 1 else None, "cuenta_partida"),
             ("no hay ninguno" if not (0 <= i + k < n) else None, "no_da_vuelta"), (L[(i + k + sgn) % n], None), (L[(i + 2 * k) % n], None)]
-    pasos = [("contar", resp, f"Parto de {L[i]} y avanzo {abs(k)} {'hacia delante' if k > 0 else 'hacia atrás'} sin contar el de partida"
+    pasos = [("contar", resp, pre + (f"Respuesta: {resp}." if k == 0 else "") if k == 0 else pre + f"Parto de {L[i]} y avanzo {abs(k)} {'hacia delante' if k > 0 else 'hacia atrás'} sin contar el de partida"
               + (f"; después de {L[-1]} vuelve a empezar {L[0]}" if not (0 <= i + k < n) and k > 0 else f"; antes de {L[0]} está {L[-1]}" if not (0 <= i + k < n) else "")
               + f": {resp}.")]
     adulto = ("Los días y los meses son cíclicos: después de " + L[-1] + " viene " + L[0] + ". Al contar no se incluye el punto de partida.")
@@ -903,6 +933,17 @@ def gen_ciclico(rng, d, lista="dias", desplazamiento_max=2):
 
 @generador("t4_calendario")
 def gen_calendario(rng, d):
+    if d == 1 and rng.random() < 0.6:
+        m = rng.randrange(12)
+        a = rng.randint(1, 20)
+        k = rng.randint(2, 8)
+        enun = rng.choice([f"Hoy es {a} de {MESES[m]}. ¿Qué fecha será dentro de {k} días?", f"Hoy es {a} de {MESES[m]}. ¿Qué fecha fue hace {k} días?" if a - k >= 1 else f"Hoy es {a} de {MESES[m]}. ¿Qué fecha será dentro de {k} días?"])
+        sg = -1 if "hace" in enun else 1
+        r = a + sg * k
+        resp = f"{r} de {MESES[m]}"
+        dist = [(f"{r - sg} de {MESES[m]}", "incluye_inicio"), (f"{r + sg} de {MESES[m]}", None), (f"{a - sg * k} de {MESES[m]}" if 1 <= a - sg * k <= 28 else None, None), (f"{r} de {MESES[(m + 1) % 12]}", None)]
+        pasos = [(f"{a} {'+' if sg > 0 else '−'} {k}", str(r), f"Cuento {k} días {'hacia delante' if sg > 0 else 'hacia atrás'} desde el {a} (sin contar el día de hoy): {a} {'+' if sg > 0 else '−'} {k} = {r}. Es el {resp}.")]
+        return mk(enun, resp, "t4_calendario", {"d": d, "a": a, "k": k}, dist, pasos, "Para avanzar o retroceder días en el calendario se suma o se resta, sin contar el día de partida.")
     if d == 1:
         m = rng.randrange(12)
         enun = f"¿Cuántos días tiene el mes de {MESES[m]}" + (" de 2025?" if m == 1 else "?")
@@ -982,7 +1023,7 @@ def gen_equiv_tiempo(rng, d, largas=False):
         resp = f"{fmt(r)} años"
         adulto = "Lustro = 5 años, década = 10, siglo = 100, milenio = 1000. Confundir lustro y década es el error más frecuente."
         return mk(enun, resp, "t4_equiv_tiempo", {"r": r}, dist, pasos, adulto)
-    eq = [("semanas", "días", 7, 14), ("días", "horas", 24, 4), ("horas", "minutos", 60, 3), ("años", "meses", 12, 8)]
+    eq = [("semanas", "días", 7, 14), ("días", "horas", 24, 4), ("horas", "minutos", 60, 2), ("años", "meses", 12, 8)]
     if d >= 2:
         eq += [("cuartos de hora", "minutos", 15, 6), ("medias horas", "minutos", 30, 3)]
     a, b, f, mx = rng.choice(eq)
@@ -991,7 +1032,9 @@ def gen_equiv_tiempo(rng, d, largas=False):
         extra_unidad = {"semanas": ("días", 1, 6), "días": ("horas", 1, 23), "horas": ("minutos", 5, 55)}[a]
     r = n * f
     sing = {"semanas": "semana", "días": "día", "horas": "hora", "años": "año", "cuartos de hora": "cuarto de hora", "medias horas": "media hora"}
-    enun = f"¿{'Cuántas' if b == 'horas' else 'Cuántos'} {b} son {n} {a if n > 1 else sing[a]}?"
+    cu = 'Cuántas' if b == 'horas' else 'Cuántos'
+    enun = rng.choice([f"¿{cu} {b} son {n} {a if n > 1 else sing[a]}?", f"¿{cu} {b} hay en {n} {a if n > 1 else sing[a]}?",
+                       f"Un viaje dura {n} {a if n > 1 else sing[a]}. ¿{cu} {b} son?"])
     if a in ("cuartos de hora", "medias horas") and n == 1:
         enun = f"¿Cuántos minutos son {'un cuarto de hora' if a == 'cuartos de hora' else 'media hora'}?"
     resp = f"{r} {b}"
@@ -1257,22 +1300,24 @@ def gen_contar_dinero(rng, d, centimos=False, max_euros=50):
 
 @generador("t4_equiv_dinero")
 def gen_equiv_dinero(rng, d):
-    for _ in range(100):
+    for _ in range(200):
         if d == 1:
             pieza = rng.choice([50, 20, 10, 100, 200])
-            total = rng.choice([100, 200, 500])
+            total = rng.choice([100, 200, 300, 400, 500])
         elif d == 2:
-            pieza = rng.choice([500, 1000, 200, 50, 20])
-            total = rng.choice([1000, 2000, 5000, 200, 500])
+            pieza = rng.choice([500, 1000, 200, 50, 20, 100])
+            total = rng.choice([1000, 2000, 5000, 200, 500, 600, 800, 3000, 4000])
         else:
-            pieza = rng.choice([5, 10, 20, 50, 500, 1000, 2000])
-            total = rng.choice([100, 200, 500, 5000, 1000])
+            pieza = rng.choice([5, 10, 20, 50, 500, 1000, 2000, 200])
+            total = rng.choice([100, 200, 500, 5000, 1000, 300, 4000, 2000, 700])
         if pieza < total and total % pieza == 0 and total // pieza <= 50:
             break
     r = total // pieza
     s, p, nom = PIEZA_TXT[pieza]
     tot_txt = (f"{total // 100} euros" if total > 100 else "1 euro") if total >= 100 else f"{total} céntimos"
-    enun = f"¿Cuántas {p} de {nom.replace(' c', ' céntimos')} hacen {tot_txt}?" if s == "moneda" else f"¿Cuántos {p} de {nom} hacen {tot_txt}?"
+    art = "Cuántas" if s == "moneda" else "Cuántos"
+    nom2 = nom.replace(' c', ' céntimos')
+    enun = rng.choice([f"¿{art} {p} de {nom2} hacen {tot_txt}?", f"{rng.choice(NOMBRES)} quiere cambiar {tot_txt} en {p} de {nom2}. ¿{art} le dan?"])
     resp = str(r)
     dist = [(str(total // 10 // pieza) if pieza < 100 and total // 10 % pieza == 0 and total // 10 // pieza > 0 else None, "euro_10c"),
             (str(r * 2), None), (str(r // 2) if r % 2 == 0 and r > 2 else str(r + 2), None), (str(r + 1), None), (str(total // 100) if total >= 100 and total // 100 != r else None, None)]
@@ -1391,7 +1436,13 @@ def gen_grados_ref(rng, d):
     casos3 = [("¿Cuántos ángulos rectos caben en un ángulo completo?", 4, "rectos_completo"), ("¿Cuántos ángulos rectos caben en un ángulo llano?", 2, "rectos_llano"),
               ("¿Cuántos grados mide la cuarta parte de un ángulo completo?", 90, "cuarto_completo"), ("¿Cuántos grados mide la mitad de un ángulo recto?", 45, "mitad_recto"),
               ("¿Cuántos grados son tres ángulos rectos?", 270, "x3"), ("¿Cuántos grados le faltan a un ángulo llano para ser completo?", 180, "falta")]
-    enun, r, clave = rng.choice({1: casos1, 2: casos2, 3: casos3}[d])
+    vueltas = [("un cuarto de vuelta", 90, "recto"), ("media vuelta", 180, "llano"), ("una vuelta completa", 360, "completo"), ("tres cuartos de vuelta", 270, "x3")]
+    if rng.random() < 0.5:
+        txt, r, clave = rng.choice(vueltas if d > 1 else vueltas[:3])
+        suj = rng.choice(["La aguja de un reloj", "Una noria", "Una puerta giratoria", f"{rng.choice(NOMBRES)}, que está patinando,", "Un molinillo", "Una peonza", "Un tiovivo"])
+        enun = f"{suj} gira {txt}. ¿Cuántos grados ha girado?"
+    else:
+        enun, r, clave = rng.choice({1: casos1, 2: casos2, 3: casos3}[d])
     g = "°" if clave not in ("rectos_completo", "rectos_llano") else ""
     resp = f"{r}{g}"
     recto_100 = {"recto": 100, "x2": 200, "x3": 300, "mitad_recto": 50, "rectos_completo": None, "rectos_llano": None, "cuarto_completo": None,
@@ -1648,12 +1699,12 @@ def gen_nombres_pol(rng, d):
     pool = {1: [3, 4, 5, 6], 2: [5, 6, 7, 8, 10], 3: [7, 8, 9, 10, 11, 12]}[d]
     n = rng.choice(pool)
     if rng.random() < 0.5:
-        enun = f"¿Cuántos lados tiene un {NOMBRES_POL[n]}?"
+        enun = rng.choice([f"¿Cuántos lados tiene un {NOMBRES_POL[n]}?", f"Un {NOMBRES_POL[n]}, ¿cuántos lados tiene?", f"¿Cuántos vértices tiene un {NOMBRES_POL[n]}?"])
         resp = f"{n} lados"
         dist = [(f"{n + 1} lados", "hex_hept" if n in (6, 7) else None), (f"{n - 1} lados", "hex_hept" if n in (7, 8) else None),
                 ("6 lados" if n == 5 else "8 lados" if n == 6 else None, "penta" if n == 5 else "hex_hept"), (f"{n + 2} lados", None)]
     else:
-        enun = f"¿Cómo se llama un polígono de {n} lados?"
+        enun = rng.choice([f"¿Cómo se llama un polígono de {n} lados?", f"Dibujo un polígono con {n} lados. ¿Qué nombre recibe?", f"¿Qué polígono tiene {n} lados?"])
         resp = NOMBRES_POL[n]
         dist = [(NOMBRES_POL.get(n + 1), "hex_hept" if n in (6, 7) else None), (NOMBRES_POL.get(n - 1), "hex_hept" if n in (7, 8) else "penta" if n == 6 else None),
                 ("hexágono" if n == 5 else None, "penta"), (NOMBRES_POL.get(n + 2), None), (NOMBRES_POL.get(n - 2), None)]
@@ -1669,7 +1720,7 @@ def gen_angulos_pol(rng, d):
         n = rng.randint(4, 12 if d == 1 else 20)
         r = 180 * (n - 2)
         nom = NOMBRES_POL.get(n, f"polígono de {n} lados")
-        enun = f"¿Cuánto suman los ángulos interiores de un {nom}?"
+        enun = rng.choice([f"¿Cuánto suman los ángulos interiores de un {nom}?", f"Halla la suma de los ángulos interiores de un {nom}."])
         dist = [(f"{fmt(180 * n)}°", "180n"), (f"{fmt(360 * (n - 2))}°", None), (f"{fmt(180 * (n - 1))}°", None), (f"{fmt(r // n)}°" if r % n == 0 else None, None)]
         pasos = [(f"180 · ({n} − 2)", fmt(r), f"Desde un vértice se divide en {n} − 2 = {n - 2} triángulos, cada uno de 180°: 180 · {n - 2} = {fmt(r)}°.")]
     else:
@@ -1704,10 +1755,10 @@ def gen_diagonales(rng, d):
         dist = [(f"{n + 1} lados", None), (f"{n - 1} lados", None), (f"{n + 3} lados", None), (f"{D_ // 2} lados" if D_ // 2 not in (n, n + 1, n - 1) else None, None)]
         pasos = [("probar", resp, f"Busco n con n · (n − 3) : 2 = {D_}: con n = {n}, {n} · {n - 3} : 2 = {D_}.")]
     else:
-        n = rng.randint(4, 8 if d == 1 else 20)
+        n = rng.randint(4, 12 if d == 1 else 20)
         r = n * (n - 3) // 2
         nom = NOMBRES_POL.get(n, f"polígono de {n} lados")
-        enun = f"¿Cuántas diagonales tiene un {nom}?"
+        enun = rng.choice([f"¿Cuántas diagonales tiene un {nom}?", f"Calcula el número total de diagonales de un {nom}."])
         resp = str(r)
         dist = [(str(n * (n - 3)), "no_divide"), (str(n * (n - 2) // 2), "n_menos_2"), (str(n * (n - 1) // 2), "n_menos_2"), (str(n - 3), None), (str(r + n), None)]
         pasos = [(f"{n} · ({n} − 3)", str(n * (n - 3)), f"Desde cada vértice salen {n} − 3 = {n - 3} diagonales (no a sí mismo ni a sus dos vecinos): {n} · {n - 3} = {n * (n - 3)}."),
@@ -2040,15 +2091,19 @@ def gen_nombre_cuerpo(rng, d):
     otro = "pirámide" if cuerpo == "prisma" else "prisma"
     if d == 1:
         if cuerpo == "prisma":
-            enun = f"Un cuerpo tiene dos bases iguales y paralelas con forma de {NOMBRES_POL[n]} y sus caras laterales son rectángulos. ¿Cómo se llama?"
+            enun = rng.choice([f"Un cuerpo tiene dos bases iguales y paralelas con forma de {NOMBRES_POL[n]} y sus caras laterales son rectángulos. ¿Cómo se llama?",
+                               f"¿Cómo se llama un prisma cuyas bases son {NOMBRES_POL[n]}s?"])
         else:
-            enun = f"Un cuerpo tiene una sola base con forma de {NOMBRES_POL[n]} y caras laterales triangulares que se juntan en un vértice. ¿Cómo se llama?"
+            enun = rng.choice([f"Un cuerpo tiene una sola base con forma de {NOMBRES_POL[n]} y caras laterales triangulares que se juntan en un vértice. ¿Cómo se llama?",
+                               f"¿Cómo se llama una pirámide cuya base es un {NOMBRES_POL[n]}?"])
         dist = [(f"{otro} {ADJ[n]}", None), ("pirámide triangular" if cuerpo == "pirámide" and n != 3 else None, "por_caras_laterales"),
                 (f"{cuerpo} {(ADJ[n + 1] if n + 1 in ADJ else ADJ[n - 1])}", None), (f"{otro} {(ADJ[n + 1] if n + 1 in ADJ else ADJ[n - 1])}", None)]
         pasos = [("bases", nombre, f"{'Dos bases iguales y paralelas: es un prisma' if cuerpo == 'prisma' else 'Una base y caras triangulares con un vértice común: es una pirámide'}. Se nombra por el polígono de la base ({NOMBRES_POL[n]}): {nombre}.")]
     else:
         caras = n + 2 if cuerpo == "prisma" else n + 1
-        enun = f"Un{'a' if cuerpo == 'pirámide' else ''} {cuerpo} tiene {caras} caras en total. ¿Cómo se llama?"
+        enun = rng.choice([f"Un{'a' if cuerpo == 'pirámide' else ''} {cuerpo} tiene {caras} caras en total. ¿Cómo se llama?",
+                           f"Un{'a' if cuerpo == 'pirámide' else ''} {cuerpo} tiene {caras} caras contando {'sus dos bases' if cuerpo == 'prisma' else 'su base'}. ¿Qué nombre recibe?",
+                           f"Un cuerpo tiene {n} caras laterales {'rectangulares y dos bases iguales' if cuerpo == 'prisma' else 'triangulares que se juntan en un vértice y una base'}. ¿Cómo se llama?"])
         mal = caras if cuerpo == "pirámide" else caras
         dist = [(f"{cuerpo} {ADJ[caras]}" if caras in ADJ else None, "cuenta_base"), ("pirámide triangular" if cuerpo == "pirámide" and n != 3 else None, "por_caras_laterales"),
                 (f"{cuerpo} {ADJ[caras - 1]}" if cuerpo == "prisma" and caras - 1 in ADJ else None, "cuenta_base"), (f"{otro} {ADJ[n]}", None),
@@ -2099,7 +2154,13 @@ def gen_euler(rng, d):
 def gen_ejes(rng, d):
     figs = {1: [("un cuadrado", 4), ("un rectángulo que no es cuadrado", 2), ("un triángulo equilátero", 3), ("un círculo", None), ("un triángulo escaleno", 0)],
             2: [("un rombo que no es cuadrado", 2), ("un triángulo isósceles no equilátero", 1), ("un pentágono regular", 5), ("un hexágono regular", 6), ("un rectángulo que no es cuadrado", 2)],
-            3: [("un octógono regular", 8), ("un romboide", 0), ("un trapecio isósceles", 1), ("un decágono regular", 10), ("un rombo que no es cuadrado", 2), ("un heptágono regular", 7)]}[d]
+            3: [("un octógono regular", 8), ("un romboide", 0), ("un trapecio isósceles", 1), ("un decágono regular", 10), ("un rombo que no es cuadrado", 2), ("un heptágono regular", 7),
+                ("un eneágono regular", 9), ("un dodecágono regular", 12), ("un triángulo rectángulo isósceles", 1), ("un trapecio rectángulo", 0)]}[d]
+    LETRAS_EJES = {"A": 1, "B": 1, "C": 1, "D": 1, "E": 1, "H": 2, "I": 2, "K": 1, "M": 1, "T": 1, "U": 1, "V": 1, "W": 1, "X": 2, "Y": 1,
+                   "F": 0, "G": 0, "J": 0, "L": 0, "N": 0, "P": 0, "R": 0, "S": 0, "Z": 0}
+    if rng.random() < 0.4:
+        let = rng.choice([k for k, v in LETRAS_EJES.items() if (v <= 1 if d == 1 else True)])
+        figs = [(f"la letra mayúscula {let} (escrita en mayúsculas de imprenta)", LETRAS_EJES[let])]
     fig, n = rng.choice(figs)
     enun = f"¿Cuántos ejes de simetría tiene {fig}?"
     txt = lambda k: "infinitos" if k is None else f"{k} {'eje' if k == 1 else 'ejes'}" if k else "ninguno"
@@ -2221,6 +2282,7 @@ def gen_coord1(rng, d):
         pasos = [("x", str(x + dx), f"La x cambia con los movimientos horizontales: {x} {'+' if dx > 0 else '−'} {abs(dx)} = {x + dx}."),
                  ("y", str(y + dy), f"La y cambia con los verticales: {y} {'+' if dy > 0 else '−'} {abs(dy)} = {y + dy}."), ("", resp, f"Respuesta: {resp}.")]
     adulto = "En (x, y), la primera coordenada es horizontal y la segunda vertical; se cuenta desde el 0 (el origen), no desde el 1."
+    dist = [(v, k) for v, k in dist if v and "−" not in v]
     return mk(enun, resp, "t4_coord1", {}, dist, pasos, adulto)
 
 
@@ -2844,7 +2906,9 @@ def gen_area_cilindro(rng, d):
 
 @generador("t4_area_cono")
 def gen_area_cono(rng, d):
-    rr_, hh, g = rng.choice([(3, 4, 5), (6, 8, 10), (5, 12, 13), (8, 6, 10), (9, 12, 15), (8, 15, 17), (12, 5, 13), (4, 3, 5)])
+    t = rng.choice(TERNAS)
+    k_ = rng.choice([1, 1, 2]) if t[2] < 20 else 1
+    rr_, hh, g = (t[0] * k_, t[1] * k_, t[2] * k_) if rng.random() < 0.5 else (t[1] * k_, t[0] * k_, t[2] * k_)
     rad, h, g = D(rr_), D(hh), D(g)
     L = r2(PI * rad * g)
     B = r2(PI * rad * rad)
@@ -2924,7 +2988,7 @@ def gen_vol_pir_cono(rng, d):
 
 @generador("t4_esfera")
 def gen_esfera(rng, d):
-    rad = D(rng.randint(1, 12))
+    rad = D(rng.randint(1, 20))
     usa_d = d >= 2 and rng.random() < 0.5
     que = "área" if d == 1 else rng.choice(["área", "volumen"])
     A = r2(4 * PI * rad * rad)
@@ -3255,7 +3319,7 @@ def gen_razon_areas(rng, d):
 def gen_cateto_altura(rng, d):
     if rng.random() < 0.5:
         for _ in range(100):
-            m, n = rng.randint(1, 16), rng.randint(1, 16)
+            m, n = rng.randint(1, 32), rng.randint(1, 32)
             if m != n and math.isqrt(m * n) ** 2 == m * n:
                 break
         h = math.isqrt(m * n)
@@ -3265,7 +3329,7 @@ def gen_cateto_altura(rng, d):
         pasos = [(f"h² = {m} · {n}", str(m * n), f"Teorema de la altura: h² = m · n = {m} · {n} = {m * n}."), (f"√{m * n}", str(h), f"h = √{m * n} = {h} cm.")]
     else:
         for _ in range(200):
-            m, n = rng.randint(1, 20), rng.randint(1, 20)
+            m, n = rng.randint(1, 40), rng.randint(1, 40)
             a = m + n
             if m != n and math.isqrt(a * m) ** 2 == a * m:
                 break

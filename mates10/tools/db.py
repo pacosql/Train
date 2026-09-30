@@ -9,6 +9,7 @@ masivas; la app usa la anon key.
 import json
 import os
 import sys
+import random
 import time
 import urllib.request
 import urllib.error
@@ -17,7 +18,7 @@ REF = "dzlhsdpgyxnjwudmrnul"
 URL = f"https://api.supabase.com/v1/projects/{REF}/database/query"
 
 
-def q(sql, retries=4):
+def q(sql, retries=8):
     token = os.environ["SUPABASE_ACCESS_TOKEN"]
     body = json.dumps({"query": sql}).encode()
     for i in range(retries):
@@ -32,7 +33,7 @@ def q(sql, retries=4):
         except urllib.error.HTTPError as e:
             msg = e.read().decode(errors="replace")
             if e.code in (429, 502, 503, 504) and i < retries - 1:
-                time.sleep(2 ** (i + 1))
+                time.sleep(min(60, 2 ** (i + 1)) + random.random() * 2)  # límite de la API compartida
                 continue
             raise RuntimeError(f"HTTP {e.code}: {msg[:2000]}") from None
         except (urllib.error.URLError, TimeoutError):
