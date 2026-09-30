@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Mates10 · Explorar</title>
+  <link rel="manifest" href="../manifest.json" />
+  <meta name="theme-color" content="#1f1e1d" />
+  <link rel="icon" href="../icons/icon-192.png" />
+  <link rel="stylesheet" href="../vendor/pivot.min.css" />
+  <link rel="stylesheet" href="../comun.css" />
+  <style>
+    .barra { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin: 10px 0; }
+    .barra select, .barra input { width: auto; min-width: 160px; }
+    .tabs button.on { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+    .chips .pill { cursor: pointer; margin: 2px; }
+    .scroll { overflow: auto; max-height: 70vh; border: 1px solid var(--line); border-radius: 10px; }
+    .scroll table { font-size: 0.8rem; }
+    .scroll th { position: sticky; top: 0; background: var(--surface); z-index: 1; white-space: nowrap; }
+    .scroll td { max-width: 320px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .scroll tr:hover td { background: var(--surface); cursor: pointer; }
+    td a.fk { color: var(--accent); text-decoration: none; }
+    .relaciones label { display: inline-flex; gap: 6px; align-items: center; margin: 4px 12px 4px 0; color: var(--text); font-size: 0.85rem; }
+    .relaciones input { width: auto; }
+    #detalle { position: fixed; inset: 0; background: rgba(0,0,0,0.55); display: none; z-index: 10; }
+    #detalle .panel { position: absolute; right: 0; top: 0; bottom: 0; width: min(560px, 100%); background: var(--bg); border-left: 1px solid var(--line); overflow: auto; padding: 16px; }
+    #detalle pre { white-space: pre-wrap; word-break: break-word; margin: 0; font-size: 0.8rem; }
+    #detalle td:first-child { color: var(--muted); white-space: nowrap; }
+    /* PivotTable.js en tema oscuro */
+    .pvtUi { color: var(--text); font-size: 0.8rem; }
+    .pvtUi td, .pvtUi th { border-color: var(--line) !important; }
+    .pvtAxisContainer, .pvtVals, .pvtUnused, .pvtRenderer, .pvtAggregator, .pvtAttrDropdown { background: var(--surface) !important; border-color: var(--line) !important; color: var(--text) !important; }
+    .pvtAxisContainer li span.pvtAttr { background: var(--surface-2); border-color: var(--line); color: var(--text); }
+    table.pvtTable { color: var(--text); font-size: 0.8rem; }
+    table.pvtTable thead tr th, table.pvtTable tbody tr th { background: var(--surface) !important; color: var(--text) !important; border-color: var(--line) !important; }
+    table.pvtTable tbody tr td { background: var(--bg); color: var(--text); border-color: var(--line) !important; }
+    .pvtFilterBox { background: var(--surface) !important; color: var(--text); border-color: var(--line) !important; }
+    .pvtFilterBox input { width: auto; }
+    .pvtSelect, .pvtUi select { width: auto; }
+  </style>
+</head>
+<body>
+  <div class="wrap ancho">
+    <div class="top"><a href="../">← Mates10</a><span class="pill">explorar</span></div>
+    <h1>Explorar datos</h1>
+    <p class="muted small">Elige una tabla. Los valores en color son relaciones: tócalos para ir a la fila relacionada. Toca una fila para ver su ficha y todo lo que la referencia. Añade columnas de tablas relacionadas y cambia a “Tabla dinámica” para cruzar datos arrastrando campos.</p>
+
+    <div class="barra">
+      <select id="tabla"></select>
+      <input id="buscar" placeholder="Buscar en la tabla…" />
+      <span class="tabs"><button id="vTabla" class="on">Tabla</button> <button id="vPivot">Tabla dinámica</button></span>
+      <button id="csv">CSV</button>
+    </div>
+    <div class="chips" id="chips"></div>
+    <div class="relaciones small" id="relaciones"></div>
+    <p class="small muted" id="info"></p>
+    <div id="vistaTabla" class="scroll"></div>
+    <div id="vistaPivot" style="display:none; overflow:auto"></div>
+    <footer class="build">build __BUILD_ID__</footer>
+  </div>
+  <div id="detalle"><div class="panel" id="panel"></div></div>
+
+  <script src="../vendor/supabase.min.js"></script>
+  <script src="../config.js"></script>
+  <script src="../comun.js"></script>
+  <script src="../vendor/jquery.min.js"></script>
+  <script src="../vendor/jquery-ui.min.js"></script>
+  <script src="../vendor/pivot.min.js"></script>
+  <script src="../vendor/pivot.es.min.js"></script>
+  <script>
+  (async () => {
+    const GRUPOS = {
+      "01 Contenido": ["habilidad", "bloque", "habilidad_prerrequisito", "error_tipico", "habilidad_fuente", "sistema_educativo", "curso", "colegio", "mapa_curricular"],
+      "02 Ejercicios": ["plantilla", "ejercicio", "ejercicio_habilidad", "ejercicio_error", "ejercicio_explicacion", "rechazo_validador"],
+      "03 Mecánicas": ["mecanica", "habilidad_mecanica"],
+      "04 Didáctica": ["metodo", "habilidad_metodo", "tecnica_practica", "habilidad_tecnica"],
+      "05 Alumno": ["alumno", "alumno_habilidad", "alumno_habilidad_hist", "sesion", "intento"],
+      "06 Enganche": ["mecanismo_enganche", "alumno_enganche", "evento_enganche"],
+      "07 Fuentes": ["fuente", "fuente_archivo"],
+      "08 Revisión": ["revision", "revisor"],
+    };
+    const ESQ = await (await fetch("esquema.json")).json();
+    const LIMITE = 30000;
+    const cache = {};        // tabla -> filas
+    const etiquetas = {};    // tabla -> Map(id -> etiqueta)
+    let estado = { tabla: "habilidad", filtros: [], joins: [], vista: "tabla" };
+
+    // Estado en la URL (#tabla=..&f=col:valor) para poder compartir/volver.
+    function leerHash() {
+      const h = new URLSearchParams(location.hash.slice(1));
+      if (h.get("t") && ESQ[h.get("t")]) estado.tabla = h.get("t");
+      estado.filtros = h.getAll("f").map((s) => { const i = s.indexOf(":"); return { col: s.slice(0, i), val: s.slice(i + 1) }; });
+      estado.joins = h.getAll("j");
+      estado.vista = h.get("v") === "pivot" ? "pivot" : "tabla";
+    }
+    function escribirHash() {
+      const h = new URLSearchParams();
+      h.set("t", estado.tabla);
+      estado.filtros.forEach((f) => h.append("f", `${f.col}:${f.val}`));
+      estado.joins.forEach((j) => h.append("j", j));
+      if (estado.vista === "pivot") h.set("v", "pivot");
+      history.replaceState(null, "", "#" + h.toString());
+    }
+
+    const sel = M.$("#tabla");
+    for (const [g, ts] of Object.entries(GRUPOS)) {
+      const og = document.createElement("optgroup"); og.label = g;
+      ts.filter((t) => ESQ[t]).forEach((t) => { const o = document.createElement("option"); o.value = t; o.textContent = t; og.appendChild(o); });
+      sel.appendChild(og);
+    }
+
+    function colEtiqueta(t) {
+      const cs = ESQ[t].columnas.map((c) => c.nombre);
+      return ["codigo", "nombre", "titulo", "enunciado", "ruta", "habilidad_id"].find((c) => cs.includes(c)) || "id";
+    }
+    async function cargar(t) {
+      if (cache[t]) return cache[t];
+      const filas = [];
+      for (let from = 0; from < LIMITE; from += 1000) {
+        const { data, error } = await M.t(t).select("*").range(from, from + 999);
+        if (error) throw error;
+        filas.push(...data);
+        if (data.length < 1000) break;
+      }
+      return (cache[t] = filas);
+    }
+    async function etiquetasDe(t) {
+      if (etiquetas[t]) return etiquetas[t];
+      const c = colEtiqueta(t);
+      const m = new Map();
+      if (!ESQ[t].columnas.some((x) => x.nombre === "id")) return (etiquetas[t] = m);
+      const filas = cache[t] || await M.all(() => M.t(t).select(`id,${c}`));
+      filas.forEach((r) => m.set(r.id, String(r[c] ?? r.id).slice(0, 80)));
+      return (etiquetas[t] = m);
+    }
+    const txt = (v) => v === null || v === undefined ? "" : typeof v === "object" ? JSON.stringify(v) : String(v);
+
+    // Filas "planas" para la vista y la tabla dinámica: FKs como etiqueta y
+    // columnas de las tablas relacionadas elegidas (con sus FKs como etiqueta).
+    async function filasPlanas() {
+      const t = estado.tabla, esq = ESQ[t];
+      const base = await cargar(t);
+      const fkLabels = {};
+      for (const [col, fk] of Object.entries(esq.fks)) fkLabels[col] = await etiquetasDe(fk.tabla);
+      const joins = [];
+      for (const col of estado.joins) {
+        const fk = esq.fks[col]; if (!fk) continue;
+        const rel = await cargar(fk.tabla);
+        const idx = new Map(rel.map((r) => [r.id, r]));
+        const sub = {};
+        for (const [c2, fk2] of Object.entries(ESQ[fk.tabla].fks)) sub[c2] = await etiquetasDe(fk2.tabla);
+        joins.push({ col, tabla: fk.tabla, idx, sub, pref: col.replace(/_id$/, "") });
+      }
+      let filas = base.map((r) => {
+        const o = {};
+        for (const c of esq.columnas) {
+          const v = r[c.nombre];
+          o[c.nombre] = fkLabels[c.nombre] ? (fkLabels[c.nombre].get(v) ?? txt(v)) : txt(v);
+        }
+        for (const j of joins) {
+          const rr = j.idx.get(r[j.col]) || {};
+          for (const c of ESQ[j.tabla].columnas) {
+            if (c.nombre === "id") continue;
+            const v = rr[c.nombre];
+            o[`${j.pref}.${c.nombre}`] = j.sub[c.nombre] ? (j.sub[c.nombre].get(v) ?? txt(v)) : txt(v);
+          }
+        }
+        o.__raw = r;
+        return o;
+      });
+      for (const f of estado.filtros) filas = filas.filter((o) => txt(o.__raw[f.col] ?? o[f.col]) === f.val);
+      const qtxt = M.$("#buscar").value.trim().toLowerCase();
+      if (qtxt) filas = filas.filter((o) => Object.entries(o).some(([k, v]) => k !== "__raw" && String(v).toLowerCase().includes(qtxt)));
+      return filas;
+    }
+
+    function pintarRelaciones() {
+      const esq = ESQ[estado.tabla];
+      const cols = Object.entries(esq.fks);
+      M.$("#relaciones").innerHTML = cols.length
+        ? "Añadir columnas de: " + cols.map(([c, fk]) => `<label><input type="checkbox" data-j="${c}" ${estado.joins.includes(c) ? "checked" : ""}/> ${M.esc(fk.tabla)} <span class="muted">(${M.esc(c)})</span></label>`).join("")
+        : "";
+      M.$$("#relaciones input").forEach((i) => i.onchange = () => {
+        estado.joins = M.$$("#relaciones input:checked").map((x) => x.dataset.j); render();
+      });
+      M.$("#chips").innerHTML = estado.filtros.map((f, i) => `<span class="pill acc" data-i="${i}">${M.esc(f.col)} = ${M.esc((etiquetas[ESQ[estado.tabla].fks[f.col]?.tabla]?.get(f.val)) || f.val)} ✕</span>`).join("");
+      M.$$("#chips .pill").forEach((p) => p.onclick = () => { estado.filtros.splice(+p.dataset.i, 1); render(); });
+    }
+
+    let ultimas = [];
+    async function render() {
+      escribirHash();
+      sel.value = estado.tabla;
+      M.$("#info").textContent = "Cargando…";
+      try {
+        pintarRelaciones();
+        const filas = await filasPlanas();
+        pintarRelaciones();
+        ultimas = filas;
+        const total = cache[estado.tabla].length;
+        M.$("#info").textContent = `${filas.length} filas${filas.length !== total ? ` de ${total}` : ""}${total >= LIMITE ? ` (limitado a ${LIMITE})` : ""}`;
+        M.$("#vTabla").classList.toggle("on", estado.vista === "tabla");
+        M.$("#vPivot").classList.toggle("on", estado.vista === "pivot");
+        M.$("#vistaTabla").style.display = estado.vista === "tabla" ? "" : "none";
+        M.$("#vistaPivot").style.display = estado.vista === "pivot" ? "" : "none";
+        estado.vista === "tabla" ? pintarTabla(filas) : pintarPivot(filas);
+      } catch (e) { M.$("#info").innerHTML = `<span class="err">${M.esc(e.message)}</span>`; }
+    }
+
+    function pintarTabla(filas) {
+      const esq = ESQ[estado.tabla];
+      const cols = Object.keys(filas[0] || Object.fromEntries(esq.columnas.map((c) => [c.nombre, 1]))).filter((c) => c !== "__raw");
+      const max = 500;
+      let h = "<table><thead><tr>" + cols.map((c) => `<th>${M.esc(c)}</th>`).join("") + "</tr></thead><tbody>";
+      filas.slice(0, max).forEach((o, i) => {
+        h += `<tr data-i="${i}">` + cols.map((c) => {
+          const fk = esq.fks[c];
+          if (fk && o.__raw[c]) return `<td><a class="fk" href="#" data-t="${fk.tabla}" data-v="${M.esc(o.__raw[c])}" data-c="${fk.columna}">${M.esc(o[c])}</a></td>`;
+          return `<td title="${M.esc(o[c])}">${M.esc(String(o[c]).slice(0, 120))}</td>`;
+        }).join("") + "</tr>";
+      });
+      h += "</tbody></table>";
+      if (filas.length > max) h += `<p class="small muted" style="padding:8px">Se muestran ${max}; usa filtros, búsqueda o la tabla dinámica para el resto.</p>`;
+      M.$("#vistaTabla").innerHTML = h;
+      M.$$("#vistaTabla a.fk").forEach((a) => a.onclick = (ev) => {
+        ev.preventDefault(); ev.stopPropagation();
+        estado = { tabla: a.dataset.t, filtros: [{ col: a.dataset.c, val: a.dataset.v }], joins: [], vista: "tabla" };
+        M.$("#buscar").value = ""; render();
+      });
+      M.$$("#vistaTabla tbody tr").forEach((tr) => tr.onclick = () => ficha(filas[+tr.dataset.i]));
+    }
+
+    async function ficha(o) {
+      const t = estado.tabla, r = o.__raw, esq = ESQ[t];
+      let h = `<div class="top"><b>${M.esc(t)}</b><button id="cerrar">Cerrar</button></div><table>`;
+      for (const c of esq.columnas) {
+        const v = r[c.nombre], fk = esq.fks[c.nombre];
+        const val = fk && v ? `<a href="#" class="ir" data-t="${fk.tabla}" data-c="${fk.columna}" data-v="${M.esc(v)}">${M.esc(o[c.nombre])}</a>` : `<pre>${M.esc(typeof v === "object" && v !== null ? JSON.stringify(v, null, 1) : txt(v))}</pre>`;
+        h += `<tr><td>${M.esc(c.nombre)}</td><td>${val}</td></tr>`;
+      }
+      h += "</table>";
+      // Relaciones inversas: tablas que apuntan a esta fila.
+      const inversas = [];
+      for (const [t2, e2] of Object.entries(ESQ)) for (const [c2, fk] of Object.entries(e2.fks)) {
+        if (fk.tabla === t && r[fk.columna] !== undefined) inversas.push({ t2, c2, v: r[fk.columna] });
+      }
+      if (inversas.length) {
+        h += "<h3>Lo que apunta aquí</h3><div id='inv' class='small muted'>Contando…</div>";
+      }
+      M.$("#panel").innerHTML = h;
+      M.$("#detalle").style.display = "block";
+      M.$("#cerrar").onclick = () => (M.$("#detalle").style.display = "none");
+      const irA = (tabla, col, v) => { M.$("#detalle").style.display = "none"; estado = { tabla, filtros: [{ col, val: v }], joins: [], vista: "tabla" }; M.$("#buscar").value = ""; render(); };
+      M.$$("#panel a.ir").forEach((a) => a.onclick = (ev) => { ev.preventDefault(); irA(a.dataset.t, a.dataset.c, a.dataset.v); });
+      if (inversas.length) {
+        const res = await Promise.all(inversas.map(async (x) => {
+          const { count } = await M.t(x.t2).select("*", { count: "exact" }).limit(1).eq(x.c2, x.v);
+          return { ...x, n: count || 0 };
+        }));
+        M.$("#inv").innerHTML = res.filter((x) => x.n > 0).map((x) => `<div><a href="#" class="inv" data-t="${x.t2}" data-c="${x.c2}" data-v="${M.esc(x.v)}">${x.n} en ${M.esc(x.t2)}</a> <span class="muted">(${M.esc(x.c2)})</span></div>`).join("") || "Nada.";
+        M.$$("#panel a.inv").forEach((a) => a.onclick = (ev) => { ev.preventDefault(); irA(a.dataset.t, a.dataset.c, a.dataset.v); });
+      }
+    }
+    M.$("#detalle").onclick = (e) => { if (e.target.id === "detalle") e.currentTarget.style.display = "none"; };
+
+    function pintarPivot(filas) {
+      const datos = filas.map((o) => { const c = { ...o }; delete c.__raw; return c; });
+      const R = $.pivotUtilities;
+      $("#vistaPivot").pivotUI(datos, {
+        renderers: R.locales?.es?.renderers || R.renderers,
+        aggregators: R.locales?.es?.aggregators || R.aggregators,
+        rows: [], cols: [],
+        unusedAttrsVertical: true,
+        menuLimit: 2000,
+      }, true, "es");
+    }
+
+    sel.onchange = () => { estado = { tabla: sel.value, filtros: [], joins: [], vista: estado.vista }; M.$("#buscar").value = ""; render(); };
+    let tBus; M.$("#buscar").oninput = () => { clearTimeout(tBus); tBus = setTimeout(render, 300); };
+    M.$("#vTabla").onclick = () => { estado.vista = "tabla"; render(); };
+    M.$("#vPivot").onclick = () => { estado.vista = "pivot"; render(); };
+    M.$("#csv").onclick = () => {
+      const cols = Object.keys(ultimas[0] || {}).filter((c) => c !== "__raw");
+      const q = (s) => `"${String(s).replace(/"/g, '""')}"`;
+      const csv = [cols.map(q).join(","), ...ultimas.map((o) => cols.map((c) => q(o[c])).join(","))].join("\n");
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(new Blob(["﻿" + csv], { type: "text/csv" }));
+      a.download = `mates10_${estado.tabla}.csv`; a.click();
+    };
+    window.addEventListener("hashchange", () => { leerHash(); render(); });
+    leerHash(); render();
+  })();
+  </script>
+</body>
+</html>

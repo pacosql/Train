@@ -1,0 +1,1925 @@
+{
+ "alumno": {
+  "columnas": [
+   {
+    "nombre": "id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "nombre",
+    "tipo": "text"
+   },
+   {
+    "nombre": "fecha_nacimiento",
+    "tipo": "date"
+   },
+   {
+    "nombre": "edad_estimada",
+    "tipo": "smallint"
+   },
+   {
+    "nombre": "curso_inferido",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "confianza_inferencia",
+    "tipo": "numeric"
+   },
+   {
+    "nombre": "sistema_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "curso_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "colegio_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "escuela_metodo",
+    "tipo": "text"
+   },
+   {
+    "nombre": "editorial_mates",
+    "tipo": "text"
+   },
+   {
+    "nombre": "posicion_mes",
+    "tipo": "smallint"
+   },
+   {
+    "nombre": "posicion_orden",
+    "tipo": "integer"
+   },
+   {
+    "nombre": "posicion_fuente",
+    "tipo": "text"
+   },
+   {
+    "nombre": "objetivo",
+    "tipo": "jsonb"
+   },
+   {
+    "nombre": "sesion_seg",
+    "tipo": "smallint"
+   },
+   {
+    "nombre": "refuerzo_cada",
+    "tipo": "smallint"
+   },
+   {
+    "nombre": "tolerancia",
+    "tipo": "smallint"
+   },
+   {
+    "nombre": "idioma",
+    "tipo": "text"
+   },
+   {
+    "nombre": "prueba_nivel_hecha",
+    "tipo": "boolean"
+   },
+   {
+    "nombre": "creado_en",
+    "tipo": "timestamp with time zone"
+   }
+  ],
+  "fks": {
+   "colegio_id": {
+    "tabla": "colegio",
+    "columna": "id"
+   },
+   "curso_id": {
+    "tabla": "curso",
+    "columna": "id"
+   },
+   "curso_inferido": {
+    "tabla": "curso",
+    "columna": "id"
+   },
+   "sistema_id": {
+    "tabla": "sistema_educativo",
+    "columna": "id"
+   }
+  },
+  "pk": [
+   "id"
+  ]
+ },
+ "alumno_enganche": {
+  "columnas": [
+   {
+    "nombre": "alumno_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "racha_dias",
+    "tipo": "integer"
+   },
+   {
+    "nombre": "ultimo_dia",
+    "tipo": "date"
+   },
+   {
+    "nombre": "escudos",
+    "tipo": "smallint"
+   },
+   {
+    "nombre": "hora_habitual",
+    "tipo": "time without time zone"
+   },
+   {
+    "nombre": "notificaciones_permitidas",
+    "tipo": "boolean"
+   },
+   {
+    "nombre": "mecanismos_activos",
+    "tipo": "ARRAY"
+   },
+   {
+    "nombre": "coleccion",
+    "tipo": "jsonb"
+   }
+  ],
+  "fks": {
+   "alumno_id": {
+    "tabla": "alumno",
+    "columna": "id"
+   }
+  },
+  "pk": [
+   "alumno_id"
+  ]
+ },
+ "alumno_habilidad": {
+  "columnas": [
+   {
+    "nombre": "alumno_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "habilidad_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "p_dominio",
+    "tipo": "numeric"
+   },
+   {
+    "nombre": "estabilidad_dias",
+    "tipo": "numeric"
+   },
+   {
+    "nombre": "dificultad_fsrs",
+    "tipo": "numeric"
+   },
+   {
+    "nombre": "proximo_repaso",
+    "tipo": "date"
+   },
+   {
+    "nombre": "intentos",
+    "tipo": "integer"
+   },
+   {
+    "nombre": "aciertos",
+    "tipo": "integer"
+   },
+   {
+    "nombre": "aciertos_produccion",
+    "tipo": "integer"
+   },
+   {
+    "nombre": "aciertos_seguidos",
+    "tipo": "smallint"
+   },
+   {
+    "nombre": "ultimo_error_tipico_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "errores_seguidos",
+    "tipo": "smallint"
+   },
+   {
+    "nombre": "ultimo_intento",
+    "tipo": "timestamp with time zone"
+   },
+   {
+    "nombre": "estado",
+    "tipo": "text"
+   },
+   {
+    "nombre": "origen",
+    "tipo": "text"
+   },
+   {
+    "nombre": "actualizado_en",
+    "tipo": "timestamp with time zone"
+   }
+  ],
+  "fks": {
+   "alumno_id": {
+    "tabla": "alumno",
+    "columna": "id"
+   },
+   "habilidad_id": {
+    "tabla": "habilidad",
+    "columna": "id"
+   },
+   "ultimo_error_tipico_id": {
+    "tabla": "error_tipico",
+    "columna": "id"
+   }
+  },
+  "pk": [
+   "alumno_id",
+   "habilidad_id"
+  ]
+ },
+ "alumno_habilidad_hist": {
+  "columnas": [
+   {
+    "nombre": "alumno_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "habilidad_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "fecha",
+    "tipo": "date"
+   },
+   {
+    "nombre": "p_dominio",
+    "tipo": "numeric"
+   }
+  ],
+  "fks": {
+   "alumno_id": {
+    "tabla": "alumno",
+    "columna": "id"
+   },
+   "habilidad_id": {
+    "tabla": "habilidad",
+    "columna": "id"
+   }
+  },
+  "pk": [
+   "alumno_id",
+   "habilidad_id",
+   "fecha"
+  ]
+ },
+ "bloque": {
+  "columnas": [
+   {
+    "nombre": "id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "codigo",
+    "tipo": "text"
+   },
+   {
+    "nombre": "nombre",
+    "tipo": "text"
+   },
+   {
+    "nombre": "nombre_padres",
+    "tipo": "text"
+   },
+   {
+    "nombre": "sentido_lomloe",
+    "tipo": "text"
+   },
+   {
+    "nombre": "orden",
+    "tipo": "smallint"
+   },
+   {
+    "nombre": "activo",
+    "tipo": "boolean"
+   }
+  ],
+  "fks": {},
+  "pk": [
+   "id"
+  ]
+ },
+ "colegio": {
+  "columnas": [
+   {
+    "nombre": "id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "sistema_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "codigo_oficial",
+    "tipo": "text"
+   },
+   {
+    "nombre": "nombre",
+    "tipo": "text"
+   },
+   {
+    "nombre": "municipio",
+    "tipo": "text"
+   },
+   {
+    "nombre": "tipo",
+    "tipo": "text"
+   },
+   {
+    "nombre": "ensenanzas",
+    "tipo": "ARRAY"
+   },
+   {
+    "nombre": "editorial_mates",
+    "tipo": "text"
+   },
+   {
+    "nombre": "escuela_metodo",
+    "tipo": "text"
+   },
+   {
+    "nombre": "fuente_id",
+    "tipo": "uuid"
+   }
+  ],
+  "fks": {
+   "fuente_id": {
+    "tabla": "fuente",
+    "columna": "id"
+   },
+   "sistema_id": {
+    "tabla": "sistema_educativo",
+    "columna": "id"
+   }
+  },
+  "pk": [
+   "id"
+  ]
+ },
+ "curso": {
+  "columnas": [
+   {
+    "nombre": "id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "sistema_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "codigo",
+    "tipo": "text"
+   },
+   {
+    "nombre": "nombre_local",
+    "tipo": "text"
+   },
+   {
+    "nombre": "orden",
+    "tipo": "smallint"
+   },
+   {
+    "nombre": "edad_tipica",
+    "tipo": "smallint"
+   },
+   {
+    "nombre": "etapa",
+    "tipo": "text"
+   },
+   {
+    "nombre": "fuente_id",
+    "tipo": "uuid"
+   }
+  ],
+  "fks": {
+   "fuente_id": {
+    "tabla": "fuente",
+    "columna": "id"
+   },
+   "sistema_id": {
+    "tabla": "sistema_educativo",
+    "columna": "id"
+   }
+  },
+  "pk": [
+   "id"
+  ]
+ },
+ "ejercicio": {
+  "columnas": [
+   {
+    "nombre": "id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "plantilla_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "formato",
+    "tipo": "text"
+   },
+   {
+    "nombre": "dificultad",
+    "tipo": "smallint"
+   },
+   {
+    "nombre": "enunciado",
+    "tipo": "text"
+   },
+   {
+    "nombre": "datos",
+    "tipo": "jsonb"
+   },
+   {
+    "nombre": "parametros",
+    "tipo": "jsonb"
+   },
+   {
+    "nombre": "respuesta",
+    "tipo": "jsonb"
+   },
+   {
+    "nombre": "distractores",
+    "tipo": "jsonb"
+   },
+   {
+    "nombre": "ciclo_registro",
+    "tipo": "text"
+   },
+   {
+    "nombre": "grupo_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "idioma",
+    "tipo": "text"
+   },
+   {
+    "nombre": "imprimible",
+    "tipo": "boolean"
+   },
+   {
+    "nombre": "generado_por",
+    "tipo": "text"
+   },
+   {
+    "nombre": "fuente_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "fuente_ref",
+    "tipo": "text"
+   },
+   {
+    "nombre": "huella",
+    "tipo": "text"
+   },
+   {
+    "nombre": "validado_automatico",
+    "tipo": "boolean"
+   },
+   {
+    "nombre": "revisado_por",
+    "tipo": "text"
+   },
+   {
+    "nombre": "revisado_en",
+    "tipo": "timestamp with time zone"
+   },
+   {
+    "nombre": "revision_tipo",
+    "tipo": "text"
+   },
+   {
+    "nombre": "rechazado",
+    "tipo": "boolean"
+   },
+   {
+    "nombre": "publicado",
+    "tipo": "boolean"
+   },
+   {
+    "nombre": "version",
+    "tipo": "integer"
+   },
+   {
+    "nombre": "creado_en",
+    "tipo": "timestamp with time zone"
+   }
+  ],
+  "fks": {
+   "fuente_id": {
+    "tabla": "fuente",
+    "columna": "id"
+   },
+   "plantilla_id": {
+    "tabla": "plantilla",
+    "columna": "id"
+   }
+  },
+  "pk": [
+   "id"
+  ]
+ },
+ "ejercicio_error": {
+  "columnas": [
+   {
+    "nombre": "ejercicio_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "error_tipico_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "respuesta_erronea",
+    "tipo": "text"
+   }
+  ],
+  "fks": {
+   "ejercicio_id": {
+    "tabla": "ejercicio",
+    "columna": "id"
+   },
+   "error_tipico_id": {
+    "tabla": "error_tipico",
+    "columna": "id"
+   }
+  },
+  "pk": [
+   "ejercicio_id",
+   "error_tipico_id",
+   "respuesta_erronea"
+  ]
+ },
+ "ejercicio_explicacion": {
+  "columnas": [
+   {
+    "nombre": "ejercicio_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "metodo_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "explicacion_nino",
+    "tipo": "text"
+   },
+   {
+    "nombre": "explicacion_adulto",
+    "tipo": "text"
+   },
+   {
+    "nombre": "explicacion_pasos",
+    "tipo": "jsonb"
+   },
+   {
+    "nombre": "generado_por",
+    "tipo": "text"
+   },
+   {
+    "nombre": "revisado_por",
+    "tipo": "text"
+   }
+  ],
+  "fks": {
+   "ejercicio_id": {
+    "tabla": "ejercicio",
+    "columna": "id"
+   },
+   "metodo_id": {
+    "tabla": "metodo",
+    "columna": "id"
+   }
+  },
+  "pk": [
+   "ejercicio_id",
+   "metodo_id"
+  ]
+ },
+ "ejercicio_habilidad": {
+  "columnas": [
+   {
+    "nombre": "ejercicio_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "habilidad_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "rol",
+    "tipo": "text"
+   }
+  ],
+  "fks": {
+   "ejercicio_id": {
+    "tabla": "ejercicio",
+    "columna": "id"
+   },
+   "habilidad_id": {
+    "tabla": "habilidad",
+    "columna": "id"
+   }
+  },
+  "pk": [
+   "ejercicio_id",
+   "habilidad_id"
+  ]
+ },
+ "error_tipico": {
+  "columnas": [
+   {
+    "nombre": "id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "habilidad_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "codigo",
+    "tipo": "text"
+   },
+   {
+    "nombre": "nombre",
+    "tipo": "text"
+   },
+   {
+    "nombre": "descripcion",
+    "tipo": "text"
+   },
+   {
+    "nombre": "explicacion_nino",
+    "tipo": "text"
+   },
+   {
+    "nombre": "indicacion_padres",
+    "tipo": "text"
+   },
+   {
+    "nombre": "funcion",
+    "tipo": "text"
+   },
+   {
+    "nombre": "fuente_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "fuente_ref",
+    "tipo": "text"
+   }
+  ],
+  "fks": {
+   "fuente_id": {
+    "tabla": "fuente",
+    "columna": "id"
+   },
+   "habilidad_id": {
+    "tabla": "habilidad",
+    "columna": "id"
+   }
+  },
+  "pk": [
+   "id"
+  ]
+ },
+ "evento_enganche": {
+  "columnas": [
+   {
+    "nombre": "id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "alumno_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "mecanismo_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "fecha",
+    "tipo": "timestamp with time zone"
+   },
+   {
+    "nombre": "resultado",
+    "tipo": "jsonb"
+   }
+  ],
+  "fks": {
+   "alumno_id": {
+    "tabla": "alumno",
+    "columna": "id"
+   },
+   "mecanismo_id": {
+    "tabla": "mecanismo_enganche",
+    "columna": "id"
+   }
+  },
+  "pk": [
+   "id"
+  ]
+ },
+ "fuente": {
+  "columnas": [
+   {
+    "nombre": "id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "codigo",
+    "tipo": "text"
+   },
+   {
+    "nombre": "tipo",
+    "tipo": "text"
+   },
+   {
+    "nombre": "titulo",
+    "tipo": "text"
+   },
+   {
+    "nombre": "editorial",
+    "tipo": "text"
+   },
+   {
+    "nombre": "isbn",
+    "tipo": "text"
+   },
+   {
+    "nombre": "curso_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "sistema_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "anio",
+    "tipo": "integer"
+   },
+   {
+    "nombre": "origen",
+    "tipo": "text"
+   },
+   {
+    "nombre": "url_original",
+    "tipo": "text"
+   },
+   {
+    "nombre": "capturado_en",
+    "tipo": "timestamp with time zone"
+   },
+   {
+    "nombre": "capturado_por",
+    "tipo": "text"
+   },
+   {
+    "nombre": "confianza",
+    "tipo": "text"
+   },
+   {
+    "nombre": "modulos",
+    "tipo": "ARRAY"
+   },
+   {
+    "nombre": "notas",
+    "tipo": "text"
+   }
+  ],
+  "fks": {
+   "curso_id": {
+    "tabla": "curso",
+    "columna": "id"
+   },
+   "sistema_id": {
+    "tabla": "sistema_educativo",
+    "columna": "id"
+   }
+  },
+  "pk": [
+   "id"
+  ]
+ },
+ "fuente_archivo": {
+  "columnas": [
+   {
+    "nombre": "id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "fuente_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "ruta",
+    "tipo": "text"
+   },
+   {
+    "nombre": "tipo_archivo",
+    "tipo": "text"
+   },
+   {
+    "nombre": "pagina_o_seccion",
+    "tipo": "text"
+   },
+   {
+    "nombre": "hash_sha256",
+    "tipo": "text"
+   },
+   {
+    "nombre": "tamano_bytes",
+    "tipo": "bigint"
+   },
+   {
+    "nombre": "derivado_de",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "orden",
+    "tipo": "smallint"
+   }
+  ],
+  "fks": {
+   "derivado_de": {
+    "tabla": "fuente_archivo",
+    "columna": "id"
+   },
+   "fuente_id": {
+    "tabla": "fuente",
+    "columna": "id"
+   }
+  },
+  "pk": [
+   "id"
+  ]
+ },
+ "habilidad": {
+  "columnas": [
+   {
+    "nombre": "id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "codigo",
+    "tipo": "text"
+   },
+   {
+    "nombre": "bloque_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "nombre",
+    "tipo": "text"
+   },
+   {
+    "nombre": "nombre_padres",
+    "tipo": "text"
+   },
+   {
+    "nombre": "definicion",
+    "tipo": "text"
+   },
+   {
+    "nombre": "parametros",
+    "tipo": "jsonb"
+   },
+   {
+    "nombre": "ejemplo_frontera",
+    "tipo": "text"
+   },
+   {
+    "nombre": "ejemplo_fuera",
+    "tipo": "text"
+   },
+   {
+    "nombre": "nivel_kumon",
+    "tipo": "text"
+   },
+   {
+    "nombre": "importancia",
+    "tipo": "smallint"
+   },
+   {
+    "nombre": "carga_alumno",
+    "tipo": "smallint"
+   },
+   {
+    "nombre": "familia",
+    "tipo": "text"
+   },
+   {
+    "nombre": "nivel_familia",
+    "tipo": "smallint"
+   },
+   {
+    "nombre": "curso_ref",
+    "tipo": "text"
+   },
+   {
+    "nombre": "generador",
+    "tipo": "text"
+   },
+   {
+    "nombre": "fuente_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "fuente_ref",
+    "tipo": "text"
+   },
+   {
+    "nombre": "estado_revision",
+    "tipo": "text"
+   },
+   {
+    "nombre": "activo",
+    "tipo": "boolean"
+   }
+  ],
+  "fks": {
+   "bloque_id": {
+    "tabla": "bloque",
+    "columna": "id"
+   },
+   "fuente_id": {
+    "tabla": "fuente",
+    "columna": "id"
+   }
+  },
+  "pk": [
+   "id"
+  ]
+ },
+ "habilidad_fuente": {
+  "columnas": [
+   {
+    "nombre": "habilidad_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "fuente_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "fuente_ref",
+    "tipo": "text"
+   },
+   {
+    "nombre": "rol",
+    "tipo": "text"
+   },
+   {
+    "nombre": "nota",
+    "tipo": "text"
+   }
+  ],
+  "fks": {
+   "fuente_id": {
+    "tabla": "fuente",
+    "columna": "id"
+   },
+   "habilidad_id": {
+    "tabla": "habilidad",
+    "columna": "id"
+   }
+  },
+  "pk": [
+   "habilidad_id",
+   "fuente_id",
+   "rol"
+  ]
+ },
+ "habilidad_mecanica": {
+  "columnas": [
+   {
+    "nombre": "habilidad_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "mecanica_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "idoneidad",
+    "tipo": "smallint"
+   },
+   {
+    "nombre": "estado_minimo",
+    "tipo": "text"
+   },
+   {
+    "nombre": "motivo",
+    "tipo": "text"
+   },
+   {
+    "nombre": "origen",
+    "tipo": "text"
+   }
+  ],
+  "fks": {
+   "habilidad_id": {
+    "tabla": "habilidad",
+    "columna": "id"
+   },
+   "mecanica_id": {
+    "tabla": "mecanica",
+    "columna": "id"
+   }
+  },
+  "pk": [
+   "habilidad_id",
+   "mecanica_id"
+  ]
+ },
+ "habilidad_metodo": {
+  "columnas": [
+   {
+    "nombre": "habilidad_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "metodo_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "rol",
+    "tipo": "text"
+   },
+   {
+    "nombre": "orden_presentacion",
+    "tipo": "smallint"
+   },
+   {
+    "nombre": "error_tipico_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "mecanica_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "nota",
+    "tipo": "text"
+   }
+  ],
+  "fks": {
+   "error_tipico_id": {
+    "tabla": "error_tipico",
+    "columna": "id"
+   },
+   "habilidad_id": {
+    "tabla": "habilidad",
+    "columna": "id"
+   },
+   "mecanica_id": {
+    "tabla": "mecanica",
+    "columna": "id"
+   },
+   "metodo_id": {
+    "tabla": "metodo",
+    "columna": "id"
+   }
+  },
+  "pk": [
+   "habilidad_id",
+   "metodo_id",
+   "rol"
+  ]
+ },
+ "habilidad_prerrequisito": {
+  "columnas": [
+   {
+    "nombre": "habilidad_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "prerrequisito_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "peso",
+    "tipo": "text"
+   },
+   {
+    "nombre": "fuente_id",
+    "tipo": "uuid"
+   }
+  ],
+  "fks": {
+   "fuente_id": {
+    "tabla": "fuente",
+    "columna": "id"
+   },
+   "habilidad_id": {
+    "tabla": "habilidad",
+    "columna": "id"
+   },
+   "prerrequisito_id": {
+    "tabla": "habilidad",
+    "columna": "id"
+   }
+  },
+  "pk": [
+   "habilidad_id",
+   "prerrequisito_id"
+  ]
+ },
+ "habilidad_tecnica": {
+  "columnas": [
+   {
+    "nombre": "habilidad_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "tecnica_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "prioridad",
+    "tipo": "smallint"
+   },
+   {
+    "nombre": "parametros",
+    "tipo": "jsonb"
+   },
+   {
+    "nombre": "nota",
+    "tipo": "text"
+   }
+  ],
+  "fks": {
+   "habilidad_id": {
+    "tabla": "habilidad",
+    "columna": "id"
+   },
+   "tecnica_id": {
+    "tabla": "tecnica_practica",
+    "columna": "id"
+   }
+  },
+  "pk": [
+   "habilidad_id",
+   "tecnica_id"
+  ]
+ },
+ "intento": {
+  "columnas": [
+   {
+    "nombre": "id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "alumno_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "sesion_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "ejercicio_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "habilidad_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "mecanica_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "tecnica_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "metodo_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "regla_cascada",
+    "tipo": "text"
+   },
+   {
+    "nombre": "dificultad",
+    "tipo": "smallint"
+   },
+   {
+    "nombre": "respuesta",
+    "tipo": "text"
+   },
+   {
+    "nombre": "correcto",
+    "tipo": "boolean"
+   },
+   {
+    "nombre": "error_tipico_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "tiempo_ms",
+    "tipo": "integer"
+   },
+   {
+    "nombre": "tiempo_primera_interaccion_ms",
+    "tipo": "integer"
+   },
+   {
+    "nombre": "cambios_respuesta",
+    "tipo": "smallint"
+   },
+   {
+    "nombre": "uso_pista",
+    "tipo": "boolean"
+   },
+   {
+    "nombre": "vio_explicacion",
+    "tipo": "boolean"
+   },
+   {
+    "nombre": "explicacion_entera",
+    "tipo": "boolean"
+   },
+   {
+    "nombre": "reintento_de",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "fecha",
+    "tipo": "timestamp with time zone"
+   }
+  ],
+  "fks": {
+   "alumno_id": {
+    "tabla": "alumno",
+    "columna": "id"
+   },
+   "ejercicio_id": {
+    "tabla": "ejercicio",
+    "columna": "id"
+   },
+   "error_tipico_id": {
+    "tabla": "error_tipico",
+    "columna": "id"
+   },
+   "habilidad_id": {
+    "tabla": "habilidad",
+    "columna": "id"
+   },
+   "mecanica_id": {
+    "tabla": "mecanica",
+    "columna": "id"
+   },
+   "metodo_id": {
+    "tabla": "metodo",
+    "columna": "id"
+   },
+   "reintento_de": {
+    "tabla": "intento",
+    "columna": "id"
+   },
+   "sesion_id": {
+    "tabla": "sesion",
+    "columna": "id"
+   },
+   "tecnica_id": {
+    "tabla": "tecnica_practica",
+    "columna": "id"
+   }
+  },
+  "pk": [
+   "id"
+  ]
+ },
+ "mapa_curricular": {
+  "columnas": [
+   {
+    "nombre": "id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "sistema_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "colegio_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "editorial",
+    "tipo": "text"
+   },
+   {
+    "nombre": "curso_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "trimestre",
+    "tipo": "smallint"
+   },
+   {
+    "nombre": "mes",
+    "tipo": "smallint"
+   },
+   {
+    "nombre": "orden",
+    "tipo": "integer"
+   },
+   {
+    "nombre": "habilidad_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "estado",
+    "tipo": "text"
+   },
+   {
+    "nombre": "confianza",
+    "tipo": "text"
+   },
+   {
+    "nombre": "fuente_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "fuente_ref",
+    "tipo": "text"
+   },
+   {
+    "nombre": "nota",
+    "tipo": "text"
+   }
+  ],
+  "fks": {
+   "colegio_id": {
+    "tabla": "colegio",
+    "columna": "id"
+   },
+   "curso_id": {
+    "tabla": "curso",
+    "columna": "id"
+   },
+   "fuente_id": {
+    "tabla": "fuente",
+    "columna": "id"
+   },
+   "habilidad_id": {
+    "tabla": "habilidad",
+    "columna": "id"
+   },
+   "sistema_id": {
+    "tabla": "sistema_educativo",
+    "columna": "id"
+   }
+  },
+  "pk": [
+   "id"
+  ]
+ },
+ "mecanica": {
+  "columnas": [
+   {
+    "nombre": "id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "codigo",
+    "tipo": "text"
+   },
+   {
+    "nombre": "nombre",
+    "tipo": "text"
+   },
+   {
+    "nombre": "tipo",
+    "tipo": "text"
+   },
+   {
+    "nombre": "descripcion",
+    "tipo": "text"
+   },
+   {
+    "nombre": "formatos_admitidos",
+    "tipo": "ARRAY"
+   },
+   {
+    "nombre": "tiempo",
+    "tipo": "text"
+   },
+   {
+    "nombre": "respuestas_correctas",
+    "tipo": "text"
+   },
+   {
+    "nombre": "mide",
+    "tipo": "text"
+   },
+   {
+    "nombre": "edad_minima",
+    "tipo": "smallint"
+   },
+   {
+    "nombre": "duracion_tipica_seg",
+    "tipo": "smallint"
+   },
+   {
+    "nombre": "carga_cognitiva",
+    "tipo": "text"
+   },
+   {
+    "nombre": "jugabilidad",
+    "tipo": "smallint"
+   },
+   {
+    "nombre": "relevancia_pedagogica",
+    "tipo": "smallint"
+   },
+   {
+    "nombre": "momento_explicacion",
+    "tipo": "text"
+   },
+   {
+    "nombre": "forma_explicacion",
+    "tipo": "ARRAY"
+   },
+   {
+    "nombre": "reintento",
+    "tipo": "boolean"
+   },
+   {
+    "nombre": "fuente_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "estado",
+    "tipo": "text"
+   }
+  ],
+  "fks": {
+   "fuente_id": {
+    "tabla": "fuente",
+    "columna": "id"
+   }
+  },
+  "pk": [
+   "id"
+  ]
+ },
+ "mecanismo_enganche": {
+  "columnas": [
+   {
+    "nombre": "id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "codigo",
+    "tipo": "text"
+   },
+   {
+    "nombre": "nombre",
+    "tipo": "text"
+   },
+   {
+    "nombre": "descripcion",
+    "tipo": "text"
+   },
+   {
+    "nombre": "origen",
+    "tipo": "text"
+   },
+   {
+    "nombre": "fuente_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "evidencia",
+    "tipo": "text"
+   },
+   {
+    "nombre": "riesgo_menores",
+    "tipo": "text"
+   },
+   {
+    "nombre": "implementable",
+    "tipo": "boolean"
+   },
+   {
+    "nombre": "uso_en_mates10",
+    "tipo": "text"
+   },
+   {
+    "nombre": "parametros",
+    "tipo": "jsonb"
+   },
+   {
+    "nombre": "edad_desde",
+    "tipo": "smallint"
+   },
+   {
+    "nombre": "edad_hasta",
+    "tipo": "smallint"
+   },
+   {
+    "nombre": "estado",
+    "tipo": "text"
+   }
+  ],
+  "fks": {
+   "fuente_id": {
+    "tabla": "fuente",
+    "columna": "id"
+   }
+  },
+  "pk": [
+   "id"
+  ]
+ },
+ "metodo": {
+  "columnas": [
+   {
+    "nombre": "id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "codigo",
+    "tipo": "text"
+   },
+   {
+    "nombre": "nombre",
+    "tipo": "text"
+   },
+   {
+    "nombre": "escuela",
+    "tipo": "text"
+   },
+   {
+    "nombre": "representacion",
+    "tipo": "text"
+   },
+   {
+    "nombre": "descripcion",
+    "tipo": "text"
+   },
+   {
+    "nombre": "cuando_usar",
+    "tipo": "text"
+   },
+   {
+    "nombre": "edad_desde",
+    "tipo": "smallint"
+   },
+   {
+    "nombre": "familia",
+    "tipo": "text"
+   },
+   {
+    "nombre": "fuente_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "activo",
+    "tipo": "boolean"
+   }
+  ],
+  "fks": {
+   "fuente_id": {
+    "tabla": "fuente",
+    "columna": "id"
+   }
+  },
+  "pk": [
+   "id"
+  ]
+ },
+ "plantilla": {
+  "columnas": [
+   {
+    "nombre": "id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "codigo",
+    "tipo": "text"
+   },
+   {
+    "nombre": "habilidad_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "formato",
+    "tipo": "text"
+   },
+   {
+    "nombre": "dificultad",
+    "tipo": "smallint"
+   },
+   {
+    "nombre": "enunciado_plantilla",
+    "tipo": "text"
+   },
+   {
+    "nombre": "restricciones",
+    "tipo": "jsonb"
+   },
+   {
+    "nombre": "solucion_plantilla",
+    "tipo": "text"
+   },
+   {
+    "nombre": "explicacion_plantilla",
+    "tipo": "text"
+   },
+   {
+    "nombre": "generador",
+    "tipo": "text"
+   },
+   {
+    "nombre": "idioma",
+    "tipo": "text"
+   },
+   {
+    "nombre": "revisado_por",
+    "tipo": "text"
+   },
+   {
+    "nombre": "revisado_en",
+    "tipo": "timestamp with time zone"
+   },
+   {
+    "nombre": "estado",
+    "tipo": "text"
+   }
+  ],
+  "fks": {
+   "habilidad_id": {
+    "tabla": "habilidad",
+    "columna": "id"
+   }
+  },
+  "pk": [
+   "id"
+  ]
+ },
+ "rechazo_validador": {
+  "columnas": [
+   {
+    "nombre": "id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "lote",
+    "tipo": "text"
+   },
+   {
+    "nombre": "habilidad_codigo",
+    "tipo": "text"
+   },
+   {
+    "nombre": "etapa",
+    "tipo": "text"
+   },
+   {
+    "nombre": "motivo",
+    "tipo": "text"
+   },
+   {
+    "nombre": "ejercicio",
+    "tipo": "jsonb"
+   },
+   {
+    "nombre": "creado_en",
+    "tipo": "timestamp with time zone"
+   }
+  ],
+  "fks": {},
+  "pk": [
+   "id"
+  ]
+ },
+ "revision": {
+  "columnas": [
+   {
+    "nombre": "id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "objeto_tipo",
+    "tipo": "text"
+   },
+   {
+    "nombre": "objeto_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "revisor",
+    "tipo": "text"
+   },
+   {
+    "nombre": "decision",
+    "tipo": "text"
+   },
+   {
+    "nombre": "motivo",
+    "tipo": "text"
+   },
+   {
+    "nombre": "texto",
+    "tipo": "text"
+   },
+   {
+    "nombre": "fecha",
+    "tipo": "timestamp with time zone"
+   }
+  ],
+  "fks": {},
+  "pk": [
+   "id"
+  ]
+ },
+ "revisor": {
+  "columnas": [
+   {
+    "nombre": "id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "nombre",
+    "tipo": "text"
+   }
+  ],
+  "fks": {},
+  "pk": [
+   "id"
+  ]
+ },
+ "sesion": {
+  "columnas": [
+   {
+    "nombre": "id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "alumno_id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "tipo",
+    "tipo": "text"
+   },
+   {
+    "nombre": "inicio",
+    "tipo": "timestamp with time zone"
+   },
+   {
+    "nombre": "fin",
+    "tipo": "timestamp with time zone"
+   },
+   {
+    "nombre": "objetivo_seg",
+    "tipo": "smallint"
+   },
+   {
+    "nombre": "mecanicas",
+    "tipo": "ARRAY"
+   },
+   {
+    "nombre": "motivo_fin",
+    "tipo": "text"
+   },
+   {
+    "nombre": "intentos",
+    "tipo": "integer"
+   },
+   {
+    "nombre": "aciertos",
+    "tipo": "integer"
+   },
+   {
+    "nombre": "explicaciones",
+    "tipo": "integer"
+   },
+   {
+    "nombre": "termino_en_acierto",
+    "tipo": "boolean"
+   },
+   {
+    "nombre": "iniciada_por",
+    "tipo": "text"
+   },
+   {
+    "nombre": "estado",
+    "tipo": "jsonb"
+   }
+  ],
+  "fks": {
+   "alumno_id": {
+    "tabla": "alumno",
+    "columna": "id"
+   }
+  },
+  "pk": [
+   "id"
+  ]
+ },
+ "sistema_educativo": {
+  "columnas": [
+   {
+    "nombre": "id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "codigo",
+    "tipo": "text"
+   },
+   {
+    "nombre": "pais",
+    "tipo": "text"
+   },
+   {
+    "nombre": "region",
+    "tipo": "text"
+   },
+   {
+    "nombre": "nombre",
+    "tipo": "text"
+   },
+   {
+    "nombre": "idioma",
+    "tipo": "text"
+   },
+   {
+    "nombre": "fuente_id",
+    "tipo": "uuid"
+   }
+  ],
+  "fks": {
+   "fuente_id": {
+    "tabla": "fuente",
+    "columna": "id"
+   }
+  },
+  "pk": [
+   "id"
+  ]
+ },
+ "tecnica_practica": {
+  "columnas": [
+   {
+    "nombre": "id",
+    "tipo": "uuid"
+   },
+   {
+    "nombre": "codigo",
+    "tipo": "text"
+   },
+   {
+    "nombre": "nombre",
+    "tipo": "text"
+   },
+   {
+    "nombre": "descripcion",
+    "tipo": "text"
+   },
+   {
+    "nombre": "disparador",
+    "tipo": "text"
+   },
+   {
+    "nombre": "regla",
+    "tipo": "jsonb"
+   },
+   {
+    "nombre": "ambito",
+    "tipo": "text"
+   },
+   {
+    "nombre": "fuente_id",
+    "tipo": "uuid"
+   }
+  ],
+  "fks": {
+   "fuente_id": {
+    "tabla": "fuente",
+    "columna": "id"
+   }
+  },
+  "pk": [
+   "id"
+  ]
+ }
+}
