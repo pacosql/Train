@@ -105,6 +105,12 @@ Fronteras dudosas que la mina ha decidido provisionalmente; cambiarlas es editar
 - **Raíz cuadrada:** toda en 1.º ESO (Murcia no la nombra en primaria). ¿Se sigue enseñando el algoritmo (OPER.RAIZ.03) con la LOMLOE? Tiene importancia 2.
 - **Factorización y criterios del 4, 6, 9, 11, 25:** en 1.º ESO por el decreto; muchos libros de 6.º los adelantan.
 - **Enteros en primaria:** en contexto y recta al final de 6.º; lo formal, en 1.º ESO.
+- **Fracciones en 2.º (mitad y cuarto):** ningún decreto las pone en el primer ciclo; adelantadas por lo que hacen los libros.
+- **Decimales:** décimas, centésimas y suma/resta con dinero en 4.º; el resto en 5.º (Murcia: tercer ciclo).
+- **Equivalentes y distinto denominador:** en 5.º–6.º (Murcia); muchos libros hacen las equivalentes en 4.º.
+- **Interés simple en 3.º ESO, compuesto en 4.º ESO, TAE en MACS I:** parte financiera dentro de NUM.PORC (no hay familia financiera).
+- **Logaritmos y radicales operativos en 4.º ESO (Matemáticas B):** el mapa tendrá que distinguir 4.º A y B.
+- **Forma polar y Moivre en Matemáticas I:** el decreto solo dice "notación adecuada"; incluidos por ser lo habitual.
 - **OPER.DIV.01** (anexo) incluye a la vez las divisiones de la tabla y el algoritmo exacto de divisor de una cifra; con granularidad fina serían dos.
 
 ## Propuestas
