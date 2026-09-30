@@ -35,11 +35,11 @@
    "fuentes_extra": [],
    "prerrequisitos": [
     {
-     "codigo": "NUM.CONT.02",
+     "codigo": "NUM.PARIDAD.02",
      "peso": "recomendable"
     },
     {
-     "codigo": "OPER.DIV.01",
+     "codigo": "NUM.CONT.07",
      "peso": "recomendable"
     }
    ],
@@ -241,7 +241,7 @@
      "peso": "imprescindible"
     },
     {
-     "codigo": "NUM.ORD.01",
+     "codigo": "NUM.ORD.03",
      "peso": "recomendable"
     }
    ],
@@ -652,7 +652,7 @@
      "peso": "imprescindible"
     },
     {
-     "codigo": "NUM.ORD.01",
+     "codigo": "NUM.ORD.04",
      "peso": "recomendable"
     }
    ],
@@ -917,7 +917,7 @@
      "peso": "imprescindible"
     },
     {
-     "codigo": "NUM.DIVIS.05",
+     "codigo": "NUM.DIVIS.10",
      "peso": "recomendable"
     }
    ],
@@ -1036,7 +1036,7 @@
      "peso": "imprescindible"
     },
     {
-     "codigo": "NUM.ENT.02",
+     "codigo": "NUM.ENT.03",
      "peso": "imprescindible"
     }
    ],
@@ -1278,7 +1278,7 @@
     "negativos": false
    },
    "ejemplo_frontera": "5/6 + 3/4 − 7/10 = 53/60",
-   "ejemplo_fuera": "2/3 − 5/4 (resultado negativo → OPER.FRAC.08)",
+   "ejemplo_fuera": "2/3 − 5/4 · 1/2 (combinada → OPER.JERARQ.05)",
    "importancia": 5,
    "carga_alumno": 4,
    "calculable": true,
@@ -1477,25 +1477,25 @@
    "familia": "OPER.FRAC",
    "nivel_familia": 7,
    "bloque": "OPER",
-   "curso_ref": "ESO2",
-   "trimestre_ref": 1,
-   "orden_ref": 2,
-   "nota_curso": "Murcia: potencias de exponente entero en 2.º ESO; con base fraccionaria se trabaja con los racionales en 2.º. Frontera con OPER.POT (T2): aquí solo base fraccionaria.",
-   "nombre": "Potencias de fracciones",
-   "nombre_padres": "Elevar una fracción a una potencia",
-   "definicion": "Calcular la potencia de una fracción con exponente natural o entero negativo: (a/b)^n = a^n/b^n y (a/b)^−n = (b/a)^n; incluye exponente 0 y aplicar las propiedades de potencias de igual base con base fraccionaria. Bases con términos hasta 10, resultado con términos hasta 10 000. No entran exponentes fraccionarios (OPER.RADIC.02).",
+   "curso_ref": "ESO1",
+   "trimestre_ref": 2,
+   "orden_ref": 3,
+   "nota_curso": "Murcia 1.º ESO: propiedades de las operaciones, incluida la potenciación, con fracciones. Frontera con OPER.POT (T2): aquí solo exponente natural y base fraccionaria; exponente 0/negativo y propiedades con base racional son OPER.POT.05/06.",
+   "nombre": "Potencia de una fracción con exponente natural",
+   "nombre_padres": "Elevar una fracción al cuadrado o al cubo",
+   "definicion": "Calcular la potencia de una fracción (positiva o con signo) con exponente natural: (a/b)^n = a^n/b^n, distinguiendo (−a/b)^n de −(a/b)^n según la paridad del exponente. Términos de la base hasta 10 y resultado con términos hasta 10 000. No entran exponentes cero o negativos ni reducir productos de potencias con propiedades (OPER.POT.05 y OPER.POT.06), ni exponentes fraccionarios (OPER.RADIC.02).",
    "parametros": {
-    "exponente": "entero",
+    "exponente": "natural",
     "max_base": 10,
-    "propiedades": true
+    "signo": true
    },
-   "ejemplo_frontera": "(2/3)^−3 · (2/3)^5 = 4/9",
-   "ejemplo_fuera": "(8/27)^(1/3) (exponente fraccionario → OPER.RADIC.02)",
+   "ejemplo_frontera": "(−2/3)^5 = −32/243",
+   "ejemplo_fuera": "(2/3)^−2 (exponente negativo → OPER.POT.05)",
    "importancia": 3,
-   "carga_alumno": 3,
+   "carga_alumno": 2,
    "calculable": true,
    "fuente": "DEC-ES-MC-ESO",
-   "fuente_ref": "Anexo III, Matemáticas 2.º ESO, A. Sentido numérico, 2. Sentido de las operaciones (pág. 42907)",
+   "fuente_ref": "Anexo III, Matemáticas 1.º ESO, A. Sentido numérico, 2. Sentido de las operaciones (pág. 42902)",
    "fuentes_extra": [],
    "prerrequisitos": [
     {
@@ -1503,7 +1503,7 @@
      "peso": "imprescindible"
     },
     {
-     "codigo": "OPER.POT.02",
+     "codigo": "OPER.POT.04",
      "peso": "imprescindible"
     }
    ],
@@ -1526,19 +1526,11 @@
     },
     {
      "sufijo": "E03",
-     "nombre": "Exponente negativo como signo negativo",
-     "descripcion": "(2/3)^−2 = −4/9.",
-     "explicacion_nino": "El exponente negativo no hace la fracción negativa: le da la vuelta. (3/2)² = 9/4.",
-     "indicacion_padres": "Si aparece un signo menos en el resultado de una potencia de base positiva, pídele que lo revise.",
-     "regla": "−(a/b)^n"
-    },
-    {
-     "sufijo": "E04",
-     "nombre": "Exponente cero da cero",
-     "descripcion": "(5/7)^0 = 0.",
-     "explicacion_nino": "Cualquier número (no nulo) elevado a 0 vale 1.",
-     "indicacion_padres": "Que recuerde: a^n : a^n = a^0 = 1.",
-     "regla": "0"
+     "nombre": "Signo de la base negativa",
+     "descripcion": "(−2/3)² = −4/9.",
+     "explicacion_nino": "Con exponente par, negativo por negativo da positivo: 4/9.",
+     "indicacion_padres": "Que distinga (−2/3)² de −(2/3)² con los paréntesis.",
+     "regla": "−|a/b|^n con n par"
     }
    ]
   },
@@ -1549,7 +1541,7 @@
    "bloque": "OPER",
    "curso_ref": "ESO2",
    "trimestre_ref": 1,
-   "orden_ref": 3,
+   "orden_ref": 2,
    "nota_curso": "Murcia: 'operaciones con números racionales' en 2.º ESO (1.º se centra en enteros y fracciones positivas).",
    "nombre": "Operaciones con fracciones con signo (números racionales)",
    "nombre_padres": "Sumar, restar, multiplicar y dividir fracciones negativas",
@@ -1563,7 +1555,7 @@
     ]
    },
    "ejemplo_frontera": "−5/6 − (−3/4) + 2/3 = 7/12",
-   "ejemplo_fuera": "−1/2 · [3/4 − (2/3)²] (combinada con jerarquía → OPER.JERARQ)",
+   "ejemplo_fuera": "−1/2 · [3/4 − (2/3)²] (combinada con jerarquía → OPER.JERARQ.06)",
    "importancia": 4,
    "carga_alumno": 4,
    "calculable": true,
@@ -1580,7 +1572,11 @@
      "peso": "imprescindible"
     },
     {
-     "codigo": "OPER.ENT.02",
+     "codigo": "OPER.ENT.03",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "OPER.ENT.05",
      "peso": "imprescindible"
     },
     {
@@ -1641,7 +1637,7 @@
    "fuentes_extra": [],
    "prerrequisitos": [
     {
-     "codigo": "NUM.LECT.02",
+     "codigo": "NUM.LECT.07",
      "peso": "imprescindible"
     },
     {
@@ -1649,7 +1645,7 @@
      "peso": "recomendable"
     },
     {
-     "codigo": "MED.DINERO.03",
+     "codigo": "MED.DINERO.04",
      "peso": "recomendable"
     }
    ],
@@ -1713,7 +1709,7 @@
      "peso": "imprescindible"
     },
     {
-     "codigo": "NUM.DESC.03",
+     "codigo": "NUM.DESC.07",
      "peso": "recomendable"
     }
    ],
@@ -2030,7 +2026,7 @@
      "peso": "imprescindible"
     },
     {
-     "codigo": "NUM.REDON.03",
+     "codigo": "NUM.REDON.07",
      "peso": "imprescindible"
     }
    ],
@@ -2140,7 +2136,7 @@
    "bloque": "NUM",
    "curso_ref": "ESO1",
    "trimestre_ref": 2,
-   "orden_ref": 3,
+   "orden_ref": 4,
    "nota_curso": "1.º ESO en Murcia (comparación y ordenación de decimales y situación en la recta); criterio.",
    "nombre": "Intercalar un decimal entre dos dados",
    "nombre_padres": "Encontrar un número con coma entre otros dos",
@@ -2196,7 +2192,7 @@
    "bloque": "NUM",
    "curso_ref": "ESO2",
    "trimestre_ref": 1,
-   "orden_ref": 4,
+   "orden_ref": 3,
    "nota_curso": "Murcia centra los racionales y sus expresiones decimales en 2.º ESO.",
    "nombre": "Tipos de expresiones decimales: exactas y periódicas",
    "nombre_padres": "Decimales que se acaban y decimales que se repiten",
@@ -2227,7 +2223,7 @@
      "peso": "imprescindible"
     },
     {
-     "codigo": "NUM.DIVIS.05",
+     "codigo": "NUM.DIVIS.09",
      "peso": "imprescindible"
     }
    ],
@@ -2265,7 +2261,7 @@
    "bloque": "NUM",
    "curso_ref": "ESO2",
    "trimestre_ref": 1,
-   "orden_ref": 5,
+   "orden_ref": 4,
    "nota_curso": "Murcia: números racionales y sus representaciones en 2.º ESO; algunos libros lo dejan para 3.º.",
    "nombre": "Fracción generatriz",
    "nombre_padres": "Pasar un decimal a fracción",
@@ -2367,11 +2363,11 @@
      "peso": "imprescindible"
     },
     {
-     "codigo": "OPER.SUMA.07",
+     "codigo": "OPER.SUMA.11",
      "peso": "imprescindible"
     },
     {
-     "codigo": "OPER.RESTA.05",
+     "codigo": "OPER.RESTA.03",
      "peso": "imprescindible"
     }
    ],
@@ -2514,7 +2510,7 @@
      "peso": "recomendable"
     },
     {
-     "codigo": "OPER.MULT.04",
+     "codigo": "OPER.MULT.06",
      "peso": "imprescindible"
     }
    ],
@@ -2582,7 +2578,11 @@
      "peso": "imprescindible"
     },
     {
-     "codigo": "OPER.MULT.05",
+     "codigo": "OPER.MULT.04",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "OPER.DIV.04",
      "peso": "imprescindible"
     }
    ],
@@ -2875,7 +2875,7 @@
    "bloque": "OPER",
    "curso_ref": "ESO1",
    "trimestre_ref": 2,
-   "orden_ref": 4,
+   "orden_ref": 5,
    "nota_curso": "Murcia 1.º ESO: 'efecto de las operaciones aritméticas con… expresiones decimales' y cálculo mental con decimales.",
    "nombre": "Multiplicar y dividir por 0,1, 0,01, 0,5 y otros decimales sencillos",
    "nombre_padres": "Qué pasa al multiplicar o dividir por números menores que 1",
@@ -3116,7 +3116,7 @@
      "peso": "imprescindible"
     },
     {
-     "codigo": "OPER.MULT.04",
+     "codigo": "OPER.MULT.06",
      "peso": "imprescindible"
     }
    ],
@@ -3227,7 +3227,7 @@
    "bloque": "NUM",
    "curso_ref": "ESO1",
    "trimestre_ref": 3,
-   "orden_ref": 5,
+   "orden_ref": 6,
    "nota_curso": "Murcia 1.º ESO: porcentajes, comprensión y problemas.",
    "nombre": "Qué porcentaje representa una cantidad de otra",
    "nombre_padres": "Qué tanto por ciento es una parte del total",
@@ -3287,7 +3287,7 @@
    "bloque": "NUM",
    "curso_ref": "ESO1",
    "trimestre_ref": 3,
-   "orden_ref": 6,
+   "orden_ref": 7,
    "nota_curso": "Murcia lo cita expresamente en 1.º y 2.º ESO ('porcentajes mayores que 100 y menores que 1: interpretación'); se introduce en 1.º.",
    "nombre": "Porcentajes mayores que 100 y menores que 1",
    "nombre_padres": "Porcentajes como 150 % o 0,5 %",
@@ -3350,7 +3350,7 @@
    "bloque": "NUM",
    "curso_ref": "ESO1",
    "trimestre_ref": 3,
-   "orden_ref": 7,
+   "orden_ref": 8,
    "nota_curso": "Murcia 1.º ESO: porcentajes, comprensión y resolución de problemas.",
    "nombre": "Calcular el total conociendo la parte y el porcentaje",
    "nombre_padres": "Si el 20 % son 15, ¿cuánto es el total?",
@@ -3410,7 +3410,7 @@
    "bloque": "NUM",
    "curso_ref": "ESO1",
    "trimestre_ref": 3,
-   "orden_ref": 8,
+   "orden_ref": 9,
    "nota_curso": "Murcia 1.º ESO: 'aumentos y disminuciones porcentuales, rebajas y subidas de precios, impuestos'.",
    "nombre": "Aumentos y disminuciones con el índice de variación",
    "nombre_padres": "Subir o bajar un porcentaje de una vez (multiplicando por 1,21 o 0,85)",
@@ -3474,7 +3474,7 @@
    "bloque": "NUM",
    "curso_ref": "ESO1",
    "trimestre_ref": 3,
-   "orden_ref": 9,
+   "orden_ref": 10,
    "nota_curso": "Murcia cita los porcentajes encadenados en 1.º y 2.º ESO; se introduce al final de 1.º.",
    "nombre": "Porcentajes encadenados",
    "nombre_padres": "Varias subidas o bajadas seguidas",
@@ -3533,7 +3533,7 @@
    "bloque": "NUM",
    "curso_ref": "ESO2",
    "trimestre_ref": 3,
-   "orden_ref": 11,
+   "orden_ref": 10,
    "nota_curso": "Murcia 2.º ESO (porcentajes: problemas; aumentos y disminuciones); criterio.",
    "nombre": "Cantidad inicial conocida la final tras una variación porcentual",
    "nombre_padres": "Precio antes del descuento o sin IVA",
@@ -3621,7 +3621,7 @@
      "peso": "imprescindible"
     },
     {
-     "codigo": "ALG.EC1.02",
+     "codigo": "ALG.EC1.05",
      "peso": "recomendable"
     }
    ],
@@ -3815,7 +3815,7 @@
      "peso": "imprescindible"
     },
     {
-     "codigo": "FUN.SUCES.04",
+     "codigo": "FUN.SUCES.07",
      "peso": "recomendable"
     }
    ],
@@ -4011,7 +4011,7 @@
      "peso": "imprescindible"
     },
     {
-     "codigo": "MED.LONG.05",
+     "codigo": "MED.LONG.07",
      "peso": "imprescindible"
     }
    ],
@@ -4049,7 +4049,7 @@
    "bloque": "NUM",
    "curso_ref": "ESO1",
    "trimestre_ref": 3,
-   "orden_ref": 10,
+   "orden_ref": 11,
    "nota_curso": "Murcia 1.º ESO: 'razones y proporciones: comprensión y representación'.",
    "nombre": "Razones y proporciones",
    "nombre_padres": "Razones y proporciones: comparar dos cantidades dividiendo",
@@ -4112,7 +4112,7 @@
    "bloque": "NUM",
    "curso_ref": "ESO1",
    "trimestre_ref": 3,
-   "orden_ref": 11,
+   "orden_ref": 12,
    "nota_curso": "Murcia 1.º ESO (situaciones de proporcionalidad directa: cambio de divisas, velocidad, etc.).",
    "nombre": "Regla de tres simple directa",
    "nombre_padres": "Regla de tres directa",
@@ -4173,7 +4173,7 @@
    "bloque": "NUM",
    "curso_ref": "ESO1",
    "trimestre_ref": 3,
-   "orden_ref": 12,
+   "orden_ref": 13,
    "nota_curso": "Murcia 1.º ESO: proporcionalidad 'directa e inversa' (ampliación sobre el estatal).",
    "nombre": "Magnitudes inversamente proporcionales: reconocer y completar tablas",
    "nombre_padres": "Cuando una sube y la otra baja en la misma proporción",
@@ -4233,7 +4233,7 @@
    "bloque": "NUM",
    "curso_ref": "ESO1",
    "trimestre_ref": 3,
-   "orden_ref": 13,
+   "orden_ref": 14,
    "nota_curso": "Murcia 1.º ESO (proporcionalidad inversa, velocidad y tiempo).",
    "nombre": "Regla de tres simple inversa",
    "nombre_padres": "Regla de tres inversa",
@@ -4294,7 +4294,7 @@
    "bloque": "NUM",
    "curso_ref": "ESO1",
    "trimestre_ref": 3,
-   "orden_ref": 14,
+   "orden_ref": 15,
    "nota_curso": "Murcia 1.º ESO cita los repartos proporcionales (ampliación sobre el estatal).",
    "nombre": "Repartos directamente proporcionales",
    "nombre_padres": "Repartir una cantidad según lo que aporta cada uno",
@@ -4355,7 +4355,7 @@
    "bloque": "NUM",
    "curso_ref": "ESO2",
    "trimestre_ref": 2,
-   "orden_ref": 9,
+   "orden_ref": 8,
    "nota_curso": "Murcia 2.º ESO: repartos proporcionales y proporcionalidad inversa; el inverso se sitúa en 2.º.",
    "nombre": "Repartos inversamente proporcionales",
    "nombre_padres": "Repartir más al que menos tiene (en proporción inversa)",
@@ -4423,7 +4423,7 @@
    "bloque": "NUM",
    "curso_ref": "ESO2",
    "trimestre_ref": 2,
-   "orden_ref": 10,
+   "orden_ref": 9,
    "nota_curso": "Murcia 2.º ESO: situaciones de proporcionalidad en diferentes contextos; la compuesta es clásica de 2.º.",
    "nombre": "Regla de tres compuesta",
    "nombre_padres": "Regla de tres con tres o más cantidades",
@@ -4487,7 +4487,7 @@
    "bloque": "NUM",
    "curso_ref": "ESO2",
    "trimestre_ref": 1,
-   "orden_ref": 6,
+   "orden_ref": 5,
    "nota_curso": "Murcia 2.º ESO: 'números grandes y pequeños: notación exponencial y científica'; se repite en 3.º.",
    "nombre": "Notación científica: escribir y leer",
    "nombre_padres": "Escribir números muy grandes o muy pequeños con potencias de 10",
@@ -4508,6 +4508,10 @@
    "prerrequisitos": [
     {
      "codigo": "OPER.POT.03",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "OPER.POT.05",
      "peso": "imprescindible"
     },
     {
@@ -4557,7 +4561,7 @@
    "bloque": "NUM",
    "curso_ref": "ESO2",
    "trimestre_ref": 1,
-   "orden_ref": 7,
+   "orden_ref": 6,
    "nota_curso": "Murcia 2.º ESO (notación científica y uso de la calculadora).",
    "nombre": "Producto y cociente en notación científica",
    "nombre_padres": "Multiplicar y dividir números escritos con potencias de 10",
@@ -4583,7 +4587,7 @@
      "peso": "imprescindible"
     },
     {
-     "codigo": "OPER.POT.02",
+     "codigo": "OPER.POT.06",
      "peso": "imprescindible"
     }
    ],
@@ -4680,7 +4684,7 @@
    "bloque": "NUM",
    "curso_ref": "ESO2",
    "trimestre_ref": 1,
-   "orden_ref": 8,
+   "orden_ref": 7,
    "nota_curso": "Murcia 2.º ESO: 'estimaciones con la precisión requerida reconociendo los errores de aproximación'.",
    "nombre": "Aproximación: truncamiento y redondeo",
    "nombre_padres": "Aproximar un número cortando o redondeando",
@@ -4974,7 +4978,7 @@
      "peso": "imprescindible"
     },
     {
-     "codigo": "NUM.ENT.02",
+     "codigo": "NUM.ENT.03",
      "peso": "imprescindible"
     }
    ],
@@ -5110,11 +5114,11 @@
      "peso": "imprescindible"
     },
     {
-     "codigo": "OPER.POT.01",
+     "codigo": "OPER.POT.04",
      "peso": "imprescindible"
     },
     {
-     "codigo": "OPER.ENT.03",
+     "codigo": "OPER.ENT.05",
      "peso": "recomendable"
     }
    ],
@@ -5186,12 +5190,8 @@
      "peso": "imprescindible"
     },
     {
-     "codigo": "OPER.POT.02",
+     "codigo": "OPER.POT.06",
      "peso": "imprescindible"
-    },
-    {
-     "codigo": "OPER.FRAC.07",
-     "peso": "recomendable"
     }
    ],
    "errores": [
@@ -5263,7 +5263,7 @@
      "peso": "imprescindible"
     },
     {
-     "codigo": "NUM.DIVIS.05",
+     "codigo": "NUM.DIVIS.09",
      "peso": "imprescindible"
     }
    ],
@@ -5447,7 +5447,11 @@
      "peso": "imprescindible"
     },
     {
-     "codigo": "ALG.IDENT.01",
+     "codigo": "ALG.IDENT.02",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "ALG.IDENT.03",
      "peso": "imprescindible"
     }
    ],
@@ -5644,7 +5648,7 @@
      "peso": "imprescindible"
     },
     {
-     "codigo": "ALG.IDENT.01",
+     "codigo": "ALG.IDENT.03",
      "peso": "imprescindible"
     }
    ],
@@ -5779,7 +5783,7 @@
      "peso": "imprescindible"
     },
     {
-     "codigo": "OPER.FRAC.07",
+     "codigo": "OPER.POT.05",
      "peso": "imprescindible"
     }
    ],
@@ -5856,7 +5860,7 @@
      "peso": "imprescindible"
     },
     {
-     "codigo": "OPER.POT.02",
+     "codigo": "OPER.POT.06",
      "peso": "imprescindible"
     }
    ],
@@ -5928,7 +5932,7 @@
      "peso": "imprescindible"
     },
     {
-     "codigo": "NUM.DIVIS.05",
+     "codigo": "NUM.DIVIS.09",
      "peso": "recomendable"
     }
    ],
@@ -6428,7 +6432,7 @@
      "peso": "imprescindible"
     },
     {
-     "codigo": "OPER.POT.02",
+     "codigo": "OPER.POT.06",
      "peso": "imprescindible"
     }
    ],
