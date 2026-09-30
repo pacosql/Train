@@ -63,7 +63,7 @@
     {
      "sufijo": "E03",
      "nombre": "Mitad de una colección = quitar uno",
-     "descripcion": "La mitad de 8 canicas: dice 7 o 4+… cuenta mal el reparto.",
+     "descripcion": "La mitad de 8 canicas: dice 7 (quita una) o 6 (quita dos).",
      "explicacion_nino": "La mitad es repartir en dos grupos iguales. Haz dos montones con el mismo número.",
      "indicacion_padres": "Que reparta de verdad los objetos en dos platos, uno a uno.",
      "regla": "n − 1 o n − 2 en vez de n : 2"
@@ -257,7 +257,7 @@
     {
      "sufijo": "E02",
      "nombre": "Compara también el denominador y se lía",
-     "descripcion": "Dice que 4/7 y 4/9 no se pueden… (o compara denominadores iguales como distintos).",
+     "descripcion": "Ante 3/8 y 5/8 responde que son iguales porque tienen el mismo número abajo.",
      "explicacion_nino": "Abajo pone lo mismo, así que solo mira el número de arriba.",
      "indicacion_padres": "Pregúntale primero: ¿los trozos son iguales? Si sí, basta con contar.",
      "regla": "responde '=' porque los denominadores coinciden"
@@ -551,7 +551,7 @@
    "bloque": "NUM",
    "curso_ref": "PRI5",
    "trimestre_ref": 2,
-   "orden_ref": 3,
+   "orden_ref": 4,
    "nota_curso": "Tercer ciclo (comparación de fracciones heterogéneas, que exige equivalencia); 5.º.",
    "nombre": "Fracciones equivalentes: amplificar y simplificar",
    "nombre_padres": "Fracciones que valen lo mismo",
@@ -628,7 +628,7 @@
    "bloque": "NUM",
    "curso_ref": "PRI5",
    "trimestre_ref": 2,
-   "orden_ref": 4,
+   "orden_ref": 5,
    "nota_curso": "Tercer ciclo de Murcia: representación en la recta de naturales y decimales, y fracciones en ESO1; se pone en 5.º como apoyo de la comparación.",
    "nombre": "Fracciones en la recta numérica",
    "nombre_padres": "Colocar fracciones en una recta",
@@ -690,7 +690,7 @@
    "bloque": "NUM",
    "curso_ref": "PRI5",
    "trimestre_ref": 2,
-   "orden_ref": 5,
+   "orden_ref": 6,
    "nota_curso": "Murcia: fracciones heterogéneas en tercer ciclo; 5.º.",
    "nombre": "Comparar fracciones con el mismo numerador",
    "nombre_padres": "Qué fracción es mayor si se coge el mismo número de trozos",
@@ -1064,6 +1064,554 @@
      "explicacion_nino": "Un signo menos, esté arriba, abajo o delante, hace la fracción negativa.",
      "indicacion_padres": "Que aplique la regla de los signos de la división.",
      "regla": "trata a/(−b) como positivo"
+    }
+   ]
+  },
+  {
+   "codigo": "OPER.FRAC.01",
+   "familia": "OPER.FRAC",
+   "nivel_familia": 1,
+   "bloque": "OPER",
+   "curso_ref": "PRI5",
+   "trimestre_ref": 1,
+   "orden_ref": 3,
+   "nota_curso": "Murcia: operaciones con fracciones en el tercer ciclo (cálculo mental con fracciones ya en el segundo); 5.º. Muchos libros lo adelantan a 4.º.",
+   "nombre": "Suma y resta de fracciones con el mismo denominador",
+   "nombre_padres": "Sumar y restar fracciones con el mismo número abajo",
+   "definicion": "Sumar o restar dos o tres fracciones homogéneas positivas (denominador hasta 12): se suman o restan los numeradores y se mantiene el denominador. El resultado puede ser impropio; no se exige simplificar. No entran fracciones con distinto denominador ni números naturales mezclados (1 − 3/5).",
+   "parametros": {
+    "homogeneas": true,
+    "denominador_max": 12,
+    "n_terminos": [
+     2,
+     3
+    ],
+    "simplificar": false
+   },
+   "ejemplo_frontera": "7/12 + 8/12 − 5/12 = 10/12",
+   "ejemplo_fuera": "2/3 + 1/4 (distinto denominador → OPER.FRAC.04)",
+   "importancia": 5,
+   "carga_alumno": 2,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, tercer ciclo, A. Sentido numérico, 3. Sentido de las operaciones (pág. 40077)",
+   "fuentes_extra": [],
+   "prerrequisitos": [
+    {
+     "codigo": "NUM.FRAC.04",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "NUM.FRAC.07",
+     "peso": "recomendable"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Suma también los denominadores",
+     "descripcion": "2/7 + 3/7 = 5/14.",
+     "explicacion_nino": "Los trozos son séptimos y siguen siendo séptimos. Solo cuentas cuántos hay: 5/7.",
+     "indicacion_padres": "Pregúntale: si juntas 2 séptimos y 3 séptimos, ¿los trozos cambian de tamaño?",
+     "regla": "(n1 + n2)/(d + d)"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Resta también los denominadores",
+     "descripcion": "5/8 − 2/8 = 3/0 o 3.",
+     "explicacion_nino": "Abajo se queda el 8: siguen siendo octavos.",
+     "indicacion_padres": "Que diga el nombre de la fracción: 'cinco octavos menos dos octavos'.",
+     "regla": "(n1 − n2)/(d − d) → 3/0 o n1 − n2"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Multiplica los denominadores",
+     "descripcion": "2/7 + 3/7 = 5/49.",
+     "explicacion_nino": "Para sumar no se multiplica abajo; si ya son iguales se deja igual.",
+     "indicacion_padres": "Que dibuje una barra en 7 trozos y coloree 2 y 3.",
+     "regla": "(n1 + n2)/(d·d)"
+    }
+   ]
+  },
+  {
+   "codigo": "OPER.FRAC.02",
+   "familia": "OPER.FRAC",
+   "nivel_familia": 2,
+   "bloque": "OPER",
+   "curso_ref": "PRI5",
+   "trimestre_ref": 2,
+   "orden_ref": 7,
+   "nota_curso": "Tercer ciclo de Murcia; 5.º.",
+   "nombre": "Suma y resta de un número natural y una fracción",
+   "nombre_padres": "Sumar o restar un número entero y una fracción",
+   "definicion": "Calcular expresiones del tipo a ± m/n o m/n ± a con a natural hasta 10 y denominador hasta 12, escribiendo el natural como fracción con el mismo denominador (1 = n/n). Resultado en fracción o número mixto. Caso típico: la parte que falta hasta la unidad (1 − 3/8). No entran dos fracciones de distinto denominador.",
+   "parametros": {
+    "natural_max": 10,
+    "denominador_max": 12
+   },
+   "ejemplo_frontera": "3 − 5/12 = 31/12",
+   "ejemplo_fuera": "1/2 + 1/3 (→ OPER.FRAC.04)",
+   "importancia": 4,
+   "carga_alumno": 3,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, tercer ciclo, A. Sentido numérico, 3. Sentido de las operaciones (pág. 40077)",
+   "fuentes_extra": [],
+   "prerrequisitos": [
+    {
+     "codigo": "OPER.FRAC.01",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "NUM.FRAC.08",
+     "peso": "recomendable"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Opera el natural con el numerador",
+     "descripcion": "1 − 3/8 = 2/8 (hace 3 − 1) o 2 + 1/4 = 3/4.",
+     "explicacion_nino": "El 1 es una unidad entera, que son 8/8. Entonces 8/8 − 3/8 = 5/8.",
+     "indicacion_padres": "Que escriba primero el número entero como fracción con el mismo denominador.",
+     "regla": "(a ± n)/d o (n − a)/d"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Pone el natural con denominador 1 sin igualar",
+     "descripcion": "2 + 1/4 = 3/5 (2/1 + 1/4 sumando todo).",
+     "explicacion_nino": "2 enteros son 8 cuartos. Suma cuartos con cuartos: 8/4 + 1/4 = 9/4.",
+     "indicacion_padres": "Que dibuje los enteros en cuartos.",
+     "regla": "(a + n)/(1 + d)"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Resta al revés",
+     "descripcion": "1 − 3/8 = −5/8 o responde 3/8 − 1.",
+     "explicacion_nino": "Tienes una unidad entera y le quitas 3 trozos: te quedan 5 de 8.",
+     "indicacion_padres": "Con una tableta de 8 onzas, que se coma 3 y cuente las que quedan.",
+     "regla": "m/n − a"
+    }
+   ]
+  },
+  {
+   "codigo": "OPER.FRAC.03",
+   "familia": "OPER.FRAC",
+   "nivel_familia": 3,
+   "bloque": "OPER",
+   "curso_ref": "PRI5",
+   "trimestre_ref": 3,
+   "orden_ref": 8,
+   "nota_curso": "Tercer ciclo de Murcia; 5.º.",
+   "nombre": "Multiplicación de una fracción por un número natural",
+   "nombre_padres": "Multiplicar una fracción por un número",
+   "definicion": "Calcular a · m/n (a natural hasta 12, denominador hasta 12) multiplicando el natural por el numerador y dejando el denominador; interpretar como suma repetida. Sin obligación de simplificar. No entra el producto de dos fracciones ni la fracción de un número presentada como 'm/n de a' (NUM.FRAC.06).",
+   "parametros": {
+    "natural_max": 12,
+    "denominador_max": 12
+   },
+   "ejemplo_frontera": "7 · 5/12 = 35/12",
+   "ejemplo_fuera": "2/3 · 4/5 (→ OPER.FRAC.05)",
+   "importancia": 4,
+   "carga_alumno": 2,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, tercer ciclo, A. Sentido numérico, 3. Sentido de las operaciones (pág. 40077)",
+   "fuentes_extra": [],
+   "prerrequisitos": [
+    {
+     "codigo": "OPER.FRAC.01",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "OPER.MULT.02",
+     "peso": "imprescindible"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Multiplica también el denominador",
+     "descripcion": "3 · 2/5 = 6/15.",
+     "explicacion_nino": "3 veces 2 quintos son 6 quintos: los trozos siguen siendo quintos.",
+     "indicacion_padres": "Que lo escriba como suma: 2/5 + 2/5 + 2/5.",
+     "regla": "(a·n)/(a·d)"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Multiplica solo el denominador",
+     "descripcion": "3 · 2/5 = 2/15.",
+     "explicacion_nino": "Multiplicas cuántos trozos tienes (arriba), no el tamaño del trozo.",
+     "indicacion_padres": "Si el resultado es más pequeño que la fracción, algo va mal: 3 veces algo es más.",
+     "regla": "n/(a·d)"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Suma el natural al numerador",
+     "descripcion": "3 · 2/5 = 5/5.",
+     "explicacion_nino": "Es multiplicar, no sumar: 3 · 2 = 6.",
+     "indicacion_padres": "Que relea el signo de la operación.",
+     "regla": "(a + n)/d"
+    }
+   ]
+  },
+  {
+   "codigo": "OPER.FRAC.04",
+   "familia": "OPER.FRAC",
+   "nivel_familia": 4,
+   "bloque": "OPER",
+   "curso_ref": "PRI6",
+   "trimestre_ref": 1,
+   "orden_ref": 3,
+   "nota_curso": "Tercer ciclo de Murcia (operaciones con fracciones y mcm); 6.º. Se consolida en 1.º ESO.",
+   "nombre": "Suma y resta de fracciones con distinto denominador",
+   "nombre_padres": "Sumar y restar fracciones con distinto número abajo",
+   "definicion": "Sumar o restar dos o tres fracciones positivas heterogéneas (denominadores hasta 20), reduciendo previamente a común denominador (mcm o producto), incluidos números mixtos, y simplificando el resultado. Resultados no negativos. No entran fracciones con signo negativo ni operaciones combinadas con productos o paréntesis (OPER.JERARQ).",
+   "parametros": {
+    "heterogeneas": true,
+    "denominador_max": 20,
+    "n_terminos": [
+     2,
+     3
+    ],
+    "simplificar_resultado": true,
+    "negativos": false
+   },
+   "ejemplo_frontera": "5/6 + 3/4 − 7/10 = 53/60",
+   "ejemplo_fuera": "2/3 − 5/4 (resultado negativo → OPER.FRAC.08)",
+   "importancia": 5,
+   "carga_alumno": 4,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, tercer ciclo, A. Sentido numérico, 3. Sentido de las operaciones (pág. 40077)",
+   "fuentes_extra": [],
+   "prerrequisitos": [
+    {
+     "codigo": "NUM.FRAC.12",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "OPER.FRAC.01",
+     "peso": "imprescindible"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Suma numeradores y denominadores",
+     "descripcion": "1/2 + 1/3 = 2/5.",
+     "explicacion_nino": "Solo se pueden sumar trozos del mismo tamaño. Pasa las dos a sextos: 3/6 + 2/6 = 5/6.",
+     "indicacion_padres": "Es el error más famoso con fracciones. Pregúntale: ¿media pizza más un tercio puede ser menos que media pizza (2/5)?",
+     "regla": "(n1 + n2)/(d1 + d2)"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Iguala denominadores pero no cambia numeradores",
+     "descripcion": "1/2 + 1/3 = 1/6 + 1/6 = 2/6.",
+     "explicacion_nino": "Al pasar 1/2 a sextos, el numerador también cambia: 1/2 = 3/6.",
+     "indicacion_padres": "Que compruebe que cada fracción nueva vale lo mismo que la original.",
+     "regla": "(n1 + n2)/mcm"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Multiplica denominadores y suma numeradores",
+     "descripcion": "1/2 + 1/3 = 2/6.",
+     "explicacion_nino": "El denominador común está bien, pero hay que transformar también los numeradores.",
+     "indicacion_padres": "Que escriba cada fracción equivalente aparte antes de sumar.",
+     "regla": "(n1 + n2)/(d1·d2)"
+    },
+    {
+     "sufijo": "E04",
+     "nombre": "Suma en cruz como en la división",
+     "descripcion": "2/3 + 1/4 = 8/3 o (2·4 + 1·3)/(3+4) = 11/7.",
+     "explicacion_nino": "Para sumar se busca el denominador común; multiplicar en cruz sirve para comparar, no para sumar así.",
+     "indicacion_padres": "Si mezcla métodos, que diga en voz alta cada paso.",
+     "regla": "(n1·d2 + n2·d1)/(d1 + d2)"
+    }
+   ]
+  },
+  {
+   "codigo": "OPER.FRAC.05",
+   "familia": "OPER.FRAC",
+   "nivel_familia": 5,
+   "bloque": "OPER",
+   "curso_ref": "PRI6",
+   "trimestre_ref": 2,
+   "orden_ref": 4,
+   "nota_curso": "Tercer ciclo de Murcia; 6.º.",
+   "nombre": "Multiplicación de fracciones",
+   "nombre_padres": "Multiplicar fracciones",
+   "definicion": "Multiplicar dos o tres fracciones positivas (numerador por numerador, denominador por denominador), incluida la interpretación como 'fracción de una fracción', y simplificar el resultado (preferiblemente antes de multiplicar). Términos hasta 20. No entran signos negativos ni potencias de fracciones.",
+   "parametros": {
+    "n_factores": [
+     2,
+     3
+    ],
+    "max_termino": 20,
+    "simplificar_resultado": true
+   },
+   "ejemplo_frontera": "(4/9) · (15/8) · (3/5) = 1/2",
+   "ejemplo_fuera": "(2/3)³ (potencia → OPER.FRAC.07)",
+   "importancia": 5,
+   "carga_alumno": 3,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, tercer ciclo, A. Sentido numérico, 3. Sentido de las operaciones (pág. 40077)",
+   "fuentes_extra": [],
+   "prerrequisitos": [
+    {
+     "codigo": "OPER.FRAC.03",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "NUM.FRAC.09",
+     "peso": "recomendable"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Busca común denominador para multiplicar",
+     "descripcion": "2/3 · 1/4 = 8/12 · 3/12 = 24/12 o 8/12·3/12 → 24/144.",
+     "explicacion_nino": "Para multiplicar no hace falta el mismo denominador: arriba por arriba y abajo por abajo, 2/12.",
+     "indicacion_padres": "Si pierde tiempo igualando denominadores, recuérdale que eso es solo para sumar y restar.",
+     "regla": "reduce a común denominador y multiplica solo numeradores: (n1·k1·n2·k2)/mcm"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Multiplica en cruz",
+     "descripcion": "2/3 · 1/4 = 8/3.",
+     "explicacion_nino": "En la multiplicación va recto: 2 · 1 arriba y 3 · 4 abajo.",
+     "indicacion_padres": "Que dibuje flechas horizontales, no en X.",
+     "regla": "(n1·d2)/(d1·n2)"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Suma en vez de multiplicar",
+     "descripcion": "2/3 · 1/4 = 3/7.",
+     "explicacion_nino": "El signo es de multiplicar: 2 · 1 = 2 y 3 · 4 = 12.",
+     "indicacion_padres": "Que rodee el signo antes de empezar.",
+     "regla": "(n1 + n2)/(d1 + d2)"
+    },
+    {
+     "sufijo": "E04",
+     "nombre": "Cree que multiplicar siempre agranda",
+     "descripcion": "Rechaza 2/3 · 1/4 = 1/6 porque 'multiplicar da más'.",
+     "explicacion_nino": "Coger un cuarto de dos tercios es coger un trozo más pequeño: el resultado es menor.",
+     "indicacion_padres": "Relaciónalo con 'la cuarta parte de…': multiplicar por una fracción menor que 1 hace más pequeño.",
+     "regla": "elige la opción mayor que ambos factores"
+    }
+   ]
+  },
+  {
+   "codigo": "OPER.FRAC.06",
+   "familia": "OPER.FRAC",
+   "nivel_familia": 6,
+   "bloque": "OPER",
+   "curso_ref": "PRI6",
+   "trimestre_ref": 2,
+   "orden_ref": 5,
+   "nota_curso": "Tercer ciclo de Murcia; 6.º (algunos libros lo dejan para 1.º ESO).",
+   "nombre": "División de fracciones",
+   "nombre_padres": "Dividir fracciones",
+   "definicion": "Dividir dos fracciones positivas (o fracción y natural) multiplicando la primera por la inversa de la segunda (o por productos cruzados), y simplificar el resultado. Términos hasta 20. No entran signos negativos ni divisiones encadenadas sin paréntesis.",
+   "parametros": {
+    "max_termino": 20,
+    "metodos": [
+     "inversa",
+     "productos_cruzados"
+    ],
+    "simplificar_resultado": true
+   },
+   "ejemplo_frontera": "(9/14) : (15/28) = 6/5",
+   "ejemplo_fuera": "(−3/4) : (2/5) (con signo → OPER.FRAC.08)",
+   "importancia": 4,
+   "carga_alumno": 3,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, tercer ciclo, A. Sentido numérico, 3. Sentido de las operaciones (pág. 40077)",
+   "fuentes_extra": [],
+   "prerrequisitos": [
+    {
+     "codigo": "OPER.FRAC.05",
+     "peso": "imprescindible"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Divide recto como en la multiplicación",
+     "descripcion": "6/8 : 2/4 = 3/2 (6:2 y 8:4) — acierta a veces, pero 2/3 : 1/4 → 2/0,75.",
+     "explicacion_nino": "Para dividir, se da la vuelta a la segunda fracción y se multiplica: 2/3 · 4/1 = 8/3.",
+     "indicacion_padres": "Pídele siempre el paso 'doy la vuelta a la segunda'.",
+     "regla": "(n1/n2)/(d1/d2)"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Invierte la primera fracción",
+     "descripcion": "2/3 : 1/4 = 3/2 · 1/4 = 3/8.",
+     "explicacion_nino": "La que se da la vuelta es la SEGUNDA, la que divide.",
+     "indicacion_padres": "Que tache la segunda y la reescriba al revés.",
+     "regla": "(d1·n2)/(n1·d2)"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Multiplica sin invertir",
+     "descripcion": "2/3 : 1/4 = 2/12.",
+     "explicacion_nino": "Dividir entre 1/4 es preguntar cuántos cuartos caben: caben muchos, el resultado sale grande.",
+     "indicacion_padres": "Pregúntale cuántos cuartos de pizza caben en 2/3 de pizza: más de 2.",
+     "regla": "(n1·n2)/(d1·d2)"
+    },
+    {
+     "sufijo": "E04",
+     "nombre": "Cruza al revés",
+     "descripcion": "2/3 : 1/4 = (3·1)/(2·4) = 3/8.",
+     "explicacion_nino": "Numerador: primero de arriba por segundo de abajo (2 · 4). Denominador: 3 · 1.",
+     "indicacion_padres": "Que dibuje las flechas partiendo del numerador de la primera.",
+     "regla": "(d1·n2)/(n1·d2)"
+    }
+   ]
+  },
+  {
+   "codigo": "OPER.FRAC.07",
+   "familia": "OPER.FRAC",
+   "nivel_familia": 7,
+   "bloque": "OPER",
+   "curso_ref": "ESO2",
+   "trimestre_ref": 1,
+   "orden_ref": 2,
+   "nota_curso": "Murcia: potencias de exponente entero en 2.º ESO; con base fraccionaria se trabaja con los racionales en 2.º. Frontera con OPER.POT (T2): aquí solo base fraccionaria.",
+   "nombre": "Potencias de fracciones",
+   "nombre_padres": "Elevar una fracción a una potencia",
+   "definicion": "Calcular la potencia de una fracción con exponente natural o entero negativo: (a/b)^n = a^n/b^n y (a/b)^−n = (b/a)^n; incluye exponente 0 y aplicar las propiedades de potencias de igual base con base fraccionaria. Bases con términos hasta 10, resultado con términos hasta 10 000. No entran exponentes fraccionarios (OPER.RADIC.02).",
+   "parametros": {
+    "exponente": "entero",
+    "max_base": 10,
+    "propiedades": true
+   },
+   "ejemplo_frontera": "(2/3)^−3 · (2/3)^5 = 4/9",
+   "ejemplo_fuera": "(8/27)^(1/3) (exponente fraccionario → OPER.RADIC.02)",
+   "importancia": 3,
+   "carga_alumno": 3,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-ESO",
+   "fuente_ref": "Anexo III, Matemáticas 2.º ESO, A. Sentido numérico, 2. Sentido de las operaciones (pág. 42907)",
+   "fuentes_extra": [],
+   "prerrequisitos": [
+    {
+     "codigo": "OPER.FRAC.05",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "OPER.POT.02",
+     "peso": "imprescindible"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Eleva solo el numerador",
+     "descripcion": "(2/3)² = 4/3.",
+     "explicacion_nino": "El exponente afecta a toda la fracción: arriba y abajo. (2/3)² = 4/9.",
+     "indicacion_padres": "Que lo escriba como producto: 2/3 · 2/3.",
+     "regla": "a^n/b"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Multiplica por el exponente",
+     "descripcion": "(2/3)³ = 6/9.",
+     "explicacion_nino": "Elevar al cubo es multiplicar la fracción 3 veces por sí misma, no por 3.",
+     "indicacion_padres": "Que escriba los tres factores.",
+     "regla": "(a·n)/(b·n)"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Exponente negativo como signo negativo",
+     "descripcion": "(2/3)^−2 = −4/9.",
+     "explicacion_nino": "El exponente negativo no hace la fracción negativa: le da la vuelta. (3/2)² = 9/4.",
+     "indicacion_padres": "Si aparece un signo menos en el resultado de una potencia de base positiva, pídele que lo revise.",
+     "regla": "−(a/b)^n"
+    },
+    {
+     "sufijo": "E04",
+     "nombre": "Exponente cero da cero",
+     "descripcion": "(5/7)^0 = 0.",
+     "explicacion_nino": "Cualquier número (no nulo) elevado a 0 vale 1.",
+     "indicacion_padres": "Que recuerde: a^n : a^n = a^0 = 1.",
+     "regla": "0"
+    }
+   ]
+  },
+  {
+   "codigo": "OPER.FRAC.08",
+   "familia": "OPER.FRAC",
+   "nivel_familia": 8,
+   "bloque": "OPER",
+   "curso_ref": "ESO2",
+   "trimestre_ref": 1,
+   "orden_ref": 3,
+   "nota_curso": "Murcia: 'operaciones con números racionales' en 2.º ESO (1.º se centra en enteros y fracciones positivas).",
+   "nombre": "Operaciones con fracciones con signo (números racionales)",
+   "nombre_padres": "Sumar, restar, multiplicar y dividir fracciones negativas",
+   "definicion": "Sumar, restar, multiplicar y dividir fracciones con signo (dos o tres términos, denominadores hasta 20), aplicando la regla de los signos y simplificando. Operaciones de un solo tipo o suma/resta mezcladas; las expresiones con jerarquía, paréntesis y corchetes son de OPER.JERARQ.",
+   "parametros": {
+    "signo": true,
+    "denominador_max": 20,
+    "n_terminos": [
+     2,
+     3
+    ]
+   },
+   "ejemplo_frontera": "−5/6 − (−3/4) + 2/3 = 7/12",
+   "ejemplo_fuera": "−1/2 · [3/4 − (2/3)²] (combinada con jerarquía → OPER.JERARQ)",
+   "importancia": 4,
+   "carga_alumno": 4,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-ESO",
+   "fuente_ref": "Anexo III, Matemáticas 2.º ESO, A. Sentido numérico, 2. Sentido de las operaciones (pág. 42907)",
+   "fuentes_extra": [],
+   "prerrequisitos": [
+    {
+     "codigo": "OPER.FRAC.04",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "OPER.FRAC.06",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "OPER.ENT.02",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "NUM.FRAC.16",
+     "peso": "imprescindible"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Pierde el signo menos del numerador al reducir",
+     "descripcion": "−5/6 + 3/4 → −10/12 + 9/12 = 19/12.",
+     "explicacion_nino": "El signo acompaña a su fracción: −10 + 9 = −1, así que −1/12.",
+     "indicacion_padres": "Que rodee cada signo con su fracción antes de igualar denominadores.",
+     "regla": "suma valores absolutos"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Resta de negativo mal",
+     "descripcion": "3/4 − (−1/4) = 2/4.",
+     "explicacion_nino": "Restar un negativo es sumar: 3/4 + 1/4 = 1.",
+     "indicacion_padres": "Que reescriba '− (−' como '+' antes de operar.",
+     "regla": "a − b en lugar de a + b"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Regla de signos en producto",
+     "descripcion": "(−2/3) · (−3/5) = −2/5.",
+     "explicacion_nino": "Menos por menos da más: +2/5.",
+     "indicacion_padres": "Que determine el signo primero y luego los números.",
+     "regla": "signo negativo en producto de dos negativos"
     }
    ]
   }

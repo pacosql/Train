@@ -637,6 +637,700 @@
      "regla": "intercambia las etiquetas conmutativa/asociativa"
     }
    ]
+  },
+  {
+   "codigo": "OPER.TABLA.01",
+   "familia": "OPER.TABLA",
+   "nivel_familia": 1,
+   "bloque": "OPER",
+   "curso_ref": "PRI3",
+   "trimestre_ref": 1,
+   "orden_ref": 12,
+   "nota_curso": "El decreto de Murcia pone la construcción y memorización de las tablas en el segundo ciclo (3.º–4.º) sin repartir por curso; criterio: todas se construyen en 3.º. Muchos libros adelantan las del 2, 5 y 10 (y a veces 3 y 4) al final de 2.º; lo fija el mapa por editorial. La tabla del 1 incluye además los productos por 0.",
+   "nombre": "Tabla del 1 (y productos por 0): hechos de memoria",
+   "nombre_padres": "Saberse la tabla del 1",
+   "definicion": "Dar de memoria, sin contar ni sumar, el resultado de 1 × k y de k × 1 para k de 0 a 10, con las preguntas desordenadas pero todas de la tabla del 1. Por 1 da el mismo número y por 0 da siempre 0. Se busca responder en unos 3 segundos. No incluye mezclar con otras tablas (eso es la fluidez global, OPER.MULT.02) ni el factor desconocido (1 × ? = 6, división: OPER.DIV.01). Existe como habilidad propia para que el tutor pueda informar 'domina la tabla del 1'.",
+   "parametros": {
+    "tabla": 1,
+    "k_min": 0,
+    "k_max": 10,
+    "orden_inverso": true,
+    "mezclada_con_otras": false,
+    "tiempo_objetivo_s": 3
+   },
+   "ejemplo_frontera": "0 × 1 = 0 y 1 × 0 = 0 (en orden salteado, sin contar)",
+   "ejemplo_fuera": "1 × 7 mezclado con 6 × 8 y 9 × 4 (tablas mezcladas → OPER.MULT.02)",
+   "importancia": 5,
+   "carga_alumno": 1,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, segundo ciclo, A. Sentido numérico, 3. Sentido de las operaciones (pág. 40072): construcción y memorización de las tablas de multiplicar",
+   "fuentes_extra": [
+    {
+     "fuente": "DEC-ES-PRI",
+     "ref": "Anexo II, segundo ciclo, A.3 (pág. 24495): construcción de las tablas",
+     "rol": "situa"
+    }
+   ],
+   "prerrequisitos": [
+    {
+     "codigo": "OPER.MULT.01",
+     "peso": "imprescindible"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Da el resultado del hecho vecino",
+     "descripcion": "1 × 7 = 6 (da 1 × 6)",
+     "explicacion_nino": "Muy cerca. Ese es 1 × 6. Para 1 × 7 suma otro 1: 7.",
+     "indicacion_padres": "Si al recitar la tabla del 1 va bien pero al preguntarle salteado da el de al lado, practicad preguntas desordenadas.",
+     "regla": "1 × (k ± 1)"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Recita la tabla desde el principio para llegar al hecho",
+     "descripcion": "Para 1 × 8 dice en voz baja toda la tabla hasta llegar",
+     "explicacion_nino": "Recitar está bien para aprenderla. Ahora intenta que 1 × 8 te salga directo, sin empezar desde el principio.",
+     "indicacion_padres": "No es un fallo de resultado sino de fluidez: tarda mucho. Se nota porque mueve los labios o los dedos. Practicad preguntas sueltas y rápidas.",
+     "regla": "acierta pero supera el tiempo objetivo (se detecta por tiempo, no por el valor)"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Multiplicar por 1 da 1",
+     "descripcion": "8 × 1 = 1",
+     "explicacion_nino": "Una vez 8 es 8. Multiplicar por 1 deja el número igual.",
+     "indicacion_padres": "Si confunde ×1 con ×0, usad objetos: 'una bolsa con 8 canicas, ¿cuántas canicas?'.",
+     "regla": "si un factor es 1, responde 1"
+    },
+    {
+     "sufijo": "E04",
+     "nombre": "Multiplicar por 0 deja el número igual",
+     "descripcion": "8 × 0 = 8",
+     "explicacion_nino": "Cero veces 8 es nada: 8 × 0 = 0.",
+     "indicacion_padres": "Está aplicando la regla de la suma (8 + 0 = 8). Comparad las dos cosas lado a lado.",
+     "regla": "si un factor es 0, responde el otro"
+    }
+   ]
+  },
+  {
+   "codigo": "OPER.TABLA.02",
+   "familia": "OPER.TABLA",
+   "nivel_familia": 2,
+   "bloque": "OPER",
+   "curso_ref": "PRI3",
+   "trimestre_ref": 1,
+   "orden_ref": 14,
+   "nota_curso": "El decreto de Murcia pone la construcción y memorización de las tablas en el segundo ciclo (3.º–4.º) sin repartir por curso; criterio: todas se construyen en 3.º. Muchos libros adelantan las del 2, 5 y 10 (y a veces 3 y 4) al final de 2.º; lo fija el mapa por editorial. ",
+   "nombre": "Tabla del 2: hechos de memoria",
+   "nombre_padres": "Saberse la tabla del 2",
+   "definicion": "Dar de memoria, sin contar ni sumar, el resultado de 2 × k y de k × 2 para k de 0 a 10, con las preguntas desordenadas pero todas de la tabla del 2. La tabla del 2 son los dobles: 7 × 2 = 7 + 7. Se busca responder en unos 3 segundos. No incluye mezclar con otras tablas (eso es la fluidez global, OPER.MULT.02) ni el factor desconocido (2 × ? = 12, división: OPER.DIV.01). Existe como habilidad propia para que el tutor pueda informar 'domina la tabla del 2'.",
+   "parametros": {
+    "tabla": 2,
+    "k_min": 0,
+    "k_max": 10,
+    "orden_inverso": true,
+    "mezclada_con_otras": false,
+    "tiempo_objetivo_s": 3
+   },
+   "ejemplo_frontera": "2 × 9 = 18 (en orden salteado, sin contar)",
+   "ejemplo_fuera": "2 × 7 mezclado con 6 × 8 y 9 × 4 (tablas mezcladas → OPER.MULT.02)",
+   "importancia": 5,
+   "carga_alumno": 1,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, segundo ciclo, A. Sentido numérico, 3. Sentido de las operaciones (pág. 40072): construcción y memorización de las tablas de multiplicar",
+   "fuentes_extra": [
+    {
+     "fuente": "DEC-ES-PRI",
+     "ref": "Anexo II, segundo ciclo, A.3 (pág. 24495): construcción de las tablas",
+     "rol": "situa"
+    }
+   ],
+   "prerrequisitos": [
+    {
+     "codigo": "OPER.MULT.01",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "OPER.CALCMENT.01",
+     "peso": "recomendable"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Da el resultado del hecho vecino",
+     "descripcion": "2 × 7 = 12 (da 2 × 6)",
+     "explicacion_nino": "Muy cerca. Ese es 2 × 6. Para 2 × 7 suma otro 2: 14.",
+     "indicacion_padres": "Si al recitar la tabla del 2 va bien pero al preguntarle salteado da el de al lado, practicad preguntas desordenadas.",
+     "regla": "2 × (k ± 1)"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Recita la tabla desde el principio para llegar al hecho",
+     "descripcion": "Para 2 × 8 dice en voz baja toda la tabla hasta llegar",
+     "explicacion_nino": "Recitar está bien para aprenderla. Ahora intenta que 2 × 8 te salga directo, sin empezar desde el principio.",
+     "indicacion_padres": "No es un fallo de resultado sino de fluidez: tarda mucho. Se nota porque mueve los labios o los dedos. Practicad preguntas sueltas y rápidas.",
+     "regla": "acierta pero supera el tiempo objetivo (se detecta por tiempo, no por el valor)"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Suma 2 en vez de doblar",
+     "descripcion": "2 × 7 = 9",
+     "explicacion_nino": "2 × 7 es el doble de 7: 7 + 7 = 14.",
+     "indicacion_padres": "Si responde con el número más 2, está sumando. Preguntadle '¿dos veces siete?'.",
+     "regla": "a + 2"
+    }
+   ]
+  },
+  {
+   "codigo": "OPER.TABLA.03",
+   "familia": "OPER.TABLA",
+   "nivel_familia": 3,
+   "bloque": "OPER",
+   "curso_ref": "PRI3",
+   "trimestre_ref": 1,
+   "orden_ref": 22,
+   "nota_curso": "El decreto de Murcia pone la construcción y memorización de las tablas en el segundo ciclo (3.º–4.º) sin repartir por curso; criterio: todas se construyen en 3.º. Muchos libros adelantan las del 2, 5 y 10 (y a veces 3 y 4) al final de 2.º; lo fija el mapa por editorial. ",
+   "nombre": "Tabla del 3: hechos de memoria",
+   "nombre_padres": "Saberse la tabla del 3",
+   "definicion": "Dar de memoria, sin contar ni sumar, el resultado de 3 × k y de k × 3 para k de 0 a 10, con las preguntas desordenadas pero todas de la tabla del 3. Es el triple: el doble más una vez (3 × 7 = 14 + 7). Se busca responder en unos 3 segundos. No incluye mezclar con otras tablas (eso es la fluidez global, OPER.MULT.02) ni el factor desconocido (3 × ? = 18, división: OPER.DIV.01). Existe como habilidad propia para que el tutor pueda informar 'domina la tabla del 3'.",
+   "parametros": {
+    "tabla": 3,
+    "k_min": 0,
+    "k_max": 10,
+    "orden_inverso": true,
+    "mezclada_con_otras": false,
+    "tiempo_objetivo_s": 3
+   },
+   "ejemplo_frontera": "3 × 8 = 24 (en orden salteado, sin contar)",
+   "ejemplo_fuera": "3 × 7 mezclado con 6 × 8 y 9 × 4 (tablas mezcladas → OPER.MULT.02)",
+   "importancia": 5,
+   "carga_alumno": 2,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, segundo ciclo, A. Sentido numérico, 3. Sentido de las operaciones (pág. 40072): construcción y memorización de las tablas de multiplicar",
+   "fuentes_extra": [
+    {
+     "fuente": "DEC-ES-PRI",
+     "ref": "Anexo II, segundo ciclo, A.3 (pág. 24495): construcción de las tablas",
+     "rol": "situa"
+    }
+   ],
+   "prerrequisitos": [
+    {
+     "codigo": "OPER.TABLA.02",
+     "peso": "recomendable"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Da el resultado del hecho vecino",
+     "descripcion": "3 × 7 = 18 (da 3 × 6)",
+     "explicacion_nino": "Muy cerca. Ese es 3 × 6. Para 3 × 7 suma otro 3: 21.",
+     "indicacion_padres": "Si al recitar la tabla del 3 va bien pero al preguntarle salteado da el de al lado, practicad preguntas desordenadas.",
+     "regla": "3 × (k ± 1)"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Recita la tabla desde el principio para llegar al hecho",
+     "descripcion": "Para 3 × 8 dice en voz baja toda la tabla hasta llegar",
+     "explicacion_nino": "Recitar está bien para aprenderla. Ahora intenta que 3 × 8 te salga directo, sin empezar desde el principio.",
+     "indicacion_padres": "No es un fallo de resultado sino de fluidez: tarda mucho. Se nota porque mueve los labios o los dedos. Practicad preguntas sueltas y rápidas.",
+     "regla": "acierta pero supera el tiempo objetivo (se detecta por tiempo, no por el valor)"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Confunde con la tabla del 2 o la del 4",
+     "descripcion": "3 × 7 = 14 o 3 × 7 = 28",
+     "explicacion_nino": "Eso es 2 × 7 o 4 × 7. 3 × 7 es una vez más que 2 × 7: 14 + 7 = 21.",
+     "indicacion_padres": "Pregúntale por el doble y súmale una vez más: así se construye el triple.",
+     "regla": "(3 ± 1) × k"
+    }
+   ]
+  },
+  {
+   "codigo": "OPER.TABLA.04",
+   "familia": "OPER.TABLA",
+   "nivel_familia": 4,
+   "bloque": "OPER",
+   "curso_ref": "PRI3",
+   "trimestre_ref": 2,
+   "orden_ref": 26,
+   "nota_curso": "El decreto de Murcia pone la construcción y memorización de las tablas en el segundo ciclo (3.º–4.º) sin repartir por curso; criterio: todas se construyen en 3.º. Muchos libros adelantan las del 2, 5 y 10 (y a veces 3 y 4) al final de 2.º; lo fija el mapa por editorial. ",
+   "nombre": "Tabla del 4: hechos de memoria",
+   "nombre_padres": "Saberse la tabla del 4",
+   "definicion": "Dar de memoria, sin contar ni sumar, el resultado de 4 × k y de k × 4 para k de 0 a 10, con las preguntas desordenadas pero todas de la tabla del 4. Es el doble del doble: 4 × 7 = 2 × 14 = 28. Se busca responder en unos 3 segundos. No incluye mezclar con otras tablas (eso es la fluidez global, OPER.MULT.02) ni el factor desconocido (4 × ? = 24, división: OPER.DIV.01). Existe como habilidad propia para que el tutor pueda informar 'domina la tabla del 4'.",
+   "parametros": {
+    "tabla": 4,
+    "k_min": 0,
+    "k_max": 10,
+    "orden_inverso": true,
+    "mezclada_con_otras": false,
+    "tiempo_objetivo_s": 3
+   },
+   "ejemplo_frontera": "4 × 7 = 28 (en orden salteado, sin contar)",
+   "ejemplo_fuera": "4 × 7 mezclado con 6 × 8 y 9 × 4 (tablas mezcladas → OPER.MULT.02)",
+   "importancia": 5,
+   "carga_alumno": 2,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, segundo ciclo, A. Sentido numérico, 3. Sentido de las operaciones (pág. 40072): construcción y memorización de las tablas de multiplicar",
+   "fuentes_extra": [
+    {
+     "fuente": "DEC-ES-PRI",
+     "ref": "Anexo II, segundo ciclo, A.3 (pág. 24495): construcción de las tablas",
+     "rol": "situa"
+    }
+   ],
+   "prerrequisitos": [
+    {
+     "codigo": "OPER.TABLA.02",
+     "peso": "imprescindible"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Da el resultado del hecho vecino",
+     "descripcion": "4 × 7 = 24 (da 4 × 6)",
+     "explicacion_nino": "Muy cerca. Ese es 4 × 6. Para 4 × 7 suma otro 4: 28.",
+     "indicacion_padres": "Si al recitar la tabla del 4 va bien pero al preguntarle salteado da el de al lado, practicad preguntas desordenadas.",
+     "regla": "4 × (k ± 1)"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Recita la tabla desde el principio para llegar al hecho",
+     "descripcion": "Para 4 × 8 dice en voz baja toda la tabla hasta llegar",
+     "explicacion_nino": "Recitar está bien para aprenderla. Ahora intenta que 4 × 8 te salga directo, sin empezar desde el principio.",
+     "indicacion_padres": "No es un fallo de resultado sino de fluidez: tarda mucho. Se nota porque mueve los labios o los dedos. Practicad preguntas sueltas y rápidas.",
+     "regla": "acierta pero supera el tiempo objetivo (se detecta por tiempo, no por el valor)"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Dobla solo una vez",
+     "descripcion": "4 × 7 = 14",
+     "explicacion_nino": "Eso es el doble. Para ×4 hay que doblar dos veces: 14 y 28.",
+     "indicacion_padres": "Si da la mitad del resultado correcto, le falta un doble.",
+     "regla": "2 × k"
+    }
+   ]
+  },
+  {
+   "codigo": "OPER.TABLA.05",
+   "familia": "OPER.TABLA",
+   "nivel_familia": 5,
+   "bloque": "OPER",
+   "curso_ref": "PRI3",
+   "trimestre_ref": 1,
+   "orden_ref": 16,
+   "nota_curso": "El decreto de Murcia pone la construcción y memorización de las tablas en el segundo ciclo (3.º–4.º) sin repartir por curso; criterio: todas se construyen en 3.º. Muchos libros adelantan las del 2, 5 y 10 (y a veces 3 y 4) al final de 2.º; lo fija el mapa por editorial. ",
+   "nombre": "Tabla del 5: hechos de memoria",
+   "nombre_padres": "Saberse la tabla del 5",
+   "definicion": "Dar de memoria, sin contar ni sumar, el resultado de 5 × k y de k × 5 para k de 0 a 10, con las preguntas desordenadas pero todas de la tabla del 5. La tabla del 5 acaba siempre en 0 o en 5 y es la mitad de la del 10. Se busca responder en unos 3 segundos. No incluye mezclar con otras tablas (eso es la fluidez global, OPER.MULT.02) ni el factor desconocido (5 × ? = 30, división: OPER.DIV.01). Existe como habilidad propia para que el tutor pueda informar 'domina la tabla del 5'.",
+   "parametros": {
+    "tabla": 5,
+    "k_min": 0,
+    "k_max": 10,
+    "orden_inverso": true,
+    "mezclada_con_otras": false,
+    "tiempo_objetivo_s": 3
+   },
+   "ejemplo_frontera": "5 × 9 = 45 (en orden salteado, sin contar)",
+   "ejemplo_fuera": "5 × 7 mezclado con 6 × 8 y 9 × 4 (tablas mezcladas → OPER.MULT.02)",
+   "importancia": 5,
+   "carga_alumno": 1,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, segundo ciclo, A. Sentido numérico, 3. Sentido de las operaciones (pág. 40072): construcción y memorización de las tablas de multiplicar",
+   "fuentes_extra": [
+    {
+     "fuente": "DEC-ES-PRI",
+     "ref": "Anexo II, segundo ciclo, A.3 (pág. 24495): construcción de las tablas",
+     "rol": "situa"
+    }
+   ],
+   "prerrequisitos": [
+    {
+     "codigo": "OPER.MULT.01",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "NUM.CONT.03",
+     "peso": "recomendable"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Da el resultado del hecho vecino",
+     "descripcion": "5 × 7 = 30 (da 5 × 6)",
+     "explicacion_nino": "Muy cerca. Ese es 5 × 6. Para 5 × 7 suma otro 5: 35.",
+     "indicacion_padres": "Si al recitar la tabla del 5 va bien pero al preguntarle salteado da el de al lado, practicad preguntas desordenadas.",
+     "regla": "5 × (k ± 1)"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Recita la tabla desde el principio para llegar al hecho",
+     "descripcion": "Para 5 × 8 dice en voz baja toda la tabla hasta llegar",
+     "explicacion_nino": "Recitar está bien para aprenderla. Ahora intenta que 5 × 8 te salga directo, sin empezar desde el principio.",
+     "indicacion_padres": "No es un fallo de resultado sino de fluidez: tarda mucho. Se nota porque mueve los labios o los dedos. Practicad preguntas sueltas y rápidas.",
+     "regla": "acierta pero supera el tiempo objetivo (se detecta por tiempo, no por el valor)"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Se equivoca al contar de 5 en 5",
+     "descripcion": "5 × 7 = 30 (cuenta un salto de menos)",
+     "explicacion_nino": "Cuenta los saltos con los dedos: 5, 10, 15, 20, 25, 30, 35. Siete saltos: 35.",
+     "indicacion_padres": "Si va contando de 5 en 5, está bien al principio, pero que no tarde: el objetivo es saberlo sin contar.",
+     "regla": "5 × (k ± 1)"
+    }
+   ]
+  },
+  {
+   "codigo": "OPER.TABLA.06",
+   "familia": "OPER.TABLA",
+   "nivel_familia": 6,
+   "bloque": "OPER",
+   "curso_ref": "PRI3",
+   "trimestre_ref": 2,
+   "orden_ref": 32,
+   "nota_curso": "El decreto de Murcia pone la construcción y memorización de las tablas en el segundo ciclo (3.º–4.º) sin repartir por curso; criterio: todas se construyen en 3.º. Muchos libros adelantan las del 2, 5 y 10 (y a veces 3 y 4) al final de 2.º; lo fija el mapa por editorial. ",
+   "nombre": "Tabla del 6: hechos de memoria",
+   "nombre_padres": "Saberse la tabla del 6",
+   "definicion": "Dar de memoria, sin contar ni sumar, el resultado de 6 × k y de k × 6 para k de 0 a 10, con las preguntas desordenadas pero todas de la tabla del 6. Es la del 5 más una vez: 6 × 7 = 35 + 7 = 42; o el doble de la del 3. Se busca responder en unos 3 segundos. No incluye mezclar con otras tablas (eso es la fluidez global, OPER.MULT.02) ni el factor desconocido (6 × ? = 36, división: OPER.DIV.01). Existe como habilidad propia para que el tutor pueda informar 'domina la tabla del 6'.",
+   "parametros": {
+    "tabla": 6,
+    "k_min": 0,
+    "k_max": 10,
+    "orden_inverso": true,
+    "mezclada_con_otras": false,
+    "tiempo_objetivo_s": 3
+   },
+   "ejemplo_frontera": "6 × 8 = 48 (en orden salteado, sin contar)",
+   "ejemplo_fuera": "6 × 7 mezclado con 6 × 8 y 9 × 4 (tablas mezcladas → OPER.MULT.02)",
+   "importancia": 5,
+   "carga_alumno": 3,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, segundo ciclo, A. Sentido numérico, 3. Sentido de las operaciones (pág. 40072): construcción y memorización de las tablas de multiplicar",
+   "fuentes_extra": [
+    {
+     "fuente": "DEC-ES-PRI",
+     "ref": "Anexo II, segundo ciclo, A.3 (pág. 24495): construcción de las tablas",
+     "rol": "situa"
+    }
+   ],
+   "prerrequisitos": [
+    {
+     "codigo": "OPER.TABLA.05",
+     "peso": "recomendable"
+    },
+    {
+     "codigo": "OPER.TABLA.03",
+     "peso": "recomendable"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Da el resultado del hecho vecino",
+     "descripcion": "6 × 7 = 36 (da 6 × 6)",
+     "explicacion_nino": "Muy cerca. Ese es 6 × 6. Para 6 × 7 suma otro 6: 42.",
+     "indicacion_padres": "Si al recitar la tabla del 6 va bien pero al preguntarle salteado da el de al lado, practicad preguntas desordenadas.",
+     "regla": "6 × (k ± 1)"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Recita la tabla desde el principio para llegar al hecho",
+     "descripcion": "Para 6 × 8 dice en voz baja toda la tabla hasta llegar",
+     "explicacion_nino": "Recitar está bien para aprenderla. Ahora intenta que 6 × 8 te salga directo, sin empezar desde el principio.",
+     "indicacion_padres": "No es un fallo de resultado sino de fluidez: tarda mucho. Se nota porque mueve los labios o los dedos. Practicad preguntas sueltas y rápidas.",
+     "regla": "acierta pero supera el tiempo objetivo (se detecta por tiempo, no por el valor)"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Cruza hechos de la zona difícil (6, 7, 8)",
+     "descripcion": "6 × 8 = 42 ; 6 × 7 = 48",
+     "explicacion_nino": "6 × 7 = 42 y 6 × 8 = 48. Dilos juntos varias veces: 'seis por siete, cuarenta y dos'.",
+     "indicacion_padres": "Son los hechos que más se cruzan. Repasadlos por parejas, no toda la tabla seguida.",
+     "regla": "intercambia 42, 48, 54, 56"
+    }
+   ]
+  },
+  {
+   "codigo": "OPER.TABLA.07",
+   "familia": "OPER.TABLA",
+   "nivel_familia": 7,
+   "bloque": "OPER",
+   "curso_ref": "PRI3",
+   "trimestre_ref": 3,
+   "orden_ref": 40,
+   "nota_curso": "El decreto de Murcia pone la construcción y memorización de las tablas en el segundo ciclo (3.º–4.º) sin repartir por curso; criterio: todas se construyen en 3.º. Muchos libros adelantan las del 2, 5 y 10 (y a veces 3 y 4) al final de 2.º; lo fija el mapa por editorial. ",
+   "nombre": "Tabla del 7: hechos de memoria",
+   "nombre_padres": "Saberse la tabla del 7",
+   "definicion": "Dar de memoria, sin contar ni sumar, el resultado de 7 × k y de k × 7 para k de 0 a 10, con las preguntas desordenadas pero todas de la tabla del 7. Es la más difícil: la del 5 más la del 2 (7 × 6 = 30 + 12 = 42). Se busca responder en unos 3 segundos. No incluye mezclar con otras tablas (eso es la fluidez global, OPER.MULT.02) ni el factor desconocido (7 × ? = 42, división: OPER.DIV.01). Existe como habilidad propia para que el tutor pueda informar 'domina la tabla del 7'.",
+   "parametros": {
+    "tabla": 7,
+    "k_min": 0,
+    "k_max": 10,
+    "orden_inverso": true,
+    "mezclada_con_otras": false,
+    "tiempo_objetivo_s": 3
+   },
+   "ejemplo_frontera": "7 × 8 = 56 (en orden salteado, sin contar)",
+   "ejemplo_fuera": "7 × 7 mezclado con 6 × 8 y 9 × 4 (tablas mezcladas → OPER.MULT.02)",
+   "importancia": 5,
+   "carga_alumno": 3,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, segundo ciclo, A. Sentido numérico, 3. Sentido de las operaciones (pág. 40072): construcción y memorización de las tablas de multiplicar",
+   "fuentes_extra": [
+    {
+     "fuente": "DEC-ES-PRI",
+     "ref": "Anexo II, segundo ciclo, A.3 (pág. 24495): construcción de las tablas",
+     "rol": "situa"
+    }
+   ],
+   "prerrequisitos": [
+    {
+     "codigo": "OPER.TABLA.05",
+     "peso": "recomendable"
+    },
+    {
+     "codigo": "OPER.TABLA.02",
+     "peso": "recomendable"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Da el resultado del hecho vecino",
+     "descripcion": "7 × 7 = 42 (da 7 × 6)",
+     "explicacion_nino": "Muy cerca. Ese es 7 × 6. Para 7 × 7 suma otro 7: 49.",
+     "indicacion_padres": "Si al recitar la tabla del 7 va bien pero al preguntarle salteado da el de al lado, practicad preguntas desordenadas.",
+     "regla": "7 × (k ± 1)"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Recita la tabla desde el principio para llegar al hecho",
+     "descripcion": "Para 7 × 8 dice en voz baja toda la tabla hasta llegar",
+     "explicacion_nino": "Recitar está bien para aprenderla. Ahora intenta que 7 × 8 te salga directo, sin empezar desde el principio.",
+     "indicacion_padres": "No es un fallo de resultado sino de fluidez: tarda mucho. Se nota porque mueve los labios o los dedos. Practicad preguntas sueltas y rápidas.",
+     "regla": "acierta pero supera el tiempo objetivo (se detecta por tiempo, no por el valor)"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Cruza 7 × 8 con 7 × 6 o 6 × 9",
+     "descripcion": "7 × 8 = 54 ; 7 × 6 = 48",
+     "explicacion_nino": "7 × 6 = 42 y 7 × 8 = 56. Truco: 5, 6, 7, 8 → 56 = 7 × 8.",
+     "indicacion_padres": "La del 7 no tiene truco visible: se sabe por hechos sueltos. Practicad de 2 en 2 hechos, no la tabla entera recitada.",
+     "regla": "intercambia 42, 48, 49, 54, 56, 63"
+    }
+   ]
+  },
+  {
+   "codigo": "OPER.TABLA.08",
+   "familia": "OPER.TABLA",
+   "nivel_familia": 8,
+   "bloque": "OPER",
+   "curso_ref": "PRI3",
+   "trimestre_ref": 2,
+   "orden_ref": 36,
+   "nota_curso": "El decreto de Murcia pone la construcción y memorización de las tablas en el segundo ciclo (3.º–4.º) sin repartir por curso; criterio: todas se construyen en 3.º. Muchos libros adelantan las del 2, 5 y 10 (y a veces 3 y 4) al final de 2.º; lo fija el mapa por editorial. ",
+   "nombre": "Tabla del 8: hechos de memoria",
+   "nombre_padres": "Saberse la tabla del 8",
+   "definicion": "Dar de memoria, sin contar ni sumar, el resultado de 8 × k y de k × 8 para k de 0 a 10, con las preguntas desordenadas pero todas de la tabla del 8. Es el doble de la del 4: 8 × 6 = 2 × 24 = 48. Se busca responder en unos 3 segundos. No incluye mezclar con otras tablas (eso es la fluidez global, OPER.MULT.02) ni el factor desconocido (8 × ? = 48, división: OPER.DIV.01). Existe como habilidad propia para que el tutor pueda informar 'domina la tabla del 8'.",
+   "parametros": {
+    "tabla": 8,
+    "k_min": 0,
+    "k_max": 10,
+    "orden_inverso": true,
+    "mezclada_con_otras": false,
+    "tiempo_objetivo_s": 3
+   },
+   "ejemplo_frontera": "8 × 7 = 56 (en orden salteado, sin contar)",
+   "ejemplo_fuera": "8 × 7 mezclado con 6 × 8 y 9 × 4 (tablas mezcladas → OPER.MULT.02)",
+   "importancia": 5,
+   "carga_alumno": 3,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, segundo ciclo, A. Sentido numérico, 3. Sentido de las operaciones (pág. 40072): construcción y memorización de las tablas de multiplicar",
+   "fuentes_extra": [
+    {
+     "fuente": "DEC-ES-PRI",
+     "ref": "Anexo II, segundo ciclo, A.3 (pág. 24495): construcción de las tablas",
+     "rol": "situa"
+    }
+   ],
+   "prerrequisitos": [
+    {
+     "codigo": "OPER.TABLA.04",
+     "peso": "imprescindible"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Da el resultado del hecho vecino",
+     "descripcion": "8 × 7 = 48 (da 8 × 6)",
+     "explicacion_nino": "Muy cerca. Ese es 8 × 6. Para 8 × 7 suma otro 8: 56.",
+     "indicacion_padres": "Si al recitar la tabla del 8 va bien pero al preguntarle salteado da el de al lado, practicad preguntas desordenadas.",
+     "regla": "8 × (k ± 1)"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Recita la tabla desde el principio para llegar al hecho",
+     "descripcion": "Para 8 × 8 dice en voz baja toda la tabla hasta llegar",
+     "explicacion_nino": "Recitar está bien para aprenderla. Ahora intenta que 8 × 8 te salga directo, sin empezar desde el principio.",
+     "indicacion_padres": "No es un fallo de resultado sino de fluidez: tarda mucho. Se nota porque mueve los labios o los dedos. Practicad preguntas sueltas y rápidas.",
+     "regla": "acierta pero supera el tiempo objetivo (se detecta por tiempo, no por el valor)"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Cruza 8 × 7 y 8 × 6 o 7 × 7",
+     "descripcion": "8 × 7 = 54 ; 8 × 7 = 49",
+     "explicacion_nino": "Truco: 5, 6, 7, 8 → 56 = 7 × 8.",
+     "indicacion_padres": "8 × 7 es el hecho que más se falla de todas las tablas. Dedicadle un repaso propio.",
+     "regla": "intercambia 48, 49, 54, 56, 64"
+    }
+   ]
+  },
+  {
+   "codigo": "OPER.TABLA.09",
+   "familia": "OPER.TABLA",
+   "nivel_familia": 9,
+   "bloque": "OPER",
+   "curso_ref": "PRI3",
+   "trimestre_ref": 3,
+   "orden_ref": 44,
+   "nota_curso": "El decreto de Murcia pone la construcción y memorización de las tablas en el segundo ciclo (3.º–4.º) sin repartir por curso; criterio: todas se construyen en 3.º. Muchos libros adelantan las del 2, 5 y 10 (y a veces 3 y 4) al final de 2.º; lo fija el mapa por editorial. ",
+   "nombre": "Tabla del 9: hechos de memoria",
+   "nombre_padres": "Saberse la tabla del 9",
+   "definicion": "Dar de memoria, sin contar ni sumar, el resultado de 9 × k y de k × 9 para k de 0 a 10, con las preguntas desordenadas pero todas de la tabla del 9. Es la del 10 menos una vez (9 × 7 = 70 − 7 = 63) y sus cifras suman 9. Se busca responder en unos 3 segundos. No incluye mezclar con otras tablas (eso es la fluidez global, OPER.MULT.02) ni el factor desconocido (9 × ? = 54, división: OPER.DIV.01). Existe como habilidad propia para que el tutor pueda informar 'domina la tabla del 9'.",
+   "parametros": {
+    "tabla": 9,
+    "k_min": 0,
+    "k_max": 10,
+    "orden_inverso": true,
+    "mezclada_con_otras": false,
+    "tiempo_objetivo_s": 3
+   },
+   "ejemplo_frontera": "9 × 7 = 63 (en orden salteado, sin contar)",
+   "ejemplo_fuera": "9 × 7 mezclado con 6 × 8 y 9 × 4 (tablas mezcladas → OPER.MULT.02)",
+   "importancia": 5,
+   "carga_alumno": 3,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, segundo ciclo, A. Sentido numérico, 3. Sentido de las operaciones (pág. 40072): construcción y memorización de las tablas de multiplicar",
+   "fuentes_extra": [
+    {
+     "fuente": "DEC-ES-PRI",
+     "ref": "Anexo II, segundo ciclo, A.3 (pág. 24495): construcción de las tablas",
+     "rol": "situa"
+    }
+   ],
+   "prerrequisitos": [
+    {
+     "codigo": "OPER.TABLA.10",
+     "peso": "recomendable"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Da el resultado del hecho vecino",
+     "descripcion": "9 × 7 = 54 (da 9 × 6)",
+     "explicacion_nino": "Muy cerca. Ese es 9 × 6. Para 9 × 7 suma otro 9: 63.",
+     "indicacion_padres": "Si al recitar la tabla del 9 va bien pero al preguntarle salteado da el de al lado, practicad preguntas desordenadas.",
+     "regla": "9 × (k ± 1)"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Recita la tabla desde el principio para llegar al hecho",
+     "descripcion": "Para 9 × 8 dice en voz baja toda la tabla hasta llegar",
+     "explicacion_nino": "Recitar está bien para aprenderla. Ahora intenta que 9 × 8 te salga directo, sin empezar desde el principio.",
+     "indicacion_padres": "No es un fallo de resultado sino de fluidez: tarda mucho. Se nota porque mueve los labios o los dedos. Practicad preguntas sueltas y rápidas.",
+     "regla": "acierta pero supera el tiempo objetivo (se detecta por tiempo, no por el valor)"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Aplica mal el truco del 9",
+     "descripcion": "9 × 7 = 73 (pone 7 delante en vez de 6)",
+     "explicacion_nino": "La primera cifra es una menos que el número: 9 × 7 → 6, y 6 + 3 = 9 → 63.",
+     "indicacion_padres": "Si usa el truco de los dedos o de las cifras que suman 9, comprobad que resta 1 al principio.",
+     "regla": "10·k + (9 − k) en lugar de 10·(k − 1) + (10 − k)"
+    }
+   ]
+  },
+  {
+   "codigo": "OPER.TABLA.10",
+   "familia": "OPER.TABLA",
+   "nivel_familia": 10,
+   "bloque": "OPER",
+   "curso_ref": "PRI3",
+   "trimestre_ref": 1,
+   "orden_ref": 18,
+   "nota_curso": "El decreto de Murcia pone la construcción y memorización de las tablas en el segundo ciclo (3.º–4.º) sin repartir por curso; criterio: todas se construyen en 3.º. Muchos libros adelantan las del 2, 5 y 10 (y a veces 3 y 4) al final de 2.º; lo fija el mapa por editorial. ",
+   "nombre": "Tabla del 10: hechos de memoria",
+   "nombre_padres": "Saberse la tabla del 10",
+   "definicion": "Dar de memoria, sin contar ni sumar, el resultado de 10 × k y de k × 10 para k de 0 a 10, con las preguntas desordenadas pero todas de la tabla del 10. Por 10 se añade un cero. Se busca responder en unos 3 segundos. No incluye mezclar con otras tablas (eso es la fluidez global, OPER.MULT.02) ni el factor desconocido (10 × ? = 60, división: OPER.DIV.01). Existe como habilidad propia para que el tutor pueda informar 'domina la tabla del 10'.",
+   "parametros": {
+    "tabla": 10,
+    "k_min": 0,
+    "k_max": 10,
+    "orden_inverso": true,
+    "mezclada_con_otras": false,
+    "tiempo_objetivo_s": 3
+   },
+   "ejemplo_frontera": "10 × 10 = 100 (en orden salteado, sin contar)",
+   "ejemplo_fuera": "10 × 7 mezclado con 6 × 8 y 9 × 4 (tablas mezcladas → OPER.MULT.02)",
+   "importancia": 5,
+   "carga_alumno": 1,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, segundo ciclo, A. Sentido numérico, 3. Sentido de las operaciones (pág. 40072): construcción y memorización de las tablas de multiplicar",
+   "fuentes_extra": [
+    {
+     "fuente": "DEC-ES-PRI",
+     "ref": "Anexo II, segundo ciclo, A.3 (pág. 24495): construcción de las tablas",
+     "rol": "situa"
+    }
+   ],
+   "prerrequisitos": [
+    {
+     "codigo": "OPER.MULT.01",
+     "peso": "imprescindible"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Da el resultado del hecho vecino",
+     "descripcion": "10 × 7 = 60 (da 10 × 6)",
+     "explicacion_nino": "Muy cerca. Ese es 10 × 6. Para 10 × 7 suma otro 10: 70.",
+     "indicacion_padres": "Si al recitar la tabla del 10 va bien pero al preguntarle salteado da el de al lado, practicad preguntas desordenadas.",
+     "regla": "10 × (k ± 1)"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Recita la tabla desde el principio para llegar al hecho",
+     "descripcion": "Para 10 × 8 dice en voz baja toda la tabla hasta llegar",
+     "explicacion_nino": "Recitar está bien para aprenderla. Ahora intenta que 10 × 8 te salga directo, sin empezar desde el principio.",
+     "indicacion_padres": "No es un fallo de resultado sino de fluidez: tarda mucho. Se nota porque mueve los labios o los dedos. Practicad preguntas sueltas y rápidas.",
+     "regla": "acierta pero supera el tiempo objetivo (se detecta por tiempo, no por el valor)"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Pone un cero de más o de menos",
+     "descripcion": "10 × 6 = 600 ; 10 × 6 = 6",
+     "explicacion_nino": "Por 10 se añade un solo cero: 60.",
+     "indicacion_padres": "Relacionadlo con el dinero: 6 billetes de 10 € son 60 €.",
+     "regla": "k × 10^(1 ± 1)"
+    }
+   ]
   }
  ]
 }

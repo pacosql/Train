@@ -1,0 +1,641 @@
+{
+ "grupo": "T6",
+ "habilidades": [
+  {
+   "codigo": "EST.DATOS.01",
+   "familia": "EST.DATOS",
+   "nivel_familia": 1,
+   "bloque": "EST",
+   "curso_ref": "PRI1",
+   "trimestre_ref": 3,
+   "orden_ref": 1,
+   "_seq": 50,
+   "nombre": "Recuento de objetos por categorías con marcas o palotes",
+   "nombre_padres": "Contar cuántos hay de cada tipo",
+   "definicion": "Dada una colección pequeña (hasta 20 elementos) de objetos o dibujos de 2 a 4 categorías, contar cuántos hay de cada categoría y anotarlo con palotes o con el número. Entra decir de qué categoría hay más o menos. No entra construir un gráfico (EST.GRAF) ni calcular diferencias entre categorías con una operación escrita (eso es PROB.DATOS).",
+   "parametros": {
+    "categorias_max": 4,
+    "total_max": 20,
+    "registro": [
+     "palotes",
+     "numero"
+    ]
+   },
+   "ejemplo_frontera": "Colección de 18 frutas mezcladas (manzanas, peras, plátanos, naranjas): ¿cuántas peras hay? → 5",
+   "ejemplo_fuera": "¿Cuántas manzanas más que peras hay? (exige restar → PROB.DATOS.02)",
+   "importancia": 3,
+   "carga_alumno": 2,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, primer ciclo, E. Sentido estocástico, 1. Organización y análisis de datos (pág. 40069)",
+   "fuentes_extra": [],
+   "prerrequisitos": [
+    {
+     "codigo": "NUM.CONT.01",
+     "peso": "imprescindible"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Cuenta un objeto dos veces",
+     "descripcion": "Hay 5 peras y dice 6 porque vuelve a contar una pera que ya había contado.",
+     "explicacion_nino": "Cuando cuentes una pera, táchala. Así no la cuentas otra vez.",
+     "indicacion_padres": "Si al recontar le sale un número distinto cada vez, pídele que tache o marque cada objeto al contarlo.",
+     "regla": "n + 1"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Se salta un objeto",
+     "descripcion": "Hay 5 peras y dice 4: deja una sin contar, sobre todo si está lejos o pegada a otra.",
+     "explicacion_nino": "Mira bien por todo el dibujo. Toca cada pera con el dedo al contar.",
+     "indicacion_padres": "Pídele que señale con el dedo cada objeto mientras cuenta en voz alta.",
+     "regla": "n − 1"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Cuenta todos los objetos, no solo los de la categoría",
+     "descripcion": "Le preguntan por las peras y responde el total de frutas (18).",
+     "explicacion_nino": "Solo hay que contar las peras. Las otras frutas no cuentan.",
+     "indicacion_padres": "Antes de contar, que te diga en voz alta qué está buscando.",
+     "regla": "total de la colección"
+    },
+    {
+     "sufijo": "E04",
+     "nombre": "Confunde dos categorías parecidas",
+     "descripcion": "Cuenta las naranjas junto con las mandarinas (o círculos con óvalos) porque se parecen.",
+     "explicacion_nino": "Fíjate bien en la forma y el color. ¿Es de verdad una pera?",
+     "indicacion_padres": "Si mezcla categorías, pídele que primero separe o rodee cada tipo con un color.",
+     "regla": "n + cantidad de la categoría parecida"
+    }
+   ]
+  },
+  {
+   "codigo": "EST.DATOS.02",
+   "familia": "EST.DATOS",
+   "nivel_familia": 2,
+   "bloque": "EST",
+   "curso_ref": "PRI2",
+   "trimestre_ref": 2,
+   "orden_ref": 1,
+   "_seq": 40,
+   "nombre": "Lectura de un dato en una tabla de doble entrada sencilla",
+   "nombre_padres": "Leer un dato en una tabla con filas y columnas",
+   "definicion": "Dada una tabla de doble entrada de hasta 4 filas y 4 columnas con números naturales hasta 100, localizar el dato que está en el cruce de una fila y una columna indicadas. No entra operar con los datos de la tabla (PROB.DATOS.02) ni construir la tabla.",
+   "parametros": {
+    "filas_max": 4,
+    "columnas_max": 4,
+    "max_valor": 100
+   },
+   "ejemplo_frontera": "Tabla de libros leídos por 4 niños en 4 meses: ¿cuántos leyó Lucía en marzo?",
+   "ejemplo_fuera": "¿Cuántos libros leyó Lucía en total? (suma varios datos → PROB.DATOS.02)",
+   "importancia": 3,
+   "carga_alumno": 2,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, primer ciclo, E. Sentido estocástico, 1. Organización y análisis de datos (pág. 40069)",
+   "fuentes_extra": [],
+   "prerrequisitos": [
+    {
+     "codigo": "EST.DATOS.01",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "NUM.LECT.01",
+     "peso": "recomendable"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Lee la fila o la columna de al lado",
+     "descripcion": "Da el dato de la fila contigua (la de Pedro en lugar de la de Lucía).",
+     "explicacion_nino": "Pon un dedo en la fila de Lucía y otro en la columna de marzo. Donde se juntan los dedos está la respuesta.",
+     "indicacion_padres": "Si se equivoca por un renglón, dale una regla o un papel para seguir la fila.",
+     "regla": "valor de la celda adyacente"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Cambia fila por columna",
+     "descripcion": "Busca 'marzo' en las filas y 'Lucía' en las columnas y da el dato de un cruce equivocado.",
+     "explicacion_nino": "Los nombres están a la izquierda. Los meses están arriba. Busca cada cosa en su sitio.",
+     "indicacion_padres": "Pregúntale antes de responder: ¿dónde están los nombres?, ¿dónde están los meses?",
+     "regla": "valor en la celda traspuesta (columna↔fila)"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Da el total de la fila",
+     "descripcion": "Suma toda la fila de Lucía en lugar de leer solo la casilla de marzo.",
+     "explicacion_nino": "Solo te preguntan por marzo. Mira una sola casilla.",
+     "indicacion_padres": "Relee con él la pregunta y subraya la palabra que dice qué casilla buscar.",
+     "regla": "suma de la fila"
+    }
+   ]
+  },
+  {
+   "codigo": "EST.DATOS.03",
+   "familia": "EST.DATOS",
+   "nivel_familia": 3,
+   "bloque": "EST",
+   "curso_ref": "PRI3",
+   "trimestre_ref": 3,
+   "orden_ref": 1,
+   "_seq": 60,
+   "nombre": "Tabla de frecuencias absolutas a partir de una lista de datos",
+   "nombre_padres": "Hacer una tabla contando cuántas veces sale cada dato",
+   "definicion": "Dada una lista de hasta 30 datos cualitativos o cuantitativos discretos (colores favoritos, número de hermanos), construir o completar la tabla de frecuencias absolutas (valor → cuántas veces aparece) y comprobar que la suma de frecuencias es el número total de datos. No entran frecuencias relativas (EST.DATOS.05) ni agrupar en intervalos (EST.DATOS.09).",
+   "parametros": {
+    "n_datos_max": 30,
+    "valores_distintos_max": 6,
+    "tipo_dato": [
+     "cualitativo",
+     "cuantitativo_discreto"
+    ]
+   },
+   "ejemplo_frontera": "Lista de 30 respuestas sobre el número de mascotas (0 a 5): completar la frecuencia de cada valor",
+   "ejemplo_fuera": "¿Qué fracción de la clase tiene 2 mascotas? (frecuencia relativa → EST.DATOS.05)",
+   "importancia": 3,
+   "carga_alumno": 2,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, segundo ciclo, E. Sentido estocástico, 1. Organización y análisis de datos (pág. 40074): 'frecuencia absoluta: interpretación'",
+   "fuentes_extra": [],
+   "prerrequisitos": [
+    {
+     "codigo": "EST.DATOS.01",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "OPER.SUMA.05",
+     "peso": "recomendable"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Confunde el valor con su frecuencia",
+     "descripcion": "En 'número de hermanos', escribe en la columna de frecuencia el propio valor (2 hermanos → frecuencia 2).",
+     "explicacion_nino": "El 2 es cuántos hermanos tiene un niño. La frecuencia es cuántos niños tienen 2 hermanos. Cuenta cuántas veces aparece el 2 en la lista.",
+     "indicacion_padres": "Si la tabla le sale igual a la columna de valores, pregúntale: ¿cuántos niños dijeron 2?",
+     "regla": "frecuencia(v) = v"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Pierde o repite datos al contar la lista",
+     "descripcion": "La suma de frecuencias no coincide con el total de datos (le salen 29 o 31 de 30).",
+     "explicacion_nino": "Tacha cada dato cuando lo apuntes. Al final, suma la columna: tiene que salir el total.",
+     "indicacion_padres": "Enséñale a comprobar siempre que la suma de la columna de frecuencias es el número de datos.",
+     "regla": "frecuencia correcta ± 1 en una fila"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Olvida los valores que no aparecen o con frecuencia cero",
+     "descripcion": "Si nadie tiene 4 mascotas, omite esa fila o no sabe qué poner.",
+     "explicacion_nino": "Si nadie tiene 4 mascotas, la frecuencia es 0. También se escribe.",
+     "indicacion_padres": "Explícale que un cero en la tabla también es información: nadie eligió esa opción.",
+     "regla": "omite valor con frecuencia 0"
+    }
+   ]
+  },
+  {
+   "codigo": "EST.DATOS.04",
+   "familia": "EST.DATOS",
+   "nivel_familia": 4,
+   "bloque": "EST",
+   "curso_ref": "PRI4",
+   "trimestre_ref": 1,
+   "orden_ref": 1,
+   "_seq": 20,
+   "nombre": "Distinguir datos cualitativos y cuantitativos",
+   "nombre_padres": "Saber si un dato es un número o una cualidad",
+   "definicion": "Clasificar una variable estadística sencilla como cualitativa (se responde con una palabra: color, deporte favorito) o cuantitativa (se responde con un número que se puede contar o medir: número de hermanos, altura). No entra distinguir cuantitativa discreta y continua (EST.DATOS.07).",
+   "parametros": {
+    "tipos": [
+     "cualitativa",
+     "cuantitativa"
+    ]
+   },
+   "ejemplo_frontera": "'Número de calzado' → cuantitativa (aunque se parece a una etiqueta, es una medida)",
+   "ejemplo_fuera": "'Altura: ¿discreta o continua?' (→ EST.DATOS.07)",
+   "importancia": 3,
+   "carga_alumno": 2,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, segundo ciclo, E. Sentido estocástico, 1. Organización y análisis de datos (pág. 40074): 'datos cualitativos o cuantitativos discretos'",
+   "fuentes_extra": [],
+   "prerrequisitos": [
+    {
+     "codigo": "EST.DATOS.03",
+     "peso": "recomendable"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Todo lo que lleva un número es cuantitativo",
+     "descripcion": "Clasifica 'número de dorsal' o 'código postal' como cuantitativa porque se escribe con cifras.",
+     "explicacion_nino": "El dorsal es un nombre con números. No tiene sentido sumar dorsales. Por eso es cualitativo.",
+     "indicacion_padres": "Pregúntale: ¿tiene sentido hacer la media de esto? Si no, es una cualidad aunque se escriba con cifras.",
+     "regla": "variable con cifras → cuantitativa"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Confunde la variable con sus valores",
+     "descripcion": "Ante 'color favorito' responde 'rojo' en lugar de decir qué tipo de dato es.",
+     "explicacion_nino": "No te preguntan qué color. Te preguntan si la respuesta es una palabra o un número.",
+     "indicacion_padres": "Distingue con él la pregunta de la encuesta (variable) y las respuestas (valores).",
+     "regla": "responde un valor en vez del tipo"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Considera cualitativo lo que no es 'de contar'",
+     "descripcion": "Dice que 'altura' o 'peso' son cualitativos porque 'no se cuentan'.",
+     "explicacion_nino": "La altura se mide con un número. Los números que se miden también son datos cuantitativos.",
+     "indicacion_padres": "Recuérdale que medir también da números: metros, kilos, minutos.",
+     "regla": "variable medida → cualitativa"
+    }
+   ]
+  },
+  {
+   "codigo": "EST.DATOS.05",
+   "familia": "EST.DATOS",
+   "nivel_familia": 5,
+   "bloque": "EST",
+   "curso_ref": "PRI5",
+   "trimestre_ref": 3,
+   "orden_ref": 1,
+   "_seq": 70,
+   "nombre": "Frecuencia relativa como fracción, decimal o porcentaje",
+   "nombre_padres": "Qué parte del total representa cada dato",
+   "definicion": "Dada una tabla de frecuencias absolutas con total conocido (hasta 100 datos), calcular la frecuencia relativa de un valor como fracción (f/N), como decimal y como porcentaje, y saber que las frecuencias relativas suman 1 (100 %). No entran frecuencias acumuladas (EST.DATOS.08).",
+   "parametros": {
+    "N_max": 100,
+    "formatos": [
+     "fraccion",
+     "decimal",
+     "porcentaje"
+    ]
+   },
+   "ejemplo_frontera": "De 40 alumnos, 14 van andando al colegio: frecuencia relativa 14/40 = 0,35 = 35 %",
+   "ejemplo_fuera": "¿Qué porcentaje de alumnos mide menos de 150 cm? (acumulada → EST.DATOS.08)",
+   "importancia": 3,
+   "carga_alumno": 2,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, tercer ciclo, E. Sentido estocástico, 1. Organización y análisis de datos (pág. 40080): 'tablas de frecuencias absolutas y relativas: interpretación'",
+   "fuentes_extra": [],
+   "prerrequisitos": [
+    {
+     "codigo": "EST.DATOS.03",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "NUM.FRAC.03",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "NUM.PORC.01",
+     "peso": "recomendable"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Divide al revés",
+     "descripcion": "Calcula N/f (40/14) en lugar de f/N.",
+     "explicacion_nino": "La frecuencia relativa es una parte del total: la parte arriba (14) y el total abajo (40). Nunca puede salir más de 1.",
+     "indicacion_padres": "Si le sale un número mayor que 1, avísale: una parte no puede ser mayor que el todo.",
+     "regla": "N / f"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Divide entre el número de categorías",
+     "descripcion": "Usa como denominador el número de filas de la tabla (4 categorías) en lugar del total de datos.",
+     "explicacion_nino": "Hay que dividir entre todas las personas que respondieron, no entre el número de opciones.",
+     "indicacion_padres": "Pregúntale: ¿cuántas personas hay en total? Ese es el número de abajo.",
+     "regla": "f / nº de categorías"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Confunde decimal y porcentaje",
+     "descripcion": "Escribe 0,35 % o 35 como frecuencia relativa decimal.",
+     "explicacion_nino": "0,35 es lo mismo que 35 %. Para pasar a porcentaje, multiplica por 100.",
+     "indicacion_padres": "Haz que compruebe que todas las frecuencias relativas suman 1 (o 100 %).",
+     "regla": "decimal expresado con %"
+    }
+   ]
+  },
+  {
+   "codigo": "EST.DATOS.06",
+   "familia": "EST.DATOS",
+   "nivel_familia": 6,
+   "bloque": "EST",
+   "curso_ref": "PRI6",
+   "trimestre_ref": 3,
+   "orden_ref": 1,
+   "_seq": 70,
+   "nombre": "Población y muestra en un estudio sencillo",
+   "nombre_padres": "Diferenciar entre todos y los que se han preguntado",
+   "definicion": "En una situación descrita (encuesta en una clase, en un colegio, en una ciudad), identificar cuál es la población (todo el grupo sobre el que se quiere saber algo) y cuál es la muestra (la parte a la que se ha preguntado), y decidir si la conclusión se puede aplicar a la población. No entran técnicas de muestreo ni representatividad formal (EST.INFER).",
+   "parametros": {
+    "elementos": [
+     "poblacion",
+     "muestra",
+     "individuo"
+    ]
+   },
+   "ejemplo_frontera": "Se pregunta a 50 alumnos de 6.º por su deporte favorito para saber el de todos los alumnos del colegio: población = alumnos del colegio; muestra = 50 alumnos de 6.º (y además no representa a los pequeños)",
+   "ejemplo_fuera": "¿Qué tipo de muestreo es? (→ EST.INFER.02)",
+   "importancia": 3,
+   "carga_alumno": 2,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-PRI",
+   "fuente_ref": "Anexo III, Matemáticas, tercer ciclo, E. Sentido estocástico, 3. Inferencia (pág. 40080)",
+   "fuentes_extra": [],
+   "prerrequisitos": [
+    {
+     "codigo": "EST.DATOS.03",
+     "peso": "recomendable"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Confunde población y muestra",
+     "descripcion": "Dice que la población son los 50 alumnos preguntados.",
+     "explicacion_nino": "La población es todo el grupo que te interesa. La muestra es solo la parte a la que has preguntado.",
+     "indicacion_padres": "Pregúntale: ¿de quién queremos saber algo? ¿A quién hemos preguntado de verdad?",
+     "regla": "intercambia población y muestra"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Generaliza sin mirar quién está en la muestra",
+     "descripcion": "Acepta que lo que opina una clase de 6.º vale para todo el colegio o toda la ciudad.",
+     "explicacion_nino": "Si solo preguntas a los mayores, no sabes lo que piensan los pequeños.",
+     "indicacion_padres": "Pon ejemplos de casa: si solo preguntamos a los abuelos qué música gusta más, ¿vale para toda la familia?",
+     "regla": "conclusión extendida a la población"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Confunde muestra con número de respuestas distintas",
+     "descripcion": "Dice que la muestra son los 5 deportes que salieron.",
+     "explicacion_nino": "La muestra son las personas a las que preguntaste, no las respuestas.",
+     "indicacion_padres": "Distingue con él quién responde (personas) de lo que responde (valores).",
+     "regla": "muestra = valores de la variable"
+    }
+   ]
+  },
+  {
+   "codigo": "EST.DATOS.07",
+   "familia": "EST.DATOS",
+   "nivel_familia": 7,
+   "bloque": "EST",
+   "curso_ref": "ESO2",
+   "trimestre_ref": 3,
+   "orden_ref": 1,
+   "_seq": 10,
+   "nombre": "Variable estadística: cualitativa, cuantitativa discreta y continua",
+   "nombre_padres": "Tipos de datos en estadística",
+   "definicion": "Clasificar una variable como cualitativa, cuantitativa discreta (toma valores aislados, se cuenta) o cuantitativa continua (puede tomar cualquier valor de un intervalo, se mide), y distinguir variable, valor e individuo en un estudio. No entra elegir gráfico (EST.GRAF.12) ni agrupar en intervalos (EST.DATOS.09).",
+   "parametros": {
+    "tipos": [
+     "cualitativa",
+     "discreta",
+     "continua"
+    ]
+   },
+   "ejemplo_frontera": "Edad en años cumplidos → discreta; tiempo en recorrer 100 m → continua",
+   "ejemplo_fuera": "¿Qué gráfico usarías para el tiempo en 100 m? (→ EST.GRAF.12)",
+   "importancia": 3,
+   "carga_alumno": 2,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-ESO",
+   "fuente_ref": "Anexo III, Matemáticas, 2.º ESO, E. Sentido estocástico, 1. Organización y análisis de datos (pág. 42910): 'diferencia entre variable y valores individuales'",
+   "fuentes_extra": [],
+   "prerrequisitos": [
+    {
+     "codigo": "EST.DATOS.04",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "EST.DATOS.06",
+     "peso": "recomendable"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Discreta si se redondea",
+     "descripcion": "Clasifica la altura como discreta porque se anota en centímetros enteros.",
+     "explicacion_nino": "Aunque redondees al anotar, la altura puede tomar cualquier valor entre 150 y 151 cm. Es continua.",
+     "indicacion_padres": "Pregúntele si entre dos valores posibles cabe otro: si sí, es continua.",
+     "regla": "continua redondeada → discreta"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Continua si tiene muchos valores",
+     "descripcion": "Clasifica 'número de habitantes' como continua porque hay muchísimos valores.",
+     "explicacion_nino": "Los habitantes se cuentan: no hay 1 000,5 personas. Es discreta, aunque sean muchos.",
+     "indicacion_padres": "Recuérdele: se cuenta → discreta; se mide → continua.",
+     "regla": "discreta con muchos valores → continua"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Confunde variable, valor e individuo",
+     "descripcion": "Ante 'Ana mide 1,62 m' señala 'Ana' como variable.",
+     "explicacion_nino": "La variable es lo que se estudia (la altura); Ana es un individuo y 1,62 m es un valor.",
+     "indicacion_padres": "Pida que subraye con tres colores quién, qué se mide y cuánto.",
+     "regla": "individuo o valor señalado como variable"
+    }
+   ]
+  },
+  {
+   "codigo": "EST.DATOS.08",
+   "familia": "EST.DATOS",
+   "nivel_familia": 8,
+   "bloque": "EST",
+   "curso_ref": "ESO2",
+   "trimestre_ref": 3,
+   "orden_ref": 2,
+   "_seq": 20,
+   "nombre": "Tabla de frecuencias completa: absolutas, relativas y acumuladas",
+   "nombre_padres": "Tabla con todas las frecuencias, también las acumuladas",
+   "definicion": "Construir o completar una tabla de frecuencias de una variable cuantitativa discreta con frecuencia absoluta (f), relativa (h), absoluta acumulada (F), relativa acumulada (H) y porcentajes, y responder preguntas del tipo 'cuántos como mucho/al menos'. No entran datos agrupados en intervalos (EST.DATOS.09).",
+   "parametros": {
+    "columnas": [
+     "f",
+     "h",
+     "F",
+     "H",
+     "%"
+    ],
+    "N_max": 200
+   },
+   "ejemplo_frontera": "Notas de 0 a 10 de 40 alumnos: ¿cuántos sacaron 6 o menos? → F(6)",
+   "ejemplo_fuera": "Tabla con intervalos [150,160) de alturas (→ EST.DATOS.09)",
+   "importancia": 3,
+   "carga_alumno": 2,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-ESO",
+   "fuente_ref": "Anexo III, Matemáticas, 2.º ESO, E. Sentido estocástico, 1. Organización y análisis de datos (pág. 42910)",
+   "fuentes_extra": [],
+   "prerrequisitos": [
+    {
+     "codigo": "EST.DATOS.05",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "EST.DATOS.07",
+     "peso": "recomendable"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Acumula en el orden equivocado",
+     "descripcion": "Empieza a acumular por el valor mayor o acumula sin ordenar los valores.",
+     "explicacion_nino": "Las acumuladas se construyen con los valores ordenados de menor a mayor, sumando hacia abajo.",
+     "indicacion_padres": "Compruebe que la última F coincide con N y la última H con 1.",
+     "regla": "acumulado desde el mayor"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "'Al menos' leído como 'como mucho'",
+     "descripcion": "Para '¿cuántos sacaron al menos 6?' da F(6) en lugar de N − F(5).",
+     "explicacion_nino": "'Al menos 6' es 6 o más. La acumulada F(6) cuenta los de 6 o menos.",
+     "indicacion_padres": "Pida que reescriba la pregunta con los signos ≥ o ≤ antes de mirar la tabla.",
+     "regla": "F(k) en lugar de N − F(k−1)"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Suma frecuencias relativas acumuladas como absolutas",
+     "descripcion": "Pone en H la suma de las f (números mayores que 1).",
+     "explicacion_nino": "H no puede pasar de 1. Es F dividida entre N.",
+     "indicacion_padres": "Si una frecuencia relativa pasa de 1, hay un error seguro.",
+     "regla": "H = F"
+    }
+   ]
+  },
+  {
+   "codigo": "EST.DATOS.09",
+   "familia": "EST.DATOS",
+   "nivel_familia": 9,
+   "bloque": "EST",
+   "curso_ref": "ESO2",
+   "trimestre_ref": 3,
+   "orden_ref": 3,
+   "_seq": 30,
+   "nombre": "Datos agrupados en intervalos: clases y marcas de clase",
+   "nombre_padres": "Agrupar datos en tramos",
+   "definicion": "Organizar datos de una variable continua (o discreta con muchos valores) en intervalos de igual amplitud dados o elegidos, contar la frecuencia de cada clase respetando el convenio de extremos [a, b), y calcular la marca de clase (punto medio). No entra calcular la media con datos agrupados (EST.MEDIDAS.08).",
+   "parametros": {
+    "convenio_extremos": "[a,b)",
+    "clases_max": 8
+   },
+   "ejemplo_frontera": "Alturas 1,48–1,79 m en clases de 5 cm: el dato 1,55 va a [1,55; 1,60), no a [1,50; 1,55)",
+   "ejemplo_fuera": "Media de las alturas agrupadas (→ EST.MEDIDAS.08)",
+   "importancia": 3,
+   "carga_alumno": 2,
+   "calculable": true,
+   "fuente": "DEC-ES-MC-ESO",
+   "fuente_ref": "Anexo III, Matemáticas, 2.º ESO, E. Sentido estocástico, 1. Organización y análisis de datos (pág. 42910): 'variables cuantitativas continuas'",
+   "fuentes_extra": [],
+   "prerrequisitos": [
+    {
+     "codigo": "EST.DATOS.08",
+     "peso": "imprescindible"
+    },
+    {
+     "codigo": "NUM.DEC.03",
+     "peso": "recomendable"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "Dato del extremo en dos clases o en la equivocada",
+     "descripcion": "Cuenta 1,55 en [1,50; 1,55) o en las dos clases.",
+     "explicacion_nino": "El corchete cerrado incluye el extremo y el paréntesis lo excluye: 1,55 va solo a la clase que empieza en 1,55.",
+     "indicacion_padres": "Haga que marque en la recta los extremos de cada clase con punto lleno o vacío.",
+     "regla": "extremo superior incluido"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Marca de clase = extremo",
+     "descripcion": "Toma como marca de clase el extremo inferior (1,50) en vez del punto medio (1,525).",
+     "explicacion_nino": "La marca de clase representa a toda la clase: es el punto medio, (a + b) / 2.",
+     "indicacion_padres": "Pregúntele qué número está justo en medio del intervalo.",
+     "regla": "marca = a"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Amplitud mal calculada",
+     "descripcion": "Calcula la amplitud como número de clases o como (máx − mín) sin dividir.",
+     "explicacion_nino": "Amplitud = (dato mayor − dato menor) / número de clases, redondeando hacia arriba.",
+     "indicacion_padres": "Compruebe que la última clase contiene al dato mayor.",
+     "regla": "amplitud = rango"
+    }
+   ]
+  },
+  {
+   "codigo": "EST.DATOS.10",
+   "familia": "EST.DATOS",
+   "nivel_familia": 10,
+   "bloque": "EST",
+   "curso_ref": "ESO3",
+   "trimestre_ref": 3,
+   "orden_ref": 1,
+   "_seq": 40,
+   "nombre": "Diseño de la recogida de datos: preguntas adecuadas y sesgos",
+   "nombre_padres": "Hacer buenas preguntas en una encuesta",
+   "definicion": "Juzgar si una pregunta de encuesta o un método de recogida de datos es adecuado para el objetivo del estudio: pregunta clara y no tendenciosa, opciones exhaustivas y excluyentes, datos que realmente responden a la pregunta. No entra la representatividad de la muestra ni el muestreo (EST.INFER).",
+   "parametros": {
+    "aspectos": [
+     "pregunta_tendenciosa",
+     "opciones_excluyentes",
+     "pertinencia"
+    ]
+   },
+   "ejemplo_frontera": "'¿No crees que el comedor debería mejorar?' es tendenciosa; elegir la formulación neutra entre cuatro",
+   "ejemplo_fuera": "¿Es representativa una muestra tomada a la salida de un gimnasio? (→ EST.INFER.01)",
+   "importancia": 2,
+   "carga_alumno": 2,
+   "calculable": false,
+   "fuente": "DEC-ES-MC-ESO",
+   "fuente_ref": "Anexo III, Matemáticas, 3.º ESO, E. Sentido estocástico (págs. 42915-42916), 3. Inferencia: 'formulación de preguntas adecuadas'",
+   "fuentes_extra": [],
+   "prerrequisitos": [
+    {
+     "codigo": "EST.DATOS.07",
+     "peso": "imprescindible"
+    }
+   ],
+   "errores": [
+    {
+     "sufijo": "E01",
+     "nombre": "No detecta la pregunta tendenciosa",
+     "descripcion": "Da por buena una pregunta que sugiere la respuesta ('¿Verdad que…?').",
+     "explicacion_nino": "Una buena pregunta no empuja hacia una respuesta: debe dejar igual de fácil decir sí o no.",
+     "indicacion_padres": "Juegue a reformular preguntas de anuncios o noticias para que sean neutras.",
+     "regla": "acepta pregunta sesgada"
+    },
+    {
+     "sufijo": "E02",
+     "nombre": "Opciones que se solapan o no cubren todo",
+     "descripcion": "Acepta opciones '0–2 horas, 2–4 horas' (el 2 está en dos) o sin opción para 'ninguna'.",
+     "explicacion_nino": "Cada persona tiene que poder marcar una opción y solo una.",
+     "indicacion_padres": "Pídale que piense en alguien que no encaje en ninguna opción o en dos.",
+     "regla": "acepta opciones no excluyentes"
+    },
+    {
+     "sufijo": "E03",
+     "nombre": "Datos que no responden al objetivo",
+     "descripcion": "Para saber cuánto leen los alumnos, propone preguntar cuántos libros tienen en casa.",
+     "explicacion_nino": "Tener libros no es lo mismo que leerlos. Pregunta justo lo que quieres saber.",
+     "indicacion_padres": "Relean juntos el objetivo del estudio antes de elegir la pregunta.",
+     "regla": "variable no pertinente"
+    }
+   ]
+  }
+ ]
+}
