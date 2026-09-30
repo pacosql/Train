@@ -1,0 +1,1774 @@
+{
+ "habilidad": "ANA.APLDER.04",
+ "generado_por": "claude (skill mates10-generar-ejercicios v1)",
+ "ejercicios": [
+  {
+   "dificultad": 1,
+   "enunciado": "¿Qué asíntotas tiene f(x) = x²/(x − 1)?",
+   "respuesta": "Vertical x = 1 y oblicua y = x + 1",
+   "distractores": [
+    {
+     "valor": "Vertical x = 1 y horizontal y = 1",
+     "error": null
+    },
+    {
+     "valor": "Vertical x = −1 y oblicua y = x − 1",
+     "error": null
+    },
+    {
+     "valor": "Vertical x = 1 y oblicua y = x",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ANA.LIM.05"
+   ],
+   "explicacion_nino": "Vertical: el denominador se anula en x = 1 y el numerador no, así que f → ±∞ allí. Horizontal no hay (el grado de arriba es mayor). Oblicua: al dividir x² entre x − 1 sale cociente x + 1 y resto 1, así que y = x + 1.",
+   "explicacion_adulto": "Está aprendiendo a juntar toda la información de una función (dominio, simetría, cortes, asíntotas, crecimiento, extremos, curvatura) para dibujarla o reconocerla. Los errores típicos son dibujar datos incompatibles (un máximo en una zona que ha calculado creciente) y olvidar el dominio (cruzar una asíntota vertical). Pídale que haga una tabla resumen con todos los datos antes de dibujar y compruebe que encajan.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "vertical",
+     "resultado": "x = 1",
+     "texto": "Ceros del denominador."
+    },
+    {
+     "paso": 2,
+     "operacion": "horizontal",
+     "resultado": "no hay",
+     "texto": "Grado del numerador mayor."
+    },
+    {
+     "paso": 3,
+     "operacion": "oblicua",
+     "resultado": "y = x + 1",
+     "texto": "Cociente de la división."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Para representar f(x) = x²/(x − 2), ¿cuáles son sus extremos relativos?",
+   "respuesta": "Máximo relativo en (0, 0) y mínimo relativo en (4, 8)",
+   "distractores": [
+    {
+     "valor": "Máximo relativo en (4, 8) y mínimo relativo en (0, 0)",
+     "error": "E01"
+    },
+    {
+     "valor": "Mínimo relativo en (2, 8) (sobre la asíntota)",
+     "error": "E02"
+    },
+    {
+     "valor": "Máximo relativo en (0, 0) y no tiene mínimo",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ANA.APLDER.02"
+   ],
+   "explicacion_nino": "f'(x) = x(x − 4)/(x − 2)², que se anula en x = 0 y x = 4. Estudia el signo: crece, decrece, decrece, crece a ambos lados de la asíntota, así que hay un máximo en (0, 0) y un mínimo en (4, 8). Fíjate que el máximo queda más bajo que el mínimo: están en ramas distintas.",
+   "explicacion_adulto": "Está aprendiendo a juntar toda la información de una función (dominio, simetría, cortes, asíntotas, crecimiento, extremos, curvatura) para dibujarla o reconocerla. Los errores típicos son dibujar datos incompatibles (un máximo en una zona que ha calculado creciente) y olvidar el dominio (cruzar una asíntota vertical). Pídale que haga una tabla resumen con todos los datos antes de dibujar y compruebe que encajan.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "derivar",
+     "resultado": "f'(x) = x(x − 4)/(x − 2)²",
+     "texto": "Regla del cociente."
+    },
+    {
+     "paso": 2,
+     "operacion": "puntos críticos",
+     "resultado": "x = 0, x = 4",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "signo",
+     "resultado": "+ − − +",
+     "texto": "Crece, decrece | decrece, crece."
+    },
+    {
+     "paso": 4,
+     "operacion": "extremos",
+     "resultado": "Máximo relativo en (0, 0) y mínimo relativo en (4, 8)",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "¿Qué asíntotas tiene f(x) = x²/(x − 3)?",
+   "respuesta": "Vertical x = 3 y oblicua y = x + 3",
+   "distractores": [
+    {
+     "valor": "Vertical x = 3 y horizontal y = 1",
+     "error": null
+    },
+    {
+     "valor": "Vertical x = −3 y oblicua y = x − 3",
+     "error": null
+    },
+    {
+     "valor": "Vertical x = 3 y oblicua y = x",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ANA.LIM.05"
+   ],
+   "explicacion_nino": "Vertical: el denominador se anula en x = 3 y el numerador no, así que f → ±∞ allí. Horizontal no hay (el grado de arriba es mayor). Oblicua: al dividir x² entre x − 3 sale cociente x + 3 y resto 9, así que y = x + 3.",
+   "explicacion_adulto": "Está aprendiendo a juntar toda la información de una función (dominio, simetría, cortes, asíntotas, crecimiento, extremos, curvatura) para dibujarla o reconocerla. Los errores típicos son dibujar datos incompatibles (un máximo en una zona que ha calculado creciente) y olvidar el dominio (cruzar una asíntota vertical). Pídale que haga una tabla resumen con todos los datos antes de dibujar y compruebe que encajan.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "vertical",
+     "resultado": "x = 3",
+     "texto": "Ceros del denominador."
+    },
+    {
+     "paso": 2,
+     "operacion": "horizontal",
+     "resultado": "no hay",
+     "texto": "Grado del numerador mayor."
+    },
+    {
+     "paso": 3,
+     "operacion": "oblicua",
+     "resultado": "y = x + 3",
+     "texto": "Cociente de la división."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Para representar f(x) = x²/(x + 1), ¿cuáles son sus extremos relativos?",
+   "respuesta": "Máximo relativo en (−2, −4) y mínimo relativo en (0, 0)",
+   "distractores": [
+    {
+     "valor": "Máximo relativo en (0, 0) y mínimo relativo en (−2, −4)",
+     "error": "E01"
+    },
+    {
+     "valor": "Mínimo relativo en (−1, 2) (sobre la asíntota)",
+     "error": "E02"
+    },
+    {
+     "valor": "Máximo relativo en (−2, −4) y no tiene mínimo",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ANA.APLDER.02"
+   ],
+   "explicacion_nino": "f'(x) = x(x + 2)/(x + 1)², que se anula en x = 0 y x = −2. Estudia el signo: crece, decrece, decrece, crece a ambos lados de la asíntota, así que hay un máximo en (−2, −4) y un mínimo en (0, 0). Fíjate que el máximo queda más bajo que el mínimo: están en ramas distintas.",
+   "explicacion_adulto": "Está aprendiendo a juntar toda la información de una función (dominio, simetría, cortes, asíntotas, crecimiento, extremos, curvatura) para dibujarla o reconocerla. Los errores típicos son dibujar datos incompatibles (un máximo en una zona que ha calculado creciente) y olvidar el dominio (cruzar una asíntota vertical). Pídale que haga una tabla resumen con todos los datos antes de dibujar y compruebe que encajan.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "derivar",
+     "resultado": "f'(x) = x(x + 2)/(x + 1)²",
+     "texto": "Regla del cociente."
+    },
+    {
+     "paso": 2,
+     "operacion": "puntos críticos",
+     "resultado": "x = 0, x = −2",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "signo",
+     "resultado": "+ − − +",
+     "texto": "Crece, decrece | decrece, crece."
+    },
+    {
+     "paso": 4,
+     "operacion": "extremos",
+     "resultado": "Máximo relativo en (−2, −4) y mínimo relativo en (0, 0)",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "¿Qué asíntotas tiene f(x) = x²/(x + 2)?",
+   "respuesta": "Vertical x = −2 y oblicua y = x − 2",
+   "distractores": [
+    {
+     "valor": "Vertical x = −2 y horizontal y = 1",
+     "error": null
+    },
+    {
+     "valor": "Vertical x = 2 y oblicua y = x + 2",
+     "error": null
+    },
+    {
+     "valor": "Vertical x = −2 y oblicua y = x",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ANA.LIM.05"
+   ],
+   "explicacion_nino": "Vertical: el denominador se anula en x = −2 y el numerador no, así que f → ±∞ allí. Horizontal no hay (el grado de arriba es mayor). Oblicua: al dividir x² entre x + 2 sale cociente x − 2 y resto 4, así que y = x − 2.",
+   "explicacion_adulto": "Está aprendiendo a juntar toda la información de una función (dominio, simetría, cortes, asíntotas, crecimiento, extremos, curvatura) para dibujarla o reconocerla. Los errores típicos son dibujar datos incompatibles (un máximo en una zona que ha calculado creciente) y olvidar el dominio (cruzar una asíntota vertical). Pídale que haga una tabla resumen con todos los datos antes de dibujar y compruebe que encajan.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "vertical",
+     "resultado": "x = −2",
+     "texto": "Ceros del denominador."
+    },
+    {
+     "paso": 2,
+     "operacion": "horizontal",
+     "resultado": "no hay",
+     "texto": "Grado del numerador mayor."
+    },
+    {
+     "paso": 3,
+     "operacion": "oblicua",
+     "resultado": "y = x − 2",
+     "texto": "Cociente de la división."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Para representar f(x) = x²/(x − 4), ¿cuáles son sus extremos relativos?",
+   "respuesta": "Máximo relativo en (0, 0) y mínimo relativo en (8, 16)",
+   "distractores": [
+    {
+     "valor": "Máximo relativo en (8, 16) y mínimo relativo en (0, 0)",
+     "error": "E01"
+    },
+    {
+     "valor": "Mínimo relativo en (4, 32) (sobre la asíntota)",
+     "error": "E02"
+    },
+    {
+     "valor": "Máximo relativo en (0, 0) y no tiene mínimo",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ANA.APLDER.02"
+   ],
+   "explicacion_nino": "f'(x) = x(x − 8)/(x − 4)², que se anula en x = 0 y x = 8. Estudia el signo: crece, decrece, decrece, crece a ambos lados de la asíntota, así que hay un máximo en (0, 0) y un mínimo en (8, 16). Fíjate que el máximo queda más bajo que el mínimo: están en ramas distintas.",
+   "explicacion_adulto": "Está aprendiendo a juntar toda la información de una función (dominio, simetría, cortes, asíntotas, crecimiento, extremos, curvatura) para dibujarla o reconocerla. Los errores típicos son dibujar datos incompatibles (un máximo en una zona que ha calculado creciente) y olvidar el dominio (cruzar una asíntota vertical). Pídale que haga una tabla resumen con todos los datos antes de dibujar y compruebe que encajan.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "derivar",
+     "resultado": "f'(x) = x(x − 8)/(x − 4)²",
+     "texto": "Regla del cociente."
+    },
+    {
+     "paso": 2,
+     "operacion": "puntos críticos",
+     "resultado": "x = 0, x = 8",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "signo",
+     "resultado": "+ − − +",
+     "texto": "Crece, decrece | decrece, crece."
+    },
+    {
+     "paso": 4,
+     "operacion": "extremos",
+     "resultado": "Máximo relativo en (0, 0) y mínimo relativo en (8, 16)",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "¿Qué asíntotas tiene f(x) = x²/(x + 3)?",
+   "respuesta": "Vertical x = −3 y oblicua y = x − 3",
+   "distractores": [
+    {
+     "valor": "Vertical x = −3 y horizontal y = 1",
+     "error": null
+    },
+    {
+     "valor": "Vertical x = 3 y oblicua y = x + 3",
+     "error": null
+    },
+    {
+     "valor": "Vertical x = −3 y oblicua y = x",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ANA.LIM.05"
+   ],
+   "explicacion_nino": "Vertical: el denominador se anula en x = −3 y el numerador no, así que f → ±∞ allí. Horizontal no hay (el grado de arriba es mayor). Oblicua: al dividir x² entre x + 3 sale cociente x − 3 y resto 9, así que y = x − 3.",
+   "explicacion_adulto": "Está aprendiendo a juntar toda la información de una función (dominio, simetría, cortes, asíntotas, crecimiento, extremos, curvatura) para dibujarla o reconocerla. Los errores típicos son dibujar datos incompatibles (un máximo en una zona que ha calculado creciente) y olvidar el dominio (cruzar una asíntota vertical). Pídale que haga una tabla resumen con todos los datos antes de dibujar y compruebe que encajan.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "vertical",
+     "resultado": "x = −3",
+     "texto": "Ceros del denominador."
+    },
+    {
+     "paso": 2,
+     "operacion": "horizontal",
+     "resultado": "no hay",
+     "texto": "Grado del numerador mayor."
+    },
+    {
+     "paso": 3,
+     "operacion": "oblicua",
+     "resultado": "y = x − 3",
+     "texto": "Cociente de la división."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Para representar f(x) = x²/(x − 5), ¿cuáles son sus extremos relativos?",
+   "respuesta": "Máximo relativo en (0, 0) y mínimo relativo en (10, 20)",
+   "distractores": [
+    {
+     "valor": "Máximo relativo en (10, 20) y mínimo relativo en (0, 0)",
+     "error": "E01"
+    },
+    {
+     "valor": "Mínimo relativo en (5, 50) (sobre la asíntota)",
+     "error": "E02"
+    },
+    {
+     "valor": "Máximo relativo en (0, 0) y no tiene mínimo",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ANA.APLDER.02"
+   ],
+   "explicacion_nino": "f'(x) = x(x − 10)/(x − 5)², que se anula en x = 0 y x = 10. Estudia el signo: crece, decrece, decrece, crece a ambos lados de la asíntota, así que hay un máximo en (0, 0) y un mínimo en (10, 20). Fíjate que el máximo queda más bajo que el mínimo: están en ramas distintas.",
+   "explicacion_adulto": "Está aprendiendo a juntar toda la información de una función (dominio, simetría, cortes, asíntotas, crecimiento, extremos, curvatura) para dibujarla o reconocerla. Los errores típicos son dibujar datos incompatibles (un máximo en una zona que ha calculado creciente) y olvidar el dominio (cruzar una asíntota vertical). Pídale que haga una tabla resumen con todos los datos antes de dibujar y compruebe que encajan.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "derivar",
+     "resultado": "f'(x) = x(x − 10)/(x − 5)²",
+     "texto": "Regla del cociente."
+    },
+    {
+     "paso": 2,
+     "operacion": "puntos críticos",
+     "resultado": "x = 0, x = 10",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "signo",
+     "resultado": "+ − − +",
+     "texto": "Crece, decrece | decrece, crece."
+    },
+    {
+     "paso": 4,
+     "operacion": "extremos",
+     "resultado": "Máximo relativo en (0, 0) y mínimo relativo en (10, 20)",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "¿Qué asíntotas tiene f(x) = x²/(x − 6)?",
+   "respuesta": "Vertical x = 6 y oblicua y = x + 6",
+   "distractores": [
+    {
+     "valor": "Vertical x = 6 y horizontal y = 1",
+     "error": null
+    },
+    {
+     "valor": "Vertical x = −6 y oblicua y = x − 6",
+     "error": null
+    },
+    {
+     "valor": "Vertical x = 6 y oblicua y = x",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ANA.LIM.05"
+   ],
+   "explicacion_nino": "Vertical: el denominador se anula en x = 6 y el numerador no, así que f → ±∞ allí. Horizontal no hay (el grado de arriba es mayor). Oblicua: al dividir x² entre x − 6 sale cociente x + 6 y resto 36, así que y = x + 6.",
+   "explicacion_adulto": "Está aprendiendo a juntar toda la información de una función (dominio, simetría, cortes, asíntotas, crecimiento, extremos, curvatura) para dibujarla o reconocerla. Los errores típicos son dibujar datos incompatibles (un máximo en una zona que ha calculado creciente) y olvidar el dominio (cruzar una asíntota vertical). Pídale que haga una tabla resumen con todos los datos antes de dibujar y compruebe que encajan.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "vertical",
+     "resultado": "x = 6",
+     "texto": "Ceros del denominador."
+    },
+    {
+     "paso": 2,
+     "operacion": "horizontal",
+     "resultado": "no hay",
+     "texto": "Grado del numerador mayor."
+    },
+    {
+     "paso": 3,
+     "operacion": "oblicua",
+     "resultado": "y = x + 6",
+     "texto": "Cociente de la división."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Para representar f(x) = x²/(x + 4), ¿cuáles son sus extremos relativos?",
+   "respuesta": "Máximo relativo en (−8, −16) y mínimo relativo en (0, 0)",
+   "distractores": [
+    {
+     "valor": "Máximo relativo en (0, 0) y mínimo relativo en (−8, −16)",
+     "error": "E01"
+    },
+    {
+     "valor": "Mínimo relativo en (−4, 32) (sobre la asíntota)",
+     "error": "E02"
+    },
+    {
+     "valor": "Máximo relativo en (−8, −16) y no tiene mínimo",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ANA.APLDER.02"
+   ],
+   "explicacion_nino": "f'(x) = x(x + 8)/(x + 4)², que se anula en x = 0 y x = −8. Estudia el signo: crece, decrece, decrece, crece a ambos lados de la asíntota, así que hay un máximo en (−8, −16) y un mínimo en (0, 0). Fíjate que el máximo queda más bajo que el mínimo: están en ramas distintas.",
+   "explicacion_adulto": "Está aprendiendo a juntar toda la información de una función (dominio, simetría, cortes, asíntotas, crecimiento, extremos, curvatura) para dibujarla o reconocerla. Los errores típicos son dibujar datos incompatibles (un máximo en una zona que ha calculado creciente) y olvidar el dominio (cruzar una asíntota vertical). Pídale que haga una tabla resumen con todos los datos antes de dibujar y compruebe que encajan.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "derivar",
+     "resultado": "f'(x) = x(x + 8)/(x + 4)²",
+     "texto": "Regla del cociente."
+    },
+    {
+     "paso": 2,
+     "operacion": "puntos críticos",
+     "resultado": "x = 0, x = −8",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "signo",
+     "resultado": "+ − − +",
+     "texto": "Crece, decrece | decrece, crece."
+    },
+    {
+     "paso": 4,
+     "operacion": "extremos",
+     "resultado": "Máximo relativo en (−8, −16) y mínimo relativo en (0, 0)",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "¿Qué asíntotas tiene f(x) = x²/(x + 5)?",
+   "respuesta": "Vertical x = −5 y oblicua y = x − 5",
+   "distractores": [
+    {
+     "valor": "Vertical x = −5 y horizontal y = 1",
+     "error": null
+    },
+    {
+     "valor": "Vertical x = 5 y oblicua y = x + 5",
+     "error": null
+    },
+    {
+     "valor": "Vertical x = −5 y oblicua y = x",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ANA.LIM.05"
+   ],
+   "explicacion_nino": "Vertical: el denominador se anula en x = −5 y el numerador no, así que f → ±∞ allí. Horizontal no hay (el grado de arriba es mayor). Oblicua: al dividir x² entre x + 5 sale cociente x − 5 y resto 25, así que y = x − 5.",
+   "explicacion_adulto": "Está aprendiendo a juntar toda la información de una función (dominio, simetría, cortes, asíntotas, crecimiento, extremos, curvatura) para dibujarla o reconocerla. Los errores típicos son dibujar datos incompatibles (un máximo en una zona que ha calculado creciente) y olvidar el dominio (cruzar una asíntota vertical). Pídale que haga una tabla resumen con todos los datos antes de dibujar y compruebe que encajan.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "vertical",
+     "resultado": "x = −5",
+     "texto": "Ceros del denominador."
+    },
+    {
+     "paso": 2,
+     "operacion": "horizontal",
+     "resultado": "no hay",
+     "texto": "Grado del numerador mayor."
+    },
+    {
+     "paso": 3,
+     "operacion": "oblicua",
+     "resultado": "y = x − 5",
+     "texto": "Cociente de la división."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Para representar f(x) = x²/(x − 7), ¿cuáles son sus extremos relativos?",
+   "respuesta": "Máximo relativo en (0, 0) y mínimo relativo en (14, 28)",
+   "distractores": [
+    {
+     "valor": "Máximo relativo en (14, 28) y mínimo relativo en (0, 0)",
+     "error": "E01"
+    },
+    {
+     "valor": "Mínimo relativo en (7, 98) (sobre la asíntota)",
+     "error": "E02"
+    },
+    {
+     "valor": "Máximo relativo en (0, 0) y no tiene mínimo",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ANA.APLDER.02"
+   ],
+   "explicacion_nino": "f'(x) = x(x − 14)/(x − 7)², que se anula en x = 0 y x = 14. Estudia el signo: crece, decrece, decrece, crece a ambos lados de la asíntota, así que hay un máximo en (0, 0) y un mínimo en (14, 28). Fíjate que el máximo queda más bajo que el mínimo: están en ramas distintas.",
+   "explicacion_adulto": "Está aprendiendo a juntar toda la información de una función (dominio, simetría, cortes, asíntotas, crecimiento, extremos, curvatura) para dibujarla o reconocerla. Los errores típicos son dibujar datos incompatibles (un máximo en una zona que ha calculado creciente) y olvidar el dominio (cruzar una asíntota vertical). Pídale que haga una tabla resumen con todos los datos antes de dibujar y compruebe que encajan.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "derivar",
+     "resultado": "f'(x) = x(x − 14)/(x − 7)²",
+     "texto": "Regla del cociente."
+    },
+    {
+     "paso": 2,
+     "operacion": "puntos críticos",
+     "resultado": "x = 0, x = 14",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "signo",
+     "resultado": "+ − − +",
+     "texto": "Crece, decrece | decrece, crece."
+    },
+    {
+     "paso": 4,
+     "operacion": "extremos",
+     "resultado": "Máximo relativo en (0, 0) y mínimo relativo en (14, 28)",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "¿Qué descripción corresponde a la gráfica de f(x) = x³ − 3x?",
+   "respuesta": "Impar; corta al eje X en x = 0 y x = ±√3; crece hasta el máximo (−1, 2), decrece hasta el mínimo (1, −2) y vuelve a crecer; inflexión en (0, 0)",
+   "distractores": [
+    {
+     "valor": "Impar; corta al eje X en x = 0 y x = ±√3; crece hasta el mínimo (1, −2), decrece hasta el máximo (−1, 2) y vuelve a crecer; inflexión en (0, 0)",
+     "error": "E01"
+    },
+    {
+     "valor": "Par; corta al eje X en x = 0 y x = ±√3; máximo en (−1, 2) y mínimo en (1, −2); inflexión en (0, 0)",
+     "error": null
+    },
+    {
+     "valor": "Impar; asíntota vertical en x = 0; máximo en (−1, 2) y mínimo en (1, −2)",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ANA.APLDER.03"
+   ],
+   "explicacion_nino": "Simetría: f(−x) = −f(x), impar. Cortes: x(x² − 3) = 0. f'(x) = 3x² − 3 = 0 en x = ±1; f'' = 6x: en x = −1 es negativa (máximo) y en x = 1 positiva (mínimo). f'' cambia de signo en 0: inflexión en (0, 0), cóncava hacia abajo a la izquierda y hacia arriba a la derecha.",
+   "explicacion_adulto": "Está aprendiendo a juntar toda la información de una función (dominio, simetría, cortes, asíntotas, crecimiento, extremos, curvatura) para dibujarla o reconocerla. Los errores típicos son dibujar datos incompatibles (un máximo en una zona que ha calculado creciente) y olvidar el dominio (cruzar una asíntota vertical). Pídale que haga una tabla resumen con todos los datos antes de dibujar y compruebe que encajan.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "simetría",
+     "resultado": "impar",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "cortes",
+     "resultado": "0, ±√3",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "extremos",
+     "resultado": "máx (−1, 2), mín (1, −2)",
+     "texto": "f' = 0 y signo de f''."
+    },
+    {
+     "paso": 4,
+     "operacion": "curvatura",
+     "resultado": "inflexión (0, 0)",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "¿Qué descripción corresponde a la gráfica de f(x) = x³ − 12x?",
+   "respuesta": "Impar; corta al eje X en x = 0 y x = ±2√3; crece hasta el máximo (−2, 16), decrece hasta el mínimo (2, −16) y vuelve a crecer; inflexión en (0, 0)",
+   "distractores": [
+    {
+     "valor": "Impar; corta al eje X en x = 0 y x = ±2√3; crece hasta el mínimo (2, −16), decrece hasta el máximo (−2, 16) y vuelve a crecer; inflexión en (0, 0)",
+     "error": "E01"
+    },
+    {
+     "valor": "Par; corta al eje X en x = 0 y x = ±2√3; máximo en (−2, 16) y mínimo en (2, −16); inflexión en (0, 0)",
+     "error": null
+    },
+    {
+     "valor": "Impar; asíntota vertical en x = 0; máximo en (−2, 16) y mínimo en (2, −16)",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ANA.APLDER.03"
+   ],
+   "explicacion_nino": "Simetría: f(−x) = −f(x), impar. Cortes: x(x² − 12) = 0. f'(x) = 3x² − 12 = 0 en x = ±2; f'' = 6x: en x = −2 es negativa (máximo) y en x = 2 positiva (mínimo). f'' cambia de signo en 0: inflexión en (0, 0), cóncava hacia abajo a la izquierda y hacia arriba a la derecha.",
+   "explicacion_adulto": "Está aprendiendo a juntar toda la información de una función (dominio, simetría, cortes, asíntotas, crecimiento, extremos, curvatura) para dibujarla o reconocerla. Los errores típicos son dibujar datos incompatibles (un máximo en una zona que ha calculado creciente) y olvidar el dominio (cruzar una asíntota vertical). Pídale que haga una tabla resumen con todos los datos antes de dibujar y compruebe que encajan.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "simetría",
+     "resultado": "impar",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "cortes",
+     "resultado": "0, ±√12",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "extremos",
+     "resultado": "máx (−2, 16), mín (2, −16)",
+     "texto": "f' = 0 y signo de f''."
+    },
+    {
+     "paso": 4,
+     "operacion": "curvatura",
+     "resultado": "inflexión (0, 0)",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "¿Qué descripción corresponde a la gráfica de f(x) = x³ − 27x?",
+   "respuesta": "Impar; corta al eje X en x = 0 y x = ±3√3; crece hasta el máximo (−3, 54), decrece hasta el mínimo (3, −54) y vuelve a crecer; inflexión en (0, 0)",
+   "distractores": [
+    {
+     "valor": "Impar; corta al eje X en x = 0 y x = ±3√3; crece hasta el mínimo (3, −54), decrece hasta el máximo (−3, 54) y vuelve a crecer; inflexión en (0, 0)",
+     "error": "E01"
+    },
+    {
+     "valor": "Par; corta al eje X en x = 0 y x = ±3√3; máximo en (−3, 54) y mínimo en (3, −54); inflexión en (0, 0)",
+     "error": null
+    },
+    {
+     "valor": "Impar; asíntota vertical en x = 0; máximo en (−3, 54) y mínimo en (3, −54)",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ANA.APLDER.03"
+   ],
+   "explicacion_nino": "Simetría: f(−x) = −f(x), impar. Cortes: x(x² − 27) = 0. f'(x) = 3x² − 27 = 0 en x = ±3; f'' = 6x: en x = −3 es negativa (máximo) y en x = 3 positiva (mínimo). f'' cambia de signo en 0: inflexión en (0, 0), cóncava hacia abajo a la izquierda y hacia arriba a la derecha.",
+   "explicacion_adulto": "Está aprendiendo a juntar toda la información de una función (dominio, simetría, cortes, asíntotas, crecimiento, extremos, curvatura) para dibujarla o reconocerla. Los errores típicos son dibujar datos incompatibles (un máximo en una zona que ha calculado creciente) y olvidar el dominio (cruzar una asíntota vertical). Pídale que haga una tabla resumen con todos los datos antes de dibujar y compruebe que encajan.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "simetría",
+     "resultado": "impar",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "cortes",
+     "resultado": "0, ±√27",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "extremos",
+     "resultado": "máx (−3, 54), mín (3, −54)",
+     "texto": "f' = 0 y signo de f''."
+    },
+    {
+     "paso": 4,
+     "operacion": "curvatura",
+     "resultado": "inflexión (0, 0)",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "¿Qué descripción corresponde a la gráfica de f(x) = x³ − 3x?",
+   "respuesta": "Impar; corta al eje X en x = 0 y x = ±√3; crece hasta el máximo (−1, 2), decrece hasta el mínimo (1, −2) y vuelve a crecer; cóncava hacia abajo para x < 0 y hacia arriba para x > 0",
+   "distractores": [
+    {
+     "valor": "Impar; corta al eje X en x = 0 y x = ±√3; crece hasta el máximo (−1, 2), decrece hasta el mínimo (1, −2) y vuelve a crecer; cóncava hacia arriba para x < 0 y hacia abajo para x > 0",
+     "error": "E01"
+    },
+    {
+     "valor": "Par; corta al eje X en x = 0 y x = ±√3; máximo en (−1, 2) y mínimo en (1, −2); inflexión en (0, 0)",
+     "error": null
+    },
+    {
+     "valor": "Impar; asíntota vertical en x = 0; máximo en (−1, 2) y mínimo en (1, −2)",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ANA.APLDER.03"
+   ],
+   "explicacion_nino": "Simetría: f(−x) = −f(x), impar. Cortes: x(x² − 3) = 0. f'(x) = 3x² − 3 = 0 en x = ±1; f'' = 6x: en x = −1 es negativa (máximo) y en x = 1 positiva (mínimo). f'' cambia de signo en 0: inflexión en (0, 0), cóncava hacia abajo a la izquierda y hacia arriba a la derecha.",
+   "explicacion_adulto": "Está aprendiendo a juntar toda la información de una función (dominio, simetría, cortes, asíntotas, crecimiento, extremos, curvatura) para dibujarla o reconocerla. Los errores típicos son dibujar datos incompatibles (un máximo en una zona que ha calculado creciente) y olvidar el dominio (cruzar una asíntota vertical). Pídale que haga una tabla resumen con todos los datos antes de dibujar y compruebe que encajan.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "simetría",
+     "resultado": "impar",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "cortes",
+     "resultado": "0, ±√3",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "extremos",
+     "resultado": "máx (−1, 2), mín (1, −2)",
+     "texto": "f' = 0 y signo de f''."
+    },
+    {
+     "paso": 4,
+     "operacion": "curvatura",
+     "resultado": "inflexión (0, 0)",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "¿Qué descripción corresponde a la gráfica de f(x) = x³ − 12x?",
+   "respuesta": "Impar; corta al eje X en x = 0 y x = ±2√3; crece hasta el máximo (−2, 16), decrece hasta el mínimo (2, −16) y vuelve a crecer; cóncava hacia abajo para x < 0 y hacia arriba para x > 0",
+   "distractores": [
+    {
+     "valor": "Impar; corta al eje X en x = 0 y x = ±2√3; crece hasta el máximo (−2, 16), decrece hasta el mínimo (2, −16) y vuelve a crecer; cóncava hacia arriba para x < 0 y hacia abajo para x > 0",
+     "error": "E01"
+    },
+    {
+     "valor": "Par; corta al eje X en x = 0 y x = ±2√3; máximo en (−2, 16) y mínimo en (2, −16); inflexión en (0, 0)",
+     "error": null
+    },
+    {
+     "valor": "Impar; asíntota vertical en x = 0; máximo en (−2, 16) y mínimo en (2, −16)",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ANA.APLDER.03"
+   ],
+   "explicacion_nino": "Simetría: f(−x) = −f(x), impar. Cortes: x(x² − 12) = 0. f'(x) = 3x² − 12 = 0 en x = ±2; f'' = 6x: en x = −2 es negativa (máximo) y en x = 2 positiva (mínimo). f'' cambia de signo en 0: inflexión en (0, 0), cóncava hacia abajo a la izquierda y hacia arriba a la derecha.",
+   "explicacion_adulto": "Está aprendiendo a juntar toda la información de una función (dominio, simetría, cortes, asíntotas, crecimiento, extremos, curvatura) para dibujarla o reconocerla. Los errores típicos son dibujar datos incompatibles (un máximo en una zona que ha calculado creciente) y olvidar el dominio (cruzar una asíntota vertical). Pídale que haga una tabla resumen con todos los datos antes de dibujar y compruebe que encajan.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "simetría",
+     "resultado": "impar",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "cortes",
+     "resultado": "0, ±√12",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "extremos",
+     "resultado": "máx (−2, 16), mín (2, −16)",
+     "texto": "f' = 0 y signo de f''."
+    },
+    {
+     "paso": 4,
+     "operacion": "curvatura",
+     "resultado": "inflexión (0, 0)",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "¿Qué descripción corresponde a la gráfica de f(x) = x³ − 27x?",
+   "respuesta": "Impar; corta al eje X en x = 0 y x = ±3√3; crece hasta el máximo (−3, 54), decrece hasta el mínimo (3, −54) y vuelve a crecer; cóncava hacia abajo para x < 0 y hacia arriba para x > 0",
+   "distractores": [
+    {
+     "valor": "Impar; corta al eje X en x = 0 y x = ±3√3; crece hasta el máximo (−3, 54), decrece hasta el mínimo (3, −54) y vuelve a crecer; cóncava hacia arriba para x < 0 y hacia abajo para x > 0",
+     "error": "E01"
+    },
+    {
+     "valor": "Par; corta al eje X en x = 0 y x = ±3√3; máximo en (−3, 54) y mínimo en (3, −54); inflexión en (0, 0)",
+     "error": null
+    },
+    {
+     "valor": "Impar; asíntota vertical en x = 0; máximo en (−3, 54) y mínimo en (3, −54)",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ANA.APLDER.03"
+   ],
+   "explicacion_nino": "Simetría: f(−x) = −f(x), impar. Cortes: x(x² − 27) = 0. f'(x) = 3x² − 27 = 0 en x = ±3; f'' = 6x: en x = −3 es negativa (máximo) y en x = 3 positiva (mínimo). f'' cambia de signo en 0: inflexión en (0, 0), cóncava hacia abajo a la izquierda y hacia arriba a la derecha.",
+   "explicacion_adulto": "Está aprendiendo a juntar toda la información de una función (dominio, simetría, cortes, asíntotas, crecimiento, extremos, curvatura) para dibujarla o reconocerla. Los errores típicos son dibujar datos incompatibles (un máximo en una zona que ha calculado creciente) y olvidar el dominio (cruzar una asíntota vertical). Pídale que haga una tabla resumen con todos los datos antes de dibujar y compruebe que encajan.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "simetría",
+     "resultado": "impar",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "cortes",
+     "resultado": "0, ±√27",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "extremos",
+     "resultado": "máx (−3, 54), mín (3, −54)",
+     "texto": "f' = 0 y signo de f''."
+    },
+    {
+     "paso": 4,
+     "operacion": "curvatura",
+     "resultado": "inflexión (0, 0)",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Describe la gráfica de f(x) = (−x − 1)/(x + 2).",
+   "respuesta": "Dos ramas separadas por la asíntota x = −2, que se acercan a y = −1; decreciente en cada rama",
+   "distractores": [
+    {
+     "valor": "Una curva continua que cruza la recta x = −2 y se acerca a y = −1; decreciente",
+     "error": "E02"
+    },
+    {
+     "valor": "Dos ramas separadas por la asíntota x = −2, que se acercan a y = −1; creciente en cada rama",
+     "error": "E01"
+    },
+    {
+     "valor": "Dos ramas separadas por la asíntota x = −2, que se acercan a y = 0; decreciente en cada rama",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ANA.LIM.05"
+   ],
+   "explicacion_nino": "Dominio: todo salvo x = −2 (asíntota vertical). Asíntota horizontal: cociente de coeficientes principales, y = −1. f'(x) = −1/(x + 2)², siempre negativa: la función es decreciente en cada rama (sin extremos).",
+   "explicacion_adulto": "Está aprendiendo a juntar toda la información de una función (dominio, simetría, cortes, asíntotas, crecimiento, extremos, curvatura) para dibujarla o reconocerla. Los errores típicos son dibujar datos incompatibles (un máximo en una zona que ha calculado creciente) y olvidar el dominio (cruzar una asíntota vertical). Pídale que haga una tabla resumen con todos los datos antes de dibujar y compruebe que encajan.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "dominio",
+     "resultado": "x ≠ −2",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "asíntotas",
+     "resultado": "x = −2, y = −1",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "monotonía",
+     "resultado": "decreciente",
+     "texto": "Signo de f'."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Describe la gráfica de f(x) = (3x − 1)/(x − 1).",
+   "respuesta": "Dos ramas separadas por la asíntota x = 1, que se acercan a y = 3; decreciente en cada rama",
+   "distractores": [
+    {
+     "valor": "Una curva continua que cruza la recta x = 1 y se acerca a y = 3; decreciente",
+     "error": "E02"
+    },
+    {
+     "valor": "Dos ramas separadas por la asíntota x = 1, que se acercan a y = 3; creciente en cada rama",
+     "error": "E01"
+    },
+    {
+     "valor": "Dos ramas separadas por la asíntota x = 1, que se acercan a y = 0; decreciente en cada rama",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ANA.LIM.05"
+   ],
+   "explicacion_nino": "Dominio: todo salvo x = 1 (asíntota vertical). Asíntota horizontal: cociente de coeficientes principales, y = 3. f'(x) = −2/(x − 1)², siempre negativa: la función es decreciente en cada rama (sin extremos).",
+   "explicacion_adulto": "Está aprendiendo a juntar toda la información de una función (dominio, simetría, cortes, asíntotas, crecimiento, extremos, curvatura) para dibujarla o reconocerla. Los errores típicos son dibujar datos incompatibles (un máximo en una zona que ha calculado creciente) y olvidar el dominio (cruzar una asíntota vertical). Pídale que haga una tabla resumen con todos los datos antes de dibujar y compruebe que encajan.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "dominio",
+     "resultado": "x ≠ 1",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "asíntotas",
+     "resultado": "x = 1, y = 3",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "monotonía",
+     "resultado": "decreciente",
+     "texto": "Signo de f'."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Describe la gráfica de f(x) = (3x + 5)/(x + 2).",
+   "respuesta": "Dos ramas separadas por la asíntota x = −2, que se acercan a y = 3; creciente en cada rama",
+   "distractores": [
+    {
+     "valor": "Una curva continua que cruza la recta x = −2 y se acerca a y = 3; creciente",
+     "error": "E02"
+    },
+    {
+     "valor": "Dos ramas separadas por la asíntota x = −2, que se acercan a y = 3; decreciente en cada rama",
+     "error": "E01"
+    },
+    {
+     "valor": "Dos ramas separadas por la asíntota x = −2, que se acercan a y = 0; creciente en cada rama",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ANA.LIM.05"
+   ],
+   "explicacion_nino": "Dominio: todo salvo x = −2 (asíntota vertical). Asíntota horizontal: cociente de coeficientes principales, y = 3. f'(x) = 1/(x + 2)², siempre positiva: la función es creciente en cada rama (sin extremos).",
+   "explicacion_adulto": "Está aprendiendo a juntar toda la información de una función (dominio, simetría, cortes, asíntotas, crecimiento, extremos, curvatura) para dibujarla o reconocerla. Los errores típicos son dibujar datos incompatibles (un máximo en una zona que ha calculado creciente) y olvidar el dominio (cruzar una asíntota vertical). Pídale que haga una tabla resumen con todos los datos antes de dibujar y compruebe que encajan.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "dominio",
+     "resultado": "x ≠ −2",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "asíntotas",
+     "resultado": "x = −2, y = 3",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "monotonía",
+     "resultado": "creciente",
+     "texto": "Signo de f'."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Describe la gráfica de f(x) = (2x + 4)/(x − 1).",
+   "respuesta": "Dos ramas separadas por la asíntota x = 1, que se acercan a y = 2; decreciente en cada rama",
+   "distractores": [
+    {
+     "valor": "Una curva continua que cruza la recta x = 1 y se acerca a y = 2; decreciente",
+     "error": "E02"
+    },
+    {
+     "valor": "Dos ramas separadas por la asíntota x = 1, que se acercan a y = 2; creciente en cada rama",
+     "error": "E01"
+    },
+    {
+     "valor": "Dos ramas separadas por la asíntota x = 1, que se acercan a y = 0; decreciente en cada rama",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ANA.LIM.05"
+   ],
+   "explicacion_nino": "Dominio: todo salvo x = 1 (asíntota vertical). Asíntota horizontal: cociente de coeficientes principales, y = 2. f'(x) = −6/(x − 1)², siempre negativa: la función es decreciente en cada rama (sin extremos).",
+   "explicacion_adulto": "Está aprendiendo a juntar toda la información de una función (dominio, simetría, cortes, asíntotas, crecimiento, extremos, curvatura) para dibujarla o reconocerla. Los errores típicos son dibujar datos incompatibles (un máximo en una zona que ha calculado creciente) y olvidar el dominio (cruzar una asíntota vertical). Pídale que haga una tabla resumen con todos los datos antes de dibujar y compruebe que encajan.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "dominio",
+     "resultado": "x ≠ 1",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "asíntotas",
+     "resultado": "x = 1, y = 2",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "monotonía",
+     "resultado": "decreciente",
+     "texto": "Signo de f'."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Describe la gráfica de f(x) = (2x + 3)/(x + 2).",
+   "respuesta": "Dos ramas separadas por la asíntota x = −2, que se acercan a y = 2; creciente en cada rama",
+   "distractores": [
+    {
+     "valor": "Una curva continua que cruza la recta x = −2 y se acerca a y = 2; creciente",
+     "error": "E02"
+    },
+    {
+     "valor": "Dos ramas separadas por la asíntota x = −2, que se acercan a y = 2; decreciente en cada rama",
+     "error": "E01"
+    },
+    {
+     "valor": "Dos ramas separadas por la asíntota x = −2, que se acercan a y = 0; creciente en cada rama",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ANA.LIM.05"
+   ],
+   "explicacion_nino": "Dominio: todo salvo x = −2 (asíntota vertical). Asíntota horizontal: cociente de coeficientes principales, y = 2. f'(x) = 1/(x + 2)², siempre positiva: la función es creciente en cada rama (sin extremos).",
+   "explicacion_adulto": "Está aprendiendo a juntar toda la información de una función (dominio, simetría, cortes, asíntotas, crecimiento, extremos, curvatura) para dibujarla o reconocerla. Los errores típicos son dibujar datos incompatibles (un máximo en una zona que ha calculado creciente) y olvidar el dominio (cruzar una asíntota vertical). Pídale que haga una tabla resumen con todos los datos antes de dibujar y compruebe que encajan.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "dominio",
+     "resultado": "x ≠ −2",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "asíntotas",
+     "resultado": "x = −2, y = 2",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "monotonía",
+     "resultado": "creciente",
+     "texto": "Signo de f'."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Describe la gráfica de f(x) = (−x)/(x − 1).",
+   "respuesta": "Dos ramas separadas por la asíntota x = 1, que se acercan a y = −1; creciente en cada rama",
+   "distractores": [
+    {
+     "valor": "Una curva continua que cruza la recta x = 1 y se acerca a y = −1; creciente",
+     "error": "E02"
+    },
+    {
+     "valor": "Dos ramas separadas por la asíntota x = 1, que se acercan a y = −1; decreciente en cada rama",
+     "error": "E01"
+    },
+    {
+     "valor": "Dos ramas separadas por la asíntota x = 1, que se acercan a y = 0; creciente en cada rama",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ANA.LIM.05"
+   ],
+   "explicacion_nino": "Dominio: todo salvo x = 1 (asíntota vertical). Asíntota horizontal: cociente de coeficientes principales, y = −1. f'(x) = 1/(x − 1)², siempre positiva: la función es creciente en cada rama (sin extremos).",
+   "explicacion_adulto": "Está aprendiendo a juntar toda la información de una función (dominio, simetría, cortes, asíntotas, crecimiento, extremos, curvatura) para dibujarla o reconocerla. Los errores típicos son dibujar datos incompatibles (un máximo en una zona que ha calculado creciente) y olvidar el dominio (cruzar una asíntota vertical). Pídale que haga una tabla resumen con todos los datos antes de dibujar y compruebe que encajan.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "dominio",
+     "resultado": "x ≠ 1",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "asíntotas",
+     "resultado": "x = 1, y = −1",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "monotonía",
+     "resultado": "creciente",
+     "texto": "Signo de f'."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Describe la gráfica de f(x) = (−2x)/(x − 2).",
+   "respuesta": "Dos ramas separadas por la asíntota x = 2, que se acercan a y = −2; creciente en cada rama",
+   "distractores": [
+    {
+     "valor": "Una curva continua que cruza la recta x = 2 y se acerca a y = −2; creciente",
+     "error": "E02"
+    },
+    {
+     "valor": "Dos ramas separadas por la asíntota x = 2, que se acercan a y = −2; decreciente en cada rama",
+     "error": "E01"
+    },
+    {
+     "valor": "Dos ramas separadas por la asíntota x = 2, que se acercan a y = 0; creciente en cada rama",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ANA.LIM.05"
+   ],
+   "explicacion_nino": "Dominio: todo salvo x = 2 (asíntota vertical). Asíntota horizontal: cociente de coeficientes principales, y = −2. f'(x) = 4/(x − 2)², siempre positiva: la función es creciente en cada rama (sin extremos).",
+   "explicacion_adulto": "Está aprendiendo a juntar toda la información de una función (dominio, simetría, cortes, asíntotas, crecimiento, extremos, curvatura) para dibujarla o reconocerla. Los errores típicos son dibujar datos incompatibles (un máximo en una zona que ha calculado creciente) y olvidar el dominio (cruzar una asíntota vertical). Pídale que haga una tabla resumen con todos los datos antes de dibujar y compruebe que encajan.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "dominio",
+     "resultado": "x ≠ 2",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "asíntotas",
+     "resultado": "x = 2, y = −2",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "monotonía",
+     "resultado": "creciente",
+     "texto": "Signo de f'."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Describe la gráfica de f(x) = (2x + 1)/(x − 3).",
+   "respuesta": "Dos ramas separadas por la asíntota x = 3, que se acercan a y = 2; decreciente en cada rama",
+   "distractores": [
+    {
+     "valor": "Una curva continua que cruza la recta x = 3 y se acerca a y = 2; decreciente",
+     "error": "E02"
+    },
+    {
+     "valor": "Dos ramas separadas por la asíntota x = 3, que se acercan a y = 2; creciente en cada rama",
+     "error": "E01"
+    },
+    {
+     "valor": "Dos ramas separadas por la asíntota x = 3, que se acercan a y = 0; decreciente en cada rama",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ANA.LIM.05"
+   ],
+   "explicacion_nino": "Dominio: todo salvo x = 3 (asíntota vertical). Asíntota horizontal: cociente de coeficientes principales, y = 2. f'(x) = −7/(x − 3)², siempre negativa: la función es decreciente en cada rama (sin extremos).",
+   "explicacion_adulto": "Está aprendiendo a juntar toda la información de una función (dominio, simetría, cortes, asíntotas, crecimiento, extremos, curvatura) para dibujarla o reconocerla. Los errores típicos son dibujar datos incompatibles (un máximo en una zona que ha calculado creciente) y olvidar el dominio (cruzar una asíntota vertical). Pídale que haga una tabla resumen con todos los datos antes de dibujar y compruebe que encajan.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "dominio",
+     "resultado": "x ≠ 3",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "asíntotas",
+     "resultado": "x = 3, y = 2",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "monotonía",
+     "resultado": "decreciente",
+     "texto": "Signo de f'."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "¿Qué resumen describe bien la gráfica de f(x) = 4/(x² + 2)?",
+   "respuesta": "Par, siempre positiva, máximo en (0, 2), asíntota horizontal y = 0 y sin asíntotas verticales",
+   "distractores": [
+    {
+     "valor": "Par, siempre positiva, mínimo en (0, 2), asíntota horizontal y = 0",
+     "error": "E01"
+    },
+    {
+     "valor": "Par, siempre positiva, máximo en (0, 2) y asíntotas verticales en x = ±√2",
+     "error": "E02"
+    },
+    {
+     "valor": "Impar, máximo en (0, 2), asíntota horizontal y = 2",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "El denominador x² + 2 nunca se anula: no hay asíntotas verticales y el dominio es ℝ. f(−x) = f(x): par. Es siempre positiva. f'(x) = −8x/(x² + 2)²: positiva para x < 0 y negativa para x > 0, así que hay un máximo en (0, 2). Cuando x → ±∞, f → 0.",
+   "explicacion_adulto": "Está aprendiendo a juntar toda la información de una función (dominio, simetría, cortes, asíntotas, crecimiento, extremos, curvatura) para dibujarla o reconocerla. Los errores típicos son dibujar datos incompatibles (un máximo en una zona que ha calculado creciente) y olvidar el dominio (cruzar una asíntota vertical). Pídale que haga una tabla resumen con todos los datos antes de dibujar y compruebe que encajan.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "dominio",
+     "resultado": "ℝ",
+     "texto": "x² + m > 0"
+    },
+    {
+     "paso": 2,
+     "operacion": "simetría",
+     "resultado": "par",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "extremos",
+     "resultado": "máx (0, 2)",
+     "texto": "Signo de f'."
+    },
+    {
+     "paso": 4,
+     "operacion": "asíntotas",
+     "resultado": "y = 0",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "¿Qué resumen describe bien la gráfica de f(x) = 8/(x² + 2)?",
+   "respuesta": "Par, siempre positiva, máximo en (0, 4), asíntota horizontal y = 0 y sin asíntotas verticales",
+   "distractores": [
+    {
+     "valor": "Par, siempre positiva, mínimo en (0, 4), asíntota horizontal y = 0",
+     "error": "E01"
+    },
+    {
+     "valor": "Par, siempre positiva, máximo en (0, 4) y asíntotas verticales en x = ±√2",
+     "error": "E02"
+    },
+    {
+     "valor": "Impar, máximo en (0, 4), asíntota horizontal y = 4",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "El denominador x² + 2 nunca se anula: no hay asíntotas verticales y el dominio es ℝ. f(−x) = f(x): par. Es siempre positiva. f'(x) = −16x/(x² + 2)²: positiva para x < 0 y negativa para x > 0, así que hay un máximo en (0, 4). Cuando x → ±∞, f → 0.",
+   "explicacion_adulto": "Está aprendiendo a juntar toda la información de una función (dominio, simetría, cortes, asíntotas, crecimiento, extremos, curvatura) para dibujarla o reconocerla. Los errores típicos son dibujar datos incompatibles (un máximo en una zona que ha calculado creciente) y olvidar el dominio (cruzar una asíntota vertical). Pídale que haga una tabla resumen con todos los datos antes de dibujar y compruebe que encajan.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "dominio",
+     "resultado": "ℝ",
+     "texto": "x² + m > 0"
+    },
+    {
+     "paso": 2,
+     "operacion": "simetría",
+     "resultado": "par",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "extremos",
+     "resultado": "máx (0, 4)",
+     "texto": "Signo de f'."
+    },
+    {
+     "paso": 4,
+     "operacion": "asíntotas",
+     "resultado": "y = 0",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "¿Qué resumen describe bien la gráfica de f(x) = 6/(x² + 1)?",
+   "respuesta": "Par, siempre positiva, máximo en (0, 6), asíntota horizontal y = 0 y sin asíntotas verticales",
+   "distractores": [
+    {
+     "valor": "Par, siempre positiva, mínimo en (0, 6), asíntota horizontal y = 0",
+     "error": "E01"
+    },
+    {
+     "valor": "Par, siempre positiva, máximo en (0, 6) y asíntotas verticales en x = ±1",
+     "error": "E02"
+    },
+    {
+     "valor": "Impar, máximo en (0, 6), asíntota horizontal y = 6",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "El denominador x² + 1 nunca se anula: no hay asíntotas verticales y el dominio es ℝ. f(−x) = f(x): par. Es siempre positiva. f'(x) = −12x/(x² + 1)²: positiva para x < 0 y negativa para x > 0, así que hay un máximo en (0, 6). Cuando x → ±∞, f → 0.",
+   "explicacion_adulto": "Está aprendiendo a juntar toda la información de una función (dominio, simetría, cortes, asíntotas, crecimiento, extremos, curvatura) para dibujarla o reconocerla. Los errores típicos son dibujar datos incompatibles (un máximo en una zona que ha calculado creciente) y olvidar el dominio (cruzar una asíntota vertical). Pídale que haga una tabla resumen con todos los datos antes de dibujar y compruebe que encajan.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "dominio",
+     "resultado": "ℝ",
+     "texto": "x² + m > 0"
+    },
+    {
+     "paso": 2,
+     "operacion": "simetría",
+     "resultado": "par",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "extremos",
+     "resultado": "máx (0, 6)",
+     "texto": "Signo de f'."
+    },
+    {
+     "paso": 4,
+     "operacion": "asíntotas",
+     "resultado": "y = 0",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "¿Qué resumen describe bien la gráfica de f(x) = 12/(x² + 2)?",
+   "respuesta": "Par, siempre positiva, máximo en (0, 6), asíntota horizontal y = 0 y sin asíntotas verticales",
+   "distractores": [
+    {
+     "valor": "Par, siempre positiva, mínimo en (0, 6), asíntota horizontal y = 0",
+     "error": "E01"
+    },
+    {
+     "valor": "Par, siempre positiva, máximo en (0, 6) y asíntotas verticales en x = ±√2",
+     "error": "E02"
+    },
+    {
+     "valor": "Impar, máximo en (0, 6), asíntota horizontal y = 6",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "El denominador x² + 2 nunca se anula: no hay asíntotas verticales y el dominio es ℝ. f(−x) = f(x): par. Es siempre positiva. f'(x) = −24x/(x² + 2)²: positiva para x < 0 y negativa para x > 0, así que hay un máximo en (0, 6). Cuando x → ±∞, f → 0.",
+   "explicacion_adulto": "Está aprendiendo a juntar toda la información de una función (dominio, simetría, cortes, asíntotas, crecimiento, extremos, curvatura) para dibujarla o reconocerla. Los errores típicos son dibujar datos incompatibles (un máximo en una zona que ha calculado creciente) y olvidar el dominio (cruzar una asíntota vertical). Pídale que haga una tabla resumen con todos los datos antes de dibujar y compruebe que encajan.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "dominio",
+     "resultado": "ℝ",
+     "texto": "x² + m > 0"
+    },
+    {
+     "paso": 2,
+     "operacion": "simetría",
+     "resultado": "par",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "extremos",
+     "resultado": "máx (0, 6)",
+     "texto": "Signo de f'."
+    },
+    {
+     "paso": 4,
+     "operacion": "asíntotas",
+     "resultado": "y = 0",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "¿Qué resumen describe bien la gráfica de f(x) = 2/(x² + 4)?",
+   "respuesta": "Par, siempre positiva, máximo en (0, 1/2), asíntota horizontal y = 0 y sin asíntotas verticales",
+   "distractores": [
+    {
+     "valor": "Par, siempre positiva, mínimo en (0, 1/2), asíntota horizontal y = 0",
+     "error": "E01"
+    },
+    {
+     "valor": "Par, siempre positiva, máximo en (0, 1/2) y asíntotas verticales en x = ±2",
+     "error": "E02"
+    },
+    {
+     "valor": "Impar, máximo en (0, 1/2), asíntota horizontal y = 1/2",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "El denominador x² + 4 nunca se anula: no hay asíntotas verticales y el dominio es ℝ. f(−x) = f(x): par. Es siempre positiva. f'(x) = −4x/(x² + 4)²: positiva para x < 0 y negativa para x > 0, así que hay un máximo en (0, 1/2). Cuando x → ±∞, f → 0.",
+   "explicacion_adulto": "Está aprendiendo a juntar toda la información de una función (dominio, simetría, cortes, asíntotas, crecimiento, extremos, curvatura) para dibujarla o reconocerla. Los errores típicos son dibujar datos incompatibles (un máximo en una zona que ha calculado creciente) y olvidar el dominio (cruzar una asíntota vertical). Pídale que haga una tabla resumen con todos los datos antes de dibujar y compruebe que encajan.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "dominio",
+     "resultado": "ℝ",
+     "texto": "x² + m > 0"
+    },
+    {
+     "paso": 2,
+     "operacion": "simetría",
+     "resultado": "par",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "extremos",
+     "resultado": "máx (0, 1/2)",
+     "texto": "Signo de f'."
+    },
+    {
+     "paso": 4,
+     "operacion": "asíntotas",
+     "resultado": "y = 0",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "¿Qué resumen describe bien la gráfica de f(x) = 12/(x² + 1)?",
+   "respuesta": "Par, siempre positiva, máximo en (0, 12), asíntota horizontal y = 0 y sin asíntotas verticales",
+   "distractores": [
+    {
+     "valor": "Par, siempre positiva, mínimo en (0, 12), asíntota horizontal y = 0",
+     "error": "E01"
+    },
+    {
+     "valor": "Par, siempre positiva, máximo en (0, 12) y asíntotas verticales en x = ±1",
+     "error": "E02"
+    },
+    {
+     "valor": "Impar, máximo en (0, 12), asíntota horizontal y = 12",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "El denominador x² + 1 nunca se anula: no hay asíntotas verticales y el dominio es ℝ. f(−x) = f(x): par. Es siempre positiva. f'(x) = −24x/(x² + 1)²: positiva para x < 0 y negativa para x > 0, así que hay un máximo en (0, 12). Cuando x → ±∞, f → 0.",
+   "explicacion_adulto": "Está aprendiendo a juntar toda la información de una función (dominio, simetría, cortes, asíntotas, crecimiento, extremos, curvatura) para dibujarla o reconocerla. Los errores típicos son dibujar datos incompatibles (un máximo en una zona que ha calculado creciente) y olvidar el dominio (cruzar una asíntota vertical). Pídale que haga una tabla resumen con todos los datos antes de dibujar y compruebe que encajan.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "dominio",
+     "resultado": "ℝ",
+     "texto": "x² + m > 0"
+    },
+    {
+     "paso": 2,
+     "operacion": "simetría",
+     "resultado": "par",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "extremos",
+     "resultado": "máx (0, 12)",
+     "texto": "Signo de f'."
+    },
+    {
+     "paso": 4,
+     "operacion": "asíntotas",
+     "resultado": "y = 0",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "¿Qué resumen corresponde a la gráfica de f(x) = (x² + 1)/x?",
+   "respuesta": "Impar; asíntotas x = 0 e y = x; máximo relativo en (−1, −2) y mínimo relativo en (1, 2); no corta a los ejes",
+   "distractores": [
+    {
+     "valor": "Impar; asíntotas x = 0 e y = x; mínimo relativo en (−1, −2) y máximo relativo en (1, 2); no corta a los ejes",
+     "error": "E01"
+    },
+    {
+     "valor": "Impar; asíntota y = x; pasa por (0, 0); máximo en (−1, −2) y mínimo en (1, 2)",
+     "error": "E02"
+    },
+    {
+     "valor": "Par; asíntotas x = 0 e y = x; mínimo relativo en (1, 2)",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Dominio: x ≠ 0 (asíntota vertical x = 0, la gráfica no pasa por el origen). f(x) = x + 1/x: asíntota oblicua y = x. f(−x) = −f(x): impar. f'(x) = 1 − 1/x² = 0 en x = ±1: máximo en (−1, −2) y mínimo en (1, 2) (el máximo queda por debajo del mínimo porque están en ramas distintas).",
+   "explicacion_adulto": "Está aprendiendo a juntar toda la información de una función (dominio, simetría, cortes, asíntotas, crecimiento, extremos, curvatura) para dibujarla o reconocerla. Los errores típicos son dibujar datos incompatibles (un máximo en una zona que ha calculado creciente) y olvidar el dominio (cruzar una asíntota vertical). Pídale que haga una tabla resumen con todos los datos antes de dibujar y compruebe que encajan.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "dominio",
+     "resultado": "x ≠ 0",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "asíntotas",
+     "resultado": "x = 0, y = x",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "extremos",
+     "resultado": "x = ±1",
+     "texto": "f' = 0."
+    },
+    {
+     "paso": 4,
+     "operacion": "simetría",
+     "resultado": "impar",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P06"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "¿Qué resumen corresponde a la gráfica de f(x) = (x² + 4)/x?",
+   "respuesta": "Impar; asíntotas x = 0 e y = x; máximo relativo en (−2, −4) y mínimo relativo en (2, 4); no corta a los ejes",
+   "distractores": [
+    {
+     "valor": "Impar; asíntotas x = 0 e y = x; mínimo relativo en (−2, −4) y máximo relativo en (2, 4); no corta a los ejes",
+     "error": "E01"
+    },
+    {
+     "valor": "Impar; asíntota y = x; pasa por (0, 0); máximo en (−2, −4) y mínimo en (2, 4)",
+     "error": "E02"
+    },
+    {
+     "valor": "Par; asíntotas x = 0 e y = x; mínimo relativo en (2, 4)",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Dominio: x ≠ 0 (asíntota vertical x = 0, la gráfica no pasa por el origen). f(x) = x + 4/x: asíntota oblicua y = x. f(−x) = −f(x): impar. f'(x) = 1 − 4/x² = 0 en x = ±2: máximo en (−2, −4) y mínimo en (2, 4) (el máximo queda por debajo del mínimo porque están en ramas distintas).",
+   "explicacion_adulto": "Está aprendiendo a juntar toda la información de una función (dominio, simetría, cortes, asíntotas, crecimiento, extremos, curvatura) para dibujarla o reconocerla. Los errores típicos son dibujar datos incompatibles (un máximo en una zona que ha calculado creciente) y olvidar el dominio (cruzar una asíntota vertical). Pídale que haga una tabla resumen con todos los datos antes de dibujar y compruebe que encajan.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "dominio",
+     "resultado": "x ≠ 0",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "asíntotas",
+     "resultado": "x = 0, y = x",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "extremos",
+     "resultado": "x = ±2",
+     "texto": "f' = 0."
+    },
+    {
+     "paso": 4,
+     "operacion": "simetría",
+     "resultado": "impar",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P06"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "¿Qué resumen corresponde a la gráfica de f(x) = (x² + 9)/x?",
+   "respuesta": "Impar; asíntotas x = 0 e y = x; máximo relativo en (−3, −6) y mínimo relativo en (3, 6); no corta a los ejes",
+   "distractores": [
+    {
+     "valor": "Impar; asíntotas x = 0 e y = x; mínimo relativo en (−3, −6) y máximo relativo en (3, 6); no corta a los ejes",
+     "error": "E01"
+    },
+    {
+     "valor": "Impar; asíntota y = x; pasa por (0, 0); máximo en (−3, −6) y mínimo en (3, 6)",
+     "error": "E02"
+    },
+    {
+     "valor": "Par; asíntotas x = 0 e y = x; mínimo relativo en (3, 6)",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Dominio: x ≠ 0 (asíntota vertical x = 0, la gráfica no pasa por el origen). f(x) = x + 9/x: asíntota oblicua y = x. f(−x) = −f(x): impar. f'(x) = 1 − 9/x² = 0 en x = ±3: máximo en (−3, −6) y mínimo en (3, 6) (el máximo queda por debajo del mínimo porque están en ramas distintas).",
+   "explicacion_adulto": "Está aprendiendo a juntar toda la información de una función (dominio, simetría, cortes, asíntotas, crecimiento, extremos, curvatura) para dibujarla o reconocerla. Los errores típicos son dibujar datos incompatibles (un máximo en una zona que ha calculado creciente) y olvidar el dominio (cruzar una asíntota vertical). Pídale que haga una tabla resumen con todos los datos antes de dibujar y compruebe que encajan.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "dominio",
+     "resultado": "x ≠ 0",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "asíntotas",
+     "resultado": "x = 0, y = x",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "extremos",
+     "resultado": "x = ±3",
+     "texto": "f' = 0."
+    },
+    {
+     "paso": 4,
+     "operacion": "simetría",
+     "resultado": "impar",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P06"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "¿Qué resumen corresponde a la gráfica de f(x) = (x² + 16)/x?",
+   "respuesta": "Impar; asíntotas x = 0 e y = x; máximo relativo en (−4, −8) y mínimo relativo en (4, 8); no corta a los ejes",
+   "distractores": [
+    {
+     "valor": "Impar; asíntotas x = 0 e y = x; mínimo relativo en (−4, −8) y máximo relativo en (4, 8); no corta a los ejes",
+     "error": "E01"
+    },
+    {
+     "valor": "Impar; asíntota y = x; pasa por (0, 0); máximo en (−4, −8) y mínimo en (4, 8)",
+     "error": "E02"
+    },
+    {
+     "valor": "Par; asíntotas x = 0 e y = x; mínimo relativo en (4, 8)",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Dominio: x ≠ 0 (asíntota vertical x = 0, la gráfica no pasa por el origen). f(x) = x + 16/x: asíntota oblicua y = x. f(−x) = −f(x): impar. f'(x) = 1 − 16/x² = 0 en x = ±4: máximo en (−4, −8) y mínimo en (4, 8) (el máximo queda por debajo del mínimo porque están en ramas distintas).",
+   "explicacion_adulto": "Está aprendiendo a juntar toda la información de una función (dominio, simetría, cortes, asíntotas, crecimiento, extremos, curvatura) para dibujarla o reconocerla. Los errores típicos son dibujar datos incompatibles (un máximo en una zona que ha calculado creciente) y olvidar el dominio (cruzar una asíntota vertical). Pídale que haga una tabla resumen con todos los datos antes de dibujar y compruebe que encajan.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "dominio",
+     "resultado": "x ≠ 0",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "asíntotas",
+     "resultado": "x = 0, y = x",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "extremos",
+     "resultado": "x = ±4",
+     "texto": "f' = 0."
+    },
+    {
+     "paso": 4,
+     "operacion": "simetría",
+     "resultado": "impar",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P06"
+  }
+ ]
+}
