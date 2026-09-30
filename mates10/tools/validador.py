@@ -29,7 +29,10 @@ def normaliza(t):
 
 
 def huella(enunciado, respuesta):
-    return hashlib.sha1((" ".join(normaliza(enunciado)) + "|" + respuesta).encode()).hexdigest()[:20]
+    """Identidad de un ejercicio para detectar duplicados: minúsculas y espacios normalizados, pero conservando
+    signos y símbolos (|−6| ≠ |6|, (−2)⁻² ≠ 2⁻²). La comprobación de copia usa `normaliza`, que sí los quita."""
+    t = re.sub(r"\s+", " ", unicodedata.normalize("NFC", enunciado.lower())).strip()
+    return hashlib.sha1((t + "|" + respuesta).encode()).hexdigest()[:20]
 
 
 def _h(gram):

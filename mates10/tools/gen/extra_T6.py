@@ -329,18 +329,18 @@ def g_frec_acum(rng, d, tipo="como_mucho"):
     arriba = sum(fs[j:])
     base = f"Se ha preguntado a {N} personas.\n{tabla}\n"
     if tipo == "como_mucho":
-        enun = base + f"¿Cuántas personas {ctx[3].format(v=vals[j])}?"
+        enun = f"Calcula cuántas personas {ctx[3].format(v=vals[j])}. " + base
         return hacer(enun, fmt(Fj), "frec_acum", {"vals": vals, "fs": fs, "j": j}, [(arriba, "acumula_al_reves"), (fs[j], None), (Fant, None)],
                      [("F", fmt(Fj), f"Acumulo desde el valor más pequeño: {' + '.join(map(str, fs[:j + 1]))} = {Fj}. Es F({vals[j]}).")],
                      "Frecuencia absoluta acumulada F(x): suma de las f de los valores menores o iguales que x, acumulando de menor a mayor.",
                      gen=cerca(Fj, rng))
     if tipo == "al_menos":
-        enun = base + f"¿Cuántas personas {ctx[4].format(v=vals[j])}?"
+        enun = f"Calcula cuántas personas {ctx[4].format(v=vals[j])}. " + base
         return hacer(enun, fmt(arriba), "frec_acum_sup", {"vals": vals, "fs": fs, "j": j}, [(Fj, "al_menos_como_mucho"), (N - Fj, None), (fs[j], None)],
                      [("N − F", fmt(arriba), f"«Al menos {vals[j]}» es {vals[j]} o más: N − F({vals[j - 1]}) = {N} − {Fant} = {arriba}.")],
                      "«Al menos x» = x o más = N − F(valor anterior). «Como mucho x» = F(x).", gen=cerca(arriba, rng))
     H = F(Fj, N)
-    enun = base + f"¿Cuál es la frecuencia relativa acumulada H del valor {vals[j]}? (en decimal)"
+    enun = f"Calcula la frecuencia relativa acumulada H del valor {vals[j]} (en decimal). " + base
     return hacer(enun, dec(H, 4), "frec_rel_acum", {"vals": vals, "fs": fs, "j": j},
                  [(Fj, "relativa_como_absoluta"), (dec(F(fs[j], N), 4), None), (dec(F(arriba, N), 4), "acumula_al_reves")],
                  [("F", fmt(Fj), f"F({vals[j]}) = {Fj}."), ("F/N", dec(H, 4), f"H = F/N = {Fj}/{N} = {dec(H, 4)}.")],
