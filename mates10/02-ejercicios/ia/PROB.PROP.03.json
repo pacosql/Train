@@ -1,0 +1,1418 @@
+{
+ "habilidad": "PROB.PROP.03",
+ "generado_por": "claude (skill mates10-generar-ejercicios v1)",
+ "ejercicios": [
+  {
+   "dificultad": 1,
+   "enunciado": "Un abrigo cuesta 28 € y tiene un 25 % de descuento. ¿Cuánto pagarás por él?",
+   "respuesta": "21 €",
+   "distractores": [
+    {
+     "valor": "7 €",
+     "error": "E01"
+    },
+    {
+     "valor": "3 €",
+     "error": "E02"
+    },
+    {
+     "valor": "35 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "28 − 28 × 25 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Primero calcula la rebaja: el 25 % de 28 € es 28 × 25 : 100 = 7 €. Luego réstala del precio: 28 − 7 = 21 €. Comprueba: 21 + 7 = 28, y pagas menos que el precio de la etiqueta.",
+   "explicacion_adulto": "Está aprendiendo a aplicar un porcentaje de descuento: primero se calcula cuántos euros se rebajan (el porcentaje del precio) y, si se pide el precio final, se restan. Los fallos típicos son dar el descuento como precio final, restar el porcentaje como si fueran euros o sumar la rebaja. Pídale que estime antes: «¿pagarás más o menos que el precio de la etiqueta?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "28 × 25 : 100",
+     "resultado": "7 €",
+     "texto": "Calculamos cuántos euros se descuentan."
+    },
+    {
+     "paso": 2,
+     "operacion": "28 − 7",
+     "resultado": "21 €",
+     "texto": "Restamos la rebaja al precio."
+    },
+    {
+     "paso": 3,
+     "operacion": "21 + 7",
+     "resultado": "28 €",
+     "texto": "Comprobamos: sumando la rebaja volvemos al precio inicial."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En las rebajas, una tienda descuenta el 25 % en todo. Marco quiere un abrigo que cuesta 52 €. ¿Cuántos euros le descuentan?",
+   "respuesta": "13 €",
+   "distractores": [
+    {
+     "valor": "39 €",
+     "error": "E01"
+    },
+    {
+     "valor": "25 €",
+     "error": "E02"
+    },
+    {
+     "valor": "65 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "52 × 25 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Te piden la rebaja, no el precio final. El 25 % de 52 € es 52 × 25 : 100 = 13 €. Comprueba: 13 € es una parte pequeña del precio, así que tiene sentido.",
+   "explicacion_adulto": "Está aprendiendo a aplicar un porcentaje de descuento: primero se calcula cuántos euros se rebajan (el porcentaje del precio) y, si se pide el precio final, se restan. Los fallos típicos son dar el descuento como precio final, restar el porcentaje como si fueran euros o sumar la rebaja. Pídale que estime antes: «¿pagarás más o menos que el precio de la etiqueta?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "52 × 25",
+     "resultado": "1300",
+     "texto": "Multiplicamos el precio por el porcentaje."
+    },
+    {
+     "paso": 2,
+     "operacion": "1300 : 100",
+     "resultado": "13 €",
+     "texto": "Dividimos entre 100: son los euros que se descuentan."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "El cartel dice: «80 €, ahora un 25 % más barato». Es el precio de una bicicleta. ¿Cuál es el precio rebajado?",
+   "respuesta": "60 €",
+   "distractores": [
+    {
+     "valor": "20 €",
+     "error": "E01"
+    },
+    {
+     "valor": "55 €",
+     "error": "E02"
+    },
+    {
+     "valor": "100 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "80 − 80 × 25 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Primero calcula la rebaja: el 25 % de 80 € es 80 × 25 : 100 = 20 €. Luego réstala del precio: 80 − 20 = 60 €. Comprueba: 60 + 20 = 80, y pagas menos que el precio de la etiqueta.",
+   "explicacion_adulto": "Está aprendiendo a aplicar un porcentaje de descuento: primero se calcula cuántos euros se rebajan (el porcentaje del precio) y, si se pide el precio final, se restan. Los fallos típicos son dar el descuento como precio final, restar el porcentaje como si fueran euros o sumar la rebaja. Pídale que estime antes: «¿pagarás más o menos que el precio de la etiqueta?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "80 × 25 : 100",
+     "resultado": "20 €",
+     "texto": "Calculamos cuántos euros se descuentan."
+    },
+    {
+     "paso": 2,
+     "operacion": "80 − 20",
+     "resultado": "60 €",
+     "texto": "Restamos la rebaja al precio."
+    },
+    {
+     "paso": 3,
+     "operacion": "60 + 20",
+     "resultado": "80 €",
+     "texto": "Comprobamos: sumando la rebaja volvemos al precio inicial."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Lola tiene un cupón del 25 % de descuento para una lámpara de 44 €. ¿Cuánto tendrá que pagar?",
+   "respuesta": "33 €",
+   "distractores": [
+    {
+     "valor": "11 €",
+     "error": "E01"
+    },
+    {
+     "valor": "19 €",
+     "error": "E02"
+    },
+    {
+     "valor": "55 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "44 − 44 × 25 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Primero calcula la rebaja: el 25 % de 44 € es 44 × 25 : 100 = 11 €. Luego réstala del precio: 44 − 11 = 33 €. Comprueba: 33 + 11 = 44, y pagas menos que el precio de la etiqueta.",
+   "explicacion_adulto": "Está aprendiendo a aplicar un porcentaje de descuento: primero se calcula cuántos euros se rebajan (el porcentaje del precio) y, si se pide el precio final, se restan. Los fallos típicos son dar el descuento como precio final, restar el porcentaje como si fueran euros o sumar la rebaja. Pídale que estime antes: «¿pagarás más o menos que el precio de la etiqueta?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "44 × 25 : 100",
+     "resultado": "11 €",
+     "texto": "Calculamos cuántos euros se descuentan."
+    },
+    {
+     "paso": 2,
+     "operacion": "44 − 11",
+     "resultado": "33 €",
+     "texto": "Restamos la rebaja al precio."
+    },
+    {
+     "paso": 3,
+     "operacion": "33 + 11",
+     "resultado": "44 €",
+     "texto": "Comprobamos: sumando la rebaja volvemos al precio inicial."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un balón de baloncesto cuesta 64 € y tiene un 25 % de descuento. ¿Cuántos euros te ahorras?",
+   "respuesta": "16 €",
+   "distractores": [
+    {
+     "valor": "48 €",
+     "error": "E01"
+    },
+    {
+     "valor": "25 €",
+     "error": "E02"
+    },
+    {
+     "valor": "80 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "64 × 25 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Te piden la rebaja, no el precio final. El 25 % de 64 € es 64 × 25 : 100 = 16 €. Comprueba: 16 € es una parte pequeña del precio, así que tiene sentido.",
+   "explicacion_adulto": "Está aprendiendo a aplicar un porcentaje de descuento: primero se calcula cuántos euros se rebajan (el porcentaje del precio) y, si se pide el precio final, se restan. Los fallos típicos son dar el descuento como precio final, restar el porcentaje como si fueran euros o sumar la rebaja. Pídale que estime antes: «¿pagarás más o menos que el precio de la etiqueta?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "64 × 25",
+     "resultado": "1600",
+     "texto": "Multiplicamos el precio por el porcentaje."
+    },
+    {
+     "paso": 2,
+     "operacion": "1600 : 100",
+     "resultado": "16 €",
+     "texto": "Dividimos entre 100: son los euros que se descuentan."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En las rebajas, una tienda descuenta el 50 % en todo. Adam quiere una mochila que cuesta 18 €. ¿Cuánto pagará?",
+   "respuesta": "9 €",
+   "distractores": [
+    {
+     "valor": "27 €",
+     "error": "E03"
+    },
+    {
+     "valor": "18 €",
+     "error": null
+    },
+    {
+     "valor": "10 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "18 − 18 × 50 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Primero calcula la rebaja: el 50 % de 18 € es 18 × 50 : 100 = 9 €. Luego réstala del precio: 18 − 9 = 9 €. Comprueba: 9 + 9 = 18, y pagas menos que el precio de la etiqueta.",
+   "explicacion_adulto": "Está aprendiendo a aplicar un porcentaje de descuento: primero se calcula cuántos euros se rebajan (el porcentaje del precio) y, si se pide el precio final, se restan. Los fallos típicos son dar el descuento como precio final, restar el porcentaje como si fueran euros o sumar la rebaja. Pídale que estime antes: «¿pagarás más o menos que el precio de la etiqueta?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "18 × 50 : 100",
+     "resultado": "9 €",
+     "texto": "Calculamos cuántos euros se descuentan."
+    },
+    {
+     "paso": 2,
+     "operacion": "18 − 9",
+     "resultado": "9 €",
+     "texto": "Restamos la rebaja al precio."
+    },
+    {
+     "paso": 3,
+     "operacion": "9 + 9",
+     "resultado": "18 €",
+     "texto": "Comprobamos: sumando la rebaja volvemos al precio inicial."
+    }
+   ],
+   "plantilla": "P06"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un videojuego cuesta 24 € y tiene un 50 % de descuento. ¿Cuánto pagarás por él?",
+   "respuesta": "12 €",
+   "distractores": [
+    {
+     "valor": "36 €",
+     "error": "E03"
+    },
+    {
+     "valor": "24 €",
+     "error": null
+    },
+    {
+     "valor": "13 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "24 − 24 × 50 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Primero calcula la rebaja: el 50 % de 24 € es 24 × 50 : 100 = 12 €. Luego réstala del precio: 24 − 12 = 12 €. Comprueba: 12 + 12 = 24, y pagas menos que el precio de la etiqueta.",
+   "explicacion_adulto": "Está aprendiendo a aplicar un porcentaje de descuento: primero se calcula cuántos euros se rebajan (el porcentaje del precio) y, si se pide el precio final, se restan. Los fallos típicos son dar el descuento como precio final, restar el porcentaje como si fueran euros o sumar la rebaja. Pídale que estime antes: «¿pagarás más o menos que el precio de la etiqueta?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "24 × 50 : 100",
+     "resultado": "12 €",
+     "texto": "Calculamos cuántos euros se descuentan."
+    },
+    {
+     "paso": 2,
+     "operacion": "24 − 12",
+     "resultado": "12 €",
+     "texto": "Restamos la rebaja al precio."
+    },
+    {
+     "paso": 3,
+     "operacion": "12 + 12",
+     "resultado": "24 €",
+     "texto": "Comprobamos: sumando la rebaja volvemos al precio inicial."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En las rebajas, una tienda descuenta el 50 % en todo. Gael quiere un patinete que cuesta 18 €. ¿Cuántos euros le descuentan?",
+   "respuesta": "9 €",
+   "distractores": [
+    {
+     "valor": "50 €",
+     "error": "E02"
+    },
+    {
+     "valor": "27 €",
+     "error": null
+    },
+    {
+     "valor": "18 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "18 × 50 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Te piden la rebaja, no el precio final. El 50 % de 18 € es 18 × 50 : 100 = 9 €. Comprueba: 9 € es una parte pequeña del precio, así que tiene sentido.",
+   "explicacion_adulto": "Está aprendiendo a aplicar un porcentaje de descuento: primero se calcula cuántos euros se rebajan (el porcentaje del precio) y, si se pide el precio final, se restan. Los fallos típicos son dar el descuento como precio final, restar el porcentaje como si fueran euros o sumar la rebaja. Pídale que estime antes: «¿pagarás más o menos que el precio de la etiqueta?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "18 × 50",
+     "resultado": "900",
+     "texto": "Multiplicamos el precio por el porcentaje."
+    },
+    {
+     "paso": 2,
+     "operacion": "900 : 100",
+     "resultado": "9 €",
+     "texto": "Dividimos entre 100: son los euros que se descuentan."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "El cartel dice: «25 €, ahora un 20 % más barato». Es el precio de una bicicleta. ¿Cuál es el precio rebajado?",
+   "respuesta": "20 €",
+   "distractores": [
+    {
+     "valor": "5 €",
+     "error": "E01"
+    },
+    {
+     "valor": "30 €",
+     "error": "E03"
+    },
+    {
+     "valor": "25 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "25 − 25 × 20 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Primero calcula la rebaja: el 20 % de 25 € es 25 × 20 : 100 = 5 €. Luego réstala del precio: 25 − 5 = 20 €. Comprueba: 20 + 5 = 25, y pagas menos que el precio de la etiqueta.",
+   "explicacion_adulto": "Está aprendiendo a aplicar un porcentaje de descuento: primero se calcula cuántos euros se rebajan (el porcentaje del precio) y, si se pide el precio final, se restan. Los fallos típicos son dar el descuento como precio final, restar el porcentaje como si fueran euros o sumar la rebaja. Pídale que estime antes: «¿pagarás más o menos que el precio de la etiqueta?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "25 × 20 : 100",
+     "resultado": "5 €",
+     "texto": "Calculamos cuántos euros se descuentan."
+    },
+    {
+     "paso": 2,
+     "operacion": "25 − 5",
+     "resultado": "20 €",
+     "texto": "Restamos la rebaja al precio."
+    },
+    {
+     "paso": 3,
+     "operacion": "20 + 5",
+     "resultado": "25 €",
+     "texto": "Comprobamos: sumando la rebaja volvemos al precio inicial."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Daniel tiene un cupón del 50 % de descuento para un videojuego de 14 €. ¿Cuánto tendrá que pagar?",
+   "respuesta": "7 €",
+   "distractores": [
+    {
+     "valor": "21 €",
+     "error": "E03"
+    },
+    {
+     "valor": "14 €",
+     "error": null
+    },
+    {
+     "valor": "8 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "14 − 14 × 50 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Primero calcula la rebaja: el 50 % de 14 € es 14 × 50 : 100 = 7 €. Luego réstala del precio: 14 − 7 = 7 €. Comprueba: 7 + 7 = 14, y pagas menos que el precio de la etiqueta.",
+   "explicacion_adulto": "Está aprendiendo a aplicar un porcentaje de descuento: primero se calcula cuántos euros se rebajan (el porcentaje del precio) y, si se pide el precio final, se restan. Los fallos típicos son dar el descuento como precio final, restar el porcentaje como si fueran euros o sumar la rebaja. Pídale que estime antes: «¿pagarás más o menos que el precio de la etiqueta?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "14 × 50 : 100",
+     "resultado": "7 €",
+     "texto": "Calculamos cuántos euros se descuentan."
+    },
+    {
+     "paso": 2,
+     "operacion": "14 − 7",
+     "resultado": "7 €",
+     "texto": "Restamos la rebaja al precio."
+    },
+    {
+     "paso": 3,
+     "operacion": "7 + 7",
+     "resultado": "14 €",
+     "texto": "Comprobamos: sumando la rebaja volvemos al precio inicial."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Una mochila cuesta 60 € y tiene un 20 % de descuento. ¿Cuántos euros te ahorras?",
+   "respuesta": "12 €",
+   "distractores": [
+    {
+     "valor": "48 €",
+     "error": "E01"
+    },
+    {
+     "valor": "20 €",
+     "error": "E02"
+    },
+    {
+     "valor": "72 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "60 × 20 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Te piden la rebaja, no el precio final. El 20 % de 60 € es 60 × 20 : 100 = 12 €. Comprueba: 12 € es una parte pequeña del precio, así que tiene sentido.",
+   "explicacion_adulto": "Está aprendiendo a aplicar un porcentaje de descuento: primero se calcula cuántos euros se rebajan (el porcentaje del precio) y, si se pide el precio final, se restan. Los fallos típicos son dar el descuento como precio final, restar el porcentaje como si fueran euros o sumar la rebaja. Pídale que estime antes: «¿pagarás más o menos que el precio de la etiqueta?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "60 × 20",
+     "resultado": "1200",
+     "texto": "Multiplicamos el precio por el porcentaje."
+    },
+    {
+     "paso": 2,
+     "operacion": "1200 : 100",
+     "resultado": "12 €",
+     "texto": "Dividimos entre 100: son los euros que se descuentan."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En las rebajas, una tienda descuenta el 25 % en todo. Fátima quiere un videojuego que cuesta 36 €. ¿Cuánto pagará?",
+   "respuesta": "27 €",
+   "distractores": [
+    {
+     "valor": "9 €",
+     "error": "E01"
+    },
+    {
+     "valor": "11 €",
+     "error": "E02"
+    },
+    {
+     "valor": "45 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "36 − 36 × 25 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Primero calcula la rebaja: el 25 % de 36 € es 36 × 25 : 100 = 9 €. Luego réstala del precio: 36 − 9 = 27 €. Comprueba: 27 + 9 = 36, y pagas menos que el precio de la etiqueta.",
+   "explicacion_adulto": "Está aprendiendo a aplicar un porcentaje de descuento: primero se calcula cuántos euros se rebajan (el porcentaje del precio) y, si se pide el precio final, se restan. Los fallos típicos son dar el descuento como precio final, restar el porcentaje como si fueran euros o sumar la rebaja. Pídale que estime antes: «¿pagarás más o menos que el precio de la etiqueta?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "36 × 25 : 100",
+     "resultado": "9 €",
+     "texto": "Calculamos cuántos euros se descuentan."
+    },
+    {
+     "paso": 2,
+     "operacion": "36 − 9",
+     "resultado": "27 €",
+     "texto": "Restamos la rebaja al precio."
+    },
+    {
+     "paso": 3,
+     "operacion": "27 + 9",
+     "resultado": "36 €",
+     "texto": "Comprobamos: sumando la rebaja volvemos al precio inicial."
+    }
+   ],
+   "plantilla": "P06"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un balón de baloncesto cuesta 90 € y tiene un 10 % de descuento. ¿Cuánto pagarás por él?",
+   "respuesta": "81 €",
+   "distractores": [
+    {
+     "valor": "9 €",
+     "error": "E01"
+    },
+    {
+     "valor": "80 €",
+     "error": "E02"
+    },
+    {
+     "valor": "99 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "90 − 90 × 10 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Primero calcula la rebaja: el 10 % de 90 € es 90 × 10 : 100 = 9 €. Luego réstala del precio: 90 − 9 = 81 €. Comprueba: 81 + 9 = 90, y pagas menos que el precio de la etiqueta.",
+   "explicacion_adulto": "Está aprendiendo a aplicar un porcentaje de descuento: primero se calcula cuántos euros se rebajan (el porcentaje del precio) y, si se pide el precio final, se restan. Los fallos típicos son dar el descuento como precio final, restar el porcentaje como si fueran euros o sumar la rebaja. Pídale que estime antes: «¿pagarás más o menos que el precio de la etiqueta?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "90 × 10 : 100",
+     "resultado": "9 €",
+     "texto": "Calculamos cuántos euros se descuentan."
+    },
+    {
+     "paso": 2,
+     "operacion": "90 − 9",
+     "resultado": "81 €",
+     "texto": "Restamos la rebaja al precio."
+    },
+    {
+     "paso": 3,
+     "operacion": "81 + 9",
+     "resultado": "90 €",
+     "texto": "Comprobamos: sumando la rebaja volvemos al precio inicial."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En las rebajas, una tienda descuenta el 30 % en todo. Leo quiere un videojuego que cuesta 140 €. ¿Cuántos euros le descuentan?",
+   "respuesta": "42 €",
+   "distractores": [
+    {
+     "valor": "98 €",
+     "error": "E01"
+    },
+    {
+     "valor": "30 €",
+     "error": "E02"
+    },
+    {
+     "valor": "182 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "140 × 30 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Te piden la rebaja, no el precio final. El 30 % de 140 € es 140 × 30 : 100 = 42 €. Comprueba: 42 € es una parte pequeña del precio, así que tiene sentido.",
+   "explicacion_adulto": "Está aprendiendo a aplicar un porcentaje de descuento: primero se calcula cuántos euros se rebajan (el porcentaje del precio) y, si se pide el precio final, se restan. Los fallos típicos son dar el descuento como precio final, restar el porcentaje como si fueran euros o sumar la rebaja. Pídale que estime antes: «¿pagarás más o menos que el precio de la etiqueta?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "140 × 30",
+     "resultado": "4200",
+     "texto": "Multiplicamos el precio por el porcentaje."
+    },
+    {
+     "paso": 2,
+     "operacion": "4200 : 100",
+     "resultado": "42 €",
+     "texto": "Dividimos entre 100: son los euros que se descuentan."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "El cartel dice: «40 €, ahora un 15 % más barato». Es el precio de unos patines. ¿Cuál es el precio rebajado?",
+   "respuesta": "34 €",
+   "distractores": [
+    {
+     "valor": "6 €",
+     "error": "E01"
+    },
+    {
+     "valor": "25 €",
+     "error": "E02"
+    },
+    {
+     "valor": "46 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "40 − 40 × 15 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Primero calcula la rebaja: el 15 % de 40 € es 40 × 15 : 100 = 6 €. Luego réstala del precio: 40 − 6 = 34 €. Comprueba: 34 + 6 = 40, y pagas menos que el precio de la etiqueta.",
+   "explicacion_adulto": "Está aprendiendo a aplicar un porcentaje de descuento: primero se calcula cuántos euros se rebajan (el porcentaje del precio) y, si se pide el precio final, se restan. Los fallos típicos son dar el descuento como precio final, restar el porcentaje como si fueran euros o sumar la rebaja. Pídale que estime antes: «¿pagarás más o menos que el precio de la etiqueta?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "40 × 15 : 100",
+     "resultado": "6 €",
+     "texto": "Calculamos cuántos euros se descuentan."
+    },
+    {
+     "paso": 2,
+     "operacion": "40 − 6",
+     "resultado": "34 €",
+     "texto": "Restamos la rebaja al precio."
+    },
+    {
+     "paso": 3,
+     "operacion": "34 + 6",
+     "resultado": "40 €",
+     "texto": "Comprobamos: sumando la rebaja volvemos al precio inicial."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Mario tiene un cupón del 50 % de descuento para un balón de baloncesto de 52 €. ¿Cuánto tendrá que pagar?",
+   "respuesta": "26 €",
+   "distractores": [
+    {
+     "valor": "2 €",
+     "error": "E02"
+    },
+    {
+     "valor": "78 €",
+     "error": "E03"
+    },
+    {
+     "valor": "52 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "52 − 52 × 50 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Primero calcula la rebaja: el 50 % de 52 € es 52 × 50 : 100 = 26 €. Luego réstala del precio: 52 − 26 = 26 €. Comprueba: 26 + 26 = 52, y pagas menos que el precio de la etiqueta.",
+   "explicacion_adulto": "Está aprendiendo a aplicar un porcentaje de descuento: primero se calcula cuántos euros se rebajan (el porcentaje del precio) y, si se pide el precio final, se restan. Los fallos típicos son dar el descuento como precio final, restar el porcentaje como si fueran euros o sumar la rebaja. Pídale que estime antes: «¿pagarás más o menos que el precio de la etiqueta?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "52 × 50 : 100",
+     "resultado": "26 €",
+     "texto": "Calculamos cuántos euros se descuentan."
+    },
+    {
+     "paso": 2,
+     "operacion": "52 − 26",
+     "resultado": "26 €",
+     "texto": "Restamos la rebaja al precio."
+    },
+    {
+     "paso": 3,
+     "operacion": "26 + 26",
+     "resultado": "52 €",
+     "texto": "Comprobamos: sumando la rebaja volvemos al precio inicial."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Unos auriculares cuestan 395 € y tienen un 20 % de descuento. ¿Cuántos euros te ahorras?",
+   "respuesta": "79 €",
+   "distractores": [
+    {
+     "valor": "316 €",
+     "error": "E01"
+    },
+    {
+     "valor": "20 €",
+     "error": "E02"
+    },
+    {
+     "valor": "474 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "395 × 20 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Te piden la rebaja, no el precio final. El 20 % de 395 € es 395 × 20 : 100 = 79 €. Comprueba: 79 € es una parte pequeña del precio, así que tiene sentido.",
+   "explicacion_adulto": "Está aprendiendo a aplicar un porcentaje de descuento: primero se calcula cuántos euros se rebajan (el porcentaje del precio) y, si se pide el precio final, se restan. Los fallos típicos son dar el descuento como precio final, restar el porcentaje como si fueran euros o sumar la rebaja. Pídale que estime antes: «¿pagarás más o menos que el precio de la etiqueta?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "395 × 20",
+     "resultado": "7900",
+     "texto": "Multiplicamos el precio por el porcentaje."
+    },
+    {
+     "paso": 2,
+     "operacion": "7900 : 100",
+     "resultado": "79 €",
+     "texto": "Dividimos entre 100: son los euros que se descuentan."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En las rebajas, una tienda descuenta el 20 % en todo. Vega quiere un videojuego que cuesta 140 €. ¿Cuánto pagará?",
+   "respuesta": "112 €",
+   "distractores": [
+    {
+     "valor": "28 €",
+     "error": "E01"
+    },
+    {
+     "valor": "120 €",
+     "error": "E02"
+    },
+    {
+     "valor": "168 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "140 − 140 × 20 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Primero calcula la rebaja: el 20 % de 140 € es 140 × 20 : 100 = 28 €. Luego réstala del precio: 140 − 28 = 112 €. Comprueba: 112 + 28 = 140, y pagas menos que el precio de la etiqueta.",
+   "explicacion_adulto": "Está aprendiendo a aplicar un porcentaje de descuento: primero se calcula cuántos euros se rebajan (el porcentaje del precio) y, si se pide el precio final, se restan. Los fallos típicos son dar el descuento como precio final, restar el porcentaje como si fueran euros o sumar la rebaja. Pídale que estime antes: «¿pagarás más o menos que el precio de la etiqueta?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "140 × 20 : 100",
+     "resultado": "28 €",
+     "texto": "Calculamos cuántos euros se descuentan."
+    },
+    {
+     "paso": 2,
+     "operacion": "140 − 28",
+     "resultado": "112 €",
+     "texto": "Restamos la rebaja al precio."
+    },
+    {
+     "paso": 3,
+     "operacion": "112 + 28",
+     "resultado": "140 €",
+     "texto": "Comprobamos: sumando la rebaja volvemos al precio inicial."
+    }
+   ],
+   "plantilla": "P06"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un abrigo cuesta 140 € y tiene un 20 % de descuento. ¿Cuánto pagarás por él?",
+   "respuesta": "112 €",
+   "distractores": [
+    {
+     "valor": "28 €",
+     "error": "E01"
+    },
+    {
+     "valor": "120 €",
+     "error": "E02"
+    },
+    {
+     "valor": "168 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "140 − 140 × 20 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Primero calcula la rebaja: el 20 % de 140 € es 140 × 20 : 100 = 28 €. Luego réstala del precio: 140 − 28 = 112 €. Comprueba: 112 + 28 = 140, y pagas menos que el precio de la etiqueta.",
+   "explicacion_adulto": "Está aprendiendo a aplicar un porcentaje de descuento: primero se calcula cuántos euros se rebajan (el porcentaje del precio) y, si se pide el precio final, se restan. Los fallos típicos son dar el descuento como precio final, restar el porcentaje como si fueran euros o sumar la rebaja. Pídale que estime antes: «¿pagarás más o menos que el precio de la etiqueta?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "140 × 20 : 100",
+     "resultado": "28 €",
+     "texto": "Calculamos cuántos euros se descuentan."
+    },
+    {
+     "paso": 2,
+     "operacion": "140 − 28",
+     "resultado": "112 €",
+     "texto": "Restamos la rebaja al precio."
+    },
+    {
+     "paso": 3,
+     "operacion": "112 + 28",
+     "resultado": "140 €",
+     "texto": "Comprobamos: sumando la rebaja volvemos al precio inicial."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En las rebajas, una tienda descuenta el 30 % en todo. Elena quiere un juego de mesa que cuesta 160 €. ¿Cuántos euros le descuentan?",
+   "respuesta": "48 €",
+   "distractores": [
+    {
+     "valor": "112 €",
+     "error": "E01"
+    },
+    {
+     "valor": "30 €",
+     "error": "E02"
+    },
+    {
+     "valor": "208 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "160 × 30 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Te piden la rebaja, no el precio final. El 30 % de 160 € es 160 × 30 : 100 = 48 €. Comprueba: 48 € es una parte pequeña del precio, así que tiene sentido.",
+   "explicacion_adulto": "Está aprendiendo a aplicar un porcentaje de descuento: primero se calcula cuántos euros se rebajan (el porcentaje del precio) y, si se pide el precio final, se restan. Los fallos típicos son dar el descuento como precio final, restar el porcentaje como si fueran euros o sumar la rebaja. Pídale que estime antes: «¿pagarás más o menos que el precio de la etiqueta?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "160 × 30",
+     "resultado": "4800",
+     "texto": "Multiplicamos el precio por el porcentaje."
+    },
+    {
+     "paso": 2,
+     "operacion": "4800 : 100",
+     "resultado": "48 €",
+     "texto": "Dividimos entre 100: son los euros que se descuentan."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "El cartel dice: «12 €, ahora un 50 % más barato». Es el precio de unos patines. ¿Cuál es el precio rebajado?",
+   "respuesta": "6 €",
+   "distractores": [
+    {
+     "valor": "18 €",
+     "error": "E03"
+    },
+    {
+     "valor": "12 €",
+     "error": null
+    },
+    {
+     "valor": "7 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "12 − 12 × 50 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Primero calcula la rebaja: el 50 % de 12 € es 12 × 50 : 100 = 6 €. Luego réstala del precio: 12 − 6 = 6 €. Comprueba: 6 + 6 = 12, y pagas menos que el precio de la etiqueta.",
+   "explicacion_adulto": "Está aprendiendo a aplicar un porcentaje de descuento: primero se calcula cuántos euros se rebajan (el porcentaje del precio) y, si se pide el precio final, se restan. Los fallos típicos son dar el descuento como precio final, restar el porcentaje como si fueran euros o sumar la rebaja. Pídale que estime antes: «¿pagarás más o menos que el precio de la etiqueta?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "12 × 50 : 100",
+     "resultado": "6 €",
+     "texto": "Calculamos cuántos euros se descuentan."
+    },
+    {
+     "paso": 2,
+     "operacion": "12 − 6",
+     "resultado": "6 €",
+     "texto": "Restamos la rebaja al precio."
+    },
+    {
+     "paso": 3,
+     "operacion": "6 + 6",
+     "resultado": "12 €",
+     "texto": "Comprobamos: sumando la rebaja volvemos al precio inicial."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Lucía tiene un cupón del 30 % de descuento para una raqueta de pádel de 290 €. ¿Cuánto tendrá que pagar?",
+   "respuesta": "203 €",
+   "distractores": [
+    {
+     "valor": "87 €",
+     "error": "E01"
+    },
+    {
+     "valor": "260 €",
+     "error": "E02"
+    },
+    {
+     "valor": "377 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "290 − 290 × 30 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Primero calcula la rebaja: el 30 % de 290 € es 290 × 30 : 100 = 87 €. Luego réstala del precio: 290 − 87 = 203 €. Comprueba: 203 + 87 = 290, y pagas menos que el precio de la etiqueta.",
+   "explicacion_adulto": "Está aprendiendo a aplicar un porcentaje de descuento: primero se calcula cuántos euros se rebajan (el porcentaje del precio) y, si se pide el precio final, se restan. Los fallos típicos son dar el descuento como precio final, restar el porcentaje como si fueran euros o sumar la rebaja. Pídale que estime antes: «¿pagarás más o menos que el precio de la etiqueta?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "290 × 30 : 100",
+     "resultado": "87 €",
+     "texto": "Calculamos cuántos euros se descuentan."
+    },
+    {
+     "paso": 2,
+     "operacion": "290 − 87",
+     "resultado": "203 €",
+     "texto": "Restamos la rebaja al precio."
+    },
+    {
+     "paso": 3,
+     "operacion": "203 + 87",
+     "resultado": "290 €",
+     "texto": "Comprobamos: sumando la rebaja volvemos al precio inicial."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Una mochila cuesta 172 € y tiene un 25 % de descuento. ¿Cuántos euros te ahorras?",
+   "respuesta": "43 €",
+   "distractores": [
+    {
+     "valor": "129 €",
+     "error": "E01"
+    },
+    {
+     "valor": "25 €",
+     "error": "E02"
+    },
+    {
+     "valor": "215 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "172 × 25 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Te piden la rebaja, no el precio final. El 25 % de 172 € es 172 × 25 : 100 = 43 €. Comprueba: 43 € es una parte pequeña del precio, así que tiene sentido.",
+   "explicacion_adulto": "Está aprendiendo a aplicar un porcentaje de descuento: primero se calcula cuántos euros se rebajan (el porcentaje del precio) y, si se pide el precio final, se restan. Los fallos típicos son dar el descuento como precio final, restar el porcentaje como si fueran euros o sumar la rebaja. Pídale que estime antes: «¿pagarás más o menos que el precio de la etiqueta?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "172 × 25",
+     "resultado": "4300",
+     "texto": "Multiplicamos el precio por el porcentaje."
+    },
+    {
+     "paso": 2,
+     "operacion": "4300 : 100",
+     "resultado": "43 €",
+     "texto": "Dividimos entre 100: son los euros que se descuentan."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En las rebajas, una tienda descuenta el 10 % en todo. Rocío quiere una mochila que cuesta 120 €. ¿Cuánto pagará?",
+   "respuesta": "108 €",
+   "distractores": [
+    {
+     "valor": "12 €",
+     "error": "E01"
+    },
+    {
+     "valor": "110 €",
+     "error": "E02"
+    },
+    {
+     "valor": "132 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "120 − 120 × 10 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Primero calcula la rebaja: el 10 % de 120 € es 120 × 10 : 100 = 12 €. Luego réstala del precio: 120 − 12 = 108 €. Comprueba: 108 + 12 = 120, y pagas menos que el precio de la etiqueta.",
+   "explicacion_adulto": "Está aprendiendo a aplicar un porcentaje de descuento: primero se calcula cuántos euros se rebajan (el porcentaje del precio) y, si se pide el precio final, se restan. Los fallos típicos son dar el descuento como precio final, restar el porcentaje como si fueran euros o sumar la rebaja. Pídale que estime antes: «¿pagarás más o menos que el precio de la etiqueta?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "120 × 10 : 100",
+     "resultado": "12 €",
+     "texto": "Calculamos cuántos euros se descuentan."
+    },
+    {
+     "paso": 2,
+     "operacion": "120 − 12",
+     "resultado": "108 €",
+     "texto": "Restamos la rebaja al precio."
+    },
+    {
+     "paso": 3,
+     "operacion": "108 + 12",
+     "resultado": "120 €",
+     "texto": "Comprobamos: sumando la rebaja volvemos al precio inicial."
+    }
+   ],
+   "plantilla": "P06"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "El cartel dice: «112,20 €, ahora un 30 % más barato». Es el precio de un videojuego. ¿Cuál es el precio rebajado?",
+   "respuesta": "78,54 €",
+   "distractores": [
+    {
+     "valor": "33,66 €",
+     "error": "E01"
+    },
+    {
+     "valor": "82,20 €",
+     "error": "E02"
+    },
+    {
+     "valor": "145,86 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "112,20 − 112,20 × 30 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Primero calcula la rebaja: el 30 % de 112,20 € es 112,20 × 30 : 100 = 33,66 €. Luego réstala del precio: 112,20 − 33,66 = 78,54 €. Comprueba: 78,54 + 33,66 = 112,20, y pagas menos que el precio de la etiqueta.",
+   "explicacion_adulto": "Está aprendiendo a aplicar un porcentaje de descuento: primero se calcula cuántos euros se rebajan (el porcentaje del precio) y, si se pide el precio final, se restan. Los fallos típicos son dar el descuento como precio final, restar el porcentaje como si fueran euros o sumar la rebaja. Pídale que estime antes: «¿pagarás más o menos que el precio de la etiqueta?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "112,20 × 30 : 100",
+     "resultado": "33,66 €",
+     "texto": "Calculamos cuántos euros se descuentan."
+    },
+    {
+     "paso": 2,
+     "operacion": "112,20 − 33,66",
+     "resultado": "78,54 €",
+     "texto": "Restamos la rebaja al precio."
+    },
+    {
+     "paso": 3,
+     "operacion": "78,54 + 33,66",
+     "resultado": "112,20 €",
+     "texto": "Comprobamos: sumando la rebaja volvemos al precio inicial."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Diego tiene un cupón del 30 % de descuento para unas zapatillas de 429 €. ¿Cuánto tendrá que pagar?",
+   "respuesta": "300,30 €",
+   "distractores": [
+    {
+     "valor": "128,70 €",
+     "error": "E01"
+    },
+    {
+     "valor": "399 €",
+     "error": "E02"
+    },
+    {
+     "valor": "557,70 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "429 − 429 × 30 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Primero calcula la rebaja: el 30 % de 429 € es 429 × 30 : 100 = 128,70 €. Luego réstala del precio: 429 − 128,70 = 300,30 €. Comprueba: 300,30 + 128,70 = 429, y pagas menos que el precio de la etiqueta.",
+   "explicacion_adulto": "Está aprendiendo a aplicar un porcentaje de descuento: primero se calcula cuántos euros se rebajan (el porcentaje del precio) y, si se pide el precio final, se restan. Los fallos típicos son dar el descuento como precio final, restar el porcentaje como si fueran euros o sumar la rebaja. Pídale que estime antes: «¿pagarás más o menos que el precio de la etiqueta?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "429 × 30 : 100",
+     "resultado": "128,70 €",
+     "texto": "Calculamos cuántos euros se descuentan."
+    },
+    {
+     "paso": 2,
+     "operacion": "429 − 128,70",
+     "resultado": "300,30 €",
+     "texto": "Restamos la rebaja al precio."
+    },
+    {
+     "paso": 3,
+     "operacion": "300,30 + 128,70",
+     "resultado": "429 €",
+     "texto": "Comprobamos: sumando la rebaja volvemos al precio inicial."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un videojuego cuesta 76,80 € y tiene un 30 % de descuento. ¿Cuántos euros te ahorras?",
+   "respuesta": "23,04 €",
+   "distractores": [
+    {
+     "valor": "53,76 €",
+     "error": "E01"
+    },
+    {
+     "valor": "30 €",
+     "error": "E02"
+    },
+    {
+     "valor": "99,84 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "76,80 × 30 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Te piden la rebaja, no el precio final. El 30 % de 76,80 € es 76,80 × 30 : 100 = 23,04 €. Comprueba: 23,04 € es una parte pequeña del precio, así que tiene sentido.",
+   "explicacion_adulto": "Está aprendiendo a aplicar un porcentaje de descuento: primero se calcula cuántos euros se rebajan (el porcentaje del precio) y, si se pide el precio final, se restan. Los fallos típicos son dar el descuento como precio final, restar el porcentaje como si fueran euros o sumar la rebaja. Pídale que estime antes: «¿pagarás más o menos que el precio de la etiqueta?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "76,80 × 30",
+     "resultado": "2304",
+     "texto": "Multiplicamos el precio por el porcentaje."
+    },
+    {
+     "paso": 2,
+     "operacion": "2304 : 100",
+     "resultado": "23,04 €",
+     "texto": "Dividimos entre 100: son los euros que se descuentan."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "En las rebajas, una tienda descuenta el 25 % en todo. Lucas quiere una mochila que cuesta 107 €. ¿Cuánto pagará?",
+   "respuesta": "80,25 €",
+   "distractores": [
+    {
+     "valor": "26,75 €",
+     "error": "E01"
+    },
+    {
+     "valor": "82 €",
+     "error": "E02"
+    },
+    {
+     "valor": "133,75 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "107 − 107 × 25 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Primero calcula la rebaja: el 25 % de 107 € es 107 × 25 : 100 = 26,75 €. Luego réstala del precio: 107 − 26,75 = 80,25 €. Comprueba: 80,25 + 26,75 = 107, y pagas menos que el precio de la etiqueta.",
+   "explicacion_adulto": "Está aprendiendo a aplicar un porcentaje de descuento: primero se calcula cuántos euros se rebajan (el porcentaje del precio) y, si se pide el precio final, se restan. Los fallos típicos son dar el descuento como precio final, restar el porcentaje como si fueran euros o sumar la rebaja. Pídale que estime antes: «¿pagarás más o menos que el precio de la etiqueta?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "107 × 25 : 100",
+     "resultado": "26,75 €",
+     "texto": "Calculamos cuántos euros se descuentan."
+    },
+    {
+     "paso": 2,
+     "operacion": "107 − 26,75",
+     "resultado": "80,25 €",
+     "texto": "Restamos la rebaja al precio."
+    },
+    {
+     "paso": 3,
+     "operacion": "80,25 + 26,75",
+     "resultado": "107 €",
+     "texto": "Comprobamos: sumando la rebaja volvemos al precio inicial."
+    }
+   ],
+   "plantilla": "P06"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Unos patines cuestan 196 € y tienen un 30 % de descuento. ¿Cuánto pagarás por ellos?",
+   "respuesta": "137,20 €",
+   "distractores": [
+    {
+     "valor": "58,80 €",
+     "error": "E01"
+    },
+    {
+     "valor": "166 €",
+     "error": "E02"
+    },
+    {
+     "valor": "254,80 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "196 − 196 × 30 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Primero calcula la rebaja: el 30 % de 196 € es 196 × 30 : 100 = 58,80 €. Luego réstala del precio: 196 − 58,80 = 137,20 €. Comprueba: 137,20 + 58,80 = 196, y pagas menos que el precio de la etiqueta.",
+   "explicacion_adulto": "Está aprendiendo a aplicar un porcentaje de descuento: primero se calcula cuántos euros se rebajan (el porcentaje del precio) y, si se pide el precio final, se restan. Los fallos típicos son dar el descuento como precio final, restar el porcentaje como si fueran euros o sumar la rebaja. Pídale que estime antes: «¿pagarás más o menos que el precio de la etiqueta?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "196 × 30 : 100",
+     "resultado": "58,80 €",
+     "texto": "Calculamos cuántos euros se descuentan."
+    },
+    {
+     "paso": 2,
+     "operacion": "196 − 58,80",
+     "resultado": "137,20 €",
+     "texto": "Restamos la rebaja al precio."
+    },
+    {
+     "paso": 3,
+     "operacion": "137,20 + 58,80",
+     "resultado": "196 €",
+     "texto": "Comprobamos: sumando la rebaja volvemos al precio inicial."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "En las rebajas, una tienda descuenta el 30 % en todo. Lucas quiere un patinete que cuesta 449 €. ¿Cuántos euros le descuentan?",
+   "respuesta": "134,70 €",
+   "distractores": [
+    {
+     "valor": "314,30 €",
+     "error": "E01"
+    },
+    {
+     "valor": "30 €",
+     "error": "E02"
+    },
+    {
+     "valor": "583,70 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "449 × 30 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Te piden la rebaja, no el precio final. El 30 % de 449 € es 449 × 30 : 100 = 134,70 €. Comprueba: 134,70 € es una parte pequeña del precio, así que tiene sentido.",
+   "explicacion_adulto": "Está aprendiendo a aplicar un porcentaje de descuento: primero se calcula cuántos euros se rebajan (el porcentaje del precio) y, si se pide el precio final, se restan. Los fallos típicos son dar el descuento como precio final, restar el porcentaje como si fueran euros o sumar la rebaja. Pídale que estime antes: «¿pagarás más o menos que el precio de la etiqueta?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "449 × 30",
+     "resultado": "13 470",
+     "texto": "Multiplicamos el precio por el porcentaje."
+    },
+    {
+     "paso": 2,
+     "operacion": "13 470 : 100",
+     "resultado": "134,70 €",
+     "texto": "Dividimos entre 100: son los euros que se descuentan."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "El cartel dice: «105,20 €, ahora un 50 % más barato». Es el precio de un balón de baloncesto. ¿Cuál es el precio rebajado?",
+   "respuesta": "52,60 €",
+   "distractores": [
+    {
+     "valor": "55,20 €",
+     "error": "E02"
+    },
+    {
+     "valor": "157,80 €",
+     "error": "E03"
+    },
+    {
+     "valor": "105,20 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "105,20 − 105,20 × 50 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Primero calcula la rebaja: el 50 % de 105,20 € es 105,20 × 50 : 100 = 52,60 €. Luego réstala del precio: 105,20 − 52,60 = 52,60 €. Comprueba: 52,60 + 52,60 = 105,20, y pagas menos que el precio de la etiqueta.",
+   "explicacion_adulto": "Está aprendiendo a aplicar un porcentaje de descuento: primero se calcula cuántos euros se rebajan (el porcentaje del precio) y, si se pide el precio final, se restan. Los fallos típicos son dar el descuento como precio final, restar el porcentaje como si fueran euros o sumar la rebaja. Pídale que estime antes: «¿pagarás más o menos que el precio de la etiqueta?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "105,20 × 50 : 100",
+     "resultado": "52,60 €",
+     "texto": "Calculamos cuántos euros se descuentan."
+    },
+    {
+     "paso": 2,
+     "operacion": "105,20 − 52,60",
+     "resultado": "52,60 €",
+     "texto": "Restamos la rebaja al precio."
+    },
+    {
+     "paso": 3,
+     "operacion": "52,60 + 52,60",
+     "resultado": "105,20 €",
+     "texto": "Comprobamos: sumando la rebaja volvemos al precio inicial."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Carmen tiene un cupón del 20 % de descuento para unas zapatillas de 38 €. ¿Cuánto tendrá que pagar?",
+   "respuesta": "30,40 €",
+   "distractores": [
+    {
+     "valor": "7,60 €",
+     "error": "E01"
+    },
+    {
+     "valor": "18 €",
+     "error": "E02"
+    },
+    {
+     "valor": "45,60 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "38 − 38 × 20 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Primero calcula la rebaja: el 20 % de 38 € es 38 × 20 : 100 = 7,60 €. Luego réstala del precio: 38 − 7,60 = 30,40 €. Comprueba: 30,40 + 7,60 = 38, y pagas menos que el precio de la etiqueta.",
+   "explicacion_adulto": "Está aprendiendo a aplicar un porcentaje de descuento: primero se calcula cuántos euros se rebajan (el porcentaje del precio) y, si se pide el precio final, se restan. Los fallos típicos son dar el descuento como precio final, restar el porcentaje como si fueran euros o sumar la rebaja. Pídale que estime antes: «¿pagarás más o menos que el precio de la etiqueta?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "38 × 20 : 100",
+     "resultado": "7,60 €",
+     "texto": "Calculamos cuántos euros se descuentan."
+    },
+    {
+     "paso": 2,
+     "operacion": "38 − 7,60",
+     "resultado": "30,40 €",
+     "texto": "Restamos la rebaja al precio."
+    },
+    {
+     "paso": 3,
+     "operacion": "30,40 + 7,60",
+     "resultado": "38 €",
+     "texto": "Comprobamos: sumando la rebaja volvemos al precio inicial."
+    }
+   ],
+   "plantilla": "P04"
+  }
+ ]
+}

@@ -764,3 +764,833 @@ def gen_div_prop(rng, d):
               [(f"{D} × {k} y {dv} × {k}", f"{fmt(D * k)} : {fmt(dv * k)}", f"Dividendo y divisor están multiplicados por {k}: el cociente no cambia ({q})."),
                (f"{r} × {k}", fmt(r * k), f"El resto sí queda multiplicado por {k}: {r} × {k} = {fmt(r * k)}. Compruebo: {fmt(dv * k)} × {q} + {fmt(r * k)} = {fmt(D * k)}.")],
               adulto)
+
+
+# ================================================================ DIVISIBILIDAD
+
+def _no_multiplos(rng, b, lo, hi, n, evitar=()):
+    out = set()
+    for _ in range(500):
+        x = rng.randint(lo, hi)
+        if x % b and x not in evitar:
+            out.add(x)
+        if len(out) >= n:
+            break
+    return sorted(out)
+
+
+@generador("t2_multiplos")
+def gen_multiplos(rng, d):
+    """Múltiplos de un número. Claves: divisor (confunde múltiplo con divisor), mayor (cree múltiplo cualquier número mayor),
+    olvida_propio (se deja el propio número), salta (se salta un múltiplo)."""
+    bmax, nmax = {1: (10, 100), 2: (20, 300), 3: (99, 1000)}[d]
+    b = rng.randint(3, bmax) if d < 3 else rng.randint(11, bmax)
+    tipo = rng.choice(["cual", "lista", "decidir"] if d < 3 else ["cual", "decidir", "decidir"])
+    adulto = ("Múltiplo de 7 = está en la 'tabla del 7' alargada (7 × algo); divisor de 7 = cabe exacto en el 7. Los múltiplos son infinitos "
+              "y empiezan en 0 y en el propio número; ser más grande no basta.")
+    if tipo == "lista":
+        k = rng.choice([4, 5, 6])
+        tope = b * k
+        ok = [b * i for i in range(1, k + 1)]
+        divs = [x for x in divisores(b)]
+        salta = ok[:2] + ok[3:] + [b * (k + 1)]
+        return mk(f"¿Cuáles son los múltiplos de {b} comprendidos entre 1 y {tope}?", lista(ok), "t2_multiplos", {"b": b, "tope": tope, "tipo": tipo},
+                  [(lista(divs), "divisor") if len(divs) > 2 else (lista([b + i for i in range(k)]), None), (lista(ok[1:]), "olvida_propio"),
+                   (lista(salta[:k]), "salta")],
+                  [("tabla", lista(ok), f"Multiplico {b} por 1, 2, 3… sin pasarme de {tope}: " + ", ".join(f"{b} × {i} = {b * i}" for i in range(1, k + 1)) + ".")],
+                  adulto, genericos=[lista([b * i + 1 for i in range(1, k + 1)])])
+    if tipo == "cual":
+        k = rng.randint(2, max(2, nmax // b))
+        r = b * k
+        otros = _no_multiplos(rng, b, max(b + 1, r - 3 * b), min(nmax, r + 3 * b), 4)
+        divs = [x for x in divisores(b) if 1 < x < b]
+        dist = [(fmt(rng.choice(divs)), "divisor")] if divs else []
+        dist += [(fmt(x), "mayor") for x in otros]
+        return mk(f"¿Cuál de estos números es múltiplo de {b}?", fmt(r), "t2_multiplos", {"b": b, "r": r, "tipo": tipo}, dist,
+                  [(f"{fmt(r)} : {b}", str(k), f"{fmt(r)} : {b} = {k} exacta (o {b} × {k} = {fmt(r)}): {fmt(r)} es múltiplo de {b}. En los demás la división no es exacta.")],
+                  adulto, datos={"opciones_fijas": True})
+    k = rng.randint(2, max(2, nmax // b))
+    N = b * k if rng.random() < 0.5 else b * k + rng.randint(1, b - 1)
+    q, r = divmod(N, b)
+    if r == 0:
+        ok = f"Sí, porque {b} × {q} = {fmt(N)}"
+        dist = [(f"No, porque {fmt(N)} : {b} no es exacta", None), (f"Sí, porque {fmt(N)} es mayor que {b}", "mayor"),
+                (f"No, porque {b} no es divisor de {fmt(N)}", None)]
+        texto = f"Divido {fmt(N)} : {b} = {q} exacta: {b} × {q} = {fmt(N)}. Sí es múltiplo."
+    else:
+        ok = f"No, porque {fmt(N)} : {b} = {q} y sobra {r}"
+        dist = [(f"Sí, porque {fmt(N)} es mayor que {b}", "mayor"), (f"Sí, porque {b} × {q} = {fmt(N)}", None),
+                (f"No, porque {fmt(N)} es mayor que {b}", None)]
+        texto = f"Divido {fmt(N)} : {b} = {q} y sobra {r}: no es exacta, así que no es múltiplo."
+    return mk(f"¿Es {fmt(N)} múltiplo de {b}?", ok, "t2_multiplos", {"b": b, "N": N, "tipo": tipo}, dist,
+              [(f"{fmt(N)} : {b}", f"{q} resto {r}", texto)], adulto)
+
+
+@generador("t2_divisor_rel")
+def gen_divisor_rel(rng, d):
+    """Relación divisor / múltiplo / divisible. Claves: invierte (7 es múltiplo de 126), division_con_resto (es divisor si la
+    división 'se puede hacer' aunque sobre)."""
+    tipo = rng.choice({1: ["cual"], 2: ["frases", "cual", "decidir"], 3: ["frases", "decidir"]}[d])
+    adulto = ("'126 es múltiplo de 7', '7 es divisor de 126' y '126 es divisible por 7' dicen lo mismo: 126 : 7 es exacta. El grande es el "
+              "múltiplo; el pequeño, el divisor. Si sobra algo, no hay relación.")
+    if tipo == "frases":
+        a, b = rng.randint(3, 25), rng.randint(3, 12)
+        while a == b:
+            b += 1
+        N = a * b
+        verdad = rng.choice([f"{N} es múltiplo de {b}", f"{a} es divisor de {N}", f"{N} es divisible por {a}", f"{b} es divisor de {N}"])
+        falsas = [f"{b} es múltiplo de {N}", f"{N} es divisor de {a}", f"{a} es divisible por {N}", f"{N} es divisor de {b}"]
+        rng.shuffle(falsas)
+        return mk(f"Sabemos que {a} × {b} = {N}. ¿Qué frase es verdadera?", verdad, "t2_divisor", {"a": a, "b": b, "tipo": tipo},
+                  [(f, "invierte") for f in falsas[:3]],
+                  [("relación", verdad, f"Como {a} × {b} = {N}, la división de {N} entre {a} y entre {b} es exacta: {N} es el múltiplo y {a} y {b} son sus divisores. "
+                                         f"Por eso es verdad que {verdad}.")], adulto)
+    N = rng.randint(12, 100 if d == 1 else 1000)
+    divs = divisores(N)
+    if tipo == "cual":
+        x = rng.choice([v for v in divs if 1 < v < N] or divs)
+        malos = [v for v in range(2, min(N, 30)) if N % v]
+        rng.shuffle(malos)
+        dist = [(fmt(v), "division_con_resto") for v in malos[:4]]
+        return mk(f"¿Cuál de estos números es divisor de {fmt(N)}?", fmt(x), "t2_divisor", {"N": N, "x": x, "tipo": tipo}, dist,
+                  [(f"{fmt(N)} : {x}", fmt(N // x), f"{fmt(N)} : {x} = {fmt(N // x)} exacta, así que {x} es divisor de {fmt(N)}. Con los otros números sobra algo.")],
+                  adulto, datos={"opciones_fijas": True})
+    malos = [v for v in range(3, 13) if N % v]
+    v = rng.choice(malos) if malos and rng.random() < 0.6 else rng.choice([t for t in divs if 1 < t < N] or [1])
+    q, r = divmod(N, v)
+    if r:
+        ok = f"No, porque {fmt(N)} : {v} = {q} y sobran {r}"
+        dist = [(f"Sí, porque {fmt(N)} : {v} = {q} y sobran {r}", "division_con_resto"), (f"Sí, porque {v} es menor que {fmt(N)}", None),
+                (f"No, porque {v} es menor que {fmt(N)}", None)]
+    else:
+        ok = f"Sí, porque {fmt(N)} : {v} = {q} exacta"
+        dist = [(f"No, porque {v} es menor que {fmt(N)}", None), (f"No, porque {fmt(N)} no es múltiplo de {v}", None),
+                (f"Sí, porque {fmt(N)} es divisor de {v}", "invierte")]
+    return mk(f"¿Es {v} divisor de {fmt(N)}?", ok, "t2_divisor", {"N": N, "v": v, "tipo": tipo}, dist,
+              [(f"{fmt(N)} : {v}", f"{q} resto {r}", f"Divido {fmt(N)} : {v} = {q}" + (f" y sobran {r}: no es exacta, no es divisor." if r else " exacta: es divisor."))],
+              adulto)
+
+
+def suma_cifras(n):
+    return sum(int(c) for c in str(n))
+
+
+def _cumple(n, k):
+    return n % k == 0
+
+
+@generador("t2_criterios")
+def gen_criterios(rng, d, grupo="basico"):
+    """Criterios de divisibilidad. basico (2, 3, 5, 10) / avanzado (4, 6, 9, 11, 25).
+    Claves: ultima_cifra_3 (criterio del 3 mirando la última cifra), primera_cifra (mira la primera cifra), cinco_diez (cree que acabar
+    en 5 vale para el 10), suma_mal, ultima_cifra_4, seis_media (solo una condición del 6), nueve_por_tres, once_suma."""
+    if grupo == "basico":
+        k = rng.choice({1: [2, 5, 10], 2: [3, 3, 2, 5, 10], 3: [3, 3, 10]}[d])
+        cifras = {1: 3, 2: 4, 3: rng.choice([5, 6])}[d]
+    else:
+        k = rng.choice({1: [4, 25, 9], 2: [6, 9, 4, 25], 3: [11, 6, 11, 9]}[d])
+        cifras = {1: 4, 2: 5, 3: rng.choice([6, 7])}[d]
+    lo, hi = 10 ** (cifras - 1), 10 ** cifras - 1
+    if grupo == "basico" and d == 3 and rng.random() < 0.5:
+        # completar una cifra para el 3
+        for _ in range(100):
+            base = rng.randint(lo // 10, hi // 10)
+            s = str(base)
+            pos = rng.randint(1, len(s) - 1)
+            plantilla_ = s[:pos] + "_" + s[pos:]
+            oks = [c for c in range(10) if int(s[:pos] + str(c) + s[pos:]) % 3 == 0]
+            if s[0] != "0":
+                break
+        malos = sorted({(c + 1) % 10 for c in oks}) if 0 not in [(c + 1) % 10 for c in oks] else [c for c in range(10) if c not in oks][:3]
+        ult = [c for c in (3, 6, 9)]
+        res = lista([str(c) for c in oks], y=True).replace(" y ", " o ")
+        sc = suma_cifras(int(s))
+        return mk(f"¿Qué cifras pueden ir en {plantilla_} para que el número sea divisible por 3?", res, "t2_criterio", {"k": 3, "plantilla": plantilla_, "tipo": "completar"},
+                  [(lista([str(c) for c in ult], y=True).replace(" y ", " o "), None) if ult != oks else (None, None),
+                   (lista([str((c + 1) % 10) for c in oks], y=True).replace(" y ", " o "), "suma_mal"),
+                   (lista([str((c + 2) % 10) for c in oks], y=True).replace(" y ", " o "), "suma_mal")],
+                  [("suma de cifras", str(sc), f"Sumo las cifras que conozco: {' + '.join(s)} = {sc}."),
+                   ("múltiplo de 3", res, f"Necesito que {sc} + la cifra que falta sea múltiplo de 3: vale {res}.")],
+                  "Por 3: la suma de todas las cifras tiene que ser múltiplo de 3 (no importa en qué cifra acabe el número).",
+                  genericos=["0, 3, 6 o 9", "2, 5 o 8", "1, 4 o 7"])
+    for _ in range(300):
+        r = rng.randint(lo, hi)
+        if _cumple(r, k):
+            break
+    trampas = []
+    for _ in range(3000):
+        x = rng.randint(lo, hi)
+        if _cumple(x, k):
+            continue
+        s = str(x)
+        clave = None
+        if k == 3 and s[-1] in "369":
+            clave = "ultima_cifra_3"
+        elif k == 3 and suma_cifras(x) % 3 in (1, 2) and rng.random() < 0.2:
+            clave = "suma_mal"
+        elif k == 2 and int(s[0]) % 2 == 0:
+            clave = "primera_cifra"
+        elif k == 10 and s[-1] == "5":
+            clave = "cinco_diez"
+        elif k == 5 and s[-1] in "2468" and rng.random() < 0.3:
+            clave = None
+        elif k == 4 and int(s[-1]) % 4 == 0:
+            clave = "ultima_cifra_4"
+        elif k == 6 and (x % 3 == 0 or x % 2 == 0):
+            clave = "seis_media"
+        elif k == 9 and x % 3 == 0:
+            clave = "nueve_por_tres"
+        elif k == 11 and suma_cifras(x) % 11 == 0:
+            clave = "once_suma"
+        elif k == 25 and s[-1] in "05":
+            clave = None
+        else:
+            continue
+        if all(t[0] != fmt(x) for t in trampas):
+            trampas.append((fmt(x), clave))
+        if len(trampas) >= 3 and sum(1 for t in trampas if t[1]) >= 2:
+            break
+    trampas.sort(key=lambda t: t[1] is None)
+    sc = suma_cifras(r)
+    s = str(r)
+    expl = {
+        2: f"Por 2: la última cifra ha de ser par. {fmt(r)} acaba en {s[-1]}, que es par.",
+        5: f"Por 5: ha de acabar en 0 o en 5. {fmt(r)} acaba en {s[-1]}.",
+        10: f"Por 10: ha de acabar en 0. {fmt(r)} acaba en 0.",
+        3: f"Por 3: la suma de las cifras ha de ser múltiplo de 3. {' + '.join(s)} = {sc}, que es múltiplo de 3.",
+        9: f"Por 9: la suma de las cifras ha de ser múltiplo de 9. {' + '.join(s)} = {sc}, que es múltiplo de 9.",
+        4: f"Por 4: las dos últimas cifras han de formar un múltiplo de 4. {s[-2:]} = 4 × {int(s[-2:]) // 4}.",
+        25: f"Por 25: ha de acabar en 00, 25, 50 o 75. {fmt(r)} acaba en {s[-2:]}.",
+        6: f"Por 6: ha de ser divisible por 2 y por 3 a la vez. Acaba en {s[-1]} (par) y sus cifras suman {sc} (múltiplo de 3).",
+        11: (f"Por 11: (suma de cifras de lugar impar) − (suma de las de lugar par) ha de ser 0 o múltiplo de 11. "
+             f"({' + '.join(s[::-1][0::2])}) − ({' + '.join(s[::-1][1::2])}) = {sum(int(c) for c in s[::-1][0::2]) - sum(int(c) for c in s[::-1][1::2])}."),
+    }[k]
+    return mk(f"¿Cuál de estos números es divisible por {k}?", fmt(r), "t2_criterio", {"k": k, "r": r, "tipo": "cual"}, trampas,
+              [(f"criterio del {k}", fmt(r), expl + " Los demás no cumplen el criterio.")],
+              {"basico": "Por 2 y por 5 y por 10 se mira la última cifra; por 3, la suma de TODAS las cifras. Mezclar los criterios es el error más habitual.",
+               "avanzado": "Por 4: las dos últimas cifras; por 25: acaba en 00, 25, 50, 75; por 9: suma de cifras múltiplo de 9 (no basta de 3); por 6: "
+                           "a la vez por 2 y por 3; por 11: diferencia entre cifras de lugar impar y par."}[grupo],
+              datos={"opciones_fijas": True})
+
+
+@generador("t2_divisores")
+def gen_divisores(rng, d):
+    """Todos los divisores de un número < 100. Claves: sin_pareja (se deja la pareja grande), no_divisor (incluye uno que no es),
+    multiplos (mezcla divisores y múltiplos)."""
+    pool = {1: [6, 8, 10, 12, 14, 15, 16, 18, 20, 21, 22, 24, 25, 26, 27, 28], 2: [30, 32, 33, 34, 35, 36, 38, 39, 40, 42, 44, 45, 48, 50, 52, 54, 55, 56],
+            3: [60, 63, 64, 66, 68, 70, 72, 75, 76, 78, 80, 81, 84, 88, 90, 91, 92, 95, 96, 98, 99]}[d]
+    n = rng.choice(pool)
+    ds = divisores(n)
+    parejas = [(x, n // x) for x in ds if x * x <= n]
+    tipo = "lista" if d < 3 or rng.random() < 0.6 else "cuantos"
+    adulto = "Buscar los divisores por parejas (1 × 36, 2 × 18, 3 × 12…) hasta que se repiten evita olvidar alguno. El 1 y el propio número siempre están."
+    pasos = [("parejas", ", ".join(f"{a} × {b}" for a, b in parejas), "Busco parejas de números que multiplicados den " + str(n) + ": "
+              + ", ".join(f"{a} × {b}" for a, b in parejas) + ".")]
+    pequenos = [a for a, _ in parejas]
+    if tipo == "cuantos":
+        pasos.append(("contar", str(len(ds)), f"Los divisores son {lista(ds)}: en total {len(ds)}."))
+        return mk(f"¿Cuántos divisores tiene {n}?", str(len(ds)), "t2_divisores", {"n": n, "tipo": tipo},
+                  [(str(len(pequenos)), "sin_pareja"), (str(len(ds) - 2), None), (str(len(ds) + 1), None)], pasos, adulto,
+                  genericos=[str(len(ds) - 1), str(len(ds) + 2)])
+    no = next((x for x in range(2, n) if n % x and x > ds[1]), n - 1)
+    con_no = sorted(ds + [no])
+    pasos.append(("lista", lista(ds), f"Ordenados: {lista(ds)}."))
+    return mk(f"¿Cuáles son todos los divisores de {n}?", lista(ds), "t2_divisores", {"n": n, "tipo": tipo},
+              [(lista(pequenos), "sin_pareja") if pequenos != ds else (None, None), (lista(con_no), "no_divisor"), (lista(ds + [2 * n, 3 * n]), "multiplos")],
+              pasos, adulto, genericos=[lista(ds[:-1]), lista(ds[1:])])
+
+
+PRIMOS_100 = [p for p in range(2, 100) if es_primo(p)]
+
+
+@generador("t2_primos")
+def gen_primos(rng, d):
+    """Primos y compuestos. Claves: impar_primo (todo impar es primo), uno_primo, dos_no_primo, sin_2_3_5 (da por primo un número
+    sin divisor 2, 3 ni 5: 49, 77, 91)."""
+    tipo = rng.choice({1: ["cual"], 2: ["cual", "es"], 3: ["es", "es", "cual"]}[d])
+    adulto = ("Primo = exactamente dos divisores (1 y él mismo). El 1 no es primo ni compuesto; el 2 es el único primo par. Ser impar no basta: "
+              "49 = 7 × 7, 77 = 7 × 11, 91 = 7 × 13.")
+    tope = 30 if d == 1 else 100
+    if tipo == "cual":
+        p = rng.choice([x for x in PRIMOS_100 if x < tope])
+        impares_comp = [x for x in range(9, tope, 2) if not es_primo(x) and x % 5 and x != 1]
+        sin235 = [x for x in (49, 77, 91) if x < tope]
+        dist = [("1", "uno_primo"), (fmt(rng.choice(impares_comp)), "impar_primo")]
+        if sin235:
+            dist.insert(0, (fmt(rng.choice(sin235)), "sin_2_3_5"))
+        dist.append((fmt(rng.choice([x for x in range(4, tope) if not es_primo(x)])), None))
+        return mk("¿Cuál de estos números es primo?", fmt(p), "t2_primo", {"p": p, "tipo": tipo}, dist,
+                  [(f"divisores de {p}", f"1 y {p}", f"{p} solo es divisible entre 1 y entre {p}: tiene exactamente dos divisores, es primo. "
+                                                     f"Los demás tienen más divisores (o, en el caso del 1, uno solo).")],
+                  adulto, datos={"opciones_fijas": True})
+    cand = [2, 1] + [49, 77, 91, 51, 57, 87, 39, 63, 27, 33, 21] + PRIMOS_100[3:]
+    n = rng.choice(cand if d == 3 else [x for x in range(2, 100) if x % 2])
+    if n == 1:
+        ok = "Ni primo ni compuesto: solo tiene un divisor"
+        dist = [("Sí, es primo", "uno_primo"), ("No, es compuesto", None), ("Sí, porque es impar", "impar_primo")]
+        texto = "El 1 solo tiene un divisor (él mismo). Los primos tienen exactamente dos, así que el 1 no es primo ni compuesto."
+    elif es_primo(n):
+        ok = f"Sí, solo tiene dos divisores: 1 y {n}"
+        dist = [("No, porque es par", "dos_no_primo") if n == 2 else ("No, porque es impar", None),
+                (f"No, porque {n} = {n} × 1", None), ("No, es compuesto", None)]
+        texto = f"Pruebo a dividir {n} entre 2, 3, 5, 7…: ninguna división es exacta. Solo tiene los divisores 1 y {n}: es primo."
+    else:
+        f = factoriza(n)[0]
+        ok = f"No, {n} = {f} × {n // f}"
+        dist = [("Sí, porque es impar", "impar_primo") if n % 2 else ("Sí, porque es par", None),
+                ("Sí, porque no es divisible por 2, 3 ni 5", "sin_2_3_5") if all(n % q for q in (2, 3, 5)) else (f"No, porque es divisible por 5", None),
+                ("Sí, solo tiene dos divisores", None)]
+        texto = f"Pruebo a dividir entre 2, 3, 5, 7…: {n} : {f} = {n // f} exacta. Tiene más de dos divisores: es compuesto."
+    return mk(f"¿Es primo el número {n}?", ok, "t2_primo", {"n": n, "tipo": tipo}, dist, [(f"divisores de {n}", ok, texto)], adulto)
+
+
+def _mcm(*xs):
+    m = 1
+    for x in xs:
+        m = m * x // math.gcd(m, x)
+    return m
+
+
+def _mcd(*xs):
+    g = 0
+    for x in xs:
+        g = math.gcd(g, x)
+    return g
+
+
+@generador("t2_mcm_listas")
+def gen_mcm_listas(rng, d):
+    """m.c.m. por listas de múltiplos. Claves: producto, mcd (da el m.c.d.), no_menor (múltiplo común no mínimo), cero."""
+    for _ in range(500):
+        if d == 3 and rng.random() < 0.5:
+            xs = sorted(rng.sample(range(2, 13), 3))
+        else:
+            xs = sorted(rng.sample(range(2, 11 if d == 1 else 21), 2))
+        m = _mcm(*xs)
+        p = math.prod(xs)
+        if m > 200 or m == max(xs) or (d > 1 and m == p and rng.random() < 0.7):
+            continue
+        break
+    g = _mcd(*xs)
+    txt = ", ".join(map(str, xs))
+    pasos = [(f"múltiplos de {x}", ", ".join(str(x * i) for i in range(1, m // x + 1)), f"Múltiplos de {x}: " + ", ".join(str(x * i) for i in range(1, m // x + 1)) + "…")
+             for x in xs]
+    pasos.append(("primer común", str(m), f"El primero que aparece en todas las listas (sin contar el 0) es {m}."))
+    return mk(f"Calcula el m.c.m.({txt}) escribiendo listas de múltiplos.", fmt(m), "t2_mcm", {"nums": xs}, [
+        (p if p != m else None, "producto"), (g, "mcd"), (2 * m, "no_menor"), (0, "cero")], pasos,
+        "El m.c.m. es el MENOR múltiplo común distinto de 0: siempre es mayor o igual que el mayor de los números. Multiplicarlos da un múltiplo común, "
+        "pero muchas veces no el menor.", genericos=[m + max(xs), 3 * m])
+
+
+@generador("t2_mcd_listas")
+def gen_mcd_listas(rng, d):
+    """m.c.d. por listas de divisores. Claves: no_mayor (divisor común que no es el mayor), mcm (da el m.c.m.), uno_o_menor."""
+    for _ in range(500):
+        a, b = sorted(rng.sample(range(4, 40 if d == 1 else 100), 2))
+        g = math.gcd(a, b)
+        if d == 3 and g < 6:
+            continue
+        if d < 3 and g == a and rng.random() < 0.7:
+            continue
+        if g == 1 and rng.random() < 0.8:
+            continue
+        break
+    comunes = [x for x in divisores(g)]
+    no_mayor = comunes[-2] if len(comunes) > 1 else None
+    m = a * b // g
+    pasos = [(f"divisores de {a}", lista(divisores(a)), f"Divisores de {a}: {lista(divisores(a))}."),
+             (f"divisores de {b}", lista(divisores(b)), f"Divisores de {b}: {lista(divisores(b))}."),
+             ("comunes", lista(comunes), f"Comunes: {lista(comunes)}. El mayor es {g}.")]
+    return mk(f"Calcula el m.c.d.({a}, {b}) escribiendo las listas de divisores.", fmt(g), "t2_mcd", {"nums": [a, b]},
+              [(no_mayor if no_mayor and no_mayor != 1 else None, "no_mayor"), (m, "mcm"), (1 if g != 1 else a, "uno_o_menor"), (a if g != a else None, "uno_o_menor")],
+              pasos, "El m.c.d. es el MAYOR número que divide a los dos: nunca es mayor que el menor de ellos. Si solo comparten el 1, el m.c.d. es 1.",
+              genericos=[g * 2, g + 1])
+
+
+@generador("t2_factorizar")
+def gen_factorizar(rng, d):
+    """Descomposición en factores primos. Claves: factor_compuesto, exponente_mal, con_uno, division_mal."""
+    primos = [2, 3, 5] if d == 1 else [2, 3, 5, 7] if d == 2 else [2, 3, 5, 7, 11, 13]
+    lim = {1: (12, 100), 2: (100, 1000), 3: (1000, 9999)}[d]
+    for _ in range(1000):
+        c = Counter()
+        n = 1
+        for _ in range(rng.randint(3, 7)):
+            p = rng.choice(primos)
+            c[p] += 1
+            n *= p
+        if lim[0] <= n <= lim[1] and len(c) >= 2 and max(c.values()) >= 2 and (d < 3 or max(c) >= 7):
+            break
+    ok = ftxt_c(c)
+    ps = sorted(c)
+    # factor compuesto: juntar dos primos
+    comp = Counter(c)
+    if c[2] >= 2:
+        comp[2] -= 2
+        comp[4] += 1
+    else:
+        comp[ps[0]] -= 1
+        comp[ps[1]] -= 1
+        comp[ps[0] * ps[1]] += 1
+    mal_exp = Counter(c)
+    pe = max(c, key=lambda p: c[p])
+    mal_exp[pe] += rng.choice([-1, 1]) if c[pe] > 1 else 1
+    tipo = rng.choice(["descomponer", "descomponer", "cual"])
+    enun = f"Descompón {fmt(n)} en factores primos." if tipo == "descomponer" else f"¿Cuál es la descomposición en factores primos de {fmt(n)}?"
+    pasos, m = [], n
+    for p in sorted(c.elements()):
+        pasos.append((f"{fmt(m)} : {p}", fmt(m // p), f"{fmt(m)} : {p} = {fmt(m // p)}."))
+        m //= p
+    pasos.append(("potencias", ok, f"He dividido entre {' · '.join(str(p) for p in sorted(c.elements()))}. Agrupado con potencias: {fmt(n)} = {ok}."))
+    return mk(enun, ok, "t2_factorizar", {"n": n}, [(ftxt_c(comp), "factor_compuesto"), (ftxt_c(mal_exp), "exponente_mal"), ("1 · " + ok, "con_uno")],
+              pasos, "Se divide sucesivamente entre primos (2, 3, 5, 7, 11…) hasta llegar a 1. Si en el resultado queda un 4, un 6 o un 9, aún no está "
+                     "terminado. El exponente es cuántas veces aparece cada primo.",
+              genericos=[ftxt_c(Counter({**c, ps[-1]: c[ps[-1]] + 1}))])
+
+
+@generador("t2_mcm_mcd_fact")
+def gen_mcm_mcd_fact(rng, d):
+    """m.c.m. y m.c.d. por factorización. Claves: intercambia (da el otro), exponente_mal (exponente equivocado), mcd_no_comunes
+    (mete factores no comunes en el m.c.d.), olvida_no_comun (se deja un primo no común en el m.c.m.)."""
+    primos = [2, 3, 5, 7] if d < 3 else [2, 3, 5, 7, 11]
+    for _ in range(2000):
+        k = 3 if d == 3 and rng.random() < 0.4 else 2
+        cs = []
+        for _ in range(k):
+            c = Counter()
+            for p in primos:
+                e = rng.choice([0, 0, 1, 1, 2, 3] if p <= 3 else [0, 0, 1])
+                if e:
+                    c[p] = e
+            cs.append(c)
+        ns = [math.prod(p ** e for p, e in c.items()) for c in cs]
+        lim = {1: (10, 200), 2: (40, 999), 3: (100, 9999)}[d]
+        if not all(lim[0] <= n <= lim[1] for n in ns) or len(set(ns)) < k:
+            continue
+        if any(x != y and y % x == 0 for x in ns for y in ns):
+            continue
+        comunes = set.intersection(*[set(c) for c in cs])
+        todos = set().union(*[set(c) for c in cs])
+        if not comunes or comunes == todos:
+            continue
+        break
+    M = Counter({p: max(c[p] for c in cs) for p in todos})
+    G = Counter({p: min(c[p] for c in cs) for p in comunes})
+    m, g = math.prod(p ** e for p, e in M.items()), math.prod(p ** e for p, e in G.items())
+    que = rng.choice(["mcm", "mcd"])
+    txt = ", ".join(fmt(n) for n in ns)
+    pasos = [(fmt(n), ftxt_c(c), f"{fmt(n)} = {ftxt_c(c)}.") for n, c in zip(ns, cs)]
+    if que == "mcm":
+        no_comun = sorted(todos - comunes)[-1]
+        olvida = m // (no_comun ** M[no_comun])
+        Gmax = Counter({p: max(c[p] for c in cs) for p in comunes})
+        pasos.append(("m.c.m.", fmt(m), f"m.c.m.: factores comunes y no comunes con el MAYOR exponente: {ftxt_c(M)} = {fmt(m)}."))
+        dist = [(g, "intercambia"), (olvida, "olvida_no_comun"), (math.prod(p ** min(c[p] for c in cs if p in c) for p in todos), "exponente_mal"),
+                (math.prod(p ** e for p, e in Gmax.items()), None)]
+        enun = f"Calcula el m.c.m.({txt}) descomponiendo en factores primos."
+        resp = m
+    else:
+        Gmax = Counter({p: max(c[p] for c in cs) for p in comunes})
+        pasos.append(("m.c.d.", fmt(g), f"m.c.d.: solo los factores comunes con el MENOR exponente: {ftxt_c(G) or '1'} = {fmt(g)}."))
+        dist = [(m, "intercambia"), (math.prod(p ** e for p, e in Gmax.items()), "exponente_mal"),
+                (g * math.prod(p ** min(c[p] for c in cs if p in c) for p in todos - comunes), "mcd_no_comunes")]
+        enun = f"Calcula el m.c.d.({txt}) descomponiendo en factores primos."
+        resp = g
+    return mk(enun, fmt(resp), "t2_mcmmcd", {"nums": ns, "que": que}, dist, pasos,
+              "m.c.m.: comunes y no comunes con el mayor exponente (sale grande, múltiplo de todos). m.c.d.: solo comunes con el menor exponente "
+              "(sale pequeño, divide a todos). Comprobar que el m.c.m. es divisible por cada número detecta casi todos los errores.",
+              genericos=[resp * 2, resp + 2])
+
+
+# ================================================================ NÚMEROS ENTEROS
+
+def sg(n):
+    """Entero con signo explícito sin paréntesis: +5, −3, 0."""
+    return "0" if n == 0 else ("+" if n > 0 else "−") + fmt(abs(n))
+
+
+@generador("t2_ent_contexto")
+def gen_ent_contexto(rng, d):
+    """Enteros en contextos. Claves: signo_contexto (signo cambiado), cero_con_signo (0 positivo o negativo),
+    pierde_positivo (traduce pierde/baja/debe como positivo)."""
+    tipo = rng.choice({1: ["temp", "planta"], 2: ["dinero", "altitud", "temp", "planta"], 3: ["anio", "leer", "cero", "dinero", "altitud"]}[d])
+    adulto = ("Por encima de un punto de referencia (0 °C, planta baja, nivel del mar, tener dinero) → positivo; por debajo o en contra "
+              "(bajo cero, sótanos, deber, perder) → negativo. El 0 es la referencia: ni positivo ni negativo.")
+    n = rng.randint(1, 15 if d == 1 else 100)
+    if tipo == "cero":
+        ref = rng.choice(["la planta baja de un edificio", "el nivel del mar", "una temperatura de 0 °C", "no tener ni deber dinero"])
+        return mk(f"¿Qué número entero representa {ref} y de qué signo es?", "0, que no es ni positivo ni negativo", "t2_ent_ctx", {"tipo": tipo},
+                  [("0, que es positivo", "cero_con_signo"), ("0, que es negativo", "cero_con_signo"), ("+1, que es positivo", None)],
+                  [("referencia", "0", f"{ref[0].upper() + ref[1:]} es el punto de referencia: se representa con el 0, que no es positivo ni negativo.")], adulto)
+    if tipo == "leer":
+        k = rng.randint(1, 5)
+        return mk(f"En el ascensor de un edificio, ¿qué significa el botón −{k}?", f"{k} planta{'s' if k > 1 else ''} por debajo de la planta baja", "t2_ent_ctx",
+                  {"tipo": tipo, "n": -k},
+                  [(f"{k} planta{'s' if k > 1 else ''} por encima de la planta baja", "signo_contexto"), (f"La planta {k}.ª", "signo_contexto"),
+                   (f"{k} plantas menos que el último piso", None)],
+                  [("signo −", f"−{k}", f"El signo − indica por debajo de la planta baja (que es el 0): el −{k} está {k} planta{'s' if k > 1 else ''} por debajo.")], adulto)
+    ctx = {
+        "temp": [(f"Un termómetro marca {min(n, 40)} grados bajo cero.", -min(n, 40), "signo_contexto"),
+                 (f"Un termómetro marca {min(n, 45)} grados sobre cero.", min(n, 45), "signo_contexto")],
+        "planta": [(f"Aparcamos el coche en el sótano {n if n < 6 else n % 5 + 1}.", -(n if n < 6 else n % 5 + 1), "signo_contexto"),
+                   (f"Vivo en la {n if n < 20 else 12}.ª planta sobre la planta baja.", n if n < 20 else 12, "signo_contexto")],
+        "dinero": [(f"{rng.choice(NOMBRES)} debe {n} € a su hermana.", -n, "pierde_positivo"), (f"{rng.choice(NOMBRES)} pierde {n} € jugando.", -n, "pierde_positivo"),
+                   (f"{rng.choice(NOMBRES)} gana {n} € vendiendo limonada.", n, "signo_contexto")],
+        "altitud": [(f"Un submarino navega a {n * 10} m bajo el nivel del mar.", -n * 10, "signo_contexto"),
+                    (f"Un pueblo está a {n * 10} m sobre el nivel del mar.", n * 10, "signo_contexto"),
+                    (f"Un buceador baja a {n} m de profundidad.", -n, "pierde_positivo")],
+        "anio": [(f"Una ciudad se fundó en el año {n * 10} antes de Cristo.", -n * 10, "signo_contexto"),
+                 (f"Un castillo se construyó en el año {n * 10 + 1000} después de Cristo.", n * 10 + 1000, "signo_contexto")],
+    }[tipo]
+    frase, v, clave = rng.choice(ctx)
+    return mk(f"{frase} ¿Qué número entero lo representa?", sg(v), "t2_ent_ctx", {"tipo": tipo, "n": v},
+              [(sg(-v), clave), (sg(v + (1 if v > 0 else -1)), None), (sg(-v - (1 if v < 0 else -1)), None)],
+              [("signo", sg(v), f"{'Está por encima o a favor de la referencia (0): es positivo' if v > 0 else 'Está por debajo o en contra de la referencia (0): es negativo'}, "
+                                f"así que se escribe {sg(v)}.")], adulto)
+
+
+@generador("t2_ent_recta")
+def gen_ent_recta(rng, d):
+    """Enteros en la recta numérica (descrita con palabras). Claves: lado_contrario (negativos a la derecha),
+    cuenta_desde_uno (cuenta una marca de más), ignora_escala."""
+    esc = 1 if d == 1 else rng.choice([2, 5]) if d == 2 else rng.choice([5, 10, 2])
+    k = rng.randint(1, 5 if d < 3 else 5)
+    lado = "izquierda" if rng.random() < 0.75 else "derecha"
+    v = -k * esc if lado == "izquierda" else k * esc
+    adulto = ("En la recta los negativos están a la izquierda del 0 y cada marca vale lo que diga la escala. Que cuente saltos (no marcas) "
+              "desde el 0 y los multiplique por la escala.")
+    if d == 3 and rng.random() < 0.5:
+        a = rng.randint(-4, 2) * esc
+        k2 = rng.randint(2, 5)
+        v2 = a - k2 * esc
+        return mk(f"En una recta numérica graduada de {esc} en {esc}, ¿qué número está {k2} marcas a la izquierda del {fmt(a)}?", fmt(v2), "t2_ent_recta",
+                  {"esc": esc, "desde": a, "marcas": -k2},
+                  [(fmt(a + k2 * esc), "lado_contrario"), (fmt(a - (k2 + 1) * esc), "cuenta_desde_uno"), (fmt(a - k2), "ignora_escala") if esc > 1 else (None, None)],
+                  [("saltos", f"{k2} × {esc}", f"Cada marca vale {esc}. {k2} marcas a la izquierda es restar {k2} × {esc} = {k2 * esc}."),
+                   (f"{fmt(a)} − {k2 * esc}", fmt(v2), f"Desde el {fmt(a)}, bajando {k2 * esc}, llego al {fmt(v2)}.")], adulto,
+                  genericos=[fmt(v2 - esc), fmt(v2 + 2 * esc)])
+    dist = [(fmt(-v), "lado_contrario"), (fmt(v + (esc if v > 0 else -esc)), "cuenta_desde_uno")]
+    if esc > 1:
+        dist.append((fmt(k if v > 0 else -k), "ignora_escala"))
+    return mk(f"En una recta numérica graduada de {esc} en {esc}, ¿qué número señala una flecha {k} marca{'s' if k > 1 else ''} a la {lado} del 0?", fmt(v),
+              "t2_ent_recta", {"esc": esc, "marcas": k if lado == "derecha" else -k}, dist,
+              [("escala", str(esc), f"Cada marca vale {esc}."),
+               ("posición", fmt(v), f"{k} marca{'s' if k > 1 else ''} a la {lado} del 0 son {k} × {esc} = {k * esc} {'hacia los negativos' if lado == 'izquierda' else 'hacia los positivos'}: {fmt(v)}.")],
+              adulto, genericos=[fmt(v - esc), fmt(v + 2 * esc), fmt(2 * v)])
+
+
+@generador("t2_ent_comparar")
+def gen_ent_comparar(rng, d):
+    """Comparar y ordenar enteros. Claves: valor_sin_signo (compara negativos por su valor absoluto), cero_menor (pone el 0 como el
+    más pequeño), orden_invertido."""
+    R = {1: 20, 2: 100, 3: 1000}[d]
+    if d == 1 or (d == 2 and rng.random() < 0.3):
+        a = -rng.randint(1, R)
+        b = -rng.randint(1, R) if rng.random() < 0.6 else rng.randint(0, R)
+        while b == a:
+            b = a + 1 if a + 1 != 0 else a - 1
+        menor, mayor = min(a, b), max(a, b)
+        ok = f"{fmt(menor)} < {fmt(mayor)}"
+        return mk(f"¿Qué comparación es correcta entre {fmt(a)} y {fmt(b)}?", ok, "t2_ent_comp", {"a": a, "b": b},
+                  [(f"{fmt(menor)} > {fmt(mayor)}", "valor_sin_signo"), (f"{fmt(mayor)} < {fmt(menor)}", "valor_sin_signo"), (f"{fmt(menor)} = {fmt(mayor)}", None)],
+                  [("recta", ok, f"En la recta, {fmt(menor)} está más a la izquierda que {fmt(mayor)}, así que es menor: {ok}. "
+                                 + ("Entre dos negativos es mayor el que está más cerca del 0." if mayor < 0 else ""))],
+                  "Cualquier negativo es menor que 0 y que cualquier positivo; entre negativos, es mayor el que está más cerca del 0 (−3 > −8). "
+                  "Pensar en temperaturas ayuda: −3 °C es más calor que −8 °C.")
+    n = 4 if d == 2 else rng.choice([5, 6])
+    xs = set()
+    xs.add(0 if rng.random() < 0.7 else rng.randint(1, R))
+    while len(xs) < n:
+        x = rng.randint(-R, R)
+        xs.add(x)
+    xs = list(xs)
+    if sum(1 for x in xs if x < 0) < 2:
+        xs[0] = -abs(xs[0]) - 1 if xs[0] != 0 else xs[0]
+        xs[-1] = -abs(xs[-1]) - 2
+        xs = list(dict.fromkeys(xs))
+    rng.shuffle(xs)
+    desc = d == 3 and rng.random() < 0.5
+    ok_l = sorted(xs, reverse=desc)
+    signo = " > " if desc else " < "
+    negs = sorted([x for x in xs if x < 0], key=abs, reverse=desc)
+    pos = sorted([x for x in xs if x >= 0], reverse=desc)
+    mal1 = (pos + negs if desc else negs + pos) if negs != sorted([x for x in xs if x < 0], reverse=desc) else None
+    cero = [0] + [x for x in ok_l if x != 0] if not desc else [x for x in ok_l if x != 0] + [0]
+    mal2 = cero if 0 in xs and cero != ok_l else None
+    inv = list(reversed(ok_l))
+    orden = "de mayor a menor" if desc else "de menor a mayor"
+    return mk(f"Ordena {orden}: {', '.join(fmt(x) for x in xs)}", signo.join(fmt(x) for x in ok_l), "t2_ent_orden", {"nums": xs, "desc": desc},
+              [(signo.join(fmt(x) for x in mal1), "valor_sin_signo") if mal1 else (None, None),
+               (signo.join(fmt(x) for x in mal2), "cero_menor") if mal2 else (None, None),
+               (signo.join(fmt(x) for x in inv), "orden_invertido")],
+              [("negativos", ", ".join(fmt(x) for x in sorted([x for x in xs if x < 0])), "Primero los negativos: el que tiene más valor absoluto es el menor."),
+               ("orden", signo.join(fmt(x) for x in ok_l), f"Después el 0 y los positivos. {orden.capitalize()}: {signo.join(fmt(x) for x in ok_l)}.")],
+              "Cualquier negativo es menor que 0 y que cualquier positivo; entre negativos, es mayor el que está más cerca del 0. "
+              "Situarlos en una recta dibujada evita casi todos los errores.",
+              genericos=[signo.join(fmt(x) for x in sorted(xs, key=abs))], datos=None)
+
+
+@generador("t2_ent_abs")
+def gen_ent_abs(rng, d):
+    """Opuesto y valor absoluto. Claves: abs_cambia_signo (|7| = −7), menos_abs (confunde −|a| con |−a|), solo_uno (da un solo número)."""
+    R = {1: 20, 2: 100, 3: 1000}[d]
+    tipo = rng.choice({1: ["abs", "op", "abs_pos"], 2: ["suma_abs", "menos_abs", "dos", "abs_pos"], 3: ["mixta", "menos_abs", "dos"]}[d])
+    a = rng.randint(2, R)
+    adulto = ("El valor absoluto es la distancia al 0: siempre positiva (o 0). El opuesto cambia el signo. −|−5| es 'el opuesto del valor absoluto de −5' = −5, "
+              "y dos números (a y −a) tienen el mismo valor absoluto.")
+    if tipo in ("abs", "abs_pos"):
+        x = -a if tipo == "abs" else a
+        return mk(f"Calcula: |{fmt(x)}|", fmt(a), "t2_ent_abs", {"tipo": tipo, "x": x},
+                  [(fmt(-a), "abs_cambia_signo"), (fmt(a + 1), None), ("0", None)],
+                  [(f"|{fmt(x)}|", fmt(a), f"El valor absoluto es la distancia de {fmt(x)} al 0, que es {fmt(a)}. Siempre sale positivo.")], adulto)
+    if tipo == "op":
+        x = rng.choice([-a, a])
+        return mk(f"¿Cuál es el opuesto de {fmt(x)}?", fmt(-x), "t2_ent_abs", {"tipo": tipo, "x": x},
+                  [(fmt(x), None), ("0", None)],
+                  [("opuesto", fmt(-x), f"El opuesto está a la misma distancia del 0 pero al otro lado: el opuesto de {fmt(x)} es {fmt(-x)}.")], adulto,
+                  genericos=[fmt(-x - 1), fmt(2 * x)])
+    if tipo == "menos_abs":
+        return mk(f"Calcula: −|−{fmt(a)}|", fmt(-a), "t2_ent_abs", {"tipo": tipo, "x": -a},
+                  [(fmt(a), "menos_abs"), ("0", None), (fmt(-a - 1), None)],
+                  [(f"|−{fmt(a)}|", fmt(a), f"Primero el valor absoluto: |−{fmt(a)}| = {fmt(a)}."),
+                   (f"−{fmt(a)}", fmt(-a), f"El signo − de fuera da el opuesto: −{fmt(a)}.")], adulto)
+    if tipo == "dos":
+        return mk(f"¿Qué números enteros tienen valor absoluto {fmt(a)}?", f"{fmt(a)} y {fmt(-a)}", "t2_ent_abs", {"tipo": tipo, "x": a},
+                  [(f"Solo el {fmt(a)}", "solo_uno"), (f"Solo el {fmt(-a)}", "solo_uno"), (f"{fmt(a)} y 0", None)],
+                  [("distancia", f"±{fmt(a)}", f"Hay dos números a distancia {fmt(a)} del 0: uno a la derecha ({fmt(a)}) y otro a la izquierda ({fmt(-a)}).")], adulto)
+    b = rng.randint(2, min(R, 50))
+    if tipo == "suma_abs":
+        x, y = -a, b if rng.random() < 0.5 else -b
+        v = abs(x) + abs(y)
+        return mk(f"Calcula: |{fmt(x)}| + |{fmt(y)}|", fmt(v), "t2_ent_abs", {"tipo": tipo, "x": x, "y": y},
+                  [(fmt(x + y) if x + y != v else None, "abs_cambia_signo"), (fmt(-v), "abs_cambia_signo"), (fmt(abs(abs(x) - abs(y))), None)],
+                  [(f"|{fmt(x)}| y |{fmt(y)}|", f"{fmt(abs(x))} y {fmt(abs(y))}", f"|{fmt(x)}| = {fmt(abs(x))} y |{fmt(y)}| = {fmt(abs(y))}."),
+                   (f"{fmt(abs(x))} + {fmt(abs(y))}", fmt(v), f"{fmt(abs(x))} + {fmt(abs(y))} = {fmt(v)}.")], adulto)
+    # mixta: −|−a| + |b − c|
+    a = rng.randint(2, 20)
+    b, c = rng.randint(1, 15), rng.randint(1, 15)
+    while b == c:
+        c += 1
+    v = -a + abs(b - c)
+    return mk(f"Calcula: −|−{a}| + |{b} − {c}|", fmt(v), "t2_ent_abs", {"tipo": tipo},
+              [(fmt(a + abs(b - c)), "menos_abs"), (fmt(-a + (b - c)) if b < c else fmt(-a - abs(b - c)), "abs_cambia_signo"), (fmt(v + 1), None)],
+              [(f"−|−{a}|", fmt(-a), f"|−{a}| = {a}, y con el − de delante queda −{a}."),
+               (f"|{b} − {c}|", fmt(abs(b - c)), f"{b} − {c} = {fmt(b - c)} y su valor absoluto es {abs(b - c)}."),
+               (f"−{a} + {abs(b - c)}", fmt(v), f"−{a} + {abs(b - c)} = {fmt(v)}.")], adulto)
+
+
+@generador("t2_ent_variacion")
+def gen_ent_variacion(rng, d):
+    """Subir y bajar con enteros en contexto. Claves: resta_sin_cero (diferencia restando los números sin signo), sentido_contrario,
+    cuenta_salida (cuenta el punto de partida como un salto)."""
+    ctx = rng.choice(["temp", "planta", "saldo"])
+    tipo = rng.choice({1: ["mover"], 2: ["mover", "diferencia"], 3: ["diferencia", "mover"]}[d])
+    R = 10 if d == 1 else 20
+    ud = {"temp": " °C", "planta": "", "saldo": " €"}[ctx]
+    adulto = ("Con la recta o el termómetro delante: subir es ir a la derecha (o arriba) y bajar a la izquierda. Para la diferencia entre un negativo y "
+              "un positivo, se cuenta hasta el 0 y desde el 0: de −4 a 9 hay 4 + 9 = 13.")
+    if tipo == "mover":
+        a = rng.randint(-R, R // 2)
+        k = rng.randint(2, R)
+        sube = rng.random() < 0.6
+        v = a + k if sube else a - k
+        if abs(v) > 20:
+            v = a + k if not sube else a - k
+            sube = not sube
+        frase = {"temp": (f"A las 8 h la temperatura es de {fmt(a)} °C y {'sube' if sube else 'baja'} {k} grados. ¿Qué temperatura hace ahora?"),
+                 "planta": (f"Un ascensor está en la planta {fmt(a)} y {'sube' if sube else 'baja'} {k} plantas. ¿En qué planta está ahora?"),
+                 "saldo": (f"El saldo de una cuenta es de {fmt(a)} € y {'ingresan' if sube else 'se cobran'} {k} €. ¿Cuál es el saldo ahora?")}[ctx]
+        return mk(frase, fmt(v) + ud, "t2_ent_var", {"a": a, "k": k if sube else -k},
+                  [(fmt(a - k if sube else a + k) + ud, "sentido_contrario"), (fmt(v - 1 if sube else v + 1) + ud, "cuenta_salida"),
+                   (fmt(-v) + ud if v != 0 else "1" + ud, None)],
+                  [("recta", fmt(v), f"Parto del {fmt(a)} y {'subo' if sube else 'bajo'} {k}: {fmt(a)} {'+' if sube else '−'} {k} = {fmt(v)}. "
+                                     f"Cuento los saltos, no el punto de partida.")], adulto,
+                  genericos=[fmt(v + 2) + ud, fmt(v - 2) + ud])
+    a = -rng.randint(1, R)
+    b = rng.randint(1, R)
+    if rng.random() < 0.3:
+        a, b = -rng.randint(R // 2, R), -rng.randint(1, R // 2 - 1 if R > 4 else 1)
+    v = b - a
+    frase = {"temp": f"A las 6 h hace {fmt(a)} °C y a mediodía {fmt(b)} °C. ¿Cuántos grados ha subido la temperatura?",
+             "planta": f"Un ascensor sube desde la planta {fmt(a)} hasta la planta {fmt(b)}. ¿Cuántas plantas ha subido?",
+             "saldo": f"Una cuenta pasa de un saldo de {fmt(a)} € a {fmt(b)} €. ¿Cuántos euros ha aumentado?"}[ctx]
+    mal = abs(b) - abs(a) if b > 0 else abs(a) + abs(b)
+    return mk(frase, fmt(v), "t2_ent_var", {"a": a, "b": b},
+              [(fmt(abs(mal)) if abs(mal) != v else None, "resta_sin_cero"), (fmt(v + 1), "cuenta_salida"), (fmt(-v), None)],
+              [("hasta el 0", str(abs(a)), f"Desde {fmt(a)} hasta 0 hay {abs(a)}." if b > 0 else f"Desde {fmt(a)} hasta {fmt(b)} hay {v} saltos."),
+               ("desde el 0", fmt(v), f"Desde 0 hasta {fmt(b)} hay {b}: en total {abs(a)} + {b} = {v}." if b > 0 else f"En total {v}.")], adulto,
+              genericos=[fmt(v - 1), fmt(v + 2)])
+
+
+@generador("t2_ent_suma")
+def gen_ent_suma(rng, d, op="suma"):
+    """Suma y resta de dos enteros con paréntesis. suma: claves regla_producto ((−5)+(−3)=+8), suma_abs (suma valores absolutos con
+    signos distintos), signo_primero (signo del primero). resta: no_cambia (no cambia el signo del sustraendo), cambia_ambos,
+    resta_al_reves (3 − 8 = 5)."""
+    R = {1: 20, 2: 100, 3: 1000}[d]
+    for _ in range(200):
+        a, b = rng.randint(-R, R), rng.randint(-R, R)
+        if a == 0 or b == 0 or abs(a) == abs(b):
+            continue
+        if op == "suma" and a > 0 and b > 0:
+            continue
+        if op == "resta" and a > 0 and b > 0 and a > b:
+            continue
+        break
+    adulto_s = ("Mismo signo: se suman los valores absolutos y se deja el signo. Distinto signo: se restan y se pone el signo del que tiene "
+                "mayor valor absoluto. La regla 'menos por menos, más' es de multiplicar, no de sumar.")
+    if op == "suma":
+        v = a + b
+        dist = []
+        if a < 0 and b < 0:
+            dist.append((abs(v), "regla_producto"))
+        else:
+            big = a if abs(a) > abs(b) else b
+            dist.append(((abs(a) + abs(b)) * (1 if big > 0 else -1), "suma_abs"))
+            if (a > 0) != (v > 0) and v != 0:
+                dist.append((abs(v) * (1 if a > 0 else -1), "signo_primero"))
+            dist.append((-(abs(a) + abs(b)) * (1 if big > 0 else -1), None))
+        dist += [(-v, None), (a - b, None)]
+        if a * b > 0:
+            txt = f"Mismo signo: sumo {fmt(abs(a))} + {fmt(abs(b))} = {fmt(abs(v))} y dejo el signo −: {fmt(v)}."
+        else:
+            txt = (f"Distinto signo: resto los valores absolutos, {fmt(max(abs(a), abs(b)))} − {fmt(min(abs(a), abs(b)))} = {fmt(abs(v))}, y pongo el signo del "
+                   f"que tiene mayor valor absoluto ({z(a if abs(a) > abs(b) else b)}): {fmt(v)}.")
+        return mk(f"Calcula: {z(a)} + {z(b)}", fmt(v), "ent_suma", {"a": a, "b": b}, dist, [(f"{z(a)} + {z(b)}", fmt(v), txt)], adulto_s,
+                  genericos=[v + 1, v - 1, v + 10])
+    v = a - b
+    dist = [(a + b, "no_cambia"), (-a - b, "cambia_ambos")]
+    if a > 0 and b > 0 and a < b:
+        dist.insert(0, (b - a, "resta_al_reves"))
+    dist += [(-v, None)]
+    txt1 = f"Restar es sumar el opuesto: {z(a)} − {z(b)} = {z(a)} + {z(-b)}."
+    txt2 = f"{z(a)} + {z(-b)} = {fmt(v)}."
+    return mk(f"Calcula: {z(a)} − {z(b)}", fmt(v), "ent_resta", {"a": a, "b": b}, dist,
+              [(f"{z(a)} + {z(-b)}", f"{z(a)} + {z(-b)}", txt1), (f"{z(a)} + {z(-b)}", fmt(v), txt2)],
+              "Restar un entero es sumar su opuesto: solo cambia el signo del segundo, nunca el del primero. Restar un negativo es sumar: "
+              "(−7) − (−12) = −7 + 12 = 5.", genericos=[v + 1, v - 1, v + 10])
+
+
+def _sumas_expr(rng, d):
+    """Expresión de sumas y restas de enteros con paréntesis de un nivel. Devuelve lista de términos (signo, contenido) donde
+    contenido es int o lista de ints (paréntesis)."""
+    R = 20 if d == 1 else 50 if d == 2 else 100
+    n = {1: 3, 2: rng.choice([4, 5]), 3: rng.choice([5, 6])}[d]
+    terms = []
+    for i in range(n):
+        s = "+" if i == 0 else rng.choice(["+", "−"])
+        if i > 0 and rng.random() < 0.45:
+            g = [rng.randint(-R, R) or 3 for _ in range(2 if d < 3 else rng.choice([2, 3]))]
+            terms.append((s, g))
+        else:
+            terms.append((s, rng.randint(-R, R) or 5))
+    if not any(isinstance(c, list) and s == "−" for s, c in terms):
+        terms[-1] = ("−", [rng.randint(1, R), -rng.randint(1, R)])
+    return terms
+
+
+def _texto_sumas(terms):
+    out = []
+    for i, (s, c) in enumerate(terms):
+        if isinstance(c, list):
+            inner = fmt(c[0]) + "".join(f" {'+' if x > 0 else '−'} {fmt(abs(x))}" for x in c[1:])
+            t = f"({inner})"
+        else:
+            t = fmt(c) if i == 0 else f"({fmt(c)})" if c < 0 else fmt(c)
+        out.append(t if i == 0 else f"{s} {t}")
+    return " ".join(out)
+
+
+def _eval_sumas(terms, modo="ok"):
+    tot = 0
+    for s, c in terms:
+        sig = 1 if s == "+" else -1
+        if isinstance(c, list):
+            if modo == "e01" and sig < 0:
+                tot += -c[0] + sum(c[1:])
+            elif modo == "e02" and sig < 0:
+                tot += sum(c)
+            else:
+                tot += sig * sum(c)
+        else:
+            tot += sig * c
+    return tot
+
+
+@generador("t2_ent_cadena")
+def gen_ent_cadena(rng, d):
+    """Sumas y restas encadenadas de enteros con paréntesis. Claves: solo_primero (un − delante del paréntesis solo cambia el primer
+    término), pierde_signo (no cambia ningún signo al quitar el paréntesis), agrupa_mal (se deja un término al agrupar)."""
+    for _ in range(100):
+        terms = _sumas_expr(rng, d)
+        v = _eval_sumas(terms)
+        e1, e2 = _eval_sumas(terms, "e01"), _eval_sumas(terms, "e02")
+        if e1 != v and e2 != v and e1 != e2:
+            break
+    expr = _texto_sumas(terms)
+    # términos sin paréntesis
+    planos = []
+    for s, c in terms:
+        sig = 1 if s == "+" else -1
+        for x in (c if isinstance(c, list) else [c]):
+            planos.append(sig * x)
+    pos = [x for x in planos if x > 0]
+    neg = [x for x in planos if x < 0]
+    olvido = v - planos[-1]
+    return mk(f"Calcula: {expr}", fmt(v), "jerarquia", {"expresion": expr}, [(e1, "solo_primero"), (e2, "pierde_signo"), (olvido, "agrupa_mal")],
+              [("quitar paréntesis", " ".join(("+ " if x > 0 else "− ") + fmt(abs(x)) for x in planos).lstrip("+ "),
+                "Quito los paréntesis: si delante hay un −, cambian de signo TODOS los términos de dentro. Queda "
+                + " ".join(("+ " if x > 0 else "− ") + fmt(abs(x)) for x in planos).lstrip("+ ") + "."),
+               ("agrupar", f"{fmt(sum(pos))} y {fmt(sum(neg))}", f"Sumo los positivos ({fmt(sum(pos))}) y los negativos ({fmt(sum(neg))})."),
+               ("total", fmt(v), f"{fmt(sum(pos))} {'−' if sum(neg) < 0 else '+'} {fmt(abs(sum(neg)))} = {fmt(v)}.")],
+              "Un − delante de un paréntesis cambia el signo de todo lo de dentro, no solo del primero. Otra opción segura: resolver primero "
+              "el paréntesis y luego restar el resultado.", genericos=[v + 1, v - 1, -v])
+
+
+@generador("t2_ent_mult")
+def gen_ent_mult(rng, d):
+    """Producto y cociente de enteros. Claves: regla_suma (aplica la regla de la suma: (−4)·(+3) = −1 o (−4)·(−3) = −12),
+    cuenta_negativos (recuento de negativos mal), signo_primero."""
+    R = {1: 12, 2: 100, 3: 12}[d]
+    if d == 3 or (d == 2 and rng.random() < 0.3):
+        n = 3 if d == 2 else rng.choice([3, 4])
+        fs = [rng.choice([-1, 1]) * rng.randint(1, 9 if d == 3 else 6) for _ in range(n)]
+        if sum(1 for f in fs if f < 0) < 2:
+            fs[0] = -abs(fs[0])
+            fs[1] = -abs(fs[1])
+        v = math.prod(fs)
+        expr = " · ".join(z(f) for f in fs)
+        nneg = sum(1 for f in fs if f < 0)
+        return mk(f"Calcula: {expr}", fmt(v), "t2_ent_prod", {"factores": fs},
+                  [(-v, "cuenta_negativos"), (abs(v) * (1 if fs[0] > 0 else -1) if (v > 0) != (fs[0] > 0) else None, "signo_primero"), (sum(fs), "regla_suma"),
+                   (v * 2, None)],
+                  [("valores absolutos", fmt(abs(v)), f"Multiplico sin signos: {' · '.join(fmt(abs(f)) for f in fs)} = {fmt(abs(v))}."),
+                   ("signo", fmt(v), f"Hay {nneg} factor{'es' if nneg > 1 else ''} negativo{'s' if nneg > 1 else ''}: "
+                                     f"{'número par → positivo' if nneg % 2 == 0 else 'número impar → negativo'}. Resultado: {fmt(v)}.")],
+                  "Signos iguales dan +, distintos dan −. Con varios factores basta contar los negativos: par → positivo, impar → negativo.",
+                  genericos=[v + 1, v - 1])
+    div = rng.random() < 0.45
+    a = rng.choice([-1, 1]) * rng.randint(2, R if d == 2 else 12)
+    b = rng.choice([-1, 1]) * rng.randint(2, 12)
+    if a > 0 and b > 0:
+        a = -a
+    if div:
+        D = a * b
+        v = a
+        expr = f"{z(D)} : {z(b)}"
+        dist = [(-v, "regla_suma" if (D < 0 and b < 0) else None), (abs(v) * (1 if D > 0 else -1) if (v > 0) != (D > 0) else None, "signo_primero"), (D * b if abs(D * b) < 10000 else v + 1, None)]
+        return mk(f"Calcula: {expr}", fmt(v), "ent_div", {"a": D, "b": b}, dist,
+                  [(f"{fmt(abs(D))} : {abs(b)}", fmt(abs(v)), f"Divido sin signos: {fmt(abs(D))} : {abs(b)} = {abs(v)}."),
+                   ("signo", fmt(v), f"Signos {'iguales → +' if D * b > 0 else 'distintos → −'}: {fmt(v)}.")],
+                  "Para dividir se usa la misma regla de los signos que para multiplicar: iguales +, distintos −.", genericos=[v + 1, v - 1, 2 * v])
+    v = a * b
+    if a < 0 and b < 0:
+        rs = -(abs(v))
+    else:
+        rs = abs(v) * (1 if (a if abs(a) > abs(b) else b) > 0 else -1)
+    dist = [(rs if rs != v else None, "regla_suma"), (a + b, "regla_suma"), (abs(v) * (1 if a > 0 else -1) if (v > 0) != (a > 0) else None, "signo_primero"), (-v, None)]
+    return mk(f"Calcula: {z(a)} · {z(b)}", fmt(v), "ent_mult", {"a": a, "b": b}, dist,
+              [(f"{abs(a)} · {abs(b)}", fmt(abs(v)), f"Multiplico sin signos: {abs(a)} · {abs(b)} = {fmt(abs(v))}."),
+               ("signo", fmt(v), f"Signos {'iguales → +' if a * b > 0 else 'distintos → −'}: {fmt(v)}.")],
+              "Signos iguales dan +, distintos dan −. La regla de la suma (se pone el signo del mayor) no sirve para multiplicar.",
+              genericos=[v + 1, v - 1, v + 10])

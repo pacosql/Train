@@ -1,4 +1,145 @@
 {
+ "NUM.DIVIS.01": {
+  "gen": "t2_multiplos",
+  "errores": {
+   "divisor": "E01",
+   "mayor": "E02",
+   "olvida_propio": "E03",
+   "salta": "E04"
+  },
+  "plantilla": "Múltiplos de un número"
+ },
+ "NUM.DIVIS.02": {
+  "gen": "t2_divisor_rel",
+  "errores": {
+   "invierte": "E01",
+   "division_con_resto": "E02"
+  },
+  "plantilla": "Relación divisor / múltiplo / divisible"
+ },
+ "NUM.DIVIS.03": {
+  "gen": "t2_criterios",
+  "kw": {
+   "grupo": "basico"
+  },
+  "errores": {
+   "ultima_cifra_3": "E01",
+   "primera_cifra": "E02",
+   "cinco_diez": "E03",
+   "suma_mal": "E04"
+  },
+  "plantilla": "Criterios de divisibilidad por 2, 3, 5 y 10"
+ },
+ "NUM.DIVIS.04": {
+  "gen": "t2_divisores",
+  "errores": {
+   "sin_pareja": "E01",
+   "no_divisor": "E02",
+   "multiplos": "E03"
+  },
+  "plantilla": "Todos los divisores de un número menor que 100"
+ },
+ "NUM.DIVIS.05": {
+  "gen": "t2_primos",
+  "errores": {
+   "impar_primo": "E01",
+   "uno_primo": "E02",
+   "dos_no_primo": "E03",
+   "sin_2_3_5": "E04"
+  },
+  "plantilla": "Primos y compuestos"
+ },
+ "NUM.DIVIS.06": {
+  "gen": "t2_mcm_listas",
+  "errores": {
+   "producto": "E01",
+   "mcd": "E02",
+   "no_menor": "E03",
+   "cero": "E04"
+  },
+  "plantilla": "m.c.m. por listas de múltiplos"
+ },
+ "NUM.DIVIS.07": {
+  "gen": "t2_mcd_listas",
+  "errores": {
+   "no_mayor": "E01",
+   "mcm": "E02",
+   "uno_o_menor": "E03"
+  },
+  "plantilla": "m.c.d. por listas de divisores"
+ },
+ "NUM.DIVIS.08": {
+  "gen": "t2_criterios",
+  "kw": {
+   "grupo": "avanzado"
+  },
+  "errores": {
+   "ultima_cifra_4": "E01",
+   "seis_media": "E02",
+   "nueve_por_tres": "E03",
+   "once_suma": "E04"
+  },
+  "plantilla": "Criterios de divisibilidad por 4, 6, 9, 11 y 25"
+ },
+ "NUM.DIVIS.09": {
+  "gen": "t2_factorizar",
+  "errores": {
+   "factor_compuesto": "E01",
+   "exponente_mal": "E02",
+   "con_uno": "E03"
+  },
+  "plantilla": "Descomposición en factores primos"
+ },
+ "NUM.DIVIS.10": {
+  "gen": "t2_mcm_mcd_fact",
+  "errores": {
+   "intercambia": "E01",
+   "exponente_mal": "E02",
+   "mcd_no_comunes": "E03",
+   "olvida_no_comun": "E04"
+  },
+  "plantilla": "m.c.m. y m.c.d. por factorización"
+ },
+ "NUM.ENT.01": {
+  "gen": "t2_ent_contexto",
+  "errores": {
+   "signo_contexto": "E01",
+   "cero_con_signo": "E02",
+   "pierde_positivo": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Enteros en contextos cotidianos"
+ },
+ "NUM.ENT.02": {
+  "gen": "t2_ent_recta",
+  "errores": {
+   "lado_contrario": "E01",
+   "cuenta_desde_uno": "E02",
+   "ignora_escala": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Enteros en la recta numérica graduada"
+ },
+ "NUM.ENT.03": {
+  "gen": "t2_ent_comparar",
+  "errores": {
+   "valor_sin_signo": "E01",
+   "cero_menor": "E02",
+   "orden_invertido": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Comparar y ordenar enteros"
+ },
+ "NUM.ENT.04": {
+  "gen": "t2_ent_abs",
+  "errores": {
+   "abs_cambia_signo": "E01",
+   "menos_abs": "E02",
+   "solo_uno": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Opuesto y valor absoluto"
+ },
  "OPER.DIV.01": {
   "gen": "t2_div1",
   "errores": {
@@ -62,6 +203,90 @@
    "resto_igual": "E03"
   },
   "plantilla": "Propiedad fundamental de la división"
+ },
+ "OPER.ENT.01": {
+  "gen": "t2_ent_variacion",
+  "errores": {
+   "resta_sin_cero": "E01",
+   "sentido_contrario": "E02",
+   "cuenta_salida": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Subir y bajar con enteros en contexto"
+ },
+ "OPER.ENT.02": {
+  "gen": "t2_ent_suma",
+  "kw": {
+   "op": "suma"
+  },
+  "errores": {
+   "regla_producto": "E01",
+   "suma_abs": "E02",
+   "signo_primero": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Suma de dos enteros"
+ },
+ "OPER.ENT.03": {
+  "gen": "t2_ent_suma",
+  "kw": {
+   "op": "resta"
+  },
+  "errores": {
+   "no_cambia": "E01",
+   "cambia_ambos": "E02",
+   "resta_al_reves": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Resta de dos enteros"
+ },
+ "OPER.ENT.04": {
+  "gen": "t2_ent_cadena",
+  "errores": {
+   "solo_primero": "E01",
+   "pierde_signo": "E02",
+   "agrupa_mal": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Sumas y restas encadenadas con paréntesis"
+ },
+ "OPER.ENT.05": {
+  "gen": "t2_ent_mult",
+  "errores": {
+   "regla_suma": "E01",
+   "cuenta_negativos": "E02",
+   "signo_primero": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Producto y cociente de enteros"
+ },
+ "OPER.JERARQ.01": {
+  "gen": "jerarquia",
+  "kw": {
+   "nivel": 1,
+   "signo_mult": "×"
+  },
+  "errores": {
+   "e01": "E01",
+   "e02": "E02",
+   "e03": "E03"
+  },
+  "plantilla": "Jerarquía sin paréntesis con naturales"
+ },
+ "OPER.JERARQ.02": {
+  "gen": "jerarquia",
+  "kw": {
+   "nivel": 2,
+   "signo_mult": "·"
+  },
+  "errores": {
+   "e01": "E01",
+   "e02": "E02",
+   "e03": "E03",
+   "e04": "E04",
+   "e05": "E05"
+  },
+  "plantilla": "Operaciones combinadas con paréntesis y corchetes"
  },
  "OPER.MULT.01": {
   "gen": "t2_mult_sentido",

@@ -233,5 +233,321 @@
    "eje_equivocado": "E02"
   },
   "plantilla": "Leer un gráfico de líneas de temperaturas: valor, máximo/mínimo, mayor subida o bajada"
+ },
+ "EST.GRAF.08": {
+  "gen": "t6_sectores",
+  "kw": {},
+  "errores": {
+   "porcentaje_por_cantidad": "E01",
+   "sector_mal_estimado": "E03"
+  },
+  "plantilla": "Diagrama de sectores descrito con fracciones o porcentajes: cuántos datos son de un sector"
+ },
+ "EST.GRAF.09": {
+  "gen": "t6_angulo_sector",
+  "kw": {},
+  "errores": {
+   "cien_grados": "E01",
+   "absoluta_por_360": "E02",
+   "reparto_igual": "E03"
+  },
+  "plantilla": "Ángulo de un sector = f/N · 360° (ángulos enteros)"
+ },
+ "EST.GRAF.10": {
+  "gen": "t6_histograma",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "clase"
+   },
+   "2": {
+    "tipo": [
+     "tramo",
+     "clase"
+    ]
+   },
+   "3": {
+    "tipo": [
+     "exacto",
+     "tramo"
+    ]
+   }
+  },
+  "errores": {
+   "barra_como_valor": "E01",
+   "extremo_mal": "E02",
+   "solo_una_clase": "E03"
+  },
+  "plantilla": "Leer un histograma (descrito barra a barra): una clase, un tramo de varias clases, valores exactos"
+ },
+ "EST.GRAF.12": {
+  "gen": "t6_poligono",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": [
+     "concentra",
+     "forma"
+    ]
+   },
+   "2": {
+    "tipo": "vertice"
+   },
+   "3": {
+    "tipo": [
+     "cierre",
+     "vertice"
+    ]
+   }
+  },
+  "errores": {
+   "barras_separadas": "E01",
+   "poligono_extremos": "E02"
+  },
+  "plantilla": "Histograma y polígono de frecuencias de una tabla agrupada: barras, vértices (marca, f) y cierre"
+ },
+ "EST.GRAF.14": {
+  "gen": "t6_caja",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": [
+     "elemento",
+     "raya"
+    ]
+   },
+   "2": {
+    "tipo": [
+     "ric",
+     "porcentaje"
+    ]
+   },
+   "3": {
+    "tipo": [
+     "comparar",
+     "ric",
+     "porcentaje"
+    ]
+   }
+  },
+  "errores": {
+   "raya_es_media": "E01",
+   "largo_mas_datos": "E02",
+   "ric_por_rango": "E03"
+  },
+  "plantilla": "Leer un diagrama de caja y bigotes (descrito con sus cinco números): elementos, RIC, porcentajes, comparar"
+ },
+ "EST.MEDIDAS.01": {
+  "gen": "t6_moda",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "lista"
+   },
+   "2": {
+    "tipo": [
+     "tabla",
+     "lista"
+    ]
+   },
+   "3": {
+    "tipo": [
+     "bimodal",
+     "tabla"
+    ]
+   }
+  },
+  "errores": {
+   "frecuencia_por_valor": "E01",
+   "mayor_valor": "E02",
+   "una_sola_moda": "E03"
+  },
+  "plantilla": "Moda de una lista o de un recuento (incluido el caso bimodal)"
+ },
+ "EST.MEDIDAS.02": {
+  "gen": "t6_media",
+  "kw": {},
+  "errores": {
+   "divide_mal": "E01",
+   "olvida_dividir": "E02",
+   "dato_central": "E03"
+  },
+  "plantilla": "Media aritmética de 2 a 10 datos naturales o con un decimal"
+ },
+ "EST.MEDIDAS.03": {
+  "gen": "t6_rango",
+  "kw": {},
+  "errores": {
+   "ultimo_menos_primero": "E01",
+   "maximo": "E02",
+   "negativos_mal": "E03"
+  },
+  "plantilla": "Rango = máximo − mínimo de datos desordenados (con decimales o negativos)"
+ },
+ "EST.MEDIDAS.04": {
+  "gen": "t6_media_inversa",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "falta"
+   },
+   "2": {
+    "tipo": [
+     "anadir",
+     "necesita",
+     "falta"
+    ]
+   },
+   "3": {
+    "tipo": [
+     "necesita",
+     "anadir"
+    ]
+   }
+  },
+  "errores": {
+   "promedia_medias": "E01",
+   "olvida_nuevo_n": "E02",
+   "no_detecta_imposible": "E03"
+  },
+  "plantilla": "Suma = media · n: dato que falta, nota necesaria, efecto de añadir un dato"
+ },
+ "EST.MEDIDAS.05": {
+  "gen": "t6_mediana",
+  "kw": {},
+  "errores": {
+   "sin_ordenar": "E01",
+   "un_central": "E02",
+   "media_o_moda": "E03"
+  },
+  "plantilla": "Mediana de una lista (n par o impar, hasta 15 datos)"
+ },
+ "EST.MEDIDAS.06": {
+  "gen": "t6_centrales_tabla",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "moda"
+   },
+   "2": {
+    "tipo": [
+     "media",
+     "moda"
+    ]
+   },
+   "3": {
+    "tipo": [
+     "mediana",
+     "media"
+    ]
+   }
+  },
+  "errores": {
+   "sin_ponderar": "E01",
+   "media_frecuencias": "E02",
+   "mediana_frecuencias": "E03",
+   "moda_frecuencia": "E04"
+  },
+  "plantilla": "Media, mediana y moda de una variable discreta en tabla de frecuencias"
+ },
+ "EST.MEDIDAS.08": {
+  "gen": "t6_cuartiles",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "lista"
+   },
+   "2": {
+    "tipo": [
+     "lista",
+     "percentil"
+    ]
+   },
+   "3": {
+    "tipo": [
+     "tabla",
+     "percentil"
+    ]
+   }
+  },
+  "errores": {
+   "sin_ordenar": "E01",
+   "posicion_por_valor": "E02",
+   "percentil_como_nota": "E03"
+  },
+  "plantilla": "Cuartiles por posición k·N/4 (lista o tabla) y significado de un percentil"
+ },
+ "EST.MEDIDAS.09": {
+  "gen": "t6_agrupados",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "modal"
+   },
+   "2": {
+    "tipo": "media"
+   },
+   "3": {
+    "tipo": [
+     "mediana",
+     "media"
+    ]
+   }
+  },
+  "errores": {
+   "extremo_por_marca": "E01",
+   "modal_central": "E02",
+   "divide_clases": "E03"
+  },
+  "plantilla": "Datos agrupados: media con marcas de clase, clase modal y clase mediana"
+ },
+ "EST.MEDIDAS.10": {
+  "gen": "t6_varianza",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "varianza"
+   },
+   "2": {
+    "tipo": "desviacion"
+   },
+   "3": {
+    "tipo": [
+     "tabla",
+     "desviacion"
+    ]
+   }
+  },
+  "errores": {
+   "sin_cuadrado": "E01",
+   "varianza_por_desviacion": "E02",
+   "sin_restar_media2": "E03",
+   "sin_ponderar": "E04"
+  },
+  "plantilla": "Varianza y desviación típica de pocos datos o de una tabla de frecuencias"
+ },
+ "EST.MEDIDAS.12": {
+  "gen": "t6_cv",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "calcular"
+   },
+   "2": {
+    "tipo": [
+     "calcular",
+     "comparar"
+    ]
+   },
+   "3": {
+    "tipo": "comparar"
+   }
+  },
+  "errores": {
+   "compara_sigma": "E01",
+   "divide_al_reves": "E02",
+   "usa_varianza": "E03"
+  },
+  "plantilla": "Coeficiente de variación σ/x̄ y comparación de la dispersión relativa"
  }
 }

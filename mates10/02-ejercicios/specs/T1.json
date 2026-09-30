@@ -836,5 +836,265 @@
    "E03": "E03"
   },
   "plantilla": "Comparar, ordenar y situar hasta 9 999"
+ },
+ "NUM.ORDINAL.01": {
+  "gen": "t1_ordinal01",
+  "kw_por_dificultad": {
+   "1": {
+    "modos": [
+     "abreviatura",
+     "fila"
+    ]
+   },
+   "2": {
+    "modos": [
+     "fila",
+     "abreviatura"
+    ]
+   },
+   "3": {
+    "modos": [
+     "penultimo",
+     "fila"
+    ]
+   }
+  },
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Ordinales del 1.º al 10.º"
+ },
+ "NUM.ORDINAL.02": {
+  "gen": "t1_ordinal02",
+  "kw_por_dificultad": {
+   "1": {
+    "modos": [
+     "numero_a_nombre",
+     "nombre_a_numero"
+    ]
+   }
+  },
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Ordinales del 11.º al 20.º"
+ },
+ "NUM.ORDINAL.03": {
+  "gen": "t1_ordinal03",
+  "errores": {
+   "E01": "E01",
+   "E02": "E02"
+  },
+  "plantilla": "Ordinales del 21.º al 100.º"
+ },
+ "NUM.PARIDAD.01": {
+  "gen": "t1_paridad01",
+  "kw_por_dificultad": {
+   "1": {
+    "modos": [
+     "parejas"
+    ]
+   },
+   "2": {
+    "modos": [
+     "parejas",
+     "elegir"
+    ]
+   },
+   "3": {
+    "modos": [
+     "elegir"
+    ]
+   }
+  },
+  "errores": {
+   "E01": "E01",
+   "E02": "E02"
+  },
+  "plantilla": "Pares e impares hasta 20 haciendo parejas"
+ },
+ "NUM.PARIDAD.02": {
+  "gen": "t1_paridad02",
+  "kw_por_dificultad": {
+   "1": {
+    "modos": [
+     "clasificar"
+    ]
+   },
+   "3": {
+    "modos": [
+     "clasificar",
+     "siguiente"
+    ]
+   }
+  },
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Par o impar por la última cifra"
+ },
+ "NUM.PARIDAD.03": {
+  "gen": "t1_paridad03",
+  "kw_por_dificultad": {
+   "1": {
+    "modos": [
+     "predecir"
+    ]
+   },
+   "3": {
+    "modos": [
+     "descartar"
+    ]
+   }
+  },
+  "errores": {
+   "E01": "E01",
+   "E02": "E02"
+  },
+  "plantilla": "Paridad de sumas y restas"
+ },
+ "NUM.REDON.01": {
+  "gen": "t1_redon01",
+  "errores": {
+   "E01": "E01",
+   "E02": "E02"
+  },
+  "plantilla": "Estimar el número de objetos de una colección"
+ },
+ "NUM.REDON.02": {
+  "gen": "t1_redon02",
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03",
+   "E04": "E04"
+  },
+  "plantilla": "Redondear números de dos cifras a la decena"
+ },
+ "NUM.REDON.03": {
+  "gen": "t1_redon03",
+  "kw_por_dificultad": {
+   "3": {
+    "arrastre": true
+   }
+  },
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03",
+   "E04": "E04"
+  },
+  "plantilla": "Redondear a la decena y a la centena"
+ },
+ "NUM.REDON.04": {
+  "gen": "t1_redon04",
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Estimar sumas y restas redondeando"
+ },
+ "NUM.REDON.05": {
+  "gen": "t1_redon05",
+  "errores": {
+   "E01": "E01",
+   "E02": "E02"
+  },
+  "plantilla": "Redondear al millar"
+ },
+ "NUM.REDON.06": {
+  "gen": "t1_redon06",
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Estimar productos y cocientes"
+ },
+ "NUM.REDON.07": {
+  "gen": "t1_redon07",
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Redondear números grandes a cualquier orden"
+ },
+ "NUM.REDON.08": {
+  "gen": "t1_redon08",
+  "kw_por_dificultad": {
+   "1": {
+    "modos": [
+     "contexto"
+    ]
+   },
+   "2": {
+    "modos": [
+     "producto",
+     "contexto"
+    ]
+   },
+   "3": {
+    "modos": [
+     "descartar",
+     "producto"
+    ]
+   }
+  },
+  "errores": {
+   "E01": "E01",
+   "E02": "E02"
+  },
+  "plantilla": "Estimar con la precisión adecuada"
+ },
+ "NUM.ROM.01": {
+  "gen": "t1_rom01",
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Romanos hasta 39"
+ },
+ "NUM.ROM.02": {
+  "gen": "t1_rom02",
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Romanos hasta 399"
+ },
+ "NUM.ROM.03": {
+  "gen": "t1_rom03",
+  "kw_por_dificultad": {
+   "1": {
+    "modos": [
+     "a_decimal",
+     "siglo"
+    ]
+   }
+  },
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Romanos hasta 3999"
+ },
+ "NUM.ROM.04": {
+  "gen": "t1_rom04",
+  "errores": {
+   "E01": "E01",
+   "E02": "E02"
+  },
+  "plantilla": "Romanos con raya (mayores que 3999)"
  }
 }

@@ -856,3 +856,550 @@ def gen_decimal_sexag(rng, d, tipo="tiempo", segundos=False):
                  ("", resp, f"Sumo la parte entera: {resp}.")]
     adulto = "La parte decimal es una fracción de hora o grado: 0,5 = media = 30 minutos; 0,25 = 15 minutos. No se lee como minutos (2,5 h ≠ 2 h 5 min) ni se divide entre 100."
     return mk(enun, resp, "t4_decimal_sexag", {"a": a, "f": str(f), "tipo": tipo}, dist, pasos, adulto)
+
+
+# ---------------------------------------------------------------- días, meses, calendario
+
+DIAS = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"]
+MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"]
+DIAS_MES = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+ORD = ["primero", "segundo", "tercero", "cuarto", "quinto", "sexto", "séptimo", "octavo", "noveno", "décimo", "undécimo", "duodécimo"]
+
+
+@generador("t4_ciclico")
+def gen_ciclico(rng, d, lista="dias", desplazamiento_max=2):
+    L = DIAS if lista == "dias" else MESES
+    n = len(L)
+    if lista == "dias":
+        frases = {-2: "¿qué día fue anteayer?", -1: "¿qué día fue ayer?", 1: "¿qué día será mañana?", 2: "¿qué día será pasado mañana?"}
+        opciones = [-1, 1] if d == 1 else [-2, -1, 1, 2]
+        i = rng.randrange(n)
+        if d == 3:
+            i = rng.choice([5, 6, 0, 1])  # cerca del cambio de semana
+        k = rng.choice(opciones)
+        enun = f"Si hoy es {L[i]}, {frases[k]}"
+    else:
+        k = rng.choice([1, -1] if d == 1 else [1, -1, 2, -2, 3, -3][:2 * desplazamiento_max])
+        i = rng.randrange(n)
+        if d == 3:
+            i = rng.choice([9, 10, 11, 0, 1, 2])
+        if abs(k) == 1:
+            enun = f"¿Qué mes va {'justo después de' if k > 0 else 'justo antes de'} {L[i]}?"
+        else:
+            enun = f"¿Qué mes va {['', '', 'dos', 'tres'][abs(k)]} meses {'después' if k > 0 else 'antes'} de {L[i]}?"
+    j = (i + k) % n
+    resp = L[j]
+    sgn = 1 if k > 0 else -1
+    dist = [(L[(i - k) % n], "invierte"), (L[(i + k - sgn) % n] if abs(k) > 1 else None, "cuenta_partida"),
+            ("no hay ninguno" if not (0 <= i + k < n) else None, "no_da_vuelta"), (L[(i + k + sgn) % n], None), (L[(i + 2 * k) % n], None)]
+    pasos = [("contar", resp, f"Parto de {L[i]} y avanzo {abs(k)} {'hacia delante' if k > 0 else 'hacia atrás'} sin contar el de partida"
+              + (f"; después de {L[-1]} vuelve a empezar {L[0]}" if not (0 <= i + k < n) and k > 0 else f"; antes de {L[0]} está {L[-1]}" if not (0 <= i + k < n) else "")
+              + f": {resp}.")]
+    adulto = ("Los días y los meses son cíclicos: después de " + L[-1] + " viene " + L[0] + ". Al contar no se incluye el punto de partida.")
+    return mk(enun, resp, "t4_ciclico", {"i": i, "k": k, "lista": lista}, dist, pasos, adulto, genericos=[x for x in L if x not in (resp, L[i])][:4])
+
+
+@generador("t4_calendario")
+def gen_calendario(rng, d):
+    if d == 1:
+        m = rng.randrange(12)
+        enun = f"¿Cuántos días tiene el mes de {MESES[m]}" + (" de 2025?" if m == 1 else "?")
+        r = DIAS_MES[m]
+        resp = f"{r} días"
+        dist = [(f"{31 if r != 31 else 30} días", "mes_30_31"), (f"{29 if r != 29 else 28} días" if m == 1 else f"{28} días", None),
+                (f"{30 if r == 31 else 31 if r == 28 else 29} días", None), ("30 días" if r != 30 else "29 días", None)]
+        pasos = [("", resp, f"{MESES[m].capitalize()} tiene {r} días" + (" (2025 no es bisiesto)." if m == 1 else ". Truco: contar con los nudillos de la mano."))]
+    elif d == 2:
+        m = rng.randrange(12)
+        a = rng.randint(1, 15)
+        b = rng.randint(a + 3, DIAS_MES[m])
+        r = b - a
+        enun = f"¿Cuántos días hay desde el {a} hasta el {b} de {MESES[m]}?"
+        resp = f"{r} días"
+        dist = [(f"{r + 1} días", "incluye_inicio"), (f"{r - 1} días", None), (f"{a + b} días", None), (f"{r + 2} días", None)]
+        pasos = [(f"{b} − {a}", str(r), f"Resto las fechas: {b} − {a} = {r} días.")]
+    else:
+        m = rng.randrange(11)
+        dm = DIAS_MES[m]
+        a = rng.randint(dm - 8, dm - 1)
+        b = rng.randint(1, 10)
+        r = dm - a + b
+        anyo = " de 2025" if m == 1 else ""
+        enun = f"¿Cuántos días hay desde el {a} de {MESES[m]} hasta el {b} de {MESES[m + 1]}{anyo}?"
+        resp = f"{r} días"
+        otro = 30 if dm == 31 else 31 if dm == 30 else 30
+        dist = [(f"{otro - a + b} días", "mes_30_31"), (f"{r + 1} días", "incluye_inicio"), (f"{abs(b - a)} días", None), (f"{r - 1} días", None)]
+        pasos = [(f"{dm} − {a}", str(dm - a), f"{MESES[m].capitalize()} tiene {dm} días: del {a} al {dm} hay {dm} − {a} = {dm - a} días."),
+                 (f"{dm - a} + {b}", str(r), f"Del {dm} de {MESES[m]} al {b} de {MESES[m + 1]} hay {b} días más. Total: {dm - a} + {b} = {r} días.")]
+    adulto = "Los días entre dos fechas se calculan restando (sin contar el día de salida). Cada mes tiene 30 o 31 días, salvo febrero (28 o 29)."
+    return mk(enun, resp, "t4_calendario", {"d": d}, dist, pasos, adulto)
+
+
+# ---------------------------------------------------------------- equivalencias de tiempo
+
+@generador("t4_equiv_tiempo")
+def gen_equiv_tiempo(rng, d, largas=False):
+    if largas:
+        uds = {"lustro": 5, "década": 10, "siglo": 100, "milenio": 1000}
+        pl = {"lustro": "lustros", "década": "décadas", "siglo": "siglos", "milenio": "milenios"}
+        if d == 1:
+            un = rng.choice(["lustro", "década", "siglo"])
+            n = rng.randint(2, 9)
+            r = n * uds[un]
+            enun = f"¿Cuántos años son {n} {pl[un]}?"
+            otra = {"lustro": 10, "década": 5, "siglo": 10, "milenio": 100}[un]
+            dist = [(f"{n * otra} años", "confunde_lustro_decada" if un in ("lustro", "década") else None), (f"{n} años", "suma_sin_convertir"),
+                    (f"{n * uds[un] * 10} años", None), (f"{n + uds[un]} años", None)]
+            pasos = [(f"{n} × {uds[un]}", str(r), f"Un {un} son {uds[un]} años: {n} × {uds[un]} = {r} años.")]
+        elif d == 2:
+            un = rng.choice(["lustro", "década", "siglo"])
+            n = rng.randint(2, 9)
+            r = n
+            anos = n * uds[un]
+            enun = f"¿{'Cuántas' if un == 'década' else 'Cuántos'} {pl[un]} son {fmt(anos)} años?"
+            otra = {"lustro": 10, "década": 5, "siglo": 10}[un]
+            dist = [(f"{fx(D(anos) / otra)} {pl[un]}", "confunde_lustro_decada" if un != "siglo" else None), (f"{fmt(anos)} {pl[un]}", None),
+                    (f"{n * 10} {pl[un]}", None), (f"{n + 1} {pl[un]}", None)]
+            resp_ = f"{n} {pl[un] if n > 1 else un}"
+            pasos = [(f"{fmt(anos)} : {uds[un]}", str(n), f"Un {un} son {uds[un]} años: {fmt(anos)} : {uds[un]} = {n}.")]
+            ej = mk(enun, resp_, "t4_equiv_tiempo", {"n": n, "un": un}, dist, pasos,
+                    "Lustro = 5 años, década = 10, siglo = 100, milenio = 1000. Confundir lustro y década es el error más frecuente.")
+            return ej
+        else:
+            u1, u2 = rng.sample(["milenio", "siglo", "década", "lustro"], 2)
+            if uds[u1] < uds[u2]:
+                u1, u2 = u2, u1
+            a, b = rng.randint(1, 5), rng.randint(1, 9)
+            r = a * uds[u1] + b * uds[u2]
+            enun = f"¿Cuántos años son {a} {pl[u1] if a > 1 else u1} y {b} {pl[u2] if b > 1 else u2}?"
+            sw = {"lustro": 10, "década": 5}
+            dist = [(f"{a + b} años", "suma_sin_convertir"),
+                    (f"{a * sw.get(u1, uds[u1]) + b * sw.get(u2, uds[u2])} años" if (u1 in sw or u2 in sw) else None, "confunde_lustro_decada"),
+                    (f"{a * uds[u1] + b} años", None), (f"{r + uds[u2]} años", None), (f"{r - uds[u2]} años", None)]
+            pasos = [(f"{a} × {uds[u1]} + {b} × {uds[u2]}", fmt(r), f"{a} × {uds[u1]} = {a * uds[u1]} años y {b} × {uds[u2]} = {b * uds[u2]} años. En total, {fmt(r)} años.")]
+        resp = f"{fmt(r)} años"
+        adulto = "Lustro = 5 años, década = 10, siglo = 100, milenio = 1000. Confundir lustro y década es el error más frecuente."
+        return mk(enun, resp, "t4_equiv_tiempo", {"r": r}, dist, pasos, adulto)
+    eq = [("semanas", "días", 7, 14), ("días", "horas", 24, 4), ("horas", "minutos", 60, 3), ("años", "meses", 12, 8)]
+    if d >= 2:
+        eq += [("cuartos de hora", "minutos", 15, 6), ("medias horas", "minutos", 30, 3)]
+    a, b, f, mx = rng.choice(eq)
+    n = rng.randint(1 if d > 1 else 2, mx)
+    if d == 3 and a in ("semanas", "días", "horas"):
+        extra_unidad = {"semanas": ("días", 1, 6), "días": ("horas", 1, 23), "horas": ("minutos", 5, 55)}[a]
+    r = n * f
+    sing = {"semanas": "semana", "días": "día", "horas": "hora", "años": "año", "cuartos de hora": "cuarto de hora", "medias horas": "media hora"}
+    enun = f"¿{'Cuántas' if b == 'horas' else 'Cuántos'} {b} son {n} {a if n > 1 else sing[a]}?"
+    if a in ("cuartos de hora", "medias horas") and n == 1:
+        enun = f"¿Cuántos minutos son {'un cuarto de hora' if a == 'cuartos de hora' else 'media hora'}?"
+    resp = f"{r} {b}"
+    decimal = {"horas": 100, "días": 10, "semanas": 10, "años": 10, "cuartos de hora": 25, "medias horas": 50}[a]
+    otras = [x for x in (7, 24, 60, 12, 30, 100) if x != f and x != decimal]
+    dist = [(f"{n * decimal} {b}", "decimal"), (f"{n * rng.choice(otras)} {b}", "mezcla"), (f"{r + f} {b}", None), (f"{n + f} {b}", None)]
+    pasos = [(f"{n} × {f}", str(r), f"1 {sing[a]} = {f} {b}. Entonces {n} × {f} = {r} {b}.")]
+    adulto = "El tiempo no va de 10 en 10: 1 semana = 7 días, 1 día = 24 h, 1 h = 60 min, 1 año = 12 meses."
+    return mk(enun, resp, "t4_equiv_tiempo", {"n": n, "f": f}, dist, pasos, adulto)
+
+
+# ---------------------------------------------------------------- reloj de 24 horas
+
+MIN_TXT = {0: "en punto", 15: "y cuarto", 30: "y media", 45: "menos cuarto"}
+
+
+def _periodo(h):
+    if h == 0:
+        return "de la noche"
+    if h < 6:
+        return "de la madrugada"
+    if h < 12:
+        return "de la mañana"
+    if h < 13:
+        return "del mediodía"
+    if h < 21:
+        return "de la tarde"
+    return "de la noche"
+
+
+def _hora12(h):
+    x = h % 12
+    return 12 if x == 0 else x
+
+
+def _decir(h, m):
+    if m <= 30:
+        hh = _hora12(h)
+        art = "la" if hh == 1 else "las"
+        num = "una" if hh == 1 else letras_h(hh)
+        mt = "" if m == 0 else (" y cuarto" if m == 15 else " y media" if m == 30 else f" y {letras_h(m)}")
+        return f"{art} {num}{mt} {_periodo(h)}"
+    hh = _hora12(h + 1)
+    art = "la" if hh == 1 else "las"
+    num = "una" if hh == 1 else letras_h(hh)
+    mt = " menos cuarto" if m == 45 else f" menos {letras_h(60 - m)}"
+    return f"{art} {num}{mt} {_periodo(h)}"
+
+
+def letras_h(n):
+    from .nucleo import letras
+    return letras(n)
+
+
+@generador("t4_reloj24")
+def gen_reloj24(rng, d):
+    mins = {1: [0, 30], 2: [0, 15, 30, 45], 3: [0, 10, 15, 20, 25, 30, 35, 40, 45, 50]}[d]
+    for _ in range(100):
+        h = rng.choice(list(range(13, 21)) + [21, 22]) if d == 1 else rng.randint(0, 23)
+        m = rng.choice(mins)
+        if m > 30 and h in (11, 12, 20, 23, 5):
+            continue  # evita ambigüedad de periodo con «menos»
+        if d < 3 and h in (0, 12):
+            continue
+        if d == 3 and rng.random() < 0.3:
+            h = rng.choice([0, 12])
+            m = rng.choice([10, 20, 30, 15])
+        break
+    txt = _decir(h, m)
+    hh = f"{h:02d}:{m:02d}"
+    if rng.random() < 0.5:
+        enun = f"¿Cómo se dice la hora que marca un reloj digital con {hh}?"
+        resp = txt[0].upper() + txt[1:]
+        cap = lambda s: s[0].upper() + s[1:]
+        d10 = _decir((h - 10) % 24 if h >= 13 else h, m).rsplit(" ", 3)
+        dist = [(cap(_decir(h - 10, m).replace(_periodo(h - 10), _periodo(h))) if 13 <= h <= 21 and m <= 30 else None, "resta_10")]
+        if h in (0, 12):
+            otro = "del mediodía" if h == 0 else "de la noche"
+            dist.append((cap(txt.replace(_periodo(h), otro)), "confunde_12_00"))
+        otros_p = [p for p in ("de la mañana", "de la tarde", "de la noche", "de la madrugada") if p != _periodo(h)]
+        dist += [(cap(txt.replace(_periodo(h), rng.choice(otros_p))), None),
+                 (cap(_decir((h + 1) % 24, m)) if (h + 1) % 24 not in (0, 12) else None, None),
+                 (cap(_decir((h - 2) % 24, m)) if (h - 2) % 24 not in (0, 12) else None, None)]
+    else:
+        enun = f"Son {txt}. ¿Qué marca un reloj digital de 24 horas?"
+        resp = hh
+        h12 = _hora12(h)
+        dist = [(f"{(h12 + 10) % 24:02d}:{m:02d}" if h >= 13 else None, "resta_10"),
+                (f"{12 if h == 0 else 0:02d}:{m:02d}" if h in (0, 12) else None, "confunde_12_00"),
+                (f"{h12:02d}:{m:02d}" if h12 != h else f"{(h + 12) % 24:02d}:{m:02d}", None),
+                (f"{(h + 1) % 24:02d}:{m:02d}", None), (f"{h:02d}:{(m + 15) % 60:02d}", None), (f"{(h - 1) % 24:02d}:{m:02d}", None)]
+    pasos = [("24 h → 12 h", txt, (f"Por la tarde y por la noche se resta 12: {h} − 12 = {h - 12}. " if h > 12 else "")
+              + (f"Las 00:{m:02d} son las doce y pico de la noche (medianoche), y las 12:xx, del mediodía. " if h in (0, 12) else "")
+              + f"{hh} = {txt}.")]
+    adulto = "Para pasar del formato de 24 h al de 12 h se resta 12 a partir de las 13:00. Las 00:xx son medianoche y las 12:xx, mediodía."
+    return mk(enun, resp, "t4_reloj24", {"h": h, "m": m}, dist, pasos, adulto)
+
+
+# ---------------------------------------------------------------- duraciones y horas de inicio/fin
+
+def _dur(mn):
+    h, m = divmod(mn, 60)
+    if h and m:
+        return f"{h} h {m} min"
+    if h:
+        return f"{h} h"
+    return f"{m} min"
+
+
+@generador("t4_duracion")
+def gen_duracion(rng, d, medias=False):
+    for _ in range(200):
+        if medias:
+            h1 = rng.randint(7, 12 if d < 3 else 11)
+            m1 = rng.choice([0, 30]) if d > 1 else 0
+            dur = rng.choice(range(60, 330, 30)) if d > 1 else rng.choice(range(60, 300, 60))
+        else:
+            h1 = rng.randint(7, 18)
+            m1 = rng.randint(0, 59) if d > 1 else rng.choice(range(0, 60, 5))
+            dur = rng.randint(20, 300)
+        ini = h1 * 60 + m1
+        fin = ini + dur
+        h2, m2 = divmod(fin, 60)
+        if h2 >= 23 or dur % 30 and medias:
+            continue
+        if not medias and d >= 2 and m2 >= m1:
+            continue  # que haya que «pedir» una hora
+        if medias and d == 3 and h2 < 13:
+            continue
+        break
+    en12 = medias and d == 3
+    if en12:
+        t1, t2 = _decir(h1, m1), _decir(h2, m2)
+        enun = f"¿Cuánto tiempo pasa desde {t1} hasta {t2}?"
+    else:
+        enun = f"¿Cuánto tiempo pasa desde las {h1}:{m1:02d} hasta las {h2}:{m2:02d}?"
+    resp = _dur(dur)
+    base10 = (h2 * 100 + m2) - (h1 * 100 + m1)
+    dist = [(f"{base10 // 100} h {base10 % 100} min" if base10 % 100 >= 60 else None, "resta_base10")]
+    if not medias:
+        dist.append((_dur((h2 - h1 - 1) * 60 + m2) if m1 > 0 and h2 - h1 - 1 >= 0 else None, "olvida_minutos"))
+    if en12:
+        h2b = _hora12(h2)
+        mal = abs((h2b * 60 + m2) - (h1 * 60 + m1))
+        dist.append((_dur(mal) if mal != dur else None, "no_24h"))
+    dist += [(_dur(dur + 60), None), (_dur(dur - 30) if dur > 30 else None, None), (_dur(dur + 30), None), (_dur(dur - 10) if dur > 10 else None, None)]
+    hasta = 60 - m1 if m1 else 0
+    pasos = [("hasta la hora en punto", _dur(hasta) if hasta else "0 min", (f"De las {h1}:{m1:02d} a las {h1 + 1}:00 van {hasta} min. " if hasta else ""))
+             , ("horas enteras", "", f"De las {h1 + (1 if hasta else 0)}:00 a las {h2}:00 van {h2 - h1 - (1 if hasta else 0)} h, y luego {m2} min más."),
+             ("total", resp, f"En total: {resp}.")]
+    pasos = [(o, r, t) for o, r, t in pasos if t]
+    adulto = "Las horas no se restan como números decimales (una hora tiene 60 minutos). Lo más seguro es contar hacia delante: hasta la hora en punto, horas enteras y minutos finales."
+    return mk(enun, resp, "t4_duracion", {"h1": h1, "m1": m1, "h2": h2, "m2": m2}, dist, pasos, adulto)
+
+
+@generador("t4_hora_fin")
+def gen_hora_fin(rng, d):
+    sentido = rng.choice(["fin", "fin", "inicio"])
+    for _ in range(200):
+        h1, m1 = rng.randint(6, 23), rng.randint(0, 59) if d > 1 else rng.choice(range(0, 60, 5))
+        dh, dm = rng.randint(0, 3), rng.randint(5, 55) if d > 1 else rng.choice(range(5, 60, 5))
+        if dh == 0 and dm < 20:
+            continue
+        ini = h1 * 60 + m1
+        fin = ini + dh * 60 + dm
+        cruza = fin >= 24 * 60
+        if d == 3 and not cruza or d < 3 and cruza:
+            continue
+        if m1 + dm < 60 and d > 1:
+            continue
+        break
+    fin %= 24 * 60
+    h2, m2 = divmod(fin, 60)
+    dur = f"{dh} h {dm} min" if dh else f"{dm} min"
+    if sentido == "fin":
+        enun = f"Una película empieza a las {h1}:{m1:02d} y dura {dur}. ¿A qué hora termina?"
+        resp = f"{h2}:{m2:02d}"
+        dist = [(f"{h1 + dh}:{m1 + dm:02d}" if m1 + dm >= 60 else None, "no_convierte_60"),
+                (f"{h2 + 24}:{m2:02d}" if cruza else None, "no_pasa_24"),
+                (f"{(h2 + 1) % 24}:{m2:02d}", None), (f"{(h2 - 1) % 24}:{m2:02d}", None), (f"{h2}:{(m2 + 10) % 60:02d}", None)]
+        pasos = [(f"{h1}:{m1:02d} + {dur}", "", f"Sumo las horas: {h1} + {dh} = {h1 + dh}. Sumo los minutos: {m1} + {dm} = {m1 + dm}."),
+                 ("60 min = 1 h", resp, (f"Como {m1 + dm} minutos pasan de 60, son 1 hora y {m1 + dm - 60} minutos más. " if m1 + dm >= 60 else "")
+                  + (f"Después de las 23:59 vienen las 0:00, así que termina a las {resp}." if cruza else f"Termina a las {resp}."))]
+    else:
+        enun = f"Un tren llega a las {h2}:{m2:02d} después de un viaje de {dur}. ¿A qué hora salió?"
+        resp = f"{h1}:{m1:02d}"
+        base = (h2 * 100 + m2) - (dh * 100 + dm)
+        dist = [(f"{base // 100}:{base % 100:02d}" if base > 0 and base % 100 >= 60 else None, "no_convierte_60"),
+                (f"{h1 - 24}:{m1:02d}" if h1 >= 24 else None, "no_pasa_24"),
+                (f"{(h1 + 1) % 24}:{m1:02d}", None), (f"{(h1 - 1) % 24}:{m1:02d}", None), (f"{h1}:{(m1 + 10) % 60:02d}", None)]
+        pasos = [(f"{h2}:{m2:02d} − {dur}", resp, f"Resto la duración a la hora de llegada, pidiendo 1 hora (60 minutos) si no llegan los minutos"
+                  + (" y pasando por la medianoche si hace falta" if cruza else "") + f": salió a las {resp}.")]
+    adulto = "Al sumar tiempos, cada 60 minutos forman 1 hora, y después de las 23:59 se vuelve a las 0:00."
+    return mk(enun, resp, "t4_hora_fin", {"h1": h1, "m1": m1, "dh": dh, "dm": dm, "sentido": sentido}, dist, pasos, adulto)
+
+
+# ---------------------------------------------------------------- dinero
+
+def eur_c(cent):
+    e, c = divmod(cent, 100)
+    if e and c:
+        return f"{e} € y {c} c"
+    if e:
+        return f"{e} €"
+    return f"{c} c"
+
+
+def eur_dec(cent):
+    return f"{cent // 100},{cent % 100:02d} €"
+
+
+PIEZA_TXT = {2000: ("billete", "billetes", "20 €"), 1000: ("billete", "billetes", "10 €"), 500: ("billete", "billetes", "5 €"),
+             200: ("moneda", "monedas", "2 €"), 100: ("moneda", "monedas", "1 €"), 50: ("moneda", "monedas", "50 c"),
+             20: ("moneda", "monedas", "20 c"), 10: ("moneda", "monedas", "10 c"), 5: ("moneda", "monedas", "5 c"), 2: ("moneda", "monedas", "2 c"),
+             1: ("moneda", "monedas", "1 c")}
+NUMS = ["", "un", "dos", "tres", "cuatro", "cinco", "seis"]
+
+
+def _piezas_txt(cuenta):
+    partes = []
+    for v, k in sorted(cuenta.items(), key=lambda t: -t[0]):
+        s, p, nom = PIEZA_TXT[v]
+        art = ("un" if s == "billete" else "una") if k == 1 else NUMS[k]
+        partes.append(f"{art} {s if k == 1 else p} de {nom}")
+    return ", ".join(partes[:-1]) + " y " + partes[-1] if len(partes) > 1 else partes[0]
+
+
+@generador("t4_contar_dinero")
+def gen_contar_dinero(rng, d, centimos=False, max_euros=50):
+    for _ in range(200):
+        if centimos:
+            vals = [1000, 500, 200, 100] + [50, 20, 10, 5, 2, 1]
+            nt = 3 if d == 1 else 4
+            elegidas = rng.sample([500, 200, 100, 1000], 1 if d == 1 else rng.randint(1, 2)) + rng.sample([50, 20, 10, 5], nt - 1)
+        else:
+            elegidas = rng.sample([2000, 1000, 500, 200, 100], 2 if d == 1 else 3 if d == 2 else 4)
+        cuenta = {v: rng.randint(1, 2 if d == 1 else 3) for v in elegidas}
+        tot = sum(v * k for v, k in cuenta.items())
+        cc = sum(v * k for v, k in cuenta.items() if v < 100)
+        if tot > max_euros * 100:
+            continue
+        if centimos and (d >= 2 and cc < 100 or cc == 0 or tot % 100 == 0):
+            continue
+        break
+    enun = f"Tengo {_piezas_txt(cuenta)}. ¿Cuánto dinero tengo?"
+    resp = eur_c(tot)
+    npiezas = sum(cuenta.values())
+    if centimos:
+        euros = sum(v * k for v, k in cuenta.items() if v >= 100)
+        dist = [(f"{euros // 100} € y {cc} c" if cc >= 100 else None, "no_convierte_100"),
+                (f"{euros // 100 + sum(v * k for v, k in cuenta.items() if v < 100)} €", "suma_juntos"),
+                (eur_c(tot + 10), None), (eur_c(tot - 10), None), (eur_c(tot + 100), None)]
+    else:
+        dist = [(f"{npiezas} €", "cuenta_piezas"), (eur_c(tot - 100 * cuenta[200]) if 200 in cuenta else None, "monedas2_como_1"),
+                (eur_c(tot + 500), None), (eur_c(tot - 100), None), (eur_c(tot + 100), None)]
+    pasos = [("sumar valores", resp, "Sumo el valor de cada pieza, no el número de piezas: "
+              + " + ".join(f"{k} × {PIEZA_TXT[v][2]}" for v, k in sorted(cuenta.items(), key=lambda t: -t[0]))
+              + (f". Los céntimos suman {cc} c" + (f", que son {cc // 100} € y {cc % 100} c" if cc >= 100 else "") if centimos else "")
+              + f". Total: {resp}.")]
+    adulto = "Se suma el valor de cada moneda o billete. Con céntimos, cada 100 céntimos forman 1 euro."
+    return mk(enun, resp, "t4_contar_dinero", {"cuenta": {str(k): v for k, v in cuenta.items()}, "total_c": tot}, dist, pasos, adulto)
+
+
+@generador("t4_equiv_dinero")
+def gen_equiv_dinero(rng, d):
+    for _ in range(100):
+        if d == 1:
+            pieza = rng.choice([50, 20, 10, 100, 200])
+            total = rng.choice([100, 200, 500])
+        elif d == 2:
+            pieza = rng.choice([500, 1000, 200, 50, 20])
+            total = rng.choice([1000, 2000, 5000, 200, 500])
+        else:
+            pieza = rng.choice([5, 10, 20, 50, 500, 1000, 2000])
+            total = rng.choice([100, 200, 500, 5000, 1000])
+        if pieza < total and total % pieza == 0 and total // pieza <= 50:
+            break
+    r = total // pieza
+    s, p, nom = PIEZA_TXT[pieza]
+    tot_txt = (f"{total // 100} euros" if total > 100 else "1 euro") if total >= 100 else f"{total} céntimos"
+    enun = f"¿Cuántas {p} de {nom.replace(' c', ' céntimos')} hacen {tot_txt}?" if s == "moneda" else f"¿Cuántos {p} de {nom} hacen {tot_txt}?"
+    resp = str(r)
+    dist = [(str(total // 10 // pieza) if pieza < 100 and total // 10 % pieza == 0 and total // 10 // pieza > 0 else None, "euro_10c"),
+            (str(r * 2), None), (str(r // 2) if r % 2 == 0 and r > 2 else str(r + 2), None), (str(r + 1), None), (str(total // 100) if total >= 100 and total // 100 != r else None, None)]
+    pasos = [(f"{total} : {pieza}", str(r), ("1 € = 100 céntimos. " if pieza < 100 else "") + f"Paso todo a céntimos: {total} c : {pieza} c = {r}.")]
+    adulto = "1 € = 100 céntimos. Para saber cuántas piezas equivalen a una cantidad se divide la cantidad entre el valor de cada pieza, en la misma unidad."
+    return mk(enun, resp, "t4_equiv_dinero", {"pieza": pieza, "total": total}, dist, pasos, adulto, genericos=var_num(r))
+
+
+@generador("t4_vuelta")
+def gen_vuelta(rng, d):
+    for _ in range(100):
+        precio = rng.randint(100, 1900 if d < 3 else 4900)
+        if d == 1:
+            precio = precio // 10 * 10
+        pagos = [x for x in (500, 1000, 2000, 5000, 10000) if x > precio]
+        pago = pagos[0] if d < 3 else rng.choice(pagos[:2])
+        if precio % 100:
+            break
+    r = pago - precio
+    enun = f"{rng.choice(NOMBRES)} paga con {pago // 100} € algo que cuesta {eur_c(precio)}. ¿Cuánto le devuelven?"
+    resp = eur_c(r)
+    e_mal = pago // 100 - precio // 100
+    dist = [(f"{e_mal} € y {precio % 100} c", "resta_sin_pedir"), (eur_c(precio), "da_precio"),
+            (f"{e_mal} € y {100 - precio % 100} c", "olvida_euro"), (eur_c(r + 100), None), (eur_c(r + 10), None)]
+    pasos = [(f"{eur_c(precio)} → {eur_c(precio + (100 - precio % 100))}", f"{100 - precio % 100} c", f"Cuento hacia delante: de {eur_c(precio)} a {eur_c(precio + (100 - precio % 100))} van {100 - precio % 100} c."),
+             (f"→ {pago // 100} €", f"{(pago - precio - (100 - precio % 100)) // 100} €", f"De {eur_c(precio + (100 - precio % 100))} a {pago // 100} € van {(pago - precio - (100 - precio % 100)) // 100} €."),
+             ("", resp, f"La vuelta es {resp}.")]
+    adulto = "La vuelta es lo pagado menos el precio. Contar hacia delante desde el precio (como en las tiendas) evita el error de restar los céntimos sin pedir un euro."
+    return mk(enun, resp, "t4_vuelta", {"precio": precio, "pago": pago}, dist, pasos, adulto)
+
+
+@generador("t4_dinero_decimal")
+def gen_dinero_decimal(rng, d):
+    tipo = rng.choice(["ec_a_dec", "dec_a_c"] if d == 1 else ["ec_a_dec", "c_a_dec", "dec_a_c"] if d == 2 else ["comparar", "ec_a_dec", "comparar"])
+    e = rng.randint(1, 30 if d < 3 else 500)
+    c = rng.randint(1, 9) if (tipo == "ec_a_dec" and rng.random() < 0.6) else rng.randint(10, 99)
+    cent = e * 100 + c
+    if tipo == "ec_a_dec":
+        enun = f"¿Cómo se escribe con coma {e} € y {c} céntimos?"
+        resp = eur_dec(cent)
+        dist = [(f"{e},{c} €" if c < 10 else f"{e},{c // 10} €", "olvida_cero" if c < 10 else None), (f"{e * 100 + c} €", None),
+                (f"{e},{c:02d}0 €" if c % 10 else f"{e + 1},{c:02d} €", None), (f"{c},{e:02d} €" if e < 100 else None, None), (f"{e + 1},{c:02d} €", None)]
+        pasos = [("", resp, f"Los euros van delante de la coma y los céntimos detrás, siempre con dos cifras: {c} c → {c:02d}. {resp}.")]
+    elif tipo == "c_a_dec":
+        enun = f"¿Cuántos euros son {cent} céntimos? Escríbelo con coma."
+        resp = eur_dec(cent)
+        dist = [(f"{fx(D(cent) / 10)} €", None), (f"{cent} €", None), (f"{e},{c % 10 if c % 10 else c // 10} €" if c >= 10 else f"{e},{c} €", None),
+                (f"{fx(D(cent) / 1000)} €", None)]
+        pasos = [(f"{cent} : 100", resp, f"100 céntimos = 1 €: {cent} c = {e} € y {c} c = {resp}.")]
+    elif tipo == "dec_a_c":
+        enun = f"¿Cuántos céntimos son {eur_dec(cent)}?"
+        resp = f"{fmt(cent)} c"
+        dist = [(f"{e + c} c", None), (f"{fmt(cent * 10)} c", None), (f"{fx(D(cent) / 10)} c", None), (f"{fmt(e * 10 + c)} c" if c < 10 else f"{fmt(e * 1000 + c)} c", None)]
+        pasos = [(f"{eur_dec(cent)} × 100", str(cent), f"Cada euro son 100 céntimos: {e} € = {e * 100} c, más {c} c = {cent} c.")]
+    else:
+        e = rng.randint(1, 20)
+        cs = rng.sample([5, 50, 15, 45, 9, 90, 25, 8, 80, 55], 4)
+        precios = [e * 100 + x for x in cs]
+        mayor = max(precios)
+        enun = "¿Cuál es el precio más caro: " + ", ".join(eur_dec(p) for p in precios) + "?"
+        resp = eur_dec(mayor)
+        por_cifras = max(precios, key=lambda p: int(str(p % 100).rstrip("0") or 0) if p % 100 >= 10 else p % 100 * 1)
+        dist = [(eur_dec(por_cifras) if por_cifras != mayor else None, "compara_cifras")] + [(eur_dec(p), None) for p in sorted(precios)]
+        pasos = [("comparar céntimos", resp, f"Los euros son iguales ({e} €); comparo los céntimos con dos cifras: " + ", ".join(f"{p % 100:02d}" for p in precios) + f". El mayor es {resp}.")]
+    adulto = "Los céntimos ocupan siempre dos cifras tras la coma: 7 € y 5 c = 7,05 € (no 7,5 €, que son 7 € y 50 c)."
+    return mk(enun, resp, "t4_dinero_decimal", {"tipo": tipo, "cent": cent}, dist, pasos, adulto)
+
+
+@generador("t4_precio_unidad")
+def gen_precio_unidad(rng, d):
+    tipo = rng.choice(["por_n", "entre_n"] if d < 3 else ["oferta", "oferta", "entre_n"])
+    prod = rng.choice([("cuaderno", "cuadernos", "Un", "uno"), ("yogur", "yogures", "Un", "uno"), ("bolígrafo", "bolígrafos", "Un", "uno"),
+                       ("lata de atún", "latas de atún", "Una", "una"), ("zumo", "zumos", "Un", "uno")])
+    n = rng.randint(2, 9 if d > 1 else 5)
+    pu = rng.randint(15, 299 if d > 1 else 150)
+    if d == 1:
+        pu = pu // 5 * 5
+    tot = pu * n
+    if tipo == "por_n":
+        enun = f"{prod[2]} {prod[0]} cuesta {eur_dec(pu)}. ¿Cuánto cuestan {n} {prod[1]}?"
+        resp = eur_dec(tot)
+        dist = [(f"{fx(D(tot) / 10)} €", "coma_mal"), (f"{fx(D(tot) / 1000)} €", "coma_mal"), (eur_dec(pu + n * 100 if pu > 100 else pu + n), None),
+                (eur_dec(tot + pu), None), (eur_dec(tot - pu), None)]
+        pasos = [(f"{eur_dec(pu)} × {n}", resp, f"Multiplico el precio de uno por {n}: {fx(D(pu) / 100)} × {n} = {fx(D(tot) / 100)}. Pongo dos cifras de céntimos: {resp}.")]
+    elif tipo == "entre_n":
+        enun = f"{n} {prod[1]} cuestan {eur_dec(tot)} en total. ¿Cuánto cuesta cada {prod[3]}?"
+        resp = eur_dec(pu)
+        dist = [(f"{fx(D(pu) / 10)} €", "coma_mal"), (f"{fx(D(pu) * 10 / 100)} €", "coma_mal"), (eur_dec(tot - n), None), (eur_dec(pu + 10), None), (eur_dec(pu - 5) if pu > 5 else None, None)]
+        pasos = [(f"{eur_dec(tot)} : {n}", resp, f"Reparto el total entre {n}: {fx(D(tot) / 100)} : {n} = {fx(D(pu) / 100)} €, es decir, {resp}.")]
+    else:
+        n = rng.choice([4, 6, 8, 10, 12])
+        pu_pack = rng.randint(20, 90)
+        suelto = pu_pack + rng.choice([-6, -4, -3, 3, 4, 6, 8])
+        tot = pu_pack * n
+        enun = f"Un pack de {n} {prod[1]} cuesta {eur_dec(tot)} y {prod[2].lower()} {prod[0]} {'suelta' if prod[3] == 'una' else 'suelto'} cuesta {eur_dec(suelto)}. ¿Qué sale más barato por unidad?"
+        barato_pack = pu_pack < suelto
+        resp = f"El pack ({eur_dec(pu_pack)} cada uno)" if barato_pack else f"El suelto ({eur_dec(suelto)} frente a {eur_dec(pu_pack)} en el pack)"
+        dist = [(f"El suelto ({eur_dec(suelto)} es menos que {eur_dec(tot)})" if barato_pack else None, "compara_total"),
+                (f"El suelto ({eur_dec(suelto)} frente a {eur_dec(pu_pack)} en el pack)" if barato_pack else f"El pack ({eur_dec(pu_pack)} cada uno)", None),
+                ("Cuestan lo mismo por unidad", None), (f"El pack ({fx(D(pu_pack) / 10)} € cada uno)", "coma_mal")]
+        pasos = [(f"{eur_dec(tot)} : {n}", eur_dec(pu_pack), f"Precio por unidad del pack: {eur_dec(tot)} : {n} = {eur_dec(pu_pack)}."),
+                 ("comparar", resp, f"Comparo precios por unidad: {eur_dec(pu_pack)} (pack) y {eur_dec(suelto)} (suelto). Sale más barato {resp[0].lower() + resp[1:]}.")]
+    adulto = "Para comparar ofertas hay que calcular el precio por unidad; comparar el precio total del pack con el de una unidad suelta es el error típico."
+    return mk(enun, resp, "t4_precio_unidad", {"tipo": tipo, "n": n}, dist, pasos, adulto, genericos=var_num(D(pu) / 100, "€", pasos=(D("0.1"), D("-0.1"), 1)) if tipo != "oferta" else [])
+
+
+# ---------------------------------------------------------------- el grado: recto, llano, completo
+
+@generador("t4_grados_ref")
+def gen_grados_ref(rng, d):
+    casos1 = [("¿Cuántos grados mide un ángulo recto?", 90, "recto"), ("¿Cuántos grados mide un ángulo llano?", 180, "llano"),
+              ("¿Cuántos grados mide un ángulo completo?", 360, "completo")]
+    casos2 = [("¿Cuántos grados son dos ángulos rectos?", 180, "x2"), ("¿Cuántos grados son tres ángulos rectos?", 270, "x3"),
+              ("¿Cuántos grados mide la mitad de un ángulo recto?", 45, "mitad_recto"), ("¿Cuántos grados mide la mitad de un ángulo llano?", 90, "mitad_llano"),
+              ("¿Cuántos grados mide la mitad de un ángulo completo?", 180, "mitad_completo")]
+    casos3 = [("¿Cuántos ángulos rectos caben en un ángulo completo?", 4, "rectos_completo"), ("¿Cuántos ángulos rectos caben en un ángulo llano?", 2, "rectos_llano"),
+              ("¿Cuántos grados mide la cuarta parte de un ángulo completo?", 90, "cuarto_completo"), ("¿Cuántos grados mide la mitad de un ángulo recto?", 45, "mitad_recto"),
+              ("¿Cuántos grados son tres ángulos rectos?", 270, "x3"), ("¿Cuántos grados le faltan a un ángulo llano para ser completo?", 180, "falta")]
+    enun, r, clave = rng.choice({1: casos1, 2: casos2, 3: casos3}[d])
+    g = "°" if clave not in ("rectos_completo", "rectos_llano") else ""
+    resp = f"{r}{g}"
+    recto_100 = {"recto": 100, "x2": 200, "x3": 300, "mitad_recto": 50, "rectos_completo": None, "rectos_llano": None, "cuarto_completo": None,
+                 "mitad_llano": 90, "mitad_completo": 180, "llano": 200, "completo": 400, "falta": None}
+    swap = {"llano": 360, "completo": 180, "mitad_llano": 180, "mitad_completo": 90, "rectos_llano": 4, "rectos_completo": 2, "cuarto_completo": 45, "falta": 360}
+    dist = [(f"{swap[clave]}{g}" if clave in swap else None, "llano_completo"),
+            (f"{recto_100[clave]}{g}" if recto_100.get(clave) and recto_100[clave] != r else None, "recto_100")]
+    otros = [x for x in ([45, 90, 180, 270, 360] if g else [1, 2, 3, 4, 6]) if x != r]
+    rng.shuffle(otros)
+    dist += [(f"{x}{g}", None) for x in otros]
+    pasos = [("referencias", resp, "Recto = 90°, llano = 180° (dos rectos), completo = 360° (cuatro rectos). " + f"Por tanto, la respuesta es {resp}.")]
+    adulto = "Referencias: recto 90°, llano 180°, completo 360°. Los grados no van de 100 en 100."
+    return mk(enun, resp, "t4_grados_ref", {"clave": clave}, dist, pasos, adulto)

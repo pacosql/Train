@@ -1,0 +1,154 @@
+{
+ "ALG.COMPUT.01": {
+  "gen": "t5_cuadricula",
+  "errores": {
+   "izq_der": "E01",
+   "salta": "E02",
+   "cuenta_salida": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Casilla de llegada tras 2–6 flechas en una cuadrícula 5×5"
+ },
+ "ALG.COMPUT.03": {
+  "gen": "t5_cuadricula_error",
+  "errores": {
+   "senala_ultima": "E01",
+   "opuesta": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Localizar y corregir la flecha equivocada de un programa"
+ },
+ "ALG.COMPUT.04": {
+  "gen": "t5_bucle",
+  "errores": {
+   "una_vez": "E01",
+   "solo_ultima": "E02",
+   "vuelta_de_mas": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Posición final tras 'repite n veces [bloque]'"
+ },
+ "ALG.COMPUT.05": {
+  "gen": "t5_maquina",
+  "errores": {
+   "deshace_mismo_orden": "E01",
+   "no_invierte": "E02",
+   "orden_directo_cambiado": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Máquina de 1–2 operaciones: salida o entrada"
+ },
+ "ALG.COMPUT.06": {
+  "gen": "t5_condicional",
+  "errores": {
+   "dos_ramas": "E01",
+   "rama_equivocada": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Algoritmo con si… entonces… si no"
+ },
+ "ALG.COMPUT.07": {
+  "gen": "t5_contador",
+  "errores": {
+   "no_actualiza": "E01",
+   "cond_una_vez": "E02",
+   "vueltas_mal": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Trazar bucle con condición y contador"
+ },
+ "ALG.COMPUT.08": {
+  "gen": "t5_pseudocodigo",
+  "errores": {
+   "limite_bucle": "E01",
+   "no_acumula": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Trazar pseudocódigo con acumulador"
+ },
+ "ALG.EC1.01": {
+  "gen": "t5_hueco_suma",
+  "errores": {
+   "opera_visibles": "E01",
+   "hueco_resultado": "E02",
+   "igual_al_reves": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Hueco en suma o resta hasta 20"
+ },
+ "ALG.EC1.02": {
+  "gen": "t5_hueco_mult",
+  "errores": {
+   "copia_lado": "E01",
+   "multiplica": "E02",
+   "divide_al_reves": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Hueco con × o : o con operaciones en los dos lados"
+ },
+ "ALG.EC1.03": {
+  "gen": "t5_letra",
+  "errores": {
+   "orden_directo": "E01",
+   "pegado": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Valor de la letra en igualdades de 1–2 pasos"
+ },
+ "ALG.EC1.04": {
+  "gen": "t5_ec_comprobar",
+  "errores": {
+   "un_miembro": "E01",
+   "signo_negativo": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Elementos de una ecuación y comprobar soluciones"
+ },
+ "ALG.EC1.05": {
+  "gen": "t5_ec1_simple",
+  "errores": {
+   "sin_cambiar_signo": "E01",
+   "coef_restando": "E02",
+   "signo_coeficiente": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "x + a = b, ax = b, ax + b = c"
+ },
+ "ALG.EC1.06": {
+  "gen": "t5_ec1_dos_miembros",
+  "errores": {
+   "sin_cambiar_signo": "E01",
+   "divide_mal": "E02",
+   "deja_x": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Incógnita en los dos miembros"
+ },
+ "ALG.EC1.07": {
+  "gen": "t5_ec1_parentesis",
+  "errores": {
+   "distributiva_incompleta": "E01",
+   "menos_delante": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Ecuaciones con paréntesis"
+ },
+ "ALG.EC1.08": {
+  "gen": "t5_ec1_denominadores",
+  "errores": {
+   "solo_con_denominador": "E01",
+   "raya_ignorada": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Ecuaciones con denominadores"
+ },
+ "ALG.EC1.09": {
+  "gen": "t5_ec1_casos",
+  "errores": {
+   "x_cero": "E01",
+   "identidad_sin_solucion": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Ecuaciones sin solución o con infinitas"
+ }
+}

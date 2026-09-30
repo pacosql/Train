@@ -31,5 +31,21 @@
   "MED.ANG.03": {"gen": "t4_sexag", "kw": {"tipo": "angulo"}, "errores": {"factor_100": "E01", "divide_una_vez": "E02"}, "plantilla": "Ángulos: forma compleja e incompleja"},
   "MED.ANG.04": {"gen": "t4_sexag_op", "kw": {"tipo": "angulo", "p_ref": 0.35}, "errores": {"sin_prestar": "E01", "presta_100": "E02"}, "plantilla": "Sumar y restar ángulos"},
   "MED.ANG.05": {"gen": "t4_sexag_multdiv", "kw": {"tipo": "angulo", "factor_max": 12}, "errores": {"pierde_resto": "E01", "no_reagrupa": "E02"}, "plantilla": "Multiplicar y dividir ángulos"},
-  "MED.ANG.06": {"gen": "t4_decimal_sexag", "kw": {"tipo": "angulo", "segundos": true}, "errores": {"decimales_como_min": "E01", "min_entre_100": "E02"}, "plantilla": "Grados decimales ↔ sexagesimales"}
+  "MED.ANG.06": {"gen": "t4_decimal_sexag", "kw": {"tipo": "angulo", "segundos": true}, "errores": {"decimales_como_min": "E01", "min_entre_100": "E02"}, "plantilla": "Grados decimales ↔ sexagesimales"},
+  "MED.TIEMPO.01": {"gen": "t4_ciclico", "kw": {"lista": "dias", "desplazamiento_max": 2}, "errores": {"invierte": "E01", "no_da_vuelta": "E02", "cuenta_partida": "E03"}, "plantilla": "Días de la semana: ayer, hoy y mañana"},
+  "MED.TIEMPO.02": {"gen": "t4_ciclico", "kw": {"lista": "meses", "desplazamiento_max": 3}, "errores": {"no_da_vuelta": "E01", "cuenta_partida": "E02"}, "plantilla": "Meses: anterior y siguiente"},
+  "MED.TIEMPO.04": {"gen": "t4_equiv_tiempo", "kw": {}, "errores": {"decimal": "E01", "mezcla": "E02"}, "plantilla": "Equivalencias básicas de tiempo"},
+  "MED.TIEMPO.05": {"gen": "t4_calendario", "kw": {}, "errores": {"mes_30_31": "E01", "incluye_inicio": "E02"}, "plantilla": "Calendario: días de cada mes y días entre fechas"},
+  "MED.TIEMPO.08": {"gen": "t4_reloj24", "kw": {}, "errores": {"resta_10": "E01", "confunde_12_00": "E02"}, "plantilla": "Reloj de 24 horas"},
+  "MED.TIEMPO.09": {"gen": "t4_equiv_tiempo", "kw": {"largas": true}, "errores": {"confunde_lustro_decada": "E01", "suma_sin_convertir": "E02"}, "plantilla": "Lustro, década, siglo y milenio"},
+  "MED.TIEMPO.10": {"gen": "t4_duracion", "kw": {"medias": true}, "errores": {"resta_base10": "E01", "no_24h": "E02"}, "plantilla": "Duración entre horas en punto o medias"},
+  "MED.TIEMPO.11": {"gen": "t4_duracion", "kw": {"medias": false}, "errores": {"resta_base10": "E01", "olvida_minutos": "E02"}, "plantilla": "Duración entre dos horas con minutos"},
+  "MED.TIEMPO.12": {"gen": "t4_hora_fin", "kw": {}, "errores": {"no_convierte_60": "E01", "no_pasa_24": "E02"}, "plantilla": "Hora de fin o de inicio"},
+  "MED.DINERO.02": {"gen": "t4_contar_dinero", "kw": {"centimos": false, "max_euros": 50}, "errores": {"cuenta_piezas": "E01", "monedas2_como_1": "E02"}, "plantilla": "Contar dinero sin céntimos"},
+  "MED.DINERO.03": {"gen": "t4_equiv_dinero", "kw": {}, "errores": {"euro_10c": "E01"}, "plantilla": "Equivalencias entre monedas y billetes"},
+  "MED.DINERO.04": {"gen": "t4_contar_dinero", "kw": {"centimos": true, "max_euros": 100}, "errores": {"no_convierte_100": "E01", "suma_juntos": "E02"}, "plantilla": "Contar dinero con euros y céntimos"},
+  "MED.DINERO.05": {"gen": "t4_vuelta", "kw": {}, "errores": {"resta_sin_pedir": "E01", "da_precio": "E02"}, "plantilla": "Calcular la vuelta"},
+  "MED.DINERO.06": {"gen": "t4_dinero_decimal", "kw": {}, "errores": {"olvida_cero": "E01", "compara_cifras": "E02"}, "plantilla": "Escritura decimal del dinero"},
+  "MED.DINERO.07": {"gen": "t4_precio_unidad", "kw": {}, "errores": {"coma_mal": "E01", "compara_total": "E02"}, "plantilla": "Precio de varias unidades y por unidad"},
+  "MED.ANG.01": {"gen": "t4_grados_ref", "kw": {}, "errores": {"llano_completo": "E01", "recto_100": "E02"}, "plantilla": "Recto, llano y completo en grados"}
 }

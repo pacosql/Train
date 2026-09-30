@@ -1,0 +1,1382 @@
+{
+ "habilidad": "PROB.PROP.05",
+ "generado_por": "claude (skill mates10-generar-ejercicios v1)",
+ "ejercicios": [
+  {
+   "dificultad": 1,
+   "enunciado": "Nico ingresa 4000 € en el banco al 5 % de interés simple anual durante 3 años. ¿Cuánto dinero gana en intereses?",
+   "respuesta": "600 €",
+   "distractores": [
+    {
+     "valor": "200 €",
+     "error": "E01"
+    },
+    {
+     "valor": "4600 €",
+     "error": "E02"
+    },
+    {
+     "valor": "4015 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "4000 × 5 × 3 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "En un año se gana el 5 % de 4000 €: 4000 × 5 : 100 = 200 €. Como son 3 años, multiplica: 200 × 3 = 600 €. Esos son los intereses (no el dinero total).",
+   "explicacion_adulto": "Está aprendiendo a calcular el interés simple: cada año el capital produce el mismo interés (C × r : 100) y se multiplica por los años. Los fallos típicos son olvidar los años, confundir interés con capital final o usar el porcentaje como si fueran euros. Pídale que calcule primero el interés de un solo año.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "4000 × 5 : 100",
+     "resultado": "200 €",
+     "texto": "Interés de un año."
+    },
+    {
+     "paso": 2,
+     "operacion": "200 × 3",
+     "resultado": "600 €",
+     "texto": "Interés de los 3 años."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un banco paga un 3 % anual de interés simple. Unai deja allí 2000 € durante 2 años. ¿Cuánto dinero tendrá al final?",
+   "respuesta": "2120 €",
+   "distractores": [
+    {
+     "valor": "2060 €",
+     "error": "E01"
+    },
+    {
+     "valor": "120 €",
+     "error": "E02"
+    },
+    {
+     "valor": "2006 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "2000 + 2000 × 3 × 2 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Primero los intereses: en un año, 2000 × 3 : 100 = 60 €; en 2 años, 60 × 2 = 120 €. Después súmalos al dinero inicial: 2000 + 120 = 2120 €.",
+   "explicacion_adulto": "Está aprendiendo a calcular el interés simple: cada año el capital produce el mismo interés (C × r : 100) y se multiplica por los años. Los fallos típicos son olvidar los años, confundir interés con capital final o usar el porcentaje como si fueran euros. Pídale que calcule primero el interés de un solo año.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "2000 × 3 : 100",
+     "resultado": "60 €",
+     "texto": "Interés de un año."
+    },
+    {
+     "paso": 2,
+     "operacion": "60 × 2",
+     "resultado": "120 €",
+     "texto": "Interés de los 2 años."
+    },
+    {
+     "paso": 3,
+     "operacion": "2000 + 120",
+     "resultado": "2120 €",
+     "texto": "Capital final = capital + intereses."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Una familia pide un préstamo de 500 € al 5 % de interés simple anual y lo devuelve en 3 años. ¿Cuántos euros de intereses pagará?",
+   "respuesta": "75 €",
+   "distractores": [
+    {
+     "valor": "25 €",
+     "error": "E01"
+    },
+    {
+     "valor": "575 €",
+     "error": "E02"
+    },
+    {
+     "valor": "515 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "500 × 5 × 3 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "En un año se gana el 5 % de 500 €: 500 × 5 : 100 = 25 €. Como son 3 años, multiplica: 25 × 3 = 75 €. Esos son los intereses (no el dinero total).",
+   "explicacion_adulto": "Está aprendiendo a calcular el interés simple: cada año el capital produce el mismo interés (C × r : 100) y se multiplica por los años. Los fallos típicos son olvidar los años, confundir interés con capital final o usar el porcentaje como si fueran euros. Pídale que calcule primero el interés de un solo año.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "500 × 5 : 100",
+     "resultado": "25 €",
+     "texto": "Interés de un año."
+    },
+    {
+     "paso": 2,
+     "operacion": "25 × 3",
+     "resultado": "75 €",
+     "texto": "Interés de los 3 años."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un club deportivo guarda 5000 € en un depósito al 4 % anual, sin sumar los intereses al capital, durante 3 años. ¿Cuánto dinero tendrá al final?",
+   "respuesta": "5600 €",
+   "distractores": [
+    {
+     "valor": "5200 €",
+     "error": "E01"
+    },
+    {
+     "valor": "600 €",
+     "error": "E02"
+    },
+    {
+     "valor": "5012 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "5000 + 5000 × 4 × 3 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Primero los intereses: en un año, 5000 × 4 : 100 = 200 €; en 3 años, 200 × 3 = 600 €. Después súmalos al dinero inicial: 5000 + 600 = 5600 €.",
+   "explicacion_adulto": "Está aprendiendo a calcular el interés simple: cada año el capital produce el mismo interés (C × r : 100) y se multiplica por los años. Los fallos típicos son olvidar los años, confundir interés con capital final o usar el porcentaje como si fueran euros. Pídale que calcule primero el interés de un solo año.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "5000 × 4 : 100",
+     "resultado": "200 €",
+     "texto": "Interés de un año."
+    },
+    {
+     "paso": 2,
+     "operacion": "200 × 3",
+     "resultado": "600 €",
+     "texto": "Interés de los 3 años."
+    },
+    {
+     "paso": 3,
+     "operacion": "5000 + 600",
+     "resultado": "5600 €",
+     "texto": "Capital final = capital + intereses."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Martín ingresa 5000 € en el banco al 4 % de interés simple anual durante 2 años. ¿Cuánto dinero tendrá al final?",
+   "respuesta": "5400 €",
+   "distractores": [
+    {
+     "valor": "5200 €",
+     "error": "E01"
+    },
+    {
+     "valor": "400 €",
+     "error": "E02"
+    },
+    {
+     "valor": "5008 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "5000 + 5000 × 4 × 2 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Primero los intereses: en un año, 5000 × 4 : 100 = 200 €; en 2 años, 200 × 2 = 400 €. Después súmalos al dinero inicial: 5000 + 400 = 5400 €.",
+   "explicacion_adulto": "Está aprendiendo a calcular el interés simple: cada año el capital produce el mismo interés (C × r : 100) y se multiplica por los años. Los fallos típicos son olvidar los años, confundir interés con capital final o usar el porcentaje como si fueran euros. Pídale que calcule primero el interés de un solo año.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "5000 × 4 : 100",
+     "resultado": "200 €",
+     "texto": "Interés de un año."
+    },
+    {
+     "paso": 2,
+     "operacion": "200 × 2",
+     "resultado": "400 €",
+     "texto": "Interés de los 2 años."
+    },
+    {
+     "paso": 3,
+     "operacion": "5000 + 400",
+     "resultado": "5400 €",
+     "texto": "Capital final = capital + intereses."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un banco paga un 4 % anual de interés simple. Lucía deja allí 2000 € durante 2 años. ¿Cuánto dinero gana en intereses?",
+   "respuesta": "160 €",
+   "distractores": [
+    {
+     "valor": "80 €",
+     "error": "E01"
+    },
+    {
+     "valor": "2160 €",
+     "error": "E02"
+    },
+    {
+     "valor": "2008 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "2000 × 4 × 2 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "En un año se gana el 4 % de 2000 €: 2000 × 4 : 100 = 80 €. Como son 2 años, multiplica: 80 × 2 = 160 €. Esos son los intereses (no el dinero total).",
+   "explicacion_adulto": "Está aprendiendo a calcular el interés simple: cada año el capital produce el mismo interés (C × r : 100) y se multiplica por los años. Los fallos típicos son olvidar los años, confundir interés con capital final o usar el porcentaje como si fueran euros. Pídale que calcule primero el interés de un solo año.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "2000 × 4 : 100",
+     "resultado": "80 €",
+     "texto": "Interés de un año."
+    },
+    {
+     "paso": 2,
+     "operacion": "80 × 2",
+     "resultado": "160 €",
+     "texto": "Interés de los 2 años."
+    }
+   ],
+   "plantilla": "P06"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Daniel ingresa 3000 € en el banco al 5 % de interés simple anual durante 2 años. ¿Cuánto dinero gana en intereses?",
+   "respuesta": "300 €",
+   "distractores": [
+    {
+     "valor": "150 €",
+     "error": "E01"
+    },
+    {
+     "valor": "3300 €",
+     "error": "E02"
+    },
+    {
+     "valor": "3010 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "3000 × 5 × 2 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "En un año se gana el 5 % de 3000 €: 3000 × 5 : 100 = 150 €. Como son 2 años, multiplica: 150 × 2 = 300 €. Esos son los intereses (no el dinero total).",
+   "explicacion_adulto": "Está aprendiendo a calcular el interés simple: cada año el capital produce el mismo interés (C × r : 100) y se multiplica por los años. Los fallos típicos son olvidar los años, confundir interés con capital final o usar el porcentaje como si fueran euros. Pídale que calcule primero el interés de un solo año.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "3000 × 5 : 100",
+     "resultado": "150 €",
+     "texto": "Interés de un año."
+    },
+    {
+     "paso": 2,
+     "operacion": "150 × 2",
+     "resultado": "300 €",
+     "texto": "Interés de los 2 años."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un banco paga un 2 % anual de interés simple. Mateo deja allí 500 € durante 3 años. ¿Cuánto dinero tendrá al final?",
+   "respuesta": "530 €",
+   "distractores": [
+    {
+     "valor": "510 €",
+     "error": "E01"
+    },
+    {
+     "valor": "30 €",
+     "error": "E02"
+    },
+    {
+     "valor": "506 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "500 + 500 × 2 × 3 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Primero los intereses: en un año, 500 × 2 : 100 = 10 €; en 3 años, 10 × 3 = 30 €. Después súmalos al dinero inicial: 500 + 30 = 530 €.",
+   "explicacion_adulto": "Está aprendiendo a calcular el interés simple: cada año el capital produce el mismo interés (C × r : 100) y se multiplica por los años. Los fallos típicos son olvidar los años, confundir interés con capital final o usar el porcentaje como si fueran euros. Pídale que calcule primero el interés de un solo año.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "500 × 2 : 100",
+     "resultado": "10 €",
+     "texto": "Interés de un año."
+    },
+    {
+     "paso": 2,
+     "operacion": "10 × 3",
+     "resultado": "30 €",
+     "texto": "Interés de los 3 años."
+    },
+    {
+     "paso": 3,
+     "operacion": "500 + 30",
+     "resultado": "530 €",
+     "texto": "Capital final = capital + intereses."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Una familia pide un préstamo de 500 € al 5 % de interés simple anual y lo devuelve en 2 años. ¿Cuántos euros de intereses pagará?",
+   "respuesta": "50 €",
+   "distractores": [
+    {
+     "valor": "25 €",
+     "error": "E01"
+    },
+    {
+     "valor": "550 €",
+     "error": "E02"
+    },
+    {
+     "valor": "510 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "500 × 5 × 2 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "En un año se gana el 5 % de 500 €: 500 × 5 : 100 = 25 €. Como son 2 años, multiplica: 25 × 2 = 50 €. Esos son los intereses (no el dinero total).",
+   "explicacion_adulto": "Está aprendiendo a calcular el interés simple: cada año el capital produce el mismo interés (C × r : 100) y se multiplica por los años. Los fallos típicos son olvidar los años, confundir interés con capital final o usar el porcentaje como si fueran euros. Pídale que calcule primero el interés de un solo año.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "500 × 5 : 100",
+     "resultado": "25 €",
+     "texto": "Interés de un año."
+    },
+    {
+     "paso": 2,
+     "operacion": "25 × 2",
+     "resultado": "50 €",
+     "texto": "Interés de los 2 años."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un club deportivo guarda 3000 € en un depósito al 4 % anual, sin sumar los intereses al capital, durante 3 años. ¿Cuánto dinero tendrá al final?",
+   "respuesta": "3360 €",
+   "distractores": [
+    {
+     "valor": "3120 €",
+     "error": "E01"
+    },
+    {
+     "valor": "360 €",
+     "error": "E02"
+    },
+    {
+     "valor": "3012 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "3000 + 3000 × 4 × 3 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Primero los intereses: en un año, 3000 × 4 : 100 = 120 €; en 3 años, 120 × 3 = 360 €. Después súmalos al dinero inicial: 3000 + 360 = 3360 €.",
+   "explicacion_adulto": "Está aprendiendo a calcular el interés simple: cada año el capital produce el mismo interés (C × r : 100) y se multiplica por los años. Los fallos típicos son olvidar los años, confundir interés con capital final o usar el porcentaje como si fueran euros. Pídale que calcule primero el interés de un solo año.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "3000 × 4 : 100",
+     "resultado": "120 €",
+     "texto": "Interés de un año."
+    },
+    {
+     "paso": 2,
+     "operacion": "120 × 3",
+     "resultado": "360 €",
+     "texto": "Interés de los 3 años."
+    },
+    {
+     "paso": 3,
+     "operacion": "3000 + 360",
+     "resultado": "3360 €",
+     "texto": "Capital final = capital + intereses."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Aitana ingresa 4000 € en el banco al 5 % de interés simple anual durante 2 años. ¿Cuánto dinero tendrá al final?",
+   "respuesta": "4400 €",
+   "distractores": [
+    {
+     "valor": "4200 €",
+     "error": "E01"
+    },
+    {
+     "valor": "400 €",
+     "error": "E02"
+    },
+    {
+     "valor": "4010 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "4000 + 4000 × 5 × 2 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Primero los intereses: en un año, 4000 × 5 : 100 = 200 €; en 2 años, 200 × 2 = 400 €. Después súmalos al dinero inicial: 4000 + 400 = 4400 €.",
+   "explicacion_adulto": "Está aprendiendo a calcular el interés simple: cada año el capital produce el mismo interés (C × r : 100) y se multiplica por los años. Los fallos típicos son olvidar los años, confundir interés con capital final o usar el porcentaje como si fueran euros. Pídale que calcule primero el interés de un solo año.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "4000 × 5 : 100",
+     "resultado": "200 €",
+     "texto": "Interés de un año."
+    },
+    {
+     "paso": 2,
+     "operacion": "200 × 2",
+     "resultado": "400 €",
+     "texto": "Interés de los 2 años."
+    },
+    {
+     "paso": 3,
+     "operacion": "4000 + 400",
+     "resultado": "4400 €",
+     "texto": "Capital final = capital + intereses."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un banco paga un 4 % anual de interés simple. Gael deja allí 5000 € durante 3 años. ¿Cuánto dinero gana en intereses?",
+   "respuesta": "600 €",
+   "distractores": [
+    {
+     "valor": "200 €",
+     "error": "E01"
+    },
+    {
+     "valor": "5600 €",
+     "error": "E02"
+    },
+    {
+     "valor": "5012 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "5000 × 4 × 3 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "En un año se gana el 4 % de 5000 €: 5000 × 4 : 100 = 200 €. Como son 3 años, multiplica: 200 × 3 = 600 €. Esos son los intereses (no el dinero total).",
+   "explicacion_adulto": "Está aprendiendo a calcular el interés simple: cada año el capital produce el mismo interés (C × r : 100) y se multiplica por los años. Los fallos típicos son olvidar los años, confundir interés con capital final o usar el porcentaje como si fueran euros. Pídale que calcule primero el interés de un solo año.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "5000 × 4 : 100",
+     "resultado": "200 €",
+     "texto": "Interés de un año."
+    },
+    {
+     "paso": 2,
+     "operacion": "200 × 3",
+     "resultado": "600 €",
+     "texto": "Interés de los 3 años."
+    }
+   ],
+   "plantilla": "P06"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Iker ingresa 1000 € en el banco al 3 % de interés simple anual durante 2 años. ¿Cuánto dinero gana en intereses?",
+   "respuesta": "60 €",
+   "distractores": [
+    {
+     "valor": "30 €",
+     "error": "E01"
+    },
+    {
+     "valor": "1060 €",
+     "error": "E02"
+    },
+    {
+     "valor": "1006 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "1000 × 3 × 2 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "En un año se gana el 3 % de 1000 €: 1000 × 3 : 100 = 30 €. Como son 2 años, multiplica: 30 × 2 = 60 €. Esos son los intereses (no el dinero total).",
+   "explicacion_adulto": "Está aprendiendo a calcular el interés simple: cada año el capital produce el mismo interés (C × r : 100) y se multiplica por los años. Los fallos típicos son olvidar los años, confundir interés con capital final o usar el porcentaje como si fueran euros. Pídale que calcule primero el interés de un solo año.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1000 × 3 : 100",
+     "resultado": "30 €",
+     "texto": "Interés de un año."
+    },
+    {
+     "paso": 2,
+     "operacion": "30 × 2",
+     "resultado": "60 €",
+     "texto": "Interés de los 2 años."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un banco paga un 3 % anual de interés simple. Lucas deja allí 7500 € durante 3 años. ¿Cuánto dinero tendrá al final?",
+   "respuesta": "8175 €",
+   "distractores": [
+    {
+     "valor": "7725 €",
+     "error": "E01"
+    },
+    {
+     "valor": "675 €",
+     "error": "E02"
+    },
+    {
+     "valor": "7509 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "7500 + 7500 × 3 × 3 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Primero los intereses: en un año, 7500 × 3 : 100 = 225 €; en 3 años, 225 × 3 = 675 €. Después súmalos al dinero inicial: 7500 + 675 = 8175 €.",
+   "explicacion_adulto": "Está aprendiendo a calcular el interés simple: cada año el capital produce el mismo interés (C × r : 100) y se multiplica por los años. Los fallos típicos son olvidar los años, confundir interés con capital final o usar el porcentaje como si fueran euros. Pídale que calcule primero el interés de un solo año.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "7500 × 3 : 100",
+     "resultado": "225 €",
+     "texto": "Interés de un año."
+    },
+    {
+     "paso": 2,
+     "operacion": "225 × 3",
+     "resultado": "675 €",
+     "texto": "Interés de los 3 años."
+    },
+    {
+     "paso": 3,
+     "operacion": "7500 + 675",
+     "resultado": "8175 €",
+     "texto": "Capital final = capital + intereses."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Una familia pide un préstamo de 2400 € al 6 % de interés simple anual y lo devuelve en 3 años. ¿Cuántos euros de intereses pagará?",
+   "respuesta": "432 €",
+   "distractores": [
+    {
+     "valor": "144 €",
+     "error": "E01"
+    },
+    {
+     "valor": "2832 €",
+     "error": "E02"
+    },
+    {
+     "valor": "2418 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "2400 × 6 × 3 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "En un año se gana el 6 % de 2400 €: 2400 × 6 : 100 = 144 €. Como son 3 años, multiplica: 144 × 3 = 432 €. Esos son los intereses (no el dinero total).",
+   "explicacion_adulto": "Está aprendiendo a calcular el interés simple: cada año el capital produce el mismo interés (C × r : 100) y se multiplica por los años. Los fallos típicos son olvidar los años, confundir interés con capital final o usar el porcentaje como si fueran euros. Pídale que calcule primero el interés de un solo año.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "2400 × 6 : 100",
+     "resultado": "144 €",
+     "texto": "Interés de un año."
+    },
+    {
+     "paso": 2,
+     "operacion": "144 × 3",
+     "resultado": "432 €",
+     "texto": "Interés de los 3 años."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un club deportivo guarda 2500 € en un depósito al 2 % anual, sin sumar los intereses al capital, durante 3 años. ¿Cuánto dinero tendrá al final?",
+   "respuesta": "2650 €",
+   "distractores": [
+    {
+     "valor": "2550 €",
+     "error": "E01"
+    },
+    {
+     "valor": "150 €",
+     "error": "E02"
+    },
+    {
+     "valor": "2506 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "2500 + 2500 × 2 × 3 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Primero los intereses: en un año, 2500 × 2 : 100 = 50 €; en 3 años, 50 × 3 = 150 €. Después súmalos al dinero inicial: 2500 + 150 = 2650 €.",
+   "explicacion_adulto": "Está aprendiendo a calcular el interés simple: cada año el capital produce el mismo interés (C × r : 100) y se multiplica por los años. Los fallos típicos son olvidar los años, confundir interés con capital final o usar el porcentaje como si fueran euros. Pídale que calcule primero el interés de un solo año.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "2500 × 2 : 100",
+     "resultado": "50 €",
+     "texto": "Interés de un año."
+    },
+    {
+     "paso": 2,
+     "operacion": "50 × 3",
+     "resultado": "150 €",
+     "texto": "Interés de los 3 años."
+    },
+    {
+     "paso": 3,
+     "operacion": "2500 + 150",
+     "resultado": "2650 €",
+     "texto": "Capital final = capital + intereses."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Nico ingresa 7500 € en el banco al 3 % de interés simple anual durante 7 años. ¿Cuánto dinero tendrá al final?",
+   "respuesta": "9075 €",
+   "distractores": [
+    {
+     "valor": "7725 €",
+     "error": "E01"
+    },
+    {
+     "valor": "1575 €",
+     "error": "E02"
+    },
+    {
+     "valor": "7521 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "7500 + 7500 × 3 × 7 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Primero los intereses: en un año, 7500 × 3 : 100 = 225 €; en 7 años, 225 × 7 = 1575 €. Después súmalos al dinero inicial: 7500 + 1575 = 9075 €.",
+   "explicacion_adulto": "Está aprendiendo a calcular el interés simple: cada año el capital produce el mismo interés (C × r : 100) y se multiplica por los años. Los fallos típicos son olvidar los años, confundir interés con capital final o usar el porcentaje como si fueran euros. Pídale que calcule primero el interés de un solo año.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "7500 × 3 : 100",
+     "resultado": "225 €",
+     "texto": "Interés de un año."
+    },
+    {
+     "paso": 2,
+     "operacion": "225 × 7",
+     "resultado": "1575 €",
+     "texto": "Interés de los 7 años."
+    },
+    {
+     "paso": 3,
+     "operacion": "7500 + 1575",
+     "resultado": "9075 €",
+     "texto": "Capital final = capital + intereses."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un banco paga un 1 % anual de interés simple. Martina deja allí 2400 € durante 8 años. ¿Cuánto dinero gana en intereses?",
+   "respuesta": "192 €",
+   "distractores": [
+    {
+     "valor": "24 €",
+     "error": "E01"
+    },
+    {
+     "valor": "2592 €",
+     "error": "E02"
+    },
+    {
+     "valor": "2408 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "2400 × 1 × 8 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "En un año se gana el 1 % de 2400 €: 2400 × 1 : 100 = 24 €. Como son 8 años, multiplica: 24 × 8 = 192 €. Esos son los intereses (no el dinero total).",
+   "explicacion_adulto": "Está aprendiendo a calcular el interés simple: cada año el capital produce el mismo interés (C × r : 100) y se multiplica por los años. Los fallos típicos son olvidar los años, confundir interés con capital final o usar el porcentaje como si fueran euros. Pídale que calcule primero el interés de un solo año.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "2400 × 1 : 100",
+     "resultado": "24 €",
+     "texto": "Interés de un año."
+    },
+    {
+     "paso": 2,
+     "operacion": "24 × 8",
+     "resultado": "192 €",
+     "texto": "Interés de los 8 años."
+    }
+   ],
+   "plantilla": "P06"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Julia ingresa 20 000 € en el banco al 6 % de interés simple anual durante 7 años. ¿Cuánto dinero gana en intereses?",
+   "respuesta": "8400 €",
+   "distractores": [
+    {
+     "valor": "1200 €",
+     "error": "E01"
+    },
+    {
+     "valor": "28 400 €",
+     "error": "E02"
+    },
+    {
+     "valor": "20 042 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "20000 × 6 × 7 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "En un año se gana el 6 % de 20 000 €: 20 000 × 6 : 100 = 1200 €. Como son 7 años, multiplica: 1200 × 7 = 8400 €. Esos son los intereses (no el dinero total).",
+   "explicacion_adulto": "Está aprendiendo a calcular el interés simple: cada año el capital produce el mismo interés (C × r : 100) y se multiplica por los años. Los fallos típicos son olvidar los años, confundir interés con capital final o usar el porcentaje como si fueran euros. Pídale que calcule primero el interés de un solo año.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "20 000 × 6 : 100",
+     "resultado": "1200 €",
+     "texto": "Interés de un año."
+    },
+    {
+     "paso": 2,
+     "operacion": "1200 × 7",
+     "resultado": "8400 €",
+     "texto": "Interés de los 7 años."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un banco paga un 6 % anual de interés simple. Pablo deja allí 2400 € durante 4 años. ¿Cuánto dinero tendrá al final?",
+   "respuesta": "2976 €",
+   "distractores": [
+    {
+     "valor": "2544 €",
+     "error": "E01"
+    },
+    {
+     "valor": "576 €",
+     "error": "E02"
+    },
+    {
+     "valor": "2424 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "2400 + 2400 × 6 × 4 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Primero los intereses: en un año, 2400 × 6 : 100 = 144 €; en 4 años, 144 × 4 = 576 €. Después súmalos al dinero inicial: 2400 + 576 = 2976 €.",
+   "explicacion_adulto": "Está aprendiendo a calcular el interés simple: cada año el capital produce el mismo interés (C × r : 100) y se multiplica por los años. Los fallos típicos son olvidar los años, confundir interés con capital final o usar el porcentaje como si fueran euros. Pídale que calcule primero el interés de un solo año.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "2400 × 6 : 100",
+     "resultado": "144 €",
+     "texto": "Interés de un año."
+    },
+    {
+     "paso": 2,
+     "operacion": "144 × 4",
+     "resultado": "576 €",
+     "texto": "Interés de los 4 años."
+    },
+    {
+     "paso": 3,
+     "operacion": "2400 + 576",
+     "resultado": "2976 €",
+     "texto": "Capital final = capital + intereses."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Una familia pide un préstamo de 2500 € al 1 % de interés simple anual y lo devuelve en 4 años. ¿Cuántos euros de intereses pagará?",
+   "respuesta": "100 €",
+   "distractores": [
+    {
+     "valor": "25 €",
+     "error": "E01"
+    },
+    {
+     "valor": "2600 €",
+     "error": "E02"
+    },
+    {
+     "valor": "2504 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "2500 × 1 × 4 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "En un año se gana el 1 % de 2500 €: 2500 × 1 : 100 = 25 €. Como son 4 años, multiplica: 25 × 4 = 100 €. Esos son los intereses (no el dinero total).",
+   "explicacion_adulto": "Está aprendiendo a calcular el interés simple: cada año el capital produce el mismo interés (C × r : 100) y se multiplica por los años. Los fallos típicos son olvidar los años, confundir interés con capital final o usar el porcentaje como si fueran euros. Pídale que calcule primero el interés de un solo año.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "2500 × 1 : 100",
+     "resultado": "25 €",
+     "texto": "Interés de un año."
+    },
+    {
+     "paso": 2,
+     "operacion": "25 × 4",
+     "resultado": "100 €",
+     "texto": "Interés de los 4 años."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un club deportivo guarda 4500 € en un depósito al 2 % anual, sin sumar los intereses al capital, durante 3 años. ¿Cuánto dinero tendrá al final?",
+   "respuesta": "4770 €",
+   "distractores": [
+    {
+     "valor": "4590 €",
+     "error": "E01"
+    },
+    {
+     "valor": "270 €",
+     "error": "E02"
+    },
+    {
+     "valor": "4506 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "4500 + 4500 × 2 × 3 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Primero los intereses: en un año, 4500 × 2 : 100 = 90 €; en 3 años, 90 × 3 = 270 €. Después súmalos al dinero inicial: 4500 + 270 = 4770 €.",
+   "explicacion_adulto": "Está aprendiendo a calcular el interés simple: cada año el capital produce el mismo interés (C × r : 100) y se multiplica por los años. Los fallos típicos son olvidar los años, confundir interés con capital final o usar el porcentaje como si fueran euros. Pídale que calcule primero el interés de un solo año.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "4500 × 2 : 100",
+     "resultado": "90 €",
+     "texto": "Interés de un año."
+    },
+    {
+     "paso": 2,
+     "operacion": "90 × 3",
+     "resultado": "270 €",
+     "texto": "Interés de los 3 años."
+    },
+    {
+     "paso": 3,
+     "operacion": "4500 + 270",
+     "resultado": "4770 €",
+     "texto": "Capital final = capital + intereses."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Valeria ingresa 8000 € en el banco al 3 % de interés simple anual durante 5 años. ¿Cuánto dinero tendrá al final?",
+   "respuesta": "9200 €",
+   "distractores": [
+    {
+     "valor": "8240 €",
+     "error": "E01"
+    },
+    {
+     "valor": "1200 €",
+     "error": "E02"
+    },
+    {
+     "valor": "8015 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "8000 + 8000 × 3 × 5 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Primero los intereses: en un año, 8000 × 3 : 100 = 240 €; en 5 años, 240 × 5 = 1200 €. Después súmalos al dinero inicial: 8000 + 1200 = 9200 €.",
+   "explicacion_adulto": "Está aprendiendo a calcular el interés simple: cada año el capital produce el mismo interés (C × r : 100) y se multiplica por los años. Los fallos típicos son olvidar los años, confundir interés con capital final o usar el porcentaje como si fueran euros. Pídale que calcule primero el interés de un solo año.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "8000 × 3 : 100",
+     "resultado": "240 €",
+     "texto": "Interés de un año."
+    },
+    {
+     "paso": 2,
+     "operacion": "240 × 5",
+     "resultado": "1200 €",
+     "texto": "Interés de los 5 años."
+    },
+    {
+     "paso": 3,
+     "operacion": "8000 + 1200",
+     "resultado": "9200 €",
+     "texto": "Capital final = capital + intereses."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un banco paga un 5 % anual de interés simple. Daniela deja allí 2500 € durante 4 años. ¿Cuánto dinero gana en intereses?",
+   "respuesta": "500 €",
+   "distractores": [
+    {
+     "valor": "125 €",
+     "error": "E01"
+    },
+    {
+     "valor": "3000 €",
+     "error": "E02"
+    },
+    {
+     "valor": "2520 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "2500 × 5 × 4 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "En un año se gana el 5 % de 2500 €: 2500 × 5 : 100 = 125 €. Como son 4 años, multiplica: 125 × 4 = 500 €. Esos son los intereses (no el dinero total).",
+   "explicacion_adulto": "Está aprendiendo a calcular el interés simple: cada año el capital produce el mismo interés (C × r : 100) y se multiplica por los años. Los fallos típicos son olvidar los años, confundir interés con capital final o usar el porcentaje como si fueran euros. Pídale que calcule primero el interés de un solo año.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "2500 × 5 : 100",
+     "resultado": "125 €",
+     "texto": "Interés de un año."
+    },
+    {
+     "paso": 2,
+     "operacion": "125 × 4",
+     "resultado": "500 €",
+     "texto": "Interés de los 4 años."
+    }
+   ],
+   "plantilla": "P06"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Chloe ingresa 3500 € en el banco al 3,5 % de interés simple anual durante 4 años. ¿Cuánto dinero gana en intereses?",
+   "respuesta": "490 €",
+   "distractores": [
+    {
+     "valor": "122,50 €",
+     "error": "E01"
+    },
+    {
+     "valor": "3990 €",
+     "error": "E02"
+    },
+    {
+     "valor": "3514 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "3500 × 3,5 × 4 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "En un año se gana el 3,5 % de 3500 €: 3500 × 3,5 : 100 = 122,50 €. Como son 4 años, multiplica: 122,50 × 4 = 490 €. Esos son los intereses (no el dinero total).",
+   "explicacion_adulto": "Está aprendiendo a calcular el interés simple: cada año el capital produce el mismo interés (C × r : 100) y se multiplica por los años. Los fallos típicos son olvidar los años, confundir interés con capital final o usar el porcentaje como si fueran euros. Pídale que calcule primero el interés de un solo año.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "3500 × 3,5 : 100",
+     "resultado": "122,50 €",
+     "texto": "Interés de un año."
+    },
+    {
+     "paso": 2,
+     "operacion": "122,50 × 4",
+     "resultado": "490 €",
+     "texto": "Interés de los 4 años."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un banco paga un 3,5 % anual de interés simple. Marco deja allí 1500 € durante 4 años. ¿Cuánto dinero tendrá al final?",
+   "respuesta": "1710 €",
+   "distractores": [
+    {
+     "valor": "1552,50 €",
+     "error": "E01"
+    },
+    {
+     "valor": "210 €",
+     "error": "E02"
+    },
+    {
+     "valor": "1514 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "1500 + 1500 × 3,5 × 4 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Primero los intereses: en un año, 1500 × 3,5 : 100 = 52,50 €; en 4 años, 52,50 × 4 = 210 €. Después súmalos al dinero inicial: 1500 + 210 = 1710 €.",
+   "explicacion_adulto": "Está aprendiendo a calcular el interés simple: cada año el capital produce el mismo interés (C × r : 100) y se multiplica por los años. Los fallos típicos son olvidar los años, confundir interés con capital final o usar el porcentaje como si fueran euros. Pídale que calcule primero el interés de un solo año.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1500 × 3,5 : 100",
+     "resultado": "52,50 €",
+     "texto": "Interés de un año."
+    },
+    {
+     "paso": 2,
+     "operacion": "52,50 × 4",
+     "resultado": "210 €",
+     "texto": "Interés de los 4 años."
+    },
+    {
+     "paso": 3,
+     "operacion": "1500 + 210",
+     "resultado": "1710 €",
+     "texto": "Capital final = capital + intereses."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Una familia pide un préstamo de 12 000 € al 3,5 % de interés simple anual y lo devuelve en 6 años. ¿Cuántos euros de intereses pagará?",
+   "respuesta": "2520 €",
+   "distractores": [
+    {
+     "valor": "420 €",
+     "error": "E01"
+    },
+    {
+     "valor": "14 520 €",
+     "error": "E02"
+    },
+    {
+     "valor": "12 021 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "12000 × 3,5 × 6 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "En un año se gana el 3,5 % de 12 000 €: 12 000 × 3,5 : 100 = 420 €. Como son 6 años, multiplica: 420 × 6 = 2520 €. Esos son los intereses (no el dinero total).",
+   "explicacion_adulto": "Está aprendiendo a calcular el interés simple: cada año el capital produce el mismo interés (C × r : 100) y se multiplica por los años. Los fallos típicos son olvidar los años, confundir interés con capital final o usar el porcentaje como si fueran euros. Pídale que calcule primero el interés de un solo año.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "12 000 × 3,5 : 100",
+     "resultado": "420 €",
+     "texto": "Interés de un año."
+    },
+    {
+     "paso": 2,
+     "operacion": "420 × 6",
+     "resultado": "2520 €",
+     "texto": "Interés de los 6 años."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un club deportivo guarda 1500 € en un depósito al 4,5 % anual, sin sumar los intereses al capital, durante 3 años. ¿Cuánto dinero tendrá al final?",
+   "respuesta": "1702,50 €",
+   "distractores": [
+    {
+     "valor": "1567,50 €",
+     "error": "E01"
+    },
+    {
+     "valor": "202,50 €",
+     "error": "E02"
+    },
+    {
+     "valor": "1513,50 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "1500 + 1500 × 4,5 × 3 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Primero los intereses: en un año, 1500 × 4,5 : 100 = 67,50 €; en 3 años, 67,50 × 3 = 202,50 €. Después súmalos al dinero inicial: 1500 + 202,50 = 1702,50 €.",
+   "explicacion_adulto": "Está aprendiendo a calcular el interés simple: cada año el capital produce el mismo interés (C × r : 100) y se multiplica por los años. Los fallos típicos son olvidar los años, confundir interés con capital final o usar el porcentaje como si fueran euros. Pídale que calcule primero el interés de un solo año.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1500 × 4,5 : 100",
+     "resultado": "67,50 €",
+     "texto": "Interés de un año."
+    },
+    {
+     "paso": 2,
+     "operacion": "67,50 × 3",
+     "resultado": "202,50 €",
+     "texto": "Interés de los 3 años."
+    },
+    {
+     "paso": 3,
+     "operacion": "1500 + 202,50",
+     "resultado": "1702,50 €",
+     "texto": "Capital final = capital + intereses."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Mario ingresa 2400 € en el banco al 2,5 % de interés simple anual durante 2 años. ¿Cuánto dinero tendrá al final?",
+   "respuesta": "2520 €",
+   "distractores": [
+    {
+     "valor": "2460 €",
+     "error": "E01"
+    },
+    {
+     "valor": "120 €",
+     "error": "E02"
+    },
+    {
+     "valor": "2405 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "2400 + 2400 × 2,5 × 2 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Primero los intereses: en un año, 2400 × 2,5 : 100 = 60 €; en 2 años, 60 × 2 = 120 €. Después súmalos al dinero inicial: 2400 + 120 = 2520 €.",
+   "explicacion_adulto": "Está aprendiendo a calcular el interés simple: cada año el capital produce el mismo interés (C × r : 100) y se multiplica por los años. Los fallos típicos son olvidar los años, confundir interés con capital final o usar el porcentaje como si fueran euros. Pídale que calcule primero el interés de un solo año.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "2400 × 2,5 : 100",
+     "resultado": "60 €",
+     "texto": "Interés de un año."
+    },
+    {
+     "paso": 2,
+     "operacion": "60 × 2",
+     "resultado": "120 €",
+     "texto": "Interés de los 2 años."
+    },
+    {
+     "paso": 3,
+     "operacion": "2400 + 120",
+     "resultado": "2520 €",
+     "texto": "Capital final = capital + intereses."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un banco paga un 5,5 % anual de interés simple. Marco deja allí 1500 € durante 3 años. ¿Cuánto dinero gana en intereses?",
+   "respuesta": "247,50 €",
+   "distractores": [
+    {
+     "valor": "82,50 €",
+     "error": "E01"
+    },
+    {
+     "valor": "1747,50 €",
+     "error": "E02"
+    },
+    {
+     "valor": "1516,50 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "1500 × 5,5 × 3 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "En un año se gana el 5,5 % de 1500 €: 1500 × 5,5 : 100 = 82,50 €. Como son 3 años, multiplica: 82,50 × 3 = 247,50 €. Esos son los intereses (no el dinero total).",
+   "explicacion_adulto": "Está aprendiendo a calcular el interés simple: cada año el capital produce el mismo interés (C × r : 100) y se multiplica por los años. Los fallos típicos son olvidar los años, confundir interés con capital final o usar el porcentaje como si fueran euros. Pídale que calcule primero el interés de un solo año.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1500 × 5,5 : 100",
+     "resultado": "82,50 €",
+     "texto": "Interés de un año."
+    },
+    {
+     "paso": 2,
+     "operacion": "82,50 × 3",
+     "resultado": "247,50 €",
+     "texto": "Interés de los 3 años."
+    }
+   ],
+   "plantilla": "P06"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Paula ingresa 7500 € en el banco al 3,5 % de interés simple anual durante 8 años. ¿Cuánto dinero gana en intereses?",
+   "respuesta": "2100 €",
+   "distractores": [
+    {
+     "valor": "262,50 €",
+     "error": "E01"
+    },
+    {
+     "valor": "9600 €",
+     "error": "E02"
+    },
+    {
+     "valor": "7528 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "7500 × 3,5 × 8 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "En un año se gana el 3,5 % de 7500 €: 7500 × 3,5 : 100 = 262,50 €. Como son 8 años, multiplica: 262,50 × 8 = 2100 €. Esos son los intereses (no el dinero total).",
+   "explicacion_adulto": "Está aprendiendo a calcular el interés simple: cada año el capital produce el mismo interés (C × r : 100) y se multiplica por los años. Los fallos típicos son olvidar los años, confundir interés con capital final o usar el porcentaje como si fueran euros. Pídale que calcule primero el interés de un solo año.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "7500 × 3,5 : 100",
+     "resultado": "262,50 €",
+     "texto": "Interés de un año."
+    },
+    {
+     "paso": 2,
+     "operacion": "262,50 × 8",
+     "resultado": "2100 €",
+     "texto": "Interés de los 8 años."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un banco paga un 3,5 % anual de interés simple. Aitana deja allí 2400 € durante 5 años. ¿Cuánto dinero tendrá al final?",
+   "respuesta": "2820 €",
+   "distractores": [
+    {
+     "valor": "2484 €",
+     "error": "E01"
+    },
+    {
+     "valor": "420 €",
+     "error": "E02"
+    },
+    {
+     "valor": "2417,50 €",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "2400 + 2400 × 3,5 × 5 : 100",
+   "secundarias": [
+    "NUM.PORC.03"
+   ],
+   "explicacion_nino": "Primero los intereses: en un año, 2400 × 3,5 : 100 = 84 €; en 5 años, 84 × 5 = 420 €. Después súmalos al dinero inicial: 2400 + 420 = 2820 €.",
+   "explicacion_adulto": "Está aprendiendo a calcular el interés simple: cada año el capital produce el mismo interés (C × r : 100) y se multiplica por los años. Los fallos típicos son olvidar los años, confundir interés con capital final o usar el porcentaje como si fueran euros. Pídale que calcule primero el interés de un solo año.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "2400 × 3,5 : 100",
+     "resultado": "84 €",
+     "texto": "Interés de un año."
+    },
+    {
+     "paso": 2,
+     "operacion": "84 × 5",
+     "resultado": "420 €",
+     "texto": "Interés de los 5 años."
+    },
+    {
+     "paso": 3,
+     "operacion": "2400 + 420",
+     "resultado": "2820 €",
+     "texto": "Capital final = capital + intereses."
+    }
+   ],
+   "plantilla": "P02"
+  }
+ ]
+}

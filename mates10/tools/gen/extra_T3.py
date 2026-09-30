@@ -1012,5 +1012,427 @@ def gen_dec_11(rng, d):
     else:
         return None
     dist = [(x, k) for x, k in dist if x != resp]
-    return mk(f"Halla la fracción generatriz (irreducible) de {txt}" + (f" = {puntos(v)}" if d > 1 else "") + ".", resp, "t3_generatriz", {"v": txt}, dist, pasos, adulto,
+    return mk(f"Halla la fracción generatriz (irreducible) de {txt}" + (f" = {puntos(v)}" if d > 1 else "."), resp, "t3_generatriz", {"v": txt}, dist, pasos, adulto,
               genericos=[fr(v + 1), fr(v * 2), fr(v + F(1, 9))])
+
+
+# ---------------------------------------------------------------- FRACCIONES (numeración)
+
+DEN_NOMBRE = {2: ("medio", "medios"), 3: ("tercio", "tercios"), 4: ("cuarto", "cuartos"), 5: ("quinto", "quintos"), 6: ("sexto", "sextos"),
+              7: ("séptimo", "séptimos"), 8: ("octavo", "octavos"), 9: ("noveno", "novenos"), 10: ("décimo", "décimos"),
+              11: ("onceavo", "onceavos"), 12: ("doceavo", "doceavos")}
+
+
+def frac_palabras(n, d):
+    s, p = DEN_NOMBRE[d]
+    return f"un {s}" if n == 1 else f"{letras(n)} {p}"
+
+
+@generador("t3_frac_03")
+def gen_frac_03(rng, d):
+    den = rng.randint(2, 5) if d == 1 else rng.randint(2, 10) if d == 2 else rng.randint(7, 12)
+    n = rng.randint(1, den - 1)
+    if n == den - n and d > 1 and rng.random() < 0.5:
+        n = max(1, n - 1)
+    if rng.random() < 0.5:
+        pasos = [("leer", f"{n}/{den}", f"«{frac_palabras(n, den)}»: el número ({n}) va arriba y el nombre de las partes ({DEN_NOMBRE[den][1]} = {den}) va abajo: {n}/{den}.")]
+        return mk(f"Escribe con cifras: {frac_palabras(n, den)}.", f"{n}/{den}", "t3_frac_leer", {"n": n, "d": den, "sentido": "a_cifras"},
+                  [(f"{den}/{n}", "E03"), (f"{n}/{den + 1 if den < 12 else den - 1}", "E02"), (f"{n}/{den - 1}" if den > 2 else f"{n + 1}/{den + 1}", None)], pasos,
+                  "El numerador cuenta las partes que se toman; el denominador da el nombre (quintos, octavos…).",
+                  genericos=[f"{den - n}/{den}", f"{n + 1}/{den}"])
+    vecino = den + 1 if den < 12 else den - 1
+    if den in (11, 12):
+        e04 = f"{letras(n)} {'onces' if den == 11 else 'doces'}" if n > 1 else f"un {'once' if den == 11 else 'doce'}"
+    else:
+        e04 = None
+    pasos = [("leer", frac_palabras(n, den), f"El denominador {den} se lee «{DEN_NOMBRE[den][1]}»: {n}/{den} se lee {frac_palabras(n, den)}.")]
+    return mk(f"¿Cómo se lee la fracción {n}/{den}?", frac_palabras(n, den), "t3_frac_leer", {"n": n, "d": den, "sentido": "a_palabras"},
+              [(f"{letras(n)} {letras(den)}" if n > 1 else f"uno {letras(den)}", "E01"), (frac_palabras(n, vecino), "E02"), (e04, "E04"), (frac_palabras(den - n, den) if den - n != n else None, None)], pasos,
+              genericos=[f"{letras(n)} de {letras(den)}", frac_palabras(n, den + 2) if den < 11 else frac_palabras(n, den - 2)],
+              adulto="Medios, tercios, cuartos… y a partir de 11 se añade «-avos»: onceavos, doceavos.")
+
+
+@generador("t3_frac_04")
+def gen_frac_04(rng, d):
+    den = rng.randint(3, 12)
+    if d < 3:
+        a, b = rng.sample(range(1, den), 2)
+        if d == 1:
+            pasos = [("mismo denominador", fr_raw(max(a, b), den), f"Las dos tienen partes del mismo tamaño ({DEN_NOMBRE.get(den, ('', 'partes'))[1]}); es mayor la que coge más partes: {fr_raw(max(a, b), den)}.")]
+            return mk(f"¿Qué fracción es mayor: {a}/{den} o {b}/{den}?", fr_raw(max(a, b), den), "t3_frac_comp_hom", {"a": a, "b": b, "d": den},
+                      [(fr_raw(min(a, b), den), "E01"), ("Son iguales", "E02"), ("No se puede saber", None)], pasos,
+                      "Con el mismo denominador, es mayor la fracción de mayor numerador.", datos={"opciones_fijas": True})
+        sig = "<" if a < b else ">"
+        pasos = [("comparar numeradores", sig, f"Mismo denominador: comparo numeradores, {a} {sig} {b}, así que {a}/{den} {sig} {b}/{den}.")]
+        return mk(f"¿Qué signo va en el hueco? {a}/{den} ☐ {b}/{den}", sig, "t3_frac_comp_hom", {"a": a, "b": b, "d": den},
+                  [(">" if sig == "<" else "<", "E01"), ("=", "E02"), ("No se pueden comparar", None)], pasos,
+                  "Con el mismo denominador, es mayor la fracción de mayor numerador.", datos={"opciones_fijas": True})
+    if den < 5:
+        den = rng.randint(5, 12)
+    nums = rng.sample(range(1, den), 4)
+    txt = [f"{x}/{den}" for x in nums]
+    resp = " < ".join(f"{x}/{den}" for x in sorted(nums))
+    e03 = " < ".join(f"{x}/{den}" for x in sorted(nums, reverse=True))
+    otro = sorted(nums)
+    otro[1], otro[2] = otro[2], otro[1]
+    otro2 = sorted(nums)
+    otro2[0], otro2[1] = otro2[1], otro2[0]
+    pasos = [("ordenar numeradores", resp, f"Todas son {DEN_NOMBRE[den][1]}: las ordeno por el numerador, de menor a mayor: {resp}.")]
+    return mk(f"Ordena de menor a mayor: {', '.join(txt)}.", resp, "t3_frac_ord_hom", {"nums": nums, "d": den},
+              [(e03, "E03"), (" < ".join(f"{x}/{den}" for x in otro), None), (" < ".join(f"{x}/{den}" for x in otro2), None)], pasos,
+              "Mismo denominador: el orden de las fracciones es el de sus numeradores.")
+
+
+@generador("t3_frac_05")
+def gen_frac_05(rng, d):
+    n = rng.randint(2, 5) if d == 1 else rng.randint(2, 10)
+    k = rng.randint(2, 10 if d == 1 else 10) if d < 3 else rng.randint(5, 100 // n)
+    N = n * k
+    if N > 100:
+        return None
+    nombres = {2: "la mitad", 3: "la tercera parte", 4: "la cuarta parte", 5: "la quinta parte"}
+    enun = f"¿Cuánto es 1/{n} de {N}?" if (d > 1 or rng.random() < 0.5 or n not in nombres) else f"¿Cuánto es {nombres[n]} de {N}?"
+    otro = 2 if n != 2 else 4
+    pasos = [(f"{N} : {n}", str(k), f"1/{n} de {N} es repartir {N} en {n} partes iguales y coger una: {N} : {n} = {k}.")]
+    return mk(enun, str(k), "frac_de", {"n": 1, "d": n, "N": N},
+              [(fmt(N * n), "E01"), (str(N - n), "E02"), (str(N // otro) if N % otro == 0 and N // otro != k else None, "E03")], pasos,
+              "La fracción unitaria de un número se calcula dividiendo entre el denominador.",
+              genericos=[str(k + 1), str(k - 1) if k > 1 else str(k + 2), str(k * 2)])
+
+
+@generador("t3_frac_06")
+def gen_frac_06(rng, d):
+    den = rng.randint(3, 5) if d == 1 else rng.randint(3, 10) if d == 2 else rng.randint(6, 12)
+    m = rng.randint(2, den - 1)
+    if math.gcd(m, den) != 1 and d < 3:
+        m = 1 + (m % (den - 1)) if math.gcd(1 + (m % (den - 1)), den) == 1 and 1 + (m % (den - 1)) > 1 else m
+    maxN = 100 if d == 1 else 500 if d == 2 else 1000
+    k = rng.randint(2, maxN // den)
+    N = den * k
+    r = m * k
+    pasos = [(f"{N} : {den}", str(k), f"Divido {N} entre el denominador: {N} : {den} = {k} (una parte)."),
+             (f"{k} × {m}", fmt(r), f"Multiplico por el numerador: {k} × {m} = {fmt(r)}.")]
+    return mk(f"¿Cuánto es {m}/{den} de {fmt(N)}?", fmt(r), "frac_de", {"n": m, "d": den, "N": N},
+              [(fmt(k), "E01"), (fmt(N * m), "E02"), (fmt(N // m * den) if N % m == 0 and N // m * den != r else None, "E03"), (fmt(N - r), "E04")], pasos,
+              "m/n de N: se divide entre el denominador y se multiplica por el numerador.",
+              genericos=[fmt(r + k), fmt(r - k)])
+
+
+@generador("t3_frac_07")
+def gen_frac_07(rng, d):
+    OPC = {"p": "Menor que la unidad", "u": "Igual a la unidad", "i": "Mayor que la unidad", "x": "No existe: está mal escrita"}
+    den = rng.randint(2, 12)
+    t = rng.choice(["p", "u", "i"] if d == 1 else ["p", "i", "i", "u"])
+    if t == "p":
+        n = rng.randint(1, den - 1) if d == 1 else rng.randint(max(1, den // 3), den - 1)
+        if d > 1 and den < 7:
+            den = rng.randint(7, 12)
+            n = rng.randint(1, 4)
+    elif t == "u":
+        n = den
+    else:
+        n = rng.randint(den + 1, 2 * den + 3) if d < 3 else rng.randint(den + 1, den + 3)
+    if d == 3:
+        den = rng.randint(5, 12)
+        t = rng.choice(["p", "u", "i"])
+        n = {"p": den - 1, "u": den, "i": den + 1}[t]
+    dist = []
+    if t == "p":
+        dist = [(OPC["i"], "E01" if den >= 6 else None), (OPC["u"], None), (OPC["x"], None)]
+        pasos = [("comparar", OPC["p"], f"El numerador ({n}) es menor que el denominador ({den}): se cogen menos partes de las que tiene la unidad. Es menor que 1.")]
+    elif t == "u":
+        dist = [(OPC["p"], "E02"), (OPC["i"], "E02"), (OPC["x"], None)]
+        pasos = [("comparar", OPC["u"], f"Numerador y denominador son iguales ({n}): se cogen todas las partes, la unidad entera. {n}/{den} = 1.")]
+    else:
+        dist = [(OPC["x"], "E03"), (OPC["p"], None), (OPC["u"], None)]
+        pasos = [("comparar", OPC["i"], f"El numerador ({n}) es mayor que el denominador ({den}): hace falta más de una unidad. Es mayor que 1.")]
+    return mk(f"La fracción {n}/{den}, ¿es menor, igual o mayor que la unidad?", OPC[t], "t3_frac_unidad", {"n": n, "d": den}, dist, pasos,
+              "Se compara el numerador con el denominador: menor → propia (< 1); igual → 1; mayor → impropia (> 1).",
+              datos={"opciones_fijas": True})
+
+
+@generador("t3_frac_08")
+def gen_frac_08(rng, d):
+    den = rng.randint(2, 6) if d == 1 else rng.randint(3, 12)
+    e = rng.randint(1, 4) if d == 1 else rng.randint(1, 10)
+    r = rng.randint(1, den - 1)
+    N = e * den + r
+    if d == 1 or (d == 2 and rng.random() < 0.5):
+        resp = f"{e} {r}/{den}"
+        pasos = [(f"{N} : {den}", f"{e} resto {r}", f"Divido {N} entre {den}: cociente {e}, resto {r}."),
+                 ("mixto", resp, f"El cociente son los enteros y el resto el numerador: {resp}.")]
+        return mk(f"Escribe {N}/{den} como número mixto.", resp, "t3_frac_mixto", {"N": N, "d": den, "sentido": "a_mixto"},
+                  [(f"{r} {e}/{den}" if e < den and r != e else f"{e} {den}/{r}", "E03"), (f"{e} {den}/{r}" if den != r else f"{e + 1} {r}/{den}", "E03"),
+                   (f"{e + 1} {r}/{den}", None), (f"{e} {r + 1}/{den}" if r + 1 < den else f"{e} {r - 1}/{den}" if r > 1 else f"{e - 1} {r}/{den}" if e > 1 else None, None)], pasos,
+                  "Impropia → mixto: se divide el numerador entre el denominador; cociente = enteros, resto = nuevo numerador.")
+    pasos = [(f"{e} · {den} + {r}", str(N), f"Multiplico el entero por el denominador y sumo el numerador: {e} · {den} + {r} = {N}."),
+             ("impropia", f"{N}/{den}", f"Se mantiene el denominador: {N}/{den}.")]
+    return mk(f"Escribe {e} {r}/{den} como fracción impropia.", f"{N}/{den}", "t3_frac_mixto", {"e": e, "r": r, "d": den, "sentido": "a_impropia"},
+              [(f"{e + r}/{den}", "E01"), (f"{e * den}/{den}", "E02"), (f"{e}{r}/{den}" if int(f'{e}{r}') != N else None, "E04"), (f"{e * r + den}/{den}" if e * r + den != N else None, None)], pasos,
+              "Mixto → impropia: entero × denominador + numerador, sobre el mismo denominador (2 3/4 = 11/4).",
+              genericos=[f"{N}/{den * e}", f"{N + 1}/{den}"])
+
+
+@generador("t3_frac_09")
+def gen_frac_09(rng, d):
+    for _ in range(100):
+        a, b = rng.randint(1, 9), rng.randint(2, 12)
+        if a >= b or math.gcd(a, b) != 1:
+            continue
+        k = rng.randint(2, 8 if d < 3 else 12)
+        if a * k > 100 or b * k > 100:
+            continue
+        break
+    if d == 1:
+        # amplificar: a/b = ?/(b·k)
+        pasos = [(f"{b} × {k} = {b * k}", str(k), f"El denominador pasa de {b} a {b * k}: se ha multiplicado por {k}."),
+                 (f"{a} × {k}", str(a * k), f"Hago lo mismo arriba: {a} × {k} = {a * k}.")]
+        return mk(f"Completa para que sean equivalentes: {a}/{b} = ?/{b * k}", str(a * k), "t3_frac_equiv", {"a": a, "b": b, "k": k, "tipo": "amplificar"},
+                  [(str(a + b * k - b), "E03"), (str(a), "E02"), (str(b * k - a) if b * k - a != a * k else None, None)], pasos,
+                  "Dos fracciones son equivalentes si se multiplica (o divide) numerador y denominador por el MISMO número.",
+                  genericos=[str(a * k + 1), str(a * k - 1), str(a + k)])
+    if d == 2:
+        # simplificar: (a·k)/(b·k) = ?/b
+        pasos = [(f"{b * k} : {k} = {b}", str(k), f"El denominador pasa de {b * k} a {b}: se ha dividido entre {k}."),
+                 (f"{a * k} : {k}", str(a), f"Divido también el numerador: {a * k} : {k} = {a}.")]
+        return mk(f"Completa para que sean equivalentes: {a * k}/{b * k} = ?/{b}", str(a), "t3_frac_equiv", {"a": a * k, "b": b * k, "k": k, "tipo": "simplificar"},
+                  [(str(a * k - (b * k - b)) if a * k - (b * k - b) > 0 else None, "E03"), (str(a * k), "E02"), (str(b - a) if b - a != a else None, None)], pasos,
+                  "Simplificar: dividir numerador y denominador entre el mismo número.",
+                  genericos=[str(a + 1), str(a + k), str(max(a - 1, 1) if a > 1 else a + 2)])
+    pasos = [(f"× {k}", f"{a * k}/{b * k}", f"Multiplico numerador y denominador por {k}: {a}/{b} = {a * k}/{b * k}.")]
+    return mk(f"¿Cuál de estas fracciones es equivalente a {a}/{b}?", f"{a * k}/{b * k}", "t3_frac_equiv", {"a": a, "b": b, "k": k, "tipo": "elegir"},
+              [(f"{a + k}/{b + k}", "E01"), (f"{a * k}/{b}", "E02"), (f"{a}/{b * k}", "E02")], pasos,
+              "Sumar lo mismo arriba y abajo NO da una fracción equivalente; multiplicar sí.", datos={"opciones_fijas": True})
+
+
+@generador("t3_frac_11")
+def gen_frac_11(rng, d):
+    n = 1 if d == 1 else rng.randint(2, 9)
+    if d < 3:
+        a, b = rng.sample([x for x in range(2, 13) if x > n], 2)
+        mayor = min(a, b)
+        pasos = [("mismo numerador", f"{n}/{mayor}", f"Las dos cogen {n} parte{'s' if n > 1 else ''}; los {DEN_NOMBRE[mayor][1]} son más grandes que los {DEN_NOMBRE[max(a, b)][1]} (el entero se parte en menos trozos). Es mayor {n}/{mayor}.")]
+        return mk(f"¿Qué fracción es mayor: {n}/{a} o {n}/{b}?", f"{n}/{mayor}", "t3_frac_comp_num", {"n": n, "a": a, "b": b},
+                  [(f"{n}/{max(a, b)}", "E01"), ("Son iguales", "E02"), ("No se puede saber", None)], pasos,
+                  "Con el mismo numerador, es mayor la de MENOR denominador: sus partes son más grandes.", datos={"opciones_fijas": True})
+    dens = rng.sample([x for x in range(2, 13) if x > n], 3)
+    txt = [f"{n}/{x}" for x in dens]
+    resp = " > ".join(f"{n}/{x}" for x in sorted(dens))
+    mal = " > ".join(f"{n}/{x}" for x in sorted(dens, reverse=True))
+    o = sorted(dens)
+    o[0], o[1] = o[1], o[0]
+    o2 = sorted(dens)
+    o2[1], o2[2] = o2[2], o2[1]
+    pasos = [("mismo numerador", resp, f"Mismo numerador: cuanto menor es el denominador, mayor es la fracción. De mayor a menor: {resp}.")]
+    return mk(f"Ordena de mayor a menor: {', '.join(txt)}.", resp, "t3_frac_ord_num", {"n": n, "dens": dens},
+              [(mal, "E01"), (" > ".join(f"{n}/{x}" for x in o), None), (" > ".join(f"{n}/{x}" for x in o2), None)], pasos,
+              "Con el mismo numerador, la fracción es mayor cuanto menor es el denominador.")
+
+
+@generador("t3_frac_12")
+def gen_frac_12(rng, d):
+    for _ in range(200):
+        k = 2 if d < 3 else 3
+        dens = rng.sample(range(2, 21 if d > 1 else 13), k)
+        if d == 1:
+            b = rng.randint(2, 6)
+            dens = [b, b * rng.randint(2, 4)]
+        m = math.lcm(*dens)
+        if m > 120 or m == max(dens) and d == 2 or math.prod(dens) == m and d > 1:
+            continue
+        nums = [rng.randint(1, x - 1) for x in dens]
+        if any(math.gcd(n, x) != 1 for n, x in zip(nums, dens)):
+            continue
+        break
+    else:
+        return None
+    fs = [f"{n}/{x}" for n, x in zip(nums, dens)]
+    resp = ", ".join(f"{n * m // x}/{m}" for n, x in zip(nums, dens))
+    e01 = ", ".join(f"{n}/{m}" for n, x in zip(nums, dens))
+    e02 = ", ".join(f"{n + m - x}/{m}" for n, x in zip(nums, dens))
+    e04 = ", ".join(f"{n * m}/{m}" for n, x in zip(nums, dens))
+    P = math.prod(dens)
+    prod = ", ".join(f"{n * P // x}/{P}" for n, x in zip(nums, dens)) if P != m else None
+    pasos = [("mcm", str(m), f"mcm({', '.join(map(str, dens))}) = {m}: será el denominador común."),
+             ("amplificar", resp, "Cada numerador se multiplica por lo mismo que su denominador: " + "; ".join(f"{n}/{x} = {n}·{m // x}/{x}·{m // x} = {n * m // x}/{m}" for n, x in zip(nums, dens)) + ".")]
+    return mk(f"Reduce a mínimo común denominador: {', '.join(fs)}.", resp, "t3_comun_den", {"fracs": fs},
+              [(e01, "E01"), (e02, "E02"), (e04, "E04"), (prod, None)], pasos,
+              "Denominador común = mcm; cada numerador se multiplica por el mismo número que su denominador.")
+
+
+def orden_txt(fs, key, sep=" < "):
+    return sep.join(fr_raw(f[0], f[1]) if isinstance(f, tuple) else f for f in sorted(fs, key=key))
+
+
+@generador("t3_frac_13")
+def gen_frac_13(rng, d):
+    if d < 3:
+        for _ in range(200):
+            a = (rng.randint(1, 15), rng.randint(2, 20 if d > 1 else 10))
+            b = (rng.randint(1, 15), rng.randint(2, 20 if d > 1 else 10))
+            fa, fb = F(*a), F(*b)
+            if fa == fb or a[1] == b[1] or a[0] == b[0] or (d == 1 and (fa > 1 or fb > 1)):
+                continue
+            if math.gcd(*a) != 1 or math.gcd(*b) != 1:
+                continue
+            may, men = (a, b) if fa > fb else (b, a)
+            # queremos trampas: el menor tiene numerador o denominador "engañoso"
+            if not (men[0] > may[0] or men[1] < may[1]):
+                continue
+            break
+        else:
+            return None
+        key = "E01" if men[0] > may[0] else "E02"
+        m = math.lcm(a[1], b[1])
+        pasos = [("denominador común", str(m), f"Paso a denominador {m}: {a[0]}/{a[1]} = {a[0] * m // a[1]}/{m} y {b[0]}/{b[1]} = {b[0] * m // b[1]}/{m}."),
+                 ("comparar", f"{may[0]}/{may[1]}", f"Es mayor la de mayor numerador: {may[0]}/{may[1]}.")]
+        return mk(f"¿Qué fracción es mayor: {a[0]}/{a[1]} o {b[0]}/{b[1]}?", f"{may[0]}/{may[1]}", "t3_frac_comp", {"a": fr_raw(*a), "b": fr_raw(*b)},
+                  [(f"{men[0]}/{men[1]}", key), ("Son iguales", "E03" if may[1] - may[0] == men[1] - men[0] else None), ("No se pueden comparar", None)], pasos,
+                  "Se comparan reduciendo a común denominador, por productos cruzados o pasando a decimal; mirar solo numeradores o denominadores engaña.",
+                  datos={"opciones_fijas": True})
+    for _ in range(200):
+        fs = []
+        while len(fs) < 4:
+            den = rng.randint(2, 12)
+            n = rng.randint(1, den + 3)
+            if math.gcd(n, den) == 1 and F(n, den) not in [F(*x) for x in fs] and n != den:
+                fs.append((n, den))
+        break
+    resp = orden_txt(fs, lambda f: F(*f))
+    e01 = orden_txt(fs, lambda f: (f[0], f[1]))
+    e02 = orden_txt(fs, lambda f: (-f[1], f[0]))
+    e03 = orden_txt(fs, lambda f: (-(f[1] - f[0]), f[0]))
+    txt = ", ".join(fr_raw(*f) for f in fs)
+    m = math.lcm(*[f[1] for f in fs])
+    pasos = [("denominador común", str(m), f"Reduzco a denominador común {m}: " + ", ".join(f"{fr_raw(*f)} = {f[0] * m // f[1]}/{m}" for f in fs) + "."),
+             ("ordenar", resp, f"Ordeno por los numeradores: {resp}.")]
+    return mk(f"Ordena de menor a mayor: {txt}.", resp, "t3_frac_ord", {"fracs": [fr_raw(*f) for f in fs]},
+              [(e01 if e01 != resp else None, "E01"), (e02 if e02 != resp else None, "E02"), (e03 if e03 != resp else None, "E03")], pasos,
+              "Para ordenar fracciones cualesquiera, lo más seguro es pasarlas a común denominador (o a decimal).",
+              genericos=[" < ".join(reversed(resp.split(" < ")))])
+
+
+def factor_pequeno(n):
+    for p in (2, 3, 5, 7, 11, 13):
+        if n % p == 0:
+            return p
+    return None
+
+
+@generador("t3_frac_14")
+def gen_frac_14(rng, d):
+    for _ in range(200):
+        a, b = rng.randint(1, 12), rng.randint(2, 15)
+        if a >= b and rng.random() < 0.7 or math.gcd(a, b) != 1 or a == b:
+            continue
+        g = rng.choice([4, 6, 8, 9, 12] if d == 1 else [12, 18, 20, 24, 30, 36] if d == 2 else [24, 36, 45, 48, 60, 72, 84])
+        N, Dn = a * g, b * g
+        if max(N, Dn) > (100 if d == 1 else 300 if d == 2 else 1000):
+            continue
+        break
+    else:
+        return None
+    p = factor_pequeno(g)
+    e01 = fr_raw(N // p, Dn // p)
+    e03 = None
+    for p1, p2 in ((2, 3), (3, 2), (2, 5), (5, 2)):
+        if N % p1 == 0 and Dn % p2 == 0 and F(N // p1, Dn // p2) != F(a, b):
+            e03 = fr(F(N // p1, Dn // p2))
+            break
+    e02 = None
+    sN, sD = str(N), str(Dn)
+    comunes = set(sN) & set(sD)
+    for c in comunes:
+        n2, d2 = sN.replace(c, "", 1), sD.replace(c, "", 1)
+        if n2 and d2 and int(d2) > 0 and F(int(n2), int(d2)) != F(a, b):
+            e02 = f"{int(n2)}/{int(d2)}"
+            break
+    pasos = [("mcd", str(g), f"mcd({N}, {Dn}) = {g}."),
+             ("dividir", fr_raw(a, b), f"Divido numerador y denominador entre {g}: {N} : {g} = {a} y {Dn} : {g} = {b}. La fracción irreducible es {a}/{b}.")]
+    return mk(f"Simplifica hasta la fracción irreducible: {N}/{Dn}", fr_raw(a, b), "t3_irreducible", {"N": N, "D": Dn},
+              [(e01, "E01"), (e02, "E02"), (e03, "E03")], pasos,
+              "Dividiendo entre el mcd se llega en un solo paso a la irreducible. Hay que dividir arriba y abajo por el MISMO número.",
+              genericos=[fr_raw(b, a), fr_raw(a + 1, b), fr_raw(a, b + 1)])
+
+
+@generador("t3_frac_15")
+def gen_frac_15(rng, d):
+    for _ in range(100):
+        den = rng.randint(2, 6) if d == 1 else rng.randint(3, 12)
+        m = rng.randint(1 if d == 1 else 2, den - 1)
+        if math.gcd(m, den) != 1:
+            continue
+        k = rng.randint(2, 15 if d < 3 else 25)
+        total = den * k
+        parte = m * k
+        break
+    if d == 3 and rng.random() < 0.5:
+        resto = total - parte
+        pasos = [(f"{parte} : {m}", str(k), f"Si {m}/{den} son {parte}, 1/{den} es {parte} : {m} = {k}."),
+                 (f"{k} × {den - m}", str(resto), f"Lo que queda son {den - m}/{den}: {k} × {den - m} = {resto}.")]
+        return mk(f"Los {m}/{den} de una cantidad son {parte}. ¿Cuánto es lo que queda (el resto de la cantidad)?", str(resto), "t3_frac_total", {"m": m, "d": den, "parte": parte, "pide": "resto"},
+                  [(str(total), None), (str(parte * (den - m) // den) if parte * (den - m) % den == 0 and parte * (den - m) // den != resto else None, "E01"),
+                   (str(k), "E03"), (str(abs(total - parte - k)) if total - parte - k > 0 else None, None)], pasos,
+                  "Primero se halla la parte unitaria (dividiendo entre el numerador) y después lo que se pide.",
+                  genericos=[str(resto + k), str(resto * 2)])
+    unidad = f"los {m}/{den}" if m > 1 else f"1/{den}"
+    pasos = [(f"{parte} : {m}", str(k), f"Si {unidad} son {parte}, cada 1/{den} es {parte} : {m} = {k}." if m > 1 else f"1/{den} es {parte}."),
+             (f"{k} × {den}", str(total), f"El total son {den}/{den}: {k} × {den} = {total}.")]
+    e01 = F(parte * m, den)
+    return mk(f"{'Los ' + str(m) + '/' + str(den) + ' de un número son' if m > 1 else '1/' + str(den) + ' de un número es'} {parte}. ¿Cuál es el número?", str(total), "t3_frac_total",
+              {"m": m, "d": den, "parte": parte, "pide": "total"},
+              [(fr(e01) if e01.denominator == 1 else None, "E01"), (fr(F(parte, den) * m) if (F(parte, den) * m).denominator == 1 else None, "E02"), (str(k) if m > 1 else None, "E03"),
+               (str(parte + den), None)], pasos,
+              "Problema inverso: se divide la parte entre el numerador y se multiplica por el denominador.",
+              genericos=[str(total + k), str(total - k), str(parte * den)])
+
+
+@generador("t3_frac_16")
+def gen_frac_16(rng, d):
+    for _ in range(100):
+        a, b = rng.randint(1, 11), rng.randint(2, 20)
+        if math.gcd(a, b) == 1 and a != b:
+            break
+    if d == 1:
+        opcs = [(f"{a}/(−{b})", None), (f"{a}/{b}", "E03"), (f"(−{a})/(−{b})", "E03"), (f"−{b}/{a}", None)]
+        pasos = [("signo", f"{a}/(−{b})", f"El signo menos puede ir delante, en el numerador o en el denominador: −{a}/{b} = (−{a})/{b} = {a}/(−{b}). En cambio (−{a})/(−{b}) es positiva.")]
+        return mk(f"¿Qué fracción es igual a −{a}/{b}?", opcs[0][0], "t3_racional_signo", {"a": a, "b": b}, opcs[1:], pasos,
+                  "Un solo signo menos (esté arriba, abajo o delante) hace la fracción negativa; dos signos menos se anulan.",
+                  datos={"opciones_fijas": True})
+    if d == 2 and rng.random() < 0.5:
+        k = rng.randint(2, 6)
+        N, Dn = a * k, b * k
+        signo = rng.choice(["num", "den", "delante"])
+        txt = f"(−{N})/{Dn}" if signo == "num" else f"{N}/(−{Dn})" if signo == "den" else f"−{N}/{Dn}"
+        pasos = [("mcd", str(k), f"mcd({N}, {Dn}) = {k}. Divido los dos términos entre {k} y mantengo el signo (uno solo, negativo): −{a}/{b}.")]
+        return mk(f"Simplifica: {txt}", f"−{a}/{b}", "t3_racional_simpl", {"expr": txt},
+                  [(f"{a}/{b}", "E02"), (f"−{b}/{a}", None), (f"−{N // factor_pequeno(k)}/{Dn // factor_pequeno(k)}" if factor_pequeno(k) != k else f"−{a}/{b + 1}", None)], pasos,
+                  "Al simplificar solo cambian los valores absolutos; el signo de la fracción se mantiene.")
+    for _ in range(100):
+        fs = []
+        while len(fs) < (2 if d == 2 else 4):
+            den = rng.randint(2, 12)
+            n = rng.randint(1, den + 2)
+            sg = -1 if (rng.random() < 0.75 or not fs) else 1
+            f_ = F(sg * n, den)
+            if math.gcd(n, den) == 1 and f_ not in fs and n != den:
+                fs.append(f_)
+        if sum(1 for x in fs if x < 0) >= 2 or d == 2:
+            break
+    if d == 2:
+        x, y = fs[0], F(-rng.randint(1, 9), rng.randint(2, 12))
+        if x > 0:
+            x = -x
+        if x == y or math.gcd(y.numerator, y.denominator) != 1:
+            return None
+        may, men = max(x, y), min(x, y)
+        pasos = [("negativos", fr(may), f"Con negativos es mayor el que está más cerca de 0: |{fr(may)}| < |{fr(men)}|, así que {fr(may)} > {fr(men)}.")]
+        return mk(f"¿Qué número es mayor: {fr(x)} o {fr(y)}?", fr(may), "t3_racional_comp", {"a": fr(x), "b": fr(y)},
+                  [(fr(men), "E01"), ("Son iguales", None), (fr(-men), None)], pasos,
+                  "Entre dos negativos es mayor el de menor valor absoluto: −2/3 > −3/4.", datos={"opciones_fijas": True})
+    resp = " < ".join(fr(x) for x in sorted(fs))
+    e01 = " < ".join(fr(x) for x in sorted(fs, key=lambda v: (v < 0, abs(v)) if False else abs(v) if v < 0 else 10 + v))
+    pasos = [("ordenar", resp, "Primero los negativos: el que tiene mayor valor absoluto es el menor. Después los positivos. " + f"Orden: {resp}.")]
+    return mk(f"Ordena de menor a mayor: {', '.join(fr(x) for x in fs)}.", resp, "t3_racional_ord", {"fracs": [fr(x) for x in fs]},
+              [(e01 if e01 != resp else None, "E01"), (" < ".join(fr(x) for x in sorted(fs, key=abs)), None), (" < ".join(fr(x) for x in sorted(fs, reverse=True)), None)], pasos,
+              "En la recta, los negativos más alejados del 0 son los menores: −5/6 < −3/4 < −2/3.")

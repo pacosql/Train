@@ -1,0 +1,1262 @@
+{
+ "habilidad": "PROB.PROP.04",
+ "generado_por": "claude (skill mates10-generar-ejercicios v1)",
+ "ejercicios": [
+  {
+   "dificultad": 1,
+   "enunciado": "En un mapa a escala 1 : 100 000, el camping y el lago están a 7 cm. ¿Qué distancia real hay, en kilómetros?",
+   "respuesta": "7 km",
+   "distractores": [
+    {
+     "valor": "700 000 km",
+     "error": "E01"
+    },
+    {
+     "valor": "70 km",
+     "error": "E03"
+    },
+    {
+     "valor": "0,7 km",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "7 × 100000 : 100000",
+   "secundarias": [
+    "NUM.PROP.03",
+    "MED.LONG.07"
+   ],
+   "explicacion_nino": "Cada centímetro del mapa son 100 000 cm de verdad. Multiplica: 7 × 100 000 = 700 000 cm. Ahora pásalo a kilómetros: 1 km son 100 000 cm, así que divides entre 100 000 y salen 7 km. Comprueba que es una distancia razonable entre el camping y el lago.",
+   "explicacion_adulto": "Está aprendiendo que la escala 1 : N significa que cada centímetro del mapa o plano son N centímetros en la realidad, y que después hay que pasar a la unidad que se pide (m o km). Los fallos típicos son no convertir las unidades, dividir en lugar de multiplicar o equivocarse de factor (1 km = 100 000 cm). Pregúntele si el resultado es razonable: ¿dos pueblos a 900 000 km?",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "7 × 100 000",
+     "resultado": "700 000 cm",
+     "texto": "Distancia real en centímetros."
+    },
+    {
+     "paso": 2,
+     "operacion": "700 000 : 100 000",
+     "resultado": "7 km",
+     "texto": "Pasamos de centímetros a kilómetros (1 km = 100 000 cm)."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En el plano de una casa a escala 1 : 50, el largo del pasillo mide 8 cm. ¿Cuántos metros mide en la realidad?",
+   "respuesta": "4 m",
+   "distractores": [
+    {
+     "valor": "400 m",
+     "error": "E01"
+    },
+    {
+     "valor": "40 m",
+     "error": "E03"
+    },
+    {
+     "valor": "0,4 m",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "8 × 50 : 100",
+   "secundarias": [
+    "NUM.PROP.03",
+    "MED.LONG.07"
+   ],
+   "explicacion_nino": "Escala 1 : 50: cada centímetro del plano son 50 cm de verdad. 8 × 50 = 400 cm. Como 1 m = 100 cm, divides entre 100: 4 m. Comprueba que es un tamaño razonable para el pasillo.",
+   "explicacion_adulto": "Está aprendiendo que la escala 1 : N significa que cada centímetro del mapa o plano son N centímetros en la realidad, y que después hay que pasar a la unidad que se pide (m o km). Los fallos típicos son no convertir las unidades, dividir en lugar de multiplicar o equivocarse de factor (1 km = 100 000 cm). Pregúntele si el resultado es razonable: ¿dos pueblos a 900 000 km?",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "8 × 50",
+     "resultado": "400 cm",
+     "texto": "Medida real en centímetros."
+    },
+    {
+     "paso": 2,
+     "operacion": "400 : 100",
+     "resultado": "4 m",
+     "texto": "Pasamos a metros (1 m = 100 cm)."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En la realidad, dos pueblos están a 28 km. ¿A cuántos centímetros aparecerán en un mapa a escala 1 : 200 000?",
+   "respuesta": "14 cm",
+   "distractores": [
+    {
+     "valor": "140 cm",
+     "error": "E03"
+    },
+    {
+     "valor": "1,4 cm",
+     "error": "E03"
+    },
+    {
+     "valor": "5 600 000 cm",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": "28 × 100000 : 200000",
+   "secundarias": [
+    "NUM.PROP.03",
+    "MED.LONG.07"
+   ],
+   "explicacion_nino": "Pasa primero la distancia real a centímetros: 28 km = 2 800 000 cm. En el mapa todo es 200 000 veces más pequeño, así que divides: 2 800 000 : 200 000 = 14 cm. Comprueba: 14 × 200 000 = 2 800 000 cm = 28 km.",
+   "explicacion_adulto": "Está aprendiendo que la escala 1 : N significa que cada centímetro del mapa o plano son N centímetros en la realidad, y que después hay que pasar a la unidad que se pide (m o km). Los fallos típicos son no convertir las unidades, dividir en lugar de multiplicar o equivocarse de factor (1 km = 100 000 cm). Pregúntele si el resultado es razonable: ¿dos pueblos a 900 000 km?",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "28 × 100 000",
+     "resultado": "2 800 000 cm",
+     "texto": "Pasamos la distancia real a centímetros."
+    },
+    {
+     "paso": 2,
+     "operacion": "2 800 000 : 200 000",
+     "resultado": "14 cm",
+     "texto": "Dividimos entre la escala para obtener la distancia en el mapa."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "La escala gráfica de un mapa indica que 1 cm equivale a 2 km. En el mapa, el pueblo y la playa están a 5 cm. ¿Qué distancia real hay?",
+   "respuesta": "10 km",
+   "distractores": [
+    {
+     "valor": "2,5 km",
+     "error": "E02"
+    },
+    {
+     "valor": "7 km",
+     "error": null
+    },
+    {
+     "valor": "100 km",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "5 × 2",
+   "secundarias": [
+    "NUM.PROP.03"
+   ],
+   "explicacion_nino": "La escala gráfica ya te dice que 1 cm del mapa son 2 km de verdad. Si hay 5 cm, multiplica: 5 × 2 = 10 km. No hace falta cambiar de unidad.",
+   "explicacion_adulto": "Está aprendiendo que la escala 1 : N significa que cada centímetro del mapa o plano son N centímetros en la realidad, y que después hay que pasar a la unidad que se pide (m o km). Los fallos típicos son no convertir las unidades, dividir en lugar de multiplicar o equivocarse de factor (1 km = 100 000 cm). Pregúntele si el resultado es razonable: ¿dos pueblos a 900 000 km?",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "5 × 2",
+     "resultado": "10 km",
+     "texto": "Cada centímetro vale lo que dice la escala gráfica."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En un mapa a escala 1 : 100 000, dos refugios de montaña están a 10 cm. ¿Qué distancia real hay, en kilómetros?",
+   "respuesta": "10 km",
+   "distractores": [
+    {
+     "valor": "1 000 000 km",
+     "error": "E01"
+    },
+    {
+     "valor": "100 km",
+     "error": "E03"
+    },
+    {
+     "valor": "1 km",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "10 × 100000 : 100000",
+   "secundarias": [
+    "NUM.PROP.03",
+    "MED.LONG.07"
+   ],
+   "explicacion_nino": "Cada centímetro del mapa son 100 000 cm de verdad. Multiplica: 10 × 100 000 = 1 000 000 cm. Ahora pásalo a kilómetros: 1 km son 100 000 cm, así que divides entre 100 000 y salen 10 km. Comprueba que es una distancia razonable entre dos refugios de montaña.",
+   "explicacion_adulto": "Está aprendiendo que la escala 1 : N significa que cada centímetro del mapa o plano son N centímetros en la realidad, y que después hay que pasar a la unidad que se pide (m o km). Los fallos típicos son no convertir las unidades, dividir en lugar de multiplicar o equivocarse de factor (1 km = 100 000 cm). Pregúntele si el resultado es razonable: ¿dos pueblos a 900 000 km?",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "10 × 100 000",
+     "resultado": "1 000 000 cm",
+     "texto": "Distancia real en centímetros."
+    },
+    {
+     "paso": 2,
+     "operacion": "1 000 000 : 100 000",
+     "resultado": "10 km",
+     "texto": "Pasamos de centímetros a kilómetros (1 km = 100 000 cm)."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En el plano de una casa a escala 1 : 100, el largo del patio mide 3 cm. ¿Cuántos metros mide en la realidad?",
+   "respuesta": "3 m",
+   "distractores": [
+    {
+     "valor": "300 m",
+     "error": "E01"
+    },
+    {
+     "valor": "30 m",
+     "error": "E03"
+    },
+    {
+     "valor": "0,3 m",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "3 × 100 : 100",
+   "secundarias": [
+    "NUM.PROP.03",
+    "MED.LONG.07"
+   ],
+   "explicacion_nino": "Escala 1 : 100: cada centímetro del plano son 100 cm de verdad. 3 × 100 = 300 cm. Como 1 m = 100 cm, divides entre 100: 3 m. Comprueba que es un tamaño razonable para el patio.",
+   "explicacion_adulto": "Está aprendiendo que la escala 1 : N significa que cada centímetro del mapa o plano son N centímetros en la realidad, y que después hay que pasar a la unidad que se pide (m o km). Los fallos típicos son no convertir las unidades, dividir en lugar de multiplicar o equivocarse de factor (1 km = 100 000 cm). Pregúntele si el resultado es razonable: ¿dos pueblos a 900 000 km?",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "3 × 100",
+     "resultado": "300 cm",
+     "texto": "Medida real en centímetros."
+    },
+    {
+     "paso": 2,
+     "operacion": "300 : 100",
+     "resultado": "3 m",
+     "texto": "Pasamos a metros (1 m = 100 cm)."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En la realidad, dos cumbres están a 4 km. ¿A cuántos centímetros aparecerán en un mapa a escala 1 : 200 000?",
+   "respuesta": "2 cm",
+   "distractores": [
+    {
+     "valor": "20 cm",
+     "error": "E03"
+    },
+    {
+     "valor": "0,2 cm",
+     "error": "E03"
+    },
+    {
+     "valor": "800 000 cm",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": "4 × 100000 : 200000",
+   "secundarias": [
+    "NUM.PROP.03",
+    "MED.LONG.07"
+   ],
+   "explicacion_nino": "Pasa primero la distancia real a centímetros: 4 km = 400 000 cm. En el mapa todo es 200 000 veces más pequeño, así que divides: 400 000 : 200 000 = 2 cm. Comprueba: 2 × 200 000 = 400 000 cm = 4 km.",
+   "explicacion_adulto": "Está aprendiendo que la escala 1 : N significa que cada centímetro del mapa o plano son N centímetros en la realidad, y que después hay que pasar a la unidad que se pide (m o km). Los fallos típicos son no convertir las unidades, dividir en lugar de multiplicar o equivocarse de factor (1 km = 100 000 cm). Pregúntele si el resultado es razonable: ¿dos pueblos a 900 000 km?",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "4 × 100 000",
+     "resultado": "400 000 cm",
+     "texto": "Pasamos la distancia real a centímetros."
+    },
+    {
+     "paso": 2,
+     "operacion": "400 000 : 200 000",
+     "resultado": "2 cm",
+     "texto": "Dividimos entre la escala para obtener la distancia en el mapa."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "La escala gráfica de un mapa indica que 1 cm equivale a 2 km. En el mapa, el camping y el lago están a 6 cm. ¿Qué distancia real hay?",
+   "respuesta": "12 km",
+   "distractores": [
+    {
+     "valor": "3 km",
+     "error": "E02"
+    },
+    {
+     "valor": "8 km",
+     "error": null
+    },
+    {
+     "valor": "120 km",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "6 × 2",
+   "secundarias": [
+    "NUM.PROP.03"
+   ],
+   "explicacion_nino": "La escala gráfica ya te dice que 1 cm del mapa son 2 km de verdad. Si hay 6 cm, multiplica: 6 × 2 = 12 km. No hace falta cambiar de unidad.",
+   "explicacion_adulto": "Está aprendiendo que la escala 1 : N significa que cada centímetro del mapa o plano son N centímetros en la realidad, y que después hay que pasar a la unidad que se pide (m o km). Los fallos típicos son no convertir las unidades, dividir en lugar de multiplicar o equivocarse de factor (1 km = 100 000 cm). Pregúntele si el resultado es razonable: ¿dos pueblos a 900 000 km?",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "6 × 2",
+     "resultado": "12 km",
+     "texto": "Cada centímetro vale lo que dice la escala gráfica."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En un mapa a escala 1 : 100 000, dos cumbres están a 4 cm. ¿Qué distancia real hay, en kilómetros?",
+   "respuesta": "4 km",
+   "distractores": [
+    {
+     "valor": "400 000 km",
+     "error": "E01"
+    },
+    {
+     "valor": "40 km",
+     "error": "E03"
+    },
+    {
+     "valor": "0,4 km",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "4 × 100000 : 100000",
+   "secundarias": [
+    "NUM.PROP.03",
+    "MED.LONG.07"
+   ],
+   "explicacion_nino": "Cada centímetro del mapa son 100 000 cm de verdad. Multiplica: 4 × 100 000 = 400 000 cm. Ahora pásalo a kilómetros: 1 km son 100 000 cm, así que divides entre 100 000 y salen 4 km. Comprueba que es una distancia razonable entre dos cumbres.",
+   "explicacion_adulto": "Está aprendiendo que la escala 1 : N significa que cada centímetro del mapa o plano son N centímetros en la realidad, y que después hay que pasar a la unidad que se pide (m o km). Los fallos típicos son no convertir las unidades, dividir en lugar de multiplicar o equivocarse de factor (1 km = 100 000 cm). Pregúntele si el resultado es razonable: ¿dos pueblos a 900 000 km?",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "4 × 100 000",
+     "resultado": "400 000 cm",
+     "texto": "Distancia real en centímetros."
+    },
+    {
+     "paso": 2,
+     "operacion": "400 000 : 100 000",
+     "resultado": "4 km",
+     "texto": "Pasamos de centímetros a kilómetros (1 km = 100 000 cm)."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En el plano de una casa a escala 1 : 50, el largo de la terraza mide 14 cm. ¿Cuántos metros mide en la realidad?",
+   "respuesta": "7 m",
+   "distractores": [
+    {
+     "valor": "700 m",
+     "error": "E01"
+    },
+    {
+     "valor": "70 m",
+     "error": "E03"
+    },
+    {
+     "valor": "0,7 m",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "14 × 50 : 100",
+   "secundarias": [
+    "NUM.PROP.03",
+    "MED.LONG.07"
+   ],
+   "explicacion_nino": "Escala 1 : 50: cada centímetro del plano son 50 cm de verdad. 14 × 50 = 700 cm. Como 1 m = 100 cm, divides entre 100: 7 m. Comprueba que es un tamaño razonable para la terraza.",
+   "explicacion_adulto": "Está aprendiendo que la escala 1 : N significa que cada centímetro del mapa o plano son N centímetros en la realidad, y que después hay que pasar a la unidad que se pide (m o km). Los fallos típicos son no convertir las unidades, dividir en lugar de multiplicar o equivocarse de factor (1 km = 100 000 cm). Pregúntele si el resultado es razonable: ¿dos pueblos a 900 000 km?",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "14 × 50",
+     "resultado": "700 cm",
+     "texto": "Medida real en centímetros."
+    },
+    {
+     "paso": 2,
+     "operacion": "700 : 100",
+     "resultado": "7 m",
+     "texto": "Pasamos a metros (1 m = 100 cm)."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En la realidad, dos ciudades están a 6 km. ¿A cuántos centímetros aparecerán en un mapa a escala 1 : 100 000?",
+   "respuesta": "6 cm",
+   "distractores": [
+    {
+     "valor": "60 cm",
+     "error": "E03"
+    },
+    {
+     "valor": "0,6 cm",
+     "error": "E03"
+    },
+    {
+     "valor": "600 000 cm",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": "6 × 100000 : 100000",
+   "secundarias": [
+    "NUM.PROP.03",
+    "MED.LONG.07"
+   ],
+   "explicacion_nino": "Pasa primero la distancia real a centímetros: 6 km = 600 000 cm. En el mapa todo es 100 000 veces más pequeño, así que divides: 600 000 : 100 000 = 6 cm. Comprueba: 6 × 100 000 = 600 000 cm = 6 km.",
+   "explicacion_adulto": "Está aprendiendo que la escala 1 : N significa que cada centímetro del mapa o plano son N centímetros en la realidad, y que después hay que pasar a la unidad que se pide (m o km). Los fallos típicos son no convertir las unidades, dividir en lugar de multiplicar o equivocarse de factor (1 km = 100 000 cm). Pregúntele si el resultado es razonable: ¿dos pueblos a 900 000 km?",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "6 × 100 000",
+     "resultado": "600 000 cm",
+     "texto": "Pasamos la distancia real a centímetros."
+    },
+    {
+     "paso": 2,
+     "operacion": "600 000 : 100 000",
+     "resultado": "6 cm",
+     "texto": "Dividimos entre la escala para obtener la distancia en el mapa."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "La escala gráfica de un mapa indica que 1 cm equivale a 2 km. En el mapa, dos pueblos están a 2 cm. ¿Qué distancia real hay?",
+   "respuesta": "4 km",
+   "distractores": [
+    {
+     "valor": "1 km",
+     "error": "E02"
+    },
+    {
+     "valor": "40 km",
+     "error": "E03"
+    },
+    {
+     "valor": "0,4 km",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "2 × 2",
+   "secundarias": [
+    "NUM.PROP.03"
+   ],
+   "explicacion_nino": "La escala gráfica ya te dice que 1 cm del mapa son 2 km de verdad. Si hay 2 cm, multiplica: 2 × 2 = 4 km. No hace falta cambiar de unidad.",
+   "explicacion_adulto": "Está aprendiendo que la escala 1 : N significa que cada centímetro del mapa o plano son N centímetros en la realidad, y que después hay que pasar a la unidad que se pide (m o km). Los fallos típicos son no convertir las unidades, dividir en lugar de multiplicar o equivocarse de factor (1 km = 100 000 cm). Pregúntele si el resultado es razonable: ¿dos pueblos a 900 000 km?",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "2 × 2",
+     "resultado": "4 km",
+     "texto": "Cada centímetro vale lo que dice la escala gráfica."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En un mapa a escala 1 : 100 000, el camping y el lago están a 10 cm. ¿Qué distancia real hay, en kilómetros?",
+   "respuesta": "10 km",
+   "distractores": [
+    {
+     "valor": "1 000 000 km",
+     "error": "E01"
+    },
+    {
+     "valor": "100 km",
+     "error": "E03"
+    },
+    {
+     "valor": "1 km",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "10 × 100000 : 100000",
+   "secundarias": [
+    "NUM.PROP.03",
+    "MED.LONG.07"
+   ],
+   "explicacion_nino": "Cada centímetro del mapa son 100 000 cm de verdad. Multiplica: 10 × 100 000 = 1 000 000 cm. Ahora pásalo a kilómetros: 1 km son 100 000 cm, así que divides entre 100 000 y salen 10 km. Comprueba que es una distancia razonable entre el camping y el lago.",
+   "explicacion_adulto": "Está aprendiendo que la escala 1 : N significa que cada centímetro del mapa o plano son N centímetros en la realidad, y que después hay que pasar a la unidad que se pide (m o km). Los fallos típicos son no convertir las unidades, dividir en lugar de multiplicar o equivocarse de factor (1 km = 100 000 cm). Pregúntele si el resultado es razonable: ¿dos pueblos a 900 000 km?",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "10 × 100 000",
+     "resultado": "1 000 000 cm",
+     "texto": "Distancia real en centímetros."
+    },
+    {
+     "paso": 2,
+     "operacion": "1 000 000 : 100 000",
+     "resultado": "10 km",
+     "texto": "Pasamos de centímetros a kilómetros (1 km = 100 000 cm)."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En la realidad, el pueblo y la playa están a 28 km. ¿A cuántos centímetros aparecerán en un mapa a escala 1 : 200 000?",
+   "respuesta": "14 cm",
+   "distractores": [
+    {
+     "valor": "140 cm",
+     "error": "E03"
+    },
+    {
+     "valor": "1,4 cm",
+     "error": "E03"
+    },
+    {
+     "valor": "5 600 000 cm",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": "28 × 100000 : 200000",
+   "secundarias": [
+    "NUM.PROP.03",
+    "MED.LONG.07"
+   ],
+   "explicacion_nino": "Pasa primero la distancia real a centímetros: 28 km = 2 800 000 cm. En el mapa todo es 200 000 veces más pequeño, así que divides: 2 800 000 : 200 000 = 14 cm. Comprueba: 14 × 200 000 = 2 800 000 cm = 28 km.",
+   "explicacion_adulto": "Está aprendiendo que la escala 1 : N significa que cada centímetro del mapa o plano son N centímetros en la realidad, y que después hay que pasar a la unidad que se pide (m o km). Los fallos típicos son no convertir las unidades, dividir en lugar de multiplicar o equivocarse de factor (1 km = 100 000 cm). Pregúntele si el resultado es razonable: ¿dos pueblos a 900 000 km?",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "28 × 100 000",
+     "resultado": "2 800 000 cm",
+     "texto": "Pasamos la distancia real a centímetros."
+    },
+    {
+     "paso": 2,
+     "operacion": "2 800 000 : 200 000",
+     "resultado": "14 cm",
+     "texto": "Dividimos entre la escala para obtener la distancia en el mapa."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "La escala gráfica de un mapa indica que 1 cm equivale a 20 km. En el mapa, la estación y el castillo están a 3 cm. ¿Qué distancia real hay?",
+   "respuesta": "60 km",
+   "distractores": [
+    {
+     "valor": "0,15 km",
+     "error": "E02"
+    },
+    {
+     "valor": "23 km",
+     "error": null
+    },
+    {
+     "valor": "600 km",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "3 × 20",
+   "secundarias": [
+    "NUM.PROP.03"
+   ],
+   "explicacion_nino": "La escala gráfica ya te dice que 1 cm del mapa son 20 km de verdad. Si hay 3 cm, multiplica: 3 × 20 = 60 km. No hace falta cambiar de unidad.",
+   "explicacion_adulto": "Está aprendiendo que la escala 1 : N significa que cada centímetro del mapa o plano son N centímetros en la realidad, y que después hay que pasar a la unidad que se pide (m o km). Los fallos típicos son no convertir las unidades, dividir en lugar de multiplicar o equivocarse de factor (1 km = 100 000 cm). Pregúntele si el resultado es razonable: ¿dos pueblos a 900 000 km?",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "3 × 20",
+     "resultado": "60 km",
+     "texto": "Cada centímetro vale lo que dice la escala gráfica."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En un mapa a escala 1 : 400 000, el faro y el puerto están a 6 cm. ¿Qué distancia real hay, en kilómetros?",
+   "respuesta": "24 km",
+   "distractores": [
+    {
+     "valor": "2 400 000 km",
+     "error": "E01"
+    },
+    {
+     "valor": "240 km",
+     "error": "E03"
+    },
+    {
+     "valor": "2,4 km",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "6 × 400000 : 100000",
+   "secundarias": [
+    "NUM.PROP.03",
+    "MED.LONG.07"
+   ],
+   "explicacion_nino": "Cada centímetro del mapa son 400 000 cm de verdad. Multiplica: 6 × 400 000 = 2 400 000 cm. Ahora pásalo a kilómetros: 1 km son 100 000 cm, así que divides entre 100 000 y salen 24 km. Comprueba que es una distancia razonable entre el faro y el puerto.",
+   "explicacion_adulto": "Está aprendiendo que la escala 1 : N significa que cada centímetro del mapa o plano son N centímetros en la realidad, y que después hay que pasar a la unidad que se pide (m o km). Los fallos típicos son no convertir las unidades, dividir en lugar de multiplicar o equivocarse de factor (1 km = 100 000 cm). Pregúntele si el resultado es razonable: ¿dos pueblos a 900 000 km?",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "6 × 400 000",
+     "resultado": "2 400 000 cm",
+     "texto": "Distancia real en centímetros."
+    },
+    {
+     "paso": 2,
+     "operacion": "2 400 000 : 100 000",
+     "resultado": "24 km",
+     "texto": "Pasamos de centímetros a kilómetros (1 km = 100 000 cm)."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En el plano de una casa a escala 1 : 250, el largo del aula mide 10 cm. ¿Cuántos metros mide en la realidad?",
+   "respuesta": "25 m",
+   "distractores": [
+    {
+     "valor": "2500 m",
+     "error": "E01"
+    },
+    {
+     "valor": "250 m",
+     "error": "E03"
+    },
+    {
+     "valor": "2,5 m",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "10 × 250 : 100",
+   "secundarias": [
+    "NUM.PROP.03",
+    "MED.LONG.07"
+   ],
+   "explicacion_nino": "Escala 1 : 250: cada centímetro del plano son 250 cm de verdad. 10 × 250 = 2500 cm. Como 1 m = 100 cm, divides entre 100: 25 m. Comprueba que es un tamaño razonable para el aula.",
+   "explicacion_adulto": "Está aprendiendo que la escala 1 : N significa que cada centímetro del mapa o plano son N centímetros en la realidad, y que después hay que pasar a la unidad que se pide (m o km). Los fallos típicos son no convertir las unidades, dividir en lugar de multiplicar o equivocarse de factor (1 km = 100 000 cm). Pregúntele si el resultado es razonable: ¿dos pueblos a 900 000 km?",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "10 × 250",
+     "resultado": "2500 cm",
+     "texto": "Medida real en centímetros."
+    },
+    {
+     "paso": 2,
+     "operacion": "2500 : 100",
+     "resultado": "25 m",
+     "texto": "Pasamos a metros (1 m = 100 cm)."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En la realidad, el camping y el lago están a 20 km. ¿A cuántos centímetros aparecerán en un mapa a escala 1 : 200 000?",
+   "respuesta": "10 cm",
+   "distractores": [
+    {
+     "valor": "100 cm",
+     "error": "E03"
+    },
+    {
+     "valor": "1 cm",
+     "error": "E03"
+    },
+    {
+     "valor": "4 000 000 cm",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": "20 × 100000 : 200000",
+   "secundarias": [
+    "NUM.PROP.03",
+    "MED.LONG.07"
+   ],
+   "explicacion_nino": "Pasa primero la distancia real a centímetros: 20 km = 2 000 000 cm. En el mapa todo es 200 000 veces más pequeño, así que divides: 2 000 000 : 200 000 = 10 cm. Comprueba: 10 × 200 000 = 2 000 000 cm = 20 km.",
+   "explicacion_adulto": "Está aprendiendo que la escala 1 : N significa que cada centímetro del mapa o plano son N centímetros en la realidad, y que después hay que pasar a la unidad que se pide (m o km). Los fallos típicos son no convertir las unidades, dividir en lugar de multiplicar o equivocarse de factor (1 km = 100 000 cm). Pregúntele si el resultado es razonable: ¿dos pueblos a 900 000 km?",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "20 × 100 000",
+     "resultado": "2 000 000 cm",
+     "texto": "Pasamos la distancia real a centímetros."
+    },
+    {
+     "paso": 2,
+     "operacion": "2 000 000 : 200 000",
+     "resultado": "10 cm",
+     "texto": "Dividimos entre la escala para obtener la distancia en el mapa."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "La escala gráfica de un mapa indica que 1 cm equivale a 3 km. En el mapa, la estación y el castillo están a 3 cm. ¿Qué distancia real hay?",
+   "respuesta": "9 km",
+   "distractores": [
+    {
+     "valor": "1 km",
+     "error": "E02"
+    },
+    {
+     "valor": "6 km",
+     "error": null
+    },
+    {
+     "valor": "90 km",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "3 × 3",
+   "secundarias": [
+    "NUM.PROP.03"
+   ],
+   "explicacion_nino": "La escala gráfica ya te dice que 1 cm del mapa son 3 km de verdad. Si hay 3 cm, multiplica: 3 × 3 = 9 km. No hace falta cambiar de unidad.",
+   "explicacion_adulto": "Está aprendiendo que la escala 1 : N significa que cada centímetro del mapa o plano son N centímetros en la realidad, y que después hay que pasar a la unidad que se pide (m o km). Los fallos típicos son no convertir las unidades, dividir en lugar de multiplicar o equivocarse de factor (1 km = 100 000 cm). Pregúntele si el resultado es razonable: ¿dos pueblos a 900 000 km?",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "3 × 3",
+     "resultado": "9 km",
+     "texto": "Cada centímetro vale lo que dice la escala gráfica."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En un mapa a escala 1 : 400 000, dos pueblos están a 6 cm. ¿Qué distancia real hay, en kilómetros?",
+   "respuesta": "24 km",
+   "distractores": [
+    {
+     "valor": "2 400 000 km",
+     "error": "E01"
+    },
+    {
+     "valor": "240 km",
+     "error": "E03"
+    },
+    {
+     "valor": "2,4 km",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "6 × 400000 : 100000",
+   "secundarias": [
+    "NUM.PROP.03",
+    "MED.LONG.07"
+   ],
+   "explicacion_nino": "Cada centímetro del mapa son 400 000 cm de verdad. Multiplica: 6 × 400 000 = 2 400 000 cm. Ahora pásalo a kilómetros: 1 km son 100 000 cm, así que divides entre 100 000 y salen 24 km. Comprueba que es una distancia razonable entre dos pueblos.",
+   "explicacion_adulto": "Está aprendiendo que la escala 1 : N significa que cada centímetro del mapa o plano son N centímetros en la realidad, y que después hay que pasar a la unidad que se pide (m o km). Los fallos típicos son no convertir las unidades, dividir en lugar de multiplicar o equivocarse de factor (1 km = 100 000 cm). Pregúntele si el resultado es razonable: ¿dos pueblos a 900 000 km?",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "6 × 400 000",
+     "resultado": "2 400 000 cm",
+     "texto": "Distancia real en centímetros."
+    },
+    {
+     "paso": 2,
+     "operacion": "2 400 000 : 100 000",
+     "resultado": "24 km",
+     "texto": "Pasamos de centímetros a kilómetros (1 km = 100 000 cm)."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En el plano de una casa a escala 1 : 200, el largo del patio mide 16 cm. ¿Cuántos metros mide en la realidad?",
+   "respuesta": "32 m",
+   "distractores": [
+    {
+     "valor": "3200 m",
+     "error": "E01"
+    },
+    {
+     "valor": "320 m",
+     "error": "E03"
+    },
+    {
+     "valor": "3,2 m",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "16 × 200 : 100",
+   "secundarias": [
+    "NUM.PROP.03",
+    "MED.LONG.07"
+   ],
+   "explicacion_nino": "Escala 1 : 200: cada centímetro del plano son 200 cm de verdad. 16 × 200 = 3200 cm. Como 1 m = 100 cm, divides entre 100: 32 m. Comprueba que es un tamaño razonable para el patio.",
+   "explicacion_adulto": "Está aprendiendo que la escala 1 : N significa que cada centímetro del mapa o plano son N centímetros en la realidad, y que después hay que pasar a la unidad que se pide (m o km). Los fallos típicos son no convertir las unidades, dividir en lugar de multiplicar o equivocarse de factor (1 km = 100 000 cm). Pregúntele si el resultado es razonable: ¿dos pueblos a 900 000 km?",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "16 × 200",
+     "resultado": "3200 cm",
+     "texto": "Medida real en centímetros."
+    },
+    {
+     "paso": 2,
+     "operacion": "3200 : 100",
+     "resultado": "32 m",
+     "texto": "Pasamos a metros (1 m = 100 cm)."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En la realidad, dos refugios de montaña están a 9 km. ¿A cuántos centímetros aparecerán en un mapa a escala 1 : 100 000?",
+   "respuesta": "9 cm",
+   "distractores": [
+    {
+     "valor": "90 cm",
+     "error": "E03"
+    },
+    {
+     "valor": "0,9 cm",
+     "error": "E03"
+    },
+    {
+     "valor": "900 000 cm",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": "9 × 100000 : 100000",
+   "secundarias": [
+    "NUM.PROP.03",
+    "MED.LONG.07"
+   ],
+   "explicacion_nino": "Pasa primero la distancia real a centímetros: 9 km = 900 000 cm. En el mapa todo es 100 000 veces más pequeño, así que divides: 900 000 : 100 000 = 9 cm. Comprueba: 9 × 100 000 = 900 000 cm = 9 km.",
+   "explicacion_adulto": "Está aprendiendo que la escala 1 : N significa que cada centímetro del mapa o plano son N centímetros en la realidad, y que después hay que pasar a la unidad que se pide (m o km). Los fallos típicos son no convertir las unidades, dividir en lugar de multiplicar o equivocarse de factor (1 km = 100 000 cm). Pregúntele si el resultado es razonable: ¿dos pueblos a 900 000 km?",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "9 × 100 000",
+     "resultado": "900 000 cm",
+     "texto": "Pasamos la distancia real a centímetros."
+    },
+    {
+     "paso": 2,
+     "operacion": "900 000 : 100 000",
+     "resultado": "9 cm",
+     "texto": "Dividimos entre la escala para obtener la distancia en el mapa."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "La escala gráfica de un mapa indica que 1 cm equivale a 20 km. En el mapa, el pueblo y la playa están a 6 cm. ¿Qué distancia real hay?",
+   "respuesta": "120 km",
+   "distractores": [
+    {
+     "valor": "0,3 km",
+     "error": "E02"
+    },
+    {
+     "valor": "26 km",
+     "error": null
+    },
+    {
+     "valor": "1200 km",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "6 × 20",
+   "secundarias": [
+    "NUM.PROP.03"
+   ],
+   "explicacion_nino": "La escala gráfica ya te dice que 1 cm del mapa son 20 km de verdad. Si hay 6 cm, multiplica: 6 × 20 = 120 km. No hace falta cambiar de unidad.",
+   "explicacion_adulto": "Está aprendiendo que la escala 1 : N significa que cada centímetro del mapa o plano son N centímetros en la realidad, y que después hay que pasar a la unidad que se pide (m o km). Los fallos típicos son no convertir las unidades, dividir en lugar de multiplicar o equivocarse de factor (1 km = 100 000 cm). Pregúntele si el resultado es razonable: ¿dos pueblos a 900 000 km?",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "6 × 20",
+     "resultado": "120 km",
+     "texto": "Cada centímetro vale lo que dice la escala gráfica."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En un mapa a escala 1 : 500 000, dos pueblos están a 9 cm. ¿Qué distancia real hay, en kilómetros?",
+   "respuesta": "45 km",
+   "distractores": [
+    {
+     "valor": "4 500 000 km",
+     "error": "E01"
+    },
+    {
+     "valor": "450 km",
+     "error": "E03"
+    },
+    {
+     "valor": "4,5 km",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "9 × 500000 : 100000",
+   "secundarias": [
+    "NUM.PROP.03",
+    "MED.LONG.07"
+   ],
+   "explicacion_nino": "Cada centímetro del mapa son 500 000 cm de verdad. Multiplica: 9 × 500 000 = 4 500 000 cm. Ahora pásalo a kilómetros: 1 km son 100 000 cm, así que divides entre 100 000 y salen 45 km. Comprueba que es una distancia razonable entre dos pueblos.",
+   "explicacion_adulto": "Está aprendiendo que la escala 1 : N significa que cada centímetro del mapa o plano son N centímetros en la realidad, y que después hay que pasar a la unidad que se pide (m o km). Los fallos típicos son no convertir las unidades, dividir en lugar de multiplicar o equivocarse de factor (1 km = 100 000 cm). Pregúntele si el resultado es razonable: ¿dos pueblos a 900 000 km?",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "9 × 500 000",
+     "resultado": "4 500 000 cm",
+     "texto": "Distancia real en centímetros."
+    },
+    {
+     "paso": 2,
+     "operacion": "4 500 000 : 100 000",
+     "resultado": "45 km",
+     "texto": "Pasamos de centímetros a kilómetros (1 km = 100 000 cm)."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "En el plano de una casa a escala 1 : 25, el largo del salón mide 14 cm. ¿Cuántos metros mide en la realidad?",
+   "respuesta": "3,5 m",
+   "distractores": [
+    {
+     "valor": "350 m",
+     "error": "E01"
+    },
+    {
+     "valor": "35 m",
+     "error": "E03"
+    },
+    {
+     "valor": "0,35 m",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "14 × 25 : 100",
+   "secundarias": [
+    "NUM.PROP.03",
+    "MED.LONG.07"
+   ],
+   "explicacion_nino": "Escala 1 : 25: cada centímetro del plano son 25 cm de verdad. 14 × 25 = 350 cm. Como 1 m = 100 cm, divides entre 100: 3,5 m. Comprueba que es un tamaño razonable para el salón.",
+   "explicacion_adulto": "Está aprendiendo que la escala 1 : N significa que cada centímetro del mapa o plano son N centímetros en la realidad, y que después hay que pasar a la unidad que se pide (m o km). Los fallos típicos son no convertir las unidades, dividir en lugar de multiplicar o equivocarse de factor (1 km = 100 000 cm). Pregúntele si el resultado es razonable: ¿dos pueblos a 900 000 km?",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "14 × 25",
+     "resultado": "350 cm",
+     "texto": "Medida real en centímetros."
+    },
+    {
+     "paso": 2,
+     "operacion": "350 : 100",
+     "resultado": "3,5 m",
+     "texto": "Pasamos a metros (1 m = 100 cm)."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "En la realidad, la estación y el castillo están a 100 km. ¿A cuántos centímetros aparecerán en un mapa a escala 1 : 1 000 000?",
+   "respuesta": "10 cm",
+   "distractores": [
+    {
+     "valor": "100 cm",
+     "error": "E03"
+    },
+    {
+     "valor": "1 cm",
+     "error": "E03"
+    },
+    {
+     "valor": "100 000 000 cm",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": "100 × 100000 : 1000000",
+   "secundarias": [
+    "NUM.PROP.03",
+    "MED.LONG.07"
+   ],
+   "explicacion_nino": "Pasa primero la distancia real a centímetros: 100 km = 10 000 000 cm. En el mapa todo es 1 000 000 veces más pequeño, así que divides: 10 000 000 : 1 000 000 = 10 cm. Comprueba: 10 × 1 000 000 = 10 000 000 cm = 100 km.",
+   "explicacion_adulto": "Está aprendiendo que la escala 1 : N significa que cada centímetro del mapa o plano son N centímetros en la realidad, y que después hay que pasar a la unidad que se pide (m o km). Los fallos típicos son no convertir las unidades, dividir en lugar de multiplicar o equivocarse de factor (1 km = 100 000 cm). Pregúntele si el resultado es razonable: ¿dos pueblos a 900 000 km?",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "100 × 100 000",
+     "resultado": "10 000 000 cm",
+     "texto": "Pasamos la distancia real a centímetros."
+    },
+    {
+     "paso": 2,
+     "operacion": "10 000 000 : 1 000 000",
+     "resultado": "10 cm",
+     "texto": "Dividimos entre la escala para obtener la distancia en el mapa."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "La escala gráfica de un mapa indica que 1 cm equivale a 3 km. En el mapa, la estación y el castillo están a 9,5 cm. ¿Qué distancia real hay?",
+   "respuesta": "28,5 km",
+   "distractores": [
+    {
+     "valor": "12,5 km",
+     "error": null
+    },
+    {
+     "valor": "285 km",
+     "error": "E03"
+    },
+    {
+     "valor": "2,85 km",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "9,5 × 3",
+   "secundarias": [
+    "NUM.PROP.03"
+   ],
+   "explicacion_nino": "La escala gráfica ya te dice que 1 cm del mapa son 3 km de verdad. Si hay 9,5 cm, multiplica: 9,5 × 3 = 28,5 km. No hace falta cambiar de unidad.",
+   "explicacion_adulto": "Está aprendiendo que la escala 1 : N significa que cada centímetro del mapa o plano son N centímetros en la realidad, y que después hay que pasar a la unidad que se pide (m o km). Los fallos típicos son no convertir las unidades, dividir en lugar de multiplicar o equivocarse de factor (1 km = 100 000 cm). Pregúntele si el resultado es razonable: ¿dos pueblos a 900 000 km?",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "9,5 × 3",
+     "resultado": "28,5 km",
+     "texto": "Cada centímetro vale lo que dice la escala gráfica."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "En un mapa a escala 1 : 50 000, dos cumbres están a 5 cm. ¿Qué distancia real hay, en kilómetros?",
+   "respuesta": "2,5 km",
+   "distractores": [
+    {
+     "valor": "250 000 km",
+     "error": "E01"
+    },
+    {
+     "valor": "25 km",
+     "error": "E03"
+    },
+    {
+     "valor": "0,25 km",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "5 × 50000 : 100000",
+   "secundarias": [
+    "NUM.PROP.03",
+    "MED.LONG.07"
+   ],
+   "explicacion_nino": "Cada centímetro del mapa son 50 000 cm de verdad. Multiplica: 5 × 50 000 = 250 000 cm. Ahora pásalo a kilómetros: 1 km son 100 000 cm, así que divides entre 100 000 y salen 2,5 km. Comprueba que es una distancia razonable entre dos cumbres.",
+   "explicacion_adulto": "Está aprendiendo que la escala 1 : N significa que cada centímetro del mapa o plano son N centímetros en la realidad, y que después hay que pasar a la unidad que se pide (m o km). Los fallos típicos son no convertir las unidades, dividir en lugar de multiplicar o equivocarse de factor (1 km = 100 000 cm). Pregúntele si el resultado es razonable: ¿dos pueblos a 900 000 km?",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "5 × 50 000",
+     "resultado": "250 000 cm",
+     "texto": "Distancia real en centímetros."
+    },
+    {
+     "paso": 2,
+     "operacion": "250 000 : 100 000",
+     "resultado": "2,5 km",
+     "texto": "Pasamos de centímetros a kilómetros (1 km = 100 000 cm)."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "En el plano de una casa a escala 1 : 100, el largo de la terraza mide 16 cm. ¿Cuántos metros mide en la realidad?",
+   "respuesta": "16 m",
+   "distractores": [
+    {
+     "valor": "1600 m",
+     "error": "E01"
+    },
+    {
+     "valor": "160 m",
+     "error": "E03"
+    },
+    {
+     "valor": "1,6 m",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "16 × 100 : 100",
+   "secundarias": [
+    "NUM.PROP.03",
+    "MED.LONG.07"
+   ],
+   "explicacion_nino": "Escala 1 : 100: cada centímetro del plano son 100 cm de verdad. 16 × 100 = 1600 cm. Como 1 m = 100 cm, divides entre 100: 16 m. Comprueba que es un tamaño razonable para la terraza.",
+   "explicacion_adulto": "Está aprendiendo que la escala 1 : N significa que cada centímetro del mapa o plano son N centímetros en la realidad, y que después hay que pasar a la unidad que se pide (m o km). Los fallos típicos son no convertir las unidades, dividir en lugar de multiplicar o equivocarse de factor (1 km = 100 000 cm). Pregúntele si el resultado es razonable: ¿dos pueblos a 900 000 km?",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "16 × 100",
+     "resultado": "1600 cm",
+     "texto": "Medida real en centímetros."
+    },
+    {
+     "paso": 2,
+     "operacion": "1600 : 100",
+     "resultado": "16 m",
+     "texto": "Pasamos a metros (1 m = 100 cm)."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "En la realidad, el pueblo y la playa están a 20 km. ¿A cuántos centímetros aparecerán en un mapa a escala 1 : 1 000 000?",
+   "respuesta": "2 cm",
+   "distractores": [
+    {
+     "valor": "20 cm",
+     "error": "E03"
+    },
+    {
+     "valor": "0,2 cm",
+     "error": "E03"
+    },
+    {
+     "valor": "20 000 000 cm",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": "20 × 100000 : 1000000",
+   "secundarias": [
+    "NUM.PROP.03",
+    "MED.LONG.07"
+   ],
+   "explicacion_nino": "Pasa primero la distancia real a centímetros: 20 km = 2 000 000 cm. En el mapa todo es 1 000 000 veces más pequeño, así que divides: 2 000 000 : 1 000 000 = 2 cm. Comprueba: 2 × 1 000 000 = 2 000 000 cm = 20 km.",
+   "explicacion_adulto": "Está aprendiendo que la escala 1 : N significa que cada centímetro del mapa o plano son N centímetros en la realidad, y que después hay que pasar a la unidad que se pide (m o km). Los fallos típicos son no convertir las unidades, dividir en lugar de multiplicar o equivocarse de factor (1 km = 100 000 cm). Pregúntele si el resultado es razonable: ¿dos pueblos a 900 000 km?",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "20 × 100 000",
+     "resultado": "2 000 000 cm",
+     "texto": "Pasamos la distancia real a centímetros."
+    },
+    {
+     "paso": 2,
+     "operacion": "2 000 000 : 1 000 000",
+     "resultado": "2 cm",
+     "texto": "Dividimos entre la escala para obtener la distancia en el mapa."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "La escala gráfica de un mapa indica que 1 cm equivale a 50 km. En el mapa, dos cumbres están a 5 cm. ¿Qué distancia real hay?",
+   "respuesta": "250 km",
+   "distractores": [
+    {
+     "valor": "0,1 km",
+     "error": "E02"
+    },
+    {
+     "valor": "55 km",
+     "error": null
+    },
+    {
+     "valor": "2500 km",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "5 × 50",
+   "secundarias": [
+    "NUM.PROP.03"
+   ],
+   "explicacion_nino": "La escala gráfica ya te dice que 1 cm del mapa son 50 km de verdad. Si hay 5 cm, multiplica: 5 × 50 = 250 km. No hace falta cambiar de unidad.",
+   "explicacion_adulto": "Está aprendiendo que la escala 1 : N significa que cada centímetro del mapa o plano son N centímetros en la realidad, y que después hay que pasar a la unidad que se pide (m o km). Los fallos típicos son no convertir las unidades, dividir en lugar de multiplicar o equivocarse de factor (1 km = 100 000 cm). Pregúntele si el resultado es razonable: ¿dos pueblos a 900 000 km?",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "5 × 50",
+     "resultado": "250 km",
+     "texto": "Cada centímetro vale lo que dice la escala gráfica."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "En la realidad, el pueblo y la playa están a 90 km. ¿A cuántos centímetros aparecerán en un mapa a escala 1 : 1 000 000?",
+   "respuesta": "9 cm",
+   "distractores": [
+    {
+     "valor": "90 cm",
+     "error": "E03"
+    },
+    {
+     "valor": "0,9 cm",
+     "error": "E03"
+    },
+    {
+     "valor": "90 000 000 cm",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": "90 × 100000 : 1000000",
+   "secundarias": [
+    "NUM.PROP.03",
+    "MED.LONG.07"
+   ],
+   "explicacion_nino": "Pasa primero la distancia real a centímetros: 90 km = 9 000 000 cm. En el mapa todo es 1 000 000 veces más pequeño, así que divides: 9 000 000 : 1 000 000 = 9 cm. Comprueba: 9 × 1 000 000 = 9 000 000 cm = 90 km.",
+   "explicacion_adulto": "Está aprendiendo que la escala 1 : N significa que cada centímetro del mapa o plano son N centímetros en la realidad, y que después hay que pasar a la unidad que se pide (m o km). Los fallos típicos son no convertir las unidades, dividir en lugar de multiplicar o equivocarse de factor (1 km = 100 000 cm). Pregúntele si el resultado es razonable: ¿dos pueblos a 900 000 km?",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "90 × 100 000",
+     "resultado": "9 000 000 cm",
+     "texto": "Pasamos la distancia real a centímetros."
+    },
+    {
+     "paso": 2,
+     "operacion": "9 000 000 : 1 000 000",
+     "resultado": "9 cm",
+     "texto": "Dividimos entre la escala para obtener la distancia en el mapa."
+    }
+   ],
+   "plantilla": "P03"
+  }
+ ]
+}

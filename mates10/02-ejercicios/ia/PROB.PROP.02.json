@@ -1,0 +1,1532 @@
+{
+ "habilidad": "PROB.PROP.02",
+ "generado_por": "claude (skill mates10-generar-ejercicios v1)",
+ "ejercicios": [
+  {
+   "dificultad": 1,
+   "enunciado": "En la papelería venden bolígrafos en tres formatos: paquete de 6 por 2,76 €, paquete de 8 por 3,20 € y paquete de 12 por 4,92 €. ¿Cuánto cuesta cada bolígrafo en el formato más ventajoso?",
+   "respuesta": "0,40 €",
+   "distractores": [
+    {
+     "valor": "0,46 €",
+     "error": "E01"
+    },
+    {
+     "valor": "0,41 €",
+     "error": "E02"
+    },
+    {
+     "valor": "3,20 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "3,20 : 8",
+   "secundarias": [
+    "OPER.DEC.06"
+   ],
+   "explicacion_nino": "Para saber qué formato sale mejor, calcula cuánto cuesta un bolígrafo en cada uno: divide el precio entre el número de unidades. Paquete de 6: 0,46 €; paquete de 8: 0,40 €; paquete de 12: 0,41 €. El más barato por unidad es el de 8, aunque no sea el más barato en total ni el más grande. Comprueba: 0,40 € × 8 = 3,20 €.",
+   "explicacion_adulto": "Está aprendiendo a comparar ofertas por el precio de una unidad, no por el precio total ni por el tamaño del paquete. El fallo típico es elegir el paquete más barato en total o el más grande sin calcular. Pregúntele: «¿cuánto te cuesta uno solo en cada oferta?» y deje que haga las divisiones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "2,76 : 6",
+     "resultado": "0,46 €",
+     "texto": "Precio de un bolígrafo en el paquete de 6."
+    },
+    {
+     "paso": 2,
+     "operacion": "3,20 : 8",
+     "resultado": "0,40 €",
+     "texto": "Precio de un bolígrafo en el paquete de 8."
+    },
+    {
+     "paso": 3,
+     "operacion": "4,92 : 12",
+     "resultado": "0,41 €",
+     "texto": "Precio de un bolígrafo en el paquete de 12."
+    },
+    {
+     "paso": 4,
+     "operacion": "comparar",
+     "resultado": "0,40 €",
+     "texto": "El precio por unidad más bajo es el del formato más ventajoso."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En la panadería hay dos ofertas de croissants. Oferta A: 3×2 (te llevas 3 y pagas 2) a 1,80 € cada croissant. Oferta B: pack de 8 por 9,36 €. ¿Cuánto sale cada croissant en la oferta más ventajosa?",
+   "respuesta": "1,17 €",
+   "distractores": [
+    {
+     "valor": "1,20 €",
+     "error": "E01"
+    },
+    {
+     "valor": "1,80 €",
+     "error": null
+    },
+    {
+     "valor": "3,60 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "9,36 : 8",
+   "secundarias": [
+    "OPER.DEC.06"
+   ],
+   "explicacion_nino": "En el 3×2 pagas 2 croissants y te llevas 3: 1,80 × 2 = 3,60 € por 3 croissants, así que cada uno sale a 3,60 € : 3 = 1,20 €. En el pack: 9,36 : 8 = 1,17 €. Gana el precio por unidad más bajo: 1,17 €.",
+   "explicacion_adulto": "Está aprendiendo a comparar ofertas por el precio de una unidad, no por el precio total ni por el tamaño del paquete. El fallo típico es elegir el paquete más barato en total o el más grande sin calcular. Pregúntele: «¿cuánto te cuesta uno solo en cada oferta?» y deje que haga las divisiones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1,80 × 2 : 3",
+     "resultado": "1,20 €",
+     "texto": "Precio real de cada unidad en el 3×2."
+    },
+    {
+     "paso": 2,
+     "operacion": "9,36 : 8",
+     "resultado": "1,17 €",
+     "texto": "Precio de cada unidad en el pack."
+    },
+    {
+     "paso": 3,
+     "operacion": "comparar",
+     "resultado": "1,17 €",
+     "texto": "Elegimos el precio por unidad más bajo."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Una garrafa de 2 litros de detergente cuesta 3 € y una de 5 litros cuesta 6 €. ¿Cuánto cuesta el litro en la opción más barata?",
+   "respuesta": "1,20 €",
+   "distractores": [
+    {
+     "valor": "1,50 €",
+     "error": "E01"
+    },
+    {
+     "valor": "6 €",
+     "error": null
+    },
+    {
+     "valor": "0,30 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "6,00 : 5",
+   "secundarias": [
+    "OPER.DEC.06"
+   ],
+   "explicacion_nino": "Calcula el precio de un litro en cada garrafa: 3,00 : 2 = 1,50 € y 6,00 : 5 = 1,20 €. La opción más barata es la que tiene el litro a 1,20 €. Comprueba multiplicando: 1,20 € × 5 = 6 €.",
+   "explicacion_adulto": "Está aprendiendo a comparar ofertas por el precio de una unidad, no por el precio total ni por el tamaño del paquete. El fallo típico es elegir el paquete más barato en total o el más grande sin calcular. Pregúntele: «¿cuánto te cuesta uno solo en cada oferta?» y deje que haga las divisiones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "3,00 : 2",
+     "resultado": "1,50 €",
+     "texto": "Precio del litro en la de 2 litros."
+    },
+    {
+     "paso": 2,
+     "operacion": "6,00 : 5",
+     "resultado": "1,20 €",
+     "texto": "Precio del litro en la de 5 litros."
+    },
+    {
+     "paso": 3,
+     "operacion": "comparar",
+     "resultado": "1,20 €",
+     "texto": "Gana el precio del litro más bajo."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En el supermercado venden botellas de agua en tres formatos: paquete de 4 por 2,80 €, paquete de 8 por 4,80 € y paquete de 12 por 7,32 €. ¿Cuánto cuesta cada botella de agua en el formato más ventajoso?",
+   "respuesta": "0,60 €",
+   "distractores": [
+    {
+     "valor": "0,70 €",
+     "error": "E01"
+    },
+    {
+     "valor": "0,61 €",
+     "error": "E02"
+    },
+    {
+     "valor": "4,80 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "4,80 : 8",
+   "secundarias": [
+    "OPER.DEC.06"
+   ],
+   "explicacion_nino": "Para saber qué formato sale mejor, calcula cuánto cuesta un botella de agua en cada uno: divide el precio entre el número de unidades. Paquete de 4: 0,70 €; paquete de 8: 0,60 €; paquete de 12: 0,61 €. El más barato por unidad es el de 8, aunque no sea el más barato en total ni el más grande. Comprueba: 0,60 € × 8 = 4,80 €.",
+   "explicacion_adulto": "Está aprendiendo a comparar ofertas por el precio de una unidad, no por el precio total ni por el tamaño del paquete. El fallo típico es elegir el paquete más barato en total o el más grande sin calcular. Pregúntele: «¿cuánto te cuesta uno solo en cada oferta?» y deje que haga las divisiones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "2,80 : 4",
+     "resultado": "0,70 €",
+     "texto": "Precio de un botella de agua en el paquete de 4."
+    },
+    {
+     "paso": 2,
+     "operacion": "4,80 : 8",
+     "resultado": "0,60 €",
+     "texto": "Precio de un botella de agua en el paquete de 8."
+    },
+    {
+     "paso": 3,
+     "operacion": "7,32 : 12",
+     "resultado": "0,61 €",
+     "texto": "Precio de un botella de agua en el paquete de 12."
+    },
+    {
+     "paso": 4,
+     "operacion": "comparar",
+     "resultado": "0,60 €",
+     "texto": "El precio por unidad más bajo es el del formato más ventajoso."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En el supermercado hay dos ofertas de botellas de agua: paquete de 6 por 3,60 € o paquete de 10 por 5 €. ¿Cuánto cuesta cada botella de agua en la oferta más barata?",
+   "respuesta": "0,50 €",
+   "distractores": [
+    {
+     "valor": "0,60 €",
+     "error": "E01"
+    },
+    {
+     "valor": "5 €",
+     "error": null
+    },
+    {
+     "valor": "3,60 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "5,00 : 10",
+   "secundarias": [
+    "OPER.DEC.06"
+   ],
+   "explicacion_nino": "No basta con mirar el precio total: el paquete de 6 cuesta menos porque trae menos botellas de agua. Divide cada precio entre sus unidades: 3,60 : 6 = 0,60 € y 5,00 : 10 = 0,50 €. Sale más barato cada botella de agua en el paquete de 10. Comprueba: 0,50 € × 10 = 5 €.",
+   "explicacion_adulto": "Está aprendiendo a comparar ofertas por el precio de una unidad, no por el precio total ni por el tamaño del paquete. El fallo típico es elegir el paquete más barato en total o el más grande sin calcular. Pregúntele: «¿cuánto te cuesta uno solo en cada oferta?» y deje que haga las divisiones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "3,60 : 6",
+     "resultado": "0,60 €",
+     "texto": "Precio de un botella de agua en el paquete de 6."
+    },
+    {
+     "paso": 2,
+     "operacion": "5,00 : 10",
+     "resultado": "0,50 €",
+     "texto": "Precio de un botella de agua en el paquete de 10."
+    },
+    {
+     "paso": 3,
+     "operacion": "comparar",
+     "resultado": "0,50 €",
+     "texto": "Gana el precio por unidad más bajo."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En la droguería hay dos ofertas de pastillas de jabón. Oferta A: 3×2 (te llevas 3 y pagas 2) a 2,10 € cada pastilla de jabón. Oferta B: pack de 4 por 5,40 €. ¿Cuánto sale cada pastilla de jabón en la oferta más ventajosa?",
+   "respuesta": "1,35 €",
+   "distractores": [
+    {
+     "valor": "1,40 €",
+     "error": "E01"
+    },
+    {
+     "valor": "2,10 €",
+     "error": null
+    },
+    {
+     "valor": "4,20 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "5,40 : 4",
+   "secundarias": [
+    "OPER.DEC.06"
+   ],
+   "explicacion_nino": "En el 3×2 pagas 2 pastillas de jabón y te llevas 3: 2,10 × 2 = 4,20 € por 3 pastillas de jabón, así que cada uno sale a 4,20 € : 3 = 1,40 €. En el pack: 5,40 : 4 = 1,35 €. Gana el precio por unidad más bajo: 1,35 €.",
+   "explicacion_adulto": "Está aprendiendo a comparar ofertas por el precio de una unidad, no por el precio total ni por el tamaño del paquete. El fallo típico es elegir el paquete más barato en total o el más grande sin calcular. Pregúntele: «¿cuánto te cuesta uno solo en cada oferta?» y deje que haga las divisiones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "2,10 × 2 : 3",
+     "resultado": "1,40 €",
+     "texto": "Precio real de cada unidad en el 3×2."
+    },
+    {
+     "paso": 2,
+     "operacion": "5,40 : 4",
+     "resultado": "1,35 €",
+     "texto": "Precio de cada unidad en el pack."
+    },
+    {
+     "paso": 3,
+     "operacion": "comparar",
+     "resultado": "1,35 €",
+     "texto": "Elegimos el precio por unidad más bajo."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un paquete de 2 kg de arroz cuesta 4,60 € y uno de 3 kg cuesta 6 €. ¿Cuánto cuesta el kilo en la opción más barata?",
+   "respuesta": "2 €",
+   "distractores": [
+    {
+     "valor": "2,30 €",
+     "error": "E01"
+    },
+    {
+     "valor": "6 €",
+     "error": null
+    },
+    {
+     "valor": "0,30 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "6,00 : 3",
+   "secundarias": [
+    "OPER.DEC.06"
+   ],
+   "explicacion_nino": "Calcula el precio de un kilo en cada paquete: 4,60 : 2 = 2,30 € y 6,00 : 3 = 2 €. La opción más barata es la que tiene el kilo a 2 €. Comprueba multiplicando: 2 € × 3 = 6 €.",
+   "explicacion_adulto": "Está aprendiendo a comparar ofertas por el precio de una unidad, no por el precio total ni por el tamaño del paquete. El fallo típico es elegir el paquete más barato en total o el más grande sin calcular. Pregúntele: «¿cuánto te cuesta uno solo en cada oferta?» y deje que haga las divisiones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "4,60 : 2",
+     "resultado": "2,30 €",
+     "texto": "Precio del kilo en la de 2 kg."
+    },
+    {
+     "paso": 2,
+     "operacion": "6,00 : 3",
+     "resultado": "2 €",
+     "texto": "Precio del kilo en la de 3 kg."
+    },
+    {
+     "paso": 3,
+     "operacion": "comparar",
+     "resultado": "2 €",
+     "texto": "Gana el precio del kilo más bajo."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En la panadería venden magdalenas en tres formatos: paquete de 4 por 1,32 €, paquete de 8 por 2,40 € y paquete de 12 por 3,84 €. ¿Cuánto cuesta cada magdalena en el formato más ventajoso?",
+   "respuesta": "0,30 €",
+   "distractores": [
+    {
+     "valor": "0,33 €",
+     "error": "E01"
+    },
+    {
+     "valor": "0,32 €",
+     "error": "E02"
+    },
+    {
+     "valor": "2,40 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "2,40 : 8",
+   "secundarias": [
+    "OPER.DEC.06"
+   ],
+   "explicacion_nino": "Para saber qué formato sale mejor, calcula cuánto cuesta un magdalena en cada uno: divide el precio entre el número de unidades. Paquete de 4: 0,33 €; paquete de 8: 0,30 €; paquete de 12: 0,32 €. El más barato por unidad es el de 8, aunque no sea el más barato en total ni el más grande. Comprueba: 0,30 € × 8 = 2,40 €.",
+   "explicacion_adulto": "Está aprendiendo a comparar ofertas por el precio de una unidad, no por el precio total ni por el tamaño del paquete. El fallo típico es elegir el paquete más barato en total o el más grande sin calcular. Pregúntele: «¿cuánto te cuesta uno solo en cada oferta?» y deje que haga las divisiones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1,32 : 4",
+     "resultado": "0,33 €",
+     "texto": "Precio de un magdalena en el paquete de 4."
+    },
+    {
+     "paso": 2,
+     "operacion": "2,40 : 8",
+     "resultado": "0,30 €",
+     "texto": "Precio de un magdalena en el paquete de 8."
+    },
+    {
+     "paso": 3,
+     "operacion": "3,84 : 12",
+     "resultado": "0,32 €",
+     "texto": "Precio de un magdalena en el paquete de 12."
+    },
+    {
+     "paso": 4,
+     "operacion": "comparar",
+     "resultado": "0,30 €",
+     "texto": "El precio por unidad más bajo es el del formato más ventajoso."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En la panadería hay dos ofertas de croissants: paquete de 5 por 3 € o paquete de 8 por 4 €. ¿Cuánto cuesta cada croissant en la oferta más barata?",
+   "respuesta": "0,50 €",
+   "distractores": [
+    {
+     "valor": "0,60 €",
+     "error": "E01"
+    },
+    {
+     "valor": "4 €",
+     "error": null
+    },
+    {
+     "valor": "3 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "4,00 : 8",
+   "secundarias": [
+    "OPER.DEC.06"
+   ],
+   "explicacion_nino": "No basta con mirar el precio total: el paquete de 5 cuesta menos porque trae menos croissants. Divide cada precio entre sus unidades: 3,00 : 5 = 0,60 € y 4,00 : 8 = 0,50 €. Sale más barato cada croissant en el paquete de 8. Comprueba: 0,50 € × 8 = 4 €.",
+   "explicacion_adulto": "Está aprendiendo a comparar ofertas por el precio de una unidad, no por el precio total ni por el tamaño del paquete. El fallo típico es elegir el paquete más barato en total o el más grande sin calcular. Pregúntele: «¿cuánto te cuesta uno solo en cada oferta?» y deje que haga las divisiones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "3,00 : 5",
+     "resultado": "0,60 €",
+     "texto": "Precio de un croissant en el paquete de 5."
+    },
+    {
+     "paso": 2,
+     "operacion": "4,00 : 8",
+     "resultado": "0,50 €",
+     "texto": "Precio de un croissant en el paquete de 8."
+    },
+    {
+     "paso": 3,
+     "operacion": "comparar",
+     "resultado": "0,50 €",
+     "texto": "Gana el precio por unidad más bajo."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En el supermercado hay dos ofertas de botellas de agua. Oferta A: 3×2 (te llevas 3 y pagas 2) a 2,40 € cada botella de agua. Oferta B: pack de 4 por 6,60 €. ¿Cuánto sale cada botella de agua en la oferta más ventajosa?",
+   "respuesta": "1,60 €",
+   "distractores": [
+    {
+     "valor": "1,65 €",
+     "error": "E02"
+    },
+    {
+     "valor": "2,40 €",
+     "error": null
+    },
+    {
+     "valor": "6,60 €",
+     "error": "E01"
+    }
+   ],
+   "expresion_calculo": "2,40 × 2 : 3",
+   "secundarias": [
+    "OPER.DEC.06"
+   ],
+   "explicacion_nino": "En el 3×2 pagas 2 botellas de agua y te llevas 3: 2,40 × 2 = 4,80 € por 3 botellas de agua, así que cada uno sale a 4,80 € : 3 = 1,60 €. En el pack: 6,60 : 4 = 1,65 €. Gana el precio por unidad más bajo: 1,60 €.",
+   "explicacion_adulto": "Está aprendiendo a comparar ofertas por el precio de una unidad, no por el precio total ni por el tamaño del paquete. El fallo típico es elegir el paquete más barato en total o el más grande sin calcular. Pregúntele: «¿cuánto te cuesta uno solo en cada oferta?» y deje que haga las divisiones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "2,40 × 2 : 3",
+     "resultado": "1,60 €",
+     "texto": "Precio real de cada unidad en el 3×2."
+    },
+    {
+     "paso": 2,
+     "operacion": "6,60 : 4",
+     "resultado": "1,65 €",
+     "texto": "Precio de cada unidad en el pack."
+    },
+    {
+     "paso": 3,
+     "operacion": "comparar",
+     "resultado": "1,60 €",
+     "texto": "Elegimos el precio por unidad más bajo."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un paquete de 1 kg de arroz cuesta 1,60 € y uno de 5 kg cuesta 7,50 €. ¿Cuánto cuesta el kilo en la opción más barata?",
+   "respuesta": "1,50 €",
+   "distractores": [
+    {
+     "valor": "1,60 €",
+     "error": "E01"
+    },
+    {
+     "valor": "7,50 €",
+     "error": null
+    },
+    {
+     "valor": "0,10 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "7,50 : 5",
+   "secundarias": [
+    "OPER.DEC.06"
+   ],
+   "explicacion_nino": "Calcula el precio de un kilo en cada paquete: 1,60 : 1 = 1,60 € y 7,50 : 5 = 1,50 €. La opción más barata es la que tiene el kilo a 1,50 €. Comprueba multiplicando: 1,50 € × 5 = 7,50 €.",
+   "explicacion_adulto": "Está aprendiendo a comparar ofertas por el precio de una unidad, no por el precio total ni por el tamaño del paquete. El fallo típico es elegir el paquete más barato en total o el más grande sin calcular. Pregúntele: «¿cuánto te cuesta uno solo en cada oferta?» y deje que haga las divisiones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1,60 : 1",
+     "resultado": "1,60 €",
+     "texto": "Precio del kilo en la de 1 kg."
+    },
+    {
+     "paso": 2,
+     "operacion": "7,50 : 5",
+     "resultado": "1,50 €",
+     "texto": "Precio del kilo en la de 5 kg."
+    },
+    {
+     "paso": 3,
+     "operacion": "comparar",
+     "resultado": "1,50 €",
+     "texto": "Gana el precio del kilo más bajo."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En la ferretería venden pilas en tres formatos: paquete de 2 por 1,36 €, paquete de 6 por 3,60 € y paquete de 10 por 6,40 €. ¿Cuánto cuesta cada pila en el formato más ventajoso?",
+   "respuesta": "0,60 €",
+   "distractores": [
+    {
+     "valor": "0,68 €",
+     "error": "E01"
+    },
+    {
+     "valor": "0,64 €",
+     "error": "E02"
+    },
+    {
+     "valor": "3,60 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "3,60 : 6",
+   "secundarias": [
+    "OPER.DEC.06"
+   ],
+   "explicacion_nino": "Para saber qué formato sale mejor, calcula cuánto cuesta un pila en cada uno: divide el precio entre el número de unidades. Paquete de 2: 0,68 €; paquete de 6: 0,60 €; paquete de 10: 0,64 €. El más barato por unidad es el de 6, aunque no sea el más barato en total ni el más grande. Comprueba: 0,60 € × 6 = 3,60 €.",
+   "explicacion_adulto": "Está aprendiendo a comparar ofertas por el precio de una unidad, no por el precio total ni por el tamaño del paquete. El fallo típico es elegir el paquete más barato en total o el más grande sin calcular. Pregúntele: «¿cuánto te cuesta uno solo en cada oferta?» y deje que haga las divisiones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1,36 : 2",
+     "resultado": "0,68 €",
+     "texto": "Precio de un pila en el paquete de 2."
+    },
+    {
+     "paso": 2,
+     "operacion": "3,60 : 6",
+     "resultado": "0,60 €",
+     "texto": "Precio de un pila en el paquete de 6."
+    },
+    {
+     "paso": 3,
+     "operacion": "6,40 : 10",
+     "resultado": "0,64 €",
+     "texto": "Precio de un pila en el paquete de 10."
+    },
+    {
+     "paso": 4,
+     "operacion": "comparar",
+     "resultado": "0,60 €",
+     "texto": "El precio por unidad más bajo es el del formato más ventajoso."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En la papelería hay dos ofertas de cuadernos: paquete de 6 por 2,40 € o paquete de 10 por 3 €. ¿Cuánto cuesta cada cuaderno en la oferta más barata?",
+   "respuesta": "0,30 €",
+   "distractores": [
+    {
+     "valor": "0,40 €",
+     "error": "E01"
+    },
+    {
+     "valor": "3 €",
+     "error": null
+    },
+    {
+     "valor": "2,40 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "3,00 : 10",
+   "secundarias": [
+    "OPER.DEC.06"
+   ],
+   "explicacion_nino": "No basta con mirar el precio total: el paquete de 6 cuesta menos porque trae menos cuadernos. Divide cada precio entre sus unidades: 2,40 : 6 = 0,40 € y 3,00 : 10 = 0,30 €. Sale más barato cada cuaderno en el paquete de 10. Comprueba: 0,30 € × 10 = 3 €.",
+   "explicacion_adulto": "Está aprendiendo a comparar ofertas por el precio de una unidad, no por el precio total ni por el tamaño del paquete. El fallo típico es elegir el paquete más barato en total o el más grande sin calcular. Pregúntele: «¿cuánto te cuesta uno solo en cada oferta?» y deje que haga las divisiones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "2,40 : 6",
+     "resultado": "0,40 €",
+     "texto": "Precio de un cuaderno en el paquete de 6."
+    },
+    {
+     "paso": 2,
+     "operacion": "3,00 : 10",
+     "resultado": "0,30 €",
+     "texto": "Precio de un cuaderno en el paquete de 10."
+    },
+    {
+     "paso": 3,
+     "operacion": "comparar",
+     "resultado": "0,30 €",
+     "texto": "Gana el precio por unidad más bajo."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En el súper hay dos ofertas de rollos de papel. Oferta A: 3×2 (te llevas 3 y pagas 2) a 4,20 € cada rollo de papel. Oferta B: pack de 8 por 22,16 €. ¿Cuánto sale cada rollo de papel en la oferta más ventajosa?",
+   "respuesta": "2,77 €",
+   "distractores": [
+    {
+     "valor": "2,80 €",
+     "error": "E01"
+    },
+    {
+     "valor": "4,20 €",
+     "error": null
+    },
+    {
+     "valor": "8,40 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "22,16 : 8",
+   "secundarias": [
+    "OPER.DEC.06"
+   ],
+   "explicacion_nino": "En el 3×2 pagas 2 rollos de papel y te llevas 3: 4,20 × 2 = 8,40 € por 3 rollos de papel, así que cada uno sale a 8,40 € : 3 = 2,80 €. En el pack: 22,16 : 8 = 2,77 €. Gana el precio por unidad más bajo: 2,77 €.",
+   "explicacion_adulto": "Está aprendiendo a comparar ofertas por el precio de una unidad, no por el precio total ni por el tamaño del paquete. El fallo típico es elegir el paquete más barato en total o el más grande sin calcular. Pregúntele: «¿cuánto te cuesta uno solo en cada oferta?» y deje que haga las divisiones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "4,20 × 2 : 3",
+     "resultado": "2,80 €",
+     "texto": "Precio real de cada unidad en el 3×2."
+    },
+    {
+     "paso": 2,
+     "operacion": "22,16 : 8",
+     "resultado": "2,77 €",
+     "texto": "Precio de cada unidad en el pack."
+    },
+    {
+     "paso": 3,
+     "operacion": "comparar",
+     "resultado": "2,77 €",
+     "texto": "Elegimos el precio por unidad más bajo."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un saco de 2 kg de patatas cuesta 4,16 € y uno de 3 kg cuesta 5,34 €. ¿Cuánto cuesta el kilo en la opción más barata?",
+   "respuesta": "1,78 €",
+   "distractores": [
+    {
+     "valor": "2,08 €",
+     "error": "E01"
+    },
+    {
+     "valor": "5,34 €",
+     "error": null
+    },
+    {
+     "valor": "0,30 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "5,34 : 3",
+   "secundarias": [
+    "OPER.DEC.06"
+   ],
+   "explicacion_nino": "Calcula el precio de un kilo en cada saco: 4,16 : 2 = 2,08 € y 5,34 : 3 = 1,78 €. La opción más barata es la que tiene el kilo a 1,78 €. Comprueba multiplicando: 1,78 € × 3 = 5,34 €.",
+   "explicacion_adulto": "Está aprendiendo a comparar ofertas por el precio de una unidad, no por el precio total ni por el tamaño del paquete. El fallo típico es elegir el paquete más barato en total o el más grande sin calcular. Pregúntele: «¿cuánto te cuesta uno solo en cada oferta?» y deje que haga las divisiones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "4,16 : 2",
+     "resultado": "2,08 €",
+     "texto": "Precio del kilo en la de 2 kg."
+    },
+    {
+     "paso": 2,
+     "operacion": "5,34 : 3",
+     "resultado": "1,78 €",
+     "texto": "Precio del kilo en la de 3 kg."
+    },
+    {
+     "paso": 3,
+     "operacion": "comparar",
+     "resultado": "1,78 €",
+     "texto": "Gana el precio del kilo más bajo."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En la droguería venden pastillas de jabón en tres formatos: paquete de 3 por 1,65 €, paquete de 6 por 2,82 € y paquete de 12 por 5,88 €. ¿Cuánto cuesta cada pastilla de jabón en el formato más ventajoso?",
+   "respuesta": "0,47 €",
+   "distractores": [
+    {
+     "valor": "0,55 €",
+     "error": "E01"
+    },
+    {
+     "valor": "0,49 €",
+     "error": "E02"
+    },
+    {
+     "valor": "2,82 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "2,82 : 6",
+   "secundarias": [
+    "OPER.DEC.06"
+   ],
+   "explicacion_nino": "Para saber qué formato sale mejor, calcula cuánto cuesta un pastilla de jabón en cada uno: divide el precio entre el número de unidades. Paquete de 3: 0,55 €; paquete de 6: 0,47 €; paquete de 12: 0,49 €. El más barato por unidad es el de 6, aunque no sea el más barato en total ni el más grande. Comprueba: 0,47 € × 6 = 2,82 €.",
+   "explicacion_adulto": "Está aprendiendo a comparar ofertas por el precio de una unidad, no por el precio total ni por el tamaño del paquete. El fallo típico es elegir el paquete más barato en total o el más grande sin calcular. Pregúntele: «¿cuánto te cuesta uno solo en cada oferta?» y deje que haga las divisiones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1,65 : 3",
+     "resultado": "0,55 €",
+     "texto": "Precio de un pastilla de jabón en el paquete de 3."
+    },
+    {
+     "paso": 2,
+     "operacion": "2,82 : 6",
+     "resultado": "0,47 €",
+     "texto": "Precio de un pastilla de jabón en el paquete de 6."
+    },
+    {
+     "paso": 3,
+     "operacion": "5,88 : 12",
+     "resultado": "0,49 €",
+     "texto": "Precio de un pastilla de jabón en el paquete de 12."
+    },
+    {
+     "paso": 4,
+     "operacion": "comparar",
+     "resultado": "0,47 €",
+     "texto": "El precio por unidad más bajo es el del formato más ventajoso."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En la papelería hay dos ofertas de cuadernos: paquete de 3 por 1,44 € o paquete de 8 por 3,20 €. ¿Cuánto cuesta cada cuaderno en la oferta más barata?",
+   "respuesta": "0,40 €",
+   "distractores": [
+    {
+     "valor": "0,48 €",
+     "error": "E01"
+    },
+    {
+     "valor": "3,20 €",
+     "error": null
+    },
+    {
+     "valor": "1,44 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "3,20 : 8",
+   "secundarias": [
+    "OPER.DEC.06"
+   ],
+   "explicacion_nino": "No basta con mirar el precio total: el paquete de 3 cuesta menos porque trae menos cuadernos. Divide cada precio entre sus unidades: 1,44 : 3 = 0,48 € y 3,20 : 8 = 0,40 €. Sale más barato cada cuaderno en el paquete de 8. Comprueba: 0,40 € × 8 = 3,20 €.",
+   "explicacion_adulto": "Está aprendiendo a comparar ofertas por el precio de una unidad, no por el precio total ni por el tamaño del paquete. El fallo típico es elegir el paquete más barato en total o el más grande sin calcular. Pregúntele: «¿cuánto te cuesta uno solo en cada oferta?» y deje que haga las divisiones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1,44 : 3",
+     "resultado": "0,48 €",
+     "texto": "Precio de un cuaderno en el paquete de 3."
+    },
+    {
+     "paso": 2,
+     "operacion": "3,20 : 8",
+     "resultado": "0,40 €",
+     "texto": "Precio de un cuaderno en el paquete de 8."
+    },
+    {
+     "paso": 3,
+     "operacion": "comparar",
+     "resultado": "0,40 €",
+     "texto": "Gana el precio por unidad más bajo."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En el supermercado hay dos ofertas de latas de refresco. Oferta A: 3×2 (te llevas 3 y pagas 2) a 2,40 € cada lata de refresco. Oferta B: pack de 8 por 12,56 €. ¿Cuánto sale cada lata de refresco en la oferta más ventajosa?",
+   "respuesta": "1,57 €",
+   "distractores": [
+    {
+     "valor": "1,60 €",
+     "error": "E01"
+    },
+    {
+     "valor": "2,40 €",
+     "error": null
+    },
+    {
+     "valor": "4,80 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "12,56 : 8",
+   "secundarias": [
+    "OPER.DEC.06"
+   ],
+   "explicacion_nino": "En el 3×2 pagas 2 latas de refresco y te llevas 3: 2,40 × 2 = 4,80 € por 3 latas de refresco, así que cada uno sale a 4,80 € : 3 = 1,60 €. En el pack: 12,56 : 8 = 1,57 €. Gana el precio por unidad más bajo: 1,57 €.",
+   "explicacion_adulto": "Está aprendiendo a comparar ofertas por el precio de una unidad, no por el precio total ni por el tamaño del paquete. El fallo típico es elegir el paquete más barato en total o el más grande sin calcular. Pregúntele: «¿cuánto te cuesta uno solo en cada oferta?» y deje que haga las divisiones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "2,40 × 2 : 3",
+     "resultado": "1,60 €",
+     "texto": "Precio real de cada unidad en el 3×2."
+    },
+    {
+     "paso": 2,
+     "operacion": "12,56 : 8",
+     "resultado": "1,57 €",
+     "texto": "Precio de cada unidad en el pack."
+    },
+    {
+     "paso": 3,
+     "operacion": "comparar",
+     "resultado": "1,57 €",
+     "texto": "Elegimos el precio por unidad más bajo."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Una bolsa de 2 kg de manzanas cuesta 3,44 € y una de 5 kg cuesta 7,10 €. ¿Cuánto cuesta el kilo en la opción más barata?",
+   "respuesta": "1,42 €",
+   "distractores": [
+    {
+     "valor": "1,72 €",
+     "error": "E01"
+    },
+    {
+     "valor": "7,10 €",
+     "error": null
+    },
+    {
+     "valor": "0,30 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "7,10 : 5",
+   "secundarias": [
+    "OPER.DEC.06"
+   ],
+   "explicacion_nino": "Calcula el precio de un kilo en cada bolsa: 3,44 : 2 = 1,72 € y 7,10 : 5 = 1,42 €. La opción más barata es la que tiene el kilo a 1,42 €. Comprueba multiplicando: 1,42 € × 5 = 7,10 €.",
+   "explicacion_adulto": "Está aprendiendo a comparar ofertas por el precio de una unidad, no por el precio total ni por el tamaño del paquete. El fallo típico es elegir el paquete más barato en total o el más grande sin calcular. Pregúntele: «¿cuánto te cuesta uno solo en cada oferta?» y deje que haga las divisiones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "3,44 : 2",
+     "resultado": "1,72 €",
+     "texto": "Precio del kilo en la de 2 kg."
+    },
+    {
+     "paso": 2,
+     "operacion": "7,10 : 5",
+     "resultado": "1,42 €",
+     "texto": "Precio del kilo en la de 5 kg."
+    },
+    {
+     "paso": 3,
+     "operacion": "comparar",
+     "resultado": "1,42 €",
+     "texto": "Gana el precio del kilo más bajo."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En el supermercado venden latas de refresco en tres formatos: paquete de 6 por 4,80 €, paquete de 8 por 6,16 € y paquete de 12 por 9,84 €. ¿Cuánto cuesta cada lata de refresco en el formato más ventajoso?",
+   "respuesta": "0,77 €",
+   "distractores": [
+    {
+     "valor": "0,80 €",
+     "error": "E01"
+    },
+    {
+     "valor": "0,82 €",
+     "error": "E02"
+    },
+    {
+     "valor": "6,16 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "6,16 : 8",
+   "secundarias": [
+    "OPER.DEC.06"
+   ],
+   "explicacion_nino": "Para saber qué formato sale mejor, calcula cuánto cuesta un lata de refresco en cada uno: divide el precio entre el número de unidades. Paquete de 6: 0,80 €; paquete de 8: 0,77 €; paquete de 12: 0,82 €. El más barato por unidad es el de 8, aunque no sea el más barato en total ni el más grande. Comprueba: 0,77 € × 8 = 6,16 €.",
+   "explicacion_adulto": "Está aprendiendo a comparar ofertas por el precio de una unidad, no por el precio total ni por el tamaño del paquete. El fallo típico es elegir el paquete más barato en total o el más grande sin calcular. Pregúntele: «¿cuánto te cuesta uno solo en cada oferta?» y deje que haga las divisiones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "4,80 : 6",
+     "resultado": "0,80 €",
+     "texto": "Precio de un lata de refresco en el paquete de 6."
+    },
+    {
+     "paso": 2,
+     "operacion": "6,16 : 8",
+     "resultado": "0,77 €",
+     "texto": "Precio de un lata de refresco en el paquete de 8."
+    },
+    {
+     "paso": 3,
+     "operacion": "9,84 : 12",
+     "resultado": "0,82 €",
+     "texto": "Precio de un lata de refresco en el paquete de 12."
+    },
+    {
+     "paso": 4,
+     "operacion": "comparar",
+     "resultado": "0,77 €",
+     "texto": "El precio por unidad más bajo es el del formato más ventajoso."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En la panadería hay dos ofertas de croissants: paquete de 6 por 2,22 € o paquete de 12 por 3,24 €. ¿Cuánto cuesta cada croissant en la oferta más barata?",
+   "respuesta": "0,27 €",
+   "distractores": [
+    {
+     "valor": "0,37 €",
+     "error": "E01"
+    },
+    {
+     "valor": "3,24 €",
+     "error": null
+    },
+    {
+     "valor": "2,22 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "3,24 : 12",
+   "secundarias": [
+    "OPER.DEC.06"
+   ],
+   "explicacion_nino": "No basta con mirar el precio total: el paquete de 6 cuesta menos porque trae menos croissants. Divide cada precio entre sus unidades: 2,22 : 6 = 0,37 € y 3,24 : 12 = 0,27 €. Sale más barato cada croissant en el paquete de 12. Comprueba: 0,27 € × 12 = 3,24 €.",
+   "explicacion_adulto": "Está aprendiendo a comparar ofertas por el precio de una unidad, no por el precio total ni por el tamaño del paquete. El fallo típico es elegir el paquete más barato en total o el más grande sin calcular. Pregúntele: «¿cuánto te cuesta uno solo en cada oferta?» y deje que haga las divisiones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "2,22 : 6",
+     "resultado": "0,37 €",
+     "texto": "Precio de un croissant en el paquete de 6."
+    },
+    {
+     "paso": 2,
+     "operacion": "3,24 : 12",
+     "resultado": "0,27 €",
+     "texto": "Precio de un croissant en el paquete de 12."
+    },
+    {
+     "paso": 3,
+     "operacion": "comparar",
+     "resultado": "0,27 €",
+     "texto": "Gana el precio por unidad más bajo."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En la panadería hay dos ofertas de magdalenas. Oferta A: 3×2 (te llevas 3 y pagas 2) a 0,60 € cada magdalena. Oferta B: pack de 8 por 3,44 €. ¿Cuánto sale cada magdalena en la oferta más ventajosa?",
+   "respuesta": "0,40 €",
+   "distractores": [
+    {
+     "valor": "0,43 €",
+     "error": "E02"
+    },
+    {
+     "valor": "0,60 €",
+     "error": null
+    },
+    {
+     "valor": "3,44 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "0,60 × 2 : 3",
+   "secundarias": [
+    "OPER.DEC.06"
+   ],
+   "explicacion_nino": "En el 3×2 pagas 2 magdalenas y te llevas 3: 0,60 × 2 = 1,20 € por 3 magdalenas, así que cada uno sale a 1,20 € : 3 = 0,40 €. En el pack: 3,44 : 8 = 0,43 €. Gana el precio por unidad más bajo: 0,40 €.",
+   "explicacion_adulto": "Está aprendiendo a comparar ofertas por el precio de una unidad, no por el precio total ni por el tamaño del paquete. El fallo típico es elegir el paquete más barato en total o el más grande sin calcular. Pregúntele: «¿cuánto te cuesta uno solo en cada oferta?» y deje que haga las divisiones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "0,60 × 2 : 3",
+     "resultado": "0,40 €",
+     "texto": "Precio real de cada unidad en el 3×2."
+    },
+    {
+     "paso": 2,
+     "operacion": "3,44 : 8",
+     "resultado": "0,43 €",
+     "texto": "Precio de cada unidad en el pack."
+    },
+    {
+     "paso": 3,
+     "operacion": "comparar",
+     "resultado": "0,40 €",
+     "texto": "Elegimos el precio por unidad más bajo."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Una garrafa de 3 litros de detergente cuesta 4,98 € y una de 5 litros cuesta 9,80 €. ¿Cuánto cuesta el litro en la opción más barata?",
+   "respuesta": "1,66 €",
+   "distractores": [
+    {
+     "valor": "1,96 €",
+     "error": "E02"
+    },
+    {
+     "valor": "4,98 €",
+     "error": null
+    },
+    {
+     "valor": "0,30 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "4,98 : 3",
+   "secundarias": [
+    "OPER.DEC.06"
+   ],
+   "explicacion_nino": "Calcula el precio de un litro en cada garrafa: 4,98 : 3 = 1,66 € y 9,80 : 5 = 1,96 €. La opción más barata es la que tiene el litro a 1,66 €. Comprueba multiplicando: 1,66 € × 3 = 4,98 €.",
+   "explicacion_adulto": "Está aprendiendo a comparar ofertas por el precio de una unidad, no por el precio total ni por el tamaño del paquete. El fallo típico es elegir el paquete más barato en total o el más grande sin calcular. Pregúntele: «¿cuánto te cuesta uno solo en cada oferta?» y deje que haga las divisiones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "4,98 : 3",
+     "resultado": "1,66 €",
+     "texto": "Precio del litro en la de 3 litros."
+    },
+    {
+     "paso": 2,
+     "operacion": "9,80 : 5",
+     "resultado": "1,96 €",
+     "texto": "Precio del litro en la de 5 litros."
+    },
+    {
+     "paso": 3,
+     "operacion": "comparar",
+     "resultado": "1,66 €",
+     "texto": "Gana el precio del litro más bajo."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En el súper venden yogures en tres formatos: paquete de 3 por 2,88 €, paquete de 5 por 4,65 € y paquete de 10 por 9,70 €. ¿Cuánto cuesta cada yogur en el formato más ventajoso?",
+   "respuesta": "0,93 €",
+   "distractores": [
+    {
+     "valor": "0,96 €",
+     "error": "E01"
+    },
+    {
+     "valor": "0,97 €",
+     "error": "E02"
+    },
+    {
+     "valor": "4,65 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "4,65 : 5",
+   "secundarias": [
+    "OPER.DEC.06"
+   ],
+   "explicacion_nino": "Para saber qué formato sale mejor, calcula cuánto cuesta un yogur en cada uno: divide el precio entre el número de unidades. Paquete de 3: 0,96 €; paquete de 5: 0,93 €; paquete de 10: 0,97 €. El más barato por unidad es el de 5, aunque no sea el más barato en total ni el más grande. Comprueba: 0,93 € × 5 = 4,65 €.",
+   "explicacion_adulto": "Está aprendiendo a comparar ofertas por el precio de una unidad, no por el precio total ni por el tamaño del paquete. El fallo típico es elegir el paquete más barato en total o el más grande sin calcular. Pregúntele: «¿cuánto te cuesta uno solo en cada oferta?» y deje que haga las divisiones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "2,88 : 3",
+     "resultado": "0,96 €",
+     "texto": "Precio de un yogur en el paquete de 3."
+    },
+    {
+     "paso": 2,
+     "operacion": "4,65 : 5",
+     "resultado": "0,93 €",
+     "texto": "Precio de un yogur en el paquete de 5."
+    },
+    {
+     "paso": 3,
+     "operacion": "9,70 : 10",
+     "resultado": "0,97 €",
+     "texto": "Precio de un yogur en el paquete de 10."
+    },
+    {
+     "paso": 4,
+     "operacion": "comparar",
+     "resultado": "0,93 €",
+     "texto": "El precio por unidad más bajo es el del formato más ventajoso."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "En la panadería hay dos ofertas de magdalenas: paquete de 6 por 4,14 € o paquete de 10 por 6,80 €. ¿Cuánto cuesta cada magdalena en la oferta más barata?",
+   "respuesta": "0,68 €",
+   "distractores": [
+    {
+     "valor": "0,69 €",
+     "error": "E01"
+    },
+    {
+     "valor": "6,80 €",
+     "error": null
+    },
+    {
+     "valor": "4,14 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "6,80 : 10",
+   "secundarias": [
+    "OPER.DEC.06"
+   ],
+   "explicacion_nino": "No basta con mirar el precio total: el paquete de 6 cuesta menos porque trae menos magdalenas. Divide cada precio entre sus unidades: 4,14 : 6 = 0,69 € y 6,80 : 10 = 0,68 €. Sale más barato cada magdalena en el paquete de 10. Comprueba: 0,68 € × 10 = 6,80 €.",
+   "explicacion_adulto": "Está aprendiendo a comparar ofertas por el precio de una unidad, no por el precio total ni por el tamaño del paquete. El fallo típico es elegir el paquete más barato en total o el más grande sin calcular. Pregúntele: «¿cuánto te cuesta uno solo en cada oferta?» y deje que haga las divisiones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "4,14 : 6",
+     "resultado": "0,69 €",
+     "texto": "Precio de un magdalena en el paquete de 6."
+    },
+    {
+     "paso": 2,
+     "operacion": "6,80 : 10",
+     "resultado": "0,68 €",
+     "texto": "Precio de un magdalena en el paquete de 10."
+    },
+    {
+     "paso": 3,
+     "operacion": "comparar",
+     "resultado": "0,68 €",
+     "texto": "Gana el precio por unidad más bajo."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "En la panadería hay dos ofertas de magdalenas. Oferta A: 3×2 (te llevas 3 y pagas 2) a 3 € cada magdalena. Oferta B: pack de 4 por 8,12 €. ¿Cuánto sale cada magdalena en la oferta más ventajosa?",
+   "respuesta": "2 €",
+   "distractores": [
+    {
+     "valor": "2,03 €",
+     "error": "E02"
+    },
+    {
+     "valor": "3 €",
+     "error": null
+    },
+    {
+     "valor": "8,12 €",
+     "error": "E01"
+    }
+   ],
+   "expresion_calculo": "3,00 × 2 : 3",
+   "secundarias": [
+    "OPER.DEC.06"
+   ],
+   "explicacion_nino": "En el 3×2 pagas 2 magdalenas y te llevas 3: 3,00 × 2 = 6 € por 3 magdalenas, así que cada uno sale a 6 € : 3 = 2 €. En el pack: 8,12 : 4 = 2,03 €. Gana el precio por unidad más bajo: 2 €.",
+   "explicacion_adulto": "Está aprendiendo a comparar ofertas por el precio de una unidad, no por el precio total ni por el tamaño del paquete. El fallo típico es elegir el paquete más barato en total o el más grande sin calcular. Pregúntele: «¿cuánto te cuesta uno solo en cada oferta?» y deje que haga las divisiones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "3,00 × 2 : 3",
+     "resultado": "2 €",
+     "texto": "Precio real de cada unidad en el 3×2."
+    },
+    {
+     "paso": 2,
+     "operacion": "8,12 : 4",
+     "resultado": "2,03 €",
+     "texto": "Precio de cada unidad en el pack."
+    },
+    {
+     "paso": 3,
+     "operacion": "comparar",
+     "resultado": "2 €",
+     "texto": "Elegimos el precio por unidad más bajo."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Una garrafa de 1 litro de detergente cuesta 2,30 € y una de 2 litros cuesta 4,56 €. ¿Cuánto cuesta el litro en la opción más barata?",
+   "respuesta": "2,28 €",
+   "distractores": [
+    {
+     "valor": "2,30 €",
+     "error": "E01"
+    },
+    {
+     "valor": "4,56 €",
+     "error": null
+    },
+    {
+     "valor": "0,02 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "4,56 : 2",
+   "secundarias": [
+    "OPER.DEC.06"
+   ],
+   "explicacion_nino": "Calcula el precio de un litro en cada garrafa: 2,30 : 1 = 2,30 € y 4,56 : 2 = 2,28 €. La opción más barata es la que tiene el litro a 2,28 €. Comprueba multiplicando: 2,28 € × 2 = 4,56 €.",
+   "explicacion_adulto": "Está aprendiendo a comparar ofertas por el precio de una unidad, no por el precio total ni por el tamaño del paquete. El fallo típico es elegir el paquete más barato en total o el más grande sin calcular. Pregúntele: «¿cuánto te cuesta uno solo en cada oferta?» y deje que haga las divisiones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "2,30 : 1",
+     "resultado": "2,30 €",
+     "texto": "Precio del litro en la de 1 litros."
+    },
+    {
+     "paso": 2,
+     "operacion": "4,56 : 2",
+     "resultado": "2,28 €",
+     "texto": "Precio del litro en la de 2 litros."
+    },
+    {
+     "paso": 3,
+     "operacion": "comparar",
+     "resultado": "2,28 €",
+     "texto": "Gana el precio del litro más bajo."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "En el súper venden yogures en tres formatos: paquete de 4 por 3,40 €, paquete de 6 por 4,74 € y paquete de 12 por 9,60 €. ¿Cuánto cuesta cada yogur en el formato más ventajoso?",
+   "respuesta": "0,79 €",
+   "distractores": [
+    {
+     "valor": "0,85 €",
+     "error": "E01"
+    },
+    {
+     "valor": "0,80 €",
+     "error": "E02"
+    },
+    {
+     "valor": "4,74 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "4,74 : 6",
+   "secundarias": [
+    "OPER.DEC.06"
+   ],
+   "explicacion_nino": "Para saber qué formato sale mejor, calcula cuánto cuesta un yogur en cada uno: divide el precio entre el número de unidades. Paquete de 4: 0,85 €; paquete de 6: 0,79 €; paquete de 12: 0,80 €. El más barato por unidad es el de 6, aunque no sea el más barato en total ni el más grande. Comprueba: 0,79 € × 6 = 4,74 €.",
+   "explicacion_adulto": "Está aprendiendo a comparar ofertas por el precio de una unidad, no por el precio total ni por el tamaño del paquete. El fallo típico es elegir el paquete más barato en total o el más grande sin calcular. Pregúntele: «¿cuánto te cuesta uno solo en cada oferta?» y deje que haga las divisiones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "3,40 : 4",
+     "resultado": "0,85 €",
+     "texto": "Precio de un yogur en el paquete de 4."
+    },
+    {
+     "paso": 2,
+     "operacion": "4,74 : 6",
+     "resultado": "0,79 €",
+     "texto": "Precio de un yogur en el paquete de 6."
+    },
+    {
+     "paso": 3,
+     "operacion": "9,60 : 12",
+     "resultado": "0,80 €",
+     "texto": "Precio de un yogur en el paquete de 12."
+    },
+    {
+     "paso": 4,
+     "operacion": "comparar",
+     "resultado": "0,79 €",
+     "texto": "El precio por unidad más bajo es el del formato más ventajoso."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "En el supermercado hay dos ofertas de botellas de agua: paquete de 6 por 1,92 € o paquete de 8 por 2,40 €. ¿Cuánto cuesta cada botella de agua en la oferta más barata?",
+   "respuesta": "0,30 €",
+   "distractores": [
+    {
+     "valor": "0,32 €",
+     "error": "E01"
+    },
+    {
+     "valor": "2,40 €",
+     "error": null
+    },
+    {
+     "valor": "1,92 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "2,40 : 8",
+   "secundarias": [
+    "OPER.DEC.06"
+   ],
+   "explicacion_nino": "No basta con mirar el precio total: el paquete de 6 cuesta menos porque trae menos botellas de agua. Divide cada precio entre sus unidades: 1,92 : 6 = 0,32 € y 2,40 : 8 = 0,30 €. Sale más barato cada botella de agua en el paquete de 8. Comprueba: 0,30 € × 8 = 2,40 €.",
+   "explicacion_adulto": "Está aprendiendo a comparar ofertas por el precio de una unidad, no por el precio total ni por el tamaño del paquete. El fallo típico es elegir el paquete más barato en total o el más grande sin calcular. Pregúntele: «¿cuánto te cuesta uno solo en cada oferta?» y deje que haga las divisiones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1,92 : 6",
+     "resultado": "0,32 €",
+     "texto": "Precio de un botella de agua en el paquete de 6."
+    },
+    {
+     "paso": 2,
+     "operacion": "2,40 : 8",
+     "resultado": "0,30 €",
+     "texto": "Precio de un botella de agua en el paquete de 8."
+    },
+    {
+     "paso": 3,
+     "operacion": "comparar",
+     "resultado": "0,30 €",
+     "texto": "Gana el precio por unidad más bajo."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "En el supermercado hay dos ofertas de botellas de agua. Oferta A: 3×2 (te llevas 3 y pagas 2) a 3,30 € cada botella de agua. Oferta B: pack de 6 por 13,56 €. ¿Cuánto sale cada botella de agua en la oferta más ventajosa?",
+   "respuesta": "2,20 €",
+   "distractores": [
+    {
+     "valor": "2,26 €",
+     "error": "E02"
+    },
+    {
+     "valor": "3,30 €",
+     "error": null
+    },
+    {
+     "valor": "13,56 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "3,30 × 2 : 3",
+   "secundarias": [
+    "OPER.DEC.06"
+   ],
+   "explicacion_nino": "En el 3×2 pagas 2 botellas de agua y te llevas 3: 3,30 × 2 = 6,60 € por 3 botellas de agua, así que cada uno sale a 6,60 € : 3 = 2,20 €. En el pack: 13,56 : 6 = 2,26 €. Gana el precio por unidad más bajo: 2,20 €.",
+   "explicacion_adulto": "Está aprendiendo a comparar ofertas por el precio de una unidad, no por el precio total ni por el tamaño del paquete. El fallo típico es elegir el paquete más barato en total o el más grande sin calcular. Pregúntele: «¿cuánto te cuesta uno solo en cada oferta?» y deje que haga las divisiones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "3,30 × 2 : 3",
+     "resultado": "2,20 €",
+     "texto": "Precio real de cada unidad en el 3×2."
+    },
+    {
+     "paso": 2,
+     "operacion": "13,56 : 6",
+     "resultado": "2,26 €",
+     "texto": "Precio de cada unidad en el pack."
+    },
+    {
+     "paso": 3,
+     "operacion": "comparar",
+     "resultado": "2,20 €",
+     "texto": "Elegimos el precio por unidad más bajo."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un paquete de 2 kg de arroz cuesta 4,28 € y uno de 5 kg cuesta 10,55 €. ¿Cuánto cuesta el kilo en la opción más barata?",
+   "respuesta": "2,11 €",
+   "distractores": [
+    {
+     "valor": "2,14 €",
+     "error": "E01"
+    },
+    {
+     "valor": "10,55 €",
+     "error": null
+    },
+    {
+     "valor": "0,03 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "10,55 : 5",
+   "secundarias": [
+    "OPER.DEC.06"
+   ],
+   "explicacion_nino": "Calcula el precio de un kilo en cada paquete: 4,28 : 2 = 2,14 € y 10,55 : 5 = 2,11 €. La opción más barata es la que tiene el kilo a 2,11 €. Comprueba multiplicando: 2,11 € × 5 = 10,55 €.",
+   "explicacion_adulto": "Está aprendiendo a comparar ofertas por el precio de una unidad, no por el precio total ni por el tamaño del paquete. El fallo típico es elegir el paquete más barato en total o el más grande sin calcular. Pregúntele: «¿cuánto te cuesta uno solo en cada oferta?» y deje que haga las divisiones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "4,28 : 2",
+     "resultado": "2,14 €",
+     "texto": "Precio del kilo en la de 2 kg."
+    },
+    {
+     "paso": 2,
+     "operacion": "10,55 : 5",
+     "resultado": "2,11 €",
+     "texto": "Precio del kilo en la de 5 kg."
+    },
+    {
+     "paso": 3,
+     "operacion": "comparar",
+     "resultado": "2,11 €",
+     "texto": "Gana el precio del kilo más bajo."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "En la papelería venden cuadernos en tres formatos: paquete de 4 por 1,44 €, paquete de 8 por 2,24 € y paquete de 12 por 3,48 €. ¿Cuánto cuesta cada cuaderno en el formato más ventajoso?",
+   "respuesta": "0,28 €",
+   "distractores": [
+    {
+     "valor": "0,36 €",
+     "error": "E01"
+    },
+    {
+     "valor": "0,29 €",
+     "error": "E02"
+    },
+    {
+     "valor": "2,24 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "2,24 : 8",
+   "secundarias": [
+    "OPER.DEC.06"
+   ],
+   "explicacion_nino": "Para saber qué formato sale mejor, calcula cuánto cuesta un cuaderno en cada uno: divide el precio entre el número de unidades. Paquete de 4: 0,36 €; paquete de 8: 0,28 €; paquete de 12: 0,29 €. El más barato por unidad es el de 8, aunque no sea el más barato en total ni el más grande. Comprueba: 0,28 € × 8 = 2,24 €.",
+   "explicacion_adulto": "Está aprendiendo a comparar ofertas por el precio de una unidad, no por el precio total ni por el tamaño del paquete. El fallo típico es elegir el paquete más barato en total o el más grande sin calcular. Pregúntele: «¿cuánto te cuesta uno solo en cada oferta?» y deje que haga las divisiones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1,44 : 4",
+     "resultado": "0,36 €",
+     "texto": "Precio de un cuaderno en el paquete de 4."
+    },
+    {
+     "paso": 2,
+     "operacion": "2,24 : 8",
+     "resultado": "0,28 €",
+     "texto": "Precio de un cuaderno en el paquete de 8."
+    },
+    {
+     "paso": 3,
+     "operacion": "3,48 : 12",
+     "resultado": "0,29 €",
+     "texto": "Precio de un cuaderno en el paquete de 12."
+    },
+    {
+     "paso": 4,
+     "operacion": "comparar",
+     "resultado": "0,28 €",
+     "texto": "El precio por unidad más bajo es el del formato más ventajoso."
+    }
+   ],
+   "plantilla": "P01"
+  }
+ ]
+}
