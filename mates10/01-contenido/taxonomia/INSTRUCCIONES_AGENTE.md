@@ -72,3 +72,9 @@ Reglas de contenido:
 
 Nº de habilidades por curso, familias cubiertas, saberes del decreto que no has sabido encajar, dudas de frontera que
 Paco o un maestro deberían decidir. Máximo 30 líneas.
+
+## Guardado incremental (obligatorio)
+
+La sesión puede reiniciarse y un agente reiniciado pierde lo que no haya escrito en disco. Escribe el JSON de tu grupo
+de forma incremental: al terminar CADA familia, reescribe `T<n>.json` completo y válido con todo lo hecho hasta ese
+momento. Si al empezar ya existe `T<n>.json`, continúa desde lo que tenga (no lo rehagas).
