@@ -1,0 +1,1304 @@
+{
+ "habilidad": "PROB.COMB.02",
+ "generado_por": "claude (skill mates10-generar-ejercicios v1)",
+ "ejercicios": [
+  {
+   "dificultad": 1,
+   "enunciado": "Unos auriculares cuestan 38 €, pero hay una rebaja de 5 € por unidad. Carmen compra 5 auriculares. ¿Cuánto paga?",
+   "respuesta": "165 €",
+   "distractores": [
+    {
+     "valor": "185 €",
+     "error": "E01"
+    },
+    {
+     "valor": "33 €",
+     "error": "E03"
+    },
+    {
+     "valor": "190 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "5 × (38 − 5)",
+   "secundarias": [
+    "OPER.JERARQ.02"
+   ],
+   "explicacion_nino": "Entiende: la rebaja es en cada unidad, así que primero se calcula el precio rebajado. Datos: 38 €, rebaja 5 €, 5 unidades. Expresión: 5 × (38 − 5). El paréntesis va primero: 38 − 5 = 33. Después: 5 × 33 = 165 €. Comprueba: sin rebaja pagaría 190 €, y se ahorra 5 € en cada una de las 5: 190 − 25 = 165.",
+   "explicacion_adulto": "Aprende a usar el paréntesis para agrupar una resta que afecta a cada unidad: 5 × (38 − 5). Si escribe 5 × 38 − 5, solo descuenta la rebaja una vez (185 €). Pregúntele: ¿la rebaja se aplica a una auriculares o a todas?",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "38 − 5",
+     "resultado": "33 €",
+     "texto": "Precio rebajado de una unidad."
+    },
+    {
+     "paso": 2,
+     "operacion": "5 × 33",
+     "resultado": "165 €",
+     "texto": "Precio de todas."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Una mochila cuesta 32 €, pero hay una rebaja de 2 € por unidad. Candela compra 5 mochilas. ¿Cuánto paga?",
+   "respuesta": "150 €",
+   "distractores": [
+    {
+     "valor": "158 €",
+     "error": "E01"
+    },
+    {
+     "valor": "30 €",
+     "error": "E03"
+    },
+    {
+     "valor": "160 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "5 × (32 − 2)",
+   "secundarias": [
+    "OPER.JERARQ.02"
+   ],
+   "explicacion_nino": "Entiende: la rebaja es en cada unidad, así que primero se calcula el precio rebajado. Datos: 32 €, rebaja 2 €, 5 unidades. Expresión: 5 × (32 − 2). El paréntesis va primero: 32 − 2 = 30. Después: 5 × 30 = 150 €. Comprueba: sin rebaja pagaría 160 €, y se ahorra 2 € en cada una de las 5: 160 − 10 = 150.",
+   "explicacion_adulto": "Aprende a usar el paréntesis para agrupar una resta que afecta a cada unidad: 5 × (32 − 2). Si escribe 5 × 32 − 2, solo descuenta la rebaja una vez (158 €). Pregúntele: ¿la rebaja se aplica a una mochila o a todas?",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "32 − 2",
+     "resultado": "30 €",
+     "texto": "Precio rebajado de una unidad."
+    },
+    {
+     "paso": 2,
+     "operacion": "5 × 30",
+     "resultado": "150 €",
+     "texto": "Precio de todas."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Unos auriculares cuestan 19 €, pero hay una rebaja de 4 € por unidad. Iker compra 3 auriculares. ¿Cuánto paga?",
+   "respuesta": "45 €",
+   "distractores": [
+    {
+     "valor": "53 €",
+     "error": "E01"
+    },
+    {
+     "valor": "15 €",
+     "error": "E03"
+    },
+    {
+     "valor": "57 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "3 × (19 − 4)",
+   "secundarias": [
+    "OPER.JERARQ.02"
+   ],
+   "explicacion_nino": "Entiende: la rebaja es en cada unidad, así que primero se calcula el precio rebajado. Datos: 19 €, rebaja 4 €, 3 unidades. Expresión: 3 × (19 − 4). El paréntesis va primero: 19 − 4 = 15. Después: 3 × 15 = 45 €. Comprueba: sin rebaja pagaría 57 €, y se ahorra 4 € en cada una de las 3: 57 − 12 = 45.",
+   "explicacion_adulto": "Aprende a usar el paréntesis para agrupar una resta que afecta a cada unidad: 3 × (19 − 4). Si escribe 3 × 19 − 4, solo descuenta la rebaja una vez (53 €). Pregúntele: ¿la rebaja se aplica a una auriculares o a todas?",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "19 − 4",
+     "resultado": "15 €",
+     "texto": "Precio rebajado de una unidad."
+    },
+    {
+     "paso": 2,
+     "operacion": "3 × 15",
+     "resultado": "45 €",
+     "texto": "Precio de todas."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Unos auriculares cuestan 38 €, pero hay una rebaja de 19 € por unidad. Bruno compra 7 auriculares. ¿Cuánto paga?",
+   "respuesta": "133 €",
+   "distractores": [
+    {
+     "valor": "247 €",
+     "error": "E01"
+    },
+    {
+     "valor": "19 €",
+     "error": "E03"
+    },
+    {
+     "valor": "266 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "7 × (38 − 19)",
+   "secundarias": [
+    "OPER.JERARQ.02"
+   ],
+   "explicacion_nino": "Entiende: la rebaja es en cada unidad, así que primero se calcula el precio rebajado. Datos: 38 €, rebaja 19 €, 7 unidades. Expresión: 7 × (38 − 19). El paréntesis va primero: 38 − 19 = 19. Después: 7 × 19 = 133 €. Comprueba: sin rebaja pagaría 266 €, y se ahorra 19 € en cada una de las 7: 266 − 133 = 133.",
+   "explicacion_adulto": "Aprende a usar el paréntesis para agrupar una resta que afecta a cada unidad: 7 × (38 − 19). Si escribe 7 × 38 − 19, solo descuenta la rebaja una vez (247 €). Pregúntele: ¿la rebaja se aplica a una auriculares o a todas?",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "38 − 19",
+     "resultado": "19 €",
+     "texto": "Precio rebajado de una unidad."
+    },
+    {
+     "paso": 2,
+     "operacion": "7 × 19",
+     "resultado": "133 €",
+     "texto": "Precio de todas."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un balón cuesta 30 €, pero hay una rebaja de 5 € por unidad. Rubén compra 10 balones. ¿Cuánto paga?",
+   "respuesta": "250 €",
+   "distractores": [
+    {
+     "valor": "295 €",
+     "error": "E01"
+    },
+    {
+     "valor": "25 €",
+     "error": "E03"
+    },
+    {
+     "valor": "300 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "10 × (30 − 5)",
+   "secundarias": [
+    "OPER.JERARQ.02"
+   ],
+   "explicacion_nino": "Entiende: la rebaja es en cada unidad, así que primero se calcula el precio rebajado. Datos: 30 €, rebaja 5 €, 10 unidades. Expresión: 10 × (30 − 5). El paréntesis va primero: 30 − 5 = 25. Después: 10 × 25 = 250 €. Comprueba: sin rebaja pagaría 300 €, y se ahorra 5 € en cada una de las 10: 300 − 50 = 250.",
+   "explicacion_adulto": "Aprende a usar el paréntesis para agrupar una resta que afecta a cada unidad: 10 × (30 − 5). Si escribe 10 × 30 − 5, solo descuenta la rebaja una vez (295 €). Pregúntele: ¿la rebaja se aplica a una balón o a todas?",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "30 − 5",
+     "resultado": "25 €",
+     "texto": "Precio rebajado de una unidad."
+    },
+    {
+     "paso": 2,
+     "operacion": "10 × 25",
+     "resultado": "250 €",
+     "texto": "Precio de todas."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Una planta cuesta 18 €, pero hay una rebaja de 3 € por unidad. Iker compra 12 plantas. ¿Cuánto paga?",
+   "respuesta": "180 €",
+   "distractores": [
+    {
+     "valor": "213 €",
+     "error": "E01"
+    },
+    {
+     "valor": "15 €",
+     "error": "E03"
+    },
+    {
+     "valor": "216 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "12 × (18 − 3)",
+   "secundarias": [
+    "OPER.JERARQ.02"
+   ],
+   "explicacion_nino": "Entiende: la rebaja es en cada unidad, así que primero se calcula el precio rebajado. Datos: 18 €, rebaja 3 €, 12 unidades. Expresión: 12 × (18 − 3). El paréntesis va primero: 18 − 3 = 15. Después: 12 × 15 = 180 €. Comprueba: sin rebaja pagaría 216 €, y se ahorra 3 € en cada una de las 12: 216 − 36 = 180.",
+   "explicacion_adulto": "Aprende a usar el paréntesis para agrupar una resta que afecta a cada unidad: 12 × (18 − 3). Si escribe 12 × 18 − 3, solo descuenta la rebaja una vez (213 €). Pregúntele: ¿la rebaja se aplica a una planta o a todas?",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "18 − 3",
+     "resultado": "15 €",
+     "texto": "Precio rebajado de una unidad."
+    },
+    {
+     "paso": 2,
+     "operacion": "12 × 15",
+     "resultado": "180 €",
+     "texto": "Precio de todas."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un balón cuesta 29 €, pero hay una rebaja de 10 € por unidad. Martina compra 20 balones. ¿Cuánto paga?",
+   "respuesta": "380 €",
+   "distractores": [
+    {
+     "valor": "570 €",
+     "error": "E01"
+    },
+    {
+     "valor": "19 €",
+     "error": "E03"
+    },
+    {
+     "valor": "580 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "20 × (29 − 10)",
+   "secundarias": [
+    "OPER.JERARQ.02"
+   ],
+   "explicacion_nino": "Entiende: la rebaja es en cada unidad, así que primero se calcula el precio rebajado. Datos: 29 €, rebaja 10 €, 20 unidades. Expresión: 20 × (29 − 10). El paréntesis va primero: 29 − 10 = 19. Después: 20 × 19 = 380 €. Comprueba: sin rebaja pagaría 580 €, y se ahorra 10 € en cada una de las 20: 580 − 200 = 380.",
+   "explicacion_adulto": "Aprende a usar el paréntesis para agrupar una resta que afecta a cada unidad: 20 × (29 − 10). Si escribe 20 × 29 − 10, solo descuenta la rebaja una vez (570 €). Pregúntele: ¿la rebaja se aplica a una balón o a todas?",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "29 − 10",
+     "resultado": "19 €",
+     "texto": "Precio rebajado de una unidad."
+    },
+    {
+     "paso": 2,
+     "operacion": "20 × 19",
+     "resultado": "380 €",
+     "texto": "Precio de todas."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Noa ha ahorrado 12 € y Ainhoa 27 €. Juntan el dinero y lo reparten a partes iguales entre sus 3 sobrinos. ¿Cuánto recibe cada uno?",
+   "respuesta": "13 €",
+   "distractores": [
+    {
+     "valor": "21 €",
+     "error": "E01"
+    },
+    {
+     "valor": "39 €",
+     "error": "E03"
+    },
+    {
+     "valor": "9 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(12 + 27) : 3",
+   "secundarias": [
+    "OPER.JERARQ.02"
+   ],
+   "explicacion_nino": "Entiende: primero se junta todo y después se reparte. Datos: 12 y 27, entre 3. Expresión: (12 + 27) : 3. Paréntesis primero: 12 + 27 = 39. Luego: 39 : 3 = 13. Comprueba: 13 × 3 = 39.",
+   "explicacion_adulto": "Traduce 'juntar y luego repartir' con un paréntesis: (12 + 27) : 3. Sin paréntesis (12 + 27 : 3) solo se repartiría la segunda cantidad y saldría 21. Pídale que diga qué se hace primero en la historia y que lo refleje en la expresión.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "12 + 27",
+     "resultado": "39",
+     "texto": "Se junta todo."
+    },
+    {
+     "paso": 2,
+     "operacion": "39 : 3",
+     "resultado": "13 €",
+     "texto": "Reparto a partes iguales."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Omar ha ahorrado 24 € y Irene 27 €. Juntan el dinero y lo reparten a partes iguales entre sus 3 sobrinos. ¿Cuánto recibe cada uno?",
+   "respuesta": "17 €",
+   "distractores": [
+    {
+     "valor": "33 €",
+     "error": "E01"
+    },
+    {
+     "valor": "51 €",
+     "error": "E03"
+    },
+    {
+     "valor": "9 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(24 + 27) : 3",
+   "secundarias": [
+    "OPER.JERARQ.02"
+   ],
+   "explicacion_nino": "Entiende: primero se junta todo y después se reparte. Datos: 24 y 27, entre 3. Expresión: (24 + 27) : 3. Paréntesis primero: 24 + 27 = 51. Luego: 51 : 3 = 17. Comprueba: 17 × 3 = 51.",
+   "explicacion_adulto": "Traduce 'juntar y luego repartir' con un paréntesis: (24 + 27) : 3. Sin paréntesis (24 + 27 : 3) solo se repartiría la segunda cantidad y saldría 33. Pídale que diga qué se hace primero en la historia y que lo refleje en la expresión.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "24 + 27",
+     "resultado": "51",
+     "texto": "Se junta todo."
+    },
+    {
+     "paso": 2,
+     "operacion": "51 : 3",
+     "resultado": "17 €",
+     "texto": "Reparto a partes iguales."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un huerto escolar recoge 20 kg de tomates el lunes y 40 kg el martes. Todo se reparte por igual en 4 cestas. ¿Cuántos kilos van en cada cesta?",
+   "respuesta": "15 kg",
+   "distractores": [
+    {
+     "valor": "30 kg",
+     "error": "E01"
+    },
+    {
+     "valor": "60 kg",
+     "error": "E03"
+    },
+    {
+     "valor": "10 kg",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(20 + 40) : 4",
+   "secundarias": [
+    "OPER.JERARQ.02"
+   ],
+   "explicacion_nino": "Entiende: primero se junta todo y después se reparte. Datos: 20 y 40, entre 4. Expresión: (20 + 40) : 4. Paréntesis primero: 20 + 40 = 60. Luego: 60 : 4 = 15. Comprueba: 15 × 4 = 60.",
+   "explicacion_adulto": "Traduce 'juntar y luego repartir' con un paréntesis: (20 + 40) : 4. Sin paréntesis (20 + 40 : 4) solo se repartiría la segunda cantidad y saldría 30. Pídale que diga qué se hace primero en la historia y que lo refleje en la expresión.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "20 + 40",
+     "resultado": "60",
+     "texto": "Se junta todo."
+    },
+    {
+     "paso": 2,
+     "operacion": "60 : 4",
+     "resultado": "15 kg",
+     "texto": "Reparto a partes iguales."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Una clase recoge 84 tapones y otra 172. Los juntan y los meten a partes iguales en 4 bolsas. ¿Cuántos tapones hay en cada bolsa?",
+   "respuesta": "64",
+   "distractores": [
+    {
+     "valor": "127",
+     "error": "E01"
+    },
+    {
+     "valor": "256",
+     "error": "E03"
+    },
+    {
+     "valor": "43",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(84 + 172) : 4",
+   "secundarias": [
+    "OPER.JERARQ.02"
+   ],
+   "explicacion_nino": "Entiende: primero se junta todo y después se reparte. Datos: 84 y 172, entre 4. Expresión: (84 + 172) : 4. Paréntesis primero: 84 + 172 = 256. Luego: 256 : 4 = 64. Comprueba: 64 × 4 = 256.",
+   "explicacion_adulto": "Traduce 'juntar y luego repartir' con un paréntesis: (84 + 172) : 4. Sin paréntesis (84 + 172 : 4) solo se repartiría la segunda cantidad y saldría 127. Pídale que diga qué se hace primero en la historia y que lo refleje en la expresión.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "84 + 172",
+     "resultado": "256",
+     "texto": "Se junta todo."
+    },
+    {
+     "paso": 2,
+     "operacion": "256 : 4",
+     "resultado": "64",
+     "texto": "Reparto a partes iguales."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Una clase recoge 190 tapones y otra 140. Los juntan y los meten a partes iguales en 5 bolsas. ¿Cuántos tapones hay en cada bolsa?",
+   "respuesta": "66",
+   "distractores": [
+    {
+     "valor": "218",
+     "error": "E01"
+    },
+    {
+     "valor": "330",
+     "error": "E03"
+    },
+    {
+     "valor": "28",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(190 + 140) : 5",
+   "secundarias": [
+    "OPER.JERARQ.02"
+   ],
+   "explicacion_nino": "Entiende: primero se junta todo y después se reparte. Datos: 190 y 140, entre 5. Expresión: (190 + 140) : 5. Paréntesis primero: 190 + 140 = 330. Luego: 330 : 5 = 66. Comprueba: 66 × 5 = 330.",
+   "explicacion_adulto": "Traduce 'juntar y luego repartir' con un paréntesis: (190 + 140) : 5. Sin paréntesis (190 + 140 : 5) solo se repartiría la segunda cantidad y saldría 218. Pídale que diga qué se hace primero en la historia y que lo refleje en la expresión.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "190 + 140",
+     "resultado": "330",
+     "texto": "Se junta todo."
+    },
+    {
+     "paso": 2,
+     "operacion": "330 : 5",
+     "resultado": "66",
+     "texto": "Reparto a partes iguales."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Una clase recoge 136 tapones y otra 140. Los juntan y los meten a partes iguales en 4 bolsas. ¿Cuántos tapones hay en cada bolsa?",
+   "respuesta": "69",
+   "distractores": [
+    {
+     "valor": "171",
+     "error": "E01"
+    },
+    {
+     "valor": "276",
+     "error": "E03"
+    },
+    {
+     "valor": "35",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(136 + 140) : 4",
+   "secundarias": [
+    "OPER.JERARQ.02"
+   ],
+   "explicacion_nino": "Entiende: primero se junta todo y después se reparte. Datos: 136 y 140, entre 4. Expresión: (136 + 140) : 4. Paréntesis primero: 136 + 140 = 276. Luego: 276 : 4 = 69. Comprueba: 69 × 4 = 276.",
+   "explicacion_adulto": "Traduce 'juntar y luego repartir' con un paréntesis: (136 + 140) : 4. Sin paréntesis (136 + 140 : 4) solo se repartiría la segunda cantidad y saldría 171. Pídale que diga qué se hace primero en la historia y que lo refleje en la expresión.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "136 + 140",
+     "resultado": "276",
+     "texto": "Se junta todo."
+    },
+    {
+     "paso": 2,
+     "operacion": "276 : 4",
+     "resultado": "69",
+     "texto": "Reparto a partes iguales."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un huerto tiene forma de rectángulo de 11 m por 3 m. ¿Cuántos metros de valla hacen falta para rodearlo?",
+   "respuesta": "28 m",
+   "distractores": [
+    {
+     "valor": "25 m",
+     "error": "E01"
+    },
+    {
+     "valor": "14 m",
+     "error": "E03"
+    },
+    {
+     "valor": "33 m",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "2 × (11 + 3)",
+   "secundarias": [
+    "OPER.JERARQ.02"
+   ],
+   "explicacion_nino": "Entiende: el contorno de un rectángulo tiene dos largos y dos anchos, así que se agrupa largo + ancho y se multiplica por 2. Expresión: 2 × (11 + 3). Resuelve primero los paréntesis y después las multiplicaciones: resultado 28 m. Comprueba sumando los cuatro lados a mano.",
+   "explicacion_adulto": "Practica expresar el perímetro con paréntesis (2 × (11 + 3)) en lugar de sumar lado a lado. El fallo típico es escribir 2 × 11 + 3, que olvida un ancho. Pídale que dibuje el rectángulo y marque qué lados cuenta cada operación.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "11 + 3",
+     "resultado": "14 m",
+     "texto": "Un largo y un ancho."
+    },
+    {
+     "paso": 2,
+     "operacion": "2 × 14",
+     "resultado": "28 m",
+     "texto": "Hay dos largos y dos anchos."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un huerto tiene forma de rectángulo de 6 m por 5 m. ¿Cuántos metros de valla hacen falta para rodearlo?",
+   "respuesta": "22 m",
+   "distractores": [
+    {
+     "valor": "17 m",
+     "error": "E01"
+    },
+    {
+     "valor": "11 m",
+     "error": "E03"
+    },
+    {
+     "valor": "30 m",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "2 × (6 + 5)",
+   "secundarias": [
+    "OPER.JERARQ.02"
+   ],
+   "explicacion_nino": "Entiende: el contorno de un rectángulo tiene dos largos y dos anchos, así que se agrupa largo + ancho y se multiplica por 2. Expresión: 2 × (6 + 5). Resuelve primero los paréntesis y después las multiplicaciones: resultado 22 m. Comprueba sumando los cuatro lados a mano.",
+   "explicacion_adulto": "Practica expresar el perímetro con paréntesis (2 × (6 + 5)) en lugar de sumar lado a lado. El fallo típico es escribir 2 × 6 + 5, que olvida un ancho. Pídale que dibuje el rectángulo y marque qué lados cuenta cada operación.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "6 + 5",
+     "resultado": "11 m",
+     "texto": "Un largo y un ancho."
+    },
+    {
+     "paso": 2,
+     "operacion": "2 × 11",
+     "resultado": "22 m",
+     "texto": "Hay dos largos y dos anchos."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un huerto tiene forma de rectángulo de 17 m por 12 m. ¿Cuántos metros de valla hacen falta para rodearlo?",
+   "respuesta": "58 m",
+   "distractores": [
+    {
+     "valor": "46 m",
+     "error": "E01"
+    },
+    {
+     "valor": "29 m",
+     "error": "E03"
+    },
+    {
+     "valor": "204 m",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "2 × (17 + 12)",
+   "secundarias": [
+    "OPER.JERARQ.02"
+   ],
+   "explicacion_nino": "Entiende: el contorno de un rectángulo tiene dos largos y dos anchos, así que se agrupa largo + ancho y se multiplica por 2. Expresión: 2 × (17 + 12). Resuelve primero los paréntesis y después las multiplicaciones: resultado 58 m. Comprueba sumando los cuatro lados a mano.",
+   "explicacion_adulto": "Practica expresar el perímetro con paréntesis (2 × (17 + 12)) en lugar de sumar lado a lado. El fallo típico es escribir 2 × 17 + 12, que olvida un ancho. Pídale que dibuje el rectángulo y marque qué lados cuenta cada operación.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "17 + 12",
+     "resultado": "29 m",
+     "texto": "Un largo y un ancho."
+    },
+    {
+     "paso": 2,
+     "operacion": "2 × 29",
+     "resultado": "58 m",
+     "texto": "Hay dos largos y dos anchos."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un huerto tiene forma de rectángulo de 31 m por 7 m. ¿Cuántos metros de valla hacen falta para rodearlo?",
+   "respuesta": "76 m",
+   "distractores": [
+    {
+     "valor": "69 m",
+     "error": "E01"
+    },
+    {
+     "valor": "38 m",
+     "error": "E03"
+    },
+    {
+     "valor": "217 m",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "2 × (31 + 7)",
+   "secundarias": [
+    "OPER.JERARQ.02"
+   ],
+   "explicacion_nino": "Entiende: el contorno de un rectángulo tiene dos largos y dos anchos, así que se agrupa largo + ancho y se multiplica por 2. Expresión: 2 × (31 + 7). Resuelve primero los paréntesis y después las multiplicaciones: resultado 76 m. Comprueba sumando los cuatro lados a mano.",
+   "explicacion_adulto": "Practica expresar el perímetro con paréntesis (2 × (31 + 7)) en lugar de sumar lado a lado. El fallo típico es escribir 2 × 31 + 7, que olvida un ancho. Pídale que dibuje el rectángulo y marque qué lados cuenta cada operación.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "31 + 7",
+     "resultado": "38 m",
+     "texto": "Un largo y un ancho."
+    },
+    {
+     "paso": 2,
+     "operacion": "2 × 38",
+     "resultado": "76 m",
+     "texto": "Hay dos largos y dos anchos."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Una pista tiene forma de rectángulo de 18 m por 12 m. Carla le da 3 vueltas completas. ¿Cuántos metros recorre?",
+   "respuesta": "180 m",
+   "distractores": [
+    {
+     "valor": "144 m",
+     "error": "E01"
+    },
+    {
+     "valor": "60 m",
+     "error": "E03"
+    },
+    {
+     "valor": "90 m",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "3 × 2 × (18 + 12)",
+   "secundarias": [
+    "OPER.JERARQ.02"
+   ],
+   "explicacion_nino": "Entiende: el contorno de un rectángulo tiene dos largos y dos anchos, así que se agrupa largo + ancho y se multiplica por 2. Expresión: 3 × 2 × (18 + 12). Resuelve primero los paréntesis y después las multiplicaciones: resultado 180 m. Comprueba sumando los cuatro lados a mano.",
+   "explicacion_adulto": "Practica expresar el perímetro con paréntesis (3 × 2 × (18 + 12)) en lugar de sumar lado a lado. El fallo típico es escribir 2 × 18 + 12, que olvida un ancho. Pídale que dibuje el rectángulo y marque qué lados cuenta cada operación.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "18 + 12",
+     "resultado": "30 m",
+     "texto": "Un largo y un ancho."
+    },
+    {
+     "paso": 2,
+     "operacion": "2 × 30",
+     "resultado": "60 m",
+     "texto": "Una vuelta."
+    },
+    {
+     "paso": 3,
+     "operacion": "3 × 60",
+     "resultado": "180 m",
+     "texto": "Todas las vueltas."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un huerto tiene forma de rectángulo de 46 m por 38 m. ¿Cuántos metros de valla hacen falta para rodearlo?",
+   "respuesta": "168 m",
+   "distractores": [
+    {
+     "valor": "130 m",
+     "error": "E01"
+    },
+    {
+     "valor": "84 m",
+     "error": "E03"
+    },
+    {
+     "valor": "1748 m",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "2 × (46 + 38)",
+   "secundarias": [
+    "OPER.JERARQ.02"
+   ],
+   "explicacion_nino": "Entiende: el contorno de un rectángulo tiene dos largos y dos anchos, así que se agrupa largo + ancho y se multiplica por 2. Expresión: 2 × (46 + 38). Resuelve primero los paréntesis y después las multiplicaciones: resultado 168 m. Comprueba sumando los cuatro lados a mano.",
+   "explicacion_adulto": "Practica expresar el perímetro con paréntesis (2 × (46 + 38)) en lugar de sumar lado a lado. El fallo típico es escribir 2 × 46 + 38, que olvida un ancho. Pídale que dibuje el rectángulo y marque qué lados cuenta cada operación.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "46 + 38",
+     "resultado": "84 m",
+     "texto": "Un largo y un ancho."
+    },
+    {
+     "paso": 2,
+     "operacion": "2 × 84",
+     "resultado": "168 m",
+     "texto": "Hay dos largos y dos anchos."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Para ribetear un cojín rectangular de 27 cm por 23 cm se necesita todo su contorno y 9 cm más para el remate. ¿Cuántos centímetros de cinta hacen falta para 6 cojines iguales?",
+   "respuesta": "654 cm",
+   "distractores": [
+    {
+     "valor": "609 cm",
+     "error": "E01"
+    },
+    {
+     "valor": "109 cm",
+     "error": "E03"
+    },
+    {
+     "valor": "516 cm",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "6 × (2 × (27 + 23) + 9)",
+   "secundarias": [
+    "OPER.JERARQ.02"
+   ],
+   "explicacion_nino": "Entiende: el contorno de un rectángulo tiene dos largos y dos anchos, así que se agrupa largo + ancho y se multiplica por 2. Expresión: 6 × (2 × (27 + 23) + 9). Resuelve primero los paréntesis y después las multiplicaciones: resultado 654 cm. Comprueba sumando los cuatro lados a mano.",
+   "explicacion_adulto": "Practica expresar el perímetro con paréntesis (6 × (2 × (27 + 23) + 9)) en lugar de sumar lado a lado. El fallo típico es escribir 2 × 27 + 23, que olvida un ancho. Pídale que dibuje el rectángulo y marque qué lados cuenta cada operación.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "2 × (27 + 23)",
+     "resultado": "100 cm",
+     "texto": "Contorno de un cojín."
+    },
+    {
+     "paso": 2,
+     "operacion": "100 + 9",
+     "resultado": "109 cm",
+     "texto": "Cinta de un cojín."
+    },
+    {
+     "paso": 3,
+     "operacion": "6 × 109",
+     "resultado": "654 cm",
+     "texto": "Todos los cojines."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Para ribetear un cojín rectangular de 19 cm por 11 cm se necesita todo su contorno y 6 cm más para el remate. ¿Cuántos centímetros de cinta hacen falta para 6 cojines iguales?",
+   "respuesta": "396 cm",
+   "distractores": [
+    {
+     "valor": "366 cm",
+     "error": "E01"
+    },
+    {
+     "valor": "66 cm",
+     "error": "E03"
+    },
+    {
+     "valor": "330 cm",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "6 × (2 × (19 + 11) + 6)",
+   "secundarias": [
+    "OPER.JERARQ.02"
+   ],
+   "explicacion_nino": "Entiende: el contorno de un rectángulo tiene dos largos y dos anchos, así que se agrupa largo + ancho y se multiplica por 2. Expresión: 6 × (2 × (19 + 11) + 6). Resuelve primero los paréntesis y después las multiplicaciones: resultado 396 cm. Comprueba sumando los cuatro lados a mano.",
+   "explicacion_adulto": "Practica expresar el perímetro con paréntesis (6 × (2 × (19 + 11) + 6)) en lugar de sumar lado a lado. El fallo típico es escribir 2 × 19 + 11, que olvida un ancho. Pídale que dibuje el rectángulo y marque qué lados cuenta cada operación.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "2 × (19 + 11)",
+     "resultado": "60 cm",
+     "texto": "Contorno de un cojín."
+    },
+    {
+     "paso": 2,
+     "operacion": "60 + 6",
+     "resultado": "66 cm",
+     "texto": "Cinta de un cojín."
+    },
+    {
+     "paso": 3,
+     "operacion": "6 × 66",
+     "resultado": "396 cm",
+     "texto": "Todos los cojines."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un menú del día cuesta 10 € y el postre especial suma 2 € más. Una mesa de 6 personas pide todas el menú con postre especial. ¿Cuánto pagan en total?",
+   "respuesta": "72 €",
+   "distractores": [
+    {
+     "valor": "62 €",
+     "error": "E01"
+    },
+    {
+     "valor": "12 €",
+     "error": "E03"
+    },
+    {
+     "valor": "60 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "6 × (10 + 2)",
+   "secundarias": [
+    "OPER.JERARQ.02"
+   ],
+   "explicacion_nino": "Entiende: cada persona paga el precio más el extra. Datos: 10 € + 2 €, 6 personas. Expresión: 6 × (10 + 2). Paréntesis: 10 + 2 = 12 €. Multiplicación: 6 × 12 = 72 €. Comprueba: 6 × 10 + 6 × 2 = 60 + 12 = 72.",
+   "explicacion_adulto": "Aprende a agrupar con paréntesis el precio de una persona antes de multiplicar: 6 × (10 + 2). Si escribe 6 × 10 + 2, el suplemento solo se cuenta una vez. Pídale que calcule primero lo que paga una persona.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "10 + 2",
+     "resultado": "12 €",
+     "texto": "Lo que paga una persona."
+    },
+    {
+     "paso": 2,
+     "operacion": "6 × 12",
+     "resultado": "72 €",
+     "texto": "Lo que paga el grupo."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un billete de tren cuesta 42 € y elegir asiento cuesta 12 € más por billete. Un grupo de 6 amigos compra billetes con asiento elegido. ¿Cuánto paga el grupo?",
+   "respuesta": "324 €",
+   "distractores": [
+    {
+     "valor": "264 €",
+     "error": "E01"
+    },
+    {
+     "valor": "54 €",
+     "error": "E03"
+    },
+    {
+     "valor": "252 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "6 × (42 + 12)",
+   "secundarias": [
+    "OPER.JERARQ.02"
+   ],
+   "explicacion_nino": "Entiende: cada persona paga el precio más el extra. Datos: 42 € + 12 €, 6 personas. Expresión: 6 × (42 + 12). Paréntesis: 42 + 12 = 54 €. Multiplicación: 6 × 54 = 324 €. Comprueba: 6 × 42 + 6 × 12 = 252 + 72 = 324.",
+   "explicacion_adulto": "Aprende a agrupar con paréntesis el precio de una persona antes de multiplicar: 6 × (42 + 12). Si escribe 6 × 42 + 12, el suplemento solo se cuenta una vez. Pídale que calcule primero lo que paga una persona.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "42 + 12",
+     "resultado": "54 €",
+     "texto": "Lo que paga una persona."
+    },
+    {
+     "paso": 2,
+     "operacion": "6 × 54",
+     "resultado": "324 €",
+     "texto": "Lo que paga el grupo."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un menú del día cuesta 11 € y el postre especial suma 6 € más. Una mesa de 4 personas pide todas el menú con postre especial. ¿Cuánto pagan en total?",
+   "respuesta": "68 €",
+   "distractores": [
+    {
+     "valor": "50 €",
+     "error": "E01"
+    },
+    {
+     "valor": "17 €",
+     "error": "E03"
+    },
+    {
+     "valor": "44 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "4 × (11 + 6)",
+   "secundarias": [
+    "OPER.JERARQ.02"
+   ],
+   "explicacion_nino": "Entiende: cada persona paga el precio más el extra. Datos: 11 € + 6 €, 4 personas. Expresión: 4 × (11 + 6). Paréntesis: 11 + 6 = 17 €. Multiplicación: 4 × 17 = 68 €. Comprueba: 4 × 11 + 4 × 6 = 44 + 24 = 68.",
+   "explicacion_adulto": "Aprende a agrupar con paréntesis el precio de una persona antes de multiplicar: 4 × (11 + 6). Si escribe 4 × 11 + 6, el suplemento solo se cuenta una vez. Pídale que calcule primero lo que paga una persona.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "11 + 6",
+     "resultado": "17 €",
+     "texto": "Lo que paga una persona."
+    },
+    {
+     "paso": 2,
+     "operacion": "4 × 17",
+     "resultado": "68 €",
+     "texto": "Lo que paga el grupo."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "La inscripción a una carrera popular cuesta 22 € y, si se quiere camiseta, hay que añadir 2 € por persona. Se apuntan 23 compañeros de trabajo, todos con camiseta. ¿Cuánto pagan entre todos?",
+   "respuesta": "552 €",
+   "distractores": [
+    {
+     "valor": "508 €",
+     "error": "E01"
+    },
+    {
+     "valor": "24 €",
+     "error": "E03"
+    },
+    {
+     "valor": "506 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "23 × (22 + 2)",
+   "secundarias": [
+    "OPER.JERARQ.02"
+   ],
+   "explicacion_nino": "Entiende: cada persona paga el precio más el extra. Datos: 22 € + 2 €, 23 personas. Expresión: 23 × (22 + 2). Paréntesis: 22 + 2 = 24 €. Multiplicación: 23 × 24 = 552 €. Comprueba: 23 × 22 + 23 × 2 = 506 + 46 = 552.",
+   "explicacion_adulto": "Aprende a agrupar con paréntesis el precio de una persona antes de multiplicar: 23 × (22 + 2). Si escribe 23 × 22 + 2, el suplemento solo se cuenta una vez. Pídale que calcule primero lo que paga una persona.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "22 + 2",
+     "resultado": "24 €",
+     "texto": "Lo que paga una persona."
+    },
+    {
+     "paso": 2,
+     "operacion": "23 × 24",
+     "resultado": "552 €",
+     "texto": "Lo que paga el grupo."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un billete de tren cuesta 46 € y elegir asiento cuesta 15 € más por billete. Un grupo de 16 amigos compra billetes con asiento elegido. ¿Cuánto paga el grupo?",
+   "respuesta": "976 €",
+   "distractores": [
+    {
+     "valor": "751 €",
+     "error": "E01"
+    },
+    {
+     "valor": "61 €",
+     "error": "E03"
+    },
+    {
+     "valor": "736 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "16 × (46 + 15)",
+   "secundarias": [
+    "OPER.JERARQ.02"
+   ],
+   "explicacion_nino": "Entiende: cada persona paga el precio más el extra. Datos: 46 € + 15 €, 16 personas. Expresión: 16 × (46 + 15). Paréntesis: 46 + 15 = 61 €. Multiplicación: 16 × 61 = 976 €. Comprueba: 16 × 46 + 16 × 15 = 736 + 240 = 976.",
+   "explicacion_adulto": "Aprende a agrupar con paréntesis el precio de una persona antes de multiplicar: 16 × (46 + 15). Si escribe 16 × 46 + 15, el suplemento solo se cuenta una vez. Pídale que calcule primero lo que paga una persona.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "46 + 15",
+     "resultado": "61 €",
+     "texto": "Lo que paga una persona."
+    },
+    {
+     "paso": 2,
+     "operacion": "16 × 61",
+     "resultado": "976 €",
+     "texto": "Lo que paga el grupo."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "La inscripción a una carrera popular cuesta 24 € y, si se quiere camiseta, hay que añadir 3 € por persona. Se apuntan 11 compañeros de trabajo, todos con camiseta. ¿Cuánto pagan entre todos?",
+   "respuesta": "297 €",
+   "distractores": [
+    {
+     "valor": "267 €",
+     "error": "E01"
+    },
+    {
+     "valor": "27 €",
+     "error": "E03"
+    },
+    {
+     "valor": "264 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "11 × (24 + 3)",
+   "secundarias": [
+    "OPER.JERARQ.02"
+   ],
+   "explicacion_nino": "Entiende: cada persona paga el precio más el extra. Datos: 24 € + 3 €, 11 personas. Expresión: 11 × (24 + 3). Paréntesis: 24 + 3 = 27 €. Multiplicación: 11 × 27 = 297 €. Comprueba: 11 × 24 + 11 × 3 = 264 + 33 = 297.",
+   "explicacion_adulto": "Aprende a agrupar con paréntesis el precio de una persona antes de multiplicar: 11 × (24 + 3). Si escribe 11 × 24 + 3, el suplemento solo se cuenta una vez. Pídale que calcule primero lo que paga una persona.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "24 + 3",
+     "resultado": "27 €",
+     "texto": "Lo que paga una persona."
+    },
+    {
+     "paso": 2,
+     "operacion": "11 × 27",
+     "resultado": "297 €",
+     "texto": "Lo que paga el grupo."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un grupo de teatro recauda 380 € en una función. Paga 65 € de alquiler de la sala y el resto lo reparte a partes iguales entre sus 5 miembros. ¿Cuánto recibe cada uno?",
+   "respuesta": "63 €",
+   "distractores": [
+    {
+     "valor": "367 €",
+     "error": "E01"
+    },
+    {
+     "valor": "315 €",
+     "error": "E03"
+    },
+    {
+     "valor": "76 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(380 − 65) : 5",
+   "secundarias": [
+    "OPER.JERARQ.02"
+   ],
+   "explicacion_nino": "Entiende: primero se quita lo que ya está pagado y lo que queda se reparte. Datos: 380 €, 65 €, 5 personas. Expresión: (380 − 65) : 5. Paréntesis: 380 − 65 = 315. División: 315 : 5 = 63 €. Comprueba: 63 × 5 + 65 = 380.",
+   "explicacion_adulto": "Escribe una única expresión en la que la resta debe hacerse antes de dividir, así que necesita paréntesis: (380 − 65) : 5. Sin ellos (380 − 65 : 5) se reparte solo una parte y sale 367 €. Pídale que cuente la historia en orden y compruebe multiplicando.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "380 − 65",
+     "resultado": "315 €",
+     "texto": "Lo que queda por repartir."
+    },
+    {
+     "paso": 2,
+     "operacion": "315 : 5",
+     "resultado": "63 €",
+     "texto": "Parte de cada uno."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un grupo de teatro recauda 550 € en una función. Paga 80 € de alquiler de la sala y el resto lo reparte a partes iguales entre sus 5 miembros. ¿Cuánto recibe cada uno?",
+   "respuesta": "94 €",
+   "distractores": [
+    {
+     "valor": "534 €",
+     "error": "E01"
+    },
+    {
+     "valor": "470 €",
+     "error": "E03"
+    },
+    {
+     "valor": "110 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(550 − 80) : 5",
+   "secundarias": [
+    "OPER.JERARQ.02"
+   ],
+   "explicacion_nino": "Entiende: primero se quita lo que ya está pagado y lo que queda se reparte. Datos: 550 €, 80 €, 5 personas. Expresión: (550 − 80) : 5. Paréntesis: 550 − 80 = 470. División: 470 : 5 = 94 €. Comprueba: 94 × 5 + 80 = 550.",
+   "explicacion_adulto": "Escribe una única expresión en la que la resta debe hacerse antes de dividir, así que necesita paréntesis: (550 − 80) : 5. Sin ellos (550 − 80 : 5) se reparte solo una parte y sale 534 €. Pídale que cuente la historia en orden y compruebe multiplicando.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "550 − 80",
+     "resultado": "470 €",
+     "texto": "Lo que queda por repartir."
+    },
+    {
+     "paso": 2,
+     "operacion": "470 : 5",
+     "resultado": "94 €",
+     "texto": "Parte de cada uno."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Unai y sus compañeros de piso, 5 en total, tienen una factura de 390 € de reformas. El casero paga 45 € y el resto lo dividen a partes iguales. ¿Cuánto paga cada uno?",
+   "respuesta": "69 €",
+   "distractores": [
+    {
+     "valor": "381 €",
+     "error": "E01"
+    },
+    {
+     "valor": "345 €",
+     "error": "E03"
+    },
+    {
+     "valor": "78 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(390 − 45) : 5",
+   "secundarias": [
+    "OPER.JERARQ.02"
+   ],
+   "explicacion_nino": "Entiende: primero se quita lo que ya está pagado y lo que queda se reparte. Datos: 390 €, 45 €, 5 personas. Expresión: (390 − 45) : 5. Paréntesis: 390 − 45 = 345. División: 345 : 5 = 69 €. Comprueba: 69 × 5 + 45 = 390.",
+   "explicacion_adulto": "Escribe una única expresión en la que la resta debe hacerse antes de dividir, así que necesita paréntesis: (390 − 45) : 5. Sin ellos (390 − 45 : 5) se reparte solo una parte y sale 381 €. Pídale que cuente la historia en orden y compruebe multiplicando.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "390 − 45",
+     "resultado": "345 €",
+     "texto": "Lo que queda por repartir."
+    },
+    {
+     "paso": 2,
+     "operacion": "345 : 5",
+     "resultado": "69 €",
+     "texto": "Parte de cada uno."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un grupo de teatro recauda 340 € en una función. Paga 120 € de alquiler de la sala y el resto lo reparte a partes iguales entre sus 4 miembros. ¿Cuánto recibe cada uno?",
+   "respuesta": "55 €",
+   "distractores": [
+    {
+     "valor": "310 €",
+     "error": "E01"
+    },
+    {
+     "valor": "220 €",
+     "error": "E03"
+    },
+    {
+     "valor": "85 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(340 − 120) : 4",
+   "secundarias": [
+    "OPER.JERARQ.02"
+   ],
+   "explicacion_nino": "Entiende: primero se quita lo que ya está pagado y lo que queda se reparte. Datos: 340 €, 120 €, 4 personas. Expresión: (340 − 120) : 4. Paréntesis: 340 − 120 = 220. División: 220 : 4 = 55 €. Comprueba: 55 × 4 + 120 = 340.",
+   "explicacion_adulto": "Escribe una única expresión en la que la resta debe hacerse antes de dividir, así que necesita paréntesis: (340 − 120) : 4. Sin ellos (340 − 120 : 4) se reparte solo una parte y sale 310 €. Pídale que cuente la historia en orden y compruebe multiplicando.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "340 − 120",
+     "resultado": "220 €",
+     "texto": "Lo que queda por repartir."
+    },
+    {
+     "paso": 2,
+     "operacion": "220 : 4",
+     "resultado": "55 €",
+     "texto": "Parte de cada uno."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Gonzalo y sus compañeros de piso, 5 en total, tienen una factura de 440 € de reformas. El casero paga 65 € y el resto lo dividen a partes iguales. ¿Cuánto paga cada uno?",
+   "respuesta": "75 €",
+   "distractores": [
+    {
+     "valor": "427 €",
+     "error": "E01"
+    },
+    {
+     "valor": "375 €",
+     "error": "E03"
+    },
+    {
+     "valor": "88 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(440 − 65) : 5",
+   "secundarias": [
+    "OPER.JERARQ.02"
+   ],
+   "explicacion_nino": "Entiende: primero se quita lo que ya está pagado y lo que queda se reparte. Datos: 440 €, 65 €, 5 personas. Expresión: (440 − 65) : 5. Paréntesis: 440 − 65 = 375. División: 375 : 5 = 75 €. Comprueba: 75 × 5 + 65 = 440.",
+   "explicacion_adulto": "Escribe una única expresión en la que la resta debe hacerse antes de dividir, así que necesita paréntesis: (440 − 65) : 5. Sin ellos (440 − 65 : 5) se reparte solo una parte y sale 427 €. Pídale que cuente la historia en orden y compruebe multiplicando.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "440 − 65",
+     "resultado": "375 €",
+     "texto": "Lo que queda por repartir."
+    },
+    {
+     "paso": 2,
+     "operacion": "375 : 5",
+     "resultado": "75 €",
+     "texto": "Parte de cada uno."
+    }
+   ],
+   "plantilla": "P05"
+  }
+ ]
+}

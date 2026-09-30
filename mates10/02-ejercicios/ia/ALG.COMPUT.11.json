@@ -1,0 +1,1680 @@
+{
+ "habilidad": "ALG.COMPUT.11",
+ "generado_por": "claude (skill mates10-generar-ejercicios v1)",
+ "ejercicios": [
+  {
+   "dificultad": 1,
+   "enunciado": "Queremos evaluar P(x) = 7x³ − 2x² + 7x + 5 en x = 2. Método directo: cada término a·xᵏ se calcula por separado con k multiplicaciones (a·x·x·…), sin reutilizar potencias, y luego se suman los términos. Método de Horner: se va multiplicando por x y sumando el siguiente coeficiente. Cuenta sumas/restas y multiplicaciones. ¿Cuántas operaciones hace el método directo?",
+   "respuesta": "9",
+   "distractores": [
+    {
+     "valor": "6",
+     "error": "E01"
+    },
+    {
+     "valor": "7",
+     "error": null
+    },
+    {
+     "valor": "10",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "6 + 3",
+   "secundarias": [],
+   "explicacion_nino": "Cuenta por separado. Directo: los términos de grado 3, 2, …, 1 necesitan 3 + 2 + … + 1 = 6 multiplicaciones, y para juntar 4 términos hacen falta 3 sumas: 9 operaciones. Horner: por cada uno de los 3 coeficientes tras el primero, una multiplicación y una suma: 6 operaciones. Comprueba que Horner nunca hace más.",
+   "explicacion_adulto": "Está comparando el coste de dos algoritmos correctos para el mismo problema. El error típico es contar solo multiplicaciones: las sumas también cuestan. Pídale que escriba las operaciones una a una para un polinomio de grado 2 y generalice.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "multiplicaciones directo",
+     "resultado": "6",
+     "texto": "1 + 2 + … + 3 = 6"
+    },
+    {
+     "paso": 2,
+     "operacion": "sumas directo",
+     "resultado": "3",
+     "texto": "4 términos necesitan 3 sumas"
+    },
+    {
+     "paso": 3,
+     "operacion": "Horner",
+     "resultado": "6",
+     "texto": "3 multiplicaciones y 3 sumas"
+    },
+    {
+     "paso": 4,
+     "operacion": "responder",
+     "resultado": "9",
+     "texto": "Leemos qué operación pide la pregunta."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Queremos evaluar P(x) = 4x³ + 4x² + 4x − 4 en x = 5. Método directo: cada término a·xᵏ se calcula por separado con k multiplicaciones (a·x·x·…), sin reutilizar potencias, y luego se suman los términos. Método de Horner: se va multiplicando por x y sumando el siguiente coeficiente. Cuenta sumas/restas y multiplicaciones. ¿Cuántas operaciones se ahorran con Horner?",
+   "respuesta": "3",
+   "distractores": [
+    {
+     "valor": "4",
+     "error": "E01"
+    },
+    {
+     "valor": "9",
+     "error": null
+    },
+    {
+     "valor": "6",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "9 − 6",
+   "secundarias": [],
+   "explicacion_nino": "Cuenta por separado. Directo: los términos de grado 3, 2, …, 1 necesitan 3 + 2 + … + 1 = 6 multiplicaciones, y para juntar 4 términos hacen falta 3 sumas: 9 operaciones. Horner: por cada uno de los 3 coeficientes tras el primero, una multiplicación y una suma: 6 operaciones. Comprueba que Horner nunca hace más.",
+   "explicacion_adulto": "Está comparando el coste de dos algoritmos correctos para el mismo problema. El error típico es contar solo multiplicaciones: las sumas también cuestan. Pídale que escriba las operaciones una a una para un polinomio de grado 2 y generalice.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "multiplicaciones directo",
+     "resultado": "6",
+     "texto": "1 + 2 + … + 3 = 6"
+    },
+    {
+     "paso": 2,
+     "operacion": "sumas directo",
+     "resultado": "3",
+     "texto": "4 términos necesitan 3 sumas"
+    },
+    {
+     "paso": 3,
+     "operacion": "Horner",
+     "resultado": "6",
+     "texto": "3 multiplicaciones y 3 sumas"
+    },
+    {
+     "paso": 4,
+     "operacion": "responder",
+     "resultado": "3",
+     "texto": "Leemos qué operación pide la pregunta."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Queremos evaluar P(x) = 4x⁴ − 2x³ + 4x² + 5x + 6 en x = 3. Método directo: cada término a·xᵏ se calcula por separado con k multiplicaciones (a·x·x·…), sin reutilizar potencias, y luego se suman los términos. Método de Horner: se va multiplicando por x y sumando el siguiente coeficiente. Cuenta sumas/restas y multiplicaciones. ¿Cuántas operaciones hace el método de Horner?",
+   "respuesta": "8",
+   "distractores": [
+    {
+     "valor": "4",
+     "error": "E01"
+    },
+    {
+     "valor": "14",
+     "error": null
+    },
+    {
+     "valor": "7",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "4 + 4",
+   "secundarias": [],
+   "explicacion_nino": "Cuenta por separado. Directo: los términos de grado 4, 3, …, 1 necesitan 4 + 3 + … + 1 = 10 multiplicaciones, y para juntar 5 términos hacen falta 4 sumas: 14 operaciones. Horner: por cada uno de los 4 coeficientes tras el primero, una multiplicación y una suma: 8 operaciones. Comprueba que Horner nunca hace más.",
+   "explicacion_adulto": "Está comparando el coste de dos algoritmos correctos para el mismo problema. El error típico es contar solo multiplicaciones: las sumas también cuestan. Pídale que escriba las operaciones una a una para un polinomio de grado 2 y generalice.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "multiplicaciones directo",
+     "resultado": "10",
+     "texto": "1 + 2 + … + 4 = 10"
+    },
+    {
+     "paso": 2,
+     "operacion": "sumas directo",
+     "resultado": "4",
+     "texto": "5 términos necesitan 4 sumas"
+    },
+    {
+     "paso": 3,
+     "operacion": "Horner",
+     "resultado": "8",
+     "texto": "4 multiplicaciones y 4 sumas"
+    },
+    {
+     "paso": 4,
+     "operacion": "responder",
+     "resultado": "8",
+     "texto": "Leemos qué operación pide la pregunta."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Queremos evaluar P(x) = 3x⁴ − 2x³ − 4x² + 6x − 4 en x = 2. Método directo: cada término a·xᵏ se calcula por separado con k multiplicaciones (a·x·x·…), sin reutilizar potencias, y luego se suman los términos. Método de Horner: se va multiplicando por x y sumando el siguiente coeficiente. Cuenta sumas/restas y multiplicaciones. ¿Cuántas operaciones hace el método directo?",
+   "respuesta": "14",
+   "distractores": [
+    {
+     "valor": "10",
+     "error": "E01"
+    },
+    {
+     "valor": "8",
+     "error": null
+    },
+    {
+     "valor": "15",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "10 + 4",
+   "secundarias": [],
+   "explicacion_nino": "Cuenta por separado. Directo: los términos de grado 4, 3, …, 1 necesitan 4 + 3 + … + 1 = 10 multiplicaciones, y para juntar 5 términos hacen falta 4 sumas: 14 operaciones. Horner: por cada uno de los 4 coeficientes tras el primero, una multiplicación y una suma: 8 operaciones. Comprueba que Horner nunca hace más.",
+   "explicacion_adulto": "Está comparando el coste de dos algoritmos correctos para el mismo problema. El error típico es contar solo multiplicaciones: las sumas también cuestan. Pídale que escriba las operaciones una a una para un polinomio de grado 2 y generalice.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "multiplicaciones directo",
+     "resultado": "10",
+     "texto": "1 + 2 + … + 4 = 10"
+    },
+    {
+     "paso": 2,
+     "operacion": "sumas directo",
+     "resultado": "4",
+     "texto": "5 términos necesitan 4 sumas"
+    },
+    {
+     "paso": 3,
+     "operacion": "Horner",
+     "resultado": "8",
+     "texto": "4 multiplicaciones y 4 sumas"
+    },
+    {
+     "paso": 4,
+     "operacion": "responder",
+     "resultado": "14",
+     "texto": "Leemos qué operación pide la pregunta."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Queremos evaluar P(x) = 5x⁵ + 5x⁴ + 6x³ + 2x² + 6x + 2 en x = 3. Método directo: cada término a·xᵏ se calcula por separado con k multiplicaciones (a·x·x·…), sin reutilizar potencias, y luego se suman los términos. Método de Horner: se va multiplicando por x y sumando el siguiente coeficiente. Cuenta sumas/restas y multiplicaciones. ¿Cuántas operaciones se ahorran con Horner?",
+   "respuesta": "10",
+   "distractores": [
+    {
+     "valor": "11",
+     "error": "E01"
+    },
+    {
+     "valor": "20",
+     "error": null
+    },
+    {
+     "valor": "12",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "20 − 10",
+   "secundarias": [],
+   "explicacion_nino": "Cuenta por separado. Directo: los términos de grado 5, 4, …, 1 necesitan 5 + 4 + … + 1 = 15 multiplicaciones, y para juntar 6 términos hacen falta 5 sumas: 20 operaciones. Horner: por cada uno de los 5 coeficientes tras el primero, una multiplicación y una suma: 10 operaciones. Comprueba que Horner nunca hace más.",
+   "explicacion_adulto": "Está comparando el coste de dos algoritmos correctos para el mismo problema. El error típico es contar solo multiplicaciones: las sumas también cuestan. Pídale que escriba las operaciones una a una para un polinomio de grado 2 y generalice.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "multiplicaciones directo",
+     "resultado": "15",
+     "texto": "1 + 2 + … + 5 = 15"
+    },
+    {
+     "paso": 2,
+     "operacion": "sumas directo",
+     "resultado": "5",
+     "texto": "6 términos necesitan 5 sumas"
+    },
+    {
+     "paso": 3,
+     "operacion": "Horner",
+     "resultado": "10",
+     "texto": "5 multiplicaciones y 5 sumas"
+    },
+    {
+     "paso": 4,
+     "operacion": "responder",
+     "resultado": "10",
+     "texto": "Leemos qué operación pide la pregunta."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Queremos evaluar P(x) = 4x⁵ + 7x⁴ + 2x³ − 2x² + 5x + 5 en x = 4. Método directo: cada término a·xᵏ se calcula por separado con k multiplicaciones (a·x·x·…), sin reutilizar potencias, y luego se suman los términos. Método de Horner: se va multiplicando por x y sumando el siguiente coeficiente. Cuenta sumas/restas y multiplicaciones. ¿Cuántas operaciones hace el método de Horner?",
+   "respuesta": "10",
+   "distractores": [
+    {
+     "valor": "5",
+     "error": "E01"
+    },
+    {
+     "valor": "20",
+     "error": null
+    },
+    {
+     "valor": "9",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "5 + 5",
+   "secundarias": [],
+   "explicacion_nino": "Cuenta por separado. Directo: los términos de grado 5, 4, …, 1 necesitan 5 + 4 + … + 1 = 15 multiplicaciones, y para juntar 6 términos hacen falta 5 sumas: 20 operaciones. Horner: por cada uno de los 5 coeficientes tras el primero, una multiplicación y una suma: 10 operaciones. Comprueba que Horner nunca hace más.",
+   "explicacion_adulto": "Está comparando el coste de dos algoritmos correctos para el mismo problema. El error típico es contar solo multiplicaciones: las sumas también cuestan. Pídale que escriba las operaciones una a una para un polinomio de grado 2 y generalice.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "multiplicaciones directo",
+     "resultado": "15",
+     "texto": "1 + 2 + … + 5 = 15"
+    },
+    {
+     "paso": 2,
+     "operacion": "sumas directo",
+     "resultado": "5",
+     "texto": "6 términos necesitan 5 sumas"
+    },
+    {
+     "paso": 3,
+     "operacion": "Horner",
+     "resultado": "10",
+     "texto": "5 multiplicaciones y 5 sumas"
+    },
+    {
+     "paso": 4,
+     "operacion": "responder",
+     "resultado": "10",
+     "texto": "Leemos qué operación pide la pregunta."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Queremos evaluar P(x) = 3x⁶ + 2x⁵ + 3x⁴ + 6x³ − 2x² + 4x + 3 en x = 2. Método directo: cada término a·xᵏ se calcula por separado con k multiplicaciones (a·x·x·…), sin reutilizar potencias, y luego se suman los términos. Método de Horner: se va multiplicando por x y sumando el siguiente coeficiente. Cuenta sumas/restas y multiplicaciones. ¿Cuántas operaciones hace el método directo?",
+   "respuesta": "27",
+   "distractores": [
+    {
+     "valor": "21",
+     "error": "E01"
+    },
+    {
+     "valor": "12",
+     "error": null
+    },
+    {
+     "valor": "28",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "21 + 6",
+   "secundarias": [],
+   "explicacion_nino": "Cuenta por separado. Directo: los términos de grado 6, 5, …, 1 necesitan 6 + 5 + … + 1 = 21 multiplicaciones, y para juntar 7 términos hacen falta 6 sumas: 27 operaciones. Horner: por cada uno de los 6 coeficientes tras el primero, una multiplicación y una suma: 12 operaciones. Comprueba que Horner nunca hace más.",
+   "explicacion_adulto": "Está comparando el coste de dos algoritmos correctos para el mismo problema. El error típico es contar solo multiplicaciones: las sumas también cuestan. Pídale que escriba las operaciones una a una para un polinomio de grado 2 y generalice.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "multiplicaciones directo",
+     "resultado": "21",
+     "texto": "1 + 2 + … + 6 = 21"
+    },
+    {
+     "paso": 2,
+     "operacion": "sumas directo",
+     "resultado": "6",
+     "texto": "7 términos necesitan 6 sumas"
+    },
+    {
+     "paso": 3,
+     "operacion": "Horner",
+     "resultado": "12",
+     "texto": "6 multiplicaciones y 6 sumas"
+    },
+    {
+     "paso": 4,
+     "operacion": "responder",
+     "resultado": "27",
+     "texto": "Leemos qué operación pide la pregunta."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Queremos evaluar P(x) = 4x⁷ − 3x⁶ + 5x⁵ + 7x⁴ − 3x³ − 3x² + 4x + 4 en x = 2. Método directo: cada término a·xᵏ se calcula por separado con k multiplicaciones (a·x·x·…), sin reutilizar potencias, y luego se suman los términos. Método de Horner: se va multiplicando por x y sumando el siguiente coeficiente. Cuenta sumas/restas y multiplicaciones. ¿Cuántas operaciones se ahorran con Horner?",
+   "respuesta": "21",
+   "distractores": [
+    {
+     "valor": "22",
+     "error": "E01"
+    },
+    {
+     "valor": "35",
+     "error": null
+    },
+    {
+     "valor": "14",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "35 − 14",
+   "secundarias": [],
+   "explicacion_nino": "Cuenta por separado. Directo: los términos de grado 7, 6, …, 1 necesitan 7 + 6 + … + 1 = 28 multiplicaciones, y para juntar 8 términos hacen falta 7 sumas: 35 operaciones. Horner: por cada uno de los 7 coeficientes tras el primero, una multiplicación y una suma: 14 operaciones. Comprueba que Horner nunca hace más.",
+   "explicacion_adulto": "Está comparando el coste de dos algoritmos correctos para el mismo problema. El error típico es contar solo multiplicaciones: las sumas también cuestan. Pídale que escriba las operaciones una a una para un polinomio de grado 2 y generalice.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "multiplicaciones directo",
+     "resultado": "28",
+     "texto": "1 + 2 + … + 7 = 28"
+    },
+    {
+     "paso": 2,
+     "operacion": "sumas directo",
+     "resultado": "7",
+     "texto": "8 términos necesitan 7 sumas"
+    },
+    {
+     "paso": 3,
+     "operacion": "Horner",
+     "resultado": "14",
+     "texto": "7 multiplicaciones y 7 sumas"
+    },
+    {
+     "paso": 4,
+     "operacion": "responder",
+     "resultado": "21",
+     "texto": "Leemos qué operación pide la pregunta."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Queremos evaluar P(x) = 2x⁸ + 2x⁷ − 3x⁶ + 6x⁵ + 7x⁴ − 4x³ + 6x² − 4x + 6 en x = 3. Método directo: cada término a·xᵏ se calcula por separado con k multiplicaciones (a·x·x·…), sin reutilizar potencias, y luego se suman los términos. Método de Horner: se va multiplicando por x y sumando el siguiente coeficiente. Cuenta sumas/restas y multiplicaciones. ¿Cuántas operaciones hace el método de Horner?",
+   "respuesta": "16",
+   "distractores": [
+    {
+     "valor": "8",
+     "error": "E01"
+    },
+    {
+     "valor": "44",
+     "error": null
+    },
+    {
+     "valor": "15",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "8 + 8",
+   "secundarias": [],
+   "explicacion_nino": "Cuenta por separado. Directo: los términos de grado 8, 7, …, 1 necesitan 8 + 7 + … + 1 = 36 multiplicaciones, y para juntar 9 términos hacen falta 8 sumas: 44 operaciones. Horner: por cada uno de los 8 coeficientes tras el primero, una multiplicación y una suma: 16 operaciones. Comprueba que Horner nunca hace más.",
+   "explicacion_adulto": "Está comparando el coste de dos algoritmos correctos para el mismo problema. El error típico es contar solo multiplicaciones: las sumas también cuestan. Pídale que escriba las operaciones una a una para un polinomio de grado 2 y generalice.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "multiplicaciones directo",
+     "resultado": "36",
+     "texto": "1 + 2 + … + 8 = 36"
+    },
+    {
+     "paso": 2,
+     "operacion": "sumas directo",
+     "resultado": "8",
+     "texto": "9 términos necesitan 8 sumas"
+    },
+    {
+     "paso": 3,
+     "operacion": "Horner",
+     "resultado": "16",
+     "texto": "8 multiplicaciones y 8 sumas"
+    },
+    {
+     "paso": 4,
+     "operacion": "responder",
+     "resultado": "16",
+     "texto": "Leemos qué operación pide la pregunta."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En la lista ordenada 11, 14, 16, 21, 23, 27, 31 buscamos el 23. La búsqueda lineal mira los elementos desde el primero; la binaria mira el central (si hay dos, el de la izquierda) y descarta la mitad que no puede contenerlo. Cada elemento mirado es una comparación. ¿Cuántas comparaciones hace la búsqueda binaria?",
+   "respuesta": "3",
+   "distractores": [
+    {
+     "valor": "5",
+     "error": null
+    },
+    {
+     "valor": "4",
+     "error": null
+    },
+    {
+     "valor": "2",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Simula los dos algoritmos. Lineal: el 23 está en la posición 5, así que mira 5 elementos. Binaria: mira 21, 27, 23: 3 comparaciones. Comprueba que cada paso de la binaria parte a la mitad lo que queda.",
+   "explicacion_adulto": "Está comparando dos algoritmos en un caso concreto simulándolos paso a paso. Si se equivoca, suele ser al elegir el central o al olvidar contar la última comparación; pídale que tache con lápiz la mitad descartada en cada paso.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "lineal",
+     "resultado": "5",
+     "texto": "El 23 ocupa la posición 5."
+    },
+    {
+     "paso": 2,
+     "operacion": "binaria",
+     "resultado": "3",
+     "texto": "Centrales mirados: 21, 27, 23."
+    },
+    {
+     "paso": 3,
+     "operacion": "responder",
+     "resultado": "3",
+     "texto": "Leemos qué pide la pregunta."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En la lista ordenada 9, 15, 22, 24, 26, 28, 34, 39, 44 buscamos el 39. La búsqueda lineal mira los elementos desde el primero; la binaria mira el central (si hay dos, el de la izquierda) y descarta la mitad que no puede contenerlo. Cada elemento mirado es una comparación. ¿Cuántas comparaciones más hace la lineal que la binaria?",
+   "respuesta": "5",
+   "distractores": [
+    {
+     "valor": "8",
+     "error": null
+    },
+    {
+     "valor": "3",
+     "error": null
+    },
+    {
+     "valor": "6",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "8 − 3",
+   "secundarias": [],
+   "explicacion_nino": "Simula los dos algoritmos. Lineal: el 39 está en la posición 8, así que mira 8 elementos. Binaria: mira 26, 34, 39: 3 comparaciones. Comprueba que cada paso de la binaria parte a la mitad lo que queda.",
+   "explicacion_adulto": "Está comparando dos algoritmos en un caso concreto simulándolos paso a paso. Si se equivoca, suele ser al elegir el central o al olvidar contar la última comparación; pídale que tache con lápiz la mitad descartada en cada paso.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "lineal",
+     "resultado": "8",
+     "texto": "El 39 ocupa la posición 8."
+    },
+    {
+     "paso": 2,
+     "operacion": "binaria",
+     "resultado": "3",
+     "texto": "Centrales mirados: 26, 34, 39."
+    },
+    {
+     "paso": 3,
+     "operacion": "responder",
+     "resultado": "5",
+     "texto": "Leemos qué pide la pregunta."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En la lista ordenada 2, 3, 14, 19, 20, 24, 25, 29, 40, 41, 50 buscamos el 40. La búsqueda lineal mira los elementos desde el primero; la binaria mira el central (si hay dos, el de la izquierda) y descarta la mitad que no puede contenerlo. Cada elemento mirado es una comparación. ¿Cuántas comparaciones hace la búsqueda binaria?",
+   "respuesta": "2",
+   "distractores": [
+    {
+     "valor": "9",
+     "error": null
+    },
+    {
+     "valor": "3",
+     "error": null
+    },
+    {
+     "valor": "1",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Simula los dos algoritmos. Lineal: el 40 está en la posición 9, así que mira 9 elementos. Binaria: mira 24, 40: 2 comparaciones. Comprueba que cada paso de la binaria parte a la mitad lo que queda.",
+   "explicacion_adulto": "Está comparando dos algoritmos en un caso concreto simulándolos paso a paso. Si se equivoca, suele ser al elegir el central o al olvidar contar la última comparación; pídale que tache con lápiz la mitad descartada en cada paso.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "lineal",
+     "resultado": "9",
+     "texto": "El 40 ocupa la posición 9."
+    },
+    {
+     "paso": 2,
+     "operacion": "binaria",
+     "resultado": "2",
+     "texto": "Centrales mirados: 24, 40."
+    },
+    {
+     "paso": 3,
+     "operacion": "responder",
+     "resultado": "2",
+     "texto": "Leemos qué pide la pregunta."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En la lista ordenada 3, 7, 8, 11, 21, 24, 27, 33, 42, 46, 48, 56, 62, 63, 73 buscamos el 21. La búsqueda lineal mira los elementos desde el primero; la binaria mira el central (si hay dos, el de la izquierda) y descarta la mitad que no puede contenerlo. Cada elemento mirado es una comparación. ¿Cuántas comparaciones más hace la lineal que la binaria?",
+   "respuesta": "1",
+   "distractores": [
+    {
+     "valor": "5",
+     "error": null
+    },
+    {
+     "valor": "4",
+     "error": null
+    },
+    {
+     "valor": "2",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "5 − 4",
+   "secundarias": [],
+   "explicacion_nino": "Simula los dos algoritmos. Lineal: el 21 está en la posición 5, así que mira 5 elementos. Binaria: mira 33, 11, 24, 21: 4 comparaciones. Comprueba que cada paso de la binaria parte a la mitad lo que queda.",
+   "explicacion_adulto": "Está comparando dos algoritmos en un caso concreto simulándolos paso a paso. Si se equivoca, suele ser al elegir el central o al olvidar contar la última comparación; pídale que tache con lápiz la mitad descartada en cada paso.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "lineal",
+     "resultado": "5",
+     "texto": "El 21 ocupa la posición 5."
+    },
+    {
+     "paso": 2,
+     "operacion": "binaria",
+     "resultado": "4",
+     "texto": "Centrales mirados: 33, 11, 24, 21."
+    },
+    {
+     "paso": 3,
+     "operacion": "responder",
+     "resultado": "1",
+     "texto": "Leemos qué pide la pregunta."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En la lista ordenada 6, 7, 9, 14, 15, 33, 41, 54, 55, 65, 66, 71, 73, 75, 76, 77, 84 buscamos el 76. La búsqueda lineal mira los elementos desde el primero; la binaria mira el central (si hay dos, el de la izquierda) y descarta la mitad que no puede contenerlo. Cada elemento mirado es una comparación. ¿Cuántas comparaciones hace la búsqueda binaria?",
+   "respuesta": "3",
+   "distractores": [
+    {
+     "valor": "15",
+     "error": null
+    },
+    {
+     "valor": "4",
+     "error": null
+    },
+    {
+     "valor": "2",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Simula los dos algoritmos. Lineal: el 76 está en la posición 15, así que mira 15 elementos. Binaria: mira 55, 73, 76: 3 comparaciones. Comprueba que cada paso de la binaria parte a la mitad lo que queda.",
+   "explicacion_adulto": "Está comparando dos algoritmos en un caso concreto simulándolos paso a paso. Si se equivoca, suele ser al elegir el central o al olvidar contar la última comparación; pídale que tache con lápiz la mitad descartada en cada paso.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "lineal",
+     "resultado": "15",
+     "texto": "El 76 ocupa la posición 15."
+    },
+    {
+     "paso": 2,
+     "operacion": "binaria",
+     "resultado": "3",
+     "texto": "Centrales mirados: 55, 73, 76."
+    },
+    {
+     "paso": 3,
+     "operacion": "responder",
+     "resultado": "3",
+     "texto": "Leemos qué pide la pregunta."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "En la lista ordenada 14, 15, 17, 21, 22, 25, 31, 32, 35, 47, 51, 57, 61, 65, 70, 71, 72, 76, 87, 89, 90, 95, 98, 108, 121 buscamos el 76. La búsqueda lineal mira los elementos desde el primero; la binaria mira el central (si hay dos, el de la izquierda) y descarta la mitad que no puede contenerlo. Cada elemento mirado es una comparación. ¿Cuántas comparaciones más hace la lineal que la binaria?",
+   "respuesta": "13",
+   "distractores": [
+    {
+     "valor": "18",
+     "error": null
+    },
+    {
+     "valor": "5",
+     "error": null
+    },
+    {
+     "valor": "14",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "18 − 5",
+   "secundarias": [],
+   "explicacion_nino": "Simula los dos algoritmos. Lineal: el 76 está en la posición 18, así que mira 18 elementos. Binaria: mira 61, 87, 71, 72, 76: 5 comparaciones. Comprueba que cada paso de la binaria parte a la mitad lo que queda.",
+   "explicacion_adulto": "Está comparando dos algoritmos en un caso concreto simulándolos paso a paso. Si se equivoca, suele ser al elegir el central o al olvidar contar la última comparación; pídale que tache con lápiz la mitad descartada en cada paso.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "lineal",
+     "resultado": "18",
+     "texto": "El 76 ocupa la posición 18."
+    },
+    {
+     "paso": 2,
+     "operacion": "binaria",
+     "resultado": "5",
+     "texto": "Centrales mirados: 61, 87, 71, 72, 76."
+    },
+    {
+     "paso": 3,
+     "operacion": "responder",
+     "resultado": "13",
+     "texto": "Leemos qué pide la pregunta."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "En la lista ordenada 4, 8, 10, 27, 29, 30, 46, 47, 51, 55, 60, 61, 73, 75, 86, 92, 96, 101, 102, 103, 108, 110, 113, 115, 119, 125, 141, 142, 143, 151, 152 buscamos el 61. La búsqueda lineal mira los elementos desde el primero; la binaria mira el central (si hay dos, el de la izquierda) y descarta la mitad que no puede contenerlo. Cada elemento mirado es una comparación. ¿Cuántas comparaciones hace la búsqueda binaria?",
+   "respuesta": "3",
+   "distractores": [
+    {
+     "valor": "12",
+     "error": null
+    },
+    {
+     "valor": "4",
+     "error": null
+    },
+    {
+     "valor": "2",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Simula los dos algoritmos. Lineal: el 61 está en la posición 12, así que mira 12 elementos. Binaria: mira 92, 47, 61: 3 comparaciones. Comprueba que cada paso de la binaria parte a la mitad lo que queda.",
+   "explicacion_adulto": "Está comparando dos algoritmos en un caso concreto simulándolos paso a paso. Si se equivoca, suele ser al elegir el central o al olvidar contar la última comparación; pídale que tache con lápiz la mitad descartada en cada paso.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "lineal",
+     "resultado": "12",
+     "texto": "El 61 ocupa la posición 12."
+    },
+    {
+     "paso": 2,
+     "operacion": "binaria",
+     "resultado": "3",
+     "texto": "Centrales mirados: 92, 47, 61."
+    },
+    {
+     "paso": 3,
+     "operacion": "responder",
+     "resultado": "3",
+     "texto": "Leemos qué pide la pregunta."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Para calcular mcd(48, 18) con el algoritmo de Euclides se divide el mayor entre el menor y se repite con el divisor y el resto hasta que el resto es 0. ¿Cuántas divisiones hace en total (contando la de resto 0)?",
+   "respuesta": "3",
+   "distractores": [
+    {
+     "valor": "2",
+     "error": null
+    },
+    {
+     "valor": "6",
+     "error": null
+    },
+    {
+     "valor": "4",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Haz las divisiones y cuéntalas: 48 = 2·18 + 12; 18 = 1·12 + 6; 12 = 2·6 + 0. Son 3 divisiones y el mcd es 6.",
+   "explicacion_adulto": "Compara un algoritmo con otro contando sus pasos. Euclides no necesita factorizar, y con números grandes da muy pocos pasos. Si confunde el número de divisiones con el mcd, pídale que numere cada línea.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "división 1",
+     "resultado": "48 = 2·18 + 12",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "división 2",
+     "resultado": "18 = 1·12 + 6",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "división 3",
+     "resultado": "12 = 2·6 + 0",
+     "texto": ""
+    },
+    {
+     "paso": 4,
+     "operacion": "contar",
+     "resultado": "3",
+     "texto": "Contamos las divisiones hechas."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Para calcular mcd(84, 36) con el algoritmo de Euclides se divide el mayor entre el menor y se repite con el divisor y el resto hasta que el resto es 0. ¿Cuántas divisiones hace en total (contando la de resto 0)?",
+   "respuesta": "2",
+   "distractores": [
+    {
+     "valor": "1",
+     "error": null
+    },
+    {
+     "valor": "12",
+     "error": null
+    },
+    {
+     "valor": "3",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Haz las divisiones y cuéntalas: 84 = 2·36 + 12; 36 = 3·12 + 0. Son 2 divisiones y el mcd es 12.",
+   "explicacion_adulto": "Compara un algoritmo con otro contando sus pasos. Euclides no necesita factorizar, y con números grandes da muy pocos pasos. Si confunde el número de divisiones con el mcd, pídale que numere cada línea.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "división 1",
+     "resultado": "84 = 2·36 + 12",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "división 2",
+     "resultado": "36 = 3·12 + 0",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "contar",
+     "resultado": "2",
+     "texto": "Contamos las divisiones hechas."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Para calcular mcd(105, 45) con el algoritmo de Euclides se divide el mayor entre el menor y se repite con el divisor y el resto hasta que el resto es 0. ¿Cuántas divisiones hace en total (contando la de resto 0)?",
+   "respuesta": "2",
+   "distractores": [
+    {
+     "valor": "1",
+     "error": null
+    },
+    {
+     "valor": "15",
+     "error": null
+    },
+    {
+     "valor": "3",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Haz las divisiones y cuéntalas: 105 = 2·45 + 15; 45 = 3·15 + 0. Son 2 divisiones y el mcd es 15.",
+   "explicacion_adulto": "Compara un algoritmo con otro contando sus pasos. Euclides no necesita factorizar, y con números grandes da muy pocos pasos. Si confunde el número de divisiones con el mcd, pídale que numere cada línea.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "división 1",
+     "resultado": "105 = 2·45 + 15",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "división 2",
+     "resultado": "45 = 3·15 + 0",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "contar",
+     "resultado": "2",
+     "texto": "Contamos las divisiones hechas."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Para calcular mcd(91, 35) con el algoritmo de Euclides se divide el mayor entre el menor y se repite con el divisor y el resto hasta que el resto es 0. ¿Cuántas divisiones hace en total (contando la de resto 0)?",
+   "respuesta": "4",
+   "distractores": [
+    {
+     "valor": "3",
+     "error": null
+    },
+    {
+     "valor": "7",
+     "error": null
+    },
+    {
+     "valor": "5",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Haz las divisiones y cuéntalas: 91 = 2·35 + 21; 35 = 1·21 + 14; 21 = 1·14 + 7; 14 = 2·7 + 0. Son 4 divisiones y el mcd es 7.",
+   "explicacion_adulto": "Compara un algoritmo con otro contando sus pasos. Euclides no necesita factorizar, y con números grandes da muy pocos pasos. Si confunde el número de divisiones con el mcd, pídale que numere cada línea.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "división 1",
+     "resultado": "91 = 2·35 + 21",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "división 2",
+     "resultado": "35 = 1·21 + 14",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "división 3",
+     "resultado": "21 = 1·14 + 7",
+     "texto": ""
+    },
+    {
+     "paso": 4,
+     "operacion": "división 4",
+     "resultado": "14 = 2·7 + 0",
+     "texto": ""
+    },
+    {
+     "paso": 5,
+     "operacion": "contar",
+     "resultado": "4",
+     "texto": "Contamos las divisiones hechas."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Para calcular mcd(144, 55) con el algoritmo de Euclides se divide el mayor entre el menor y se repite con el divisor y el resto hasta que el resto es 0. ¿Cuántas divisiones hace en total (contando la de resto 0)?",
+   "respuesta": "9",
+   "distractores": [
+    {
+     "valor": "8",
+     "error": null
+    },
+    {
+     "valor": "1",
+     "error": null
+    },
+    {
+     "valor": "10",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Haz las divisiones y cuéntalas: 144 = 2·55 + 34; 55 = 1·34 + 21; 34 = 1·21 + 13; 21 = 1·13 + 8; 13 = 1·8 + 5; 8 = 1·5 + 3; 5 = 1·3 + 2; 3 = 1·2 + 1; 2 = 2·1 + 0. Son 9 divisiones y el mcd es 1.",
+   "explicacion_adulto": "Compara un algoritmo con otro contando sus pasos. Euclides no necesita factorizar, y con números grandes da muy pocos pasos. Si confunde el número de divisiones con el mcd, pídale que numere cada línea.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "división 1",
+     "resultado": "144 = 2·55 + 34",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "división 2",
+     "resultado": "55 = 1·34 + 21",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "división 3",
+     "resultado": "34 = 1·21 + 13",
+     "texto": ""
+    },
+    {
+     "paso": 4,
+     "operacion": "división 4",
+     "resultado": "21 = 1·13 + 8",
+     "texto": ""
+    },
+    {
+     "paso": 5,
+     "operacion": "división 5",
+     "resultado": "13 = 1·8 + 5",
+     "texto": ""
+    },
+    {
+     "paso": 6,
+     "operacion": "división 6",
+     "resultado": "8 = 1·5 + 3",
+     "texto": ""
+    },
+    {
+     "paso": 7,
+     "operacion": "división 7",
+     "resultado": "5 = 1·3 + 2",
+     "texto": ""
+    },
+    {
+     "paso": 8,
+     "operacion": "división 8",
+     "resultado": "3 = 1·2 + 1",
+     "texto": ""
+    },
+    {
+     "paso": 9,
+     "operacion": "división 9",
+     "resultado": "2 = 2·1 + 0",
+     "texto": ""
+    },
+    {
+     "paso": 10,
+     "operacion": "contar",
+     "resultado": "9",
+     "texto": "Contamos las divisiones hechas."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Para calcular mcd(377, 233) con el algoritmo de Euclides se divide el mayor entre el menor y se repite con el divisor y el resto hasta que el resto es 0. ¿Cuántas divisiones hace en total (contando la de resto 0)?",
+   "respuesta": "12",
+   "distractores": [
+    {
+     "valor": "11",
+     "error": null
+    },
+    {
+     "valor": "1",
+     "error": null
+    },
+    {
+     "valor": "13",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Haz las divisiones y cuéntalas: 377 = 1·233 + 144; 233 = 1·144 + 89; 144 = 1·89 + 55; 89 = 1·55 + 34; 55 = 1·34 + 21; 34 = 1·21 + 13; 21 = 1·13 + 8; 13 = 1·8 + 5; 8 = 1·5 + 3; 5 = 1·3 + 2; 3 = 1·2 + 1; 2 = 2·1 + 0. Son 12 divisiones y el mcd es 1.",
+   "explicacion_adulto": "Compara un algoritmo con otro contando sus pasos. Euclides no necesita factorizar, y con números grandes da muy pocos pasos. Si confunde el número de divisiones con el mcd, pídale que numere cada línea.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "división 1",
+     "resultado": "377 = 1·233 + 144",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "división 2",
+     "resultado": "233 = 1·144 + 89",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "división 3",
+     "resultado": "144 = 1·89 + 55",
+     "texto": ""
+    },
+    {
+     "paso": 4,
+     "operacion": "división 4",
+     "resultado": "89 = 1·55 + 34",
+     "texto": ""
+    },
+    {
+     "paso": 5,
+     "operacion": "división 5",
+     "resultado": "55 = 1·34 + 21",
+     "texto": ""
+    },
+    {
+     "paso": 6,
+     "operacion": "división 6",
+     "resultado": "34 = 1·21 + 13",
+     "texto": ""
+    },
+    {
+     "paso": 7,
+     "operacion": "división 7",
+     "resultado": "21 = 1·13 + 8",
+     "texto": ""
+    },
+    {
+     "paso": 8,
+     "operacion": "división 8",
+     "resultado": "13 = 1·8 + 5",
+     "texto": ""
+    },
+    {
+     "paso": 9,
+     "operacion": "división 9",
+     "resultado": "8 = 1·5 + 3",
+     "texto": ""
+    },
+    {
+     "paso": 10,
+     "operacion": "división 10",
+     "resultado": "5 = 1·3 + 2",
+     "texto": ""
+    },
+    {
+     "paso": 11,
+     "operacion": "división 11",
+     "resultado": "3 = 1·2 + 1",
+     "texto": ""
+    },
+    {
+     "paso": 12,
+     "operacion": "división 12",
+     "resultado": "2 = 2·1 + 0",
+     "texto": ""
+    },
+    {
+     "paso": 13,
+     "operacion": "contar",
+     "resultado": "12",
+     "texto": "Contamos las divisiones hechas."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Para calcular mcd(210, 77) con el algoritmo de Euclides se divide el mayor entre el menor y se repite con el divisor y el resto hasta que el resto es 0. ¿Cuántas divisiones hace en total (contando la de resto 0)?",
+   "respuesta": "5",
+   "distractores": [
+    {
+     "valor": "4",
+     "error": null
+    },
+    {
+     "valor": "7",
+     "error": null
+    },
+    {
+     "valor": "6",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Haz las divisiones y cuéntalas: 210 = 2·77 + 56; 77 = 1·56 + 21; 56 = 2·21 + 14; 21 = 1·14 + 7; 14 = 2·7 + 0. Son 5 divisiones y el mcd es 7.",
+   "explicacion_adulto": "Compara un algoritmo con otro contando sus pasos. Euclides no necesita factorizar, y con números grandes da muy pocos pasos. Si confunde el número de divisiones con el mcd, pídale que numere cada línea.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "división 1",
+     "resultado": "210 = 2·77 + 56",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "división 2",
+     "resultado": "77 = 1·56 + 21",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "división 3",
+     "resultado": "56 = 2·21 + 14",
+     "texto": ""
+    },
+    {
+     "paso": 4,
+     "operacion": "división 4",
+     "resultado": "21 = 1·14 + 7",
+     "texto": ""
+    },
+    {
+     "paso": 5,
+     "operacion": "división 5",
+     "resultado": "14 = 2·7 + 0",
+     "texto": ""
+    },
+    {
+     "paso": 6,
+     "operacion": "contar",
+     "resultado": "5",
+     "texto": "Contamos las divisiones hechas."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Para calcular mcd(252, 198) con el algoritmo de Euclides se divide el mayor entre el menor y se repite con el divisor y el resto hasta que el resto es 0. ¿Cuántas divisiones hace en total (contando la de resto 0)?",
+   "respuesta": "4",
+   "distractores": [
+    {
+     "valor": "3",
+     "error": null
+    },
+    {
+     "valor": "18",
+     "error": null
+    },
+    {
+     "valor": "5",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Haz las divisiones y cuéntalas: 252 = 1·198 + 54; 198 = 3·54 + 36; 54 = 1·36 + 18; 36 = 2·18 + 0. Son 4 divisiones y el mcd es 18.",
+   "explicacion_adulto": "Compara un algoritmo con otro contando sus pasos. Euclides no necesita factorizar, y con números grandes da muy pocos pasos. Si confunde el número de divisiones con el mcd, pídale que numere cada línea.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "división 1",
+     "resultado": "252 = 1·198 + 54",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "división 2",
+     "resultado": "198 = 3·54 + 36",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "división 3",
+     "resultado": "54 = 1·36 + 18",
+     "texto": ""
+    },
+    {
+     "paso": 4,
+     "operacion": "división 4",
+     "resultado": "36 = 2·18 + 0",
+     "texto": ""
+    },
+    {
+     "paso": 5,
+     "operacion": "contar",
+     "resultado": "4",
+     "texto": "Contamos las divisiones hechas."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Para calcular mcd(610, 377) con el algoritmo de Euclides se divide el mayor entre el menor y se repite con el divisor y el resto hasta que el resto es 0. ¿Cuántas divisiones hace en total (contando la de resto 0)?",
+   "respuesta": "13",
+   "distractores": [
+    {
+     "valor": "12",
+     "error": null
+    },
+    {
+     "valor": "1",
+     "error": null
+    },
+    {
+     "valor": "14",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Haz las divisiones y cuéntalas: 610 = 1·377 + 233; 377 = 1·233 + 144; 233 = 1·144 + 89; 144 = 1·89 + 55; 89 = 1·55 + 34; 55 = 1·34 + 21; 34 = 1·21 + 13; 21 = 1·13 + 8; 13 = 1·8 + 5; 8 = 1·5 + 3; 5 = 1·3 + 2; 3 = 1·2 + 1; 2 = 2·1 + 0. Son 13 divisiones y el mcd es 1.",
+   "explicacion_adulto": "Compara un algoritmo con otro contando sus pasos. Euclides no necesita factorizar, y con números grandes da muy pocos pasos. Si confunde el número de divisiones con el mcd, pídale que numere cada línea.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "división 1",
+     "resultado": "610 = 1·377 + 233",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "división 2",
+     "resultado": "377 = 1·233 + 144",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "división 3",
+     "resultado": "233 = 1·144 + 89",
+     "texto": ""
+    },
+    {
+     "paso": 4,
+     "operacion": "división 4",
+     "resultado": "144 = 1·89 + 55",
+     "texto": ""
+    },
+    {
+     "paso": 5,
+     "operacion": "división 5",
+     "resultado": "89 = 1·55 + 34",
+     "texto": ""
+    },
+    {
+     "paso": 6,
+     "operacion": "división 6",
+     "resultado": "55 = 1·34 + 21",
+     "texto": ""
+    },
+    {
+     "paso": 7,
+     "operacion": "división 7",
+     "resultado": "34 = 1·21 + 13",
+     "texto": ""
+    },
+    {
+     "paso": 8,
+     "operacion": "división 8",
+     "resultado": "21 = 1·13 + 8",
+     "texto": ""
+    },
+    {
+     "paso": 9,
+     "operacion": "división 9",
+     "resultado": "13 = 1·8 + 5",
+     "texto": ""
+    },
+    {
+     "paso": 10,
+     "operacion": "división 10",
+     "resultado": "8 = 1·5 + 3",
+     "texto": ""
+    },
+    {
+     "paso": 11,
+     "operacion": "división 11",
+     "resultado": "5 = 1·3 + 2",
+     "texto": ""
+    },
+    {
+     "paso": 12,
+     "operacion": "división 12",
+     "resultado": "3 = 1·2 + 1",
+     "texto": ""
+    },
+    {
+     "paso": 13,
+     "operacion": "división 13",
+     "resultado": "2 = 2·1 + 0",
+     "texto": ""
+    },
+    {
+     "paso": 14,
+     "operacion": "contar",
+     "resultado": "13",
+     "texto": "Contamos las divisiones hechas."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "El algoritmo A necesita 50·n pasos y el B necesita n² pasos para una lista de n datos. Con n = 10, B es más rápido. ¿A partir de qué número de datos A pasa a ser mejor (es decir, para qué n tardan lo mismo)?",
+   "respuesta": "50",
+   "distractores": [
+    {
+     "valor": "10",
+     "error": "E02"
+    },
+    {
+     "valor": "2500",
+     "error": null
+    },
+    {
+     "valor": "100",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "50 × 50 : 50",
+   "secundarias": [],
+   "explicacion_nino": "Iguala los pasos: 50·n = n², y dividiendo entre n queda n = 50. Para más de 50 datos, A gana.",
+   "explicacion_adulto": "Está aprendiendo que un algoritmo que parece rápido con pocos datos puede escalar peor. El error típico es decidir con n pequeño. Pídale que calcule los pasos para n = 10, 100 y 1000 y observe cómo crece cada uno.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "plantear",
+     "resultado": "",
+     "texto": "Escribimos los pasos de cada algoritmo."
+    },
+    {
+     "paso": 2,
+     "operacion": "calcular",
+     "resultado": "50",
+     "texto": "Iguala los pasos: 50·n = n², y dividiendo entre n queda n = 50. Para más de 50 datos, A gana."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "El algoritmo A necesita 100·n pasos y el B necesita n² pasos. Con n = 10, B hace 100 pasos y A hace 1000. Si la lista tiene n = 500 datos, ¿cuántos pasos se ahorran usando el que mejor escala?",
+   "respuesta": "200000",
+   "distractores": [
+    {
+     "valor": "900",
+     "error": "E02"
+    },
+    {
+     "valor": "250000",
+     "error": null
+    },
+    {
+     "valor": "50000",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "500² − 100 × 500",
+   "secundarias": [],
+   "explicacion_nino": "Calcula los dos: A hace 100·500 = 50000 pasos; B hace 500² = 250000. El que escala mejor es A; ahorro 250000 − 50000 = 200000.",
+   "explicacion_adulto": "Está aprendiendo que un algoritmo que parece rápido con pocos datos puede escalar peor. El error típico es decidir con n pequeño. Pídale que calcule los pasos para n = 10, 100 y 1000 y observe cómo crece cada uno.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "plantear",
+     "resultado": "",
+     "texto": "Escribimos los pasos de cada algoritmo."
+    },
+    {
+     "paso": 2,
+     "operacion": "calcular",
+     "resultado": "200000",
+     "texto": "Calcula los dos: A hace 100·500 = 50000 pasos; B hace 500² = 250000. El que escala mejor es A; ahorro 250000 − 50000 = 200000."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "El algoritmo A necesita 200·n pasos y el B necesita n² pasos para una lista de n datos. Con n = 10, B es más rápido. ¿A partir de qué número de datos A pasa a ser mejor (es decir, para qué n tardan lo mismo)?",
+   "respuesta": "200",
+   "distractores": [
+    {
+     "valor": "10",
+     "error": "E02"
+    },
+    {
+     "valor": "40000",
+     "error": null
+    },
+    {
+     "valor": "400",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "200 × 200 : 200",
+   "secundarias": [],
+   "explicacion_nino": "Iguala los pasos: 200·n = n², y dividiendo entre n queda n = 200. Para más de 200 datos, A gana.",
+   "explicacion_adulto": "Está aprendiendo que un algoritmo que parece rápido con pocos datos puede escalar peor. El error típico es decidir con n pequeño. Pídale que calcule los pasos para n = 10, 100 y 1000 y observe cómo crece cada uno.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "plantear",
+     "resultado": "",
+     "texto": "Escribimos los pasos de cada algoritmo."
+    },
+    {
+     "paso": 2,
+     "operacion": "calcular",
+     "resultado": "200",
+     "texto": "Iguala los pasos: 200·n = n², y dividiendo entre n queda n = 200. Para más de 200 datos, A gana."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "El algoritmo A necesita 400·n pasos y el B necesita n² pasos. Con n = 10, B hace 100 pasos y A hace 4000. Si la lista tiene n = 2000 datos, ¿cuántos pasos se ahorran usando el que mejor escala?",
+   "respuesta": "3200000",
+   "distractores": [
+    {
+     "valor": "3900",
+     "error": "E02"
+    },
+    {
+     "valor": "4000000",
+     "error": null
+    },
+    {
+     "valor": "800000",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "2000² − 400 × 2000",
+   "secundarias": [],
+   "explicacion_nino": "Calcula los dos: A hace 400·2000 = 800000 pasos; B hace 2000² = 4000000. El que escala mejor es A; ahorro 4000000 − 800000 = 3200000.",
+   "explicacion_adulto": "Está aprendiendo que un algoritmo que parece rápido con pocos datos puede escalar peor. El error típico es decidir con n pequeño. Pídale que calcule los pasos para n = 10, 100 y 1000 y observe cómo crece cada uno.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "plantear",
+     "resultado": "",
+     "texto": "Escribimos los pasos de cada algoritmo."
+    },
+    {
+     "paso": 2,
+     "operacion": "calcular",
+     "resultado": "3200000",
+     "texto": "Calcula los dos: A hace 400·2000 = 800000 pasos; B hace 2000² = 4000000. El que escala mejor es A; ahorro 4000000 − 800000 = 3200000."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "El algoritmo A necesita 1000·n pasos y el B necesita n² pasos para una lista de n datos. Con n = 10, B es más rápido. ¿A partir de qué número de datos A pasa a ser mejor (es decir, para qué n tardan lo mismo)?",
+   "respuesta": "1000",
+   "distractores": [
+    {
+     "valor": "10",
+     "error": "E02"
+    },
+    {
+     "valor": "1000000",
+     "error": null
+    },
+    {
+     "valor": "2000",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "1000 × 1000 : 1000",
+   "secundarias": [],
+   "explicacion_nino": "Iguala los pasos: 1000·n = n², y dividiendo entre n queda n = 1000. Para más de 1000 datos, A gana.",
+   "explicacion_adulto": "Está aprendiendo que un algoritmo que parece rápido con pocos datos puede escalar peor. El error típico es decidir con n pequeño. Pídale que calcule los pasos para n = 10, 100 y 1000 y observe cómo crece cada uno.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "plantear",
+     "resultado": "",
+     "texto": "Escribimos los pasos de cada algoritmo."
+    },
+    {
+     "paso": 2,
+     "operacion": "calcular",
+     "resultado": "1000",
+     "texto": "Iguala los pasos: 1000·n = n², y dividiendo entre n queda n = 1000. Para más de 1000 datos, A gana."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "El algoritmo A necesita 30·n pasos y el B necesita n² pasos. Con n = 10, B hace 100 pasos y A hace 300. Si la lista tiene n = 150 datos, ¿cuántos pasos se ahorran usando el que mejor escala?",
+   "respuesta": "18000",
+   "distractores": [
+    {
+     "valor": "200",
+     "error": "E02"
+    },
+    {
+     "valor": "22500",
+     "error": null
+    },
+    {
+     "valor": "4500",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "150² − 30 × 150",
+   "secundarias": [],
+   "explicacion_nino": "Calcula los dos: A hace 30·150 = 4500 pasos; B hace 150² = 22500. El que escala mejor es A; ahorro 22500 − 4500 = 18000.",
+   "explicacion_adulto": "Está aprendiendo que un algoritmo que parece rápido con pocos datos puede escalar peor. El error típico es decidir con n pequeño. Pídale que calcule los pasos para n = 10, 100 y 1000 y observe cómo crece cada uno.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "plantear",
+     "resultado": "",
+     "texto": "Escribimos los pasos de cada algoritmo."
+    },
+    {
+     "paso": 2,
+     "operacion": "calcular",
+     "resultado": "18000",
+     "texto": "Calcula los dos: A hace 30·150 = 4500 pasos; B hace 150² = 22500. El que escala mejor es A; ahorro 22500 − 4500 = 18000."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "El algoritmo A necesita 500·n pasos y el B necesita n² pasos para una lista de n datos. Con n = 10, B es más rápido. ¿A partir de qué número de datos A pasa a ser mejor (es decir, para qué n tardan lo mismo)?",
+   "respuesta": "500",
+   "distractores": [
+    {
+     "valor": "10",
+     "error": "E02"
+    },
+    {
+     "valor": "250000",
+     "error": null
+    },
+    {
+     "valor": "1000",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "500 × 500 : 500",
+   "secundarias": [],
+   "explicacion_nino": "Iguala los pasos: 500·n = n², y dividiendo entre n queda n = 500. Para más de 500 datos, A gana.",
+   "explicacion_adulto": "Está aprendiendo que un algoritmo que parece rápido con pocos datos puede escalar peor. El error típico es decidir con n pequeño. Pídale que calcule los pasos para n = 10, 100 y 1000 y observe cómo crece cada uno.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "plantear",
+     "resultado": "",
+     "texto": "Escribimos los pasos de cada algoritmo."
+    },
+    {
+     "paso": 2,
+     "operacion": "calcular",
+     "resultado": "500",
+     "texto": "Iguala los pasos: 500·n = n², y dividiendo entre n queda n = 500. Para más de 500 datos, A gana."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "El algoritmo A necesita 80·n pasos y el B necesita n² pasos. Con n = 10, B hace 100 pasos y A hace 800. Si la lista tiene n = 400 datos, ¿cuántos pasos se ahorran usando el que mejor escala?",
+   "respuesta": "128000",
+   "distractores": [
+    {
+     "valor": "700",
+     "error": "E02"
+    },
+    {
+     "valor": "160000",
+     "error": null
+    },
+    {
+     "valor": "32000",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "400² − 80 × 400",
+   "secundarias": [],
+   "explicacion_nino": "Calcula los dos: A hace 80·400 = 32000 pasos; B hace 400² = 160000. El que escala mejor es A; ahorro 160000 − 32000 = 128000.",
+   "explicacion_adulto": "Está aprendiendo que un algoritmo que parece rápido con pocos datos puede escalar peor. El error típico es decidir con n pequeño. Pídale que calcule los pasos para n = 10, 100 y 1000 y observe cómo crece cada uno.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "plantear",
+     "resultado": "",
+     "texto": "Escribimos los pasos de cada algoritmo."
+    },
+    {
+     "paso": 2,
+     "operacion": "calcular",
+     "resultado": "128000",
+     "texto": "Calcula los dos: A hace 80·400 = 32000 pasos; B hace 400² = 160000. El que escala mejor es A; ahorro 160000 − 32000 = 128000."
+    }
+   ],
+   "plantilla": "P04"
+  }
+ ]
+}
