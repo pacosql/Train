@@ -701,7 +701,7 @@ def gen_letra(rng, d):
         od = F(c, a) - s * b
         dist = [(od if od.denominator == 1 and od > 0 else c - s * b, "orden_directo"), (c - s * b, None), (F(c + s * b, a) if (c + s * b) % a == 0 else c - a, None)]
     r = x
-    return mk(f"Halla el valor de la letra: {e}", f"{L} = {N(r)}", "t5_letra", [(f"{L} = {N(v)}", k) for v, k in dist],
+    return mk(f"Calcula el valor de la letra: {e}", f"{L} = {N(r)}", "t5_letra", [(f"{L} = {N(v)}", k) for v, k in dist],
               [f"{L} = {N(r + 1)}", f"{L} = {N(r - 1)}", f"{L} = {N(r + 2)}"],
               ["Deshago las operaciones empezando por la última que se hizo (la suma o la resta) y después la multiplicación.",
                f"{L} = {r}. Compruebo: {e.split('=')[0].replace(L, f'({r})').strip()} = {e.split('=')[1].strip()}. ✓"],
@@ -1524,7 +1524,7 @@ def gen_traducir(rng, d):
     frase, resp, dist = TRAD[rng.choice(idx)]
     n, m = rng.randint(2, 12), rng.randint(1, 9)
     f = lambda s: s.format(n=n, m=m)
-    return mk(f"¿Qué expresión algebraica corresponde a «{f(frase)}»? (x es el número)", f(resp), "t5_traducir",
+    return mk(f"¿Cómo se escribe en lenguaje algebraico «{f(frase)}»? (x es el número)", f(resp), "t5_traducir",
               [(f(v), k) for v, k in dist], ["x + " + str(n + 1), f"{n + 1}x"],
               ["Leo la frase de fuera hacia dentro para saber qué operación se hace la última.", f"Queda {f(resp)}."],
               "'El doble de la suma' ≠ 'la suma del doble': el orden de las operaciones está en el orden de las palabras. Doble es ×2; cuadrado es elevar a 2.")
@@ -1920,13 +1920,13 @@ def gen_regla_patron(rng, d):
         n = rng.randint(15, 40)
         r = s * n + c
         fig = rng.random() < 0.5
-        enun = (f"Las figuras de una serie tienen {', '.join(map(str, xs))}… cuadrados. Con la regla de la serie, ¿cuántos cuadrados tendrá la figura {n}?" if fig else
-                f"En la tabla posición → valor: " + ", ".join(f"{i + 1} → {x}" for i, x in enumerate(xs)) + f". ¿Qué valor corresponde a la posición {n}?")
+        enun = (f"¿Qué número es el de cuadrados de la figura {n}, si las figuras de la serie tienen {', '.join(map(str, xs))}… cuadrados?" if fig else
+                f"¿Qué número es el valor de la posición {n} en la tabla posición → valor " + ", ".join(f"{i + 1} → {x}" for i, x in enumerate(xs)) + "?")
         return mk(enun, fmt(r), "t5_regla_patron", [(fmt(n + s), "salto_constante"), (fmt(a1 * n + s), "primero_coef"), (fmt(s * n), None)], [fmt(r + s), fmt(r - 1), fmt(r + 1)],
                   [f"Cada vez aumenta {s}: la regla es {resp}.", f"Para n = {n}: {s}·{n} {'+' if c >= 0 else '−'} {abs(c)} = {fmt(r)}."],
                   "La regla de un patrón lineal es (salto)·n + (primer término − salto).", s=s, a1=a1)
-    enun = (f"Las figuras de una serie tienen {', '.join(map(str, xs))}… cuadrados (figura n = 1, 2, 3…). ¿Qué expresión da los cuadrados de la figura n?" if d == 1 else
-            "En la tabla posición → valor: " + ", ".join(f"{i + 1} → {x}" for i, x in enumerate(xs)) + ". ¿Qué regla relaciona la posición n con el valor?")
+    enun = (f"¿Cómo se escribe con la letra n el número de cuadrados de la figura n, si las figuras 1, 2, 3… tienen {', '.join(map(str, xs))}… cuadrados?" if d == 1 else
+            "¿Cómo se escribe la regla (con n) de la tabla posición → valor " + ", ".join(f"{i + 1} → {x}" for i, x in enumerate(xs)) + "?")
     return mk(enun, resp, "t5_regla_patron", dist, [_regla_n(s + 1, c - 1), _regla_n(s, c + 1)],
               [f"El valor aumenta {s} cada vez: la regla empieza por {s}·n.", f"Para n = 1, {s}·1 = {s} y el valor es {a1}: hay que {'sumar' if c > 0 else 'restar'} {abs(c)}. Regla: {resp}." if c else f"Para n = 1 da {s}: la regla es {resp}."],
               "El salto multiplica a n; el número suelto se ajusta con el primer término. Se comprueba con dos posiciones.", s=s, a1=a1)
@@ -2342,7 +2342,7 @@ def gen_teorema_resto(rng, d):
         for p_ in partes[1:]:
             txt += (" − " + p_[1:]) if p_.startswith("−") else (" + " + p_)
         k2 = F(-pev(base, -a), (-a) ** e)
-        return mk(f"Halla k para que {txt} sea divisible entre {fac(a)[1:-1]}", f"k = {N(k)}", "t5_teorema_resto",
+        return mk(f"Calcula k para que {txt} sea divisible entre {fac(a)[1:-1]}", f"k = {N(k)}", "t5_teorema_resto",
                   [(f"k = {N(k2)}" if k2 != k else None, "evalua_menos_a"), (f"k = {N(-k)}", None), (f"k = {N(pev(base, a))}", None)], [f"k = {N(k + 1)}", "k = 0"],
                   [f"Divisible entre x − a significa resto 0, es decir, P(a) = 0 con a = {N(a)}.", f"Sustituyo y despejo: k = {N(k)}."],
                   "El teorema del resto convierte 'ser divisible' en una ecuación: P(a) = 0.")
@@ -2353,7 +2353,7 @@ def gen_teorema_resto(rng, d):
         if max(abs(c) for c in p.values()) <= 60:
             break
     resp = ", ".join(f"x = {N(r)}" for r in rs)
-    return mk(f"Halla las raíces enteras de P(x) = {P(p)}", resp, "t5_teorema_resto",
+    return mk(f"Calcula las raíces enteras de P(x) = {P(p)}", resp, "t5_teorema_resto",
               [(", ".join(f"x = {N(r)}" for r in sorted(-x for x in rs)), None), (", ".join(f"x = {N(r)}" for r in rs[:2]), None),
                (", ".join(f"x = {N(r)}" for r in sorted(set([1, -1, k, -k]))) if k > 1 else ", ".join(f"x = {N(r)}" for r in sorted(rs[:2] + [rs[2] + 1])), "divisores_principal" if k > 1 else None)],
               [", ".join(f"x = {N(r)}" for r in sorted([rs[0], rs[1], -rs[2]])) if -rs[2] not in rs else "x = 0"],
@@ -2930,7 +2930,7 @@ def gen_gauss_clasificar(rng, d):
             if not any(f3):
                 continue
         break
-    enun = "Clasifica el sistema: {" + "; ".join(_eq3(f, bb) for f, bb in ((f1, b1), (f2, b2), (f3, b3))) + "}"
+    enun = "Calcula de qué tipo es el sistema {" + "; ".join(_eq3(f, bb) for f, bb in ((f1, b1), (f2, b2), (f3, b3))) + "}"
     TXT = {"SCD": "Compatible determinado", "SCI": "Compatible indeterminado", "SI": "Incompatible"}
     resp = TXT[caso]
     Z0 = "Compatible determinado con z = 0"
@@ -2994,7 +2994,7 @@ def gen_matriz_elementos(rng, d):
         n = rng.randint(1, 4)
     A = _rand_mat(rng, m, n)
     if tarea == "dim":
-        return mk(f"¿Qué dimensión tiene la matriz A = {mat(A)}?", f"{m} × {n}", "t5_matriz", [(f"{n} × {m}", "dimension_invertida"), (f"{m * n} × 1", None), (f"{m} × {m}", None)],
+        return mk(f"Calcula la dimensión de la matriz A = {mat(A)}", f"{m} × {n}", "t5_matriz", [(f"{n} × {m}", "dimension_invertida"), (f"{m * n} × 1", None), (f"{m} × {m}", None)],
                   [f"{m + 1} × {n}"], [f"Tiene {m} filas y {n} columnas: dimensión {m} × {n} (primero filas)."], "La dimensión se da como filas × columnas.")
     if tarea == "elem":
         for _ in range(50):
@@ -3004,7 +3004,7 @@ def gen_matriz_elementos(rng, d):
         else:
             i, j = 1, 2
             A[1][0] = A[0][1] + 1
-        return mk(f"En A = {mat(A)}, ¿cuánto vale el elemento a{sub(i)}{sub(j)}?", N(A[i - 1][j - 1]), "t5_matriz",
+        return mk(f"Calcula el elemento a{sub(i)}{sub(j)} de la matriz A = {mat(A)}", N(A[i - 1][j - 1]), "t5_matriz",
                   [(N(A[j - 1][i - 1]) if j <= m and i <= n else None, "fila_columna"), (N(A[i - 1][j - 1] + 1), None), (N(-A[i - 1][j - 1]) if A[i - 1][j - 1] else "1", None)],
                   [N(A[0][0]), N(A[-1][-1])], [f"a{sub(i)}{sub(j)} está en la fila {i}, columna {j}: vale {N(A[i - 1][j - 1])}."], "El primer subíndice es la fila y el segundo la columna.")
     if tarea == "tras":
@@ -3031,7 +3031,7 @@ def gen_matriz_elementos(rng, d):
         else:
             M = [[nz(rng, -5, 5) if j >= i else 0 for j in range(k)] for i in range(k)]
         otros = [t for t in ["diagonal", "identidad", "simétrica", "triangular superior", "triangular inferior", "nula"] if t != tipo and not (tipo == "identidad" and t in ("diagonal", "simétrica")) and not (tipo in ("diagonal", "nula") and t in ("simétrica", "triangular superior", "triangular inferior", "diagonal"))]
-        return mk(f"¿Qué tipo de matriz es {mat(M)}? (elige el nombre más preciso)", f"Matriz {tipo}", "t5_matriz", [(f"Matriz {t}", None) for t in rng.sample(otros, min(3, len(otros)))],
+        return mk(f"Calcula de qué tipo es la matriz {mat(M)} (elige el nombre más preciso)", f"Matriz {tipo}", "t5_matriz", [(f"Matriz {t}", None) for t in rng.sample(otros, min(3, len(otros)))],
                   ["Matriz fila", "Matriz columna"], [f"Miro dónde están los ceros y si aᵢⱼ = aⱼᵢ: es {tipo}."], "Identidad ⊂ diagonal ⊂ triangular; simétrica si coincide con su traspuesta.")
     p, q, r = rng.randint(-3, 3), rng.randint(-3, 3), rng.randint(-3, 3)
     if p == q:
@@ -3039,7 +3039,7 @@ def gen_matriz_elementos(rng, d):
     M = [[p * i + q * j + r for j in range(1, n + 1)] for i in range(1, m + 1)]
     regla = terms([(p, "i"), (q, "j"), (r, "")])
     Mt = [[p * j + q * i + r for j in range(1, n + 1)] for i in range(1, m + 1)]
-    return mk(f"Escribe la matriz A de dimensión {m} × {n} con a_ij = {regla}", mat(M), "t5_matriz", [(mat(Mt), "fila_columna"), (mat(mT(M)), "dimension_invertida"), (mat(mscale(M, -1)), None)],
+    return mk(f"Calcula la matriz A de dimensión {m} × {n} con a_ij = {regla}", mat(M), "t5_matriz", [(mat(Mt), "fila_columna"), (mat(mT(M)), "dimension_invertida"), (mat(mscale(M, -1)), None)],
               [mat(madd(M, [[1] * n for _ in range(m)]))], [f"i es el número de fila (1 a {m}) y j el de columna (1 a {n}); calculo cada elemento con la regla.", f"A = {mat(M)}."],
               "a_ij: i fila, j columna.")
 
@@ -3060,7 +3060,7 @@ def gen_matriz_suma(rng, d):
     mal1 = madd([f if i == 0 else f for i, f in enumerate(Am)], mscale(Bu, q)) if p != 1 else madd(A, mscale(Bu, -q))
     dist = [(mat(mal1), "escalar_una_fila" if p != 1 else None), (mat(madd(mscale(A, p), mscale(B, q))) if d == 3 and B != Bu else mat(madd(mscale(A, p), mscale(Bu, -q))), None),
             (mat(madd(mscale(A, q), mscale(Bu, p))) if p != q else mat(mscale(R, -1)), None)]
-    return mk(f"Con A = {mat(A)} y B = {mat(B)}, calcula {expr}", mat(R), "t5_matriz", dist, [mat(madd(R, [[1] * n for _ in range(m)]))],
+    return mk(f"Calcula {expr} con A = {mat(A)} y B = {mat(B)}", mat(R), "t5_matriz", dist, [mat(madd(R, [[1] * n for _ in range(m)]))],
               ["Multiplico cada matriz por su número (TODOS sus elementos)" + (" y traspongo B" if d == 3 else "") + ".", "Sumo o resto elemento a elemento (misma posición).", f"Resultado: {mat(R)}."],
               "Solo se suman matrices de igual dimensión; el producto por un número afecta a todos los elementos.")
 
@@ -3089,10 +3089,10 @@ def gen_matriz_producto(rng, d):
     dist.append((mat(mT(R)), None))
     dist.append((mat(mscale(R, -1)), None))
     if enun_op == "A²":
-        return mk(f"Con A = {mat(A)}, calcula A²", mat(R), "t5_matriz", dist, [mat(madd(R, mscale(A, 1)))],
+        return mk(f"Calcula A² con A = {mat(A)}", mat(R), "t5_matriz", dist, [mat(madd(R, mscale(A, 1)))],
                   ["A² = A·A: cada elemento es fila de A por columna de A (multiplicar término a término y sumar).", f"A² = {mat(R)}."],
                   "A² no es elevar cada elemento al cuadrado.")
-    return mk(f"Con A = {mat(A)} y B = {mat(B)}, calcula A·B", mat(R), "t5_matriz", dist, [mat(madd(R, [[1] * len(R[0]) for _ in R]))],
+    return mk(f"Calcula A·B con A = {mat(A)} y B = {mat(B)}", mat(R), "t5_matriz", dist, [mat(madd(R, [[1] * len(R[0]) for _ in R]))],
               [f"A es {len(A)} × {len(A[0])} y B es {len(B)} × {len(B[0])}: se puede multiplicar y el resultado es {len(R)} × {len(R[0])}.",
                "Elemento (i, j) = fila i de A por columna j de B (productos sumados).", f"A·B = {mat(R)}."],
               "El producto de matrices es 'fila por columna' y en general A·B ≠ B·A.")
@@ -3125,7 +3125,7 @@ def gen_determinante(rng, d):
         if k.denominator == 1 and abs(k) <= 9:
             break
     txt = "[" + "; ".join(", ".join("k" if (r, c) == (i, j) else N(A[r][c]) for c in range(3)) for r in range(3)) + "]"
-    return mk(f"¿Para qué valor de k se anula el determinante de {txt}?", f"k = {N(k)}", "t5_det", [(f"k = {N(-k)}", None), (f"k = {N(F(-base, _m))}" if _m != cof and _m else None, None), ("k = 0", None)],
+    return mk(f"Calcula el valor de k que anula el determinante de {txt}", f"k = {N(k)}", "t5_det", [(f"k = {N(-k)}", None), (f"k = {N(F(-base, _m))}" if _m != cof and _m else None, None), ("k = 0", None)],
               [f"k = {N(k + 1)}", f"k = {N(k - 1)}"], [f"Desarrollo el determinante con k: queda una expresión de primer grado en k ({N(cof)}k {'+' if base >= 0 else '−'} {N(abs(base))}).", f"La igualo a 0: k = {N(k)}."],
               "Con un parámetro, el determinante es un polinomio en k; sus raíces son los valores que lo anulan.")
 
@@ -3160,10 +3160,10 @@ def gen_det_propiedades(rng, d):
         E = nz(rng, -5, 5)
         enun, r, mal = f"|A·B| sabiendo que |B| = {N(E)}", F(D0 * E), F(D0 + E)
     elif op == "fila":
-        enun, r, mal = f"el determinante de la matriz que resulta al multiplicar una fila de A por {k}", F(k * D0), F(k) ** n * D0
+        enun, r, mal = f"el determinante de la matriz que sale al multiplicar una fila de A por {N(k)}", F(k * D0), F(k) ** n * D0
     else:
-        enun, r, mal = "el determinante de la matriz que resulta al intercambiar dos filas de A", F(-D0), F(D0)
-    return mk(f"A es una matriz cuadrada de orden {n} con |A| = {N(D0)}. Calcula {enun}.", N(r), "t5_det",
+        enun, r, mal = "el determinante de la matriz que sale al intercambiar dos filas de A", F(-D0), F(D0)
+    return mk(f"Calcula {enun}, sabiendo que A es cuadrada de orden {n} y |A| = {N(D0)}.", N(r), "t5_det",
               [(N(mal) if mal != r else N(-r), "k_por_det" if op in ("kA", "kinv") else None), (N(-r) if -r != mal else N(r + 1), None), (N(r * 2), None)], [N(r + 1), N(r - 1)],
               [{"kA": f"Multiplicar A por {k} multiplica cada una de sus {n} filas por {k}: |{k}A| = {k}^{n}·|A|.", "inv": "|A·A⁻¹| = |I| = 1, así que |A⁻¹| = 1/|A|.",
                 "tras": "|Aᵗ| = |A|.", "kinv": f"|{k}A⁻¹| = {k}^{n}·|A⁻¹| = {k}^{n}/|A|.", "AB": "|A·B| = |A|·|B|.", "fila": f"Multiplicar UNA fila por {k} multiplica el determinante por {k}.",
@@ -3205,7 +3205,7 @@ def gen_rango(rng, d):
     txt[pos] = "m"
     M = f"[{', '.join(N(v) for v in f1)}; {', '.join(txt)}; {', '.join(N(v) for v in f3)}]"
     resp = f"Si m = {N(valor)}, rango 2; si m ≠ {N(valor)}, rango 3"
-    return mk(f"Estudia el rango de {M} según los valores de m.", resp, "t5_rango", [(f"Rango 3 para todo m", "rango_filas"), (f"Si m = {N(valor)}, rango 1; si m ≠ {N(valor)}, rango 3", "menor_nulo"),
+    return mk(f"Calcula el rango de {M} según los valores de m.", resp, "t5_rango", [(f"Rango 3 para todo m", "rango_filas"), (f"Si m = {N(valor)}, rango 1; si m ≠ {N(valor)}, rango 3", "menor_nulo"),
                                                                                      (f"Si m = {N(-valor) if valor else 1}, rango 2; si m ≠ {N(-valor) if valor else 1}, rango 3", None)],
               [f"Si m = 0, rango 2; si m ≠ 0, rango 3"], [f"La fila 2 es proporcional a la 1 solo si m = {N(valor)}.", "Calculo el determinante (depende de m) y veo dónde se anula; en ese caso busco un menor 2×2 no nulo.", f"{resp}."],
               "Con parámetro se estudia dónde se anula el menor de mayor orden y, en esos valores, los menores de orden inferior.")
@@ -3297,7 +3297,7 @@ def gen_proglin(rng, d):
     txt = lambda j: f"{tipo.capitalize()} {N(vals[j])} en {pt(*vx[j])}"
     dist = [(txt(far) if far != i else None, "vertice_lejano"), (f"{tipo.capitalize()} {N(best)}", "solo_valor")]
     dist += [(txt(j), None) for j in range(4) if j != i]
-    return mk(f"La región factible es el cuadrilátero de vértices {', '.join(pt(*v) for v in vx)}. Halla el {tipo} de F(x, y) = {terms([(p, 'x'), (q, 'y')])} y dónde se alcanza.",
+    return mk(f"Calcula el {tipo} de F(x, y) = {terms([(p, 'x'), (q, 'y')])} en la región factible de vértices {', '.join(pt(*v) for v in vx)}, y dónde se alcanza.",
               txt(i), "t5_proglin", dist, [],
               ["El óptimo de una función lineal en un polígono se alcanza en un vértice: evalúo F en cada uno.",
                "; ".join(f"F{pt(*v)} = {N(val)}" for v, val in zip(vx, vals)) + ".", f"{txt(i)}."],
@@ -3379,7 +3379,7 @@ def gen_rouche(rng, d):
     if d == 1:
         enun = f"Un sistema de {ne} ecuaciones con {n} incógnitas tiene rg(A) = {rA} y rg(A*) = {rAs}. ¿Qué tipo de sistema es?"
     else:
-        enun = "Discute el sistema: {" + "; ".join(_eq3(A[i], b[i]) for i in range(3)) + "}"
+        enun = "Calcula de qué tipo es el sistema {" + "; ".join(_eq3(A[i], b[i]) for i in range(3)) + "} (discútelo con los rangos)"
     return mk(enun, resp, "t5_rouche", dist, [],
               [f"rg(A) = {rA}, rg(A*) = {rAs}, número de incógnitas n = {n}.",
                "Rouché-Fröbenius: rangos distintos → incompatible; iguales a n → compatible determinado; iguales y menores que n → indeterminado con n − rg parámetros.", f"{resp}."],
@@ -3440,7 +3440,7 @@ def gen_discusion_param(rng, d):
                   "En los valores críticos (|A| = 0) hay que sustituir el parámetro y estudiar los rangos.")
     crit_s = sorted(crit)
     resp = " y ".join(f"a ≠ {N(c)}" for c in crit_s)
-    return mk(f"¿Para qué valores de a es compatible determinado el sistema {enun_s}?", resp, "t5_discusion",
+    return mk(f"Calcula los valores de a para los que el sistema {enun_s} es compatible determinado", resp, "t5_discusion",
               [(" y ".join(f"a = {N(c)}" for c in crit_s), None), (" y ".join(f"a ≠ {N(-c)}" for c in crit_s) if any(crit_s) else "a ≠ 1", None), ("Para todo a", "se_queda_det"),
                ((" y ".join(f"a ≠ {N(c)}" for c in crit_s[:1])) if len(crit_s) > 1 else None, None)],
               [], [f"Compatible determinado ⇔ |A| ≠ 0.", f"|A| se anula para {', '.join('a = ' + N(c) for c in crit_s)}.", f"Es compatible determinado si {resp}."],
@@ -3561,7 +3561,7 @@ def gen_concepto_funcion(rng, d):
         resp = SI
         dist = [(f"No: y = {N(ry[0])} corresponde a dos valores de x" if ry else None, "y_repetida"), (f"No: x = {N(xs[0])} tiene dos valores de y", None),
                 ("No: los valores de x no están ordenados", None)]
-    return mk(f"La relación viene dada por los pares (x, y): {pares}. ¿Es una función de x?", resp, "t5_concepto_funcion", dist, ["No: hay valores negativos"],
+    return mk(f"Calcula si es una función de x la relación dada por los pares (x, y): {pares}", resp, "t5_concepto_funcion", dist, ["No: hay valores negativos"],
               ["Es función si cada valor de x tiene UNA sola imagen y.", "Busco si algún x se repite con valores de y distintos." + (" Sí: x = " + N(rx[0]) + "." if rx else " No ocurre."),
                "Que dos x distintas tengan la misma y no impide que sea función."],
               "Función: a cada x, un único y. Que se repitan valores de y está permitido.")
@@ -3724,12 +3724,12 @@ def gen_parabola_trasladada(rng, d):
     h, k = nz(rng, -6, 6), rng.randint(-7, 7)
     if d < 3:
         f = _canonica(a, h, k)
-        return mk(f"¿Cuál es el vértice de la parábola {f}?", f"V{pt(h, k)}", "t5_trasladada", [(f"V{pt(-h, k)}", "signo_h"), (f"V{pt(h, -k)}" if k else f"V{pt(-h, 1)}", "vertical_al_reves"), (f"V{pt(-h, -k)}", None)],
+        return mk(f"Calcula el vértice de la parábola {f}", f"V{pt(h, k)}", "t5_trasladada", [(f"V{pt(-h, k)}", "signo_h"), (f"V{pt(h, -k)}" if k else f"V{pt(-h, 1)}", "vertical_al_reves"), (f"V{pt(-h, -k)}", None)],
                   [f"V{pt(k, h)}"], [f"y = a(x − h)² + k tiene vértice (h, k).", f"Aquí (x − ({N(h)}))²: h = {N(h)}; k = {N(k)}. V{pt(h, k)}."],
                   "(x + 3)² corresponde a h = −3: la gráfica se traslada a la izquierda.")
     a = rng.choice([1, 2, -1, 3])
     p = {2: a, 1: -2 * a * h, 0: a * h * h + k}
-    return mk(f"Escribe en la forma y = a(x − h)² + k la parábola y = {P(p)}", _canonica(a, h, k), "t5_trasladada",
+    return mk(f"Calcula la forma y = a(x − h)² + k de la parábola y = {P(p)}", _canonica(a, h, k), "t5_trasladada",
               [(_canonica(a, -h, k), "signo_h"), (_canonica(a, h, -k), "vertical_al_reves"), (_canonica(1, h, k) if a != 1 else _canonica(2, h, k), None)], [_canonica(a, h, k + 1)],
               [f"Vértice: x_v = −b/(2a) = {N(h)}, y_v = f({N(h)}) = {N(k)}.", f"La forma canónica es {_canonica(a, h, k)} (a no cambia)."],
               "Completar cuadrados o usar el vértice: y = a(x − x_v)² + y_v.")
@@ -3789,7 +3789,7 @@ def gen_trozos(rng, d):
     r = f(x0)
     otro = pev(f2, x0) if r == pev(f1, x0) else pev(f1, x0)
     tot = pev(f1, x0) + pev(f2, x0) + (pev(f3, x0) if f3 else 0)
-    enun = f"f(x) = {{{trozos}}}. Calcula f({N(x0)})."
+    enun = f"Calcula f({N(x0)}) si f(x) = {{{trozos}}}"
     return mk(enun, N(r), "t5_trozos", [(N(otro) if otro != r else None, "tramo_extremo" if x0 in (c1, c2) else None), (N(tot) if tot != r else None, "todas_formulas"), (N(-r) if r else "1", None)],
               [N(r + 1), N(r - 1), N(r + 2)], [f"Busco en qué tramo está x = {N(x0)} (mirando si el extremo va con ≤ o con <).", f"Uso solo esa fórmula: f({N(x0)}) = {N(r)}."],
               "Cada x usa UNA fórmula; en los puntos de cambio decide el signo = de la condición.")
@@ -4000,10 +4000,10 @@ def gen_recta_puntos(rng, d):
     n = y1 - m * x1
     resp = expl_y(m, n)
     if d == 1:
-        enun = f"Escribe la ecuación de la recta de pendiente {N(m)} que pasa por {pt(x1, y1)}."
+        enun = f"Calcula la ecuación de la recta de pendiente {N(m)} que pasa por {pt(x1, y1)}."
         dist = [(expl_y(m, y1 + m * x1), "signos_resta"), (expl_y(m, y1), None), (expl_y(-m, y1 + m * x1), None)]
     else:
-        enun = f"Escribe la ecuación de la recta que pasa por {pt(x1, y1)} y {pt(x2, y2)}."
+        enun = f"Calcula la ecuación de la recta que pasa por {pt(x1, y1)} y {pt(x2, y2)}."
         mi = 1 / m
         dist = [(expl_y(mi, y1 - mi * x1), "pendiente_invertida"), (expl_y(-m, y1 + m * x1), "signos_resta"), (expl_y(m, y2 - m * x1), None)]
     return mk(enun, resp, "t5_recta", dist, [expl_y(m, n + 1), expl_y(m + 1, n)],
@@ -4031,7 +4031,7 @@ def gen_pendientes_comparar(rng, d):
         n1, n2 = rng.sample(range(-8, 9), 2)
         x0, y0 = rng.randint(-4, 4), rng.randint(-5, 5)
         resp = expl_y(m, y0 - m * x0)
-        return mk(f"Halla la recta paralela a y = {P({1: m, 0: n1})} que pasa por {pt(x0, y0)}.", resp, "t5_pendientes",
+        return mk(f"Calcula la recta paralela a y = {P({1: m, 0: n1})} que pasa por {pt(x0, y0)}.", resp, "t5_pendientes",
                   [(expl_y(-m, y0 + m * x0), None), (expl_y(m, n1), "compara_ordenada"), (expl_y(F(-1, m), y0 + F(1, m) * x0), None)], [expl_y(m, y0)],
                   [f"Paralelas: misma pendiente, m = {N(m)}.", f"Pasa por {pt(x0, y0)}: n = {N(y0)} − ({N(m)})·({N(x0)}) = {N(y0 - m * x0)}. {resp}."], "Rectas paralelas ⇔ misma pendiente.")
     for _ in range(100):
@@ -4060,16 +4060,16 @@ def gen_pendiente_angulo(rng, d):
             mm = rng.choice([F(2), F(3), F(1, 2), F(-2), F(5), F(-3), F(3, 4), F(-1, 2), F(4), F(3, 2)])
             a_ = math.degrees(math.atan(float(mm)))
             a_ = a_ + 180 if a_ < 0 else a_
-            return mk(f"Una recta tiene pendiente m = {N(mm)}. ¿Qué ángulo forma con el eje X? (redondea a décimas)", f"{D(a_, 1)}°", "t5_pendiente_ang",
+            return mk(f"Calcula el ángulo que forma con el eje X una recta de pendiente m = {N(mm)} (redondea a décimas)", f"{D(a_, 1)}°", "t5_pendiente_ang",
                       [(f"{D(math.degrees(math.atan(1 / float(mm))) % 180, 1)}°", "tangente_invertida"), (f"{D(float(mm) * 45, 1)}°", "porcentaje_angulo"), (f"{D(180 - a_, 1)}°", None)], [],
                       [f"tg α = {N(mm)} → α = arctg({N(mm)}) ≈ {D(a_, 1)}°" + (" (sumando 180° porque la pendiente es negativa)." if mm < 0 else ".")],
                       "La pendiente es la tangente del ángulo de inclinación (entre 0° y 180°).")
         if rng.random() < 0.5:
-            return mk(f"Una recta forma un ángulo de {ang}° con el eje X. ¿Cuál es su pendiente?", f"m = {m}", "t5_pendiente_ang",
+            return mk(f"Calcula la pendiente de una recta que forma un ángulo de {ang}° con el eje X", f"m = {m}", "t5_pendiente_ang",
                       [(f"m = {dict([(45, '√2/2'), (60, '1/2'), (30, '√3/2'), (135, '−√2/2'), (120, '−1/2'), (150, '−√3/2')])[ang]}", "tangente_invertida"), (f"m = {ang}", "porcentaje_angulo"),
                        (f"m = {dict([(45, '−1'), (60, '√3/3'), (30, '√3'), (135, '1'), (120, '−√3/3'), (150, '−√3')])[ang]}", "tangente_invertida")], [],
                       [f"m = tg α = tg {ang}° = {m}."], "La pendiente es la tangente del ángulo de inclinación (no el coseno ni el ángulo).")
-        return mk(f"Una recta tiene pendiente m = {m}. ¿Qué ángulo forma con el eje X?", f"{ang}°", "t5_pendiente_ang",
+        return mk(f"Calcula el ángulo que forma con el eje X una recta de pendiente m = {m}", f"{ang}°", "t5_pendiente_ang",
                   [(f"{180 - ang}°", None), (f"{90 - ang if ang < 90 else 270 - ang}°", "tangente_invertida"), (f"{ang // 3 if ang % 3 == 0 else ang + 15}°", None)], [],
                   [f"tg α = {m} → α = {ang}° (entre 0° y 180°)."], "α = arctg m; si m < 0 el ángulo es obtuso.")
     p = rng.choice([5, 8, 10, 12, 15, 20, 25, 30, 40, 50, 75, 100, 150, 200])
@@ -4177,7 +4177,7 @@ def gen_operaciones_funciones(rng, d):
     if op in "+−·":
         v = pev(f, a) + pev(g, a) if op == "+" else pev(f, a) - pev(g, a) if op == "−" else pev(f, a) * pev(g, a)
         nombre = {"+": "f + g", "−": "f − g", "·": "f·g"}[op]
-        return mk(f"Si f(x) = {P(f)} y g(x) = {P(g)}, calcula ({nombre})({N(a)})", N(v), "t5_op_funciones",
+        return mk(f"Calcula ({nombre})({N(a)}) si f(x) = {P(f)} y g(x) = {P(g)}", N(v), "t5_op_funciones",
                   [(N(comp) if comp != v else None, "producto_composicion" if op == "·" else None), (N(pev(f, a) - pev(g, a) if op != "−" else pev(f, a) + pev(g, a)), None), (N(-v) if v else "1", None)],
                   [N(v + 1), N(v - 1)], [f"f({N(a)}) = {N(pev(f, a))} y g({N(a)}) = {N(pev(g, a))}.", f"({nombre})({N(a)}) = {N(v)}."],
                   "(f·g)(a) = f(a)·g(a); no es f(g(a)).")
@@ -4185,11 +4185,11 @@ def gen_operaciones_funciones(rng, d):
         if pev(g, a) == 0:
             a += 1
         v = pev(f, a) / pev(g, a)
-        return mk(f"Si f(x) = {P(f)} y g(x) = {P(g)}, calcula (f/g)({N(a)})", N(v), "t5_op_funciones",
+        return mk(f"Calcula (f/g)({N(a)}) si f(x) = {P(f)} y g(x) = {P(g)}", N(v), "t5_op_funciones",
                   [(N(comp), "producto_composicion"), (N(pev(g, a) / pev(f, a)) if pev(f, a) else "0", None), (N(pev(f, a) * pev(g, a)), None)], [N(v + 1)],
                   [f"f({N(a)}) = {N(pev(f, a))}, g({N(a)}) = {N(pev(g, a))}: (f/g)({N(a)}) = {N(v)}."], "(f/g)(a) = f(a)/g(a).")
     r = -g[0]
-    return mk(f"Si f(x) = {P(f)} y g(x) = {P(g)}, ¿cuál es el dominio de f/g?", _dom_union([r]), "t5_op_funciones",
+    return mk(f"Calcula el dominio de f/g si f(x) = {P(f)} y g(x) = {P(g)}", _dom_union([r]), "t5_op_funciones",
               [("ℝ", "dominio_cociente"), (_dom_union([-r]), None), (_dom_union([r] + ([x for x in _cuad(1, 0, f[0]) or []] if 2 in f else [F(-f.get(0, 0), f[1])] if 1 in f else [])) if (2 in f and _cuad(1, 0, f[0])) or (1 in f) else _dom_union([0]), "dominio_cociente")],
               [], [f"f/g no existe donde g(x) = 0: x = {N(r)}.", f"Dominio: {_dom_union([r])}."], "Del dominio de f/g se quitan los ceros de g (el denominador).")
 
@@ -4212,11 +4212,11 @@ def gen_composicion(rng, d):
     if d == 1:
         a = rng.randint(-3, 3)
         v = pev(gf, a)
-        return mk(f"Si f(x) = {P(f)} y g(x) = {P(g)}, calcula (g∘f)({N(a)})", N(v), "t5_composicion",
+        return mk(f"Calcula (g∘f)({N(a)}) si f(x) = {P(f)} y g(x) = {P(g)}", N(v), "t5_composicion",
                   [(N(pev(fg, a)) if pev(fg, a) != v else None, "orden_cambiado"), (N(pev(f, a) * pev(g, a)), "multiplica"), (N(pev(f, a) + pev(g, a)), None)], [N(v + 1), N(v - 1)],
                   [f"(g∘f)({N(a)}) = g(f({N(a)})): primero f({N(a)}) = {N(pev(f, a))}.", f"Después g({N(pev(f, a))}) = {N(v)}."], "g∘f: primero se aplica f y después g.")
     resp = P(gf)
-    return mk(f"Si f(x) = {P(f)} y g(x) = {P(g)}, calcula (g∘f)(x)", resp, "t5_composicion",
+    return mk(f"Calcula (g∘f)(x) si f(x) = {P(f)} y g(x) = {P(g)}", resp, "t5_composicion",
               [(P(fg) if fg != gf else None, "orden_cambiado"), (P(pmul(f, g)), "multiplica"), (P(padd(f, g)), None)], [P(padd(gf, {0: 1}))],
               [f"(g∘f)(x) = g(f(x)): sustituyo la x de g por ({P(f)}).", f"Desarrollo: {resp}."], "La composición no es conmutativa: g∘f ≠ f∘g en general.")
 
@@ -4282,7 +4282,7 @@ def gen_transformaciones(rng, d):
         f = f"y = {_aplica_base(b, arg)}" + (f" {'+' if k > 0 else '−'} {abs(k)}" if k else "")
         T = lambda hh, kk: ", ".join(x for x in [f"{abs(hh)} unidades a la {'derecha' if hh > 0 else 'izquierda'}" if hh else "", f"{abs(kk)} unidades hacia {'arriba' if kk > 0 else 'abajo'}" if kk else ""] if x)
         resp = T(h, k)
-        return mk(f"¿Cómo se obtiene la gráfica de {f} a partir de la de y = {b}?", resp[0].upper() + resp[1:], "t5_transformaciones",
+        return mk(f"Calcula qué movimiento transforma la gráfica de y = {b} en la de {f}", resp[0].upper() + resp[1:], "t5_transformaciones",
                   [(T(-h, k)[0].upper() + T(-h, k)[1:], "horizontal_al_reves"), ((T(h, -k)[0].upper() + T(h, -k)[1:]) if k else (T(0, -h)[0].upper() + T(0, -h)[1:]), None),
                    ((T(-h, -k)[0].upper() + T(-h, -k)[1:]) if k else (T(0, h)[0].upper() + T(0, h)[1:]), None)], [],
                   [f"f(x − h) desplaza la gráfica h unidades a la derecha (h = {N(h)}).", ("f(x) + k la sube k unidades." if k else "") + f" Resultado: {resp}."],
@@ -4292,14 +4292,14 @@ def gen_transformaciones(rng, d):
         kk = rng.choice([2, 3, 4, 5])
         f = f"y = {kk}{_aplica_base(b, 'x')}" if b not in ("√x", "|x|", "1/x") else f"y = {kk}·{_aplica_base(b, 'x')}"
         resp = f"Estirada verticalmente: las alturas se multiplican por {kk}"
-        return mk(f"¿Cómo se obtiene la gráfica de {f} a partir de la de y = {b}?", resp, "t5_transformaciones",
+        return mk(f"Calcula qué movimiento transforma la gráfica de y = {b} en la de {f}", resp, "t5_transformaciones",
                   [(f"Estirada horizontalmente: las x se multiplican por {kk}", "horizontal_al_reves"), (f"Desplazada {kk} unidades hacia arriba", None), ("Simétrica respecto del eje X", "eje_equivocado")], [],
                   [f"k·f(x) multiplica cada altura por k = {kk}.", f"{resp}."], "k·f(x) dilata en vertical; f(kx) comprime en horizontal.")
     if tipo == "-f+k":
         kk = nz(rng, -5, 5)
         f = f"y = −{_aplica_base(b, 'x')} {'+' if kk > 0 else '−'} {abs(kk)}"
         resp = f"Simétrica respecto del eje X y desplazada {abs(kk)} unidades hacia {'arriba' if kk > 0 else 'abajo'}"
-        return mk(f"¿Cómo se obtiene la gráfica de {f} a partir de la de y = {b}?", resp, "t5_transformaciones",
+        return mk(f"Calcula qué movimiento transforma la gráfica de y = {b} en la de {f}", resp, "t5_transformaciones",
                   [(f"Simétrica respecto del eje Y y desplazada {abs(kk)} unidades hacia {'arriba' if kk > 0 else 'abajo'}", "eje_equivocado"),
                    (f"Simétrica respecto del eje X y desplazada {abs(kk)} unidades a la {'derecha' if kk > 0 else 'izquierda'}", "horizontal_al_reves"),
                    (f"Simétrica respecto del eje X y desplazada {abs(kk)} unidades hacia {'abajo' if kk > 0 else 'arriba'}", None)], [],
@@ -4312,7 +4312,7 @@ def gen_transformaciones(rng, d):
         b = rng.choice(["√x", "2^x", "3^x", "ln x"])
         f = {"√x": "y = √(−x)", "2^x": "y = 2^(−x)", "3^x": "y = 3^(−x)", "ln x": "y = ln(−x)"}[b]
         resp, mal = "Simétrica respecto del eje Y", "Simétrica respecto del eje X"
-    return mk(f"¿Cómo se obtiene la gráfica de {f} a partir de la de y = {b}?", resp, "t5_transformaciones",
+    return mk(f"Calcula qué movimiento transforma la gráfica de y = {b} en la de {f}", resp, "t5_transformaciones",
               [(mal, "eje_equivocado"), ("Simétrica respecto del origen", None), ("Desplazada 1 unidad hacia abajo", None)], [],
               ["−f(x) cambia el signo de las y: refleja respecto del eje X. f(−x) cambia el signo de las x: refleja respecto del eje Y.", f"{resp}."],
               "−f(x): se reflejan las alturas (eje X). f(−x): se refleja izquierda-derecha (eje Y).")
@@ -4439,7 +4439,7 @@ def gen_termino_general(rng, d):
         dist = [(f"({P({1: p, 0: a1n - p}, 'n')})/({P({1: r + 1, 0: a1d - r - 1}, 'n')})", "solo_primero"), (f"({P({1: p, 0: q}, 'n')})/({P({1: r, 0: s + 1}, 'n')})", None),
                 (f"({P({1: 1, 0: p}, 'n')})/({P({1: 1, 0: r}, 'n')})", "constante_coef")]
     terms_txt = ", ".join((f"{p * n + q}/{r * n + s}" if kind == "frac" else N(f(n))) for n in range(1, 5))
-    return mk(f"¿Cuál es el término general de la sucesión {terms_txt}, …?", f"aₙ = {resp}", "t5_termino_general",
+    return mk(f"Calcula el término general de la sucesión {terms_txt}, …", f"aₙ = {resp}", "t5_termino_general",
               [(f"aₙ = {v}", k) for v, k in dist if v and v != resp], [f"aₙ = {P({1: 1, 0: 1}, 'n')}"],
               ["Busco qué cambia de un término a otro (diferencia constante, cuadrados, signos alternos, numerador y denominador por separado).",
                f"aₙ = {resp}. Compruebo con n = 1, 2, 3 y 4."], "Una fórmula solo vale si da TODOS los términos, no solo el primero.")
@@ -4690,7 +4690,7 @@ def gen_tangente(rng, d):
     fa = pev(co, a)
     m = pev(pder(co), a)
     resp = expl_y(m, fa - m * a)
-    return mk(f"Halla la recta tangente a f(x) = {P(co)} en x = {N(a)}", resp, "t5_tangente",
+    return mk(f"Calcula la recta tangente a f(x) = {P(co)} en x = {N(a)}", resp, "t5_tangente",
               [(expl_y(fa, fa - fa * a), "pendiente_fa") if fa != m else (expl_y(m + 1, fa - (m + 1) * a), None), (expl_y(m, fa + m * a), None), (expl_y(-m, fa + m * a), None)],
               [expl_y(m, fa), expl_y(1 / m if m else 1, fa)],
               [f"Punto de tangencia: f({N(a)}) = {N(fa)}.", f"Pendiente: f′(x) = {P(pder(co))}, f′({N(a)}) = {N(m)}.", f"y − ({N(fa)}) = {N(m)}(x − ({N(a)})) → {resp}."],
@@ -4824,7 +4824,7 @@ def gen_derivabilidad(rng, d):
             f = f"f(x) = {{2x si x ≤ {N(p)}; 2x {'+' if k > 0 else '−'} {abs(k)} si x ﹥ {N(p)}}}".replace("﹥", ">")
             resp = f"No: no es continua en x = {N(p)}"
             dist = [(f"Sí: las derivadas laterales valen 2 las dos", "olvida_continuidad"), (f"No: las derivadas laterales no coinciden", None), (f"Sí: es continua, luego es derivable", "continua_derivable")]
-        return mk(f"¿Es derivable {f} en x = {N(p)}?", resp, "t5_derivabilidad", dist, [],
+        return mk(f"Calcula si es derivable en x = {N(p)} la función {f}", resp, "t5_derivabilidad", dist, [],
                   ["Derivable en un punto exige: continua en él Y derivadas laterales iguales.", f"{resp}."], "Derivable ⇒ continua, pero continua no implica derivable (|x| en 0).")
     for _ in range(200):
         p = nz(rng, -3, 3)
@@ -4835,7 +4835,7 @@ def gen_derivabilidad(rng, d):
     f = f"f(x) = {{ax² + b si x ≤ {N(p)}; {P({1: m, 0: n})} si x > {N(p)}}}"
     resp = f"a = {N(a)}, b = {N(b)}"
     a2 = F(m - 0, 1)
-    return mk(f"Halla a y b para que {f} sea derivable en x = {N(p)}", resp, "t5_derivabilidad",
+    return mk(f"Calcula a y b para que {f} sea derivable en x = {N(p)}", resp, "t5_derivabilidad",
               [(f"a = {N(a)}, b = {N(n)}", "olvida_continuidad"), (f"a = {N(F(m, p))}, b = {N(b)}" if F(m, p) != a else f"a = {N(-a)}, b = {N(b)}", None), (f"a = {N(b)}, b = {N(a)}" if a != b else f"a = {N(a)}, b = {N(-b)}", None)],
               [f"a = {N(a + 1)}, b = {N(b)}"],
               [f"Derivadas laterales iguales en x = {N(p)}: 2a·({N(p)}) = {N(m)} → a = {N(a)}.", f"Continuidad en x = {N(p)}: a·{N(p * p)} + b = {N(m * p + n)} → b = {N(b)}."],
@@ -4889,7 +4889,7 @@ def gen_extremos(rng, d):
         co = {2: a, 1: -2 * a * h, 0: a * h * h + kk}
         tipo = "Mínimo" if a > 0 else "Máximo"
         otro = "Máximo" if a > 0 else "Mínimo"
-        return mk(f"Halla los extremos relativos de f(x) = {P(co)}", f"{tipo} en {pt(h, kk)}", "t5_extremos",
+        return mk(f"Calcula los extremos relativos de f(x) = {P(co)}", f"{tipo} en {pt(h, kk)}", "t5_extremos",
                   [(f"{otro} en {pt(h, kk)}", "clasificacion_invertida"), (f"{tipo} en x = {N(h)}", "solo_x"), (f"{tipo} en {pt(-h, kk)}", None)], [],
                   [f"f′(x) = {P(pder(co))} = 0 → x = {N(h)}.", f"f″ = {N(2 * a)} {'> 0: mínimo' if a > 0 else '< 0: máximo'}. f({N(h)}) = {N(kk)}."],
                   "Un extremo es un punto (x, f(x)); f″ > 0 es mínimo y f″ < 0 máximo.")
@@ -4897,7 +4897,7 @@ def gen_extremos(rng, d):
         c = rng.randint(-6, 6)
         k = rng.choice([1, 2, -1, 3])
         f = P({3: k, 0: c})
-        return mk(f"Halla los extremos relativos de f(x) = {f}", "No tiene extremos relativos", "t5_extremos",
+        return mk(f"Calcula los extremos relativos de f(x) = {f}", "No tiene extremos relativos", "t5_extremos",
                   [(f"{'Mínimo' if k > 0 else 'Máximo'} en {pt(0, c)}", "todo_cero_extremo"), (f"{'Máximo' if k > 0 else 'Mínimo'} en {pt(0, c)}", "todo_cero_extremo"), ("Máximo en x = 0", "solo_x")], [],
                   [f"f′(x) = {P({2: 3 * k})} = 0 solo en x = 0.", "Pero f′ no cambia de signo en 0: no hay extremo (es un punto de inflexión)."],
                   "f′(a) = 0 no basta: tiene que haber cambio de signo de f′.")
@@ -4911,7 +4911,7 @@ def gen_extremos(rng, d):
         resp = f"Mínimo en {pt(r1, y1)} y máximo en {pt(r2, y2)}"
         inv = f"Máximo en {pt(r1, y1)} y mínimo en {pt(r2, y2)}"
         sx = f"Mínimo en x = {N(r1)} y máximo en x = {N(r2)}"
-    return mk(f"Halla los extremos relativos de f(x) = {P(co)}", resp, "t5_extremos",
+    return mk(f"Calcula los extremos relativos de f(x) = {P(co)}", resp, "t5_extremos",
               [(inv, "clasificacion_invertida"), (sx, "solo_x"), (resp.replace(pt(r1, y1), pt(r1, y2)).replace(pt(r2, y2), pt(r2, y1)), None)], [],
               [f"f′(x) = {P(pder(co))} = 0 → x = {N(r1)}, x = {N(r2)}.", f"Con el signo de f′ (o de f″) clasifico; f({N(r1)}) = {N(y1)}, f({N(r2)}) = {N(y2)}.", f"{resp}."],
               "f″(a) > 0 → mínimo; f″(a) < 0 → máximo. El extremo se da como punto.")
@@ -4945,7 +4945,7 @@ def gen_inflexion(rng, d):
         dist = [(f"Puntos de inflexión en {pt(0, co[0])}", "inflexion_fprima"), (f"Puntos de inflexión en {pt(-c * c, pev(co, -c * c))} y {pt(c * c, pev(co, c * c))}" if c > 1 else f"Puntos de inflexión en {pt(-2, pev(co, -2))} y {pt(2, pev(co, 2))}", None),
                 (f"Puntos de inflexión en {pt(-c, 0)} y {pt(c, 0)}", None)]
         pasos = [f"f″(x) = {P(pder(pder(co)))} se anula en x = ±{c} y cambia de signo en ambos.", f"{resp}."]
-    return mk(f"Halla los puntos de inflexión de f(x) = {P(co)}", resp, "t5_inflexion", dist, [], pasos,
+    return mk(f"Calcula los puntos de inflexión de f(x) = {P(co)}", resp, "t5_inflexion", dist, [], pasos,
               "Los puntos de inflexión se buscan con f″ (cambio de curvatura), no con f′.")
 
 
@@ -4991,7 +4991,7 @@ def gen_parametros_funcion(rng, d):
     if d == 1:
         p, q = rng.randint(-4, 4), rng.randint(-6, 6)
         a, b = -2 * p, q + p * p
-        return mk(f"Halla a y b para que f(x) = x² + ax + b tenga un mínimo en el punto {pt(p, q)}", f"a = {N(a)}, b = {N(b)}", "t5_parametros",
+        return mk(f"Calcula a y b para que f(x) = x² + ax + b tenga un mínimo en el punto {pt(p, q)}", f"a = {N(a)}, b = {N(b)}", "t5_parametros",
                   [(f"a = {N(-a)}, b = {N(q - p * p)}", None), (f"a = 0, b = {N(q - p * p) if p else q + 1}", "extremo_solo_punto"), (f"a = {N(a)}, b = {N(q)}", None)], [f"a = {N(a + 1)}, b = {N(b)}"],
                   [f"Extremo en x = {N(p)}: f′({N(p)}) = 2·({N(p)}) + a = 0 → a = {N(a)}.", f"Pasa por {pt(p, q)}: {N(p * p)} + ({N(a)})·({N(p)}) + b = {N(q)} → b = {N(b)}."],
                   "'Extremo en (p, q)' da DOS condiciones: f′(p) = 0 y f(p) = q.")
@@ -5005,7 +5005,7 @@ def gen_parametros_funcion(rng, d):
         if a2 != a:
             break
     resp = f"a = {N(a)}, b = {N(b)}, c = {N(c0)}"
-    return mk(f"Halla a, b y c para que f(x) = x³ + ax² + bx + c pase por {pt(0, c0)}, tenga un extremo en x = {N(p)} y un punto de inflexión en x = {N(s)}", resp, "t5_parametros",
+    return mk(f"Calcula a, b y c para que f(x) = x³ + ax² + bx + c pase por {pt(0, c0)}, tenga un extremo en x = {N(p)} y un punto de inflexión en x = {N(s)}", resp, "t5_parametros",
               [(f"a = {N(a2)}, b = {N(b2)}, c = {N(c0)}", "inflexion_con_fprima"), (f"a = {N(-a)}, b = {N(b)}, c = {N(c0)}", None), (f"a = {N(a)}, b = {N(-b)}, c = {N(c0)}" if b else f"a = {N(a)}, b = 1, c = {N(c0)}", None)],
               [f"a = {N(a)}, b = {N(b)}, c = 0" if c0 else f"a = {N(a)}, b = {N(b)}, c = 1"],
               [f"f(0) = {N(c0)} → c = {N(c0)}.", f"Inflexión: f″({N(s)}) = 6·({N(s)}) + 2a = 0 → a = {N(a)}.", f"Extremo: f′({N(p)}) = 3·{N(p * p)} + 2a·({N(p)}) + b = 0 → b = {N(b)}."],
@@ -5041,7 +5041,7 @@ def gen_continuidad_punto(rng, d):
         caso, err = "nofa", {}
     resp = CONT_OPC[caso]
     dist = [(v, err.get(k)) for k, v in CONT_OPC.items() if k != caso]
-    return mk(f"¿Es continua {f} en x = {N(a)}?", resp, "t5_continuidad", dist, [],
+    return mk(f"Calcula si es continua en x = {N(a)} la función {f}", resp, "t5_continuidad", dist, [],
               ["Continua en a ⇔ existe f(a), existe el límite en a y coinciden.", {"si": "Se cumplen las tres condiciones.", "nofa": f"La función no está definida en x = {N(a)}.",
                                                                                  "nolim": "Los límites laterales son distintos: no existe el límite.", "nocoin": "El límite existe pero vale distinto que f(a)."}[caso]],
               "Hay que comprobar las TRES condiciones; no basta con que exista f(a) ni con que exista el límite.")
@@ -5065,7 +5065,7 @@ def gen_continuidad_param(rng, d):
         a = F(p * p - n, p + 1)
         f = f"f(x) = {{ax {'+' if n >= 0 else '−'} {abs(n)} si x < {N(p)}; x² − a si x ≥ {N(p)}}}"
         e1 = F(-n)
-    return mk(f"Halla a para que {f} sea continua en x = {N(p)}", f"a = {N(a)}", "t5_continuidad_param",
+    return mk(f"Calcula a para que {f} sea continua en x = {N(p)}", f"a = {N(a)}", "t5_continuidad_param",
               [(f"a = {N(e1)}" if e1 != a else None, "iguala_sin_evaluar"), (f"a = {N(-a)}" if a else "a = 1", None), (f"a = {N(a + 1)}", "un_lateral")], [f"a = {N(a - 1)}"],
               [f"Calculo los límites laterales en x = {N(p)} sustituyendo x = {N(p)} en cada fórmula.", f"Los igualo (y coinciden con f({N(p)})): a = {N(a)}."],
               "La condición de continuidad se plantea con los valores en el punto de cambio, no igualando las fórmulas en general.")
@@ -5104,7 +5104,7 @@ def gen_tipo_discontinuidad(rng, d):
         caso = "cont"
     resp = DISC_OPC[caso]
     err = {"sf": {"ev": "evitable_salto"}, "si": {"ev": "asintotica_evitable"}}.get(caso, {})
-    return mk(f"Clasifica la discontinuidad de {f} en x = {N(a)}", resp, "t5_discontinuidad", [(v, err.get(k)) for k, v in DISC_OPC.items() if k != caso], [],
+    return mk(f"Calcula el tipo de discontinuidad de {f} en x = {N(a)}", resp, "t5_discontinuidad", [(v, err.get(k)) for k, v in DISC_OPC.items() if k != caso], [],
               ["Calculo los límites laterales en el punto.", {"ev": "Existe el límite (finito) pero la función no vale eso en el punto: evitable.", "sf": "Los laterales son finitos y distintos: salto finito.",
                                                             "si": "Algún lateral es infinito: salto infinito (asíntota vertical).", "cont": "No hay discontinuidad: es continua."}[caso]],
               "Evitable: existe el límite. Salto finito: laterales finitos distintos. Asintótica: algún lateral infinito.")
@@ -5248,7 +5248,7 @@ def gen_primitivas(rng, d):
             Cc = y0 - val
         if x0 == 0:
             resp = f"F(x) = {_prim_fmt(prim2 + [(('pow', 0), Cc)])}"
-            return mk(f"Halla la primitiva de f(x) = {integ2} que pasa por {pt(0, y0)}", resp, "t5_primitivas",
+            return mk(f"Calcula la primitiva de f(x) = {integ2} que pasa por {pt(0, y0)}", resp, "t5_primitivas",
                       [(f"F(x) = {_prim_fmt(prim2 + [(('pow', 0), y0)])}" if Cc != y0 else f"F(x) = {_prim_fmt(prim2)}", None), (f"F(x) = {_prim_fmt(_deriva_mal(ts2) + [(('pow', 0), y0)])}", "deriva"),
                        (f"F(x) = {_prim_fmt(prim2)}", "olvida_c") if Cc else (f"F(x) = {_prim_fmt(prim2 + [(('pow', 0), 1)])}", None)], [],
                       [f"Primitiva general: {_prim_fmt(prim2)} + C.", f"F(0) = {N(y0)} → C = {N(Cc)}.", f"{resp}."], "La condición F(x₀) = y₀ fija el valor de la constante C.")
@@ -6020,15 +6020,15 @@ def gen_ecuacion_recta(rng, d):
     e2 = lin(v[0], v[1], -(v[0] * P0[0] + v[1] * P0[1]))  # usa v como normal
     if d == 1:
         m = F(v[1], v[0])
-        return mk(f"Escribe en forma general la recta que pasa por {pt(*P0)} con pendiente {N(m)}", lin(m, -1, P0[1] - m * P0[0]), "t5_ecuacion_recta",
+        return mk(f"Calcula la ecuación general de la recta que pasa por {pt(*P0)} con pendiente {N(m)}", lin(m, -1, P0[1] - m * P0[0]), "t5_ecuacion_recta",
                   [(lin(-1 / m, -1, P0[1] + P0[0] / m), None), (lin(m, -1, P0[1] + m * P0[0]), None), (lin(1 / m, -1, P0[1] - P0[0] / m), "pendiente_director")], [],
                   [f"Punto-pendiente: y − ({N(P0[1])}) = {N(m)}(x − ({N(P0[0])})).", f"Paso todo a un miembro con coeficientes enteros: {lin(m, -1, P0[1] - m * P0[0])}."], "Forma general Ax + By + C = 0 con enteros.")
     if d == 2:
-        return mk(f"Escribe en forma general la recta que pasa por {pt(*P0)} con vector director {vec(*v)}", resp, "t5_ecuacion_recta",
+        return mk(f"Calcula la ecuación general de la recta que pasa por {pt(*P0)} con vector director {vec(*v)}", resp, "t5_ecuacion_recta",
                   [(e1, "pendiente_director"), (e2, "director_general"), (lin(A, B, -C), None)], [lin(A, B, C + 1)],
                   [f"Con director (v₁, v₂) = {vec(*v)}, la general es v₂x − v₁y + C = 0: {N(A)}x {'+' if B >= 0 else '−'} {N(abs(B))}y + C = 0.", f"Paso por {pt(*P0)}: C = {N(C)}. {resp}."],
                   "La pendiente es v₂/v₁ y (A, B) de la general es un vector NORMAL, no director.")
-    return mk(f"¿Cuál de estos es un vector director de la recta {resp}?", vec(*v) if v[0] > 0 else vec(-v[0], -v[1]), "t5_ecuacion_recta",
+    return mk(f"Calcula un vector director de la recta {resp}", vec(*v) if v[0] > 0 else vec(-v[0], -v[1]), "t5_ecuacion_recta",
               [(vec(A, B) if A > 0 or (A == 0 and B > 0) else vec(-A, -B), "director_general"), (vec(v[1], v[0]), None), (vec(v[0], -v[1]) if v[0] > 0 else vec(-v[0], v[1]), None)], [],
               ["En Ax + By + C = 0, (A, B) es normal; un director es (−B, A) o (B, −A).", f"Director: {vec(*v) if v[0] > 0 else vec(-v[0], -v[1])}."], "Normal (A, B) y director (−B, A) son perpendiculares.")
 
@@ -6059,7 +6059,7 @@ def gen_posicion_rectas(rng, d):
         dist = [(f"Secantes en {pt(*otro)}", "corte_una_recta"), (T["par"], None), (T["coin"], None)]
     else:
         dist = [(T["coin"] if caso == "par" else T["par"], "paralelas_coincidentes"), (f"Secantes en {pt(x0, y0)}", None), ("Perpendiculares", None)]
-    return mk(f"Estudia la posición relativa de las rectas r: {r1} y s: {r2}", resp, "t5_posicion_rectas", dist, [],
+    return mk(f"Calcula la posición relativa de las rectas r: {r1} y s: {r2}", resp, "t5_posicion_rectas", dist, [],
               ["Comparo A/A′ con B/B′: si son distintos, secantes (resuelvo el sistema para el corte).", "Si son iguales, miro C/C′: iguales → coincidentes; distintos → paralelas.", f"{resp}."],
               "Coeficientes proporcionales: paralelas o coincidentes según el término independiente.")
 
@@ -6080,7 +6080,7 @@ def gen_recta_vectorial(rng, d):
     v = (nz(rng, -4, 4), nz(rng, -4, 4))
     if d == 1:
         resp = continua(P0, v)
-        return mk(f"Escribe la ecuación continua de la recta que pasa por {pt(*P0)} con vector director {vec(*v)}", resp, "t5_recta_vect",
+        return mk(f"Calcula la ecuación continua de la recta que pasa por {pt(*P0)} con vector director {vec(*v)}", resp, "t5_recta_vect",
                   [(continua((-P0[0], -P0[1]), v), "signo_punto"), (continua(v, P0) if all(P0) else continua(v, (1, 1)), "director_punto"), (continua(P0, (v[1], v[0])), None)], [],
                   ["Continua: (x − x₀)/v₁ = (y − y₀)/v₂, con (x₀, y₀) el punto y (v₁, v₂) el director.", f"{resp}."], "En la continua, el punto aparece restando: x − x₀ (con x₀ = −1 queda x + 1).")
     if d == 2:
@@ -6093,7 +6093,7 @@ def gen_recta_vectorial(rng, d):
     si = rng.random() < 0.5
     Qp = Q_ if si else (Q_[0], Q_[1] + nz(rng, -2, 2))
     resp = f"Sí: se obtiene con t = {N(t)}" if si else "No pertenece a la recta"
-    return mk(f"¿Pertenece el punto {pt(*Qp)} a la recta (x, y) = {pt(*P0)} + t{vec(*v)}?", resp, "t5_recta_vect",
+    return mk(f"Calcula si el punto {pt(*Qp)} pertenece a la recta (x, y) = {pt(*P0)} + t{vec(*v)}", resp, "t5_recta_vect",
               [("No pertenece a la recta" if si else f"Sí: se obtiene con t = {N(t)}", None), (f"Sí: se obtiene con t = {N(-t)}", "signo_punto"), (f"Sí: se obtiene con t = {N(t + 1)}", None)], [],
               ["Busco un t que dé las dos coordenadas a la vez.", f"De la x: t = {N(F(Qp[0] - P0[0], v[0]))}; compruebo en la y. {resp}."], "Un punto está en la recta si EL MISMO t sirve para todas las coordenadas.")
 
@@ -6107,12 +6107,12 @@ def gen_paralela_perpendicular(rng, d):
     m = F(-A, B)
     if d == 1:
         resp = lin(A, B, -(A * P0[0] + B * P0[1]))
-        return mk(f"Halla la recta paralela a {r} que pasa por {pt(*P0)}", resp, "t5_par_perp",
+        return mk(f"Calcula la recta paralela a {r} que pasa por {pt(*P0)}", resp, "t5_par_perp",
                   [(lin(B, -A, -(B * P0[0] - A * P0[1])), None), (lin(A, B, C), None), (lin(A, B, A * P0[0] + B * P0[1]), None)], [],
                   ["Paralela: mismo vector normal (A, B), solo cambia C.", f"Sustituyo el punto: {resp}."], "Rectas paralelas: Ax + By + C′ = 0 con los mismos A y B.")
     resp = lin(B, -A, -(B * P0[0] - A * P0[1]))
     mp = -1 / m
-    return mk(f"Halla la recta perpendicular a {r} que pasa por {pt(*P0)}", resp, "t5_par_perp",
+    return mk(f"Calcula la recta perpendicular a {r} que pasa por {pt(*P0)}", resp, "t5_par_perp",
               [(lin(-m, -1, P0[1] + m * P0[0]), "pendiente_opuesta"), (lin(1 / m, -1, P0[1] - P0[0] / m), "inversa_sin_signo"), (lin(A, B, -(A * P0[0] + B * P0[1])), None)], [],
               [f"La pendiente de r es m = {N(m)}; la perpendicular tiene m′ = −1/m = {N(mp)}.", f"Por {pt(*P0)}: {resp}."],
               "Perpendicular: pendiente inversa Y cambiada de signo (m·m′ = −1).")
@@ -6152,13 +6152,13 @@ def gen_circunferencia(rng, d):
     a, b, r = rng.randint(-5, 5), rng.randint(-5, 5), rng.randint(1, 7)
     if d == 1:
         eq = f"({P({1: 1, 0: -a})})² + ({P({1: 1, 0: -b}, 'y')})² = {r * r}".replace("(x)²", "x²").replace("(y)²", "y²")
-        return mk(f"¿Cuáles son el centro y el radio de la circunferencia {eq}?", f"C{pt(a, b)}, r = {r}", "t5_circunferencia",
+        return mk(f"Calcula el centro y el radio de la circunferencia {eq}", f"C{pt(a, b)}, r = {r}", "t5_circunferencia",
                   [(f"C{pt(-a, -b)}, r = {r}", "signo_centro"), (f"C{pt(a, b)}, r = {r * r}", "radio_sin_raiz"), (f"C{pt(-a, -b)}, r = {r * r}", None)], [f"C{pt(b, a)}, r = {r}"],
                   ["(x − a)² + (y − b)² = r² tiene centro (a, b) y radio r.", f"C{pt(a, b)} y r = √{r * r} = {r}."], "(x + 3)² corresponde a a = −3. El número de la derecha es r².")
     if d == 2:
         Cc = a * a + b * b - r * r
         eq = terms([(1, "x²"), (1, "y²"), (-2 * a, "x"), (-2 * b, "y"), (Cc, "")]) + " = 0"
-        return mk(f"Halla el centro y el radio de la circunferencia {eq}", f"C{pt(a, b)}, r = {r}", "t5_circunferencia",
+        return mk(f"Calcula el centro y el radio de la circunferencia {eq}", f"C{pt(a, b)}, r = {r}", "t5_circunferencia",
                   [(f"C{pt(-a, -b)}, r = {r}", "signo_centro"), (f"C{pt(a, b)}, r = {r * r}", "radio_sin_raiz"), (f"C{pt(-2 * a, -2 * b)}, r = {r}", None)], [f"C{pt(a, b)}, r = {r + 1}"],
                   [f"Centro: (−D/2, −E/2) = {pt(a, b)}.", f"r = √(a² + b² − F) = √({a * a} + {b * b} − ({Cc})) = {r}."], "Completando cuadrados: x² − 2ax = (x − a)² − a².")
     A_, B_ = (rng.randint(-5, 5), rng.randint(-5, 5)), (rng.randint(-5, 5), rng.randint(-5, 5))
@@ -6167,7 +6167,7 @@ def gen_circunferencia(rng, d):
     M = (F(A_[0] + B_[0], 2), F(A_[1] + B_[1], 2))
     v = (B_[0] - A_[0], B_[1] - A_[1])
     resp = lin(v[0], v[1], -(v[0] * M[0] + v[1] * M[1]))
-    return mk(f"Halla la ecuación de la mediatriz del segmento de extremos A{pt(*A_)} y B{pt(*B_)}", resp, "t5_circunferencia",
+    return mk(f"Calcula la ecuación de la mediatriz del segmento de extremos A{pt(*A_)} y B{pt(*B_)}", resp, "t5_circunferencia",
               [(lin(v[1], -v[0], -(v[1] * M[0] - v[0] * M[1])), None), (lin(v[0], v[1], v[0] * M[0] + v[1] * M[1]), None), (lin(v[0], v[1], -(v[0] * A_[0] + v[1] * A_[1])), None)], [],
               [f"La mediatriz pasa por el punto medio M{pt(*M)} y es perpendicular a AB = {vec(*v)} (que es su normal).", f"{resp}."], "Mediatriz: puntos que equidistan de A y B.")
 
@@ -6183,7 +6183,7 @@ def gen_conicas(rng, d):
         eq = f"x²/{a * a} + y²/{b * b} = 1" if not vert else f"x²/{b * b} + y²/{a * a} = 1"
         f = lambda cc: f"({N(-cc)}, 0) y ({N(cc)}, 0)" if not vert else f"(0, {N(-cc)}) y (0, {N(cc)})"
         fr = lambda s: f"(−{s}, 0) y ({s}, 0)" if not vert else f"(0, −{s}) y (0, {s})"
-        return mk(f"Halla los focos de la elipse {eq}", f"Focos {f(c)}", "t5_conicas",
+        return mk(f"Calcula los focos de la elipse {eq}", f"Focos {f(c)}", "t5_conicas",
                   [(f"Focos {fr(rad(a * a + b * b))}", "c_suma"), (f"Focos {f(c * c)}", "semiejes_cuadrado"), (f"Focos {f(a)}", None)], [f"Focos {f(b)}"],
                   [f"Semiejes: a = {a}, b = {b}. En la elipse c² = a² − b² = {a * a - b * b}, c = {c}.", f"Focos {f(c)}."], "Elipse: c² = a² − b²; hipérbola: c² = a² + b². a y b son las raíces de los denominadores.")
     if d == 2:
@@ -6195,18 +6195,18 @@ def gen_conicas(rng, d):
                       [f"c = √(a² − b²) = {c}.", f"e = c/a = {N(F(c, a))}."], "La excentricidad de una elipse es c/a (menor que 1).")
         c, a, b = rng.choice(PIT)
         eq = f"x²/{a * a} − y²/{b * b} = 1"
-        return mk(f"Halla los focos de la hipérbola {eq}", f"Focos ({N(-c)}, 0) y ({N(c)}, 0)", "t5_conicas",
+        return mk(f"Calcula los focos de la hipérbola {eq}", f"Focos ({N(-c)}, 0) y ({N(c)}, 0)", "t5_conicas",
                   [(f"Focos (−{rad(abs(a * a - b * b)) if a != b else 0}, 0) y ({rad(abs(a * a - b * b))}, 0)", "c_suma"), (f"Focos ({N(-c * c)}, 0) y ({N(c * c)}, 0)", "semiejes_cuadrado"), (f"Focos (0, {N(-c)}) y (0, {N(c)})", None)], [],
                   [f"En la hipérbola c² = a² + b² = {c * c}, c = {c}.", f"Focos (±{c}, 0)."], "Hipérbola: c² = a² + b².")
     if rng.random() < 0.5:
         c, a, b = rng.choice(PIT)
         eq = f"x²/{a * a} − y²/{b * b} = 1"
         m = F(b, a)
-        return mk(f"Halla las asíntotas de la hipérbola {eq}", f"y = {P({1: m})} e y = {P({1: -m})}", "t5_conicas",
+        return mk(f"Calcula las asíntotas de la hipérbola {eq}", f"y = {P({1: m})} e y = {P({1: -m})}", "t5_conicas",
                   [(f"y = {P({1: 1 / m})} e y = {P({1: -1 / m})}", None), (f"y = {P({1: m * m})} e y = {P({1: -m * m})}", "semiejes_cuadrado"), (f"y = {P({1: m})}", None)], [],
                   [f"Asíntotas de x²/a² − y²/b² = 1: y = ±(b/a)x.", f"a = {a}, b = {b}: y = ±{N(m)}x."], "y = ±(b/a)x con a y b los semiejes (raíces de los denominadores).")
     k = rng.choice([2, 4, 6, 8, 12, 16, -4, -8, 20])
-    return mk(f"Halla el foco y la directriz de la parábola y² = {N(k)}x", f"Foco ({N(F(k, 4))}, 0); directriz x = {N(F(-k, 4))}", "t5_conicas",
+    return mk(f"Calcula el foco y la directriz de la parábola y² = {N(k)}x", f"Foco ({N(F(k, 4))}, 0); directriz x = {N(F(-k, 4))}", "t5_conicas",
               [(f"Foco ({N(F(k, 2))}, 0); directriz x = {N(F(-k, 2))}", None), (f"Foco ({N(F(-k, 4))}, 0); directriz x = {N(F(k, 4))}", None), (f"Foco ({N(k)}, 0); directriz x = {N(-k)}", "semiejes_cuadrado")], [],
               [f"y² = 4px con 4p = {N(k)}: p = {N(F(k, 4))}.", f"Foco (p, 0) = ({N(F(k, 4))}, 0) y directriz x = −p."], "En y² = 2px el foco es (p/2, 0); conviene identificar bien el parámetro.")
 
@@ -6246,7 +6246,7 @@ def gen_vectores_espacio(rng, d):
         if (dt == 0) == dep and not prop and all(any(t) for t in (u, v, w)):
             break
     resp = "Son linealmente dependientes (determinante 0)" if dep else f"Son linealmente independientes (determinante {N(dt)})"
-    return mk(f"¿Son linealmente independientes u = {vec(*u)}, v = {vec(*v)} y w = {vec(*w)}?", resp, "t5_vect_espacio",
+    return mk(f"Calcula si son linealmente independientes u = {vec(*u)}, v = {vec(*v)} y w = {vec(*w)}", resp, "t5_vect_espacio",
               [("Son linealmente independientes: no hay dos proporcionales", "tres_proporcionalidad") if dep else ("Son linealmente dependientes (determinante 0)", None),
                ("Son linealmente dependientes: tres vectores siempre lo son", None), (f"Son linealmente independientes (determinante {N(-dt) if dt else 1})", None)], [],
               ["Tres vectores de ℝ³ son independientes si el determinante que forman es distinto de 0.", f"det = {N(dt)}: {resp}."],
@@ -6289,7 +6289,7 @@ def gen_recta_espacio(rng, d):
         P0 = _v3(rng, -5, 5)
         v = tuple(nz(rng, -4, 4) for _ in range(3))
         resp = continua(P0, v, ("x", "y", "z"))
-        return mk(f"Escribe la ecuación continua de la recta que pasa por {pt(*P0)} con vector director {vec(*v)}", resp, "t5_recta_espacio",
+        return mk(f"Calcula la ecuación continua de la recta que pasa por {pt(*P0)} con vector director {vec(*v)}", resp, "t5_recta_espacio",
                   [(continua(tuple(-x for x in P0), v, ("x", "y", "z")), None), (continua(v, P0, ("x", "y", "z")) if all(P0) else continua(v, (1, 1, 1), ("x", "y", "z")), None), (continua(P0, v[::-1], ("x", "y", "z")), None)], [],
                   ["(x − x₀)/v₁ = (y − y₀)/v₂ = (z − z₀)/v₃.", f"{resp}."], "En la continua el punto aparece restando.")
     for _ in range(200):
@@ -6303,7 +6303,7 @@ def gen_recta_espacio(rng, d):
             break
     d1, d2 = rng.randint(-5, 5), rng.randint(-5, 5)
     r = f"{{{plano(*n1, d1)}; {plano(*n2, d2)}}}"
-    return mk(f"¿Cuál de estos es un vector director de la recta {r}?", vec(*pw), "t5_recta_espacio",
+    return mk(f"Calcula un vector director de la recta {r}", vec(*pw), "t5_recta_espacio",
               [(vec(*cands[0]), "director_normal"), (vec(*cands[1]), "director_normal"), (vec(*cands[2]), None)], [],
               ["El director es perpendicular a los dos vectores normales: v = n₁ × n₂.", f"n₁ × n₂ = {vec(*w)} ∼ {vec(*pw)}."], "Los coeficientes de cada plano forman su vector NORMAL, no un director de la recta.")
 
@@ -6317,7 +6317,7 @@ def gen_plano(rng, d):
             n = _v3(rng)
         Dd = -dot(n, P0)
         resp = plano(*n, Dd)
-        return mk(f"Halla el plano que pasa por {pt(*P0)} y tiene vector normal {vec(*n)}", resp, "t5_plano",
+        return mk(f"Calcula el plano que pasa por {pt(*P0)} y tiene vector normal {vec(*n)}", resp, "t5_plano",
                   [(plano(*n, -Dd) if Dd else plano(*n, 1), None), (plano(*P0, -dot(P0, n)) if norm2(P0) else plano(1, 1, 1, 0), "normal_director"), (plano(*n, 0) if Dd else plano(*n, 2), None)], [],
                   ["Plano con normal (A, B, C): Ax + By + Cz + D = 0.", f"Sustituyo el punto para hallar D = {N(Dd)}: {resp}."], "Los coeficientes de x, y, z son el vector normal.")
     for _ in range(200):
@@ -6330,7 +6330,7 @@ def gen_plano(rng, d):
     Dd = -dot(n, A)
     resp = plano(*n, Dd)
     mal = cross(u, u) if False else u
-    return mk(f"Halla el plano que pasa por A{pt(*A)}, B{pt(*B)} y C{pt(*C)}", resp, "t5_plano",
+    return mk(f"Calcula el plano que pasa por A{pt(*A)}, B{pt(*B)} y C{pt(*C)}", resp, "t5_plano",
               [(plano(*u, -dot(u, A)), "normal_director"), (plano(n[0], -n[1], n[2], -(n[0] * A[0] - n[1] * A[1] + n[2] * A[2])) if n[1] else plano(*n, -Dd), None), (plano(*n, -Dd) if Dd else plano(*n, 3), None)], [],
               [f"Vectores del plano: AB = {vec(*u)} y AC = {vec(*v)}.", f"Normal: AB × AC = {vec(*n)}.", f"Paso por A: {resp}."], "El normal se obtiene con el producto vectorial de dos vectores del plano.")
 
@@ -6377,7 +6377,7 @@ def gen_posicion_espacio(rng, d):
         break
     resp = REL_RECTAS[caso]
     err = {"cruz": {"sec": "cruza_secante"}, "sec": {"cruz": "cruza_secante"}}.get(caso, {})
-    return mk(f"Estudia la posición relativa de r: {_vec_recta(P1, v1)} y s: {_vec_recta(P2, v2, 'λ')}", resp, "t5_posicion_espacio",
+    return mk(f"Calcula la posición relativa de r: {_vec_recta(P1, v1)} y s: {_vec_recta(P2, v2, 'λ')}", resp, "t5_posicion_espacio",
               [(v, err.get(k)) for k, v in REL_RECTAS.items() if k != caso], [],
               ["Comparo los directores: proporcionales → paralelas o coincidentes (miro si un punto de r está en s).",
                "No proporcionales → secantes si el determinante de (P₁P₂, u, v) es 0; si no, se cruzan.", f"{resp}."],
@@ -6462,7 +6462,7 @@ def gen_proyeccion_simetrico(rng, d):
             S[i] = -S[i]
             Pr = list(P0)
             Pr[i] = 0
-        return mk(f"Halla el simétrico del punto P{pt(*P0)} respecto del plano {eje}", pt(*S), "t5_proyeccion",
+        return mk(f"Calcula el simétrico del punto P{pt(*P0)} respecto del plano {eje}", pt(*S), "t5_proyeccion",
                   [(pt(*Pr), "simetrico_proyeccion"), (pt(*(-x for x in P0)), None), (pt(*[(-x if j != i else x) for j, x in enumerate(P0)]), None)], [],
                   [f"La proyección sobre {eje} es {pt(*Pr)}; el simétrico está al otro lado a la misma distancia.", f"P′{pt(*S)}."], "El simétrico es P′ = 2M − P, con M la proyección.")
     for _ in range(200):
@@ -6475,10 +6475,10 @@ def gen_proyeccion_simetrico(rng, d):
     Pl = plano(*n, Dd)
     S = tuple(2 * m - p for m, p in zip(M, P0))
     if d == 2:
-        return mk(f"Halla la proyección ortogonal del punto P{pt(*P0)} sobre el plano {Pl}", pt(*M), "t5_proyeccion",
+        return mk(f"Calcula la proyección ortogonal del punto P{pt(*P0)} sobre el plano {Pl}", pt(*M), "t5_proyeccion",
                   [(pt(*S), "simetrico_proyeccion"), (pt(*(p + x for p, x in zip(P0, n))), "recta_no_perpendicular"), (pt(*(p - t * x for p, x in zip(P0, n))), None)], [],
                   ["Trazo la recta por P perpendicular al plano (director = normal) y la corto con el plano.", f"t = {N(t)}: proyección {pt(*M)}."], "La recta que proyecta debe ser perpendicular al plano.")
-    return mk(f"Halla el simétrico del punto P{pt(*P0)} respecto del plano {Pl}", pt(*S), "t5_proyeccion",
+    return mk(f"Calcula el simétrico del punto P{pt(*P0)} respecto del plano {Pl}", pt(*S), "t5_proyeccion",
               [(pt(*M), "simetrico_proyeccion"), (pt(*(p - 2 * t * x for p, x in zip(P0, n))), None), (pt(*(p + 3 * t * x for p, x in zip(P0, n))), None)], [],
               [f"Proyección M{pt(*M)} (corte de la perpendicular por P con el plano).", f"Simétrico P′ = 2M − P = {pt(*S)}."], "El simétrico no es la proyección: M es el punto medio de P y P′.")
 
@@ -6588,19 +6588,19 @@ def gen_triangulo_rectangulo(rng, d):
         v = h * (math.sin if que == "opuesto" else math.cos)(math.radians(ang))
         m1 = h * (math.cos if que == "opuesto" else math.sin)(math.radians(ang))
         m2 = (math.sin if que == "opuesto" else math.cos)(math.radians(ang)) / h
-        return mk(f"En un triángulo rectángulo la hipotenusa mide {h} cm y un ángulo agudo {ang}°. Calcula el cateto {que} a ese ángulo (redondea a centésimas).", f"{D(v)} cm", "t5_tri_rect",
+        return mk(f"Calcula el cateto {que} a un ángulo agudo de {ang}° en un triángulo rectángulo de hipotenusa {h} cm (redondea a centésimas).", f"{D(v)} cm", "t5_tri_rect",
                   [(f"{D(m1)} cm", "razon_mal"), (f"{D(m2, 4)} cm", "despeje_invertido"), (f"{D(h * math.tan(math.radians(ang)))} cm", None)], [],
                   [f"{'sen' if que == 'opuesto' else 'cos'} {ang}° = cateto {que}/hipotenusa.", f"Cateto = {h}·{'sen' if que == 'opuesto' else 'cos'} {ang}° ≈ {D(v)} cm."],
                   "Se elige la razón que relaciona el dato y la incógnita, y se despeja multiplicando.")
     if d == 2:
         c1 = rng.randint(3, 20)
         v = c1 * math.tan(math.radians(ang))
-        return mk(f"Desde un punto a {c1} m del pie de un árbol se ve su copa con un ángulo de elevación de {ang}°. ¿Cuánto mide el árbol? (redondea a centésimas)", f"{D(v)} m", "t5_tri_rect",
+        return mk(f"Calcula la altura de un árbol si desde un punto a {c1} m de su pie se ve la copa con un ángulo de elevación de {ang}° (redondea a centésimas)", f"{D(v)} m", "t5_tri_rect",
                   [(f"{D(c1 * math.sin(math.radians(ang)))} m", "razon_mal"), (f"{D(c1 / math.tan(math.radians(ang)))} m", "despeje_invertido"), (f"{D(c1 * math.cos(math.radians(ang)))} m", None)], [],
                   [f"tg {ang}° = altura/{c1}.", f"altura = {c1}·tg {ang}° ≈ {D(v)} m."], "Altura y distancia horizontal son los dos catetos: tangente.")
     a, b = rng.randint(3, 15), rng.randint(3, 15)
     ang = math.degrees(math.atan(a / b))
-    return mk(f"Los catetos de un triángulo rectángulo miden {a} cm y {b} cm. ¿Cuánto mide el ángulo opuesto al cateto de {a} cm? (redondea a décimas)", grad(ang), "t5_tri_rect",
+    return mk(f"Calcula el ángulo opuesto al cateto de {a} cm en un triángulo rectángulo de catetos {a} cm y {b} cm (redondea a décimas)", grad(ang), "t5_tri_rect",
               [(grad(90 - ang), "razon_mal"), (grad(math.degrees(math.atan(b / a)) if False else math.degrees(math.asin(min(1, a / (a + b))))), None), (grad(ang / 2), None)], [],
               [f"tg α = {a}/{b}.", f"α = arctg({a}/{b}) ≈ {grad(ang)}."], "Con los dos catetos se usa la tangente.")
 
