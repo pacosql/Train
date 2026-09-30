@@ -1,0 +1,1710 @@
+{
+ "habilidad": "PROB.GEO.12",
+ "generado_por": "claude (skill mates10-generar-ejercicios v1)",
+ "ejercicios": [
+  {
+   "dificultad": 1,
+   "enunciado": "Un dron sigue la recta que pasa por (3, −2, 1) con vector director (1, 2, 1). El tejado de una nave está en el plano 2x + 2y + 3z = 23. ¿En qué punto la trayectoria corta al plano?",
+   "respuesta": "(5, 2, 3)",
+   "distractores": [
+    {
+     "valor": "(7, 2, 7)",
+     "error": "E01"
+    },
+    {
+     "valor": "(3, −2, 1)",
+     "error": null
+    },
+    {
+     "valor": "(6, 4, 4)",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.ESPACIO.05"
+   ],
+   "explicacion_nino": "Escribe la recta en paramétricas: (x, y, z) = (3, −2, 1) + t·(1, 2, 1). Sustituye en el plano y despeja t: t = 2. El punto es (3, −2, 1) + 2·(1, 2, 1) = (5, 2, 3). Comprueba que cumple la ecuación del plano.",
+   "explicacion_adulto": "Está aprendiendo a traducir situaciones del espacio (trayectorias, techos, antenas) a puntos, rectas y planos y a usar vectores para calcular. Los errores típicos son confundir el vector director de una recta con el normal de un plano, decir que dos rectas son paralelas solo porque no se cortan (pueden cruzarse) y calcular el ángulo recta-plano con el coseno. Pídale que diga qué vector usa y por qué.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "paramétricas",
+     "resultado": "(3, −2, 1) + t·(1, 2, 1)",
+     "texto": "Punto más t veces el director."
+    },
+    {
+     "paso": 2,
+     "operacion": "sustituir",
+     "resultado": "t = 2",
+     "texto": "En la ecuación del plano."
+    },
+    {
+     "paso": 3,
+     "operacion": "punto",
+     "resultado": "(5, 2, 3)",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un dron sigue la recta que pasa por (−13, −5, −6) con vector director (3, 1, 3). El tejado de una nave está en el plano 3x = −3. ¿En qué punto la trayectoria corta al plano?",
+   "respuesta": "(−1, −1, 6)",
+   "distractores": [
+    {
+     "valor": "(−1, −5, −6)",
+     "error": "E01"
+    },
+    {
+     "valor": "(−13, −5, −6)",
+     "error": null
+    },
+    {
+     "valor": "(2, 0, 9)",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.ESPACIO.05"
+   ],
+   "explicacion_nino": "Escribe la recta en paramétricas: (x, y, z) = (−13, −5, −6) + t·(3, 1, 3). Sustituye en el plano y despeja t: t = 4. El punto es (−13, −5, −6) + 4·(3, 1, 3) = (−1, −1, 6). Comprueba que cumple la ecuación del plano.",
+   "explicacion_adulto": "Está aprendiendo a traducir situaciones del espacio (trayectorias, techos, antenas) a puntos, rectas y planos y a usar vectores para calcular. Los errores típicos son confundir el vector director de una recta con el normal de un plano, decir que dos rectas son paralelas solo porque no se cortan (pueden cruzarse) y calcular el ángulo recta-plano con el coseno. Pídale que diga qué vector usa y por qué.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "paramétricas",
+     "resultado": "(−13, −5, −6) + t·(3, 1, 3)",
+     "texto": "Punto más t veces el director."
+    },
+    {
+     "paso": 2,
+     "operacion": "sustituir",
+     "resultado": "t = 4",
+     "texto": "En la ecuación del plano."
+    },
+    {
+     "paso": 3,
+     "operacion": "punto",
+     "resultado": "(−1, −1, 6)",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un dron sigue la recta que pasa por (−2, −13, −2) con vector director (1, 3, 1). El tejado de una nave está en el plano −y − z = −1. ¿En qué punto la trayectoria corta al plano?",
+   "respuesta": "(2, −1, 2)",
+   "distractores": [
+    {
+     "valor": "(−2, −17, −6)",
+     "error": "E01"
+    },
+    {
+     "valor": "(−2, −13, −2)",
+     "error": null
+    },
+    {
+     "valor": "(3, 2, 3)",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.ESPACIO.05"
+   ],
+   "explicacion_nino": "Escribe la recta en paramétricas: (x, y, z) = (−2, −13, −2) + t·(1, 3, 1). Sustituye en el plano y despeja t: t = 4. El punto es (−2, −13, −2) + 4·(1, 3, 1) = (2, −1, 2). Comprueba que cumple la ecuación del plano.",
+   "explicacion_adulto": "Está aprendiendo a traducir situaciones del espacio (trayectorias, techos, antenas) a puntos, rectas y planos y a usar vectores para calcular. Los errores típicos son confundir el vector director de una recta con el normal de un plano, decir que dos rectas son paralelas solo porque no se cortan (pueden cruzarse) y calcular el ángulo recta-plano con el coseno. Pídale que diga qué vector usa y por qué.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "paramétricas",
+     "resultado": "(−2, −13, −2) + t·(1, 3, 1)",
+     "texto": "Punto más t veces el director."
+    },
+    {
+     "paso": 2,
+     "operacion": "sustituir",
+     "resultado": "t = 4",
+     "texto": "En la ecuación del plano."
+    },
+    {
+     "paso": 3,
+     "operacion": "punto",
+     "resultado": "(2, −1, 2)",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un dron sigue la recta que pasa por (−3, 7, 3) con vector director (3, −1, 3). El tejado de una nave está en el plano −x = 0. ¿En qué punto la trayectoria corta al plano?",
+   "respuesta": "(0, 6, 6)",
+   "distractores": [
+    {
+     "valor": "(−4, 7, 3)",
+     "error": "E01"
+    },
+    {
+     "valor": "(−3, 7, 3)",
+     "error": null
+    },
+    {
+     "valor": "(3, 5, 9)",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.ESPACIO.05"
+   ],
+   "explicacion_nino": "Escribe la recta en paramétricas: (x, y, z) = (−3, 7, 3) + t·(3, −1, 3). Sustituye en el plano y despeja t: t = 1. El punto es (−3, 7, 3) + 1·(3, −1, 3) = (0, 6, 6). Comprueba que cumple la ecuación del plano.",
+   "explicacion_adulto": "Está aprendiendo a traducir situaciones del espacio (trayectorias, techos, antenas) a puntos, rectas y planos y a usar vectores para calcular. Los errores típicos son confundir el vector director de una recta con el normal de un plano, decir que dos rectas son paralelas solo porque no se cortan (pueden cruzarse) y calcular el ángulo recta-plano con el coseno. Pídale que diga qué vector usa y por qué.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "paramétricas",
+     "resultado": "(−3, 7, 3) + t·(3, −1, 3)",
+     "texto": "Punto más t veces el director."
+    },
+    {
+     "paso": 2,
+     "operacion": "sustituir",
+     "resultado": "t = 1",
+     "texto": "En la ecuación del plano."
+    },
+    {
+     "paso": 3,
+     "operacion": "punto",
+     "resultado": "(0, 6, 6)",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un rayo láser sigue la recta que pasa por (−2, −6, 1) con vector director (−1, 3, 3). Una pantalla inclinada está en el plano 3x + 3y − z = −22. ¿En qué punto la trayectoria corta al plano?",
+   "respuesta": "(−3, −3, 4)",
+   "distractores": [
+    {
+     "valor": "(1, −3, 0)",
+     "error": "E01"
+    },
+    {
+     "valor": "(−2, −6, 1)",
+     "error": null
+    },
+    {
+     "valor": "(−4, 0, 7)",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.ESPACIO.05"
+   ],
+   "explicacion_nino": "Escribe la recta en paramétricas: (x, y, z) = (−2, −6, 1) + t·(−1, 3, 3). Sustituye en el plano y despeja t: t = 1. El punto es (−2, −6, 1) + 1·(−1, 3, 3) = (−3, −3, 4). Comprueba que cumple la ecuación del plano.",
+   "explicacion_adulto": "Está aprendiendo a traducir situaciones del espacio (trayectorias, techos, antenas) a puntos, rectas y planos y a usar vectores para calcular. Los errores típicos son confundir el vector director de una recta con el normal de un plano, decir que dos rectas son paralelas solo porque no se cortan (pueden cruzarse) y calcular el ángulo recta-plano con el coseno. Pídale que diga qué vector usa y por qué.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "paramétricas",
+     "resultado": "(−2, −6, 1) + t·(−1, 3, 3)",
+     "texto": "Punto más t veces el director."
+    },
+    {
+     "paso": 2,
+     "operacion": "sustituir",
+     "resultado": "t = 1",
+     "texto": "En la ecuación del plano."
+    },
+    {
+     "paso": 3,
+     "operacion": "punto",
+     "resultado": "(−3, −3, 4)",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un avión sigue la recta que pasa por (−1, −8, 9) con vector director (1, 3, −1). Una ladera está en el plano −x − y − z = −12. ¿En qué punto la trayectoria corta al plano?",
+   "respuesta": "(3, 4, 5)",
+   "distractores": [
+    {
+     "valor": "(−5, −12, 5)",
+     "error": "E01"
+    },
+    {
+     "valor": "(−1, −8, 9)",
+     "error": null
+    },
+    {
+     "valor": "(4, 7, 4)",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.ESPACIO.05"
+   ],
+   "explicacion_nino": "Escribe la recta en paramétricas: (x, y, z) = (−1, −8, 9) + t·(1, 3, −1). Sustituye en el plano y despeja t: t = 4. El punto es (−1, −8, 9) + 4·(1, 3, −1) = (3, 4, 5). Comprueba que cumple la ecuación del plano.",
+   "explicacion_adulto": "Está aprendiendo a traducir situaciones del espacio (trayectorias, techos, antenas) a puntos, rectas y planos y a usar vectores para calcular. Los errores típicos son confundir el vector director de una recta con el normal de un plano, decir que dos rectas son paralelas solo porque no se cortan (pueden cruzarse) y calcular el ángulo recta-plano con el coseno. Pídale que diga qué vector usa y por qué.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "paramétricas",
+     "resultado": "(−1, −8, 9) + t·(1, 3, −1)",
+     "texto": "Punto más t veces el director."
+    },
+    {
+     "paso": 2,
+     "operacion": "sustituir",
+     "resultado": "t = 4",
+     "texto": "En la ecuación del plano."
+    },
+    {
+     "paso": 3,
+     "operacion": "punto",
+     "resultado": "(3, 4, 5)",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un avión sigue la recta que pasa por (0, 3, 2) con vector director (3, 1, −2). Una ladera está en el plano z = −2. ¿En qué punto la trayectoria corta al plano?",
+   "respuesta": "(6, 5, −2)",
+   "distractores": [
+    {
+     "valor": "(0, 3, 4)",
+     "error": "E01"
+    },
+    {
+     "valor": "(0, 3, 2)",
+     "error": null
+    },
+    {
+     "valor": "(9, 6, −4)",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.ESPACIO.05"
+   ],
+   "explicacion_nino": "Escribe la recta en paramétricas: (x, y, z) = (0, 3, 2) + t·(3, 1, −2). Sustituye en el plano y despeja t: t = 2. El punto es (0, 3, 2) + 2·(3, 1, −2) = (6, 5, −2). Comprueba que cumple la ecuación del plano.",
+   "explicacion_adulto": "Está aprendiendo a traducir situaciones del espacio (trayectorias, techos, antenas) a puntos, rectas y planos y a usar vectores para calcular. Los errores típicos son confundir el vector director de una recta con el normal de un plano, decir que dos rectas son paralelas solo porque no se cortan (pueden cruzarse) y calcular el ángulo recta-plano con el coseno. Pídale que diga qué vector usa y por qué.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "paramétricas",
+     "resultado": "(0, 3, 2) + t·(3, 1, −2)",
+     "texto": "Punto más t veces el director."
+    },
+    {
+     "paso": 2,
+     "operacion": "sustituir",
+     "resultado": "t = 2",
+     "texto": "En la ecuación del plano."
+    },
+    {
+     "paso": 3,
+     "operacion": "punto",
+     "resultado": "(6, 5, −2)",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un avión sigue la recta que pasa por (−7, 7, −15) con vector director (2, −2, 3). Una ladera está en el plano 3y + 3z = −12. ¿En qué punto la trayectoria corta al plano?",
+   "respuesta": "(1, −1, −3)",
+   "distractores": [
+    {
+     "valor": "(−7, 19, −3)",
+     "error": "E01"
+    },
+    {
+     "valor": "(−7, 7, −15)",
+     "error": null
+    },
+    {
+     "valor": "(3, −3, 0)",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.ESPACIO.05"
+   ],
+   "explicacion_nino": "Escribe la recta en paramétricas: (x, y, z) = (−7, 7, −15) + t·(2, −2, 3). Sustituye en el plano y despeja t: t = 4. El punto es (−7, 7, −15) + 4·(2, −2, 3) = (1, −1, −3). Comprueba que cumple la ecuación del plano.",
+   "explicacion_adulto": "Está aprendiendo a traducir situaciones del espacio (trayectorias, techos, antenas) a puntos, rectas y planos y a usar vectores para calcular. Los errores típicos son confundir el vector director de una recta con el normal de un plano, decir que dos rectas son paralelas solo porque no se cortan (pueden cruzarse) y calcular el ángulo recta-plano con el coseno. Pídale que diga qué vector usa y por qué.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "paramétricas",
+     "resultado": "(−7, 7, −15) + t·(2, −2, 3)",
+     "texto": "Punto más t veces el director."
+    },
+    {
+     "paso": 2,
+     "operacion": "sustituir",
+     "resultado": "t = 4",
+     "texto": "En la ecuación del plano."
+    },
+    {
+     "paso": 3,
+     "operacion": "punto",
+     "resultado": "(1, −1, −3)",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un foco está en el punto (8, 8, −2) (en metros) y el plano de una pared inclinada es x + 4y + 8z = −3. ¿A qué distancia está del plano?",
+   "respuesta": "3 m",
+   "distractores": [
+    {
+     "valor": "27 m",
+     "error": "E01"
+    },
+    {
+     "valor": "0,33 m",
+     "error": null
+    },
+    {
+     "valor": "−3 m",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "27 : 9",
+   "secundarias": [
+    "GEO.ESPACIO.07"
+   ],
+   "explicacion_nino": "d = |1·8 + 4·8 + 8·-2 − -3| / √(1² + 4² + 8²) = 27/9 = 3 m.",
+   "explicacion_adulto": "Está aprendiendo a traducir situaciones del espacio (trayectorias, techos, antenas) a puntos, rectas y planos y a usar vectores para calcular. Los errores típicos son confundir el vector director de una recta con el normal de un plano, decir que dos rectas son paralelas solo porque no se cortan (pueden cruzarse) y calcular el ángulo recta-plano con el coseno. Pídale que diga qué vector usa y por qué.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "fórmula",
+     "resultado": "|ax₀ + by₀ + cz₀ − d| / |n|",
+     "texto": "Distancia punto-plano."
+    },
+    {
+     "paso": 2,
+     "operacion": "numerador",
+     "resultado": "27",
+     "texto": "Valor absoluto."
+    },
+    {
+     "paso": 3,
+     "operacion": "módulo",
+     "resultado": "9",
+     "texto": "|n|"
+    },
+    {
+     "paso": 4,
+     "operacion": "resultado",
+     "resultado": "3 m",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Una lámpara cuelga en el punto (5, −3, 5) (en metros) y el plano de una rampa es 4x + 4y + 7z = −2. ¿A qué distancia está del plano?",
+   "respuesta": "5 m",
+   "distractores": [
+    {
+     "valor": "45 m",
+     "error": "E01"
+    },
+    {
+     "valor": "0,56 m",
+     "error": null
+    },
+    {
+     "valor": "−5 m",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "45 : 9",
+   "secundarias": [
+    "GEO.ESPACIO.07"
+   ],
+   "explicacion_nino": "d = |4·5 + 4·-3 + 7·5 − -2| / √(4² + 4² + 7²) = 45/9 = 5 m.",
+   "explicacion_adulto": "Está aprendiendo a traducir situaciones del espacio (trayectorias, techos, antenas) a puntos, rectas y planos y a usar vectores para calcular. Los errores típicos son confundir el vector director de una recta con el normal de un plano, decir que dos rectas son paralelas solo porque no se cortan (pueden cruzarse) y calcular el ángulo recta-plano con el coseno. Pídale que diga qué vector usa y por qué.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "fórmula",
+     "resultado": "|ax₀ + by₀ + cz₀ − d| / |n|",
+     "texto": "Distancia punto-plano."
+    },
+    {
+     "paso": 2,
+     "operacion": "numerador",
+     "resultado": "45",
+     "texto": "Valor absoluto."
+    },
+    {
+     "paso": 3,
+     "operacion": "módulo",
+     "resultado": "9",
+     "texto": "|n|"
+    },
+    {
+     "paso": 4,
+     "operacion": "resultado",
+     "resultado": "5 m",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Una lámpara cuelga en el punto (8, 5, 6) (en metros) y el plano de una rampa es x + 2y + 2z = 18. ¿A qué distancia está del plano?",
+   "respuesta": "4 m",
+   "distractores": [
+    {
+     "valor": "12 m",
+     "error": "E01"
+    },
+    {
+     "valor": "1,33 m",
+     "error": null
+    },
+    {
+     "valor": "−4 m",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "12 : 3",
+   "secundarias": [
+    "GEO.ESPACIO.07"
+   ],
+   "explicacion_nino": "d = |1·8 + 2·5 + 2·6 − 18| / √(1² + 2² + 2²) = 12/3 = 4 m.",
+   "explicacion_adulto": "Está aprendiendo a traducir situaciones del espacio (trayectorias, techos, antenas) a puntos, rectas y planos y a usar vectores para calcular. Los errores típicos son confundir el vector director de una recta con el normal de un plano, decir que dos rectas son paralelas solo porque no se cortan (pueden cruzarse) y calcular el ángulo recta-plano con el coseno. Pídale que diga qué vector usa y por qué.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "fórmula",
+     "resultado": "|ax₀ + by₀ + cz₀ − d| / |n|",
+     "texto": "Distancia punto-plano."
+    },
+    {
+     "paso": 2,
+     "operacion": "numerador",
+     "resultado": "12",
+     "texto": "Valor absoluto."
+    },
+    {
+     "paso": 3,
+     "operacion": "módulo",
+     "resultado": "3",
+     "texto": "|n|"
+    },
+    {
+     "paso": 4,
+     "operacion": "resultado",
+     "resultado": "4 m",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un foco está en el punto (8, 4, 6) (en metros) y el plano de una pared inclinada es 6x + 2y + 3z = 88. ¿A qué distancia está del plano?",
+   "respuesta": "2 m",
+   "distractores": [
+    {
+     "valor": "−14 m",
+     "error": null
+    },
+    {
+     "valor": "0,29 m",
+     "error": null
+    },
+    {
+     "valor": "−2 m",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "14 : 7",
+   "secundarias": [
+    "GEO.ESPACIO.07"
+   ],
+   "explicacion_nino": "d = |6·8 + 2·4 + 3·6 − 88| / √(6² + 2² + 3²) = 14/7 = 2 m.",
+   "explicacion_adulto": "Está aprendiendo a traducir situaciones del espacio (trayectorias, techos, antenas) a puntos, rectas y planos y a usar vectores para calcular. Los errores típicos son confundir el vector director de una recta con el normal de un plano, decir que dos rectas son paralelas solo porque no se cortan (pueden cruzarse) y calcular el ángulo recta-plano con el coseno. Pídale que diga qué vector usa y por qué.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "fórmula",
+     "resultado": "|ax₀ + by₀ + cz₀ − d| / |n|",
+     "texto": "Distancia punto-plano."
+    },
+    {
+     "paso": 2,
+     "operacion": "numerador",
+     "resultado": "14",
+     "texto": "Valor absoluto."
+    },
+    {
+     "paso": 3,
+     "operacion": "módulo",
+     "resultado": "7",
+     "texto": "|n|"
+    },
+    {
+     "paso": 4,
+     "operacion": "resultado",
+     "resultado": "2 m",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Una cámara de seguridad está en el punto (6, −1, 2) (en metros) y el plano de un talud es 2x + 2y + z = 24. ¿A qué distancia está del plano?",
+   "respuesta": "4 m",
+   "distractores": [
+    {
+     "valor": "−12 m",
+     "error": null
+    },
+    {
+     "valor": "1,33 m",
+     "error": null
+    },
+    {
+     "valor": "−4 m",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "12 : 3",
+   "secundarias": [
+    "GEO.ESPACIO.07"
+   ],
+   "explicacion_nino": "d = |2·6 + 2·-1 + 1·2 − 24| / √(2² + 2² + 1²) = 12/3 = 4 m.",
+   "explicacion_adulto": "Está aprendiendo a traducir situaciones del espacio (trayectorias, techos, antenas) a puntos, rectas y planos y a usar vectores para calcular. Los errores típicos son confundir el vector director de una recta con el normal de un plano, decir que dos rectas son paralelas solo porque no se cortan (pueden cruzarse) y calcular el ángulo recta-plano con el coseno. Pídale que diga qué vector usa y por qué.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "fórmula",
+     "resultado": "|ax₀ + by₀ + cz₀ − d| / |n|",
+     "texto": "Distancia punto-plano."
+    },
+    {
+     "paso": 2,
+     "operacion": "numerador",
+     "resultado": "12",
+     "texto": "Valor absoluto."
+    },
+    {
+     "paso": 3,
+     "operacion": "módulo",
+     "resultado": "3",
+     "texto": "|n|"
+    },
+    {
+     "paso": 4,
+     "operacion": "resultado",
+     "resultado": "4 m",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Una antena tiene su extremo en el punto (−3, 1, −2) (en metros) y el plano del tejado es 2x − 2y + z = −4. ¿A qué distancia está del plano?",
+   "respuesta": "2 m",
+   "distractores": [
+    {
+     "valor": "−6 m",
+     "error": null
+    },
+    {
+     "valor": "0,67 m",
+     "error": null
+    },
+    {
+     "valor": "−2 m",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "6 : 3",
+   "secundarias": [
+    "GEO.ESPACIO.07"
+   ],
+   "explicacion_nino": "d = |2·-3 + -2·1 + 1·-2 − -4| / √(2² + -2² + 1²) = 6/3 = 2 m.",
+   "explicacion_adulto": "Está aprendiendo a traducir situaciones del espacio (trayectorias, techos, antenas) a puntos, rectas y planos y a usar vectores para calcular. Los errores típicos son confundir el vector director de una recta con el normal de un plano, decir que dos rectas son paralelas solo porque no se cortan (pueden cruzarse) y calcular el ángulo recta-plano con el coseno. Pídale que diga qué vector usa y por qué.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "fórmula",
+     "resultado": "|ax₀ + by₀ + cz₀ − d| / |n|",
+     "texto": "Distancia punto-plano."
+    },
+    {
+     "paso": 2,
+     "operacion": "numerador",
+     "resultado": "6",
+     "texto": "Valor absoluto."
+    },
+    {
+     "paso": 3,
+     "operacion": "módulo",
+     "resultado": "3",
+     "texto": "|n|"
+    },
+    {
+     "paso": 4,
+     "operacion": "resultado",
+     "resultado": "2 m",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Una antena tiene su extremo en el punto (7, 3, −1) (en metros) y el plano del tejado es 6x + 2y + 3z = 80. ¿A qué distancia está del plano?",
+   "respuesta": "5 m",
+   "distractores": [
+    {
+     "valor": "−35 m",
+     "error": null
+    },
+    {
+     "valor": "0,71 m",
+     "error": null
+    },
+    {
+     "valor": "−5 m",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "35 : 7",
+   "secundarias": [
+    "GEO.ESPACIO.07"
+   ],
+   "explicacion_nino": "d = |6·7 + 2·3 + 3·-1 − 80| / √(6² + 2² + 3²) = 35/7 = 5 m.",
+   "explicacion_adulto": "Está aprendiendo a traducir situaciones del espacio (trayectorias, techos, antenas) a puntos, rectas y planos y a usar vectores para calcular. Los errores típicos son confundir el vector director de una recta con el normal de un plano, decir que dos rectas son paralelas solo porque no se cortan (pueden cruzarse) y calcular el ángulo recta-plano con el coseno. Pídale que diga qué vector usa y por qué.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "fórmula",
+     "resultado": "|ax₀ + by₀ + cz₀ − d| / |n|",
+     "texto": "Distancia punto-plano."
+    },
+    {
+     "paso": 2,
+     "operacion": "numerador",
+     "resultado": "35",
+     "texto": "Valor absoluto."
+    },
+    {
+     "paso": 3,
+     "operacion": "módulo",
+     "resultado": "7",
+     "texto": "|n|"
+    },
+    {
+     "paso": 4,
+     "operacion": "resultado",
+     "resultado": "5 m",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un foco está en el punto (3, 7, −1) (en metros) y el plano de una pared inclinada es 2x + 3y + 6z = 56. ¿A qué distancia está del plano?",
+   "respuesta": "5 m",
+   "distractores": [
+    {
+     "valor": "−35 m",
+     "error": null
+    },
+    {
+     "valor": "0,71 m",
+     "error": null
+    },
+    {
+     "valor": "−5 m",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "35 : 7",
+   "secundarias": [
+    "GEO.ESPACIO.07"
+   ],
+   "explicacion_nino": "d = |2·3 + 3·7 + 6·-1 − 56| / √(2² + 3² + 6²) = 35/7 = 5 m.",
+   "explicacion_adulto": "Está aprendiendo a traducir situaciones del espacio (trayectorias, techos, antenas) a puntos, rectas y planos y a usar vectores para calcular. Los errores típicos son confundir el vector director de una recta con el normal de un plano, decir que dos rectas son paralelas solo porque no se cortan (pueden cruzarse) y calcular el ángulo recta-plano con el coseno. Pídale que diga qué vector usa y por qué.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "fórmula",
+     "resultado": "|ax₀ + by₀ + cz₀ − d| / |n|",
+     "texto": "Distancia punto-plano."
+    },
+    {
+     "paso": 2,
+     "operacion": "numerador",
+     "resultado": "35",
+     "texto": "Valor absoluto."
+    },
+    {
+     "paso": 3,
+     "operacion": "módulo",
+     "resultado": "7",
+     "texto": "|n|"
+    },
+    {
+     "paso": 4,
+     "operacion": "resultado",
+     "resultado": "5 m",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Dos aviones vuelan las rectas r: (2, 0, 4) + t·(1, 1, 2) y s: (3, 4, 6) + λ·(1, −2, 2). ¿Cuál es su posición relativa?",
+   "respuesta": "Se cortan en un punto",
+   "distractores": [
+    {
+     "valor": "Son paralelas",
+     "error": null
+    },
+    {
+     "valor": "Se cruzan (no se cortan y no son paralelas)",
+     "error": null
+    },
+    {
+     "valor": "Son la misma recta",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.ESPACIO.05"
+   ],
+   "explicacion_nino": "Compara los vectores directores (1, 1, 2) y (1, −2, 2) y usa el vector AB = (1, 4, 2). Los directores no son proporcionales y el determinante de AB, u y v es 0: están en un mismo plano y se cortan.",
+   "explicacion_adulto": "Está aprendiendo a traducir situaciones del espacio (trayectorias, techos, antenas) a puntos, rectas y planos y a usar vectores para calcular. Los errores típicos son confundir el vector director de una recta con el normal de un plano, decir que dos rectas son paralelas solo porque no se cortan (pueden cruzarse) y calcular el ángulo recta-plano con el coseno. Pídale que diga qué vector usa y por qué.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "directores",
+     "resultado": "(1, 1, 2), (1, −2, 2)",
+     "texto": "¿Proporcionales?"
+    },
+    {
+     "paso": 2,
+     "operacion": "AB",
+     "resultado": "(1, 4, 2)",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "decidir",
+     "resultado": "Se cortan en un punto",
+     "texto": "Los directores no son proporcionales y el determinante de AB, u y v es 0: están en un mismo plano y se cortan."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Dos cables tensados siguen las rectas r: (−1, 1, 3) + t·(2, 3, 3) y s: (0, 3, 2) + λ·(1, −1, −1). ¿Cuál es su posición relativa?",
+   "respuesta": "Se cruzan (no se cortan y no son paralelas)",
+   "distractores": [
+    {
+     "valor": "Se cortan en un punto",
+     "error": null
+    },
+    {
+     "valor": "Son paralelas",
+     "error": "E02"
+    },
+    {
+     "valor": "Son la misma recta",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.ESPACIO.05"
+   ],
+   "explicacion_nino": "Compara los vectores directores (2, 3, 3) y (1, −1, −1) y usa el vector AB = (1, 2, −1). Los directores no son proporcionales y el determinante de AB, u y v no es 0: no están en un mismo plano, se cruzan. No cortarse no basta para ser paralelas.",
+   "explicacion_adulto": "Está aprendiendo a traducir situaciones del espacio (trayectorias, techos, antenas) a puntos, rectas y planos y a usar vectores para calcular. Los errores típicos son confundir el vector director de una recta con el normal de un plano, decir que dos rectas son paralelas solo porque no se cortan (pueden cruzarse) y calcular el ángulo recta-plano con el coseno. Pídale que diga qué vector usa y por qué.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "directores",
+     "resultado": "(2, 3, 3), (1, −1, −1)",
+     "texto": "¿Proporcionales?"
+    },
+    {
+     "paso": 2,
+     "operacion": "AB",
+     "resultado": "(1, 2, −1)",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "decidir",
+     "resultado": "Se cruzan (no se cortan y no son paralelas)",
+     "texto": "Los directores no son proporcionales y el determinante de AB, u y v no es 0: no están en un mismo plano, se cruzan. No cortarse no basta para ser paralelas."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Dos rayos de luz siguen las rectas r: (4, 2, −2) + t·(−2, 1, 2) y s: (5, 2, 0) + λ·(−6, 3, 6). ¿Cuál es su posición relativa?",
+   "respuesta": "Son paralelas",
+   "distractores": [
+    {
+     "valor": "Se cortan en un punto",
+     "error": null
+    },
+    {
+     "valor": "Se cruzan (no se cortan y no son paralelas)",
+     "error": null
+    },
+    {
+     "valor": "Son la misma recta",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.ESPACIO.05"
+   ],
+   "explicacion_nino": "Compara los vectores directores (−2, 1, 2) y (−6, 3, 6) y usa el vector AB = (1, 0, 2). Los directores son proporcionales y el punto de s no está en r: paralelas.",
+   "explicacion_adulto": "Está aprendiendo a traducir situaciones del espacio (trayectorias, techos, antenas) a puntos, rectas y planos y a usar vectores para calcular. Los errores típicos son confundir el vector director de una recta con el normal de un plano, decir que dos rectas son paralelas solo porque no se cortan (pueden cruzarse) y calcular el ángulo recta-plano con el coseno. Pídale que diga qué vector usa y por qué.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "directores",
+     "resultado": "(−2, 1, 2), (−6, 3, 6)",
+     "texto": "¿Proporcionales?"
+    },
+    {
+     "paso": 2,
+     "operacion": "AB",
+     "resultado": "(1, 0, 2)",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "decidir",
+     "resultado": "Son paralelas",
+     "texto": "Los directores son proporcionales y el punto de s no está en r: paralelas."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Dos drones se mueven las rectas r: (0, −3, 2) + t·(−1, 2, −1) y s: (1, −1, 1) + λ·(2, 3, 3). ¿Cuál es su posición relativa?",
+   "respuesta": "Se cruzan (no se cortan y no son paralelas)",
+   "distractores": [
+    {
+     "valor": "Se cortan en un punto",
+     "error": null
+    },
+    {
+     "valor": "Son paralelas",
+     "error": "E02"
+    },
+    {
+     "valor": "Son la misma recta",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.ESPACIO.05"
+   ],
+   "explicacion_nino": "Compara los vectores directores (−1, 2, −1) y (2, 3, 3) y usa el vector AB = (1, 2, −1). Los directores no son proporcionales y el determinante de AB, u y v no es 0: no están en un mismo plano, se cruzan. No cortarse no basta para ser paralelas.",
+   "explicacion_adulto": "Está aprendiendo a traducir situaciones del espacio (trayectorias, techos, antenas) a puntos, rectas y planos y a usar vectores para calcular. Los errores típicos son confundir el vector director de una recta con el normal de un plano, decir que dos rectas son paralelas solo porque no se cortan (pueden cruzarse) y calcular el ángulo recta-plano con el coseno. Pídale que diga qué vector usa y por qué.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "directores",
+     "resultado": "(−1, 2, −1), (2, 3, 3)",
+     "texto": "¿Proporcionales?"
+    },
+    {
+     "paso": 2,
+     "operacion": "AB",
+     "resultado": "(1, 2, −1)",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "decidir",
+     "resultado": "Se cruzan (no se cortan y no son paralelas)",
+     "texto": "Los directores no son proporcionales y el determinante de AB, u y v no es 0: no están en un mismo plano, se cruzan. No cortarse no basta para ser paralelas."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Dos rayos de luz siguen las rectas r: (2, 3, 1) + t·(2, −2, 1) y s: (5, −3, 2) + λ·(1, 2, 1). ¿Cuál es su posición relativa?",
+   "respuesta": "Se cortan en un punto",
+   "distractores": [
+    {
+     "valor": "Son paralelas",
+     "error": null
+    },
+    {
+     "valor": "Se cruzan (no se cortan y no son paralelas)",
+     "error": null
+    },
+    {
+     "valor": "Son la misma recta",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.ESPACIO.05"
+   ],
+   "explicacion_nino": "Compara los vectores directores (2, −2, 1) y (1, 2, 1) y usa el vector AB = (3, −6, 1). Los directores no son proporcionales y el determinante de AB, u y v es 0: están en un mismo plano y se cortan.",
+   "explicacion_adulto": "Está aprendiendo a traducir situaciones del espacio (trayectorias, techos, antenas) a puntos, rectas y planos y a usar vectores para calcular. Los errores típicos son confundir el vector director de una recta con el normal de un plano, decir que dos rectas son paralelas solo porque no se cortan (pueden cruzarse) y calcular el ángulo recta-plano con el coseno. Pídale que diga qué vector usa y por qué.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "directores",
+     "resultado": "(2, −2, 1), (1, 2, 1)",
+     "texto": "¿Proporcionales?"
+    },
+    {
+     "paso": 2,
+     "operacion": "AB",
+     "resultado": "(3, −6, 1)",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "decidir",
+     "resultado": "Se cortan en un punto",
+     "texto": "Los directores no son proporcionales y el determinante de AB, u y v es 0: están en un mismo plano y se cortan."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Dos drones se mueven las rectas r: (1, −2, 0) + t·(−1, −2, −2) y s: (2, 0, −1) + λ·(−2, 1, 1). ¿Cuál es su posición relativa?",
+   "respuesta": "Se cruzan (no se cortan y no son paralelas)",
+   "distractores": [
+    {
+     "valor": "Se cortan en un punto",
+     "error": null
+    },
+    {
+     "valor": "Son paralelas",
+     "error": "E02"
+    },
+    {
+     "valor": "Son la misma recta",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.ESPACIO.05"
+   ],
+   "explicacion_nino": "Compara los vectores directores (−1, −2, −2) y (−2, 1, 1) y usa el vector AB = (1, 2, −1). Los directores no son proporcionales y el determinante de AB, u y v no es 0: no están en un mismo plano, se cruzan. No cortarse no basta para ser paralelas.",
+   "explicacion_adulto": "Está aprendiendo a traducir situaciones del espacio (trayectorias, techos, antenas) a puntos, rectas y planos y a usar vectores para calcular. Los errores típicos son confundir el vector director de una recta con el normal de un plano, decir que dos rectas son paralelas solo porque no se cortan (pueden cruzarse) y calcular el ángulo recta-plano con el coseno. Pídale que diga qué vector usa y por qué.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "directores",
+     "resultado": "(−1, −2, −2), (−2, 1, 1)",
+     "texto": "¿Proporcionales?"
+    },
+    {
+     "paso": 2,
+     "operacion": "AB",
+     "resultado": "(1, 2, −1)",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "decidir",
+     "resultado": "Se cruzan (no se cortan y no son paralelas)",
+     "texto": "Los directores no son proporcionales y el determinante de AB, u y v no es 0: no están en un mismo plano, se cruzan. No cortarse no basta para ser paralelas."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Dos cables tensados siguen las rectas r: (−2, −2, 2) + t·(2, −1, −1) y s: (−1, −2, 4) + λ·(6, −3, −3). ¿Cuál es su posición relativa?",
+   "respuesta": "Son paralelas",
+   "distractores": [
+    {
+     "valor": "Se cortan en un punto",
+     "error": null
+    },
+    {
+     "valor": "Se cruzan (no se cortan y no son paralelas)",
+     "error": null
+    },
+    {
+     "valor": "Son la misma recta",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.ESPACIO.05"
+   ],
+   "explicacion_nino": "Compara los vectores directores (2, −1, −1) y (6, −3, −3) y usa el vector AB = (1, 0, 2). Los directores son proporcionales y el punto de s no está en r: paralelas.",
+   "explicacion_adulto": "Está aprendiendo a traducir situaciones del espacio (trayectorias, techos, antenas) a puntos, rectas y planos y a usar vectores para calcular. Los errores típicos son confundir el vector director de una recta con el normal de un plano, decir que dos rectas son paralelas solo porque no se cortan (pueden cruzarse) y calcular el ángulo recta-plano con el coseno. Pídale que diga qué vector usa y por qué.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "directores",
+     "resultado": "(2, −1, −1), (6, −3, −3)",
+     "texto": "¿Proporcionales?"
+    },
+    {
+     "paso": 2,
+     "operacion": "AB",
+     "resultado": "(1, 0, 2)",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "decidir",
+     "resultado": "Son paralelas",
+     "texto": "Los directores son proporcionales y el punto de s no está en r: paralelas."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Dos rayos de luz siguen las rectas r: (−1, −3, 4) + t·(3, 1, 2) y s: (5, −1, 8) + λ·(9, 3, 6). ¿Cuál es su posición relativa?",
+   "respuesta": "Son la misma recta",
+   "distractores": [
+    {
+     "valor": "Se cortan en un punto",
+     "error": null
+    },
+    {
+     "valor": "Son paralelas",
+     "error": null
+    },
+    {
+     "valor": "Se cruzan (no se cortan y no son paralelas)",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.ESPACIO.05"
+   ],
+   "explicacion_nino": "Compara los vectores directores (3, 1, 2) y (9, 3, 6) y usa el vector AB = (6, 2, 4). Los directores son proporcionales y el punto de s está en r: coinciden.",
+   "explicacion_adulto": "Está aprendiendo a traducir situaciones del espacio (trayectorias, techos, antenas) a puntos, rectas y planos y a usar vectores para calcular. Los errores típicos son confundir el vector director de una recta con el normal de un plano, decir que dos rectas son paralelas solo porque no se cortan (pueden cruzarse) y calcular el ángulo recta-plano con el coseno. Pídale que diga qué vector usa y por qué.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "directores",
+     "resultado": "(3, 1, 2), (9, 3, 6)",
+     "texto": "¿Proporcionales?"
+    },
+    {
+     "paso": 2,
+     "operacion": "AB",
+     "resultado": "(6, 2, 4)",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "decidir",
+     "resultado": "Son la misma recta",
+     "texto": "Los directores son proporcionales y el punto de s está en r: coinciden."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Dos aviones vuelan las rectas r: (−1, −3, −2) + t·(3, −1, 2) y s: (0, −1, −3) + λ·(−1, −1, −1). ¿Cuál es su posición relativa?",
+   "respuesta": "Se cruzan (no se cortan y no son paralelas)",
+   "distractores": [
+    {
+     "valor": "Se cortan en un punto",
+     "error": null
+    },
+    {
+     "valor": "Son paralelas",
+     "error": "E02"
+    },
+    {
+     "valor": "Son la misma recta",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.ESPACIO.05"
+   ],
+   "explicacion_nino": "Compara los vectores directores (3, −1, 2) y (−1, −1, −1) y usa el vector AB = (1, 2, −1). Los directores no son proporcionales y el determinante de AB, u y v no es 0: no están en un mismo plano, se cruzan. No cortarse no basta para ser paralelas.",
+   "explicacion_adulto": "Está aprendiendo a traducir situaciones del espacio (trayectorias, techos, antenas) a puntos, rectas y planos y a usar vectores para calcular. Los errores típicos son confundir el vector director de una recta con el normal de un plano, decir que dos rectas son paralelas solo porque no se cortan (pueden cruzarse) y calcular el ángulo recta-plano con el coseno. Pídale que diga qué vector usa y por qué.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "directores",
+     "resultado": "(3, −1, 2), (−1, −1, −1)",
+     "texto": "¿Proporcionales?"
+    },
+    {
+     "paso": 2,
+     "operacion": "AB",
+     "resultado": "(1, 2, −1)",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "decidir",
+     "resultado": "Se cruzan (no se cortan y no son paralelas)",
+     "texto": "Los directores no son proporcionales y el determinante de AB, u y v no es 0: no están en un mismo plano, se cruzan. No cortarse no basta para ser paralelas."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un rayo de sol sigue la dirección (0, −1, 3) y el suelo de una rampa es el plano x + y + 2z = 4. ¿Qué ángulo forma con el plano?",
+   "respuesta": "40,2°",
+   "distractores": [
+    {
+     "valor": "49,8°",
+     "error": "E03"
+    },
+    {
+     "valor": "139,8°",
+     "error": null
+    },
+    {
+     "valor": "20,1°",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.ESPACIO.06"
+   ],
+   "explicacion_nino": "El ángulo recta-plano es el complementario del que forman el director v = (0, −1, 3) y el normal n = (1, 1, 2): sen φ = |v·n| / (|v|·|n|) = 5/(√10·√6) ≈ 0,645, φ ≈ 40,2°.",
+   "explicacion_adulto": "Está aprendiendo a traducir situaciones del espacio (trayectorias, techos, antenas) a puntos, rectas y planos y a usar vectores para calcular. Los errores típicos son confundir el vector director de una recta con el normal de un plano, decir que dos rectas son paralelas solo porque no se cortan (pueden cruzarse) y calcular el ángulo recta-plano con el coseno. Pídale que diga qué vector usa y por qué.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "vectores",
+     "resultado": "v = (0, −1, 3), n = (1, 1, 2)",
+     "texto": "Director y normal."
+    },
+    {
+     "paso": 2,
+     "operacion": "seno",
+     "resultado": "|v·n|/(|v||n|) ≈ 0,645",
+     "texto": "Con seno, no coseno."
+    },
+    {
+     "paso": 3,
+     "operacion": "ángulo",
+     "resultado": "40,2°",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Una pasarela recta sigue la dirección (2, 2, 3) y el suelo de una rampa es el plano −2x + 2y − 2z = 6. ¿Qué ángulo forma con el plano?",
+   "respuesta": "24,8°",
+   "distractores": [
+    {
+     "valor": "65,2°",
+     "error": "E03"
+    },
+    {
+     "valor": "155,2°",
+     "error": null
+    },
+    {
+     "valor": "12,4°",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.ESPACIO.06"
+   ],
+   "explicacion_nino": "El ángulo recta-plano es el complementario del que forman el director v = (2, 2, 3) y el normal n = (−2, 2, −2): sen φ = |v·n| / (|v|·|n|) = 6/(√17·√12) ≈ 0,42, φ ≈ 24,8°.",
+   "explicacion_adulto": "Está aprendiendo a traducir situaciones del espacio (trayectorias, techos, antenas) a puntos, rectas y planos y a usar vectores para calcular. Los errores típicos son confundir el vector director de una recta con el normal de un plano, decir que dos rectas son paralelas solo porque no se cortan (pueden cruzarse) y calcular el ángulo recta-plano con el coseno. Pídale que diga qué vector usa y por qué.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "vectores",
+     "resultado": "v = (2, 2, 3), n = (−2, 2, −2)",
+     "texto": "Director y normal."
+    },
+    {
+     "paso": 2,
+     "operacion": "seno",
+     "resultado": "|v·n|/(|v||n|) ≈ 0,42",
+     "texto": "Con seno, no coseno."
+    },
+    {
+     "paso": 3,
+     "operacion": "ángulo",
+     "resultado": "24,8°",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Una pasarela recta sigue la dirección (1, 1, 1) y el suelo de una rampa es el plano 2x + 2y = 6. ¿Qué ángulo forma con el plano?",
+   "respuesta": "54,7°",
+   "distractores": [
+    {
+     "valor": "35,3°",
+     "error": "E03"
+    },
+    {
+     "valor": "125,3°",
+     "error": null
+    },
+    {
+     "valor": "27,4°",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.ESPACIO.06"
+   ],
+   "explicacion_nino": "El ángulo recta-plano es el complementario del que forman el director v = (1, 1, 1) y el normal n = (2, 2, 0): sen φ = |v·n| / (|v|·|n|) = 4/(√3·√8) ≈ 0,816, φ ≈ 54,7°.",
+   "explicacion_adulto": "Está aprendiendo a traducir situaciones del espacio (trayectorias, techos, antenas) a puntos, rectas y planos y a usar vectores para calcular. Los errores típicos son confundir el vector director de una recta con el normal de un plano, decir que dos rectas son paralelas solo porque no se cortan (pueden cruzarse) y calcular el ángulo recta-plano con el coseno. Pídale que diga qué vector usa y por qué.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "vectores",
+     "resultado": "v = (1, 1, 1), n = (2, 2, 0)",
+     "texto": "Director y normal."
+    },
+    {
+     "paso": 2,
+     "operacion": "seno",
+     "resultado": "|v·n|/(|v||n|) ≈ 0,816",
+     "texto": "Con seno, no coseno."
+    },
+    {
+     "paso": 3,
+     "operacion": "ángulo",
+     "resultado": "54,7°",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un rayo de sol sigue la dirección (2, 2, 3) y el suelo de una rampa es el plano 2x + y + 2z = 6. ¿Qué ángulo forma con el plano?",
+   "respuesta": "76°",
+   "distractores": [
+    {
+     "valor": "14°",
+     "error": "E03"
+    },
+    {
+     "valor": "104°",
+     "error": null
+    },
+    {
+     "valor": "38°",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.ESPACIO.06"
+   ],
+   "explicacion_nino": "El ángulo recta-plano es el complementario del que forman el director v = (2, 2, 3) y el normal n = (2, 1, 2): sen φ = |v·n| / (|v|·|n|) = 12/(√17·√9) ≈ 0,97, φ ≈ 76°.",
+   "explicacion_adulto": "Está aprendiendo a traducir situaciones del espacio (trayectorias, techos, antenas) a puntos, rectas y planos y a usar vectores para calcular. Los errores típicos son confundir el vector director de una recta con el normal de un plano, decir que dos rectas son paralelas solo porque no se cortan (pueden cruzarse) y calcular el ángulo recta-plano con el coseno. Pídale que diga qué vector usa y por qué.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "vectores",
+     "resultado": "v = (2, 2, 3), n = (2, 1, 2)",
+     "texto": "Director y normal."
+    },
+    {
+     "paso": 2,
+     "operacion": "seno",
+     "resultado": "|v·n|/(|v||n|) ≈ 0,97",
+     "texto": "Con seno, no coseno."
+    },
+    {
+     "paso": 3,
+     "operacion": "ángulo",
+     "resultado": "76°",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un cable de tirolina sigue la dirección (3, 0, −1) y el suelo de una rampa es el plano 2y − 2z = 9. ¿Qué ángulo forma con el plano?",
+   "respuesta": "12,9°",
+   "distractores": [
+    {
+     "valor": "77,1°",
+     "error": "E03"
+    },
+    {
+     "valor": "167,1°",
+     "error": null
+    },
+    {
+     "valor": "6,5°",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.ESPACIO.06"
+   ],
+   "explicacion_nino": "El ángulo recta-plano es el complementario del que forman el director v = (3, 0, −1) y el normal n = (0, 2, −2): sen φ = |v·n| / (|v|·|n|) = 2/(√10·√8) ≈ 0,224, φ ≈ 12,9°.",
+   "explicacion_adulto": "Está aprendiendo a traducir situaciones del espacio (trayectorias, techos, antenas) a puntos, rectas y planos y a usar vectores para calcular. Los errores típicos son confundir el vector director de una recta con el normal de un plano, decir que dos rectas son paralelas solo porque no se cortan (pueden cruzarse) y calcular el ángulo recta-plano con el coseno. Pídale que diga qué vector usa y por qué.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "vectores",
+     "resultado": "v = (3, 0, −1), n = (0, 2, −2)",
+     "texto": "Director y normal."
+    },
+    {
+     "paso": 2,
+     "operacion": "seno",
+     "resultado": "|v·n|/(|v||n|) ≈ 0,224",
+     "texto": "Con seno, no coseno."
+    },
+    {
+     "paso": 3,
+     "operacion": "ángulo",
+     "resultado": "12,9°",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un rayo de sol sigue la dirección (1, 3, 0) y el suelo de una rampa es el plano 2x − 2y − 2z = 0. ¿Qué ángulo forma con el plano?",
+   "respuesta": "21,4°",
+   "distractores": [
+    {
+     "valor": "68,6°",
+     "error": "E03"
+    },
+    {
+     "valor": "158,6°",
+     "error": null
+    },
+    {
+     "valor": "10,7°",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.ESPACIO.06"
+   ],
+   "explicacion_nino": "El ángulo recta-plano es el complementario del que forman el director v = (1, 3, 0) y el normal n = (2, −2, −2): sen φ = |v·n| / (|v|·|n|) = 4/(√10·√12) ≈ 0,365, φ ≈ 21,4°.",
+   "explicacion_adulto": "Está aprendiendo a traducir situaciones del espacio (trayectorias, techos, antenas) a puntos, rectas y planos y a usar vectores para calcular. Los errores típicos son confundir el vector director de una recta con el normal de un plano, decir que dos rectas son paralelas solo porque no se cortan (pueden cruzarse) y calcular el ángulo recta-plano con el coseno. Pídale que diga qué vector usa y por qué.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "vectores",
+     "resultado": "v = (1, 3, 0), n = (2, −2, −2)",
+     "texto": "Director y normal."
+    },
+    {
+     "paso": 2,
+     "operacion": "seno",
+     "resultado": "|v·n|/(|v||n|) ≈ 0,365",
+     "texto": "Con seno, no coseno."
+    },
+    {
+     "paso": 3,
+     "operacion": "ángulo",
+     "resultado": "21,4°",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Una pasarela recta sigue la dirección (1, 3, −1) y el suelo de una rampa es el plano −2x + 2z = 0. ¿Qué ángulo forma con el plano?",
+   "respuesta": "25,2°",
+   "distractores": [
+    {
+     "valor": "64,8°",
+     "error": "E03"
+    },
+    {
+     "valor": "154,8°",
+     "error": null
+    },
+    {
+     "valor": "12,6°",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.ESPACIO.06"
+   ],
+   "explicacion_nino": "El ángulo recta-plano es el complementario del que forman el director v = (1, 3, −1) y el normal n = (−2, 0, 2): sen φ = |v·n| / (|v|·|n|) = 4/(√11·√8) ≈ 0,426, φ ≈ 25,2°.",
+   "explicacion_adulto": "Está aprendiendo a traducir situaciones del espacio (trayectorias, techos, antenas) a puntos, rectas y planos y a usar vectores para calcular. Los errores típicos son confundir el vector director de una recta con el normal de un plano, decir que dos rectas son paralelas solo porque no se cortan (pueden cruzarse) y calcular el ángulo recta-plano con el coseno. Pídale que diga qué vector usa y por qué.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "vectores",
+     "resultado": "v = (1, 3, −1), n = (−2, 0, 2)",
+     "texto": "Director y normal."
+    },
+    {
+     "paso": 2,
+     "operacion": "seno",
+     "resultado": "|v·n|/(|v||n|) ≈ 0,426",
+     "texto": "Con seno, no coseno."
+    },
+    {
+     "paso": 3,
+     "operacion": "ángulo",
+     "resultado": "25,2°",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Una pieza de un juego de construcción es un tetraedro con vértices (1, 3, 2), (4, 5, 2), (−1, 5, 5) y (−1, 7, 2) (en cm). ¿Cuál es su volumen?",
+   "respuesta": "8 cm³",
+   "distractores": [
+    {
+     "valor": "48 cm³",
+     "error": null
+    },
+    {
+     "valor": "24 cm³",
+     "error": null
+    },
+    {
+     "valor": "16 cm³",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "48 : 6",
+   "secundarias": [
+    "GEO.ESPACIO.02"
+   ],
+   "explicacion_nino": "Toma los vectores desde (1, 3, 2): (3, 2, 0), (−2, 2, 3), (−2, 4, 0). Su producto mixto (determinante) vale -48. El volumen del tetraedro es |-48|/6 = 8 cm³.",
+   "explicacion_adulto": "Está aprendiendo a traducir situaciones del espacio (trayectorias, techos, antenas) a puntos, rectas y planos y a usar vectores para calcular. Los errores típicos son confundir el vector director de una recta con el normal de un plano, decir que dos rectas son paralelas solo porque no se cortan (pueden cruzarse) y calcular el ángulo recta-plano con el coseno. Pídale que diga qué vector usa y por qué.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "vectores",
+     "resultado": "",
+     "texto": "Desde un vértice a los otros tres."
+    },
+    {
+     "paso": 2,
+     "operacion": "producto mixto",
+     "resultado": "-48",
+     "texto": "Determinante 3×3."
+    },
+    {
+     "paso": 3,
+     "operacion": "volumen",
+     "resultado": "8 cm³",
+     "texto": "Un sexto del valor absoluto."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Una pieza de un juego de construcción es un tetraedro con vértices (1, 3, 0), (5, 5, −2), (0, 3, 3) y (4, 5, −2) (en cm). ¿Cuál es su volumen?",
+   "respuesta": "1 cm³",
+   "distractores": [
+    {
+     "valor": "6 cm³",
+     "error": null
+    },
+    {
+     "valor": "3 cm³",
+     "error": null
+    },
+    {
+     "valor": "2 cm³",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "6 : 6",
+   "secundarias": [
+    "GEO.ESPACIO.02"
+   ],
+   "explicacion_nino": "Toma los vectores desde (1, 3, 0): (4, 2, −2), (−1, 0, 3), (3, 2, −2). Su producto mixto (determinante) vale -6. El volumen del tetraedro es |-6|/6 = 1 cm³.",
+   "explicacion_adulto": "Está aprendiendo a traducir situaciones del espacio (trayectorias, techos, antenas) a puntos, rectas y planos y a usar vectores para calcular. Los errores típicos son confundir el vector director de una recta con el normal de un plano, decir que dos rectas son paralelas solo porque no se cortan (pueden cruzarse) y calcular el ángulo recta-plano con el coseno. Pídale que diga qué vector usa y por qué.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "vectores",
+     "resultado": "",
+     "texto": "Desde un vértice a los otros tres."
+    },
+    {
+     "paso": 2,
+     "operacion": "producto mixto",
+     "resultado": "-6",
+     "texto": "Determinante 3×3."
+    },
+    {
+     "paso": 3,
+     "operacion": "volumen",
+     "resultado": "1 cm³",
+     "texto": "Un sexto del valor absoluto."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Una pieza de un juego de construcción es un tetraedro con vértices (2, 0, 3), (2, 2, 3), (0, −2, 5) y (6, −2, 5) (en cm). ¿Cuál es su volumen?",
+   "respuesta": "4 cm³",
+   "distractores": [
+    {
+     "valor": "24 cm³",
+     "error": null
+    },
+    {
+     "valor": "12 cm³",
+     "error": null
+    },
+    {
+     "valor": "8 cm³",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "24 : 6",
+   "secundarias": [
+    "GEO.ESPACIO.02"
+   ],
+   "explicacion_nino": "Toma los vectores desde (2, 0, 3): (0, 2, 0), (−2, −2, 2), (4, −2, 2). Su producto mixto (determinante) vale 24. El volumen del tetraedro es |24|/6 = 4 cm³.",
+   "explicacion_adulto": "Está aprendiendo a traducir situaciones del espacio (trayectorias, techos, antenas) a puntos, rectas y planos y a usar vectores para calcular. Los errores típicos son confundir el vector director de una recta con el normal de un plano, decir que dos rectas son paralelas solo porque no se cortan (pueden cruzarse) y calcular el ángulo recta-plano con el coseno. Pídale que diga qué vector usa y por qué.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "vectores",
+     "resultado": "",
+     "texto": "Desde un vértice a los otros tres."
+    },
+    {
+     "paso": 2,
+     "operacion": "producto mixto",
+     "resultado": "24",
+     "texto": "Determinante 3×3."
+    },
+    {
+     "paso": 3,
+     "operacion": "volumen",
+     "resultado": "4 cm³",
+     "texto": "Un sexto del valor absoluto."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Una pieza de un juego de construcción es un tetraedro con vértices (3, 1, 0), (1, 0, 2), (3, 2, 3) y (1, 1, 2) (en cm). ¿Cuál es su volumen?",
+   "respuesta": "1 cm³",
+   "distractores": [
+    {
+     "valor": "6 cm³",
+     "error": null
+    },
+    {
+     "valor": "3 cm³",
+     "error": null
+    },
+    {
+     "valor": "2 cm³",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "6 : 6",
+   "secundarias": [
+    "GEO.ESPACIO.02"
+   ],
+   "explicacion_nino": "Toma los vectores desde (3, 1, 0): (−2, −1, 2), (0, 1, 3), (−2, 0, 2). Su producto mixto (determinante) vale 6. El volumen del tetraedro es |6|/6 = 1 cm³.",
+   "explicacion_adulto": "Está aprendiendo a traducir situaciones del espacio (trayectorias, techos, antenas) a puntos, rectas y planos y a usar vectores para calcular. Los errores típicos son confundir el vector director de una recta con el normal de un plano, decir que dos rectas son paralelas solo porque no se cortan (pueden cruzarse) y calcular el ángulo recta-plano con el coseno. Pídale que diga qué vector usa y por qué.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "vectores",
+     "resultado": "",
+     "texto": "Desde un vértice a los otros tres."
+    },
+    {
+     "paso": 2,
+     "operacion": "producto mixto",
+     "resultado": "6",
+     "texto": "Determinante 3×3."
+    },
+    {
+     "paso": 3,
+     "operacion": "volumen",
+     "resultado": "1 cm³",
+     "texto": "Un sexto del valor absoluto."
+    }
+   ],
+   "plantilla": "P05"
+  }
+ ]
+}
