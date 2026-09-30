@@ -4,40 +4,40 @@
  "ejercicios": [
   {
    "dificultad": 1,
-   "enunciado": "Una abuela tiene 29 años y su nieto, 7. ¿Dentro de cuántos años la edad de la abuela será el doble que la de el nieto?",
+   "enunciado": "Una madre tiene 63 años y su hija, 11. ¿Dentro de cuántos años tendrá la madre el triple de la edad de la hija?",
    "respuesta": "15",
    "distractores": [
     {
-     "valor": "22",
+     "valor": "10",
+     "error": "E01"
+    },
+    {
+     "valor": "52",
      "error": null
     },
     {
-     "valor": "17",
-     "error": null
-    },
-    {
-     "valor": "16",
+     "valor": "26",
      "error": null
     }
    ],
-   "expresion_calculo": "29 − 14",
+   "expresion_calculo": "(63 − 33) : 2",
    "secundarias": [
     "ALG.EC1.06"
    ],
-   "explicacion_nino": "Entiende: dentro de x años las DOS edades aumentan x. Datos: la abuela 29 años, el nieto 7. Plantea: 29 + x = 2(7 + x). Resuelve: 29 + x = 14 + 2x; 29 − 14 = 2x − x; x = 15. Comprueba: dentro de 15 años tendrán 44 y 22, y 44 = 2 × 22.",
-   "explicacion_adulto": "Aprende a plantear problemas de edades en otro momento del tiempo: todas las edades cambian a la vez. Fallo típico: sumar x solo a una edad (29 + x = 2 · 7). Una tabla 'hoy / dentro de x años' con una fila por persona ayuda mucho.",
+   "explicacion_nino": "Entiende: dentro de x años las DOS edades aumentan x. Datos: la madre 63 años, la hija 11. Plantea: 63 + x = 3(11 + x). Resuelve: 63 + x = 33 + 3x; 63 − 33 = 3x − x; x = 15. Comprueba: dentro de 15 años tendrán 78 y 26, y 78 = 3 × 26.",
+   "explicacion_adulto": "Aprende a plantear problemas de edades en otro momento del tiempo: todas las edades cambian a la vez. Fallo típico: sumar x solo a una edad (63 + x = 3 · 11). Una tabla 'hoy / dentro de x años' con una fila por persona ayuda mucho.",
    "explicacion_pasos": [
     {
      "paso": 1,
      "operacion": "Tabla",
-     "resultado": "29 + x y 7 + x",
+     "resultado": "63 + x y 11 + x",
      "texto": "Edades dentro de x años."
     },
     {
      "paso": 2,
      "operacion": "Plantear",
-     "resultado": "29 + x = 2(7 + x)",
-     "texto": "La abuela = 2 veces el nieto."
+     "resultado": "63 + x = 3(11 + x)",
+     "texto": "La madre = 3 veces la hija."
     },
     {
      "paso": 3,
@@ -47,7 +47,7 @@
     },
     {
      "paso": 4,
-     "operacion": "44 = 2 × 22",
+     "operacion": "78 = 3 × 26",
      "resultado": "cierto",
      "texto": "Comprobar."
     }
@@ -56,144 +56,40 @@
   },
   {
    "dificultad": 1,
-   "enunciado": "Un tío tiene 35 años y su sobrina, 9. ¿Dentro de cuántos años la edad de el tío será el doble que la de la sobrina?",
-   "respuesta": "17",
-   "distractores": [
-    {
-     "valor": "26",
-     "error": null
-    },
-    {
-     "valor": "19",
-     "error": null
-    },
-    {
-     "valor": "18",
-     "error": null
-    }
-   ],
-   "expresion_calculo": "35 − 18",
-   "secundarias": [
-    "ALG.EC1.06"
-   ],
-   "explicacion_nino": "Entiende: dentro de x años las DOS edades aumentan x. Datos: el tío 35 años, la sobrina 9. Plantea: 35 + x = 2(9 + x). Resuelve: 35 + x = 18 + 2x; 35 − 18 = 2x − x; x = 17. Comprueba: dentro de 17 años tendrán 52 y 26, y 52 = 2 × 26.",
-   "explicacion_adulto": "Aprende a plantear problemas de edades en otro momento del tiempo: todas las edades cambian a la vez. Fallo típico: sumar x solo a una edad (35 + x = 2 · 9). Una tabla 'hoy / dentro de x años' con una fila por persona ayuda mucho.",
-   "explicacion_pasos": [
-    {
-     "paso": 1,
-     "operacion": "Tabla",
-     "resultado": "35 + x y 9 + x",
-     "texto": "Edades dentro de x años."
-    },
-    {
-     "paso": 2,
-     "operacion": "Plantear",
-     "resultado": "35 + x = 2(9 + x)",
-     "texto": "El tío = 2 veces la sobrina."
-    },
-    {
-     "paso": 3,
-     "operacion": "Resolver",
-     "resultado": "x = 17",
-     "texto": "Transponer y despejar."
-    },
-    {
-     "paso": 4,
-     "operacion": "52 = 2 × 26",
-     "resultado": "cierto",
-     "texto": "Comprobar."
-    }
-   ],
-   "plantilla": "P01"
-  },
-  {
-   "dificultad": 1,
-   "enunciado": "Una abuela tiene 31 años y su nieto, 12. ¿Dentro de cuántos años la edad de la abuela será el doble que la de el nieto?",
-   "respuesta": "7",
-   "distractores": [
-    {
-     "valor": "19",
-     "error": null
-    },
-    {
-     "valor": "9",
-     "error": null
-    },
-    {
-     "valor": "8",
-     "error": null
-    }
-   ],
-   "expresion_calculo": "31 − 24",
-   "secundarias": [
-    "ALG.EC1.06"
-   ],
-   "explicacion_nino": "Entiende: dentro de x años las DOS edades aumentan x. Datos: la abuela 31 años, el nieto 12. Plantea: 31 + x = 2(12 + x). Resuelve: 31 + x = 24 + 2x; 31 − 24 = 2x − x; x = 7. Comprueba: dentro de 7 años tendrán 38 y 19, y 38 = 2 × 19.",
-   "explicacion_adulto": "Aprende a plantear problemas de edades en otro momento del tiempo: todas las edades cambian a la vez. Fallo típico: sumar x solo a una edad (31 + x = 2 · 12). Una tabla 'hoy / dentro de x años' con una fila por persona ayuda mucho.",
-   "explicacion_pasos": [
-    {
-     "paso": 1,
-     "operacion": "Tabla",
-     "resultado": "31 + x y 12 + x",
-     "texto": "Edades dentro de x años."
-    },
-    {
-     "paso": 2,
-     "operacion": "Plantear",
-     "resultado": "31 + x = 2(12 + x)",
-     "texto": "La abuela = 2 veces el nieto."
-    },
-    {
-     "paso": 3,
-     "operacion": "Resolver",
-     "resultado": "x = 7",
-     "texto": "Transponer y despejar."
-    },
-    {
-     "paso": 4,
-     "operacion": "38 = 2 × 19",
-     "resultado": "cierto",
-     "texto": "Comprobar."
-    }
-   ],
-   "plantilla": "P01"
-  },
-  {
-   "dificultad": 1,
-   "enunciado": "Un tío tiene 42 años y su sobrina, 15. ¿Dentro de cuántos años la edad de el tío será el doble que la de la sobrina?",
+   "enunciado": "Una abuela tiene 54 años y su nieto, 10. ¿Dentro de cuántos años tendrá la abuela el triple de la edad del nieto?",
    "respuesta": "12",
    "distractores": [
     {
-     "valor": "27",
+     "valor": "8",
+     "error": "E01"
+    },
+    {
+     "valor": "44",
      "error": null
     },
     {
-     "valor": "6",
-     "error": null
-    },
-    {
-     "valor": "13",
+     "valor": "22",
      "error": null
     }
    ],
-   "expresion_calculo": "42 − 30",
+   "expresion_calculo": "(54 − 30) : 2",
    "secundarias": [
     "ALG.EC1.06"
    ],
-   "explicacion_nino": "Entiende: dentro de x años las DOS edades aumentan x. Datos: el tío 42 años, la sobrina 15. Plantea: 42 + x = 2(15 + x). Resuelve: 42 + x = 30 + 2x; 42 − 30 = 2x − x; x = 12. Comprueba: dentro de 12 años tendrán 54 y 27, y 54 = 2 × 27.",
-   "explicacion_adulto": "Aprende a plantear problemas de edades en otro momento del tiempo: todas las edades cambian a la vez. Fallo típico: sumar x solo a una edad (42 + x = 2 · 15). Una tabla 'hoy / dentro de x años' con una fila por persona ayuda mucho.",
+   "explicacion_nino": "Entiende: dentro de x años las DOS edades aumentan x. Datos: la abuela 54 años, el nieto 10. Plantea: 54 + x = 3(10 + x). Resuelve: 54 + x = 30 + 3x; 54 − 30 = 3x − x; x = 12. Comprueba: dentro de 12 años tendrán 66 y 22, y 66 = 3 × 22.",
+   "explicacion_adulto": "Aprende a plantear problemas de edades en otro momento del tiempo: todas las edades cambian a la vez. Fallo típico: sumar x solo a una edad (54 + x = 3 · 10). Una tabla 'hoy / dentro de x años' con una fila por persona ayuda mucho.",
    "explicacion_pasos": [
     {
      "paso": 1,
      "operacion": "Tabla",
-     "resultado": "42 + x y 15 + x",
+     "resultado": "54 + x y 10 + x",
      "texto": "Edades dentro de x años."
     },
     {
      "paso": 2,
      "operacion": "Plantear",
-     "resultado": "42 + x = 2(15 + x)",
-     "texto": "El tío = 2 veces la sobrina."
+     "resultado": "54 + x = 3(10 + x)",
+     "texto": "La abuela = 3 veces el nieto."
     },
     {
      "paso": 3,
@@ -203,7 +99,7 @@
     },
     {
      "paso": 4,
-     "operacion": "54 = 2 × 27",
+     "operacion": "66 = 3 × 22",
      "resultado": "cierto",
      "texto": "Comprobar."
     }
@@ -212,154 +108,50 @@
   },
   {
    "dificultad": 1,
-   "enunciado": "Una madre tiene 37 años y su hija, 3. ¿Dentro de cuántos años la edad de la madre será el triple que la de la hija?",
-   "respuesta": "14",
+   "enunciado": "Un padre tiene 34 años y su hijo, 10. ¿Dentro de cuántos años tendrá el padre el triple de la edad del hijo?",
+   "respuesta": "2",
    "distractores": [
     {
-     "valor": "28",
-     "error": "E01"
-    },
-    {
-     "valor": "34",
+     "valor": "24",
      "error": null
     },
     {
-     "valor": "17",
-     "error": null
-    }
-   ],
-   "expresion_calculo": "(37 − 9) : 2",
-   "secundarias": [
-    "ALG.EC1.06"
-   ],
-   "explicacion_nino": "Entiende: dentro de x años las DOS edades aumentan x. Datos: la madre 37 años, la hija 3. Plantea: 37 + x = 3(3 + x). Resuelve: 37 + x = 9 + 3x; 37 − 9 = 3x − x; x = 14. Comprueba: dentro de 14 años tendrán 51 y 17, y 51 = 3 × 17.",
-   "explicacion_adulto": "Aprende a plantear problemas de edades en otro momento del tiempo: todas las edades cambian a la vez. Fallo típico: sumar x solo a una edad (37 + x = 3 · 3). Una tabla 'hoy / dentro de x años' con una fila por persona ayuda mucho.",
-   "explicacion_pasos": [
-    {
-     "paso": 1,
-     "operacion": "Tabla",
-     "resultado": "37 + x y 3 + x",
-     "texto": "Edades dentro de x años."
-    },
-    {
-     "paso": 2,
-     "operacion": "Plantear",
-     "resultado": "37 + x = 3(3 + x)",
-     "texto": "La madre = 3 veces la hija."
-    },
-    {
-     "paso": 3,
-     "operacion": "Resolver",
-     "resultado": "x = 14",
-     "texto": "Transponer y despejar."
-    },
-    {
-     "paso": 4,
-     "operacion": "51 = 3 × 17",
-     "resultado": "cierto",
-     "texto": "Comprobar."
-    }
-   ],
-   "plantilla": "P01"
-  },
-  {
-   "dificultad": 1,
-   "enunciado": "Un tío tiene 38 años y su sobrina, 10. ¿Dentro de cuántos años la edad de el tío será el triple que la de la sobrina?",
-   "respuesta": "4",
-   "distractores": [
-    {
-     "valor": "8",
-     "error": "E01"
-    },
-    {
-     "valor": "28",
-     "error": null
-    },
-    {
-     "valor": "7",
-     "error": null
-    }
-   ],
-   "expresion_calculo": "(38 − 30) : 2",
-   "secundarias": [
-    "ALG.EC1.06"
-   ],
-   "explicacion_nino": "Entiende: dentro de x años las DOS edades aumentan x. Datos: el tío 38 años, la sobrina 10. Plantea: 38 + x = 3(10 + x). Resuelve: 38 + x = 30 + 3x; 38 − 30 = 3x − x; x = 4. Comprueba: dentro de 4 años tendrán 42 y 14, y 42 = 3 × 14.",
-   "explicacion_adulto": "Aprende a plantear problemas de edades en otro momento del tiempo: todas las edades cambian a la vez. Fallo típico: sumar x solo a una edad (38 + x = 3 · 10). Una tabla 'hoy / dentro de x años' con una fila por persona ayuda mucho.",
-   "explicacion_pasos": [
-    {
-     "paso": 1,
-     "operacion": "Tabla",
-     "resultado": "38 + x y 10 + x",
-     "texto": "Edades dentro de x años."
-    },
-    {
-     "paso": 2,
-     "operacion": "Plantear",
-     "resultado": "38 + x = 3(10 + x)",
-     "texto": "El tío = 3 veces la sobrina."
-    },
-    {
-     "paso": 3,
-     "operacion": "Resolver",
-     "resultado": "x = 4",
-     "texto": "Transponer y despejar."
-    },
-    {
-     "paso": 4,
-     "operacion": "42 = 3 × 14",
-     "resultado": "cierto",
-     "texto": "Comprobar."
-    }
-   ],
-   "plantilla": "P01"
-  },
-  {
-   "dificultad": 2,
-   "enunciado": "Una profesora tiene 23 años y su hijo, 10. ¿Dentro de cuántos años la edad de la profesora será el doble que la de el hijo?",
-   "respuesta": "3",
-   "distractores": [
-    {
-     "valor": "13",
+     "valor": "12",
      "error": null
     },
     {
      "valor": "5",
      "error": null
-    },
-    {
-     "valor": "4",
-     "error": null
     }
    ],
-   "expresion_calculo": "23 − 20",
+   "expresion_calculo": "(34 − 30) : 2",
    "secundarias": [
     "ALG.EC1.06"
    ],
-   "explicacion_nino": "Entiende: dentro de x años las DOS edades aumentan x. Datos: la profesora 23 años, el hijo 10. Plantea: 23 + x = 2(10 + x). Resuelve: 23 + x = 20 + 2x; 23 − 20 = 2x − x; x = 3. Comprueba: dentro de 3 años tendrán 26 y 13, y 26 = 2 × 13.",
-   "explicacion_adulto": "Aprende a plantear problemas de edades en otro momento del tiempo: todas las edades cambian a la vez. Fallo típico: sumar x solo a una edad (23 + x = 2 · 10). Una tabla 'hoy / dentro de x años' con una fila por persona ayuda mucho.",
+   "explicacion_nino": "Entiende: dentro de x años las DOS edades aumentan x. Datos: el padre 34 años, el hijo 10. Plantea: 34 + x = 3(10 + x). Resuelve: 34 + x = 30 + 3x; 34 − 30 = 3x − x; x = 2. Comprueba: dentro de 2 años tendrán 36 y 12, y 36 = 3 × 12.",
+   "explicacion_adulto": "Aprende a plantear problemas de edades en otro momento del tiempo: todas las edades cambian a la vez. Fallo típico: sumar x solo a una edad (34 + x = 3 · 10). Una tabla 'hoy / dentro de x años' con una fila por persona ayuda mucho.",
    "explicacion_pasos": [
     {
      "paso": 1,
      "operacion": "Tabla",
-     "resultado": "23 + x y 10 + x",
+     "resultado": "34 + x y 10 + x",
      "texto": "Edades dentro de x años."
     },
     {
      "paso": 2,
      "operacion": "Plantear",
-     "resultado": "23 + x = 2(10 + x)",
-     "texto": "La profesora = 2 veces el hijo."
+     "resultado": "34 + x = 3(10 + x)",
+     "texto": "El padre = 3 veces el hijo."
     },
     {
      "paso": 3,
      "operacion": "Resolver",
-     "resultado": "x = 3",
+     "resultado": "x = 2",
      "texto": "Transponer y despejar."
     },
     {
      "paso": 4,
-     "operacion": "26 = 2 × 13",
+     "operacion": "36 = 3 × 12",
      "resultado": "cierto",
      "texto": "Comprobar."
     }
@@ -367,16 +159,16 @@
    "plantilla": "P01"
   },
   {
-   "dificultad": 2,
-   "enunciado": "Un tío tiene 23 años y su sobrina, 4. ¿Dentro de cuántos años la edad de el tío será el doble que la de la sobrina?",
+   "dificultad": 1,
+   "enunciado": "Una madre tiene 33 años y su hija, 9. ¿Dentro de cuántos años tendrá la madre el doble de la edad de la hija?",
    "respuesta": "15",
    "distractores": [
     {
-     "valor": "19",
+     "valor": "24",
      "error": null
     },
     {
-     "valor": "17",
+     "valor": "18",
      "error": null
     },
     {
@@ -384,24 +176,24 @@
      "error": null
     }
    ],
-   "expresion_calculo": "23 − 8",
+   "expresion_calculo": "33 − 18",
    "secundarias": [
     "ALG.EC1.06"
    ],
-   "explicacion_nino": "Entiende: dentro de x años las DOS edades aumentan x. Datos: el tío 23 años, la sobrina 4. Plantea: 23 + x = 2(4 + x). Resuelve: 23 + x = 8 + 2x; 23 − 8 = 2x − x; x = 15. Comprueba: dentro de 15 años tendrán 38 y 19, y 38 = 2 × 19.",
-   "explicacion_adulto": "Aprende a plantear problemas de edades en otro momento del tiempo: todas las edades cambian a la vez. Fallo típico: sumar x solo a una edad (23 + x = 2 · 4). Una tabla 'hoy / dentro de x años' con una fila por persona ayuda mucho.",
+   "explicacion_nino": "Entiende: dentro de x años las DOS edades aumentan x. Datos: la madre 33 años, la hija 9. Plantea: 33 + x = 2(9 + x). Resuelve: 33 + x = 18 + 2x; 33 − 18 = 2x − x; x = 15. Comprueba: dentro de 15 años tendrán 48 y 24, y 48 = 2 × 24.",
+   "explicacion_adulto": "Aprende a plantear problemas de edades en otro momento del tiempo: todas las edades cambian a la vez. Fallo típico: sumar x solo a una edad (33 + x = 2 · 9). Una tabla 'hoy / dentro de x años' con una fila por persona ayuda mucho.",
    "explicacion_pasos": [
     {
      "paso": 1,
      "operacion": "Tabla",
-     "resultado": "23 + x y 4 + x",
+     "resultado": "33 + x y 9 + x",
      "texto": "Edades dentro de x años."
     },
     {
      "paso": 2,
      "operacion": "Plantear",
-     "resultado": "23 + x = 2(4 + x)",
-     "texto": "El tío = 2 veces la sobrina."
+     "resultado": "33 + x = 2(9 + x)",
+     "texto": "La madre = 2 veces la hija."
     },
     {
      "paso": 3,
@@ -411,7 +203,111 @@
     },
     {
      "paso": 4,
-     "operacion": "38 = 2 × 19",
+     "operacion": "48 = 2 × 24",
+     "resultado": "cierto",
+     "texto": "Comprobar."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Una madre tiene 26 años y su hija, 6. ¿Dentro de cuántos años tendrá la madre el triple de la edad de la hija?",
+   "respuesta": "4",
+   "distractores": [
+    {
+     "valor": "20",
+     "error": null
+    },
+    {
+     "valor": "10",
+     "error": null
+    },
+    {
+     "valor": "7",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(26 − 18) : 2",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: dentro de x años las DOS edades aumentan x. Datos: la madre 26 años, la hija 6. Plantea: 26 + x = 3(6 + x). Resuelve: 26 + x = 18 + 3x; 26 − 18 = 3x − x; x = 4. Comprueba: dentro de 4 años tendrán 30 y 10, y 30 = 3 × 10.",
+   "explicacion_adulto": "Aprende a plantear problemas de edades en otro momento del tiempo: todas las edades cambian a la vez. Fallo típico: sumar x solo a una edad (26 + x = 3 · 6). Una tabla 'hoy / dentro de x años' con una fila por persona ayuda mucho.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Tabla",
+     "resultado": "26 + x y 6 + x",
+     "texto": "Edades dentro de x años."
+    },
+    {
+     "paso": 2,
+     "operacion": "Plantear",
+     "resultado": "26 + x = 3(6 + x)",
+     "texto": "La madre = 3 veces la hija."
+    },
+    {
+     "paso": 3,
+     "operacion": "Resolver",
+     "resultado": "x = 4",
+     "texto": "Transponer y despejar."
+    },
+    {
+     "paso": 4,
+     "operacion": "30 = 3 × 10",
+     "resultado": "cierto",
+     "texto": "Comprobar."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Una abuela tiene 61 años y su nieto, 13. ¿Dentro de cuántos años tendrá la abuela el triple de la edad del nieto?",
+   "respuesta": "11",
+   "distractores": [
+    {
+     "valor": "48",
+     "error": null
+    },
+    {
+     "valor": "24",
+     "error": null
+    },
+    {
+     "valor": "14",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(61 − 39) : 2",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: dentro de x años las DOS edades aumentan x. Datos: la abuela 61 años, el nieto 13. Plantea: 61 + x = 3(13 + x). Resuelve: 61 + x = 39 + 3x; 61 − 39 = 3x − x; x = 11. Comprueba: dentro de 11 años tendrán 72 y 24, y 72 = 3 × 24.",
+   "explicacion_adulto": "Aprende a plantear problemas de edades en otro momento del tiempo: todas las edades cambian a la vez. Fallo típico: sumar x solo a una edad (61 + x = 3 · 13). Una tabla 'hoy / dentro de x años' con una fila por persona ayuda mucho.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Tabla",
+     "resultado": "61 + x y 13 + x",
+     "texto": "Edades dentro de x años."
+    },
+    {
+     "paso": 2,
+     "operacion": "Plantear",
+     "resultado": "61 + x = 3(13 + x)",
+     "texto": "La abuela = 3 veces el nieto."
+    },
+    {
+     "paso": 3,
+     "operacion": "Resolver",
+     "resultado": "x = 11",
+     "texto": "Transponer y despejar."
+    },
+    {
+     "paso": 4,
+     "operacion": "72 = 3 × 24",
      "resultado": "cierto",
      "texto": "Comprobar."
     }
@@ -420,50 +316,154 @@
   },
   {
    "dificultad": 2,
-   "enunciado": "Un tío tiene 51 años y su sobrina, 13. ¿Dentro de cuántos años la edad de el tío será el triple que la de la sobrina?",
-   "respuesta": "6",
+   "enunciado": "Un padre tiene 36 años y su hijo, 6. ¿Dentro de cuántos años tendrá el padre el triple de la edad del hijo?",
+   "respuesta": "9",
    "distractores": [
     {
-     "valor": "12",
+     "valor": "6",
      "error": "E01"
     },
     {
-     "valor": "38",
+     "valor": "30",
      "error": null
     },
     {
-     "valor": "4",
+     "valor": "15",
      "error": null
     }
    ],
-   "expresion_calculo": "(51 − 39) : 2",
+   "expresion_calculo": "(36 − 18) : 2",
    "secundarias": [
     "ALG.EC1.06"
    ],
-   "explicacion_nino": "Entiende: dentro de x años las DOS edades aumentan x. Datos: el tío 51 años, la sobrina 13. Plantea: 51 + x = 3(13 + x). Resuelve: 51 + x = 39 + 3x; 51 − 39 = 3x − x; x = 6. Comprueba: dentro de 6 años tendrán 57 y 19, y 57 = 3 × 19.",
-   "explicacion_adulto": "Aprende a plantear problemas de edades en otro momento del tiempo: todas las edades cambian a la vez. Fallo típico: sumar x solo a una edad (51 + x = 3 · 13). Una tabla 'hoy / dentro de x años' con una fila por persona ayuda mucho.",
+   "explicacion_nino": "Entiende: dentro de x años las DOS edades aumentan x. Datos: el padre 36 años, el hijo 6. Plantea: 36 + x = 3(6 + x). Resuelve: 36 + x = 18 + 3x; 36 − 18 = 3x − x; x = 9. Comprueba: dentro de 9 años tendrán 45 y 15, y 45 = 3 × 15.",
+   "explicacion_adulto": "Aprende a plantear problemas de edades en otro momento del tiempo: todas las edades cambian a la vez. Fallo típico: sumar x solo a una edad (36 + x = 3 · 6). Una tabla 'hoy / dentro de x años' con una fila por persona ayuda mucho.",
    "explicacion_pasos": [
     {
      "paso": 1,
      "operacion": "Tabla",
-     "resultado": "51 + x y 13 + x",
+     "resultado": "36 + x y 6 + x",
      "texto": "Edades dentro de x años."
     },
     {
      "paso": 2,
      "operacion": "Plantear",
-     "resultado": "51 + x = 3(13 + x)",
+     "resultado": "36 + x = 3(6 + x)",
+     "texto": "El padre = 3 veces el hijo."
+    },
+    {
+     "paso": 3,
+     "operacion": "Resolver",
+     "resultado": "x = 9",
+     "texto": "Transponer y despejar."
+    },
+    {
+     "paso": 4,
+     "operacion": "45 = 3 × 15",
+     "resultado": "cierto",
+     "texto": "Comprobar."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un tío tiene 65 años y su sobrina, 11. ¿Dentro de cuántos años tendrá el tío el triple de la edad de la sobrina?",
+   "respuesta": "16",
+   "distractores": [
+    {
+     "valor": "54",
+     "error": null
+    },
+    {
+     "valor": "27",
+     "error": null
+    },
+    {
+     "valor": "19",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(65 − 33) : 2",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: dentro de x años las DOS edades aumentan x. Datos: el tío 65 años, la sobrina 11. Plantea: 65 + x = 3(11 + x). Resuelve: 65 + x = 33 + 3x; 65 − 33 = 3x − x; x = 16. Comprueba: dentro de 16 años tendrán 81 y 27, y 81 = 3 × 27.",
+   "explicacion_adulto": "Aprende a plantear problemas de edades en otro momento del tiempo: todas las edades cambian a la vez. Fallo típico: sumar x solo a una edad (65 + x = 3 · 11). Una tabla 'hoy / dentro de x años' con una fila por persona ayuda mucho.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Tabla",
+     "resultado": "65 + x y 11 + x",
+     "texto": "Edades dentro de x años."
+    },
+    {
+     "paso": 2,
+     "operacion": "Plantear",
+     "resultado": "65 + x = 3(11 + x)",
      "texto": "El tío = 3 veces la sobrina."
     },
     {
      "paso": 3,
      "operacion": "Resolver",
-     "resultado": "x = 6",
+     "resultado": "x = 16",
      "texto": "Transponer y despejar."
     },
     {
      "paso": 4,
-     "operacion": "57 = 3 × 19",
+     "operacion": "81 = 3 × 27",
+     "resultado": "cierto",
+     "texto": "Comprobar."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Una entrenadora tiene 45 años y su hijo, 15. ¿Dentro de cuántos años tendrá la entrenadora el doble de la edad del hijo?",
+   "respuesta": "15",
+   "distractores": [
+    {
+     "valor": "30",
+     "error": null
+    },
+    {
+     "valor": "18",
+     "error": null
+    },
+    {
+     "valor": "16",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "45 − 30",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: dentro de x años las DOS edades aumentan x. Datos: la entrenadora 45 años, el hijo 15. Plantea: 45 + x = 2(15 + x). Resuelve: 45 + x = 30 + 2x; 45 − 30 = 2x − x; x = 15. Comprueba: dentro de 15 años tendrán 60 y 30, y 60 = 2 × 30.",
+   "explicacion_adulto": "Aprende a plantear problemas de edades en otro momento del tiempo: todas las edades cambian a la vez. Fallo típico: sumar x solo a una edad (45 + x = 2 · 15). Una tabla 'hoy / dentro de x años' con una fila por persona ayuda mucho.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Tabla",
+     "resultado": "45 + x y 15 + x",
+     "texto": "Edades dentro de x años."
+    },
+    {
+     "paso": 2,
+     "operacion": "Plantear",
+     "resultado": "45 + x = 2(15 + x)",
+     "texto": "La entrenadora = 2 veces el hijo."
+    },
+    {
+     "paso": 3,
+     "operacion": "Resolver",
+     "resultado": "x = 15",
+     "texto": "Transponer y despejar."
+    },
+    {
+     "paso": 4,
+     "operacion": "60 = 2 × 30",
      "resultado": "cierto",
      "texto": "Comprobar."
     }
@@ -472,67 +472,15 @@
   },
   {
    "dificultad": 1,
-   "enunciado": "Unai tiene 27 años y su sobrina Leo, 9. ¿Cuántos años hace que la edad de Unai era el cuádruple que la de Leo?",
-   "respuesta": "3",
+   "enunciado": "Noa tiene 22 años y Candela, 10. ¿Cuántos años hace que Noa tenía el triple de la edad de Candela?",
+   "respuesta": "4",
    "distractores": [
     {
-     "valor": "9",
+     "valor": "8",
      "error": "E01"
     },
     {
-     "valor": "6",
-     "error": "E02"
-    },
-    {
-     "valor": "18",
-     "error": null
-    }
-   ],
-   "expresion_calculo": "(36 − 27) : 3",
-   "secundarias": [
-    "ALG.EC1.06"
-   ],
-   "explicacion_nino": "Entiende: hace x años las dos edades eran x años menores. Plantea: 27 − x = 4(9 − x). Resuelve: 27 − x = 36 − 4x; 4x − x = 36 − 27; 3x = 9; x = 3. Comprueba: hace 3 años tenían 24 y 6, y 24 = 4 × 6.",
-   "explicacion_adulto": "Mismo tipo de problema pero hacia el pasado: se resta x a las dos edades. Si solo la resta a una o aplica el 'el cuádruple' al lado equivocado, la ecuación cambia. Pídale que haga la tabla 'hoy / hace x años' y compruebe con los números.",
-   "explicacion_pasos": [
-    {
-     "paso": 1,
-     "operacion": "Tabla",
-     "resultado": "27 − x y 9 − x",
-     "texto": "Edades hace x años."
-    },
-    {
-     "paso": 2,
-     "operacion": "Plantear",
-     "resultado": "27 − x = 4(9 − x)",
-     "texto": "Relación en el pasado."
-    },
-    {
-     "paso": 3,
-     "operacion": "9 : 3",
-     "resultado": "x = 3",
-     "texto": "Despejar."
-    },
-    {
-     "paso": 4,
-     "operacion": "24 = 4 × 6",
-     "resultado": "cierto",
-     "texto": "Comprobar."
-    }
-   ],
-   "plantilla": "P02"
-  },
-  {
-   "dificultad": 1,
-   "enunciado": "Nerea tiene 22 años y su sobrina Samuel, 10. ¿Cuántos años hace que la edad de Nerea era el cuádruple que la de Samuel?",
-   "respuesta": "6",
-   "distractores": [
-    {
-     "valor": "18",
-     "error": "E01"
-    },
-    {
-     "valor": "9",
+     "valor": "2",
      "error": "E02"
     },
     {
@@ -540,12 +488,12 @@
      "error": null
     }
    ],
-   "expresion_calculo": "(40 − 22) : 3",
+   "expresion_calculo": "(30 − 22) : 2",
    "secundarias": [
     "ALG.EC1.06"
    ],
-   "explicacion_nino": "Entiende: hace x años las dos edades eran x años menores. Plantea: 22 − x = 4(10 − x). Resuelve: 22 − x = 40 − 4x; 4x − x = 40 − 22; 3x = 18; x = 6. Comprueba: hace 6 años tenían 16 y 4, y 16 = 4 × 4.",
-   "explicacion_adulto": "Mismo tipo de problema pero hacia el pasado: se resta x a las dos edades. Si solo la resta a una o aplica el 'el cuádruple' al lado equivocado, la ecuación cambia. Pídale que haga la tabla 'hoy / hace x años' y compruebe con los números.",
+   "explicacion_nino": "Entiende: hace x años las dos edades eran x años menores. Plantea: 22 − x = 3(10 − x). Resuelve: 22 − x = 30 − 3x; 3x − x = 30 − 22; 2x = 8; x = 4. Comprueba: hace 4 años tenían 18 y 6, y 18 = 3 × 6.",
+   "explicacion_adulto": "Mismo tipo de problema pero hacia el pasado: se resta x a las dos edades. Si solo la resta a una o aplica el 'el triple' al lado equivocado, la ecuación cambia. Pídale que haga la tabla 'hoy / hace x años' y compruebe con los números.",
    "explicacion_pasos": [
     {
      "paso": 1,
@@ -556,18 +504,18 @@
     {
      "paso": 2,
      "operacion": "Plantear",
-     "resultado": "22 − x = 4(10 − x)",
+     "resultado": "22 − x = 3(10 − x)",
      "texto": "Relación en el pasado."
     },
     {
      "paso": 3,
-     "operacion": "18 : 3",
-     "resultado": "x = 6",
+     "operacion": "8 : 2",
+     "resultado": "x = 4",
      "texto": "Despejar."
     },
     {
      "paso": 4,
-     "operacion": "16 = 4 × 4",
+     "operacion": "18 = 3 × 6",
      "resultado": "cierto",
      "texto": "Comprobar."
     }
@@ -576,11 +524,11 @@
   },
   {
    "dificultad": 1,
-   "enunciado": "Nerea tiene 21 años y su sobrina Valeria, 13. ¿Cuántos años hace que la edad de Nerea era el triple que la de Valeria?",
+   "enunciado": "Nicolás tiene 37 años y Rubén, 16. ¿Cuántos años hace que Nicolás tenía el cuádruple de la edad de Rubén?",
    "respuesta": "9",
    "distractores": [
     {
-     "valor": "18",
+     "valor": "27",
      "error": "E01"
     },
     {
@@ -588,38 +536,38 @@
      "error": "E02"
     },
     {
-     "valor": "8",
+     "valor": "21",
      "error": null
     }
    ],
-   "expresion_calculo": "(39 − 21) : 2",
+   "expresion_calculo": "(64 − 37) : 3",
    "secundarias": [
     "ALG.EC1.06"
    ],
-   "explicacion_nino": "Entiende: hace x años las dos edades eran x años menores. Plantea: 21 − x = 3(13 − x). Resuelve: 21 − x = 39 − 3x; 3x − x = 39 − 21; 2x = 18; x = 9. Comprueba: hace 9 años tenían 12 y 4, y 12 = 3 × 4.",
-   "explicacion_adulto": "Mismo tipo de problema pero hacia el pasado: se resta x a las dos edades. Si solo la resta a una o aplica el 'el triple' al lado equivocado, la ecuación cambia. Pídale que haga la tabla 'hoy / hace x años' y compruebe con los números.",
+   "explicacion_nino": "Entiende: hace x años las dos edades eran x años menores. Plantea: 37 − x = 4(16 − x). Resuelve: 37 − x = 64 − 4x; 4x − x = 64 − 37; 3x = 27; x = 9. Comprueba: hace 9 años tenían 28 y 7, y 28 = 4 × 7.",
+   "explicacion_adulto": "Mismo tipo de problema pero hacia el pasado: se resta x a las dos edades. Si solo la resta a una o aplica el 'el cuádruple' al lado equivocado, la ecuación cambia. Pídale que haga la tabla 'hoy / hace x años' y compruebe con los números.",
    "explicacion_pasos": [
     {
      "paso": 1,
      "operacion": "Tabla",
-     "resultado": "21 − x y 13 − x",
+     "resultado": "37 − x y 16 − x",
      "texto": "Edades hace x años."
     },
     {
      "paso": 2,
      "operacion": "Plantear",
-     "resultado": "21 − x = 3(13 − x)",
+     "resultado": "37 − x = 4(16 − x)",
      "texto": "Relación en el pasado."
     },
     {
      "paso": 3,
-     "operacion": "18 : 2",
+     "operacion": "27 : 3",
      "resultado": "x = 9",
      "texto": "Despejar."
     },
     {
      "paso": 4,
-     "operacion": "12 = 3 × 4",
+     "operacion": "28 = 4 × 7",
      "resultado": "cierto",
      "texto": "Comprobar."
     }
@@ -628,50 +576,50 @@
   },
   {
    "dificultad": 1,
-   "enunciado": "Candela tiene 52 años y su sobrina Carla, 22. ¿Cuántos años hace que la edad de Candela era el cuádruple que la de Carla?",
-   "respuesta": "12",
+   "enunciado": "Leo tiene 33 años y Gonzalo, 12. ¿Cuántos años hace que Leo tenía el cuádruple de la edad de Gonzalo?",
+   "respuesta": "5",
    "distractores": [
     {
-     "valor": "36",
+     "valor": "15",
      "error": "E01"
     },
     {
-     "valor": "15",
+     "valor": "3",
      "error": "E02"
     },
     {
-     "valor": "30",
+     "valor": "21",
      "error": null
     }
    ],
-   "expresion_calculo": "(88 − 52) : 3",
+   "expresion_calculo": "(48 − 33) : 3",
    "secundarias": [
     "ALG.EC1.06"
    ],
-   "explicacion_nino": "Entiende: hace x años las dos edades eran x años menores. Plantea: 52 − x = 4(22 − x). Resuelve: 52 − x = 88 − 4x; 4x − x = 88 − 52; 3x = 36; x = 12. Comprueba: hace 12 años tenían 40 y 10, y 40 = 4 × 10.",
+   "explicacion_nino": "Entiende: hace x años las dos edades eran x años menores. Plantea: 33 − x = 4(12 − x). Resuelve: 33 − x = 48 − 4x; 4x − x = 48 − 33; 3x = 15; x = 5. Comprueba: hace 5 años tenían 28 y 7, y 28 = 4 × 7.",
    "explicacion_adulto": "Mismo tipo de problema pero hacia el pasado: se resta x a las dos edades. Si solo la resta a una o aplica el 'el cuádruple' al lado equivocado, la ecuación cambia. Pídale que haga la tabla 'hoy / hace x años' y compruebe con los números.",
    "explicacion_pasos": [
     {
      "paso": 1,
      "operacion": "Tabla",
-     "resultado": "52 − x y 22 − x",
+     "resultado": "33 − x y 12 − x",
      "texto": "Edades hace x años."
     },
     {
      "paso": 2,
      "operacion": "Plantear",
-     "resultado": "52 − x = 4(22 − x)",
+     "resultado": "33 − x = 4(12 − x)",
      "texto": "Relación en el pasado."
     },
     {
      "paso": 3,
-     "operacion": "36 : 3",
-     "resultado": "x = 12",
+     "operacion": "15 : 3",
+     "resultado": "x = 5",
      "texto": "Despejar."
     },
     {
      "paso": 4,
-     "operacion": "40 = 4 × 10",
+     "operacion": "28 = 4 × 7",
      "resultado": "cierto",
      "texto": "Comprobar."
     }
@@ -679,60 +627,8 @@
    "plantilla": "P02"
   },
   {
-   "dificultad": 2,
-   "enunciado": "Mateo tiene 52 años y su sobrina Gonzalo, 12. ¿Cuántos años hace que la edad de Mateo era el quíntuple que la de Gonzalo?",
-   "respuesta": "2",
-   "distractores": [
-    {
-     "valor": "8",
-     "error": "E01"
-    },
-    {
-     "valor": "5",
-     "error": "E02"
-    },
-    {
-     "valor": "40",
-     "error": null
-    }
-   ],
-   "expresion_calculo": "(60 − 52) : 4",
-   "secundarias": [
-    "ALG.EC1.06"
-   ],
-   "explicacion_nino": "Entiende: hace x años las dos edades eran x años menores. Plantea: 52 − x = 5(12 − x). Resuelve: 52 − x = 60 − 5x; 5x − x = 60 − 52; 4x = 8; x = 2. Comprueba: hace 2 años tenían 50 y 10, y 50 = 5 × 10.",
-   "explicacion_adulto": "Mismo tipo de problema pero hacia el pasado: se resta x a las dos edades. Si solo la resta a una o aplica el 'el quíntuple' al lado equivocado, la ecuación cambia. Pídale que haga la tabla 'hoy / hace x años' y compruebe con los números.",
-   "explicacion_pasos": [
-    {
-     "paso": 1,
-     "operacion": "Tabla",
-     "resultado": "52 − x y 12 − x",
-     "texto": "Edades hace x años."
-    },
-    {
-     "paso": 2,
-     "operacion": "Plantear",
-     "resultado": "52 − x = 5(12 − x)",
-     "texto": "Relación en el pasado."
-    },
-    {
-     "paso": 3,
-     "operacion": "8 : 4",
-     "resultado": "x = 2",
-     "texto": "Despejar."
-    },
-    {
-     "paso": 4,
-     "operacion": "50 = 5 × 10",
-     "resultado": "cierto",
-     "texto": "Comprobar."
-    }
-   ],
-   "plantilla": "P02"
-  },
-  {
-   "dificultad": 2,
-   "enunciado": "Hugo tiene 35 años y su sobrina Paula, 17. ¿Cuántos años hace que la edad de Hugo era el triple que la de Paula?",
+   "dificultad": 1,
+   "enunciado": "Elena tiene 35 años y Fátima, 17. ¿Cuántos años hace que Elena tenía el triple de la edad de Fátima?",
    "respuesta": "8",
    "distractores": [
     {
@@ -784,7 +680,59 @@
   },
   {
    "dificultad": 2,
-   "enunciado": "Candela tiene 27 años y su sobrina Ainhoa, 11. ¿Cuántos años hace que la edad de Candela era el quíntuple que la de Ainhoa?",
+   "enunciado": "Lola tiene 34 años y Álvaro, 16. ¿Cuántos años hace que Lola tenía el triple de la edad de Álvaro?",
+   "respuesta": "7",
+   "distractores": [
+    {
+     "valor": "14",
+     "error": "E01"
+    },
+    {
+     "valor": "10",
+     "error": "E02"
+    },
+    {
+     "valor": "18",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(48 − 34) : 2",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: hace x años las dos edades eran x años menores. Plantea: 34 − x = 3(16 − x). Resuelve: 34 − x = 48 − 3x; 3x − x = 48 − 34; 2x = 14; x = 7. Comprueba: hace 7 años tenían 27 y 9, y 27 = 3 × 9.",
+   "explicacion_adulto": "Mismo tipo de problema pero hacia el pasado: se resta x a las dos edades. Si solo la resta a una o aplica el 'el triple' al lado equivocado, la ecuación cambia. Pídale que haga la tabla 'hoy / hace x años' y compruebe con los números.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Tabla",
+     "resultado": "34 − x y 16 − x",
+     "texto": "Edades hace x años."
+    },
+    {
+     "paso": 2,
+     "operacion": "Plantear",
+     "resultado": "34 − x = 3(16 − x)",
+     "texto": "Relación en el pasado."
+    },
+    {
+     "paso": 3,
+     "operacion": "14 : 2",
+     "resultado": "x = 7",
+     "texto": "Despejar."
+    },
+    {
+     "paso": 4,
+     "operacion": "27 = 3 × 9",
+     "resultado": "cierto",
+     "texto": "Comprobar."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Olivia tiene 37 años y Lara, 13. ¿Cuántos años hace que Olivia tenía el quíntuple de la edad de Lara?",
    "respuesta": "7",
    "distractores": [
     {
@@ -796,27 +744,27 @@
      "error": "E02"
     },
     {
-     "valor": "16",
+     "valor": "24",
      "error": null
     }
    ],
-   "expresion_calculo": "(55 − 27) : 4",
+   "expresion_calculo": "(65 − 37) : 4",
    "secundarias": [
     "ALG.EC1.06"
    ],
-   "explicacion_nino": "Entiende: hace x años las dos edades eran x años menores. Plantea: 27 − x = 5(11 − x). Resuelve: 27 − x = 55 − 5x; 5x − x = 55 − 27; 4x = 28; x = 7. Comprueba: hace 7 años tenían 20 y 4, y 20 = 5 × 4.",
+   "explicacion_nino": "Entiende: hace x años las dos edades eran x años menores. Plantea: 37 − x = 5(13 − x). Resuelve: 37 − x = 65 − 5x; 5x − x = 65 − 37; 4x = 28; x = 7. Comprueba: hace 7 años tenían 30 y 6, y 30 = 5 × 6.",
    "explicacion_adulto": "Mismo tipo de problema pero hacia el pasado: se resta x a las dos edades. Si solo la resta a una o aplica el 'el quíntuple' al lado equivocado, la ecuación cambia. Pídale que haga la tabla 'hoy / hace x años' y compruebe con los números.",
    "explicacion_pasos": [
     {
      "paso": 1,
      "operacion": "Tabla",
-     "resultado": "27 − x y 11 − x",
+     "resultado": "37 − x y 13 − x",
      "texto": "Edades hace x años."
     },
     {
      "paso": 2,
      "operacion": "Plantear",
-     "resultado": "27 − x = 5(11 − x)",
+     "resultado": "37 − x = 5(13 − x)",
      "texto": "Relación en el pasado."
     },
     {
@@ -827,7 +775,59 @@
     },
     {
      "paso": 4,
-     "operacion": "20 = 5 × 4",
+     "operacion": "30 = 5 × 6",
+     "resultado": "cierto",
+     "texto": "Comprobar."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Marcos tiene 29 años y Íker, 11. ¿Cuántos años hace que Marcos tenía el triple de la edad de Íker?",
+   "respuesta": "2",
+   "distractores": [
+    {
+     "valor": "4",
+     "error": "E01"
+    },
+    {
+     "valor": "1",
+     "error": "E02"
+    },
+    {
+     "valor": "18",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(33 − 29) : 2",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: hace x años las dos edades eran x años menores. Plantea: 29 − x = 3(11 − x). Resuelve: 29 − x = 33 − 3x; 3x − x = 33 − 29; 2x = 4; x = 2. Comprueba: hace 2 años tenían 27 y 9, y 27 = 3 × 9.",
+   "explicacion_adulto": "Mismo tipo de problema pero hacia el pasado: se resta x a las dos edades. Si solo la resta a una o aplica el 'el triple' al lado equivocado, la ecuación cambia. Pídale que haga la tabla 'hoy / hace x años' y compruebe con los números.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Tabla",
+     "resultado": "29 − x y 11 − x",
+     "texto": "Edades hace x años."
+    },
+    {
+     "paso": 2,
+     "operacion": "Plantear",
+     "resultado": "29 − x = 3(11 − x)",
+     "texto": "Relación en el pasado."
+    },
+    {
+     "paso": 3,
+     "operacion": "4 : 2",
+     "resultado": "x = 2",
+     "texto": "Despejar."
+    },
+    {
+     "paso": 4,
+     "operacion": "27 = 3 × 9",
      "resultado": "cierto",
      "texto": "Comprobar."
     }
@@ -836,263 +836,7 @@
   },
   {
    "dificultad": 1,
-   "enunciado": "Una profesora le lleva 30 años a su hijo. Dentro de 9 años, la profesora tendrá el triple de la edad de el hijo. ¿Cuántos años tiene ahora el hijo?",
-   "respuesta": "6",
-   "distractores": [
-    {
-     "valor": "15",
-     "error": "E01"
-    },
-    {
-     "valor": "36",
-     "error": null
-    },
-    {
-     "valor": "8",
-     "error": null
-    }
-   ],
-   "expresion_calculo": "(30 + 9 − 27) : 2",
-   "secundarias": [
-    "ALG.EC1.06"
-   ],
-   "explicacion_nino": "Entiende: si el hijo tiene x años, la profesora tiene x + 30. Dentro de 9 años: x + 9 y x + 39. Plantea: x + 30 + 9 = 3(x + 9). Resuelve: x + 39 = 3x + 27; x = 6. Comprueba: dentro de 9 años tendrán 15 y 45, y 45 = 3 × 15.",
-   "explicacion_adulto": "Combina una diferencia de edad constante con un momento futuro. Hay dos trampas: olvidar sumar 9 a las dos edades y responder con la edad futura (15) en lugar de la actual. Pídale que relea qué se pregunta: '¿cuántos años tiene ahora?'.",
-   "explicacion_pasos": [
-    {
-     "paso": 1,
-     "operacion": "Hoy",
-     "resultado": "x y x + 30",
-     "texto": "Edades de el hijo y la profesora."
-    },
-    {
-     "paso": 2,
-     "operacion": "Dentro de 9",
-     "resultado": "x + 9 y x + 39",
-     "texto": "Las dos aumentan."
-    },
-    {
-     "paso": 3,
-     "operacion": "Plantear",
-     "resultado": "x + 30 + 9 = 3(x + 9)",
-     "texto": "Relación futura."
-    },
-    {
-     "paso": 4,
-     "operacion": "Resolver",
-     "resultado": "x = 6",
-     "texto": "Edad actual."
-    }
-   ],
-   "plantilla": "P03"
-  },
-  {
-   "dificultad": 1,
-   "enunciado": "Un tío le lleva 20 años a su sobrina. Dentro de 8 años, el tío tendrá el triple de la edad de la sobrina. ¿Cuántos años tiene ahora la sobrina?",
-   "respuesta": "2",
-   "distractores": [
-    {
-     "valor": "10",
-     "error": "E01"
-    },
-    {
-     "valor": "22",
-     "error": null
-    },
-    {
-     "valor": "4",
-     "error": null
-    }
-   ],
-   "expresion_calculo": "(20 + 8 − 24) : 2",
-   "secundarias": [
-    "ALG.EC1.06"
-   ],
-   "explicacion_nino": "Entiende: si la sobrina tiene x años, el tío tiene x + 20. Dentro de 8 años: x + 8 y x + 28. Plantea: x + 20 + 8 = 3(x + 8). Resuelve: x + 28 = 3x + 24; x = 2. Comprueba: dentro de 8 años tendrán 10 y 30, y 30 = 3 × 10.",
-   "explicacion_adulto": "Combina una diferencia de edad constante con un momento futuro. Hay dos trampas: olvidar sumar 8 a las dos edades y responder con la edad futura (10) en lugar de la actual. Pídale que relea qué se pregunta: '¿cuántos años tiene ahora?'.",
-   "explicacion_pasos": [
-    {
-     "paso": 1,
-     "operacion": "Hoy",
-     "resultado": "x y x + 20",
-     "texto": "Edades de la sobrina y el tío."
-    },
-    {
-     "paso": 2,
-     "operacion": "Dentro de 8",
-     "resultado": "x + 8 y x + 28",
-     "texto": "Las dos aumentan."
-    },
-    {
-     "paso": 3,
-     "operacion": "Plantear",
-     "resultado": "x + 20 + 8 = 3(x + 8)",
-     "texto": "Relación futura."
-    },
-    {
-     "paso": 4,
-     "operacion": "Resolver",
-     "resultado": "x = 2",
-     "texto": "Edad actual."
-    }
-   ],
-   "plantilla": "P03"
-  },
-  {
-   "dificultad": 1,
-   "enunciado": "Una abuela le lleva 32 años a su nieto. Dentro de 10 años, la abuela tendrá el triple de la edad de el nieto. ¿Cuántos años tiene ahora el nieto?",
-   "respuesta": "6",
-   "distractores": [
-    {
-     "valor": "16",
-     "error": "E01"
-    },
-    {
-     "valor": "38",
-     "error": null
-    },
-    {
-     "valor": "8",
-     "error": null
-    }
-   ],
-   "expresion_calculo": "(32 + 10 − 30) : 2",
-   "secundarias": [
-    "ALG.EC1.06"
-   ],
-   "explicacion_nino": "Entiende: si el nieto tiene x años, la abuela tiene x + 32. Dentro de 10 años: x + 10 y x + 42. Plantea: x + 32 + 10 = 3(x + 10). Resuelve: x + 42 = 3x + 30; x = 6. Comprueba: dentro de 10 años tendrán 16 y 48, y 48 = 3 × 16.",
-   "explicacion_adulto": "Combina una diferencia de edad constante con un momento futuro. Hay dos trampas: olvidar sumar 10 a las dos edades y responder con la edad futura (16) en lugar de la actual. Pídale que relea qué se pregunta: '¿cuántos años tiene ahora?'.",
-   "explicacion_pasos": [
-    {
-     "paso": 1,
-     "operacion": "Hoy",
-     "resultado": "x y x + 32",
-     "texto": "Edades de el nieto y la abuela."
-    },
-    {
-     "paso": 2,
-     "operacion": "Dentro de 10",
-     "resultado": "x + 10 y x + 42",
-     "texto": "Las dos aumentan."
-    },
-    {
-     "paso": 3,
-     "operacion": "Plantear",
-     "resultado": "x + 32 + 10 = 3(x + 10)",
-     "texto": "Relación futura."
-    },
-    {
-     "paso": 4,
-     "operacion": "Resolver",
-     "resultado": "x = 6",
-     "texto": "Edad actual."
-    }
-   ],
-   "plantilla": "P03"
-  },
-  {
-   "dificultad": 2,
-   "enunciado": "Una abuela le lleva 26 años a su nieto. Dentro de 4 años, la abuela tendrá el triple de la edad de el nieto. ¿Cuántos años tiene ahora el nieto?",
-   "respuesta": "9",
-   "distractores": [
-    {
-     "valor": "13",
-     "error": "E01"
-    },
-    {
-     "valor": "35",
-     "error": null
-    },
-    {
-     "valor": "11",
-     "error": null
-    }
-   ],
-   "expresion_calculo": "(26 + 4 − 12) : 2",
-   "secundarias": [
-    "ALG.EC1.06"
-   ],
-   "explicacion_nino": "Entiende: si el nieto tiene x años, la abuela tiene x + 26. Dentro de 4 años: x + 4 y x + 30. Plantea: x + 26 + 4 = 3(x + 4). Resuelve: x + 30 = 3x + 12; x = 9. Comprueba: dentro de 4 años tendrán 13 y 39, y 39 = 3 × 13.",
-   "explicacion_adulto": "Combina una diferencia de edad constante con un momento futuro. Hay dos trampas: olvidar sumar 4 a las dos edades y responder con la edad futura (13) en lugar de la actual. Pídale que relea qué se pregunta: '¿cuántos años tiene ahora?'.",
-   "explicacion_pasos": [
-    {
-     "paso": 1,
-     "operacion": "Hoy",
-     "resultado": "x y x + 26",
-     "texto": "Edades de el nieto y la abuela."
-    },
-    {
-     "paso": 2,
-     "operacion": "Dentro de 4",
-     "resultado": "x + 4 y x + 30",
-     "texto": "Las dos aumentan."
-    },
-    {
-     "paso": 3,
-     "operacion": "Plantear",
-     "resultado": "x + 26 + 4 = 3(x + 4)",
-     "texto": "Relación futura."
-    },
-    {
-     "paso": 4,
-     "operacion": "Resolver",
-     "resultado": "x = 9",
-     "texto": "Edad actual."
-    }
-   ],
-   "plantilla": "P03"
-  },
-  {
-   "dificultad": 2,
-   "enunciado": "Una profesora le lleva 19 años a su hijo. Dentro de 2 años, la profesora tendrá el doble de la edad de el hijo. ¿Cuántos años tiene ahora el hijo?",
-   "respuesta": "17",
-   "distractores": [
-    {
-     "valor": "19",
-     "error": "E01"
-    },
-    {
-     "valor": "36",
-     "error": null
-    }
-   ],
-   "expresion_calculo": "19 + 2 − 4",
-   "secundarias": [
-    "ALG.EC1.06"
-   ],
-   "explicacion_nino": "Entiende: si el hijo tiene x años, la profesora tiene x + 19. Dentro de 2 años: x + 2 y x + 21. Plantea: x + 19 + 2 = 2(x + 2). Resuelve: x + 21 = 2x + 4; x = 17. Comprueba: dentro de 2 años tendrán 19 y 38, y 38 = 2 × 19.",
-   "explicacion_adulto": "Combina una diferencia de edad constante con un momento futuro. Hay dos trampas: olvidar sumar 2 a las dos edades y responder con la edad futura (19) en lugar de la actual. Pídale que relea qué se pregunta: '¿cuántos años tiene ahora?'.",
-   "explicacion_pasos": [
-    {
-     "paso": 1,
-     "operacion": "Hoy",
-     "resultado": "x y x + 19",
-     "texto": "Edades de el hijo y la profesora."
-    },
-    {
-     "paso": 2,
-     "operacion": "Dentro de 2",
-     "resultado": "x + 2 y x + 21",
-     "texto": "Las dos aumentan."
-    },
-    {
-     "paso": 3,
-     "operacion": "Plantear",
-     "resultado": "x + 19 + 2 = 2(x + 2)",
-     "texto": "Relación futura."
-    },
-    {
-     "paso": 4,
-     "operacion": "Resolver",
-     "resultado": "x = 17",
-     "texto": "Edad actual."
-    }
-   ],
-   "plantilla": "P03"
-  },
-  {
-   "dificultad": 2,
-   "enunciado": "Una madre le lleva 18 años a su hija. Dentro de 5 años, la madre tendrá el doble de la edad de la hija. ¿Cuántos años tiene ahora la hija?",
+   "enunciado": "Un tío le lleva 18 años a su sobrina. Dentro de 5 años, el tío tendrá el doble de la edad de la sobrina. ¿Cuántos años tiene ahora la sobrina?",
    "respuesta": "13",
    "distractores": [
     {
@@ -1112,14 +856,14 @@
    "secundarias": [
     "ALG.EC1.06"
    ],
-   "explicacion_nino": "Entiende: si la hija tiene x años, la madre tiene x + 18. Dentro de 5 años: x + 5 y x + 23. Plantea: x + 18 + 5 = 2(x + 5). Resuelve: x + 23 = 2x + 10; x = 13. Comprueba: dentro de 5 años tendrán 18 y 36, y 36 = 2 × 18.",
+   "explicacion_nino": "Entiende: si la sobrina tiene x años, el tío tiene x + 18. Dentro de 5 años: x + 5 y x + 23. Plantea: x + 18 + 5 = 2(x + 5). Resuelve: x + 23 = 2x + 10; x = 13. Comprueba: dentro de 5 años tendrán 18 y 36, y 36 = 2 × 18.",
    "explicacion_adulto": "Combina una diferencia de edad constante con un momento futuro. Hay dos trampas: olvidar sumar 5 a las dos edades y responder con la edad futura (18) en lugar de la actual. Pídale que relea qué se pregunta: '¿cuántos años tiene ahora?'.",
    "explicacion_pasos": [
     {
      "paso": 1,
      "operacion": "Hoy",
      "resultado": "x y x + 18",
-     "texto": "Edades de la hija y la madre."
+     "texto": "Edades de la sobrina y el tío."
     },
     {
      "paso": 2,
@@ -1143,7 +887,7 @@
    "plantilla": "P03"
   },
   {
-   "dificultad": 3,
+   "dificultad": 1,
    "enunciado": "Una madre le lleva 38 años a su hija. Dentro de 5 años, la madre tendrá el triple de la edad de la hija. ¿Cuántos años tiene ahora la hija?",
    "respuesta": "14",
    "distractores": [
@@ -1195,204 +939,320 @@
    "plantilla": "P03"
   },
   {
-   "dificultad": 2,
-   "enunciado": "Hoy la edad de Jorge es el triple que la de su hija Lucía. Dentro de 18 años será el doble. ¿Cuántos años tiene Lucía ahora?",
-   "respuesta": "18",
-   "distractores": [
-    {
-     "valor": "36",
-     "error": "E01"
-    },
-    {
-     "valor": "54",
-     "error": null
-    }
-   ],
-   "expresion_calculo": "(36 − 18) : (3 − 2)",
-   "secundarias": [
-    "ALG.EC1.06"
-   ],
-   "explicacion_nino": "Entiende: si Lucía tiene x años, Jorge tiene 3x. Dentro de 18 años: x + 18 y 3x + 18. Plantea: 3x + 18 = 2(x + 18). Resuelve: 3x + 18 = 2x + 36; 1x = 18; x = 18. Comprueba: hoy 18 y 54; dentro de 18: 36 y 72 = 2 × 36.",
-   "explicacion_adulto": "Problema de edades con dos relaciones ('el triple' hoy y 'el doble' en el futuro) y una sola incógnita. El error típico es sumar 18 solo a una edad. Pídale que construya la tabla hoy / dentro de 18 años antes de plantear.",
-   "explicacion_pasos": [
-    {
-     "paso": 1,
-     "operacion": "Hoy",
-     "resultado": "x y 3x",
-     "texto": "Edades actuales."
-    },
-    {
-     "paso": 2,
-     "operacion": "Dentro de 18",
-     "resultado": "x + 18 y 3x + 18",
-     "texto": "Edades futuras."
-    },
-    {
-     "paso": 3,
-     "operacion": "Plantear",
-     "resultado": "3x + 18 = 2(x + 18)",
-     "texto": "Relación futura."
-    },
-    {
-     "paso": 4,
-     "operacion": "(36 − 18) : (3 − 2)",
-     "resultado": "x = 18",
-     "texto": "Despejar."
-    }
-   ],
-   "plantilla": "P04"
-  },
-  {
-   "dificultad": 2,
-   "enunciado": "Hoy la edad de Rocío es el triple que la de su hija Yusuf. Dentro de 19 años será el doble. ¿Cuántos años tiene Yusuf ahora?",
-   "respuesta": "19",
-   "distractores": [
-    {
-     "valor": "38",
-     "error": "E01"
-    },
-    {
-     "valor": "57",
-     "error": null
-    }
-   ],
-   "expresion_calculo": "(38 − 19) : (3 − 2)",
-   "secundarias": [
-    "ALG.EC1.06"
-   ],
-   "explicacion_nino": "Entiende: si Yusuf tiene x años, Rocío tiene 3x. Dentro de 19 años: x + 19 y 3x + 19. Plantea: 3x + 19 = 2(x + 19). Resuelve: 3x + 19 = 2x + 38; 1x = 19; x = 19. Comprueba: hoy 19 y 57; dentro de 19: 38 y 76 = 2 × 38.",
-   "explicacion_adulto": "Problema de edades con dos relaciones ('el triple' hoy y 'el doble' en el futuro) y una sola incógnita. El error típico es sumar 19 solo a una edad. Pídale que construya la tabla hoy / dentro de 19 años antes de plantear.",
-   "explicacion_pasos": [
-    {
-     "paso": 1,
-     "operacion": "Hoy",
-     "resultado": "x y 3x",
-     "texto": "Edades actuales."
-    },
-    {
-     "paso": 2,
-     "operacion": "Dentro de 19",
-     "resultado": "x + 19 y 3x + 19",
-     "texto": "Edades futuras."
-    },
-    {
-     "paso": 3,
-     "operacion": "Plantear",
-     "resultado": "3x + 19 = 2(x + 19)",
-     "texto": "Relación futura."
-    },
-    {
-     "paso": 4,
-     "operacion": "(38 − 19) : (3 − 2)",
-     "resultado": "x = 19",
-     "texto": "Despejar."
-    }
-   ],
-   "plantilla": "P04"
-  },
-  {
-   "dificultad": 3,
-   "enunciado": "Hoy la edad de Íker es el triple que la de su hija Fátima. Dentro de 11 años será el doble. ¿Cuántos años tiene Fátima ahora?",
-   "respuesta": "11",
-   "distractores": [
-    {
-     "valor": "22",
-     "error": "E01"
-    },
-    {
-     "valor": "33",
-     "error": null
-    }
-   ],
-   "expresion_calculo": "(22 − 11) : (3 − 2)",
-   "secundarias": [
-    "ALG.EC1.06"
-   ],
-   "explicacion_nino": "Entiende: si Fátima tiene x años, Íker tiene 3x. Dentro de 11 años: x + 11 y 3x + 11. Plantea: 3x + 11 = 2(x + 11). Resuelve: 3x + 11 = 2x + 22; 1x = 11; x = 11. Comprueba: hoy 11 y 33; dentro de 11: 22 y 44 = 2 × 22.",
-   "explicacion_adulto": "Problema de edades con dos relaciones ('el triple' hoy y 'el doble' en el futuro) y una sola incógnita. El error típico es sumar 11 solo a una edad. Pídale que construya la tabla hoy / dentro de 11 años antes de plantear.",
-   "explicacion_pasos": [
-    {
-     "paso": 1,
-     "operacion": "Hoy",
-     "resultado": "x y 3x",
-     "texto": "Edades actuales."
-    },
-    {
-     "paso": 2,
-     "operacion": "Dentro de 11",
-     "resultado": "x + 11 y 3x + 11",
-     "texto": "Edades futuras."
-    },
-    {
-     "paso": 3,
-     "operacion": "Plantear",
-     "resultado": "3x + 11 = 2(x + 11)",
-     "texto": "Relación futura."
-    },
-    {
-     "paso": 4,
-     "operacion": "(22 − 11) : (3 − 2)",
-     "resultado": "x = 11",
-     "texto": "Despejar."
-    }
-   ],
-   "plantilla": "P04"
-  },
-  {
-   "dificultad": 3,
-   "enunciado": "Hoy la edad de Lara es el quíntuple que la de su hija Inés. Dentro de 15 años será el doble. ¿Cuántos años tiene Inés ahora?",
-   "respuesta": "5",
+   "dificultad": 1,
+   "enunciado": "Una entrenadora le lleva 20 años a su hijo. Dentro de 3 años, la entrenadora tendrá el doble de la edad del hijo. ¿Cuántos años tiene ahora el hijo?",
+   "respuesta": "17",
    "distractores": [
     {
      "valor": "20",
      "error": "E01"
     },
     {
-     "valor": "25",
+     "valor": "37",
      "error": null
     },
     {
-     "valor": "10",
+     "valor": "19",
      "error": null
     }
    ],
-   "expresion_calculo": "(30 − 15) : (5 − 2)",
+   "expresion_calculo": "20 + 3 − 6",
    "secundarias": [
     "ALG.EC1.06"
    ],
-   "explicacion_nino": "Entiende: si Inés tiene x años, Lara tiene 5x. Dentro de 15 años: x + 15 y 5x + 15. Plantea: 5x + 15 = 2(x + 15). Resuelve: 5x + 15 = 2x + 30; 3x = 15; x = 5. Comprueba: hoy 5 y 25; dentro de 15: 20 y 40 = 2 × 20.",
-   "explicacion_adulto": "Problema de edades con dos relaciones ('el quíntuple' hoy y 'el doble' en el futuro) y una sola incógnita. El error típico es sumar 15 solo a una edad. Pídale que construya la tabla hoy / dentro de 15 años antes de plantear.",
+   "explicacion_nino": "Entiende: si el hijo tiene x años, la entrenadora tiene x + 20. Dentro de 3 años: x + 3 y x + 23. Plantea: x + 20 + 3 = 2(x + 3). Resuelve: x + 23 = 2x + 6; x = 17. Comprueba: dentro de 3 años tendrán 20 y 40, y 40 = 2 × 20.",
+   "explicacion_adulto": "Combina una diferencia de edad constante con un momento futuro. Hay dos trampas: olvidar sumar 3 a las dos edades y responder con la edad futura (20) en lugar de la actual. Pídale que relea qué se pregunta: '¿cuántos años tiene ahora?'.",
    "explicacion_pasos": [
     {
      "paso": 1,
      "operacion": "Hoy",
-     "resultado": "x y 5x",
+     "resultado": "x y x + 20",
+     "texto": "Edades de el hijo y la entrenadora."
+    },
+    {
+     "paso": 2,
+     "operacion": "Dentro de 3",
+     "resultado": "x + 3 y x + 23",
+     "texto": "Las dos aumentan."
+    },
+    {
+     "paso": 3,
+     "operacion": "Plantear",
+     "resultado": "x + 20 + 3 = 2(x + 3)",
+     "texto": "Relación futura."
+    },
+    {
+     "paso": 4,
+     "operacion": "Resolver",
+     "resultado": "x = 17",
+     "texto": "Edad actual."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un padre le lleva 30 años a su hijo. Dentro de 9 años, el padre tendrá el triple de la edad del hijo. ¿Cuántos años tiene ahora el hijo?",
+   "respuesta": "6",
+   "distractores": [
+    {
+     "valor": "15",
+     "error": "E01"
+    },
+    {
+     "valor": "36",
+     "error": null
+    },
+    {
+     "valor": "8",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(30 + 9 − 27) : 2",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: si el hijo tiene x años, el padre tiene x + 30. Dentro de 9 años: x + 9 y x + 39. Plantea: x + 30 + 9 = 3(x + 9). Resuelve: x + 39 = 3x + 27; x = 6. Comprueba: dentro de 9 años tendrán 15 y 45, y 45 = 3 × 15.",
+   "explicacion_adulto": "Combina una diferencia de edad constante con un momento futuro. Hay dos trampas: olvidar sumar 9 a las dos edades y responder con la edad futura (15) en lugar de la actual. Pídale que relea qué se pregunta: '¿cuántos años tiene ahora?'.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Hoy",
+     "resultado": "x y x + 30",
+     "texto": "Edades de el hijo y el padre."
+    },
+    {
+     "paso": 2,
+     "operacion": "Dentro de 9",
+     "resultado": "x + 9 y x + 39",
+     "texto": "Las dos aumentan."
+    },
+    {
+     "paso": 3,
+     "operacion": "Plantear",
+     "resultado": "x + 30 + 9 = 3(x + 9)",
+     "texto": "Relación futura."
+    },
+    {
+     "paso": 4,
+     "operacion": "Resolver",
+     "resultado": "x = 6",
+     "texto": "Edad actual."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Una entrenadora le lleva 28 años a su hijo. Dentro de 9 años, la entrenadora tendrá el triple de la edad del hijo. ¿Cuántos años tiene ahora el hijo?",
+   "respuesta": "5",
+   "distractores": [
+    {
+     "valor": "14",
+     "error": "E01"
+    },
+    {
+     "valor": "33",
+     "error": null
+    },
+    {
+     "valor": "7",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(28 + 9 − 27) : 2",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: si el hijo tiene x años, la entrenadora tiene x + 28. Dentro de 9 años: x + 9 y x + 37. Plantea: x + 28 + 9 = 3(x + 9). Resuelve: x + 37 = 3x + 27; x = 5. Comprueba: dentro de 9 años tendrán 14 y 42, y 42 = 3 × 14.",
+   "explicacion_adulto": "Combina una diferencia de edad constante con un momento futuro. Hay dos trampas: olvidar sumar 9 a las dos edades y responder con la edad futura (14) en lugar de la actual. Pídale que relea qué se pregunta: '¿cuántos años tiene ahora?'.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Hoy",
+     "resultado": "x y x + 28",
+     "texto": "Edades de el hijo y la entrenadora."
+    },
+    {
+     "paso": 2,
+     "operacion": "Dentro de 9",
+     "resultado": "x + 9 y x + 37",
+     "texto": "Las dos aumentan."
+    },
+    {
+     "paso": 3,
+     "operacion": "Plantear",
+     "resultado": "x + 28 + 9 = 3(x + 9)",
+     "texto": "Relación futura."
+    },
+    {
+     "paso": 4,
+     "operacion": "Resolver",
+     "resultado": "x = 5",
+     "texto": "Edad actual."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un padre le lleva 30 años a su hijo. Dentro de 6 años, el padre tendrá el triple de la edad del hijo. ¿Cuántos años tiene ahora el hijo?",
+   "respuesta": "9",
+   "distractores": [
+    {
+     "valor": "15",
+     "error": "E01"
+    },
+    {
+     "valor": "39",
+     "error": null
+    },
+    {
+     "valor": "11",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(30 + 6 − 18) : 2",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: si el hijo tiene x años, el padre tiene x + 30. Dentro de 6 años: x + 6 y x + 36. Plantea: x + 30 + 6 = 3(x + 6). Resuelve: x + 36 = 3x + 18; x = 9. Comprueba: dentro de 6 años tendrán 15 y 45, y 45 = 3 × 15.",
+   "explicacion_adulto": "Combina una diferencia de edad constante con un momento futuro. Hay dos trampas: olvidar sumar 6 a las dos edades y responder con la edad futura (15) en lugar de la actual. Pídale que relea qué se pregunta: '¿cuántos años tiene ahora?'.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Hoy",
+     "resultado": "x y x + 30",
+     "texto": "Edades de el hijo y el padre."
+    },
+    {
+     "paso": 2,
+     "operacion": "Dentro de 6",
+     "resultado": "x + 6 y x + 36",
+     "texto": "Las dos aumentan."
+    },
+    {
+     "paso": 3,
+     "operacion": "Plantear",
+     "resultado": "x + 30 + 6 = 3(x + 6)",
+     "texto": "Relación futura."
+    },
+    {
+     "paso": 4,
+     "operacion": "Resolver",
+     "resultado": "x = 9",
+     "texto": "Edad actual."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Una madre le lleva 34 años a su hija. Dentro de 3 años, la madre tendrá el triple de la edad de la hija. ¿Cuántos años tiene ahora la hija?",
+   "respuesta": "14",
+   "distractores": [
+    {
+     "valor": "17",
+     "error": "E01"
+    },
+    {
+     "valor": "48",
+     "error": null
+    },
+    {
+     "valor": "16",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(34 + 3 − 9) : 2",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: si la hija tiene x años, la madre tiene x + 34. Dentro de 3 años: x + 3 y x + 37. Plantea: x + 34 + 3 = 3(x + 3). Resuelve: x + 37 = 3x + 9; x = 14. Comprueba: dentro de 3 años tendrán 17 y 51, y 51 = 3 × 17.",
+   "explicacion_adulto": "Combina una diferencia de edad constante con un momento futuro. Hay dos trampas: olvidar sumar 3 a las dos edades y responder con la edad futura (17) en lugar de la actual. Pídale que relea qué se pregunta: '¿cuántos años tiene ahora?'.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Hoy",
+     "resultado": "x y x + 34",
+     "texto": "Edades de la hija y la madre."
+    },
+    {
+     "paso": 2,
+     "operacion": "Dentro de 3",
+     "resultado": "x + 3 y x + 37",
+     "texto": "Las dos aumentan."
+    },
+    {
+     "paso": 3,
+     "operacion": "Plantear",
+     "resultado": "x + 34 + 3 = 3(x + 3)",
+     "texto": "Relación futura."
+    },
+    {
+     "paso": 4,
+     "operacion": "Resolver",
+     "resultado": "x = 14",
+     "texto": "Edad actual."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Hoy Sofía tiene el cuádruple de años que Paula. Dentro de 5 años tendrá el triple. ¿Cuántos años tiene Paula ahora?",
+   "respuesta": "10",
+   "distractores": [
+    {
+     "valor": "5",
+     "error": "E01"
+    },
+    {
+     "valor": "15",
+     "error": null
+    },
+    {
+     "valor": "40",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(15 − 5) : (4 − 3)",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: si Paula tiene x años, Sofía tiene 4x. Dentro de 5 años: x + 5 y 4x + 5. Plantea: 4x + 5 = 3(x + 5). Resuelve: 4x + 5 = 3x + 15; 1x = 10; x = 10. Comprueba: hoy 10 y 40; dentro de 5: 15 y 45 = 3 × 15.",
+   "explicacion_adulto": "Problema de edades con dos relaciones ('el cuádruple' hoy y 'el triple' en el futuro) y una sola incógnita. El error típico es sumar 5 solo a una edad. Pídale que construya la tabla hoy / dentro de 5 años antes de plantear.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Hoy",
+     "resultado": "x y 4x",
      "texto": "Edades actuales."
     },
     {
      "paso": 2,
-     "operacion": "Dentro de 15",
-     "resultado": "x + 15 y 5x + 15",
+     "operacion": "Dentro de 5",
+     "resultado": "x + 5 y 4x + 5",
      "texto": "Edades futuras."
     },
     {
      "paso": 3,
      "operacion": "Plantear",
-     "resultado": "5x + 15 = 2(x + 15)",
+     "resultado": "4x + 5 = 3(x + 5)",
      "texto": "Relación futura."
     },
     {
      "paso": 4,
-     "operacion": "(30 − 15) : (5 − 2)",
-     "resultado": "x = 5",
+     "operacion": "(15 − 5) : (4 − 3)",
+     "resultado": "x = 10",
      "texto": "Despejar."
     }
    ],
    "plantilla": "P04"
   },
   {
-   "dificultad": 3,
-   "enunciado": "Hoy la edad de Lola es el quíntuple que la de su hija Iker. Dentro de 18 años será el doble. ¿Cuántos años tiene Iker ahora?",
+   "dificultad": 2,
+   "enunciado": "Hoy Paula tiene el quíntuple de años que Carla. Dentro de 18 años tendrá el doble. ¿Cuántos años tiene Carla ahora?",
    "respuesta": "6",
    "distractores": [
     {
@@ -1412,7 +1272,7 @@
    "secundarias": [
     "ALG.EC1.06"
    ],
-   "explicacion_nino": "Entiende: si Iker tiene x años, Lola tiene 5x. Dentro de 18 años: x + 18 y 5x + 18. Plantea: 5x + 18 = 2(x + 18). Resuelve: 5x + 18 = 2x + 36; 3x = 18; x = 6. Comprueba: hoy 6 y 30; dentro de 18: 24 y 48 = 2 × 24.",
+   "explicacion_nino": "Entiende: si Carla tiene x años, Paula tiene 5x. Dentro de 18 años: x + 18 y 5x + 18. Plantea: 5x + 18 = 2(x + 18). Resuelve: 5x + 18 = 2x + 36; 3x = 18; x = 6. Comprueba: hoy 6 y 30; dentro de 18: 24 y 48 = 2 × 24.",
    "explicacion_adulto": "Problema de edades con dos relaciones ('el quíntuple' hoy y 'el doble' en el futuro) y una sola incógnita. El error típico es sumar 18 solo a una edad. Pídale que construya la tabla hoy / dentro de 18 años antes de plantear.",
    "explicacion_pasos": [
     {
@@ -1444,28 +1304,28 @@
   },
   {
    "dificultad": 3,
-   "enunciado": "Hoy la edad de Yusuf es el cuádruple que la de su hija Hugo. Dentro de 20 años será el doble. ¿Cuántos años tiene Hugo ahora?",
-   "respuesta": "10",
+   "enunciado": "Hoy Gonzalo tiene el cuádruple de años que Nerea. Dentro de 4 años tendrá el triple. ¿Cuántos años tiene Nerea ahora?",
+   "respuesta": "8",
    "distractores": [
     {
-     "valor": "30",
+     "valor": "4",
      "error": "E01"
     },
     {
-     "valor": "40",
+     "valor": "12",
      "error": null
     },
     {
-     "valor": "20",
+     "valor": "32",
      "error": null
     }
    ],
-   "expresion_calculo": "(40 − 20) : (4 − 2)",
+   "expresion_calculo": "(12 − 4) : (4 − 3)",
    "secundarias": [
     "ALG.EC1.06"
    ],
-   "explicacion_nino": "Entiende: si Hugo tiene x años, Yusuf tiene 4x. Dentro de 20 años: x + 20 y 4x + 20. Plantea: 4x + 20 = 2(x + 20). Resuelve: 4x + 20 = 2x + 40; 2x = 20; x = 10. Comprueba: hoy 10 y 40; dentro de 20: 30 y 60 = 2 × 30.",
-   "explicacion_adulto": "Problema de edades con dos relaciones ('el cuádruple' hoy y 'el doble' en el futuro) y una sola incógnita. El error típico es sumar 20 solo a una edad. Pídale que construya la tabla hoy / dentro de 20 años antes de plantear.",
+   "explicacion_nino": "Entiende: si Nerea tiene x años, Gonzalo tiene 4x. Dentro de 4 años: x + 4 y 4x + 4. Plantea: 4x + 4 = 3(x + 4). Resuelve: 4x + 4 = 3x + 12; 1x = 8; x = 8. Comprueba: hoy 8 y 32; dentro de 4: 12 y 36 = 3 × 12.",
+   "explicacion_adulto": "Problema de edades con dos relaciones ('el cuádruple' hoy y 'el triple' en el futuro) y una sola incógnita. El error típico es sumar 4 solo a una edad. Pídale que construya la tabla hoy / dentro de 4 años antes de plantear.",
    "explicacion_pasos": [
     {
      "paso": 1,
@@ -1475,20 +1335,20 @@
     },
     {
      "paso": 2,
-     "operacion": "Dentro de 20",
-     "resultado": "x + 20 y 4x + 20",
+     "operacion": "Dentro de 4",
+     "resultado": "x + 4 y 4x + 4",
      "texto": "Edades futuras."
     },
     {
      "paso": 3,
      "operacion": "Plantear",
-     "resultado": "4x + 20 = 2(x + 20)",
+     "resultado": "4x + 4 = 3(x + 4)",
      "texto": "Relación futura."
     },
     {
      "paso": 4,
-     "operacion": "(40 − 20) : (4 − 2)",
-     "resultado": "x = 10",
+     "operacion": "(12 − 4) : (4 − 3)",
+     "resultado": "x = 8",
      "texto": "Despejar."
     }
    ],
@@ -1496,58 +1356,163 @@
   },
   {
    "dificultad": 3,
-   "enunciado": "Una profesora tiene 53 años y su hijo, 21. Al plantear '¿dentro de cuántos años la edad de la profesora será el triple que la de el hijo?' se obtiene la ecuación 53 + x = 3(21 + x). ¿Qué respuesta es correcta?",
-   "respuesta": "Nunca en el futuro: ocurrió hace 5 años",
+   "enunciado": "Hoy Adrián tiene el quíntuple de años que Iker. Dentro de 3 años tendrá el cuádruple. ¿Cuántos años tiene Iker ahora?",
+   "respuesta": "9",
    "distractores": [
     {
-     "valor": "Dentro de −5 años",
-     "error": "E03"
+     "valor": "3",
+     "error": "E01"
     },
     {
-     "valor": "Dentro de 5 años",
+     "valor": "12",
      "error": null
     },
     {
-     "valor": "Nunca ha ocurrido ni ocurrirá",
+     "valor": "45",
      "error": null
     }
    ],
+   "expresion_calculo": "(12 − 3) : (5 − 4)",
    "secundarias": [
     "ALG.EC1.06"
    ],
-   "explicacion_nino": "Resuelve: 53 + x = 63 + 3x → x = -5. Un número negativo de años 'dentro de' significa que la situación fue en el pasado. Comprueba: hace 5 años tenían 48 y 16, y 48 = 3 × 16. Así que no ocurrirá: ya ocurrió hace 5 años.",
-   "explicacion_adulto": "Trabaja la interpretación de una solución negativa en un problema de edades: x = -5 en 'dentro de x años' significa 'hace 5 años'. Pregúntele qué significa una x negativa en la vida real antes de dar la respuesta.",
+   "explicacion_nino": "Entiende: si Iker tiene x años, Adrián tiene 5x. Dentro de 3 años: x + 3 y 5x + 3. Plantea: 5x + 3 = 4(x + 3). Resuelve: 5x + 3 = 4x + 12; 1x = 9; x = 9. Comprueba: hoy 9 y 45; dentro de 3: 12 y 48 = 4 × 12.",
+   "explicacion_adulto": "Problema de edades con dos relaciones ('el quíntuple' hoy y 'el cuádruple' en el futuro) y una sola incógnita. El error típico es sumar 3 solo a una edad. Pídale que construya la tabla hoy / dentro de 3 años antes de plantear.",
    "explicacion_pasos": [
     {
      "paso": 1,
-     "operacion": "Plantear",
-     "resultado": "53 + x = 3(21 + x)",
-     "texto": "Ecuación."
+     "operacion": "Hoy",
+     "resultado": "x y 5x",
+     "texto": "Edades actuales."
     },
     {
      "paso": 2,
-     "operacion": "Resolver",
-     "resultado": "x = -5",
-     "texto": "Solución negativa."
+     "operacion": "Dentro de 3",
+     "resultado": "x + 3 y 5x + 3",
+     "texto": "Edades futuras."
     },
     {
      "paso": 3,
-     "operacion": "Interpretar",
-     "resultado": "hace 5 años",
-     "texto": "Negativo = pasado."
+     "operacion": "Plantear",
+     "resultado": "5x + 3 = 4(x + 3)",
+     "texto": "Relación futura."
     },
     {
      "paso": 4,
-     "operacion": "48 = 3 × 16",
-     "resultado": "cierto",
-     "texto": "Comprobar."
+     "operacion": "(12 − 3) : (5 − 4)",
+     "resultado": "x = 9",
+     "texto": "Despejar."
     }
    ],
-   "plantilla": "P05"
+   "plantilla": "P04"
   },
   {
    "dificultad": 3,
-   "enunciado": "Una abuela tiene 58 años y su nieto, 22. Al plantear '¿dentro de cuántos años la edad de la abuela será el triple que la de el nieto?' se obtiene la ecuación 58 + x = 3(22 + x). ¿Qué respuesta es correcta?",
+   "enunciado": "Hoy Bruno tiene el quíntuple de años que Inés. Dentro de 18 años tendrá el doble. ¿Cuántos años tiene Inés ahora?",
+   "respuesta": "6",
+   "distractores": [
+    {
+     "valor": "24",
+     "error": "E01"
+    },
+    {
+     "valor": "30",
+     "error": null
+    },
+    {
+     "valor": "12",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(36 − 18) : (5 − 2)",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: si Inés tiene x años, Bruno tiene 5x. Dentro de 18 años: x + 18 y 5x + 18. Plantea: 5x + 18 = 2(x + 18). Resuelve: 5x + 18 = 2x + 36; 3x = 18; x = 6. Comprueba: hoy 6 y 30; dentro de 18: 24 y 48 = 2 × 24.",
+   "explicacion_adulto": "Problema de edades con dos relaciones ('el quíntuple' hoy y 'el doble' en el futuro) y una sola incógnita. El error típico es sumar 18 solo a una edad. Pídale que construya la tabla hoy / dentro de 18 años antes de plantear.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Hoy",
+     "resultado": "x y 5x",
+     "texto": "Edades actuales."
+    },
+    {
+     "paso": 2,
+     "operacion": "Dentro de 18",
+     "resultado": "x + 18 y 5x + 18",
+     "texto": "Edades futuras."
+    },
+    {
+     "paso": 3,
+     "operacion": "Plantear",
+     "resultado": "5x + 18 = 2(x + 18)",
+     "texto": "Relación futura."
+    },
+    {
+     "paso": 4,
+     "operacion": "(36 − 18) : (5 − 2)",
+     "resultado": "x = 6",
+     "texto": "Despejar."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Hoy Nicolás tiene el cuádruple de años que Pablo. Dentro de 14 años tendrá el doble. ¿Cuántos años tiene Pablo ahora?",
+   "respuesta": "7",
+   "distractores": [
+    {
+     "valor": "21",
+     "error": "E01"
+    },
+    {
+     "valor": "28",
+     "error": null
+    },
+    {
+     "valor": "14",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(28 − 14) : (4 − 2)",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: si Pablo tiene x años, Nicolás tiene 4x. Dentro de 14 años: x + 14 y 4x + 14. Plantea: 4x + 14 = 2(x + 14). Resuelve: 4x + 14 = 2x + 28; 2x = 14; x = 7. Comprueba: hoy 7 y 28; dentro de 14: 21 y 42 = 2 × 21.",
+   "explicacion_adulto": "Problema de edades con dos relaciones ('el cuádruple' hoy y 'el doble' en el futuro) y una sola incógnita. El error típico es sumar 14 solo a una edad. Pídale que construya la tabla hoy / dentro de 14 años antes de plantear.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Hoy",
+     "resultado": "x y 4x",
+     "texto": "Edades actuales."
+    },
+    {
+     "paso": 2,
+     "operacion": "Dentro de 14",
+     "resultado": "x + 14 y 4x + 14",
+     "texto": "Edades futuras."
+    },
+    {
+     "paso": 3,
+     "operacion": "Plantear",
+     "resultado": "4x + 14 = 2(x + 14)",
+     "texto": "Relación futura."
+    },
+    {
+     "paso": 4,
+     "operacion": "(28 − 14) : (4 − 2)",
+     "resultado": "x = 7",
+     "texto": "Despejar."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un padre tiene 46 años y su hijo, 25. Para responder a '¿dentro de cuántos años tendrá el padre el doble de la edad del hijo?' se obtiene la ecuación 46 + x = 2(25 + x). ¿Qué respuesta es correcta?",
    "respuesta": "Nunca en el futuro: ocurrió hace 4 años",
    "distractores": [
     {
@@ -1566,13 +1531,13 @@
    "secundarias": [
     "ALG.EC1.06"
    ],
-   "explicacion_nino": "Resuelve: 58 + x = 66 + 3x → x = -4. Un número negativo de años 'dentro de' significa que la situación fue en el pasado. Comprueba: hace 4 años tenían 54 y 18, y 54 = 3 × 18. Así que no ocurrirá: ya ocurrió hace 4 años.",
+   "explicacion_nino": "Resuelve: 46 + x = 50 + 2x → x = -4. Un número negativo de años 'dentro de' significa que la situación fue en el pasado. Comprueba: hace 4 años tenían 42 y 21, y 42 = 2 × 21. Así que no ocurrirá: ya ocurrió hace 4 años.",
    "explicacion_adulto": "Trabaja la interpretación de una solución negativa en un problema de edades: x = -4 en 'dentro de x años' significa 'hace 4 años'. Pregúntele qué significa una x negativa en la vida real antes de dar la respuesta.",
    "explicacion_pasos": [
     {
      "paso": 1,
      "operacion": "Plantear",
-     "resultado": "58 + x = 3(22 + x)",
+     "resultado": "46 + x = 2(25 + x)",
      "texto": "Ecuación."
     },
     {
@@ -1589,7 +1554,7 @@
     },
     {
      "paso": 4,
-     "operacion": "54 = 3 × 18",
+     "operacion": "42 = 2 × 21",
      "resultado": "cierto",
      "texto": "Comprobar."
     }
@@ -1598,7 +1563,58 @@
   },
   {
    "dificultad": 3,
-   "enunciado": "Una madre tiene 66 años y su hija, 24. Al plantear '¿dentro de cuántos años la edad de la madre será el triple que la de la hija?' se obtiene la ecuación 66 + x = 3(24 + x). ¿Qué respuesta es correcta?",
+   "enunciado": "Un tío tiene 65 años y su sobrina, 25. Para responder a '¿dentro de cuántos años tendrá el tío el triple de la edad de la sobrina?' se obtiene la ecuación 65 + x = 3(25 + x). ¿Qué respuesta es correcta?",
+   "respuesta": "Nunca en el futuro: ocurrió hace 5 años",
+   "distractores": [
+    {
+     "valor": "Dentro de −5 años",
+     "error": "E03"
+    },
+    {
+     "valor": "Dentro de 5 años",
+     "error": null
+    },
+    {
+     "valor": "Nunca ha ocurrido ni ocurrirá",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Resuelve: 65 + x = 75 + 3x → x = -5. Un número negativo de años 'dentro de' significa que la situación fue en el pasado. Comprueba: hace 5 años tenían 60 y 20, y 60 = 3 × 20. Así que no ocurrirá: ya ocurrió hace 5 años.",
+   "explicacion_adulto": "Trabaja la interpretación de una solución negativa en un problema de edades: x = -5 en 'dentro de x años' significa 'hace 5 años'. Pregúntele qué significa una x negativa en la vida real antes de dar la respuesta.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Plantear",
+     "resultado": "65 + x = 3(25 + x)",
+     "texto": "Ecuación."
+    },
+    {
+     "paso": 2,
+     "operacion": "Resolver",
+     "resultado": "x = -5",
+     "texto": "Solución negativa."
+    },
+    {
+     "paso": 3,
+     "operacion": "Interpretar",
+     "resultado": "hace 5 años",
+     "texto": "Negativo = pasado."
+    },
+    {
+     "paso": 4,
+     "operacion": "60 = 3 × 20",
+     "resultado": "cierto",
+     "texto": "Comprobar."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Una madre tiene 48 años y su hija, 18. Para responder a '¿dentro de cuántos años tendrá la madre el triple de la edad de la hija?' se obtiene la ecuación 48 + x = 3(18 + x). ¿Qué respuesta es correcta?",
    "respuesta": "Nunca en el futuro: ocurrió hace 3 años",
    "distractores": [
     {
@@ -1617,13 +1633,13 @@
    "secundarias": [
     "ALG.EC1.06"
    ],
-   "explicacion_nino": "Resuelve: 66 + x = 72 + 3x → x = -3. Un número negativo de años 'dentro de' significa que la situación fue en el pasado. Comprueba: hace 3 años tenían 63 y 21, y 63 = 3 × 21. Así que no ocurrirá: ya ocurrió hace 3 años.",
+   "explicacion_nino": "Resuelve: 48 + x = 54 + 3x → x = -3. Un número negativo de años 'dentro de' significa que la situación fue en el pasado. Comprueba: hace 3 años tenían 45 y 15, y 45 = 3 × 15. Así que no ocurrirá: ya ocurrió hace 3 años.",
    "explicacion_adulto": "Trabaja la interpretación de una solución negativa en un problema de edades: x = -3 en 'dentro de x años' significa 'hace 3 años'. Pregúntele qué significa una x negativa en la vida real antes de dar la respuesta.",
    "explicacion_pasos": [
     {
      "paso": 1,
      "operacion": "Plantear",
-     "resultado": "66 + x = 3(24 + x)",
+     "resultado": "48 + x = 3(18 + x)",
      "texto": "Ecuación."
     },
     {
@@ -1640,7 +1656,7 @@
     },
     {
      "paso": 4,
-     "operacion": "63 = 3 × 21",
+     "operacion": "45 = 3 × 15",
      "resultado": "cierto",
      "texto": "Comprobar."
     }
