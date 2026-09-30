@@ -2719,3 +2719,558 @@ def gen_dim_area(rng, d):
         pasos = [(f"{fx(A)} : 3,14", str(rad * rad), f"r² = área : π = {fx(A)} : 3,14 = {rad * rad}."), (f"√{rad * rad}", str(rad), f"r = √{rad * rad} = {rad} cm.")]
     adulto = "Para hallar una dimensión se deshace la fórmula: en el triángulo, h = 2A/b; en el cuadrado, lado = √A (no A/2 ni A/4)."
     return mk(enun, resp, "t4_dim_area", {"fig": fig}, dist, pasos, adulto)
+
+
+# ---------------------------------------------------------------- cuerpos: áreas y volúmenes
+
+@generador("t4_vol_orto")
+def gen_vol_orto(rng, d):
+    if rng.random() < 0.35:
+        a = _dec(rng, 1 if d < 3 else 2, 2, 12)
+        r = a ** 3
+        enun = f"¿Cuál es el volumen de un cubo de {fx(a)} cm de arista?"
+        resp = u(r, "cm³")
+        dist = [(u(3 * a, "cm³"), "arista_3"), (u(a * a, "cm³"), "area_cara"), (u(6 * a * a, "cm³"), None), (u(3 * a * a, "cm³"), None)]
+        pasos = [(f"{fx(a)} · {fx(a)} · {fx(a)}", fx(r), f"Volumen del cubo = arista³ = {fx(a)} · {fx(a)} · {fx(a)} = {resp}.")]
+    else:
+        a, b, c = (rng.randint(2, 12) for _ in range(3)) if d == 1 else (_dec(rng, 2, 2, 15), _dec(rng, 1, 2, 12), _dec(rng, 1, 2, 10))
+        if d == 3:
+            a, b, c = (D(rng.choice(range(10, 80, 5))) for _ in range(3))
+        r = a * b * c
+        if d == 3:
+            enun = f"Un acuario con forma de ortoedro mide {fx(a)} cm × {fx(b)} cm × {fx(c)} cm. ¿Cuántos litros caben?"
+            resp = u(r / 1000, "l")
+            dist = [(u((a + b + c), "l"), "suma"), (u(a * b / 1000, "l"), "area_cara"), (u(r, "l"), None), (u(r / 100, "l"), None)]
+            pasos = [(f"{fx(a)} · {fx(b)} · {fx(c)}", fx(r), f"Volumen = largo · ancho · alto = {fx(a)} · {fx(b)} · {fx(c)} = {fx(r)} cm³."),
+                     (f"{fx(r)} : 1000", fx(r / 1000), f"1 l = 1 dm³ = 1000 cm³: {fx(r)} cm³ = {resp}.")]
+        else:
+            enun = f"¿Cuál es el volumen de un ortoedro de {fx(a)} cm de largo, {fx(b)} cm de ancho y {fx(c)} cm de alto?"
+            resp = u(r, "cm³")
+            dist = [(u(a + b + c, "cm³"), "suma"), (u(a * b, "cm³"), "area_cara"), (u(2 * (a * b + a * c + b * c), "cm³"), None), (u(r / 2, "cm³"), None)]
+            pasos = [(f"{fx(a)} · {fx(b)} · {fx(c)}", fx(r), f"Volumen = largo · ancho · alto = {fx(a)} · {fx(b)} · {fx(c)} = {resp}.")]
+    adulto = "Volumen del ortoedro = largo · ancho · alto; del cubo = arista³ (arista · arista · arista, no arista · 3). 1000 cm³ = 1 l."
+    return mk(enun, resp, "t4_vol_orto", {}, dist, pasos, adulto)
+
+
+@generador("t4_area_prisma")
+def gen_area_prisma(rng, d):
+    base = rng.choice(["rectangulo"] if d == 1 else ["rectangulo", "triangulo"] if d == 2 else ["regular", "triangulo", "regular"])
+    h = D(rng.randint(3, 20))
+    if base == "rectangulo":
+        a, b = D(rng.randint(2, 12)), D(rng.randint(2, 10))
+        P, Ab = 2 * (a + b), a * b
+        desc = f"un prisma recto de base rectangular de {fx(a)} cm × {fx(b)} cm y {fx(h)} cm de altura"
+    elif base == "triangulo":
+        t = rng.choice([(3, 4, 5), (6, 8, 10), (5, 12, 13), (9, 12, 15)])
+        a, b, c = (D(x) for x in t)
+        P, Ab = a + b + c, a * b / 2
+        desc = f"un prisma recto cuya base es un triángulo rectángulo de lados {t[0]}, {t[1]} y {t[2]} cm, y {fx(h)} cm de altura"
+    else:
+        n = rng.choice([5, 6, 8])
+        l = D(rng.randint(2, 10))
+        ap = r2(l * {5: Decimal("0.688"), 6: Decimal("0.866"), 8: Decimal("1.207")}[n], 2)
+        P, Ab = n * l, n * l * ap / 2
+        desc = f"un prisma {ADJ[n]} regular de {fx(l)} cm de arista de la base, {fx(ap)} cm de apotema de la base y {fx(h)} cm de altura"
+    L = P * h
+    T = L + 2 * Ab
+    que = rng.choice(["lateral", "total"]) if d > 1 else rng.choice(["lateral", "total"])
+    enun = f"Calcula el área {que} de {desc}."
+    if que == "lateral":
+        resp = u(L, "cm²")
+        dist = [(u(Ab * h, "cm²"), "volumen"), (u(T, "cm²"), None), (u(P + h, "cm²"), None), (u(L / 2, "cm²"), None)]
+    else:
+        resp = u(T, "cm²")
+        dist = [(u(L + Ab, "cm²"), "una_base"), (u(Ab * h, "cm²"), "volumen"), (u(L, "cm²"), None), (u(T + Ab, "cm²"), None)]
+    pasos = [("perímetro de la base", fx(P), f"Perímetro de la base: {fx(P)} cm. Área de la base: {fx(Ab)} cm²."),
+             (f"{fx(P)} · {fx(h)}", fx(L), f"Área lateral = perímetro de la base · altura = {fx(P)} · {fx(h)} = {fx(L)} cm².")]
+    if que == "total":
+        pasos.append((f"{fx(L)} + 2 · {fx(Ab)}", fx(T), f"Área total = lateral + 2 bases = {fx(L)} + 2 · {fx(Ab)} = {resp}."))
+    adulto = "Prisma: área lateral = perímetro de la base · altura; área total = lateral + las DOS bases. El producto área de la base · altura es el volumen, no el área."
+    return mk(enun, resp, "t4_area_prisma", {"base": base, "que": que}, dist, pasos, adulto, genericos=var_rel(D(resp.split()[0].replace(",", ".").replace(" ", "")), "cm²"))
+
+
+@generador("t4_area_piramide")
+def gen_area_piramide(rng, d):
+    n = 4 if d < 3 else rng.choice([4, 6, 3])
+    l = D(rng.choice(range(2, 21, 2)))
+    for _ in range(100):
+        ap = D(rng.randint(3, 20))
+        if ap > l / 2 + 1:
+            break
+    h = r2(D(math.sqrt(float(ap * ap - (l / 2) ** 2))), 1) if n == 4 else None
+    P = n * l
+    L = P * ap / 2
+    Ab = {4: l * l, 6: r2(6 * l * r2(l * Decimal("0.866"), 2) / 2), 3: r2(l * r2(l * Decimal("0.866"), 2) / 2)}[n]
+    T = L + Ab
+    que = rng.choice(["lateral", "total"])
+    nom = {4: "cuadrangular", 6: "hexagonal", 3: "triangular"}[n]
+    extra = f", {fx(h)} cm de altura" if h is not None and d >= 2 else ""
+    base_txt = f" (área de la base: {fx(Ab)} cm²)" if n != 4 and que == "total" else ""
+    enun = f"Una pirámide {nom} regular tiene {fx(l)} cm de arista de la base{extra} y {fx(ap)} cm de apotema. Calcula su área {que}{base_txt}."
+    resp = u(L if que == "lateral" else T, "cm²")
+    malh = P * h / 2 if h is not None else None
+    dist = [(u(malh if que == "lateral" else malh + Ab, "cm²") if malh is not None and d >= 2 else None, "usa_altura"),
+            (u(P * ap if que == "lateral" else P * ap + Ab, "cm²"), "no_divide"), (u(T if que == "lateral" else L, "cm²"), None), (u(T + Ab, "cm²") if que == "total" else u(L + P, "cm²"), None)]
+    pasos = [(f"{n} · {fx(l)}", fx(P), f"Perímetro de la base: {n} · {fx(l)} = {fx(P)} cm."),
+             (f"{fx(P)} · {fx(ap)} : 2", fx(L), f"Área lateral = perímetro · apotema : 2 = {fx(P)} · {fx(ap)} : 2 = {fx(L)} cm² (son {n} triángulos)" + (". La altura de la pirámide no se usa aquí." if extra else "."))]
+    if que == "total":
+        pasos.append((f"{fx(L)} + {fx(Ab)}", fx(T), f"Área total = lateral + base = {fx(L)} + {fx(Ab)} = {resp}."))
+    adulto = "En la pirámide, las caras laterales son triángulos de altura la apotema de la pirámide (no la altura del cuerpo). Área lateral = P · ap / 2."
+    return mk(enun, resp, "t4_area_piramide", {"n": n, "l": str(l), "ap": str(ap), "que": que}, dist, pasos, adulto)
+
+
+@generador("t4_area_cilindro")
+def gen_area_cilindro(rng, d):
+    rad = D(rng.randint(1, 10))
+    h = D(rng.randint(2, 20))
+    usa_d = d == 3 and rng.random() < 0.5
+    L = r2(2 * PI * rad * h)
+    B = r2(PI * rad * rad)
+    T = L + 2 * B
+    que = "lateral" if d == 1 else rng.choice(["lateral", "total"])
+    dato = f"{fx(2 * rad)} cm de diámetro" if usa_d else f"{fx(rad)} cm de radio"
+    enun = f"Calcula el área {que} de un cilindro de {dato} y {fx(h)} cm de altura (usa π = 3,14)."
+    resp = u(L if que == "lateral" else T, "cm²")
+    dist = [(u(r2(PI * rad * rad * h), "cm²"), "pi_r2_h"), (u(L + B, "cm²") if que == "total" else u(T, "cm²"), "una_base" if que == "total" else None),
+            (u(r2(PI * rad * h), "cm²"), None), (u(r2(2 * PI * 2 * rad * h), "cm²") if usa_d else u(L + 10, "cm²"), None)]
+    pasos = [(f"2 · 3,14 · {fx(rad)} · {fx(h)}", fx(L), (f"Radio = {fx(2 * rad)} : 2 = {fx(rad)} cm. " if usa_d else "") + f"Área lateral = 2 · π · r · h = 2 · 3,14 · {fx(rad)} · {fx(h)} = {fx(L)} cm² (un rectángulo enrollado).")]
+    if que == "total":
+        pasos.append((f"{fx(L)} + 2 · {fx(B)}", fx(T), f"Cada base mide π · r² = {fx(B)} cm². Total = {fx(L)} + 2 · {fx(B)} = {resp}."))
+    adulto = "Cilindro: lateral = 2πrh (rectángulo de base la longitud de la circunferencia); total = lateral + 2πr². πr²h es el volumen."
+    return mk(enun, resp, "t4_area_cilindro", {"r": str(rad), "h": str(h), "que": que}, dist, pasos, adulto, genericos=var_rel(L if que == "lateral" else T, "cm²"))
+
+
+@generador("t4_area_cono")
+def gen_area_cono(rng, d):
+    rr_, hh, g = rng.choice([(3, 4, 5), (6, 8, 10), (5, 12, 13), (8, 6, 10), (9, 12, 15), (8, 15, 17), (12, 5, 13), (4, 3, 5)])
+    rad, h, g = D(rr_), D(hh), D(g)
+    L = r2(PI * rad * g)
+    B = r2(PI * rad * rad)
+    T = L + B
+    que = "lateral" if d == 1 else rng.choice(["lateral", "total"])
+    extra = f", {fx(h)} cm de altura" if d >= 2 else ""
+    enun = f"Un cono tiene {fx(rad)} cm de radio{extra} y {fx(g)} cm de generatriz. Calcula su área {que} (usa π = 3,14)."
+    resp = u(L if que == "lateral" else T, "cm²")
+    malh = r2(PI * rad * h)
+    dist = [(u(malh if que == "lateral" else malh + B, "cm²") if d >= 2 else None, "usa_altura"), (u(L + 2 * B, "cm²") if que == "total" else None, "dos_bases"),
+            (u(T, "cm²") if que == "lateral" else u(L, "cm²"), None), (u(r2(2 * PI * rad * g), "cm²"), None), (u(r2(PI * g * g), "cm²"), None)]
+    pasos = [(f"3,14 · {fx(rad)} · {fx(g)}", fx(L), f"Área lateral = π · r · g = 3,14 · {fx(rad)} · {fx(g)} = {fx(L)} cm²" + (" (se usa la generatriz, no la altura)." if extra else "."))]
+    if que == "total":
+        pasos.append((f"{fx(L)} + 3,14 · {fx(rad)}²", fx(T), f"El cono tiene una sola base: π · r² = {fx(B)} cm². Total = {fx(L)} + {fx(B)} = {resp}."))
+    adulto = "Cono: lateral = π · r · g (g = generatriz); total = lateral + π · r² (una sola base)."
+    return mk(enun, resp, "t4_area_cono", {"r": str(rad), "g": str(g), "que": que}, dist, pasos, adulto, genericos=var_rel(L if que == "lateral" else T, "cm²"))
+
+
+@generador("t4_vol_prisma_cil")
+def gen_vol_prisma_cil(rng, d):
+    cuerpo = rng.choice(["prisma", "cilindro"])
+    if cuerpo == "prisma":
+        t = rng.choice([(3, 4, 5), (6, 8, 10), (5, 12, 13)])
+        h = D(rng.randint(3, 20))
+        Ab = D(t[0] * t[1]) / 2
+        V = Ab * h
+        P = D(sum(t))
+        enun = f"Calcula el volumen de un prisma recto cuya base es un triángulo rectángulo de catetos {t[0]} cm y {t[1]} cm, y cuya altura es {fx(h)} cm."
+        resp = u(V, "cm³")
+        dist = [(u(P * h, "cm³"), "perimetro_base"), (u(2 * V, "cm³"), None), (u(V / 3, "cm³") if ndec(V / 3) <= 2 else None, None), (u(Ab + h, "cm³"), None), (u(V + Ab, "cm³"), None)]
+        pasos = [(f"{t[0]} · {t[1]} : 2", fx(Ab), f"Área de la base (triángulo): {t[0]} · {t[1]} : 2 = {fx(Ab)} cm²."), (f"{fx(Ab)} · {fx(h)}", fx(V), f"Volumen = área de la base · altura = {fx(Ab)} · {fx(h)} = {resp}.")]
+    else:
+        if d == 3:
+            rad, h = D(rng.randint(1, 3)), D(rng.randint(1, 5))
+            V = PI * rad * rad * h
+            enun = f"Un depósito cilíndrico tiene {fx(rad)} m de radio y {fx(h)} m de altura. ¿Cuántos litros caben? (usa π = 3,14)"
+            resp = u(V * 1000, "l")
+            dist = [(u(V, "l"), "litros_mal"), (u(r2(2 * PI * rad * h) * 1000, "l"), "perimetro_base"), (u(V * 100, "l"), None), (u(V * 1000 / 3, "l", 2) if ndec(V * 1000 / 3) <= 2 else None, None), (u(V * 10000, "l"), None)]
+            pasos = [(f"3,14 · {fx(rad)}² · {fx(h)}", fx(V), f"V = π · r² · h = 3,14 · {fx(rad)}² · {fx(h)} = {fx(V)} m³."), (f"{fx(V)} · 1000", fx(V * 1000), f"1 m³ = 1000 l: {fx(V)} m³ = {resp}.")]
+        else:
+            rad, h = D(rng.randint(1, 10)), D(rng.randint(2, 20))
+            V = r2(PI * rad * rad * h)
+            enun = f"Calcula el volumen de un cilindro de {fx(rad)} cm de radio y {fx(h)} cm de altura (usa π = 3,14)."
+            resp = u(V, "cm³")
+            dist = [(u(r2(2 * PI * rad * h), "cm³"), "perimetro_base"), (u(r2(V / 3), "cm³"), None), (u(r2(PI * rad * h), "cm³"), None), (u(r2(PI * 4 * rad * rad * h), "cm³"), None)]
+            pasos = [(f"3,14 · {fx(rad)}² · {fx(h)}", fx(V), f"Volumen = área de la base · altura = π · r² · h = 3,14 · {fx(rad)} · {fx(rad)} · {fx(h)} = {resp}.")]
+    adulto = "Prisma y cilindro: volumen = área de la base · altura (en el cilindro, π r² h). 1 m³ = 1000 l; 1 dm³ = 1 l."
+    return mk(enun, resp, "t4_vol_prisma_cil", {"cuerpo": cuerpo}, dist, pasos, adulto, genericos=var_rel(D(resp.split()[0].replace(",", ".").replace(" ", "")), resp.split()[-1]))
+
+
+@generador("t4_vol_pir_cono")
+def gen_vol_pir_cono(rng, d):
+    cuerpo = rng.choice(["pirámide", "cono"])
+    if cuerpo == "pirámide":
+        l = D(rng.choice(range(2, 21, 2)))
+        h = D(rng.choice([x for x in range(3, 25) if (l * l * x) % 3 == 0] or [3]))
+        ap = r2(D(math.sqrt(float(h * h + (l / 2) ** 2))), 1)
+        V = l * l * h / 3
+        extra = f" y {fx(ap)} cm de apotema" if d >= 2 else ""
+        enun = f"Calcula el volumen de una pirámide cuadrangular de {fx(l)} cm de arista de la base, {fx(h)} cm de altura{extra}."
+        resp = u(V, "cm³")
+        dist = [(u(l * l * h, "cm³"), "olvida_tercio"), (u(r2(l * l * ap / 3), "cm³") if d >= 2 else None, "usa_apotema"), (u(l * l * h / 2, "cm³"), None), (u(4 * l * h / 3, "cm³", 2), None), (u(V + l, "cm³"), None)]
+        pasos = [(f"{fx(l)}²", fx(l * l), f"Área de la base: {fx(l)} · {fx(l)} = {fx(l * l)} cm²."), (f"{fx(l * l)} · {fx(h)} : 3", fx(V), f"V = área de la base · altura : 3 = {fx(l * l)} · {fx(h)} : 3 = {resp}.")]
+    else:
+        rr_, hh, gg = rng.choice([(3, 4, 5), (6, 8, 10), (5, 12, 13), (9, 12, 15), (12, 5, 13), (8, 6, 10)])
+        rad, h, g = D(rr_), D(hh), D(gg)
+        V = r2(PI * rad * rad * h / 3)
+        extra = f" y {fx(g)} cm de generatriz" if d >= 2 else ""
+        enun = f"Calcula el volumen de un cono de {fx(rad)} cm de radio, {fx(h)} cm de altura{extra} (usa π = 3,14)."
+        resp = u(V, "cm³")
+        dist = [(u(r2(PI * rad * rad * h), "cm³"), "olvida_tercio"), (u(r2(PI * rad * rad * g / 3), "cm³") if d >= 2 else None, "usa_apotema"), (u(r2(PI * rad * h / 3), "cm³"), None), (u(r2(PI * rad * rad * h / 2), "cm³"), None)]
+        pasos = [(f"3,14 · {fx(rad)}²", fx(r2(PI * rad * rad)), f"Área de la base: 3,14 · {fx(rad)}² = {fx(r2(PI * rad * rad))} cm²."),
+                 (f"· {fx(h)} : 3", fx(V), f"V = área de la base · altura : 3 = {fx(r2(PI * rad * rad))} · {fx(h)} : 3 = {resp}.")]
+    adulto = "Pirámide y cono: volumen = área de la base · altura / 3 (un tercio del prisma o cilindro de igual base y altura). Se usa la altura, no la apotema ni la generatriz."
+    return mk(enun, resp, "t4_vol_pir_cono", {"cuerpo": cuerpo}, dist, pasos, adulto, genericos=var_rel(D(resp.split()[0].replace(",", ".").replace(" ", "")), "cm³"))
+
+
+@generador("t4_esfera")
+def gen_esfera(rng, d):
+    rad = D(rng.randint(1, 12))
+    usa_d = d >= 2 and rng.random() < 0.5
+    que = "área" if d == 1 else rng.choice(["área", "volumen"])
+    A = r2(4 * PI * rad * rad)
+    V = r2(4 * PI * rad ** 3 / 3)
+    dato = f"{fx(2 * rad)} cm de diámetro" if usa_d else f"{fx(rad)} cm de radio"
+    enun = f"Calcula el {que} de una esfera de {dato} (usa π = 3,14)."
+    if que == "área":
+        resp = u(A, "cm²")
+        dist = [(u(V, "cm²"), "intercambia"), (u(r2(4 * PI * 4 * rad * rad), "cm²") if usa_d else u(r2(PI * rad * rad), "cm²"), "usa_diametro" if usa_d else None), (u(r2(2 * PI * rad * rad), "cm²"), None), (u(r2(4 * PI * rad), "cm²"), None)]
+        pasos = [(f"4 · 3,14 · {fx(rad)}²", fx(A), (f"Radio = {fx(2 * rad)} : 2 = {fx(rad)} cm. " if usa_d else "") + f"Área = 4 · π · r² = 4 · 3,14 · {fx(rad)}² = {resp}.")]
+    else:
+        resp = u(V, "cm³")
+        dist = [(u(A, "cm³"), "intercambia"), (u(r2(4 * PI * (2 * rad) ** 3 / 3), "cm³") if usa_d else u(r2(PI * rad ** 3), "cm³"), "usa_diametro" if usa_d else None), (u(r2(4 * PI * rad ** 3), "cm³"), None), (u(r2(PI * rad ** 3 / 3), "cm³"), None)]
+        pasos = [(f"4 · 3,14 · {fx(rad)}³ : 3", fx(V), (f"Radio = {fx(2 * rad)} : 2 = {fx(rad)} cm. " if usa_d else "") + f"Volumen = 4/3 · π · r³ = 4 · 3,14 · {fx(rad ** 3)} : 3 = {resp}.")]
+    adulto = "Esfera: área = 4πr² (cm²); volumen = 4/3 πr³ (cm³). Con el diámetro, primero se halla el radio."
+    return mk(enun, resp, "t4_esfera", {"r": str(rad), "que": que}, dist, pasos, adulto, genericos=var_rel(A if que == "área" else V, resp.split()[-1]))
+
+
+# ---------------------------------------------------------------- Pitágoras: cálculos
+
+def _raiz(v, nd=1):
+    return r2(D(math.sqrt(float(v))), nd)
+
+
+@generador("t4_hipotenusa")
+def gen_hipotenusa(rng, d):
+    if d < 3 and rng.random() < 0.75:
+        a, b, c = rng.choice(TERNAS)
+        exacta = True
+    else:
+        a, b = rng.randint(2, 15), rng.randint(2, 15)
+        c = _raiz(a * a + b * b)
+        exacta = math.isqrt(a * a + b * b) ** 2 == a * a + b * b
+        if exacta:
+            c = D(math.isqrt(a * a + b * b))
+    s = a * a + b * b
+    enun = f"Los catetos de un triángulo rectángulo miden {a} cm y {b} cm. ¿Cuánto mide la hipotenusa?" + ("" if exacta else " (redondea a las décimas)")
+    resp = f"{fx(c)} cm" if exacta else f"≈ {fx(c)} cm"
+    pre = "" if exacta else "≈ "
+    dist = [(f"{pre}{fx(D(a + b))} cm" if exacta else f"{a + b} cm", "suma_raices"), (f"{fmt(s)} cm", "olvida_raiz"), (f"≈ {fx(_raiz(2 * a + 2 * b))} cm", "por_2"),
+            (f"{pre}{fx(_raiz(abs(b * b - a * a)))} cm" if a != b else None, None)]
+    pasos = [(f"{a}² + {b}²", str(s), f"h² = {a}² + {b}² = {a * a} + {b * b} = {s}."), (f"√{s}", fx(c), f"h = √{s} {'=' if exacta else '≈'} {fx(c)} cm.")]
+    adulto = "Hipotenusa = √(a² + b²). La raíz de una suma no es la suma de raíces, y no hay que olvidar la raíz final."
+    return mk(enun, resp, "t4_hipotenusa", {"a": a, "b": b}, dist, pasos, adulto)
+
+
+@generador("t4_cateto")
+def gen_cateto(rng, d):
+    if d < 3 and rng.random() < 0.75:
+        a, b, c = rng.choice(TERNAS)
+        if rng.random() < 0.5:
+            a, b = b, a
+        exacta = True
+        r = D(b)
+    else:
+        c = rng.randint(6, 20)
+        a = rng.randint(2, c - 1)
+        v = c * c - a * a
+        exacta = math.isqrt(v) ** 2 == v
+        r = D(math.isqrt(v)) if exacta else _raiz(v)
+    v = c * c - a * a
+    enun = f"En un triángulo rectángulo, la hipotenusa mide {c} cm y un cateto {a} cm. ¿Cuánto mide el otro cateto?" + ("" if exacta else " (redondea a las décimas)")
+    pre = "" if exacta else "≈ "
+    resp = f"{pre}{fx(r)} cm"
+    dist = [(f"≈ {fx(_raiz(c * c + a * a))} cm", "suma"), (f"{c - a} cm", "resta_lados"), (f"{fmt(v)} cm", None), (f"{pre}{fx(r + 1)} cm", None)]
+    pasos = [(f"{c}² − {a}²", str(v), f"c² = {c}² − {a}² = {c * c} − {a * a} = {v} (el cateto es menor que la hipotenusa: se resta)."), (f"√{v}", fx(r), f"c = √{v} {'=' if exacta else '≈'} {fx(r)} cm.")]
+    adulto = "Cateto = √(hipotenusa² − otro cateto²). Si se suman los cuadrados, sale un número mayor que la hipotenusa, lo que es imposible."
+    return mk(enun, resp, "t4_cateto", {"c": c, "a": a}, dist, pasos, adulto)
+
+
+@generador("t4_pitag_figuras")
+def gen_pitag_figuras(rng, d):
+    fig = rng.choice(["rectangulo", "cuadrado", "isosceles"] if d == 1 else ["isosceles", "rombo", "equilatero", "rectangulo"] if d == 2 else ["rombo", "trapecio", "hexagono", "equilatero"])
+    if fig == "rectangulo":
+        a, b, c = rng.choice(TERNAS)
+        enun = f"¿Cuánto mide la diagonal de un rectángulo de {a} cm × {b} cm?"
+        r = D(c)
+        dist = [(f"{a + b} cm", None), (f"{fmt(a * a + b * b)} cm", None), (f"≈ {fx(_raiz(abs(b * b - a * a)))} cm", None), (f"{c + 1} cm", None)]
+        pasos = [(f"√({a}² + {b}²)", str(c), f"La diagonal es la hipotenusa de un triángulo de catetos {a} y {b}: √({a * a} + {b * b}) = √{a * a + b * b} = {c} cm.")]
+    elif fig == "cuadrado":
+        l = rng.randint(2, 12)
+        r = _raiz(2 * l * l)
+        enun = f"¿Cuánto mide la diagonal de un cuadrado de {l} cm de lado? (redondea a las décimas)"
+        dist = [(f"{2 * l} cm", None), (f"{2 * l * l} cm", None), (f"≈ {fx(_raiz(l * l))} cm" if False else f"≈ {fx(r + 1)} cm", None), (f"≈ {fx(r - D('0.5'))} cm", None)]
+        pasos = [(f"√({l}² + {l}²)", fx(r), f"d = √({l}² + {l}²) = √{2 * l * l} ≈ {fx(r)} cm.")]
+    elif fig == "isosceles":
+        b2, h, l = rng.choice(TERNAS[:8])
+        b = 2 * b2
+        enun = f"Un triángulo isósceles tiene los lados iguales de {l} cm y la base de {b} cm. ¿Cuánto mide su altura?"
+        r = D(h)
+        mal = l * l - b * b
+        dist = [(f"≈ {fx(_raiz(mal))} cm" if mal > 0 else None, "no_mitad_base"), (f"≈ {fx(_raiz(l * l + b2 * b2))} cm", None), (f"{l - b2} cm", None), (f"{h + 1} cm", None), (f"{fmt(l * l - b2 * b2)} cm", None)]
+        pasos = [(f"{b} : 2", str(b2), f"La altura parte la base por la mitad: {b} : 2 = {b2} cm."), (f"√({l}² − {b2}²)", str(h), f"h = √({l * l} − {b2 * b2}) = √{h * h} = {h} cm.")]
+    elif fig == "equilatero":
+        l = rng.choice(range(2, 21, 2))
+        r = _raiz(l * l - (l // 2) ** 2)
+        enun = f"¿Cuánto mide la altura de un triángulo equilátero de {l} cm de lado? (redondea a las décimas)"
+        dist = [(f"≈ {fx(_raiz(l * l - l * l // 1 + 1))} cm" if False else f"{l} cm", None), (f"≈ {fx(_raiz(l * l + (l // 2) ** 2))} cm", None), (f"{l // 2} cm", "no_mitad_base"), (f"≈ {fx(r + 1)} cm", None)]
+        pasos = [(f"√({l}² − {l // 2}²)", fx(r), f"La altura cae en el punto medio del lado: h = √({l}² − {l // 2}²) = √{l * l - (l // 2) ** 2} ≈ {fx(r)} cm.")]
+    elif fig == "rombo":
+        a, b, c = rng.choice(TERNAS[:8])
+        D1, D2 = 2 * a, 2 * b
+        enun = f"Las diagonales de un rombo miden {D1} cm y {D2} cm. ¿Cuánto mide su lado?"
+        r = D(c)
+        dist = [(f"{2 * c} cm", "diagonales_enteras"), (f"{a + b} cm", None), (f"{fmt(a * a + b * b)} cm", None), (f"{c + 2} cm", None)]
+        pasos = [("semidiagonales", f"{a} y {b}", f"Las diagonales se cortan en su punto medio: semidiagonales de {a} y {b} cm."), (f"√({a}² + {b}²)", str(c), f"Lado = √({a * a} + {b * b}) = {c} cm.")]
+    elif fig == "trapecio":
+        x, h, l = rng.choice(TERNAS[:8])
+        bb = rng.randint(2, 10)
+        B = bb + 2 * x
+        enun = f"Un trapecio isósceles tiene bases de {B} cm y {bb} cm y lados oblicuos de {l} cm. ¿Cuánto mide su altura?"
+        r = D(h)
+        mal = l * l - (B - bb) ** 2
+        dist = [(f"≈ {fx(_raiz(mal))} cm" if mal > 0 else None, "no_mitad_base"), (f"{l - x} cm", None), (f"≈ {fx(_raiz(l * l + x * x))} cm", None), (f"{h + 1} cm", None)]
+        pasos = [(f"({B} − {bb}) : 2", str(x), f"Lo que sobresale la base mayor por cada lado: ({B} − {bb}) : 2 = {x} cm."), (f"√({l}² − {x}²)", str(h), f"h = √({l * l} − {x * x}) = {h} cm.")]
+    else:
+        l = rng.choice(range(2, 21, 2))
+        r = _raiz(l * l - (l // 2) ** 2)
+        enun = f"¿Cuánto mide la apotema de un hexágono regular de {l} cm de lado? (redondea a las décimas)"
+        dist = [(f"{l} cm", None), (f"≈ {fx(_raiz(l * l + (l // 2) ** 2))} cm", None), (f"{l // 2} cm", "no_mitad_base"), (f"≈ {fx(r + 1)} cm", None)]
+        pasos = [("radio = lado", str(l), f"En el hexágono regular el radio mide lo mismo que el lado ({l} cm) y la apotema cae en el punto medio del lado ({l // 2} cm)."),
+                 (f"√({l}² − {l // 2}²)", fx(r), f"ap = √({l * l} − {(l // 2) ** 2}) ≈ {fx(r)} cm.")]
+    exacta = ndec(r) == 0 and "redondea" not in enun
+    resp = f"{fx(r)} cm" if exacta else f"≈ {fx(r)} cm"
+    adulto = "Hay que localizar el triángulo rectángulo: en el isósceles y el trapecio se usa media base; en el rombo, medias diagonales; en el hexágono, radio = lado."
+    return mk(enun, resp, "t4_pitag_figuras", {"fig": fig}, dist, pasos, adulto)
+
+
+CUADRUPLAS = [(1, 2, 2, 3), (2, 3, 6, 7), (1, 4, 8, 9), (4, 4, 7, 9), (2, 6, 9, 11), (6, 6, 7, 11), (3, 4, 12, 13), (2, 5, 14, 15), (2, 10, 11, 15), (8, 9, 12, 17)]
+
+
+@generador("t4_pitag_espacio")
+def gen_pitag_espacio(rng, d):
+    cu = rng.choice(["ortoedro", "cubo"] if d == 1 else ["ortoedro", "cono", "piramide"] if d == 2 else ["piramide", "cono", "ortoedro", "cubo"])
+    if cu == "ortoedro":
+        a, b, c, D_ = rng.choice(CUADRUPLAS)
+        enun = f"¿Cuánto mide la diagonal de un ortoedro de {a} cm × {b} cm × {c} cm?"
+        resp = f"{D_} cm"
+        base = a * a + b * b
+        dist = [(f"≈ {fx(_raiz(base))} cm" if math.isqrt(base) ** 2 != base else f"{math.isqrt(base)} cm", "dos_dimensiones"), (f"{a + b + c} cm", None), (f"{fmt(D_ * D_)} cm", None), (f"{D_ + 1} cm", None)]
+        pasos = [(f"√({a}² + {b}² + {c}²)", str(D_), f"Diagonal del ortoedro = √(a² + b² + c²) = √({a * a} + {b * b} + {c * c}) = √{D_ * D_} = {D_} cm.")]
+    elif cu == "cubo":
+        a = rng.randint(2, 12)
+        r = _raiz(3 * a * a)
+        enun = f"¿Cuánto mide la diagonal de un cubo de {a} cm de arista? (redondea a las décimas)"
+        resp = f"≈ {fx(r)} cm"
+        dist = [(f"≈ {fx(_raiz(2 * a * a))} cm", "dos_dimensiones"), (f"{3 * a} cm", None), (f"{3 * a * a} cm", None), (f"≈ {fx(r + 1)} cm", None)]
+        pasos = [(f"√(3 · {a}²)", fx(r), f"Diagonal = √({a}² + {a}² + {a}²) = √{3 * a * a} ≈ {fx(r)} cm.")]
+    elif cu == "cono":
+        rr_, h, g = rng.choice(TERNAS[:8])
+        if rng.random() < 0.5:
+            enun = f"Un cono tiene {rr_} cm de radio y {h} cm de altura. ¿Cuánto mide su generatriz?"
+            resp = f"{g} cm"
+            dist = [(f"{rr_ + h} cm", None), (f"{fmt(rr_ * rr_ + h * h)} cm", None), (f"≈ {fx(_raiz(abs(h * h - rr_ * rr_)))} cm" if h != rr_ else None, None), (f"≈ {fx(_raiz(4 * rr_ * rr_ + h * h))} cm", "apotema_base")]
+            pasos = [(f"√({rr_}² + {h}²)", str(g), f"Radio, altura y generatriz forman un triángulo rectángulo: g = √({rr_ * rr_} + {h * h}) = {g} cm.")]
+        else:
+            enun = f"Un cono tiene {rr_} cm de radio y {g} cm de generatriz. ¿Cuánto mide su altura?"
+            resp = f"{h} cm"
+            dist = [(f"{g - rr_} cm", None), (f"≈ {fx(_raiz(g * g + rr_ * rr_))} cm", None), (f"{fmt(g * g - rr_ * rr_)} cm", None), (f"{h + 1} cm", None)]
+            pasos = [(f"√({g}² − {rr_}²)", str(h), f"h = √({g * g} − {rr_ * rr_}) = {h} cm.")]
+    else:
+        half, h, ap = rng.choice(TERNAS[:8])
+        l = 2 * half
+        if rng.random() < 0.5:
+            enun = f"Una pirámide cuadrangular regular tiene {l} cm de arista de la base y {h} cm de altura. ¿Cuánto mide su apotema?"
+            resp = f"{ap} cm"
+            dist = [(f"{half} cm", "apotema_base"), (f"≈ {fx(_raiz(l * l + h * h))} cm", "apotema_base"), (f"{half + h} cm", None), (f"{ap + 1} cm", None)]
+            pasos = [("apotema de la base", str(half), f"La apotema de la base es la mitad de la arista: {l} : 2 = {half} cm."),
+                     (f"√({h}² + {half}²)", str(ap), f"Apotema de la pirámide = √(altura² + apotema de la base²) = √({h * h} + {half * half}) = {ap} cm.")]
+        else:
+            enun = f"Una pirámide cuadrangular regular tiene {l} cm de arista de la base y {ap} cm de apotema. ¿Cuánto mide su altura?"
+            resp = f"{h} cm"
+            mal = ap * ap - l * l
+            dist = [(f"≈ {fx(_raiz(mal))} cm" if mal > 0 else f"{ap - half} cm", "apotema_base"), (f"{ap - half} cm", None), (f"≈ {fx(_raiz(ap * ap + half * half))} cm", None), (f"{h + 1} cm", None)]
+            pasos = [("apotema de la base", str(half), f"La apotema de la base es {l} : 2 = {half} cm."), (f"√({ap}² − {half}²)", str(h), f"Altura = √({ap * ap} − {half * half}) = {h} cm.")]
+    adulto = "En el espacio hay que localizar el triángulo rectángulo adecuado: diagonal del ortoedro = √(a² + b² + c²); en la pirámide, altura, apotema de la base y apotema de la pirámide; en el cono, r, h y g."
+    return mk(enun, resp, "t4_pitag_espacio", {"cuerpo": cu}, dist, pasos, adulto)
+
+
+# ---------------------------------------------------------------- semejanza
+
+@generador("t4_razon_semej")
+def gen_razon_semej(rng, d):
+    for _ in range(100):
+        ls = sorted(rng.sample(range(3, 15), 3))
+        if ls[2] < ls[0] + ls[1]:
+            break
+    k = rng.choice([D(2), D(3), D("1.5"), D("2.5")] if d > 1 else [D(2), D(3)])
+    if d == 3 and rng.random() < 0.3:
+        ang = rng.randint(30, 100)
+        enun = f"Un triángulo se amplía con razón de semejanza {fx(k)}. Uno de sus ángulos mide {ang}°. ¿Cuánto mide el ángulo correspondiente en el triángulo ampliado?"
+        resp = f"{ang}°"
+        dist = [(f"{fx(k * ang)}°" if k * ang < 180 else f"{fx(k * ang)}°", "cambia_angulos"), (f"{fx(ang + k)}°", None), (f"{180 - ang}°", None), (f"{fx(ang / k, 1)}°", None)]
+        pasos = [("ángulos", resp, f"En figuras semejantes los ángulos se conservan: sigue midiendo {ang}°. Solo cambian las longitudes (se multiplican por {fx(k)}).")]
+        return mk(enun, resp, "t4_razon_semej", {"k": str(k)}, dist, pasos, "La semejanza multiplica las longitudes por k pero conserva los ángulos.")
+    a, b, c = (D(x) for x in ls)
+    enun = f"Dos triángulos son semejantes. Los lados del primero miden {fx(a)}, {fx(b)} y {fx(c)} cm, y el lado homólogo al de {fx(a)} cm mide {fx(k * a)} cm en el segundo. ¿Cuánto miden los otros dos lados del segundo?"
+    resp = f"{fx(k * b)} cm y {fx(k * c)} cm"
+    dif = k * a - a
+    k2 = k * a / c
+    dist = [(f"{fx(b + dif)} cm y {fx(c + dif)} cm", "aditivo"), (f"{fx(r2(k2 * b))} cm y {fx(r2(k2 * a))} cm", "no_homologos"),
+            (f"{fx(k * b + 1)} cm y {fx(k * c + 1)} cm", None), (f"{fx(k * c)} cm y {fx(k * b)} cm" if False else f"{fx(b * 2 if k != 2 else b * 3)} cm y {fx(c * 2 if k != 2 else c * 3)} cm", None)]
+    pasos = [(f"{fx(k * a)} : {fx(a)}", fx(k), f"Razón de semejanza: {fx(k * a)} : {fx(a)} = {fx(k)}."),
+             (f"{fx(b)} · {fx(k)}; {fx(c)} · {fx(k)}", resp, f"Multiplico los otros lados por {fx(k)}: {fx(b)} · {fx(k)} = {fx(k * b)} y {fx(c)} · {fx(k)} = {fx(k * c)}.")]
+    adulto = "En figuras semejantes los lados homólogos son proporcionales: se multiplican por la razón k, no se les suma la misma cantidad."
+    return mk(enun, resp, "t4_razon_semej", {"lados": ls, "k": str(k)}, dist, pasos, adulto)
+
+
+@generador("t4_tales")
+def gen_tales(rng, d):
+    for _ in range(100):
+        a, b = rng.randint(2, 12), rng.randint(2, 12)
+        if a == b:
+            continue
+        k = rng.choice([D("1.5"), D(2), D("2.5"), D(3), D("0.5")] if d > 1 else [D(2), D(3)])
+        a2 = k * a
+        b2 = k * b
+        if ndec(b2) <= 1 and ndec(a2) <= 1:
+            break
+    enun = (f"Tres rectas paralelas cortan a dos secantes. En la primera secante determinan segmentos de {a} cm y {b} cm; en la segunda, "
+            f"el segmento correspondiente al de {a} cm mide {fx(a2)} cm. ¿Cuánto mide el otro?")
+    resp = u(b2, "cm")
+    cruz = D(a) * a2 / b
+    dist = [(u(r2(cruz, 2), "cm"), "cruzada"), (u(b + (a2 - a), "cm"), None), (u(r2(D(b) * a / a2, 2), "cm"), None), (u(b2 + 1, "cm"), None)]
+    pasos = [(f"{fx(a2)} / {a} = x / {b}", "", f"Teorema de Tales: los segmentos son proporcionales, {fx(a2)} / {a} = x / {b}."),
+             (f"x = {b} · {fx(a2)} : {a}", fx(b2), f"x = {b} · {fx(a2)} : {a} = {resp}.")]
+    adulto = "Tales: las paralelas determinan segmentos proporcionales; hay que emparejar cada segmento con su correspondiente al escribir la proporción."
+    return mk(enun, resp, "t4_tales", {"a": a, "b": b, "a2": str(a2)}, dist, pasos, adulto)
+
+
+@generador("t4_criterio_semej")
+def gen_criterio_semej(rng, d):
+    for _ in range(100):
+        ls = sorted(rng.sample(range(3, 15), 3))
+        if ls[2] < ls[0] + ls[1]:
+            break
+    caso = rng.choice(["si", "diferencias"] if d < 3 else ["si", "diferencias", "si_desordenado", "aa"])
+    if caso == "aa":
+        a1, a2 = rng.randint(30, 80), rng.randint(30, 70)
+        a3 = 180 - a1 - a2
+        otro_b = rng.choice([a3, a2])
+        enun = f"Un triángulo tiene ángulos de {a1}° y {a2}°. Otro triángulo tiene ángulos de {a1}° y {a3}°. ¿Son semejantes?"
+        resp = "Sí, porque tienen los tres ángulos iguales"
+        dist = [("No, porque no nos dan los lados", None), ("No, porque el segundo ángulo es distinto", None), ("Solo si además son iguales", None), ("No se puede saber", None)]
+        pasos = [("tercer ángulo", f"{a3}°", f"El tercer ángulo del primero es 180° − {a1}° − {a2}° = {a3}°, así que los dos tienen ángulos {a1}°, {a2}° y {a3}°: basta con dos ángulos iguales.")]
+        return mk(enun, resp, "t4_criterio_semej", {"caso": caso}, dist, pasos, "Dos triángulos con dos ángulos iguales son semejantes (el tercero también coincide).")
+    k = rng.choice([D("1.5"), D(2), D("2.5"), D(3)])
+    a, b, c = (D(x) for x in ls)
+    if caso == "diferencias":
+        sum_ = rng.randint(2, 5)
+        otros = [a + sum_, b + sum_, c + sum_]
+    else:
+        otros = [k * a, k * b, k * c]
+    mostrados = list(otros)
+    if caso == "si_desordenado":
+        rng.shuffle(mostrados)
+        while mostrados == otros:
+            rng.shuffle(mostrados)
+    enun = f"¿Son semejantes un triángulo de lados {fx(a)}, {fx(b)} y {fx(c)} cm y otro de lados {', '.join(fx(x) for x in mostrados[:2])} y {fx(mostrados[2])} cm?"
+    if caso == "diferencias":
+        resp = "No, porque los cocientes entre lados no son iguales"
+        dist = [(f"Sí, porque cada lado aumenta {sum_} cm", "diferencias"), ("Sí, porque los dos son escalenos", None), ("Sí, con razón " + fx(r2(otros[0] / a, 2)), None), ("No se puede saber sin los ángulos", None)]
+        pasos = [("cocientes", "", f"Divido lados homólogos (ordenados): {fx(otros[0])}/{fx(a)}, {fx(otros[1])}/{fx(b)}, {fx(otros[2])}/{fx(c)}. No dan lo mismo, así que no son semejantes (sumar la misma cantidad no conserva la forma).")]
+    else:
+        resp = f"Sí, con razón de semejanza {fx(k)}"
+        dist = [(f"No, porque {fx(mostrados[0])}/{fx(a)} ≠ {fx(mostrados[1])}/{fx(b)}" if caso == "si_desordenado" else None, "no_ordena"),
+                ("No, porque los lados no son iguales", None), (f"Sí, con razón de semejanza {fx(k + 1)}", None), (f"Sí, con razón de semejanza {fx(k * a - a)}" if k * a - a not in (k, k + 1) else None, None),
+                ("No se puede saber sin los ángulos", None)]
+        pasos = [("ordenar", "", "Ordeno los lados de menor a mayor en los dos triángulos y los emparejo."),
+                 ("cocientes", fx(k), f"{fx(otros[0])}/{fx(a)} = {fx(otros[1])}/{fx(b)} = {fx(otros[2])}/{fx(c)} = {fx(k)}: son proporcionales, luego semejantes con razón {fx(k)}.")]
+    adulto = "Criterio LLL: los lados, ordenados de menor a mayor, deben tener el mismo cociente (no la misma diferencia)."
+    return mk(enun, resp, "t4_criterio_semej", {"caso": caso}, dist, pasos, adulto)
+
+
+@generador("t4_sombras")
+def gen_sombras(rng, d):
+    for _ in range(100):
+        h1 = D(rng.choice([1, 2, D("1.5"), D("1.2"), D("0.8"), D("1.6")]))
+        s1 = D(rng.choice([1, 2, 3, D("1.5"), D("2.4"), D("0.8"), 4]))
+        s2 = D(rng.randint(3, 30))
+        h2 = h1 * s2 / s1
+        if ndec(h2) <= 2 and h2 != s2:
+            break
+    obj = rng.choice(["el árbol", "la farola", "el edificio", "la torre"])
+    ind = {"el árbol": "un árbol", "la farola": "una farola", "el edificio": "un edificio", "la torre": "una torre"}[obj]
+    en_cm = d == 3 and rng.random() < 0.5
+    vara = f"{fmt(int(h1 * 100))} cm" if en_cm else f"{fx(h1)} m"
+    enun = f"Una vara de {vara} da una sombra de {fx(s1)} m. A la misma hora, {ind} da una sombra de {fx(s2)} m. ¿Cuánto mide {obj.split()[1] if False else 'de alto'} {obj}?".replace("¿Cuánto mide de alto", "¿Qué altura tiene")
+    resp = u(h2, "m")
+    dist = [(u(r2(h1 * s1 / s2, 2), "m"), "invertida"), (u(h1 * 100 / s1 * s2, "m") if en_cm else u(r2(s1 * s2 / h1, 2), "m"), "mezcla_unidades" if en_cm else None),
+            (u(h1 + s2 - s1, "m"), None), (u(h2 + 1, "m"), None)]
+    pasos = [(f"{fx(h1)} / {fx(s1)} = x / {fx(s2)}", "", (f"Paso la vara a metros: {vara} = {fx(h1)} m. " if en_cm else "") + f"Los triángulos altura–sombra son semejantes: {fx(h1)} / {fx(s1)} = x / {fx(s2)}."),
+             (f"x = {fx(h1)} · {fx(s2)} : {fx(s1)}", fx(h2), f"x = {fx(h1)} · {fx(s2)} : {fx(s1)} = {resp}.")]
+    adulto = "Altura y sombra son proporcionales a la misma hora: altura/sombra es igual para la vara y el objeto. Todas las medidas en la misma unidad."
+    return mk(enun, resp, "t4_sombras", {"h1": str(h1), "s1": str(s1), "s2": str(s2)}, dist, pasos, adulto)
+
+
+@generador("t4_razon_areas")
+def gen_razon_areas(rng, d):
+    tipo = rng.choice(["area", "volumen"] if d < 3 else ["maqueta", "volumen", "area"])
+    k = rng.choice([2, 3, 4, 5])
+    if tipo == "area":
+        A = rng.randint(3, 40)
+        enun = f"Dos figuras son semejantes con razón {k}. Si la pequeña tiene {A} cm² de área, ¿cuál es el área de la grande?"
+        resp = f"{fmt(A * k * k)} cm²"
+        dist = [(f"{fmt(A * k)} cm²", "aplica_k"), (f"{fmt(A * k ** 3)} cm²", None), (f"{fmt(A * 2 * k)} cm²", None), (f"{fmt(A + k * k)} cm²", None)]
+        pasos = [(f"{k}² = {k * k}", fmt(A * k * k), f"Las áreas se multiplican por k² = {k}² = {k * k}: {A} · {k * k} = {resp}.")]
+    elif tipo == "volumen":
+        V = rng.randint(2, 30)
+        enun = f"Dos cuerpos son semejantes con razón {k}. Si el pequeño tiene {V} cm³ de volumen, ¿cuál es el volumen del grande?"
+        resp = f"{fmt(V * k ** 3)} cm³"
+        dist = [(f"{fmt(V * k * k)} cm³", "k2_volumen"), (f"{fmt(V * k)} cm³", "aplica_k"), (f"{fmt(V * 3 * k)} cm³", None), (f"{fmt(V + k ** 3)} cm³", None)]
+        pasos = [(f"{k}³ = {k ** 3}", fmt(V * k ** 3), f"Los volúmenes se multiplican por k³ = {k}³ = {k ** 3}: {V} · {k ** 3} = {resp}.")]
+    else:
+        esc = rng.choice([10, 20, 50, 100])
+        A = rng.randint(2, 30)
+        real = A * esc * esc
+        enun = f"Una maqueta está hecha a escala 1:{esc}. Una pared de la maqueta tiene {A} cm² de superficie. ¿Qué superficie tiene la pared real?"
+        resp = f"{fx(D(real) / 10000)} m²"
+        dist = [(f"{fx(D(A * esc) / 10000)} m²", "aplica_k"), (f"{fmt(real)} m²", None), (f"{fx(D(A * esc ** 3) / 10000)} m²", None), (f"{fx(D(real) / 100)} m²", None)]
+        pasos = [(f"{A} · {esc}²", fmt(real), f"Las superficies se multiplican por {esc}² = {fmt(esc * esc)}: {A} · {fmt(esc * esc)} = {fmt(real)} cm²."),
+                 (f"{fmt(real)} : 10 000", fx(D(real) / 10000), f"1 m² = 10 000 cm²: {fmt(real)} cm² = {resp}.")]
+    adulto = "Si la razón de semejanza es k, las longitudes se multiplican por k, las áreas por k² y los volúmenes por k³."
+    return mk(enun, resp, "t4_razon_areas", {"k": k, "tipo": tipo}, dist, pasos, adulto)
+
+
+@generador("t4_cateto_altura")
+def gen_cateto_altura(rng, d):
+    if rng.random() < 0.5:
+        for _ in range(100):
+            m, n = rng.randint(1, 16), rng.randint(1, 16)
+            if m != n and math.isqrt(m * n) ** 2 == m * n:
+                break
+        h = math.isqrt(m * n)
+        enun = f"En un triángulo rectángulo, la altura sobre la hipotenusa la divide en dos segmentos (proyecciones de los catetos) de {m} cm y {n} cm. ¿Cuánto mide la altura?"
+        resp = f"{h} cm"
+        dist = [(f"≈ {fx(_raiz(m + n))} cm", "suma_proyecciones"), (f"{m * n} cm", None), (f"{fx(D(m + n) / 2)} cm", None), (f"{h + 1} cm", None)]
+        pasos = [(f"h² = {m} · {n}", str(m * n), f"Teorema de la altura: h² = m · n = {m} · {n} = {m * n}."), (f"√{m * n}", str(h), f"h = √{m * n} = {h} cm.")]
+    else:
+        for _ in range(200):
+            m, n = rng.randint(1, 20), rng.randint(1, 20)
+            a = m + n
+            if m != n and math.isqrt(a * m) ** 2 == a * m:
+                break
+        b = math.isqrt(a * m)
+        enun = f"En un triángulo rectángulo, la hipotenusa mide {a} cm y la proyección de un cateto sobre ella mide {m} cm. ¿Cuánto mide ese cateto?"
+        resp = f"{b} cm"
+        dist = [(f"≈ {fx(_raiz(a * n))} cm" if math.isqrt(a * n) ** 2 != a * n else f"{math.isqrt(a * n)} cm", "proyeccion_equivocada"), (f"≈ {fx(_raiz(a + m))} cm", None), (f"{a * m} cm", None), (f"{b + 1} cm", None)]
+        pasos = [(f"b² = {a} · {m}", str(a * m), f"Teorema del cateto: el cateto al cuadrado es la hipotenusa por SU proyección: b² = {a} · {m} = {a * m}."), (f"√{a * m}", str(b), f"b = √{a * m} = {b} cm.")]
+    adulto = "Teorema de la altura: h² = m · n (producto de las proyecciones). Teorema del cateto: b² = a · m, con la proyección de ese mismo cateto."
+    return mk(enun, resp, "t4_cateto_altura", {}, dist, pasos, adulto)

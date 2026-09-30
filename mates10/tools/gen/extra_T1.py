@@ -4,7 +4,7 @@ Cada generador se llama "t1_<familia><nn>" (p. ej. t1_cont01 = NUM.CONT.01) y de
 directamente el sufijo del error típico de esa habilidad ("E01", "E02"…); los distractores sin error llevan clave None
 o van en `genericos`. Los modos (`modos`) se eligen en la spec con kw_por_dificultad.
 """
-from .nucleo import Ejercicio, generador, fmt, letras, ORDINALES, ICONOS, NOMBRES, OBJETOS, genericos_num
+from .nucleo import REGISTRY, Ejercicio, generador, fmt, letras, ORDINALES, ICONOS, NOMBRES, OBJETOS, genericos_num
 
 NINAS = ["Lucía", "Martina", "Sofía", "Julia", "Paula", "Valeria", "Emma", "Carla", "Noa", "Alba", "Sara", "Olivia", "Aitana",
          "Vega", "Lola", "Irene", "Claudia", "Aya"]
@@ -1249,7 +1249,15 @@ def abrev(n, f=False):
 
 
 @generador("t1_ordinal01")
-def g_ordinal01(rng, d, modos=("abreviatura", "fila", "penultimo")):
+def g_ordinal01(rng, d, **kw):
+    for _ in range(30):
+        ej = _g_ordinal01(rng, d, **kw)
+        if not _repetido("g_ordinal01", ej):
+            return ej
+    return None
+
+
+def _g_ordinal01(rng, d, modos=("abreviatura", "fila", "penultimo")):
     m = modo(rng, modos, "fila")
     f = rng.random() < 0.5
     nom = rng.choice(NINAS if f else NINOS)
@@ -1983,7 +1991,7 @@ def g_suma03(rng, d, contexto=False):
         s = a + b
         if not 11 <= s <= 18:
             continue
-        if d == 1 and s > 13 or d == 2 and not 12 <= s <= 16 or d == 3 and s < 14:
+        if d == 1 and s > 13 or d == 2 and not 12 <= s <= 16 or d == 3 and s < 13:
             continue
         break
     dist = [(s - 1, "E01"), (s - 10, "E02"), (s + 1, "E04"), (s + 10, None), (s - 2, None)]
@@ -2327,7 +2335,7 @@ def g_resta04(rng, d, contexto=False):
         b = rng.randint(2, 9)
         if b <= a % 10 or a - b > 9:
             continue
-        if d == 1 and a > 13 or d == 3 and b < 7:
+        if d == 1 and a > 13 or d == 3 and b < 6:
             continue
         break
     else:
@@ -2960,3 +2968,23 @@ def g_cm19(rng, d, modos=("factor_comun", "asociativa", "compensacion")):
         txt = f"{b} = {R} − {k}, así que {b} · {a} = {R} · {a} − {k} · {a} = {fmt(R * a)} − {k * a} = {fmt(r)}."
     return mk(f"Calcula de la forma más cómoda: {expr}", r, dist, "jerarquia", txt,
               "Las propiedades (conmutativa, asociativa, distributiva) permiten reorganizar el cálculo para que sea mental y seguro.", expresion=expr)
+
+
+# ================================================================ antiduplicados
+# El validador compara huellas normalizadas (sin emojis ni signos): dos enunciados que solo se distinguen por un dibujo
+# cuentan como duplicados. Envolvemos todos los generadores t1_ para descartar esos casos y que se reintente.
+
+def _envolver(nombre, f):
+    def g(rng, d, **kw):
+        for _ in range(20):
+            ej = f(rng, d, **kw)
+            if not _repetido("reg_" + nombre, ej):
+                return ej
+        return None
+    g.__name__ = f.__name__
+    g.__doc__ = f.__doc__
+    return g
+
+
+for _n in [n for n in REGISTRY if n.startswith("t1_")]:
+    REGISTRY[_n] = _envolver(_n, REGISTRY[_n])

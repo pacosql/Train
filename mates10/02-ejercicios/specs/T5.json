@@ -587,5 +587,213 @@
   },
   "permitir_negativos": true,
   "plantilla": "Producto y cociente de fracciones algebraicas"
+ },
+ "ALG.SIST.01": {
+  "gen": "t5_sist_comprobar",
+  "errores": {
+   "solo_una": "E01",
+   "intercambia": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "¿Es (x, y) solución del sistema?"
+ },
+ "ALG.SIST.02": {
+  "gen": "t5_sist_resolver",
+  "errores": {
+   "misma_ecuacion": "E01",
+   "parentesis": "E02",
+   "olvida_incognita": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Sistemas 2×2 por sustitución",
+  "kw": {
+   "metodo": "sustitucion"
+  }
+ },
+ "ALG.SIST.03": {
+  "gen": "t5_sist_resolver",
+  "errores": {
+   "letras_distintas": "E01",
+   "denominadores": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Sistemas 2×2 por igualación",
+  "kw": {
+   "metodo": "igualacion"
+  }
+ },
+ "ALG.SIST.04": {
+  "gen": "t5_sist_resolver",
+  "errores": {
+   "multiplica_un_miembro": "E01",
+   "suma_en_vez": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Sistemas 2×2 por reducción",
+  "kw": {
+   "metodo": "reduccion"
+  }
+ },
+ "ALG.SIST.05": {
+  "gen": "t5_sist_tipos",
+  "errores": {
+   "paralelas_coincidentes": "E01",
+   "corte_al_reves": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Clasificar sistemas 2×2 e interpretación gráfica"
+ },
+ "ALG.SIST.06": {
+  "gen": "t5_sist_no_lineal",
+  "errores": {
+   "un_par": "E01",
+   "empareja_mal": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Sistemas no lineales sencillos"
+ },
+ "ALG.SIST.07": {
+  "gen": "t5_gauss3",
+  "errores": {
+   "fila_mal": "E01",
+   "regresiva_mal": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Sistemas 3×3 por Gauss"
+ },
+ "ALG.SIST.08": {
+  "gen": "t5_gauss_clasificar",
+  "errores": {
+   "cero_cero_incompatible": "E01",
+   "cero_k_solucion": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Clasificar sistemas 3×3 por Gauss"
+ },
+ "ALG.SISTLIN.01": {
+  "gen": "t5_sistema_matricial",
+  "errores": {
+   "coef_ausente": "E01",
+   "ampliada_sin_terminos": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Matriz de coeficientes y ampliada"
+ },
+ "ALG.SISTLIN.02": {
+  "gen": "t5_rouche",
+  "errores": {
+   "compara_ecuaciones": "E01",
+   "distintos_sci": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Rouché-Fröbenius"
+ },
+ "ALG.SISTLIN.03": {
+  "gen": "t5_discusion_param",
+  "errores": {
+   "se_queda_det": "E01"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Discusión de sistemas 3×3 con un parámetro"
+ },
+ "ALG.SISTLIN.04": {
+  "gen": "t5_cramer",
+  "errores": {
+   "columna_equivocada": "E01"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Regla de Cramer"
+ },
+ "ALG.SISTLIN.05": {
+  "gen": "t5_homogeneo",
+  "errores": {
+   "homogeneo_incompatible": "E01",
+   "det_no_nulo": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Sistemas homogéneos con parámetro"
+ },
+ "ALG.MATRIZ.01": {
+  "gen": "t5_matriz_elementos",
+  "errores": {
+   "fila_columna": "E01",
+   "dimension_invertida": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Dimensión, elementos, tipos y traspuesta"
+ },
+ "ALG.MATRIZ.02": {
+  "gen": "t5_matriz_suma",
+  "errores": {
+   "escalar_una_fila": "E01"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Combinaciones lineales de matrices"
+ },
+ "ALG.MATRIZ.03": {
+  "gen": "t5_matriz_producto",
+  "errores": {
+   "elemento_a_elemento": "E01",
+   "conmuta": "E02",
+   "cuadrado_elementos": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Producto de matrices y potencias"
+ },
+ "ALG.MATRIZ.04": {
+  "gen": "t5_determinante",
+  "errores": {
+   "signo_secundaria": "E01",
+   "sarrus_incompleto": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Determinantes 2×2, 3×3 y con parámetro"
+ },
+ "ALG.MATRIZ.05": {
+  "gen": "t5_det_propiedades",
+  "errores": {
+   "k_por_det": "E01",
+   "signo_adjunto": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Propiedades de los determinantes y adjuntos"
+ },
+ "ALG.MATRIZ.06": {
+  "gen": "t5_rango",
+  "errores": {
+   "rango_filas": "E01",
+   "menor_nulo": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Rango de una matriz"
+ },
+ "ALG.MATRIZ.07": {
+  "gen": "t5_inversa",
+  "errores": {
+   "elemento_a_elemento": "E01",
+   "olvida_trasponer": "E02",
+   "sin_signos": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Matriz inversa"
+ },
+ "ALG.MATRIZ.08": {
+  "gen": "t5_ec_matricial",
+  "errores": {
+   "lado_equivocado": "E01",
+   "divide": "E02",
+   "factor_sin_identidad": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Ecuaciones matriciales"
+ },
+ "ALG.PROGLIN.02": {
+  "gen": "t5_proglin",
+  "errores": {
+   "vertice_lejano": "E01",
+   "solo_valor": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Optimizar la función objetivo en los vértices"
  }
 }

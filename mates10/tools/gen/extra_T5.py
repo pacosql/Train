@@ -2643,3 +2643,866 @@ def gen_frac_producto(rng, d):
               [("Dividir es multiplicar por la inversa de la segunda fracción. " if div else "") + "Factorizo todos los numeradores y denominadores.",
                f"Multiplico y cancelo factores comunes entre cualquier numerador y cualquier denominador: {res}."],
               "Factorizar antes de multiplicar simplifica mucho; se cancela un factor de un numerador con uno de un denominador, nunca dos del mismo numerador.")
+
+
+# ================================================================ ALG.SIST (2×2 y 3×3)
+
+def _eq2(a, b, c, vx="x", vy="y"):
+    return f"{terms([(a, vx), (b, vy)])} = {N(c)}"
+
+
+def _solve2(a, b, c, d_, e, f):
+    det = a * e - b * d_
+    if det == 0:
+        return None
+    return F(c * e - b * f, det), F(a * f - c * d_, det)
+
+
+def _sxy(x, y):
+    return f"x = {N(x)}, y = {N(y)}"
+
+
+def _sistema2(rng, d, frac=False, forma=None):
+    for _ in range(500):
+        x, y = F(rng.randint(-6, 8)), F(rng.randint(-6, 8))
+        if frac and rng.random() < 0.4:
+            x = F(rng.randint(-7, 7), rng.choice([2, 3]))
+        a, b, d_, e = nz(rng, -5, 6), nz(rng, -5, 6), nz(rng, -5, 6), nz(rng, -5, 6)
+        if forma == "sust":
+            d_ = 1
+        if forma == "igual":
+            b, e = -1, -1
+        if a * e - b * d_ == 0:
+            continue
+        c, f = a * x + b * y, d_ * x + e * y
+        if c.denominator == 1 and f.denominator == 1:
+            return x, y, a, b, int(c), d_, e, int(f)
+
+
+@generador("t5_sist_comprobar")
+def gen_sist_comprobar(rng, d):
+    x, y, a, b, c, d_, e, f = _sistema2(rng, d)
+    caso = rng.choice(["ambas", "primera", "segunda", "ninguna"])
+    px, py = x, y
+    if caso != "ambas":
+        for _ in range(100):
+            px, py = x + rng.randint(-3, 3), y + rng.randint(-3, 3)
+            ok1, ok2 = a * px + b * py == c, d_ * px + e * py == f
+            if (caso, ok1, ok2) in (("primera", True, False), ("segunda", False, True), ("ninguna", False, False)):
+                break
+        else:
+            caso = "ambas"
+            px, py = x, y
+    ok1, ok2 = a * px + b * py == c, d_ * px + e * py == f
+    OPC = {"ambas": "Sí: cumple las dos ecuaciones", "primera": "No: solo cumple la primera", "segunda": "No: solo cumple la segunda", "ninguna": "No: no cumple ninguna"}
+    real = "ambas" if ok1 and ok2 else "primera" if ok1 else "segunda" if ok2 else "ninguna"
+    resp = OPC[real]
+    s1, s2 = a * py + b * px == c, d_ * py + e * px == f
+    inter = "ambas" if s1 and s2 else "primera" if s1 else "segunda" if s2 else "ninguna"
+    dist = [(OPC["ambas"] if real == "primera" else None, "solo_una"), (OPC[inter] if inter != real else None, "intercambia")]
+    dist += [(v, None) for k, v in OPC.items() if k != real]
+    return mk(f"¿Es ({N(px)}, {N(py)}) solución del sistema {{{_eq2(a, b, c)}; {_eq2(d_, e, f)}}}?", resp, "t5_sist_comprobar", dist, [],
+              [f"Sustituyo x = {N(px)} e y = {N(py)} en la primera: {N(a * px + b * py)} {'=' if ok1 else '≠'} {N(c)}.",
+               f"Y en la segunda: {N(d_ * px + e * py)} {'=' if ok2 else '≠'} {N(f)}.", "Solo es solución si cumple LAS DOS."],
+              "Un par es solución del sistema si cumple todas las ecuaciones a la vez; el primer número del par es x.")
+
+
+@generador("t5_sist_resolver")
+def gen_sist_resolver(rng, d, metodo="sustitucion"):
+    forma = {"sustitucion": "sust", "igualacion": "igual", "reduccion": None}[metodo]
+    x, y, a, b, c, d_, e, f = _sistema2(rng, d, frac=(d == 3), forma=forma if d < 3 or forma == "sust" else None)
+    if metodo == "igualacion" and d < 3:
+        # y = mx + n en las dos
+        e1, e2 = f"y = {P({1: a, 0: c})}".replace("y = ", "y = "), None
+        m1, n1 = F(a), F(c)
+        # reconstruye: a x − y = −c  →  y = a x + c : usamos b = e = −1
+        e1 = f"y = {P({1: a, 0: -c})}" if False else f"y = {P({1: F(-a, b), 0: F(c, b)})}"
+        e2 = f"y = {P({1: F(-d_, e), 0: F(f, e)})}"
+        enun = f"Resuelve por igualación: {{{e1}; {e2}}}"
+    else:
+        enun = f"Resuelve por {metodo}: {{{_eq2(a, b, c)}; {_eq2(d_, e, f)}}}"
+    resp = _sxy(x, y)
+    dist = []
+    if metodo == "sustitucion":
+        # E02: paréntesis al sustituir: de la 2.ª x = f − e y; en la 1.ª: a(f − e y) → a f − e y
+        den = b - e
+        if den:
+            y2 = F(c - a * f, den)
+            x2 = f - e * y2
+            dist.append((_sxy(x2, y2), "parentesis"))
+        dist.append((f"y = {N(y)}", "olvida_incognita"))
+        dist.append(("Infinitas soluciones", "misma_ecuacion"))
+    elif metodo == "igualacion":
+        dist.append((_sxy(y, x), "letras_distintas"))
+        s2 = _solve2(a, b, c + 1, d_, e, f)
+        dist.append((_sxy(*s2) if s2 else None, "denominadores"))
+    else:
+        s1 = _solve2(a * e, b * e, c, d_, e, f) if e != 1 else None  # multiplica solo el primer miembro
+        if s1:
+            dist.append((_sxy(*s1), "multiplica_un_miembro"))
+        s2 = _solve2(a, b, c, -d_, -e, f)
+        if s2:
+            dist.append((_sxy(*s2), "suma_en_vez"))
+    dist.append((_sxy(-x, y), None))
+    return mk(enun, resp, "t5_sistema", dist, [_sxy(x, -y), _sxy(x + 1, y), _sxy(y, x)],
+              {"sustitucion": ["Despejo x en la ecuación donde es más fácil y sustituyo esa expresión, entre paréntesis, en la OTRA ecuación.",
+                               f"Resuelvo la ecuación en y: y = {N(y)}; vuelvo a la expresión despejada: x = {N(x)}."],
+               "igualacion": ["Despejo la MISMA incógnita en las dos ecuaciones e igualo las dos expresiones.",
+                              f"Resuelvo: x = {N(x)}; sustituyo en cualquiera: y = {N(y)}."],
+               "reduccion": ["Multiplico una o las dos ecuaciones (todos sus términos, también el independiente) para que una incógnita tenga coeficientes opuestos.",
+                             f"Sumo las ecuaciones, despejo y sustituyo: x = {N(x)}, y = {N(y)}."]}[metodo] + ["Compruebo en las dos ecuaciones."],
+              "La solución de un sistema es un par (x, y) que cumple las dos ecuaciones; comprobarlo al final detecta casi todos los errores.",
+              x=x, y=y)
+
+
+@generador("t5_sist_tipos")
+def gen_sist_tipos(rng, d):
+    caso = rng.choice(["SCD", "SI", "SCI"]) if d > 1 else rng.choice(["SCD", "SCD", "SI", "SCI"])
+    x, y, a, b, c, d_, e, f = _sistema2(rng, d)
+    if caso != "SCD":
+        k = rng.choice([2, 3, -2, -1, -3])
+        d_, e = k * a, k * b
+        f = k * c if caso == "SCI" else k * c + nz(rng, -5, 5)
+    TXT = {"SCD": f"Compatible determinado: rectas secantes en {pt(x, y)}", "SI": "Incompatible: rectas paralelas", "SCI": "Compatible indeterminado: rectas coincidentes"}
+    resp = TXT[caso]
+    dist = []
+    if caso == "SI":
+        dist.append((TXT["SCI"], "paralelas_coincidentes"))
+        dist.append(("Compatible determinado: rectas secantes en (0, 0)", None))
+    elif caso == "SCI":
+        dist.append((TXT["SI"], None))
+        dist.append((f"Compatible determinado: rectas secantes en {pt(x, y)}", None))
+    else:
+        dist.append((f"Compatible determinado: rectas secantes en {pt(y, x)}" if x != y else None, "corte_al_reves"))
+        dist.append((TXT["SI"], None))
+        dist.append((TXT["SCI"], None))
+    return mk(f"Clasifica el sistema {{{_eq2(a, b, c)}; {_eq2(d_, e, f)}}} e interprétalo gráficamente.", resp, "t5_sist_tipos", dist,
+              [TXT["SI"], TXT["SCI"], f"Compatible determinado: rectas secantes en {pt(x + 1, y)}"],
+              ["Comparo los coeficientes: si a/a' ≠ b/b', las rectas se cortan (una solución).",
+               "Si son proporcionales, miro también los términos independientes: si también lo son, coinciden (infinitas); si no, son paralelas (ninguna).",
+               f"{resp}."],
+              "Coeficientes proporcionales no bastan para 'infinitas soluciones': hay que mirar el término independiente.")
+
+
+@generador("t5_sist_no_lineal")
+def gen_sist_no_lineal(rng, d):
+    tipo = rng.choice(["sp", "sp", "parab"]) if d < 3 else rng.choice(["parab", "circ"])
+    if tipo == "sp":
+        p, q = rng.sample(range(-6, 9), 2)
+        enun = f"{{x + y = {N(p + q)}; xy = {N(p * q)}}}"
+        pares = sorted({(p, q), (q, p)})
+        mal = [(p, p), (q, q)]
+    elif tipo == "parab":
+        r1, r2 = rng.sample(range(-4, 5), 2)
+        m, n = rng.randint(-3, 3), rng.randint(-5, 5)
+        # y = x² + bx + c ; y = m x + n con cortes r1, r2
+        b = m - (r1 + r2)
+        c = n + r1 * r2
+        enun = f"{{y = {P({2: 1, 1: b, 0: c})}; y = {P({1: m, 0: n})}}}"
+        pares = sorted({(r1, m * r1 + n), (r2, m * r2 + n)})
+        mal = [(pares[0][0], pares[1][1]), (pares[1][0], pares[0][1])]
+    else:
+        tri = rng.choice([(3, 4, 5), (0, 5, 5), (6, 8, 10), (5, 12, 13), (0, 3, 3), (0, 4, 4)])
+        a_, b_, r = tri
+        sx, sy = rng.choice([1, -1]), rng.choice([1, -1])
+        px, py = sx * a_, sy * b_
+        # recta y = k x por el origen y el punto
+        if px == 0:
+            enun = f"{{x² + y² = {r * r}; x = 0}}"
+            pares = sorted({(0, r), (0, -r)})
+        else:
+            k = F(py, px)
+            enun = f"{{x² + y² = {r * r}; y = {P({1: k})}}}"
+            pares = sorted({(px, py), (-px, -py)})
+        mal = [(pares[0][0], pares[1][1]), (pares[1][0], pares[0][1])]
+    fp = lambda ps: " y ".join(pt(*q) for q in sorted(ps))
+    resp = fp(pares)
+    dist = [(pt(*pares[0]), "un_par"), (fp(set(mal)) if set(mal) != set(pares) and mal[0] != mal[1] else None, "empareja_mal"), (pt(*pares[-1]), "un_par"),
+            (fp({(-a, -b) for a, b in pares}), None)]
+    return mk(f"Resuelve el sistema: {enun}", resp, "t5_sist_no_lineal", dist, [fp({(a + 1, b) for a, b in pares})],
+              ["Despejo una incógnita en la ecuación lineal y la sustituyo en la otra: sale una ecuación de segundo grado.",
+               "Cada solución de esa ecuación da un par; calculo la otra incógnita en la ecuación despejada.", f"Soluciones: {resp}."],
+              "Los sistemas no lineales pueden tener varias soluciones; cada valor de x va con SU valor de y.")
+
+
+def _solve3(A, b):
+    """Gauss con fracciones. Devuelve lista o None si singular."""
+    M = [[F(v) for v in fila] + [F(bb)] for fila, bb in zip(A, b)]
+    n = 3
+    for i in range(n):
+        piv = next((r for r in range(i, n) if M[r][i] != 0), None)
+        if piv is None:
+            return None
+        M[i], M[piv] = M[piv], M[i]
+        for r in range(n):
+            if r != i and M[r][i] != 0:
+                k = M[r][i] / M[i][i]
+                M[r] = [x - k * y for x, y in zip(M[r], M[i])]
+    return [M[i][3] / M[i][i] for i in range(n)]
+
+
+def det3(A):
+    return (A[0][0] * (A[1][1] * A[2][2] - A[1][2] * A[2][1]) - A[0][1] * (A[1][0] * A[2][2] - A[1][2] * A[2][0])
+            + A[0][2] * (A[1][0] * A[2][1] - A[1][1] * A[2][0]))
+
+
+def det2(A):
+    return A[0][0] * A[1][1] - A[0][1] * A[1][0]
+
+
+def rango(M):
+    M = [[F(v) for v in f] for f in M]
+    r = 0
+    cols = len(M[0])
+    for c in range(cols):
+        piv = next((i for i in range(r, len(M)) if M[i][c] != 0), None)
+        if piv is None:
+            continue
+        M[r], M[piv] = M[piv], M[r]
+        for i in range(len(M)):
+            if i != r and M[i][c] != 0:
+                k = M[i][c] / M[r][c]
+                M[i] = [x - k * y for x, y in zip(M[i], M[r])]
+        r += 1
+    return r
+
+
+def _eq3(fila, b, vs=("x", "y", "z")):
+    return f"{terms(list(zip(fila, vs)))} = {N(b)}"
+
+
+def _sxyz(s):
+    return f"x = {N(s[0])}, y = {N(s[1])}, z = {N(s[2])}"
+
+
+def _matriz3(rng, lo=-3, hi=3, detmin=1):
+    for _ in range(500):
+        A = [[rng.randint(lo, hi) for _ in range(3)] for _ in range(3)]
+        A[0][0] = 1
+        if abs(det3(A)) >= detmin and all(any(v for v in f) for f in A):
+            return A
+
+
+@generador("t5_gauss3")
+def gen_gauss3(rng, d):
+    A = _matriz3(rng, -2 if d == 1 else -3, 2 if d == 1 else 4)
+    s = [rng.randint(-3, 4) for _ in range(3)]
+    b = [sum(A[i][j] * s[j] for j in range(3)) for i in range(3)]
+    enun = "Resuelve por el método de Gauss: {" + "; ".join(_eq3(A[i], b[i]) for i in range(3)) + "}"
+    resp = _sxyz(s)
+    dist = []
+    s1 = _solve3(A, [b[0], b[1] + b[0], b[2]])
+    if s1:
+        dist.append((_sxyz(s1), "fila_mal"))
+    # E02: sustitución regresiva mal: x calculada con z pero sin y
+    x2 = F(b[0] - A[0][2] * s[2], A[0][0])
+    dist.append((_sxyz([x2, s[1], s[2]]) if x2 != s[0] else None, "regresiva_mal"))
+    dist.append((_sxyz([s[1], s[0], s[2]]) if s[0] != s[1] else None, None))
+    dist.append((_sxyz([-s[0], s[1], -s[2]]), None))
+    return mk(enun, resp, "t5_gauss", dist, [_sxyz([s[0] + 1, s[1], s[2]]), _sxyz([s[0], s[1], s[2] + 1])],
+              ["Uso la primera ecuación para eliminar la x de las otras dos (restando múltiplos de filas enteras, término independiente incluido).",
+               "Con la nueva segunda ecuación elimino la y de la tercera: el sistema queda escalonado.",
+               f"Despejo z en la última, luego y, luego x: {resp}. Compruebo en las tres ecuaciones."],
+              "Las transformaciones de Gauss afectan a la fila entera, también al término independiente; la sustitución regresiva va de abajo arriba.")
+
+
+@generador("t5_gauss_clasificar")
+def gen_gauss_clasificar(rng, d):
+    caso = rng.choice(["SCD", "SCI", "SI"])
+    for _ in range(300):
+        f1 = [1, rng.randint(-3, 3), rng.randint(-3, 3)]
+        f2 = [rng.randint(-3, 3) for _ in range(3)]
+        s = [rng.randint(-3, 3) for _ in range(3)]
+        b1, b2 = sum(x * y for x, y in zip(f1, s)), sum(x * y for x, y in zip(f2, s))
+        if rango([f1, f2]) < 2:
+            continue
+        if caso == "SCD":
+            f3 = [rng.randint(-3, 3) for _ in range(3)]
+            b3 = sum(x * y for x, y in zip(f3, s))
+            if det3([f1, f2, f3]) == 0:
+                continue
+        else:
+            p, q = rng.choice([1, 2, -1]), rng.choice([1, -1, 2])
+            f3 = [p * x + q * y for x, y in zip(f1, f2)]
+            b3 = p * b1 + q * b2 + (0 if caso == "SCI" else nz(rng, -4, 4))
+            if not any(f3):
+                continue
+        break
+    enun = "Clasifica el sistema: {" + "; ".join(_eq3(f, bb) for f, bb in ((f1, b1), (f2, b2), (f3, b3))) + "}"
+    TXT = {"SCD": "Compatible determinado", "SCI": "Compatible indeterminado", "SI": "Incompatible"}
+    resp = TXT[caso]
+    dist = [(TXT["SI"], "cero_cero_incompatible") if caso == "SCI" else (TXT["SCI"], None) if caso == "SI" else (TXT["SCI"], None)]
+    dist.append(("Compatible determinado con z = 0" if caso == "SI" else TXT["SI"] if caso == "SCD" else TXT["SCD"], "cero_k_solucion" if caso == "SI" else None))
+    dist.append((TXT["SCD"] if caso != "SCD" else "Compatible determinado con z = 0", None))
+    return mk(enun, resp, "t5_gauss", dist, [TXT[k] for k in TXT if k != caso],
+              ["Escalono por Gauss.", {"SCD": "Quedan tres ecuaciones con pivote: solución única.",
+                                         "SCI": "La última fila se anula entera (0 = 0): sobra una ecuación y hay infinitas soluciones (un parámetro).",
+                                         "SI": "La última fila queda 0x + 0y + 0z = k con k ≠ 0: imposible, no hay solución."}[caso]],
+              "0 = 0 indica una ecuación que sobra (infinitas soluciones si el resto es compatible); 0 = k (k ≠ 0) indica incompatible.")
+
+
+# ================================================================ ALG.SISTLIN / MATRIZ
+
+def _rand_mat(rng, m, n, lo=-4, hi=5):
+    return [[rng.randint(lo, hi) for _ in range(n)] for _ in range(m)]
+
+
+def madd(A, B, k=1):
+    return [[a + k * b for a, b in zip(fa, fb)] for fa, fb in zip(A, B)]
+
+
+def mscale(A, k):
+    return [[k * a for a in f] for f in A]
+
+
+def mmul(A, B):
+    return [[sum(A[i][k] * B[k][j] for k in range(len(B))) for j in range(len(B[0]))] for i in range(len(A))]
+
+
+def mT(A):
+    return [list(c) for c in zip(*A)]
+
+
+def minv(A):
+    n = len(A)
+    M = [[F(v) for v in f] + [F(int(i == j)) for j in range(n)] for i, f in enumerate(A)]
+    for i in range(n):
+        piv = next(r for r in range(i, n) if M[r][i] != 0)
+        M[i], M[piv] = M[piv], M[i]
+        p = M[i][i]
+        M[i] = [x / p for x in M[i]]
+        for r in range(n):
+            if r != i and M[r][i] != 0:
+                k = M[r][i]
+                M[r] = [x - k * y for x, y in zip(M[r], M[i])]
+    return [f[n:] for f in M]
+
+
+def cofactor(A, i, j):
+    m = [[A[r][c] for c in range(len(A)) if c != j] for r in range(len(A)) if r != i]
+    return (-1) ** (i + j) * (det2(m) if len(m) == 2 else det3(m)), (det2(m) if len(m) == 2 else det3(m))
+
+
+@generador("t5_matriz_elementos")
+def gen_matriz_elementos(rng, d):
+    tarea = rng.choice(["dim", "elem"]) if d == 1 else rng.choice(["tras", "elem", "tipo"]) if d == 2 else "regla"
+    m, n = rng.randint(2, 4), rng.randint(2, 4)
+    while m == n and tarea == "dim":
+        n = rng.randint(1, 4)
+    A = _rand_mat(rng, m, n)
+    if tarea == "dim":
+        return mk(f"¿Qué dimensión tiene la matriz A = {mat(A)}?", f"{m} × {n}", "t5_matriz", [(f"{n} × {m}", "dimension_invertida"), (f"{m * n} × 1", None), (f"{m} × {m}", None)],
+                  [f"{m + 1} × {n}"], [f"Tiene {m} filas y {n} columnas: dimensión {m} × {n} (primero filas)."], "La dimensión se da como filas × columnas.")
+    if tarea == "elem":
+        for _ in range(50):
+            i, j = rng.randint(1, m), rng.randint(1, n)
+            if i != j and j <= m and i <= n and A[i - 1][j - 1] != A[j - 1][i - 1]:
+                break
+        else:
+            i, j = 1, 2
+            A[1][0] = A[0][1] + 1
+        return mk(f"En A = {mat(A)}, ¿cuánto vale el elemento a{sub(i)}{sub(j)}?", N(A[i - 1][j - 1]), "t5_matriz",
+                  [(N(A[j - 1][i - 1]) if j <= m and i <= n else None, "fila_columna"), (N(A[i - 1][j - 1] + 1), None), (N(-A[i - 1][j - 1]) if A[i - 1][j - 1] else "1", None)],
+                  [N(A[0][0]), N(A[-1][-1])], [f"a{sub(i)}{sub(j)} está en la fila {i}, columna {j}: vale {N(A[i - 1][j - 1])}."], "El primer subíndice es la fila y el segundo la columna.")
+    if tarea == "tras":
+        T = mT(A)
+        return mk(f"Calcula la traspuesta de A = {mat(A)}", mat(T), "t5_matriz", [(mat(A), None), (mat([f[::-1] for f in A]), None), (mat([f[::-1] for f in T]), None)],
+                  [mat(mscale(T, -1))], ["La traspuesta cambia filas por columnas: la fila 1 de A es la columna 1 de Aᵗ.", f"Aᵗ = {mat(T)}."],
+                  "Si A es m × n, Aᵗ es n × m.")
+    if tarea == "tipo":
+        k = rng.randint(2, 3)
+        tipo = rng.choice(["diagonal", "identidad", "simétrica", "triangular superior", "nula"])
+        if tipo == "identidad":
+            M = [[int(i == j) for j in range(k)] for i in range(k)]
+        elif tipo == "nula":
+            M = [[0] * k for _ in range(k)]
+        elif tipo == "diagonal":
+            M = [[nz(rng, -5, 5) if i == j else 0 for j in range(k)] for i in range(k)]
+            if all(M[i][i] == 1 for i in range(k)):
+                M[0][0] = 2
+        elif tipo == "simétrica":
+            M = [[0] * k for _ in range(k)]
+            for i in range(k):
+                for j in range(i, k):
+                    M[i][j] = M[j][i] = nz(rng, -5, 5)
+        else:
+            M = [[nz(rng, -5, 5) if j >= i else 0 for j in range(k)] for i in range(k)]
+        otros = [t for t in ["diagonal", "identidad", "simétrica", "triangular superior", "triangular inferior", "nula"] if t != tipo and not (tipo == "identidad" and t in ("diagonal", "simétrica")) and not (tipo in ("diagonal", "nula") and t in ("simétrica", "triangular superior", "triangular inferior", "diagonal"))]
+        return mk(f"¿Qué tipo de matriz es {mat(M)}? (elige el nombre más preciso)", f"Matriz {tipo}", "t5_matriz", [(f"Matriz {t}", None) for t in rng.sample(otros, min(3, len(otros)))],
+                  ["Matriz fila", "Matriz columna"], [f"Miro dónde están los ceros y si aᵢⱼ = aⱼᵢ: es {tipo}."], "Identidad ⊂ diagonal ⊂ triangular; simétrica si coincide con su traspuesta.")
+    p, q, r = rng.randint(-3, 3), rng.randint(-3, 3), rng.randint(-3, 3)
+    if p == q:
+        q += 1
+    M = [[p * i + q * j + r for j in range(1, n + 1)] for i in range(1, m + 1)]
+    regla = terms([(p, "i"), (q, "j"), (r, "")])
+    Mt = [[p * j + q * i + r for j in range(1, n + 1)] for i in range(1, m + 1)]
+    return mk(f"Escribe la matriz A de dimensión {m} × {n} con a_ij = {regla}", mat(M), "t5_matriz", [(mat(Mt), "fila_columna"), (mat(mT(M)), "dimension_invertida"), (mat(mscale(M, -1)), None)],
+              [mat(madd(M, [[1] * n for _ in range(m)]))], [f"i es el número de fila (1 a {m}) y j el de columna (1 a {n}); calculo cada elemento con la regla.", f"A = {mat(M)}."],
+              "a_ij: i fila, j columna.")
+
+
+@generador("t5_matriz_suma")
+def gen_matriz_suma(rng, d):
+    m, n = (2, 2) if d == 1 else (rng.randint(2, 3), rng.randint(2, 3))
+    A, B = _rand_mat(rng, m, n), _rand_mat(rng, m, n)
+    if d == 3 and m != n:
+        m = n
+        A, B = _rand_mat(rng, m, n), _rand_mat(rng, m, n)
+    p, q = (1, rng.choice([1, -1])) if d == 1 else (rng.choice([2, 3, -1, -2]), rng.choice([1, -1, 2, -3]))
+    Bu = mT(B) if d == 3 else B
+    R = madd(mscale(A, p), mscale(Bu, q))
+    expr = ("A" if p == 1 else "−A" if p == -1 else f"{p}A") + (" + " if q > 0 else " − ") + ("" if abs(q) == 1 else str(abs(q))) + ("Bᵗ" if d == 3 else "B")
+    Am = [list(f) for f in A]
+    Am[0] = [p * x for x in A[0]]
+    mal1 = madd([f if i == 0 else f for i, f in enumerate(Am)], mscale(Bu, q)) if p != 1 else madd(A, mscale(Bu, -q))
+    dist = [(mat(mal1), "escalar_una_fila" if p != 1 else None), (mat(madd(mscale(A, p), mscale(B, q))) if d == 3 and B != Bu else mat(madd(mscale(A, p), mscale(Bu, -q))), None),
+            (mat(madd(mscale(A, q), mscale(Bu, p))) if p != q else mat(mscale(R, -1)), None)]
+    return mk(f"Con A = {mat(A)} y B = {mat(B)}, calcula {expr}", mat(R), "t5_matriz", dist, [mat(madd(R, [[1] * n for _ in range(m)]))],
+              ["Multiplico cada matriz por su número (TODOS sus elementos)" + (" y traspongo B" if d == 3 else "") + ".", "Sumo o resto elemento a elemento (misma posición).", f"Resultado: {mat(R)}."],
+              "Solo se suman matrices de igual dimensión; el producto por un número afecta a todos los elementos.")
+
+
+@generador("t5_matriz_producto")
+def gen_matriz_producto(rng, d):
+    if d == 1:
+        A, B = _rand_mat(rng, 2, 2, -3, 4), _rand_mat(rng, 2, 2, -3, 4)
+        enun_op = "A·B"
+    elif d == 2:
+        m, k, n = rng.choice([(2, 3, 2), (3, 2, 3), (2, 3, 3), (3, 2, 2), (2, 2, 3)])
+        A, B = _rand_mat(rng, m, k, -3, 3), _rand_mat(rng, k, n, -3, 3)
+        enun_op = "A·B"
+    else:
+        A = _rand_mat(rng, 2, 2, -3, 3) if rng.random() < 0.6 else _rand_mat(rng, 3, 3, -2, 2)
+        B = A
+        enun_op = "A²"
+    R = mmul(A, B)
+    dist = []
+    if len(A) == len(B) and len(A[0]) == len(B[0]):
+        dist.append((mat([[a * b for a, b in zip(fa, fb)] for fa, fb in zip(A, B)]), "elemento_a_elemento" if enun_op == "A·B" else "cuadrado_elementos"))
+    if enun_op == "A·B" and len(B[0]) == len(A):
+        BA = mmul(B, A)
+        if len(BA) == len(R) and len(BA[0]) == len(R[0]):
+            dist.append((mat(BA), "conmuta"))
+    dist.append((mat(mT(R)), None))
+    dist.append((mat(mscale(R, -1)), None))
+    if enun_op == "A²":
+        return mk(f"Con A = {mat(A)}, calcula A²", mat(R), "t5_matriz", dist, [mat(madd(R, mscale(A, 1)))],
+                  ["A² = A·A: cada elemento es fila de A por columna de A (multiplicar término a término y sumar).", f"A² = {mat(R)}."],
+                  "A² no es elevar cada elemento al cuadrado.")
+    return mk(f"Con A = {mat(A)} y B = {mat(B)}, calcula A·B", mat(R), "t5_matriz", dist, [mat(madd(R, [[1] * len(R[0]) for _ in R]))],
+              [f"A es {len(A)} × {len(A[0])} y B es {len(B)} × {len(B[0])}: se puede multiplicar y el resultado es {len(R)} × {len(R[0])}.",
+               "Elemento (i, j) = fila i de A por columna j de B (productos sumados).", f"A·B = {mat(R)}."],
+              "El producto de matrices es 'fila por columna' y en general A·B ≠ B·A.")
+
+
+@generador("t5_determinante")
+def gen_determinante(rng, d):
+    if d == 1:
+        A = _rand_mat(rng, 2, 2, -6, 7)
+        v = det2(A)
+        return mk(f"Calcula el determinante |{mat(A)}|", N(v), "t5_det", [(N(A[0][0] * A[1][1] + A[0][1] * A[1][0]), "signo_secundaria"), (N(-v), None), (N(A[0][0] * A[1][0] - A[0][1] * A[1][1]), None)],
+                  [N(v + 1), N(v - 1)], [f"|a b; c d| = ad − bc = ({N(A[0][0])})·({N(A[1][1])}) − ({N(A[0][1])})·({N(A[1][0])}) = {N(v)}."], "El producto de la diagonal secundaria se RESTA.")
+    if d == 2:
+        A = _rand_mat(rng, 3, 3, -3, 4)
+        v = det3(A)
+        diag = A[0][0] * A[1][1] * A[2][2] + A[0][1] * A[1][2] * A[2][0] + A[0][2] * A[1][0] * A[2][1]
+        return mk(f"Calcula el determinante |{mat(A)}|", N(v), "t5_det", [(N(diag), "sarrus_incompleto"), (N(-v), None), (N(A[0][0] * A[1][1] * A[2][2] - A[0][2] * A[1][1] * A[2][0]), None)],
+                  [N(v + 1), N(v - 2)], ["Regla de Sarrus: suma de los tres productos 'paralelos' a la diagonal principal menos los tres paralelos a la secundaria.", f"|A| = {N(v)}."],
+                  "Sarrus tiene seis productos: tres con signo + y tres con signo −.")
+    for _ in range(300):
+        A = _rand_mat(rng, 3, 3, -3, 4)
+        i, j = rng.randrange(3), rng.randrange(3)
+        cof, _m = cofactor(A, i, j)
+        if cof == 0:
+            continue
+        A0 = [list(f) for f in A]
+        A0[i][j] = 0
+        base = det3(A0)
+        k = F(-base, cof)
+        if k.denominator == 1 and abs(k) <= 9:
+            break
+    txt = "[" + "; ".join(", ".join("k" if (r, c) == (i, j) else N(A[r][c]) for c in range(3)) for r in range(3)) + "]"
+    return mk(f"¿Para qué valor de k se anula el determinante de {txt}?", f"k = {N(k)}", "t5_det", [(f"k = {N(-k)}", None), (f"k = {N(F(-base, _m))}" if _m != cof and _m else None, None), ("k = 0", None)],
+              [f"k = {N(k + 1)}", f"k = {N(k - 1)}"], [f"Desarrollo el determinante con k: queda una expresión de primer grado en k ({N(cof)}k {'+' if base >= 0 else '−'} {N(abs(base))}).", f"La igualo a 0: k = {N(k)}."],
+              "Con un parámetro, el determinante es un polinomio en k; sus raíces son los valores que lo anulan.")
+
+
+@generador("t5_det_propiedades")
+def gen_det_propiedades(rng, d):
+    if d == 3:
+        A = _rand_mat(rng, 3, 3, -3, 4)
+        i, j = rng.randrange(3), rng.randrange(3)
+        while (i + j) % 2 == 0:
+            i, j = rng.randrange(3), rng.randrange(3)
+        cof, m = cofactor(A, i, j)
+        if cof == 0:
+            A[0][0] += 1
+            cof, m = cofactor(A, i, j)
+        return mk(f"Calcula el adjunto A{sub(i + 1)}{sub(j + 1)} de la matriz {mat(A)}", N(cof), "t5_det", [(N(m), "signo_adjunto"), (N(A[i][j] * cof), None), (N(cof + 1), None)],
+                  [N(cof - 1)], [f"Tacho la fila {i + 1} y la columna {j + 1}: el menor vale {N(m)}.", f"Adjunto = (−1)^({i + 1}+{j + 1})·menor = {N(cof)}."],
+                  "El adjunto lleva el signo (−1)^(i+j): tablero de ajedrez + − + / − + − / + − +.")
+    n = rng.choice([2, 3, 4]) if d == 2 else rng.choice([2, 3])
+    D0 = nz(rng, -6, 6)
+    k = rng.choice([2, 3, -1, -2])
+    op = rng.choice(["kA", "inv", "tras", "kinv", "AB", "fila", "cambio"]) if d == 2 else rng.choice(["kA", "tras", "fila", "cambio"])
+    if op == "kA":
+        enun, r, mal = f"|{k}A|", F(k) ** n * D0, F(k) * D0
+    elif op == "inv":
+        enun, r, mal = "|A⁻¹|", F(1, D0), F(-D0)
+    elif op == "tras":
+        enun, r, mal = "|Aᵗ|", F(D0), F(-D0)
+    elif op == "kinv":
+        enun, r, mal = f"|{k}A⁻¹|", F(k) ** n / D0, F(k) / D0
+    elif op == "AB":
+        E = nz(rng, -5, 5)
+        enun, r, mal = f"|A·B| sabiendo que |B| = {N(E)}", F(D0 * E), F(D0 + E)
+    elif op == "fila":
+        enun, r, mal = f"el determinante de la matriz que resulta al multiplicar una fila de A por {k}", F(k * D0), F(k) ** n * D0
+    else:
+        enun, r, mal = "el determinante de la matriz que resulta al intercambiar dos filas de A", F(-D0), F(D0)
+    return mk(f"A es una matriz cuadrada de orden {n} con |A| = {N(D0)}. Calcula {enun}.", N(r), "t5_det",
+              [(N(mal) if mal != r else N(-r), "k_por_det" if op in ("kA", "kinv") else None), (N(-r) if -r != mal else N(r + 1), None), (N(r * 2), None)], [N(r + 1), N(r - 1)],
+              [{"kA": f"Multiplicar A por {k} multiplica cada una de sus {n} filas por {k}: |{k}A| = {k}^{n}·|A|.", "inv": "|A·A⁻¹| = |I| = 1, así que |A⁻¹| = 1/|A|.",
+                "tras": "|Aᵗ| = |A|.", "kinv": f"|{k}A⁻¹| = {k}^{n}·|A⁻¹| = {k}^{n}/|A|.", "AB": "|A·B| = |A|·|B|.", "fila": f"Multiplicar UNA fila por {k} multiplica el determinante por {k}.",
+                "cambio": "Intercambiar dos filas cambia el signo del determinante."}[op], f"Resultado: {N(r)}."],
+              "|kA| = kⁿ|A| (n = orden), no k|A|: el número multiplica todas las filas.")
+
+
+@generador("t5_rango")
+def gen_rango(rng, d):
+    if d < 3:
+        r = rng.choice([1, 2, 3]) if d == 2 else rng.choice([1, 2, 2])
+        m, n = 3, rng.choice([3, 4]) if d == 2 else 3
+        for _ in range(300):
+            base = _rand_mat(rng, r, n, -3, 3)
+            if rango(base) != r:
+                continue
+            M = [list(f) for f in base]
+            while len(M) < m:
+                cs = [rng.randint(-2, 2) for _ in range(r)]
+                M.append([sum(c * base[i][j] for i, c in enumerate(cs)) for j in range(n)])
+            rng.shuffle(M)
+            if all(any(f) for f in M):
+                break
+        return mk(f"Calcula el rango de la matriz {mat(M)}", str(r), "t5_rango", [("3" if r != 3 else "2", "rango_filas"), ("0" if r != 1 else "2", "menor_nulo"), (str(r % 3 + 1) if r % 3 + 1 not in (3,) else "1", None)],
+                  ["1", "2", "4"], ["Escalono por Gauss (o busco el mayor menor no nulo).", f"Quedan {r} filas no nulas: rg = {r}."],
+                  "El rango es el número de filas (o columnas) linealmente independientes, no el número de filas.")
+    for _ in range(300):
+        a, b = rng.randint(1, 3), rng.randint(-3, 3)
+        f1 = [1, a, b]
+        k = nz(rng, -3, 3)
+        k0 = rng.randint(-5, 5)
+        f2 = [k * v for v in f1]
+        pos = rng.randrange(3)
+        valor = f2[pos]
+        f3 = [rng.randint(-3, 3) for _ in range(3)]
+        if rango([f1, f3]) == 2:
+            break
+    txt = [N(v) for v in f2]
+    txt[pos] = "m"
+    M = f"[{', '.join(N(v) for v in f1)}; {', '.join(txt)}; {', '.join(N(v) for v in f3)}]"
+    resp = f"Si m = {N(valor)}, rango 2; si m ≠ {N(valor)}, rango 3"
+    return mk(f"Estudia el rango de {M} según los valores de m.", resp, "t5_rango", [(f"Rango 3 para todo m", "rango_filas"), (f"Si m = {N(valor)}, rango 1; si m ≠ {N(valor)}, rango 3", "menor_nulo"),
+                                                                                     (f"Si m = {N(-valor) if valor else 1}, rango 2; si m ≠ {N(-valor) if valor else 1}, rango 3", None)],
+              [f"Si m = 0, rango 2; si m ≠ 0, rango 3"], [f"La fila 2 es proporcional a la 1 solo si m = {N(valor)}.", "Calculo el determinante (depende de m) y veo dónde se anula; en ese caso busco un menor 2×2 no nulo.", f"{resp}."],
+              "Con parámetro se estudia dónde se anula el menor de mayor orden y, en esos valores, los menores de orden inferior.")
+
+
+def _inv_ok(rng, n):
+    for _ in range(500):
+        A = _rand_mat(rng, n, n, -3, 4)
+        dt = det2(A) if n == 2 else det3(A)
+        if dt in (1, -1) or (n == 2 and dt in (2, -2, 3, -3) and rng.random() < 0.3):
+            return A, dt
+
+
+@generador("t5_inversa")
+def gen_inversa(rng, d):
+    n = 2 if d < 3 else 3
+    A, dt = _inv_ok(rng, n)
+    Ai = minv(A)
+    dist = []
+    if all(v != 0 for f in A for v in f):
+        dist.append((mat([[F(1, v) for v in f] for f in A]), "elemento_a_elemento"))
+    if n == 2:
+        a, b, c, e = A[0][0], A[0][1], A[1][0], A[1][1]
+        dist.append((mat([[F(e, dt), F(-c, dt)], [F(-b, dt), F(a, dt)]]), "olvida_trasponer"))
+        dist.append((mat([[F(e, dt), F(c, dt)], [F(b, dt), F(a, dt)]]), "sin_signos"))
+    else:
+        dist.append((mat(mT(Ai)), "olvida_trasponer"))
+    dist.append((mat(mscale(Ai, -1)), None))
+    return mk(f"Calcula la inversa de A = {mat(A)}", mat(Ai), "t5_inversa", dist, [mat(mT(A))],
+              [f"|A| = {N(dt)} ≠ 0: A es invertible.", "A⁻¹ = (1/|A|)·Adj(A)ᵗ: matriz de adjuntos (con sus signos), traspuesta y dividida entre el determinante.",
+               f"A⁻¹ = {mat(Ai)}. Compruebo que A·A⁻¹ = I."],
+              "La inversa no se hace elemento a elemento; en 2×2: [a, b; c, d]⁻¹ = (1/|A|)[d, −b; −c, a].")
+
+
+@generador("t5_ec_matricial")
+def gen_ec_matricial(rng, d):
+    A, dt = _inv_ok(rng, 2)
+    while dt not in (1, -1):
+        A, dt = _inv_ok(rng, 2)
+    B = _rand_mat(rng, 2, 2, -3, 4)
+    Ai = minv(A)
+    tipo = rng.choice(["AX=B", "XA=B"]) if d < 3 else rng.choice(["AX+C=B", "AX−X=B"])
+    if tipo == "AX=B":
+        X, mal, enun = mmul(Ai, B), mmul(B, Ai), "A·X = B"
+    elif tipo == "XA=B":
+        X, mal, enun = mmul(B, Ai), mmul(Ai, B), "X·A = B"
+    elif tipo == "AX+C=B":
+        C = _rand_mat(rng, 2, 2, -3, 3)
+        X, mal, enun = mmul(Ai, madd(B, C, -1)), mmul(madd(B, C, -1), Ai), f"A·X + C = B, con C = {mat(C)}"
+    else:
+        AI = madd(A, [[1, 0], [0, 1]], -1)
+        if det2(AI) == 0:
+            AI = madd(A, [[1, 0], [0, 1]], 1)
+            A = madd(AI, [[1, 0], [0, 1]], 1) if False else A
+        if det2(AI) == 0:
+            return None
+        X = mmul(minv(AI), B)
+        mal = mmul(minv(madd(A, [[1, 1], [1, 1]], -1)), B) if det2(madd(A, [[1, 1], [1, 1]], -1)) else mmul(B, minv(AI))
+        enun = "A·X − X = B"
+        return mk(f"Resuelve la ecuación matricial {enun}, con A = {mat(A)} y B = {mat(B)}", mat(X), "t5_ec_matricial",
+                  [(mat(mal), "factor_sin_identidad"), (mat(mmul(B, minv(AI))), "lado_equivocado"), (mat([[F(b, a) if a else F(b) for a, b in zip(fa, fb)] for fa, fb in zip(AI, B)]) if all(a for f in AI for a in f) else None, "divide")],
+                  [mat(mscale(X, -1))], ["Saco factor común X por la derecha: (A − I)·X = B (la identidad, no el número 1).", "Multiplico por (A − I)⁻¹ por la IZQUIERDA: X = (A − I)⁻¹·B.", f"X = {mat(X)}."],
+                  "Las matrices no se dividen y el producto no es conmutativo: se multiplica por la inversa por el mismo lado en que está la matriz.")
+    dist = [(mat(mal), "lado_equivocado"), (mat([[F(b, a) if a else F(b) for a, b in zip(fa, fb)] for fa, fb in zip(A, B)]) if all(a for f in A for a in f) else None, "divide"), (mat(mscale(X, -1)), None)]
+    return mk(f"Resuelve la ecuación matricial {enun}, con A = {mat(A)} y B = {mat(B)}", mat(X), "t5_ec_matricial", dist, [mat(mT(X))],
+              [f"A es invertible (|A| = {N(dt)}); A⁻¹ = {mat(Ai)}.",
+               ("Multiplico por A⁻¹ por la IZQUIERDA: X = A⁻¹·B" if tipo == "AX=B" else "Multiplico por A⁻¹ por la DERECHA: X = B·A⁻¹" if tipo == "XA=B" else "Paso C restando y multiplico por A⁻¹ por la izquierda: X = A⁻¹·(B − C)") + ".",
+               f"X = {mat(X)}."],
+              "Las matrices no se dividen y el producto no es conmutativo: se multiplica por la inversa por el mismo lado en que está la matriz.")
+
+
+@generador("t5_proglin")
+def gen_proglin(rng, d):
+    for _ in range(300):
+        a, b = rng.randint(3, 10), rng.randint(3, 10)
+        vx = [(0, 0), (a, 0), (rng.randint(1, a - 1), rng.randint(2, b)), (0, b)]
+        if d > 1:
+            vx = [(rng.randint(0, 2), rng.randint(0, 2)), (a, rng.randint(0, 2)), (rng.randint(2, a), rng.randint(3, b + 2)), (rng.randint(0, 2), b)]
+        p, q = rng.randint(1, 6), rng.randint(1, 6)
+        if d == 3 and rng.random() < 0.5:
+            p = -p
+        tipo = "máximo" if d < 3 or rng.random() < 0.5 else "mínimo"
+        vals = [p * x + q * y for x, y in vx]
+        best = max(vals) if tipo == "máximo" else min(vals)
+        if vals.count(best) == 1 and len(set(vx)) == 4:
+            break
+    i = vals.index(best)
+    far = max(range(4), key=lambda j: vx[j][0] + vx[j][1])
+    txt = lambda j: f"{tipo.capitalize()} {N(vals[j])} en {pt(*vx[j])}"
+    dist = [(txt(far) if far != i else None, "vertice_lejano"), (f"{tipo.capitalize()} {N(best)}", "solo_valor")]
+    dist += [(txt(j), None) for j in range(4) if j != i]
+    return mk(f"La región factible es el cuadrilátero de vértices {', '.join(pt(*v) for v in vx)}. Halla el {tipo} de F(x, y) = {terms([(p, 'x'), (q, 'y')])} y dónde se alcanza.",
+              txt(i), "t5_proglin", dist, [],
+              ["El óptimo de una función lineal en un polígono se alcanza en un vértice: evalúo F en cada uno.",
+               "; ".join(f"F{pt(*v)} = {N(val)}" for v, val in zip(vx, vals)) + ".", f"{txt(i)}."],
+              "Hay que evaluar la función objetivo en TODOS los vértices y dar el valor y el punto.")
+
+
+@generador("t5_sistema_matricial")
+def gen_sistema_matricial(rng, d):
+    n = 2 if d < 3 else 3
+    vs = ["x", "y", "z"][:n]
+    for _ in range(100):
+        A = _rand_mat(rng, n, n, -3, 4)
+        if n == 3:
+            A[rng.randrange(3)][rng.randrange(3)] = 0
+        if (det2(A) if n == 2 else det3(A)) != 0:
+            break
+    s = [rng.randint(-3, 4) for _ in range(n)]
+    b = [sum(A[i][j] * s[j] for j in range(n)) for i in range(n)]
+    enun = "{" + "; ".join(f"{terms(list(zip(A[i], vs)))} = {N(b[i])}" for i in range(n)) + "}"
+    Am = [A[i] + [b[i]] for i in range(n)]
+    if d < 3 and rng.random() < 0.5:
+        return mk(f"Escribe la matriz de coeficientes A del sistema {enun}", mat(A), "t5_sistlin", [(mat(Am), None), (mat(mT(A)), None), (mat([[abs(v) for v in f] for f in A]) if any(v < 0 for f in A for v in f) else mat(mscale(A, -1)), None)],
+                  [mat([f[::-1] for f in A])], ["Cada fila son los coeficientes de una ecuación, en el orden x, y" + (", z" if n == 3 else "") + ".", f"A = {mat(A)}."], "La matriz de coeficientes no incluye los términos independientes.")
+    comp = [[v for v in f if v != 0] + [0] * sum(1 for v in f if v == 0) for f in A]
+    compa = [comp[i] + [b[i]] for i in range(n)]
+    dist = [(mat(A), "ampliada_sin_terminos"), (mat(compa) if compa != Am else None, "coef_ausente"), (mat([f[:-1] + [-f[-1]] for f in Am]), None)]
+    return mk(f"Escribe la matriz ampliada A* del sistema {enun}", mat(Am), "t5_sistlin", dist, [mat(mT(A))],
+              ["La ampliada es la de coeficientes con una columna más: los términos independientes.", "Si falta una incógnita en una ecuación, su coeficiente es 0.", f"A* = {mat(Am)}."],
+              "Escribir el sistema como A·X = B: A coeficientes (con ceros donde falte una incógnita), B términos independientes.")
+
+
+@generador("t5_rouche")
+def gen_rouche(rng, d):
+    if d == 1:
+        n = rng.choice([2, 3, 4])
+        rA = rng.randint(1, min(3, n))
+        rAs = rA + (1 if rng.random() < 0.35 and rA < 3 else 0)
+    else:
+        caso = rng.choice(["SCD", "SCI", "SI"])
+        for _ in range(300):
+            A = [[rng.randint(-3, 3) for _ in range(3)] for _ in range(3)]
+            s = [rng.randint(-2, 3) for _ in range(3)]
+            if caso == "SCD":
+                if det3(A) == 0:
+                    continue
+                b = [sum(A[i][j] * s[j] for j in range(3)) for i in range(3)]
+            else:
+                if rango(A[:2]) < 2:
+                    continue
+                p, q = rng.choice([1, -1, 2]), rng.choice([1, 2, -1])
+                A[2] = [p * x + q * y for x, y in zip(A[0], A[1])]
+                b = [sum(A[i][j] * s[j] for j in range(3)) for i in range(3)]
+                if caso == "SI":
+                    b[2] += nz(rng, -3, 3)
+            if all(any(f) for f in A):
+                break
+        n = 3
+        rA = rango(A)
+        rAs = rango([A[i] + [b[i]] for i in range(3)])
+    if rA != rAs:
+        resp = "Incompatible"
+    elif rA == n:
+        resp = "Compatible determinado"
+    else:
+        resp = f"Compatible indeterminado ({n - rA} parámetro{'s' if n - rA > 1 else ''})"
+    ne = 3
+    dist = []
+    if rA != rAs:
+        dist.append((f"Compatible indeterminado ({max(1, n - rA)} parámetro{'s' if n - rA > 1 else ''})", "distintos_sci"))
+    if rA == rAs and rA == ne and n > ne:
+        dist.append(("Compatible determinado", "compara_ecuaciones"))
+    if rA == rAs and rA < n:
+        dist.append(("Compatible determinado", "compara_ecuaciones" if rA == ne else None))
+    for t in ["Incompatible", "Compatible determinado", "Compatible indeterminado (1 parámetro)", "Compatible indeterminado (2 parámetros)"]:
+        if t != resp:
+            dist.append((t, None))
+    if d == 1:
+        enun = f"Un sistema de 3 ecuaciones con {n} incógnitas tiene rg(A) = {rA} y rg(A*) = {rAs}. ¿Qué tipo de sistema es?"
+    else:
+        enun = "Discute el sistema: {" + "; ".join(_eq3(A[i], b[i]) for i in range(3)) + "}"
+    return mk(enun, resp, "t5_rouche", dist, [],
+              [f"rg(A) = {rA}, rg(A*) = {rAs}, número de incógnitas n = {n}.",
+               "Rouché-Fröbenius: rangos distintos → incompatible; iguales a n → compatible determinado; iguales y menores que n → indeterminado con n − rg parámetros.", f"{resp}."],
+              "El rango se compara con el número de INCÓGNITAS, no con el de ecuaciones.")
+
+
+FAM_PARAM = [
+    ([[1, 1, 1], [1, "a", 1], [1, 1, "a"]], [1, 1, "a"]),
+    ([["a", 1, 1], [1, "a", 1], [1, 1, "a"]], [1, 1, 1]),
+    ([[1, 1, 1], [1, 2, "a"], [2, 3, 3]], [1, 2, "a"]),
+    ([[1, 2, 1], [2, "a", 2], [1, 1, 1]], [3, 6, 2]),
+    ([[1, 1, "a"], [1, "a", 1], ["a", 1, 1]], [1, 1, 1]),
+    ([[1, -1, 1], [2, 1, "a"], [1, 2, 1]], [1, 3, "a"]),
+    ([["a", 1, 0], [1, "a", 1], [0, 1, "a"]], [1, 1, 1]),
+    ([[1, 1, 1], [2, "a", 2], [3, 3, "a"]], [1, 2, 3]),
+    ([[1, 2, "a"], [1, "a", 2], [2, 4, 4]], [1, 1, 2]),
+]
+
+
+def _sust(M, a):
+    return [[F(a) if v == "a" else F(v) for v in f] for f in M]
+
+
+@generador("t5_discusion_param")
+def gen_discusion_param(rng, d):
+    for _ in range(100):
+        Mt, bt = rng.choice(FAM_PARAM)
+        if rng.random() < 0.5:
+            # permuta variables para variar
+            perm = rng.sample(range(3), 3)
+            Mt = [[f[p] for p in perm] for f in Mt]
+        vals = {a: det3(_sust(Mt, a)) for a in range(-6, 7)}
+        crit = [a for a, v in vals.items() if v == 0]
+        if crit:
+            break
+    txt = lambda f: terms([(v if v != "a" else 1, (("a" if v == "a" else "") + x)) for v, x in zip(f, "xyz")]).replace("1a", "a")
+    def eq(f, bb):
+        parts = []
+        for v, x in zip(f, "xyz"):
+            if v == "a":
+                parts.append((1, "a" + x))
+            else:
+                parts.append((v, x))
+        rhs = "a" if bb == "a" else N(bb)
+        return f"{terms(parts)} = {rhs}"
+    enun_s = "{" + "; ".join(eq(f, bb) for f, bb in zip(Mt, bt)) + "}"
+    def clasif(a):
+        A = _sust(Mt, a)
+        b = [F(a) if v == "a" else F(v) for v in bt]
+        rA, rAs = rango(A), rango([A[i] + [b[i]] for i in range(3)])
+        return "Incompatible" if rA != rAs else ("Compatible determinado" if rA == 3 else f"Compatible indeterminado")
+    if d < 3:
+        a0 = rng.choice(crit)
+        resp = clasif(a0)
+        otros = [t for t in ["Incompatible", "Compatible determinado", "Compatible indeterminado"] if t != resp]
+        return mk(f"Para a = {N(a0)}, ¿qué tipo de sistema es {enun_s}?", resp, "t5_discusion", [("Compatible determinado", "se_queda_det") if resp != "Compatible determinado" else (otros[0], None)] + [(t, None) for t in otros] + [("No se puede saber", None)], [],
+                  [f"Para a = {N(a0)} el determinante de A se anula: no es compatible determinado.", "Sustituyo a en el sistema y comparo rg(A) con rg(A*).", f"{resp}."],
+                  "En los valores críticos (|A| = 0) hay que sustituir el parámetro y estudiar los rangos.")
+    crit_s = sorted(crit)
+    resp = " y ".join(f"a ≠ {N(c)}" for c in crit_s)
+    return mk(f"¿Para qué valores de a es compatible determinado el sistema {enun_s}?", resp, "t5_discusion",
+              [(" y ".join(f"a = {N(c)}" for c in crit_s), None), (" y ".join(f"a ≠ {N(-c)}" for c in crit_s) if any(crit_s) else "a ≠ 1", None), ("Para todo a", "se_queda_det"),
+               ((" y ".join(f"a ≠ {N(c)}" for c in crit_s[:1])) if len(crit_s) > 1 else None, None)],
+              [], [f"Compatible determinado ⇔ |A| ≠ 0.", f"|A| se anula para {', '.join('a = ' + N(c) for c in crit_s)}.", f"Es compatible determinado si {resp}."],
+              "Los valores críticos son las raíces de |A|; fuera de ellos el sistema es compatible determinado.")
+
+
+@generador("t5_cramer")
+def gen_cramer(rng, d):
+    n = 2 if d < 3 else 3
+    for _ in range(300):
+        A = _rand_mat(rng, n, n, -4, 5)
+        dA = det2(A) if n == 2 else det3(A)
+        if dA:
+            break
+    s = [F(rng.randint(-4, 5)) for _ in range(n)]
+    if d == 2 and rng.random() < 0.5:
+        s[0] = s[0] + F(1, dA) if abs(dA) > 1 else s[0]
+    b = [sum(A[i][j] * s[j] for j in range(n)) for i in range(n)]
+    if any(v.denominator != 1 for v in b):
+        s = [F(rng.randint(-4, 5)) for _ in range(n)]
+        b = [sum(A[i][j] * s[j] for j in range(n)) for i in range(n)]
+    vs = ["x", "y", "z"][:n]
+    k = rng.randrange(n)
+    def Dk(col):
+        M = [[(b[i] if j == col else A[i][j]) for j in range(n)] for i in range(n)]
+        return det2(M) if n == 2 else det3(M)
+    val = F(Dk(k), dA)
+    otro = (k + 1) % n
+    enun = f"Resuelve por Cramer y da el valor de {vs[k]}: {{" + "; ".join(f"{terms(list(zip(A[i], vs)))} = {N(b[i])}" for i in range(n)) + "}"
+    return mk(enun, f"{vs[k]} = {N(val)}", "t5_cramer", [(f"{vs[k]} = {N(F(Dk(otro), dA))}" if F(Dk(otro), dA) != val else None, "columna_equivocada"), (f"{vs[k]} = {N(-val)}", None),
+                                                         (f"{vs[k]} = {N(F(dA, Dk(k)))}" if Dk(k) else f"{vs[k]} = 1", None)],
+              [f"{vs[k]} = {N(val + 1)}", f"{vs[k]} = {N(val - 1)}"],
+              [f"|A| = {N(dA)} ≠ 0: se puede aplicar Cramer.", f"Sustituyo la columna de {vs[k]} por la de términos independientes: |A_{vs[k]}| = {N(Dk(k))}.",
+               f"{vs[k]} = |A_{vs[k]}|/|A| = {N(val)}."],
+              "Para cada incógnita se sustituye SU columna; solo se puede usar si |A| ≠ 0.")
+
+
+@generador("t5_homogeneo")
+def gen_homogeneo(rng, d):
+    for _ in range(300):
+        A = _rand_mat(rng, 3, 3, -3, 3)
+        i, j = rng.randrange(3), rng.randrange(3)
+        cof, _m = cofactor(A, i, j)
+        if cof == 0:
+            continue
+        A0 = [list(f) for f in A]
+        A0[i][j] = 0
+        k0 = F(-det3(A0), cof)
+        if k0.denominator == 1 and abs(k0) <= 8 and all(any(f) for f in A):
+            break
+    k0 = int(k0)
+    def eq(r):
+        parts = []
+        for c, x in enumerate("xyz"):
+            if (r, c) == (i, j):
+                parts.append((1, "k" + x))
+            else:
+                parts.append((A[r][c], x))
+        return f"{terms(parts)} = 0"
+    enun_s = "{" + "; ".join(eq(r) for r in range(3)) + "}"
+    if d < 3:
+        return mk(f"¿Para qué valor de k tiene soluciones distintas de la trivial el sistema {enun_s}?", f"k = {N(k0)}", "t5_homogeneo",
+                  [(f"k ≠ {N(k0)}", "det_no_nulo"), ("Para ningún valor: un sistema homogéneo puede ser incompatible", "homogeneo_incompatible"), (f"k = {N(-k0) if k0 else 1}", None)],
+                  [f"k = {N(k0 + 1)}"], ["Un sistema homogéneo siempre tiene la solución trivial (0, 0, 0).", f"Tiene otras soluciones si |A| = 0: {N(cof)}k {'+' if det3(A0) >= 0 else '−'} {N(abs(det3(A0)))} = 0 → k = {N(k0)}."],
+                  "Homogéneo: siempre compatible; tiene soluciones no triviales exactamente cuando |A| = 0.")
+    kk = k0 + rng.choice([1, 2, -1])
+    return mk(f"Para k = {N(kk)}, ¿cuántas soluciones tiene el sistema {enun_s}?", "Solo la solución trivial (0, 0, 0)", "t5_homogeneo",
+              [("No tiene solución", "homogeneo_incompatible"), ("Infinitas soluciones", "det_no_nulo"), ("Dos soluciones", None)], [],
+              [f"|A| se anula solo para k = {N(k0)}; con k = {N(kk)}, |A| ≠ 0.", "Rango 3 = nº de incógnitas: compatible determinado, solo la solución (0, 0, 0)."],
+              "Homogéneo: siempre compatible; si |A| ≠ 0 la única solución es la trivial.")
