@@ -1,0 +1,201 @@
+Criterio del modelo (Claude, agente de taxonomía de Mates10) para errores típicos, prerrequisitos, importancia, carga y secuencia de referencia del grupo T3.
+
+Instrucciones con las que se generó:
+
+# Instrucciones para agentes de taxonomía (Mates10, módulo 01, mina 1)
+
+Repo /home/user/Train. Trabaja SOLO en `mates10/`. Sin git commit/push. BD solo lectura (no cargues nada: lo carga
+`mates10/tools/cargar_taxonomia.py`), vía `python3 mates10/tools/db.py "SQL"` ($SUPABASE_ACCESS_TOKEN, nunca lo imprimas).
+
+## Lee antes de empezar
+
+1. `mates10/fuentes/raw/a43b4b89-d7ad-4ebf-9247-c3824becb7ad/mates10-documento-unificado.md`: módulo 01 entero (tabla
+   5.1 habilidad, 5.2 prerrequisitos, 5.3 error_tipico, enseñanza concéntrica, problemas como habilidad) y el ANEXO (la
+   fila completa de OPER.JERARQ.02 es el listón de calidad: definición con fronteras exactas, parámetros, ejemplo
+   frontera, ejemplo fuera, errores con explicación al niño e indicación al padre).
+2. `mates10/01-contenido/taxonomia/familias.md`: familias, grupos y códigos fijados.
+3. Las fuentes legales (texto extraído en `mates10/fuentes/text/<fuente_id>/texto.txt`; ids con
+   `select codigo, id from mates10_fuente where codigo like 'DEC-%' or codigo like 'ORD-%'`) y los resúmenes JSON de
+   `mates10/01-contenido/decretos/` (ES-PRI.json, ES-ESO.json, ES-BAC.json = estatal; ES-MC-*.json = Murcia).
+   La referencia para el curso de cada habilidad (`curso_ref`) es el decreto de MURCIA; donde Murcia no reparte por
+   curso, el estatal por ciclo + tu criterio (anótalo en `nota_curso`).
+
+## Qué produces
+
+`mates10/01-contenido/taxonomia/<GRUPO>.json` (tu grupo: T1…T6) con TODAS las habilidades de tus familias, de 1º de
+primaria a 2º de bachillerato:
+
+```json
+{"grupo": "T1", "habilidades": [{
+  "codigo": "OPER.SUMA.03", "familia": "OPER.SUMA", "nivel_familia": 3, "bloque": "OPER",
+  "curso_ref": "PRI1", "trimestre_ref": 2, "orden_ref": 14,
+  "nota_curso": "El decreto de Murcia lo sitúa en 1º (pág. N); el estatal en primer ciclo.",
+  "nombre": "Suma de dos números de una cifra con resultado hasta 18 (con paso de la decena)",
+  "nombre_padres": "Sumas de números pequeños pasando del 10",
+  "definicion": "Qué se pide exactamente y qué NO entra: aquí viven las fronteras.",
+  "parametros": {"sumandos": 2, "cifras": 1, "llevada": true, "max_resultado": 18},
+  "ejemplo_frontera": "9 + 9 = 18", "ejemplo_fuera": "12 + 9 (un sumando de 2 cifras → OPER.SUMA.05)",
+  "importancia": 5, "carga_alumno": 2,
+  "calculable": true,
+  "fuente": "DEC-ES-MC-PRI", "fuente_ref": "Anexo II, Matemáticas, 1º, A. Sentido numérico, 2. Cantidad…",
+  "fuentes_extra": [{"fuente": "DEC-ES-PRI", "ref": "…", "rol": "define|situa|afina|contradice", "nota": "obligatoria si contradice"}],
+  "prerrequisitos": [{"codigo": "OPER.SUMA.02", "peso": "imprescindible"}, {"codigo": "NUM.DESC.01", "peso": "recomendable"}],
+  "errores": [{"sufijo": "E01", "nombre": "Cuenta el primer sumando", "descripcion": "8 + 5 = 12 (cuenta desde 8 incluyéndolo)",
+               "explicacion_nino": "…", "indicacion_padres": "…",
+               "regla": "descripción operativa de cómo se obtiene la respuesta errónea a partir de los datos (p. ej. 'a + b − 1')"}]
+}]}
+```
+
+Reglas de contenido:
+- Granularidad fina en primaria (una habilidad = un conocimiento distinto: si dos ejercicios exigen conocimientos
+  distintos, son dos habilidades). En ESO y bachillerato, algo más gruesa si hace falta, pero cada habilidad debe seguir
+  siendo evaluable con ejercicios de opción múltiple de 4 opciones.
+- Cubre TODO lo que el decreto pide para tus familias en todos los cursos. Si el decreto tiene algo que no encaja en
+  ninguna familia de tu grupo, créalo en la familia más cercana y dilo en el informe.
+- `curso_ref` = curso en que se INTRODUCE esa habilidad; `trimestre_ref` (1–3) y `orden_ref` (1..n dentro del curso,
+  para tu grupo) = secuencia didáctica de referencia dentro del curso (lo que haría un libro típico: primero la decena y
+  luego la suma con llevada). Es criterio: se contrastará con los índices de editoriales.
+- `importancia` y `carga_alumno` 1–5 según el módulo 01 (tablas y problemas = importancia 5; problemas = carga 5).
+- `nombre_padres`: sin jerga ("restas llevándose", no "sustracción con reagrupación").
+- Errores típicos: 2–5 por habilidad, los REALES y frecuentes (la literatura de errores en matemáticas escolares los
+  describe bien: el del anexo es el modelo). Cada error con una `regla` operativa (para calcular distractores por
+  código cuando la habilidad es calculable). `explicacion_nino` en el registro de la edad del curso (frases cortas en
+  1º–2º). `indicacion_padres`: cómo reconocerlo en casa y qué decirle.
+- Prerrequisitos: dentro de tu grupo con código exacto; de otros grupos, usa los códigos de familia de familias.md con
+  el nivel que estimes (se revisan en una segunda pasada). Sin ciclos.
+- `calculable`: true si los ejercicios se pueden generar por código (operaciones, comparaciones, conversiones de
+  unidades, lecturas de números…); false si necesitan texto/contexto/figura (problemas, geometría descriptiva…).
+- `fuente`: el código de la fuente archivada que justifica la habilidad (normalmente el decreto de Murcia o el estatal).
+  Los errores típicos y prerrequisitos son criterio (se les asigna la fuente de criterio del grupo al cargar), salvo
+  que los saques de una fuente concreta (entonces pon `"fuente": "<codigo>"` dentro del error).
+- NO copies frases del decreto en `definicion`: redacta con tus palabras. No inventes páginas: si no sabes la página,
+  cita la sección.
+- Respeta los códigos y definiciones fijados por el anexo (ver familias.md).
+
+## Informe final (tu respuesta)
+
+Nº de habilidades por curso, familias cubiertas, saberes del decreto que no has sabido encajar, dudas de frontera que
+Paco o un maestro deberían decidir. Máximo 30 líneas.
+
+## Guardado incremental (obligatorio)
+
+La sesión puede reiniciarse y un agente reiniciado pierde lo que no haya escrito en disco. Escribe el JSON de tu grupo
+de forma incremental: al terminar CADA familia, reescribe `T<n>.json` completo y válido con todo lo hecho hasta ese
+momento. Si al empezar ya existe `T<n>.json`, continúa desde lo que tenga (no lo rehagas).
+
+
+Familias:
+
+# Catálogo de familias (esqueleto de la taxonomía)
+
+Cada habilidad tiene código `BLOQUE.FAMILIA.NN` (NN = `nivel_familia` con dos cifras, 01, 02…), igual que el anexo
+(`OPER.JERARQ.02`). La familia agrupa las vueltas de la enseñanza concéntrica. Los cursos son orientativos (dónde suele
+introducirse cada nivel según el RD estatal y el decreto de Murcia); el curso definitivo lo fija el mapa.
+
+Códigos fijados por el documento (anexo) que se respetan tal cual, con su definición: NUM.LECT.03, NUM.ORD.02,
+OPER.DIV.03, OPER.POT.01, OPER.POT.02, OPER.RAIZ.01, OPER.RAIZ.02, OPER.RAIZ.03, OPER.JERARQ.01, OPER.JERARQ.02,
+OPER.JERARQ.03, PROB.COMB.01, OPER.MULT.02 (tablas hasta 10, fluidez), OPER.DIV.01 (división exacta con divisor de
+1 cifra), OPER.RESTA.03 (resta de naturales de 2–3 cifras con llevada), OPER.MULT.03. Donde el documento dice
+`NUM.SUMA.*`, aquí es `OPER.SUMA.*` (la suma es del bloque operaciones; D-020).
+
+| grupo | familia | nombre | cursos | notas |
+|---|---|---|---|---|
+| T1 | NUM.CONT | Conteo y subitización | PRI1–PRI2 | contar colecciones, hacia delante/atrás, de 2 en 2, 5 en 5, 10 en 10 |
+| T1 | NUM.LECT | Leer y escribir números | PRI1–ESO1 | hasta 99, 999, 9 999, 6 cifras, millones, 9 cifras (LECT.03 del anexo), billones |
+| T1 | NUM.ORD | Comparar, ordenar, recta numérica | PRI1–ESO1 | ORD.02 del anexo = naturales de cualquier tamaño |
+| T1 | NUM.DESC | Valor posicional y descomposición | PRI1–PRI5 | |
+| T1 | NUM.REDON | Redondeo y estimación | PRI2–PRI6 | |
+| T1 | NUM.ORDINAL | Números ordinales | PRI1–PRI3 | |
+| T1 | NUM.PARIDAD | Pares e impares | PRI1–PRI2 | |
+| T1 | NUM.ROM | Números romanos | PRI3–PRI5 | |
+| T1 | OPER.SUMA | Suma | PRI1–PRI4 | 1 cifra sin llevada, completar a 10, con llevada, 2 y 3 cifras, varios sumandos |
+| T1 | OPER.RESTA | Resta | PRI1–PRI4 | RESTA.03 del anexo = 2–3 cifras con llevada |
+| T1 | OPER.CALCMENT | Estrategias de cálculo mental | PRI1–PRI6 | dobles, casi dobles, +9/−9, +10, compensación |
+| T2 | OPER.MULT | Multiplicación | PRI2–PRI5 | sentido de la multiplicación, tablas (MULT.02 fluidez), por 1 cifra, por 2–3 cifras, por 10/100/1000 |
+| T2 | OPER.DIV | División | PRI3–ESO1 | reparto, DIV.01 exacta divisor 1 cifra, con resto, divisor 2 cifras, DIV.03 del anexo |
+| T2 | NUM.DIVIS | Divisibilidad | PRI5–ESO1 | múltiplos, divisores, criterios, primos, factorización, mcm, mcd |
+| T2 | OPER.JERARQ | Jerarquía de operaciones | PRI5–ESO2 | JERARQ.01/02/03 del anexo; más niveles con enteros y fracciones |
+| T2 | OPER.POT | Potencias | PRI6–ESO3 | POT.01/02 del anexo |
+| T2 | OPER.RAIZ | Raíz cuadrada | PRI6–ESO1 | RAIZ.01/02/03 del anexo |
+| T2 | NUM.ENT | Números enteros | PRI6–ESO1 | concepto, recta, comparar, valor absoluto |
+| T2 | OPER.ENT | Operaciones con enteros | ESO1–ESO2 | |
+| T3 | NUM.FRAC | Fracciones: concepto | PRI2–ESO1 | parte de un todo, de un número, equivalentes, comparar, fracción irreducible |
+| T3 | OPER.FRAC | Operaciones con fracciones | PRI5–ESO2 | |
+| T3 | NUM.DEC | Decimales: concepto | PRI4–ESO1 | leer, valor posicional, comparar, redondear, fracción decimal |
+| T3 | OPER.DEC | Operaciones con decimales | PRI4–ESO1 | |
+| T3 | NUM.PORC | Porcentajes | PRI5–ESO3 | |
+| T3 | NUM.PROP | Proporcionalidad | PRI6–ESO3 | razón, proporción, regla de tres directa e inversa, repartos, escalas |
+| T3 | NUM.REAL | Números reales | ESO2–BAC1 | racionales/irracionales, notación científica, intervalos, aproximación y error |
+| T3 | OPER.RADIC | Radicales | ESO3–BAC1 | |
+| T3 | OPER.LOG | Logaritmos | ESO4–BAC1 | |
+| T3 | NUM.COMPLEJO | Números complejos | BAC1 | Matemáticas I |
+| T4 | MED.LONG | Longitud | PRI1–PRI6 | |
+| T4 | MED.MASA | Masa | PRI2–PRI6 | |
+| T4 | MED.CAP | Capacidad | PRI2–PRI6 | |
+| T4 | MED.TIEMPO | Tiempo: reloj y calendario | PRI1–PRI6 | |
+| T4 | MED.DINERO | Dinero (euro) | PRI1–PRI5 | |
+| T4 | MED.SUP | Superficie (unidades) | PRI5–ESO1 | |
+| T4 | MED.VOL | Volumen (unidades) | PRI6–ESO2 | |
+| T4 | MED.ANG | Medida de ángulos y sistema sexagesimal | PRI4–ESO1 | |
+| T4 | GEO.POS | Posición y orientación en el espacio | PRI1–PRI4 | planos, itinerarios, coordenadas en cuadrícula |
+| T4 | GEO.LINEA | Líneas y rectas | PRI2–PRI5 | |
+| T4 | GEO.ANG | Ángulos: tipos y relaciones | PRI3–ESO2 | |
+| T4 | GEO.POLI | Polígonos | PRI1–PRI6 | |
+| T4 | GEO.TRIANG | Triángulos | PRI3–ESO2 | clasificación, rectas notables |
+| T4 | GEO.CUAD | Cuadriláteros | PRI3–PRI6 | |
+| T4 | GEO.CIRC | Circunferencia y círculo | PRI3–ESO1 | |
+| T4 | GEO.PERIM | Perímetro | PRI3–ESO1 | |
+| T4 | GEO.AREA | Área de figuras planas | PRI5–ESO2 | |
+| T4 | GEO.CUERPO | Cuerpos geométricos | PRI1–ESO2 | |
+| T4 | GEO.VOLCUERPO | Volumen y área de cuerpos | ESO2–ESO3 | |
+| T4 | GEO.MOV | Simetría y movimientos en el plano | PRI2–ESO3 | |
+| T4 | GEO.PITAG | Teorema de Pitágoras | ESO2 | |
+| T4 | GEO.SEMEJ | Semejanza y Tales | ESO2–ESO4 | |
+| T4 | GEO.COORD | Coordenadas cartesianas | PRI6–ESO2 | |
+| T5 | GEO.TRIG | Trigonometría | ESO4–BAC1 | |
+| T5 | GEO.VECT | Vectores | ESO4–BAC1 | |
+| T5 | GEO.ANALIT | Geometría analítica del plano | ESO4–BAC1 | |
+| T5 | GEO.ESPACIO | Geometría en el espacio | BAC2 | Matemáticas II |
+| T5 | ALG.PATRON | Patrones y regularidades | PRI1–PRI6 | sentido algebraico en primaria (LOMLOE) |
+| T5 | ALG.COMPUT | Pensamiento computacional | PRI1–ESO4 | secuencias de instrucciones, algoritmos, descomposición (LOMLOE) |
+| T5 | ALG.EXPR | Lenguaje y expresiones algebraicas | PRI6–ESO2 | |
+| T5 | ALG.POLI | Polinomios | ESO2–ESO4 | |
+| T5 | ALG.IDENT | Identidades notables y factorización | ESO2–ESO4 | |
+| T5 | ALG.FRACALG | Fracciones algebraicas | ESO4–BAC1 | |
+| T5 | ALG.EC1 | Ecuaciones de primer grado | ESO1–ESO3 | |
+| T5 | ALG.EC2 | Ecuaciones de segundo grado y otras | ESO2–BAC1 | |
+| T5 | ALG.SIST | Sistemas de ecuaciones | ESO2–BAC1 | |
+| T5 | ALG.INEC | Inecuaciones | ESO4–BAC1 | |
+| T5 | ALG.MATRIZ | Matrices y determinantes | BAC2 | también MACS II |
+| T5 | ALG.SISTLIN | Sistemas lineales (discusión) | BAC2 | |
+| T5 | ALG.PROGLIN | Programación lineal | BAC2 | MACS II |
+| T5 | FUN.CONC | Concepto de función, tablas y gráficas | ESO1–ESO2 | |
+| T5 | FUN.SUCES | Sucesiones y progresiones | ESO3–ESO4 | |
+| T5 | FUN.LINEAL | Funciones lineales y afines | ESO2–ESO3 | |
+| T5 | FUN.CUADR | Funciones cuadráticas | ESO3–ESO4 | |
+| T5 | FUN.ELEM | Funciones elementales (exponencial, logarítmica, trigonométrica, racional) | ESO4–BAC1 | |
+| T5 | FUN.PROPS | Propiedades de funciones y operaciones | BAC1 | dominio, monotonía, composición, inversa |
+| T5 | ANA.LIM | Límites | BAC1–BAC2 | |
+| T5 | ANA.CONT | Continuidad | BAC1–BAC2 | |
+| T5 | ANA.DER | Derivadas | BAC1–BAC2 | |
+| T5 | ANA.APLDER | Aplicaciones de la derivada | BAC1–BAC2 | monotonía, extremos, optimización, representación |
+| T5 | ANA.INT | Integrales | BAC2 | |
+| T6 | EST.DATOS | Recogida y organización de datos | PRI1–ESO2 | tablas de recuento, frecuencias |
+| T6 | EST.GRAF | Gráficos estadísticos | PRI1–ESO3 | pictogramas, barras, sectores, histogramas |
+| T6 | EST.MEDIDAS | Medidas de centralización y dispersión | PRI5–ESO4 | |
+| T6 | EST.AZAR | Azar y probabilidad cualitativa | PRI1–PRI6 | seguro, posible, imposible |
+| T6 | EST.PROB | Probabilidad | PRI6–BAC2 | Laplace, compuesta, condicionada, Bayes |
+| T6 | EST.COMB | Combinatoria | ESO4–BAC1 | |
+| T6 | EST.BIDIM | Estadística bidimensional | ESO4–BAC1 | |
+| T6 | EST.DISTR | Distribuciones de probabilidad | BAC1–BAC2 | binomial, normal |
+| T6 | EST.INFER | Inferencia estadística | BAC2 | MACS II |
+| T6 | PROB.UNA | Problemas de una operación | PRI1–PRI4 | por estructura semántica: cambio, combinación, comparación, igualación; multiplicativos: grupos iguales, reparto, agrupamiento, comparación |
+| T6 | PROB.DOS | Problemas de dos operaciones | PRI2–PRI5 | |
+| T6 | PROB.COMB | Problemas con operaciones combinadas | PRI4–ESO1 | PROB.COMB.01 del anexo |
+| T6 | PROB.DATOS | Problemas con datos sobrantes, faltantes o en tablas/gráficos | PRI2–ESO1 | |
+| T6 | PROB.MED | Problemas de medida y dinero | PRI1–PRI6 | |
+| T6 | PROB.FRAC | Problemas de fracciones y decimales | PRI4–ESO2 | |
+| T6 | PROB.PROP | Problemas de proporcionalidad y porcentajes | PRI6–ESO4 | |
+| T6 | PROB.EC | Problemas que se resuelven con ecuaciones o sistemas | ESO1–BAC1 | |
+| T6 | PROB.GEO | Problemas geométricos | PRI4–BAC2 | |
+| T6 | PROB.ESTRAT | Estrategias de resolución | PRI1–ESO4 | ensayo-error, dibujo, tabla, empezar por el final, casos más sencillos |
