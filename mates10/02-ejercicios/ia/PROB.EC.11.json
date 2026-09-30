@@ -1,0 +1,1774 @@
+{
+ "habilidad": "PROB.EC.11",
+ "generado_por": "claude (skill mates10-generar-ejercicios v1)",
+ "ejercicios": [
+  {
+   "dificultad": 1,
+   "enunciado": "Una tienda prepara 52 kg de una mezcla de arroz bomba (7 €/kg), arroz largo (9 €/kg) y arroz integral (12 €/kg). La mezcla cuesta en total 538 € y lleva el triple de kilos de arroz integral que de arroz bomba. ¿Cuántos kilos lleva de cada uno?",
+   "respuesta": "10 kg de arroz bomba, 12 kg de arroz largo, 30 kg de arroz integral",
+   "distractores": [
+    {
+     "valor": "−70 kg de arroz bomba, 145,33 kg de arroz largo, −23,33 kg de arroz integral",
+     "error": "E02"
+    },
+    {
+     "valor": "19 kg de arroz bomba, −3 kg de arroz largo, 36 kg de arroz integral",
+     "error": "E03"
+    },
+    {
+     "valor": "12 kg de arroz bomba, 10 kg de arroz largo, 30 kg de arroz integral",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.07"
+   ],
+   "explicacion_nino": "Entiende: hay tres cantidades desconocidas; llámalas x, y, z en el orden del enunciado. Datos → ecuaciones: x + y + z = 52 ; 7x + 9y + 12z = 538 ; −3x + z = 0. Resuelve por Gauss (elimina x de la 2ª y 3ª ecuación, luego y de la 3ª, y despeja de abajo arriba): x = 10, y = 12, z = 30. Comprueba: los valores cumplen las tres condiciones y son positivos.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado con tres incógnitas a un sistema de tres ecuaciones independientes y a resolverlo por Gauss (hacer ceros por debajo de la diagonal y despejar de abajo arriba). Los fallos típicos son traducir mal una relación ('el doble', 'el 20 %') y no comprobar que la solución tenga sentido (cantidades negativas o no enteras). Pídale que compruebe la solución en las tres frases del enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y, z",
+     "texto": "Elegimos una incógnita para cada cantidad."
+    },
+    {
+     "paso": 2,
+     "operacion": "plantear",
+     "resultado": "x + y + z = 52 ; 7x + 9y + 12z = 538 ; −3x + z = 0",
+     "texto": "Una ecuación por cada dato independiente. La relación se escribe z = 3x."
+    },
+    {
+     "paso": 3,
+     "operacion": "Gauss",
+     "resultado": "x = 10, y = 12, z = 30",
+     "texto": "Escalonamos y despejamos."
+    },
+    {
+     "paso": 4,
+     "operacion": "comprobar",
+     "resultado": "10 kg de arroz bomba, 12 kg de arroz largo, 30 kg de arroz integral",
+     "texto": "Sustituimos en el enunciado y vemos que tiene sentido."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un museo vendió ayer 176 entradas de tres tipos: general a 12 €, infantil a 8 € y de jubilado a 6 €. Recaudó 1608 € y se vendieron el doble de entradas infantiles que de jubilado. ¿Cuántas entradas de cada tipo se vendieron?",
+   "respuesta": "68 generales, 72 infantiles, 36 de jubilado",
+   "distractores": [
+    {
+     "valor": "81,5 generales, 31,5 infantiles, 63 de jubilado",
+     "error": "E02"
+    },
+    {
+     "valor": "48 generales, 132 infantiles, −4 de jubilado",
+     "error": "E03"
+    },
+    {
+     "valor": "72 generales, 68 infantiles, 36 de jubilado",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.07"
+   ],
+   "explicacion_nino": "Entiende: hay tres cantidades desconocidas; llámalas x, y, z en el orden del enunciado. Datos → ecuaciones: x + y + z = 176 ; 12x + 8y + 6z = 1608 ; y − 2z = 0. Resuelve por Gauss (elimina x de la 2ª y 3ª ecuación, luego y de la 3ª, y despeja de abajo arriba): x = 68, y = 72, z = 36. Comprueba: los valores cumplen las tres condiciones y son positivos.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado con tres incógnitas a un sistema de tres ecuaciones independientes y a resolverlo por Gauss (hacer ceros por debajo de la diagonal y despejar de abajo arriba). Los fallos típicos son traducir mal una relación ('el doble', 'el 20 %') y no comprobar que la solución tenga sentido (cantidades negativas o no enteras). Pídale que compruebe la solución en las tres frases del enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y, z",
+     "texto": "Elegimos una incógnita para cada cantidad."
+    },
+    {
+     "paso": 2,
+     "operacion": "plantear",
+     "resultado": "x + y + z = 176 ; 12x + 8y + 6z = 1608 ; y − 2z = 0",
+     "texto": "Una ecuación por cada dato independiente. La relación se escribe y = 2z."
+    },
+    {
+     "paso": 3,
+     "operacion": "Gauss",
+     "resultado": "x = 68, y = 72, z = 36",
+     "texto": "Escalonamos y despejamos."
+    },
+    {
+     "paso": 4,
+     "operacion": "comprobar",
+     "resultado": "68 generales, 72 infantiles, 36 de jubilado",
+     "texto": "Sustituimos en el enunciado y vemos que tiene sentido."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un premio de 1020 € se reparte entre Mateo, Rocío y Yeray. Mateo recibe 150 € más que Rocío, y Yeray recibe el 20 % de lo que reciben entre los otros dos. ¿Cuánto recibe cada uno?",
+   "respuesta": "Mateo 500 €, Rocío 350 €, Yeray 170 €",
+   "distractores": [
+    {
+     "valor": "Mateo 99,29 €, Rocío −50,71 €, Yeray 971,43 €",
+     "error": "E02"
+    },
+    {
+     "valor": "Mateo 586 €, Rocío 436 €, Yeray −2 €",
+     "error": "E03"
+    },
+    {
+     "valor": "Mateo 350 €, Rocío 500 €, Yeray 170 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.07"
+   ],
+   "explicacion_nino": "Entiende: hay tres cantidades desconocidas; llámalas x, y, z en el orden del enunciado. Datos → ecuaciones: x + y + z = 1020 ; x − y = 150 ; −0,2x − 0,2y + z = 0. Resuelve por Gauss (elimina x de la 2ª y 3ª ecuación, luego y de la 3ª, y despeja de abajo arriba): x = 500, y = 350, z = 170. Comprueba: los valores cumplen las tres condiciones y son positivos.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado con tres incógnitas a un sistema de tres ecuaciones independientes y a resolverlo por Gauss (hacer ceros por debajo de la diagonal y despejar de abajo arriba). Los fallos típicos son traducir mal una relación ('el doble', 'el 20 %') y no comprobar que la solución tenga sentido (cantidades negativas o no enteras). Pídale que compruebe la solución en las tres frases del enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y, z",
+     "texto": "Elegimos una incógnita para cada cantidad."
+    },
+    {
+     "paso": 2,
+     "operacion": "plantear",
+     "resultado": "x + y + z = 1020 ; x − y = 150 ; −0,2x − 0,2y + z = 0",
+     "texto": "Una ecuación por cada dato independiente. La relación se escribe z = 0,2(x + y)."
+    },
+    {
+     "paso": 3,
+     "operacion": "Gauss",
+     "resultado": "x = 500, y = 350, z = 170",
+     "texto": "Escalonamos y despejamos."
+    },
+    {
+     "paso": 4,
+     "operacion": "comprobar",
+     "resultado": "Mateo 500 €, Rocío 350 €, Yeray 170 €",
+     "texto": "Sustituimos en el enunciado y vemos que tiene sentido."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un taller fabrica mochilas, maletas y bolsos. Cada unidad necesita, respectivamente, 1, 2 y 3 horas de montaje y 2, 1 y 1 horas de acabado. Esta semana ha hecho 42 unidades y ha usado exactamente 97 horas de montaje y 47 de acabado. ¿Cuántas unidades de cada tipo ha fabricado?",
+   "respuesta": "5 mochilas, 19 maletas, 18 bolsos",
+   "distractores": [
+    {
+     "valor": "5 mochilas, 12 maletas, 25 bolsos",
+     "error": "E02"
+    },
+    {
+     "valor": "−1 mochilas, 31 maletas, 12 bolsos",
+     "error": "E03"
+    },
+    {
+     "valor": "19 mochilas, 5 maletas, 18 bolsos",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.07"
+   ],
+   "explicacion_nino": "Entiende: hay tres cantidades desconocidas; llámalas x, y, z en el orden del enunciado. Datos → ecuaciones: x + y + z = 42 ; x + 2y + 3z = 97 ; 2x + y + z = 47. Resuelve por Gauss (elimina x de la 2ª y 3ª ecuación, luego y de la 3ª, y despeja de abajo arriba): x = 5, y = 19, z = 18. Comprueba: los valores cumplen las tres condiciones y son positivos.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado con tres incógnitas a un sistema de tres ecuaciones independientes y a resolverlo por Gauss (hacer ceros por debajo de la diagonal y despejar de abajo arriba). Los fallos típicos son traducir mal una relación ('el doble', 'el 20 %') y no comprobar que la solución tenga sentido (cantidades negativas o no enteras). Pídale que compruebe la solución en las tres frases del enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y, z",
+     "texto": "Elegimos una incógnita para cada cantidad."
+    },
+    {
+     "paso": 2,
+     "operacion": "plantear",
+     "resultado": "x + y + z = 42 ; x + 2y + 3z = 97 ; 2x + y + z = 47",
+     "texto": "Una ecuación por cada dato independiente."
+    },
+    {
+     "paso": 3,
+     "operacion": "Gauss",
+     "resultado": "x = 5, y = 19, z = 18",
+     "texto": "Escalonamos y despejamos."
+    },
+    {
+     "paso": 4,
+     "operacion": "comprobar",
+     "resultado": "5 mochilas, 19 maletas, 18 bolsos",
+     "texto": "Sustituimos en el enunciado y vemos que tiene sentido."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Una tienda prepara 31 kg de una mezcla de arroz bomba (5 €/kg), arroz largo (6 €/kg) y arroz integral (8 €/kg). La mezcla cuesta en total 204 € y lleva el doble de kilos de arroz integral que de arroz bomba. ¿Cuántos kilos lleva de cada uno?",
+   "respuesta": "6 kg de arroz bomba, 13 kg de arroz largo, 12 kg de arroz integral",
+   "distractores": [
+    {
+     "valor": "−2 kg de arroz bomba, 25 kg de arroz largo, 8 kg de arroz integral",
+     "error": "E03"
+    },
+    {
+     "valor": "13 kg de arroz bomba, 6 kg de arroz largo, 12 kg de arroz integral",
+     "error": null
+    },
+    {
+     "valor": "7 kg de arroz bomba, 12 kg de arroz largo, 12 kg de arroz integral",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.07"
+   ],
+   "explicacion_nino": "Entiende: hay tres cantidades desconocidas; llámalas x, y, z en el orden del enunciado. Datos → ecuaciones: x + y + z = 31 ; 5x + 6y + 8z = 204 ; −2x + z = 0. Resuelve por Gauss (elimina x de la 2ª y 3ª ecuación, luego y de la 3ª, y despeja de abajo arriba): x = 6, y = 13, z = 12. Comprueba: los valores cumplen las tres condiciones y son positivos.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado con tres incógnitas a un sistema de tres ecuaciones independientes y a resolverlo por Gauss (hacer ceros por debajo de la diagonal y despejar de abajo arriba). Los fallos típicos son traducir mal una relación ('el doble', 'el 20 %') y no comprobar que la solución tenga sentido (cantidades negativas o no enteras). Pídale que compruebe la solución en las tres frases del enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y, z",
+     "texto": "Elegimos una incógnita para cada cantidad."
+    },
+    {
+     "paso": 2,
+     "operacion": "plantear",
+     "resultado": "x + y + z = 31 ; 5x + 6y + 8z = 204 ; −2x + z = 0",
+     "texto": "Una ecuación por cada dato independiente. La relación se escribe z = 2x."
+    },
+    {
+     "paso": 3,
+     "operacion": "Gauss",
+     "resultado": "x = 6, y = 13, z = 12",
+     "texto": "Escalonamos y despejamos."
+    },
+    {
+     "paso": 4,
+     "operacion": "comprobar",
+     "resultado": "6 kg de arroz bomba, 13 kg de arroz largo, 12 kg de arroz integral",
+     "texto": "Sustituimos en el enunciado y vemos que tiene sentido."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un parque de atracciones vendió ayer 194 entradas de tres tipos: general a 8 €, infantil a 5 € y de jubilado a 4 €. Recaudó 1084 € y se vendieron el triple de entradas infantiles que de jubilado. ¿Cuántas entradas de cada tipo se vendieron?",
+   "respuesta": "50 generales, 108 infantiles, 36 de jubilado",
+   "distractores": [
+    {
+     "valor": "69,2 generales, 31,2 infantiles, 93,6 de jubilado",
+     "error": "E02"
+    },
+    {
+     "valor": "37 generales, 160 infantiles, −3 de jubilado",
+     "error": "E03"
+    },
+    {
+     "valor": "108 generales, 50 infantiles, 36 de jubilado",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.07"
+   ],
+   "explicacion_nino": "Entiende: hay tres cantidades desconocidas; llámalas x, y, z en el orden del enunciado. Datos → ecuaciones: x + y + z = 194 ; 8x + 5y + 4z = 1084 ; y − 3z = 0. Resuelve por Gauss (elimina x de la 2ª y 3ª ecuación, luego y de la 3ª, y despeja de abajo arriba): x = 50, y = 108, z = 36. Comprueba: los valores cumplen las tres condiciones y son positivos.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado con tres incógnitas a un sistema de tres ecuaciones independientes y a resolverlo por Gauss (hacer ceros por debajo de la diagonal y despejar de abajo arriba). Los fallos típicos son traducir mal una relación ('el doble', 'el 20 %') y no comprobar que la solución tenga sentido (cantidades negativas o no enteras). Pídale que compruebe la solución en las tres frases del enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y, z",
+     "texto": "Elegimos una incógnita para cada cantidad."
+    },
+    {
+     "paso": 2,
+     "operacion": "plantear",
+     "resultado": "x + y + z = 194 ; 8x + 5y + 4z = 1084 ; y − 3z = 0",
+     "texto": "Una ecuación por cada dato independiente. La relación se escribe y = 3z."
+    },
+    {
+     "paso": 3,
+     "operacion": "Gauss",
+     "resultado": "x = 50, y = 108, z = 36",
+     "texto": "Escalonamos y despejamos."
+    },
+    {
+     "paso": 4,
+     "operacion": "comprobar",
+     "resultado": "50 generales, 108 infantiles, 36 de jubilado",
+     "texto": "Sustituimos en el enunciado y vemos que tiene sentido."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un premio de 1500 € se reparte entre Mateo, Rocío y Yeray. Mateo recibe 350 € más que Rocío, y Yeray recibe el 20 % de lo que reciben entre los otros dos. ¿Cuánto recibe cada uno?",
+   "respuesta": "Mateo 800 €, Rocío 450 €, Yeray 250 €",
+   "distractores": [
+    {
+     "valor": "Mateo 210,71 €, Rocío −139,29 €, Yeray 1428,57 €",
+     "error": "E02"
+    },
+    {
+     "valor": "Mateo 926 €, Rocío 576 €, Yeray −2 €",
+     "error": "E03"
+    },
+    {
+     "valor": "Mateo 450 €, Rocío 800 €, Yeray 250 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.07"
+   ],
+   "explicacion_nino": "Entiende: hay tres cantidades desconocidas; llámalas x, y, z en el orden del enunciado. Datos → ecuaciones: x + y + z = 1500 ; x − y = 350 ; −0,2x − 0,2y + z = 0. Resuelve por Gauss (elimina x de la 2ª y 3ª ecuación, luego y de la 3ª, y despeja de abajo arriba): x = 800, y = 450, z = 250. Comprueba: los valores cumplen las tres condiciones y son positivos.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado con tres incógnitas a un sistema de tres ecuaciones independientes y a resolverlo por Gauss (hacer ceros por debajo de la diagonal y despejar de abajo arriba). Los fallos típicos son traducir mal una relación ('el doble', 'el 20 %') y no comprobar que la solución tenga sentido (cantidades negativas o no enteras). Pídale que compruebe la solución en las tres frases del enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y, z",
+     "texto": "Elegimos una incógnita para cada cantidad."
+    },
+    {
+     "paso": 2,
+     "operacion": "plantear",
+     "resultado": "x + y + z = 1500 ; x − y = 350 ; −0,2x − 0,2y + z = 0",
+     "texto": "Una ecuación por cada dato independiente. La relación se escribe z = 0,2(x + y)."
+    },
+    {
+     "paso": 3,
+     "operacion": "Gauss",
+     "resultado": "x = 800, y = 450, z = 250",
+     "texto": "Escalonamos y despejamos."
+    },
+    {
+     "paso": 4,
+     "operacion": "comprobar",
+     "resultado": "Mateo 800 €, Rocío 450 €, Yeray 250 €",
+     "texto": "Sustituimos en el enunciado y vemos que tiene sentido."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un taller fabrica bicicletas de paseo, de montaña y eléctricas. Cada unidad necesita, respectivamente, 2, 3 y 1 horas de montaje y 1, 1 y 2 horas de acabado. Esta semana ha hecho 49 unidades y ha usado exactamente 91 horas de montaje y 70 de acabado. ¿Cuántas unidades de cada tipo ha fabricado?",
+   "respuesta": "14 bicicletas de paseo, 14 de montaña, 21 eléctricas",
+   "distractores": [
+    {
+     "valor": "−2 bicicletas de paseo, 22 de montaña, 29 eléctricas",
+     "error": "E03"
+    },
+    {
+     "valor": "21 bicicletas de paseo, 14 de montaña, 14 eléctricas",
+     "error": null
+    },
+    {
+     "valor": "15 bicicletas de paseo, 13 de montaña, 21 eléctricas",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.07"
+   ],
+   "explicacion_nino": "Entiende: hay tres cantidades desconocidas; llámalas x, y, z en el orden del enunciado. Datos → ecuaciones: x + y + z = 49 ; 2x + 3y + z = 91 ; x + y + 2z = 70. Resuelve por Gauss (elimina x de la 2ª y 3ª ecuación, luego y de la 3ª, y despeja de abajo arriba): x = 14, y = 14, z = 21. Comprueba: los valores cumplen las tres condiciones y son positivos.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado con tres incógnitas a un sistema de tres ecuaciones independientes y a resolverlo por Gauss (hacer ceros por debajo de la diagonal y despejar de abajo arriba). Los fallos típicos son traducir mal una relación ('el doble', 'el 20 %') y no comprobar que la solución tenga sentido (cantidades negativas o no enteras). Pídale que compruebe la solución en las tres frases del enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y, z",
+     "texto": "Elegimos una incógnita para cada cantidad."
+    },
+    {
+     "paso": 2,
+     "operacion": "plantear",
+     "resultado": "x + y + z = 49 ; 2x + 3y + z = 91 ; x + y + 2z = 70",
+     "texto": "Una ecuación por cada dato independiente."
+    },
+    {
+     "paso": 3,
+     "operacion": "Gauss",
+     "resultado": "x = 14, y = 14, z = 21",
+     "texto": "Escalonamos y despejamos."
+    },
+    {
+     "paso": 4,
+     "operacion": "comprobar",
+     "resultado": "14 bicicletas de paseo, 14 de montaña, 21 eléctricas",
+     "texto": "Sustituimos en el enunciado y vemos que tiene sentido."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Una tienda prepara 58 kg de una mezcla de almendras (5 €/kg), avellanas (7 €/kg) y nueces (10 €/kg). La mezcla cuesta en total 466 € y lleva el doble de kilos de nueces que de almendras. ¿Cuántos kilos lleva de cada uno?",
+   "respuesta": "15 kg de almendras, 13 kg de avellanas, 30 kg de nueces",
+   "distractores": [
+    {
+     "valor": "−120 kg de almendras, 238 kg de avellanas, −60 kg de nueces",
+     "error": "E02"
+    },
+    {
+     "valor": "24 kg de almendras, −2 kg de avellanas, 36 kg de nueces",
+     "error": "E03"
+    },
+    {
+     "valor": "13 kg de almendras, 15 kg de avellanas, 30 kg de nueces",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.07"
+   ],
+   "explicacion_nino": "Entiende: hay tres cantidades desconocidas; llámalas x, y, z en el orden del enunciado. Datos → ecuaciones: x + y + z = 58 ; 5x + 7y + 10z = 466 ; −2x + z = 0. Resuelve por Gauss (elimina x de la 2ª y 3ª ecuación, luego y de la 3ª, y despeja de abajo arriba): x = 15, y = 13, z = 30. Comprueba: los valores cumplen las tres condiciones y son positivos.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado con tres incógnitas a un sistema de tres ecuaciones independientes y a resolverlo por Gauss (hacer ceros por debajo de la diagonal y despejar de abajo arriba). Los fallos típicos son traducir mal una relación ('el doble', 'el 20 %') y no comprobar que la solución tenga sentido (cantidades negativas o no enteras). Pídale que compruebe la solución en las tres frases del enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y, z",
+     "texto": "Elegimos una incógnita para cada cantidad."
+    },
+    {
+     "paso": 2,
+     "operacion": "plantear",
+     "resultado": "x + y + z = 58 ; 5x + 7y + 10z = 466 ; −2x + z = 0",
+     "texto": "Una ecuación por cada dato independiente. La relación se escribe z = 2x."
+    },
+    {
+     "paso": 3,
+     "operacion": "Gauss",
+     "resultado": "x = 15, y = 13, z = 30",
+     "texto": "Escalonamos y despejamos."
+    },
+    {
+     "paso": 4,
+     "operacion": "comprobar",
+     "resultado": "15 kg de almendras, 13 kg de avellanas, 30 kg de nueces",
+     "texto": "Sustituimos en el enunciado y vemos que tiene sentido."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un parque de atracciones vendió ayer 201 entradas de tres tipos: general a 10 €, infantil a 7 € y de jubilado a 6 €. Recaudó 1490 € y se vendieron el triple de entradas infantiles que de jubilado. ¿Cuántas entradas de cada tipo se vendieron?",
+   "respuesta": "41 generales, 120 infantiles, 40 de jubilado",
+   "distractores": [
+    {
+     "valor": "62,33 generales, 34,67 infantiles, 104 de jubilado",
+     "error": "E02"
+    },
+    {
+     "valor": "27 generales, 176 infantiles, −2 de jubilado",
+     "error": "E03"
+    },
+    {
+     "valor": "120 generales, 41 infantiles, 40 de jubilado",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.07"
+   ],
+   "explicacion_nino": "Entiende: hay tres cantidades desconocidas; llámalas x, y, z en el orden del enunciado. Datos → ecuaciones: x + y + z = 201 ; 10x + 7y + 6z = 1490 ; y − 3z = 0. Resuelve por Gauss (elimina x de la 2ª y 3ª ecuación, luego y de la 3ª, y despeja de abajo arriba): x = 41, y = 120, z = 40. Comprueba: los valores cumplen las tres condiciones y son positivos.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado con tres incógnitas a un sistema de tres ecuaciones independientes y a resolverlo por Gauss (hacer ceros por debajo de la diagonal y despejar de abajo arriba). Los fallos típicos son traducir mal una relación ('el doble', 'el 20 %') y no comprobar que la solución tenga sentido (cantidades negativas o no enteras). Pídale que compruebe la solución en las tres frases del enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y, z",
+     "texto": "Elegimos una incógnita para cada cantidad."
+    },
+    {
+     "paso": 2,
+     "operacion": "plantear",
+     "resultado": "x + y + z = 201 ; 10x + 7y + 6z = 1490 ; y − 3z = 0",
+     "texto": "Una ecuación por cada dato independiente. La relación se escribe y = 3z."
+    },
+    {
+     "paso": 3,
+     "operacion": "Gauss",
+     "resultado": "x = 41, y = 120, z = 40",
+     "texto": "Escalonamos y despejamos."
+    },
+    {
+     "paso": 4,
+     "operacion": "comprobar",
+     "resultado": "41 generales, 120 infantiles, 40 de jubilado",
+     "texto": "Sustituimos en el enunciado y vemos que tiene sentido."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un premio de 1260 € se reparte entre Carmen, Iker y Aitana. Carmen recibe 350 € más que Iker, y Aitana recibe el 20 % de lo que reciben entre los otros dos. ¿Cuánto recibe cada uno?",
+   "respuesta": "Carmen 700 €, Iker 350 €, Aitana 210 €",
+   "distractores": [
+    {
+     "valor": "Carmen 205 €, Iker −145 €, Aitana 1200 €",
+     "error": "E02"
+    },
+    {
+     "valor": "Carmen 806 €, Iker 456 €, Aitana −2 €",
+     "error": "E03"
+    },
+    {
+     "valor": "Carmen 350 €, Iker 700 €, Aitana 210 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.07"
+   ],
+   "explicacion_nino": "Entiende: hay tres cantidades desconocidas; llámalas x, y, z en el orden del enunciado. Datos → ecuaciones: x + y + z = 1260 ; x − y = 350 ; −0,2x − 0,2y + z = 0. Resuelve por Gauss (elimina x de la 2ª y 3ª ecuación, luego y de la 3ª, y despeja de abajo arriba): x = 700, y = 350, z = 210. Comprueba: los valores cumplen las tres condiciones y son positivos.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado con tres incógnitas a un sistema de tres ecuaciones independientes y a resolverlo por Gauss (hacer ceros por debajo de la diagonal y despejar de abajo arriba). Los fallos típicos son traducir mal una relación ('el doble', 'el 20 %') y no comprobar que la solución tenga sentido (cantidades negativas o no enteras). Pídale que compruebe la solución en las tres frases del enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y, z",
+     "texto": "Elegimos una incógnita para cada cantidad."
+    },
+    {
+     "paso": 2,
+     "operacion": "plantear",
+     "resultado": "x + y + z = 1260 ; x − y = 350 ; −0,2x − 0,2y + z = 0",
+     "texto": "Una ecuación por cada dato independiente. La relación se escribe z = 0,2(x + y)."
+    },
+    {
+     "paso": 3,
+     "operacion": "Gauss",
+     "resultado": "x = 700, y = 350, z = 210",
+     "texto": "Escalonamos y despejamos."
+    },
+    {
+     "paso": 4,
+     "operacion": "comprobar",
+     "resultado": "Carmen 700 €, Iker 350 €, Aitana 210 €",
+     "texto": "Sustituimos en el enunciado y vemos que tiene sentido."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un taller fabrica bicicletas de paseo, de montaña y eléctricas. Cada unidad necesita, respectivamente, 1, 2 y 3 horas de montaje y 1, 2 y 1 horas de acabado. Esta semana ha hecho 37 unidades y ha usado exactamente 57 horas de montaje y 43 de acabado. ¿Cuántas unidades de cada tipo ha fabricado?",
+   "respuesta": "24 bicicletas de paseo, 6 de montaña, 7 eléctricas",
+   "distractores": [
+    {
+     "valor": "42 bicicletas de paseo, 6 de montaña, −11 eléctricas",
+     "error": "E02"
+    },
+    {
+     "valor": "28 bicicletas de paseo, −2 de montaña, 11 eléctricas",
+     "error": "E03"
+    },
+    {
+     "valor": "6 bicicletas de paseo, 24 de montaña, 7 eléctricas",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.07"
+   ],
+   "explicacion_nino": "Entiende: hay tres cantidades desconocidas; llámalas x, y, z en el orden del enunciado. Datos → ecuaciones: x + y + z = 37 ; x + 2y + 3z = 57 ; x + 2y + z = 43. Resuelve por Gauss (elimina x de la 2ª y 3ª ecuación, luego y de la 3ª, y despeja de abajo arriba): x = 24, y = 6, z = 7. Comprueba: los valores cumplen las tres condiciones y son positivos.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado con tres incógnitas a un sistema de tres ecuaciones independientes y a resolverlo por Gauss (hacer ceros por debajo de la diagonal y despejar de abajo arriba). Los fallos típicos son traducir mal una relación ('el doble', 'el 20 %') y no comprobar que la solución tenga sentido (cantidades negativas o no enteras). Pídale que compruebe la solución en las tres frases del enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y, z",
+     "texto": "Elegimos una incógnita para cada cantidad."
+    },
+    {
+     "paso": 2,
+     "operacion": "plantear",
+     "resultado": "x + y + z = 37 ; x + 2y + 3z = 57 ; x + 2y + z = 43",
+     "texto": "Una ecuación por cada dato independiente."
+    },
+    {
+     "paso": 3,
+     "operacion": "Gauss",
+     "resultado": "x = 24, y = 6, z = 7",
+     "texto": "Escalonamos y despejamos."
+    },
+    {
+     "paso": 4,
+     "operacion": "comprobar",
+     "resultado": "24 bicicletas de paseo, 6 de montaña, 7 eléctricas",
+     "texto": "Sustituimos en el enunciado y vemos que tiene sentido."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Una tienda prepara 62 kg de una mezcla de arroz bomba (6 €/kg), arroz largo (10 €/kg) y arroz integral (12 €/kg). La mezcla cuesta en total 644 € y lleva el triple de kilos de arroz integral que de arroz bomba. ¿Cuántos kilos lleva de cada uno?",
+   "respuesta": "12 kg de arroz bomba, 14 kg de arroz largo, 36 kg de arroz integral",
+   "distractores": [
+    {
+     "valor": "−7,2 kg de arroz bomba, 71,6 kg de arroz largo, −2,4 kg de arroz integral",
+     "error": "E02"
+    },
+    {
+     "valor": "18 kg de arroz bomba, −4 kg de arroz largo, 48 kg de arroz integral",
+     "error": "E03"
+    },
+    {
+     "valor": "14 kg de arroz bomba, 12 kg de arroz largo, 36 kg de arroz integral",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.07"
+   ],
+   "explicacion_nino": "Entiende: hay tres cantidades desconocidas; llámalas x, y, z en el orden del enunciado. Datos → ecuaciones: x + y + z = 62 ; 6x + 10y + 12z = 644 ; −3x + z = 0. Resuelve por Gauss (elimina x de la 2ª y 3ª ecuación, luego y de la 3ª, y despeja de abajo arriba): x = 12, y = 14, z = 36. Comprueba: los valores cumplen las tres condiciones y son positivos.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado con tres incógnitas a un sistema de tres ecuaciones independientes y a resolverlo por Gauss (hacer ceros por debajo de la diagonal y despejar de abajo arriba). Los fallos típicos son traducir mal una relación ('el doble', 'el 20 %') y no comprobar que la solución tenga sentido (cantidades negativas o no enteras). Pídale que compruebe la solución en las tres frases del enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y, z",
+     "texto": "Elegimos una incógnita para cada cantidad."
+    },
+    {
+     "paso": 2,
+     "operacion": "plantear",
+     "resultado": "x + y + z = 62 ; 6x + 10y + 12z = 644 ; −3x + z = 0",
+     "texto": "Una ecuación por cada dato independiente. La relación se escribe z = 3x."
+    },
+    {
+     "paso": 3,
+     "operacion": "Gauss",
+     "resultado": "x = 12, y = 14, z = 36",
+     "texto": "Escalonamos y despejamos."
+    },
+    {
+     "paso": 4,
+     "operacion": "comprobar",
+     "resultado": "12 kg de arroz bomba, 14 kg de arroz largo, 36 kg de arroz integral",
+     "texto": "Sustituimos en el enunciado y vemos que tiene sentido."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un cine de verano vendió ayer 231 entradas de tres tipos: general a 12 €, infantil a 8 € y de jubilado a 6 €. Recaudó 2250 € y se vendieron el triple de entradas infantiles que de jubilado. ¿Cuántas entradas de cada tipo se vendieron?",
+   "respuesta": "115 generales, 87 infantiles, 29 de jubilado",
+   "distractores": [
+    {
+     "valor": "136,09 generales, 23,73 infantiles, 71,18 de jubilado",
+     "error": "E02"
+    },
+    {
+     "valor": "99 generales, 135 infantiles, −3 de jubilado",
+     "error": "E03"
+    },
+    {
+     "valor": "87 generales, 115 infantiles, 29 de jubilado",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.07"
+   ],
+   "explicacion_nino": "Entiende: hay tres cantidades desconocidas; llámalas x, y, z en el orden del enunciado. Datos → ecuaciones: x + y + z = 231 ; 12x + 8y + 6z = 2250 ; y − 3z = 0. Resuelve por Gauss (elimina x de la 2ª y 3ª ecuación, luego y de la 3ª, y despeja de abajo arriba): x = 115, y = 87, z = 29. Comprueba: los valores cumplen las tres condiciones y son positivos.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado con tres incógnitas a un sistema de tres ecuaciones independientes y a resolverlo por Gauss (hacer ceros por debajo de la diagonal y despejar de abajo arriba). Los fallos típicos son traducir mal una relación ('el doble', 'el 20 %') y no comprobar que la solución tenga sentido (cantidades negativas o no enteras). Pídale que compruebe la solución en las tres frases del enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y, z",
+     "texto": "Elegimos una incógnita para cada cantidad."
+    },
+    {
+     "paso": 2,
+     "operacion": "plantear",
+     "resultado": "x + y + z = 231 ; 12x + 8y + 6z = 2250 ; y − 3z = 0",
+     "texto": "Una ecuación por cada dato independiente. La relación se escribe y = 3z."
+    },
+    {
+     "paso": 3,
+     "operacion": "Gauss",
+     "resultado": "x = 115, y = 87, z = 29",
+     "texto": "Escalonamos y despejamos."
+    },
+    {
+     "paso": 4,
+     "operacion": "comprobar",
+     "resultado": "115 generales, 87 infantiles, 29 de jubilado",
+     "texto": "Sustituimos en el enunciado y vemos que tiene sentido."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un premio de 1920 € se reparte entre Óscar, Julia y Bilal. Óscar recibe 400 € más que Julia, y Bilal recibe el 20 % de lo que reciben entre los otros dos. ¿Cuánto recibe cada uno?",
+   "respuesta": "Óscar 1000 €, Julia 600 €, Bilal 320 €",
+   "distractores": [
+    {
+     "valor": "Óscar 245,71 €, Julia −154,29 €, Bilal 1828,57 €",
+     "error": "E02"
+    },
+    {
+     "valor": "Óscar 1161 €, Julia 761 €, Bilal −2 €",
+     "error": "E03"
+    },
+    {
+     "valor": "Óscar 600 €, Julia 1000 €, Bilal 320 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.07"
+   ],
+   "explicacion_nino": "Entiende: hay tres cantidades desconocidas; llámalas x, y, z en el orden del enunciado. Datos → ecuaciones: x + y + z = 1920 ; x − y = 400 ; −0,2x − 0,2y + z = 0. Resuelve por Gauss (elimina x de la 2ª y 3ª ecuación, luego y de la 3ª, y despeja de abajo arriba): x = 1000, y = 600, z = 320. Comprueba: los valores cumplen las tres condiciones y son positivos.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado con tres incógnitas a un sistema de tres ecuaciones independientes y a resolverlo por Gauss (hacer ceros por debajo de la diagonal y despejar de abajo arriba). Los fallos típicos son traducir mal una relación ('el doble', 'el 20 %') y no comprobar que la solución tenga sentido (cantidades negativas o no enteras). Pídale que compruebe la solución en las tres frases del enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y, z",
+     "texto": "Elegimos una incógnita para cada cantidad."
+    },
+    {
+     "paso": 2,
+     "operacion": "plantear",
+     "resultado": "x + y + z = 1920 ; x − y = 400 ; −0,2x − 0,2y + z = 0",
+     "texto": "Una ecuación por cada dato independiente. La relación se escribe z = 0,2(x + y)."
+    },
+    {
+     "paso": 3,
+     "operacion": "Gauss",
+     "resultado": "x = 1000, y = 600, z = 320",
+     "texto": "Escalonamos y despejamos."
+    },
+    {
+     "paso": 4,
+     "operacion": "comprobar",
+     "resultado": "Óscar 1000 €, Julia 600 €, Bilal 320 €",
+     "texto": "Sustituimos en el enunciado y vemos que tiene sentido."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un taller fabrica mochilas, maletas y bolsos. Cada unidad necesita, respectivamente, 2, 3 y 1 horas de montaje y 2, 1 y 1 horas de acabado. Esta semana ha hecho 55 unidades y ha usado exactamente 125 horas de montaje y 71 de acabado. ¿Cuántas unidades de cada tipo ha fabricado?",
+   "respuesta": "16 mochilas, 27 maletas, 12 bolsos",
+   "distractores": [
+    {
+     "valor": "16 mochilas, 38 maletas, 1 bolsos",
+     "error": "E02"
+    },
+    {
+     "valor": "−2 mochilas, 36 maletas, 21 bolsos",
+     "error": "E03"
+    },
+    {
+     "valor": "27 mochilas, 16 maletas, 12 bolsos",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.07"
+   ],
+   "explicacion_nino": "Entiende: hay tres cantidades desconocidas; llámalas x, y, z en el orden del enunciado. Datos → ecuaciones: x + y + z = 55 ; 2x + 3y + z = 125 ; 2x + y + z = 71. Resuelve por Gauss (elimina x de la 2ª y 3ª ecuación, luego y de la 3ª, y despeja de abajo arriba): x = 16, y = 27, z = 12. Comprueba: los valores cumplen las tres condiciones y son positivos.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado con tres incógnitas a un sistema de tres ecuaciones independientes y a resolverlo por Gauss (hacer ceros por debajo de la diagonal y despejar de abajo arriba). Los fallos típicos son traducir mal una relación ('el doble', 'el 20 %') y no comprobar que la solución tenga sentido (cantidades negativas o no enteras). Pídale que compruebe la solución en las tres frases del enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y, z",
+     "texto": "Elegimos una incógnita para cada cantidad."
+    },
+    {
+     "paso": 2,
+     "operacion": "plantear",
+     "resultado": "x + y + z = 55 ; 2x + 3y + z = 125 ; 2x + y + z = 71",
+     "texto": "Una ecuación por cada dato independiente."
+    },
+    {
+     "paso": 3,
+     "operacion": "Gauss",
+     "resultado": "x = 16, y = 27, z = 12",
+     "texto": "Escalonamos y despejamos."
+    },
+    {
+     "paso": 4,
+     "operacion": "comprobar",
+     "resultado": "16 mochilas, 27 maletas, 12 bolsos",
+     "texto": "Sustituimos en el enunciado y vemos que tiene sentido."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Una tienda prepara 38 kg de una mezcla de almendras (5 €/kg), avellanas (6 €/kg) y nueces (7 €/kg). La mezcla cuesta en total 239 € y lleva el doble de kilos de nueces que de almendras. ¿Cuántos kilos lleva de cada uno?",
+   "respuesta": "11 kg de almendras, 5 kg de avellanas, 22 kg de nueces",
+   "distractores": [
+    {
+     "valor": "−22 kg de almendras, 71 kg de avellanas, −11 kg de nueces",
+     "error": "E02"
+    },
+    {
+     "valor": "14 kg de almendras, −1 kg de avellanas, 25 kg de nueces",
+     "error": "E03"
+    },
+    {
+     "valor": "5 kg de almendras, 11 kg de avellanas, 22 kg de nueces",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.07"
+   ],
+   "explicacion_nino": "Entiende: hay tres cantidades desconocidas; llámalas x, y, z en el orden del enunciado. Datos → ecuaciones: x + y + z = 38 ; 5x + 6y + 7z = 239 ; −2x + z = 0. Resuelve por Gauss (elimina x de la 2ª y 3ª ecuación, luego y de la 3ª, y despeja de abajo arriba): x = 11, y = 5, z = 22. Comprueba: los valores cumplen las tres condiciones y son positivos.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado con tres incógnitas a un sistema de tres ecuaciones independientes y a resolverlo por Gauss (hacer ceros por debajo de la diagonal y despejar de abajo arriba). Los fallos típicos son traducir mal una relación ('el doble', 'el 20 %') y no comprobar que la solución tenga sentido (cantidades negativas o no enteras). Pídale que compruebe la solución en las tres frases del enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y, z",
+     "texto": "Elegimos una incógnita para cada cantidad."
+    },
+    {
+     "paso": 2,
+     "operacion": "plantear",
+     "resultado": "x + y + z = 38 ; 5x + 6y + 7z = 239 ; −2x + z = 0",
+     "texto": "Una ecuación por cada dato independiente. La relación se escribe z = 2x."
+    },
+    {
+     "paso": 3,
+     "operacion": "Gauss",
+     "resultado": "x = 11, y = 5, z = 22",
+     "texto": "Escalonamos y despejamos."
+    },
+    {
+     "paso": 4,
+     "operacion": "comprobar",
+     "resultado": "11 kg de almendras, 5 kg de avellanas, 22 kg de nueces",
+     "texto": "Sustituimos en el enunciado y vemos que tiene sentido."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un museo vendió ayer 240 entradas de tres tipos: general a 9 €, infantil a 6 € y de jubilado a 5 €. Recaudó 1718 € y se vendieron el triple de entradas infantiles que de jubilado. ¿Cuántas entradas de cada tipo se vendieron?",
+   "respuesta": "104 generales, 102 infantiles, 34 de jubilado",
+   "distractores": [
+    {
+     "valor": "122,13 generales, 29,47 infantiles, 88,4 de jubilado",
+     "error": "E02"
+    },
+    {
+     "valor": "92 generales, 150 infantiles, −2 de jubilado",
+     "error": "E03"
+    },
+    {
+     "valor": "102 generales, 104 infantiles, 34 de jubilado",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.07"
+   ],
+   "explicacion_nino": "Entiende: hay tres cantidades desconocidas; llámalas x, y, z en el orden del enunciado. Datos → ecuaciones: x + y + z = 240 ; 9x + 6y + 5z = 1718 ; y − 3z = 0. Resuelve por Gauss (elimina x de la 2ª y 3ª ecuación, luego y de la 3ª, y despeja de abajo arriba): x = 104, y = 102, z = 34. Comprueba: los valores cumplen las tres condiciones y son positivos.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado con tres incógnitas a un sistema de tres ecuaciones independientes y a resolverlo por Gauss (hacer ceros por debajo de la diagonal y despejar de abajo arriba). Los fallos típicos son traducir mal una relación ('el doble', 'el 20 %') y no comprobar que la solución tenga sentido (cantidades negativas o no enteras). Pídale que compruebe la solución en las tres frases del enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y, z",
+     "texto": "Elegimos una incógnita para cada cantidad."
+    },
+    {
+     "paso": 2,
+     "operacion": "plantear",
+     "resultado": "x + y + z = 240 ; 9x + 6y + 5z = 1718 ; y − 3z = 0",
+     "texto": "Una ecuación por cada dato independiente. La relación se escribe y = 3z."
+    },
+    {
+     "paso": 3,
+     "operacion": "Gauss",
+     "resultado": "x = 104, y = 102, z = 34",
+     "texto": "Escalonamos y despejamos."
+    },
+    {
+     "paso": 4,
+     "operacion": "comprobar",
+     "resultado": "104 generales, 102 infantiles, 34 de jubilado",
+     "texto": "Sustituimos en el enunciado y vemos que tiene sentido."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un premio de 2700 € se reparte entre Carmen, Iker y Aitana. Carmen recibe 250 € más que Iker, y Aitana recibe el 20 % de lo que reciben entre los otros dos. ¿Cuánto recibe cada uno?",
+   "respuesta": "Carmen 1250 €, Iker 1000 €, Aitana 450 €",
+   "distractores": [
+    {
+     "valor": "Carmen 189,29 €, Iker −60,71 €, Aitana 2571,43 €",
+     "error": "E02"
+    },
+    {
+     "valor": "Carmen 1000 €, Iker 1250 €, Aitana 450 €",
+     "error": null
+    },
+    {
+     "valor": "Carmen 1251 €, Iker 999 €, Aitana 450 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.07"
+   ],
+   "explicacion_nino": "Entiende: hay tres cantidades desconocidas; llámalas x, y, z en el orden del enunciado. Datos → ecuaciones: x + y + z = 2700 ; x − y = 250 ; −0,2x − 0,2y + z = 0. Resuelve por Gauss (elimina x de la 2ª y 3ª ecuación, luego y de la 3ª, y despeja de abajo arriba): x = 1250, y = 1000, z = 450. Comprueba: los valores cumplen las tres condiciones y son positivos.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado con tres incógnitas a un sistema de tres ecuaciones independientes y a resolverlo por Gauss (hacer ceros por debajo de la diagonal y despejar de abajo arriba). Los fallos típicos son traducir mal una relación ('el doble', 'el 20 %') y no comprobar que la solución tenga sentido (cantidades negativas o no enteras). Pídale que compruebe la solución en las tres frases del enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y, z",
+     "texto": "Elegimos una incógnita para cada cantidad."
+    },
+    {
+     "paso": 2,
+     "operacion": "plantear",
+     "resultado": "x + y + z = 2700 ; x − y = 250 ; −0,2x − 0,2y + z = 0",
+     "texto": "Una ecuación por cada dato independiente. La relación se escribe z = 0,2(x + y)."
+    },
+    {
+     "paso": 3,
+     "operacion": "Gauss",
+     "resultado": "x = 1250, y = 1000, z = 450",
+     "texto": "Escalonamos y despejamos."
+    },
+    {
+     "paso": 4,
+     "operacion": "comprobar",
+     "resultado": "Carmen 1250 €, Iker 1000 €, Aitana 450 €",
+     "texto": "Sustituimos en el enunciado y vemos que tiene sentido."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un taller fabrica mochilas, maletas y bolsos. Cada unidad necesita, respectivamente, 1, 2 y 3 horas de montaje y 2, 1 y 1 horas de acabado. Esta semana ha hecho 49 unidades y ha usado exactamente 113 horas de montaje y 58 de acabado. ¿Cuántas unidades de cada tipo ha fabricado?",
+   "respuesta": "9 mochilas, 16 maletas, 24 bolsos",
+   "distractores": [
+    {
+     "valor": "9 mochilas, 12,5 maletas, 27,5 bolsos",
+     "error": "E02"
+    },
+    {
+     "valor": "18 mochilas, −2 maletas, 33 bolsos",
+     "error": "E03"
+    },
+    {
+     "valor": "16 mochilas, 9 maletas, 24 bolsos",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.07"
+   ],
+   "explicacion_nino": "Entiende: hay tres cantidades desconocidas; llámalas x, y, z en el orden del enunciado. Datos → ecuaciones: x + y + z = 49 ; x + 2y + 3z = 113 ; 2x + y + z = 58. Resuelve por Gauss (elimina x de la 2ª y 3ª ecuación, luego y de la 3ª, y despeja de abajo arriba): x = 9, y = 16, z = 24. Comprueba: los valores cumplen las tres condiciones y son positivos.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado con tres incógnitas a un sistema de tres ecuaciones independientes y a resolverlo por Gauss (hacer ceros por debajo de la diagonal y despejar de abajo arriba). Los fallos típicos son traducir mal una relación ('el doble', 'el 20 %') y no comprobar que la solución tenga sentido (cantidades negativas o no enteras). Pídale que compruebe la solución en las tres frases del enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y, z",
+     "texto": "Elegimos una incógnita para cada cantidad."
+    },
+    {
+     "paso": 2,
+     "operacion": "plantear",
+     "resultado": "x + y + z = 49 ; x + 2y + 3z = 113 ; 2x + y + z = 58",
+     "texto": "Una ecuación por cada dato independiente."
+    },
+    {
+     "paso": 3,
+     "operacion": "Gauss",
+     "resultado": "x = 9, y = 16, z = 24",
+     "texto": "Escalonamos y despejamos."
+    },
+    {
+     "paso": 4,
+     "operacion": "comprobar",
+     "resultado": "9 mochilas, 16 maletas, 24 bolsos",
+     "texto": "Sustituimos en el enunciado y vemos que tiene sentido."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Una tienda prepara 35 kg de una mezcla de almendras (7 €/kg), avellanas (10 €/kg) y nueces (12 €/kg). La mezcla cuesta en total 360 € y lleva el doble de kilos de nueces que de almendras. ¿Cuántos kilos lleva de cada uno?",
+   "respuesta": "10 kg de almendras, 5 kg de avellanas, 20 kg de nueces",
+   "distractores": [
+    {
+     "valor": "−5 kg de almendras, 42,5 kg de avellanas, −2,5 kg de nueces",
+     "error": "E02"
+    },
+    {
+     "valor": "14 kg de almendras, −5 kg de avellanas, 26 kg de nueces",
+     "error": "E03"
+    },
+    {
+     "valor": "5 kg de almendras, 10 kg de avellanas, 20 kg de nueces",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.07"
+   ],
+   "explicacion_nino": "Entiende: hay tres cantidades desconocidas; llámalas x, y, z en el orden del enunciado. Datos → ecuaciones: x + y + z = 35 ; 7x + 10y + 12z = 360 ; −2x + z = 0. Resuelve por Gauss (elimina x de la 2ª y 3ª ecuación, luego y de la 3ª, y despeja de abajo arriba): x = 10, y = 5, z = 20. Comprueba: los valores cumplen las tres condiciones y son positivos.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado con tres incógnitas a un sistema de tres ecuaciones independientes y a resolverlo por Gauss (hacer ceros por debajo de la diagonal y despejar de abajo arriba). Los fallos típicos son traducir mal una relación ('el doble', 'el 20 %') y no comprobar que la solución tenga sentido (cantidades negativas o no enteras). Pídale que compruebe la solución en las tres frases del enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y, z",
+     "texto": "Elegimos una incógnita para cada cantidad."
+    },
+    {
+     "paso": 2,
+     "operacion": "plantear",
+     "resultado": "x + y + z = 35 ; 7x + 10y + 12z = 360 ; −2x + z = 0",
+     "texto": "Una ecuación por cada dato independiente. La relación se escribe z = 2x."
+    },
+    {
+     "paso": 3,
+     "operacion": "Gauss",
+     "resultado": "x = 10, y = 5, z = 20",
+     "texto": "Escalonamos y despejamos."
+    },
+    {
+     "paso": 4,
+     "operacion": "comprobar",
+     "resultado": "10 kg de almendras, 5 kg de avellanas, 20 kg de nueces",
+     "texto": "Sustituimos en el enunciado y vemos que tiene sentido."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un teatro vendió ayer 154 entradas de tres tipos: general a 12 €, infantil a 8 € y de jubilado a 6 €. Recaudó 1330 € y se vendieron el doble de entradas infantiles que de jubilado. ¿Cuántas entradas de cada tipo se vendieron?",
+   "respuesta": "43 generales, 74 infantiles, 37 de jubilado",
+   "distractores": [
+    {
+     "valor": "56,88 generales, 32,38 infantiles, 64,75 de jubilado",
+     "error": "E02"
+    },
+    {
+     "valor": "23 generales, 134 infantiles, −3 de jubilado",
+     "error": "E03"
+    },
+    {
+     "valor": "74 generales, 43 infantiles, 37 de jubilado",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.07"
+   ],
+   "explicacion_nino": "Entiende: hay tres cantidades desconocidas; llámalas x, y, z en el orden del enunciado. Datos → ecuaciones: x + y + z = 154 ; 12x + 8y + 6z = 1330 ; y − 2z = 0. Resuelve por Gauss (elimina x de la 2ª y 3ª ecuación, luego y de la 3ª, y despeja de abajo arriba): x = 43, y = 74, z = 37. Comprueba: los valores cumplen las tres condiciones y son positivos.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado con tres incógnitas a un sistema de tres ecuaciones independientes y a resolverlo por Gauss (hacer ceros por debajo de la diagonal y despejar de abajo arriba). Los fallos típicos son traducir mal una relación ('el doble', 'el 20 %') y no comprobar que la solución tenga sentido (cantidades negativas o no enteras). Pídale que compruebe la solución en las tres frases del enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y, z",
+     "texto": "Elegimos una incógnita para cada cantidad."
+    },
+    {
+     "paso": 2,
+     "operacion": "plantear",
+     "resultado": "x + y + z = 154 ; 12x + 8y + 6z = 1330 ; y − 2z = 0",
+     "texto": "Una ecuación por cada dato independiente. La relación se escribe y = 2z."
+    },
+    {
+     "paso": 3,
+     "operacion": "Gauss",
+     "resultado": "x = 43, y = 74, z = 37",
+     "texto": "Escalonamos y despejamos."
+    },
+    {
+     "paso": 4,
+     "operacion": "comprobar",
+     "resultado": "43 generales, 74 infantiles, 37 de jubilado",
+     "texto": "Sustituimos en el enunciado y vemos que tiene sentido."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un premio de 2880 € se reparte entre Carmen, Iker y Aitana. Carmen recibe 400 € más que Iker, y Aitana recibe el 20 % de lo que reciben entre los otros dos. ¿Cuánto recibe cada uno?",
+   "respuesta": "Carmen 1400 €, Iker 1000 €, Aitana 480 €",
+   "distractores": [
+    {
+     "valor": "Carmen 268,57 €, Iker −131,43 €, Aitana 2742,86 €",
+     "error": "E02"
+    },
+    {
+     "valor": "Carmen 1000 €, Iker 1400 €, Aitana 480 €",
+     "error": null
+    },
+    {
+     "valor": "Carmen 1401 €, Iker 999 €, Aitana 480 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.07"
+   ],
+   "explicacion_nino": "Entiende: hay tres cantidades desconocidas; llámalas x, y, z en el orden del enunciado. Datos → ecuaciones: x + y + z = 2880 ; x − y = 400 ; −0,2x − 0,2y + z = 0. Resuelve por Gauss (elimina x de la 2ª y 3ª ecuación, luego y de la 3ª, y despeja de abajo arriba): x = 1400, y = 1000, z = 480. Comprueba: los valores cumplen las tres condiciones y son positivos.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado con tres incógnitas a un sistema de tres ecuaciones independientes y a resolverlo por Gauss (hacer ceros por debajo de la diagonal y despejar de abajo arriba). Los fallos típicos son traducir mal una relación ('el doble', 'el 20 %') y no comprobar que la solución tenga sentido (cantidades negativas o no enteras). Pídale que compruebe la solución en las tres frases del enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y, z",
+     "texto": "Elegimos una incógnita para cada cantidad."
+    },
+    {
+     "paso": 2,
+     "operacion": "plantear",
+     "resultado": "x + y + z = 2880 ; x − y = 400 ; −0,2x − 0,2y + z = 0",
+     "texto": "Una ecuación por cada dato independiente. La relación se escribe z = 0,2(x + y)."
+    },
+    {
+     "paso": 3,
+     "operacion": "Gauss",
+     "resultado": "x = 1400, y = 1000, z = 480",
+     "texto": "Escalonamos y despejamos."
+    },
+    {
+     "paso": 4,
+     "operacion": "comprobar",
+     "resultado": "Carmen 1400 €, Iker 1000 €, Aitana 480 €",
+     "texto": "Sustituimos en el enunciado y vemos que tiene sentido."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un taller fabrica sillas, mesas y estanterías. Cada unidad necesita, respectivamente, 2, 3 y 1 horas de montaje y 2, 1 y 1 horas de acabado. Esta semana ha hecho 52 unidades y ha usado exactamente 123 horas de montaje y 69 de acabado. ¿Cuántas unidades de cada tipo ha fabricado?",
+   "respuesta": "17 sillas, 27 mesas, 8 estanterías",
+   "distractores": [
+    {
+     "valor": "17 sillas, 37 mesas, −2 estanterías",
+     "error": "E02"
+    },
+    {
+     "valor": "−1 sillas, 36 mesas, 17 estanterías",
+     "error": "E03"
+    },
+    {
+     "valor": "27 sillas, 17 mesas, 8 estanterías",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.07"
+   ],
+   "explicacion_nino": "Entiende: hay tres cantidades desconocidas; llámalas x, y, z en el orden del enunciado. Datos → ecuaciones: x + y + z = 52 ; 2x + 3y + z = 123 ; 2x + y + z = 69. Resuelve por Gauss (elimina x de la 2ª y 3ª ecuación, luego y de la 3ª, y despeja de abajo arriba): x = 17, y = 27, z = 8. Comprueba: los valores cumplen las tres condiciones y son positivos.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado con tres incógnitas a un sistema de tres ecuaciones independientes y a resolverlo por Gauss (hacer ceros por debajo de la diagonal y despejar de abajo arriba). Los fallos típicos son traducir mal una relación ('el doble', 'el 20 %') y no comprobar que la solución tenga sentido (cantidades negativas o no enteras). Pídale que compruebe la solución en las tres frases del enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y, z",
+     "texto": "Elegimos una incógnita para cada cantidad."
+    },
+    {
+     "paso": 2,
+     "operacion": "plantear",
+     "resultado": "x + y + z = 52 ; 2x + 3y + z = 123 ; 2x + y + z = 69",
+     "texto": "Una ecuación por cada dato independiente."
+    },
+    {
+     "paso": 3,
+     "operacion": "Gauss",
+     "resultado": "x = 17, y = 27, z = 8",
+     "texto": "Escalonamos y despejamos."
+    },
+    {
+     "paso": 4,
+     "operacion": "comprobar",
+     "resultado": "17 sillas, 27 mesas, 8 estanterías",
+     "texto": "Sustituimos en el enunciado y vemos que tiene sentido."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Una tienda prepara 83 kg de una mezcla de café de Colombia (5 €/kg), café de Brasil (7 €/kg) y café de Kenia (9 €/kg). La mezcla cuesta en total 641 € y lleva el triple de kilos de café de Kenia que de café de Colombia. ¿Cuántos kilos lleva de cada uno?",
+   "respuesta": "15 kg de café de Colombia, 23 kg de café de Brasil, 45 kg de café de Kenia",
+   "distractores": [
+    {
+     "valor": "−45 kg de café de Colombia, 143 kg de café de Brasil, −15 kg de café de Kenia",
+     "error": "E02"
+    },
+    {
+     "valor": "27 kg de café de Colombia, −1 kg de café de Brasil, 57 kg de café de Kenia",
+     "error": "E03"
+    },
+    {
+     "valor": "23 kg de café de Colombia, 15 kg de café de Brasil, 45 kg de café de Kenia",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.07"
+   ],
+   "explicacion_nino": "Entiende: hay tres cantidades desconocidas; llámalas x, y, z en el orden del enunciado. Datos → ecuaciones: x + y + z = 83 ; 5x + 7y + 9z = 641 ; −3x + z = 0. Resuelve por Gauss (elimina x de la 2ª y 3ª ecuación, luego y de la 3ª, y despeja de abajo arriba): x = 15, y = 23, z = 45. Comprueba: los valores cumplen las tres condiciones y son positivos.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado con tres incógnitas a un sistema de tres ecuaciones independientes y a resolverlo por Gauss (hacer ceros por debajo de la diagonal y despejar de abajo arriba). Los fallos típicos son traducir mal una relación ('el doble', 'el 20 %') y no comprobar que la solución tenga sentido (cantidades negativas o no enteras). Pídale que compruebe la solución en las tres frases del enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y, z",
+     "texto": "Elegimos una incógnita para cada cantidad."
+    },
+    {
+     "paso": 2,
+     "operacion": "plantear",
+     "resultado": "x + y + z = 83 ; 5x + 7y + 9z = 641 ; −3x + z = 0",
+     "texto": "Una ecuación por cada dato independiente. La relación se escribe z = 3x."
+    },
+    {
+     "paso": 3,
+     "operacion": "Gauss",
+     "resultado": "x = 15, y = 23, z = 45",
+     "texto": "Escalonamos y despejamos."
+    },
+    {
+     "paso": 4,
+     "operacion": "comprobar",
+     "resultado": "15 kg de café de Colombia, 23 kg de café de Brasil, 45 kg de café de Kenia",
+     "texto": "Sustituimos en el enunciado y vemos que tiene sentido."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un cine de verano vendió ayer 199 entradas de tres tipos: general a 12 €, infantil a 8 € y de jubilado a 6 €. Recaudó 1740 € y se vendieron el triple de entradas infantiles que de jubilado. ¿Cuántas entradas de cada tipo se vendieron?",
+   "respuesta": "55 generales, 108 infantiles, 36 de jubilado",
+   "distractores": [
+    {
+     "valor": "81,18 generales, 29,45 infantiles, 88,36 de jubilado",
+     "error": "E02"
+    },
+    {
+     "valor": "35 generales, 168 infantiles, −4 de jubilado",
+     "error": "E03"
+    },
+    {
+     "valor": "108 generales, 55 infantiles, 36 de jubilado",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.07"
+   ],
+   "explicacion_nino": "Entiende: hay tres cantidades desconocidas; llámalas x, y, z en el orden del enunciado. Datos → ecuaciones: x + y + z = 199 ; 12x + 8y + 6z = 1740 ; y − 3z = 0. Resuelve por Gauss (elimina x de la 2ª y 3ª ecuación, luego y de la 3ª, y despeja de abajo arriba): x = 55, y = 108, z = 36. Comprueba: los valores cumplen las tres condiciones y son positivos.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado con tres incógnitas a un sistema de tres ecuaciones independientes y a resolverlo por Gauss (hacer ceros por debajo de la diagonal y despejar de abajo arriba). Los fallos típicos son traducir mal una relación ('el doble', 'el 20 %') y no comprobar que la solución tenga sentido (cantidades negativas o no enteras). Pídale que compruebe la solución en las tres frases del enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y, z",
+     "texto": "Elegimos una incógnita para cada cantidad."
+    },
+    {
+     "paso": 2,
+     "operacion": "plantear",
+     "resultado": "x + y + z = 199 ; 12x + 8y + 6z = 1740 ; y − 3z = 0",
+     "texto": "Una ecuación por cada dato independiente. La relación se escribe y = 3z."
+    },
+    {
+     "paso": 3,
+     "operacion": "Gauss",
+     "resultado": "x = 55, y = 108, z = 36",
+     "texto": "Escalonamos y despejamos."
+    },
+    {
+     "paso": 4,
+     "operacion": "comprobar",
+     "resultado": "55 generales, 108 infantiles, 36 de jubilado",
+     "texto": "Sustituimos en el enunciado y vemos que tiene sentido."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un premio de 1260 € se reparte entre Irene, Samuel y Nerea. Irene recibe 450 € más que Samuel, y Nerea recibe el 20 % de lo que reciben entre los otros dos. ¿Cuánto recibe cada uno?",
+   "respuesta": "Irene 750 €, Samuel 300 €, Nerea 210 €",
+   "distractores": [
+    {
+     "valor": "Irene 255 €, Samuel −195 €, Nerea 1200 €",
+     "error": "E02"
+    },
+    {
+     "valor": "Irene 856 €, Samuel 406 €, Nerea −2 €",
+     "error": "E03"
+    },
+    {
+     "valor": "Irene 300 €, Samuel 750 €, Nerea 210 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.07"
+   ],
+   "explicacion_nino": "Entiende: hay tres cantidades desconocidas; llámalas x, y, z en el orden del enunciado. Datos → ecuaciones: x + y + z = 1260 ; x − y = 450 ; −0,2x − 0,2y + z = 0. Resuelve por Gauss (elimina x de la 2ª y 3ª ecuación, luego y de la 3ª, y despeja de abajo arriba): x = 750, y = 300, z = 210. Comprueba: los valores cumplen las tres condiciones y son positivos.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado con tres incógnitas a un sistema de tres ecuaciones independientes y a resolverlo por Gauss (hacer ceros por debajo de la diagonal y despejar de abajo arriba). Los fallos típicos son traducir mal una relación ('el doble', 'el 20 %') y no comprobar que la solución tenga sentido (cantidades negativas o no enteras). Pídale que compruebe la solución en las tres frases del enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y, z",
+     "texto": "Elegimos una incógnita para cada cantidad."
+    },
+    {
+     "paso": 2,
+     "operacion": "plantear",
+     "resultado": "x + y + z = 1260 ; x − y = 450 ; −0,2x − 0,2y + z = 0",
+     "texto": "Una ecuación por cada dato independiente. La relación se escribe z = 0,2(x + y)."
+    },
+    {
+     "paso": 3,
+     "operacion": "Gauss",
+     "resultado": "x = 750, y = 300, z = 210",
+     "texto": "Escalonamos y despejamos."
+    },
+    {
+     "paso": 4,
+     "operacion": "comprobar",
+     "resultado": "Irene 750 €, Samuel 300 €, Nerea 210 €",
+     "texto": "Sustituimos en el enunciado y vemos que tiene sentido."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un taller fabrica bicicletas de paseo, de montaña y eléctricas. Cada unidad necesita, respectivamente, 1, 3 y 2 horas de montaje y 1, 1 y 2 horas de acabado. Esta semana ha hecho 42 unidades y ha usado exactamente 84 horas de montaje y 52 de acabado. ¿Cuántas unidades de cada tipo ha fabricado?",
+   "respuesta": "16 bicicletas de paseo, 16 de montaña, 10 eléctricas",
+   "distractores": [
+    {
+     "valor": "22 bicicletas de paseo, 22 de montaña, −2 eléctricas",
+     "error": "E03"
+    },
+    {
+     "valor": "10 bicicletas de paseo, 16 de montaña, 16 eléctricas",
+     "error": null
+    },
+    {
+     "valor": "17 bicicletas de paseo, 15 de montaña, 10 eléctricas",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.07"
+   ],
+   "explicacion_nino": "Entiende: hay tres cantidades desconocidas; llámalas x, y, z en el orden del enunciado. Datos → ecuaciones: x + y + z = 42 ; x + 3y + 2z = 84 ; x + y + 2z = 52. Resuelve por Gauss (elimina x de la 2ª y 3ª ecuación, luego y de la 3ª, y despeja de abajo arriba): x = 16, y = 16, z = 10. Comprueba: los valores cumplen las tres condiciones y son positivos.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado con tres incógnitas a un sistema de tres ecuaciones independientes y a resolverlo por Gauss (hacer ceros por debajo de la diagonal y despejar de abajo arriba). Los fallos típicos son traducir mal una relación ('el doble', 'el 20 %') y no comprobar que la solución tenga sentido (cantidades negativas o no enteras). Pídale que compruebe la solución en las tres frases del enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y, z",
+     "texto": "Elegimos una incógnita para cada cantidad."
+    },
+    {
+     "paso": 2,
+     "operacion": "plantear",
+     "resultado": "x + y + z = 42 ; x + 3y + 2z = 84 ; x + y + 2z = 52",
+     "texto": "Una ecuación por cada dato independiente."
+    },
+    {
+     "paso": 3,
+     "operacion": "Gauss",
+     "resultado": "x = 16, y = 16, z = 10",
+     "texto": "Escalonamos y despejamos."
+    },
+    {
+     "paso": 4,
+     "operacion": "comprobar",
+     "resultado": "16 bicicletas de paseo, 16 de montaña, 10 eléctricas",
+     "texto": "Sustituimos en el enunciado y vemos que tiene sentido."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Una tienda prepara 73 kg de una mezcla de café de Colombia (5 €/kg), café de Brasil (7 €/kg) y café de Kenia (10 €/kg). La mezcla cuesta en total 602 € y lleva el triple de kilos de café de Kenia que de café de Colombia. ¿Cuántos kilos lleva de cada uno?",
+   "respuesta": "13 kg de café de Colombia, 21 kg de café de Brasil, 39 kg de café de Kenia",
+   "distractores": [
+    {
+     "valor": "−91 kg de café de Colombia, 194,33 kg de café de Brasil, −30,33 kg de café de Kenia",
+     "error": "E02"
+    },
+    {
+     "valor": "28 kg de café de Colombia, −4 kg de café de Brasil, 49 kg de café de Kenia",
+     "error": "E03"
+    },
+    {
+     "valor": "21 kg de café de Colombia, 13 kg de café de Brasil, 39 kg de café de Kenia",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.07"
+   ],
+   "explicacion_nino": "Entiende: hay tres cantidades desconocidas; llámalas x, y, z en el orden del enunciado. Datos → ecuaciones: x + y + z = 73 ; 5x + 7y + 10z = 602 ; −3x + z = 0. Resuelve por Gauss (elimina x de la 2ª y 3ª ecuación, luego y de la 3ª, y despeja de abajo arriba): x = 13, y = 21, z = 39. Comprueba: los valores cumplen las tres condiciones y son positivos.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado con tres incógnitas a un sistema de tres ecuaciones independientes y a resolverlo por Gauss (hacer ceros por debajo de la diagonal y despejar de abajo arriba). Los fallos típicos son traducir mal una relación ('el doble', 'el 20 %') y no comprobar que la solución tenga sentido (cantidades negativas o no enteras). Pídale que compruebe la solución en las tres frases del enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y, z",
+     "texto": "Elegimos una incógnita para cada cantidad."
+    },
+    {
+     "paso": 2,
+     "operacion": "plantear",
+     "resultado": "x + y + z = 73 ; 5x + 7y + 10z = 602 ; −3x + z = 0",
+     "texto": "Una ecuación por cada dato independiente. La relación se escribe z = 3x."
+    },
+    {
+     "paso": 3,
+     "operacion": "Gauss",
+     "resultado": "x = 13, y = 21, z = 39",
+     "texto": "Escalonamos y despejamos."
+    },
+    {
+     "paso": 4,
+     "operacion": "comprobar",
+     "resultado": "13 kg de café de Colombia, 21 kg de café de Brasil, 39 kg de café de Kenia",
+     "texto": "Sustituimos en el enunciado y vemos que tiene sentido."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un teatro vendió ayer 236 entradas de tres tipos: general a 9 €, infantil a 6 € y de jubilado a 5 €. Recaudó 1630 € y se vendieron el triple de entradas infantiles que de jubilado. ¿Cuántas entradas de cada tipo se vendieron?",
+   "respuesta": "84 generales, 114 infantiles, 38 de jubilado",
+   "distractores": [
+    {
+     "valor": "104,27 generales, 32,93 infantiles, 98,8 de jubilado",
+     "error": "E02"
+    },
+    {
+     "valor": "71 generales, 166 infantiles, −1 de jubilado",
+     "error": "E03"
+    },
+    {
+     "valor": "114 generales, 84 infantiles, 38 de jubilado",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.07"
+   ],
+   "explicacion_nino": "Entiende: hay tres cantidades desconocidas; llámalas x, y, z en el orden del enunciado. Datos → ecuaciones: x + y + z = 236 ; 9x + 6y + 5z = 1630 ; y − 3z = 0. Resuelve por Gauss (elimina x de la 2ª y 3ª ecuación, luego y de la 3ª, y despeja de abajo arriba): x = 84, y = 114, z = 38. Comprueba: los valores cumplen las tres condiciones y son positivos.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado con tres incógnitas a un sistema de tres ecuaciones independientes y a resolverlo por Gauss (hacer ceros por debajo de la diagonal y despejar de abajo arriba). Los fallos típicos son traducir mal una relación ('el doble', 'el 20 %') y no comprobar que la solución tenga sentido (cantidades negativas o no enteras). Pídale que compruebe la solución en las tres frases del enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y, z",
+     "texto": "Elegimos una incógnita para cada cantidad."
+    },
+    {
+     "paso": 2,
+     "operacion": "plantear",
+     "resultado": "x + y + z = 236 ; 9x + 6y + 5z = 1630 ; y − 3z = 0",
+     "texto": "Una ecuación por cada dato independiente. La relación se escribe y = 3z."
+    },
+    {
+     "paso": 3,
+     "operacion": "Gauss",
+     "resultado": "x = 84, y = 114, z = 38",
+     "texto": "Escalonamos y despejamos."
+    },
+    {
+     "paso": 4,
+     "operacion": "comprobar",
+     "resultado": "84 generales, 114 infantiles, 38 de jubilado",
+     "texto": "Sustituimos en el enunciado y vemos que tiene sentido."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un premio de 1980 € se reparte entre Carmen, Iker y Aitana. Carmen recibe 50 € más que Iker, y Aitana recibe el 20 % de lo que reciben entre los otros dos. ¿Cuánto recibe cada uno?",
+   "respuesta": "Carmen 850 €, Iker 800 €, Aitana 330 €",
+   "distractores": [
+    {
+     "valor": "Carmen 72,14 €, Iker 22,14 €, Aitana 1885,71 €",
+     "error": "E02"
+    },
+    {
+     "valor": "Carmen 1016 €, Iker 966 €, Aitana −2 €",
+     "error": "E03"
+    },
+    {
+     "valor": "Carmen 800 €, Iker 850 €, Aitana 330 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.07"
+   ],
+   "explicacion_nino": "Entiende: hay tres cantidades desconocidas; llámalas x, y, z en el orden del enunciado. Datos → ecuaciones: x + y + z = 1980 ; x − y = 50 ; −0,2x − 0,2y + z = 0. Resuelve por Gauss (elimina x de la 2ª y 3ª ecuación, luego y de la 3ª, y despeja de abajo arriba): x = 850, y = 800, z = 330. Comprueba: los valores cumplen las tres condiciones y son positivos.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado con tres incógnitas a un sistema de tres ecuaciones independientes y a resolverlo por Gauss (hacer ceros por debajo de la diagonal y despejar de abajo arriba). Los fallos típicos son traducir mal una relación ('el doble', 'el 20 %') y no comprobar que la solución tenga sentido (cantidades negativas o no enteras). Pídale que compruebe la solución en las tres frases del enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y, z",
+     "texto": "Elegimos una incógnita para cada cantidad."
+    },
+    {
+     "paso": 2,
+     "operacion": "plantear",
+     "resultado": "x + y + z = 1980 ; x − y = 50 ; −0,2x − 0,2y + z = 0",
+     "texto": "Una ecuación por cada dato independiente. La relación se escribe z = 0,2(x + y)."
+    },
+    {
+     "paso": 3,
+     "operacion": "Gauss",
+     "resultado": "x = 850, y = 800, z = 330",
+     "texto": "Escalonamos y despejamos."
+    },
+    {
+     "paso": 4,
+     "operacion": "comprobar",
+     "resultado": "Carmen 850 €, Iker 800 €, Aitana 330 €",
+     "texto": "Sustituimos en el enunciado y vemos que tiene sentido."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un taller fabrica bicicletas de paseo, de montaña y eléctricas. Cada unidad necesita, respectivamente, 1, 3 y 2 horas de montaje y 1, 1 y 2 horas de acabado. Esta semana ha hecho 63 unidades y ha usado exactamente 138 horas de montaje y 90 de acabado. ¿Cuántas unidades de cada tipo ha fabricado?",
+   "respuesta": "12 bicicletas de paseo, 24 de montaña, 27 eléctricas",
+   "distractores": [
+    {
+     "valor": "24 bicicletas de paseo, 12 de montaña, 27 eléctricas",
+     "error": "E02"
+    },
+    {
+     "valor": "−1 bicicletas de paseo, 11 de montaña, 53 eléctricas",
+     "error": "E03"
+    },
+    {
+     "valor": "13 bicicletas de paseo, 23 de montaña, 27 eléctricas",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.07"
+   ],
+   "explicacion_nino": "Entiende: hay tres cantidades desconocidas; llámalas x, y, z en el orden del enunciado. Datos → ecuaciones: x + y + z = 63 ; x + 3y + 2z = 138 ; x + y + 2z = 90. Resuelve por Gauss (elimina x de la 2ª y 3ª ecuación, luego y de la 3ª, y despeja de abajo arriba): x = 12, y = 24, z = 27. Comprueba: los valores cumplen las tres condiciones y son positivos.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado con tres incógnitas a un sistema de tres ecuaciones independientes y a resolverlo por Gauss (hacer ceros por debajo de la diagonal y despejar de abajo arriba). Los fallos típicos son traducir mal una relación ('el doble', 'el 20 %') y no comprobar que la solución tenga sentido (cantidades negativas o no enteras). Pídale que compruebe la solución en las tres frases del enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y, z",
+     "texto": "Elegimos una incógnita para cada cantidad."
+    },
+    {
+     "paso": 2,
+     "operacion": "plantear",
+     "resultado": "x + y + z = 63 ; x + 3y + 2z = 138 ; x + y + 2z = 90",
+     "texto": "Una ecuación por cada dato independiente."
+    },
+    {
+     "paso": 3,
+     "operacion": "Gauss",
+     "resultado": "x = 12, y = 24, z = 27",
+     "texto": "Escalonamos y despejamos."
+    },
+    {
+     "paso": 4,
+     "operacion": "comprobar",
+     "resultado": "12 bicicletas de paseo, 24 de montaña, 27 eléctricas",
+     "texto": "Sustituimos en el enunciado y vemos que tiene sentido."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Una tienda prepara 56 kg de una mezcla de café de Colombia (4 €/kg), café de Brasil (7 €/kg) y café de Kenia (12 €/kg). La mezcla cuesta en total 500 € y lleva el triple de kilos de café de Kenia que de café de Colombia. ¿Cuántos kilos lleva de cada uno?",
+   "respuesta": "9 kg de café de Colombia, 20 kg de café de Brasil, 27 kg de café de Kenia",
+   "distractores": [
+    {
+     "valor": "−81 kg de café de Colombia, 164 kg de café de Brasil, −27 kg de café de Kenia",
+     "error": "E02"
+    },
+    {
+     "valor": "−1 kg de café de Colombia, 36 kg de café de Brasil, 21 kg de café de Kenia",
+     "error": "E03"
+    },
+    {
+     "valor": "20 kg de café de Colombia, 9 kg de café de Brasil, 27 kg de café de Kenia",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.07"
+   ],
+   "explicacion_nino": "Entiende: hay tres cantidades desconocidas; llámalas x, y, z en el orden del enunciado. Datos → ecuaciones: x + y + z = 56 ; 4x + 7y + 12z = 500 ; −3x + z = 0. Resuelve por Gauss (elimina x de la 2ª y 3ª ecuación, luego y de la 3ª, y despeja de abajo arriba): x = 9, y = 20, z = 27. Comprueba: los valores cumplen las tres condiciones y son positivos.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado con tres incógnitas a un sistema de tres ecuaciones independientes y a resolverlo por Gauss (hacer ceros por debajo de la diagonal y despejar de abajo arriba). Los fallos típicos son traducir mal una relación ('el doble', 'el 20 %') y no comprobar que la solución tenga sentido (cantidades negativas o no enteras). Pídale que compruebe la solución en las tres frases del enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y, z",
+     "texto": "Elegimos una incógnita para cada cantidad."
+    },
+    {
+     "paso": 2,
+     "operacion": "plantear",
+     "resultado": "x + y + z = 56 ; 4x + 7y + 12z = 500 ; −3x + z = 0",
+     "texto": "Una ecuación por cada dato independiente. La relación se escribe z = 3x."
+    },
+    {
+     "paso": 3,
+     "operacion": "Gauss",
+     "resultado": "x = 9, y = 20, z = 27",
+     "texto": "Escalonamos y despejamos."
+    },
+    {
+     "paso": 4,
+     "operacion": "comprobar",
+     "resultado": "9 kg de café de Colombia, 20 kg de café de Brasil, 27 kg de café de Kenia",
+     "texto": "Sustituimos en el enunciado y vemos que tiene sentido."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un parque de atracciones vendió ayer 166 entradas de tres tipos: general a 10 €, infantil a 7 € y de jubilado a 6 €. Recaudó 1440 € y se vendieron el doble de entradas infantiles que de jubilado. ¿Cuántas entradas de cada tipo se vendieron?",
+   "respuesta": "100 generales, 44 infantiles, 22 de jubilado",
+   "distractores": [
+    {
+     "valor": "106 generales, 20 infantiles, 40 de jubilado",
+     "error": "E02"
+    },
+    {
+     "valor": "92 generales, 76 infantiles, −2 de jubilado",
+     "error": "E03"
+    },
+    {
+     "valor": "44 generales, 100 infantiles, 22 de jubilado",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "ALG.SIST.07"
+   ],
+   "explicacion_nino": "Entiende: hay tres cantidades desconocidas; llámalas x, y, z en el orden del enunciado. Datos → ecuaciones: x + y + z = 166 ; 10x + 7y + 6z = 1440 ; y − 2z = 0. Resuelve por Gauss (elimina x de la 2ª y 3ª ecuación, luego y de la 3ª, y despeja de abajo arriba): x = 100, y = 44, z = 22. Comprueba: los valores cumplen las tres condiciones y son positivos.",
+   "explicacion_adulto": "Está aprendiendo a traducir un enunciado con tres incógnitas a un sistema de tres ecuaciones independientes y a resolverlo por Gauss (hacer ceros por debajo de la diagonal y despejar de abajo arriba). Los fallos típicos son traducir mal una relación ('el doble', 'el 20 %') y no comprobar que la solución tenga sentido (cantidades negativas o no enteras). Pídale que compruebe la solución en las tres frases del enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "variables",
+     "resultado": "x, y, z",
+     "texto": "Elegimos una incógnita para cada cantidad."
+    },
+    {
+     "paso": 2,
+     "operacion": "plantear",
+     "resultado": "x + y + z = 166 ; 10x + 7y + 6z = 1440 ; y − 2z = 0",
+     "texto": "Una ecuación por cada dato independiente. La relación se escribe y = 2z."
+    },
+    {
+     "paso": 3,
+     "operacion": "Gauss",
+     "resultado": "x = 100, y = 44, z = 22",
+     "texto": "Escalonamos y despejamos."
+    },
+    {
+     "paso": 4,
+     "operacion": "comprobar",
+     "resultado": "100 generales, 44 infantiles, 22 de jubilado",
+     "texto": "Sustituimos en el enunciado y vemos que tiene sentido."
+    }
+   ],
+   "plantilla": "P02"
+  }
+ ]
+}
