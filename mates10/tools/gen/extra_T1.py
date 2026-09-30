@@ -455,7 +455,7 @@ def g_desc02(rng, d, modos=("componer", "descomponer", "valor")):
         return mk(f"¿Cómo se descompone {n}?", resp, [(f"{dd} + {u}", "E02"), (f"{dd} + {10 * u}", None), (f"{10 * dd} + {10 * u}", None)],
                   "descomponer", f"El {dd} de {n} está en las decenas y vale {10 * dd}; el {u} vale {u}. Así, {n} = {resp}.", ADULTO_POS,
                   genericos=[f"{10 * (dd + 1)} + {u}", f"{10 * dd} + {u + 1}"], n=n)
-    cual = rng.choice(["d", "u"])
+    cual = "d" if rng.random() < 0.75 else "u"
     c, val = (dd, 10 * dd) if cual == "d" else (u, u)
     if dd == u:
         return None
@@ -509,19 +509,19 @@ def g_desc04(rng, d, modos=("d_a_u", "c_a_d", "doble")):
         dd, u = rng.randint(1, 8), rng.randint(10, 19)
         n = 10 * dd + u
         txt = f"{_cant(dd, 1)} y {_cant(u, 0)}"
-        dist = [(cifras_concat(dd, u), "E01"), (10 * dd + u % 10, "E02"), (dd + u, None), (n + 10, None)]
+        dist = [(str(cifras_concat(dd, u)), "E01"), (10 * dd + u % 10, "E02"), (dd + u, None), (n + 10, None)]
         exp = f"{u} unidades son 1 decena y {u - 10} unidades. Entonces hay {dd + 1} decenas y {u - 10} unidades: {n}."
     elif m == "c_a_d":
         c, dd, u = rng.randint(1, 8), rng.randint(10, 19), rng.randint(0, 9)
         n = 100 * c + 10 * dd + u
         txt = f"{_cant(c, 2)}, {_cant(dd, 1)} y {_cant(u, 0)}" if u else f"{_cant(c, 2)} y {_cant(dd, 1)}"
-        dist = [(cifras_concat(c, dd, u) if u else cifras_concat(c, dd, 0), "E01"), (100 * c + 10 * (dd % 10) + u, "E02"), (n + 100, None), (n - 10, None)]
+        dist = [(str(cifras_concat(c, dd, u)), "E01"), (100 * c + 10 * (dd % 10) + u, "E02"), (n + 100, None), (n - 10, None)]
         exp = f"{dd} decenas son 1 centena y {dd - 10} decenas. Hay {c + 1} centenas, {dd - 10} decenas y {u} unidades: {n}."
     else:
         c, dd, u = rng.randint(1, 7), rng.randint(10, 19), rng.randint(10, 19)
         n = 100 * c + 10 * dd + u
         txt = f"{_cant(c, 2)}, {_cant(dd, 1)} y {_cant(u, 0)}"
-        dist = [(cifras_concat(c, dd, u), "E01"), (100 * c + 10 * (dd % 10) + u % 10, "E02"), (n - 10, None), (n + 100, None)]
+        dist = [(str(cifras_concat(c, dd, u)), "E01"), (100 * c + 10 * (dd % 10) + u % 10, "E02"), (n - 10, None), (n + 100, None)]
         exp = f"{u} unidades son 1 decena y {u - 10} unidades; {dd} decenas son 1 centena y {dd - 10} decenas. En total: {n}."
     return mk(f"¿Qué número forman {txt}?", n, dist, "canje", exp,
               "Canjear 10 unidades por 1 decena (y al revés) es justo lo que se hace al «llevar» en la suma y la resta. Con bloques o monedas se entiende enseguida.", n=n)
@@ -547,7 +547,7 @@ def g_desc05(rng, d, modos=("descomponer", "componer", "desordenado")):
         while orden == partes:
             rng.shuffle(orden)
     enun = f"¿Qué número es {' + '.join(fmt(p) for p in orden)}?"
-    dist = [(cifras_concat(*orden) if cifras_concat(*orden) < 10 ** 7 else None, "E01"),
+    dist = [(str(cifras_concat(*orden)), "E01"),
             (cifras_concat(*[str(p)[0] for p in orden]) if orden != partes else None, "E02"),
             (sin_ceros(n) if "0" in str(n) else None, "E03"), (n + 10 if n % 100 < 90 else n - 10, None), (n + 100 if n < 900 else n - 100, None)]
     return mk(enun, n, dist, "componer", f"Pongo cada sumando en su columna (centenas, decenas, unidades): {' + '.join(fmt(p) for p in partes)} = {n}." +
@@ -576,7 +576,7 @@ def _componer_grande(rng, n, E_concat, E_ceros):
     if rng.random() < 0.3:
         rng.shuffle(orden)
     enun = f"¿Qué número es {' + '.join(fmt(p) for p in orden)}?"
-    conc = cifras_concat(*partes)
+    conc = str(cifras_concat(*partes))
     dist = [(conc, E_concat), (sin_ceros(n) if "0" in str(n) else None, E_ceros),
             (n + 10 ** (len(str(n)) - 2), None), (n - 10 ** (len(str(n)) - 1) if n >= 2 * 10 ** (len(str(n)) - 1) else None, None),
             (int(str(n)[:-1] + "0" + str(n)[-1]) if len(str(n)) < 9 else None, None)]
@@ -672,8 +672,8 @@ def g_desc09(rng, d, modos=("descomponer", "componer"), cifras=(4, 6)):
     if m == "descomponer":
         mal1 = " + ".join(_pot(k, e + 1) for k, e in terms)
         mal2 = " + ".join(_pot(k, e - 1) if e else str(k) for k, e in terms)
-        mal3 = " + ".join(f"{k}·{10 ** e}" if e else str(k) for k, e in terms[:1]) + " + " + " + ".join(_pot(k, len(terms) - 1 - i) for i, (k, e) in enumerate(terms[1:], 1))
-        return mk(f"Escribe {fmt(n)} con potencias de 10.", expr, [(mal1, "E01"), (mal2, None), (mal3 if mal3 != expr else None, None)], "polinomica",
+        mal3 = " + ".join(_pot(k, e + 1) if i == 0 else _pot(k, e) for i, (k, e) in enumerate(terms))
+        return mk(f"Escribe {fmt(n)} con potencias de 10.", expr, [(mal1, "E01"), (mal2, None), (mal3, "E01")], "polinomica",
                   f"Cada cifra se multiplica por la potencia de 10 de su lugar (el exponente es el número de cifras que tiene a su derecha): {fmt(n)} = {expr}.",
                   "10² = 100, 10³ = 1 000… El exponente cuenta los ceros. El error típico es poner como exponente el número de cifras.", n=n)
     mal_e1 = sum(k * 10 ** (e - 1) if e else k for k, e in terms)
@@ -681,3 +681,465 @@ def g_desc09(rng, d, modos=("descomponer", "componer"), cifras=(4, 6)):
     return mk(f"¿Qué número es {expr}?", n, [(sin_ceros(n), "E03"), (mal_e2, "E02"), (mal_e1, "E01"), (n * 10, None)], "polinomica",
               f"Calculo cada término y los junto: {' + '.join(fmt(k * 10 ** e) for k, e in terms)} = {fmt(n)}. Los lugares vacíos llevan 0.",
               "10ⁿ es un 1 seguido de n ceros; no es 10 · n.", n=n)
+
+
+# ================================================================ NUM.LECT
+
+ADULTO_LECT = "Leer y escribir números exige saber que los ceros no se dicen pero sí se escriben. Los dictados de números con ceros intermedios son la mejor práctica."
+
+
+def _lect(rng, n, sentido, dist_cifras, dist_letras, extra=""):
+    """dist_*: [(valor_int_o_str, clave)] para cada sentido."""
+    if sentido == "letras_a_cifras":
+        enun = rng.choice([f"¿Cómo se escribe con cifras «{letras(n)}»?", f"Escribe con cifras: {letras(n)}."])
+        dist = [(v if isinstance(v, str) else fmt(v), k) for v, k in dist_cifras if v is not None and v != n]
+        return mk(enun, fmt(n), dist, "leer", f"«{letras(n)}» se escribe {fmt(n)}.{extra}", ADULTO_LECT,
+                  genericos=[fmt(n + 1), fmt(n + 10), fmt(max(0, n - 10))], n=n)
+    dist = [(v if isinstance(v, str) else letras(v), k) for v, k in dist_letras if v is not None and v != n]
+    return mk(f"¿Cómo se lee {fmt(n)}?", letras(n), dist, "leer", f"{fmt(n)} se lee «{letras(n)}».{extra}", ADULTO_LECT,
+              genericos=[letras(n + 1), letras(n + 10), letras(max(0, n - 10))], n=n)
+
+
+@generador("t1_lect01")
+def g_lect01(rng, d, modos=("cantidad", "nombre_a_cifra", "cifra_a_nombre")):
+    m = modo(rng, modos, "nombre_a_cifra")
+    n = rng.randint(0, 5) if d == 1 else rng.randint(0, 10) if d == 2 else rng.choice([0, 6, 7, 9, 6, 9, 8, 10, 3])
+    vec = {6: 7, 7: 6}.get(n)
+    if m == "cantidad":
+        if n == 0:
+            obj = rng.choice(OBJETOS)
+            return mk(f"En el plato no queda ninguna {obj[0]}. ¿Qué número dice cuántas {obj[1]} hay?" if obj[0][-1] == "a" else
+                      f"En la caja no queda ningún {obj[0]}. ¿Qué número dice cuántos {obj[1]} hay?", 0, [(1, "E03"), (10, None), (2, None)], "leer",
+                      "Cuando no hay ninguno, el número es el 0 (cero).", "El cero como «ninguno» no es evidente para un niño pequeño: jugad a quitar objetos hasta que no quede nada.", n=0)
+        ic = rng.choice(ICONOS)
+        resp = ic * n
+        dist = [(ic * (n + 1), None), (ic * (n - 1) if n > 1 else None, None), (ic * {6: 9, 9: 6}.get(n, n + 2), "E01" if n in (6, 9) else None), (ic * (n + 2), None)]
+        return mk(f"¿Dónde hay {n} ({letras(n)})?", resp, dist, "leer", f"Cuenta los dibujos de cada opción: la que tiene {n} es la buena.",
+                  "Asociar cifra, nombre y cantidad es la base de todo lo demás.", n=n)
+    dc = [({6: 9, 9: 6}.get(n), "E01"), (vec, "E04"), (1 if n == 0 else None, "E03"), (n + 1, None), (n - 1 if n else None, None), (n + 2, None)]
+    dl = [({6: 9, 9: 6}.get(n), "E01"), (vec, "E04"), (n + 1, None), (n - 1 if n else None, None), (n + 2, None)]
+    return _lect(rng, n, "letras_a_cifras" if m == "nombre_a_cifra" else "cifras_a_letras", dc, dl)
+
+
+@generador("t1_lect02")
+def g_lect02(rng, d, modos=("nombre_a_cifra", "cifra_a_nombre")):
+    m = modo(rng, modos, "nombre_a_cifra")
+    n = rng.randint(11, 15) if d == 1 else rng.randint(11, 20)
+    inv = int(str(n)[::-1]) if n != 11 else None
+    dieci = cifras_concat(10, n - 10) if 16 <= n <= 19 else None
+    irr = [(n - 1 if 12 <= n <= 15 else None, "E03"), (n + 1 if 11 <= n <= 14 else None, "E03")]
+    dc = [(inv, "E01"), (str(dieci) if dieci else None, "E02")] + irr + [(n + 10, None), (n - 10 if n > 10 else None, None)]
+    dl = [(inv, "E01")] + irr + [(n + 1, None), (n - 1, None), (n + 10, None)]
+    return _lect(rng, n, "letras_a_cifras" if m == "nombre_a_cifra" else "cifras_a_letras", dc, dl,
+                 " Todos los números del 11 al 19 empiezan por 1 porque tienen una decena.")
+
+
+@generador("t1_lect05")
+def g_lect05(rng, d, modos=("nombre_a_cifra", "cifra_a_nombre")):
+    m = modo(rng, modos, "nombre_a_cifra")
+    n = rng.randint(21, 99)
+    if d == 1:
+        n = rng.choice([x for x in range(21, 60) if x % 10])
+    if d == 3 and rng.random() < 0.6:
+        n = rng.choice(range(60, 80))
+    dd, u = divmod(n, 10)
+    inv = 10 * u + dd if u and u != dd else None
+    sete = n + 10 if dd == 6 else n - 10 if dd == 7 else None
+    e04 = {22: 12, 20: 12}.get(n)
+    dc = [(inv, "E01"), (str(cifras_concat(10 * dd, u)) if u else None, "E02"), (sete, "E03"), (e04, "E04"), (n + 10 if n < 90 else n - 20, None), (n + 1, None)]
+    dl = [(inv, "E01"), (sete, "E03"), (e04, "E04"), (n + 10 if n < 90 else n - 20, None), (n + 1, None)]
+    return _lect(rng, n, "letras_a_cifras" if m == "nombre_a_cifra" else "cifras_a_letras", dc, dl)
+
+
+IRREG = {5: 4, 7: 6, 9: 8}
+
+
+@generador("t1_lect06")
+def g_lect06(rng, d, modos=("nombre_a_cifra", "cifra_a_nombre")):
+    m = modo(rng, modos, "nombre_a_cifra")
+    if d == 1:
+        n = _num_con_ceros(rng, 3, 0)
+    else:
+        n = _num_con_ceros(rng, 3, 0.4)
+        if d == 3 and rng.random() < 0.5:
+            n = rng.choice([5, 7, 9]) * 100 + rng.choice([0, rng.randint(1, 9), rng.randint(10, 99)])
+        if d == 3 and rng.random() < 0.1:
+            n = 100
+    c, r = divmod(n, 100)
+    conc = str(cifras_concat(100 * c, r)) if r else None
+    quit = sin_ceros(n) if "0" in str(n)[1:] and n % 100 else None
+    vec = (IRREG[c] * 100 + r) if c in IRREG else None
+    dc = [(conc, "E01"), (quit, "E02"), (vec, "E03"), (101 if n == 100 else None, "E04"), (n + 10 if n % 100 < 90 else n - 10, None), (n + 100 if c < 9 else n - 100, None)]
+    dl = [(quit, "E02"), (vec, "E03"), ("ciento" if n == 100 else None, "E04"), (n + 10 if n % 100 < 90 else n - 10, None), (n + 100 if c < 9 else n - 100, None)]
+    return _lect(rng, n, "letras_a_cifras" if m == "nombre_a_cifra" else "cifras_a_letras", dc, dl)
+
+
+@generador("t1_lect07")
+def g_lect07(rng, d, modos=("nombre_a_cifra", "cifra_a_nombre")):
+    m = modo(rng, modos, "nombre_a_cifra")
+    n = _num_con_ceros(rng, 4, 0.15 if d == 1 else 0.45)
+    mi, r = divmod(n, 1000)
+    conc = str(cifras_concat(1000 * mi, r)) if r else None
+    s = str(n)
+    quit_todos = sin_ceros(n) if "0" in s[1:] and n % 10 else None
+    quit_uno = int(s[0] + s[1:].replace("0", "", 1)) if "0" in s[1:] and s[1:].count("0") >= 1 and int(s[0] + s[1:].replace("0", "", 1)) != quit_todos else None
+    dc = [(conc, "E01"), (quit_todos, "E02"), (quit_uno, "E02"), (n + 100 if n % 1000 < 900 else n - 100, None), (n + 1000 if mi < 9 else n - 1000, None)]
+    dl = [(n // 10 if n % 10 == 0 else None, "E03"), (quit_uno, "E02"), (quit_todos, "E02"), (n + 100 if n % 1000 < 900 else n - 100, None), (n + 1000 if mi < 9 else n - 1000, None)]
+    return _lect(rng, n, "letras_a_cifras" if m == "nombre_a_cifra" else "cifras_a_letras", dc, dl)
+
+
+@generador("t1_lect08")
+def g_lect08(rng, d, modos=("nombre_a_cifra", "cifra_a_nombre")):
+    m = modo(rng, modos, "nombre_a_cifra")
+    n = _num_con_ceros(rng, rng.choice([5, 6]), 0.15 if d == 1 else 0.45)
+    mi, r = divmod(n, 1000)
+    conc = str(cifras_concat(1000 * mi, r)) if r else None
+    corto = cifras_concat(mi, r) if r and r < 100 else None
+    sin_mil = f"{letras(mi)} {letras(r)}" if r else None
+    dc = [(conc, "E01"), (corto, "E02"), (n + 10000 if n < 990000 else n - 10000, None), (n + 1000, None), (n * 10 if n < 100000 else n // 10, None)]
+    dl = [(sin_mil, "E03"), (corto, "E02"), (n + 10000 if n < 990000 else n - 10000, None), (n + 1000, None)]
+    return _lect(rng, n, "letras_a_cifras" if m == "nombre_a_cifra" else "cifras_a_letras", dc, dl,
+                 " Separo en grupos de tres cifras desde la derecha: el grupo de la izquierda son los miles.")
+
+
+@generador("t1_lect03")
+def g_lect03(rng, d, modos=("nombre_a_cifra", "cifra_a_nombre", "valor")):
+    m = modo(rng, modos, "nombre_a_cifra")
+    n = _num_con_ceros(rng, rng.choice([7, 8, 9]), 0.35 if d < 3 else 0.5)
+    if m == "valor":
+        return _valor_cifra(rng, n, "E03", "E03", None)
+    M, resto = divmod(n, 10 ** 6)
+    mi, u = divmod(resto, 1000)
+    conc = str(M * 10 ** 6) + (str(mi * 1000) if mi else "") + (str(u) if u else "")
+    conc = conc if conc != str(n) else None
+    omit = cifras_concat(M, u) if mi == 0 and u else None
+    dup = n * 1000 if mi == 0 and u and n * 1000 < 10 ** 12 else None
+    dc = [(conc, "E01"), (omit, "E02"), (dup, "E02"), (n + 10 ** 6 if M < 999 else n - 10 ** 6, None), (n // 10 if n % 10 == 0 else n * 10, None), (n + 1000, None)]
+    dl = [(omit, "E02"), (n + 10 ** 6 if M < 999 else n - 10 ** 6, None), (n + 10 ** 5 if (n // 10 ** 5) % 10 < 9 else n - 10 ** 5, None), (n + 1000, None)]
+    return _lect(rng, n, "letras_a_cifras" if m == "nombre_a_cifra" else "cifras_a_letras", dc, dl,
+                 " Separo en grupos de tres desde la derecha: unidades, miles y millones.")
+
+
+@generador("t1_lect04")
+def g_lect04(rng, d, modos=("nombre_a_cifra", "cifra_a_nombre", "billon")):
+    m = modo(rng, modos, "nombre_a_cifra")
+    if m == "billon":
+        k = rng.randint(1, 999)
+        n = k * 10 ** 9
+        resp = letras(n)
+        dist = [(letras(k * 10 ** 12) if k * 10 ** 12 < 10 ** 15 else None, "E01"), (letras(k * 10 ** 6), None), (letras(k * 10 ** 8) if k < 10 else letras(k * 10 ** 7), None)]
+        return mk(f"¿Cómo se lee {fmt(n)}?", resp, dist, "leer",
+                  f"Con 9 ceros detrás son miles de millones: {fmt(n)} = «{resp}». Un billón es un millón de millones (12 ceros).",
+                  "Ojo: el «billion» inglés son mil millones; en español un billón tiene 12 ceros.", genericos=[letras(k * 10 ** 10)], n=n)
+    cifras = rng.randint(10, 12) if d < 3 else rng.randint(13, 15)
+    n = _num_con_ceros(rng, cifras, 0.6)
+    s = str(n)
+    grupos = []
+    while s:
+        grupos.insert(0, s[-3:])
+        s = s[:-3]
+    omit = None
+    if len(grupos) >= 3:
+        # quitar la clase de los miles de millones (o de los millares si no la hay)
+        i = len(grupos) - 4 if len(grupos) >= 5 else len(grupos) - 2
+        g2 = grupos[:i] + grupos[i + 1:]
+        omit = int("".join(g2))
+    dc = [(omit, "E02"), (n * 1000 if n * 1000 < 10 ** 16 else n // 1000, "E02" if omit is None else None), (n + 10 ** (cifras - 1) if int(str(n)[0]) < 9 else n - 10 ** (cifras - 1), None),
+          (n // 1000 if omit is not None else n * 10, None)]
+    dl = [(omit, "E02"), (n * 1000 if n * 1000 < 10 ** 15 else n // 1000, None), (n + 10 ** (cifras - 1) if int(str(n)[0]) < 9 else n - 10 ** (cifras - 1), None),
+          (n + 10 ** 6, None)]
+    return _lect(rng, n, "letras_a_cifras" if m == "nombre_a_cifra" else "cifras_a_letras", dc, dl,
+                 " Separo en grupos de tres: unidades, miles, millones, miles de millones y billones.")
+
+
+# ================================================================ NUM.ORD
+
+ADULTO_ORD = "Para comparar: primero, ¿cuál tiene más cifras? Si tienen las mismas, se comparan de izquierda a derecha hasta la primera cifra distinta."
+
+
+def _cmp_frase(a, b):
+    return "<" if a < b else ">" if a > b else "="
+
+
+def _ej_cmp_signo(rng, a, b, E_signo, adulto=ADULTO_ORD):
+    """Opciones: afirmaciones «a ? b». Correcta la del signo bueno."""
+    sg = _cmp_frase(a, b)
+    otros = [x for x in "<>=" if x != sg]
+    inv = ">" if sg == "<" else "<" if sg == ">" else None
+    resp = f"{fmt(a)} {sg} {fmt(b)}"
+    dist = [(f"{fmt(a)} {inv} {fmt(b)}" if inv else None, E_signo)] + [(f"{fmt(a)} {x} {fmt(b)}", None) for x in otros if x != inv]
+    dist.append((f"{fmt(b)} {sg} {fmt(a)}" if sg != "=" else None, E_signo))
+    txt = (f"{fmt(a)} es {'menor' if sg == '<' else 'mayor'} que {fmt(b)}, así que {resp}. La boca abierta del signo mira al número mayor."
+           if sg != "=" else f"Son el mismo número: {resp}.")
+    return mk(f"¿Qué comparación es correcta?", resp, dist, "comparar_signo", txt, adulto, genericos=[f"{fmt(b)} = {fmt(a)}" if a != b else f"{fmt(a)} < {fmt(a + 1)}"],
+              a=a, b=b)
+
+
+def _ej_extremo(rng, vals, tipo, claves, adulto=ADULTO_ORD, contexto=None):
+    obj = max(vals) if tipo == "mayor" else min(vals)
+    dist = [(fmt(v), claves.get(v)) for v in vals if v != obj]
+    enun = contexto or f"¿Cuál es el número {tipo}: {', '.join(fmt(v) for v in vals)}?"
+    return mk(enun, fmt(obj), dist, "extremo", f"El {tipo} es {fmt(obj)}. " + ADULTO_ORD.split(': ', 1)[1][0].upper() + ADULTO_ORD.split(': ', 1)[1][1:],
+              adulto, datos={"opciones_fijas": True}, valores=vals, tipo=tipo)
+
+
+def _ej_ordenar(rng, vals, asc, E_inv, E_otro=None, otro=None):
+    s = sorted(vals, reverse=not asc)
+    resp = ", ".join(fmt(v) for v in s)
+    inv = ", ".join(fmt(v) for v in reversed(s))
+    dist = [(inv, E_inv)]
+    if otro:
+        dist.append((", ".join(fmt(v) for v in otro), E_otro))
+    for _ in range(10):
+        t = s[:]
+        i = rng.randint(0, len(t) - 2)
+        t[i], t[i + 1] = t[i + 1], t[i]
+        dist.append((", ".join(fmt(v) for v in t), None))
+    return mk(f"Ordena de {'menor a mayor' if asc else 'mayor a menor'}: {', '.join(fmt(v) for v in vals)}", resp, dist, "ordenar",
+              f"Busco el {'menor' if asc else 'mayor'}, luego el siguiente… Queda: {resp}.", ADULTO_ORD, valores=vals, asc=asc)
+
+
+def _unidades_mayor(vals, obj):
+    """Número que parecería mayor si se comparan solo las unidades."""
+    u = max(vals, key=lambda v: (v % 10, v))
+    return u if u != obj else None
+
+
+def _primera_cifra_mayor(vals, obj):
+    u = max(vals, key=lambda v: (int(str(v)[0]), v))
+    return u if u != obj and int(str(u)[0]) > int(str(obj)[0]) else None
+
+
+@generador("t1_ord01")
+def g_ord01(rng, d, modos=("mayor", "menor"), maximo=20):
+    m = modo(rng, modos, "mayor")
+    top = 10 if d == 1 else maximo
+    k = 3 if d == 1 else 4
+    for _ in range(50):
+        vals = rng.sample(range(0 if d > 1 else 1, top + 1), k)
+        if d >= 2 and not any(v < 10 for v in vals) or not any(v >= 10 for v in vals) and d >= 2:
+            continue
+        break
+    obj = max(vals) if m == "mayor" else min(vals)
+    contrario = min(vals) if m == "mayor" else max(vals)
+    claves = {contrario: "E02"}
+    if m == "mayor":
+        u = _unidades_mayor(vals, obj)
+        if u and u != contrario:
+            claves[u] = "E03"
+    if k == 3:
+        vals = vals + [None]
+        vals = [v for v in vals if v is not None]
+    ej = _ej_extremo(rng, vals, m, claves, "Comparar hasta 20: el que está más lejos contando es el mayor. Con dos cifras, el que tiene decena gana al que no la tiene.")
+    if k == 3:
+        extra = obj + rng.choice([1, 2]) if m == "menor" else obj - rng.choice([1, 2])
+        if extra in vals or extra < 0:
+            return None
+        ej.distractores.append((fmt(extra), None))
+        ej.enunciado = f"¿Cuál es el número {m}: {', '.join(fmt(v) for v in vals + [extra])}?"
+        ej.parametros["valores"] = vals + [extra]
+    return ej
+
+
+@generador("t1_ord03")
+def g_ord03(rng, d, modos=("signo", "extremo", "ordenar", "intercalar"), maximo=99, E_uni="E02", E_prim="E03", E_signo="E01", E_inv="E04"):
+    m = modo(rng, modos, "signo")
+    lo = 1 if maximo <= 99 else 10
+    if m == "signo":
+        a = rng.randint(lo, maximo)
+        if d == 3 and rng.random() < 0.5:
+            b = int(str(a)[::-1]) if len(str(a)) > 1 and a % 10 else a + rng.choice([1, 10])
+        elif rng.random() < 0.15:
+            b = a
+        else:
+            b = rng.randint(lo, maximo)
+        if b > maximo or b < 1:
+            return None
+        return _ej_cmp_signo(rng, a, b, E_signo)
+    if m == "extremo":
+        tipo = rng.choice(["mayor", "menor"])
+        vals = rng.sample(range(lo, maximo + 1), 4)
+        if d >= 2:
+            # trampas: uno con menos cifras pero primera cifra alta; otro con unidades altas
+            vals[0] = rng.randint(7, 9) if maximo <= 99 else rng.randint(60, 99)
+        if len(set(vals)) < 4:
+            return None
+        obj = max(vals) if tipo == "mayor" else min(vals)
+        contrario = min(vals) if tipo == "mayor" else max(vals)
+        claves = {}
+        if tipo == "mayor":
+            u = _unidades_mayor(vals, obj)
+            p = _primera_cifra_mayor(vals, obj)
+            if p:
+                claves[p] = E_prim
+            if u and u not in claves:
+                claves[u] = E_uni
+        return _ej_extremo(rng, vals, tipo, claves)
+    if m == "ordenar":
+        vals = rng.sample(range(lo, maximo + 1), 5 if d == 3 else 4)
+        if d == 3 and maximo <= 99:
+            dd = rng.randint(1, 8)
+            vals = list({10 * dd + rng.randint(0, 9), 10 * dd + rng.randint(0, 9), 10 * (dd + 1) + rng.randint(0, 9), rng.randint(1, 9), 10 * dd + rng.randint(0, 9)})
+            if len(vals) < 4:
+                return None
+        rng.shuffle(vals)
+        return _ej_ordenar(rng, vals, rng.random() < 0.6, E_inv)
+    a = rng.randint(lo, maximo - 3)
+    b = a + 2
+    return mk(f"¿Qué número está entre {fmt(a)} y {fmt(b)}?", a + 1, [(a - 1, None), (b + 1, None), (a + 10 if a + 10 != b else a + 11, None)], "intercalar",
+              f"Entre {fmt(a)} y {fmt(b)} solo cabe {fmt(a + 1)}: {fmt(a)}, {fmt(a + 1)}, {fmt(b)}.", ADULTO_ORD, a=a, b=b)
+
+
+@generador("t1_ord02")
+def g_ord02(rng, d, modos=("extremo", "signo", "ordenar")):
+    m = modo(rng, modos, "extremo")
+    def grande(c):
+        return rng.randint(10 ** (c - 1), 10 ** c - 1)
+    c = rng.randint(5, 9) if d > 1 else rng.randint(4, 6)
+    if m == "signo":
+        a = grande(c)
+        s = list(str(a))
+        i = rng.randint(1, len(s) - 2)
+        s[i] = str((int(s[i]) + rng.choice([1, 9])) % 10)
+        b = int("".join(s))
+        return _ej_cmp_signo(rng, a, b, "E03")
+    if m == "ordenar":
+        vals = [grande(rng.choice([c - 1, c, c])) for _ in range(4)]
+        if len(set(vals)) < 4:
+            return None
+        return _ej_ordenar(rng, vals, rng.random() < 0.5, None)
+    tipo = "mayor"
+    # trampa E01: número con una cifra menos pero primera cifra 9; trampa E02: misma longitud, primera distinta menor pero cifras posteriores altas
+    obj = grande(c)
+    if str(obj)[0] == "9":
+        obj -= 10 ** (c - 1)
+    t1 = rng.randint(9 * 10 ** (c - 2), 10 ** (c - 1) - 1)
+    s = str(obj)
+    i = 1 + rng.randint(0, c - 3)
+    if s[i] == "0":
+        s = s[:i] + "1" + s[i + 1:]
+        obj = int(s)
+    t2 = int(s[:i] + str(int(s[i]) - 1) + "9" * (c - i - 1))
+    t3 = obj - rng.randint(1, 10 ** (c - 2))
+    vals = [obj, t1, t2, t3]
+    if len(set(vals)) < 4 or t3 <= 0:
+        return None
+    rng.shuffle(vals)
+    return _ej_extremo(rng, vals, tipo, {t1: "E01", t2: "E02"})
+
+
+@generador("t1_ord04")
+def g_ord04(rng, d, modos=("uno", "diez", "extremo")):
+    m = modo(rng, modos, "uno")
+    if m == "diez":
+        k = rng.randint(1, 9)
+        marks = ["0"] + ["•"] * 9 + ["100"]
+        marks[k] = "⬆"
+        return mk(f"En esta recta cada marca vale 10 más que la anterior:\n{' '.join(marks)}\n¿Qué número señala la flecha ⬆?", 10 * k,
+                  [(k, "E02"), (10 * k - 10 if k > 1 else None, "E01"), (100 - 10 * k if 100 - 10 * k != 10 * k else None, None), (10 * k + 10, None)], "recta",
+                  f"Cuento las marcas desde el 0 de 10 en 10: " + ", ".join(str(10 * i) for i in range(1, k + 1)) + f". La flecha está en el {10 * k}.",
+                  "En la recta numérica hay que fijarse en cuánto vale cada salto antes de contar marcas.", k=k)
+    ini = rng.randint(0, 9) * 10
+    fin = ini + 10
+    k = rng.randint(1, 9)
+    if m == "extremo":
+        k = rng.randint(6, 9)
+    elif d == 1:
+        k = rng.randint(1, 5)
+    marks = [str(ini)] + ["•"] * 9 + [str(fin)]
+    marks[k] = "⬆"
+    v = ini + k
+    dist = [(v - 1, "E01"), (fin + (fin - v) if k >= 5 else None, "E03"), (v + 1, None), (ini + (10 - k) if ini + 10 - k != v else None, None)]
+    return mk(f"En esta recta hay una marca por cada número:\n{' '.join(marks)}\n¿Qué número señala la flecha ⬆?", v, dist, "recta",
+              (f"Empiezo en el {ini} y cuento marcas hacia la derecha: " + ", ".join(str(ini + i) for i in range(1, k + 1)) + f". Es el {v}."
+               if k < 6 else f"La flecha está cerca del {fin}: cuento hacia atrás desde el {fin}: " + ", ".join(str(fin - i) for i in range(1, 10 - k + 1)) + f". Es el {v}."),
+              "Contar marcas en la recta: no se cuenta la marca de partida, se cuentan los saltos. Si la flecha está cerca del final, conviene contar hacia atrás.",
+              ini=ini, k=k)
+
+
+@generador("t1_ord06")
+def g_ord06(rng, d, modos=("diez", "cien", "aprox")):
+    m = modo(rng, modos, "diez")
+    if m == "aprox":
+        n = rng.randint(1, 9) * 100 + rng.choice([rng.randint(10, 40), rng.randint(60, 90)])
+        c = n // 100 * 100
+        cerca = c if n - c < 50 else c + 100
+        lejos = c + 100 if cerca == c else c
+        resp = f"entre {c} y {c + 100}, más cerca del {cerca}"
+        otra_c = (n % 100) // 10 * 100
+        dist = [(f"entre {c} y {c + 100}, más cerca del {lejos}", None),
+                (f"entre {otra_c} y {otra_c + 100}, más cerca del {otra_c if otra_c != c else otra_c + 100}" if otra_c != c else None, "E03"),
+                (f"entre {c + 100} y {c + 200}, más cerca del {c + 100}" if c < 800 else f"entre {c - 100} y {c}, más cerca del {c}", None),
+                (f"entre {c - 100} y {c}, más cerca del {c}" if c >= 100 else None, None)]
+        return mk(f"En una recta de 0 a 1000 con marcas de 100 en 100, ¿dónde va el {n}?", resp, dist, "recta_aprox",
+                  f"{n} tiene {n // 100} centenas: está entre {c} y {c + 100}. Como {n % 100} {'es menos' if n - c < 50 else 'es más'} de 50, está más cerca del {cerca}.",
+                  "Situar un número aproximadamente en la recta prepara el redondeo.", n=n)
+    paso = 10 if m == "diez" else 100
+    ini = rng.randint(1, 8) * 100 if paso == 10 else 0
+    fin = ini + 10 * paso
+    k = rng.randint(2, 9)
+    marks = [str(ini)] + ["•"] * 9 + [str(fin)]
+    marks[k] = "⬆"
+    v = ini + k * paso
+    dist = [(ini + k, "E01"), (ini + 100 * k if paso == 10 else None, "E02"), (v - paso, None), (v + paso, None), (ini + k * 10 if paso == 100 else None, None)]
+    return mk(f"En esta recta cada marca vale {paso} más que la anterior:\n{' '.join(marks)}\n¿Qué número señala la flecha ⬆?", v, dist, "recta",
+              f"Cada salto vale {paso}. Desde el {ini} cuento {k} saltos: " + ", ".join(str(ini + paso * i) for i in range(1, k + 1)) + f". Es el {v}.",
+              "Antes de contar marcas hay que averiguar cuánto vale cada salto (mirando los números escritos en los extremos).", ini=ini, paso=paso, k=k)
+
+
+@generador("t1_ord05")
+def g_ord05(rng, d, modos=("signo", "extremo", "ordenar", "intercalar")):
+    m = modo(rng, modos, "signo")
+    if m == "extremo":
+        # trampa E01: número de dos cifras con primera cifra alta; trampa E02: mismo centenar y unidades altas
+        c = rng.randint(1, 8)
+        obj = c * 100 + rng.randint(5, 9) * 10 + rng.randint(0, 4)
+        t2 = c * 100 + (obj // 10 % 10 - rng.randint(1, 4)) * 10 + rng.randint(5, 9)
+        t1 = rng.randint(max(c + 1, 5), 9) * 10 + rng.randint(0, 9)
+        t3 = rng.randint(1, c) * 100 + rng.randint(0, 99) - (100 if c == 1 else 0)
+        vals = [obj, t1, t2, t3] if t3 > 0 else None
+        if not vals or len(set(vals)) < 4 or max(vals) != obj:
+            return None
+        rng.shuffle(vals)
+        return _ej_extremo(rng, vals, "mayor", {t1: "E01", t2: "E02"})
+    if m == "signo":
+        a = rng.randint(100, 999)
+        s = str(a)
+        b = int(s[0] + s[2] + s[1]) if d >= 2 and s[1] != s[2] else rng.randint(10, 999)
+        if rng.random() < 0.1:
+            b = a
+        return _ej_cmp_signo(rng, a, b, "E03")
+    return g_ord03(rng, d, modos=(m,), maximo=999, E_inv=None)
+
+
+@generador("t1_ord07")
+def g_ord07(rng, d, modos=("signo", "extremo", "ordenar", "recta")):
+    m = modo(rng, modos, "signo")
+    if m == "extremo":
+        mi = rng.randint(1, 8)
+        obj = mi * 1000 + rng.randint(1, 3) * 100 + rng.randint(0, 99)
+        t2 = mi * 1000 + (obj // 100 % 10 - 1) * 100 + 99   # «tiene nueves»
+        t1 = rng.randint(900, 999)                          # menos cifras, primera cifra alta
+        t3 = rng.randint(1000, mi * 1000 - 1) if mi > 1 else obj - rng.randint(1, 50)
+        vals = [obj, t1, t2, t3]
+        if len(set(vals)) < 4 or max(vals) != obj:
+            return None
+        rng.shuffle(vals)
+        return _ej_extremo(rng, vals, "mayor", {t1: "E01", t2: "E02"})
+    if m == "signo":
+        a = rng.randint(1000, 9999)
+        s = str(a)
+        b = int(s[:2] + s[3] + s[2]) if d >= 2 and s[2] != s[3] else rng.randint(900, 9999)
+        return _ej_cmp_signo(rng, a, b, "E03")
+    if m == "recta":
+        paso = rng.choice([100, 1000])
+        ini = rng.randint(1, 8) * 1000 if paso == 100 else 0
+        k = rng.randint(2, 9)
+        marks = [fmt(ini)] + ["•"] * 9 + [fmt(ini + 10 * paso)]
+        marks[k] = "⬆"
+        v = ini + k * paso
+        return mk(f"En esta recta cada marca vale {fmt(paso)} más que la anterior:\n{' '.join(marks)}\n¿Qué número señala la flecha ⬆?", v,
+                  [(ini + k * (paso // 10), None), (v - paso, None), (v + paso, None)], "recta",
+                  f"Cada salto vale {fmt(paso)}. Desde el {fmt(ini)} cuento {k} saltos y llego al {fmt(v)}.",
+                  "Antes de contar marcas hay que averiguar cuánto vale cada salto.", ini=ini, paso=paso, k=k)
+    return g_ord03(rng, d, modos=(m,), maximo=9999, E_inv=None)

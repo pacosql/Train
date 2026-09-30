@@ -1,0 +1,237 @@
+{
+ "EST.DATOS.01": {
+  "gen": "t6_recuento",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "cuantos"
+   },
+   "2": {
+    "tipo": "mixto"
+   },
+   "3": {
+    "tipo": "mixto"
+   }
+  },
+  "errores": {
+   "cuenta_dos_veces": "E01",
+   "se_salta": "E02",
+   "cuenta_todos": "E03",
+   "confunde_parecidos": "E04"
+  },
+  "plantilla": "Contar los objetos de una categoría en una colección de dibujos (2–4 categorías, hasta 20)"
+ },
+ "EST.DATOS.02": {
+  "gen": "t6_tabla_doble",
+  "kw": {},
+  "errores": {
+   "fila_de_al_lado": "E01",
+   "cambia_fila_columna": "E02",
+   "total_fila": "E03"
+  },
+  "plantilla": "Leer el dato del cruce de una fila y una columna en una tabla de doble entrada (hasta 4×4, valores hasta 100)"
+ },
+ "EST.DATOS.03": {
+  "gen": "t6_frec_abs",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": [
+     "frecuencia",
+     "total"
+    ]
+   },
+   "2": {
+    "tipo": "frecuencia"
+   },
+   "3": {
+    "tipo": "frecuencia"
+   }
+  },
+  "errores": {
+   "valor_por_frecuencia": "E01",
+   "pierde_dato": "E02",
+   "olvida_cero": "E03"
+  },
+  "plantilla": "Frecuencia absoluta de un valor a partir de una lista de hasta 30 datos"
+ },
+ "EST.DATOS.05": {
+  "gen": "t6_frec_rel",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "formato": "fraccion"
+   },
+   "2": {
+    "formato": [
+     "decimal",
+     "fraccion"
+    ]
+   },
+   "3": {
+    "formato": [
+     "porcentaje",
+     "decimal"
+    ]
+   }
+  },
+  "errores": {
+   "divide_al_reves": "E01",
+   "divide_entre_categorias": "E02",
+   "decimal_porcentaje": "E03"
+  },
+  "plantilla": "Frecuencia relativa f/N como fracción, decimal o porcentaje (N ≤ 100)"
+ },
+ "EST.DATOS.08": {
+  "gen": "t6_frec_acum",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "como_mucho"
+   },
+   "2": {
+    "tipo": [
+     "al_menos",
+     "como_mucho"
+    ]
+   },
+   "3": {
+    "tipo": [
+     "rel",
+     "al_menos"
+    ]
+   }
+  },
+  "errores": {
+   "acumula_al_reves": "E01",
+   "al_menos_como_mucho": "E02",
+   "relativa_como_absoluta": "E03"
+  },
+  "plantilla": "Frecuencias acumuladas (F, H) en una tabla de variable discreta: «como mucho», «al menos»"
+ },
+ "EST.DATOS.09": {
+  "gen": "t6_intervalos",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "marca"
+   },
+   "2": {
+    "tipo": [
+     "clase",
+     "amplitud",
+     "marca"
+    ]
+   },
+   "3": {
+    "tipo": "frecuencia"
+   }
+  },
+  "errores": {
+   "extremo_mal": "E01",
+   "marca_extremo": "E02",
+   "amplitud_mal": "E03"
+  },
+  "plantilla": "Datos agrupados en intervalos [a, b): marca de clase, clase de un dato, amplitud, frecuencia de una clase"
+ },
+ "EST.GRAF.01": {
+  "gen": "t6_pictograma",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "cuantos"
+   },
+   "2": {
+    "tipo": [
+     "mas",
+     "menos",
+     "cuantos"
+    ]
+   },
+   "3": {
+    "tipo": [
+     "menos",
+     "cuantos"
+    ]
+   }
+  },
+  "errores": {
+   "fila_de_al_lado": "E01",
+   "mas_por_menos": "E03"
+  },
+  "plantilla": "Leer un pictograma (cada icono vale 1): cuántos hay, cuál tiene más o menos"
+ },
+ "EST.GRAF.04": {
+  "gen": "t6_picto_valor",
+  "kw": {},
+  "errores": {
+   "ignora_leyenda": "E01",
+   "medio_vale_uno": "E02",
+   "medio_mal": "E03"
+  },
+  "plantilla": "Leer una fila de pictograma con iconos que valen 2, 5 o 10 (con medios iconos)"
+ },
+ "EST.GRAF.05": {
+  "gen": "t6_barras_escala",
+  "kw": {},
+  "errores": {
+   "cuenta_marcas": "E01",
+   "entre_mas_uno": "E02",
+   "marca_cercana": "E03"
+  },
+  "plantilla": "Leer una barra en un eje graduado de 2, 5 o 10 (también a mitad entre dos marcas)"
+ },
+ "EST.GRAF.06": {
+  "gen": "t6_barras_dobles",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "serie"
+   },
+   "2": {
+    "tipo": [
+     "bajo",
+     "serie"
+    ]
+   },
+   "3": {
+    "tipo": [
+     "diferencia",
+     "bajo"
+    ]
+   }
+  },
+  "errores": {
+   "confunde_series": "E01",
+   "compara_categorias": "E02",
+   "barra_mas_alta": "E03"
+  },
+  "plantilla": "Comparar dos series en un diagrama de barras dobles (descrito con su leyenda)"
+ },
+ "EST.GRAF.07": {
+  "gen": "t6_lineas",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "valor"
+   },
+   "2": {
+    "tipo": [
+     "maximo",
+     "minimo"
+    ]
+   },
+   "3": {
+    "tipo": [
+     "subida",
+     "bajada"
+    ]
+   }
+  },
+  "errores": {
+   "mas_alto_por_mayor_subida": "E01",
+   "eje_equivocado": "E02"
+  },
+  "plantilla": "Leer un gráfico de líneas de temperaturas: valor, máximo/mínimo, mayor subida o bajada"
+ }
+}

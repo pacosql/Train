@@ -100,6 +100,7 @@ ESTRATEGIA_TABLA = {
     10: lambda o: f"Por 10 se añade un cero: {10 * o}.",
 }
 ZONA_DIFICIL = [36, 42, 48, 49, 54, 56, 63, 64, 72]
+FEMENINOS = {"canica", "pegatina", "galleta", "manzana", "flor", "concha", "piedra"}
 FRASES_TABLA = ["Calcula: {a} × {b}", "¿Cuánto es {a} × {b}?", "Completa: {a} × {b} = ?"]
 
 
@@ -149,8 +150,6 @@ def gen_tabla(rng, d, tabla=None, frases=3):
     if j > 0:
         dist.append((k * (j - 1), "vecino"))
     dist.append((k * (j + 1), "vecino"))
-    if tabla is None and a + b != p:
-        pass
     base, otro = (a, b) if tabla is None or a == tabla else (b, a)
     txt = ESTRATEGIA_TABLA[0](0) if p == 0 else ESTRATEGIA_TABLA[base](otro) if base in ESTRATEGIA_TABLA else f"{a} × {b} = {p}."
     ej = mk(frase.format(a=a, b=b), fmt(p), "mult", {"a": a, "b": b}, dist,
@@ -171,6 +170,7 @@ def gen_mult_sentido(rng, d):
     tipo = rng.choice({1: ["suma_a_mult", "veces"], 2: ["suma_a_mult", "cuadricula", "grupos_suma"], 3: ["cuadricula", "grupos_suma", "suma_a_mult", "veces"]}[d])
     n, a = rng.randint(2, hi), rng.randint(2, hi)
     if tipo == "suma_a_mult":
+        n = max(n, 3)
         suma = " + ".join([str(a)] * n)
         return mk(f"¿Qué multiplicación es {suma}?", f"{n} × {a}", "t2_sentido", {"a": n, "b": a, "tipo": tipo},
                   [(f"{n - 1} × {a}", "cuenta_mal"), (f"{n} + {a}", "suma"), (f"{n + 1} × {a}", "cuenta_mal")],
@@ -185,9 +185,9 @@ def gen_mult_sentido(rng, d):
                   "'Veces' significa multiplicar: 3 veces 4 son tres grupos de 4. El error típico es sumar 3 + 4.",
                   genericos=[n * a + 1, n * a - 1, n * a + 2])
     if tipo == "cuadricula":
-        cosa = rng.choice([("una caja de bombones", "bombones"), ("un huerto", "lechugas"), ("una tableta de chocolate", "onzas"),
-                           ("un aparcamiento", "coches"), ("una bandeja de huevos", "huevos"), ("un mural", "fotos")])
-        return mk(f"En {cosa[0]} hay {n} filas y en cada fila {a} {cosa[1]}. ¿Cuántos {cosa[1]} hay en total?", fmt(n * a), "mult",
+        cosa = rng.choice([("una caja de bombones", "bombones", "Cuántos"), ("un huerto", "lechugas", "Cuántas"), ("una tableta de chocolate", "onzas", "Cuántas"),
+                           ("un aparcamiento", "coches", "Cuántos"), ("una bandeja de huevos", "huevos", "Cuántos"), ("un mural", "fotos", "Cuántas")])
+        return mk(f"En {cosa[0]} hay {n} filas y en cada fila {a} {cosa[1]}. ¿{cosa[2]} {cosa[1]} hay en total?", fmt(n * a), "mult",
                   {"a": n, "b": a, "tipo": tipo},
                   [(n + a, "suma"), (n * a + a, "uno_mas"), ((n - 1) * a, "cuenta_mal")],
                   [(f"{n} × {a}", str(n * a), f"Son {n} filas iguales de {a}: {n} × {a} = {n * a} {cosa[1]}.")],
@@ -196,8 +196,9 @@ def gen_mult_sentido(rng, d):
     if a == n:
         a = n + 1 if n < hi else n - 1
     cosa = rng.choice(OBJETOS)
-    caja = rng.choice(["bolsas", "cajas", "platos", "cestas"])
-    return mk(f"Hay {n} {caja} con {a} {cosa[1]} en cada una. ¿Qué suma representa todos los {cosa[1]}?", " + ".join([str(a)] * n),
+    caja, una = rng.choice([("bolsas", "una"), ("cajas", "una"), ("platos", "uno"), ("cestas", "una")])
+    art = "todas las" if cosa[0] in FEMENINOS else "todos los"
+    return mk(f"Hay {n} {caja} con {a} {cosa[1]} en cada {una}. ¿Qué suma representa {art} {cosa[1]}?", " + ".join([str(a)] * n),
               "t2_sentido", {"a": n, "b": a, "tipo": tipo},
               [(" + ".join([str(n)] * a), "grupos_cambiados"), (f"{n} + {a}", "suma"), (" + ".join([str(a)] * (n + 1)), "cuenta_mal")],
               [("grupos", f"{n} grupos de {a}", f"Hay {n} {caja} y en cada una {a}: sumo el {a} tantas veces como {caja}, {n} veces."),
@@ -496,3 +497,270 @@ def gen_mult_prop(rng, d):
                (f"{x * y} × {m}", fmt(v), f"{x * y} × {m} = {fmt(v)}.")],
               "Conmutativa y asociativa permiten reordenar y agrupar factores para buscar productos redondos (25 × 4 = 100, 5 × 2 = 10).",
               genericos=[v + 100, v - 100, v + x])
+
+
+# ================================================================ DIVISIÓN
+
+def div_larga(D, dv, error_resta=None):
+    """Algoritmo de la división. Devuelve (cociente, resto, pasos). error_resta=i: en el paso i la resta da 1 de más."""
+    s = str(D)
+    pasos, q, r, i = [], "", 0, 0
+    # primera cifra o cifras que contienen al divisor
+    cur = 0
+    while i < len(s) and cur < dv:
+        cur = cur * 10 + int(s[i])
+        i += 1
+    paso = 0
+    while True:
+        c = cur // dv
+        resta = cur - c * dv
+        if error_resta is not None and paso == error_resta:
+            resta += 1
+        pasos.append((cur, c, resta))
+        q += str(c)
+        paso += 1
+        if i >= len(s):
+            r = resta
+            break
+        cur = resta * 10 + int(s[i])
+        i += 1
+    return int(q), r, pasos
+
+
+def texto_div(D, dv):
+    q, r, pasos = div_larga(D, dv)
+    out = []
+    for k, (cur, c, resta) in enumerate(pasos):
+        if k == 0:
+            t = f"Cojo {cur} (lo primero en lo que cabe el {dv}). {cur} : {dv} = {c}, porque {dv} × {c} = {dv * c}; resto {cur} − {dv * c} = {resta}."
+        elif c == 0:
+            t = f"Bajo la cifra siguiente: {cur}. El {dv} no cabe en {cur}: pongo un 0 en el cociente."
+        else:
+            t = f"Bajo la cifra siguiente: {cur}. {cur} : {dv} = {c} ({dv} × {c} = {dv * c}); resto {resta}."
+        out.append((f"{cur} : {dv}", str(c), t))
+    out.append((f"{fmt(dv)} × {fmt(q)} + {r}", fmt(D), f"Compruebo: {fmt(dv)} × {fmt(q)} + {r} = {fmt(D)}."))
+    return out
+
+
+def qr(q, r):
+    return f"cociente {fmt(q)}, resto {fmt(r)}"
+
+
+def sin_cero_interior(q):
+    s = str(q)
+    return int(s[0] + s[1:].replace("0", "")) if "0" in s[1:] else None
+
+
+@generador("t2_div1")
+def gen_div1(rng, d):
+    """División exacta entre una cifra. Claves: invierte (dice que no se puede), olvida_cero, tabla_equivocada (cociente ±1),
+    cifra_a_cifra (divide cada cifra por separado)."""
+    for _ in range(500):
+        dv = rng.randint(2, 9)
+        if d == 1:
+            q = rng.randint(2, 10)
+        elif d == 2:
+            q = rng.randint(11, 49)
+        else:
+            q = rng.randint(101, 199) if rng.random() < 0.4 else rng.randint(11, 140)
+        D = q * dv
+        if d == 2 and D > 99:
+            continue
+        if d == 3 and not (100 <= D <= 999):
+            continue
+        break
+    s = str(D)
+    cac = None
+    if len(s) >= 2 and int(s[0]) >= dv:
+        ds = [int(c) // dv for c in s]
+        cac_s = "".join(str(x) for x in ds).lstrip("0")
+        if cac_s and int(cac_s) != q:
+            cac = int(cac_s)
+    dist = [(sin_cero_interior(q), "olvida_cero"), (cac, "cifra_a_cifra"), (q + 1, "tabla_equivocada"), (q - 1, "tabla_equivocada"),
+            ("No se puede dividir", "invierte")]
+    if d == 1:
+        pasos = [(f"{dv} × ? = {D}", str(q), f"Busco en la tabla del {dv} qué número da {D}: {dv} × {q} = {D}. Así que {D} : {dv} = {q}.")]
+    else:
+        pasos = texto_div(D, dv)
+    return mk(f"Calcula: {fmt(D)} : {dv}", fmt(q), "div", {"a": D, "b": dv}, dist, pasos,
+              "La división exacta se apoya en la tabla: '¿el 7 por cuánto da 56?'. En divisiones largas, lo que sobra de una cifra se junta con la "
+              "siguiente (no se divide cada cifra por separado) y, si el divisor no cabe, se pone un 0 en el cociente.",
+              genericos=[q + 2, q + 10, q - 2])
+
+
+@generador("t2_div_resto")
+def gen_div_resto(rng, d, cifras_divisor=1, prueba=False):
+    """División entera (cociente y resto). Claves: resto_mayor (se queda corto: resto ≥ divisor), olvida_cero, resto_ultima_cifra
+    (da como resto la última cifra que bajó), resta_mal (error en una resta intermedia), prueba_mal (prueba c × r + d o sin resto)."""
+    for _ in range(800):
+        if cifras_divisor == 1:
+            dv = rng.randint(2, 9)
+            D = rng.randint(*{1: (11, 99), 2: (100, 999), 3: (1000, 9999)}[d])
+        else:
+            if d == 1:
+                dv, D = rng.randint(11, 49), rng.randint(100, 999)
+            elif d == 2:
+                dv, D = rng.randint(12, 99), rng.randint(1000, 9999)
+            else:
+                dv, D = rng.randint(101, 499), rng.randint(10000, 99999)
+        q, r = divmod(D, dv)
+        if r == 0 or q < 2:
+            continue
+        if d == 3 and cifras_divisor == 1 and "0" not in str(q)[1:] and rng.random() < 0.7:
+            continue
+        if cifras_divisor > 1 and d >= 2 and "0" not in str(q)[1:] and rng.random() < 0.5:
+            continue
+        break
+    if prueba and rng.random() < 0.4:
+        corr = f"{fmt(dv)} × {fmt(q)} + {fmt(r)} = {fmt(D)}"
+        return mk(f"Al dividir {fmt(D)} entre {fmt(dv)} sale cociente {fmt(q)} y resto {fmt(r)}. ¿Qué cuenta sirve de prueba?", corr, "t2_prueba",
+                  {"a": D, "b": dv, "q": q, "r": r},
+                  [(f"{fmt(q)} × {fmt(r)} + {fmt(dv)}", "prueba_mal"), (f"{fmt(dv)} × {fmt(q)} = {fmt(D)}", "prueba_mal"),
+                   (f"{fmt(D)} × {fmt(dv)} + {fmt(r)}", None)],
+                  [("prueba", corr, f"Dividendo = divisor × cociente + resto: {fmt(dv)} × {fmt(q)} = {fmt(dv * q)} y {fmt(dv * q)} + {fmt(r)} = {fmt(D)}. "
+                                     f"Además el resto ({fmt(r)}) es menor que el divisor ({fmt(dv)}).")],
+                  "La prueba de la división es D = d × c + r con r < d. Si no se suma el resto, la prueba 'falla' aunque la división esté bien.")
+    dist = []
+    sc = sin_cero_interior(q)
+    if sc:
+        dist.append((qr(sc, r), "olvida_cero"))
+    dist.append((qr(q - 1, r + dv), "resto_mayor"))
+    if cifras_divisor == 1 and D % 10 != r and D % 10 < 10:
+        dist.append((qr(q, D % 10), "resto_ultima_cifra"))
+    if cifras_divisor == 1:
+        try:
+            q2, r2, _ = div_larga(D, dv, error_resta=0)
+            if (q2, r2) != (q, r) and r2 >= 0 and len(str(q2)) == len(str(q)):
+                dist.append((qr(q2, r2), "resta_mal"))
+        except Exception:  # noqa: BLE001
+            pass
+    return mk(f"Divide: {fmt(D)} : {fmt(dv)}. ¿Cuál es el cociente y el resto?", qr(q, r), "div", {"a": D, "b": dv}, dist,
+              texto_div(D, dv),
+              "El resto siempre tiene que ser menor que el divisor; si no, cabía una vez más. Si al bajar una cifra el divisor no cabe, va un 0 en el "
+              "cociente. Terminad siempre con la prueba: divisor × cociente + resto = dividendo.",
+              genericos=[qr(q + 1, r), qr(q, (r + 1) % dv if (r + 1) % dv != r else r + 1), qr(q - 1, r)])
+
+
+@generador("t2_div10")
+def gen_div10(rng, d):
+    """Dividir entre 10, 100, 1000 (cociente y resto). Claves: ceros (quita un número de ceros equivocado), sin_resto (quita cifras
+    que no son ceros y no da resto), anade_ceros (multiplica)."""
+    if d == 1:
+        m = 10
+        D = rng.randint(2, 999) * 10
+    elif d == 2:
+        m = rng.choice([100, 1000])
+        D = rng.randint(2, 99) * m if rng.random() < 0.5 else rng.randint(1000, 99999)
+    else:
+        m = rng.choice([10, 100, 1000])
+        D = rng.randint(10000, 99999)
+        if rng.random() < 0.35:
+            a, b = rng.randint(2, 9), rng.randint(2, 9)
+            k = rng.choice([10, 100])
+            D, m = a * b * k * 10, b * k
+            if D % m == 0 and (a * b * k * 10) // m == a * 10 and m not in (10, 100, 1000):
+                return mk(f"Calcula: {fmt(D)} : {fmt(m)}", fmt(D // m), "div", {"a": D, "b": m},
+                          [(D // m // 10, "ceros"), (D // m * 10 if D // m * 10 != a * 10 else None, "ceros"), (D // (m // 10) if m % 100 == 0 else D * 10, "ceros")],
+                          [(f"{fmt(D)} : {fmt(m)}", f"{fmt(D // (m // k * 1) // 1) if False else ''}{fmt(D // k)} : {m // k}",
+                            f"Quito el mismo número de ceros a los dos ({len(str(k)) - 1}): {fmt(D)} : {fmt(m)} = {fmt(D // k)} : {fmt(m // k)}."),
+                           (f"{fmt(D // k)} : {fmt(m // k)}", fmt(D // m), f"{fmt(D // k)} : {fmt(m // k)} = {fmt(D // m)}.")],
+                          "Si dividendo y divisor acaban en ceros, se pueden quitar los mismos ceros a los dos y el cociente no cambia.",
+                          genericos=[D // m + 1, D // m - 1, D // m + 10])
+    q, r = divmod(D, m)
+    k = len(str(m)) - 1
+    if r == 0:
+        return mk(f"Calcula: {fmt(D)} : {fmt(m)}", fmt(q), "div", {"a": D, "b": m},
+                  [(D // (m * 10) if D % (m * 10) == 0 else None, "ceros"), (D // (m // 10) if m > 10 else None, "ceros"),
+                   (D * m if D * m < 10 ** 8 else D * 10, "anade_ceros")],
+                  [(f"{fmt(D)} : {fmt(m)}", fmt(q), f"Dividir entre {fmt(m)} es quitar {k} cero{'s' if k > 1 else ''} del final: {fmt(D)} → {fmt(q)}.")],
+                  "Dividir entre 10, 100 o 1000 es quitar uno, dos o tres ceros (cada cifra baja de orden). Que no quite ceros que no son del final.",
+                  genericos=[q + 1, q + 10, q - 1])
+    return mk(f"Divide: {fmt(D)} : {fmt(m)}. ¿Cuál es el cociente y el resto?", qr(q, r), "div", {"a": D, "b": m},
+              [(qr(q, 0), "sin_resto"), (qr(q // 10, D % (m * 10)) if q >= 10 else None, "ceros"), (qr(D // (m // 10), D % (m // 10)) if m > 10 else None, "ceros"),
+               (qr(q * 10, r), None)],
+              [(f"{fmt(D)} : {fmt(m)}", qr(q, r), f"Al dividir entre {fmt(m)} separo las {k} última{'s' if k > 1 else ''} cifra{'s' if k > 1 else ''}: "
+                                                   f"lo de delante ({fmt(q)}) es el cociente y lo que queda ({fmt(r)}) es el resto."),
+               ("prueba", fmt(D), f"Compruebo: {fmt(q)} × {fmt(m)} + {fmt(r)} = {fmt(D)}.")],
+              "Entre 10, 100 o 1000: las últimas 1, 2 o 3 cifras son el resto y las demás el cociente. Si no acaba en ceros, no se pueden 'quitar' sin más: sobra algo.",
+              genericos=[qr(q + 1, r), qr(q, r + 1), qr(q - 1, r)])
+
+
+@generador("t2_div_terminos")
+def gen_div_terminos(rng, d):
+    """Hallar el término desconocido con D = d·c + r. Claves: olvida_resto (D = d·c), resta_resto (D = d·c − r),
+    no_quita_resto (d = D : c sin quitar el resto), resto_grande (acepta r ≥ d)."""
+    dv = rng.randint(2, 9) if d == 1 else rng.randint(6, 30) if d == 2 else rng.randint(11, 99)
+    c = rng.randint(3, 30 if d > 1 else 12)
+    r = rng.randint(1, dv - 1)
+    D = dv * c + r
+    tipo = {1: "dividendo", 2: rng.choice(["divisor", "cociente", "dividendo"]), 3: rng.choice(["divisor", "posible", "dividendo", "cociente"])}[d]
+    adulto = ("Todo sale de la prueba de la división: D = d × c + r, con el resto menor que el divisor. Para hallar el divisor o el cociente, "
+              "primero se quita el resto al dividendo y luego se divide.")
+    if tipo == "dividendo":
+        return mk(f"En una división, el divisor es {dv}, el cociente {c} y el resto {r}. ¿Cuál es el dividendo?", fmt(D), "t2_terminos",
+                  {"d": dv, "c": c, "r": r, "incognita": tipo},
+                  [(dv * c, "olvida_resto"), (dv * c - r, "resta_resto"), (dv + c + r, None)],
+                  [(f"{dv} × {c} + {r}", fmt(D), f"Dividendo = divisor × cociente + resto = {dv} × {c} + {r} = {dv * c} + {r} = {fmt(D)}.")],
+                  adulto, genericos=[D + 1, D + dv, D - 1])
+    if tipo in ("divisor", "cociente"):
+        buscado, dado = (dv, c) if tipo == "divisor" else (c, dv)
+        while buscado == dado:
+            c += 1
+            D = dv * c + r
+            buscado, dado = (dv, c) if tipo == "divisor" else (c, dv)
+        mal = D // dado if D % dado and D // dado != buscado else None
+        enun = (f"En una división, el dividendo es {fmt(D)}, el cociente {c} y el resto {r}. ¿Cuál es el divisor?" if tipo == "divisor"
+                else f"En una división, el dividendo es {fmt(D)}, el divisor {dv} y el resto {r}. ¿Cuál es el cociente?")
+        return mk(enun, fmt(buscado), "t2_terminos", {"D": D, "d": dv, "c": c, "r": r, "incognita": tipo},
+                  [(mal, "no_quita_resto" if tipo == "divisor" else None), (buscado + 1, None), ((D + r) // dado if (D + r) % dado == 0 and (D + r) // dado != buscado else buscado - 1, None)],
+                  [(f"{fmt(D)} − {r}", fmt(D - r), f"Quito el resto al dividendo: {fmt(D)} − {r} = {fmt(D - r)}."),
+                   (f"{fmt(D - r)} : {dado}", fmt(buscado), f"{fmt(D - r)} : {dado} = {buscado}. Compruebo: {dv} × {c} + {r} = {fmt(D)}.")],
+                  adulto, genericos=[buscado + 2, buscado - 2])
+    # posible
+    ok = f"divisor {dv}, cociente {c}, resto {r}"
+    return mk(f"¿Cuál de estos datos puede ser de una división con dividendo {fmt(D)}?", ok, "t2_terminos", {"D": D, "d": dv, "c": c, "r": r, "incognita": tipo},
+              [(f"divisor {dv}, cociente {c - 1}, resto {r + dv}", "resto_grande"), (f"divisor {c}, cociente {dv - 1}, resto {r + c}" if r + c != r else None, "resto_grande"),
+               (f"divisor {dv}, cociente {c}, resto {r + 1 if r + 1 < dv else r - 1}", None)],
+              [(f"{dv} × {c} + {r}", fmt(D), f"Compruebo cada opción con D = d × c + r y miro que el resto sea menor que el divisor. "
+                                              f"{dv} × {c} + {r} = {fmt(D)} y {r} < {dv}: esta vale.")],
+              adulto + " Una opción con el resto mayor o igual que el divisor nunca vale, aunque la cuenta cuadre.",
+              genericos=[f"divisor {dv + 1}, cociente {c}, resto {r}"])
+
+
+@generador("t2_div_prop")
+def gen_div_prop(rng, d):
+    """Propiedad fundamental de la división. Claves: solo_uno (cambia solo un término), suma_igual (suma/resta el mismo número a
+    los dos), resto_igual (cree que el resto tampoco cambia)."""
+    tipo = {1: "equivalente", 2: rng.choice(["equivalente", "simplificar"]), 3: rng.choice(["entera", "entera", "simplificar"])}[d]
+    adulto = ("Si dividendo y divisor se multiplican (o dividen) por el mismo número, el cociente no cambia; en la división entera el resto "
+              "queda multiplicado (o dividido) por ese número. Sumar o restar lo mismo a los dos NO conserva el cociente.")
+    if tipo == "equivalente":
+        dv, q = rng.randint(2, 9), rng.randint(2, 9)
+        k = rng.randint(2, 5)
+        D = dv * q
+        ok = f"{D * k} : {dv * k}"
+        return mk(f"¿Qué división tiene el mismo cociente que {D} : {dv}?", ok, "t2_divprop", {"D": D, "d": dv, "k": k},
+                  [(f"{D * k} : {dv}", "solo_uno"), (f"{D} : {dv * k}", "solo_uno"), (f"{D + k} : {dv + k}", "suma_igual")],
+                  [(f"{D} × {k} y {dv} × {k}", ok, f"Multiplico dividendo y divisor por {k}: {D * k} : {dv * k}. El cociente sigue siendo {q}.")],
+                  adulto)
+    if tipo == "simplificar":
+        dv, q = rng.randint(2, 9), rng.randint(2, 9)
+        k = rng.choice([10, 100])
+        D = dv * q * k
+        ok = f"{fmt(D // k)} : {dv}"
+        return mk(f"¿Qué división da el mismo resultado que {fmt(D)} : {fmt(dv * k)}?", ok, "t2_divprop", {"D": D, "d": dv * k, "k": k},
+                  [(f"{fmt(D // k)} : {fmt(dv * k)}", "solo_uno"), (f"{fmt(D - k)} : {fmt(dv * k - k)}", "suma_igual"), (f"{fmt(D)} : {dv}", "solo_uno")],
+                  [(f"{fmt(D)} : {fmt(dv * k)}", ok, f"Divido los dos entre {k} (les quito {len(str(k)) - 1} cero{'s' if k > 10 else ''}): {ok} = {q}.")],
+                  adulto)
+    for _ in range(100):
+        dv = rng.randint(3, 9)
+        q = rng.randint(3, 12)
+        r = rng.randint(1, dv - 1)
+        k = rng.choice([2, 3, 10, 100]) if d == 3 else 10
+        break
+    D = dv * q + r
+    return mk(f"Si {D} : {dv} = {q} y resto {r}, ¿cuánto es {fmt(D * k)} : {fmt(dv * k)}?", qr(q, r * k), "div", {"a": D * k, "b": dv * k},
+              [(qr(q, r), "resto_igual"), (qr(q * k, r * k), "solo_uno"), (qr(q * k, r), "solo_uno")],
+              [(f"{D} × {k} y {dv} × {k}", f"{fmt(D * k)} : {fmt(dv * k)}", f"Dividendo y divisor están multiplicados por {k}: el cociente no cambia ({q})."),
+               (f"{r} × {k}", fmt(r * k), f"El resto sí queda multiplicado por {k}: {r} × {k} = {fmt(r * k)}. Compruebo: {fmt(dv * k)} × {q} + {fmt(r * k)} = {fmt(D * k)}.")],
+              adulto)

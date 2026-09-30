@@ -1,9 +1,183 @@
 {
- "NUM.COMPLEJO.01": {"gen": "t3_complejo_01", "kw": {}, "errores": {"E01": "E01", "E02": "E02", "E03": "E03"}, "permitir_negativos": true, "plantilla": "Unidad imaginaria: raíces de negativos, partes de a + bi, ecuaciones con Δ < 0"},
- "NUM.COMPLEJO.02": {"gen": "t3_complejo_02", "kw": {}, "errores": {"E01": "E01", "E02": "E02", "E03": "E03"}, "permitir_negativos": true, "plantilla": "Calcula i^n"},
- "NUM.COMPLEJO.03": {"gen": "t3_complejo_03", "kw": {}, "errores": {"E01": "E01", "E02": "E02", "E03": "E03"}, "permitir_negativos": true, "plantilla": "Suma, resta, producto y potencias pequeñas de complejos en binómica"},
- "NUM.COMPLEJO.04": {"gen": "t3_complejo_04", "kw": {}, "errores": {"E01": "E01", "E02": "E02", "E03": "E03"}, "permitir_negativos": true, "plantilla": "Conjugado, opuesto y división en binómica"},
- "NUM.COMPLEJO.06": {"gen": "t3_complejo_06", "kw": {}, "errores": {"E01": "E01", "E02": "E02", "E03": "E03"}, "permitir_negativos": true, "plantilla": "Paso entre forma polar y binómica con ángulos notables"},
- "NUM.COMPLEJO.07": {"gen": "t3_complejo_07", "kw": {}, "errores": {"E01": "E01", "E02": "E02", "E03": "E03", "E04": "E04"}, "permitir_negativos": true, "plantilla": "Producto, cociente y potencias en forma polar"},
- "NUM.COMPLEJO.08": {"gen": "t3_complejo_08", "kw": {}, "errores": {"E01": "E01", "E02": "E02", "E03": "E03"}, "permitir_negativos": true, "plantilla": "Raíces n-ésimas de un complejo en forma polar"}
+ "NUM.COMPLEJO.01": {
+  "gen": "t3_complejo_01",
+  "kw": {},
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Unidad imaginaria: raíces de negativos, partes de a + bi, ecuaciones con Δ < 0"
+ },
+ "NUM.COMPLEJO.02": {
+  "gen": "t3_complejo_02",
+  "kw": {},
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Calcula i^n"
+ },
+ "NUM.COMPLEJO.03": {
+  "gen": "t3_complejo_03",
+  "kw": {},
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Suma, resta, producto y potencias pequeñas de complejos en binómica"
+ },
+ "NUM.COMPLEJO.04": {
+  "gen": "t3_complejo_04",
+  "kw": {},
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Conjugado, opuesto y división en binómica"
+ },
+ "NUM.COMPLEJO.06": {
+  "gen": "t3_complejo_06",
+  "kw": {},
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Paso entre forma polar y binómica con ángulos notables"
+ },
+ "NUM.COMPLEJO.07": {
+  "gen": "t3_complejo_07",
+  "kw": {},
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03",
+   "E04": "E04"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Producto, cociente y potencias en forma polar"
+ },
+ "NUM.COMPLEJO.08": {
+  "gen": "t3_complejo_08",
+  "kw": {},
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Raíces n-ésimas de un complejo en forma polar"
+ },
+ "NUM.DEC.01": {
+  "gen": "t3_dec_01",
+  "kw": {},
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Leer y escribir decimales hasta centésimas (y precios)"
+ },
+ "NUM.DEC.02": {
+  "gen": "t3_dec_02",
+  "kw": {},
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Equivalencias entre unidades, décimas y centésimas"
+ },
+ "NUM.DEC.03": {
+  "gen": "t3_dec_03",
+  "kw": {},
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Valor posicional de decimales hasta milésimas"
+ },
+ "NUM.DEC.04": {
+  "gen": "t3_dec_04",
+  "kw": {},
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03",
+   "E04": "E04"
+  },
+  "plantilla": "Comparar y ordenar decimales"
+ },
+ "NUM.DEC.06": {
+  "gen": "t3_dec_06",
+  "kw": {},
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Fracción decimal ↔ número decimal"
+ },
+ "NUM.DEC.07": {
+  "gen": "t3_dec_07",
+  "kw": {},
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03",
+   "E04": "E04"
+  },
+  "plantilla": "Redondear decimales a unidades, décimas o centésimas"
+ },
+ "NUM.DEC.08": {
+  "gen": "t3_dec_08",
+  "kw": {},
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Expresión decimal de una fracción"
+ },
+ "NUM.DEC.09": {
+  "gen": "t3_dec_09",
+  "kw": {},
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Intercalar un decimal entre dos dados"
+ },
+ "NUM.DEC.10": {
+  "gen": "t3_dec_10",
+  "kw": {},
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Clasificar la expresión decimal; periodo y anteperiodo"
+ },
+ "NUM.DEC.11": {
+  "gen": "t3_dec_11",
+  "kw": {},
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03",
+   "E04": "E04"
+  },
+  "plantilla": "Fracción generatriz"
+ }
 }

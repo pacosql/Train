@@ -617,3 +617,242 @@ def gen_comparar_nc(rng, d, max_medida=20):
     adulto = "Con la misma unidad, más unidades significa más longitud. Hay que comparar el número entero (12 > 9), no solo la última cifra, y respetar el orden que se pide."
     return mk(enun, resp, "t4_comparar_nc", {"medidas": ms, "colores": cols}, dist, pasos, adulto,
               genericos=["miden lo mismo"] if tipo != "ordenar" else [])
+
+
+# ---------------------------------------------------------------- sexagesimal: tiempo y ángulos
+
+SEX = {"tiempo": ("h", "min", "s"), "angulo": ("°", "'", "\"")}
+NOMSEX = {"h": ("hora", "horas"), "min": ("minuto", "minutos"), "s": ("segundo", "segundos"), "°": ("grado", "grados"),
+          "'": ("minuto", "minutos"), "\"": ("segundo", "segundos")}
+
+
+def sx(vals, tipo, ceros=False):
+    """vals = (a, b, c) → '2 h 3 min 4 s' / '3° 25' 45"'. Omite componentes nulas (salvo que todo sea 0)."""
+    us = SEX[tipo]
+    partes = []
+    for v, un in zip(vals, us):
+        if v or ceros:
+            partes.append(f"{fmt(v)} {un}" if tipo == "tiempo" else f"{fmt(v)}{un}")
+    return " ".join(partes) if partes else (f"0 {us[-1]}" if tipo == "tiempo" else f"0{us[0]}")
+
+
+def norm(seg):
+    return (seg // 3600, seg % 3600 // 60, seg % 60)
+
+
+def aseg(vals):
+    return vals[0] * 3600 + vals[1] * 60 + vals[2]
+
+
+@generador("t4_sexag")
+def gen_sexag(rng, d, tipo="tiempo", modos=("a_menor", "a_compleja"), tres=None):
+    us = SEX[tipo]
+    modo = rng.choice(list(modos))
+    tres = (d == 3) if tres is None else tres
+    if tres:
+        vals = (rng.randint(1, 5 if tipo == "tiempo" else 40), rng.randint(1, 59), rng.randint(1, 59))
+        idx = (0, 1, 2)
+    else:
+        par = rng.choice([(0, 1), (1, 2)] if d == 1 else [(0, 1), (1, 2), (0, 2)])
+        vals = [0, 0, 0]
+        vals[par[0]] = rng.randint(1, 9 if par[0] == 0 else 59)
+        vals[par[1]] = rng.randint(1, 59)
+        vals = tuple(vals)
+        idx = par
+    menor = max(i for i in idx if vals[i]) if modo == "a_menor" else 2
+    mult = [3600, 60, 1]
+    if modo == "a_menor":
+        # a la unidad menor presente (o segundos si hay tres)
+        total = sum(v * mult[i] for i, v in enumerate(vals)) // mult[menor]
+        enun = f"¿Cuántos {NOMSEX[us[menor]][1]} son {sx(vals, tipo)}?"
+        resp = f"{fmt(total)} {us[menor]}" if tipo == "tiempo" else f"{fmt(total)}{us[menor]}"
+        m100 = [10000, 100, 1]
+        f100 = sum(v * m100[i] for i, v in enumerate(vals)) // m100[menor]
+        un = (lambda x: f"{fmt(x)} {us[menor]}") if tipo == "tiempo" else (lambda x: f"{fmt(x)}{us[menor]}")
+        dist = [(un(f100), "factor_100")]
+        if vals[0] and menor == 2:
+            dist.append((un(vals[0] * 60 + vals[1] * 60 + vals[2]), "h_60s"))
+        dist += [(un(sum(v * mult[i] for i, v in enumerate(vals[:menor])) // mult[menor]), "olvida_ultima"),
+                 (un(total + 60 if menor == 2 else total + 1), None)]
+        pasos = [(f"{sx(vals, tipo)} → {us[menor]}", un(total),
+                  " ".join(f"{vals[i]} {NOMSEX[us[i]][1]} = {fmt(vals[i] * mult[i] // mult[menor])} {NOMSEX[us[menor]][1]}." for i in range(menor) if vals[i])
+                  + f" Sumo todo: {un(total)}.")]
+    else:
+        total = aseg(vals) if tres or idx == (0, 2) or idx == (1, 2) else (vals[0] * 60 + vals[1])
+        if not (tres or 2 in idx):  # h y min → desde minutos
+            h, m = divmod(total, 60)
+            enun = f"Expresa {fmt(total)} {'minutos' if tipo == 'tiempo' else 'minutos (′)'} en forma compleja."
+            if tipo == "angulo":
+                enun = f"Expresa {fmt(total)}' en grados y minutos."
+            else:
+                enun = f"Expresa {fmt(total)} min en horas y minutos."
+            resp = sx((h, m, 0), tipo)
+            dist = [(sx((total // 100, total % 100, 0), tipo) if total >= 100 else None, "factor_100"),
+                    (sx((h, m + 1, 0), tipo), None), (sx((h + 1, m, 0), tipo), None), (sx((h - 1 if h > 1 else h + 2, m, 0), tipo), None)]
+            pasos = [(f"{fmt(total)} : 60", f"{h} y resto {m}", f"Cada 60 {NOMSEX[us[1]][1]} hacen 1 {NOMSEX[us[0]][0]}: {fmt(total)} : 60 = {h} y sobran {m}."),
+                     ("", resp, f"Por tanto: {resp}.")]
+        else:
+            h, m, s_ = norm(total)
+            un_s = "s" if tipo == "tiempo" else "\""
+            enun = f"Expresa {fmt(total)} {un_s} en forma compleja." if tipo == "tiempo" else f"Expresa {fmt(total)}\" en grados, minutos y segundos."
+            if tipo == "tiempo":
+                enun = f"Expresa {fmt(total)} s en {'horas, minutos y segundos' if h else 'minutos y segundos'}."
+            elif not h:
+                enun = f"Expresa {fmt(total)}\" en minutos y segundos."
+            resp = sx((h, m, s_), tipo)
+            q, r = divmod(total, 60)
+            dist = [(sx((q, 0, r), tipo) if q != h else None, "divide_una_vez"),
+                    (sx((total // 10000, total % 10000 // 100, total % 100), tipo) if total % 100 < 60 else sx((total // 10000, total % 10000 // 100, total % 100 - 40), tipo), "factor_100"),
+                    (sx((h, m + 1, s_), tipo), None), (sx((h + 1, m, s_), tipo), None), (sx((h, m, (s_ + 10) % 60), tipo), None)]
+            pasos = [(f"{fmt(total)} : 60", f"{fmt(q)} y resto {r}", f"Divido entre 60 para pasar a {NOMSEX[us[1]][1]}: {fmt(total)} : 60 = {fmt(q)} y sobran {r} {NOMSEX[us[2]][1]}."),
+                     (f"{fmt(q)} : 60", f"{h} y resto {m}", f"Vuelvo a dividir entre 60 para pasar a {NOMSEX[us[0]][1]}: {fmt(q)} : 60 = {h} y sobran {m} {NOMSEX[us[1]][1]}."),
+                     ("", resp, f"Resultado: {resp}.")]
+    adulto = f"El sistema sexagesimal va de 60 en 60 (1 {us[0]} = 60 {us[1]} = 3600 {us[2]}), no de 100 en 100. Para pasar a forma compleja hay que dividir entre 60 dos veces."
+    return mk(enun, resp, "t4_sexag", {"vals": list(vals), "tipo": tipo, "modo": modo}, dist, pasos, adulto)
+
+
+def _sex_rand(rng, tipo, d, mayor=None):
+    top = mayor or (12 if tipo == "tiempo" else 90)
+    if d == 1:
+        return (rng.randint(1, top), rng.randint(1, 59), 0)
+    return (rng.randint(1, top), rng.randint(1, 59), rng.randint(1, 59))
+
+
+@generador("t4_sexag_op")
+def gen_sexag_op(rng, d, tipo="tiempo", ops=("+", "-"), p_ref=0.0):
+    """Suma/resta en forma compleja. p_ref: probabilidad (ángulos) de 90°/180° − x (complementario/suplementario)."""
+    op = rng.choice(list(ops))
+    ref = None
+    if tipo == "angulo" and rng.random() < p_ref:
+        ref = rng.choice([90, 180])
+        b = (rng.randint(10, ref - 10), rng.randint(1, 59), rng.randint(1, 59) if d > 1 else 0)
+        a = (ref, 0, 0)
+        op = "-"
+    else:
+        for _ in range(100):
+            a, b = _sex_rand(rng, tipo, d), _sex_rand(rng, tipo, d)
+            if op == "-" and aseg(a) <= aseg(b):
+                a, b = b, a
+            if op == "-" and aseg(a) == aseg(b):
+                continue
+            lleva = (a[2] + b[2] >= 60 or a[1] + b[1] >= 60) if op == "+" else (a[2] < b[2] or a[1] < b[1])
+            if lleva or d == 1:
+                break
+    if op == "+":
+        r = norm(aseg(a) + aseg(b))
+    else:
+        r = norm(aseg(a) - aseg(b))
+    if tipo == "angulo":
+        r = (r[0], r[1], r[2])
+    enun = (f"Calcula el {'complementario' if ref == 90 else 'suplementario'} de {sx(b, tipo)}." if ref else
+            f"Calcula: {sx(a, tipo)} {'+' if op == '+' else '−'} {sx(b, tipo)}")
+    resp = sx(r, tipo)
+    dist = []
+    if op == "+":
+        dist.append((sx(tuple(x + y for x, y in zip(a, b)), tipo, ceros=False), "no_reagrupa"))
+        s2 = a[2] + b[2]
+        m2 = a[1] + b[1] + (1 if s2 >= 100 else 0)
+        dist.append((sx((a[0] + b[0] + (1 if m2 >= 100 else 0), m2 % 100, s2 % 100), tipo), "reagrupa_100"))
+        dist.append((sx(norm(aseg(a) + aseg(b) + 60), tipo), None))
+    else:
+        dist.append((sx(tuple(abs(x - y) for x, y in zip(a, b)), tipo), "sin_prestar"))
+        s, m, h = a[2] - b[2], a[1] - b[1], a[0] - b[0]
+        if s < 0:
+            s += 100
+            m -= 1
+        if m < 0:
+            m += 100
+            h -= 1
+        if h >= 0:
+            dist.append((sx((h, m, s), tipo), "presta_100"))
+        dist.append((sx(norm(aseg(a) - aseg(b) + 60), tipo), None))
+        dist.append((sx(norm(abs(aseg(a) - aseg(b) - 3600)), tipo), None))
+    us = SEX[tipo]
+    if op == "+":
+        crudo = tuple(x + y for x, y in zip(a, b))
+        pasos = [("sumo por columnas", sx(crudo, tipo), f"Sumo cada unidad por separado: {sx(crudo, tipo, ceros=True)}."),
+                 ("reagrupo", resp, f"Cada 60 {NOMSEX[us[2]][1]} forman 1 {NOMSEX[us[1]][0]} y cada 60 {NOMSEX[us[1]][1]} forman 1 {NOMSEX[us[0]][0]}: {resp}.")]
+    else:
+        pasos = [("preparo", sx(a, tipo, ceros=True), f"Coloco {sx(a, tipo, ceros=True)} encima de {sx(b, tipo, ceros=True)}. Si en una columna no puedo restar, pido 1 a la unidad de la izquierda, que vale 60 (no 100)."),
+                 ("resto", resp, f"Resto columna a columna: {resp}.")]
+    adulto = "Al sumar se reagrupa de 60 en 60; al restar, cada unidad que se pide prestada vale 60 de la unidad inferior, no 100."
+    return mk(enun, resp, "t4_sexag_op", {"a": list(a), "b": list(b), "op": op, "tipo": tipo, "ref": ref}, dist, pasos, adulto)
+
+
+@generador("t4_sexag_multdiv")
+def gen_sexag_multdiv(rng, d, tipo="tiempo", ops=("×", ":"), factor_max=12):
+    op = rng.choice(list(ops))
+    n = rng.randint(2, factor_max if d > 1 else min(6, factor_max))
+    if op == "×":
+        a = _sex_rand(rng, tipo, d, mayor=10 if tipo == "tiempo" else 40)
+        r = norm(aseg(a) * n)
+        enun = f"Calcula: ({sx(a, tipo)}) × {n}"
+        dist = [(sx(tuple(x * n for x in a), tipo), "no_reagrupa"), (sx(norm(aseg(a) * n + 60), tipo), None),
+                (sx((a[0] * n, a[1], a[2]), tipo), "solo_primera"), (sx(norm(aseg(a) * (n + 1)), tipo), None)]
+    else:
+        for _ in range(100):
+            q = _sex_rand(rng, tipo, d, mayor=5 if tipo == "tiempo" else 30)
+            a = norm(aseg(q) * n)
+            if a[0] % n or d == 1:
+                break
+        r = q
+        enun = f"Calcula: ({sx(a, tipo)}) : {n}"
+        pr = (a[0] // n, a[1] // n, a[2] // n)
+        dist = [(sx(pr, tipo) if pr != r else None, "pierde_resto"), (sx(norm(aseg(q) + 60), tipo), None),
+                (sx(norm(max(aseg(q) - 60, 1)), tipo), None), (sx((a[0] // n, a[1], a[2]), tipo), None)]
+    resp = sx(r, tipo)
+    us = SEX[tipo]
+    if op == "×":
+        crudo = tuple(x * n for x in a)
+        pasos = [("multiplico cada unidad", sx(crudo, tipo, ceros=True), f"Multiplico cada parte por {n}: {sx(crudo, tipo, ceros=True)}."),
+                 ("reagrupo", resp, f"Paso cada 60 {NOMSEX[us[2]][1]} a 1 {NOMSEX[us[1]][0]} y cada 60 {NOMSEX[us[1]][1]} a 1 {NOMSEX[us[0]][0]}: {resp}.")]
+    else:
+        q0, r0 = divmod(a[0], n)
+        m_tot = r0 * 60 + a[1]
+        q1, r1 = divmod(m_tot, n)
+        s_tot = r1 * 60 + a[2]
+        pasos = [(f"{a[0]} : {n}", f"{q0} y resto {r0}", f"Divido {NOMSEX[us[0]][1]}: {a[0]} : {n} = {q0} y sobran {r0}, que son {r0 * 60} {NOMSEX[us[1]][1]}."),
+                 (f"{m_tot} : {n}", f"{q1} y resto {r1}", f"Sumo {r0 * 60} + {a[1]} = {m_tot} {NOMSEX[us[1]][1]}; {m_tot} : {n} = {q1} y sobran {r1}, que son {r1 * 60} {NOMSEX[us[2]][1]}."),
+                 (f"{s_tot} : {n}", str(s_tot // n), f"Sumo {r1 * 60} + {a[2]} = {s_tot} {NOMSEX[us[2]][1]}; {s_tot} : {n} = {s_tot // n}. Resultado: {resp}.")]
+    adulto = ("Al multiplicar se reagrupa de 60 en 60; al dividir, el resto de cada unidad se pasa a la inferior multiplicándolo por 60 "
+              "y se suma antes de seguir dividiendo. Tirar los restos es el error típico.")
+    return mk(enun, resp, "t4_sexag_multdiv", {"a": list(a), "n": n, "op": op, "tipo": tipo}, dist, pasos, adulto)
+
+
+@generador("t4_decimal_sexag")
+def gen_decimal_sexag(rng, d, tipo="tiempo", segundos=False):
+    us = SEX[tipo]
+    a = rng.randint(1, 9 if tipo == "tiempo" else 89)
+    if d == 1:
+        f = D(rng.choice(["0.5", "0.25", "0.75", "0.2", "0.1", "0.4", "0.6", "0.8"]))
+    else:
+        opts = [D(x) / 100 for x in range(5, 100, 5)] + [D(x) / 10 for x in range(1, 10)]
+        if segundos and d == 3:
+            opts = [D(x) / 100 for x in range(1, 100) if x % 5]
+        f = rng.choice(opts)
+    val = D(a) + f
+    tot_s = int(f * 3600)
+    mm, ss = divmod(tot_s, 60)
+    compl = (a, mm, ss)
+    unid = " h" if tipo == "tiempo" else "°"
+    if rng.random() < 0.55:
+        enun = f"Expresa {fx(val)}{unid} en {'horas y minutos' if tipo == 'tiempo' else 'grados, minutos y segundos' if ss else 'grados y minutos'}."
+        resp = sx(compl, tipo)
+        dec = format(f.normalize(), "f").split(".")[1]
+        alt = int(dec) * 10 if len(dec) == 1 and int(dec) * 10 != mm else int(dec) + 10
+        dist = [(sx((a, int(dec), 0), tipo) if int(dec) != mm else None, "decimales_como_min"),
+                (sx((a, alt, 0), tipo) if alt < 60 else None, None),
+                (sx((a, mm + 10 if mm < 50 else mm - 10, ss), tipo), None), (sx((a + 1, mm, ss), tipo), None)]
+        pasos = [(f"{fx(f)} × 60", fx(f * 60), f"La parte entera son {a}{unid}. La parte decimal se multiplica por 60: {fx(f)} × 60 = {fx(f * 60)} {NOMSEX[us[1]][1]}."),
+                 ("", resp, f"Resultado: {resp}.")]
+    else:
+        enun = f"Expresa {sx(compl, tipo)} en {'horas' if tipo == 'tiempo' else 'grados'} con decimales."
+        resp = f"{fx(val)}{unid}"
+        mal = D(a) + D(mm) / 100 if mm < 100 else None
+        dist = [(f"{fx(mal)}{unid}" if mal is not None and mal != val else None, "min_entre_100"),
+                (f"{fx(D(a) + D(mm) / 10)}{unid}" if D(mm) / 10 < 1 else None, None),
+                (f"{fx(val + D('0.1'))}{unid}", None), (f"{fx(val - D('0.05'))}{unid}", None), (f"{fx(val + 1)}{unid}", None)]
+        pasos = [(f"{mm} : 60" + (f" + {ss} : 3600" if ss else ""), fx(f), f"Paso los {NOMSEX[us[1]][1]} a {NOMSEX[us[0]][1]} dividiendo entre 60: {mm} : 60 = {fx(D(mm) / 60)}" + (f"; y los {ss} {NOMSEX[us[2]][1]} entre 3600" if ss else "") + "."),
+                 ("", resp, f"Sumo la parte entera: {resp}.")]
+    adulto = "La parte decimal es una fracción de hora o grado: 0,5 = media = 30 minutos; 0,25 = 15 minutos. No se lee como minutos (2,5 h ≠ 2 h 5 min) ni se divide entre 100."
+    return mk(enun, resp, "t4_decimal_sexag", {"a": a, "f": str(f), "tipo": tipo}, dist, pasos, adulto)

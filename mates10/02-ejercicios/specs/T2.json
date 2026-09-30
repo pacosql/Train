@@ -1,4 +1,68 @@
 {
+ "OPER.DIV.01": {
+  "gen": "t2_div1",
+  "errores": {
+   "invierte": "E01",
+   "olvida_cero": "E02",
+   "tabla_equivocada": "E03",
+   "cifra_a_cifra": "E04"
+  },
+  "plantilla": "División exacta con divisor de una cifra"
+ },
+ "OPER.DIV.02": {
+  "gen": "t2_div_resto",
+  "kw": {
+   "cifras_divisor": 1
+  },
+  "errores": {
+   "resto_mayor": "E01",
+   "olvida_cero": "E02",
+   "resto_ultima_cifra": "E04",
+   "resta_mal": "E05"
+  },
+  "plantilla": "División entera con divisor de una cifra (cociente y resto)"
+ },
+ "OPER.DIV.03": {
+  "gen": "t2_div_resto",
+  "kw": {
+   "cifras_divisor": 2,
+   "prueba": true
+  },
+  "errores": {
+   "resto_mayor": "E02",
+   "olvida_cero": "E03",
+   "prueba_mal": "E04"
+  },
+  "plantilla": "División entera con divisor de 2–3 cifras y su prueba"
+ },
+ "OPER.DIV.04": {
+  "gen": "t2_div10",
+  "errores": {
+   "ceros": "E01",
+   "sin_resto": "E02",
+   "anade_ceros": "E03"
+  },
+  "plantilla": "Dividir entre 10, 100 o 1000"
+ },
+ "OPER.DIV.05": {
+  "gen": "t2_div_terminos",
+  "errores": {
+   "olvida_resto": "E01",
+   "resta_resto": "E02",
+   "no_quita_resto": "E03",
+   "resto_grande": "E04"
+  },
+  "plantilla": "Término desconocido con D = d·c + r"
+ },
+ "OPER.DIV.06": {
+  "gen": "t2_div_prop",
+  "errores": {
+   "solo_uno": "E01",
+   "suma_igual": "E02",
+   "resto_igual": "E03"
+  },
+  "plantilla": "Propiedad fundamental de la división"
+ },
  "OPER.MULT.01": {
   "gen": "t2_mult_sentido",
   "errores": {

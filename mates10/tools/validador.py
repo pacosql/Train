@@ -110,7 +110,8 @@ def eval_expr(expr):
     e = re.sub(r"√(\d+)", r"isqrt(\1)", e)
     e = re.sub(r"√\(", "isqrt(", e)
     e = re.sub(r"(\d+|\))([⁰¹²³⁴⁵⁶⁷⁸⁹]+)", lambda m: f"{m.group(1)}**{m.group(2).translate(SUPS)}", e)
-    e = re.sub(r"(\d+)", r"F(\1)", e)
+    # enteros y decimales con coma española (3,5 → F('3.5')), con aritmética exacta
+    e = re.sub(r"\d+(?:,\d+)?", lambda m: f"F('{m.group(0).replace(',', '.')}')", e)
 
     def isqrt(v):
         r = int(round(float(v) ** 0.5))

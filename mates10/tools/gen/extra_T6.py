@@ -548,7 +548,9 @@ def g_lineas(rng, d, tipo="valor"):
     """EST.GRAF.07. Claves: mas_alto_por_mayor_subida, eje_equivocado."""
     k = {1: 5, 2: 6, 3: 7}[d]
     for _ in range(300):
-        t = [rng.randint(8, 30) for _ in range(k)]
+        t = [rng.randint(10, 24)]
+        for _ in range(k - 1):
+            t.append(max(2, min(35, t[-1] + rng.choice([-7, -5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5, 7]))))
         dif = [t[i + 1] - t[i] for i in range(k - 1)]
         if tipo == "valor" and len(set(t)) == k:
             break
@@ -571,7 +573,7 @@ def g_lineas(rng, d, tipo="valor"):
         i = rng.randrange(k)
         ii = i + 1 if i + 1 < k else i - 1
         return hacer(base + f"¿Qué temperatura hizo el {ds[i]}?", f"{t[i]} °C", "lineas_valor", {"t": t},
-                     [(f"{t[ii]} °C", None), (f"{t[i] + 1} °C", None), (f"{i + 1} °C", "eje_equivocado")],
+                     [(f"{t[ii]} °C", None), (f"{t[i] + 1} °C", None), (f"{t[i] - 1} °C", None)],
                      [("leer", f"{t[i]} °C", f"Busco el {ds[i]} en el eje horizontal y leo la altura del punto en el vertical: {t[i]} °C.")],
                      "Eje horizontal: el tiempo; eje vertical: la cantidad. Se localiza el día y se lee la altura del punto.",
                      gen=[f"{t[i] - 1} °C", f"{t[i] + 2} °C"])
@@ -595,3 +597,216 @@ def g_lineas(rng, d, tipo="valor"):
                  [(par(im - 1), "mas_alto_por_mayor_subida")] + [(par(n), None) for n in otros],
                  [("restar", fmt(abs(ext)), "Cambios de un día al siguiente: " + ", ".join(f"{'+' if x > 0 else ''}{x}" for x in dif) + f". El que más {pal} es {par(i)} ({abs(ext)} °C).")],
                  "El mayor aumento se ve en el tramo más empinado, no en el punto más alto: hay que restar días seguidos.")
+
+
+@gen6("t6_sectores")
+def g_sectores(rng, d):
+    """EST.GRAF.08. Claves: porcentaje_por_cantidad, sector_mal_estimado."""
+    if d == 1:
+        fr = rng.choice([[F(1, 2), F(1, 4), F(1, 4)], [F(1, 2), F(1, 2)], [F(1, 4), F(3, 4)], [F(1, 3), F(1, 3), F(1, 3)], [F(1, 2), F(1, 3), F(1, 6)]])
+        N = rng.choice([12, 24, 36, 48, 60, 120])
+        nom = {F(1, 2): "la mitad del círculo", F(1, 4): "un cuarto del círculo", F(3, 4): "tres cuartos del círculo",
+               F(1, 3): "un tercio del círculo", F(1, 6): "un sexto del círculo"}
+        desc = lambda f: nom[f]
+    else:
+        for _ in range(100):
+            if d == 2:
+                fr = [F(x, 100) for x in rng.choice([[50, 25, 15, 10], [40, 30, 20, 10], [50, 30, 20], [60, 25, 15], [25, 25, 50], [70, 20, 10]])]
+                N = rng.choice([20, 40, 60, 80, 100, 200])
+            else:
+                cs = sorted(rng.sample(range(1, 20), 3))
+                fr = [F(5 * (b - a), 100) for a, b in zip([0] + cs, cs + [20])]
+                N = rng.choice([120, 160, 240, 300, 400, 500, 600, 800, 1000])
+            if all((f * N).denominator == 1 for f in fr):
+                break
+        desc = lambda f: pc(f, 0)
+    ops = rng.sample(["fútbol", "baloncesto", "natación", "tenis", "atletismo"] if rng.random() < 0.5 else
+                     ["playa", "montaña", "pueblo", "ciudad", "campamento"], len(fr))
+    i = rng.randrange(len(fr))
+    f = fr[i]
+    v = f * N
+    graf = "\n".join(f"«{o}»: {desc(x)}" for o, x in zip(ops, fr))
+    enun = f"En un diagrama de sectores con las respuestas de {N} personas:\n{graf}\n¿Cuántas personas eligieron «{ops[i]}»?"
+    malo = {F(1, 4): F(1, 3), F(1, 3): F(1, 4), F(1, 2): F(1, 3), F(3, 4): F(2, 3), F(1, 6): F(1, 4)}.get(f, f + F(5, 100))
+    dis = [(fmt(int(f * 100)) if d > 1 else fmt(int(round(f * 100))), "porcentaje_por_cantidad"), (fmt(int(malo * N)) if (malo * N).denominator == 1 else fmt(round(float(malo * N))), "sector_mal_estimado"),
+           (fmt(int(N * (1 - f))), None), (fmt(int(v) + (10 if N > 100 else 2)), None)]
+    txt = f"El sector de «{ops[i]}» es {desc(f)} del total: {ff(f) if d == 1 else pc(f, 0)} de {N} = {int(v)}."
+    return hacer(enun, fmt(int(v)), "sectores", {"N": N, "f": str(f)}, dis, [("parte × total", fmt(int(v)), txt)],
+                 "Cada sector es una fracción del total: cantidad = fracción (o porcentaje) × total de datos.",
+                 gen=[fmt(int(v) + 1), fmt(int(v) * 2)])
+
+
+@gen6("t6_angulo_sector")
+def g_angulo_sector(rng, d):
+    """EST.GRAF.09. Claves: cien_grados, absoluta_por_360, reparto_igual."""
+    Ns = {1: [10, 12, 18, 20], 2: [24, 30, 36, 40, 45], 3: [60, 72, 90, 120, 180]}[d]
+    for _ in range(200):
+        N = rng.choice(Ns)
+        k = rng.randint(3, 4)
+        cs = sorted(rng.sample(range(1, N), k - 1))
+        fs = [b - a for a, b in zip([0] + cs, cs + [N])]
+        i = rng.randrange(k)
+        ang = F(fs[i] * 360, N)
+        if ang.denominator == 1 and ang != F(360, k) and min(fs) > 0:
+            break
+    else:
+        return None
+    ctx = rng.sample(DEPORTES, k)
+    tabla = ", ".join(f"{c}: {x}" for c, x in zip(ctx, fs))
+    enun = f"Encuesta a {N} alumnos sobre su deporte favorito: {tabla}.\n¿Cuántos grados mide el sector de «{ctx[i]}» en el diagrama de sectores?"
+    pct_ = F(fs[i] * 100, N)
+    dis = [(dec(pct_, 1) + "°", "cien_grados"), (fmt(fs[i] * 360) + "°", "absoluta_por_360"), (fmt(360 // k) + "°" if 360 % k == 0 else dec(F(360, k), 1) + "°", "reparto_igual")]
+    return hacer(enun, fmt(int(ang)) + "°", "angulo_sector", {"f": fs[i], "N": N}, dis,
+                 [("f/N · 360°", fmt(int(ang)) + "°", f"El sector ocupa la misma parte del círculo que los alumnos del total: {fs[i]}/{N} · 360° = {int(ang)}°.")],
+                 "Ángulo del sector = frecuencia relativa × 360°. Los ángulos de todos los sectores suman 360°.",
+                 gen=[fmt(int(ang) + 10) + "°", fmt(int(ang) * 2) + "°", fmt(abs(int(ang) - 10)) + "°"])
+
+
+def _histo(rng, d):
+    w = rng.choice([2, 5, 10])
+    a0 = rng.randint(1, 5) * w
+    k = rng.randint(4, 6)
+    fs = [rng.randint(1, 12) for _ in range(k)]
+    lims = [a0 + i * w for i in range(k + 1)]
+    return w, lims, fs
+
+
+@gen6("t6_histograma")
+def g_histograma(rng, d, tipo="clase"):
+    """EST.GRAF.10. Claves: barra_como_valor, extremo_mal, solo_una_clase."""
+    for _ in range(100):
+        w, lims, fs = _histo(rng, d)
+        if len(set(fs)) >= len(fs) - 1:
+            break
+    k = len(fs)
+    ctx, ud = rng.choice([("tiempo en una carrera", "minutos"), ("peso de unas mochilas", "kg"), ("edad de los socios de un club", "años")])
+    graf = "\n".join(f"barra de {lims[i]} a {lims[i + 1]} {ud}: {fs[i]}" for i in range(k))
+    base = f"Histograma del {ctx} (cada barra va desde su extremo izquierdo, incluido, hasta el derecho, sin incluir):\n{graf}\n"
+    if tipo == "clase":
+        i = rng.randrange(1, k)
+        x = lims[i]
+        enun = base + f"Un dato vale exactamente {x} {ud}. ¿Cuántos datos tiene la barra en la que está contado?"
+        return hacer(enun, fmt(fs[i]), "histo_clase", {"fs": fs, "i": i}, [(fs[i - 1], "extremo_mal"), (fs[i - 1] + fs[i], None), (fs[i] + 1, None)],
+                     [("[a, b)", fmt(fs[i]), f"{x} es el extremo izquierdo de la barra de {lims[i]} a {lims[i + 1]}, así que está en ella: altura {fs[i]}.")],
+                     "Cada barra es un intervalo [a, b): el extremo izquierdo entra y el derecho pertenece a la barra siguiente.",
+                     gen=cerca(fs[i], rng, minimo=1))
+    if tipo == "tramo":
+        n = 2 if d < 3 else rng.choice([2, 3])
+        i = rng.randrange(0, k - n + 1)
+        v = sum(fs[i:i + n])
+        enun = base + f"¿Cuántos datos hay entre {lims[i]} y {lims[i + n]} {ud}?"
+        return hacer(enun, fmt(v), "histo_tramo", {"fs": fs, "i": i, "n": n}, [(fs[i], "solo_una_clase"), (fs[i + n - 1], "solo_una_clase"),
+                                                                             (v + (fs[i + n] if i + n < k else fs[i - 1]), None)],
+                     [("sumar barras", fmt(v), f"Ese tramo ocupa {n} barras: {' + '.join(map(str, fs[i:i + n]))} = {v}.")],
+                     "Un tramo más ancho que una clase se obtiene sumando las alturas de las barras que abarca.", gen=cerca(v, rng))
+    i = rng.randrange(k)
+    x = lims[i] + (w // 2 if w > 2 else 1)
+    enun = base + f"¿Cuántos datos valen exactamente {x} {ud}?"
+    return hacer(enun, "no se puede saber con el histograma", "histo_exacto", {"fs": fs, "i": i},
+                 [(fmt(fs[i]), "barra_como_valor"), (fmt(fs[i] // 2 if fs[i] > 1 else fs[i] + 1), None), ("0", None)],
+                 [("", "", f"La barra de {lims[i]} a {lims[i + 1]} cuenta {fs[i]} datos, pero no dice cuántos valen exactamente {x}: solo que están en ese intervalo.")],
+                 "Una barra de un histograma no representa un valor, sino todos los datos de un intervalo.", gen=["1"])
+
+
+@gen6("t6_poligono")
+def g_poligono(rng, d, tipo="vertice"):
+    """EST.GRAF.12. Claves: poligono_extremos, barras_separadas."""
+    w = rng.choice([2, 4, 10, 20]) if d < 3 else rng.choice([5, 10, 3])
+    a0 = rng.randint(2, 8) * w
+    k = rng.randint(4, 6)
+    fs = [rng.randint(2, 15) for _ in range(k)]
+    lims = [a0 + i * w for i in range(k + 1)]
+    mc = lambda i: F(lims[i] + lims[i + 1], 2)
+    ctx = rng.choice(["Peso (kg)", "Altura (cm)", "Tiempo (min)", "Edad (años)"])
+    tabla = "\n".join(f"[{lims[i]}, {lims[i + 1]}): {fs[i]}" for i in range(k))
+    base = f"{ctx} agrupados en clases de igual amplitud, con su frecuencia:\n{tabla}\n"
+    p = lambda x, y: f"({dec(x, 1)}, {y})"
+    if tipo == "vertice":
+        i = rng.randrange(k)
+        enun = base + f"En el polígono de frecuencias, ¿qué punto corresponde a la clase [{lims[i]}, {lims[i + 1]})?"
+        return hacer(enun, p(mc(i), fs[i]), "poligono_vertice", {"i": i}, [(p(lims[i], fs[i]), "poligono_extremos"), (p(lims[i + 1], fs[i]), None),
+                                                                          (p(mc(i), fs[i] + 1), None), (p(mc(i), fs[i] + 2), None)],
+                     [("(marca, f)", p(mc(i), fs[i]), f"El polígono une los puntos (marca de clase, frecuencia): la marca de [{lims[i]}, {lims[i + 1]}) es {dec(mc(i), 1)}, así que el punto es {p(mc(i), fs[i])}.")],
+                     "El polígono de frecuencias une los puntos medios de los techos de las barras: (marca de clase, f).")
+    if tipo == "cierre":
+        ini = rng.random() < 0.5
+        x = mc(0) - w if ini else mc(k - 1) + w
+        enun = base + f"El polígono de frecuencias se cierra sobre el eje horizontal. ¿En qué punto se cierra por la {'izquierda' if ini else 'derecha'}?"
+        return hacer(enun, p(x, 0), "poligono_cierre", {}, [(p(lims[0] if ini else lims[-1], 0), "poligono_extremos"),
+                                                           (p(x, fs[0] if ini else fs[-1]), None), (p(0, 0), None)],
+                     [("marca de la clase vecina", p(x, 0), f"Se añade una clase vacía {'antes' if ini else 'después'} y su marca, {dec(x, 1)}, con frecuencia 0: {p(x, 0)}.")],
+                     "El polígono se cierra en las marcas de las clases vecinas (vacías) con frecuencia 0.")
+    if tipo == "concentra":
+        if fs.count(max(fs)) > 1:
+            fs[fs.index(max(fs))] += 1
+        j = fs.index(max(fs))
+        tabla = "\n".join(f"[{lims[i]}, {lims[i + 1]}): {fs[i]}" for i in range(k))
+        base = f"{ctx} agrupados en clases de igual amplitud, con su frecuencia:\n{tabla}\n"
+        cl = lambda i: f"[{lims[i]}, {lims[i + 1]})"
+        otras = [i for i in range(k) if i != j]
+        rng.shuffle(otras)
+        return hacer(base + "¿En qué clase está la barra más alta del histograma (donde se concentran más datos)?", cl(j), "histo_modal", {"fs": fs},
+                     [(cl(i), None) for i in otras],
+                     [("mayor f", cl(j), f"La barra más alta es la de mayor frecuencia: {cl(j)} con {fs[j]}.")],
+                     "En un histograma de clases iguales, la altura de cada barra es la frecuencia de la clase.")
+    enun = base + "Al dibujar el histograma de esta tabla, ¿cómo deben ir las barras?"
+    return hacer(enun, "pegadas, una a continuación de otra", "histo_forma", {}, [("separadas por un hueco", "barras_separadas"),
+                                                                                 ("con anchos distintos según la frecuencia", None),
+                                                                                 ("en el orden de mayor a menor frecuencia", None)],
+                 [("", "", "Las clases son intervalos seguidos ([a, b), [b, c)…), así que las barras van pegadas sin huecos y con la misma anchura.")],
+                 "Histograma: barras contiguas (variable continua agrupada), de igual anchura si la amplitud es igual.")
+
+
+@gen6("t6_caja")
+def g_caja(rng, d, tipo="ric"):
+    """EST.GRAF.14. Claves: raya_es_media, largo_mas_datos, ric_por_rango."""
+    for _ in range(100):
+        v = sorted(rng.sample(range(0, 41 if d > 1 else 21), 5))
+        if min(b - a for a, b in zip(v, v[1:])) >= 2:
+            break
+    mn, q1, me, q3, mx = v
+    ctx = rng.choice(["notas (sobre 40) de un examen", "minutos que se tarda en llegar al instituto", "puntos conseguidos en un juego"])
+    desc = f"El bigote izquierdo empieza en {mn}; la caja va de {q1} a {q3} con una raya dentro en {me}; el bigote derecho llega a {mx}."
+    base = f"Diagrama de caja y bigotes ({ctx}). {desc}\n"
+    if tipo == "ric":
+        r = q3 - q1
+        return hacer(base + "¿Cuál es el rango intercuartílico?", fmt(r), "caja_ric", {"v": v}, [(mx - mn, "ric_por_rango"), (me - q1, None), (q3 - me, None), (me, None)],
+                     [("Q3 − Q1", fmt(r), f"Q1 = {q1} y Q3 = {q3} son los bordes de la caja: RIC = {q3} − {q1} = {r}.")],
+                     "RIC = Q3 − Q1 (anchura de la caja, donde está el 50 % central). Rango = máx − mín.", gen=cerca(r, rng, 1, minimo=1))
+    if tipo == "elemento":
+        el = rng.choice([("la mediana", me), ("el primer cuartil Q1", q1), ("el tercer cuartil Q3", q3)])
+        return hacer(base + f"¿Cuánto vale {el[0]}?", fmt(el[1]), "caja_elemento", {"v": v},
+                     [(fmt(x), None) for x in v if x != el[1]],
+                     [("leer", fmt(el[1]), f"Mínimo {mn}, Q1 {q1} (borde izquierdo de la caja), mediana {me} (raya interior), Q3 {q3} (borde derecho), máximo {mx}.")],
+                     "Cinco números del diagrama: mínimo, Q1, mediana, Q3 y máximo.")
+    if tipo == "raya":
+        return hacer(base + "¿Qué medida representa la raya que hay dentro de la caja?", "la mediana", "caja_raya", {"v": v},
+                     [("la media", "raya_es_media"), ("la moda", None), ("el rango", None)],
+                     [("", "la mediana", f"La raya interior ({me}) marca la mediana: deja la mitad de los datos a cada lado.")],
+                     "La caja se construye con cuartiles; la raya central es Q2 = mediana, no la media.")
+    if tipo == "porcentaje":
+        tramo = rng.choice([("entre " + str(q3) + " y " + str(mx) + " (el bigote derecho)", "25 %"), ("entre " + str(mn) + " y " + str(q1) + " (el bigote izquierdo)", "25 %"),
+                            ("entre " + str(q1) + " y " + str(q3) + " (la caja)", "50 %"), ("entre " + str(mn) + " y " + str(me), "50 %")])
+        largo = "más del 25 %" if tramo[1] == "25 %" else "más del 50 %"
+        return hacer(base + f"¿Qué porcentaje aproximado de los datos está {tramo[0]}?", tramo[1], "caja_pct", {"v": v},
+                     [(largo, "largo_mas_datos"), ("75 %" if tramo[1] != "75 %" else "100 %", None), ("50 %" if tramo[1] == "25 %" else "25 %", None)],
+                     [("cuartos", tramo[1], "Los cuatro tramos (bigote, media caja, media caja, bigote) tienen cada uno alrededor del 25 % de los datos, aunque su longitud sea distinta.")],
+                     "Cada tramo del diagrama de caja contiene un cuarto de los datos; un tramo más largo solo indica datos más dispersos.")
+    # comparar dos grupos
+    for _ in range(100):
+        w1, w2 = rng.sample(range(3, 15), 2)
+        me2 = me
+        if abs(w1 - w2) >= 3:
+            break
+    b = [me - w2 // 2 - rng.randint(2, 5), me - w2 // 2, me, me + (w2 - w2 // 2), me + (w2 - w2 // 2) + rng.randint(2, 5)]
+    a = [me - w1 // 2 - rng.randint(1, 3), me - w1 // 2, me, me + (w1 - w1 // 2), me + (w1 - w1 // 2) + rng.randint(1, 3)]
+    if (a[4] - a[0] > b[4] - b[0]) == (w1 > w2):
+        a[0] -= 0
+    homog = "el grupo A" if w1 < w2 else "el grupo B"
+    otro = "el grupo B" if w1 < w2 else "el grupo A"
+    f5 = lambda x: f"mín {x[0]}, Q1 {x[1]}, Me {x[2]}, Q3 {x[3]}, máx {x[4]}"
+    enun = (f"Diagramas de caja de las notas de dos grupos:\nGrupo A: {f5(a)}\nGrupo B: {f5(b)}\n"
+            "¿Qué grupo tiene las notas centrales más parecidas entre sí (menos dispersas)?")
+    return hacer(enun, homog, "caja_comparar", {"a": a, "b": b}, [(otro, None), ("los dos igual, porque tienen la misma mediana", None), ("no se puede saber", None)],
+                 [("comparar RIC", homog, f"RIC de A = {a[3] - a[1]}, RIC de B = {b[3] - b[1]}. La caja más estrecha indica el 50 % central más agrupado: {homog}.")],
+                 "Para comparar dispersión se mira la anchura de la caja (RIC); la misma mediana no implica la misma dispersión.")

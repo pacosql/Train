@@ -462,3 +462,555 @@ def gen_complejo_08(rng, d):
                (", ".join(P(base, (ang // n) + 360 * k) if ang % n == 0 else P(base, args[0] + 360 * k) for k in range(n)), "E03"),
                (", ".join(P(base, (args[0] + 360 * k // (n + 1)) % 360) for k in range(n)), None)], pasos,
               "Un complejo no nulo tiene exactamente n raíces n-ésimas: mismo módulo ⁿ√r y argumentos separados 360°/n.")
+
+
+# ---------------------------------------------------------------- DECIMALES (numeración)
+
+def fem(s):
+    """Numeral en femenino (unidades, décimas, centésimas)."""
+    if s == "uno":
+        return "una"
+    s = s.replace("ientos", "ientas").replace("quinientos", "quinientas")
+    if s.endswith("veintiuno"):
+        s = s[:-9] + "veintiuna"
+    elif s.endswith(" uno"):
+        s = s[:-4] + " una"
+    return s
+
+
+def cant(n, sing, plur):
+    return f"una {sing}" if n == 1 else f"{fem(letras(n))} {plur}"
+
+
+ORD_DEC = {1: ("décima", "décimas"), 2: ("centésima", "centésimas"), 3: ("milésima", "milésimas")}
+
+
+def dec_palabras(e, k, nd):
+    return f"{cant(e, 'unidad', 'unidades')} y {cant(k, *ORD_DEC[nd])}"
+
+
+@generador("t3_dec_01")
+def gen_dec_01(rng, d):
+    if d == 1:
+        e, k = rng.randint(0, 20), rng.randint(1, 9)
+        v = F(e) + F(k, 10)
+        txt = dec_palabras(e, k, 1)
+        pasos = [("décimas", D(v), f"Las décimas van en el primer lugar después de la coma: {txt} = {D(v)}.")]
+        return mk(f"Escribe con cifras: {txt}.", D(v), "t3_dec_leer", {"e": e, "k": k, "nd": 1},
+                  [(f"{e}{k}", "E03"), (D(F(e) + F(k, 100)), None), (D(F(k) + F(e, 10)) if e < 10 else D(F(e) + F(k, 1000)), None)], pasos,
+                  "Una cifra decimal = décimas; dos = centésimas.", genericos=[D(v + 1), D(F(e * 10 + k, 100))])
+    if d == 2 or rng.random() < 0.4:
+        if rng.random() < 0.5 or d == 3:
+            e = rng.randint(1, 99 if d == 2 else 999)
+            k = rng.randint(1, 9) if rng.random() < 0.6 else rng.randint(11, 99)
+            v = F(e) + F(k, 100)
+            txt = dec_palabras(e, k, 2)
+            pasos = [("centésimas", D(v), f"Las centésimas ocupan el segundo lugar tras la coma; si hay menos de diez centésimas, las décimas son 0: {txt} = {D(v)}.")]
+            dist = [(D(F(e) + F(k, 10)) if k < 10 else None, "E01"), (f"{fmt(e * 100 + k)}", "E03"), (D(F(e) + F(k, 1000)), None), (D(F(e) + F(k, 10)) if k >= 10 else None, None)]
+            return mk(f"Escribe con cifras: {txt}.", D(v), "t3_dec_leer", {"e": e, "k": k, "nd": 2}, dist, pasos,
+                      "El cero de las décimas es la trampa: «tres unidades y siete centésimas» es 3,07, no 3,7.",
+                      genericos=[D(v + F(1, 10)), D(v + 1)])
+        e, k = rng.randint(1, 99), rng.randint(1, 9)
+        v = F(e) + F(k, 10)
+        pasos = [("leer", dec_palabras(e, k, 1), f"En {D(v)} hay una sola cifra decimal: son décimas. Se lee {dec_palabras(e, k, 1)}.")]
+        return mk(f"¿Cómo se lee {D(v)}?", dec_palabras(e, k, 1), "t3_dec_leer_inv", {"v": D(v)},
+                  [(dec_palabras(e, k, 2), "E02"), (dec_palabras(e, k, 3), None), (dec_palabras(k, e, 1) if e != k and e < 1000 else None, None)], pasos,
+                  "El nombre de la parte decimal lo da la última cifra: una cifra, décimas; dos, centésimas.",
+                  genericos=[f"{fem(letras(e * 10 + k))} centésimas"])
+    e, c = rng.randint(1, 60), rng.choice([rng.randint(1, 9), rng.randint(10, 95)])
+    v = F(e) + F(c, 100)
+    txt = f"{letras(e)} euros con {letras(c)} céntimo{'s' if c > 1 else ''}".replace("uno euros", "un euros").replace("un euros", "un euros")
+    txt = txt.replace("uno euros", "un euros")
+    if txt.startswith("un euros"):
+        txt = "un euro" + txt[8:]
+    txt = txt.replace("y uno euros", "y un euros").replace("veintiuno euros", "veintiún euros").replace(" uno céntimo", " un céntimo")
+    resp = D(v, 2) + " €"
+    pasos = [("céntimos", resp, f"Un céntimo es una centésima de euro: {c} céntimos = {D(F(c, 100), 2)} €. Total: {resp}.")]
+    return mk(f"Escribe con cifras el precio: {txt}.", resp, "t3_dec_precio", {"e": e, "c": c},
+              [(D(F(e) + F(c, 10) if c < 10 else F(e) + F(c, 1000)) + " €", "E01" if c < 10 else None), (f"{fmt(e * 100 + c)} €", "E03"), (D(F(e) + F(c, 1000), 3) + " €", None)], pasos,
+              "Los céntimos son centésimas de euro: siempre dos cifras tras la coma (5 céntimos = 0,05 €).",
+              genericos=[D(v + F(1, 10), 2) + " €", D(v + 1, 2) + " €"])
+
+
+@generador("t3_dec_02")
+def gen_dec_02(rng, d):
+    t = rng.choice(["a", "e", "f"] if d == 1 else ["b", "c"] if d == 2 else ["d", "c3"])
+    if t == "a":
+        k = rng.randint(1, 9)
+        v = F(k, 10)
+        pasos = [("1 d = 10 c", str(10 * k), f"{D(v)} son {k} décimas, y cada décima son 10 centésimas: {k} × 10 = {10 * k} centésimas.")]
+        return mk(f"¿Cuántas centésimas son {D(v)}?", str(10 * k), "t3_dec_equiv", {"v": D(v), "u": "c"},
+                  [(str(k), "E02"), (str(100 * k), "E02"), (str(1000 * k), None)], pasos,
+                  "1 décima = 10 centésimas: 0,4 = 0,40 = 40 centésimas.", genericos=[str(k + 10)])
+    if t == "e":
+        n = rng.choice([x for x in range(11, 100) if x % 10])
+        pasos = [("centésimas", D(F(n, 100)), f"{n} centésimas son {n}/100 = {D(F(n, 100))}.")]
+        return mk(f"¿Qué número decimal son {n} centésimas?", D(F(n, 100)), "t3_dec_equiv", {"n": n, "u": "c"},
+                  [(D(F(n, 10)), "E02"), (D(F(n, 1000)), "E02"), (str(n), None)], pasos, "Centésima = 1/100: segunda cifra después de la coma.")
+    if t == "f":
+        k = rng.randint(1, 9)
+        a, b = D(F(k, 10)), D(F(k, 10), 2)
+        e = rng.randint(0, 9)
+        a, b = D(e + F(k, 10)), D(e + F(k, 10), 2)
+        pasos = [("0,5 = 0,50", "iguales", f"{b} son {10 * k + e * 100} centésimas y {a} son {k + e * 10} décimas, que también son {10 * k + e * 100} centésimas: valen lo mismo.")]
+        return mk(f"¿Qué número es mayor: {a} o {b}?", "Son iguales", "t3_dec_ceros", {"v": a},
+                  [(b, "E01"), (a, None), ("No se pueden comparar", None)], pasos,
+                  "Añadir ceros a la derecha de la parte decimal no cambia el valor: 0,5 = 0,50 = 0,500.", datos={"opciones_fijas": True})
+    if t == "b":
+        e, k = rng.randint(1, 30), rng.randint(1, 9)
+        v = F(e) + F(k, 10)
+        pasos = [("1 u = 10 d", str(10 * e + k), f"{e} unidades son {10 * e} décimas; más {k} décimas: {10 * e + k} décimas.")]
+        return mk(f"¿Cuántas décimas son {D(v)}?", str(10 * e + k), "t3_dec_equiv", {"v": D(v), "u": "d"},
+                  [(str(k), "E03"), (str(100 * e + 10 * k), "E02"), (str(e + k), None)], pasos,
+                  "Cada unidad son 10 décimas: hay que contar también la parte entera.")
+    if t in ("c", "c3"):
+        e, k = rng.randint(1, 9 if d == 2 else 60), rng.randint(11, 99)
+        if k % 10 == 0:
+            k += 1
+        v = F(e) + F(k, 100)
+        pasos = [("1 u = 100 c", str(100 * e + k), f"{e} unidad{'es' if e > 1 else ''} = {100 * e} centésimas; más {k}: {100 * e + k} centésimas.")]
+        return mk(f"¿Cuántas centésimas son {D(v)}?", fmt(100 * e + k), "t3_dec_equiv", {"v": D(v), "u": "c"},
+                  [(str(k), "E03"), (fmt(10 * e + k // 10), "E02"), (fmt(1000 * e + 10 * k), "E02")], pasos,
+                  "Cada unidad son 100 centésimas: 2,35 = 235 centésimas, no 35.")
+    e, k = rng.randint(1, 40), rng.randint(1, 9)
+    v = F(e) + F(k, 10)
+    pasos = [("× 100", fmt(100 * e + 10 * k), f"{D(v)} = {D(v, 2)}: son {fmt(100 * e + 10 * k)} centésimas.")]
+    return mk(f"¿Cuántas centésimas son {D(v)}?", fmt(100 * e + 10 * k), "t3_dec_equiv", {"v": D(v), "u": "c"},
+              [(fmt(10 * e + k), "E02"), (str(10 * k), "E03"), (str(k), "E03")], pasos,
+              "Añadiendo un cero, 3,2 = 3,20: se ve que son 320 centésimas.")
+
+
+ORDENES = {1: ("décimas", "decenas"), 2: ("centésimas", "centenas"), 3: ("milésimas", "unidades de millar")}
+
+
+@generador("t3_dec_03")
+def gen_dec_03(rng, d):
+    if d in (1, 2):
+        for _ in range(50):
+            e = rng.randint(1, 999 if d == 2 else 99)
+            ds_ = [rng.randint(0, 9) for _ in range(3)]
+            if ds_[2] == 0:
+                continue
+            pos = rng.randint(1, 3)
+            dig = ds_[pos - 1]
+            todos = str(e) + "".join(map(str, ds_))
+            if dig == 0 or todos.count(str(dig)) != 1:
+                continue
+            break
+        else:
+            return None
+        v = F(e) + F(int("".join(map(str, ds_))), 1000)
+        if d == 1:
+            val = F(dig, 10 ** pos)
+            pasos = [("posición", ORDENES[pos][0], f"En {D(v)} la cifra {dig} está en el lugar {pos} tras la coma: son {ORDENES[pos][0]}."),
+                     ("valor", D(val), f"Vale {dig} {ORDENES[pos][0]} = {D(val)}.")]
+            return mk(f"¿Qué valor tiene la cifra {dig} en el número {D(v)}?", D(val), "t3_dec_valor", {"v": D(v), "cifra": dig},
+                      [(fmt(dig * 10 ** pos), "E01"), (str(dig), "E03"), (D(F(dig, 10 ** (pos + 1))) if pos < 3 else D(F(dig, 10 ** (pos - 1))), None)], pasos,
+                      "Tras la coma: décimas (0,1), centésimas (0,01), milésimas (0,001). No confundir décimas con decenas.")
+        pasos = [("posición", ORDENES[pos][0], f"Cuento lugares desde la coma: décimas, centésimas, milésimas. La cifra {dig} está en las {ORDENES[pos][0]}.")]
+        otros = [ORDENES[p][0] for p in (1, 2, 3) if p != pos]
+        return mk(f"En el número {D(v)}, ¿en qué orden está la cifra {dig}?", ORDENES[pos][0], "t3_dec_orden", {"v": D(v), "cifra": dig},
+                  [(ORDENES[pos][1], "E01"), (otros[0], None), (otros[1], None)], pasos,
+                  "Los órdenes decimales terminan en «-ésimas» y son simétricos a los enteros respecto de las unidades, no de la coma.",
+                  datos={"opciones_fijas": True})
+    # componer
+    partes = {}
+    for nombre, val in (("decenas", 10), ("unidades", 1), ("décimas", F(1, 10)), ("centésimas", F(1, 100)), ("milésimas", F(1, 1000))):
+        if rng.random() < 0.6:
+            partes[nombre] = (rng.randint(1, 9), val)
+    if "milésimas" not in partes and "centésimas" not in partes:
+        partes["milésimas"] = (rng.randint(1, 9), F(1, 1000))
+    if len(partes) < 2 or ("décimas" in partes and "centésimas" in partes and "milésimas" in partes):
+        partes.pop("décimas", None)
+    if len(partes) < 2:
+        partes["unidades"] = (rng.randint(1, 9), 1)
+    orden = ["decenas", "unidades", "décimas", "centésimas", "milésimas"]
+    items = [(n, partes[n]) for n in orden if n in partes]
+    v = sum(c * val for _, (c, val) in items)
+    SING = {"decenas": "decena", "unidades": "unidad", "décimas": "décima", "centésimas": "centésima", "milésimas": "milésima"}
+
+    def uno(n, c):
+        return f"{c} {SING[n] if c == 1 else n}"
+    txt = ", ".join(uno(n, c) for n, (c, _) in items[:-1]) + f" y {uno(items[-1][0], items[-1][1][0])}"
+    ent = "".join(str(c) for n, (c, val) in items if val >= 1) or "0"
+    decs = "".join(str(c) for n, (c, val) in items if val < 1)
+    e02 = f"{int(ent)},{decs}" if decs else None
+    pasos = [("tabla", D(v), f"Coloco cada cifra en su orden y pongo 0 en los que faltan: {D(v)}.")]
+    return mk(f"Escribe el número que tiene {txt}.", D(v), "t3_dec_componer", {"partes": txt},
+              [(e02 if e02 and e02 != D(v) else None, "E02"), (D(v * 10), None), (D(v / 10), None)], pasos,
+              "Los órdenes que no aparecen se rellenan con ceros: 5 unidades y 7 milésimas = 5,007.",
+              genericos=[D(v + F(1, 10)), D(v + F(1, 100)), D(v * 100)])
+
+
+@generador("t3_dec_04")
+def gen_dec_04(rng, d):
+    a, b = rng.sample(range(1, 10), 2)
+    I = rng.randint(1, 9) if d < 3 else rng.randint(0, 3)
+    if d == 1 or (d == 2 and rng.random() < 0.5):
+        # mayor: M = I,x ; E01 = I,(x−1)y ; E03 = (I−1),zzz ; E04 = I,0x
+        x = max(a, b)
+        y = rng.randint(x, 9) if x < 9 else 9
+        M = I + F(x, 10)
+        e01 = I + F(x - 1, 10) + F(y, 100 if d == 1 else 100) + (F(rng.randint(1, 9), 1000) if d == 2 else 0)
+        e03 = (I - 1) + F(rng.randint(800, 999), 1000)
+        e04 = I + F(x, 100)
+        nums = [M, e01, e03, e04]
+        if len(set(nums)) < 4 or max(nums) != M:
+            return None
+        lista = sorted(nums, key=lambda _: rng.random())
+        pasos = [("comparar", D(M), f"Comparo la parte entera: la mayor es {I}. Entre los que tienen {I}, miro las décimas: {D(M)} tiene {x} décimas, que es lo máximo. El mayor es {D(M)}.")]
+        return mk(f"¿Cuál es el mayor de estos números: {'; '.join(D(n) for n in lista)}?", D(M), "t3_dec_comp", {"nums": [D(n) for n in lista], "tipo": "mayor"},
+                  [(D(e01), "E01"), (D(e03), "E03"), (D(e04), "E04")], pasos,
+                  "Se compara la parte entera y después cifra a cifra desde las décimas. Tener más cifras no hace mayor a un decimal.",
+                  datos={"opciones_fijas": True})
+    if d == 2:
+        x = min(a, b)
+        m = I + F(10 * x + rng.randint(1, 9), 100)
+        e02 = m + F(rng.randint(1, 9), 1000)
+        e03 = (I + 1) + F(rng.randint(1, 3), 10)
+        g = I + F(x + 1, 10)
+        nums = [m, e02, e03, g]
+        if len(set(nums)) < 4 or min(nums) != m:
+            return None
+        lista = sorted(nums, key=lambda _: rng.random())
+        pasos = [("comparar", D(m), f"La parte entera menor es {I}. Entre esos, comparo décimas y después centésimas: el menor es {D(m)}.")]
+        return mk(f"¿Cuál es el menor de estos números: {'; '.join(D(n) for n in lista)}?", D(m), "t3_dec_comp", {"nums": [D(n) for n in lista], "tipo": "menor"},
+                  [(D(e02), "E02"), (D(e03), "E03"), (D(g), None)], pasos,
+                  "Ni más cifras significa mayor ni menos cifras significa mayor: se compara orden a orden.",
+                  datos={"opciones_fijas": True})
+    x, y = max(a, b), min(a, b)
+    Ist = I
+    nums = [Ist + F(x, 10), Ist + F(10 * y + x, 100), Ist + F(100 * y + x, 1000), Ist + F(10 * x + y, 100), Ist + F(10 * y + x, 1000)]
+    if len(set(nums)) < 5:
+        return None
+    lista = sorted(nums, key=lambda _: rng.random())
+    txt = [D(n) for n in lista]
+    resp = " < ".join(D(n) for n in sorted(nums))
+
+    def dec_part(s):
+        return s.split(",")[1]
+    e01 = " < ".join(sorted(txt, key=lambda s: (int(dec_part(s)), len(dec_part(s)))))
+    e02 = " < ".join(sorted(txt, key=lambda s: (-len(dec_part(s)), s)))
+    e04 = " < ".join(sorted(txt, key=lambda s: (float("0." + dec_part(s).replace("0", "")), len(s))))
+    pasos = [("comparar", resp, "Completo con ceros para que todos tengan tres decimales y comparo como números naturales: " +
+              ", ".join(f"{D(n)} → {D(n, 3)}" for n in sorted(nums)) + f". Orden: {resp}.")]
+    return mk(f"Ordena de menor a mayor: {'; '.join(txt)}.", resp, "t3_dec_ordenar", {"nums": txt},
+              [(e01 if e01 != resp else None, "E01"), (e02 if e02 != resp else None, "E02"), (e04 if e04 != resp else None, "E04")], pasos,
+              "Truco: igualar el número de decimales con ceros (0,5 = 0,500) y comparar como naturales.",
+              genericos=[" < ".join(reversed(resp.split(" < "))), " < ".join(sorted(txt))])
+
+
+@generador("t3_dec_06")
+def gen_dec_06(rng, d):
+    if d == 1:
+        den = rng.choice([10, 100])
+        n = rng.randint(1, 9) if den == 10 or rng.random() < 0.5 else rng.randint(11, 99)
+        v = F(n, den)
+        pasos = [(f"{n}/{den}", D(v), f"Dividir entre {den} es correr la coma {len(str(den)) - 1} lugar{'es' if den > 10 else ''} a la izquierda: {n}/{den} = {D(v)}.")]
+        return mk(f"Escribe {n}/{den} como número decimal.", D(v), "t3_dec_fracdec", {"n": n, "d": den},
+                  [(D(F(n, 10)) if den == 100 and n < 10 else None, "E01"), (f"{n},{den}", "E02"), (D(v * 10) if den == 100 and n >= 10 else D(v / 10), None), (D(v * 100) if v * 100 != n else None, None)], pasos,
+                  "El número de ceros del denominador indica cuántas cifras decimales hay: 7/100 = 0,07.")
+    if d == 2:
+        nd = rng.choice([1, 2, 2, 3])
+        n = rng.randint(1, 10 ** nd - 1)
+        if n % 10 == 0:
+            n += 1
+        e = rng.randint(0, 5)
+        v = e + F(n, 10 ** nd)
+        num = int(v * 10 ** nd)
+        resp = f"{num}/{10 ** nd}"
+        pasos = [("cifras decimales", resp, f"{D(v)} tiene {nd} cifra{'s' if nd > 1 else ''} decimal{'es' if nd > 1 else ''}: se quita la coma y se divide entre {10 ** nd}. {D(v)} = {resp}.")]
+        return mk(f"Escribe {D(v)} como fracción decimal.", resp, "t3_dec_decfrac", {"v": D(v)},
+                  [(f"{num}/{10 ** (nd - 1)}" if nd > 1 else f"{num}/100", "E03"), (f"{num}/{10 ** (nd + 1)}", "E03"), (f"{n}/{10 ** nd}" if e else f"{num}/{10 ** (nd + 2)}", None)], pasos,
+                  "Tantos ceros en el denominador como cifras decimales: 0,25 = 25/100, no 25/10.")
+    den = rng.choice([100, 1000])
+    n = rng.choice([rng.randint(1, 9), rng.randint(101, 9999)])
+    if n % 10 == 0:
+        n += 3
+    v = F(n, den)
+    pasos = [(f"{fmt(n)}/{fmt(den)}", D(v), f"Divido entre {fmt(den)}: corro la coma {len(str(den)) - 1} lugares a la izquierda (relleno con ceros si hace falta): {D(v)}.")]
+    return mk(f"Escribe {fmt(n)}/{fmt(den)} como número decimal.", D(v), "t3_dec_fracdec", {"n": n, "d": den},
+              [(D(F(n, 10)) if n < 10 else D(F(n, den // 10)), "E01"), (f"{n},{den}", "E02"), (D(v / 10), None)], pasos,
+              "El denominador 10, 100 o 1000 indica cuántas cifras decimales: 7/1000 = 0,007.")
+
+
+ORD_NOMBRE = {0: "las unidades", 1: "las décimas", 2: "las centésimas", 3: "las milésimas"}
+
+
+def _redondeo_casos(rng, d, ordenes, nd_extra=(1, 2)):
+    for _ in range(200):
+        o = rng.choice(ordenes)
+        ext = rng.choice(nd_extra)
+        nd = o + ext
+        e = rng.randint(0, 99)
+        dec = rng.randint(1, 10 ** nd - 1)
+        if d == 3:
+            # forzar arrastre: cifras 9 en el orden y siguiente ≥ 5
+            s = list(str(dec).zfill(nd))
+            for i in range(max(0, o - 1), o):
+                s[i] = "9"
+            if o == 0:
+                s[0] = str(rng.randint(5, 9))
+                e = rng.choice([9, 19, 29, 99, 49])
+            s[o] = str(rng.randint(5, 9))
+            dec = int("".join(s))
+        v = e + F(dec, 10 ** nd)
+        if (v * 10 ** nd).denominator != 1 or dec % 10 == 0:
+            continue
+        return v, o, nd
+    return None
+
+
+@generador("t3_dec_07")
+def gen_dec_07(rng, d):
+    r = _redondeo_casos(rng, d, [0, 1] if d == 1 else [0, 1, 2] if d == 2 else [1, 2])
+    if not r:
+        return None
+    v, o, nd = r
+    resp = D(redondear(v, o), o)
+    sig = int(str(int(v * 10 ** (o + 1)))[-1])
+    trunc = D(truncar(v, o), o)
+    ult = int(str(int(v * 10 ** nd))[-1])
+    e02 = D(truncar(v, o) + (F(1, 10 ** o) if ult >= 5 else 0), o) if nd > o + 1 else None
+    e03 = None
+    if sig >= 5 and o >= 1:
+        t = D(truncar(v, o), o)
+        last = int(t[-1])
+        if last == 9:
+            e03 = t[:-1] + "10"
+    e04 = D(redondear(v, o - 1), o - 1) if o >= 1 else D(redondear(v, 1), 1)
+    pasos = [("cifra siguiente", str(sig), f"Redondeo a {ORD_NOMBRE[o]}: miro la cifra siguiente, que es {sig}."),
+             ("subir o dejar", resp, (f"Como {sig} ≥ 5, sumo 1 a {ORD_NOMBRE[o]}" + (" (y arrastra a los órdenes de la izquierda)" if e03 or (o == 0 and str(int(v))[-1] == '9') else "") if sig >= 5 else f"Como {sig} < 5, se queda igual") + f": {resp}.")]
+    return mk(f"Redondea {D(v)} a {ORD_NOMBRE[o]}.", resp, "t3_redondeo", {"v": D(v), "orden": o},
+              [(trunc if trunc != resp else None, "E01"), (e02 if e02 and e02 != resp else None, "E02"), (e03, "E03"), (e04, "E04")], pasos,
+              "Solo se mira la cifra inmediatamente a la derecha del orden pedido; si es 5 o más se sube, arrastrando si hay nueves.",
+              genericos=[D(redondear(v, o) + F(1, 10 ** o), o), D(max(redondear(v, o) - F(1, 10 ** o), 0), o)])
+
+
+def dec_periodico(x):
+    """(texto con arco, anteperiodo, periodo) de un racional positivo."""
+    x = F(x)
+    ent, r = divmod(x.numerator, x.denominator)
+    den = x.denominator
+    digs, vistos = [], {}
+    while r and r not in vistos:
+        vistos[r] = len(digs)
+        r *= 10
+        digs.append(str(r // den))
+        r %= den
+    if not r:
+        return fmt(ent) + ("," + "".join(digs) if digs else ""), "".join(digs), ""
+    i = vistos[r]
+    ante, per = "".join(digs[:i]), "".join(digs[i:])
+    return fmt(ent) + "," + ante + "".join(c + "̅" for c in per), ante, per
+
+
+def puntos(x, n=6):
+    """0,1666… (expansión con puntos suspensivos)."""
+    x = F(x)
+    ent, r = divmod(x.numerator, x.denominator)
+    s = ""
+    for _ in range(n):
+        r *= 10
+        s += str(r // x.denominator)
+        r %= x.denominator
+    return fmt(ent) + "," + s + "…"
+
+
+@generador("t3_dec_08")
+def gen_dec_08(rng, d):
+    if d == 1:
+        n, den = rng.choice([(1, 2), (1, 4), (3, 4), (1, 5), (2, 5), (3, 5), (4, 5), (1, 8), (3, 8), (1, 10), (7, 10), (1, 20), (1, 25), (1, 50)])
+        if rng.random() < 0.3:
+            n += den * rng.randint(1, 3)
+    elif d == 2:
+        for _ in range(50):
+            den = rng.choice([8, 16, 20, 25, 40, 50]) if False else rng.choice([8, 20, 25, 4, 5])
+            n = rng.randint(1, 3 * den)
+            if n % den and ndec(F(n, den)) <= 3 and math.gcd(n, den) == 1:
+                break
+    else:
+        for _ in range(50):
+            den = rng.choice([3, 6, 7, 9, 11, 12, 15])
+            n = rng.randint(1, 2 * den)
+            if n % den and math.gcd(n, den) == 1:
+                break
+    v = F(n, den)
+    exacto = es_dec(v, 4)
+    resp = D(v) if exacto else D(v, 2)
+    enun = f"Escribe {n}/{den} como número decimal." if exacto else f"Escribe {n}/{den} como número decimal redondeado a las centésimas."
+    inv = F(den, n)
+    e01 = D(inv) if es_dec(inv, 3) else D(inv, 2)
+    pasos = [(f"{n} : {den}", resp, f"Una fracción es una división: {n} : {den} = {D(v) if exacto else puntos(v, 4)}" + ("." if exacto else f" ≈ {resp}."))]
+    return mk(enun, resp, "t3_frac_a_dec", {"n": n, "d": den},
+              [(e01, "E01"), (f"{n},{den}", "E02"), (D(F(den, 10 ** len(str(den)))) if n == 1 else f"0,{n}{den}", "E03" if n == 1 else "E02")], pasos,
+              "La raya de fracción significa «dividido entre»: numerador entre denominador. 3/4 no es 3,4 ni 0,4.",
+              genericos=[D(v * 10) if exacto else D(v * 10, 2), D(v + F(1, 10)) if exacto else D(v + F(1, 10), 2)])
+
+
+@generador("t3_dec_09")
+def gen_dec_09(rng, d):
+    if d == 1:
+        a = F(rng.randint(1, 99), 10)
+        b = a + F(1, 10)
+    elif d == 2:
+        a = F(rng.randint(1, 9)) / 10 * 0 + F(rng.randint(0, 9)) + F(rng.randint(0, 9) * 10 + 9, 100)
+        b = a + F(1, 100)
+        if b.denominator not in (10, 1, 2, 5):
+            return None
+    else:
+        a = F(rng.randint(1, 30)) + F(rng.randint(10, 999), 1000)
+        b = a + F(1, 1000)
+    m = (a + b) / 2
+    e03 = None
+    s = D(a)
+    if "," in s:
+        ult = int(s[-1])
+        if ult < 9:
+            e03 = s[:-1] + str(ult + 1)
+        elif s[-2] not in ",9":
+            e03 = s[:-2] + str(int(s[-2]) + 1) + "0"
+    fuera = b + (b - a) * rng.choice([2, 5, 10])
+    pasos = [("añadir cifras", D(m), f"Añado una cifra decimal a los dos: {D(a, ndec(m))} y {D(b, ndec(m))}. Entre ellos está {D(m)}.")]
+    return mk(f"¿Qué número decimal está comprendido entre {D(a)} y {D(b)}?", D(m), "t3_dec_entre", {"a": D(a), "b": D(b)},
+              [("No hay ninguno", "E01"), (D(fuera), "E02"), (e03 if e03 and e03 != D(m) else None, "E03"), (D(a - (b - a) / 2), None)], pasos,
+              "Entre dos decimales distintos siempre hay otros: basta añadir una cifra decimal (entre 2,3 y 2,4 está 2,35).",
+              datos={"opciones_fijas": True})
+
+
+TIPO_DEC = {"exacto": "Decimal exacto", "puro": "Periódico puro", "mixto": "Periódico mixto", "irr": "Decimal infinito no periódico"}
+
+
+def tipo_de(x):
+    den = F(x).denominator
+    while den % 2 == 0:
+        den //= 2
+    while den % 5 == 0:
+        den //= 5
+    if den == 1:
+        return "exacto"
+    d0 = F(x).denominator
+    return "puro" if d0 % 2 and d0 % 5 else "mixto"
+
+
+@generador("t3_dec_10")
+def gen_dec_10(rng, d):
+    if d in (1, 2):
+        for _ in range(100):
+            if d == 1:
+                den = rng.choice([2, 4, 5, 8, 20, 25, 3, 9, 11, 7, 6, 12, 15, 30])
+                n = rng.randint(1, 2 * den)
+                if math.gcd(n, den) != 1:
+                    continue
+                k = 1
+            else:
+                den = rng.choice([4, 8, 5, 20, 3, 9, 6, 12, 15, 45, 11, 22])
+                n = rng.randint(1, den)
+                k = rng.choice([3, 3, 7, 9, 11, 6])
+                if math.gcd(n, den) != 1:
+                    continue
+            N, Dn = n * k, den * k
+            if Dn > 100:
+                continue
+            break
+        else:
+            return None
+        v = F(N, Dn)
+        t = tipo_de(v)
+        t_mal = tipo_de(F(1, Dn)) if k > 1 else None  # clasificar por el denominador sin simplificar
+        dist = []
+        if t_mal and t_mal != t:
+            dist.append((TIPO_DEC[t_mal], "E01"))
+        if t == "exacto" and ndec(v) >= 3:
+            dist.append((TIPO_DEC["puro"], "E03"))
+        dist += [(TIPO_DEC[x], None) for x in ("exacto", "puro", "mixto", "irr") if x != t]
+        red = v.denominator
+        pasos = [("simplificar", fr(v), f"Simplifico: {N}/{Dn} = {fr(v)}." if k > 1 else f"{fr(v)} ya es irreducible."),
+                 ("factores del denominador", str(red), f"Factorizo el denominador {red}: " + ("solo tiene 2 y/o 5 → exacto." if t == "exacto" else "no tiene 2 ni 5 → periódico puro." if t == "puro" else "tiene 2 o 5 y otros primos → periódico mixto.")),
+                 ("comprobar", dec_periodico(v)[0], f"En efecto, {fr(v)} = {puntos(v) if t != 'exacto' else D(v)}.")]
+        return mk(f"¿Qué tipo de expresión decimal tiene la fracción {N}/{Dn}?", TIPO_DEC[t], "t3_tipo_dec", {"n": N, "d": Dn}, dist, pasos,
+                  "Se mira el denominador de la fracción IRREDUCIBLE: solo 2 y 5 → exacto; sin 2 ni 5 → periódico puro; mezcla → periódico mixto.",
+                  datos={"opciones_fijas": True})
+    for _ in range(100):
+        den = rng.choice([6, 12, 15, 30, 18, 36, 45, 22, 44, 55, 60, 90, 24, 75])
+        n = rng.randint(1, den - 1)
+        if math.gcd(n, den) != 1:
+            continue
+        txt, ante, per = dec_periodico(F(n, den))
+        if ante and per and len(per) <= 2 and ante != per:
+            break
+    else:
+        return None
+    if rng.random() < 0.5:
+        pasos = [("dividir", puntos(F(n, den), 7), f"{n} : {den} = {puntos(F(n, den), 7)}"),
+                 ("periodo", per, f"Las cifras que se repiten siempre son el periodo: {per}. Las de antes ({ante}) son el anteperiodo.")]
+        return mk(f"¿Cuál es el periodo de la expresión decimal de {n}/{den}?", per, "t3_periodo", {"n": n, "d": den, "pide": "periodo"},
+                  [(ante + per, "E02"), (ante, "E02"), (per[::-1] if len(per) > 1 and per[::-1] != per else per + per[0], None)], pasos,
+                  "Anteperiodo: cifras decimales que no se repiten. Periodo: el bloque que se repite indefinidamente.",
+                  genericos=[str((int(per) + 1) % 10), ante + "0"])
+    pasos = [("dividir", puntos(F(n, den), 7), f"{n} : {den} = {puntos(F(n, den), 7)}"),
+             ("anteperiodo", ante, f"El periodo es {per}; lo que hay entre la coma y el periodo es el anteperiodo: {ante}.")]
+    return mk(f"¿Cuál es el anteperiodo de la expresión decimal de {n}/{den}?", ante, "t3_periodo", {"n": n, "d": den, "pide": "anteperiodo"},
+              [(per, "E02"), (ante + per, "E02"), (str(n // den) if str(n // den) != ante else "0" + ante, None)], pasos,
+              "Anteperiodo: cifras decimales que no se repiten. Periodo: el bloque que se repite indefinidamente.",
+              genericos=[str((int(ante) + 1)), ante + "0"])
+
+
+@generador("t3_dec_11")
+def gen_dec_11(rng, d):
+    for _ in range(100):
+        I = rng.choice([0, 0, rng.randint(1, 5)])
+        if d == 1:
+            nd = rng.randint(1, 3)
+            dec = rng.randint(1, 10 ** nd - 1)
+            if dec % 10 == 0:
+                continue
+            v = I + F(dec, 10 ** nd)
+            txt = D(v)
+            resp = fr(v)
+            pasos = [("quitar la coma", f"{int(v * 10 ** nd)}/{10 ** nd}", f"{txt} tiene {nd} decimal{'es' if nd > 1 else ''}: {txt} = {int(v * 10 ** nd)}/{10 ** nd}."),
+                     ("simplificar", resp, f"Simplifico: {resp}.")]
+            dist = [(fr(F(int(v * 10 ** nd), 10 ** (nd - 1))) if nd > 1 else fr(F(int(v * 10), 100)), None), (fr(F(dec, 10 ** nd)) if I else fr(F(dec, 10 ** (nd + 1))), "E04" if I else None),
+                    (fr(F(int(v * 10 ** nd), 9 * 10 ** (nd - 1))), None)]
+            adulto = "Un decimal exacto es una fracción decimal: se quita la coma, se divide entre 10, 100… y se simplifica."
+            break
+        per_len = rng.randint(1, 2)
+        per = rng.randint(1, 10 ** per_len - 2)
+        if per_len == 2 and (per < 10 or per % 11 == 0):
+            continue
+        if d == 2:
+            v = I + F(per, 10 ** per_len - 1)
+            nueves = "9" * per_len
+            txt = dec_periodico(v)[0]
+            if dec_periodico(v)[2] != str(per).zfill(per_len):
+                continue
+            resp = fr(v)
+            pasos = [("regla práctica", f"{I * (10 ** per_len - 1) + per}/{nueves}" if I else f"{per}/{nueves}",
+                      f"Periódico puro: numerador = número sin coma menos la parte entera ({int(str(I) + str(per).zfill(per_len))} − {I}); denominador = tantos 9 como cifras tiene el periodo ({nueves})."),
+                     ("simplificar", resp, f"Simplifico: {resp}.")]
+            dist = [(fr(I + F(per, 10 ** per_len)), "E01"), (fr(F(per, 10 ** per_len - 1)) if I else fr(F(per, 10 ** per_len - 1) + 1), "E04" if I else None),
+                    (fr(I + F(per, 10 ** per_len + 1)), None)]
+            adulto = "0,333… = 3/9 = 1/3: el periodo va sobre tantos nueves como cifras tenga. Ojo con la parte entera."
+        else:
+            a_len = rng.randint(1, 2)
+            ante = rng.randint(0, 10 ** a_len - 1)
+            v = I + (F(ante) + F(per, 10 ** per_len - 1)) / 10 ** a_len
+            t, a_, p_ = dec_periodico(v)
+            if a_ != str(ante).zfill(a_len) or p_ != str(per).zfill(per_len):
+                continue
+            txt = t
+            todo = int(str(I) + a_ + p_)
+            sinp = int(str(I) + a_)
+            den = int("9" * per_len + "0" * a_len)
+            resp = fr(v)
+            pasos = [("regla práctica", f"({todo} − {sinp})/{den}", f"Periódico mixto: numerador = número sin coma ({todo}) menos la parte no periódica ({sinp}); denominador = un 9 por cifra del periodo y un 0 por cifra del anteperiodo ({den})."),
+                     ("simplificar", resp, f"({todo} − {sinp})/{den} = {todo - sinp}/{den} = {resp}.")]
+            dist = [(fr(F(todo, den)), "E02"), (fr(F(todo - sinp, int("9" * (per_len + a_len)))), "E03"), (fr(F(todo - sinp, 10 ** (per_len + a_len))), "E01"),
+                    (fr(v - I) if I else None, "E04")]
+            adulto = "En el mixto hay que restar la parte no periódica y poner nueves (periodo) seguidos de ceros (anteperiodo)."
+        break
+    else:
+        return None
+    dist = [(x, k) for x, k in dist if x != resp]
+    return mk(f"Halla la fracción generatriz (irreducible) de {txt}" + (f" = {puntos(v)}" if d > 1 else "") + ".", resp, "t3_generatriz", {"v": txt}, dist, pasos, adulto,
+              genericos=[fr(v + 1), fr(v * 2), fr(v + F(1, 9))])
