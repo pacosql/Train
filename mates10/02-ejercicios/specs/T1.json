@@ -1,14 +1,529 @@
 {
- "NUM.CONT.01": {"gen": "t1_cont01", "kw_por_dificultad": {"3": {"desordenado": true}}, "errores": {"E01": "E01", "E02": "E02", "E04": "E04"}, "plantilla": "¿Cuántos hay? (colección de 2 a 10 dibujos)"},
- "NUM.CONT.02": {"gen": "t1_cont02", "kw_por_dificultad": {"1": {"modos": ["dado"]}, "2": {"modos": ["dado", "marco10"]}, "3": {"modos": ["marco10"]}}, "errores": {"E01": "E01", "E02": "E02", "E03": "E03"}, "plantilla": "Cantidad en un dado o marco de 10 sin contar"},
- "NUM.CONT.03": {"gen": "t1_cont03", "kw_por_dificultad": {"1": {"modos": ["contar", "siguiente"]}, "2": {"modos": ["contar", "siguiente"]}, "3": {"modos": ["siguiente", "contar"]}}, "errores": {"E01": "E01", "E02": "E02", "E03": "E03"}, "plantilla": "Contar de 11 a 20 y número siguiente"},
- "NUM.CONT.04": {"gen": "t1_cont04", "errores": {"E01": "E01", "E02": "E02", "E03": "E03"}, "plantilla": "Número siguiente hasta 99"},
- "NUM.CONT.05": {"gen": "t1_cont05", "errores": {"E01": "E01", "E02": "E02", "E03": "E03"}, "plantilla": "Número anterior hasta 99"},
- "NUM.CONT.06": {"gen": "t1_cont06", "kw_por_dificultad": {"1": {"modos": ["adelante_decena"]}, "2": {"modos": ["adelante"]}, "3": {"modos": ["atras"]}}, "errores": {"E01": "E01", "E02": "E02", "E03": "E03"}, "plantilla": "Serie de 10 en 10 hasta 99"},
- "NUM.CONT.07": {"gen": "t1_cont07", "kw_por_dificultad": {"1": {"modos": ["adelante_par"]}, "2": {"modos": ["adelante_impar", "adelante_par"]}, "3": {"modos": ["cruce", "atras"]}}, "errores": {"E01": "E01", "E02": "E02", "E03": "E03"}, "plantilla": "Serie de 2 en 2 hasta 99"},
- "NUM.CONT.08": {"gen": "t1_cont08", "kw_por_dificultad": {"1": {"modos": ["adelante"]}, "2": {"modos": ["adelante"]}, "3": {"modos": ["atras"]}}, "errores": {"E01": "E01", "E02": "E02", "E03": "E03"}, "plantilla": "Serie de 5 en 5 hasta 100"},
- "NUM.CONT.09": {"gen": "t1_cont09", "errores": {"E01": "E01", "E02": "E02", "E03": "E03"}, "plantilla": "Siguiente y anterior hasta 999"},
- "NUM.CONT.10": {"gen": "t1_cont10", "kw_por_dificultad": {"1": {"modos": ["d10_adelante"]}, "2": {"modos": ["d100", "d10_atras"]}, "3": {"modos": ["cruce"]}}, "errores": {"E01": "E01", "E02": "E02", "E03": "E03", "E04": "E04"}, "plantilla": "Series de 10 en 10 y de 100 en 100 hasta 999"},
- "NUM.CONT.11": {"gen": "t1_cont11", "kw_por_dificultad": {"1": {"modos": ["adelante"]}, "2": {"modos": ["adelante"]}, "3": {"modos": ["atras", "adelante"]}}, "errores": {"E01": "E01", "E02": "E02", "E03": "E03"}, "plantilla": "Series de 3 en 3 y de 4 en 4 hasta 40"},
- "NUM.CONT.12": {"gen": "t1_cont12", "kw_por_dificultad": {"1": {"modos": ["p1000", "p100"]}, "2": {"modos": ["p100", "cruce"]}, "3": {"modos": ["cruce"]}}, "errores": {"E01": "E01", "E02": "E02", "E03": "E03"}, "plantilla": "Series con números de cuatro cifras"}
+ "NUM.CONT.01": {
+  "gen": "t1_cont01",
+  "kw_por_dificultad": {
+   "3": {
+    "desordenado": true
+   }
+  },
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E04": "E04"
+  },
+  "plantilla": "¿Cuántos hay? (colección de 2 a 10 dibujos)"
+ },
+ "NUM.CONT.02": {
+  "gen": "t1_cont02",
+  "kw_por_dificultad": {
+   "1": {
+    "modos": [
+     "dado"
+    ]
+   },
+   "2": {
+    "modos": [
+     "dado",
+     "marco10"
+    ]
+   },
+   "3": {
+    "modos": [
+     "marco10"
+    ]
+   }
+  },
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Cantidad en un dado o marco de 10 sin contar"
+ },
+ "NUM.CONT.03": {
+  "gen": "t1_cont03",
+  "kw_por_dificultad": {
+   "1": {
+    "modos": [
+     "contar",
+     "siguiente"
+    ]
+   },
+   "2": {
+    "modos": [
+     "contar",
+     "siguiente"
+    ]
+   },
+   "3": {
+    "modos": [
+     "siguiente",
+     "contar"
+    ]
+   }
+  },
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Contar de 11 a 20 y número siguiente"
+ },
+ "NUM.CONT.04": {
+  "gen": "t1_cont04",
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Número siguiente hasta 99"
+ },
+ "NUM.CONT.05": {
+  "gen": "t1_cont05",
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Número anterior hasta 99"
+ },
+ "NUM.CONT.06": {
+  "gen": "t1_cont06",
+  "kw_por_dificultad": {
+   "1": {
+    "modos": [
+     "adelante_decena"
+    ]
+   },
+   "2": {
+    "modos": [
+     "adelante"
+    ]
+   },
+   "3": {
+    "modos": [
+     "atras"
+    ]
+   }
+  },
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Serie de 10 en 10 hasta 99"
+ },
+ "NUM.CONT.07": {
+  "gen": "t1_cont07",
+  "kw_por_dificultad": {
+   "1": {
+    "modos": [
+     "adelante_par"
+    ]
+   },
+   "2": {
+    "modos": [
+     "adelante_impar",
+     "adelante_par"
+    ]
+   },
+   "3": {
+    "modos": [
+     "cruce",
+     "atras"
+    ]
+   }
+  },
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Serie de 2 en 2 hasta 99"
+ },
+ "NUM.CONT.08": {
+  "gen": "t1_cont08",
+  "kw_por_dificultad": {
+   "1": {
+    "modos": [
+     "adelante"
+    ]
+   },
+   "2": {
+    "modos": [
+     "adelante"
+    ]
+   },
+   "3": {
+    "modos": [
+     "atras"
+    ]
+   }
+  },
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Serie de 5 en 5 hasta 100"
+ },
+ "NUM.CONT.09": {
+  "gen": "t1_cont09",
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Siguiente y anterior hasta 999"
+ },
+ "NUM.CONT.10": {
+  "gen": "t1_cont10",
+  "kw_por_dificultad": {
+   "1": {
+    "modos": [
+     "d10_adelante"
+    ]
+   },
+   "2": {
+    "modos": [
+     "d100",
+     "d10_atras"
+    ]
+   },
+   "3": {
+    "modos": [
+     "cruce"
+    ]
+   }
+  },
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03",
+   "E04": "E04"
+  },
+  "plantilla": "Series de 10 en 10 y de 100 en 100 hasta 999"
+ },
+ "NUM.CONT.11": {
+  "gen": "t1_cont11",
+  "kw_por_dificultad": {
+   "1": {
+    "modos": [
+     "adelante"
+    ]
+   },
+   "2": {
+    "modos": [
+     "adelante"
+    ]
+   },
+   "3": {
+    "modos": [
+     "atras",
+     "adelante"
+    ]
+   }
+  },
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Series de 3 en 3 y de 4 en 4 hasta 40"
+ },
+ "NUM.CONT.12": {
+  "gen": "t1_cont12",
+  "kw_por_dificultad": {
+   "1": {
+    "modos": [
+     "p1000",
+     "p100"
+    ]
+   },
+   "2": {
+    "modos": [
+     "p100",
+     "cruce"
+    ]
+   },
+   "3": {
+    "modos": [
+     "cruce"
+    ]
+   }
+  },
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Series con números de cuatro cifras"
+ },
+ "NUM.DESC.01": {
+  "gen": "t1_desc01",
+  "kw_por_dificultad": {
+   "1": {
+    "modos": [
+     "du_a_numero"
+    ]
+   },
+   "2": {
+    "modos": [
+     "bloques",
+     "du_a_numero"
+    ]
+   },
+   "3": {
+    "modos": [
+     "bloques",
+     "numero_a_du",
+     "du_a_numero"
+    ]
+   }
+  },
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Decenas y unidades (hasta 99)"
+ },
+ "NUM.DESC.02": {
+  "gen": "t1_desc02",
+  "kw_por_dificultad": {
+   "1": {
+    "modos": [
+     "componer"
+    ]
+   },
+   "2": {
+    "modos": [
+     "descomponer",
+     "componer"
+    ]
+   },
+   "3": {
+    "modos": [
+     "valor",
+     "descomponer"
+    ]
+   }
+  },
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Componer y descomponer números de dos cifras"
+ },
+ "NUM.DESC.03": {
+  "gen": "t1_desc03",
+  "kw_por_dificultad": {
+   "1": {
+    "modos": [
+     "cdu_a_numero",
+     "numero_a_cdu"
+    ]
+   },
+   "2": {
+    "modos": [
+     "valor",
+     "cdu_a_numero"
+    ]
+   },
+   "3": {
+    "modos": [
+     "cdu_a_numero",
+     "desordenado",
+     "valor"
+    ]
+   }
+  },
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Centenas, decenas y unidades"
+ },
+ "NUM.DESC.04": {
+  "gen": "t1_desc04",
+  "kw_por_dificultad": {
+   "1": {
+    "modos": [
+     "d_a_u"
+    ]
+   },
+   "2": {
+    "modos": [
+     "c_a_d",
+     "d_a_u"
+    ]
+   },
+   "3": {
+    "modos": [
+     "doble",
+     "c_a_d"
+    ]
+   }
+  },
+  "errores": {
+   "E01": "E01",
+   "E02": "E02"
+  },
+  "plantilla": "Descomposiciones no canónicas"
+ },
+ "NUM.DESC.05": {
+  "gen": "t1_desc05",
+  "kw_por_dificultad": {
+   "1": {
+    "modos": [
+     "descomponer"
+    ]
+   },
+   "2": {
+    "modos": [
+     "componer",
+     "descomponer"
+    ]
+   },
+   "3": {
+    "modos": [
+     "desordenado",
+     "componer"
+    ]
+   }
+  },
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Componer y descomponer números de tres cifras"
+ },
+ "NUM.DESC.06": {
+  "gen": "t1_desc06",
+  "kw_por_dificultad": {
+   "1": {
+    "modos": [
+     "descomponer",
+     "valor"
+    ]
+   },
+   "2": {
+    "modos": [
+     "valor",
+     "componer"
+    ]
+   },
+   "3": {
+    "modos": [
+     "componer",
+     "valor"
+    ]
+   }
+  },
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Valor posicional hasta 9 999"
+ },
+ "NUM.DESC.07": {
+  "gen": "t1_desc07",
+  "kw_por_dificultad": {
+   "1": {
+    "modos": [
+     "equivalencia"
+    ]
+   },
+   "2": {
+    "modos": [
+     "total",
+     "billetes"
+    ]
+   },
+   "3": {
+    "modos": [
+     "total",
+     "equivalencia",
+     "billetes"
+    ]
+   }
+  },
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Cuántas decenas, centenas o millares hay"
+ },
+ "NUM.DESC.08": {
+  "gen": "t1_desc08",
+  "kw_por_dificultad": {
+   "1": {
+    "modos": [
+     "descomponer"
+    ]
+   },
+   "2": {
+    "modos": [
+     "valor",
+     "componer"
+    ]
+   },
+   "3": {
+    "modos": [
+     "valor",
+     "componer"
+    ]
+   }
+  },
+  "errores": {
+   "E01": "E01",
+   "E02": "E02"
+  },
+  "plantilla": "Valor posicional de cinco y seis cifras"
+ },
+ "NUM.DESC.09": {
+  "gen": "t1_desc09",
+  "kw_por_dificultad": {
+   "1": {
+    "modos": [
+     "descomponer"
+    ],
+    "cifras": [
+     4,
+     5
+    ]
+   },
+   "2": {
+    "modos": [
+     "componer",
+     "descomponer"
+    ],
+    "cifras": [
+     5,
+     6
+    ]
+   },
+   "3": {
+    "modos": [
+     "componer",
+     "descomponer"
+    ],
+    "cifras": [
+     6,
+     9
+    ]
+   }
+  },
+  "errores": {
+   "E01": "E01",
+   "E02": "E02",
+   "E03": "E03"
+  },
+  "plantilla": "Descomposición polinómica con potencias de 10"
+ }
 }

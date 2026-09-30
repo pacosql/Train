@@ -412,8 +412,8 @@ def g_intervalos(rng, d, tipo="marca"):
 @gen6("t6_pictograma")
 def g_pictograma(rng, d, tipo="cuantos"):
     """EST.GRAF.01. Claves: fila_de_al_lado, mas_por_menos."""
-    nc = {1: rng.randint(2, 3), 2: 4, 3: 5}[d]
-    _, cats = rng.choice(CATEGORIAS)
+    nc = {1: rng.randint(2, 3) if tipo == "cuantos" else 3, 2: 4, 3: 5}[d]
+    grupo, cats = rng.choice(CATEGORIAS)
     cats = rng.sample(cats, nc)
     for _ in range(100):
         vs = [rng.randint(1, 10) for _ in cats]
@@ -425,13 +425,14 @@ def g_pictograma(rng, d, tipo="cuantos"):
             break
     else:
         return None
-    ctx = rng.choice(["Mascotas favoritas", "Votos de la clase", "Lo que más nos gusta"])
+    ctx = {"frutas": "Fruta favorita de la clase", "animales": "Animal favorito de la clase", "juguetes": "Juguete favorito de la clase",
+           "flores": "Flor favorita de la clase"}[grupo]
     graf = "\n".join(f"{c[1].capitalize()}: {c[0] * v}" for c, v in zip(cats, vs))
     base = f"{ctx} (cada dibujo es 1 voto):\n{graf}\n"
     if tipo == "cuantos":
         i = rng.randrange(nc)
         ii = i + 1 if i + 1 < nc else i - 1
-        return hacer(base + f"¿Cuántos votos tienen los {cats[i][1]}?", fmt(vs[i]), "pictograma", {"vs": vs, "i": i},
+        return hacer(base + f"¿Cuántos votos tiene «{cats[i][1]}»?", fmt(vs[i]), "pictograma", {"vs": vs, "i": i},
                      [(vs[ii], "fila_de_al_lado"), (vs[i] + 1, None), (vs[i] - 1 if vs[i] > 1 else vs[i] + 2, None)],
                      [("contar", fmt(vs[i]), f"Cuento los dibujos de la fila de los {cats[i][1]}: {vs[i]}.")],
                      "En un pictograma de iconos de valor 1, el valor es el número de iconos de la fila.", gen=cerca(vs[i], rng, minimo=1))
@@ -451,11 +452,12 @@ def g_picto_valor(rng, d):
     val = {1: 2, 2: rng.choice([5, 10]), 3: rng.choice([2, 10])}[d]
     medio = d == 3 or (d == 2 and val == 10 and rng.random() < 0.5)
     ico, cosa = rng.choice([("⚽", "niños"), ("📚", "libros"), ("🍎", "manzanas"), ("⭐", "puntos"), ("🎟️", "entradas")])
+    dia = rng.choice(DIAS[:5])
     n = rng.randint(2, 6 if val < 10 else 9)
     v = n * val + (val // 2 if medio else 0)
     fila = ico * n + (" ½" + ico if medio else "")
     enun = (f"En un pictograma, cada {ico} vale {val} {cosa}" + (f" y medio {ico} (½{ico}) vale {val // 2}" if medio else "") +
-            f".\nLa fila de «martes» es: {fila}\n¿Cuántos {cosa} representa?")
+            f".\nLa fila del {dia} es: {fila}\n¿{'Cuántas' if fem(cosa) else 'Cuántos'} {cosa} representa?")
     dis = [(n + (1 if medio else 0), "ignora_leyenda")]
     if medio:
         dis += [(n * val + 1, "medio_vale_uno"), (n * val, "medio_mal"), ((n + 1) * val, "medio_mal")]
@@ -494,7 +496,7 @@ def g_barras_escala(rng, d):
 @gen6("t6_barras_dobles")
 def g_barras_dobles(rng, d, tipo="bajo"):
     """EST.GRAF.06. Claves: confunde_series, compara_categorias, barra_mas_alta."""
-    k = {1: 3, 2: 4, 3: rng.randint(5, 6)}[d]
+    k = {1: 4, 2: 4, 3: rng.randint(5, 6)}[d]
     esc = {1: 1, 2: 2, 3: rng.choice([5, 10])}[d]
     ms = MESES[:k] if rng.random() < 0.5 else MESES[4:4 + k]
     for _ in range(300):
