@@ -463,6 +463,8 @@ begin
       from mates10_habilidad h
       join lateral (select min(cc.orden) orden from mates10_curso cc where cc.codigo = h.curso_ref) c on true
       where h.activo and h.familia is not null and mates10__tiene_ejercicios(h.id)
+        -- con curso declarado, la prueba no pasa de un curso por encima del suyo (módulo 05: techo)
+        and (v_alu.curso_id is null or c.orden <= v_orden_ref + 2)
         and h.bloque_id in (select id from mates10_bloque where codigo in ('NUM', 'OPER', 'MED', 'PROB', 'GEO', 'EST', 'ALG'))
       group by h.familia
       having count(*) >= 2 and min(c.orden) <= greatest(v_orden_ref + 2, 3)

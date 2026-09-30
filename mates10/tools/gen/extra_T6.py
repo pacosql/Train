@@ -71,6 +71,9 @@ def hacer(enun, resp, op, par, dis, pasos, adulto, gen=(), datos=None, nino=None
         if rv is not None and _valor(gs) == rv:
             continue
         gens.append(gs)
+    m = re.match(r"^(.*?)¿(?:Qué probabilidad hay de|Cuál es la probabilidad de) (.+?)\?(.*)$", enun, re.S)
+    if m:
+        enun = f"Calcula la probabilidad de {m.group(2)}.\n{m.group(1).strip()}{m.group(3)}".rstrip()
     e = Ejercicio(enunciado=enun, respuesta=resp, parametros=par, distractores=d2, datos=datos)
     e.genericos = gens
     e.pasos = [{"paso": i + 1, "operacion": o, "resultado": r, "texto": t} for i, (o, r, t) in enumerate(pasos)]
@@ -1307,8 +1310,8 @@ def g_cv(rng, d, tipo="calcular"):
 # ================================================================ AZAR Y PROBABILIDAD
 
 def _bolsa_txt(cs):
-    partes = [f"{n} {'bola' if n == 1 else 'bolas'} {sing(c) if n == 1 else c}" for c, n in cs if n]
-    return lista(partes)
+    partes = [f"{n} {sing(c) if n == 1 else c}" for c, n in cs if n]
+    return "bolas de colores: " + lista(partes)
 
 
 @gen6("t6_suceso_tipo")
@@ -1342,7 +1345,7 @@ def g_suceso_tipo(rng, d):
             clave_seg = "probable_es_seguro"
         if suc == f"sacar un {k}":
             clave_imp = "poco_probable_imposible"
-        situ = "Se lanza un dado normal de seis caras."
+        situ = "Tiramos un dado corriente, con caras del 1 al 6."
     elif disp == "ruleta":
         cols = rng.sample(["roja", "azul", "verde", "amarilla"], 3)
         n = rng.choice([4, 6, 8])
@@ -1404,7 +1407,7 @@ def g_comparar_azar(rng, d, tipo="mismo"):
         A, B = [(c1, y1), (c2, x)], [(c1, y2), (c2, x)]
         mejor = "la bolsa A" if y1 > y2 else "la bolsa B"
         razon = f"En las dos hay {x} {c2}, pero en {mejor} hay más bolas {c1}."
-    enun = f"Bolsa A: {_bolsa_txt(A)}. Bolsa B: {_bolsa_txt(B)}.\n¿En qué bolsa es más fácil sacar una bola {sing(c1)}?"
+    enun = f"Dos bolsas con bolas de colores. Bolsa A: {_bolsa_txt(A)[18:]}. Bolsa B: {_bolsa_txt(B)[18:]}.\n¿En qué bolsa es más fácil sacar una bola {sing(c1)}?"
     otra = "la bolsa B" if mejor == "la bolsa A" else "la bolsa A"
     dis = [("en las dos igual", "solo_favorables" if igual == "fav" else "todo_igual"), (otra, None), ("no se puede saber, es cuestión de suerte", "todo_igual")]
     return hacer(enun, mejor, "azar_cmp_bolsas", {"A": A, "B": B}, dis, [("comparar", mejor, razon)],
@@ -1475,8 +1478,8 @@ def g_laplace(rng, d, tipo="simple"):
             A, B = ("A", a2, t2), ("B", a1, t1)
         mejor = A if F(A[1], A[2]) > F(B[1], B[2]) else B
         peor = B if mejor is A else A
-        enun = (f"Bolsa A: {A[1]} bolas {c1} y {A[2] - A[1]} {c2}. Bolsa B: {B[1]} bolas {c1} y {B[2] - B[1]} {c2}.\n"
-                f"¿En qué bolsa es más probable sacar una bola {sing(c1)}?")
+        enun = (f"Bolsa A: {A[1]} {c1} y {A[2] - A[1]} {c2}. Bolsa B: {B[1]} {c1} y {B[2] - B[1]} {c2} (todas son bolas).\n"
+                f"¿En qué bolsa tienes más opciones de conseguir bola {sing(c1)}?")
         resp = f"en la bolsa {mejor[0]} ({mejor[1]}/{mejor[2]} frente a {peor[1]}/{peor[2]})"
         return hacer(enun, resp, "laplace_comparar", {"A": list(A[1:]), "B": list(B[1:])},
                      [(f"en la bolsa {peor[0]}, porque tiene más bolas {c1}", "solo_favorables"), ("en las dos igual", None),
@@ -1493,7 +1496,7 @@ def g_laplace(rng, d, tipo="simple"):
         q = f"sacar una bola {sing(cs[0])}"
     elif exp == "dado":
         suc = rng.choice([("un número par", 3), ("un múltiplo de 3", 2), ("un número mayor que 4", 2), ("un número menor que 3", 2), ("un 5", 1), ("un número primo", 3)])
-        situ, q, fav, tot = "Se lanza un dado de seis caras.", f"sacar {suc[0]}", suc[1], 6
+        situ, q, fav, tot = "Tiramos un dado corriente, con caras del 1 al 6.", f"sacar {suc[0]}", suc[1], 6
     elif exp == "ruleta":
         n = rng.choice([8, 10, 12, 20])
         k = rng.choice([2, 3, 4, 5])
@@ -1518,7 +1521,7 @@ def g_espacio(rng, d, tipo="suceso"):
     conj = lambda xs: "{" + ", ".join(map(str, xs)) + "}"
     if tipo == "suceso":
         n = rng.choice([6, 8, 9, 10, 12, 15])
-        exp = "Se lanza un dado de seis caras." if n == 6 else f"Se gira una ruleta con los números del 1 al {n}."
+        exp = "Tiramos un dado corriente, con caras del 1 al 6." if n == 6 else f"Giramos una ruleta numerada de 1 a {n}."
         k = rng.randint(2, n - 2)
         suc = rng.choice([("sacar par", lambda x: x % 2 == 0), ("sacar impar", lambda x: x % 2 == 1), ("sacar múltiplo de 3", lambda x: x % 3 == 0),
                           (f"sacar un número mayor que {k}", lambda x: x > k), (f"sacar un número menor que {k}", lambda x: x < k),
@@ -1543,20 +1546,20 @@ def g_espacio(rng, d, tipo="suceso"):
         if exp == "moneda_dado":
             k = rng.choice([3, 4, 5, 6])
             E = [f"{m}{i}" for m in "CX" for i in range(1, k + 1)]
-            return hacer(f"Se lanza una moneda (C o X) y se gira una ruleta con los números del 1 al {k}. ¿Cuál es el espacio muestral?", conj(E), "espacio", {"k": k},
+            return hacer(f"Se lanza una moneda (C o X) y giramos una ruleta numerada de 1 a {k}. ¿Cuál es el espacio muestral?", conj(E), "espacio", {"k": k},
                          [(conj(E[:k] + E[k:-1]), "olvida_resultado"), (conj(["C", "X"] + list(range(1, k + 1))), None), (conj(E[:k]), None)],
                          [("árbol", conj(E), f"Para cada cara de la moneda hay {k} números: {2 * k} resultados.")],
                          "Espacio muestral de un experimento compuesto: todas las parejas posibles.")
         n = rng.randint(5, 12)
         k = rng.choice([2, 3, 4])
         A = [x for x in range(1, n + 1) if x % k == 0]
-        return hacer(f"Se gira una ruleta con los números del 1 al {n}. Nos interesa el suceso A = «múltiplo de {k}». ¿Cuál es el espacio muestral E?",
+        return hacer(f"Giramos una ruleta numerada de 1 a {n}. Nos interesa el suceso A = «múltiplo de {k}». ¿Cuál es el espacio muestral E?",
                      conj(range(1, n + 1)), "espacio", {"n": n},
                      [(conj(A), "solo_favorables"), (conj(range(1, n)), "olvida_resultado"), (conj(range(0, n + 1)), None)],
                      [("todos los resultados", conj(range(1, n + 1)), f"E contiene todos los resultados posibles del experimento, no solo los de A: del 1 al {n}.")],
                      "El espacio muestral son todos los resultados posibles; el suceso es una parte de él.")
     n = rng.choice([6, 8, 9, 10, 12])
-    exp = "Se lanza un dado de seis caras." if n == 6 else f"Se gira una ruleta con los números del 1 al {n}."
+    exp = "Tiramos un dado corriente, con caras del 1 al 6." if n == 6 else f"Giramos una ruleta numerada de 1 a {n}."
     if rng.random() < 0.6:
         m = n + rng.randint(1, 5)
         return hacer(f"{exp} ¿Cómo se escribe el suceso «sacar un {m}»?", "∅ (suceso imposible)", "imposible_conjunto", {"n": n},
@@ -1574,7 +1577,7 @@ def g_contrario(rng, d, tipo="describir"):
     """EST.PROB.03. Claves: otro_suceso, olvida_frontera, inverso."""
     if tipo == "describir":
         n = rng.choice([6, 8, 10])
-        exp = "Se lanza un dado de seis caras." if n == 6 else f"Se gira una ruleta con los números del 1 al {n}."
+        exp = "Tiramos un dado corriente, con caras del 1 al 6." if n == 6 else f"Giramos una ruleta numerada de 1 a {n}."
         k = rng.randint(2, n - 2)
         tip = rng.choice(["mayor", "menor", "par"])
         if tip == "mayor":
@@ -1610,7 +1613,7 @@ def g_contrario(rng, d, tipo="describir"):
         return hacer(enun, dec(r, 2), "contrario_p", {"p": str(p)}, [(dec(1 / p, 2), "inverso"), (dec(p, 2), None), (dec(r + F(1, 10), 2) if r < F(9, 10) else dec(r - F(1, 10), 2), None)],
                      [("1 − p", dec(r, 2), f"P(contrario) = 1 − {dec(p, 2)} = {dec(r, 2)}.")], "P(no A) = 1 − P(A).")
     k = rng.randint(2, 5)
-    enun = f"Se lanza un dado de seis caras. ¿Qué probabilidad hay de NO sacar un número mayor que {k}? (Piensa en el contrario.)"
+    enun = f"Tiramos un dado corriente, con caras del 1 al 6. ¿Qué probabilidad hay de NO sacar un número mayor que {k}? (Piensa en el contrario.)"
     r = F(k, 6)
     return hacer(enun, ff(r), "contrario_p", {"k": k}, [(ff(F(6 - k, 6)), None), (ff(F(6, 6 - k)), "inverso"), (ff(F(k - 1, 6)), "olvida_frontera")],
                  [("contrario", ff(F(6 - k, 6)), f"P(mayor que {k}) = {6 - k}/6."), ("1 − p", ff(r), f"P(no) = 1 − {6 - k}/6 = {k}/6 = {ff(r)}.")],
@@ -1670,7 +1673,7 @@ def g_union(rng, d, tipo="union"):
                      "P(A ∪ B) = P(A) + P(B) − P(A ∩ B): la intersección se ha contado dos veces.", gen=[dec(u + F(1, 10), 2)])
     if d == 1 or rng.random() < 0.4:
         n = rng.choice([6, 8, 9, 10, 12, 15, 20])
-        exp = "Se lanza un dado de seis caras." if n == 6 else f"Se gira una ruleta con los números del 1 al {n}."
+        exp = "Tiramos un dado corriente, con caras del 1 al 6." if n == 6 else f"Giramos una ruleta numerada de 1 a {n}."
         k = rng.choice([3, 4, 5])
         m = rng.randint(2, n - 2)
         evs = [("sacar par", {x for x in range(1, n + 1) if x % 2 == 0}), ("sacar impar", {x for x in range(1, n + 1) if x % 2}),
@@ -1738,7 +1741,7 @@ def g_compuesto(rng, d, tipo="moneda_dado"):
     c1, c2 = rng.sample(COLORES_F, 2)
     a, b = rng.randint(1, 6), rng.randint(1, 6)
     t = a + b
-    bolsa = f"En una bolsa hay {a} bolas {c1} y {b} {c2}. Se saca una bola, se mira y se devuelve; después se saca otra."
+    bolsa = f"En una bolsa hay bolas de colores: {a} {c1} y {b} {c2}. Se saca una bola, se mira y se devuelve; después se saca otra."
     if tipo == "reemplazo_igual":
         p = F(a, t) ** 2
         return hacer(f"{bolsa} ¿Qué probabilidad hay de que las dos sean {c1}?", ff(p), "reemplazo", {"a": a, "b": b},
@@ -1759,7 +1762,7 @@ def g_sin_reemplazo(rng, d, tipo="dos_iguales"):
     c1, c2 = rng.sample(COLORES_F, 2)
     a, b = rng.randint(2, 7), rng.randint(2, 7)
     t = a + b
-    bolsa = f"En una bolsa hay {a} bolas {c1} y {b} {c2}. Se sacan"
+    bolsa = f"En una bolsa hay bolas de colores: {a} {c1} y {b} {c2}. Se sacan"
     if tipo == "dos_iguales":
         p = F(a * (a - 1), t * (t - 1))
         return hacer(f"{bolsa} dos bolas sin devolver la primera. ¿Qué probabilidad hay de que las dos sean {c1}?", ff(p), "sin_reemplazo", {"a": a, "b": b},
@@ -1777,7 +1780,7 @@ def g_sin_reemplazo(rng, d, tipo="dos_iguales"):
     if a < 3:
         a = 3
         t = a + b
-        bolsa = f"En una bolsa hay {a} bolas {c1} y {b} {c2}. Se sacan"
+        bolsa = f"En una bolsa hay bolas de colores: {a} {c1} y {b} {c2}. Se sacan"
     p = F(a * (a - 1) * (a - 2), t * (t - 1) * (t - 2))
     return hacer(f"{bolsa} tres bolas, una tras otra, sin devolverlas. ¿Qué probabilidad hay de que las tres sean {c1}?", ff(p), "sin_reemplazo3", {"a": a, "b": b},
                  [(ff(F(a, t) ** 3), "no_actualiza"), (ff(F(a ** 3, t * (t - 1) * (t - 2))), "actualiza_solo_total"), (ff(F(a - 2, t - 2)), None)],
