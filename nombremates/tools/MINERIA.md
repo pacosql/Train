@@ -26,7 +26,9 @@ no se confunde con nada y en Google sale solo él.
 ## Proceso de cada ejecución (≈ 50 min)
 
 0. `python3 nombremates/tools/turno.py tomar <id de sesión>`. Si sale con
-   código 3 (OCUPADO), **termina sin hacer nada**. Durante el trabajo,
+   código 3 (OCUPADO) o 4 (COLA LLENA: a Paco le quedan 250 o más nombres
+   por decidir), **termina sin hacer nada**: solo se mina cuando la cola
+   baja de 250. Durante el trabajo,
    `turno.py renovar` cada ~30 min; al acabar, `turno.py soltar "<resumen>"`
    (también si algo falla).
 1. `git pull origin main`. Lee `tools/fichas.json`, este fichero entero y
@@ -59,6 +61,13 @@ no se confunde con nada y en Google sale solo él.
 6. `turno.py soltar "<resumen corto>"` y resumen final: nuevos ≥ 80, los
    ≥ 88 si hay, los 5 mejores con nota y qué medida les falta para el 90,
    familias probadas.
+
+## Mejorar las herramientas
+
+La rutina puede y debe arreglar lo que le estorbe (scripts de `tools/`,
+este fichero, fallos de la app): hazlo, prueba (`node nombremates/test/smoke.js`
+si tocas la app) y haz commit y push a main. Nunca cambies decisiones de
+Paco, ni borres nombres, ni toques tablas o carpetas de otras apps.
 
 ## Ideas para llegar a 90
 
