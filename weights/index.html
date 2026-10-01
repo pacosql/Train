@@ -342,7 +342,7 @@
     .rec-card.r3 { color: var(--pull); border-color: rgba(245, 181, 68, 0.35); background: rgba(245, 181, 68, 0.12); }
     .rec-card.r4, .rec-card.r5 { color: var(--accent); border-color: rgba(67, 211, 145, 0.35); background: rgba(67, 211, 145, 0.12); }
     /* etiqueta compacta en las listas */
-    .rec-tag { font-family: var(--display); font-size: 0.72rem; font-weight: 800; letter-spacing: 0.5px; padding: 1px 7px; border-radius: 999px; border: 1px solid currentColor; white-space: nowrap; }
+    .rec-tag { font-family: var(--display); font-size: 0.74rem; font-weight: 800; padding: 2px 8px; border-radius: 999px; border: 1px solid currentColor; white-space: nowrap; }
     .rec-tag.r1, .rec-tag.r2 { color: var(--danger); }
     .rec-tag.r3 { color: var(--pull); }
     .rec-tag.r4, .rec-tag.r5 { color: var(--accent); }
@@ -679,6 +679,7 @@
     <section id="screen-exercise" hidden>
       <p class="eyebrow" id="ex-header"></p>
       <h2 id="ex-name">—</h2>
+      <div class="rec-card" id="ex-rec-card" hidden></div>
       <div class="last-card" id="ex-last-card" hidden></div>
       <p class="sub" id="ex-recommendation"></p>
       <div class="note-line" id="ex-note-line" hidden></div>
@@ -711,7 +712,6 @@
       <details class="detail" open>
         <summary>Cómo entrenarlo</summary>
         <div class="hero-art" id="ex-hero-art"></div>
-        <div class="rec-card" id="ex-rec-card" hidden></div>
         <div class="pm-row" id="ex-pm-row" hidden></div>
         <p id="ex-description"></p>
 
@@ -911,7 +911,7 @@
     }
     function recTagHtml(ex) {
       const r = recOf(ex);
-      return r ? `<span class="rec-tag r${r}">${r}/5</span>` : "";
+      return r ? `<span class="rec-tag r${r}">${r}/5 ${REC_LABEL[r]}</span>` : "";
     }
     function renderRecommendation(id, ex) {
       const box = el(id);
@@ -1492,7 +1492,21 @@
           musclesToday.set(tag, Math.max(musclesToday.get(tag) || 0, w));
         }
       }
-      const last = lastStrengthDone();
+      // Lo último que has hecho: el ejercicio de fuerza que tienes EN MARCHA
+      // ahora mismo (superserie) manda sobre el último terminado — lo que
+      // toca a continuación debe alternar con lo que estás haciendo.
+      let last = lastStrengthDone();
+      const runningNow = startedIds()
+        .map((id) => ({ ex: catalog.find((e) => e.id === id), at: state.active[id].startedAt }))
+        .filter((x) => x.ex && isStrength(x.ex))
+        .sort((a, b) => new Date(b.at) - new Date(a.at))[0];
+      if (runningNow) last = runningNow;
+      // Los músculos de lo que está en marcha también cuentan como de hoy.
+      for (const id of startedIds()) {
+        const ex = catalog.find((e) => e.id === id);
+        if (!ex || ex.movement_type === "cardio") continue;
+        for (const [tag, w] of muscleWeights(ex)) musclesToday.set(tag, Math.max(musclesToday.get(tag) || 0, w));
+      }
       return {
         musclesToday,
         lastEx: last ? last.ex : null,
@@ -1546,13 +1560,16 @@
         && !!ex.station && ctx.lastEx.station === ex.station;
       if (chain) score += 40;
 
-      // Una máquina marcada 1-2 para ti baja en la lista: no tiene sentido
-      // que salga con la estrella de "recomendado" y a la vez "evítalo".
+      // La nota 1-5 para tus lesiones pesa en toda la escala: 5 sube
+      // (+30), 4 un poco (+15), 3 neutro, 2 baja (-35) y 1 se hunde (-50).
+      // Así una "adelante" gana a una "con cuidado" con la misma frescura,
+      // y una "evítalo" nunca sale con la estrella.
       const rec = recOf(ex);
-      const recPenalty = rec && rec <= 2 ? (3 - rec) * 25 : 0;
-      score -= recPenalty;
+      const recBonus = rec ? (rec - 3) * 15 - (rec <= 2 ? 20 : 0) : 0;
+      score += recBonus;
+      const recPenalty = recBonus < 0 ? -recBonus : 0;
 
-      return { bucket, score, running, done, days, overlap, load, alt, chain, rec, recPenalty };
+      return { bucket, score, running, done, days, overlap, load, alt, chain, rec, recPenalty, recBonus };
     }
 
     function rateReason(ex, r, ctx) {
@@ -1585,6 +1602,7 @@
         bits.push(ctx.lastToday ? `otra vez ${movementWord(ex.movement_type)}` : `mismo tipo que tu último entreno`);
         tone = "warn";
       }
+      if (r.rec === 5 && tone === "good") bits.push("ideal para tu espalda");
       return { text: bits.join(" · "), tone };
     }
 

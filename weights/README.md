@@ -64,9 +64,11 @@ tres sitios:
   Adelante —, la nota y un aviso de que es orientativo);
 - una etiqueta compacta (`3/5`) en la lista de ejercicios y en el
   catálogo;
-- la lista de ejercicios baja las máquinas con 1-2 (`rateExercise`,
-  25 puntos por escalón) y lo dice en su línea de motivo, para que una
-  marcada "evítalo" no salga a la vez con la estrella de recomendada.
+- la lista de ejercicios la usa en toda la escala (`rateExercise`):
+  5 suma +30, 4 suma +15, 3 es neutro, 2 resta 35 y 1 resta 50 — una
+  "adelante" gana a una "con cuidado" con la misma frescura, y una
+  "evítalo" nunca sale con la estrella. La línea de motivo lo dice
+  ("mejor no para tu espalda (2/5)", "ideal para tu espalda").
 
 Se edita desde la ficha de la máquina (chips 1-5). Los detalles
 médicos que motivan cada nota se quedan en la base de datos del
@@ -229,7 +231,10 @@ Dentro de cada cesta se puntúa con tres señales:
   pero el *Pectoral* después del *Press de Pecho* sí cae al fondo.
 - **Alternar empuje y tirón** con el último ejercicio de fuerza que
   hiciste — pesa mucho si fue hoy (descanso entre máquinas) y la mitad
-  si fue en el entrenamiento anterior.
+  si fue en el entrenamiento anterior. Si tienes una máquina **en
+  marcha** (superserie), esa cuenta como "lo último", y sus músculos
+  como ya trabajados hoy: lo siguiente se elige para ir bien con lo que
+  estás haciendo ahora.
 
 Cada fila enseña en una línea la razón de estar donde está ("descansas
 del tirón de Remo", "hoy ya has trabajado pecho", "9 días sin
