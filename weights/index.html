@@ -243,11 +243,11 @@
     /* ---------- chips ---------- */
     .chip-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
     .chip {
-      flex: 1; min-width: 72px; text-align: center;
-      padding: 14px 8px; border-radius: 16px;
+      flex: 1 1 28%; text-align: center; white-space: nowrap;
+      padding: 12px 10px; border-radius: 14px;
       border: 1px solid var(--line); background: var(--glass);
       color: var(--text); cursor: pointer;
-      font-family: var(--display); font-size: 1.2rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px;
+      font-family: var(--display); font-size: 0.95rem; font-weight: 700;
       transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
     }
     .chip.selected { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
@@ -346,7 +346,7 @@
     .rec-tag.r1, .rec-tag.r2 { color: var(--danger); }
     .rec-tag.r3 { color: var(--pull); }
     .rec-tag.r4, .rec-tag.r5 { color: var(--accent); }
-    .chip-row.rec-chips .chip { min-width: 0; padding: 12px 4px; }
+    .chip-row.rec-chips .chip { flex-basis: 15%; padding: 12px 4px; }
 
     /* ---------- diagrama corporal (grupo muscular) ---------- */
     /* Silueta por bloques redondeados, a juego con el resto de la interfaz
@@ -1362,7 +1362,7 @@
         const type = ex ? ex.movement_type : "cardio";
         const detail = r.minutes != null
           ? `${fmtNum(r.minutes)} min`
-          : `${fmtNum(r.weight_used || 0)} kg · ${r.sets || 3}×${r.reps || 8}`;
+          : `${fmtNum(r.weight_used || 0)} kg · ${r.sets || 3}×${r.reps || 8}${r.next_time ? ` · ${fbTagHtml(r.next_time)}` : ""}`;
         const div = document.createElement("div");
         div.className = "item " + type;
         div.style.setProperty("--i", i);
@@ -1371,9 +1371,7 @@
            <div class="item-main">
              <div class="name">${name}</div>
              <div class="meta">${detail}</div>
-           </div>` +
-          (r.next_time ? `<span class="tag ${r.next_time}">${feedbackLabel(r.next_time)}</span>` : "") +
-          `<span class="chev">›</span>`;
+           </div><span class="chev">›</span>`;
         if (ex) div.addEventListener("click", () => showCatalogDetail(ex, { from: "session-detail" }));
         box.appendChild(div);
       });
