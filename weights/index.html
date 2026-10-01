@@ -234,6 +234,15 @@
     .fb-tag.igual { color: var(--text); }
     .fb-tag.menos { color: var(--stop); }
 
+    /* ---------- superserie ---------- */
+    .ss-row { margin-bottom: 14px; }
+    .ss-row[hidden] { display: none; }
+    .ss-label { font-family: var(--display); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-2); margin-bottom: 6px; }
+    .ss-chip { display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%; margin-bottom: 6px; padding: 10px 14px; border-radius: 14px; background: var(--glass); border: 1px solid var(--line-strong); color: var(--text); box-shadow: none; text-transform: none; font-family: var(--body); font-size: 0.9rem; font-weight: 700; letter-spacing: 0; }
+    .ss-chip.push { border-left: 4px solid var(--push); }
+    .ss-chip.pull { border-left: 4px solid var(--pull); }
+    .ss-chip .ss-time { font-family: var(--display); font-size: 1.1rem; font-weight: 800; color: var(--accent); font-variant-numeric: tabular-nums; }
+
     /* ---------- "la última vez" (pantalla de ejercicio) ---------- */
     /* Lo que marcaste al terminar la vez anterior, bien grande, y el peso
        que sale de ahí para hoy — antes era una coletilla ("subiendo") al
@@ -692,6 +701,7 @@
       <p class="eyebrow" id="ex-header"></p>
       <h2 id="ex-name">—</h2>
       <div class="hero-art" id="ex-hero-art"></div>
+      <div class="ss-row" id="ex-superset" hidden></div>
       <div class="last-card" id="ex-last-card" hidden></div>
       <div class="rec-card" id="ex-rec-card" hidden></div>
       <p class="sub" id="ex-recommendation"></p>
@@ -860,6 +870,7 @@
       legExtension: '<rect x="18" y="22" width="16" height="50" rx="7"/><rect x="18" y="72" width="26" height="9" rx="4"/><path d="M44 80h40"/><rect x="86" y="72" width="10" height="16" rx="3"/>' + weightStackArt(104, 16, 46),
       bench: '<rect x="26" y="66" width="72" height="9" rx="4"/><path d="M32 75v11M92 75v11"/><path d="M18 86 26 18M114 86 104 18"/><path d="M10 86h22M100 86h22"/><path d="M18 24h94"/><circle cx="12" cy="24" r="8"/><circle cx="120" cy="24" r="8"/>',
       lunge: '<path d="M78 86V26"/><path d="M78 40l26 12"/><rect x="100" y="44" width="11" height="18" rx="3" transform="rotate(24 105 53)"/>' + weightStackArt(52, 12, 38) + '<path d="M64 86h28"/>',
+      pulldown: '<path d="M88 86V10H40v22"/><path d="M18 34h44"/><rect x="28" y="52" width="26" height="7" rx="3.5"/><rect x="28" y="68" width="28" height="8" rx="4"/><path d="M42 76v10M30 86h26M80 86h16"/>' + weightStackArt(100, 24, 46),
       elliptical: '<path d="M20 76 118 50"/><ellipse cx="46" cy="69" rx="13" ry="5" transform="rotate(-13 46 69)"/><ellipse cx="94" cy="57" rx="13" ry="5" transform="rotate(-13 94 57)"/><path d="M75 62 78 22"/><rect x="64" y="8" width="28" height="16" rx="3"/><path d="M70 16h16"/>',
     };
     function svgMachine(key) {
@@ -871,7 +882,7 @@
       dominadas_asistidas: "assisted", fondos_asistidos: "assisted",
       remo: "cableRow", reverse_fly: "pecMachine", pectoral: "pecMachine", extensora_hombros: "pecMachine",
       press_pecho: "chestPress", press_pierna_sentado: "legPress", extension_pierna: "legExtension",
-      press_banca: "bench", contraccion_pierna: "lunge",
+      press_banca: "bench", contraccion_pierna: "lunge", estirar_abajo: "pulldown",
     };
     // El icono/ilustración que va en la lista y en la cabecera al entrar:
     // el emoji que haya puesto el usuario manda siempre; si no, la
@@ -1063,6 +1074,7 @@
       extension_pierna: { pos: "armchair", motion: "arrow-up-down" },
       press_banca: { pos: "bed", motion: "arrow-up-down" },
       contraccion_pierna: { pos: "footprints", motion: "arrow-up-down" },
+      estirar_abajo: { pos: "armchair", motion: "arrow-up-down" },
     };
     const POSITION_LABEL = { armchair: "Sentado", bed: "Tumbado", footprints: "De pie" };
     const MOTION_LABEL = { "arrow-left-right": "Empuje/tirón horizontal", "arrow-up-down": "Movimiento vertical" };
@@ -1103,7 +1115,11 @@
         plannedDuration: null, cardioMinutesSuggested: null,
         cardioExerciseId: null, cardioStartedAt: null,
         doneExerciseIds: [],
-        currentExerciseId: null, currentExerciseStartedAt: null, currentWeightDraft: null,
+        // currentExerciseId = la máquina que tienes en pantalla. active guarda
+        // TODAS las que tienes abiertas: { id: { startedAt, weight } }. Las
+        // que tienen startedAt están en marcha (superserie); una sin
+        // startedAt es solo la que estás mirando, y se descarta al salir.
+        currentExerciseId: null, active: {},
         pendingExercise: null, summary: [],
       };
     }
@@ -1114,6 +1130,18 @@
       const defaults = freshState();
       for (const k of Object.keys(defaults)) {
         if (state[k] === undefined) state[k] = defaults[k];
+      }
+      // Estado de antes de las superseries: un solo ejercicio con su
+      // cronómetro y su peso sueltos. Se pasa a `active` sin perderlo.
+      if ("currentExerciseStartedAt" in state || "currentWeightDraft" in state) {
+        if (state.currentExerciseId && !state.active[state.currentExerciseId]) {
+          state.active[state.currentExerciseId] = {
+            startedAt: state.currentExerciseStartedAt || null,
+            weight: state.currentWeightDraft != null ? Number(state.currentWeightDraft) : null,
+          };
+        }
+        delete state.currentExerciseStartedAt;
+        delete state.currentWeightDraft;
       }
       saveState();
     }
@@ -1227,8 +1255,10 @@
 
       if (state.screen === "exercise") {
         const box = el("ex-elapsed");
-        box.textContent = state.currentExerciseStartedAt ? formatElapsed(state.currentExerciseStartedAt) : "Sin empezar";
-        box.classList.toggle("idle", !state.currentExerciseStartedAt);
+        const startedAt = cur() && cur().startedAt;
+        box.textContent = startedAt ? formatElapsed(startedAt) : "Sin empezar";
+        box.classList.toggle("idle", !startedAt);
+        document.querySelectorAll("#ex-superset .ss-time").forEach((t) => { t.textContent = formatElapsed(t.dataset.started); });
       }
       if (state.screen === "cardio") {
         const box = el("cardio-elapsed");
@@ -1468,7 +1498,7 @@
     function isRunning(ex) {
       return ex.movement_type === "cardio"
         ? !!state.cardioStartedAt && state.cardioExerciseId === ex.id
-        : !!state.currentExerciseStartedAt && state.currentExerciseId === ex.id;
+        : !!(state.active[ex.id] && state.active[ex.id].startedAt);
     }
 
     function pickContext() {
@@ -1736,7 +1766,7 @@
       return type === "push" ? "Empuje" : type === "pull" ? "Tirón" : type === "cardio" ? "Cardio" : "Sin clasificar";
     }
 
-    const PICK_HEADERS = { "-1": "⏱ Lo que tienes empezado", 1: "❤️ Cardio · para alargar o rematar", 2: "✅ Ya hecho hoy" };
+    const PICK_HEADERS = { "-1": "⏱ En marcha", 1: "❤️ Cardio · para alargar o rematar", 2: "✅ Ya hecho hoy" };
 
     function renderPickScreen() {
       const ctx = pickContext();
@@ -1767,10 +1797,12 @@
       for (const { ex, r } of rated) {
         if (r.bucket !== bucket) {
           bucket = r.bucket;
-          if (PICK_HEADERS[bucket]) {
+          const nRunning = rated.filter((x) => x.r.bucket === -1).length;
+          if (PICK_HEADERS[bucket] || (bucket === 0 && nRunning > 0)) {
             const h = document.createElement("div");
             h.className = "group-header";
-            h.textContent = PICK_HEADERS[bucket];
+            h.textContent = bucket === -1 && nRunning > 1 ? `⏱ En marcha · superserie de ${nRunning}` : PICK_HEADERS[bucket];
+            if (bucket === 0) h.textContent = "▶ Lo siguiente";
             box.appendChild(h);
           }
         }
@@ -1804,7 +1836,7 @@
         div.addEventListener("click", () =>
           isCardio
             ? startCardioFromList(ex, { resume: ex.id === state.cardioExerciseId })
-            : startExercise(ex, { resume: ex.id === state.currentExerciseId })
+            : startExercise(ex)
         );
         box.appendChild(div);
       }
@@ -2021,23 +2053,33 @@
     }
 
     // ---------- ejercicio ----------
-    function abandonInProgressExercise() {
-      state.currentExerciseId = null;
-      state.currentExerciseStartedAt = null;
-      state.currentWeightDraft = null;
+    function cur() { return state.currentExerciseId ? state.active[state.currentExerciseId] : null; }
+    function startedIds() {
+      return Object.keys(state.active).filter((id) => state.active[id].startedAt).map(Number);
     }
+    // Salir de la pantalla del ejercicio sin terminarlo: si estaba en marcha
+    // sigue en marcha (superserie); si solo lo estabas mirando, se olvida.
+    function leaveCurrentExercise() {
+      const c = cur();
+      if (c && !c.startedAt) delete state.active[state.currentExerciseId];
+      state.currentExerciseId = null;
+    }
+    function abandonInProgressExercise() { leaveCurrentExercise(); }
     function abandonInProgressCardio() { state.cardioStartedAt = null; }
 
-    function goToListWithoutFinishing() { renderPickScreen(); showScreen("pick"); }
+    function goToListWithoutFinishing() { leaveCurrentExercise(); saveState(); renderPickScreen(); showScreen("pick"); }
 
     function renderWeightDisplay() {
-      const v = parseFloat(state.currentWeightDraft);
+      const c = cur();
+      const v = c ? parseFloat(c.weight) : NaN;
       el("ex-weight-display").textContent = isNaN(v) ? "0" : fmtNum(v);
     }
     function adjustWeight(dir) {
       const ex = catalog.find((e) => e.id === state.currentExerciseId);
       const step = ex && Number(ex.weight_step) > 0 ? Number(ex.weight_step) : 2.5;
-      state.currentWeightDraft = Math.max(0, (parseFloat(state.currentWeightDraft) || 0) + dir * step);
+      const c = cur();
+      if (!c) return;
+      c.weight = Math.max(0, (parseFloat(c.weight) || 0) + dir * step);
       saveState();
       renderWeightDisplay();
       bump("ex-weight-display");
@@ -2057,7 +2099,7 @@
     }
 
     function renderExerciseButtons() {
-      const started = !!state.currentExerciseStartedAt;
+      const started = !!(cur() && cur().startedAt);
       el("btn-start-exercise").hidden = started;
       el("btn-save-weight-only").hidden = started;
       el("btn-finish-exercise").hidden = !started;
@@ -2066,12 +2108,12 @@
     function startExercise(ex, opts = {}) {
       // Elegir un ejercicio solo prepara la pantalla; el cronómetro no
       // arranca hasta pulsar Start, para poder ajustar el peso con calma.
-      const resuming = !!(opts.resume && state.currentExerciseId === ex.id && state.currentWeightDraft != null);
-      if (!resuming) {
-        abandonInProgressCardio();
-        state.currentExerciseId = ex.id;
-        state.currentExerciseStartedAt = null;
-      }
+      // Si ya la tenías abierta (en marcha en la superserie), se retoma
+      // con su peso y su cronómetro; si no, se prepara de cero.
+      if (state.currentExerciseId !== ex.id) leaveCurrentExercise();
+      const resuming = !!(state.active[ex.id] && state.active[ex.id].weight != null);
+      if (!resuming) abandonInProgressCardio();
+      state.currentExerciseId = ex.id;
 
       el("ex-name").innerHTML = `<span class="h-icon ${ex.movement_type}">${exIconHtml(ex)}</span>`;
       el("ex-name").appendChild(document.createTextNode(ex.name));
@@ -2086,7 +2128,10 @@
       const inherit = shared && !shared.own && shared.weight_used != null;
       if (inherit) suggested = Number(shared.weight_used);
       if (!resuming) {
-        state.currentWeightDraft = suggested != null ? suggested : ex.default_weight != null ? Number(ex.default_weight) : 0;
+        state.active[ex.id] = {
+          startedAt: null,
+          weight: suggested != null ? suggested : ex.default_weight != null ? Number(ex.default_weight) : 0,
+        };
       }
       saveState();
       renderWeightDisplay();
@@ -2116,11 +2161,32 @@
       renderProgressChart("ex", ex);
 
       renderExerciseButtons();
+      renderSupersetRow();
       showScreen("exercise");
     }
 
+    // Fila de "en marcha" en la pantalla del ejercicio: las otras máquinas
+    // de la superserie, con su cronómetro, para saltar de una a otra.
+    function renderSupersetRow() {
+      const box = el("ex-superset");
+      const others = startedIds().filter((id) => id !== state.currentExerciseId)
+        .map((id) => catalog.find((e) => e.id === id)).filter(Boolean);
+      if (!others.length) { box.hidden = true; box.innerHTML = ""; return; }
+      box.hidden = false;
+      box.innerHTML = `<div class="ss-label">También en marcha</div>` + others.map((o) =>
+        `<button type="button" class="ss-chip ${o.movement_type}" data-id="${o.id}">` +
+        `<span class="ss-name">${o.name}</span><span class="ss-time" data-started="${state.active[o.id].startedAt}">` +
+        `${formatElapsed(state.active[o.id].startedAt)}</span></button>`).join("");
+      box.querySelectorAll(".ss-chip").forEach((b) => b.addEventListener("click", () => {
+        const target = catalog.find((e) => e.id === Number(b.dataset.id));
+        if (target) startExercise(target);
+      }));
+    }
+
     function beginExercise() {
-      state.currentExerciseStartedAt = new Date().toISOString();
+      const c = cur();
+      if (!c) return;
+      c.startedAt = new Date().toISOString();
       saveState();
       renderExerciseButtons();
       tick();
@@ -2129,7 +2195,7 @@
     function finishExercise() {
       const ex = catalog.find((e) => e.id === state.currentExerciseId);
       if (!ex) { goToListWithoutFinishing(); return; }
-      state.pendingExercise = { exercise: ex, weightUsed: parseFloat(state.currentWeightDraft) || 0 };
+      state.pendingExercise = { exercise: ex, weightUsed: parseFloat(cur() && cur().weight) || 0 };
       saveState();
       el("fb-name").textContent = ex.name;
       document.querySelectorAll("#screen-feedback .fb-option").forEach((c) => c.classList.remove("selected"));
@@ -2151,9 +2217,8 @@
       (seriesByExercise[exercise.id] ||= []).push({ at: nowIso, weight: weightUsed, minutes: null });
       if (!state.doneExerciseIds.includes(exercise.id)) state.doneExerciseIds.push(exercise.id);
       state.summary.push({ name: exercise.name, weight: weightUsed, next_time: nextTime });
+      delete state.active[exercise.id];
       state.currentExerciseId = null;
-      state.currentExerciseStartedAt = null;
-      state.currentWeightDraft = null;
       state.pendingExercise = null;
       saveState();
       renderPickScreen();
@@ -2208,7 +2273,7 @@
       if (!target || !state.sessionId) { showScreen("home"); return; }
       if (target === "pick" || target === "exercise" || target === "feedback") renderPickScreen();
 
-      if (target === "exercise" && state.currentExerciseId) {
+      if (target === "exercise" && state.currentExerciseId && state.active[state.currentExerciseId]) {
         const ex = catalog.find((e) => e.id === state.currentExerciseId);
         if (ex) startExercise(ex, { resume: true }); else showScreen("pick");
       } else if (target === "feedback" && state.pendingExercise) {

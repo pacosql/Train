@@ -205,6 +205,28 @@ Cada fila enseña en una línea la razón de estar donde está ("descansas
 del tirón de Remo", "hoy ya has trabajado pecho", "9 días sin
 hacerlo"), en verde si empuja hacia arriba y en ámbar si la frena.
 
+## Superseries (varias máquinas en marcha a la vez)
+
+Se pueden tener varios ejercicios empezados a la vez. El estado guarda
+`currentExerciseId` (la máquina que tienes en pantalla) y `active`, un
+mapa `{ id: { startedAt, weight } }` con todas las abiertas:
+
+- Una entrada **con** `startedAt` está en marcha: sigue en marcha
+  aunque salgas a la lista o abras otra máquina, con su peso y su
+  cronómetro intactos.
+- Una entrada **sin** `startedAt` es solo la que estás mirando; se
+  descarta al salir de ella sin pulsar Start.
+- En la lista, las que están en marcha van arriba del todo bajo
+  "⏱ En marcha · superserie de N", y el resto bajo "▶ Lo siguiente".
+- En la pantalla de ejercicio, la fila "También en marcha" enseña las
+  otras de la superserie con su cronómetro; tocándolas saltas a ellas.
+- Al terminar una (feedback guardado) se quita de `active`; las demás
+  siguen en marcha. Sobrevive a recargar la página.
+
+`migrateState()` convierte el formato anterior (un solo ejercicio con
+`currentExerciseStartedAt`/`currentWeightDraft`) a `active`, para no
+perder un ejercicio a medias al actualizar la app.
+
 ## Misma máquina, varios ejercicios (estaciones)
 
 La columna `station` de `weights_exercises` agrupa filas que son la misma
