@@ -163,6 +163,36 @@ La columna `weights_exercises.icon` sigue existiendo como override
 manual: si alguien escribe su propio emoji en la ficha de una máquina,
 ese emoji sustituye al pictograma automático solo para esa fila.
 
+## Velocidad: nunca esperar a la red
+
+Medido con 800 ms de latencia simulada a Supabase (lo normal en el wifi
+de un gimnasio): guardar el feedback de un ejercicio pasó de 812 ms a
+~6 ms de pantalla a pantalla, terminar sesión de 3,2 s a ~5 ms, y abrir
+la app por segunda vez de 2,5 s a ~0,1 s. Tres piezas:
+
+- **Bandeja de salida** (`state.outbox`): toda escritura (feedback,
+  cardio, duración, cierre de sesión) se apunta en localStorage y la
+  pantalla cambia al momento; `flushOutbox()` la envía por detrás, en
+  orden, y reintenta sola (cada 20 s, al volver la red, al abrir la
+  app). Los inserts llevan un `client_id` único con índice único en
+  `weights_session_exercises`: si la respuesta se pierde pero el
+  servidor ya lo tenía, el 23505 cuenta como enviado y no se duplica.
+  Una píldora "N cambios por guardar" avisa mientras haya algo
+  pendiente. Lo único que sigue esperando a la red es crear la sesión
+  (hace falta su id), y el botón lo dice ("Un segundo…").
+- **Copia local de datos** (`weights_data_cache_v1`): catálogo,
+  historial y sesiones se guardan al cargar; la app arranca con eso al
+  instante y refresca por detrás (`refreshData()`), repintando la
+  pantalla si cambió algo.
+- **Service worker stale-while-revalidate**: sirve el shell desde caché
+  al instante y comprueba por detrás si `index.html` cambió; si sí,
+  manda `new-version` a la página, que se recarga sola en inicio sin
+  sesión o muestra "Hay una versión nueva · toca para actualizar" si
+  estás en mitad de un entrenamiento.
+
+Además, sin fuente externa (Google Fonts): fuente del sistema, una
+petición menos en cada arranque y un look más limpio.
+
 ## Resiliencia de red
 
 El wifi/datos del gimnasio corta a ratos. Toda escritura a Supabase

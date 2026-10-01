@@ -13,9 +13,6 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="icon" href="icons/icon-192.png" />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&display=swap" />
 
   <style>
     /* Texto grande a propósito: se usa en el gimnasio, a menudo de pie y
@@ -27,7 +24,7 @@
       --bg: #070908;
       --surface: #121715;            /* sólido: lo usa también la gráfica para recortar puntos */
       --surface-2: rgba(255, 255, 255, 0.08);
-      --glass: linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.025));
+      --glass: var(--surface);
       --line: rgba(255, 255, 255, 0.08);
       --line-strong: rgba(255, 255, 255, 0.16);
       --text: #f5f8f6;
@@ -42,9 +39,9 @@
       --push: #72a9ff;
       --pull: #f5b544;
       --cardio: #b98cff;
-      --display: "Barlow Condensed", "Arial Narrow", "Helvetica Neue", -apple-system, sans-serif;
+      --display: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       --body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      --lift: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 12px 32px rgba(0, 0, 0, 0.35);
+      --lift: none;
       padding-top: env(safe-area-inset-top, 0px);
       padding-bottom: env(safe-area-inset-bottom, 0px);
     }
@@ -63,23 +60,16 @@
     /* Luz de fondo fija: un halo del acento arriba y otro azul muy tenue a
        la derecha. Como pseudo-elemento fijo funciona también en iOS, donde
        background-attachment: fixed no. */
-    body::before {
-      content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
-      background:
-        radial-gradient(70% 42% at 50% -6%, rgba(67, 211, 145, 0.17), transparent 70%),
-        radial-gradient(45% 30% at 105% 25%, rgba(114, 169, 255, 0.06), transparent 70%);
-    }
     .wrap { max-width: 480px; margin: 0 auto; }
 
     /* ---------- tipografía ---------- */
-    h1, h2 { font-family: var(--display); text-transform: uppercase; letter-spacing: 0.3px; line-height: 0.98; margin: 0 0 6px; }
-    h1 { font-size: 2.2rem; font-weight: 800; }
-    h2 { font-size: 1.85rem; font-weight: 800; }
+    h1, h2 { font-family: var(--display); letter-spacing: -0.4px; line-height: 1.08; margin: 0 0 6px; }
+    h1 { font-size: 1.7rem; font-weight: 800; }
+    h2 { font-size: 1.45rem; font-weight: 800; }
     h3 { font-family: var(--display); font-size: 0.95rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.3px; color: var(--accent); margin: 22px 0 8px; }
     h1.hero {
       font-size: 2.3rem;
-      background: linear-gradient(90deg, #ffffff 15%, var(--accent-2) 85%);
-      -webkit-background-clip: text; background-clip: text; color: transparent;
+      color: var(--text);
     }
     .sub { color: var(--text-2); font-size: 0.88rem; margin: 0 0 18px; }
     .eyebrow { font-family: var(--display); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.4px; color: var(--text-2); margin: 0 0 4px; }
@@ -89,76 +79,69 @@
 
     /* ---------- barra superior ---------- */
     .top-bar { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 16px; }
-    .brand { display: flex; align-items: center; gap: 8px; cursor: pointer; font-family: var(--display); font-size: 1.25rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.2px; }
+    .brand { display: flex; align-items: center; gap: 8px; cursor: pointer; font-family: var(--display); font-size: 1.05rem; font-weight: 800; }
     .brand-mark {
       width: 1.45rem; height: 1.45rem; border-radius: 9px; display: grid; place-items: center; font-size: 0.8rem;
-      background: linear-gradient(135deg, var(--accent-2), var(--accent));
-      box-shadow: 0 0 18px var(--accent-glow), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+      background: var(--accent);
     }
     .live-pill {
       display: flex; align-items: center; gap: 7px; cursor: pointer;
       font-family: var(--display); font-size: 1.05rem; font-weight: 800; letter-spacing: 0.6px; font-variant-numeric: tabular-nums;
       color: var(--accent-ink);
-      background: linear-gradient(135deg, var(--accent-2), var(--accent));
+      background: var(--accent);
       padding: 6px 13px; border-radius: 999px;
-      box-shadow: 0 6px 20px var(--accent-glow), inset 0 1px 0 rgba(255, 255, 255, 0.4);
       transition: transform 0.1s ease;
     }
     .live-pill:active { transform: scale(0.95); }
-    .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent-ink); animation: pulse 1.6s ease-in-out infinite; }
-    @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.35; transform: scale(0.75); } }
+    .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent-ink);  }
 
     /* ---------- tarjetas ---------- */
     .card {
       background: var(--glass);
       border: 1px solid var(--line);
-      border-radius: 22px;
+      border-radius: 16px;
       padding: 18px;
       margin-bottom: 12px;
-      box-shadow: var(--lift);
     }
     .card.flush { padding: 14px 18px; }
     .card.accent {
       border-color: rgba(67, 211, 145, 0.4);
-      background: linear-gradient(135deg, rgba(67, 211, 145, 0.2), rgba(255, 255, 255, 0.03) 60%);
-      box-shadow: 0 0 0 1px rgba(67, 211, 145, 0.12), 0 14px 40px rgba(67, 211, 145, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      background: rgba(67, 211, 145, 0.2);
     }
 
     /* ---------- botones ---------- */
     button {
       font-family: var(--display);
-      font-size: 1.3rem; font-weight: 700; letter-spacing: 0.7px; text-transform: uppercase;
-      background: linear-gradient(135deg, var(--accent-2), var(--accent) 55%, #2fb877);
+      font-size: 1.05rem; font-weight: 700; letter-spacing: 0;
+      background: var(--accent);
       color: var(--accent-ink);
       border: none; border-radius: 18px;
       padding: 15px 18px; width: 100%; margin-bottom: 10px;
       cursor: pointer;
-      box-shadow: 0 8px 24px var(--accent-glow), inset 0 1px 0 rgba(255, 255, 255, 0.35);
       transition: transform 0.08s ease, filter 0.15s ease, box-shadow 0.15s ease;
     }
     button:last-child { margin-bottom: 0; }
     button:active { transform: scale(0.98); filter: brightness(1.06); }
     button.stop {
-      background: linear-gradient(135deg, #ff9270, var(--stop) 55%, #e5522f); color: #2b0a02;
-      box-shadow: 0 8px 24px rgba(255, 107, 74, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      background: var(--stop); color: #2b0a02;
     }
-    button.secondary { background: rgba(255, 255, 255, 0.06); color: var(--text); border: 1px solid var(--line-strong); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05); }
-    button.danger { background: transparent; color: var(--danger); border: 1px solid rgba(255, 84, 112, 0.4); box-shadow: none; }
-    button.ghost { background: transparent; color: var(--text-2); border: none; box-shadow: none; font-family: var(--body); text-transform: none; letter-spacing: 0; font-weight: 700; font-size: 0.9rem; padding: 12px; }
+    button.secondary { background: rgba(255, 255, 255, 0.06); color: var(--text); border: 1px solid var(--line-strong); }
+    button.danger { background: transparent; color: var(--danger); border: 1px solid rgba(255, 84, 112, 0.4); }
+    button.ghost { background: transparent; color: var(--text-2); border: none; font-family: var(--body); text-transform: none; letter-spacing: 0; font-weight: 700; font-size: 0.9rem; padding: 12px; }
     button.small { width: auto; padding: 12px 16px; margin: 0; flex-shrink: 0; font-size: 1.05rem; }
-    button:disabled { opacity: 0.32; cursor: default; box-shadow: none; }
+    button:disabled { opacity: 0.32; cursor: default; }
 
     /* ---------- estadísticas ---------- */
     .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
-    .tile { background: var(--glass); border: 1px solid var(--line); border-radius: 18px; padding: 14px 6px 12px; text-align: center; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05); }
-    .tile .n { font-family: var(--display); font-size: 2.1rem; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; }
+    .tile { background: var(--glass); border: 1px solid var(--line); border-radius: 18px; padding: 14px 6px 12px; text-align: center; }
+    .tile .n { font-family: var(--display); font-size: 1.7rem; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; white-space: nowrap; letter-spacing: -0.5px; }
     .tile .l { font-family: var(--display); font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-2); margin-top: 5px; }
 
     /* ---------- progreso de sesión ---------- */
-    .strip { background: var(--glass); border: 1px solid var(--line); border-radius: 16px; padding: 10px 14px; margin-bottom: 14px; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04); }
+    .strip { background: var(--glass); border: 1px solid var(--line); border-radius: 16px; padding: 10px 14px; margin-bottom: 14px; }
     .strip-row { display: flex; justify-content: space-between; font-family: var(--display); font-size: 0.9rem; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase; color: var(--text-2); margin-bottom: 8px; font-variant-numeric: tabular-nums; }
     .progress { height: 6px; background: rgba(255, 255, 255, 0.07); border-radius: 999px; overflow: hidden; }
-    .progress i { display: block; height: 100%; width: 0%; border-radius: 999px; background: linear-gradient(90deg, var(--accent), var(--accent-2)); box-shadow: 0 0 12px var(--accent-glow); transition: width 0.4s ease; }
+    .progress i { display: block; height: 100%; width: 0%; border-radius: 999px; background: var(--accent); transition: width 0.4s ease; }
 
     /* ---------- listas de máquinas / entrenamientos ---------- */
     .group-header { display: flex; align-items: center; gap: 10px; font-family: var(--display); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.3px; color: var(--text-2); margin: 20px 0 10px; }
@@ -171,16 +154,13 @@
       border-radius: 18px;
       border: 1px solid var(--line);
       background: var(--glass);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
       margin-bottom: 8px;
       cursor: pointer;
       transition: transform 0.08s ease, background 0.12s ease;
-      animation: item-in 0.32s cubic-bezier(0.2, 0.7, 0.2, 1) both;
-      animation-delay: calc(var(--i, 0) * 28ms);
     }
-    @keyframes item-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+ }
     /* franja de color por tipo de movimiento, con un poco de luz propia */
-    .item::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--type, var(--line-strong)); box-shadow: 0 0 16px var(--type, transparent); }
+    .item::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--type, var(--line-strong)); }
     .item.push { --type: var(--push); }
     .item.pull { --type: var(--pull); }
     .item.cardio { --type: var(--cardio); }
@@ -188,8 +168,7 @@
     .item:active { transform: scale(0.985); background: var(--surface-2); }
     .item.top {
       border-color: rgba(67, 211, 145, 0.45);
-      background: linear-gradient(135deg, rgba(67, 211, 145, 0.17), rgba(255, 255, 255, 0.03) 55%);
-      box-shadow: 0 0 0 1px rgba(67, 211, 145, 0.14), 0 10px 30px rgba(67, 211, 145, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      background: rgba(67, 211, 145, 0.17);
     }
     /* icono: pictograma de línea (SVG) o, si el usuario puso uno propio, un
        emoji de texto — ambos comparten el mismo chip. El color sigue al tipo
@@ -198,7 +177,6 @@
       width: 2.3rem; height: 2.3rem; border-radius: 14px; flex-shrink: 0;
       display: grid; place-items: center; font-size: 1.3rem; line-height: 1;
       background: rgba(255, 255, 255, 0.06); border: 1px solid var(--line);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
       color: var(--type, var(--text-2));
     }
     .item .icon svg { width: 55%; height: 55%; stroke: currentColor; }
@@ -209,7 +187,7 @@
     .h-icon.push { color: var(--push); }
     .h-icon.pull { color: var(--pull); }
     .h-icon.cardio { color: var(--cardio); }
-    .item .name { font-family: var(--display); font-size: 1.3rem; font-weight: 700; letter-spacing: 0.2px; line-height: 1.05; }
+    .item .name { font-family: var(--display); font-size: 1.05rem; font-weight: 700; letter-spacing: 0.2px; line-height: 1.05; }
     .item .meta { color: var(--text-2); font-size: 0.75rem; margin-top: 3px; }
     .item .meta .type { font-family: var(--display); font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.7px; }
     .item .meta .type.push { color: var(--push); }
@@ -220,9 +198,9 @@
     .item .reason.muted { color: var(--text-2); }
     .item.done .name { color: var(--text-2); }
     .pill { font-family: var(--display); font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; padding: 4px 10px; border-radius: 999px; flex-shrink: 0; }
-    .pill.push { background: var(--push); color: #04142e; box-shadow: 0 0 14px rgba(114, 169, 255, 0.35); }
-    .pill.pull { background: var(--pull); color: #2b1d00; box-shadow: 0 0 14px rgba(245, 181, 68, 0.35); }
-    .pill.cardio { background: var(--cardio); color: #1b0b33; box-shadow: 0 0 14px rgba(185, 140, 255, 0.35); }
+    .pill.push { background: var(--push); color: #04142e; }
+    .pill.pull { background: var(--pull); color: #2b1d00; }
+    .pill.cardio { background: var(--cardio); color: #1b0b33; }
     .pill.otro { background: var(--surface-2); color: var(--text-2); border: 1px solid var(--line-strong); }
     .chev { color: var(--text-2); font-size: 1.2rem; font-weight: 800; flex-shrink: 0; }
     .tag { font-family: var(--display); font-size: 0.72rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; padding: 3px 9px; border-radius: 999px; background: var(--surface-2); color: var(--text-2); border: 1px solid var(--line); flex-shrink: 0; }
@@ -238,7 +216,7 @@
     .ss-row { margin-bottom: 14px; }
     .ss-row[hidden] { display: none; }
     .ss-label { font-family: var(--display); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-2); margin-bottom: 6px; }
-    .ss-chip { display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%; margin-bottom: 6px; padding: 10px 14px; border-radius: 14px; background: var(--glass); border: 1px solid var(--line-strong); color: var(--text); box-shadow: none; text-transform: none; font-family: var(--body); font-size: 0.9rem; font-weight: 700; letter-spacing: 0; }
+    .ss-chip { display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%; margin-bottom: 6px; padding: 10px 14px; border-radius: 14px; background: var(--glass); border: 1px solid var(--line-strong); color: var(--text); text-transform: none; font-family: var(--body); font-size: 0.9rem; font-weight: 700; letter-spacing: 0; }
     .ss-chip.push { border-left: 4px solid var(--push); }
     .ss-chip.pull { border-left: 4px solid var(--pull); }
     .ss-chip .ss-time { font-family: var(--display); font-size: 1.1rem; font-weight: 800; color: var(--accent); font-variant-numeric: tabular-nums; }
@@ -247,19 +225,19 @@
     /* Lo que marcaste al terminar la vez anterior, bien grande, y el peso
        que sale de ahí para hoy — antes era una coletilla ("subiendo") al
        final de una frase gris y no se veía. */
-    .last-card { border-radius: 18px; padding: 12px 14px; margin-bottom: 14px; border: 1px solid var(--line); background: var(--glass); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05); }
+    .last-card { border-radius: 18px; padding: 12px 14px; margin-bottom: 14px; border: 1px solid var(--line); background: var(--glass); }
     .last-card[hidden] { display: none; }
     .last-card .lc-eyebrow { font-family: var(--display); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-2); }
     .last-card .lc-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 6px; }
-    .last-card .lc-weight { font-family: var(--display); font-size: 2rem; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; }
+    .last-card .lc-weight { font-family: var(--display); font-size: 1.6rem; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; }
     .last-card .lc-weight small { font-size: 0.5em; color: var(--text-2); margin-left: 3px; }
-    .last-card .lc-fb { display: flex; align-items: center; gap: 6px; font-family: var(--display); font-size: 1.1rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; padding: 6px 12px; border-radius: 999px; border: 1px solid currentColor; white-space: nowrap; }
+    .last-card .lc-fb { display: flex; align-items: center; gap: 6px; font-family: var(--display); font-size: 0.95rem; font-weight: 800; padding: 6px 12px; border-radius: 999px; border: 1px solid currentColor; white-space: nowrap; }
     .last-card .lc-today { font-size: 0.85rem; color: var(--text); margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line); }
     .last-card .lc-today b { font-family: var(--display); font-size: 1.15rem; letter-spacing: 0.3px; }
-    .last-card.mas { border-color: rgba(67, 211, 145, 0.35); background: linear-gradient(160deg, rgba(67, 211, 145, 0.12), rgba(255, 255, 255, 0.02) 65%); }
+    .last-card.mas { border-color: rgba(67, 211, 145, 0.35); background: rgba(67, 211, 145, 0.12); }
     .last-card.mas .lc-fb { color: var(--accent); background: var(--accent-soft); }
     .last-card.igual .lc-fb { color: var(--text); background: rgba(255, 255, 255, 0.06); }
-    .last-card.menos { border-color: rgba(255, 107, 74, 0.35); background: linear-gradient(160deg, rgba(255, 107, 74, 0.12), rgba(255, 255, 255, 0.02) 65%); }
+    .last-card.menos { border-color: rgba(255, 107, 74, 0.35); background: rgba(255, 107, 74, 0.12); }
     .last-card.menos .lc-fb { color: var(--stop); background: rgba(255, 107, 74, 0.12); }
 
     /* ---------- chips ---------- */
@@ -270,20 +248,19 @@
       border: 1px solid var(--line); background: var(--glass);
       color: var(--text); cursor: pointer;
       font-family: var(--display); font-size: 1.2rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
       transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
     }
-    .chip.selected { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); box-shadow: 0 0 0 1px rgba(67, 211, 145, 0.25), 0 6px 20px rgba(67, 211, 145, 0.18); }
+    .chip.selected { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
 
     /* ---------- opciones de feedback ---------- */
     .fb-option {
       display: flex; align-items: center; gap: 14px; width: 100%; text-align: left;
       background: var(--glass); border: 1px solid var(--line); color: var(--text);
       border-radius: 18px; padding: 14px 16px; margin-bottom: 10px; cursor: pointer;
-      font-family: var(--body); text-transform: none; letter-spacing: 0; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      font-family: var(--body); text-transform: none; letter-spacing: 0;
       transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
     }
-    .fb-option.selected { border-color: var(--accent); background: var(--accent-soft); box-shadow: 0 0 0 1px rgba(67, 211, 145, 0.25), 0 8px 24px rgba(67, 211, 145, 0.16); }
+    .fb-option.selected { border-color: var(--accent); background: var(--accent-soft); }
     .fb-icon { font-size: 1.7rem; flex-shrink: 0; }
     .fb-text b { display: block; font-family: var(--display); font-size: 1.35rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; line-height: 1; }
     .fb-text span { display: block; font-size: 0.75rem; color: var(--text-2); font-weight: 600; margin-top: 3px; }
@@ -296,7 +273,7 @@
       border: 1px solid var(--line-strong); background: rgba(0, 0, 0, 0.35); color: var(--text); font-size: 1rem;
       font-family: inherit; transition: border-color 0.15s ease, box-shadow 0.15s ease;
     }
-    input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(67, 211, 145, 0.18); }
+    input:focus { outline: none; border-color: var(--accent); }
     input::placeholder { color: var(--text-2); opacity: 0.6; }
     label { font-family: var(--display); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-2); display: block; margin-bottom: 8px; }
 
@@ -307,18 +284,17 @@
       width: 3.2rem; height: 3.2rem; border-radius: 50%; flex: none;
       font-size: 1.7rem; font-weight: 700; padding: 0; margin: 0; line-height: 1;
       background: rgba(255, 255, 255, 0.06); color: var(--text); border: 1px solid var(--line-strong);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
     }
     .stepper-btn:active { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
     .stepper-value { font-family: var(--display); font-size: 3.6rem; font-weight: 800; line-height: 1; min-width: 4.6rem; font-variant-numeric: tabular-nums; letter-spacing: 0.5px; }
-    .stepper-value.bump { animation: bump 0.2s ease; }
-    @keyframes bump { 45% { transform: scale(1.1); color: var(--accent); text-shadow: 0 0 22px var(--accent-glow); } }
+    .stepper-value.bump { animation: bump 0.15s ease; }
+    @keyframes bump { 50% { transform: scale(1.06); } }
     .stepper-unit { font-family: var(--display); font-size: 0.8rem; font-weight: 700; color: var(--text-2); text-transform: uppercase; letter-spacing: 1.2px; margin-top: 2px; }
 
     /* ---------- cronómetro ---------- */
     .timer { text-align: center; padding: 6px 0 2px; }
-    .timer .t { font-family: var(--display); font-size: 3rem; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; letter-spacing: 0.5px; color: var(--accent); text-shadow: 0 0 28px var(--accent-glow); }
-    .timer .t.idle { color: var(--text-2); font-size: 1.5rem; text-shadow: none; }
+    .timer .t { font-family: var(--display); font-size: 3rem; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; letter-spacing: 0.5px; color: var(--accent); }
+    .timer .t.idle { color: var(--text-2); font-size: 1.5rem; }
     .timer .l { font-family: var(--display); font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--text-2); margin-top: 6px; }
 
     /* ---------- detalle plegable ---------- */
@@ -339,33 +315,32 @@
        de movimiento, como las tarjetas "recomendada" de la lista. */
     .hero-art {
       display: flex; align-items: center; justify-content: center;
-      height: 118px; margin: 4px 0 14px; border-radius: 20px;
+      height: 96px; margin: 4px 0 14px; border-radius: 16px;
       background: var(--glass); border: 1px solid var(--line);
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
       color: var(--text-2);
     }
-    .hero-art.push { color: var(--push); background: linear-gradient(160deg, rgba(114, 169, 255, 0.14), rgba(255, 255, 255, 0.02) 65%); border-color: rgba(114, 169, 255, 0.3); }
-    .hero-art.pull { color: var(--pull); background: linear-gradient(160deg, rgba(245, 181, 68, 0.14), rgba(255, 255, 255, 0.02) 65%); border-color: rgba(245, 181, 68, 0.3); }
-    .hero-art.cardio { color: var(--cardio); background: linear-gradient(160deg, rgba(185, 140, 255, 0.14), rgba(255, 255, 255, 0.02) 65%); border-color: rgba(185, 140, 255, 0.3); }
+    .hero-art.push { color: var(--push); background: rgba(114, 169, 255, 0.14); border-color: rgba(114, 169, 255, 0.3); }
+    .hero-art.pull { color: var(--pull); background: rgba(245, 181, 68, 0.14); border-color: rgba(245, 181, 68, 0.3); }
+    .hero-art.cardio { color: var(--cardio); background: rgba(185, 140, 255, 0.14); border-color: rgba(185, 140, 255, 0.3); }
     .hero-art svg { width: 62%; height: 62%; max-width: 210px; }
     .hero-art.emoji { font-size: 3.6rem; } /* icono propio (emoji) del usuario, si lo puso */
 
     /* ---------- recomendación personal (1-5) ---------- */
     /* Tarjeta justo bajo la ilustración: cinco puntos, una palabra y el
        porqué. Color por tramo: rojo (1-2) / ámbar (3) / verde (4-5). */
-    .rec-card { border-radius: 18px; padding: 12px 14px 12px; margin-bottom: 14px; border: 1px solid var(--line); background: var(--glass); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05); }
+    .rec-card { border-radius: 18px; padding: 12px 14px 12px; margin-bottom: 14px; border: 1px solid var(--line); background: var(--glass); }
     .rec-card[hidden] { display: none; }
     .rec-head { display: flex; align-items: center; gap: 10px; }
     .rec-dots { display: flex; gap: 4px; flex-shrink: 0; }
     .rec-dots i { width: 0.55rem; height: 0.55rem; border-radius: 50%; background: rgba(255, 255, 255, 0.12); border: 1px solid var(--line-strong); }
-    .rec-dots i.on { background: currentColor; border-color: currentColor; box-shadow: 0 0 6px currentColor; }
+    .rec-dots i.on { background: currentColor; border-color: currentColor; }
     .rec-label { font-family: var(--display); font-size: 1.05rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.6px; line-height: 1; white-space: nowrap; }
     .rec-eyebrow { font-family: var(--display); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.5px; color: var(--text-2); margin-left: auto; white-space: nowrap; font-variant-numeric: tabular-nums; }
     .rec-note { font-size: 0.82rem; color: var(--text); margin: 8px 0 0; }
     .rec-disclaimer { font-size: 0.66rem; color: var(--text-2); margin: 8px 0 0; opacity: 0.85; }
-    .rec-card.r1, .rec-card.r2 { color: var(--danger); border-color: rgba(255, 84, 112, 0.35); background: linear-gradient(160deg, rgba(255, 84, 112, 0.12), rgba(255, 255, 255, 0.02) 65%); }
-    .rec-card.r3 { color: var(--pull); border-color: rgba(245, 181, 68, 0.35); background: linear-gradient(160deg, rgba(245, 181, 68, 0.12), rgba(255, 255, 255, 0.02) 65%); }
-    .rec-card.r4, .rec-card.r5 { color: var(--accent); border-color: rgba(67, 211, 145, 0.35); background: linear-gradient(160deg, rgba(67, 211, 145, 0.12), rgba(255, 255, 255, 0.02) 65%); }
+    .rec-card.r1, .rec-card.r2 { color: var(--danger); border-color: rgba(255, 84, 112, 0.35); background: rgba(255, 84, 112, 0.12); }
+    .rec-card.r3 { color: var(--pull); border-color: rgba(245, 181, 68, 0.35); background: rgba(245, 181, 68, 0.12); }
+    .rec-card.r4, .rec-card.r5 { color: var(--accent); border-color: rgba(67, 211, 145, 0.35); background: rgba(67, 211, 145, 0.12); }
     /* etiqueta compacta en las listas */
     .rec-tag { font-family: var(--display); font-size: 0.72rem; font-weight: 800; letter-spacing: 0.5px; padding: 1px 7px; border-radius: 999px; border: 1px solid currentColor; white-space: nowrap; }
     .rec-tag.r1, .rec-tag.r2 { color: var(--danger); }
@@ -384,7 +359,7 @@
     .body-fig { width: 84px; text-align: center; }
     .body-fig svg { width: 100%; height: auto; overflow: visible; }
     .body-fig .bs-part { fill: var(--surface-2); stroke: var(--line-strong); stroke-width: 1.5; }
-    .body-fig .bs-part.bs-on { fill: currentColor; stroke: currentColor; stroke-width: 1.5; filter: drop-shadow(0 0 5px currentColor); }
+    .body-fig .bs-part.bs-on { fill: currentColor; stroke: currentColor; stroke-width: 1.5; }
     .body-fig .bs-spine { stroke: var(--line-strong); stroke-width: 1.5; fill: none; }
     .body-fig .bs-label { font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-2); margin-top: 6px; }
 
@@ -413,14 +388,14 @@
        líneas que chocaban entre sí. Nunca más de una línea cada uno. */
     .chart-head .title { font-family: var(--display); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: var(--text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
     .chart-head .delta { font-family: var(--display); font-size: 1.1rem; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: 0.4px; white-space: nowrap; flex-shrink: 0; }
-    .delta.up { color: var(--accent); text-shadow: 0 0 16px var(--accent-glow); }
+    .delta.up { color: var(--accent); }
     .delta.flat { color: var(--text-2); }
     .delta.down { color: var(--stop); }
     .chart svg { display: block; width: 100%; height: auto; overflow: visible; }
     .chart-caption { font-size: 0.7rem; color: var(--text-2); text-align: center; margin-top: 6px; min-height: 1.1rem; font-variant-numeric: tabular-nums; }
     /* Punto actual del sparkline: un halo suave para que se note que es el
        último dato, no solo uno más de la serie. */
-    .chart svg circle.cur { filter: drop-shadow(0 0 4px var(--accent-glow)); }
+    .chart svg circle.cur { }
     /* Con un único registro no hay tendencia que dibujar: una cifra grande
        en vez de una "gráfica" con un punto suelto en el vacío. */
     .chart-first { text-align: center; padding: 14px 0 6px; }
@@ -429,13 +404,15 @@
     .chart-first .d { font-size: 0.78rem; color: var(--text-2); margin-top: 6px; font-weight: 600; }
 
     /* ---------- varios ---------- */
+    .info-pill { border-radius: 12px; padding: 9px 14px; font-size: 0.8rem; font-weight: 600; margin-bottom: 12px; cursor: pointer; background: var(--accent-soft); color: var(--accent); border: 1px solid rgba(67, 211, 145, 0.35); }
+    .info-pill.muted { background: var(--surface-2); color: var(--text-2); border-color: var(--line); cursor: default; }
     .error-bar { background: rgba(255, 84, 112, 0.12); border: 1px solid rgba(255, 84, 112, 0.4); color: var(--danger); border-radius: 14px; padding: 10px 14px; font-size: 0.82rem; margin-bottom: 14px; }
     .empty { color: var(--text-2); font-size: 0.85rem; text-align: center; padding: 18px 0; }
     .build-id { text-align: center; font-size: 0.65rem; color: var(--text-2); opacity: 0.5; margin-top: 26px; font-family: ui-monospace, monospace; }
     [hidden] { display: none !important; }
 
-    section[id^="screen-"]:not([hidden]) { animation: screen-in 0.26s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
-    @keyframes screen-in { from { opacity: 0; transform: translateY(14px) scale(0.985); } to { opacity: 1; transform: none; } }
+    section[id^="screen-"]:not([hidden]) { animation: screen-in 0.12s ease both; }
+    @keyframes screen-in { from { opacity: 0; } to { opacity: 1; } }
     @media (prefers-reduced-motion: reduce) {
       section[id^="screen-"]:not([hidden]), .item, .stepper-value.bump { animation: none; }
       button:active, .item:active { transform: none; }
@@ -451,6 +428,8 @@
     </div>
 
     <div id="error-bar" class="error-bar" hidden></div>
+    <div id="update-pill" class="info-pill" hidden>Hay una versión nueva · toca para actualizar</div>
+    <div id="pending-pill" class="info-pill muted" hidden></div>
 
     <!-- progreso de la sesión (solo en pantallas de entrenamiento) -->
     <div id="session-strip" class="strip" hidden>
@@ -700,13 +679,10 @@
     <section id="screen-exercise" hidden>
       <p class="eyebrow" id="ex-header"></p>
       <h2 id="ex-name">—</h2>
-      <div class="hero-art" id="ex-hero-art"></div>
-      <div class="ss-row" id="ex-superset" hidden></div>
       <div class="last-card" id="ex-last-card" hidden></div>
-      <div class="rec-card" id="ex-rec-card" hidden></div>
       <p class="sub" id="ex-recommendation"></p>
-
       <div class="note-line" id="ex-note-line" hidden></div>
+      <div class="ss-row" id="ex-superset" hidden></div>
 
       <div class="card flush">
         <div class="timer">
@@ -734,6 +710,8 @@
 
       <details class="detail" open>
         <summary>Cómo entrenarlo</summary>
+        <div class="hero-art" id="ex-hero-art"></div>
+        <div class="rec-card" id="ex-rec-card" hidden></div>
         <div class="pm-row" id="ex-pm-row" hidden></div>
         <p id="ex-description"></p>
 
@@ -1121,6 +1099,9 @@
         // startedAt es solo la que estás mirando, y se descarta al salir.
         currentExerciseId: null, active: {},
         pendingExercise: null, summary: [],
+        // Escrituras pendientes de enviar a Supabase. La pantalla nunca
+        // espera a la red: se apunta aquí y se envía por detrás.
+        outbox: [],
       };
     }
     function migrateState() {
@@ -2033,14 +2014,12 @@
         ? Math.max(1, Math.round(elapsedSeconds(state.cardioStartedAt) / 60))
         : state.cardioMinutesSuggested;
       if (state.sessionId && cardioEx) {
-        const { error } = await withRetry(() => client.from(T.sessionExercises).insert({
-          session_id: state.sessionId, exercise_id: cardioEx.id, order_index: -1,
-          minutes, weight_used: null, sets: null, reps: null, next_time: null,
-        }));
-        if (error) { showError("No se pudo guardar el cardio: " + friendlyError(error)); return; }
-        showError("");
-        await withRetry(() => client.from(T.sessions).update({ cardio_minutes_done: minutes }).eq("id", state.sessionId));
         const nowIso = new Date().toISOString();
+        enqueue({ kind: "insertSessionExercise", row: {
+          session_id: state.sessionId, exercise_id: cardioEx.id, order_index: -1,
+          minutes, weight_used: null, sets: null, reps: null, next_time: null, completed_at: nowIso,
+        } });
+        enqueue({ kind: "updateSession", sessionId: state.sessionId, patch: { cardio_minutes_done: minutes } });
         historyByExercise[cardioEx.id] = { weight_used: null, next_time: null, completed_at: nowIso };
         (seriesByExercise[cardioEx.id] ||= []).push({ at: nowIso, weight: null, minutes });
         state.summary.push({ name: cardioEx.name, minutes });
@@ -2203,16 +2182,15 @@
       showScreen("feedback");
     }
 
-    async function saveFeedback(nextTime) {
+    function saveFeedback(nextTime) {
       const { exercise, weightUsed } = state.pendingExercise;
-      const { error } = await withRetry(() => client.from(T.sessionExercises).insert({
+      const nowIso = new Date().toISOString();
+      // La pantalla cambia ya; el envío va por la bandeja de salida.
+      enqueue({ kind: "insertSessionExercise", row: {
         session_id: state.sessionId, exercise_id: exercise.id,
         order_index: state.doneExerciseIds.length,
-        weight_used: weightUsed, sets: 3, reps: 8, next_time: nextTime,
-      }));
-      if (error) { showError("No se pudo guardar: " + friendlyError(error)); return; }
-      showError("");
-      const nowIso = new Date().toISOString();
+        weight_used: weightUsed, sets: 3, reps: 8, next_time: nextTime, completed_at: nowIso,
+      } });
       historyByExercise[exercise.id] = { weight_used: weightUsed, next_time: nextTime, completed_at: nowIso };
       (seriesByExercise[exercise.id] ||= []).push({ at: nowIso, weight: weightUsed, minutes: null });
       if (!state.doneExerciseIds.includes(exercise.id)) state.doneExerciseIds.push(exercise.id);
@@ -2227,7 +2205,10 @@
 
     // ---------- sesión ----------
     async function startNewSession() {
+      const btn = el("btn-start");
+      btn.disabled = true; btn.textContent = "Un segundo…";
       const { data, error } = await withRetry(() => client.from(T.sessions).insert({ status: "in_progress" }).select().single());
+      btn.disabled = false; btn.textContent = "Empezar entrenamiento";
       if (error) { showError("No se pudo crear la sesión: " + friendlyError(error)); return; }
       showError("");
       state = freshState();
@@ -2239,8 +2220,11 @@
 
     async function finishSession() {
       const totalMin = state.sessionStartedAt ? Math.max(1, Math.round(elapsedSeconds(state.sessionStartedAt) / 60)) : 0;
+      const endedAt = new Date().toISOString();
       if (state.sessionId) {
-        await withRetry(() => client.from(T.sessions).update({ ended_at: new Date().toISOString(), status: "done" }).eq("id", state.sessionId));
+        enqueue({ kind: "updateSession", sessionId: state.sessionId, patch: { ended_at: endedAt, status: "done" } });
+        // Que salga ya en "últimos entrenamientos" sin esperar al servidor.
+        recentSessions.unshift({ id: state.sessionId, started_at: state.sessionStartedAt, ended_at: endedAt, status: "done", count: state.summary.length });
       }
       const strength = state.summary.filter((i) => i.minutes == null);
       el("sum-count").textContent = state.summary.length;
@@ -2265,8 +2249,8 @@
       state.sessionId = null;
       state.lastActiveScreen = null;
       saveState();
-      await loadSessions();
       showScreen("summary");
+      refreshData();
     }
 
     function restoreScreen(target) {
@@ -2305,9 +2289,7 @@
       state.cardioMinutesSuggested = suggestCardioMinutes(total);
       saveState();
       if (state.sessionId) {
-        await withRetry(() => client.from(T.sessions)
-          .update({ planned_duration_min: total, cardio_minutes_planned: state.cardioMinutesSuggested })
-          .eq("id", state.sessionId));
+        enqueue({ kind: "updateSession", sessionId: state.sessionId, patch: { planned_duration_min: total, cardio_minutes_planned: state.cardioMinutesSuggested } });
       }
       showScreen("cardio-pick");
     }
@@ -2389,15 +2371,19 @@
     }
 
     // ---------- carga ----------
-    async function loadCatalogAndHistory() {
-      const { data: exs, error: exErr } = await withRetry(() => client.from(T.exercises).select("*").order("sort_order"));
-      if (exErr) throw exErr;
-      catalog = exs;
-
-      const { data: rows, error: histErr } = await withRetry(() => client.from(T.sessionExercises)
-        .select("session_id, exercise_id, weight_used, next_time, minutes, completed_at")
-        .order("completed_at", { ascending: false }).limit(400));
-      if (histErr) throw histErr;
+    // Copia local de catálogo, historial y sesiones: la app arranca con
+    // esto al instante y refresca por detrás. Sin ella, abrir la app
+    // esperaba tres viajes a Supabase (~2-3 s en el wifi del gimnasio).
+    const DATA_KEY = "weights_data_cache_v1";
+    function saveDataCache(rows, sessions) {
+      try { localStorage.setItem(DATA_KEY, JSON.stringify({ catalog, rows, sessions, at: Date.now() })); } catch (e) {}
+    }
+    function loadDataCache() {
+      try { const raw = localStorage.getItem(DATA_KEY); return raw ? JSON.parse(raw) : null; } catch (e) { return null; }
+    }
+    let lastRows = [];
+    function applyHistoryRows(rows) {
+      lastRows = rows;
       historyByExercise = {};
       seriesByExercise = {};
       const perSession = {};
@@ -2416,6 +2402,16 @@
       }
       return perSession;
     }
+    async function loadCatalogAndHistory() {
+      const { data: exs, error: exErr } = await withRetry(() => client.from(T.exercises).select("*").order("sort_order"));
+      if (exErr) throw exErr;
+      catalog = exs;
+      const { data: rows, error: histErr } = await withRetry(() => client.from(T.sessionExercises)
+        .select("session_id, exercise_id, weight_used, next_time, minutes, completed_at")
+        .order("completed_at", { ascending: false }).limit(400));
+      if (histErr) throw histErr;
+      return applyHistoryRows(rows);
+    }
 
     async function loadSessions(perSession) {
       const counts = perSession || (await loadCatalogAndHistory());
@@ -2424,6 +2420,89 @@
         .eq("status", "done").order("started_at", { ascending: false }).limit(30));
       if (error) return;
       recentSessions = (data || []).map((s) => ({ ...s, count: counts[s.id] || 0 }));
+      saveDataCache(lastRows, data || []);
+    }
+    // Arranque desde la copia local. Devuelve true si había algo.
+    function bootFromCache() {
+      const c = loadDataCache();
+      if (!c || !Array.isArray(c.catalog) || !c.catalog.length) return false;
+      catalog = c.catalog;
+      const counts = applyHistoryRows(c.rows || []);
+      recentSessions = (c.sessions || []).map((s) => ({ ...s, count: counts[s.id] || 0 }));
+      return true;
+    }
+    // Refresco por detrás: si la pantalla actual depende de los datos, se
+    // vuelve a pintar con lo nuevo sin que el usuario haga nada.
+    async function refreshData() {
+      try {
+        const perSession = await loadCatalogAndHistory();
+        await loadSessions(perSession);
+        showError("");
+      } catch (err) {
+        if (!isNetworkError(err)) showError("Sin conexión con Supabase: " + err.message);
+        return;
+      }
+      if (state.screen === "home") renderHome();
+      else if (state.screen === "pick") renderPickScreen();
+      else if (state.screen === "catalog-list") renderCatalogList();
+    }
+
+    // ---------- bandeja de salida (escrituras en segundo plano) ----------
+    // Cada escritura se apunta en state.outbox y la pantalla sigue sin
+    // esperar. flushOutbox() las envía en orden; si una falla por red se
+    // queda y se reintenta (al rato, al volver a tener red, al abrir la
+    // app). Los inserts llevan un client_id único: si el servidor ya lo
+    // tenía (la respuesta se perdió por el camino), cuenta como enviado y
+    // no se duplica.
+    let flushing = false;
+    function enqueue(op) {
+      op.id = op.id || (Date.now().toString(36) + Math.random().toString(36).slice(2, 8));
+      state.outbox.push(op);
+      saveState();
+      flushOutbox();
+      renderPendingBadge();
+    }
+    function renderPendingBadge() {
+      const n = state.outbox.length;
+      const pill = el("pending-pill");
+      pill.hidden = n === 0;
+      if (n) pill.textContent = n === 1 ? "1 cambio por guardar" : `${n} cambios por guardar`;
+    }
+    async function runOp(op) {
+      if (op.kind === "insertSessionExercise") {
+        const { error } = await withRetry(() => client.from(T.sessionExercises).insert({ ...op.row, client_id: op.id }));
+        if (error && error.code === "23505") return null; // ya estaba
+        return error;
+      }
+      if (op.kind === "updateSession") {
+        const { error } = await withRetry(() => client.from(T.sessions).update(op.patch).eq("id", op.sessionId));
+        return error;
+      }
+      return null;
+    }
+    async function flushOutbox() {
+      if (flushing || !client || !state.outbox.length) return;
+      flushing = true;
+      try {
+        while (state.outbox.length) {
+          const op = state.outbox[0];
+          const error = await runOp(op);
+          if (error) {
+            if (isNetworkError(error)) break; // sin red: lo dejamos y volvemos luego
+            // Error del servidor que no se arregla reintentando: avisar y
+            // apartarlo para no bloquear al resto.
+            showError("No se pudo guardar un cambio: " + error.message);
+            state.outbox.shift();
+            saveState();
+            continue;
+          }
+          state.outbox.shift();
+          saveState();
+        }
+      } finally {
+        flushing = false;
+        renderPendingBadge();
+      }
     }
 
     async function hydrateSessionStart() {
@@ -2504,26 +2583,45 @@
       if (!url || !anonKey) { showError("Faltan credenciales en config.js"); return; }
       client = supabase.createClient(url, anonKey);
 
-      try {
-        const perSession = await loadCatalogAndHistory();
-        await loadSessions(perSession);
-        showError("");
-      } catch (err) {
-        showError("Sin conexión con Supabase: " + err.message);
-        return;
+      // Con copia local: pintar ya y refrescar por detrás. Sin ella
+      // (primera vez): esperar a Supabase como antes.
+      if (bootFromCache()) {
+        refreshData();
+      } else {
+        try {
+          const perSession = await loadCatalogAndHistory();
+          await loadSessions(perSession);
+          showError("");
+        } catch (err) {
+          showError("Sin conexión con Supabase: " + friendlyError(err));
+          return;
+        }
       }
 
-      await hydrateSessionStart();
       setInterval(tick, 1000);
+      renderPendingBadge();
+      flushOutbox();
+      setInterval(flushOutbox, 20000);
+      window.addEventListener("online", flushOutbox);
 
       if (state.sessionId && state.lastActiveScreen) restoreScreen(state.lastActiveScreen);
       else showScreen("home");
+      hydrateSessionStart();
     }
 
     init();
 
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+      // El SW sirve la app desde caché al instante y comprueba por detrás
+      // si hay versión nueva. Si la hay: en inicio sin sesión se recarga
+      // sola; en mitad de un entrenamiento se avisa y se recarga al tocar.
+      navigator.serviceWorker.addEventListener("message", (e) => {
+        if (!e.data || e.data.type !== "new-version") return;
+        if (state.screen === "home" && !state.sessionId) { location.reload(); return; }
+        el("update-pill").hidden = false;
+      });
+      el("update-pill").addEventListener("click", () => location.reload());
     }
   </script>
 </body>
