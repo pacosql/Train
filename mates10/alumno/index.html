@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Mates10 · Alumno</title>
+  <link rel="manifest" href="../manifest.json" />
+  <meta name="theme-color" content="#1f1e1d" />
+  <link rel="icon" href="../icons/icon-192.png" />
+  <link rel="stylesheet" href="../comun.css" />
+  <style>
+    /* En la app del niño hay color en los elementos de juego; la estructura es la misma. */
+    .op-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 18px 0; }
+    .op { font-size: 1.5rem; font-weight: 700; padding: 22px 8px; border-radius: 16px; border: 3px solid transparent; color: #1f1e1d; min-height: 84px; word-break: break-word; }
+    .op.largo { font-size: 1.05rem; }
+    .op:nth-child(1) { background: #f2b880; } .op:nth-child(2) { background: #9fd3c7; }
+    .op:nth-child(3) { background: #c9b6e4; } .op:nth-child(4) { background: #f4d35e; }
+    .op.sel { border-color: var(--text); transform: scale(1.03); }
+    .op.bien { background: #7fb685 !important; border-color: #fff; }
+    .op.mal { background: #e0736b !important; opacity: 0.85; }
+    .op:disabled { opacity: 1; }
+    .enunciado { font-size: 1.6rem; line-height: 1.35; white-space: pre-wrap; margin: 18px 0 6px; font-family: var(--sans); }
+    .enunciado.largo { font-size: 1.2rem; }
+    /* Dibujos con caracteres (cuadrículas, rectas, barras): fuente de ancho fijo para que se alineen. */
+    .enunciado.dibujo { font-family: ui-monospace, "SF Mono", Menlo, Consolas, "Noto Color Emoji", monospace; font-size: 1.1rem; line-height: 1.25; overflow-x: auto; }
+    .op.dibujo { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 0.95rem; white-space: pre-wrap; }
+    .alumnos button { display: block; width: 100%; text-align: left; font-size: 1.2rem; padding: 16px; margin: 8px 0; }
+    .grande { font-size: 1.2rem; padding: 16px 22px; width: 100%; }
+    .fb { border-radius: 14px; padding: 14px 16px; margin: 12px 0; }
+    .fb.ok { background: rgba(127, 182, 133, 0.15); border: 1px solid var(--ok); }
+    .fb.ko { background: rgba(224, 115, 107, 0.12); border: 1px solid var(--bad); }
+    .paso { padding: 8px 0; border-top: 1px dashed var(--line); }
+    .paso .op2 { font-weight: 700; color: var(--accent); }
+    .prog { display: flex; gap: 8px; align-items: center; }
+    .prog .bar { flex: 1; height: 10px; }
+    .fam { margin: 10px 0; }
+    .fam .n { display: flex; justify-content: space-between; font-size: 0.95rem; }
+    .oir { background: none; border: 1px solid var(--line); border-radius: 99px; padding: 6px 12px; font-size: 1rem; }
+    .estrella { font-size: 3rem; text-align: center; margin: 10px 0; }
+    .oculto { display: none; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top"><a href="../">← Mates10</a><span class="pill" id="quien">alumno</span></div>
+    <div id="app">Cargando…</div>
+    <footer class="build">build __BUILD_ID__</footer>
+  </div>
+  <script src="../vendor/supabase.min.js"></script>
+  <script src="../config.js"></script>
+  <script src="../comun.js"></script>
+  <script>
+  (() => {
+    const app = M.$("#app");
+    const K = "mates10_alumno";
+    let alumno = null;
+    const get = (k) => { try { return localStorage.getItem(k); } catch { return null; } };
+    const set = (k, v) => { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch {} };
+
+    function hablar(t) {
+      try { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(t); u.lang = "es-ES"; u.rate = 0.9; speechSynthesis.speak(u); } catch {}
+    }
+
+    // ---------------------------------------------------------------- inicio
+    async function inicio() {
+      M.$("#quien").textContent = "alumno";
+      const alumnos = M.must(await M.t("alumno").select("id,nombre,prueba_nivel_hecha").order("creado_en", { ascending: false }).limit(50));
+      app.innerHTML = `<h1>¿Quién eres?</h1>
+        <div class="alumnos">${alumnos.map((a) => `<button data-id="${a.id}">${M.esc(a.nombre)}</button>`).join("") || '<p class="muted">Aún no hay nadie. Escribe tu nombre para empezar.</p>'}</div>
+        <h3>Soy nuevo</h3>
+        <div class="row"><input id="nombre" class="grow" placeholder="Tu nombre" maxlength="40" autocomplete="off" /><button class="primary" id="crear">Empezar</button></div>`;
+      M.$$(".alumnos button").forEach((b) => (b.onclick = () => elegir(b.dataset.id)));
+      M.$("#crear").onclick = async () => {
+        const n = M.$("#nombre").value.trim();
+        if (!n) return M.$("#nombre").focus();
+        M.$("#crear").disabled = true;
+        const id = M.must(await M.rpc("crear_alumno", { p_nombre: n }));
+        elegir(id);
+      };
+      M.$("#nombre").onkeydown = (e) => { if (e.key === "Enter") M.$("#crear").click(); };
+    }
+
+    async function elegir(id) {
+      alumno = M.must(await M.t("alumno").select("*").eq("id", id).single());
+      set(K, id);
+      M.$("#quien").textContent = alumno.nombre;
+      if (!alumno.prueba_nivel_hecha) return introPrueba();
+      casa();
+    }
+
+    function casa() {
+      app.innerHTML = `<h1>¡Hola, ${M.esc(alumno.nombre)}!</h1>
+        <p class="muted">Unos minutos de mates y a otra cosa. Mañana, otro poquito.</p>
+        <button class="primary grande" id="jugar">Jugar</button>
+        <p></p><button class="grande" id="prog">Mi progreso</button>
+        <p></p><button class="grande" id="salir">No soy ${M.esc(alumno.nombre)}</button>`;
+      M.$("#jugar").onclick = () => sesion("practica");
+      M.$("#prog").onclick = progreso;
+      M.$("#salir").onclick = () => { set(K, null); alumno = null; inicio(); };
+    }
+
+    function introPrueba() {
+      app.innerHTML = `<h1>¡Hola, ${M.esc(alumno.nombre)}!</h1>
+        <p>Antes de jugar vamos a ver qué sabes ya. Son unas preguntas: unas fáciles, otras más difíciles.
+        <b>No pasa nada si no sabes alguna</b>: así sabremos por dónde empezar.</p>
+        <p class="muted small">Si no sabes leer bien todavía, toca 🔊 y te leo la pregunta.</p>
+        <button class="primary grande" id="ir">Empezar</button>`;
+      M.$("#ir").onclick = () => sesion("prueba_nivel");
+    }
+
+    // ---------------------------------------------------------------- sesión
+    async function sesion(tipo) {
+      const sid = M.must(await M.rpc("iniciar_sesion", { p_alumno: alumno.id, p_tipo: tipo }));
+      let n = 0, aciertos = 0, reintentoDe = null;
+      const siguiente = async () => {
+        const fn = tipo === "prueba_nivel" ? "prueba_siguiente" : "siguiente";
+        const r = M.must(await M.rpc(fn, { p_alumno: alumno.id, p_sesion: sid }));
+        if (r.fin) return fin(r, n, aciertos, tipo);
+        n++;
+        pregunta(r, n, tipo, async (res, ej) => {
+          if (res.correcto) aciertos++;
+          reintentoDe = null;
+          await siguiente();
+        }, sid, reintentoDe, (id) => (reintentoDe = id));
+      };
+      await siguiente();
+    }
+
+    function pregunta(r, n, tipo, onDone, sid) {
+      const t0 = performance.now();
+      let primera = null, cambios = 0, sel = null;
+      const largo = r.opciones.some((o) => String(o).length > 10);
+      const enunLargo = r.enunciado.length > 70;
+      const DIB = /[─│├┤┼┌┐└┘●■□▇🟦🟥⬜🟩🟨]/;
+      const dibujo = DIB.test(r.enunciado) && r.enunciado.includes("\n");
+      const opDibujo = r.opciones.some((o) => DIB.test(String(o)));
+      const cab = tipo === "prueba_nivel"
+        ? `<div class="prog"><div class="bar"><i style="width:${r.progreso || 0}%"></i></div><span class="small muted">prueba</span></div>`
+        : `<div class="prog"><div class="bar"><i style="width:${Math.min(100, n * 100 / 15)}%"></i></div><span class="small muted">${n}</span></div>`;
+      app.innerHTML = `${cab}
+        <div class="row" style="justify-content:space-between;margin-top:10px"><span class="pill">${M.esc(r.habilidad.nombre_padres || r.habilidad.nombre)}</span>
+          <button class="oir" id="oir" title="Leer en voz alta">🔊</button></div>
+        <div class="enunciado ${enunLargo ? "largo" : ""} ${dibujo ? "dibujo" : ""}">${M.esc(r.enunciado)}</div>
+        <div class="op-grid">${r.opciones.map((o, i) => `<button class="op ${largo ? "largo" : ""} ${opDibujo ? "dibujo" : ""}" data-i="${i}">${M.esc(o)}</button>`).join("")}</div>
+        <button class="primary grande" id="ok" disabled>Comprobar</button>
+        <div id="fb"></div>`;
+      M.$("#oir").onclick = () => hablar((r.datos && r.datos.lectura) || r.enunciado.replace(/×/g, " por ").replace(/:/g, " entre ").replace(/−/g, " menos "));
+      if (tipo === "prueba_nivel" && r.datos && r.datos.sin_lectura) hablar(r.datos.lectura);
+      M.$$(".op").forEach((b) => (b.onclick = () => {
+        if (primera === null) primera = Math.round(performance.now() - t0); else if (sel !== b) cambios++;
+        M.$$(".op").forEach((x) => x.classList.remove("sel"));
+        b.classList.add("sel"); sel = b; M.$("#ok").disabled = false;
+      }));
+      M.$("#ok").onclick = async () => {
+        M.$("#ok").disabled = true;
+        M.$$(".op").forEach((x) => (x.disabled = true));
+        const resp = r.opciones[+sel.dataset.i];
+        const res = M.must(await M.rpc("registrar_intento", {
+          p_alumno: alumno.id, p_sesion: sid, p_ejercicio: r.ejercicio_id, p_respuesta: resp,
+          p_tiempo_ms: Math.round(performance.now() - t0), p_regla: r.regla, p_tecnica: r.tecnica,
+          p_cambios: cambios, p_primera_ms: primera, p_reintento_de: r.reintento_de || null,
+        }));
+        M.$$(".op").forEach((x) => { if (String(r.opciones[+x.dataset.i]) === res.respuesta_correcta) x.classList.add("bien"); });
+        if (res.correcto) {
+          const frases = ["¡Muy bien!", "¡Eso es!", "¡Genial!", "¡Correcto!", "¡Bien hecho!"];
+          M.$("#fb").innerHTML = `<div class="fb ok"><b>${frases[Math.floor(Math.random() * frases.length)]}</b></div>
+            <button class="primary grande" id="sig">Siguiente</button>`;
+          M.$("#sig").onclick = () => onDone(res, r);
+          if (tipo === "prueba_nivel") setTimeout(() => onDone(res, r), 700);
+          return;
+        }
+        sel.classList.add("mal");
+        if (tipo === "prueba_nivel") {
+          M.$("#fb").innerHTML = `<div class="fb ko">No pasa nada. ¡Vamos con otra!</div>`;
+          return setTimeout(() => onDone(res, r), 900);
+        }
+        const ex = res.explicacion || {};
+        const pasos = Array.isArray(ex.pasos) ? ex.pasos : [];
+        M.$("#fb").innerHTML = `<div class="fb ko">
+            ${res.error ? `<p>Te ha pasado esto: <b>${M.esc(res.error.nombre)}</b>.</p>` : ""}
+            <p>La respuesta era <b>${M.esc(res.respuesta_correcta)}</b>.</p>
+            ${pasos.length ? `<div id="pasos"></div><button id="masPaso">Ver cómo se hace</button>` : `<p>${M.esc(ex.nino || "")}</p>`}
+            ${res.error ? `<details class="small" style="margin-top:10px"><summary>Otro ejemplo de este error</summary><p>${M.esc(res.error.explicacion_nino)}</p></details>` : ""}
+          </div>
+          <button class="primary grande" id="otra">Probar otra parecida</button>`;
+        let k = 0;
+        const verPaso = () => {
+          const p = pasos[k++];
+          M.$("#pasos").insertAdjacentHTML("beforeend", `<div class="paso">${p.operacion ? `<span class="op2">${M.esc(p.operacion)}</span> → ` : ""}${M.esc(p.texto)}</div>`);
+          if (k >= pasos.length) M.$("#masPaso").remove(); else M.$("#masPaso").textContent = "Siguiente paso";
+        };
+        if (pasos.length) M.$("#masPaso").onclick = verPaso;
+        M.$("#otra").onclick = async () => {
+          await M.rpc("marcar_explicacion", { p_intento: res.intento_id, p_entera: !pasos.length || k >= pasos.length });
+          onDone(res, r);
+        };
+      };
+    }
+
+    async function fin(r, n, aciertos, tipo) {
+      if (tipo === "prueba_nivel") {
+        alumno.prueba_nivel_hecha = true;
+        app.innerHTML = `<div class="estrella">⭐</div><h1>¡Terminado!</h1>
+          <p>Ya sabemos por dónde empezar. Ahora a jugar un poco cada día.</p>
+          <button class="primary grande" id="c">Seguir</button>`;
+        M.$("#c").onclick = casa;
+        return;
+      }
+      if (r.motivo === "sin_ejercicios") {
+        app.innerHTML = `<h1>¡Uy!</h1><p>Todavía no hay ejercicios preparados para ti. Díselo a tu padre o madre.</p><button class="grande" id="c">Volver</button>`;
+        M.$("#c").onclick = casa; return;
+      }
+      app.innerHTML = `<div class="estrella">⭐</div><h1>¡Sesión terminada!</h1>
+        <p>Has hecho <b>${n}</b> ejercicios y has acertado <b>${aciertos}</b>.</p>
+        <p class="muted">Lo mejor es parar aquí y volver mañana: así se aprende más.</p>
+        <button class="primary grande" id="p">Ver mi progreso</button><p></p><button class="grande" id="c">Volver</button>`;
+      M.$("#p").onclick = progreso; M.$("#c").onclick = casa;
+    }
+
+    // ---------------------------------------------------------------- progreso
+    async function progreso() {
+      app.innerHTML = "Cargando…";
+      const inf = M.must(await M.rpc("informe", { p_alumno: alumno.id }));
+      const fams = (inf.familias || []).slice(0, 30);
+      app.innerHTML = `<h1>Lo que ya sabes</h1>
+        ${(inf.bloques || []).map((b) => `<div class="fam"><div class="n"><span>${M.esc(b.nombre)}</span><span>${M.pct(b.dominio)}</span></div><div class="bar"><i style="width:${M.pct(b.dominio)}"></i></div></div>`).join("") || '<p class="muted">Todavía no hay datos. ¡Juega un poco!</p>'}
+        <h3>Poco a poco</h3>
+        ${fams.map((f) => `<div class="fam"><div class="n"><span>${M.esc(f.nombre || f.familia)}</span><span class="muted">nivel ${f.nivel} de ${f.de}</span></div><div class="bar"><i style="width:${M.pct(f.dominio)}"></i></div></div>`).join("")}
+        <p></p><button class="grande" id="c">Volver</button>`;
+      M.$("#c").onclick = casa;
+    }
+
+    const guardado = get(K);
+    (guardado ? elegir(guardado).catch(() => inicio()) : inicio()).catch((e) => (app.innerHTML = `<p class="err">${M.esc(e.message)}</p>`));
+  })();
+  </script>
+</body>
+</html>

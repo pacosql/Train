@@ -1,0 +1,1424 @@
+{
+ "habilidad": "PROB.EC.05",
+ "generado_por": "claude (skill mates10-generar-ejercicios v1)",
+ "ejercicios": [
+  {
+   "dificultad": 1,
+   "enunciado": "Se mezclan 15 kg de café de 6 €/kg con 85 kg de café de 7 €/kg. ¿A qué precio sale el kilo de la mezcla?",
+   "respuesta": "6,85 €",
+   "distractores": [
+    {
+     "valor": "6,5 €",
+     "error": "E01"
+    },
+    {
+     "valor": "685 €",
+     "error": null
+    },
+    {
+     "valor": "7,85 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(15 × 6 + 85 × 7) : (15 + 85)",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: el precio medio se calcula repartiendo el coste total entre la cantidad total. Coste: 15 × 6 + 85 × 7 = 685 €. Cantidad: 100 kg. Precio: 685 : 100 = 6,85 €/kg. Comprueba que está entre 6 y 7 y más cerca del que hay más cantidad.",
+   "explicacion_adulto": "Es un precio medio ponderado: pesa más el producto del que hay más cantidad. El error típico es hacer la media simple de los dos precios. Pregúntele hacia qué precio debería acercarse.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "15 × 6 + 85 × 7",
+     "resultado": "685 €",
+     "texto": "Coste total."
+    },
+    {
+     "paso": 2,
+     "operacion": "15 + 85",
+     "resultado": "100 kg",
+     "texto": "Cantidad total."
+    },
+    {
+     "paso": 3,
+     "operacion": "685 : 100",
+     "resultado": "6,85 €",
+     "texto": "Precio por unidad."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Se mezclan 45 kg de café de 16 €/kg con 80 kg de café de 9 €/kg. ¿A qué precio sale el kilo de la mezcla?",
+   "respuesta": "11,52 €",
+   "distractores": [
+    {
+     "valor": "12,5 €",
+     "error": "E01"
+    },
+    {
+     "valor": "18 €",
+     "error": "E02"
+    },
+    {
+     "valor": "1440 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(45 × 16 + 80 × 9) : (45 + 80)",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: el precio medio se calcula repartiendo el coste total entre la cantidad total. Coste: 45 × 16 + 80 × 9 = 1440 €. Cantidad: 125 kg. Precio: 1440 : 125 = 11,52 €/kg. Comprueba que está entre 9 y 16 y más cerca del que hay más cantidad.",
+   "explicacion_adulto": "Es un precio medio ponderado: pesa más el producto del que hay más cantidad. El error típico es hacer la media simple de los dos precios. Pregúntele hacia qué precio debería acercarse.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "45 × 16 + 80 × 9",
+     "resultado": "1440 €",
+     "texto": "Coste total."
+    },
+    {
+     "paso": 2,
+     "operacion": "45 + 80",
+     "resultado": "125 kg",
+     "texto": "Cantidad total."
+    },
+    {
+     "paso": 3,
+     "operacion": "1440 : 125",
+     "resultado": "11,52 €",
+     "texto": "Precio por unidad."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Se mezclan 30 l de aceite de 7 €/l con 70 l de aceite de 12 €/l. ¿A qué precio sale el litro de la mezcla?",
+   "respuesta": "10,5 €",
+   "distractores": [
+    {
+     "valor": "9,5 €",
+     "error": "E01"
+    },
+    {
+     "valor": "15 €",
+     "error": "E02"
+    },
+    {
+     "valor": "1050 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(30 × 7 + 70 × 12) : (30 + 70)",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: el precio medio se calcula repartiendo el coste total entre la cantidad total. Coste: 30 × 7 + 70 × 12 = 1050 €. Cantidad: 100 l. Precio: 1050 : 100 = 10,5 €/l. Comprueba que está entre 7 y 12 y más cerca del que hay más cantidad.",
+   "explicacion_adulto": "Es un precio medio ponderado: pesa más el producto del que hay más cantidad. El error típico es hacer la media simple de los dos precios. Pregúntele hacia qué precio debería acercarse.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "30 × 7 + 70 × 12",
+     "resultado": "1050 €",
+     "texto": "Coste total."
+    },
+    {
+     "paso": 2,
+     "operacion": "30 + 70",
+     "resultado": "100 l",
+     "texto": "Cantidad total."
+    },
+    {
+     "paso": 3,
+     "operacion": "1050 : 100",
+     "resultado": "10,5 €",
+     "texto": "Precio por unidad."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Se mezclan 20 l de aceite de 12 €/l con 30 l de aceite de 10 €/l. ¿A qué precio sale el litro de la mezcla?",
+   "respuesta": "10,8 €",
+   "distractores": [
+    {
+     "valor": "11 €",
+     "error": "E01"
+    },
+    {
+     "valor": "18 €",
+     "error": "E02"
+    },
+    {
+     "valor": "540 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(20 × 12 + 30 × 10) : (20 + 30)",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: el precio medio se calcula repartiendo el coste total entre la cantidad total. Coste: 20 × 12 + 30 × 10 = 540 €. Cantidad: 50 l. Precio: 540 : 50 = 10,8 €/l. Comprueba que está entre 10 y 12 y más cerca del que hay más cantidad.",
+   "explicacion_adulto": "Es un precio medio ponderado: pesa más el producto del que hay más cantidad. El error típico es hacer la media simple de los dos precios. Pregúntele hacia qué precio debería acercarse.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "20 × 12 + 30 × 10",
+     "resultado": "540 €",
+     "texto": "Coste total."
+    },
+    {
+     "paso": 2,
+     "operacion": "20 + 30",
+     "resultado": "50 l",
+     "texto": "Cantidad total."
+    },
+    {
+     "paso": 3,
+     "operacion": "540 : 50",
+     "resultado": "10,8 €",
+     "texto": "Precio por unidad."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Se mezclan 90 kg de pienso de 3 €/kg con 35 kg de pienso de 4 €/kg. ¿A qué precio sale el kilo de la mezcla?",
+   "respuesta": "3,28 €",
+   "distractores": [
+    {
+     "valor": "3,5 €",
+     "error": "E01"
+    },
+    {
+     "valor": "410 €",
+     "error": null
+    },
+    {
+     "valor": "4,28 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(90 × 3 + 35 × 4) : (90 + 35)",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: el precio medio se calcula repartiendo el coste total entre la cantidad total. Coste: 90 × 3 + 35 × 4 = 410 €. Cantidad: 125 kg. Precio: 410 : 125 = 3,28 €/kg. Comprueba que está entre 3 y 4 y más cerca del que hay más cantidad.",
+   "explicacion_adulto": "Es un precio medio ponderado: pesa más el producto del que hay más cantidad. El error típico es hacer la media simple de los dos precios. Pregúntele hacia qué precio debería acercarse.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "90 × 3 + 35 × 4",
+     "resultado": "410 €",
+     "texto": "Coste total."
+    },
+    {
+     "paso": 2,
+     "operacion": "90 + 35",
+     "resultado": "125 kg",
+     "texto": "Cantidad total."
+    },
+    {
+     "paso": 3,
+     "operacion": "410 : 125",
+     "resultado": "3,28 €",
+     "texto": "Precio por unidad."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Se mezclan 85 l de aceite de 6 €/l con 15 l de aceite de 4 €/l. ¿A qué precio sale el litro de la mezcla?",
+   "respuesta": "5,7 €",
+   "distractores": [
+    {
+     "valor": "5 €",
+     "error": "E01"
+    },
+    {
+     "valor": "38 €",
+     "error": "E02"
+    },
+    {
+     "valor": "570 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(85 × 6 + 15 × 4) : (85 + 15)",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: el precio medio se calcula repartiendo el coste total entre la cantidad total. Coste: 85 × 6 + 15 × 4 = 570 €. Cantidad: 100 l. Precio: 570 : 100 = 5,7 €/l. Comprueba que está entre 4 y 6 y más cerca del que hay más cantidad.",
+   "explicacion_adulto": "Es un precio medio ponderado: pesa más el producto del que hay más cantidad. El error típico es hacer la media simple de los dos precios. Pregúntele hacia qué precio debería acercarse.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "85 × 6 + 15 × 4",
+     "resultado": "570 €",
+     "texto": "Coste total."
+    },
+    {
+     "paso": 2,
+     "operacion": "85 + 15",
+     "resultado": "100 l",
+     "texto": "Cantidad total."
+    },
+    {
+     "paso": 3,
+     "operacion": "570 : 100",
+     "resultado": "5,7 €",
+     "texto": "Precio por unidad."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Se mezclan 10 kg de frutos secos de 9 €/kg con 15 kg de frutos secos de 16 €/kg. ¿A qué precio sale el kilo de la mezcla?",
+   "respuesta": "13,2 €",
+   "distractores": [
+    {
+     "valor": "12,5 €",
+     "error": "E01"
+    },
+    {
+     "valor": "22 €",
+     "error": "E02"
+    },
+    {
+     "valor": "330 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(10 × 9 + 15 × 16) : (10 + 15)",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: el precio medio se calcula repartiendo el coste total entre la cantidad total. Coste: 10 × 9 + 15 × 16 = 330 €. Cantidad: 25 kg. Precio: 330 : 25 = 13,2 €/kg. Comprueba que está entre 9 y 16 y más cerca del que hay más cantidad.",
+   "explicacion_adulto": "Es un precio medio ponderado: pesa más el producto del que hay más cantidad. El error típico es hacer la media simple de los dos precios. Pregúntele hacia qué precio debería acercarse.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "10 × 9 + 15 × 16",
+     "resultado": "330 €",
+     "texto": "Coste total."
+    },
+    {
+     "paso": 2,
+     "operacion": "10 + 15",
+     "resultado": "25 kg",
+     "texto": "Cantidad total."
+    },
+    {
+     "paso": 3,
+     "operacion": "330 : 25",
+     "resultado": "13,2 €",
+     "texto": "Precio por unidad."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un comerciante mezcla 30 kg de café de 6 €/kg con otra variedad de café de 8 €/kg para obtener una mezcla de 7,4 €/kg. ¿Cuántos kg del segundo tipo tiene que poner?",
+   "respuesta": "70 kg",
+   "distractores": [
+    {
+     "valor": "30 kg",
+     "error": "E01"
+    },
+    {
+     "valor": "300 kg",
+     "error": "E02"
+    },
+    {
+     "valor": "100 kg",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "30 × (7,4 − 6) : (8 − 7,4)",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: el dinero de la mezcla es la suma del dinero de cada parte. Plantea: 6 · 30 + 8 · x = 7,4 · (30 + x). Resuelve: 180 + 8x = 222 + 7,4x; 0,6x = 42; x = 70. Comprueba: 180 + 560 = 740 € y 7,4 × 100 = 740 €.",
+   "explicacion_adulto": "En los problemas de mezclas se igualan costes (precio × cantidad), no precios, y la cantidad de la mezcla es la suma de las dos. Errores típicos: promediar los precios sin ponderar u olvidar sumar las cantidades. Una tabla cantidad / precio / coste para cada producto y para la mezcla ayuda mucho.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Tabla",
+     "resultado": "30 y x; 6 y 8; mezcla 30 + x a 7,4",
+     "texto": "Cantidades y precios."
+    },
+    {
+     "paso": 2,
+     "operacion": "Plantear",
+     "resultado": "6 · 30 + 8 · x = 7,4 · (30 + x)",
+     "texto": "Coste total igual."
+    },
+    {
+     "paso": 3,
+     "operacion": "Resolver",
+     "resultado": "x = 70",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un comerciante mezcla 60 kg de frutos secos de 11 €/kg con otra variedad de frutos secos de 17 €/kg para obtener una mezcla de 12,2 €/kg. ¿Cuántos kg del segundo tipo tiene que poner?",
+   "respuesta": "15 kg",
+   "distractores": [
+    {
+     "valor": "60 kg",
+     "error": "E01"
+    },
+    {
+     "valor": "137,5 kg",
+     "error": "E02"
+    },
+    {
+     "valor": "240 kg",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "60 × (12,2 − 11) : (17 − 12,2)",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: el dinero de la mezcla es la suma del dinero de cada parte. Plantea: 11 · 60 + 17 · x = 12,2 · (60 + x). Resuelve: 660 + 17x = 732 + 12,2x; 4,8x = 72; x = 15. Comprueba: 660 + 255 = 915 € y 12,2 × 75 = 915 €.",
+   "explicacion_adulto": "En los problemas de mezclas se igualan costes (precio × cantidad), no precios, y la cantidad de la mezcla es la suma de las dos. Errores típicos: promediar los precios sin ponderar u olvidar sumar las cantidades. Una tabla cantidad / precio / coste para cada producto y para la mezcla ayuda mucho.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Tabla",
+     "resultado": "60 y x; 11 y 17; mezcla 60 + x a 12,2",
+     "texto": "Cantidades y precios."
+    },
+    {
+     "paso": 2,
+     "operacion": "Plantear",
+     "resultado": "11 · 60 + 17 · x = 12,2 · (60 + x)",
+     "texto": "Coste total igual."
+    },
+    {
+     "paso": 3,
+     "operacion": "Resolver",
+     "resultado": "x = 15",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un comerciante mezcla 35 kg de café de 10 €/kg con otra variedad de café de 12 €/kg para obtener una mezcla de 10,6 €/kg. ¿Cuántos kg del segundo tipo tiene que poner?",
+   "respuesta": "15 kg",
+   "distractores": [
+    {
+     "valor": "35 kg",
+     "error": "E01"
+    },
+    {
+     "valor": "250 kg",
+     "error": "E02"
+    },
+    {
+     "valor": "50 kg",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "35 × (10,6 − 10) : (12 − 10,6)",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: el dinero de la mezcla es la suma del dinero de cada parte. Plantea: 10 · 35 + 12 · x = 10,6 · (35 + x). Resuelve: 350 + 12x = 371 + 10,6x; 1,4x = 21; x = 15. Comprueba: 350 + 180 = 530 € y 10,6 × 50 = 530 €.",
+   "explicacion_adulto": "En los problemas de mezclas se igualan costes (precio × cantidad), no precios, y la cantidad de la mezcla es la suma de las dos. Errores típicos: promediar los precios sin ponderar u olvidar sumar las cantidades. Una tabla cantidad / precio / coste para cada producto y para la mezcla ayuda mucho.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Tabla",
+     "resultado": "35 y x; 10 y 12; mezcla 35 + x a 10,6",
+     "texto": "Cantidades y precios."
+    },
+    {
+     "paso": 2,
+     "operacion": "Plantear",
+     "resultado": "10 · 35 + 12 · x = 10,6 · (35 + x)",
+     "texto": "Coste total igual."
+    },
+    {
+     "paso": 3,
+     "operacion": "Resolver",
+     "resultado": "x = 15",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un comerciante mezcla 15 kg de frutos secos de 10 €/kg con otra variedad de frutos secos de 13 €/kg para obtener una mezcla de 12,7 €/kg. ¿Cuántos kg del segundo tipo tiene que poner?",
+   "respuesta": "135 kg",
+   "distractores": [
+    {
+     "valor": "15 kg",
+     "error": "E01"
+    },
+    {
+     "valor": "500 kg",
+     "error": "E02"
+    },
+    {
+     "valor": "150 kg",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "15 × (12,7 − 10) : (13 − 12,7)",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: el dinero de la mezcla es la suma del dinero de cada parte. Plantea: 10 · 15 + 13 · x = 12,7 · (15 + x). Resuelve: 150 + 13x = 190,5 + 12,7x; 0,3x = 40,5; x = 135. Comprueba: 150 + 1755 = 1905 € y 12,7 × 150 = 1905 €.",
+   "explicacion_adulto": "En los problemas de mezclas se igualan costes (precio × cantidad), no precios, y la cantidad de la mezcla es la suma de las dos. Errores típicos: promediar los precios sin ponderar u olvidar sumar las cantidades. Una tabla cantidad / precio / coste para cada producto y para la mezcla ayuda mucho.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Tabla",
+     "resultado": "15 y x; 10 y 13; mezcla 15 + x a 12,7",
+     "texto": "Cantidades y precios."
+    },
+    {
+     "paso": 2,
+     "operacion": "Plantear",
+     "resultado": "10 · 15 + 13 · x = 12,7 · (15 + x)",
+     "texto": "Coste total igual."
+    },
+    {
+     "paso": 3,
+     "operacion": "Resolver",
+     "resultado": "x = 135",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un bidón tiene 25 litros de una mezcla con un 60 % de jabón líquido. ¿Cuántos litros de agua hay que añadir para que la mezcla quede al 15 %?",
+   "respuesta": "75 l",
+   "distractores": [
+    {
+     "valor": "100 l",
+     "error": null
+    },
+    {
+     "valor": "11,25 l",
+     "error": null
+    },
+    {
+     "valor": "25 l",
+     "error": "E01"
+    }
+   ],
+   "expresion_calculo": "25 × 60 : 15 − 25",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: el agua no tiene jabón líquido, así que la cantidad pura no cambia: 15 l. Plantea: 25 · 0,6 = (25 + x) · 0,15. Resuelve: 25 + x = 100; x = 75 l. Comprueba: 15 : 100 = 0,15, es decir, el 15 %.",
+   "explicacion_adulto": "Caso especial de mezcla: se añade agua (0 %). La cantidad de sustancia pura se conserva y solo cambia el volumen total. El error típico es responder con el volumen final en lugar del agua añadida.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Sustancia pura",
+     "resultado": "15 l",
+     "texto": "No cambia."
+    },
+    {
+     "paso": 2,
+     "operacion": "Plantear",
+     "resultado": "25 · 0,6 = (25 + x) · 0,15",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "Resolver",
+     "resultado": "x = 75",
+     "texto": "Agua añadida."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un bidón tiene 25 litros de una mezcla con un 60 % de zumo concentrado. ¿Cuántos litros de agua hay que añadir para que la mezcla quede al 25 %?",
+   "respuesta": "35 l",
+   "distractores": [
+    {
+     "valor": "60 l",
+     "error": null
+    },
+    {
+     "valor": "8,75 l",
+     "error": null
+    },
+    {
+     "valor": "25 l",
+     "error": "E01"
+    }
+   ],
+   "expresion_calculo": "25 × 60 : 25 − 25",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: el agua no tiene zumo concentrado, así que la cantidad pura no cambia: 15 l. Plantea: 25 · 0,6 = (25 + x) · 0,25. Resuelve: 25 + x = 60; x = 35 l. Comprueba: 15 : 60 = 0,25, es decir, el 25 %.",
+   "explicacion_adulto": "Caso especial de mezcla: se añade agua (0 %). La cantidad de sustancia pura se conserva y solo cambia el volumen total. El error típico es responder con el volumen final en lugar del agua añadida.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Sustancia pura",
+     "resultado": "15 l",
+     "texto": "No cambia."
+    },
+    {
+     "paso": 2,
+     "operacion": "Plantear",
+     "resultado": "25 · 0,6 = (25 + x) · 0,25",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "Resolver",
+     "resultado": "x = 35",
+     "texto": "Agua añadida."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un comerciante mezcla 30 kg de té de 34 €/kg con otra variedad de té de 38 €/kg para obtener una mezcla de 37,2 €/kg. ¿Cuántos kg del segundo tipo tiene que poner?",
+   "respuesta": "120 kg",
+   "distractores": [
+    {
+     "valor": "30 kg",
+     "error": "E01"
+    },
+    {
+     "valor": "1275 kg",
+     "error": "E02"
+    },
+    {
+     "valor": "7,5 kg",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "30 × (37,2 − 34) : (38 − 37,2)",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: el dinero de la mezcla es la suma del dinero de cada parte. Plantea: 34 · 30 + 38 · x = 37,2 · (30 + x). Resuelve: 1020 + 38x = 1116 + 37,2x; 0,8x = 96; x = 120. Comprueba: 1020 + 4560 = 5580 € y 37,2 × 150 = 5580 €.",
+   "explicacion_adulto": "En los problemas de mezclas se igualan costes (precio × cantidad), no precios, y la cantidad de la mezcla es la suma de las dos. Errores típicos: promediar los precios sin ponderar u olvidar sumar las cantidades. Una tabla cantidad / precio / coste para cada producto y para la mezcla ayuda mucho.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Tabla",
+     "resultado": "30 y x; 34 y 38; mezcla 30 + x a 37,2",
+     "texto": "Cantidades y precios."
+    },
+    {
+     "paso": 2,
+     "operacion": "Plantear",
+     "resultado": "34 · 30 + 38 · x = 37,2 · (30 + x)",
+     "texto": "Coste total igual."
+    },
+    {
+     "paso": 3,
+     "operacion": "Resolver",
+     "resultado": "x = 120",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un comerciante mezcla 45 kg de frutos secos de 11 €/kg con otra variedad de frutos secos de 15 €/kg para obtener una mezcla de 12,6 €/kg. ¿Cuántos kg del segundo tipo tiene que poner?",
+   "respuesta": "30 kg",
+   "distractores": [
+    {
+     "valor": "45 kg",
+     "error": "E01"
+    },
+    {
+     "valor": "206,25 kg",
+     "error": "E02"
+    },
+    {
+     "valor": "67,5 kg",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "45 × (12,6 − 11) : (15 − 12,6)",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: el dinero de la mezcla es la suma del dinero de cada parte. Plantea: 11 · 45 + 15 · x = 12,6 · (45 + x). Resuelve: 495 + 15x = 567 + 12,6x; 2,4x = 72; x = 30. Comprueba: 495 + 450 = 945 € y 12,6 × 75 = 945 €.",
+   "explicacion_adulto": "En los problemas de mezclas se igualan costes (precio × cantidad), no precios, y la cantidad de la mezcla es la suma de las dos. Errores típicos: promediar los precios sin ponderar u olvidar sumar las cantidades. Una tabla cantidad / precio / coste para cada producto y para la mezcla ayuda mucho.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Tabla",
+     "resultado": "45 y x; 11 y 15; mezcla 45 + x a 12,6",
+     "texto": "Cantidades y precios."
+    },
+    {
+     "paso": 2,
+     "operacion": "Plantear",
+     "resultado": "11 · 45 + 15 · x = 12,6 · (45 + x)",
+     "texto": "Coste total igual."
+    },
+    {
+     "paso": 3,
+     "operacion": "Resolver",
+     "resultado": "x = 30",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un comerciante mezcla 60 kg de té de 22 €/kg con otra variedad de té de 26 €/kg para obtener una mezcla de 24,4 €/kg. ¿Cuántos kg del segundo tipo tiene que poner?",
+   "respuesta": "90 kg",
+   "distractores": [
+    {
+     "valor": "60 kg",
+     "error": "E01"
+    },
+    {
+     "valor": "825 kg",
+     "error": "E02"
+    },
+    {
+     "valor": "40 kg",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "60 × (24,4 − 22) : (26 − 24,4)",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: el dinero de la mezcla es la suma del dinero de cada parte. Plantea: 22 · 60 + 26 · x = 24,4 · (60 + x). Resuelve: 1320 + 26x = 1464 + 24,4x; 1,6x = 144; x = 90. Comprueba: 1320 + 2340 = 3660 € y 24,4 × 150 = 3660 €.",
+   "explicacion_adulto": "En los problemas de mezclas se igualan costes (precio × cantidad), no precios, y la cantidad de la mezcla es la suma de las dos. Errores típicos: promediar los precios sin ponderar u olvidar sumar las cantidades. Una tabla cantidad / precio / coste para cada producto y para la mezcla ayuda mucho.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Tabla",
+     "resultado": "60 y x; 22 y 26; mezcla 60 + x a 24,4",
+     "texto": "Cantidades y precios."
+    },
+    {
+     "paso": 2,
+     "operacion": "Plantear",
+     "resultado": "22 · 60 + 26 · x = 24,4 · (60 + x)",
+     "texto": "Coste total igual."
+    },
+    {
+     "paso": 3,
+     "operacion": "Resolver",
+     "resultado": "x = 90",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un comerciante mezcla 10 kg de café de 9 €/kg con otra variedad de café de 13 €/kg para obtener una mezcla de 12,2 €/kg. ¿Cuántos kg del segundo tipo tiene que poner?",
+   "respuesta": "40 kg",
+   "distractores": [
+    {
+     "valor": "10 kg",
+     "error": "E01"
+    },
+    {
+     "valor": "112,5 kg",
+     "error": "E02"
+    },
+    {
+     "valor": "2,5 kg",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "10 × (12,2 − 9) : (13 − 12,2)",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: el dinero de la mezcla es la suma del dinero de cada parte. Plantea: 9 · 10 + 13 · x = 12,2 · (10 + x). Resuelve: 90 + 13x = 122 + 12,2x; 0,8x = 32; x = 40. Comprueba: 90 + 520 = 610 € y 12,2 × 50 = 610 €.",
+   "explicacion_adulto": "En los problemas de mezclas se igualan costes (precio × cantidad), no precios, y la cantidad de la mezcla es la suma de las dos. Errores típicos: promediar los precios sin ponderar u olvidar sumar las cantidades. Una tabla cantidad / precio / coste para cada producto y para la mezcla ayuda mucho.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Tabla",
+     "resultado": "10 y x; 9 y 13; mezcla 10 + x a 12,2",
+     "texto": "Cantidades y precios."
+    },
+    {
+     "paso": 2,
+     "operacion": "Plantear",
+     "resultado": "9 · 10 + 13 · x = 12,2 · (10 + x)",
+     "texto": "Coste total igual."
+    },
+    {
+     "paso": 3,
+     "operacion": "Resolver",
+     "resultado": "x = 40",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Se tienen 40 litros de una mezcla con un 5 % de sirope. ¿Cuántos litros de otra mezcla al 40 % hay que añadir para obtener una al 30 %?",
+   "respuesta": "100 l",
+   "distractores": [
+    {
+     "valor": "40 l",
+     "error": "E01"
+    },
+    {
+     "valor": "16 l",
+     "error": null
+    },
+    {
+     "valor": "140 l",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "40 × (30 − 5) : (40 − 30)",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: la cantidad de sirope puro de las dos mezclas se suma. Plantea: 40 · 0,05 + x · 0,4 = (40 + x) · 0,3. Resuelve: x = 100 l. Comprueba: sirope puro = 2 + 40 = 42 l, y el 30 % de 140 l es 42 l.",
+   "explicacion_adulto": "En mezclas de concentraciones se iguala la cantidad de sustancia pura (volumen × porcentaje), y el volumen final es la suma. Errores típicos: promediar los porcentajes o no sumar los volúmenes. Una tabla volumen / % / sustancia pura ayuda.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Plantear",
+     "resultado": "40 · 0,05 + x · 0,4 = (40 + x) · 0,3",
+     "texto": "Sustancia pura."
+    },
+    {
+     "paso": 2,
+     "operacion": "Resolver",
+     "resultado": "x = 100",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Se tienen 30 litros de una mezcla con un 20 % de zumo de naranja. ¿Cuántos litros de otra mezcla al 50 % hay que añadir para obtener una al 46 %?",
+   "respuesta": "195 l",
+   "distractores": [
+    {
+     "valor": "30 l",
+     "error": "E01"
+    },
+    {
+     "valor": "225 l",
+     "error": null
+    },
+    {
+     "valor": "390 l",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "30 × (46 − 20) : (50 − 46)",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: la cantidad de zumo de naranja puro de las dos mezclas se suma. Plantea: 30 · 0,2 + x · 0,5 = (30 + x) · 0,46. Resuelve: x = 195 l. Comprueba: zumo de naranja puro = 6 + 97,5 = 103,5 l, y el 46 % de 225 l es 103,5 l.",
+   "explicacion_adulto": "En mezclas de concentraciones se iguala la cantidad de sustancia pura (volumen × porcentaje), y el volumen final es la suma. Errores típicos: promediar los porcentajes o no sumar los volúmenes. Una tabla volumen / % / sustancia pura ayuda.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Plantear",
+     "resultado": "30 · 0,2 + x · 0,5 = (30 + x) · 0,46",
+     "texto": "Sustancia pura."
+    },
+    {
+     "paso": 2,
+     "operacion": "Resolver",
+     "resultado": "x = 195",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Se tienen 10 litros de una mezcla con un 10 % de sirope. ¿Cuántos litros de otra mezcla al 40 % hay que añadir para obtener una al 38 %?",
+   "respuesta": "140 l",
+   "distractores": [
+    {
+     "valor": "10 l",
+     "error": "E01"
+    },
+    {
+     "valor": "150 l",
+     "error": null
+    },
+    {
+     "valor": "280 l",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "10 × (38 − 10) : (40 − 38)",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: la cantidad de sirope puro de las dos mezclas se suma. Plantea: 10 · 0,1 + x · 0,4 = (10 + x) · 0,38. Resuelve: x = 140 l. Comprueba: sirope puro = 1 + 56 = 57 l, y el 38 % de 150 l es 57 l.",
+   "explicacion_adulto": "En mezclas de concentraciones se iguala la cantidad de sustancia pura (volumen × porcentaje), y el volumen final es la suma. Errores típicos: promediar los porcentajes o no sumar los volúmenes. Una tabla volumen / % / sustancia pura ayuda.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Plantear",
+     "resultado": "10 · 0,1 + x · 0,4 = (10 + x) · 0,38",
+     "texto": "Sustancia pura."
+    },
+    {
+     "paso": 2,
+     "operacion": "Resolver",
+     "resultado": "x = 140",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Se tienen 75 litros de una mezcla con un 15 % de sirope. ¿Cuántos litros de otra mezcla al 80 % hay que añadir para obtener una al 41 %?",
+   "respuesta": "50 l",
+   "distractores": [
+    {
+     "valor": "75 l",
+     "error": "E01"
+    },
+    {
+     "valor": "112,5 l",
+     "error": null
+    },
+    {
+     "valor": "125 l",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "75 × (41 − 15) : (80 − 41)",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: la cantidad de sirope puro de las dos mezclas se suma. Plantea: 75 · 0,15 + x · 0,8 = (75 + x) · 0,41. Resuelve: x = 50 l. Comprueba: sirope puro = 11,25 + 40 = 51,25 l, y el 41 % de 125 l es 51,25 l.",
+   "explicacion_adulto": "En mezclas de concentraciones se iguala la cantidad de sustancia pura (volumen × porcentaje), y el volumen final es la suma. Errores típicos: promediar los porcentajes o no sumar los volúmenes. Una tabla volumen / % / sustancia pura ayuda.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Plantear",
+     "resultado": "75 · 0,15 + x · 0,8 = (75 + x) · 0,41",
+     "texto": "Sustancia pura."
+    },
+    {
+     "paso": 2,
+     "operacion": "Resolver",
+     "resultado": "x = 50",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un bidón tiene 75 litros de una mezcla con un 60 % de lejía. ¿Cuántos litros de agua hay que añadir para que la mezcla quede al 25 %?",
+   "respuesta": "105 l",
+   "distractores": [
+    {
+     "valor": "180 l",
+     "error": null
+    },
+    {
+     "valor": "26,25 l",
+     "error": null
+    },
+    {
+     "valor": "75 l",
+     "error": "E01"
+    }
+   ],
+   "expresion_calculo": "75 × 60 : 25 − 75",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: el agua no tiene lejía, así que la cantidad pura no cambia: 45 l. Plantea: 75 · 0,6 = (75 + x) · 0,25. Resuelve: 75 + x = 180; x = 105 l. Comprueba: 45 : 180 = 0,25, es decir, el 25 %.",
+   "explicacion_adulto": "Caso especial de mezcla: se añade agua (0 %). La cantidad de sustancia pura se conserva y solo cambia el volumen total. El error típico es responder con el volumen final en lugar del agua añadida.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Sustancia pura",
+     "resultado": "45 l",
+     "texto": "No cambia."
+    },
+    {
+     "paso": 2,
+     "operacion": "Plantear",
+     "resultado": "75 · 0,6 = (75 + x) · 0,25",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "Resolver",
+     "resultado": "x = 105",
+     "texto": "Agua añadida."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un bidón tiene 90 litros de una mezcla con un 30 % de zumo concentrado. ¿Cuántos litros de agua hay que añadir para que la mezcla quede al 10 %?",
+   "respuesta": "180 l",
+   "distractores": [
+    {
+     "valor": "270 l",
+     "error": null
+    },
+    {
+     "valor": "18 l",
+     "error": null
+    },
+    {
+     "valor": "90 l",
+     "error": "E01"
+    }
+   ],
+   "expresion_calculo": "90 × 30 : 10 − 90",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: el agua no tiene zumo concentrado, así que la cantidad pura no cambia: 27 l. Plantea: 90 · 0,3 = (90 + x) · 0,1. Resuelve: 90 + x = 270; x = 180 l. Comprueba: 27 : 270 = 0,1, es decir, el 10 %.",
+   "explicacion_adulto": "Caso especial de mezcla: se añade agua (0 %). La cantidad de sustancia pura se conserva y solo cambia el volumen total. El error típico es responder con el volumen final en lugar del agua añadida.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Sustancia pura",
+     "resultado": "27 l",
+     "texto": "No cambia."
+    },
+    {
+     "paso": 2,
+     "operacion": "Plantear",
+     "resultado": "90 · 0,3 = (90 + x) · 0,1",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "Resolver",
+     "resultado": "x = 180",
+     "texto": "Agua añadida."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un bidón tiene 100 litros de una mezcla con un 40 % de abono líquido. ¿Cuántos litros de agua hay que añadir para que la mezcla quede al 10 %?",
+   "respuesta": "300 l",
+   "distractores": [
+    {
+     "valor": "400 l",
+     "error": null
+    },
+    {
+     "valor": "30 l",
+     "error": null
+    },
+    {
+     "valor": "100 l",
+     "error": "E01"
+    }
+   ],
+   "expresion_calculo": "100 × 40 : 10 − 100",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: el agua no tiene abono líquido, así que la cantidad pura no cambia: 40 l. Plantea: 100 · 0,4 = (100 + x) · 0,1. Resuelve: 100 + x = 400; x = 300 l. Comprueba: 40 : 400 = 0,1, es decir, el 10 %.",
+   "explicacion_adulto": "Caso especial de mezcla: se añade agua (0 %). La cantidad de sustancia pura se conserva y solo cambia el volumen total. El error típico es responder con el volumen final en lugar del agua añadida.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Sustancia pura",
+     "resultado": "40 l",
+     "texto": "No cambia."
+    },
+    {
+     "paso": 2,
+     "operacion": "Plantear",
+     "resultado": "100 · 0,4 = (100 + x) · 0,1",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "Resolver",
+     "resultado": "x = 300",
+     "texto": "Agua añadida."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un comerciante mezcla 15 l de aceite de 7 €/l con otra variedad de aceite de 11 €/l para obtener una mezcla de 10,6 €/l. ¿Cuántos l del segundo tipo tiene que poner?",
+   "respuesta": "135 l",
+   "distractores": [
+    {
+     "valor": "15 l",
+     "error": "E01"
+    },
+    {
+     "valor": "262,5 l",
+     "error": "E02"
+    },
+    {
+     "valor": "150 l",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "15 × (10,6 − 7) : (11 − 10,6)",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: el dinero de la mezcla es la suma del dinero de cada parte. Plantea: 7 · 15 + 11 · x = 10,6 · (15 + x). Resuelve: 105 + 11x = 159 + 10,6x; 0,4x = 54; x = 135. Comprueba: 105 + 1485 = 1590 € y 10,6 × 150 = 1590 €.",
+   "explicacion_adulto": "En los problemas de mezclas se igualan costes (precio × cantidad), no precios, y la cantidad de la mezcla es la suma de las dos. Errores típicos: promediar los precios sin ponderar u olvidar sumar las cantidades. Una tabla cantidad / precio / coste para cada producto y para la mezcla ayuda mucho.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Tabla",
+     "resultado": "15 y x; 7 y 11; mezcla 15 + x a 10,6",
+     "texto": "Cantidades y precios."
+    },
+    {
+     "paso": 2,
+     "operacion": "Plantear",
+     "resultado": "7 · 15 + 11 · x = 10,6 · (15 + x)",
+     "texto": "Coste total igual."
+    },
+    {
+     "paso": 3,
+     "operacion": "Resolver",
+     "resultado": "x = 135",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un comerciante mezcla 60 kg de café de 9 €/kg con otra variedad de café de 13 €/kg para obtener una mezcla de 10,6 €/kg. ¿Cuántos kg del segundo tipo tiene que poner?",
+   "respuesta": "40 kg",
+   "distractores": [
+    {
+     "valor": "60 kg",
+     "error": "E01"
+    },
+    {
+     "valor": "225 kg",
+     "error": "E02"
+    },
+    {
+     "valor": "90 kg",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "60 × (10,6 − 9) : (13 − 10,6)",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: el dinero de la mezcla es la suma del dinero de cada parte. Plantea: 9 · 60 + 13 · x = 10,6 · (60 + x). Resuelve: 540 + 13x = 636 + 10,6x; 2,4x = 96; x = 40. Comprueba: 540 + 520 = 1060 € y 10,6 × 100 = 1060 €.",
+   "explicacion_adulto": "En los problemas de mezclas se igualan costes (precio × cantidad), no precios, y la cantidad de la mezcla es la suma de las dos. Errores típicos: promediar los precios sin ponderar u olvidar sumar las cantidades. Una tabla cantidad / precio / coste para cada producto y para la mezcla ayuda mucho.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Tabla",
+     "resultado": "60 y x; 9 y 13; mezcla 60 + x a 10,6",
+     "texto": "Cantidades y precios."
+    },
+    {
+     "paso": 2,
+     "operacion": "Plantear",
+     "resultado": "9 · 60 + 13 · x = 10,6 · (60 + x)",
+     "texto": "Coste total igual."
+    },
+    {
+     "paso": 3,
+     "operacion": "Resolver",
+     "resultado": "x = 40",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un comerciante mezcla 20 kg de té de 23 €/kg con otra variedad de té de 31 €/kg para obtener una mezcla de 27,8 €/kg. ¿Cuántos kg del segundo tipo tiene que poner?",
+   "respuesta": "30 kg",
+   "distractores": [
+    {
+     "valor": "20 kg",
+     "error": "E01"
+    },
+    {
+     "valor": "143,75 kg",
+     "error": "E02"
+    },
+    {
+     "valor": "50 kg",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "20 × (27,8 − 23) : (31 − 27,8)",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: el dinero de la mezcla es la suma del dinero de cada parte. Plantea: 23 · 20 + 31 · x = 27,8 · (20 + x). Resuelve: 460 + 31x = 556 + 27,8x; 3,2x = 96; x = 30. Comprueba: 460 + 930 = 1390 € y 27,8 × 50 = 1390 €.",
+   "explicacion_adulto": "En los problemas de mezclas se igualan costes (precio × cantidad), no precios, y la cantidad de la mezcla es la suma de las dos. Errores típicos: promediar los precios sin ponderar u olvidar sumar las cantidades. Una tabla cantidad / precio / coste para cada producto y para la mezcla ayuda mucho.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Tabla",
+     "resultado": "20 y x; 23 y 31; mezcla 20 + x a 27,8",
+     "texto": "Cantidades y precios."
+    },
+    {
+     "paso": 2,
+     "operacion": "Plantear",
+     "resultado": "23 · 20 + 31 · x = 27,8 · (20 + x)",
+     "texto": "Coste total igual."
+    },
+    {
+     "paso": 3,
+     "operacion": "Resolver",
+     "resultado": "x = 30",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Se tienen 20 litros de una mezcla con un 5 % de sirope. ¿Cuántos litros de otra mezcla al 50 % hay que añadir para obtener una al 25 %?",
+   "respuesta": "16 l",
+   "distractores": [
+    {
+     "valor": "20 l",
+     "error": "E01"
+    },
+    {
+     "valor": "4 l",
+     "error": "E02"
+    },
+    {
+     "valor": "25 l",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "20 × (25 − 5) : (50 − 25)",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: la cantidad de sirope puro de las dos mezclas se suma. Plantea: 20 · 0,05 + x · 0,5 = (20 + x) · 0,25. Resuelve: x = 16 l. Comprueba: sirope puro = 1 + 8 = 9 l, y el 25 % de 36 l es 9 l.",
+   "explicacion_adulto": "En mezclas de concentraciones se iguala la cantidad de sustancia pura (volumen × porcentaje), y el volumen final es la suma. Errores típicos: promediar los porcentajes o no sumar los volúmenes. Una tabla volumen / % / sustancia pura ayuda.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Plantear",
+     "resultado": "20 · 0,05 + x · 0,5 = (20 + x) · 0,25",
+     "texto": "Sustancia pura."
+    },
+    {
+     "paso": 2,
+     "operacion": "Resolver",
+     "resultado": "x = 16",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Se tienen 35 litros de una mezcla con un 5 % de sirope. ¿Cuántos litros de otra mezcla al 50 % hay que añadir para obtener una al 15 %?",
+   "respuesta": "10 l",
+   "distractores": [
+    {
+     "valor": "35 l",
+     "error": "E01"
+    },
+    {
+     "valor": "122,5 l",
+     "error": null
+    },
+    {
+     "valor": "45 l",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "35 × (15 − 5) : (50 − 15)",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: la cantidad de sirope puro de las dos mezclas se suma. Plantea: 35 · 0,05 + x · 0,5 = (35 + x) · 0,15. Resuelve: x = 10 l. Comprueba: sirope puro = 1,75 + 5 = 6,75 l, y el 15 % de 45 l es 6,75 l.",
+   "explicacion_adulto": "En mezclas de concentraciones se iguala la cantidad de sustancia pura (volumen × porcentaje), y el volumen final es la suma. Errores típicos: promediar los porcentajes o no sumar los volúmenes. Una tabla volumen / % / sustancia pura ayuda.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Plantear",
+     "resultado": "35 · 0,05 + x · 0,5 = (35 + x) · 0,15",
+     "texto": "Sustancia pura."
+    },
+    {
+     "paso": 2,
+     "operacion": "Resolver",
+     "resultado": "x = 10",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Se tienen 50 litros de una mezcla con un 10 % de anticongelante. ¿Cuántos litros de otra mezcla al 70 % hay que añadir para obtener una al 55 %?",
+   "respuesta": "150 l",
+   "distractores": [
+    {
+     "valor": "50 l",
+     "error": "E01"
+    },
+    {
+     "valor": "200 l",
+     "error": null
+    },
+    {
+     "valor": "300 l",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "50 × (55 − 10) : (70 − 55)",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: la cantidad de anticongelante puro de las dos mezclas se suma. Plantea: 50 · 0,1 + x · 0,7 = (50 + x) · 0,55. Resuelve: x = 150 l. Comprueba: anticongelante puro = 5 + 105 = 110 l, y el 55 % de 200 l es 110 l.",
+   "explicacion_adulto": "En mezclas de concentraciones se iguala la cantidad de sustancia pura (volumen × porcentaje), y el volumen final es la suma. Errores típicos: promediar los porcentajes o no sumar los volúmenes. Una tabla volumen / % / sustancia pura ayuda.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Plantear",
+     "resultado": "50 · 0,1 + x · 0,7 = (50 + x) · 0,55",
+     "texto": "Sustancia pura."
+    },
+    {
+     "paso": 2,
+     "operacion": "Resolver",
+     "resultado": "x = 150",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Se tienen 20 litros de una mezcla con un 15 % de zumo de naranja. ¿Cuántos litros de otra mezcla al 80 % hay que añadir para obtener una al 54 %?",
+   "respuesta": "30 l",
+   "distractores": [
+    {
+     "valor": "20 l",
+     "error": "E01"
+    },
+    {
+     "valor": "50 l",
+     "error": null
+    },
+    {
+     "valor": "60 l",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "20 × (54 − 15) : (80 − 54)",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: la cantidad de zumo de naranja puro de las dos mezclas se suma. Plantea: 20 · 0,15 + x · 0,8 = (20 + x) · 0,54. Resuelve: x = 30 l. Comprueba: zumo de naranja puro = 3 + 24 = 27 l, y el 54 % de 50 l es 27 l.",
+   "explicacion_adulto": "En mezclas de concentraciones se iguala la cantidad de sustancia pura (volumen × porcentaje), y el volumen final es la suma. Errores típicos: promediar los porcentajes o no sumar los volúmenes. Una tabla volumen / % / sustancia pura ayuda.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Plantear",
+     "resultado": "20 · 0,15 + x · 0,8 = (20 + x) · 0,54",
+     "texto": "Sustancia pura."
+    },
+    {
+     "paso": 2,
+     "operacion": "Resolver",
+     "resultado": "x = 30",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Se tienen 20 litros de una mezcla con un 25 % de alcohol. ¿Cuántos litros de otra mezcla al 80 % hay que añadir para obtener una al 58 %?",
+   "respuesta": "30 l",
+   "distractores": [
+    {
+     "valor": "20 l",
+     "error": "E01"
+    },
+    {
+     "valor": "50 l",
+     "error": null
+    },
+    {
+     "valor": "60 l",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "20 × (58 − 25) : (80 − 58)",
+   "secundarias": [
+    "ALG.EC1.06"
+   ],
+   "explicacion_nino": "Entiende: la cantidad de alcohol puro de las dos mezclas se suma. Plantea: 20 · 0,25 + x · 0,8 = (20 + x) · 0,58. Resuelve: x = 30 l. Comprueba: alcohol puro = 5 + 24 = 29 l, y el 58 % de 50 l es 29 l.",
+   "explicacion_adulto": "En mezclas de concentraciones se iguala la cantidad de sustancia pura (volumen × porcentaje), y el volumen final es la suma. Errores típicos: promediar los porcentajes o no sumar los volúmenes. Una tabla volumen / % / sustancia pura ayuda.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Plantear",
+     "resultado": "20 · 0,25 + x · 0,8 = (20 + x) · 0,58",
+     "texto": "Sustancia pura."
+    },
+    {
+     "paso": 2,
+     "operacion": "Resolver",
+     "resultado": "x = 30",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P03"
+  }
+ ]
+}

@@ -1,0 +1,1626 @@
+{
+ "ALG.COMPUT.01": {
+  "gen": "t5_cuadricula",
+  "errores": {
+   "izq_der": "E01",
+   "salta": "E02",
+   "cuenta_salida": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Casilla de llegada tras 2–6 flechas en una cuadrícula 5×5"
+ },
+ "ALG.COMPUT.03": {
+  "gen": "t5_cuadricula_error",
+  "errores": {
+   "senala_ultima": "E01",
+   "opuesta": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Localizar y corregir la flecha equivocada de un programa"
+ },
+ "ALG.COMPUT.04": {
+  "gen": "t5_bucle",
+  "errores": {
+   "una_vez": "E01",
+   "solo_ultima": "E02",
+   "vuelta_de_mas": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Posición final tras 'repite n veces [bloque]'"
+ },
+ "ALG.COMPUT.05": {
+  "gen": "t5_maquina",
+  "errores": {
+   "deshace_mismo_orden": "E01",
+   "no_invierte": "E02",
+   "orden_directo_cambiado": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Máquina de 1–2 operaciones: salida o entrada"
+ },
+ "ALG.COMPUT.06": {
+  "gen": "t5_condicional",
+  "errores": {
+   "dos_ramas": "E01",
+   "rama_equivocada": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Algoritmo con si… entonces… si no"
+ },
+ "ALG.COMPUT.07": {
+  "gen": "t5_contador",
+  "errores": {
+   "no_actualiza": "E01",
+   "cond_una_vez": "E02",
+   "vueltas_mal": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Trazar bucle con condición y contador"
+ },
+ "ALG.COMPUT.08": {
+  "gen": "t5_pseudocodigo",
+  "errores": {
+   "limite_bucle": "E01",
+   "no_acumula": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Trazar pseudocódigo con acumulador"
+ },
+ "ALG.EC1.01": {
+  "gen": "t5_hueco_suma",
+  "errores": {
+   "opera_visibles": "E01",
+   "hueco_resultado": "E02",
+   "igual_al_reves": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Hueco en suma o resta hasta 20"
+ },
+ "ALG.EC1.02": {
+  "gen": "t5_hueco_mult",
+  "errores": {
+   "copia_lado": "E01",
+   "multiplica": "E02",
+   "divide_al_reves": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Hueco con × o : o con operaciones en los dos lados"
+ },
+ "ALG.EC1.03": {
+  "gen": "t5_letra",
+  "errores": {
+   "orden_directo": "E01",
+   "pegado": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Valor de la letra en igualdades de 1–2 pasos"
+ },
+ "ALG.EC1.04": {
+  "gen": "t5_ec_comprobar",
+  "errores": {
+   "un_miembro": "E01",
+   "signo_negativo": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Elementos de una ecuación y comprobar soluciones"
+ },
+ "ALG.EC1.05": {
+  "gen": "t5_ec1_simple",
+  "errores": {
+   "sin_cambiar_signo": "E01",
+   "coef_restando": "E02",
+   "signo_coeficiente": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "x + a = b, ax = b, ax + b = c"
+ },
+ "ALG.EC1.06": {
+  "gen": "t5_ec1_dos_miembros",
+  "errores": {
+   "sin_cambiar_signo": "E01",
+   "divide_mal": "E02",
+   "deja_x": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Incógnita en los dos miembros"
+ },
+ "ALG.EC1.07": {
+  "gen": "t5_ec1_parentesis",
+  "errores": {
+   "distributiva_incompleta": "E01",
+   "menos_delante": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Ecuaciones con paréntesis"
+ },
+ "ALG.EC1.08": {
+  "gen": "t5_ec1_denominadores",
+  "errores": {
+   "solo_con_denominador": "E01",
+   "raya_ignorada": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Ecuaciones con denominadores"
+ },
+ "ALG.EC1.09": {
+  "gen": "t5_ec1_casos",
+  "errores": {
+   "x_cero": "E01",
+   "identidad_sin_solucion": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Ecuaciones sin solución o con infinitas"
+ },
+ "ALG.EC2.01": {
+  "gen": "t5_ec2_incompleta",
+  "errores": {
+   "olvida_negativa": "E01",
+   "divide_x": "E02",
+   "raiz_negativo": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Ecuaciones de 2.º grado incompletas"
+ },
+ "ALG.EC2.02": {
+  "gen": "t5_ec2_completa",
+  "errores": {
+   "signo_b": "E01",
+   "b2_negativo": "E02",
+   "divide_solo_raiz": "E03",
+   "denominador_a": "E04"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Fórmula general de 2.º grado"
+ },
+ "ALG.EC2.03": {
+  "gen": "t5_discriminante",
+  "errores": {
+   "negativo_dos": "E01",
+   "iguala_c": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Discriminante y parámetro para solución doble"
+ },
+ "ALG.EC2.04": {
+  "gen": "t5_suma_producto",
+  "errores": {
+   "suma_signo": "E01",
+   "factor_signo": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Suma y producto de soluciones; ecuación con soluciones dadas"
+ },
+ "ALG.EC2.05": {
+  "gen": "t5_bicuadrada",
+  "errores": {
+   "se_queda_en_z": "E01",
+   "solo_positivas": "E02",
+   "raiz_z_negativo": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Ecuaciones bicuadradas"
+ },
+ "ALG.EC2.06": {
+  "gen": "t5_ec_polinomica",
+  "errores": {
+   "divide_x": "E01"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Ecuaciones polinómicas de grado 3–4 por factorización"
+ },
+ "ALG.EC2.07": {
+  "gen": "t5_ec_racional",
+  "errores": {
+   "no_comprueba": "E01",
+   "multiplica_algunos": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Ecuaciones racionales A/(x − a) + B/x = 1"
+ },
+ "ALG.EC2.08": {
+  "gen": "t5_ec_irracional",
+  "errores": {
+   "eleva_termino": "E01",
+   "no_comprueba": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Ecuaciones irracionales con un radical"
+ },
+ "ALG.EC2.09": {
+  "gen": "t5_ec_exponencial",
+  "errores": {
+   "iguala_bases_distintas": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Ecuaciones exponenciales: igualar bases y cambio de variable"
+ },
+ "ALG.EC2.10": {
+  "gen": "t5_ec_logaritmica",
+  "errores": {
+   "log_suma": "E01",
+   "no_descarta": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Ecuaciones logarítmicas"
+ },
+ "ALG.EXPR.01": {
+  "gen": "t5_igualdad",
+  "errores": {
+   "igual_da": "E01",
+   "un_lado": "E02",
+   "parecido": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Elegir la igualdad verdadera (= / ≠) hasta 20"
+ },
+ "ALG.EXPR.02": {
+  "gen": "t5_comparar_expr",
+  "errores": {
+   "signo_al_reves": "E01",
+   "primer_numero": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Comparar expresiones con <, >, ="
+ },
+ "ALG.EXPR.03": {
+  "gen": "t5_traducir",
+  "errores": {
+   "orden": "E01",
+   "doble_cuadrado": "E02",
+   "menos_que": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Traducir frases al lenguaje algebraico"
+ },
+ "ALG.EXPR.04": {
+  "gen": "t5_valor_numerico",
+  "errores": {
+   "pega_numero": "E01",
+   "signo_cuadrado": "E02",
+   "potencia_x2": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Valor numérico con una o dos letras"
+ },
+ "ALG.EXPR.05": {
+  "gen": "t5_monomio",
+  "errores": {
+   "grado_mayor": "E01",
+   "coef_invisible": "E02",
+   "semejante_letras": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Coeficiente, parte literal, grado y semejanza"
+ },
+ "ALG.EXPR.06": {
+  "gen": "t5_reducir",
+  "errores": {
+   "no_semejantes": "E01",
+   "suma_exponentes": "E02",
+   "pierde_signo": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Reducir términos semejantes"
+ },
+ "ALG.EXPR.07": {
+  "gen": "t5_parentesis",
+  "errores": {
+   "solo_primero": "E01",
+   "menos_solo_primero": "E02",
+   "signo_segundo": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Quitar paréntesis y reducir"
+ },
+ "ALG.EXPR.08": {
+  "gen": "t5_monomios_op",
+  "errores": {
+   "multiplica_exponentes": "E01",
+   "suma_coeficientes": "E02",
+   "resta_al_reves": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Producto y cociente de monomios"
+ },
+ "ALG.PATRON.01": {
+  "gen": "t5_patron_sig",
+  "errores": {
+   "repite_ultimo": "E01",
+   "nucleo_mal": "E02",
+   "alterna": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Siguiente elemento de un patrón de repetición"
+ },
+ "ALG.PATRON.02": {
+  "gen": "t5_patron_hueco",
+  "errores": {
+   "copia_vecino": "E01",
+   "desplaza": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Elemento oculto en un patrón de repetición"
+ },
+ "ALG.PATRON.03": {
+  "gen": "t5_serie_aritmetica",
+  "errores": {
+   "salto_uno": "E01",
+   "sentido": "E02",
+   "cambio_decena": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Series de 1, 2, 5 o 10 en 10 hasta 99",
+  "kw": {
+   "saltos": [
+    1,
+    2,
+    5,
+    10
+   ],
+   "maxv": 99
+  }
+ },
+ "ALG.PATRON.04": {
+  "gen": "t5_serie_aritmetica",
+  "errores": {
+   "solo_unidades": "E01",
+   "salto_mal": "E02",
+   "sentido": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Series con salto constante hasta 999",
+  "kw": {
+   "saltos": [
+    3,
+    4,
+    6,
+    7,
+    8,
+    9
+   ],
+   "maxv": 999,
+   "dec_cent": true
+  }
+ },
+ "ALG.PATRON.06": {
+  "gen": "t5_serie_no_aritmetica",
+  "errores": {
+   "busca_suma": "E01",
+   "ignora_alternancia": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Series multiplicativas o con dos saltos alternos"
+ },
+ "ALG.PATRON.07": {
+  "gen": "t5_termino_lejano",
+  "errores": {
+   "multiplica_posicion": "E01",
+   "proporcional": "E02",
+   "un_salto_mas": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Término lejano de un patrón lineal"
+ },
+ "ALG.PATRON.08": {
+  "gen": "t5_regla_patron",
+  "errores": {
+   "salto_constante": "E01",
+   "primero_coef": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Regla de un patrón lineal con letra"
+ },
+ "ALG.INEC.01": {
+  "gen": "t5_desigualdad_natural",
+  "errores": {
+   "incluye_borde": "E01",
+   "solo_uno": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Números de una lista que cumplen una desigualdad"
+ },
+ "ALG.INEC.02": {
+  "gen": "t5_inecuacion1",
+  "errores": {
+   "no_invierte": "E01",
+   "extremo_mal": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Inecuaciones de primer grado"
+ },
+ "ALG.INEC.03": {
+  "gen": "t5_inecuacion2",
+  "errores": {
+   "como_ecuacion": "E01",
+   "intervalo_equivocado": "E02",
+   "divide_x": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Inecuaciones de segundo grado"
+ },
+ "ALG.INEC.04": {
+  "gen": "t5_sistema_inecuaciones",
+  "errores": {
+   "une": "E01",
+   "extremos_mal": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Sistemas de dos inecuaciones de primer grado"
+ },
+ "ALG.INEC.06": {
+  "gen": "t5_inec_racional",
+  "errores": {
+   "multiplica_denominador": "E01",
+   "incluye_cero_den": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Inecuaciones racionales (x − a)/(x − b)"
+ },
+ "ALG.POLI.01": {
+  "gen": "t5_poli_elementos",
+  "errores": {
+   "grado_primero": "E01",
+   "indep_ultimo": "E02",
+   "signo_potencia": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Grado, coeficientes, término independiente y P(a)"
+ },
+ "ALG.POLI.02": {
+  "gen": "t5_poli_suma",
+  "errores": {
+   "resta_solo_primero": "E01",
+   "mezcla_grados": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Suma y resta de polinomios"
+ },
+ "ALG.POLI.03": {
+  "gen": "t5_poli_producto",
+  "errores": {
+   "alineados": "E01",
+   "exponentes": "E02",
+   "signos": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Producto de polinomios"
+ },
+ "ALG.POLI.04": {
+  "gen": "t5_poli_division",
+  "errores": {
+   "sin_huecos": "E01",
+   "suma_en_vez": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "División de polinomios (cociente y resto)"
+ },
+ "ALG.POLI.05": {
+  "gen": "t5_ruffini",
+  "errores": {
+   "signo_a": "E01",
+   "olvida_ceros": "E02",
+   "grado_cociente": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Regla de Ruffini"
+ },
+ "ALG.POLI.06": {
+  "gen": "t5_teorema_resto",
+  "errores": {
+   "evalua_menos_a": "E01",
+   "divisores_principal": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Teorema del resto y raíces enteras"
+ },
+ "ALG.IDENT.01": {
+  "gen": "t5_factor_comun",
+  "errores": {
+   "termino_vacio": "E01",
+   "factor_no_maximo": "E02",
+   "mayor_exponente": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Sacar factor común"
+ },
+ "ALG.IDENT.02": {
+  "gen": "t5_cuadrado_binomio",
+  "errores": {
+   "sin_doble_producto": "E01",
+   "sin_2": "E02",
+   "signo_ultimo": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Cuadrado de una suma o diferencia"
+ },
+ "ALG.IDENT.03": {
+  "gen": "t5_suma_diferencia",
+  "errores": {
+   "signo_segundo": "E01",
+   "coeficiente": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Suma por diferencia"
+ },
+ "ALG.IDENT.04": {
+  "gen": "t5_factorizar_ident",
+  "errores": {
+   "suma_cuadrados": "E01",
+   "trinomio_no_cuadrado": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Factorizar con identidades notables"
+ },
+ "ALG.IDENT.05": {
+  "gen": "t5_factorizar_completo",
+  "errores": {
+   "factor_signo": "E01",
+   "pierde_coef": "E02",
+   "para_antes": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Factorización completa de polinomios"
+ },
+ "ALG.FRACALG.01": {
+  "gen": "t5_frac_simplificar",
+  "errores": {
+   "tacha_sumandos": "E01",
+   "tacha_x": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Simplificar fracciones algebraicas"
+ },
+ "ALG.FRACALG.02": {
+  "gen": "t5_frac_suma",
+  "errores": {
+   "suma_num_den": "E01",
+   "signo_numerador": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Suma y resta de fracciones algebraicas"
+ },
+ "ALG.FRACALG.03": {
+  "gen": "t5_frac_producto",
+  "errores": {
+   "divide_sin_invertir": "E01",
+   "simplifica_mal": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Producto y cociente de fracciones algebraicas"
+ },
+ "ALG.SIST.01": {
+  "gen": "t5_sist_comprobar",
+  "errores": {
+   "solo_una": "E01",
+   "intercambia": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "¿Es (x, y) solución del sistema?"
+ },
+ "ALG.SIST.02": {
+  "gen": "t5_sist_resolver",
+  "errores": {
+   "misma_ecuacion": "E01",
+   "parentesis": "E02",
+   "olvida_incognita": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Sistemas 2×2 por sustitución",
+  "kw": {
+   "metodo": "sustitucion"
+  }
+ },
+ "ALG.SIST.03": {
+  "gen": "t5_sist_resolver",
+  "errores": {
+   "letras_distintas": "E01",
+   "denominadores": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Sistemas 2×2 por igualación",
+  "kw": {
+   "metodo": "igualacion"
+  }
+ },
+ "ALG.SIST.04": {
+  "gen": "t5_sist_resolver",
+  "errores": {
+   "multiplica_un_miembro": "E01",
+   "suma_en_vez": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Sistemas 2×2 por reducción",
+  "kw": {
+   "metodo": "reduccion"
+  }
+ },
+ "ALG.SIST.05": {
+  "gen": "t5_sist_tipos",
+  "errores": {
+   "paralelas_coincidentes": "E01",
+   "corte_al_reves": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Clasificar sistemas 2×2 e interpretación gráfica"
+ },
+ "ALG.SIST.06": {
+  "gen": "t5_sist_no_lineal",
+  "errores": {
+   "un_par": "E01",
+   "empareja_mal": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Sistemas no lineales sencillos"
+ },
+ "ALG.SIST.07": {
+  "gen": "t5_gauss3",
+  "errores": {
+   "fila_mal": "E01",
+   "regresiva_mal": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Sistemas 3×3 por Gauss"
+ },
+ "ALG.SIST.08": {
+  "gen": "t5_gauss_clasificar",
+  "errores": {
+   "cero_cero_incompatible": "E01",
+   "cero_k_solucion": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Clasificar sistemas 3×3 por Gauss"
+ },
+ "ALG.SISTLIN.01": {
+  "gen": "t5_sistema_matricial",
+  "errores": {
+   "coef_ausente": "E01",
+   "ampliada_sin_terminos": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Matriz de coeficientes y ampliada"
+ },
+ "ALG.SISTLIN.02": {
+  "gen": "t5_rouche",
+  "errores": {
+   "compara_ecuaciones": "E01",
+   "distintos_sci": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Rouché-Fröbenius"
+ },
+ "ALG.SISTLIN.03": {
+  "gen": "t5_discusion_param",
+  "errores": {
+   "se_queda_det": "E01"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Discusión de sistemas 3×3 con un parámetro"
+ },
+ "ALG.SISTLIN.04": {
+  "gen": "t5_cramer",
+  "errores": {
+   "columna_equivocada": "E01"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Regla de Cramer"
+ },
+ "ALG.SISTLIN.05": {
+  "gen": "t5_homogeneo",
+  "errores": {
+   "homogeneo_incompatible": "E01",
+   "det_no_nulo": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Sistemas homogéneos con parámetro"
+ },
+ "ALG.MATRIZ.01": {
+  "gen": "t5_matriz_elementos",
+  "errores": {
+   "fila_columna": "E01",
+   "dimension_invertida": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Dimensión, elementos, tipos y traspuesta"
+ },
+ "ALG.MATRIZ.02": {
+  "gen": "t5_matriz_suma",
+  "errores": {
+   "escalar_una_fila": "E01"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Combinaciones lineales de matrices"
+ },
+ "ALG.MATRIZ.03": {
+  "gen": "t5_matriz_producto",
+  "errores": {
+   "elemento_a_elemento": "E01",
+   "conmuta": "E02",
+   "cuadrado_elementos": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Producto de matrices y potencias"
+ },
+ "ALG.MATRIZ.04": {
+  "gen": "t5_determinante",
+  "errores": {
+   "signo_secundaria": "E01",
+   "sarrus_incompleto": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Determinantes 2×2, 3×3 y con parámetro"
+ },
+ "ALG.MATRIZ.05": {
+  "gen": "t5_det_propiedades",
+  "errores": {
+   "k_por_det": "E01",
+   "signo_adjunto": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Propiedades de los determinantes y adjuntos"
+ },
+ "ALG.MATRIZ.06": {
+  "gen": "t5_rango",
+  "errores": {
+   "rango_filas": "E01",
+   "menor_nulo": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Rango de una matriz"
+ },
+ "ALG.MATRIZ.07": {
+  "gen": "t5_inversa",
+  "errores": {
+   "elemento_a_elemento": "E01",
+   "olvida_trasponer": "E02",
+   "sin_signos": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Matriz inversa"
+ },
+ "ALG.MATRIZ.08": {
+  "gen": "t5_ec_matricial",
+  "errores": {
+   "lado_equivocado": "E01",
+   "divide": "E02",
+   "factor_sin_identidad": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Ecuaciones matriciales"
+ },
+ "ALG.PROGLIN.02": {
+  "gen": "t5_proglin",
+  "errores": {
+   "vertice_lejano": "E01",
+   "solo_valor": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Optimizar la función objetivo en los vértices"
+ },
+ "FUN.CONC.02": {
+  "gen": "t5_concepto_funcion",
+  "errores": {
+   "y_repetida": "E01",
+   "variables_al_reves": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "¿Es función? Variables dependiente e independiente"
+ },
+ "FUN.CONC.03": {
+  "gen": "t5_formula_tabla",
+  "errores": {
+   "coordenadas_cambiadas": "E01",
+   "cuadrado_negativo": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Tabla de valores y puntos de la gráfica"
+ },
+ "FUN.CONC.05": {
+  "gen": "t5_cortes_ejes",
+  "errores": {
+   "ejes_al_reves": "E01",
+   "solo_coordenada": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Puntos de corte con los ejes"
+ },
+ "FUN.CONC.06": {
+  "gen": "t5_tvm",
+  "errores": {
+   "no_divide": "E01",
+   "resta_al_reves": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Tasa de variación media"
+ },
+ "FUN.CUADR.01": {
+  "gen": "t5_parabola_forma",
+  "errores": {
+   "abs_grande_abierta": "E01",
+   "signo_ignorado": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Forma y abertura de y = ax²"
+ },
+ "FUN.CUADR.02": {
+  "gen": "t5_parabola_vertice",
+  "errores": {
+   "signo_vertice": "E01",
+   "y_vertice": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Vértice, eje y cortes de una parábola"
+ },
+ "FUN.CUADR.04": {
+  "gen": "t5_parabola_trasladada",
+  "errores": {
+   "signo_h": "E01",
+   "vertical_al_reves": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Parábolas y = a(x − h)² + k"
+ },
+ "FUN.ELEM.01": {
+  "gen": "t5_prop_inversa",
+  "errores": {
+   "lineal_decreciente": "E01",
+   "corta_ejes": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Proporcionalidad inversa y = k/x"
+ },
+ "FUN.ELEM.02": {
+  "gen": "t5_trozos",
+  "errores": {
+   "tramo_extremo": "E01",
+   "todas_formulas": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Evaluar funciones a trozos"
+ },
+ "FUN.ELEM.03": {
+  "gen": "t5_exponencial",
+  "errores": {
+   "potencia": "E01",
+   "pasa_origen": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Función exponencial"
+ },
+ "FUN.ELEM.04": {
+  "gen": "t5_logaritmica",
+  "errores": {
+   "dominio_negativos": "E01",
+   "corte_01": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Función logarítmica"
+ },
+ "FUN.ELEM.05": {
+  "gen": "t5_trigonometrica_graf",
+  "errores": {
+   "periodo_multiplicado": "E01",
+   "recorrido": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Amplitud, periodo y recorrido de A·sen(kx)"
+ },
+ "FUN.ELEM.06": {
+  "gen": "t5_racional_simple",
+  "errores": {
+   "av_signo": "E01",
+   "ah_independiente": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Asíntotas de funciones racionales sencillas"
+ },
+ "FUN.ELEM.07": {
+  "gen": "t5_radical_absoluto",
+  "errores": {
+   "abs_resta": "E01",
+   "dominio_raiz": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Funciones con radicales y valor absoluto"
+ },
+ "FUN.LINEAL.01": {
+  "gen": "t5_prop_directa",
+  "errores": {
+   "m_x_entre_y": "E01",
+   "toda_recta": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Proporcionalidad directa y = mx"
+ },
+ "FUN.LINEAL.02": {
+  "gen": "t5_pendiente_ordenada",
+  "errores": {
+   "m_n_cambiados": "E01",
+   "no_despeja": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Pendiente y ordenada en el origen"
+ },
+ "FUN.LINEAL.03": {
+  "gen": "t5_recta_puntos",
+  "errores": {
+   "pendiente_invertida": "E01",
+   "signos_resta": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Recta por dos puntos o punto y pendiente"
+ },
+ "FUN.LINEAL.04": {
+  "gen": "t5_pendientes_comparar",
+  "errores": {
+   "compara_ordenada": "E01",
+   "negativa_mayor": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Comparar pendientes, paralelas y corte"
+ },
+ "FUN.LINEAL.05": {
+  "gen": "t5_pendiente_angulo",
+  "errores": {
+   "porcentaje_angulo": "E01",
+   "tangente_invertida": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Pendiente en % y ángulo de inclinación"
+ },
+ "FUN.PROPS.01": {
+  "gen": "t5_dominio",
+  "errores": {
+   "excluye_numerador": "E01",
+   "raiz_estricta": "E02",
+   "olvida_restriccion": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Dominio de funciones"
+ },
+ "FUN.PROPS.02": {
+  "gen": "t5_paridad",
+  "errores": {
+   "par_por_x2": "E01"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Funciones pares e impares"
+ },
+ "FUN.PROPS.03": {
+  "gen": "t5_operaciones_funciones",
+  "errores": {
+   "producto_composicion": "E01",
+   "dominio_cociente": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Operaciones con funciones"
+ },
+ "FUN.PROPS.04": {
+  "gen": "t5_composicion",
+  "errores": {
+   "orden_cambiado": "E01",
+   "multiplica": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Composición de funciones"
+ },
+ "FUN.PROPS.05": {
+  "gen": "t5_inversa_funcion",
+  "errores": {
+   "uno_entre_f": "E01",
+   "no_intercambia": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Función inversa"
+ },
+ "FUN.PROPS.06": {
+  "gen": "t5_transformaciones",
+  "errores": {
+   "horizontal_al_reves": "E01",
+   "eje_equivocado": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Traslaciones y simetrías de gráficas"
+ },
+ "FUN.SUCES.01": {
+  "gen": "t5_sucesion_termino",
+  "errores": {
+   "n_por_an": "E01",
+   "alterna_mal": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Términos desde el término general"
+ },
+ "FUN.SUCES.02": {
+  "gen": "t5_recurrencia",
+  "errores": {
+   "usa_n": "E01",
+   "desfase": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Sucesiones por recurrencia"
+ },
+ "FUN.SUCES.03": {
+  "gen": "t5_termino_general",
+  "errores": {
+   "solo_primero": "E01",
+   "constante_coef": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Término general de sucesiones sencillas"
+ },
+ "FUN.SUCES.04": {
+  "gen": "t5_prog_aritmetica",
+  "errores": {
+   "n_en_vez": "E01",
+   "d_no_consecutivos": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Progresión aritmética"
+ },
+ "FUN.SUCES.05": {
+  "gen": "t5_suma_aritmetica",
+  "errores": {
+   "sin_dividir": "E01",
+   "d_en_vez": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Suma de una progresión aritmética"
+ },
+ "FUN.SUCES.06": {
+  "gen": "t5_prog_geometrica",
+  "errores": {
+   "como_aritmetica": "E01",
+   "exponente_n": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Progresión geométrica"
+ },
+ "FUN.SUCES.07": {
+  "gen": "t5_suma_geometrica",
+  "errores": {
+   "formula_aritmetica": "E01",
+   "exponente_n1": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Suma de n términos de una geométrica"
+ },
+ "FUN.SUCES.08": {
+  "gen": "t5_suma_infinita",
+  "errores": {
+   "siempre_infinita": "E01",
+   "aplica_r_mayor": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Suma infinita de una geométrica"
+ },
+ "ANA.DER.01": {
+  "gen": "t5_derivada_def",
+  "errores": {
+   "f_mas_h": "E01",
+   "simplifica_h": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Derivada en un punto por la definición"
+ },
+ "ANA.DER.02": {
+  "gen": "t5_derivada_potencias",
+  "errores": {
+   "no_baja_exponente": "E01",
+   "deriva_constante": "E02",
+   "raiz_rec": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Derivadas de potencias y polinomios"
+ },
+ "ANA.DER.03": {
+  "gen": "t5_tangente",
+  "errores": {
+   "pendiente_fa": "E01"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Recta tangente"
+ },
+ "ANA.DER.04": {
+  "gen": "t5_derivada_prod_coc",
+  "errores": {
+   "producto_derivadas": "E01",
+   "orden_cociente": "E02",
+   "sin_cuadrado": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Derivada del producto y del cociente"
+ },
+ "ANA.DER.05": {
+  "gen": "t5_cadena",
+  "errores": {
+   "olvida_interior": "E01",
+   "deriva_dentro": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Regla de la cadena"
+ },
+ "ANA.DER.06": {
+  "gen": "t5_derivada_elementales",
+  "errores": {
+   "exp_potencia": "E01",
+   "ln_inverso": "E02",
+   "signo_coseno": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Derivadas de exponenciales, logaritmos y trigonométricas"
+ },
+ "ANA.DER.07": {
+  "gen": "t5_derivabilidad",
+  "errores": {
+   "olvida_continuidad": "E01",
+   "continua_derivable": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Derivabilidad de funciones a trozos"
+ },
+ "ANA.APLDER.01": {
+  "gen": "t5_monotonia",
+  "errores": {
+   "signo_f": "E01",
+   "olvida_dominio": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Monotonía con el signo de f′"
+ },
+ "ANA.APLDER.02": {
+  "gen": "t5_extremos",
+  "errores": {
+   "todo_cero_extremo": "E01",
+   "clasificacion_invertida": "E02",
+   "solo_x": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Máximos y mínimos relativos"
+ },
+ "ANA.APLDER.03": {
+  "gen": "t5_inflexion",
+  "errores": {
+   "inflexion_fprima": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Puntos de inflexión"
+ },
+ "ANA.APLDER.06": {
+  "gen": "t5_rolle_tvm",
+  "errores": {
+   "sin_hipotesis": "E01",
+   "confunde_bolzano": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Teoremas de Rolle y del valor medio"
+ },
+ "ANA.APLDER.07": {
+  "gen": "t5_parametros_funcion",
+  "errores": {
+   "extremo_solo_punto": "E01",
+   "inflexion_con_fprima": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Parámetros a partir de propiedades"
+ },
+ "ANA.CONT.01": {
+  "gen": "t5_continuidad_punto",
+  "errores": {
+   "solo_fa": "E01",
+   "solo_limite": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Continuidad en un punto"
+ },
+ "ANA.CONT.02": {
+  "gen": "t5_continuidad_param",
+  "errores": {
+   "iguala_sin_evaluar": "E01",
+   "un_lateral": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Continuidad de funciones a trozos con parámetro"
+ },
+ "ANA.CONT.03": {
+  "gen": "t5_tipo_discontinuidad",
+  "errores": {
+   "evitable_salto": "E01",
+   "asintotica_evitable": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Tipos de discontinuidad"
+ },
+ "ANA.CONT.04": {
+  "gen": "t5_bolzano",
+  "errores": {
+   "olvida_continuidad": "E01",
+   "mismo_signo": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Teorema de Bolzano"
+ },
+ "ANA.INT.01": {
+  "gen": "t5_primitivas",
+  "errores": {
+   "deriva": "E01",
+   "olvida_c": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Primitivas inmediatas"
+ },
+ "ANA.INT.02": {
+  "gen": "t5_casi_inmediatas",
+  "errores": {
+   "no_ajusta": "E01"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Integrales casi inmediatas"
+ },
+ "ANA.INT.03": {
+  "gen": "t5_cambio_variable",
+  "errores": {
+   "no_cambia_dx": "E01",
+   "no_deshace": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Integración por cambio de variable"
+ },
+ "ANA.INT.04": {
+  "gen": "t5_partes",
+  "errores": {
+   "mala_u": "E01",
+   "signo_formula": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Integración por partes"
+ },
+ "ANA.INT.05": {
+  "gen": "t5_racionales_int",
+  "errores": {
+   "no_divide": "E01",
+   "ln_denominador": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Integrales racionales"
+ },
+ "ANA.INT.06": {
+  "gen": "t5_barrow",
+  "errores": {
+   "resta_al_reves": "E01",
+   "mantiene_c": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Integral definida y regla de Barrow"
+ },
+ "ANA.INT.07": {
+  "gen": "t5_areas",
+  "errores": {
+   "integral_con_signo": "E01",
+   "resta_al_reves": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Áreas con integrales"
+ },
+ "ANA.INT.08": {
+  "gen": "t5_volumen_revolucion",
+  "errores": {
+   "sin_cuadrado": "E01",
+   "sin_pi": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Volúmenes de revolución"
+ },
+ "ANA.LIM.02": {
+  "gen": "t5_limite_punto",
+  "errores": {
+   "cero_cero": "E01",
+   "k_cero": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Límites en un punto: 0/0 y k/0"
+ },
+ "ANA.LIM.03": {
+  "gen": "t5_limite_infinito",
+  "errores": {
+   "infinito_uno": "E01",
+   "signo_menos_infinito": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Límites en el infinito de funciones racionales"
+ },
+ "ANA.LIM.04": {
+  "gen": "t5_limite_conjugado",
+  "errores": {
+   "infinito_menos_infinito": "E01",
+   "conjugado_mal": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "∞ − ∞ con radicales"
+ },
+ "ANA.LIM.05": {
+  "gen": "t5_asintotas",
+  "errores": {
+   "av_evitable": "E01",
+   "horizontal_y_oblicua": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Asíntotas"
+ },
+ "ANA.LIM.06": {
+  "gen": "t5_limite_e",
+  "errores": {
+   "uno_infinito": "E01",
+   "olvida_exponente": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Indeterminación 1^∞"
+ },
+ "ANA.LIM.07": {
+  "gen": "t5_lhopital",
+  "errores": {
+   "deriva_cociente": "E01",
+   "sin_indeterminacion": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Regla de L'Hôpital"
+ },
+ "GEO.VECT.01": {
+  "gen": "t5_vector_coord",
+  "errores": {
+   "resta_al_reves": "E01",
+   "sin_raiz": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Coordenadas y módulo de un vector"
+ },
+ "GEO.VECT.02": {
+  "gen": "t5_vector_operaciones",
+  "errores": {
+   "escalar_una_coord": "E01",
+   "resta_al_reves": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Operaciones con vectores"
+ },
+ "GEO.VECT.03": {
+  "gen": "t5_base_vectores",
+  "errores": {
+   "base_proporcionales": "E01",
+   "coef_cruzados": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Bases y combinación lineal en el plano"
+ },
+ "GEO.VECT.04": {
+  "gen": "t5_producto_escalar",
+  "errores": {
+   "como_vector": "E01",
+   "igual_uno": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Producto escalar, ángulo y perpendicularidad"
+ },
+ "GEO.ANALIT.01": {
+  "gen": "t5_punto_medio",
+  "errores": {
+   "resta": "E01",
+   "simetrico_medio": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Punto medio, distancia y simétrico"
+ },
+ "GEO.ANALIT.02": {
+  "gen": "t5_ecuacion_recta",
+  "errores": {
+   "pendiente_director": "E01",
+   "director_general": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Ecuaciones de la recta en el plano"
+ },
+ "GEO.ANALIT.03": {
+  "gen": "t5_posicion_rectas",
+  "errores": {
+   "paralelas_coincidentes": "E01",
+   "corte_una_recta": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Posición relativa de dos rectas"
+ },
+ "GEO.ANALIT.04": {
+  "gen": "t5_recta_vectorial",
+  "errores": {
+   "signo_punto": "E01",
+   "director_punto": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Ecuaciones vectorial, paramétricas y continua"
+ },
+ "GEO.ANALIT.05": {
+  "gen": "t5_paralela_perpendicular",
+  "errores": {
+   "pendiente_opuesta": "E01",
+   "inversa_sin_signo": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Rectas paralelas y perpendiculares por un punto"
+ },
+ "GEO.ANALIT.06": {
+  "gen": "t5_distancia_recta",
+  "errores": {
+   "sin_valor_absoluto": "E01",
+   "sin_raiz": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Distancia punto-recta y ángulo entre rectas"
+ },
+ "GEO.ANALIT.07": {
+  "gen": "t5_circunferencia",
+  "errores": {
+   "signo_centro": "E01",
+   "radio_sin_raiz": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Circunferencia y mediatriz"
+ },
+ "GEO.ANALIT.08": {
+  "gen": "t5_conicas",
+  "errores": {
+   "c_suma": "E01",
+   "semiejes_cuadrado": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Elementos de las cónicas"
+ },
+ "GEO.ESPACIO.01": {
+  "gen": "t5_vectores_espacio",
+  "errores": {
+   "dos_coordenadas": "E01",
+   "tres_proporcionalidad": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Vectores en el espacio"
+ },
+ "GEO.ESPACIO.02": {
+  "gen": "t5_producto_vectorial",
+  "errores": {
+   "signo_j": "E01",
+   "area_sin_mitad": "E02",
+   "tetraedro_sin_sexto": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Producto vectorial y mixto"
+ },
+ "GEO.ESPACIO.03": {
+  "gen": "t5_recta_espacio",
+  "errores": {
+   "director_normal": "E01"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Ecuaciones de la recta en el espacio"
+ },
+ "GEO.ESPACIO.04": {
+  "gen": "t5_plano",
+  "errores": {
+   "normal_director": "E01"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Ecuaciones del plano"
+ },
+ "GEO.ESPACIO.05": {
+  "gen": "t5_posicion_espacio",
+  "errores": {
+   "cruza_secante": "E01"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Posición relativa de dos rectas en el espacio"
+ },
+ "GEO.ESPACIO.06": {
+  "gen": "t5_angulos_espacio",
+  "errores": {
+   "coseno_recta_plano": "E01",
+   "obtuso": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Ángulos entre rectas y planos"
+ },
+ "GEO.ESPACIO.07": {
+  "gen": "t5_distancias_espacio",
+  "errores": {
+   "sin_raiz": "E01"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Distancias en el espacio"
+ },
+ "GEO.ESPACIO.08": {
+  "gen": "t5_proyeccion_simetrico",
+  "errores": {
+   "simetrico_proyeccion": "E01",
+   "recta_no_perpendicular": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Proyecciones y simétricos"
+ },
+ "GEO.TRIG.01": {
+  "gen": "t5_razones_agudo",
+  "errores": {
+   "opuesto_contiguo": "E01",
+   "tangente_hipotenusa": "E02",
+   "radianes": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Razones trigonométricas de un ángulo agudo"
+ },
+ "GEO.TRIG.02": {
+  "gen": "t5_razones_notables",
+  "errores": {
+   "sen30_sen60": "E01",
+   "tg30_tg60": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Razones de 30°, 45° y 60°"
+ },
+ "GEO.TRIG.03": {
+  "gen": "t5_relaciones_fundamentales",
+  "errores": {
+   "uno_menos": "E01",
+   "signo_cuadrante": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Relaciones fundamentales"
+ },
+ "GEO.TRIG.04": {
+  "gen": "t5_triangulo_rectangulo",
+  "errores": {
+   "razon_mal": "E01",
+   "despeje_invertido": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Resolución de triángulos rectángulos"
+ },
+ "GEO.TRIG.05": {
+  "gen": "t5_reduccion_cuadrante",
+  "errores": {
+   "signo_cuadrante": "E01",
+   "angulo_equivocado": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Razones de un ángulo cualquiera"
+ },
+ "GEO.TRIG.06": {
+  "gen": "t5_radianes",
+  "errores": {
+   "factor_invertido": "E01",
+   "pi_grados": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Grados y radianes"
+ },
+ "GEO.TRIG.07": {
+  "gen": "t5_seno_coseno",
+  "errores": {
+   "sin_coseno": "E01",
+   "caso_ambiguo": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Teoremas del seno y del coseno"
+ },
+ "GEO.TRIG.08": {
+  "gen": "t5_formulas_trig",
+  "errores": {
+   "linealidad": "E01",
+   "doble_por_dos": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Fórmulas de suma y ángulo doble"
+ },
+ "GEO.TRIG.09": {
+  "gen": "t5_ecuacion_trig",
+  "errores": {
+   "una_solucion": "E01",
+   "divide_sen": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Ecuaciones trigonométricas"
+ }
+}

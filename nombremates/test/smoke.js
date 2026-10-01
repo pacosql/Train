@@ -1,0 +1,231 @@
+// Prueba de humo de Nombre Mates en Chromium (Playwright) contra el
+// Supabase real, SOLO LECTURA: las escrituras se interceptan (route.js) y
+// se comprueba qué se habría enviado, así nunca altera las decisiones del
+// usuario. Uso, desde la raíz del repo:
+//
+//   node nombremates/test/smoke.js
+//
+// Playwright está instalado globalmente en el entorno de Claude Code.
+const fs = require("fs"), path = require("path"), http = require("http"), os = require("os");
+const root = path.resolve(__dirname, "..", "..");
+const dir = fs.mkdtempSync(path.join(os.tmpdir(), "nombremates-smoke-"));
+
+function playwright() {
+  try { return require("playwright"); } catch {}
+  return require("/opt/node22/lib/node_modules/playwright");
+}
+const server = http.createServer((req, res) => {
+  let p = decodeURIComponent(req.url.split("?")[0]); if (p.endsWith("/")) p += "index.html";
+  const f = path.join(root, p); if (!fs.existsSync(f)) { res.writeHead(404); return res.end(); }
+  const ct = { ".html": "text/html", ".js": "text/javascript", ".json": "application/json", ".png": "image/png", ".css": "text/css" }[path.extname(f)] || "application/octet-stream";
+  res.writeHead(200, { "content-type": ct }); fs.createReadStream(f).pipe(res);
+}).listen(0);
+const ok = (cond, msg) => { if (!cond) throw new Error(msg); };
+
+(async () => {
+  const port = server.address().port;
+  const { chromium } = playwright();
+  const browser = await chromium.launch();
+  const page = await (await browser.newContext({ viewport: { width: 390, height: 664 } })).newPage();
+  const errors = [];
+  page.on("pageerror", (e) => errors.push("pageerror: " + e.message));
+  page.on("console", (m) => { if (m.type() === "error") errors.push("console: " + m.text()); });
+  const escrituras = [];
+  await require("./route.js")(page, dir, escrituras);
+  // Si la cola está vacía (Paco lo ha revisado todo), se prueba con nombres ya descartados.
+  {
+    const cfg = fs.readFileSync(path.join(root, "nombremates", "config.js"), "utf8");
+    const url = cfg.match(/https:\/\/[a-z0-9]+\.supabase\.co/)[0], key = cfg.match(/eyJ[\w.-]+/)[0];
+    const n = require("child_process").execFileSync("curl", ["-s", `${url}/rest/v1/nombremates_ideas?status=eq.pendiente&select=id&limit=1`, "-H", `apikey: ${key}`]).toString();
+    if (n.trim() === "[]") {
+      console.log("(cola vacía: pruebo con nombres ya descartados)");
+      await page.route(/nombremates_ideas.*status=eq\.pendiente/, (r) => r.fallback({ url: r.request().url().replace("status=eq.pendiente", "status=eq.no_me_gusta") }));
+    }
+  }
+  // La letra de Google Fonts no se descarga en el entorno de pruebas (CA del proxy): hoja vacía.
+  await page.route(/fonts\.(googleapis|gstatic)\.com/, (r) => r.fulfill({ status: 200, contentType: "text/css", body: "" }));
+  // SpeechRecognition falso: window.__oir(texto) simula una frase final.
+  await page.addInitScript(() => {
+    class FakeRec {
+      constructor() { window.__rec = this; }
+      start() { this.arrancado = true; }
+      stop() { this.arrancado = false; this.onend && this.onend(); }
+    }
+    window.SpeechRecognition = FakeRec;
+    window.__oir = (t) => window.__rec.onresult({ resultIndex: 0, results: [Object.assign([{ transcript: t }], { isFinal: true })] });
+  });
+  await page.goto(`http://localhost:${port}/nombremates/`, { waitUntil: "networkidle" });
+
+  // Al entrar se elige el modo
+  await page.waitForSelector("#elige-modo:not([hidden])");
+  ok(await page.locator("#zona-revision").isHidden(), "la revisión no debe verse antes de elegir modo");
+  const cola = parseInt(await page.textContent("#cola-count"), 10);
+  console.log("por decidir:", cola);
+  ok(await page.locator("#error-banner").isHidden(), "banner de error visible");
+
+  // --- De 10 en 10 ---
+  await page.click('.btn-modo[data-modo="lote"]');
+  await page.waitForSelector(".lote-fila");
+  const filas = page.locator(".lote-fila");
+  const n = await filas.count();
+  ok(n === Math.min(10, cola), `se esperaban ${Math.min(10, cola)} filas y hay ${n}`);
+  ok((await page.textContent("#btn-siguiente")).includes(`No me gustan los ${n}`), "botón inicial debe ser «No me gustan los N»");
+  await filas.nth(2).locator(".lote-nombre").click();           // toco un nombre…
+  await filas.nth(2).locator(".grande-like").click();           // …y le doy a me gusta
+  ok((await page.textContent("#btn-siguiente")).includes("Guardar 1"), "el botón debe indicar 1 marcado");
+  await filas.nth(2).locator(".grande-like").click();           // desmarcar
+  ok((await page.textContent("#btn-siguiente")).includes(`No me gustan los ${n}`), "al desmarcar vuelve a «No me gustan»");
+  await filas.nth(2).locator(".grande-like").click();
+  await filas.nth(5).locator(".marca-star").click();
+  const ids = [];
+  await page.click("#btn-siguiente");
+  await page.waitForTimeout(1500);
+  const patches = escrituras.filter((e) => e.method === "PATCH");
+  const cuerpo = (st) => patches.find((p) => JSON.parse(p.body).status === st);
+  ok(cuerpo("me_gusta") && cuerpo("favorito") && cuerpo("no_me_gusta"), "faltan PATCH de me_gusta / favorito / no_me_gusta");
+  const noIds = cuerpo("no_me_gusta").url.match(/in\.\(([^)]*)\)/)[1].split(",");
+  ok(noIds.length === n - 2, `se esperaban ${n - 2} descartes y hay ${noIds.length}`);
+  console.log(`lote OK: 1 👍, 1 ⭐, ${noIds.length} 👎 (no enviados, solo lectura)`);
+
+  // --- Numeración y que los 10 quepan en un iPhone (390x844) ---
+  await page.waitForTimeout(800);
+  const nums = await filas.locator(".lote-num").allTextContents();
+  ok(nums.join(",") === Array.from({ length: n }, (_, i) => String(i + 1)).join(","), `numeración 1..${n} incorrecta: ${nums}`);
+
+  // --- Modo conversación: pantalla completa, los 10 y el botón sin scroll (Safari iPhone ≈ 390x664) ---
+  escrituras.length = 0;
+  await page.click("#btn-conversacion");
+  ok((await page.getAttribute("#btn-conversacion", "aria-pressed")) === "true", "el modo conversación no se ha activado");
+  const caja = await page.locator("#btn-siguiente").boundingBox();
+  const ultima = await filas.nth(n - 1).boundingBox();
+  ok(caja && caja.y + caja.height <= 664 && ultima.y + ultima.height <= caja.y, `el lote no cabe en pantalla: fila ${n} termina en ${ultima && ultima.y + ultima.height}, botón en ${caja && caja.y + caja.height}`);
+  console.log(`conversación: caben los ${n} sin scroll (fila ${n} termina en ${Math.round(ultima.y + ultima.height)}px, botón en ${Math.round(caja.y + caja.height)}px de 664)`);
+  await page.evaluate(() => window.__oir("la 1 y la 3"));
+  await page.waitForTimeout(200);
+  ok((await page.textContent("#btn-siguiente")).includes("👍 2"), "por voz: deberían estar marcados 2");
+  await page.evaluate(() => window.__oir("definitiva la 5"));
+  await page.waitForTimeout(200);
+  ok((await filas.nth(4).getAttribute("class")).includes("star"), "por voz: la 5 debería ser ⭐");
+  await page.evaluate(() => window.__oir("quita la 3"));
+  await page.waitForTimeout(200);
+  ok((await page.textContent("#btn-siguiente")).includes("👍 2"), "por voz: tras quitar la 3 deben quedar 2");
+  await page.evaluate(() => window.__oir("siguiente"));
+  await page.waitForTimeout(1500);
+  const pv = escrituras.filter((e) => e.method === "PATCH");
+  const cv = (st) => pv.find((p) => JSON.parse(p.body).status === st);
+  ok(cv("me_gusta") && cv("favorito") && cv("no_me_gusta"), "por voz: faltan PATCH");
+  ok(cv("no_me_gusta").url.match(/in\.\(([^)]*)\)/)[1].split(",").length === n - 2, "por voz: deberían descartarse N-2");
+  ok((await page.getAttribute("#btn-conversacion", "aria-pressed")) === "true", "el modo conversación debe seguir activo tras «siguiente»");
+  // «ninguna, siguiente» descarta los 10; «parar» cierra el modo.
+  // Antes, esperar a que el «siguiente» anterior haya cargado el lote nuevo.
+  await page.waitForFunction(() => document.querySelector("#conv-estado").textContent.startsWith("Lote nuevo"), null, { timeout: 8000 }).catch(() => {});
+  await page.waitForTimeout(300);
+  escrituras.length = 0;
+  await page.evaluate(() => window.__oir("ninguna siguiente"));
+  await page.waitForTimeout(1500);
+  const todos = escrituras.filter((e) => e.method === "PATCH");
+  ok(todos.length === 1 && JSON.parse(todos[0].body).status === "no_me_gusta", "«ninguna, siguiente» debe mandar un solo PATCH no_me_gusta");
+  await page.waitForFunction(() => document.querySelector("#conv-estado").textContent.startsWith("Lote nuevo"), null, { timeout: 8000 }).catch(() => {});
+  await page.evaluate(() => window.__oir("parar"));
+  await page.waitForTimeout(600);
+  ok((await page.getAttribute("#btn-conversacion", "aria-pressed")) === "false", "«parar» debe cerrar el modo");
+  console.log("modo conversación OK (voz simulada, nada enviado)");
+
+  // --- De 10 en 10 sin modo conversación: pantalla completa, cada nombre en una línea, sin .com ✓ ---
+  {
+    const r = await page.evaluate(() => ({
+      boton: document.querySelector("#btn-siguiente").getBoundingClientRect().bottom,
+      atras: document.querySelector("#btn-atras-lote").getBoundingClientRect().top,
+      altos: [...document.querySelectorAll("#lote-area .name-text")].map((e) => e.getBoundingClientRect().height),
+      cortados: [...document.querySelectorAll("#lote-area .name-text")].filter((e) => e.scrollWidth > e.clientWidth + 1).length,
+      dom: document.querySelectorAll("#lote-area .lote-dom").length,
+      cab: document.querySelector("header").getBoundingClientRect().height > 0 && document.elementFromPoint(195, 20).closest("header") !== null,
+    }));
+    ok(r.boton <= 664 && r.atras >= r.boton, `el lote de 10 no cabe en pantalla o «Atrás» no va debajo: botón en ${r.boton}px de 664, atrás en ${r.atras}`);
+    ok(Math.max(...r.altos) < 2 * Math.min(...r.altos) && r.cortados === 0, `algún nombre del lote ocupa dos líneas o no cabe: ${JSON.stringify(r)}`);
+    ok(r.dom === 0 && !r.cab, "en el lote no deben verse «.com ✓» ni los menús de arriba");
+    console.log(`lote a pantalla completa OK (botón en ${Math.round(r.boton)}px de 664, nombres en una línea)`);
+  }
+
+  // --- «← Atrás» vuelve a los menús; cambiar a 1 en 1 ---
+  escrituras.length = 0;
+  await page.click("#btn-atras-lote");
+  await page.waitForSelector("#elige-modo:not([hidden])");
+  ok(await page.locator("#btn-ranking").isVisible(), "tras «Atrás» deben verse los menús");
+  await page.click('.btn-modo[data-modo="uno"]');
+  await page.waitForSelector(".swipe-card .name-text");
+  const nombre = (await page.textContent(".swipe-card .name-text")).trim();
+  await page.fill(".swipe-card .nota-input", "prueba");
+  await page.click(".swipe-card .btn-like");
+  await page.waitForTimeout(1500);
+  const p1 = escrituras.find((e) => e.method === "PATCH");
+  ok(p1 && JSON.parse(p1.body).status === "me_gusta" && JSON.parse(p1.body).nota === "prueba", "1 en 1: PATCH me_gusta con nota");
+  console.log("1 en 1 OK:", nombre);
+
+  // --- Buscador ---
+  escrituras.length = 0;
+  await page.click("#btn-buscar");
+  await page.waitForSelector("#vista-buscar:not([hidden])");
+  ok(await page.locator(".wrap").isHidden(), "al buscar se oculta la revisión");
+  await page.fill("#input-buscar", "mates 10");
+  await page.click("#form-buscar .btn-primary");
+  await page.waitForSelector("#resultado-buscar .res-caja");
+  const res1 = await page.textContent("#resultado-buscar");
+  ok(res1.includes("Mates10") && res1.includes("Definitivo") && res1.includes("PROFESOR 10 DE MATES"), "buscar «mates 10» debe explicar que Mates10 es la referencia y su conflicto de marca");
+  ok(res1.includes("marca 77") && (await page.textContent("#resultado-buscar .res-cab .pill-score")) === "77", "debe mostrar la puntuación 77 de Mates10 al lado del nombre");
+  // Listas ordenadas por puntuación, con la pastilla al lado del nombre
+  const primerDef = page.locator("#lista-definitivos .name-card").first();
+  ok((await primerDef.locator(".name-text").textContent()) !== null, "debe haber definitivos");
+  const pillsLote = await page.locator("#lote-area .lote-nombre .pill-score").count();
+  ok(pillsLote > 0, "las filas del lote deben llevar la pastilla de puntuación al lado del nombre");
+  await page.fill("#input-buscar", "mates club");
+  await page.click("#form-buscar .btn-primary");
+  await page.waitForFunction(() => /ocupado/.test(document.querySelector("#resultado-buscar").textContent));
+  const res2 = await page.textContent("#resultado-buscar");
+  ok(res2.includes(".com está ocupado"), "«mates club» debe explicar que el .com está ocupado");
+  await page.fill("#input-buscar", "zzqqxx diez");
+  await page.click("#form-buscar .btn-primary");
+  await page.waitForFunction(() => /Nunca lo he probado/.test(document.querySelector("#resultado-buscar").textContent));
+  await page.click("#resultado-buscar .btn-mini");
+  await page.waitForTimeout(1200);
+  const post = escrituras.find((e) => e.method === "POST" && e.url.includes("nombremates_ideas"));
+  ok(post && JSON.parse(post.body).nombre === "Zzqqxxdiez" && JSON.parse(post.body).status === "pendiente" && JSON.parse(post.body).orden === -1, "añadir desde el buscador debe insertar pendiente el primero");
+  await page.click("#btn-volver-buscar");
+  await page.waitForSelector(".wrap:not([hidden])");
+  console.log("buscador OK (nada enviado, solo lectura)");
+
+
+  // --- Ranking de Claude: solo fichas de 6 medidas ---
+  await page.click("#btn-ranking");
+  await page.waitForSelector("#vista-ranking:not([hidden]) .rk-ficha");
+  const fichas = page.locator("#lista-ranking .rk-ficha");
+  ok((await fichas.count()) >= 1, "el ranking debe tener al menos una ficha");
+  ok(/Mates10/.test(await page.textContent("#lista-ranking")), "Mates10 debe estar en el ranking (ya hay nombres que le gustan con más nota)");
+  ok((await fichas.first().locator(".ref-medida").count()) === 6, "la ficha del ranking debe tener 6 medidas");
+  await page.click("#btn-volver");
+  await page.waitForSelector(".wrap:not([hidden])");
+  console.log("ranking OK");
+
+  // --- ¿Qué es un buen nombre? ---
+  escrituras.length = 0;
+  await page.click("#btn-referencias");
+  await page.waitForSelector("#vista-referencias:not([hidden]) .ref-card");
+  const nRef = await page.locator("#lista-referencias .ref-card").count();
+  ok(nRef === 25, `debe haber 25 marcas de referencia (hay ${nRef})`);
+  ok((await page.locator("#lista-referencias .ref-card").first().locator(".ref-medida").count()) === 6, "cada ficha debe tener 6 medidas");
+  ok(/Apple/.test(await page.textContent("#lista-referencias")), "debe salir Apple");
+  await page.locator("#lista-referencias .ref-card").first().locator(".nota-input").fill("prueba");
+  await page.locator("#lista-referencias .ref-card").first().locator(".grande-like").click();
+  await page.waitForTimeout(800);
+  const pr = escrituras.find((e) => e.method === "PATCH" && e.url.includes("nombremates_referencias"));
+  ok(pr && JSON.parse(pr.body).decision === "de_acuerdo" && JSON.parse(pr.body).nota === "prueba", "👍 debe guardar decision de_acuerdo con la nota");
+  await page.click("#btn-volver-referencias");
+  await page.waitForSelector(".wrap:not([hidden])");
+  console.log("buen nombre OK (nada enviado, solo lectura)");
+
+  await page.screenshot({ path: path.join(dir, "nombremates.png"), fullPage: true });
+  console.log("captura:", path.join(dir, "nombremates.png"));
+  if (errors.length) throw new Error(errors.join("\n"));
+  await browser.close(); server.close();
+  console.log("OK");
+})().catch((e) => { console.error("FALLO:", e.message); process.exit(1); });

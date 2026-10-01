@@ -1,0 +1,1476 @@
+{
+ "habilidad": "PROB.MED.07",
+ "generado_por": "claude (skill mates10-generar-ejercicios v1)",
+ "ejercicios": [
+  {
+   "dificultad": 1,
+   "enunciado": "Un tren sale de la estación a las 8:45 y llega a su destino a las 10:25. ¿Cuánto dura el viaje?",
+   "respuesta": "1 h 40 min",
+   "distractores": [
+    {
+     "valor": "1 h 80 min",
+     "error": "E01"
+    },
+    {
+     "valor": "2 h 40 min",
+     "error": null
+    },
+    {
+     "valor": "2 h 20 min",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "MED.TIEMPO.08",
+    "MED.TIEMPO.11",
+    "MED.TIEMPO.12",
+    "MED.TIEMPO.05"
+   ],
+   "explicacion_nino": "Entiende: una hora tiene 60 minutos, así que no se resta como con decimales. Ve por tramos. De 8:45 a 9:00 van 15 min. De 9:00 a 10:00 van 1 h. De 10:00 a 10:25 van 25 min. Total: 1 h y 40 min = 1 h 40 min. Comprueba: 8:45 + 1 h 40 min = 10:25.",
+   "explicacion_adulto": "Está aprendiendo a calcular duraciones y horas de llegada con horas y minutos (en formato de 24 horas) y días entre fechas del calendario. La clave es que una hora tiene 60 minutos, no 100: conviene ir por tramos hasta la hora en punto («de 9:47 a 10:00 van 13 minutos»). Los errores típicos son restar las horas como si fueran números decimales (13,15 − 9,47), leer mal las horas de 24 h (las 15:00 no son «las 5») o, en el calendario, contar un día de más o de menos o suponer que todos los meses tienen 30 días. Pídale que haga los tramos en una recta del tiempo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "8:45 → 9:00",
+     "resultado": "15 min",
+     "texto": "Hasta la hora en punto."
+    },
+    {
+     "paso": 2,
+     "operacion": "9:00 → 10:00",
+     "resultado": "1 h",
+     "texto": "Horas enteras."
+    },
+    {
+     "paso": 3,
+     "operacion": "10:00 → 10:25",
+     "resultado": "25 min",
+     "texto": "Minutos del final."
+    },
+    {
+     "paso": 4,
+     "operacion": "15 + 25 min",
+     "resultado": "1 h 40 min",
+     "texto": "Junto los tramos (60 min = 1 h)."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un tren sale de la estación a las 9:55 y llega a su destino a las 12:45. ¿Cuánto dura el viaje?",
+   "respuesta": "2 h 50 min",
+   "distractores": [
+    {
+     "valor": "2 h 90 min",
+     "error": "E01"
+    },
+    {
+     "valor": "3 h 50 min",
+     "error": null
+    },
+    {
+     "valor": "3 h 10 min",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "MED.TIEMPO.08",
+    "MED.TIEMPO.11",
+    "MED.TIEMPO.12",
+    "MED.TIEMPO.05"
+   ],
+   "explicacion_nino": "Entiende: una hora tiene 60 minutos, así que no se resta como con decimales. Ve por tramos. De 9:55 a 10:00 van 5 min. De 10:00 a 12:00 van 2 h. De 12:00 a 12:45 van 45 min. Total: 2 h y 50 min = 2 h 50 min. Comprueba: 9:55 + 2 h 50 min = 12:45.",
+   "explicacion_adulto": "Está aprendiendo a calcular duraciones y horas de llegada con horas y minutos (en formato de 24 horas) y días entre fechas del calendario. La clave es que una hora tiene 60 minutos, no 100: conviene ir por tramos hasta la hora en punto («de 9:47 a 10:00 van 13 minutos»). Los errores típicos son restar las horas como si fueran números decimales (13,15 − 9,47), leer mal las horas de 24 h (las 15:00 no son «las 5») o, en el calendario, contar un día de más o de menos o suponer que todos los meses tienen 30 días. Pídale que haga los tramos en una recta del tiempo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "9:55 → 10:00",
+     "resultado": "5 min",
+     "texto": "Hasta la hora en punto."
+    },
+    {
+     "paso": 2,
+     "operacion": "10:00 → 12:00",
+     "resultado": "2 h",
+     "texto": "Horas enteras."
+    },
+    {
+     "paso": 3,
+     "operacion": "12:00 → 12:45",
+     "resultado": "45 min",
+     "texto": "Minutos del final."
+    },
+    {
+     "paso": 4,
+     "operacion": "5 + 45 min",
+     "resultado": "2 h 50 min",
+     "texto": "Junto los tramos (60 min = 1 h)."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un tren sale de la estación a las 9:10 y llega a su destino a las 10:00. ¿Cuánto dura el viaje?",
+   "respuesta": "50 min",
+   "distractores": [
+    {
+     "valor": "0 h 90 min",
+     "error": "E01"
+    },
+    {
+     "valor": "1 h 50 min",
+     "error": null
+    },
+    {
+     "valor": "1 h 10 min",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "MED.TIEMPO.08",
+    "MED.TIEMPO.11",
+    "MED.TIEMPO.12",
+    "MED.TIEMPO.05"
+   ],
+   "explicacion_nino": "Entiende: una hora tiene 60 minutos, así que no se resta como con decimales. Ve por tramos. De 9:10 a 10:00 van 50 min. De 10:00 a 10:00 van 0 min. Total: 0 h y 50 min = 50 min. Comprueba: 9:10 + 50 min = 10:00.",
+   "explicacion_adulto": "Está aprendiendo a calcular duraciones y horas de llegada con horas y minutos (en formato de 24 horas) y días entre fechas del calendario. La clave es que una hora tiene 60 minutos, no 100: conviene ir por tramos hasta la hora en punto («de 9:47 a 10:00 van 13 minutos»). Los errores típicos son restar las horas como si fueran números decimales (13,15 − 9,47), leer mal las horas de 24 h (las 15:00 no son «las 5») o, en el calendario, contar un día de más o de menos o suponer que todos los meses tienen 30 días. Pídale que haga los tramos en una recta del tiempo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "9:10 → 10:00",
+     "resultado": "50 min",
+     "texto": "Hasta la hora en punto."
+    },
+    {
+     "paso": 2,
+     "operacion": "10:00 → 10:00",
+     "resultado": "0 h",
+     "texto": "Horas enteras."
+    },
+    {
+     "paso": 3,
+     "operacion": "10:00 → 10:00",
+     "resultado": "0 min",
+     "texto": "Minutos del final."
+    },
+    {
+     "paso": 4,
+     "operacion": "50 + 0 min",
+     "resultado": "50 min",
+     "texto": "Junto los tramos (60 min = 1 h)."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un tren sale de la estación a las 9:55 y llega a su destino a las 10:28. ¿Cuánto dura el viaje?",
+   "respuesta": "33 min",
+   "distractores": [
+    {
+     "valor": "0 h 73 min",
+     "error": "E01"
+    },
+    {
+     "valor": "1 h 33 min",
+     "error": null
+    },
+    {
+     "valor": "1 h 27 min",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "MED.TIEMPO.08",
+    "MED.TIEMPO.11",
+    "MED.TIEMPO.12",
+    "MED.TIEMPO.05"
+   ],
+   "explicacion_nino": "Entiende: una hora tiene 60 minutos, así que no se resta como con decimales. Ve por tramos. De 9:55 a 10:00 van 5 min. De 10:00 a 10:28 van 28 min. Total: 0 h y 33 min = 33 min. Comprueba: 9:55 + 33 min = 10:28.",
+   "explicacion_adulto": "Está aprendiendo a calcular duraciones y horas de llegada con horas y minutos (en formato de 24 horas) y días entre fechas del calendario. La clave es que una hora tiene 60 minutos, no 100: conviene ir por tramos hasta la hora en punto («de 9:47 a 10:00 van 13 minutos»). Los errores típicos son restar las horas como si fueran números decimales (13,15 − 9,47), leer mal las horas de 24 h (las 15:00 no son «las 5») o, en el calendario, contar un día de más o de menos o suponer que todos los meses tienen 30 días. Pídale que haga los tramos en una recta del tiempo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "9:55 → 10:00",
+     "resultado": "5 min",
+     "texto": "Hasta la hora en punto."
+    },
+    {
+     "paso": 2,
+     "operacion": "10:00 → 10:00",
+     "resultado": "0 h",
+     "texto": "Horas enteras."
+    },
+    {
+     "paso": 3,
+     "operacion": "10:00 → 10:28",
+     "resultado": "28 min",
+     "texto": "Minutos del final."
+    },
+    {
+     "paso": 4,
+     "operacion": "5 + 28 min",
+     "resultado": "33 min",
+     "texto": "Junto los tramos (60 min = 1 h)."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un tren sale de la estación a las 10:30 y llega a su destino a las 13:26. ¿Cuánto dura el viaje?",
+   "respuesta": "2 h 56 min",
+   "distractores": [
+    {
+     "valor": "2 h 96 min",
+     "error": "E01"
+    },
+    {
+     "valor": "3 h 56 min",
+     "error": null
+    },
+    {
+     "valor": "3 h 4 min",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "MED.TIEMPO.08",
+    "MED.TIEMPO.11",
+    "MED.TIEMPO.12",
+    "MED.TIEMPO.05"
+   ],
+   "explicacion_nino": "Entiende: una hora tiene 60 minutos, así que no se resta como con decimales. Ve por tramos. De 10:30 a 11:00 van 30 min. De 11:00 a 13:00 van 2 h. De 13:00 a 13:26 van 26 min. Total: 2 h y 56 min = 2 h 56 min. Comprueba: 10:30 + 2 h 56 min = 13:26.",
+   "explicacion_adulto": "Está aprendiendo a calcular duraciones y horas de llegada con horas y minutos (en formato de 24 horas) y días entre fechas del calendario. La clave es que una hora tiene 60 minutos, no 100: conviene ir por tramos hasta la hora en punto («de 9:47 a 10:00 van 13 minutos»). Los errores típicos son restar las horas como si fueran números decimales (13,15 − 9,47), leer mal las horas de 24 h (las 15:00 no son «las 5») o, en el calendario, contar un día de más o de menos o suponer que todos los meses tienen 30 días. Pídale que haga los tramos en una recta del tiempo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "10:30 → 11:00",
+     "resultado": "30 min",
+     "texto": "Hasta la hora en punto."
+    },
+    {
+     "paso": 2,
+     "operacion": "11:00 → 13:00",
+     "resultado": "2 h",
+     "texto": "Horas enteras."
+    },
+    {
+     "paso": 3,
+     "operacion": "13:00 → 13:26",
+     "resultado": "26 min",
+     "texto": "Minutos del final."
+    },
+    {
+     "paso": 4,
+     "operacion": "30 + 26 min",
+     "resultado": "2 h 56 min",
+     "texto": "Junto los tramos (60 min = 1 h)."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un tren sale de la estación a las 8:21 y llega a su destino a las 10:16. ¿Cuánto dura el viaje?",
+   "respuesta": "1 h 55 min",
+   "distractores": [
+    {
+     "valor": "1 h 95 min",
+     "error": "E01"
+    },
+    {
+     "valor": "2 h 55 min",
+     "error": null
+    },
+    {
+     "valor": "2 h 5 min",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "MED.TIEMPO.08",
+    "MED.TIEMPO.11",
+    "MED.TIEMPO.12",
+    "MED.TIEMPO.05"
+   ],
+   "explicacion_nino": "Entiende: una hora tiene 60 minutos, así que no se resta como con decimales. Ve por tramos. De 8:21 a 9:00 van 39 min. De 9:00 a 10:00 van 1 h. De 10:00 a 10:16 van 16 min. Total: 1 h y 55 min = 1 h 55 min. Comprueba: 8:21 + 1 h 55 min = 10:16.",
+   "explicacion_adulto": "Está aprendiendo a calcular duraciones y horas de llegada con horas y minutos (en formato de 24 horas) y días entre fechas del calendario. La clave es que una hora tiene 60 minutos, no 100: conviene ir por tramos hasta la hora en punto («de 9:47 a 10:00 van 13 minutos»). Los errores típicos son restar las horas como si fueran números decimales (13,15 − 9,47), leer mal las horas de 24 h (las 15:00 no son «las 5») o, en el calendario, contar un día de más o de menos o suponer que todos los meses tienen 30 días. Pídale que haga los tramos en una recta del tiempo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "8:21 → 9:00",
+     "resultado": "39 min",
+     "texto": "Hasta la hora en punto."
+    },
+    {
+     "paso": 2,
+     "operacion": "9:00 → 10:00",
+     "resultado": "1 h",
+     "texto": "Horas enteras."
+    },
+    {
+     "paso": 3,
+     "operacion": "10:00 → 10:16",
+     "resultado": "16 min",
+     "texto": "Minutos del final."
+    },
+    {
+     "paso": 4,
+     "operacion": "39 + 16 min",
+     "resultado": "1 h 55 min",
+     "texto": "Junto los tramos (60 min = 1 h)."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un tren sale de la estación a las 9:20 y llega a su destino a las 12:08. ¿Cuánto dura el viaje?",
+   "respuesta": "2 h 48 min",
+   "distractores": [
+    {
+     "valor": "2 h 88 min",
+     "error": "E01"
+    },
+    {
+     "valor": "3 h 48 min",
+     "error": null
+    },
+    {
+     "valor": "3 h 12 min",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "MED.TIEMPO.08",
+    "MED.TIEMPO.11",
+    "MED.TIEMPO.12",
+    "MED.TIEMPO.05"
+   ],
+   "explicacion_nino": "Entiende: una hora tiene 60 minutos, así que no se resta como con decimales. Ve por tramos. De 9:20 a 10:00 van 40 min. De 10:00 a 12:00 van 2 h. De 12:00 a 12:08 van 8 min. Total: 2 h y 48 min = 2 h 48 min. Comprueba: 9:20 + 2 h 48 min = 12:08.",
+   "explicacion_adulto": "Está aprendiendo a calcular duraciones y horas de llegada con horas y minutos (en formato de 24 horas) y días entre fechas del calendario. La clave es que una hora tiene 60 minutos, no 100: conviene ir por tramos hasta la hora en punto («de 9:47 a 10:00 van 13 minutos»). Los errores típicos son restar las horas como si fueran números decimales (13,15 − 9,47), leer mal las horas de 24 h (las 15:00 no son «las 5») o, en el calendario, contar un día de más o de menos o suponer que todos los meses tienen 30 días. Pídale que haga los tramos en una recta del tiempo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "9:20 → 10:00",
+     "resultado": "40 min",
+     "texto": "Hasta la hora en punto."
+    },
+    {
+     "paso": 2,
+     "operacion": "10:00 → 12:00",
+     "resultado": "2 h",
+     "texto": "Horas enteras."
+    },
+    {
+     "paso": 3,
+     "operacion": "12:00 → 12:08",
+     "resultado": "8 min",
+     "texto": "Minutos del final."
+    },
+    {
+     "paso": 4,
+     "operacion": "40 + 8 min",
+     "resultado": "2 h 48 min",
+     "texto": "Junto los tramos (60 min = 1 h)."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "La excursión de la clase de Bruno sale a las 10:50 y vuelve al colegio a las 15:30. ¿Cuánto tiempo dura?",
+   "respuesta": "4 h 40 min",
+   "distractores": [
+    {
+     "valor": "4 h 80 min",
+     "error": "E01"
+    },
+    {
+     "valor": "5 h 40 min",
+     "error": null
+    },
+    {
+     "valor": "5 h 20 min",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "MED.TIEMPO.08",
+    "MED.TIEMPO.11",
+    "MED.TIEMPO.12",
+    "MED.TIEMPO.05"
+   ],
+   "explicacion_nino": "Entiende: una hora tiene 60 minutos, así que no se resta como con decimales. Ve por tramos. De 10:50 a 11:00 van 10 min. De 11:00 a 15:00 van 4 h. De 15:00 a 15:30 van 30 min. Total: 4 h y 40 min = 4 h 40 min. Comprueba: 10:50 + 4 h 40 min = 15:30.",
+   "explicacion_adulto": "Está aprendiendo a calcular duraciones y horas de llegada con horas y minutos (en formato de 24 horas) y días entre fechas del calendario. La clave es que una hora tiene 60 minutos, no 100: conviene ir por tramos hasta la hora en punto («de 9:47 a 10:00 van 13 minutos»). Los errores típicos son restar las horas como si fueran números decimales (13,15 − 9,47), leer mal las horas de 24 h (las 15:00 no son «las 5») o, en el calendario, contar un día de más o de menos o suponer que todos los meses tienen 30 días. Pídale que haga los tramos en una recta del tiempo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "10:50 → 11:00",
+     "resultado": "10 min",
+     "texto": "Hasta la hora en punto."
+    },
+    {
+     "paso": 2,
+     "operacion": "11:00 → 15:00",
+     "resultado": "4 h",
+     "texto": "Horas enteras."
+    },
+    {
+     "paso": 3,
+     "operacion": "15:00 → 15:30",
+     "resultado": "30 min",
+     "texto": "Minutos del final."
+    },
+    {
+     "paso": 4,
+     "operacion": "10 + 30 min",
+     "resultado": "4 h 40 min",
+     "texto": "Junto los tramos (60 min = 1 h)."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "La excursión de la clase de Ainhoa sale a las 10:40 y vuelve al colegio a las 15:30. ¿Cuánto tiempo dura?",
+   "respuesta": "4 h 50 min",
+   "distractores": [
+    {
+     "valor": "4 h 90 min",
+     "error": "E01"
+    },
+    {
+     "valor": "5 h 50 min",
+     "error": null
+    },
+    {
+     "valor": "5 h 10 min",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "MED.TIEMPO.08",
+    "MED.TIEMPO.11",
+    "MED.TIEMPO.12",
+    "MED.TIEMPO.05"
+   ],
+   "explicacion_nino": "Entiende: una hora tiene 60 minutos, así que no se resta como con decimales. Ve por tramos. De 10:40 a 11:00 van 20 min. De 11:00 a 15:00 van 4 h. De 15:00 a 15:30 van 30 min. Total: 4 h y 50 min = 4 h 50 min. Comprueba: 10:40 + 4 h 50 min = 15:30.",
+   "explicacion_adulto": "Está aprendiendo a calcular duraciones y horas de llegada con horas y minutos (en formato de 24 horas) y días entre fechas del calendario. La clave es que una hora tiene 60 minutos, no 100: conviene ir por tramos hasta la hora en punto («de 9:47 a 10:00 van 13 minutos»). Los errores típicos son restar las horas como si fueran números decimales (13,15 − 9,47), leer mal las horas de 24 h (las 15:00 no son «las 5») o, en el calendario, contar un día de más o de menos o suponer que todos los meses tienen 30 días. Pídale que haga los tramos en una recta del tiempo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "10:40 → 11:00",
+     "resultado": "20 min",
+     "texto": "Hasta la hora en punto."
+    },
+    {
+     "paso": 2,
+     "operacion": "11:00 → 15:00",
+     "resultado": "4 h",
+     "texto": "Horas enteras."
+    },
+    {
+     "paso": 3,
+     "operacion": "15:00 → 15:30",
+     "resultado": "30 min",
+     "texto": "Minutos del final."
+    },
+    {
+     "paso": 4,
+     "operacion": "20 + 30 min",
+     "resultado": "4 h 50 min",
+     "texto": "Junto los tramos (60 min = 1 h)."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "La excursión de la clase de Nil sale a las 11:20 y vuelve al colegio a las 16:07. ¿Cuánto tiempo dura?",
+   "respuesta": "4 h 47 min",
+   "distractores": [
+    {
+     "valor": "4 h 87 min",
+     "error": "E01"
+    },
+    {
+     "valor": "5 h 47 min",
+     "error": null
+    },
+    {
+     "valor": "5 h 13 min",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "MED.TIEMPO.08",
+    "MED.TIEMPO.11",
+    "MED.TIEMPO.12",
+    "MED.TIEMPO.05"
+   ],
+   "explicacion_nino": "Entiende: una hora tiene 60 minutos, así que no se resta como con decimales. Ve por tramos. De 11:20 a 12:00 van 40 min. De 12:00 a 16:00 van 4 h. De 16:00 a 16:07 van 7 min. Total: 4 h y 47 min = 4 h 47 min. Comprueba: 11:20 + 4 h 47 min = 16:07.",
+   "explicacion_adulto": "Está aprendiendo a calcular duraciones y horas de llegada con horas y minutos (en formato de 24 horas) y días entre fechas del calendario. La clave es que una hora tiene 60 minutos, no 100: conviene ir por tramos hasta la hora en punto («de 9:47 a 10:00 van 13 minutos»). Los errores típicos son restar las horas como si fueran números decimales (13,15 − 9,47), leer mal las horas de 24 h (las 15:00 no son «las 5») o, en el calendario, contar un día de más o de menos o suponer que todos los meses tienen 30 días. Pídale que haga los tramos en una recta del tiempo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "11:20 → 12:00",
+     "resultado": "40 min",
+     "texto": "Hasta la hora en punto."
+    },
+    {
+     "paso": 2,
+     "operacion": "12:00 → 16:00",
+     "resultado": "4 h",
+     "texto": "Horas enteras."
+    },
+    {
+     "paso": 3,
+     "operacion": "16:00 → 16:07",
+     "resultado": "7 min",
+     "texto": "Minutos del final."
+    },
+    {
+     "paso": 4,
+     "operacion": "40 + 7 min",
+     "resultado": "4 h 47 min",
+     "texto": "Junto los tramos (60 min = 1 h)."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "La excursión de la clase de Ainhoa sale a las 9:05 y vuelve al colegio a las 18:03. ¿Cuánto tiempo dura?",
+   "respuesta": "8 h 58 min",
+   "distractores": [
+    {
+     "valor": "8 h 98 min",
+     "error": "E01"
+    },
+    {
+     "valor": "9 h 58 min",
+     "error": null
+    },
+    {
+     "valor": "9 h 2 min",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "MED.TIEMPO.08",
+    "MED.TIEMPO.11",
+    "MED.TIEMPO.12",
+    "MED.TIEMPO.05"
+   ],
+   "explicacion_nino": "Entiende: una hora tiene 60 minutos, así que no se resta como con decimales. Ve por tramos. De 9:05 a 10:00 van 55 min. De 10:00 a 18:00 van 8 h. De 18:00 a 18:03 van 3 min. Total: 8 h y 58 min = 8 h 58 min. Comprueba: 9:05 + 8 h 58 min = 18:03.",
+   "explicacion_adulto": "Está aprendiendo a calcular duraciones y horas de llegada con horas y minutos (en formato de 24 horas) y días entre fechas del calendario. La clave es que una hora tiene 60 minutos, no 100: conviene ir por tramos hasta la hora en punto («de 9:47 a 10:00 van 13 minutos»). Los errores típicos son restar las horas como si fueran números decimales (13,15 − 9,47), leer mal las horas de 24 h (las 15:00 no son «las 5») o, en el calendario, contar un día de más o de menos o suponer que todos los meses tienen 30 días. Pídale que haga los tramos en una recta del tiempo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "9:05 → 10:00",
+     "resultado": "55 min",
+     "texto": "Hasta la hora en punto."
+    },
+    {
+     "paso": 2,
+     "operacion": "10:00 → 18:00",
+     "resultado": "8 h",
+     "texto": "Horas enteras."
+    },
+    {
+     "paso": 3,
+     "operacion": "18:00 → 18:03",
+     "resultado": "3 min",
+     "texto": "Minutos del final."
+    },
+    {
+     "paso": 4,
+     "operacion": "55 + 3 min",
+     "resultado": "8 h 58 min",
+     "texto": "Junto los tramos (60 min = 1 h)."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "La excursión de la clase de Rocío sale a las 9:17 y vuelve al colegio a las 17:01. ¿Cuánto tiempo dura?",
+   "respuesta": "7 h 44 min",
+   "distractores": [
+    {
+     "valor": "7 h 84 min",
+     "error": "E01"
+    },
+    {
+     "valor": "8 h 44 min",
+     "error": null
+    },
+    {
+     "valor": "8 h 16 min",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "MED.TIEMPO.08",
+    "MED.TIEMPO.11",
+    "MED.TIEMPO.12",
+    "MED.TIEMPO.05"
+   ],
+   "explicacion_nino": "Entiende: una hora tiene 60 minutos, así que no se resta como con decimales. Ve por tramos. De 9:17 a 10:00 van 43 min. De 10:00 a 17:00 van 7 h. De 17:00 a 17:01 van 1 min. Total: 7 h y 44 min = 7 h 44 min. Comprueba: 9:17 + 7 h 44 min = 17:01.",
+   "explicacion_adulto": "Está aprendiendo a calcular duraciones y horas de llegada con horas y minutos (en formato de 24 horas) y días entre fechas del calendario. La clave es que una hora tiene 60 minutos, no 100: conviene ir por tramos hasta la hora en punto («de 9:47 a 10:00 van 13 minutos»). Los errores típicos son restar las horas como si fueran números decimales (13,15 − 9,47), leer mal las horas de 24 h (las 15:00 no son «las 5») o, en el calendario, contar un día de más o de menos o suponer que todos los meses tienen 30 días. Pídale que haga los tramos en una recta del tiempo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "9:17 → 10:00",
+     "resultado": "43 min",
+     "texto": "Hasta la hora en punto."
+    },
+    {
+     "paso": 2,
+     "operacion": "10:00 → 17:00",
+     "resultado": "7 h",
+     "texto": "Horas enteras."
+    },
+    {
+     "paso": 3,
+     "operacion": "17:00 → 17:01",
+     "resultado": "1 min",
+     "texto": "Minutos del final."
+    },
+    {
+     "paso": 4,
+     "operacion": "43 + 1 min",
+     "resultado": "7 h 44 min",
+     "texto": "Junto los tramos (60 min = 1 h)."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "El autobús de Kofi sale a las 17:55 y el viaje dura 3 h 15 min. ¿A qué hora llega (en formato de 24 horas)?",
+   "respuesta": "21:10",
+   "distractores": [
+    {
+     "valor": "20:70",
+     "error": "E01"
+    },
+    {
+     "valor": "11:10",
+     "error": "E02"
+    },
+    {
+     "valor": "22:10",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "MED.TIEMPO.08",
+    "MED.TIEMPO.11",
+    "MED.TIEMPO.12",
+    "MED.TIEMPO.05"
+   ],
+   "explicacion_nino": "Entiende: se suma el tiempo del viaje a la hora de salida. Suma las horas: 17 + 3 = 20. Suma los minutos: 55 + 15 = 70, que es más de 60: 70 min = 1 h 10 min. Llega a las 21:10. Comprueba: de 17:55 a 21:10 pasan 3 h 15 min.",
+   "explicacion_adulto": "Está aprendiendo a calcular duraciones y horas de llegada con horas y minutos (en formato de 24 horas) y días entre fechas del calendario. La clave es que una hora tiene 60 minutos, no 100: conviene ir por tramos hasta la hora en punto («de 9:47 a 10:00 van 13 minutos»). Los errores típicos son restar las horas como si fueran números decimales (13,15 − 9,47), leer mal las horas de 24 h (las 15:00 no son «las 5») o, en el calendario, contar un día de más o de menos o suponer que todos los meses tienen 30 días. Pídale que haga los tramos en una recta del tiempo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "17 + 3",
+     "resultado": "20",
+     "texto": "Horas."
+    },
+    {
+     "paso": 2,
+     "operacion": "55 + 15",
+     "resultado": "70",
+     "texto": "Minutos."
+    },
+    {
+     "paso": 3,
+     "operacion": "70 min = 1 h 10 min",
+     "resultado": "21:10",
+     "texto": "Paso 60 minutos a una hora."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "El autobús de Mario sale a las 13:45 y el viaje dura 1 h 45 min. ¿A qué hora llega (en formato de 24 horas)?",
+   "respuesta": "15:30",
+   "distractores": [
+    {
+     "valor": "14:90",
+     "error": "E01"
+    },
+    {
+     "valor": "5:30",
+     "error": "E02"
+    },
+    {
+     "valor": "16:30",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "MED.TIEMPO.08",
+    "MED.TIEMPO.11",
+    "MED.TIEMPO.12",
+    "MED.TIEMPO.05"
+   ],
+   "explicacion_nino": "Entiende: se suma el tiempo del viaje a la hora de salida. Suma las horas: 13 + 1 = 14. Suma los minutos: 45 + 45 = 90, que es más de 60: 90 min = 1 h 30 min. Llega a las 15:30. Comprueba: de 13:45 a 15:30 pasan 1 h 45 min.",
+   "explicacion_adulto": "Está aprendiendo a calcular duraciones y horas de llegada con horas y minutos (en formato de 24 horas) y días entre fechas del calendario. La clave es que una hora tiene 60 minutos, no 100: conviene ir por tramos hasta la hora en punto («de 9:47 a 10:00 van 13 minutos»). Los errores típicos son restar las horas como si fueran números decimales (13,15 − 9,47), leer mal las horas de 24 h (las 15:00 no son «las 5») o, en el calendario, contar un día de más o de menos o suponer que todos los meses tienen 30 días. Pídale que haga los tramos en una recta del tiempo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "13 + 1",
+     "resultado": "14",
+     "texto": "Horas."
+    },
+    {
+     "paso": 2,
+     "operacion": "45 + 45",
+     "resultado": "90",
+     "texto": "Minutos."
+    },
+    {
+     "paso": 3,
+     "operacion": "90 min = 1 h 30 min",
+     "resultado": "15:30",
+     "texto": "Paso 60 minutos a una hora."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "El autobús de Adrián sale a las 13:50 y el viaje dura 3 h 20 min. ¿A qué hora llega (en formato de 24 horas)?",
+   "respuesta": "17:10",
+   "distractores": [
+    {
+     "valor": "16:70",
+     "error": "E01"
+    },
+    {
+     "valor": "7:10",
+     "error": "E02"
+    },
+    {
+     "valor": "18:10",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "MED.TIEMPO.08",
+    "MED.TIEMPO.11",
+    "MED.TIEMPO.12",
+    "MED.TIEMPO.05"
+   ],
+   "explicacion_nino": "Entiende: se suma el tiempo del viaje a la hora de salida. Suma las horas: 13 + 3 = 16. Suma los minutos: 50 + 20 = 70, que es más de 60: 70 min = 1 h 10 min. Llega a las 17:10. Comprueba: de 13:50 a 17:10 pasan 3 h 20 min.",
+   "explicacion_adulto": "Está aprendiendo a calcular duraciones y horas de llegada con horas y minutos (en formato de 24 horas) y días entre fechas del calendario. La clave es que una hora tiene 60 minutos, no 100: conviene ir por tramos hasta la hora en punto («de 9:47 a 10:00 van 13 minutos»). Los errores típicos son restar las horas como si fueran números decimales (13,15 − 9,47), leer mal las horas de 24 h (las 15:00 no son «las 5») o, en el calendario, contar un día de más o de menos o suponer que todos los meses tienen 30 días. Pídale que haga los tramos en una recta del tiempo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "13 + 3",
+     "resultado": "16",
+     "texto": "Horas."
+    },
+    {
+     "paso": 2,
+     "operacion": "50 + 20",
+     "resultado": "70",
+     "texto": "Minutos."
+    },
+    {
+     "paso": 3,
+     "operacion": "70 min = 1 h 10 min",
+     "resultado": "17:10",
+     "texto": "Paso 60 minutos a una hora."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "El autobús de Aya sale a las 17:45 y el viaje dura 3 h 50 min. ¿A qué hora llega (en formato de 24 horas)?",
+   "respuesta": "21:35",
+   "distractores": [
+    {
+     "valor": "20:95",
+     "error": "E01"
+    },
+    {
+     "valor": "11:35",
+     "error": "E02"
+    },
+    {
+     "valor": "22:35",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "MED.TIEMPO.08",
+    "MED.TIEMPO.11",
+    "MED.TIEMPO.12",
+    "MED.TIEMPO.05"
+   ],
+   "explicacion_nino": "Entiende: se suma el tiempo del viaje a la hora de salida. Suma las horas: 17 + 3 = 20. Suma los minutos: 45 + 50 = 95, que es más de 60: 95 min = 1 h 35 min. Llega a las 21:35. Comprueba: de 17:45 a 21:35 pasan 3 h 50 min.",
+   "explicacion_adulto": "Está aprendiendo a calcular duraciones y horas de llegada con horas y minutos (en formato de 24 horas) y días entre fechas del calendario. La clave es que una hora tiene 60 minutos, no 100: conviene ir por tramos hasta la hora en punto («de 9:47 a 10:00 van 13 minutos»). Los errores típicos son restar las horas como si fueran números decimales (13,15 − 9,47), leer mal las horas de 24 h (las 15:00 no son «las 5») o, en el calendario, contar un día de más o de menos o suponer que todos los meses tienen 30 días. Pídale que haga los tramos en una recta del tiempo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "17 + 3",
+     "resultado": "20",
+     "texto": "Horas."
+    },
+    {
+     "paso": 2,
+     "operacion": "45 + 50",
+     "resultado": "95",
+     "texto": "Minutos."
+    },
+    {
+     "paso": 3,
+     "operacion": "95 min = 1 h 35 min",
+     "resultado": "21:35",
+     "texto": "Paso 60 minutos a una hora."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "El autobús de Valeria sale a las 13:45 y el viaje dura 1 h 50 min. ¿A qué hora llega (en formato de 24 horas)?",
+   "respuesta": "15:35",
+   "distractores": [
+    {
+     "valor": "14:95",
+     "error": "E01"
+    },
+    {
+     "valor": "5:35",
+     "error": "E02"
+    },
+    {
+     "valor": "16:35",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "MED.TIEMPO.08",
+    "MED.TIEMPO.11",
+    "MED.TIEMPO.12",
+    "MED.TIEMPO.05"
+   ],
+   "explicacion_nino": "Entiende: se suma el tiempo del viaje a la hora de salida. Suma las horas: 13 + 1 = 14. Suma los minutos: 45 + 50 = 95, que es más de 60: 95 min = 1 h 35 min. Llega a las 15:35. Comprueba: de 13:45 a 15:35 pasan 1 h 50 min.",
+   "explicacion_adulto": "Está aprendiendo a calcular duraciones y horas de llegada con horas y minutos (en formato de 24 horas) y días entre fechas del calendario. La clave es que una hora tiene 60 minutos, no 100: conviene ir por tramos hasta la hora en punto («de 9:47 a 10:00 van 13 minutos»). Los errores típicos son restar las horas como si fueran números decimales (13,15 − 9,47), leer mal las horas de 24 h (las 15:00 no son «las 5») o, en el calendario, contar un día de más o de menos o suponer que todos los meses tienen 30 días. Pídale que haga los tramos en una recta del tiempo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "13 + 1",
+     "resultado": "14",
+     "texto": "Horas."
+    },
+    {
+     "paso": 2,
+     "operacion": "45 + 50",
+     "resultado": "95",
+     "texto": "Minutos."
+    },
+    {
+     "paso": 3,
+     "operacion": "95 min = 1 h 35 min",
+     "resultado": "15:35",
+     "texto": "Paso 60 minutos a una hora."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "El autobús de Valeria sale a las 16:40 y el viaje dura 2 h 50 min. ¿A qué hora llega (en formato de 24 horas)?",
+   "respuesta": "19:30",
+   "distractores": [
+    {
+     "valor": "18:90",
+     "error": "E01"
+    },
+    {
+     "valor": "9:30",
+     "error": "E02"
+    },
+    {
+     "valor": "20:30",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "MED.TIEMPO.08",
+    "MED.TIEMPO.11",
+    "MED.TIEMPO.12",
+    "MED.TIEMPO.05"
+   ],
+   "explicacion_nino": "Entiende: se suma el tiempo del viaje a la hora de salida. Suma las horas: 16 + 2 = 18. Suma los minutos: 40 + 50 = 90, que es más de 60: 90 min = 1 h 30 min. Llega a las 19:30. Comprueba: de 16:40 a 19:30 pasan 2 h 50 min.",
+   "explicacion_adulto": "Está aprendiendo a calcular duraciones y horas de llegada con horas y minutos (en formato de 24 horas) y días entre fechas del calendario. La clave es que una hora tiene 60 minutos, no 100: conviene ir por tramos hasta la hora en punto («de 9:47 a 10:00 van 13 minutos»). Los errores típicos son restar las horas como si fueran números decimales (13,15 − 9,47), leer mal las horas de 24 h (las 15:00 no son «las 5») o, en el calendario, contar un día de más o de menos o suponer que todos los meses tienen 30 días. Pídale que haga los tramos en una recta del tiempo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "16 + 2",
+     "resultado": "18",
+     "texto": "Horas."
+    },
+    {
+     "paso": 2,
+     "operacion": "40 + 50",
+     "resultado": "90",
+     "texto": "Minutos."
+    },
+    {
+     "paso": 3,
+     "operacion": "90 min = 1 h 30 min",
+     "resultado": "19:30",
+     "texto": "Paso 60 minutos a una hora."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Omar llega al campamento el 29 de julio y se marcha el 6 de agosto. ¿Cuántos días pasan entre esas dos fechas?",
+   "respuesta": "8",
+   "distractores": [
+    {
+     "valor": "9",
+     "error": "E03"
+    },
+    {
+     "valor": "7",
+     "error": "E03"
+    },
+    {
+     "valor": "15",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "31 − 29 + 6",
+   "secundarias": [
+    "MED.TIEMPO.08",
+    "MED.TIEMPO.11",
+    "MED.TIEMPO.12",
+    "MED.TIEMPO.05"
+   ],
+   "explicacion_nino": "Entiende: cuenta los días que pasan de una fecha a otra. Julio tiene 31 días. Del 29 al 31 de julio pasan 31 − 29 = 2 días. Del 31 de julio al 6 de agosto pasan 6 más. Total: 2 + 6 = 8 días. Comprueba con un calendario, contando saltos de un día a otro.",
+   "explicacion_adulto": "Está aprendiendo a calcular duraciones y horas de llegada con horas y minutos (en formato de 24 horas) y días entre fechas del calendario. La clave es que una hora tiene 60 minutos, no 100: conviene ir por tramos hasta la hora en punto («de 9:47 a 10:00 van 13 minutos»). Los errores típicos son restar las horas como si fueran números decimales (13,15 − 9,47), leer mal las horas de 24 h (las 15:00 no son «las 5») o, en el calendario, contar un día de más o de menos o suponer que todos los meses tienen 30 días. Pídale que haga los tramos en una recta del tiempo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "31 − 29",
+     "resultado": "2",
+     "texto": "Días que quedan de julio."
+    },
+    {
+     "paso": 2,
+     "operacion": "2 + 6",
+     "resultado": "8",
+     "texto": "Más los días de agosto."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Mateo llega al campamento el 25 de abril y se marcha el 1 de mayo. ¿Cuántos días pasan entre esas dos fechas?",
+   "respuesta": "6",
+   "distractores": [
+    {
+     "valor": "7",
+     "error": "E03"
+    },
+    {
+     "valor": "5",
+     "error": "E03"
+    },
+    {
+     "valor": "13",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "30 − 25 + 1",
+   "secundarias": [
+    "MED.TIEMPO.08",
+    "MED.TIEMPO.11",
+    "MED.TIEMPO.12",
+    "MED.TIEMPO.05"
+   ],
+   "explicacion_nino": "Entiende: cuenta los días que pasan de una fecha a otra. Abril tiene 30 días. Del 25 al 30 de abril pasan 30 − 25 = 5 días. Del 30 de abril al 1 de mayo pasan 1 más. Total: 5 + 1 = 6 días. Comprueba con un calendario, contando saltos de un día a otro.",
+   "explicacion_adulto": "Está aprendiendo a calcular duraciones y horas de llegada con horas y minutos (en formato de 24 horas) y días entre fechas del calendario. La clave es que una hora tiene 60 minutos, no 100: conviene ir por tramos hasta la hora en punto («de 9:47 a 10:00 van 13 minutos»). Los errores típicos son restar las horas como si fueran números decimales (13,15 − 9,47), leer mal las horas de 24 h (las 15:00 no son «las 5») o, en el calendario, contar un día de más o de menos o suponer que todos los meses tienen 30 días. Pídale que haga los tramos en una recta del tiempo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "30 − 25",
+     "resultado": "5",
+     "texto": "Días que quedan de abril."
+    },
+    {
+     "paso": 2,
+     "operacion": "5 + 1",
+     "resultado": "6",
+     "texto": "Más los días de mayo."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Kofi llega al campamento el 28 de marzo y se marcha el 8 de abril. ¿Cuántos días pasan entre esas dos fechas?",
+   "respuesta": "11",
+   "distractores": [
+    {
+     "valor": "12",
+     "error": "E03"
+    },
+    {
+     "valor": "10",
+     "error": "E03"
+    },
+    {
+     "valor": "18",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "31 − 28 + 8",
+   "secundarias": [
+    "MED.TIEMPO.08",
+    "MED.TIEMPO.11",
+    "MED.TIEMPO.12",
+    "MED.TIEMPO.05"
+   ],
+   "explicacion_nino": "Entiende: cuenta los días que pasan de una fecha a otra. Marzo tiene 31 días. Del 28 al 31 de marzo pasan 31 − 28 = 3 días. Del 31 de marzo al 8 de abril pasan 8 más. Total: 3 + 8 = 11 días. Comprueba con un calendario, contando saltos de un día a otro.",
+   "explicacion_adulto": "Está aprendiendo a calcular duraciones y horas de llegada con horas y minutos (en formato de 24 horas) y días entre fechas del calendario. La clave es que una hora tiene 60 minutos, no 100: conviene ir por tramos hasta la hora en punto («de 9:47 a 10:00 van 13 minutos»). Los errores típicos son restar las horas como si fueran números decimales (13,15 − 9,47), leer mal las horas de 24 h (las 15:00 no son «las 5») o, en el calendario, contar un día de más o de menos o suponer que todos los meses tienen 30 días. Pídale que haga los tramos en una recta del tiempo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "31 − 28",
+     "resultado": "3",
+     "texto": "Días que quedan de marzo."
+    },
+    {
+     "paso": 2,
+     "operacion": "3 + 8",
+     "resultado": "11",
+     "texto": "Más los días de abril."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Álvaro llega al campamento el 29 de abril y se marcha el 7 de mayo. ¿Cuántos días pasan entre esas dos fechas?",
+   "respuesta": "8",
+   "distractores": [
+    {
+     "valor": "9",
+     "error": "E03"
+    },
+    {
+     "valor": "7",
+     "error": "E03"
+    },
+    {
+     "valor": "15",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "30 − 29 + 7",
+   "secundarias": [
+    "MED.TIEMPO.08",
+    "MED.TIEMPO.11",
+    "MED.TIEMPO.12",
+    "MED.TIEMPO.05"
+   ],
+   "explicacion_nino": "Entiende: cuenta los días que pasan de una fecha a otra. Abril tiene 30 días. Del 29 al 30 de abril pasan 30 − 29 = 1 días. Del 30 de abril al 7 de mayo pasan 7 más. Total: 1 + 7 = 8 días. Comprueba con un calendario, contando saltos de un día a otro.",
+   "explicacion_adulto": "Está aprendiendo a calcular duraciones y horas de llegada con horas y minutos (en formato de 24 horas) y días entre fechas del calendario. La clave es que una hora tiene 60 minutos, no 100: conviene ir por tramos hasta la hora en punto («de 9:47 a 10:00 van 13 minutos»). Los errores típicos son restar las horas como si fueran números decimales (13,15 − 9,47), leer mal las horas de 24 h (las 15:00 no son «las 5») o, en el calendario, contar un día de más o de menos o suponer que todos los meses tienen 30 días. Pídale que haga los tramos en una recta del tiempo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "30 − 29",
+     "resultado": "1",
+     "texto": "Días que quedan de abril."
+    },
+    {
+     "paso": 2,
+     "operacion": "1 + 7",
+     "resultado": "8",
+     "texto": "Más los días de mayo."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Carmen llega al campamento el 25 de julio y se marcha el 1 de agosto. ¿Cuántos días pasan entre esas dos fechas?",
+   "respuesta": "7",
+   "distractores": [
+    {
+     "valor": "8",
+     "error": "E03"
+    },
+    {
+     "valor": "6",
+     "error": "E03"
+    },
+    {
+     "valor": "14",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "31 − 25 + 1",
+   "secundarias": [
+    "MED.TIEMPO.08",
+    "MED.TIEMPO.11",
+    "MED.TIEMPO.12",
+    "MED.TIEMPO.05"
+   ],
+   "explicacion_nino": "Entiende: cuenta los días que pasan de una fecha a otra. Julio tiene 31 días. Del 25 al 31 de julio pasan 31 − 25 = 6 días. Del 31 de julio al 1 de agosto pasan 1 más. Total: 6 + 1 = 7 días. Comprueba con un calendario, contando saltos de un día a otro.",
+   "explicacion_adulto": "Está aprendiendo a calcular duraciones y horas de llegada con horas y minutos (en formato de 24 horas) y días entre fechas del calendario. La clave es que una hora tiene 60 minutos, no 100: conviene ir por tramos hasta la hora en punto («de 9:47 a 10:00 van 13 minutos»). Los errores típicos son restar las horas como si fueran números decimales (13,15 − 9,47), leer mal las horas de 24 h (las 15:00 no son «las 5») o, en el calendario, contar un día de más o de menos o suponer que todos los meses tienen 30 días. Pídale que haga los tramos en una recta del tiempo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "31 − 25",
+     "resultado": "6",
+     "texto": "Días que quedan de julio."
+    },
+    {
+     "paso": 2,
+     "operacion": "6 + 1",
+     "resultado": "7",
+     "texto": "Más los días de agosto."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Yusuf llega al campamento el 24 de octubre y se marcha el 10 de noviembre. ¿Cuántos días pasan entre esas dos fechas?",
+   "respuesta": "17",
+   "distractores": [
+    {
+     "valor": "18",
+     "error": "E03"
+    },
+    {
+     "valor": "16",
+     "error": "E03"
+    },
+    {
+     "valor": "24",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "31 − 24 + 10",
+   "secundarias": [
+    "MED.TIEMPO.08",
+    "MED.TIEMPO.11",
+    "MED.TIEMPO.12",
+    "MED.TIEMPO.05"
+   ],
+   "explicacion_nino": "Entiende: cuenta los días que pasan de una fecha a otra. Octubre tiene 31 días. Del 24 al 31 de octubre pasan 31 − 24 = 7 días. Del 31 de octubre al 10 de noviembre pasan 10 más. Total: 7 + 10 = 17 días. Comprueba con un calendario, contando saltos de un día a otro.",
+   "explicacion_adulto": "Está aprendiendo a calcular duraciones y horas de llegada con horas y minutos (en formato de 24 horas) y días entre fechas del calendario. La clave es que una hora tiene 60 minutos, no 100: conviene ir por tramos hasta la hora en punto («de 9:47 a 10:00 van 13 minutos»). Los errores típicos son restar las horas como si fueran números decimales (13,15 − 9,47), leer mal las horas de 24 h (las 15:00 no son «las 5») o, en el calendario, contar un día de más o de menos o suponer que todos los meses tienen 30 días. Pídale que haga los tramos en una recta del tiempo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "31 − 24",
+     "resultado": "7",
+     "texto": "Días que quedan de octubre."
+    },
+    {
+     "paso": 2,
+     "operacion": "7 + 10",
+     "resultado": "17",
+     "texto": "Más los días de noviembre."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Candela llega al campamento el 24 de marzo y se marcha el 3 de abril. ¿Cuántos días pasan entre esas dos fechas?",
+   "respuesta": "10",
+   "distractores": [
+    {
+     "valor": "11",
+     "error": "E03"
+    },
+    {
+     "valor": "9",
+     "error": "E03"
+    },
+    {
+     "valor": "17",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "31 − 24 + 3",
+   "secundarias": [
+    "MED.TIEMPO.08",
+    "MED.TIEMPO.11",
+    "MED.TIEMPO.12",
+    "MED.TIEMPO.05"
+   ],
+   "explicacion_nino": "Entiende: cuenta los días que pasan de una fecha a otra. Marzo tiene 31 días. Del 24 al 31 de marzo pasan 31 − 24 = 7 días. Del 31 de marzo al 3 de abril pasan 3 más. Total: 7 + 3 = 10 días. Comprueba con un calendario, contando saltos de un día a otro.",
+   "explicacion_adulto": "Está aprendiendo a calcular duraciones y horas de llegada con horas y minutos (en formato de 24 horas) y días entre fechas del calendario. La clave es que una hora tiene 60 minutos, no 100: conviene ir por tramos hasta la hora en punto («de 9:47 a 10:00 van 13 minutos»). Los errores típicos son restar las horas como si fueran números decimales (13,15 − 9,47), leer mal las horas de 24 h (las 15:00 no son «las 5») o, en el calendario, contar un día de más o de menos o suponer que todos los meses tienen 30 días. Pídale que haga los tramos en una recta del tiempo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "31 − 24",
+     "resultado": "7",
+     "texto": "Días que quedan de marzo."
+    },
+    {
+     "paso": 2,
+     "operacion": "7 + 3",
+     "resultado": "10",
+     "texto": "Más los días de abril."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En clase plantan una semilla el 24 de junio. La primera hoja sale el 1 de julio. ¿Cuántos días han pasado?",
+   "respuesta": "7",
+   "distractores": [
+    {
+     "valor": "8",
+     "error": "E03"
+    },
+    {
+     "valor": "6",
+     "error": "E03"
+    },
+    {
+     "valor": "14",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "30 − 24 + 1",
+   "secundarias": [
+    "MED.TIEMPO.08",
+    "MED.TIEMPO.11",
+    "MED.TIEMPO.12",
+    "MED.TIEMPO.05"
+   ],
+   "explicacion_nino": "Entiende: cuenta los días que pasan de una fecha a otra. Junio tiene 30 días. Del 24 al 30 de junio pasan 30 − 24 = 6 días. Del 30 de junio al 1 de julio pasan 1 más. Total: 6 + 1 = 7 días. Comprueba con un calendario, contando saltos de un día a otro.",
+   "explicacion_adulto": "Está aprendiendo a calcular duraciones y horas de llegada con horas y minutos (en formato de 24 horas) y días entre fechas del calendario. La clave es que una hora tiene 60 minutos, no 100: conviene ir por tramos hasta la hora en punto («de 9:47 a 10:00 van 13 minutos»). Los errores típicos son restar las horas como si fueran números decimales (13,15 − 9,47), leer mal las horas de 24 h (las 15:00 no son «las 5») o, en el calendario, contar un día de más o de menos o suponer que todos los meses tienen 30 días. Pídale que haga los tramos en una recta del tiempo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "30 − 24",
+     "resultado": "6",
+     "texto": "Días que quedan de junio."
+    },
+    {
+     "paso": 2,
+     "operacion": "6 + 1",
+     "resultado": "7",
+     "texto": "Más los días de julio."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En clase plantan una semilla el 25 de abril. La primera hoja sale el 9 de mayo. ¿Cuántos días han pasado?",
+   "respuesta": "14",
+   "distractores": [
+    {
+     "valor": "15",
+     "error": "E03"
+    },
+    {
+     "valor": "13",
+     "error": "E03"
+    },
+    {
+     "valor": "21",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "30 − 25 + 9",
+   "secundarias": [
+    "MED.TIEMPO.08",
+    "MED.TIEMPO.11",
+    "MED.TIEMPO.12",
+    "MED.TIEMPO.05"
+   ],
+   "explicacion_nino": "Entiende: cuenta los días que pasan de una fecha a otra. Abril tiene 30 días. Del 25 al 30 de abril pasan 30 − 25 = 5 días. Del 30 de abril al 9 de mayo pasan 9 más. Total: 5 + 9 = 14 días. Comprueba con un calendario, contando saltos de un día a otro.",
+   "explicacion_adulto": "Está aprendiendo a calcular duraciones y horas de llegada con horas y minutos (en formato de 24 horas) y días entre fechas del calendario. La clave es que una hora tiene 60 minutos, no 100: conviene ir por tramos hasta la hora en punto («de 9:47 a 10:00 van 13 minutos»). Los errores típicos son restar las horas como si fueran números decimales (13,15 − 9,47), leer mal las horas de 24 h (las 15:00 no son «las 5») o, en el calendario, contar un día de más o de menos o suponer que todos los meses tienen 30 días. Pídale que haga los tramos en una recta del tiempo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "30 − 25",
+     "resultado": "5",
+     "texto": "Días que quedan de abril."
+    },
+    {
+     "paso": 2,
+     "operacion": "5 + 9",
+     "resultado": "14",
+     "texto": "Más los días de mayo."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En clase plantan una semilla el 23 de septiembre. La primera hoja sale el 5 de octubre. ¿Cuántos días han pasado?",
+   "respuesta": "12",
+   "distractores": [
+    {
+     "valor": "13",
+     "error": "E03"
+    },
+    {
+     "valor": "11",
+     "error": "E03"
+    },
+    {
+     "valor": "19",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "30 − 23 + 5",
+   "secundarias": [
+    "MED.TIEMPO.08",
+    "MED.TIEMPO.11",
+    "MED.TIEMPO.12",
+    "MED.TIEMPO.05"
+   ],
+   "explicacion_nino": "Entiende: cuenta los días que pasan de una fecha a otra. Septiembre tiene 30 días. Del 23 al 30 de septiembre pasan 30 − 23 = 7 días. Del 30 de septiembre al 5 de octubre pasan 5 más. Total: 7 + 5 = 12 días. Comprueba con un calendario, contando saltos de un día a otro.",
+   "explicacion_adulto": "Está aprendiendo a calcular duraciones y horas de llegada con horas y minutos (en formato de 24 horas) y días entre fechas del calendario. La clave es que una hora tiene 60 minutos, no 100: conviene ir por tramos hasta la hora en punto («de 9:47 a 10:00 van 13 minutos»). Los errores típicos son restar las horas como si fueran números decimales (13,15 − 9,47), leer mal las horas de 24 h (las 15:00 no son «las 5») o, en el calendario, contar un día de más o de menos o suponer que todos los meses tienen 30 días. Pídale que haga los tramos en una recta del tiempo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "30 − 23",
+     "resultado": "7",
+     "texto": "Días que quedan de septiembre."
+    },
+    {
+     "paso": 2,
+     "operacion": "7 + 5",
+     "resultado": "12",
+     "texto": "Más los días de octubre."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En clase plantan una semilla el 28 de noviembre. La primera hoja sale el 6 de diciembre. ¿Cuántos días han pasado?",
+   "respuesta": "8",
+   "distractores": [
+    {
+     "valor": "9",
+     "error": "E03"
+    },
+    {
+     "valor": "7",
+     "error": "E03"
+    },
+    {
+     "valor": "15",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "30 − 28 + 6",
+   "secundarias": [
+    "MED.TIEMPO.08",
+    "MED.TIEMPO.11",
+    "MED.TIEMPO.12",
+    "MED.TIEMPO.05"
+   ],
+   "explicacion_nino": "Entiende: cuenta los días que pasan de una fecha a otra. Noviembre tiene 30 días. Del 28 al 30 de noviembre pasan 30 − 28 = 2 días. Del 30 de noviembre al 6 de diciembre pasan 6 más. Total: 2 + 6 = 8 días. Comprueba con un calendario, contando saltos de un día a otro.",
+   "explicacion_adulto": "Está aprendiendo a calcular duraciones y horas de llegada con horas y minutos (en formato de 24 horas) y días entre fechas del calendario. La clave es que una hora tiene 60 minutos, no 100: conviene ir por tramos hasta la hora en punto («de 9:47 a 10:00 van 13 minutos»). Los errores típicos son restar las horas como si fueran números decimales (13,15 − 9,47), leer mal las horas de 24 h (las 15:00 no son «las 5») o, en el calendario, contar un día de más o de menos o suponer que todos los meses tienen 30 días. Pídale que haga los tramos en una recta del tiempo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "30 − 28",
+     "resultado": "2",
+     "texto": "Días que quedan de noviembre."
+    },
+    {
+     "paso": 2,
+     "operacion": "2 + 6",
+     "resultado": "8",
+     "texto": "Más los días de diciembre."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "En clase plantan una semilla el 25 de enero. La primera hoja sale el 11 de febrero. ¿Cuántos días han pasado?",
+   "respuesta": "17",
+   "distractores": [
+    {
+     "valor": "18",
+     "error": "E03"
+    },
+    {
+     "valor": "16",
+     "error": "E03"
+    },
+    {
+     "valor": "24",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "31 − 25 + 11",
+   "secundarias": [
+    "MED.TIEMPO.08",
+    "MED.TIEMPO.11",
+    "MED.TIEMPO.12",
+    "MED.TIEMPO.05"
+   ],
+   "explicacion_nino": "Entiende: cuenta los días que pasan de una fecha a otra. Enero tiene 31 días. Del 25 al 31 de enero pasan 31 − 25 = 6 días. Del 31 de enero al 11 de febrero pasan 11 más. Total: 6 + 11 = 17 días. Comprueba con un calendario, contando saltos de un día a otro.",
+   "explicacion_adulto": "Está aprendiendo a calcular duraciones y horas de llegada con horas y minutos (en formato de 24 horas) y días entre fechas del calendario. La clave es que una hora tiene 60 minutos, no 100: conviene ir por tramos hasta la hora en punto («de 9:47 a 10:00 van 13 minutos»). Los errores típicos son restar las horas como si fueran números decimales (13,15 − 9,47), leer mal las horas de 24 h (las 15:00 no son «las 5») o, en el calendario, contar un día de más o de menos o suponer que todos los meses tienen 30 días. Pídale que haga los tramos en una recta del tiempo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "31 − 25",
+     "resultado": "6",
+     "texto": "Días que quedan de enero."
+    },
+    {
+     "paso": 2,
+     "operacion": "6 + 11",
+     "resultado": "17",
+     "texto": "Más los días de febrero."
+    }
+   ],
+   "plantilla": "P05"
+  }
+ ]
+}

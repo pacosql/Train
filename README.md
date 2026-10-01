@@ -39,6 +39,8 @@ reglas para no interferir con las demás:
 | 🗂️ Contactos | [`contactos/`](./contactos) | `/Train/contactos/` | `contactos_` |
 | 💼 Empleo | [`empleo/`](./empleo) | `/Train/empleo/` | `empleo_` |
 | ✳️ Logos | [`logos/`](./logos) | `/Train/logos/` | `logos_` |
+| ➕ Nombre Mates | [`nombremates/`](./nombremates) | `/Train/nombremates/` | `nombremates_` |
+| ➗ Mates10 | [`mates10/`](./mates10) | `/Train/mates10/` | `mates10_` |
 
 ## Añadir una app nueva
 

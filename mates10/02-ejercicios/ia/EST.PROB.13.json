@@ -1,0 +1,1522 @@
+{
+ "habilidad": "EST.PROB.13",
+ "generado_por": "claude (skill mates10-generar-ejercicios v1)",
+ "ejercicios": [
+  {
+   "dificultad": 1,
+   "enunciado": "El defecto de fábrica en un móvil afecta al 1 % de los casos. Un control automático detecta el 99 % de los casos reales y da un falso aviso en el 5 % de los casos en que no hay problema. Si se sabe que el control da alarma, ¿qué probabilidad hay de que esté realmente defectuoso?",
+   "respuesta": "0,167",
+   "distractores": [
+    {
+     "valor": "0,99",
+     "error": "E01"
+    },
+    {
+     "valor": "0,952",
+     "error": "E02"
+    },
+    {
+     "valor": "0,01",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Árbol: defectuoso (1 %) o no (99 %). P(aviso) = 0,01·0,99 + 0,99·0,05 = 0,059. Bayes: P(defectuoso | aviso) = 0,01·0,99 / 0,059 ≈ 0,167. Aunque la prueba es buena, como el caso es raro muchos avisos son falsos.",
+   "explicacion_adulto": "Está aprendiendo el teorema de Bayes: cómo cambia la probabilidad de una causa cuando sabemos que ha ocurrido cierto efecto. La clave es P(causa | efecto) = P(causa)·P(efecto | causa) / P(efecto), con P(efecto) por probabilidad total. Los errores típicos son confundir P(efecto | causa) con P(causa | efecto) e ignorar lo rara que es la causa (la tasa base). Pídale que imagine 10 000 casos y cuente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "probabilidad total",
+     "resultado": "0,059",
+     "texto": "P(aviso) sumando las dos ramas."
+    },
+    {
+     "paso": 2,
+     "operacion": "rama buscada",
+     "resultado": "0,01",
+     "texto": "P(causa)·P(aviso | causa)."
+    },
+    {
+     "paso": 3,
+     "operacion": "Bayes",
+     "resultado": "0,167",
+     "texto": "Dividimos la rama buscada entre el total."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "El defecto de fábrica en un móvil afecta al 5 % de los casos. Un control automático detecta el 98 % de los casos reales y da un falso aviso en el 5 % de los casos en que no hay problema. Si se sabe que el control da alarma, ¿qué probabilidad hay de que esté realmente defectuoso?",
+   "respuesta": "0,508",
+   "distractores": [
+    {
+     "valor": "0,98",
+     "error": "E01"
+    },
+    {
+     "valor": "0,951",
+     "error": "E02"
+    },
+    {
+     "valor": "0,05",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Árbol: defectuoso (5 %) o no (95 %). P(aviso) = 0,05·0,98 + 0,95·0,05 = 0,097. Bayes: P(defectuoso | aviso) = 0,05·0,98 / 0,097 ≈ 0,508. Aunque la prueba es buena, como el caso es raro muchos avisos son falsos.",
+   "explicacion_adulto": "Está aprendiendo el teorema de Bayes: cómo cambia la probabilidad de una causa cuando sabemos que ha ocurrido cierto efecto. La clave es P(causa | efecto) = P(causa)·P(efecto | causa) / P(efecto), con P(efecto) por probabilidad total. Los errores típicos son confundir P(efecto | causa) con P(causa | efecto) e ignorar lo rara que es la causa (la tasa base). Pídale que imagine 10 000 casos y cuente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "probabilidad total",
+     "resultado": "0,097",
+     "texto": "P(aviso) sumando las dos ramas."
+    },
+    {
+     "paso": 2,
+     "operacion": "rama buscada",
+     "resultado": "0,049",
+     "texto": "P(causa)·P(aviso | causa)."
+    },
+    {
+     "paso": 3,
+     "operacion": "Bayes",
+     "resultado": "0,508",
+     "texto": "Dividimos la rama buscada entre el total."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "El defecto de fábrica en un móvil afecta al 2 % de los casos. Un control automático detecta el 98 % de los casos reales y da un falso aviso en el 10 % de los casos en que no hay problema. Si se sabe que el control da alarma, ¿qué probabilidad hay de que esté realmente defectuoso?",
+   "respuesta": "0,167",
+   "distractores": [
+    {
+     "valor": "0,98",
+     "error": "E01"
+    },
+    {
+     "valor": "0,907",
+     "error": "E02"
+    },
+    {
+     "valor": "0,02",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Árbol: defectuoso (2 %) o no (98 %). P(aviso) = 0,02·0,98 + 0,98·0,1 = 0,118. Bayes: P(defectuoso | aviso) = 0,02·0,98 / 0,118 ≈ 0,167. Aunque la prueba es buena, como el caso es raro muchos avisos son falsos.",
+   "explicacion_adulto": "Está aprendiendo el teorema de Bayes: cómo cambia la probabilidad de una causa cuando sabemos que ha ocurrido cierto efecto. La clave es P(causa | efecto) = P(causa)·P(efecto | causa) / P(efecto), con P(efecto) por probabilidad total. Los errores típicos son confundir P(efecto | causa) con P(causa | efecto) e ignorar lo rara que es la causa (la tasa base). Pídale que imagine 10 000 casos y cuente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "probabilidad total",
+     "resultado": "0,118",
+     "texto": "P(aviso) sumando las dos ramas."
+    },
+    {
+     "paso": 2,
+     "operacion": "rama buscada",
+     "resultado": "0,02",
+     "texto": "P(causa)·P(aviso | causa)."
+    },
+    {
+     "paso": 3,
+     "operacion": "Bayes",
+     "resultado": "0,167",
+     "texto": "Dividimos la rama buscada entre el total."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "La alergia al polen afecta al 20 % de la población. Un test cutáneo detecta el 98 % de los casos reales y da un falso aviso en el 8 % de los casos en que no hay problema. Si el resultado es positivo, ¿qué probabilidad hay de que sea realmente alérgico?",
+   "respuesta": "0,754",
+   "distractores": [
+    {
+     "valor": "0,98",
+     "error": "E01"
+    },
+    {
+     "valor": "0,925",
+     "error": "E02"
+    },
+    {
+     "valor": "0,2",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Árbol: alérgico (20 %) o no (80 %). P(aviso) = 0,2·0,98 + 0,8·0,08 = 0,26. Bayes: P(alérgico | aviso) = 0,2·0,98 / 0,26 ≈ 0,754. Aunque la prueba es buena, como el caso es raro muchos avisos son falsos.",
+   "explicacion_adulto": "Está aprendiendo el teorema de Bayes: cómo cambia la probabilidad de una causa cuando sabemos que ha ocurrido cierto efecto. La clave es P(causa | efecto) = P(causa)·P(efecto | causa) / P(efecto), con P(efecto) por probabilidad total. Los errores típicos son confundir P(efecto | causa) con P(causa | efecto) e ignorar lo rara que es la causa (la tasa base). Pídale que imagine 10 000 casos y cuente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "probabilidad total",
+     "resultado": "0,26",
+     "texto": "P(aviso) sumando las dos ramas."
+    },
+    {
+     "paso": 2,
+     "operacion": "rama buscada",
+     "resultado": "0,196",
+     "texto": "P(causa)·P(aviso | causa)."
+    },
+    {
+     "paso": 3,
+     "operacion": "Bayes",
+     "resultado": "0,754",
+     "texto": "Dividimos la rama buscada entre el total."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "La enfermedad afecta al 10 % de la población. Una prueba detecta el 99 % de los casos reales y da un falso aviso en el 8 % de los casos en que no hay problema. Si una persona da positivo, ¿qué probabilidad hay de que tenga la enfermedad?",
+   "respuesta": "0,579",
+   "distractores": [
+    {
+     "valor": "0,99",
+     "error": "E01"
+    },
+    {
+     "valor": "0,925",
+     "error": "E02"
+    },
+    {
+     "valor": "0,1",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Árbol: enfermo (10 %) o no (90 %). P(aviso) = 0,1·0,99 + 0,9·0,08 = 0,171. Bayes: P(enfermo | aviso) = 0,1·0,99 / 0,171 ≈ 0,579. Aunque la prueba es buena, como el caso es raro muchos avisos son falsos.",
+   "explicacion_adulto": "Está aprendiendo el teorema de Bayes: cómo cambia la probabilidad de una causa cuando sabemos que ha ocurrido cierto efecto. La clave es P(causa | efecto) = P(causa)·P(efecto | causa) / P(efecto), con P(efecto) por probabilidad total. Los errores típicos son confundir P(efecto | causa) con P(causa | efecto) e ignorar lo rara que es la causa (la tasa base). Pídale que imagine 10 000 casos y cuente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "probabilidad total",
+     "resultado": "0,171",
+     "texto": "P(aviso) sumando las dos ramas."
+    },
+    {
+     "paso": 2,
+     "operacion": "rama buscada",
+     "resultado": "0,099",
+     "texto": "P(causa)·P(aviso | causa)."
+    },
+    {
+     "paso": 3,
+     "operacion": "Bayes",
+     "resultado": "0,579",
+     "texto": "Dividimos la rama buscada entre el total."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "La plaga en un olivo afecta al 5 % de los casos. Una trampa de feromonas detecta el 90 % de los casos reales y da un falso aviso en el 5 % de los casos en que no hay problema. Si se sabe que la trampa detecta insectos, ¿qué probabilidad hay de que esté realmente afectado?",
+   "respuesta": "0,486",
+   "distractores": [
+    {
+     "valor": "0,9",
+     "error": "E01"
+    },
+    {
+     "valor": "0,947",
+     "error": "E02"
+    },
+    {
+     "valor": "0,05",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Árbol: afectado (5 %) o no (95 %). P(aviso) = 0,05·0,9 + 0,95·0,05 = 0,092. Bayes: P(afectado | aviso) = 0,05·0,9 / 0,092 ≈ 0,486. Aunque la prueba es buena, como el caso es raro muchos avisos son falsos.",
+   "explicacion_adulto": "Está aprendiendo el teorema de Bayes: cómo cambia la probabilidad de una causa cuando sabemos que ha ocurrido cierto efecto. La clave es P(causa | efecto) = P(causa)·P(efecto | causa) / P(efecto), con P(efecto) por probabilidad total. Los errores típicos son confundir P(efecto | causa) con P(causa | efecto) e ignorar lo rara que es la causa (la tasa base). Pídale que imagine 10 000 casos y cuente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "probabilidad total",
+     "resultado": "0,092",
+     "texto": "P(aviso) sumando las dos ramas."
+    },
+    {
+     "paso": 2,
+     "operacion": "rama buscada",
+     "resultado": "0,045",
+     "texto": "P(causa)·P(aviso | causa)."
+    },
+    {
+     "paso": 3,
+     "operacion": "Bayes",
+     "resultado": "0,486",
+     "texto": "Dividimos la rama buscada entre el total."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "La avería en un ascensor afecta al 5 % de los casos. Un sensor detecta el 98 % de los casos reales y da un falso aviso en el 10 % de los casos en que no hay problema. Si se sabe que el sensor avisa, ¿qué probabilidad hay de que esté realmente averiado?",
+   "respuesta": "0,34",
+   "distractores": [
+    {
+     "valor": "0,98",
+     "error": "E01"
+    },
+    {
+     "valor": "0,907",
+     "error": "E02"
+    },
+    {
+     "valor": "0,05",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Árbol: averiado (5 %) o no (95 %). P(aviso) = 0,05·0,98 + 0,95·0,1 = 0,144. Bayes: P(averiado | aviso) = 0,05·0,98 / 0,144 ≈ 0,34. Aunque la prueba es buena, como el caso es raro muchos avisos son falsos.",
+   "explicacion_adulto": "Está aprendiendo el teorema de Bayes: cómo cambia la probabilidad de una causa cuando sabemos que ha ocurrido cierto efecto. La clave es P(causa | efecto) = P(causa)·P(efecto | causa) / P(efecto), con P(efecto) por probabilidad total. Los errores típicos son confundir P(efecto | causa) con P(causa | efecto) e ignorar lo rara que es la causa (la tasa base). Pídale que imagine 10 000 casos y cuente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "probabilidad total",
+     "resultado": "0,144",
+     "texto": "P(aviso) sumando las dos ramas."
+    },
+    {
+     "paso": 2,
+     "operacion": "rama buscada",
+     "resultado": "0,049",
+     "texto": "P(causa)·P(aviso | causa)."
+    },
+    {
+     "paso": 3,
+     "operacion": "Bayes",
+     "resultado": "0,34",
+     "texto": "Dividimos la rama buscada entre el total."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "La avería en un ascensor afecta al 2 % de los casos. Un sensor detecta el 99 % de los casos reales y da un falso aviso en el 5 % de los casos en que no hay problema. Si se sabe que el sensor avisa, ¿qué probabilidad hay de que esté realmente averiado?",
+   "respuesta": "0,288",
+   "distractores": [
+    {
+     "valor": "0,99",
+     "error": "E01"
+    },
+    {
+     "valor": "0,952",
+     "error": "E02"
+    },
+    {
+     "valor": "0,02",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Árbol: averiado (2 %) o no (98 %). P(aviso) = 0,02·0,99 + 0,98·0,05 = 0,069. Bayes: P(averiado | aviso) = 0,02·0,99 / 0,069 ≈ 0,288. Aunque la prueba es buena, como el caso es raro muchos avisos son falsos.",
+   "explicacion_adulto": "Está aprendiendo el teorema de Bayes: cómo cambia la probabilidad de una causa cuando sabemos que ha ocurrido cierto efecto. La clave es P(causa | efecto) = P(causa)·P(efecto | causa) / P(efecto), con P(efecto) por probabilidad total. Los errores típicos son confundir P(efecto | causa) con P(causa | efecto) e ignorar lo rara que es la causa (la tasa base). Pídale que imagine 10 000 casos y cuente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "probabilidad total",
+     "resultado": "0,069",
+     "texto": "P(aviso) sumando las dos ramas."
+    },
+    {
+     "paso": 2,
+     "operacion": "rama buscada",
+     "resultado": "0,02",
+     "texto": "P(causa)·P(aviso | causa)."
+    },
+    {
+     "paso": 3,
+     "operacion": "Bayes",
+     "resultado": "0,288",
+     "texto": "Dividimos la rama buscada entre el total."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "La plaga en un olivo afecta al 5 % de los casos. Una trampa de feromonas detecta el 98 % de los casos reales y da un falso aviso en el 5 % de los casos en que no hay problema. Si se sabe que la trampa detecta insectos, ¿qué probabilidad hay de que esté realmente afectado?",
+   "respuesta": "0,508",
+   "distractores": [
+    {
+     "valor": "0,98",
+     "error": "E01"
+    },
+    {
+     "valor": "0,951",
+     "error": "E02"
+    },
+    {
+     "valor": "0,05",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Árbol: afectado (5 %) o no (95 %). P(aviso) = 0,05·0,98 + 0,95·0,05 = 0,097. Bayes: P(afectado | aviso) = 0,05·0,98 / 0,097 ≈ 0,508. Aunque la prueba es buena, como el caso es raro muchos avisos son falsos.",
+   "explicacion_adulto": "Está aprendiendo el teorema de Bayes: cómo cambia la probabilidad de una causa cuando sabemos que ha ocurrido cierto efecto. La clave es P(causa | efecto) = P(causa)·P(efecto | causa) / P(efecto), con P(efecto) por probabilidad total. Los errores típicos son confundir P(efecto | causa) con P(causa | efecto) e ignorar lo rara que es la causa (la tasa base). Pídale que imagine 10 000 casos y cuente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "probabilidad total",
+     "resultado": "0,097",
+     "texto": "P(aviso) sumando las dos ramas."
+    },
+    {
+     "paso": 2,
+     "operacion": "rama buscada",
+     "resultado": "0,049",
+     "texto": "P(causa)·P(aviso | causa)."
+    },
+    {
+     "paso": 3,
+     "operacion": "Bayes",
+     "resultado": "0,508",
+     "texto": "Dividimos la rama buscada entre el total."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "La alergia al polen afecta al 1 % de la población. Un test cutáneo detecta el 95 % de los casos reales y da un falso aviso en el 8 % de los casos en que no hay problema. Si el resultado es positivo, ¿qué probabilidad hay de que sea realmente alérgico?",
+   "respuesta": "0,107",
+   "distractores": [
+    {
+     "valor": "0,95",
+     "error": "E01"
+    },
+    {
+     "valor": "0,922",
+     "error": "E02"
+    },
+    {
+     "valor": "0,01",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Árbol: alérgico (1 %) o no (99 %). P(aviso) = 0,01·0,95 + 0,99·0,08 = 0,089. Bayes: P(alérgico | aviso) = 0,01·0,95 / 0,089 ≈ 0,107. Aunque la prueba es buena, como el caso es raro muchos avisos son falsos.",
+   "explicacion_adulto": "Está aprendiendo el teorema de Bayes: cómo cambia la probabilidad de una causa cuando sabemos que ha ocurrido cierto efecto. La clave es P(causa | efecto) = P(causa)·P(efecto | causa) / P(efecto), con P(efecto) por probabilidad total. Los errores típicos son confundir P(efecto | causa) con P(causa | efecto) e ignorar lo rara que es la causa (la tasa base). Pídale que imagine 10 000 casos y cuente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "probabilidad total",
+     "resultado": "0,089",
+     "texto": "P(aviso) sumando las dos ramas."
+    },
+    {
+     "paso": 2,
+     "operacion": "rama buscada",
+     "resultado": "0,009",
+     "texto": "P(causa)·P(aviso | causa)."
+    },
+    {
+     "paso": 3,
+     "operacion": "Bayes",
+     "resultado": "0,107",
+     "texto": "Dividimos la rama buscada entre el total."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "La plaga en un olivo afecta al 2 % de los casos. Una trampa de feromonas detecta el 90 % de los casos reales y da un falso aviso en el 5 % de los casos en que no hay problema. Si se sabe que la trampa detecta insectos, ¿qué probabilidad hay de que esté realmente afectado?",
+   "respuesta": "0,269",
+   "distractores": [
+    {
+     "valor": "0,9",
+     "error": "E01"
+    },
+    {
+     "valor": "0,947",
+     "error": "E02"
+    },
+    {
+     "valor": "0,02",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Árbol: afectado (2 %) o no (98 %). P(aviso) = 0,02·0,9 + 0,98·0,05 = 0,067. Bayes: P(afectado | aviso) = 0,02·0,9 / 0,067 ≈ 0,269. Aunque la prueba es buena, como el caso es raro muchos avisos son falsos.",
+   "explicacion_adulto": "Está aprendiendo el teorema de Bayes: cómo cambia la probabilidad de una causa cuando sabemos que ha ocurrido cierto efecto. La clave es P(causa | efecto) = P(causa)·P(efecto | causa) / P(efecto), con P(efecto) por probabilidad total. Los errores típicos son confundir P(efecto | causa) con P(causa | efecto) e ignorar lo rara que es la causa (la tasa base). Pídale que imagine 10 000 casos y cuente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "probabilidad total",
+     "resultado": "0,067",
+     "texto": "P(aviso) sumando las dos ramas."
+    },
+    {
+     "paso": 2,
+     "operacion": "rama buscada",
+     "resultado": "0,018",
+     "texto": "P(causa)·P(aviso | causa)."
+    },
+    {
+     "paso": 3,
+     "operacion": "Bayes",
+     "resultado": "0,269",
+     "texto": "Dividimos la rama buscada entre el total."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "La avería en un ascensor afecta al 5 % de los casos. Un sensor detecta el 98 % de los casos reales y da un falso aviso en el 5 % de los casos en que no hay problema. Si se sabe que el sensor avisa, ¿qué probabilidad hay de que esté realmente averiado?",
+   "respuesta": "0,508",
+   "distractores": [
+    {
+     "valor": "0,98",
+     "error": "E01"
+    },
+    {
+     "valor": "0,951",
+     "error": "E02"
+    },
+    {
+     "valor": "0,05",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Árbol: averiado (5 %) o no (95 %). P(aviso) = 0,05·0,98 + 0,95·0,05 = 0,097. Bayes: P(averiado | aviso) = 0,05·0,98 / 0,097 ≈ 0,508. Aunque la prueba es buena, como el caso es raro muchos avisos son falsos.",
+   "explicacion_adulto": "Está aprendiendo el teorema de Bayes: cómo cambia la probabilidad de una causa cuando sabemos que ha ocurrido cierto efecto. La clave es P(causa | efecto) = P(causa)·P(efecto | causa) / P(efecto), con P(efecto) por probabilidad total. Los errores típicos son confundir P(efecto | causa) con P(causa | efecto) e ignorar lo rara que es la causa (la tasa base). Pídale que imagine 10 000 casos y cuente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "probabilidad total",
+     "resultado": "0,097",
+     "texto": "P(aviso) sumando las dos ramas."
+    },
+    {
+     "paso": 2,
+     "operacion": "rama buscada",
+     "resultado": "0,049",
+     "texto": "P(causa)·P(aviso | causa)."
+    },
+    {
+     "paso": 3,
+     "operacion": "Bayes",
+     "resultado": "0,508",
+     "texto": "Dividimos la rama buscada entre el total."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Tres granjas, A, B y C, aportan el 10 %, 45 % y 45 % de los huevos de una cooperativa, y rompen en el transporte el 9 %, 7 % y 6 % de los suyos. Se toma un huevo al azar y está roto. ¿Qué probabilidad hay de que sea de la granja C?",
+   "respuesta": "0,4",
+   "distractores": [
+    {
+     "valor": "0,06",
+     "error": "E01"
+    },
+    {
+     "valor": "0,45",
+     "error": "E02"
+    },
+    {
+     "valor": "0,123",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "EST.PROB.12"
+   ],
+   "explicacion_nino": "Primero la probabilidad total del efecto: P = 0,1·0,09 + 0,45·0,07 + 0,45·0,06 = 0,068. Luego Bayes: P(C | efecto) = 0,45·0,06 / 0,068 ≈ 0,4.",
+   "explicacion_adulto": "Está aprendiendo el teorema de Bayes: cómo cambia la probabilidad de una causa cuando sabemos que ha ocurrido cierto efecto. La clave es P(causa | efecto) = P(causa)·P(efecto | causa) / P(efecto), con P(efecto) por probabilidad total. Los errores típicos son confundir P(efecto | causa) con P(causa | efecto) e ignorar lo rara que es la causa (la tasa base). Pídale que imagine 10 000 casos y cuente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "total",
+     "resultado": "0,068",
+     "texto": "Suma de las tres ramas."
+    },
+    {
+     "paso": 2,
+     "operacion": "rama",
+     "resultado": "0,027",
+     "texto": "Rama de C."
+    },
+    {
+     "paso": 3,
+     "operacion": "Bayes",
+     "resultado": "0,4",
+     "texto": "Cociente."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Tres imprentas, A, B y C, hacen el 35 %, 40 % y 25 % de los libros de una editorial; tienen erratas el 5 %, 1 % y 6 % de sus libros. Se toma un libro al azar y tiene erratas. ¿Qué probabilidad hay de que sea de la imprenta B?",
+   "respuesta": "0,11",
+   "distractores": [
+    {
+     "valor": "0,01",
+     "error": "E01"
+    },
+    {
+     "valor": "0,4",
+     "error": "E02"
+    },
+    {
+     "valor": "0,033",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "EST.PROB.12"
+   ],
+   "explicacion_nino": "Primero la probabilidad total del efecto: P = 0,35·0,05 + 0,4·0,01 + 0,25·0,06 = 0,036. Luego Bayes: P(B | efecto) = 0,4·0,01 / 0,036 ≈ 0,11.",
+   "explicacion_adulto": "Está aprendiendo el teorema de Bayes: cómo cambia la probabilidad de una causa cuando sabemos que ha ocurrido cierto efecto. La clave es P(causa | efecto) = P(causa)·P(efecto | causa) / P(efecto), con P(efecto) por probabilidad total. Los errores típicos son confundir P(efecto | causa) con P(causa | efecto) e ignorar lo rara que es la causa (la tasa base). Pídale que imagine 10 000 casos y cuente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "total",
+     "resultado": "0,036",
+     "texto": "Suma de las tres ramas."
+    },
+    {
+     "paso": 2,
+     "operacion": "rama",
+     "resultado": "0,004",
+     "texto": "Rama de B."
+    },
+    {
+     "paso": 3,
+     "operacion": "Bayes",
+     "resultado": "0,11",
+     "texto": "Cociente."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Tres granjas, A, B y C, aportan el 10 %, 15 % y 75 % de los huevos de una cooperativa, y rompen en el transporte el 7 %, 1 % y 3 % de los suyos. Se toma un huevo al azar y está roto. ¿Qué probabilidad hay de que sea de la granja A?",
+   "respuesta": "0,226",
+   "distractores": [
+    {
+     "valor": "0,07",
+     "error": "E01"
+    },
+    {
+     "valor": "0,1",
+     "error": "E02"
+    },
+    {
+     "valor": "0,064",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "EST.PROB.12"
+   ],
+   "explicacion_nino": "Primero la probabilidad total del efecto: P = 0,1·0,07 + 0,15·0,01 + 0,75·0,03 = 0,031. Luego Bayes: P(A | efecto) = 0,1·0,07 / 0,031 ≈ 0,226.",
+   "explicacion_adulto": "Está aprendiendo el teorema de Bayes: cómo cambia la probabilidad de una causa cuando sabemos que ha ocurrido cierto efecto. La clave es P(causa | efecto) = P(causa)·P(efecto | causa) / P(efecto), con P(efecto) por probabilidad total. Los errores típicos son confundir P(efecto | causa) con P(causa | efecto) e ignorar lo rara que es la causa (la tasa base). Pídale que imagine 10 000 casos y cuente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "total",
+     "resultado": "0,031",
+     "texto": "Suma de las tres ramas."
+    },
+    {
+     "paso": 2,
+     "operacion": "rama",
+     "resultado": "0,007",
+     "texto": "Rama de A."
+    },
+    {
+     "paso": 3,
+     "operacion": "Bayes",
+     "resultado": "0,226",
+     "texto": "Cociente."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Tres imprentas, A, B y C, hacen el 45 %, 15 % y 40 % de los libros de una editorial; tienen erratas el 1 %, 4 % y 9 % de sus libros. Se toma un libro al azar y tiene erratas. ¿Qué probabilidad hay de que sea de la imprenta A?",
+   "respuesta": "0,097",
+   "distractores": [
+    {
+     "valor": "0,01",
+     "error": "E01"
+    },
+    {
+     "valor": "0,45",
+     "error": "E02"
+    },
+    {
+     "valor": "0,032",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "EST.PROB.12"
+   ],
+   "explicacion_nino": "Primero la probabilidad total del efecto: P = 0,45·0,01 + 0,15·0,04 + 0,4·0,09 = 0,046. Luego Bayes: P(A | efecto) = 0,45·0,01 / 0,046 ≈ 0,097.",
+   "explicacion_adulto": "Está aprendiendo el teorema de Bayes: cómo cambia la probabilidad de una causa cuando sabemos que ha ocurrido cierto efecto. La clave es P(causa | efecto) = P(causa)·P(efecto | causa) / P(efecto), con P(efecto) por probabilidad total. Los errores típicos son confundir P(efecto | causa) con P(causa | efecto) e ignorar lo rara que es la causa (la tasa base). Pídale que imagine 10 000 casos y cuente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "total",
+     "resultado": "0,046",
+     "texto": "Suma de las tres ramas."
+    },
+    {
+     "paso": 2,
+     "operacion": "rama",
+     "resultado": "0,004",
+     "texto": "Rama de A."
+    },
+    {
+     "paso": 3,
+     "operacion": "Bayes",
+     "resultado": "0,097",
+     "texto": "Cociente."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Tres imprentas, A, B y C, hacen el 15 %, 70 % y 15 % de los libros de una editorial; tienen erratas el 8 %, 9 % y 4 % de sus libros. Se toma un libro al azar y tiene erratas. ¿Qué probabilidad hay de que sea de la imprenta C?",
+   "respuesta": "0,074",
+   "distractores": [
+    {
+     "valor": "0,04",
+     "error": "E01"
+    },
+    {
+     "valor": "0,15",
+     "error": "E02"
+    },
+    {
+     "valor": "0,029",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "EST.PROB.12"
+   ],
+   "explicacion_nino": "Primero la probabilidad total del efecto: P = 0,15·0,08 + 0,7·0,09 + 0,15·0,04 = 0,081. Luego Bayes: P(C | efecto) = 0,15·0,04 / 0,081 ≈ 0,074.",
+   "explicacion_adulto": "Está aprendiendo el teorema de Bayes: cómo cambia la probabilidad de una causa cuando sabemos que ha ocurrido cierto efecto. La clave es P(causa | efecto) = P(causa)·P(efecto | causa) / P(efecto), con P(efecto) por probabilidad total. Los errores típicos son confundir P(efecto | causa) con P(causa | efecto) e ignorar lo rara que es la causa (la tasa base). Pídale que imagine 10 000 casos y cuente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "total",
+     "resultado": "0,081",
+     "texto": "Suma de las tres ramas."
+    },
+    {
+     "paso": 2,
+     "operacion": "rama",
+     "resultado": "0,006",
+     "texto": "Rama de C."
+    },
+    {
+     "paso": 3,
+     "operacion": "Bayes",
+     "resultado": "0,074",
+     "texto": "Cociente."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Tres imprentas, A, B y C, hacen el 30 %, 30 % y 40 % de los libros de una editorial; tienen erratas el 1 %, 5 % y 6 % de sus libros. Se toma un libro al azar y tiene erratas. ¿Qué probabilidad hay de que sea de la imprenta C?",
+   "respuesta": "0,571",
+   "distractores": [
+    {
+     "valor": "0,06",
+     "error": "E01"
+    },
+    {
+     "valor": "0,4",
+     "error": "E02"
+    },
+    {
+     "valor": "0,2",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "EST.PROB.12"
+   ],
+   "explicacion_nino": "Primero la probabilidad total del efecto: P = 0,3·0,01 + 0,3·0,05 + 0,4·0,06 = 0,042. Luego Bayes: P(C | efecto) = 0,4·0,06 / 0,042 ≈ 0,571.",
+   "explicacion_adulto": "Está aprendiendo el teorema de Bayes: cómo cambia la probabilidad de una causa cuando sabemos que ha ocurrido cierto efecto. La clave es P(causa | efecto) = P(causa)·P(efecto | causa) / P(efecto), con P(efecto) por probabilidad total. Los errores típicos son confundir P(efecto | causa) con P(causa | efecto) e ignorar lo rara que es la causa (la tasa base). Pídale que imagine 10 000 casos y cuente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "total",
+     "resultado": "0,042",
+     "texto": "Suma de las tres ramas."
+    },
+    {
+     "paso": 2,
+     "operacion": "rama",
+     "resultado": "0,024",
+     "texto": "Rama de C."
+    },
+    {
+     "paso": 3,
+     "operacion": "Bayes",
+     "resultado": "0,571",
+     "texto": "Cociente."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Tres talleres, A, B y C, fabrican, respectivamente, el 30 %, 10 % y 60 % de las piezas, con un 8 %, 2 % y 3 % de piezas defectuosas. Se toma una pieza al azar y es defectuosa. ¿Qué probabilidad hay de que sea del taller B?",
+   "respuesta": "0,045",
+   "distractores": [
+    {
+     "valor": "0,02",
+     "error": "E01"
+    },
+    {
+     "valor": "0,1",
+     "error": "E02"
+    },
+    {
+     "valor": "0,015",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "EST.PROB.12"
+   ],
+   "explicacion_nino": "Primero la probabilidad total del efecto: P = 0,3·0,08 + 0,1·0,02 + 0,6·0,03 = 0,044. Luego Bayes: P(B | efecto) = 0,1·0,02 / 0,044 ≈ 0,045.",
+   "explicacion_adulto": "Está aprendiendo el teorema de Bayes: cómo cambia la probabilidad de una causa cuando sabemos que ha ocurrido cierto efecto. La clave es P(causa | efecto) = P(causa)·P(efecto | causa) / P(efecto), con P(efecto) por probabilidad total. Los errores típicos son confundir P(efecto | causa) con P(causa | efecto) e ignorar lo rara que es la causa (la tasa base). Pídale que imagine 10 000 casos y cuente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "total",
+     "resultado": "0,044",
+     "texto": "Suma de las tres ramas."
+    },
+    {
+     "paso": 2,
+     "operacion": "rama",
+     "resultado": "0,002",
+     "texto": "Rama de B."
+    },
+    {
+     "paso": 3,
+     "operacion": "Bayes",
+     "resultado": "0,045",
+     "texto": "Cociente."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Tres talleres, A, B y C, fabrican, respectivamente, el 40 %, 50 % y 10 % de las piezas, con un 7 %, 4 % y 9 % de piezas defectuosas. Se toma una pieza al azar y es defectuosa. ¿Qué probabilidad hay de que sea del taller B?",
+   "respuesta": "0,351",
+   "distractores": [
+    {
+     "valor": "0,04",
+     "error": "E01"
+    },
+    {
+     "valor": "0,5",
+     "error": "E02"
+    },
+    {
+     "valor": "0,1",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "EST.PROB.12"
+   ],
+   "explicacion_nino": "Primero la probabilidad total del efecto: P = 0,4·0,07 + 0,5·0,04 + 0,1·0,09 = 0,057. Luego Bayes: P(B | efecto) = 0,5·0,04 / 0,057 ≈ 0,351.",
+   "explicacion_adulto": "Está aprendiendo el teorema de Bayes: cómo cambia la probabilidad de una causa cuando sabemos que ha ocurrido cierto efecto. La clave es P(causa | efecto) = P(causa)·P(efecto | causa) / P(efecto), con P(efecto) por probabilidad total. Los errores típicos son confundir P(efecto | causa) con P(causa | efecto) e ignorar lo rara que es la causa (la tasa base). Pídale que imagine 10 000 casos y cuente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "total",
+     "resultado": "0,057",
+     "texto": "Suma de las tres ramas."
+    },
+    {
+     "paso": 2,
+     "operacion": "rama",
+     "resultado": "0,02",
+     "texto": "Rama de B."
+    },
+    {
+     "paso": 3,
+     "operacion": "Bayes",
+     "resultado": "0,351",
+     "texto": "Cociente."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Tres imprentas, A, B y C, hacen el 40 %, 25 % y 35 % de los libros de una editorial; tienen erratas el 4 %, 6 % y 2 % de sus libros. Se toma un libro al azar y tiene erratas. ¿Qué probabilidad hay de que sea de la imprenta C?",
+   "respuesta": "0,184",
+   "distractores": [
+    {
+     "valor": "0,02",
+     "error": "E01"
+    },
+    {
+     "valor": "0,35",
+     "error": "E02"
+    },
+    {
+     "valor": "0,058",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "EST.PROB.12"
+   ],
+   "explicacion_nino": "Primero la probabilidad total del efecto: P = 0,4·0,04 + 0,25·0,06 + 0,35·0,02 = 0,038. Luego Bayes: P(C | efecto) = 0,35·0,02 / 0,038 ≈ 0,184.",
+   "explicacion_adulto": "Está aprendiendo el teorema de Bayes: cómo cambia la probabilidad de una causa cuando sabemos que ha ocurrido cierto efecto. La clave es P(causa | efecto) = P(causa)·P(efecto | causa) / P(efecto), con P(efecto) por probabilidad total. Los errores típicos son confundir P(efecto | causa) con P(causa | efecto) e ignorar lo rara que es la causa (la tasa base). Pídale que imagine 10 000 casos y cuente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "total",
+     "resultado": "0,038",
+     "texto": "Suma de las tres ramas."
+    },
+    {
+     "paso": 2,
+     "operacion": "rama",
+     "resultado": "0,007",
+     "texto": "Rama de C."
+    },
+    {
+     "paso": 3,
+     "operacion": "Bayes",
+     "resultado": "0,184",
+     "texto": "Cociente."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Tres imprentas, A, B y C, hacen el 10 %, 70 % y 20 % de los libros de una editorial; tienen erratas el 1 %, 7 % y 8 % de sus libros. Se toma un libro al azar y tiene erratas. ¿Qué probabilidad hay de que sea de la imprenta B?",
+   "respuesta": "0,742",
+   "distractores": [
+    {
+     "valor": "0,07",
+     "error": "E01"
+    },
+    {
+     "valor": "0,7",
+     "error": "E02"
+    },
+    {
+     "valor": "0,306",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "EST.PROB.12"
+   ],
+   "explicacion_nino": "Primero la probabilidad total del efecto: P = 0,1·0,01 + 0,7·0,07 + 0,2·0,08 = 0,066. Luego Bayes: P(B | efecto) = 0,7·0,07 / 0,066 ≈ 0,742.",
+   "explicacion_adulto": "Está aprendiendo el teorema de Bayes: cómo cambia la probabilidad de una causa cuando sabemos que ha ocurrido cierto efecto. La clave es P(causa | efecto) = P(causa)·P(efecto | causa) / P(efecto), con P(efecto) por probabilidad total. Los errores típicos son confundir P(efecto | causa) con P(causa | efecto) e ignorar lo rara que es la causa (la tasa base). Pídale que imagine 10 000 casos y cuente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "total",
+     "resultado": "0,066",
+     "texto": "Suma de las tres ramas."
+    },
+    {
+     "paso": 2,
+     "operacion": "rama",
+     "resultado": "0,049",
+     "texto": "Rama de B."
+    },
+    {
+     "paso": 3,
+     "operacion": "Bayes",
+     "resultado": "0,742",
+     "texto": "Cociente."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "U₁ tiene 6 bolas rojas y 2 verdes; U₂ tiene 3 rojas y 4 verdes. Primero se lanza una moneda: con cara se usa la urna U₁ y con cruz la U₂, y de ella se saca una bola. Ha salido roja. ¿Qué probabilidad hay de que viniera de U₁?",
+   "respuesta": "7/11",
+   "distractores": [
+    {
+     "valor": "3/4",
+     "error": "E01"
+    },
+    {
+     "valor": "1/2",
+     "error": "E02"
+    },
+    {
+     "valor": "2/3",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(1/2 × 6/8) : (1/2 × 6/8 + 1/2 × 3/7)",
+   "secundarias": [],
+   "explicacion_nino": "P(roja) = 1/2·6/8 + 1/2·3/7 = 33/56. P(U₁ | roja) = (1/2·6/8) / 33/56 = 7/11.",
+   "explicacion_adulto": "Está aprendiendo el teorema de Bayes: cómo cambia la probabilidad de una causa cuando sabemos que ha ocurrido cierto efecto. La clave es P(causa | efecto) = P(causa)·P(efecto | causa) / P(efecto), con P(efecto) por probabilidad total. Los errores típicos son confundir P(efecto | causa) con P(causa | efecto) e ignorar lo rara que es la causa (la tasa base). Pídale que imagine 10 000 casos y cuente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "total",
+     "resultado": "33/56",
+     "texto": "Probabilidad de roja."
+    },
+    {
+     "paso": 2,
+     "operacion": "rama U₁",
+     "resultado": "3/8",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "Bayes",
+     "resultado": "7/11",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "U₁ tiene 5 bolas rojas y 6 verdes; U₂ tiene 2 rojas y 3 verdes. Primero se lanza un dado: con 1 o 2 se usa la urna U₁ y si no la U₂, y de ella se saca una bola. Ha salido roja. ¿Qué probabilidad hay de que viniera de U₁?",
+   "respuesta": "25/69",
+   "distractores": [
+    {
+     "valor": "5/11",
+     "error": "E01"
+    },
+    {
+     "valor": "1/3",
+     "error": "E02"
+    },
+    {
+     "valor": "5/7",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(1/3 × 5/11) : (1/3 × 5/11 + 2/3 × 2/5)",
+   "secundarias": [],
+   "explicacion_nino": "P(roja) = 1/3·5/11 + 2/3·2/5 = 23/55. P(U₁ | roja) = (1/3·5/11) / 23/55 = 25/69.",
+   "explicacion_adulto": "Está aprendiendo el teorema de Bayes: cómo cambia la probabilidad de una causa cuando sabemos que ha ocurrido cierto efecto. La clave es P(causa | efecto) = P(causa)·P(efecto | causa) / P(efecto), con P(efecto) por probabilidad total. Los errores típicos son confundir P(efecto | causa) con P(causa | efecto) e ignorar lo rara que es la causa (la tasa base). Pídale que imagine 10 000 casos y cuente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "total",
+     "resultado": "23/55",
+     "texto": "Probabilidad de roja."
+    },
+    {
+     "paso": 2,
+     "operacion": "rama U₁",
+     "resultado": "5/33",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "Bayes",
+     "resultado": "25/69",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "U₁ tiene 5 bolas rojas y 2 verdes; U₂ tiene 4 rojas y 5 verdes. Primero se lanza un dado: con 1 o 2 se usa la urna U₁ y si no la U₂, y de ella se saca una bola. Ha salido roja. ¿Qué probabilidad hay de que viniera de U₁?",
+   "respuesta": "45/101",
+   "distractores": [
+    {
+     "valor": "5/7",
+     "error": "E01"
+    },
+    {
+     "valor": "1/3",
+     "error": "E02"
+    },
+    {
+     "valor": "5/9",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(1/3 × 5/7) : (1/3 × 5/7 + 2/3 × 4/9)",
+   "secundarias": [],
+   "explicacion_nino": "P(roja) = 1/3·5/7 + 2/3·4/9 = 101/189. P(U₁ | roja) = (1/3·5/7) / 101/189 = 45/101.",
+   "explicacion_adulto": "Está aprendiendo el teorema de Bayes: cómo cambia la probabilidad de una causa cuando sabemos que ha ocurrido cierto efecto. La clave es P(causa | efecto) = P(causa)·P(efecto | causa) / P(efecto), con P(efecto) por probabilidad total. Los errores típicos son confundir P(efecto | causa) con P(causa | efecto) e ignorar lo rara que es la causa (la tasa base). Pídale que imagine 10 000 casos y cuente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "total",
+     "resultado": "101/189",
+     "texto": "Probabilidad de roja."
+    },
+    {
+     "paso": 2,
+     "operacion": "rama U₁",
+     "resultado": "5/21",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "Bayes",
+     "resultado": "45/101",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "U₁ tiene 5 bolas rojas y 6 verdes; U₂ tiene 5 rojas y 2 verdes. Primero se saca una carta de una baraja española: si es de copas se usa la urna U₁ y si no la U₂, y de ella se saca una bola. Ha salido roja. ¿Qué probabilidad hay de que viniera de U₁?",
+   "respuesta": "7/40",
+   "distractores": [
+    {
+     "valor": "5/11",
+     "error": "E01"
+    },
+    {
+     "valor": "1/4",
+     "error": "E02"
+    },
+    {
+     "valor": "1/2",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(1/4 × 5/11) : (1/4 × 5/11 + 3/4 × 5/7)",
+   "secundarias": [],
+   "explicacion_nino": "P(roja) = 1/4·5/11 + 3/4·5/7 = 50/77. P(U₁ | roja) = (1/4·5/11) / 50/77 = 7/40.",
+   "explicacion_adulto": "Está aprendiendo el teorema de Bayes: cómo cambia la probabilidad de una causa cuando sabemos que ha ocurrido cierto efecto. La clave es P(causa | efecto) = P(causa)·P(efecto | causa) / P(efecto), con P(efecto) por probabilidad total. Los errores típicos son confundir P(efecto | causa) con P(causa | efecto) e ignorar lo rara que es la causa (la tasa base). Pídale que imagine 10 000 casos y cuente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "total",
+     "resultado": "50/77",
+     "texto": "Probabilidad de roja."
+    },
+    {
+     "paso": 2,
+     "operacion": "rama U₁",
+     "resultado": "5/44",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "Bayes",
+     "resultado": "7/40",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "U₁ tiene 3 bolas rojas y 7 verdes; U₂ tiene 6 rojas y 2 verdes. Primero se lanza una moneda: con cara se usa la urna U₁ y con cruz la U₂, y de ella se saca una bola. Ha salido roja. ¿Qué probabilidad hay de que viniera de U₁?",
+   "respuesta": "2/7",
+   "distractores": [
+    {
+     "valor": "3/10",
+     "error": "E01"
+    },
+    {
+     "valor": "1/2",
+     "error": "E02"
+    },
+    {
+     "valor": "1/3",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(1/2 × 3/10) : (1/2 × 3/10 + 1/2 × 6/8)",
+   "secundarias": [],
+   "explicacion_nino": "P(roja) = 1/2·3/10 + 1/2·6/8 = 21/40. P(U₁ | roja) = (1/2·3/10) / 21/40 = 2/7.",
+   "explicacion_adulto": "Está aprendiendo el teorema de Bayes: cómo cambia la probabilidad de una causa cuando sabemos que ha ocurrido cierto efecto. La clave es P(causa | efecto) = P(causa)·P(efecto | causa) / P(efecto), con P(efecto) por probabilidad total. Los errores típicos son confundir P(efecto | causa) con P(causa | efecto) e ignorar lo rara que es la causa (la tasa base). Pídale que imagine 10 000 casos y cuente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "total",
+     "resultado": "21/40",
+     "texto": "Probabilidad de roja."
+    },
+    {
+     "paso": 2,
+     "operacion": "rama U₁",
+     "resultado": "3/20",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "Bayes",
+     "resultado": "2/7",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "U₁ tiene 3 bolas rojas y 7 verdes; U₂ tiene 2 rojas y 3 verdes. Primero se lanza un dado: con 1 o 2 se usa la urna U₁ y si no la U₂, y de ella se saca una bola. Ha salido roja. ¿Qué probabilidad hay de que viniera de U₁?",
+   "respuesta": "3/11",
+   "distractores": [
+    {
+     "valor": "3/10",
+     "error": "E01"
+    },
+    {
+     "valor": "1/3",
+     "error": "E02"
+    },
+    {
+     "valor": "3/5",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(1/3 × 3/10) : (1/3 × 3/10 + 2/3 × 2/5)",
+   "secundarias": [],
+   "explicacion_nino": "P(roja) = 1/3·3/10 + 2/3·2/5 = 11/30. P(U₁ | roja) = (1/3·3/10) / 11/30 = 3/11.",
+   "explicacion_adulto": "Está aprendiendo el teorema de Bayes: cómo cambia la probabilidad de una causa cuando sabemos que ha ocurrido cierto efecto. La clave es P(causa | efecto) = P(causa)·P(efecto | causa) / P(efecto), con P(efecto) por probabilidad total. Los errores típicos son confundir P(efecto | causa) con P(causa | efecto) e ignorar lo rara que es la causa (la tasa base). Pídale que imagine 10 000 casos y cuente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "total",
+     "resultado": "11/30",
+     "texto": "Probabilidad de roja."
+    },
+    {
+     "paso": 2,
+     "operacion": "rama U₁",
+     "resultado": "1/10",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "Bayes",
+     "resultado": "3/11",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "U₁ tiene 3 bolas rojas y 5 verdes; U₂ tiene 2 rojas y 6 verdes. Primero se lanza un dado: con 1, 2, 3 o 4 se usa la urna U₁ y si no la U₂, y de ella se saca una bola. Ha salido roja. ¿Qué probabilidad hay de que viniera de U₁?",
+   "respuesta": "3/4",
+   "distractores": [
+    {
+     "valor": "3/8",
+     "error": "E01"
+    },
+    {
+     "valor": "2/3",
+     "error": "E02"
+    },
+    {
+     "valor": "3/5",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(2/3 × 3/8) : (2/3 × 3/8 + 1/3 × 2/8)",
+   "secundarias": [],
+   "explicacion_nino": "P(roja) = 2/3·3/8 + 1/3·2/8 = 1/3. P(U₁ | roja) = (2/3·3/8) / 1/3 = 3/4.",
+   "explicacion_adulto": "Está aprendiendo el teorema de Bayes: cómo cambia la probabilidad de una causa cuando sabemos que ha ocurrido cierto efecto. La clave es P(causa | efecto) = P(causa)·P(efecto | causa) / P(efecto), con P(efecto) por probabilidad total. Los errores típicos son confundir P(efecto | causa) con P(causa | efecto) e ignorar lo rara que es la causa (la tasa base). Pídale que imagine 10 000 casos y cuente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "total",
+     "resultado": "1/3",
+     "texto": "Probabilidad de roja."
+    },
+    {
+     "paso": 2,
+     "operacion": "rama U₁",
+     "resultado": "1/4",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "Bayes",
+     "resultado": "3/4",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "El 20 % de los correos que recibe Nuria son spam. La palabra «oferta» aparece en el 40 % de los correos spam y en el 5 % de los que no lo son. Llega un correo con «oferta». ¿Qué probabilidad hay de que sea spam?",
+   "respuesta": "0,667",
+   "distractores": [
+    {
+     "valor": "0,4",
+     "error": "E01"
+    },
+    {
+     "valor": "0,889",
+     "error": "E02"
+    },
+    {
+     "valor": "0,2",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "P(«oferta») = 0,2·0,4 + 0,8·0,05 = 0,12. P(spam | «oferta») = 0,2·0,4 / 0,12 ≈ 0,667. La observación sube la probabilidad de spam de 20 % a más del 66 %.",
+   "explicacion_adulto": "Está aprendiendo el teorema de Bayes: cómo cambia la probabilidad de una causa cuando sabemos que ha ocurrido cierto efecto. La clave es P(causa | efecto) = P(causa)·P(efecto | causa) / P(efecto), con P(efecto) por probabilidad total. Los errores típicos son confundir P(efecto | causa) con P(causa | efecto) e ignorar lo rara que es la causa (la tasa base). Pídale que imagine 10 000 casos y cuente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "total",
+     "resultado": "0,12",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "rama spam",
+     "resultado": "0,08",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "Bayes",
+     "resultado": "0,667",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "El 40 % de los correos que recibe Nuria son spam. La palabra «oferta» aparece en el 50 % de los correos spam y en el 1 % de los que no lo son. Llega un correo con «oferta». ¿Qué probabilidad hay de que sea spam?",
+   "respuesta": "0,971",
+   "distractores": [
+    {
+     "valor": "0,5",
+     "error": "E01"
+    },
+    {
+     "valor": "0,98",
+     "error": "E02"
+    },
+    {
+     "valor": "0,4",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "P(«oferta») = 0,4·0,5 + 0,6·0,01 = 0,206. P(spam | «oferta») = 0,4·0,5 / 0,206 ≈ 0,971. La observación sube la probabilidad de spam de 40 % a más del 97 %.",
+   "explicacion_adulto": "Está aprendiendo el teorema de Bayes: cómo cambia la probabilidad de una causa cuando sabemos que ha ocurrido cierto efecto. La clave es P(causa | efecto) = P(causa)·P(efecto | causa) / P(efecto), con P(efecto) por probabilidad total. Los errores típicos son confundir P(efecto | causa) con P(causa | efecto) e ignorar lo rara que es la causa (la tasa base). Pídale que imagine 10 000 casos y cuente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "total",
+     "resultado": "0,206",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "rama spam",
+     "resultado": "0,2",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "Bayes",
+     "resultado": "0,971",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "El 40 % de los correos que recibe Nuria son spam. La palabra «premio» aparece en el 50 % de los correos spam y en el 5 % de los que no lo son. Llega un correo con «premio». ¿Qué probabilidad hay de que sea spam?",
+   "respuesta": "0,87",
+   "distractores": [
+    {
+     "valor": "0,5",
+     "error": "E01"
+    },
+    {
+     "valor": "0,909",
+     "error": "E02"
+    },
+    {
+     "valor": "0,4",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "P(«premio») = 0,4·0,5 + 0,6·0,05 = 0,23. P(spam | «premio») = 0,4·0,5 / 0,23 ≈ 0,87. La observación sube la probabilidad de spam de 40 % a más del 86 %.",
+   "explicacion_adulto": "Está aprendiendo el teorema de Bayes: cómo cambia la probabilidad de una causa cuando sabemos que ha ocurrido cierto efecto. La clave es P(causa | efecto) = P(causa)·P(efecto | causa) / P(efecto), con P(efecto) por probabilidad total. Los errores típicos son confundir P(efecto | causa) con P(causa | efecto) e ignorar lo rara que es la causa (la tasa base). Pídale que imagine 10 000 casos y cuente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "total",
+     "resultado": "0,23",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "rama spam",
+     "resultado": "0,2",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "Bayes",
+     "resultado": "0,87",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "El 20 % de los correos que recibe Nuria son spam. La palabra «oferta» aparece en el 60 % de los correos spam y en el 4 % de los que no lo son. Llega un correo con «oferta». ¿Qué probabilidad hay de que sea spam?",
+   "respuesta": "0,789",
+   "distractores": [
+    {
+     "valor": "0,6",
+     "error": "E01"
+    },
+    {
+     "valor": "0,938",
+     "error": "E02"
+    },
+    {
+     "valor": "0,2",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "P(«oferta») = 0,2·0,6 + 0,8·0,04 = 0,152. P(spam | «oferta») = 0,2·0,6 / 0,152 ≈ 0,789. La observación sube la probabilidad de spam de 20 % a más del 78 %.",
+   "explicacion_adulto": "Está aprendiendo el teorema de Bayes: cómo cambia la probabilidad de una causa cuando sabemos que ha ocurrido cierto efecto. La clave es P(causa | efecto) = P(causa)·P(efecto | causa) / P(efecto), con P(efecto) por probabilidad total. Los errores típicos son confundir P(efecto | causa) con P(causa | efecto) e ignorar lo rara que es la causa (la tasa base). Pídale que imagine 10 000 casos y cuente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "total",
+     "resultado": "0,152",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "rama spam",
+     "resultado": "0,12",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "Bayes",
+     "resultado": "0,789",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "El 40 % de los correos que recibe Nuria son spam. La palabra «oferta» aparece en el 50 % de los correos spam y en el 5 % de los que no lo son. Llega un correo con «oferta». ¿Qué probabilidad hay de que sea spam?",
+   "respuesta": "0,87",
+   "distractores": [
+    {
+     "valor": "0,5",
+     "error": "E01"
+    },
+    {
+     "valor": "0,909",
+     "error": "E02"
+    },
+    {
+     "valor": "0,4",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "P(«oferta») = 0,4·0,5 + 0,6·0,05 = 0,23. P(spam | «oferta») = 0,4·0,5 / 0,23 ≈ 0,87. La observación sube la probabilidad de spam de 40 % a más del 86 %.",
+   "explicacion_adulto": "Está aprendiendo el teorema de Bayes: cómo cambia la probabilidad de una causa cuando sabemos que ha ocurrido cierto efecto. La clave es P(causa | efecto) = P(causa)·P(efecto | causa) / P(efecto), con P(efecto) por probabilidad total. Los errores típicos son confundir P(efecto | causa) con P(causa | efecto) e ignorar lo rara que es la causa (la tasa base). Pídale que imagine 10 000 casos y cuente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "total",
+     "resultado": "0,23",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "rama spam",
+     "resultado": "0,2",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "Bayes",
+     "resultado": "0,87",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P04"
+  }
+ ]
+}

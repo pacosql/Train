@@ -1,0 +1,654 @@
+{
+ "NUM.DIVIS.01": {
+  "gen": "t2_multiplos",
+  "errores": {
+   "divisor": "E01",
+   "mayor": "E02",
+   "olvida_propio": "E03",
+   "salta": "E04"
+  },
+  "plantilla": "Múltiplos de un número"
+ },
+ "NUM.DIVIS.02": {
+  "gen": "t2_divisor_rel",
+  "errores": {
+   "invierte": "E01",
+   "division_con_resto": "E02"
+  },
+  "plantilla": "Relación divisor / múltiplo / divisible"
+ },
+ "NUM.DIVIS.03": {
+  "gen": "t2_criterios",
+  "kw": {
+   "grupo": "basico"
+  },
+  "errores": {
+   "ultima_cifra_3": "E01",
+   "primera_cifra": "E02",
+   "cinco_diez": "E03",
+   "suma_mal": "E04"
+  },
+  "plantilla": "Criterios de divisibilidad por 2, 3, 5 y 10"
+ },
+ "NUM.DIVIS.04": {
+  "gen": "t2_divisores",
+  "errores": {
+   "sin_pareja": "E01",
+   "no_divisor": "E02",
+   "multiplos": "E03"
+  },
+  "plantilla": "Todos los divisores de un número menor que 100"
+ },
+ "NUM.DIVIS.05": {
+  "gen": "t2_primos",
+  "errores": {
+   "impar_primo": "E01",
+   "uno_primo": "E02",
+   "dos_no_primo": "E03",
+   "sin_2_3_5": "E04"
+  },
+  "plantilla": "Primos y compuestos"
+ },
+ "NUM.DIVIS.06": {
+  "gen": "t2_mcm_listas",
+  "errores": {
+   "producto": "E01",
+   "mcd": "E02",
+   "no_menor": "E03",
+   "cero": "E04"
+  },
+  "plantilla": "m.c.m. por listas de múltiplos"
+ },
+ "NUM.DIVIS.07": {
+  "gen": "t2_mcd_listas",
+  "errores": {
+   "no_mayor": "E01",
+   "mcm": "E02",
+   "uno_o_menor": "E03"
+  },
+  "plantilla": "m.c.d. por listas de divisores"
+ },
+ "NUM.DIVIS.08": {
+  "gen": "t2_criterios",
+  "kw": {
+   "grupo": "avanzado"
+  },
+  "errores": {
+   "ultima_cifra_4": "E01",
+   "seis_media": "E02",
+   "nueve_por_tres": "E03",
+   "once_suma": "E04"
+  },
+  "plantilla": "Criterios de divisibilidad por 4, 6, 9, 11 y 25"
+ },
+ "NUM.DIVIS.09": {
+  "gen": "t2_factorizar",
+  "errores": {
+   "factor_compuesto": "E01",
+   "exponente_mal": "E02",
+   "con_uno": "E03"
+  },
+  "plantilla": "Descomposición en factores primos"
+ },
+ "NUM.DIVIS.10": {
+  "gen": "t2_mcm_mcd_fact",
+  "errores": {
+   "intercambia": "E01",
+   "exponente_mal": "E02",
+   "mcd_no_comunes": "E03",
+   "olvida_no_comun": "E04"
+  },
+  "plantilla": "m.c.m. y m.c.d. por factorización"
+ },
+ "NUM.ENT.01": {
+  "gen": "t2_ent_contexto",
+  "errores": {
+   "signo_contexto": "E01",
+   "cero_con_signo": "E02",
+   "pierde_positivo": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Enteros en contextos cotidianos"
+ },
+ "NUM.ENT.02": {
+  "gen": "t2_ent_recta",
+  "errores": {
+   "lado_contrario": "E01",
+   "cuenta_desde_uno": "E02",
+   "ignora_escala": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Enteros en la recta numérica graduada"
+ },
+ "NUM.ENT.03": {
+  "gen": "t2_ent_comparar",
+  "errores": {
+   "valor_sin_signo": "E01",
+   "cero_menor": "E02",
+   "orden_invertido": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Comparar y ordenar enteros"
+ },
+ "NUM.ENT.04": {
+  "gen": "t2_ent_abs",
+  "errores": {
+   "abs_cambia_signo": "E01",
+   "menos_abs": "E02",
+   "solo_uno": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Opuesto y valor absoluto"
+ },
+ "OPER.DIV.01": {
+  "gen": "t2_div1",
+  "errores": {
+   "invierte": "E01",
+   "olvida_cero": "E02",
+   "tabla_equivocada": "E03",
+   "cifra_a_cifra": "E04"
+  },
+  "plantilla": "División exacta con divisor de una cifra"
+ },
+ "OPER.DIV.02": {
+  "gen": "t2_div_resto",
+  "kw": {
+   "cifras_divisor": 1
+  },
+  "errores": {
+   "resto_mayor": "E01",
+   "olvida_cero": "E02",
+   "resto_ultima_cifra": "E04",
+   "resta_mal": "E05"
+  },
+  "plantilla": "División entera con divisor de una cifra (cociente y resto)"
+ },
+ "OPER.DIV.03": {
+  "gen": "t2_div_resto",
+  "kw": {
+   "cifras_divisor": 2,
+   "prueba": true
+  },
+  "errores": {
+   "resto_mayor": "E02",
+   "olvida_cero": "E03",
+   "prueba_mal": "E04"
+  },
+  "plantilla": "División entera con divisor de 2–3 cifras y su prueba"
+ },
+ "OPER.DIV.04": {
+  "gen": "t2_div10",
+  "errores": {
+   "ceros": "E01",
+   "sin_resto": "E02",
+   "anade_ceros": "E03"
+  },
+  "plantilla": "Dividir entre 10, 100 o 1000"
+ },
+ "OPER.DIV.05": {
+  "gen": "t2_div_terminos",
+  "errores": {
+   "olvida_resto": "E01",
+   "resta_resto": "E02",
+   "no_quita_resto": "E03",
+   "resto_grande": "E04"
+  },
+  "plantilla": "Término desconocido con D = d·c + r"
+ },
+ "OPER.DIV.06": {
+  "gen": "t2_div_prop",
+  "errores": {
+   "solo_uno": "E01",
+   "suma_igual": "E02",
+   "resto_igual": "E03"
+  },
+  "plantilla": "Propiedad fundamental de la división"
+ },
+ "OPER.ENT.01": {
+  "gen": "t2_ent_variacion",
+  "errores": {
+   "resta_sin_cero": "E01",
+   "sentido_contrario": "E02",
+   "cuenta_salida": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Subir y bajar con enteros en contexto"
+ },
+ "OPER.ENT.02": {
+  "gen": "t2_ent_suma",
+  "kw": {
+   "op": "suma"
+  },
+  "errores": {
+   "regla_producto": "E01",
+   "suma_abs": "E02",
+   "signo_primero": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Suma de dos enteros"
+ },
+ "OPER.ENT.03": {
+  "gen": "t2_ent_suma",
+  "kw": {
+   "op": "resta"
+  },
+  "errores": {
+   "no_cambia": "E01",
+   "cambia_ambos": "E02",
+   "resta_al_reves": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Resta de dos enteros"
+ },
+ "OPER.ENT.04": {
+  "gen": "t2_ent_cadena",
+  "errores": {
+   "solo_primero": "E01",
+   "pierde_signo": "E02",
+   "agrupa_mal": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Sumas y restas encadenadas con paréntesis"
+ },
+ "OPER.ENT.05": {
+  "gen": "t2_ent_mult",
+  "errores": {
+   "regla_suma": "E01",
+   "cuenta_negativos": "E02",
+   "signo_primero": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Producto y cociente de enteros"
+ },
+ "OPER.JERARQ.01": {
+  "gen": "jerarquia",
+  "kw": {
+   "nivel": 1,
+   "signo_mult": "×"
+  },
+  "errores": {
+   "e01": "E01",
+   "e02": "E02",
+   "e03": "E03"
+  },
+  "plantilla": "Jerarquía sin paréntesis con naturales"
+ },
+ "OPER.JERARQ.02": {
+  "gen": "jerarquia",
+  "kw": {
+   "nivel": 2,
+   "signo_mult": "·"
+  },
+  "errores": {
+   "e01": "E01",
+   "e02": "E02",
+   "e03": "E03",
+   "e04": "E04",
+   "e05": "E05"
+  },
+  "plantilla": "Operaciones combinadas con paréntesis y corchetes"
+ },
+ "OPER.JERARQ.03": {
+  "gen": "t2_jerarq_pot",
+  "errores": {
+   "op_antes_pot": "E01",
+   "pot_producto": "E02",
+   "raiz_suma": "E03",
+   "olvida_pot": "E04"
+  },
+  "plantilla": "Jerarquía con potencias y raíces cuadradas exactas"
+ },
+ "OPER.JERARQ.04": {
+  "gen": "t2_jerarq_ent",
+  "errores": {
+   "menos_parentesis": "E01",
+   "regla_signos_suma": "E02",
+   "izq_der": "E03",
+   "menos_cuadrado": "E04"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Operaciones combinadas con enteros"
+ },
+ "OPER.JERARQ.05": {
+  "gen": "t2_jerarq_frac",
+  "errores": {
+   "suma_antes": "E01",
+   "suma_nd": "E02",
+   "divide_sin_invertir": "E03",
+   "entero_nd": "E04"
+  },
+  "plantilla": "Operaciones combinadas con fracciones"
+ },
+ "OPER.JERARQ.06": {
+  "gen": "t2_jerarq_potfrac",
+  "errores": {
+   "exp_neg_negativo": "E01",
+   "solo_numerador": "E02",
+   "cero_da_cero": "E03",
+   "pierde_signo": "E04"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Operaciones combinadas con racionales y potencias de exponente entero"
+ },
+ "OPER.MULT.01": {
+  "gen": "t2_mult_sentido",
+  "errores": {
+   "suma": "E01",
+   "cuenta_mal": "E02",
+   "grupos_cambiados": "E03",
+   "uno_mas": "E04"
+  },
+  "plantilla": "Suma repetida ↔ multiplicación, 'veces', filas × columnas"
+ },
+ "OPER.MULT.02": {
+  "gen": "t2_tabla",
+  "kw": {
+   "frases": 1
+  },
+  "errores": {
+   "vecino": "E01",
+   "suma": "E02",
+   "cruza": "E03",
+   "por0": "E04"
+  },
+  "plantilla": "Tablas mezcladas: a × b con factores de 0 a 10"
+ },
+ "OPER.MULT.03": {
+  "gen": "t2_mult1",
+  "errores": {
+   "sin_llevada": "E01",
+   "llevada_antes": "E02",
+   "escribe_todo": "E03",
+   "salta_cero": "E04",
+   "tabla": "E05"
+  },
+  "plantilla": "Número de 2–4 cifras × una cifra"
+ },
+ "OPER.MULT.04": {
+  "gen": "t2_mult10",
+  "errores": {
+   "ceros": "E01",
+   "no_cuenta": "E02",
+   "suma": "E03"
+  },
+  "plantilla": "Natural × 10, 100 o 1000"
+ },
+ "OPER.MULT.05": {
+  "gen": "t2_mult_decenas",
+  "errores": {
+   "olvida_ceros": "E01",
+   "come_cero": "E02",
+   "solo_cifras": "E03"
+  },
+  "plantilla": "Natural × cifra seguida de ceros"
+ },
+ "OPER.MULT.06": {
+  "gen": "t2_mult2",
+  "kw": {
+   "cifras_b": 2
+  },
+  "errores": {
+   "sin_desplazar": "E01",
+   "cifra_a_cifra": "E02",
+   "mezcla_llevadas": "E03",
+   "suma_mal": "E04"
+  },
+  "plantilla": "Número de 2–4 cifras × número de 2 cifras"
+ },
+ "OPER.MULT.07": {
+  "gen": "t2_mult2",
+  "kw": {
+   "cifras_b": 3
+  },
+  "errores": {
+   "desplaza_poco": "E01",
+   "cero_medio": "E02",
+   "suma_mal": "E03"
+  },
+  "plantilla": "Número de hasta 4 cifras × número de 3 cifras"
+ },
+ "OPER.MULT.08": {
+  "gen": "t2_mult_prop",
+  "errores": {
+   "distribuye_primero": "E01",
+   "conmuta_resta": "E02",
+   "nombre": "E03"
+  },
+  "plantilla": "Propiedades conmutativa, asociativa, neutro y distributiva"
+ },
+ "OPER.POT.01": {
+  "gen": "t2_potencia",
+  "errores": {
+   "base_por_exp": "E01",
+   "factor_de_mas": "E03",
+   "base_exp_cambiados": "E04"
+  },
+  "plantilla": "Potencias de base natural"
+ },
+ "OPER.POT.02": {
+  "gen": "t2_pot_prop",
+  "errores": {
+   "multiplica_exp": "E01",
+   "multiplica_bases": "E02",
+   "suma_exp_potpot": "E03",
+   "misma_base_distintas": "E04",
+   "divide_exp": "E05"
+  },
+  "plantilla": "Propiedades de las potencias (exponente natural)"
+ },
+ "OPER.POT.03": {
+  "gen": "t2_pot10",
+  "errores": {
+   "cero_mas_menos": "E01",
+   "diez_por_exp": "E02",
+   "ceros_propios": "E03"
+  },
+  "plantilla": "Potencias de base 10"
+ },
+ "OPER.POT.04": {
+  "gen": "t2_pot_entera",
+  "errores": {
+   "menos_fuera": "E01",
+   "signo_fijo": "E02",
+   "base_por_exp": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Potencias de base entera y exponente natural"
+ },
+ "OPER.POT.05": {
+  "gen": "t2_pot_negativa",
+  "errores": {
+   "exp_neg_da_neg": "E01",
+   "cero_da_cero_o_base": "E02",
+   "pierde_signo_base": "E03",
+   "base_por_exp": "E04"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Potencias con exponente cero y negativo"
+ },
+ "OPER.POT.06": {
+  "gen": "t2_pot_prop",
+  "kw": {
+   "enteros": true
+  },
+  "errores": {
+   "resta_neg_mal": "E01",
+   "multiplica_exp": "E02",
+   "sin_base_comun": "E03",
+   "pierde_signo_potpot": "E04"
+  },
+  "plantilla": "Propiedades de las potencias con exponente entero"
+ },
+ "OPER.RAIZ.01": {
+  "gen": "t2_raiz_exacta",
+  "errores": {
+   "divide_dos": "E01",
+   "cercano": "E02",
+   "cualquiera_exacta": "E03",
+   "quita_cero": "E04"
+  },
+  "plantilla": "Raíz cuadrada exacta"
+ },
+ "OPER.RAIZ.02": {
+  "gen": "t2_raiz_entera",
+  "errores": {
+   "por_exceso": "E01",
+   "se_queda_corto": "E02",
+   "resto_sin_cuadrado": "E03",
+   "decimal": "E04"
+  },
+  "plantilla": "Raíz cuadrada entera por tanteo, con resto"
+ },
+ "OPER.RAIZ.03": {
+  "gen": "t2_raiz_entera",
+  "kw": {
+   "algoritmo": true
+  },
+  "errores": {
+   "agrupa_izquierda": "E01",
+   "no_duplica": "E02",
+   "salta_cero": "E03"
+  },
+  "plantilla": "Algoritmo de la raíz cuadrada"
+ },
+ "OPER.RAIZ.04": {
+  "gen": "t2_raiz_enteros",
+  "errores": {
+   "solo_positiva": "E01",
+   "raiz_negativo": "E02",
+   "confunde_menos": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Raíz cuadrada de enteros (dos raíces opuestas)"
+ },
+ "OPER.RAIZ.05": {
+  "gen": "t2_raiz_fracdec",
+  "errores": {
+   "coma_mal": "E01",
+   "solo_numerador": "E02",
+   "por_exceso": "E03",
+   "termino_a_termino": "E04"
+  },
+  "plantilla": "Raíz de fracciones y decimales; aproximación"
+ },
+ "OPER.TABLA.01": {
+  "gen": "t2_tabla",
+  "kw": {
+   "tabla": 1
+  },
+  "errores": {
+   "vecino": "E01",
+   "por1": "E03",
+   "por0": "E04"
+  },
+  "secundarias": [],
+  "plantilla": "Hechos de la tabla del 1 (orden salteado e inverso)"
+ },
+ "OPER.TABLA.02": {
+  "gen": "t2_tabla",
+  "kw": {
+   "tabla": 2
+  },
+  "errores": {
+   "vecino": "E01",
+   "suma": "E03"
+  },
+  "secundarias": [],
+  "plantilla": "Hechos de la tabla del 2 (orden salteado e inverso)"
+ },
+ "OPER.TABLA.03": {
+  "gen": "t2_tabla",
+  "kw": {
+   "tabla": 3
+  },
+  "errores": {
+   "vecino": "E01",
+   "otra_tabla": "E03"
+  },
+  "secundarias": [],
+  "plantilla": "Hechos de la tabla del 3 (orden salteado e inverso)"
+ },
+ "OPER.TABLA.04": {
+  "gen": "t2_tabla",
+  "kw": {
+   "tabla": 4
+  },
+  "errores": {
+   "vecino": "E01",
+   "dobla_una_vez": "E03"
+  },
+  "secundarias": [],
+  "plantilla": "Hechos de la tabla del 4 (orden salteado e inverso)"
+ },
+ "OPER.TABLA.05": {
+  "gen": "t2_tabla",
+  "kw": {
+   "tabla": 5
+  },
+  "errores": {
+   "vecino": "E01"
+  },
+  "secundarias": [],
+  "plantilla": "Hechos de la tabla del 5 (orden salteado e inverso)"
+ },
+ "OPER.TABLA.06": {
+  "gen": "t2_tabla",
+  "kw": {
+   "tabla": 6
+  },
+  "errores": {
+   "vecino": "E01",
+   "cruza": "E03"
+  },
+  "secundarias": [],
+  "plantilla": "Hechos de la tabla del 6 (orden salteado e inverso)"
+ },
+ "OPER.TABLA.07": {
+  "gen": "t2_tabla",
+  "kw": {
+   "tabla": 7
+  },
+  "errores": {
+   "vecino": "E01",
+   "cruza": "E03"
+  },
+  "secundarias": [],
+  "plantilla": "Hechos de la tabla del 7 (orden salteado e inverso)"
+ },
+ "OPER.TABLA.08": {
+  "gen": "t2_tabla",
+  "kw": {
+   "tabla": 8
+  },
+  "errores": {
+   "vecino": "E01",
+   "cruza": "E03"
+  },
+  "secundarias": [],
+  "plantilla": "Hechos de la tabla del 8 (orden salteado e inverso)"
+ },
+ "OPER.TABLA.09": {
+  "gen": "t2_tabla",
+  "kw": {
+   "tabla": 9
+  },
+  "errores": {
+   "vecino": "E01",
+   "truco9": "E03"
+  },
+  "secundarias": [],
+  "plantilla": "Hechos de la tabla del 9 (orden salteado e inverso)"
+ },
+ "OPER.TABLA.10": {
+  "gen": "t2_tabla",
+  "kw": {
+   "tabla": 10
+  },
+  "errores": {
+   "vecino": "E01",
+   "ceros": "E03"
+  },
+  "secundarias": [],
+  "plantilla": "Hechos de la tabla del 10 (orden salteado e inverso)"
+ }
+}

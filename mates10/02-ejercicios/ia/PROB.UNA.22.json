@@ -1,0 +1,1286 @@
+{
+ "habilidad": "PROB.UNA.22",
+ "generado_por": "claude (skill mates10-generar-ejercicios v1)",
+ "ejercicios": [
+  {
+   "dificultad": 1,
+   "enunciado": "Van de excursión 11 alumnos en furgonetas de 3 plazas. ¿Cuántas furgonetas hacen falta para que vayan todos?",
+   "respuesta": "4",
+   "distractores": [
+    {
+     "valor": "3",
+     "error": "E01"
+    },
+    {
+     "valor": "2",
+     "error": "E02"
+    },
+    {
+     "valor": "3,67",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "(11 − 2) : 3 + 1",
+   "secundarias": [
+    "OPER.DIV.02"
+   ],
+   "explicacion_nino": "Divide: 11 : 3 = 3 y sobran 2. Con 3 no caben todos: quedan 2 sin sitio, así que hace falta una más. Respuesta: 3 + 1 = 4. Comprueba: 4 × 3 = 12, que llega para 11.",
+   "explicacion_adulto": "Está aprendiendo que, cuando la división no es exacta, la respuesta depende de la pregunta: a veces es el cociente (grupos completos), a veces el cociente más uno (hace falta uno más para los que sobran) y a veces el resto (lo que sobra). Pídale que lea la pregunta de nuevo y que piense qué pasa con los que sobran.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "11 : 3",
+     "resultado": "3, resto 2",
+     "texto": "Hacemos la división."
+    },
+    {
+     "paso": 2,
+     "operacion": "3 + 1",
+     "resultado": "4",
+     "texto": "Los que sobran también necesitan sitio: una más."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Con 16 caramelos, Jorge hace bolsas de 3 caramelos. ¿Cuántas bolsas completas puede hacer?",
+   "respuesta": "5",
+   "distractores": [
+    {
+     "valor": "6",
+     "error": "E04"
+    },
+    {
+     "valor": "1",
+     "error": "E02"
+    },
+    {
+     "valor": "5,33",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "(16 − 1) : 3",
+   "secundarias": [
+    "OPER.DIV.02"
+   ],
+   "explicacion_nino": "Divide: 16 : 3 = 5 y sobran 1. Con lo que sobra no se completa otro grupo de 3, así que la respuesta es 5. Comprueba: 5 × 3 + 1 = 16.",
+   "explicacion_adulto": "Está aprendiendo que, cuando la división no es exacta, la respuesta depende de la pregunta: a veces es el cociente (grupos completos), a veces el cociente más uno (hace falta uno más para los que sobran) y a veces el resto (lo que sobra). Pídale que lea la pregunta de nuevo y que piense qué pasa con los que sobran.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "16 : 3",
+     "resultado": "5, resto 1",
+     "texto": "Hacemos la división."
+    },
+    {
+     "paso": 2,
+     "operacion": "interpretar",
+     "resultado": "5",
+     "texto": "Solo cuentan los grupos completos; los 1 que sobran no llegan a 3."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Aleix reparte 7 cromos entre 2 amigos, a todos los mismos y los máximos posibles. ¿Cuántos cromos le sobran?",
+   "respuesta": "1",
+   "distractores": [
+    {
+     "valor": "3",
+     "error": null
+    },
+    {
+     "valor": "4",
+     "error": null
+    },
+    {
+     "valor": "2",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "7 − 3 × 2",
+   "secundarias": [
+    "OPER.DIV.02"
+   ],
+   "explicacion_nino": "Divide: 7 : 2 = 3 y sobran 1. A cada amigo le tocan 3 y la pregunta es lo que sobra: 1. Comprueba: 3 × 2 + 1 = 7.",
+   "explicacion_adulto": "Está aprendiendo que, cuando la división no es exacta, la respuesta depende de la pregunta: a veces es el cociente (grupos completos), a veces el cociente más uno (hace falta uno más para los que sobran) y a veces el resto (lo que sobra). Pídale que lea la pregunta de nuevo y que piense qué pasa con los que sobran.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "7 : 2",
+     "resultado": "3, resto 1",
+     "texto": "Hacemos la división."
+    },
+    {
+     "paso": 2,
+     "operacion": "interpretar",
+     "resultado": "1",
+     "texto": "La pregunta es lo que sobra: el resto."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Hay que guardar 17 libros en cajas donde caben 4. ¿Cuántas cajas hacen falta para guardarlos todos?",
+   "respuesta": "5",
+   "distractores": [
+    {
+     "valor": "4",
+     "error": "E01"
+    },
+    {
+     "valor": "1",
+     "error": "E02"
+    },
+    {
+     "valor": "4,25",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "(17 − 1) : 4 + 1",
+   "secundarias": [
+    "OPER.DIV.02"
+   ],
+   "explicacion_nino": "Divide: 17 : 4 = 4 y sobran 1. Con 4 no caben todos: quedan 1 sin sitio, así que hace falta una más. Respuesta: 4 + 1 = 5. Comprueba: 5 × 4 = 20, que llega para 17.",
+   "explicacion_adulto": "Está aprendiendo que, cuando la división no es exacta, la respuesta depende de la pregunta: a veces es el cociente (grupos completos), a veces el cociente más uno (hace falta uno más para los que sobran) y a veces el resto (lo que sobra). Pídale que lea la pregunta de nuevo y que piense qué pasa con los que sobran.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "17 : 4",
+     "resultado": "4, resto 1",
+     "texto": "Hacemos la división."
+    },
+    {
+     "paso": 2,
+     "operacion": "4 + 1",
+     "resultado": "5",
+     "texto": "Los que sobran también necesitan sitio: una más."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Con 18 metros de cuerda cortamos trozos de 4 metros. ¿Cuántos trozos de 4 metros salen?",
+   "respuesta": "4",
+   "distractores": [
+    {
+     "valor": "5",
+     "error": "E04"
+    },
+    {
+     "valor": "2",
+     "error": "E02"
+    },
+    {
+     "valor": "4,5",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "(18 − 2) : 4",
+   "secundarias": [
+    "OPER.DIV.02"
+   ],
+   "explicacion_nino": "Divide: 18 : 4 = 4 y sobran 2. Con lo que sobra no se completa otro grupo de 4, así que la respuesta es 4. Comprueba: 4 × 4 + 2 = 18.",
+   "explicacion_adulto": "Está aprendiendo que, cuando la división no es exacta, la respuesta depende de la pregunta: a veces es el cociente (grupos completos), a veces el cociente más uno (hace falta uno más para los que sobran) y a veces el resto (lo que sobra). Pídale que lea la pregunta de nuevo y que piense qué pasa con los que sobran.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "18 : 4",
+     "resultado": "4, resto 2",
+     "texto": "Hacemos la división."
+    },
+    {
+     "paso": 2,
+     "operacion": "interpretar",
+     "resultado": "4",
+     "texto": "Solo cuentan los grupos completos; los 2 que sobran no llegan a 4."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Van de excursión 37 alumnos en furgonetas de 4 plazas. ¿Cuántas furgonetas hacen falta para que vayan todos?",
+   "respuesta": "10",
+   "distractores": [
+    {
+     "valor": "9",
+     "error": "E01"
+    },
+    {
+     "valor": "1",
+     "error": "E02"
+    },
+    {
+     "valor": "9,25",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "(37 − 1) : 4 + 1",
+   "secundarias": [
+    "OPER.DIV.02"
+   ],
+   "explicacion_nino": "Divide: 37 : 4 = 9 y sobran 1. Con 9 no caben todos: quedan 1 sin sitio, así que hace falta una más. Respuesta: 9 + 1 = 10. Comprueba: 10 × 4 = 40, que llega para 37.",
+   "explicacion_adulto": "Está aprendiendo que, cuando la división no es exacta, la respuesta depende de la pregunta: a veces es el cociente (grupos completos), a veces el cociente más uno (hace falta uno más para los que sobran) y a veces el resto (lo que sobra). Pídale que lea la pregunta de nuevo y que piense qué pasa con los que sobran.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "37 : 4",
+     "resultado": "9, resto 1",
+     "texto": "Hacemos la división."
+    },
+    {
+     "paso": 2,
+     "operacion": "9 + 1",
+     "resultado": "10",
+     "texto": "Los que sobran también necesitan sitio: una más."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Con 5 caramelos, Javier hace bolsas de 2 caramelos. ¿Cuántas bolsas completas puede hacer?",
+   "respuesta": "2",
+   "distractores": [
+    {
+     "valor": "3",
+     "error": "E04"
+    },
+    {
+     "valor": "1",
+     "error": "E02"
+    },
+    {
+     "valor": "2,5",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "(5 − 1) : 2",
+   "secundarias": [
+    "OPER.DIV.02"
+   ],
+   "explicacion_nino": "Divide: 5 : 2 = 2 y sobran 1. Con lo que sobra no se completa otro grupo de 2, así que la respuesta es 2. Comprueba: 2 × 2 + 1 = 5.",
+   "explicacion_adulto": "Está aprendiendo que, cuando la división no es exacta, la respuesta depende de la pregunta: a veces es el cociente (grupos completos), a veces el cociente más uno (hace falta uno más para los que sobran) y a veces el resto (lo que sobra). Pídale que lea la pregunta de nuevo y que piense qué pasa con los que sobran.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "5 : 2",
+     "resultado": "2, resto 1",
+     "texto": "Hacemos la división."
+    },
+    {
+     "paso": 2,
+     "operacion": "interpretar",
+     "resultado": "2",
+     "texto": "Solo cuentan los grupos completos; los 1 que sobran no llegan a 2."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Claudia reparte 9 cromos entre 2 amigos, a todos los mismos y los máximos posibles. ¿Cuántos cromos le sobran?",
+   "respuesta": "1",
+   "distractores": [
+    {
+     "valor": "4",
+     "error": null
+    },
+    {
+     "valor": "5",
+     "error": null
+    },
+    {
+     "valor": "2",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "9 − 4 × 2",
+   "secundarias": [
+    "OPER.DIV.02"
+   ],
+   "explicacion_nino": "Divide: 9 : 2 = 4 y sobran 1. A cada amigo le tocan 4 y la pregunta es lo que sobra: 1. Comprueba: 4 × 2 + 1 = 9.",
+   "explicacion_adulto": "Está aprendiendo que, cuando la división no es exacta, la respuesta depende de la pregunta: a veces es el cociente (grupos completos), a veces el cociente más uno (hace falta uno más para los que sobran) y a veces el resto (lo que sobra). Pídale que lea la pregunta de nuevo y que piense qué pasa con los que sobran.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "9 : 2",
+     "resultado": "4, resto 1",
+     "texto": "Hacemos la división."
+    },
+    {
+     "paso": 2,
+     "operacion": "interpretar",
+     "resultado": "1",
+     "texto": "La pregunta es lo que sobra: el resto."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Hay que guardar 28 libros en cajas donde caben 3. ¿Cuántas cajas hacen falta para guardarlos todos?",
+   "respuesta": "10",
+   "distractores": [
+    {
+     "valor": "9",
+     "error": "E01"
+    },
+    {
+     "valor": "1",
+     "error": "E02"
+    },
+    {
+     "valor": "9,33",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "(28 − 1) : 3 + 1",
+   "secundarias": [
+    "OPER.DIV.02"
+   ],
+   "explicacion_nino": "Divide: 28 : 3 = 9 y sobran 1. Con 9 no caben todos: quedan 1 sin sitio, así que hace falta una más. Respuesta: 9 + 1 = 10. Comprueba: 10 × 3 = 30, que llega para 28.",
+   "explicacion_adulto": "Está aprendiendo que, cuando la división no es exacta, la respuesta depende de la pregunta: a veces es el cociente (grupos completos), a veces el cociente más uno (hace falta uno más para los que sobran) y a veces el resto (lo que sobra). Pídale que lea la pregunta de nuevo y que piense qué pasa con los que sobran.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "28 : 3",
+     "resultado": "9, resto 1",
+     "texto": "Hacemos la división."
+    },
+    {
+     "paso": 2,
+     "operacion": "9 + 1",
+     "resultado": "10",
+     "texto": "Los que sobran también necesitan sitio: una más."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Con 22 metros de cuerda cortamos trozos de 5 metros. ¿Cuántos trozos de 5 metros salen?",
+   "respuesta": "4",
+   "distractores": [
+    {
+     "valor": "5",
+     "error": "E04"
+    },
+    {
+     "valor": "2",
+     "error": "E02"
+    },
+    {
+     "valor": "4,4",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "(22 − 2) : 5",
+   "secundarias": [
+    "OPER.DIV.02"
+   ],
+   "explicacion_nino": "Divide: 22 : 5 = 4 y sobran 2. Con lo que sobra no se completa otro grupo de 5, así que la respuesta es 4. Comprueba: 4 × 5 + 2 = 22.",
+   "explicacion_adulto": "Está aprendiendo que, cuando la división no es exacta, la respuesta depende de la pregunta: a veces es el cociente (grupos completos), a veces el cociente más uno (hace falta uno más para los que sobran) y a veces el resto (lo que sobra). Pídale que lea la pregunta de nuevo y que piense qué pasa con los que sobran.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "22 : 5",
+     "resultado": "4, resto 2",
+     "texto": "Hacemos la división."
+    },
+    {
+     "paso": 2,
+     "operacion": "interpretar",
+     "resultado": "4",
+     "texto": "Solo cuentan los grupos completos; los 2 que sobran no llegan a 5."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Van de excursión 7 alumnos en furgonetas de 2 plazas. ¿Cuántas furgonetas hacen falta para que vayan todos?",
+   "respuesta": "4",
+   "distractores": [
+    {
+     "valor": "3",
+     "error": "E01"
+    },
+    {
+     "valor": "1",
+     "error": "E02"
+    },
+    {
+     "valor": "3,5",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "(7 − 1) : 2 + 1",
+   "secundarias": [
+    "OPER.DIV.02"
+   ],
+   "explicacion_nino": "Divide: 7 : 2 = 3 y sobran 1. Con 3 no caben todos: quedan 1 sin sitio, así que hace falta una más. Respuesta: 3 + 1 = 4. Comprueba: 4 × 2 = 8, que llega para 7.",
+   "explicacion_adulto": "Está aprendiendo que, cuando la división no es exacta, la respuesta depende de la pregunta: a veces es el cociente (grupos completos), a veces el cociente más uno (hace falta uno más para los que sobran) y a veces el resto (lo que sobra). Pídale que lea la pregunta de nuevo y que piense qué pasa con los que sobran.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "7 : 2",
+     "resultado": "3, resto 1",
+     "texto": "Hacemos la división."
+    },
+    {
+     "paso": 2,
+     "operacion": "3 + 1",
+     "resultado": "4",
+     "texto": "Los que sobran también necesitan sitio: una más."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Con 11 caramelos, Diego hace bolsas de 3 caramelos. ¿Cuántas bolsas completas puede hacer?",
+   "respuesta": "3",
+   "distractores": [
+    {
+     "valor": "4",
+     "error": "E04"
+    },
+    {
+     "valor": "2",
+     "error": "E02"
+    },
+    {
+     "valor": "3,67",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "(11 − 2) : 3",
+   "secundarias": [
+    "OPER.DIV.02"
+   ],
+   "explicacion_nino": "Divide: 11 : 3 = 3 y sobran 2. Con lo que sobra no se completa otro grupo de 3, así que la respuesta es 3. Comprueba: 3 × 3 + 2 = 11.",
+   "explicacion_adulto": "Está aprendiendo que, cuando la división no es exacta, la respuesta depende de la pregunta: a veces es el cociente (grupos completos), a veces el cociente más uno (hace falta uno más para los que sobran) y a veces el resto (lo que sobra). Pídale que lea la pregunta de nuevo y que piense qué pasa con los que sobran.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "11 : 3",
+     "resultado": "3, resto 2",
+     "texto": "Hacemos la división."
+    },
+    {
+     "paso": 2,
+     "operacion": "interpretar",
+     "resultado": "3",
+     "texto": "Solo cuentan los grupos completos; los 2 que sobran no llegan a 3."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Diego reparte 13 cromos entre 3 amigos, a todos los mismos y los máximos posibles. ¿Cuántos cromos le sobran?",
+   "respuesta": "1",
+   "distractores": [
+    {
+     "valor": "4",
+     "error": null
+    },
+    {
+     "valor": "5",
+     "error": null
+    },
+    {
+     "valor": "2",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "13 − 4 × 3",
+   "secundarias": [
+    "OPER.DIV.02"
+   ],
+   "explicacion_nino": "Divide: 13 : 3 = 4 y sobran 1. A cada amigo le tocan 4 y la pregunta es lo que sobra: 1. Comprueba: 4 × 3 + 1 = 13.",
+   "explicacion_adulto": "Está aprendiendo que, cuando la división no es exacta, la respuesta depende de la pregunta: a veces es el cociente (grupos completos), a veces el cociente más uno (hace falta uno más para los que sobran) y a veces el resto (lo que sobra). Pídale que lea la pregunta de nuevo y que piense qué pasa con los que sobran.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "13 : 3",
+     "resultado": "4, resto 1",
+     "texto": "Hacemos la división."
+    },
+    {
+     "paso": 2,
+     "operacion": "interpretar",
+     "resultado": "1",
+     "texto": "La pregunta es lo que sobra: el resto."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Hay que guardar 48 libros en cajas donde caben 5. ¿Cuántas cajas hacen falta para guardarlos todos?",
+   "respuesta": "10",
+   "distractores": [
+    {
+     "valor": "9",
+     "error": "E01"
+    },
+    {
+     "valor": "3",
+     "error": "E02"
+    },
+    {
+     "valor": "9,6",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "(48 − 3) : 5 + 1",
+   "secundarias": [
+    "OPER.DIV.02"
+   ],
+   "explicacion_nino": "Divide: 48 : 5 = 9 y sobran 3. Con 9 no caben todos: quedan 3 sin sitio, así que hace falta una más. Respuesta: 9 + 1 = 10. Comprueba: 10 × 5 = 50, que llega para 48.",
+   "explicacion_adulto": "Está aprendiendo que, cuando la división no es exacta, la respuesta depende de la pregunta: a veces es el cociente (grupos completos), a veces el cociente más uno (hace falta uno más para los que sobran) y a veces el resto (lo que sobra). Pídale que lea la pregunta de nuevo y que piense qué pasa con los que sobran.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "48 : 5",
+     "resultado": "9, resto 3",
+     "texto": "Hacemos la división."
+    },
+    {
+     "paso": 2,
+     "operacion": "9 + 1",
+     "resultado": "10",
+     "texto": "Los que sobran también necesitan sitio: una más."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Con 89 metros de cuerda cortamos trozos de 7 metros. ¿Cuántos trozos de 7 metros salen?",
+   "respuesta": "12",
+   "distractores": [
+    {
+     "valor": "13",
+     "error": "E04"
+    },
+    {
+     "valor": "5",
+     "error": "E02"
+    },
+    {
+     "valor": "12,71",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "(89 − 5) : 7",
+   "secundarias": [
+    "OPER.DIV.02"
+   ],
+   "explicacion_nino": "Divide: 89 : 7 = 12 y sobran 5. Con lo que sobra no se completa otro grupo de 7, así que la respuesta es 12. Comprueba: 12 × 7 + 5 = 89.",
+   "explicacion_adulto": "Está aprendiendo que, cuando la división no es exacta, la respuesta depende de la pregunta: a veces es el cociente (grupos completos), a veces el cociente más uno (hace falta uno más para los que sobran) y a veces el resto (lo que sobra). Pídale que lea la pregunta de nuevo y que piense qué pasa con los que sobran.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "89 : 7",
+     "resultado": "12, resto 5",
+     "texto": "Hacemos la división."
+    },
+    {
+     "paso": 2,
+     "operacion": "interpretar",
+     "resultado": "12",
+     "texto": "Solo cuentan los grupos completos; los 5 que sobran no llegan a 7."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Van de excursión 51 alumnos en furgonetas de 4 plazas. ¿Cuántas furgonetas hacen falta para que vayan todos?",
+   "respuesta": "13",
+   "distractores": [
+    {
+     "valor": "12",
+     "error": "E01"
+    },
+    {
+     "valor": "3",
+     "error": "E02"
+    },
+    {
+     "valor": "12,75",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "(51 − 3) : 4 + 1",
+   "secundarias": [
+    "OPER.DIV.02"
+   ],
+   "explicacion_nino": "Divide: 51 : 4 = 12 y sobran 3. Con 12 no caben todos: quedan 3 sin sitio, así que hace falta una más. Respuesta: 12 + 1 = 13. Comprueba: 13 × 4 = 52, que llega para 51.",
+   "explicacion_adulto": "Está aprendiendo que, cuando la división no es exacta, la respuesta depende de la pregunta: a veces es el cociente (grupos completos), a veces el cociente más uno (hace falta uno más para los que sobran) y a veces el resto (lo que sobra). Pídale que lea la pregunta de nuevo y que piense qué pasa con los que sobran.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "51 : 4",
+     "resultado": "12, resto 3",
+     "texto": "Hacemos la división."
+    },
+    {
+     "paso": 2,
+     "operacion": "12 + 1",
+     "resultado": "13",
+     "texto": "Los que sobran también necesitan sitio: una más."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Con 37 caramelos, Unai hace bolsas de 3 caramelos. ¿Cuántas bolsas completas puede hacer?",
+   "respuesta": "12",
+   "distractores": [
+    {
+     "valor": "13",
+     "error": "E04"
+    },
+    {
+     "valor": "1",
+     "error": "E02"
+    },
+    {
+     "valor": "12,33",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "(37 − 1) : 3",
+   "secundarias": [
+    "OPER.DIV.02"
+   ],
+   "explicacion_nino": "Divide: 37 : 3 = 12 y sobran 1. Con lo que sobra no se completa otro grupo de 3, así que la respuesta es 12. Comprueba: 12 × 3 + 1 = 37.",
+   "explicacion_adulto": "Está aprendiendo que, cuando la división no es exacta, la respuesta depende de la pregunta: a veces es el cociente (grupos completos), a veces el cociente más uno (hace falta uno más para los que sobran) y a veces el resto (lo que sobra). Pídale que lea la pregunta de nuevo y que piense qué pasa con los que sobran.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "37 : 3",
+     "resultado": "12, resto 1",
+     "texto": "Hacemos la división."
+    },
+    {
+     "paso": 2,
+     "operacion": "interpretar",
+     "resultado": "12",
+     "texto": "Solo cuentan los grupos completos; los 1 que sobran no llegan a 3."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Paula reparte 61 cromos entre 6 amigos, a todos los mismos y los máximos posibles. ¿Cuántos cromos le sobran?",
+   "respuesta": "1",
+   "distractores": [
+    {
+     "valor": "10",
+     "error": null
+    },
+    {
+     "valor": "11",
+     "error": null
+    },
+    {
+     "valor": "5",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "61 − 10 × 6",
+   "secundarias": [
+    "OPER.DIV.02"
+   ],
+   "explicacion_nino": "Divide: 61 : 6 = 10 y sobran 1. A cada amigo le tocan 10 y la pregunta es lo que sobra: 1. Comprueba: 10 × 6 + 1 = 61.",
+   "explicacion_adulto": "Está aprendiendo que, cuando la división no es exacta, la respuesta depende de la pregunta: a veces es el cociente (grupos completos), a veces el cociente más uno (hace falta uno más para los que sobran) y a veces el resto (lo que sobra). Pídale que lea la pregunta de nuevo y que piense qué pasa con los que sobran.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "61 : 6",
+     "resultado": "10, resto 1",
+     "texto": "Hacemos la división."
+    },
+    {
+     "paso": 2,
+     "operacion": "interpretar",
+     "resultado": "1",
+     "texto": "La pregunta es lo que sobra: el resto."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Hay que guardar 28 libros en cajas donde caben 5. ¿Cuántas cajas hacen falta para guardarlos todos?",
+   "respuesta": "6",
+   "distractores": [
+    {
+     "valor": "5",
+     "error": "E01"
+    },
+    {
+     "valor": "3",
+     "error": "E02"
+    },
+    {
+     "valor": "5,6",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "(28 − 3) : 5 + 1",
+   "secundarias": [
+    "OPER.DIV.02"
+   ],
+   "explicacion_nino": "Divide: 28 : 5 = 5 y sobran 3. Con 5 no caben todos: quedan 3 sin sitio, así que hace falta una más. Respuesta: 5 + 1 = 6. Comprueba: 6 × 5 = 30, que llega para 28.",
+   "explicacion_adulto": "Está aprendiendo que, cuando la división no es exacta, la respuesta depende de la pregunta: a veces es el cociente (grupos completos), a veces el cociente más uno (hace falta uno más para los que sobran) y a veces el resto (lo que sobra). Pídale que lea la pregunta de nuevo y que piense qué pasa con los que sobran.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "28 : 5",
+     "resultado": "5, resto 3",
+     "texto": "Hacemos la división."
+    },
+    {
+     "paso": 2,
+     "operacion": "5 + 1",
+     "resultado": "6",
+     "texto": "Los que sobran también necesitan sitio: una más."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Con 101 metros de cuerda cortamos trozos de 8 metros. ¿Cuántos trozos de 8 metros salen?",
+   "respuesta": "12",
+   "distractores": [
+    {
+     "valor": "13",
+     "error": "E04"
+    },
+    {
+     "valor": "5",
+     "error": "E02"
+    },
+    {
+     "valor": "12,62",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "(101 − 5) : 8",
+   "secundarias": [
+    "OPER.DIV.02"
+   ],
+   "explicacion_nino": "Divide: 101 : 8 = 12 y sobran 5. Con lo que sobra no se completa otro grupo de 8, así que la respuesta es 12. Comprueba: 12 × 8 + 5 = 101.",
+   "explicacion_adulto": "Está aprendiendo que, cuando la división no es exacta, la respuesta depende de la pregunta: a veces es el cociente (grupos completos), a veces el cociente más uno (hace falta uno más para los que sobran) y a veces el resto (lo que sobra). Pídale que lea la pregunta de nuevo y que piense qué pasa con los que sobran.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "101 : 8",
+     "resultado": "12, resto 5",
+     "texto": "Hacemos la división."
+    },
+    {
+     "paso": 2,
+     "operacion": "interpretar",
+     "resultado": "12",
+     "texto": "Solo cuentan los grupos completos; los 5 que sobran no llegan a 8."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Van de excursión 58 alumnos en furgonetas de 7 plazas. ¿Cuántas furgonetas hacen falta para que vayan todos?",
+   "respuesta": "9",
+   "distractores": [
+    {
+     "valor": "8",
+     "error": "E01"
+    },
+    {
+     "valor": "2",
+     "error": "E02"
+    },
+    {
+     "valor": "8,29",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "(58 − 2) : 7 + 1",
+   "secundarias": [
+    "OPER.DIV.02"
+   ],
+   "explicacion_nino": "Divide: 58 : 7 = 8 y sobran 2. Con 8 no caben todos: quedan 2 sin sitio, así que hace falta una más. Respuesta: 8 + 1 = 9. Comprueba: 9 × 7 = 63, que llega para 58.",
+   "explicacion_adulto": "Está aprendiendo que, cuando la división no es exacta, la respuesta depende de la pregunta: a veces es el cociente (grupos completos), a veces el cociente más uno (hace falta uno más para los que sobran) y a veces el resto (lo que sobra). Pídale que lea la pregunta de nuevo y que piense qué pasa con los que sobran.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "58 : 7",
+     "resultado": "8, resto 2",
+     "texto": "Hacemos la división."
+    },
+    {
+     "paso": 2,
+     "operacion": "8 + 1",
+     "resultado": "9",
+     "texto": "Los que sobran también necesitan sitio: una más."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Con 14 caramelos, Diego hace bolsas de 3 caramelos. ¿Cuántas bolsas completas puede hacer?",
+   "respuesta": "4",
+   "distractores": [
+    {
+     "valor": "5",
+     "error": "E04"
+    },
+    {
+     "valor": "2",
+     "error": "E02"
+    },
+    {
+     "valor": "4,67",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "(14 − 2) : 3",
+   "secundarias": [
+    "OPER.DIV.02"
+   ],
+   "explicacion_nino": "Divide: 14 : 3 = 4 y sobran 2. Con lo que sobra no se completa otro grupo de 3, así que la respuesta es 4. Comprueba: 4 × 3 + 2 = 14.",
+   "explicacion_adulto": "Está aprendiendo que, cuando la división no es exacta, la respuesta depende de la pregunta: a veces es el cociente (grupos completos), a veces el cociente más uno (hace falta uno más para los que sobran) y a veces el resto (lo que sobra). Pídale que lea la pregunta de nuevo y que piense qué pasa con los que sobran.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "14 : 3",
+     "resultado": "4, resto 2",
+     "texto": "Hacemos la división."
+    },
+    {
+     "paso": 2,
+     "operacion": "interpretar",
+     "resultado": "4",
+     "texto": "Solo cuentan los grupos completos; los 2 que sobran no llegan a 3."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Marco reparte 74 cromos entre 7 amigos, a todos los mismos y los máximos posibles. ¿Cuántos cromos le sobran?",
+   "respuesta": "4",
+   "distractores": [
+    {
+     "valor": "10",
+     "error": null
+    },
+    {
+     "valor": "11",
+     "error": null
+    },
+    {
+     "valor": "3",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "74 − 10 × 7",
+   "secundarias": [
+    "OPER.DIV.02"
+   ],
+   "explicacion_nino": "Divide: 74 : 7 = 10 y sobran 4. A cada amigo le tocan 10 y la pregunta es lo que sobra: 4. Comprueba: 10 × 7 + 4 = 74.",
+   "explicacion_adulto": "Está aprendiendo que, cuando la división no es exacta, la respuesta depende de la pregunta: a veces es el cociente (grupos completos), a veces el cociente más uno (hace falta uno más para los que sobran) y a veces el resto (lo que sobra). Pídale que lea la pregunta de nuevo y que piense qué pasa con los que sobran.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "74 : 7",
+     "resultado": "10, resto 4",
+     "texto": "Hacemos la división."
+    },
+    {
+     "paso": 2,
+     "operacion": "interpretar",
+     "resultado": "4",
+     "texto": "La pregunta es lo que sobra: el resto."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Hay que guardar 51 libros en cajas donde caben 6. ¿Cuántas cajas hacen falta para guardarlos todos?",
+   "respuesta": "9",
+   "distractores": [
+    {
+     "valor": "8",
+     "error": "E01"
+    },
+    {
+     "valor": "3",
+     "error": "E02"
+    },
+    {
+     "valor": "8,5",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "(51 − 3) : 6 + 1",
+   "secundarias": [
+    "OPER.DIV.02"
+   ],
+   "explicacion_nino": "Divide: 51 : 6 = 8 y sobran 3. Con 8 no caben todos: quedan 3 sin sitio, así que hace falta una más. Respuesta: 8 + 1 = 9. Comprueba: 9 × 6 = 54, que llega para 51.",
+   "explicacion_adulto": "Está aprendiendo que, cuando la división no es exacta, la respuesta depende de la pregunta: a veces es el cociente (grupos completos), a veces el cociente más uno (hace falta uno más para los que sobran) y a veces el resto (lo que sobra). Pídale que lea la pregunta de nuevo y que piense qué pasa con los que sobran.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "51 : 6",
+     "resultado": "8, resto 3",
+     "texto": "Hacemos la división."
+    },
+    {
+     "paso": 2,
+     "operacion": "8 + 1",
+     "resultado": "9",
+     "texto": "Los que sobran también necesitan sitio: una más."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Con 136 metros de cuerda cortamos trozos de 9 metros. ¿Cuántos trozos de 9 metros salen?",
+   "respuesta": "15",
+   "distractores": [
+    {
+     "valor": "16",
+     "error": "E04"
+    },
+    {
+     "valor": "1",
+     "error": "E02"
+    },
+    {
+     "valor": "15,11",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "(136 − 1) : 9",
+   "secundarias": [
+    "OPER.DIV.02"
+   ],
+   "explicacion_nino": "Divide: 136 : 9 = 15 y sobran 1. Con lo que sobra no se completa otro grupo de 9, así que la respuesta es 15. Comprueba: 15 × 9 + 1 = 136.",
+   "explicacion_adulto": "Está aprendiendo que, cuando la división no es exacta, la respuesta depende de la pregunta: a veces es el cociente (grupos completos), a veces el cociente más uno (hace falta uno más para los que sobran) y a veces el resto (lo que sobra). Pídale que lea la pregunta de nuevo y que piense qué pasa con los que sobran.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "136 : 9",
+     "resultado": "15, resto 1",
+     "texto": "Hacemos la división."
+    },
+    {
+     "paso": 2,
+     "operacion": "interpretar",
+     "resultado": "15",
+     "texto": "Solo cuentan los grupos completos; los 1 que sobran no llegan a 9."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Van de excursión 98 alumnos en furgonetas de 8 plazas. ¿Cuántas furgonetas hacen falta para que vayan todos?",
+   "respuesta": "13",
+   "distractores": [
+    {
+     "valor": "12",
+     "error": "E01"
+    },
+    {
+     "valor": "2",
+     "error": "E02"
+    },
+    {
+     "valor": "12,25",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "(98 − 2) : 8 + 1",
+   "secundarias": [
+    "OPER.DIV.02"
+   ],
+   "explicacion_nino": "Divide: 98 : 8 = 12 y sobran 2. Con 12 no caben todos: quedan 2 sin sitio, así que hace falta una más. Respuesta: 12 + 1 = 13. Comprueba: 13 × 8 = 104, que llega para 98.",
+   "explicacion_adulto": "Está aprendiendo que, cuando la división no es exacta, la respuesta depende de la pregunta: a veces es el cociente (grupos completos), a veces el cociente más uno (hace falta uno más para los que sobran) y a veces el resto (lo que sobra). Pídale que lea la pregunta de nuevo y que piense qué pasa con los que sobran.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "98 : 8",
+     "resultado": "12, resto 2",
+     "texto": "Hacemos la división."
+    },
+    {
+     "paso": 2,
+     "operacion": "12 + 1",
+     "resultado": "13",
+     "texto": "Los que sobran también necesitan sitio: una más."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Con 134 caramelos, Inés hace bolsas de 7 caramelos. ¿Cuántas bolsas completas puede hacer?",
+   "respuesta": "19",
+   "distractores": [
+    {
+     "valor": "20",
+     "error": "E04"
+    },
+    {
+     "valor": "1",
+     "error": "E02"
+    },
+    {
+     "valor": "19,14",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "(134 − 1) : 7",
+   "secundarias": [
+    "OPER.DIV.02"
+   ],
+   "explicacion_nino": "Divide: 134 : 7 = 19 y sobran 1. Con lo que sobra no se completa otro grupo de 7, así que la respuesta es 19. Comprueba: 19 × 7 + 1 = 134.",
+   "explicacion_adulto": "Está aprendiendo que, cuando la división no es exacta, la respuesta depende de la pregunta: a veces es el cociente (grupos completos), a veces el cociente más uno (hace falta uno más para los que sobran) y a veces el resto (lo que sobra). Pídale que lea la pregunta de nuevo y que piense qué pasa con los que sobran.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "134 : 7",
+     "resultado": "19, resto 1",
+     "texto": "Hacemos la división."
+    },
+    {
+     "paso": 2,
+     "operacion": "interpretar",
+     "resultado": "19",
+     "texto": "Solo cuentan los grupos completos; los 1 que sobran no llegan a 7."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Diego reparte 190 cromos entre 9 amigos, a todos los mismos y los máximos posibles. ¿Cuántos cromos le sobran?",
+   "respuesta": "1",
+   "distractores": [
+    {
+     "valor": "21",
+     "error": null
+    },
+    {
+     "valor": "22",
+     "error": null
+    },
+    {
+     "valor": "8",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "190 − 21 × 9",
+   "secundarias": [
+    "OPER.DIV.02"
+   ],
+   "explicacion_nino": "Divide: 190 : 9 = 21 y sobran 1. A cada amigo le tocan 21 y la pregunta es lo que sobra: 1. Comprueba: 21 × 9 + 1 = 190.",
+   "explicacion_adulto": "Está aprendiendo que, cuando la división no es exacta, la respuesta depende de la pregunta: a veces es el cociente (grupos completos), a veces el cociente más uno (hace falta uno más para los que sobran) y a veces el resto (lo que sobra). Pídale que lea la pregunta de nuevo y que piense qué pasa con los que sobran.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "190 : 9",
+     "resultado": "21, resto 1",
+     "texto": "Hacemos la división."
+    },
+    {
+     "paso": 2,
+     "operacion": "interpretar",
+     "resultado": "1",
+     "texto": "La pregunta es lo que sobra: el resto."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Hay que guardar 132 libros en cajas donde caben 7. ¿Cuántas cajas hacen falta para guardarlos todos?",
+   "respuesta": "19",
+   "distractores": [
+    {
+     "valor": "18",
+     "error": "E01"
+    },
+    {
+     "valor": "6",
+     "error": "E02"
+    },
+    {
+     "valor": "18,86",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "(132 − 6) : 7 + 1",
+   "secundarias": [
+    "OPER.DIV.02"
+   ],
+   "explicacion_nino": "Divide: 132 : 7 = 18 y sobran 6. Con 18 no caben todos: quedan 6 sin sitio, así que hace falta una más. Respuesta: 18 + 1 = 19. Comprueba: 19 × 7 = 133, que llega para 132.",
+   "explicacion_adulto": "Está aprendiendo que, cuando la división no es exacta, la respuesta depende de la pregunta: a veces es el cociente (grupos completos), a veces el cociente más uno (hace falta uno más para los que sobran) y a veces el resto (lo que sobra). Pídale que lea la pregunta de nuevo y que piense qué pasa con los que sobran.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "132 : 7",
+     "resultado": "18, resto 6",
+     "texto": "Hacemos la división."
+    },
+    {
+     "paso": 2,
+     "operacion": "18 + 1",
+     "resultado": "19",
+     "texto": "Los que sobran también necesitan sitio: una más."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Con 110 metros de cuerda cortamos trozos de 9 metros. ¿Cuántos trozos de 9 metros salen?",
+   "respuesta": "12",
+   "distractores": [
+    {
+     "valor": "13",
+     "error": "E04"
+    },
+    {
+     "valor": "2",
+     "error": "E02"
+    },
+    {
+     "valor": "12,22",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "(110 − 2) : 9",
+   "secundarias": [
+    "OPER.DIV.02"
+   ],
+   "explicacion_nino": "Divide: 110 : 9 = 12 y sobran 2. Con lo que sobra no se completa otro grupo de 9, así que la respuesta es 12. Comprueba: 12 × 9 + 2 = 110.",
+   "explicacion_adulto": "Está aprendiendo que, cuando la división no es exacta, la respuesta depende de la pregunta: a veces es el cociente (grupos completos), a veces el cociente más uno (hace falta uno más para los que sobran) y a veces el resto (lo que sobra). Pídale que lea la pregunta de nuevo y que piense qué pasa con los que sobran.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "110 : 9",
+     "resultado": "12, resto 2",
+     "texto": "Hacemos la división."
+    },
+    {
+     "paso": 2,
+     "operacion": "interpretar",
+     "resultado": "12",
+     "texto": "Solo cuentan los grupos completos; los 2 que sobran no llegan a 9."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Van de excursión 98 alumnos en furgonetas de 4 plazas. ¿Cuántas furgonetas hacen falta para que vayan todos?",
+   "respuesta": "25",
+   "distractores": [
+    {
+     "valor": "24",
+     "error": "E01"
+    },
+    {
+     "valor": "2",
+     "error": "E02"
+    },
+    {
+     "valor": "24,5",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "(98 − 2) : 4 + 1",
+   "secundarias": [
+    "OPER.DIV.02"
+   ],
+   "explicacion_nino": "Divide: 98 : 4 = 24 y sobran 2. Con 24 no caben todos: quedan 2 sin sitio, así que hace falta una más. Respuesta: 24 + 1 = 25. Comprueba: 25 × 4 = 100, que llega para 98.",
+   "explicacion_adulto": "Está aprendiendo que, cuando la división no es exacta, la respuesta depende de la pregunta: a veces es el cociente (grupos completos), a veces el cociente más uno (hace falta uno más para los que sobran) y a veces el resto (lo que sobra). Pídale que lea la pregunta de nuevo y que piense qué pasa con los que sobran.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "98 : 4",
+     "resultado": "24, resto 2",
+     "texto": "Hacemos la división."
+    },
+    {
+     "paso": 2,
+     "operacion": "24 + 1",
+     "resultado": "25",
+     "texto": "Los que sobran también necesitan sitio: una más."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Con 82 caramelos, Marcos hace bolsas de 7 caramelos. ¿Cuántas bolsas completas puede hacer?",
+   "respuesta": "11",
+   "distractores": [
+    {
+     "valor": "12",
+     "error": "E04"
+    },
+    {
+     "valor": "5",
+     "error": "E02"
+    },
+    {
+     "valor": "11,71",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "(82 − 5) : 7",
+   "secundarias": [
+    "OPER.DIV.02"
+   ],
+   "explicacion_nino": "Divide: 82 : 7 = 11 y sobran 5. Con lo que sobra no se completa otro grupo de 7, así que la respuesta es 11. Comprueba: 11 × 7 + 5 = 82.",
+   "explicacion_adulto": "Está aprendiendo que, cuando la división no es exacta, la respuesta depende de la pregunta: a veces es el cociente (grupos completos), a veces el cociente más uno (hace falta uno más para los que sobran) y a veces el resto (lo que sobra). Pídale que lea la pregunta de nuevo y que piense qué pasa con los que sobran.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "82 : 7",
+     "resultado": "11, resto 5",
+     "texto": "Hacemos la división."
+    },
+    {
+     "paso": 2,
+     "operacion": "interpretar",
+     "resultado": "11",
+     "texto": "Solo cuentan los grupos completos; los 5 que sobran no llegan a 7."
+    }
+   ],
+   "plantilla": "P02"
+  }
+ ]
+}

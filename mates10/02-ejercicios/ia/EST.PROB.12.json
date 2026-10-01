@@ -1,0 +1,1502 @@
+{
+ "habilidad": "EST.PROB.12",
+ "generado_por": "claude (skill mates10-generar-ejercicios v1)",
+ "ejercicios": [
+  {
+   "dificultad": 1,
+   "enunciado": "Una fábrica tiene 3 máquinas que producen, respectivamente, el 25 %, 10 % y 65 % de las piezas. Los porcentajes de piezas defectuosas son 16 %, 6 % y 11 %. ¿Qué probabilidad hay de que una pieza al azar sea defectuosa?",
+   "respuesta": "0,1175",
+   "distractores": [
+    {
+     "valor": "0,33",
+     "error": "E01"
+    },
+    {
+     "valor": "0,11",
+     "error": "E02"
+    },
+    {
+     "valor": "0,046",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "0,25 × 0,16 + 0,1 × 0,06 + 0,65 × 0,11",
+   "secundarias": [],
+   "explicacion_nino": "Dibuja un árbol: primero la causa y luego si ocurre o no el suceso. Multiplica en cada rama que acaba en el suceso: 0,25·0,16 = 0,04; 0,1·0,06 = 0,006; 0,65·0,11 = 0,0715. Suma las ramas: P = 0,25 × 0,16 + 0,1 × 0,06 + 0,65 × 0,11 = 0,1175.",
+   "explicacion_adulto": "Está aprendiendo el teorema de la probabilidad total: si un suceso puede ocurrir por varios caminos (causas que no se solapan y cubren todos los casos), su probabilidad es la suma, camino a camino, de P(causa)·P(suceso | causa). Los errores típicos son sumar las condicionadas sin ponderarlas o promediarlas. Pídale que dibuje el árbol y multiplique a lo largo de cada rama.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "árbol",
+     "resultado": "3 causas",
+     "texto": "Las causas suman 1."
+    },
+    {
+     "paso": 2,
+     "operacion": "ramas",
+     "resultado": "0,25·0,16 = 0,04; 0,1·0,06 = 0,006; 0,65·0,11 = 0,0715",
+     "texto": "P(causa)·P(suceso | causa)."
+    },
+    {
+     "paso": 3,
+     "operacion": "sumar",
+     "resultado": "0,1175",
+     "texto": "Probabilidad total."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Una frutería compra las naranjas a 3 proveedores: el 45 %, 40 % y 15 % del total. El porcentaje de naranjas estropeadas de cada uno es 10 %, 17 % y 8 %. ¿Qué probabilidad hay de que una naranja al azar esté estropeada?",
+   "respuesta": "0,125",
+   "distractores": [
+    {
+     "valor": "0,35",
+     "error": "E01"
+    },
+    {
+     "valor": "0,1167",
+     "error": "E02"
+    },
+    {
+     "valor": "0,113",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "0,45 × 0,1 + 0,4 × 0,17 + 0,15 × 0,08",
+   "secundarias": [],
+   "explicacion_nino": "Dibuja un árbol: primero la causa y luego si ocurre o no el suceso. Multiplica en cada rama que acaba en el suceso: 0,45·0,1 = 0,045; 0,4·0,17 = 0,068; 0,15·0,08 = 0,012. Suma las ramas: P = 0,45 × 0,1 + 0,4 × 0,17 + 0,15 × 0,08 = 0,125.",
+   "explicacion_adulto": "Está aprendiendo el teorema de la probabilidad total: si un suceso puede ocurrir por varios caminos (causas que no se solapan y cubren todos los casos), su probabilidad es la suma, camino a camino, de P(causa)·P(suceso | causa). Los errores típicos son sumar las condicionadas sin ponderarlas o promediarlas. Pídale que dibuje el árbol y multiplique a lo largo de cada rama.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "árbol",
+     "resultado": "3 causas",
+     "texto": "Las causas suman 1."
+    },
+    {
+     "paso": 2,
+     "operacion": "ramas",
+     "resultado": "0,45·0,1 = 0,045; 0,4·0,17 = 0,068; 0,15·0,08 = 0,012",
+     "texto": "P(causa)·P(suceso | causa)."
+    },
+    {
+     "paso": 3,
+     "operacion": "sumar",
+     "resultado": "0,125",
+     "texto": "Probabilidad total."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Para ir al trabajo, Rebeca elige autobús, metro o bici con probabilidades del 35 %, 35 % y 30 %. La probabilidad de llegar tarde con cada uno es del 7 %, 12 % y 17 %. ¿Qué probabilidad hay de que llegue tarde un día cualquiera?",
+   "respuesta": "0,1175",
+   "distractores": [
+    {
+     "valor": "0,36",
+     "error": "E01"
+    },
+    {
+     "valor": "0,12",
+     "error": "E02"
+    },
+    {
+     "valor": "0,0665",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "0,35 × 0,07 + 0,35 × 0,12 + 0,3 × 0,17",
+   "secundarias": [],
+   "explicacion_nino": "Dibuja un árbol: primero la causa y luego si ocurre o no el suceso. Multiplica en cada rama que acaba en el suceso: 0,35·0,07 = 0,0245; 0,35·0,12 = 0,042; 0,3·0,17 = 0,051. Suma las ramas: P = 0,35 × 0,07 + 0,35 × 0,12 + 0,3 × 0,17 = 0,1175.",
+   "explicacion_adulto": "Está aprendiendo el teorema de la probabilidad total: si un suceso puede ocurrir por varios caminos (causas que no se solapan y cubren todos los casos), su probabilidad es la suma, camino a camino, de P(causa)·P(suceso | causa). Los errores típicos son sumar las condicionadas sin ponderarlas o promediarlas. Pídale que dibuje el árbol y multiplique a lo largo de cada rama.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "árbol",
+     "resultado": "3 causas",
+     "texto": "Las causas suman 1."
+    },
+    {
+     "paso": 2,
+     "operacion": "ramas",
+     "resultado": "0,35·0,07 = 0,0245; 0,35·0,12 = 0,042; 0,3·0,17 = 0,051",
+     "texto": "P(causa)·P(suceso | causa)."
+    },
+    {
+     "paso": 3,
+     "operacion": "sumar",
+     "resultado": "0,1175",
+     "texto": "Probabilidad total."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En un instituto, los alumnos de 1º, 2º y 3º son el 50 %, 25 % y 25 % del total. Usan el comedor el 53 %, 84 % y 46 %, respectivamente. ¿Qué probabilidad hay de que un alumno al azar use el comedor?",
+   "respuesta": "0,59",
+   "distractores": [
+    {
+     "valor": "1,37",
+     "error": "E01"
+    },
+    {
+     "valor": "0,61",
+     "error": "E02"
+    },
+    {
+     "valor": "0,475",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "0,5 × 0,53 + 0,25 × 0,84 + 0,25 × 0,46",
+   "secundarias": [],
+   "explicacion_nino": "Dibuja un árbol: primero la causa y luego si ocurre o no el suceso. Multiplica en cada rama que acaba en el suceso: 0,5·0,53 = 0,265; 0,25·0,84 = 0,21; 0,25·0,46 = 0,115. Suma las ramas: P = 0,5 × 0,53 + 0,25 × 0,84 + 0,25 × 0,46 = 0,59.",
+   "explicacion_adulto": "Está aprendiendo el teorema de la probabilidad total: si un suceso puede ocurrir por varios caminos (causas que no se solapan y cubren todos los casos), su probabilidad es la suma, camino a camino, de P(causa)·P(suceso | causa). Los errores típicos son sumar las condicionadas sin ponderarlas o promediarlas. Pídale que dibuje el árbol y multiplique a lo largo de cada rama.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "árbol",
+     "resultado": "3 causas",
+     "texto": "Las causas suman 1."
+    },
+    {
+     "paso": 2,
+     "operacion": "ramas",
+     "resultado": "0,5·0,53 = 0,265; 0,25·0,84 = 0,21; 0,25·0,46 = 0,115",
+     "texto": "P(causa)·P(suceso | causa)."
+    },
+    {
+     "paso": 3,
+     "operacion": "sumar",
+     "resultado": "0,59",
+     "texto": "Probabilidad total."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Una app de música tiene usuarios gratuitos, estándar y prémium: el 20 %, 20 % y 60 %. Escuchan pódcast el 25 %, 50 % y 44 %, respectivamente. ¿Qué probabilidad hay de que un usuario al azar escuche pódcast?",
+   "respuesta": "0,414",
+   "distractores": [
+    {
+     "valor": "0,75",
+     "error": "E01"
+    },
+    {
+     "valor": "0,3967",
+     "error": "E02"
+    },
+    {
+     "valor": "0,15",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "0,2 × 0,25 + 0,2 × 0,5 + 0,6 × 0,44",
+   "secundarias": [],
+   "explicacion_nino": "Dibuja un árbol: primero la causa y luego si ocurre o no el suceso. Multiplica en cada rama que acaba en el suceso: 0,2·0,25 = 0,05; 0,2·0,5 = 0,1; 0,6·0,44 = 0,264. Suma las ramas: P = 0,2 × 0,25 + 0,2 × 0,5 + 0,6 × 0,44 = 0,414.",
+   "explicacion_adulto": "Está aprendiendo el teorema de la probabilidad total: si un suceso puede ocurrir por varios caminos (causas que no se solapan y cubren todos los casos), su probabilidad es la suma, camino a camino, de P(causa)·P(suceso | causa). Los errores típicos son sumar las condicionadas sin ponderarlas o promediarlas. Pídale que dibuje el árbol y multiplique a lo largo de cada rama.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "árbol",
+     "resultado": "3 causas",
+     "texto": "Las causas suman 1."
+    },
+    {
+     "paso": 2,
+     "operacion": "ramas",
+     "resultado": "0,2·0,25 = 0,05; 0,2·0,5 = 0,1; 0,6·0,44 = 0,264",
+     "texto": "P(causa)·P(suceso | causa)."
+    },
+    {
+     "paso": 3,
+     "operacion": "sumar",
+     "resultado": "0,414",
+     "texto": "Probabilidad total."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un vivero tiene semillas de 2 lotes que son el 70 % y 30 % del total. Germinan el 68 % y 81 % de cada lote. ¿Qué probabilidad hay de que una semilla al azar germine?",
+   "respuesta": "0,719",
+   "distractores": [
+    {
+     "valor": "1,49",
+     "error": "E01"
+    },
+    {
+     "valor": "0,745",
+     "error": "E02"
+    },
+    {
+     "valor": "0,476",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "0,7 × 0,68 + 0,3 × 0,81",
+   "secundarias": [],
+   "explicacion_nino": "Dibuja un árbol: primero la causa y luego si ocurre o no el suceso. Multiplica en cada rama que acaba en el suceso: 0,7·0,68 = 0,476; 0,3·0,81 = 0,243. Suma las ramas: P = 0,7 × 0,68 + 0,3 × 0,81 = 0,719.",
+   "explicacion_adulto": "Está aprendiendo el teorema de la probabilidad total: si un suceso puede ocurrir por varios caminos (causas que no se solapan y cubren todos los casos), su probabilidad es la suma, camino a camino, de P(causa)·P(suceso | causa). Los errores típicos son sumar las condicionadas sin ponderarlas o promediarlas. Pídale que dibuje el árbol y multiplique a lo largo de cada rama.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "árbol",
+     "resultado": "2 causas",
+     "texto": "Las causas suman 1."
+    },
+    {
+     "paso": 2,
+     "operacion": "ramas",
+     "resultado": "0,7·0,68 = 0,476; 0,3·0,81 = 0,243",
+     "texto": "P(causa)·P(suceso | causa)."
+    },
+    {
+     "paso": 3,
+     "operacion": "sumar",
+     "resultado": "0,719",
+     "texto": "Probabilidad total."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En una ciudad, los días son soleados, nublados o lluviosos con probabilidades del 60 %, 10 % y 30 %. La probabilidad de atasco es del 14 %, 6 % y 9 %, según el tiempo. ¿Qué probabilidad hay de que haya atasco un día al azar?",
+   "respuesta": "0,117",
+   "distractores": [
+    {
+     "valor": "0,29",
+     "error": "E01"
+    },
+    {
+     "valor": "0,0967",
+     "error": "E02"
+    },
+    {
+     "valor": "0,09",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "0,6 × 0,14 + 0,1 × 0,06 + 0,3 × 0,09",
+   "secundarias": [],
+   "explicacion_nino": "Dibuja un árbol: primero la causa y luego si ocurre o no el suceso. Multiplica en cada rama que acaba en el suceso: 0,6·0,14 = 0,084; 0,1·0,06 = 0,006; 0,3·0,09 = 0,027. Suma las ramas: P = 0,6 × 0,14 + 0,1 × 0,06 + 0,3 × 0,09 = 0,117.",
+   "explicacion_adulto": "Está aprendiendo el teorema de la probabilidad total: si un suceso puede ocurrir por varios caminos (causas que no se solapan y cubren todos los casos), su probabilidad es la suma, camino a camino, de P(causa)·P(suceso | causa). Los errores típicos son sumar las condicionadas sin ponderarlas o promediarlas. Pídale que dibuje el árbol y multiplique a lo largo de cada rama.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "árbol",
+     "resultado": "3 causas",
+     "texto": "Las causas suman 1."
+    },
+    {
+     "paso": 2,
+     "operacion": "ramas",
+     "resultado": "0,6·0,14 = 0,084; 0,1·0,06 = 0,006; 0,3·0,09 = 0,027",
+     "texto": "P(causa)·P(suceso | causa)."
+    },
+    {
+     "paso": 3,
+     "operacion": "sumar",
+     "resultado": "0,117",
+     "texto": "Probabilidad total."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Una fábrica tiene 3 máquinas que producen, respectivamente, el 80 %, 10 % y 10 % de las piezas. Los porcentajes de piezas defectuosas son 5 %, 15 % y 11 %. ¿Qué probabilidad hay de que una pieza al azar sea defectuosa?",
+   "respuesta": "0,066",
+   "distractores": [
+    {
+     "valor": "0,31",
+     "error": "E01"
+    },
+    {
+     "valor": "0,1033",
+     "error": "E02"
+    },
+    {
+     "valor": "0,055",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "0,8 × 0,05 + 0,1 × 0,15 + 0,1 × 0,11",
+   "secundarias": [],
+   "explicacion_nino": "Dibuja un árbol: primero la causa y luego si ocurre o no el suceso. Multiplica en cada rama que acaba en el suceso: 0,8·0,05 = 0,04; 0,1·0,15 = 0,015; 0,1·0,11 = 0,011. Suma las ramas: P = 0,8 × 0,05 + 0,1 × 0,15 + 0,1 × 0,11 = 0,066.",
+   "explicacion_adulto": "Está aprendiendo el teorema de la probabilidad total: si un suceso puede ocurrir por varios caminos (causas que no se solapan y cubren todos los casos), su probabilidad es la suma, camino a camino, de P(causa)·P(suceso | causa). Los errores típicos son sumar las condicionadas sin ponderarlas o promediarlas. Pídale que dibuje el árbol y multiplique a lo largo de cada rama.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "árbol",
+     "resultado": "3 causas",
+     "texto": "Las causas suman 1."
+    },
+    {
+     "paso": 2,
+     "operacion": "ramas",
+     "resultado": "0,8·0,05 = 0,04; 0,1·0,15 = 0,015; 0,1·0,11 = 0,011",
+     "texto": "P(causa)·P(suceso | causa)."
+    },
+    {
+     "paso": 3,
+     "operacion": "sumar",
+     "resultado": "0,066",
+     "texto": "Probabilidad total."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Una frutería compra las naranjas a 3 proveedores: el 40 %, 10 % y 50 % del total. El porcentaje de naranjas estropeadas de cada uno es 3 %, 11 % y 6 %. ¿Qué probabilidad hay de que una naranja al azar esté estropeada?",
+   "respuesta": "0,053",
+   "distractores": [
+    {
+     "valor": "0,2",
+     "error": "E01"
+    },
+    {
+     "valor": "0,0667",
+     "error": "E02"
+    },
+    {
+     "valor": "0,023",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "0,4 × 0,03 + 0,1 × 0,11 + 0,5 × 0,06",
+   "secundarias": [],
+   "explicacion_nino": "Dibuja un árbol: primero la causa y luego si ocurre o no el suceso. Multiplica en cada rama que acaba en el suceso: 0,4·0,03 = 0,012; 0,1·0,11 = 0,011; 0,5·0,06 = 0,03. Suma las ramas: P = 0,4 × 0,03 + 0,1 × 0,11 + 0,5 × 0,06 = 0,053.",
+   "explicacion_adulto": "Está aprendiendo el teorema de la probabilidad total: si un suceso puede ocurrir por varios caminos (causas que no se solapan y cubren todos los casos), su probabilidad es la suma, camino a camino, de P(causa)·P(suceso | causa). Los errores típicos son sumar las condicionadas sin ponderarlas o promediarlas. Pídale que dibuje el árbol y multiplique a lo largo de cada rama.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "árbol",
+     "resultado": "3 causas",
+     "texto": "Las causas suman 1."
+    },
+    {
+     "paso": 2,
+     "operacion": "ramas",
+     "resultado": "0,4·0,03 = 0,012; 0,1·0,11 = 0,011; 0,5·0,06 = 0,03",
+     "texto": "P(causa)·P(suceso | causa)."
+    },
+    {
+     "paso": 3,
+     "operacion": "sumar",
+     "resultado": "0,053",
+     "texto": "Probabilidad total."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En un instituto, los alumnos de 1º, 2º y 3º son el 35 %, 20 % y 45 % del total. Usan el comedor el 90 %, 37 % y 47 %, respectivamente. ¿Qué probabilidad hay de que un alumno al azar use el comedor?",
+   "respuesta": "0,6005",
+   "distractores": [
+    {
+     "valor": "1,27",
+     "error": "E01"
+    },
+    {
+     "valor": "0,58",
+     "error": "E02"
+    },
+    {
+     "valor": "0,389",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "0,35 × 0,9 + 0,2 × 0,37 + 0,45 × 0,47",
+   "secundarias": [],
+   "explicacion_nino": "Dibuja un árbol: primero la causa y luego si ocurre o no el suceso. Multiplica en cada rama que acaba en el suceso: 0,35·0,9 = 0,315; 0,2·0,37 = 0,074; 0,45·0,47 = 0,2115. Suma las ramas: P = 0,35 × 0,9 + 0,2 × 0,37 + 0,45 × 0,47 = 0,6005.",
+   "explicacion_adulto": "Está aprendiendo el teorema de la probabilidad total: si un suceso puede ocurrir por varios caminos (causas que no se solapan y cubren todos los casos), su probabilidad es la suma, camino a camino, de P(causa)·P(suceso | causa). Los errores típicos son sumar las condicionadas sin ponderarlas o promediarlas. Pídale que dibuje el árbol y multiplique a lo largo de cada rama.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "árbol",
+     "resultado": "3 causas",
+     "texto": "Las causas suman 1."
+    },
+    {
+     "paso": 2,
+     "operacion": "ramas",
+     "resultado": "0,35·0,9 = 0,315; 0,2·0,37 = 0,074; 0,45·0,47 = 0,2115",
+     "texto": "P(causa)·P(suceso | causa)."
+    },
+    {
+     "paso": 3,
+     "operacion": "sumar",
+     "resultado": "0,6005",
+     "texto": "Probabilidad total."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Una app de música tiene usuarios gratuitos, estándar y prémium: el 10 %, 30 % y 60 %. Escuchan pódcast el 25 %, 90 % y 28 %, respectivamente. ¿Qué probabilidad hay de que un usuario al azar escuche pódcast?",
+   "respuesta": "0,463",
+   "distractores": [
+    {
+     "valor": "1,15",
+     "error": "E01"
+    },
+    {
+     "valor": "0,4767",
+     "error": "E02"
+    },
+    {
+     "valor": "0,295",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "0,1 × 0,25 + 0,3 × 0,9 + 0,6 × 0,28",
+   "secundarias": [],
+   "explicacion_nino": "Dibuja un árbol: primero la causa y luego si ocurre o no el suceso. Multiplica en cada rama que acaba en el suceso: 0,1·0,25 = 0,025; 0,3·0,9 = 0,27; 0,6·0,28 = 0,168. Suma las ramas: P = 0,1 × 0,25 + 0,3 × 0,9 + 0,6 × 0,28 = 0,463.",
+   "explicacion_adulto": "Está aprendiendo el teorema de la probabilidad total: si un suceso puede ocurrir por varios caminos (causas que no se solapan y cubren todos los casos), su probabilidad es la suma, camino a camino, de P(causa)·P(suceso | causa). Los errores típicos son sumar las condicionadas sin ponderarlas o promediarlas. Pídale que dibuje el árbol y multiplique a lo largo de cada rama.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "árbol",
+     "resultado": "3 causas",
+     "texto": "Las causas suman 1."
+    },
+    {
+     "paso": 2,
+     "operacion": "ramas",
+     "resultado": "0,1·0,25 = 0,025; 0,3·0,9 = 0,27; 0,6·0,28 = 0,168",
+     "texto": "P(causa)·P(suceso | causa)."
+    },
+    {
+     "paso": 3,
+     "operacion": "sumar",
+     "resultado": "0,463",
+     "texto": "Probabilidad total."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un vivero tiene semillas de 2 lotes que son el 35 % y 65 % del total. Germinan el 30 % y 59 % de cada lote. ¿Qué probabilidad hay de que una semilla al azar germine?",
+   "respuesta": "0,4885",
+   "distractores": [
+    {
+     "valor": "0,89",
+     "error": "E01"
+    },
+    {
+     "valor": "0,445",
+     "error": "E02"
+    },
+    {
+     "valor": "0,105",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "0,35 × 0,3 + 0,65 × 0,59",
+   "secundarias": [],
+   "explicacion_nino": "Dibuja un árbol: primero la causa y luego si ocurre o no el suceso. Multiplica en cada rama que acaba en el suceso: 0,35·0,3 = 0,105; 0,65·0,59 = 0,3835. Suma las ramas: P = 0,35 × 0,3 + 0,65 × 0,59 = 0,4885.",
+   "explicacion_adulto": "Está aprendiendo el teorema de la probabilidad total: si un suceso puede ocurrir por varios caminos (causas que no se solapan y cubren todos los casos), su probabilidad es la suma, camino a camino, de P(causa)·P(suceso | causa). Los errores típicos son sumar las condicionadas sin ponderarlas o promediarlas. Pídale que dibuje el árbol y multiplique a lo largo de cada rama.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "árbol",
+     "resultado": "2 causas",
+     "texto": "Las causas suman 1."
+    },
+    {
+     "paso": 2,
+     "operacion": "ramas",
+     "resultado": "0,35·0,3 = 0,105; 0,65·0,59 = 0,3835",
+     "texto": "P(causa)·P(suceso | causa)."
+    },
+    {
+     "paso": 3,
+     "operacion": "sumar",
+     "resultado": "0,4885",
+     "texto": "Probabilidad total."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En una ciudad, los días son soleados, nublados o lluviosos con probabilidades del 40 %, 50 % y 10 %. La probabilidad de atasco es del 4 %, 14 % y 11 %, según el tiempo. ¿Qué probabilidad hay de que haya atasco un día al azar?",
+   "respuesta": "0,097",
+   "distractores": [
+    {
+     "valor": "0,29",
+     "error": "E01"
+    },
+    {
+     "valor": "0,0967",
+     "error": "E02"
+    },
+    {
+     "valor": "0,086",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "0,4 × 0,04 + 0,5 × 0,14 + 0,1 × 0,11",
+   "secundarias": [],
+   "explicacion_nino": "Dibuja un árbol: primero la causa y luego si ocurre o no el suceso. Multiplica en cada rama que acaba en el suceso: 0,4·0,04 = 0,016; 0,5·0,14 = 0,07; 0,1·0,11 = 0,011. Suma las ramas: P = 0,4 × 0,04 + 0,5 × 0,14 + 0,1 × 0,11 = 0,097.",
+   "explicacion_adulto": "Está aprendiendo el teorema de la probabilidad total: si un suceso puede ocurrir por varios caminos (causas que no se solapan y cubren todos los casos), su probabilidad es la suma, camino a camino, de P(causa)·P(suceso | causa). Los errores típicos son sumar las condicionadas sin ponderarlas o promediarlas. Pídale que dibuje el árbol y multiplique a lo largo de cada rama.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "árbol",
+     "resultado": "3 causas",
+     "texto": "Las causas suman 1."
+    },
+    {
+     "paso": 2,
+     "operacion": "ramas",
+     "resultado": "0,4·0,04 = 0,016; 0,5·0,14 = 0,07; 0,1·0,11 = 0,011",
+     "texto": "P(causa)·P(suceso | causa)."
+    },
+    {
+     "paso": 3,
+     "operacion": "sumar",
+     "resultado": "0,097",
+     "texto": "Probabilidad total."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Una fábrica tiene 3 máquinas que producen, respectivamente, el 30 %, 10 % y 60 % de las piezas. Los porcentajes de piezas defectuosas son 14 %, 9 % y 7 %. ¿Qué probabilidad hay de que una pieza al azar sea defectuosa?",
+   "respuesta": "0,093",
+   "distractores": [
+    {
+     "valor": "0,3",
+     "error": "E01"
+    },
+    {
+     "valor": "0,1",
+     "error": "E02"
+    },
+    {
+     "valor": "0,051",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "0,3 × 0,14 + 0,1 × 0,09 + 0,6 × 0,07",
+   "secundarias": [],
+   "explicacion_nino": "Dibuja un árbol: primero la causa y luego si ocurre o no el suceso. Multiplica en cada rama que acaba en el suceso: 0,3·0,14 = 0,042; 0,1·0,09 = 0,009; 0,6·0,07 = 0,042. Suma las ramas: P = 0,3 × 0,14 + 0,1 × 0,09 + 0,6 × 0,07 = 0,093.",
+   "explicacion_adulto": "Está aprendiendo el teorema de la probabilidad total: si un suceso puede ocurrir por varios caminos (causas que no se solapan y cubren todos los casos), su probabilidad es la suma, camino a camino, de P(causa)·P(suceso | causa). Los errores típicos son sumar las condicionadas sin ponderarlas o promediarlas. Pídale que dibuje el árbol y multiplique a lo largo de cada rama.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "árbol",
+     "resultado": "3 causas",
+     "texto": "Las causas suman 1."
+    },
+    {
+     "paso": 2,
+     "operacion": "ramas",
+     "resultado": "0,3·0,14 = 0,042; 0,1·0,09 = 0,009; 0,6·0,07 = 0,042",
+     "texto": "P(causa)·P(suceso | causa)."
+    },
+    {
+     "paso": 3,
+     "operacion": "sumar",
+     "resultado": "0,093",
+     "texto": "Probabilidad total."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Para ir al trabajo, Rebeca elige autobús, metro o bici con probabilidades del 45 %, 30 % y 25 %. La probabilidad de llegar tarde con cada uno es del 7 %, 17 % y 2 %. ¿Qué probabilidad hay de que llegue tarde un día cualquiera?",
+   "respuesta": "0,0875",
+   "distractores": [
+    {
+     "valor": "0,26",
+     "error": "E01"
+    },
+    {
+     "valor": "0,0867",
+     "error": "E02"
+    },
+    {
+     "valor": "0,0825",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "0,45 × 0,07 + 0,3 × 0,17 + 0,25 × 0,02",
+   "secundarias": [],
+   "explicacion_nino": "Dibuja un árbol: primero la causa y luego si ocurre o no el suceso. Multiplica en cada rama que acaba en el suceso: 0,45·0,07 = 0,0315; 0,3·0,17 = 0,051; 0,25·0,02 = 0,005. Suma las ramas: P = 0,45 × 0,07 + 0,3 × 0,17 + 0,25 × 0,02 = 0,0875.",
+   "explicacion_adulto": "Está aprendiendo el teorema de la probabilidad total: si un suceso puede ocurrir por varios caminos (causas que no se solapan y cubren todos los casos), su probabilidad es la suma, camino a camino, de P(causa)·P(suceso | causa). Los errores típicos son sumar las condicionadas sin ponderarlas o promediarlas. Pídale que dibuje el árbol y multiplique a lo largo de cada rama.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "árbol",
+     "resultado": "3 causas",
+     "texto": "Las causas suman 1."
+    },
+    {
+     "paso": 2,
+     "operacion": "ramas",
+     "resultado": "0,45·0,07 = 0,0315; 0,3·0,17 = 0,051; 0,25·0,02 = 0,005",
+     "texto": "P(causa)·P(suceso | causa)."
+    },
+    {
+     "paso": 3,
+     "operacion": "sumar",
+     "resultado": "0,0875",
+     "texto": "Probabilidad total."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En un instituto, los alumnos de 1º, 2º y 3º son el 45 %, 25 % y 30 % del total. Usan el comedor el 81 %, 33 % y 39 %, respectivamente. ¿Qué probabilidad hay de que un alumno al azar use el comedor?",
+   "respuesta": "0,564",
+   "distractores": [
+    {
+     "valor": "1,14",
+     "error": "E01"
+    },
+    {
+     "valor": "0,51",
+     "error": "E02"
+    },
+    {
+     "valor": "0,447",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "0,45 × 0,81 + 0,25 × 0,33 + 0,3 × 0,39",
+   "secundarias": [],
+   "explicacion_nino": "Dibuja un árbol: primero la causa y luego si ocurre o no el suceso. Multiplica en cada rama que acaba en el suceso: 0,45·0,81 = 0,3645; 0,25·0,33 = 0,0825; 0,3·0,39 = 0,117. Suma las ramas: P = 0,45 × 0,81 + 0,25 × 0,33 + 0,3 × 0,39 = 0,564.",
+   "explicacion_adulto": "Está aprendiendo el teorema de la probabilidad total: si un suceso puede ocurrir por varios caminos (causas que no se solapan y cubren todos los casos), su probabilidad es la suma, camino a camino, de P(causa)·P(suceso | causa). Los errores típicos son sumar las condicionadas sin ponderarlas o promediarlas. Pídale que dibuje el árbol y multiplique a lo largo de cada rama.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "árbol",
+     "resultado": "3 causas",
+     "texto": "Las causas suman 1."
+    },
+    {
+     "paso": 2,
+     "operacion": "ramas",
+     "resultado": "0,45·0,81 = 0,3645; 0,25·0,33 = 0,0825; 0,3·0,39 = 0,117",
+     "texto": "P(causa)·P(suceso | causa)."
+    },
+    {
+     "paso": 3,
+     "operacion": "sumar",
+     "resultado": "0,564",
+     "texto": "Probabilidad total."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un servicio de mensajería reparte con 2 empresas: el 50 % y 50 % de los paquetes. Se retrasan el 11 % y 17 % de sus envíos, respectivamente. ¿Qué probabilidad hay de que un paquete al azar llegue con retraso?",
+   "respuesta": "0,14",
+   "distractores": [
+    {
+     "valor": "0,28",
+     "error": "E01"
+    },
+    {
+     "valor": "0,055",
+     "error": "E03"
+    },
+    {
+     "valor": "0,15",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "0,5 × 0,11 + 0,5 × 0,17",
+   "secundarias": [],
+   "explicacion_nino": "Dibuja un árbol: primero la causa y luego si ocurre o no el suceso. Multiplica en cada rama que acaba en el suceso: 0,5·0,11 = 0,055; 0,5·0,17 = 0,085. Suma las ramas: P = 0,5 × 0,11 + 0,5 × 0,17 = 0,14.",
+   "explicacion_adulto": "Está aprendiendo el teorema de la probabilidad total: si un suceso puede ocurrir por varios caminos (causas que no se solapan y cubren todos los casos), su probabilidad es la suma, camino a camino, de P(causa)·P(suceso | causa). Los errores típicos son sumar las condicionadas sin ponderarlas o promediarlas. Pídale que dibuje el árbol y multiplique a lo largo de cada rama.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "árbol",
+     "resultado": "2 causas",
+     "texto": "Las causas suman 1."
+    },
+    {
+     "paso": 2,
+     "operacion": "ramas",
+     "resultado": "0,5·0,11 = 0,055; 0,5·0,17 = 0,085",
+     "texto": "P(causa)·P(suceso | causa)."
+    },
+    {
+     "paso": 3,
+     "operacion": "sumar",
+     "resultado": "0,14",
+     "texto": "Probabilidad total."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Una app de música tiene usuarios gratuitos, estándar y prémium: el 20 %, 55 % y 25 %. Escuchan pódcast el 86 %, 20 % y 57 %, respectivamente. ¿Qué probabilidad hay de que un usuario al azar escuche pódcast?",
+   "respuesta": "0,4245",
+   "distractores": [
+    {
+     "valor": "1,06",
+     "error": "E01"
+    },
+    {
+     "valor": "0,5433",
+     "error": "E02"
+    },
+    {
+     "valor": "0,282",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "0,2 × 0,86 + 0,55 × 0,2 + 0,25 × 0,57",
+   "secundarias": [],
+   "explicacion_nino": "Dibuja un árbol: primero la causa y luego si ocurre o no el suceso. Multiplica en cada rama que acaba en el suceso: 0,2·0,86 = 0,172; 0,55·0,2 = 0,11; 0,25·0,57 = 0,1425. Suma las ramas: P = 0,2 × 0,86 + 0,55 × 0,2 + 0,25 × 0,57 = 0,4245.",
+   "explicacion_adulto": "Está aprendiendo el teorema de la probabilidad total: si un suceso puede ocurrir por varios caminos (causas que no se solapan y cubren todos los casos), su probabilidad es la suma, camino a camino, de P(causa)·P(suceso | causa). Los errores típicos son sumar las condicionadas sin ponderarlas o promediarlas. Pídale que dibuje el árbol y multiplique a lo largo de cada rama.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "árbol",
+     "resultado": "3 causas",
+     "texto": "Las causas suman 1."
+    },
+    {
+     "paso": 2,
+     "operacion": "ramas",
+     "resultado": "0,2·0,86 = 0,172; 0,55·0,2 = 0,11; 0,25·0,57 = 0,1425",
+     "texto": "P(causa)·P(suceso | causa)."
+    },
+    {
+     "paso": 3,
+     "operacion": "sumar",
+     "resultado": "0,4245",
+     "texto": "Probabilidad total."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un vivero tiene semillas de 3 lotes que son el 30 %, 40 % y 30 % del total. Germinan el 21 %, 36 % y 89 % de cada lote. ¿Qué probabilidad hay de que una semilla al azar germine?",
+   "respuesta": "0,474",
+   "distractores": [
+    {
+     "valor": "0,57",
+     "error": "E01"
+    },
+    {
+     "valor": "0,4867",
+     "error": "E02"
+    },
+    {
+     "valor": "0,207",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "0,3 × 0,21 + 0,4 × 0,36 + 0,3 × 0,89",
+   "secundarias": [],
+   "explicacion_nino": "Dibuja un árbol: primero la causa y luego si ocurre o no el suceso. Multiplica en cada rama que acaba en el suceso: 0,3·0,21 = 0,063; 0,4·0,36 = 0,144; 0,3·0,89 = 0,267. Suma las ramas: P = 0,3 × 0,21 + 0,4 × 0,36 + 0,3 × 0,89 = 0,474.",
+   "explicacion_adulto": "Está aprendiendo el teorema de la probabilidad total: si un suceso puede ocurrir por varios caminos (causas que no se solapan y cubren todos los casos), su probabilidad es la suma, camino a camino, de P(causa)·P(suceso | causa). Los errores típicos son sumar las condicionadas sin ponderarlas o promediarlas. Pídale que dibuje el árbol y multiplique a lo largo de cada rama.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "árbol",
+     "resultado": "3 causas",
+     "texto": "Las causas suman 1."
+    },
+    {
+     "paso": 2,
+     "operacion": "ramas",
+     "resultado": "0,3·0,21 = 0,063; 0,4·0,36 = 0,144; 0,3·0,89 = 0,267",
+     "texto": "P(causa)·P(suceso | causa)."
+    },
+    {
+     "paso": 3,
+     "operacion": "sumar",
+     "resultado": "0,474",
+     "texto": "Probabilidad total."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "En una ciudad, los días son soleados, nublados o lluviosos con probabilidades del 10 %, 30 % y 60 %. La probabilidad de atasco es del 2 %, 16 % y 7 %, según el tiempo. ¿Qué probabilidad hay de que haya atasco un día al azar?",
+   "respuesta": "0,092",
+   "distractores": [
+    {
+     "valor": "0,25",
+     "error": "E01"
+    },
+    {
+     "valor": "0,0833",
+     "error": "E02"
+    },
+    {
+     "valor": "0,05",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "0,1 × 0,02 + 0,3 × 0,16 + 0,6 × 0,07",
+   "secundarias": [],
+   "explicacion_nino": "Dibuja un árbol: primero la causa y luego si ocurre o no el suceso. Multiplica en cada rama que acaba en el suceso: 0,1·0,02 = 0,002; 0,3·0,16 = 0,048; 0,6·0,07 = 0,042. Suma las ramas: P = 0,1 × 0,02 + 0,3 × 0,16 + 0,6 × 0,07 = 0,092.",
+   "explicacion_adulto": "Está aprendiendo el teorema de la probabilidad total: si un suceso puede ocurrir por varios caminos (causas que no se solapan y cubren todos los casos), su probabilidad es la suma, camino a camino, de P(causa)·P(suceso | causa). Los errores típicos son sumar las condicionadas sin ponderarlas o promediarlas. Pídale que dibuje el árbol y multiplique a lo largo de cada rama.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "árbol",
+     "resultado": "3 causas",
+     "texto": "Las causas suman 1."
+    },
+    {
+     "paso": 2,
+     "operacion": "ramas",
+     "resultado": "0,1·0,02 = 0,002; 0,3·0,16 = 0,048; 0,6·0,07 = 0,042",
+     "texto": "P(causa)·P(suceso | causa)."
+    },
+    {
+     "paso": 3,
+     "operacion": "sumar",
+     "resultado": "0,092",
+     "texto": "Probabilidad total."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Una fábrica tiene 2 máquinas que producen, respectivamente, el 20 % y 80 % de las piezas. Los porcentajes de piezas defectuosas son 7 % y 3 %. ¿Qué probabilidad hay de que una pieza al azar sea defectuosa?",
+   "respuesta": "0,038",
+   "distractores": [
+    {
+     "valor": "0,1",
+     "error": "E01"
+    },
+    {
+     "valor": "0,05",
+     "error": "E02"
+    },
+    {
+     "valor": "0,014",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "0,2 × 0,07 + 0,8 × 0,03",
+   "secundarias": [],
+   "explicacion_nino": "Dibuja un árbol: primero la causa y luego si ocurre o no el suceso. Multiplica en cada rama que acaba en el suceso: 0,2·0,07 = 0,014; 0,8·0,03 = 0,024. Suma las ramas: P = 0,2 × 0,07 + 0,8 × 0,03 = 0,038.",
+   "explicacion_adulto": "Está aprendiendo el teorema de la probabilidad total: si un suceso puede ocurrir por varios caminos (causas que no se solapan y cubren todos los casos), su probabilidad es la suma, camino a camino, de P(causa)·P(suceso | causa). Los errores típicos son sumar las condicionadas sin ponderarlas o promediarlas. Pídale que dibuje el árbol y multiplique a lo largo de cada rama.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "árbol",
+     "resultado": "2 causas",
+     "texto": "Las causas suman 1."
+    },
+    {
+     "paso": 2,
+     "operacion": "ramas",
+     "resultado": "0,2·0,07 = 0,014; 0,8·0,03 = 0,024",
+     "texto": "P(causa)·P(suceso | causa)."
+    },
+    {
+     "paso": 3,
+     "operacion": "sumar",
+     "resultado": "0,038",
+     "texto": "Probabilidad total."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Una frutería compra las naranjas a 3 proveedores: el 15 %, 25 % y 60 % del total. El porcentaje de naranjas estropeadas de cada uno es 13 %, 17 % y 15 %. ¿Qué probabilidad hay de que una naranja al azar esté estropeada?",
+   "respuesta": "0,152",
+   "distractores": [
+    {
+     "valor": "0,45",
+     "error": "E01"
+    },
+    {
+     "valor": "0,15",
+     "error": "E02"
+    },
+    {
+     "valor": "0,062",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "0,15 × 0,13 + 0,25 × 0,17 + 0,6 × 0,15",
+   "secundarias": [],
+   "explicacion_nino": "Dibuja un árbol: primero la causa y luego si ocurre o no el suceso. Multiplica en cada rama que acaba en el suceso: 0,15·0,13 = 0,0195; 0,25·0,17 = 0,0425; 0,6·0,15 = 0,09. Suma las ramas: P = 0,15 × 0,13 + 0,25 × 0,17 + 0,6 × 0,15 = 0,152.",
+   "explicacion_adulto": "Está aprendiendo el teorema de la probabilidad total: si un suceso puede ocurrir por varios caminos (causas que no se solapan y cubren todos los casos), su probabilidad es la suma, camino a camino, de P(causa)·P(suceso | causa). Los errores típicos son sumar las condicionadas sin ponderarlas o promediarlas. Pídale que dibuje el árbol y multiplique a lo largo de cada rama.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "árbol",
+     "resultado": "3 causas",
+     "texto": "Las causas suman 1."
+    },
+    {
+     "paso": 2,
+     "operacion": "ramas",
+     "resultado": "0,15·0,13 = 0,0195; 0,25·0,17 = 0,0425; 0,6·0,15 = 0,09",
+     "texto": "P(causa)·P(suceso | causa)."
+    },
+    {
+     "paso": 3,
+     "operacion": "sumar",
+     "resultado": "0,152",
+     "texto": "Probabilidad total."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "En un instituto, los alumnos de 1º, 2º y 3º son el 55 %, 10 % y 35 % del total. Usan el comedor el 24 %, 60 % y 35 %, respectivamente. ¿Qué probabilidad hay de que un alumno al azar use el comedor?",
+   "respuesta": "0,3145",
+   "distractores": [
+    {
+     "valor": "0,84",
+     "error": "E01"
+    },
+    {
+     "valor": "0,3967",
+     "error": "E02"
+    },
+    {
+     "valor": "0,192",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "0,55 × 0,24 + 0,1 × 0,6 + 0,35 × 0,35",
+   "secundarias": [],
+   "explicacion_nino": "Dibuja un árbol: primero la causa y luego si ocurre o no el suceso. Multiplica en cada rama que acaba en el suceso: 0,55·0,24 = 0,132; 0,1·0,6 = 0,06; 0,35·0,35 = 0,1225. Suma las ramas: P = 0,55 × 0,24 + 0,1 × 0,6 + 0,35 × 0,35 = 0,3145.",
+   "explicacion_adulto": "Está aprendiendo el teorema de la probabilidad total: si un suceso puede ocurrir por varios caminos (causas que no se solapan y cubren todos los casos), su probabilidad es la suma, camino a camino, de P(causa)·P(suceso | causa). Los errores típicos son sumar las condicionadas sin ponderarlas o promediarlas. Pídale que dibuje el árbol y multiplique a lo largo de cada rama.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "árbol",
+     "resultado": "3 causas",
+     "texto": "Las causas suman 1."
+    },
+    {
+     "paso": 2,
+     "operacion": "ramas",
+     "resultado": "0,55·0,24 = 0,132; 0,1·0,6 = 0,06; 0,35·0,35 = 0,1225",
+     "texto": "P(causa)·P(suceso | causa)."
+    },
+    {
+     "paso": 3,
+     "operacion": "sumar",
+     "resultado": "0,3145",
+     "texto": "Probabilidad total."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un servicio de mensajería reparte con 3 empresas: el 25 %, 40 % y 35 % de los paquetes. Se retrasan el 18 %, 16 % y 17 % de sus envíos, respectivamente. ¿Qué probabilidad hay de que un paquete al azar llegue con retraso?",
+   "respuesta": "0,1685",
+   "distractores": [
+    {
+     "valor": "0,51",
+     "error": "E01"
+    },
+    {
+     "valor": "0,17",
+     "error": "E02"
+    },
+    {
+     "valor": "0,109",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "0,25 × 0,18 + 0,4 × 0,16 + 0,35 × 0,17",
+   "secundarias": [],
+   "explicacion_nino": "Dibuja un árbol: primero la causa y luego si ocurre o no el suceso. Multiplica en cada rama que acaba en el suceso: 0,25·0,18 = 0,045; 0,4·0,16 = 0,064; 0,35·0,17 = 0,0595. Suma las ramas: P = 0,25 × 0,18 + 0,4 × 0,16 + 0,35 × 0,17 = 0,1685.",
+   "explicacion_adulto": "Está aprendiendo el teorema de la probabilidad total: si un suceso puede ocurrir por varios caminos (causas que no se solapan y cubren todos los casos), su probabilidad es la suma, camino a camino, de P(causa)·P(suceso | causa). Los errores típicos son sumar las condicionadas sin ponderarlas o promediarlas. Pídale que dibuje el árbol y multiplique a lo largo de cada rama.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "árbol",
+     "resultado": "3 causas",
+     "texto": "Las causas suman 1."
+    },
+    {
+     "paso": 2,
+     "operacion": "ramas",
+     "resultado": "0,25·0,18 = 0,045; 0,4·0,16 = 0,064; 0,35·0,17 = 0,0595",
+     "texto": "P(causa)·P(suceso | causa)."
+    },
+    {
+     "paso": 3,
+     "operacion": "sumar",
+     "resultado": "0,1685",
+     "texto": "Probabilidad total."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Primero se lanza un dado: si sale un número menor que 3 se saca una bola de la urna U₁ (4 rojas y 3 azules); si no, de la urna U₂ (5 rojas y 3 azules). ¿Qué probabilidad hay de sacar bola roja?",
+   "respuesta": "17/28",
+   "distractores": [
+    {
+     "valor": "4/21",
+     "error": null
+    },
+    {
+     "valor": "67/112",
+     "error": "E02"
+    },
+    {
+     "valor": "3/5",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "1/3 × 4/7 + 2/3 × 5/8",
+   "secundarias": [],
+   "explicacion_nino": "Dos caminos: U₁ con probabilidad 1/3 y U₂ con 2/3. P(roja) = 1/3·4/7 + 2/3·5/8 = 17/28.",
+   "explicacion_adulto": "Está aprendiendo el teorema de la probabilidad total: si un suceso puede ocurrir por varios caminos (causas que no se solapan y cubren todos los casos), su probabilidad es la suma, camino a camino, de P(causa)·P(suceso | causa). Los errores típicos son sumar las condicionadas sin ponderarlas o promediarlas. Pídale que dibuje el árbol y multiplique a lo largo de cada rama.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "causas",
+     "resultado": "U₁: 1/3, U₂: 2/3",
+     "texto": "Primer paso del árbol."
+    },
+    {
+     "paso": 2,
+     "operacion": "condicionadas",
+     "resultado": "4/7 y 5/8",
+     "texto": "Roja en cada urna."
+    },
+    {
+     "paso": 3,
+     "operacion": "sumar",
+     "resultado": "17/28",
+     "texto": "Probabilidad total."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Primero se lanza un dado: si sale un número menor que 3 se saca una bola de la urna U₁ (4 rojas y 2 azules); si no, de la urna U₂ (5 rojas y 6 azules). ¿Qué probabilidad hay de sacar bola roja?",
+   "respuesta": "52/99",
+   "distractores": [
+    {
+     "valor": "2/9",
+     "error": null
+    },
+    {
+     "valor": "37/66",
+     "error": "E02"
+    },
+    {
+     "valor": "9/17",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "1/3 × 4/6 + 2/3 × 5/11",
+   "secundarias": [],
+   "explicacion_nino": "Dos caminos: U₁ con probabilidad 1/3 y U₂ con 2/3. P(roja) = 1/3·4/6 + 2/3·5/11 = 52/99.",
+   "explicacion_adulto": "Está aprendiendo el teorema de la probabilidad total: si un suceso puede ocurrir por varios caminos (causas que no se solapan y cubren todos los casos), su probabilidad es la suma, camino a camino, de P(causa)·P(suceso | causa). Los errores típicos son sumar las condicionadas sin ponderarlas o promediarlas. Pídale que dibuje el árbol y multiplique a lo largo de cada rama.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "causas",
+     "resultado": "U₁: 1/3, U₂: 2/3",
+     "texto": "Primer paso del árbol."
+    },
+    {
+     "paso": 2,
+     "operacion": "condicionadas",
+     "resultado": "4/6 y 5/11",
+     "texto": "Roja en cada urna."
+    },
+    {
+     "paso": 3,
+     "operacion": "sumar",
+     "resultado": "52/99",
+     "texto": "Probabilidad total."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Primero se lanza un dado: si sale un 6 se saca una bola de la urna U₁ (7 rojas y 6 azules); si no, de la urna U₂ (2 rojas y 3 azules). ¿Qué probabilidad hay de sacar bola roja?",
+   "respuesta": "11/26",
+   "distractores": [
+    {
+     "valor": "61/65",
+     "error": "E01"
+    },
+    {
+     "valor": "61/130",
+     "error": "E02"
+    },
+    {
+     "valor": "1/2",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "1/6 × 7/13 + 5/6 × 2/5",
+   "secundarias": [],
+   "explicacion_nino": "Dos caminos: U₁ con probabilidad 1/6 y U₂ con 5/6. P(roja) = 1/6·7/13 + 5/6·2/5 = 11/26.",
+   "explicacion_adulto": "Está aprendiendo el teorema de la probabilidad total: si un suceso puede ocurrir por varios caminos (causas que no se solapan y cubren todos los casos), su probabilidad es la suma, camino a camino, de P(causa)·P(suceso | causa). Los errores típicos son sumar las condicionadas sin ponderarlas o promediarlas. Pídale que dibuje el árbol y multiplique a lo largo de cada rama.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "causas",
+     "resultado": "U₁: 1/6, U₂: 5/6",
+     "texto": "Primer paso del árbol."
+    },
+    {
+     "paso": 2,
+     "operacion": "condicionadas",
+     "resultado": "7/13 y 2/5",
+     "texto": "Roja en cada urna."
+    },
+    {
+     "paso": 3,
+     "operacion": "sumar",
+     "resultado": "11/26",
+     "texto": "Probabilidad total."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Primero se lanza un dado: si sale un 6 se saca una bola de la urna U₁ (4 rojas y 2 azules); si no, de la urna U₂ (2 rojas y 5 azules). ¿Qué probabilidad hay de sacar bola roja?",
+   "respuesta": "22/63",
+   "distractores": [
+    {
+     "valor": "20/21",
+     "error": "E01"
+    },
+    {
+     "valor": "10/21",
+     "error": "E02"
+    },
+    {
+     "valor": "6/13",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "1/6 × 4/6 + 5/6 × 2/7",
+   "secundarias": [],
+   "explicacion_nino": "Dos caminos: U₁ con probabilidad 1/6 y U₂ con 5/6. P(roja) = 1/6·4/6 + 5/6·2/7 = 22/63.",
+   "explicacion_adulto": "Está aprendiendo el teorema de la probabilidad total: si un suceso puede ocurrir por varios caminos (causas que no se solapan y cubren todos los casos), su probabilidad es la suma, camino a camino, de P(causa)·P(suceso | causa). Los errores típicos son sumar las condicionadas sin ponderarlas o promediarlas. Pídale que dibuje el árbol y multiplique a lo largo de cada rama.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "causas",
+     "resultado": "U₁: 1/6, U₂: 5/6",
+     "texto": "Primer paso del árbol."
+    },
+    {
+     "paso": 2,
+     "operacion": "condicionadas",
+     "resultado": "4/6 y 2/7",
+     "texto": "Roja en cada urna."
+    },
+    {
+     "paso": 3,
+     "operacion": "sumar",
+     "resultado": "22/63",
+     "texto": "Probabilidad total."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Primero se lanza un dado: si sale un 6 se saca una bola de la urna U₁ (6 rojas y 2 azules); si no, de la urna U₂ (6 rojas y 5 azules). ¿Qué probabilidad hay de sacar bola roja?",
+   "respuesta": "51/88",
+   "distractores": [
+    {
+     "valor": "1/8",
+     "error": null
+    },
+    {
+     "valor": "57/88",
+     "error": "E02"
+    },
+    {
+     "valor": "12/19",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "1/6 × 6/8 + 5/6 × 6/11",
+   "secundarias": [],
+   "explicacion_nino": "Dos caminos: U₁ con probabilidad 1/6 y U₂ con 5/6. P(roja) = 1/6·6/8 + 5/6·6/11 = 51/88.",
+   "explicacion_adulto": "Está aprendiendo el teorema de la probabilidad total: si un suceso puede ocurrir por varios caminos (causas que no se solapan y cubren todos los casos), su probabilidad es la suma, camino a camino, de P(causa)·P(suceso | causa). Los errores típicos son sumar las condicionadas sin ponderarlas o promediarlas. Pídale que dibuje el árbol y multiplique a lo largo de cada rama.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "causas",
+     "resultado": "U₁: 1/6, U₂: 5/6",
+     "texto": "Primer paso del árbol."
+    },
+    {
+     "paso": 2,
+     "operacion": "condicionadas",
+     "resultado": "6/8 y 6/11",
+     "texto": "Roja en cada urna."
+    },
+    {
+     "paso": 3,
+     "operacion": "sumar",
+     "resultado": "51/88",
+     "texto": "Probabilidad total."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Primero se lanza un dado: si sale un número menor que 3 se saca una bola de la urna U₁ (4 rojas y 4 azules); si no, de la urna U₂ (4 rojas y 6 azules). ¿Qué probabilidad hay de sacar bola roja?",
+   "respuesta": "13/30",
+   "distractores": [
+    {
+     "valor": "9/10",
+     "error": "E01"
+    },
+    {
+     "valor": "9/20",
+     "error": "E02"
+    },
+    {
+     "valor": "4/9",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "1/3 × 4/8 + 2/3 × 4/10",
+   "secundarias": [],
+   "explicacion_nino": "Dos caminos: U₁ con probabilidad 1/3 y U₂ con 2/3. P(roja) = 1/3·4/8 + 2/3·4/10 = 13/30.",
+   "explicacion_adulto": "Está aprendiendo el teorema de la probabilidad total: si un suceso puede ocurrir por varios caminos (causas que no se solapan y cubren todos los casos), su probabilidad es la suma, camino a camino, de P(causa)·P(suceso | causa). Los errores típicos son sumar las condicionadas sin ponderarlas o promediarlas. Pídale que dibuje el árbol y multiplique a lo largo de cada rama.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "causas",
+     "resultado": "U₁: 1/3, U₂: 2/3",
+     "texto": "Primer paso del árbol."
+    },
+    {
+     "paso": 2,
+     "operacion": "condicionadas",
+     "resultado": "4/8 y 4/10",
+     "texto": "Roja en cada urna."
+    },
+    {
+     "paso": 3,
+     "operacion": "sumar",
+     "resultado": "13/30",
+     "texto": "Probabilidad total."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Primero se lanza un dado: si sale un número menor que 3 se saca una bola de la urna U₁ (2 rojas y 5 azules); si no, de la urna U₂ (4 rojas y 6 azules). ¿Qué probabilidad hay de sacar bola roja?",
+   "respuesta": "38/105",
+   "distractores": [
+    {
+     "valor": "24/35",
+     "error": "E01"
+    },
+    {
+     "valor": "12/35",
+     "error": "E02"
+    },
+    {
+     "valor": "6/17",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "1/3 × 2/7 + 2/3 × 4/10",
+   "secundarias": [],
+   "explicacion_nino": "Dos caminos: U₁ con probabilidad 1/3 y U₂ con 2/3. P(roja) = 1/3·2/7 + 2/3·4/10 = 38/105.",
+   "explicacion_adulto": "Está aprendiendo el teorema de la probabilidad total: si un suceso puede ocurrir por varios caminos (causas que no se solapan y cubren todos los casos), su probabilidad es la suma, camino a camino, de P(causa)·P(suceso | causa). Los errores típicos son sumar las condicionadas sin ponderarlas o promediarlas. Pídale que dibuje el árbol y multiplique a lo largo de cada rama.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "causas",
+     "resultado": "U₁: 1/3, U₂: 2/3",
+     "texto": "Primer paso del árbol."
+    },
+    {
+     "paso": 2,
+     "operacion": "condicionadas",
+     "resultado": "2/7 y 4/10",
+     "texto": "Roja en cada urna."
+    },
+    {
+     "paso": 3,
+     "operacion": "sumar",
+     "resultado": "38/105",
+     "texto": "Probabilidad total."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Primero se lanza un dado: si sale un número menor que 3 se saca una bola de la urna U₁ (7 rojas y 2 azules); si no, de la urna U₂ (6 rojas y 7 azules). ¿Qué probabilidad hay de sacar bola roja?",
+   "respuesta": "199/351",
+   "distractores": [
+    {
+     "valor": "7/27",
+     "error": null
+    },
+    {
+     "valor": "145/234",
+     "error": "E02"
+    },
+    {
+     "valor": "13/22",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "1/3 × 7/9 + 2/3 × 6/13",
+   "secundarias": [],
+   "explicacion_nino": "Dos caminos: U₁ con probabilidad 1/3 y U₂ con 2/3. P(roja) = 1/3·7/9 + 2/3·6/13 = 199/351.",
+   "explicacion_adulto": "Está aprendiendo el teorema de la probabilidad total: si un suceso puede ocurrir por varios caminos (causas que no se solapan y cubren todos los casos), su probabilidad es la suma, camino a camino, de P(causa)·P(suceso | causa). Los errores típicos son sumar las condicionadas sin ponderarlas o promediarlas. Pídale que dibuje el árbol y multiplique a lo largo de cada rama.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "causas",
+     "resultado": "U₁: 1/3, U₂: 2/3",
+     "texto": "Primer paso del árbol."
+    },
+    {
+     "paso": 2,
+     "operacion": "condicionadas",
+     "resultado": "7/9 y 6/13",
+     "texto": "Roja en cada urna."
+    },
+    {
+     "paso": 3,
+     "operacion": "sumar",
+     "resultado": "199/351",
+     "texto": "Probabilidad total."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Primero se lanza un dado: si sale un 6 se saca una bola de la urna U₁ (4 rojas y 6 azules); si no, de la urna U₂ (6 rojas y 3 azules). ¿Qué probabilidad hay de sacar bola roja?",
+   "respuesta": "28/45",
+   "distractores": [
+    {
+     "valor": "1/15",
+     "error": null
+    },
+    {
+     "valor": "8/15",
+     "error": "E02"
+    },
+    {
+     "valor": "10/19",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "1/6 × 4/10 + 5/6 × 6/9",
+   "secundarias": [],
+   "explicacion_nino": "Dos caminos: U₁ con probabilidad 1/6 y U₂ con 5/6. P(roja) = 1/6·4/10 + 5/6·6/9 = 28/45.",
+   "explicacion_adulto": "Está aprendiendo el teorema de la probabilidad total: si un suceso puede ocurrir por varios caminos (causas que no se solapan y cubren todos los casos), su probabilidad es la suma, camino a camino, de P(causa)·P(suceso | causa). Los errores típicos son sumar las condicionadas sin ponderarlas o promediarlas. Pídale que dibuje el árbol y multiplique a lo largo de cada rama.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "causas",
+     "resultado": "U₁: 1/6, U₂: 5/6",
+     "texto": "Primer paso del árbol."
+    },
+    {
+     "paso": 2,
+     "operacion": "condicionadas",
+     "resultado": "4/10 y 6/9",
+     "texto": "Roja en cada urna."
+    },
+    {
+     "paso": 3,
+     "operacion": "sumar",
+     "resultado": "28/45",
+     "texto": "Probabilidad total."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Primero se lanza un dado: si sale un número menor que 3 se saca una bola de la urna U₁ (3 rojas y 5 azules); si no, de la urna U₂ (5 rojas y 7 azules). ¿Qué probabilidad hay de sacar bola roja?",
+   "respuesta": "29/72",
+   "distractores": [
+    {
+     "valor": "19/24",
+     "error": "E01"
+    },
+    {
+     "valor": "19/48",
+     "error": "E02"
+    },
+    {
+     "valor": "2/5",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "1/3 × 3/8 + 2/3 × 5/12",
+   "secundarias": [],
+   "explicacion_nino": "Dos caminos: U₁ con probabilidad 1/3 y U₂ con 2/3. P(roja) = 1/3·3/8 + 2/3·5/12 = 29/72.",
+   "explicacion_adulto": "Está aprendiendo el teorema de la probabilidad total: si un suceso puede ocurrir por varios caminos (causas que no se solapan y cubren todos los casos), su probabilidad es la suma, camino a camino, de P(causa)·P(suceso | causa). Los errores típicos son sumar las condicionadas sin ponderarlas o promediarlas. Pídale que dibuje el árbol y multiplique a lo largo de cada rama.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "causas",
+     "resultado": "U₁: 1/3, U₂: 2/3",
+     "texto": "Primer paso del árbol."
+    },
+    {
+     "paso": 2,
+     "operacion": "condicionadas",
+     "resultado": "3/8 y 5/12",
+     "texto": "Roja en cada urna."
+    },
+    {
+     "paso": 3,
+     "operacion": "sumar",
+     "resultado": "29/72",
+     "texto": "Probabilidad total."
+    }
+   ],
+   "plantilla": "P05"
+  }
+ ]
+}

@@ -1,0 +1,1546 @@
+{
+ "habilidad": "EST.PROB.09",
+ "generado_por": "claude (skill mates10-generar-ejercicios v1)",
+ "ejercicios": [
+  {
+   "dificultad": 1,
+   "enunciado": "En una rifa se extraen 4 números distintos entre el 1 y el 20 (el orden no importa). Marta ha elegido 4 números. ¿Qué probabilidad tiene de acertar exactamente 3?",
+   "respuesta": "64/4845",
+   "distractores": [
+    {
+     "valor": "4/4845",
+     "error": "E02"
+    },
+    {
+     "valor": "128/1615",
+     "error": "E01"
+    },
+    {
+     "valor": "1/285",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "4 × 16 : 4845",
+   "secundarias": [],
+   "explicacion_nino": "Posibles: formas de sacar 4 números de 20 sin orden, C(20, 4) = 4845. Favorables: elegir 3 de los 4 suyos, C(4, 3) = 4, y 1 de los 16 que no ha marcado, C(16, 1) = 16. Probabilidad = 4 · 16 / 4845 = 64/4845.",
+   "explicacion_adulto": "Está aprendiendo a usar la regla de Laplace cuando hay tantos casos que hay que contarlos con combinatoria. La clave es contar favorables y posibles con el mismo modelo (con o sin orden, con o sin repetición). Si se equivoca, pídale que diga en voz alta si importa el orden y si se puede repetir, antes de elegir la fórmula. Un fallo frecuente es olvidar que los números no acertados también hay que elegirlos entre los que no marcó.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "posibles",
+     "resultado": "4845",
+     "texto": "C(20, 4)"
+    },
+    {
+     "paso": 2,
+     "operacion": "favorables",
+     "resultado": "64",
+     "texto": "C(4, 3) · C(16, 1)"
+    },
+    {
+     "paso": 3,
+     "operacion": "Laplace",
+     "resultado": "64/4845",
+     "texto": "favorables / posibles, simplificado"
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En una rifa se extraen 5 números distintos entre el 1 y el 25 (el orden no importa). Marta ha elegido 5 números. ¿Qué probabilidad tiene de acertar exactamente 4?",
+   "respuesta": "10/5313",
+   "distractores": [
+    {
+     "valor": "1/10626",
+     "error": "E02"
+    },
+    {
+     "valor": "80/1771",
+     "error": "E01"
+    },
+    {
+     "valor": "1/2530",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "5 × 20 : 53130",
+   "secundarias": [],
+   "explicacion_nino": "Posibles: formas de sacar 5 números de 25 sin orden, C(25, 5) = 53130. Favorables: elegir 4 de los 5 suyos, C(5, 4) = 5, y 1 de los 20 que no ha marcado, C(20, 1) = 20. Probabilidad = 5 · 20 / 53130 = 10/5313.",
+   "explicacion_adulto": "Está aprendiendo a usar la regla de Laplace cuando hay tantos casos que hay que contarlos con combinatoria. La clave es contar favorables y posibles con el mismo modelo (con o sin orden, con o sin repetición). Si se equivoca, pídale que diga en voz alta si importa el orden y si se puede repetir, antes de elegir la fórmula. Un fallo frecuente es olvidar que los números no acertados también hay que elegirlos entre los que no marcó.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "posibles",
+     "resultado": "53130",
+     "texto": "C(25, 5)"
+    },
+    {
+     "paso": 2,
+     "operacion": "favorables",
+     "resultado": "100",
+     "texto": "C(5, 4) · C(20, 1)"
+    },
+    {
+     "paso": 3,
+     "operacion": "Laplace",
+     "resultado": "10/5313",
+     "texto": "favorables / posibles, simplificado"
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En una rifa se extraen 4 números distintos entre el 1 y el 30 (el orden no importa). Marta ha elegido 4 números. ¿Qué probabilidad tiene de acertar exactamente 2?",
+   "respuesta": "130/1827",
+   "distractores": [
+    {
+     "valor": "2/9135",
+     "error": "E02"
+    },
+    {
+     "valor": "520/1827",
+     "error": "E01"
+    },
+    {
+     "valor": "2/145",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "6 × 325 : 27405",
+   "secundarias": [],
+   "explicacion_nino": "Posibles: formas de sacar 4 números de 30 sin orden, C(30, 4) = 27405. Favorables: elegir 2 de los 4 suyos, C(4, 2) = 6, y 2 de los 26 que no ha marcado, C(26, 2) = 325. Probabilidad = 6 · 325 / 27405 = 130/1827.",
+   "explicacion_adulto": "Está aprendiendo a usar la regla de Laplace cuando hay tantos casos que hay que contarlos con combinatoria. La clave es contar favorables y posibles con el mismo modelo (con o sin orden, con o sin repetición). Si se equivoca, pídale que diga en voz alta si importa el orden y si se puede repetir, antes de elegir la fórmula. Un fallo frecuente es olvidar que los números no acertados también hay que elegirlos entre los que no marcó.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "posibles",
+     "resultado": "27405",
+     "texto": "C(30, 4)"
+    },
+    {
+     "paso": 2,
+     "operacion": "favorables",
+     "resultado": "1950",
+     "texto": "C(4, 2) · C(26, 2)"
+    },
+    {
+     "paso": 3,
+     "operacion": "Laplace",
+     "resultado": "130/1827",
+     "texto": "favorables / posibles, simplificado"
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En una rifa se extraen 3 números distintos entre el 1 y el 15 (el orden no importa). Marta ha elegido 3 números. ¿Qué probabilidad tiene de acertar exactamente 2?",
+   "respuesta": "36/455",
+   "distractores": [
+    {
+     "valor": "3/455",
+     "error": "E02"
+    },
+    {
+     "valor": "72/455",
+     "error": "E01"
+    },
+    {
+     "valor": "1/35",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "3 × 12 : 455",
+   "secundarias": [],
+   "explicacion_nino": "Posibles: formas de sacar 3 números de 15 sin orden, C(15, 3) = 455. Favorables: elegir 2 de los 3 suyos, C(3, 2) = 3, y 1 de los 12 que no ha marcado, C(12, 1) = 12. Probabilidad = 3 · 12 / 455 = 36/455.",
+   "explicacion_adulto": "Está aprendiendo a usar la regla de Laplace cuando hay tantos casos que hay que contarlos con combinatoria. La clave es contar favorables y posibles con el mismo modelo (con o sin orden, con o sin repetición). Si se equivoca, pídale que diga en voz alta si importa el orden y si se puede repetir, antes de elegir la fórmula. Un fallo frecuente es olvidar que los números no acertados también hay que elegirlos entre los que no marcó.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "posibles",
+     "resultado": "455",
+     "texto": "C(15, 3)"
+    },
+    {
+     "paso": 2,
+     "operacion": "favorables",
+     "resultado": "36",
+     "texto": "C(3, 2) · C(12, 1)"
+    },
+    {
+     "paso": 3,
+     "operacion": "Laplace",
+     "resultado": "36/455",
+     "texto": "favorables / posibles, simplificado"
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En una rifa se extraen 5 números distintos entre el 1 y el 40 (el orden no importa). Marta ha elegido 5 números. ¿Qué probabilidad tiene de acertar exactamente 3?",
+   "respuesta": "2975/329004",
+   "distractores": [
+    {
+     "valor": "5/329004",
+     "error": "E02"
+    },
+    {
+     "valor": "2975/27417",
+     "error": "E01"
+    },
+    {
+     "valor": "1/988",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "10 × 595 : 658008",
+   "secundarias": [],
+   "explicacion_nino": "Posibles: formas de sacar 5 números de 40 sin orden, C(40, 5) = 658008. Favorables: elegir 3 de los 5 suyos, C(5, 3) = 10, y 2 de los 35 que no ha marcado, C(35, 2) = 595. Probabilidad = 10 · 595 / 658008 = 2975/329004.",
+   "explicacion_adulto": "Está aprendiendo a usar la regla de Laplace cuando hay tantos casos que hay que contarlos con combinatoria. La clave es contar favorables y posibles con el mismo modelo (con o sin orden, con o sin repetición). Si se equivoca, pídale que diga en voz alta si importa el orden y si se puede repetir, antes de elegir la fórmula. Un fallo frecuente es olvidar que los números no acertados también hay que elegirlos entre los que no marcó.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "posibles",
+     "resultado": "658008",
+     "texto": "C(40, 5)"
+    },
+    {
+     "paso": 2,
+     "operacion": "favorables",
+     "resultado": "5950",
+     "texto": "C(5, 3) · C(35, 2)"
+    },
+    {
+     "paso": 3,
+     "operacion": "Laplace",
+     "resultado": "2975/329004",
+     "texto": "favorables / posibles, simplificado"
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "En una rifa se extraen 6 números distintos entre el 1 y el 36 (el orden no importa). Marta ha elegido 6 números. ¿Qué probabilidad tiene de acertar exactamente 5?",
+   "respuesta": "15/162316",
+   "distractores": [
+    {
+     "valor": "1/324632",
+     "error": "E02"
+    },
+    {
+     "valor": "450/40579",
+     "error": "E01"
+    },
+    {
+     "valor": "1/62832",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "6 × 30 : 1947792",
+   "secundarias": [],
+   "explicacion_nino": "Posibles: formas de sacar 6 números de 36 sin orden, C(36, 6) = 1947792. Favorables: elegir 5 de los 6 suyos, C(6, 5) = 6, y 1 de los 30 que no ha marcado, C(30, 1) = 30. Probabilidad = 6 · 30 / 1947792 = 15/162316.",
+   "explicacion_adulto": "Está aprendiendo a usar la regla de Laplace cuando hay tantos casos que hay que contarlos con combinatoria. La clave es contar favorables y posibles con el mismo modelo (con o sin orden, con o sin repetición). Si se equivoca, pídale que diga en voz alta si importa el orden y si se puede repetir, antes de elegir la fórmula. Un fallo frecuente es olvidar que los números no acertados también hay que elegirlos entre los que no marcó.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "posibles",
+     "resultado": "1947792",
+     "texto": "C(36, 6)"
+    },
+    {
+     "paso": 2,
+     "operacion": "favorables",
+     "resultado": "180",
+     "texto": "C(6, 5) · C(30, 1)"
+    },
+    {
+     "paso": 3,
+     "operacion": "Laplace",
+     "resultado": "15/162316",
+     "texto": "favorables / posibles, simplificado"
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "En una rifa se extraen 5 números distintos entre el 1 y el 45 (el orden no importa). Marta ha elegido 5 números. ¿Qué probabilidad tiene de acertar exactamente 4?",
+   "respuesta": "200/1221759",
+   "distractores": [
+    {
+     "valor": "5/1221759",
+     "error": "E02"
+    },
+    {
+     "valor": "1600/407253",
+     "error": "E01"
+    },
+    {
+     "valor": "1/29799",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "5 × 40 : 1221759",
+   "secundarias": [],
+   "explicacion_nino": "Posibles: formas de sacar 5 números de 45 sin orden, C(45, 5) = 1221759. Favorables: elegir 4 de los 5 suyos, C(5, 4) = 5, y 1 de los 40 que no ha marcado, C(40, 1) = 40. Probabilidad = 5 · 40 / 1221759 = 200/1221759.",
+   "explicacion_adulto": "Está aprendiendo a usar la regla de Laplace cuando hay tantos casos que hay que contarlos con combinatoria. La clave es contar favorables y posibles con el mismo modelo (con o sin orden, con o sin repetición). Si se equivoca, pídale que diga en voz alta si importa el orden y si se puede repetir, antes de elegir la fórmula. Un fallo frecuente es olvidar que los números no acertados también hay que elegirlos entre los que no marcó.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "posibles",
+     "resultado": "1221759",
+     "texto": "C(45, 5)"
+    },
+    {
+     "paso": 2,
+     "operacion": "favorables",
+     "resultado": "200",
+     "texto": "C(5, 4) · C(40, 1)"
+    },
+    {
+     "paso": 3,
+     "operacion": "Laplace",
+     "resultado": "200/1221759",
+     "texto": "favorables / posibles, simplificado"
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En una rifa se extraen 3 números distintos entre el 1 y el 12 (el orden no importa). Marta ha elegido 3 números. ¿Qué probabilidad tiene de acertar exactamente 2?",
+   "respuesta": "27/220",
+   "distractores": [
+    {
+     "valor": "3/220",
+     "error": "E02"
+    },
+    {
+     "valor": "27/110",
+     "error": "E01"
+    },
+    {
+     "valor": "1/22",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "3 × 9 : 220",
+   "secundarias": [],
+   "explicacion_nino": "Posibles: formas de sacar 3 números de 12 sin orden, C(12, 3) = 220. Favorables: elegir 2 de los 3 suyos, C(3, 2) = 3, y 1 de los 9 que no ha marcado, C(9, 1) = 9. Probabilidad = 3 · 9 / 220 = 27/220.",
+   "explicacion_adulto": "Está aprendiendo a usar la regla de Laplace cuando hay tantos casos que hay que contarlos con combinatoria. La clave es contar favorables y posibles con el mismo modelo (con o sin orden, con o sin repetición). Si se equivoca, pídale que diga en voz alta si importa el orden y si se puede repetir, antes de elegir la fórmula. Un fallo frecuente es olvidar que los números no acertados también hay que elegirlos entre los que no marcó.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "posibles",
+     "resultado": "220",
+     "texto": "C(12, 3)"
+    },
+    {
+     "paso": 2,
+     "operacion": "favorables",
+     "resultado": "27",
+     "texto": "C(3, 2) · C(9, 1)"
+    },
+    {
+     "paso": 3,
+     "operacion": "Laplace",
+     "resultado": "27/220",
+     "texto": "favorables / posibles, simplificado"
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En un club de ajedrez hay 8 chicas y 7 chicos. Se sortea una comisión de 4 personas. ¿Qué probabilidad hay de que en ella haya exactamente 2 chicas?",
+   "respuesta": "28/65",
+   "distractores": [
+    {
+     "valor": "4/195",
+     "error": "E02"
+    },
+    {
+     "valor": "1/2",
+     "error": null
+    },
+    {
+     "valor": "7/195",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "28 × 21 : 1365",
+   "secundarias": [],
+   "explicacion_nino": "Posibles: comisiones de 4 entre 15: C(15, 4) = 1365. Favorables: 2 de las 8 chicas y 2 de los 7 chicos: C(8, 2) · C(7, 2) = 28 · 21 = 588. Probabilidad = 588/1365 = 28/65.",
+   "explicacion_adulto": "Está aprendiendo a usar la regla de Laplace cuando hay tantos casos que hay que contarlos con combinatoria. La clave es contar favorables y posibles con el mismo modelo (con o sin orden, con o sin repetición). Si se equivoca, pídale que diga en voz alta si importa el orden y si se puede repetir, antes de elegir la fórmula.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "posibles",
+     "resultado": "1365",
+     "texto": "C(15, 4)"
+    },
+    {
+     "paso": 2,
+     "operacion": "favorables",
+     "resultado": "588",
+     "texto": "C(8, 2) · C(7, 2)"
+    },
+    {
+     "paso": 3,
+     "operacion": "Laplace",
+     "resultado": "28/65",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En un claustro hay 8 profesoras y 6 profesores. Se sortea una comisión de 3 personas. ¿Qué probabilidad hay de que en ella haya exactamente 2 profesoras?",
+   "respuesta": "6/13",
+   "distractores": [
+    {
+     "valor": "1/13",
+     "error": "E02"
+    },
+    {
+     "valor": "12/13",
+     "error": "E01"
+    },
+    {
+     "valor": "2/3",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "28 × 6 : 364",
+   "secundarias": [],
+   "explicacion_nino": "Posibles: comisiones de 3 entre 14: C(14, 3) = 364. Favorables: 2 de las 8 profesoras y 1 de los 6 profesores: C(8, 2) · C(6, 1) = 28 · 6 = 168. Probabilidad = 168/364 = 6/13.",
+   "explicacion_adulto": "Está aprendiendo a usar la regla de Laplace cuando hay tantos casos que hay que contarlos con combinatoria. La clave es contar favorables y posibles con el mismo modelo (con o sin orden, con o sin repetición). Si se equivoca, pídale que diga en voz alta si importa el orden y si se puede repetir, antes de elegir la fórmula.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "posibles",
+     "resultado": "364",
+     "texto": "C(14, 3)"
+    },
+    {
+     "paso": 2,
+     "operacion": "favorables",
+     "resultado": "168",
+     "texto": "C(8, 2) · C(6, 1)"
+    },
+    {
+     "paso": 3,
+     "operacion": "Laplace",
+     "resultado": "6/13",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En una comunidad de vecinos hay 5 vecinas y 7 vecinos. Se sortea una comisión de 3 personas. ¿Qué probabilidad hay de que en ella haya exactamente 2 vecinas?",
+   "respuesta": "7/22",
+   "distractores": [
+    {
+     "valor": "1/22",
+     "error": "E02"
+    },
+    {
+     "valor": "7/11",
+     "error": "E01"
+    },
+    {
+     "valor": "2/3",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "10 × 7 : 220",
+   "secundarias": [],
+   "explicacion_nino": "Posibles: comisiones de 3 entre 12: C(12, 3) = 220. Favorables: 2 de las 5 vecinas y 1 de los 7 vecinos: C(5, 2) · C(7, 1) = 10 · 7 = 70. Probabilidad = 70/220 = 7/22.",
+   "explicacion_adulto": "Está aprendiendo a usar la regla de Laplace cuando hay tantos casos que hay que contarlos con combinatoria. La clave es contar favorables y posibles con el mismo modelo (con o sin orden, con o sin repetición). Si se equivoca, pídale que diga en voz alta si importa el orden y si se puede repetir, antes de elegir la fórmula.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "posibles",
+     "resultado": "220",
+     "texto": "C(12, 3)"
+    },
+    {
+     "paso": 2,
+     "operacion": "favorables",
+     "resultado": "70",
+     "texto": "C(5, 2) · C(7, 1)"
+    },
+    {
+     "paso": 3,
+     "operacion": "Laplace",
+     "resultado": "7/22",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En un equipo de laboratorio hay 5 biólogas y 4 químicos. Se sortea una comisión de 4 personas. ¿Qué probabilidad hay de que en ella haya exactamente 2 biólogas?",
+   "respuesta": "10/21",
+   "distractores": [
+    {
+     "valor": "5/63",
+     "error": "E02"
+    },
+    {
+     "valor": "1/2",
+     "error": null
+    },
+    {
+     "valor": "8/63",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "10 × 6 : 126",
+   "secundarias": [],
+   "explicacion_nino": "Posibles: comisiones de 4 entre 9: C(9, 4) = 126. Favorables: 2 de las 5 biólogas y 2 de los 4 químicos: C(5, 2) · C(4, 2) = 10 · 6 = 60. Probabilidad = 60/126 = 10/21.",
+   "explicacion_adulto": "Está aprendiendo a usar la regla de Laplace cuando hay tantos casos que hay que contarlos con combinatoria. La clave es contar favorables y posibles con el mismo modelo (con o sin orden, con o sin repetición). Si se equivoca, pídale que diga en voz alta si importa el orden y si se puede repetir, antes de elegir la fórmula.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "posibles",
+     "resultado": "126",
+     "texto": "C(9, 4)"
+    },
+    {
+     "paso": 2,
+     "operacion": "favorables",
+     "resultado": "60",
+     "texto": "C(5, 2) · C(4, 2)"
+    },
+    {
+     "paso": 3,
+     "operacion": "Laplace",
+     "resultado": "10/21",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En una peña ciclista hay 8 socias y 7 socios. Se sortea una comisión de 3 personas. ¿Qué probabilidad hay de que en ella haya exactamente 2 socias?",
+   "respuesta": "28/65",
+   "distractores": [
+    {
+     "valor": "4/65",
+     "error": "E02"
+    },
+    {
+     "valor": "56/65",
+     "error": "E01"
+    },
+    {
+     "valor": "2/3",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "28 × 7 : 455",
+   "secundarias": [],
+   "explicacion_nino": "Posibles: comisiones de 3 entre 15: C(15, 3) = 455. Favorables: 2 de las 8 socias y 1 de los 7 socios: C(8, 2) · C(7, 1) = 28 · 7 = 196. Probabilidad = 196/455 = 28/65.",
+   "explicacion_adulto": "Está aprendiendo a usar la regla de Laplace cuando hay tantos casos que hay que contarlos con combinatoria. La clave es contar favorables y posibles con el mismo modelo (con o sin orden, con o sin repetición). Si se equivoca, pídale que diga en voz alta si importa el orden y si se puede repetir, antes de elegir la fórmula.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "posibles",
+     "resultado": "455",
+     "texto": "C(15, 3)"
+    },
+    {
+     "paso": 2,
+     "operacion": "favorables",
+     "resultado": "196",
+     "texto": "C(8, 2) · C(7, 1)"
+    },
+    {
+     "paso": 3,
+     "operacion": "Laplace",
+     "resultado": "28/65",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En un grupo de voluntariado hay 8 voluntarias y 6 voluntarios. Se sortea una comisión de 3 personas. ¿Qué probabilidad hay de que en ella haya exactamente 2 voluntarias?",
+   "respuesta": "6/13",
+   "distractores": [
+    {
+     "valor": "1/13",
+     "error": "E02"
+    },
+    {
+     "valor": "12/13",
+     "error": "E01"
+    },
+    {
+     "valor": "2/3",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "28 × 6 : 364",
+   "secundarias": [],
+   "explicacion_nino": "Posibles: comisiones de 3 entre 14: C(14, 3) = 364. Favorables: 2 de las 8 voluntarias y 1 de los 6 voluntarios: C(8, 2) · C(6, 1) = 28 · 6 = 168. Probabilidad = 168/364 = 6/13.",
+   "explicacion_adulto": "Está aprendiendo a usar la regla de Laplace cuando hay tantos casos que hay que contarlos con combinatoria. La clave es contar favorables y posibles con el mismo modelo (con o sin orden, con o sin repetición). Si se equivoca, pídale que diga en voz alta si importa el orden y si se puede repetir, antes de elegir la fórmula.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "posibles",
+     "resultado": "364",
+     "texto": "C(14, 3)"
+    },
+    {
+     "paso": 2,
+     "operacion": "favorables",
+     "resultado": "168",
+     "texto": "C(8, 2) · C(6, 1)"
+    },
+    {
+     "paso": 3,
+     "operacion": "Laplace",
+     "resultado": "6/13",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En una orquesta juvenil hay 8 violinistas y 7 percusionistas. Se sortea una comisión de 3 personas. ¿Qué probabilidad hay de que en ella haya exactamente 2 violinistas?",
+   "respuesta": "28/65",
+   "distractores": [
+    {
+     "valor": "4/65",
+     "error": "E02"
+    },
+    {
+     "valor": "56/65",
+     "error": "E01"
+    },
+    {
+     "valor": "2/3",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "28 × 7 : 455",
+   "secundarias": [],
+   "explicacion_nino": "Posibles: comisiones de 3 entre 15: C(15, 3) = 455. Favorables: 2 de las 8 violinistas y 1 de los 7 percusionistas: C(8, 2) · C(7, 1) = 28 · 7 = 196. Probabilidad = 196/455 = 28/65.",
+   "explicacion_adulto": "Está aprendiendo a usar la regla de Laplace cuando hay tantos casos que hay que contarlos con combinatoria. La clave es contar favorables y posibles con el mismo modelo (con o sin orden, con o sin repetición). Si se equivoca, pídale que diga en voz alta si importa el orden y si se puede repetir, antes de elegir la fórmula.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "posibles",
+     "resultado": "455",
+     "texto": "C(15, 3)"
+    },
+    {
+     "paso": 2,
+     "operacion": "favorables",
+     "resultado": "196",
+     "texto": "C(8, 2) · C(7, 1)"
+    },
+    {
+     "paso": 3,
+     "operacion": "Laplace",
+     "resultado": "28/65",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Se elige al azar un PIN de 4 cifras (se pueden repetir dígitos). ¿Qué probabilidad hay de que no se repita ningún símbolo?",
+   "respuesta": "63/125",
+   "distractores": [
+    {
+     "valor": "1/24",
+     "error": "E01"
+    },
+    {
+     "valor": "21/1000",
+     "error": "E01"
+    },
+    {
+     "valor": "1/5040",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "5040 : 10000",
+   "secundarias": [],
+   "explicacion_nino": "Posibles: con repetición y con orden, 10^4 = 10000. Favorables: todos distintos, con orden: V(10, 4) = 5040. Probabilidad = 5040/10000 = 63/125.",
+   "explicacion_adulto": "Está aprendiendo a usar la regla de Laplace cuando hay tantos casos que hay que contarlos con combinatoria. La clave es contar favorables y posibles con el mismo modelo (con o sin orden, con o sin repetición). Si se equivoca, pídale que diga en voz alta si importa el orden y si se puede repetir, antes de elegir la fórmula. Aquí los posibles llevan repetición y los favorables no: por eso usan fórmulas distintas, pero las dos cuentan con orden.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "posibles",
+     "resultado": "10000",
+     "texto": "10^4"
+    },
+    {
+     "paso": 2,
+     "operacion": "favorables",
+     "resultado": "5040",
+     "texto": "V(10, 4)"
+    },
+    {
+     "paso": 3,
+     "operacion": "Laplace",
+     "resultado": "63/125",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Se elige al azar la combinación de un candado de 3 ruedas numeradas del 0 al 9 (se pueden repetir dígitos). ¿Qué probabilidad hay de que no se repita ningún símbolo?",
+   "respuesta": "18/25",
+   "distractores": [
+    {
+     "valor": "1/6",
+     "error": "E01"
+    },
+    {
+     "valor": "3/25",
+     "error": "E01"
+    },
+    {
+     "valor": "1/720",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "720 : 1000",
+   "secundarias": [],
+   "explicacion_nino": "Posibles: con repetición y con orden, 10^3 = 1000. Favorables: todos distintos, con orden: V(10, 3) = 720. Probabilidad = 720/1000 = 18/25.",
+   "explicacion_adulto": "Está aprendiendo a usar la regla de Laplace cuando hay tantos casos que hay que contarlos con combinatoria. La clave es contar favorables y posibles con el mismo modelo (con o sin orden, con o sin repetición). Si se equivoca, pídale que diga en voz alta si importa el orden y si se puede repetir, antes de elegir la fórmula. Aquí los posibles llevan repetición y los favorables no: por eso usan fórmulas distintas, pero las dos cuentan con orden.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "posibles",
+     "resultado": "1000",
+     "texto": "10^3"
+    },
+    {
+     "paso": 2,
+     "operacion": "favorables",
+     "resultado": "720",
+     "texto": "V(10, 3)"
+    },
+    {
+     "paso": 3,
+     "operacion": "Laplace",
+     "resultado": "18/25",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Se elige al azar un código de 3 letras (alfabeto de 26) (se pueden repetir letras). ¿Qué probabilidad hay de que no se repita ningún símbolo?",
+   "respuesta": "150/169",
+   "distractores": [
+    {
+     "valor": "1/6",
+     "error": "E01"
+    },
+    {
+     "valor": "25/169",
+     "error": "E01"
+    },
+    {
+     "valor": "1/15600",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "15600 : 17576",
+   "secundarias": [],
+   "explicacion_nino": "Posibles: con repetición y con orden, 26^3 = 17576. Favorables: todos distintos, con orden: V(26, 3) = 15600. Probabilidad = 15600/17576 = 150/169.",
+   "explicacion_adulto": "Está aprendiendo a usar la regla de Laplace cuando hay tantos casos que hay que contarlos con combinatoria. La clave es contar favorables y posibles con el mismo modelo (con o sin orden, con o sin repetición). Si se equivoca, pídale que diga en voz alta si importa el orden y si se puede repetir, antes de elegir la fórmula. Aquí los posibles llevan repetición y los favorables no: por eso usan fórmulas distintas, pero las dos cuentan con orden.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "posibles",
+     "resultado": "17576",
+     "texto": "26^3"
+    },
+    {
+     "paso": 2,
+     "operacion": "favorables",
+     "resultado": "15600",
+     "texto": "V(26, 3)"
+    },
+    {
+     "paso": 3,
+     "operacion": "Laplace",
+     "resultado": "150/169",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Se elige al azar una clave de 4 símbolos elegidos entre 6 colores (se pueden repetir símbolos). ¿Qué probabilidad hay de que no se repita ningún símbolo?",
+   "respuesta": "5/18",
+   "distractores": [
+    {
+     "valor": "1/24",
+     "error": "E01"
+    },
+    {
+     "valor": "5/432",
+     "error": "E01"
+    },
+    {
+     "valor": "1/360",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "360 : 1296",
+   "secundarias": [],
+   "explicacion_nino": "Posibles: con repetición y con orden, 6^4 = 1296. Favorables: todos distintos, con orden: V(6, 4) = 360. Probabilidad = 360/1296 = 5/18.",
+   "explicacion_adulto": "Está aprendiendo a usar la regla de Laplace cuando hay tantos casos que hay que contarlos con combinatoria. La clave es contar favorables y posibles con el mismo modelo (con o sin orden, con o sin repetición). Si se equivoca, pídale que diga en voz alta si importa el orden y si se puede repetir, antes de elegir la fórmula. Aquí los posibles llevan repetición y los favorables no: por eso usan fórmulas distintas, pero las dos cuentan con orden.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "posibles",
+     "resultado": "1296",
+     "texto": "6^4"
+    },
+    {
+     "paso": 2,
+     "operacion": "favorables",
+     "resultado": "360",
+     "texto": "V(6, 4)"
+    },
+    {
+     "paso": 3,
+     "operacion": "Laplace",
+     "resultado": "5/18",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Se elige al azar un código postal inventado de 5 cifras (se pueden repetir dígitos). ¿Qué probabilidad hay de que no se repita ningún símbolo?",
+   "respuesta": "189/625",
+   "distractores": [
+    {
+     "valor": "1/120",
+     "error": "E01"
+    },
+    {
+     "valor": "63/25000",
+     "error": "E01"
+    },
+    {
+     "valor": "1/30240",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "30240 : 100000",
+   "secundarias": [],
+   "explicacion_nino": "Posibles: con repetición y con orden, 10^5 = 100000. Favorables: todos distintos, con orden: V(10, 5) = 30240. Probabilidad = 30240/100000 = 189/625.",
+   "explicacion_adulto": "Está aprendiendo a usar la regla de Laplace cuando hay tantos casos que hay que contarlos con combinatoria. La clave es contar favorables y posibles con el mismo modelo (con o sin orden, con o sin repetición). Si se equivoca, pídale que diga en voz alta si importa el orden y si se puede repetir, antes de elegir la fórmula. Aquí los posibles llevan repetición y los favorables no: por eso usan fórmulas distintas, pero las dos cuentan con orden.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "posibles",
+     "resultado": "100000",
+     "texto": "10^5"
+    },
+    {
+     "paso": 2,
+     "operacion": "favorables",
+     "resultado": "30240",
+     "texto": "V(10, 5)"
+    },
+    {
+     "paso": 3,
+     "operacion": "Laplace",
+     "resultado": "189/625",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Se elige al azar una clave de 4 vocales (se pueden repetir vocales). ¿Qué probabilidad hay de que no se repita ningún símbolo?",
+   "respuesta": "24/125",
+   "distractores": [
+    {
+     "valor": "1/24",
+     "error": "E01"
+    },
+    {
+     "valor": "1/125",
+     "error": "E01"
+    },
+    {
+     "valor": "1/120",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "120 : 625",
+   "secundarias": [],
+   "explicacion_nino": "Posibles: con repetición y con orden, 5^4 = 625. Favorables: todos distintos, con orden: V(5, 4) = 120. Probabilidad = 120/625 = 24/125.",
+   "explicacion_adulto": "Está aprendiendo a usar la regla de Laplace cuando hay tantos casos que hay que contarlos con combinatoria. La clave es contar favorables y posibles con el mismo modelo (con o sin orden, con o sin repetición). Si se equivoca, pídale que diga en voz alta si importa el orden y si se puede repetir, antes de elegir la fórmula. Aquí los posibles llevan repetición y los favorables no: por eso usan fórmulas distintas, pero las dos cuentan con orden.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "posibles",
+     "resultado": "625",
+     "texto": "5^4"
+    },
+    {
+     "paso": 2,
+     "operacion": "favorables",
+     "resultado": "120",
+     "texto": "V(5, 4)"
+    },
+    {
+     "paso": 3,
+     "operacion": "Laplace",
+     "resultado": "24/125",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Se elige al azar una combinación de 3 pulsaciones entre 8 teclas (se pueden repetir teclas). ¿Qué probabilidad hay de que no se repita ningún símbolo?",
+   "respuesta": "21/32",
+   "distractores": [
+    {
+     "valor": "1/6",
+     "error": "E01"
+    },
+    {
+     "valor": "7/64",
+     "error": "E01"
+    },
+    {
+     "valor": "1/336",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "336 : 512",
+   "secundarias": [],
+   "explicacion_nino": "Posibles: con repetición y con orden, 8^3 = 512. Favorables: todos distintos, con orden: V(8, 3) = 336. Probabilidad = 336/512 = 21/32.",
+   "explicacion_adulto": "Está aprendiendo a usar la regla de Laplace cuando hay tantos casos que hay que contarlos con combinatoria. La clave es contar favorables y posibles con el mismo modelo (con o sin orden, con o sin repetición). Si se equivoca, pídale que diga en voz alta si importa el orden y si se puede repetir, antes de elegir la fórmula. Aquí los posibles llevan repetición y los favorables no: por eso usan fórmulas distintas, pero las dos cuentan con orden.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "posibles",
+     "resultado": "512",
+     "texto": "8^3"
+    },
+    {
+     "paso": 2,
+     "operacion": "favorables",
+     "resultado": "336",
+     "texto": "V(8, 3)"
+    },
+    {
+     "paso": 3,
+     "operacion": "Laplace",
+     "resultado": "21/32",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "4 amigos, entre ellos Lucía y Ahmed, se colocan al azar en una fila para una foto. ¿Qué probabilidad hay de que Lucía y Ahmed queden juntos?",
+   "respuesta": "1/2",
+   "distractores": [
+    {
+     "valor": "1/4",
+     "error": "E02"
+    },
+    {
+     "valor": "1/6",
+     "error": "E01"
+    },
+    {
+     "valor": "1",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "2 × 6 : 24",
+   "secundarias": [],
+   "explicacion_nino": "Posibles: 4! = 24 filas. Favorables: tratamos a la pareja como un bloque: (3)! = 6 filas, y dentro del bloque pueden ir de 2 formas: 12. Probabilidad = 1/2.",
+   "explicacion_adulto": "Está aprendiendo a usar la regla de Laplace cuando hay tantos casos que hay que contarlos con combinatoria. La clave es contar favorables y posibles con el mismo modelo (con o sin orden, con o sin repetición). Si se equivoca, pídale que diga en voz alta si importa el orden y si se puede repetir, antes de elegir la fórmula.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "posibles",
+     "resultado": "24",
+     "texto": "4!"
+    },
+    {
+     "paso": 2,
+     "operacion": "favorables",
+     "resultado": "12",
+     "texto": "bloque o extremos fijos"
+    },
+    {
+     "paso": 3,
+     "operacion": "Laplace",
+     "resultado": "1/2",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Se ordenan al azar 5 libros distintos en una estantería, entre ellos un atlas y un diccionario. ¿Qué probabilidad hay de que el atlas quede en un extremo y el diccionario en el otro?",
+   "respuesta": "1/10",
+   "distractores": [
+    {
+     "valor": "1/20",
+     "error": "E02"
+    },
+    {
+     "valor": "2/5",
+     "error": null
+    },
+    {
+     "valor": "1/25",
+     "error": "E01"
+    }
+   ],
+   "expresion_calculo": "2 × 6 : 120",
+   "secundarias": [],
+   "explicacion_nino": "Posibles: 5! = 120. Favorables: atlas y diccionario ocupan los extremos de 2 formas y los otros 3 libros se ordenan de (3)! = 6 formas: 12. Probabilidad = 1/10.",
+   "explicacion_adulto": "Está aprendiendo a usar la regla de Laplace cuando hay tantos casos que hay que contarlos con combinatoria. La clave es contar favorables y posibles con el mismo modelo (con o sin orden, con o sin repetición). Si se equivoca, pídale que diga en voz alta si importa el orden y si se puede repetir, antes de elegir la fórmula.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "posibles",
+     "resultado": "120",
+     "texto": "5!"
+    },
+    {
+     "paso": 2,
+     "operacion": "favorables",
+     "resultado": "12",
+     "texto": "bloque o extremos fijos"
+    },
+    {
+     "paso": 3,
+     "operacion": "Laplace",
+     "resultado": "1/10",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "6 amigos, entre ellos Lucía y Ahmed, se colocan al azar en una fila para una foto. ¿Qué probabilidad hay de que Lucía y Ahmed queden juntos?",
+   "respuesta": "1/3",
+   "distractores": [
+    {
+     "valor": "1/6",
+     "error": "E02"
+    },
+    {
+     "valor": "1/15",
+     "error": "E01"
+    },
+    {
+     "valor": "2/3",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "2 × 120 : 720",
+   "secundarias": [],
+   "explicacion_nino": "Posibles: 6! = 720 filas. Favorables: tratamos a la pareja como un bloque: (5)! = 120 filas, y dentro del bloque pueden ir de 2 formas: 240. Probabilidad = 1/3.",
+   "explicacion_adulto": "Está aprendiendo a usar la regla de Laplace cuando hay tantos casos que hay que contarlos con combinatoria. La clave es contar favorables y posibles con el mismo modelo (con o sin orden, con o sin repetición). Si se equivoca, pídale que diga en voz alta si importa el orden y si se puede repetir, antes de elegir la fórmula.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "posibles",
+     "resultado": "720",
+     "texto": "6!"
+    },
+    {
+     "paso": 2,
+     "operacion": "favorables",
+     "resultado": "240",
+     "texto": "bloque o extremos fijos"
+    },
+    {
+     "paso": 3,
+     "operacion": "Laplace",
+     "resultado": "1/3",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Se ordenan al azar 7 libros distintos en una estantería, entre ellos un atlas y un diccionario. ¿Qué probabilidad hay de que el atlas quede en un extremo y el diccionario en el otro?",
+   "respuesta": "1/21",
+   "distractores": [
+    {
+     "valor": "1/42",
+     "error": "E02"
+    },
+    {
+     "valor": "2/7",
+     "error": null
+    },
+    {
+     "valor": "1/49",
+     "error": "E01"
+    }
+   ],
+   "expresion_calculo": "2 × 120 : 5040",
+   "secundarias": [],
+   "explicacion_nino": "Posibles: 7! = 5040. Favorables: atlas y diccionario ocupan los extremos de 2 formas y los otros 5 libros se ordenan de (5)! = 120 formas: 240. Probabilidad = 1/21.",
+   "explicacion_adulto": "Está aprendiendo a usar la regla de Laplace cuando hay tantos casos que hay que contarlos con combinatoria. La clave es contar favorables y posibles con el mismo modelo (con o sin orden, con o sin repetición). Si se equivoca, pídale que diga en voz alta si importa el orden y si se puede repetir, antes de elegir la fórmula.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "posibles",
+     "resultado": "5040",
+     "texto": "7!"
+    },
+    {
+     "paso": 2,
+     "operacion": "favorables",
+     "resultado": "240",
+     "texto": "bloque o extremos fijos"
+    },
+    {
+     "paso": 3,
+     "operacion": "Laplace",
+     "resultado": "1/21",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "8 amigos, entre ellos Lucía y Ahmed, se colocan al azar en una fila para una foto. ¿Qué probabilidad hay de que Lucía y Ahmed queden juntos?",
+   "respuesta": "1/4",
+   "distractores": [
+    {
+     "valor": "1/8",
+     "error": "E02"
+    },
+    {
+     "valor": "1/28",
+     "error": "E01"
+    },
+    {
+     "valor": "1/2",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "2 × 5040 : 40320",
+   "secundarias": [],
+   "explicacion_nino": "Posibles: 8! = 40320 filas. Favorables: tratamos a la pareja como un bloque: (7)! = 5040 filas, y dentro del bloque pueden ir de 2 formas: 10080. Probabilidad = 1/4.",
+   "explicacion_adulto": "Está aprendiendo a usar la regla de Laplace cuando hay tantos casos que hay que contarlos con combinatoria. La clave es contar favorables y posibles con el mismo modelo (con o sin orden, con o sin repetición). Si se equivoca, pídale que diga en voz alta si importa el orden y si se puede repetir, antes de elegir la fórmula.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "posibles",
+     "resultado": "40320",
+     "texto": "8!"
+    },
+    {
+     "paso": 2,
+     "operacion": "favorables",
+     "resultado": "10080",
+     "texto": "bloque o extremos fijos"
+    },
+    {
+     "paso": 3,
+     "operacion": "Laplace",
+     "resultado": "1/4",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Se ordenan al azar 9 libros distintos en una estantería, entre ellos un atlas y un diccionario. ¿Qué probabilidad hay de que el atlas quede en un extremo y el diccionario en el otro?",
+   "respuesta": "1/36",
+   "distractores": [
+    {
+     "valor": "1/72",
+     "error": "E02"
+    },
+    {
+     "valor": "2/9",
+     "error": null
+    },
+    {
+     "valor": "1/81",
+     "error": "E01"
+    }
+   ],
+   "expresion_calculo": "2 × 5040 : 362880",
+   "secundarias": [],
+   "explicacion_nino": "Posibles: 9! = 362880. Favorables: atlas y diccionario ocupan los extremos de 2 formas y los otros 7 libros se ordenan de (7)! = 5040 formas: 10080. Probabilidad = 1/36.",
+   "explicacion_adulto": "Está aprendiendo a usar la regla de Laplace cuando hay tantos casos que hay que contarlos con combinatoria. La clave es contar favorables y posibles con el mismo modelo (con o sin orden, con o sin repetición). Si se equivoca, pídale que diga en voz alta si importa el orden y si se puede repetir, antes de elegir la fórmula.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "posibles",
+     "resultado": "362880",
+     "texto": "9!"
+    },
+    {
+     "paso": 2,
+     "operacion": "favorables",
+     "resultado": "10080",
+     "texto": "bloque o extremos fijos"
+    },
+    {
+     "paso": 3,
+     "operacion": "Laplace",
+     "resultado": "1/36",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "7 amigos, entre ellos Lucía y Ahmed, se colocan al azar en una fila para una foto. ¿Qué probabilidad hay de que Lucía y Ahmed queden juntos?",
+   "respuesta": "2/7",
+   "distractores": [
+    {
+     "valor": "1/7",
+     "error": "E02"
+    },
+    {
+     "valor": "1/21",
+     "error": "E01"
+    },
+    {
+     "valor": "4/7",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "2 × 720 : 5040",
+   "secundarias": [],
+   "explicacion_nino": "Posibles: 7! = 5040 filas. Favorables: tratamos a la pareja como un bloque: (6)! = 720 filas, y dentro del bloque pueden ir de 2 formas: 1440. Probabilidad = 2/7.",
+   "explicacion_adulto": "Está aprendiendo a usar la regla de Laplace cuando hay tantos casos que hay que contarlos con combinatoria. La clave es contar favorables y posibles con el mismo modelo (con o sin orden, con o sin repetición). Si se equivoca, pídale que diga en voz alta si importa el orden y si se puede repetir, antes de elegir la fórmula.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "posibles",
+     "resultado": "5040",
+     "texto": "7!"
+    },
+    {
+     "paso": 2,
+     "operacion": "favorables",
+     "resultado": "1440",
+     "texto": "bloque o extremos fijos"
+    },
+    {
+     "paso": 3,
+     "operacion": "Laplace",
+     "resultado": "2/7",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "De una baraja española de 40 cartas (10 de cada palo) se reparten 2 cartas. ¿Qué probabilidad hay de que exactamente 2 sean de oros?",
+   "respuesta": "3/52",
+   "distractores": [
+    {
+     "valor": "3/26",
+     "error": "E01"
+    },
+    {
+     "valor": "1/4",
+     "error": null
+    },
+    {
+     "valor": "9/52",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "45 × 1 : 780",
+   "secundarias": [],
+   "explicacion_nino": "Posibles: C(40, 2) = 780. Favorables: 2 de las 10 de oros y 0 de las 30 restantes: C(10, 2) · C(30, 0) = 45. Probabilidad = 3/52.",
+   "explicacion_adulto": "Está aprendiendo a usar la regla de Laplace cuando hay tantos casos que hay que contarlos con combinatoria. La clave es contar favorables y posibles con el mismo modelo (con o sin orden, con o sin repetición). Si se equivoca, pídale que diga en voz alta si importa el orden y si se puede repetir, antes de elegir la fórmula.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "posibles",
+     "resultado": "780",
+     "texto": "C(40, 2)"
+    },
+    {
+     "paso": 2,
+     "operacion": "favorables",
+     "resultado": "45",
+     "texto": "C(10, 2) · C(30, 0)"
+    },
+    {
+     "paso": 3,
+     "operacion": "Laplace",
+     "resultado": "3/52",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "De una baraja española de 40 cartas (10 de cada palo) se reparten 3 cartas. ¿Qué probabilidad hay de que exactamente 3 sean de copas?",
+   "respuesta": "3/247",
+   "distractores": [
+    {
+     "valor": "18/247",
+     "error": "E01"
+    },
+    {
+     "valor": "1/4",
+     "error": null
+    },
+    {
+     "valor": "6/247",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "120 × 1 : 9880",
+   "secundarias": [],
+   "explicacion_nino": "Posibles: C(40, 3) = 9880. Favorables: 3 de las 10 de copas y 0 de las 30 restantes: C(10, 3) · C(30, 0) = 120. Probabilidad = 3/247.",
+   "explicacion_adulto": "Está aprendiendo a usar la regla de Laplace cuando hay tantos casos que hay que contarlos con combinatoria. La clave es contar favorables y posibles con el mismo modelo (con o sin orden, con o sin repetición). Si se equivoca, pídale que diga en voz alta si importa el orden y si se puede repetir, antes de elegir la fórmula.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "posibles",
+     "resultado": "9880",
+     "texto": "C(40, 3)"
+    },
+    {
+     "paso": 2,
+     "operacion": "favorables",
+     "resultado": "120",
+     "texto": "C(10, 3) · C(30, 0)"
+    },
+    {
+     "paso": 3,
+     "operacion": "Laplace",
+     "resultado": "3/247",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "De una baraja española de 40 cartas (10 de cada palo) se reparten 3 cartas. ¿Qué probabilidad hay de que exactamente 2 sean de espadas?",
+   "respuesta": "135/988",
+   "distractores": [
+    {
+     "valor": "9/1976",
+     "error": "E02"
+    },
+    {
+     "valor": "135/494",
+     "error": "E01"
+    },
+    {
+     "valor": "1/6",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "45 × 30 : 9880",
+   "secundarias": [],
+   "explicacion_nino": "Posibles: C(40, 3) = 9880. Favorables: 2 de las 10 de espadas y 1 de las 30 restantes: C(10, 2) · C(30, 1) = 1350. Probabilidad = 135/988.",
+   "explicacion_adulto": "Está aprendiendo a usar la regla de Laplace cuando hay tantos casos que hay que contarlos con combinatoria. La clave es contar favorables y posibles con el mismo modelo (con o sin orden, con o sin repetición). Si se equivoca, pídale que diga en voz alta si importa el orden y si se puede repetir, antes de elegir la fórmula.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "posibles",
+     "resultado": "9880",
+     "texto": "C(40, 3)"
+    },
+    {
+     "paso": 2,
+     "operacion": "favorables",
+     "resultado": "1350",
+     "texto": "C(10, 2) · C(30, 1)"
+    },
+    {
+     "paso": 3,
+     "operacion": "Laplace",
+     "resultado": "135/988",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "De una baraja española de 40 cartas (10 de cada palo) se reparten 4 cartas. ¿Qué probabilidad hay de que exactamente 2 sean de bastos?",
+   "respuesta": "3915/18278",
+   "distractores": [
+    {
+     "valor": "9/18278",
+     "error": "E02"
+    },
+    {
+     "valor": "7830/9139",
+     "error": "E01"
+    },
+    {
+     "valor": "1/8",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "45 × 435 : 91390",
+   "secundarias": [],
+   "explicacion_nino": "Posibles: C(40, 4) = 91390. Favorables: 2 de las 10 de bastos y 2 de las 30 restantes: C(10, 2) · C(30, 2) = 19575. Probabilidad = 3915/18278.",
+   "explicacion_adulto": "Está aprendiendo a usar la regla de Laplace cuando hay tantos casos que hay que contarlos con combinatoria. La clave es contar favorables y posibles con el mismo modelo (con o sin orden, con o sin repetición). Si se equivoca, pídale que diga en voz alta si importa el orden y si se puede repetir, antes de elegir la fórmula.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "posibles",
+     "resultado": "91390",
+     "texto": "C(40, 4)"
+    },
+    {
+     "paso": 2,
+     "operacion": "favorables",
+     "resultado": "19575",
+     "texto": "C(10, 2) · C(30, 2)"
+    },
+    {
+     "paso": 3,
+     "operacion": "Laplace",
+     "resultado": "3915/18278",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "De una baraja española de 40 cartas (10 de cada palo) se reparten 4 cartas. ¿Qué probabilidad hay de que exactamente 3 sean de oros?",
+   "respuesta": "360/9139",
+   "distractores": [
+    {
+     "valor": "12/9139",
+     "error": "E02"
+    },
+    {
+     "valor": "2160/9139",
+     "error": "E01"
+    },
+    {
+     "valor": "3/16",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "120 × 30 : 91390",
+   "secundarias": [],
+   "explicacion_nino": "Posibles: C(40, 4) = 91390. Favorables: 3 de las 10 de oros y 1 de las 30 restantes: C(10, 3) · C(30, 1) = 3600. Probabilidad = 360/9139.",
+   "explicacion_adulto": "Está aprendiendo a usar la regla de Laplace cuando hay tantos casos que hay que contarlos con combinatoria. La clave es contar favorables y posibles con el mismo modelo (con o sin orden, con o sin repetición). Si se equivoca, pídale que diga en voz alta si importa el orden y si se puede repetir, antes de elegir la fórmula.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "posibles",
+     "resultado": "91390",
+     "texto": "C(40, 4)"
+    },
+    {
+     "paso": 2,
+     "operacion": "favorables",
+     "resultado": "3600",
+     "texto": "C(10, 3) · C(30, 1)"
+    },
+    {
+     "paso": 3,
+     "operacion": "Laplace",
+     "resultado": "360/9139",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "De una baraja española de 40 cartas (10 de cada palo) se reparten 5 cartas. ¿Qué probabilidad hay de que exactamente 2 sean de copas?",
+   "respuesta": "5075/18278",
+   "distractores": [
+    {
+     "valor": "5/73112",
+     "error": "E02"
+    },
+    {
+     "valor": "1/10",
+     "error": null
+    },
+    {
+     "valor": "3/52",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "45 × 4060 : 658008",
+   "secundarias": [],
+   "explicacion_nino": "Posibles: C(40, 5) = 658008. Favorables: 2 de las 10 de copas y 3 de las 30 restantes: C(10, 2) · C(30, 3) = 182700. Probabilidad = 5075/18278.",
+   "explicacion_adulto": "Está aprendiendo a usar la regla de Laplace cuando hay tantos casos que hay que contarlos con combinatoria. La clave es contar favorables y posibles con el mismo modelo (con o sin orden, con o sin repetición). Si se equivoca, pídale que diga en voz alta si importa el orden y si se puede repetir, antes de elegir la fórmula.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "posibles",
+     "resultado": "658008",
+     "texto": "C(40, 5)"
+    },
+    {
+     "paso": 2,
+     "operacion": "favorables",
+     "resultado": "182700",
+     "texto": "C(10, 2) · C(30, 3)"
+    },
+    {
+     "paso": 3,
+     "operacion": "Laplace",
+     "resultado": "5075/18278",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P05"
+  }
+ ]
+}

@@ -1,0 +1,1521 @@
+{
+ "habilidad": "PROB.PROP.15",
+ "generado_por": "claude (skill mates10-generar-ejercicios v1)",
+ "ejercicios": [
+  {
+   "dificultad": 1,
+   "enunciado": "Se invierten 11 000 € al 1 % anual de interés compuesto durante 6 años. ¿Qué capital se tendrá al final?",
+   "respuesta": "11 676,72 €",
+   "distractores": [
+    {
+     "valor": "11 660 €",
+     "error": "E01"
+    },
+    {
+     "valor": "66 660 €",
+     "error": "E03"
+    },
+    {
+     "valor": "676,72 €",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "PROB.PROP.05",
+    "PROB.PROP.12",
+    "OPER.POT.01"
+   ],
+   "explicacion_nino": "Cada año el capital se multiplica por 1 + 0,01 = 1,01. En 6 años: 11 000 × 1,01^6 = 11 000 × 1,0615 ≈ 11 676,72 €.",
+   "explicacion_adulto": "Está aprendiendo el interés compuesto y las tasas acumuladas: cada periodo se aplica el porcentaje sobre la cantidad ya aumentada (o disminuida), por eso se multiplica por (1 + r) tantas veces como periodos: C·(1 + r)^t. Errores típicos: aplicar interés simple, no dividir el tipo anual entre los periodos del año y multiplicar por t en lugar de elevar. Pídele que calcule a mano los dos primeros periodos para ver por qué se multiplica una y otra vez.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1 + 0,01",
+     "resultado": "1,01",
+     "texto": "Factor de cada año."
+    },
+    {
+     "paso": 2,
+     "operacion": "1,01^6",
+     "resultado": "1,0615",
+     "texto": "Se aplica t veces."
+    },
+    {
+     "paso": 3,
+     "operacion": "11 000 × 1,0615",
+     "resultado": "11 676,72 €",
+     "texto": "Capital final."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Se invierten 19 000 € al 3 % anual de interés compuesto durante 6 años. ¿Qué capital se tendrá al final?",
+   "respuesta": "22 686,99 €",
+   "distractores": [
+    {
+     "valor": "22 420 €",
+     "error": "E01"
+    },
+    {
+     "valor": "117 420 €",
+     "error": "E03"
+    },
+    {
+     "valor": "3686,99 €",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "PROB.PROP.05",
+    "PROB.PROP.12",
+    "OPER.POT.01"
+   ],
+   "explicacion_nino": "Cada año el capital se multiplica por 1 + 0,03 = 1,03. En 6 años: 19 000 × 1,03^6 = 19 000 × 1,1941 ≈ 22 686,99 €.",
+   "explicacion_adulto": "Está aprendiendo el interés compuesto y las tasas acumuladas: cada periodo se aplica el porcentaje sobre la cantidad ya aumentada (o disminuida), por eso se multiplica por (1 + r) tantas veces como periodos: C·(1 + r)^t. Errores típicos: aplicar interés simple, no dividir el tipo anual entre los periodos del año y multiplicar por t en lugar de elevar. Pídele que calcule a mano los dos primeros periodos para ver por qué se multiplica una y otra vez.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1 + 0,03",
+     "resultado": "1,03",
+     "texto": "Factor de cada año."
+    },
+    {
+     "paso": 2,
+     "operacion": "1,03^6",
+     "resultado": "1,1941",
+     "texto": "Se aplica t veces."
+    },
+    {
+     "paso": 3,
+     "operacion": "19 000 × 1,1941",
+     "resultado": "22 686,99 €",
+     "texto": "Capital final."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Se invierten 12 000 € al 3 % anual de interés compuesto durante 7 años. ¿Qué capital se tendrá al final?",
+   "respuesta": "14 758,49 €",
+   "distractores": [
+    {
+     "valor": "14 520 €",
+     "error": "E01"
+    },
+    {
+     "valor": "86 520 €",
+     "error": "E03"
+    },
+    {
+     "valor": "2758,49 €",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "PROB.PROP.05",
+    "PROB.PROP.12",
+    "OPER.POT.01"
+   ],
+   "explicacion_nino": "Cada año el capital se multiplica por 1 + 0,03 = 1,03. En 7 años: 12 000 × 1,03^7 = 12 000 × 1,2299 ≈ 14 758,49 €.",
+   "explicacion_adulto": "Está aprendiendo el interés compuesto y las tasas acumuladas: cada periodo se aplica el porcentaje sobre la cantidad ya aumentada (o disminuida), por eso se multiplica por (1 + r) tantas veces como periodos: C·(1 + r)^t. Errores típicos: aplicar interés simple, no dividir el tipo anual entre los periodos del año y multiplicar por t en lugar de elevar. Pídele que calcule a mano los dos primeros periodos para ver por qué se multiplica una y otra vez.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1 + 0,03",
+     "resultado": "1,03",
+     "texto": "Factor de cada año."
+    },
+    {
+     "paso": 2,
+     "operacion": "1,03^7",
+     "resultado": "1,2299",
+     "texto": "Se aplica t veces."
+    },
+    {
+     "paso": 3,
+     "operacion": "12 000 × 1,2299",
+     "resultado": "14 758,49 €",
+     "texto": "Capital final."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Se invierten 1500 € al 5 % anual de interés compuesto durante 8 años. ¿Qué capital se tendrá al final?",
+   "respuesta": "2216,18 €",
+   "distractores": [
+    {
+     "valor": "2100 €",
+     "error": "E01"
+    },
+    {
+     "valor": "12 600 €",
+     "error": "E03"
+    },
+    {
+     "valor": "716,18 €",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "PROB.PROP.05",
+    "PROB.PROP.12",
+    "OPER.POT.01"
+   ],
+   "explicacion_nino": "Cada año el capital se multiplica por 1 + 0,05 = 1,05. En 8 años: 1500 × 1,05^8 = 1500 × 1,4775 ≈ 2216,18 €.",
+   "explicacion_adulto": "Está aprendiendo el interés compuesto y las tasas acumuladas: cada periodo se aplica el porcentaje sobre la cantidad ya aumentada (o disminuida), por eso se multiplica por (1 + r) tantas veces como periodos: C·(1 + r)^t. Errores típicos: aplicar interés simple, no dividir el tipo anual entre los periodos del año y multiplicar por t en lugar de elevar. Pídele que calcule a mano los dos primeros periodos para ver por qué se multiplica una y otra vez.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1 + 0,05",
+     "resultado": "1,05",
+     "texto": "Factor de cada año."
+    },
+    {
+     "paso": 2,
+     "operacion": "1,05^8",
+     "resultado": "1,4775",
+     "texto": "Se aplica t veces."
+    },
+    {
+     "paso": 3,
+     "operacion": "1500 × 1,4775",
+     "resultado": "2216,18 €",
+     "texto": "Capital final."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Se invierten 17 000 € al 3 % anual de interés compuesto durante 7 años. ¿Qué capital se tendrá al final?",
+   "respuesta": "20 907,86 €",
+   "distractores": [
+    {
+     "valor": "20 570 €",
+     "error": "E01"
+    },
+    {
+     "valor": "122 570 €",
+     "error": "E03"
+    },
+    {
+     "valor": "3907,86 €",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "PROB.PROP.05",
+    "PROB.PROP.12",
+    "OPER.POT.01"
+   ],
+   "explicacion_nino": "Cada año el capital se multiplica por 1 + 0,03 = 1,03. En 7 años: 17 000 × 1,03^7 = 17 000 × 1,2299 ≈ 20 907,86 €.",
+   "explicacion_adulto": "Está aprendiendo el interés compuesto y las tasas acumuladas: cada periodo se aplica el porcentaje sobre la cantidad ya aumentada (o disminuida), por eso se multiplica por (1 + r) tantas veces como periodos: C·(1 + r)^t. Errores típicos: aplicar interés simple, no dividir el tipo anual entre los periodos del año y multiplicar por t en lugar de elevar. Pídele que calcule a mano los dos primeros periodos para ver por qué se multiplica una y otra vez.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1 + 0,03",
+     "resultado": "1,03",
+     "texto": "Factor de cada año."
+    },
+    {
+     "paso": 2,
+     "operacion": "1,03^7",
+     "resultado": "1,2299",
+     "texto": "Se aplica t veces."
+    },
+    {
+     "paso": 3,
+     "operacion": "17 000 × 1,2299",
+     "resultado": "20 907,86 €",
+     "texto": "Capital final."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Se invierten 13 000 € al 2,5 % anual de interés compuesto durante 4 años. ¿Qué capital se tendrá al final?",
+   "respuesta": "14 349,57 €",
+   "distractores": [
+    {
+     "valor": "14 300 €",
+     "error": "E01"
+    },
+    {
+     "valor": "53 300 €",
+     "error": "E03"
+    },
+    {
+     "valor": "1349,57 €",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "PROB.PROP.05",
+    "PROB.PROP.12",
+    "OPER.POT.01"
+   ],
+   "explicacion_nino": "Cada año el capital se multiplica por 1 + 0,03 = 1,03. En 4 años: 13 000 × 1,03^4 = 13 000 × 1,1038 ≈ 14 349,57 €.",
+   "explicacion_adulto": "Está aprendiendo el interés compuesto y las tasas acumuladas: cada periodo se aplica el porcentaje sobre la cantidad ya aumentada (o disminuida), por eso se multiplica por (1 + r) tantas veces como periodos: C·(1 + r)^t. Errores típicos: aplicar interés simple, no dividir el tipo anual entre los periodos del año y multiplicar por t en lugar de elevar. Pídele que calcule a mano los dos primeros periodos para ver por qué se multiplica una y otra vez.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1 + 0,03",
+     "resultado": "1,03",
+     "texto": "Factor de cada año."
+    },
+    {
+     "paso": 2,
+     "operacion": "1,03^4",
+     "resultado": "1,1038",
+     "texto": "Se aplica t veces."
+    },
+    {
+     "paso": 3,
+     "operacion": "13 000 × 1,1038",
+     "resultado": "14 349,57 €",
+     "texto": "Capital final."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Se invierten 9000 € al 3,5 % anual de interés compuesto durante 5 años. ¿Qué capital se tendrá al final?",
+   "respuesta": "10 689,18 €",
+   "distractores": [
+    {
+     "valor": "10 575 €",
+     "error": "E01"
+    },
+    {
+     "valor": "46 575 €",
+     "error": "E03"
+    },
+    {
+     "valor": "1689,18 €",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "PROB.PROP.05",
+    "PROB.PROP.12",
+    "OPER.POT.01"
+   ],
+   "explicacion_nino": "Cada año el capital se multiplica por 1 + 0,04 = 1,04. En 5 años: 9000 × 1,04^5 = 9000 × 1,1877 ≈ 10 689,18 €.",
+   "explicacion_adulto": "Está aprendiendo el interés compuesto y las tasas acumuladas: cada periodo se aplica el porcentaje sobre la cantidad ya aumentada (o disminuida), por eso se multiplica por (1 + r) tantas veces como periodos: C·(1 + r)^t. Errores típicos: aplicar interés simple, no dividir el tipo anual entre los periodos del año y multiplicar por t en lugar de elevar. Pídele que calcule a mano los dos primeros periodos para ver por qué se multiplica una y otra vez.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1 + 0,04",
+     "resultado": "1,04",
+     "texto": "Factor de cada año."
+    },
+    {
+     "paso": 2,
+     "operacion": "1,04^5",
+     "resultado": "1,1877",
+     "texto": "Se aplica t veces."
+    },
+    {
+     "paso": 3,
+     "operacion": "9000 × 1,1877",
+     "resultado": "10 689,18 €",
+     "texto": "Capital final."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Se invierten 4000 € al 3 % anual de interés compuesto durante 5 años. ¿Qué capital se tendrá al final?",
+   "respuesta": "4637,10 €",
+   "distractores": [
+    {
+     "valor": "4600 €",
+     "error": "E01"
+    },
+    {
+     "valor": "20 600 €",
+     "error": "E03"
+    },
+    {
+     "valor": "637,10 €",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "PROB.PROP.05",
+    "PROB.PROP.12",
+    "OPER.POT.01"
+   ],
+   "explicacion_nino": "Cada año el capital se multiplica por 1 + 0,03 = 1,03. En 5 años: 4000 × 1,03^5 = 4000 × 1,1593 ≈ 4637,10 €.",
+   "explicacion_adulto": "Está aprendiendo el interés compuesto y las tasas acumuladas: cada periodo se aplica el porcentaje sobre la cantidad ya aumentada (o disminuida), por eso se multiplica por (1 + r) tantas veces como periodos: C·(1 + r)^t. Errores típicos: aplicar interés simple, no dividir el tipo anual entre los periodos del año y multiplicar por t en lugar de elevar. Pídele que calcule a mano los dos primeros periodos para ver por qué se multiplica una y otra vez.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1 + 0,03",
+     "resultado": "1,03",
+     "texto": "Factor de cada año."
+    },
+    {
+     "paso": 2,
+     "operacion": "1,03^5",
+     "resultado": "1,1593",
+     "texto": "Se aplica t veces."
+    },
+    {
+     "paso": 3,
+     "operacion": "4000 × 1,1593",
+     "resultado": "4637,10 €",
+     "texto": "Capital final."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un banco ofrece un 4 % anual con capitalización mensual. Si se depositan 9000 € durante 4 años, ¿qué capital final se obtiene?",
+   "respuesta": "10 558,79 €",
+   "distractores": [
+    {
+     "valor": "59 134,75 €",
+     "error": "E02"
+    },
+    {
+     "valor": "10 440 €",
+     "error": "E01"
+    },
+    {
+     "valor": "10 528,73 €",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "PROB.PROP.05",
+    "PROB.PROP.12",
+    "OPER.POT.01"
+   ],
+   "explicacion_nino": "Capitalización mensual: hay 12 periodos al año, y en cada uno el tipo es 4 % : 12 = 0,33 % (factor 1,0033). En 4 años hay 48 periodos: 9000 × 1,0033^48 ≈ 10 558,79 €.",
+   "explicacion_adulto": "Está aprendiendo el interés compuesto y las tasas acumuladas: cada periodo se aplica el porcentaje sobre la cantidad ya aumentada (o disminuida), por eso se multiplica por (1 + r) tantas veces como periodos: C·(1 + r)^t. Errores típicos: aplicar interés simple, no dividir el tipo anual entre los periodos del año y multiplicar por t en lugar de elevar. Pídele que calcule a mano los dos primeros periodos para ver por qué se multiplica una y otra vez.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "0,04 : 12",
+     "resultado": "0,0033",
+     "texto": "Tipo de cada periodo."
+    },
+    {
+     "paso": 2,
+     "operacion": "12 × 4",
+     "resultado": "48",
+     "texto": "Número de periodos."
+    },
+    {
+     "paso": 3,
+     "operacion": "9000 × 1,0033^48",
+     "resultado": "10 558,79 €",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un banco ofrece un 3 % anual con capitalización semestral. Si se depositan 21 000 € durante 1 año, ¿qué capital final se obtiene?",
+   "respuesta": "21 634,73 €",
+   "distractores": [
+    {
+     "valor": "22 278,90 €",
+     "error": "E02"
+    },
+    {
+     "valor": "21 630 €",
+     "error": "E01"
+    },
+    {
+     "valor": "42 630 €",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "PROB.PROP.05",
+    "PROB.PROP.12",
+    "OPER.POT.01"
+   ],
+   "explicacion_nino": "Capitalización semestral: hay 2 periodos al año, y en cada uno el tipo es 3 % : 2 = 1,5 % (factor 1,015). En 1 año hay 2 periodos: 21 000 × 1,015^2 ≈ 21 634,73 €.",
+   "explicacion_adulto": "Está aprendiendo el interés compuesto y las tasas acumuladas: cada periodo se aplica el porcentaje sobre la cantidad ya aumentada (o disminuida), por eso se multiplica por (1 + r) tantas veces como periodos: C·(1 + r)^t. Errores típicos: aplicar interés simple, no dividir el tipo anual entre los periodos del año y multiplicar por t en lugar de elevar. Pídele que calcule a mano los dos primeros periodos para ver por qué se multiplica una y otra vez.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "0,03 : 2",
+     "resultado": "0,015",
+     "texto": "Tipo de cada periodo."
+    },
+    {
+     "paso": 2,
+     "operacion": "2 × 1",
+     "resultado": "2",
+     "texto": "Número de periodos."
+    },
+    {
+     "paso": 3,
+     "operacion": "21 000 × 1,015^2",
+     "resultado": "21 634,73 €",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un banco ofrece un 6 % anual con capitalización semestral. Si se depositan 28 000 € durante 1 año, ¿qué capital final se obtiene?",
+   "respuesta": "29 705,20 €",
+   "distractores": [
+    {
+     "valor": "31 460,80 €",
+     "error": "E02"
+    },
+    {
+     "valor": "29 680 €",
+     "error": "E01"
+    },
+    {
+     "valor": "57 680 €",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "PROB.PROP.05",
+    "PROB.PROP.12",
+    "OPER.POT.01"
+   ],
+   "explicacion_nino": "Capitalización semestral: hay 2 periodos al año, y en cada uno el tipo es 6 % : 2 = 3 % (factor 1,03). En 1 año hay 2 periodos: 28 000 × 1,03^2 ≈ 29 705,20 €.",
+   "explicacion_adulto": "Está aprendiendo el interés compuesto y las tasas acumuladas: cada periodo se aplica el porcentaje sobre la cantidad ya aumentada (o disminuida), por eso se multiplica por (1 + r) tantas veces como periodos: C·(1 + r)^t. Errores típicos: aplicar interés simple, no dividir el tipo anual entre los periodos del año y multiplicar por t en lugar de elevar. Pídele que calcule a mano los dos primeros periodos para ver por qué se multiplica una y otra vez.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "0,06 : 2",
+     "resultado": "0,03",
+     "texto": "Tipo de cada periodo."
+    },
+    {
+     "paso": 2,
+     "operacion": "2 × 1",
+     "resultado": "2",
+     "texto": "Número de periodos."
+    },
+    {
+     "paso": 3,
+     "operacion": "28 000 × 1,03^2",
+     "resultado": "29 705,20 €",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un banco ofrece un 2 % anual con capitalización trimestral. Si se depositan 20 000 € durante 3 años, ¿qué capital final se obtiene?",
+   "respuesta": "21 233,56 €",
+   "distractores": [
+    {
+     "valor": "25 364,84 €",
+     "error": "E02"
+    },
+    {
+     "valor": "21 200 €",
+     "error": "E01"
+    },
+    {
+     "valor": "21 224,16 €",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "PROB.PROP.05",
+    "PROB.PROP.12",
+    "OPER.POT.01"
+   ],
+   "explicacion_nino": "Capitalización trimestral: hay 4 periodos al año, y en cada uno el tipo es 2 % : 4 = 0,5 % (factor 1,005). En 3 años hay 12 periodos: 20 000 × 1,005^12 ≈ 21 233,56 €.",
+   "explicacion_adulto": "Está aprendiendo el interés compuesto y las tasas acumuladas: cada periodo se aplica el porcentaje sobre la cantidad ya aumentada (o disminuida), por eso se multiplica por (1 + r) tantas veces como periodos: C·(1 + r)^t. Errores típicos: aplicar interés simple, no dividir el tipo anual entre los periodos del año y multiplicar por t en lugar de elevar. Pídele que calcule a mano los dos primeros periodos para ver por qué se multiplica una y otra vez.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "0,02 : 4",
+     "resultado": "0,005",
+     "texto": "Tipo de cada periodo."
+    },
+    {
+     "paso": 2,
+     "operacion": "4 × 3",
+     "resultado": "12",
+     "texto": "Número de periodos."
+    },
+    {
+     "paso": 3,
+     "operacion": "20 000 × 1,005^12",
+     "resultado": "21 233,56 €",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un banco ofrece un 6 % anual con capitalización trimestral. Si se depositan 4000 € durante 4 años, ¿qué capital final se obtiene?",
+   "respuesta": "5075,94 €",
+   "distractores": [
+    {
+     "valor": "10 161,41 €",
+     "error": "E02"
+    },
+    {
+     "valor": "4960 €",
+     "error": "E01"
+    },
+    {
+     "valor": "5049,91 €",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "PROB.PROP.05",
+    "PROB.PROP.12",
+    "OPER.POT.01"
+   ],
+   "explicacion_nino": "Capitalización trimestral: hay 4 periodos al año, y en cada uno el tipo es 6 % : 4 = 1,5 % (factor 1,015). En 4 años hay 16 periodos: 4000 × 1,015^16 ≈ 5075,94 €.",
+   "explicacion_adulto": "Está aprendiendo el interés compuesto y las tasas acumuladas: cada periodo se aplica el porcentaje sobre la cantidad ya aumentada (o disminuida), por eso se multiplica por (1 + r) tantas veces como periodos: C·(1 + r)^t. Errores típicos: aplicar interés simple, no dividir el tipo anual entre los periodos del año y multiplicar por t en lugar de elevar. Pídele que calcule a mano los dos primeros periodos para ver por qué se multiplica una y otra vez.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "0,06 : 4",
+     "resultado": "0,015",
+     "texto": "Tipo de cada periodo."
+    },
+    {
+     "paso": 2,
+     "operacion": "4 × 4",
+     "resultado": "16",
+     "texto": "Número de periodos."
+    },
+    {
+     "paso": 3,
+     "operacion": "4000 × 1,015^16",
+     "resultado": "5075,94 €",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un banco ofrece un 6 % anual con capitalización trimestral. Si se depositan 2000 € durante 2 años, ¿qué capital final se obtiene?",
+   "respuesta": "2252,99 €",
+   "distractores": [
+    {
+     "valor": "3187,70 €",
+     "error": "E02"
+    },
+    {
+     "valor": "2240 €",
+     "error": "E01"
+    },
+    {
+     "valor": "2247,20 €",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "PROB.PROP.05",
+    "PROB.PROP.12",
+    "OPER.POT.01"
+   ],
+   "explicacion_nino": "Capitalización trimestral: hay 4 periodos al año, y en cada uno el tipo es 6 % : 4 = 1,5 % (factor 1,015). En 2 años hay 8 periodos: 2000 × 1,015^8 ≈ 2252,99 €.",
+   "explicacion_adulto": "Está aprendiendo el interés compuesto y las tasas acumuladas: cada periodo se aplica el porcentaje sobre la cantidad ya aumentada (o disminuida), por eso se multiplica por (1 + r) tantas veces como periodos: C·(1 + r)^t. Errores típicos: aplicar interés simple, no dividir el tipo anual entre los periodos del año y multiplicar por t en lugar de elevar. Pídele que calcule a mano los dos primeros periodos para ver por qué se multiplica una y otra vez.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "0,06 : 4",
+     "resultado": "0,015",
+     "texto": "Tipo de cada periodo."
+    },
+    {
+     "paso": 2,
+     "operacion": "4 × 2",
+     "resultado": "8",
+     "texto": "Número de periodos."
+    },
+    {
+     "paso": 3,
+     "operacion": "2000 × 1,015^8",
+     "resultado": "2252,99 €",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un banco ofrece un 2 % anual con capitalización trimestral. Si se depositan 29 000 € durante 1 año, ¿qué capital final se obtiene?",
+   "respuesta": "29 584,36 €",
+   "distractores": [
+    {
+     "valor": "31 390,53 €",
+     "error": "E02"
+    },
+    {
+     "valor": "29 580 €",
+     "error": "E01"
+    },
+    {
+     "valor": "116 580 €",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "PROB.PROP.05",
+    "PROB.PROP.12",
+    "OPER.POT.01"
+   ],
+   "explicacion_nino": "Capitalización trimestral: hay 4 periodos al año, y en cada uno el tipo es 2 % : 4 = 0,5 % (factor 1,005). En 1 año hay 4 periodos: 29 000 × 1,005^4 ≈ 29 584,36 €.",
+   "explicacion_adulto": "Está aprendiendo el interés compuesto y las tasas acumuladas: cada periodo se aplica el porcentaje sobre la cantidad ya aumentada (o disminuida), por eso se multiplica por (1 + r) tantas veces como periodos: C·(1 + r)^t. Errores típicos: aplicar interés simple, no dividir el tipo anual entre los periodos del año y multiplicar por t en lugar de elevar. Pídele que calcule a mano los dos primeros periodos para ver por qué se multiplica una y otra vez.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "0,02 : 4",
+     "resultado": "0,005",
+     "texto": "Tipo de cada periodo."
+    },
+    {
+     "paso": 2,
+     "operacion": "4 × 1",
+     "resultado": "4",
+     "texto": "Número de periodos."
+    },
+    {
+     "paso": 3,
+     "operacion": "29 000 × 1,005^4",
+     "resultado": "29 584,36 €",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Se colocan 8500 € al 2 % anual durante 5 años. ¿Cuántos euros más de intereses se obtienen con interés compuesto que con interés simple?",
+   "respuesta": "34,69 €",
+   "distractores": [
+    {
+     "valor": "884,69 €",
+     "error": null
+    },
+    {
+     "valor": "850 €",
+     "error": "E01"
+    },
+    {
+     "valor": "9384,69 €",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "PROB.PROP.05",
+    "PROB.PROP.12",
+    "OPER.POT.01"
+   ],
+   "explicacion_nino": "Compuesto: 8500 × 1,02^5 − 8500 ≈ 884,69 € de intereses. Simple: 8500 × 0,02 × 5 = 850 €. Diferencia: ≈ 34,69 €. El compuesto gana más porque cada año también producen intereses los intereses anteriores.",
+   "explicacion_adulto": "Está aprendiendo el interés compuesto y las tasas acumuladas: cada periodo se aplica el porcentaje sobre la cantidad ya aumentada (o disminuida), por eso se multiplica por (1 + r) tantas veces como periodos: C·(1 + r)^t. Errores típicos: aplicar interés simple, no dividir el tipo anual entre los periodos del año y multiplicar por t en lugar de elevar. Pídele que calcule a mano los dos primeros periodos para ver por qué se multiplica una y otra vez.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "8500 × 1,02^5 − 8500",
+     "resultado": "884,69 €",
+     "texto": "Interés compuesto."
+    },
+    {
+     "paso": 2,
+     "operacion": "8500 × 0,02 × 5",
+     "resultado": "850 €",
+     "texto": "Interés simple."
+    },
+    {
+     "paso": 3,
+     "operacion": "Restar",
+     "resultado": "34,69 €",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Se colocan 12 500 € al 6 % anual durante 5 años. ¿Cuántos euros más de intereses se obtienen con interés compuesto que con interés simple?",
+   "respuesta": "477,82 €",
+   "distractores": [
+    {
+     "valor": "4227,82 €",
+     "error": null
+    },
+    {
+     "valor": "3750 €",
+     "error": "E01"
+    },
+    {
+     "valor": "16 727,82 €",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "PROB.PROP.05",
+    "PROB.PROP.12",
+    "OPER.POT.01"
+   ],
+   "explicacion_nino": "Compuesto: 12 500 × 1,06^5 − 12 500 ≈ 4227,82 € de intereses. Simple: 12 500 × 0,06 × 5 = 3750 €. Diferencia: ≈ 477,82 €. El compuesto gana más porque cada año también producen intereses los intereses anteriores.",
+   "explicacion_adulto": "Está aprendiendo el interés compuesto y las tasas acumuladas: cada periodo se aplica el porcentaje sobre la cantidad ya aumentada (o disminuida), por eso se multiplica por (1 + r) tantas veces como periodos: C·(1 + r)^t. Errores típicos: aplicar interés simple, no dividir el tipo anual entre los periodos del año y multiplicar por t en lugar de elevar. Pídele que calcule a mano los dos primeros periodos para ver por qué se multiplica una y otra vez.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "12 500 × 1,06^5 − 12 500",
+     "resultado": "4227,82 €",
+     "texto": "Interés compuesto."
+    },
+    {
+     "paso": 2,
+     "operacion": "12 500 × 0,06 × 5",
+     "resultado": "3750 €",
+     "texto": "Interés simple."
+    },
+    {
+     "paso": 3,
+     "operacion": "Restar",
+     "resultado": "477,82 €",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Se colocan 4000 € al 2 % anual durante 3 años. ¿Cuántos euros más de intereses se obtienen con interés compuesto que con interés simple?",
+   "respuesta": "4,83 €",
+   "distractores": [
+    {
+     "valor": "244,83 €",
+     "error": null
+    },
+    {
+     "valor": "240 €",
+     "error": "E01"
+    },
+    {
+     "valor": "4244,83 €",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "PROB.PROP.05",
+    "PROB.PROP.12",
+    "OPER.POT.01"
+   ],
+   "explicacion_nino": "Compuesto: 4000 × 1,02^3 − 4000 ≈ 244,83 € de intereses. Simple: 4000 × 0,02 × 3 = 240 €. Diferencia: ≈ 4,83 €. El compuesto gana más porque cada año también producen intereses los intereses anteriores.",
+   "explicacion_adulto": "Está aprendiendo el interés compuesto y las tasas acumuladas: cada periodo se aplica el porcentaje sobre la cantidad ya aumentada (o disminuida), por eso se multiplica por (1 + r) tantas veces como periodos: C·(1 + r)^t. Errores típicos: aplicar interés simple, no dividir el tipo anual entre los periodos del año y multiplicar por t en lugar de elevar. Pídele que calcule a mano los dos primeros periodos para ver por qué se multiplica una y otra vez.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "4000 × 1,02^3 − 4000",
+     "resultado": "244,83 €",
+     "texto": "Interés compuesto."
+    },
+    {
+     "paso": 2,
+     "operacion": "4000 × 0,02 × 3",
+     "resultado": "240 €",
+     "texto": "Interés simple."
+    },
+    {
+     "paso": 3,
+     "operacion": "Restar",
+     "resultado": "4,83 €",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Se colocan 14 000 € al 2 % anual durante 4 años. ¿Cuántos euros más de intereses se obtienen con interés compuesto que con interés simple?",
+   "respuesta": "34,05 €",
+   "distractores": [
+    {
+     "valor": "1154,05 €",
+     "error": null
+    },
+    {
+     "valor": "1120 €",
+     "error": "E01"
+    },
+    {
+     "valor": "15 154,05 €",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "PROB.PROP.05",
+    "PROB.PROP.12",
+    "OPER.POT.01"
+   ],
+   "explicacion_nino": "Compuesto: 14 000 × 1,02^4 − 14 000 ≈ 1154,05 € de intereses. Simple: 14 000 × 0,02 × 4 = 1120 €. Diferencia: ≈ 34,05 €. El compuesto gana más porque cada año también producen intereses los intereses anteriores.",
+   "explicacion_adulto": "Está aprendiendo el interés compuesto y las tasas acumuladas: cada periodo se aplica el porcentaje sobre la cantidad ya aumentada (o disminuida), por eso se multiplica por (1 + r) tantas veces como periodos: C·(1 + r)^t. Errores típicos: aplicar interés simple, no dividir el tipo anual entre los periodos del año y multiplicar por t en lugar de elevar. Pídele que calcule a mano los dos primeros periodos para ver por qué se multiplica una y otra vez.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "14 000 × 1,02^4 − 14 000",
+     "resultado": "1154,05 €",
+     "texto": "Interés compuesto."
+    },
+    {
+     "paso": 2,
+     "operacion": "14 000 × 0,02 × 4",
+     "resultado": "1120 €",
+     "texto": "Interés simple."
+    },
+    {
+     "paso": 3,
+     "operacion": "Restar",
+     "resultado": "34,05 €",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Se colocan 11 500 € al 5 % anual durante 10 años. ¿Cuántos euros más de intereses se obtienen con interés compuesto que con interés simple?",
+   "respuesta": "1482,29 €",
+   "distractores": [
+    {
+     "valor": "7232,29 €",
+     "error": null
+    },
+    {
+     "valor": "5750 €",
+     "error": "E01"
+    },
+    {
+     "valor": "18 732,29 €",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "PROB.PROP.05",
+    "PROB.PROP.12",
+    "OPER.POT.01"
+   ],
+   "explicacion_nino": "Compuesto: 11 500 × 1,05^10 − 11 500 ≈ 7232,29 € de intereses. Simple: 11 500 × 0,05 × 10 = 5750 €. Diferencia: ≈ 1482,29 €. El compuesto gana más porque cada año también producen intereses los intereses anteriores.",
+   "explicacion_adulto": "Está aprendiendo el interés compuesto y las tasas acumuladas: cada periodo se aplica el porcentaje sobre la cantidad ya aumentada (o disminuida), por eso se multiplica por (1 + r) tantas veces como periodos: C·(1 + r)^t. Errores típicos: aplicar interés simple, no dividir el tipo anual entre los periodos del año y multiplicar por t en lugar de elevar. Pídele que calcule a mano los dos primeros periodos para ver por qué se multiplica una y otra vez.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "11 500 × 1,05^10 − 11 500",
+     "resultado": "7232,29 €",
+     "texto": "Interés compuesto."
+    },
+    {
+     "paso": 2,
+     "operacion": "11 500 × 0,05 × 10",
+     "resultado": "5750 €",
+     "texto": "Interés simple."
+    },
+    {
+     "paso": 3,
+     "operacion": "Restar",
+     "resultado": "1482,29 €",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Se colocan 4500 € al 6 % anual durante 6 años. ¿Cuántos euros más de intereses se obtienen con interés compuesto que con interés simple?",
+   "respuesta": "263,34 €",
+   "distractores": [
+    {
+     "valor": "1883,34 €",
+     "error": null
+    },
+    {
+     "valor": "1620 €",
+     "error": "E01"
+    },
+    {
+     "valor": "6383,34 €",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "PROB.PROP.05",
+    "PROB.PROP.12",
+    "OPER.POT.01"
+   ],
+   "explicacion_nino": "Compuesto: 4500 × 1,06^6 − 4500 ≈ 1883,34 € de intereses. Simple: 4500 × 0,06 × 6 = 1620 €. Diferencia: ≈ 263,34 €. El compuesto gana más porque cada año también producen intereses los intereses anteriores.",
+   "explicacion_adulto": "Está aprendiendo el interés compuesto y las tasas acumuladas: cada periodo se aplica el porcentaje sobre la cantidad ya aumentada (o disminuida), por eso se multiplica por (1 + r) tantas veces como periodos: C·(1 + r)^t. Errores típicos: aplicar interés simple, no dividir el tipo anual entre los periodos del año y multiplicar por t en lugar de elevar. Pídele que calcule a mano los dos primeros periodos para ver por qué se multiplica una y otra vez.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "4500 × 1,06^6 − 4500",
+     "resultado": "1883,34 €",
+     "texto": "Interés compuesto."
+    },
+    {
+     "paso": 2,
+     "operacion": "4500 × 0,06 × 6",
+     "resultado": "1620 €",
+     "texto": "Interés simple."
+    },
+    {
+     "paso": 3,
+     "operacion": "Restar",
+     "resultado": "263,34 €",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Una moto costó 40 000 € y pierde cada año el 12 % del valor que tiene en ese momento. ¿Cuánto valdrá dentro de 5 años?",
+   "respuesta": "21 109,28 €",
+   "distractores": [
+    {
+     "valor": "16 000 €",
+     "error": "E01"
+    },
+    {
+     "valor": "176 000 €",
+     "error": "E03"
+    },
+    {
+     "valor": "70 493,67 €",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "PROB.PROP.05",
+    "PROB.PROP.12",
+    "OPER.POT.01"
+   ],
+   "explicacion_nino": "Perder un 12 % es multiplicar por 1 − 0,12 = 0,88. Cada año se aplica sobre el valor nuevo: 40 000 × 0,88^5 = 40 000 × 0,5277 ≈ 21 109,28 €.",
+   "explicacion_adulto": "Está aprendiendo el interés compuesto y las tasas acumuladas: cada periodo se aplica el porcentaje sobre la cantidad ya aumentada (o disminuida), por eso se multiplica por (1 + r) tantas veces como periodos: C·(1 + r)^t. Errores típicos: aplicar interés simple, no dividir el tipo anual entre los periodos del año y multiplicar por t en lugar de elevar. Pídele que calcule a mano los dos primeros periodos para ver por qué se multiplica una y otra vez.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1 − 0,12",
+     "resultado": "0,88",
+     "texto": "Factor de disminución."
+    },
+    {
+     "paso": 2,
+     "operacion": "0,88^5",
+     "resultado": "0,5277",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "40 000 × 0,5277",
+     "resultado": "21 109,28 €",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un coche costó 15 000 € y pierde cada año el 12 % del valor que tiene en ese momento. ¿Cuánto valdrá dentro de 4 años?",
+   "respuesta": "8995,43 €",
+   "distractores": [
+    {
+     "valor": "7800 €",
+     "error": "E01"
+    },
+    {
+     "valor": "52 800 €",
+     "error": "E03"
+    },
+    {
+     "valor": "23 602,79 €",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "PROB.PROP.05",
+    "PROB.PROP.12",
+    "OPER.POT.01"
+   ],
+   "explicacion_nino": "Perder un 12 % es multiplicar por 1 − 0,12 = 0,88. Cada año se aplica sobre el valor nuevo: 15 000 × 0,88^4 = 15 000 × 0,5997 ≈ 8995,43 €.",
+   "explicacion_adulto": "Está aprendiendo el interés compuesto y las tasas acumuladas: cada periodo se aplica el porcentaje sobre la cantidad ya aumentada (o disminuida), por eso se multiplica por (1 + r) tantas veces como periodos: C·(1 + r)^t. Errores típicos: aplicar interés simple, no dividir el tipo anual entre los periodos del año y multiplicar por t en lugar de elevar. Pídele que calcule a mano los dos primeros periodos para ver por qué se multiplica una y otra vez.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1 − 0,12",
+     "resultado": "0,88",
+     "texto": "Factor de disminución."
+    },
+    {
+     "paso": 2,
+     "operacion": "0,88^4",
+     "resultado": "0,5997",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "15 000 × 0,5997",
+     "resultado": "8995,43 €",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un coche costó 13 000 € y pierde cada año el 10 % del valor que tiene en ese momento. ¿Cuánto valdrá dentro de 6 años?",
+   "respuesta": "6908,73 €",
+   "distractores": [
+    {
+     "valor": "5200 €",
+     "error": "E01"
+    },
+    {
+     "valor": "70 200 €",
+     "error": "E03"
+    },
+    {
+     "valor": "23 030,29 €",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "PROB.PROP.05",
+    "PROB.PROP.12",
+    "OPER.POT.01"
+   ],
+   "explicacion_nino": "Perder un 10 % es multiplicar por 1 − 0,1 = 0,9. Cada año se aplica sobre el valor nuevo: 13 000 × 0,9^6 = 13 000 × 0,5314 ≈ 6908,73 €.",
+   "explicacion_adulto": "Está aprendiendo el interés compuesto y las tasas acumuladas: cada periodo se aplica el porcentaje sobre la cantidad ya aumentada (o disminuida), por eso se multiplica por (1 + r) tantas veces como periodos: C·(1 + r)^t. Errores típicos: aplicar interés simple, no dividir el tipo anual entre los periodos del año y multiplicar por t en lugar de elevar. Pídele que calcule a mano los dos primeros periodos para ver por qué se multiplica una y otra vez.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1 − 0,1",
+     "resultado": "0,9",
+     "texto": "Factor de disminución."
+    },
+    {
+     "paso": 2,
+     "operacion": "0,9^6",
+     "resultado": "0,5314",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "13 000 × 0,5314",
+     "resultado": "6908,73 €",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un tractor costó 36 000 € y pierde cada año el 10 % del valor que tiene en ese momento. ¿Cuánto valdrá dentro de 2 años?",
+   "respuesta": "29 160 €",
+   "distractores": [
+    {
+     "valor": "28 800 €",
+     "error": "E01"
+    },
+    {
+     "valor": "64 800 €",
+     "error": "E03"
+    },
+    {
+     "valor": "43 560 €",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "PROB.PROP.05",
+    "PROB.PROP.12",
+    "OPER.POT.01"
+   ],
+   "explicacion_nino": "Perder un 10 % es multiplicar por 1 − 0,1 = 0,9. Cada año se aplica sobre el valor nuevo: 36 000 × 0,9^2 = 36 000 × 0,81 ≈ 29 160 €.",
+   "explicacion_adulto": "Está aprendiendo el interés compuesto y las tasas acumuladas: cada periodo se aplica el porcentaje sobre la cantidad ya aumentada (o disminuida), por eso se multiplica por (1 + r) tantas veces como periodos: C·(1 + r)^t. Errores típicos: aplicar interés simple, no dividir el tipo anual entre los periodos del año y multiplicar por t en lugar de elevar. Pídele que calcule a mano los dos primeros periodos para ver por qué se multiplica una y otra vez.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1 − 0,1",
+     "resultado": "0,9",
+     "texto": "Factor de disminución."
+    },
+    {
+     "paso": 2,
+     "operacion": "0,9^2",
+     "resultado": "0,81",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "36 000 × 0,81",
+     "resultado": "29 160 €",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Una furgoneta costó 38 000 € y pierde cada año el 8 % del valor que tiene en ese momento. ¿Cuánto valdrá dentro de 3 años?",
+   "respuesta": "29 590,14 €",
+   "distractores": [
+    {
+     "valor": "28 880 €",
+     "error": "E01"
+    },
+    {
+     "valor": "104 880 €",
+     "error": "E03"
+    },
+    {
+     "valor": "47 869,06 €",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "PROB.PROP.05",
+    "PROB.PROP.12",
+    "OPER.POT.01"
+   ],
+   "explicacion_nino": "Perder un 8 % es multiplicar por 1 − 0,08 = 0,92. Cada año se aplica sobre el valor nuevo: 38 000 × 0,92^3 = 38 000 × 0,7787 ≈ 29 590,14 €.",
+   "explicacion_adulto": "Está aprendiendo el interés compuesto y las tasas acumuladas: cada periodo se aplica el porcentaje sobre la cantidad ya aumentada (o disminuida), por eso se multiplica por (1 + r) tantas veces como periodos: C·(1 + r)^t. Errores típicos: aplicar interés simple, no dividir el tipo anual entre los periodos del año y multiplicar por t en lugar de elevar. Pídele que calcule a mano los dos primeros periodos para ver por qué se multiplica una y otra vez.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1 − 0,08",
+     "resultado": "0,92",
+     "texto": "Factor de disminución."
+    },
+    {
+     "paso": 2,
+     "operacion": "0,92^3",
+     "resultado": "0,7787",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "38 000 × 0,7787",
+     "resultado": "29 590,14 €",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Una moto costó 35 000 € y pierde cada año el 12 % del valor que tiene en ese momento. ¿Cuánto valdrá dentro de 2 años?",
+   "respuesta": "27 104 €",
+   "distractores": [
+    {
+     "valor": "26 600 €",
+     "error": "E01"
+    },
+    {
+     "valor": "61 600 €",
+     "error": "E03"
+    },
+    {
+     "valor": "43 904 €",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "PROB.PROP.05",
+    "PROB.PROP.12",
+    "OPER.POT.01"
+   ],
+   "explicacion_nino": "Perder un 12 % es multiplicar por 1 − 0,12 = 0,88. Cada año se aplica sobre el valor nuevo: 35 000 × 0,88^2 = 35 000 × 0,7744 ≈ 27 104 €.",
+   "explicacion_adulto": "Está aprendiendo el interés compuesto y las tasas acumuladas: cada periodo se aplica el porcentaje sobre la cantidad ya aumentada (o disminuida), por eso se multiplica por (1 + r) tantas veces como periodos: C·(1 + r)^t. Errores típicos: aplicar interés simple, no dividir el tipo anual entre los periodos del año y multiplicar por t en lugar de elevar. Pídele que calcule a mano los dos primeros periodos para ver por qué se multiplica una y otra vez.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1 − 0,12",
+     "resultado": "0,88",
+     "texto": "Factor de disminución."
+    },
+    {
+     "paso": 2,
+     "operacion": "0,88^2",
+     "resultado": "0,7744",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "35 000 × 0,7744",
+     "resultado": "27 104 €",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un pueblo tiene 50 500 habitantes y su población crece un 4 % cada año. ¿Cuántos habitantes tendrá dentro de 3 años, aproximadamente?",
+   "respuesta": "56 806 hab.",
+   "distractores": [
+    {
+     "valor": "56 560 hab.",
+     "error": "E01"
+    },
+    {
+     "valor": "157 560 hab.",
+     "error": "E03"
+    },
+    {
+     "valor": "44 679 hab.",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "PROB.PROP.05",
+    "PROB.PROP.12",
+    "OPER.POT.01"
+   ],
+   "explicacion_nino": "Cada año la población se multiplica por 1,04. En 3 años: 50 500 × 1,04^3 ≈ 56 806 habitantes (se redondea porque son personas).",
+   "explicacion_adulto": "Está aprendiendo el interés compuesto y las tasas acumuladas: cada periodo se aplica el porcentaje sobre la cantidad ya aumentada (o disminuida), por eso se multiplica por (1 + r) tantas veces como periodos: C·(1 + r)^t. Errores típicos: aplicar interés simple, no dividir el tipo anual entre los periodos del año y multiplicar por t en lugar de elevar. Pídele que calcule a mano los dos primeros periodos para ver por qué se multiplica una y otra vez.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Factor anual",
+     "resultado": "1,04",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "50 500 × 1,04^3",
+     "resultado": "56 806",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un pueblo tiene 9500 habitantes y su población crece un 4 % cada año. ¿Cuántos habitantes tendrá dentro de 3 años, aproximadamente?",
+   "respuesta": "10 686 hab.",
+   "distractores": [
+    {
+     "valor": "10 640 hab.",
+     "error": "E01"
+    },
+    {
+     "valor": "29 640 hab.",
+     "error": "E03"
+    },
+    {
+     "valor": "8405 hab.",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "PROB.PROP.05",
+    "PROB.PROP.12",
+    "OPER.POT.01"
+   ],
+   "explicacion_nino": "Cada año la población se multiplica por 1,04. En 3 años: 9500 × 1,04^3 ≈ 10 686 habitantes (se redondea porque son personas).",
+   "explicacion_adulto": "Está aprendiendo el interés compuesto y las tasas acumuladas: cada periodo se aplica el porcentaje sobre la cantidad ya aumentada (o disminuida), por eso se multiplica por (1 + r) tantas veces como periodos: C·(1 + r)^t. Errores típicos: aplicar interés simple, no dividir el tipo anual entre los periodos del año y multiplicar por t en lugar de elevar. Pídele que calcule a mano los dos primeros periodos para ver por qué se multiplica una y otra vez.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Factor anual",
+     "resultado": "1,04",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "9500 × 1,04^3",
+     "resultado": "10 686",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un pueblo tiene 15 500 habitantes y su población crece un 1 % cada año. ¿Cuántos habitantes tendrá dentro de 7 años, aproximadamente?",
+   "respuesta": "16 618 hab.",
+   "distractores": [
+    {
+     "valor": "16 585 hab.",
+     "error": "E01"
+    },
+    {
+     "valor": "109 585 hab.",
+     "error": "E03"
+    },
+    {
+     "valor": "14 447 hab.",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "PROB.PROP.05",
+    "PROB.PROP.12",
+    "OPER.POT.01"
+   ],
+   "explicacion_nino": "Cada año la población se multiplica por 1,01. En 7 años: 15 500 × 1,01^7 ≈ 16 618 habitantes (se redondea porque son personas).",
+   "explicacion_adulto": "Está aprendiendo el interés compuesto y las tasas acumuladas: cada periodo se aplica el porcentaje sobre la cantidad ya aumentada (o disminuida), por eso se multiplica por (1 + r) tantas veces como periodos: C·(1 + r)^t. Errores típicos: aplicar interés simple, no dividir el tipo anual entre los periodos del año y multiplicar por t en lugar de elevar. Pídele que calcule a mano los dos primeros periodos para ver por qué se multiplica una y otra vez.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Factor anual",
+     "resultado": "1,01",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "15 500 × 1,01^7",
+     "resultado": "16 618",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un pueblo tiene 38 500 habitantes y su población crece un 5 % cada año. ¿Cuántos habitantes tendrá dentro de 2 años, aproximadamente?",
+   "respuesta": "42 446 hab.",
+   "distractores": [
+    {
+     "valor": "42 350 hab.",
+     "error": "E01"
+    },
+    {
+     "valor": "80 850 hab.",
+     "error": "E03"
+    },
+    {
+     "valor": "34 746 hab.",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "PROB.PROP.05",
+    "PROB.PROP.12",
+    "OPER.POT.01"
+   ],
+   "explicacion_nino": "Cada año la población se multiplica por 1,05. En 2 años: 38 500 × 1,05^2 ≈ 42 446 habitantes (se redondea porque son personas).",
+   "explicacion_adulto": "Está aprendiendo el interés compuesto y las tasas acumuladas: cada periodo se aplica el porcentaje sobre la cantidad ya aumentada (o disminuida), por eso se multiplica por (1 + r) tantas veces como periodos: C·(1 + r)^t. Errores típicos: aplicar interés simple, no dividir el tipo anual entre los periodos del año y multiplicar por t en lugar de elevar. Pídele que calcule a mano los dos primeros periodos para ver por qué se multiplica una y otra vez.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Factor anual",
+     "resultado": "1,05",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "38 500 × 1,05^2",
+     "resultado": "42 446",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un pueblo tiene 41 000 habitantes y su población disminuye un 2 % cada año. ¿Cuántos habitantes tendrá dentro de 8 años, aproximadamente?",
+   "respuesta": "34 881 hab.",
+   "distractores": [
+    {
+     "valor": "34 440 hab.",
+     "error": "E01"
+    },
+    {
+     "valor": "321 440 hab.",
+     "error": "E03"
+    },
+    {
+     "valor": "48 038 hab.",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "PROB.PROP.05",
+    "PROB.PROP.12",
+    "OPER.POT.01"
+   ],
+   "explicacion_nino": "Cada año la población se multiplica por 0,98. En 8 años: 41 000 × 0,98^8 ≈ 34 881 habitantes (se redondea porque son personas).",
+   "explicacion_adulto": "Está aprendiendo el interés compuesto y las tasas acumuladas: cada periodo se aplica el porcentaje sobre la cantidad ya aumentada (o disminuida), por eso se multiplica por (1 + r) tantas veces como periodos: C·(1 + r)^t. Errores típicos: aplicar interés simple, no dividir el tipo anual entre los periodos del año y multiplicar por t en lugar de elevar. Pídele que calcule a mano los dos primeros periodos para ver por qué se multiplica una y otra vez.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Factor anual",
+     "resultado": "0,98",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "41 000 × 0,98^8",
+     "resultado": "34 881",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un pueblo tiene 12 000 habitantes y su población disminuye un 5 % cada año. ¿Cuántos habitantes tendrá dentro de 7 años, aproximadamente?",
+   "respuesta": "8380 hab.",
+   "distractores": [
+    {
+     "valor": "7800 hab.",
+     "error": "E01"
+    },
+    {
+     "valor": "79 800 hab.",
+     "error": "E03"
+    },
+    {
+     "valor": "16 885 hab.",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "PROB.PROP.05",
+    "PROB.PROP.12",
+    "OPER.POT.01"
+   ],
+   "explicacion_nino": "Cada año la población se multiplica por 0,95. En 7 años: 12 000 × 0,95^7 ≈ 8380 habitantes (se redondea porque son personas).",
+   "explicacion_adulto": "Está aprendiendo el interés compuesto y las tasas acumuladas: cada periodo se aplica el porcentaje sobre la cantidad ya aumentada (o disminuida), por eso se multiplica por (1 + r) tantas veces como periodos: C·(1 + r)^t. Errores típicos: aplicar interés simple, no dividir el tipo anual entre los periodos del año y multiplicar por t en lugar de elevar. Pídele que calcule a mano los dos primeros periodos para ver por qué se multiplica una y otra vez.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Factor anual",
+     "resultado": "0,95",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "12 000 × 0,95^7",
+     "resultado": "8380",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P05"
+  }
+ ]
+}

@@ -1,0 +1,1419 @@
+{
+ "EST.DATOS.01": {
+  "gen": "t6_recuento",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "cuantos"
+   },
+   "2": {
+    "tipo": "mixto"
+   },
+   "3": {
+    "tipo": "mixto"
+   }
+  },
+  "errores": {
+   "cuenta_dos_veces": "E01",
+   "se_salta": "E02",
+   "cuenta_todos": "E03",
+   "confunde_parecidos": "E04"
+  },
+  "plantilla": "Contar los objetos de una categoría en una colección de dibujos (2–4 categorías, hasta 20)"
+ },
+ "EST.DATOS.02": {
+  "gen": "t6_tabla_doble",
+  "kw": {},
+  "errores": {
+   "fila_de_al_lado": "E01",
+   "cambia_fila_columna": "E02",
+   "total_fila": "E03"
+  },
+  "plantilla": "Leer el dato del cruce de una fila y una columna en una tabla de doble entrada (hasta 4×4, valores hasta 100)"
+ },
+ "EST.DATOS.03": {
+  "gen": "t6_frec_abs",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": [
+     "frecuencia",
+     "total"
+    ]
+   },
+   "2": {
+    "tipo": "frecuencia"
+   },
+   "3": {
+    "tipo": "frecuencia"
+   }
+  },
+  "errores": {
+   "valor_por_frecuencia": "E01",
+   "pierde_dato": "E02",
+   "olvida_cero": "E03"
+  },
+  "plantilla": "Frecuencia absoluta de un valor a partir de una lista de hasta 30 datos"
+ },
+ "EST.DATOS.05": {
+  "gen": "t6_frec_rel",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "formato": "fraccion"
+   },
+   "2": {
+    "formato": [
+     "decimal",
+     "fraccion"
+    ]
+   },
+   "3": {
+    "formato": [
+     "porcentaje",
+     "decimal"
+    ]
+   }
+  },
+  "errores": {
+   "divide_al_reves": "E01",
+   "divide_entre_categorias": "E02",
+   "decimal_porcentaje": "E03"
+  },
+  "plantilla": "Frecuencia relativa f/N como fracción, decimal o porcentaje (N ≤ 100)"
+ },
+ "EST.DATOS.08": {
+  "gen": "t6_frec_acum",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "como_mucho"
+   },
+   "2": {
+    "tipo": [
+     "al_menos",
+     "como_mucho"
+    ]
+   },
+   "3": {
+    "tipo": [
+     "rel",
+     "al_menos"
+    ]
+   }
+  },
+  "errores": {
+   "acumula_al_reves": "E01",
+   "al_menos_como_mucho": "E02",
+   "relativa_como_absoluta": "E03"
+  },
+  "plantilla": "Frecuencias acumuladas (F, H) en una tabla de variable discreta: «como mucho», «al menos»"
+ },
+ "EST.DATOS.09": {
+  "gen": "t6_intervalos",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "marca"
+   },
+   "2": {
+    "tipo": [
+     "clase",
+     "amplitud",
+     "marca"
+    ]
+   },
+   "3": {
+    "tipo": "frecuencia"
+   }
+  },
+  "errores": {
+   "extremo_mal": "E01",
+   "marca_extremo": "E02",
+   "amplitud_mal": "E03"
+  },
+  "plantilla": "Datos agrupados en intervalos [a, b): marca de clase, clase de un dato, amplitud, frecuencia de una clase"
+ },
+ "EST.GRAF.01": {
+  "gen": "t6_pictograma",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "cuantos"
+   },
+   "2": {
+    "tipo": [
+     "mas",
+     "menos",
+     "cuantos"
+    ]
+   },
+   "3": {
+    "tipo": [
+     "menos",
+     "cuantos"
+    ]
+   }
+  },
+  "errores": {
+   "fila_de_al_lado": "E01",
+   "mas_por_menos": "E03"
+  },
+  "plantilla": "Leer un pictograma (cada icono vale 1): cuántos hay, cuál tiene más o menos"
+ },
+ "EST.GRAF.04": {
+  "gen": "t6_picto_valor",
+  "kw": {},
+  "errores": {
+   "ignora_leyenda": "E01",
+   "medio_vale_uno": "E02",
+   "medio_mal": "E03"
+  },
+  "plantilla": "Leer una fila de pictograma con iconos que valen 2, 5 o 10 (con medios iconos)"
+ },
+ "EST.GRAF.05": {
+  "gen": "t6_barras_escala",
+  "kw": {},
+  "errores": {
+   "cuenta_marcas": "E01",
+   "entre_mas_uno": "E02",
+   "marca_cercana": "E03"
+  },
+  "plantilla": "Leer una barra en un eje graduado de 2, 5 o 10 (también a mitad entre dos marcas)"
+ },
+ "EST.GRAF.06": {
+  "gen": "t6_barras_dobles",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "serie"
+   },
+   "2": {
+    "tipo": [
+     "bajo",
+     "serie"
+    ]
+   },
+   "3": {
+    "tipo": [
+     "diferencia",
+     "bajo"
+    ]
+   }
+  },
+  "errores": {
+   "confunde_series": "E01",
+   "compara_categorias": "E02",
+   "barra_mas_alta": "E03"
+  },
+  "plantilla": "Comparar dos series en un diagrama de barras dobles (descrito con su leyenda)"
+ },
+ "EST.GRAF.07": {
+  "gen": "t6_lineas",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "valor"
+   },
+   "2": {
+    "tipo": [
+     "maximo",
+     "minimo"
+    ]
+   },
+   "3": {
+    "tipo": [
+     "subida",
+     "bajada"
+    ]
+   }
+  },
+  "errores": {
+   "mas_alto_por_mayor_subida": "E01",
+   "eje_equivocado": "E02"
+  },
+  "plantilla": "Leer un gráfico de líneas de temperaturas: valor, máximo/mínimo, mayor subida o bajada"
+ },
+ "EST.GRAF.08": {
+  "gen": "t6_sectores",
+  "kw": {},
+  "errores": {
+   "porcentaje_por_cantidad": "E01",
+   "sector_mal_estimado": "E03"
+  },
+  "plantilla": "Diagrama de sectores descrito con fracciones o porcentajes: cuántos datos son de un sector"
+ },
+ "EST.GRAF.09": {
+  "gen": "t6_angulo_sector",
+  "kw": {},
+  "errores": {
+   "cien_grados": "E01",
+   "absoluta_por_360": "E02",
+   "reparto_igual": "E03"
+  },
+  "plantilla": "Ángulo de un sector = f/N · 360° (ángulos enteros)"
+ },
+ "EST.GRAF.10": {
+  "gen": "t6_histograma",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "clase"
+   },
+   "2": {
+    "tipo": [
+     "tramo",
+     "clase"
+    ]
+   },
+   "3": {
+    "tipo": [
+     "exacto",
+     "tramo"
+    ]
+   }
+  },
+  "errores": {
+   "barra_como_valor": "E01",
+   "extremo_mal": "E02",
+   "solo_una_clase": "E03"
+  },
+  "plantilla": "Leer un histograma (descrito barra a barra): una clase, un tramo de varias clases, valores exactos"
+ },
+ "EST.GRAF.12": {
+  "gen": "t6_poligono",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": [
+     "concentra",
+     "forma"
+    ]
+   },
+   "2": {
+    "tipo": "vertice"
+   },
+   "3": {
+    "tipo": [
+     "cierre",
+     "vertice"
+    ]
+   }
+  },
+  "errores": {
+   "barras_separadas": "E01",
+   "poligono_extremos": "E02"
+  },
+  "plantilla": "Histograma y polígono de frecuencias de una tabla agrupada: barras, vértices (marca, f) y cierre"
+ },
+ "EST.GRAF.14": {
+  "gen": "t6_caja",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": [
+     "elemento",
+     "raya"
+    ]
+   },
+   "2": {
+    "tipo": [
+     "ric",
+     "porcentaje"
+    ]
+   },
+   "3": {
+    "tipo": [
+     "comparar",
+     "ric",
+     "porcentaje"
+    ]
+   }
+  },
+  "errores": {
+   "raya_es_media": "E01",
+   "largo_mas_datos": "E02",
+   "ric_por_rango": "E03"
+  },
+  "plantilla": "Leer un diagrama de caja y bigotes (descrito con sus cinco números): elementos, RIC, porcentajes, comparar"
+ },
+ "EST.MEDIDAS.01": {
+  "gen": "t6_moda",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "lista"
+   },
+   "2": {
+    "tipo": [
+     "tabla",
+     "lista"
+    ]
+   },
+   "3": {
+    "tipo": [
+     "bimodal",
+     "tabla"
+    ]
+   }
+  },
+  "errores": {
+   "frecuencia_por_valor": "E01",
+   "mayor_valor": "E02",
+   "una_sola_moda": "E03"
+  },
+  "plantilla": "Moda de una lista o de un recuento (incluido el caso bimodal)"
+ },
+ "EST.MEDIDAS.02": {
+  "gen": "t6_media",
+  "kw": {},
+  "errores": {
+   "divide_mal": "E01",
+   "olvida_dividir": "E02",
+   "dato_central": "E03"
+  },
+  "plantilla": "Media aritmética de 2 a 10 datos naturales o con un decimal"
+ },
+ "EST.MEDIDAS.03": {
+  "gen": "t6_rango",
+  "kw": {},
+  "errores": {
+   "ultimo_menos_primero": "E01",
+   "maximo": "E02",
+   "negativos_mal": "E03"
+  },
+  "plantilla": "Rango = máximo − mínimo de datos desordenados (con decimales o negativos)"
+ },
+ "EST.MEDIDAS.04": {
+  "gen": "t6_media_inversa",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "falta"
+   },
+   "2": {
+    "tipo": [
+     "anadir",
+     "necesita",
+     "falta"
+    ]
+   },
+   "3": {
+    "tipo": [
+     "necesita",
+     "anadir"
+    ]
+   }
+  },
+  "errores": {
+   "promedia_medias": "E01",
+   "olvida_nuevo_n": "E02",
+   "no_detecta_imposible": "E03"
+  },
+  "plantilla": "Suma = media · n: dato que falta, nota necesaria, efecto de añadir un dato"
+ },
+ "EST.MEDIDAS.05": {
+  "gen": "t6_mediana",
+  "kw": {},
+  "errores": {
+   "sin_ordenar": "E01",
+   "un_central": "E02",
+   "media_o_moda": "E03"
+  },
+  "plantilla": "Mediana de una lista (n par o impar, hasta 15 datos)"
+ },
+ "EST.MEDIDAS.06": {
+  "gen": "t6_centrales_tabla",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "moda"
+   },
+   "2": {
+    "tipo": [
+     "media",
+     "moda"
+    ]
+   },
+   "3": {
+    "tipo": [
+     "mediana",
+     "media"
+    ]
+   }
+  },
+  "errores": {
+   "sin_ponderar": "E01",
+   "media_frecuencias": "E02",
+   "mediana_frecuencias": "E03",
+   "moda_frecuencia": "E04"
+  },
+  "plantilla": "Media, mediana y moda de una variable discreta en tabla de frecuencias"
+ },
+ "EST.MEDIDAS.08": {
+  "gen": "t6_cuartiles",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "lista"
+   },
+   "2": {
+    "tipo": [
+     "lista",
+     "percentil"
+    ]
+   },
+   "3": {
+    "tipo": [
+     "tabla",
+     "percentil"
+    ]
+   }
+  },
+  "errores": {
+   "sin_ordenar": "E01",
+   "posicion_por_valor": "E02",
+   "percentil_como_nota": "E03"
+  },
+  "plantilla": "Cuartiles por posición k·N/4 (lista o tabla) y significado de un percentil"
+ },
+ "EST.MEDIDAS.09": {
+  "gen": "t6_agrupados",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "modal"
+   },
+   "2": {
+    "tipo": "media"
+   },
+   "3": {
+    "tipo": [
+     "mediana",
+     "media"
+    ]
+   }
+  },
+  "errores": {
+   "extremo_por_marca": "E01",
+   "modal_central": "E02",
+   "divide_clases": "E03"
+  },
+  "plantilla": "Datos agrupados: media con marcas de clase, clase modal y clase mediana"
+ },
+ "EST.MEDIDAS.10": {
+  "gen": "t6_varianza",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "varianza"
+   },
+   "2": {
+    "tipo": "desviacion"
+   },
+   "3": {
+    "tipo": [
+     "tabla",
+     "desviacion"
+    ]
+   }
+  },
+  "errores": {
+   "sin_cuadrado": "E01",
+   "varianza_por_desviacion": "E02",
+   "sin_restar_media2": "E03",
+   "sin_ponderar": "E04"
+  },
+  "plantilla": "Varianza y desviación típica de pocos datos o de una tabla de frecuencias"
+ },
+ "EST.MEDIDAS.12": {
+  "gen": "t6_cv",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "calcular"
+   },
+   "2": {
+    "tipo": [
+     "calcular",
+     "comparar"
+    ]
+   },
+   "3": {
+    "tipo": "comparar"
+   }
+  },
+  "errores": {
+   "compara_sigma": "E01",
+   "divide_al_reves": "E02",
+   "usa_varianza": "E03"
+  },
+  "plantilla": "Coeficiente de variación σ/x̄ y comparación de la dispersión relativa"
+ },
+ "EST.AZAR.02": {
+  "gen": "t6_suceso_tipo",
+  "kw": {},
+  "errores": {
+   "probable_es_seguro": "E01",
+   "poco_probable_imposible": "E02"
+  },
+  "plantilla": "Clasificar un suceso (bolsa, dado, ruleta, moneda) como seguro, posible o imposible"
+ },
+ "EST.AZAR.03": {
+  "gen": "t6_comparar_azar",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "mismo"
+   },
+   "2": {
+    "tipo": [
+     "bolsas",
+     "mismo"
+    ]
+   },
+   "3": {
+    "tipo": "bolsas"
+   }
+  },
+  "errores": {
+   "solo_favorables": "E01",
+   "todo_igual": "E02"
+  },
+  "plantilla": "Comparar intuitivamente dos sucesos o dos bolsas con un recuento igual"
+ },
+ "EST.AZAR.04": {
+  "gen": "t6_escala",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "verbal"
+   },
+   "2": {
+    "tipo": [
+     "verbal",
+     "recta"
+    ]
+   },
+   "3": {
+    "tipo": "recta"
+   }
+  },
+  "errores": {
+   "igual_por_posible": "E01",
+   "escala_invertida": "E02",
+   "poco_imposible": "E03"
+  },
+  "plantilla": "Situar un suceso en la escala imposible–seguro y en la recta de 0 a 1"
+ },
+ "EST.PROB.01": {
+  "gen": "t6_laplace",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "simple"
+   },
+   "2": {
+    "tipo": "simple"
+   },
+   "3": {
+    "tipo": [
+     "comparar",
+     "simple"
+    ]
+   }
+  },
+  "errores": {
+   "favorables_entre_desfavorables": "E01",
+   "solo_favorables": "E02"
+  },
+  "plantilla": "Regla de Laplace en un experimento simple (bolsa, dado, ruleta, baraja) y comparación de dos bolsas"
+ },
+ "EST.PROB.02": {
+  "gen": "t6_espacio",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "suceso"
+   },
+   "2": {
+    "tipo": [
+     "espacio",
+     "suceso"
+    ]
+   },
+   "3": {
+    "tipo": [
+     "imposible",
+     "espacio"
+    ]
+   }
+  },
+  "errores": {
+   "solo_favorables": "E01",
+   "olvida_resultado": "E02",
+   "imposible_mal": "E03"
+  },
+  "plantilla": "Espacio muestral y sucesos como conjuntos (incluidos ∅ y E)"
+ },
+ "EST.PROB.03": {
+  "gen": "t6_contrario",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "describir"
+   },
+   "2": {
+    "tipo": "fraccion"
+   },
+   "3": {
+    "tipo": [
+     "almenos",
+     "describir"
+    ]
+   }
+  },
+  "errores": {
+   "otro_suceso": "E01",
+   "olvida_frontera": "E02",
+   "inverso": "E03"
+  },
+  "plantilla": "Suceso contrario y p(no A) = 1 − p(A)"
+ },
+ "EST.PROB.04": {
+  "gen": "t6_frecuencial",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "estimar"
+   },
+   "2": {
+    "tipo": [
+     "estimar",
+     "laplace_si"
+    ]
+   },
+   "3": {
+    "tipo": [
+     "pocos",
+     "estimar"
+    ]
+   }
+  },
+  "errores": {
+   "uno_entre_n": "E01",
+   "pocos_ensayos_exacto": "E02",
+   "divide_al_reves": "E03"
+  },
+  "plantilla": "Probabilidad frecuencial (frecuencia relativa) y cuándo se puede usar Laplace"
+ },
+ "EST.PROB.05": {
+  "gen": "t6_union",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": [
+     "union",
+     "interseccion"
+    ]
+   },
+   "2": {
+    "tipo": [
+     "union",
+     "interseccion"
+    ]
+   },
+   "3": {
+    "tipo": "union"
+   }
+  },
+  "errores": {
+   "sin_restar_interseccion": "E01",
+   "y_por_o": "E02",
+   "incompatibles_multiplica": "E03"
+  },
+  "plantilla": "p(A ∪ B) = p(A) + p(B) − p(A ∩ B) en experimentos simples (dado, ruleta, baraja española)"
+ },
+ "EST.PROB.06": {
+  "gen": "t6_compuesto",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "moneda_dado"
+   },
+   "2": {
+    "tipo": [
+     "dos_dados",
+     "reemplazo_igual",
+     "moneda_dado"
+    ]
+   },
+   "3": {
+    "tipo": [
+     "monedas",
+     "reemplazo_dist",
+     "dos_dados"
+    ]
+   }
+  },
+  "errores": {
+   "suma_en_rama": "E01",
+   "olvida_ramas": "E02",
+   "no_equiprobables": "E03"
+  },
+  "plantilla": "Experimentos compuestos independientes: regla del producto y suma de ramas"
+ },
+ "EST.PROB.07": {
+  "gen": "t6_sin_reemplazo",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "dos_iguales"
+   },
+   "2": {
+    "tipo": "una_de_cada"
+   },
+   "3": {
+    "tipo": [
+     "tres",
+     "una_de_cada"
+    ]
+   }
+  },
+  "errores": {
+   "no_actualiza": "E01",
+   "actualiza_solo_total": "E02",
+   "olvida_orden": "E03"
+  },
+  "plantilla": "Extracciones sucesivas sin reemplazamiento (dos o tres etapas)"
+ },
+ "EST.PROB.08": {
+  "gen": "t6_prob_tabla",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "celda"
+   },
+   "2": {
+    "tipo": "restringida"
+   },
+   "3": {
+    "tipo": [
+     "union",
+     "restringida"
+    ]
+   }
+  },
+  "errores": {
+   "divide_total": "E01",
+   "divide_fila": "E02",
+   "interseccion_por_union": "E03"
+  },
+  "plantilla": "Probabilidades a partir de una tabla de contingencia: casilla, restringida a una columna, unión"
+ },
+ "EST.PROB.10": {
+  "gen": "t6_condicionada",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "tabla"
+   },
+   "2": {
+    "tipo": [
+     "producto",
+     "tabla"
+    ]
+   },
+   "3": {
+    "tipo": "formula"
+   }
+  },
+  "errores": {
+   "invierte_condicion": "E01",
+   "interseccion_por_condicionada": "E02",
+   "multiplica_sin_independencia": "E03"
+  },
+  "plantilla": "Probabilidad condicionada P(A|B) = P(A∩B)/P(B) desde tablas o datos, y regla del producto"
+ },
+ "EST.PROB.11": {
+  "gen": "t6_independencia",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "interseccion"
+   },
+   "2": {
+    "tipo": [
+     "decidir",
+     "union"
+    ]
+   },
+   "3": {
+    "tipo": "decidir"
+   }
+  },
+  "errores": {
+   "incompatibles_independientes": "E01",
+   "comprueba_union": "E02",
+   "intuicion": "E03"
+  },
+  "plantilla": "Independencia de sucesos: comprobar P(A∩B) = P(A)·P(B) y usarla para calcular"
+ },
+ "EST.COMB.01": {
+  "gen": "t6_recuento_sistematico",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": [
+     "parejas",
+     "cifras"
+    ]
+   },
+   "2": {
+    "tipo": [
+     "cifras",
+     "parejas"
+    ]
+   },
+   "3": {
+    "tipo": [
+     "tres",
+     "parejas",
+     "cifras"
+    ]
+   }
+  },
+  "errores": {
+   "olvida_casos": "E01",
+   "repetidos_no_permitidos": "E02",
+   "orden_duplicado": "E03",
+   "suma_opciones": "E04"
+  },
+  "plantilla": "Recuento sistemático de casos pequeños (≤ 30): números con cifras dadas, parejas"
+ },
+ "EST.COMB.02": {
+  "gen": "t6_multiplicativo",
+  "kw": {},
+  "errores": {
+   "suma_en_vez": "E01",
+   "arbol_incompleto": "E02"
+  },
+  "plantilla": "Principio multiplicativo en elecciones de 2 a 4 etapas (menús, ropa, rutas)"
+ },
+ "EST.COMB.03": {
+  "gen": "t6_vr",
+  "kw": {},
+  "errores": {
+   "k_a_la_n": "E01",
+   "n_por_k": "E02"
+  },
+  "plantilla": "Variaciones con repetición VR(n,k) = n^k (claves, códigos, quinielas, banderas)"
+ },
+ "EST.COMB.04": {
+  "gen": "t6_variaciones",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": [
+     "factorial",
+     "permutaciones"
+    ]
+   },
+   "2": {
+    "tipo": [
+     "permutaciones",
+     "variaciones"
+    ]
+   },
+   "3": {
+    "tipo": "variaciones"
+   }
+  },
+  "errores": {
+   "con_repeticion": "E01",
+   "divide_k_factorial": "E02"
+  },
+  "plantilla": "Factoriales, permutaciones n! y variaciones sin repetición n!/(n−k)!"
+ },
+ "EST.COMB.05": {
+  "gen": "t6_combinaciones",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "numero"
+   },
+   "2": {
+    "tipo": "contexto"
+   },
+   "3": {
+    "tipo": [
+     "numero",
+     "contexto"
+    ]
+   }
+  },
+  "errores": {
+   "no_divide_k": "E01",
+   "divide_mal": "E02"
+  },
+  "plantilla": "Combinaciones y números combinatorios C(n,k), incluida C(n,k) = C(n,n−k)"
+ },
+ "EST.COMB.07": {
+  "gen": "t6_perm_rep",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": [
+     "anagrama",
+     "bolas"
+    ]
+   },
+   "2": {
+    "tipo": [
+     "bolas",
+     "anagrama"
+    ]
+   },
+   "3": {
+    "tipo": [
+     "juntos",
+     "anagrama"
+    ]
+   }
+  },
+  "errores": {
+   "no_divide_repeticiones": "E01",
+   "resta_en_vez": "E02"
+  },
+  "plantilla": "Permutaciones con repetición (anagramas, objetos iguales) y recuentos con una restricción"
+ },
+ "EST.BIDIM.01": {
+  "gen": "t6_marginal",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "marginal"
+   },
+   "2": {
+    "tipo": [
+     "fila",
+     "marginal"
+    ]
+   },
+   "3": {
+    "tipo": "porcentaje"
+   }
+  },
+  "errores": {
+   "marginal_por_casilla": "E01",
+   "porcentaje_mal": "E02"
+  },
+  "plantilla": "Tabla de contingencia: distribuciones marginales y porcentajes por fila"
+ },
+ "EST.BIDIM.03": {
+  "gen": "t6_regresion_uso",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "prediccion"
+   },
+   "2": {
+    "tipo": [
+     "pendiente",
+     "prediccion"
+    ]
+   },
+   "3": {
+    "tipo": [
+     "extrap",
+     "pendiente"
+    ]
+   }
+  },
+  "errores": {
+   "extrapola": "E01",
+   "sustituye_mal": "E02"
+  },
+  "plantilla": "Recta de regresión dada: predicción, interpretación de la pendiente y fiabilidad al extrapolar"
+ },
+ "EST.BIDIM.04": {
+  "gen": "t6_correlacion",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "r"
+   },
+   "2": {
+    "tipo": "covarianza"
+   },
+   "3": {
+    "tipo": [
+     "interpretar",
+     "covarianza"
+    ]
+   }
+  },
+  "errores": {
+   "olvida_medias": "E01",
+   "divide_varianzas": "E02",
+   "causalidad": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Covarianza σxy = Σxy/N − x̄ȳ, coeficiente r = σxy/(σxσy) e interpretación"
+ },
+ "EST.BIDIM.05": {
+  "gen": "t6_recta_regresion",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "pendiente"
+   },
+   "2": {
+    "tipo": [
+     "estimar",
+     "r2"
+    ]
+   },
+   "3": {
+    "tipo": [
+     "estimar_x",
+     "estimar"
+    ]
+   }
+  },
+  "errores": {
+   "usa_recta_yx_para_x": "E01",
+   "pendiente_r": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Rectas de regresión de y sobre x y de x sobre y a partir de los parámetros; R² = r²"
+ },
+ "EST.BIDIM.06": {
+  "gen": "t6_condicionadas_dep",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "porcentaje"
+   },
+   "2": {
+    "tipo": [
+     "dependencia",
+     "porcentaje"
+    ]
+   },
+   "3": {
+    "tipo": "dependencia"
+   }
+  },
+  "errores": {
+   "compara_absolutas": "E01",
+   "dependencia_causalidad": "E02"
+  },
+  "plantilla": "Distribuciones condicionadas (porcentajes por grupo) y dependencia estadística"
+ },
+ "EST.DISTR.01": {
+  "gen": "t6_va_discreta",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "falta"
+   },
+   "2": {
+    "tipo": "media"
+   },
+   "3": {
+    "tipo": [
+     "juego",
+     "sigma"
+    ]
+   }
+  },
+  "errores": {
+   "media_sin_ponderar": "E01",
+   "no_suma_uno": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Variable aleatoria discreta: completar la función de probabilidad, μ = Σxp, σ y juego justo"
+ },
+ "EST.DISTR.02": {
+  "gen": "t6_binomial",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "calculo"
+   },
+   "2": {
+    "tipo": "contexto"
+   },
+   "3": {
+    "tipo": [
+     "identificar",
+     "contexto",
+     "calculo"
+    ]
+   }
+  },
+  "errores": {
+   "olvida_combinatorio": "E01",
+   "exponentes_cambiados": "E02",
+   "sin_independencia": "E03"
+  },
+  "plantilla": "Binomial: identificarla y calcular P(X = k) = C(n,k)·p^k·q^(n−k)"
+ },
+ "EST.DISTR.03": {
+  "gen": "t6_binomial_acum",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "parametros"
+   },
+   "2": {
+    "tipo": "al_menos_uno"
+   },
+   "3": {
+    "tipo": [
+     "mayor",
+     "al_menos_uno"
+    ]
+   }
+  },
+  "errores": {
+   "al_menos_uno_mal": "E01",
+   "frontera_mal": "E02",
+   "sigma_npq": "E03"
+  },
+  "plantilla": "Binomial: σ = √(npq), P(X ≥ 1) = 1 − qⁿ y P(X > k) = 1 − P(X ≤ k)"
+ },
+ "EST.DISTR.04": {
+  "gen": "t6_normal_tabla",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": [
+     "menor",
+     "mayor"
+    ]
+   },
+   "2": {
+    "tipo": "negativo"
+   },
+   "3": {
+    "tipo": [
+     "intervalo",
+     "inversa"
+    ]
+   }
+  },
+  "errores": {
+   "mayor_leida_directa": "E01",
+   "negativo_mal": "E02"
+  },
+  "permitir_negativos": true,
+  "plantilla": "Tabla de N(0,1): P(Z ≤ a), P(Z ≥ a), valores negativos, intervalos y problema inverso"
+ },
+ "EST.DISTR.05": {
+  "gen": "t6_tipificar",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "z"
+   },
+   "2": {
+    "tipo": "prob"
+   },
+   "3": {
+    "tipo": [
+     "inversa",
+     "prob"
+    ]
+   }
+  },
+  "errores": {
+   "divide_varianza": "E01",
+   "no_resta_media": "E02",
+   "prob_como_z": "E03"
+  },
+  "permitir_negativos": true,
+  "plantilla": "N(μ,σ): tipificar, calcular probabilidades y problema inverso (valor que deja un porcentaje)"
+ },
+ "EST.DISTR.06": {
+  "gen": "t6_aprox_normal",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "parametros"
+   },
+   "2": {
+    "tipo": "menor"
+   },
+   "3": {
+    "tipo": "mayor"
+   }
+  },
+  "errores": {
+   "sin_correccion": "E01",
+   "correccion_al_reves": "E02",
+   "sigma_npq": "E03"
+  },
+  "plantilla": "Aproximación de B(n,p) por N(np, √(npq)) con corrección de continuidad"
+ },
+ "EST.INFER.02": {
+  "gen": "t6_muestreo",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": [
+     "tipo",
+     "estratificado"
+    ]
+   },
+   "2": {
+    "tipo": "estratificado"
+   },
+   "3": {
+    "tipo": [
+     "uno",
+     "estratificado"
+    ]
+   }
+  },
+  "errores": {
+   "reparto_igual": "E01",
+   "sistematico_por_simple": "E02"
+  },
+  "plantilla": "Tipos de muestreo y muestreo estratificado con afijación proporcional"
+ },
+ "EST.INFER.03": {
+  "gen": "t6_estimacion",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "proporcion"
+   },
+   "2": {
+    "tipo": [
+     "concepto",
+     "proporcion"
+    ]
+   },
+   "3": {
+    "tipo": "cuasi"
+   }
+  },
+  "errores": {
+   "parametro_estadistico": "E01",
+   "divide_n": "E02"
+  },
+  "plantilla": "Estimación puntual: proporción muestral, parámetro/estadístico y cuasidesviación típica"
+ },
+ "EST.INFER.04": {
+  "gen": "t6_media_muestral",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "error_tipico"
+   },
+   "2": {
+    "tipo": "prob"
+   },
+   "3": {
+    "tipo": "prob"
+   }
+  },
+  "errores": {
+   "usa_sigma": "E01",
+   "divide_n": "E02"
+  },
+  "plantilla": "Distribución de la media muestral N(μ, σ/√n) y probabilidades sobre x̄"
+ },
+ "EST.INFER.05": {
+  "gen": "t6_prop_muestral",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "sigma"
+   },
+   "2": {
+    "tipo": "prob"
+   },
+   "3": {
+    "tipo": "prob"
+   }
+  },
+  "errores": {
+   "sin_dividir_n": "E01",
+   "mezcla_recuentos": "E02"
+  },
+  "plantilla": "Distribución de la proporción muestral N(p, √(pq/n)) y probabilidades sobre p̂"
+ },
+ "EST.INFER.06": {
+  "gen": "t6_ic_media",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": [
+     "critico",
+     "intervalo"
+    ]
+   },
+   "2": {
+    "tipo": "intervalo"
+   },
+   "3": {
+    "tipo": [
+     "concepto",
+     "intervalo"
+    ]
+   }
+  },
+  "errores": {
+   "critico_mal": "E01",
+   "interpretacion_probabilistica": "E02",
+   "confianza_estrecha": "E03"
+  },
+  "plantilla": "Intervalo de confianza para μ con σ conocida: valor crítico, intervalo e interpretación"
+ },
+ "EST.INFER.07": {
+  "gen": "t6_ic_prop",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "margen"
+   },
+   "2": {
+    "tipo": "intervalo"
+   },
+   "3": {
+    "tipo": [
+     "compat",
+     "intervalo"
+    ]
+   }
+  },
+  "errores": {
+   "sin_dividir_n": "E01",
+   "porcentaje_por_proporcion": "E02"
+  },
+  "plantilla": "Intervalo de confianza para una proporción: margen, intervalo y compatibilidad de un valor"
+ },
+ "EST.INFER.08": {
+  "gen": "t6_tamano_muestra",
+  "kw": {},
+  "kw_por_dificultad": {
+   "1": {
+    "tipo": "error"
+   },
+   "2": {
+    "tipo": "n_media"
+   },
+   "3": {
+    "tipo": "n_prop"
+   }
+  },
+  "errores": {
+   "redondea_abajo": "E01",
+   "olvida_cuadrado": "E02"
+  },
+  "plantilla": "Error máximo admisible y tamaño mínimo de muestra (redondeando hacia arriba)"
+ }
+}

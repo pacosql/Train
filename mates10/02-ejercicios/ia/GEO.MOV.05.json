@@ -1,0 +1,1502 @@
+{
+ "habilidad": "GEO.MOV.05",
+ "generado_por": "claude (skill mates10-generar-ejercicios v1)",
+ "ejercicios": [
+  {
+   "dificultad": 1,
+   "enunciado": "¿Se puede cubrir el plano, sin huecos ni solapes, usando solo triángulos equiláteros iguales?",
+   "respuesta": "Sí: su ángulo mide 60° y 6 de ellos suman 360°",
+   "distractores": [
+    {
+     "valor": "No: su ángulo mide 60° y no divide a 360°",
+     "error": null
+    },
+    {
+     "valor": "Sí: cualquier polígono regular sirve",
+     "error": "E01"
+    },
+    {
+     "valor": "No: solo sirven los cuadrados",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.POLI.07"
+   ],
+   "explicacion_nino": "Ángulo interior del polígono regular de 3 lados: 180°·(3 − 2)/3 = 60°. En cada vértice del mosaico los ángulos deben sumar 360°: 360 : 60 = 6, un número entero: sí tesela.",
+   "explicacion_adulto": "Está aprendiendo cómo se construyen frisos (una franja que repite un motivo) y mosaicos (que cubren el plano sin huecos ni solapes). Un polígono regular solo cubre el plano él solo si su ángulo interior cabe un número exacto de veces en 360°: triángulo (60°), cuadrado (90°) y hexágono (120°). Los errores típicos son creer que cualquier polígono regular vale y confundir traslación con simetría. Pídale que calque el motivo y compruebe si basta con deslizarlo o hay que darle la vuelta.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "ángulo interior",
+     "resultado": "60°",
+     "texto": "180·(n − 2)/n"
+    },
+    {
+     "paso": 2,
+     "operacion": "dividir",
+     "resultado": "360 : 60",
+     "texto": "¿Da exacto?"
+    },
+    {
+     "paso": 3,
+     "operacion": "decidir",
+     "resultado": "sí",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "¿Se puede cubrir el plano, sin huecos ni solapes, usando solo cuadrados iguales?",
+   "respuesta": "Sí: su ángulo mide 90° y 4 de ellos suman 360°",
+   "distractores": [
+    {
+     "valor": "No: su ángulo mide 90° y no divide a 360°",
+     "error": null
+    },
+    {
+     "valor": "Sí: cualquier polígono regular sirve",
+     "error": "E01"
+    },
+    {
+     "valor": "No: solo sirven los cuadrados",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.POLI.07"
+   ],
+   "explicacion_nino": "Ángulo interior del polígono regular de 4 lados: 180°·(4 − 2)/4 = 90°. En cada vértice del mosaico los ángulos deben sumar 360°: 360 : 90 = 4, un número entero: sí tesela.",
+   "explicacion_adulto": "Está aprendiendo cómo se construyen frisos (una franja que repite un motivo) y mosaicos (que cubren el plano sin huecos ni solapes). Un polígono regular solo cubre el plano él solo si su ángulo interior cabe un número exacto de veces en 360°: triángulo (60°), cuadrado (90°) y hexágono (120°). Los errores típicos son creer que cualquier polígono regular vale y confundir traslación con simetría. Pídale que calque el motivo y compruebe si basta con deslizarlo o hay que darle la vuelta.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "ángulo interior",
+     "resultado": "90°",
+     "texto": "180·(n − 2)/n"
+    },
+    {
+     "paso": 2,
+     "operacion": "dividir",
+     "resultado": "360 : 90",
+     "texto": "¿Da exacto?"
+    },
+    {
+     "paso": 3,
+     "operacion": "decidir",
+     "resultado": "sí",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "¿Se puede cubrir el plano, sin huecos ni solapes, usando solo pentágonos regulares iguales?",
+   "respuesta": "No: su ángulo mide 108° y no cabe un número exacto de veces en 360°",
+   "distractores": [
+    {
+     "valor": "Sí: cualquier polígono regular sirve",
+     "error": "E01"
+    },
+    {
+     "valor": "Sí: caben 3 en cada vértice",
+     "error": "E01"
+    },
+    {
+     "valor": "Sí, si son suficientemente pequeños",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.POLI.07"
+   ],
+   "explicacion_nino": "Ángulo interior del polígono regular de 5 lados: 180°·(5 − 2)/5 = 108°. En cada vértice del mosaico los ángulos deben sumar 360°: 360 : 108 = 3,33, no es entero: quedan huecos o solapes.",
+   "explicacion_adulto": "Está aprendiendo cómo se construyen frisos (una franja que repite un motivo) y mosaicos (que cubren el plano sin huecos ni solapes). Un polígono regular solo cubre el plano él solo si su ángulo interior cabe un número exacto de veces en 360°: triángulo (60°), cuadrado (90°) y hexágono (120°). Los errores típicos son creer que cualquier polígono regular vale y confundir traslación con simetría. Pídale que calque el motivo y compruebe si basta con deslizarlo o hay que darle la vuelta.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "ángulo interior",
+     "resultado": "108°",
+     "texto": "180·(n − 2)/n"
+    },
+    {
+     "paso": 2,
+     "operacion": "dividir",
+     "resultado": "360 : 108",
+     "texto": "¿Da exacto?"
+    },
+    {
+     "paso": 3,
+     "operacion": "decidir",
+     "resultado": "no",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "¿Se puede cubrir el plano, sin huecos ni solapes, usando solo hexágonos regulares iguales?",
+   "respuesta": "Sí: su ángulo mide 120° y 3 de ellos suman 360°",
+   "distractores": [
+    {
+     "valor": "No: su ángulo mide 120° y no divide a 360°",
+     "error": null
+    },
+    {
+     "valor": "Sí: cualquier polígono regular sirve",
+     "error": "E01"
+    },
+    {
+     "valor": "No: solo sirven los cuadrados",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.POLI.07"
+   ],
+   "explicacion_nino": "Ángulo interior del polígono regular de 6 lados: 180°·(6 − 2)/6 = 120°. En cada vértice del mosaico los ángulos deben sumar 360°: 360 : 120 = 3, un número entero: sí tesela.",
+   "explicacion_adulto": "Está aprendiendo cómo se construyen frisos (una franja que repite un motivo) y mosaicos (que cubren el plano sin huecos ni solapes). Un polígono regular solo cubre el plano él solo si su ángulo interior cabe un número exacto de veces en 360°: triángulo (60°), cuadrado (90°) y hexágono (120°). Los errores típicos son creer que cualquier polígono regular vale y confundir traslación con simetría. Pídale que calque el motivo y compruebe si basta con deslizarlo o hay que darle la vuelta.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "ángulo interior",
+     "resultado": "120°",
+     "texto": "180·(n − 2)/n"
+    },
+    {
+     "paso": 2,
+     "operacion": "dividir",
+     "resultado": "360 : 120",
+     "texto": "¿Da exacto?"
+    },
+    {
+     "paso": 3,
+     "operacion": "decidir",
+     "resultado": "sí",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "¿Se puede cubrir el plano, sin huecos ni solapes, usando solo octógonos regulares iguales?",
+   "respuesta": "No: su ángulo mide 135° y no cabe un número exacto de veces en 360°",
+   "distractores": [
+    {
+     "valor": "Sí: cualquier polígono regular sirve",
+     "error": "E01"
+    },
+    {
+     "valor": "Sí: caben 2 en cada vértice",
+     "error": "E01"
+    },
+    {
+     "valor": "Sí, si son suficientemente pequeños",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.POLI.07"
+   ],
+   "explicacion_nino": "Ángulo interior del polígono regular de 8 lados: 180°·(8 − 2)/8 = 135°. En cada vértice del mosaico los ángulos deben sumar 360°: 360 : 135 = 2,67, no es entero: quedan huecos o solapes.",
+   "explicacion_adulto": "Está aprendiendo cómo se construyen frisos (una franja que repite un motivo) y mosaicos (que cubren el plano sin huecos ni solapes). Un polígono regular solo cubre el plano él solo si su ángulo interior cabe un número exacto de veces en 360°: triángulo (60°), cuadrado (90°) y hexágono (120°). Los errores típicos son creer que cualquier polígono regular vale y confundir traslación con simetría. Pídale que calque el motivo y compruebe si basta con deslizarlo o hay que darle la vuelta.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "ángulo interior",
+     "resultado": "135°",
+     "texto": "180·(n − 2)/n"
+    },
+    {
+     "paso": 2,
+     "operacion": "dividir",
+     "resultado": "360 : 135",
+     "texto": "¿Da exacto?"
+    },
+    {
+     "paso": 3,
+     "operacion": "decidir",
+     "resultado": "no",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "¿Se puede cubrir el plano, sin huecos ni solapes, usando solo decágonos regulares iguales?",
+   "respuesta": "No: su ángulo mide 144° y no cabe un número exacto de veces en 360°",
+   "distractores": [
+    {
+     "valor": "Sí: cualquier polígono regular sirve",
+     "error": "E01"
+    },
+    {
+     "valor": "Sí: caben 2 en cada vértice",
+     "error": "E01"
+    },
+    {
+     "valor": "Sí, si son suficientemente pequeños",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.POLI.07"
+   ],
+   "explicacion_nino": "Ángulo interior del polígono regular de 10 lados: 180°·(10 − 2)/10 = 144°. En cada vértice del mosaico los ángulos deben sumar 360°: 360 : 144 = 2,5, no es entero: quedan huecos o solapes.",
+   "explicacion_adulto": "Está aprendiendo cómo se construyen frisos (una franja que repite un motivo) y mosaicos (que cubren el plano sin huecos ni solapes). Un polígono regular solo cubre el plano él solo si su ángulo interior cabe un número exacto de veces en 360°: triángulo (60°), cuadrado (90°) y hexágono (120°). Los errores típicos son creer que cualquier polígono regular vale y confundir traslación con simetría. Pídale que calque el motivo y compruebe si basta con deslizarlo o hay que darle la vuelta.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "ángulo interior",
+     "resultado": "144°",
+     "texto": "180·(n − 2)/n"
+    },
+    {
+     "paso": 2,
+     "operacion": "dividir",
+     "resultado": "360 : 144",
+     "texto": "¿Da exacto?"
+    },
+    {
+     "paso": 3,
+     "operacion": "decidir",
+     "resultado": "no",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "¿Se puede cubrir el plano, sin huecos ni solapes, usando solo dodecágonos regulares iguales?",
+   "respuesta": "No: su ángulo mide 150° y no cabe un número exacto de veces en 360°",
+   "distractores": [
+    {
+     "valor": "Sí: cualquier polígono regular sirve",
+     "error": "E01"
+    },
+    {
+     "valor": "Sí: caben 2 en cada vértice",
+     "error": "E01"
+    },
+    {
+     "valor": "Sí, si son suficientemente pequeños",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.POLI.07"
+   ],
+   "explicacion_nino": "Ángulo interior del polígono regular de 12 lados: 180°·(12 − 2)/12 = 150°. En cada vértice del mosaico los ángulos deben sumar 360°: 360 : 150 = 2,4, no es entero: quedan huecos o solapes.",
+   "explicacion_adulto": "Está aprendiendo cómo se construyen frisos (una franja que repite un motivo) y mosaicos (que cubren el plano sin huecos ni solapes). Un polígono regular solo cubre el plano él solo si su ángulo interior cabe un número exacto de veces en 360°: triángulo (60°), cuadrado (90°) y hexágono (120°). Los errores típicos son creer que cualquier polígono regular vale y confundir traslación con simetría. Pídale que calque el motivo y compruebe si basta con deslizarlo o hay que darle la vuelta.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "ángulo interior",
+     "resultado": "150°",
+     "texto": "180·(n − 2)/n"
+    },
+    {
+     "paso": 2,
+     "operacion": "dividir",
+     "resultado": "360 : 150",
+     "texto": "¿Da exacto?"
+    },
+    {
+     "paso": 3,
+     "operacion": "decidir",
+     "resultado": "no",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "¿Se puede cubrir el plano, sin huecos ni solapes, usando solo heptágonos regulares iguales?",
+   "respuesta": "No: su ángulo mide 128,57° y no cabe un número exacto de veces en 360°",
+   "distractores": [
+    {
+     "valor": "Sí: cualquier polígono regular sirve",
+     "error": "E01"
+    },
+    {
+     "valor": "Sí: caben 2 en cada vértice",
+     "error": "E01"
+    },
+    {
+     "valor": "Sí, si son suficientemente pequeños",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.POLI.07"
+   ],
+   "explicacion_nino": "Ángulo interior del polígono regular de 7 lados: 180°·(7 − 2)/7 = 128,57°. En cada vértice del mosaico los ángulos deben sumar 360°: 360 : 128,57 = 2,8, no es entero: quedan huecos o solapes.",
+   "explicacion_adulto": "Está aprendiendo cómo se construyen frisos (una franja que repite un motivo) y mosaicos (que cubren el plano sin huecos ni solapes). Un polígono regular solo cubre el plano él solo si su ángulo interior cabe un número exacto de veces en 360°: triángulo (60°), cuadrado (90°) y hexágono (120°). Los errores típicos son creer que cualquier polígono regular vale y confundir traslación con simetría. Pídale que calque el motivo y compruebe si basta con deslizarlo o hay que darle la vuelta.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "ángulo interior",
+     "resultado": "128,57°",
+     "texto": "180·(n − 2)/n"
+    },
+    {
+     "paso": 2,
+     "operacion": "dividir",
+     "resultado": "360 : 128,57",
+     "texto": "¿Da exacto?"
+    },
+    {
+     "paso": 3,
+     "operacion": "decidir",
+     "resultado": "no",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "¿Se puede cubrir el plano, sin huecos ni solapes, usando solo eneágonos regulares iguales?",
+   "respuesta": "No: su ángulo mide 140° y no cabe un número exacto de veces en 360°",
+   "distractores": [
+    {
+     "valor": "Sí: cualquier polígono regular sirve",
+     "error": "E01"
+    },
+    {
+     "valor": "Sí: caben 2 en cada vértice",
+     "error": "E01"
+    },
+    {
+     "valor": "Sí, si son suficientemente pequeños",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.POLI.07"
+   ],
+   "explicacion_nino": "Ángulo interior del polígono regular de 9 lados: 180°·(9 − 2)/9 = 140°. En cada vértice del mosaico los ángulos deben sumar 360°: 360 : 140 = 2,57, no es entero: quedan huecos o solapes.",
+   "explicacion_adulto": "Está aprendiendo cómo se construyen frisos (una franja que repite un motivo) y mosaicos (que cubren el plano sin huecos ni solapes). Un polígono regular solo cubre el plano él solo si su ángulo interior cabe un número exacto de veces en 360°: triángulo (60°), cuadrado (90°) y hexágono (120°). Los errores típicos son creer que cualquier polígono regular vale y confundir traslación con simetría. Pídale que calque el motivo y compruebe si basta con deslizarlo o hay que darle la vuelta.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "ángulo interior",
+     "resultado": "140°",
+     "texto": "180·(n − 2)/n"
+    },
+    {
+     "paso": 2,
+     "operacion": "dividir",
+     "resultado": "360 : 140",
+     "texto": "¿Da exacto?"
+    },
+    {
+     "paso": 3,
+     "operacion": "decidir",
+     "resultado": "no",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En un mosaico hecho solo con triángulos equiláteros, ¿cuántos se juntan en cada vértice?",
+   "respuesta": "6",
+   "distractores": [
+    {
+     "valor": "3",
+     "error": null
+    },
+    {
+     "valor": "7",
+     "error": null
+    },
+    {
+     "valor": "5",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "360 : 60",
+   "secundarias": [],
+   "explicacion_nino": "Cada ángulo de estos polígonos mide 60°; alrededor de un vértice hay 360°: 360 : 60 = 6.",
+   "explicacion_adulto": "Está aprendiendo cómo se construyen frisos (una franja que repite un motivo) y mosaicos (que cubren el plano sin huecos ni solapes). Un polígono regular solo cubre el plano él solo si su ángulo interior cabe un número exacto de veces en 360°: triángulo (60°), cuadrado (90°) y hexágono (120°). Los errores típicos son creer que cualquier polígono regular vale y confundir traslación con simetría. Pídale que calque el motivo y compruebe si basta con deslizarlo o hay que darle la vuelta.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "ángulo",
+     "resultado": "60°",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "dividir",
+     "resultado": "360 : 60",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "resultado",
+     "resultado": "6",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Una pared está alicatada solo con cuadrados. ¿Cuántas piezas coinciden en cada vértice?",
+   "respuesta": "4",
+   "distractores": [
+    {
+     "valor": "5",
+     "error": null
+    },
+    {
+     "valor": "3",
+     "error": null
+    },
+    {
+     "valor": "8",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "360 : 90",
+   "secundarias": [],
+   "explicacion_nino": "Cada ángulo de estos polígonos mide 90°; alrededor de un vértice hay 360°: 360 : 90 = 4.",
+   "explicacion_adulto": "Está aprendiendo cómo se construyen frisos (una franja que repite un motivo) y mosaicos (que cubren el plano sin huecos ni solapes). Un polígono regular solo cubre el plano él solo si su ángulo interior cabe un número exacto de veces en 360°: triángulo (60°), cuadrado (90°) y hexágono (120°). Los errores típicos son creer que cualquier polígono regular vale y confundir traslación con simetría. Pídale que calque el motivo y compruebe si basta con deslizarlo o hay que darle la vuelta.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "ángulo",
+     "resultado": "90°",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "dividir",
+     "resultado": "360 : 90",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "resultado",
+     "resultado": "4",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Una pared está alicatada solo con hexágonos regulares. ¿Cuántas piezas coinciden en cada vértice?",
+   "respuesta": "3",
+   "distractores": [
+    {
+     "valor": "6",
+     "error": null
+    },
+    {
+     "valor": "4",
+     "error": null
+    },
+    {
+     "valor": "2",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "360 : 120",
+   "secundarias": [],
+   "explicacion_nino": "Cada ángulo de estos polígonos mide 120°; alrededor de un vértice hay 360°: 360 : 120 = 3.",
+   "explicacion_adulto": "Está aprendiendo cómo se construyen frisos (una franja que repite un motivo) y mosaicos (que cubren el plano sin huecos ni solapes). Un polígono regular solo cubre el plano él solo si su ángulo interior cabe un número exacto de veces en 360°: triángulo (60°), cuadrado (90°) y hexágono (120°). Los errores típicos son creer que cualquier polígono regular vale y confundir traslación con simetría. Pídale que calque el motivo y compruebe si basta con deslizarlo o hay que darle la vuelta.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "ángulo",
+     "resultado": "120°",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "dividir",
+     "resultado": "360 : 120",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "resultado",
+     "resultado": "3",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Una pared está alicatada solo con triángulos equiláteros. ¿Cuántas piezas coinciden en cada vértice?",
+   "respuesta": "6",
+   "distractores": [
+    {
+     "valor": "3",
+     "error": null
+    },
+    {
+     "valor": "7",
+     "error": null
+    },
+    {
+     "valor": "5",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "360 : 60",
+   "secundarias": [],
+   "explicacion_nino": "Cada ángulo de estos polígonos mide 60°; alrededor de un vértice hay 360°: 360 : 60 = 6.",
+   "explicacion_adulto": "Está aprendiendo cómo se construyen frisos (una franja que repite un motivo) y mosaicos (que cubren el plano sin huecos ni solapes). Un polígono regular solo cubre el plano él solo si su ángulo interior cabe un número exacto de veces en 360°: triángulo (60°), cuadrado (90°) y hexágono (120°). Los errores típicos son creer que cualquier polígono regular vale y confundir traslación con simetría. Pídale que calque el motivo y compruebe si basta con deslizarlo o hay que darle la vuelta.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "ángulo",
+     "resultado": "60°",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "dividir",
+     "resultado": "360 : 60",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "resultado",
+     "resultado": "6",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En un mosaico hecho solo con hexágonos regulares, ¿cuántos se juntan en cada vértice?",
+   "respuesta": "3",
+   "distractores": [
+    {
+     "valor": "6",
+     "error": null
+    },
+    {
+     "valor": "4",
+     "error": null
+    },
+    {
+     "valor": "2",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "360 : 120",
+   "secundarias": [],
+   "explicacion_nino": "Cada ángulo de estos polígonos mide 120°; alrededor de un vértice hay 360°: 360 : 120 = 3.",
+   "explicacion_adulto": "Está aprendiendo cómo se construyen frisos (una franja que repite un motivo) y mosaicos (que cubren el plano sin huecos ni solapes). Un polígono regular solo cubre el plano él solo si su ángulo interior cabe un número exacto de veces en 360°: triángulo (60°), cuadrado (90°) y hexágono (120°). Los errores típicos son creer que cualquier polígono regular vale y confundir traslación con simetría. Pídale que calque el motivo y compruebe si basta con deslizarlo o hay que darle la vuelta.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "ángulo",
+     "resultado": "120°",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "dividir",
+     "resultado": "360 : 120",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "resultado",
+     "resultado": "3",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En un mosaico hecho solo con cuadrados, ¿cuántos se juntan en cada vértice?",
+   "respuesta": "4",
+   "distractores": [
+    {
+     "valor": "5",
+     "error": null
+    },
+    {
+     "valor": "3",
+     "error": null
+    },
+    {
+     "valor": "8",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "360 : 90",
+   "secundarias": [],
+   "explicacion_nino": "Cada ángulo de estos polígonos mide 90°; alrededor de un vértice hay 360°: 360 : 90 = 4.",
+   "explicacion_adulto": "Está aprendiendo cómo se construyen frisos (una franja que repite un motivo) y mosaicos (que cubren el plano sin huecos ni solapes). Un polígono regular solo cubre el plano él solo si su ángulo interior cabe un número exacto de veces en 360°: triángulo (60°), cuadrado (90°) y hexágono (120°). Los errores típicos son creer que cualquier polígono regular vale y confundir traslación con simetría. Pídale que calque el motivo y compruebe si basta con deslizarlo o hay que darle la vuelta.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "ángulo",
+     "resultado": "90°",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "dividir",
+     "resultado": "360 : 90",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "resultado",
+     "resultado": "4",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Este friso repite un motivo:\nb d b d b d b d\n¿Qué movimiento transforma cada motivo en el siguiente (o el de arriba en el de abajo)?",
+   "respuesta": "Una simetría de eje vertical (y traslación)",
+   "distractores": [
+    {
+     "valor": "Solo una traslación",
+     "error": "E02"
+    },
+    {
+     "valor": "Un giro de 180°",
+     "error": null
+    },
+    {
+     "valor": "Una simetría de eje horizontal",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.MOV.01",
+    "GEO.MOV.02",
+    "GEO.MOV.04"
+   ],
+   "explicacion_nino": "Compara un motivo con el siguiente: si es idéntico y solo se ha deslizado, es una traslación; si está 'dado la vuelta' como en un espejo, es una simetría (mira dónde estaría el espejo); si está cabeza abajo sin espejo, es un giro de 180°. Aquí: una simetría de eje vertical (y traslación).",
+   "explicacion_adulto": "Está aprendiendo cómo se construyen frisos (una franja que repite un motivo) y mosaicos (que cubren el plano sin huecos ni solapes). Un polígono regular solo cubre el plano él solo si su ángulo interior cabe un número exacto de veces en 360°: triángulo (60°), cuadrado (90°) y hexágono (120°). Los errores típicos son creer que cualquier polígono regular vale y confundir traslación con simetría. Pídale que calque el motivo y compruebe si basta con deslizarlo o hay que darle la vuelta.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "comparar",
+     "resultado": "motivo y siguiente",
+     "texto": "¿Igual, reflejado o girado?"
+    },
+    {
+     "paso": 2,
+     "operacion": "movimiento",
+     "resultado": "Una simetría de eje vertical (y traslación)",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Este friso repite un motivo:\nb q b q b q b q\n¿Qué movimiento transforma cada motivo en el siguiente (o el de arriba en el de abajo)?",
+   "respuesta": "Un giro de 180° (y traslación)",
+   "distractores": [
+    {
+     "valor": "Solo una traslación",
+     "error": "E02"
+    },
+    {
+     "valor": "Una simetría de eje vertical",
+     "error": "E02"
+    },
+    {
+     "valor": "Una simetría de eje horizontal",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.MOV.01",
+    "GEO.MOV.02",
+    "GEO.MOV.04"
+   ],
+   "explicacion_nino": "Compara un motivo con el siguiente: si es idéntico y solo se ha deslizado, es una traslación; si está 'dado la vuelta' como en un espejo, es una simetría (mira dónde estaría el espejo); si está cabeza abajo sin espejo, es un giro de 180°. Aquí: un giro de 180° (y traslación).",
+   "explicacion_adulto": "Está aprendiendo cómo se construyen frisos (una franja que repite un motivo) y mosaicos (que cubren el plano sin huecos ni solapes). Un polígono regular solo cubre el plano él solo si su ángulo interior cabe un número exacto de veces en 360°: triángulo (60°), cuadrado (90°) y hexágono (120°). Los errores típicos son creer que cualquier polígono regular vale y confundir traslación con simetría. Pídale que calque el motivo y compruebe si basta con deslizarlo o hay que darle la vuelta.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "comparar",
+     "resultado": "motivo y siguiente",
+     "texto": "¿Igual, reflejado o girado?"
+    },
+    {
+     "paso": 2,
+     "operacion": "movimiento",
+     "resultado": "Un giro de 180° (y traslación)",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Este friso repite un motivo:\nb b b b b b\np p p p p p\n¿Qué movimiento transforma cada motivo en el siguiente (o el de arriba en el de abajo)?",
+   "respuesta": "Una simetría de eje horizontal (y traslación)",
+   "distractores": [
+    {
+     "valor": "Solo una traslación",
+     "error": "E02"
+    },
+    {
+     "valor": "Un giro de 90°",
+     "error": null
+    },
+    {
+     "valor": "Una simetría de eje vertical",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.MOV.01",
+    "GEO.MOV.02",
+    "GEO.MOV.04"
+   ],
+   "explicacion_nino": "Compara un motivo con el siguiente: si es idéntico y solo se ha deslizado, es una traslación; si está 'dado la vuelta' como en un espejo, es una simetría (mira dónde estaría el espejo); si está cabeza abajo sin espejo, es un giro de 180°. Aquí: una simetría de eje horizontal (y traslación).",
+   "explicacion_adulto": "Está aprendiendo cómo se construyen frisos (una franja que repite un motivo) y mosaicos (que cubren el plano sin huecos ni solapes). Un polígono regular solo cubre el plano él solo si su ángulo interior cabe un número exacto de veces en 360°: triángulo (60°), cuadrado (90°) y hexágono (120°). Los errores típicos son creer que cualquier polígono regular vale y confundir traslación con simetría. Pídale que calque el motivo y compruebe si basta con deslizarlo o hay que darle la vuelta.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "comparar",
+     "resultado": "motivo y siguiente",
+     "texto": "¿Igual, reflejado o girado?"
+    },
+    {
+     "paso": 2,
+     "operacion": "movimiento",
+     "resultado": "Una simetría de eje horizontal (y traslación)",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Este friso repite un motivo:\n▶ ▶ ▶ ▶ ▶ ▶ ▶\n¿Qué movimiento transforma cada motivo en el siguiente (o el de arriba en el de abajo)?",
+   "respuesta": "Una traslación",
+   "distractores": [
+    {
+     "valor": "Una simetría de eje vertical",
+     "error": "E02"
+    },
+    {
+     "valor": "Un giro de 90°",
+     "error": null
+    },
+    {
+     "valor": "Una simetría de eje horizontal",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.MOV.01",
+    "GEO.MOV.02",
+    "GEO.MOV.04"
+   ],
+   "explicacion_nino": "Compara un motivo con el siguiente: si es idéntico y solo se ha deslizado, es una traslación; si está 'dado la vuelta' como en un espejo, es una simetría (mira dónde estaría el espejo); si está cabeza abajo sin espejo, es un giro de 180°. Aquí: una traslación.",
+   "explicacion_adulto": "Está aprendiendo cómo se construyen frisos (una franja que repite un motivo) y mosaicos (que cubren el plano sin huecos ni solapes). Un polígono regular solo cubre el plano él solo si su ángulo interior cabe un número exacto de veces en 360°: triángulo (60°), cuadrado (90°) y hexágono (120°). Los errores típicos son creer que cualquier polígono regular vale y confundir traslación con simetría. Pídale que calque el motivo y compruebe si basta con deslizarlo o hay que darle la vuelta.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "comparar",
+     "resultado": "motivo y siguiente",
+     "texto": "¿Igual, reflejado o girado?"
+    },
+    {
+     "paso": 2,
+     "operacion": "movimiento",
+     "resultado": "Una traslación",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Este friso repite un motivo:\n▶◀ ▶◀ ▶◀ ▶◀ ▶◀\n¿Qué movimiento transforma cada motivo en el siguiente (o el de arriba en el de abajo)?",
+   "respuesta": "Una simetría de eje vertical (y traslación)",
+   "distractores": [
+    {
+     "valor": "Solo una traslación",
+     "error": "E02"
+    },
+    {
+     "valor": "Un giro de 90°",
+     "error": null
+    },
+    {
+     "valor": "Una simetría de eje horizontal",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.MOV.01",
+    "GEO.MOV.02",
+    "GEO.MOV.04"
+   ],
+   "explicacion_nino": "Compara un motivo con el siguiente: si es idéntico y solo se ha deslizado, es una traslación; si está 'dado la vuelta' como en un espejo, es una simetría (mira dónde estaría el espejo); si está cabeza abajo sin espejo, es un giro de 180°. Aquí: una simetría de eje vertical (y traslación).",
+   "explicacion_adulto": "Está aprendiendo cómo se construyen frisos (una franja que repite un motivo) y mosaicos (que cubren el plano sin huecos ni solapes). Un polígono regular solo cubre el plano él solo si su ángulo interior cabe un número exacto de veces en 360°: triángulo (60°), cuadrado (90°) y hexágono (120°). Los errores típicos son creer que cualquier polígono regular vale y confundir traslación con simetría. Pídale que calque el motivo y compruebe si basta con deslizarlo o hay que darle la vuelta.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "comparar",
+     "resultado": "motivo y siguiente",
+     "texto": "¿Igual, reflejado o girado?"
+    },
+    {
+     "paso": 2,
+     "operacion": "movimiento",
+     "resultado": "Una simetría de eje vertical (y traslación)",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Este friso repite un motivo:\n◢◣◢◣◢◣◢◣\n¿Qué movimiento transforma cada motivo en el siguiente (o el de arriba en el de abajo)?",
+   "respuesta": "Una simetría de eje vertical (y traslación)",
+   "distractores": [
+    {
+     "valor": "Solo una traslación",
+     "error": "E02"
+    },
+    {
+     "valor": "Un giro de 90°",
+     "error": null
+    },
+    {
+     "valor": "Una simetría de eje horizontal",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.MOV.01",
+    "GEO.MOV.02",
+    "GEO.MOV.04"
+   ],
+   "explicacion_nino": "Compara un motivo con el siguiente: si es idéntico y solo se ha deslizado, es una traslación; si está 'dado la vuelta' como en un espejo, es una simetría (mira dónde estaría el espejo); si está cabeza abajo sin espejo, es un giro de 180°. Aquí: una simetría de eje vertical (y traslación).",
+   "explicacion_adulto": "Está aprendiendo cómo se construyen frisos (una franja que repite un motivo) y mosaicos (que cubren el plano sin huecos ni solapes). Un polígono regular solo cubre el plano él solo si su ángulo interior cabe un número exacto de veces en 360°: triángulo (60°), cuadrado (90°) y hexágono (120°). Los errores típicos son creer que cualquier polígono regular vale y confundir traslación con simetría. Pídale que calque el motivo y compruebe si basta con deslizarlo o hay que darle la vuelta.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "comparar",
+     "resultado": "motivo y siguiente",
+     "texto": "¿Igual, reflejado o girado?"
+    },
+    {
+     "paso": 2,
+     "operacion": "movimiento",
+     "resultado": "Una simetría de eje vertical (y traslación)",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Este friso repite un motivo:\n◢◤◢◤◢◤◢◤\n¿Qué movimiento transforma cada motivo en el siguiente (o el de arriba en el de abajo)?",
+   "respuesta": "Un giro de 180° (y traslación)",
+   "distractores": [
+    {
+     "valor": "Una simetría de eje vertical",
+     "error": "E02"
+    },
+    {
+     "valor": "Solo una traslación",
+     "error": "E02"
+    },
+    {
+     "valor": "Un giro de 90°",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.MOV.01",
+    "GEO.MOV.02",
+    "GEO.MOV.04"
+   ],
+   "explicacion_nino": "Compara un motivo con el siguiente: si es idéntico y solo se ha deslizado, es una traslación; si está 'dado la vuelta' como en un espejo, es una simetría (mira dónde estaría el espejo); si está cabeza abajo sin espejo, es un giro de 180°. Aquí: un giro de 180° (y traslación).",
+   "explicacion_adulto": "Está aprendiendo cómo se construyen frisos (una franja que repite un motivo) y mosaicos (que cubren el plano sin huecos ni solapes). Un polígono regular solo cubre el plano él solo si su ángulo interior cabe un número exacto de veces en 360°: triángulo (60°), cuadrado (90°) y hexágono (120°). Los errores típicos son creer que cualquier polígono regular vale y confundir traslación con simetría. Pídale que calque el motivo y compruebe si basta con deslizarlo o hay que darle la vuelta.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "comparar",
+     "resultado": "motivo y siguiente",
+     "texto": "¿Igual, reflejado o girado?"
+    },
+    {
+     "paso": 2,
+     "operacion": "movimiento",
+     "resultado": "Un giro de 180° (y traslación)",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Este friso repite un motivo:\n◢◢◢◢◢◢◢◢\n◥◥◥◥◥◥◥◥\n¿Qué movimiento transforma cada motivo en el siguiente (o el de arriba en el de abajo)?",
+   "respuesta": "Una simetría de eje horizontal (y traslación)",
+   "distractores": [
+    {
+     "valor": "Solo una traslación",
+     "error": "E02"
+    },
+    {
+     "valor": "Una simetría de eje vertical",
+     "error": null
+    },
+    {
+     "valor": "Un giro de 90°",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.MOV.01",
+    "GEO.MOV.02",
+    "GEO.MOV.04"
+   ],
+   "explicacion_nino": "Compara un motivo con el siguiente: si es idéntico y solo se ha deslizado, es una traslación; si está 'dado la vuelta' como en un espejo, es una simetría (mira dónde estaría el espejo); si está cabeza abajo sin espejo, es un giro de 180°. Aquí: una simetría de eje horizontal (y traslación).",
+   "explicacion_adulto": "Está aprendiendo cómo se construyen frisos (una franja que repite un motivo) y mosaicos (que cubren el plano sin huecos ni solapes). Un polígono regular solo cubre el plano él solo si su ángulo interior cabe un número exacto de veces en 360°: triángulo (60°), cuadrado (90°) y hexágono (120°). Los errores típicos son creer que cualquier polígono regular vale y confundir traslación con simetría. Pídale que calque el motivo y compruebe si basta con deslizarlo o hay que darle la vuelta.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "comparar",
+     "resultado": "motivo y siguiente",
+     "texto": "¿Igual, reflejado o girado?"
+    },
+    {
+     "paso": 2,
+     "operacion": "movimiento",
+     "resultado": "Una simetría de eje horizontal (y traslación)",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Este friso repite un motivo:\n🐟 🐟 🐟 🐟 🐟 🐟\n¿Qué movimiento transforma cada motivo en el siguiente (o el de arriba en el de abajo)?",
+   "respuesta": "Una traslación",
+   "distractores": [
+    {
+     "valor": "Una simetría de eje vertical",
+     "error": "E02"
+    },
+    {
+     "valor": "Un giro de 180°",
+     "error": null
+    },
+    {
+     "valor": "Una simetría de eje horizontal",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.MOV.01",
+    "GEO.MOV.02",
+    "GEO.MOV.04"
+   ],
+   "explicacion_nino": "Compara un motivo con el siguiente: si es idéntico y solo se ha deslizado, es una traslación; si está 'dado la vuelta' como en un espejo, es una simetría (mira dónde estaría el espejo); si está cabeza abajo sin espejo, es un giro de 180°. Aquí: una traslación.",
+   "explicacion_adulto": "Está aprendiendo cómo se construyen frisos (una franja que repite un motivo) y mosaicos (que cubren el plano sin huecos ni solapes). Un polígono regular solo cubre el plano él solo si su ángulo interior cabe un número exacto de veces en 360°: triángulo (60°), cuadrado (90°) y hexágono (120°). Los errores típicos son creer que cualquier polígono regular vale y confundir traslación con simetría. Pídale que calque el motivo y compruebe si basta con deslizarlo o hay que darle la vuelta.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "comparar",
+     "resultado": "motivo y siguiente",
+     "texto": "¿Igual, reflejado o girado?"
+    },
+    {
+     "paso": 2,
+     "operacion": "movimiento",
+     "resultado": "Una traslación",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Queremos juntar alrededor de un mismo punto 2 octógonos regulares y 1 cuadrado, sin solaparlos. ¿Cuánto suman sus ángulos en ese punto?",
+   "respuesta": "360°",
+   "distractores": [
+    {
+     "valor": "225°",
+     "error": null
+    },
+    {
+     "valor": "180°",
+     "error": null
+    },
+    {
+     "valor": "390°",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "135 + 135 + 90",
+   "secundarias": [],
+   "explicacion_nino": "Suma los ángulos interiores: 135° + 135° + 90° = 360°. Suman 360°, así que encajan sin huecos.",
+   "explicacion_adulto": "Está aprendiendo cómo se construyen frisos (una franja que repite un motivo) y mosaicos (que cubren el plano sin huecos ni solapes). Un polígono regular solo cubre el plano él solo si su ángulo interior cabe un número exacto de veces en 360°: triángulo (60°), cuadrado (90°) y hexágono (120°). Los errores típicos son creer que cualquier polígono regular vale y confundir traslación con simetría. Pídale que calque el motivo y compruebe si basta con deslizarlo o hay que darle la vuelta.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "ángulos",
+     "resultado": "135°, 135°, 90°",
+     "texto": "Ángulo interior de cada polígono."
+    },
+    {
+     "paso": 2,
+     "operacion": "sumar",
+     "resultado": "360°",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "comparar",
+     "resultado": "360°",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Queremos juntar alrededor de un mismo punto 3 hexágonos regulares, sin solaparlos. ¿Cuánto suman sus ángulos en ese punto?",
+   "respuesta": "360°",
+   "distractores": [
+    {
+     "valor": "240°",
+     "error": null
+    },
+    {
+     "valor": "180°",
+     "error": null
+    },
+    {
+     "valor": "390°",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "120 + 120 + 120",
+   "secundarias": [],
+   "explicacion_nino": "Suma los ángulos interiores: 120° + 120° + 120° = 360°. Suman 360°, así que encajan sin huecos.",
+   "explicacion_adulto": "Está aprendiendo cómo se construyen frisos (una franja que repite un motivo) y mosaicos (que cubren el plano sin huecos ni solapes). Un polígono regular solo cubre el plano él solo si su ángulo interior cabe un número exacto de veces en 360°: triángulo (60°), cuadrado (90°) y hexágono (120°). Los errores típicos son creer que cualquier polígono regular vale y confundir traslación con simetría. Pídale que calque el motivo y compruebe si basta con deslizarlo o hay que darle la vuelta.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "ángulos",
+     "resultado": "120°, 120°, 120°",
+     "texto": "Ángulo interior de cada polígono."
+    },
+    {
+     "paso": 2,
+     "operacion": "sumar",
+     "resultado": "360°",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "comparar",
+     "resultado": "360°",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Queremos juntar alrededor de un mismo punto 3 pentágonos regulares, sin solaparlos. ¿Cuánto suman sus ángulos en ese punto?",
+   "respuesta": "324°",
+   "distractores": [
+    {
+     "valor": "360°",
+     "error": "E01"
+    },
+    {
+     "valor": "216°",
+     "error": null
+    },
+    {
+     "valor": "354°",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "108 + 108 + 108",
+   "secundarias": [],
+   "explicacion_nino": "Suma los ángulos interiores: 108° + 108° + 108° = 324°. No suman 360°: esa combinación deja un hueco o se solapa.",
+   "explicacion_adulto": "Está aprendiendo cómo se construyen frisos (una franja que repite un motivo) y mosaicos (que cubren el plano sin huecos ni solapes). Un polígono regular solo cubre el plano él solo si su ángulo interior cabe un número exacto de veces en 360°: triángulo (60°), cuadrado (90°) y hexágono (120°). Los errores típicos son creer que cualquier polígono regular vale y confundir traslación con simetría. Pídale que calque el motivo y compruebe si basta con deslizarlo o hay que darle la vuelta.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "ángulos",
+     "resultado": "108°, 108°, 108°",
+     "texto": "Ángulo interior de cada polígono."
+    },
+    {
+     "paso": 2,
+     "operacion": "sumar",
+     "resultado": "324°",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "comparar",
+     "resultado": "360°",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Queremos juntar alrededor de un mismo punto 6 triángulos equiláteros, sin solaparlos. ¿Cuánto suman sus ángulos en ese punto?",
+   "respuesta": "360°",
+   "distractores": [
+    {
+     "valor": "300°",
+     "error": null
+    },
+    {
+     "valor": "720°",
+     "error": null
+    },
+    {
+     "valor": "390°",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "60 + 60 + 60 + 60 + 60 + 60",
+   "secundarias": [],
+   "explicacion_nino": "Suma los ángulos interiores: 60° + 60° + 60° + 60° + 60° + 60° = 360°. Suman 360°, así que encajan sin huecos.",
+   "explicacion_adulto": "Está aprendiendo cómo se construyen frisos (una franja que repite un motivo) y mosaicos (que cubren el plano sin huecos ni solapes). Un polígono regular solo cubre el plano él solo si su ángulo interior cabe un número exacto de veces en 360°: triángulo (60°), cuadrado (90°) y hexágono (120°). Los errores típicos son creer que cualquier polígono regular vale y confundir traslación con simetría. Pídale que calque el motivo y compruebe si basta con deslizarlo o hay que darle la vuelta.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "ángulos",
+     "resultado": "60°, 60°, 60°, 60°, 60°, 60°",
+     "texto": "Ángulo interior de cada polígono."
+    },
+    {
+     "paso": 2,
+     "operacion": "sumar",
+     "resultado": "360°",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "comparar",
+     "resultado": "360°",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Queremos juntar alrededor de un mismo punto 2 triángulos equiláteros y 2 hexágonos regulares, sin solaparlos. ¿Cuánto suman sus ángulos en ese punto?",
+   "respuesta": "360°",
+   "distractores": [
+    {
+     "valor": "300°",
+     "error": null
+    },
+    {
+     "valor": "390°",
+     "error": null
+    },
+    {
+     "valor": "380°",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "60 + 120 + 60 + 120",
+   "secundarias": [],
+   "explicacion_nino": "Suma los ángulos interiores: 60° + 120° + 60° + 120° = 360°. Suman 360°, así que encajan sin huecos.",
+   "explicacion_adulto": "Está aprendiendo cómo se construyen frisos (una franja que repite un motivo) y mosaicos (que cubren el plano sin huecos ni solapes). Un polígono regular solo cubre el plano él solo si su ángulo interior cabe un número exacto de veces en 360°: triángulo (60°), cuadrado (90°) y hexágono (120°). Los errores típicos son creer que cualquier polígono regular vale y confundir traslación con simetría. Pídale que calque el motivo y compruebe si basta con deslizarlo o hay que darle la vuelta.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "ángulos",
+     "resultado": "60°, 120°, 60°, 120°",
+     "texto": "Ángulo interior de cada polígono."
+    },
+    {
+     "paso": 2,
+     "operacion": "sumar",
+     "resultado": "360°",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "comparar",
+     "resultado": "360°",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Queremos juntar alrededor de un mismo punto 4 cuadrados, sin solaparlos. ¿Cuánto suman sus ángulos en ese punto?",
+   "respuesta": "360°",
+   "distractores": [
+    {
+     "valor": "270°",
+     "error": null
+    },
+    {
+     "valor": "390°",
+     "error": null
+    },
+    {
+     "valor": "380°",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "90 + 90 + 90 + 90",
+   "secundarias": [],
+   "explicacion_nino": "Suma los ángulos interiores: 90° + 90° + 90° + 90° = 360°. Suman 360°, así que encajan sin huecos.",
+   "explicacion_adulto": "Está aprendiendo cómo se construyen frisos (una franja que repite un motivo) y mosaicos (que cubren el plano sin huecos ni solapes). Un polígono regular solo cubre el plano él solo si su ángulo interior cabe un número exacto de veces en 360°: triángulo (60°), cuadrado (90°) y hexágono (120°). Los errores típicos son creer que cualquier polígono regular vale y confundir traslación con simetría. Pídale que calque el motivo y compruebe si basta con deslizarlo o hay que darle la vuelta.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "ángulos",
+     "resultado": "90°, 90°, 90°, 90°",
+     "texto": "Ángulo interior de cada polígono."
+    },
+    {
+     "paso": 2,
+     "operacion": "sumar",
+     "resultado": "360°",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "comparar",
+     "resultado": "360°",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Queremos juntar alrededor de un mismo punto 2 dodecágonos regulares y 1 triángulo equilátero, sin solaparlos. ¿Cuánto suman sus ángulos en ese punto?",
+   "respuesta": "360°",
+   "distractores": [
+    {
+     "valor": "210°",
+     "error": null
+    },
+    {
+     "valor": "180°",
+     "error": null
+    },
+    {
+     "valor": "390°",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "150 + 150 + 60",
+   "secundarias": [],
+   "explicacion_nino": "Suma los ángulos interiores: 150° + 150° + 60° = 360°. Suman 360°, así que encajan sin huecos.",
+   "explicacion_adulto": "Está aprendiendo cómo se construyen frisos (una franja que repite un motivo) y mosaicos (que cubren el plano sin huecos ni solapes). Un polígono regular solo cubre el plano él solo si su ángulo interior cabe un número exacto de veces en 360°: triángulo (60°), cuadrado (90°) y hexágono (120°). Los errores típicos son creer que cualquier polígono regular vale y confundir traslación con simetría. Pídale que calque el motivo y compruebe si basta con deslizarlo o hay que darle la vuelta.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "ángulos",
+     "resultado": "150°, 150°, 60°",
+     "texto": "Ángulo interior de cada polígono."
+    },
+    {
+     "paso": 2,
+     "operacion": "sumar",
+     "resultado": "360°",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "comparar",
+     "resultado": "360°",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Queremos juntar alrededor de un mismo punto 2 pentágonos regulares y 1 decágono regular, sin solaparlos. ¿Cuánto suman sus ángulos en ese punto?",
+   "respuesta": "360°",
+   "distractores": [
+    {
+     "valor": "252°",
+     "error": null
+    },
+    {
+     "valor": "180°",
+     "error": null
+    },
+    {
+     "valor": "390°",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "108 + 108 + 144",
+   "secundarias": [],
+   "explicacion_nino": "Suma los ángulos interiores: 108° + 108° + 144° = 360°. Suman 360°, así que encajan sin huecos.",
+   "explicacion_adulto": "Está aprendiendo cómo se construyen frisos (una franja que repite un motivo) y mosaicos (que cubren el plano sin huecos ni solapes). Un polígono regular solo cubre el plano él solo si su ángulo interior cabe un número exacto de veces en 360°: triángulo (60°), cuadrado (90°) y hexágono (120°). Los errores típicos son creer que cualquier polígono regular vale y confundir traslación con simetría. Pídale que calque el motivo y compruebe si basta con deslizarlo o hay que darle la vuelta.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "ángulos",
+     "resultado": "108°, 108°, 144°",
+     "texto": "Ángulo interior de cada polígono."
+    },
+    {
+     "paso": 2,
+     "operacion": "sumar",
+     "resultado": "360°",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "comparar",
+     "resultado": "360°",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Queremos juntar alrededor de un mismo punto 2 heptágonos regulares y 1 triángulo equilátero, sin solaparlos. ¿Cuánto suman sus ángulos en ese punto?",
+   "respuesta": "317,14°",
+   "distractores": [
+    {
+     "valor": "360°",
+     "error": "E01"
+    },
+    {
+     "valor": "222,86°",
+     "error": null
+    },
+    {
+     "valor": "347,14°",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Suma los ángulos interiores: 128,57° + 128,57° + 60° = 317,14°. No suman 360°: esa combinación deja un hueco o se solapa.",
+   "explicacion_adulto": "Está aprendiendo cómo se construyen frisos (una franja que repite un motivo) y mosaicos (que cubren el plano sin huecos ni solapes). Un polígono regular solo cubre el plano él solo si su ángulo interior cabe un número exacto de veces en 360°: triángulo (60°), cuadrado (90°) y hexágono (120°). Los errores típicos son creer que cualquier polígono regular vale y confundir traslación con simetría. Pídale que calque el motivo y compruebe si basta con deslizarlo o hay que darle la vuelta.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "ángulos",
+     "resultado": "128,57°, 128,57°, 60°",
+     "texto": "Ángulo interior de cada polígono."
+    },
+    {
+     "paso": 2,
+     "operacion": "sumar",
+     "resultado": "317,14°",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "comparar",
+     "resultado": "360°",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Queremos juntar alrededor de un mismo punto 1 cuadrado, 1 hexágono regular y 1 dodecágono regular, sin solaparlos. ¿Cuánto suman sus ángulos en ese punto?",
+   "respuesta": "360°",
+   "distractores": [
+    {
+     "valor": "270°",
+     "error": null
+    },
+    {
+     "valor": "180°",
+     "error": null
+    },
+    {
+     "valor": "390°",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "90 + 120 + 150",
+   "secundarias": [],
+   "explicacion_nino": "Suma los ángulos interiores: 90° + 120° + 150° = 360°. Suman 360°, así que encajan sin huecos.",
+   "explicacion_adulto": "Está aprendiendo cómo se construyen frisos (una franja que repite un motivo) y mosaicos (que cubren el plano sin huecos ni solapes). Un polígono regular solo cubre el plano él solo si su ángulo interior cabe un número exacto de veces en 360°: triángulo (60°), cuadrado (90°) y hexágono (120°). Los errores típicos son creer que cualquier polígono regular vale y confundir traslación con simetría. Pídale que calque el motivo y compruebe si basta con deslizarlo o hay que darle la vuelta.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "ángulos",
+     "resultado": "90°, 120°, 150°",
+     "texto": "Ángulo interior de cada polígono."
+    },
+    {
+     "paso": 2,
+     "operacion": "sumar",
+     "resultado": "360°",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "comparar",
+     "resultado": "360°",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P04"
+  }
+ ]
+}

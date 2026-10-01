@@ -1,0 +1,1552 @@
+{
+ "habilidad": "PROB.FRAC.06",
+ "generado_por": "claude (skill mates10-generar-ejercicios v1)",
+ "ejercicios": [
+  {
+   "dificultad": 1,
+   "enunciado": "Marco tenía 45 €. Gastó 2/5 en un regalo y 1/3 de lo que le quedó en el cine. ¿Cuánto dinero le queda?",
+   "respuesta": "18 €",
+   "distractores": [
+    {
+     "valor": "12 €",
+     "error": "E01"
+    },
+    {
+     "valor": "27 €",
+     "error": "E03"
+    },
+    {
+     "valor": "9 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "45 × 3 : 5 × 2 : 3",
+   "secundarias": [
+    "NUM.FRAC.06"
+   ],
+   "explicacion_nino": "Entiende: la segunda fracción NO es del total, sino de lo que queda. Datos: 45; primero 2/5; después 1/3 del resto. 2/5 de 45 = 18; quedan 27. 1/3 de 27 = 9; quedan 18. Comprueba: 18 + 9 + 18 = 45.",
+   "explicacion_adulto": "Trabaja las fracciones sucesivas: cada fracción se aplica a una cantidad distinta. El error típico es tomar 1/3 del total (15) o sumar las fracciones directamente. Un modelo de barras donde se parte de nuevo el trozo que queda ayuda a verlo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "2/5 de 45",
+     "resultado": "18 €",
+     "texto": "Primer gasto."
+    },
+    {
+     "paso": 2,
+     "operacion": "45 − 18",
+     "resultado": "27 €",
+     "texto": "Lo que queda."
+    },
+    {
+     "paso": 3,
+     "operacion": "1/3 de 27",
+     "resultado": "9 €",
+     "texto": "Segundo gasto, sobre lo que quedaba."
+    },
+    {
+     "paso": 4,
+     "operacion": "27 − 9",
+     "resultado": "18 €",
+     "texto": "Lo que queda al final."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Candela tenía 96 €. Gastó 1/4 en un regalo y 1/6 de lo que le quedó en el cine. ¿Cuánto dinero le queda?",
+   "respuesta": "60 €",
+   "distractores": [
+    {
+     "valor": "56 €",
+     "error": "E01"
+    },
+    {
+     "valor": "36 €",
+     "error": "E03"
+    },
+    {
+     "valor": "72 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "96 × 3 : 4 × 5 : 6",
+   "secundarias": [
+    "NUM.FRAC.06"
+   ],
+   "explicacion_nino": "Entiende: la segunda fracción NO es del total, sino de lo que queda. Datos: 96; primero 1/4; después 1/6 del resto. 1/4 de 96 = 24; quedan 72. 1/6 de 72 = 12; quedan 60. Comprueba: 24 + 12 + 60 = 96.",
+   "explicacion_adulto": "Trabaja las fracciones sucesivas: cada fracción se aplica a una cantidad distinta. El error típico es tomar 1/6 del total (16) o sumar las fracciones directamente. Un modelo de barras donde se parte de nuevo el trozo que queda ayuda a verlo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1/4 de 96",
+     "resultado": "24 €",
+     "texto": "Primer gasto."
+    },
+    {
+     "paso": 2,
+     "operacion": "96 − 24",
+     "resultado": "72 €",
+     "texto": "Lo que queda."
+    },
+    {
+     "paso": 3,
+     "operacion": "1/6 de 72",
+     "resultado": "12 €",
+     "texto": "Segundo gasto, sobre lo que quedaba."
+    },
+    {
+     "paso": 4,
+     "operacion": "72 − 12",
+     "resultado": "60 €",
+     "texto": "Lo que queda al final."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Gonzalo tenía 80 €. Gastó 4/5 en un regalo y 3/4 de lo que le quedó en el cine. ¿Cuánto dinero le queda?",
+   "respuesta": "4 €",
+   "distractores": [
+    {
+     "valor": "76 €",
+     "error": "E03"
+    },
+    {
+     "valor": "16 €",
+     "error": null
+    },
+    {
+     "valor": "12 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "80 × 1 : 5 × 1 : 4",
+   "secundarias": [
+    "NUM.FRAC.06"
+   ],
+   "explicacion_nino": "Entiende: la segunda fracción NO es del total, sino de lo que queda. Datos: 80; primero 4/5; después 3/4 del resto. 4/5 de 80 = 64; quedan 16. 3/4 de 16 = 12; quedan 4. Comprueba: 64 + 12 + 4 = 80.",
+   "explicacion_adulto": "Trabaja las fracciones sucesivas: cada fracción se aplica a una cantidad distinta. El error típico es tomar 3/4 del total (60) o sumar las fracciones directamente. Un modelo de barras donde se parte de nuevo el trozo que queda ayuda a verlo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "4/5 de 80",
+     "resultado": "64 €",
+     "texto": "Primer gasto."
+    },
+    {
+     "paso": 2,
+     "operacion": "80 − 64",
+     "resultado": "16 €",
+     "texto": "Lo que queda."
+    },
+    {
+     "paso": 3,
+     "operacion": "3/4 de 16",
+     "resultado": "12 €",
+     "texto": "Segundo gasto, sobre lo que quedaba."
+    },
+    {
+     "paso": 4,
+     "operacion": "16 − 12",
+     "resultado": "4 €",
+     "texto": "Lo que queda al final."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un depósito tenía 120 litros de agua. El lunes se usó 2/5 y el martes 1/6 de lo que quedaba. ¿Cuántos litros quedan?",
+   "respuesta": "60 l",
+   "distractores": [
+    {
+     "valor": "52 l",
+     "error": "E01"
+    },
+    {
+     "valor": "72 l",
+     "error": null
+    },
+    {
+     "valor": "12 l",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "120 × 3 : 5 × 5 : 6",
+   "secundarias": [
+    "NUM.FRAC.06"
+   ],
+   "explicacion_nino": "Entiende: la segunda fracción NO es del total, sino de lo que queda. Datos: 120; primero 2/5; después 1/6 del resto. 2/5 de 120 = 48; quedan 72. 1/6 de 72 = 12; quedan 60. Comprueba: 48 + 12 + 60 = 120.",
+   "explicacion_adulto": "Trabaja las fracciones sucesivas: cada fracción se aplica a una cantidad distinta. El error típico es tomar 1/6 del total (20) o sumar las fracciones directamente. Un modelo de barras donde se parte de nuevo el trozo que queda ayuda a verlo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "2/5 de 120",
+     "resultado": "48 l",
+     "texto": "Primer gasto."
+    },
+    {
+     "paso": 2,
+     "operacion": "120 − 48",
+     "resultado": "72 l",
+     "texto": "Lo que queda."
+    },
+    {
+     "paso": 3,
+     "operacion": "1/6 de 72",
+     "resultado": "12 l",
+     "texto": "Segundo gasto, sobre lo que quedaba."
+    },
+    {
+     "paso": 4,
+     "operacion": "72 − 12",
+     "resultado": "60 l",
+     "texto": "Lo que queda al final."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Una panadería hizo 25 barras de pan. Por la mañana vendió 1/5 y por la tarde 4/5 de las que quedaban. ¿Cuántas barras le sobraron?",
+   "respuesta": "4",
+   "distractores": [
+    {
+     "valor": "21",
+     "error": "E03"
+    },
+    {
+     "valor": "20",
+     "error": null
+    },
+    {
+     "valor": "16",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "25 × 4 : 5 × 1 : 5",
+   "secundarias": [
+    "NUM.FRAC.06"
+   ],
+   "explicacion_nino": "Entiende: la segunda fracción NO es del total, sino de lo que queda. Datos: 25; primero 1/5; después 4/5 del resto. 1/5 de 25 = 5; quedan 20. 4/5 de 20 = 16; quedan 4. Comprueba: 5 + 16 + 4 = 25.",
+   "explicacion_adulto": "Trabaja las fracciones sucesivas: cada fracción se aplica a una cantidad distinta. El error típico es tomar 4/5 del total (20) o sumar las fracciones directamente. Un modelo de barras donde se parte de nuevo el trozo que queda ayuda a verlo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1/5 de 25",
+     "resultado": "5",
+     "texto": "Primer gasto."
+    },
+    {
+     "paso": 2,
+     "operacion": "25 − 5",
+     "resultado": "20",
+     "texto": "Lo que queda."
+    },
+    {
+     "paso": 3,
+     "operacion": "4/5 de 20",
+     "resultado": "16",
+     "texto": "Segundo gasto, sobre lo que quedaba."
+    },
+    {
+     "paso": 4,
+     "operacion": "20 − 16",
+     "resultado": "4",
+     "texto": "Lo que queda al final."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un depósito tenía 60 litros de agua. El lunes se usó 1/3 y el martes 3/5 de lo que quedaba. ¿Cuántos litros quedan?",
+   "respuesta": "16 l",
+   "distractores": [
+    {
+     "valor": "4 l",
+     "error": "E01"
+    },
+    {
+     "valor": "44 l",
+     "error": "E03"
+    },
+    {
+     "valor": "40 l",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "60 × 2 : 3 × 2 : 5",
+   "secundarias": [
+    "NUM.FRAC.06"
+   ],
+   "explicacion_nino": "Entiende: la segunda fracción NO es del total, sino de lo que queda. Datos: 60; primero 1/3; después 3/5 del resto. 1/3 de 60 = 20; quedan 40. 3/5 de 40 = 24; quedan 16. Comprueba: 20 + 24 + 16 = 60.",
+   "explicacion_adulto": "Trabaja las fracciones sucesivas: cada fracción se aplica a una cantidad distinta. El error típico es tomar 3/5 del total (36) o sumar las fracciones directamente. Un modelo de barras donde se parte de nuevo el trozo que queda ayuda a verlo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1/3 de 60",
+     "resultado": "20 l",
+     "texto": "Primer gasto."
+    },
+    {
+     "paso": 2,
+     "operacion": "60 − 20",
+     "resultado": "40 l",
+     "texto": "Lo que queda."
+    },
+    {
+     "paso": 3,
+     "operacion": "3/5 de 40",
+     "resultado": "24 l",
+     "texto": "Segundo gasto, sobre lo que quedaba."
+    },
+    {
+     "paso": 4,
+     "operacion": "40 − 24",
+     "resultado": "16 l",
+     "texto": "Lo que queda al final."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Ismael tenía 120 €. Gastó 4/5 en un regalo y 1/6 de lo que le quedó en el cine. ¿Cuánto dinero le queda?",
+   "respuesta": "20 €",
+   "distractores": [
+    {
+     "valor": "4 €",
+     "error": "E01"
+    },
+    {
+     "valor": "100 €",
+     "error": "E03"
+    },
+    {
+     "valor": "24 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "120 × 1 : 5 × 5 : 6",
+   "secundarias": [
+    "NUM.FRAC.06"
+   ],
+   "explicacion_nino": "Entiende: la segunda fracción NO es del total, sino de lo que queda. Datos: 120; primero 4/5; después 1/6 del resto. 4/5 de 120 = 96; quedan 24. 1/6 de 24 = 4; quedan 20. Comprueba: 96 + 4 + 20 = 120.",
+   "explicacion_adulto": "Trabaja las fracciones sucesivas: cada fracción se aplica a una cantidad distinta. El error típico es tomar 1/6 del total (20) o sumar las fracciones directamente. Un modelo de barras donde se parte de nuevo el trozo que queda ayuda a verlo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "4/5 de 120",
+     "resultado": "96 €",
+     "texto": "Primer gasto."
+    },
+    {
+     "paso": 2,
+     "operacion": "120 − 96",
+     "resultado": "24 €",
+     "texto": "Lo que queda."
+    },
+    {
+     "paso": 3,
+     "operacion": "1/6 de 24",
+     "resultado": "4 €",
+     "texto": "Segundo gasto, sobre lo que quedaba."
+    },
+    {
+     "paso": 4,
+     "operacion": "24 − 4",
+     "resultado": "20 €",
+     "texto": "Lo que queda al final."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un agricultor cosechó 75 kg de patatas. Vendió 3/5 en el mercado y 1/3 del resto a una cooperativa. ¿Cuántos kilos le quedan?",
+   "respuesta": "20 kg",
+   "distractores": [
+    {
+     "valor": "5 kg",
+     "error": "E01"
+    },
+    {
+     "valor": "55 kg",
+     "error": "E03"
+    },
+    {
+     "valor": "30 kg",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "75 × 2 : 5 × 2 : 3",
+   "secundarias": [
+    "NUM.FRAC.06"
+   ],
+   "explicacion_nino": "Entiende: la segunda fracción NO es del total, sino de lo que queda. Datos: 75; primero 3/5; después 1/3 del resto. 3/5 de 75 = 45; quedan 30. 1/3 de 30 = 10; quedan 20. Comprueba: 45 + 10 + 20 = 75.",
+   "explicacion_adulto": "Trabaja las fracciones sucesivas: cada fracción se aplica a una cantidad distinta. El error típico es tomar 1/3 del total (25) o sumar las fracciones directamente. Un modelo de barras donde se parte de nuevo el trozo que queda ayuda a verlo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "3/5 de 75",
+     "resultado": "45 kg",
+     "texto": "Primer gasto."
+    },
+    {
+     "paso": 2,
+     "operacion": "75 − 45",
+     "resultado": "30 kg",
+     "texto": "Lo que queda."
+    },
+    {
+     "paso": 3,
+     "operacion": "1/3 de 30",
+     "resultado": "10 kg",
+     "texto": "Segundo gasto, sobre lo que quedaba."
+    },
+    {
+     "paso": 4,
+     "operacion": "30 − 10",
+     "resultado": "20 kg",
+     "texto": "Lo que queda al final."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Pablo tenía 84 €. Gastó 3/4 en un regalo y 1/3 de lo que le quedó en el cine. ¿Cuánto dinero le queda?",
+   "respuesta": "14 €",
+   "distractores": [
+    {
+     "valor": "70 €",
+     "error": "E03"
+    },
+    {
+     "valor": "21 €",
+     "error": null
+    },
+    {
+     "valor": "7 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "84 × 1 : 4 × 2 : 3",
+   "secundarias": [
+    "NUM.FRAC.06"
+   ],
+   "explicacion_nino": "Entiende: la segunda fracción NO es del total, sino de lo que queda. Datos: 84; primero 3/4; después 1/3 del resto. 3/4 de 84 = 63; quedan 21. 1/3 de 21 = 7; quedan 14. Comprueba: 63 + 7 + 14 = 84.",
+   "explicacion_adulto": "Trabaja las fracciones sucesivas: cada fracción se aplica a una cantidad distinta. El error típico es tomar 1/3 del total (28) o sumar las fracciones directamente. Un modelo de barras donde se parte de nuevo el trozo que queda ayuda a verlo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "3/4 de 84",
+     "resultado": "63 €",
+     "texto": "Primer gasto."
+    },
+    {
+     "paso": 2,
+     "operacion": "84 − 63",
+     "resultado": "21 €",
+     "texto": "Lo que queda."
+    },
+    {
+     "paso": 3,
+     "operacion": "1/3 de 21",
+     "resultado": "7 €",
+     "texto": "Segundo gasto, sobre lo que quedaba."
+    },
+    {
+     "paso": 4,
+     "operacion": "21 − 7",
+     "resultado": "14 €",
+     "texto": "Lo que queda al final."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Una panadería hizo 54 barras de pan. Por la mañana vendió 1/2 y por la tarde 2/3 de las que quedaban. ¿Cuántas barras le sobraron?",
+   "respuesta": "9",
+   "distractores": [
+    {
+     "valor": "45",
+     "error": "E03"
+    },
+    {
+     "valor": "27",
+     "error": null
+    },
+    {
+     "valor": "18",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "54 × 1 : 2 × 1 : 3",
+   "secundarias": [
+    "NUM.FRAC.06"
+   ],
+   "explicacion_nino": "Entiende: la segunda fracción NO es del total, sino de lo que queda. Datos: 54; primero 1/2; después 2/3 del resto. 1/2 de 54 = 27; quedan 27. 2/3 de 27 = 18; quedan 9. Comprueba: 27 + 18 + 9 = 54.",
+   "explicacion_adulto": "Trabaja las fracciones sucesivas: cada fracción se aplica a una cantidad distinta. El error típico es tomar 2/3 del total (36) o sumar las fracciones directamente. Un modelo de barras donde se parte de nuevo el trozo que queda ayuda a verlo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1/2 de 54",
+     "resultado": "27",
+     "texto": "Primer gasto."
+    },
+    {
+     "paso": 2,
+     "operacion": "54 − 27",
+     "resultado": "27",
+     "texto": "Lo que queda."
+    },
+    {
+     "paso": 3,
+     "operacion": "2/3 de 27",
+     "resultado": "18",
+     "texto": "Segundo gasto, sobre lo que quedaba."
+    },
+    {
+     "paso": 4,
+     "operacion": "27 − 18",
+     "resultado": "9",
+     "texto": "Lo que queda al final."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Aya tiene que leer un libro de 100 páginas. El sábado leyó 2/5 y el domingo 1/4 de lo que le faltaba. ¿Cuántas páginas le quedan por leer?",
+   "respuesta": "45",
+   "distractores": [
+    {
+     "valor": "35",
+     "error": "E01"
+    },
+    {
+     "valor": "55",
+     "error": "E03"
+    },
+    {
+     "valor": "60",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "100 × 3 : 5 × 3 : 4",
+   "secundarias": [
+    "NUM.FRAC.06"
+   ],
+   "explicacion_nino": "Entiende: la segunda fracción NO es del total, sino de lo que queda. Datos: 100; primero 2/5; después 1/4 del resto. 2/5 de 100 = 40; quedan 60. 1/4 de 60 = 15; quedan 45. Comprueba: 40 + 15 + 45 = 100.",
+   "explicacion_adulto": "Trabaja las fracciones sucesivas: cada fracción se aplica a una cantidad distinta. El error típico es tomar 1/4 del total (25) o sumar las fracciones directamente. Un modelo de barras donde se parte de nuevo el trozo que queda ayuda a verlo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "2/5 de 100",
+     "resultado": "40",
+     "texto": "Primer gasto."
+    },
+    {
+     "paso": 2,
+     "operacion": "100 − 40",
+     "resultado": "60",
+     "texto": "Lo que queda."
+    },
+    {
+     "paso": 3,
+     "operacion": "1/4 de 60",
+     "resultado": "15",
+     "texto": "Segundo gasto, sobre lo que quedaba."
+    },
+    {
+     "paso": 4,
+     "operacion": "60 − 15",
+     "resultado": "45",
+     "texto": "Lo que queda al final."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Una panadería hizo 50 barras de pan. Por la mañana vendió 1/5 y por la tarde 4/5 de las que quedaban. ¿Cuántas barras vendió por la tarde?",
+   "respuesta": "32",
+   "distractores": [
+    {
+     "valor": "40",
+     "error": "E01"
+    },
+    {
+     "valor": "8",
+     "error": null
+    },
+    {
+     "valor": "10",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "50 × 4 : 5 × 4 : 5",
+   "secundarias": [
+    "NUM.FRAC.06"
+   ],
+   "explicacion_nino": "Entiende: la segunda fracción NO es del total, sino de lo que queda. Datos: 50; primero 1/5; después 4/5 del resto. 1/5 de 50 = 10; quedan 40. 4/5 de 40 = 32; quedan 8. Comprueba: 10 + 32 + 8 = 50.",
+   "explicacion_adulto": "Trabaja las fracciones sucesivas: cada fracción se aplica a una cantidad distinta. El error típico es tomar 4/5 del total (40) o sumar las fracciones directamente. Un modelo de barras donde se parte de nuevo el trozo que queda ayuda a verlo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1/5 de 50",
+     "resultado": "10",
+     "texto": "Primer gasto."
+    },
+    {
+     "paso": 2,
+     "operacion": "50 − 10",
+     "resultado": "40",
+     "texto": "Lo que queda."
+    },
+    {
+     "paso": 3,
+     "operacion": "4/5 de 40",
+     "resultado": "32",
+     "texto": "Segundo gasto: fracción de lo que quedaba."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Una panadería hizo 60 barras de pan. Por la mañana vendió 2/5 y por la tarde 1/4 de las que quedaban. ¿Cuántas barras vendió por la tarde?",
+   "respuesta": "9",
+   "distractores": [
+    {
+     "valor": "15",
+     "error": "E01"
+    },
+    {
+     "valor": "27",
+     "error": null
+    },
+    {
+     "valor": "24",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "60 × 3 : 5 × 1 : 4",
+   "secundarias": [
+    "NUM.FRAC.06"
+   ],
+   "explicacion_nino": "Entiende: la segunda fracción NO es del total, sino de lo que queda. Datos: 60; primero 2/5; después 1/4 del resto. 2/5 de 60 = 24; quedan 36. 1/4 de 36 = 9; quedan 27. Comprueba: 24 + 9 + 27 = 60.",
+   "explicacion_adulto": "Trabaja las fracciones sucesivas: cada fracción se aplica a una cantidad distinta. El error típico es tomar 1/4 del total (15) o sumar las fracciones directamente. Un modelo de barras donde se parte de nuevo el trozo que queda ayuda a verlo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "2/5 de 60",
+     "resultado": "24",
+     "texto": "Primer gasto."
+    },
+    {
+     "paso": 2,
+     "operacion": "60 − 24",
+     "resultado": "36",
+     "texto": "Lo que queda."
+    },
+    {
+     "paso": 3,
+     "operacion": "1/4 de 36",
+     "resultado": "9",
+     "texto": "Segundo gasto: fracción de lo que quedaba."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un depósito tenía 60 litros de agua. El lunes se usó 1/3 y el martes 3/5 de lo que quedaba. ¿Cuántos litros se usaron el martes?",
+   "respuesta": "24 l",
+   "distractores": [
+    {
+     "valor": "36 l",
+     "error": "E01"
+    },
+    {
+     "valor": "16 l",
+     "error": null
+    },
+    {
+     "valor": "20 l",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "60 × 2 : 3 × 3 : 5",
+   "secundarias": [
+    "NUM.FRAC.06"
+   ],
+   "explicacion_nino": "Entiende: la segunda fracción NO es del total, sino de lo que queda. Datos: 60; primero 1/3; después 3/5 del resto. 1/3 de 60 = 20; quedan 40. 3/5 de 40 = 24; quedan 16. Comprueba: 20 + 24 + 16 = 60.",
+   "explicacion_adulto": "Trabaja las fracciones sucesivas: cada fracción se aplica a una cantidad distinta. El error típico es tomar 3/5 del total (36) o sumar las fracciones directamente. Un modelo de barras donde se parte de nuevo el trozo que queda ayuda a verlo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1/3 de 60",
+     "resultado": "20 l",
+     "texto": "Primer gasto."
+    },
+    {
+     "paso": 2,
+     "operacion": "60 − 20",
+     "resultado": "40 l",
+     "texto": "Lo que queda."
+    },
+    {
+     "paso": 3,
+     "operacion": "3/5 de 40",
+     "resultado": "24 l",
+     "texto": "Segundo gasto: fracción de lo que quedaba."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Ainhoa tiene que leer un libro de 25 páginas. El sábado leyó 1/5 y el domingo 4/5 de lo que le faltaba. ¿Cuántas páginas leyó el domingo?",
+   "respuesta": "16",
+   "distractores": [
+    {
+     "valor": "20",
+     "error": "E01"
+    },
+    {
+     "valor": "4",
+     "error": null
+    },
+    {
+     "valor": "5",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "25 × 4 : 5 × 4 : 5",
+   "secundarias": [
+    "NUM.FRAC.06"
+   ],
+   "explicacion_nino": "Entiende: la segunda fracción NO es del total, sino de lo que queda. Datos: 25; primero 1/5; después 4/5 del resto. 1/5 de 25 = 5; quedan 20. 4/5 de 20 = 16; quedan 4. Comprueba: 5 + 16 + 4 = 25.",
+   "explicacion_adulto": "Trabaja las fracciones sucesivas: cada fracción se aplica a una cantidad distinta. El error típico es tomar 4/5 del total (20) o sumar las fracciones directamente. Un modelo de barras donde se parte de nuevo el trozo que queda ayuda a verlo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1/5 de 25",
+     "resultado": "5",
+     "texto": "Primer gasto."
+    },
+    {
+     "paso": 2,
+     "operacion": "25 − 5",
+     "resultado": "20",
+     "texto": "Lo que queda."
+    },
+    {
+     "paso": 3,
+     "operacion": "4/5 de 20",
+     "resultado": "16",
+     "texto": "Segundo gasto: fracción de lo que quedaba."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Álvaro tiene que leer un libro de 75 páginas. El sábado leyó 3/5 y el domingo 4/5 de lo que le faltaba. ¿Cuántas páginas leyó el domingo?",
+   "respuesta": "24",
+   "distractores": [
+    {
+     "valor": "60",
+     "error": "E01"
+    },
+    {
+     "valor": "6",
+     "error": null
+    },
+    {
+     "valor": "45",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "75 × 2 : 5 × 4 : 5",
+   "secundarias": [
+    "NUM.FRAC.06"
+   ],
+   "explicacion_nino": "Entiende: la segunda fracción NO es del total, sino de lo que queda. Datos: 75; primero 3/5; después 4/5 del resto. 3/5 de 75 = 45; quedan 30. 4/5 de 30 = 24; quedan 6. Comprueba: 45 + 24 + 6 = 75.",
+   "explicacion_adulto": "Trabaja las fracciones sucesivas: cada fracción se aplica a una cantidad distinta. El error típico es tomar 4/5 del total (60) o sumar las fracciones directamente. Un modelo de barras donde se parte de nuevo el trozo que queda ayuda a verlo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "3/5 de 75",
+     "resultado": "45",
+     "texto": "Primer gasto."
+    },
+    {
+     "paso": 2,
+     "operacion": "75 − 45",
+     "resultado": "30",
+     "texto": "Lo que queda."
+    },
+    {
+     "paso": 3,
+     "operacion": "4/5 de 30",
+     "resultado": "24",
+     "texto": "Segundo gasto: fracción de lo que quedaba."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Una panadería hizo 120 barras de pan. Por la mañana vendió 2/5 y por la tarde 1/6 de las que quedaban. ¿Cuántas barras vendió por la tarde?",
+   "respuesta": "12",
+   "distractores": [
+    {
+     "valor": "20",
+     "error": "E01"
+    },
+    {
+     "valor": "60",
+     "error": null
+    },
+    {
+     "valor": "48",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "120 × 3 : 5 × 1 : 6",
+   "secundarias": [
+    "NUM.FRAC.06"
+   ],
+   "explicacion_nino": "Entiende: la segunda fracción NO es del total, sino de lo que queda. Datos: 120; primero 2/5; después 1/6 del resto. 2/5 de 120 = 48; quedan 72. 1/6 de 72 = 12; quedan 60. Comprueba: 48 + 12 + 60 = 120.",
+   "explicacion_adulto": "Trabaja las fracciones sucesivas: cada fracción se aplica a una cantidad distinta. El error típico es tomar 1/6 del total (20) o sumar las fracciones directamente. Un modelo de barras donde se parte de nuevo el trozo que queda ayuda a verlo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "2/5 de 120",
+     "resultado": "48",
+     "texto": "Primer gasto."
+    },
+    {
+     "paso": 2,
+     "operacion": "120 − 48",
+     "resultado": "72",
+     "texto": "Lo que queda."
+    },
+    {
+     "paso": 3,
+     "operacion": "1/6 de 72",
+     "resultado": "12",
+     "texto": "Segundo gasto: fracción de lo que quedaba."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Aya tenía 36 €. Gastó 1/6 en un regalo y 1/3 de lo que le quedó en el cine. ¿Cuánto gastó en el cine?",
+   "respuesta": "10 €",
+   "distractores": [
+    {
+     "valor": "12 €",
+     "error": "E01"
+    },
+    {
+     "valor": "20 €",
+     "error": null
+    },
+    {
+     "valor": "6 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "36 × 5 : 6 × 1 : 3",
+   "secundarias": [
+    "NUM.FRAC.06"
+   ],
+   "explicacion_nino": "Entiende: la segunda fracción NO es del total, sino de lo que queda. Datos: 36; primero 1/6; después 1/3 del resto. 1/6 de 36 = 6; quedan 30. 1/3 de 30 = 10; quedan 20. Comprueba: 6 + 10 + 20 = 36.",
+   "explicacion_adulto": "Trabaja las fracciones sucesivas: cada fracción se aplica a una cantidad distinta. El error típico es tomar 1/3 del total (12) o sumar las fracciones directamente. Un modelo de barras donde se parte de nuevo el trozo que queda ayuda a verlo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1/6 de 36",
+     "resultado": "6 €",
+     "texto": "Primer gasto."
+    },
+    {
+     "paso": 2,
+     "operacion": "36 − 6",
+     "resultado": "30 €",
+     "texto": "Lo que queda."
+    },
+    {
+     "paso": 3,
+     "operacion": "1/3 de 30",
+     "resultado": "10 €",
+     "texto": "Segundo gasto: fracción de lo que quedaba."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Elena tiene que leer un libro de 105 páginas. El sábado leyó 1/3 y el domingo 4/5 de lo que le faltaba. ¿Cuántas páginas leyó el domingo?",
+   "respuesta": "56",
+   "distractores": [
+    {
+     "valor": "84",
+     "error": "E01"
+    },
+    {
+     "valor": "14",
+     "error": null
+    },
+    {
+     "valor": "35",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "105 × 2 : 3 × 4 : 5",
+   "secundarias": [
+    "NUM.FRAC.06"
+   ],
+   "explicacion_nino": "Entiende: la segunda fracción NO es del total, sino de lo que queda. Datos: 105; primero 1/3; después 4/5 del resto. 1/3 de 105 = 35; quedan 70. 4/5 de 70 = 56; quedan 14. Comprueba: 35 + 56 + 14 = 105.",
+   "explicacion_adulto": "Trabaja las fracciones sucesivas: cada fracción se aplica a una cantidad distinta. El error típico es tomar 4/5 del total (84) o sumar las fracciones directamente. Un modelo de barras donde se parte de nuevo el trozo que queda ayuda a verlo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1/3 de 105",
+     "resultado": "35",
+     "texto": "Primer gasto."
+    },
+    {
+     "paso": 2,
+     "operacion": "105 − 35",
+     "resultado": "70",
+     "texto": "Lo que queda."
+    },
+    {
+     "paso": 3,
+     "operacion": "4/5 de 70",
+     "resultado": "56",
+     "texto": "Segundo gasto: fracción de lo que quedaba."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un depósito tenía 75 litros de agua. El lunes se usó 3/5 y el martes 4/5 de lo que quedaba. ¿Cuántos litros se usaron el martes?",
+   "respuesta": "24 l",
+   "distractores": [
+    {
+     "valor": "60 l",
+     "error": "E01"
+    },
+    {
+     "valor": "6 l",
+     "error": null
+    },
+    {
+     "valor": "45 l",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "75 × 2 : 5 × 4 : 5",
+   "secundarias": [
+    "NUM.FRAC.06"
+   ],
+   "explicacion_nino": "Entiende: la segunda fracción NO es del total, sino de lo que queda. Datos: 75; primero 3/5; después 4/5 del resto. 3/5 de 75 = 45; quedan 30. 4/5 de 30 = 24; quedan 6. Comprueba: 45 + 24 + 6 = 75.",
+   "explicacion_adulto": "Trabaja las fracciones sucesivas: cada fracción se aplica a una cantidad distinta. El error típico es tomar 4/5 del total (60) o sumar las fracciones directamente. Un modelo de barras donde se parte de nuevo el trozo que queda ayuda a verlo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "3/5 de 75",
+     "resultado": "45 l",
+     "texto": "Primer gasto."
+    },
+    {
+     "paso": 2,
+     "operacion": "75 − 45",
+     "resultado": "30 l",
+     "texto": "Lo que queda."
+    },
+    {
+     "paso": 3,
+     "operacion": "4/5 de 30",
+     "resultado": "24 l",
+     "texto": "Segundo gasto: fracción de lo que quedaba."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Dario gasta 1/5 de su sueldo en el alquiler y 1/6 de lo que le queda en comida. ¿Qué fracción del sueldo le queda?",
+   "respuesta": "2/3",
+   "distractores": [
+    {
+     "valor": "19/30",
+     "error": "E02"
+    },
+    {
+     "valor": "1/3",
+     "error": "E03"
+    },
+    {
+     "valor": "4/5",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(1 − 1/5) × (1 − 1/6)",
+   "secundarias": [
+    "NUM.FRAC.06",
+    "OPER.JERARQ.05"
+   ],
+   "explicacion_nino": "Entiende: tras la primera parte queda 4/5. La segunda se toma de ese resto, así que queda 5/6 de 4/5: 5/6 × 4/5 = 2/3. Comprueba con un total inventado, por ejemplo 30.",
+   "explicacion_adulto": "Pide la fracción final sin cantidades: hay que multiplicar las fracciones que quedan, (1 − 1/5) × (1 − 1/6). El error típico es restar las dos fracciones del total (19/30). Probar con un número concreto le ayuda a verlo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1 − 1/5",
+     "resultado": "4/5",
+     "texto": "Queda tras la primera."
+    },
+    {
+     "paso": 2,
+     "operacion": "1 − 1/6",
+     "resultado": "5/6",
+     "texto": "Se queda de ese resto."
+    },
+    {
+     "paso": 3,
+     "operacion": "(1 − 1/5) × (1 − 1/6)",
+     "resultado": "2/3",
+     "texto": "Fracción final."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Sofía gasta 2/5 de su sueldo en el alquiler y 1/6 de lo que le queda en comida. ¿Qué fracción del sueldo le queda?",
+   "respuesta": "1/2",
+   "distractores": [
+    {
+     "valor": "13/30",
+     "error": "E02"
+    },
+    {
+     "valor": "3/5",
+     "error": null
+    },
+    {
+     "valor": "1/10",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(1 − 2/5) × (1 − 1/6)",
+   "secundarias": [
+    "NUM.FRAC.06",
+    "OPER.JERARQ.05"
+   ],
+   "explicacion_nino": "Entiende: tras la primera parte queda 3/5. La segunda se toma de ese resto, así que queda 5/6 de 3/5: 5/6 × 3/5 = 1/2. Comprueba con un total inventado, por ejemplo 30.",
+   "explicacion_adulto": "Pide la fracción final sin cantidades: hay que multiplicar las fracciones que quedan, (1 − 2/5) × (1 − 1/6). El error típico es restar las dos fracciones del total (13/30). Probar con un número concreto le ayuda a verlo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1 − 2/5",
+     "resultado": "3/5",
+     "texto": "Queda tras la primera."
+    },
+    {
+     "paso": 2,
+     "operacion": "1 − 1/6",
+     "resultado": "5/6",
+     "texto": "Se queda de ese resto."
+    },
+    {
+     "paso": 3,
+     "operacion": "(1 − 2/5) × (1 − 1/6)",
+     "resultado": "1/2",
+     "texto": "Fracción final."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "De una pizza, Marcos se come 3/5 y su hermano 2/5 de lo que queda. ¿Qué fracción de la pizza sobra?",
+   "respuesta": "6/25",
+   "distractores": [
+    {
+     "valor": "19/25",
+     "error": "E03"
+    },
+    {
+     "valor": "2/5",
+     "error": null
+    },
+    {
+     "valor": "4/25",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(1 − 3/5) × (1 − 2/5)",
+   "secundarias": [
+    "NUM.FRAC.06",
+    "OPER.JERARQ.05"
+   ],
+   "explicacion_nino": "Entiende: tras la primera parte queda 2/5. La segunda se toma de ese resto, así que queda 3/5 de 2/5: 3/5 × 2/5 = 6/25. Comprueba con un total inventado, por ejemplo 25.",
+   "explicacion_adulto": "Pide la fracción final sin cantidades: hay que multiplicar las fracciones que quedan, (1 − 3/5) × (1 − 2/5). El error típico es restar las dos fracciones del total (0/1). Probar con un número concreto le ayuda a verlo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1 − 3/5",
+     "resultado": "2/5",
+     "texto": "Queda tras la primera."
+    },
+    {
+     "paso": 2,
+     "operacion": "1 − 2/5",
+     "resultado": "3/5",
+     "texto": "Se queda de ese resto."
+    },
+    {
+     "paso": 3,
+     "operacion": "(1 − 3/5) × (1 − 2/5)",
+     "resultado": "6/25",
+     "texto": "Fracción final."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Ainhoa gasta 2/5 de su sueldo en el alquiler y 1/6 de lo que le queda en comida. ¿Qué fracción del sueldo le queda?",
+   "respuesta": "1/2",
+   "distractores": [
+    {
+     "valor": "13/30",
+     "error": "E02"
+    },
+    {
+     "valor": "3/5",
+     "error": null
+    },
+    {
+     "valor": "1/10",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(1 − 2/5) × (1 − 1/6)",
+   "secundarias": [
+    "NUM.FRAC.06",
+    "OPER.JERARQ.05"
+   ],
+   "explicacion_nino": "Entiende: tras la primera parte queda 3/5. La segunda se toma de ese resto, así que queda 5/6 de 3/5: 5/6 × 3/5 = 1/2. Comprueba con un total inventado, por ejemplo 30.",
+   "explicacion_adulto": "Pide la fracción final sin cantidades: hay que multiplicar las fracciones que quedan, (1 − 2/5) × (1 − 1/6). El error típico es restar las dos fracciones del total (13/30). Probar con un número concreto le ayuda a verlo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1 − 2/5",
+     "resultado": "3/5",
+     "texto": "Queda tras la primera."
+    },
+    {
+     "paso": 2,
+     "operacion": "1 − 1/6",
+     "resultado": "5/6",
+     "texto": "Se queda de ese resto."
+    },
+    {
+     "paso": 3,
+     "operacion": "(1 − 2/5) × (1 − 1/6)",
+     "resultado": "1/2",
+     "texto": "Fracción final."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "De una pizza, Rocío se come 1/6 y su hermano 1/5 de lo que queda. ¿Qué fracción de la pizza sobra?",
+   "respuesta": "2/3",
+   "distractores": [
+    {
+     "valor": "19/30",
+     "error": "E02"
+    },
+    {
+     "valor": "1/3",
+     "error": "E03"
+    },
+    {
+     "valor": "5/6",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(1 − 1/6) × (1 − 1/5)",
+   "secundarias": [
+    "NUM.FRAC.06",
+    "OPER.JERARQ.05"
+   ],
+   "explicacion_nino": "Entiende: tras la primera parte queda 5/6. La segunda se toma de ese resto, así que queda 4/5 de 5/6: 4/5 × 5/6 = 2/3. Comprueba con un total inventado, por ejemplo 30.",
+   "explicacion_adulto": "Pide la fracción final sin cantidades: hay que multiplicar las fracciones que quedan, (1 − 1/6) × (1 − 1/5). El error típico es restar las dos fracciones del total (19/30). Probar con un número concreto le ayuda a verlo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1 − 1/6",
+     "resultado": "5/6",
+     "texto": "Queda tras la primera."
+    },
+    {
+     "paso": 2,
+     "operacion": "1 − 1/5",
+     "resultado": "4/5",
+     "texto": "Se queda de ese resto."
+    },
+    {
+     "paso": 3,
+     "operacion": "(1 − 1/6) × (1 − 1/5)",
+     "resultado": "2/3",
+     "texto": "Fracción final."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Olivia gasta 4/5 de su sueldo en el alquiler y 2/5 de lo que le queda en comida. ¿Qué fracción del sueldo le queda?",
+   "respuesta": "3/25",
+   "distractores": [
+    {
+     "valor": "22/25",
+     "error": "E03"
+    },
+    {
+     "valor": "1/5",
+     "error": null
+    },
+    {
+     "valor": "2/25",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(1 − 4/5) × (1 − 2/5)",
+   "secundarias": [
+    "NUM.FRAC.06",
+    "OPER.JERARQ.05"
+   ],
+   "explicacion_nino": "Entiende: tras la primera parte queda 1/5. La segunda se toma de ese resto, así que queda 3/5 de 1/5: 3/5 × 1/5 = 3/25. Comprueba con un total inventado, por ejemplo 25.",
+   "explicacion_adulto": "Pide la fracción final sin cantidades: hay que multiplicar las fracciones que quedan, (1 − 4/5) × (1 − 2/5). El error típico es restar las dos fracciones del total (-1/5). Probar con un número concreto le ayuda a verlo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1 − 4/5",
+     "resultado": "1/5",
+     "texto": "Queda tras la primera."
+    },
+    {
+     "paso": 2,
+     "operacion": "1 − 2/5",
+     "resultado": "3/5",
+     "texto": "Se queda de ese resto."
+    },
+    {
+     "paso": 3,
+     "operacion": "(1 − 4/5) × (1 − 2/5)",
+     "resultado": "3/25",
+     "texto": "Fracción final."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "De una pizza, Paula se come 1/5 y su hermano 3/5 de lo que queda. ¿Qué fracción de la pizza sobra?",
+   "respuesta": "8/25",
+   "distractores": [
+    {
+     "valor": "1/5",
+     "error": "E02"
+    },
+    {
+     "valor": "17/25",
+     "error": "E03"
+    },
+    {
+     "valor": "4/5",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(1 − 1/5) × (1 − 3/5)",
+   "secundarias": [
+    "NUM.FRAC.06",
+    "OPER.JERARQ.05"
+   ],
+   "explicacion_nino": "Entiende: tras la primera parte queda 4/5. La segunda se toma de ese resto, así que queda 2/5 de 4/5: 2/5 × 4/5 = 8/25. Comprueba con un total inventado, por ejemplo 25.",
+   "explicacion_adulto": "Pide la fracción final sin cantidades: hay que multiplicar las fracciones que quedan, (1 − 1/5) × (1 − 3/5). El error típico es restar las dos fracciones del total (1/5). Probar con un número concreto le ayuda a verlo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1 − 1/5",
+     "resultado": "4/5",
+     "texto": "Queda tras la primera."
+    },
+    {
+     "paso": 2,
+     "operacion": "1 − 3/5",
+     "resultado": "2/5",
+     "texto": "Se queda de ese resto."
+    },
+    {
+     "paso": 3,
+     "operacion": "(1 − 1/5) × (1 − 3/5)",
+     "resultado": "8/25",
+     "texto": "Fracción final."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "De una pizza, Sofía se come 1/3 y su hermano 4/5 de lo que queda. ¿Qué fracción de la pizza sobra?",
+   "respuesta": "2/15",
+   "distractores": [
+    {
+     "valor": "13/15",
+     "error": "E03"
+    },
+    {
+     "valor": "2/3",
+     "error": null
+    },
+    {
+     "valor": "8/15",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(1 − 1/3) × (1 − 4/5)",
+   "secundarias": [
+    "NUM.FRAC.06",
+    "OPER.JERARQ.05"
+   ],
+   "explicacion_nino": "Entiende: tras la primera parte queda 2/3. La segunda se toma de ese resto, así que queda 1/5 de 2/3: 1/5 × 2/3 = 2/15. Comprueba con un total inventado, por ejemplo 15.",
+   "explicacion_adulto": "Pide la fracción final sin cantidades: hay que multiplicar las fracciones que quedan, (1 − 1/3) × (1 − 4/5). El error típico es restar las dos fracciones del total (-2/15). Probar con un número concreto le ayuda a verlo.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "1 − 1/3",
+     "resultado": "2/3",
+     "texto": "Queda tras la primera."
+    },
+    {
+     "paso": 2,
+     "operacion": "1 − 4/5",
+     "resultado": "1/5",
+     "texto": "Se queda de ese resto."
+    },
+    {
+     "paso": 3,
+     "operacion": "(1 − 1/3) × (1 − 4/5)",
+     "resultado": "2/15",
+     "texto": "Fracción final."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un depósito de gasóleo tiene 100 litros. En enero se gasta 1/2, en febrero 1/5 de lo que queda y en marzo 2/5 de lo que quedaba entonces. ¿Cuántos litros quedan a final de marzo?",
+   "respuesta": "24 l",
+   "distractores": [
+    {
+     "valor": "76 l",
+     "error": "E03"
+    },
+    {
+     "valor": "40 l",
+     "error": null
+    },
+    {
+     "valor": "50 l",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "100 × 1 : 2 × 4 : 5 × 3 : 5",
+   "secundarias": [
+    "NUM.FRAC.06"
+   ],
+   "explicacion_nino": "Ve mes a mes, siempre sobre lo que queda: enero deja 50 l; febrero gasta 1/5 de 50 y deja 40 l; marzo gasta 2/5 de 40 y deja 24 l. Comprueba que en cada paso has usado lo que quedaba, no los 100 l del principio.",
+   "explicacion_adulto": "Encadena tres fracciones sucesivas; cada una actúa sobre un resto distinto. Anímele a hacer una tabla mes / gasto / queda.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "100 − 1/2 de 100",
+     "resultado": "50 l",
+     "texto": "Enero."
+    },
+    {
+     "paso": 2,
+     "operacion": "50 − 1/5 de 50",
+     "resultado": "40 l",
+     "texto": "Febrero."
+    },
+    {
+     "paso": 3,
+     "operacion": "40 − 2/5 de 40",
+     "resultado": "24 l",
+     "texto": "Marzo."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un depósito de gasóleo tiene 120 litros. En enero se gasta 1/4, en febrero 1/3 de lo que queda y en marzo 4/5 de lo que quedaba entonces. ¿Cuántos litros quedan a final de marzo?",
+   "respuesta": "12 l",
+   "distractores": [
+    {
+     "valor": "108 l",
+     "error": "E03"
+    },
+    {
+     "valor": "60 l",
+     "error": null
+    },
+    {
+     "valor": "90 l",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "120 × 3 : 4 × 2 : 3 × 1 : 5",
+   "secundarias": [
+    "NUM.FRAC.06"
+   ],
+   "explicacion_nino": "Ve mes a mes, siempre sobre lo que queda: enero deja 90 l; febrero gasta 1/3 de 90 y deja 60 l; marzo gasta 4/5 de 60 y deja 12 l. Comprueba que en cada paso has usado lo que quedaba, no los 120 l del principio.",
+   "explicacion_adulto": "Encadena tres fracciones sucesivas; cada una actúa sobre un resto distinto. Anímele a hacer una tabla mes / gasto / queda.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "120 − 1/4 de 120",
+     "resultado": "90 l",
+     "texto": "Enero."
+    },
+    {
+     "paso": 2,
+     "operacion": "90 − 1/3 de 90",
+     "resultado": "60 l",
+     "texto": "Febrero."
+    },
+    {
+     "paso": 3,
+     "operacion": "60 − 4/5 de 60",
+     "resultado": "12 l",
+     "texto": "Marzo."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un depósito de gasóleo tiene 150 litros. En enero se gasta 1/5, en febrero 4/5 de lo que queda y en marzo 1/6 de lo que quedaba entonces. ¿Cuántos litros quedan a final de marzo?",
+   "respuesta": "20 l",
+   "distractores": [
+    {
+     "valor": "130 l",
+     "error": "E03"
+    },
+    {
+     "valor": "24 l",
+     "error": null
+    },
+    {
+     "valor": "120 l",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "150 × 4 : 5 × 1 : 5 × 5 : 6",
+   "secundarias": [
+    "NUM.FRAC.06"
+   ],
+   "explicacion_nino": "Ve mes a mes, siempre sobre lo que queda: enero deja 120 l; febrero gasta 4/5 de 120 y deja 24 l; marzo gasta 1/6 de 24 y deja 20 l. Comprueba que en cada paso has usado lo que quedaba, no los 150 l del principio.",
+   "explicacion_adulto": "Encadena tres fracciones sucesivas; cada una actúa sobre un resto distinto. Anímele a hacer una tabla mes / gasto / queda.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "150 − 1/5 de 150",
+     "resultado": "120 l",
+     "texto": "Enero."
+    },
+    {
+     "paso": 2,
+     "operacion": "120 − 4/5 de 120",
+     "resultado": "24 l",
+     "texto": "Febrero."
+    },
+    {
+     "paso": 3,
+     "operacion": "24 − 1/6 de 24",
+     "resultado": "20 l",
+     "texto": "Marzo."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un depósito de gasóleo tiene 250 litros. En enero se gasta 1/5, en febrero 3/5 de lo que queda y en marzo 1/5 de lo que quedaba entonces. ¿Cuántos litros quedan a final de marzo?",
+   "respuesta": "64 l",
+   "distractores": [
+    {
+     "valor": "186 l",
+     "error": "E03"
+    },
+    {
+     "valor": "80 l",
+     "error": null
+    },
+    {
+     "valor": "200 l",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "250 × 4 : 5 × 2 : 5 × 4 : 5",
+   "secundarias": [
+    "NUM.FRAC.06"
+   ],
+   "explicacion_nino": "Ve mes a mes, siempre sobre lo que queda: enero deja 200 l; febrero gasta 3/5 de 200 y deja 80 l; marzo gasta 1/5 de 80 y deja 64 l. Comprueba que en cada paso has usado lo que quedaba, no los 250 l del principio.",
+   "explicacion_adulto": "Encadena tres fracciones sucesivas; cada una actúa sobre un resto distinto. Anímele a hacer una tabla mes / gasto / queda.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "250 − 1/5 de 250",
+     "resultado": "200 l",
+     "texto": "Enero."
+    },
+    {
+     "paso": 2,
+     "operacion": "200 − 3/5 de 200",
+     "resultado": "80 l",
+     "texto": "Febrero."
+    },
+    {
+     "paso": 3,
+     "operacion": "80 − 1/5 de 80",
+     "resultado": "64 l",
+     "texto": "Marzo."
+    }
+   ],
+   "plantilla": "P04"
+  }
+ ]
+}

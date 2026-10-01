@@ -1,0 +1,1176 @@
+{
+ "habilidad": "ALG.COMPUT.10",
+ "generado_por": "claude (skill mates10-generar-ejercicios v1)",
+ "ejercicios": [
+  {
+   "dificultad": 3,
+   "enunciado": "Algoritmo para saber si n es primo:\n1. Prueba los divisores d = 2, 3, … mientras d × d ≤ n.\n2. Si alguno divide a n, di «no primo».\n3. Si ninguno divide a n, di «primo».\n¿Con qué valor de n falla?",
+   "respuesta": "n = 1",
+   "distractores": [
+    {
+     "valor": "n = 9",
+     "error": "E01"
+    },
+    {
+     "valor": "n = 13",
+     "error": "E02"
+    },
+    {
+     "valor": "n = 25",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "ALG.COMPUT.08"
+   ],
+   "explicacion_nino": "Prueba el algoritmo con cada opción, paso a paso, y compara con la respuesta correcta. Con n = 1 no se prueba ningún divisor (2 × 2 > 1) y el algoritmo dice «primo», pero 1 no es primo. Con 9 y 25 encuentra el divisor 3 o 5, y 13 sí es primo.",
+   "explicacion_adulto": "Está aprendiendo a pensar como un programador que automatiza: un algoritmo general tiene que funcionar para TODOS los casos de la familia, no solo para el ejemplo con el que se probó. Errores típicos: darlo por bueno porque funciona con un caso y no probar los casos frontera (0, 1, números iguales, negativos). Pídele que busque activamente un caso que lo haga fallar, empezando por los valores extremos.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Ejecutar con cada dato",
+     "resultado": "",
+     "texto": "Sigue los pasos como lo haría el ordenador."
+    },
+    {
+     "paso": 2,
+     "operacion": "Comparar con lo correcto",
+     "resultado": "n = 1",
+     "texto": "Con n = 1 no se prueba ningún divisor (2 × 2 > 1) y el algoritmo dice «primo», pero 1 no es primo. Con 9 y 25 encuentra el divisor 3 o 5, y 13 sí es primo."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Algoritmo para saber si n es primo:\n1. Si n es impar, di «primo».\n2. Si no, di «no primo».\n¿Con qué valor de n falla?",
+   "respuesta": "n = 15",
+   "distractores": [
+    {
+     "valor": "n = 7",
+     "error": "E01"
+    },
+    {
+     "valor": "n = 4",
+     "error": "E02"
+    },
+    {
+     "valor": "n = 11",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "ALG.COMPUT.08"
+   ],
+   "explicacion_nino": "Prueba el algoritmo con cada opción, paso a paso, y compara con la respuesta correcta. 15 es impar y el algoritmo dice «primo», pero 15 = 3 × 5. Los otros casos salen bien por casualidad.",
+   "explicacion_adulto": "Está aprendiendo a pensar como un programador que automatiza: un algoritmo general tiene que funcionar para TODOS los casos de la familia, no solo para el ejemplo con el que se probó. Errores típicos: darlo por bueno porque funciona con un caso y no probar los casos frontera (0, 1, números iguales, negativos). Pídele que busque activamente un caso que lo haga fallar, empezando por los valores extremos.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Ejecutar con cada dato",
+     "resultado": "",
+     "texto": "Sigue los pasos como lo haría el ordenador."
+    },
+    {
+     "paso": 2,
+     "operacion": "Comparar con lo correcto",
+     "resultado": "n = 15",
+     "texto": "15 es impar y el algoritmo dice «primo», pero 15 = 3 × 5. Los otros casos salen bien por casualidad."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Algoritmo para el mayor de tres números a, b, c:\n1. Si a > b, mayor = a.\n2. Si no, mayor = b.\n3. Escribe mayor.\n¿Con qué datos falla?",
+   "respuesta": "a = 2, b = 4, c = 9",
+   "distractores": [
+    {
+     "valor": "a = 8, b = 3, c = 1",
+     "error": "E01"
+    },
+    {
+     "valor": "a = 1, b = 6, c = 5",
+     "error": "E02"
+    },
+    {
+     "valor": "a = 7, b = 2, c = 7",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "ALG.COMPUT.08"
+   ],
+   "explicacion_nino": "Prueba el algoritmo con cada opción, paso a paso, y compara con la respuesta correcta. El algoritmo nunca mira c. Falla cuando c es el mayor: con 2, 4, 9 escribe 4. En el caso 7, 2, 7 escribe 7, que también es el mayor.",
+   "explicacion_adulto": "Está aprendiendo a pensar como un programador que automatiza: un algoritmo general tiene que funcionar para TODOS los casos de la familia, no solo para el ejemplo con el que se probó. Errores típicos: darlo por bueno porque funciona con un caso y no probar los casos frontera (0, 1, números iguales, negativos). Pídele que busque activamente un caso que lo haga fallar, empezando por los valores extremos.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Ejecutar con cada dato",
+     "resultado": "",
+     "texto": "Sigue los pasos como lo haría el ordenador."
+    },
+    {
+     "paso": 2,
+     "operacion": "Comparar con lo correcto",
+     "resultado": "a = 2, b = 4, c = 9",
+     "texto": "El algoritmo nunca mira c. Falla cuando c es el mayor: con 2, 4, 9 escribe 4. En el caso 7, 2, 7 escribe 7, que también es el mayor."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Algoritmo para clasificar un triángulo por sus lados a, b, c:\n1. Si a = b y b = c: «equilátero».\n2. Si no, si a = b: «isósceles».\n3. Si no: «escaleno».\n¿Con qué lados falla?",
+   "respuesta": "a = 3, b = 5, c = 5",
+   "distractores": [
+    {
+     "valor": "a = 4, b = 4, c = 4",
+     "error": "E01"
+    },
+    {
+     "valor": "a = 6, b = 6, c = 2",
+     "error": "E02"
+    },
+    {
+     "valor": "a = 3, b = 4, c = 5",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "ALG.COMPUT.08"
+   ],
+   "explicacion_nino": "Prueba el algoritmo con cada opción, paso a paso, y compara con la respuesta correcta. Solo compara a con b. Si los lados iguales son b y c (3, 5, 5), dice «escaleno» aunque es isósceles.",
+   "explicacion_adulto": "Está aprendiendo a pensar como un programador que automatiza: un algoritmo general tiene que funcionar para TODOS los casos de la familia, no solo para el ejemplo con el que se probó. Errores típicos: darlo por bueno porque funciona con un caso y no probar los casos frontera (0, 1, números iguales, negativos). Pídele que busque activamente un caso que lo haga fallar, empezando por los valores extremos.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Ejecutar con cada dato",
+     "resultado": "",
+     "texto": "Sigue los pasos como lo haría el ordenador."
+    },
+    {
+     "paso": 2,
+     "operacion": "Comparar con lo correcto",
+     "resultado": "a = 3, b = 5, c = 5",
+     "texto": "Solo compara a con b. Si los lados iguales son b y c (3, 5, 5), dice «escaleno» aunque es isósceles."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Algoritmo para el máximo de una lista:\n1. máx = 0.\n2. Para cada número x de la lista: si x > máx, máx = x.\n3. Escribe máx.\n¿Con qué lista falla?",
+   "respuesta": "−5, −2, −8",
+   "distractores": [
+    {
+     "valor": "3, 9, 1",
+     "error": "E01"
+    },
+    {
+     "valor": "0, 4, 4",
+     "error": "E02"
+    },
+    {
+     "valor": "7, 7, 2",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "ALG.COMPUT.08"
+   ],
+   "explicacion_nino": "Prueba el algoritmo con cada opción, paso a paso, y compara con la respuesta correcta. Si todos son negativos, ninguno supera al 0 inicial y escribe 0, que ni siquiera está en la lista. Hay que empezar con máx = primer elemento.",
+   "explicacion_adulto": "Está aprendiendo a pensar como un programador que automatiza: un algoritmo general tiene que funcionar para TODOS los casos de la familia, no solo para el ejemplo con el que se probó. Errores típicos: darlo por bueno porque funciona con un caso y no probar los casos frontera (0, 1, números iguales, negativos). Pídele que busque activamente un caso que lo haga fallar, empezando por los valores extremos.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Ejecutar con cada dato",
+     "resultado": "",
+     "texto": "Sigue los pasos como lo haría el ordenador."
+    },
+    {
+     "paso": 2,
+     "operacion": "Comparar con lo correcto",
+     "resultado": "−5, −2, −8",
+     "texto": "Si todos son negativos, ninguno supera al 0 inicial y escribe 0, que ni siquiera está en la lista. Hay que empezar con máx = primer elemento."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Algoritmo para saber si un año es bisiesto:\n1. Si el año es divisible entre 4, di «bisiesto».\n2. Si no, di «no bisiesto».\n¿Con qué año falla?",
+   "respuesta": "1900",
+   "distractores": [
+    {
+     "valor": "2024",
+     "error": "E01"
+    },
+    {
+     "valor": "2023",
+     "error": "E02"
+    },
+    {
+     "valor": "2000",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "ALG.COMPUT.08"
+   ],
+   "explicacion_nino": "Prueba el algoritmo con cada opción, paso a paso, y compara con la respuesta correcta. 1900 es divisible entre 4 pero no es bisiesto: los años divisibles entre 100 solo lo son si también lo son entre 400 (como 2000).",
+   "explicacion_adulto": "Está aprendiendo a pensar como un programador que automatiza: un algoritmo general tiene que funcionar para TODOS los casos de la familia, no solo para el ejemplo con el que se probó. Errores típicos: darlo por bueno porque funciona con un caso y no probar los casos frontera (0, 1, números iguales, negativos). Pídele que busque activamente un caso que lo haga fallar, empezando por los valores extremos.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Ejecutar con cada dato",
+     "resultado": "",
+     "texto": "Sigue los pasos como lo haría el ordenador."
+    },
+    {
+     "paso": 2,
+     "operacion": "Comparar con lo correcto",
+     "resultado": "1900",
+     "texto": "1900 es divisible entre 4 pero no es bisiesto: los años divisibles entre 100 solo lo son si también lo son entre 400 (como 2000)."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Algoritmo para saber si un número entero es par:\n1. Mira su última cifra.\n2. Si es 2, 4, 6 u 8, di «par».\n3. Si no, di «impar».\n¿Con qué número falla?",
+   "respuesta": "30",
+   "distractores": [
+    {
+     "valor": "16",
+     "error": "E01"
+    },
+    {
+     "valor": "27",
+     "error": "E02"
+    },
+    {
+     "valor": "58",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "ALG.COMPUT.08"
+   ],
+   "explicacion_nino": "Prueba el algoritmo con cada opción, paso a paso, y compara con la respuesta correcta. 30 termina en 0, que no está en la lista, y dice «impar». Falta la cifra 0.",
+   "explicacion_adulto": "Está aprendiendo a pensar como un programador que automatiza: un algoritmo general tiene que funcionar para TODOS los casos de la familia, no solo para el ejemplo con el que se probó. Errores típicos: darlo por bueno porque funciona con un caso y no probar los casos frontera (0, 1, números iguales, negativos). Pídele que busque activamente un caso que lo haga fallar, empezando por los valores extremos.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Ejecutar con cada dato",
+     "resultado": "",
+     "texto": "Sigue los pasos como lo haría el ordenador."
+    },
+    {
+     "paso": 2,
+     "operacion": "Comparar con lo correcto",
+     "resultado": "30",
+     "texto": "30 termina en 0, que no está en la lista, y dice «impar». Falta la cifra 0."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Algoritmo para decidir si una nota aprueba:\n1. Si nota > 5, di «aprobado».\n2. Si no, di «suspenso».\n¿Con qué nota falla?",
+   "respuesta": "5",
+   "distractores": [
+    {
+     "valor": "7",
+     "error": "E01"
+    },
+    {
+     "valor": "4,5",
+     "error": "E02"
+    },
+    {
+     "valor": "9,5",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "ALG.COMPUT.08"
+   ],
+   "explicacion_nino": "Prueba el algoritmo con cada opción, paso a paso, y compara con la respuesta correcta. Con un 5 exacto (que es aprobado) dice «suspenso»: la condición debería ser nota ≥ 5. Los casos frontera son los que más fallan.",
+   "explicacion_adulto": "Está aprendiendo a pensar como un programador que automatiza: un algoritmo general tiene que funcionar para TODOS los casos de la familia, no solo para el ejemplo con el que se probó. Errores típicos: darlo por bueno porque funciona con un caso y no probar los casos frontera (0, 1, números iguales, negativos). Pídele que busque activamente un caso que lo haga fallar, empezando por los valores extremos.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Ejecutar con cada dato",
+     "resultado": "",
+     "texto": "Sigue los pasos como lo haría el ordenador."
+    },
+    {
+     "paso": 2,
+     "operacion": "Comparar con lo correcto",
+     "resultado": "5",
+     "texto": "Con un 5 exacto (que es aprobado) dice «suspenso»: la condición debería ser nota ≥ 5. Los casos frontera son los que más fallan."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Algoritmo para el mcd de a y b por restas:\n1. Mientras a ≠ b: resta el menor al mayor.\n2. Escribe a.\n¿Con qué datos no termina nunca?",
+   "respuesta": "a = 8, b = 0",
+   "distractores": [
+    {
+     "valor": "a = 12, b = 18",
+     "error": "E01"
+    },
+    {
+     "valor": "a = 7, b = 7",
+     "error": "E02"
+    },
+    {
+     "valor": "a = 9, b = 4",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "ALG.COMPUT.08"
+   ],
+   "explicacion_nino": "Prueba el algoritmo con cada opción, paso a paso, y compara con la respuesta correcta. Con b = 0, restar 0 no cambia nada: a sigue siendo 8 y b 0 para siempre. Hay que tratar aparte el caso del 0.",
+   "explicacion_adulto": "Está aprendiendo a pensar como un programador que automatiza: un algoritmo general tiene que funcionar para TODOS los casos de la familia, no solo para el ejemplo con el que se probó. Errores típicos: darlo por bueno porque funciona con un caso y no probar los casos frontera (0, 1, números iguales, negativos). Pídele que busque activamente un caso que lo haga fallar, empezando por los valores extremos.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Ejecutar con cada dato",
+     "resultado": "",
+     "texto": "Sigue los pasos como lo haría el ordenador."
+    },
+    {
+     "paso": 2,
+     "operacion": "Comparar con lo correcto",
+     "resultado": "a = 8, b = 0",
+     "texto": "Con b = 0, restar 0 no cambia nada: a sigue siendo 8 y b 0 para siempre. Hay que tratar aparte el caso del 0."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Algoritmo para saber si n es múltiplo de 3:\n1. Si la última cifra es 3, 6 o 9, di «sí».\n2. Si no, di «no».\n¿Con qué número falla?",
+   "respuesta": "21",
+   "distractores": [
+    {
+     "valor": "36",
+     "error": "E01"
+    },
+    {
+     "valor": "40",
+     "error": "E02"
+    },
+    {
+     "valor": "99",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "ALG.COMPUT.08"
+   ],
+   "explicacion_nino": "Prueba el algoritmo con cada opción, paso a paso, y compara con la respuesta correcta. 21 = 3 × 7 es múltiplo de 3 pero termina en 1 y dice «no». La regla correcta mira la suma de las cifras.",
+   "explicacion_adulto": "Está aprendiendo a pensar como un programador que automatiza: un algoritmo general tiene que funcionar para TODOS los casos de la familia, no solo para el ejemplo con el que se probó. Errores típicos: darlo por bueno porque funciona con un caso y no probar los casos frontera (0, 1, números iguales, negativos). Pídele que busque activamente un caso que lo haga fallar, empezando por los valores extremos.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Ejecutar con cada dato",
+     "resultado": "",
+     "texto": "Sigue los pasos como lo haría el ordenador."
+    },
+    {
+     "paso": 2,
+     "operacion": "Comparar con lo correcto",
+     "resultado": "21",
+     "texto": "21 = 3 × 7 es múltiplo de 3 pero termina en 1 y dice «no». La regla correcta mira la suma de las cifras."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Algoritmo para el valor absoluto de n:\n1. Si n es mayor que 0, escribe n.\n2. Si n es menor que 0, escribe −n.\n¿Con qué valor no escribe nada?",
+   "respuesta": "n = 0",
+   "distractores": [
+    {
+     "valor": "n = 5",
+     "error": "E01"
+    },
+    {
+     "valor": "n = −3",
+     "error": "E02"
+    },
+    {
+     "valor": "n = 12",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "ALG.COMPUT.08"
+   ],
+   "explicacion_nino": "Prueba el algoritmo con cada opción, paso a paso, y compara con la respuesta correcta. Si n = 0 no se cumple ninguna de las dos condiciones y no escribe nada. Hay que usar n ≥ 0 en el primer paso.",
+   "explicacion_adulto": "Está aprendiendo a pensar como un programador que automatiza: un algoritmo general tiene que funcionar para TODOS los casos de la familia, no solo para el ejemplo con el que se probó. Errores típicos: darlo por bueno porque funciona con un caso y no probar los casos frontera (0, 1, números iguales, negativos). Pídele que busque activamente un caso que lo haga fallar, empezando por los valores extremos.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Ejecutar con cada dato",
+     "resultado": "",
+     "texto": "Sigue los pasos como lo haría el ordenador."
+    },
+    {
+     "paso": 2,
+     "operacion": "Comparar con lo correcto",
+     "resultado": "n = 0",
+     "texto": "Si n = 0 no se cumple ninguna de las dos condiciones y no escribe nada. Hay que usar n ≥ 0 en el primer paso."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Algoritmo para ordenar a y b de menor a mayor:\n1. Si a es menor que b, escribe a, b.\n2. Si a es mayor que b, escribe b, a.\n¿Con qué datos no escribe nada?",
+   "respuesta": "a = 6, b = 6",
+   "distractores": [
+    {
+     "valor": "a = 2, b = 9",
+     "error": "E01"
+    },
+    {
+     "valor": "a = 9, b = 2",
+     "error": "E02"
+    },
+    {
+     "valor": "a = −1, b = 0",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "ALG.COMPUT.08"
+   ],
+   "explicacion_nino": "Prueba el algoritmo con cada opción, paso a paso, y compara con la respuesta correcta. Si los dos son iguales no se cumple ni a < b ni a > b: falta el caso del empate.",
+   "explicacion_adulto": "Está aprendiendo a pensar como un programador que automatiza: un algoritmo general tiene que funcionar para TODOS los casos de la familia, no solo para el ejemplo con el que se probó. Errores típicos: darlo por bueno porque funciona con un caso y no probar los casos frontera (0, 1, números iguales, negativos). Pídele que busque activamente un caso que lo haga fallar, empezando por los valores extremos.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Ejecutar con cada dato",
+     "resultado": "",
+     "texto": "Sigue los pasos como lo haría el ordenador."
+    },
+    {
+     "paso": 2,
+     "operacion": "Comparar con lo correcto",
+     "resultado": "a = 6, b = 6",
+     "texto": "Si los dos son iguales no se cumple ni a < b ni a > b: falta el caso del empate."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Algoritmo para saber si un número entero n es positivo, negativo o cero:\n1. Si n ≥ 0, di «positivo».\n2. Si no, di «negativo».\n¿Con qué número falla?",
+   "respuesta": "0",
+   "distractores": [
+    {
+     "valor": "−4",
+     "error": "E01"
+    },
+    {
+     "valor": "8",
+     "error": "E02"
+    },
+    {
+     "valor": "−1",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "ALG.COMPUT.08"
+   ],
+   "explicacion_nino": "Prueba el algoritmo con cada opción, paso a paso, y compara con la respuesta correcta. El 0 no es positivo, pero el algoritmo lo clasifica así porque usa ≥. Falta el caso «cero».",
+   "explicacion_adulto": "Está aprendiendo a pensar como un programador que automatiza: un algoritmo general tiene que funcionar para TODOS los casos de la familia, no solo para el ejemplo con el que se probó. Errores típicos: darlo por bueno porque funciona con un caso y no probar los casos frontera (0, 1, números iguales, negativos). Pídele que busque activamente un caso que lo haga fallar, empezando por los valores extremos.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Ejecutar con cada dato",
+     "resultado": "",
+     "texto": "Sigue los pasos como lo haría el ordenador."
+    },
+    {
+     "paso": 2,
+     "operacion": "Comparar con lo correcto",
+     "resultado": "0",
+     "texto": "El 0 no es positivo, pero el algoritmo lo clasifica así porque usa ≥. Falta el caso «cero»."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Algoritmo para calcular la media de las notas de un alumno:\n1. Suma las notas.\n2. Divide entre 3.\n¿Con qué lista de notas falla?",
+   "respuesta": "6, 8, 7, 5",
+   "distractores": [
+    {
+     "valor": "6, 8, 7",
+     "error": "E01"
+    },
+    {
+     "valor": "5, 5, 5",
+     "error": "E02"
+    },
+    {
+     "valor": "9, 3, 6",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "ALG.COMPUT.08"
+   ],
+   "explicacion_nino": "Prueba el algoritmo con cada opción, paso a paso, y compara con la respuesta correcta. Divide siempre entre 3, así que solo funciona con tres notas. Con cuatro, hay que dividir entre 4: debe dividir entre el número de notas.",
+   "explicacion_adulto": "Está aprendiendo a pensar como un programador que automatiza: un algoritmo general tiene que funcionar para TODOS los casos de la familia, no solo para el ejemplo con el que se probó. Errores típicos: darlo por bueno porque funciona con un caso y no probar los casos frontera (0, 1, números iguales, negativos). Pídele que busque activamente un caso que lo haga fallar, empezando por los valores extremos.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Ejecutar con cada dato",
+     "resultado": "",
+     "texto": "Sigue los pasos como lo haría el ordenador."
+    },
+    {
+     "paso": 2,
+     "operacion": "Comparar con lo correcto",
+     "resultado": "6, 8, 7, 5",
+     "texto": "Divide siempre entre 3, así que solo funciona con tres notas. Con cuatro, hay que dividir entre 4: debe dividir entre el número de notas."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Algoritmo para el número de días de un mes (del 1 al 12):\n1. Si el mes es 2, 28 días.\n2. Si el mes es par, 30 días.\n3. Si no, 31 días.\n¿Con qué mes falla?",
+   "respuesta": "8 (agosto)",
+   "distractores": [
+    {
+     "valor": "4 (abril)",
+     "error": "E01"
+    },
+    {
+     "valor": "1 (enero)",
+     "error": "E02"
+    },
+    {
+     "valor": "6 (junio)",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "ALG.COMPUT.08"
+   ],
+   "explicacion_nino": "Prueba el algoritmo con cada opción, paso a paso, y compara con la respuesta correcta. Agosto es par pero tiene 31 días. La regla «par → 30» solo funciona hasta julio.",
+   "explicacion_adulto": "Está aprendiendo a pensar como un programador que automatiza: un algoritmo general tiene que funcionar para TODOS los casos de la familia, no solo para el ejemplo con el que se probó. Errores típicos: darlo por bueno porque funciona con un caso y no probar los casos frontera (0, 1, números iguales, negativos). Pídele que busque activamente un caso que lo haga fallar, empezando por los valores extremos.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Ejecutar con cada dato",
+     "resultado": "",
+     "texto": "Sigue los pasos como lo haría el ordenador."
+    },
+    {
+     "paso": 2,
+     "operacion": "Comparar con lo correcto",
+     "resultado": "8 (agosto)",
+     "texto": "Agosto es par pero tiene 31 días. La regla «par → 30» solo funciona hasta julio."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "¿Qué algoritmo sirve para decidir si un número natural n es primo en TODOS los casos?",
+   "respuesta": "Si n < 2, «no primo»; si no, prueba d = 2, 3, … con d × d ≤ n y di «primo» solo si ninguno divide a n",
+   "distractores": [
+    {
+     "valor": "Prueba si n es divisible entre 2, 3 o 5; si no lo es, «primo»",
+     "error": "E01"
+    },
+    {
+     "valor": "Prueba d = 2, 3, … con d × d ≤ n y di «primo» si ninguno divide a n",
+     "error": "E02"
+    },
+    {
+     "valor": "Si n es impar, «primo»",
+     "error": "E01"
+    }
+   ],
+   "secundarias": [
+    "ALG.COMPUT.08"
+   ],
+   "explicacion_nino": "Para cada opción busca un caso que la haga fallar, sobre todo en los extremos (0, 1, números iguales, negativos, años especiales…). La única que no falla nunca es: si n < 2, «no primo»; si no, prueba d = 2, 3, … con d × d ≤ n y di «primo» solo si ninguno divide a n.",
+   "explicacion_adulto": "Está aprendiendo a pensar como un programador que automatiza: un algoritmo general tiene que funcionar para TODOS los casos de la familia, no solo para el ejemplo con el que se probó. Errores típicos: darlo por bueno porque funciona con un caso y no probar los casos frontera (0, 1, números iguales, negativos). Pídele que busque activamente un caso que lo haga fallar, empezando por los valores extremos.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Buscar contraejemplos",
+     "resultado": "",
+     "texto": "Prueba casos frontera en cada opción."
+    },
+    {
+     "paso": 2,
+     "operacion": "Quedarse con la que no falla",
+     "resultado": "Si n < 2, «no primo»; si no, prueba d = 2, 3, … con d × d ≤ n y di «primo» solo si ninguno divide a n",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "¿Qué algoritmo sirve para hallar el mayor número de una lista en TODOS los casos?",
+   "respuesta": "Toma como máximo el primer número y recorre los demás, cambiando el máximo si encuentras uno mayor",
+   "distractores": [
+    {
+     "valor": "Empieza con máximo = 0 y recorre la lista cambiándolo si encuentras uno mayor",
+     "error": "E02"
+    },
+    {
+     "valor": "Compara solo el primero con el último",
+     "error": "E01"
+    },
+    {
+     "valor": "Escribe el último número de la lista",
+     "error": "E01"
+    }
+   ],
+   "secundarias": [
+    "ALG.COMPUT.08"
+   ],
+   "explicacion_nino": "Para cada opción busca un caso que la haga fallar, sobre todo en los extremos (0, 1, números iguales, negativos, años especiales…). La única que no falla nunca es: toma como máximo el primer número y recorre los demás, cambiando el máximo si encuentras uno mayor.",
+   "explicacion_adulto": "Está aprendiendo a pensar como un programador que automatiza: un algoritmo general tiene que funcionar para TODOS los casos de la familia, no solo para el ejemplo con el que se probó. Errores típicos: darlo por bueno porque funciona con un caso y no probar los casos frontera (0, 1, números iguales, negativos). Pídele que busque activamente un caso que lo haga fallar, empezando por los valores extremos.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Buscar contraejemplos",
+     "resultado": "",
+     "texto": "Prueba casos frontera en cada opción."
+    },
+    {
+     "paso": 2,
+     "operacion": "Quedarse con la que no falla",
+     "resultado": "Toma como máximo el primer número y recorre los demás, cambiando el máximo si encuentras uno mayor",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "¿Qué algoritmo sirve para saber si un año es bisiesto en TODOS los casos?",
+   "respuesta": "Bisiesto si es divisible entre 400, o si es divisible entre 4 pero no entre 100",
+   "distractores": [
+    {
+     "valor": "Bisiesto si es divisible entre 4",
+     "error": "E02"
+    },
+    {
+     "valor": "Bisiesto si termina en 0, 4 u 8",
+     "error": "E01"
+    },
+    {
+     "valor": "Bisiesto si es divisible entre 4 y entre 100",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "ALG.COMPUT.08"
+   ],
+   "explicacion_nino": "Para cada opción busca un caso que la haga fallar, sobre todo en los extremos (0, 1, números iguales, negativos, años especiales…). La única que no falla nunca es: bisiesto si es divisible entre 400, o si es divisible entre 4 pero no entre 100.",
+   "explicacion_adulto": "Está aprendiendo a pensar como un programador que automatiza: un algoritmo general tiene que funcionar para TODOS los casos de la familia, no solo para el ejemplo con el que se probó. Errores típicos: darlo por bueno porque funciona con un caso y no probar los casos frontera (0, 1, números iguales, negativos). Pídele que busque activamente un caso que lo haga fallar, empezando por los valores extremos.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Buscar contraejemplos",
+     "resultado": "",
+     "texto": "Prueba casos frontera en cada opción."
+    },
+    {
+     "paso": 2,
+     "operacion": "Quedarse con la que no falla",
+     "resultado": "Bisiesto si es divisible entre 400, o si es divisible entre 4 pero no entre 100",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "¿Qué algoritmo sirve para clasificar un triángulo según sus lados a, b, c en TODOS los casos?",
+   "respuesta": "Si a = b = c, equilátero; si no, si a = b o b = c o a = c, isósceles; si no, escaleno",
+   "distractores": [
+    {
+     "valor": "Si a = b = c, equilátero; si no, si a = b, isósceles; si no, escaleno",
+     "error": "E02"
+    },
+    {
+     "valor": "Si a = b, isósceles; si no, escaleno",
+     "error": "E01"
+    },
+    {
+     "valor": "Si a + b = c, equilátero; si no, escaleno",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "ALG.COMPUT.08"
+   ],
+   "explicacion_nino": "Para cada opción busca un caso que la haga fallar, sobre todo en los extremos (0, 1, números iguales, negativos, años especiales…). La única que no falla nunca es: si a = b = c, equilátero; si no, si a = b o b = c o a = c, isósceles; si no, escaleno.",
+   "explicacion_adulto": "Está aprendiendo a pensar como un programador que automatiza: un algoritmo general tiene que funcionar para TODOS los casos de la familia, no solo para el ejemplo con el que se probó. Errores típicos: darlo por bueno porque funciona con un caso y no probar los casos frontera (0, 1, números iguales, negativos). Pídele que busque activamente un caso que lo haga fallar, empezando por los valores extremos.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Buscar contraejemplos",
+     "resultado": "",
+     "texto": "Prueba casos frontera en cada opción."
+    },
+    {
+     "paso": 2,
+     "operacion": "Quedarse con la que no falla",
+     "resultado": "Si a = b = c, equilátero; si no, si a = b o b = c o a = c, isósceles; si no, escaleno",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "¿Qué algoritmo sirve para saber si un número entero es par en TODOS los casos?",
+   "respuesta": "Par si el resto de dividirlo entre 2 es 0",
+   "distractores": [
+    {
+     "valor": "Par si termina en 2, 4, 6 u 8",
+     "error": "E02"
+    },
+    {
+     "valor": "Par si es mayor que 0",
+     "error": null
+    },
+    {
+     "valor": "Par si al dividirlo entre 2 da más de 1",
+     "error": "E01"
+    }
+   ],
+   "secundarias": [
+    "ALG.COMPUT.08"
+   ],
+   "explicacion_nino": "Para cada opción busca un caso que la haga fallar, sobre todo en los extremos (0, 1, números iguales, negativos, años especiales…). La única que no falla nunca es: par si el resto de dividirlo entre 2 es 0.",
+   "explicacion_adulto": "Está aprendiendo a pensar como un programador que automatiza: un algoritmo general tiene que funcionar para TODOS los casos de la familia, no solo para el ejemplo con el que se probó. Errores típicos: darlo por bueno porque funciona con un caso y no probar los casos frontera (0, 1, números iguales, negativos). Pídele que busque activamente un caso que lo haga fallar, empezando por los valores extremos.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Buscar contraejemplos",
+     "resultado": "",
+     "texto": "Prueba casos frontera en cada opción."
+    },
+    {
+     "paso": 2,
+     "operacion": "Quedarse con la que no falla",
+     "resultado": "Par si el resto de dividirlo entre 2 es 0",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "¿Qué algoritmo sirve para decidir si una nota (de 0 a 10) está aprobada en TODOS los casos?",
+   "respuesta": "Aprobado si nota ≥ 5",
+   "distractores": [
+    {
+     "valor": "Aprobado si nota > 5",
+     "error": "E02"
+    },
+    {
+     "valor": "Aprobado si nota = 5",
+     "error": "E01"
+    },
+    {
+     "valor": "Aprobado si nota < 10",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "ALG.COMPUT.08"
+   ],
+   "explicacion_nino": "Para cada opción busca un caso que la haga fallar, sobre todo en los extremos (0, 1, números iguales, negativos, años especiales…). La única que no falla nunca es: aprobado si nota ≥ 5.",
+   "explicacion_adulto": "Está aprendiendo a pensar como un programador que automatiza: un algoritmo general tiene que funcionar para TODOS los casos de la familia, no solo para el ejemplo con el que se probó. Errores típicos: darlo por bueno porque funciona con un caso y no probar los casos frontera (0, 1, números iguales, negativos). Pídele que busque activamente un caso que lo haga fallar, empezando por los valores extremos.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Buscar contraejemplos",
+     "resultado": "",
+     "texto": "Prueba casos frontera en cada opción."
+    },
+    {
+     "paso": 2,
+     "operacion": "Quedarse con la que no falla",
+     "resultado": "Aprobado si nota ≥ 5",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "¿Qué algoritmo sirve para calcular el valor absoluto de un número n en TODOS los casos?",
+   "respuesta": "Si n ≥ 0, escribe n; si no, escribe −n",
+   "distractores": [
+    {
+     "valor": "Si n > 0, escribe n; si n < 0, escribe −n",
+     "error": "E02"
+    },
+    {
+     "valor": "Escribe −n",
+     "error": "E01"
+    },
+    {
+     "valor": "Escribe n × n",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "ALG.COMPUT.08"
+   ],
+   "explicacion_nino": "Para cada opción busca un caso que la haga fallar, sobre todo en los extremos (0, 1, números iguales, negativos, años especiales…). La única que no falla nunca es: si n ≥ 0, escribe n; si no, escribe −n.",
+   "explicacion_adulto": "Está aprendiendo a pensar como un programador que automatiza: un algoritmo general tiene que funcionar para TODOS los casos de la familia, no solo para el ejemplo con el que se probó. Errores típicos: darlo por bueno porque funciona con un caso y no probar los casos frontera (0, 1, números iguales, negativos). Pídele que busque activamente un caso que lo haga fallar, empezando por los valores extremos.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Buscar contraejemplos",
+     "resultado": "",
+     "texto": "Prueba casos frontera en cada opción."
+    },
+    {
+     "paso": 2,
+     "operacion": "Quedarse con la que no falla",
+     "resultado": "Si n ≥ 0, escribe n; si no, escribe −n",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "¿Qué algoritmo sirve para calcular el mcd de dos naturales a y b en TODOS los casos?",
+   "respuesta": "Si b = 0, el mcd es a; si no, calcula el mcd de b y del resto de dividir a entre b, y repite",
+   "distractores": [
+    {
+     "valor": "Mientras a ≠ b, resta el menor al mayor (aunque uno sea 0)",
+     "error": "E02"
+    },
+    {
+     "valor": "El mcd es el menor de los dos",
+     "error": "E01"
+    },
+    {
+     "valor": "El mcd es a × b",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "ALG.COMPUT.08"
+   ],
+   "explicacion_nino": "Para cada opción busca un caso que la haga fallar, sobre todo en los extremos (0, 1, números iguales, negativos, años especiales…). La única que no falla nunca es: si b = 0, el mcd es a; si no, calcula el mcd de b y del resto de dividir a entre b, y repite.",
+   "explicacion_adulto": "Está aprendiendo a pensar como un programador que automatiza: un algoritmo general tiene que funcionar para TODOS los casos de la familia, no solo para el ejemplo con el que se probó. Errores típicos: darlo por bueno porque funciona con un caso y no probar los casos frontera (0, 1, números iguales, negativos). Pídele que busque activamente un caso que lo haga fallar, empezando por los valores extremos.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Buscar contraejemplos",
+     "resultado": "",
+     "texto": "Prueba casos frontera en cada opción."
+    },
+    {
+     "paso": 2,
+     "operacion": "Quedarse con la que no falla",
+     "resultado": "Si b = 0, el mcd es a; si no, calcula el mcd de b y del resto de dividir a entre b, y repite",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "¿Qué algoritmo sirve para calcular la media de una lista de números en TODOS los casos?",
+   "respuesta": "Suma todos los números y divide entre cuántos hay",
+   "distractores": [
+    {
+     "valor": "Suma todos los números y divide entre 2",
+     "error": "E01"
+    },
+    {
+     "valor": "Suma el primero y el último y divide entre 2",
+     "error": "E01"
+    },
+    {
+     "valor": "Escribe el número que está en medio de la lista",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "ALG.COMPUT.08"
+   ],
+   "explicacion_nino": "Para cada opción busca un caso que la haga fallar, sobre todo en los extremos (0, 1, números iguales, negativos, años especiales…). La única que no falla nunca es: suma todos los números y divide entre cuántos hay.",
+   "explicacion_adulto": "Está aprendiendo a pensar como un programador que automatiza: un algoritmo general tiene que funcionar para TODOS los casos de la familia, no solo para el ejemplo con el que se probó. Errores típicos: darlo por bueno porque funciona con un caso y no probar los casos frontera (0, 1, números iguales, negativos). Pídele que busque activamente un caso que lo haga fallar, empezando por los valores extremos.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Buscar contraejemplos",
+     "resultado": "",
+     "texto": "Prueba casos frontera en cada opción."
+    },
+    {
+     "paso": 2,
+     "operacion": "Quedarse con la que no falla",
+     "resultado": "Suma todos los números y divide entre cuántos hay",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "¿Qué algoritmo sirve para ordenar dos números a y b de menor a mayor en TODOS los casos?",
+   "respuesta": "Si a ≤ b, escribe a, b; si no, escribe b, a",
+   "distractores": [
+    {
+     "valor": "Si a < b, escribe a, b; si a > b, escribe b, a",
+     "error": "E02"
+    },
+    {
+     "valor": "Escribe siempre a, b",
+     "error": "E01"
+    },
+    {
+     "valor": "Si a < b, escribe b, a; si no, a, b",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "ALG.COMPUT.08"
+   ],
+   "explicacion_nino": "Para cada opción busca un caso que la haga fallar, sobre todo en los extremos (0, 1, números iguales, negativos, años especiales…). La única que no falla nunca es: si a ≤ b, escribe a, b; si no, escribe b, a.",
+   "explicacion_adulto": "Está aprendiendo a pensar como un programador que automatiza: un algoritmo general tiene que funcionar para TODOS los casos de la familia, no solo para el ejemplo con el que se probó. Errores típicos: darlo por bueno porque funciona con un caso y no probar los casos frontera (0, 1, números iguales, negativos). Pídele que busque activamente un caso que lo haga fallar, empezando por los valores extremos.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Buscar contraejemplos",
+     "resultado": "",
+     "texto": "Prueba casos frontera en cada opción."
+    },
+    {
+     "paso": 2,
+     "operacion": "Quedarse con la que no falla",
+     "resultado": "Si a ≤ b, escribe a, b; si no, escribe b, a",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "¿Qué algoritmo sirve para saber si tres longitudes a, b, c pueden formar un triángulo en TODOS los casos?",
+   "respuesta": "Cada una debe ser menor que la suma de las otras dos",
+   "distractores": [
+    {
+     "valor": "Basta con que a < b + c",
+     "error": "E01"
+    },
+    {
+     "valor": "Las tres tienen que ser distintas",
+     "error": null
+    },
+    {
+     "valor": "Cada una debe ser menor o igual que la suma de las otras dos",
+     "error": "E02"
+    }
+   ],
+   "secundarias": [
+    "ALG.COMPUT.08"
+   ],
+   "explicacion_nino": "Para cada opción busca un caso que la haga fallar, sobre todo en los extremos (0, 1, números iguales, negativos, años especiales…). La única que no falla nunca es: cada una debe ser menor que la suma de las otras dos.",
+   "explicacion_adulto": "Está aprendiendo a pensar como un programador que automatiza: un algoritmo general tiene que funcionar para TODOS los casos de la familia, no solo para el ejemplo con el que se probó. Errores típicos: darlo por bueno porque funciona con un caso y no probar los casos frontera (0, 1, números iguales, negativos). Pídele que busque activamente un caso que lo haga fallar, empezando por los valores extremos.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Buscar contraejemplos",
+     "resultado": "",
+     "texto": "Prueba casos frontera en cada opción."
+    },
+    {
+     "paso": 2,
+     "operacion": "Quedarse con la que no falla",
+     "resultado": "Cada una debe ser menor que la suma de las otras dos",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "¿Qué algoritmo sirve para contar cuántos divisores tiene un natural n en TODOS los casos?",
+   "respuesta": "Prueba todos los números de 1 a n y cuenta los que dividen a n",
+   "distractores": [
+    {
+     "valor": "Prueba de 2 a n − 1 y cuenta los que dividen a n",
+     "error": "E02"
+    },
+    {
+     "valor": "Prueba de 1 a 10 y cuenta los que dividen a n",
+     "error": "E01"
+    },
+    {
+     "valor": "Divide n entre 2",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "ALG.COMPUT.08"
+   ],
+   "explicacion_nino": "Para cada opción busca un caso que la haga fallar, sobre todo en los extremos (0, 1, números iguales, negativos, años especiales…). La única que no falla nunca es: prueba todos los números de 1 a n y cuenta los que dividen a n.",
+   "explicacion_adulto": "Está aprendiendo a pensar como un programador que automatiza: un algoritmo general tiene que funcionar para TODOS los casos de la familia, no solo para el ejemplo con el que se probó. Errores típicos: darlo por bueno porque funciona con un caso y no probar los casos frontera (0, 1, números iguales, negativos). Pídele que busque activamente un caso que lo haga fallar, empezando por los valores extremos.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Buscar contraejemplos",
+     "resultado": "",
+     "texto": "Prueba casos frontera en cada opción."
+    },
+    {
+     "paso": 2,
+     "operacion": "Quedarse con la que no falla",
+     "resultado": "Prueba todos los números de 1 a n y cuenta los que dividen a n",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "¿Qué algoritmo sirve para saber si un número natural es múltiplo de 9 en TODOS los casos?",
+   "respuesta": "Suma sus cifras; es múltiplo de 9 si esa suma es múltiplo de 9",
+   "distractores": [
+    {
+     "valor": "Es múltiplo de 9 si termina en 9",
+     "error": "E01"
+    },
+    {
+     "valor": "Es múltiplo de 9 si es impar",
+     "error": null
+    },
+    {
+     "valor": "Es múltiplo de 9 si su última cifra es múltiplo de 3",
+     "error": "E01"
+    }
+   ],
+   "secundarias": [
+    "ALG.COMPUT.08"
+   ],
+   "explicacion_nino": "Para cada opción busca un caso que la haga fallar, sobre todo en los extremos (0, 1, números iguales, negativos, años especiales…). La única que no falla nunca es: suma sus cifras; es múltiplo de 9 si esa suma es múltiplo de 9.",
+   "explicacion_adulto": "Está aprendiendo a pensar como un programador que automatiza: un algoritmo general tiene que funcionar para TODOS los casos de la familia, no solo para el ejemplo con el que se probó. Errores típicos: darlo por bueno porque funciona con un caso y no probar los casos frontera (0, 1, números iguales, negativos). Pídele que busque activamente un caso que lo haga fallar, empezando por los valores extremos.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Buscar contraejemplos",
+     "resultado": "",
+     "texto": "Prueba casos frontera en cada opción."
+    },
+    {
+     "paso": 2,
+     "operacion": "Quedarse con la que no falla",
+     "resultado": "Suma sus cifras; es múltiplo de 9 si esa suma es múltiplo de 9",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "¿Qué algoritmo sirve para calcular el precio con un descuento del d % sobre un precio p en TODOS los casos?",
+   "respuesta": "Calcula p × (100 − d) : 100",
+   "distractores": [
+    {
+     "valor": "Calcula p − d",
+     "error": "E01"
+    },
+    {
+     "valor": "Calcula p × d : 100",
+     "error": null
+    },
+    {
+     "valor": "Calcula p : d",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "ALG.COMPUT.08"
+   ],
+   "explicacion_nino": "Para cada opción busca un caso que la haga fallar, sobre todo en los extremos (0, 1, números iguales, negativos, años especiales…). La única que no falla nunca es: calcula p × (100 − d) : 100.",
+   "explicacion_adulto": "Está aprendiendo a pensar como un programador que automatiza: un algoritmo general tiene que funcionar para TODOS los casos de la familia, no solo para el ejemplo con el que se probó. Errores típicos: darlo por bueno porque funciona con un caso y no probar los casos frontera (0, 1, números iguales, negativos). Pídele que busque activamente un caso que lo haga fallar, empezando por los valores extremos.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Buscar contraejemplos",
+     "resultado": "",
+     "texto": "Prueba casos frontera en cada opción."
+    },
+    {
+     "paso": 2,
+     "operacion": "Quedarse con la que no falla",
+     "resultado": "Calcula p × (100 − d) : 100",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "¿Qué algoritmo sirve para saber si un número entero es positivo, negativo o cero en TODOS los casos?",
+   "respuesta": "Si n > 0, positivo; si n < 0, negativo; si no, cero",
+   "distractores": [
+    {
+     "valor": "Si n ≥ 0, positivo; si no, negativo",
+     "error": "E02"
+    },
+    {
+     "valor": "Si n > 0, positivo; si no, negativo",
+     "error": "E02"
+    },
+    {
+     "valor": "Si n es par, positivo; si no, negativo",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "ALG.COMPUT.08"
+   ],
+   "explicacion_nino": "Para cada opción busca un caso que la haga fallar, sobre todo en los extremos (0, 1, números iguales, negativos, años especiales…). La única que no falla nunca es: si n > 0, positivo; si n < 0, negativo; si no, cero.",
+   "explicacion_adulto": "Está aprendiendo a pensar como un programador que automatiza: un algoritmo general tiene que funcionar para TODOS los casos de la familia, no solo para el ejemplo con el que se probó. Errores típicos: darlo por bueno porque funciona con un caso y no probar los casos frontera (0, 1, números iguales, negativos). Pídele que busque activamente un caso que lo haga fallar, empezando por los valores extremos.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "Buscar contraejemplos",
+     "resultado": "",
+     "texto": "Prueba casos frontera en cada opción."
+    },
+    {
+     "paso": 2,
+     "operacion": "Quedarse con la que no falla",
+     "resultado": "Si n > 0, positivo; si n < 0, negativo; si no, cero",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P02"
+  }
+ ]
+}

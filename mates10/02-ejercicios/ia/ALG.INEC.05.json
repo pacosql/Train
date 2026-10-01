@@ -1,0 +1,1594 @@
+{
+ "habilidad": "ALG.INEC.05",
+ "generado_por": "claude (skill mates10-generar-ejercicios v1)",
+ "ejercicios": [
+  {
+   "dificultad": 1,
+   "enunciado": "¿Qué región del plano es la solución de la inecuación 2x + 3y ≤ 12?",
+   "respuesta": "El semiplano que contiene el origen, incluida la recta",
+   "distractores": [
+    {
+     "valor": "El semiplano que no contiene el origen, incluida la recta",
+     "error": "E01"
+    },
+    {
+     "valor": "El semiplano que contiene el origen, sin incluir la recta",
+     "error": null
+    },
+    {
+     "valor": "Solo los puntos de la recta 2x + 3y = 12",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Dibuja la recta 2x + 3y = 12 y prueba un punto que no esté en ella, por ejemplo el origen (0, 0): queda 0 ≤ 12, que es verdadero. Así que la solución es el semiplano que contiene el origen. Como el signo es ≤, la recta sí entra.",
+   "explicacion_adulto": "Está aprendiendo a resolver una inecuación con dos incógnitas: la recta divide el plano en dos semiplanos y un punto de prueba decide cuál es la solución. El error típico es quedarse con el semiplano contrario; pídale que sustituya el punto y diga en voz alta si la desigualdad resulta verdadera o falsa.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "recta frontera",
+     "resultado": "2x + 3y = 12",
+     "texto": "Cambiamos el signo por = para tener el borde."
+    },
+    {
+     "paso": 2,
+     "operacion": "punto de prueba",
+     "resultado": "0 ≤ 12",
+     "texto": "Sustituimos (0, 0)."
+    },
+    {
+     "paso": 3,
+     "operacion": "decidir",
+     "resultado": "El semiplano que contiene el origen, incluida la recta",
+     "texto": "Si se cumple, es el semiplano del origen; si no, el otro."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "¿Qué región del plano es la solución de la inecuación x − 2y ≥ 4?",
+   "respuesta": "El semiplano que no contiene el origen, incluida la recta",
+   "distractores": [
+    {
+     "valor": "El semiplano que contiene el origen, incluida la recta",
+     "error": "E01"
+    },
+    {
+     "valor": "El semiplano que no contiene el origen, sin incluir la recta",
+     "error": null
+    },
+    {
+     "valor": "Solo los puntos de la recta x − 2y = 4",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Dibuja la recta x − 2y = 4 y prueba un punto que no esté en ella, por ejemplo el origen (0, 0): queda 0 ≥ 4, que es falso. Así que la solución es el semiplano que no contiene el origen. Como el signo es ≥, la recta sí entra.",
+   "explicacion_adulto": "Está aprendiendo a resolver una inecuación con dos incógnitas: la recta divide el plano en dos semiplanos y un punto de prueba decide cuál es la solución. El error típico es quedarse con el semiplano contrario; pídale que sustituya el punto y diga en voz alta si la desigualdad resulta verdadera o falsa.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "recta frontera",
+     "resultado": "x − 2y = 4",
+     "texto": "Cambiamos el signo por = para tener el borde."
+    },
+    {
+     "paso": 2,
+     "operacion": "punto de prueba",
+     "resultado": "0 ≥ 4",
+     "texto": "Sustituimos (0, 0)."
+    },
+    {
+     "paso": 3,
+     "operacion": "decidir",
+     "resultado": "El semiplano que no contiene el origen, incluida la recta",
+     "texto": "Si se cumple, es el semiplano del origen; si no, el otro."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "¿Qué región del plano es la solución de la inecuación 3x + y < 6?",
+   "respuesta": "El semiplano que contiene el origen, sin incluir la recta",
+   "distractores": [
+    {
+     "valor": "El semiplano que no contiene el origen, sin incluir la recta",
+     "error": "E01"
+    },
+    {
+     "valor": "El semiplano que contiene el origen, incluida la recta",
+     "error": null
+    },
+    {
+     "valor": "Solo los puntos de la recta 3x + y = 6",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Dibuja la recta 3x + y = 6 y prueba un punto que no esté en ella, por ejemplo el origen (0, 0): queda 0 < 6, que es verdadero. Así que la solución es el semiplano que contiene el origen. Como el signo es <, la recta no entra.",
+   "explicacion_adulto": "Está aprendiendo a resolver una inecuación con dos incógnitas: la recta divide el plano en dos semiplanos y un punto de prueba decide cuál es la solución. El error típico es quedarse con el semiplano contrario; pídale que sustituya el punto y diga en voz alta si la desigualdad resulta verdadera o falsa.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "recta frontera",
+     "resultado": "3x + y = 6",
+     "texto": "Cambiamos el signo por = para tener el borde."
+    },
+    {
+     "paso": 2,
+     "operacion": "punto de prueba",
+     "resultado": "0 < 6",
+     "texto": "Sustituimos (0, 0)."
+    },
+    {
+     "paso": 3,
+     "operacion": "decidir",
+     "resultado": "El semiplano que contiene el origen, sin incluir la recta",
+     "texto": "Si se cumple, es el semiplano del origen; si no, el otro."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "¿Qué región del plano es la solución de la inecuación −x + 4y ≤ 8?",
+   "respuesta": "El semiplano que contiene el origen, incluida la recta",
+   "distractores": [
+    {
+     "valor": "El semiplano que no contiene el origen, incluida la recta",
+     "error": "E01"
+    },
+    {
+     "valor": "El semiplano que contiene el origen, sin incluir la recta",
+     "error": null
+    },
+    {
+     "valor": "Solo los puntos de la recta −x + 4y = 8",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Dibuja la recta −x + 4y = 8 y prueba un punto que no esté en ella, por ejemplo el origen (0, 0): queda 0 ≤ 8, que es verdadero. Así que la solución es el semiplano que contiene el origen. Como el signo es ≤, la recta sí entra.",
+   "explicacion_adulto": "Está aprendiendo a resolver una inecuación con dos incógnitas: la recta divide el plano en dos semiplanos y un punto de prueba decide cuál es la solución. El error típico es quedarse con el semiplano contrario; pídale que sustituya el punto y diga en voz alta si la desigualdad resulta verdadera o falsa.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "recta frontera",
+     "resultado": "−x + 4y = 8",
+     "texto": "Cambiamos el signo por = para tener el borde."
+    },
+    {
+     "paso": 2,
+     "operacion": "punto de prueba",
+     "resultado": "0 ≤ 8",
+     "texto": "Sustituimos (0, 0)."
+    },
+    {
+     "paso": 3,
+     "operacion": "decidir",
+     "resultado": "El semiplano que contiene el origen, incluida la recta",
+     "texto": "Si se cumple, es el semiplano del origen; si no, el otro."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "¿Qué región del plano es la solución de la inecuación 5x − 2y > 10?",
+   "respuesta": "El semiplano que no contiene el origen, sin incluir la recta",
+   "distractores": [
+    {
+     "valor": "El semiplano que contiene el origen, sin incluir la recta",
+     "error": "E01"
+    },
+    {
+     "valor": "El semiplano que no contiene el origen, incluida la recta",
+     "error": null
+    },
+    {
+     "valor": "Solo los puntos de la recta 5x − 2y = 10",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Dibuja la recta 5x − 2y = 10 y prueba un punto que no esté en ella, por ejemplo el origen (0, 0): queda 0 > 10, que es falso. Así que la solución es el semiplano que no contiene el origen. Como el signo es >, la recta no entra.",
+   "explicacion_adulto": "Está aprendiendo a resolver una inecuación con dos incógnitas: la recta divide el plano en dos semiplanos y un punto de prueba decide cuál es la solución. El error típico es quedarse con el semiplano contrario; pídale que sustituya el punto y diga en voz alta si la desigualdad resulta verdadera o falsa.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "recta frontera",
+     "resultado": "5x − 2y = 10",
+     "texto": "Cambiamos el signo por = para tener el borde."
+    },
+    {
+     "paso": 2,
+     "operacion": "punto de prueba",
+     "resultado": "0 > 10",
+     "texto": "Sustituimos (0, 0)."
+    },
+    {
+     "paso": 3,
+     "operacion": "decidir",
+     "resultado": "El semiplano que no contiene el origen, sin incluir la recta",
+     "texto": "Si se cumple, es el semiplano del origen; si no, el otro."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "¿Qué región del plano es la solución de la inecuación x + y ≥ 7?",
+   "respuesta": "El semiplano que no contiene el origen, incluida la recta",
+   "distractores": [
+    {
+     "valor": "El semiplano que contiene el origen, incluida la recta",
+     "error": "E01"
+    },
+    {
+     "valor": "El semiplano que no contiene el origen, sin incluir la recta",
+     "error": null
+    },
+    {
+     "valor": "Solo los puntos de la recta x + y = 7",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Dibuja la recta x + y = 7 y prueba un punto que no esté en ella, por ejemplo el origen (0, 0): queda 0 ≥ 7, que es falso. Así que la solución es el semiplano que no contiene el origen. Como el signo es ≥, la recta sí entra.",
+   "explicacion_adulto": "Está aprendiendo a resolver una inecuación con dos incógnitas: la recta divide el plano en dos semiplanos y un punto de prueba decide cuál es la solución. El error típico es quedarse con el semiplano contrario; pídale que sustituya el punto y diga en voz alta si la desigualdad resulta verdadera o falsa.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "recta frontera",
+     "resultado": "x + y = 7",
+     "texto": "Cambiamos el signo por = para tener el borde."
+    },
+    {
+     "paso": 2,
+     "operacion": "punto de prueba",
+     "resultado": "0 ≥ 7",
+     "texto": "Sustituimos (0, 0)."
+    },
+    {
+     "paso": 3,
+     "operacion": "decidir",
+     "resultado": "El semiplano que no contiene el origen, incluida la recta",
+     "texto": "Si se cumple, es el semiplano del origen; si no, el otro."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "¿Qué región del plano es la solución de la inecuación 4x + 3y ≤ −12?",
+   "respuesta": "El semiplano que no contiene el origen, incluida la recta",
+   "distractores": [
+    {
+     "valor": "El semiplano que contiene el origen, incluida la recta",
+     "error": "E01"
+    },
+    {
+     "valor": "El semiplano que no contiene el origen, sin incluir la recta",
+     "error": null
+    },
+    {
+     "valor": "Solo los puntos de la recta 4x + 3y = −12",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Dibuja la recta 4x + 3y = −12 y prueba un punto que no esté en ella, por ejemplo el origen (0, 0): queda 0 ≤ −12, que es falso. Así que la solución es el semiplano que no contiene el origen. Como el signo es ≤, la recta sí entra.",
+   "explicacion_adulto": "Está aprendiendo a resolver una inecuación con dos incógnitas: la recta divide el plano en dos semiplanos y un punto de prueba decide cuál es la solución. El error típico es quedarse con el semiplano contrario; pídale que sustituya el punto y diga en voz alta si la desigualdad resulta verdadera o falsa.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "recta frontera",
+     "resultado": "4x + 3y = −12",
+     "texto": "Cambiamos el signo por = para tener el borde."
+    },
+    {
+     "paso": 2,
+     "operacion": "punto de prueba",
+     "resultado": "0 ≤ −12",
+     "texto": "Sustituimos (0, 0)."
+    },
+    {
+     "paso": 3,
+     "operacion": "decidir",
+     "resultado": "El semiplano que no contiene el origen, incluida la recta",
+     "texto": "Si se cumple, es el semiplano del origen; si no, el otro."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "¿Qué región del plano es la solución de la inecuación 2x − y ≥ −6?",
+   "respuesta": "El semiplano que contiene el origen, incluida la recta",
+   "distractores": [
+    {
+     "valor": "El semiplano que no contiene el origen, incluida la recta",
+     "error": "E01"
+    },
+    {
+     "valor": "El semiplano que contiene el origen, sin incluir la recta",
+     "error": null
+    },
+    {
+     "valor": "Solo los puntos de la recta 2x − y = −6",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Dibuja la recta 2x − y = −6 y prueba un punto que no esté en ella, por ejemplo el origen (0, 0): queda 0 ≥ −6, que es verdadero. Así que la solución es el semiplano que contiene el origen. Como el signo es ≥, la recta sí entra.",
+   "explicacion_adulto": "Está aprendiendo a resolver una inecuación con dos incógnitas: la recta divide el plano en dos semiplanos y un punto de prueba decide cuál es la solución. El error típico es quedarse con el semiplano contrario; pídale que sustituya el punto y diga en voz alta si la desigualdad resulta verdadera o falsa.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "recta frontera",
+     "resultado": "2x − y = −6",
+     "texto": "Cambiamos el signo por = para tener el borde."
+    },
+    {
+     "paso": 2,
+     "operacion": "punto de prueba",
+     "resultado": "0 ≥ −6",
+     "texto": "Sustituimos (0, 0)."
+    },
+    {
+     "paso": 3,
+     "operacion": "decidir",
+     "resultado": "El semiplano que contiene el origen, incluida la recta",
+     "texto": "Si se cumple, es el semiplano del origen; si no, el otro."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "¿Cuál de estos puntos es solución de −x − y ≥ −3?",
+   "respuesta": "(4, −4)",
+   "distractores": [
+    {
+     "valor": "(5, 4)",
+     "error": "E01"
+    },
+    {
+     "valor": "(5, 0)",
+     "error": "E01"
+    },
+    {
+     "valor": "(2, 3)",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Sustituye cada punto en −x − y ≥ −3. Con (4, −4): -1·(4) + -1·(-4) = 0, y 0 ≥ -3 es verdadero. Los otros puntos dan una desigualdad falsa: están en el semiplano contrario.",
+   "explicacion_adulto": "Está aprendiendo a resolver una inecuación con dos incógnitas: la recta divide el plano en dos semiplanos y un punto de prueba decide cuál es la solución. El error típico es quedarse con el semiplano contrario; pídale que sustituya el punto y diga en voz alta si la desigualdad resulta verdadera o falsa.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "sustituir",
+     "resultado": "-1·(4) + -1·(-4) = 0",
+     "texto": "Calculamos el primer miembro."
+    },
+    {
+     "paso": 2,
+     "operacion": "comparar",
+     "resultado": "0 ≥ -3",
+     "texto": "Comprobamos si la desigualdad es cierta."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "¿Cuál de estos puntos es solución de −2x + 2y ≤ −3?",
+   "respuesta": "(2, 0)",
+   "distractores": [
+    {
+     "valor": "(−3, 2)",
+     "error": "E01"
+    },
+    {
+     "valor": "(−2, 2)",
+     "error": "E01"
+    },
+    {
+     "valor": "(0, 3)",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Sustituye cada punto en −2x + 2y ≤ −3. Con (2, 0): -2·(2) + 2·(0) = -4, y -4 ≤ -3 es verdadero. Los otros puntos dan una desigualdad falsa: están en el semiplano contrario.",
+   "explicacion_adulto": "Está aprendiendo a resolver una inecuación con dos incógnitas: la recta divide el plano en dos semiplanos y un punto de prueba decide cuál es la solución. El error típico es quedarse con el semiplano contrario; pídale que sustituya el punto y diga en voz alta si la desigualdad resulta verdadera o falsa.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "sustituir",
+     "resultado": "-2·(2) + 2·(0) = -4",
+     "texto": "Calculamos el primer miembro."
+    },
+    {
+     "paso": 2,
+     "operacion": "comparar",
+     "resultado": "-4 ≤ -3",
+     "texto": "Comprobamos si la desigualdad es cierta."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "¿Cuál de estos puntos es solución de x − 3y ≥ 3?",
+   "respuesta": "(2, −4)",
+   "distractores": [
+    {
+     "valor": "(4, 3)",
+     "error": "E01"
+    },
+    {
+     "valor": "(−2, 5)",
+     "error": "E01"
+    },
+    {
+     "valor": "(−4, 3)",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Sustituye cada punto en x − 3y ≥ 3. Con (2, −4): 1·(2) + -3·(-4) = 14, y 14 ≥ 3 es verdadero. Los otros puntos dan una desigualdad falsa: están en el semiplano contrario.",
+   "explicacion_adulto": "Está aprendiendo a resolver una inecuación con dos incógnitas: la recta divide el plano en dos semiplanos y un punto de prueba decide cuál es la solución. El error típico es quedarse con el semiplano contrario; pídale que sustituya el punto y diga en voz alta si la desigualdad resulta verdadera o falsa.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "sustituir",
+     "resultado": "1·(2) + -3·(-4) = 14",
+     "texto": "Calculamos el primer miembro."
+    },
+    {
+     "paso": 2,
+     "operacion": "comparar",
+     "resultado": "14 ≥ 3",
+     "texto": "Comprobamos si la desigualdad es cierta."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "¿Cuál de estos puntos es solución de x + y ≤ 3?",
+   "respuesta": "(0, −2)",
+   "distractores": [
+    {
+     "valor": "(−1, 5)",
+     "error": "E01"
+    },
+    {
+     "valor": "(5, −1)",
+     "error": "E01"
+    },
+    {
+     "valor": "(4, 2)",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Sustituye cada punto en x + y ≤ 3. Con (0, −2): 1·(0) + 1·(-2) = -2, y -2 ≤ 3 es verdadero. Los otros puntos dan una desigualdad falsa: están en el semiplano contrario.",
+   "explicacion_adulto": "Está aprendiendo a resolver una inecuación con dos incógnitas: la recta divide el plano en dos semiplanos y un punto de prueba decide cuál es la solución. El error típico es quedarse con el semiplano contrario; pídale que sustituya el punto y diga en voz alta si la desigualdad resulta verdadera o falsa.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "sustituir",
+     "resultado": "1·(0) + 1·(-2) = -2",
+     "texto": "Calculamos el primer miembro."
+    },
+    {
+     "paso": 2,
+     "operacion": "comparar",
+     "resultado": "-2 ≤ 3",
+     "texto": "Comprobamos si la desigualdad es cierta."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "¿Cuál de estos puntos es solución de 2x + 3y ≥ 11?",
+   "respuesta": "(1, 4)",
+   "distractores": [
+    {
+     "valor": "(3, −3)",
+     "error": "E01"
+    },
+    {
+     "valor": "(0, −3)",
+     "error": "E01"
+    },
+    {
+     "valor": "(0, −4)",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Sustituye cada punto en 2x + 3y ≥ 11. Con (1, 4): 2·(1) + 3·(4) = 14, y 14 ≥ 11 es verdadero. Los otros puntos dan una desigualdad falsa: están en el semiplano contrario.",
+   "explicacion_adulto": "Está aprendiendo a resolver una inecuación con dos incógnitas: la recta divide el plano en dos semiplanos y un punto de prueba decide cuál es la solución. El error típico es quedarse con el semiplano contrario; pídale que sustituya el punto y diga en voz alta si la desigualdad resulta verdadera o falsa.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "sustituir",
+     "resultado": "2·(1) + 3·(4) = 14",
+     "texto": "Calculamos el primer miembro."
+    },
+    {
+     "paso": 2,
+     "operacion": "comparar",
+     "resultado": "14 ≥ 11",
+     "texto": "Comprobamos si la desigualdad es cierta."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "¿Cuál de estos puntos es solución de x + y ≤ 0?",
+   "respuesta": "(−3, −3)",
+   "distractores": [
+    {
+     "valor": "(5, 2)",
+     "error": "E01"
+    },
+    {
+     "valor": "(3, 2)",
+     "error": "E01"
+    },
+    {
+     "valor": "(4, 3)",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Sustituye cada punto en x + y ≤ 0. Con (−3, −3): 1·(-3) + 1·(-3) = -6, y -6 ≤ 0 es verdadero. Los otros puntos dan una desigualdad falsa: están en el semiplano contrario.",
+   "explicacion_adulto": "Está aprendiendo a resolver una inecuación con dos incógnitas: la recta divide el plano en dos semiplanos y un punto de prueba decide cuál es la solución. El error típico es quedarse con el semiplano contrario; pídale que sustituya el punto y diga en voz alta si la desigualdad resulta verdadera o falsa.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "sustituir",
+     "resultado": "1·(-3) + 1·(-3) = -6",
+     "texto": "Calculamos el primer miembro."
+    },
+    {
+     "paso": 2,
+     "operacion": "comparar",
+     "resultado": "-6 ≤ 0",
+     "texto": "Comprobamos si la desigualdad es cierta."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "¿Cuál de estos puntos es solución de 3x − y ≥ 5?",
+   "respuesta": "(1, −4)",
+   "distractores": [
+    {
+     "valor": "(1, 0)",
+     "error": "E01"
+    },
+    {
+     "valor": "(1, 5)",
+     "error": "E01"
+    },
+    {
+     "valor": "(−1, −1)",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Sustituye cada punto en 3x − y ≥ 5. Con (1, −4): 3·(1) + -1·(-4) = 7, y 7 ≥ 5 es verdadero. Los otros puntos dan una desigualdad falsa: están en el semiplano contrario.",
+   "explicacion_adulto": "Está aprendiendo a resolver una inecuación con dos incógnitas: la recta divide el plano en dos semiplanos y un punto de prueba decide cuál es la solución. El error típico es quedarse con el semiplano contrario; pídale que sustituya el punto y diga en voz alta si la desigualdad resulta verdadera o falsa.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "sustituir",
+     "resultado": "3·(1) + -1·(-4) = 7",
+     "texto": "Calculamos el primer miembro."
+    },
+    {
+     "paso": 2,
+     "operacion": "comparar",
+     "resultado": "7 ≥ 5",
+     "texto": "Comprobamos si la desigualdad es cierta."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "¿Cuáles son los vértices de la región solución del sistema {x ≥ 0; y ≥ 2; x + y ≤ 6}?",
+   "respuesta": "(0, 2), (4, 2), (0, 6)",
+   "distractores": [
+    {
+     "valor": "(0, 6), (4, 2)",
+     "error": "E01"
+    },
+    {
+     "valor": "(2, 0), (2, 4), (6, 0)",
+     "error": null
+    },
+    {
+     "valor": "(0, 2), (4, 2), (1, 7)",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Dibuja las tres rectas frontera y sombrea en cada una el semiplano que cumple la inecuación (prueba un punto). La región común es un triángulo. Sus vértices son los cortes de cada par de rectas que cumplen las tres inecuaciones: (0, 2), (4, 2), (0, 6).",
+   "explicacion_adulto": "Está aprendiendo que la solución de un sistema de inecuaciones es la intersección de semiplanos, y que sus vértices son cortes de rectas contiguas que además cumplen todas las inecuaciones. El error típico es dar como vértice un corte que queda fuera; pídale que compruebe cada vértice candidato en todas las inecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "x = 0; y = 2; x + y = 6",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Decidimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "vértices",
+     "resultado": "(0, 2), (4, 2), (0, 6)",
+     "texto": "Cortamos las rectas dos a dos y nos quedamos con los cortes que cumplen todo."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "¿Cuáles son los vértices de la región solución del sistema {x ≥ 0; −x + y ≥ 0; y ≤ 3}?",
+   "respuesta": "(0, 0), (3, 3), (0, 3)",
+   "distractores": [
+    {
+     "valor": "(0, 3), (3, 3)",
+     "error": "E01"
+    },
+    {
+     "valor": "(0, 0), (3, 3), (3, 0)",
+     "error": null
+    },
+    {
+     "valor": "(0, 0), (3, 3), (1, 4)",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Dibuja las tres rectas frontera y sombrea en cada una el semiplano que cumple la inecuación (prueba un punto). La región común es un triángulo. Sus vértices son los cortes de cada par de rectas que cumplen las tres inecuaciones: (0, 0), (3, 3), (0, 3).",
+   "explicacion_adulto": "Está aprendiendo que la solución de un sistema de inecuaciones es la intersección de semiplanos, y que sus vértices son cortes de rectas contiguas que además cumplen todas las inecuaciones. El error típico es dar como vértice un corte que queda fuera; pídale que compruebe cada vértice candidato en todas las inecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "x = 0; −x + y = 0; y = 3",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Decidimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "vértices",
+     "resultado": "(0, 0), (3, 3), (0, 3)",
+     "texto": "Cortamos las rectas dos a dos y nos quedamos con los cortes que cumplen todo."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "¿Cuáles son los vértices de la región solución del sistema {x ≥ 0; y ≥ 0; 3x + 4y ≤ 24}?",
+   "respuesta": "(0, 0), (8, 0), (0, 6)",
+   "distractores": [
+    {
+     "valor": "(0, 6), (8, 0)",
+     "error": "E01"
+    },
+    {
+     "valor": "(0, 0), (0, 8), (6, 0)",
+     "error": null
+    },
+    {
+     "valor": "(0, 0), (8, 0), (1, 7)",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Dibuja las tres rectas frontera y sombrea en cada una el semiplano que cumple la inecuación (prueba un punto). La región común es un triángulo. Sus vértices son los cortes de cada par de rectas que cumplen las tres inecuaciones: (0, 0), (8, 0), (0, 6).",
+   "explicacion_adulto": "Está aprendiendo que la solución de un sistema de inecuaciones es la intersección de semiplanos, y que sus vértices son cortes de rectas contiguas que además cumplen todas las inecuaciones. El error típico es dar como vértice un corte que queda fuera; pídale que compruebe cada vértice candidato en todas las inecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "x = 0; y = 0; 3x + 4y = 24",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Decidimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "vértices",
+     "resultado": "(0, 0), (8, 0), (0, 6)",
+     "texto": "Cortamos las rectas dos a dos y nos quedamos con los cortes que cumplen todo."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "¿Cuáles son los vértices de la región solución del sistema {x ≥ 0; −x + y ≥ 0; y ≤ 9}?",
+   "respuesta": "(0, 0), (9, 9), (0, 9)",
+   "distractores": [
+    {
+     "valor": "(0, 9), (9, 9)",
+     "error": "E01"
+    },
+    {
+     "valor": "(0, 0), (9, 9), (9, 0)",
+     "error": null
+    },
+    {
+     "valor": "(0, 0), (9, 9), (1, 10)",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Dibuja las tres rectas frontera y sombrea en cada una el semiplano que cumple la inecuación (prueba un punto). La región común es un triángulo. Sus vértices son los cortes de cada par de rectas que cumplen las tres inecuaciones: (0, 0), (9, 9), (0, 9).",
+   "explicacion_adulto": "Está aprendiendo que la solución de un sistema de inecuaciones es la intersección de semiplanos, y que sus vértices son cortes de rectas contiguas que además cumplen todas las inecuaciones. El error típico es dar como vértice un corte que queda fuera; pídale que compruebe cada vértice candidato en todas las inecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "x = 0; −x + y = 0; y = 9",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Decidimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "vértices",
+     "resultado": "(0, 0), (9, 9), (0, 9)",
+     "texto": "Cortamos las rectas dos a dos y nos quedamos con los cortes que cumplen todo."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "¿Cuáles son los vértices de la región solución del sistema {x ≥ 0; y ≥ 0; x + 3y ≤ 6}?",
+   "respuesta": "(0, 0), (6, 0), (0, 2)",
+   "distractores": [
+    {
+     "valor": "(0, 2), (6, 0)",
+     "error": "E01"
+    },
+    {
+     "valor": "(0, 0), (0, 6), (2, 0)",
+     "error": null
+    },
+    {
+     "valor": "(0, 0), (6, 0), (1, 3)",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Dibuja las tres rectas frontera y sombrea en cada una el semiplano que cumple la inecuación (prueba un punto). La región común es un triángulo. Sus vértices son los cortes de cada par de rectas que cumplen las tres inecuaciones: (0, 0), (6, 0), (0, 2).",
+   "explicacion_adulto": "Está aprendiendo que la solución de un sistema de inecuaciones es la intersección de semiplanos, y que sus vértices son cortes de rectas contiguas que además cumplen todas las inecuaciones. El error típico es dar como vértice un corte que queda fuera; pídale que compruebe cada vértice candidato en todas las inecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "x = 0; y = 0; x + 3y = 6",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Decidimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "vértices",
+     "resultado": "(0, 0), (6, 0), (0, 2)",
+     "texto": "Cortamos las rectas dos a dos y nos quedamos con los cortes que cumplen todo."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "¿Cuáles son los vértices de la región solución del sistema {x ≥ 0; y ≥ 3; x + y ≤ 5}?",
+   "respuesta": "(0, 3), (2, 3), (0, 5)",
+   "distractores": [
+    {
+     "valor": "(0, 5), (2, 3)",
+     "error": "E01"
+    },
+    {
+     "valor": "(3, 0), (3, 2), (5, 0)",
+     "error": null
+    },
+    {
+     "valor": "(0, 3), (2, 3), (1, 6)",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Dibuja las tres rectas frontera y sombrea en cada una el semiplano que cumple la inecuación (prueba un punto). La región común es un triángulo. Sus vértices son los cortes de cada par de rectas que cumplen las tres inecuaciones: (0, 3), (2, 3), (0, 5).",
+   "explicacion_adulto": "Está aprendiendo que la solución de un sistema de inecuaciones es la intersección de semiplanos, y que sus vértices son cortes de rectas contiguas que además cumplen todas las inecuaciones. El error típico es dar como vértice un corte que queda fuera; pídale que compruebe cada vértice candidato en todas las inecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "x = 0; y = 3; x + y = 5",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Decidimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "vértices",
+     "resultado": "(0, 3), (2, 3), (0, 5)",
+     "texto": "Cortamos las rectas dos a dos y nos quedamos con los cortes que cumplen todo."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "¿Cuáles son los vértices de la región solución del sistema {x ≥ 0; −x + y ≥ 0; y ≤ 6}?",
+   "respuesta": "(0, 0), (6, 6), (0, 6)",
+   "distractores": [
+    {
+     "valor": "(0, 6), (6, 6)",
+     "error": "E01"
+    },
+    {
+     "valor": "(0, 0), (6, 6), (6, 0)",
+     "error": null
+    },
+    {
+     "valor": "(0, 0), (6, 6), (1, 7)",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Dibuja las tres rectas frontera y sombrea en cada una el semiplano que cumple la inecuación (prueba un punto). La región común es un triángulo. Sus vértices son los cortes de cada par de rectas que cumplen las tres inecuaciones: (0, 0), (6, 6), (0, 6).",
+   "explicacion_adulto": "Está aprendiendo que la solución de un sistema de inecuaciones es la intersección de semiplanos, y que sus vértices son cortes de rectas contiguas que además cumplen todas las inecuaciones. El error típico es dar como vértice un corte que queda fuera; pídale que compruebe cada vértice candidato en todas las inecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "x = 0; −x + y = 0; y = 6",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Decidimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "vértices",
+     "resultado": "(0, 0), (6, 6), (0, 6)",
+     "texto": "Cortamos las rectas dos a dos y nos quedamos con los cortes que cumplen todo."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "¿Cuáles son los vértices de la región solución del sistema {x ≥ 0; −x + y ≥ 0; y ≤ 5}?",
+   "respuesta": "(0, 0), (5, 5), (0, 5)",
+   "distractores": [
+    {
+     "valor": "(0, 5), (5, 5)",
+     "error": "E01"
+    },
+    {
+     "valor": "(0, 0), (5, 5), (5, 0)",
+     "error": null
+    },
+    {
+     "valor": "(0, 0), (5, 5), (1, 6)",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Dibuja las tres rectas frontera y sombrea en cada una el semiplano que cumple la inecuación (prueba un punto). La región común es un triángulo. Sus vértices son los cortes de cada par de rectas que cumplen las tres inecuaciones: (0, 0), (5, 5), (0, 5).",
+   "explicacion_adulto": "Está aprendiendo que la solución de un sistema de inecuaciones es la intersección de semiplanos, y que sus vértices son cortes de rectas contiguas que además cumplen todas las inecuaciones. El error típico es dar como vértice un corte que queda fuera; pídale que compruebe cada vértice candidato en todas las inecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "x = 0; −x + y = 0; y = 5",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Decidimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "vértices",
+     "resultado": "(0, 0), (5, 5), (0, 5)",
+     "texto": "Cortamos las rectas dos a dos y nos quedamos con los cortes que cumplen todo."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "¿Cuáles son los vértices de la región solución del sistema {x ≥ 0; y ≤ 5; x − y ≤ 2}?",
+   "respuesta": "(0, −2), (7, 5), (0, 5)",
+   "distractores": [
+    {
+     "valor": "(0, −2), (7, 5)",
+     "error": "E01"
+    },
+    {
+     "valor": "(−2, 0), (5, 7), (5, 0)",
+     "error": null
+    },
+    {
+     "valor": "(0, −2), (7, 5), (1, 6)",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Dibuja las tres rectas frontera y sombrea en cada una el semiplano que cumple la inecuación (prueba un punto). La región común es un triángulo. Sus vértices son los cortes de cada par de rectas que cumplen las tres inecuaciones: (0, −2), (7, 5), (0, 5).",
+   "explicacion_adulto": "Está aprendiendo que la solución de un sistema de inecuaciones es la intersección de semiplanos, y que sus vértices son cortes de rectas contiguas que además cumplen todas las inecuaciones. El error típico es dar como vértice un corte que queda fuera; pídale que compruebe cada vértice candidato en todas las inecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "x = 0; y = 5; x − y = 2",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Decidimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "vértices",
+     "resultado": "(0, −2), (7, 5), (0, 5)",
+     "texto": "Cortamos las rectas dos a dos y nos quedamos con los cortes que cumplen todo."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "¿Cuáles son los vértices de la región solución del sistema {x ≥ 0; y ≥ 0; 2x + 3y ≤ 12}?",
+   "respuesta": "(0, 0), (6, 0), (0, 4)",
+   "distractores": [
+    {
+     "valor": "(0, 4), (6, 0)",
+     "error": "E01"
+    },
+    {
+     "valor": "(0, 0), (0, 6), (4, 0)",
+     "error": null
+    },
+    {
+     "valor": "(0, 0), (6, 0), (1, 5)",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Dibuja las tres rectas frontera y sombrea en cada una el semiplano que cumple la inecuación (prueba un punto). La región común es un triángulo. Sus vértices son los cortes de cada par de rectas que cumplen las tres inecuaciones: (0, 0), (6, 0), (0, 4).",
+   "explicacion_adulto": "Está aprendiendo que la solución de un sistema de inecuaciones es la intersección de semiplanos, y que sus vértices son cortes de rectas contiguas que además cumplen todas las inecuaciones. El error típico es dar como vértice un corte que queda fuera; pídale que compruebe cada vértice candidato en todas las inecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "x = 0; y = 0; 2x + 3y = 12",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Decidimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "vértices",
+     "resultado": "(0, 0), (6, 0), (0, 4)",
+     "texto": "Cortamos las rectas dos a dos y nos quedamos con los cortes que cumplen todo."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "¿Cuáles son los vértices de la región solución del sistema {x ≥ 0; y ≥ 1; x + y ≤ 9}?",
+   "respuesta": "(0, 1), (8, 1), (0, 9)",
+   "distractores": [
+    {
+     "valor": "(0, 9), (8, 1)",
+     "error": "E01"
+    },
+    {
+     "valor": "(1, 0), (1, 8), (9, 0)",
+     "error": null
+    },
+    {
+     "valor": "(0, 1), (8, 1), (1, 10)",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Dibuja las tres rectas frontera y sombrea en cada una el semiplano que cumple la inecuación (prueba un punto). La región común es un triángulo. Sus vértices son los cortes de cada par de rectas que cumplen las tres inecuaciones: (0, 1), (8, 1), (0, 9).",
+   "explicacion_adulto": "Está aprendiendo que la solución de un sistema de inecuaciones es la intersección de semiplanos, y que sus vértices son cortes de rectas contiguas que además cumplen todas las inecuaciones. El error típico es dar como vértice un corte que queda fuera; pídale que compruebe cada vértice candidato en todas las inecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "x = 0; y = 1; x + y = 9",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Decidimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "vértices",
+     "resultado": "(0, 1), (8, 1), (0, 9)",
+     "texto": "Cortamos las rectas dos a dos y nos quedamos con los cortes que cumplen todo."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "¿Cuáles son los vértices de la región solución del sistema {x ≥ 0; y ≥ 1; x + y ≤ 5}?",
+   "respuesta": "(0, 1), (4, 1), (0, 5)",
+   "distractores": [
+    {
+     "valor": "(0, 5), (4, 1)",
+     "error": "E01"
+    },
+    {
+     "valor": "(1, 0), (1, 4), (5, 0)",
+     "error": null
+    },
+    {
+     "valor": "(0, 1), (4, 1), (1, 6)",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Dibuja las tres rectas frontera y sombrea en cada una el semiplano que cumple la inecuación (prueba un punto). La región común es un triángulo. Sus vértices son los cortes de cada par de rectas que cumplen las tres inecuaciones: (0, 1), (4, 1), (0, 5).",
+   "explicacion_adulto": "Está aprendiendo que la solución de un sistema de inecuaciones es la intersección de semiplanos, y que sus vértices son cortes de rectas contiguas que además cumplen todas las inecuaciones. El error típico es dar como vértice un corte que queda fuera; pídale que compruebe cada vértice candidato en todas las inecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "rectas",
+     "resultado": "x = 0; y = 1; x + y = 5",
+     "texto": "Escribimos las rectas frontera."
+    },
+    {
+     "paso": 2,
+     "operacion": "semiplanos",
+     "resultado": "punto de prueba",
+     "texto": "Decidimos el lado de cada una."
+    },
+    {
+     "paso": 3,
+     "operacion": "vértices",
+     "resultado": "(0, 1), (4, 1), (0, 5)",
+     "texto": "Cortamos las rectas dos a dos y nos quedamos con los cortes que cumplen todo."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "¿Cuál de estos puntos pertenece a la región solución del sistema {x ≥ 0; −x + y ≥ 0; y ≤ 8}?",
+   "respuesta": "(5, 7)",
+   "distractores": [
+    {
+     "valor": "(1, 0)",
+     "error": "E01"
+    },
+    {
+     "valor": "(5, −1)",
+     "error": "E01"
+    },
+    {
+     "valor": "(3, 1)",
+     "error": "E01"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Un punto es solución del sistema si cumple todas las inecuaciones a la vez. (5, 7) las cumple todas; en cambio, (1, 0) no cumple −x + y ≥ 0; (5, −1) no cumple −x + y ≥ 0; (3, 1) no cumple −x + y ≥ 0.",
+   "explicacion_adulto": "Está aprendiendo que la solución de un sistema de inecuaciones es la intersección de semiplanos, y que sus vértices son cortes de rectas contiguas que además cumplen todas las inecuaciones. El error típico es dar como vértice un corte que queda fuera; pídale que compruebe cada vértice candidato en todas las inecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "sustituir",
+     "resultado": "(5, 7)",
+     "texto": "Probamos el punto en cada inecuación."
+    },
+    {
+     "paso": 2,
+     "operacion": "comprobar",
+     "resultado": "todas verdaderas",
+     "texto": "Si falla una sola, no es solución."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "¿Cuál de estos puntos pertenece a la región solución del sistema {x ≥ 0; −x + y ≥ 0; y ≤ 7}?",
+   "respuesta": "(2, 3)",
+   "distractores": [
+    {
+     "valor": "(5, 8)",
+     "error": "E01"
+    },
+    {
+     "valor": "(−2, 2)",
+     "error": "E01"
+    },
+    {
+     "valor": "(6, 5)",
+     "error": "E01"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Un punto es solución del sistema si cumple todas las inecuaciones a la vez. (2, 3) las cumple todas; en cambio, (5, 8) no cumple y ≤ 7; (−2, 2) no cumple x ≥ 0; (6, 5) no cumple −x + y ≥ 0.",
+   "explicacion_adulto": "Está aprendiendo que la solución de un sistema de inecuaciones es la intersección de semiplanos, y que sus vértices son cortes de rectas contiguas que además cumplen todas las inecuaciones. El error típico es dar como vértice un corte que queda fuera; pídale que compruebe cada vértice candidato en todas las inecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "sustituir",
+     "resultado": "(2, 3)",
+     "texto": "Probamos el punto en cada inecuación."
+    },
+    {
+     "paso": 2,
+     "operacion": "comprobar",
+     "resultado": "todas verdaderas",
+     "texto": "Si falla una sola, no es solución."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "¿Cuál de estos puntos pertenece a la región solución del sistema {x ≥ 0; y ≥ 0; x + y ≤ 6}?",
+   "respuesta": "(1, 4)",
+   "distractores": [
+    {
+     "valor": "(−2, 8)",
+     "error": "E01"
+    },
+    {
+     "valor": "(8, 1)",
+     "error": "E01"
+    },
+    {
+     "valor": "(6, 6)",
+     "error": "E01"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Un punto es solución del sistema si cumple todas las inecuaciones a la vez. (1, 4) las cumple todas; en cambio, (−2, 8) no cumple x ≥ 0; (8, 1) no cumple x + y ≤ 6; (6, 6) no cumple x + y ≤ 6.",
+   "explicacion_adulto": "Está aprendiendo que la solución de un sistema de inecuaciones es la intersección de semiplanos, y que sus vértices son cortes de rectas contiguas que además cumplen todas las inecuaciones. El error típico es dar como vértice un corte que queda fuera; pídale que compruebe cada vértice candidato en todas las inecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "sustituir",
+     "resultado": "(1, 4)",
+     "texto": "Probamos el punto en cada inecuación."
+    },
+    {
+     "paso": 2,
+     "operacion": "comprobar",
+     "resultado": "todas verdaderas",
+     "texto": "Si falla una sola, no es solución."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "¿Cuál de estos puntos pertenece a la región solución del sistema {x ≥ 0; y ≥ 0; 3x + 4y ≤ 36}?",
+   "respuesta": "(4, 3)",
+   "distractores": [
+    {
+     "valor": "(2, −2)",
+     "error": "E01"
+    },
+    {
+     "valor": "(6, 7)",
+     "error": "E01"
+    },
+    {
+     "valor": "(4, −2)",
+     "error": "E01"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Un punto es solución del sistema si cumple todas las inecuaciones a la vez. (4, 3) las cumple todas; en cambio, (2, −2) no cumple y ≥ 0; (6, 7) no cumple 3x + 4y ≤ 36; (4, −2) no cumple y ≥ 0.",
+   "explicacion_adulto": "Está aprendiendo que la solución de un sistema de inecuaciones es la intersección de semiplanos, y que sus vértices son cortes de rectas contiguas que además cumplen todas las inecuaciones. El error típico es dar como vértice un corte que queda fuera; pídale que compruebe cada vértice candidato en todas las inecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "sustituir",
+     "resultado": "(4, 3)",
+     "texto": "Probamos el punto en cada inecuación."
+    },
+    {
+     "paso": 2,
+     "operacion": "comprobar",
+     "resultado": "todas verdaderas",
+     "texto": "Si falla una sola, no es solución."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "¿Cuál de estos puntos pertenece a la región solución del sistema {x ≥ 0; y ≤ 5; x − y ≤ 2}?",
+   "respuesta": "(2, 4)",
+   "distractores": [
+    {
+     "valor": "(6, −2)",
+     "error": "E01"
+    },
+    {
+     "valor": "(8, 6)",
+     "error": "E01"
+    },
+    {
+     "valor": "(5, 8)",
+     "error": "E01"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Un punto es solución del sistema si cumple todas las inecuaciones a la vez. (2, 4) las cumple todas; en cambio, (6, −2) no cumple x − y ≤ 2; (8, 6) no cumple y ≤ 5; (5, 8) no cumple y ≤ 5.",
+   "explicacion_adulto": "Está aprendiendo que la solución de un sistema de inecuaciones es la intersección de semiplanos, y que sus vértices son cortes de rectas contiguas que además cumplen todas las inecuaciones. El error típico es dar como vértice un corte que queda fuera; pídale que compruebe cada vértice candidato en todas las inecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "sustituir",
+     "resultado": "(2, 4)",
+     "texto": "Probamos el punto en cada inecuación."
+    },
+    {
+     "paso": 2,
+     "operacion": "comprobar",
+     "resultado": "todas verdaderas",
+     "texto": "Si falla una sola, no es solución."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "¿Cuál de estos puntos pertenece a la región solución del sistema {x ≥ 0; y ≥ 1; x + y ≤ 10}?",
+   "respuesta": "(3, 5)",
+   "distractores": [
+    {
+     "valor": "(4, −2)",
+     "error": "E01"
+    },
+    {
+     "valor": "(2, −2)",
+     "error": "E01"
+    },
+    {
+     "valor": "(−2, 7)",
+     "error": "E01"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Un punto es solución del sistema si cumple todas las inecuaciones a la vez. (3, 5) las cumple todas; en cambio, (4, −2) no cumple y ≥ 1; (2, −2) no cumple y ≥ 1; (−2, 7) no cumple x ≥ 0.",
+   "explicacion_adulto": "Está aprendiendo que la solución de un sistema de inecuaciones es la intersección de semiplanos, y que sus vértices son cortes de rectas contiguas que además cumplen todas las inecuaciones. El error típico es dar como vértice un corte que queda fuera; pídale que compruebe cada vértice candidato en todas las inecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "sustituir",
+     "resultado": "(3, 5)",
+     "texto": "Probamos el punto en cada inecuación."
+    },
+    {
+     "paso": 2,
+     "operacion": "comprobar",
+     "resultado": "todas verdaderas",
+     "texto": "Si falla una sola, no es solución."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "¿Cuál de estos puntos pertenece a la región solución del sistema {x ≥ 0; y ≥ 0; 2x + 3y ≤ 12}?",
+   "respuesta": "(1, 1)",
+   "distractores": [
+    {
+     "valor": "(8, −2)",
+     "error": "E01"
+    },
+    {
+     "valor": "(2, 4)",
+     "error": "E01"
+    },
+    {
+     "valor": "(5, 3)",
+     "error": "E01"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Un punto es solución del sistema si cumple todas las inecuaciones a la vez. (1, 1) las cumple todas; en cambio, (8, −2) no cumple y ≥ 0; (2, 4) no cumple 2x + 3y ≤ 12; (5, 3) no cumple 2x + 3y ≤ 12.",
+   "explicacion_adulto": "Está aprendiendo que la solución de un sistema de inecuaciones es la intersección de semiplanos, y que sus vértices son cortes de rectas contiguas que además cumplen todas las inecuaciones. El error típico es dar como vértice un corte que queda fuera; pídale que compruebe cada vértice candidato en todas las inecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "sustituir",
+     "resultado": "(1, 1)",
+     "texto": "Probamos el punto en cada inecuación."
+    },
+    {
+     "paso": 2,
+     "operacion": "comprobar",
+     "resultado": "todas verdaderas",
+     "texto": "Si falla una sola, no es solución."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "La región solución del sistema {x + y ≥ 7; x − y ≤ 1} no está acotada y tiene un único vértice. ¿Cuál es?",
+   "respuesta": "(4, 3)",
+   "distractores": [
+    {
+     "valor": "(3, 4)",
+     "error": null
+    },
+    {
+     "valor": "(7, 0)",
+     "error": "E02"
+    },
+    {
+     "valor": "(1, 0)",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "El vértice es el corte de las dos rectas frontera: x + y = 7 y x − y = 1. Sumando, 2x = 8, x = 4; y = 3. Comprueba que cumple las dos inecuaciones con igualdad.",
+   "explicacion_adulto": "Está aprendiendo que la solución de un sistema de inecuaciones es la intersección de semiplanos, y que sus vértices son cortes de rectas contiguas que además cumplen todas las inecuaciones. El error típico es dar como vértice un corte que queda fuera; pídale que compruebe cada vértice candidato en todas las inecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "sumar",
+     "resultado": "2x = 8",
+     "texto": "Sumamos las dos ecuaciones de las rectas."
+    },
+    {
+     "paso": 2,
+     "operacion": "x",
+     "resultado": "4",
+     "texto": "Despejamos x."
+    },
+    {
+     "paso": 3,
+     "operacion": "y",
+     "resultado": "3",
+     "texto": "Sustituimos para hallar y."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "La región solución del sistema {x + y ≥ 4; x − y ≤ 2} no está acotada y tiene un único vértice. ¿Cuál es?",
+   "respuesta": "(3, 1)",
+   "distractores": [
+    {
+     "valor": "(1, 3)",
+     "error": null
+    },
+    {
+     "valor": "(4, 0)",
+     "error": "E02"
+    },
+    {
+     "valor": "(2, 0)",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "El vértice es el corte de las dos rectas frontera: x + y = 4 y x − y = 2. Sumando, 2x = 6, x = 3; y = 1. Comprueba que cumple las dos inecuaciones con igualdad.",
+   "explicacion_adulto": "Está aprendiendo que la solución de un sistema de inecuaciones es la intersección de semiplanos, y que sus vértices son cortes de rectas contiguas que además cumplen todas las inecuaciones. El error típico es dar como vértice un corte que queda fuera; pídale que compruebe cada vértice candidato en todas las inecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "sumar",
+     "resultado": "2x = 6",
+     "texto": "Sumamos las dos ecuaciones de las rectas."
+    },
+    {
+     "paso": 2,
+     "operacion": "x",
+     "resultado": "3",
+     "texto": "Despejamos x."
+    },
+    {
+     "paso": 3,
+     "operacion": "y",
+     "resultado": "1",
+     "texto": "Sustituimos para hallar y."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "La región solución del sistema {x + y ≥ 2; x − y ≤ −4} no está acotada y tiene un único vértice. ¿Cuál es?",
+   "respuesta": "(−1, 3)",
+   "distractores": [
+    {
+     "valor": "(3, −1)",
+     "error": null
+    },
+    {
+     "valor": "(2, 0)",
+     "error": "E02"
+    },
+    {
+     "valor": "(−4, 0)",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "El vértice es el corte de las dos rectas frontera: x + y = 2 y x − y = −4. Sumando, 2x = -2, x = −1; y = 3. Comprueba que cumple las dos inecuaciones con igualdad.",
+   "explicacion_adulto": "Está aprendiendo que la solución de un sistema de inecuaciones es la intersección de semiplanos, y que sus vértices son cortes de rectas contiguas que además cumplen todas las inecuaciones. El error típico es dar como vértice un corte que queda fuera; pídale que compruebe cada vértice candidato en todas las inecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "sumar",
+     "resultado": "2x = -2",
+     "texto": "Sumamos las dos ecuaciones de las rectas."
+    },
+    {
+     "paso": 2,
+     "operacion": "x",
+     "resultado": "−1",
+     "texto": "Despejamos x."
+    },
+    {
+     "paso": 3,
+     "operacion": "y",
+     "resultado": "3",
+     "texto": "Sustituimos para hallar y."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "La región solución del sistema {x + y ≥ 8; x − y ≤ 4} no está acotada y tiene un único vértice. ¿Cuál es?",
+   "respuesta": "(6, 2)",
+   "distractores": [
+    {
+     "valor": "(2, 6)",
+     "error": null
+    },
+    {
+     "valor": "(8, 0)",
+     "error": "E02"
+    },
+    {
+     "valor": "(4, 0)",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "El vértice es el corte de las dos rectas frontera: x + y = 8 y x − y = 4. Sumando, 2x = 12, x = 6; y = 2. Comprueba que cumple las dos inecuaciones con igualdad.",
+   "explicacion_adulto": "Está aprendiendo que la solución de un sistema de inecuaciones es la intersección de semiplanos, y que sus vértices son cortes de rectas contiguas que además cumplen todas las inecuaciones. El error típico es dar como vértice un corte que queda fuera; pídale que compruebe cada vértice candidato en todas las inecuaciones.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "sumar",
+     "resultado": "2x = 12",
+     "texto": "Sumamos las dos ecuaciones de las rectas."
+    },
+    {
+     "paso": 2,
+     "operacion": "x",
+     "resultado": "6",
+     "texto": "Despejamos x."
+    },
+    {
+     "paso": 3,
+     "operacion": "y",
+     "resultado": "2",
+     "texto": "Sustituimos para hallar y."
+    }
+   ],
+   "plantilla": "P05"
+  }
+ ]
+}

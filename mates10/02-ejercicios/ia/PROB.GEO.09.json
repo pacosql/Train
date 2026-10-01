@@ -1,0 +1,1566 @@
+{
+ "habilidad": "PROB.GEO.09",
+ "generado_por": "claude (skill mates10-generar-ejercicios v1)",
+ "ejercicios": [
+  {
+   "dificultad": 2,
+   "enunciado": "Desde un punto del llano se ve la cima de un monte con un ángulo de elevación de 20°. Tras avanzar 290 m en línea recta hacia el monte, el ángulo pasa a ser de 35°. ¿Qué altura tiene el monte sobre el llano? Redondea a las décimas. (tan 20° ≈ 0,36; tan 35° ≈ 0,7)",
+   "respuesta": "214,9 m",
+   "distractores": [
+    {
+     "valor": "203 m",
+     "error": "E01"
+    },
+    {
+     "valor": "77,7 m",
+     "error": "E02"
+    },
+    {
+     "valor": "429,9 m",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "GEO.TRIG.04",
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Llama h a la altura y x a la distancia desde el punto más cercano al pie. Desde cerca: tan 35° = h/x → h = 0,7x. Desde lejos: tan 20° = h/(x + 290) → h = 0,36(x + 290). Igualando: 0,7x = 0,36x + 104,4 → 0,34x = 104,4 → x ≈ 307,1 m. Entonces h = 0,7 × 307,06 ≈ 214,9 m.",
+   "explicacion_adulto": "Está aprendiendo a resolver la doble observación: hay dos triángulos rectángulos que comparten la altura h, y la distancia al pie (x) también es desconocida. Se plantea un sistema con dos tangentes: tan β = h/x (desde el punto cercano) y tan α = h/(x + d) (desde el lejano). Errores típicos: usar d como si fuera la distancia al pie, restar los ángulos o sumar d en el triángulo equivocado. Pídele que dibuje los dos puntos de observación y marque qué distancia conoce y cuál no.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "h = 0,7x",
+     "resultado": "",
+     "texto": "Triángulo del punto cercano."
+    },
+    {
+     "paso": 2,
+     "operacion": "h = 0,36(x + 290)",
+     "resultado": "",
+     "texto": "Triángulo del punto lejano."
+    },
+    {
+     "paso": 3,
+     "operacion": "x = 104,4 : 0,34",
+     "resultado": "307,1 m",
+     "texto": "Igualación."
+    },
+    {
+     "paso": 4,
+     "operacion": "h = 0,7 × x",
+     "resultado": "214,9 m",
+     "texto": "Altura."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Desde un punto del llano se ve la cima de un monte con un ángulo de elevación de 40°. Tras avanzar 410 m en línea recta hacia el monte, el ángulo pasa a ser de 60°. ¿Qué altura tiene el monte sobre el llano? Redondea a las décimas. (tan 40° ≈ 0,84; tan 60° ≈ 1,73)",
+   "respuesta": "669,5 m",
+   "distractores": [
+    {
+     "valor": "709,3 m",
+     "error": "E01"
+    },
+    {
+     "valor": "149,2 m",
+     "error": "E02"
+    },
+    {
+     "valor": "1338,9 m",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "GEO.TRIG.04",
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Llama h a la altura y x a la distancia desde el punto más cercano al pie. Desde cerca: tan 60° = h/x → h = 1,73x. Desde lejos: tan 40° = h/(x + 410) → h = 0,84(x + 410). Igualando: 1,73x = 0,84x + 344,4 → 0,89x = 344,4 → x ≈ 387 m. Entonces h = 1,73 × 386,97 ≈ 669,5 m.",
+   "explicacion_adulto": "Está aprendiendo a resolver la doble observación: hay dos triángulos rectángulos que comparten la altura h, y la distancia al pie (x) también es desconocida. Se plantea un sistema con dos tangentes: tan β = h/x (desde el punto cercano) y tan α = h/(x + d) (desde el lejano). Errores típicos: usar d como si fuera la distancia al pie, restar los ángulos o sumar d en el triángulo equivocado. Pídele que dibuje los dos puntos de observación y marque qué distancia conoce y cuál no.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "h = 1,73x",
+     "resultado": "",
+     "texto": "Triángulo del punto cercano."
+    },
+    {
+     "paso": 2,
+     "operacion": "h = 0,84(x + 410)",
+     "resultado": "",
+     "texto": "Triángulo del punto lejano."
+    },
+    {
+     "paso": 3,
+     "operacion": "x = 344,4 : 0,89",
+     "resultado": "387 m",
+     "texto": "Igualación."
+    },
+    {
+     "paso": 4,
+     "operacion": "h = 1,73 × x",
+     "resultado": "669,5 m",
+     "texto": "Altura."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Desde un punto del llano se ve la cima de un monte con un ángulo de elevación de 20°. Tras avanzar 120 m en línea recta hacia el monte, el ángulo pasa a ser de 30°. ¿Qué altura tiene el monte sobre el llano? Redondea a las décimas. (tan 20° ≈ 0,36; tan 30° ≈ 0,58)",
+   "respuesta": "113,9 m",
+   "distractores": [
+    {
+     "valor": "69,6 m",
+     "error": "E01"
+    },
+    {
+     "valor": "21,2 m",
+     "error": "E02"
+    },
+    {
+     "valor": "227,8 m",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "GEO.TRIG.04",
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Llama h a la altura y x a la distancia desde el punto más cercano al pie. Desde cerca: tan 30° = h/x → h = 0,58x. Desde lejos: tan 20° = h/(x + 120) → h = 0,36(x + 120). Igualando: 0,58x = 0,36x + 43,2 → 0,22x = 43,2 → x ≈ 196,4 m. Entonces h = 0,58 × 196,36 ≈ 113,9 m.",
+   "explicacion_adulto": "Está aprendiendo a resolver la doble observación: hay dos triángulos rectángulos que comparten la altura h, y la distancia al pie (x) también es desconocida. Se plantea un sistema con dos tangentes: tan β = h/x (desde el punto cercano) y tan α = h/(x + d) (desde el lejano). Errores típicos: usar d como si fuera la distancia al pie, restar los ángulos o sumar d en el triángulo equivocado. Pídele que dibuje los dos puntos de observación y marque qué distancia conoce y cuál no.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "h = 0,58x",
+     "resultado": "",
+     "texto": "Triángulo del punto cercano."
+    },
+    {
+     "paso": 2,
+     "operacion": "h = 0,36(x + 120)",
+     "resultado": "",
+     "texto": "Triángulo del punto lejano."
+    },
+    {
+     "paso": 3,
+     "operacion": "x = 43,2 : 0,22",
+     "resultado": "196,4 m",
+     "texto": "Igualación."
+    },
+    {
+     "paso": 4,
+     "operacion": "h = 0,58 × x",
+     "resultado": "113,9 m",
+     "texto": "Altura."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Desde un punto del llano se ve la cima de un monte con un ángulo de elevación de 30°. Tras avanzar 470 m en línea recta hacia el monte, el ángulo pasa a ser de 55°. ¿Qué altura tiene el monte sobre el llano? Redondea a las décimas. (tan 30° ≈ 0,58; tan 55° ≈ 1,43)",
+   "respuesta": "458,6 m",
+   "distractores": [
+    {
+     "valor": "672,1 m",
+     "error": "E01"
+    },
+    {
+     "valor": "219,2 m",
+     "error": "E02"
+    },
+    {
+     "valor": "917,2 m",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "GEO.TRIG.04",
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Llama h a la altura y x a la distancia desde el punto más cercano al pie. Desde cerca: tan 55° = h/x → h = 1,43x. Desde lejos: tan 30° = h/(x + 470) → h = 0,58(x + 470). Igualando: 1,43x = 0,58x + 272,6 → 0,85x = 272,6 → x ≈ 320,7 m. Entonces h = 1,43 × 320,71 ≈ 458,6 m.",
+   "explicacion_adulto": "Está aprendiendo a resolver la doble observación: hay dos triángulos rectángulos que comparten la altura h, y la distancia al pie (x) también es desconocida. Se plantea un sistema con dos tangentes: tan β = h/x (desde el punto cercano) y tan α = h/(x + d) (desde el lejano). Errores típicos: usar d como si fuera la distancia al pie, restar los ángulos o sumar d en el triángulo equivocado. Pídele que dibuje los dos puntos de observación y marque qué distancia conoce y cuál no.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "h = 1,43x",
+     "resultado": "",
+     "texto": "Triángulo del punto cercano."
+    },
+    {
+     "paso": 2,
+     "operacion": "h = 0,58(x + 470)",
+     "resultado": "",
+     "texto": "Triángulo del punto lejano."
+    },
+    {
+     "paso": 3,
+     "operacion": "x = 272,6 : 0,85",
+     "resultado": "320,7 m",
+     "texto": "Igualación."
+    },
+    {
+     "paso": 4,
+     "operacion": "h = 1,43 × x",
+     "resultado": "458,6 m",
+     "texto": "Altura."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Desde un punto del llano se ve la cima de un monte con un ángulo de elevación de 20°. Tras avanzar 130 m en línea recta hacia el monte, el ángulo pasa a ser de 30°. ¿Qué altura tiene el monte sobre el llano? Redondea a las décimas. (tan 20° ≈ 0,36; tan 30° ≈ 0,58)",
+   "respuesta": "123,4 m",
+   "distractores": [
+    {
+     "valor": "75,4 m",
+     "error": "E01"
+    },
+    {
+     "valor": "22,9 m",
+     "error": "E02"
+    },
+    {
+     "valor": "246,8 m",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "GEO.TRIG.04",
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Llama h a la altura y x a la distancia desde el punto más cercano al pie. Desde cerca: tan 30° = h/x → h = 0,58x. Desde lejos: tan 20° = h/(x + 130) → h = 0,36(x + 130). Igualando: 0,58x = 0,36x + 46,8 → 0,22x = 46,8 → x ≈ 212,7 m. Entonces h = 0,58 × 212,73 ≈ 123,4 m.",
+   "explicacion_adulto": "Está aprendiendo a resolver la doble observación: hay dos triángulos rectángulos que comparten la altura h, y la distancia al pie (x) también es desconocida. Se plantea un sistema con dos tangentes: tan β = h/x (desde el punto cercano) y tan α = h/(x + d) (desde el lejano). Errores típicos: usar d como si fuera la distancia al pie, restar los ángulos o sumar d en el triángulo equivocado. Pídele que dibuje los dos puntos de observación y marque qué distancia conoce y cuál no.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "h = 0,58x",
+     "resultado": "",
+     "texto": "Triángulo del punto cercano."
+    },
+    {
+     "paso": 2,
+     "operacion": "h = 0,36(x + 130)",
+     "resultado": "",
+     "texto": "Triángulo del punto lejano."
+    },
+    {
+     "paso": 3,
+     "operacion": "x = 46,8 : 0,22",
+     "resultado": "212,7 m",
+     "texto": "Igualación."
+    },
+    {
+     "paso": 4,
+     "operacion": "h = 0,58 × x",
+     "resultado": "123,4 m",
+     "texto": "Altura."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Desde un punto del llano se ve la cima de un monte con un ángulo de elevación de 25°. Tras avanzar 210 m en línea recta hacia el monte, el ángulo pasa a ser de 60°. ¿Qué altura tiene el monte sobre el llano? Redondea a las décimas. (tan 25° ≈ 0,47; tan 60° ≈ 1,73)",
+   "respuesta": "135,5 m",
+   "distractores": [
+    {
+     "valor": "363,3 m",
+     "error": "E01"
+    },
+    {
+     "valor": "147 m",
+     "error": "E02"
+    },
+    {
+     "valor": "271 m",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "GEO.TRIG.04",
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Llama h a la altura y x a la distancia desde el punto más cercano al pie. Desde cerca: tan 60° = h/x → h = 1,73x. Desde lejos: tan 25° = h/(x + 210) → h = 0,47(x + 210). Igualando: 1,73x = 0,47x + 98,7 → 1,26x = 98,7 → x ≈ 78,3 m. Entonces h = 1,73 × 78,33 ≈ 135,5 m.",
+   "explicacion_adulto": "Está aprendiendo a resolver la doble observación: hay dos triángulos rectángulos que comparten la altura h, y la distancia al pie (x) también es desconocida. Se plantea un sistema con dos tangentes: tan β = h/x (desde el punto cercano) y tan α = h/(x + d) (desde el lejano). Errores típicos: usar d como si fuera la distancia al pie, restar los ángulos o sumar d en el triángulo equivocado. Pídele que dibuje los dos puntos de observación y marque qué distancia conoce y cuál no.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "h = 1,73x",
+     "resultado": "",
+     "texto": "Triángulo del punto cercano."
+    },
+    {
+     "paso": 2,
+     "operacion": "h = 0,47(x + 210)",
+     "resultado": "",
+     "texto": "Triángulo del punto lejano."
+    },
+    {
+     "paso": 3,
+     "operacion": "x = 98,7 : 1,26",
+     "resultado": "78,3 m",
+     "texto": "Igualación."
+    },
+    {
+     "paso": 4,
+     "operacion": "h = 1,73 × x",
+     "resultado": "135,5 m",
+     "texto": "Altura."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Desde un punto del llano se ve la cima de un monte con un ángulo de elevación de 30°. Tras avanzar 460 m en línea recta hacia el monte, el ángulo pasa a ser de 65°. ¿Qué altura tiene el monte sobre el llano? Redondea a las décimas. (tan 30° ≈ 0,58; tan 65° ≈ 2,14)",
+   "respuesta": "366 m",
+   "distractores": [
+    {
+     "valor": "984,4 m",
+     "error": "E01"
+    },
+    {
+     "valor": "322,1 m",
+     "error": "E02"
+    },
+    {
+     "valor": "732 m",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "GEO.TRIG.04",
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Llama h a la altura y x a la distancia desde el punto más cercano al pie. Desde cerca: tan 65° = h/x → h = 2,14x. Desde lejos: tan 30° = h/(x + 460) → h = 0,58(x + 460). Igualando: 2,14x = 0,58x + 266,8 → 1,56x = 266,8 → x ≈ 171 m. Entonces h = 2,14 × 171,03 ≈ 366 m.",
+   "explicacion_adulto": "Está aprendiendo a resolver la doble observación: hay dos triángulos rectángulos que comparten la altura h, y la distancia al pie (x) también es desconocida. Se plantea un sistema con dos tangentes: tan β = h/x (desde el punto cercano) y tan α = h/(x + d) (desde el lejano). Errores típicos: usar d como si fuera la distancia al pie, restar los ángulos o sumar d en el triángulo equivocado. Pídele que dibuje los dos puntos de observación y marque qué distancia conoce y cuál no.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "h = 2,14x",
+     "resultado": "",
+     "texto": "Triángulo del punto cercano."
+    },
+    {
+     "paso": 2,
+     "operacion": "h = 0,58(x + 460)",
+     "resultado": "",
+     "texto": "Triángulo del punto lejano."
+    },
+    {
+     "paso": 3,
+     "operacion": "x = 266,8 : 1,56",
+     "resultado": "171 m",
+     "texto": "Igualación."
+    },
+    {
+     "paso": 4,
+     "operacion": "h = 2,14 × x",
+     "resultado": "366 m",
+     "texto": "Altura."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Desde un punto del llano se ve la cima de un monte con un ángulo de elevación de 40°. Tras avanzar 390 m en línea recta hacia el monte, el ángulo pasa a ser de 70°. ¿Qué altura tiene el monte sobre el llano? Redondea a las décimas. (tan 40° ≈ 0,84; tan 70° ≈ 2,75)",
+   "respuesta": "471,7 m",
+   "distractores": [
+    {
+     "valor": "1072,5 m",
+     "error": "E01"
+    },
+    {
+     "valor": "225,2 m",
+     "error": "E02"
+    },
+    {
+     "valor": "943,4 m",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "GEO.TRIG.04",
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Llama h a la altura y x a la distancia desde el punto más cercano al pie. Desde cerca: tan 70° = h/x → h = 2,75x. Desde lejos: tan 40° = h/(x + 390) → h = 0,84(x + 390). Igualando: 2,75x = 0,84x + 327,6 → 1,91x = 327,6 → x ≈ 171,5 m. Entonces h = 2,75 × 171,52 ≈ 471,7 m.",
+   "explicacion_adulto": "Está aprendiendo a resolver la doble observación: hay dos triángulos rectángulos que comparten la altura h, y la distancia al pie (x) también es desconocida. Se plantea un sistema con dos tangentes: tan β = h/x (desde el punto cercano) y tan α = h/(x + d) (desde el lejano). Errores típicos: usar d como si fuera la distancia al pie, restar los ángulos o sumar d en el triángulo equivocado. Pídele que dibuje los dos puntos de observación y marque qué distancia conoce y cuál no.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "h = 2,75x",
+     "resultado": "",
+     "texto": "Triángulo del punto cercano."
+    },
+    {
+     "paso": 2,
+     "operacion": "h = 0,84(x + 390)",
+     "resultado": "",
+     "texto": "Triángulo del punto lejano."
+    },
+    {
+     "paso": 3,
+     "operacion": "x = 327,6 : 1,91",
+     "resultado": "171,5 m",
+     "texto": "Igualación."
+    },
+    {
+     "paso": 4,
+     "operacion": "h = 2,75 × x",
+     "resultado": "471,7 m",
+     "texto": "Altura."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un topógrafo mide la elevación de lo alto de una torre desde dos puntos alineados con su base y separados 30 m: desde el más alejado obtiene 35° y desde el más próximo 55°. ¿A qué distancia de la base está el punto más próximo? Redondea a las décimas. (tan 35° ≈ 0,7; tan 55° ≈ 1,43)",
+   "respuesta": "28,8 m",
+   "distractores": [
+    {
+     "valor": "30 m",
+     "error": "E01"
+    },
+    {
+     "valor": "82,4 m",
+     "error": "E02"
+    },
+    {
+     "valor": "58,8 m",
+     "error": "E03"
+    }
+   ],
+   "secundarias": [
+    "GEO.TRIG.04",
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Llama h a la altura y x a la distancia desde el punto más cercano al pie. Desde cerca: tan 55° = h/x → h = 1,43x. Desde lejos: tan 35° = h/(x + 30) → h = 0,7(x + 30). Igualando: 1,43x = 0,7x + 21 → 0,73x = 21 → x ≈ 28,8 m. Entonces h = 1,43 × 28,77 ≈ 41,1 m.",
+   "explicacion_adulto": "Está aprendiendo a resolver la doble observación: hay dos triángulos rectángulos que comparten la altura h, y la distancia al pie (x) también es desconocida. Se plantea un sistema con dos tangentes: tan β = h/x (desde el punto cercano) y tan α = h/(x + d) (desde el lejano). Errores típicos: usar d como si fuera la distancia al pie, restar los ángulos o sumar d en el triángulo equivocado. Pídele que dibuje los dos puntos de observación y marque qué distancia conoce y cuál no.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "h = 1,43x",
+     "resultado": "",
+     "texto": "Triángulo del punto cercano."
+    },
+    {
+     "paso": 2,
+     "operacion": "h = 0,7(x + 30)",
+     "resultado": "",
+     "texto": "Triángulo del punto lejano."
+    },
+    {
+     "paso": 3,
+     "operacion": "x = 21 : 0,73",
+     "resultado": "28,8 m",
+     "texto": "Igualación."
+    },
+    {
+     "paso": 4,
+     "operacion": "h = 1,43 × x",
+     "resultado": "41,1 m",
+     "texto": "Altura."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un topógrafo mide la elevación de lo alto de una torre desde dos puntos alineados con su base y separados 10 m: desde el más alejado obtiene 40° y desde el más próximo 70°. ¿A qué distancia de la base está el punto más próximo? Redondea a las décimas. (tan 40° ≈ 0,84; tan 70° ≈ 2,75)",
+   "respuesta": "4,4 m",
+   "distractores": [
+    {
+     "valor": "10 m",
+     "error": "E01"
+    },
+    {
+     "valor": "17,3 m",
+     "error": "E02"
+    },
+    {
+     "valor": "14,4 m",
+     "error": "E03"
+    }
+   ],
+   "secundarias": [
+    "GEO.TRIG.04",
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Llama h a la altura y x a la distancia desde el punto más cercano al pie. Desde cerca: tan 70° = h/x → h = 2,75x. Desde lejos: tan 40° = h/(x + 10) → h = 0,84(x + 10). Igualando: 2,75x = 0,84x + 8,4 → 1,91x = 8,4 → x ≈ 4,4 m. Entonces h = 2,75 × 4,4 ≈ 12,1 m.",
+   "explicacion_adulto": "Está aprendiendo a resolver la doble observación: hay dos triángulos rectángulos que comparten la altura h, y la distancia al pie (x) también es desconocida. Se plantea un sistema con dos tangentes: tan β = h/x (desde el punto cercano) y tan α = h/(x + d) (desde el lejano). Errores típicos: usar d como si fuera la distancia al pie, restar los ángulos o sumar d en el triángulo equivocado. Pídele que dibuje los dos puntos de observación y marque qué distancia conoce y cuál no.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "h = 2,75x",
+     "resultado": "",
+     "texto": "Triángulo del punto cercano."
+    },
+    {
+     "paso": 2,
+     "operacion": "h = 0,84(x + 10)",
+     "resultado": "",
+     "texto": "Triángulo del punto lejano."
+    },
+    {
+     "paso": 3,
+     "operacion": "x = 8,4 : 1,91",
+     "resultado": "4,4 m",
+     "texto": "Igualación."
+    },
+    {
+     "paso": 4,
+     "operacion": "h = 2,75 × x",
+     "resultado": "12,1 m",
+     "texto": "Altura."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un topógrafo mide la elevación de lo alto de una torre desde dos puntos alineados con su base y separados 75 m: desde el más alejado obtiene 25° y desde el más próximo 35°. ¿A qué distancia de la base está el punto más próximo? Redondea a las décimas. (tan 25° ≈ 0,47; tan 35° ≈ 0,7)",
+   "respuesta": "153,3 m",
+   "distractores": [
+    {
+     "valor": "75 m",
+     "error": "E01"
+    },
+    {
+     "valor": "425,3 m",
+     "error": "E02"
+    },
+    {
+     "valor": "228,3 m",
+     "error": "E03"
+    }
+   ],
+   "secundarias": [
+    "GEO.TRIG.04",
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Llama h a la altura y x a la distancia desde el punto más cercano al pie. Desde cerca: tan 35° = h/x → h = 0,7x. Desde lejos: tan 25° = h/(x + 75) → h = 0,47(x + 75). Igualando: 0,7x = 0,47x + 35,25 → 0,23x = 35,25 → x ≈ 153,3 m. Entonces h = 0,7 × 153,26 ≈ 107,3 m.",
+   "explicacion_adulto": "Está aprendiendo a resolver la doble observación: hay dos triángulos rectángulos que comparten la altura h, y la distancia al pie (x) también es desconocida. Se plantea un sistema con dos tangentes: tan β = h/x (desde el punto cercano) y tan α = h/(x + d) (desde el lejano). Errores típicos: usar d como si fuera la distancia al pie, restar los ángulos o sumar d en el triángulo equivocado. Pídele que dibuje los dos puntos de observación y marque qué distancia conoce y cuál no.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "h = 0,7x",
+     "resultado": "",
+     "texto": "Triángulo del punto cercano."
+    },
+    {
+     "paso": 2,
+     "operacion": "h = 0,47(x + 75)",
+     "resultado": "",
+     "texto": "Triángulo del punto lejano."
+    },
+    {
+     "paso": 3,
+     "operacion": "x = 35,25 : 0,23",
+     "resultado": "153,3 m",
+     "texto": "Igualación."
+    },
+    {
+     "paso": 4,
+     "operacion": "h = 0,7 × x",
+     "resultado": "107,3 m",
+     "texto": "Altura."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un topógrafo mide la elevación de lo alto de una torre desde dos puntos alineados con su base y separados 85 m: desde el más alejado obtiene 25° y desde el más próximo 50°. ¿A qué distancia de la base está el punto más próximo? Redondea a las décimas. (tan 25° ≈ 0,47; tan 50° ≈ 1,19)",
+   "respuesta": "55,5 m",
+   "distractores": [
+    {
+     "valor": "85 m",
+     "error": "E01"
+    },
+    {
+     "valor": "182,3 m",
+     "error": "E02"
+    },
+    {
+     "valor": "140,5 m",
+     "error": "E03"
+    }
+   ],
+   "secundarias": [
+    "GEO.TRIG.04",
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Llama h a la altura y x a la distancia desde el punto más cercano al pie. Desde cerca: tan 50° = h/x → h = 1,19x. Desde lejos: tan 25° = h/(x + 85) → h = 0,47(x + 85). Igualando: 1,19x = 0,47x + 39,95 → 0,72x = 39,95 → x ≈ 55,5 m. Entonces h = 1,19 × 55,49 ≈ 66 m.",
+   "explicacion_adulto": "Está aprendiendo a resolver la doble observación: hay dos triángulos rectángulos que comparten la altura h, y la distancia al pie (x) también es desconocida. Se plantea un sistema con dos tangentes: tan β = h/x (desde el punto cercano) y tan α = h/(x + d) (desde el lejano). Errores típicos: usar d como si fuera la distancia al pie, restar los ángulos o sumar d en el triángulo equivocado. Pídele que dibuje los dos puntos de observación y marque qué distancia conoce y cuál no.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "h = 1,19x",
+     "resultado": "",
+     "texto": "Triángulo del punto cercano."
+    },
+    {
+     "paso": 2,
+     "operacion": "h = 0,47(x + 85)",
+     "resultado": "",
+     "texto": "Triángulo del punto lejano."
+    },
+    {
+     "paso": 3,
+     "operacion": "x = 39,95 : 0,72",
+     "resultado": "55,5 m",
+     "texto": "Igualación."
+    },
+    {
+     "paso": 4,
+     "operacion": "h = 1,19 × x",
+     "resultado": "66 m",
+     "texto": "Altura."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un topógrafo mide la elevación de lo alto de una torre desde dos puntos alineados con su base y separados 80 m: desde el más alejado obtiene 25° y desde el más próximo 45°. ¿A qué distancia de la base está el punto más próximo? Redondea a las décimas. (tan 25° ≈ 0,47; tan 45° ≈ 1)",
+   "respuesta": "70,9 m",
+   "distractores": [
+    {
+     "valor": "80 m",
+     "error": "E01"
+    },
+    {
+     "valor": "219,8 m",
+     "error": "E02"
+    },
+    {
+     "valor": "150,9 m",
+     "error": "E03"
+    }
+   ],
+   "secundarias": [
+    "GEO.TRIG.04",
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Llama h a la altura y x a la distancia desde el punto más cercano al pie. Desde cerca: tan 45° = h/x → h = 1x. Desde lejos: tan 25° = h/(x + 80) → h = 0,47(x + 80). Igualando: 1x = 0,47x + 37,6 → 0,53x = 37,6 → x ≈ 70,9 m. Entonces h = 1 × 70,94 ≈ 70,9 m.",
+   "explicacion_adulto": "Está aprendiendo a resolver la doble observación: hay dos triángulos rectángulos que comparten la altura h, y la distancia al pie (x) también es desconocida. Se plantea un sistema con dos tangentes: tan β = h/x (desde el punto cercano) y tan α = h/(x + d) (desde el lejano). Errores típicos: usar d como si fuera la distancia al pie, restar los ángulos o sumar d en el triángulo equivocado. Pídele que dibuje los dos puntos de observación y marque qué distancia conoce y cuál no.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "h = 1x",
+     "resultado": "",
+     "texto": "Triángulo del punto cercano."
+    },
+    {
+     "paso": 2,
+     "operacion": "h = 0,47(x + 80)",
+     "resultado": "",
+     "texto": "Triángulo del punto lejano."
+    },
+    {
+     "paso": 3,
+     "operacion": "x = 37,6 : 0,53",
+     "resultado": "70,9 m",
+     "texto": "Igualación."
+    },
+    {
+     "paso": 4,
+     "operacion": "h = 1 × x",
+     "resultado": "70,9 m",
+     "texto": "Altura."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un topógrafo mide la elevación de lo alto de una torre desde dos puntos alineados con su base y separados 70 m: desde el más alejado obtiene 45° y desde el más próximo 55°. ¿A qué distancia de la base está el punto más próximo? Redondea a las décimas. (tan 45° ≈ 1; tan 55° ≈ 1,43)",
+   "respuesta": "162,8 m",
+   "distractores": [
+    {
+     "valor": "70 m",
+     "error": "E01"
+    },
+    {
+     "valor": "397 m",
+     "error": "E02"
+    },
+    {
+     "valor": "232,8 m",
+     "error": "E03"
+    }
+   ],
+   "secundarias": [
+    "GEO.TRIG.04",
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Llama h a la altura y x a la distancia desde el punto más cercano al pie. Desde cerca: tan 55° = h/x → h = 1,43x. Desde lejos: tan 45° = h/(x + 70) → h = 1(x + 70). Igualando: 1,43x = 1x + 70 → 0,43x = 70 → x ≈ 162,8 m. Entonces h = 1,43 × 162,79 ≈ 232,8 m.",
+   "explicacion_adulto": "Está aprendiendo a resolver la doble observación: hay dos triángulos rectángulos que comparten la altura h, y la distancia al pie (x) también es desconocida. Se plantea un sistema con dos tangentes: tan β = h/x (desde el punto cercano) y tan α = h/(x + d) (desde el lejano). Errores típicos: usar d como si fuera la distancia al pie, restar los ángulos o sumar d en el triángulo equivocado. Pídele que dibuje los dos puntos de observación y marque qué distancia conoce y cuál no.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "h = 1,43x",
+     "resultado": "",
+     "texto": "Triángulo del punto cercano."
+    },
+    {
+     "paso": 2,
+     "operacion": "h = 1(x + 70)",
+     "resultado": "",
+     "texto": "Triángulo del punto lejano."
+    },
+    {
+     "paso": 3,
+     "operacion": "x = 70 : 0,43",
+     "resultado": "162,8 m",
+     "texto": "Igualación."
+    },
+    {
+     "paso": 4,
+     "operacion": "h = 1,43 × x",
+     "resultado": "232,8 m",
+     "texto": "Altura."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un topógrafo mide la elevación de lo alto de una torre desde dos puntos alineados con su base y separados 90 m: desde el más alejado obtiene 35° y desde el más próximo 50°. ¿A qué distancia de la base está el punto más próximo? Redondea a las décimas. (tan 35° ≈ 0,7; tan 50° ≈ 1,19)",
+   "respuesta": "128,6 m",
+   "distractores": [
+    {
+     "valor": "90 m",
+     "error": "E01"
+    },
+    {
+     "valor": "335,9 m",
+     "error": "E02"
+    },
+    {
+     "valor": "218,6 m",
+     "error": "E03"
+    }
+   ],
+   "secundarias": [
+    "GEO.TRIG.04",
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Llama h a la altura y x a la distancia desde el punto más cercano al pie. Desde cerca: tan 50° = h/x → h = 1,19x. Desde lejos: tan 35° = h/(x + 90) → h = 0,7(x + 90). Igualando: 1,19x = 0,7x + 63 → 0,49x = 63 → x ≈ 128,6 m. Entonces h = 1,19 × 128,57 ≈ 153 m.",
+   "explicacion_adulto": "Está aprendiendo a resolver la doble observación: hay dos triángulos rectángulos que comparten la altura h, y la distancia al pie (x) también es desconocida. Se plantea un sistema con dos tangentes: tan β = h/x (desde el punto cercano) y tan α = h/(x + d) (desde el lejano). Errores típicos: usar d como si fuera la distancia al pie, restar los ángulos o sumar d en el triángulo equivocado. Pídele que dibuje los dos puntos de observación y marque qué distancia conoce y cuál no.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "h = 1,19x",
+     "resultado": "",
+     "texto": "Triángulo del punto cercano."
+    },
+    {
+     "paso": 2,
+     "operacion": "h = 0,7(x + 90)",
+     "resultado": "",
+     "texto": "Triángulo del punto lejano."
+    },
+    {
+     "paso": 3,
+     "operacion": "x = 63 : 0,49",
+     "resultado": "128,6 m",
+     "texto": "Igualación."
+    },
+    {
+     "paso": 4,
+     "operacion": "h = 1,19 × x",
+     "resultado": "153 m",
+     "texto": "Altura."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En una orilla de un río, Tomás ve la copa de un árbol de la otra orilla bajo un ángulo de 70°. Se aleja 14 m del río, en línea recta, y ahora lo ve bajo 45°. ¿Cuánto mide el árbol? Redondea a las décimas. (tan 45° ≈ 1; tan 70° ≈ 2,75)",
+   "respuesta": "22 m",
+   "distractores": [
+    {
+     "valor": "38,5 m",
+     "error": "E01"
+    },
+    {
+     "valor": "6,5 m",
+     "error": "E02"
+    },
+    {
+     "valor": "44 m",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "GEO.TRIG.04",
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Llama h a la altura y x a la distancia desde el punto más cercano al pie. Desde cerca: tan 70° = h/x → h = 2,75x. Desde lejos: tan 45° = h/(x + 14) → h = 1(x + 14). Igualando: 2,75x = 1x + 14 → 1,75x = 14 → x ≈ 8 m. Entonces h = 2,75 × 8 ≈ 22 m.",
+   "explicacion_adulto": "Está aprendiendo a resolver la doble observación: hay dos triángulos rectángulos que comparten la altura h, y la distancia al pie (x) también es desconocida. Se plantea un sistema con dos tangentes: tan β = h/x (desde el punto cercano) y tan α = h/(x + d) (desde el lejano). Errores típicos: usar d como si fuera la distancia al pie, restar los ángulos o sumar d en el triángulo equivocado. Pídele que dibuje los dos puntos de observación y marque qué distancia conoce y cuál no.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "h = 2,75x",
+     "resultado": "",
+     "texto": "Triángulo del punto cercano."
+    },
+    {
+     "paso": 2,
+     "operacion": "h = 1(x + 14)",
+     "resultado": "",
+     "texto": "Triángulo del punto lejano."
+    },
+    {
+     "paso": 3,
+     "operacion": "x = 14 : 1,75",
+     "resultado": "8 m",
+     "texto": "Igualación."
+    },
+    {
+     "paso": 4,
+     "operacion": "h = 2,75 × x",
+     "resultado": "22 m",
+     "texto": "Altura."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En una orilla de un río, Jorge ve la copa de un árbol de la otra orilla bajo un ángulo de 40°. Se aleja 10 m del río, en línea recta, y ahora lo ve bajo 20°. ¿Cuánto mide el árbol? Redondea a las décimas. (tan 20° ≈ 0,36; tan 40° ≈ 0,84)",
+   "respuesta": "6,3 m",
+   "distractores": [
+    {
+     "valor": "8,4 m",
+     "error": "E01"
+    },
+    {
+     "valor": "3,6 m",
+     "error": "E02"
+    },
+    {
+     "valor": "12,6 m",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "GEO.TRIG.04",
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Llama h a la altura y x a la distancia desde el punto más cercano al pie. Desde cerca: tan 40° = h/x → h = 0,84x. Desde lejos: tan 20° = h/(x + 10) → h = 0,36(x + 10). Igualando: 0,84x = 0,36x + 3,6 → 0,48x = 3,6 → x ≈ 7,5 m. Entonces h = 0,84 × 7,5 ≈ 6,3 m.",
+   "explicacion_adulto": "Está aprendiendo a resolver la doble observación: hay dos triángulos rectángulos que comparten la altura h, y la distancia al pie (x) también es desconocida. Se plantea un sistema con dos tangentes: tan β = h/x (desde el punto cercano) y tan α = h/(x + d) (desde el lejano). Errores típicos: usar d como si fuera la distancia al pie, restar los ángulos o sumar d en el triángulo equivocado. Pídele que dibuje los dos puntos de observación y marque qué distancia conoce y cuál no.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "h = 0,84x",
+     "resultado": "",
+     "texto": "Triángulo del punto cercano."
+    },
+    {
+     "paso": 2,
+     "operacion": "h = 0,36(x + 10)",
+     "resultado": "",
+     "texto": "Triángulo del punto lejano."
+    },
+    {
+     "paso": 3,
+     "operacion": "x = 3,6 : 0,48",
+     "resultado": "7,5 m",
+     "texto": "Igualación."
+    },
+    {
+     "paso": 4,
+     "operacion": "h = 0,84 × x",
+     "resultado": "6,3 m",
+     "texto": "Altura."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En una orilla de un río, Nicolás ve la copa de un árbol de la otra orilla bajo un ángulo de 55°. Se aleja 12 m del río, en línea recta, y ahora lo ve bajo 40°. ¿Cuánto mide el árbol? Redondea a las décimas. (tan 40° ≈ 0,84; tan 55° ≈ 1,43)",
+   "respuesta": "24,4 m",
+   "distractores": [
+    {
+     "valor": "17,2 m",
+     "error": "E01"
+    },
+    {
+     "valor": "3,2 m",
+     "error": "E02"
+    },
+    {
+     "valor": "48,9 m",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "GEO.TRIG.04",
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Llama h a la altura y x a la distancia desde el punto más cercano al pie. Desde cerca: tan 55° = h/x → h = 1,43x. Desde lejos: tan 40° = h/(x + 12) → h = 0,84(x + 12). Igualando: 1,43x = 0,84x + 10,08 → 0,59x = 10,08 → x ≈ 17,1 m. Entonces h = 1,43 × 17,08 ≈ 24,4 m.",
+   "explicacion_adulto": "Está aprendiendo a resolver la doble observación: hay dos triángulos rectángulos que comparten la altura h, y la distancia al pie (x) también es desconocida. Se plantea un sistema con dos tangentes: tan β = h/x (desde el punto cercano) y tan α = h/(x + d) (desde el lejano). Errores típicos: usar d como si fuera la distancia al pie, restar los ángulos o sumar d en el triángulo equivocado. Pídele que dibuje los dos puntos de observación y marque qué distancia conoce y cuál no.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "h = 1,43x",
+     "resultado": "",
+     "texto": "Triángulo del punto cercano."
+    },
+    {
+     "paso": 2,
+     "operacion": "h = 0,84(x + 12)",
+     "resultado": "",
+     "texto": "Triángulo del punto lejano."
+    },
+    {
+     "paso": 3,
+     "operacion": "x = 10,08 : 0,59",
+     "resultado": "17,1 m",
+     "texto": "Igualación."
+    },
+    {
+     "paso": 4,
+     "operacion": "h = 1,43 × x",
+     "resultado": "24,4 m",
+     "texto": "Altura."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En una orilla de un río, Chloe ve la copa de un árbol de la otra orilla bajo un ángulo de 65°. Se aleja 22 m del río, en línea recta, y ahora lo ve bajo 50°. ¿Cuánto mide el árbol? Redondea a las décimas. (tan 50° ≈ 1,19; tan 65° ≈ 2,14)",
+   "respuesta": "59 m",
+   "distractores": [
+    {
+     "valor": "47,1 m",
+     "error": "E01"
+    },
+    {
+     "valor": "5,9 m",
+     "error": "E02"
+    },
+    {
+     "valor": "117,9 m",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "GEO.TRIG.04",
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Llama h a la altura y x a la distancia desde el punto más cercano al pie. Desde cerca: tan 65° = h/x → h = 2,14x. Desde lejos: tan 50° = h/(x + 22) → h = 1,19(x + 22). Igualando: 2,14x = 1,19x + 26,18 → 0,95x = 26,18 → x ≈ 27,6 m. Entonces h = 2,14 × 27,56 ≈ 59 m.",
+   "explicacion_adulto": "Está aprendiendo a resolver la doble observación: hay dos triángulos rectángulos que comparten la altura h, y la distancia al pie (x) también es desconocida. Se plantea un sistema con dos tangentes: tan β = h/x (desde el punto cercano) y tan α = h/(x + d) (desde el lejano). Errores típicos: usar d como si fuera la distancia al pie, restar los ángulos o sumar d en el triángulo equivocado. Pídele que dibuje los dos puntos de observación y marque qué distancia conoce y cuál no.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "h = 2,14x",
+     "resultado": "",
+     "texto": "Triángulo del punto cercano."
+    },
+    {
+     "paso": 2,
+     "operacion": "h = 1,19(x + 22)",
+     "resultado": "",
+     "texto": "Triángulo del punto lejano."
+    },
+    {
+     "paso": 3,
+     "operacion": "x = 26,18 : 0,95",
+     "resultado": "27,6 m",
+     "texto": "Igualación."
+    },
+    {
+     "paso": 4,
+     "operacion": "h = 2,14 × x",
+     "resultado": "59 m",
+     "texto": "Altura."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En una orilla de un río, Bruno ve la copa de un árbol de la otra orilla bajo un ángulo de 40°. Se aleja 6 m del río, en línea recta, y ahora lo ve bajo 30°. ¿Cuánto mide el árbol? Redondea a las décimas. (tan 30° ≈ 0,58; tan 40° ≈ 0,84)",
+   "respuesta": "11,2 m",
+   "distractores": [
+    {
+     "valor": "5 m",
+     "error": "E01"
+    },
+    {
+     "valor": "1,1 m",
+     "error": "E02"
+    },
+    {
+     "valor": "22,5 m",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "GEO.TRIG.04",
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Llama h a la altura y x a la distancia desde el punto más cercano al pie. Desde cerca: tan 40° = h/x → h = 0,84x. Desde lejos: tan 30° = h/(x + 6) → h = 0,58(x + 6). Igualando: 0,84x = 0,58x + 3,48 → 0,26x = 3,48 → x ≈ 13,4 m. Entonces h = 0,84 × 13,38 ≈ 11,2 m.",
+   "explicacion_adulto": "Está aprendiendo a resolver la doble observación: hay dos triángulos rectángulos que comparten la altura h, y la distancia al pie (x) también es desconocida. Se plantea un sistema con dos tangentes: tan β = h/x (desde el punto cercano) y tan α = h/(x + d) (desde el lejano). Errores típicos: usar d como si fuera la distancia al pie, restar los ángulos o sumar d en el triángulo equivocado. Pídele que dibuje los dos puntos de observación y marque qué distancia conoce y cuál no.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "h = 0,84x",
+     "resultado": "",
+     "texto": "Triángulo del punto cercano."
+    },
+    {
+     "paso": 2,
+     "operacion": "h = 0,58(x + 6)",
+     "resultado": "",
+     "texto": "Triángulo del punto lejano."
+    },
+    {
+     "paso": 3,
+     "operacion": "x = 3,48 : 0,26",
+     "resultado": "13,4 m",
+     "texto": "Igualación."
+    },
+    {
+     "paso": 4,
+     "operacion": "h = 0,84 × x",
+     "resultado": "11,2 m",
+     "texto": "Altura."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En una orilla de un río, Unai ve la copa de un árbol de la otra orilla bajo un ángulo de 60°. Se aleja 14 m del río, en línea recta, y ahora lo ve bajo 40°. ¿Cuánto mide el árbol? Redondea a las décimas. (tan 40° ≈ 0,84; tan 60° ≈ 1,73)",
+   "respuesta": "22,9 m",
+   "distractores": [
+    {
+     "valor": "24,2 m",
+     "error": "E01"
+    },
+    {
+     "valor": "5,1 m",
+     "error": "E02"
+    },
+    {
+     "valor": "45,7 m",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "GEO.TRIG.04",
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Llama h a la altura y x a la distancia desde el punto más cercano al pie. Desde cerca: tan 60° = h/x → h = 1,73x. Desde lejos: tan 40° = h/(x + 14) → h = 0,84(x + 14). Igualando: 1,73x = 0,84x + 11,76 → 0,89x = 11,76 → x ≈ 13,2 m. Entonces h = 1,73 × 13,21 ≈ 22,9 m.",
+   "explicacion_adulto": "Está aprendiendo a resolver la doble observación: hay dos triángulos rectángulos que comparten la altura h, y la distancia al pie (x) también es desconocida. Se plantea un sistema con dos tangentes: tan β = h/x (desde el punto cercano) y tan α = h/(x + d) (desde el lejano). Errores típicos: usar d como si fuera la distancia al pie, restar los ángulos o sumar d en el triángulo equivocado. Pídele que dibuje los dos puntos de observación y marque qué distancia conoce y cuál no.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "h = 1,73x",
+     "resultado": "",
+     "texto": "Triángulo del punto cercano."
+    },
+    {
+     "paso": 2,
+     "operacion": "h = 0,84(x + 14)",
+     "resultado": "",
+     "texto": "Triángulo del punto lejano."
+    },
+    {
+     "paso": 3,
+     "operacion": "x = 11,76 : 0,89",
+     "resultado": "13,2 m",
+     "texto": "Igualación."
+    },
+    {
+     "paso": 4,
+     "operacion": "h = 1,73 × x",
+     "resultado": "22,9 m",
+     "texto": "Altura."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En una orilla de un río, Daniel ve la copa de un árbol de la otra orilla bajo un ángulo de 45°. Se aleja 16 m del río, en línea recta, y ahora lo ve bajo 25°. ¿Cuánto mide el árbol? Redondea a las décimas. (tan 25° ≈ 0,47; tan 45° ≈ 1)",
+   "respuesta": "14,2 m",
+   "distractores": [
+    {
+     "valor": "16 m",
+     "error": "E01"
+    },
+    {
+     "valor": "5,8 m",
+     "error": "E02"
+    },
+    {
+     "valor": "28,4 m",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "GEO.TRIG.04",
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Llama h a la altura y x a la distancia desde el punto más cercano al pie. Desde cerca: tan 45° = h/x → h = 1x. Desde lejos: tan 25° = h/(x + 16) → h = 0,47(x + 16). Igualando: 1x = 0,47x + 7,52 → 0,53x = 7,52 → x ≈ 14,2 m. Entonces h = 1 × 14,19 ≈ 14,2 m.",
+   "explicacion_adulto": "Está aprendiendo a resolver la doble observación: hay dos triángulos rectángulos que comparten la altura h, y la distancia al pie (x) también es desconocida. Se plantea un sistema con dos tangentes: tan β = h/x (desde el punto cercano) y tan α = h/(x + d) (desde el lejano). Errores típicos: usar d como si fuera la distancia al pie, restar los ángulos o sumar d en el triángulo equivocado. Pídele que dibuje los dos puntos de observación y marque qué distancia conoce y cuál no.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "h = 1x",
+     "resultado": "",
+     "texto": "Triángulo del punto cercano."
+    },
+    {
+     "paso": 2,
+     "operacion": "h = 0,47(x + 16)",
+     "resultado": "",
+     "texto": "Triángulo del punto lejano."
+    },
+    {
+     "paso": 3,
+     "operacion": "x = 7,52 : 0,53",
+     "resultado": "14,2 m",
+     "texto": "Igualación."
+    },
+    {
+     "paso": 4,
+     "operacion": "h = 1 × x",
+     "resultado": "14,2 m",
+     "texto": "Altura."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En una orilla de un río, Martina ve la copa de un árbol de la otra orilla bajo un ángulo de 50°. Se aleja 22 m del río, en línea recta, y ahora lo ve bajo 35°. ¿Cuánto mide el árbol? Redondea a las décimas. (tan 35° ≈ 0,7; tan 50° ≈ 1,19)",
+   "respuesta": "37,4 m",
+   "distractores": [
+    {
+     "valor": "26,2 m",
+     "error": "E01"
+    },
+    {
+     "valor": "5,9 m",
+     "error": "E02"
+    },
+    {
+     "valor": "74,8 m",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "GEO.TRIG.04",
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Llama h a la altura y x a la distancia desde el punto más cercano al pie. Desde cerca: tan 50° = h/x → h = 1,19x. Desde lejos: tan 35° = h/(x + 22) → h = 0,7(x + 22). Igualando: 1,19x = 0,7x + 15,4 → 0,49x = 15,4 → x ≈ 31,4 m. Entonces h = 1,19 × 31,43 ≈ 37,4 m.",
+   "explicacion_adulto": "Está aprendiendo a resolver la doble observación: hay dos triángulos rectángulos que comparten la altura h, y la distancia al pie (x) también es desconocida. Se plantea un sistema con dos tangentes: tan β = h/x (desde el punto cercano) y tan α = h/(x + d) (desde el lejano). Errores típicos: usar d como si fuera la distancia al pie, restar los ángulos o sumar d en el triángulo equivocado. Pídele que dibuje los dos puntos de observación y marque qué distancia conoce y cuál no.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "h = 1,19x",
+     "resultado": "",
+     "texto": "Triángulo del punto cercano."
+    },
+    {
+     "paso": 2,
+     "operacion": "h = 0,7(x + 22)",
+     "resultado": "",
+     "texto": "Triángulo del punto lejano."
+    },
+    {
+     "paso": 3,
+     "operacion": "x = 15,4 : 0,49",
+     "resultado": "31,4 m",
+     "texto": "Igualación."
+    },
+    {
+     "paso": 4,
+     "operacion": "h = 1,19 × x",
+     "resultado": "37,4 m",
+     "texto": "Altura."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un dron vuela quieto sobre un punto P del suelo. Desde A se ve con una elevación de 30° y desde B, que está 140 m más cerca de P y en la misma línea, con 50°. ¿A qué altura vuela el dron? Redondea a las décimas. (tan 30° ≈ 0,58; tan 50° ≈ 1,19)",
+   "respuesta": "158,4 m",
+   "distractores": [
+    {
+     "valor": "166,6 m",
+     "error": "E01"
+    },
+    {
+     "valor": "51 m",
+     "error": "E02"
+    },
+    {
+     "valor": "316,8 m",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "GEO.TRIG.04",
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Llama h a la altura y x a la distancia desde el punto más cercano al pie. Desde cerca: tan 50° = h/x → h = 1,19x. Desde lejos: tan 30° = h/(x + 140) → h = 0,58(x + 140). Igualando: 1,19x = 0,58x + 81,2 → 0,61x = 81,2 → x ≈ 133,1 m. Entonces h = 1,19 × 133,11 ≈ 158,4 m.",
+   "explicacion_adulto": "Está aprendiendo a resolver la doble observación: hay dos triángulos rectángulos que comparten la altura h, y la distancia al pie (x) también es desconocida. Se plantea un sistema con dos tangentes: tan β = h/x (desde el punto cercano) y tan α = h/(x + d) (desde el lejano). Errores típicos: usar d como si fuera la distancia al pie, restar los ángulos o sumar d en el triángulo equivocado. Pídele que dibuje los dos puntos de observación y marque qué distancia conoce y cuál no.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "h = 1,19x",
+     "resultado": "",
+     "texto": "Triángulo del punto cercano."
+    },
+    {
+     "paso": 2,
+     "operacion": "h = 0,58(x + 140)",
+     "resultado": "",
+     "texto": "Triángulo del punto lejano."
+    },
+    {
+     "paso": 3,
+     "operacion": "x = 81,2 : 0,61",
+     "resultado": "133,1 m",
+     "texto": "Igualación."
+    },
+    {
+     "paso": 4,
+     "operacion": "h = 1,19 × x",
+     "resultado": "158,4 m",
+     "texto": "Altura."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un dron vuela quieto sobre un punto P del suelo. Desde A se ve con una elevación de 30° y desde B, que está 60 m más cerca de P y en la misma línea, con 55°. ¿A qué altura vuela el dron? Redondea a las décimas. (tan 30° ≈ 0,58; tan 55° ≈ 1,43)",
+   "respuesta": "58,5 m",
+   "distractores": [
+    {
+     "valor": "85,8 m",
+     "error": "E01"
+    },
+    {
+     "valor": "28 m",
+     "error": "E02"
+    },
+    {
+     "valor": "117,1 m",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "GEO.TRIG.04",
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Llama h a la altura y x a la distancia desde el punto más cercano al pie. Desde cerca: tan 55° = h/x → h = 1,43x. Desde lejos: tan 30° = h/(x + 60) → h = 0,58(x + 60). Igualando: 1,43x = 0,58x + 34,8 → 0,85x = 34,8 → x ≈ 40,9 m. Entonces h = 1,43 × 40,94 ≈ 58,5 m.",
+   "explicacion_adulto": "Está aprendiendo a resolver la doble observación: hay dos triángulos rectángulos que comparten la altura h, y la distancia al pie (x) también es desconocida. Se plantea un sistema con dos tangentes: tan β = h/x (desde el punto cercano) y tan α = h/(x + d) (desde el lejano). Errores típicos: usar d como si fuera la distancia al pie, restar los ángulos o sumar d en el triángulo equivocado. Pídele que dibuje los dos puntos de observación y marque qué distancia conoce y cuál no.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "h = 1,43x",
+     "resultado": "",
+     "texto": "Triángulo del punto cercano."
+    },
+    {
+     "paso": 2,
+     "operacion": "h = 0,58(x + 60)",
+     "resultado": "",
+     "texto": "Triángulo del punto lejano."
+    },
+    {
+     "paso": 3,
+     "operacion": "x = 34,8 : 0,85",
+     "resultado": "40,9 m",
+     "texto": "Igualación."
+    },
+    {
+     "paso": 4,
+     "operacion": "h = 1,43 × x",
+     "resultado": "58,5 m",
+     "texto": "Altura."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un dron vuela quieto sobre un punto P del suelo. Desde A se ve con una elevación de 30° y desde B, que está 30 m más cerca de P y en la misma línea, con 40°. ¿A qué altura vuela el dron? Redondea a las décimas. (tan 30° ≈ 0,58; tan 40° ≈ 0,84)",
+   "respuesta": "56,2 m",
+   "distractores": [
+    {
+     "valor": "25,2 m",
+     "error": "E01"
+    },
+    {
+     "valor": "5,3 m",
+     "error": "E02"
+    },
+    {
+     "valor": "112,4 m",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "GEO.TRIG.04",
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Llama h a la altura y x a la distancia desde el punto más cercano al pie. Desde cerca: tan 40° = h/x → h = 0,84x. Desde lejos: tan 30° = h/(x + 30) → h = 0,58(x + 30). Igualando: 0,84x = 0,58x + 17,4 → 0,26x = 17,4 → x ≈ 66,9 m. Entonces h = 0,84 × 66,92 ≈ 56,2 m.",
+   "explicacion_adulto": "Está aprendiendo a resolver la doble observación: hay dos triángulos rectángulos que comparten la altura h, y la distancia al pie (x) también es desconocida. Se plantea un sistema con dos tangentes: tan β = h/x (desde el punto cercano) y tan α = h/(x + d) (desde el lejano). Errores típicos: usar d como si fuera la distancia al pie, restar los ángulos o sumar d en el triángulo equivocado. Pídele que dibuje los dos puntos de observación y marque qué distancia conoce y cuál no.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "h = 0,84x",
+     "resultado": "",
+     "texto": "Triángulo del punto cercano."
+    },
+    {
+     "paso": 2,
+     "operacion": "h = 0,58(x + 30)",
+     "resultado": "",
+     "texto": "Triángulo del punto lejano."
+    },
+    {
+     "paso": 3,
+     "operacion": "x = 17,4 : 0,26",
+     "resultado": "66,9 m",
+     "texto": "Igualación."
+    },
+    {
+     "paso": 4,
+     "operacion": "h = 0,84 × x",
+     "resultado": "56,2 m",
+     "texto": "Altura."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un dron vuela quieto sobre un punto P del suelo. Desde A se ve con una elevación de 40° y desde B, que está 100 m más cerca de P y en la misma línea, con 60°. ¿A qué altura vuela el dron? Redondea a las décimas. (tan 40° ≈ 0,84; tan 60° ≈ 1,73)",
+   "respuesta": "163,3 m",
+   "distractores": [
+    {
+     "valor": "173 m",
+     "error": "E01"
+    },
+    {
+     "valor": "36,4 m",
+     "error": "E02"
+    },
+    {
+     "valor": "326,6 m",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "GEO.TRIG.04",
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Llama h a la altura y x a la distancia desde el punto más cercano al pie. Desde cerca: tan 60° = h/x → h = 1,73x. Desde lejos: tan 40° = h/(x + 100) → h = 0,84(x + 100). Igualando: 1,73x = 0,84x + 84 → 0,89x = 84 → x ≈ 94,4 m. Entonces h = 1,73 × 94,38 ≈ 163,3 m.",
+   "explicacion_adulto": "Está aprendiendo a resolver la doble observación: hay dos triángulos rectángulos que comparten la altura h, y la distancia al pie (x) también es desconocida. Se plantea un sistema con dos tangentes: tan β = h/x (desde el punto cercano) y tan α = h/(x + d) (desde el lejano). Errores típicos: usar d como si fuera la distancia al pie, restar los ángulos o sumar d en el triángulo equivocado. Pídele que dibuje los dos puntos de observación y marque qué distancia conoce y cuál no.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "h = 1,73x",
+     "resultado": "",
+     "texto": "Triángulo del punto cercano."
+    },
+    {
+     "paso": 2,
+     "operacion": "h = 0,84(x + 100)",
+     "resultado": "",
+     "texto": "Triángulo del punto lejano."
+    },
+    {
+     "paso": 3,
+     "operacion": "x = 84 : 0,89",
+     "resultado": "94,4 m",
+     "texto": "Igualación."
+    },
+    {
+     "paso": 4,
+     "operacion": "h = 1,73 × x",
+     "resultado": "163,3 m",
+     "texto": "Altura."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un dron vuela quieto sobre un punto P del suelo. Desde A se ve con una elevación de 20° y desde B, que está 120 m más cerca de P y en la misma línea, con 55°. ¿A qué altura vuela el dron? Redondea a las décimas. (tan 20° ≈ 0,36; tan 55° ≈ 1,43)",
+   "respuesta": "57,7 m",
+   "distractores": [
+    {
+     "valor": "171,6 m",
+     "error": "E01"
+    },
+    {
+     "valor": "84 m",
+     "error": "E02"
+    },
+    {
+     "valor": "115,5 m",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "GEO.TRIG.04",
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Llama h a la altura y x a la distancia desde el punto más cercano al pie. Desde cerca: tan 55° = h/x → h = 1,43x. Desde lejos: tan 20° = h/(x + 120) → h = 0,36(x + 120). Igualando: 1,43x = 0,36x + 43,2 → 1,07x = 43,2 → x ≈ 40,4 m. Entonces h = 1,43 × 40,37 ≈ 57,7 m.",
+   "explicacion_adulto": "Está aprendiendo a resolver la doble observación: hay dos triángulos rectángulos que comparten la altura h, y la distancia al pie (x) también es desconocida. Se plantea un sistema con dos tangentes: tan β = h/x (desde el punto cercano) y tan α = h/(x + d) (desde el lejano). Errores típicos: usar d como si fuera la distancia al pie, restar los ángulos o sumar d en el triángulo equivocado. Pídele que dibuje los dos puntos de observación y marque qué distancia conoce y cuál no.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "h = 1,43x",
+     "resultado": "",
+     "texto": "Triángulo del punto cercano."
+    },
+    {
+     "paso": 2,
+     "operacion": "h = 0,36(x + 120)",
+     "resultado": "",
+     "texto": "Triángulo del punto lejano."
+    },
+    {
+     "paso": 3,
+     "operacion": "x = 43,2 : 1,07",
+     "resultado": "40,4 m",
+     "texto": "Igualación."
+    },
+    {
+     "paso": 4,
+     "operacion": "h = 1,43 × x",
+     "resultado": "57,7 m",
+     "texto": "Altura."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un dron vuela quieto sobre un punto P del suelo. Desde A se ve con una elevación de 50° y desde B, que está 20 m más cerca de P y en la misma línea, con 65°. ¿A qué altura vuela el dron? Redondea a las décimas. (tan 50° ≈ 1,19; tan 65° ≈ 2,14)",
+   "respuesta": "53,6 m",
+   "distractores": [
+    {
+     "valor": "42,8 m",
+     "error": "E01"
+    },
+    {
+     "valor": "5,4 m",
+     "error": "E02"
+    },
+    {
+     "valor": "107,2 m",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "GEO.TRIG.04",
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Llama h a la altura y x a la distancia desde el punto más cercano al pie. Desde cerca: tan 65° = h/x → h = 2,14x. Desde lejos: tan 50° = h/(x + 20) → h = 1,19(x + 20). Igualando: 2,14x = 1,19x + 23,8 → 0,95x = 23,8 → x ≈ 25,1 m. Entonces h = 2,14 × 25,05 ≈ 53,6 m.",
+   "explicacion_adulto": "Está aprendiendo a resolver la doble observación: hay dos triángulos rectángulos que comparten la altura h, y la distancia al pie (x) también es desconocida. Se plantea un sistema con dos tangentes: tan β = h/x (desde el punto cercano) y tan α = h/(x + d) (desde el lejano). Errores típicos: usar d como si fuera la distancia al pie, restar los ángulos o sumar d en el triángulo equivocado. Pídele que dibuje los dos puntos de observación y marque qué distancia conoce y cuál no.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "h = 2,14x",
+     "resultado": "",
+     "texto": "Triángulo del punto cercano."
+    },
+    {
+     "paso": 2,
+     "operacion": "h = 1,19(x + 20)",
+     "resultado": "",
+     "texto": "Triángulo del punto lejano."
+    },
+    {
+     "paso": 3,
+     "operacion": "x = 23,8 : 0,95",
+     "resultado": "25,1 m",
+     "texto": "Igualación."
+    },
+    {
+     "paso": 4,
+     "operacion": "h = 2,14 × x",
+     "resultado": "53,6 m",
+     "texto": "Altura."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un dron vuela quieto sobre un punto P del suelo. Desde A se ve con una elevación de 30° y desde B, que está 130 m más cerca de P y en la misma línea, con 45°. ¿A qué altura vuela el dron? Redondea a las décimas. (tan 30° ≈ 0,58; tan 45° ≈ 1)",
+   "respuesta": "179,5 m",
+   "distractores": [
+    {
+     "valor": "130 m",
+     "error": "E01"
+    },
+    {
+     "valor": "34,8 m",
+     "error": "E02"
+    },
+    {
+     "valor": "359 m",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "GEO.TRIG.04",
+    "ALG.SIST.02"
+   ],
+   "explicacion_nino": "Llama h a la altura y x a la distancia desde el punto más cercano al pie. Desde cerca: tan 45° = h/x → h = 1x. Desde lejos: tan 30° = h/(x + 130) → h = 0,58(x + 130). Igualando: 1x = 0,58x + 75,4 → 0,42x = 75,4 → x ≈ 179,5 m. Entonces h = 1 × 179,52 ≈ 179,5 m.",
+   "explicacion_adulto": "Está aprendiendo a resolver la doble observación: hay dos triángulos rectángulos que comparten la altura h, y la distancia al pie (x) también es desconocida. Se plantea un sistema con dos tangentes: tan β = h/x (desde el punto cercano) y tan α = h/(x + d) (desde el lejano). Errores típicos: usar d como si fuera la distancia al pie, restar los ángulos o sumar d en el triángulo equivocado. Pídele que dibuje los dos puntos de observación y marque qué distancia conoce y cuál no.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "h = 1x",
+     "resultado": "",
+     "texto": "Triángulo del punto cercano."
+    },
+    {
+     "paso": 2,
+     "operacion": "h = 0,58(x + 130)",
+     "resultado": "",
+     "texto": "Triángulo del punto lejano."
+    },
+    {
+     "paso": 3,
+     "operacion": "x = 75,4 : 0,42",
+     "resultado": "179,5 m",
+     "texto": "Igualación."
+    },
+    {
+     "paso": 4,
+     "operacion": "h = 1 × x",
+     "resultado": "179,5 m",
+     "texto": "Altura."
+    }
+   ],
+   "plantilla": "P04"
+  }
+ ]
+}

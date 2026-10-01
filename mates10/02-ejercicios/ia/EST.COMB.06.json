@@ -1,0 +1,1626 @@
+{
+ "habilidad": "EST.COMB.06",
+ "generado_por": "claude (skill mates10-generar-ejercicios v1)",
+ "ejercicios": [
+  {
+   "dificultad": 3,
+   "enunciado": "En un examen hay 10 preguntas y cada alumno debe elegir 4 para contestar. ¿De cuántas formas puede elegirlas?",
+   "respuesta": "210",
+   "distractores": [
+    {
+     "valor": "5040",
+     "error": "E01"
+    },
+    {
+     "valor": "10000",
+     "error": null
+    },
+    {
+     "valor": "40",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "EST.COMB.03",
+    "EST.COMB.04",
+    "EST.COMB.05"
+   ],
+   "explicacion_nino": "Hazte las tres preguntas. No entran todos, no importa el orden (elegir A y B es lo mismo que B y A) y no se repite: combinaciones. Cálculo: 10 × 9 × 8 × 7 : (4 × 3 × 2 × 1) = 210.",
+   "explicacion_adulto": "Está aprendiendo a decidir qué fórmula de recuento usar haciéndose tres preguntas: ¿entran todos los elementos?, ¿importa el orden?, ¿se pueden repetir? Errores típicos: usar variaciones cuando el orden no importa (contar dos veces el mismo saludo) o combinaciones cuando sí importa (123 y 321 son números distintos). Pídele que intercambie dos elementos de un resultado y se pregunte si obtiene algo distinto.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "¿Entran todos?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "¿Importa el orden?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "¿Se repiten?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 4,
+     "operacion": "10 × 9 × 8 × 7 : (4 × 3 × 2 × 1)",
+     "resultado": "210",
+     "texto": "Combinaciones"
+    }
+   ],
+   "plantilla": "P01",
+   "expresion_calculo": "10 × 9 × 8 × 7 : (4 × 3 × 2 × 1)"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "5 amigos se ponen en fila para una foto. ¿De cuántas maneras distintas pueden colocarse?",
+   "respuesta": "120",
+   "distractores": [
+    {
+     "valor": "25",
+     "error": null
+    },
+    {
+     "valor": "15",
+     "error": null
+    },
+    {
+     "valor": "3125",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "EST.COMB.03",
+    "EST.COMB.04",
+    "EST.COMB.05"
+   ],
+   "explicacion_nino": "Hazte las tres preguntas. Entran todos los elementos, importa el orden y no se repite ninguno: permutaciones. Cálculo: 5 × 4 × 3 × 2 × 1 = 120.",
+   "explicacion_adulto": "Está aprendiendo a decidir qué fórmula de recuento usar haciéndose tres preguntas: ¿entran todos los elementos?, ¿importa el orden?, ¿se pueden repetir? Errores típicos: usar variaciones cuando el orden no importa (contar dos veces el mismo saludo) o combinaciones cuando sí importa (123 y 321 son números distintos). Pídele que intercambie dos elementos de un resultado y se pregunte si obtiene algo distinto.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "¿Entran todos?",
+     "resultado": "sí",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "¿Importa el orden?",
+     "resultado": "sí",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "¿Se repiten?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 4,
+     "operacion": "5 × 4 × 3 × 2 × 1",
+     "resultado": "120",
+     "texto": "Permutaciones"
+    }
+   ],
+   "plantilla": "P04",
+   "expresion_calculo": "5 × 4 × 3 × 2 × 1"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un repartidor tiene que visitar 4 casas, todas en un día. ¿En cuántos órdenes distintos puede hacer el recorrido?",
+   "respuesta": "24",
+   "distractores": [
+    {
+     "valor": "16",
+     "error": null
+    },
+    {
+     "valor": "10",
+     "error": null
+    },
+    {
+     "valor": "256",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "EST.COMB.03",
+    "EST.COMB.04",
+    "EST.COMB.05"
+   ],
+   "explicacion_nino": "Hazte las tres preguntas. Entran todos los elementos, importa el orden y no se repite ninguno: permutaciones. Cálculo: 4 × 3 × 2 × 1 = 24.",
+   "explicacion_adulto": "Está aprendiendo a decidir qué fórmula de recuento usar haciéndose tres preguntas: ¿entran todos los elementos?, ¿importa el orden?, ¿se pueden repetir? Errores típicos: usar variaciones cuando el orden no importa (contar dos veces el mismo saludo) o combinaciones cuando sí importa (123 y 321 son números distintos). Pídele que intercambie dos elementos de un resultado y se pregunte si obtiene algo distinto.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "¿Entran todos?",
+     "resultado": "sí",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "¿Importa el orden?",
+     "resultado": "sí",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "¿Se repiten?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 4,
+     "operacion": "4 × 3 × 2 × 1",
+     "resultado": "24",
+     "texto": "Permutaciones"
+    }
+   ],
+   "plantilla": "P04",
+   "expresion_calculo": "4 × 3 × 2 × 1"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Hay 11 canciones y se van a poner 3 seguidas, sin repetir ninguna. ¿Cuántas listas ordenadas distintas se pueden preparar?",
+   "respuesta": "990",
+   "distractores": [
+    {
+     "valor": "165",
+     "error": "E02"
+    },
+    {
+     "valor": "1331",
+     "error": null
+    },
+    {
+     "valor": "33",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "EST.COMB.03",
+    "EST.COMB.04",
+    "EST.COMB.05"
+   ],
+   "explicacion_nino": "Hazte las tres preguntas. No entran todos, sí importa el orden (no es lo mismo el primero que el segundo) y no se repite: variaciones sin repetición. Cálculo: 11 × 10 × 9 = 990.",
+   "explicacion_adulto": "Está aprendiendo a decidir qué fórmula de recuento usar haciéndose tres preguntas: ¿entran todos los elementos?, ¿importa el orden?, ¿se pueden repetir? Errores típicos: usar variaciones cuando el orden no importa (contar dos veces el mismo saludo) o combinaciones cuando sí importa (123 y 321 son números distintos). Pídele que intercambie dos elementos de un resultado y se pregunte si obtiene algo distinto.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "¿Entran todos?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "¿Importa el orden?",
+     "resultado": "sí",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "¿Se repiten?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 4,
+     "operacion": "11 × 10 × 9",
+     "resultado": "990",
+     "texto": "Variaciones sin repetición"
+    }
+   ],
+   "plantilla": "P02",
+   "expresion_calculo": "11 × 10 × 9"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En una liga de 6 equipos cada equipo juega una sola vez contra cada uno de los demás. ¿Cuántos partidos se juegan?",
+   "respuesta": "15",
+   "distractores": [
+    {
+     "valor": "30",
+     "error": "E01"
+    },
+    {
+     "valor": "36",
+     "error": null
+    },
+    {
+     "valor": "12",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "EST.COMB.03",
+    "EST.COMB.04",
+    "EST.COMB.05"
+   ],
+   "explicacion_nino": "Hazte las tres preguntas. No entran todos, no importa el orden (elegir A y B es lo mismo que B y A) y no se repite: combinaciones. Cálculo: 6 × 5 : (2 × 1) = 15.",
+   "explicacion_adulto": "Está aprendiendo a decidir qué fórmula de recuento usar haciéndose tres preguntas: ¿entran todos los elementos?, ¿importa el orden?, ¿se pueden repetir? Errores típicos: usar variaciones cuando el orden no importa (contar dos veces el mismo saludo) o combinaciones cuando sí importa (123 y 321 son números distintos). Pídele que intercambie dos elementos de un resultado y se pregunte si obtiene algo distinto.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "¿Entran todos?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "¿Importa el orden?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "¿Se repiten?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 4,
+     "operacion": "6 × 5 : (2 × 1)",
+     "resultado": "15",
+     "texto": "Combinaciones"
+    }
+   ],
+   "plantilla": "P01",
+   "expresion_calculo": "6 × 5 : (2 × 1)"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "¿Cuántas palabras (con o sin sentido) se pueden formar ordenando todas las letras de una palabra con 4 letras distintas?",
+   "respuesta": "24",
+   "distractores": [
+    {
+     "valor": "16",
+     "error": null
+    },
+    {
+     "valor": "10",
+     "error": null
+    },
+    {
+     "valor": "256",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "EST.COMB.03",
+    "EST.COMB.04",
+    "EST.COMB.05"
+   ],
+   "explicacion_nino": "Hazte las tres preguntas. Entran todos los elementos, importa el orden y no se repite ninguno: permutaciones. Cálculo: 4 × 3 × 2 × 1 = 24.",
+   "explicacion_adulto": "Está aprendiendo a decidir qué fórmula de recuento usar haciéndose tres preguntas: ¿entran todos los elementos?, ¿importa el orden?, ¿se pueden repetir? Errores típicos: usar variaciones cuando el orden no importa (contar dos veces el mismo saludo) o combinaciones cuando sí importa (123 y 321 son números distintos). Pídele que intercambie dos elementos de un resultado y se pregunte si obtiene algo distinto.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "¿Entran todos?",
+     "resultado": "sí",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "¿Importa el orden?",
+     "resultado": "sí",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "¿Se repiten?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 4,
+     "operacion": "4 × 3 × 2 × 1",
+     "resultado": "24",
+     "texto": "Permutaciones"
+    }
+   ],
+   "plantilla": "P04",
+   "expresion_calculo": "4 × 3 × 2 × 1"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "De un grupo de 10 alumnos hay que elegir 3 para formar una comisión (todos con el mismo cargo). ¿Cuántas comisiones distintas se pueden formar?",
+   "respuesta": "120",
+   "distractores": [
+    {
+     "valor": "720",
+     "error": "E01"
+    },
+    {
+     "valor": "1000",
+     "error": null
+    },
+    {
+     "valor": "30",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "EST.COMB.03",
+    "EST.COMB.04",
+    "EST.COMB.05"
+   ],
+   "explicacion_nino": "Hazte las tres preguntas. No entran todos, no importa el orden (elegir A y B es lo mismo que B y A) y no se repite: combinaciones. Cálculo: 10 × 9 × 8 : (3 × 2 × 1) = 120.",
+   "explicacion_adulto": "Está aprendiendo a decidir qué fórmula de recuento usar haciéndose tres preguntas: ¿entran todos los elementos?, ¿importa el orden?, ¿se pueden repetir? Errores típicos: usar variaciones cuando el orden no importa (contar dos veces el mismo saludo) o combinaciones cuando sí importa (123 y 321 son números distintos). Pídele que intercambie dos elementos de un resultado y se pregunte si obtiene algo distinto.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "¿Entran todos?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "¿Importa el orden?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "¿Se repiten?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 4,
+     "operacion": "10 × 9 × 8 : (3 × 2 × 1)",
+     "resultado": "120",
+     "texto": "Combinaciones"
+    }
+   ],
+   "plantilla": "P01",
+   "expresion_calculo": "10 × 9 × 8 : (3 × 2 × 1)"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En una clase de 10 alumnos se sortean 2 premios distintos, sin que nadie pueda llevarse dos. ¿De cuántas formas puede acabar el sorteo?",
+   "respuesta": "90",
+   "distractores": [
+    {
+     "valor": "45",
+     "error": "E02"
+    },
+    {
+     "valor": "100",
+     "error": null
+    },
+    {
+     "valor": "20",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "EST.COMB.03",
+    "EST.COMB.04",
+    "EST.COMB.05"
+   ],
+   "explicacion_nino": "Hazte las tres preguntas. No entran todos, sí importa el orden (no es lo mismo el primero que el segundo) y no se repite: variaciones sin repetición. Cálculo: 10 × 9 = 90.",
+   "explicacion_adulto": "Está aprendiendo a decidir qué fórmula de recuento usar haciéndose tres preguntas: ¿entran todos los elementos?, ¿importa el orden?, ¿se pueden repetir? Errores típicos: usar variaciones cuando el orden no importa (contar dos veces el mismo saludo) o combinaciones cuando sí importa (123 y 321 son números distintos). Pídele que intercambie dos elementos de un resultado y se pregunte si obtiene algo distinto.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "¿Entran todos?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "¿Importa el orden?",
+     "resultado": "sí",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "¿Se repiten?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 4,
+     "operacion": "10 × 9",
+     "resultado": "90",
+     "texto": "Variaciones sin repetición"
+    }
+   ],
+   "plantilla": "P02",
+   "expresion_calculo": "10 × 9"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "¿De cuántas formas se pueden colocar 4 libros distintos en una estantería, uno al lado del otro?",
+   "respuesta": "24",
+   "distractores": [
+    {
+     "valor": "16",
+     "error": null
+    },
+    {
+     "valor": "10",
+     "error": null
+    },
+    {
+     "valor": "256",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "EST.COMB.03",
+    "EST.COMB.04",
+    "EST.COMB.05"
+   ],
+   "explicacion_nino": "Hazte las tres preguntas. Entran todos los elementos, importa el orden y no se repite ninguno: permutaciones. Cálculo: 4 × 3 × 2 × 1 = 24.",
+   "explicacion_adulto": "Está aprendiendo a decidir qué fórmula de recuento usar haciéndose tres preguntas: ¿entran todos los elementos?, ¿importa el orden?, ¿se pueden repetir? Errores típicos: usar variaciones cuando el orden no importa (contar dos veces el mismo saludo) o combinaciones cuando sí importa (123 y 321 son números distintos). Pídele que intercambie dos elementos de un resultado y se pregunte si obtiene algo distinto.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "¿Entran todos?",
+     "resultado": "sí",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "¿Importa el orden?",
+     "resultado": "sí",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "¿Se repiten?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 4,
+     "operacion": "4 × 3 × 2 × 1",
+     "resultado": "24",
+     "texto": "Permutaciones"
+    }
+   ],
+   "plantilla": "P04",
+   "expresion_calculo": "4 × 3 × 2 × 1"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "De un grupo de 5 alumnos hay que elegir 3 para formar una comisión (todos con el mismo cargo). ¿Cuántas comisiones distintas se pueden formar?",
+   "respuesta": "10",
+   "distractores": [
+    {
+     "valor": "60",
+     "error": "E01"
+    },
+    {
+     "valor": "125",
+     "error": null
+    },
+    {
+     "valor": "15",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "EST.COMB.03",
+    "EST.COMB.04",
+    "EST.COMB.05"
+   ],
+   "explicacion_nino": "Hazte las tres preguntas. No entran todos, no importa el orden (elegir A y B es lo mismo que B y A) y no se repite: combinaciones. Cálculo: 5 × 4 × 3 : (3 × 2 × 1) = 10.",
+   "explicacion_adulto": "Está aprendiendo a decidir qué fórmula de recuento usar haciéndose tres preguntas: ¿entran todos los elementos?, ¿importa el orden?, ¿se pueden repetir? Errores típicos: usar variaciones cuando el orden no importa (contar dos veces el mismo saludo) o combinaciones cuando sí importa (123 y 321 son números distintos). Pídele que intercambie dos elementos de un resultado y se pregunte si obtiene algo distinto.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "¿Entran todos?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "¿Importa el orden?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "¿Se repiten?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 4,
+     "operacion": "5 × 4 × 3 : (3 × 2 × 1)",
+     "resultado": "10",
+     "texto": "Combinaciones"
+    }
+   ],
+   "plantilla": "P01",
+   "expresion_calculo": "5 × 4 × 3 : (3 × 2 × 1)"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Una heladería tiene 5 sabores y una copa lleva 4 bolas de sabores distintos (no importa cómo se coloquen). ¿Cuántas copas diferentes se pueden pedir?",
+   "respuesta": "5",
+   "distractores": [
+    {
+     "valor": "120",
+     "error": "E01"
+    },
+    {
+     "valor": "625",
+     "error": null
+    },
+    {
+     "valor": "20",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "EST.COMB.03",
+    "EST.COMB.04",
+    "EST.COMB.05"
+   ],
+   "explicacion_nino": "Hazte las tres preguntas. No entran todos, no importa el orden (elegir A y B es lo mismo que B y A) y no se repite: combinaciones. Cálculo: 5 × 4 × 3 × 2 : (4 × 3 × 2 × 1) = 5.",
+   "explicacion_adulto": "Está aprendiendo a decidir qué fórmula de recuento usar haciéndose tres preguntas: ¿entran todos los elementos?, ¿importa el orden?, ¿se pueden repetir? Errores típicos: usar variaciones cuando el orden no importa (contar dos veces el mismo saludo) o combinaciones cuando sí importa (123 y 321 son números distintos). Pídele que intercambie dos elementos de un resultado y se pregunte si obtiene algo distinto.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "¿Entran todos?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "¿Importa el orden?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "¿Se repiten?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 4,
+     "operacion": "5 × 4 × 3 × 2 : (4 × 3 × 2 × 1)",
+     "resultado": "5",
+     "texto": "Combinaciones"
+    }
+   ],
+   "plantilla": "P01",
+   "expresion_calculo": "5 × 4 × 3 × 2 : (4 × 3 × 2 × 1)"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Una heladería tiene 7 sabores y una copa lleva 4 bolas de sabores distintos (no importa cómo se coloquen). ¿Cuántas copas diferentes se pueden pedir?",
+   "respuesta": "35",
+   "distractores": [
+    {
+     "valor": "840",
+     "error": "E01"
+    },
+    {
+     "valor": "2401",
+     "error": null
+    },
+    {
+     "valor": "28",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "EST.COMB.03",
+    "EST.COMB.04",
+    "EST.COMB.05"
+   ],
+   "explicacion_nino": "Hazte las tres preguntas. No entran todos, no importa el orden (elegir A y B es lo mismo que B y A) y no se repite: combinaciones. Cálculo: 7 × 6 × 5 × 4 : (4 × 3 × 2 × 1) = 35.",
+   "explicacion_adulto": "Está aprendiendo a decidir qué fórmula de recuento usar haciéndose tres preguntas: ¿entran todos los elementos?, ¿importa el orden?, ¿se pueden repetir? Errores típicos: usar variaciones cuando el orden no importa (contar dos veces el mismo saludo) o combinaciones cuando sí importa (123 y 321 son números distintos). Pídele que intercambie dos elementos de un resultado y se pregunte si obtiene algo distinto.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "¿Entran todos?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "¿Importa el orden?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "¿Se repiten?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 4,
+     "operacion": "7 × 6 × 5 × 4 : (4 × 3 × 2 × 1)",
+     "resultado": "35",
+     "texto": "Combinaciones"
+    }
+   ],
+   "plantilla": "P01",
+   "expresion_calculo": "7 × 6 × 5 × 4 : (4 × 3 × 2 × 1)"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Una heladería tiene 9 sabores y una copa lleva 4 bolas de sabores distintos (no importa cómo se coloquen). ¿Cuántas copas diferentes se pueden pedir?",
+   "respuesta": "126",
+   "distractores": [
+    {
+     "valor": "3024",
+     "error": "E01"
+    },
+    {
+     "valor": "6561",
+     "error": null
+    },
+    {
+     "valor": "36",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "EST.COMB.03",
+    "EST.COMB.04",
+    "EST.COMB.05"
+   ],
+   "explicacion_nino": "Hazte las tres preguntas. No entran todos, no importa el orden (elegir A y B es lo mismo que B y A) y no se repite: combinaciones. Cálculo: 9 × 8 × 7 × 6 : (4 × 3 × 2 × 1) = 126.",
+   "explicacion_adulto": "Está aprendiendo a decidir qué fórmula de recuento usar haciéndose tres preguntas: ¿entran todos los elementos?, ¿importa el orden?, ¿se pueden repetir? Errores típicos: usar variaciones cuando el orden no importa (contar dos veces el mismo saludo) o combinaciones cuando sí importa (123 y 321 son números distintos). Pídele que intercambie dos elementos de un resultado y se pregunte si obtiene algo distinto.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "¿Entran todos?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "¿Importa el orden?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "¿Se repiten?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 4,
+     "operacion": "9 × 8 × 7 × 6 : (4 × 3 × 2 × 1)",
+     "resultado": "126",
+     "texto": "Combinaciones"
+    }
+   ],
+   "plantilla": "P01",
+   "expresion_calculo": "9 × 8 × 7 × 6 : (4 × 3 × 2 × 1)"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un repartidor tiene que visitar 7 casas, todas en un día. ¿En cuántos órdenes distintos puede hacer el recorrido?",
+   "respuesta": "5040",
+   "distractores": [
+    {
+     "valor": "49",
+     "error": null
+    },
+    {
+     "valor": "28",
+     "error": null
+    },
+    {
+     "valor": "823543",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "EST.COMB.03",
+    "EST.COMB.04",
+    "EST.COMB.05"
+   ],
+   "explicacion_nino": "Hazte las tres preguntas. Entran todos los elementos, importa el orden y no se repite ninguno: permutaciones. Cálculo: 7 × 6 × 5 × 4 × 3 × 2 × 1 = 5040.",
+   "explicacion_adulto": "Está aprendiendo a decidir qué fórmula de recuento usar haciéndose tres preguntas: ¿entran todos los elementos?, ¿importa el orden?, ¿se pueden repetir? Errores típicos: usar variaciones cuando el orden no importa (contar dos veces el mismo saludo) o combinaciones cuando sí importa (123 y 321 son números distintos). Pídele que intercambie dos elementos de un resultado y se pregunte si obtiene algo distinto.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "¿Entran todos?",
+     "resultado": "sí",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "¿Importa el orden?",
+     "resultado": "sí",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "¿Se repiten?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 4,
+     "operacion": "7 × 6 × 5 × 4 × 3 × 2 × 1",
+     "resultado": "5040",
+     "texto": "Permutaciones"
+    }
+   ],
+   "plantilla": "P04",
+   "expresion_calculo": "7 × 6 × 5 × 4 × 3 × 2 × 1"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un repartidor tiene que visitar 5 casas, todas en un día. ¿En cuántos órdenes distintos puede hacer el recorrido?",
+   "respuesta": "120",
+   "distractores": [
+    {
+     "valor": "25",
+     "error": null
+    },
+    {
+     "valor": "15",
+     "error": null
+    },
+    {
+     "valor": "3125",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "EST.COMB.03",
+    "EST.COMB.04",
+    "EST.COMB.05"
+   ],
+   "explicacion_nino": "Hazte las tres preguntas. Entran todos los elementos, importa el orden y no se repite ninguno: permutaciones. Cálculo: 5 × 4 × 3 × 2 × 1 = 120.",
+   "explicacion_adulto": "Está aprendiendo a decidir qué fórmula de recuento usar haciéndose tres preguntas: ¿entran todos los elementos?, ¿importa el orden?, ¿se pueden repetir? Errores típicos: usar variaciones cuando el orden no importa (contar dos veces el mismo saludo) o combinaciones cuando sí importa (123 y 321 son números distintos). Pídele que intercambie dos elementos de un resultado y se pregunte si obtiene algo distinto.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "¿Entran todos?",
+     "resultado": "sí",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "¿Importa el orden?",
+     "resultado": "sí",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "¿Se repiten?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 4,
+     "operacion": "5 × 4 × 3 × 2 × 1",
+     "resultado": "120",
+     "texto": "Permutaciones"
+    }
+   ],
+   "plantilla": "P04",
+   "expresion_calculo": "5 × 4 × 3 × 2 × 1"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "¿Cuántos números de 4 cifras distintas se pueden formar con las cifras del 1 al 7?",
+   "respuesta": "840",
+   "distractores": [
+    {
+     "valor": "35",
+     "error": "E02"
+    },
+    {
+     "valor": "2401",
+     "error": null
+    },
+    {
+     "valor": "28",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "EST.COMB.03",
+    "EST.COMB.04",
+    "EST.COMB.05"
+   ],
+   "explicacion_nino": "Hazte las tres preguntas. No entran todos, sí importa el orden (no es lo mismo el primero que el segundo) y no se repite: variaciones sin repetición. Cálculo: 7 × 6 × 5 × 4 = 840.",
+   "explicacion_adulto": "Está aprendiendo a decidir qué fórmula de recuento usar haciéndose tres preguntas: ¿entran todos los elementos?, ¿importa el orden?, ¿se pueden repetir? Errores típicos: usar variaciones cuando el orden no importa (contar dos veces el mismo saludo) o combinaciones cuando sí importa (123 y 321 son números distintos). Pídele que intercambie dos elementos de un resultado y se pregunte si obtiene algo distinto.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "¿Entran todos?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "¿Importa el orden?",
+     "resultado": "sí",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "¿Se repiten?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 4,
+     "operacion": "7 × 6 × 5 × 4",
+     "resultado": "840",
+     "texto": "Variaciones sin repetición"
+    }
+   ],
+   "plantilla": "P02",
+   "expresion_calculo": "7 × 6 × 5 × 4"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En una liga de 8 equipos cada equipo juega una sola vez contra cada uno de los demás. ¿Cuántos partidos se juegan?",
+   "respuesta": "28",
+   "distractores": [
+    {
+     "valor": "56",
+     "error": "E01"
+    },
+    {
+     "valor": "64",
+     "error": null
+    },
+    {
+     "valor": "16",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "EST.COMB.03",
+    "EST.COMB.04",
+    "EST.COMB.05"
+   ],
+   "explicacion_nino": "Hazte las tres preguntas. No entran todos, no importa el orden (elegir A y B es lo mismo que B y A) y no se repite: combinaciones. Cálculo: 8 × 7 : (2 × 1) = 28.",
+   "explicacion_adulto": "Está aprendiendo a decidir qué fórmula de recuento usar haciéndose tres preguntas: ¿entran todos los elementos?, ¿importa el orden?, ¿se pueden repetir? Errores típicos: usar variaciones cuando el orden no importa (contar dos veces el mismo saludo) o combinaciones cuando sí importa (123 y 321 son números distintos). Pídele que intercambie dos elementos de un resultado y se pregunte si obtiene algo distinto.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "¿Entran todos?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "¿Importa el orden?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "¿Se repiten?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 4,
+     "operacion": "8 × 7 : (2 × 1)",
+     "resultado": "28",
+     "texto": "Combinaciones"
+    }
+   ],
+   "plantilla": "P01",
+   "expresion_calculo": "8 × 7 : (2 × 1)"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En un examen hay 12 preguntas y cada alumno debe elegir 2 para contestar. ¿De cuántas formas puede elegirlas?",
+   "respuesta": "66",
+   "distractores": [
+    {
+     "valor": "132",
+     "error": "E01"
+    },
+    {
+     "valor": "144",
+     "error": null
+    },
+    {
+     "valor": "24",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "EST.COMB.03",
+    "EST.COMB.04",
+    "EST.COMB.05"
+   ],
+   "explicacion_nino": "Hazte las tres preguntas. No entran todos, no importa el orden (elegir A y B es lo mismo que B y A) y no se repite: combinaciones. Cálculo: 12 × 11 : (2 × 1) = 66.",
+   "explicacion_adulto": "Está aprendiendo a decidir qué fórmula de recuento usar haciéndose tres preguntas: ¿entran todos los elementos?, ¿importa el orden?, ¿se pueden repetir? Errores típicos: usar variaciones cuando el orden no importa (contar dos veces el mismo saludo) o combinaciones cuando sí importa (123 y 321 son números distintos). Pídele que intercambie dos elementos de un resultado y se pregunte si obtiene algo distinto.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "¿Entran todos?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "¿Importa el orden?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "¿Se repiten?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 4,
+     "operacion": "12 × 11 : (2 × 1)",
+     "resultado": "66",
+     "texto": "Combinaciones"
+    }
+   ],
+   "plantilla": "P01",
+   "expresion_calculo": "12 × 11 : (2 × 1)"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Hay 6 canciones y se van a poner 2 seguidas, sin repetir ninguna. ¿Cuántas listas ordenadas distintas se pueden preparar?",
+   "respuesta": "30",
+   "distractores": [
+    {
+     "valor": "15",
+     "error": "E02"
+    },
+    {
+     "valor": "36",
+     "error": null
+    },
+    {
+     "valor": "12",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "EST.COMB.03",
+    "EST.COMB.04",
+    "EST.COMB.05"
+   ],
+   "explicacion_nino": "Hazte las tres preguntas. No entran todos, sí importa el orden (no es lo mismo el primero que el segundo) y no se repite: variaciones sin repetición. Cálculo: 6 × 5 = 30.",
+   "explicacion_adulto": "Está aprendiendo a decidir qué fórmula de recuento usar haciéndose tres preguntas: ¿entran todos los elementos?, ¿importa el orden?, ¿se pueden repetir? Errores típicos: usar variaciones cuando el orden no importa (contar dos veces el mismo saludo) o combinaciones cuando sí importa (123 y 321 son números distintos). Pídele que intercambie dos elementos de un resultado y se pregunte si obtiene algo distinto.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "¿Entran todos?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "¿Importa el orden?",
+     "resultado": "sí",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "¿Se repiten?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 4,
+     "operacion": "6 × 5",
+     "resultado": "30",
+     "texto": "Variaciones sin repetición"
+    }
+   ],
+   "plantilla": "P02",
+   "expresion_calculo": "6 × 5"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Se lanza un dado 5 veces y se anota el resultado de cada lanzamiento en orden. ¿Cuántos resultados distintos puede haber?",
+   "respuesta": "7776",
+   "distractores": [
+    {
+     "valor": "720",
+     "error": null
+    },
+    {
+     "valor": "30",
+     "error": null
+    },
+    {
+     "valor": "15625",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "EST.COMB.03",
+    "EST.COMB.04",
+    "EST.COMB.05"
+   ],
+   "explicacion_nino": "Hazte las tres preguntas. Importa el orden y los elementos se pueden repetir: variaciones con repetición. Cálculo: 6 × 6 × 6 × 6 × 6 = 7776.",
+   "explicacion_adulto": "Está aprendiendo a decidir qué fórmula de recuento usar haciéndose tres preguntas: ¿entran todos los elementos?, ¿importa el orden?, ¿se pueden repetir? Errores típicos: usar variaciones cuando el orden no importa (contar dos veces el mismo saludo) o combinaciones cuando sí importa (123 y 321 son números distintos). Pídele que intercambie dos elementos de un resultado y se pregunte si obtiene algo distinto.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "¿Entran todos?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "¿Importa el orden?",
+     "resultado": "sí",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "¿Se repiten?",
+     "resultado": "sí",
+     "texto": ""
+    },
+    {
+     "paso": 4,
+     "operacion": "6 × 6 × 6 × 6 × 6",
+     "resultado": "7776",
+     "texto": "Variaciones con repetición"
+    }
+   ],
+   "plantilla": "P03",
+   "expresion_calculo": "6 × 6 × 6 × 6 × 6"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Hay 9 canciones y se van a poner 2 seguidas, sin repetir ninguna. ¿Cuántas listas ordenadas distintas se pueden preparar?",
+   "respuesta": "72",
+   "distractores": [
+    {
+     "valor": "36",
+     "error": "E02"
+    },
+    {
+     "valor": "81",
+     "error": null
+    },
+    {
+     "valor": "18",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "EST.COMB.03",
+    "EST.COMB.04",
+    "EST.COMB.05"
+   ],
+   "explicacion_nino": "Hazte las tres preguntas. No entran todos, sí importa el orden (no es lo mismo el primero que el segundo) y no se repite: variaciones sin repetición. Cálculo: 9 × 8 = 72.",
+   "explicacion_adulto": "Está aprendiendo a decidir qué fórmula de recuento usar haciéndose tres preguntas: ¿entran todos los elementos?, ¿importa el orden?, ¿se pueden repetir? Errores típicos: usar variaciones cuando el orden no importa (contar dos veces el mismo saludo) o combinaciones cuando sí importa (123 y 321 son números distintos). Pídele que intercambie dos elementos de un resultado y se pregunte si obtiene algo distinto.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "¿Entran todos?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "¿Importa el orden?",
+     "resultado": "sí",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "¿Se repiten?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 4,
+     "operacion": "9 × 8",
+     "resultado": "72",
+     "texto": "Variaciones sin repetición"
+    }
+   ],
+   "plantilla": "P02",
+   "expresion_calculo": "9 × 8"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "¿Cuántos números de 4 cifras distintas se pueden formar con las cifras del 1 al 5?",
+   "respuesta": "120",
+   "distractores": [
+    {
+     "valor": "5",
+     "error": "E02"
+    },
+    {
+     "valor": "625",
+     "error": null
+    },
+    {
+     "valor": "20",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "EST.COMB.03",
+    "EST.COMB.04",
+    "EST.COMB.05"
+   ],
+   "explicacion_nino": "Hazte las tres preguntas. No entran todos, sí importa el orden (no es lo mismo el primero que el segundo) y no se repite: variaciones sin repetición. Cálculo: 5 × 4 × 3 × 2 = 120.",
+   "explicacion_adulto": "Está aprendiendo a decidir qué fórmula de recuento usar haciéndose tres preguntas: ¿entran todos los elementos?, ¿importa el orden?, ¿se pueden repetir? Errores típicos: usar variaciones cuando el orden no importa (contar dos veces el mismo saludo) o combinaciones cuando sí importa (123 y 321 son números distintos). Pídele que intercambie dos elementos de un resultado y se pregunte si obtiene algo distinto.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "¿Entran todos?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "¿Importa el orden?",
+     "resultado": "sí",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "¿Se repiten?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 4,
+     "operacion": "5 × 4 × 3 × 2",
+     "resultado": "120",
+     "texto": "Variaciones sin repetición"
+    }
+   ],
+   "plantilla": "P02",
+   "expresion_calculo": "5 × 4 × 3 × 2"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "¿Cuántos números de 4 cifras distintas se pueden formar con las cifras del 1 al 6?",
+   "respuesta": "360",
+   "distractores": [
+    {
+     "valor": "15",
+     "error": "E02"
+    },
+    {
+     "valor": "1296",
+     "error": null
+    },
+    {
+     "valor": "24",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "EST.COMB.03",
+    "EST.COMB.04",
+    "EST.COMB.05"
+   ],
+   "explicacion_nino": "Hazte las tres preguntas. No entran todos, sí importa el orden (no es lo mismo el primero que el segundo) y no se repite: variaciones sin repetición. Cálculo: 6 × 5 × 4 × 3 = 360.",
+   "explicacion_adulto": "Está aprendiendo a decidir qué fórmula de recuento usar haciéndose tres preguntas: ¿entran todos los elementos?, ¿importa el orden?, ¿se pueden repetir? Errores típicos: usar variaciones cuando el orden no importa (contar dos veces el mismo saludo) o combinaciones cuando sí importa (123 y 321 son números distintos). Pídele que intercambie dos elementos de un resultado y se pregunte si obtiene algo distinto.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "¿Entran todos?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "¿Importa el orden?",
+     "resultado": "sí",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "¿Se repiten?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 4,
+     "operacion": "6 × 5 × 4 × 3",
+     "resultado": "360",
+     "texto": "Variaciones sin repetición"
+    }
+   ],
+   "plantilla": "P02",
+   "expresion_calculo": "6 × 5 × 4 × 3"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En una clase de 12 alumnos se sortean 2 premios distintos, sin que nadie pueda llevarse dos. ¿De cuántas formas puede acabar el sorteo?",
+   "respuesta": "132",
+   "distractores": [
+    {
+     "valor": "66",
+     "error": "E02"
+    },
+    {
+     "valor": "144",
+     "error": null
+    },
+    {
+     "valor": "24",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "EST.COMB.03",
+    "EST.COMB.04",
+    "EST.COMB.05"
+   ],
+   "explicacion_nino": "Hazte las tres preguntas. No entran todos, sí importa el orden (no es lo mismo el primero que el segundo) y no se repite: variaciones sin repetición. Cálculo: 12 × 11 = 132.",
+   "explicacion_adulto": "Está aprendiendo a decidir qué fórmula de recuento usar haciéndose tres preguntas: ¿entran todos los elementos?, ¿importa el orden?, ¿se pueden repetir? Errores típicos: usar variaciones cuando el orden no importa (contar dos veces el mismo saludo) o combinaciones cuando sí importa (123 y 321 son números distintos). Pídele que intercambie dos elementos de un resultado y se pregunte si obtiene algo distinto.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "¿Entran todos?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "¿Importa el orden?",
+     "resultado": "sí",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "¿Se repiten?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 4,
+     "operacion": "12 × 11",
+     "resultado": "132",
+     "texto": "Variaciones sin repetición"
+    }
+   ],
+   "plantilla": "P02",
+   "expresion_calculo": "12 × 11"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Una quiniela tiene 2 partidos y en cada uno se marca 1, X o 2. ¿Cuántas quinielas distintas se pueden rellenar?",
+   "respuesta": "9",
+   "distractores": [
+    {
+     "valor": "6",
+     "error": null
+    },
+    {
+     "valor": "8",
+     "error": null
+    },
+    {
+     "valor": "18",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "EST.COMB.03",
+    "EST.COMB.04",
+    "EST.COMB.05"
+   ],
+   "explicacion_nino": "Hazte las tres preguntas. Importa el orden y los elementos se pueden repetir: variaciones con repetición. Cálculo: 3 × 3 = 9.",
+   "explicacion_adulto": "Está aprendiendo a decidir qué fórmula de recuento usar haciéndose tres preguntas: ¿entran todos los elementos?, ¿importa el orden?, ¿se pueden repetir? Errores típicos: usar variaciones cuando el orden no importa (contar dos veces el mismo saludo) o combinaciones cuando sí importa (123 y 321 son números distintos). Pídele que intercambie dos elementos de un resultado y se pregunte si obtiene algo distinto.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "¿Entran todos?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "¿Importa el orden?",
+     "resultado": "sí",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "¿Se repiten?",
+     "resultado": "sí",
+     "texto": ""
+    },
+    {
+     "paso": 4,
+     "operacion": "3 × 3",
+     "resultado": "9",
+     "texto": "Variaciones con repetición"
+    }
+   ],
+   "plantilla": "P03",
+   "expresion_calculo": "3 × 3"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un código se forma con 4 símbolos elegidos entre 6 colores, y los colores se pueden repetir. ¿Cuántos códigos distintos hay?",
+   "respuesta": "1296",
+   "distractores": [
+    {
+     "valor": "360",
+     "error": null
+    },
+    {
+     "valor": "24",
+     "error": null
+    },
+    {
+     "valor": "4096",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "EST.COMB.03",
+    "EST.COMB.04",
+    "EST.COMB.05"
+   ],
+   "explicacion_nino": "Hazte las tres preguntas. Importa el orden y los elementos se pueden repetir: variaciones con repetición. Cálculo: 6 × 6 × 6 × 6 = 1296.",
+   "explicacion_adulto": "Está aprendiendo a decidir qué fórmula de recuento usar haciéndose tres preguntas: ¿entran todos los elementos?, ¿importa el orden?, ¿se pueden repetir? Errores típicos: usar variaciones cuando el orden no importa (contar dos veces el mismo saludo) o combinaciones cuando sí importa (123 y 321 son números distintos). Pídele que intercambie dos elementos de un resultado y se pregunte si obtiene algo distinto.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "¿Entran todos?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "¿Importa el orden?",
+     "resultado": "sí",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "¿Se repiten?",
+     "resultado": "sí",
+     "texto": ""
+    },
+    {
+     "paso": 4,
+     "operacion": "6 × 6 × 6 × 6",
+     "resultado": "1296",
+     "texto": "Variaciones con repetición"
+    }
+   ],
+   "plantilla": "P03",
+   "expresion_calculo": "6 × 6 × 6 × 6"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un candado tiene 5 ruedas con las cifras del 0 al 9. ¿Cuántas combinaciones de apertura posibles tiene?",
+   "respuesta": "100000",
+   "distractores": [
+    {
+     "valor": "30240",
+     "error": null
+    },
+    {
+     "valor": "50",
+     "error": null
+    },
+    {
+     "valor": "9765625",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "EST.COMB.03",
+    "EST.COMB.04",
+    "EST.COMB.05"
+   ],
+   "explicacion_nino": "Hazte las tres preguntas. Importa el orden y los elementos se pueden repetir: variaciones con repetición. Cálculo: 10 × 10 × 10 × 10 × 10 = 100000.",
+   "explicacion_adulto": "Está aprendiendo a decidir qué fórmula de recuento usar haciéndose tres preguntas: ¿entran todos los elementos?, ¿importa el orden?, ¿se pueden repetir? Errores típicos: usar variaciones cuando el orden no importa (contar dos veces el mismo saludo) o combinaciones cuando sí importa (123 y 321 son números distintos). Pídele que intercambie dos elementos de un resultado y se pregunte si obtiene algo distinto.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "¿Entran todos?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "¿Importa el orden?",
+     "resultado": "sí",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "¿Se repiten?",
+     "resultado": "sí",
+     "texto": ""
+    },
+    {
+     "paso": 4,
+     "operacion": "10 × 10 × 10 × 10 × 10",
+     "resultado": "100000",
+     "texto": "Variaciones con repetición"
+    }
+   ],
+   "plantilla": "P03",
+   "expresion_calculo": "10 × 10 × 10 × 10 × 10"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Una quiniela tiene 3 partidos y en cada uno se marca 1, X o 2. ¿Cuántas quinielas distintas se pueden rellenar?",
+   "respuesta": "27",
+   "distractores": [
+    {
+     "valor": "6",
+     "error": null
+    },
+    {
+     "valor": "9",
+     "error": null
+    },
+    {
+     "valor": "54",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "EST.COMB.03",
+    "EST.COMB.04",
+    "EST.COMB.05"
+   ],
+   "explicacion_nino": "Hazte las tres preguntas. Importa el orden y los elementos se pueden repetir: variaciones con repetición. Cálculo: 3 × 3 × 3 = 27.",
+   "explicacion_adulto": "Está aprendiendo a decidir qué fórmula de recuento usar haciéndose tres preguntas: ¿entran todos los elementos?, ¿importa el orden?, ¿se pueden repetir? Errores típicos: usar variaciones cuando el orden no importa (contar dos veces el mismo saludo) o combinaciones cuando sí importa (123 y 321 son números distintos). Pídele que intercambie dos elementos de un resultado y se pregunte si obtiene algo distinto.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "¿Entran todos?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "¿Importa el orden?",
+     "resultado": "sí",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "¿Se repiten?",
+     "resultado": "sí",
+     "texto": ""
+    },
+    {
+     "paso": 4,
+     "operacion": "3 × 3 × 3",
+     "resultado": "27",
+     "texto": "Variaciones con repetición"
+    }
+   ],
+   "plantilla": "P03",
+   "expresion_calculo": "3 × 3 × 3"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un código se forma con 3 símbolos elegidos entre 5 colores, y los colores se pueden repetir. ¿Cuántos códigos distintos hay?",
+   "respuesta": "125",
+   "distractores": [
+    {
+     "valor": "60",
+     "error": null
+    },
+    {
+     "valor": "15",
+     "error": null
+    },
+    {
+     "valor": "243",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "EST.COMB.03",
+    "EST.COMB.04",
+    "EST.COMB.05"
+   ],
+   "explicacion_nino": "Hazte las tres preguntas. Importa el orden y los elementos se pueden repetir: variaciones con repetición. Cálculo: 5 × 5 × 5 = 125.",
+   "explicacion_adulto": "Está aprendiendo a decidir qué fórmula de recuento usar haciéndose tres preguntas: ¿entran todos los elementos?, ¿importa el orden?, ¿se pueden repetir? Errores típicos: usar variaciones cuando el orden no importa (contar dos veces el mismo saludo) o combinaciones cuando sí importa (123 y 321 son números distintos). Pídele que intercambie dos elementos de un resultado y se pregunte si obtiene algo distinto.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "¿Entran todos?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "¿Importa el orden?",
+     "resultado": "sí",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "¿Se repiten?",
+     "resultado": "sí",
+     "texto": ""
+    },
+    {
+     "paso": 4,
+     "operacion": "5 × 5 × 5",
+     "resultado": "125",
+     "texto": "Variaciones con repetición"
+    }
+   ],
+   "plantilla": "P03",
+   "expresion_calculo": "5 × 5 × 5"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un candado tiene 4 ruedas con las cifras del 0 al 9. ¿Cuántas combinaciones de apertura posibles tiene?",
+   "respuesta": "10000",
+   "distractores": [
+    {
+     "valor": "5040",
+     "error": null
+    },
+    {
+     "valor": "40",
+     "error": null
+    },
+    {
+     "valor": "1048576",
+     "error": null
+    }
+   ],
+   "secundarias": [
+    "EST.COMB.03",
+    "EST.COMB.04",
+    "EST.COMB.05"
+   ],
+   "explicacion_nino": "Hazte las tres preguntas. Importa el orden y los elementos se pueden repetir: variaciones con repetición. Cálculo: 10 × 10 × 10 × 10 = 10000.",
+   "explicacion_adulto": "Está aprendiendo a decidir qué fórmula de recuento usar haciéndose tres preguntas: ¿entran todos los elementos?, ¿importa el orden?, ¿se pueden repetir? Errores típicos: usar variaciones cuando el orden no importa (contar dos veces el mismo saludo) o combinaciones cuando sí importa (123 y 321 son números distintos). Pídele que intercambie dos elementos de un resultado y se pregunte si obtiene algo distinto.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "¿Entran todos?",
+     "resultado": "no",
+     "texto": ""
+    },
+    {
+     "paso": 2,
+     "operacion": "¿Importa el orden?",
+     "resultado": "sí",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "¿Se repiten?",
+     "resultado": "sí",
+     "texto": ""
+    },
+    {
+     "paso": 4,
+     "operacion": "10 × 10 × 10 × 10",
+     "resultado": "10000",
+     "texto": "Variaciones con repetición"
+    }
+   ],
+   "plantilla": "P03",
+   "expresion_calculo": "10 × 10 × 10 × 10"
+  }
+ ]
+}

@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Nombre Mates — nombres para una app de mates para niños</title>
+
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#15120e" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Nombre Mates" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@500;600&display=swap" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>➕ Nombre Mates 🔟</h1>
+      <div class="cab-botones">
+        <button type="button" id="btn-ranking" class="btn-ranking">🏆 Ranking de Claude</button>
+        <button type="button" id="btn-buscar" class="btn-ranking">🔍 Buscar</button>
+        <button type="button" id="btn-referencias" class="btn-ranking">📐 Buen nombre</button>
+      </div>
+    </header>
+
+    <div class="progreso">
+      <span id="cola-count">…</span> por decidir · <span id="decididos-count">0</span> decididos
+      <div class="barra"><i id="barra-progreso" style="width:0%"></i></div>
+    </div>
+
+    <div id="error-banner" class="error-banner" hidden>
+      <span id="error-texto"></span>
+      <button type="button" id="btn-reintentar">Reintentar</button>
+    </div>
+
+    <section id="elige-modo" class="elige-modo" hidden>
+      <p class="elige-titulo">¿Cómo quieres revisar?</p>
+      <button type="button" class="btn-modo" data-modo="uno">☝️ De 1 en 1<small>un nombre cada vez, con su explicación</small></button>
+      <button type="button" class="btn-modo" data-modo="lote">🔟 De 10 en 10<small>descarta 10 de golpe y marca solo los que te gusten</small></button>
+    </section>
+
+    <div id="zona-revision" hidden>
+      <p class="modo-actual"><span id="modo-texto"></span> · <button type="button" id="btn-cambiar-modo" class="link">cambiar</button></p>
+
+      <div id="modo-uno" hidden>
+        <div id="swipe-area" aria-live="polite"></div>
+      </div>
+
+      <div id="modo-lote" hidden>
+        <div class="lote-pantalla">
+          <p class="lote-quedan"><span id="lote-quedan">…</span> por decidir</p>
+          <div id="lote-area" class="lote" aria-live="polite"></div>
+          <div class="lote-acciones">
+            <p id="conv-estado" class="conv-estado" hidden></p>
+            <button type="button" id="btn-siguiente" class="btn-siguiente">👎 No me gustan los 10</button>
+          </div>
+        </div>
+        <div class="lote-extra">
+          <button type="button" id="btn-atras-lote" class="btn-atras">← Atrás</button>
+          <span id="hueco-deshacer"></span>
+          <button type="button" id="btn-conversacion" class="btn-conv" aria-pressed="false" hidden>🎙️ Conversación</button>
+        </div>
+        <p class="lote-ayuda">Toca un nombre para ver por qué, marca 👍/⭐ y pulsa el botón: el resto van a «no me gusta». Con 🎙️ Conversación di «el 3 y el 5, siguiente».</p>
+      </div>
+
+      <div class="undo-row">
+        <button type="button" id="btn-deshacer" class="btn-ghost" hidden>↩️ Deshacer</button>
+      </div>
+    </div>
+
+    <section class="sugerencia-box">
+      <label for="input-sugerencia" class="sug-label">💬 Comentario general (por voz o texto): qué estilo te gusta, qué no, ideas…</label>
+      <form id="form-sugerencia" class="add-form con-mic">
+        <textarea id="input-sugerencia" rows="2" maxlength="1000" placeholder="p. ej. me gustan los que suenan a juego, nada de inglés" autocomplete="off"></textarea>
+        <button type="button" class="btn-mic" data-mic-for="input-sugerencia" aria-label="Dictar por voz">🎙️</button>
+        <button type="submit">Enviar</button>
+      </form>
+      <p id="sug-msg" class="sug-msg" hidden></p>
+      <details id="sug-lista-wrap" hidden>
+        <summary class="sub">comentarios enviados (<span id="sug-count">0</span>)</summary>
+        <ul id="sug-lista" class="sug-lista"></ul>
+      </details>
+    </section>
+
+    <section>
+      <h2 class="sec-title">⭐ Definitivos <span id="count-definitivos" class="count"></span></h2>
+      <div id="lista-definitivos" class="name-list"></div>
+    </section>
+
+    <section>
+      <details>
+        <summary><span class="sec-title">👍 Me gusta <span id="count-megusta" class="count"></span></span></summary>
+        <div id="lista-me-gusta" class="name-list"></div>
+      </details>
+    </section>
+
+    <section>
+      <details>
+        <summary><span class="sec-title">👎 Descartados <span id="count-descartados" class="count"></span></span></summary>
+        <div id="lista-descartados" class="name-list"></div>
+      </details>
+    </section>
+
+    <section>
+      <details>
+        <summary><span class="sec-title">🚫 Vetados por marca <span id="count-vetados" class="count"></span></span></summary>
+        <p class="sub">Nombres con el .com libre que he quitado porque ya existe una marca, canal o app igual o muy parecida.</p>
+        <div id="lista-vetados" class="name-list"></div>
+      </details>
+    </section>
+
+    <details class="info-collapse">
+      <summary>ℹ️ cómo funciona</summary>
+      <p>
+        Cada nombre que ves ya tiene el <strong>.com comprobado libre</strong>
+        en el registro oficial (RDAP de Verisign) y un cribado de marcas
+        iguales o parecidas: registro de marcas de España, UE y WIPO (TMview),
+        canales de YouTube, App Store y Google Play. Los que chocan pasan a
+        «Vetados» con el motivo. No es un certificado legal: antes de
+        registrar, búsqueda profesional de marca.
+      </p>
+      <p>
+        En «10 en 10», el botón 🎙️ <strong>Modo conversación</strong> escucha
+        seguido: di los números que te gustan («la 1 y la 3»), «definitiva la 5»
+        para marcar ⭐, y «siguiente» para guardar y pasar al lote siguiente
+        («ninguna, siguiente» descarta los 10). «Deshacer» recupera el último
+        lote y «parar» cierra el modo.
+      </p>
+      <p>
+        Los comentarios (por nombre o generales) se guardan y los reviso para
+        buscarte la siguiente tanda. El 🎙️ convierte tu voz en texto; si tu
+        navegador no lo permite, usa el micrófono del teclado.
+      </p>
+    </details>
+
+    <div class="build-id">build __BUILD_ID__</div>
+  </div>
+
+  <section id="vista-ranking" class="vista-ranking" hidden>
+    <div class="ranking-cab">
+      <button type="button" id="btn-volver" class="btn-ghost">← Volver</button>
+      <h2>🏆 Ranking de marca</h2>
+    </div>
+    <p class="sub">
+      Mi puntuación de cada nombre con la misma vara que las marcas de
+      «📐 Buen nombre»: seis medidas de 0 a 10 (corto, fácil, memorable,
+      sugiere, distintivo y búsqueda) y un total sobre 100 en el que distintivo
+      pesa la mitad, con el porqué de cada nota. Aquí solo salen los nombres ya puntuados con este método.
+    </p>
+    <div id="lista-ranking" class="ranking"></div>
+  </section>
+
+  <section id="vista-referencias" class="vista-ranking vista-referencias" hidden>
+    <div class="ranking-cab">
+      <button type="button" id="btn-volver-referencias" class="btn-ghost">← Volver</button>
+      <h2>📐 ¿Qué es un buen nombre?</h2>
+    </div>
+    <p class="sub">
+      Antes de buscar más nombres, fijemos juntos qué es un buen nombre. Aquí
+      tienes 25 marcas conocidas que para mí lo son, cada una con su nota en
+      seis medidas y el porqué. Dime si estás de acuerdo o no, y si quieres,
+      por qué. Con tus respuestas ajusto la vara de medir para cualquier tipo
+      de empresa.
+    </p>
+    <details class="criterios">
+      <summary>Las 6 medidas (0-10 cada una; total sobre 100, distintivo pesa la mitad)</summary>
+      <ul>
+        <li><strong>Corto</strong>: pocas letras y sílabas; cabe en un icono y se dice de un tirón.</li>
+        <li><strong>Fácil</strong>: al oírlo lo escribes bien a la primera, y al leerlo lo dices bien (el «test del teléfono»).</li>
+        <li><strong>Memorable</strong>: crea una imagen o una emoción (una manzana, un toro rojo, una sonrisa).</li>
+        <li><strong>Sugiere</strong>: dice o insinúa qué hace sin ser una descripción aburrida.</li>
+        <li><strong>Distintivo</strong>: no se parece a nadie, se puede registrar como marca y no provoca polémica ni significa algo feo en otros idiomas.</li>
+        <li><strong>Búsqueda</strong>: quien lo busca te encuentra, y quien busca el servicio (por ejemplo «cerrajería Murcia») puede llegar a ti.</li>
+      </ul>
+      <p>Me baso en el test SMILE y SCRATCH de Alexandra Watkins (libro «Hello, My Name Is Awesome»). Un buen nombre hace sonreír: sugiere, se recuerda, crea imagen, da juego y emociona. Uno malo hace rascarse la cabeza: cuesta escribirlo, copia a otro, te limita, cansa, es soso, solo lo entiendes tú o es difícil de pronunciar.</p>
+    </details>
+    <p id="ref-progreso" class="ref-progreso"></p>
+    <div id="lista-referencias" class="lista-referencias"></div>
+  </section>
+
+  <section id="vista-buscar" class="vista-ranking vista-buscar" hidden>
+    <div class="ranking-cab">
+      <button type="button" id="btn-volver-buscar" class="btn-ghost">← Volver</button>
+      <h2>🔍 Buscar un nombre</h2>
+    </div>
+    <p class="sub">
+      Escribe o dicta un nombre (por ejemplo «mates 10») y te digo si lo he
+      probado, en qué estado está y por qué no ha entrado en tu cola.
+    </p>
+    <form id="form-buscar" class="buscar-form" autocomplete="off">
+      <input id="input-buscar" type="search" placeholder="mates 10" aria-label="Nombre a buscar" enterkeyhint="search" />
+      <button type="button" class="btn-mic" data-mic-for="input-buscar" aria-label="Dictar el nombre">🎙️</button>
+      <button type="submit" class="btn-primary">Buscar</button>
+    </form>
+    <div id="resultado-buscar" class="resultado-buscar" aria-live="polite"></div>
+  </section>
+
+  <template id="tpl-ranking-fila">
+    <div class="rk-fila">
+      <div class="rk-pos"></div>
+      <div class="rk-cuerpo">
+        <div class="rk-linea">
+          <span class="rk-estado"></span>
+          <span class="name-text"></span>
+          <span class="rk-score"></span>
+        </div>
+        <p class="rk-motivo"></p>
+        <div class="head-actions"></div>
+      </div>
+    </div>
+  </template>
+
+  <template id="tpl-swipe-card">
+    <div class="swipe-card">
+      <div class="metodo-tag"></div>
+      <div class="name-text"></div>
+      <div class="dominio"></div>
+      <p class="porque"></p>
+      <div class="nota-row">
+        <textarea class="nota-input" rows="1" maxlength="1000" placeholder="comentario (opcional)" autocomplete="off" aria-label="Comentario sobre este nombre"></textarea>
+        <button type="button" class="btn-mic" aria-label="Dictar comentario por voz">🎙️</button>
+      </div>
+      <div class="swipe-actions">
+        <button class="btn-dislike" type="button">👎 No</button>
+        <button class="btn-star" type="button">⭐ Definitivo</button>
+        <button class="btn-like" type="button">👍 Me gusta</button>
+      </div>
+      <details class="mas-info">
+        <summary>más información</summary>
+        <div class="checks"></div>
+        <div class="colision-info"></div>
+      </details>
+    </div>
+  </template>
+
+  <template id="tpl-lote-fila">
+    <div class="lote-fila">
+      <div class="lote-linea">
+        <button type="button" class="lote-nombre" aria-expanded="false">
+          <span class="lote-num"></span>
+          <span class="name-text"></span>
+                  </button>
+        <button type="button" class="marca marca-like" aria-pressed="false" aria-label="Me gusta">👍</button>
+        <button type="button" class="marca marca-star" aria-pressed="false" aria-label="Definitivo">⭐</button>
+      </div>
+      <div class="lote-detalle" hidden>
+        <p class="porque"></p>
+        <div class="lote-grandes">
+          <button type="button" class="grande grande-like">👍 Me gusta</button>
+          <button type="button" class="grande grande-star">⭐ Definitivo</button>
+        </div>
+        <div class="nota-row">
+          <textarea class="nota-input" rows="1" maxlength="1000" placeholder="comentario (opcional)" autocomplete="off"></textarea>
+          <button type="button" class="btn-mic" aria-label="Dictar comentario por voz">🎙️</button>
+        </div>
+        <div class="checks"></div>
+        <div class="colision-info"></div>
+      </div>
+    </div>
+  </template>
+
+  <template id="tpl-nombre-card">
+    <div class="name-card">
+      <div class="name-head">
+        <span class="name-text"></span>
+        <div class="head-actions"></div>
+      </div>
+      <p class="porque"></p>
+      <div class="nota-guardada"></div>
+      <details class="mas-info">
+        <summary>más información / comentar</summary>
+        <div class="checks"></div>
+        <div class="colision-info"></div>
+        <div class="nota-row nota-edit">
+          <textarea class="nota-input" rows="1" maxlength="1000" placeholder="añadir comentario" autocomplete="off"></textarea>
+          <button type="button" class="btn-mic" aria-label="Dictar comentario por voz">🎙️</button>
+          <button type="button" class="btn-mini btn-guardar-nota">Guardar</button>
+        </div>
+        <div class="official-links"></div>
+      </details>
+    </div>
+  </template>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

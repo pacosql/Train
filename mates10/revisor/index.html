@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Mates10 · Revisor</title>
+  <link rel="manifest" href="../manifest.json" />
+  <meta name="theme-color" content="#1f1e1d" />
+  <link rel="icon" href="../icons/icon-192.png" />
+  <link rel="stylesheet" href="../comun.css" />
+  <style>
+    .tabs { display: flex; gap: 6px; margin: 10px 0; flex-wrap: wrap; }
+    .tabs button.on { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+    .filtros { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    .filtros select { font-size: 0.85rem; padding: 8px; }
+    .item { cursor: pointer; }
+    .item .e { white-space: pre-wrap; }
+    .opcion { padding: 8px 10px; border-radius: 8px; border: 1px solid var(--line); margin: 4px 0; font-size: 0.95rem; }
+    .opcion.ok { border-color: var(--ok); color: var(--ok); }
+    .opcion small { color: var(--muted); display: block; }
+    .enun { font-size: 1.25rem; white-space: pre-wrap; margin: 6px 0 10px; }
+    .acciones { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; position: sticky; bottom: 0; background: var(--bg); padding: 10px 0; border-top: 1px solid var(--line); }
+    .acciones button { flex: 1; }
+    details { margin: 6px 0; }
+    summary { cursor: pointer; color: var(--muted); }
+    textarea { min-height: 70px; }
+    pre { white-space: pre-wrap; font-size: 0.8rem; margin: 0; }
+    .num { font-size: 1.6rem; font-family: var(--serif); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top"><a href="../">← Mates10</a><span class="pill" id="rev">revisor</span></div>
+    <h1>Revisión</h1>
+    <div class="tabs" id="tabs"></div>
+    <div id="app">Cargando…</div>
+    <footer class="build">build __BUILD_ID__</footer>
+  </div>
+  <script src="../vendor/supabase.min.js"></script>
+  <script src="../config.js"></script>
+  <script src="../comun.js"></script>
+  <script>
+  (() => {
+    const app = M.$("#app");
+    const MOTIVOS = ["fuera_de_frontera", "respuesta_incorrecta", "distractor_ambiguo", "explicacion_incorrecta", "registro_inadecuado", "copia", "otro"];
+    const CURSOS = ["PRI1", "PRI2", "PRI3", "PRI4", "PRI5", "PRI6", "ESO1", "ESO2", "ESO3", "ESO4", "BAC1", "BAC2"];
+    let revisor = null, tab = "cola", filtro = { curso: "", bloque: "", habilidad: "", formato: "", generador: "" };
+    let bloques = [], cache = {};
+    try { revisor = localStorage.getItem("mates10_revisor"); } catch {}
+
+    function tabs() {
+      M.$("#tabs").innerHTML = [["cola", "Cola"], ["plantillas", "Plantillas"], ["habilidades", "Habilidades"], ["estadisticas", "Estadísticas"]]
+        .map(([k, n]) => `<button data-t="${k}" class="${tab === k ? "on" : ""}">${n}</button>`).join("");
+      M.$$("#tabs button").forEach((b) => (b.onclick = () => { tab = b.dataset.t; ir(); }));
+    }
+    function ir() { tabs(); ({ cola, plantillas, habilidades, estadisticas })[tab]().catch((e) => (app.innerHTML = `<p class="err">${M.esc(e.message)}</p>`)); }
+
+    function pedirNombre() {
+      app.innerHTML = `<p>¿Quién revisa? Tu nombre queda en cada aprobación.</p><input id="n" value="Paco" /><p></p><button class="primary" id="ok">Entrar</button>`;
+      M.$("#ok").onclick = () => { revisor = M.$("#n").value.trim() || "Paco"; try { localStorage.setItem("mates10_revisor", revisor); } catch {} arrancar(); };
+    }
+    async function arrancar() {
+      M.$("#rev").textContent = revisor;
+      bloques = M.must(await M.t("bloque").select("id,codigo,nombre").order("orden"));
+      ir();
+    }
+
+    // ---------------------------------------------------------------- cola
+    async function habilidadesFiltradas() {
+      let q = M.t("habilidad").select("id,codigo,nombre,curso_ref,bloque_id").order("codigo");
+      if (filtro.curso) q = q.eq("curso_ref", filtro.curso);
+      if (filtro.bloque) q = q.eq("bloque_id", filtro.bloque);
+      return M.must(await q.limit(1000));
+    }
+
+    async function cola() {
+      const habs = await habilidadesFiltradas();
+      app.innerHTML = `<div class="filtros">
+          <select id="f_curso"><option value="">Todos los cursos</option>${CURSOS.map((c) => `<option ${c === filtro.curso ? "selected" : ""}>${c}</option>`).join("")}</select>
+          <select id="f_bloque"><option value="">Todos los bloques</option>${bloques.map((b) => `<option value="${b.id}" ${b.id === filtro.bloque ? "selected" : ""}>${M.esc(b.nombre)}</option>`).join("")}</select>
+          <select id="f_hab" style="grid-column:1/3"><option value="">Todas las habilidades</option>${habs.map((h) => `<option value="${h.id}" ${h.id === filtro.habilidad ? "selected" : ""}>${M.esc(h.codigo)} · ${M.esc(h.nombre).slice(0, 60)}</option>`).join("")}</select>
+          <select id="f_formato"><option value="">Todos los formatos</option>${["opcion_multiple", "numerico", "verdadero_falso"].map((f) => `<option ${f === filtro.formato ? "selected" : ""}>${f}</option>`).join("")}</select>
+          <select id="f_gen"><option value="">Código e IA</option><option value="algoritmo" ${filtro.generador === "algoritmo" ? "selected" : ""}>Por código</option><option value="ia" ${filtro.generador === "ia" ? "selected" : ""}>Por IA</option></select>
+        </div><p class="small muted" id="info">Cargando…</p><div id="lista"></div>`;
+      const on = (id, k) => (M.$(id).onchange = (e) => { filtro[k] = e.target.value; if (k !== "habilidad") filtro.habilidad = k === "habilidad" ? filtro.habilidad : filtro.habilidad; cola(); });
+      on("#f_curso", "curso"); on("#f_bloque", "bloque"); on("#f_hab", "habilidad"); on("#f_formato", "formato"); on("#f_gen", "generador");
+      let q = M.t("ejercicio").select("id,enunciado,respuesta,dificultad,formato,generado_por,publicado,revision_tipo,ejercicio_habilidad:mates10_ejercicio_habilidad!inner(habilidad_id,rol,habilidad:habilidad_id(codigo,curso_ref,bloque_id))", { count: "exact" })
+        .eq("validado_automatico", true).is("revisado_por", null).eq("rechazado", false).eq("ejercicio_habilidad.rol", "principal");
+      if (filtro.habilidad) q = q.eq("ejercicio_habilidad.habilidad_id", filtro.habilidad);
+      else if (filtro.curso || filtro.bloque) q = q.in("ejercicio_habilidad.habilidad_id", habs.map((h) => h.id).slice(0, 400));
+      if (filtro.formato) q = q.eq("formato", filtro.formato);
+      if (filtro.generador === "algoritmo") q = q.eq("generado_por", "algoritmo");
+      if (filtro.generador === "ia") q = q.neq("generado_por", "algoritmo");
+      const { data, count, error } = await q.order("creado_en").limit(60);
+      if (error) throw error;
+      M.$("#info").textContent = `${count ?? data.length} pendientes${(count ?? 0) > 60 ? " (se muestran 60)" : ""}. Los marcados «provisional» ya se ven en la app hasta que los revises.`;
+      M.$("#lista").innerHTML = data.map((e) => `<div class="card item" data-id="${e.id}">
+          <div class="row" style="justify-content:space-between"><span class="pill">${M.esc(e.ejercicio_habilidad[0]?.habilidad?.codigo || "")}</span>
+          <span class="small muted">dif. ${e.dificultad} · ${e.generado_por === "algoritmo" ? "código" : "IA"}${e.publicado ? ' · <span class="pill acc">provisional</span>' : ""}</span></div>
+          <div class="e">${M.esc(e.enunciado)}</div><div class="small muted">→ ${M.esc(e.respuesta[0])}</div></div>`).join("") || '<p class="muted">Nada pendiente con estos filtros.</p>';
+      M.$$("#lista .item").forEach((d) => (d.onclick = () => fichaEjercicio(d.dataset.id, data.map((x) => x.id))));
+    }
+
+    async function cargarEjercicio(id) {
+      const e = M.must(await M.t("ejercicio").select("*, plantilla:plantilla_id(codigo,generador,estado)").eq("id", id).single());
+      const hs = M.must(await M.t("ejercicio_habilidad").select("rol, habilidad:habilidad_id(id,codigo,nombre,definicion,ejemplo_frontera,ejemplo_fuera,curso_ref)").eq("ejercicio_id", id));
+      const errs = M.must(await M.t("ejercicio_error").select("respuesta_erronea, error:error_tipico_id(codigo,nombre,descripcion)").eq("ejercicio_id", id));
+      const exps = M.must(await M.t("ejercicio_explicacion").select("metodo_id,explicacion_nino,explicacion_adulto,explicacion_pasos,metodo:metodo_id(codigo,nombre,escuela)").eq("ejercicio_id", id));
+      return { e, hs, errs, exps };
+    }
+
+    async function fichaEjercicio(id, cola) {
+      const { e, hs, errs, exps } = await cargarEjercicio(id);
+      const pr = hs.find((h) => h.rol === "principal")?.habilidad || {};
+      const errDe = Object.fromEntries(errs.map((x) => [x.respuesta_erronea, x.error]));
+      app.innerHTML = `<p><a href="#" id="volver">← cola</a></p>
+        <div class="card"><div class="small muted">Así lo ve el niño (dificultad ${e.dificultad}):</div><div class="enun">${M.esc(e.enunciado)}</div>
+          <div class="opcion ok">✓ ${M.esc(e.respuesta[0])}</div>
+          ${(e.distractores || []).map((d) => `<div class="opcion">✗ ${M.esc(d)}<small>${errDe[d] ? `${M.esc(errDe[d].codigo)} · ${M.esc(errDe[d].nombre)}` : "distractor genérico (sin error típico)"}</small></div>`).join("")}
+        </div>
+        ${exps.map((x) => `<details open><summary>Explicación · ${M.esc(x.metodo?.nombre || "")} (${x.metodo?.escuela || ""})</summary>
+            <p>${M.esc(x.explicacion_nino)}</p>${x.explicacion_adulto ? `<p class="small muted">Adulto: ${M.esc(x.explicacion_adulto)}</p>` : ""}
+            ${Array.isArray(x.explicacion_pasos) ? `<ol class="small">${x.explicacion_pasos.map((p) => `<li>${M.esc(p.texto)}</li>`).join("")}</ol>` : ""}</details>`).join("")}
+        <details><summary>Habilidad ${M.esc(pr.codigo || "")} (${M.esc(pr.curso_ref || "")})</summary>
+          <p><b>${M.esc(pr.nombre)}</b></p><p class="small">${M.esc(pr.definicion)}</p>
+          <p class="small">Frontera: ${M.esc(pr.ejemplo_frontera || "—")}<br>Fuera: ${M.esc(pr.ejemplo_fuera || "—")}</p>
+          ${hs.filter((h) => h.rol !== "principal").map((h) => `<span class="pill">sec. ${M.esc(h.habilidad.codigo)}</span>`).join(" ")}</details>
+        <details><summary>Parámetros y trazabilidad</summary><pre>${M.esc(JSON.stringify({ parametros: e.parametros, generado_por: e.generado_por, plantilla: e.plantilla?.codigo, version: e.version, revision_tipo: e.revision_tipo }, null, 1))}</pre></details>
+        <div id="editor"></div>
+        <div class="acciones"><button class="primary" id="ap">Aprobar</button><button id="ed">Editar</button><button id="re">Rechazar</button></div>`;
+      M.$("#volver").onclick = (ev) => { ev.preventDefault(); cola_(); };
+      const siguiente = () => { const i = cola.indexOf(id); const n = cola[i + 1]; n ? fichaEjercicio(n, cola) : cola_(); };
+      const cola_ = () => { tab = "cola"; ir(); };
+      M.$("#ap").onclick = async () => { M.must(await M.rpc("revisar", { p_tipo: "ejercicio", p_id: id, p_revisor: revisor, p_decision: "aprobado" })); siguiente(); };
+      M.$("#re").onclick = () => {
+        M.$("#editor").innerHTML = `<div class="card"><label>Motivo</label><select id="mot">${MOTIVOS.map((m) => `<option>${m}</option>`).join("")}</select>
+          <label>Comentario</label><textarea id="txt"></textarea><p></p><button class="primary" id="conf">Rechazar</button></div>`;
+        M.$("#conf").onclick = async () => { M.must(await M.rpc("revisar", { p_tipo: "ejercicio", p_id: id, p_revisor: revisor, p_decision: "rechazado", p_motivo: M.$("#mot").value, p_texto: M.$("#txt").value || null })); siguiente(); };
+      };
+      M.$("#ed").onclick = () => {
+        const x = exps[0] || {};
+        M.$("#editor").innerHTML = `<div class="card"><label>Enunciado</label><textarea id="en">${M.esc(e.enunciado)}</textarea>
+          <label>Respuesta correcta</label><input id="rs" value="${M.esc(e.respuesta[0])}" />
+          ${(e.distractores || []).map((d, i) => `<label>Distractor ${i + 1}</label><input class="ds" value="${M.esc(d)}" />`).join("")}
+          <label>Explicación para el niño (${M.esc(x.metodo?.nombre || "")})</label><textarea id="xn">${M.esc(x.explicacion_nino || "")}</textarea>
+          <p></p><button class="primary" id="gd">Guardar y aprobar</button></div>`;
+        M.$("#gd").onclick = async () => {
+          const ds = M.$$(".ds").map((i) => i.value.trim());
+          const rs = M.$("#rs").value.trim();
+          if (new Set([rs, ...ds]).size !== ds.length + 1) return alert("Respuesta y distractores deben ser distintos.");
+          M.must(await M.t("ejercicio").update({ enunciado: M.$("#en").value, respuesta: [rs], distractores: ds, version: (e.version || 1) + 1 }).eq("id", id));
+          if (exps[0]) M.must(await M.t("ejercicio_explicacion").update({ explicacion_nino: M.$("#xn").value }).eq("ejercicio_id", id).eq("metodo_id", exps[0].metodo_id));
+          M.must(await M.rpc("revisar", { p_tipo: "ejercicio", p_id: id, p_revisor: revisor, p_decision: "editado", p_texto: "Editado en la ficha de revisión" }));
+          siguiente();
+        };
+      };
+    }
+
+    // ---------------------------------------------------------------- plantillas
+    async function plantillas() {
+      const ps = M.must(await M.t("plantilla").select("id,codigo,dificultad,enunciado_plantilla,generador,estado,habilidad:habilidad_id(codigo,nombre,curso_ref)").eq("estado", "borrador").order("codigo").limit(200));
+      app.innerHTML = `<p class="small muted">Aprobar una plantilla generada por código aprueba sus instancias (revisión heredada). Revisa las 20 de muestra antes.</p>
+        ${ps.map((p) => `<div class="card item" data-id="${p.id}"><span class="pill">${M.esc(p.habilidad?.codigo)}</span> <span class="small muted">${p.generador} · dif. ${p.dificultad}</span><div>${M.esc(p.enunciado_plantilla)}</div></div>`).join("") || '<p class="muted">No hay plantillas pendientes.</p>'}`;
+      M.$$(".item").forEach((d) => (d.onclick = () => fichaPlantilla(d.dataset.id)));
+    }
+
+    async function fichaPlantilla(id) {
+      const p = M.must(await M.t("plantilla").select("*, habilidad:habilidad_id(codigo,nombre,definicion,ejemplo_frontera,ejemplo_fuera)").eq("id", id).single());
+      const inst = M.must(await M.t("ejercicio").select("id,enunciado,respuesta,distractores").eq("plantilla_id", id).limit(200));
+      const muestra = inst.sort(() => Math.random() - 0.5).slice(0, 20);
+      app.innerHTML = `<p><a href="#" id="volver">← plantillas</a></p>
+        <div class="card"><span class="pill">${M.esc(p.codigo)}</span><p><b>${M.esc(p.enunciado_plantilla)}</b></p>
+          <p class="small muted">Generador: ${p.generador} · dificultad ${p.dificultad} · ${inst.length} instancias</p>
+          <pre>${M.esc(JSON.stringify(p.restricciones, null, 1))}</pre></div>
+        <details><summary>Habilidad ${M.esc(p.habilidad.codigo)}</summary><p class="small">${M.esc(p.habilidad.definicion)}</p><p class="small">Frontera: ${M.esc(p.habilidad.ejemplo_frontera || "—")}</p></details>
+        <h3>Muestra de ${muestra.length}</h3>
+        ${muestra.map((e) => `<div class="card small"><div style="white-space:pre-wrap">${M.esc(e.enunciado)}</div><div>✓ <b>${M.esc(e.respuesta[0])}</b> · ✗ ${(e.distractores || []).map(M.esc).join(" · ")}</div></div>`).join("")}
+        <div id="editor"></div>
+        <div class="acciones"><button class="primary" id="ap">Aprobar plantilla</button><button id="re">Rechazar</button></div>`;
+      M.$("#volver").onclick = (ev) => { ev.preventDefault(); plantillas(); };
+      M.$("#ap").onclick = async () => { M.must(await M.rpc("revisar", { p_tipo: "plantilla", p_id: id, p_revisor: revisor, p_decision: "aprobado" })); plantillas(); };
+      M.$("#re").onclick = () => {
+        M.$("#editor").innerHTML = `<div class="card"><label>Motivo</label><select id="mot">${MOTIVOS.map((m) => `<option>${m}</option>`).join("")}</select><label>Comentario</label><textarea id="txt"></textarea><p></p><button class="primary" id="conf">Rechazar plantilla</button></div>`;
+        M.$("#conf").onclick = async () => { M.must(await M.rpc("revisar", { p_tipo: "plantilla", p_id: id, p_revisor: revisor, p_decision: "rechazado", p_motivo: M.$("#mot").value, p_texto: M.$("#txt").value || null })); plantillas(); };
+      };
+    }
+
+    // ---------------------------------------------------------------- habilidades
+    async function habilidades() {
+      const habs = await habilidadesFiltradas();
+      app.innerHTML = `<div class="filtros">
+          <select id="f_curso"><option value="">Todos los cursos</option>${CURSOS.map((c) => `<option ${c === filtro.curso ? "selected" : ""}>${c}</option>`).join("")}</select>
+          <select id="f_bloque"><option value="">Todos los bloques</option>${bloques.map((b) => `<option value="${b.id}" ${b.id === filtro.bloque ? "selected" : ""}>${M.esc(b.nombre)}</option>`).join("")}</select></div>
+        <p class="small muted">${habs.length} habilidades</p>
+        ${habs.slice(0, 300).map((h) => `<div class="card item" data-id="${h.id}"><span class="pill">${M.esc(h.codigo)}</span> <span class="small muted">${h.curso_ref}</span><div>${M.esc(h.nombre)}</div></div>`).join("")}`;
+      M.$("#f_curso").onchange = (e) => { filtro.curso = e.target.value; habilidades(); };
+      M.$("#f_bloque").onchange = (e) => { filtro.bloque = e.target.value; habilidades(); };
+      M.$$(".item").forEach((d) => (d.onclick = () => fichaHabilidad(d.dataset.id)));
+    }
+
+    async function fichaHabilidad(id) {
+      const h = M.must(await M.t("habilidad").select("*, fuente:fuente_id(codigo,titulo)").eq("id", id).single());
+      const pre = M.must(await M.t("habilidad_prerrequisito").select("peso, p:prerrequisito_id(codigo,nombre)").eq("habilidad_id", id));
+      const err = M.must(await M.t("error_tipico").select("codigo,nombre,descripcion,explicacion_nino,indicacion_padres").eq("habilidad_id", id).order("codigo"));
+      const rev = M.must(await M.t("revision").select("revisor,decision,texto,fecha").eq("objeto_tipo", "habilidad").eq("objeto_id", id).order("fecha", { ascending: false }));
+      app.innerHTML = `<p><a href="#" id="volver">← habilidades</a></p>
+        <div class="card"><span class="pill">${M.esc(h.codigo)}</span> <span class="pill">${M.esc(h.estado_revision)}</span>
+          <h2>${M.esc(h.nombre)}</h2><p class="small muted">Para padres: ${M.esc(h.nombre_padres)}</p>
+          <p>${M.esc(h.definicion)}</p>
+          <p class="small">Frontera: ${M.esc(h.ejemplo_frontera || "—")}<br>Fuera: ${M.esc(h.ejemplo_fuera || "—")}</p>
+          <p class="small muted">Curso ${h.curso_ref} · familia ${M.esc(h.familia)} nivel ${h.nivel_familia} · importancia ${h.importancia} · carga ${h.carga_alumno}<br>Fuente: ${M.esc(h.fuente?.titulo || "")} ${M.esc(h.fuente_ref || "")}</p></div>
+        <h3>Prerrequisitos</h3>${pre.map((p) => `<div class="small">${p.peso === "imprescindible" ? "●" : "○"} ${M.esc(p.p.codigo)} · ${M.esc(p.p.nombre)}</div>`).join("") || '<p class="muted small">Ninguno</p>'}
+        <h3>Errores típicos</h3>${err.map((e) => `<details><summary>${M.esc(e.codigo)} · ${M.esc(e.nombre)}</summary><p class="small">${M.esc(e.descripcion)}</p><p class="small">Niño: ${M.esc(e.explicacion_nino)}</p><p class="small muted">Padres: ${M.esc(e.indicacion_padres)}</p></details>`).join("") || '<p class="muted small">Ninguno</p>'}
+        ${rev.length ? `<h3>Revisiones</h3>${rev.map((r) => `<div class="small">${M.esc(r.revisor)} · ${r.decision} · ${new Date(r.fecha).toLocaleDateString("es-ES")} ${r.texto ? "· " + M.esc(r.texto) : ""}</div>`).join("")}` : ""}
+        <label>Comentario</label><textarea id="txt"></textarea>
+        <div class="acciones"><button class="primary" id="ap">Aprobar</button><button id="co">Comentar</button></div>`;
+      M.$("#volver").onclick = (ev) => { ev.preventDefault(); habilidades(); };
+      M.$("#ap").onclick = async () => { M.must(await M.rpc("revisar", { p_tipo: "habilidad", p_id: id, p_revisor: revisor, p_decision: "aprobado", p_texto: M.$("#txt").value || null })); habilidades(); };
+      M.$("#co").onclick = async () => { if (!M.$("#txt").value.trim()) return M.$("#txt").focus(); M.must(await M.rpc("revisar", { p_tipo: "habilidad", p_id: id, p_revisor: revisor, p_decision: "comentado", p_texto: M.$("#txt").value })); fichaHabilidad(id); };
+    }
+
+    // ---------------------------------------------------------------- estadísticas
+    async function estadisticas() {
+      const st = M.must(await M.rpc("estadisticas_revision"));
+      app.innerHTML = `<div class="row">${[["habilidades", "habilidades"], ["ejercicios", "ejercicios"], ["publicados", "publicados"], ["pendientes", "pendientes de revisar"], ["revisados", "revisados"], ["rechazados", "rechazados"]]
+          .map(([k, n]) => `<div class="card grow" style="min-width:140px"><div class="num">${st.totales[k] ?? 0}</div><div class="small muted">${n}</div></div>`).join("")}</div>
+        <h3>Cobertura por curso</h3><div style="overflow:auto"><table><tr><th>Curso</th><th>Habilidades</th><th>Con ejercicios</th><th>Ejercicios</th><th>Publicados</th><th>Revisados</th></tr>
+        ${(st.por_curso || []).map((c) => `<tr><td>${c.curso}</td><td>${c.habilidades}</td><td>${c.con_ejercicios}</td><td>${c.ejercicios}</td><td>${c.publicados}</td><td>${c.revisados}</td></tr>`).join("")}</table></div>
+        <h3>Cobertura por bloque</h3><div style="overflow:auto"><table><tr><th>Bloque</th><th>Habilidades</th><th>Ejercicios</th><th>Publicados</th></tr>
+        ${(st.por_bloque || []).map((c) => `<tr><td>${M.esc(c.bloque)}</td><td>${c.habilidades}</td><td>${c.ejercicios}</td><td>${c.publicados}</td></tr>`).join("")}</table></div>
+        <h3>Validador: aceptación por lote</h3><div style="overflow:auto"><table><tr><th>Lote</th><th>Aceptados</th><th>Rechazados</th><th>%</th></tr>
+        ${(st.por_lote || []).map((l) => `<tr><td>${M.esc(l.lote)}</td><td>${l.aceptados}</td><td>${l.rechazados}</td><td>${l.pct}%</td></tr>`).join("")}</table></div>
+        <h3>Rechazos por motivo</h3><div style="overflow:auto"><table><tr><th>Etapa</th><th>Motivo</th><th>Nº</th></tr>
+        ${(st.rechazos || []).map((r) => `<tr><td>${r.etapa}</td><td>${M.esc(r.motivo)}</td><td>${r.n}</td></tr>`).join("")}</table></div>
+        <h3>Decisiones de revisión</h3><div style="overflow:auto"><table><tr><th>Tipo</th><th>Decisión</th><th>Motivo</th><th>Nº</th></tr>
+        ${(st.revisiones || []).map((r) => `<tr><td>${r.objeto_tipo}</td><td>${r.decision}</td><td>${M.esc(r.motivo || "")}</td><td>${r.n}</td></tr>`).join("")}</table></div>`;
+    }
+
+    revisor ? arrancar() : pedirNombre();
+  })();
+  </script>
+</body>
+</html>

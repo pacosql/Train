@@ -1,0 +1,1416 @@
+{
+ "habilidad": "PROB.ESTRAT.04",
+ "generado_por": "claude (skill mates10-generar-ejercicios v1)",
+ "ejercicios": [
+  {
+   "dificultad": 1,
+   "enunciado": "En el comedor juntan mesas en fila. Con 1 mesa se sientan 4 personas, con 2 mesas 6 y con 3 mesas 8. ¿Cuántas personas se sientan con 7 mesas en fila?",
+   "respuesta": "16",
+   "distractores": [
+    {
+     "valor": "28",
+     "error": "E01"
+    },
+    {
+     "valor": "18",
+     "error": "E02"
+    },
+    {
+     "valor": "14",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "4 + 2 × (7 − 1)",
+   "secundarias": [
+    "OPER.MULT.02",
+    "OPER.SUMA.11"
+   ],
+   "explicacion_nino": "Entiende: haz una tabla con los primeros casos: 1 → 4; 2 → 6; 3 → 8; 4 → 10. Cada vez que añades uno, suman 2. Del caso 1 al caso 7 hay 6 saltos (uno menos que casos). Así que: 4 + 2 × 6 = 4 + 12 = 16. Comprueba con un caso pequeño: para 3 serían 4 + 2 × 2 = 8, como en la tabla. Ojo: no es 4 × 7, porque al juntar mesas se pierden los sitios de las uniones.",
+   "explicacion_adulto": "Está aprendiendo a organizar los casos en una tabla (1, 2, 3…) para descubrir la regularidad y usarla en un caso lejano sin dibujarlo todo. Los errores típicos son aplicar la proporcionalidad donde no la hay (si 1 mesa son 4 personas, 10 mesas serían 40), contar mal los saltos (hay un salto menos que casos) o ver solo que la columna crece de tanto en tanto sin relacionarla con el número de casos. Pídale que complete la tabla unas filas más y que explique con palabras cómo pasa de una fila a la siguiente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "7 − 1",
+     "resultado": "6",
+     "texto": "Saltos desde el primer caso."
+    },
+    {
+     "paso": 2,
+     "operacion": "2 × 6",
+     "resultado": "12",
+     "texto": "Lo que se añade en esos saltos."
+    },
+    {
+     "paso": 3,
+     "operacion": "4 + 12",
+     "resultado": "16",
+     "texto": "Le sumo lo del primer caso."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En el comedor juntan mesas en fila. Con 1 mesa se sientan 4 personas, con 2 mesas 6 y con 3 mesas 8. ¿Cuántas personas se sientan con 8 mesas en fila?",
+   "respuesta": "18",
+   "distractores": [
+    {
+     "valor": "32",
+     "error": "E01"
+    },
+    {
+     "valor": "20",
+     "error": "E02"
+    },
+    {
+     "valor": "16",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "4 + 2 × (8 − 1)",
+   "secundarias": [
+    "OPER.MULT.02",
+    "OPER.SUMA.11"
+   ],
+   "explicacion_nino": "Entiende: haz una tabla con los primeros casos: 1 → 4; 2 → 6; 3 → 8; 4 → 10. Cada vez que añades uno, suman 2. Del caso 1 al caso 8 hay 7 saltos (uno menos que casos). Así que: 4 + 2 × 7 = 4 + 14 = 18. Comprueba con un caso pequeño: para 3 serían 4 + 2 × 2 = 8, como en la tabla. Ojo: no es 4 × 8, porque al juntar mesas se pierden los sitios de las uniones.",
+   "explicacion_adulto": "Está aprendiendo a organizar los casos en una tabla (1, 2, 3…) para descubrir la regularidad y usarla en un caso lejano sin dibujarlo todo. Los errores típicos son aplicar la proporcionalidad donde no la hay (si 1 mesa son 4 personas, 10 mesas serían 40), contar mal los saltos (hay un salto menos que casos) o ver solo que la columna crece de tanto en tanto sin relacionarla con el número de casos. Pídale que complete la tabla unas filas más y que explique con palabras cómo pasa de una fila a la siguiente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "8 − 1",
+     "resultado": "7",
+     "texto": "Saltos desde el primer caso."
+    },
+    {
+     "paso": 2,
+     "operacion": "2 × 7",
+     "resultado": "14",
+     "texto": "Lo que se añade en esos saltos."
+    },
+    {
+     "paso": 3,
+     "operacion": "4 + 14",
+     "resultado": "18",
+     "texto": "Le sumo lo del primer caso."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En el comedor juntan mesas en fila. Con 1 mesa se sientan 6 personas, con 2 mesas 10 y con 3 mesas 14. ¿Cuántas personas se sientan con 8 mesas en fila?",
+   "respuesta": "34",
+   "distractores": [
+    {
+     "valor": "48",
+     "error": "E01"
+    },
+    {
+     "valor": "38",
+     "error": "E02"
+    },
+    {
+     "valor": "32",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "6 + 4 × (8 − 1)",
+   "secundarias": [
+    "OPER.MULT.02",
+    "OPER.SUMA.11"
+   ],
+   "explicacion_nino": "Entiende: haz una tabla con los primeros casos: 1 → 6; 2 → 10; 3 → 14; 4 → 18. Cada vez que añades uno, suman 4. Del caso 1 al caso 8 hay 7 saltos (uno menos que casos). Así que: 6 + 4 × 7 = 6 + 28 = 34. Comprueba con un caso pequeño: para 3 serían 6 + 4 × 2 = 14, como en la tabla. Ojo: no es 6 × 8, porque al juntar mesas se pierden los sitios de las uniones.",
+   "explicacion_adulto": "Está aprendiendo a organizar los casos en una tabla (1, 2, 3…) para descubrir la regularidad y usarla en un caso lejano sin dibujarlo todo. Los errores típicos son aplicar la proporcionalidad donde no la hay (si 1 mesa son 4 personas, 10 mesas serían 40), contar mal los saltos (hay un salto menos que casos) o ver solo que la columna crece de tanto en tanto sin relacionarla con el número de casos. Pídale que complete la tabla unas filas más y que explique con palabras cómo pasa de una fila a la siguiente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "8 − 1",
+     "resultado": "7",
+     "texto": "Saltos desde el primer caso."
+    },
+    {
+     "paso": 2,
+     "operacion": "4 × 7",
+     "resultado": "28",
+     "texto": "Lo que se añade en esos saltos."
+    },
+    {
+     "paso": 3,
+     "operacion": "6 + 28",
+     "resultado": "34",
+     "texto": "Le sumo lo del primer caso."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En el comedor juntan mesas en fila. Con 1 mesa se sientan 4 personas, con 2 mesas 6 y con 3 mesas 8. ¿Cuántas personas se sientan con 15 mesas en fila?",
+   "respuesta": "32",
+   "distractores": [
+    {
+     "valor": "60",
+     "error": "E01"
+    },
+    {
+     "valor": "34",
+     "error": "E02"
+    },
+    {
+     "valor": "30",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "4 + 2 × (15 − 1)",
+   "secundarias": [
+    "OPER.MULT.02",
+    "OPER.SUMA.11"
+   ],
+   "explicacion_nino": "Entiende: haz una tabla con los primeros casos: 1 → 4; 2 → 6; 3 → 8; 4 → 10. Cada vez que añades uno, suman 2. Del caso 1 al caso 15 hay 14 saltos (uno menos que casos). Así que: 4 + 2 × 14 = 4 + 28 = 32. Comprueba con un caso pequeño: para 3 serían 4 + 2 × 2 = 8, como en la tabla. Ojo: no es 4 × 15, porque al juntar mesas se pierden los sitios de las uniones.",
+   "explicacion_adulto": "Está aprendiendo a organizar los casos en una tabla (1, 2, 3…) para descubrir la regularidad y usarla en un caso lejano sin dibujarlo todo. Los errores típicos son aplicar la proporcionalidad donde no la hay (si 1 mesa son 4 personas, 10 mesas serían 40), contar mal los saltos (hay un salto menos que casos) o ver solo que la columna crece de tanto en tanto sin relacionarla con el número de casos. Pídale que complete la tabla unas filas más y que explique con palabras cómo pasa de una fila a la siguiente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "15 − 1",
+     "resultado": "14",
+     "texto": "Saltos desde el primer caso."
+    },
+    {
+     "paso": 2,
+     "operacion": "2 × 14",
+     "resultado": "28",
+     "texto": "Lo que se añade en esos saltos."
+    },
+    {
+     "paso": 3,
+     "operacion": "4 + 28",
+     "resultado": "32",
+     "texto": "Le sumo lo del primer caso."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En el comedor juntan mesas en fila. Con 1 mesa se sientan 6 personas, con 2 mesas 10 y con 3 mesas 14. ¿Cuántas personas se sientan con 13 mesas en fila?",
+   "respuesta": "54",
+   "distractores": [
+    {
+     "valor": "78",
+     "error": "E01"
+    },
+    {
+     "valor": "58",
+     "error": "E02"
+    },
+    {
+     "valor": "52",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "6 + 4 × (13 − 1)",
+   "secundarias": [
+    "OPER.MULT.02",
+    "OPER.SUMA.11"
+   ],
+   "explicacion_nino": "Entiende: haz una tabla con los primeros casos: 1 → 6; 2 → 10; 3 → 14; 4 → 18. Cada vez que añades uno, suman 4. Del caso 1 al caso 13 hay 12 saltos (uno menos que casos). Así que: 6 + 4 × 12 = 6 + 48 = 54. Comprueba con un caso pequeño: para 3 serían 6 + 4 × 2 = 14, como en la tabla. Ojo: no es 6 × 13, porque al juntar mesas se pierden los sitios de las uniones.",
+   "explicacion_adulto": "Está aprendiendo a organizar los casos en una tabla (1, 2, 3…) para descubrir la regularidad y usarla en un caso lejano sin dibujarlo todo. Los errores típicos son aplicar la proporcionalidad donde no la hay (si 1 mesa son 4 personas, 10 mesas serían 40), contar mal los saltos (hay un salto menos que casos) o ver solo que la columna crece de tanto en tanto sin relacionarla con el número de casos. Pídale que complete la tabla unas filas más y que explique con palabras cómo pasa de una fila a la siguiente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "13 − 1",
+     "resultado": "12",
+     "texto": "Saltos desde el primer caso."
+    },
+    {
+     "paso": 2,
+     "operacion": "4 × 12",
+     "resultado": "48",
+     "texto": "Lo que se añade en esos saltos."
+    },
+    {
+     "paso": 3,
+     "operacion": "6 + 48",
+     "resultado": "54",
+     "texto": "Le sumo lo del primer caso."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "En el comedor juntan mesas en fila. Con 1 mesa se sientan 6 personas, con 2 mesas 10 y con 3 mesas 14. ¿Cuántas personas se sientan con 32 mesas en fila?",
+   "respuesta": "130",
+   "distractores": [
+    {
+     "valor": "192",
+     "error": "E01"
+    },
+    {
+     "valor": "134",
+     "error": "E02"
+    },
+    {
+     "valor": "128",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "6 + 4 × (32 − 1)",
+   "secundarias": [
+    "OPER.MULT.02",
+    "OPER.SUMA.11"
+   ],
+   "explicacion_nino": "Entiende: haz una tabla con los primeros casos: 1 → 6; 2 → 10; 3 → 14; 4 → 18. Cada vez que añades uno, suman 4. Del caso 1 al caso 32 hay 31 saltos (uno menos que casos). Así que: 6 + 4 × 31 = 6 + 124 = 130. Comprueba con un caso pequeño: para 3 serían 6 + 4 × 2 = 14, como en la tabla. Ojo: no es 6 × 32, porque al juntar mesas se pierden los sitios de las uniones.",
+   "explicacion_adulto": "Está aprendiendo a organizar los casos en una tabla (1, 2, 3…) para descubrir la regularidad y usarla en un caso lejano sin dibujarlo todo. Los errores típicos son aplicar la proporcionalidad donde no la hay (si 1 mesa son 4 personas, 10 mesas serían 40), contar mal los saltos (hay un salto menos que casos) o ver solo que la columna crece de tanto en tanto sin relacionarla con el número de casos. Pídale que complete la tabla unas filas más y que explique con palabras cómo pasa de una fila a la siguiente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "32 − 1",
+     "resultado": "31",
+     "texto": "Saltos desde el primer caso."
+    },
+    {
+     "paso": 2,
+     "operacion": "4 × 31",
+     "resultado": "124",
+     "texto": "Lo que se añade en esos saltos."
+    },
+    {
+     "paso": 3,
+     "operacion": "6 + 124",
+     "resultado": "130",
+     "texto": "Le sumo lo del primer caso."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "En el comedor juntan mesas en fila. Con 1 mesa se sientan 6 personas, con 2 mesas 10 y con 3 mesas 14. ¿Cuántas personas se sientan con 35 mesas en fila?",
+   "respuesta": "142",
+   "distractores": [
+    {
+     "valor": "210",
+     "error": "E01"
+    },
+    {
+     "valor": "146",
+     "error": "E02"
+    },
+    {
+     "valor": "140",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "6 + 4 × (35 − 1)",
+   "secundarias": [
+    "OPER.MULT.02",
+    "OPER.SUMA.11"
+   ],
+   "explicacion_nino": "Entiende: haz una tabla con los primeros casos: 1 → 6; 2 → 10; 3 → 14; 4 → 18. Cada vez que añades uno, suman 4. Del caso 1 al caso 35 hay 34 saltos (uno menos que casos). Así que: 6 + 4 × 34 = 6 + 136 = 142. Comprueba con un caso pequeño: para 3 serían 6 + 4 × 2 = 14, como en la tabla. Ojo: no es 6 × 35, porque al juntar mesas se pierden los sitios de las uniones.",
+   "explicacion_adulto": "Está aprendiendo a organizar los casos en una tabla (1, 2, 3…) para descubrir la regularidad y usarla en un caso lejano sin dibujarlo todo. Los errores típicos son aplicar la proporcionalidad donde no la hay (si 1 mesa son 4 personas, 10 mesas serían 40), contar mal los saltos (hay un salto menos que casos) o ver solo que la columna crece de tanto en tanto sin relacionarla con el número de casos. Pídale que complete la tabla unas filas más y que explique con palabras cómo pasa de una fila a la siguiente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "35 − 1",
+     "resultado": "34",
+     "texto": "Saltos desde el primer caso."
+    },
+    {
+     "paso": 2,
+     "operacion": "4 × 34",
+     "resultado": "136",
+     "texto": "Lo que se añade en esos saltos."
+    },
+    {
+     "paso": 3,
+     "operacion": "6 + 136",
+     "resultado": "142",
+     "texto": "Le sumo lo del primer caso."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Kofi forma figuras con palillos, una al lado de otra. Para 1 figura usa 3 palillos, para 2 figuras 5 y para 3 figuras 7. ¿Cuántos palillos necesita para 8 figuras?",
+   "respuesta": "17",
+   "distractores": [
+    {
+     "valor": "24",
+     "error": "E01"
+    },
+    {
+     "valor": "19",
+     "error": "E02"
+    },
+    {
+     "valor": "16",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "3 + 2 × (8 − 1)",
+   "secundarias": [
+    "OPER.MULT.02",
+    "OPER.SUMA.11"
+   ],
+   "explicacion_nino": "Entiende: haz una tabla con los primeros casos: 1 → 3; 2 → 5; 3 → 7; 4 → 9. Cada vez que añades uno, suman 2. Del caso 1 al caso 8 hay 7 saltos (uno menos que casos). Así que: 3 + 2 × 7 = 3 + 14 = 17. Comprueba con un caso pequeño: para 3 serían 3 + 2 × 2 = 7, como en la tabla. Ojo: no es 3 × 8, porque las figuras pegadas comparten un lado.",
+   "explicacion_adulto": "Está aprendiendo a organizar los casos en una tabla (1, 2, 3…) para descubrir la regularidad y usarla en un caso lejano sin dibujarlo todo. Los errores típicos son aplicar la proporcionalidad donde no la hay (si 1 mesa son 4 personas, 10 mesas serían 40), contar mal los saltos (hay un salto menos que casos) o ver solo que la columna crece de tanto en tanto sin relacionarla con el número de casos. Pídale que complete la tabla unas filas más y que explique con palabras cómo pasa de una fila a la siguiente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "8 − 1",
+     "resultado": "7",
+     "texto": "Saltos desde el primer caso."
+    },
+    {
+     "paso": 2,
+     "operacion": "2 × 7",
+     "resultado": "14",
+     "texto": "Lo que se añade en esos saltos."
+    },
+    {
+     "paso": 3,
+     "operacion": "3 + 14",
+     "resultado": "17",
+     "texto": "Le sumo lo del primer caso."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Vega forma figuras con palillos, una al lado de otra. Para 1 figura usa 5 palillos, para 2 figuras 9 y para 3 figuras 13. ¿Cuántos palillos necesita para 6 figuras?",
+   "respuesta": "25",
+   "distractores": [
+    {
+     "valor": "30",
+     "error": "E01"
+    },
+    {
+     "valor": "29",
+     "error": "E02"
+    },
+    {
+     "valor": "24",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "5 + 4 × (6 − 1)",
+   "secundarias": [
+    "OPER.MULT.02",
+    "OPER.SUMA.11"
+   ],
+   "explicacion_nino": "Entiende: haz una tabla con los primeros casos: 1 → 5; 2 → 9; 3 → 13; 4 → 17. Cada vez que añades uno, suman 4. Del caso 1 al caso 6 hay 5 saltos (uno menos que casos). Así que: 5 + 4 × 5 = 5 + 20 = 25. Comprueba con un caso pequeño: para 3 serían 5 + 4 × 2 = 13, como en la tabla. Ojo: no es 5 × 6, porque las figuras pegadas comparten un lado.",
+   "explicacion_adulto": "Está aprendiendo a organizar los casos en una tabla (1, 2, 3…) para descubrir la regularidad y usarla en un caso lejano sin dibujarlo todo. Los errores típicos son aplicar la proporcionalidad donde no la hay (si 1 mesa son 4 personas, 10 mesas serían 40), contar mal los saltos (hay un salto menos que casos) o ver solo que la columna crece de tanto en tanto sin relacionarla con el número de casos. Pídale que complete la tabla unas filas más y que explique con palabras cómo pasa de una fila a la siguiente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "6 − 1",
+     "resultado": "5",
+     "texto": "Saltos desde el primer caso."
+    },
+    {
+     "paso": 2,
+     "operacion": "4 × 5",
+     "resultado": "20",
+     "texto": "Lo que se añade en esos saltos."
+    },
+    {
+     "paso": 3,
+     "operacion": "5 + 20",
+     "resultado": "25",
+     "texto": "Le sumo lo del primer caso."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Sofía forma figuras con palillos, una al lado de otra. Para 1 figura usa 3 palillos, para 2 figuras 5 y para 3 figuras 7. ¿Cuántos palillos necesita para 13 figuras?",
+   "respuesta": "27",
+   "distractores": [
+    {
+     "valor": "39",
+     "error": "E01"
+    },
+    {
+     "valor": "29",
+     "error": "E02"
+    },
+    {
+     "valor": "26",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "3 + 2 × (13 − 1)",
+   "secundarias": [
+    "OPER.MULT.02",
+    "OPER.SUMA.11"
+   ],
+   "explicacion_nino": "Entiende: haz una tabla con los primeros casos: 1 → 3; 2 → 5; 3 → 7; 4 → 9. Cada vez que añades uno, suman 2. Del caso 1 al caso 13 hay 12 saltos (uno menos que casos). Así que: 3 + 2 × 12 = 3 + 24 = 27. Comprueba con un caso pequeño: para 3 serían 3 + 2 × 2 = 7, como en la tabla. Ojo: no es 3 × 13, porque las figuras pegadas comparten un lado.",
+   "explicacion_adulto": "Está aprendiendo a organizar los casos en una tabla (1, 2, 3…) para descubrir la regularidad y usarla en un caso lejano sin dibujarlo todo. Los errores típicos son aplicar la proporcionalidad donde no la hay (si 1 mesa son 4 personas, 10 mesas serían 40), contar mal los saltos (hay un salto menos que casos) o ver solo que la columna crece de tanto en tanto sin relacionarla con el número de casos. Pídale que complete la tabla unas filas más y que explique con palabras cómo pasa de una fila a la siguiente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "13 − 1",
+     "resultado": "12",
+     "texto": "Saltos desde el primer caso."
+    },
+    {
+     "paso": 2,
+     "operacion": "2 × 12",
+     "resultado": "24",
+     "texto": "Lo que se añade en esos saltos."
+    },
+    {
+     "paso": 3,
+     "operacion": "3 + 24",
+     "resultado": "27",
+     "texto": "Le sumo lo del primer caso."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Valeria forma figuras con palillos, una al lado de otra. Para 1 figura usa 3 palillos, para 2 figuras 5 y para 3 figuras 7. ¿Cuántos palillos necesita para 14 figuras?",
+   "respuesta": "29",
+   "distractores": [
+    {
+     "valor": "42",
+     "error": "E01"
+    },
+    {
+     "valor": "31",
+     "error": "E02"
+    },
+    {
+     "valor": "28",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "3 + 2 × (14 − 1)",
+   "secundarias": [
+    "OPER.MULT.02",
+    "OPER.SUMA.11"
+   ],
+   "explicacion_nino": "Entiende: haz una tabla con los primeros casos: 1 → 3; 2 → 5; 3 → 7; 4 → 9. Cada vez que añades uno, suman 2. Del caso 1 al caso 14 hay 13 saltos (uno menos que casos). Así que: 3 + 2 × 13 = 3 + 26 = 29. Comprueba con un caso pequeño: para 3 serían 3 + 2 × 2 = 7, como en la tabla. Ojo: no es 3 × 14, porque las figuras pegadas comparten un lado.",
+   "explicacion_adulto": "Está aprendiendo a organizar los casos en una tabla (1, 2, 3…) para descubrir la regularidad y usarla en un caso lejano sin dibujarlo todo. Los errores típicos son aplicar la proporcionalidad donde no la hay (si 1 mesa son 4 personas, 10 mesas serían 40), contar mal los saltos (hay un salto menos que casos) o ver solo que la columna crece de tanto en tanto sin relacionarla con el número de casos. Pídale que complete la tabla unas filas más y que explique con palabras cómo pasa de una fila a la siguiente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "14 − 1",
+     "resultado": "13",
+     "texto": "Saltos desde el primer caso."
+    },
+    {
+     "paso": 2,
+     "operacion": "2 × 13",
+     "resultado": "26",
+     "texto": "Lo que se añade en esos saltos."
+    },
+    {
+     "paso": 3,
+     "operacion": "3 + 26",
+     "resultado": "29",
+     "texto": "Le sumo lo del primer caso."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Bruno forma figuras con palillos, una al lado de otra. Para 1 figura usa 3 palillos, para 2 figuras 5 y para 3 figuras 7. ¿Cuántos palillos necesita para 10 figuras?",
+   "respuesta": "21",
+   "distractores": [
+    {
+     "valor": "30",
+     "error": "E01"
+    },
+    {
+     "valor": "23",
+     "error": "E02"
+    },
+    {
+     "valor": "20",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "3 + 2 × (10 − 1)",
+   "secundarias": [
+    "OPER.MULT.02",
+    "OPER.SUMA.11"
+   ],
+   "explicacion_nino": "Entiende: haz una tabla con los primeros casos: 1 → 3; 2 → 5; 3 → 7; 4 → 9. Cada vez que añades uno, suman 2. Del caso 1 al caso 10 hay 9 saltos (uno menos que casos). Así que: 3 + 2 × 9 = 3 + 18 = 21. Comprueba con un caso pequeño: para 3 serían 3 + 2 × 2 = 7, como en la tabla. Ojo: no es 3 × 10, porque las figuras pegadas comparten un lado.",
+   "explicacion_adulto": "Está aprendiendo a organizar los casos en una tabla (1, 2, 3…) para descubrir la regularidad y usarla en un caso lejano sin dibujarlo todo. Los errores típicos son aplicar la proporcionalidad donde no la hay (si 1 mesa son 4 personas, 10 mesas serían 40), contar mal los saltos (hay un salto menos que casos) o ver solo que la columna crece de tanto en tanto sin relacionarla con el número de casos. Pídale que complete la tabla unas filas más y que explique con palabras cómo pasa de una fila a la siguiente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "10 − 1",
+     "resultado": "9",
+     "texto": "Saltos desde el primer caso."
+    },
+    {
+     "paso": 2,
+     "operacion": "2 × 9",
+     "resultado": "18",
+     "texto": "Lo que se añade en esos saltos."
+    },
+    {
+     "paso": 3,
+     "operacion": "3 + 18",
+     "resultado": "21",
+     "texto": "Le sumo lo del primer caso."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Bruno forma figuras con palillos, una al lado de otra. Para 1 figura usa 3 palillos, para 2 figuras 5 y para 3 figuras 7. ¿Cuántos palillos necesita para 26 figuras?",
+   "respuesta": "53",
+   "distractores": [
+    {
+     "valor": "78",
+     "error": "E01"
+    },
+    {
+     "valor": "55",
+     "error": "E02"
+    },
+    {
+     "valor": "52",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "3 + 2 × (26 − 1)",
+   "secundarias": [
+    "OPER.MULT.02",
+    "OPER.SUMA.11"
+   ],
+   "explicacion_nino": "Entiende: haz una tabla con los primeros casos: 1 → 3; 2 → 5; 3 → 7; 4 → 9. Cada vez que añades uno, suman 2. Del caso 1 al caso 26 hay 25 saltos (uno menos que casos). Así que: 3 + 2 × 25 = 3 + 50 = 53. Comprueba con un caso pequeño: para 3 serían 3 + 2 × 2 = 7, como en la tabla. Ojo: no es 3 × 26, porque las figuras pegadas comparten un lado.",
+   "explicacion_adulto": "Está aprendiendo a organizar los casos en una tabla (1, 2, 3…) para descubrir la regularidad y usarla en un caso lejano sin dibujarlo todo. Los errores típicos son aplicar la proporcionalidad donde no la hay (si 1 mesa son 4 personas, 10 mesas serían 40), contar mal los saltos (hay un salto menos que casos) o ver solo que la columna crece de tanto en tanto sin relacionarla con el número de casos. Pídale que complete la tabla unas filas más y que explique con palabras cómo pasa de una fila a la siguiente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "26 − 1",
+     "resultado": "25",
+     "texto": "Saltos desde el primer caso."
+    },
+    {
+     "paso": 2,
+     "operacion": "2 × 25",
+     "resultado": "50",
+     "texto": "Lo que se añade en esos saltos."
+    },
+    {
+     "paso": 3,
+     "operacion": "3 + 50",
+     "resultado": "53",
+     "texto": "Le sumo lo del primer caso."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Hugo guarda 5 € la semana 1, 7 € la semana 2 y 9 € la semana 3. Si sigue igual, ¿cuántos euros guardará solo en la semana 8?",
+   "respuesta": "19",
+   "distractores": [
+    {
+     "valor": "40",
+     "error": "E01"
+    },
+    {
+     "valor": "21",
+     "error": "E02"
+    },
+    {
+     "valor": "16",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "5 + 2 × (8 − 1)",
+   "secundarias": [
+    "OPER.MULT.02",
+    "OPER.SUMA.11"
+   ],
+   "explicacion_nino": "Entiende: haz una tabla con los primeros casos: 1 → 5; 2 → 7; 3 → 9; 4 → 11. Cada vez que añades uno, suman 2. Del caso 1 al caso 8 hay 7 saltos (uno menos que casos). Así que: 5 + 2 × 7 = 5 + 14 = 19. Comprueba con un caso pequeño: para 3 serían 5 + 2 × 2 = 9, como en la tabla. Ojo: no es 5 × 8, porque cada semana guarda una cantidad distinta: no es siempre lo de la semana 1.",
+   "explicacion_adulto": "Está aprendiendo a organizar los casos en una tabla (1, 2, 3…) para descubrir la regularidad y usarla en un caso lejano sin dibujarlo todo. Los errores típicos son aplicar la proporcionalidad donde no la hay (si 1 mesa son 4 personas, 10 mesas serían 40), contar mal los saltos (hay un salto menos que casos) o ver solo que la columna crece de tanto en tanto sin relacionarla con el número de casos. Pídale que complete la tabla unas filas más y que explique con palabras cómo pasa de una fila a la siguiente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "8 − 1",
+     "resultado": "7",
+     "texto": "Saltos desde el primer caso."
+    },
+    {
+     "paso": 2,
+     "operacion": "2 × 7",
+     "resultado": "14",
+     "texto": "Lo que se añade en esos saltos."
+    },
+    {
+     "paso": 3,
+     "operacion": "5 + 14",
+     "resultado": "19",
+     "texto": "Le sumo lo del primer caso."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Andrés guarda 2 € la semana 1, 5 € la semana 2 y 8 € la semana 3. Si sigue igual, ¿cuántos euros guardará solo en la semana 7?",
+   "respuesta": "20",
+   "distractores": [
+    {
+     "valor": "14",
+     "error": "E01"
+    },
+    {
+     "valor": "23",
+     "error": "E02"
+    },
+    {
+     "valor": "21",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "2 + 3 × (7 − 1)",
+   "secundarias": [
+    "OPER.MULT.02",
+    "OPER.SUMA.11"
+   ],
+   "explicacion_nino": "Entiende: haz una tabla con los primeros casos: 1 → 2; 2 → 5; 3 → 8; 4 → 11. Cada vez que añades uno, suman 3. Del caso 1 al caso 7 hay 6 saltos (uno menos que casos). Así que: 2 + 3 × 6 = 2 + 18 = 20. Comprueba con un caso pequeño: para 3 serían 2 + 3 × 2 = 8, como en la tabla. Ojo: no es 2 × 7, porque cada semana guarda una cantidad distinta: no es siempre lo de la semana 1.",
+   "explicacion_adulto": "Está aprendiendo a organizar los casos en una tabla (1, 2, 3…) para descubrir la regularidad y usarla en un caso lejano sin dibujarlo todo. Los errores típicos son aplicar la proporcionalidad donde no la hay (si 1 mesa son 4 personas, 10 mesas serían 40), contar mal los saltos (hay un salto menos que casos) o ver solo que la columna crece de tanto en tanto sin relacionarla con el número de casos. Pídale que complete la tabla unas filas más y que explique con palabras cómo pasa de una fila a la siguiente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "7 − 1",
+     "resultado": "6",
+     "texto": "Saltos desde el primer caso."
+    },
+    {
+     "paso": 2,
+     "operacion": "3 × 6",
+     "resultado": "18",
+     "texto": "Lo que se añade en esos saltos."
+    },
+    {
+     "paso": 3,
+     "operacion": "2 + 18",
+     "resultado": "20",
+     "texto": "Le sumo lo del primer caso."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Rubén guarda 3 € la semana 1, 7 € la semana 2 y 11 € la semana 3. Si sigue igual, ¿cuántos euros guardará solo en la semana 8?",
+   "respuesta": "31",
+   "distractores": [
+    {
+     "valor": "24",
+     "error": "E01"
+    },
+    {
+     "valor": "35",
+     "error": "E02"
+    },
+    {
+     "valor": "32",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "3 + 4 × (8 − 1)",
+   "secundarias": [
+    "OPER.MULT.02",
+    "OPER.SUMA.11"
+   ],
+   "explicacion_nino": "Entiende: haz una tabla con los primeros casos: 1 → 3; 2 → 7; 3 → 11; 4 → 15. Cada vez que añades uno, suman 4. Del caso 1 al caso 8 hay 7 saltos (uno menos que casos). Así que: 3 + 4 × 7 = 3 + 28 = 31. Comprueba con un caso pequeño: para 3 serían 3 + 4 × 2 = 11, como en la tabla. Ojo: no es 3 × 8, porque cada semana guarda una cantidad distinta: no es siempre lo de la semana 1.",
+   "explicacion_adulto": "Está aprendiendo a organizar los casos en una tabla (1, 2, 3…) para descubrir la regularidad y usarla en un caso lejano sin dibujarlo todo. Los errores típicos son aplicar la proporcionalidad donde no la hay (si 1 mesa son 4 personas, 10 mesas serían 40), contar mal los saltos (hay un salto menos que casos) o ver solo que la columna crece de tanto en tanto sin relacionarla con el número de casos. Pídale que complete la tabla unas filas más y que explique con palabras cómo pasa de una fila a la siguiente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "8 − 1",
+     "resultado": "7",
+     "texto": "Saltos desde el primer caso."
+    },
+    {
+     "paso": 2,
+     "operacion": "4 × 7",
+     "resultado": "28",
+     "texto": "Lo que se añade en esos saltos."
+    },
+    {
+     "paso": 3,
+     "operacion": "3 + 28",
+     "resultado": "31",
+     "texto": "Le sumo lo del primer caso."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Amira guarda 10 € la semana 1, 15 € la semana 2 y 20 € la semana 3. Si sigue igual, ¿cuántos euros guardará solo en la semana 13?",
+   "respuesta": "70",
+   "distractores": [
+    {
+     "valor": "130",
+     "error": "E01"
+    },
+    {
+     "valor": "75",
+     "error": "E02"
+    },
+    {
+     "valor": "65",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "10 + 5 × (13 − 1)",
+   "secundarias": [
+    "OPER.MULT.02",
+    "OPER.SUMA.11"
+   ],
+   "explicacion_nino": "Entiende: haz una tabla con los primeros casos: 1 → 10; 2 → 15; 3 → 20; 4 → 25. Cada vez que añades uno, suman 5. Del caso 1 al caso 13 hay 12 saltos (uno menos que casos). Así que: 10 + 5 × 12 = 10 + 60 = 70. Comprueba con un caso pequeño: para 3 serían 10 + 5 × 2 = 20, como en la tabla. Ojo: no es 10 × 13, porque cada semana guarda una cantidad distinta: no es siempre lo de la semana 1.",
+   "explicacion_adulto": "Está aprendiendo a organizar los casos en una tabla (1, 2, 3…) para descubrir la regularidad y usarla en un caso lejano sin dibujarlo todo. Los errores típicos son aplicar la proporcionalidad donde no la hay (si 1 mesa son 4 personas, 10 mesas serían 40), contar mal los saltos (hay un salto menos que casos) o ver solo que la columna crece de tanto en tanto sin relacionarla con el número de casos. Pídale que complete la tabla unas filas más y que explique con palabras cómo pasa de una fila a la siguiente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "13 − 1",
+     "resultado": "12",
+     "texto": "Saltos desde el primer caso."
+    },
+    {
+     "paso": 2,
+     "operacion": "5 × 12",
+     "resultado": "60",
+     "texto": "Lo que se añade en esos saltos."
+    },
+    {
+     "paso": 3,
+     "operacion": "10 + 60",
+     "resultado": "70",
+     "texto": "Le sumo lo del primer caso."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Laia guarda 2 € la semana 1, 5 € la semana 2 y 8 € la semana 3. Si sigue igual, ¿cuántos euros guardará solo en la semana 15?",
+   "respuesta": "44",
+   "distractores": [
+    {
+     "valor": "30",
+     "error": "E01"
+    },
+    {
+     "valor": "47",
+     "error": "E02"
+    },
+    {
+     "valor": "45",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "2 + 3 × (15 − 1)",
+   "secundarias": [
+    "OPER.MULT.02",
+    "OPER.SUMA.11"
+   ],
+   "explicacion_nino": "Entiende: haz una tabla con los primeros casos: 1 → 2; 2 → 5; 3 → 8; 4 → 11. Cada vez que añades uno, suman 3. Del caso 1 al caso 15 hay 14 saltos (uno menos que casos). Así que: 2 + 3 × 14 = 2 + 42 = 44. Comprueba con un caso pequeño: para 3 serían 2 + 3 × 2 = 8, como en la tabla. Ojo: no es 2 × 15, porque cada semana guarda una cantidad distinta: no es siempre lo de la semana 1.",
+   "explicacion_adulto": "Está aprendiendo a organizar los casos en una tabla (1, 2, 3…) para descubrir la regularidad y usarla en un caso lejano sin dibujarlo todo. Los errores típicos son aplicar la proporcionalidad donde no la hay (si 1 mesa son 4 personas, 10 mesas serían 40), contar mal los saltos (hay un salto menos que casos) o ver solo que la columna crece de tanto en tanto sin relacionarla con el número de casos. Pídale que complete la tabla unas filas más y que explique con palabras cómo pasa de una fila a la siguiente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "15 − 1",
+     "resultado": "14",
+     "texto": "Saltos desde el primer caso."
+    },
+    {
+     "paso": 2,
+     "operacion": "3 × 14",
+     "resultado": "42",
+     "texto": "Lo que se añade en esos saltos."
+    },
+    {
+     "paso": 3,
+     "operacion": "2 + 42",
+     "resultado": "44",
+     "texto": "Le sumo lo del primer caso."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Noa guarda 5 € la semana 1, 7 € la semana 2 y 9 € la semana 3. Si sigue igual, ¿cuántos euros guardará solo en la semana 20?",
+   "respuesta": "43",
+   "distractores": [
+    {
+     "valor": "100",
+     "error": "E01"
+    },
+    {
+     "valor": "45",
+     "error": "E02"
+    },
+    {
+     "valor": "40",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "5 + 2 × (20 − 1)",
+   "secundarias": [
+    "OPER.MULT.02",
+    "OPER.SUMA.11"
+   ],
+   "explicacion_nino": "Entiende: haz una tabla con los primeros casos: 1 → 5; 2 → 7; 3 → 9; 4 → 11. Cada vez que añades uno, suman 2. Del caso 1 al caso 20 hay 19 saltos (uno menos que casos). Así que: 5 + 2 × 19 = 5 + 38 = 43. Comprueba con un caso pequeño: para 3 serían 5 + 2 × 2 = 9, como en la tabla. Ojo: no es 5 × 20, porque cada semana guarda una cantidad distinta: no es siempre lo de la semana 1.",
+   "explicacion_adulto": "Está aprendiendo a organizar los casos en una tabla (1, 2, 3…) para descubrir la regularidad y usarla en un caso lejano sin dibujarlo todo. Los errores típicos son aplicar la proporcionalidad donde no la hay (si 1 mesa son 4 personas, 10 mesas serían 40), contar mal los saltos (hay un salto menos que casos) o ver solo que la columna crece de tanto en tanto sin relacionarla con el número de casos. Pídale que complete la tabla unas filas más y que explique con palabras cómo pasa de una fila a la siguiente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "20 − 1",
+     "resultado": "19",
+     "texto": "Saltos desde el primer caso."
+    },
+    {
+     "paso": 2,
+     "operacion": "2 × 19",
+     "resultado": "38",
+     "texto": "Lo que se añade en esos saltos."
+    },
+    {
+     "paso": 3,
+     "operacion": "5 + 38",
+     "resultado": "43",
+     "texto": "Le sumo lo del primer caso."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Kofi guarda 10 € la semana 1, 15 € la semana 2 y 20 € la semana 3. Si sigue igual, ¿cuántos euros guardará solo en la semana 40?",
+   "respuesta": "205",
+   "distractores": [
+    {
+     "valor": "400",
+     "error": "E01"
+    },
+    {
+     "valor": "210",
+     "error": "E02"
+    },
+    {
+     "valor": "200",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "10 + 5 × (40 − 1)",
+   "secundarias": [
+    "OPER.MULT.02",
+    "OPER.SUMA.11"
+   ],
+   "explicacion_nino": "Entiende: haz una tabla con los primeros casos: 1 → 10; 2 → 15; 3 → 20; 4 → 25. Cada vez que añades uno, suman 5. Del caso 1 al caso 40 hay 39 saltos (uno menos que casos). Así que: 10 + 5 × 39 = 10 + 195 = 205. Comprueba con un caso pequeño: para 3 serían 10 + 5 × 2 = 20, como en la tabla. Ojo: no es 10 × 40, porque cada semana guarda una cantidad distinta: no es siempre lo de la semana 1.",
+   "explicacion_adulto": "Está aprendiendo a organizar los casos en una tabla (1, 2, 3…) para descubrir la regularidad y usarla en un caso lejano sin dibujarlo todo. Los errores típicos son aplicar la proporcionalidad donde no la hay (si 1 mesa son 4 personas, 10 mesas serían 40), contar mal los saltos (hay un salto menos que casos) o ver solo que la columna crece de tanto en tanto sin relacionarla con el número de casos. Pídale que complete la tabla unas filas más y que explique con palabras cómo pasa de una fila a la siguiente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "40 − 1",
+     "resultado": "39",
+     "texto": "Saltos desde el primer caso."
+    },
+    {
+     "paso": 2,
+     "operacion": "5 × 39",
+     "resultado": "195",
+     "texto": "Lo que se añade en esos saltos."
+    },
+    {
+     "paso": 3,
+     "operacion": "10 + 195",
+     "resultado": "205",
+     "texto": "Le sumo lo del primer caso."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Una planta mide 3 cm el día 1, 8 cm el día 2 y 13 cm el día 3. Si crece siempre igual, ¿cuántos centímetros medirá el día 8?",
+   "respuesta": "38",
+   "distractores": [
+    {
+     "valor": "24",
+     "error": "E01"
+    },
+    {
+     "valor": "43",
+     "error": "E02"
+    },
+    {
+     "valor": "40",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "3 + 5 × (8 − 1)",
+   "secundarias": [
+    "OPER.MULT.02",
+    "OPER.SUMA.11"
+   ],
+   "explicacion_nino": "Entiende: haz una tabla con los primeros casos: 1 → 3; 2 → 8; 3 → 13; 4 → 18. Cada vez que añades uno, suman 5. Del caso 1 al caso 8 hay 7 saltos (uno menos que casos). Así que: 3 + 5 × 7 = 3 + 35 = 38. Comprueba con un caso pequeño: para 3 serían 3 + 5 × 2 = 13, como en la tabla. Ojo: no es 3 × 8, porque el día 1 ya medía algo y cada día solo crece un poco.",
+   "explicacion_adulto": "Está aprendiendo a organizar los casos en una tabla (1, 2, 3…) para descubrir la regularidad y usarla en un caso lejano sin dibujarlo todo. Los errores típicos son aplicar la proporcionalidad donde no la hay (si 1 mesa son 4 personas, 10 mesas serían 40), contar mal los saltos (hay un salto menos que casos) o ver solo que la columna crece de tanto en tanto sin relacionarla con el número de casos. Pídale que complete la tabla unas filas más y que explique con palabras cómo pasa de una fila a la siguiente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "8 − 1",
+     "resultado": "7",
+     "texto": "Saltos desde el primer caso."
+    },
+    {
+     "paso": 2,
+     "operacion": "5 × 7",
+     "resultado": "35",
+     "texto": "Lo que se añade en esos saltos."
+    },
+    {
+     "paso": 3,
+     "operacion": "3 + 35",
+     "resultado": "38",
+     "texto": "Le sumo lo del primer caso."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Una planta mide 5 cm el día 1, 8 cm el día 2 y 11 cm el día 3. Si crece siempre igual, ¿cuántos centímetros medirá el día 7?",
+   "respuesta": "23",
+   "distractores": [
+    {
+     "valor": "35",
+     "error": "E01"
+    },
+    {
+     "valor": "26",
+     "error": "E02"
+    },
+    {
+     "valor": "21",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "5 + 3 × (7 − 1)",
+   "secundarias": [
+    "OPER.MULT.02",
+    "OPER.SUMA.11"
+   ],
+   "explicacion_nino": "Entiende: haz una tabla con los primeros casos: 1 → 5; 2 → 8; 3 → 11; 4 → 14. Cada vez que añades uno, suman 3. Del caso 1 al caso 7 hay 6 saltos (uno menos que casos). Así que: 5 + 3 × 6 = 5 + 18 = 23. Comprueba con un caso pequeño: para 3 serían 5 + 3 × 2 = 11, como en la tabla. Ojo: no es 5 × 7, porque el día 1 ya medía algo y cada día solo crece un poco.",
+   "explicacion_adulto": "Está aprendiendo a organizar los casos en una tabla (1, 2, 3…) para descubrir la regularidad y usarla en un caso lejano sin dibujarlo todo. Los errores típicos son aplicar la proporcionalidad donde no la hay (si 1 mesa son 4 personas, 10 mesas serían 40), contar mal los saltos (hay un salto menos que casos) o ver solo que la columna crece de tanto en tanto sin relacionarla con el número de casos. Pídale que complete la tabla unas filas más y que explique con palabras cómo pasa de una fila a la siguiente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "7 − 1",
+     "resultado": "6",
+     "texto": "Saltos desde el primer caso."
+    },
+    {
+     "paso": 2,
+     "operacion": "3 × 6",
+     "resultado": "18",
+     "texto": "Lo que se añade en esos saltos."
+    },
+    {
+     "paso": 3,
+     "operacion": "5 + 18",
+     "resultado": "23",
+     "texto": "Le sumo lo del primer caso."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Una planta mide 8 cm el día 1, 10 cm el día 2 y 12 cm el día 3. Si crece siempre igual, ¿cuántos centímetros medirá el día 13?",
+   "respuesta": "32",
+   "distractores": [
+    {
+     "valor": "104",
+     "error": "E01"
+    },
+    {
+     "valor": "34",
+     "error": "E02"
+    },
+    {
+     "valor": "26",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "8 + 2 × (13 − 1)",
+   "secundarias": [
+    "OPER.MULT.02",
+    "OPER.SUMA.11"
+   ],
+   "explicacion_nino": "Entiende: haz una tabla con los primeros casos: 1 → 8; 2 → 10; 3 → 12; 4 → 14. Cada vez que añades uno, suman 2. Del caso 1 al caso 13 hay 12 saltos (uno menos que casos). Así que: 8 + 2 × 12 = 8 + 24 = 32. Comprueba con un caso pequeño: para 3 serían 8 + 2 × 2 = 12, como en la tabla. Ojo: no es 8 × 13, porque el día 1 ya medía algo y cada día solo crece un poco.",
+   "explicacion_adulto": "Está aprendiendo a organizar los casos en una tabla (1, 2, 3…) para descubrir la regularidad y usarla en un caso lejano sin dibujarlo todo. Los errores típicos son aplicar la proporcionalidad donde no la hay (si 1 mesa son 4 personas, 10 mesas serían 40), contar mal los saltos (hay un salto menos que casos) o ver solo que la columna crece de tanto en tanto sin relacionarla con el número de casos. Pídale que complete la tabla unas filas más y que explique con palabras cómo pasa de una fila a la siguiente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "13 − 1",
+     "resultado": "12",
+     "texto": "Saltos desde el primer caso."
+    },
+    {
+     "paso": 2,
+     "operacion": "2 × 12",
+     "resultado": "24",
+     "texto": "Lo que se añade en esos saltos."
+    },
+    {
+     "paso": 3,
+     "operacion": "8 + 24",
+     "resultado": "32",
+     "texto": "Le sumo lo del primer caso."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Una planta mide 8 cm el día 1, 10 cm el día 2 y 12 cm el día 3. Si crece siempre igual, ¿cuántos centímetros medirá el día 11?",
+   "respuesta": "28",
+   "distractores": [
+    {
+     "valor": "88",
+     "error": "E01"
+    },
+    {
+     "valor": "30",
+     "error": "E02"
+    },
+    {
+     "valor": "22",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "8 + 2 × (11 − 1)",
+   "secundarias": [
+    "OPER.MULT.02",
+    "OPER.SUMA.11"
+   ],
+   "explicacion_nino": "Entiende: haz una tabla con los primeros casos: 1 → 8; 2 → 10; 3 → 12; 4 → 14. Cada vez que añades uno, suman 2. Del caso 1 al caso 11 hay 10 saltos (uno menos que casos). Así que: 8 + 2 × 10 = 8 + 20 = 28. Comprueba con un caso pequeño: para 3 serían 8 + 2 × 2 = 12, como en la tabla. Ojo: no es 8 × 11, porque el día 1 ya medía algo y cada día solo crece un poco.",
+   "explicacion_adulto": "Está aprendiendo a organizar los casos en una tabla (1, 2, 3…) para descubrir la regularidad y usarla en un caso lejano sin dibujarlo todo. Los errores típicos son aplicar la proporcionalidad donde no la hay (si 1 mesa son 4 personas, 10 mesas serían 40), contar mal los saltos (hay un salto menos que casos) o ver solo que la columna crece de tanto en tanto sin relacionarla con el número de casos. Pídale que complete la tabla unas filas más y que explique con palabras cómo pasa de una fila a la siguiente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "11 − 1",
+     "resultado": "10",
+     "texto": "Saltos desde el primer caso."
+    },
+    {
+     "paso": 2,
+     "operacion": "2 × 10",
+     "resultado": "20",
+     "texto": "Lo que se añade en esos saltos."
+    },
+    {
+     "paso": 3,
+     "operacion": "8 + 20",
+     "resultado": "28",
+     "texto": "Le sumo lo del primer caso."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Una planta mide 3 cm el día 1, 8 cm el día 2 y 13 cm el día 3. Si crece siempre igual, ¿cuántos centímetros medirá el día 38?",
+   "respuesta": "188",
+   "distractores": [
+    {
+     "valor": "114",
+     "error": "E01"
+    },
+    {
+     "valor": "193",
+     "error": "E02"
+    },
+    {
+     "valor": "190",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "3 + 5 × (38 − 1)",
+   "secundarias": [
+    "OPER.MULT.02",
+    "OPER.SUMA.11"
+   ],
+   "explicacion_nino": "Entiende: haz una tabla con los primeros casos: 1 → 3; 2 → 8; 3 → 13; 4 → 18. Cada vez que añades uno, suman 5. Del caso 1 al caso 38 hay 37 saltos (uno menos que casos). Así que: 3 + 5 × 37 = 3 + 185 = 188. Comprueba con un caso pequeño: para 3 serían 3 + 5 × 2 = 13, como en la tabla. Ojo: no es 3 × 38, porque el día 1 ya medía algo y cada día solo crece un poco.",
+   "explicacion_adulto": "Está aprendiendo a organizar los casos en una tabla (1, 2, 3…) para descubrir la regularidad y usarla en un caso lejano sin dibujarlo todo. Los errores típicos son aplicar la proporcionalidad donde no la hay (si 1 mesa son 4 personas, 10 mesas serían 40), contar mal los saltos (hay un salto menos que casos) o ver solo que la columna crece de tanto en tanto sin relacionarla con el número de casos. Pídale que complete la tabla unas filas más y que explique con palabras cómo pasa de una fila a la siguiente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "38 − 1",
+     "resultado": "37",
+     "texto": "Saltos desde el primer caso."
+    },
+    {
+     "paso": 2,
+     "operacion": "5 × 37",
+     "resultado": "185",
+     "texto": "Lo que se añade en esos saltos."
+    },
+    {
+     "paso": 3,
+     "operacion": "3 + 185",
+     "resultado": "188",
+     "texto": "Le sumo lo del primer caso."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Wei construye una torre por pisos. Con 1 piso usa 3 piezas, con 2 pisos 5 y con 3 pisos 7. ¿Cuántas piezas usa con 8 pisos?",
+   "respuesta": "17",
+   "distractores": [
+    {
+     "valor": "24",
+     "error": "E01"
+    },
+    {
+     "valor": "19",
+     "error": "E02"
+    },
+    {
+     "valor": "16",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "3 + 2 × (8 − 1)",
+   "secundarias": [
+    "OPER.MULT.02",
+    "OPER.SUMA.11"
+   ],
+   "explicacion_nino": "Entiende: haz una tabla con los primeros casos: 1 → 3; 2 → 5; 3 → 7; 4 → 9. Cada vez que añades uno, suman 2. Del caso 1 al caso 8 hay 7 saltos (uno menos que casos). Así que: 3 + 2 × 7 = 3 + 14 = 17. Comprueba con un caso pequeño: para 3 serían 3 + 2 × 2 = 7, como en la tabla. Ojo: no es 3 × 8, porque el primer piso lleva piezas de base que no se repiten.",
+   "explicacion_adulto": "Está aprendiendo a organizar los casos en una tabla (1, 2, 3…) para descubrir la regularidad y usarla en un caso lejano sin dibujarlo todo. Los errores típicos son aplicar la proporcionalidad donde no la hay (si 1 mesa son 4 personas, 10 mesas serían 40), contar mal los saltos (hay un salto menos que casos) o ver solo que la columna crece de tanto en tanto sin relacionarla con el número de casos. Pídale que complete la tabla unas filas más y que explique con palabras cómo pasa de una fila a la siguiente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "8 − 1",
+     "resultado": "7",
+     "texto": "Saltos desde el primer caso."
+    },
+    {
+     "paso": 2,
+     "operacion": "2 × 7",
+     "resultado": "14",
+     "texto": "Lo que se añade en esos saltos."
+    },
+    {
+     "paso": 3,
+     "operacion": "3 + 14",
+     "resultado": "17",
+     "texto": "Le sumo lo del primer caso."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Amira construye una torre por pisos. Con 1 piso usa 3 piezas, con 2 pisos 5 y con 3 pisos 7. ¿Cuántas piezas usa con 6 pisos?",
+   "respuesta": "13",
+   "distractores": [
+    {
+     "valor": "18",
+     "error": "E01"
+    },
+    {
+     "valor": "15",
+     "error": "E02"
+    },
+    {
+     "valor": "12",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "3 + 2 × (6 − 1)",
+   "secundarias": [
+    "OPER.MULT.02",
+    "OPER.SUMA.11"
+   ],
+   "explicacion_nino": "Entiende: haz una tabla con los primeros casos: 1 → 3; 2 → 5; 3 → 7; 4 → 9. Cada vez que añades uno, suman 2. Del caso 1 al caso 6 hay 5 saltos (uno menos que casos). Así que: 3 + 2 × 5 = 3 + 10 = 13. Comprueba con un caso pequeño: para 3 serían 3 + 2 × 2 = 7, como en la tabla. Ojo: no es 3 × 6, porque el primer piso lleva piezas de base que no se repiten.",
+   "explicacion_adulto": "Está aprendiendo a organizar los casos en una tabla (1, 2, 3…) para descubrir la regularidad y usarla en un caso lejano sin dibujarlo todo. Los errores típicos son aplicar la proporcionalidad donde no la hay (si 1 mesa son 4 personas, 10 mesas serían 40), contar mal los saltos (hay un salto menos que casos) o ver solo que la columna crece de tanto en tanto sin relacionarla con el número de casos. Pídale que complete la tabla unas filas más y que explique con palabras cómo pasa de una fila a la siguiente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "6 − 1",
+     "resultado": "5",
+     "texto": "Saltos desde el primer caso."
+    },
+    {
+     "paso": 2,
+     "operacion": "2 × 5",
+     "resultado": "10",
+     "texto": "Lo que se añade en esos saltos."
+    },
+    {
+     "paso": 3,
+     "operacion": "3 + 10",
+     "resultado": "13",
+     "texto": "Le sumo lo del primer caso."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Mateo construye una torre por pisos. Con 1 piso usa 6 piezas, con 2 pisos 9 y con 3 pisos 12. ¿Cuántas piezas usa con 12 pisos?",
+   "respuesta": "39",
+   "distractores": [
+    {
+     "valor": "72",
+     "error": "E01"
+    },
+    {
+     "valor": "42",
+     "error": "E02"
+    },
+    {
+     "valor": "36",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "6 + 3 × (12 − 1)",
+   "secundarias": [
+    "OPER.MULT.02",
+    "OPER.SUMA.11"
+   ],
+   "explicacion_nino": "Entiende: haz una tabla con los primeros casos: 1 → 6; 2 → 9; 3 → 12; 4 → 15. Cada vez que añades uno, suman 3. Del caso 1 al caso 12 hay 11 saltos (uno menos que casos). Así que: 6 + 3 × 11 = 6 + 33 = 39. Comprueba con un caso pequeño: para 3 serían 6 + 3 × 2 = 12, como en la tabla. Ojo: no es 6 × 12, porque el primer piso lleva piezas de base que no se repiten.",
+   "explicacion_adulto": "Está aprendiendo a organizar los casos en una tabla (1, 2, 3…) para descubrir la regularidad y usarla en un caso lejano sin dibujarlo todo. Los errores típicos son aplicar la proporcionalidad donde no la hay (si 1 mesa son 4 personas, 10 mesas serían 40), contar mal los saltos (hay un salto menos que casos) o ver solo que la columna crece de tanto en tanto sin relacionarla con el número de casos. Pídale que complete la tabla unas filas más y que explique con palabras cómo pasa de una fila a la siguiente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "12 − 1",
+     "resultado": "11",
+     "texto": "Saltos desde el primer caso."
+    },
+    {
+     "paso": 2,
+     "operacion": "3 × 11",
+     "resultado": "33",
+     "texto": "Lo que se añade en esos saltos."
+    },
+    {
+     "paso": 3,
+     "operacion": "6 + 33",
+     "resultado": "39",
+     "texto": "Le sumo lo del primer caso."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Adrián construye una torre por pisos. Con 1 piso usa 6 piezas, con 2 pisos 9 y con 3 pisos 12. ¿Cuántas piezas usa con 10 pisos?",
+   "respuesta": "33",
+   "distractores": [
+    {
+     "valor": "60",
+     "error": "E01"
+    },
+    {
+     "valor": "36",
+     "error": "E02"
+    },
+    {
+     "valor": "30",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "6 + 3 × (10 − 1)",
+   "secundarias": [
+    "OPER.MULT.02",
+    "OPER.SUMA.11"
+   ],
+   "explicacion_nino": "Entiende: haz una tabla con los primeros casos: 1 → 6; 2 → 9; 3 → 12; 4 → 15. Cada vez que añades uno, suman 3. Del caso 1 al caso 10 hay 9 saltos (uno menos que casos). Así que: 6 + 3 × 9 = 6 + 27 = 33. Comprueba con un caso pequeño: para 3 serían 6 + 3 × 2 = 12, como en la tabla. Ojo: no es 6 × 10, porque el primer piso lleva piezas de base que no se repiten.",
+   "explicacion_adulto": "Está aprendiendo a organizar los casos en una tabla (1, 2, 3…) para descubrir la regularidad y usarla en un caso lejano sin dibujarlo todo. Los errores típicos son aplicar la proporcionalidad donde no la hay (si 1 mesa son 4 personas, 10 mesas serían 40), contar mal los saltos (hay un salto menos que casos) o ver solo que la columna crece de tanto en tanto sin relacionarla con el número de casos. Pídale que complete la tabla unas filas más y que explique con palabras cómo pasa de una fila a la siguiente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "10 − 1",
+     "resultado": "9",
+     "texto": "Saltos desde el primer caso."
+    },
+    {
+     "paso": 2,
+     "operacion": "3 × 9",
+     "resultado": "27",
+     "texto": "Lo que se añade en esos saltos."
+    },
+    {
+     "paso": 3,
+     "operacion": "6 + 27",
+     "resultado": "33",
+     "texto": "Le sumo lo del primer caso."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Carmen construye una torre por pisos. Con 1 piso usa 6 piezas, con 2 pisos 9 y con 3 pisos 12. ¿Cuántas piezas usa con 31 pisos?",
+   "respuesta": "96",
+   "distractores": [
+    {
+     "valor": "186",
+     "error": "E01"
+    },
+    {
+     "valor": "99",
+     "error": "E02"
+    },
+    {
+     "valor": "93",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "6 + 3 × (31 − 1)",
+   "secundarias": [
+    "OPER.MULT.02",
+    "OPER.SUMA.11"
+   ],
+   "explicacion_nino": "Entiende: haz una tabla con los primeros casos: 1 → 6; 2 → 9; 3 → 12; 4 → 15. Cada vez que añades uno, suman 3. Del caso 1 al caso 31 hay 30 saltos (uno menos que casos). Así que: 6 + 3 × 30 = 6 + 90 = 96. Comprueba con un caso pequeño: para 3 serían 6 + 3 × 2 = 12, como en la tabla. Ojo: no es 6 × 31, porque el primer piso lleva piezas de base que no se repiten.",
+   "explicacion_adulto": "Está aprendiendo a organizar los casos en una tabla (1, 2, 3…) para descubrir la regularidad y usarla en un caso lejano sin dibujarlo todo. Los errores típicos son aplicar la proporcionalidad donde no la hay (si 1 mesa son 4 personas, 10 mesas serían 40), contar mal los saltos (hay un salto menos que casos) o ver solo que la columna crece de tanto en tanto sin relacionarla con el número de casos. Pídale que complete la tabla unas filas más y que explique con palabras cómo pasa de una fila a la siguiente.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "31 − 1",
+     "resultado": "30",
+     "texto": "Saltos desde el primer caso."
+    },
+    {
+     "paso": 2,
+     "operacion": "3 × 30",
+     "resultado": "90",
+     "texto": "Lo que se añade en esos saltos."
+    },
+    {
+     "paso": 3,
+     "operacion": "6 + 90",
+     "resultado": "96",
+     "texto": "Le sumo lo del primer caso."
+    }
+   ],
+   "plantilla": "P05"
+  }
+ ]
+}

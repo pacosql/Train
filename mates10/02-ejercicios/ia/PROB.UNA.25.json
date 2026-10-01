@@ -1,0 +1,1510 @@
+{
+ "habilidad": "PROB.UNA.25",
+ "generado_por": "claude (skill mates10-generar-ejercicios v1)",
+ "ejercicios": [
+  {
+   "dificultad": 1,
+   "enunciado": "Con sus pantalones y sus 2 camisetas, Jorge puede vestirse de 8 formas distintas. ¿Cuántos pantalones tiene?",
+   "respuesta": "4",
+   "distractores": [
+    {
+     "valor": "6",
+     "error": "E01"
+    },
+    {
+     "valor": "16",
+     "error": "E02"
+    },
+    {
+     "valor": "8",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "8 : 2",
+   "secundarias": [
+    "OPER.DIV.01",
+    "PROB.UNA.20"
+   ],
+   "explicacion_nino": "Entiende: el total de combinaciones sale de multiplicar las opciones de los dos grupos: ? × 2 = 8. Para hallar el que falta, dividimos: 8 : 2 = 4. Comprueba: 4 × 2 = 8.",
+   "explicacion_adulto": "Está aprendiendo el problema inverso del recuento de combinaciones: si el total de combinaciones es el producto de las opciones de cada grupo, conociendo el total y uno de los grupos, el otro se halla dividiendo. Si resta o multiplica, pídale que compruebe con una tabla: filas × columnas deben dar el total.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "8 combinaciones, 2 opciones",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "8 : 2",
+     "resultado": "4",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "4 × 2 = 8",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un restaurante ofrece 20 menús distintos de primer y segundo plato. Hay 5 primeros platos. ¿Cuántos segundos platos hay?",
+   "respuesta": "4",
+   "distractores": [
+    {
+     "valor": "15",
+     "error": "E01"
+    },
+    {
+     "valor": "100",
+     "error": "E02"
+    },
+    {
+     "valor": "20",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "20 : 5",
+   "secundarias": [
+    "OPER.DIV.01",
+    "PROB.UNA.20"
+   ],
+   "explicacion_nino": "Entiende: el total de combinaciones sale de multiplicar las opciones de los dos grupos: ? × 5 = 20. Para hallar el que falta, dividimos: 20 : 5 = 4. Comprueba: 4 × 5 = 20.",
+   "explicacion_adulto": "Está aprendiendo el problema inverso del recuento de combinaciones: si el total de combinaciones es el producto de las opciones de cada grupo, conociendo el total y uno de los grupos, el otro se halla dividiendo. Si resta o multiplica, pídale que compruebe con una tabla: filas × columnas deben dar el total.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "20 combinaciones, 5 opciones",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "20 : 5",
+     "resultado": "4",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "4 × 5 = 20",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En una heladería se pueden pedir 12 helados distintos de una bola combinando sabor y cucurucho. Hay 4 tipos de cucurucho. ¿Cuántos sabores hay?",
+   "respuesta": "3",
+   "distractores": [
+    {
+     "valor": "8",
+     "error": "E01"
+    },
+    {
+     "valor": "48",
+     "error": "E02"
+    },
+    {
+     "valor": "12",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "12 : 4",
+   "secundarias": [
+    "OPER.DIV.01",
+    "PROB.UNA.20"
+   ],
+   "explicacion_nino": "Entiende: el total de combinaciones sale de multiplicar las opciones de los dos grupos: ? × 4 = 12. Para hallar el que falta, dividimos: 12 : 4 = 3. Comprueba: 3 × 4 = 12.",
+   "explicacion_adulto": "Está aprendiendo el problema inverso del recuento de combinaciones: si el total de combinaciones es el producto de las opciones de cada grupo, conociendo el total y uno de los grupos, el otro se halla dividiendo. Si resta o multiplica, pídale que compruebe con una tabla: filas × columnas deben dar el total.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "12 combinaciones, 4 opciones",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "12 : 4",
+     "resultado": "3",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "3 × 4 = 12",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En la cafetería se pueden preparar 15 bocadillos distintos con un tipo de pan y un relleno. Hay 5 tipos de pan. ¿Cuántos rellenos hay?",
+   "respuesta": "3",
+   "distractores": [
+    {
+     "valor": "10",
+     "error": "E01"
+    },
+    {
+     "valor": "75",
+     "error": "E02"
+    },
+    {
+     "valor": "15",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "15 : 5",
+   "secundarias": [
+    "OPER.DIV.01",
+    "PROB.UNA.20"
+   ],
+   "explicacion_nino": "Entiende: el total de combinaciones sale de multiplicar las opciones de los dos grupos: ? × 5 = 15. Para hallar el que falta, dividimos: 15 : 5 = 3. Comprueba: 3 × 5 = 15.",
+   "explicacion_adulto": "Está aprendiendo el problema inverso del recuento de combinaciones: si el total de combinaciones es el producto de las opciones de cada grupo, conociendo el total y uno de los grupos, el otro se halla dividiendo. Si resta o multiplica, pídale que compruebe con una tabla: filas × columnas deben dar el total.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "15 combinaciones, 5 opciones",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "15 : 5",
+     "resultado": "3",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "3 × 5 = 15",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En un juego, cada ficha lleva un color y un animal dibujado. Hay 2 colores y 6 fichas distintas, sin repetir ninguna combinación. ¿Cuántos animales distintos hay?",
+   "respuesta": "3",
+   "distractores": [
+    {
+     "valor": "4",
+     "error": "E01"
+    },
+    {
+     "valor": "12",
+     "error": "E02"
+    },
+    {
+     "valor": "6",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "6 : 2",
+   "secundarias": [
+    "OPER.DIV.01",
+    "PROB.UNA.20"
+   ],
+   "explicacion_nino": "Entiende: el total de combinaciones sale de multiplicar las opciones de los dos grupos: ? × 2 = 6. Para hallar el que falta, dividimos: 6 : 2 = 3. Comprueba: 3 × 2 = 6.",
+   "explicacion_adulto": "Está aprendiendo el problema inverso del recuento de combinaciones: si el total de combinaciones es el producto de las opciones de cada grupo, conociendo el total y uno de los grupos, el otro se halla dividiendo. Si resta o multiplica, pídale que compruebe con una tabla: filas × columnas deben dar el total.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "6 combinaciones, 2 opciones",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "6 : 2",
+     "resultado": "3",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "3 × 2 = 6",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Con sus pantalones y sus 2 camisetas, Omar puede vestirse de 8 formas distintas. ¿Cuántos pantalones tiene?",
+   "respuesta": "4",
+   "distractores": [
+    {
+     "valor": "6",
+     "error": "E01"
+    },
+    {
+     "valor": "16",
+     "error": "E02"
+    },
+    {
+     "valor": "8",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "8 : 2",
+   "secundarias": [
+    "OPER.DIV.01",
+    "PROB.UNA.20"
+   ],
+   "explicacion_nino": "Entiende: el total de combinaciones sale de multiplicar las opciones de los dos grupos: ? × 2 = 8. Para hallar el que falta, dividimos: 8 : 2 = 4. Comprueba: 4 × 2 = 8.",
+   "explicacion_adulto": "Está aprendiendo el problema inverso del recuento de combinaciones: si el total de combinaciones es el producto de las opciones de cada grupo, conociendo el total y uno de los grupos, el otro se halla dividiendo. Si resta o multiplica, pídale que compruebe con una tabla: filas × columnas deben dar el total.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "8 combinaciones, 2 opciones",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "8 : 2",
+     "resultado": "4",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "4 × 2 = 8",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En una heladería se pueden pedir 30 helados distintos de una bola combinando sabor y cucurucho. Hay 5 tipos de cucurucho. ¿Cuántos sabores hay?",
+   "respuesta": "6",
+   "distractores": [
+    {
+     "valor": "25",
+     "error": "E01"
+    },
+    {
+     "valor": "150",
+     "error": "E02"
+    },
+    {
+     "valor": "30",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "30 : 5",
+   "secundarias": [
+    "OPER.DIV.01",
+    "PROB.UNA.20"
+   ],
+   "explicacion_nino": "Entiende: el total de combinaciones sale de multiplicar las opciones de los dos grupos: ? × 5 = 30. Para hallar el que falta, dividimos: 30 : 5 = 6. Comprueba: 6 × 5 = 30.",
+   "explicacion_adulto": "Está aprendiendo el problema inverso del recuento de combinaciones: si el total de combinaciones es el producto de las opciones de cada grupo, conociendo el total y uno de los grupos, el otro se halla dividiendo. Si resta o multiplica, pídale que compruebe con una tabla: filas × columnas deben dar el total.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "30 combinaciones, 5 opciones",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "30 : 5",
+     "resultado": "6",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "6 × 5 = 30",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En la cafetería se pueden preparar 12 bocadillos distintos con un tipo de pan y un relleno. Hay 3 tipos de pan. ¿Cuántos rellenos hay?",
+   "respuesta": "4",
+   "distractores": [
+    {
+     "valor": "9",
+     "error": "E01"
+    },
+    {
+     "valor": "36",
+     "error": "E02"
+    },
+    {
+     "valor": "12",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "12 : 3",
+   "secundarias": [
+    "OPER.DIV.01",
+    "PROB.UNA.20"
+   ],
+   "explicacion_nino": "Entiende: el total de combinaciones sale de multiplicar las opciones de los dos grupos: ? × 3 = 12. Para hallar el que falta, dividimos: 12 : 3 = 4. Comprueba: 4 × 3 = 12.",
+   "explicacion_adulto": "Está aprendiendo el problema inverso del recuento de combinaciones: si el total de combinaciones es el producto de las opciones de cada grupo, conociendo el total y uno de los grupos, el otro se halla dividiendo. Si resta o multiplica, pídale que compruebe con una tabla: filas × columnas deben dar el total.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "12 combinaciones, 3 opciones",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "12 : 3",
+     "resultado": "4",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "4 × 3 = 12",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En un juego, cada ficha lleva un color y un animal dibujado. Hay 5 colores y 10 fichas distintas, sin repetir ninguna combinación. ¿Cuántos animales distintos hay?",
+   "respuesta": "2",
+   "distractores": [
+    {
+     "valor": "5",
+     "error": "E01"
+    },
+    {
+     "valor": "50",
+     "error": "E02"
+    },
+    {
+     "valor": "10",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "10 : 5",
+   "secundarias": [
+    "OPER.DIV.01",
+    "PROB.UNA.20"
+   ],
+   "explicacion_nino": "Entiende: el total de combinaciones sale de multiplicar las opciones de los dos grupos: ? × 5 = 10. Para hallar el que falta, dividimos: 10 : 5 = 2. Comprueba: 2 × 5 = 10.",
+   "explicacion_adulto": "Está aprendiendo el problema inverso del recuento de combinaciones: si el total de combinaciones es el producto de las opciones de cada grupo, conociendo el total y uno de los grupos, el otro se halla dividiendo. Si resta o multiplica, pídale que compruebe con una tabla: filas × columnas deben dar el total.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "10 combinaciones, 5 opciones",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "10 : 5",
+     "resultado": "2",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "2 × 5 = 10",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Con sus pantalones y sus 5 camisetas, Diego puede vestirse de 10 formas distintas. ¿Cuántos pantalones tiene?",
+   "respuesta": "2",
+   "distractores": [
+    {
+     "valor": "5",
+     "error": "E01"
+    },
+    {
+     "valor": "50",
+     "error": "E02"
+    },
+    {
+     "valor": "10",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "10 : 5",
+   "secundarias": [
+    "OPER.DIV.01",
+    "PROB.UNA.20"
+   ],
+   "explicacion_nino": "Entiende: el total de combinaciones sale de multiplicar las opciones de los dos grupos: ? × 5 = 10. Para hallar el que falta, dividimos: 10 : 5 = 2. Comprueba: 2 × 5 = 10.",
+   "explicacion_adulto": "Está aprendiendo el problema inverso del recuento de combinaciones: si el total de combinaciones es el producto de las opciones de cada grupo, conociendo el total y uno de los grupos, el otro se halla dividiendo. Si resta o multiplica, pídale que compruebe con una tabla: filas × columnas deben dar el total.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "10 combinaciones, 5 opciones",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "10 : 5",
+     "resultado": "2",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "2 × 5 = 10",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un restaurante ofrece 12 menús distintos de primer y segundo plato. Hay 4 primeros platos. ¿Cuántos segundos platos hay?",
+   "respuesta": "3",
+   "distractores": [
+    {
+     "valor": "8",
+     "error": "E01"
+    },
+    {
+     "valor": "48",
+     "error": "E02"
+    },
+    {
+     "valor": "12",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "12 : 4",
+   "secundarias": [
+    "OPER.DIV.01",
+    "PROB.UNA.20"
+   ],
+   "explicacion_nino": "Entiende: el total de combinaciones sale de multiplicar las opciones de los dos grupos: ? × 4 = 12. Para hallar el que falta, dividimos: 12 : 4 = 3. Comprueba: 3 × 4 = 12.",
+   "explicacion_adulto": "Está aprendiendo el problema inverso del recuento de combinaciones: si el total de combinaciones es el producto de las opciones de cada grupo, conociendo el total y uno de los grupos, el otro se halla dividiendo. Si resta o multiplica, pídale que compruebe con una tabla: filas × columnas deben dar el total.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "12 combinaciones, 4 opciones",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "12 : 4",
+     "resultado": "3",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "3 × 4 = 12",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "En una heladería se pueden pedir 15 helados distintos de una bola combinando sabor y cucurucho. Hay 3 tipos de cucurucho. ¿Cuántos sabores hay?",
+   "respuesta": "5",
+   "distractores": [
+    {
+     "valor": "12",
+     "error": "E01"
+    },
+    {
+     "valor": "45",
+     "error": "E02"
+    },
+    {
+     "valor": "15",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "15 : 3",
+   "secundarias": [
+    "OPER.DIV.01",
+    "PROB.UNA.20"
+   ],
+   "explicacion_nino": "Entiende: el total de combinaciones sale de multiplicar las opciones de los dos grupos: ? × 3 = 15. Para hallar el que falta, dividimos: 15 : 3 = 5. Comprueba: 5 × 3 = 15.",
+   "explicacion_adulto": "Está aprendiendo el problema inverso del recuento de combinaciones: si el total de combinaciones es el producto de las opciones de cada grupo, conociendo el total y uno de los grupos, el otro se halla dividiendo. Si resta o multiplica, pídale que compruebe con una tabla: filas × columnas deben dar el total.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "15 combinaciones, 3 opciones",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "15 : 3",
+     "resultado": "5",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "5 × 3 = 15",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Con sus pantalones y sus 4 camisetas, Elena puede vestirse de 8 formas distintas. ¿Cuántos pantalones tiene?",
+   "respuesta": "2",
+   "distractores": [
+    {
+     "valor": "4",
+     "error": "E01"
+    },
+    {
+     "valor": "32",
+     "error": "E02"
+    },
+    {
+     "valor": "8",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "8 : 4",
+   "secundarias": [
+    "OPER.DIV.01",
+    "PROB.UNA.20"
+   ],
+   "explicacion_nino": "Entiende: el total de combinaciones sale de multiplicar las opciones de los dos grupos: ? × 4 = 8. Para hallar el que falta, dividimos: 8 : 4 = 2. Comprueba: 2 × 4 = 8.",
+   "explicacion_adulto": "Está aprendiendo el problema inverso del recuento de combinaciones: si el total de combinaciones es el producto de las opciones de cada grupo, conociendo el total y uno de los grupos, el otro se halla dividiendo. Si resta o multiplica, pídale que compruebe con una tabla: filas × columnas deben dar el total.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "8 combinaciones, 4 opciones",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "8 : 4",
+     "resultado": "2",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "2 × 4 = 8",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un restaurante ofrece 28 menús distintos de primer y segundo plato. Hay 7 primeros platos. ¿Cuántos segundos platos hay?",
+   "respuesta": "4",
+   "distractores": [
+    {
+     "valor": "21",
+     "error": "E01"
+    },
+    {
+     "valor": "196",
+     "error": "E02"
+    },
+    {
+     "valor": "28",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "28 : 7",
+   "secundarias": [
+    "OPER.DIV.01",
+    "PROB.UNA.20"
+   ],
+   "explicacion_nino": "Entiende: el total de combinaciones sale de multiplicar las opciones de los dos grupos: ? × 7 = 28. Para hallar el que falta, dividimos: 28 : 7 = 4. Comprueba: 4 × 7 = 28.",
+   "explicacion_adulto": "Está aprendiendo el problema inverso del recuento de combinaciones: si el total de combinaciones es el producto de las opciones de cada grupo, conociendo el total y uno de los grupos, el otro se halla dividiendo. Si resta o multiplica, pídale que compruebe con una tabla: filas × columnas deben dar el total.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "28 combinaciones, 7 opciones",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "28 : 7",
+     "resultado": "4",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "4 × 7 = 28",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En una heladería se pueden pedir 42 helados distintos de una bola combinando sabor y cucurucho. Hay 7 tipos de cucurucho. ¿Cuántos sabores hay?",
+   "respuesta": "6",
+   "distractores": [
+    {
+     "valor": "35",
+     "error": "E01"
+    },
+    {
+     "valor": "294",
+     "error": "E02"
+    },
+    {
+     "valor": "42",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "42 : 7",
+   "secundarias": [
+    "OPER.DIV.01",
+    "PROB.UNA.20"
+   ],
+   "explicacion_nino": "Entiende: el total de combinaciones sale de multiplicar las opciones de los dos grupos: ? × 7 = 42. Para hallar el que falta, dividimos: 42 : 7 = 6. Comprueba: 6 × 7 = 42.",
+   "explicacion_adulto": "Está aprendiendo el problema inverso del recuento de combinaciones: si el total de combinaciones es el producto de las opciones de cada grupo, conociendo el total y uno de los grupos, el otro se halla dividiendo. Si resta o multiplica, pídale que compruebe con una tabla: filas × columnas deben dar el total.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "42 combinaciones, 7 opciones",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "42 : 7",
+     "resultado": "6",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "6 × 7 = 42",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En la cafetería se pueden preparar 36 bocadillos distintos con un tipo de pan y un relleno. Hay 9 tipos de pan. ¿Cuántos rellenos hay?",
+   "respuesta": "4",
+   "distractores": [
+    {
+     "valor": "27",
+     "error": "E01"
+    },
+    {
+     "valor": "324",
+     "error": "E02"
+    },
+    {
+     "valor": "36",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "36 : 9",
+   "secundarias": [
+    "OPER.DIV.01",
+    "PROB.UNA.20"
+   ],
+   "explicacion_nino": "Entiende: el total de combinaciones sale de multiplicar las opciones de los dos grupos: ? × 9 = 36. Para hallar el que falta, dividimos: 36 : 9 = 4. Comprueba: 4 × 9 = 36.",
+   "explicacion_adulto": "Está aprendiendo el problema inverso del recuento de combinaciones: si el total de combinaciones es el producto de las opciones de cada grupo, conociendo el total y uno de los grupos, el otro se halla dividiendo. Si resta o multiplica, pídale que compruebe con una tabla: filas × columnas deben dar el total.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "36 combinaciones, 9 opciones",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "36 : 9",
+     "resultado": "4",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "4 × 9 = 36",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En un juego, cada ficha lleva un color y un animal dibujado. Hay 8 colores y 56 fichas distintas, sin repetir ninguna combinación. ¿Cuántos animales distintos hay?",
+   "respuesta": "7",
+   "distractores": [
+    {
+     "valor": "48",
+     "error": "E01"
+    },
+    {
+     "valor": "448",
+     "error": "E02"
+    },
+    {
+     "valor": "56",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "56 : 8",
+   "secundarias": [
+    "OPER.DIV.01",
+    "PROB.UNA.20"
+   ],
+   "explicacion_nino": "Entiende: el total de combinaciones sale de multiplicar las opciones de los dos grupos: ? × 8 = 56. Para hallar el que falta, dividimos: 56 : 8 = 7. Comprueba: 7 × 8 = 56.",
+   "explicacion_adulto": "Está aprendiendo el problema inverso del recuento de combinaciones: si el total de combinaciones es el producto de las opciones de cada grupo, conociendo el total y uno de los grupos, el otro se halla dividiendo. Si resta o multiplica, pídale que compruebe con una tabla: filas × columnas deben dar el total.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "56 combinaciones, 8 opciones",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "56 : 8",
+     "resultado": "7",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "7 × 8 = 56",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Con sus pantalones y sus 5 camisetas, Pablo puede vestirse de 15 formas distintas. ¿Cuántos pantalones tiene?",
+   "respuesta": "3",
+   "distractores": [
+    {
+     "valor": "10",
+     "error": "E01"
+    },
+    {
+     "valor": "75",
+     "error": "E02"
+    },
+    {
+     "valor": "15",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "15 : 5",
+   "secundarias": [
+    "OPER.DIV.01",
+    "PROB.UNA.20"
+   ],
+   "explicacion_nino": "Entiende: el total de combinaciones sale de multiplicar las opciones de los dos grupos: ? × 5 = 15. Para hallar el que falta, dividimos: 15 : 5 = 3. Comprueba: 3 × 5 = 15.",
+   "explicacion_adulto": "Está aprendiendo el problema inverso del recuento de combinaciones: si el total de combinaciones es el producto de las opciones de cada grupo, conociendo el total y uno de los grupos, el otro se halla dividiendo. Si resta o multiplica, pídale que compruebe con una tabla: filas × columnas deben dar el total.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "15 combinaciones, 5 opciones",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "15 : 5",
+     "resultado": "3",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "3 × 5 = 15",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un restaurante ofrece 36 menús distintos de primer y segundo plato. Hay 9 primeros platos. ¿Cuántos segundos platos hay?",
+   "respuesta": "4",
+   "distractores": [
+    {
+     "valor": "27",
+     "error": "E01"
+    },
+    {
+     "valor": "324",
+     "error": "E02"
+    },
+    {
+     "valor": "36",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "36 : 9",
+   "secundarias": [
+    "OPER.DIV.01",
+    "PROB.UNA.20"
+   ],
+   "explicacion_nino": "Entiende: el total de combinaciones sale de multiplicar las opciones de los dos grupos: ? × 9 = 36. Para hallar el que falta, dividimos: 36 : 9 = 4. Comprueba: 4 × 9 = 36.",
+   "explicacion_adulto": "Está aprendiendo el problema inverso del recuento de combinaciones: si el total de combinaciones es el producto de las opciones de cada grupo, conociendo el total y uno de los grupos, el otro se halla dividiendo. Si resta o multiplica, pídale que compruebe con una tabla: filas × columnas deben dar el total.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "36 combinaciones, 9 opciones",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "36 : 9",
+     "resultado": "4",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "4 × 9 = 36",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En una heladería se pueden pedir 56 helados distintos de una bola combinando sabor y cucurucho. Hay 7 tipos de cucurucho. ¿Cuántos sabores hay?",
+   "respuesta": "8",
+   "distractores": [
+    {
+     "valor": "49",
+     "error": "E01"
+    },
+    {
+     "valor": "392",
+     "error": "E02"
+    },
+    {
+     "valor": "56",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "56 : 7",
+   "secundarias": [
+    "OPER.DIV.01",
+    "PROB.UNA.20"
+   ],
+   "explicacion_nino": "Entiende: el total de combinaciones sale de multiplicar las opciones de los dos grupos: ? × 7 = 56. Para hallar el que falta, dividimos: 56 : 7 = 8. Comprueba: 8 × 7 = 56.",
+   "explicacion_adulto": "Está aprendiendo el problema inverso del recuento de combinaciones: si el total de combinaciones es el producto de las opciones de cada grupo, conociendo el total y uno de los grupos, el otro se halla dividiendo. Si resta o multiplica, pídale que compruebe con una tabla: filas × columnas deben dar el total.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "56 combinaciones, 7 opciones",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "56 : 7",
+     "resultado": "8",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "8 × 7 = 56",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En la cafetería se pueden preparar 54 bocadillos distintos con un tipo de pan y un relleno. Hay 9 tipos de pan. ¿Cuántos rellenos hay?",
+   "respuesta": "6",
+   "distractores": [
+    {
+     "valor": "45",
+     "error": "E01"
+    },
+    {
+     "valor": "486",
+     "error": "E02"
+    },
+    {
+     "valor": "54",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "54 : 9",
+   "secundarias": [
+    "OPER.DIV.01",
+    "PROB.UNA.20"
+   ],
+   "explicacion_nino": "Entiende: el total de combinaciones sale de multiplicar las opciones de los dos grupos: ? × 9 = 54. Para hallar el que falta, dividimos: 54 : 9 = 6. Comprueba: 6 × 9 = 54.",
+   "explicacion_adulto": "Está aprendiendo el problema inverso del recuento de combinaciones: si el total de combinaciones es el producto de las opciones de cada grupo, conociendo el total y uno de los grupos, el otro se halla dividiendo. Si resta o multiplica, pídale que compruebe con una tabla: filas × columnas deben dar el total.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "54 combinaciones, 9 opciones",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "54 : 9",
+     "resultado": "6",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "6 × 9 = 54",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "En un juego, cada ficha lleva un color y un animal dibujado. Hay 3 colores y 21 fichas distintas, sin repetir ninguna combinación. ¿Cuántos animales distintos hay?",
+   "respuesta": "7",
+   "distractores": [
+    {
+     "valor": "18",
+     "error": "E01"
+    },
+    {
+     "valor": "63",
+     "error": "E02"
+    },
+    {
+     "valor": "21",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "21 : 3",
+   "secundarias": [
+    "OPER.DIV.01",
+    "PROB.UNA.20"
+   ],
+   "explicacion_nino": "Entiende: el total de combinaciones sale de multiplicar las opciones de los dos grupos: ? × 3 = 21. Para hallar el que falta, dividimos: 21 : 3 = 7. Comprueba: 7 × 3 = 21.",
+   "explicacion_adulto": "Está aprendiendo el problema inverso del recuento de combinaciones: si el total de combinaciones es el producto de las opciones de cada grupo, conociendo el total y uno de los grupos, el otro se halla dividiendo. Si resta o multiplica, pídale que compruebe con una tabla: filas × columnas deben dar el total.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "21 combinaciones, 3 opciones",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "21 : 3",
+     "resultado": "7",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "7 × 3 = 21",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Con sus pantalones y sus 3 camisetas, Daniela puede vestirse de 27 formas distintas. ¿Cuántos pantalones tiene?",
+   "respuesta": "9",
+   "distractores": [
+    {
+     "valor": "24",
+     "error": "E01"
+    },
+    {
+     "valor": "81",
+     "error": "E02"
+    },
+    {
+     "valor": "27",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "27 : 3",
+   "secundarias": [
+    "OPER.DIV.01",
+    "PROB.UNA.20"
+   ],
+   "explicacion_nino": "Entiende: el total de combinaciones sale de multiplicar las opciones de los dos grupos: ? × 3 = 27. Para hallar el que falta, dividimos: 27 : 3 = 9. Comprueba: 9 × 3 = 27.",
+   "explicacion_adulto": "Está aprendiendo el problema inverso del recuento de combinaciones: si el total de combinaciones es el producto de las opciones de cada grupo, conociendo el total y uno de los grupos, el otro se halla dividiendo. Si resta o multiplica, pídale que compruebe con una tabla: filas × columnas deben dar el total.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "27 combinaciones, 3 opciones",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "27 : 3",
+     "resultado": "9",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "9 × 3 = 27",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un restaurante ofrece 21 menús distintos de primer y segundo plato. Hay 7 primeros platos. ¿Cuántos segundos platos hay?",
+   "respuesta": "3",
+   "distractores": [
+    {
+     "valor": "14",
+     "error": "E01"
+    },
+    {
+     "valor": "147",
+     "error": "E02"
+    },
+    {
+     "valor": "21",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "21 : 7",
+   "secundarias": [
+    "OPER.DIV.01",
+    "PROB.UNA.20"
+   ],
+   "explicacion_nino": "Entiende: el total de combinaciones sale de multiplicar las opciones de los dos grupos: ? × 7 = 21. Para hallar el que falta, dividimos: 21 : 7 = 3. Comprueba: 3 × 7 = 21.",
+   "explicacion_adulto": "Está aprendiendo el problema inverso del recuento de combinaciones: si el total de combinaciones es el producto de las opciones de cada grupo, conociendo el total y uno de los grupos, el otro se halla dividiendo. Si resta o multiplica, pídale que compruebe con una tabla: filas × columnas deben dar el total.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "21 combinaciones, 7 opciones",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "21 : 7",
+     "resultado": "3",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "3 × 7 = 21",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "En una heladería se pueden pedir 120 helados distintos de una bola combinando sabor y cucurucho. Hay 8 tipos de cucurucho. ¿Cuántos sabores hay?",
+   "respuesta": "15",
+   "distractores": [
+    {
+     "valor": "112",
+     "error": "E01"
+    },
+    {
+     "valor": "960",
+     "error": "E02"
+    },
+    {
+     "valor": "120",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "120 : 8",
+   "secundarias": [
+    "OPER.DIV.03",
+    "PROB.UNA.20"
+   ],
+   "explicacion_nino": "Entiende: el total de combinaciones sale de multiplicar las opciones de los dos grupos: ? × 8 = 120. Para hallar el que falta, dividimos: 120 : 8 = 15. Comprueba: 15 × 8 = 120.",
+   "explicacion_adulto": "Está aprendiendo el problema inverso del recuento de combinaciones: si el total de combinaciones es el producto de las opciones de cada grupo, conociendo el total y uno de los grupos, el otro se halla dividiendo. Si resta o multiplica, pídale que compruebe con una tabla: filas × columnas deben dar el total.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "120 combinaciones, 8 opciones",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "120 : 8",
+     "resultado": "15",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "15 × 8 = 120",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "En la cafetería se pueden preparar 60 bocadillos distintos con un tipo de pan y un relleno. Hay 4 tipos de pan. ¿Cuántos rellenos hay?",
+   "respuesta": "15",
+   "distractores": [
+    {
+     "valor": "56",
+     "error": "E01"
+    },
+    {
+     "valor": "240",
+     "error": "E02"
+    },
+    {
+     "valor": "60",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "60 : 4",
+   "secundarias": [
+    "OPER.DIV.01",
+    "PROB.UNA.20"
+   ],
+   "explicacion_nino": "Entiende: el total de combinaciones sale de multiplicar las opciones de los dos grupos: ? × 4 = 60. Para hallar el que falta, dividimos: 60 : 4 = 15. Comprueba: 15 × 4 = 60.",
+   "explicacion_adulto": "Está aprendiendo el problema inverso del recuento de combinaciones: si el total de combinaciones es el producto de las opciones de cada grupo, conociendo el total y uno de los grupos, el otro se halla dividiendo. Si resta o multiplica, pídale que compruebe con una tabla: filas × columnas deben dar el total.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "60 combinaciones, 4 opciones",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "60 : 4",
+     "resultado": "15",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "15 × 4 = 60",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "En un juego, cada ficha lleva un color y un animal dibujado. Hay 8 colores y 96 fichas distintas, sin repetir ninguna combinación. ¿Cuántos animales distintos hay?",
+   "respuesta": "12",
+   "distractores": [
+    {
+     "valor": "88",
+     "error": "E01"
+    },
+    {
+     "valor": "768",
+     "error": "E02"
+    },
+    {
+     "valor": "96",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "96 : 8",
+   "secundarias": [
+    "OPER.DIV.01",
+    "PROB.UNA.20"
+   ],
+   "explicacion_nino": "Entiende: el total de combinaciones sale de multiplicar las opciones de los dos grupos: ? × 8 = 96. Para hallar el que falta, dividimos: 96 : 8 = 12. Comprueba: 12 × 8 = 96.",
+   "explicacion_adulto": "Está aprendiendo el problema inverso del recuento de combinaciones: si el total de combinaciones es el producto de las opciones de cada grupo, conociendo el total y uno de los grupos, el otro se halla dividiendo. Si resta o multiplica, pídale que compruebe con una tabla: filas × columnas deben dar el total.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "96 combinaciones, 8 opciones",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "96 : 8",
+     "resultado": "12",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "12 × 8 = 96",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Con sus pantalones y sus 9 camisetas, Alba puede vestirse de 72 formas distintas. ¿Cuántos pantalones tiene?",
+   "respuesta": "8",
+   "distractores": [
+    {
+     "valor": "63",
+     "error": "E01"
+    },
+    {
+     "valor": "648",
+     "error": "E02"
+    },
+    {
+     "valor": "72",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "72 : 9",
+   "secundarias": [
+    "OPER.DIV.01",
+    "PROB.UNA.20"
+   ],
+   "explicacion_nino": "Entiende: el total de combinaciones sale de multiplicar las opciones de los dos grupos: ? × 9 = 72. Para hallar el que falta, dividimos: 72 : 9 = 8. Comprueba: 8 × 9 = 72.",
+   "explicacion_adulto": "Está aprendiendo el problema inverso del recuento de combinaciones: si el total de combinaciones es el producto de las opciones de cada grupo, conociendo el total y uno de los grupos, el otro se halla dividiendo. Si resta o multiplica, pídale que compruebe con una tabla: filas × columnas deben dar el total.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "72 combinaciones, 9 opciones",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "72 : 9",
+     "resultado": "8",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "8 × 9 = 72",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un restaurante ofrece 72 menús distintos de primer y segundo plato. Hay 8 primeros platos. ¿Cuántos segundos platos hay?",
+   "respuesta": "9",
+   "distractores": [
+    {
+     "valor": "64",
+     "error": "E01"
+    },
+    {
+     "valor": "576",
+     "error": "E02"
+    },
+    {
+     "valor": "72",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "72 : 8",
+   "secundarias": [
+    "OPER.DIV.01",
+    "PROB.UNA.20"
+   ],
+   "explicacion_nino": "Entiende: el total de combinaciones sale de multiplicar las opciones de los dos grupos: ? × 8 = 72. Para hallar el que falta, dividimos: 72 : 8 = 9. Comprueba: 9 × 8 = 72.",
+   "explicacion_adulto": "Está aprendiendo el problema inverso del recuento de combinaciones: si el total de combinaciones es el producto de las opciones de cada grupo, conociendo el total y uno de los grupos, el otro se halla dividiendo. Si resta o multiplica, pídale que compruebe con una tabla: filas × columnas deben dar el total.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "72 combinaciones, 8 opciones",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "72 : 8",
+     "resultado": "9",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "9 × 8 = 72",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "En una heladería se pueden pedir 32 helados distintos de una bola combinando sabor y cucurucho. Hay 4 tipos de cucurucho. ¿Cuántos sabores hay?",
+   "respuesta": "8",
+   "distractores": [
+    {
+     "valor": "28",
+     "error": "E01"
+    },
+    {
+     "valor": "128",
+     "error": "E02"
+    },
+    {
+     "valor": "32",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "32 : 4",
+   "secundarias": [
+    "OPER.DIV.01",
+    "PROB.UNA.20"
+   ],
+   "explicacion_nino": "Entiende: el total de combinaciones sale de multiplicar las opciones de los dos grupos: ? × 4 = 32. Para hallar el que falta, dividimos: 32 : 4 = 8. Comprueba: 8 × 4 = 32.",
+   "explicacion_adulto": "Está aprendiendo el problema inverso del recuento de combinaciones: si el total de combinaciones es el producto de las opciones de cada grupo, conociendo el total y uno de los grupos, el otro se halla dividiendo. Si resta o multiplica, pídale que compruebe con una tabla: filas × columnas deben dar el total.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "32 combinaciones, 4 opciones",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "32 : 4",
+     "resultado": "8",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "8 × 4 = 32",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "En la cafetería se pueden preparar 40 bocadillos distintos con un tipo de pan y un relleno. Hay 5 tipos de pan. ¿Cuántos rellenos hay?",
+   "respuesta": "8",
+   "distractores": [
+    {
+     "valor": "35",
+     "error": "E01"
+    },
+    {
+     "valor": "200",
+     "error": "E02"
+    },
+    {
+     "valor": "40",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "40 : 5",
+   "secundarias": [
+    "OPER.DIV.01",
+    "PROB.UNA.20"
+   ],
+   "explicacion_nino": "Entiende: el total de combinaciones sale de multiplicar las opciones de los dos grupos: ? × 5 = 40. Para hallar el que falta, dividimos: 40 : 5 = 8. Comprueba: 8 × 5 = 40.",
+   "explicacion_adulto": "Está aprendiendo el problema inverso del recuento de combinaciones: si el total de combinaciones es el producto de las opciones de cada grupo, conociendo el total y uno de los grupos, el otro se halla dividiendo. Si resta o multiplica, pídale que compruebe con una tabla: filas × columnas deben dar el total.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "40 combinaciones, 5 opciones",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "40 : 5",
+     "resultado": "8",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "8 × 5 = 40",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "En un juego, cada ficha lleva un color y un animal dibujado. Hay 9 colores y 90 fichas distintas, sin repetir ninguna combinación. ¿Cuántos animales distintos hay?",
+   "respuesta": "10",
+   "distractores": [
+    {
+     "valor": "81",
+     "error": "E01"
+    },
+    {
+     "valor": "810",
+     "error": "E02"
+    },
+    {
+     "valor": "90",
+     "error": "E03"
+    }
+   ],
+   "expresion_calculo": "90 : 9",
+   "secundarias": [
+    "OPER.DIV.01",
+    "PROB.UNA.20"
+   ],
+   "explicacion_nino": "Entiende: el total de combinaciones sale de multiplicar las opciones de los dos grupos: ? × 9 = 90. Para hallar el que falta, dividimos: 90 : 9 = 10. Comprueba: 10 × 9 = 90.",
+   "explicacion_adulto": "Está aprendiendo el problema inverso del recuento de combinaciones: si el total de combinaciones es el producto de las opciones de cada grupo, conociendo el total y uno de los grupos, el otro se halla dividiendo. Si resta o multiplica, pídale que compruebe con una tabla: filas × columnas deben dar el total.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "90 combinaciones, 9 opciones",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "90 : 9",
+     "resultado": "10",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "10 × 9 = 90",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P05"
+  }
+ ]
+}

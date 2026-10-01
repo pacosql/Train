@@ -1,0 +1,1422 @@
+{
+ "habilidad": "ANA.LIM.01",
+ "generado_por": "claude (skill mates10-generar-ejercicios v1)",
+ "ejercicios": [
+  {
+   "dificultad": 1,
+   "enunciado": "Estos son algunos valores de f cerca de x = 5:\n x     │ f(x)\n───────┼──────────\n 4,9   │ −2,8\n 4,99  │ −2,98\n 4,999 │ −2,998\n 5     │ −6\n 5,001 │ −3,003\n 5,01  │ −3,03\n 5,1   │ −3,3\n¿Cuánto vale lím f(x) para x → 5?",
+   "respuesta": "−3",
+   "distractores": [
+    {
+     "valor": "−6",
+     "error": "E01"
+    },
+    {
+     "valor": "−3,3",
+     "error": null
+    },
+    {
+     "valor": "No existe",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Lee los dos lados. Por la izquierda (4,9, 4,99, 4,999) las imágenes se acercan a −3; por la derecha también. Como los dos laterales coinciden, el límite es −3. Lo que pase justo en x = 5 no importa.",
+   "explicacion_adulto": "Está aprendiendo qué significa el límite: el valor al que se acercan las imágenes cuando x se acerca a un punto, sin importar lo que valga la función justo en ese punto. Si responde f(a) o mezcla los dos lados, pídale que lea por separado la columna de la izquierda y la de la derecha y diga a qué número 'tienden'.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "límite por la izquierda",
+     "resultado": "−3",
+     "texto": "Miramos las filas con x < 5."
+    },
+    {
+     "paso": 2,
+     "operacion": "límite por la derecha",
+     "resultado": "−3",
+     "texto": "Miramos las filas con x > 5."
+    },
+    {
+     "paso": 3,
+     "operacion": "comparar",
+     "resultado": "−3",
+     "texto": "Si coinciden, ese es el límite."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Estos son algunos valores de f cerca de x = −2:\n x      │ f(x)\n────────┼──────────\n −2,1   │ 2,8\n −2,01  │ 2,98\n −2,001 │ 2,998\n −2     │ no definida\n −1,999 │ 3,004\n −1,99  │ 3,04\n −1,9   │ 3,4\n¿Cuánto vale lím f(x) para x → −2?",
+   "respuesta": "3",
+   "distractores": [
+    {
+     "valor": "No existe",
+     "error": "E01"
+    },
+    {
+     "valor": "3,4",
+     "error": null
+    },
+    {
+     "valor": "4",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Lee los dos lados. Por la izquierda (−2,1, −2,01, −2,001) las imágenes se acercan a 3; por la derecha también. Como los dos laterales coinciden, el límite es 3. Lo que pase justo en x = −2 no importa.",
+   "explicacion_adulto": "Está aprendiendo qué significa el límite: el valor al que se acercan las imágenes cuando x se acerca a un punto, sin importar lo que valga la función justo en ese punto. Si responde f(a) o mezcla los dos lados, pídale que lea por separado la columna de la izquierda y la de la derecha y diga a qué número 'tienden'.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "límite por la izquierda",
+     "resultado": "3",
+     "texto": "Miramos las filas con x < −2."
+    },
+    {
+     "paso": 2,
+     "operacion": "límite por la derecha",
+     "resultado": "3",
+     "texto": "Miramos las filas con x > −2."
+    },
+    {
+     "paso": 3,
+     "operacion": "comparar",
+     "resultado": "3",
+     "texto": "Si coinciden, ese es el límite."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Estos son algunos valores de f cerca de x = 2:\n x     │ f(x)\n───────┼──────────\n 1,9   │ −2,8\n 1,99  │ −2,98\n 1,999 │ −2,998\n 2     │ −1\n 2,001 │ −3,001\n 2,01  │ −3,01\n 2,1   │ −3,1\n¿Cuánto vale lím f(x) para x → 2?",
+   "respuesta": "−3",
+   "distractores": [
+    {
+     "valor": "−1",
+     "error": "E01"
+    },
+    {
+     "valor": "−3,1",
+     "error": null
+    },
+    {
+     "valor": "No existe",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Lee los dos lados. Por la izquierda (1,9, 1,99, 1,999) las imágenes se acercan a −3; por la derecha también. Como los dos laterales coinciden, el límite es −3. Lo que pase justo en x = 2 no importa.",
+   "explicacion_adulto": "Está aprendiendo qué significa el límite: el valor al que se acercan las imágenes cuando x se acerca a un punto, sin importar lo que valga la función justo en ese punto. Si responde f(a) o mezcla los dos lados, pídale que lea por separado la columna de la izquierda y la de la derecha y diga a qué número 'tienden'.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "límite por la izquierda",
+     "resultado": "−3",
+     "texto": "Miramos las filas con x < 2."
+    },
+    {
+     "paso": 2,
+     "operacion": "límite por la derecha",
+     "resultado": "−3",
+     "texto": "Miramos las filas con x > 2."
+    },
+    {
+     "paso": 3,
+     "operacion": "comparar",
+     "resultado": "−3",
+     "texto": "Si coinciden, ese es el límite."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Estos son algunos valores de f cerca de x = 3:\n x     │ f(x)\n───────┼──────────\n 2,9   │ −0,8\n 2,99  │ −0,98\n 2,999 │ −0,998\n 3     │ no definida\n 3,001 │ −1,001\n 3,01  │ −1,01\n 3,1   │ −1,1\n¿Cuánto vale lím f(x) para x → 3?",
+   "respuesta": "−1",
+   "distractores": [
+    {
+     "valor": "No existe",
+     "error": "E01"
+    },
+    {
+     "valor": "−1,1",
+     "error": null
+    },
+    {
+     "valor": "0",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Lee los dos lados. Por la izquierda (2,9, 2,99, 2,999) las imágenes se acercan a −1; por la derecha también. Como los dos laterales coinciden, el límite es −1. Lo que pase justo en x = 3 no importa.",
+   "explicacion_adulto": "Está aprendiendo qué significa el límite: el valor al que se acercan las imágenes cuando x se acerca a un punto, sin importar lo que valga la función justo en ese punto. Si responde f(a) o mezcla los dos lados, pídale que lea por separado la columna de la izquierda y la de la derecha y diga a qué número 'tienden'.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "límite por la izquierda",
+     "resultado": "−1",
+     "texto": "Miramos las filas con x < 3."
+    },
+    {
+     "paso": 2,
+     "operacion": "límite por la derecha",
+     "resultado": "−1",
+     "texto": "Miramos las filas con x > 3."
+    },
+    {
+     "paso": 3,
+     "operacion": "comparar",
+     "resultado": "−1",
+     "texto": "Si coinciden, ese es el límite."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Estos son algunos valores de f cerca de x = −1:\n x      │ f(x)\n────────┼──────────\n −1,1   │ −3,1\n −1,01  │ −3,01\n −1,001 │ −3,001\n −1     │ −1\n −0,999 │ −2,999\n −0,99  │ −2,99\n −0,9   │ −2,9\n¿Cuánto vale lím f(x) para x → −1?",
+   "respuesta": "−3",
+   "distractores": [
+    {
+     "valor": "−1",
+     "error": "E01"
+    },
+    {
+     "valor": "−2,9",
+     "error": null
+    },
+    {
+     "valor": "No existe",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Lee los dos lados. Por la izquierda (−1,1, −1,01, −1,001) las imágenes se acercan a −3; por la derecha también. Como los dos laterales coinciden, el límite es −3. Lo que pase justo en x = −1 no importa.",
+   "explicacion_adulto": "Está aprendiendo qué significa el límite: el valor al que se acercan las imágenes cuando x se acerca a un punto, sin importar lo que valga la función justo en ese punto. Si responde f(a) o mezcla los dos lados, pídale que lea por separado la columna de la izquierda y la de la derecha y diga a qué número 'tienden'.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "límite por la izquierda",
+     "resultado": "−3",
+     "texto": "Miramos las filas con x < −1."
+    },
+    {
+     "paso": 2,
+     "operacion": "límite por la derecha",
+     "resultado": "−3",
+     "texto": "Miramos las filas con x > −1."
+    },
+    {
+     "paso": 3,
+     "operacion": "comparar",
+     "resultado": "−3",
+     "texto": "Si coinciden, ese es el límite."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Estos son algunos valores de f cerca de x = 0:\n x      │ f(x)\n────────┼──────────\n −0,1   │ −1,2\n −0,01  │ −1,02\n −0,001 │ −1,002\n 0      │ no definida\n 0,001  │ −1,001\n 0,01   │ −1,01\n 0,1    │ −1,1\n¿Cuánto vale lím f(x) para x → 0?",
+   "respuesta": "−1",
+   "distractores": [
+    {
+     "valor": "No existe",
+     "error": "E01"
+    },
+    {
+     "valor": "−1,1",
+     "error": null
+    },
+    {
+     "valor": "0",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Lee los dos lados. Por la izquierda (−0,1, −0,01, −0,001) las imágenes se acercan a −1; por la derecha también. Como los dos laterales coinciden, el límite es −1. Lo que pase justo en x = 0 no importa.",
+   "explicacion_adulto": "Está aprendiendo qué significa el límite: el valor al que se acercan las imágenes cuando x se acerca a un punto, sin importar lo que valga la función justo en ese punto. Si responde f(a) o mezcla los dos lados, pídale que lea por separado la columna de la izquierda y la de la derecha y diga a qué número 'tienden'.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "límite por la izquierda",
+     "resultado": "−1",
+     "texto": "Miramos las filas con x < 0."
+    },
+    {
+     "paso": 2,
+     "operacion": "límite por la derecha",
+     "resultado": "−1",
+     "texto": "Miramos las filas con x > 0."
+    },
+    {
+     "paso": 3,
+     "operacion": "comparar",
+     "resultado": "−1",
+     "texto": "Si coinciden, ese es el límite."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Estos son algunos valores de f cerca de x = 1:\n x     │ f(x)\n───────┼──────────\n 0,9   │ 5,9\n 0,99  │ 5,99\n 0,999 │ 5,999\n 1     │ 11\n 1,001 │ 6,001\n 1,01  │ 6,01\n 1,1   │ 6,1\n¿Cuánto vale lím f(x) para x → 1?",
+   "respuesta": "6",
+   "distractores": [
+    {
+     "valor": "11",
+     "error": "E01"
+    },
+    {
+     "valor": "6,1",
+     "error": null
+    },
+    {
+     "valor": "No existe",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Lee los dos lados. Por la izquierda (0,9, 0,99, 0,999) las imágenes se acercan a 6; por la derecha también. Como los dos laterales coinciden, el límite es 6. Lo que pase justo en x = 1 no importa.",
+   "explicacion_adulto": "Está aprendiendo qué significa el límite: el valor al que se acercan las imágenes cuando x se acerca a un punto, sin importar lo que valga la función justo en ese punto. Si responde f(a) o mezcla los dos lados, pídale que lea por separado la columna de la izquierda y la de la derecha y diga a qué número 'tienden'.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "límite por la izquierda",
+     "resultado": "6",
+     "texto": "Miramos las filas con x < 1."
+    },
+    {
+     "paso": 2,
+     "operacion": "límite por la derecha",
+     "resultado": "6",
+     "texto": "Miramos las filas con x > 1."
+    },
+    {
+     "paso": 3,
+     "operacion": "comparar",
+     "resultado": "6",
+     "texto": "Si coinciden, ese es el límite."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Estos son algunos valores de f cerca de x = 3:\n x     │ f(x)\n───────┼──────────\n 2,9   │ 6,9\n 2,99  │ 6,99\n 2,999 │ 6,999\n 3     │ no definida\n 3,001 │ 7,001\n 3,01  │ 7,01\n 3,1   │ 7,1\n¿Cuánto vale lím f(x) para x → 3?",
+   "respuesta": "7",
+   "distractores": [
+    {
+     "valor": "No existe",
+     "error": "E01"
+    },
+    {
+     "valor": "7,1",
+     "error": null
+    },
+    {
+     "valor": "8",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Lee los dos lados. Por la izquierda (2,9, 2,99, 2,999) las imágenes se acercan a 7; por la derecha también. Como los dos laterales coinciden, el límite es 7. Lo que pase justo en x = 3 no importa.",
+   "explicacion_adulto": "Está aprendiendo qué significa el límite: el valor al que se acercan las imágenes cuando x se acerca a un punto, sin importar lo que valga la función justo en ese punto. Si responde f(a) o mezcla los dos lados, pídale que lea por separado la columna de la izquierda y la de la derecha y diga a qué número 'tienden'.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "límite por la izquierda",
+     "resultado": "7",
+     "texto": "Miramos las filas con x < 3."
+    },
+    {
+     "paso": 2,
+     "operacion": "límite por la derecha",
+     "resultado": "7",
+     "texto": "Miramos las filas con x > 3."
+    },
+    {
+     "paso": 3,
+     "operacion": "comparar",
+     "resultado": "7",
+     "texto": "Si coinciden, ese es el límite."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Estos son algunos valores de f cerca de x = 2:\n x     │ f(x)\n───────┼──────────\n 1,9   │ 5,9\n 1,99  │ 5,99\n 1,999 │ 5,999\n 2,001 │ 3,998\n 2,01  │ 3,98\n 2,1   │ 3,8\n¿Cuánto vale lím f(x) para x → 2?",
+   "respuesta": "No existe",
+   "distractores": [
+    {
+     "valor": "6",
+     "error": "E02"
+    },
+    {
+     "valor": "4",
+     "error": "E02"
+    },
+    {
+     "valor": "5",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Por la izquierda las imágenes se acercan a 6; por la derecha, a 4. Los límites laterales son distintos, así que el límite (sin lateral) no existe; cada lateral sí existe.",
+   "explicacion_adulto": "Está aprendiendo qué significa el límite: el valor al que se acercan las imágenes cuando x se acerca a un punto, sin importar lo que valga la función justo en ese punto. Si responde f(a) o mezcla los dos lados, pídale que lea por separado la columna de la izquierda y la de la derecha y diga a qué número 'tienden'. Recuérdele que el límite solo existe si los dos laterales coinciden.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "izquierda",
+     "resultado": "6",
+     "texto": "x < 2"
+    },
+    {
+     "paso": 2,
+     "operacion": "derecha",
+     "resultado": "4",
+     "texto": "x > 2"
+    },
+    {
+     "paso": 3,
+     "operacion": "responder",
+     "resultado": "No existe",
+     "texto": "Lo que pide la pregunta."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Estos son algunos valores de f cerca de x = 0:\n x      │ f(x)\n────────┼──────────\n −0,1   │ −2,1\n −0,01  │ −2,01\n −0,001 │ −2,001\n 0,001  │ 0,998\n 0,01   │ 0,98\n 0,1    │ 0,8\n¿Cuánto vale el lateral izquierdo, lím f(x) para x → 0⁻?",
+   "respuesta": "−2",
+   "distractores": [
+    {
+     "valor": "1",
+     "error": null
+    },
+    {
+     "valor": "No existe",
+     "error": null
+    },
+    {
+     "valor": "−0,5",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Por la izquierda las imágenes se acercan a −2; por la derecha, a 1. Los límites laterales son distintos, así que el límite (sin lateral) no existe; cada lateral sí existe.",
+   "explicacion_adulto": "Está aprendiendo qué significa el límite: el valor al que se acercan las imágenes cuando x se acerca a un punto, sin importar lo que valga la función justo en ese punto. Si responde f(a) o mezcla los dos lados, pídale que lea por separado la columna de la izquierda y la de la derecha y diga a qué número 'tienden'. Recuérdele que el límite solo existe si los dos laterales coinciden.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "izquierda",
+     "resultado": "−2",
+     "texto": "x < 0"
+    },
+    {
+     "paso": 2,
+     "operacion": "derecha",
+     "resultado": "1",
+     "texto": "x > 0"
+    },
+    {
+     "paso": 3,
+     "operacion": "responder",
+     "resultado": "−2",
+     "texto": "Lo que pide la pregunta."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Estos son algunos valores de f cerca de x = 0:\n x      │ f(x)\n────────┼──────────\n −0,1   │ 2,9\n −0,01  │ 2,99\n −0,001 │ 2,999\n 0,001  │ 3,998\n 0,01   │ 3,98\n 0,1    │ 3,8\n¿Cuánto vale el lateral derecho, lím f(x) para x → 0⁺?",
+   "respuesta": "4",
+   "distractores": [
+    {
+     "valor": "3",
+     "error": null
+    },
+    {
+     "valor": "No existe",
+     "error": null
+    },
+    {
+     "valor": "3,5",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Por la izquierda las imágenes se acercan a 3; por la derecha, a 4. Los límites laterales son distintos, así que el límite (sin lateral) no existe; cada lateral sí existe.",
+   "explicacion_adulto": "Está aprendiendo qué significa el límite: el valor al que se acercan las imágenes cuando x se acerca a un punto, sin importar lo que valga la función justo en ese punto. Si responde f(a) o mezcla los dos lados, pídale que lea por separado la columna de la izquierda y la de la derecha y diga a qué número 'tienden'. Recuérdele que el límite solo existe si los dos laterales coinciden.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "izquierda",
+     "resultado": "3",
+     "texto": "x < 0"
+    },
+    {
+     "paso": 2,
+     "operacion": "derecha",
+     "resultado": "4",
+     "texto": "x > 0"
+    },
+    {
+     "paso": 3,
+     "operacion": "responder",
+     "resultado": "4",
+     "texto": "Lo que pide la pregunta."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Estos son algunos valores de f cerca de x = 0:\n x      │ f(x)\n────────┼──────────\n −0,1   │ 4,9\n −0,01  │ 4,99\n −0,001 │ 4,999\n 0,001  │ 2,998\n 0,01   │ 2,98\n 0,1    │ 2,8\n¿Cuánto vale lím f(x) para x → 0?",
+   "respuesta": "No existe",
+   "distractores": [
+    {
+     "valor": "5",
+     "error": "E02"
+    },
+    {
+     "valor": "3",
+     "error": "E02"
+    },
+    {
+     "valor": "4",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Por la izquierda las imágenes se acercan a 5; por la derecha, a 3. Los límites laterales son distintos, así que el límite (sin lateral) no existe; cada lateral sí existe.",
+   "explicacion_adulto": "Está aprendiendo qué significa el límite: el valor al que se acercan las imágenes cuando x se acerca a un punto, sin importar lo que valga la función justo en ese punto. Si responde f(a) o mezcla los dos lados, pídale que lea por separado la columna de la izquierda y la de la derecha y diga a qué número 'tienden'. Recuérdele que el límite solo existe si los dos laterales coinciden.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "izquierda",
+     "resultado": "5",
+     "texto": "x < 0"
+    },
+    {
+     "paso": 2,
+     "operacion": "derecha",
+     "resultado": "3",
+     "texto": "x > 0"
+    },
+    {
+     "paso": 3,
+     "operacion": "responder",
+     "resultado": "No existe",
+     "texto": "Lo que pide la pregunta."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Estos son algunos valores de f cerca de x = −1:\n x      │ f(x)\n────────┼──────────\n −1,1   │ 1,9\n −1,01  │ 1,99\n −1,001 │ 1,999\n −0,999 │ 2,998\n −0,99  │ 2,98\n −0,9   │ 2,8\n¿Cuánto vale el lateral izquierdo, lím f(x) para x → −1⁻?",
+   "respuesta": "2",
+   "distractores": [
+    {
+     "valor": "3",
+     "error": null
+    },
+    {
+     "valor": "No existe",
+     "error": null
+    },
+    {
+     "valor": "2,5",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Por la izquierda las imágenes se acercan a 2; por la derecha, a 3. Los límites laterales son distintos, así que el límite (sin lateral) no existe; cada lateral sí existe.",
+   "explicacion_adulto": "Está aprendiendo qué significa el límite: el valor al que se acercan las imágenes cuando x se acerca a un punto, sin importar lo que valga la función justo en ese punto. Si responde f(a) o mezcla los dos lados, pídale que lea por separado la columna de la izquierda y la de la derecha y diga a qué número 'tienden'. Recuérdele que el límite solo existe si los dos laterales coinciden.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "izquierda",
+     "resultado": "2",
+     "texto": "x < −1"
+    },
+    {
+     "paso": 2,
+     "operacion": "derecha",
+     "resultado": "3",
+     "texto": "x > −1"
+    },
+    {
+     "paso": 3,
+     "operacion": "responder",
+     "resultado": "2",
+     "texto": "Lo que pide la pregunta."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Estos son algunos valores de f cerca de x = −1:\n x      │ f(x)\n────────┼──────────\n −1,1   │ 3,9\n −1,01  │ 3,99\n −1,001 │ 3,999\n −0,999 │ 2,998\n −0,99  │ 2,98\n −0,9   │ 2,8\n¿Cuánto vale el lateral derecho, lím f(x) para x → −1⁺?",
+   "respuesta": "3",
+   "distractores": [
+    {
+     "valor": "4",
+     "error": null
+    },
+    {
+     "valor": "No existe",
+     "error": null
+    },
+    {
+     "valor": "3,5",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Por la izquierda las imágenes se acercan a 4; por la derecha, a 3. Los límites laterales son distintos, así que el límite (sin lateral) no existe; cada lateral sí existe.",
+   "explicacion_adulto": "Está aprendiendo qué significa el límite: el valor al que se acercan las imágenes cuando x se acerca a un punto, sin importar lo que valga la función justo en ese punto. Si responde f(a) o mezcla los dos lados, pídale que lea por separado la columna de la izquierda y la de la derecha y diga a qué número 'tienden'. Recuérdele que el límite solo existe si los dos laterales coinciden.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "izquierda",
+     "resultado": "4",
+     "texto": "x < −1"
+    },
+    {
+     "paso": 2,
+     "operacion": "derecha",
+     "resultado": "3",
+     "texto": "x > −1"
+    },
+    {
+     "paso": 3,
+     "operacion": "responder",
+     "resultado": "3",
+     "texto": "Lo que pide la pregunta."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "La gráfica de f es un tramo de parábola que se abre hacia abajo que llega al punto (4, 2), dibujado con un círculo hueco ○; además hay un punto aislado relleno ● en (4, 0). ¿Cuánto vale lím f(x) para x → 4?",
+   "respuesta": "2",
+   "distractores": [
+    {
+     "valor": "0",
+     "error": "E01"
+    },
+    {
+     "valor": "No existe",
+     "error": null
+    },
+    {
+     "valor": "4",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "El límite mira hacia dónde va la gráfica al acercarse a x = 4 por los dos lados: los dos tramos llegan al hueco (4, 2). El punto aislado ● dice que f(4) = 0, pero eso no cambia el límite: vale 2.",
+   "explicacion_adulto": "Está aprendiendo qué significa el límite: el valor al que se acercan las imágenes cuando x se acerca a un punto, sin importar lo que valga la función justo en ese punto. Si responde f(a) o mezcla los dos lados, pídale que lea por separado la columna de la izquierda y la de la derecha y diga a qué número 'tienden'.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "izquierda",
+     "resultado": "2",
+     "texto": "Seguimos la gráfica desde la izquierda."
+    },
+    {
+     "paso": 2,
+     "operacion": "derecha",
+     "resultado": "2",
+     "texto": "Seguimos la gráfica desde la derecha."
+    },
+    {
+     "paso": 3,
+     "operacion": "responder",
+     "resultado": "2",
+     "texto": "Si coinciden, ese es el límite; si no, no existe."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "La gráfica de f tiene dos tramos: a la izquierda de x = 2 es un tramo de parábola que se abre hacia abajo que llega a (2, 2) con un círculo hueco ○; a la derecha empieza en (2, 5) con un punto relleno ●. ¿Cuánto vale lím f(x) para x → 2?",
+   "respuesta": "No existe",
+   "distractores": [
+    {
+     "valor": "2",
+     "error": "E02"
+    },
+    {
+     "valor": "5",
+     "error": "E01"
+    },
+    {
+     "valor": "3,5",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Por la izquierda la gráfica llega a altura 2; por la derecha, a 5. Los límites laterales son distintos, así que el límite en x = 2 no existe (aunque f(2) = 5 sí está definido).",
+   "explicacion_adulto": "Está aprendiendo qué significa el límite: el valor al que se acercan las imágenes cuando x se acerca a un punto, sin importar lo que valga la función justo en ese punto. Si responde f(a) o mezcla los dos lados, pídale que lea por separado la columna de la izquierda y la de la derecha y diga a qué número 'tienden'.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "izquierda",
+     "resultado": "2",
+     "texto": "Seguimos la gráfica desde la izquierda."
+    },
+    {
+     "paso": 2,
+     "operacion": "derecha",
+     "resultado": "5",
+     "texto": "Seguimos la gráfica desde la derecha."
+    },
+    {
+     "paso": 3,
+     "operacion": "responder",
+     "resultado": "No existe",
+     "texto": "Si coinciden, ese es el límite; si no, no existe."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "La gráfica de f es una recta creciente que llega al punto (−2, 5), dibujado con un círculo hueco ○; además hay un punto aislado relleno ● en (−2, 3). ¿Cuánto vale lím f(x) para x → −2?",
+   "respuesta": "5",
+   "distractores": [
+    {
+     "valor": "3",
+     "error": "E01"
+    },
+    {
+     "valor": "No existe",
+     "error": null
+    },
+    {
+     "valor": "−2",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "El límite mira hacia dónde va la gráfica al acercarse a x = −2 por los dos lados: los dos tramos llegan al hueco (−2, 5). El punto aislado ● dice que f(−2) = 3, pero eso no cambia el límite: vale 5.",
+   "explicacion_adulto": "Está aprendiendo qué significa el límite: el valor al que se acercan las imágenes cuando x se acerca a un punto, sin importar lo que valga la función justo en ese punto. Si responde f(a) o mezcla los dos lados, pídale que lea por separado la columna de la izquierda y la de la derecha y diga a qué número 'tienden'.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "izquierda",
+     "resultado": "5",
+     "texto": "Seguimos la gráfica desde la izquierda."
+    },
+    {
+     "paso": 2,
+     "operacion": "derecha",
+     "resultado": "5",
+     "texto": "Seguimos la gráfica desde la derecha."
+    },
+    {
+     "paso": 3,
+     "operacion": "responder",
+     "resultado": "5",
+     "texto": "Si coinciden, ese es el límite; si no, no existe."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "La gráfica de f tiene dos tramos: a la izquierda de x = 1 es una curva decreciente que llega a (1, 3) con un círculo hueco ○; a la derecha empieza en (1, 0) con un punto relleno ●. ¿Cuánto vale lím f(x) para x → 1?",
+   "respuesta": "No existe",
+   "distractores": [
+    {
+     "valor": "3",
+     "error": "E02"
+    },
+    {
+     "valor": "0",
+     "error": "E01"
+    },
+    {
+     "valor": "1,5",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Por la izquierda la gráfica llega a altura 3; por la derecha, a 0. Los límites laterales son distintos, así que el límite en x = 1 no existe (aunque f(1) = 0 sí está definido).",
+   "explicacion_adulto": "Está aprendiendo qué significa el límite: el valor al que se acercan las imágenes cuando x se acerca a un punto, sin importar lo que valga la función justo en ese punto. Si responde f(a) o mezcla los dos lados, pídale que lea por separado la columna de la izquierda y la de la derecha y diga a qué número 'tienden'.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "izquierda",
+     "resultado": "3",
+     "texto": "Seguimos la gráfica desde la izquierda."
+    },
+    {
+     "paso": 2,
+     "operacion": "derecha",
+     "resultado": "0",
+     "texto": "Seguimos la gráfica desde la derecha."
+    },
+    {
+     "paso": 3,
+     "operacion": "responder",
+     "resultado": "No existe",
+     "texto": "Si coinciden, ese es el límite; si no, no existe."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "La gráfica de f es un tramo de parábola que se abre hacia abajo que llega al punto (3, 4), dibujado con un círculo hueco ○; además hay un punto aislado relleno ● en (3, 7). ¿Cuánto vale lím f(x) para x → 3?",
+   "respuesta": "4",
+   "distractores": [
+    {
+     "valor": "7",
+     "error": "E01"
+    },
+    {
+     "valor": "No existe",
+     "error": null
+    },
+    {
+     "valor": "3",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "El límite mira hacia dónde va la gráfica al acercarse a x = 3 por los dos lados: los dos tramos llegan al hueco (3, 4). El punto aislado ● dice que f(3) = 7, pero eso no cambia el límite: vale 4.",
+   "explicacion_adulto": "Está aprendiendo qué significa el límite: el valor al que se acercan las imágenes cuando x se acerca a un punto, sin importar lo que valga la función justo en ese punto. Si responde f(a) o mezcla los dos lados, pídale que lea por separado la columna de la izquierda y la de la derecha y diga a qué número 'tienden'.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "izquierda",
+     "resultado": "4",
+     "texto": "Seguimos la gráfica desde la izquierda."
+    },
+    {
+     "paso": 2,
+     "operacion": "derecha",
+     "resultado": "4",
+     "texto": "Seguimos la gráfica desde la derecha."
+    },
+    {
+     "paso": 3,
+     "operacion": "responder",
+     "resultado": "4",
+     "texto": "Si coinciden, ese es el límite; si no, no existe."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "La gráfica de f tiene dos tramos: a la izquierda de x = 4 es una curva decreciente que llega a (4, −2) con un círculo hueco ○; a la derecha empieza en (4, −5) con un punto relleno ●. ¿Cuánto vale lím f(x) para x → 4?",
+   "respuesta": "No existe",
+   "distractores": [
+    {
+     "valor": "−2",
+     "error": "E02"
+    },
+    {
+     "valor": "−5",
+     "error": "E01"
+    },
+    {
+     "valor": "−3,5",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Por la izquierda la gráfica llega a altura −2; por la derecha, a −5. Los límites laterales son distintos, así que el límite en x = 4 no existe (aunque f(4) = −5 sí está definido).",
+   "explicacion_adulto": "Está aprendiendo qué significa el límite: el valor al que se acercan las imágenes cuando x se acerca a un punto, sin importar lo que valga la función justo en ese punto. Si responde f(a) o mezcla los dos lados, pídale que lea por separado la columna de la izquierda y la de la derecha y diga a qué número 'tienden'.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "izquierda",
+     "resultado": "−2",
+     "texto": "Seguimos la gráfica desde la izquierda."
+    },
+    {
+     "paso": 2,
+     "operacion": "derecha",
+     "resultado": "−5",
+     "texto": "Seguimos la gráfica desde la derecha."
+    },
+    {
+     "paso": 3,
+     "operacion": "responder",
+     "resultado": "No existe",
+     "texto": "Si coinciden, ese es el límite; si no, no existe."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "La gráfica de f es una parábola que se abre hacia arriba que llega al punto (−1, 3), dibujado con un círculo hueco ○; además hay un punto aislado relleno ● en (−1, 6). ¿Cuánto vale lím f(x) para x → −1?",
+   "respuesta": "3",
+   "distractores": [
+    {
+     "valor": "6",
+     "error": "E01"
+    },
+    {
+     "valor": "No existe",
+     "error": null
+    },
+    {
+     "valor": "−1",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "El límite mira hacia dónde va la gráfica al acercarse a x = −1 por los dos lados: los dos tramos llegan al hueco (−1, 3). El punto aislado ● dice que f(−1) = 6, pero eso no cambia el límite: vale 3.",
+   "explicacion_adulto": "Está aprendiendo qué significa el límite: el valor al que se acercan las imágenes cuando x se acerca a un punto, sin importar lo que valga la función justo en ese punto. Si responde f(a) o mezcla los dos lados, pídale que lea por separado la columna de la izquierda y la de la derecha y diga a qué número 'tienden'.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "izquierda",
+     "resultado": "3",
+     "texto": "Seguimos la gráfica desde la izquierda."
+    },
+    {
+     "paso": 2,
+     "operacion": "derecha",
+     "resultado": "3",
+     "texto": "Seguimos la gráfica desde la derecha."
+    },
+    {
+     "paso": 3,
+     "operacion": "responder",
+     "resultado": "3",
+     "texto": "Si coinciden, ese es el límite; si no, no existe."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "La gráfica de f tiene dos tramos: a la izquierda de x = 1 es un tramo de parábola que se abre hacia abajo que llega a (1, 4) con un círculo hueco ○; a la derecha empieza en (1, 7) con un punto relleno ●. ¿Cuánto vale lím f(x) para x → 1?",
+   "respuesta": "No existe",
+   "distractores": [
+    {
+     "valor": "4",
+     "error": "E02"
+    },
+    {
+     "valor": "7",
+     "error": "E01"
+    },
+    {
+     "valor": "5,5",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Por la izquierda la gráfica llega a altura 4; por la derecha, a 7. Los límites laterales son distintos, así que el límite en x = 1 no existe (aunque f(1) = 7 sí está definido).",
+   "explicacion_adulto": "Está aprendiendo qué significa el límite: el valor al que se acercan las imágenes cuando x se acerca a un punto, sin importar lo que valga la función justo en ese punto. Si responde f(a) o mezcla los dos lados, pídale que lea por separado la columna de la izquierda y la de la derecha y diga a qué número 'tienden'.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "izquierda",
+     "resultado": "4",
+     "texto": "Seguimos la gráfica desde la izquierda."
+    },
+    {
+     "paso": 2,
+     "operacion": "derecha",
+     "resultado": "7",
+     "texto": "Seguimos la gráfica desde la derecha."
+    },
+    {
+     "paso": 3,
+     "operacion": "responder",
+     "resultado": "No existe",
+     "texto": "Si coinciden, ese es el límite; si no, no existe."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Estos son algunos valores de f al acercarse x a 1:\n x     │ f(x)\n───────┼──────────\n 0,9   │ 20\n 0,99  │ 200\n 0,999 │ 2000\n 1,001 │ 2000\n 1,01  │ 200\n 1,1   │ 20\n¿A qué tiende f(x) cuando x → 1?",
+   "respuesta": "+∞",
+   "distractores": [
+    {
+     "valor": "No existe",
+     "error": null
+    },
+    {
+     "valor": "−∞",
+     "error": null
+    },
+    {
+     "valor": "0",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Al acercarse a 1 por los dos lados las imágenes crecen sin parar en valor absoluto y con el mismo signo: el límite es +∞.",
+   "explicacion_adulto": "Está aprendiendo qué significa el límite: el valor al que se acercan las imágenes cuando x se acerca a un punto, sin importar lo que valga la función justo en ese punto. Si responde f(a) o mezcla los dos lados, pídale que lea por separado la columna de la izquierda y la de la derecha y diga a qué número 'tienden'.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "izquierda",
+     "resultado": "+∞",
+     "texto": "Las imágenes crecen sin límite."
+    },
+    {
+     "paso": 2,
+     "operacion": "derecha",
+     "resultado": "+∞",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "responder",
+     "resultado": "+∞",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Estos son algunos valores de f al acercarse x a 3:\n x     │ f(x)\n───────┼──────────\n 2,9   │ −10\n 2,99  │ −100\n 2,999 │ −1000\n 3,001 │ −1000\n 3,01  │ −100\n 3,1   │ −10\n¿A qué tiende f(x) cuando x → 3?",
+   "respuesta": "−∞",
+   "distractores": [
+    {
+     "valor": "No existe",
+     "error": null
+    },
+    {
+     "valor": "+∞",
+     "error": null
+    },
+    {
+     "valor": "0",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Al acercarse a 3 por los dos lados las imágenes crecen sin parar en valor absoluto y con el mismo signo: el límite es −∞.",
+   "explicacion_adulto": "Está aprendiendo qué significa el límite: el valor al que se acercan las imágenes cuando x se acerca a un punto, sin importar lo que valga la función justo en ese punto. Si responde f(a) o mezcla los dos lados, pídale que lea por separado la columna de la izquierda y la de la derecha y diga a qué número 'tienden'.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "izquierda",
+     "resultado": "−∞",
+     "texto": "Las imágenes crecen sin límite."
+    },
+    {
+     "paso": 2,
+     "operacion": "derecha",
+     "resultado": "−∞",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "responder",
+     "resultado": "−∞",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Estos son algunos valores de f al acercarse x a 3:\n x     │ f(x)\n───────┼──────────\n 2,9   │ −10\n 2,99  │ −100\n 2,999 │ −1000\n 3,001 │ 1000\n 3,01  │ 100\n 3,1   │ 10\n¿A qué tiende f(x) cuando x → 3?",
+   "respuesta": "No existe (por un lado +∞ y por el otro −∞)",
+   "distractores": [
+    {
+     "valor": "+∞",
+     "error": "E02"
+    },
+    {
+     "valor": "−∞",
+     "error": "E02"
+    },
+    {
+     "valor": "0",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Por la izquierda las imágenes van a −∞ y por la derecha a +∞: los laterales son distintos y el límite no existe (hay una asíntota vertical).",
+   "explicacion_adulto": "Está aprendiendo qué significa el límite: el valor al que se acercan las imágenes cuando x se acerca a un punto, sin importar lo que valga la función justo en ese punto. Si responde f(a) o mezcla los dos lados, pídale que lea por separado la columna de la izquierda y la de la derecha y diga a qué número 'tienden'.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "izquierda",
+     "resultado": "−∞",
+     "texto": "Las imágenes crecen sin límite."
+    },
+    {
+     "paso": 2,
+     "operacion": "derecha",
+     "resultado": "+∞",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "responder",
+     "resultado": "No existe (por un lado +∞ y por el otro −∞)",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Estos son algunos valores de f al acercarse x a 1:\n x     │ f(x)\n───────┼──────────\n 0,9   │ 10\n 0,99  │ 100\n 0,999 │ 1000\n 1,001 │ −1000\n 1,01  │ −100\n 1,1   │ −10\n¿A qué tiende f(x) cuando x → 1?",
+   "respuesta": "No existe (por un lado +∞ y por el otro −∞)",
+   "distractores": [
+    {
+     "valor": "+∞",
+     "error": "E02"
+    },
+    {
+     "valor": "−∞",
+     "error": "E02"
+    },
+    {
+     "valor": "0",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Por la izquierda las imágenes van a +∞ y por la derecha a −∞: los laterales son distintos y el límite no existe (hay una asíntota vertical).",
+   "explicacion_adulto": "Está aprendiendo qué significa el límite: el valor al que se acercan las imágenes cuando x se acerca a un punto, sin importar lo que valga la función justo en ese punto. Si responde f(a) o mezcla los dos lados, pídale que lea por separado la columna de la izquierda y la de la derecha y diga a qué número 'tienden'.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "izquierda",
+     "resultado": "+∞",
+     "texto": "Las imágenes crecen sin límite."
+    },
+    {
+     "paso": 2,
+     "operacion": "derecha",
+     "resultado": "−∞",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "responder",
+     "resultado": "No existe (por un lado +∞ y por el otro −∞)",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Estos son algunos valores de f al acercarse x a 3:\n x     │ f(x)\n───────┼──────────\n 2,9   │ 20\n 2,99  │ 200\n 2,999 │ 2000\n 3,001 │ 2000\n 3,01  │ 200\n 3,1   │ 20\n¿A qué tiende f(x) cuando x → 3?",
+   "respuesta": "+∞",
+   "distractores": [
+    {
+     "valor": "No existe",
+     "error": null
+    },
+    {
+     "valor": "−∞",
+     "error": null
+    },
+    {
+     "valor": "0",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Al acercarse a 3 por los dos lados las imágenes crecen sin parar en valor absoluto y con el mismo signo: el límite es +∞.",
+   "explicacion_adulto": "Está aprendiendo qué significa el límite: el valor al que se acercan las imágenes cuando x se acerca a un punto, sin importar lo que valga la función justo en ese punto. Si responde f(a) o mezcla los dos lados, pídale que lea por separado la columna de la izquierda y la de la derecha y diga a qué número 'tienden'.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "izquierda",
+     "resultado": "+∞",
+     "texto": "Las imágenes crecen sin límite."
+    },
+    {
+     "paso": 2,
+     "operacion": "derecha",
+     "resultado": "+∞",
+     "texto": ""
+    },
+    {
+     "paso": 3,
+     "operacion": "responder",
+     "resultado": "+∞",
+     "texto": ""
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Valores de f para x cada vez más grandes:\n x     │ f(x)\n───────┼──────────\n 10    │ 0,3\n 100   │ 0,03\n 1000  │ 0,003\n 10000 │ 0,0003\n¿A qué valor se acerca f(x) cuando x → +∞?",
+   "respuesta": "0",
+   "distractores": [
+    {
+     "valor": "+∞",
+     "error": null
+    },
+    {
+     "valor": "0,0003",
+     "error": null
+    },
+    {
+     "valor": "No existe",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Cuando x se hace cada vez más grande, las imágenes se acercan cada vez más a 0 (la diferencia es 3/|x|, cada vez menor). El límite es 0: la recta y = 0 es una asíntota horizontal.",
+   "explicacion_adulto": "Está aprendiendo qué significa el límite: el valor al que se acercan las imágenes cuando x se acerca a un punto, sin importar lo que valga la función justo en ese punto. Si responde f(a) o mezcla los dos lados, pídale que lea por separado la columna de la izquierda y la de la derecha y diga a qué número 'tienden'.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "observar",
+     "resultado": "0,3, 0,03, 0,003, 0,0003",
+     "texto": "Miramos cómo cambian las imágenes."
+    },
+    {
+     "paso": 2,
+     "operacion": "límite",
+     "resultado": "0",
+     "texto": "Valor al que se acercan."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Valores de f para x cada vez más negativos:\n x      │ f(x)\n────────┼──────────\n −10    │ 0,5\n −100   │ 0,05\n −1000  │ 0,005\n −10000 │ 0,0005\n¿A qué valor se acerca f(x) cuando x → −∞?",
+   "respuesta": "0",
+   "distractores": [
+    {
+     "valor": "−∞",
+     "error": null
+    },
+    {
+     "valor": "0,0005",
+     "error": null
+    },
+    {
+     "valor": "No existe",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Cuando x se hace cada vez más negativo, las imágenes se acercan cada vez más a 0 (la diferencia es 5/|x|, cada vez menor). El límite es 0: la recta y = 0 es una asíntota horizontal.",
+   "explicacion_adulto": "Está aprendiendo qué significa el límite: el valor al que se acercan las imágenes cuando x se acerca a un punto, sin importar lo que valga la función justo en ese punto. Si responde f(a) o mezcla los dos lados, pídale que lea por separado la columna de la izquierda y la de la derecha y diga a qué número 'tienden'.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "observar",
+     "resultado": "0,5, 0,05, 0,005, 0,0005",
+     "texto": "Miramos cómo cambian las imágenes."
+    },
+    {
+     "paso": 2,
+     "operacion": "límite",
+     "resultado": "0",
+     "texto": "Valor al que se acercan."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Valores de f para x cada vez más grandes:\n x     │ f(x)\n───────┼──────────\n 10    │ 4,6\n 100   │ 4,96\n 1000  │ 4,996\n 10000 │ 4,9996\n¿A qué valor se acerca f(x) cuando x → +∞?",
+   "respuesta": "5",
+   "distractores": [
+    {
+     "valor": "+∞",
+     "error": null
+    },
+    {
+     "valor": "4,9996",
+     "error": null
+    },
+    {
+     "valor": "No existe",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Cuando x se hace cada vez más grande, las imágenes se acercan cada vez más a 5 (la diferencia es −4/|x|, cada vez menor). El límite es 5: la recta y = 5 es una asíntota horizontal.",
+   "explicacion_adulto": "Está aprendiendo qué significa el límite: el valor al que se acercan las imágenes cuando x se acerca a un punto, sin importar lo que valga la función justo en ese punto. Si responde f(a) o mezcla los dos lados, pídale que lea por separado la columna de la izquierda y la de la derecha y diga a qué número 'tienden'.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "observar",
+     "resultado": "4,6, 4,96, 4,996, 4,9996",
+     "texto": "Miramos cómo cambian las imágenes."
+    },
+    {
+     "paso": 2,
+     "operacion": "límite",
+     "resultado": "5",
+     "texto": "Valor al que se acercan."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Valores de f para x cada vez más negativos:\n x      │ f(x)\n────────┼──────────\n −10    │ 4,5\n −100   │ 4,05\n −1000  │ 4,005\n −10000 │ 4,0005\n¿A qué valor se acerca f(x) cuando x → −∞?",
+   "respuesta": "4",
+   "distractores": [
+    {
+     "valor": "−∞",
+     "error": null
+    },
+    {
+     "valor": "4,0005",
+     "error": null
+    },
+    {
+     "valor": "No existe",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Cuando x se hace cada vez más negativo, las imágenes se acercan cada vez más a 4 (la diferencia es 5/|x|, cada vez menor). El límite es 4: la recta y = 4 es una asíntota horizontal.",
+   "explicacion_adulto": "Está aprendiendo qué significa el límite: el valor al que se acercan las imágenes cuando x se acerca a un punto, sin importar lo que valga la función justo en ese punto. Si responde f(a) o mezcla los dos lados, pídale que lea por separado la columna de la izquierda y la de la derecha y diga a qué número 'tienden'.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "observar",
+     "resultado": "4,5, 4,05, 4,005, 4,0005",
+     "texto": "Miramos cómo cambian las imágenes."
+    },
+    {
+     "paso": 2,
+     "operacion": "límite",
+     "resultado": "4",
+     "texto": "Valor al que se acercan."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Valores de f para x cada vez más grandes:\n x     │ f(x)\n───────┼──────────\n 10    │ 5,3\n 100   │ 5,03\n 1000  │ 5,003\n 10000 │ 5,0003\n¿A qué valor se acerca f(x) cuando x → +∞?",
+   "respuesta": "5",
+   "distractores": [
+    {
+     "valor": "+∞",
+     "error": null
+    },
+    {
+     "valor": "5,0003",
+     "error": null
+    },
+    {
+     "valor": "No existe",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Cuando x se hace cada vez más grande, las imágenes se acercan cada vez más a 5 (la diferencia es 3/|x|, cada vez menor). El límite es 5: la recta y = 5 es una asíntota horizontal.",
+   "explicacion_adulto": "Está aprendiendo qué significa el límite: el valor al que se acercan las imágenes cuando x se acerca a un punto, sin importar lo que valga la función justo en ese punto. Si responde f(a) o mezcla los dos lados, pídale que lea por separado la columna de la izquierda y la de la derecha y diga a qué número 'tienden'.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "observar",
+     "resultado": "5,3, 5,03, 5,003, 5,0003",
+     "texto": "Miramos cómo cambian las imágenes."
+    },
+    {
+     "paso": 2,
+     "operacion": "límite",
+     "resultado": "5",
+     "texto": "Valor al que se acercan."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Valores de f para x cada vez más negativos:\n x      │ f(x)\n────────┼──────────\n −10    │ −1,4\n −100   │ −1,04\n −1000  │ −1,004\n −10000 │ −1,0004\n¿A qué valor se acerca f(x) cuando x → −∞?",
+   "respuesta": "−1",
+   "distractores": [
+    {
+     "valor": "−∞",
+     "error": null
+    },
+    {
+     "valor": "−1,0004",
+     "error": null
+    },
+    {
+     "valor": "No existe",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Cuando x se hace cada vez más negativo, las imágenes se acercan cada vez más a −1 (la diferencia es −4/|x|, cada vez menor). El límite es −1: la recta y = −1 es una asíntota horizontal.",
+   "explicacion_adulto": "Está aprendiendo qué significa el límite: el valor al que se acercan las imágenes cuando x se acerca a un punto, sin importar lo que valga la función justo en ese punto. Si responde f(a) o mezcla los dos lados, pídale que lea por separado la columna de la izquierda y la de la derecha y diga a qué número 'tienden'.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "observar",
+     "resultado": "−1,4, −1,04, −1,004, −1,0004",
+     "texto": "Miramos cómo cambian las imágenes."
+    },
+    {
+     "paso": 2,
+     "operacion": "límite",
+     "resultado": "−1",
+     "texto": "Valor al que se acercan."
+    }
+   ],
+   "plantilla": "P05"
+  }
+ ]
+}

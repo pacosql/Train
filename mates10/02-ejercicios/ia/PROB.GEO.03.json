@@ -1,0 +1,1488 @@
+{
+ "habilidad": "PROB.GEO.03",
+ "generado_por": "claude (skill mates10-generar-ejercicios v1)",
+ "ejercicios": [
+  {
+   "dificultad": 1,
+   "enunciado": "Laia va a pintar una pared de 4 m de ancho y 2,7 m de alto. Tiene una puerta de 0,9 m × 2 m y una ventana de 1 m × 1,2 m. Cada bote de pintura cubre 4 m². ¿Cuántos botes tiene que comprar?",
+   "respuesta": "2",
+   "distractores": [
+    {
+     "valor": "3",
+     "error": "E01"
+    },
+    {
+     "valor": "1",
+     "error": "E03"
+    },
+    {
+     "valor": "7,8",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.AREA.01",
+    "GEO.AREA.02",
+    "PROB.GEO.02"
+   ],
+   "explicacion_nino": "Entiende: se pinta la pared menos la puerta y la ventana, y los botes se compran enteros. Pared: 4 × 2,7 = 10,8 m². Puerta: 0,9 × 2 = 1,8 m². Ventana: 1 × 1,2 = 1,2 m². A pintar: 10,8 − 1,8 − 1,2 = 7,8 m². Botes: 7,8 : 4 = 1,95… Con 1 botes no llega, así que hay que comprar 2. Comprueba: 2 × 4 = 8 m², más que 7,8.",
+   "explicacion_adulto": "Está aprendiendo a calcular la superficie de figuras compuestas: descomponerlas en rectángulos, triángulos o semicírculos que no se solapen, sumar sus áreas y restar los huecos (puertas, ventanas, la parte que falta). Los errores típicos son olvidar restar los huecos, contar dos veces un trozo al descomponer, o redondear hacia abajo cuando hay que comprar material (si hacen falta 2,55 botes, hay que comprar 3). Pídale que dibuje la figura, la parta con líneas de colores y escriba el área de cada trozo encima.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "4 × 2,7",
+     "resultado": "10,8",
+     "texto": "Área de la pared."
+    },
+    {
+     "paso": 2,
+     "operacion": "0,9 × 2 + 1 × 1,2",
+     "resultado": "3",
+     "texto": "Huecos."
+    },
+    {
+     "paso": 3,
+     "operacion": "10,8 − 3",
+     "resultado": "7,8",
+     "texto": "Superficie a pintar."
+    },
+    {
+     "paso": 4,
+     "operacion": "7,8 : 4",
+     "resultado": "1,95",
+     "texto": "Redondeo hacia arriba: 2 botes."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Aya va a pintar una pared de 6 m de ancho y 2,6 m de alto. Tiene una puerta de 0,8 m × 2 m y una ventana de 1,2 m × 1,2 m. Cada bote de pintura cubre 5 m². ¿Cuántos botes tiene que comprar?",
+   "respuesta": "3",
+   "distractores": [
+    {
+     "valor": "4",
+     "error": "E01"
+    },
+    {
+     "valor": "2",
+     "error": "E03"
+    },
+    {
+     "valor": "12,56",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.AREA.01",
+    "GEO.AREA.02",
+    "PROB.GEO.02"
+   ],
+   "explicacion_nino": "Entiende: se pinta la pared menos la puerta y la ventana, y los botes se compran enteros. Pared: 6 × 2,6 = 15,6 m². Puerta: 0,8 × 2 = 1,6 m². Ventana: 1,2 × 1,2 = 1,44 m². A pintar: 15,6 − 1,6 − 1,44 = 12,56 m². Botes: 12,56 : 5 = 2,51… Con 2 botes no llega, así que hay que comprar 3. Comprueba: 3 × 5 = 15 m², más que 12,56.",
+   "explicacion_adulto": "Está aprendiendo a calcular la superficie de figuras compuestas: descomponerlas en rectángulos, triángulos o semicírculos que no se solapen, sumar sus áreas y restar los huecos (puertas, ventanas, la parte que falta). Los errores típicos son olvidar restar los huecos, contar dos veces un trozo al descomponer, o redondear hacia abajo cuando hay que comprar material (si hacen falta 2,55 botes, hay que comprar 3). Pídale que dibuje la figura, la parta con líneas de colores y escriba el área de cada trozo encima.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "6 × 2,6",
+     "resultado": "15,6",
+     "texto": "Área de la pared."
+    },
+    {
+     "paso": 2,
+     "operacion": "0,8 × 2 + 1,2 × 1,2",
+     "resultado": "3,04",
+     "texto": "Huecos."
+    },
+    {
+     "paso": 3,
+     "operacion": "15,6 − 3,04",
+     "resultado": "12,56",
+     "texto": "Superficie a pintar."
+    },
+    {
+     "paso": 4,
+     "operacion": "12,56 : 5",
+     "resultado": "2,51",
+     "texto": "Redondeo hacia arriba: 3 botes."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Daniel va a pintar una pared de 6 m de ancho y 2,6 m de alto. Tiene una puerta de 0,8 m × 2 m y una ventana de 1,2 m × 1 m. Cada bote de pintura cubre 5 m². ¿Cuántos botes tiene que comprar?",
+   "respuesta": "3",
+   "distractores": [
+    {
+     "valor": "4",
+     "error": "E01"
+    },
+    {
+     "valor": "2",
+     "error": "E03"
+    },
+    {
+     "valor": "12,8",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.AREA.01",
+    "GEO.AREA.02",
+    "PROB.GEO.02"
+   ],
+   "explicacion_nino": "Entiende: se pinta la pared menos la puerta y la ventana, y los botes se compran enteros. Pared: 6 × 2,6 = 15,6 m². Puerta: 0,8 × 2 = 1,6 m². Ventana: 1,2 × 1 = 1,2 m². A pintar: 15,6 − 1,6 − 1,2 = 12,8 m². Botes: 12,8 : 5 = 2,56… Con 2 botes no llega, así que hay que comprar 3. Comprueba: 3 × 5 = 15 m², más que 12,8.",
+   "explicacion_adulto": "Está aprendiendo a calcular la superficie de figuras compuestas: descomponerlas en rectángulos, triángulos o semicírculos que no se solapen, sumar sus áreas y restar los huecos (puertas, ventanas, la parte que falta). Los errores típicos son olvidar restar los huecos, contar dos veces un trozo al descomponer, o redondear hacia abajo cuando hay que comprar material (si hacen falta 2,55 botes, hay que comprar 3). Pídale que dibuje la figura, la parta con líneas de colores y escriba el área de cada trozo encima.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "6 × 2,6",
+     "resultado": "15,6",
+     "texto": "Área de la pared."
+    },
+    {
+     "paso": 2,
+     "operacion": "0,8 × 2 + 1,2 × 1",
+     "resultado": "2,8",
+     "texto": "Huecos."
+    },
+    {
+     "paso": 3,
+     "operacion": "15,6 − 2,8",
+     "resultado": "12,8",
+     "texto": "Superficie a pintar."
+    },
+    {
+     "paso": 4,
+     "operacion": "12,8 : 5",
+     "resultado": "2,56",
+     "texto": "Redondeo hacia arriba: 3 botes."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Rocío va a pintar una pared de 5 m de ancho y 2,6 m de alto. Tiene una puerta de 0,9 m × 2 m y una ventana de 1,5 m × 1,2 m. Cada bote de pintura cubre 4 m². ¿Cuántos botes tiene que comprar?",
+   "respuesta": "3",
+   "distractores": [
+    {
+     "valor": "4",
+     "error": "E01"
+    },
+    {
+     "valor": "2",
+     "error": "E03"
+    },
+    {
+     "valor": "9,4",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.AREA.01",
+    "GEO.AREA.02",
+    "PROB.GEO.02"
+   ],
+   "explicacion_nino": "Entiende: se pinta la pared menos la puerta y la ventana, y los botes se compran enteros. Pared: 5 × 2,6 = 13 m². Puerta: 0,9 × 2 = 1,8 m². Ventana: 1,5 × 1,2 = 1,8 m². A pintar: 13 − 1,8 − 1,8 = 9,4 m². Botes: 9,4 : 4 = 2,35… Con 2 botes no llega, así que hay que comprar 3. Comprueba: 3 × 4 = 12 m², más que 9,4.",
+   "explicacion_adulto": "Está aprendiendo a calcular la superficie de figuras compuestas: descomponerlas en rectángulos, triángulos o semicírculos que no se solapen, sumar sus áreas y restar los huecos (puertas, ventanas, la parte que falta). Los errores típicos son olvidar restar los huecos, contar dos veces un trozo al descomponer, o redondear hacia abajo cuando hay que comprar material (si hacen falta 2,55 botes, hay que comprar 3). Pídale que dibuje la figura, la parta con líneas de colores y escriba el área de cada trozo encima.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "5 × 2,6",
+     "resultado": "13",
+     "texto": "Área de la pared."
+    },
+    {
+     "paso": 2,
+     "operacion": "0,9 × 2 + 1,5 × 1,2",
+     "resultado": "3,6",
+     "texto": "Huecos."
+    },
+    {
+     "paso": 3,
+     "operacion": "13 − 3,6",
+     "resultado": "9,4",
+     "texto": "Superficie a pintar."
+    },
+    {
+     "paso": 4,
+     "operacion": "9,4 : 4",
+     "resultado": "2,35",
+     "texto": "Redondeo hacia arriba: 3 botes."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Jon va a pintar una pared de 5 m de ancho y 2,5 m de alto. Tiene una puerta de 0,9 m × 2 m y una ventana de 1 m × 1 m. Cada bote de pintura cubre 4 m². ¿Cuántos botes tiene que comprar?",
+   "respuesta": "3",
+   "distractores": [
+    {
+     "valor": "4",
+     "error": "E01"
+    },
+    {
+     "valor": "2",
+     "error": "E03"
+    },
+    {
+     "valor": "9,7",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.AREA.01",
+    "GEO.AREA.02",
+    "PROB.GEO.02"
+   ],
+   "explicacion_nino": "Entiende: se pinta la pared menos la puerta y la ventana, y los botes se compran enteros. Pared: 5 × 2,5 = 12,5 m². Puerta: 0,9 × 2 = 1,8 m². Ventana: 1 × 1 = 1 m². A pintar: 12,5 − 1,8 − 1 = 9,7 m². Botes: 9,7 : 4 = 2,42… Con 2 botes no llega, así que hay que comprar 3. Comprueba: 3 × 4 = 12 m², más que 9,7.",
+   "explicacion_adulto": "Está aprendiendo a calcular la superficie de figuras compuestas: descomponerlas en rectángulos, triángulos o semicírculos que no se solapen, sumar sus áreas y restar los huecos (puertas, ventanas, la parte que falta). Los errores típicos son olvidar restar los huecos, contar dos veces un trozo al descomponer, o redondear hacia abajo cuando hay que comprar material (si hacen falta 2,55 botes, hay que comprar 3). Pídale que dibuje la figura, la parta con líneas de colores y escriba el área de cada trozo encima.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "5 × 2,5",
+     "resultado": "12,5",
+     "texto": "Área de la pared."
+    },
+    {
+     "paso": 2,
+     "operacion": "0,9 × 2 + 1 × 1",
+     "resultado": "2,8",
+     "texto": "Huecos."
+    },
+    {
+     "paso": 3,
+     "operacion": "12,5 − 2,8",
+     "resultado": "9,7",
+     "texto": "Superficie a pintar."
+    },
+    {
+     "paso": 4,
+     "operacion": "9,7 : 4",
+     "resultado": "2,42",
+     "texto": "Redondeo hacia arriba: 3 botes."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Iván va a pintar una pared de 5 m de ancho y 2,7 m de alto. Tiene una puerta de 0,8 m × 2 m y una ventana de 1,5 m × 1 m. Cada bote de pintura cubre 3 m². ¿Cuántos botes tiene que comprar?",
+   "respuesta": "4",
+   "distractores": [
+    {
+     "valor": "5",
+     "error": "E01"
+    },
+    {
+     "valor": "3",
+     "error": "E03"
+    },
+    {
+     "valor": "10,4",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.AREA.01",
+    "GEO.AREA.02",
+    "PROB.GEO.02"
+   ],
+   "explicacion_nino": "Entiende: se pinta la pared menos la puerta y la ventana, y los botes se compran enteros. Pared: 5 × 2,7 = 13,5 m². Puerta: 0,8 × 2 = 1,6 m². Ventana: 1,5 × 1 = 1,5 m². A pintar: 13,5 − 1,6 − 1,5 = 10,4 m². Botes: 10,4 : 3 = 3,47… Con 3 botes no llega, así que hay que comprar 4. Comprueba: 4 × 3 = 12 m², más que 10,4.",
+   "explicacion_adulto": "Está aprendiendo a calcular la superficie de figuras compuestas: descomponerlas en rectángulos, triángulos o semicírculos que no se solapen, sumar sus áreas y restar los huecos (puertas, ventanas, la parte que falta). Los errores típicos son olvidar restar los huecos, contar dos veces un trozo al descomponer, o redondear hacia abajo cuando hay que comprar material (si hacen falta 2,55 botes, hay que comprar 3). Pídale que dibuje la figura, la parta con líneas de colores y escriba el área de cada trozo encima.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "5 × 2,7",
+     "resultado": "13,5",
+     "texto": "Área de la pared."
+    },
+    {
+     "paso": 2,
+     "operacion": "0,8 × 2 + 1,5 × 1",
+     "resultado": "3,1",
+     "texto": "Huecos."
+    },
+    {
+     "paso": 3,
+     "operacion": "13,5 − 3,1",
+     "resultado": "10,4",
+     "texto": "Superficie a pintar."
+    },
+    {
+     "paso": 4,
+     "operacion": "10,4 : 3",
+     "resultado": "3,47",
+     "texto": "Redondeo hacia arriba: 4 botes."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Kofi va a pintar una pared de 5 m de ancho y 2,8 m de alto. Tiene una puerta de 0,8 m × 2 m y una ventana de 1,5 m × 1 m. Cada bote de pintura cubre 3 m². ¿Cuántos botes tiene que comprar?",
+   "respuesta": "4",
+   "distractores": [
+    {
+     "valor": "5",
+     "error": "E01"
+    },
+    {
+     "valor": "3",
+     "error": "E03"
+    },
+    {
+     "valor": "10,9",
+     "error": null
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [
+    "GEO.AREA.01",
+    "GEO.AREA.02",
+    "PROB.GEO.02"
+   ],
+   "explicacion_nino": "Entiende: se pinta la pared menos la puerta y la ventana, y los botes se compran enteros. Pared: 5 × 2,8 = 14 m². Puerta: 0,8 × 2 = 1,6 m². Ventana: 1,5 × 1 = 1,5 m². A pintar: 14 − 1,6 − 1,5 = 10,9 m². Botes: 10,9 : 3 = 3,63… Con 3 botes no llega, así que hay que comprar 4. Comprueba: 4 × 3 = 12 m², más que 10,9.",
+   "explicacion_adulto": "Está aprendiendo a calcular la superficie de figuras compuestas: descomponerlas en rectángulos, triángulos o semicírculos que no se solapen, sumar sus áreas y restar los huecos (puertas, ventanas, la parte que falta). Los errores típicos son olvidar restar los huecos, contar dos veces un trozo al descomponer, o redondear hacia abajo cuando hay que comprar material (si hacen falta 2,55 botes, hay que comprar 3). Pídale que dibuje la figura, la parta con líneas de colores y escriba el área de cada trozo encima.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "5 × 2,8",
+     "resultado": "14",
+     "texto": "Área de la pared."
+    },
+    {
+     "paso": 2,
+     "operacion": "0,8 × 2 + 1,5 × 1",
+     "resultado": "3,1",
+     "texto": "Huecos."
+    },
+    {
+     "paso": 3,
+     "operacion": "14 − 3,1",
+     "resultado": "10,9",
+     "texto": "Superficie a pintar."
+    },
+    {
+     "paso": 4,
+     "operacion": "10,9 : 3",
+     "resultado": "3,63",
+     "texto": "Redondeo hacia arriba: 4 botes."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "El salón de Samuel tiene forma de L: es un rectángulo de 7 m × 6 m al que le falta una esquina rectangular de 4 m × 4 m. ¿Cuántos metros cuadrados de suelo tiene el salón?",
+   "respuesta": "26 m²",
+   "distractores": [
+    {
+     "valor": "42 m²",
+     "error": "E01"
+    },
+    {
+     "valor": "32 m²",
+     "error": "E02"
+    },
+    {
+     "valor": "34 m²",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "7 × 6 − 4 × 4",
+   "secundarias": [
+    "GEO.AREA.01",
+    "GEO.AREA.02",
+    "PROB.GEO.02"
+   ],
+   "explicacion_nino": "Entiende: la L es el rectángulo grande menos la esquina que falta. Rectángulo grande: 7 × 6 = 42 m². Esquina: 4 × 4 = 16 m². L: 42 − 16 = 26 m². Otra forma sin solapar: un trozo de 7 × 2 = 14 y otro de 3 × 4 = 12; suman 26. Cuidado: si coges 7 × 2 y 3 × 6, cuentas un trozo dos veces.",
+   "explicacion_adulto": "Está aprendiendo a calcular la superficie de figuras compuestas: descomponerlas en rectángulos, triángulos o semicírculos que no se solapen, sumar sus áreas y restar los huecos (puertas, ventanas, la parte que falta). Los errores típicos son olvidar restar los huecos, contar dos veces un trozo al descomponer, o redondear hacia abajo cuando hay que comprar material (si hacen falta 2,55 botes, hay que comprar 3). Pídale que dibuje la figura, la parta con líneas de colores y escriba el área de cada trozo encima.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "7 × 6",
+     "resultado": "42",
+     "texto": "Rectángulo grande."
+    },
+    {
+     "paso": 2,
+     "operacion": "4 × 4",
+     "resultado": "16",
+     "texto": "Esquina que falta."
+    },
+    {
+     "paso": 3,
+     "operacion": "42 − 16",
+     "resultado": "26",
+     "texto": "Área de la L."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "El salón de Adrián tiene forma de L: es un rectángulo de 8 m × 7 m al que le falta una esquina rectangular de 5 m × 2 m. ¿Cuántos metros cuadrados de suelo tiene el salón?",
+   "respuesta": "46 m²",
+   "distractores": [
+    {
+     "valor": "56 m²",
+     "error": "E01"
+    },
+    {
+     "valor": "61 m²",
+     "error": "E02"
+    },
+    {
+     "valor": "49 m²",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "8 × 7 − 5 × 2",
+   "secundarias": [
+    "GEO.AREA.01",
+    "GEO.AREA.02",
+    "PROB.GEO.02"
+   ],
+   "explicacion_nino": "Entiende: la L es el rectángulo grande menos la esquina que falta. Rectángulo grande: 8 × 7 = 56 m². Esquina: 5 × 2 = 10 m². L: 56 − 10 = 46 m². Otra forma sin solapar: un trozo de 8 × 5 = 40 y otro de 3 × 2 = 6; suman 46. Cuidado: si coges 8 × 5 y 3 × 7, cuentas un trozo dos veces.",
+   "explicacion_adulto": "Está aprendiendo a calcular la superficie de figuras compuestas: descomponerlas en rectángulos, triángulos o semicírculos que no se solapen, sumar sus áreas y restar los huecos (puertas, ventanas, la parte que falta). Los errores típicos son olvidar restar los huecos, contar dos veces un trozo al descomponer, o redondear hacia abajo cuando hay que comprar material (si hacen falta 2,55 botes, hay que comprar 3). Pídale que dibuje la figura, la parta con líneas de colores y escriba el área de cada trozo encima.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "8 × 7",
+     "resultado": "56",
+     "texto": "Rectángulo grande."
+    },
+    {
+     "paso": 2,
+     "operacion": "5 × 2",
+     "resultado": "10",
+     "texto": "Esquina que falta."
+    },
+    {
+     "paso": 3,
+     "operacion": "56 − 10",
+     "resultado": "46",
+     "texto": "Área de la L."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "El salón de Salma tiene forma de L: es un rectángulo de 8 m × 7 m al que le falta una esquina rectangular de 6 m × 3 m. ¿Cuántos metros cuadrados de suelo tiene el salón?",
+   "respuesta": "38 m²",
+   "distractores": [
+    {
+     "valor": "56 m²",
+     "error": "E01"
+    },
+    {
+     "valor": "46 m²",
+     "error": "E02"
+    },
+    {
+     "valor": "47 m²",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "8 × 7 − 6 × 3",
+   "secundarias": [
+    "GEO.AREA.01",
+    "GEO.AREA.02",
+    "PROB.GEO.02"
+   ],
+   "explicacion_nino": "Entiende: la L es el rectángulo grande menos la esquina que falta. Rectángulo grande: 8 × 7 = 56 m². Esquina: 6 × 3 = 18 m². L: 56 − 18 = 38 m². Otra forma sin solapar: un trozo de 8 × 4 = 32 y otro de 2 × 3 = 6; suman 38. Cuidado: si coges 8 × 4 y 2 × 7, cuentas un trozo dos veces.",
+   "explicacion_adulto": "Está aprendiendo a calcular la superficie de figuras compuestas: descomponerlas en rectángulos, triángulos o semicírculos que no se solapen, sumar sus áreas y restar los huecos (puertas, ventanas, la parte que falta). Los errores típicos son olvidar restar los huecos, contar dos veces un trozo al descomponer, o redondear hacia abajo cuando hay que comprar material (si hacen falta 2,55 botes, hay que comprar 3). Pídale que dibuje la figura, la parta con líneas de colores y escriba el área de cada trozo encima.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "8 × 7",
+     "resultado": "56",
+     "texto": "Rectángulo grande."
+    },
+    {
+     "paso": 2,
+     "operacion": "6 × 3",
+     "resultado": "18",
+     "texto": "Esquina que falta."
+    },
+    {
+     "paso": 3,
+     "operacion": "56 − 18",
+     "resultado": "38",
+     "texto": "Área de la L."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "El salón de Alba tiene forma de L: es un rectángulo de 14 m × 7 m al que le falta una esquina rectangular de 12 m × 5 m. ¿Cuántos metros cuadrados de suelo tiene el salón?",
+   "respuesta": "38 m²",
+   "distractores": [
+    {
+     "valor": "98 m²",
+     "error": "E01"
+    },
+    {
+     "valor": "42 m²",
+     "error": "E02"
+    },
+    {
+     "valor": "81 m²",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "14 × 7 − 12 × 5",
+   "secundarias": [
+    "GEO.AREA.01",
+    "GEO.AREA.02",
+    "PROB.GEO.02"
+   ],
+   "explicacion_nino": "Entiende: la L es el rectángulo grande menos la esquina que falta. Rectángulo grande: 14 × 7 = 98 m². Esquina: 12 × 5 = 60 m². L: 98 − 60 = 38 m². Otra forma sin solapar: un trozo de 14 × 2 = 28 y otro de 2 × 5 = 10; suman 38. Cuidado: si coges 14 × 2 y 2 × 7, cuentas un trozo dos veces.",
+   "explicacion_adulto": "Está aprendiendo a calcular la superficie de figuras compuestas: descomponerlas en rectángulos, triángulos o semicírculos que no se solapen, sumar sus áreas y restar los huecos (puertas, ventanas, la parte que falta). Los errores típicos son olvidar restar los huecos, contar dos veces un trozo al descomponer, o redondear hacia abajo cuando hay que comprar material (si hacen falta 2,55 botes, hay que comprar 3). Pídale que dibuje la figura, la parta con líneas de colores y escriba el área de cada trozo encima.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "14 × 7",
+     "resultado": "98",
+     "texto": "Rectángulo grande."
+    },
+    {
+     "paso": 2,
+     "operacion": "12 × 5",
+     "resultado": "60",
+     "texto": "Esquina que falta."
+    },
+    {
+     "paso": 3,
+     "operacion": "98 − 60",
+     "resultado": "38",
+     "texto": "Área de la L."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "El salón de Omar tiene forma de L: es un rectángulo de 14 m × 8 m al que le falta una esquina rectangular de 9 m × 4 m. ¿Cuántos metros cuadrados de suelo tiene el salón?",
+   "respuesta": "76 m²",
+   "distractores": [
+    {
+     "valor": "112 m²",
+     "error": "E01"
+    },
+    {
+     "valor": "96 m²",
+     "error": "E02"
+    },
+    {
+     "valor": "99 m²",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "14 × 8 − 9 × 4",
+   "secundarias": [
+    "GEO.AREA.01",
+    "GEO.AREA.02",
+    "PROB.GEO.02"
+   ],
+   "explicacion_nino": "Entiende: la L es el rectángulo grande menos la esquina que falta. Rectángulo grande: 14 × 8 = 112 m². Esquina: 9 × 4 = 36 m². L: 112 − 36 = 76 m². Otra forma sin solapar: un trozo de 14 × 4 = 56 y otro de 5 × 4 = 20; suman 76. Cuidado: si coges 14 × 4 y 5 × 8, cuentas un trozo dos veces.",
+   "explicacion_adulto": "Está aprendiendo a calcular la superficie de figuras compuestas: descomponerlas en rectángulos, triángulos o semicírculos que no se solapen, sumar sus áreas y restar los huecos (puertas, ventanas, la parte que falta). Los errores típicos son olvidar restar los huecos, contar dos veces un trozo al descomponer, o redondear hacia abajo cuando hay que comprar material (si hacen falta 2,55 botes, hay que comprar 3). Pídale que dibuje la figura, la parta con líneas de colores y escriba el área de cada trozo encima.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "14 × 8",
+     "resultado": "112",
+     "texto": "Rectángulo grande."
+    },
+    {
+     "paso": 2,
+     "operacion": "9 × 4",
+     "resultado": "36",
+     "texto": "Esquina que falta."
+    },
+    {
+     "paso": 3,
+     "operacion": "112 − 36",
+     "resultado": "76",
+     "texto": "Área de la L."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "El salón de Gael tiene forma de L: es un rectángulo de 11 m × 7 m al que le falta una esquina rectangular de 7 m × 3 m. ¿Cuántos metros cuadrados de suelo tiene el salón?",
+   "respuesta": "56 m²",
+   "distractores": [
+    {
+     "valor": "77 m²",
+     "error": "E01"
+    },
+    {
+     "valor": "72 m²",
+     "error": "E02"
+    },
+    {
+     "valor": "67 m²",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "11 × 7 − 7 × 3",
+   "secundarias": [
+    "GEO.AREA.01",
+    "GEO.AREA.02",
+    "PROB.GEO.02"
+   ],
+   "explicacion_nino": "Entiende: la L es el rectángulo grande menos la esquina que falta. Rectángulo grande: 11 × 7 = 77 m². Esquina: 7 × 3 = 21 m². L: 77 − 21 = 56 m². Otra forma sin solapar: un trozo de 11 × 4 = 44 y otro de 4 × 3 = 12; suman 56. Cuidado: si coges 11 × 4 y 4 × 7, cuentas un trozo dos veces.",
+   "explicacion_adulto": "Está aprendiendo a calcular la superficie de figuras compuestas: descomponerlas en rectángulos, triángulos o semicírculos que no se solapen, sumar sus áreas y restar los huecos (puertas, ventanas, la parte que falta). Los errores típicos son olvidar restar los huecos, contar dos veces un trozo al descomponer, o redondear hacia abajo cuando hay que comprar material (si hacen falta 2,55 botes, hay que comprar 3). Pídale que dibuje la figura, la parta con líneas de colores y escriba el área de cada trozo encima.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "11 × 7",
+     "resultado": "77",
+     "texto": "Rectángulo grande."
+    },
+    {
+     "paso": 2,
+     "operacion": "7 × 3",
+     "resultado": "21",
+     "texto": "Esquina que falta."
+    },
+    {
+     "paso": 3,
+     "operacion": "77 − 21",
+     "resultado": "56",
+     "texto": "Área de la L."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "La fachada de la caseta del perro de Rocío es un rectángulo de 8 dm de ancho y 4 dm de alto con un tejado triangular encima de 8 dm de base y 2 dm de altura. ¿Cuánta superficie tiene la fachada?",
+   "respuesta": "40 dm²",
+   "distractores": [
+    {
+     "valor": "48 dm²",
+     "error": "E02"
+    },
+    {
+     "valor": "32 dm²",
+     "error": null
+    },
+    {
+     "valor": "24 dm²",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "8 × 4 + 8 × 2 : 2",
+   "secundarias": [
+    "GEO.AREA.01",
+    "GEO.AREA.02",
+    "PROB.GEO.02"
+   ],
+   "explicacion_nino": "Entiende: la fachada es un rectángulo más un triángulo. Rectángulo: 8 × 4 = 32 dm². Triángulo: 8 × 2 : 2 = 8 dm² (la mitad del rectángulo que lo rodea). Total: 32 + 8 = 40 dm². Comprueba: el tejado es más pequeño que la parte de abajo, como en el dibujo.",
+   "explicacion_adulto": "Está aprendiendo a calcular la superficie de figuras compuestas: descomponerlas en rectángulos, triángulos o semicírculos que no se solapen, sumar sus áreas y restar los huecos (puertas, ventanas, la parte que falta). Los errores típicos son olvidar restar los huecos, contar dos veces un trozo al descomponer, o redondear hacia abajo cuando hay que comprar material (si hacen falta 2,55 botes, hay que comprar 3). Pídale que dibuje la figura, la parta con líneas de colores y escriba el área de cada trozo encima.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "8 × 4",
+     "resultado": "32",
+     "texto": "Rectángulo."
+    },
+    {
+     "paso": 2,
+     "operacion": "8 × 2 : 2",
+     "resultado": "8",
+     "texto": "Triángulo."
+    },
+    {
+     "paso": 3,
+     "operacion": "32 + 8",
+     "resultado": "40",
+     "texto": "Fachada."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "La fachada de la caseta del perro de Nerea es un rectángulo de 4 dm de ancho y 3 dm de alto con un tejado triangular encima de 4 dm de base y 4 dm de altura. ¿Cuánta superficie tiene la fachada?",
+   "respuesta": "20 dm²",
+   "distractores": [
+    {
+     "valor": "28 dm²",
+     "error": "E02"
+    },
+    {
+     "valor": "12 dm²",
+     "error": null
+    },
+    {
+     "valor": "14 dm²",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "4 × 3 + 4 × 4 : 2",
+   "secundarias": [
+    "GEO.AREA.01",
+    "GEO.AREA.02",
+    "PROB.GEO.02"
+   ],
+   "explicacion_nino": "Entiende: la fachada es un rectángulo más un triángulo. Rectángulo: 4 × 3 = 12 dm². Triángulo: 4 × 4 : 2 = 8 dm² (la mitad del rectángulo que lo rodea). Total: 12 + 8 = 20 dm². Comprueba: el tejado es más pequeño que la parte de abajo, como en el dibujo.",
+   "explicacion_adulto": "Está aprendiendo a calcular la superficie de figuras compuestas: descomponerlas en rectángulos, triángulos o semicírculos que no se solapen, sumar sus áreas y restar los huecos (puertas, ventanas, la parte que falta). Los errores típicos son olvidar restar los huecos, contar dos veces un trozo al descomponer, o redondear hacia abajo cuando hay que comprar material (si hacen falta 2,55 botes, hay que comprar 3). Pídale que dibuje la figura, la parta con líneas de colores y escriba el área de cada trozo encima.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "4 × 3",
+     "resultado": "12",
+     "texto": "Rectángulo."
+    },
+    {
+     "paso": 2,
+     "operacion": "4 × 4 : 2",
+     "resultado": "8",
+     "texto": "Triángulo."
+    },
+    {
+     "paso": 3,
+     "operacion": "12 + 8",
+     "resultado": "20",
+     "texto": "Fachada."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "La fachada de la caseta del perro de Ainhoa es un rectángulo de 10 dm de ancho y 6 dm de alto con un tejado triangular encima de 10 dm de base y 3 dm de altura. ¿Cuánta superficie tiene la fachada?",
+   "respuesta": "75 dm²",
+   "distractores": [
+    {
+     "valor": "90 dm²",
+     "error": "E02"
+    },
+    {
+     "valor": "60 dm²",
+     "error": null
+    },
+    {
+     "valor": "45 dm²",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "10 × 6 + 10 × 3 : 2",
+   "secundarias": [
+    "GEO.AREA.01",
+    "GEO.AREA.02",
+    "PROB.GEO.02"
+   ],
+   "explicacion_nino": "Entiende: la fachada es un rectángulo más un triángulo. Rectángulo: 10 × 6 = 60 dm². Triángulo: 10 × 3 : 2 = 15 dm² (la mitad del rectángulo que lo rodea). Total: 60 + 15 = 75 dm². Comprueba: el tejado es más pequeño que la parte de abajo, como en el dibujo.",
+   "explicacion_adulto": "Está aprendiendo a calcular la superficie de figuras compuestas: descomponerlas en rectángulos, triángulos o semicírculos que no se solapen, sumar sus áreas y restar los huecos (puertas, ventanas, la parte que falta). Los errores típicos son olvidar restar los huecos, contar dos veces un trozo al descomponer, o redondear hacia abajo cuando hay que comprar material (si hacen falta 2,55 botes, hay que comprar 3). Pídale que dibuje la figura, la parta con líneas de colores y escriba el área de cada trozo encima.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "10 × 6",
+     "resultado": "60",
+     "texto": "Rectángulo."
+    },
+    {
+     "paso": 2,
+     "operacion": "10 × 3 : 2",
+     "resultado": "15",
+     "texto": "Triángulo."
+    },
+    {
+     "paso": 3,
+     "operacion": "60 + 15",
+     "resultado": "75",
+     "texto": "Fachada."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "La fachada de la caseta del perro de Unai es un rectángulo de 4 dm de ancho y 5 dm de alto con un tejado triangular encima de 4 dm de base y 2 dm de altura. ¿Cuánta superficie tiene la fachada?",
+   "respuesta": "24 dm²",
+   "distractores": [
+    {
+     "valor": "28 dm²",
+     "error": "E02"
+    },
+    {
+     "valor": "20 dm²",
+     "error": null
+    },
+    {
+     "valor": "14 dm²",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "4 × 5 + 4 × 2 : 2",
+   "secundarias": [
+    "GEO.AREA.01",
+    "GEO.AREA.02",
+    "PROB.GEO.02"
+   ],
+   "explicacion_nino": "Entiende: la fachada es un rectángulo más un triángulo. Rectángulo: 4 × 5 = 20 dm². Triángulo: 4 × 2 : 2 = 4 dm² (la mitad del rectángulo que lo rodea). Total: 20 + 4 = 24 dm². Comprueba: el tejado es más pequeño que la parte de abajo, como en el dibujo.",
+   "explicacion_adulto": "Está aprendiendo a calcular la superficie de figuras compuestas: descomponerlas en rectángulos, triángulos o semicírculos que no se solapen, sumar sus áreas y restar los huecos (puertas, ventanas, la parte que falta). Los errores típicos son olvidar restar los huecos, contar dos veces un trozo al descomponer, o redondear hacia abajo cuando hay que comprar material (si hacen falta 2,55 botes, hay que comprar 3). Pídale que dibuje la figura, la parta con líneas de colores y escriba el área de cada trozo encima.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "4 × 5",
+     "resultado": "20",
+     "texto": "Rectángulo."
+    },
+    {
+     "paso": 2,
+     "operacion": "4 × 2 : 2",
+     "resultado": "4",
+     "texto": "Triángulo."
+    },
+    {
+     "paso": 3,
+     "operacion": "20 + 4",
+     "resultado": "24",
+     "texto": "Fachada."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "La fachada de la caseta del perro de Hugo es un rectángulo de 8 dm de ancho y 3 dm de alto con un tejado triangular encima de 8 dm de base y 2 dm de altura. ¿Cuánta superficie tiene la fachada?",
+   "respuesta": "32 dm²",
+   "distractores": [
+    {
+     "valor": "40 dm²",
+     "error": "E02"
+    },
+    {
+     "valor": "24 dm²",
+     "error": null
+    },
+    {
+     "valor": "20 dm²",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "8 × 3 + 8 × 2 : 2",
+   "secundarias": [
+    "GEO.AREA.01",
+    "GEO.AREA.02",
+    "PROB.GEO.02"
+   ],
+   "explicacion_nino": "Entiende: la fachada es un rectángulo más un triángulo. Rectángulo: 8 × 3 = 24 dm². Triángulo: 8 × 2 : 2 = 8 dm² (la mitad del rectángulo que lo rodea). Total: 24 + 8 = 32 dm². Comprueba: el tejado es más pequeño que la parte de abajo, como en el dibujo.",
+   "explicacion_adulto": "Está aprendiendo a calcular la superficie de figuras compuestas: descomponerlas en rectángulos, triángulos o semicírculos que no se solapen, sumar sus áreas y restar los huecos (puertas, ventanas, la parte que falta). Los errores típicos son olvidar restar los huecos, contar dos veces un trozo al descomponer, o redondear hacia abajo cuando hay que comprar material (si hacen falta 2,55 botes, hay que comprar 3). Pídale que dibuje la figura, la parta con líneas de colores y escriba el área de cada trozo encima.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "8 × 3",
+     "resultado": "24",
+     "texto": "Rectángulo."
+    },
+    {
+     "paso": 2,
+     "operacion": "8 × 2 : 2",
+     "resultado": "8",
+     "texto": "Triángulo."
+    },
+    {
+     "paso": 3,
+     "operacion": "24 + 8",
+     "resultado": "32",
+     "texto": "Fachada."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "La fachada de la caseta del perro de Andrés es un rectángulo de 7 dm de ancho y 7 dm de alto con un tejado triangular encima de 7 dm de base y 2 dm de altura. ¿Cuánta superficie tiene la fachada?",
+   "respuesta": "56 dm²",
+   "distractores": [
+    {
+     "valor": "63 dm²",
+     "error": "E02"
+    },
+    {
+     "valor": "49 dm²",
+     "error": null
+    },
+    {
+     "valor": "31,5 dm²",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "7 × 7 + 7 × 2 : 2",
+   "secundarias": [
+    "GEO.AREA.01",
+    "GEO.AREA.02",
+    "PROB.GEO.02"
+   ],
+   "explicacion_nino": "Entiende: la fachada es un rectángulo más un triángulo. Rectángulo: 7 × 7 = 49 dm². Triángulo: 7 × 2 : 2 = 7 dm² (la mitad del rectángulo que lo rodea). Total: 49 + 7 = 56 dm². Comprueba: el tejado es más pequeño que la parte de abajo, como en el dibujo.",
+   "explicacion_adulto": "Está aprendiendo a calcular la superficie de figuras compuestas: descomponerlas en rectángulos, triángulos o semicírculos que no se solapen, sumar sus áreas y restar los huecos (puertas, ventanas, la parte que falta). Los errores típicos son olvidar restar los huecos, contar dos veces un trozo al descomponer, o redondear hacia abajo cuando hay que comprar material (si hacen falta 2,55 botes, hay que comprar 3). Pídale que dibuje la figura, la parta con líneas de colores y escriba el área de cada trozo encima.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "7 × 7",
+     "resultado": "49",
+     "texto": "Rectángulo."
+    },
+    {
+     "paso": 2,
+     "operacion": "7 × 2 : 2",
+     "resultado": "7",
+     "texto": "Triángulo."
+    },
+    {
+     "paso": 3,
+     "operacion": "49 + 7",
+     "resultado": "56",
+     "texto": "Fachada."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Una vidriera tiene forma de rectángulo de 6 dm de ancho y 4 dm de alto, con un semicírculo encima de 6 dm de diámetro. Usa π = 3,14. ¿Cuál es su área?",
+   "respuesta": "38,13 dm²",
+   "distractores": [
+    {
+     "valor": "52,26 dm²",
+     "error": "E02"
+    },
+    {
+     "valor": "24 dm²",
+     "error": null
+    },
+    {
+     "valor": "80,52 dm²",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "6 × 4 + 3,14 × 3 × 3 : 2",
+   "secundarias": [
+    "GEO.AREA.01",
+    "GEO.AREA.02",
+    "PROB.GEO.02"
+   ],
+   "explicacion_nino": "Entiende: la vidriera es un rectángulo más medio círculo. Rectángulo: 6 × 4 = 24 dm². El radio es la mitad del diámetro: 3 dm. Círculo entero: 3,14 × 3 × 3 = 28,26 dm²; medio círculo: 14,13 dm². Total: 24 + 14,13 = 38,13 dm². Comprueba que has usado el radio y no el diámetro.",
+   "explicacion_adulto": "Está aprendiendo a calcular la superficie de figuras compuestas: descomponerlas en rectángulos, triángulos o semicírculos que no se solapen, sumar sus áreas y restar los huecos (puertas, ventanas, la parte que falta). Los errores típicos son olvidar restar los huecos, contar dos veces un trozo al descomponer, o redondear hacia abajo cuando hay que comprar material (si hacen falta 2,55 botes, hay que comprar 3). Pídale que dibuje la figura, la parta con líneas de colores y escriba el área de cada trozo encima.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "6 × 4",
+     "resultado": "24",
+     "texto": "Rectángulo."
+    },
+    {
+     "paso": 2,
+     "operacion": "3,14 × 3 × 3 : 2",
+     "resultado": "14,13",
+     "texto": "Semicírculo."
+    },
+    {
+     "paso": 3,
+     "operacion": "24 + 14,13",
+     "resultado": "38,13",
+     "texto": "Vidriera."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Una vidriera tiene forma de rectángulo de 6 dm de ancho y 5 dm de alto, con un semicírculo encima de 6 dm de diámetro. Usa π = 3,14. ¿Cuál es su área?",
+   "respuesta": "44,13 dm²",
+   "distractores": [
+    {
+     "valor": "58,26 dm²",
+     "error": "E02"
+    },
+    {
+     "valor": "30 dm²",
+     "error": null
+    },
+    {
+     "valor": "86,52 dm²",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "6 × 5 + 3,14 × 3 × 3 : 2",
+   "secundarias": [
+    "GEO.AREA.01",
+    "GEO.AREA.02",
+    "PROB.GEO.02"
+   ],
+   "explicacion_nino": "Entiende: la vidriera es un rectángulo más medio círculo. Rectángulo: 6 × 5 = 30 dm². El radio es la mitad del diámetro: 3 dm. Círculo entero: 3,14 × 3 × 3 = 28,26 dm²; medio círculo: 14,13 dm². Total: 30 + 14,13 = 44,13 dm². Comprueba que has usado el radio y no el diámetro.",
+   "explicacion_adulto": "Está aprendiendo a calcular la superficie de figuras compuestas: descomponerlas en rectángulos, triángulos o semicírculos que no se solapen, sumar sus áreas y restar los huecos (puertas, ventanas, la parte que falta). Los errores típicos son olvidar restar los huecos, contar dos veces un trozo al descomponer, o redondear hacia abajo cuando hay que comprar material (si hacen falta 2,55 botes, hay que comprar 3). Pídale que dibuje la figura, la parta con líneas de colores y escriba el área de cada trozo encima.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "6 × 5",
+     "resultado": "30",
+     "texto": "Rectángulo."
+    },
+    {
+     "paso": 2,
+     "operacion": "3,14 × 3 × 3 : 2",
+     "resultado": "14,13",
+     "texto": "Semicírculo."
+    },
+    {
+     "paso": 3,
+     "operacion": "30 + 14,13",
+     "resultado": "44,13",
+     "texto": "Vidriera."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Una vidriera tiene forma de rectángulo de 6 dm de ancho y 3 dm de alto, con un semicírculo encima de 6 dm de diámetro. Usa π = 3,14. ¿Cuál es su área?",
+   "respuesta": "32,13 dm²",
+   "distractores": [
+    {
+     "valor": "46,26 dm²",
+     "error": "E02"
+    },
+    {
+     "valor": "18 dm²",
+     "error": null
+    },
+    {
+     "valor": "74,52 dm²",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "6 × 3 + 3,14 × 3 × 3 : 2",
+   "secundarias": [
+    "GEO.AREA.01",
+    "GEO.AREA.02",
+    "PROB.GEO.02"
+   ],
+   "explicacion_nino": "Entiende: la vidriera es un rectángulo más medio círculo. Rectángulo: 6 × 3 = 18 dm². El radio es la mitad del diámetro: 3 dm. Círculo entero: 3,14 × 3 × 3 = 28,26 dm²; medio círculo: 14,13 dm². Total: 18 + 14,13 = 32,13 dm². Comprueba que has usado el radio y no el diámetro.",
+   "explicacion_adulto": "Está aprendiendo a calcular la superficie de figuras compuestas: descomponerlas en rectángulos, triángulos o semicírculos que no se solapen, sumar sus áreas y restar los huecos (puertas, ventanas, la parte que falta). Los errores típicos son olvidar restar los huecos, contar dos veces un trozo al descomponer, o redondear hacia abajo cuando hay que comprar material (si hacen falta 2,55 botes, hay que comprar 3). Pídale que dibuje la figura, la parta con líneas de colores y escriba el área de cada trozo encima.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "6 × 3",
+     "resultado": "18",
+     "texto": "Rectángulo."
+    },
+    {
+     "paso": 2,
+     "operacion": "3,14 × 3 × 3 : 2",
+     "resultado": "14,13",
+     "texto": "Semicírculo."
+    },
+    {
+     "paso": 3,
+     "operacion": "18 + 14,13",
+     "resultado": "32,13",
+     "texto": "Vidriera."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Una vidriera tiene forma de rectángulo de 2 dm de ancho y 6 dm de alto, con un semicírculo encima de 2 dm de diámetro. Usa π = 3,14. ¿Cuál es su área?",
+   "respuesta": "13,57 dm²",
+   "distractores": [
+    {
+     "valor": "15,14 dm²",
+     "error": "E02"
+    },
+    {
+     "valor": "12 dm²",
+     "error": null
+    },
+    {
+     "valor": "18,28 dm²",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "2 × 6 + 3,14 × 1 × 1 : 2",
+   "secundarias": [
+    "GEO.AREA.01",
+    "GEO.AREA.02",
+    "PROB.GEO.02"
+   ],
+   "explicacion_nino": "Entiende: la vidriera es un rectángulo más medio círculo. Rectángulo: 2 × 6 = 12 dm². El radio es la mitad del diámetro: 1 dm. Círculo entero: 3,14 × 1 × 1 = 3,14 dm²; medio círculo: 1,57 dm². Total: 12 + 1,57 = 13,57 dm². Comprueba que has usado el radio y no el diámetro.",
+   "explicacion_adulto": "Está aprendiendo a calcular la superficie de figuras compuestas: descomponerlas en rectángulos, triángulos o semicírculos que no se solapen, sumar sus áreas y restar los huecos (puertas, ventanas, la parte que falta). Los errores típicos son olvidar restar los huecos, contar dos veces un trozo al descomponer, o redondear hacia abajo cuando hay que comprar material (si hacen falta 2,55 botes, hay que comprar 3). Pídale que dibuje la figura, la parta con líneas de colores y escriba el área de cada trozo encima.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "2 × 6",
+     "resultado": "12",
+     "texto": "Rectángulo."
+    },
+    {
+     "paso": 2,
+     "operacion": "3,14 × 1 × 1 : 2",
+     "resultado": "1,57",
+     "texto": "Semicírculo."
+    },
+    {
+     "paso": 3,
+     "operacion": "12 + 1,57",
+     "resultado": "13,57",
+     "texto": "Vidriera."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Una vidriera tiene forma de rectángulo de 8 dm de ancho y 7 dm de alto, con un semicírculo encima de 8 dm de diámetro. Usa π = 3,14. ¿Cuál es su área?",
+   "respuesta": "81,12 dm²",
+   "distractores": [
+    {
+     "valor": "106,24 dm²",
+     "error": "E02"
+    },
+    {
+     "valor": "56 dm²",
+     "error": null
+    },
+    {
+     "valor": "156,48 dm²",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "8 × 7 + 3,14 × 4 × 4 : 2",
+   "secundarias": [
+    "GEO.AREA.01",
+    "GEO.AREA.02",
+    "PROB.GEO.02"
+   ],
+   "explicacion_nino": "Entiende: la vidriera es un rectángulo más medio círculo. Rectángulo: 8 × 7 = 56 dm². El radio es la mitad del diámetro: 4 dm. Círculo entero: 3,14 × 4 × 4 = 50,24 dm²; medio círculo: 25,12 dm². Total: 56 + 25,12 = 81,12 dm². Comprueba que has usado el radio y no el diámetro.",
+   "explicacion_adulto": "Está aprendiendo a calcular la superficie de figuras compuestas: descomponerlas en rectángulos, triángulos o semicírculos que no se solapen, sumar sus áreas y restar los huecos (puertas, ventanas, la parte que falta). Los errores típicos son olvidar restar los huecos, contar dos veces un trozo al descomponer, o redondear hacia abajo cuando hay que comprar material (si hacen falta 2,55 botes, hay que comprar 3). Pídale que dibuje la figura, la parta con líneas de colores y escriba el área de cada trozo encima.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "8 × 7",
+     "resultado": "56",
+     "texto": "Rectángulo."
+    },
+    {
+     "paso": 2,
+     "operacion": "3,14 × 4 × 4 : 2",
+     "resultado": "25,12",
+     "texto": "Semicírculo."
+    },
+    {
+     "paso": 3,
+     "operacion": "56 + 25,12",
+     "resultado": "81,12",
+     "texto": "Vidriera."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Mateo enmarca una lámina de 22 cm × 15 cm. Con el marco, el cuadro mide 28 cm × 21 cm. ¿Cuál es el área del marco?",
+   "respuesta": "258 cm²",
+   "distractores": [
+    {
+     "valor": "588 cm²",
+     "error": "E01"
+    },
+    {
+     "valor": "294 cm²",
+     "error": "E02"
+    },
+    {
+     "valor": "36 cm²",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "28 × 21 − 22 × 15",
+   "secundarias": [
+    "GEO.AREA.01",
+    "GEO.AREA.02",
+    "PROB.GEO.02"
+   ],
+   "explicacion_nino": "Entiende: el marco es el cuadro entero menos el hueco de la lámina. Cuadro: 28 × 21 = 588 cm². Lámina: 22 × 15 = 330 cm². Marco: 588 − 330 = 258 cm². Cuidado: si sumas las cuatro tiras de 28 y 21 cm de largo, las esquinas se cuentan dos veces.",
+   "explicacion_adulto": "Está aprendiendo a calcular la superficie de figuras compuestas: descomponerlas en rectángulos, triángulos o semicírculos que no se solapen, sumar sus áreas y restar los huecos (puertas, ventanas, la parte que falta). Los errores típicos son olvidar restar los huecos, contar dos veces un trozo al descomponer, o redondear hacia abajo cuando hay que comprar material (si hacen falta 2,55 botes, hay que comprar 3). Pídale que dibuje la figura, la parta con líneas de colores y escriba el área de cada trozo encima.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "28 × 21",
+     "resultado": "588",
+     "texto": "Cuadro con marco."
+    },
+    {
+     "paso": 2,
+     "operacion": "22 × 15",
+     "resultado": "330",
+     "texto": "Lámina."
+    },
+    {
+     "paso": 3,
+     "operacion": "588 − 330",
+     "resultado": "258",
+     "texto": "Marco."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Aitana enmarca una lámina de 34 cm × 23 cm. Con el marco, el cuadro mide 40 cm × 29 cm. ¿Cuál es el área del marco?",
+   "respuesta": "378 cm²",
+   "distractores": [
+    {
+     "valor": "1160 cm²",
+     "error": "E01"
+    },
+    {
+     "valor": "414 cm²",
+     "error": "E02"
+    },
+    {
+     "valor": "36 cm²",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "40 × 29 − 34 × 23",
+   "secundarias": [
+    "GEO.AREA.01",
+    "GEO.AREA.02",
+    "PROB.GEO.02"
+   ],
+   "explicacion_nino": "Entiende: el marco es el cuadro entero menos el hueco de la lámina. Cuadro: 40 × 29 = 1160 cm². Lámina: 34 × 23 = 782 cm². Marco: 1160 − 782 = 378 cm². Cuidado: si sumas las cuatro tiras de 40 y 29 cm de largo, las esquinas se cuentan dos veces.",
+   "explicacion_adulto": "Está aprendiendo a calcular la superficie de figuras compuestas: descomponerlas en rectángulos, triángulos o semicírculos que no se solapen, sumar sus áreas y restar los huecos (puertas, ventanas, la parte que falta). Los errores típicos son olvidar restar los huecos, contar dos veces un trozo al descomponer, o redondear hacia abajo cuando hay que comprar material (si hacen falta 2,55 botes, hay que comprar 3). Pídale que dibuje la figura, la parta con líneas de colores y escriba el área de cada trozo encima.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "40 × 29",
+     "resultado": "1160",
+     "texto": "Cuadro con marco."
+    },
+    {
+     "paso": 2,
+     "operacion": "34 × 23",
+     "resultado": "782",
+     "texto": "Lámina."
+    },
+    {
+     "paso": 3,
+     "operacion": "1160 − 782",
+     "resultado": "378",
+     "texto": "Marco."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Pablo enmarca una lámina de 35 cm × 20 cm. Con el marco, el cuadro mide 45 cm × 30 cm. ¿Cuál es el área del marco?",
+   "respuesta": "650 cm²",
+   "distractores": [
+    {
+     "valor": "1350 cm²",
+     "error": "E01"
+    },
+    {
+     "valor": "750 cm²",
+     "error": "E02"
+    },
+    {
+     "valor": "100 cm²",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "45 × 30 − 35 × 20",
+   "secundarias": [
+    "GEO.AREA.01",
+    "GEO.AREA.02",
+    "PROB.GEO.02"
+   ],
+   "explicacion_nino": "Entiende: el marco es el cuadro entero menos el hueco de la lámina. Cuadro: 45 × 30 = 1350 cm². Lámina: 35 × 20 = 700 cm². Marco: 1350 − 700 = 650 cm². Cuidado: si sumas las cuatro tiras de 45 y 30 cm de largo, las esquinas se cuentan dos veces.",
+   "explicacion_adulto": "Está aprendiendo a calcular la superficie de figuras compuestas: descomponerlas en rectángulos, triángulos o semicírculos que no se solapen, sumar sus áreas y restar los huecos (puertas, ventanas, la parte que falta). Los errores típicos son olvidar restar los huecos, contar dos veces un trozo al descomponer, o redondear hacia abajo cuando hay que comprar material (si hacen falta 2,55 botes, hay que comprar 3). Pídale que dibuje la figura, la parta con líneas de colores y escriba el área de cada trozo encima.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "45 × 30",
+     "resultado": "1350",
+     "texto": "Cuadro con marco."
+    },
+    {
+     "paso": 2,
+     "operacion": "35 × 20",
+     "resultado": "700",
+     "texto": "Lámina."
+    },
+    {
+     "paso": 3,
+     "operacion": "1350 − 700",
+     "resultado": "650",
+     "texto": "Marco."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Julia enmarca una lámina de 51 cm × 20 cm. Con el marco, el cuadro mide 59 cm × 28 cm. ¿Cuál es el área del marco?",
+   "respuesta": "632 cm²",
+   "distractores": [
+    {
+     "valor": "1652 cm²",
+     "error": "E01"
+    },
+    {
+     "valor": "696 cm²",
+     "error": "E02"
+    },
+    {
+     "valor": "64 cm²",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "59 × 28 − 51 × 20",
+   "secundarias": [
+    "GEO.AREA.01",
+    "GEO.AREA.02",
+    "PROB.GEO.02"
+   ],
+   "explicacion_nino": "Entiende: el marco es el cuadro entero menos el hueco de la lámina. Cuadro: 59 × 28 = 1652 cm². Lámina: 51 × 20 = 1020 cm². Marco: 1652 − 1020 = 632 cm². Cuidado: si sumas las cuatro tiras de 59 y 28 cm de largo, las esquinas se cuentan dos veces.",
+   "explicacion_adulto": "Está aprendiendo a calcular la superficie de figuras compuestas: descomponerlas en rectángulos, triángulos o semicírculos que no se solapen, sumar sus áreas y restar los huecos (puertas, ventanas, la parte que falta). Los errores típicos son olvidar restar los huecos, contar dos veces un trozo al descomponer, o redondear hacia abajo cuando hay que comprar material (si hacen falta 2,55 botes, hay que comprar 3). Pídale que dibuje la figura, la parta con líneas de colores y escriba el área de cada trozo encima.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "59 × 28",
+     "resultado": "1652",
+     "texto": "Cuadro con marco."
+    },
+    {
+     "paso": 2,
+     "operacion": "51 × 20",
+     "resultado": "1020",
+     "texto": "Lámina."
+    },
+    {
+     "paso": 3,
+     "operacion": "1652 − 1020",
+     "resultado": "632",
+     "texto": "Marco."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Aya enmarca una lámina de 46 cm × 41 cm. Con el marco, el cuadro mide 52 cm × 47 cm. ¿Cuál es el área del marco?",
+   "respuesta": "558 cm²",
+   "distractores": [
+    {
+     "valor": "2444 cm²",
+     "error": "E01"
+    },
+    {
+     "valor": "594 cm²",
+     "error": "E02"
+    },
+    {
+     "valor": "36 cm²",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "52 × 47 − 46 × 41",
+   "secundarias": [
+    "GEO.AREA.01",
+    "GEO.AREA.02",
+    "PROB.GEO.02"
+   ],
+   "explicacion_nino": "Entiende: el marco es el cuadro entero menos el hueco de la lámina. Cuadro: 52 × 47 = 2444 cm². Lámina: 46 × 41 = 1886 cm². Marco: 2444 − 1886 = 558 cm². Cuidado: si sumas las cuatro tiras de 52 y 47 cm de largo, las esquinas se cuentan dos veces.",
+   "explicacion_adulto": "Está aprendiendo a calcular la superficie de figuras compuestas: descomponerlas en rectángulos, triángulos o semicírculos que no se solapen, sumar sus áreas y restar los huecos (puertas, ventanas, la parte que falta). Los errores típicos son olvidar restar los huecos, contar dos veces un trozo al descomponer, o redondear hacia abajo cuando hay que comprar material (si hacen falta 2,55 botes, hay que comprar 3). Pídale que dibuje la figura, la parta con líneas de colores y escriba el área de cada trozo encima.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "52 × 47",
+     "resultado": "2444",
+     "texto": "Cuadro con marco."
+    },
+    {
+     "paso": 2,
+     "operacion": "46 × 41",
+     "resultado": "1886",
+     "texto": "Lámina."
+    },
+    {
+     "paso": 3,
+     "operacion": "2444 − 1886",
+     "resultado": "558",
+     "texto": "Marco."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Maite enmarca una lámina de 64 cm × 51 cm. Con el marco, el cuadro mide 70 cm × 57 cm. ¿Cuál es el área del marco?",
+   "respuesta": "726 cm²",
+   "distractores": [
+    {
+     "valor": "3990 cm²",
+     "error": "E01"
+    },
+    {
+     "valor": "762 cm²",
+     "error": "E02"
+    },
+    {
+     "valor": "36 cm²",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "70 × 57 − 64 × 51",
+   "secundarias": [
+    "GEO.AREA.01",
+    "GEO.AREA.02",
+    "PROB.GEO.02"
+   ],
+   "explicacion_nino": "Entiende: el marco es el cuadro entero menos el hueco de la lámina. Cuadro: 70 × 57 = 3990 cm². Lámina: 64 × 51 = 3264 cm². Marco: 3990 − 3264 = 726 cm². Cuidado: si sumas las cuatro tiras de 70 y 57 cm de largo, las esquinas se cuentan dos veces.",
+   "explicacion_adulto": "Está aprendiendo a calcular la superficie de figuras compuestas: descomponerlas en rectángulos, triángulos o semicírculos que no se solapen, sumar sus áreas y restar los huecos (puertas, ventanas, la parte que falta). Los errores típicos son olvidar restar los huecos, contar dos veces un trozo al descomponer, o redondear hacia abajo cuando hay que comprar material (si hacen falta 2,55 botes, hay que comprar 3). Pídale que dibuje la figura, la parta con líneas de colores y escriba el área de cada trozo encima.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "70 × 57",
+     "resultado": "3990",
+     "texto": "Cuadro con marco."
+    },
+    {
+     "paso": 2,
+     "operacion": "64 × 51",
+     "resultado": "3264",
+     "texto": "Lámina."
+    },
+    {
+     "paso": 3,
+     "operacion": "3990 − 3264",
+     "resultado": "726",
+     "texto": "Marco."
+    }
+   ],
+   "plantilla": "P05"
+  }
+ ]
+}

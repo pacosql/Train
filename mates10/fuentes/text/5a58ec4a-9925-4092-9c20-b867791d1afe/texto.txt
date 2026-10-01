@@ -1,0 +1,1659 @@
+Accepted Manuscript
+
+Applications of the Elo Rating System in Adaptive Educational Systems
+
+Radek Pelanek
+
+
+PII:             S0360-1315(16)30080-X
+DOI:             10.1016/j.compedu.2016.03.017
+Reference:       CAE 3015
+
+
+To appear in:    Computers & Education
+
+
+Received Date: 22 May 2015
+Revised Date:    24 March 2016
+Accepted Date: 29 March 2016
+
+
+
+Please cite this article as: Pelanek R., Applications of the Elo Rating System in Adaptive Educational
+Systems, Computers & Education (2016), doi: 10.1016/j.compedu.2016.03.017.
+
+
+This is a PDF file of an unedited manuscript that has been accepted for publication. As a service to
+our customers we are providing this early version of the manuscript. The manuscript will undergo
+copyediting, typesetting, and review of the resulting proof before it is published in its final form. Please
+note that during the production process errors may be discovered which could affect the content, and all
+legal disclaimers that apply to the journal pertain.
+                       ACCEPTED MANUSCRIPT
+Applications of the Elo Rating System in Adaptive Educational Systems
+
+Radek Pelanek
+
+Masaryk University Brno, Czech Republic
+
+Resubmission of CAE-D-15-00715R2
+
+
+
+
+                                                    PT
+                                                  RI
+                                   U        SC
+                                AN
+                               M
+                        D
+                     TE
+        C       EP
+     AC
+                                           ACCEPTED MANUSCRIPT
+
+ 1
+ 2
+ 3     Applications of the Elo Rating System in Adaptive Educational Systems
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+
+
+
+
+                                                                                   PT
+11   Abstract
+12   The Elo rating system was originally developed for rating chess players, nowadays it is widely used for
+13   ranking players of many other games. The system can be used in educational systems when we interpret
+14
+
+
+
+
+                                                                                 RI
+     student’s answer to an item as a match between the student and the item. In this way we can easily
+15   dynamically estimate the skill of students and difficulty of items. We provide a systematic overview of
+16
+     different variants of the Elo rating system and their application in education. We compare the Elo rating
+17
+     system to alternative methods and describe a specific case study (an adaptive practice of geography facts)
+
+
+
+
+                                                                        SC
+18
+19   to illustrate the application of the Elo rating system in education. We argue that the Elo rating system is
+20   simple, robust, and effective and thus suitable for use in the development of adaptive educational systems.
+21   We provide specific guidelines for such applications.
+22
+
+
+
+                                                        U
+     Keywords: architectures for educational technology system, interactive learning environments,
+23   applications in subject areas, student modeling
+24
+                                                     AN
+25
+26
+27   1. Introduction
+28
+         Adaptive educational systems aim to provide students with individualized learning materials and thus
+                                                    M
+
+29
+30   to increase efficiency of the learning process. Specific examples of educational systems that incorporate
+31   adaptive behaviour and have been shown to increase efficiency of learning are Cognitive Tutor (Ritter et al.,
+32   2007) and Math Spring (Arroyo et al., 2014).
+                                         D
+
+
+33       In order to achieve adaptivity, systems need to be able to estimate the skill of students and difficulty
+34   of educational materials (items, questions, problems). One possible way to obtain skill estimates is to use
+35   models from item response theory (IRT). These models were, however, developed in the context of comput-
+                                      TE
+
+
+
+
+36   erized adaptive testing and are typically based on the assumption of a constant skill. Another possibility
+37   is to use specialized models for modeling learning (Desmarais and Baker, 2012), e.g., Bayesian knowledge
+38   tracing (Corbett and Anderson, 1994) or Performance factor analysis (Pavlik et al., 2009). All these models,
+39   however, are not easy to use: they may require calibration on large samples using nontrivial parameter
+                             EP
+
+
+
+
+40   estimation or are hard to use in an online educational system. These aspects make the development of
+41   adaptive systems more complicated, time consuming, and expensive.
+42       An interesting alternative to specialized models is the Elo rating system (Elo, 1978). This system
+43   was originally proposed for rating chess players; for an overview of the history of chess rating systems
+                 C
+
+
+
+
+44   see Glickman (1995). The basic principle of the system is simple: each player is assigned a rating, this
+45   rating is updated after each match, the update is proportional to the surprisingness of the match result.
+              AC
+
+
+
+
+46
+     If a strong player beats a weak player, the results is not surprising and the update is small; whereas if
+47
+     the opposite happens, the update is large. The system has been extended in many ways, the most well-
+48
+49   known extensions are Glicko (Glickman, 1999) and TrueSkill (Herbrich et al., 2006). Nevertheless, even
+50   the basic Elo rating system is still widely used for rating many contests, online games, and sports, e.g.,
+51   football (Hvattum and Arntzen, 2010). The system provides a foundation for adaptive behaviour of gaming
+52   sites as it can automatically select opponents of similar skill. Moreover, the Elo rating system can be used
+53   not just for rating players. It has been used for rating patterns in the game of Go (Coulom, 2007), eliciting
+54   user preferences (Hacker and Von Ahn, 2009), assessing security and vulnerability risks (Pieters et al., 2012),
+55   or for ranking posts in online forums (Das Sarma et al., 2010).
+56       We can use the Elo rating system in educational systems if we interpret a solution attempt as a match
+57   between a student and an item. This approach provides an easy way to estimate the skill of students and
+58
+59   Preprint submitted to Computers & Education                                                      March 24, 2016
+60
+61
+62
+63
+64
+65
+                                          ACCEPTED MANUSCRIPT
+
+ 1
+ 2
+ 3   difficulty of items. The use of the Elo rating system offers many advantages: it is a simple system, which
+ 4   is easy to implement in educational systems; it has only a small number of parameters that need to be set;
+ 5
+     it can be easily used in an online setting; and it also provides comparable performance to more complex
+ 6
+     models.
+ 7
+ 8       The Elo rating system has already been used in education. Previous studies, however, describe the use
+ 9   of the Elo rating system only briefly or study only a particular aspect of the system. Several studies discuss
+10   basic properties of the system: Brinkhuis and Maris (2009) provide analysis of statistical properties of the
+
+
+
+
+                                                                                      PT
+11   model; Antal (2013) used simulated data to compare parameter estimates by the Elo rating system with
+12   IRT estimates; Pelánek (2014) compares the model with other student models and discusses modification of
+13   the system for problem solving times.
+14       Other studies focused on evaluations and applications. Wauters et al. (2011) provide evaluation of an
+
+
+
+
+                                                                                    RI
+15   extension of the Elo rating system over real (but rather small) student data. Wauters et al. (2012) focus
+16   on estimation of item difficulty (for items from computerized adaptive testing) and compares estimates by
+17   an IRT model, the Elo rating system, proportion correct, learner feedback, and user judgment. Klinkenberg
+
+
+
+
+                                                                          SC
+18   et al. (2011) propose an extension of the Elo rating system and apply it in an online system for adaptive
+19   practice of mathematics. Papoušek et al. (2014) and Nižnan et al. (2015) describe an application of the Elo
+20   rating system for adaptive practice of facts, particularly for prior knowledge estimation. Attali (2014) uses
+21   a ranking method similar to the Elo rating system for grading constructed responses.
+22
+
+
+
+                                                         U
+         In this paper we provide a systematic survey of those aspects and extensions of the Elo rating system
+23   that are relevant in educational settings. We also compare the Elo rating system to alternatives using an
+24
+     experiment with simulated data, and describe a specific case study of an application of the Elo rating system
+                                                      AN
+25
+     in a widely used educational system. Finally, we provide guidelines for the use of the Elo rating system in
+26
+27   the practical development of adaptive educational systems.
+28
+                                                     M
+
+29   2. The Elo Rating System and its Variants
+30
+31      In this section we describe in detail the Elo rating system and its variants relevant for student modeling.
+32
+                                        D
+
+
+33   2.1. The Basic Elo Rating System
+34
+         The core principle of the Elo rating system (Elo, 1978) can be summarized as follows. For each player i
+35
+                                     TE
+
+
+
+
+     we have a rating estimate θi . Let Rij ∈ {0, 1} be the results of a match between players i, j. The expected
+36
+37   probability that the player i wins is given by the logistic function with respect to the difference of estimated
+38   ratings (Figure 1 left):
+39                                           P (Rij = 1) = 1/(1 + e−(θi −θj ) )
+                            EP
+
+
+
+
+40   Based on the result of a match the rating estimates are updated using the following update rule (K is a
+41   constant specifying sensitivity of the estimate to the last attempt):
+42
+43                                           θi := θi + K(Rij − P (Rij = 1))
+                C
+
+
+
+
+44
+45       The used probability function can be seen as a reparametrization of the Bradley-Terry model for paired
+             AC
+
+
+
+
+46   comparisons (Bradley and Terry, 1952). Under the Bradley-Terry model if two objects have true ratings
+47   (or preferences) π1 , π2 , then the first object is preferred (will rank higher in a comparison) with probability
+48   π1 /(π1 + π2 ). Instead of the logistic function it is possible to use a normal cumulative distribution, which
+49   corresponds to the Thurstone-Mosteller model for paired comparisons (Glickman, 1995). Since the logistic
+50
+     function and normal cumulative distribution function have very similar shapes, the difference between these
+51
+     two variants is in practice not essential. Current realizations of the Elo rating system typically use the
+52
+53   logistic function because it is easier to use in practical applications.
+54       The original Elo rating system for chess uses a specific rescaling of the standard logistic function: P (Rij =
+55   1) = 1/(1 + 10−(θi −θj )/400 ). This rescaling (i.e., the base 10 instead of e and the constant 400) is used for
+56   historical reasons (compatibility with the preceding system for rating chess players) and does not have any
+57   impact on the underlying principles. In this paper we consistently use the standard logistic function. The
+58
+59                                                           2
+60
+61
+62
+63
+64
+65
+                                                                                ACCEPTED MANUSCRIPT
+
+ 1
+ 2
+ 3                                                 standard logistic function                                                              shifted logistic function
+ 4
+     probability of a win (or a correct answer)
+
+
+
+
+ 5
+ 6
+
+
+
+
+                                                                                                        probability of a correct answer
+ 7
+ 8
+ 9
+10
+
+
+
+
+                                                                                                                                            PT
+11
+12
+13
+14
+
+
+
+
+                                                                                                                                          RI
+15
+16
+17
+                                                                                     (or      )
+
+
+
+
+                                                                                                                                          SC
+18
+19
+           Figure 1: The logistic function transforms the difference between opponents ratings (student skill and item difficulty) into a
+20         probability of a win (a correct answer). The shifted logistic function takes into account guessing (with the probability 1/3 in
+21         the example).
+22
+
+
+
+                                                                                               U
+23
+24         original Elo rating system also performs update of the skill level after a tournament (not after each match)
+                                                                                            AN
+25         and there are several extensions for modeling draws and the first-move advantage (Glickman, 1995). These
+26         aspects are not important for applications of the rating system in the educational context and thus we do
+27         not discuss them in more detail.
+28
+                                                                                           M
+
+29         2.2. The Elo Rating System in an Educational Setting
+30
+31            To apply the Elo rating system in the context of educational systems, we interpret a student’s answer
+32         to an item as a match between the student and the item. In this context it is natural to slightly change
+                                                                          D
+
+
+33         the notation while keeping the basic principle the same. We denote skill of a student s as θs , difficulty of
+34         an item i as di , and the correctness of an answer of a student s on an item i as correctsi ∈ {0, 1}. The
+35         probability of a correct answer is given by the logistic function with respect to the difference between skill
+                                                                       TE
+
+
+
+
+36         and difficulty (Figure 1 left):
+37                                              P (correctsi = 1) = 1/(1 + e−(θs −di ) )
+38
+           The skill and difficulty estimates are updated as follows:
+39
+                                                           EP
+
+
+
+
+40                                                                     θs       := θs + K · (correctsi − P (correctsi = 1))
+41
+                                                                       di       := di + K · (P (correctsi = 1) − correctsi )
+42
+43         Initial values of θs and δi parameters are set to 0.
+                                                     C
+
+
+
+
+44             In this formulation the Elo rating system is closely related to the Rasch model (one parameter model)
+45
+           used in IRT. These two approaches share the same functional form of the model for predicting the probability
+                                                  AC
+
+
+
+
+46
+           of a correct answer, they differ only in the parameter estimation procedure. The standard approach in item
+47
+48         response theory is to use maximum likelihood based methods (De Ayala, 2008), whereas the Elo rating
+49         system uses the above presented heuristic equations. They also differ in their basic assumptions. Basic
+50         IRT models assume that a student’s skill is constant (such models are typically used in testing and it is
+51         assumed that there is no change of the skill during a test), whereas the Elo rating system is designed to
+52         track changing skill levels.
+53             The advantage of the Elo rating system is that it can be easily modified for different situations. For
+54         example, in education we often use multiple choice questions (typically with 3 to 6 choices), where students
+55         have a significant chance of answering correctly just by guessing. We can easily incorporate this guessing
+56         behaviour into the Elo rating system. It is sufficient to change only the predicted probability of a correct
+57
+58
+59                                                                                                 3
+60
+61
+62
+63
+64
+65
+                                              ACCEPTED MANUSCRIPT
+
+ 1
+ 2
+ 3   answer by using the shifted logistic function, i.e., for question with k options the probability of a correct
+ 4   answer becomes (Figure 1 right):
+ 5
+ 6                                    P (correctsi = 1) = 1/k + (1 − 1/k)/(1 + e−(θs −di ) )
+ 7
+ 8       Note that the main advantage of the Elo rating system is not expressive power, but its simplicity and
+ 9   versatility. Situations like multiple-choice questions or dynamically changing skill can be modeled by many
+10
+
+
+
+
+                                                                                               PT
+     methods, e.g., there exist suitable extensions of IRT models (Drasgow et al., 1995; Wang et al., 2013). The
+11
+     Elo rating system, however, offers a flexible student modeling approach, which can be easily modified.
+12
+         As noted above, the original Elo rating system is applied for a summary score of a tournament, i.e., the
+13
+     Elo rating system is not restricted to binary results. In education it can thus be used also with partial credit
+14
+
+
+
+
+                                                                                             RI
+15   modeling of answers in the presence of hints (Wang and Heffernan, 2013); or with problem solving times
+16   for problems where time is the only measure of performance (Pelánek, 2014; Vaněk, 2014), e.g., time to find
+17   a correct solution of a Sudoku puzzle or to write a correct program which outputs a list of primes. In the
+     case of problem solving times we have for each student a skill parameter θs and for each problem a difficulty
+
+
+
+
+                                                                                  SC
+18
+19   parameter dp . When a student s solves a problem p in the logarithm1 of time tsp we update parameter
+20   estimates as follows:
+21                                             θs := θs + K(E(t|s, p) − tsp )
+22
+
+
+
+                                                               U
+                                                   dp := θp + K(tsp − E(t|s, p))
+23
+24   where E(t|s, p) is the expected logarithm of a solving time for the student s and the problem p given as
+                                                            AN
+25   E(t|s, p) = dp − θs .
+26       It is also possible to combine both the correctness of answers and response times into the update rule.
+27   For example, Klinkenberg et al. (2011) use a “high speed, high stakes” rule, where the answer is assigned
+28   a score based on the correctness correctsi and the response time tsi as follows (di is a time limit, ai is a
+                                                           M
+
+29   discrimination parameter):
+30
+                                          Ssi = (2correctsi − 1)(ai di − ai tsi )
+31
+32   Under this rule stakes are high when a student answers quickly; with increasing response time the score
+                                            D
+
+
+33   goes towards zero (for both correct and incorrect answers). An appropriate way to include response times
+34   depends on the user interface of a particular system. The “high speed, high stakes” rule may be appropriate
+35
+                                         TE
+
+
+
+
+     for systems showing the timing information and deadlines in the user interface – this is the case in the Math
+36   Garden software, where the rule has been applied (Klinkenberg et al., 2011). In other systems the response
+37   time may be measured without any explicit notification about its role to users. In such cases the response
+38   time may still contain interesting information (Papoušek et al., 2015), but a different scoring rule needs to
+39   be applied, see for example Řihák (2015) for a specific proposal.
+                               EP
+
+
+
+
+40
+41
+     2.3. Uncertainty
+42
+43       The value of the constant K in the update rule determines the behaviour of the system. If K is small,
+                 C
+
+
+
+
+44   the estimation converges too slowly, if K is large, the estimation is unstable as it gives too large a weighting
+45   to the last few attempts, see Figure 2 (left) for illustration. Previous work in student modeling used
+     K = 0.4 (Antal, 2013; Wauters et al., 2012).
+              AC
+
+
+
+
+46
+47       An intuitive improvement used in most Elo extensions2 is to use an “uncertainty function” instead of
+48   a constant K. When we have a new player (student), the skill estimate is highly uncertain and thus the
+49   update should be large. As we get more data the size of the update should get smaller. A principled way
+50   to realize this idea is to use a Bayesian approach to parameter estimation. A well-known extension in this
+51   direction is the Glicko system (Glickman, 1999). It models prior skill by the normal distribution and uses
+52
+53
+54      1 The reason for the use of the logarithm of time is that problem solving times are log-normally distributed (Jarušek and
+55   Pelánek, 2012).
+        2 In fact even the basic application of the Elo rating system in chess includes variable choice of K depending on the rating
+56
+57   of a player. The specific choice of the K parameter has been subject of discussions (Sonas, 2002).
+58
+59                                                                 4
+60
+61
+62
+63
+64
+65
+                                          ACCEPTED MANUSCRIPT
+
+ 1
+ 2
+ 3   numerical approximation to represent the posterior by the normal distribution and to perform the update
+ 4   of the mean and standard deviation of the skill distribution using closed form expressions. Another widely
+ 5
+     used extension based on a Bayesian approach is TrueSkill (Herbrich et al., 2006), which further extends the
+ 6
+     system to allow team competitions. There also exists Bayesian rating system for time-varying skill (Coulom,
+ 7
+ 8   2008).
+ 9       The approach used by Glicko and TrueSkill is, however, difficult to modify for new situations, e.g.,
+10   when we want to use the shifted logistic function for modeling answers to multiple-choice questions. Such
+
+
+
+
+                                                                                     PT
+11   modifications significantly complicate derivation of equations for numerical approximation. An alternative
+12   approach to numerical approximation is to use particle filtering, i.e., to represent the skill distribution
+13   discretely by a vector of values (Nižnan et al., 2015). This approach has larger time and memory requirements
+14   than the closed form expression approach, but it can be easily used with a modified likelihood function.
+
+
+
+
+                                                                                   RI
+15       From another point of view, the Elo rating system is closely related to stochastic gradient descent
+16   (SGD) Bottou (2010). The update rule in the Elo rating system corresponds to the update of parameters
+17   along the error gradient. The main difference is that SGD typically iterates over data several times, whereas
+
+
+
+
+                                                                         SC
+18   the Elo rating system uses just one pass. The parameter K corresponds to the learning rate used in SGD.
+19   Similarly to the described use of uncertainty function, SGD often uses learning rate that decreases during
+20   time. Previous research identified principled ways to determine the change of learning rate, e.g., the AdaGrad
+21   algorithm (Duchi et al., 2011).
+22
+
+
+
+                                                         U
+         Experience suggests that in the case of student modeling, principled approaches to modeling uncer-
+23   tainty actually do not bring significant advantages – it may be sufficient to model uncertainty in a simpler,
+24
+     pragmatic way (Nižnan et al., 2015). Several works have explored this approach:
+                                                      AN
+25
+26      • Papoušek et al. (2014) and Nižnan et al. (2015) use an uncertainty function U (n) = a/(1 + bn), where
+27        n is the number of answered questions and a, b are meta-parameters fitted to data (a = 1, b = 0.05),
+28
+        • Wauters et al. (2011) use an uncertainty function U (n) = w0 /(1 + aebn ), where n is the number of
+                                                     M
+
+29
+30        answered questions and w0 , a, b are meta-parameters fitted to data (w0 = 0.2, b = 50 and a between
+31        0.01 and 0.15),
+32
+                                        D
+
+
+33      • Klinkenberg et al. (2011) use uncertainty initialized as U = 1 and updated after each answer as follows:
+                    1     1
+34        U := U − 40 + 30  D where D is a time from a previous attempt (in days).
+35
+                                     TE
+
+
+
+
+36       Figure 2 shows comparison of difficulty estimates with two different values of constant K and with two
+37   different uncertainty functions. The estimation was done for simulated data (described in more detail in
+38   Section 3.1), i.e., we can compare estimates to the ground truth item difficulty. The figure shows that using
+39   an uncertainty function we can quickly get coarse estimates, which are then fine-tuned.
+                            EP
+
+
+
+
+40       In educational applications there is often an asymmetry in the number of available answers for items
+41   and students. In most systems we expect that (in the long run) each item is answered by many students,
+42   whereas for students the number of answer is typically smaller (often by orders of magnitude). It may thus
+43   be useful to use different uncertainty function for items and for students.
+                C
+
+
+
+
+44
+45   2.4. Multivariate Extension
+             AC
+
+
+
+
+46
+         Another extension of the Elo rating system is to measure several related skills at once. Instead of a single
+47
+48   skill for a student, we measure several correlated skills. This extension is not very relevant for application in
+49   games, but it was previously studied in the context of adaptive experiments in psychology (Doebler et al.,
+50   2014) and for modeling prior knowledge of geography facts (Nižnan et al., 2015). Although the multivariate
+51   extension has not been used in mainstream applications of the Elo rating system, it is particularly relevant for
+52   educational applications where we often work with multiple knowledge components (Koedinger et al., 2012),
+53   e.g., in mathematics such knowledge components may be “fractions”, “polynomials”, and “trigonometric
+54   functions”.
+55       Let us consider the following (simplified, but quite common) situation: each item belongs to a single
+56   knowledge component and skills for individual knowledge components are correlated, i.e., answers directly
+57
+58
+59                                                          5
+60
+61
+62
+63
+64
+65
+                                                  ACCEPTED MANUSCRIPT
+
+ 1
+ 2
+ 3
+ 4                                     fixed K                                                   uncertainty function
+ 5
+ 6
+     difficulty estimate
+
+
+
+
+                                                                           difficulty estimate
+ 7
+ 8
+ 9
+10
+
+
+
+
+                                                                                                          PT
+11
+12
+13
+14
+
+
+
+
+                                                                                                        RI
+15
+16
+17                                answers                                                                        answers
+
+
+
+
+                                                                                                 SC
+18
+        Figure 2: Difficulty estimates for two items with different values of the K parameter (left) and different uncertainty functions
+19      (right). The dotted line represents the ground truth value of the difficulty parameter.
+20
+21
+22      relevant for one knowledge component provide indirect information about other skills as well. The multi-
+
+
+
+                                                                  U
+23      variate extension is used as follows. Based on available data we compute correlations cij between knowledge
+24      components. For each knowledge component i we have a student skill parameter θsi . After a student s
+                                                               AN
+25      answers a question belonging to a knowledge component i we update estimates of all skills j as follows:
+26
+27                                            θsj := θsj + cij K(correct − P (correct = 1))
+28
+                                                              M
+
+29          Previous applications of multivariate extensions (Doebler et al., 2014; Nižnan et al., 2015) combine
+30      this basic approach with modeling of the uncertainty (instead of K they use one of the above discussed
+31      uncertainty functions) and with the use of a global skill.
+32
+                                                D
+
+
+33      2.5. Extension with Learning
+34
+35          As noted above, the basic difference between the Elo rating system and the basic IRT models is that IRT
+                                             TE
+
+
+
+
+36      models typically assume a fixed skill, whereas the Elo rating system can track changing skill. An advantage
+37      of the Elo rating system is that by setting the parameter K (respectively the uncertainty function) we can
+38      “tune” the system for a particular situation. If the skill is expected to change quickly, K should stay large.
+39      If the skill is expected to be (nearly) constant, we can use an uncertainty function which approaches zero
+                                  EP
+
+
+
+
+40      with an increasing number of attempts – in an educational setting this may be appropriate for example in
+41      the case of estimation of prior knowledge (Papoušek et al., 2014).
+42          An important difference between applications of the Elo rating system in games and education is an
+43      asymmetry between students and items in education. For items we expect their difficulty to be approximately
+                              C
+
+
+
+
+44      constant. In some cases it may be useful to track changes in difficulty, e.g., in geography general knowledge
+45      of some places may temporarily change due to their presence in media (Guinea during the Ebola epidemic).
+                           AC
+
+
+
+
+46      But such cases are exceptions and changes in difficulty are not expected to be large. On the other hand,
+47      changes in student skill are expected – after all, that is the aim of educational systems.
+48
+            In many educational applications there is also an asymmetry between correct and incorrect answers,
+49
+        since students learn just by an exposure to an item. An answer to an item is not only evidence of student’s
+50
+51      knowledge, but also an opportunity for learning. In such situations we need to perform different updates
+52      for correct and incorrect answers. Papoušek et al. (2014) and Pelánek (2015) propose such modification of
+53      the Elo rating system under the name “Performance Factor Analysis Extended / Elo” (PFAE). This name
+54      reflects the fact that the modification can be viewed from different perspective as an extension of Performance
+55      factor analysis (PFA), which is a student modeling approach based on the logistic function (Pavlik et al.,
+56      2009). The basic principle of the PFAE system is that in the update rule instead of a single constant K we
+57
+58
+59                                                                     6
+60
+61
+62
+63
+64
+65
+                                         ACCEPTED MANUSCRIPT
+
+ 1
+ 2
+ 3   use different constants γ, δ for correct and incorrect answers:
+ 4
+ 5
+                                (
+                                   θsi + γ · (1 − P (correctsi = 1)) if the answer was correct
+ 6                       θsi :=
+ 7                                 θsi + δ · P (correctsi = 1)       if the answer was incorrect
+ 8
+ 9   3. Difficulty Estimates: Comparison of Elo, IRT, and Proportion Correct
+10
+
+
+
+
+                                                                                    PT
+11       Wauters et al. (2012) provide a comparison of several methods for estimating difficulty of items: the
+12   proportion of correct answers, IRT models, the Elo rating system, and human judgment methods (e.g.,
+13   student feedback, expert rating). Their conclusion is that with a sample size of 200 students the data-driven
+14
+
+
+
+
+                                                                                  RI
+     methods provide reliable and highly correlated estimates. One interesting aspect of this analysis is that even
+15
+     the simple proportion correct method provides good estimates. This result casts doubts on the practical
+16
+     usefulness of more complex methods like IRT or the Elo rating systems.
+17
+         To explore this issue we analyze the relation among the proportion correct method, IRT models, and the
+
+
+
+
+                                                                        SC
+18
+19   Elo rating system using experiments with simulated data. We illustrate that the proportion correct method
+20   provides good estimates when the selection of items presented to students is random. In the case of adaptive
+21   selection of items, however, the proportion correct method fails. The Elo rating system is able to achieve in
+22   both cases very similar performance as the IRT approach, which is computationally much more demanding.
+
+
+
+                                                        U
+23
+24   3.1. Experimental Setting
+                                                     AN
+25       We generated simulated data using the Rasch model with skills and difficulties generated from the
+26   standard normal distribution, i.e., θs ∼ N (0, 1), di ∼ N (0, 1); an answer of a student s on an item i is a
+27   Bernoulli random variable with p = 1/(1 + e−(θs −di ) ). We assume that students solve only a portion of
+28   available items; for selection of items we consider both random selection and adaptive selection. In the case
+                                                    M
+
+29
+     of adaptive selection a student is presented with items having the closest difficulty to student’s skill. We
+30
+     also consider transition between these two extremes (a “random factor” between 0 and 1 sets the weight of
+31
+32   randomness in the selection).
+         From the generated data we want to recover the skill and difficulty parameters. To evaluate the quality
+                                        D
+
+
+33
+34   of estimated parameter values we measure the correlation with the ground truth values (using the Spearman
+35   correlation coefficient). For estimation of parameters we compare three methods:
+                                     TE
+
+
+
+
+36
+        • The proportion of correct answers (it produces estimates on a different scale than the ground truth
+37
+          values, but this does not impact the Spearman correlation coefficient).
+38
+39      • Joint maximum likelihood estimation (JMLE) – the standard iterative procedure for estimating pa-
+                            EP
+
+
+
+
+40        rameters of the Rasch model (De Ayala, 2008).
+41
+42      • The Elo rating system with the uncertainty function U (n) = a/(1 + bx). We use parameters a = 4, b =
+43        0.5; these values were optimized using grid search. The performance of the system is quite stable and
+                C
+
+
+
+
+44        the precise choice of parameter values is not fundamental to the presented results.
+45
+        Note that all these methods estimate one parameter per item, i.e., they do not differ in model complexity
+             AC
+
+
+
+
+46
+47   (number of free model parameters).
+48
+49   3.2. Results
+50
+        In the case that items are selected randomly all three methods provide very similar estimates and even
+51
+     the simple proportion correct method gives good prediction of item difficulty – this result is in line with
+52
+53   conclusions by Wauters et al. (2012). However, when items are selected adaptively, results are quite different.
+54      Figure 3 shows results for scenarios with (partially) adaptive selection of items. For the reported exper-
+55   iments we used 150 items and the number of items solved by each student is chosen randomly (uniformly)
+56   between 10 and 100. The graph on the left shows the quality of estimated item difficulty parameters de-
+57   pending on the number of students (for fully adaptive selection of items). The graph on the right shows the
+58
+59                                                          7
+60
+61
+62
+63
+64
+65
+                                            ACCEPTED MANUSCRIPT
+
+ 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+
+
+
+
+                                                                                          PT
+11
+12
+13
+14
+
+
+
+
+                                                                                        RI
+15
+16
+17   Figure 3: Correlation between generated and estimated difficulty parameters (JMLE = joint maximum likelihood estimation,
+
+
+
+
+                                                                             SC
+18   Elo = the Elo rating system, PC = the proportion of correct answers).
+19
+20
+     quality of estimated item difficulty parameters for 200 students with different degree of randomness in the
+21
+     item selection process.
+22
+
+
+
+                                                            U
+23       The results clearly demonstrate that in the case of adaptive selection of items the proportion correct
+24   method gives poor estimates. The quality of these estimates moreover does not improve with the increasing
+                                                         AN
+25   number of students. The Elo rating system, still a rather simple and efficient procedure, gives nearly the
+26   same estimates as joint maximum likelihood, which is a much more computationally demanding procedure
+27   (unsuitable for online updating of parameters). Also note that this scenario is optimistic for the JMLE
+28   method, since the simulated data adhere to the constancy of skill assumption, whereas real data typically
+     contain at least some variability.
+                                                        M
+
+29
+30       We have presented analysis of item difficulties, analogical results hold also for student skills – the Elo
+31   rating systems provides similar estimates as the JMLE estimation, the difference with respect to proportion
+32   correct is pronounced particularly for adaptive choice of items. Once the Elo rating system has good
+                                          D
+
+
+33   estimates of item difficulties, it can estimate the skill of new students rather quickly – under the simulation
+34   settings just 10 answers per student are sufficient to produce reasonable skill estimates (correlation 0.8 with
+35
+                                       TE
+
+
+
+
+     the ground truth).
+36
+37
+38   4. Case Study: Adaptive Practice of Geography
+39       As an illustration of an application of the Elo rating system in education we describe an online adaptive
+                             EP
+
+
+
+
+40   system Outline Maps (outlinemaps.org) for practice of geography facts (e.g., names and location of coun-
+41
+     tries, cities, mountains). Geography is a typical domain with widely varied prior knowledge of individual
+42
+     facts – Figure 4 visualizes significant differences in the prior knowledge of African countries (of mostly Czech
+43
+     students using the system). The system contains over 1200 geographical items, has been already used by
+                 C
+
+
+
+
+44
+45   more than 100,000 students, who answered in total more than 15 million questions.
+         Similar architecture (including the use of the Elo rating system) has been used for adaptive practice of
+              AC
+
+
+
+
+46
+47   facts in other domains: anatomy for medical students (practiceanatomy.com), practice of driving licence
+48   test (autoskolachytre.cz), Czech grammar (umimecesky.cz), animal names (Drábek, 2016), vocabulary
+49   learning (Mikula, 2015), or early reading (Kühpastová, 2015). The Elo rating system has also been applied
+50   for practicing basic mathematical operations in the Math Garden system (Klinkenberg et al., 2011) and
+51   the MatMat system (Řihák, 2015). Applications for practice of mathematics use extensions of the Elo
+52   rating system that incorporate response time (it is an important indicator of knowledge in the case of basic
+53   arithmetic).
+54
+55   4.1. System Structure
+56       The Outline Maps system estimates student knowledge and uses it to adaptively select questions of
+57   suitable difficulty (Papoušek et al., 2014). The system uses a target success rate (e.g., 75 %) and adaptively
+58
+59                                                              8
+60
+61
+62
+63
+64
+65
+                                              ACCEPTED MANUSCRIPT
+
+ 1
+ 2
+ 3
+ 4
+ 5                                                                                                                Zambia
+ 6
+                                                                                                                 Mali
+ 7
+
+
+
+
+                                                            difficulty estimate
+ 8                                                                                                                Jemen
+ 9
+10
+
+
+
+
+                                                                                              PT
+11                                                                                                                Tunis
+12
+13                                                                                                               Chile
+14
+
+
+
+
+                                                                                            RI
+15                                                                                                               Norway
+16
+17
+
+
+
+
+                                                                                      SC
+18                                                                                        answers
+19
+20   Figure 4: Left: A map of Africa colored by prior knowledge of countries, the shade corresponds to the probability of a correct
+21   answer for an average user of outlinemaps.org. Right: Difficulty of countries – estimates by the Elo rating system.
+22
+
+
+
+                                                              U
+23
+     selects questions in such a way that students’ achieved performance is close to this target (Papoušek and
+24
+     Pelánek, 2015). The system uses open questions (e.g., “Where is Egypt?”) and multiple-choice questions
+                                                           AN
+25
+26   with 2 to 6 options (e.g., “What is the name of the highlighted country?”). Students answer questions with
+27   the use of an interactive outline map. Students can also access a visualization of their knowledge using an
+28   open learner model.
+         The system has a modular structure consisting of three independent steps (Papoušek et al., 2014):
+                                                          M
+
+29
+30      1. Estimation of prior knowledge. Estimation of the probability that a student s knows an item i before
+31         the first question about this item. The estimate is based on previous answers of the student s and on
+32         answers of other students about the item i.
+                                            D
+
+
+33      2. Estimation of current knowledge. Estimation of the probability that a student s knows an item i based
+34
+           on the estimation of prior knowledge and a sequence of previous answers of the student s on questions
+35
+                                         TE
+
+
+
+
+           about the item i.
+36
+37      3. Question construction. Construction of a suitable question for a student based on the estimation of
+38         knowledge and the recent history of answers.
+39   The implementation of the first two steps uses some variant of the Elo rating system.
+                               EP
+
+
+
+
+40
+41   4.2. Estimation of Prior Skill
+42       For estimating prior skill we make a simplifying assumption that both students and items are homoge-
+43
+     neous – we assume that we can model students’ overall prior knowledge in the domain by a one-dimensional
+                 C
+
+
+
+
+44
+     parameter. Currently the users of the system are mostly from the Czech Republic. For a system with
+45
+     students with different backgrounds it would be necessary to extend the used model or to make predictions
+              AC
+
+
+
+
+46
+47   for different groups of students independently. The homogeneity of items is addressed below.
+48       We model students’ prior knowledge of geography as a single global skill θs ; difficulty of geography items
+49   is modeled by a difficulty parameter di . For estimation of these parameters we use the basic Elo rating
+50   system with the uncertainty function U (n) = a/(1 + bn), where n is the number of previous answers and
+51   a, b are meta-parameters. Using a grid search we have determined optimal values a = 1, b = 0.05. This
+52   exact choice of parameter values is not important, many different choices of a, b provide very similar results.
+53   Figure 4 shows difficulty estimates for several countries. The figure illustrates how the Elo rating system
+54   with an uncertainty function provides both fast coarse estimates after few answers and stability in the long
+55   run. Estimates by the Elo rating system with the uncertainty function U (n) = a/(1 + bn) are also very
+56   similar to estimates obtained by a more principled Bayesian approach to modeling uncertainty (Nižnan
+57   et al., 2015).
+58
+59                                                                                9
+60
+61
+62
+63
+64
+65
+                                          ACCEPTED MANUSCRIPT
+
+ 1
+ 2
+ 3       Although the assumptions in this context are closer to the assumptions of the Rasch model (the global
+ 4   skill and the difficulty of items are rather constant), the Elo rating system is much more suitable for an online
+ 5
+     application. Similarly to the above reported experiments with simulated data, the used Elo rating system
+ 6
+     provides very similar estimates as the joint maximum likelihood estimation for the Rasch model (Papoušek
+ 7
+ 8   et al., 2014). At the same time the Elo rating system is much faster and more suitable for online application
+ 9   than the iterative JMLE procedure.
+10       As stated above, the model uses an assumption of a single global skill. We have tested this assumption by
+
+
+
+
+                                                                                     PT
+11   computing the skill for independent subsets of items (countries from different continents) and then checking
+12   the correlation between the obtained skill – resulting correlations are around 0.6. Given that there is some
+13   intrinsic noise in the data and that the skills are estimated from a limited amount of questions, this is quite
+14   high correlation. We have explored the use of extended models with a hierarchy of skills (e.g., separate skills
+
+
+
+
+                                                                                   RI
+15   for individual continents). These models are able to improve accuracy of predictions, the improvement is
+16   statistically significant, but small (Nižnan et al., 2015). In this context we can also use the multivariate
+17   extension of the Elo rating system. This model again leads to only small improvement in prediction accuracy,
+
+
+
+
+                                                                         SC
+18   but the correlations used within the system can be of interest themselves (Nižnan et al., 2015).
+19
+20   4.3. Estimation of Current Skill
+21
+         We now turn to the estimation of students’ current knowledge, i.e., knowledge estimates based on repeated
+22
+
+
+
+                                                         U
+23   answers about a particular item. The input data for this estimation are an estimate of prior knowledge
+24   (provided by the above described model) and a history of previous attempts, i.e., a sequence of previous
+                                                      AN
+25   answers (the correctness of answers, information about question types, and timing information).
+26       In this setting we use the extension of the Elo rating system with learning (i.e., asymmetric update in
+27   the case of correct and incorrect answer). It is also useful to incorporate forgetting, particularly when we
+28   are modeling declarative knowledge (in contrast to procedural skills, which are the typical focus of student
+                                                     M
+
+29   modeling). We can do this by using time from previous attempt. We can model short term memory effect in
+30   the following way: the skill is “locally” increased by f (t) where t is the time (in seconds) between attempts.
+31   For this function we used either a fixed function f (t) = w/t with parameter w = 80 fitted to data (Papoušek
+32   et al., 2014) or a generic staircase function fitted to data (Pelánek, 2015). It should be possible to further
+                                        D
+
+
+33   improve the model by a more thorough treatment of forgetting and spacing effects, e.g., by incorporating
+34   some aspects of the ACT-R model (Pavlik and Anderson, 2005).
+35
+                                     TE
+
+
+
+
+         Papoušek et al. (2014) provide a comparison of the extended Elo rating system (PFAE) with standard
+36   student models: BKT (Corbett and Anderson, 1994) and PFA (Pavlik et al., 2009). The results show that
+37   the PFAE models achieves better predictive accuracy than both the standard PFA and BKT models. The
+38
+     results also show that the consideration of timing information further improves the performance of models.
+39
+                            EP
+
+
+
+
+40
+41   5. Discussion and Guidelines
+42
+43       To conclude, we provide a summary discussion of the Elo rating system and guidelines for its application
+                C
+
+
+
+
+44   in the practical development of adaptive educational systems.
+45
+             AC
+
+
+
+
+46   5.1. When is the Elo Rating System Applicable?
+47       In educational applications the Elo rating system is suitable mainly for adaptive practice or low stakes
+48
+     testing. The system provides reasonable estimates that are sufficient for guiding adaptive behaviour, but
+49
+     does not provide statistical guarantees on estimated skills (as opposed to well calibrated IRT models used
+50
+51   in computerized adaptive testing).
+52       The Elo rating system is particularly attractive when we want to build a reasonably behaving system
+53   quickly and cheaply. It allows us to get adaptive behaviour without expensive expert input, since the system
+54   can estimate difficulty of items (questions, problems) and skills of users just from data. Of course, to be
+55   able to learn from data, it needs to have enough data available. As our analysis and previous experience
+56   shows, the system needs at least 100 students to get good estimates of item difficulty.
+57
+58
+59                                                          10
+60
+61
+62
+63
+64
+65
+                                              ACCEPTED MANUSCRIPT
+
+ 1
+ 2
+ 3       Typical examples of potential applications of the Elo rating system are in domains with simple structure:
+ 4   learning of factual knowledge, foreign language vocabulary, or practice of basic skills (e.g., arithmetic). More
+ 5
+     complex domains, involving for example prerequisite relations among skills, require more involved student
+ 6
+     modeling approaches (Desmarais and Baker, 2012) or a novel extension of the Elo rating system.
+ 7
+ 8       The Elo rating system is attractive particularly for medium sized target groups, e.g., elementary and
+ 9   high school knowledge for speakers of smaller languages or company vocational training. In these cases it
+10   is usually not feasible to construct sophisticated educational systems by experts, particularly in the context
+
+
+
+
+                                                                                               PT
+11   of fast changes of the technological landscape. At the same time these target groups are sufficiently large
+12   to enable the ‘learning from data’ approach. The use of the Elo rating system provides a way to implement
+13   adaptive behaviour quickly and cheaply.
+14
+
+
+
+
+                                                                                             RI
+15   5.2. What are the Advantages of the Elo Rating System?
+16       To appreciate advantages of the Elo rating system it is useful to compare it to alternative approaches
+17   to skill estimation. Basic item response theory models assume a constant skill. These models are thus
+
+
+
+
+                                                                                  SC
+18   applicable only for short tests (where we do not expect learning) or for modeling very “coarse-grained” skills
+19
+     (where the overall learning is slow). We can model fined-grained skill and learning over short term using
+20
+     models like Bayesian Knowledge Tracing or Performance Factor Analysis. These models, however, make
+21
+     specific assumptions about learning. The Elo rating system is flexible – it can model changing skill, but does
+22
+
+
+
+                                                               U
+23   not make fixed assumptions about the nature of learning. Since the Elo rating system does not make any
+24   specific assumptions, it should not be expected to bring an optimal performance for a particular situation.
+                                                            AN
+25   But it can be easily applied in a wide range of situations and provides reasonable accuracy. The system is
+26   also easy to modify for different situations, e.g., the use of multiple choice options or incorporation of timing
+27   information.
+28       A practically important advantage of the Elo rating system is that it is very simple to implement.
+                                                           M
+
+29   The basic Elo rating system needs to store just a single parameter for each student and each item; these
+30   parameters are updated after each answer using simple equations. The system requires us to set only the
+31   parameter K (respectively the uncertainty function) – other student models typically have more parameters
+32   and require calibration or complex parameter fitting.
+                                            D
+
+
+33       The use of the Elo rating system allows easy updating of the content of the education system. When we
+34   change or add a new item into the system, we just (re)set its difficulty to 0 and the system learns the item
+35
+                                         TE
+
+
+
+
+     difficulty from students’ answers. Overall, the application of the Elo rating system is cheap as it requires
+36   expert input neither for domain knowledge nor for implementation.
+37
+38
+     5.3. Which Variant of the Elo Rating System is Preferable?
+39
+                               EP
+
+
+
+
+40      The reported experience suggest that the basic version of the Elo rating system extended with a simple
+41   uncertainty function U (n) = a/(1 + bn) provides a good starting point (e.g., with values a = 1, b = 0.05;
+42   once enough data are collected these values can be easily fitted using a grid search). More complex variants
+43   can improve performance, but the improvement is often small and may not be worth the increase in imple-
+                 C
+
+
+
+
+44   mentation complexity. It is useful to focus only on extensions which are particularly suited for a specific
+45   educational application (e.g., incorporation of response times in the case of mathematics).
+              AC
+
+
+
+
+46
+47
+48   References
+49   Antal, M., 2013. On the use of elo rating for adaptive assessment. Studia Universitatis Babes-Bolyai, Informatica 58.
+50   Arroyo, I., Woolf, B.P., Burelson, W., Muldner, K., Rai, D., Tai, M., 2014. A multimedia adaptive tutoring system for
+51     mathematics that addresses cognition, metacognition and affect. International Journal of Artificial Intelligence in Education
+52     24, 387–426.
+     Attali, Y., 2014. A ranking method for evaluating constructed responses. Educational and Psychological Measurement 74,
+53
+       795–808.
+54   Bottou, L., 2010. Large-scale machine learning with stochastic gradient descent, in: Proceedings of COMPSTAT’2010. Springer,
+55     pp. 177–186.
+56   Bradley, R.A., Terry, M.E., 1952. Rank analysis of incomplete block designs: I. the method of paired comparisons. Biometrika
+57     , 324–345.
+58
+59                                                                 11
+60
+61
+62
+63
+64
+65
+                                                 ACCEPTED MANUSCRIPT
+
+ 1
+ 2
+ 3   Brinkhuis, M.J., Maris, G., 2009. Dynamic parameter estimation in student monitoring systems. Measurement and Research
+ 4      Department Reports (Rep. No. 2009-1). Arnhem: Cito .
+ 5   Corbett, A., Anderson, J., 1994. Knowledge tracing: Modeling the acquisition of procedural knowledge. User modeling and
+ 6      user-adapted interaction 4, 253–278.
+ 7   Coulom, R., 2007. Computing elo ratings of move patterns in the game of go. ICGA Journal 30, 198–208.
+     Coulom, R., 2008. Whole-history rating: A bayesian rating system for players of time-varying strength, in: Computers and
+ 8      games. Springer, pp. 113–124.
+ 9   Das Sarma, A., Das Sarma, A., Gollapudi, S., Panigrahy, R., 2010. Ranking mechanisms in twitter-like forums, in: Proc. of
+10      the third ACM international conference on Web search and data mining, ACM. pp. 21–30.
+
+
+
+
+                                                                                                   PT
+11   De Ayala, R., 2008. The theory and practice of item response theory. The Guilford Press.
+12   Desmarais, M.C., Baker, R.S., 2012. A review of recent advances in learner and skill modeling in intelligent learning environ-
+        ments. User Modeling and User-Adapted Interaction 22, 9–38.
+13   Doebler, P., Alavash, M., Giessing, C., 2014. Adaptive experiments with a multivariate elo-type algorithm. Behavior Research
+14
+
+
+
+
+                                                                                                 RI
+        Methods , 1–11.
+15   Drábek, J., 2016. Adaptabilnı́ systém pro procvičovánı́ faktografických znalostı́ z biologie. Master’s thesis. Faculty of Infor-
+16      matics, Masaryk University Brno.
+17   Drasgow, F., Levine, M.V., Tsien, S., Williams, B., Mead, A.D., 1995. Fitting polytomous item response theory models to
+        multiple-choice tests. Applied Psychological Measurement 19, 143–166.
+
+
+
+
+                                                                                      SC
+18   Duchi, J., Hazan, E., Singer, Y., 2011. Adaptive subgradient methods for online learning and stochastic optimization. The
+19      Journal of Machine Learning Research 12, 2121–2159.
+20   Elo, A.E., 1978. The rating of chessplayers, past and present. volume 3. Batsford London.
+21   Glickman, M.E., 1995. Chess rating systems. American Chess Journal 3, 102.
+22   Glickman, M.E., 1999. Parameter estimation in large dynamic paired comparison experiments. Journal of the Royal Statistical
+
+
+
+
+                                                                  U
+        Society: Series C (Applied Statistics) 48, 377–394.
+23   Hacker, S., Von Ahn, L., 2009. Matchin: eliciting user preferences with an online game, in: Proc. of the SIGCHI Conference
+24      on Human Factors in Computing Systems, ACM. pp. 1207–1216.
+                                                               AN
+25   Herbrich, R., Minka, T., Graepel, T., 2006. Trueskill: A bayesian skill rating system, in: Advances in Neural Information
+26      Processing Systems, pp. 569–576.
+27   Hvattum, L.M., Arntzen, H., 2010. Using elo ratings for match result prediction in association football. International Journal
+        of forecasting 26, 460–470.
+28   Jarušek, P., Pelánek, R., 2012. Analysis of a simple model of problem solving times, in: Proc. of Intelligent Tutoring Systems,
+                                                              M
+
+29      Springer. pp. 379–388.
+30   Klinkenberg, S., Straatemeier, M., Van der Maas, H., 2011. Computer adaptive practice of maths ability using a new item
+31      response model for on the fly ability and difficulty estimation. Computers & Education 57, 1813–1824.
+32   Koedinger, K.R., Corbett, A.T., Perfetti, C., 2012. The knowledge-learning-instruction framework: Bridging the science-
+                                              D
+
+
+        practice chasm to enhance robust student learning. Cognitive Science 36, 757–798.
+33   Kühpastová, M., 2015. Adaptabilnı́ systém pro procvičovánı́ čtenı́. Master’s thesis. Faculty of Informatics, Masaryk University
+34      Brno.
+35
+                                           TE
+
+
+
+
+     Mikula, D., 2015. Adaptabilnı́ systém pro procvičovánı́ anglické slovnı́ zásoby. Master’s thesis. Faculty of Informatics, Masaryk
+36      University Brno.
+37   Nižnan, J., Pelánek, R., Řihák, J., 2015. Student models for prior knowledge estimation, in: Proc. of Educational Data Mining,
+        pp. 109–116.
+38
+     Papoušek, J., Pelánek, R., 2015. Impact of adaptive educational system behaviour on student motivation, in: Proc. of Artificial
+39      Intelligence in Education, pp. 348–357.
+                                EP
+
+
+
+
+40   Papoušek, J., Pelánek, R., Stanislav, V., 2014. Adaptive practice of facts in domains with varied prior knowledge, in: Proc. of
+41      Educational Data Mining, pp. 6–13.
+42   Papoušek, J., Pelánek, R., Řihák, J., Stanislav, V., 2015. An analysis of response times in adaptive practice of geography facts,
+        in: Proc. of Educational Data Mining, pp. 562–563.
+43
+     Pavlik, P.I., Anderson, J.R., 2005. Practice and forgetting effects on vocabulary memory: An activation-based model of the
+                  C
+
+
+
+
+44      spacing effect. Cognitive Science 29, 559–586.
+45   Pavlik, P.I., Cen, H., Koedinger, K.R., 2009. Performance factors analysis-a new alternative to knowledge tracing., in: Proc.
+               AC
+
+
+
+
+46      of Artificial Intelligence in Education, IOS Press. pp. 531–538.
+47   Pelánek, R., 2014. Application of time decay functions and Elo system in student modeling, in: Proc. of Educational Data
+        Mining, pp. 21–27.
+48
+     Pelánek, R., 2015. Modeling students’ memory for application in adaptive educational systems, in: Proc. of Educational Data
+49      Mining, pp. 480–483.
+50   Pieters, W., van der Ven, S.H., Probst, C.W., 2012. A move in the security measurement stalemate: Elo-style ratings to
+51      quantify vulnerability, in: Proc. of the 2012 workshop on New security paradigms, ACM. pp. 1–14.
+52   Ritter, S., Anderson, J.R., Koedinger, K.R., Corbett, A., 2007. Cognitive tutor: Applied research in mathematics education.
+        Psychonomic bulletin & review 14, 249–255.
+53
+     Sonas, J., 2002. The sonas rating formula – better than elo? Chessbase news .
+54   Vaněk, L., 2014. Elo systém a modelovánı́ času řešenı́. Master’s thesis. Masaryk University Brno.
+55   Řihák, J., 2015. Use of time information in models behind adaptive system for building fluency in mathematics, in: Educational
+56      Data Mining, Doctoral Consortium, pp. 642–644.
+57   Wang, X., Berger, J.O., Burdick, D.S., et al., 2013. Bayesian analysis of dynamic item response models in educational testing.
+58
+59                                                                    12
+60
+61
+62
+63
+64
+65
+                                              ACCEPTED MANUSCRIPT
+
+ 1
+ 2
+ 3    The Annals of Applied Statistics 7, 126–153.
+ 4   Wang, Y., Heffernan, N., 2013. Extending knowledge tracing to allow partial credit: Using continuous versus binary nodes, in:
+ 5    Prof. of Artificial Intelligence in Education, Springer. pp. 181–188.
+ 6   Wauters, K., Desmet, P., Van Den Noortgate, W., 2011. Monitoring learners’ proficiency: Weight adaptation in the elo rating
+ 7    system, in: Proc. of Educational Data Mining, pp. 247–252.
+     Wauters, K., Desmet, P., Van Den Noortgate, W., 2012. Item difficulty estimation: An auspicious collaboration between data
+ 8    and judgment. Computers & Education 58, 1183–1193.
+ 9
+10
+
+
+
+
+                                                                                             PT
+11
+12
+13
+14
+
+
+
+
+                                                                                           RI
+15
+16
+17
+
+
+
+
+                                                                                 SC
+18
+19
+20
+21
+22
+
+
+
+                                                              U
+23
+24
+                                                           AN
+25
+26
+27
+28
+                                                          M
+
+29
+30
+31
+32
+                                            D
+
+
+33
+34
+35
+                                         TE
+
+
+
+
+36
+37
+38
+39
+                              EP
+
+
+
+
+40
+41
+42
+43
+                 C
+
+
+
+
+44
+45
+              AC
+
+
+
+
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59                                                                13
+60
+61
+62
+63
+64
+65
+                                 ACCEPTED MANUSCRIPT
+
+
+
+The Elo rating system was originally developed for rating chess players.
+The system is well suited for development of adaptive educational systems.
+Relevant variants of the Elo rating systems are described.
+The system is compared with alternative methods for estimating item difficulty.
+Application of the system is illustrated using a geography case study.
+
+
+
+
+                                                                         PT
+                                                                       RI
+                                               U              SC
+                                            AN
+                                           M
+                               D
+                            TE
+         C          EP
+      AC
+

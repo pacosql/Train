@@ -1,0 +1,2052 @@
+{
+ "habilidad": "ANA.APLDER.05",
+ "generado_por": "claude (skill mates10-generar-ejercicios v1)",
+ "ejercicios": [
+  {
+   "dificultad": 1,
+   "enunciado": "Con 40 m de valla se quiere cercar un recinto rectangular para ovejas de la mayor área posible. ¿Cuál es esa área máxima?",
+   "respuesta": "100 m²",
+   "distractores": [
+    {
+     "valor": "10 m²",
+     "error": "E02"
+    },
+    {
+     "valor": "400 m²",
+     "error": null
+    },
+    {
+     "valor": "120 m²",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "10 × 10",
+   "secundarias": [],
+   "explicacion_nino": "Área A = x·y y condición 2x + 2y = 40, así que y = 20 − x y A(x) = x(20 − x). A'(x) = 20 − 2x = 0 → x = 10; A''= −2 < 0, máximo. Entonces y = 10: es un cuadrado de lado 10 m y área 100 m².",
+   "explicacion_adulto": "Está aprendiendo el esquema de la optimización: función a optimizar, condición que liga las variables, sustituir para dejar una sola variable, derivar, igualar a cero, comprobar que es máximo o mínimo y responder a lo que se pregunta. Los errores típicos son no usar la condición (quedarse con dos variables) y responder con la x cuando se pide otra cosa (el área, el precio…). Pídale que subraye qué pregunta el enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "función",
+     "resultado": "A = x·y",
+     "texto": "Qué hay que hacer máximo o mínimo."
+    },
+    {
+     "paso": 2,
+     "operacion": "condición",
+     "resultado": "2x + 2y = 40",
+     "texto": "Relación entre las variables."
+    },
+    {
+     "paso": 3,
+     "operacion": "una variable",
+     "resultado": "A(x) = x(20 − x)",
+     "texto": "Sustituimos la condición."
+    },
+    {
+     "paso": 4,
+     "operacion": "derivar",
+     "resultado": "20 − 2x = 0",
+     "texto": "f'(x) = 0."
+    },
+    {
+     "paso": 5,
+     "operacion": "punto crítico",
+     "resultado": "x = 10",
+     "texto": "Comprobamos con f'' o el signo de f'."
+    },
+    {
+     "paso": 6,
+     "operacion": "responder",
+     "resultado": "100 m²",
+     "texto": "Contestamos a lo que se pregunta."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Con 36 m de valla se quiere cercar una zona de juegos rectangular de la mayor área posible. ¿Cuánto deben medir sus lados?",
+   "respuesta": "9 m y 9 m",
+   "distractores": [
+    {
+     "valor": "11 m y 7 m",
+     "error": null
+    },
+    {
+     "valor": "81 m y 1 m",
+     "error": "E02"
+    },
+    {
+     "valor": "18 m y 18 m",
+     "error": "E01"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Área A = x·y y condición 2x + 2y = 36, así que y = 18 − x y A(x) = x(18 − x). A'(x) = 18 − 2x = 0 → x = 9; A''= −2 < 0, máximo. Entonces y = 9: es un cuadrado de lado 9 m y área 81 m².",
+   "explicacion_adulto": "Está aprendiendo el esquema de la optimización: función a optimizar, condición que liga las variables, sustituir para dejar una sola variable, derivar, igualar a cero, comprobar que es máximo o mínimo y responder a lo que se pregunta. Los errores típicos son no usar la condición (quedarse con dos variables) y responder con la x cuando se pide otra cosa (el área, el precio…). Pídale que subraye qué pregunta el enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "función",
+     "resultado": "A = x·y",
+     "texto": "Qué hay que hacer máximo o mínimo."
+    },
+    {
+     "paso": 2,
+     "operacion": "condición",
+     "resultado": "2x + 2y = 36",
+     "texto": "Relación entre las variables."
+    },
+    {
+     "paso": 3,
+     "operacion": "una variable",
+     "resultado": "A(x) = x(18 − x)",
+     "texto": "Sustituimos la condición."
+    },
+    {
+     "paso": 4,
+     "operacion": "derivar",
+     "resultado": "18 − 2x = 0",
+     "texto": "f'(x) = 0."
+    },
+    {
+     "paso": 5,
+     "operacion": "punto crítico",
+     "resultado": "x = 9",
+     "texto": "Comprobamos con f'' o el signo de f'."
+    },
+    {
+     "paso": 6,
+     "operacion": "responder",
+     "resultado": "9 m y 9 m",
+     "texto": "Contestamos a lo que se pregunta."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Con 60 m de valla se quiere cercar una zona de juegos rectangular de la mayor área posible. ¿Cuál es esa área máxima?",
+   "respuesta": "225 m²",
+   "distractores": [
+    {
+     "valor": "15 m²",
+     "error": "E02"
+    },
+    {
+     "valor": "900 m²",
+     "error": null
+    },
+    {
+     "valor": "255 m²",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "15 × 15",
+   "secundarias": [],
+   "explicacion_nino": "Área A = x·y y condición 2x + 2y = 60, así que y = 30 − x y A(x) = x(30 − x). A'(x) = 30 − 2x = 0 → x = 15; A''= −2 < 0, máximo. Entonces y = 15: es un cuadrado de lado 15 m y área 225 m².",
+   "explicacion_adulto": "Está aprendiendo el esquema de la optimización: función a optimizar, condición que liga las variables, sustituir para dejar una sola variable, derivar, igualar a cero, comprobar que es máximo o mínimo y responder a lo que se pregunta. Los errores típicos son no usar la condición (quedarse con dos variables) y responder con la x cuando se pide otra cosa (el área, el precio…). Pídale que subraye qué pregunta el enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "función",
+     "resultado": "A = x·y",
+     "texto": "Qué hay que hacer máximo o mínimo."
+    },
+    {
+     "paso": 2,
+     "operacion": "condición",
+     "resultado": "2x + 2y = 60",
+     "texto": "Relación entre las variables."
+    },
+    {
+     "paso": 3,
+     "operacion": "una variable",
+     "resultado": "A(x) = x(30 − x)",
+     "texto": "Sustituimos la condición."
+    },
+    {
+     "paso": 4,
+     "operacion": "derivar",
+     "resultado": "30 − 2x = 0",
+     "texto": "f'(x) = 0."
+    },
+    {
+     "paso": 5,
+     "operacion": "punto crítico",
+     "resultado": "x = 15",
+     "texto": "Comprobamos con f'' o el signo de f'."
+    },
+    {
+     "paso": 6,
+     "operacion": "responder",
+     "resultado": "225 m²",
+     "texto": "Contestamos a lo que se pregunta."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Con 100 m de valla se quiere cercar una zona de juegos rectangular de la mayor área posible. ¿Cuánto deben medir sus lados?",
+   "respuesta": "25 m y 25 m",
+   "distractores": [
+    {
+     "valor": "27 m y 23 m",
+     "error": null
+    },
+    {
+     "valor": "625 m y 1 m",
+     "error": "E02"
+    },
+    {
+     "valor": "50 m y 50 m",
+     "error": "E01"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Área A = x·y y condición 2x + 2y = 100, así que y = 50 − x y A(x) = x(50 − x). A'(x) = 50 − 2x = 0 → x = 25; A''= −2 < 0, máximo. Entonces y = 25: es un cuadrado de lado 25 m y área 625 m².",
+   "explicacion_adulto": "Está aprendiendo el esquema de la optimización: función a optimizar, condición que liga las variables, sustituir para dejar una sola variable, derivar, igualar a cero, comprobar que es máximo o mínimo y responder a lo que se pregunta. Los errores típicos son no usar la condición (quedarse con dos variables) y responder con la x cuando se pide otra cosa (el área, el precio…). Pídale que subraye qué pregunta el enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "función",
+     "resultado": "A = x·y",
+     "texto": "Qué hay que hacer máximo o mínimo."
+    },
+    {
+     "paso": 2,
+     "operacion": "condición",
+     "resultado": "2x + 2y = 100",
+     "texto": "Relación entre las variables."
+    },
+    {
+     "paso": 3,
+     "operacion": "una variable",
+     "resultado": "A(x) = x(50 − x)",
+     "texto": "Sustituimos la condición."
+    },
+    {
+     "paso": 4,
+     "operacion": "derivar",
+     "resultado": "50 − 2x = 0",
+     "texto": "f'(x) = 0."
+    },
+    {
+     "paso": 5,
+     "operacion": "punto crítico",
+     "resultado": "x = 25",
+     "texto": "Comprobamos con f'' o el signo de f'."
+    },
+    {
+     "paso": 6,
+     "operacion": "responder",
+     "resultado": "25 m y 25 m",
+     "texto": "Contestamos a lo que se pregunta."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Con 48 m de valla se quiere cercar una zona de juegos rectangular de la mayor área posible. ¿Cuál es esa área máxima?",
+   "respuesta": "144 m²",
+   "distractores": [
+    {
+     "valor": "12 m²",
+     "error": "E02"
+    },
+    {
+     "valor": "576 m²",
+     "error": null
+    },
+    {
+     "valor": "168 m²",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "12 × 12",
+   "secundarias": [],
+   "explicacion_nino": "Área A = x·y y condición 2x + 2y = 48, así que y = 24 − x y A(x) = x(24 − x). A'(x) = 24 − 2x = 0 → x = 12; A''= −2 < 0, máximo. Entonces y = 12: es un cuadrado de lado 12 m y área 144 m².",
+   "explicacion_adulto": "Está aprendiendo el esquema de la optimización: función a optimizar, condición que liga las variables, sustituir para dejar una sola variable, derivar, igualar a cero, comprobar que es máximo o mínimo y responder a lo que se pregunta. Los errores típicos son no usar la condición (quedarse con dos variables) y responder con la x cuando se pide otra cosa (el área, el precio…). Pídale que subraye qué pregunta el enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "función",
+     "resultado": "A = x·y",
+     "texto": "Qué hay que hacer máximo o mínimo."
+    },
+    {
+     "paso": 2,
+     "operacion": "condición",
+     "resultado": "2x + 2y = 48",
+     "texto": "Relación entre las variables."
+    },
+    {
+     "paso": 3,
+     "operacion": "una variable",
+     "resultado": "A(x) = x(24 − x)",
+     "texto": "Sustituimos la condición."
+    },
+    {
+     "paso": 4,
+     "operacion": "derivar",
+     "resultado": "24 − 2x = 0",
+     "texto": "f'(x) = 0."
+    },
+    {
+     "paso": 5,
+     "operacion": "punto crítico",
+     "resultado": "x = 12",
+     "texto": "Comprobamos con f'' o el signo de f'."
+    },
+    {
+     "paso": 6,
+     "operacion": "responder",
+     "resultado": "144 m²",
+     "texto": "Contestamos a lo que se pregunta."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Con 80 m de valla se quiere cercar una zona de juegos rectangular de la mayor área posible. ¿Cuánto deben medir sus lados?",
+   "respuesta": "20 m y 20 m",
+   "distractores": [
+    {
+     "valor": "22 m y 18 m",
+     "error": null
+    },
+    {
+     "valor": "400 m y 1 m",
+     "error": "E02"
+    },
+    {
+     "valor": "40 m y 40 m",
+     "error": "E01"
+    }
+   ],
+   "expresion_calculo": null,
+   "secundarias": [],
+   "explicacion_nino": "Área A = x·y y condición 2x + 2y = 80, así que y = 40 − x y A(x) = x(40 − x). A'(x) = 40 − 2x = 0 → x = 20; A''= −2 < 0, máximo. Entonces y = 20: es un cuadrado de lado 20 m y área 400 m².",
+   "explicacion_adulto": "Está aprendiendo el esquema de la optimización: función a optimizar, condición que liga las variables, sustituir para dejar una sola variable, derivar, igualar a cero, comprobar que es máximo o mínimo y responder a lo que se pregunta. Los errores típicos son no usar la condición (quedarse con dos variables) y responder con la x cuando se pide otra cosa (el área, el precio…). Pídale que subraye qué pregunta el enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "función",
+     "resultado": "A = x·y",
+     "texto": "Qué hay que hacer máximo o mínimo."
+    },
+    {
+     "paso": 2,
+     "operacion": "condición",
+     "resultado": "2x + 2y = 80",
+     "texto": "Relación entre las variables."
+    },
+    {
+     "paso": 3,
+     "operacion": "una variable",
+     "resultado": "A(x) = x(40 − x)",
+     "texto": "Sustituimos la condición."
+    },
+    {
+     "paso": 4,
+     "operacion": "derivar",
+     "resultado": "40 − 2x = 0",
+     "texto": "f'(x) = 0."
+    },
+    {
+     "paso": 5,
+     "operacion": "punto crítico",
+     "resultado": "x = 20",
+     "texto": "Comprobamos con f'' o el signo de f'."
+    },
+    {
+     "paso": 6,
+     "operacion": "responder",
+     "resultado": "20 m y 20 m",
+     "texto": "Contestamos a lo que se pregunta."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Con 120 m de valla se quiere cercar un corral rectangular de la mayor área posible. ¿Cuál es esa área máxima?",
+   "respuesta": "900 m²",
+   "distractores": [
+    {
+     "valor": "30 m²",
+     "error": "E02"
+    },
+    {
+     "valor": "3600 m²",
+     "error": null
+    },
+    {
+     "valor": "960 m²",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "30 × 30",
+   "secundarias": [],
+   "explicacion_nino": "Área A = x·y y condición 2x + 2y = 120, así que y = 60 − x y A(x) = x(60 − x). A'(x) = 60 − 2x = 0 → x = 30; A''= −2 < 0, máximo. Entonces y = 30: es un cuadrado de lado 30 m y área 900 m².",
+   "explicacion_adulto": "Está aprendiendo el esquema de la optimización: función a optimizar, condición que liga las variables, sustituir para dejar una sola variable, derivar, igualar a cero, comprobar que es máximo o mínimo y responder a lo que se pregunta. Los errores típicos son no usar la condición (quedarse con dos variables) y responder con la x cuando se pide otra cosa (el área, el precio…). Pídale que subraye qué pregunta el enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "función",
+     "resultado": "A = x·y",
+     "texto": "Qué hay que hacer máximo o mínimo."
+    },
+    {
+     "paso": 2,
+     "operacion": "condición",
+     "resultado": "2x + 2y = 120",
+     "texto": "Relación entre las variables."
+    },
+    {
+     "paso": 3,
+     "operacion": "una variable",
+     "resultado": "A(x) = x(60 − x)",
+     "texto": "Sustituimos la condición."
+    },
+    {
+     "paso": 4,
+     "operacion": "derivar",
+     "resultado": "60 − 2x = 0",
+     "texto": "f'(x) = 0."
+    },
+    {
+     "paso": 5,
+     "operacion": "punto crítico",
+     "resultado": "x = 30",
+     "texto": "Comprobamos con f'' o el signo de f'."
+    },
+    {
+     "paso": 6,
+     "operacion": "responder",
+     "resultado": "900 m²",
+     "texto": "Contestamos a lo que se pregunta."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Se quiere vallar una parcela rectangular pegada a un muro recto, de modo que el lado del muro no necesita valla. Hay 40 m de valla. ¿Cuál es el área máxima que se puede cercar?",
+   "respuesta": "200 m²",
+   "distractores": [
+    {
+     "valor": "10 m²",
+     "error": "E02"
+    },
+    {
+     "valor": "100 m²",
+     "error": "E01"
+    },
+    {
+     "valor": "169 m²",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "10 × 20",
+   "secundarias": [],
+   "explicacion_nino": "Llama x a los lados perpendiculares al muro e y al paralelo. Condición: 2x + y = 40, así que y = 40 − 2x. Área A(x) = x(40 − 2x) = 40x − 2x². A'(x) = 40 − 4x = 0 → x = 10 m; A'' = −4 < 0, máximo. Entonces y = 20 m y el área es 200 m².",
+   "explicacion_adulto": "Está aprendiendo el esquema de la optimización: función a optimizar, condición que liga las variables, sustituir para dejar una sola variable, derivar, igualar a cero, comprobar que es máximo o mínimo y responder a lo que se pregunta. Los errores típicos son no usar la condición (quedarse con dos variables) y responder con la x cuando se pide otra cosa (el área, el precio…). Pídale que subraye qué pregunta el enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "función",
+     "resultado": "A = x·y",
+     "texto": "Qué hay que hacer máximo o mínimo."
+    },
+    {
+     "paso": 2,
+     "operacion": "condición",
+     "resultado": "2x + y = 40",
+     "texto": "Relación entre las variables."
+    },
+    {
+     "paso": 3,
+     "operacion": "una variable",
+     "resultado": "A(x) = 40x − 2x²",
+     "texto": "Sustituimos la condición."
+    },
+    {
+     "paso": 4,
+     "operacion": "derivar",
+     "resultado": "40 − 4x = 0",
+     "texto": "f'(x) = 0."
+    },
+    {
+     "paso": 5,
+     "operacion": "punto crítico",
+     "resultado": "x = 10",
+     "texto": "Comprobamos con f'' o el signo de f'."
+    },
+    {
+     "paso": 6,
+     "operacion": "responder",
+     "resultado": "200 m²",
+     "texto": "Contestamos a lo que se pregunta."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Se quiere vallar una parcela rectangular pegada a un muro recto, de modo que el lado del muro no necesita valla. Hay 60 m de valla. ¿Cuánto debe medir el lado paralelo al muro?",
+   "respuesta": "30 m",
+   "distractores": [
+    {
+     "valor": "15 m",
+     "error": "E01"
+    },
+    {
+     "valor": "20 m",
+     "error": null
+    },
+    {
+     "valor": "40 m",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "60 − 2 × 15",
+   "secundarias": [],
+   "explicacion_nino": "Llama x a los lados perpendiculares al muro e y al paralelo. Condición: 2x + y = 60, así que y = 60 − 2x. Área A(x) = x(60 − 2x) = 60x − 2x². A'(x) = 60 − 4x = 0 → x = 15 m; A'' = −4 < 0, máximo. Entonces y = 30 m y el área es 450 m².",
+   "explicacion_adulto": "Está aprendiendo el esquema de la optimización: función a optimizar, condición que liga las variables, sustituir para dejar una sola variable, derivar, igualar a cero, comprobar que es máximo o mínimo y responder a lo que se pregunta. Los errores típicos son no usar la condición (quedarse con dos variables) y responder con la x cuando se pide otra cosa (el área, el precio…). Pídale que subraye qué pregunta el enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "función",
+     "resultado": "A = x·y",
+     "texto": "Qué hay que hacer máximo o mínimo."
+    },
+    {
+     "paso": 2,
+     "operacion": "condición",
+     "resultado": "2x + y = 60",
+     "texto": "Relación entre las variables."
+    },
+    {
+     "paso": 3,
+     "operacion": "una variable",
+     "resultado": "A(x) = 60x − 2x²",
+     "texto": "Sustituimos la condición."
+    },
+    {
+     "paso": 4,
+     "operacion": "derivar",
+     "resultado": "60 − 4x = 0",
+     "texto": "f'(x) = 0."
+    },
+    {
+     "paso": 5,
+     "operacion": "punto crítico",
+     "resultado": "x = 15",
+     "texto": "Comprobamos con f'' o el signo de f'."
+    },
+    {
+     "paso": 6,
+     "operacion": "responder",
+     "resultado": "30 m",
+     "texto": "Contestamos a lo que se pregunta."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Se quiere vallar una parcela rectangular pegada a un muro recto, de modo que el lado del muro no necesita valla. Hay 80 m de valla. ¿Cuál es el área máxima que se puede cercar?",
+   "respuesta": "800 m²",
+   "distractores": [
+    {
+     "valor": "20 m²",
+     "error": "E02"
+    },
+    {
+     "valor": "400 m²",
+     "error": "E01"
+    },
+    {
+     "valor": "676 m²",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "20 × 40",
+   "secundarias": [],
+   "explicacion_nino": "Llama x a los lados perpendiculares al muro e y al paralelo. Condición: 2x + y = 80, así que y = 80 − 2x. Área A(x) = x(80 − 2x) = 80x − 2x². A'(x) = 80 − 4x = 0 → x = 20 m; A'' = −4 < 0, máximo. Entonces y = 40 m y el área es 800 m².",
+   "explicacion_adulto": "Está aprendiendo el esquema de la optimización: función a optimizar, condición que liga las variables, sustituir para dejar una sola variable, derivar, igualar a cero, comprobar que es máximo o mínimo y responder a lo que se pregunta. Los errores típicos son no usar la condición (quedarse con dos variables) y responder con la x cuando se pide otra cosa (el área, el precio…). Pídale que subraye qué pregunta el enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "función",
+     "resultado": "A = x·y",
+     "texto": "Qué hay que hacer máximo o mínimo."
+    },
+    {
+     "paso": 2,
+     "operacion": "condición",
+     "resultado": "2x + y = 80",
+     "texto": "Relación entre las variables."
+    },
+    {
+     "paso": 3,
+     "operacion": "una variable",
+     "resultado": "A(x) = 80x − 2x²",
+     "texto": "Sustituimos la condición."
+    },
+    {
+     "paso": 4,
+     "operacion": "derivar",
+     "resultado": "80 − 4x = 0",
+     "texto": "f'(x) = 0."
+    },
+    {
+     "paso": 5,
+     "operacion": "punto crítico",
+     "resultado": "x = 20",
+     "texto": "Comprobamos con f'' o el signo de f'."
+    },
+    {
+     "paso": 6,
+     "operacion": "responder",
+     "resultado": "800 m²",
+     "texto": "Contestamos a lo que se pregunta."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Se quiere vallar una parcela rectangular pegada a un muro recto, de modo que el lado del muro no necesita valla. Hay 100 m de valla. ¿Cuánto debe medir el lado paralelo al muro?",
+   "respuesta": "50 m",
+   "distractores": [
+    {
+     "valor": "25 m",
+     "error": "E01"
+    },
+    {
+     "valor": "33 m",
+     "error": null
+    },
+    {
+     "valor": "60 m",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "100 − 2 × 25",
+   "secundarias": [],
+   "explicacion_nino": "Llama x a los lados perpendiculares al muro e y al paralelo. Condición: 2x + y = 100, así que y = 100 − 2x. Área A(x) = x(100 − 2x) = 100x − 2x². A'(x) = 100 − 4x = 0 → x = 25 m; A'' = −4 < 0, máximo. Entonces y = 50 m y el área es 1250 m².",
+   "explicacion_adulto": "Está aprendiendo el esquema de la optimización: función a optimizar, condición que liga las variables, sustituir para dejar una sola variable, derivar, igualar a cero, comprobar que es máximo o mínimo y responder a lo que se pregunta. Los errores típicos son no usar la condición (quedarse con dos variables) y responder con la x cuando se pide otra cosa (el área, el precio…). Pídale que subraye qué pregunta el enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "función",
+     "resultado": "A = x·y",
+     "texto": "Qué hay que hacer máximo o mínimo."
+    },
+    {
+     "paso": 2,
+     "operacion": "condición",
+     "resultado": "2x + y = 100",
+     "texto": "Relación entre las variables."
+    },
+    {
+     "paso": 3,
+     "operacion": "una variable",
+     "resultado": "A(x) = 100x − 2x²",
+     "texto": "Sustituimos la condición."
+    },
+    {
+     "paso": 4,
+     "operacion": "derivar",
+     "resultado": "100 − 4x = 0",
+     "texto": "f'(x) = 0."
+    },
+    {
+     "paso": 5,
+     "operacion": "punto crítico",
+     "resultado": "x = 25",
+     "texto": "Comprobamos con f'' o el signo de f'."
+    },
+    {
+     "paso": 6,
+     "operacion": "responder",
+     "resultado": "50 m",
+     "texto": "Contestamos a lo que se pregunta."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Se quiere vallar una parcela rectangular pegada a un muro recto, de modo que el lado del muro no necesita valla. Hay 120 m de valla. ¿Cuál es el área máxima que se puede cercar?",
+   "respuesta": "1800 m²",
+   "distractores": [
+    {
+     "valor": "30 m²",
+     "error": "E02"
+    },
+    {
+     "valor": "900 m²",
+     "error": "E01"
+    },
+    {
+     "valor": "1600 m²",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "30 × 60",
+   "secundarias": [],
+   "explicacion_nino": "Llama x a los lados perpendiculares al muro e y al paralelo. Condición: 2x + y = 120, así que y = 120 − 2x. Área A(x) = x(120 − 2x) = 120x − 2x². A'(x) = 120 − 4x = 0 → x = 30 m; A'' = −4 < 0, máximo. Entonces y = 60 m y el área es 1800 m².",
+   "explicacion_adulto": "Está aprendiendo el esquema de la optimización: función a optimizar, condición que liga las variables, sustituir para dejar una sola variable, derivar, igualar a cero, comprobar que es máximo o mínimo y responder a lo que se pregunta. Los errores típicos son no usar la condición (quedarse con dos variables) y responder con la x cuando se pide otra cosa (el área, el precio…). Pídale que subraye qué pregunta el enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "función",
+     "resultado": "A = x·y",
+     "texto": "Qué hay que hacer máximo o mínimo."
+    },
+    {
+     "paso": 2,
+     "operacion": "condición",
+     "resultado": "2x + y = 120",
+     "texto": "Relación entre las variables."
+    },
+    {
+     "paso": 3,
+     "operacion": "una variable",
+     "resultado": "A(x) = 120x − 2x²",
+     "texto": "Sustituimos la condición."
+    },
+    {
+     "paso": 4,
+     "operacion": "derivar",
+     "resultado": "120 − 4x = 0",
+     "texto": "f'(x) = 0."
+    },
+    {
+     "paso": 5,
+     "operacion": "punto crítico",
+     "resultado": "x = 30",
+     "texto": "Comprobamos con f'' o el signo de f'."
+    },
+    {
+     "paso": 6,
+     "operacion": "responder",
+     "resultado": "1800 m²",
+     "texto": "Contestamos a lo que se pregunta."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Se quiere vallar una parcela rectangular pegada a un muro recto, de modo que el lado del muro no necesita valla. Hay 200 m de valla. ¿Cuánto debe medir el lado paralelo al muro?",
+   "respuesta": "100 m",
+   "distractores": [
+    {
+     "valor": "50 m",
+     "error": "E01"
+    },
+    {
+     "valor": "66 m",
+     "error": null
+    },
+    {
+     "valor": "110 m",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "200 − 2 × 50",
+   "secundarias": [],
+   "explicacion_nino": "Llama x a los lados perpendiculares al muro e y al paralelo. Condición: 2x + y = 200, así que y = 200 − 2x. Área A(x) = x(200 − 2x) = 200x − 2x². A'(x) = 200 − 4x = 0 → x = 50 m; A'' = −4 < 0, máximo. Entonces y = 100 m y el área es 5000 m².",
+   "explicacion_adulto": "Está aprendiendo el esquema de la optimización: función a optimizar, condición que liga las variables, sustituir para dejar una sola variable, derivar, igualar a cero, comprobar que es máximo o mínimo y responder a lo que se pregunta. Los errores típicos son no usar la condición (quedarse con dos variables) y responder con la x cuando se pide otra cosa (el área, el precio…). Pídale que subraye qué pregunta el enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "función",
+     "resultado": "A = x·y",
+     "texto": "Qué hay que hacer máximo o mínimo."
+    },
+    {
+     "paso": 2,
+     "operacion": "condición",
+     "resultado": "2x + y = 200",
+     "texto": "Relación entre las variables."
+    },
+    {
+     "paso": 3,
+     "operacion": "una variable",
+     "resultado": "A(x) = 200x − 2x²",
+     "texto": "Sustituimos la condición."
+    },
+    {
+     "paso": 4,
+     "operacion": "derivar",
+     "resultado": "200 − 4x = 0",
+     "texto": "f'(x) = 0."
+    },
+    {
+     "paso": 5,
+     "operacion": "punto crítico",
+     "resultado": "x = 50",
+     "texto": "Comprobamos con f'' o el signo de f'."
+    },
+    {
+     "paso": 6,
+     "operacion": "responder",
+     "resultado": "100 m",
+     "texto": "Contestamos a lo que se pregunta."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Halla dos números positivos que sumen 50 y cuyo producto sea el mayor posible. ¿Cuál es ese producto máximo?",
+   "respuesta": "625",
+   "distractores": [
+    {
+     "valor": "25",
+     "error": "E02"
+    },
+    {
+     "valor": "1250",
+     "error": null
+    },
+    {
+     "valor": "619",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "25 × 25",
+   "secundarias": [],
+   "explicacion_nino": "x + y = 50 → y = 50 − x. P(x) = x(50 − x). P'(x) = 50 − 2x = 0 → x = 25, y = 25; P'' < 0, máximo. Producto: 25·25 = 625.",
+   "explicacion_adulto": "Está aprendiendo el esquema de la optimización: función a optimizar, condición que liga las variables, sustituir para dejar una sola variable, derivar, igualar a cero, comprobar que es máximo o mínimo y responder a lo que se pregunta. Los errores típicos son no usar la condición (quedarse con dos variables) y responder con la x cuando se pide otra cosa (el área, el precio…). Pídale que subraye qué pregunta el enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "función",
+     "resultado": "P = x·y",
+     "texto": "Qué hay que hacer máximo o mínimo."
+    },
+    {
+     "paso": 2,
+     "operacion": "condición",
+     "resultado": "x + y = 50",
+     "texto": "Relación entre las variables."
+    },
+    {
+     "paso": 3,
+     "operacion": "una variable",
+     "resultado": "P(x) = x(50 − x)",
+     "texto": "Sustituimos la condición."
+    },
+    {
+     "paso": 4,
+     "operacion": "derivar",
+     "resultado": "50 − 2x = 0",
+     "texto": "f'(x) = 0."
+    },
+    {
+     "paso": 5,
+     "operacion": "punto crítico",
+     "resultado": "x = 25",
+     "texto": "Comprobamos con f'' o el signo de f'."
+    },
+    {
+     "paso": 6,
+     "operacion": "responder",
+     "resultado": "625",
+     "texto": "Contestamos a lo que se pregunta."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "El producto de dos números positivos es 25. ¿Cuál es el menor valor posible de su suma?",
+   "respuesta": "10",
+   "distractores": [
+    {
+     "valor": "5",
+     "error": "E02"
+    },
+    {
+     "valor": "26",
+     "error": null
+    },
+    {
+     "valor": "14",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "5 + 5",
+   "secundarias": [],
+   "explicacion_nino": "x·y = 25 → y = 25/x. S(x) = x + 25/x. S'(x) = 1 − 25/x² = 0 → x = 5 (positivo); S'' = 50/x³ > 0, mínimo. Suma: 5 + 5 = 10.",
+   "explicacion_adulto": "Está aprendiendo el esquema de la optimización: función a optimizar, condición que liga las variables, sustituir para dejar una sola variable, derivar, igualar a cero, comprobar que es máximo o mínimo y responder a lo que se pregunta. Los errores típicos son no usar la condición (quedarse con dos variables) y responder con la x cuando se pide otra cosa (el área, el precio…). Pídale que subraye qué pregunta el enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "función",
+     "resultado": "S = x + y",
+     "texto": "Qué hay que hacer máximo o mínimo."
+    },
+    {
+     "paso": 2,
+     "operacion": "condición",
+     "resultado": "x·y = 25",
+     "texto": "Relación entre las variables."
+    },
+    {
+     "paso": 3,
+     "operacion": "una variable",
+     "resultado": "S(x) = x + 25/x",
+     "texto": "Sustituimos la condición."
+    },
+    {
+     "paso": 4,
+     "operacion": "derivar",
+     "resultado": "1 − 25/x² = 0",
+     "texto": "f'(x) = 0."
+    },
+    {
+     "paso": 5,
+     "operacion": "punto crítico",
+     "resultado": "x = 5",
+     "texto": "Comprobamos con f'' o el signo de f'."
+    },
+    {
+     "paso": 6,
+     "operacion": "responder",
+     "resultado": "10",
+     "texto": "Contestamos a lo que se pregunta."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Halla dos números positivos que sumen 64 y cuyo producto sea el mayor posible. ¿Cuál es ese producto máximo?",
+   "respuesta": "1024",
+   "distractores": [
+    {
+     "valor": "32",
+     "error": "E02"
+    },
+    {
+     "valor": "2048",
+     "error": null
+    },
+    {
+     "valor": "1018",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "32 × 32",
+   "secundarias": [],
+   "explicacion_nino": "x + y = 64 → y = 64 − x. P(x) = x(64 − x). P'(x) = 64 − 2x = 0 → x = 32, y = 32; P'' < 0, máximo. Producto: 32·32 = 1024.",
+   "explicacion_adulto": "Está aprendiendo el esquema de la optimización: función a optimizar, condición que liga las variables, sustituir para dejar una sola variable, derivar, igualar a cero, comprobar que es máximo o mínimo y responder a lo que se pregunta. Los errores típicos son no usar la condición (quedarse con dos variables) y responder con la x cuando se pide otra cosa (el área, el precio…). Pídale que subraye qué pregunta el enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "función",
+     "resultado": "P = x·y",
+     "texto": "Qué hay que hacer máximo o mínimo."
+    },
+    {
+     "paso": 2,
+     "operacion": "condición",
+     "resultado": "x + y = 64",
+     "texto": "Relación entre las variables."
+    },
+    {
+     "paso": 3,
+     "operacion": "una variable",
+     "resultado": "P(x) = x(64 − x)",
+     "texto": "Sustituimos la condición."
+    },
+    {
+     "paso": 4,
+     "operacion": "derivar",
+     "resultado": "64 − 2x = 0",
+     "texto": "f'(x) = 0."
+    },
+    {
+     "paso": 5,
+     "operacion": "punto crítico",
+     "resultado": "x = 32",
+     "texto": "Comprobamos con f'' o el signo de f'."
+    },
+    {
+     "paso": 6,
+     "operacion": "responder",
+     "resultado": "1024",
+     "texto": "Contestamos a lo que se pregunta."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "El producto de dos números positivos es 9. ¿Cuál es el menor valor posible de su suma?",
+   "respuesta": "6",
+   "distractores": [
+    {
+     "valor": "3",
+     "error": "E02"
+    },
+    {
+     "valor": "10",
+     "error": null
+    },
+    {
+     "valor": "7",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "3 + 3",
+   "secundarias": [],
+   "explicacion_nino": "x·y = 9 → y = 9/x. S(x) = x + 9/x. S'(x) = 1 − 9/x² = 0 → x = 3 (positivo); S'' = 18/x³ > 0, mínimo. Suma: 3 + 3 = 6.",
+   "explicacion_adulto": "Está aprendiendo el esquema de la optimización: función a optimizar, condición que liga las variables, sustituir para dejar una sola variable, derivar, igualar a cero, comprobar que es máximo o mínimo y responder a lo que se pregunta. Los errores típicos son no usar la condición (quedarse con dos variables) y responder con la x cuando se pide otra cosa (el área, el precio…). Pídale que subraye qué pregunta el enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "función",
+     "resultado": "S = x + y",
+     "texto": "Qué hay que hacer máximo o mínimo."
+    },
+    {
+     "paso": 2,
+     "operacion": "condición",
+     "resultado": "x·y = 9",
+     "texto": "Relación entre las variables."
+    },
+    {
+     "paso": 3,
+     "operacion": "una variable",
+     "resultado": "S(x) = x + 9/x",
+     "texto": "Sustituimos la condición."
+    },
+    {
+     "paso": 4,
+     "operacion": "derivar",
+     "resultado": "1 − 9/x² = 0",
+     "texto": "f'(x) = 0."
+    },
+    {
+     "paso": 5,
+     "operacion": "punto crítico",
+     "resultado": "x = 3",
+     "texto": "Comprobamos con f'' o el signo de f'."
+    },
+    {
+     "paso": 6,
+     "operacion": "responder",
+     "resultado": "6",
+     "texto": "Contestamos a lo que se pregunta."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Halla dos números positivos que sumen 20 y cuyo producto sea el mayor posible. ¿Cuál es ese producto máximo?",
+   "respuesta": "100",
+   "distractores": [
+    {
+     "valor": "10",
+     "error": "E02"
+    },
+    {
+     "valor": "200",
+     "error": null
+    },
+    {
+     "valor": "94",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "10 × 10",
+   "secundarias": [],
+   "explicacion_nino": "x + y = 20 → y = 20 − x. P(x) = x(20 − x). P'(x) = 20 − 2x = 0 → x = 10, y = 10; P'' < 0, máximo. Producto: 10·10 = 100.",
+   "explicacion_adulto": "Está aprendiendo el esquema de la optimización: función a optimizar, condición que liga las variables, sustituir para dejar una sola variable, derivar, igualar a cero, comprobar que es máximo o mínimo y responder a lo que se pregunta. Los errores típicos son no usar la condición (quedarse con dos variables) y responder con la x cuando se pide otra cosa (el área, el precio…). Pídale que subraye qué pregunta el enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "función",
+     "resultado": "P = x·y",
+     "texto": "Qué hay que hacer máximo o mínimo."
+    },
+    {
+     "paso": 2,
+     "operacion": "condición",
+     "resultado": "x + y = 20",
+     "texto": "Relación entre las variables."
+    },
+    {
+     "paso": 3,
+     "operacion": "una variable",
+     "resultado": "P(x) = x(20 − x)",
+     "texto": "Sustituimos la condición."
+    },
+    {
+     "paso": 4,
+     "operacion": "derivar",
+     "resultado": "20 − 2x = 0",
+     "texto": "f'(x) = 0."
+    },
+    {
+     "paso": 5,
+     "operacion": "punto crítico",
+     "resultado": "x = 10",
+     "texto": "Comprobamos con f'' o el signo de f'."
+    },
+    {
+     "paso": 6,
+     "operacion": "responder",
+     "resultado": "100",
+     "texto": "Contestamos a lo que se pregunta."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "El producto de dos números positivos es 36. ¿Cuál es el menor valor posible de su suma?",
+   "respuesta": "12",
+   "distractores": [
+    {
+     "valor": "6",
+     "error": "E02"
+    },
+    {
+     "valor": "37",
+     "error": null
+    },
+    {
+     "valor": "20",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "6 + 6",
+   "secundarias": [],
+   "explicacion_nino": "x·y = 36 → y = 36/x. S(x) = x + 36/x. S'(x) = 1 − 36/x² = 0 → x = 6 (positivo); S'' = 72/x³ > 0, mínimo. Suma: 6 + 6 = 12.",
+   "explicacion_adulto": "Está aprendiendo el esquema de la optimización: función a optimizar, condición que liga las variables, sustituir para dejar una sola variable, derivar, igualar a cero, comprobar que es máximo o mínimo y responder a lo que se pregunta. Los errores típicos son no usar la condición (quedarse con dos variables) y responder con la x cuando se pide otra cosa (el área, el precio…). Pídale que subraye qué pregunta el enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "función",
+     "resultado": "S = x + y",
+     "texto": "Qué hay que hacer máximo o mínimo."
+    },
+    {
+     "paso": 2,
+     "operacion": "condición",
+     "resultado": "x·y = 36",
+     "texto": "Relación entre las variables."
+    },
+    {
+     "paso": 3,
+     "operacion": "una variable",
+     "resultado": "S(x) = x + 36/x",
+     "texto": "Sustituimos la condición."
+    },
+    {
+     "paso": 4,
+     "operacion": "derivar",
+     "resultado": "1 − 36/x² = 0",
+     "texto": "f'(x) = 0."
+    },
+    {
+     "paso": 5,
+     "operacion": "punto crítico",
+     "resultado": "x = 6",
+     "texto": "Comprobamos con f'' o el signo de f'."
+    },
+    {
+     "paso": 6,
+     "operacion": "responder",
+     "resultado": "12",
+     "texto": "Contestamos a lo que se pregunta."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Halla dos números positivos que sumen 36 y cuyo producto sea el mayor posible. ¿Cuál es ese producto máximo?",
+   "respuesta": "324",
+   "distractores": [
+    {
+     "valor": "18",
+     "error": "E02"
+    },
+    {
+     "valor": "648",
+     "error": null
+    },
+    {
+     "valor": "318",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "18 × 18",
+   "secundarias": [],
+   "explicacion_nino": "x + y = 36 → y = 36 − x. P(x) = x(36 − x). P'(x) = 36 − 2x = 0 → x = 18, y = 18; P'' < 0, máximo. Producto: 18·18 = 324.",
+   "explicacion_adulto": "Está aprendiendo el esquema de la optimización: función a optimizar, condición que liga las variables, sustituir para dejar una sola variable, derivar, igualar a cero, comprobar que es máximo o mínimo y responder a lo que se pregunta. Los errores típicos son no usar la condición (quedarse con dos variables) y responder con la x cuando se pide otra cosa (el área, el precio…). Pídale que subraye qué pregunta el enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "función",
+     "resultado": "P = x·y",
+     "texto": "Qué hay que hacer máximo o mínimo."
+    },
+    {
+     "paso": 2,
+     "operacion": "condición",
+     "resultado": "x + y = 36",
+     "texto": "Relación entre las variables."
+    },
+    {
+     "paso": 3,
+     "operacion": "una variable",
+     "resultado": "P(x) = x(36 − x)",
+     "texto": "Sustituimos la condición."
+    },
+    {
+     "paso": 4,
+     "operacion": "derivar",
+     "resultado": "36 − 2x = 0",
+     "texto": "f'(x) = 0."
+    },
+    {
+     "paso": 5,
+     "operacion": "punto crítico",
+     "resultado": "x = 18",
+     "texto": "Comprobamos con f'' o el signo de f'."
+    },
+    {
+     "paso": 6,
+     "operacion": "responder",
+     "resultado": "324",
+     "texto": "Contestamos a lo que se pregunta."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "De una chapa cuadrada de 12 cm de lado se cortan cuatro cuadrados iguales en las esquinas y se doblan los bordes para hacer una caja sin tapa. ¿De qué lado hay que cortar los cuadrados para que el volumen sea máximo?",
+   "respuesta": "2 cm",
+   "distractores": [
+    {
+     "valor": "6 cm",
+     "error": null
+    },
+    {
+     "valor": "3 cm",
+     "error": null
+    },
+    {
+     "valor": "128 cm",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": "12 : 6",
+   "secundarias": [],
+   "explicacion_nino": "Si el cuadrado cortado mide x, la caja tiene base (12 − 2x)² y altura x: V(x) = x(12 − 2x)². V'(x) = (12 − 2x)(12 − 6x) = 0 → x = 6 (no sirve, volumen 0) o x = 2. El signo de V' pasa de + a −: máximo en x = 2 cm, con V = 128 cm³.",
+   "explicacion_adulto": "Está aprendiendo el esquema de la optimización: función a optimizar, condición que liga las variables, sustituir para dejar una sola variable, derivar, igualar a cero, comprobar que es máximo o mínimo y responder a lo que se pregunta. Los errores típicos son no usar la condición (quedarse con dos variables) y responder con la x cuando se pide otra cosa (el área, el precio…). Pídale que subraye qué pregunta el enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "función",
+     "resultado": "V = base × altura",
+     "texto": "Qué hay que hacer máximo o mínimo."
+    },
+    {
+     "paso": 2,
+     "operacion": "condición",
+     "resultado": "base (a − 2x)²",
+     "texto": "Relación entre las variables."
+    },
+    {
+     "paso": 3,
+     "operacion": "una variable",
+     "resultado": "V(x) = x(12 − 2x)²",
+     "texto": "Sustituimos la condición."
+    },
+    {
+     "paso": 4,
+     "operacion": "derivar",
+     "resultado": "(12 − 2x)(12 − 6x) = 0",
+     "texto": "f'(x) = 0."
+    },
+    {
+     "paso": 5,
+     "operacion": "punto crítico",
+     "resultado": "x = 2",
+     "texto": "Comprobamos con f'' o el signo de f'."
+    },
+    {
+     "paso": 6,
+     "operacion": "responder",
+     "resultado": "2 cm",
+     "texto": "Contestamos a lo que se pregunta."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "De una chapa cuadrada de 18 cm de lado se cortan cuadrados iguales en las cuatro esquinas para hacer una caja sin tapa. ¿Cuál es el volumen máximo de la caja?",
+   "respuesta": "432 cm³",
+   "distractores": [
+    {
+     "valor": "3 cm³",
+     "error": "E02"
+    },
+    {
+     "valor": "400 cm³",
+     "error": null
+    },
+    {
+     "valor": "216 cm³",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(18 − 2 × 3)² × 3",
+   "secundarias": [],
+   "explicacion_nino": "Si el cuadrado cortado mide x, la caja tiene base (18 − 2x)² y altura x: V(x) = x(18 − 2x)². V'(x) = (18 − 2x)(18 − 6x) = 0 → x = 9 (no sirve, volumen 0) o x = 3. El signo de V' pasa de + a −: máximo en x = 3 cm, con V = 432 cm³.",
+   "explicacion_adulto": "Está aprendiendo el esquema de la optimización: función a optimizar, condición que liga las variables, sustituir para dejar una sola variable, derivar, igualar a cero, comprobar que es máximo o mínimo y responder a lo que se pregunta. Los errores típicos son no usar la condición (quedarse con dos variables) y responder con la x cuando se pide otra cosa (el área, el precio…). Pídale que subraye qué pregunta el enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "función",
+     "resultado": "V = base × altura",
+     "texto": "Qué hay que hacer máximo o mínimo."
+    },
+    {
+     "paso": 2,
+     "operacion": "condición",
+     "resultado": "base (a − 2x)²",
+     "texto": "Relación entre las variables."
+    },
+    {
+     "paso": 3,
+     "operacion": "una variable",
+     "resultado": "V(x) = x(18 − 2x)²",
+     "texto": "Sustituimos la condición."
+    },
+    {
+     "paso": 4,
+     "operacion": "derivar",
+     "resultado": "(18 − 2x)(18 − 6x) = 0",
+     "texto": "f'(x) = 0."
+    },
+    {
+     "paso": 5,
+     "operacion": "punto crítico",
+     "resultado": "x = 3",
+     "texto": "Comprobamos con f'' o el signo de f'."
+    },
+    {
+     "paso": 6,
+     "operacion": "responder",
+     "resultado": "432 cm³",
+     "texto": "Contestamos a lo que se pregunta."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "De una chapa cuadrada de 24 cm de lado se cortan cuatro cuadrados iguales en las esquinas y se doblan los bordes para hacer una caja sin tapa. ¿De qué lado hay que cortar los cuadrados para que el volumen sea máximo?",
+   "respuesta": "4 cm",
+   "distractores": [
+    {
+     "valor": "12 cm",
+     "error": null
+    },
+    {
+     "valor": "6 cm",
+     "error": null
+    },
+    {
+     "valor": "1024 cm",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": "24 : 6",
+   "secundarias": [],
+   "explicacion_nino": "Si el cuadrado cortado mide x, la caja tiene base (24 − 2x)² y altura x: V(x) = x(24 − 2x)². V'(x) = (24 − 2x)(24 − 6x) = 0 → x = 12 (no sirve, volumen 0) o x = 4. El signo de V' pasa de + a −: máximo en x = 4 cm, con V = 1024 cm³.",
+   "explicacion_adulto": "Está aprendiendo el esquema de la optimización: función a optimizar, condición que liga las variables, sustituir para dejar una sola variable, derivar, igualar a cero, comprobar que es máximo o mínimo y responder a lo que se pregunta. Los errores típicos son no usar la condición (quedarse con dos variables) y responder con la x cuando se pide otra cosa (el área, el precio…). Pídale que subraye qué pregunta el enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "función",
+     "resultado": "V = base × altura",
+     "texto": "Qué hay que hacer máximo o mínimo."
+    },
+    {
+     "paso": 2,
+     "operacion": "condición",
+     "resultado": "base (a − 2x)²",
+     "texto": "Relación entre las variables."
+    },
+    {
+     "paso": 3,
+     "operacion": "una variable",
+     "resultado": "V(x) = x(24 − 2x)²",
+     "texto": "Sustituimos la condición."
+    },
+    {
+     "paso": 4,
+     "operacion": "derivar",
+     "resultado": "(24 − 2x)(24 − 6x) = 0",
+     "texto": "f'(x) = 0."
+    },
+    {
+     "paso": 5,
+     "operacion": "punto crítico",
+     "resultado": "x = 4",
+     "texto": "Comprobamos con f'' o el signo de f'."
+    },
+    {
+     "paso": 6,
+     "operacion": "responder",
+     "resultado": "4 cm",
+     "texto": "Contestamos a lo que se pregunta."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "De una chapa cuadrada de 30 cm de lado se cortan cuadrados iguales en las cuatro esquinas para hacer una caja sin tapa. ¿Cuál es el volumen máximo de la caja?",
+   "respuesta": "2000 cm³",
+   "distractores": [
+    {
+     "valor": "5 cm³",
+     "error": "E02"
+    },
+    {
+     "valor": "1792 cm³",
+     "error": null
+    },
+    {
+     "valor": "1000 cm³",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(30 − 2 × 5)² × 5",
+   "secundarias": [],
+   "explicacion_nino": "Si el cuadrado cortado mide x, la caja tiene base (30 − 2x)² y altura x: V(x) = x(30 − 2x)². V'(x) = (30 − 2x)(30 − 6x) = 0 → x = 15 (no sirve, volumen 0) o x = 5. El signo de V' pasa de + a −: máximo en x = 5 cm, con V = 2000 cm³.",
+   "explicacion_adulto": "Está aprendiendo el esquema de la optimización: función a optimizar, condición que liga las variables, sustituir para dejar una sola variable, derivar, igualar a cero, comprobar que es máximo o mínimo y responder a lo que se pregunta. Los errores típicos son no usar la condición (quedarse con dos variables) y responder con la x cuando se pide otra cosa (el área, el precio…). Pídale que subraye qué pregunta el enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "función",
+     "resultado": "V = base × altura",
+     "texto": "Qué hay que hacer máximo o mínimo."
+    },
+    {
+     "paso": 2,
+     "operacion": "condición",
+     "resultado": "base (a − 2x)²",
+     "texto": "Relación entre las variables."
+    },
+    {
+     "paso": 3,
+     "operacion": "una variable",
+     "resultado": "V(x) = x(30 − 2x)²",
+     "texto": "Sustituimos la condición."
+    },
+    {
+     "paso": 4,
+     "operacion": "derivar",
+     "resultado": "(30 − 2x)(30 − 6x) = 0",
+     "texto": "f'(x) = 0."
+    },
+    {
+     "paso": 5,
+     "operacion": "punto crítico",
+     "resultado": "x = 5",
+     "texto": "Comprobamos con f'' o el signo de f'."
+    },
+    {
+     "paso": 6,
+     "operacion": "responder",
+     "resultado": "2000 cm³",
+     "texto": "Contestamos a lo que se pregunta."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "De una chapa cuadrada de 36 cm de lado se cortan cuatro cuadrados iguales en las esquinas y se doblan los bordes para hacer una caja sin tapa. ¿De qué lado hay que cortar los cuadrados para que el volumen sea máximo?",
+   "respuesta": "6 cm",
+   "distractores": [
+    {
+     "valor": "18 cm",
+     "error": null
+    },
+    {
+     "valor": "9 cm",
+     "error": null
+    },
+    {
+     "valor": "3456 cm",
+     "error": "E02"
+    }
+   ],
+   "expresion_calculo": "36 : 6",
+   "secundarias": [],
+   "explicacion_nino": "Si el cuadrado cortado mide x, la caja tiene base (36 − 2x)² y altura x: V(x) = x(36 − 2x)². V'(x) = (36 − 2x)(36 − 6x) = 0 → x = 18 (no sirve, volumen 0) o x = 6. El signo de V' pasa de + a −: máximo en x = 6 cm, con V = 3456 cm³.",
+   "explicacion_adulto": "Está aprendiendo el esquema de la optimización: función a optimizar, condición que liga las variables, sustituir para dejar una sola variable, derivar, igualar a cero, comprobar que es máximo o mínimo y responder a lo que se pregunta. Los errores típicos son no usar la condición (quedarse con dos variables) y responder con la x cuando se pide otra cosa (el área, el precio…). Pídale que subraye qué pregunta el enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "función",
+     "resultado": "V = base × altura",
+     "texto": "Qué hay que hacer máximo o mínimo."
+    },
+    {
+     "paso": 2,
+     "operacion": "condición",
+     "resultado": "base (a − 2x)²",
+     "texto": "Relación entre las variables."
+    },
+    {
+     "paso": 3,
+     "operacion": "una variable",
+     "resultado": "V(x) = x(36 − 2x)²",
+     "texto": "Sustituimos la condición."
+    },
+    {
+     "paso": 4,
+     "operacion": "derivar",
+     "resultado": "(36 − 2x)(36 − 6x) = 0",
+     "texto": "f'(x) = 0."
+    },
+    {
+     "paso": 5,
+     "operacion": "punto crítico",
+     "resultado": "x = 6",
+     "texto": "Comprobamos con f'' o el signo de f'."
+    },
+    {
+     "paso": 6,
+     "operacion": "responder",
+     "resultado": "6 cm",
+     "texto": "Contestamos a lo que se pregunta."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "De una chapa cuadrada de 42 cm de lado se cortan cuadrados iguales en las cuatro esquinas para hacer una caja sin tapa. ¿Cuál es el volumen máximo de la caja?",
+   "respuesta": "5488 cm³",
+   "distractores": [
+    {
+     "valor": "7 cm³",
+     "error": "E02"
+    },
+    {
+     "valor": "4840 cm³",
+     "error": null
+    },
+    {
+     "valor": "2744 cm³",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "(42 − 2 × 7)² × 7",
+   "secundarias": [],
+   "explicacion_nino": "Si el cuadrado cortado mide x, la caja tiene base (42 − 2x)² y altura x: V(x) = x(42 − 2x)². V'(x) = (42 − 2x)(42 − 6x) = 0 → x = 21 (no sirve, volumen 0) o x = 7. El signo de V' pasa de + a −: máximo en x = 7 cm, con V = 5488 cm³.",
+   "explicacion_adulto": "Está aprendiendo el esquema de la optimización: función a optimizar, condición que liga las variables, sustituir para dejar una sola variable, derivar, igualar a cero, comprobar que es máximo o mínimo y responder a lo que se pregunta. Los errores típicos son no usar la condición (quedarse con dos variables) y responder con la x cuando se pide otra cosa (el área, el precio…). Pídale que subraye qué pregunta el enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "función",
+     "resultado": "V = base × altura",
+     "texto": "Qué hay que hacer máximo o mínimo."
+    },
+    {
+     "paso": 2,
+     "operacion": "condición",
+     "resultado": "base (a − 2x)²",
+     "texto": "Relación entre las variables."
+    },
+    {
+     "paso": 3,
+     "operacion": "una variable",
+     "resultado": "V(x) = x(42 − 2x)²",
+     "texto": "Sustituimos la condición."
+    },
+    {
+     "paso": 4,
+     "operacion": "derivar",
+     "resultado": "(42 − 2x)(42 − 6x) = 0",
+     "texto": "f'(x) = 0."
+    },
+    {
+     "paso": 5,
+     "operacion": "punto crítico",
+     "resultado": "x = 7",
+     "texto": "Comprobamos con f'' o el signo de f'."
+    },
+    {
+     "paso": 6,
+     "operacion": "responder",
+     "resultado": "5488 cm³",
+     "texto": "Contestamos a lo que se pregunta."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Si la entrada de un concierto cuesta p euros, acuden 100 − 5p personas. ¿Qué precio da los máximos ingresos?",
+   "respuesta": "10 €",
+   "distractores": [
+    {
+     "valor": "500 €",
+     "error": "E02"
+    },
+    {
+     "valor": "20 €",
+     "error": null
+    },
+    {
+     "valor": "50 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "100 : (2 × 5)",
+   "secundarias": [],
+   "explicacion_nino": "Ingresos = precio × asistentes: I(p) = p(100 − 5p) = 100p − 5p². I'(p) = 100 − 10p = 0 → p = 10 €; I'' < 0, máximo. Ingresos: 10·(100 − 5·10) = 500 €.",
+   "explicacion_adulto": "Está aprendiendo el esquema de la optimización: función a optimizar, condición que liga las variables, sustituir para dejar una sola variable, derivar, igualar a cero, comprobar que es máximo o mínimo y responder a lo que se pregunta. Los errores típicos son no usar la condición (quedarse con dos variables) y responder con la x cuando se pide otra cosa (el área, el precio…). Pídale que subraye qué pregunta el enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "función",
+     "resultado": "I = p·q",
+     "texto": "Qué hay que hacer máximo o mínimo."
+    },
+    {
+     "paso": 2,
+     "operacion": "condición",
+     "resultado": "q = 100 − 5p",
+     "texto": "Relación entre las variables."
+    },
+    {
+     "paso": 3,
+     "operacion": "una variable",
+     "resultado": "I(p) = 100p − 5p²",
+     "texto": "Sustituimos la condición."
+    },
+    {
+     "paso": 4,
+     "operacion": "derivar",
+     "resultado": "100 − 10p = 0",
+     "texto": "f'(x) = 0."
+    },
+    {
+     "paso": 5,
+     "operacion": "punto crítico",
+     "resultado": "p = 10",
+     "texto": "Comprobamos con f'' o el signo de f'."
+    },
+    {
+     "paso": 6,
+     "operacion": "responder",
+     "resultado": "10 €",
+     "texto": "Contestamos a lo que se pregunta."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Si la entrada de un concierto cuesta p euros, acuden 32 − 2p personas. ¿Cuáles son los ingresos máximos?",
+   "respuesta": "128 €",
+   "distractores": [
+    {
+     "valor": "8 €",
+     "error": "E02"
+    },
+    {
+     "valor": "256 €",
+     "error": "E01"
+    },
+    {
+     "valor": "120 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "8 × (32 − 2 × 8)",
+   "secundarias": [],
+   "explicacion_nino": "Ingresos = precio × asistentes: I(p) = p(32 − 2p) = 32p − 2p². I'(p) = 32 − 4p = 0 → p = 8 €; I'' < 0, máximo. Ingresos: 8·(32 − 2·8) = 128 €.",
+   "explicacion_adulto": "Está aprendiendo el esquema de la optimización: función a optimizar, condición que liga las variables, sustituir para dejar una sola variable, derivar, igualar a cero, comprobar que es máximo o mínimo y responder a lo que se pregunta. Los errores típicos son no usar la condición (quedarse con dos variables) y responder con la x cuando se pide otra cosa (el área, el precio…). Pídale que subraye qué pregunta el enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "función",
+     "resultado": "I = p·q",
+     "texto": "Qué hay que hacer máximo o mínimo."
+    },
+    {
+     "paso": 2,
+     "operacion": "condición",
+     "resultado": "q = 32 − 2p",
+     "texto": "Relación entre las variables."
+    },
+    {
+     "paso": 3,
+     "operacion": "una variable",
+     "resultado": "I(p) = 32p − 2p²",
+     "texto": "Sustituimos la condición."
+    },
+    {
+     "paso": 4,
+     "operacion": "derivar",
+     "resultado": "32 − 4p = 0",
+     "texto": "f'(x) = 0."
+    },
+    {
+     "paso": 5,
+     "operacion": "punto crítico",
+     "resultado": "p = 8",
+     "texto": "Comprobamos con f'' o el signo de f'."
+    },
+    {
+     "paso": 6,
+     "operacion": "responder",
+     "resultado": "128 €",
+     "texto": "Contestamos a lo que se pregunta."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Si la entrada de una piscina municipal cuesta p euros, acuden 40 − 2p personas. ¿Qué precio da los máximos ingresos?",
+   "respuesta": "10 €",
+   "distractores": [
+    {
+     "valor": "200 €",
+     "error": "E02"
+    },
+    {
+     "valor": "20 €",
+     "error": null
+    },
+    {
+     "valor": "12 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "40 : (2 × 2)",
+   "secundarias": [],
+   "explicacion_nino": "Ingresos = precio × asistentes: I(p) = p(40 − 2p) = 40p − 2p². I'(p) = 40 − 4p = 0 → p = 10 €; I'' < 0, máximo. Ingresos: 10·(40 − 2·10) = 200 €.",
+   "explicacion_adulto": "Está aprendiendo el esquema de la optimización: función a optimizar, condición que liga las variables, sustituir para dejar una sola variable, derivar, igualar a cero, comprobar que es máximo o mínimo y responder a lo que se pregunta. Los errores típicos son no usar la condición (quedarse con dos variables) y responder con la x cuando se pide otra cosa (el área, el precio…). Pídale que subraye qué pregunta el enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "función",
+     "resultado": "I = p·q",
+     "texto": "Qué hay que hacer máximo o mínimo."
+    },
+    {
+     "paso": 2,
+     "operacion": "condición",
+     "resultado": "q = 40 − 2p",
+     "texto": "Relación entre las variables."
+    },
+    {
+     "paso": 3,
+     "operacion": "una variable",
+     "resultado": "I(p) = 40p − 2p²",
+     "texto": "Sustituimos la condición."
+    },
+    {
+     "paso": 4,
+     "operacion": "derivar",
+     "resultado": "40 − 4p = 0",
+     "texto": "f'(x) = 0."
+    },
+    {
+     "paso": 5,
+     "operacion": "punto crítico",
+     "resultado": "p = 10",
+     "texto": "Comprobamos con f'' o el signo de f'."
+    },
+    {
+     "paso": 6,
+     "operacion": "responder",
+     "resultado": "10 €",
+     "texto": "Contestamos a lo que se pregunta."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Si la entrada de una exposición cuesta p euros, acuden 80 − 2p personas. ¿Cuáles son los ingresos máximos?",
+   "respuesta": "800 €",
+   "distractores": [
+    {
+     "valor": "20 €",
+     "error": "E02"
+    },
+    {
+     "valor": "1600 €",
+     "error": "E01"
+    },
+    {
+     "valor": "792 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "20 × (80 − 2 × 20)",
+   "secundarias": [],
+   "explicacion_nino": "Ingresos = precio × asistentes: I(p) = p(80 − 2p) = 80p − 2p². I'(p) = 80 − 4p = 0 → p = 20 €; I'' < 0, máximo. Ingresos: 20·(80 − 2·20) = 800 €.",
+   "explicacion_adulto": "Está aprendiendo el esquema de la optimización: función a optimizar, condición que liga las variables, sustituir para dejar una sola variable, derivar, igualar a cero, comprobar que es máximo o mínimo y responder a lo que se pregunta. Los errores típicos son no usar la condición (quedarse con dos variables) y responder con la x cuando se pide otra cosa (el área, el precio…). Pídale que subraye qué pregunta el enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "función",
+     "resultado": "I = p·q",
+     "texto": "Qué hay que hacer máximo o mínimo."
+    },
+    {
+     "paso": 2,
+     "operacion": "condición",
+     "resultado": "q = 80 − 2p",
+     "texto": "Relación entre las variables."
+    },
+    {
+     "paso": 3,
+     "operacion": "una variable",
+     "resultado": "I(p) = 80p − 2p²",
+     "texto": "Sustituimos la condición."
+    },
+    {
+     "paso": 4,
+     "operacion": "derivar",
+     "resultado": "80 − 4p = 0",
+     "texto": "f'(x) = 0."
+    },
+    {
+     "paso": 5,
+     "operacion": "punto crítico",
+     "resultado": "p = 20",
+     "texto": "Comprobamos con f'' o el signo de f'."
+    },
+    {
+     "paso": 6,
+     "operacion": "responder",
+     "resultado": "800 €",
+     "texto": "Contestamos a lo que se pregunta."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Si la entrada de un concierto cuesta p euros, acuden 48 − 2p personas. ¿Qué precio da los máximos ingresos?",
+   "respuesta": "12 €",
+   "distractores": [
+    {
+     "valor": "288 €",
+     "error": "E02"
+    },
+    {
+     "valor": "24 €",
+     "error": null
+    },
+    {
+     "valor": "14 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "48 : (2 × 2)",
+   "secundarias": [],
+   "explicacion_nino": "Ingresos = precio × asistentes: I(p) = p(48 − 2p) = 48p − 2p². I'(p) = 48 − 4p = 0 → p = 12 €; I'' < 0, máximo. Ingresos: 12·(48 − 2·12) = 288 €.",
+   "explicacion_adulto": "Está aprendiendo el esquema de la optimización: función a optimizar, condición que liga las variables, sustituir para dejar una sola variable, derivar, igualar a cero, comprobar que es máximo o mínimo y responder a lo que se pregunta. Los errores típicos son no usar la condición (quedarse con dos variables) y responder con la x cuando se pide otra cosa (el área, el precio…). Pídale que subraye qué pregunta el enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "función",
+     "resultado": "I = p·q",
+     "texto": "Qué hay que hacer máximo o mínimo."
+    },
+    {
+     "paso": 2,
+     "operacion": "condición",
+     "resultado": "q = 48 − 2p",
+     "texto": "Relación entre las variables."
+    },
+    {
+     "paso": 3,
+     "operacion": "una variable",
+     "resultado": "I(p) = 48p − 2p²",
+     "texto": "Sustituimos la condición."
+    },
+    {
+     "paso": 4,
+     "operacion": "derivar",
+     "resultado": "48 − 4p = 0",
+     "texto": "f'(x) = 0."
+    },
+    {
+     "paso": 5,
+     "operacion": "punto crítico",
+     "resultado": "p = 12",
+     "texto": "Comprobamos con f'' o el signo de f'."
+    },
+    {
+     "paso": 6,
+     "operacion": "responder",
+     "resultado": "12 €",
+     "texto": "Contestamos a lo que se pregunta."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Si la entrada de una sala de escape cuesta p euros, acuden 60 − 2p personas. ¿Cuáles son los ingresos máximos?",
+   "respuesta": "450 €",
+   "distractores": [
+    {
+     "valor": "15 €",
+     "error": "E02"
+    },
+    {
+     "valor": "900 €",
+     "error": "E01"
+    },
+    {
+     "valor": "442 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "15 × (60 − 2 × 15)",
+   "secundarias": [],
+   "explicacion_nino": "Ingresos = precio × asistentes: I(p) = p(60 − 2p) = 60p − 2p². I'(p) = 60 − 4p = 0 → p = 15 €; I'' < 0, máximo. Ingresos: 15·(60 − 2·15) = 450 €.",
+   "explicacion_adulto": "Está aprendiendo el esquema de la optimización: función a optimizar, condición que liga las variables, sustituir para dejar una sola variable, derivar, igualar a cero, comprobar que es máximo o mínimo y responder a lo que se pregunta. Los errores típicos son no usar la condición (quedarse con dos variables) y responder con la x cuando se pide otra cosa (el área, el precio…). Pídale que subraye qué pregunta el enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "función",
+     "resultado": "I = p·q",
+     "texto": "Qué hay que hacer máximo o mínimo."
+    },
+    {
+     "paso": 2,
+     "operacion": "condición",
+     "resultado": "q = 60 − 2p",
+     "texto": "Relación entre las variables."
+    },
+    {
+     "paso": 3,
+     "operacion": "una variable",
+     "resultado": "I(p) = 60p − 2p²",
+     "texto": "Sustituimos la condición."
+    },
+    {
+     "paso": 4,
+     "operacion": "derivar",
+     "resultado": "60 − 4p = 0",
+     "texto": "f'(x) = 0."
+    },
+    {
+     "paso": 5,
+     "operacion": "punto crítico",
+     "resultado": "p = 15",
+     "texto": "Comprobamos con f'' o el signo de f'."
+    },
+    {
+     "paso": 6,
+     "operacion": "responder",
+     "resultado": "450 €",
+     "texto": "Contestamos a lo que se pregunta."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Si la entrada de una sala de escape cuesta p euros, acuden 60 − 2p personas. ¿Qué precio da los máximos ingresos?",
+   "respuesta": "15 €",
+   "distractores": [
+    {
+     "valor": "450 €",
+     "error": "E02"
+    },
+    {
+     "valor": "30 €",
+     "error": null
+    },
+    {
+     "valor": "17 €",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "60 : (2 × 2)",
+   "secundarias": [],
+   "explicacion_nino": "Ingresos = precio × asistentes: I(p) = p(60 − 2p) = 60p − 2p². I'(p) = 60 − 4p = 0 → p = 15 €; I'' < 0, máximo. Ingresos: 15·(60 − 2·15) = 450 €.",
+   "explicacion_adulto": "Está aprendiendo el esquema de la optimización: función a optimizar, condición que liga las variables, sustituir para dejar una sola variable, derivar, igualar a cero, comprobar que es máximo o mínimo y responder a lo que se pregunta. Los errores típicos son no usar la condición (quedarse con dos variables) y responder con la x cuando se pide otra cosa (el área, el precio…). Pídale que subraye qué pregunta el enunciado.",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "función",
+     "resultado": "I = p·q",
+     "texto": "Qué hay que hacer máximo o mínimo."
+    },
+    {
+     "paso": 2,
+     "operacion": "condición",
+     "resultado": "q = 60 − 2p",
+     "texto": "Relación entre las variables."
+    },
+    {
+     "paso": 3,
+     "operacion": "una variable",
+     "resultado": "I(p) = 60p − 2p²",
+     "texto": "Sustituimos la condición."
+    },
+    {
+     "paso": 4,
+     "operacion": "derivar",
+     "resultado": "60 − 4p = 0",
+     "texto": "f'(x) = 0."
+    },
+    {
+     "paso": 5,
+     "operacion": "punto crítico",
+     "resultado": "p = 15",
+     "texto": "Comprobamos con f'' o el signo de f'."
+    },
+    {
+     "paso": 6,
+     "operacion": "responder",
+     "resultado": "15 €",
+     "texto": "Contestamos a lo que se pregunta."
+    }
+   ],
+   "plantilla": "P05"
+  }
+ ]
+}

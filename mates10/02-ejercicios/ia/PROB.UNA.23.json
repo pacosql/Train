@@ -1,0 +1,1478 @@
+{
+ "habilidad": "PROB.UNA.23",
+ "generado_por": "claude (skill mates10-generar-ejercicios v1)",
+ "ejercicios": [
+  {
+   "dificultad": 1,
+   "enunciado": "Un elefante pesa 2600 kg y un rinoceronte 1300 kg. ¿Cuántas veces pesa más el elefante que el rinoceronte?",
+   "respuesta": "2 veces",
+   "distractores": [
+    {
+     "valor": "1300 kg",
+     "error": "E01"
+    },
+    {
+     "valor": "2 kg",
+     "error": "E03"
+    },
+    {
+     "valor": "3 veces",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "2600 : 1300",
+   "secundarias": [
+    "OPER.DIV.03"
+   ],
+   "explicacion_nino": "Entiende: queremos saber cuántas veces cabe 1300 en 2600. Dividimos la cantidad mayor entre la menor: 2600 : 1300 = 2. Comprueba: 1300 × 2 = 2600. La respuesta son veces, no kg.",
+   "explicacion_adulto": "Está aprendiendo a comparar dos cantidades preguntando cuántas veces cabe la pequeña en la grande (dividir), no cuánto más tiene una que otra (restar). La respuesta es un número de veces, sin unidades. Pregúntele: «¿cuántas barras pequeñas hacen falta para igualar la grande?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "2600 y 1300",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "2600 : 1300",
+     "resultado": "2 veces",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "1300 × 2 = 2600",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Una bicicleta cuesta 20 € y un casco 10 €. ¿Cuántas veces más cara es la bicicleta que el casco?",
+   "respuesta": "2 veces",
+   "distractores": [
+    {
+     "valor": "10 €",
+     "error": "E01"
+    },
+    {
+     "valor": "2 €",
+     "error": "E03"
+    },
+    {
+     "valor": "3 veces",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "20 : 10",
+   "secundarias": [
+    "OPER.DIV.01"
+   ],
+   "explicacion_nino": "Entiende: queremos saber cuántas veces cabe 10 en 20. Dividimos la cantidad mayor entre la menor: 20 : 10 = 2. Comprueba: 10 × 2 = 20. La respuesta son veces, no €.",
+   "explicacion_adulto": "Está aprendiendo a comparar dos cantidades preguntando cuántas veces cabe la pequeña en la grande (dividir), no cuánto más tiene una que otra (restar). La respuesta es un número de veces, sin unidades. Pregúntele: «¿cuántas barras pequeñas hacen falta para igualar la grande?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "20 y 10",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "20 : 10",
+     "resultado": "2 veces",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "10 × 2 = 20",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un rascacielos mide 80 m y una casa mide 20 m. ¿Cuántas veces más alto es el rascacielos que la casa?",
+   "respuesta": "4 veces",
+   "distractores": [
+    {
+     "valor": "60 m",
+     "error": "E01"
+    },
+    {
+     "valor": "4 m",
+     "error": "E03"
+    },
+    {
+     "valor": "5 veces",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "80 : 20",
+   "secundarias": [
+    "OPER.DIV.01"
+   ],
+   "explicacion_nino": "Entiende: queremos saber cuántas veces cabe 20 en 80. Dividimos la cantidad mayor entre la menor: 80 : 20 = 4. Comprueba: 20 × 4 = 80. La respuesta son veces, no m.",
+   "explicacion_adulto": "Está aprendiendo a comparar dos cantidades preguntando cuántas veces cabe la pequeña en la grande (dividir), no cuánto más tiene una que otra (restar). La respuesta es un número de veces, sin unidades. Pregúntele: «¿cuántas barras pequeñas hacen falta para igualar la grande?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "80 y 20",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "80 : 20",
+     "resultado": "4 veces",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "20 × 4 = 80",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Martín tiene 36 cromos y su hermano pequeño tiene 9. ¿Cuántas veces tiene Martín los cromos de su hermano?",
+   "respuesta": "4 veces",
+   "distractores": [
+    {
+     "valor": "27 cromos",
+     "error": "E01"
+    },
+    {
+     "valor": "4 cromos",
+     "error": "E03"
+    },
+    {
+     "valor": "5 veces",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "36 : 9",
+   "secundarias": [
+    "OPER.DIV.01"
+   ],
+   "explicacion_nino": "Entiende: queremos saber cuántas veces cabe 9 en 36. Dividimos la cantidad mayor entre la menor: 36 : 9 = 4. Comprueba: 9 × 4 = 36. La respuesta son veces, no cromos.",
+   "explicacion_adulto": "Está aprendiendo a comparar dos cantidades preguntando cuántas veces cabe la pequeña en la grande (dividir), no cuánto más tiene una que otra (restar). La respuesta es un número de veces, sin unidades. Pregúntele: «¿cuántas barras pequeñas hacen falta para igualar la grande?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "36 y 9",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "36 : 9",
+     "resultado": "4 veces",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "9 × 4 = 36",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un depósito tiene 24 litros y un cubo 6 litros. ¿Cuántas veces cabe el agua del cubo en el depósito?",
+   "respuesta": "4 veces",
+   "distractores": [
+    {
+     "valor": "18 litros",
+     "error": "E01"
+    },
+    {
+     "valor": "4 litros",
+     "error": "E03"
+    },
+    {
+     "valor": "5 veces",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "24 : 6",
+   "secundarias": [
+    "OPER.DIV.01"
+   ],
+   "explicacion_nino": "Entiende: queremos saber cuántas veces cabe 6 en 24. Dividimos la cantidad mayor entre la menor: 24 : 6 = 4. Comprueba: 6 × 4 = 24. La respuesta son veces, no litros.",
+   "explicacion_adulto": "Está aprendiendo a comparar dos cantidades preguntando cuántas veces cabe la pequeña en la grande (dividir), no cuánto más tiene una que otra (restar). La respuesta es un número de veces, sin unidades. Pregúntele: «¿cuántas barras pequeñas hacen falta para igualar la grande?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "24 y 6",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "24 : 6",
+     "resultado": "4 veces",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "6 × 4 = 24",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un elefante pesa 3300 kg y un rinoceronte 1100 kg. ¿Cuántas veces pesa más el elefante que el rinoceronte?",
+   "respuesta": "3 veces",
+   "distractores": [
+    {
+     "valor": "2200 kg",
+     "error": "E01"
+    },
+    {
+     "valor": "3 kg",
+     "error": "E03"
+    },
+    {
+     "valor": "4 veces",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "3300 : 1100",
+   "secundarias": [
+    "OPER.DIV.03"
+   ],
+   "explicacion_nino": "Entiende: queremos saber cuántas veces cabe 1100 en 3300. Dividimos la cantidad mayor entre la menor: 3300 : 1100 = 3. Comprueba: 1100 × 3 = 3300. La respuesta son veces, no kg.",
+   "explicacion_adulto": "Está aprendiendo a comparar dos cantidades preguntando cuántas veces cabe la pequeña en la grande (dividir), no cuánto más tiene una que otra (restar). La respuesta es un número de veces, sin unidades. Pregúntele: «¿cuántas barras pequeñas hacen falta para igualar la grande?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "3300 y 1100",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "3300 : 1100",
+     "resultado": "3 veces",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "1100 × 3 = 3300",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Una bicicleta cuesta 350 € y un casco 70 €. ¿Cuántas veces más cara es la bicicleta que el casco?",
+   "respuesta": "5 veces",
+   "distractores": [
+    {
+     "valor": "280 €",
+     "error": "E01"
+    },
+    {
+     "valor": "5 €",
+     "error": "E03"
+    },
+    {
+     "valor": "6 veces",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "350 : 70",
+   "secundarias": [
+    "OPER.DIV.03"
+   ],
+   "explicacion_nino": "Entiende: queremos saber cuántas veces cabe 70 en 350. Dividimos la cantidad mayor entre la menor: 350 : 70 = 5. Comprueba: 70 × 5 = 350. La respuesta son veces, no €.",
+   "explicacion_adulto": "Está aprendiendo a comparar dos cantidades preguntando cuántas veces cabe la pequeña en la grande (dividir), no cuánto más tiene una que otra (restar). La respuesta es un número de veces, sin unidades. Pregúntele: «¿cuántas barras pequeñas hacen falta para igualar la grande?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "350 y 70",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "350 : 70",
+     "resultado": "5 veces",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "70 × 5 = 350",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un rascacielos mide 40 m y una casa mide 10 m. ¿Cuántas veces más alto es el rascacielos que la casa?",
+   "respuesta": "4 veces",
+   "distractores": [
+    {
+     "valor": "30 m",
+     "error": "E01"
+    },
+    {
+     "valor": "4 m",
+     "error": "E03"
+    },
+    {
+     "valor": "5 veces",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "40 : 10",
+   "secundarias": [
+    "OPER.DIV.01"
+   ],
+   "explicacion_nino": "Entiende: queremos saber cuántas veces cabe 10 en 40. Dividimos la cantidad mayor entre la menor: 40 : 10 = 4. Comprueba: 10 × 4 = 40. La respuesta son veces, no m.",
+   "explicacion_adulto": "Está aprendiendo a comparar dos cantidades preguntando cuántas veces cabe la pequeña en la grande (dividir), no cuánto más tiene una que otra (restar). La respuesta es un número de veces, sin unidades. Pregúntele: «¿cuántas barras pequeñas hacen falta para igualar la grande?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "40 y 10",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "40 : 10",
+     "resultado": "4 veces",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "10 × 4 = 40",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Nico tiene 100 cromos y su hermano pequeño tiene 20. ¿Cuántas veces tiene Nico los cromos de su hermano?",
+   "respuesta": "5 veces",
+   "distractores": [
+    {
+     "valor": "80 cromos",
+     "error": "E01"
+    },
+    {
+     "valor": "5 cromos",
+     "error": "E03"
+    },
+    {
+     "valor": "6 veces",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "100 : 20",
+   "secundarias": [
+    "OPER.DIV.03"
+   ],
+   "explicacion_nino": "Entiende: queremos saber cuántas veces cabe 20 en 100. Dividimos la cantidad mayor entre la menor: 100 : 20 = 5. Comprueba: 20 × 5 = 100. La respuesta son veces, no cromos.",
+   "explicacion_adulto": "Está aprendiendo a comparar dos cantidades preguntando cuántas veces cabe la pequeña en la grande (dividir), no cuánto más tiene una que otra (restar). La respuesta es un número de veces, sin unidades. Pregúntele: «¿cuántas barras pequeñas hacen falta para igualar la grande?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "100 y 20",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "100 : 20",
+     "resultado": "5 veces",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "20 × 5 = 100",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un depósito tiene 18 litros y un cubo 6 litros. ¿Cuántas veces cabe el agua del cubo en el depósito?",
+   "respuesta": "3 veces",
+   "distractores": [
+    {
+     "valor": "12 litros",
+     "error": "E01"
+    },
+    {
+     "valor": "3 litros",
+     "error": "E03"
+    },
+    {
+     "valor": "4 veces",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "18 : 6",
+   "secundarias": [
+    "OPER.DIV.01"
+   ],
+   "explicacion_nino": "Entiende: queremos saber cuántas veces cabe 6 en 18. Dividimos la cantidad mayor entre la menor: 18 : 6 = 3. Comprueba: 6 × 3 = 18. La respuesta son veces, no litros.",
+   "explicacion_adulto": "Está aprendiendo a comparar dos cantidades preguntando cuántas veces cabe la pequeña en la grande (dividir), no cuánto más tiene una que otra (restar). La respuesta es un número de veces, sin unidades. Pregúntele: «¿cuántas barras pequeñas hacen falta para igualar la grande?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "18 y 6",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "18 : 6",
+     "resultado": "3 veces",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "6 × 3 = 18",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un elefante pesa 1000 kg y un rinoceronte 500 kg. ¿Cuántas veces pesa más el elefante que el rinoceronte?",
+   "respuesta": "2 veces",
+   "distractores": [
+    {
+     "valor": "500 kg",
+     "error": "E01"
+    },
+    {
+     "valor": "2 kg",
+     "error": "E03"
+    },
+    {
+     "valor": "3 veces",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "1000 : 500",
+   "secundarias": [
+    "OPER.DIV.03"
+   ],
+   "explicacion_nino": "Entiende: queremos saber cuántas veces cabe 500 en 1000. Dividimos la cantidad mayor entre la menor: 1000 : 500 = 2. Comprueba: 500 × 2 = 1000. La respuesta son veces, no kg.",
+   "explicacion_adulto": "Está aprendiendo a comparar dos cantidades preguntando cuántas veces cabe la pequeña en la grande (dividir), no cuánto más tiene una que otra (restar). La respuesta es un número de veces, sin unidades. Pregúntele: «¿cuántas barras pequeñas hacen falta para igualar la grande?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "1000 y 500",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "1000 : 500",
+     "resultado": "2 veces",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "500 × 2 = 1000",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Una bicicleta cuesta 80 € y un casco 20 €. ¿Cuántas veces más cara es la bicicleta que el casco?",
+   "respuesta": "4 veces",
+   "distractores": [
+    {
+     "valor": "60 €",
+     "error": "E01"
+    },
+    {
+     "valor": "4 €",
+     "error": "E03"
+    },
+    {
+     "valor": "5 veces",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "80 : 20",
+   "secundarias": [
+    "OPER.DIV.01"
+   ],
+   "explicacion_nino": "Entiende: queremos saber cuántas veces cabe 20 en 80. Dividimos la cantidad mayor entre la menor: 80 : 20 = 4. Comprueba: 20 × 4 = 80. La respuesta son veces, no €.",
+   "explicacion_adulto": "Está aprendiendo a comparar dos cantidades preguntando cuántas veces cabe la pequeña en la grande (dividir), no cuánto más tiene una que otra (restar). La respuesta es un número de veces, sin unidades. Pregúntele: «¿cuántas barras pequeñas hacen falta para igualar la grande?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "80 y 20",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "80 : 20",
+     "resultado": "4 veces",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "20 × 4 = 80",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 1,
+   "enunciado": "Un rascacielos mide 60 m y una casa mide 20 m. ¿Cuántas veces más alto es el rascacielos que la casa?",
+   "respuesta": "3 veces",
+   "distractores": [
+    {
+     "valor": "40 m",
+     "error": "E01"
+    },
+    {
+     "valor": "3 m",
+     "error": "E03"
+    },
+    {
+     "valor": "4 veces",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "60 : 20",
+   "secundarias": [
+    "OPER.DIV.01"
+   ],
+   "explicacion_nino": "Entiende: queremos saber cuántas veces cabe 20 en 60. Dividimos la cantidad mayor entre la menor: 60 : 20 = 3. Comprueba: 20 × 3 = 60. La respuesta son veces, no m.",
+   "explicacion_adulto": "Está aprendiendo a comparar dos cantidades preguntando cuántas veces cabe la pequeña en la grande (dividir), no cuánto más tiene una que otra (restar). La respuesta es un número de veces, sin unidades. Pregúntele: «¿cuántas barras pequeñas hacen falta para igualar la grande?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "60 y 20",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "60 : 20",
+     "resultado": "3 veces",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "20 × 3 = 60",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Samuel tiene 69 cromos y su hermano pequeño tiene 23. ¿Cuántas veces tiene Samuel los cromos de su hermano?",
+   "respuesta": "3 veces",
+   "distractores": [
+    {
+     "valor": "46 cromos",
+     "error": "E01"
+    },
+    {
+     "valor": "3 cromos",
+     "error": "E03"
+    },
+    {
+     "valor": "4 veces",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "69 : 23",
+   "secundarias": [
+    "OPER.DIV.01"
+   ],
+   "explicacion_nino": "Entiende: queremos saber cuántas veces cabe 23 en 69. Dividimos la cantidad mayor entre la menor: 69 : 23 = 3. Comprueba: 23 × 3 = 69. La respuesta son veces, no cromos.",
+   "explicacion_adulto": "Está aprendiendo a comparar dos cantidades preguntando cuántas veces cabe la pequeña en la grande (dividir), no cuánto más tiene una que otra (restar). La respuesta es un número de veces, sin unidades. Pregúntele: «¿cuántas barras pequeñas hacen falta para igualar la grande?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "69 y 23",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "69 : 23",
+     "resultado": "3 veces",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "23 × 3 = 69",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un depósito tiene 56 litros y un cubo 7 litros. ¿Cuántas veces cabe el agua del cubo en el depósito?",
+   "respuesta": "8 veces",
+   "distractores": [
+    {
+     "valor": "49 litros",
+     "error": "E01"
+    },
+    {
+     "valor": "8 litros",
+     "error": "E03"
+    },
+    {
+     "valor": "9 veces",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "56 : 7",
+   "secundarias": [
+    "OPER.DIV.01"
+   ],
+   "explicacion_nino": "Entiende: queremos saber cuántas veces cabe 7 en 56. Dividimos la cantidad mayor entre la menor: 56 : 7 = 8. Comprueba: 7 × 8 = 56. La respuesta son veces, no litros.",
+   "explicacion_adulto": "Está aprendiendo a comparar dos cantidades preguntando cuántas veces cabe la pequeña en la grande (dividir), no cuánto más tiene una que otra (restar). La respuesta es un número de veces, sin unidades. Pregúntele: «¿cuántas barras pequeñas hacen falta para igualar la grande?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "56 y 7",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "56 : 7",
+     "resultado": "8 veces",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "7 × 8 = 56",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un elefante pesa 2000 kg y un rinoceronte 500 kg. ¿Cuántas veces pesa más el elefante que el rinoceronte?",
+   "respuesta": "4 veces",
+   "distractores": [
+    {
+     "valor": "1500 kg",
+     "error": "E01"
+    },
+    {
+     "valor": "4 kg",
+     "error": "E03"
+    },
+    {
+     "valor": "5 veces",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "2000 : 500",
+   "secundarias": [
+    "OPER.DIV.03"
+   ],
+   "explicacion_nino": "Entiende: queremos saber cuántas veces cabe 500 en 2000. Dividimos la cantidad mayor entre la menor: 2000 : 500 = 4. Comprueba: 500 × 4 = 2000. La respuesta son veces, no kg.",
+   "explicacion_adulto": "Está aprendiendo a comparar dos cantidades preguntando cuántas veces cabe la pequeña en la grande (dividir), no cuánto más tiene una que otra (restar). La respuesta es un número de veces, sin unidades. Pregúntele: «¿cuántas barras pequeñas hacen falta para igualar la grande?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "2000 y 500",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "2000 : 500",
+     "resultado": "4 veces",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "500 × 4 = 2000",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Una bicicleta cuesta 318 € y un casco 53 €. ¿Cuántas veces más cara es la bicicleta que el casco?",
+   "respuesta": "6 veces",
+   "distractores": [
+    {
+     "valor": "265 €",
+     "error": "E01"
+    },
+    {
+     "valor": "6 €",
+     "error": "E03"
+    },
+    {
+     "valor": "7 veces",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "318 : 53",
+   "secundarias": [
+    "OPER.DIV.03"
+   ],
+   "explicacion_nino": "Entiende: queremos saber cuántas veces cabe 53 en 318. Dividimos la cantidad mayor entre la menor: 318 : 53 = 6. Comprueba: 53 × 6 = 318. La respuesta son veces, no €.",
+   "explicacion_adulto": "Está aprendiendo a comparar dos cantidades preguntando cuántas veces cabe la pequeña en la grande (dividir), no cuánto más tiene una que otra (restar). La respuesta es un número de veces, sin unidades. Pregúntele: «¿cuántas barras pequeñas hacen falta para igualar la grande?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "318 y 53",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "318 : 53",
+     "resultado": "6 veces",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "53 × 6 = 318",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un rascacielos mide 120 m y una casa mide 15 m. ¿Cuántas veces más alto es el rascacielos que la casa?",
+   "respuesta": "8 veces",
+   "distractores": [
+    {
+     "valor": "105 m",
+     "error": "E01"
+    },
+    {
+     "valor": "8 m",
+     "error": "E03"
+    },
+    {
+     "valor": "9 veces",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "120 : 15",
+   "secundarias": [
+    "OPER.DIV.03"
+   ],
+   "explicacion_nino": "Entiende: queremos saber cuántas veces cabe 15 en 120. Dividimos la cantidad mayor entre la menor: 120 : 15 = 8. Comprueba: 15 × 8 = 120. La respuesta son veces, no m.",
+   "explicacion_adulto": "Está aprendiendo a comparar dos cantidades preguntando cuántas veces cabe la pequeña en la grande (dividir), no cuánto más tiene una que otra (restar). La respuesta es un número de veces, sin unidades. Pregúntele: «¿cuántas barras pequeñas hacen falta para igualar la grande?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "120 y 15",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "120 : 15",
+     "resultado": "8 veces",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "15 × 8 = 120",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Mía tiene 160 cromos y su hermano pequeño tiene 32. ¿Cuántas veces tiene Mía los cromos de su hermano?",
+   "respuesta": "5 veces",
+   "distractores": [
+    {
+     "valor": "128 cromos",
+     "error": "E01"
+    },
+    {
+     "valor": "5 cromos",
+     "error": "E03"
+    },
+    {
+     "valor": "6 veces",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "160 : 32",
+   "secundarias": [
+    "OPER.DIV.03"
+   ],
+   "explicacion_nino": "Entiende: queremos saber cuántas veces cabe 32 en 160. Dividimos la cantidad mayor entre la menor: 160 : 32 = 5. Comprueba: 32 × 5 = 160. La respuesta son veces, no cromos.",
+   "explicacion_adulto": "Está aprendiendo a comparar dos cantidades preguntando cuántas veces cabe la pequeña en la grande (dividir), no cuánto más tiene una que otra (restar). La respuesta es un número de veces, sin unidades. Pregúntele: «¿cuántas barras pequeñas hacen falta para igualar la grande?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "160 y 32",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "160 : 32",
+     "resultado": "5 veces",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "32 × 5 = 160",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un depósito tiene 56 litros y un cubo 8 litros. ¿Cuántas veces cabe el agua del cubo en el depósito?",
+   "respuesta": "7 veces",
+   "distractores": [
+    {
+     "valor": "48 litros",
+     "error": "E01"
+    },
+    {
+     "valor": "7 litros",
+     "error": "E03"
+    },
+    {
+     "valor": "8 veces",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "56 : 8",
+   "secundarias": [
+    "OPER.DIV.01"
+   ],
+   "explicacion_nino": "Entiende: queremos saber cuántas veces cabe 8 en 56. Dividimos la cantidad mayor entre la menor: 56 : 8 = 7. Comprueba: 8 × 7 = 56. La respuesta son veces, no litros.",
+   "explicacion_adulto": "Está aprendiendo a comparar dos cantidades preguntando cuántas veces cabe la pequeña en la grande (dividir), no cuánto más tiene una que otra (restar). La respuesta es un número de veces, sin unidades. Pregúntele: «¿cuántas barras pequeñas hacen falta para igualar la grande?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "56 y 8",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "56 : 8",
+     "resultado": "7 veces",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "8 × 7 = 56",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un elefante pesa 4200 kg y un rinoceronte 1400 kg. ¿Cuántas veces pesa más el elefante que el rinoceronte?",
+   "respuesta": "3 veces",
+   "distractores": [
+    {
+     "valor": "2800 kg",
+     "error": "E01"
+    },
+    {
+     "valor": "3 kg",
+     "error": "E03"
+    },
+    {
+     "valor": "4 veces",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "4200 : 1400",
+   "secundarias": [
+    "OPER.DIV.03"
+   ],
+   "explicacion_nino": "Entiende: queremos saber cuántas veces cabe 1400 en 4200. Dividimos la cantidad mayor entre la menor: 4200 : 1400 = 3. Comprueba: 1400 × 3 = 4200. La respuesta son veces, no kg.",
+   "explicacion_adulto": "Está aprendiendo a comparar dos cantidades preguntando cuántas veces cabe la pequeña en la grande (dividir), no cuánto más tiene una que otra (restar). La respuesta es un número de veces, sin unidades. Pregúntele: «¿cuántas barras pequeñas hacen falta para igualar la grande?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "4200 y 1400",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "4200 : 1400",
+     "resultado": "3 veces",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "1400 × 3 = 4200",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Una bicicleta cuesta 261 € y un casco 87 €. ¿Cuántas veces más cara es la bicicleta que el casco?",
+   "respuesta": "3 veces",
+   "distractores": [
+    {
+     "valor": "174 €",
+     "error": "E01"
+    },
+    {
+     "valor": "3 €",
+     "error": "E03"
+    },
+    {
+     "valor": "4 veces",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "261 : 87",
+   "secundarias": [
+    "OPER.DIV.03"
+   ],
+   "explicacion_nino": "Entiende: queremos saber cuántas veces cabe 87 en 261. Dividimos la cantidad mayor entre la menor: 261 : 87 = 3. Comprueba: 87 × 3 = 261. La respuesta son veces, no €.",
+   "explicacion_adulto": "Está aprendiendo a comparar dos cantidades preguntando cuántas veces cabe la pequeña en la grande (dividir), no cuánto más tiene una que otra (restar). La respuesta es un número de veces, sin unidades. Pregúntele: «¿cuántas barras pequeñas hacen falta para igualar la grande?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "261 y 87",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "261 : 87",
+     "resultado": "3 veces",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "87 × 3 = 261",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Un rascacielos mide 55 m y una casa mide 11 m. ¿Cuántas veces más alto es el rascacielos que la casa?",
+   "respuesta": "5 veces",
+   "distractores": [
+    {
+     "valor": "44 m",
+     "error": "E01"
+    },
+    {
+     "valor": "5 m",
+     "error": "E03"
+    },
+    {
+     "valor": "6 veces",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "55 : 11",
+   "secundarias": [
+    "OPER.DIV.01"
+   ],
+   "explicacion_nino": "Entiende: queremos saber cuántas veces cabe 11 en 55. Dividimos la cantidad mayor entre la menor: 55 : 11 = 5. Comprueba: 11 × 5 = 55. La respuesta son veces, no m.",
+   "explicacion_adulto": "Está aprendiendo a comparar dos cantidades preguntando cuántas veces cabe la pequeña en la grande (dividir), no cuánto más tiene una que otra (restar). La respuesta es un número de veces, sin unidades. Pregúntele: «¿cuántas barras pequeñas hacen falta para igualar la grande?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "55 y 11",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "55 : 11",
+     "resultado": "5 veces",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "11 × 5 = 55",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 2,
+   "enunciado": "Pol tiene 99 cromos y su hermano pequeño tiene 33. ¿Cuántas veces tiene Pol los cromos de su hermano?",
+   "respuesta": "3 veces",
+   "distractores": [
+    {
+     "valor": "66 cromos",
+     "error": "E01"
+    },
+    {
+     "valor": "3 cromos",
+     "error": "E03"
+    },
+    {
+     "valor": "4 veces",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "99 : 33",
+   "secundarias": [
+    "OPER.DIV.01"
+   ],
+   "explicacion_nino": "Entiende: queremos saber cuántas veces cabe 33 en 99. Dividimos la cantidad mayor entre la menor: 99 : 33 = 3. Comprueba: 33 × 3 = 99. La respuesta son veces, no cromos.",
+   "explicacion_adulto": "Está aprendiendo a comparar dos cantidades preguntando cuántas veces cabe la pequeña en la grande (dividir), no cuánto más tiene una que otra (restar). La respuesta es un número de veces, sin unidades. Pregúntele: «¿cuántas barras pequeñas hacen falta para igualar la grande?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "99 y 33",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "99 : 33",
+     "resultado": "3 veces",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "33 × 3 = 99",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un depósito tiene 96 litros y un cubo 8 litros. ¿Cuántas veces cabe el agua del cubo en el depósito?",
+   "respuesta": "12 veces",
+   "distractores": [
+    {
+     "valor": "88 litros",
+     "error": "E01"
+    },
+    {
+     "valor": "12 litros",
+     "error": "E03"
+    },
+    {
+     "valor": "13 veces",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "96 : 8",
+   "secundarias": [
+    "OPER.DIV.01"
+   ],
+   "explicacion_nino": "Entiende: queremos saber cuántas veces cabe 8 en 96. Dividimos la cantidad mayor entre la menor: 96 : 8 = 12. Comprueba: 8 × 12 = 96. La respuesta son veces, no litros.",
+   "explicacion_adulto": "Está aprendiendo a comparar dos cantidades preguntando cuántas veces cabe la pequeña en la grande (dividir), no cuánto más tiene una que otra (restar). La respuesta es un número de veces, sin unidades. Pregúntele: «¿cuántas barras pequeñas hacen falta para igualar la grande?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "96 y 8",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "96 : 8",
+     "resultado": "12 veces",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "8 × 12 = 96",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un elefante pesa 4000 kg y un rinoceronte 500 kg. ¿Cuántas veces pesa más el elefante que el rinoceronte?",
+   "respuesta": "8 veces",
+   "distractores": [
+    {
+     "valor": "3500 kg",
+     "error": "E01"
+    },
+    {
+     "valor": "8 kg",
+     "error": "E03"
+    },
+    {
+     "valor": "9 veces",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "4000 : 500",
+   "secundarias": [
+    "OPER.DIV.03"
+   ],
+   "explicacion_nino": "Entiende: queremos saber cuántas veces cabe 500 en 4000. Dividimos la cantidad mayor entre la menor: 4000 : 500 = 8. Comprueba: 500 × 8 = 4000. La respuesta son veces, no kg.",
+   "explicacion_adulto": "Está aprendiendo a comparar dos cantidades preguntando cuántas veces cabe la pequeña en la grande (dividir), no cuánto más tiene una que otra (restar). La respuesta es un número de veces, sin unidades. Pregúntele: «¿cuántas barras pequeñas hacen falta para igualar la grande?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "4000 y 500",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "4000 : 500",
+     "resultado": "8 veces",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "500 × 8 = 4000",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Una bicicleta cuesta 560 € y un casco 70 €. ¿Cuántas veces más cara es la bicicleta que el casco?",
+   "respuesta": "8 veces",
+   "distractores": [
+    {
+     "valor": "490 €",
+     "error": "E01"
+    },
+    {
+     "valor": "8 €",
+     "error": "E03"
+    },
+    {
+     "valor": "9 veces",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "560 : 70",
+   "secundarias": [
+    "OPER.DIV.03"
+   ],
+   "explicacion_nino": "Entiende: queremos saber cuántas veces cabe 70 en 560. Dividimos la cantidad mayor entre la menor: 560 : 70 = 8. Comprueba: 70 × 8 = 560. La respuesta son veces, no €.",
+   "explicacion_adulto": "Está aprendiendo a comparar dos cantidades preguntando cuántas veces cabe la pequeña en la grande (dividir), no cuánto más tiene una que otra (restar). La respuesta es un número de veces, sin unidades. Pregúntele: «¿cuántas barras pequeñas hacen falta para igualar la grande?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "560 y 70",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "560 : 70",
+     "resultado": "8 veces",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "70 × 8 = 560",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P02"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un rascacielos mide 240 m y una casa mide 24 m. ¿Cuántas veces más alto es el rascacielos que la casa?",
+   "respuesta": "10 veces",
+   "distractores": [
+    {
+     "valor": "216 m",
+     "error": "E01"
+    },
+    {
+     "valor": "10 m",
+     "error": "E03"
+    },
+    {
+     "valor": "11 veces",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "240 : 24",
+   "secundarias": [
+    "OPER.DIV.03"
+   ],
+   "explicacion_nino": "Entiende: queremos saber cuántas veces cabe 24 en 240. Dividimos la cantidad mayor entre la menor: 240 : 24 = 10. Comprueba: 24 × 10 = 240. La respuesta son veces, no m.",
+   "explicacion_adulto": "Está aprendiendo a comparar dos cantidades preguntando cuántas veces cabe la pequeña en la grande (dividir), no cuánto más tiene una que otra (restar). La respuesta es un número de veces, sin unidades. Pregúntele: «¿cuántas barras pequeñas hacen falta para igualar la grande?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "240 y 24",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "240 : 24",
+     "resultado": "10 veces",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "24 × 10 = 240",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P03"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Lucía tiene 96 cromos y su hermano pequeño tiene 12. ¿Cuántas veces tiene Lucía los cromos de su hermano?",
+   "respuesta": "8 veces",
+   "distractores": [
+    {
+     "valor": "84 cromos",
+     "error": "E01"
+    },
+    {
+     "valor": "8 cromos",
+     "error": "E03"
+    },
+    {
+     "valor": "9 veces",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "96 : 12",
+   "secundarias": [
+    "OPER.DIV.01"
+   ],
+   "explicacion_nino": "Entiende: queremos saber cuántas veces cabe 12 en 96. Dividimos la cantidad mayor entre la menor: 96 : 12 = 8. Comprueba: 12 × 8 = 96. La respuesta son veces, no cromos.",
+   "explicacion_adulto": "Está aprendiendo a comparar dos cantidades preguntando cuántas veces cabe la pequeña en la grande (dividir), no cuánto más tiene una que otra (restar). La respuesta es un número de veces, sin unidades. Pregúntele: «¿cuántas barras pequeñas hacen falta para igualar la grande?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "96 y 12",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "96 : 12",
+     "resultado": "8 veces",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "12 × 8 = 96",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P04"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un depósito tiene 60 litros y un cubo 10 litros. ¿Cuántas veces cabe el agua del cubo en el depósito?",
+   "respuesta": "6 veces",
+   "distractores": [
+    {
+     "valor": "50 litros",
+     "error": "E01"
+    },
+    {
+     "valor": "6 litros",
+     "error": "E03"
+    },
+    {
+     "valor": "7 veces",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "60 : 10",
+   "secundarias": [
+    "OPER.DIV.01"
+   ],
+   "explicacion_nino": "Entiende: queremos saber cuántas veces cabe 10 en 60. Dividimos la cantidad mayor entre la menor: 60 : 10 = 6. Comprueba: 10 × 6 = 60. La respuesta son veces, no litros.",
+   "explicacion_adulto": "Está aprendiendo a comparar dos cantidades preguntando cuántas veces cabe la pequeña en la grande (dividir), no cuánto más tiene una que otra (restar). La respuesta es un número de veces, sin unidades. Pregúntele: «¿cuántas barras pequeñas hacen falta para igualar la grande?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "60 y 10",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "60 : 10",
+     "resultado": "6 veces",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "10 × 6 = 60",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P05"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Un elefante pesa 6300 kg y un rinoceronte 900 kg. ¿Cuántas veces pesa más el elefante que el rinoceronte?",
+   "respuesta": "7 veces",
+   "distractores": [
+    {
+     "valor": "5400 kg",
+     "error": "E01"
+    },
+    {
+     "valor": "7 kg",
+     "error": "E03"
+    },
+    {
+     "valor": "8 veces",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "6300 : 900",
+   "secundarias": [
+    "OPER.DIV.03"
+   ],
+   "explicacion_nino": "Entiende: queremos saber cuántas veces cabe 900 en 6300. Dividimos la cantidad mayor entre la menor: 6300 : 900 = 7. Comprueba: 900 × 7 = 6300. La respuesta son veces, no kg.",
+   "explicacion_adulto": "Está aprendiendo a comparar dos cantidades preguntando cuántas veces cabe la pequeña en la grande (dividir), no cuánto más tiene una que otra (restar). La respuesta es un número de veces, sin unidades. Pregúntele: «¿cuántas barras pequeñas hacen falta para igualar la grande?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "6300 y 900",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "6300 : 900",
+     "resultado": "7 veces",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "900 × 7 = 6300",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P01"
+  },
+  {
+   "dificultad": 3,
+   "enunciado": "Una bicicleta cuesta 480 € y un casco 60 €. ¿Cuántas veces más cara es la bicicleta que el casco?",
+   "respuesta": "8 veces",
+   "distractores": [
+    {
+     "valor": "420 €",
+     "error": "E01"
+    },
+    {
+     "valor": "8 €",
+     "error": "E03"
+    },
+    {
+     "valor": "9 veces",
+     "error": null
+    }
+   ],
+   "expresion_calculo": "480 : 60",
+   "secundarias": [
+    "OPER.DIV.03"
+   ],
+   "explicacion_nino": "Entiende: queremos saber cuántas veces cabe 60 en 480. Dividimos la cantidad mayor entre la menor: 480 : 60 = 8. Comprueba: 60 × 8 = 480. La respuesta son veces, no €.",
+   "explicacion_adulto": "Está aprendiendo a comparar dos cantidades preguntando cuántas veces cabe la pequeña en la grande (dividir), no cuánto más tiene una que otra (restar). La respuesta es un número de veces, sin unidades. Pregúntele: «¿cuántas barras pequeñas hacen falta para igualar la grande?».",
+   "explicacion_pasos": [
+    {
+     "paso": 1,
+     "operacion": "datos",
+     "resultado": "480 y 60",
+     "texto": "Buscamos los datos que nos da el problema."
+    },
+    {
+     "paso": 2,
+     "operacion": "480 : 60",
+     "resultado": "8 veces",
+     "texto": "Hacemos la operación."
+    },
+    {
+     "paso": 3,
+     "operacion": "comprobar",
+     "resultado": "60 × 8 = 480",
+     "texto": "Comprobamos que la respuesta tiene sentido."
+    }
+   ],
+   "plantilla": "P02"
+  }
+ ]
+}
