@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Series</title>
+
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0d0b10" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Series" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" href="icons/icon-192.png" />
+
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0d0b10;
+      --card: #17141c;
+      --card-2: #211d28;
+      --line: rgba(255, 255, 255, 0.09);
+      --text: #f5f3f7;
+      --text-2: #a39dab;
+      --accent: #e5484d;
+      --good: #3ecf8e;
+      --bad: #ff6b6b;
+      --gold: #f2c14e;
+      padding-top: env(safe-area-inset-top, 0px);
+    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      padding: 12px 16px calc(32px + env(safe-area-inset-bottom, 0px));
+    }
+    .wrap { max-width: 520px; margin: 0 auto; }
+    header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 4px 0 12px; }
+    header h1 { font-size: 1.35rem; margin: 0; letter-spacing: -0.01em; }
+    header .count { color: var(--text-2); font-size: 0.8rem; text-align: right; }
+
+    .tabs { display: flex; gap: 6px; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 4px; margin-bottom: 14px; }
+    .tabs button {
+      flex: 1; border: 0; background: transparent; color: var(--text-2); font: inherit; font-weight: 600; font-size: 0.9rem;
+      padding: 9px 6px; border-radius: 10px; cursor: pointer;
+    }
+    .tabs button.on { background: var(--card-2); color: var(--text); }
+
+    /* Ficha */
+    .ficha { background: var(--card); border: 1px solid var(--line); border-radius: 20px; overflow: hidden; }
+    .poster { position: relative; aspect-ratio: 2 / 3; max-height: 62vh; width: 100%; background: var(--card-2); overflow: hidden; }
+    .poster img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .poster .shade { position: absolute; inset: auto 0 0 0; height: 45%; background: linear-gradient(transparent, rgba(13, 11, 16, 0.95)); }
+    .poster .head { position: absolute; left: 16px; right: 16px; bottom: 14px; }
+    .poster h2 { margin: 0; font-size: 1.6rem; line-height: 1.15; text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6); }
+    .poster .orig { color: #d6d0dc; font-size: 0.85rem; margin-top: 2px; }
+    .plats { display: flex; flex-wrap: wrap; gap: 6px; position: absolute; top: 12px; left: 12px; }
+    .plat { background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 999px; padding: 4px 10px; font-size: 0.78rem; font-weight: 700; }
+    .plat.netflix { color: #ff4b55; }
+    .plat.prime { color: #4fb6ff; }
+
+    .body { padding: 14px 16px 16px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+    .chip { background: var(--card-2); border: 1px solid var(--line); border-radius: 8px; padding: 4px 8px; font-size: 0.78rem; color: var(--text-2); }
+    .chip.fin { color: var(--good); border-color: rgba(62, 207, 142, 0.35); }
+    .chip.curso { color: var(--gold); border-color: rgba(242, 193, 78, 0.35); }
+    .chip.nota { color: var(--gold); }
+    .label { font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-2); margin: 12px 0 4px; font-weight: 700; }
+    .por-que { margin: 0; line-height: 1.5; font-size: 0.97rem; }
+    .dato { margin: 0; line-height: 1.45; font-size: 0.93rem; }
+    .donde { display: inline-block; margin-top: 12px; color: var(--text-2); font-size: 0.8rem; }
+
+    .votar { display: flex; gap: 10px; margin-top: 14px; position: sticky; bottom: calc(10px + env(safe-area-inset-bottom, 0px)); }
+    .votar button {
+      flex: 1; border: 0; border-radius: 16px; padding: 16px 10px; font: inherit; font-size: 1.05rem; font-weight: 700; cursor: pointer;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+    }
+    .votar .no { background: #2a2230; color: var(--bad); border: 1px solid rgba(255, 107, 107, 0.35); }
+    .votar .si { background: var(--good); color: #062417; }
+    .votar button:active { transform: scale(0.97); }
+    .deshacer { display: block; margin: 12px auto 0; background: none; border: 0; color: var(--text-2); font: inherit; font-size: 0.85rem; text-decoration: underline; cursor: pointer; }
+
+    /* Listas */
+    .share { display: flex; gap: 8px; align-items: center; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; margin-bottom: 14px; font-size: 0.88rem; color: var(--text-2); }
+    .share button { margin-left: auto; flex-shrink: 0; border: 0; background: var(--accent); color: white; font: inherit; font-weight: 700; font-size: 0.85rem; border-radius: 10px; padding: 8px 12px; cursor: pointer; }
+    .item { display: flex; gap: 12px; background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 10px; margin-bottom: 10px; cursor: pointer; }
+    .item img { width: 72px; height: 106px; object-fit: cover; border-radius: 10px; flex-shrink: 0; background: var(--card-2); }
+    .item .t { font-weight: 700; font-size: 1rem; }
+    .item .m { color: var(--text-2); font-size: 0.8rem; margin-top: 3px; line-height: 1.35; }
+    .item .r { font-size: 0.85rem; margin-top: 6px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .seccion { font-size: 0.8rem; color: var(--text-2); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; margin: 20px 0 8px; }
+    .vacio { text-align: center; color: var(--text-2); padding: 40px 12px; line-height: 1.5; }
+    .vacio .big { font-size: 2.6rem; }
+
+    .detalle { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); z-index: 10; overflow-y: auto; padding: calc(16px + env(safe-area-inset-top, 0px)) 16px 24px; }
+    .detalle .wrap { position: relative; }
+    .cerrar { position: absolute; top: 10px; right: 10px; z-index: 2; width: 38px; height: 38px; border-radius: 50%; border: 0; background: rgba(0, 0, 0, 0.7); color: white; font-size: 1.2rem; cursor: pointer; }
+    .cambiar { display: flex; gap: 8px; margin-top: 14px; }
+    .cambiar button { flex: 1; border: 1px solid var(--line); background: var(--card-2); color: var(--text); font: inherit; font-size: 0.88rem; border-radius: 12px; padding: 10px; cursor: pointer; }
+    .cambiar button.on.si { border-color: var(--good); color: var(--good); }
+    .cambiar button.on.no { border-color: var(--bad); color: var(--bad); }
+
+    .toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: #2b2532; color: var(--text); padding: 10px 16px; border-radius: 12px; font-size: 0.88rem; z-index: 20; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5); max-width: 90vw; }
+    .build-id { text-align: center; font-size: 0.7rem; color: var(--text-2); margin-top: 28px; font-family: ui-monospace, monospace; }
+    .build-id a { color: inherit; }
+    .nueva-version { position: fixed; top: calc(10px + env(safe-area-inset-top, 0px)); left: 50%; transform: translateX(-50%); background: var(--accent); color: white; border: 0; border-radius: 999px; padding: 8px 16px; font: inherit; font-weight: 700; font-size: 0.85rem; z-index: 30; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1 id="titulo">📺 Series</h1>
+      <div class="count" id="count"></div>
+    </header>
+    <nav class="tabs" id="tabs">
+      <button data-tab="descubrir" class="on">Descubrir</button>
+      <button data-tab="gustan">👍 Me gustan</button>
+      <button data-tab="nogustan">👎 No</button>
+    </nav>
+    <main id="main"><div class="vacio">Cargando…</div></main>
+    <div class="build-id">build __BUILD_ID__ · datos de <a href="https://www.tvmaze.com" target="_blank" rel="noopener">TVmaze</a></div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="config.js"></script>
+  <script>
+    const { url, anonKey, tablePrefix } = window.SERIES_CONFIG;
+    const T = `${tablePrefix}series`;
+    const CACHE_KEY = "series-cache-v1";
+    // Modo amigos: ?ver=recomendadas enseña solo las que me gustan, sin votar.
+    const AMIGOS = new URLSearchParams(location.search).get("ver") === "recomendadas";
+
+    let client = null;
+    let series = [];
+    let tab = "descubrir";
+    let ultima = null; // id de la última valorada, para "Deshacer"
+
+    const $ = (id) => document.getElementById(id);
+    const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+    const thumb = (u) => (u || "").replace("/original_untouched/", "/medium_portrait/");
+
+    function toast(msg) {
+      const t = document.createElement("div");
+      t.className = "toast";
+      t.textContent = msg;
+      document.body.appendChild(t);
+      setTimeout(() => t.remove(), 2600);
+    }
+
+    function estadoChip(s) {
+      if (s.estado === "finalizada") return `<span class="chip fin">✅ Acabada${s.anio_fin ? ` (${s.anio_inicio}–${s.anio_fin})` : ""}</span>`;
+      if (s.estado === "en_emision") return `<span class="chip curso">🔴 En curso (desde ${s.anio_inicio})</span>`;
+      return `<span class="chip curso">⏸️ Pendiente de renovación</span>`;
+    }
+
+    function duracion(s) {
+      const partes = [];
+      if (s.temporadas) partes.push(`${s.temporadas} ${s.temporadas === 1 ? "temporada" : "temporadas"}`);
+      if (s.episodios) partes.push(`${s.episodios} episodios`);
+      if (s.minutos_episodio) partes.push(`~${s.minutos_episodio} min cada uno`);
+      let txt = partes.join(" · ");
+      if (s.episodios && s.minutos_episodio) {
+        const h = Math.round((s.episodios * s.minutos_episodio) / 60);
+        txt += ` — unas ${h} ${h === 1 ? "hora" : "horas"} en total`;
+      }
+      if (s.estado === "en_emision") txt += " (de momento)";
+      return txt;
+    }
+
+    function platHtml(s) {
+      return (s.plataformas || [])
+        .map((p) => `<span class="plat ${/netflix/i.test(p) ? "netflix" : /prime/i.test(p) ? "prime" : ""}">${esc(p)}</span>`)
+        .join("");
+    }
+
+    function fichaHtml(s) {
+      const orig = s.titulo_original && s.titulo_original.toLowerCase() !== s.titulo.toLowerCase() ? `<div class="orig">${esc(s.titulo_original)}</div>` : "";
+      const actores = (s.actores || []).map(esc).join(", ");
+      const justwatch = `https://www.justwatch.com/es/buscar?q=${encodeURIComponent(s.titulo_original || s.titulo)}`;
+      return `
+        <div class="poster">
+          ${s.poster_url ? `<img src="${esc(s.poster_url)}" alt="Cartel de ${esc(s.titulo)}" />` : ""}
+          <div class="plats">${platHtml(s)}</div>
+          <div class="shade"></div>
+          <div class="head"><h2>${esc(s.titulo)}</h2>${orig}</div>
+        </div>
+        <div class="body">
+          <div class="chips">
+            ${estadoChip(s)}
+            ${s.genero ? `<span class="chip">${esc(s.genero)}</span>` : ""}
+            ${s.nota ? `<span class="chip nota">★ ${s.nota}</span>` : ""}
+          </div>
+          <div class="label">Por qué verla</div>
+          <p class="por-que">${esc(s.por_que)}</p>
+          ${actores ? `<div class="label">Actores principales</div><p class="dato">${actores}</p>` : ""}
+          <div class="label">Duración</div>
+          <p class="dato">${esc(duracion(s))}</p>
+          <a class="donde" href="${justwatch}" target="_blank" rel="noopener">¿Dónde verla hoy en España? (JustWatch) ↗</a>
+        </div>`;
+    }
+
+    function render() {
+      const gustan = series.filter((s) => s.valoracion === "me_gusta");
+      const nogustan = series.filter((s) => s.valoracion === "no_me_gusta");
+      const pendientes = series.filter((s) => !s.valoracion);
+      if (AMIGOS) {
+        $("count").textContent = `${gustan.length} series`;
+        $("main").innerHTML = gustan.length
+          ? `<p class="dato" style="color:var(--text-2);margin:0 0 14px">Series que he visto y os recomiendo. Toca una para ver la ficha.</p>${gustan.map(itemHtml).join("")}`
+          : `<div class="vacio"><div class="big">🍿</div>Todavía no hay recomendaciones.</div>`;
+        bindItems(gustan);
+        return;
+      }
+      $("count").textContent = `${series.length - pendientes.length} de ${series.length} valoradas`;
+      document.querySelectorAll("#tabs button").forEach((b) => {
+        b.classList.toggle("on", b.dataset.tab === tab);
+        if (b.dataset.tab === "gustan") b.textContent = `👍 Me gustan (${gustan.length})`;
+        if (b.dataset.tab === "nogustan") b.textContent = `👎 No (${nogustan.length})`;
+      });
+
+      if (tab === "descubrir") {
+        const s = pendientes[0];
+        const deshacer = ultima ? `<button class="deshacer" id="deshacer">↩︎ Deshacer la última</button>` : "";
+        if (!s) {
+          $("main").innerHTML = `<div class="vacio"><div class="big">🎉</div>¡Has valorado todas las series!<br />Pídele a Claude que añada más al catálogo.</div>${deshacer}`;
+        } else {
+          $("main").innerHTML = `
+            <article class="ficha">${fichaHtml(s)}</article>
+            <div class="votar">
+              <button class="no" id="no">👎 No me gusta</button>
+              <button class="si" id="si">👍 Me gusta</button>
+            </div>${deshacer}`;
+          $("si").onclick = () => valorar(s, "me_gusta");
+          $("no").onclick = () => valorar(s, "no_me_gusta");
+          // Precarga el cartel de la siguiente para que salga al instante.
+          if (pendientes[1]?.poster_url) new Image().src = pendientes[1].poster_url;
+        }
+        if (ultima) $("deshacer").onclick = deshacerUltima;
+        return;
+      }
+
+      const lista = tab === "gustan" ? gustan : nogustan;
+      const share = tab === "gustan" && gustan.length
+        ? `<div class="share">Enlace para tus amigos con las series que te gustan<button id="compartir">Compartir</button></div>`
+        : "";
+      $("main").innerHTML = lista.length
+        ? share + lista.map(itemHtml).join("")
+        : `<div class="vacio"><div class="big">${tab === "gustan" ? "👍" : "👎"}</div>Aún no hay ninguna aquí.<br />Ve a «Descubrir» y empieza a valorar.</div>`;
+      if (share) $("compartir").onclick = compartir;
+      bindItems(lista);
+    }
+
+    function itemHtml(s) {
+      const meta = [(s.plataformas || []).join(", "), s.estado === "finalizada" ? "Acabada" : "En curso", s.temporadas ? `${s.temporadas} temp.` : ""].filter(Boolean).join(" · ");
+      return `<div class="item" data-id="${s.id}">
+        <img src="${esc(thumb(s.poster_url))}" alt="" loading="lazy" />
+        <div><div class="t">${esc(s.titulo)}</div><div class="m">${esc(meta)}</div><div class="r">${esc(s.por_que)}</div></div>
+      </div>`;
+    }
+
+    function bindItems(lista) {
+      document.querySelectorAll(".item").forEach((el) => {
+        el.onclick = () => abrirDetalle(lista.find((s) => String(s.id) === el.dataset.id));
+      });
+    }
+
+    function abrirDetalle(s) {
+      const d = document.createElement("div");
+      d.className = "detalle";
+      const cambiar = AMIGOS ? "" : `
+        <div class="cambiar">
+          <button class="no ${s.valoracion === "no_me_gusta" ? "on" : ""}" data-v="no_me_gusta">👎 No me gusta</button>
+          <button class="si ${s.valoracion === "me_gusta" ? "on" : ""}" data-v="me_gusta">👍 Me gusta</button>
+        </div>`;
+      d.innerHTML = `<div class="wrap"><article class="ficha" style="position:relative"><button class="cerrar" aria-label="Cerrar">✕</button>${fichaHtml(s)}</article>${cambiar}</div>`;
+      const cerrar = () => { d.remove(); render(); };
+      d.onclick = (e) => { if (e.target === d) cerrar(); };
+      d.querySelector(".cerrar").onclick = cerrar;
+      d.querySelectorAll(".cambiar button").forEach((b) => {
+        b.onclick = async () => { await valorar(s, b.dataset.v, true); cerrar(); };
+      });
+      document.body.appendChild(d);
+    }
+
+    async function guardar(s, valoracion) {
+      const { error } = await client
+        .from(T)
+        .update({ valoracion, valorada_en: valoracion ? new Date().toISOString() : null })
+        .eq("id", s.id);
+      if (error) throw error;
+    }
+
+    async function valorar(s, v, desdeDetalle = false) {
+      const antes = s.valoracion;
+      s.valoracion = v;
+      if (!desdeDetalle) ultima = s.id;
+      guardarCache();
+      if (!desdeDetalle) { render(); window.scrollTo({ top: 0 }); }
+      try {
+        await guardar(s, v);
+      } catch (e) {
+        s.valoracion = antes;
+        guardarCache();
+        render();
+        toast("No se pudo guardar: " + (e.message || e));
+      }
+    }
+
+    async function deshacerUltima() {
+      const s = series.find((x) => x.id === ultima);
+      ultima = null;
+      if (!s) return render();
+      const antes = s.valoracion;
+      s.valoracion = null;
+      // Que vuelva a salir la primera en Descubrir.
+      series = [s, ...series.filter((x) => x !== s)];
+      render();
+      try { await guardar(s, null); } catch (e) { s.valoracion = antes; render(); toast("No se pudo deshacer"); }
+    }
+
+    async function compartir() {
+      const link = new URL("./?ver=recomendadas", location.href).href;
+      const data = { title: "Series que te recomiendo", text: "Mira las series que me han gustado:", url: link };
+      try {
+        if (navigator.share) return await navigator.share(data);
+      } catch (e) { if (e.name === "AbortError") return; }
+      try { await navigator.clipboard.writeText(link); toast("Enlace copiado ✓"); }
+      catch { prompt("Copia este enlace:", link); }
+    }
+
+    function guardarCache() {
+      try { localStorage.setItem(CACHE_KEY, JSON.stringify(series)); } catch {}
+    }
+
+    async function cargar() {
+      // Abre al instante con lo último guardado y refresca por detrás.
+      try {
+        const c = JSON.parse(localStorage.getItem(CACHE_KEY) || "null");
+        if (Array.isArray(c) && c.length) { series = c; render(); }
+      } catch {}
+      const { data, error } = await client.from(T).select("*").order("orden", { ascending: true });
+      if (error) {
+        if (!series.length) $("main").innerHTML = `<div class="vacio">No se pudieron cargar las series.<br />${esc(error.message)}</div>`;
+        return;
+      }
+      series = data;
+      guardarCache();
+      if (!document.querySelector(".detalle")) render();
+    }
+
+    if (AMIGOS) {
+      $("tabs").style.display = "none";
+      $("titulo").textContent = "🍿 Series recomendadas";
+      document.title = "Series recomendadas";
+    }
+    document.querySelectorAll("#tabs button").forEach((b) => {
+      b.onclick = () => { tab = b.dataset.tab; render(); window.scrollTo({ top: 0 }); };
+    });
+
+    client = supabase.createClient(url, anonKey);
+    cargar();
+
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+      navigator.serviceWorker.addEventListener("message", (e) => {
+        if (e.data?.type !== "new-version" || document.querySelector(".nueva-version")) return;
+        const b = document.createElement("button");
+        b.className = "nueva-version";
+        b.textContent = "Nueva versión — tocar para actualizar";
+        b.onclick = () => location.reload();
+        document.body.appendChild(b);
+      });
+    }
+  </script>
+</body>
+</html>
