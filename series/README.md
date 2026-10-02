@@ -11,6 +11,11 @@ está acabada o sigue en curso. Tú marcas **👍 Me gusta / 👎 No me gusta**.
   de opinión.
 - **Compartir**: el enlace `?ver=recomendadas` enseña a tus amigos solo
   las que te gustan, en modo lectura.
+- **⭐ Cristóbal** (también `?ver=cristobal`): las series que recomienda
+  Cristóbal Terrer Mota, director de [Seriemaniac](https://seriemaniac.com),
+  puntuadas de 1 a 5 estrellas. Las de 5 llevan su sello con foto.
+  Las estrellas salen de la nota 🧡 de su crítica cuando la hay y, si no,
+  de su puesto en sus rankings (ver `tools/cristobal.json`). Sin votos.
 
 URL: `https://<usuario>.github.io/Train/series/`
 
@@ -27,6 +32,11 @@ Para añadir series: edita [`tools/catalogo.json`](./tools/catalogo.json)
 node series/tools/enriquecer.mjs > /tmp/series.json   # carátula, reparto, episodios… de TVmaze
 node series/tools/cargar.mjs /tmp/series.json          # upsert sin tocar valoraciones
 ```
+
+Para refrescar las recomendaciones de Cristóbal (nuevas críticas o
+cambios en sus rankings): edita `tools/cristobal.json` y ejecuta
+`node series/tools/cristobal.mjs` (tabla `series_cristobal`, solo lectura
+desde la app).
 
 La disponibilidad por plataforma es la de la fecha de carga y puede
 cambiar; cada ficha enlaza a JustWatch España para comprobarla.

@@ -32,3 +32,35 @@ create policy "allow anon rate" on public.series_series for update to anon using
 revoke insert, update, delete, truncate on public.series_series from anon, authenticated;
 grant select on public.series_series to anon, authenticated;
 grant update (valoracion, valorada_en) on public.series_series to anon;
+
+-- Recomendaciones de Cristóbal Terrer Mota (seriemaniac.com), solo lectura
+-- desde la app; las carga series/tools/cristobal.mjs.
+create table if not exists public.series_cristobal (
+  slug text primary key,
+  titulo text not null,
+  titulo_original text,
+  poster_url text,
+  plataformas jsonb not null default '[]'::jsonb,
+  actores jsonb not null default '[]'::jsonb,
+  genero text,
+  anio_inicio int,
+  anio_fin int,
+  estado text,
+  temporadas int,
+  episodios int,
+  minutos_episodio int,
+  nota numeric,
+  tvmaze_id int,
+  estrellas int not null check (estrellas between 1 and 5),
+  fuentes jsonb not null default '[]'::jsonb,
+  posicion_historia int,
+  posicion_actuales int,
+  url_critica text,
+  cita text,
+  orden int
+);
+alter table public.series_cristobal enable row level security;
+drop policy if exists "allow anon read" on public.series_cristobal;
+create policy "allow anon read" on public.series_cristobal for select to anon using (true);
+revoke insert, update, delete, truncate on public.series_cristobal from anon, authenticated;
+grant select on public.series_cristobal to anon, authenticated;

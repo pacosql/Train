@@ -44,8 +44,8 @@
 
     .tabs { display: flex; gap: 6px; background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 4px; margin-bottom: 14px; }
     .tabs button {
-      flex: 1; border: 0; background: transparent; color: var(--text-2); font: inherit; font-weight: 600; font-size: 0.9rem;
-      padding: 9px 6px; border-radius: 10px; cursor: pointer;
+      flex: 1; border: 0; background: transparent; color: var(--text-2); font: inherit; font-weight: 600; font-size: 0.85rem;
+      padding: 9px 2px; border-radius: 10px; cursor: pointer; white-space: nowrap;
     }
     .tabs button.on { background: var(--card-2); color: var(--text); }
 
@@ -103,6 +103,27 @@
     .cambiar button.on.si { border-color: var(--good); color: var(--good); }
     .cambiar button.on.no { border-color: var(--bad); color: var(--bad); }
 
+    /* Recomendadas por Cristóbal (Seriemaniac) */
+    .stars { color: var(--gold); letter-spacing: 1px; font-size: 1.05rem; white-space: nowrap; }
+    .stars .off { color: #4a4452; }
+    .item .stars { font-size: 0.95rem; margin-top: 4px; }
+    .cita { margin: 0; line-height: 1.5; font-size: 0.97rem; font-style: italic; border-left: 3px solid var(--gold); padding-left: 10px; }
+    .fuentes { margin: 6px 0 0; padding: 0; list-style: none; color: var(--text-2); font-size: 0.85rem; line-height: 1.5; }
+    .fuentes a { color: inherit; }
+    .sello { display: flex; align-items: center; gap: 14px; margin: 18px -16px -16px; padding: 16px; background: linear-gradient(135deg, rgba(242, 193, 78, 0.18), rgba(242, 193, 78, 0.04)); border-top: 1px solid rgba(242, 193, 78, 0.35); }
+    .sello img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; object-position: top; border: 2px solid var(--gold); flex-shrink: 0; }
+    .sello .q { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); font-weight: 700; }
+    .sello .n { font-weight: 700; font-size: 1.02rem; margin-top: 2px; }
+    .sello .b { color: var(--text-2); font-size: 0.82rem; margin-top: 2px; }
+    .sello .b a { color: inherit; }
+    .item .mini { display: inline-flex; align-items: center; gap: 6px; margin-top: 6px; font-size: 0.75rem; color: var(--gold); font-weight: 700; }
+    .item .mini img { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; object-position: top; border: 1px solid var(--gold); }
+    .intro { display: flex; gap: 12px; align-items: center; background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 12px 14px; margin-bottom: 14px; }
+    .intro img { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; object-position: top; border: 2px solid var(--gold); flex-shrink: 0; }
+    .intro p { margin: 0; font-size: 0.85rem; line-height: 1.45; color: var(--text-2); }
+    .intro p b { color: var(--text); }
+    .intro a { color: var(--gold); }
+
     .toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: #2b2532; color: var(--text); padding: 10px 16px; border-radius: 12px; font-size: 0.88rem; z-index: 20; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5); max-width: 90vw; }
     .build-id { text-align: center; font-size: 0.7rem; color: var(--text-2); margin-top: 28px; font-family: ui-monospace, monospace; }
     .build-id a { color: inherit; }
@@ -117,8 +138,9 @@
     </header>
     <nav class="tabs" id="tabs">
       <button data-tab="descubrir" class="on">Descubrir</button>
-      <button data-tab="gustan">👍 Me gustan</button>
-      <button data-tab="nogustan">👎 No</button>
+      <button data-tab="gustan" title="Me gustan">👍</button>
+      <button data-tab="nogustan" title="No me gustan">👎</button>
+      <button data-tab="cristobal">⭐ Cristóbal</button>
     </nav>
     <main id="main"><div class="vacio">Cargando…</div></main>
     <div class="build-id">build __BUILD_ID__ · datos de <a href="https://www.tvmaze.com" target="_blank" rel="noopener">TVmaze</a></div>
@@ -131,11 +153,22 @@
     const T = `${tablePrefix}series`;
     const CACHE_KEY = "series-cache-v1";
     // Modo amigos: ?ver=recomendadas enseña solo las que me gustan, sin votar.
-    const AMIGOS = new URLSearchParams(location.search).get("ver") === "recomendadas";
+    const VER = new URLSearchParams(location.search).get("ver");
+    const AMIGOS = VER === "recomendadas";
+    // ?ver=cristobal abre directamente las recomendaciones de Cristóbal.
+    const SOLO_CRISTOBAL = VER === "cristobal";
+    const CRISTOBAL = {
+      nombre: "Cristóbal Terrer Mota",
+      foto: "icons/cristobal-terrer-mota.jpg",
+      web: "https://seriemaniac.com/",
+      historia: "https://seriemaniac.com/mejores-series-de-la-historia/",
+      actuales: "https://seriemaniac.com/mejores-series-actuales/",
+    };
 
     let client = null;
     let series = [];
-    let tab = "descubrir";
+    let cristobal = []; // series_cristobal, ya ordenadas por estrellas
+    let tab = SOLO_CRISTOBAL ? "cristobal" : "descubrir";
     let ultima = null; // id de la última valorada, para "Deshacer"
 
     const $ = (id) => document.getElementById(id);
@@ -176,10 +209,41 @@
         .join("");
     }
 
+    const starsHtml = (n) => `<span class="stars" aria-label="${n} de 5 estrellas">${"★".repeat(n)}<span class="off">${"★".repeat(5 - n)}</span></span>`;
+
+    // Enlace a la fuente de cada mención en Seriemaniac.
+    function fuenteHtml(s, f) {
+      if (f.startsWith("Top 50")) return `<a href="${CRISTOBAL.historia}" target="_blank" rel="noopener">${esc(f)}</a>`;
+      if (f.startsWith("30 mejores")) return `<a href="${CRISTOBAL.actuales}" target="_blank" rel="noopener">${esc(f)}</a>`;
+      if (f.startsWith("crítica") && s.url_critica) return `<a href="${esc(s.url_critica)}" target="_blank" rel="noopener">su crítica</a>: ${esc(f.slice(9))}`;
+      return esc(f);
+    }
+
+    function cristobalHtml(s) {
+      const fuentes = (s.fuentes || []).map((f) => `<li>· ${fuenteHtml(s, f)}</li>`).join("");
+      const sello = s.estrellas === 5 ? `
+        <div class="sello">
+          <img src="${CRISTOBAL.foto}" alt="Foto de ${CRISTOBAL.nombre}" />
+          <div>
+            <div class="q">★★★★★ Recomendada por</div>
+            <div class="n">${CRISTOBAL.nombre}</div>
+            <div class="b">Director de <a href="${CRISTOBAL.web}" target="_blank" rel="noopener">Seriemaniac</a>, web de referencia en series</div>
+          </div>
+        </div>` : "";
+      return `
+        <div class="label">Nota de Cristóbal</div>
+        <p class="dato">${starsHtml(s.estrellas)}</p>
+        ${s.cita ? `<div class="label">Qué dice de ella</div><p class="cita">«${esc(s.cita)}»</p>` : ""}
+        <div class="label">Dónde la menciona en Seriemaniac</div>
+        <ul class="fuentes">${fuentes}</ul>
+        ${sello}`;
+    }
+
     function fichaHtml(s) {
       const orig = s.titulo_original && s.titulo_original.toLowerCase() !== s.titulo.toLowerCase() ? `<div class="orig">${esc(s.titulo_original)}</div>` : "";
       const actores = (s.actores || []).map(esc).join(", ");
       const justwatch = `https://www.justwatch.com/es/buscar?q=${encodeURIComponent(s.titulo_original || s.titulo)}`;
+      const deCristobal = s.estrellas != null;
       return `
         <div class="poster">
           ${s.poster_url ? `<img src="${esc(s.poster_url)}" alt="Cartel de ${esc(s.titulo)}" />` : ""}
@@ -193,13 +257,34 @@
             ${s.genero ? `<span class="chip">${esc(s.genero)}</span>` : ""}
             ${s.nota ? `<span class="chip nota">★ ${s.nota}</span>` : ""}
           </div>
-          <div class="label">Por qué verla</div>
-          <p class="por-que">${esc(s.por_que)}</p>
+          ${deCristobal ? "" : `<div class="label">Por qué verla</div><p class="por-que">${esc(s.por_que)}</p>`}
           ${actores ? `<div class="label">Actores principales</div><p class="dato">${actores}</p>` : ""}
           <div class="label">Duración</div>
           <p class="dato">${esc(duracion(s))}</p>
           <a class="donde" href="${justwatch}" target="_blank" rel="noopener">¿Dónde verla hoy en España? (JustWatch) ↗</a>
+          ${deCristobal ? cristobalHtml(s) : ""}
         </div>`;
+    }
+
+    function renderCristobal() {
+      $("count").textContent = `${cristobal.length} series`;
+      if (!cristobal.length) {
+        $("main").innerHTML = `<div class="vacio">Cargando las recomendaciones de Cristóbal…</div>`;
+        return;
+      }
+      const intro = `
+        <div class="intro">
+          <img src="${CRISTOBAL.foto}" alt="Foto de ${CRISTOBAL.nombre}" />
+          <p><b>${CRISTOBAL.nombre}</b>, director de <a href="${CRISTOBAL.web}" target="_blank" rel="noopener">Seriemaniac</a>. Estrellas según su nota en cada crítica o su puesto en sus rankings de <a href="${CRISTOBAL.historia}" target="_blank" rel="noopener">mejores series de la historia</a> y <a href="${CRISTOBAL.actuales}" target="_blank" rel="noopener">mejores series actuales</a>.</p>
+        </div>`;
+      let html = intro;
+      for (const n of [5, 4, 3, 2, 1]) {
+        const grupo = cristobal.filter((s) => s.estrellas === n);
+        if (!grupo.length) continue;
+        html += `<div class="seccion">${starsHtml(n)} · ${grupo.length}</div>` + grupo.map(itemHtml).join("");
+      }
+      $("main").innerHTML = html;
+      bindItems(cristobal);
     }
 
     function render() {
@@ -214,12 +299,13 @@
         bindItems(gustan);
         return;
       }
-      $("count").textContent = `${series.length - pendientes.length} de ${series.length} valoradas`;
       document.querySelectorAll("#tabs button").forEach((b) => {
         b.classList.toggle("on", b.dataset.tab === tab);
-        if (b.dataset.tab === "gustan") b.textContent = `👍 Me gustan (${gustan.length})`;
-        if (b.dataset.tab === "nogustan") b.textContent = `👎 No (${nogustan.length})`;
+        if (b.dataset.tab === "gustan") b.textContent = `👍 ${gustan.length}`;
+        if (b.dataset.tab === "nogustan") b.textContent = `👎 ${nogustan.length}`;
       });
+      if (tab === "cristobal") return renderCristobal();
+      $("count").textContent = `${series.length - pendientes.length} de ${series.length} valoradas`;
 
       if (tab === "descubrir") {
         const s = pendientes[0];
@@ -253,24 +339,29 @@
       bindItems(lista);
     }
 
+    const idDe = (s) => s.id ?? s.slug;
+
     function itemHtml(s) {
-      const meta = [(s.plataformas || []).join(", "), s.estado === "finalizada" ? "Acabada" : "En curso", s.temporadas ? `${s.temporadas} temp.` : ""].filter(Boolean).join(" · ");
-      return `<div class="item" data-id="${s.id}">
+      const meta = [(s.plataformas || []).join(", ") || "sin plataforma en España ahora mismo", s.estado === "finalizada" ? "Acabada" : s.estado === "en_emision" ? "En curso" : "", s.temporadas ? `${s.temporadas} temp.` : ""].filter(Boolean).join(" · ");
+      const cuerpo = s.estrellas != null
+        ? `${starsHtml(s.estrellas)}<div class="r">${s.cita ? `«${esc(s.cita)}»` : esc((s.fuentes || []).join(" · "))}</div>${s.estrellas === 5 ? `<div class="mini"><img src="${CRISTOBAL.foto}" alt="" /> Recomendada por ${CRISTOBAL.nombre}</div>` : ""}`
+        : `<div class="r">${esc(s.por_que)}</div>`;
+      return `<div class="item" data-id="${esc(idDe(s))}">
         <img src="${esc(thumb(s.poster_url))}" alt="" loading="lazy" />
-        <div><div class="t">${esc(s.titulo)}</div><div class="m">${esc(meta)}</div><div class="r">${esc(s.por_que)}</div></div>
+        <div><div class="t">${esc(s.titulo)}</div><div class="m">${esc(meta)}</div>${cuerpo}</div>
       </div>`;
     }
 
     function bindItems(lista) {
       document.querySelectorAll(".item").forEach((el) => {
-        el.onclick = () => abrirDetalle(lista.find((s) => String(s.id) === el.dataset.id));
+        el.onclick = () => abrirDetalle(lista.find((s) => String(idDe(s)) === el.dataset.id));
       });
     }
 
     function abrirDetalle(s) {
       const d = document.createElement("div");
       d.className = "detalle";
-      const cambiar = AMIGOS ? "" : `
+      const cambiar = AMIGOS || s.estrellas != null ? "" : `
         <div class="cambiar">
           <button class="no ${s.valoracion === "no_me_gusta" ? "on" : ""}" data-v="no_me_gusta">👎 No me gusta</button>
           <button class="si ${s.valoracion === "me_gusta" ? "on" : ""}" data-v="me_gusta">👍 Me gusta</button>
@@ -351,6 +442,18 @@
       if (!document.querySelector(".detalle")) render();
     }
 
+    async function cargarCristobal() {
+      const { data, error } = await client.from(`${tablePrefix}cristobal`).select("*").order("orden", { ascending: true });
+      if (error) { if (tab === "cristobal") toast("No se pudieron cargar las recomendaciones: " + error.message); return; }
+      cristobal = data;
+      if (tab === "cristobal" && !document.querySelector(".detalle")) render();
+    }
+
+    if (SOLO_CRISTOBAL) {
+      $("tabs").style.display = "none";
+      $("titulo").textContent = "⭐ Series de Cristóbal";
+      document.title = "Series recomendadas por Cristóbal Terrer Mota";
+    }
     if (AMIGOS) {
       $("tabs").style.display = "none";
       $("titulo").textContent = "🍿 Series recomendadas";
@@ -362,6 +465,7 @@
 
     client = supabase.createClient(url, anonKey);
     cargar();
+    cargarCristobal();
 
     if ("serviceWorker" in navigator) {
       window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
