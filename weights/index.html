@@ -2383,7 +2383,7 @@
           icon: el("new-ex-icon").value.trim() || null,
           movement_type: typeChip ? typeChip.dataset.type : "otro",
           assisted: el("new-ex-assisted").checked,
-          weight_step: 5, sort_order: catalog.length,
+          weight_step: 2.5, sort_order: catalog.length,
           notes: el("new-ex-notes").value.trim() || null,
         }).select().single());
         if (!error) {

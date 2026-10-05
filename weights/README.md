@@ -298,7 +298,7 @@ subirlo.
 
 - `weights_exercises`: catálogo de máquinas/ejercicios (nombre, grupo
   muscular opcional, tipo de movimiento push/pull/cardio/otro, si es
-  asistida, y el incremento de peso típico).
+  asistida, y el incremento de peso: 2,5 kg en todas las de fuerza).
 - `weights_sessions`: una fila por entrenamiento (duración planeada,
   minutos de cardio, inicio/fin).
 - `weights_session_exercises`: una fila por ejercicio hecho dentro de
