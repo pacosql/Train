@@ -266,7 +266,7 @@ perder un ejercicio a medias al actualizar la app.
 
 La columna `station` de `weights_exercises` agrupa filas que son la misma
 máquina física. Ahora mismo `asistida` une **Ascenso Asistido** (dominadas)
-y **Extensora Asistida** (fondos): una sola pila de pesos para las dos.
+y **Descenso Asistido** (fondos): una sola pila de pesos para las dos.
 Los compañeros de estación:
 
 - van siempre **pegados** en la lista de ejercicios (el mejor puntuado
