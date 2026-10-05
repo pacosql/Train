@@ -252,18 +252,21 @@
     }
     .chip.selected { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
 
-    /* ---------- opciones de feedback ---------- */
-    .fb-option {
-      display: flex; align-items: center; gap: 14px; width: 100%; text-align: left;
-      background: var(--glass); border: 1px solid var(--line); color: var(--text);
-      border-radius: 18px; padding: 14px 16px; margin-bottom: 10px; cursor: pointer;
-      font-family: var(--body); text-transform: none; letter-spacing: 0;
-      transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+    /* ---------- "la próxima vez" (más / igual / menos) ---------- */
+    .next-row { margin: 10px 0 14px; }
+    .next-label { font-family: var(--display); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--text-2); margin-bottom: 6px; }
+    .next-seg { display: flex; gap: 6px; }
+    .next-seg button {
+      flex: 1 1 0; min-width: 0; padding: 12px 6px; margin: 0;
+      background: var(--glass); border: 1px solid var(--line); color: var(--text-2);
+      border-radius: 14px; font-family: var(--display); font-size: 0.95rem; font-weight: 800;
+      text-transform: none; letter-spacing: 0; white-space: nowrap; cursor: pointer;
+      transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
     }
-    .fb-option.selected { border-color: var(--accent); background: var(--accent-soft); }
-    .fb-icon { font-size: 1.7rem; flex-shrink: 0; }
-    .fb-text b { display: block; font-family: var(--display); font-size: 1.35rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; line-height: 1; }
-    .fb-text span { display: block; font-size: 0.75rem; color: var(--text-2); font-weight: 600; margin-top: 3px; }
+    .next-seg button.selected { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+    .next-seg button.igual.selected { color: var(--text); border-color: var(--line-strong); background: var(--surface-2); }
+    .next-seg button.menos.selected { color: var(--stop); border-color: rgba(255, 107, 74, 0.45); background: rgba(255, 107, 74, 0.12); }
+    .next-hint { font-size: 0.8rem; color: var(--text-2); margin-top: 6px; }
 
     /* ---------- formularios ---------- */
     .row { display: flex; gap: 10px; align-items: stretch; }
@@ -704,6 +707,16 @@
         </div>
       </div>
 
+      <div class="next-row" id="ex-next-row">
+        <div class="next-label">La próxima vez</div>
+        <div class="next-seg" id="ex-next-seg">
+          <button type="button" class="menos" data-next="menos">▼ Menos</button>
+          <button type="button" class="igual selected" data-next="igual">= Igual</button>
+          <button type="button" class="mas" data-next="mas">▲ Más</button>
+        </div>
+        <div class="next-hint" id="ex-next-hint"></div>
+      </div>
+
       <button id="btn-start-exercise">Start</button>
       <button id="btn-finish-exercise" class="stop" hidden>Stop</button>
       <button id="btn-save-weight-only" class="secondary">💾 Guardar peso sin cronometrar</button>
@@ -733,28 +746,6 @@
           autocomplete="off" autocapitalize="sentences" autocorrect="off" enterkeyhint="done" />
         <p class="save-hint" id="ex-notes-hint"></p>
       </details>
-    </section>
-
-    <!-- FEEDBACK -->
-    <section id="screen-feedback" hidden>
-      <p class="eyebrow">Último paso</p>
-      <h2>¿Cómo ha ido?</h2>
-      <p class="sub">Con esto decido el peso que te sugiero la próxima vez que hagas <span id="fb-name"></span>.</p>
-
-      <button class="fb-option" data-fb="mas">
-        <span class="fb-icon">💪</span>
-        <span class="fb-text"><b>Más peso</b><span>Me he quedado corto, puedo con más</span></span>
-      </button>
-      <button class="fb-option" data-fb="igual">
-        <span class="fb-icon">👌</span>
-        <span class="fb-text"><b>Igual</b><span>Ha sido el peso justo</span></span>
-      </button>
-      <button class="fb-option" data-fb="menos">
-        <span class="fb-icon">😮‍💨</span>
-        <span class="fb-text"><b>Menos peso</b><span>Me ha costado demasiado</span></span>
-      </button>
-
-      <button id="btn-save-feedback" disabled style="margin-top:8px;">Guardar y seguir</button>
     </section>
 
     <!-- RESUMEN -->
@@ -1066,10 +1057,10 @@
     }
 
     const el = (id) => document.getElementById(id);
-    const screens = ["home", "session-detail", "catalog-list", "catalog-detail", "setup", "cardio-pick", "cardio", "pick", "exercise", "add-exercise", "feedback", "summary"];
+    const screens = ["home", "session-detail", "catalog-list", "catalog-detail", "setup", "cardio-pick", "cardio", "pick", "exercise", "add-exercise", "summary"];
     // Solo estas cuentan como "dónde retomar": navegar al catálogo nunca debe
     // pisar el punto de retorno de un entrenamiento en marcha.
-    const WORKOUT_SCREENS = new Set(["setup", "cardio-pick", "cardio", "pick", "exercise", "add-exercise", "feedback"]);
+    const WORKOUT_SCREENS = new Set(["setup", "cardio-pick", "cardio", "pick", "exercise", "add-exercise"]);
 
     let client = null;
     let catalog = [];
@@ -1094,11 +1085,12 @@
         cardioExerciseId: null, cardioStartedAt: null,
         doneExerciseIds: [],
         // currentExerciseId = la máquina que tienes en pantalla. active guarda
-        // TODAS las que tienes abiertas: { id: { startedAt, weight } }. Las
-        // que tienen startedAt están en marcha (superserie); una sin
+        // TODAS las que tienes abiertas: { id: { startedAt, weight, nextTime } }.
+        // Las que tienen startedAt están en marcha (superserie); una sin
         // startedAt es solo la que estás mirando, y se descarta al salir.
+        // nextTime es lo marcado para la próxima vez (igual si no se toca).
         currentExerciseId: null, active: {},
-        pendingExercise: null, summary: [],
+        summary: [],
         // Escrituras pendientes de enviar a Supabase. La pantalla nunca
         // espera a la red: se apunta aquí y se envía por detrás.
         outbox: [],
@@ -1124,6 +1116,7 @@
         delete state.currentExerciseStartedAt;
         delete state.currentWeightDraft;
       }
+      delete state.pendingExercise; // la pantalla de feedback ya no existe
       saveState();
     }
     function saveState() {
@@ -2077,6 +2070,7 @@
       c.weight = Math.max(0, (parseFloat(c.weight) || 0) + dir * step);
       saveState();
       renderWeightDisplay();
+      renderNextSeg();
       bump("ex-weight-display");
     }
     async function saveExerciseNotes() {
@@ -2126,10 +2120,12 @@
         state.active[ex.id] = {
           startedAt: null,
           weight: suggested != null ? suggested : ex.default_weight != null ? Number(ex.default_weight) : 0,
+          nextTime: "igual",
         };
       }
       saveState();
       renderWeightDisplay();
+      renderNextSeg();
 
       renderLastCard(ex, last, inherit ? null : suggested);
       el("ex-recommendation").hidden = false;
@@ -2187,19 +2183,36 @@
       tick();
     }
 
+    // Stop guarda directamente: el peso ya lo has puesto tú con el stepper y
+    // "la próxima vez" va marcado como Igual salvo que toques el selector.
     function finishExercise() {
       const ex = catalog.find((e) => e.id === state.currentExerciseId);
       if (!ex) { goToListWithoutFinishing(); return; }
-      state.pendingExercise = { exercise: ex, weightUsed: parseFloat(cur() && cur().weight) || 0 };
+      const c = cur();
+      saveFeedback(ex, parseFloat(c && c.weight) || 0, (c && FB_BIG[c.nextTime]) ? c.nextTime : "igual");
+    }
+    function setNextTime(v) {
+      const c = cur();
+      if (!c || !FB_BIG[v]) return;
+      c.nextTime = v;
       saveState();
-      el("fb-name").textContent = ex.name;
-      document.querySelectorAll("#screen-feedback .fb-option").forEach((c) => c.classList.remove("selected"));
-      el("btn-save-feedback").disabled = true;
-      showScreen("feedback");
+      renderNextSeg();
+    }
+    function renderNextSeg() {
+      const ex = catalog.find((e) => e.id === state.currentExerciseId);
+      const c = cur();
+      const v = (c && FB_BIG[c.nextTime]) ? c.nextTime : "igual";
+      document.querySelectorAll("#ex-next-seg button").forEach((b) => b.classList.toggle("selected", b.dataset.next === v));
+      const step = ex && Number(ex.weight_step) > 0 ? Number(ex.weight_step) : 2.5;
+      const w = parseFloat(c && c.weight) || 0;
+      const harder = ex && ex.assisted ? -1 : 1;
+      let hint = "Stop guarda este peso tal cual.";
+      if (v === "mas") hint = `Stop guarda y la próxima te propondré ${fmtNum(Math.max(0, w + harder * step))} kg.`;
+      else if (v === "menos") hint = `Stop guarda y la próxima te propondré ${fmtNum(Math.max(0, w - harder * step))} kg.`;
+      el("ex-next-hint").textContent = hint;
     }
 
-    function saveFeedback(nextTime) {
-      const { exercise, weightUsed } = state.pendingExercise;
+    function saveFeedback(exercise, weightUsed, nextTime) {
       const nowIso = new Date().toISOString();
       // La pantalla cambia ya; el envío va por la bandeja de salida.
       enqueue({ kind: "insertSessionExercise", row: {
@@ -2213,7 +2226,6 @@
       state.summary.push({ name: exercise.name, weight: weightUsed, next_time: nextTime });
       delete state.active[exercise.id];
       state.currentExerciseId = null;
-      state.pendingExercise = null;
       saveState();
       renderPickScreen();
       showScreen("pick");
@@ -2272,13 +2284,12 @@
     function restoreScreen(target) {
       if (!target || !state.sessionId) { showScreen("home"); return; }
       if (target === "pick" || target === "exercise" || target === "feedback") renderPickScreen();
+      // "feedback" era una pantalla aparte; ahora Stop guarda directo.
+      if (target === "feedback") target = "pick";
 
       if (target === "exercise" && state.currentExerciseId && state.active[state.currentExerciseId]) {
         const ex = catalog.find((e) => e.id === state.currentExerciseId);
         if (ex) startExercise(ex, { resume: true }); else showScreen("pick");
-      } else if (target === "feedback" && state.pendingExercise) {
-        el("fb-name").textContent = state.pendingExercise.exercise.name;
-        showScreen("feedback");
       } else if (target === "cardio") {
         const cardioEx = catalog.find((e) => e.id === state.cardioExerciseId);
         el("cardio-title").innerHTML = cardioEx ? cardioTitle(cardioEx) : "Cardio";
@@ -2581,14 +2592,8 @@
       wireChipGroup("#screen-add-exercise .chip-row");
       el("btn-save-new-exercise").addEventListener("click", saveNewExercise);
 
-      document.querySelectorAll("#screen-feedback .fb-option").forEach((opt) =>
-        opt.addEventListener("click", () => {
-          document.querySelectorAll("#screen-feedback .fb-option").forEach((c) => c.classList.remove("selected"));
-          opt.classList.add("selected");
-          el("btn-save-feedback").disabled = false;
-          el("btn-save-feedback").dataset.value = opt.dataset.fb;
-        }));
-      el("btn-save-feedback").addEventListener("click", (e) => saveFeedback(e.currentTarget.dataset.value));
+      document.querySelectorAll("#ex-next-seg button").forEach((b) =>
+        b.addEventListener("click", () => setNextTime(b.dataset.next)));
 
       el("btn-finish-session").addEventListener("click", finishSession);
       el("btn-new-session").addEventListener("click", () => { clearState(); showScreen("home"); });
