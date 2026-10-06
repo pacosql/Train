@@ -52,8 +52,11 @@ URL: `https://pacosql.github.io/Train/empleo/`
 - `python3 empleo/tools/guardar.py insertar /tmp/candidatas.json` —
   inserta solo las nuevas (dedupe por URL o empresa+puesto) y añade
   enlaces nuevos a las existentes.
-- `python3 empleo/tools/guardar.py revalidar` — desactiva las activas
-  cuyo enlace 1 ya no existe y pone `verificada_en` = hoy en las vivas.
+- `python3 empleo/tools/guardar.py revalidar` — comprueba TODOS los enlaces
+  de cada oferta activa con la API de su portal (Greenhouse, Ashby, Lever,
+  Workday por referencia, SmartRecruiters, Microsoft, LinkedIn, Himalayas…):
+  oficial cerrado → oferta desactivada (las aplicadas solo se etiquetan
+  "oferta cerrada"); agregador cerrado → se quita ese enlace.
 - `bash empleo/tools/sb.sh GET|POST|PATCH …` — REST genérico.
 
 ## Rutina diaria (1:00, hora de Madrid)
