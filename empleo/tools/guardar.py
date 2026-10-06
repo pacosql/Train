@@ -28,7 +28,7 @@ KEY = re.search(r'eyJ[^"]*', CFG).group(0)
 URL = re.search(r"https://[a-z0-9]*\.supabase\.co", CFG).group(0)
 HOY = datetime.date.today().isoformat()
 COLS = ("empresa", "puesto", "ubicacion", "modalidad", "remoto_claro", "url", "fuente", "sector", "area",
-        "seniority", "resumen", "fecha_publicacion", "etiquetas", "enlaces", "categoria", "empresa_data_ai", "empresa_top", "empleados")
+        "seniority", "resumen", "fecha_publicacion", "etiquetas", "enlaces", "categoria", "empresa_data_ai", "empresa_top", "empleados", "sueldo", "sueldo_min_eur", "sueldo_max_eur")
 
 
 def api(method, path, body=None, prefer="return=representation"):
@@ -89,10 +89,18 @@ def insertar(path):
             row.setdefault("fecha_publicacion", c["fecha"])
         row.update(encontrado_en=HOY, verificada_en=HOY, decision="pendiente", activa=True,
                    etiquetas=row.get("etiquetas") or [])
+        c["_nueva"] = True
         nuevas.append(row)
         rows.append(row)
         for l in enl:
             by_url[nurl(l["url"])] = row
+    sys.path.insert(0, HERE)
+    from sueldo import sueldo_oferta
+    for r, c in zip(nuevas, [c for c in cands if c.get("_nueva")]):
+        if not r.get("sueldo_min_eur"):
+            sd = sueldo_oferta([l["url"] for l in r["enlaces"]], r.get("empresa"), c.get("descripcion") or "")
+            if sd:
+                r.update(sd)
     emp = {e["nombre"].lower(): e["empleados"] for e in api("GET", "empleo_empresas?select=nombre,empleados") if e.get("empleados")}
     for r in nuevas:
         r["empleados"] = r.get("empleados") or emp.get((r.get("empresa") or "").lower())
