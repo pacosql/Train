@@ -78,6 +78,7 @@
       font-size: 0.8rem; padding: 6px 11px; border-radius: 999px; cursor: pointer; user-select: none;
       border: 1px solid var(--line-strong); color: var(--text-2); background: rgba(255, 255, 255, 0.03);
     }
+    .filters .lbl { font-size: 0.8rem; color: var(--text-2); align-self: center; margin-right: 2px; }
     .chip.on { color: var(--accent-2); background: var(--accent-soft); border-color: rgba(110, 168, 255, 0.55); }
     .row2 { display: grid; grid-template-columns: 1fr auto; gap: 6px; margin-bottom: 12px; }
     input[type=search], select {
@@ -117,6 +118,7 @@
     .key .k-hib { color: var(--mid); border-color: rgba(242, 184, 64, 0.55); }
     .key .k-cat { color: var(--accent-2); border-color: rgba(110, 168, 255, 0.5); }
     .key .k-emp { color: var(--text); }
+    .key .k-pay { color: #ffd66e; border-color: rgba(242, 184, 64, 0.55); background: rgba(242, 184, 64, 0.12); }
     .acts .dislike.on { background: var(--bad-soft); color: var(--bad); border-color: rgba(255, 84, 112, 0.6); }
     .acts .apply.on { background: rgba(110, 168, 255, 0.18); color: var(--accent-2); border-color: rgba(110, 168, 255, 0.7); }
     .acts .review.on { background: rgba(242, 184, 64, 0.14); color: var(--mid); border-color: rgba(242, 184, 64, 0.6); }
@@ -181,12 +183,31 @@
       <span class="chip" data-f="devrel">📣 DevRel / Evangelist</span>
       <span class="chip" data-f="direccion">🧭 CTO / Dirección</span>
     </div>
+    <div class="filters" id="sizes">
+      <span class="lbl">👥 Tamaño:</span>
+      <span class="chip" data-s="1-50">1–50</span>
+      <span class="chip" data-s="51-200">51–200</span>
+      <span class="chip" data-s="201-1K">201–1K</span>
+      <span class="chip" data-s="1K-5K">1K–5K</span>
+      <span class="chip" data-s="5K-10K">5K–10K</span>
+      <span class="chip" data-s="10K-50K">10K–50K</span>
+      <span class="chip" data-s="50K+">50K+</span>
+    </div>
+    <div class="filters" id="pay">
+      <span class="lbl">💶 Sueldo:</span>
+      <span class="chip" data-p="con">Con sueldo</span>
+      <span class="chip" data-p="50000">≥ 50K</span>
+      <span class="chip" data-p="75000">≥ 75K</span>
+      <span class="chip" data-p="100000">≥ 100K</span>
+      <span class="chip" data-p="150000">≥ 150K</span>
+    </div>
     <div class="row2">
       <input type="search" id="q" placeholder="Buscar empresa, puesto, ciudad…" />
       <select id="sort">
         <option value="encontrado">Más recientes</option>
         <option value="empresa">Empresa A–Z</option>
         <option value="remoto">Remoto primero</option>
+        <option value="sueldo">Sueldo más alto</option>
       </select>
     </div>
 
@@ -223,7 +244,7 @@
 
     const STATE_KEY = "empleo.estado";
     const state = (() => {
-      const def = { tab: "pendiente", f: {}, q: "", sort: "encontrado", view: "ofertas", qe: "", fe: "" };
+      const def = { tab: "pendiente", f: {}, sz: {}, pay: "", q: "", sort: "encontrado", view: "ofertas", qe: "", fe: "" };
       try { return { ...def, ...JSON.parse(localStorage.getItem(STATE_KEY) || "{}") }; } catch { return def; }
     })();
     if (state.tab === "gusta") state.tab = "medium";
@@ -274,10 +295,15 @@
       if (cats.length) list = list.filter((o) => cats.includes(o.categoria));
       if (state.f.data_ai) list = list.filter((o) => o.empresa_data_ai);
       if (state.f.top) list = list.filter((o) => o.empresa_top);
+      const sizes = Object.keys(state.sz || {}).filter((k) => state.sz[k]);
+      if (sizes.length) list = list.filter((o) => sizes.includes(empleados(o)));
+      if (state.pay === "con") list = list.filter((o) => o.sueldo);
+      else if (state.pay) list = list.filter((o) => (o.sueldo_max_eur || o.sueldo_min_eur || 0) >= +state.pay);
       if (q) list = list.filter((o) => [o.empresa, o.puesto, o.ubicacion, o.resumen, o.fuente, o.sector, (o.etiquetas || []).join(" ")].join(" ").toLowerCase().includes(q));
       const by = {
         encontrado: (a, b) => (b.encontrado_en || "").localeCompare(a.encontrado_en || "") || b.created_at.localeCompare(a.created_at),
         empresa: (a, b) => a.empresa.localeCompare(b.empresa, "es"),
+        sueldo: (a, b) => (b.sueldo_max_eur || 0) - (a.sueldo_max_eur || 0),
         remoto: (a, b) => (b.remoto_claro - a.remoto_claro) || ((b.modalidad === "remoto") - (a.modalidad === "remoto")) || (b.encontrado_en || "").localeCompare(a.encontrado_en || ""),
       }[state.sort];
       return list.sort(by);
@@ -292,7 +318,9 @@
       for (const k of ["pendiente", "high", "medium", "low", "no_gusta", "revisar", "aplicada"]) $("n-" + k).textContent = ofertas.filter((o) => o.decision === k).length;
       $("n-todas").textContent = ofertas.length;
       document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("active", t.dataset.tab === state.tab));
-      document.querySelectorAll(".chip").forEach((c) => c.classList.toggle("on", !!state.f[c.dataset.f]));
+      document.querySelectorAll("#filters .chip").forEach((c) => c.classList.toggle("on", !!state.f[c.dataset.f]));
+      document.querySelectorAll("#pay .chip").forEach((c) => c.classList.toggle("on", state.pay === c.dataset.p));
+      document.querySelectorAll("#sizes .chip").forEach((c) => c.classList.toggle("on", !!(state.sz || {})[c.dataset.s]));
       $("q").value = state.q; $("sort").value = state.sort;
 
       const list = filtered();
@@ -314,6 +342,7 @@
           : `<span class="${o.modalidad === "remoto" ? "k-rem" : o.modalidad === "hibrido" ? "k-hib" : ""}">${MOD[o.modalidad] || o.modalidad}</span>`,
         `<span class="k-cat">${CAT_LABEL[o.categoria] || o.categoria}</span>`,
         `<span class="k-emp">👥 ${esc(empleados(o) || "¿?")} empleados</span>`,
+        o.sueldo ? `<span class="k-pay">💶 ${esc(o.sueldo)}/año</span>` : "",
       ].join("");
       if (o.seniority) badges.push(`<span class="b">${esc(o.seniority)}</span>`);
       if (o.sector) badges.push(`<span class="b">${esc(o.sector)}</span>`);
@@ -421,6 +450,14 @@
     $("filters").addEventListener("click", (e) => {
       const c = e.target.closest(".chip"); if (!c) return;
       state.f[c.dataset.f] = !state.f[c.dataset.f]; save(); render();
+    });
+    $("pay").addEventListener("click", (e) => {
+      const c = e.target.closest(".chip"); if (!c) return;
+      state.pay = state.pay === c.dataset.p ? "" : c.dataset.p; save(); render();
+    });
+    $("sizes").addEventListener("click", (e) => {
+      const c = e.target.closest(".chip"); if (!c) return;
+      state.sz = state.sz || {}; state.sz[c.dataset.s] = !state.sz[c.dataset.s]; save(); render();
     });
     $("q").addEventListener("input", (e) => { state.q = e.target.value; save(); render(); });
     $("sort").addEventListener("change", (e) => { state.sort = e.target.value; save(); render(); });
