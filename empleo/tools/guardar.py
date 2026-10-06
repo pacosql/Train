@@ -58,8 +58,8 @@ def misma(a_emp, a_pto, b_emp, b_pto):
     return ea == eb and len(min(pa, pb, key=len)) >= 8 and (pa.startswith(pb) or pb.startswith(pa))
 
 
-def insertar(path):
-    cands = json.load(open(path))
+def insertar(*paths):
+    cands = [c for p in paths for c in json.load(open(p))]
     rows = api("GET", "empleo_ofertas?select=id,empresa,puesto,url,enlaces")
     by_url = {}
     for r in rows:
@@ -266,5 +266,48 @@ def revalidar():
     print(json.dumps(res))
 
 
+def para_resumir(path):
+    """Exporta las ofertas activas que aún no ha revisado una IA (resumen en español,
+    modalidad confirmada, empleados) para que la rutina las complete."""
+    rows = api("GET", "empleo_ofertas?select=id,empresa,puesto,ubicacion,modalidad,remoto_claro,resumen,empleados,"
+                      "categoria,url,enlaces&activa=eq.true&revisada_ia=eq.false")
+    out = [{k: r[k] for k in ("id", "empresa", "puesto", "ubicacion", "modalidad", "remoto_claro", "resumen",
+                              "empleados", "categoria")} | {"url": (r["enlaces"] or [{"url": r["url"]}])[0]["url"]}
+           for r in rows]
+    json.dump(out, open(path, "w"), ensure_ascii=False, indent=0)
+    print(json.dumps({"para_resumir": len(out)}))
+
+
+def aplicar_resumenes(*paths):
+    """Aplica [{id, resumen, modalidad?, remoto_claro?, activa?, empleados?}] y marca revisada_ia."""
+    ok_emp = {"1-50", "51-200", "201-1K", "1K-5K", "5K-10K", "10K-50K", "50K+"}
+    n = 0
+    for p in paths:
+        for r in json.load(open(p)):
+            patch = {k: r[k] for k in ("resumen", "modalidad", "remoto_claro", "activa") if r.get(k) is not None}
+            if r.get("empleados") in ok_emp:
+                patch["empleados"] = r["empleados"]
+            patch["revisada_ia"] = True
+            api("PATCH", f"empleo_ofertas?id=eq.{r['id']}", patch, "return=minimal")
+            n += 1
+    print(json.dumps({"aplicados": n}))
+
+
+def limpiar_regla():
+    """Retira (activa=false) las PENDIENTES que, con la modalidad ya confirmada, no cumplen la regla:
+    no remotas -> partner/direccion/ejecutivo solo si Data & AI; sales/arquitecto/devrel solo si Top AI."""
+    rows = api("GET", "empleo_ofertas?select=id,empresa,puesto,modalidad,categoria,empresa_data_ai,empresa_top"
+                      "&activa=eq.true&decision=eq.pendiente&modalidad=neq.remoto")
+    n = 0
+    for r in rows:
+        bad = not r["empresa_data_ai"] if r["categoria"] in ("partner", "direccion", "ejecutivo") else not r["empresa_top"]
+        if bad:
+            api("PATCH", f"empleo_ofertas?id=eq.{r['id']}", {"activa": False}, "return=minimal")
+            n += 1
+    print(json.dumps({"retiradas_por_regla": n}))
+
+
 if __name__ == "__main__":
-    {"insertar": lambda: insertar(sys.argv[2]), "revalidar": revalidar}[sys.argv[1]]()
+    {"insertar": lambda: insertar(*sys.argv[2:]), "revalidar": revalidar,
+     "para_resumir": lambda: para_resumir(sys.argv[2]), "aplicar_resumenes": lambda: aplicar_resumenes(*sys.argv[2:]),
+     "limpiar_regla": limpiar_regla}[sys.argv[1]]()

@@ -150,7 +150,7 @@
       <div class="brand"><span class="brand-mark">💼</span> Empleo</div>
       <button class="icon-btn" id="btn-refresh" title="Recargar">↻</button>
     </div>
-    <p class="sub">Partner · Sales · Solution Architect · DevRel/Evangelist · CTO — Data &amp; AI · España · énfasis en remoto</p>
+    <p class="sub">Partner · Sales · Solution Architect · DevRel · CTO · Ejecutivo — Data &amp; AI · España · énfasis en remoto</p>
     <p class="msg" id="msg"></p>
 
     <div class="views" id="views">
@@ -182,6 +182,7 @@
       <span class="chip" data-f="arquitecto">🛠️ Solution Architect</span>
       <span class="chip" data-f="devrel">📣 DevRel / Evangelist</span>
       <span class="chip" data-f="direccion">🧭 CTO / Dirección</span>
+      <span class="chip" data-f="ejecutivo">👔 Ejecutivo</span>
     </div>
     <div class="filters" id="sizes">
       <span class="lbl">👥 Tamaño:</span>
@@ -259,8 +260,8 @@
     const $ = (id) => document.getElementById(id);
     const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
     const fmtDate = (d) => d ? new Date(d + (d.length === 10 ? "T00:00:00" : "")).toLocaleDateString("es-ES", { day: "numeric", month: "short", year: "numeric" }) : "";
-    const CATS = ["partner", "sales", "arquitecto", "devrel", "direccion"];
-    const CAT_LABEL = { partner: "🤝 Partner", sales: "💼 Sales", arquitecto: "🛠️ Solution Architect", devrel: "📣 DevRel / Evangelist", direccion: "🧭 CTO / Dirección" };
+    const CATS = ["partner", "sales", "arquitecto", "devrel", "direccion", "ejecutivo"];
+    const CAT_LABEL = { partner: "🤝 Partner", sales: "💼 Sales", arquitecto: "🛠️ Solution Architect", devrel: "📣 DevRel / Evangelist", direccion: "🧭 CTO / Dirección", ejecutivo: "👔 Ejecutivo" };
     const PRIO = { high: "🔥 High", medium: "👌 Medium", low: "🧊 Low" };
     function empleados(o) {
       if (o.empleados) return o.empleados;
@@ -368,7 +369,7 @@
           <button class="low${o.decision === "low" ? " on" : ""}" data-act="low">🧊 Low</button>
           <button class="dislike${o.decision === "no_gusta" ? " on" : ""}" data-act="no_gusta">👎 No</button>
           <button class="review wide${o.decision === "revisar" ? " on" : ""}" data-act="revisar">🔁 Revisar</button>
-          <button class="apply wide${o.decision === "aplicada" ? " on" : ""}" data-act="aplicada">✅ Aplicar</button>
+          <button class="apply wide${o.decision === "aplicada" ? " on" : ""}" data-act="aplicada">✅ Aplicado</button>
         </div>
         <div class="nota"><textarea placeholder="${o.decision === "revisar" ? "¿Qué reviso? (p. ej. el enlace no funciona, confirmar si es remoto…)" : "Nota (opcional)…"}" data-nota>${esc(o.nota || "")}</textarea></div>
         ${o.respuesta ? `<div class="respuesta">🤖 ${esc(o.respuesta)}</div>` : ""}
