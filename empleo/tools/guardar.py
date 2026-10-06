@@ -19,6 +19,7 @@ import os
 import re
 import subprocess
 import sys
+import urllib.parse
 import urllib.request
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -106,35 +107,152 @@ def insertar(path):
     print(json.dumps({"nuevas": len(nuevas), "ampliadas": ampliadas}))
 
 
-def viva(url):
+UA = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/126 Safari/537.36"}
+CERRADA = re.compile(r"no longer accepting applications|no longer available|this job (is|has) (closed|expired)|job (has )?expired|"
+                     r"position (has been )?(filled|closed)|job not found|page not found|posting (is )?closed|"
+                     r"ya no (está|esta) disponible|oferta (cerrada|caducada)|vacante cerrada", re.I)
+_cache = {}
+
+
+def _http(url, accept="application/json"):
+    """(código, url_final, cuerpo) sin lanzar excepciones."""
     try:
-        out = subprocess.run(["curl", "-sL", "-m", "25", "-A", "Mozilla/5.0", "-o", "/dev/null", "-w",
-                              "%{http_code} %{url_effective}", url], capture_output=True, text=True).stdout
-        code, eff = out.split(" ", 1)
+        out = subprocess.run(["curl", "-sL", "-m", "30", "-A", UA["User-Agent"], "-H", f"Accept: {accept}",
+                              "-w", "\n%{http_code} %{url_effective}", url], capture_output=True, text=True).stdout
+        body, meta = out.rsplit("\n", 1)
+        code, eff = meta.split(" ", 1)
+        return int(code), eff, body
     except Exception:
-        return None  # no concluyente: no tocar
-    if code in ("404", "410") or re.search(r"error|404|not[-_]found|expired|closed", eff, re.I):
+        return 0, url, ""
+
+
+def _json(url):
+    code, _, body = _http(url)
+    try:
+        return code, json.loads(body)
+    except Exception:
+        return code, None
+
+
+def _gh_token(empresa):
+    if "gh" not in _cache:
+        _cache["gh"] = {e["nombre"].lower(): e["ats_token"] for e in
+                        api("GET", "empleo_empresas?select=nombre,ats,ats_token&ats=eq.greenhouse")}
+    return _cache["gh"].get((empresa or "").lower())
+
+
+def estado(url, empresa=None):
+    """True = viva, False = cerrada, None = no concluyente. Usa la API de cada portal."""
+    h = re.sub(r"^https?://", "", url).split("/")[0].lower()
+    m = re.search(r"greenhouse\.io/([^/]+)/jobs/(\d+)", url) or None
+    gh_id = re.search(r"[?&]gh_jid=(\d+)", url)
+    if m or gh_id:
+        tok, jid = (m.group(1), m.group(2)) if m else (_gh_token(empresa) or h.split(".")[-2], gh_id.group(1))
+        code, _, _ = _http(f"https://boards-api.greenhouse.io/v1/boards/{tok}/jobs/{jid}")
+        return True if code == 200 else False if code == 404 else None
+    m = re.search(r"jobs\.ashbyhq\.com/([^/]+)/([0-9a-f-]{36})", url)
+    if m:
+        org, jid = m.groups()
+        if ("ash", org) not in _cache:
+            code, d = _json(f"https://api.ashbyhq.com/posting-api/job-board/{org}")
+            _cache[("ash", org)] = {j["id"] for j in d.get("jobs", [])} if d else None
+        ids = _cache[("ash", org)]
+        return None if ids is None else jid in ids
+    m = re.search(r"jobs(\.eu)?\.lever\.co/([^/]+)/([0-9a-f-]{36})", url)
+    if m:
+        eu, org, jid = m.groups()
+        code, _, _ = _http(f"https://api{'.eu' if eu else ''}.lever.co/v0/postings/{org}/{jid}")
+        return True if code == 200 else False if code == 404 else None
+    m = re.search(r"([a-z0-9-]+)\.(wd\d+)\.myworkdayjobs\.com/(?:[a-z]{2}-[A-Z]{2}/)?([^/]+)(/job/.+?)(?:[?#]|$)", url)
+    if m:
+        ten, wd, site, path = m.groups()
+        # Lo más fiable: buscar la referencia (p. ej. JR357442) en el buscador del propio portal.
+        ref = re.search(r"_([A-Za-z]*-?\d{4,}[A-Za-z0-9]*)(?:-\d+)?$", path)
+        if ref:
+            try:
+                out = subprocess.run(["curl", "-s", "-m", "30", "-X", "POST", "-A", UA["User-Agent"],
+                                      "-H", "Content-Type: application/json", "-H", "Accept: application/json",
+                                      f"https://{ten}.{wd}.myworkdayjobs.com/wday/cxs/{ten}/{site}/jobs",
+                                      "-d", json.dumps({"appliedFacets": {}, "limit": 20, "offset": 0, "searchText": ref.group(1)})],
+                                     capture_output=True, text=True).stdout
+                d = json.loads(out)
+                if "total" in d:
+                    return any(ref.group(1).lower() in j.get("externalPath", "").lower() for j in d.get("jobPostings", []))
+            except Exception:
+                pass
+        code, d = _json(f"https://{ten}.{wd}.myworkdayjobs.com/wday/cxs/{ten}/{site}{path}")
+        if code == 200 and d and d.get("jobPostingInfo"):
+            return bool(d["jobPostingInfo"].get("canApply", True))
+        return False if code in (404, 410) or (code == 200 and d is not None) else None
+    m = re.search(r"smartrecruiters\.com/([^/]+)/(\d+)", url)
+    if m:
+        code, d = _json(f"https://api.smartrecruiters.com/v1/companies/{m.group(1)}/postings/{m.group(2)}")
+        return True if code == 200 and d and d.get("active", True) else False if code in (200, 404) else None
+    m = re.search(r"apply\.careers\.microsoft\.com/careers/job/(\d+)", url)
+    if m:
+        code, d = _json(f"https://apply.careers.microsoft.com/api/pcsx/position_details?position_id={m.group(1)}&domain=microsoft.com&hl=en")
+        st = (d or {}).get("status")
+        return True if st == 200 else False if st == 404 else None
+    m = re.search(r"linkedin\.com/jobs/view/(?:[^/]*?-)?(\d+)", url)
+    if m:
+        code, eff, body = _http(f"https://www.linkedin.com/jobs-guest/jobs/api/jobPosting/{m.group(1)}", "text/html")
+        if code in (404, 410):
+            return False
+        if code == 200:
+            return not (re.search(r"closed-job|No longer accepting applications", body, re.I))
+        return None
+    if "himalayas.app" in h:
+        slug = url.rstrip("/").split("/")[-1]
+        code, d = _json("https://himalayas.app/jobs/api/search?q=" + urllib.parse.quote(slug.replace("-", " ")[:80]))
+        if not d:
+            return None
+        return any(slug in (j.get("guid") or "") or slug in (j.get("applicationLink") or "") for j in d.get("jobs", []))
+    code, eff, body = _http(url, "text/html")
+    if code in (404, 410) or re.search(r"expired|not[-_]found|/404|error=true|closed", eff, re.I):
         return False
-    if code.startswith("2"):
-        return True
+    if code == 200:
+        txt = re.sub(r"<[^>]+>", " ", body)[:200000]
+        return False if CERRADA.search(txt) else True
     return None
 
 
 def revalidar():
-    rows = api("GET", "empleo_ofertas?select=id,url,enlaces&activa=eq.true")
-    muertas = vivas = dudas = 0
-    for r in rows:
-        u = (r.get("enlaces") or [{"url": r["url"]}])[0]["url"]
-        v = viva(u)
-        if v is True:
-            api("PATCH", f"empleo_ofertas?id=eq.{r['id']}", {"verificada_en": HOY}, "return=minimal")
-            vivas += 1
-        elif v is False:
-            api("PATCH", f"empleo_ofertas?id=eq.{r['id']}", {"activa": False}, "return=minimal")
-            muertas += 1
+    """Comprueba TODOS los enlaces de cada oferta activa con la API de su portal.
+    Enlace oficial (o el único) cerrado -> oferta desactivada (las aplicadas solo se etiquetan).
+    Enlaces de agregadores cerrados -> se quitan de la oferta."""
+    from concurrent.futures import ThreadPoolExecutor
+    rows = api("GET", "empleo_ofertas?select=id,empresa,puesto,url,enlaces,decision,etiquetas&activa=eq.true")
+    res = {"vivas": 0, "desactivadas": 0, "enlaces_quitados": 0, "sin_concluir": 0, "aplicadas_cerradas": 0}
+
+    def una(r):
+        enl = r.get("enlaces") or [{"label": "Oferta", "url": r["url"]}]
+        est = [estado(l["url"], r["empresa"]) for l in enl]
+        oficiales = [i for i, l in enumerate(enl) if "oficial" in (l.get("label") or "").lower()] or [0]
+        principal = [est[i] for i in oficiales]
+        if any(e is True for e in principal) or (all(e is None for e in principal) and any(e is True for e in est)):
+            vivos = [l for l, e in zip(enl, est) if e is not False]
+            patch = {"verificada_en": HOY}
+            if len(vivos) != len(enl):
+                patch.update(enlaces=vivos, url=vivos[0]["url"], fuente=vivos[0].get("label"))
+                res["enlaces_quitados"] += len(enl) - len(vivos)
+            api("PATCH", f"empleo_ofertas?id=eq.{r['id']}", patch, "return=minimal")
+            res["vivas"] += 1
+        elif all(e is False for e in principal) or all(e is False for e in est):
+            if r["decision"] == "aplicada":
+                et = list(dict.fromkeys((r.get("etiquetas") or []) + ["oferta cerrada"]))
+                api("PATCH", f"empleo_ofertas?id=eq.{r['id']}", {"etiquetas": et}, "return=minimal")
+                res["aplicadas_cerradas"] += 1
+            else:
+                api("PATCH", f"empleo_ofertas?id=eq.{r['id']}", {"activa": False}, "return=minimal")
+                res["desactivadas"] += 1
+                print(f"[cerrada] {r['empresa']} | {r['puesto']}", file=sys.stderr)
         else:
-            dudas += 1
-    print(json.dumps({"vivas": vivas, "desactivadas": muertas, "sin_concluir": dudas}))
+            res["sin_concluir"] += 1
+            print(f"[duda] {r['empresa']} | {r['puesto']} | {est} | {[l['url'] for l in enl]}", file=sys.stderr)
+
+    with ThreadPoolExecutor(8) as ex:
+        list(ex.map(una, rows))
+    print(json.dumps(res))
 
 
 if __name__ == "__main__":
