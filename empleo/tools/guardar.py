@@ -28,7 +28,7 @@ KEY = re.search(r'eyJ[^"]*', CFG).group(0)
 URL = re.search(r"https://[a-z0-9]*\.supabase\.co", CFG).group(0)
 HOY = datetime.date.today().isoformat()
 COLS = ("empresa", "puesto", "ubicacion", "modalidad", "remoto_claro", "url", "fuente", "sector", "area",
-        "seniority", "resumen", "fecha_publicacion", "etiquetas", "enlaces", "categoria", "empresa_data_ai", "empresa_top")
+        "seniority", "resumen", "fecha_publicacion", "etiquetas", "enlaces", "categoria", "empresa_data_ai", "empresa_top", "empleados")
 
 
 def api(method, path, body=None, prefer="return=representation"):
@@ -93,6 +93,9 @@ def insertar(path):
         rows.append(row)
         for l in enl:
             by_url[nurl(l["url"])] = row
+    emp = {e["nombre"].lower(): e["empleados"] for e in api("GET", "empleo_empresas?select=nombre,empleados") if e.get("empleados")}
+    for r in nuevas:
+        r["empleados"] = r.get("empleados") or emp.get((r.get("empresa") or "").lower())
     keys = set(COLS) | {"encontrado_en", "verificada_en", "decision", "activa"}
     nuevas = [{k: r.get(k) for k in keys} for r in nuevas]
     for r in nuevas:
