@@ -90,6 +90,11 @@
     .count { color: var(--text-2); font-size: 0.8rem; margin: 0 0 8px; }
     .card { background: var(--glass); border: 1px solid var(--line); border-radius: 18px; padding: 14px 15px; margin-bottom: 10px; }
     .card.new { border-color: rgba(110, 168, 255, 0.45); }
+    .card .emp { cursor: pointer; }
+    .card .emp .emp-go { font-size: 1rem; opacity: 0.6; }
+    .comp { cursor: pointer; }
+    #emp-filter .chip-emp { display: inline-flex; gap: 8px; align-items: center; margin: 0 0 8px; padding: 7px 12px; border-radius: 999px;
+      font-size: 0.9rem; font-weight: 700; color: var(--accent-2); background: var(--accent-soft); border: 1px solid rgba(110, 168, 255, 0.55); cursor: pointer; }
     .card .emp { font-family: var(--display); font-size: 1.45rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; line-height: 1.1; color: var(--accent); }
     .card .pto { font-weight: 700; font-size: 1.05rem; margin: 2px 0 6px; line-height: 1.25; }
     .badges { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 6px; }
@@ -212,6 +217,7 @@
       </select>
     </div>
 
+    <div id="emp-filter"></div>
     <p class="count" id="count"></p>
     <div id="list"></div>
     </div>
@@ -289,6 +295,7 @@
     function filtered() {
       const q = state.q.trim().toLowerCase();
       let list = ofertas.filter((o) => state.tab === "todas" || o.decision === state.tab);
+      if (state.empresa) list = list.filter((o) => o.empresa.toLowerCase() === state.empresa.toLowerCase());
       if (state.f.remoto_claro) list = list.filter((o) => o.remoto_claro);
       if (state.f.remoto || state.f.hibrido) list = list.filter((o) => (state.f.remoto && o.modalidad === "remoto") || (state.f.hibrido && o.modalidad === "hibrido"));
       if (state.f.nuevas) list = list.filter(isNew);
@@ -324,6 +331,8 @@
       document.querySelectorAll("#sizes .chip").forEach((c) => c.classList.toggle("on", !!(state.sz || {})[c.dataset.s]));
       $("q").value = state.q; $("sort").value = state.sort;
 
+      $("emp-filter").innerHTML = state.empresa
+        ? `<span class="chip-emp" id="emp-clear">🏢 ${esc(state.empresa)} ✕</span>` : "";
       const list = filtered();
       $("count").textContent = `${list.length} oferta${list.length === 1 ? "" : "s"}`;
       if (!list.length) {
@@ -356,7 +365,7 @@
         o.aplicada_en && "✅ Aplicada el " + fmtDate(o.aplicada_en.slice(0, 10)),
       ].filter(Boolean).join(" · ");
       return `<div class="card${isNew(o) ? " new" : ""}" data-id="${o.id}">
-        <div class="emp">${esc(o.empresa)}</div>
+        <div class="emp" data-emp="${esc(o.empresa)}" title="Ver todas las ofertas de ${esc(o.empresa)}">${esc(o.empresa)} <span class="emp-go">›</span></div>
         <div class="pto">${esc(o.puesto)}</div>
         <div class="key">${key}</div>
         <div class="badges">${badges.join("")}</div>
@@ -394,7 +403,7 @@
       list.sort((a, b) => b.n - a.n || (b.top - a.top) || a.nombre.localeCompare(b.nombre, "es"));
       $("qe").value = state.qe; $("fe").value = state.fe;
       $("count-e").textContent = `${list.length} compañías`;
-      $("list-e").innerHTML = list.map((e) => `<div class="comp">
+      $("list-e").innerHTML = list.map((e) => `<div class="comp" data-emp="${esc(e.nombre)}">
         <div><div class="n">${e.n ? `<span class="cnt">${e.n}</span>` : ""}${e.top ? "⭐ " : ""}${esc(e.nombre)}</div>
         <div class="s">${esc(e.sector || "")}${e.empleados ? " · 👥 " + esc(e.empleados) : ""}${e.data_ai ? " · 🧠 Data & AI" : " · solo remoto"}</div></div>
         ${e.portal_url ? `<a href="${esc(e.portal_url)}" target="_blank" rel="noopener">Empleo ↗</a>` : ""}
@@ -432,7 +441,19 @@
       if (error) { $("msg").textContent = "No se pudo guardar: " + error.message; load(); }
     }
 
+    function verEmpresa(nombre) {
+      state.empresa = nombre; state.tab = "todas"; state.view = "ofertas"; save(); render(); window.scrollTo(0, 0);
+    }
+    $("emp-filter").addEventListener("click", (e) => {
+      if (e.target.closest("#emp-clear")) { state.empresa = ""; save(); render(); }
+    });
+    $("list-e").addEventListener("click", (e) => {
+      if (e.target.closest("a")) return;
+      const c = e.target.closest(".comp[data-emp]"); if (c) verEmpresa(c.dataset.emp);
+    });
     $("list").addEventListener("click", (e) => {
+      const emp = e.target.closest(".emp[data-emp]");
+      if (emp) { verEmpresa(emp.dataset.emp); return; }
       const btn = e.target.closest("button[data-act]");
       if (btn) decide(btn.closest(".card").dataset.id, btn.dataset.act);
     });
