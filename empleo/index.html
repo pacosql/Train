@@ -59,7 +59,9 @@
     .icon-btn.spin { animation: spin 0.8s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    .views { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 10px; }
+    .views { display: grid; grid-template-columns: 1.1fr 1fr 1.1fr; gap: 6px; margin-bottom: 10px; }
+    .b.cerrada { color: var(--bad); border-color: rgba(255, 84, 112, 0.55); background: var(--bad-soft); font-weight: 700; }
+    .archivo-note { color: var(--text-2); font-size: 0.82rem; margin: 0 0 10px; }
     .view-btn { font: inherit; font-weight: 700; font-size: 0.9rem; padding: 9px; border-radius: 12px; cursor: pointer; border: 1px solid var(--line-strong); background: rgba(255, 255, 255, 0.04); color: var(--text-2); }
     .view-btn.on { color: var(--accent-2); background: var(--accent-soft); border-color: rgba(110, 168, 255, 0.55); }
     .hidden { display: none !important; }
@@ -160,10 +162,12 @@
 
     <div class="views" id="views">
       <button class="view-btn on" data-view="ofertas">💼 Ofertas</button>
+      <button class="view-btn" data-view="archivo">🗄️ No activas <span id="n-archivo"></span></button>
       <button class="view-btn" data-view="empresas">🏢 Compañías <span id="n-empresas"></span></button>
     </div>
 
     <div id="v-ofertas">
+    <p class="archivo-note hidden" id="archivo-note">🗄️ Ofertas que ya no están activas (cerradas o caducadas en el portal del empleador). Usa las pestañas y filtros igual que en Ofertas: p. ej. ✅ Aplicadas o 🔥 High.</p>
     <div class="tabs" id="tabs">
       <div class="tab active" data-tab="pendiente"><span class="n" id="n-pendiente">–</span>Pendientes</div>
       <div class="tab" data-tab="high"><span class="n" id="n-high">–</span>🔥 High</div>
@@ -268,6 +272,9 @@
     const fmtDate = (d) => d ? new Date(d + (d.length === 10 ? "T00:00:00" : "")).toLocaleDateString("es-ES", { day: "numeric", month: "short", year: "numeric" }) : "";
     const CATS = ["partner", "sales", "arquitecto", "devrel", "direccion", "ejecutivo"];
     const CAT_LABEL = { partner: "🤝 Partner", sales: "💼 Sales", arquitecto: "🛠️ Solution Architect", devrel: "📣 DevRel / Evangelist", direccion: "🧭 CTO / Dirección", ejecutivo: "👔 Ejecutivo" };
+    // Una oferta "no activa" está desactivada o es una aplicada cuya oferta ya cerró.
+    const cerrada = (o) => !o.activa || (o.etiquetas || []).includes("oferta cerrada");
+    const base = () => ofertas.filter((o) => (state.view === "archivo" ? cerrada(o) : !cerrada(o)));
     const PRIO = { high: "🔥 High", medium: "👌 Medium", low: "🧊 Low" };
     function empleados(o) {
       if (o.empleados) return o.empleados;
@@ -280,7 +287,7 @@
       $("btn-refresh").classList.add("spin");
       $("msg").textContent = "";
       const [{ data, error }, rut, emp] = await Promise.all([
-        client.from(T_OFERTAS).select("*").eq("activa", true).order("encontrado_en", { ascending: false }).order("created_at", { ascending: false }),
+        client.from(T_OFERTAS).select("*").order("encontrado_en", { ascending: false }).order("created_at", { ascending: false }),
         client.from(T_RUTINAS).select("*").order("created_at", { ascending: false }).limit(5),
         client.from(T_EMPRESAS).select("*").eq("activa", true).order("nombre"),
       ]);
@@ -294,7 +301,7 @@
 
     function filtered() {
       const q = state.q.trim().toLowerCase();
-      let list = ofertas.filter((o) => state.tab === "todas" || o.decision === state.tab);
+      let list = base().filter((o) => state.tab === "todas" || o.decision === state.tab);
       if (state.empresa) list = list.filter((o) => o.empresa.toLowerCase() === state.empresa.toLowerCase());
       if (state.f.remoto_claro) list = list.filter((o) => o.remoto_claro);
       if (state.f.remoto || state.f.hibrido) list = list.filter((o) => (state.f.remoto && o.modalidad === "remoto") || (state.f.hibrido && o.modalidad === "hibrido"));
@@ -319,12 +326,15 @@
 
     function render() {
       document.querySelectorAll(".view-btn").forEach((b) => b.classList.toggle("on", b.dataset.view === state.view));
-      $("v-ofertas").classList.toggle("hidden", state.view !== "ofertas");
+      $("v-ofertas").classList.toggle("hidden", state.view === "empresas");
+      $("archivo-note").classList.toggle("hidden", state.view !== "archivo");
+      $("n-archivo").textContent = `(${ofertas.filter(cerrada).length})`;
       $("v-empresas").classList.toggle("hidden", state.view !== "empresas");
       $("n-empresas").textContent = empresas.length ? `(${empresas.length})` : "";
       renderEmpresas();
-      for (const k of ["pendiente", "high", "medium", "low", "no_gusta", "revisar", "aplicada"]) $("n-" + k).textContent = ofertas.filter((o) => o.decision === k).length;
-      $("n-todas").textContent = ofertas.length;
+      const b = base();
+      for (const k of ["pendiente", "high", "medium", "low", "no_gusta", "revisar", "aplicada"]) $("n-" + k).textContent = b.filter((o) => o.decision === k).length;
+      $("n-todas").textContent = b.length;
       document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("active", t.dataset.tab === state.tab));
       document.querySelectorAll("#filters .chip").forEach((c) => c.classList.toggle("on", !!state.f[c.dataset.f]));
       document.querySelectorAll("#pay .chip").forEach((c) => c.classList.toggle("on", state.pay === c.dataset.p));
@@ -344,6 +354,7 @@
 
     function card(o) {
       const badges = [];
+      if (cerrada(o)) badges.push(`<span class="b cerrada">⛔ No activa</span>`);
       if (isNew(o)) badges.push(`<span class="b nuevo">Nueva</span>`);
       if (o.empresa_top) badges.push(`<span class="b cat">⭐ Top AI</span>`);
       if (o.decision === "aplicada" && o.prioridad) badges.push(`<span class="b cat">${PRIO[o.prioridad] || ""}</span>`);
@@ -392,7 +403,7 @@
 
     function renderEmpresas() {
       const cnt = {};
-      for (const o of ofertas) cnt[o.empresa.toLowerCase()] = (cnt[o.empresa.toLowerCase()] || 0) + 1;
+      for (const o of ofertas.filter((x) => !cerrada(x))) cnt[o.empresa.toLowerCase()] = (cnt[o.empresa.toLowerCase()] || 0) + 1;
       const q = state.qe.trim().toLowerCase();
       let list = empresas.map((e) => ({ ...e, n: cnt[e.nombre.toLowerCase()] || 0 }));
       if (state.fe === "data") list = list.filter((e) => e.data_ai);
@@ -442,7 +453,7 @@
     }
 
     function verEmpresa(nombre) {
-      state.empresa = nombre; state.tab = "todas"; state.view = "ofertas"; save(); render(); window.scrollTo(0, 0);
+      state.empresa = nombre; state.tab = "todas"; state.view = state.view === "archivo" ? "archivo" : "ofertas"; save(); render(); window.scrollTo(0, 0);
     }
     $("emp-filter").addEventListener("click", (e) => {
       if (e.target.closest("#emp-clear")) { state.empresa = ""; save(); render(); }
