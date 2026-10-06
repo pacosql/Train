@@ -20,7 +20,7 @@ Regla de selección:
   modalidad) + las 5 categorías si son remotas que admitan España.
 - **Otras empresas**: solo `partner`/`direccion` remotas que admitan España.
 
-Cada oferta se marca 👍 me gusta, 👎 no me gusta o 🔁 revisar (con una
+Cada oferta se marca 🔥 High, 👌 Medium, 🧊 Low, 👎 No, 🔁 revisar o ✅ aplicar (con una
 nota: "el enlace no funciona", "confirmar si es remoto"…); la rutina lee
 esas notas, lo comprueba y contesta en el campo `respuesta`.
 
@@ -35,7 +35,7 @@ URL: `https://pacosql.github.io/Train/empleo/`
   única), `enlaces` (JSON `[{label,url}]`: enlace 1 = portal oficial si
   existe, luego LinkedIn/agregadores), `encontrado_en`, `verificada_en`,
   `fecha_publicacion`, `resumen`, `etiquetas`, `decision`
-  (`pendiente|gusta|no_gusta|revisar`), `nota` (del usuario),
+  (`pendiente|high|medium|low|no_gusta|revisar|aplicada`; `prioridad` guarda high/medium/low al aplicar), `nota` (del usuario),
   `respuesta` (de la rutina), `activa`.
 - `empleo_empresas`: compañías vigiladas (`nombre`, `sector`, `data_ai`,
   `ats`, `ats_token`, `portal_url`). Es la fuente de verdad que
@@ -90,5 +90,8 @@ siempre que exista; LinkedIn y agregadores como enlace 2, 3…
    tiene portal con API). `buscar.py` lee las compañías de esa tabla, así
    que no hace falta hacer push. Solo si se cambia código: commit, merge
    a `main` y push (si el push falla, anotarlo en la nota de la rutina).
+8b. Compañías nuevas: rellenar `empleo_empresas.empleados` con su rango
+   (`1-50`, `51-200`, `201-1K`, `1K-5K`, `5K-10K`, `10K-50K`, `50K+`);
+   `guardar.py insertar` lo copia a cada oferta nueva.
 9. Registrar la ejecución: `POST empleo_rutinas` con
    `{"nuevas": N, "nota": "…"}`.
