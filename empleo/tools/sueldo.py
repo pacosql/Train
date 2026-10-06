@@ -18,7 +18,7 @@ import urllib.parse
 UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/126 Safari/537.36"
 A_EUR = {"€": 1, "EUR": 1, "$": 0.86, "USD": 0.86, "£": 1.15, "GBP": 1.15, "CHF": 1.07, "PLN": 0.23}
 CUR = r"(€|EUR|\$|USD|US\$|£|GBP|CHF|PLN)"
-NUM = r"(\d{1,3}(?:[.,\s]\d{3})+|\d+(?:[.,]\d+)?)\s*([kK])?"
+NUM = r"(\d{1,3}(?:[.,\s]\d{3})+(?:[.,]\d{2})?|\d+(?:[.,]\d+)?)\s*([kK])?"
 HORA = re.compile(r"per hour|/\s?h(ou)?r|hourly|por hora|/hora|per day|daily rate|por día", re.I)
 RANGO = re.compile(
     rf"{CUR}\s?{NUM}\s*(?:-|–|—|to|a|hasta)\s*{CUR}?\s?{NUM}\s*{CUR}?"
@@ -30,6 +30,7 @@ UNO = re.compile(rf"(?:salary|salario|sueldo|compensation|base pay|pay range|ret
 
 def _num(s, k):
     s = s.strip()
+    s = re.sub(r"(\d{1,3}(?:[.,\s]\d{3})+)[.,]\d{2}$", r"\1", s)  # 62,200.00 -> 62,200
     if re.fullmatch(r"\d{1,3}(?:[.,\s]\d{3})+", s):
         v = float(re.sub(r"[.,\s]", "", s))
     else:
@@ -51,8 +52,17 @@ def parse(text):
     text = html.unescape(html.unescape(text))
     text = re.sub(r"<[^>]+>", " ", text)
     text = re.sub(r"\s+", " ", text)
-    for m in RANGO.finditer(text):
+    ms = list(RANGO.finditer(text))
+    # Si la oferta da rangos de varios países, primero el de España.
+    SAL = r"salary|salario|sueldo|comp\b|compensation|base|pay|retribuci|remuneraci|OTE|bruto"
+    NO = r"ARR|deal|revenue|ingresos|raised|funding|valuation|series [a-e]|quota|budget|presupuesto|facturaci"
+    ms.sort(key=lambda m: (
+        0 if re.search(SAL, text[max(0, m.start() - 100): m.end() + 40], re.I) else 1,
+        0 if re.search(r"spain|españa|madrid|barcelona", text[max(0, m.start() - 120): m.end() + 40], re.I) else 1))
+    for m in ms:
         ctx = text[max(0, m.start() - 80): m.end() + 80]
+        if re.search(NO, text[max(0, m.start() - 60): m.end() + 25], re.I):
+            continue
         if HORA.search(ctx):
             continue
         g = [x for x in m.groups()]
@@ -163,7 +173,10 @@ def texto_oferta(url, empresa=None):
 
 
 def sueldo_oferta(urls, empresa=None, extra=""):
-    """Prueba el texto ya conocido y luego cada enlace hasta encontrar sueldo."""
+    """Prueba el texto ya conocido y luego los enlaces fiables (el 1.º, que es el
+    portal oficial cuando existe, y fichas de LinkedIn/Himalayas). Los demás
+    agregadores pueden ser listados con sueldos de OTRAS ofertas: se ignoran."""
+    urls = urls[:1] + [u for u in urls[1:] if re.search(r"linkedin\.com/jobs/view|himalayas\.app/companies", u)]
     for t in [extra] + [None] * len(urls):
         if t is None:
             u = urls.pop(0)
