@@ -261,8 +261,15 @@ def revalidar():
             res["sin_concluir"] += 1
             print(f"[duda] {r['empresa']} | {r['puesto']} | {est} | {[l['url'] for l in enl]}", file=sys.stderr)
 
+    def segura(r):
+        try:
+            una(r)
+        except Exception as e:  # fallo de red puntual: no tumbar toda la revalidación
+            res["sin_concluir"] += 1
+            print(f"[error] {r['empresa']} | {r['puesto']} | {e}", file=sys.stderr)
+
     with ThreadPoolExecutor(8) as ex:
-        list(ex.map(una, rows))
+        list(ex.map(segura, rows))
     print(json.dumps(res))
 
 
