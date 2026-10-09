@@ -554,6 +554,130 @@ def himalayas():
     return out
 
 
+# ---------- más bolsas (feeds públicos) ----------
+
+def _geo(loc):
+    """Ubicación normalizada para bolsas de remoto: solo si admite España/Europa/mundo."""
+    return bool(SPAIN.search(loc) or EUROPE.search(loc))
+
+
+def remoteok():
+    out = []
+    try:
+        d = get("https://remoteok.com/api")
+    except Exception as ex:
+        log("[aviso] RemoteOK", ex)
+        return out
+    for j in d:
+        if not isinstance(j, dict) or not j.get("position"):
+            continue
+        loc = j.get("location") or "Worldwide"
+        out.append(dict(puesto=j["position"], empresa=j.get("company", ""), ubicacion=f"Remoto ({loc})",
+                        url=j.get("url") or j.get("apply_url"), workplace="remote", fecha=(j.get("date") or "")[:10],
+                        descripcion=text(j.get("description")), fuente="RemoteOK"))
+    return [o for o in out if _geo(o["ubicacion"]) or SPAIN.search(o["descripcion"][:3000])]
+
+
+def weworkremotely():
+    import xml.etree.ElementTree as ET
+    out = []
+    feeds = ["remote-jobs", "categories/remote-sales-and-marketing-jobs", "categories/remote-management-and-finance-jobs",
+             "categories/remote-devops-sysadmin-jobs", "categories/remote-back-end-programming-jobs",
+             "categories/remote-customer-support-jobs", "categories/all-other-remote-jobs"]
+    for f in feeds:
+        try:
+            root = ET.fromstring(get(f"https://weworkremotely.com/{f}.rss", raw=True).encode())
+        except Exception as ex:
+            log("[aviso] WWR", f, ex)
+            continue
+        for it in root.iter("item"):
+            g = lambda t: (it.findtext(t) or "").strip()
+            title = g("title")
+            emp, _, puesto = title.partition(": ")
+            region = g("region") or g("country") or "Worldwide"
+            out.append(dict(puesto=puesto or title, empresa=emp if puesto else "", ubicacion=f"Remoto ({region})",
+                            url=g("link"), workplace="remote", fecha=None,
+                            descripcion=text(g("description")), fuente="We Work Remotely"))
+    return [o for o in out if o["empresa"] and (_geo(o["ubicacion"]) or SPAIN.search(o["descripcion"][:3000]))]
+
+
+def workingnomads():
+    out = []
+    try:
+        d = get("https://www.workingnomads.com/api/exposed_jobs/")
+    except Exception as ex:
+        log("[aviso] WorkingNomads", ex)
+        return out
+    for j in d:
+        loc = j.get("location") or "Worldwide"
+        out.append(dict(puesto=j["title"], empresa=j.get("company_name", ""), ubicacion=f"Remoto ({loc})",
+                        url=j["url"], workplace="remote", fecha=(j.get("pub_date") or "")[:10],
+                        descripcion=text(j.get("description")), fuente="Working Nomads"))
+    return [o for o in out if _geo(o["ubicacion"]) or SPAIN.search(o["descripcion"][:3000])]
+
+
+def jobicy():
+    out = []
+    for geo in ("spain", "europe", "emea", "anywhere"):
+        try:
+            d = get(f"https://jobicy.com/api/v2/remote-jobs?count=100&geo={geo}")
+        except Exception as ex:
+            log("[aviso] Jobicy", geo, ex)
+            continue
+        for j in d.get("jobs", []):
+            out.append(dict(puesto=html.unescape(j["jobTitle"]), empresa=html.unescape(j.get("companyName", "")),
+                            ubicacion=f"Remoto ({j.get('jobGeo') or geo})", url=j["url"], workplace="remote",
+                            fecha=(j.get("pubDate") or "")[:10], descripcion=text(j.get("jobDescription")), fuente="Jobicy"))
+    return out
+
+
+def arbeitnow():
+    out = []
+    for page in range(1, 6):
+        try:
+            d = get(f"https://www.arbeitnow.com/api/job-board-api?page={page}")
+        except Exception as ex:
+            log("[aviso] Arbeitnow", ex)
+            break
+        for j in d.get("data", []):
+            rem = bool(j.get("remote"))
+            loc = j.get("location") or ""
+            out.append(dict(puesto=j["title"], empresa=j.get("company_name", ""),
+                            ubicacion=("Remoto (Europe)" if rem and not loc else (f"Remoto ({loc})" if rem else loc)),
+                            url=j["url"], workplace="remote" if rem else None,
+                            fecha=time.strftime("%Y-%m-%d", time.gmtime(int(j["created_at"]))) if j.get("created_at") else None,
+                            descripcion=text(j.get("description")), fuente="Arbeitnow"))
+        time.sleep(0.5)
+    return [o for o in out if o["workplace"] == "remote" or SPAIN.search(o["ubicacion"])]
+
+
+def hackernews():
+    """Hilo mensual 'Ask HN: Who is hiring?': comentarios que mencionan remoto + Europa/España."""
+    out = []
+    try:
+        h = get("https://hn.algolia.com/api/v1/search_by_date?tags=story,author_whoishiring&hitsPerPage=6")
+        ids = [x["objectID"] for x in h["hits"] if "who is hiring" in x["title"].lower()][:2]
+        for sid in ids:
+            for page in range(0, 6):
+                d = get(f"https://hn.algolia.com/api/v1/search?tags=comment,story_{sid}&hitsPerPage=200&page={page}")
+                for c in d.get("hits", []):
+                    t = text(c.get("comment_text"), 3000)
+                    first = t.split("|")
+                    if len(first) < 3 or c.get("parent_id") != int(sid):
+                        continue
+                    if not (REMOTE.search(t[:600]) and (SPAIN.search(t) or EUROPE.search(t[:600]))):
+                        continue
+                    out.append(dict(puesto=first[1].strip()[:140] if len(first) > 2 else t[:100],
+                                    empresa=first[0].strip()[:80], ubicacion=f"Remoto ({first[2].strip()[:60]})",
+                                    url=f"https://news.ycombinator.com/item?id={c['objectID']}", workplace="remote",
+                                    fecha=(c.get("created_at") or "")[:10], descripcion=t, fuente="Hacker News"))
+                if page + 1 >= d.get("nbPages", 0):
+                    break
+    except Exception as ex:
+        log("[aviso] HN", ex)
+    return out
+
+
 # ---------- unir ----------
 
 def norm(s):
@@ -562,7 +686,9 @@ def norm(s):
 
 def main():
     cands = []
-    for nombre, f in (("portales", portales), ("remotive", remotive), ("himalayas", himalayas), ("linkedin", linkedin)):
+    for nombre, f in (("portales", portales), ("remotive", remotive), ("himalayas", himalayas), ("remoteok", remoteok),
+                          ("weworkremotely", weworkremotely), ("workingnomads", workingnomads), ("jobicy", jobicy),
+                          ("arbeitnow", arbeitnow), ("hackernews", hackernews), ("linkedin", linkedin)):
         if os.environ.get("SIN_" + nombre.upper()):
             continue
         t = time.time()
