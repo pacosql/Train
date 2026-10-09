@@ -53,7 +53,10 @@ URL: `https://pacosql.github.io/Train/empleo/`
 
 - `python3 empleo/tools/buscar.py > /tmp/candidatas.json` — portales
   oficiales de las compañías de `empresas.json` (Greenhouse, Ashby,
-  Lever, Workable, SmartRecruiters, Workday, Microsoft, AWS) + LinkedIn
+  Lever, Workable, SmartRecruiters, Workday, Microsoft, AWS) + portales sin ATS
+  estándar (`portales_web.py`: Oracle, IBM, SAP, Capgemini, Nutanix, ServiceNow…)
+  + bolsas de remoto (Remotive, Himalayas, RemoteOK, We Work Remotely, Working
+  Nomads, Jobicy, Arbeitnow, Hacker News) + LinkedIn
   (España, ficha de cada oferta) + Remotive/Himalayas. Fusiona la misma
   oferta vista en varios sitios en varios `enlaces`. Tarda ~15 min.
 - `python3 empleo/tools/guardar.py insertar /tmp/candidatas.json` —
@@ -85,7 +88,7 @@ por partes. Trabajar en `/tmp/r/` (crear la carpeta).
 3. **Limpiar cerradas**: `python3 empleo/tools/guardar.py revalidar`
    (verifica cada enlace con la API de su portal; puede tardar ~8 min).
 4. **Buscar** (cada orden < 10 min):
-   - `SIN_LINKEDIN=1 python3 empleo/tools/buscar.py > /tmp/r/c_portales.json`
+   - `SIN_LINKEDIN=1 python3 empleo/tools/buscar.py > /tmp/r/c_portales.json` (incluye portales web y todas las bolsas; ~5 min)
    - LinkedIn en 32 lotes, una orden por lote (~5 min cada uno):
      `SIN_PORTALES=1 SIN_REMOTIVE=1 SIN_HIMALAYAS=1 LINKEDIN_LOTE=<i>/32 python3 empleo/tools/buscar.py > /tmp/r/c_li_<i>.json`
      para i = 1…32. Si un lote falla por bloqueo de LinkedIn, esperar 1 min y

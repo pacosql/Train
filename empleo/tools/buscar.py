@@ -678,6 +678,13 @@ def hackernews():
     return out
 
 
+def portales_web():
+    """Portales sin ATS estándar (ats == "web"): adaptadores propios en portales_web.py."""
+    sys.path.insert(0, HERE)
+    import portales_web as pw
+    return pw.web(EMPRESAS)
+
+
 # ---------- unir ----------
 
 def norm(s):
@@ -686,7 +693,7 @@ def norm(s):
 
 def main():
     cands = []
-    for nombre, f in (("portales", portales), ("remotive", remotive), ("himalayas", himalayas), ("remoteok", remoteok),
+    for nombre, f in (("portales", portales), ("portales_web", portales_web), ("remotive", remotive), ("himalayas", himalayas), ("remoteok", remoteok),
                           ("weworkremotely", weworkremotely), ("workingnomads", workingnomads), ("jobicy", jobicy),
                           ("arbeitnow", arbeitnow), ("hackernews", hackernews), ("linkedin", linkedin)):
         if os.environ.get("SIN_" + nombre.upper()):
