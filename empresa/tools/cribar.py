@@ -136,14 +136,14 @@ def itunes(q):
     parecido. Apple corta con 403 si se le pregunta deprisa: una consulta
     cada ~3 s, en serie, con reintentos (la tienda de EE. UU. también va
     por el mismo límite, por eso solo se mira la española)."""
-    for intento in range(6):
+    for intento in range(3):
         with _APPLE:
-            espera = 3.0 - (time.time() - _apple_ult[0])
+            espera = 2.0 - (time.time() - _apple_ult[0])
             if espera > 0: time.sleep(espera)
             st, r = get("https://itunes.apple.com/search?" + urllib.parse.urlencode({"term": q, "country": "es", "entity": "software", "limit": 50}), tries=1)
             _apple_ult[0] = time.time()
         if st == 200: break
-        time.sleep(5 * (intento + 1))
+        time.sleep(2)
     else:
         return None
     out = []
