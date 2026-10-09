@@ -149,6 +149,9 @@
     .toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%) translateY(120px); background: #1b2230; border: 1px solid var(--line-strong); padding: 10px 14px; border-radius: 12px; font-size: 0.88rem; transition: transform 0.25s; display: flex; gap: 12px; align-items: center; }
     .toast.show { transform: translateX(-50%) translateY(0); }
     .toast button { background: none; border: none; color: var(--accent-2); font: inherit; font-weight: 700; cursor: pointer; }
+    .xl-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0 0 10px; }
+    .xl-bar .chip { cursor: pointer; }
+    .xl-bar .lbl { font-size: 0.75rem; color: var(--text-2); }
   </style>
 </head>
 <body>
@@ -222,6 +225,10 @@
     </div>
 
     <div id="emp-filter"></div>
+    <div class="xl-bar hidden" id="xl-bar">
+      <button class="chip on" id="btn-xlsx">⬇️ Descargar Excel de aplicadas</button>
+      <span class="lbl">Hoja con todas las aplicadas (abiertas y cerradas) y un resumen con filtros por mes, modalidad y empresa.</span>
+    </div>
     <p class="count" id="count"></p>
     <div id="list"></div>
     </div>
@@ -243,6 +250,7 @@
   <div class="toast" id="toast"><span id="toast-text"></span><button id="toast-undo">Deshacer</button></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
   <script src="config.js"></script>
   <script>
     const { url, anonKey, tablePrefix } = window.EMPLEO_CONFIG;
@@ -341,6 +349,7 @@
       document.querySelectorAll("#sizes .chip").forEach((c) => c.classList.toggle("on", !!(state.sz || {})[c.dataset.s]));
       $("q").value = state.q; $("sort").value = state.sort;
 
+      $("xl-bar").classList.toggle("hidden", state.tab !== "aplicada");
       $("emp-filter").innerHTML = state.empresa
         ? `<span class="chip-emp" id="emp-clear">🏢 ${esc(state.empresa)} ✕</span>` : "";
       const list = filtered();
@@ -351,6 +360,77 @@
       }
       $("list").innerHTML = list.map(card).join("");
     }
+
+
+    // ---- Excel de aplicadas: hoja "Aplicadas" (tabla filtrable) + hoja "Resumen" con filtros desplegables ----
+    async function descargarExcel() {
+      if (!window.ExcelJS) { alert("No se pudo cargar la librería de Excel (¿sin conexión?)."); return; }
+      const ap = ofertas.filter((o) => o.decision === "aplicada")
+        .sort((a, b) => (b.aplicada_en || "").localeCompare(a.aplicada_en || ""));
+      if (!ap.length) { alert("Todavía no hay ofertas aplicadas."); return; }
+      const wb = new ExcelJS.Workbook();
+      const ws = wb.addWorksheet("Aplicadas", { views: [{ state: "frozen", ySplit: 1 }] });
+      const cols = ["Fecha aplicación", "Mes", "Empresa", "Posición", "Estado", "Modalidad", "Remoto claro", "Prioridad", "Perfil", "Ubicación", "Sueldo", "Empleados", "Enlace", "Nota"];
+      const rows = ap.map((o) => {
+        const f = o.aplicada_en ? new Date(o.aplicada_en) : null;
+        return [
+          f ? new Date(f.getFullYear(), f.getMonth(), f.getDate()) : null,
+          f ? `${f.getFullYear()}-${String(f.getMonth() + 1).padStart(2, "0")}` : "",
+          o.empresa, o.puesto, cerrada(o) ? "Cerrada" : "Abierta",
+          (MOD[o.modalidad] || o.modalidad || "").replace(/^\S+\s/, ""),
+          o.remoto_claro ? "Sí" : "No",
+          (PRIO[o.prioridad] || "").replace(/^\S+\s/, ""),
+          (CAT_LABEL[o.categoria] || o.categoria || "").replace(/^\S+\s/, ""),
+          (o.ubicacion || "").slice(0, 80), o.sueldo || "", empleados(o) || "", o.url || "", o.nota || "",
+        ];
+      });
+      ws.addTable({ name: "Aplicadas", ref: "A1", headerRow: true, style: { theme: "TableStyleMedium2", showRowStripes: true },
+        columns: cols.map((name) => ({ name, filterButton: true })), rows });
+      const w = [16, 9, 24, 44, 10, 12, 12, 10, 20, 28, 18, 11, 40, 36];
+      w.forEach((x, i) => (ws.getColumn(i + 1).width = x));
+      ws.getColumn(1).numFmt = "dd/mm/yyyy";
+      const n = rows.length + 1;
+
+      // Resumen: desplegables Mes / Modalidad / Remoto claro / Estado + recuentos que los respetan.
+      const rs = wb.addWorksheet("Resumen");
+      const uniq = (i) => [...new Set(rows.map((r) => r[i]).filter(Boolean))].sort();
+      const meses = uniq(1).reverse(), mods = uniq(5), emps = uniq(2);
+      const lists = wb.addWorksheet("Listas", { state: "veryHidden" });
+      const L = (col, vals) => { lists.getColumn(col).values = ["", ...vals]; return `Listas!$${"ABCDE"[col - 1]}$2:$${"ABCDE"[col - 1]}$${vals.length + 1}`; };
+      const lm = L(1, ["(todos)", ...meses]), lmod = L(2, ["(todas)", ...mods]), lrc = L(3, ["(todos)", "Sí", "No"]), le = L(4, ["(todos)", "Abierta", "Cerrada"]);
+      rs.getCell("A1").value = "Resumen de aplicadas — cambia los desplegables amarillos"; rs.getCell("A1").font = { bold: true, size: 14 };
+      const filt = [["Mes", lm, "(todos)"], ["Modalidad", lmod, "(todas)"], ["Remoto claro", lrc, "(todos)"], ["Estado", le, "(todos)"]];
+      filt.forEach(([lab, list, def], i) => {
+        const r = 3 + i; rs.getCell(`A${r}`).value = lab; rs.getCell(`A${r}`).font = { bold: true };
+        const c = rs.getCell(`B${r}`); c.value = def; c.dataValidation = { type: "list", allowBlank: false, formulae: [list] };
+        c.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFFFF2CC" } };
+      });
+      const crit = (col, cell) => `Aplicadas!$${col}$2:$${col}$${n},IF(OR(${cell}="(todos)",${cell}="(todas)"),"*",${cell})`;
+      const base = [crit("B", "$B$3"), crit("F", "$B$4"), crit("G", "$B$5"), crit("E", "$B$6")].join(",");
+      rs.getCell("A8").value = "Total aplicadas con estos filtros"; rs.getCell("A8").font = { bold: true };
+      rs.getCell("B8").value = { formula: `COUNTIFS(${base})` }; rs.getCell("B8").font = { bold: true, size: 14 };
+      rs.getCell("A10").value = "Por empresa"; rs.getCell("A10").font = { bold: true };
+      rs.getCell("B10").value = "Aplicadas"; rs.getCell("B10").font = { bold: true };
+      emps.forEach((e, i) => {
+        const r = 11 + i; rs.getCell(`A${r}`).value = e;
+        rs.getCell(`B${r}`).value = { formula: `COUNTIFS(Aplicadas!$C$2:$C$${n},$A${r},${base})` };
+      });
+      const r0 = 11 + emps.length + 1;
+      rs.getCell(`A${r0}`).value = "Por mes (sin filtro de mes)"; rs.getCell(`A${r0}`).font = { bold: true };
+      const noMes = [crit("F", "$B$4"), crit("G", "$B$5"), crit("E", "$B$6")].join(",");
+      meses.forEach((m, i) => {
+        const r = r0 + 1 + i; rs.getCell(`A${r}`).value = m;
+        rs.getCell(`B${r}`).value = { formula: `COUNTIFS(Aplicadas!$B$2:$B$${n},$A${r},${noMes})` };
+      });
+      rs.getColumn(1).width = 34; rs.getColumn(2).width = 16;
+      wb.views = [{ activeTab: 0 }];
+      const buf = await wb.xlsx.writeBuffer();
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(new Blob([buf], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }));
+      a.download = `empleo-aplicadas-${new Date().toISOString().slice(0, 10)}.xlsx`;
+      a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+    }
+    $("btn-xlsx").addEventListener("click", () => descargarExcel().catch((e) => alert("Error generando el Excel: " + e.message)));
 
     function card(o) {
       const badges = [];

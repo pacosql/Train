@@ -26,6 +26,11 @@ Cada oferta se marca 🔥 High, 👌 Medium, 🧊 Low, 👎 No, 🔁 revisar o �
 nota: "el enlace no funciona", "confirmar si es remoto"…); la rutina lee
 esas notas, lo comprueba y contesta en el campo `respuesta`.
 
+En la pestaña ✅ Aplicadas, el botón **⬇️ Descargar Excel de aplicadas** genera un
+`.xlsx` (ExcelJS, en el navegador): hoja `Aplicadas` (tabla filtrable: fecha, mes,
+empresa, posición, estado abierta/cerrada, modalidad, remoto claro…) y hoja
+`Resumen` con desplegables (mes, modalidad, remoto claro, estado) y recuentos.
+
 URL: `https://pacosql.github.io/Train/empleo/`
 
 ## Tablas (Supabase, prefijo `empleo_`)
