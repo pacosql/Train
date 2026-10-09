@@ -689,7 +689,8 @@ async function recargarTodo() {
     ]);
 
     cola = pendientes;
-    const referencias = await apiGet(`${TABLE}?status=eq.vetado&score=not.is.null&select=*`);
+    // Aquí el ranking enseña todo lo puntuado con fichas (también pendientes y vetados).
+    const referencias = await apiGet(`${TABLE}?status=in.(vetado,pendiente)&medidas=not.is.null&select=*`);
     gustados = [...favoritos, ...meGusta, ...referencias];
     if (!document.getElementById("vista-ranking").hidden) pintaRanking();
     const decididos = meGusta.total + favoritos.total + descartados.total;
@@ -776,7 +777,7 @@ function pintaRanking() {
     t.textContent = Math.round(row.score);
     cab.append(n, t);
     card.appendChild(cab);
-    const estado = row.status === "favorito" ? "⭐ Definitivo" : row.status === "vetado" ? "🚫 Vetado" : "👍 Me gusta";
+    const estado = row.status === "favorito" ? "⭐ Definitivo" : row.status === "vetado" ? "🚫 Vetado" : row.status === "pendiente" ? "🕒 Por decidir" : "👍 Me gusta";
     parrafo(card, [estado, row.medidas.tipo].filter(Boolean).join(" · "), "ref-sector");
     parrafo(card, (row.score_motivo || "").replace(/^(Claude|Rúbrica):\s*/, ""), "ref-porque");
     card.appendChild(bloqueMedidas(row.medidas));
