@@ -19,7 +19,7 @@ export const CREATIVE_GAMES_2 = [
   { id: "barras", title: "Compara fracciones", emoji: "🍫", topic: "Fracciones", custom: mountBarrasGame },
   { id: "monedas", title: "Cuenta las monedas", emoji: "💰", topic: "Dinero", v: 2, custom: mountMonedasGame },
   { id: "coordenadas", title: "Plano cartesiano", emoji: "🗺️", topic: "Coordenadas", v: 3, custom: mountCoordenadasGame },
-  { id: "simetria", title: "Simetría", emoji: "🪞", topic: "Geometría", custom: mountSimetriaGame },
+  { id: "simetria", title: "Simetría", emoji: "🪞", topic: "Geometría", v: 2, custom: mountSimetriaGame },
   { id: "amigos10", title: "Amigos del 10", emoji: "🔗", topic: "Cálculo mental", custom: mountAmigos10Game },
   { id: "area", title: "Área y perímetro", emoji: "🔲", topic: "Geometría", custom: mountAreaGame },
   { id: "laberinto", title: "Laberinto numérico", emoji: "🌀", topic: "Múltiplos y reglas", custom: mountLaberintoGame },

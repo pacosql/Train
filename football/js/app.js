@@ -531,7 +531,19 @@ document.addEventListener("visibilitychange", async () => {
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
-    navigator.serviceWorker.register("sw.js").catch(() => {});
+    navigator.serviceWorker
+      .register("sw.js")
+      .then((reg) => {
+        // La app se queda abierta horas (todo es la misma página con #rutas),
+        // así que el navegador casi nunca miraba si había versión nueva: Paco
+        // seguía jugando versiones viejas de ejercicios ya arreglados. Se
+        // comprueba al volver a la app y cada minuto.
+        const check = () => reg.update().catch(() => {});
+        setInterval(check, 60000);
+        document.addEventListener("visibilitychange", () => document.visibilityState === "visible" && check());
+        window.addEventListener("hashchange", () => (location.hash === "#/" || !location.hash) && check());
+      })
+      .catch(() => {});
     // Cuando se publica una versión nueva, el service worker nuevo toma el
     // control: se recarga una vez para que se vea ya, sin tener que cerrar
     // y volver a abrir la app. (No al instalar por primera vez.)

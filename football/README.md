@@ -65,6 +65,7 @@ Primeros 🔧 con comentario de voz de Paco, ya aplicados:
 | 44 | Dados | sin tiempo | quitada la barra de tiempo y la vida que costaba agotarla |
 | 30 | Ruleta | sale un color y dice otro | arreglado: el giro se calculaba desde -90° y paraba un cuarto de vuelta desplazado; comprobado en 12 giros que la flecha queda en el color anunciado |
 | 1 | Globos (v3) | si se escapa, misma cuenta; que diga bien/mal | si el bueno se escapa vuelven los mismos globos con la misma cuenta; ✓ +10 al acertar y ✗ "29 no es 4 × 7" al fallar |
+| 37 | Simetría | "8 cuadrados centrales con borde, no se entiende" | el espejo se dibuja como línea discontinua entre las dos columnas centrales |
 
 Además: #14 Formas pasa a 🏁 Final como modelo del tipo "pregunta + 4
 opciones"; #15 y #20 a 👎 ("ese tipo ya lo tenemos"); y se crea **#175

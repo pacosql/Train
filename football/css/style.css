@@ -510,12 +510,12 @@ button.secondary {
 .maze-cell.maze-current { background: var(--accent-2); border-color: var(--accent-2); }
 
 /* ---------- Simetría ---------- */
-.sym-grid { display: grid; gap: 4px; width: 100%; max-width: 280px; margin: 0 auto; }
+.sym-grid { display: grid; gap: 4px; width: 100%; max-width: 280px; margin: 0 auto; position: relative; }
+.sym-mirror { position: absolute; top: -8px; bottom: -8px; left: 50%; width: 0; border-left: 3px dashed var(--accent-2); transform: translateX(-50%); pointer-events: none; z-index: 2; }
 .sym-cell { aspect-ratio: 1; background: var(--bg); border: 2px solid var(--border); border-radius: 6px; cursor: pointer; }
 .sym-cell.filled { background: var(--accent); border-color: var(--accent); }
 .sym-cell.correct { background: var(--good); border-color: var(--good); }
 .sym-cell.wrong { background: var(--danger); border-color: var(--danger); }
-.sym-cell.sym-axis-edge { border-color: var(--accent-2); }
 
 /* ---------- Amigos del 10 (number bonds) ---------- */
 .bond-diagram { display: flex; flex-direction: column; align-items: center; margin-bottom: 10px; }
