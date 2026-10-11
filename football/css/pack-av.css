@@ -1,0 +1,60 @@
+/* Pack AV — "Regla y compás" (.cp-) y "Apaga las luces" (.lz-). */
+
+/* ---------- Regla y compás ---------- */
+.prompt.cp-prompt { font-size: 1.12rem; margin-bottom: 6px; }
+.cp-meta {
+  display: flex; justify-content: space-between; align-items: baseline; gap: 8px;
+  width: 100%; max-width: 360px; font-size: 0.8rem; color: var(--muted); margin-bottom: 6px;
+}
+.cp-meta b { color: var(--accent); font-size: 0.95rem; }
+.cp-exact { font-size: 0.68rem; opacity: 0.85; text-align: right; }
+.cp-svg {
+  display: block; width: 100%; max-width: 360px; aspect-ratio: 1 / 1; height: auto;
+  background: var(--bg); border: 1px solid var(--border); border-radius: 14px;
+  touch-action: none; user-select: none; -webkit-user-select: none; cursor: crosshair;
+}
+.cp-target { stroke: var(--accent-2); stroke-width: 2; stroke-dasharray: 5 6; fill: none; opacity: 0.45; }
+.cp-target.cp-target-strong { opacity: 0.9; stroke-width: 2.5; }
+.cp-done { stroke: var(--good); stroke-width: 3.5; fill: var(--good); fill-opacity: 0.12; stroke-linejoin: round; }
+.cp-ring.cp-done { fill-opacity: 0.25; }
+.cp-gline { stroke: var(--text); stroke-width: 2.2; fill: none; stroke-linecap: round; }
+.cp-gline.cp-back { opacity: 0.25; stroke-dasharray: 3 5; }
+.cp-gcirc { stroke: var(--text); stroke-width: 2.2; fill: none; }
+.cp-line { stroke: var(--accent); stroke-width: 1.8; fill: none; }
+.cp-circ { stroke: var(--accent); stroke-width: 1.6; fill: none; opacity: 0.85; }
+.cp-preview { stroke: var(--accent); stroke-width: 1.5; stroke-dasharray: 4 4; fill: none; opacity: 0.7; }
+.cp-rname { fill: var(--muted); font-size: 15px; font-style: italic; font-weight: 700; text-anchor: middle; }
+.cp-pt { fill: var(--accent); stroke: var(--card); stroke-width: 1.5; }
+.cp-pt-given { fill: var(--text); }
+.cp-pt-sel { fill: var(--danger); stroke: var(--danger); stroke-width: 6; stroke-opacity: 0.35; }
+.cp-lbl {
+  fill: var(--text); font-size: 15px; font-weight: 800; text-anchor: middle;
+  paint-order: stroke; stroke: var(--bg); stroke-width: 4px; stroke-linejoin: round;
+}
+.cp-dim { opacity: 0.3; transition: opacity 0.3s; }
+.cp-sol { stroke: var(--good); stroke-width: 2.6; fill: none; }
+.cp-sol-pt { fill: var(--good); }
+.cp-num circle { fill: var(--good); }
+.cp-num text { fill: #fff; font-size: 11px; font-weight: 800; text-anchor: middle; }
+.cp-ghost { stroke: var(--muted); stroke-width: 1.2; fill: none; opacity: 0.5; }
+.cp-miss { stroke: var(--danger); stroke-width: 3; fill: none; }
+.cp-miss-pt { fill: var(--danger); }
+.cp-tools {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;
+  width: 100%; max-width: 360px; margin-top: 10px;
+}
+.cp-tool {
+  background: var(--bg); color: var(--text); border: 2px solid var(--border); border-radius: 11px;
+  padding: 10px 2px; font-size: 0.8rem; font-weight: 700; cursor: pointer; line-height: 1.15;
+}
+.cp-tool.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+.cp-tool.cp-small { font-size: 0.72rem; color: var(--muted); }
+.cp-tool:disabled { opacity: 0.45; }
+.cp-hint { margin: 8px 0 0; font-size: 0.76rem; color: var(--muted); text-align: center; min-height: 1em; }
+.cp-why { display: block; margin-top: 6px; color: var(--text); font-weight: 500; line-height: 1.4; }
+.cp-steps {
+  margin: 8px 0 0; padding-left: 22px; width: 100%; max-width: 360px;
+  font-size: 0.78rem; color: var(--good); font-weight: 600; line-height: 1.45;
+}
+.cp-steps:empty { display: none; }
+.cp-next { margin-top: 12px; }
