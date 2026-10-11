@@ -207,7 +207,7 @@ export function buildLevel(level) {
 }
 
 function figureName(lv) {
-  if (lv.kind === "poly") return `un ${POLY_NAMES[lv.n]} regular`;
+  if (lv.kind === "poly") return lv.n === 4 ? "un cuadrado" : `un ${POLY_NAMES[lv.n]} regular`;
   if (lv.kind === "star") return `la estrella {${lv.n}/${lv.k}}`;
   if (lv.kind === "L") return "la L";
   if (lv.kind === "U") return "el arco";
