@@ -1,0 +1,124 @@
+/* Pack BF — juegos de pregunta: La regla de los signos (.sg-), Tanto por
+   ciento (.tp-), Completa la tabla (.tb-), ¿Cuánto vale x? (.dx-) y
+   Potencias (.ev-). Todos comparten el teclado del núcleo (.keypad). */
+
+/* ---------- comunes del pack ---------- */
+.game-body.sg-body, .game-body.tp-body, .game-body.tb-body, .game-body.dx-body, .game-body.ev-body {
+  justify-content: flex-start; padding: 16px 14px;
+}
+.feedback.sg-hint, .feedback.tp-hint, .feedback.tb-hint, .feedback.dx-hint, .feedback.ev-hint {
+  font-size: 0.9rem; line-height: 1.35; text-align: center; max-width: 340px; margin-top: 10px;
+}
+.feedback.bad.sg-hint, .feedback.bad.tp-hint, .feedback.bad.tb-hint, .feedback.bad.dx-hint, .feedback.bad.ev-hint {
+  color: var(--text);
+}
+
+/* ---------- La regla de los signos ---------- */
+.prompt.sg-prompt { font-size: 1.7rem; margin-bottom: 6px; font-variant-numeric: tabular-nums; }
+.sg-ans { color: var(--accent); }
+.sg-ans.ok, .sg-ans.bad-fix { color: var(--good); }
+.sg-step { display: block; font-size: 0.8rem; color: var(--muted); margin-bottom: 10px; text-align: center; }
+.sg-signs { display: flex; gap: 14px; width: 100%; max-width: 260px; margin-bottom: 10px; }
+.sg-sign {
+  flex: 1; font-size: 2rem; font-weight: 800; padding: 10px 0; line-height: 1;
+  background: var(--bg); border: 2px solid var(--border); border-radius: 14px; color: var(--text); cursor: pointer;
+}
+.sg-sign:active { transform: scale(0.97); }
+.sg-sign.ok { background: var(--good); border-color: var(--good); color: #fff; }
+.sg-sign.bad { background: var(--danger); border-color: var(--danger); color: #fff; }
+.sg-sign:disabled:not(.ok):not(.bad) { opacity: 0.5; }
+.sg-pad { display: flex; flex-direction: column; align-items: center; width: 100%; }
+.sg-pad[hidden] { display: none; }
+.sg-pad .keypad-display { margin-bottom: 8px; min-height: 2rem; font-size: 1.5rem; }
+.sg-pad .keypad-key { padding: 11px 8px; }
+.sg-line { width: 100%; max-width: 300px; min-height: 0; margin-top: 8px; }
+.sg-svg { width: 100%; height: auto; display: block; }
+.sg-svg .sg-axis { stroke: var(--text); stroke-width: 1.5; }
+.sg-svg line { stroke: var(--muted); stroke-width: 1; }
+.sg-svg line.sg-tbig { stroke: var(--text); stroke-width: 1.5; }
+.sg-svg text { font-size: 9px; font-weight: 700; fill: var(--muted); text-anchor: middle; }
+.sg-svg text.sg-tto { fill: var(--good); }
+.sg-svg .sg-jump { fill: none; stroke: var(--accent-2); stroke-width: 2; }
+.sg-svg .sg-jumphead { fill: var(--accent-2); }
+
+/* ---------- Tanto por ciento ---------- */
+.prompt.tp-prompt { font-size: 1.3rem; margin-bottom: 10px; }
+.prompt.tp-prompt b { color: var(--accent); }
+.tp-barwrap { width: 100%; max-width: 320px; margin-bottom: 12px; }
+.tp-bar {
+  position: relative; height: 34px; border: 2px solid var(--border); border-radius: 8px;
+  background: var(--bg); overflow: hidden; margin-bottom: 4px;
+}
+.tp-ticks {
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(to right, transparent 0, transparent calc(10% - 1px), var(--border) calc(10% - 1px), var(--border) 10%);
+}
+.tp-fill {
+  position: absolute; left: 0; top: 0; bottom: 0; background: var(--accent); opacity: 0.85;
+  display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 0.95rem;
+  min-width: 2.2rem; transition: background 0.2s;
+}
+.tp-fill:has(.tp-mark.ok), .tp-fill:has(.tp-mark.fix) { background: var(--good); opacity: 1; }
+.tp-ends { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--muted); font-weight: 700; }
+.tp-body .keypad-display { margin-bottom: 8px; min-height: 2rem; font-size: 1.5rem; }
+.tp-body .keypad-key { padding: 11px 8px; }
+
+/* ---------- Completa la tabla ---------- */
+.prompt.tb-prompt { font-size: 1.15rem; margin-bottom: 6px; }
+.tb-q {
+  display: inline-block; min-width: 1.6rem; padding: 0 6px; border-radius: 8px;
+  background: var(--accent-2); color: #fff;
+}
+.tb-badge {
+  font-size: 0.74rem; font-weight: 800; color: var(--muted); margin-bottom: 8px; text-align: center;
+  padding: 3px 10px; border-radius: 999px; background: var(--bg); border: 1px solid var(--border);
+}
+.tb-badge.inv { color: #fff; background: var(--accent-2); border-color: var(--accent-2); }
+.tb-table { border-collapse: separate; border-spacing: 4px; width: 100%; max-width: 340px; margin-bottom: 8px; table-layout: fixed; }
+.tb-table th {
+  text-align: left; font-size: 0.78rem; color: var(--muted); font-weight: 800; padding: 0 4px; width: 26%;
+  overflow-wrap: anywhere;
+}
+.tb-table td {
+  text-align: center; font-size: 1.15rem; font-weight: 800; padding: 9px 2px;
+  background: var(--bg); border: 2px solid var(--border); border-radius: 10px; color: var(--text);
+}
+.tb-table td.tb-hole { border-color: var(--accent-2); color: var(--accent-2); background: var(--card); border-style: dashed; }
+.tb-table td.tb-hole.ok, .tb-table td.tb-hole.fix { background: var(--good); border-color: var(--good); border-style: solid; color: #fff; }
+.tb-display { margin-bottom: 6px; min-height: 1.8rem; font-size: 1.3rem; }
+.tb-body .keypad-key { padding: 10px 8px; }
+
+/* ---------- ¿Cuánto vale x? ---------- */
+.prompt.dx-prompt { font-size: 1.1rem; margin-bottom: 6px; color: var(--muted); font-weight: 600; }
+.dx-x { color: var(--accent); font-style: italic; font-weight: 800; }
+.dx-eq { font-size: 1.9rem; font-weight: 800; text-align: center; font-variant-numeric: tabular-nums; line-height: 1.2; }
+.dx-sol { font-size: 1.2rem; font-weight: 700; color: var(--muted); margin: 6px 0 4px; }
+.dx-val { color: var(--accent); }
+.dx-val.ok, .dx-val.fix { color: var(--good); }
+.dx-display { margin-bottom: 6px; min-height: 1.8rem; font-size: 1.3rem; }
+.dx-body .keypad-key { padding: 10px 8px; }
+.dx-body .keypad-sign { margin-top: 8px; padding: 8px; }
+.dx-check { color: var(--muted); font-weight: 600; }
+
+/* ---------- Potencias ---------- */
+.prompt.ev-prompt { font-size: 1.6rem; margin-bottom: 4px; font-variant-numeric: tabular-nums; }
+.prompt.ev-prompt b { color: var(--accent); font-size: 1.25rem; }
+.ev-answer { display: flex; align-items: flex-start; margin-bottom: 4px; }
+.ev-box {
+  display: inline-flex; align-items: center; justify-content: center; min-width: 2.6rem; padding: 4px 10px;
+  font: inherit; font-size: 1.6rem; font-weight: 800; color: var(--accent); cursor: pointer;
+  background: var(--bg); border: 2px dashed var(--border); border-radius: 10px;
+}
+.ev-box.ev-exp { font-size: 1rem; min-width: 1.8rem; padding: 2px 7px; margin-left: 3px; margin-top: -8px; }
+.ev-box.ev-inline { font-size: inherit; vertical-align: middle; }
+.ev-box.active { border-color: var(--accent); border-style: solid; }
+.ev-box.ok, .ev-box.fix { background: var(--good); border-color: var(--good); color: #fff; border-style: solid; }
+.ev-step { display: block; font-size: 0.78rem; color: var(--muted); margin-bottom: 8px; text-align: center; }
+.ev-display { margin-bottom: 6px; min-height: 1.8rem; font-size: 1.3rem; }
+.ev-body .keypad-key { padding: 10px 8px; }
+.ev-body .keypad-sign { margin-top: 8px; padding: 8px; }
+
+/* Al fallar, lo que se había escrito queda tachado en rojo en el display. */
+.keypad-display.sg-wrong, .keypad-display.tp-wrong, .keypad-display.tb-wrong, .keypad-display.dx-wrong, .keypad-display.ev-wrong {
+  color: var(--danger); text-decoration: line-through;
+}

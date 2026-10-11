@@ -1,0 +1,119 @@
+/* Pack BB — juegos de pregunta: Dictado de números (.dc-), Forma el número
+   (.mn-), El número escondido (.hu-), Plantea el problema (.pl-) y
+   Fracción de una cantidad (.ga-). */
+
+/* ---------- Dictado de números ---------- */
+.game-body.dc-body { justify-content: flex-start; padding-top: 18px; }
+.prompt.dc-words { font-size: 1.45rem; line-height: 1.3; margin-bottom: 10px; color: var(--accent); text-transform: lowercase; }
+.keypad-display.dc-display { font-size: 2rem; min-height: 2.6rem; }
+.dc-wrong, .hu-wrong, .ga-wrong { color: var(--danger); opacity: 0.7; font-size: 0.8em; }
+.dc-good, .hu-good, .ga-good { color: var(--good); }
+.keypad.dc-pad { max-width: 280px; }
+.keypad.dc-pad .keypad-key:disabled { opacity: 0.3; }
+.keypad.dc-pad .dc-ok { grid-column: 1 / -1; padding: 12px 8px; font-size: 1.2rem; }
+.feedback.dc-feedback, .feedback.mn-feedback, .feedback.hu-feedback, .feedback.pl-feedback, .feedback.ga-feedback {
+  text-align: center; line-height: 1.4; max-width: 360px;
+}
+
+/* ---------- Forma el número ---------- */
+.game-body.mn-body { justify-content: flex-start; padding-top: 18px; }
+.prompt.mn-prompt { font-size: 1.2rem; margin-bottom: 14px; }
+.prompt.mn-prompt b { color: var(--accent); }
+.mn-slots { display: flex; gap: 8px; justify-content: center; margin-bottom: 18px; }
+.mn-slot {
+  width: 56px; height: 68px; border-radius: 12px;
+  border: 2px dashed var(--border); background: var(--bg); color: var(--text);
+  font-size: 1.8rem; font-weight: 800; cursor: pointer; padding: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.mn-slot:not(.empty) { border-style: solid; border-color: var(--accent); }
+.mn-slot.good { border-color: var(--good); background: var(--good); color: #fff; }
+.mn-slot.bad { border-color: var(--danger); color: var(--danger); }
+.mn-answer { margin-top: -8px; }
+.mn-answer .mn-slot { width: 44px; height: 52px; font-size: 1.4rem; }
+.mn-cards { display: flex; gap: 10px; justify-content: center; margin-bottom: 16px; }
+.mn-card {
+  width: 58px; height: 74px; border-radius: 12px;
+  border: 2px solid var(--border); background: var(--card); color: var(--text);
+  font-size: 2rem; font-weight: 800; cursor: pointer; padding: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+.mn-card:active { transform: scale(0.95); }
+.mn-card.used { opacity: 0.25; box-shadow: none; }
+button.mn-ok { min-width: 140px; font-size: 1.2rem; padding: 10px 18px; }
+button.mn-ok:disabled { opacity: 0.4; }
+
+/* ---------- El número escondido ---------- */
+.game-body.hu-body { justify-content: flex-start; padding-top: 18px; }
+.prompt.hu-prompt { font-size: 1.1rem; margin-bottom: 8px; color: var(--muted); font-weight: 600; }
+.hu-eq {
+  display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap;
+  font-size: 2rem; font-weight: 800; margin-bottom: 16px; min-height: 64px;
+}
+.hu-op { color: var(--muted); font-weight: 700; }
+.hu-hole {
+  min-width: 64px; padding: 4px 10px; border-radius: 12px;
+  border: 3px dashed var(--accent-2); color: var(--accent-2); font-family: ui-monospace, monospace;
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+}
+.hu-hole.filled { border-style: solid; color: var(--accent); border-color: var(--accent); }
+.hu-hole.good { border-color: var(--good); color: var(--good); }
+.hu-hole.bad { border-color: var(--danger); }
+.keypad.hu-pad { max-width: 270px; }
+
+/* ---------- Plantea el problema ---------- */
+.game-body.pl-body { justify-content: flex-start; padding: 16px 14px; }
+.prompt.pl-prompt { font-size: 1.05rem; line-height: 1.4; margin-bottom: 12px; }
+.pl-expr { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 14px; }
+.pl-slot {
+  min-width: 58px; height: 56px; border-radius: 12px; padding: 0 8px;
+  border: 2px dashed var(--border); background: var(--bg); color: var(--text);
+  font-size: 1.4rem; font-weight: 800; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.pl-slot-op { min-width: 48px; }
+.pl-slot:not(.empty) { border-style: solid; border-color: var(--accent); }
+.pl-slot.good { border-color: var(--good); background: var(--good); color: #fff; }
+.pl-slot.bad { border-color: var(--danger); color: var(--danger); }
+.pl-eq { font-size: 1.4rem; font-weight: 800; color: var(--muted); }
+.pl-res { font-size: 1.4rem; font-weight: 800; color: var(--accent); min-width: 30px; text-align: left; }
+.pl-res.good { color: var(--good); }
+.pl-answer { margin-top: -6px; }
+.pl-answer .pl-slot { min-width: 46px; height: 44px; font-size: 1.1rem; }
+.pl-chips { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; max-width: 340px; }
+.pl-chip {
+  min-width: 56px; height: 52px; border-radius: 12px; padding: 0 10px;
+  border: 2px solid var(--border); background: var(--card); color: var(--text);
+  font-size: 1.3rem; font-weight: 800; cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+.pl-break { flex-basis: 100%; height: 0; }
+.pl-chip-op { border-color: var(--accent-2); color: var(--accent-2); }
+.pl-chip:disabled { opacity: 0.25; box-shadow: none; }
+
+/* ---------- Fracción de una cantidad ---------- */
+.game-body.ga-body { justify-content: flex-start; padding: 16px 14px; }
+.prompt.ga-prompt { font-size: 1.25rem; margin-bottom: 10px; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px; }
+.prompt.ga-prompt small { flex-basis: 100%; margin-top: 2px; }
+.prompt.ga-prompt > b { color: var(--accent); font-size: 1.5rem; }
+.ga-frac { display: inline-flex; flex-direction: column; align-items: center; line-height: 1; color: var(--accent); margin: 0 4px; }
+.ga-frac b { font-size: 1.2rem; }
+.ga-frac i { display: block; width: 100%; height: 3px; background: var(--accent); margin: 2px 0; border-radius: 2px; }
+.ga-grid { display: grid; grid-template-columns: repeat(var(--ga-cols, 6), 1fr); gap: 6px; width: 100%; max-width: 330px; margin-bottom: 10px; }
+.ga-cookie {
+  aspect-ratio: 1; border-radius: 10px; border: 2px solid var(--border); background: var(--bg);
+  font-size: 1.5rem; cursor: pointer; padding: 0; display: flex; align-items: center; justify-content: center;
+  touch-action: manipulation;
+}
+.ga-cookie.on { border-color: var(--accent); background: var(--accent); }
+.ga-groups { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; width: 100%; max-width: 340px; margin-bottom: 10px; }
+.ga-group {
+  display: flex; flex-wrap: wrap; gap: 2px; max-width: 150px; padding: 6px; border-radius: 10px;
+  border: 2px solid var(--border); background: var(--bg); font-size: 1.1rem; line-height: 1;
+}
+.ga-group.hl { border-color: var(--good); background: color-mix(in srgb, var(--good) 22%, var(--bg)); }
+.ga-row { display: flex; align-items: center; gap: 14px; justify-content: center; width: 100%; }
+.ga-count { color: var(--muted); font-weight: 700; font-size: 0.9rem; min-width: 100px; text-align: right; }
+button.ga-ok { min-width: 120px; font-size: 1.2rem; padding: 10px 18px; }
+.keypad-display.ga-display { font-size: 2rem; }
+.keypad.ga-pad { max-width: 270px; }
