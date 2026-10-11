@@ -31,6 +31,11 @@ pestañas (🆕 Nuevos, 👍, 👎, 🏁, 🔧).
   de pago). La primera vez lo instala en `~/.cache/football-stt`. Quien
   mejore un ejercicio lee `note` y `transcripcion`: el agente no puede oír
   audios.
+- **Al terminar un 🔧**: se quita SOLO la marca (`review=false`, y se
+  borran `note`, el audio y la transcripción); la valoración (👍/👎/🏁) se
+  conserva, así el ejercicio vuelve a la pestaña donde estaba. Se sube su
+  `v` para que se vea que es una versión nueva. (Petición de Paco,
+  11-10-2026: antes se mandaban a 🆕 Nuevos.)
 
 Vive en `football/` y usa el prefijo `football_` en Supabase — nombres
 heredados de un prototipo anterior de esta misma carpeta, se han
@@ -58,6 +63,8 @@ Primeros 🔧 con comentario de voz de Paco, ya aplicados:
 | 35 | Monedas | "Reiniciar" y dibujos raros (cuadritos) | monedas de euro dibujadas (2 € y 1 € bimetálicas, céntimos dorados, con su tamaño), monedero visible donde tocar una moneda la devuelve, botón "Empezar de nuevo" |
 | 41 | Pesca | si se escapa el bueno, no cambiar de cuenta | vuelven a salir los mismos peces con la misma operación |
 | 44 | Dados | sin tiempo | quitada la barra de tiempo y la vida que costaba agotarla |
+| 30 | Ruleta | sale un color y dice otro | arreglado: el giro se calculaba desde -90° y paraba un cuarto de vuelta desplazado; comprobado en 12 giros que la flecha queda en el color anunciado |
+| 1 | Globos (v3) | si se escapa, misma cuenta; que diga bien/mal | si el bueno se escapa vuelven los mismos globos con la misma cuenta; ✓ +10 al acertar y ✗ "29 no es 4 × 7" al fallar |
 
 Además: #14 Formas pasa a 🏁 Final como modelo del tipo "pregunta + 4
 opciones"; #15 y #20 a 👎 ("ese tipo ya lo tenemos"); y se crea **#175

@@ -12,7 +12,7 @@ import { mountAreaGame } from "./game-area.js";
 import { mountLaberintoGame } from "./game-laberinto.js";
 
 export const CREATIVE_GAMES_2 = [
-  { id: "ruleta", title: "Ruleta de probabilidad", emoji: "🎡", topic: "Probabilidad", custom: mountRuletaGame },
+  { id: "ruleta", title: "Ruleta de probabilidad", emoji: "🎡", topic: "Probabilidad", v: 2, custom: mountRuletaGame },
   { id: "clasifica", title: "Clasifica los números", emoji: "🧺", topic: "Clasificación", v: 2, custom: mountClasificaGame },
   { id: "estima", title: "Estima el resultado", emoji: "🎚️", topic: "Estimación", custom: mountEstimaGame },
   { id: "teclado", title: "Teclado numérico", emoji: "⌨️", topic: "Cálculo mental", custom: mountTecladoGame },

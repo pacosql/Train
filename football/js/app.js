@@ -55,7 +55,7 @@ import { startRecording, canRecord, canTranscribe } from "./voice.js";
 // que sea estable de verdad, los juegos nuevos SIEMPRE se añaden al
 // final (nunca se insertan en medio ni se reordenan los existentes).
 const GAMES = [
-  { id: "globos", title: "Globos de multiplicar", emoji: "🎈", topic: "Multiplicación", v: 2, custom: mountBalloonsGame },
+  { id: "globos", title: "Globos de multiplicar", emoji: "🎈", topic: "Multiplicación", v: 3, custom: mountBalloonsGame },
   ...CREATIVE_GAMES,
   ...QUIZ_GAMES,
   ...QUIZ_GAMES_2,

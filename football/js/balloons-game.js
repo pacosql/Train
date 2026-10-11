@@ -17,7 +17,12 @@ export function mountBalloonsGame(container, { client, onExit }) {
   let finished = false;
   let balloonEls = [];
   let cleanupTimers = [];
-  let sky, questionEl;
+  let sky, questionEl, sayEl;
+  // v3 (petición de Paco): si el globo bueno se escapa, se repite la MISMA
+  // cuenta con los mismos globos (no cambia de ejercicio sin que se note), y
+  // cada toque dice claramente si está bien (✓) o mal (✗ y por qué).
+  let current = null;
+  let sayTimer = null;
 
   container.innerHTML = `
     <div class="game-topbar">
@@ -67,17 +72,44 @@ export function mountBalloonsGame(container, { client, onExit }) {
       renderLives();
     }
     clearBalloons();
-    if (lives <= 0) return setTimeout(() => finish(false), 300);
-    setTimeout(nextRound, 500);
+    if (won) say(`✓ ¡Bien! ${current.a} × ${current.b} = ${current.correct}`, true);
+    else say(`¡Se ha escapado! Era ${current.correct}. Otra vez la misma cuenta…`, false);
+    if (lives <= 0) return setTimeout(() => finish(false), 900);
+    setTimeout(() => nextRound(!won), won ? 900 : 1600);
   }
 
-  function nextRound() {
+  function say(text, ok) {
+    sayEl.textContent = text;
+    sayEl.className = `feedback atrapa-say ${ok ? "ok" : "bad"}`;
+    clearTimeout(sayTimer);
+    sayTimer = setTimeout(() => {
+      sayEl.textContent = "";
+      sayEl.className = "feedback atrapa-say";
+    }, ok ? 1100 : 2000);
+  }
+  function mark(el, ok) {
+    const sr = sky.getBoundingClientRect();
+    const r = el.getBoundingClientRect();
+    const m = document.createElement("div");
+    m.className = `atrapa-mark ${ok ? "ok" : "bad"}`;
+    m.textContent = ok ? "✓ +10" : "✗";
+    m.style.left = `${r.left - sr.left + r.width / 2}px`;
+    m.style.top = `${r.top - sr.top + r.height / 2}px`;
+    sky.appendChild(m);
+    setTimeout(() => m.remove(), 900);
+  }
+
+  function nextRound(again = false) {
     if (finished) return;
-    const a = randInt(2, 9);
-    const b = randInt(2, 9);
-    const correct = a * b;
+    if (!again || !current) {
+      const a = randInt(2, 9);
+      const b = randInt(2, 9);
+      const correct = a * b;
+      current = { a, b, correct, values: shuffle(buildChoices(correct, () => Math.max(1, correct + randInt(-8, 8)))) };
+    }
+    const { a, b, correct } = current;
     questionEl.textContent = `${a} × ${b} = ?`;
-    const values = shuffle(buildChoices(correct, () => Math.max(1, correct + randInt(-8, 8))));
+    const values = again ? shuffle(current.values) : current.values;
     const dur = duration();
     // Cada globo de la ronda, de un color distinto (v2: antes se sorteaba
     // por globo y a veces salían dos iguales).
@@ -92,9 +124,12 @@ export function mountBalloonsGame(container, { client, onExit }) {
       el.addEventListener("click", () => {
         if (!roundActive) return;
         if (val === correct) {
+          mark(el, true);
           el.classList.add("popped");
           endRound(true);
         } else {
+          mark(el, false);
+          say(`✗ ${val} no es ${a} × ${b}`, false);
           el.classList.add("popped");
           setTimeout(() => el.remove(), 250);
           balloonEls = balloonEls.filter((b) => b.el !== el);
@@ -156,10 +191,13 @@ export function mountBalloonsGame(container, { client, onExit }) {
     bodyEl.innerHTML = `
       <div class="balloon-sky" data-sky>
         <div class="balloon-question" data-question></div>
+        <div class="feedback atrapa-say" data-say></div>
       </div>
     `;
     sky = bodyEl.querySelector("[data-sky]");
     questionEl = bodyEl.querySelector("[data-question]");
+    sayEl = bodyEl.querySelector("[data-say]");
+    current = null;
     renderLives();
     renderScore();
     nextRound();
@@ -169,6 +207,7 @@ export function mountBalloonsGame(container, { client, onExit }) {
 
   return function cleanupGame() {
     finished = true;
+    clearTimeout(sayTimer);
     roundActive = false;
     clearBalloons();
   };
