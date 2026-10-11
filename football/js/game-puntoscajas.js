@@ -439,6 +439,7 @@ export function mountPuntoscajasGame(container, { client, onExit }) {
   let preview = -1;
   let puzzle = null; // final preparado en curso (o null)
   let puzzleNext = false; // tras ganar una partida toca un final preparado
+  let matchNo = 0; // partidas normales empezadas (los finales no cuentan)
   let startD = null; // posición inicial (para la repetición)
   let startOwn = null;
   const timers = new Set();
@@ -495,6 +496,7 @@ export function mountPuntoscajasGame(container, { client, onExit }) {
         return;
       }
       const extra = (opts.last === e ? " pc-last" : "") + (opts.key === e ? " pc-key" : "");
+      if (opts.key === e) s += `<line class="pc-halo" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`;
       s += `<line class="pc-e pc-w${dd[e]}${extra}" data-e="${e}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`;
     });
     if (opts.live && preview >= 0 && !dd[preview]) {
@@ -521,6 +523,7 @@ export function mountPuntoscajasGame(container, { client, onExit }) {
       owner = puzzle.own.slice();
     } else {
       cfg = MATCHES[Math.min(level, MATCHES.length - 1)];
+      matchNo++;
       bd = makeBoard(cfg.R, cfg.C);
       d = new Uint8Array(bd.E);
       owner = new Int8Array(bd.B);
@@ -535,7 +538,7 @@ export function mountPuntoscajasGame(container, { client, onExit }) {
       ? `🧩 Final preparado
         <small>Vas ${count(1)}–${count(2)} · te toca · la máquina juega perfecto</small>`
       : `Puntos y cajas
-        <small>Partida ${rounds + 1} · ${cfg.R}×${cfg.C} cajas · máquina nivel ${cfg.ai}</small>`;
+        <small>Partida ${matchNo} · ${cfg.R}×${cfg.C} cajas · máquina nivel ${cfg.ai}</small>`;
     const help = !puzzle
       ? "Toca entre dos puntos para trazar un lado. Si cierras una caja, es tuya y vuelves a jugar."
       : puzzle.type === "A"
@@ -781,7 +784,7 @@ export function mountPuntoscajasGame(container, { client, onExit }) {
     if (isKey)
       cap =
         km.run >= 3
-          ? `<b>Jugada clave (${k}):</b> aquí abriste una cadena de ${km.run} → ${km.run} cajas seguidas para la máquina (rayadas).`
+          ? `<b>Jugada clave (${k}):</b> aquí trazaste este lado y regalaste una cadena: ${km.run} cajas seguidas para la máquina (rayadas).`
           : `<b>Jugada clave (${k}):</b> tras este lado la máquina se llevó ${km.run} caja${km.run === 1 ? "" : "s"} seguida${km.run === 1 ? "" : "s"}.`;
     const capEl = body.querySelector("[data-rcap]");
     capEl.innerHTML = cap;
@@ -834,6 +837,8 @@ export function mountPuntoscajasGame(container, { client, onExit }) {
     score = 0;
     rounds = 0;
     level = 0;
+    matchNo = 0;
+    puzzleNext = false;
     finished = false;
     renderLives();
     renderScore();

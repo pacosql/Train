@@ -815,6 +815,7 @@ export function mountCompasGame(container, { client, onExit }) {
     let best = null;
     task.target(gv).forEach((alt, ai) => {
       alt.lines.forEach(([p, q], li) => {
+        if (hasLine(gg, p, q)) return; // esa ya está: no es un "casi"
         const seg = clip(p, unit(sub(q, p)));
         if (!seg) return;
         objs.forEach((o, j) => {
@@ -824,6 +825,7 @@ export function mountCompasGame(container, { client, onExit }) {
         });
       });
       alt.pts.forEach((q, qi) =>
+        !hasPt(gg, q) &&
         pos.forEach((p, i) => {
           if (!p || gg.pts[i].def.given) return;
           const d = dist(p, q);
