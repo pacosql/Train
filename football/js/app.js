@@ -405,22 +405,26 @@ function renderGame(id) {
     paintAudio();
 
     const recBtn = $("[data-rv-rec]");
+    // Para la grabación en curso y se queda con lo grabado. La usan el
+    // botón de grabar y también "Guardar": guardar mientras grabas para
+    // y guarda, sin pedirte que pares antes.
+    async function stopRec() {
+      if (!rec) return;
+      clearInterval(timer);
+      recBtn.disabled = true;
+      const got = await rec.stop();
+      rec = null;
+      recBtn.disabled = false;
+      recBtn.classList.remove("on");
+      recBtn.textContent = "🎤 Volver a grabar";
+      if (take) URL.revokeObjectURL(take.url);
+      take = { ...got, url: URL.createObjectURL(got.blob) };
+      if (!got.text && canTranscribe()) msg("No se ha podido transcribir: queda el audio (puedes escribir un resumen).");
+      paintAudio();
+    }
     if (recBtn)
       recBtn.addEventListener("click", async () => {
-        if (rec) {
-          clearInterval(timer);
-          recBtn.disabled = true;
-          const got = await rec.stop();
-          rec = null;
-          recBtn.disabled = false;
-          recBtn.classList.remove("on");
-          recBtn.textContent = "🎤 Volver a grabar";
-          if (take) URL.revokeObjectURL(take.url);
-          take = { ...got, url: URL.createObjectURL(got.blob) };
-          if (!got.text && canTranscribe()) msg("No se ha podido transcribir: queda el audio (puedes escribir un resumen).");
-          paintAudio();
-          return;
-        }
+        if (rec) return stopRec();
         msg("");
         const base = textarea.value.trim();
         try {
@@ -466,10 +470,8 @@ function renderGame(id) {
       onExit();
     });
     $("[data-review-save]").addEventListener("click", async () => {
-      if (rec) {
-        msg("Para la grabación antes de guardar.");
-        return;
-      }
+      lock();
+      await stopRec();
       lock();
       msg(take ? "Subiendo el audio…" : "Guardando…");
       const audio = take ? { blob: take.blob, mime: take.mime } : dropOld ? null : undefined;
