@@ -5,6 +5,9 @@
 .game-body.eq-body, .game-body.ci-body, .game-body.gr-body, .game-body.pp-body, .game-body.cn2-body {
   justify-content: flex-start; padding: 16px 14px;
 }
+/* El end-card vuelve a quedar centrado como en el resto de juegos. */
+.game-body.eq-body:has(.end-card), .game-body.ci-body:has(.end-card), .game-body.gr-body:has(.end-card),
+.game-body.pp-body:has(.end-card), .game-body.cn2-body:has(.end-card) { justify-content: center; }
 .prompt.eq-prompt, .prompt.ci-prompt, .prompt.gr-prompt, .prompt.pp-prompt, .prompt.cn2-prompt {
   font-size: 1.12rem; margin-bottom: 12px;
 }
