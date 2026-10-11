@@ -110,7 +110,7 @@
 .rz-line .rz-seg { fill: var(--bg); stroke: var(--border); stroke-width: 1; cursor: pointer; }
 .rz-line .rz-seg.good { fill: var(--good); fill-opacity: 0.35; stroke: var(--good); }
 .rz-line .rz-seg.bad { fill: var(--danger); fill-opacity: 0.35; stroke: var(--danger); }
-.rz-line .rz-axis { stroke: var(--text); stroke-width: 2; }
+.rz-line .rz-axis { stroke: var(--text); stroke-width: 2; pointer-events: none; }
 .rz-line .rz-pt { fill: var(--card); stroke: var(--text); stroke-width: 2; cursor: pointer; }
 .rz-line .rz-pt.good { fill: var(--good); stroke: var(--good); }
 .rz-line .rz-pt.bad { fill: var(--danger); stroke: var(--danger); }

@@ -46,13 +46,10 @@ export function polygonFromAngles(angs) {
 
 // Escala y centra los puntos en el lienzo.
 function fit(pts, pad) {
-  const xs = pts.map((p) => p[0]);
-  const ys = pts.map((p) => p[1]);
+  const xs = pts.map((p) => p[0]), ys = pts.map((p) => p[1]);
   const [x0, x1, y0, y1] = [Math.min(...xs), Math.max(...xs), Math.min(...ys), Math.max(...ys)];
   const s = Math.min((W - 2 * pad) / (x1 - x0 || 1), (H - 2 * pad) / (y1 - y0 || 1));
-  const ox = (W - s * (x1 - x0)) / 2;
-  const oy = (H - s * (y1 - y0)) / 2;
-  return pts.map(([x, y]) => [ox + s * (x - x0), oy + s * (y - y0)]);
+  return pts.map(([x, y]) => [(W - s * (x1 - x0)) / 2 + s * (x - x0), (H - s * (y1 - y0)) / 2 + s * (y - y0)]);
 }
 
 // Ronda: { kind, scene: { polys, lines, angles:[{v,p,q,label}], ticks }, answer, hint }
@@ -82,13 +79,8 @@ export function buildRound(level) {
     const askApex = Math.random() < 0.5;
     const shownBase = randInt(0, 1); // qué ángulo de la base lleva rótulo (o "?")
     const labels = [null, null, null];
-    if (askApex) {
-      labels[2] = "?";
-      labels[shownBase] = `${base}°`;
-    } else {
-      labels[2] = `${apex}°`;
-      labels[shownBase] = "?";
-    }
+    labels[2] = askApex ? "?" : `${apex}°`;
+    labels[shownBase] = askApex ? `${base}°` : "?";
     const degs = [base, base, apex];
     const angles = P.map((v, i) => ({ v, p: P[(i + 2) % 3], q: P[(i + 1) % 3], label: labels[i], deg: degs[i] })).filter((a) => a.label);
     const hint = askApex
@@ -101,9 +93,7 @@ export function buildRound(level) {
   const ray = (deg, len) => [O[0] + len * Math.cos(deg * DEG), O[1] - len * Math.sin(deg * DEG)];
   if (Math.random() < 0.5) {
     const t = randInt(4, 32) * 5; // 20..160
-    const E = ray(0, 135);
-    const Wp = ray(180, 135);
-    const R = ray(t, 110);
+    const [E, Wp, R] = [ray(0, 135), ray(180, 135), ray(t, 110)];
     const givenRight = Math.random() < 0.5;
     const angles = [
       { v: O, p: E, q: R, label: givenRight ? `${t}°` : "?", deg: t },
@@ -128,8 +118,8 @@ function renderScene(scene) {
   scene.lines.forEach(([a, b]) => (s += `<line class="ta-line" x1="${f(a[0])}" y1="${f(a[1])}" x2="${f(b[0])}" y2="${f(b[1])}"/>`));
   scene.ticks.forEach(([a, b]) => {
     const m = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
-    const d = Math.hypot(b[0] - a[0], b[1] - a[1]);
-    const n = [(-(b[1] - a[1]) / d) * 6, ((b[0] - a[0]) / d) * 6];
+    const d = Math.hypot(b[0] - a[0], b[1] - a[1]) / 6;
+    const n = [-(b[1] - a[1]) / d, (b[0] - a[0]) / d];
     s += `<line class="ta-tick" x1="${f(m[0] - n[0])}" y1="${f(m[1] - n[1])}" x2="${f(m[0] + n[0])}" y2="${f(m[1] + n[1])}"/>`;
   });
   scene.angles.forEach((a, i) => {
@@ -137,35 +127,23 @@ function renderScene(scene) {
       const d = Math.hypot(p[0] - a.v[0], p[1] - a.v[1]);
       return [(p[0] - a.v[0]) / d, (p[1] - a.v[1]) / d];
     };
-    const up = u(a.p);
-    const uq = u(a.q);
+    const [up, uq] = [u(a.p), u(a.q)];
     const r = 16 + (i % 2) * 6;
-    const cross = up[0] * uq[1] - up[1] * uq[0];
-    const sweep = cross > 0 ? 1 : 0;
+    const sweep = up[0] * uq[1] - up[1] * uq[0] > 0 ? 1 : 0; // el arco va por dentro del ángulo
     const isQ = a.label === "?";
     s += `<path class="ta-arc${isQ ? " q" : ""}" d="M${f(a.v[0] + up[0] * r)},${f(a.v[1] + up[1] * r)} A${r},${r} 0 0 ${sweep} ${f(a.v[0] + uq[0] * r)},${f(a.v[1] + uq[1] * r)}"/>`;
-    let bx = up[0] + uq[0];
-    let by = up[1] + uq[1];
-    const bl = Math.hypot(bx, by) || 1;
-    bx /= bl;
-    by /= bl;
-    const dist = a.deg < 35 ? 50 : a.deg < 60 ? 38 : 30;
-    s += `<text class="ta-lab${isQ ? " q" : ""}" ${isQ ? "data-q" : ""} x="${f(a.v[0] + bx * dist)}" y="${f(a.v[1] + by * dist)}">${a.label}</text>`;
+    // Rótulo sobre la bisectriz, más lejos cuanto más cerrado el ángulo.
+    const bl = Math.hypot(up[0] + uq[0], up[1] + uq[1]) || 1;
+    const dist = (a.deg < 35 ? 50 : a.deg < 60 ? 38 : 30) / bl;
+    s += `<text class="ta-lab${isQ ? " q" : ""}" ${isQ ? "data-q" : ""} x="${f(a.v[0] + (up[0] + uq[0]) * dist)}" y="${f(a.v[1] + (up[1] + uq[1]) * dist)}">${a.label}</text>`;
   });
   return s + "</svg>";
 }
 
 export function mountTerceranguloGame(container, { client, onExit }) {
   const startLives = 3;
-  let lives = startLives;
-  let score = 0;
-  let rounds = 0;
-  let hits = 0;
-  let finished = false;
-  let round = null;
-  let typed = "";
-  let busy = false;
-  let pending = null;
+  let lives = startLives, score = 0, rounds = 0, hits = 0, finished = false, busy = false;
+  let round = null, typed = "", pending = null;
 
   container.innerHTML = `
     <div class="game-topbar">
@@ -219,9 +197,7 @@ export function mountTerceranguloGame(container, { client, onExit }) {
     rounds++;
     const value = Number(typed);
     const ok = value === round.answer;
-    const fb = body.querySelector("[data-feedback]");
-    const disp = body.querySelector("[data-display]");
-    const q = body.querySelector("[data-q]");
+    const [fb, disp, q] = ["[data-feedback]", "[data-display]", "[data-q]"].map((sel) => body.querySelector(sel));
     // La respuesta correcta aparece en verde en el propio dibujo (bien o mal).
     q.textContent = `${round.answer}°`;
     q.classList.add("good");
@@ -272,11 +248,7 @@ export function mountTerceranguloGame(container, { client, onExit }) {
   }
 
   function start() {
-    lives = startLives;
-    score = 0;
-    rounds = 0;
-    hits = 0;
-    finished = false;
+    [lives, score, rounds, hits, finished] = [startLives, 0, 0, 0, false];
     renderLives();
     renderScore();
     nextRound();
