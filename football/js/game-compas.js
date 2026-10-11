@@ -803,7 +803,9 @@ export function mountCompasGame(container, { client, onExit }) {
     level++;
     renderScore();
     setButtonsDisabled(true);
-    gTarget.innerHTML = task.show(round.gv, round.s).map((sh) => shapeSvg(sh, "cp-done")).join("");
+    // El objetivo cumplido se pinta en verde por encima de la construcción.
+    gTarget.innerHTML = "";
+    gSol.innerHTML = task.show(round.gv, round.s).map((sh) => shapeSvg(sh, "cp-done")).join("");
     feedbackEl.textContent =
       moves <= task.opt ? `¡Construido en ${moves}! Es el óptimo.` : `¡Construido en ${moves}! (se puede en ${task.opt})`;
     feedbackEl.className = "feedback ok";
@@ -921,6 +923,7 @@ export function mountCompasGame(container, { client, onExit }) {
     feedbackEl.innerHTML = `${keep}${msg ? msg + " " : ""}Así se hace en ${task.opt}: <span class="cp-why">${task.why}</span>`;
     feedbackEl.className = "feedback bad";
     gObjs.classList.add("cp-dim");
+    gPts.classList.add("cp-dimpts");
     const g2 = buildGiven(task, round.gv);
     const steps = task.solve(round.gv, round.s);
     stepsEl.innerHTML = "";
@@ -932,7 +935,12 @@ export function mountCompasGame(container, { client, onExit }) {
         html += objSvg(o, "cp-sol");
         for (const q of [st.p, st.q]) html += `<circle class="cp-sol-pt" cx="${f(q.x)}" cy="${f(q.y)}" r="4.5"/>`;
         // Numerito del paso, sobre el propio objeto.
-        const at = o.kind === "C" ? add(P(o.x, o.y), mul(dir(-Math.PI / 4 - k * 0.5), o.r)) : mid(st.p, st.q);
+        let at;
+        if (o.kind === "C") at = add(P(o.x, o.y), mul(dir(-Math.PI / 4 - k * 0.5), o.r));
+        else {
+          const c = clip(P(o.x, o.y), P(o.dx, o.dy), 0);
+          at = c ? add(c[1], mul(P(o.dx, o.dy), -16)) : mid(st.p, st.q);
+        }
         if (onCanvas(at, 8)) html += `<g class="cp-num"><circle cx="${f(at.x)}" cy="${f(at.y)}" r="8"/><text x="${f(at.x)}" y="${f(at.y + 3.5)}">${k + 1}</text></g>`;
         gSol.innerHTML = html;
         stepsEl.insertAdjacentHTML("beforeend", `<li>${st.say}</li>`);
@@ -959,7 +967,7 @@ export function mountCompasGame(container, { client, onExit }) {
     saveScore(client, "compas", { score, rounds });
     body.innerHTML = `
       <div class="end-card">
-        <div>📐</div>
+        <div>🧭</div>
         <div class="big-score">${score} pts</div>
         <p>${score / 10} construcciones exactas</p>
         <div class="end-actions">

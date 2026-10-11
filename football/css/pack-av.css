@@ -18,7 +18,7 @@
 .cp-done { stroke: var(--good); stroke-width: 3.5; fill: var(--good); fill-opacity: 0.12; stroke-linejoin: round; }
 .cp-ring.cp-done { fill-opacity: 0.25; }
 .cp-gline { stroke: var(--text); stroke-width: 2.2; fill: none; stroke-linecap: round; }
-.cp-gline.cp-back { opacity: 0.25; stroke-dasharray: 3 5; }
+.cp-gline.cp-back { opacity: 0.3; stroke-width: 1.4; stroke-dasharray: 1 5; }
 .cp-gcirc { stroke: var(--text); stroke-width: 2.2; fill: none; }
 .cp-line { stroke: var(--accent); stroke-width: 1.8; fill: none; }
 .cp-circ { stroke: var(--accent); stroke-width: 1.6; fill: none; opacity: 0.85; }
@@ -26,12 +26,13 @@
 .cp-rname { fill: var(--muted); font-size: 15px; font-style: italic; font-weight: 700; text-anchor: middle; }
 .cp-pt { fill: var(--accent); stroke: var(--card); stroke-width: 1.5; }
 .cp-pt-given { fill: var(--text); }
-.cp-pt-sel { fill: var(--danger); stroke: var(--danger); stroke-width: 6; stroke-opacity: 0.35; }
+.cp-pt.cp-pt-sel { fill: var(--danger); stroke: var(--danger); stroke-width: 6; stroke-opacity: 0.35; }
 .cp-lbl {
   fill: var(--text); font-size: 15px; font-weight: 800; text-anchor: middle;
   paint-order: stroke; stroke: var(--bg); stroke-width: 4px; stroke-linejoin: round;
 }
 .cp-dim { opacity: 0.3; transition: opacity 0.3s; }
+.cp-dimpts .cp-pt:not(.cp-pt-given) { opacity: 0.3; }
 .cp-sol { stroke: var(--good); stroke-width: 2.6; fill: none; }
 .cp-sol-pt { fill: var(--good); }
 .cp-num circle { fill: var(--good); }
@@ -58,3 +59,9 @@
 }
 .cp-steps:empty { display: none; }
 .cp-next { margin-top: 12px; }
+@media (prefers-color-scheme: dark) {
+  .cp-pt { fill: #a993ff; stroke: var(--bg); }
+  .cp-pt-given { fill: var(--text); }
+  .cp-line, .cp-circ, .cp-preview { stroke: #9b84ff; }
+  .cp-target { opacity: 0.6; }
+}
