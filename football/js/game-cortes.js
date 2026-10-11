@@ -77,14 +77,14 @@ function isConvex(poly) {
   return true;
 }
 // Dentro estricto (rayo horizontal), descartando puntos sobre el borde.
-function insideStrict(poly, q) {
+function insideStrict(poly, q, tol = 1e-7) {
   for (let i = 0; i < poly.length; i++) {
     const a = poly[i];
     const b = poly[(i + 1) % poly.length];
     const ab = sub(b, a);
     const len2 = ab.x * ab.x + ab.y * ab.y;
     const t = Math.max(0, Math.min(1, ((q.x - a.x) * ab.x + (q.y - a.y) * ab.y) / len2));
-    if (dist(q, P(a.x + ab.x * t, a.y + ab.y * t)) < 1e-7) return false;
+    if (dist(q, P(a.x + ab.x * t, a.y + ab.y * t)) < tol) return false;
   }
   let inside = false;
   for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
@@ -580,11 +580,13 @@ export function mountCortesGame(container, { client, onExit }) {
       return paint();
     }
     // Un trazo vale si empieza y acaba fuera de la figura y la atraviesa.
-    const raw = { a: d.start, b: d.cur };
+    // (Se mira el trazo ya imantado; un extremo justo sobre el borde vale.)
+    const raw = round.parallel ? { a: d.start, b: d.cur } : { a: snap(d.start), b: snap(d.cur) };
     const L = lineOf(raw);
     const len = dist(raw.a, raw.b);
     const crosses = chordsOf(round.poly, L).some(([t0, t1]) => t0 > -0.15 && t1 < len + 0.15 && t1 - t0 > 0.3);
-    if (!crosses || insideStrict(round.poly, raw.a) || insideStrict(round.poly, raw.b)) {
+    console.debug("DBG", JSON.stringify({ raw, s: d.start, c: d.cur, crosses, ch: chordsOf(round.poly, L), len }));
+    if (!crosses || insideStrict(round.poly, raw.a, 0.06) || insideStrict(round.poly, raw.b, 0.06)) {
       fb.textContent = "Desliza de lado a lado: empieza y termina fuera de la figura.";
       fb.className = "feedback bad";
       return paint();
