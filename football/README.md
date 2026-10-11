@@ -39,6 +39,16 @@ pestañas (🆕 Nuevos, 👍, 👎, 🏁, 🔧).
   pendientes, los lee **antes de nada** (pueden cambiar cómo hay que
   trabajar), actúa, y los marca `estado=atendido` con una `respuesta` de
   una línea (qué se ha hecho), que Paco ve en el menú.
+  Pueden llevar **adjuntos** (capturas, fotos, PDFs…) en el bucket
+  `football-adjuntos` (columna `adjuntos`, lista de `{path, mime, name}`);
+  típicamente la captura de un ejercicio visto en otra app para que se
+  proponga uno parecido. Bandeja de trabajo:
+
+  ```bash
+  python3 football/tools/transcribir.py           # audios → texto
+  python3 football/tools/comentarios.py           # lista 🔧 y 💬 pendientes y baja los adjuntos a /tmp/football-adjuntos/<id>/
+  python3 football/tools/comentarios.py --atender 7 "Hecho: …"   # marca el 💬 #7 como atendido
+  ```
 - **Al terminar un 🔧**: se quita SOLO la marca (`review=false`, y se
   borran `note`, el audio y la transcripción); la valoración (👍/👎/🏁) se
   conserva, así el ejercicio vuelve a la pestaña donde estaba. Se sube su

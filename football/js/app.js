@@ -50,7 +50,7 @@ import {
   fetchReworkNote,
 } from "./ratings.js";
 import { startRecording, canRecord, canTranscribe } from "./voice.js";
-import { fetchComments, saveComment, audioUrl } from "./comments.js";
+import { fetchComments, saveComment, audioUrl, fileUrl } from "./comments.js";
 
 // El número de cada juego (#1, #2…) es su posición en este array — para
 // que sea estable de verdad, los juegos nuevos SIEMPRE se añaden al
@@ -260,13 +260,15 @@ async function renderComments() {
   }
   list.innerHTML = rows
     .map((c) => {
-      const text = c.note || c.transcripcion || "(audio, pendiente de transcribir)";
+      const text =
+        c.note || c.transcripcion || (c.audio_path ? "(audio, pendiente de transcribir)" : c.adjuntos?.length ? "(adjunto)" : "");
       const when = new Date(c.created_at).toLocaleString();
       const url = audioUrl(client, c.audio_path);
       return `<li class="gc-item ${c.estado}">
         <div class="gc-head"><span class="gc-state">${c.estado === "atendido" ? "✅ Atendido" : "🕓 Pendiente"}</span><span class="gc-when">${when}</span></div>
         <div class="gc-text">${escapeHtml(text)}</div>
         ${url ? `<button type="button" class="note-audio" data-gc-audio="${url}">▶︎ Oír</button>` : ""}
+        ${attachmentsHtml(c.adjuntos)}
         ${c.respuesta ? `<div class="gc-reply">↳ ${escapeHtml(c.respuesta)}</div>` : ""}
       </li>`;
     })
@@ -280,12 +282,27 @@ async function renderComments() {
   );
 }
 
+// Miniaturas de los adjuntos: las imágenes se ven; el resto, como enlace.
+function attachmentsHtml(list) {
+  if (!Array.isArray(list) || !list.length) return "";
+  return `<div class="gc-files">${list
+    .map((a) => {
+      const url = fileUrl(client, a.path);
+      return (a.mime || "").startsWith("image/")
+        ? `<a href="${url}" target="_blank" rel="noopener"><img src="${url}" alt="${escapeHtml(a.name || "")}"></a>`
+        : `<a class="gc-file" href="${url}" target="_blank" rel="noopener">📄 ${escapeHtml(a.name || "archivo")}</a>`;
+    })
+    .join("")}</div>`;
+}
+
 function openGeneralComment() {
   if (root.querySelector("[data-gc-box]")) return;
   const header = root.querySelector(".menu-header");
   let rec = null;
   let take = null;
   let timer = null;
+  let files = [];
+  const previews = [];
   const box = document.createElement("div");
   box.className = "review-note-box gc-box";
   box.setAttribute("data-gc-box", "");
@@ -299,6 +316,10 @@ function openGeneralComment() {
     }
     <div class="rv-audio" data-rv-audio></div>
     <textarea data-gc-input rows="3" placeholder="Lo que digas aparecerá aquí escrito (también puedes escribir)…"></textarea>
+    <label class="gc-attach">📎 Foto, captura o archivo
+      <input type="file" data-gc-file multiple accept="image/*,video/*,application/pdf,*/*" hidden>
+    </label>
+    <div class="gc-picked" data-gc-picked></div>
     <div class="rv-msg" data-rv-msg></div>
     <div class="review-note-actions">
       <button type="button" data-gc-cancel>Cancelar</button>
@@ -310,6 +331,30 @@ function openGeneralComment() {
   const textarea = $("[data-gc-input]");
   const msg = (t) => ($("[data-rv-msg]").textContent = t);
   const recBtn = $("[data-rv-rec]");
+  const paintFiles = () => {
+    previews.splice(0).forEach((u) => URL.revokeObjectURL(u));
+    $("[data-gc-picked]").innerHTML = files
+      .map((f, i) => {
+        if (f.type.startsWith("image/")) {
+          const u = URL.createObjectURL(f);
+          previews.push(u);
+          return `<span class="gc-thumb"><img src="${u}" alt=""><button type="button" data-gc-unpick="${i}" aria-label="Quitar">×</button></span>`;
+        }
+        return `<span class="gc-thumb gc-thumb-file">📄 ${escapeHtml(f.name)}<button type="button" data-gc-unpick="${i}" aria-label="Quitar">×</button></span>`;
+      })
+      .join("");
+    box.querySelectorAll("[data-gc-unpick]").forEach((b) =>
+      b.addEventListener("click", () => {
+        files.splice(Number(b.dataset.gcUnpick), 1);
+        paintFiles();
+      })
+    );
+  };
+  $("[data-gc-file]").addEventListener("change", (e) => {
+    files = files.concat([...e.target.files]);
+    e.target.value = "";
+    paintFiles();
+  });
   const paintAudio = () => {
     const slot = $("[data-rv-audio]");
     slot.innerHTML = take ? `<audio controls src="${take.url}"></audio><button type="button" class="rv-del" data-rv-del>Borrar audio</button>` : "";
@@ -356,6 +401,7 @@ function openGeneralComment() {
     rec = null;
     if (take) URL.revokeObjectURL(take.url);
     take = null;
+    previews.splice(0).forEach((u) => URL.revokeObjectURL(u));
     box.remove();
     cleanupReview = null;
   };
@@ -367,13 +413,13 @@ function openGeneralComment() {
     await stopRec();
     lock(true);
     const note = textarea.value.trim();
-    if (!note && !take) {
+    if (!note && !take && !files.length) {
       lock(false);
-      msg("Graba o escribe algo antes de guardar.");
+      msg("Graba, escribe o adjunta algo antes de guardar.");
       return;
     }
-    msg(take ? "Subiendo el audio…" : "Guardando…");
-    const err = await saveComment(client, { note, audio: take ? { blob: take.blob, mime: take.mime } : null });
+    msg(take || files.length ? "Subiendo…" : "Guardando…");
+    const err = await saveComment(client, { note, audio: take ? { blob: take.blob, mime: take.mime } : null, files });
     if (err) {
       lock(false);
       msg(err);
