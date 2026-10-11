@@ -413,6 +413,11 @@ export function mountTunelGame(container, { client, onExit }) {
     els.pin.style.display = "";
     els.pin.setAttribute("transform", `translate(${sx(pinX)},0)`);
     const ok = !deadlineReveal && Math.abs(tapMs - trueMs) <= TOL_MS;
+    // El reloj se queda marcando el instante del toque (redondeado como en
+    // la explicación; si acierta, el instante correcto).
+    const shown = ok ? { q: r.tPulses, approx: false } : snapPulse(tau - PREROLL);
+    if (shown.q >= 0)
+      els.num.textContent = (shown.approx ? "≈" : "") + (r.secPerPulse ? `${fmt(shown.q * r.secPerPulse)} s` : fmt(shown.q));
     const fb = els.feedback;
     if (ok) {
       score += 10;
@@ -456,14 +461,22 @@ export function mountTunelGame(container, { client, onExit }) {
     return `Asoma en el pulso ${r.tPulses}: ${r.L} ÷ ${r.v1} = ${r.tPulses}.`;
   }
 
+  // Redondea un instante (en pulsos) a pulso entero si está cerca, o a
+  // medio pulso; approx indica si se ha redondeado de forma apreciable.
+  function snapPulse(x) {
+    let q = Math.round(x * 2) / 2;
+    if (Math.abs(x - Math.round(x)) < 0.25) q = Math.round(x);
+    return { q, approx: Math.abs(q - x) > 0.06 };
+  }
+
   // Explicación del fallo: dónde iba al pulsar y cuánto faltaba/sobraba.
   function explain(r, tauIn) {
     if (tauIn === null) return `No pulsaste a tiempo. ${solution(r)}`;
     // Se redondea el instante del toque a medio pulso para que la cuenta
     // salga limpia (el dibujo sí muestra la posición exacta).
-    let q = Math.round(tauIn * 2) / 2;
-    if (Math.abs(tauIn - Math.round(tauIn)) < 0.25) q = Math.round(tauIn);
-    const approx = Math.abs(q - tauIn) > 0.06 ? "≈" : "";
+    const sp = snapPulse(tauIn);
+    const q = sp.q;
+    const approx = sp.approx ? "≈" : "";
     if (q <= 0) return `¡Pulsaste antes de que entrase! ${solution(r)}`;
     const d = noseAt(r, PREROLL + q);
     const metric = r.unit === "m";

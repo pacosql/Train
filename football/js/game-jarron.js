@@ -61,11 +61,13 @@ export function volumenesMuestra(Vtot) {
 }
 
 // Cuántas muestras de la curva f(V) caen en la banda (f puede dar null).
-export function aciertos(jarron, f) {
+// "holgura" ensancha la banda: las respuestas equivocadas se prueban con
+// una banda algo más ancha para que no haya casos que dependan de un pelo.
+export function aciertos(jarron, f, holgura = 0) {
   let n = 0;
   for (const V of volumenesMuestra(jarron.Vtot)) {
     const u = f(V);
-    if (u !== null && Math.abs(u - alturaDeVolumen(jarron, V)) <= BANDA * jarron.H) n++;
+    if (u !== null && Math.abs(u - alturaDeVolumen(jarron, V)) <= (BANDA + holgura) * jarron.H) n++;
   }
   return n;
 }
@@ -114,13 +116,13 @@ function jarronValido(j, nivel) {
     if (Math.max(a, b) / Math.min(a, b) < 1.7) return false;
   }
   // La diagonal recta (llenado "uniforme") tiene que suspender.
-  if (aciertos(j, (V) => (V / Vtot) * H) >= APROBADO) return false;
+  if (aciertos(j, (V) => (V / Vtot) * H, 0.01) >= APROBADO) return false;
   // El jarrón al revés (mismos tramos en orden inverso) tiene que suspender.
   const alReves = montar(tramos.slice().reverse().map((s) => tramo(s.V, s.h, 1 / s.q)));
-  if (aciertos(j, (V) => alturaDeVolumen(alReves, V)) >= APROBADO) return false;
+  if (aciertos(j, (V) => alturaDeVolumen(alReves, V), 0.01) >= APROBADO) return false;
   // Con troncos de cono, unir las juntas con rectas tiene que suspender:
   // ahí lo que se juzga es ver que la línea se curva.
-  if (nivel >= 2 && aciertos(j, curvaPoligonal(juntas(tramos))) >= APROBADO) return false;
+  if (nivel >= 2 && aciertos(j, curvaPoligonal(juntas(tramos)), 0.01) >= APROBADO) return false;
   return true;
 }
 
