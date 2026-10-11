@@ -229,23 +229,19 @@ function pieSvg(total, shaded) {
 }
 function gcd(a, b) { return b === 0 ? a : gcd(b, a % b); }
 function fractionsQuestion() {
-  // total=3 solo admite 2 fracciones distintas posibles (1/3, 2/3) y
-  // total=4 solo 3 (1/4, 1/2, 3/4) — con menos de 4 opciones reales,
-  // buildChoices no puede rellenar el cuadro de 4 respuestas y la ronda
-  // sale con menos botones de los que debería. Se excluyen ambos.
-  const total = pick([5, 6, 8, 10, 12]);
+  // Tarta de 2 a 6 trozos como máximo (petición de Paco, v2): con 8, 10 o
+  // 12 trozos el niño se pasa el rato contando porciones en vez de pensar
+  // en la fracción; si la entiende con sextos o cuartos, la entiende.
+  // Los distractores salen de todas las fracciones propias irreducibles
+  // con denominador ≤ 6 (hay 11), así que siempre hay 4 opciones distintas
+  // aunque la tarta sea de 2, 3 o 4 trozos.
+  const total = pick([2, 3, 4, 4, 5, 5, 6, 6, 6]);
   const shaded = randInt(1, total - 1);
   const g = gcd(shaded, total);
   const correct = `${shaded / g}/${total / g}`;
-  // Un offset estrecho (±1/±2) no siempre alcanza a "ver" las 3 fracciones
-  // distintas que hacen falta desde algunos valores de shaded (p.ej. desde
-  // 1/5 solo se alcanzaban 2/5 y 3/5, nunca 4/5) — sorteando en todo el
-  // rango [1, total-1] sí se garantizan 4 opciones distintas siempre.
-  const choices = buildChoices(correct, () => {
-    const s = randInt(1, total - 1);
-    const gg = gcd(s, total);
-    return `${s / gg}/${total / gg}`;
-  }).map(String);
+  const pool = [];
+  for (let d = 2; d <= 6; d++) for (let n = 1; n < d; n++) if (gcd(n, d) === 1) pool.push(`${n}/${d}`);
+  const choices = buildChoices(correct, () => pick(pool));
   return {
     prompt: `${pieSvg(total, shaded)}<br>¿Qué fracción está sombreada?`,
     choices,
@@ -290,6 +286,6 @@ export const QUIZ_GAMES = [
   { id: "estadistica", title: "Media y moda", emoji: "📊", topic: "Estadística", mode: "lives", lives: 3, v: 2, generateQuestion: statsQuestion },
   { id: "distancias", title: "Distancias", emoji: "📏", topic: "Medidas", mode: "lives", lives: 3, generateQuestion: distanceQuestion },
   { id: "pesos", title: "Pesos", emoji: "🐘", topic: "Medidas", mode: "lives", lives: 3, generateQuestion: weightQuestion },
-  { id: "fracciones", title: "La tarta", emoji: "🍕", topic: "Fracciones", mode: "lives", lives: 3, generateQuestion: fractionsQuestion },
+  { id: "fracciones", title: "La tarta", emoji: "🍕", topic: "Fracciones", v: 2, mode: "lives", lives: 3, generateQuestion: fractionsQuestion },
   { id: "secuencias", title: "Secuencias", emoji: "🔢", topic: "Patrones", mode: "lives", lives: 3, generateQuestion: sequenceQuestion },
 ];

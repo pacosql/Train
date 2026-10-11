@@ -79,12 +79,15 @@ export function mountBalloonsGame(container, { client, onExit }) {
     questionEl.textContent = `${a} × ${b} = ?`;
     const values = shuffle(buildChoices(correct, () => Math.max(1, correct + randInt(-8, 8))));
     const dur = duration();
+    // Cada globo de la ronda, de un color distinto (v2: antes se sorteaba
+    // por globo y a veces salían dos iguales).
+    const colors = shuffle(COLORS);
     values.forEach((val, i) => {
       const el = document.createElement("div");
       el.className = "balloon";
       el.textContent = val;
       el.style.left = `${SLOTS[i] + randInt(-3, 3)}%`;
-      el.style.background = COLORS[randInt(0, COLORS.length - 1)];
+      el.style.background = colors[i % colors.length];
       el.style.animationDuration = `${dur}ms`;
       el.addEventListener("click", () => {
         if (!roundActive) return;

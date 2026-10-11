@@ -14,13 +14,13 @@ import { mountPuntosGame } from "./game-puntos.js";
 
 export const CREATIVE_GAMES = [
   { id: "parejas", title: "Parejas que suman", emoji: "🫧", topic: "Cálculo mental", custom: mountParejasGame },
-  { id: "orden", title: "Ordena los números", emoji: "📶", topic: "Orden numérico", custom: mountOrdenGame },
+  { id: "orden", title: "Ordena los números", emoji: "📶", topic: "Orden numérico", v: 2, custom: mountOrdenGame },
   { id: "recta", title: "Recta numérica", emoji: "📍", topic: "Sentido numérico", custom: mountRectaGame },
   { id: "reloj", title: "Pon en hora el reloj", emoji: "🕐", topic: "Tiempo", custom: mountRelojGame },
   { id: "balanza", title: "Predice la balanza", emoji: "🏋️", topic: "Igualdad y pesos", v: 5, custom: mountBalanzaGame },
   { id: "memoria", title: "Memoria matemática", emoji: "🃏", topic: "Memoria y cálculo", custom: mountMemoriaGame },
-  { id: "atrapa", title: "Atrapa los múltiplos", emoji: "🎯", topic: "Múltiplos y reglas", custom: mountAtrapaGame },
-  { id: "bloques", title: "Construye el número", emoji: "🧱", topic: "Valor posicional", custom: mountBloquesGame },
-  { id: "angulo", title: "Ajusta el ángulo", emoji: "📐", topic: "Geometría", custom: mountAnguloGame },
+  { id: "atrapa", title: "Atrapa los múltiplos", emoji: "🎯", topic: "Múltiplos y reglas", v: 2, custom: mountAtrapaGame },
+  { id: "bloques", title: "Construye el número", emoji: "🧱", topic: "Valor posicional", v: 2, custom: mountBloquesGame },
+  { id: "angulo", title: "Ajusta el ángulo", emoji: "📐", topic: "Geometría", v: 2, custom: mountAnguloGame },
   { id: "puntos", title: "Une los puntos", emoji: "✏️", topic: "Conteo salteado", custom: mountPuntosGame },
 ];

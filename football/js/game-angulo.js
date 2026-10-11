@@ -1,8 +1,13 @@
 // "Ajusta el ángulo": arrastra la flecha hasta el ángulo objetivo sobre
 // un transportador circular. Mecánica de arrastre rotacional.
+//
+// v2 (petición de Paco): la flecha gira a saltos de 45° (no en continuo)
+// y solo se piden múltiplos de 45: 45, 90, 135… — nada de 120 o 210, que
+// "quedan en el medio de nada". Al fallar se dibuja la flecha correcta.
 import { pick, angleFromCenter, saveScore } from "./utils.js";
 
-const TARGETS = [30, 45, 60, 90, 120, 135, 150, 180, 210, 240, 270, 315];
+const STEP = 45;
+const TARGETS = [45, 90, 135, 180, 225, 270, 315];
 
 export function mountAnguloGame(container, { client, onExit }) {
   const startLives = 3;
@@ -42,8 +47,9 @@ export function mountAnguloGame(container, { client, onExit }) {
     body.innerHTML = `
       <p class="prompt">Coloca la flecha en <b>${target}°</b><small>0° arriba, gira en sentido horario</small></p>
       <div class="angle-dial" data-dial>
-        <div class="angle-tick t0"></div><div class="angle-tick t90"></div>
-        <div class="angle-tick t180"></div><div class="angle-tick t270"></div>
+        ${[0, 45, 90, 135, 180, 225, 270, 315]
+          .map((a) => `<div class="angle-tick${a % 90 ? " minor" : ""}" style="transform:translateX(-50%) rotate(${a}deg)"></div>`)
+          .join("")}
         <div class="angle-needle" data-needle></div>
         <div class="clock-center"></div>
       </div>
@@ -67,26 +73,28 @@ export function mountAnguloGame(container, { client, onExit }) {
       const rect = dialEl.getBoundingClientRect();
       const cx = rect.left + rect.width / 2;
       const cy = rect.top + rect.height / 2;
-      deg = angleFromCenter(cx, cy, clientX, clientY);
+      deg = (Math.round(angleFromCenter(cx, cy, clientX, clientY) / STEP) * STEP) % 360;
       applyRotation();
     }
-    needleEl.addEventListener("pointerdown", (e) => {
+    // Se arrastra desde cualquier punto de la esfera (la flecha sola, de
+    // 8 px, era difícil de coger con el pulgar).
+    dialEl.addEventListener("pointerdown", (e) => {
       dragging = true;
-      needleEl.setPointerCapture(e.pointerId);
+      dialEl.setPointerCapture(e.pointerId);
       move(e.clientX, e.clientY);
     });
-    needleEl.addEventListener("pointermove", (e) => {
+    dialEl.addEventListener("pointermove", (e) => {
       if (dragging) move(e.clientX, e.clientY);
     });
-    needleEl.addEventListener("pointerup", () => (dragging = false));
+    dialEl.addEventListener("pointerup", () => (dragging = false));
   }
 
   function confirm() {
     if (finished) return;
     rounds++;
-    const snapped = Math.round(deg / 15) * 15;
     const feedback = body.querySelector("[data-feedback]");
-    if (snapped === target || snapped === target + 360 || snapped % 360 === target) {
+    body.querySelector("[data-confirm]").disabled = true;
+    if (deg === target) {
       score += 10;
       renderScore();
       feedback.textContent = "¡Ángulo correcto!";
@@ -95,10 +103,14 @@ export function mountAnguloGame(container, { client, onExit }) {
     } else {
       lives--;
       renderLives();
-      feedback.textContent = `Casi — eran ${target}°`;
+      feedback.textContent = `Has puesto ${deg}° y eran ${target}° (la flecha verde)`;
       feedback.className = "feedback bad";
+      const ghost = document.createElement("div");
+      ghost.className = "angle-needle ghost";
+      ghost.style.transform = `translateX(-50%) rotate(${target}deg)`;
+      dialEl.insertBefore(ghost, needleEl);
       if (lives <= 0) return setTimeout(() => finish(false), 650);
-      setTimeout(nextRound, 950);
+      setTimeout(nextRound, 1600);
     }
   }
 

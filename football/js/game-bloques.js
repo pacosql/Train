@@ -51,7 +51,7 @@ export function mountBloquesGame(container, { client, onExit }) {
       <div class="blocks-readout" data-readout>0</div>
       <div class="blocks-cols" data-cols></div>
       <div class="feedback" data-feedback></div>
-      <button class="secondary" data-reset style="margin-top:10px;">↺ Reiniciar</button>
+      <button class="secondary" data-reset style="margin-top:10px;">⌫ Borrar</button>
     `;
     const colsEl = body.querySelector("[data-cols]");
     COLUMNS.forEach((col) => {

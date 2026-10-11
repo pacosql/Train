@@ -42,6 +42,19 @@ multi-app de este repo — ver el [README de la raíz](../README.md).
 final, nunca se insertan en medio, así que "#17" siempre es el mismo
 juego de una sesión a otra.
 
+## Revisados por voz (11-10-2026) — v2
+
+Primeros 🔧 con comentario de voz de Paco, ya aplicados:
+
+| # | Ejercicio | Lo que pidió | Qué se ha hecho |
+|---|---|---|---|
+| 1 | Globos | colores repetidos | cada globo de la ronda, de un color distinto |
+| 3 | Ordena los números | más intuitivo, con < y >, arrastrar | rehecho: huecos separados por `<`/`>`, tocar lleva el número al primer hueco libre y también se arrastra; al llenarse se comprueba cada símbolo (verde/rojo) y dice cuál falla; números cercanos según sube el nivel |
+| 8 | Atrapa los múltiplos | no avisa de acierto/fallo; la regla cambiaba sin notarse | una sola regla por partida; ✓ +10 en verde al acertar y ✗ en rojo con el porqué al fallar |
+| 9 | Construye el número | "Reiniciar" → "Borrar" | botón ⌫ Borrar |
+| 10 | Ajusta el ángulo | giro continuo y ángulos como 120° | la flecha salta de 45° en 45°, solo se piden múltiplos de 45, se arrastra desde toda la esfera y al fallar se dibuja la flecha correcta |
+| 19 | La tarta | más de 6 trozos obliga a contar | tartas de 2 a 6 trozos; distractores entre fracciones con denominador ≤ 6 |
+
 ## Ejercicios #1-#20 (primera tanda) — mecánica propia, sin A/B/C/D
 
 | # | Juego | Tema | Mecánica |
