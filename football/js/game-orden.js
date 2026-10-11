@@ -72,7 +72,16 @@ export function mountOrdenGame(container, { client, onExit }) {
       <div class="ord-line" data-line></div>
       <div class="ord-tray" data-tray></div>
       <div class="feedback" data-feedback></div>
+      <button type="button" class="secondary" data-clear style="margin-top:10px;">⌫ Borrar</button>
     `;
+    // Petición de Paco: un botón para devolver todos los números a la bandeja.
+    body.querySelector("[data-clear]").addEventListener("click", () => {
+      if (busy || finished) return;
+      tray = [...round.nums];
+      slots = slots.map(() => null);
+      body.querySelector("[data-feedback]").textContent = "";
+      paint();
+    });
     paint();
   }
 

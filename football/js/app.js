@@ -50,6 +50,7 @@ import {
   fetchReworkNote,
 } from "./ratings.js";
 import { startRecording, canRecord, canTranscribe } from "./voice.js";
+import { fetchComments, saveComment, audioUrl } from "./comments.js";
 
 // El número de cada juego (#1, #2…) es su posición en este array — para
 // que sea estable de verdad, los juegos nuevos SIEMPRE se añaden al
@@ -157,6 +158,7 @@ async function renderMenu() {
       <div class="menu-header">
         <h1>🧠 Math Games</h1>
         <p>Elige un juego y a jugar. Puntúalo con 👍 / 👎 / 🔧 / 🏁 para organizar tus ideas.</p>
+        <button type="button" class="gc-open" data-gc-open>💬 Comentario general</button>
       </div>
       <div class="tab-bar" data-tabs>
         <button class="tab-btn" data-tab="new">🆕 Nuevos (${groups.new.length})</button>
@@ -167,6 +169,10 @@ async function renderMenu() {
       </div>
       ${renderReworkNote()}
       <div class="game-grid" data-grid></div>
+      <div class="gc-list">
+        <h2>💬 Tus comentarios generales</h2>
+        <ul data-gc-list><li class="empty">Cargando…</li></ul>
+      </div>
       <div class="recent">
         <h2>Últimas partidas</h2>
         <ul data-recent><li class="empty">Cargando…</li></ul>
@@ -181,6 +187,8 @@ async function renderMenu() {
     });
   });
   renderGrid(groups);
+  root.querySelector("[data-gc-open]").addEventListener("click", openGeneralComment);
+  renderComments();
   await renderRecent();
 }
 
@@ -236,6 +244,143 @@ function renderGrid(groups) {
       note ? `<span class="note-hint">📝 ${escapeHtml(note)}</span>` : ""
     }${audio ? `<button type="button" class="note-audio" data-audio="${audio}">▶︎ Oír comentario</button>` : ""}`;
     grid.appendChild(card);
+  });
+}
+
+// ---------- 💬 Comentarios generales (sobre la app o el proceso) ----------
+let commentAudio = null;
+async function renderComments() {
+  const list = root.querySelector("[data-gc-list]");
+  if (!list) return;
+  const rows = await fetchComments(client);
+  if (!root.contains(list)) return;
+  if (!rows.length) {
+    list.innerHTML = `<li class="empty">Aún no has dejado ninguno. Usa «💬 Comentario general» para hablar de la app en general, no de un ejercicio.</li>`;
+    return;
+  }
+  list.innerHTML = rows
+    .map((c) => {
+      const text = c.note || c.transcripcion || "(audio, pendiente de transcribir)";
+      const when = new Date(c.created_at).toLocaleString();
+      const url = audioUrl(client, c.audio_path);
+      return `<li class="gc-item ${c.estado}">
+        <div class="gc-head"><span class="gc-state">${c.estado === "atendido" ? "✅ Atendido" : "🕓 Pendiente"}</span><span class="gc-when">${when}</span></div>
+        <div class="gc-text">${escapeHtml(text)}</div>
+        ${url ? `<button type="button" class="note-audio" data-gc-audio="${url}">▶︎ Oír</button>` : ""}
+        ${c.respuesta ? `<div class="gc-reply">↳ ${escapeHtml(c.respuesta)}</div>` : ""}
+      </li>`;
+    })
+    .join("");
+  list.querySelectorAll("[data-gc-audio]").forEach((b) =>
+    b.addEventListener("click", () => {
+      if (commentAudio) commentAudio.pause();
+      commentAudio = new Audio(b.dataset.gcAudio);
+      commentAudio.play().catch(() => {});
+    })
+  );
+}
+
+function openGeneralComment() {
+  if (root.querySelector("[data-gc-box]")) return;
+  const header = root.querySelector(".menu-header");
+  let rec = null;
+  let take = null;
+  let timer = null;
+  const box = document.createElement("div");
+  box.className = "review-note-box gc-box";
+  box.setAttribute("data-gc-box", "");
+  box.innerHTML = `
+    <div class="rv-title">💬 Comentario general: la app, cómo se trabaja, ideas… lo que quieras</div>
+    ${
+      canRecord()
+        ? `<button type="button" class="rv-rec" data-rv-rec>🎤 Grabar comentario</button>
+           <div class="rv-hint">Habla con normalidad: se guarda el audio${canTranscribe() ? " y se transcribe solo" : " y se transcribe más tarde"}.</div>`
+        : ""
+    }
+    <div class="rv-audio" data-rv-audio></div>
+    <textarea data-gc-input rows="3" placeholder="Lo que digas aparecerá aquí escrito (también puedes escribir)…"></textarea>
+    <div class="rv-msg" data-rv-msg></div>
+    <div class="review-note-actions">
+      <button type="button" data-gc-cancel>Cancelar</button>
+      <button type="button" class="review-note-save" data-gc-save>Guardar 💬</button>
+    </div>
+  `;
+  header.after(box);
+  const $ = (sel) => box.querySelector(sel);
+  const textarea = $("[data-gc-input]");
+  const msg = (t) => ($("[data-rv-msg]").textContent = t);
+  const recBtn = $("[data-rv-rec]");
+  const paintAudio = () => {
+    const slot = $("[data-rv-audio]");
+    slot.innerHTML = take ? `<audio controls src="${take.url}"></audio><button type="button" class="rv-del" data-rv-del>Borrar audio</button>` : "";
+    $("[data-rv-del]")?.addEventListener("click", () => {
+      URL.revokeObjectURL(take.url);
+      take = null;
+      paintAudio();
+    });
+  };
+  async function stopRec() {
+    if (!rec) return;
+    clearInterval(timer);
+    recBtn.disabled = true;
+    const got = await rec.stop();
+    rec = null;
+    recBtn.disabled = false;
+    recBtn.classList.remove("on");
+    recBtn.textContent = "🎤 Volver a grabar";
+    if (take) URL.revokeObjectURL(take.url);
+    take = { ...got, url: URL.createObjectURL(got.blob) };
+    paintAudio();
+  }
+  recBtn?.addEventListener("click", async () => {
+    if (rec) return stopRec();
+    msg("");
+    const base = textarea.value.trim();
+    try {
+      rec = await startRecording({ onText: (f, i) => (textarea.value = [base, f, i].filter(Boolean).join(" ")) });
+    } catch (err) {
+      msg("Sin acceso al micrófono: " + (err && err.message ? err.message : err));
+      return;
+    }
+    recBtn.classList.add("on");
+    const tick = () => {
+      const sec = Math.round((Date.now() - rec.startedAt) / 1000);
+      recBtn.textContent = `⏹ Parar · ${Math.floor(sec / 60)}:${String(sec % 60).padStart(2, "0")}`;
+    };
+    tick();
+    timer = setInterval(tick, 250);
+  });
+  const close = () => {
+    clearInterval(timer);
+    if (rec) rec.cancel();
+    rec = null;
+    if (take) URL.revokeObjectURL(take.url);
+    take = null;
+    box.remove();
+    cleanupReview = null;
+  };
+  cleanupReview = close;
+  const lock = (on) => box.querySelectorAll("button, textarea").forEach((el) => (el.disabled = on));
+  $("[data-gc-cancel]").addEventListener("click", close);
+  $("[data-gc-save]").addEventListener("click", async () => {
+    lock(true);
+    await stopRec();
+    lock(true);
+    const note = textarea.value.trim();
+    if (!note && !take) {
+      lock(false);
+      msg("Graba o escribe algo antes de guardar.");
+      return;
+    }
+    msg(take ? "Subiendo el audio…" : "Guardando…");
+    const err = await saveComment(client, { note, audio: take ? { blob: take.blob, mime: take.mime } : null });
+    if (err) {
+      lock(false);
+      msg(err);
+      return;
+    }
+    close();
+    renderComments();
   });
 }
 
@@ -516,7 +661,9 @@ route();
   } catch (_) {
     // Sin red se juega igual, solo que sin valoraciones.
   }
-  if (!location.hash || location.hash === "#/") route();
+  // Repinta el menú con las cuentas, salvo si Paco está a mitad de un
+  // comentario general (repintar se lo cerraría y cortaría la grabación).
+  if ((!location.hash || location.hash === "#/") && !root.querySelector("[data-gc-box]")) route();
 })();
 
 // Al volver a la pestaña, recarga por si se ha valorado desde otro
@@ -526,7 +673,7 @@ document.addEventListener("visibilitychange", async () => {
   if (location.hash && location.hash !== "#/") return;
   await reloadRatings();
   reworkNote = await fetchReworkNote();
-  route();
+  if (!root.querySelector("[data-gc-box]")) route();
 });
 
 if ("serviceWorker" in navigator) {

@@ -31,6 +31,14 @@ pestañas (🆕 Nuevos, 👍, 👎, 🏁, 🔧).
   de pago). La primera vez lo instala en `~/.cache/football-stt`. Quien
   mejore un ejercicio lee `note` y `transcripcion`: el agente no puede oír
   audios.
+- **💬 Comentarios generales** (botón en el menú): sobre la app o el
+  proceso, no sobre un ejercicio. Tabla `football_comentarios` (`note`,
+  audio en `football-audios/general/`, `transcripcion`, `estado`
+  pendiente/atendido, `respuesta`). Quien trabaje en la app (Claude cuando
+  Paco dice "actualiza", o la rutina en cada tanda) transcribe los
+  pendientes, los lee **antes de nada** (pueden cambiar cómo hay que
+  trabajar), actúa, y los marca `estado=atendido` con una `respuesta` de
+  una línea (qué se ha hecho), que Paco ve en el menú.
 - **Al terminar un 🔧**: se quita SOLO la marca (`review=false`, y se
   borran `note`, el audio y la transcripción); la valoración (👍/👎/🏁) se
   conserva, así el ejercicio vuelve a la pestaña donde estaba. Se sube su
@@ -66,6 +74,7 @@ Primeros 🔧 con comentario de voz de Paco, ya aplicados:
 | 30 | Ruleta | sale un color y dice otro | arreglado: el giro se calculaba desde -90° y paraba un cuarto de vuelta desplazado; comprobado en 12 giros que la flecha queda en el color anunciado |
 | 1 | Globos (v3) | si se escapa, misma cuenta; que diga bien/mal | si el bueno se escapa vuelven los mismos globos con la misma cuenta; ✓ +10 al acertar y ✗ "29 no es 4 × 7" al fallar |
 | 37 | Simetría | "8 cuadrados centrales con borde, no se entiende" | el espejo se dibuja como línea discontinua entre las dos columnas centrales |
+| 3 | Ordena | un botón para limpiar | botón ⌫ Borrar que devuelve todos los números a la bandeja |
 
 Además: #14 Formas pasa a 🏁 Final como modelo del tipo "pregunta + 4
 opciones"; #15 y #20 a 👎 ("ese tipo ya lo tenemos"); y se crea **#175

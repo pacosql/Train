@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Transcribe los comentarios de voz de 🔧 Revisar que siguen sin texto.
+"""Transcribe los comentarios de voz que siguen sin texto: los de 🔧 Revisar
+de cada ejercicio y los 💬 comentarios generales.
 
 En el móvil, el navegador intenta transcribir mientras grabas, pero no
 siempre puede. El audio se guarda igual (bucket `football-audios`) y este
@@ -65,16 +66,22 @@ def main():
 
     base, key = config()
     todos = "--todos" in sys.argv
-    filtro = "audio_path=not.is.null" + ("" if todos else "&transcripcion=is.null")
-    rows = api("GET", f"{base}/rest/v1/football_ratings?select=game,audio_path,note&{filtro}", key)
-    if not rows:
+    pend = "" if todos else "&transcripcion=is.null"
+    # Dos fuentes: los 🔧 de cada ejercicio y los 💬 comentarios generales.
+    trabajos = []
+    for r in api("GET", f"{base}/rest/v1/football_ratings?select=game,audio_path&audio_path=not.is.null{pend}", key) or []:
+        filtro = f"game=eq.{urllib.parse.quote(r['game'])}&audio_path=eq.{urllib.parse.quote(r['audio_path'])}"
+        trabajos.append((f"🔧 {r['game']}", r["audio_path"], f"{base}/rest/v1/football_ratings?{filtro}"))
+    for r in api("GET", f"{base}/rest/v1/football_comentarios?select=id,audio_path&audio_path=not.is.null{pend}", key) or []:
+        filtro = f"id=eq.{r['id']}&audio_path=eq.{urllib.parse.quote(r['audio_path'])}"
+        trabajos.append((f"💬 #{r['id']}", r["audio_path"], f"{base}/rest/v1/football_comentarios?{filtro}"))
+    if not trabajos:
         print("No hay audios pendientes de transcribir.")
         return
-    print(f"{len(rows)} audio(s) por transcribir.", flush=True)
+    print(f"{len(trabajos)} audio(s) por transcribir.", flush=True)
     model = WhisperModel("small", device="cpu", compute_type="int8", download_root=os.path.join(VENV, "models"))
     hechos = 0
-    for row in rows:
-        game, path = row["game"], row["audio_path"]
+    for nombre, path, patch_url in trabajos:
         audio_url = f"{base}/storage/v1/object/public/{BUCKET}/{path}"
         with tempfile.NamedTemporaryFile(suffix=os.path.splitext(path)[1]) as tmp:
             try:
@@ -84,19 +91,19 @@ def main():
                 segs, _ = model.transcribe(tmp.name, language="es", vad_filter=True)
                 texto = " ".join(s.text.strip() for s in segs).strip()
             except Exception as e:  # un audio roto no para los demás
-                print(f"  ✗ {game}: {e}")
+                print(f"  ✗ {nombre}: {e}")
                 continue
-        # Solo se escribe si el audio sigue siendo el mismo (si Paco lo ha
-        # cambiado mientras tanto, la fila ya no casa y no se pisa nada).
+        # El filtro incluye el audio: si se ha cambiado mientras tanto, la
+        # fila ya no casa y no se pisa nada.
         api(
             "PATCH",
-            f"{base}/rest/v1/football_ratings?game=eq.{game}&audio_path=eq.{urllib.parse.quote(path)}",
+            patch_url,
             key,
             {"transcripcion": texto or "(audio sin voz)", "transcrito_at": datetime.now(timezone.utc).isoformat()},
         )
         hechos += 1
-        print(f"  ✓ {game}: {texto or '(sin voz)'}", flush=True)
-    print(f"Hecho: {hechos} de {len(rows)}.")
+        print(f"  ✓ {nombre}: {texto or '(sin voz)'}", flush=True)
+    print(f"Hecho: {hechos} de {len(trabajos)}.")
 
 
 if __name__ == "__main__":

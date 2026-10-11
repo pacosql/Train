@@ -201,6 +201,7 @@ const SHELL = [
   "./js/utils.js",
   "./js/ratings.js",
   "./js/voice.js",
+  "./js/comments.js",
   "./js/quiz-engine.js",
   "./js/balloons-game.js",
   "./js/games-data.js",
