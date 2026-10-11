@@ -647,8 +647,8 @@ export function mountCompasGame(container, { client, onExit }) {
         html += (back ? segSvg(gv.V, back[1], "cp-gline cp-back") : "") + (c ? segSvg(gv.V, c[1], "cp-gline") : "");
       } else html += objSvg(o, o.given ? (o.kind === "C" ? "cp-gcirc" : "cp-gline") : o.kind === "C" ? "cp-circ" : "cp-line");
     }
-    if (task.gobjs.some(([k]) => k === "L") && task.id !== "bise") {
-      // Nombre de la recta dada.
+    if (task.gobjs.some(([k]) => k === "L") && /\br\b/.test(task.title)) {
+      // Nombre de la recta dada (solo en los encargos que hablan de r).
       const o = g.objs.find((x) => x.given && x.kind === "L");
       const c = clip(P(o.x, o.y), P(o.dx, o.dy), 12);
       if (c) html += `<text class="cp-rname" x="${f(c[1].x)}" y="${f(c[1].y - 6)}">r</text>`;

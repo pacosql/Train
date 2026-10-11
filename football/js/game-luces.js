@@ -110,20 +110,23 @@ export function solveLights(n, nb, p, b) {
   return { solvable: true, min, sols, kernelDim: free.length };
 }
 
-// Ronda: k toques distintos al azar desde todo apagado; mínimo ≥ 2 (≥ 3
-// si k ≥ 4) para que no salga trivial.
+// Ronda: k casillas distintas tocadas al azar desde todo apagado; mínimo
+// ≥ 2 (≥ 3 si k ≥ 4) para que no salga trivial.
 export function makeLucesRound(lv) {
   for (;;) {
     const N = lv.n * lv.n;
     const k = randInt(lv.k[0], lv.k[1]);
     const taps = shuffle([...Array(N).keys()]).slice(0, k);
+    // En módulo 3 cada casilla elegida se toca 1 o 2 veces (así salen
+    // ámbares y rojas mezcladas y el mínimo no es siempre 2·k).
+    const times = taps.map(() => (lv.p === 3 ? randInt(1, 2) : 1));
     const start = new Array(N).fill(0);
-    for (const t of taps) applyTap(start, lv.n, lv.nb, lv.p, t);
+    taps.forEach((t, j) => applyTap(start, lv.n, lv.nb, lv.p, t, times[j]));
     if (start.every((v) => v === 0)) continue;
     const sol = solveLights(lv.n, lv.nb, lv.p, start);
     if (!sol.solvable) continue; // no puede pasar (viene de toques), pero por si acaso
     if (sol.min < (k >= 4 ? 3 : 2)) continue;
-    return { start, taps, min: sol.min, sols: sol.sols, limit: sol.min + lv.margin };
+    return { start, taps, times, min: sol.min, sols: sol.sols, limit: sol.min + lv.margin };
   }
 }
 

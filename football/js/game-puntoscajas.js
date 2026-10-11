@@ -492,7 +492,8 @@ export function mountPuntoscajasGame(container, { client, onExit }) {
       const [x1, y1] = dot(...ed.p);
       const [x2, y2] = dot(...ed.q);
       if (!dd[e]) {
-        if (opts.live) s += `<line class="pc-free" data-e="${e}" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`;
+        // Guía punteada de los lados libres (en las miniaturas, sin data-e).
+        s += `<line class="pc-free"${opts.live ? ` data-e="${e}"` : ""} x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`;
         return;
       }
       const extra = (opts.last === e ? " pc-last" : "") + (opts.key === e ? " pc-key" : "");
