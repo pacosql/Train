@@ -20,6 +20,7 @@ const MARGIN = 1.2; // margen alrededor de la figura (en cuadritos)
 const SNAP_R = 0.2; // radio del imán a la media cuadrícula
 const GAIN = 0.5; // los tiradores van a media velocidad del dedo
 const EPS = 1e-9;
+const CRUMB = 0.03; // migas: trozos de menos de 0,03 cuadritos no cuentan como pieza
 const LEVELS = ["bar2", "bar3", "bar4", "rect4", "L2", "tri3", "tripar"];
 
 // ---------- Geometría ----------
@@ -159,7 +160,9 @@ export function evaluateCortes(round, cuts) {
       if (ch.length > 1 && !isConvex(pc)) return { reject: "concave", index: i };
       const a = clipHalf(pc, L, 1);
       const b = clipHalf(pc, L, -1);
-      if (a.length >= 3 && b.length >= 3 && polyArea(a) > 1e-6 && polyArea(b) > 1e-6) next.push(a, b);
+      // Si un lado es una miga (dos cortes casi cruzándose en el borde),
+      // no se parte: a la vista sigue siendo un solo trozo.
+      if (a.length >= 3 && b.length >= 3 && polyArea(a) > CRUMB && polyArea(b) > CRUMB) next.push(a, b);
       else next.push(pc);
     }
     pieces = next;
@@ -367,7 +370,7 @@ export function mountCortesGame(container, { client, onExit }) {
     body.innerHTML = `
       <p class="prompt ct-prompt">${round.n} trozos iguales, ${round.k} corte${round.k > 1 ? "s" : ""}
         ${round.parallel ? "<span class=\"ct-extra\">con un corte paralelo a la base</span>" : ""}
-        <small>Desliza de lado a lado para cortar · arrastra los ● para afinar</small></p>
+        <small>Desliza de lado a lado para cortar · toca un corte y arrastra sus ● para afinar</small></p>
       <svg class="ct-svg" data-svg viewBox="${vb.join(" ")}" data-vbw="${vb[2]}" role="img" aria-label="Figura para cortar"></svg>
       <div class="ct-bar">
         <span class="ct-count" data-count></span>
@@ -433,10 +436,13 @@ export function mountCortesGame(container, { client, onExit }) {
       cuts.forEach((c, i) => {
         s += fullLine(c, `ct-cut${i === selected ? " sel" : ""}${i === badCut ? " bad" : ""}`);
       });
-      cuts.forEach((c, i) => {
-        s += `<circle class="ct-handle${i === selected ? " sel" : ""}" cx="${c.a.x}" cy="${c.a.y}" r="0.28"/>`;
-        s += `<circle class="ct-handle${i === selected ? " sel" : ""}" cx="${c.b.x}" cy="${c.b.y}" r="0.28"/>`;
-      });
+      // Solo el corte elegido enseña sus tiradores (así un trazo nuevo que
+      // empieza en el mismo vértice no agarra el tirador de otro corte).
+      const c = cuts[selected];
+      if (c) {
+        s += `<circle class="ct-handle" cx="${c.a.x}" cy="${c.a.y}" r="0.28"/>`;
+        s += `<circle class="ct-handle" cx="${c.b.x}" cy="${c.b.y}" r="0.28"/>`;
+      }
       if (temp) s += fullLine(temp, "ct-cut temp");
     } else {
       s += gridSvg();
@@ -444,7 +450,10 @@ export function mountCortesGame(container, { client, onExit }) {
       result.pieces.forEach((pc, i) => {
         const v = sub(pc.c, figC);
         const n = Math.hypot(v.x, v.y);
-        const off = n < 0.05 ? P(0, 0) : P((v.x / n) * 0.35, (v.y / n) * 0.35);
+        // Al fallar se separan menos, para que el dibujo de la solución
+        // (en la posición original) siga cuadrando con las piezas.
+        const mag = result.ok ? 0.35 : 0.14;
+        const off = n < 0.05 ? P(0, 0) : P((v.x / n) * mag, (v.y / n) * mag);
         const good = Math.abs(pc.area - result.target) <= TOL * result.target + 1e-9;
         s += `<g class="ct-piece" style="--dx:${off.x.toFixed(3)}px;--dy:${off.y.toFixed(3)}px">
           <polygon class="ct-pc ${good && result.ok ? "ok" : good ? "" : "bad"}" data-piece="${i}" data-area="${pc.area.toFixed(4)}" points="${ptsAttr(pc.poly)}"/>
@@ -458,7 +467,7 @@ export function mountCortesGame(container, { client, onExit }) {
     if (cnt) cnt.textContent = `Cortes: ${cuts.length}/${round.k}`;
     const del = body.querySelector("[data-del]");
     const cutBtn = body.querySelector("[data-cut]");
-    if (del) del.disabled = phase !== "edit" || selected < 0;
+    if (del) del.disabled = phase !== "edit" || !cuts.length;
     if (cutBtn) cutBtn.disabled = phase !== "edit" || cuts.length !== round.k;
   }
 
@@ -477,7 +486,9 @@ export function mountCortesGame(container, { client, onExit }) {
       const mBC = m(Bv, Cv);
       s += `<polygon class="ct-quarter" points="${ptsAttr([A, mAB, mAC])}"/>`;
       s += `<polygon class="ct-help" points="${ptsAttr([mAB, mBC, mAC])}"/>`;
-      const c = centroid([A, mAB, mAC]);
+      // "1/4" un poco hacia el vértice, para no tapar el área del trozo.
+      const c0 = centroid([A, mAB, mAC]);
+      const c = P(c0.x, c0.y + Math.sign(A.y - c0.y) * 0.95);
       s += `<text class="ct-qlabel" x="${c.x}" y="${c.y}">1/4</text>`;
     }
     round.solution.forEach((c) => (s += chordSegs(c, "ct-sol")));
@@ -508,12 +519,11 @@ export function mountCortesGame(container, { client, onExit }) {
     const q = toUnits(e);
     const hitR = 24 * unitsPerPx();
     let best = null;
-    cuts.forEach((c, i) =>
+    if (cuts[selected])
       ["a", "b"].forEach((end) => {
-        const d = dist(c[end], q);
-        if (d < hitR && (!best || d < best.d)) best = { i, end, d };
-      })
-    );
+        const d = dist(cuts[selected][end], q);
+        if (d < hitR && (!best || d < best.d)) best = { i: selected, end, d };
+      });
     if (best) {
       selected = best.i;
       const c = cuts[best.i];
@@ -585,7 +595,6 @@ export function mountCortesGame(container, { client, onExit }) {
     const L = lineOf(raw);
     const len = dist(raw.a, raw.b);
     const crosses = chordsOf(round.poly, L).some(([t0, t1]) => t0 > -0.15 && t1 < len + 0.15 && t1 - t0 > 0.3);
-    console.debug("DBG", JSON.stringify({ raw, s: d.start, c: d.cur, crosses, ch: chordsOf(round.poly, L), len }));
     if (!crosses || insideStrict(round.poly, raw.a, 0.06) || insideStrict(round.poly, raw.b, 0.06)) {
       fb.textContent = "Desliza de lado a lado: empieza y termina fuera de la figura.";
       fb.className = "feedback bad";
@@ -596,7 +605,9 @@ export function mountCortesGame(container, { client, onExit }) {
     const cut = makeSwipeCut(raw.a, raw.b);
     if (cuts.length < round.k) {
       cuts.push(cut);
-      selected = cuts.length - 1;
+      // Mientras falten cortes no se elige ninguno (sin tiradores a mano);
+      // con el último, ese queda elegido para afinarlo.
+      selected = cuts.length === round.k ? cuts.length - 1 : -1;
     } else {
       // Con todos los cortes puestos, el trazo nuevo sustituye al elegido.
       const i = selected >= 0 ? selected : cuts.length - 1;
@@ -606,10 +617,11 @@ export function mountCortesGame(container, { client, onExit }) {
     paint();
   }
 
+  // Borra el corte elegido o, si no hay ninguno elegido, el último.
   function delCut() {
-    if (finished || phase !== "edit" || selected < 0) return;
-    cuts.splice(selected, 1);
-    selected = cuts.length - 1;
+    if (finished || phase !== "edit" || !cuts.length) return;
+    cuts.splice(selected >= 0 ? selected : cuts.length - 1, 1);
+    selected = -1;
     badCut = -1;
     paint();
   }
