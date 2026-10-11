@@ -16,6 +16,7 @@ const SHELL = [
   "./js/games-pack-33.js",
   "./js/game-redes3d.js",
   "./css/pack-ap.css",
+  "./js/games-pack-35.js",
   "./js/games-pack-34.js",
   "./js/game-mediawatch.js",
   "./css/pack-ak.css",

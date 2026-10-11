@@ -13,11 +13,11 @@ import { mountLaberintoGame } from "./game-laberinto.js";
 
 export const CREATIVE_GAMES_2 = [
   { id: "ruleta", title: "Ruleta de probabilidad", emoji: "🎡", topic: "Probabilidad", custom: mountRuletaGame },
-  { id: "clasifica", title: "Clasifica los números", emoji: "🧺", topic: "Clasificación", custom: mountClasificaGame },
+  { id: "clasifica", title: "Clasifica los números", emoji: "🧺", topic: "Clasificación", v: 2, custom: mountClasificaGame },
   { id: "estima", title: "Estima el resultado", emoji: "🎚️", topic: "Estimación", custom: mountEstimaGame },
   { id: "teclado", title: "Teclado numérico", emoji: "⌨️", topic: "Cálculo mental", custom: mountTecladoGame },
   { id: "barras", title: "Compara fracciones", emoji: "🍫", topic: "Fracciones", custom: mountBarrasGame },
-  { id: "monedas", title: "Cuenta las monedas", emoji: "💰", topic: "Dinero", custom: mountMonedasGame },
+  { id: "monedas", title: "Cuenta las monedas", emoji: "💰", topic: "Dinero", v: 2, custom: mountMonedasGame },
   { id: "coordenadas", title: "Plano cartesiano", emoji: "🗺️", topic: "Coordenadas", v: 3, custom: mountCoordenadasGame },
   { id: "simetria", title: "Simetría", emoji: "🪞", topic: "Geometría", custom: mountSimetriaGame },
   { id: "amigos10", title: "Amigos del 10", emoji: "🔗", topic: "Cálculo mental", custom: mountAmigos10Game },

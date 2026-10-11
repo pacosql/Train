@@ -1,7 +1,7 @@
 # Math Games 🧠
 
-PWA (sin build, HTML/CSS/JS puro) con **174 ejercicios de matemáticas**,
-cada uno numerado (#1-#174) para poder referirse a ellos sin ambigüedad.
+PWA (sin build, HTML/CSS/JS puro) con **175 ejercicios de matemáticas**,
+cada uno numerado (#1-#175) para poder referirse a ellos sin ambigüedad.
 Cálculo mental, geometría, álgebra, estadística, fracciones, dinero,
 probabilidad, coordenadas, tiempo y más. Nace como banco de pruebas
 rápido para sacar ideas de mecánicas (tipo Duolingo Math, Synthesis,
@@ -54,6 +54,17 @@ Primeros 🔧 con comentario de voz de Paco, ya aplicados:
 | 9 | Construye el número | "Reiniciar" → "Borrar" | botón ⌫ Borrar |
 | 10 | Ajusta el ángulo | giro continuo y ángulos como 120° | la flecha salta de 45° en 45°, solo se piden múltiplos de 45, se arrastra desde toda la esfera y al fallar se dibuja la flecha correcta |
 | 19 | La tarta | más de 6 trozos obliga a contar | tartas de 2 a 6 trozos; distractores entre fracciones con denominador ≤ 6 |
+| 31 | Clasifica | usar colores | cada cesta con su color (azul/naranja) y el número clasificado se queda pintado; al fallar dice en qué cesta va |
+| 35 | Monedas | "Reiniciar" y dibujos raros (cuadritos) | monedas de euro dibujadas (2 € y 1 € bimetálicas, céntimos dorados, con su tamaño), monedero visible donde tocar una moneda la devuelve, botón "Empezar de nuevo" |
+
+Además: #14 Formas pasa a 🏁 Final como modelo del tipo "pregunta + 4
+opciones"; #15 y #20 a 👎 ("ese tipo ya lo tenemos"); y se crea **#175
+Opción múltiple** ("2 × 2 = ?" con 4 respuestas cuyos distractores son
+errores típicos: sumar en vez de multiplicar, la fila de al lado…).
+
+> Criterio de Paco para lo que venga: se buscan **tipos de juego**
+> (formas de interactuar), no temas. "Pregunta + elegir 1 de 4" es un
+> solo tipo, sea de tablas o de números romanos: no proponer más.
 
 ## Ejercicios #1-#20 (primera tanda) — mecánica propia, sin A/B/C/D
 
