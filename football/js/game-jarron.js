@@ -106,7 +106,8 @@ function montar(tramos) {
 
 function jarronValido(j, nivel) {
   const { tramos, H, Vtot } = j;
-  if (H < 6 || H > 12 || Vtot < 4 || Vtot > 12) return false;
+  const tope = tramos.length === 4 ? 14 : 12; // con 4 tramos se deja algo más de sitio
+  if (H < 6 || H > tope || Vtot < 4 || Vtot > tope) return false;
   const radios = tramos.flatMap((s) => [s.r0, s.r1]);
   if (Math.max(...radios) / Math.min(...radios) > 5) return false;
   // Tramos vecinos con "base media" bien distinta (si no, no hay codo).
@@ -121,24 +122,29 @@ function jarronValido(j, nivel) {
   const alReves = montar(tramos.slice().reverse().map((s) => tramo(s.V, s.h, 1 / s.q)));
   if (aciertos(j, (V) => alturaDeVolumen(alReves, V), 0.01) >= APROBADO) return false;
   // Con troncos de cono, unir las juntas con rectas tiene que suspender:
-  // ahí lo que se juzga es ver que la línea se curva.
-  if (nivel >= 2 && aciertos(j, curvaPoligonal(juntas(tramos)), 0.01) >= APROBADO) return false;
+  // ahí lo que se juzga es ver que la línea se curva. (Con 4 tramos cortos
+  // la curva casi no se separa de la recta: ahí se juzga el orden de
+  // tramos rápidos y lentos, que ya vigilan las dos pruebas de arriba.)
+  if (nivel >= 2 && tramos.length < 4 && aciertos(j, curvaPoligonal(juntas(tramos)), 0.01) >= APROBADO) return false;
   return true;
 }
 
 // Se exporta para que la simulación pruebe exactamente lo que corre aquí.
 export function buildJarron(nivel) {
   const nv = Math.min(nivel, 3);
-  for (let intento = 0; intento < 5000; intento++) {
-    const n = nv === 0 ? 2 : nv === 1 ? 3 : nv === 2 ? pick([2, 3]) : pick([3, 4]);
+  // El nº de tramos se sortea una vez (si se sorteara en cada intento,
+  // ganarían los tamaños que más fácil pasan los filtros).
+  const n = nv === 0 ? 2 : nv === 1 ? 3 : nv === 2 ? pick([2, 3]) : pick([3, 3, 4]);
+  for (let intento = 0; intento < 20000; intento++) {
     const nConos = nv < 2 ? 0 : nv === 2 ? 1 : randInt(2, Math.min(n, 3));
     const conos = new Set();
     while (conos.size < nConos) conos.add(randInt(0, n - 1));
     const tramos = [];
     for (let i = 0; i < n; i++) {
       const cono = conos.has(i);
-      const h = cono ? randInt(3, 6) : randInt(2, 5);
-      const V = randInt(1, cono ? 6 : 5);
+      // En los niveles con 3-4 tramos se acortan para que quepan en 12 cm.
+      const h = nv < 3 ? (cono ? randInt(3, 6) : randInt(2, 5)) : cono ? randInt(3, 5) : randInt(2, 3);
+      const V = nv < 3 ? randInt(1, cono ? 6 : 5) : randInt(1, cono ? 5 : 4);
       tramos.push(tramo(V, h, cono ? pick([0.33, 0.4, 0.5, 2, 2.5, 3]) : 1));
     }
     const j = montar(tramos);
