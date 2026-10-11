@@ -1,4 +1,4 @@
-// Valoración de ejercicios (👍 me gusta / 👎 no me gusta / 🔧 revisar).
+// Valoración de ejercicios (👍 me gusta / 👎 no me gusta / 🔧 revisar / 🏁 final).
 //
 // Vive en Supabase (tabla `football_ratings`), no en el navegador: así la
 // misma valoración se ve desde cualquier dispositivo y, sobre todo, la

@@ -106,10 +106,10 @@ function teardown() {
 }
 
 function categorize() {
-  const groups = { new: [], like: [], dislike: [], review: [] };
+  const groups = { new: [], like: [], dislike: [], review: [], final: [] };
   GAMES.forEach((g) => {
     const r = getRating(g.id);
-    const key = r === "like" || r === "dislike" || r === "review" ? r : "new";
+    const key = r in groups && r !== "new" ? r : "new";
     groups[key].push(g);
   });
   return groups;
@@ -133,13 +133,14 @@ async function renderMenu() {
     <div class="menu-wrap">
       <div class="menu-header">
         <h1>🧠 Math Games</h1>
-        <p>Elige un juego y a jugar. Puntúalo con 👍 / 👎 para organizar tus ideas.</p>
+        <p>Elige un juego y a jugar. Puntúalo con 👍 / 👎 / 🔧 / 🏁 para organizar tus ideas.</p>
       </div>
       <div class="tab-bar" data-tabs>
         <button class="tab-btn" data-tab="new">🆕 Nuevos (${groups.new.length})</button>
         <button class="tab-btn" data-tab="like">👍 Me gusta (${groups.like.length})</button>
         <button class="tab-btn" data-tab="dislike">👎 No me gusta (${groups.dislike.length})</button>
         <button class="tab-btn" data-tab="review">🔧 Revisar (${groups.review.length})</button>
+        <button class="tab-btn" data-tab="final">🏁 Final (${groups.final.length})</button>
       </div>
       ${renderReworkNote()}
       <div class="game-grid" data-grid></div>
@@ -175,7 +176,9 @@ function renderGrid(groups) {
         ? "Aún no has marcado ningún juego con 👍."
         : activeTab === "dislike"
         ? "Aún no has marcado ningún juego con 👎."
-        : "Aún no has marcado ningún juego para revisar.";
+        : activeTab === "review"
+        ? "Aún no has marcado ningún juego para revisar."
+        : "Aún no has dado ningún juego por 🏁 final.";
     grid.innerHTML = `<div class="tab-empty">${msg}</div>`;
     return;
   }
@@ -230,8 +233,9 @@ function renderGame(id) {
       <div class="game-mount" data-mount></div>
       <div class="rate-bar" data-rate-bar>
         <button class="rate-btn dislike" data-rate="dislike">👎 No me gusta</button>
-        <button class="rate-btn review" data-rate="review">🔧 Revisar</button>
         <button class="rate-btn like" data-rate="like">👍 Me gusta</button>
+        <button class="rate-btn review" data-rate="review">🔧 Revisar</button>
+        <button class="rate-btn final" data-rate="final">🏁 Final</button>
       </div>
     </div>
   `;
