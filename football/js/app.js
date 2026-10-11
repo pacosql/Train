@@ -40,6 +40,7 @@ import {
   getRating,
   getRatingNote,
   getAudioUrl,
+  getTranscript,
   isReview,
   setRating,
   setReview,
@@ -220,7 +221,9 @@ function renderGrid(groups) {
     card.className = "game-card";
     card.href = `#/game/${g.id}`;
     const inReview = activeTab === "review";
-    const note = inReview ? getRatingNote(g.id) : "";
+    // Lo escrito/dictado en el móvil y, si no lo hay, la transcripción
+    // hecha después a partir del audio.
+    const note = inReview ? getRatingNote(g.id) || getTranscript(g.id) : "";
     const audio = inReview ? getAudioUrl(g.id) : "";
     // Marca pequeña con lo que no dice la pestaña: en "Revisar", la
     // valoración que lleva; en las demás, si además está en 🔧.
@@ -349,7 +352,7 @@ function renderGame(id) {
              <div class="rv-hint">${
                canTranscribe()
                  ? "Habla con normalidad: se guarda el audio y se transcribe solo."
-                 : "Este navegador no transcribe: se guarda el audio y puedes escribir abajo un resumen."
+                 : "Habla con normalidad: se guarda el audio y se transcribe más tarde."
              }</div>`
           : `<div class="rv-hint">Este navegador no permite grabar audio: usa el micrófono del teclado para dictar.</div>`
       }
@@ -372,7 +375,7 @@ function renderGame(id) {
     screen.appendChild(box);
     const $ = (sel) => box.querySelector(sel);
     const textarea = $("[data-review-input]");
-    textarea.value = getRatingNote(id);
+    textarea.value = getRatingNote(id) || getTranscript(id);
     const msg = (t) => ($("[data-rv-msg]").textContent = t);
 
     function paintRating() {
@@ -419,7 +422,6 @@ function renderGame(id) {
       recBtn.textContent = "🎤 Volver a grabar";
       if (take) URL.revokeObjectURL(take.url);
       take = { ...got, url: URL.createObjectURL(got.blob) };
-      if (!got.text && canTranscribe()) msg("No se ha podido transcribir: queda el audio (puedes escribir un resumen).");
       paintAudio();
     }
     if (recBtn)

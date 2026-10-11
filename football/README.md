@@ -6,9 +6,31 @@ Cálculo mental, geometría, álgebra, estadística, fracciones, dinero,
 probabilidad, coordenadas, tiempo y más. Nace como banco de pruebas
 rápido para sacar ideas de mecánicas (tipo Duolingo Math, Synthesis,
 DreamBox o SplashLearn) de cara a otra app de matemáticas más grande.
-Cada ejercicio se puede marcar con 👍/👎/🔧 desde su propia pantalla, y
-el menú los organiza en cuatro pestañas para llevar el control de qué
-mecánicas convencen.
+Cada ejercicio se valora desde su propia pantalla con 👍 Me gusta,
+👎 No me gusta o 🏁 Final, y aparte se puede marcar con 🔧 Revisar (que se
+combina con la valoración: 👍+🔧, 👎+🔧, 🏁+🔧). El menú los organiza en
+pestañas (🆕 Nuevos, 👍, 👎, 🏁, 🔧).
+
+## Valoraciones y comentarios por voz
+
+- Tabla `football_ratings`: `rating` (`like`/`dislike`/`final` o nulo),
+  `review` (la marca 🔧), `note` (texto escrito o dictado), `audio_path` +
+  `audio_mime` (audio en el bucket público `football-audios`) y
+  `transcripcion` (texto sacado del audio después).
+- Al pulsar 🔧 se graba un comentario de voz. El navegador intenta
+  transcribirlo en directo; si no puede, el audio se guarda igual y queda
+  pendiente.
+- **Transcribir lo pendiente** (cuando Paco dice "actualiza", y en cada
+  tanda de la rutina antes de revisar los 🔧):
+
+  ```bash
+  python3 football/tools/transcribir.py
+  ```
+
+  Usa Whisper (`faster-whisper`, modelo «small», en local y sin servicios
+  de pago). La primera vez lo instala en `~/.cache/football-stt`. Quien
+  mejore un ejercicio lee `note` y `transcripcion`: el agente no puede oír
+  audios.
 
 Vive en `football/` y usa el prefijo `football_` en Supabase — nombres
 heredados de un prototipo anterior de esta misma carpeta, se han

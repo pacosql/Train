@@ -29,7 +29,7 @@ function withTimeout(promise, ms = NET_TIMEOUT_MS) {
   ]);
 }
 
-const EMPTY = { rating: null, review: false, note: "", audio_path: null, audio_mime: null };
+const EMPTY = { rating: null, review: false, note: "", audio_path: null, audio_mime: null, transcripcion: "" };
 const entry = (id) => cache.get(id) || EMPTY;
 
 // Valoración base: "like" | "dislike" | "final" | "new" (sin valorar).
@@ -44,6 +44,12 @@ export function isReview(id) {
 // Comentario de 🔧 (escrito o transcrito del audio).
 export function getRatingNote(id) {
   return entry(id).note || "";
+}
+
+// Transcripción del audio hecha después, fuera del móvil (Whisper, con
+// football/tools/transcribir.py): rellena lo que el navegador no pudo.
+export function getTranscript(id) {
+  return entry(id).transcripcion || "";
 }
 
 export function getAudioUrl(id) {
@@ -72,7 +78,7 @@ export async function initRatings(supabaseClient) {
 export async function reloadRatings() {
   if (!client) return;
   const { data, error } = await withTimeout(
-    client.from("football_ratings").select("game,rating,review,note,audio_path,audio_mime")
+    client.from("football_ratings").select("game,rating,review,note,audio_path,audio_mime,transcripcion")
   );
   if (error || !data) return;
   cache = new Map(
@@ -84,6 +90,7 @@ export async function reloadRatings() {
         note: row.note || "",
         audio_path: row.audio_path || null,
         audio_mime: row.audio_mime || null,
+        transcripcion: row.transcripcion || "",
       },
     ])
   );
@@ -103,6 +110,8 @@ async function save(id, patch) {
     next.audio_path = null;
     next.audio_mime = null;
   }
+  const audioChanged = prev.audio_path !== next.audio_path;
+  if (audioChanged) next.transcripcion = "";
   const remove = !next.rating && !next.review;
   if (remove) cache.delete(id);
   else cache.set(id, next);
@@ -119,6 +128,9 @@ async function save(id, patch) {
               note: next.note || null,
               audio_path: next.audio_path,
               audio_mime: next.audio_mime,
+              // La transcripción la escribe el script del servidor: solo se
+              // borra si cambia el audio (si no, ni se envía, para no pisarla).
+              ...(audioChanged ? { transcripcion: null, transcrito_at: null } : {}),
               updated_at: new Date().toISOString(),
             },
             { onConflict: "game" }
