@@ -133,7 +133,7 @@ export function mountRaizGame(container, { client, onExit }) {
     saveScore(client, "raiz", { score, rounds });
     body.innerHTML = `
       <div class="end-card">
-        <div>√</div>
+        <div>🔢</div>
         <div class="big-score">${score} pts</div>
         <p>${score / 10} raíces situadas</p>
         <div class="end-actions">

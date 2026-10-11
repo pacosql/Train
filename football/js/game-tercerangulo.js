@@ -73,8 +73,7 @@ export function buildRound(level) {
   }
   if (level === 3) {
     // Isósceles: A y B en la base (iguales), C el vértice.
-    const apex = randInt(2, 12) * 10;
-    const base = (180 - apex) / 2;
+    const apex = randInt(2, 12) * 10, base = (180 - apex) / 2;
     const P = fit(polygonFromAngles([base, base, apex]), 36);
     const askApex = Math.random() < 0.5;
     const shownBase = randInt(0, 1); // qué ángulo de la base lleva rótulo (o "?")
@@ -105,8 +104,7 @@ export function buildRound(level) {
   const t = pick([30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 105, 110, 115, 120, 125, 130, 135, 140, 145, 150]);
   const ends = [ray(0, 135), ray(t, 125), ray(180, 135), ray(t + 180, 125)];
   const degs = [t, 180 - t, t, 180 - t];
-  const gi = randInt(0, 3);
-  const qi = (gi + 2) % 4;
+  const gi = randInt(0, 3), qi = (gi + 2) % 4; // el "?" es el opuesto al dado
   const angles = ends.map((e, i) => ({ v: O, p: e, q: ends[(i + 1) % 4], label: i === gi ? `${degs[i]}°` : i === qi ? "?" : null, deg: degs[i] })).filter((a) => a.label);
   return { kind: "opuestos", scene: { polys: [], lines: [[ends[0], ends[2]], [ends[1], ends[3]]], angles, ticks: [] }, answer: degs[gi], hint: `Los ángulos opuestos por el vértice son iguales: ? = ${degs[gi]}°` };
 }
@@ -156,9 +154,7 @@ export function mountTerceranguloGame(container, { client, onExit }) {
     <div class="game-body ta-body" data-body></div>
   `;
   container.querySelector("[data-exit]").addEventListener("click", () => finish(true));
-  const livesEl = container.querySelector("[data-lives]");
-  const scoreEl = container.querySelector("[data-score]");
-  const body = container.querySelector("[data-body]");
+  const [livesEl, scoreEl, body] = ["[data-lives]", "[data-score]", "[data-body]"].map((sel) => container.querySelector(sel));
   const renderLives = () => (livesEl.textContent = "❤️".repeat(Math.max(lives, 0)) + "🖤".repeat(startLives - Math.max(lives, 0)));
   const renderScore = () => (scoreEl.textContent = `⭐ ${score}`);
 
