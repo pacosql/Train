@@ -487,7 +487,7 @@ export function mountMonedafalsaGame(container, { client, onExit }) {
       const capTxt =
         w.rAfter === 0
           ? "y no te quedaba ninguna pesada"
-          : `y solo te ${plural(w.rAfter, "quedaba", "quedaban")} ${w.rAfter} ${plural(w.rAfter, "pesada", "pesadas")}, que ${plural(w.rAfter, "distingue", "distinguen")} como mucho ${w.rAfter > 1 ? `3^${w.rAfter} = ${cap}` : "3"}`;
+          : `y solo te ${plural(w.rAfter, "quedaba", "quedaban")} ${w.rAfter} ${plural(w.rAfter, "pesada", "pesadas")}, que ${plural(w.rAfter, "distingue", "distinguen")} como mucho ${w.rAfter > 1 ? `3${w.rAfter === 2 ? "²" : "³"} = ${cap}` : "3"}`;
       html +=
         max > cap
           ? `<p>En la ${firstBad + 1}ª pesada estuvo el fallo: un resultado dejaba ${max} ${unit} ${capTxt} → no llega.</p>`
@@ -498,18 +498,21 @@ export function mountMonedafalsaGame(container, { client, onExit }) {
     } else if (!sure) {
       html += `<p>Te ${plural(cfg.p - used, "quedaba", "quedaban")} ${cfg.p - used} ${plural(cfg.p - used, "pesada", "pesadas")}: había que seguir pesando antes de señalar.</p>`;
     }
-    html += `<p class="mf-rule">📏 Regla: cada pesada tiene 3 resultados, así que con P pesadas se distinguen como mucho 3^P ${cfg.both ? "casos (moneda + más/menos)" : "monedas"}: 1 → 3, 2 → 9, 3 → 27.</p>`;
+    html += `<p class="mf-rule">📏 Regla: cada pesada tiene 3 resultados, así que con P pesadas se distinguen como mucho 3ᴾ ${cfg.both ? "casos (moneda + más/menos)" : "monedas"}: 3¹ = 3, 3² = 9, 3³ = 27.</p>`;
     return html;
   }
 
   function describeMove(mv, k) {
     if (!cfg.both) {
       const out = k.l - mv.l1 - mv.l2;
-      return `reparte ${mv.l1}-${mv.l2}-${out}: ${mv.l1} sospechosas en cada plato y ${out} fuera. Salga lo que salga, quedan como mucho ${mv.worst}.`;
+      const rest = mv.worst === 1 ? "queda como mucho 1" : `quedan como mucho ${mv.worst}`;
+      if (mv.l1 === mv.l2) return `reparte ${mv.l1}-${mv.l2}-${out}: ${mv.l1} sospechosas en cada plato y ${out} fuera. Salga lo que salga, ${rest}.`;
+      const pad = (k) => (k ? ` + ${k} ${plural(k, "buena", "buenas")}` : "");
+      return `izquierda: ${mv.l1} sospechosas${pad(mv.g1)}; derecha: ${mv.l2}${pad(mv.g2)}; fuera: ${out}. Salga lo que salga, ${rest}.`;
     }
     const side = (u, h, l, g) =>
       [u && `${u} ±`, h && `${h} «+»`, l && `${l} «−»`, g && `${g} ${plural(g, "buena", "buenas")}`].filter(Boolean).join(", ") || "nada";
-    return `izquierda: ${side(mv.u1, mv.h1, mv.l1, mv.g1)}; derecha: ${side(mv.u2, mv.h2, mv.l2, mv.g2)}. Salga lo que salga, quedan como mucho ${mv.worst} casos.`;
+    return `izquierda: ${side(mv.u1, mv.h1, mv.l1, mv.g1)}; derecha: ${side(mv.u2, mv.h2, mv.l2, mv.g2)}. Salga lo que salga, queda${mv.worst === 1 ? " como mucho 1 caso" : `n como mucho ${mv.worst} casos`}.`;
   }
 
   function finish(userExited) {

@@ -422,13 +422,16 @@ export function mountCerillasGame(container, { client, onExit }) {
     const inv = m.inverse();
     return { x: inv.a * e.clientX + inv.c * e.clientY + inv.e, y: inv.b * e.clientX + inv.d * e.clientY + inv.f };
   }
-  // Posición más cercana al dedo (por distancia al segmento).
+  // Posición más cercana al dedo (por distancia al segmento). En el
+  // centro de un "+" se cruzan dos cerillas: gana la vertical (quitarla
+  // es lo habitual, + → −); la horizontal se coge tocando su brazo. La
+  // cerilla que se sostiene tiene preferencia para poder devolverla.
   function nearest(pt, filter, maxD = 13) {
     let best = null;
     let bd = maxD;
     for (const p of pos) {
       if (!filter(p)) continue;
-      const d = distSeg(pt.x, pt.y, p);
+      const d = distSeg(pt.x, pt.y, p) + (p.seg === "h" ? 1.5 : 0) - (p.key === held ? 3 : 0);
       if (d < bd) {
         bd = d;
         best = p;
@@ -441,17 +444,19 @@ export function mountCerillasGame(container, { client, onExit }) {
     if (busy || finished) return;
     const pt = svgPoint(e);
     if (held) {
-      const p = nearest(pt, () => true);
-      if (!p) {
-        held = null;
-        return paint();
-      }
-      if (p.key === held) {
+      // Primero huecos libres (o la propia cerilla); si no, otra cerilla.
+      const p = nearest(pt, (q) => !isOn(q.key) || q.key === held);
+      if (p && p.key === held) {
         held = null; // soltar en su sitio: no cuenta
         return paint();
       }
-      if (!isOn(p.key)) return doMove(held, p.key);
-      held = p.key; // cambiar de cerilla
+      if (p) return doMove(held, p.key);
+      const o = nearest(pt, (q) => isOn(q.key));
+      if (!o) {
+        held = null;
+        return paint();
+      }
+      held = o.key; // cambiar de cerilla
     } else {
       const p = nearest(pt, (q) => isOn(q.key));
       if (!p) return;

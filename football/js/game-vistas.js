@@ -355,7 +355,8 @@ export function mountVistasGame(container, { client, onExit }) {
 
   function paintControls() {
     body.querySelectorAll("[data-mode]").forEach((b) => b.classList.toggle("on", b.dataset.mode === mode));
-    body.querySelector("[data-count]").textContent = `🧊 ${total(grid)} cubos`;
+    const t = total(grid);
+    body.querySelector("[data-count]").textContent = `🧊 ${t} cubo${t === 1 ? "" : "s"}`;
   }
 
   function paintViews() {

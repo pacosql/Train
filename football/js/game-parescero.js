@@ -273,7 +273,7 @@ export function mountParesceroGame(container, { client, onExit }) {
       alg: "Arrastra x sobre −x y +1 sobre −1 para anularlas. Una x y un 1 no se anulan.",
     }[round.type];
     body.innerHTML = `
-      <p class="prompt pz-prompt"><span class="pz-op" data-op>${round.type === "make" ? `Deja el tablero en <b>${signed(round.v)}</b> usando exactamente <b>${round.n}</b> fichas` : opText(round)}</span>
+      <p class="prompt pz-prompt"><span class="pz-op ${round.type === "make" ? "pz-op-long" : ""}" data-op>${round.type === "make" ? `Deja el tablero en <b>${signed(round.v)}</b> usando exactamente <b>${round.n}</b> fichas` : opText(round)}</span>
         <small>${help}</small></p>
       <div class="pz-task" data-task></div>
       <div class="pz-boardwrap">
@@ -531,8 +531,8 @@ export function mountParesceroGame(container, { client, onExit }) {
       const other = round.b > 0 ? "n" : "p";
       why.push(`has tirado ${chipsText(other, removed[other])} que no había que quitar`);
     }
-    if (e.includes("pairs")) why.push(`quedan ${nPairs} ${nPairs === 1 ? "par cero" : "pares cero"} sin anular (amarilla + roja = 0)`);
-    if (e.includes("pairsx")) why.push(`quedan ${nPairsX} ${nPairsX === 1 ? "pareja" : "parejas"} x/−x sin anular`);
+    if (e.includes("pairs")) why.push(`${nPairs === 1 ? "queda 1 par cero" : `quedan ${nPairs} pares cero`} sin anular (amarilla + roja = 0)`);
+    if (e.includes("pairsx")) why.push(`${nPairsX === 1 ? "queda 1 pareja" : `quedan ${nPairsX} parejas`} x/−x sin anular`);
     if (e.includes("count")) why.push(`hay ${c.p + c.n} fichas y tenían que ser ${round.n}`);
     if (e.includes("value")) {
       const want = round.type === "make" ? round.v : round.result;
@@ -547,11 +547,11 @@ export function mountParesceroGame(container, { client, onExit }) {
     if (rm.length) you.push(`quitaste ${rm.join(" y ")}`);
     if (log.cancelled) you.push(`anulaste ${log.cancelled} ${log.cancelled === 1 ? "par" : "pares"}`);
     if (log.cancelledX) you.push(`anulaste ${log.cancelledX} x/−x`);
-    const right = round.type === "make" ? `${chipsText("p", round.yellow)} y ${chipsText("n", round.red)}` : round.type === "alg" ? algText(round.p, round.q) : signed(round.result);
+    const right = round.type === "alg" ? algText(round.p, round.q) : signed(round.result);
     storyEl.innerHTML = `
       ${you.length ? `<p class="pz-you"><b>Tú:</b> ${you.join(", ")}.</p>` : ""}
       <p class="pz-narr" data-narr><b>Lo que tenía que pasar:</b> ${narrate(round)}</p>
-      <div class="pz-big pz-bigbad" data-big>${round.type === "make" ? "Solución" : opText(round)} = <b>${right}</b></div>
+      <div class="pz-big pz-bigbad" data-big>${round.type === "make" ? `${round.yellow} ${mini("p")} ${MINUS} ${round.red} ${mini("n")} = <b>${signed(round.v)}</b>` : `${opText(round)} = <b>${right}</b>`}</div>
       <button type="button" class="primary pz-btn" data-next>${lives <= 0 ? "Ver resultado →" : "Siguiente →"}</button>`;
     storyEl.querySelector("[data-next]").addEventListener("click", () => {
       if (finished) return;
