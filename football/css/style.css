@@ -533,3 +533,35 @@ button.secondary {
   font-weight: 800; font-size: 1rem;
 }
 .bond-missing { border-color: var(--accent-2); color: var(--accent-2); }
+
+/* 🔧 Revisar como marca aparte + comentario por voz */
+.game-card .flag-badge { position: absolute; top: 22px; right: 6px; font-size: 0.85rem; line-height: 1; }
+.game-card .note-audio {
+  margin-top: 2px; border: 1px solid var(--accent-2); color: var(--accent-2); background: transparent;
+  border-radius: 8px; padding: 4px 8px; font-size: 0.68rem; font-weight: 700; cursor: pointer;
+}
+.review-note-box .rv-title { font-size: 0.85rem; font-weight: 800; margin-bottom: 8px; color: var(--text); }
+.review-note-box .rv-rec {
+  width: 100%; border: none; border-radius: 12px; padding: 16px 10px; font-size: 1rem; font-weight: 800;
+  background: var(--accent-2); color: #fff; cursor: pointer;
+}
+.review-note-box .rv-rec.on { background: var(--danger); animation: rv-pulse 1.2s ease-in-out infinite; }
+@keyframes rv-pulse { 50% { opacity: 0.75; } }
+.review-note-box .rv-hint { font-size: 0.7rem; color: var(--muted); margin: 6px 0 8px; }
+.review-note-box .rv-audio { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+.review-note-box .rv-audio:empty { display: none; }
+.review-note-box .rv-audio audio { flex: 1; min-width: 0; height: 36px; }
+.review-note-box .rv-del {
+  border: 1px solid var(--danger); color: var(--danger); background: transparent;
+  border-radius: 8px; padding: 6px 8px; font-size: 0.7rem; font-weight: 700; cursor: pointer;
+}
+.review-note-box .rv-rating { display: flex; align-items: center; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+.review-note-box .rv-rating span { font-size: 0.75rem; color: var(--muted); font-weight: 700; }
+.review-note-box .rv-rating button {
+  border: 2px solid var(--border); background: var(--card); color: var(--text); border-radius: 10px;
+  padding: 6px 10px; font-size: 0.85rem; cursor: pointer;
+}
+.review-note-box .rv-rating button.on { border-color: var(--accent-2); background: var(--accent-2); color: #fff; }
+.review-note-box .rv-msg { font-size: 0.72rem; color: var(--danger); margin-top: 6px; }
+.review-note-box .rv-msg:empty { display: none; }
+.rate-msg { margin-top: 8px; font-size: 0.75rem; color: var(--danger); text-align: center; }
