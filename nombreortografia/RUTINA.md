@@ -156,6 +156,13 @@ rellena siempre que queden < 40 pendientes buenos.
   tiempo (Junio, Anual) y número-palabra (Decena, Nota10). Si esta también
   va a 0, proponer a Paco cerrar entre los 5 ⭐ (OEPM, .es, redes).
 
+- Tanda 9 (46): solo 👍 **Orthografia10** y **Ortografia10App**: las dos,
+  variantes de la ⭐ Ortografia10. Todo lo demás 👎 (X de ortografía, Tu/Mi,
+  verbos, emociones, tiempo, Spelling10). Conclusión: **la marca es
+  Ortografia10** (y sus hermanas 100/365/Diez, Lengua10). Tanda 10 (26):
+  sufijos de marca (App, Web, Lab, Club, Hub, Play, Go, Diario, Ya…) y
+  Orthografia + número. Vetados: Ortografia10Online, Plus, Test.
+
 ## Programación
 
 - Cron de sesión cada 15 min (CronCreate) + Routine horaria de respaldo que
