@@ -35,7 +35,7 @@ que ha marcado. Todo desde la raíz del repo `Train`.
      proponer, añade ~50 palabras simples nuevas en inglés (status
      pendiente, origen claude) en la línea de las que elige.
 3. ¿Hace falta tanda? Sí si hay comentarios nuevos, palabras 💡 nuevas, o 👍/⭐/🙅 nuevos
-   desde la última ejecución, o quedan **< 100 pendientes con score ≥ 70**.
+   desde la última ejecución, o quedan **< 200 pendientes con score ≥ 70**.
    Si no hace falta, registra con `log.py` y termina.
 4. **Genera** `empresa/tools/out/candidatos.txt` (con Write) con líneas
    `Nombre|por qué|c f m s d b` bajo cabeceras `# familia: …`, donde las
@@ -131,15 +131,22 @@ que ha marcado. Todo desde la raíz del repo `Train`.
   ZorrillaLabs. Palabra española de escribir/dibujar/navegar + studios es
   la línea fuerte junto con Azul + astro. Las de 4-5 letras + studios
   suelen tener el .com cogido: prueba también palabras de 6-9 letras.
+- ⭐ (12/10, 23:30): **TrailEast, Tintazulstudio, Azulnorth, Tintastudios,
+  TintaNorth, TintaForge, TizaWave**. «Tinta» es SU palabra: Tinta + palabra
+  inglesa vuelve a subir aunque antes hubo 🙅 a otras mezclas (Trazo, Papel,
+  Pluma + inglés siguen bajas). Cabezas buenas: Tinta, Tiza, Trail, Azul.
 - Paco revisa ~150 nombres por hora: cada tanda debe cargar **≥ 300** y la
   rutina debe lanzar tanda en cuanto queden < 100 pendientes buenos.
 - La cola nunca debe quedarse vacía: `cribar.py` carga cada 10 aprobados.
 
 ## Programación
 
-- Cron de sesión cada 15 min (CronCreate) + Routine horaria de respaldo
-  (`trig_015wh7PUgjQgeKx92jVMeqLY`) que recrea el cron si la sesión se
-  reinicia y ejecuta la rutina.
+- 4 Routines horarias persistentes desfasadas 15 min (sobreviven a los
+  reinicios de sesión): :01 `trig_01LXYDWWauTB3cTbvKTZUvtf`, :16
+  `trig_012SRHxP3ow9Bo1oPUMWG4EJ`, :31 `trig_01SMMWDZj1oQyPXrzq5VmhVZ` y la
+  de respaldo :46 `trig_015wh7PUgjQgeKx92jVMeqLY`. El cron de sesión
+  (CronCreate) es opcional: muere con cada reinicio.
+- Umbral: tanda en cuanto queden < 200 pendientes buenos; ~600 candidatos.
 
 ## Qué NO hacer
 
