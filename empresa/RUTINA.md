@@ -24,6 +24,9 @@ que ha marcado. Todo desde la raíz del repo `Train`.
        Un 👍 posterior lo vuelve a subir.
      - Generaliza el estilo: 🙅 a «OcreApps» pesa sobre «todo lo que acaba
        en Apps», no solo sobre ese nombre.
+   - **🏛️ Otras marcas** que ha marcado 👍/👎 (venture studios reales):
+     úsalas como inspiración (tipo de nombre, sonido, longitud) y súbele el
+     peso a los estilos de las 👍. Para añadir más marcas: `tools/marcas.py`.
 3. ¿Hace falta tanda? Sí si hay comentarios nuevos, o 👍/⭐/🙅 nuevos
    desde la última ejecución, o quedan **< 60 pendientes con score ≥ 70**.
    Si no hace falta, registra con `log.py` y termina.
