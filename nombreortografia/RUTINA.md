@@ -76,6 +76,24 @@ nuevo de lo que aprender.
   (OrtoDuelo, OrtoLiga, OrtoSprint…), corrector (FolioLimpio, CeroTachones,
   NiUnTachon), CazaFaltas, Ortografista, Mateo Alemán / Correas / Bello.
 
+- **Petición (12/10, chat): «busca en la Academia, en los autores, bromas o
+  chistes de ortografía; ¿habla el Quijote de ortografía?; sinónimos;
+  esfuérzate al máximo»**. Tanda 3 (70 cargados, delante de la cola), con
+  fuentes verificadas:
+  - Quijote (texto de Gutenberg): no dice «ortografía», pero sí II-62 en la
+    imprenta («corregir en otra, componer en ésta, enmendar en aquélla»),
+    I-25 «de buena letra», II-19 «la discreción es la gramática del buen
+    lenguaje», Sancho que no sabe escribir, la carta a Dulcinea.
+  - RAE: lema «Limpia, fija y da esplendor» y el crisol del emblema.
+  - Nebrija «Reglas de orthographía» (1517); Gabo «Jubilemos la ortografía,
+    terror del ser humano desde la cuna» (1997); Juan Ramón y su jota
+    «hijiénica» («intelijencia»).
+  - Chistes: hay/ahí/ay, haber/a ver, hecho/echo, vaca/baca; los
+    «vengadores» de Acción Ortográfica que corrigen grafitis.
+  - Ocupados: orthographia.com, olakase, hoygan, botellaalmar. Vetados:
+    OrtografiaCervantes, DesocupadoLector, HolaQueHaces (canales/marcas).
+  - Si gustan, seguir con más chistes de homófonos y más citas literarias.
+
 ## Programación
 
 - Cron de sesión cada 15 min (CronCreate) + Routine horaria de respaldo que
