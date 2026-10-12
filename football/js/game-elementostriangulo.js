@@ -86,16 +86,19 @@ export function buildRound(level, roundNo = 0) {
       const prompt = q === "hip" ? "Toca la <b>hipotenusa</b>" : q === "cat" ? "Toca un <b>cateto</b>" : "Toca el vértice del <b>ángulo recto</b>";
       return { ...base, type, right: r, picks, answer: q === "hip" ? [r] : q === "cat" ? cat : [3 + r], prompt, hint };
     }
-    const kinds = type === "puntos" ? shuffle(Object.keys(POINT)).slice(0, 2) : level === 1 ? ["altura", "mediana"] : ["altura", "mediana", "bisectriz", "mediatriz"];
     const col = shuffle(COLORS);
     if (type === "puntos") {
-      // Dos familias de tres rectas; se pide el punto donde se corta una.
-      const fam = kinds.map((k, f) => ({ kind: k, color: col[f], lines: [0, 1, 2].map((i) => ({ ...notable(k, V, i), kind: k, from: i })) }));
-      const pts = fam.map((f) => cross(f.lines[0].p, f.lines[0].q, f.lines[1].p, f.lines[1].q));
-      if (dist(pts[0], pts[1]) < 40) continue;
-      const a = randInt(0, 1);
+      // Dos familias de tres rectas; se pide el punto donde se corta una
+      // (elegida primero, para que salgan todas por igual) y la otra
+      // familia se elige entre las que se cortan lejos (≥ 44 px).
+      const all = Object.keys(POINT).map((k) => { const ls = [0, 1, 2].map((i) => ({ ...notable(k, V, i), kind: k, from: i })); return { kind: k, lines: ls, pt: cross(ls[0].p, ls[0].q, ls[1].p, ls[1].q) }; });
+      const want = pick(all), mates = all.filter((f) => f !== want && dist(f.pt, want.pt) >= 44);
+      if (!mates.length) continue;
+      const fam = shuffle([want, pick(mates)]).map((f, k) => ({ kind: f.kind, color: col[k], lines: f.lines, pt: f.pt }));
+      const kinds = fam.map((f) => f.kind), pts = fam.map((f) => f.pt), a = fam.findIndex((f) => f.kind === want.kind);
       return { ...base, type, fam, pts: pts.map(r1), answer: a, prompt: `Toca el punto donde se cortan <b>${POINT[kinds[a]][0]}</b>`, hint: `${POINT[kinds[a]][0][0].toUpperCase()}${POINT[kinds[a]][0].slice(1)} se cortan en un punto: ${POINT[kinds[a]][1]}` };
     }
+    const kinds = level === 1 ? ["altura", "mediana"] : ["altura", "mediana", "bisectriz", "mediatriz"];
     const from = shuffle([0, 1, 2]);
     const lines = kinds.map((k, j) => ({ ...notable(k, V, k === "mediatriz" ? from[0] : from[j]), kind: k, from: k === "mediatriz" ? from[0] : from[j], color: col[j], type: "line" }));
     // Ninguna recta puede ir casi pegada a otra: o se cruzan con ≥ 12° o,
