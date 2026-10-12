@@ -87,6 +87,11 @@ que ha marcado. Todo desde la raíz del repo `Train`.
   escribir (papel carbón, tinta) + Studio/Works. Tanda 9 explora imprenta y
   escritura en inglés, materiales de escribir/pintar en español y tipos de
   papel + Studio.
+- 👍 (12/10, 19 h): SepiaGrid, TintaNorth, TrailStroke, LapiceroLabs →
+  material + dirección/trazo funciona. Comentarios: **«Papersword» me
+  gusta**; **trail como en «trailblazers»**. Tanda 10: objeto de
+  papel/tinta (Paperfox, Inkblade), estilo trailblazer (Inkblazer,
+  Trailsmith) y material + dirección/trazo.
 - Paco revisa ~150 nombres por hora: cada tanda debe cargar **≥ 300** y la
   rutina debe lanzar tanda en cuanto queden < 100 pendientes buenos.
 - La cola nunca debe quedarse vacía: `cribar.py` carga cada 10 aprobados.
