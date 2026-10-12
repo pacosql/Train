@@ -76,31 +76,32 @@ usuario, no en este repo.
 
 ## Ilustración de la máquina
 
-Cada máquina lleva ahora un dibujo propio de línea (el mismo estilo de
-los iconos, pero más grande y detallado), no una foto de catálogo de un
-fabricante — esas tienen derechos y no se pueden incrustar aquí, se
-haya visto en Technogym, Life Fitness o donde sea. En su lugar,
-esquemas hechos a mano con el mismo lenguaje visual del resto de la
-app: solo trazo, sin relleno, con la tinta suave del tipo de movimiento
-de fondo (azul empuje, ámbar tirón, violeta cardio).
+Cada máquina lleva un dibujo de producto que imita la silueta de las
+máquinas reales del gimnasio (Synergym, con equipamiento Technogym y
+Life Fitness): estructura gris, tapicería oscura y la torre de pesos
+con su carcasa, la ventana y las placas. Es un dibujo propio en SVG, no
+una foto de catálogo de un fabricante: esas tienen derechos y no se
+pueden incrustar aquí.
 
-- **`MACHINE_ART`**: un dibujo por familia de máquina (asistida, remo/
-  polea, pec-deck, press de pecho, prensa de pierna, extensora de
-  pierna, banco+rack, zancada) — varias máquinas del catálogo comparten
-  familia cuando son mecánicamente la misma cosa (Pectoral y Reverse
-  Fly son las dos un "pec-deck", por ejemplo).
-- **`weightStackArt()`**: un glifo compartido (polea + columna con
-  muescas) que se repite en toda máquina de pin — así se aprende a
-  reconocerlo de un vistazo en vez de tener que descifrar cada dibujo
-  desde cero.
-- Se ve en dos sitios: el icono de la lista de ejercicios/catálogo
-  (`machineArtHtml()`) y una tarjeta grande al entrar en la máquina
-  (`renderHeroArt()`, en `#cd-hero-art`/`#ex-hero-art`). El emoji
-  personalizado de la ficha, si el usuario puso uno, gana siempre a la
-  ilustración automática, en los dos sitios.
-- Bicicleta y Andar no tienen dibujo propio en `MACHINE_ART`: su icono
-  de categoría (bici/huellas) ya es exacto, así que no hacía falta
-  redibujarlos.
+- **`ART`**: una función por familia de máquina (extensión y prensa de
+  pierna, press de pecho, pec-deck, remo con apoyo de pecho, jalón,
+  asistida, banco con barra, flexión de cadera en zancada, elíptica,
+  bici y cinta). Varias fichas comparten dibujo cuando son la misma
+  máquina mecánicamente: Pectoral, Reverse Fly y Extensora de Hombros
+  son el mismo pec-deck, visto de frente.
+- **Color**: solo va en el color del tipo de movimiento (azul empuje,
+  ámbar tirón, violeta cardio) lo que mueves tú, las asas, la palanca o
+  el rodillo, y el pin de la pila. Así se ve de un vistazo qué parte
+  trabaja.
+- **Figura translúcida**: una silueta encima de la máquina enseña cómo
+  te colocas (sentado, tumbado, de rodillas, en zancada).
+- **Piezas comunes** (`stack`, `pad`, `tube`, `pulley`, `figure`): la
+  torre de pesos y los acolchados se dibujan siempre igual, así se
+  reconocen enseguida.
+- Se ve en dos sitios: la miniatura apaisada de la lista
+  (`machineArtHtml()`) y la tarjeta grande de "Cómo entrenarlo"
+  (`renderHeroArt()`). El emoji propio de la ficha, si el usuario puso
+  uno, gana siempre a la ilustración automática.
 
 ## Cómo se usa la máquina (silueta + posición)
 

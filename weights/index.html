@@ -180,6 +180,9 @@
       color: var(--type, var(--text-2));
     }
     .item .icon svg { width: 55%; height: 55%; stroke: currentColor; }
+    /* con dibujo de máquina el chip es apaisado, para que se reconozca */
+    .item .icon:has(> svg.machine) { width: 3.3rem; height: 2.3rem; border-radius: 12px; padding: 1px; }
+    .item .icon svg.machine { width: 100%; height: 100%; stroke: none; }
     .item.top .icon { background: var(--accent-soft); border-color: rgba(67, 211, 145, 0.35); }
     .item-main { flex: 1; min-width: 0; }
     .h-icon { display: inline-flex; align-items: center; margin-right: 8px; font-size: 0.85em; vertical-align: -0.1em; color: var(--text-2); }
@@ -326,6 +329,8 @@
     .hero-art.pull { color: var(--pull); background: rgba(245, 181, 68, 0.14); border-color: rgba(245, 181, 68, 0.3); }
     .hero-art.cardio { color: var(--cardio); background: rgba(185, 140, 255, 0.14); border-color: rgba(185, 140, 255, 0.3); }
     .hero-art svg { width: 62%; height: 62%; max-width: 210px; }
+    .hero-art:has(> svg.machine) { height: auto; padding: 6px 8px 2px; }
+    .hero-art svg.machine { width: 100%; height: auto; max-width: 420px; max-height: 240px; }
     .hero-art.emoji { font-size: 3.6rem; } /* icono propio (emoji) del usuario, si lo puso */
 
     /* ---------- recomendación personal (1-5) ---------- */
@@ -818,40 +823,177 @@
     }
 
     // ---------- ilustración de la máquina ----------
-    // Igual que los iconos (solo trazo, sin relleno), pero dibujos propios
-    // más detallados de cada máquina real — no una foto de un fabricante
-    // (esas tienen derechos), un esquema hecho a mano con el mismo
-    // lenguaje visual que el resto de la app. Un glifo compartido para la
-    // "pila de pesos" (polea + columna con muescas) se repite en toda
-    // máquina de pin, así se aprende a reconocerlo de un vistazo.
-    function weightStackArt(x, y, h) {
-      const n = Math.max(2, Math.round(h / 12));
-      let notches = "";
-      for (let i = 1; i <= n; i++) notches += `<path d="M${x + 2} ${y + (h / (n + 1)) * i}h6"/>`;
-      return `<circle cx="${x + 5}" cy="${y - 6}" r="3"/><rect x="${x}" y="${y}" width="10" height="${h}" rx="2.5"/>${notches}`;
+    // Dibujo de producto de cada máquina, imitando la silueta de las de
+    // Technogym / Life Fitness del gimnasio (Synergym): torre de pesos con
+    // carcasa y ventana, tapicería, estructura gris. Es un dibujo propio, no
+    // una foto de catálogo (esas tienen derechos). En el color del tipo de
+    // movimiento solo va lo que mueves tú (asas, palanca, rodillo) y el pin
+    // de la pila; la figura translúcida enseña cómo te colocas.
+    const C = {
+      frame: "#a7afb7", frameDk: "#6f7881", deep: "#4a5159",
+      pad: "#2a2f35", padEdge: "#626b74",
+      shroud: "#3a4148", shroudEdge: "#666f78", win: "#14171a", plate: "#c5cbd1",
+    };
+    const tube = (d, w = 6, c = C.frame) =>
+      `<path d="${d}" fill="none" stroke="${c}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>`;
+    const pad = (x, y, w, h, r = 6, rot = 0, cx, cy) =>
+      `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" fill="${C.pad}" stroke="${C.padEdge}" stroke-width="1.6"${rot ? ` transform="rotate(${rot} ${cx ?? x + w / 2} ${cy ?? y + h / 2})"` : ""}/>`;
+    const floor = (x1, x2) => `<path d="M${x1} 151H${x2}" stroke="${C.deep}" stroke-width="3" stroke-linecap="round"/>`;
+    // Torre de pesos con carcasa, ventana con las placas y el pin seleccionado.
+    function stack(x, y, w, h) {
+      const wx = x + w * 0.28, ww = w * 0.44, wy = y + 14, wh = h - 30;
+      let plates = "";
+      const n = Math.floor(wh * 0.62 / 5);
+      for (let i = 0; i < n; i++) {
+        const py = wy + wh - 3 - i * 5;
+        plates += `<path d="M${wx + 2} ${py}H${wx + ww - 2}" stroke="${C.plate}" stroke-width="3"/>`;
+      }
+      const pinY = wy + wh - 3 - Math.floor(n * 0.45) * 5;
+      return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="4" fill="${C.shroud}" stroke="${C.shroudEdge}" stroke-width="1.6"/>` +
+        `<rect x="${wx}" y="${wy}" width="${ww}" height="${wh}" rx="2" fill="${C.win}"/>` + plates +
+        `<path d="M${wx + ww / 2} ${wy + 2}V${pinY}" stroke="${C.frameDk}" stroke-width="1.6"/>` +
+        `<circle cx="${wx + ww + 3}" cy="${pinY}" r="2.6" fill="currentColor"/>` +
+        `<rect x="${x - 3}" y="${y + h - 4}" width="${w + 6}" height="6" rx="2" fill="${C.deep}"/>`;
     }
-    const MACHINE_ART = {
-      assisted: '<path d="M28 86V16h64v14M50 16v14M90 16v14M52 54h34"/>' + weightStackArt(104, 24, 44) + '<path d="M18 86h20M88 86h20"/>',
-      cableRow: '<rect x="55" y="52" width="24" height="9" rx="4"/><path d="M28 61h70"/><path d="M96 61 102 36"/>' + weightStackArt(14, 16, 42),
-      pecMachine: '<rect x="58" y="26" width="16" height="46" rx="7"/><rect x="58" y="72" width="24" height="8" rx="4"/><path d="M66 32c-20 2-34 14-44 28M66 32c20 2 34 14 44 28"/><circle cx="22" cy="60" r="5"/><circle cx="110" cy="60" r="5"/>',
-      chestPress: '<rect x="20" y="20" width="16" height="52" rx="7"/><rect x="20" y="72" width="28" height="9" rx="4"/><path d="M50 44h48"/><circle cx="100" cy="44" r="6"/>' + weightStackArt(100, 62, 22),
-      legPress: '<path d="M22 84V52h24"/><path d="M46 52 106 20"/><path d="M90 32l16-8"/>' + weightStackArt(98, 6, 16),
-      legExtension: '<rect x="18" y="22" width="16" height="50" rx="7"/><rect x="18" y="72" width="26" height="9" rx="4"/><path d="M44 80h40"/><rect x="86" y="72" width="10" height="16" rx="3"/>' + weightStackArt(104, 16, 46),
-      bench: '<rect x="26" y="66" width="72" height="9" rx="4"/><path d="M32 75v11M92 75v11"/><path d="M18 86 26 18M114 86 104 18"/><path d="M10 86h22M100 86h22"/><path d="M18 24h94"/><circle cx="12" cy="24" r="8"/><circle cx="120" cy="24" r="8"/>',
-      lunge: '<path d="M78 86V26"/><path d="M78 40l26 12"/><rect x="100" y="44" width="11" height="18" rx="3" transform="rotate(24 105 53)"/>' + weightStackArt(52, 12, 38) + '<path d="M64 86h28"/>',
-      pulldown: '<path d="M88 86V10H40v22"/><path d="M18 34h44"/><rect x="28" y="52" width="26" height="7" rx="3.5"/><rect x="28" y="68" width="28" height="8" rx="4"/><path d="M42 76v10M30 86h26M80 86h16"/>' + weightStackArt(100, 24, 46),
-      elliptical: '<path d="M20 76 118 50"/><ellipse cx="46" cy="69" rx="13" ry="5" transform="rotate(-13 46 69)"/><ellipse cx="94" cy="57" rx="13" ry="5" transform="rotate(-13 94 57)"/><path d="M75 62 78 22"/><rect x="64" y="8" width="28" height="16" rx="3"/><path d="M70 16h16"/>',
+    const pulley = (x, y, r = 5) => `<circle cx="${x}" cy="${y}" r="${r}" fill="${C.deep}" stroke="${C.frame}" stroke-width="2"/>`;
+    const cable = (d) => `<path d="${d}" fill="none" stroke="${C.frameDk}" stroke-width="1.4" stroke-dasharray="0"/>`;
+    // Lo que se mueve (asas, palanca, rodillo) va en el color del tipo.
+    const moving = (d, w = 6) => tube(d, w, "currentColor");
+    const grip = (x, y, r = 4.5) => `<circle cx="${x}" cy="${y}" r="${r}" fill="currentColor"/>`;
+    // Figura fantasma: cómo te colocas. Grupo con opacidad para que los
+    // solapes no se oscurezcan.
+    function figure(parts, head) {
+      const limbs = parts.map(([d, w]) => `<path d="${d}" stroke-width="${w || 11}"/>`).join("");
+      return `<g opacity=".34" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round">${limbs}` +
+        `<circle cx="${head[0]}" cy="${head[1]}" r="9" fill="#fff" stroke="none"/></g>`;
+    }
+
+    const ART = {
+      // Extensión de cuádriceps: asiento, respaldo, rodillo en el empeine.
+      legExtension: () =>
+        floor(14, 226) + stack(18, 22, 30, 128) +
+        tube("M33 22V14H96") + tube("M48 140H150V128") + tube("M88 140V112") + tube("M140 140V120", 5) +
+        pad(70, 98, 66, 13, 6) + pad(64, 40, 13, 62, 6, -10, 70, 100) +
+        figure([["M100 98L84 56", 13], ["M100 100L138 98"], ["M138 98L150 132"], ["M84 60L104 96", 8]], [82, 44]) +
+        tube("M118 104h-8", 5, C.frameDk) + grip(112, 104, 3.5) +
+        `<circle cx="138" cy="98" r="5" fill="${C.deep}" stroke="${C.frame}" stroke-width="2"/>` +
+        moving("M138 98L154 136", 6) + pad(144, 128, 22, 12, 6, 20, 155, 134).replace(C.pad, "currentColor").replace(C.padEdge, "currentColor"),
+
+      // Prensa de piernas sentado: respaldo reclinado, plataforma delante.
+      legPress: () =>
+        floor(10, 230) + stack(16, 30, 30, 120) +
+        tube("M31 30V20H70V60") + tube("M46 146H200") + cable("M70 60L176 96") +
+        tube("M120 146V112") + tube("M196 146V96", 6) +
+        pad(84, 104, 58, 13, 6, -6) + pad(60, 52, 14, 62, 6, -32, 82, 108) +
+        figure([["M100 104L70 66", 13], ["M100 104L148 84"], ["M148 84L176 104"], ["M74 70L108 108", 8]], [62, 56]) +
+        moving("M196 112V70", 5) + `<rect x="176" y="64" width="14" height="58" rx="4" fill="currentColor" transform="rotate(-8 183 93)"/>` +
+        grip(112, 112, 3.5),
+
+      // Press de pecho sentado: asas delante a la altura del pecho.
+      chestPress: () =>
+        floor(14, 226) + stack(16, 28, 30, 122) +
+        tube("M31 28V18H92") + tube("M46 146H150") + tube("M104 146V112") + tube("M92 18V36", 6) +
+        pad(84, 104, 54, 13, 6) + pad(80, 40, 13, 64, 6, -6, 86, 104) +
+        figure([["M108 102L94 56", 13], ["M108 104L146 102"], ["M146 102L148 140"], ["M96 60L124 70L150 66", 9]], [92, 44]) +
+        `<circle cx="92" cy="36" r="5" fill="${C.deep}" stroke="${C.frame}" stroke-width="2"/>` +
+        moving("M92 36C120 34 150 46 152 66", 6) + moving("M152 60V74", 6),
+
+      // Pectoral / Reverse Fly (de frente): asiento, respaldo alto y dos brazos.
+      pecMachine: () =>
+        floor(30, 210) +
+        tube("M96 150V24H144V150", 6, C.frameDk) + tube("M84 150h72", 6, C.deep) +
+        tube("M120 24V16", 6) + `<rect x="100" y="10" width="40" height="10" rx="4" fill="${C.shroud}" stroke="${C.shroudEdge}" stroke-width="1.4"/>` +
+        pad(104, 36, 32, 68, 8) + pad(98, 104, 44, 13, 6) + tube("M120 117V146", 7) +
+        figure([["M120 104V60", 15], ["M118 66L84 70", 9], ["M122 66L156 70", 9], ["M112 108L104 146"], ["M128 108L136 146"]], [120, 46]) +
+        `<circle cx="104" cy="28" r="4" fill="${C.deep}" stroke="${C.frame}" stroke-width="2"/><circle cx="136" cy="28" r="4" fill="${C.deep}" stroke="${C.frame}" stroke-width="2"/>` +
+        moving("M104 28L66 40V86", 6) + moving("M136 28L174 40V86", 6) +
+        moving("M66 60V86", 8) + moving("M174 60V86", 8),
+
+      // Remo sentado con apoyo de pecho: asas delante, pila delante.
+      cableRow: () =>
+        floor(10, 230) + stack(190, 26, 30, 124) +
+        tube("M205 26V16H150") + tube("M40 146H190") + tube("M70 146V112") + tube("M150 16V40", 6) +
+        tube("M140 146V60", 6) + pad(52, 104, 52, 13, 6) + pad(132, 52, 14, 52, 6, 6) +
+        figure([["M80 102L104 56", 13], ["M80 104L120 106"], ["M120 106L126 142"], ["M106 62L136 72L160 70", 9]], [108, 44]) +
+        `<circle cx="150" cy="40" r="5" fill="${C.deep}" stroke="${C.frame}" stroke-width="2"/>` +
+        moving("M150 40C162 48 166 58 164 72", 6) + moving("M164 62V80", 6),
+
+      // Jalón al pecho (polea alta): torre, brazo superior, barra ancha, rodillo de muslo.
+      pulldown: () =>
+        floor(14, 226) + stack(22, 36, 30, 114) +
+        tube("M37 36V18H112") + pulley(112, 22) + pulley(44, 22, 4) +
+        tube("M52 146H150") + tube("M118 146V112") + tube("M90 146V98", 5) +
+        pad(92, 112, 56, 13, 6) + pad(76, 90, 32, 11, 5) +
+        figure([["M124 110L120 66", 13], ["M124 112L92 104"], ["M92 104L90 142"], ["M120 72L104 54L108 42", 9]], [122, 54]) +
+        cable("M112 27V40") + moving("M88 46L112 40L136 46", 6) + grip(88, 46, 3.2) + grip(136, 46, 3.2),
+
+      // Asistida (dominadas y fondos): marco alto, rodillera que empuja hacia arriba.
+      assisted: () =>
+        floor(10, 230) + stack(176, 34, 30, 116) +
+        tube("M60 150V14H160V150") + tube("M60 150h-14M160 150h46") +
+        tube("M50 14H172", 6) + tube("M60 66H88M160 66h-28", 6) +
+        tube("M78 150v-14h64v14", 5, C.frameDk) +
+        figure([["M110 104V58", 15], ["M108 62L86 30L80 18", 9], ["M112 62L134 30L140 18", 9], ["M104 108L104 132"], ["M116 108L116 132"]], [110, 44]) +
+        moving("M74 120H146", 6) + pad(88, 112, 44, 12, 6).replace(C.pad, "currentColor").replace(C.padEdge, "currentColor") +
+        grip(80, 14, 4) + grip(140, 14, 4),
+
+      // Press de banca con barra: banco plano, soportes y barra con discos.
+      bench: () =>
+        floor(10, 230) +
+        tube("M150 150V44", 6) + tube("M150 64h-10", 5) + tube("M138 150h24", 6, C.deep) +
+        pad(40, 104, 116, 14, 6) + tube("M56 118V150M140 118V150", 6) + tube("M44 150h24M128 150h24", 6, C.deep) +
+        figure([["M60 98H128", 15], ["M64 100L40 114L32 150"], ["M120 98L132 74", 9]], [140, 94]) +
+        moving("M132 62H132", 6) + `<circle cx="132" cy="62" r="17" fill="none" stroke="currentColor" stroke-width="6"/><circle cx="132" cy="62" r="4" fill="currentColor"/>`,
+
+      // Contracción de pierna (flexión de cadera en zancada): columna, rodillo en el muslo.
+      lunge: () =>
+        floor(10, 230) + stack(20, 28, 30, 122) +
+        tube("M35 28V18H120V150") + tube("M50 146H200") + tube("M150 146h-30", 6, C.deep) +
+        tube("M120 70H142", 5) + grip(144, 70, 3.5) +
+        figure([["M150 102V58", 14], ["M150 66L144 70", 8], ["M148 104L176 130L196 146"], ["M150 104L130 90L134 128"]], [150, 44]) +
+        `<circle cx="120" cy="92" r="6" fill="${C.deep}" stroke="${C.frame}" stroke-width="2"/>` +
+        moving("M120 92L134 96", 6) + `<rect x="128" y="84" width="12" height="22" rx="5" fill="currentColor" transform="rotate(-10 134 95)"/>`,
+
+      // Elíptica: carcasa delantera, consola, brazos móviles, pedales.
+      elliptical: () =>
+        floor(10, 230) +
+        `<path d="M168 150V112c0-20 14-30 32-30s24 18 24 36v32Z" fill="${C.shroud}" stroke="${C.shroudEdge}" stroke-width="1.6"/>` +
+        tube("M30 150h200", 6, C.deep) + tube("M182 92L176 40", 6) +
+        `<rect x="160" y="26" width="34" height="18" rx="4" fill="${C.shroud}" stroke="${C.shroudEdge}" stroke-width="1.6" transform="rotate(-10 177 35)"/><rect x="166" y="30" width="22" height="9" rx="2" fill="${C.win}" transform="rotate(-10 177 35)"/>` +
+        figure([["M118 92L112 46", 14], ["M114 52L140 60L156 40", 9], ["M118 94L108 124L96 134"], ["M118 94L138 112L152 120"]], [110, 32]) +
+        moving("M184 106L156 34", 6) + moving("M60 140L184 112", 6) +
+        `<rect x="84" y="128" width="30" height="7" rx="3" fill="currentColor" transform="rotate(-12 99 131)"/><rect x="138" y="114" width="30" height="7" rx="3" fill="currentColor" transform="rotate(-12 153 117)"/>`,
+
+      // Bicicleta vertical.
+      bike: () =>
+        floor(10, 230) +
+        `<path d="M120 150V120c0-14 10-22 26-22s28 10 28 26v26Z" fill="${C.shroud}" stroke="${C.shroudEdge}" stroke-width="1.6"/>` +
+        tube("M50 150H190", 6, C.deep) + tube("M70 150L96 96L150 104") + tube("M96 96L90 64", 6) + tube("M150 104L168 46", 6) +
+        pad(72, 56, 34, 9, 4) +
+        `<rect x="156" y="30" width="30" height="16" rx="4" fill="${C.shroud}" stroke="${C.shroudEdge}" stroke-width="1.6"/>` +
+        figure([["M92 58L118 30", 14], ["M116 34L148 50", 9], ["M92 60L124 76L128 112"], ["M92 60L112 88L116 126"]], [124, 20]) +
+        moving("M164 50h14", 6) + `<circle cx="122" cy="118" r="7" fill="none" stroke="currentColor" stroke-width="4"/>` + moving("M122 118L130 130", 4),
+
+      // Cinta de andar.
+      treadmill: () =>
+        floor(10, 230) +
+        `<path d="M24 146H190l12-16H36Z" fill="${C.shroud}" stroke="${C.shroudEdge}" stroke-width="1.6"/>` +
+        `<path d="M168 130h34c8 0 10 6 10 12v4H190Z" fill="${C.deep}"/>` +
+        tube("M186 130L180 48", 6) + tube("M182 74H130", 5) +
+        `<rect x="164" y="34" width="40" height="18" rx="4" fill="${C.shroud}" stroke="${C.shroudEdge}" stroke-width="1.6" transform="rotate(-12 184 43)"/><rect x="170" y="38" width="28" height="9" rx="2" fill="${C.win}" transform="rotate(-12 184 43)"/>` +
+        figure([["M110 84L114 44", 14], ["M114 50L104 72L114 88", 8], ["M110 86L94 108L84 128"], ["M110 86L126 106L130 128"]], [116, 30]) +
+        moving("M40 130H190", 4),
     };
     function svgMachine(key) {
-      return `<svg viewBox="0 0 140 96" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">${MACHINE_ART[key] || ""}</svg>`;
+      const f = ART[key];
+      return f ? `<svg class="machine" viewBox="0 0 240 160" role="img" aria-hidden="true">${f()}</svg>` : "";
     }
-    // Bicicleta y Andar ya tienen un icono de categoría bueno y exacto
-    // (bike/footprints); no hace falta redibujarlos aquí.
     const MACHINE_ART_FOR = {
       dominadas_asistidas: "assisted", fondos_asistidos: "assisted",
       remo: "cableRow", reverse_fly: "pecMachine", pectoral: "pecMachine", extensora_hombros: "pecMachine",
       press_pecho: "chestPress", press_pierna_sentado: "legPress", extension_pierna: "legExtension",
       press_banca: "bench", contraccion_pierna: "lunge", estirar_abajo: "pulldown",
+      eliptica: "elliptical", bicicleta: "bike", andar: "treadmill",
     };
     // El icono/ilustración que va en la lista y en la cabecera al entrar:
     // el emoji que haya puesto el usuario manda siempre; si no, la
