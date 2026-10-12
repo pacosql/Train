@@ -44,6 +44,7 @@ reglas para no interferir con las demás:
 | 🏢 Nombre Empresa | [`empresa/`](./empresa) | `/Train/empresa/` | `empresa_` |
 | ✍️ Nombre Ortografía | [`nombreortografia/`](./nombreortografia) | `/Train/nombreortografia/` | `nombreortografia_` |
 | 📺 Series | [`series/`](./series) | `/Train/series/` | `series_` |
+| ✍️ Orto | [`orto/`](./orto) | `/Train/orto/` | `orto_` |
 
 ## Añadir una app nueva
 
