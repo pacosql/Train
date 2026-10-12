@@ -34,12 +34,12 @@ const fits = (v, k) => (k === "dec" ? isDec(v) : k === "pct" ? isPct(v) : k === 
 export const openOK = (h, lv) => LEVELS[lv].open.includes(h.k) && LEVELS[lv].pool.some((v) => same(v, h));
 
 // Escribe el valor v en la forma k (la fracción, a veces amplificada).
-function render(v, k, avoid) {
+function render(v, k, avoid, maxD = 30) {
   const s = simp(v);
   if (k === "dec" || k === "pct") return { k, ...s };
   // La tarta de una fracción escrita se parte en tantos trozos como dice el denominador.
   if (k === "pie" && avoid && avoid.k === "frac" && avoid.d <= 8) return { k, n: avoid.n, d: avoid.d };
-  const ks = [1, 2, 3, 4, 5].filter((m) => m * s.d <= (k === "pie" ? 8 : 30));
+  const ks = [1, 2, 3, 4, 5].filter((m) => m * s.d <= (k === "pie" ? 8 : maxD));
   for (const m of shuffle(ks)) {
     const h = { k, n: m * s.n, d: m * s.d };
     if (!avoid || label(h) !== label(avoid) || avoid.k !== k) return h;
@@ -49,13 +49,15 @@ function render(v, k, avoid) {
 // Mitades "casi" iguales al valor v: los errores típicos de la clase.
 function nearMisses(o, k) {
   const { n: p, d: q } = simp(o), out = [];
-  const add = (n, d) => n >= 1 && n < d && out.push({ k, n, d });
+  const add = (n, d) => n >= 1 && n < d && (d <= 20 || k === "dec" || k === "pct") && out.push({ k, n, d });
   if (k === "pie") [[o.n + 1, o.d], [o.n - 1, o.d], [o.n, o.d + 1], [o.n, o.d - 1], [o.d - o.n, o.d]].forEach(([n, d]) => d <= 10 && add(n, d));
   if (k === "frac") for (const m of [2, 3, 4]) [[p + m, q + m], [m * p, q + m], [m * p + 1, m * q], [m * p - 1, m * q], [m * p, m * q + 1], [q - p, q], [m * p, q]].forEach(([n, d]) => add(n, d));
-  const digits = [`${p}${q}`, `${q}`, `${p}`, `0${p}`, `${q}${p}`].filter((t) => t.length <= 3);
+  const digits = [`${p}${q}`, `${q}`, `${p}`, `0${p}`, `${q}${p}`].filter((t) => t.length <= 2);
   if (k === "dec") digits.forEach((t) => add(Number(t), 10 ** t.length));
   if (k === "pct") [`${p}${q}`, `${q}`, `${p}`, `${10 * p}`, `${q}${p}`].forEach((t) => Number(t) < 100 && add(Number(t), 100));
   if (k === "dec" || k === "pct") for (const x of [-10, -5, 5, 10]) add(Math.round((100 * p) / q) + x, 100);
+  // Si faltan, otras tartas con los mismos trozos pintados o el mismo número de trozos.
+  if (k === "pie") for (let d = 2; d <= 8; d++) add(o.n, d), add(Math.min(d - 1, o.n + 1), d);
   return out.map((h) => (k === "dec" || k === "pct" ? { k, ...simp(h) } : h)).filter((h) => !same(h, o) && fits(h, k));
 }
 // Una mitad cualquiera para el lado libre de una ficha, con valor distinto de o.
@@ -63,7 +65,7 @@ function freeHalf(o, lv, nextLv) {
   for (;;) {
     const v = pick(LEVELS[lv].pool), k = pick(LEVELS[lv].open);
     if (same(v, o) || !fits(v, k)) continue;
-    const h = render(v, k);
+    const h = render(v, k, null, [8, 24, 20, 20, 24][lv]);
     if (h && openOK(h, lv) && openOK(h, nextLv)) return h;
   }
 }
@@ -85,6 +87,8 @@ export function buildRound(level, open = null, nextLv = level) {
     for (const h of near.slice(0, 3)) tiles.push({ m: h, f: freeHalf(open, level, level), ok: false });
     const hand = shuffle(tiles).map((t) => (Math.random() < 0.5 ? { a: t.m, b: t.f, ...t } : { a: t.f, b: t.m, ...t }));
     if (hand.filter((t) => same(t.a, open) || same(t.b, open)).length !== 1) continue;
+    // Sin fichas repetidas (da igual hacia dónde estén giradas).
+    if (new Set(hand.map((t) => [t.a, t.b].map((h) => h.k + label(h)).sort().join("|"))).size !== 4) continue;
     return { level, open, hand, correct: hand.findIndex((t) => t.ok), hint: explain(open, good) };
   }
 }
@@ -101,15 +105,16 @@ function explain(o, g) {
       return `${label(o)} = ${label(g)}: ${o === lo ? "×" : "÷"} ${m} arriba y abajo`;
     }
     const s = simp(o);
-    return `${label(o)} = ${s.n}/${s.d} = ${label(g)}`;
+    return `${label(o)} = ${s.n}/${s.d} = ${label(g)}: ÷ ${o.n / s.n} y × ${g.n / s.n} arriba y abajo`;
   }
+  // Todas las formas del mismo valor, empezando por las fracciones que se ven.
   const s = simp(o), forms = [];
-  if (o.k === "frac" && (o.n !== s.n || o.d !== s.d)) forms.push(label(o));
+  for (const h of [o, g]) if (h.k === "frac") forms.push(label(h));
   forms.push(`${s.n}/${s.d}`);
   if (100 % s.d === 0 && s.d !== 100) forms.push(`${(100 * s.n) / s.d}/100`);
   if (isDec(s)) forms.push(decText(s));
   if (isPct(s)) forms.push(pctText(s));
-  return forms.join(" = ");
+  return [...new Set(forms)].join(" = ");
 }
 
 function halfHTML(h) {

@@ -25,7 +25,7 @@ export function buildRound(level) {
   } else if (type === "x11") {
     a = randInt(12, 99), b = 11, op = "×", ans = a * 11;
     const [d, u] = [Math.floor(a / 10), a % 10], s = d + u;
-    steps = [`${d} + ${u} = ${s}`, s < 10 ? `${d} (${s}) ${u} → ${ans}` : `${d} (${s}) ${u}: me llevo 1 → ${ans}`];
+    steps = [`${d} + ${u} = ${s}`, s < 10 ? `${d} (${s}) ${u} → ${ans}` : `${d} (${s}) ${u}: me llevo 1 → ${fmt(ans)}`];
     rule = `× 11 = la suma de las cifras en medio`;
   } else if (type === "d5") {
     a = 5 * randInt(3, level >= 4 ? 199 : 99), b = 5, op = "÷", ans = a / 5;

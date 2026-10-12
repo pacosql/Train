@@ -20,7 +20,7 @@ export function buildRound(level) {
   const terms = m <= 10 ? Array.from({ length: m }, (_, i) => f + i * s) : [f, f + s, f + 2 * s, "…", last];
   let hint;
   if (level === 2) {
-    hint = `${m} · ${m + 1} / 2 = ${fmt(m * (m + 1))} / 2 = ${fmt(total)} (la mitad porque cada pareja sale dos veces)`;
+    hint = `${m} · ${m + 1} / 2 = ${fmt(m * (m + 1))} / 2 = ${fmt(total)} (sumando del derecho y del revés salen ${m} parejas de ${m + 1}: es la suma dos veces)`;
   } else {
     const how = level >= 3 ? `Del ${f} al ${last}${s === 2 ? " de 2 en 2" : ""} hay ${m} números → ` : "";
     const p = Math.floor(m / 2);
