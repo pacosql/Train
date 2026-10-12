@@ -28,7 +28,7 @@ que ha marcado. Todo desde la raíz del repo `Train`.
      úsalas como inspiración (tipo de nombre, sonido, longitud) y súbele el
      peso a los estilos de las 👍. Para añadir más marcas: `tools/marcas.py`.
 3. ¿Hace falta tanda? Sí si hay comentarios nuevos, o 👍/⭐/🙅 nuevos
-   desde la última ejecución, o quedan **< 60 pendientes con score ≥ 70**.
+   desde la última ejecución, o quedan **< 100 pendientes con score ≥ 70**.
    Si no hace falta, registra con `log.py` y termina.
 4. **Genera** `empresa/tools/out/candidatos.txt` (con Write) con líneas
    `Nombre|por qué|c f m s d b` bajo cabeceras `# familia: …`, donde las
@@ -77,6 +77,14 @@ que ha marcado. Todo desde la raíz del repo `Train`.
   oficios, arquitectura, árboles + Labs/Works): no basta con «palabra
   española antigua»; lo que gusta es más concreto (tintero, escuadra,
   cartabón: útiles de escribir/dibujar/medir).
+- Comentarios (12/10, 17 h): le gustan **CarbonStudio**, **GraphiteStudio**
+  (grafito en inglés) y **TrailStudio**; insiste en que sea **compatible en
+  inglés y en español**. 👍 nuevos: GrafitoLabs, TipografiaLab,
+  AstilleroLab. Dirección: materiales de dibujar/escribir (carbón,
+  grafito, tinta, papel) y caminos (trail), una palabra legible en los dos
+  idiomas + Studio/Lab/Labs/Works.
+- Paco revisa ~150 nombres por hora: cada tanda debe cargar **≥ 300** y la
+  rutina debe lanzar tanda en cuanto queden < 100 pendientes buenos.
 - La cola nunca debe quedarse vacía: `cribar.py` carga cada 10 aprobados.
 
 ## Programación
