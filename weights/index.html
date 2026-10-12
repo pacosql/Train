@@ -608,6 +608,7 @@
         <div class="chip" data-cardio="eliptica">🏃 Elíptica</div>
         <div class="chip" data-cardio="bicicleta">🚴 Bicicleta</div>
         <div class="chip" data-cardio="andar">🚶 Andar</div>
+        <div class="chip" data-cardio="escaladora">🪜 Escaladora</div>
       </div>
     </section>
 
@@ -954,6 +955,32 @@
         `<circle cx="120" cy="92" r="6" fill="${C.deep}" stroke="${C.frame}" stroke-width="2"/>` +
         moving("M120 92L134 96", 6) + `<rect x="128" y="84" width="12" height="22" rx="5" fill="currentColor" transform="rotate(-10 134 95)"/>`,
 
+      // Extensora de hombros (vista lateral): sentado con la espalda apoyada,
+      // brazos delante a la altura del hombro que se llevan hacia atrás. La
+      // posición de salida va en tenue y la final en color, con la flecha.
+      shoulderExt: () =>
+        floor(14, 226) + stack(186, 30, 30, 120) +
+        tube("M201 30V18H112") + tube("M60 146H186") + tube("M96 146V112") + tube("M112 18V34", 6) +
+        pad(70, 104, 54, 13, 6) + pad(64, 30, 14, 74, 6, -4, 71, 104) +
+        figure([["M90 102L82 56", 13], ["M90 104L126 102"], ["M126 102L130 140"]], [80, 42]) +
+        `<circle cx="112" cy="34" r="5" fill="${C.deep}" stroke="${C.frame}" stroke-width="2"/>` +
+        `<g opacity=".35">${moving("M112 34L140 62", 5)}${grip(141, 63, 5)}${tube("M84 62L140 62", 8, "#fff")}</g>` +
+        `<g opacity=".34">${tube("M84 62L96 82", 8, "#fff")}</g>` +
+        moving("M112 34L100 80", 6) + grip(99, 82, 5.5) +
+        `<path d="M150 74Q140 96 112 96" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>` +
+        `<path d="M118 90l-8 6 8 5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`,
+
+      // Escaladora: escalera giratoria inclinada, barras laterales y consola.
+      stairs: () =>
+        floor(10, 230) +
+        `<path d="M40 150H196V128L120 54H96Z" fill="${C.shroud}" stroke="${C.shroudEdge}" stroke-width="1.6"/>` +
+        [0, 1, 2, 3, 4, 5].map((i) => `<path d="M${100 + i * 15} ${62 + i * 15}h16v6" fill="none" stroke="${C.plate}" stroke-width="3" stroke-linejoin="round"/>`).join("") +
+        tube("M96 54L80 40H50", 6) + tube("M120 54V20", 6) +
+        `<rect x="102" y="8" width="38" height="18" rx="4" fill="${C.shroud}" stroke="${C.shroudEdge}" stroke-width="1.6"/><rect x="108" y="12" width="26" height="9" rx="2" fill="${C.win}"/>` +
+        figure([["M118 92L114 50", 14], ["M114 56L96 66L84 58", 8], ["M118 94L126 106L116 124"], ["M118 94L138 104L140 120"]], [114, 36]) +
+        `<rect x="110" y="122" width="18" height="6" rx="2" fill="currentColor"/><rect x="132" y="116" width="18" height="6" rx="2" fill="currentColor"/>` +
+        moving("M64 40H84", 6),
+
       // Elíptica: carcasa delantera, consola, brazos móviles, pedales.
       elliptical: () =>
         floor(10, 230) +
@@ -990,10 +1017,10 @@
     }
     const MACHINE_ART_FOR = {
       dominadas_asistidas: "assisted", fondos_asistidos: "assisted",
-      remo: "cableRow", reverse_fly: "pecMachine", pectoral: "pecMachine", extensora_hombros: "pecMachine",
+      remo: "cableRow", reverse_fly: "pecMachine", pectoral: "pecMachine", extensora_hombros: "shoulderExt",
       press_pecho: "chestPress", press_pierna_sentado: "legPress", extension_pierna: "legExtension",
       press_banca: "bench", contraccion_pierna: "lunge", estirar_abajo: "pulldown",
-      eliptica: "elliptical", bicicleta: "bike", andar: "treadmill",
+      eliptica: "elliptical", bicicleta: "bike", andar: "treadmill", escaladora: "stairs",
     };
     // El icono/ilustración que va en la lista y en la cabecera al entrar:
     // el emoji que haya puesto el usuario manda siempre; si no, la
@@ -1174,6 +1201,7 @@
       eliptica: { pos: "footprints" },
       bicicleta: { pos: "armchair" },
       andar: { pos: "footprints" },
+      escaladora: { pos: "footprints" },
       dominadas_asistidas: { pos: "footprints", motion: "arrow-up-down" },
       fondos_asistidos: { pos: "footprints", motion: "arrow-up-down" },
       remo: { pos: "armchair", motion: "arrow-left-right" },

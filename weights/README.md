@@ -85,10 +85,10 @@ pueden incrustar aquí.
 
 - **`ART`**: una función por familia de máquina (extensión y prensa de
   pierna, press de pecho, pec-deck, remo con apoyo de pecho, jalón,
-  asistida, banco con barra, flexión de cadera en zancada, elíptica,
-  bici y cinta). Varias fichas comparten dibujo cuando son la misma
-  máquina mecánicamente: Pectoral, Reverse Fly y Extensora de Hombros
-  son el mismo pec-deck, visto de frente.
+  asistida, banco con barra, flexión de cadera en zancada, extensora
+  de hombros, elíptica, bici, cinta y escaladora). Varias fichas comparten dibujo cuando son la misma
+  máquina mecánicamente: Pectoral y Reverse Fly son el mismo pec-deck,
+  visto de frente.
 - **Color**: solo va en el color del tipo de movimiento (azul empuje,
   ámbar tirón, violeta cardio) lo que mueves tú, las asas, la palanca o
   el rodillo, y el pin de la pila. Así se ve de un vistazo qué parte
