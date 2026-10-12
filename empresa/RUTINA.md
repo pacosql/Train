@@ -92,6 +92,11 @@ que ha marcado. Todo desde la raíz del repo `Train`.
   gusta**; **trail como en «trailblazers»**. Tanda 10: objeto de
   papel/tinta (Paperfox, Inkblade), estilo trailblazer (Inkblazer,
   Trailsmith) y material + dirección/trazo.
+- 👍 (12/10, 20 h): **Tinta + palabra inglesa corta** es lo que más gusta
+  (TintaGrid, TintaPoint, TintaForge, TintaNorth, TintaArc), también
+  SepiaSquare/Grid/Fold, GrafitoTrail, Inkblazer, CaligrafiaStudio,
+  EstilograficaLab, SketchPaperStudio. Patrón: **material de escribir en
+  español + sustantivo inglés de 4-5 letras**. Tanda 11 lo explora a fondo.
 - Paco revisa ~150 nombres por hora: cada tanda debe cargar **≥ 300** y la
   rutina debe lanzar tanda en cuanto queden < 100 pendientes buenos.
 - La cola nunca debe quedarse vacía: `cribar.py` carga cada 10 aprobados.
