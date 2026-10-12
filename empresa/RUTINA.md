@@ -50,7 +50,7 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 - Busca el nombre de una **SL paraguas** (venture studio): desarrollador
   de Mates10 y de apps de vocabulario/ortografía en App Store y Google
   Play, y nombre en facturas de consultoría a EE. UU.
-- Tiene que **sonar bien en inglés y en español** y tener sentido.
+- Tiene que **entenderse sobre todo en inglés** (y sonar bien en español) y tener sentido.
 - Le gusta **«Blue»** (p. ej. «Blue Studio»); propuso «azul studio» y
   «studiolab».
 - Lo que termina en **«Apps»**: 🙅 (12/10, «eso no me interesa»): peso
@@ -97,6 +97,14 @@ que ha marcado. Todo desde la raíz del repo `Train`.
   SepiaSquare/Grid/Fold, GrafitoTrail, Inkblazer, CaligrafiaStudio,
   EstilograficaLab, SketchPaperStudio. Patrón: **material de escribir en
   español + sustantivo inglés de 4-5 letras**. Tanda 11 lo explora a fondo.
+- **Giro (12/10 noche)**: «me gusta mucho **Studio**, me gusta mucho
+  **Azul**, pero quiero que sea **principalmente entendible en inglés**;
+  me gusta **Stone** (Stone Studio); como **Pixar** (Toy Story y Pixar):
+  un nombre chulo». → Las mezclas español+inglés (TintaGrid…) bajan de
+  peso. Prioridad: nombre propio corto que funcione en inglés + Studio,
+  con Azul o Stone como guiño (Azulfox, Azulkite, Inkstone Studios,
+  Stonewren Studio). Azul + palabra inglesa corta suele tener el .com
+  libre incluso sin «Studio».
 - Paco revisa ~150 nombres por hora: cada tanda debe cargar **≥ 300** y la
   rutina debe lanzar tanda en cuanto queden < 100 pendientes buenos.
 - La cola nunca debe quedarse vacía: `cribar.py` carga cada 10 aprobados.
