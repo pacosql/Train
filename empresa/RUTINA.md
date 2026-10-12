@@ -118,6 +118,11 @@ que ha marcado. Todo desde la raíz del repo `Train`.
   buena. Comentario: «Quevedo Studios o Góngora Studios, busca algo
   original» → figuras con nombre propio (escritores, científicos) +
   Studios.
+- 👍 (12/10, 22 h): **Azulnova**, **QuevedoStudios**, **GaudiStudios**.
+  Dos líneas vivas: Azul + astro/cielo (Azulnorth ⭐, Azulnova) y figura
+  española con nombre propio + Studios (Quevedo, Gaudí). Ojo: la criba
+  veta por error nombres que contienen una marca corta (GongoraStudio ⊃
+  «ORA STUDIO»); si Paco pidió el nombre, rescátalo.
 - Paco revisa ~150 nombres por hora: cada tanda debe cargar **≥ 300** y la
   rutina debe lanzar tanda en cuanto queden < 100 pendientes buenos.
 - La cola nunca debe quedarse vacía: `cribar.py` carga cada 10 aprobados.
