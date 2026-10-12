@@ -123,6 +123,10 @@ que ha marcado. Todo desde la raíz del repo `Train`.
   española con nombre propio + Studios (Quevedo, Gaudí). Ojo: la criba
   veta por error nombres que contienen una marca corta (GongoraStudio ⊃
   «ORA STUDIO»); si Paco pidió el nombre, rescátalo.
+- 👍 desde el buscador (12/10, 23 h): **Pacostudios**, **Tizastudios** →
+  palabra corta (4-5 letras) + **Studios** en plural. Tanda 15 lo explora
+  (palabra española corta / inglesa corta + studios, y variantes con
+  «Paco»).
 - Paco revisa ~150 nombres por hora: cada tanda debe cargar **≥ 300** y la
   rutina debe lanzar tanda en cuanto queden < 100 pendientes buenos.
 - La cola nunca debe quedarse vacía: `cribar.py` carga cada 10 aprobados.
