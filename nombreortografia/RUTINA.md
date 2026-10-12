@@ -163,6 +163,11 @@ rellena siempre que queden < 40 pendientes buenos.
   sufijos de marca (App, Web, Lab, Club, Hub, Play, Go, Diario, Ya…) y
   Orthografia + número. Vetados: Ortografia10Online, Plus, Test.
 
+- 13/10 madrugada: tanda 10 sin revisar (26 pendientes). Tanda 11 (15):
+  hermanas de la marca + sufijo (Ortografia100Web, Ortografia365Diario,
+  Lengua10Club, Lengua100…) para pasar de 40. Sin feedback nuevo no tiene
+  sentido seguir apilando: a partir de aquí, si la cola tiene ≥ 40, nada.
+
 ## Programación
 
 - Cron de sesión cada 15 min (CronCreate) + Routine horaria de respaldo que
