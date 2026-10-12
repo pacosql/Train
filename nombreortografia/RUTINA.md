@@ -109,6 +109,19 @@ nuevo de lo que aprender.
   Se quedaron sin cargar por el tope (siguiente tanda si sigue el gusto):
   Orto + palabra (OrtoDiez, OrtoCopa, OrtoApto…) y Tilde + palabra.
 
+- Tanda 4 revisada (12/10): 15 👍 de 50. **Nota máxima** arrasa: Diez
+  (DiezDeOrtografia, OrtografiaDeDiez), Cien (OrtografiaCien,
+  CienOrtografia), MatriculaOrtografia, OrtografiaSobresaliente, Apto/Apta.
+  Adjetivos simples: Clara, Sencilla, Super, Prime, Mejor. Entrenar:
+  OrtografiaGimnasio, OrtografiaForma. 👎 a lo competitivo (Medalla, Oro,
+  Podio, Campeón, Ganadora, Victoria), a la velocidad (Veloz, Turbo,
+  Exprés), a Notable/Nueve (no es la máxima) y a Genial/Guay/Crack/Vip.
+- Tanda 5 (12/10): **Ortografia10** (gemela de Mates10; .com libre, puesto
+  el primero de la cola junto a Lengua10 y Tildes10), Ortografia100, más
+  nota máxima (CienPorCien, Pleno, Matrícula de Honor), adjetivos simples
+  (Simple, Exacta, Precisa, Lista), palabra + Ortografía y Orto + palabra.
+  orto10.com ocupado.
+
 ## Programación
 
 - Cron de sesión cada 15 min (CronCreate) + Routine horaria de respaldo que
