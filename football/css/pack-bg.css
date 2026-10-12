@@ -69,7 +69,7 @@
   content: ""; position: absolute; left: -8px; right: -8px; top: 50%; height: 0;
   border-top: 3px dashed var(--danger); transform: translateY(-1.5px);
 }
-.dm-nodots { font-size: 2.4rem; font-weight: 800; color: var(--accent); padding: 8px 0; }
+.dm-nodots { font-size: 2.4rem; font-weight: 800; color: color-mix(in srgb, var(--accent) 65%, var(--text)); padding: 8px 0; }
 .dm-line { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 1.25rem; font-weight: 700; flex-wrap: wrap; }
 .dm-slot { width: 84px; height: 50px; font-size: 1.35rem; }
 @keyframes dm-pop { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
@@ -119,13 +119,14 @@
 .dp-table { display: grid; gap: 0; border: 2px solid var(--text); border-radius: 6px; overflow: hidden; background: var(--card); }
 .dp-table span { display: flex; align-items: center; justify-content: center; width: 54px; height: 32px; border-left: 2px solid var(--text); font-weight: 800; }
 .dp-table span:nth-child(1), .dp-table span.dp-first { border-left: none; }
-.dp-table .dp-h { background: color-mix(in srgb, var(--accent) 16%, var(--card)); color: var(--accent); font-size: 0.82rem; border-bottom: 2px solid var(--text); }
+.dp-table .dp-h { background: color-mix(in srgb, var(--accent) 16%, var(--card)); color: color-mix(in srgb, var(--accent) 65%, var(--text)); font-size: 0.82rem; border-bottom: 2px solid var(--text); }
 .dp-table .dp-d { font-size: 1.4rem; font-family: ui-monospace, "SF Mono", Menlo, monospace; }
 .dp-table .dp-d.dp-empty { color: var(--muted); font-weight: 400; }
 .dp-table .dp-d.good { color: var(--good); }
 .dp-eq { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 5px 6px; font-size: 1.15rem; font-weight: 700; padding: 4px 0; max-width: 100%; }
-.dp-eq .dp-num { font-size: 1.5rem; font-weight: 800; color: var(--accent); font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+.dp-eq .dp-num { font-size: 1.5rem; font-weight: 800; color: color-mix(in srgb, var(--accent) 65%, var(--text)); font-family: ui-monospace, "SF Mono", Menlo, monospace; }
 .dp-eq .dp-u { color: var(--muted); font-size: 0.95rem; font-weight: 700; }
+.dp-grp { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
 .dp-slot { width: 46px; height: 44px; font-size: 1.15rem; }
 .dp-slot.dp-wide { width: 76px; }
 .dp-slot.dp-xwide { width: 104px; }

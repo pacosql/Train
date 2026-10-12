@@ -36,7 +36,7 @@ export function buildRound(level) {
     else if (level <= 2) { d = randInt(2, 9); D = randInt(100, 999); }
     else if (level === 3) { d = randInt(11, 39); D = randInt(150, 9999); }
     else { d = randInt(2, 9); D = randInt(20, 999); }
-    if (d % 10 === 0) continue;
+    if (d % 10 === 0 || D % 100 === 0) continue; // 200 : 2 no enseña nada
     digits = String(D).split("").map(Number);
     if (dec) digits.push(0); // el ",0" que se añade para sacar décimas
     steps = divide(digits, d);

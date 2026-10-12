@@ -75,7 +75,8 @@ export function mountDescomponGame(container, { client, onExit }) {
     const num = `<span class="dp-num" data-num>${fmt(round.n)}</span>`;
     if (form === "A") return `${num} <span>=</span> ${slots.map((s, i) => `${slotBtn(i)} <span class="dp-u">${places[i]}</span>${i < slots.length - 1 ? " <span>+</span>" : ""}`).join(" ")}`;
     if (form === "B") return `${num} <span>=</span> ${slots.map((s, i) => `${slotBtn(i, ["dp-xwide", "dp-wide", "dp-wide", ""][4 - slots.length + i])}${i < slots.length - 1 ? " <span>+</span>" : ""}`).join(" ")}`;
-    if (form === "C") return slots.map((s, i) => `${slotBtn(i)} <span class="dp-u">${words[i]}</span>${i < slots.length - 2 ? "<span>,</span>" : i === slots.length - 2 ? ' <span class="dp-u">y</span>' : ""}`).join(" ");
+    // cada casilla va pegada a su palabra (y a su coma) para que la frase no se parta mal
+    if (form === "C") return slots.map((s, i) => `<span class="dp-grp">${slotBtn(i)} <span class="dp-u">${words[i]}${i < slots.length - 2 ? "," : ""}</span>${i === slots.length - 2 ? ' <span class="dp-u">y</span>' : ""}</span>`).join(" ");
     return `${terms.map((t) => `<span class="dp-num">${t.d}</span> <span class="dp-u">${places[t.i]}</span>`).join(" <span>+</span> ")} <span>=</span> ${slotBtn(0, "dp-xwide")}`;
   }
 
