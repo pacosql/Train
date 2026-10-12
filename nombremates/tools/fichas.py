@@ -26,6 +26,5 @@ for f in json.load(open(os.path.join(AQUI, "fichas.json"), encoding="utf-8")):
     medidas["tipo"] = f["tipo"]
     n = urllib.parse.quote(f["nombre"])  # tildes y eñes en la URL
     filas = req("PATCH", f"{BASE}?nombre=ilike.{n}", {"medidas": medidas, "score": total, "score_motivo": "Claude: " + f["por_que"]})
-    # Los pendientes, en la cola por puntuación (los mejores primero).
-    req("PATCH", f"{BASE}?nombre=ilike.{n}&status=eq.pendiente", {"orden": round((100 - total) * 10)})
+    # El orden de la cola no se toca aquí: va por gusto previsto de Paco (minar.py), no por nota.
     print(total, f["nombre"], "→", len(filas), "fila(s)")
