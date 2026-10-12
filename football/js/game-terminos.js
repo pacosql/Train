@@ -168,7 +168,7 @@ export function mountTerminosGame(container, { client, onExit }) {
       lives--;
       renderLives();
       const go = () => { clearTimeout(pending); lives <= 0 ? finish(false) : nextRound(); };
-      feedback.innerHTML = `Ese es ${btn.dataset.role === "parcial" ? "un resto parcial" : `el ${btn.dataset.role}`}. 💡 ${round.hint} <button type="button" class="tm-next" data-next>Siguiente →</button>`;
+      feedback.innerHTML = `Has tocado ${{ parcial: "un resto parcial", suma: "la suma", diferencia: "la diferencia", sumando: "un sumando", factor: "un factor" }[btn.dataset.role] || `el ${btn.dataset.role}`}. 💡 ${round.hint} <button type="button" class="tm-next" data-next>Siguiente →</button>`;
       feedback.className = "feedback bad tm-feedback";
       feedback.querySelector("[data-next]").addEventListener("click", go);
       pending = setTimeout(go, 3000);

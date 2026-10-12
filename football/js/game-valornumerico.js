@@ -77,7 +77,7 @@ export function buildRound(level) {
   if (level >= 4) {
     const f = pick(FORMULAS)();
     const ks = Object.keys(f.vals);
-    return { ...f, level, def: `${f.name}: ${f.def}`, given: ks.map((k) => `${V(k)} = ${f.vals[k]}`).join(", "),
+    return { ...f, level, given: ks.map((k) => `${V(k)} = ${f.vals[k]}`).join(", "),
       answers: [...ks.map((k) => f.vals[k]), f.value], hint: `Cambio ${ks.map((k) => `la ${V(k)} por ${f.vals[k]}`).join(", ")}: ${f.calc}` };
   }
   if (level === 3) {
@@ -134,6 +134,7 @@ export function mountValornumericoGame(container, { client, onExit }) {
     body.innerHTML = `
       <p class="prompt vn-prompt">Sustituye y calcula</p>
       <div class="vn-cuaderno">
+        ${round.name ? `<div class="vn-name">${round.name}</div>` : ""}
         <div class="vn-def">${round.def}</div>
         ${round.given ? `<div class="vn-given">con ${round.given}</div>` : ""}
         <div class="vn-work">${slots(round.work)}</div>

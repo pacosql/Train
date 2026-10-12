@@ -14,7 +14,9 @@ const gcd = (a, b) => (b ? gcd(b, a % b) : a);
 const S = (n, r = false) => ({ n, r });
 const val = (s) => (s.r ? Math.sqrt(s.n) : s.n);
 const str = (s) => (s.r ? `√${s.n}` : `${s.n}`);
-const html = (s) => (s.r ? `√<span class="tg-rad">${s.n}</span>` : `${s.n}`);
+const SQ = '<svg class="tg-sym" viewBox="0 0 10 20" preserveAspectRatio="none" aria-hidden="true"><path d="M0 12 L2.5 10.5 L6 19 L10 1"/></svg>';
+const rootH = (inner) => `<span class="tg-rad">${SQ}<span class="tg-ra">${inner}</span></span>`;
+const html = (s) => (s.r ? rootH(s.n) : `${s.n}`);
 const same = (a, b) => a.n === b.n && a.r === b.r;
 
 // Niveles: 0 seno · 1 coseno · 2 tangente · 3 los tres mezclados ·
@@ -90,7 +92,7 @@ function figure(r) {
   const others = [C, Hd, Vt].filter((v) => v !== A), u1 = unit(A, others[0]), u2 = unit(A, others[1]), R = 24;
   const sweep = u1[0] * u2[1] - u1[1] * u2[0] > 0 ? 1 : 0;
   const arc = `<path class="tg-arc" d="M${(A[0] + u1[0] * R).toFixed(1)} ${(A[1] + u1[1] * R).toFixed(1)} A${R} ${R} 0 0 ${sweep} ${(A[0] + u2[0] * R).toFixed(1)} ${(A[1] + u2[1] * R).toFixed(1)}"/>`;
-  const bis = unit([0, 0], [u1[0] + u2[0], u1[1] + u2[1]]), RL = r.ang === "α" ? 38 : 46;
+  const bis = unit([0, 0], [u1[0] + u2[0], u1[1] + u2[1]]), RL = r.ang === "α" ? 36 : 46;
   const angLab = t(A[0] + bis[0] * RL, A[1] + bis[1] * RL + 5, r.ang === "α" ? `<tspan class="tg-it">α</tspan>` : r.ang, "tg-ang");
   // rótulos de los lados, por fuera
   const side = (F, T, s) => {
@@ -168,7 +170,7 @@ export function mountTrigoGame(container, { client, onExit }) {
   function paint() {
     body.querySelectorAll("[data-slot]").forEach((b) => {
       const s = typed[+b.dataset.slot];
-      b.innerHTML = s.r ? `√<span class="tg-rad">${s.d || "&nbsp;"}</span>` : s.d;
+      b.innerHTML = s.r ? rootH(s.d || "&nbsp;") : s.d;
       b.classList.toggle("active", +b.dataset.slot === active);
     });
   }

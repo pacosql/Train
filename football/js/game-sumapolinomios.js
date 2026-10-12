@@ -17,11 +17,11 @@ const term = (c, g) => (c < 0 ? M : "") + (Math.abs(c) === 1 && g ? "" : Math.ab
 const degs = (p) => p.map((_, g) => g).filter((g) => p[g] !== 0).reverse();
 // Polinomio p[g] = coeficiente de grado g, del mayor al menor, cada término
 // en un <span> con su color de grado (para colorear los semejantes).
-const poly = (p, color = true) =>
+const poly = (p, color = true, shift = 0) =>
   degs(p).map((g, i) => {
     const c = p[g], s = i === 0 ? (c < 0 ? M : "") : c < 0 ? ` ${M} ` : " + ";
     const t = s + (Math.abs(c) === 1 && g ? "" : Math.abs(c)) + xp(g);
-    return color ? `<span class="sp2-t sp2-g${g}">${t}</span>` : t;
+    return color ? `<span class="sp2-t sp2-g${g + shift}">${t}</span>` : t;
   }).join("");
 const comb = (a, b) => `${neg(a)} ${b < 0 ? M : "+"} ${Math.abs(b)} = ${neg(a + b)}`;
 
@@ -36,8 +36,8 @@ export function buildRound(level) {
     const mono = term(k, 1);
     const prods = degs(q).map((g) => `${mono} · ${q[g] < 0 ? `(${term(q[g], g)})` : term(q[g], g)} = ${term(k * q[g], g + 1)}`);
     return { level, op: "·", p: [0, k], q, r, ds, answers: ds.map((g) => r[g]),
-      problem: `<span class="sp2-t sp2-mono">${mono}</span>(${poly(q, false)}) =`,
-      hint: `Multiplico ${mono} por cada término: ${prods.join("; ")}${k < 0 ? " (menos por menos, más)" : ""}` };
+      problem: `<span class="sp2-mono">${mono}</span>(${poly(q, true, 1)}) =`, // cada término con el color de su producto
+      hint: `Multiplico ${mono} por cada término: ${prods.join("; ")}${k < 0 ? (q.some((c) => c < 0) ? " (ojo: menos por menos, más)" : " (ojo: menos por más, menos)") : ""}` };
   }
   const op = level === 2 || (level === 3 && Math.random() < 0.5) ? "−" : "+";
   const deg = level === 0 ? 1 : 2;

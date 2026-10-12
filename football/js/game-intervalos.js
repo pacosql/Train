@@ -116,7 +116,7 @@ export function mountIntervalosGame(container, { client, onExit }) {
         <div data-recta></div>
         ${mode === "dibujar" ? `<p class="iv-help">Toca los dos extremos; toca un extremo para llenarlo ● o vaciarlo ○</p>` : writeRow}
       </div>
-      ${mode === "dibujar" ? `<button type="button" class="primary iv-ok" data-ok>✓ Comprobar</button>` : `<div class="keypad iv-keypad" data-keypad></div>
+      ${mode === "dibujar" ? `<button type="button" class="primary iv-check" data-ok>✓ Comprobar</button>` : `<div class="keypad iv-keypad" data-keypad></div>
       <button type="button" class="choice-btn keypad-sign iv-sign" data-sign>${M} cambiar signo</button>`}
       <div class="feedback iv-feedback" data-feedback></div>
     `;

@@ -44,7 +44,7 @@ export function buildRound(level) {
   const who = K.names ? "al número" : "al primero";
   const pre = K.par === 0 ? "Los pares van de 2 en 2. " : K.par === 1 ? "Los impares van de 2 en 2. " : "";
   const hint = `${pre}Llamo ${X} ${who}: ${steps}. Son ${list(vals)} (${vals.join(" + ")} = ${S} ✓)`;
-  return { level, kind, text: `${K.text} suman ${S}. ${K.names ? "¿Cuáles son?" : "¿Cuáles son?"}`, t: K.t, names: K.names || null, x, S, answers: vals, hint };
+  return { level, kind, text: `${K.text} suman ${S}. ¿Cuáles son?`, t: K.t, names: K.names || null, x, S, answers: vals, hint };
 }
 
 export function mountConsecutivosGame(container, { client, onExit }) {

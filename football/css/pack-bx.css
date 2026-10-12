@@ -1,0 +1,120 @@
+/* Pack BX — ESO "como en el libro": "Progresiones" (.pg-), "Regla de
+   Laplace" (.lp-), "Repartos proporcionales" (.rt-), "Interés simple"
+   (.is-) y "Cambio de moneda" (.cv-). Hoja cuadriculada, fórmulas con
+   subíndices y fracciones con raya, casillas que se tocan y se rellenan
+   con el teclado (activa = borde acento, bien = verde, mal = rojo con la
+   correcta al lado). */
+
+/* ---------- común ---------- */
+.game-body:is(.pg-body, .lp-body, .rt-body, .is-body, .cv-body) { justify-content: flex-start; padding: 10px 10px 8px; }
+.game-body:is(.pg-body, .lp-body, .rt-body, .is-body, .cv-body):has(> .end-card) { justify-content: center; }
+.prompt:is(.pg-prompt, .lp-prompt, .rt-prompt, .is-prompt, .cv-prompt) { font-size: 1.08rem; margin: 0 0 7px; line-height: 1.3; }
+.feedback:is(.pg-feedback, .lp-feedback, .rt-feedback, .is-feedback, .cv-feedback) {
+  margin-top: 7px; line-height: 1.4; text-align: center; max-width: 370px; font-size: 0.86rem;
+}
+.keypad:is(.pg-keypad, .lp-keypad, .rt-keypad, .is-keypad, .cv-keypad) { margin-top: 9px; max-width: 270px; gap: 6px; }
+.keypad:is(.pg-keypad, .lp-keypad, .rt-keypad, .is-keypad, .cv-keypad) .keypad-key { padding: 9px 8px; font-size: 1.2rem; }
+.keypad:is(.pg-keypad, .lp-keypad, .rt-keypad, .is-keypad, .cv-keypad) .keypad-key.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.keypad-key:is(.pg-ok, .lp-ok, .is-ok, .cv-ok) { grid-column: 1 / -1; padding: 7px 8px; }
+
+/* hoja de cuaderno: cuadrícula tenue con var(--border) */
+:is(.pg-cuaderno, .lp-cuaderno, .rt-cuaderno, .is-cuaderno, .cv-cuaderno) {
+  width: 100%; max-width: 376px; box-sizing: border-box; border-radius: 10px;
+  border: 1px solid var(--border); background-color: var(--card);
+  background-image:
+    repeating-linear-gradient(to right, var(--border) 0 1px, transparent 1px 22px),
+    repeating-linear-gradient(to bottom, var(--border) 0 1px, transparent 1px 22px);
+  background-size: 22px 22px; padding: 10px 8px;
+  font-family: "Cambria Math", "STIX Two Math", Cambria, Georgia, "Times New Roman", serif;
+  font-size: 1.2rem; line-height: 1.85; text-align: center; color: var(--text);
+}
+:is(.pg-cuaderno, .lp-cuaderno, .rt-cuaderno, .is-cuaderno, .cv-cuaderno, .pg-feedback, .lp-feedback, .is-feedback) i {
+  font-style: italic; font-family: Georgia, "Times New Roman", serif;
+}
+:is(.pg-cuaderno, .lp-cuaderno, .is-cuaderno, .pg-feedback, .is-feedback) :is(sub, sup) { font-size: 0.65em; line-height: 0; }
+:is(.pg-row, .lp-row, .rt-row, .is-row, .cv-row) { white-space: nowrap; }
+
+/* casillas */
+:is(.pg-slot, .lp-slot, .rt-slot, .is-slot, .cv-slot) {
+  font: inherit; font-family: system-ui, sans-serif; font-weight: 800; color: var(--text); cursor: pointer;
+  background: var(--bg); border: 2px solid var(--border); border-radius: 7px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 3px; padding: 0 3px;
+  min-width: 40px; height: 34px; font-size: 1.05rem; vertical-align: middle; margin: 1px 2px; line-height: 1;
+}
+:is(.pg-slot, .lp-slot, .rt-slot, .is-slot, .cv-slot).active {
+  border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+:is(.pg-slot, .lp-slot, .rt-slot, .is-slot, .cv-slot).good { background: var(--good); border-color: var(--good); color: #fff; }
+:is(.pg-slot, .lp-slot, .rt-slot, .is-slot, .cv-slot).bad {
+  background: color-mix(in srgb, var(--danger) 14%, var(--bg)); border-color: var(--danger); color: var(--danger);
+}
+:is(.pg-slot, .lp-slot, .rt-slot, .is-slot, .cv-slot) s { font-size: 0.72em; font-weight: 700; }
+:is(.pg-want, .lp-want, .rt-want, .is-want, .cv-want) {
+  background: var(--good); color: #fff; border-radius: 5px; padding: 1px 4px; font-size: 0.95em; line-height: 1.2;
+}
+
+/* botón "Siguiente →" dentro del feedback al fallar */
+:is(.pg-next, .lp-next, .rt-next, .is-next, .cv-next) {
+  display: inline-block; margin-left: 6px; font: inherit; font-weight: 800; font-size: 0.8rem;
+  color: #fff; background: var(--danger); border: none; border-radius: 8px; padding: 4px 10px; cursor: pointer;
+}
+
+/* fracción con raya, como en el libro */
+:is(.pg-frac, .lp-frac, .rt-frac, .is-frac) {
+  display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; margin: 0 3px; line-height: 1.3;
+}
+:is(.pg-frac, .lp-frac, .rt-frac, .is-frac) > span:first-child { border-bottom: 2px solid currentColor; padding: 0 4px 2px; }
+:is(.pg-frac, .lp-frac, .rt-frac, .is-frac) > span:last-child { padding-top: 2px; }
+
+/* echo: lo escrito en una casilla se copia en las líneas de abajo */
+:is(.rt-echo, .cv-echo) { font-family: system-ui, sans-serif; font-weight: 700; color: var(--accent); min-width: 1ch; display: inline-block; }
+
+/* enunciados */
+:is(.rt-enun, .is-enun, .cv-enun) {
+  font-family: system-ui, sans-serif; font-size: 0.98rem; line-height: 1.4; white-space: normal;
+  padding: 0 4px 6px; margin-bottom: 4px; border-bottom: 1px dashed var(--border);
+}
+
+/* ---------- Progresiones ---------- */
+.pg-seq { font-size: 1.45rem; font-weight: 700; letter-spacing: 0.5px; padding-bottom: 2px; }
+.pg-cuaderno .pg-row:nth-child(n + 2) { font-size: 1.15rem; }
+
+/* ---------- Regla de Laplace ---------- */
+.lp-pic { display: block; width: 100%; max-width: 330px; height: auto; margin: 0 auto 2px; }
+.lp-bag { fill: color-mix(in srgb, #b07a3a 22%, var(--card)); stroke: #9a6a32; stroke-width: 3; }
+.lp-tie { fill: none; stroke: #9a6a32; stroke-width: 3; stroke-linejoin: round; }
+.lp-ball { stroke: rgba(0, 0, 0, 0.35); stroke-width: 1.5; }
+.lp-ball.lp-fav { stroke: var(--text); stroke-width: 3.5; }
+.lp-die { fill: var(--bg); stroke: var(--border); stroke-width: 2.5; }
+.lp-die.lp-fav { fill: color-mix(in srgb, var(--good) 30%, var(--bg)); stroke: var(--good); stroke-width: 3.5; }
+.lp-pip { fill: var(--text); }
+.lp-card { fill: var(--bg); stroke-width: 1.6; }
+.lp-card.lp-fav { fill: color-mix(in srgb, var(--good) 35%, var(--bg)); stroke: var(--good); stroke-width: 3; }
+.lp-cardtxt { font-family: system-ui, sans-serif; font-size: 14px; font-weight: 800; text-anchor: middle; }
+.lp-suit { font-family: system-ui, sans-serif; font-size: 13px; font-weight: 800; }
+.lp-legend { font-family: system-ui, sans-serif; font-size: 0.72rem; color: var(--muted); line-height: 1.2; margin-bottom: 2px; }
+.lp-law { font-size: 0.95rem; color: var(--muted); line-height: 1.5; }
+.lp-law .lp-frac { font-family: system-ui, sans-serif; font-size: 0.8rem; }
+.lp-row { font-size: 1.2rem; }
+
+/* ---------- Repartos proporcionales ---------- */
+.rt-cuaderno { line-height: 1.75; font-size: 1.12rem; }
+.rt-inv { color: var(--danger); text-decoration: underline; }
+.rt-frac { font-size: 0.95em; }
+
+/* ---------- Interés simple ---------- */
+.is-cuaderno { line-height: 1.8; }
+.is-note { font-family: system-ui, sans-serif; font-size: 0.7rem; color: var(--muted); }
+.is-row .is-frac { font-size: 1rem; }
+
+/* ---------- Cambio de moneda ---------- */
+.cv-row { font-size: 1.2rem; }
+.cv-tabla {
+  margin: 6px auto; border-collapse: collapse; font-family: system-ui, sans-serif; font-size: 1.15rem;
+  background: var(--card);
+}
+.cv-tabla :is(th, td) { border: 2px solid var(--text); padding: 4px 12px; min-width: 56px; text-align: center; font-weight: 700; }
+.cv-tabla th { background: color-mix(in srgb, var(--accent) 16%, var(--card)); font-size: 1.1rem; }
+.cv-wrap { display: flex; align-items: center; justify-content: center; gap: 8px; }
+.cv-wrap .cv-tabla { margin: 6px 0; }
+.cv-arrow { font-family: system-ui, sans-serif; font-weight: 800; font-size: 0.95rem; color: var(--accent); line-height: 1.3; }

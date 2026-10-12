@@ -23,7 +23,7 @@ export function buildRound(level) {
   for (;;) {
     k = who.map(() => randInt(level === 3 ? 2 : 1, level >= 2 ? 9 : 6));
     if (new Set(k).size < n) continue; // proporciones distintas
-    if (level === 3) { const m = (k[0] * k[1]) / gcd(k[0], k[1]); if (m > 30 || k[0] % k[1] === 0 && k[0] / k[1] > 5) continue; }
+    if (level === 3 && (k[0] * k[1]) / gcd(k[0], k[1]) > 30) continue; // mcm pequeño
     break;
   }
   u = level === 2 ? randInt(2, 30) * 10 : level === 3 ? randInt(2, 12) * 5 : randInt(2, level === 4 ? 60 : 30);

@@ -1,0 +1,75 @@
+/* Pack BY — "Regla de Ruffini" (.rf-), "Tabla de valores" (.tv-),
+   "Despeja la fórmula" (.df-), "Error absoluto y relativo" (.er-) y
+   "De km/h a m/s" (.km-). Ejercicios de ESO dibujados como en el libro:
+   hoja cuadriculada, casillas que se tocan y se rellenan con el teclado
+   del núcleo; activa = borde acento, bien = verde, mal = rojo con la
+   correcta al lado. Todo con variables del tema (claro y oscuro). */
+
+/* ---------- común ---------- */
+.game-body.rf-body, .game-body.tv-body, .game-body.df-body, .game-body.er-body, .game-body.km-body {
+  justify-content: flex-start; padding: 12px 10px 10px;
+}
+.prompt.rf-prompt, .prompt.tv-prompt, .prompt.df-prompt, .prompt.er-prompt, .prompt.km-prompt {
+  font-size: 1.12rem; margin: 0 0 8px; line-height: 1.25;
+}
+.feedback.rf-feedback, .feedback.tv-feedback, .feedback.df-feedback, .feedback.er-feedback, .feedback.km-feedback {
+  margin-top: 8px; line-height: 1.35; text-align: center; max-width: 360px; font-size: 0.8rem;
+}
+.keypad.rf-keypad, .keypad.tv-keypad, .keypad.df-keypad, .keypad.er-keypad, .keypad.km-keypad { margin-top: 10px; max-width: 240px; gap: 6px; }
+.keypad.rf-keypad .keypad-key, .keypad.tv-keypad .keypad-key, .keypad.df-keypad .keypad-key,
+.keypad.er-keypad .keypad-key, .keypad.km-keypad .keypad-key { padding: 10px 6px; }
+.keypad.rf-keypad .keypad-key.primary, .keypad.tv-keypad .keypad-key.primary, .keypad.df-keypad .keypad-key.primary,
+.keypad.er-keypad .keypad-key.primary, .keypad.km-keypad .keypad-key.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.keypad-sign.rf-sign, .keypad-sign.tv-sign, .keypad-sign.er-comma, .keypad-sign.km-comma { max-width: 240px; margin-top: 6px; padding: 8px; }
+.rf-next, .tv-next, .df-next, .er-next, .km-next { display: block; margin: 8px auto 0; padding: 9px 18px; font-size: 0.9rem; }
+
+/* Hoja de cuaderno: cuadrícula tenue con el color del borde del tema */
+.rf-cuaderno, .tv-cuaderno, .df-cuaderno, .er-cuaderno, .km-cuaderno {
+  width: 100%; max-width: 372px; border: 1px solid var(--border); border-radius: 10px;
+  padding: 10px 6px; display: flex; flex-direction: column; align-items: center; gap: 8px;
+  background-color: var(--bg);
+  background-image:
+    repeating-linear-gradient(0deg, var(--border) 0 1px, transparent 1px 22px),
+    repeating-linear-gradient(90deg, var(--border) 0 1px, transparent 1px 22px);
+  color: var(--text);
+}
+
+/* Casillas que se rellenan (compartidas) */
+.rf-slot, .tv-slot, .df-slot, .er-slot, .km-slot {
+  font: inherit; font-weight: 800; color: var(--text); cursor: pointer;
+  background: var(--card); border: 2px solid var(--muted); border-radius: 7px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 2px; padding: 0 3px;
+  min-width: 42px; height: 34px; vertical-align: middle; font-size: 1.05rem; white-space: nowrap;
+}
+.rf-slot.active, .tv-slot.active, .df-slot.active, .er-slot.active, .km-slot.active {
+  border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 28%, transparent);
+}
+.rf-slot.good, .tv-slot.good, .df-slot.good, .er-slot.good, .km-slot.good { background: var(--good); border-color: var(--good); color: #fff; }
+.rf-slot.bad, .tv-slot.bad, .df-slot.bad, .er-slot.bad, .km-slot.bad { background: var(--danger); border-color: var(--danger); color: #fff; }
+.rf-slot s, .tv-slot s, .df-slot s, .er-slot s, .km-slot s { font-size: 0.7em; opacity: 0.85; font-weight: 600; }
+.rf-slot b, .tv-slot b, .df-slot b, .er-slot b, .km-slot b {
+  background: var(--good); color: #fff; border-radius: 4px; padding: 0 3px; font-weight: 800;
+}
+
+/* ---------- Regla de Ruffini ---------- */
+.rf-head { font-size: 1.05rem; font-weight: 700; text-align: center; }
+.rf-head i, .rf-line i, .rf-prompt i, .rf-yesno i { font-family: Georgia, "Times New Roman", serif; }
+.rf-table {
+  display: grid; grid-template-columns: 44px repeat(var(--rf-n), 60px);
+  grid-auto-rows: 46px; margin: 2px 0 4px;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 1.3rem; font-weight: 800;
+}
+.rf-c { display: flex; align-items: center; justify-content: center; }
+.rf-c .rf-slot { min-width: 50px; height: 38px; font-family: inherit; font-size: 1.15rem; }
+/* raya vertical (coeficientes y productos) */
+.rf-left { border-right: 2.5px solid var(--text); }
+.rf-num { color: var(--accent); justify-content: center; }
+/* raya horizontal bajo la fila de productos */
+.rf-under { border-bottom: 2.5px solid var(--text); }
+/* el resto, en su cajita */
+.rf-resto { border-left: 2.5px solid var(--text); border-right: 2.5px solid var(--text); border-bottom: 2.5px solid var(--text); }
+.rf-line { font-size: 1.1rem; font-weight: 700; text-align: center; line-height: 40px; }
+.rf-yesno { display: flex; align-items: center; gap: 8px; font-weight: 700; }
+.rf-yesno[hidden] { display: none; }
+.rf-yn { padding: 8px 16px; font-weight: 800; }
+.rf-yn.rf-said { border-color: var(--accent); }

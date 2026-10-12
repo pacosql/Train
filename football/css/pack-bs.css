@@ -72,7 +72,7 @@
 
 /* ---------- Los nombres de las cuentas ---------- */
 .feedback.tm-feedback { font-size: 0.9rem; margin-top: 18px; }
-.tm-stage { margin: 34px 0 10px; display: flex; justify-content: center; width: 100%; }
+.tm-stage { margin: 52px 0 10px; display: flex; justify-content: center; width: 100%; }
 .tm-cuaderno { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 2.3rem; padding: 18px 22px; }
 .tm-num {
   font: inherit; font-weight: 800; color: var(--text); cursor: pointer; letter-spacing: 0.08em;
@@ -85,7 +85,7 @@
 .tm-term { position: relative; display: inline-flex; flex-direction: column; align-items: center; }
 .tm-lab {
   position: absolute; top: 100%; margin-top: 3px; font-family: system-ui, sans-serif; font-size: 0.85rem; font-weight: 700;
-  color: var(--accent); white-space: nowrap; opacity: 0; transition: opacity 0.3s; pointer-events: none;
+  color: color-mix(in srgb, var(--accent) 65%, var(--text)); white-space: nowrap; opacity: 0; transition: opacity 0.3s; pointer-events: none;
 }
 .tm-show .tm-lab { opacity: 1; }
 .tm-term.tm-side .tm-lab { top: 50%; left: 100%; margin: 0 0 0 10px; transform: translateY(-50%); }

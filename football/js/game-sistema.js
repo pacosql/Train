@@ -75,6 +75,7 @@ export function buildRound(level) {
       y = kind === "k" ? k * x : x + k;
       const sub = kind === "k" ? `${k}${X}` : `${X} + ${k}`;
       E = [kind === "k" ? [-k, 1, 0] : [-1, 1, k], [a, b, a * x + b * y]];
+      if (E[1][2] > 60) continue;
       const rowsTop = `${Y} = ${sub}`;
       const into = `${a === 1 ? "" : a}${X} + ${b === 1 ? (kind === "k" ? sub : sub) : `${b} · (${sub})`} = ${E[1][2]}`;
       const coef = kind === "k" ? a + b * k : a + b;

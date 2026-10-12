@@ -49,7 +49,7 @@ export function buildRound(level) {
   if (level === 3) {
     // Despejar: se dan C, I y uno de r o t; se pide el otro.
     const askR = Math.random() < 0.5;
-    const enun3 = `<div class="is-enun"><b>${fmt(C)} €</b> ${askR ? `durante <b>${tTxt}</b>` : `al <b>${r} %</b>`} han dado <b>${money(I)} €</b> de interés. ¿${askR ? "A qué %" : `Cuánto${months ? "s meses" : "s años"}`}?</div>`;
+    const enun3 = `<div class="is-enun"><b>${fmt(C)} €</b> ${askR ? `durante <b>${tTxt}</b>` : `al <b>${r} %</b> anual`} han dado <b>${money(I)} €</b> de interés. ¿${askR ? "A qué %" : `Cuánto${months ? "s meses" : "s años"}`}?</div>`;
     const top = `100 · ${months ? "12 · " : ""}${I_}`, top2 = `100 · ${months ? "12 · " : ""}`;
     return {
       level, C, r, t, I, months, askR, answers: [askR ? t : r, askR ? r : t], prompt: askR ? "Despeja el rédito r" : "Despeja el tiempo t",

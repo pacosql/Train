@@ -56,7 +56,7 @@ function double() {
   rows.push(`<div class="in-row">${slot(l, "n")} ${slot(s1, "s")} ${X} ${slot(s2, "s")} ${slot(r, "n")}</div>`);
   const op = b > 0 ? `Resto ${b}` : `Sumo ${-b}`;
   const steps = [`${op} en los tres miembros: ${neg(L)} ${b > 0 ? M : "+"} ${Math.abs(b)} ${H(s1)} ${ax(a)} ${H(s2)} ${neg(R)} ${b > 0 ? M : "+"} ${Math.abs(b)}${a > 1 ? ` → ${neg(a * l)} ${H(s1)} ${ax(a)} ${H(s2)} ${neg(a * r)}` : ""}`];
-  if (a > 1) steps.push(`Divido los tres entre ${a} (positivo, nada cambia de sentido)`);
+  if (a > 1) steps.push(`Divido los tres entre ${a}, que es positivo: el sentido no cambia`);
   steps.push(`${neg(l)} ${H(s1)} ${X} ${H(s2)} ${neg(r)}: ${dot(l, s1 === "≤")} y ${dot(r, s2 === "≤")}`);
   const sol = { lo: l, loIn: s1 === "≤", hi: r, hiIn: s2 === "≤" };
   return { a, b, kind: "doble", rows, answers, kinds, sol, hint: steps.join(". ") };

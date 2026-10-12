@@ -100,21 +100,21 @@ function figRectas({ seg: s, unk }) {
 }
 
 function figArbol({ p, s1, s2, h }) {
-  const G = 166, sc = Math.min(192 / (s1 + s2), 132 / h), x0 = 44, xt = x0 + s1 * sc + 56;
+  const G = 166, sc = Math.min(200 / (s1 + s2), 140 / h), x0 = 44, xt = x0 + s1 * sc + 48;
   const topS = [x0, G - p * sc], topT = [xt, G - h * sc], endS = [x0 + s1 * sc, G], endT = [xt + s2 * sc, G];
   // rayo de sol: desde la punta de la sombra, hacia arriba a la izquierda (paralelos)
   const ray = (top, end) => { const dx = top[0] - end[0], dy = top[1] - end[1], l = Math.hypot(dx, dy); return seg(end, [top[0] + (dx / l) * 18, top[1] + (dy / l) * 18], "tls-sun"); };
   const ry = Math.max(10, h * sc * 0.32), rx = Math.min(16, Math.max(9, ry * 0.6)), cx = xt - rx - 9;
   return `<svg class="tls-fig" viewBox="0 0 300 186" role="img" aria-label="árbol, palo y sus sombras">
     <circle class="tls-sol" cx="16" cy="16" r="9"/>
-    ${seg([4, G], [296, G], "tls-ground")}
+    ${seg([x0 - 4, G], [296, G], "tls-ground")}
     ${seg([x0, G], endS, "tls-shadow")}${seg([xt, G], endT, "tls-shadow")}
     ${ray(topS, endS)}${ray(topT, endT)}
     ${seg([x0, G], topS, "tls-palo")}
     ${seg([xt, G], [xt, topT[1] + ry], "tls-trunk")}<ellipse class="tls-crown" cx="${xt}" cy="${(topT[1] + ry).toFixed(1)}" rx="${rx.toFixed(1)}" ry="${ry.toFixed(1)}"/>
     ${seg([cx, G], [cx, topT[1]], "tls-cota")}${seg([cx - 4, topT[1]], [cx + 4, topT[1]], "tls-cota")}${seg([cx - 4, G], [cx + 4, G], "tls-cota")}
     ${txt(cx - 5, (G + topT[1]) / 2 + 5, lab("x"), "tls-lab tls-end")}
-    ${txt(x0 - 5, (G + topS[1]) / 2 + 5, `${fmt(p)} m`, "tls-lab tls-end")}
+    ${txt(x0 - 7, Math.min((G + topS[1]) / 2 + 5, G - 4), `${fmt(p)} m`, "tls-lab tls-end")}
     ${txt((x0 + endS[0]) / 2, G + 16, `${fmt(s1)} m`, "tls-lab")}${txt((xt + endT[0]) / 2, G + 16, `${fmt(s2)} m`, "tls-lab")}
   </svg>`;
 }

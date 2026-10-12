@@ -72,11 +72,12 @@ export function buildRound(level) {
       hint: `Resto exponentes: ${m} − ${m} = 0 → ${c}⁰, que vale 1 (un número entre sí mismo da 1)` };
   }
   if (kind === 2) {
-    const c = pick([2, 3, 5, 7]), m = randInt(1, 5), n = randInt(m + 1, 8);
+    const c = pick([2, 3, 5, 7]), m = randInt(2, 5), n = randInt(m + 1, 8);
     return { level, neg: true, text: `${pw(c, m)} : ${pw(c, n)} = ${pw(c, "[0]")}`, answers: [m - n],
-      hint: `Resto exponentes: ${m} − ${n} = ${neg(m - n)} → ${c}${sup(m - n)} = 1/${c}${sup(n - m)}` };
+      hint: `Resto exponentes: ${m} − ${n} = ${neg(m - n)} → ${c}${sup(m - n)} = 1/${c}${n - m > 1 ? sup(n - m) : ""}` };
   }
-  const [c, n] = pick([[2, 1], [2, 2], [2, 3], [2, 4], [2, 5], [3, 1], [3, 2], [3, 3], [4, 2], [5, 2], [5, 3], [10, 2], [10, 3]]);
+  const [c, n] = pick([[2, 1], [3, 1], [5, 1], [10, 1], [2, 2], [2, 3], [2, 4], [2, 5], [3, 2], [3, 3], [4, 2], [5, 2], [5, 3], [10, 2], [10, 3]]);
+  if (kind === 4 && n === 1) return buildRound(4); // con dos casillas, mejor exponente ≥ 2
   const v = c ** n;
   if (kind === 3) {
     return { level, neg: true, text: `${pw(c, -n)} = F{1|[0]}`, answers: [v],

@@ -97,11 +97,12 @@ export { grade };
 function picture(r, fav) {
   const mark = (on) => (fav && on ? " lp-fav" : "");
   if (r.kind === "bolsa") {
-    const n = r.items.length, cols = n <= 6 ? n : n <= 12 ? Math.ceil(n / 2) : Math.ceil(n / 3), rows = Math.ceil(n / cols);
+    const n = r.items.length, cols = Math.ceil(Math.sqrt(n * 1.6)), rows = Math.ceil(n / cols);
     const w = cols * 30 + 36, h = rows * 30 + 36, x0 = (300 - w) / 2;
     const balls = r.items.map((c, i) =>
       `<circle class="lp-ball${mark(c === r.label)}" cx="${x0 + 33 + (i % cols) * 30}" cy="${52 + Math.floor(i / cols) * 30}" r="12" fill="${COLORS[c]}"/>`).join("");
-    return `<svg class="lp-pic" viewBox="0 0 300 ${h + 20}"><path class="lp-bag" d="M${x0 + 30} 26 L${x0 + w - 30} 26 Q${x0 + w} 26 ${x0 + w} ${56} L${x0 + w} ${h} Q${x0 + w} ${h + 16} ${x0 + w - 24} ${h + 16} L${x0 + 24} ${h + 16} Q${x0} ${h + 16} ${x0} ${h} L${x0} 56 Q${x0} 26 ${x0 + 30} 26 Z"/><path class="lp-tie" d="M${x0 + 30} 26 L${150 - 14} 8 L${150 + 14} 8 L${x0 + w - 30} 26"/>${balls}</svg>`;
+    // Saco: cuerpo redondeado y cuello atado con un cordel en el centro.
+    return `<svg class="lp-pic" viewBox="0 0 300 ${h + 20}"><path class="lp-bag" d="M128 24 Q${x0 + 6} 24 ${x0} 56 L${x0} ${h} Q${x0} ${h + 16} ${x0 + 24} ${h + 16} L${x0 + w - 24} ${h + 16} Q${x0 + w} ${h + 16} ${x0 + w} ${h} L${x0 + w} 56 Q${x0 + w - 6} 24 172 24 L162 14 L170 4 L130 4 L138 14 Z"/><path class="lp-tie" d="M136 15 L164 15 M150 15 q-14 -10 -18 2 M150 15 q14 -10 18 2"/>${balls}</svg>`;
   }
   if (r.kind === "dado") {
     const PIPS = { 1: [[1, 1]], 2: [[0, 0], [2, 2]], 3: [[0, 0], [1, 1], [2, 2]], 4: [[0, 0], [2, 0], [0, 2], [2, 2]], 5: [[0, 0], [2, 0], [1, 1], [0, 2], [2, 2]], 6: [[0, 0], [2, 0], [0, 1], [2, 1], [0, 2], [2, 2]] };

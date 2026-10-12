@@ -71,7 +71,8 @@ export function buildRound(level) {
       line = ["P = ", { frac: [S(0), "36"] }, " = ", { frac: [S(1), S(2)] }];
       want = [c, c / g, 36 / g];
     }
-    hint = `Hay ${c} casilla${c > 1 ? "s" : ""} de 36 (${lit.map(([a, b]) => `${a}+${b}`).join(", ")}): ${c}/36${kind === "simple" ? ` = ${c / g}/${36 / g} (divido entre ${g})` : ""}`;
+    const list = c <= 6 ? lit.map(([a, b]) => `${a}+${b}`).join(", ") : "las iluminadas";
+    hint = `Hay ${c} casilla${c > 1 ? "s" : ""} de 36 (${list}): ${c}/36${kind === "simple" ? ` = ${c / g}/${36 / g} (divido entre ${g})` : ""}`;
     if (kind === "casos") hint = `Hay ${c} casilla${c > 1 ? "s" : ""}: ${lit.map(([a, b]) => `${a}+${b}`).join(", ")}`;
   }
   return { kind, prompt, line, want, hint, lit, blanks };

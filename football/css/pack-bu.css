@@ -71,6 +71,7 @@
 
 /* ---------- Valor numérico ---------- */
 .vn-def { font-weight: 700; }
+.vn-name { font-family: system-ui, sans-serif; font-size: 0.8rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.4; }
 .vn-given { font-size: 1.05rem; color: var(--muted); }
 .vn-work { margin-top: 4px; }
 
@@ -80,10 +81,10 @@
 .sp2-t { white-space: nowrap; border-radius: 6px; transition: background 0.2s, color 0.2s; }
 .sp2-mono { font-weight: 700; }
 /* al corregir: cada grado con su color (arriba y abajo) */
-.sp2-show .sp2-g3 { color: var(--final); }
-.sp2-show .sp2-g2 { color: var(--accent); background: color-mix(in srgb, var(--accent) 14%, transparent); }
-.sp2-show .sp2-g1 { color: var(--accent-2); background: color-mix(in srgb, var(--accent-2) 16%, transparent); }
-.sp2-show .sp2-g0 { color: var(--final); background: color-mix(in srgb, var(--final) 16%, transparent); }
+.sp2-show .sp2-g3 { color: var(--danger); background: color-mix(in srgb, var(--danger) 16%, transparent); }
+.sp2-show .sp2-g2 { color: var(--accent); background: color-mix(in srgb, var(--accent) 22%, transparent); }
+.sp2-show .sp2-g1 { color: var(--accent-2); background: color-mix(in srgb, var(--accent-2) 24%, transparent); }
+.sp2-show .sp2-g0 { color: var(--final); background: color-mix(in srgb, var(--final) 24%, transparent); }
 .sp2-show .sp2-t { font-weight: 700; padding: 0 2px; }
 
 /* ---------- Identidades notables ---------- */
@@ -95,18 +96,20 @@
 .sf-check { font-size: 1rem; color: var(--muted); border-top: 1px dashed var(--border); margin-top: 4px; padding-top: 2px; }
 .sf-check.good { color: var(--good); }
 .sf-check.bad { color: var(--danger); }
-.sf-m { font-weight: 700; color: var(--accent); font-family: system-ui, sans-serif; }
+.sf-m { font-weight: 700; color: var(--accent); }
 
 /* ---------- Ecuación de segundo grado ---------- */
-.s2-cuaderno { line-height: 1.7; padding: 8px 8px 10px; }
+.s2-cuaderno { line-height: 1.5; padding: 6px 8px 8px; }
 .s2-eq { font-weight: 700; font-size: 1.35rem; }
 .s2-row { font-size: 1.15rem; }
 .s2-formula { font-size: 1.05rem; color: var(--muted); }
-.s2-slot { min-width: 44px; height: 34px; }
+.s2-slot { min-width: 44px; height: 31px; margin-top: 2px; margin-bottom: 2px; }
+.keypad.s2-keypad .keypad-key { padding: 9px 8px; }
+.feedback.s2-feedback { font-size: 0.85rem; line-height: 1.35; }
 .s2-slot.s2-off { opacity: 0.35; }
 .s2-none {
   font: inherit; font-family: system-ui, sans-serif; font-size: 0.9rem; font-weight: 700; color: var(--text); cursor: pointer;
-  margin-top: 6px; padding: 6px 12px; border-radius: 9px; border: 2px dashed var(--border); background: var(--bg);
+  margin-top: 4px; padding: 4px 12px; border-radius: 9px; border: 2px dashed var(--border); background: var(--bg);
 }
 .s2-none.good { background: var(--good); border-color: var(--good); border-style: solid; color: #fff; }
 .s2-none.s2-off { opacity: 0.4; }

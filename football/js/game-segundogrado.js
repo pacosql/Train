@@ -45,7 +45,7 @@ function complete(level) {
   const head = `<i>a</i> = ${neg(a)}, <i>b</i> = ${neg(b)}, <i>c</i> = ${neg(c)}; ${dText}`;
   let hint, formula;
   if (D < 0) {
-    hint = `${head} < 0: no hay raíz cuadrada de un número negativo → no tiene solución real`;
+    hint = `${head} < 0 → no hay raíz cuadrada de un negativo: no tiene solución real`;
     formula = `${X} = ${frac(`${neg(-b)} ± √(${neg(D)})`, neg(2 * a))} → ∄`;
   } else {
     const s = Math.sqrt(D);
@@ -194,7 +194,7 @@ export function mountSegundogradoGame(container, { client, onExit }) {
     } else {
       lives--;
       renderLives();
-      const why = saysNone && !round.none ? `Δ = ${neg(round.D)} no es negativo: sí tiene solución. ` : !saysNone && round.none ? "Con Δ negativo no hay soluciones: tocaba el botón ∄. " : "";
+      const why = saysNone && !round.none ? `Δ = ${neg(round.D)} no es negativo: sí tiene solución. ` : !saysNone && round.none ? "Tocaba el botón ∄. " : "";
       const after = () => (lives <= 0 ? finish(false) : nextRound());
       feedback.innerHTML = `${why}💡 ${round.hint} <button type="button" class="s2-next" data-next>Siguiente →</button>`;
       feedback.className = "feedback bad s2-feedback";
