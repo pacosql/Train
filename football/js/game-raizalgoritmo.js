@@ -119,7 +119,7 @@ export function mountRaizalgoritmoGame(container, { client, onExit }) {
     const rad = digitsOf(N).map((ch, j) => cell(ch, `ra-fixed${algo && j === 1 ? " ra-tick" : ""}`)).join("");
     const rows = grid.map((r, k) =>
       k === 0
-        ? `<div class="ra-row"><span class="ra-cell ra-signo"><svg viewBox="0 0 28 34" width="28" height="34"><path d="M2 21 L7 18 L13.5 32 L24.5 1.5 L28 1.5"/></svg></span><span class="ra-num">${rad}</span></div>`
+        ? `<div class="ra-row"><span class="ra-cell ra-signo"><svg viewBox="0 0 28 34" width="28" height="34"><path d="M2 21 L7 18 L13.5 32 L24.5 1.5 L31 1.5"/></svg></span><span class="ra-num">${rad}</span></div>`
         : `<div class="ra-row" data-row="${k}">${r.join("")}</div>`
     );
     let rootHtml, aux;
@@ -159,9 +159,11 @@ export function mountRaizalgoritmoGame(container, { client, onExit }) {
     paint();
   }
 
-  // Lo que el niño ha escrito en un tipo de casilla (o "?" si falta algo).
+  // Lo que el niño ha escrito en un tipo de casilla ("" si falta algo). Al
+  // corregir, las copias muestran ya lo correcto (las casillas marcan el error).
+  const val = (i) => (busy ? round.slots[i].want : typed[i]);
   const typedOf = (kind) => {
-    const v = slotsOf(kind).map(([, i]) => typed[i]);
+    const v = slotsOf(kind).map(([, i]) => val(i));
     return v.every((x) => x !== "") ? v.join("") : "";
   };
 
@@ -177,13 +179,13 @@ export function mountRaizalgoritmoGame(container, { client, onExit }) {
       const r = typedOf("r");
       set('[data-echo="rr"]', r ? `${r} × ${r}` : "");
     } else {
-      set('[data-echo="b"]', typed[slotsOf("b")[0][1]]);
-      set('[data-echo="b2"]', typed[slotsOf("b")[0][1]]);
+      set('[data-echo="b"]', val(slotsOf("b")[0][1]));
+      set('[data-echo="b2"]', val(slotsOf("b")[0][1]));
       const p = typedOf("p");
       body.querySelectorAll("[data-copy]").forEach((e, j) => (e.textContent = p ? p[j] : ""));
       const r1 = busy || typedOf("r1") !== "";
       body.querySelectorAll(".ra-baja").forEach((e) => e.classList.toggle("ra-show", r1));
-      const a = typed[slotsOf("a")[0][1]], b = typed[slotsOf("b")[0][1]];
+      const a = val(slotsOf("a")[0][1]), b = val(slotsOf("b")[0][1]);
       set('[data-echo="root"]', a && b ? a + b : "□□");
     }
   }

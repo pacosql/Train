@@ -22,7 +22,7 @@ const sv = (s) => `<tspan class="cc-it">${s}</tspan>`; // cursiva dentro del SVG
 export function buildRound(level) {
   const kind = level === 4 ? pick([0, 1, 2, 3]) : level;
   const u = pick(["cm", "cm", "m"]);
-  const r = kind === 2 ? randInt(1, 12) : randInt(kind === 1 ? 2 : 1, 20);
+  const r = randInt(2, kind === 2 ? 12 : 20);
   const L = (628 * r) / 100, A = (314 * r * r) / 100;
   let lines, slots, hint, fig, prompt, answer;
   if (kind === 0) {
@@ -60,7 +60,7 @@ export function buildRound(level) {
 // El círculo del libro: centro, radio o diámetro rotulado; en "al revés"
 // se remarca la circunferencia y el radio es la incógnita.
 function figure(f) {
-  const R = 54;
+  const R = 58;
   const seg = f.show === "d" ? `<line class="cc-seg" x1="${120 - R}" y1="70" x2="${120 + R}" y2="70"/>`
     : `<line class="cc-seg${f.show === "L" ? " cc-dash" : ""}" x1="120" y1="70" x2="${120 + R}" y2="70"/>`;
   const lab = f.show === "L"
@@ -102,7 +102,9 @@ export function mountCircunferenciaGame(container, { client, onExit }) {
     if (finished) return;
     clearTimeout(pending);
     goNext = null;
-    round = buildRound(Math.min(4, Math.floor(hits / 2)));
+    const prev = round && JSON.stringify(round);
+    do round = buildRound(Math.min(4, Math.floor(hits / 2)));
+    while (JSON.stringify(round) === prev); // nunca la misma ronda dos veces seguidas
     typed = round.slots.map(() => "");
     active = 0;
     busy = false;
@@ -117,7 +119,7 @@ export function mountCircunferenciaGame(container, { client, onExit }) {
     `;
     body.querySelectorAll("[data-slot]").forEach((b) => b.addEventListener("click", () => !busy && ((active = +b.dataset.slot), paint())));
     const pad = body.querySelector("[data-keypad]");
-    ["1", "2", "3", "4", "5", "6", "7", "8", "9", ",", "0", "⌫", "✓"].forEach((key) => {
+    ["1", "2", "3", "⌫", "4", "5", "6", ",", "7", "8", "9", "0", "✓"].forEach((key) => {
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = `choice-btn keypad-key${key === "✓" ? " primary cc-ok" : ""}`;

@@ -158,7 +158,9 @@ export function mountTresformasGame(container, { client, onExit }) {
     const fi = slots.findIndex((s) => s.id === "fn");
     if (fi >= 0) {
       const n = Number(typed[fi]), d = Number(typed[fi + 1]);
-      ok.fn = ok.fd = d > 0 && n * 100 === P * d; // vale cualquier equivalente
+      const pair = d > 0 && n * 100 === P * d; // vale cualquier equivalente
+      ok.fn = pair || typed[fi] === slots[fi].want;
+      ok.fd = pair || typed[fi + 1] === slots[fi + 1].want;
     }
     slots.forEach((s, i) => s.col !== "f" && (ok[s.id] = Math.abs(parseCent(typed[i]) - (s.id === "d" ? P : P * 100)) < 1e-6));
     const allOk = slots.every((s) => ok[s.id]);

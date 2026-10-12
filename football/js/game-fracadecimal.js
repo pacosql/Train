@@ -66,7 +66,7 @@ export function buildRound(level) {
     String(L.rems[k]).split("").forEach((ch, j, a) => slots.push({ id: `r${k}.${j}`, want: ch, row: k, col: ln + k - a.length + j }));
   }
   const steps = L.decs.map((q, i) => `${L.rems[i] * 10} : ${d} = ${q} resto ${L.rems[i + 1]}`);
-  let hint = `${n} : ${d}: ${n} no cabe, pongo 0 y coma, y añado un 0: ${steps.join("; ")}`;
+  let hint = `${n} : ${d} → ${n} no cabe, pongo 0 y coma y añado un 0: ${steps.join("; ")}`;
   if (L.period) {
     const per = L.decs.slice(L.period[0]).join("");
     hint += `. El resto ${L.rems[K]} ya salió: el ${per} se repite siempre → 0,${L.decs.join("")}${per}${per}… se escribe 0,${L.decs.join("")} con el arco sobre el ${per}`;
@@ -233,14 +233,14 @@ export function mountFracadecimalGame(container, { client, onExit }) {
       score += 10;
       hits++;
       renderScore();
-      feedback.textContent = `✓ ${text}. 💡 ${round.hint}`;
+      feedback.textContent = `✓ ${text}${text.endsWith("…") ? "" : "."} 💡 ${round.hint}`;
       feedback.className = "feedback ok fd-feedback";
       pending = setTimeout(nextRound, 900);
     } else {
       lives--;
       renderLives();
       const go = () => { clearTimeout(pending); lives <= 0 ? finish(false) : nextRound(); };
-      feedback.innerHTML = `Era ${text}. 💡 ${round.hint} <button type="button" class="fd-next" data-next>Siguiente →</button>`;
+      feedback.innerHTML = `Era ${text}${text.endsWith("…") ? "" : "."} 💡 ${round.hint} <button type="button" class="fd-next" data-next>Siguiente →</button>`;
       feedback.className = "feedback bad fd-feedback";
       feedback.querySelector("[data-next]").addEventListener("click", go);
       pending = setTimeout(go, 3500);

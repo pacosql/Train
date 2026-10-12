@@ -70,8 +70,8 @@ export function buildRound(level, roundNo = 0) {
     const toD = Math.random() < 0.5;
     const r = randInt(2, 25), d = 2 * r;
     return toD
-      ? { kind: "calc", given: "r", value: r, answer: d, rot: randInt(0, 359), prompt: `El radio mide ${r} cm. ¿Y el diámetro?`, hint: `El diámetro son dos radios: ${r} + ${r} = ${d} cm` }
-      : { kind: "calc", given: "d", value: d, answer: r, rot: randInt(0, 359), prompt: `El diámetro mide ${d} cm. ¿Y el radio?`, hint: `El radio es la mitad del diámetro: ${d} : 2 = ${r} cm` };
+      ? { kind: "calc", given: "r", value: r, answer: d, prompt: `El radio mide ${r} cm. ¿Y el diámetro?`, hint: `El diámetro son dos radios: ${r} + ${r} = ${d} cm` }
+      : { kind: "calc", given: "d", value: d, answer: r, prompt: `El diámetro mide ${d} cm. ¿Y el radio?`, hint: `El radio es la mitad del diámetro: ${d} : 2 = ${r} cm` };
   }
   const li = level >= 4 ? randInt(1, 3) : level;
   const rot = randInt(0, 359), m = Math.random() < 0.5 ? 1 : -1;
@@ -125,20 +125,20 @@ export function mountElementoscirculoGame(container, { client, onExit }) {
       const zones = order.filter(([s]) => s.type === "zone"), rest = order.filter(([s]) => s.type !== "zone");
       svg = `${zones.map(([s, i]) => figure(s, i)).join("")}<circle class="el-circ" cx="${CX}" cy="${CY}" r="${R}"/>${rest.map(([s, i]) => figure(s, i)).join("")}<g data-names></g>`;
     } else {
-      // Cálculo: diámetro y un radio dibujados; el dato conocido escrito, el otro con "?".
-      const a = round.rot, P = pt(a), Q = pt(a + 180), S = pt(a + 100);
-      const lab = (p, t, cls) => `<text class="el-measure ${cls}" x="${p[0]}" y="${p[1]}">${t}</text>`;
+      // Cálculo: diámetro horizontal y un radio hacia abajo, como en el
+      // libro; el dato conocido escrito junto a su segmento y el otro con "?".
+      const lab = (x, y, t, cls, anchor) => `<text class="el-measure ${cls}" x="${x}" y="${y}" style="text-anchor:${anchor}">${t}</text>`;
       const dTxt = round.given === "d" ? `${round.value} cm` : "?", rTxt = round.given === "r" ? `${round.value} cm` : "?";
       svg = `<circle class="el-circ" cx="${CX}" cy="${CY}" r="${R}"/>
-        <line class="el-line el-dline" x1="${P[0]}" y1="${P[1]}" x2="${Q[0]}" y2="${Q[1]}"/>
-        <line class="el-line el-rline" x1="${CX}" y1="${CY}" x2="${S[0]}" y2="${S[1]}"/>
+        <line class="el-line el-dline" x1="${CX - R}" y1="${CY}" x2="${CX + R}" y2="${CY}"/>
+        <line class="el-line el-rline" x1="${CX}" y1="${CY}" x2="${CX}" y2="${CY + R}"/>
         <circle class="el-dot" cx="${CX}" cy="${CY}" r="4.5"/>
-        ${lab(pt(a + 16, 55), `d = ${dTxt}`, round.given === "d" ? "" : "el-ask")}
-        ${lab(pt(a + 112, 58), `r = ${rTxt}`, round.given === "r" ? "" : "el-ask")}`;
+        ${lab(CX - R / 2, CY - 10, `d = ${dTxt}`, round.given === "d" ? "" : "el-ask", "middle")}
+        ${lab(CX + 9, CY + 58, `r = ${rTxt}`, round.given === "r" ? "" : "el-ask", "start")}`;
     }
     body.innerHTML = `
       <p class="prompt el-prompt">${round.prompt}</p>
-      <svg class="el-svg" viewBox="0 0 ${W} ${H}" data-svg>${svg}</svg>
+      <svg class="el-svg${round.kind === "calc" ? " el-small" : ""}" viewBox="0 0 ${W} ${H}" data-svg>${svg}</svg>
       ${round.kind === "calc" ? `<div class="el-cuaderno el-q">${round.given === "r" ? "d" : "r"} = <button type="button" class="el-slot active" data-slot></button> cm</div><div class="keypad el-keypad" data-keypad></div>` : ""}
       <div class="feedback el-feedback" data-feedback></div>
       <button type="button" class="secondary el-next" data-next hidden>Siguiente →</button>

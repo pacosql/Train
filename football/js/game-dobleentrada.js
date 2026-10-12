@@ -10,7 +10,7 @@ import { randInt, pick, shuffle, saveScore } from "./utils.js";
 // Cada contexto: filas (emoji + nombre), columnas y cómo se pregunta.
 const CTX = [
   {
-    corner: "Deporte", unit: "alumnos",
+    corner: "Deporte", across: "Curso", unit: "alumnos",
     rows: [["⚽", "fútbol", "juegan al fútbol"], ["🏀", "baloncesto", "juegan al baloncesto"], ["🎾", "tenis", "juegan al tenis"], ["🏊", "natación", "hacen natación"]],
     cols: ["2.º", "3.º", "4.º"],
     cell: (r, c) => `¿Cuántos de ${c} ${r[2]}?`,
@@ -21,7 +21,7 @@ const CTX = [
     all: "¿Cuántos alumnos hay en toda la tabla?",
   },
   {
-    corner: "Helado", unit: "helados",
+    corner: "Helado", across: "Día", unit: "helados",
     rows: [["🍓", "fresa"], ["🍫", "chocolate"], ["🍋", "limón"], ["🍦", "vainilla"]],
     cols: ["lunes", "martes", "miércoles"],
     cell: (r, c) => `¿Cuántos helados de ${r[1]} se vendieron el ${c}?`,
@@ -32,7 +32,7 @@ const CTX = [
     all: "¿Cuántos helados se vendieron en los tres días?",
   },
   {
-    corner: "Mascota", unit: "mascotas",
+    corner: "Mascota", across: "Clase", unit: "mascotas",
     rows: [["🐶", "perros"], ["🐱", "gatos"], ["🐟", "peces"], ["🐹", "hámsteres"]],
     cols: ["4.º A", "4.º B", "4.º C"],
     cell: (r, c) => `¿Cuántos ${r[1]} tienen los de ${c}?`,
@@ -52,10 +52,13 @@ export function buildRound(level) {
   const nR = level === 3 ? 3 : pick([3, 4]);
   const rows = shuffle(ctx.rows).slice(0, nR), cols = ctx.cols;
   const hi = [12, 15, 20, 9, 15][level];
-  const grid = rows.map(() => cols.map(() => randInt(1, hi)));
+  const r = randInt(0, nR - 1), c = randInt(0, cols.length - 1);
+  let grid;
+  // Para restar hace falta que la fila y la columna tengan números distintos.
+  do grid = rows.map(() => cols.map(() => randInt(1, hi)));
+  while (new Set(grid[r]).size < 2 || new Set(grid.map((g) => g[c])).size < 2);
   const R = (i) => rows[i][1], sumRow = (i) => grid[i].reduce((t, v) => t + v, 0);
   let q, want, hint, lit = { rows: [], cols: [], cells: [] }, missing = null;
-  const r = randInt(0, nR - 1), c = randInt(0, cols.length - 1);
   if (level === 0) {
     q = ctx.cell(rows[r], cols[c]); want = grid[r][c];
     hint = `Fila "${R(r)}", columna "${cols[c]}": ${want}`;
@@ -130,7 +133,7 @@ export function mountDobleentradaGame(container, { client, onExit }) {
     busy = false;
     const { ctx, rows, cols, grid, missing, total } = round;
     const slot = `<button type="button" class="db-slot active" data-slot></button>`;
-    const head = `<tr><th class="db-corner">${ctx.corner}</th>${cols.map((c) => `<th>${c}</th>`).join("")}${total ? `<th class="db-tot">Total</th>` : ""}</tr>`;
+    const head = `<tr><th class="db-corner"><span>${ctx.across} →</span><span>${ctx.corner} ↓</span></th>${cols.map((c) => `<th>${c}</th>`).join("")}${total ? `<th class="db-tot">Total</th>` : ""}</tr>`;
     const trs = rows.map((r, i) => `<tr><th>${r[0]} ${cap(r[1])}</th>${grid[i]
       .map((v, j) => `<td data-r="${i}" data-c="${j}">${missing && missing[0] === i && missing[1] === j ? slot : v}</td>`)
       .join("")}${total ? `<td class="db-tot">${grid[i].reduce((t, v) => t + v, 0)}</td>` : ""}</tr>`);

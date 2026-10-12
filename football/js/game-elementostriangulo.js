@@ -6,7 +6,7 @@
 // notables (ortocentro, baricentro, incentro, circuncentro).
 import { randInt, pick, shuffle, saveScore } from "./utils.js";
 
-const W = 340, H = 270;
+const W = 340, H = 320;
 const COLORS = ["#f76707", "#339af0", "#e64980", "#ae3ec9"];
 const add = (a, b, k = 1) => [a[0] + k * b[0], a[1] + k * b[1]];
 const sub = (a, b) => [a[0] - b[0], a[1] - b[1]];
@@ -115,8 +115,8 @@ export function buildRound(level, roundNo = 0) {
 }
 
 // Marcas del libro: cuadradito, rayitas y arquitos.
-function square(F, u, v, s = 10) { const a = add(F, u, s), b = add(add(F, u, s), v, s), c = add(F, v, s); return `<path class="et-mark" d="M ${r1(a)} L ${r1(b)} L ${r1(c)}"/>`; }
-function tick(P, dir, n = 1) { const nn = [-dir[1], dir[0]]; return Array.from({ length: n }, (_, k) => { const c = add(P, dir, (k - (n - 1) / 2) * 5); return `<line class="et-mark" x1="${r1(add(c, nn, -6))[0]}" y1="${r1(add(c, nn, -6))[1]}" x2="${r1(add(c, nn, 6))[0]}" y2="${r1(add(c, nn, 6))[1]}"/>`; }).join(""); }
+function square(F, u, v, s = 12) { const a = add(F, u, s), b = add(add(F, u, s), v, s), c = add(F, v, s); return `<path class="et-mark" d="M ${r1(a)} L ${r1(b)} L ${r1(c)}"/>`; }
+function tick(P, dir, n = 1) { const nn = [-dir[1], dir[0]]; return Array.from({ length: n }, (_, k) => { const c = add(P, dir, (k - (n - 1) / 2) * 5); return `<line class="et-mark" x1="${r1(add(c, nn, -7))[0]}" y1="${r1(add(c, nn, -7))[1]}" x2="${r1(add(c, nn, 7))[0]}" y2="${r1(add(c, nn, 7))[1]}"/>`; }).join(""); }
 function arc(V, d1, d2, r) { const a = add(V, d1, r), b = add(V, d2, r), sw = d1[0] * d2[1] - d1[1] * d2[0] > 0 ? 1 : 0; return `<path class="et-mark" d="M ${r1(a)} A ${r} ${r} 0 0 ${sw} ${r1(b)}"/>`; }
 function marks(l, V) {
   const v = V[l.from], b = V[(l.from + 1) % 3], c = V[(l.from + 2) % 3], u = unit(sub(c, b));

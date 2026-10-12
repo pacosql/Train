@@ -52,11 +52,11 @@ export function buildRound(level) {
       ctx = pick(kind === 1 ? DIRECTA.filter((t) => t.dec) : DIRECTA);
       a = randInt(2, ctx.A === "Horas" ? 6 : 9); c = randInt(2, 12); b = randInt(...ctx.b);
     }
-    if (a === c) continue;
+    if (a === c || a === b) continue;
     P = kind === 3 ? a * b : c * b; // producto en cruz (o en línea si es inversa)
     den = kind === 3 ? c : a;
     x = P / den;
-    if (P > 9999 || x < 1 || near(x, b)) continue;
+    if (P > 9999 || x < (kind === 3 ? 2 : 1) || near(x, b)) continue;
     const exact = P % den === 0, cents = (P * 100) % den === 0;
     if (kind === 1 ? !exact && cents : kind === 2 ? (P * 10) % den === 0 : exact) break;
   }
@@ -91,7 +91,7 @@ function plant(r) {
   return `<svg class="r3-plant" viewBox="0 0 264 112" role="img" aria-label="planteamiento">
     ${t(L, 22, r.ctx.A, "r3-head")}${t(R, 22, r.ctx.B, "r3-head")}
     <line class="r3-raya" x1="22" y1="32" x2="242" y2="32"/>
-    ${mark}<circle class="r3-div" cx="${dv[0]}" cy="${dv[1] - 6}" r="17"/>
+    ${mark}<circle class="r3-div" cx="${dv[0]}" cy="${dv[1] - 7}" r="${String(r.inv ? r.c : r.a).length > 2 ? 23 : 17}"/>
     ${t(L, y1, fmt(r.a), "r3-num")}${t(132, y1, "→", "r3-arrow")}${t(R, y1, fmt(r.b), "r3-num")}
     ${t(L, y2, fmt(r.c), "r3-num")}${t(132, y2, "→", "r3-arrow")}${t(R, y2, "x", "r3-num r3-x")}
   </svg>`;
@@ -124,7 +124,9 @@ export function mountReglatresGame(container, { client, onExit }) {
     if (finished) return;
     clearTimeout(pending);
     goNext = null;
-    round = buildRound(Math.min(4, Math.floor(hits / 2)));
+    const prev = round && JSON.stringify(round);
+    do round = buildRound(Math.min(4, Math.floor(hits / 2)));
+    while (JSON.stringify(round) === prev); // nunca la misma ronda dos veces seguidas
     typed = round.slots.map(() => "");
     active = 0;
     busy = false;
@@ -140,7 +142,7 @@ export function mountReglatresGame(container, { client, onExit }) {
     `;
     body.querySelectorAll("[data-slot]").forEach((b) => b.addEventListener("click", () => !busy && ((active = +b.dataset.slot), paint())));
     const pad = body.querySelector("[data-keypad]");
-    ["1", "2", "3", "4", "5", "6", "7", "8", "9", ",", "0", "⌫", "✓"].forEach((key) => {
+    ["1", "2", "3", "⌫", "4", "5", "6", ",", "7", "8", "9", "0", "✓"].forEach((key) => {
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = `choice-btn keypad-key${key === "✓" ? " primary r3-ok" : ""}`;
@@ -207,7 +209,7 @@ export function mountReglatresGame(container, { client, onExit }) {
       lives--;
       renderLives();
       goNext = () => { clearTimeout(pending); goNext = null; lives <= 0 ? finish(false) : nextRound(); };
-      say(`<i>x</i> = ${fmt(round.x)} ${round.ctx.u}. 💡 ${round.hint} <button type="button" class="r3-next" data-next>Siguiente →</button>`, "bad")
+      say(`<i>x</i> = ${fmt(round.x)}${round.ctx.u ? " " + round.ctx.u : ""}. 💡 ${round.hint} <button type="button" class="r3-next" data-next>Siguiente →</button>`, "bad")
         .querySelector("[data-next]").addEventListener("click", goNext);
       pending = setTimeout(goNext, 4000);
     }

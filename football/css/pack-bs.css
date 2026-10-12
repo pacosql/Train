@@ -1,0 +1,162 @@
+/* Pack BS — "Ángulos de un polígono" (.ai-), "Los nombres de las cuentas"
+   (.tm-), "Tablas de doble entrada" (.db-), "¿De cuántas formas?" (.cb-) y
+   "La tabla de los dos dados" (.dd-). Casillas sobre papel cuadriculado
+   (.xx-cuaderno) que se tocan para enfocarlas (activa = borde acento,
+   bien = verde, mal = rojo con la buena en verde al lado). */
+
+/* ---------- común ---------- */
+.game-body.ai-body, .game-body.tm-body, .game-body.db-body, .game-body.cb-body, .game-body.dd-body {
+  justify-content: flex-start; padding: 12px 12px 10px;
+}
+.prompt.ai-prompt, .prompt.tm-prompt, .prompt.db-prompt, .prompt.cb-prompt, .prompt.dd-prompt {
+  font-size: 1.08rem; margin: 0 0 8px; line-height: 1.25;
+}
+.feedback.ai-feedback, .feedback.tm-feedback, .feedback.db-feedback, .feedback.cb-feedback, .feedback.dd-feedback {
+  margin-top: 8px; line-height: 1.35; text-align: center; max-width: 370px; font-size: 0.8rem;
+}
+.keypad.ai-keypad, .keypad.db-keypad, .keypad.cb-keypad, .keypad.dd-keypad { margin-top: 10px; max-width: 230px; gap: 6px; }
+.keypad.ai-keypad .keypad-key, .keypad.db-keypad .keypad-key, .keypad.cb-keypad .keypad-key, .keypad.dd-keypad .keypad-key { padding: 8px 8px; }
+.keypad.ai-keypad .keypad-key.primary, .keypad.db-keypad .keypad-key.primary,
+.keypad.cb-keypad .keypad-key.primary, .keypad.dd-keypad .keypad-key.primary {
+  background: var(--accent); border-color: var(--accent); color: #fff;
+}
+.ai-next, .tm-next, .db-next, .cb-next, .dd-next {
+  margin-left: 6px; font: inherit; font-weight: 700; font-size: 0.8rem; padding: 4px 10px; cursor: pointer;
+  border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--text);
+}
+
+/* papel cuadriculado del cuaderno */
+.ai-cuaderno, .tm-cuaderno, .db-cuaderno, .cb-cuaderno, .dd-cuaderno {
+  background-color: var(--card);
+  background-image:
+    repeating-linear-gradient(0deg, transparent 0 17px, var(--border) 17px 18px),
+    repeating-linear-gradient(90deg, transparent 0 17px, var(--border) 17px 18px);
+  border: 1px solid var(--border); border-radius: 10px; color: var(--text); font-weight: 800;
+}
+
+/* casillas que se rellenan (números enteros) */
+.ai-slot, .db-slot, .cb-slot, .dd-slot {
+  font: inherit; font-weight: 800; color: var(--text); cursor: pointer; position: relative;
+  background: var(--bg); border: 2px solid var(--border); border-radius: 7px;
+  min-width: 42px; height: 36px; padding: 0 5px; margin: 0 2px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 3px; vertical-align: middle;
+}
+.ai-slot.active, .db-slot.active, .cb-slot.active, .dd-slot.active {
+  border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+.ai-slot.good, .db-slot.good, .cb-slot.good, .dd-slot.good { background: var(--good); border-color: var(--good); color: #fff; }
+.ai-slot.bad, .db-slot.bad, .cb-slot.bad, .dd-slot.bad { background: var(--danger); border-color: var(--danger); color: #fff; overflow: visible; }
+.ai-slot s, .db-slot s, .cb-slot s, .dd-slot s { opacity: 0.9; text-decoration-thickness: 2px; }
+.ai-fix, .db-fix, .cb-fix, .dd-fix {
+  position: absolute; right: -10px; top: -12px; z-index: 1; font-style: normal; font-size: 0.72em; line-height: 1;
+  padding: 2px 4px; border-radius: 6px; background: var(--good); color: #fff; border: 1.5px solid var(--card); white-space: nowrap;
+}
+
+/* ---------- Ángulos de un polígono ---------- */
+.ai-fig { width: 100%; max-width: 232px; }
+.ai-svg { display: block; width: 100%; height: auto; }
+.ai-poly { fill: none; stroke: var(--text); stroke-width: 2.5; stroke-linejoin: round; }
+.ai-t0 { fill: color-mix(in srgb, var(--accent) 22%, transparent); }
+.ai-t1 { fill: color-mix(in srgb, var(--accent-2) 26%, transparent); }
+.ai-diag { stroke: var(--accent); stroke-width: 1.6; stroke-dasharray: 5 4; }
+.ai-v0 { fill: var(--accent); }
+.ai-tn { fill: var(--text); font-size: 13px; font-weight: 800; text-anchor: middle; }
+.ai-side { stroke: var(--text); stroke-width: 3; stroke-linecap: round; }
+.ai-ext { stroke: var(--muted); stroke-width: 2; stroke-dasharray: 6 5; }
+.ai-arc { fill: none; stroke: var(--accent); stroke-width: 2.5; }
+.ai-arc2 { fill: none; stroke: var(--accent-2); stroke-width: 2.5; }
+.ai-al { fill: var(--accent); font-size: 15px; font-weight: 800; text-anchor: middle; }
+.ai-al.ai-q { fill: var(--accent-2); font-size: 18px; }
+.ai-formula { margin-top: 6px; padding: 7px 8px; display: flex; flex-direction: column; gap: 6px; font-size: 1rem; width: 100%; max-width: 370px; }
+.ai-line { display: flex; align-items: center; flex-wrap: wrap; justify-content: center; white-space: pre; }
+
+/* ---------- Los nombres de las cuentas ---------- */
+.feedback.tm-feedback { font-size: 0.9rem; margin-top: 18px; }
+.tm-stage { margin: 34px 0 10px; display: flex; justify-content: center; width: 100%; }
+.tm-cuaderno { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 2.3rem; padding: 18px 22px; }
+.tm-num {
+  font: inherit; font-weight: 800; color: var(--text); cursor: pointer; letter-spacing: 0.08em;
+  background: transparent; border: 2px dashed color-mix(in srgb, var(--muted) 50%, transparent); border-radius: 8px; padding: 0 4px; line-height: 1.25;
+}
+.tm-num:hover { border-color: var(--accent); }
+.tm-num.good { background: var(--good); border: 2px solid var(--good); color: #fff; }
+.tm-num.bad { background: var(--danger); border: 2px solid var(--danger); color: #fff; }
+.tm-num.tm-want { border: 3px solid var(--good); box-shadow: 0 0 0 3px color-mix(in srgb, var(--good) 30%, transparent); }
+.tm-term { position: relative; display: inline-flex; flex-direction: column; align-items: center; }
+.tm-lab {
+  position: absolute; top: 100%; margin-top: 3px; font-family: system-ui, sans-serif; font-size: 0.85rem; font-weight: 700;
+  color: var(--accent); white-space: nowrap; opacity: 0; transition: opacity 0.3s; pointer-events: none;
+}
+.tm-show .tm-lab { opacity: 1; }
+.tm-term.tm-side .tm-lab { top: 50%; left: 100%; margin: 0 0 0 10px; transform: translateY(-50%); }
+.tm-term.tm-top .tm-lab { top: auto; bottom: 100%; margin: 0 0 2px; }
+.tm-term.tm-l .tm-lab { right: 0; }
+.tm-term.tm-r .tm-lab { left: 0; }
+.tm-col { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; padding-right: 128px; }
+.tm-crow { display: flex; align-items: center; gap: 8px; }
+.tm-crow.tm-under { border-bottom: 3px solid var(--text); padding-bottom: 6px; }
+.tm-sign { color: var(--accent); min-width: 1ch; }
+.tm-lin { display: flex; align-items: center; gap: 10px; padding: 18px 18px 30px; }
+.tm-fracbox { display: flex; flex-direction: column; align-items: center; gap: 14px; padding: 14px 18px; }
+.tm-frac { display: flex; flex-direction: column; align-items: center; gap: 4px; padding-right: 100px; }
+.tm-frac .tm-term:first-child { border-bottom: 3px solid var(--text); padding: 0 8px 4px; }
+.tm-bar { width: 220px; height: auto; }
+.tm-bar rect { stroke: var(--text); stroke-width: 1.5; }
+.tm-on { fill: var(--accent-2); }
+.tm-off { fill: var(--bg); }
+.tm-caja { display: flex; align-items: flex-start; font-size: 2.1rem; padding: 34px 26px 32px 40px; }
+.tm-left { display: flex; flex-direction: column; gap: 4px; padding-right: 12px; }
+.tm-drow { display: flex; }
+.tm-drow .tm-num { padding: 0; letter-spacing: 0; }
+.tm-part { color: var(--muted); }
+.tm-right { display: flex; flex-direction: column; }
+.tm-dv { border-left: 3px solid var(--text); border-bottom: 3px solid var(--text); padding: 0 10px 2px 10px; }
+.tm-cc { padding: 6px 10px 0 13px; }
+
+/* ---------- Tablas de doble entrada ---------- */
+.db-table { border-collapse: collapse; font-size: 0.9rem; margin: 2px 0 10px; background: var(--card); }
+.db-table th, .db-table td { border: 1.5px solid var(--border); padding: 7px 8px; text-align: center; }
+.db-table th { background: var(--bg); font-weight: 800; white-space: nowrap; }
+.db-table tr th:first-child { text-align: left; }
+.db-table td { font-size: 1.15rem; font-weight: 800; min-width: 44px; transition: background 0.3s; }
+.db-corner { color: var(--muted); font-size: 0.7rem; line-height: 1.15; }
+.db-corner span { display: block; }
+.db-corner span:first-child { text-align: right; }
+.db-tot { color: var(--accent); }
+.db-table td.db-hrow, .db-table td.db-hcol { background: color-mix(in srgb, var(--accent-2) 22%, transparent); }
+.db-table td.db-hit { background: color-mix(in srgb, var(--accent) 35%, transparent); outline: 2px solid var(--accent); outline-offset: -2px; }
+.db-table td .db-slot { margin: 0; height: 32px; min-width: 40px; }
+.db-ans { display: flex; align-items: center; gap: 8px; padding: 8px 14px; font-size: 1.1rem; }
+.db-ans span { color: var(--muted); font-weight: 700; font-size: 0.95rem; }
+
+/* ---------- ¿De cuántas formas? ---------- */
+.cb-items { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 14px; margin-bottom: 8px; }
+.cb-group { display: flex; gap: 2px; padding: 4px 6px; border: 1.5px solid var(--border); border-radius: 10px; background: var(--bg); }
+.cb-item { width: 34px; height: 34px; }
+.cb-g { stroke: var(--text); stroke-width: 1.6; stroke-linejoin: round; }
+.cb-p { stroke: var(--text); stroke-width: 1.2; }
+.cb-pt { fill: #fff; font-weight: 800; text-anchor: middle; font-family: system-ui, sans-serif; }
+.cb-formula { display: flex; align-items: center; gap: 4px; padding: 8px 10px; font-size: 1.15rem; max-width: 100%; }
+.cb-formula .cb-slot { min-width: 34px; margin: 0 1px; }
+.cb-unit { color: var(--muted); font-size: 0.85rem; font-weight: 700; }
+.cb-treebox { width: 100%; max-width: 370px; margin-top: 6px; }
+.cb-tree { display: block; width: 100%; height: auto; max-height: 190px; }
+.cb-edge { stroke: var(--muted); stroke-width: 1.4; }
+.cb-root { fill: var(--text); }
+.cb-more { fill: var(--accent); font-size: 11px; font-weight: 800; text-anchor: middle; font-family: system-ui, sans-serif; }
+.cb-in { animation: cb-grow 0.35s ease-out both; }
+@keyframes cb-grow { from { opacity: 0; } to { opacity: 1; } }
+
+/* ---------- La tabla de los dos dados ---------- */
+.dd-table { border-collapse: collapse; margin: 0 0 8px; background: var(--card); }
+.dd-table th, .dd-table td { border: 1.5px solid var(--border); width: 38px; height: 33px; padding: 0; text-align: center; }
+.dd-table th { background: var(--bg); }
+.dd-table td { font-size: 1.02rem; font-weight: 800; transition: background 0.3s; }
+.dd-corner { color: var(--muted); font-size: 1.1rem; }
+.dd-die { width: 22px; height: 22px; display: block; margin: auto; }
+.dd-die circle { fill: #fff; }
+.dd-red rect { fill: var(--danger); }
+.dd-blue rect { fill: #3b82f6; }
+.dd-table td.dd-hit { background: color-mix(in srgb, var(--accent) 32%, transparent); outline: 2px solid var(--accent); outline-offset: -2px; }
+.dd-table td .dd-slot { min-width: 32px; height: 28px; margin: 0; padding: 0 2px; }
+.dd-line { display: flex; align-items: center; gap: 4px; padding: 8px 14px; font-size: 1.15rem; white-space: pre; }

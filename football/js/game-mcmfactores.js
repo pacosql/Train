@@ -27,6 +27,8 @@ export function buildRound(level) {
     nums = exps.map((ex) => value(ps, ex));
     if (nums.some((n) => n < 4 || n > (count === 3 ? 150 : 200))) continue;
     if (new Set(nums).size < count) continue;
+    // Si uno divide a otro, el mcd y el mcm salen "solos": se descarta.
+    if (nums.some((a, i) => nums.some((b, j) => i !== j && b % a === 0))) continue;
     if (exps.some((ex) => ps.reduce((s, p) => s + ex[p], 0) < 2)) continue; // nada de primos sueltos
     if (ps.some((p) => exps.every((ex) => ex[p] === 0))) continue; // cada primo aparece en alguno
     // Sin factores comunes el mcd es 1 y no hay nada que buscar.

@@ -17,9 +17,8 @@ const near = (a, b) => Math.abs(a - b) < 1e-6;
 const frac = (n, d) => `<span class="vo-frac"><span>${n}</span><span>${d}</span></span>`;
 const v = (s) => `<i>${s}</i>`;
 const sv = (s) => `<tspan class="vo-it">${s}</tspan>`; // cursiva dentro del SVG
-const AB = `${v("A")}<sub>base</sub>`;
+const AB = `<span class="vo-ab">${v("A")}<sub>base</sub></span>`;
 const pi = (k) => (314 * k) / 100; // 3,14 · k sin errores de coma flotante
-
 // Niveles: 0 ortoedro/cubo · 1 prisma · 2 cilindro · 3 pirámide/cono ·
 // 4 capacidad · 5 mezcla. {k} = casilla k; {=k} = copia de la casilla k.
 export function buildRound(level) {
@@ -28,7 +27,7 @@ export function buildRound(level) {
   const cm3 = "cm³";
   let d, lines, slots, groups = [], hint, name;
   if (body === "ortoedro" || body === "capacidad") {
-    const l = randInt(3, 12), a = randInt(2, 8), h = randInt(2, 10), V = l * a * h, u = body === "capacidad" ? "dm" : "cm";
+    const l = randInt(3, 12), a = randInt(2, Math.min(8, l)), h = randInt(2, 10), V = l * a * h, u = body === "capacidad" ? "dm" : "cm";
     d = { l, a, h, u }; name = body === "capacidad" ? "Pecera: ¿cuántos litros caben?" : "Ortoedro: calcula el volumen";
     lines = [`${v("V")} = ${v("l")} · ${v("a")} · ${v("h")}`, `${v("V")} = {0} · {1} · {2} = {3} ${u}³`];
     slots = [l, a, h, V];
@@ -79,14 +78,14 @@ export function buildRound(level) {
 
 // Dibujo en isométrica (x hacia la derecha-abajo, y hacia la izquierda-abajo, z arriba).
 function figure(r) {
-  const { body, d } = r, W = 280, H = 150, cx = 140, cy = 75;
+  const { body, d } = r, W = 280, H = 146, cx = 140, cy = 76;
   const t = (x, y, s, cls = "") => `<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" class="vo-lab ${cls}">${s}</text>`;
   const pts = (p) => p.map((q) => q.map((z) => z.toFixed(1)).join(",")).join(" ");
   const face = (p, cls = "vo-face") => `<polygon class="${cls}" points="${pts(p)}"/>`;
   const dash = (a, b) => `<line class="vo-dash" x1="${a[0].toFixed(1)}" y1="${a[1].toFixed(1)}" x2="${b[0].toFixed(1)}" y2="${b[1].toFixed(1)}"/>`;
   let g = "";
   if (body === "cilindro" || body === "cono") {
-    const R = 52, hh = Math.max(50, Math.min(110, (d.h / d.r) * R * 0.9)), ry = R * 0.32;
+    const R = 52, hh = Math.max(body === "cono" ? 72 : 50, Math.min(110, (d.h / d.r) * R * 0.9)), ry = R * 0.32;
     const yb = cy + hh / 2 + 4, yt = yb - hh;
     const arc = (y, front) => `<path class="${front ? "vo-edge" : "vo-dash"}" d="M${cx - R} ${y} A${R} ${ry} 0 0 ${front ? 0 : 1} ${cx + R} ${y}"/>`;
     if (body === "cilindro") {
@@ -102,7 +101,7 @@ function figure(r) {
   } else {
     // dimensiones del dibujo (x, y, z) proporcionadas pero legibles
     const real = body === "cubo" ? [d.a, d.a, d.a] : body === "piramide" ? [d.r, d.r, d.h] : body.startsWith("prisma") ? [d.h, d.b, d.t] : [d.l, d.a, d.h];
-    const m = Math.max(...real), [X, Y, Z] = real.map((q) => Math.max(q, m * 0.4));
+    const m = Math.max(...real), [X, Y, Z] = real.map((q, i) => Math.max(q, m * (body === "piramide" && i === 2 ? 1 : 0.4))); // la pirámide, algo más alta para que se lea
     const s = Math.min(230 / ((X + Y) * 0.866), 128 / ((X + Y) * 0.5 + Z));
     const ox = cx - ((X - Y) * 0.866 * s) / 2, oy = cy - ((X + Y) * 0.5 * s - Z * s) / 2;
     const P = (x, y, z) => [ox + (x - y) * 0.866 * s, oy + (x + y) * 0.5 * s - z * s];
@@ -124,7 +123,7 @@ function figure(r) {
       g += t(...mid(c2, a2, -8, 16), lab[0], "vo-end") + t(...mid(a2, a1, 8, 16), lab[1], "vo-start") + t(...mid(a1, up(a1), 6, 4), lab[2], "vo-start");
     }
   }
-  g += t(W - 4, H - 4, `medidas en ${d.u || "cm"}`, "vo-end vo-unit");
+  g += t(4, 12, `medidas en ${d.u || "cm"}`, "vo-start vo-unit");
   return `<svg class="vo-fig" viewBox="0 0 ${W} ${H}" role="img" aria-label="cuerpo geométrico">${g}</svg>`;
 }
 
@@ -152,12 +151,13 @@ export function mountVolumenesGame(container, { client, onExit }) {
   const fill = (s) => s
     .replace(/\{(\d+)\}/g, (_, k) => `<button type="button" class="vo-slot" data-slot="${k}"></button>`)
     .replace(/\{=(\d+)\}/g, (_, k) => `<span class="vo-mirror" data-mirror="${k}"></span>`);
-
   function nextRound() {
     if (finished) return;
     clearTimeout(pending);
     goNext = null;
-    round = buildRound(Math.min(5, Math.floor(hits / 2)));
+    const prev = round && JSON.stringify(round);
+    do round = buildRound(Math.min(5, Math.floor(hits / 2)));
+    while (JSON.stringify(round) === prev); // nunca la misma ronda dos veces seguidas
     typed = round.slots.map(() => "");
     active = 0;
     busy = false;
@@ -169,7 +169,7 @@ export function mountVolumenesGame(container, { client, onExit }) {
     `;
     body.querySelectorAll("[data-slot]").forEach((b) => b.addEventListener("click", () => !busy && ((active = +b.dataset.slot), paint())));
     const pad = body.querySelector("[data-keypad]");
-    ["1", "2", "3", "4", "5", "6", "7", "8", "9", ",", "0", "⌫", "✓"].forEach((key) => {
+    ["1", "2", "3", "⌫", "4", "5", "6", ",", "7", "8", "9", "0", "✓"].forEach((key) => {
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = `choice-btn keypad-key${key === "✓" ? " primary vo-ok" : ""}`;
@@ -179,7 +179,6 @@ export function mountVolumenesGame(container, { client, onExit }) {
     });
     paint();
   }
-
   function paint() {
     body.querySelectorAll("[data-slot]").forEach((b) => {
       b.textContent = typed[+b.dataset.slot];

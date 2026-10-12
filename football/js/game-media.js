@@ -84,15 +84,15 @@ export function mountMediaGame(container, { client, onExit }) {
   // Columnas de los datos; con `line` se dibuja la raya de la media.
   function chart(line) {
     const vals = round.inv && line ? [...round.data, round.x] : round.data;
-    const top = Math.max(round.ctx.max, 10), W = 300, H = 96, bw = Math.min(44, W / vals.length - 12);
+    const top = Math.max(...vals, round.inv ? round.t : 0) + 1, W = 250, H = 112, bw = Math.min(40, W / vals.length - 12);
     const y = (v) => H - 14 - ((H - 26) * v) / top;
     const cols = vals.map((v, i) => {
       const x = (W / vals.length) * (i + 0.5) - bw / 2;
       return `<rect class="me-col${round.inv && i === round.data.length ? " me-new" : ""}" x="${x}" y="${y(v)}" width="${bw}" height="${H - 14 - y(v)}" rx="3"/><text class="me-val" x="${x + bw / 2}" y="${y(v) - 3}">${v}</text>`;
     });
     const m = line ? cent(round.mean) / 100 : 0;
-    const mean = line ? `<line class="me-line" x1="0" x2="${W}" y1="${y(m)}" y2="${y(m)}"/><text class="me-mlabel" x="${W - 2}" y="${y(m) + 12}">media ${round.mean}</text>` : "";
-    return `<svg class="me-chart" viewBox="0 -4 ${W} ${H + 4}"><line class="me-axis" x1="0" x2="${W}" y1="${H - 14}" y2="${H - 14}"/>${cols.join("")}${mean}</svg>`;
+    const mean = line ? `<line class="me-line" x1="0" x2="${W}" y1="${y(m)}" y2="${y(m)}"/><text class="me-mlabel" x="${W + 4}" y="${y(m) + 4}">media ${round.mean}</text>` : "";
+    return `<svg class="me-chart" viewBox="-33 -4 ${W + 99} ${H + 4}"><line class="me-axis" x1="0" x2="${W}" y1="${H - 14}" y2="${H - 14}"/>${cols.join("")}${mean}</svg>`;
   }
 
   function nextRound() {
@@ -175,7 +175,7 @@ export function mountMediaGame(container, { client, onExit }) {
     paint();
     body.querySelector("[data-chart]").innerHTML = chart(true);
     if (round.inv) body.querySelector(".me-q").textContent = round.x;
-    const text = round.inv ? `${round.x}` : `${round.S} : ${round.N} = ${round.mean}`;
+    const text = round.inv ? `Necesita un ${round.x}` : `Era ${round.S} : ${round.N} = ${round.mean}`;
     if (allOk) {
       score += 10;
       hits++;
@@ -187,7 +187,7 @@ export function mountMediaGame(container, { client, onExit }) {
       lives--;
       renderLives();
       const go = () => { clearTimeout(pending); lives <= 0 ? finish(false) : nextRound(); };
-      feedback.innerHTML = `Era ${text}. 💡 ${round.hint} <button type="button" class="me-next" data-next>Siguiente →</button>`;
+      feedback.innerHTML = `${text}. 💡 ${round.hint} <button type="button" class="me-next" data-next>Siguiente →</button>`;
       feedback.className = "feedback bad me-feedback";
       feedback.querySelector("[data-next]").addEventListener("click", go);
       pending = setTimeout(go, 3000);

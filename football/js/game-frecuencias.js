@@ -10,7 +10,7 @@ import { randInt, pick, shuffle, saveScore } from "./utils.js";
 const COLORS = [["rojo", "rojos", "#e5484d"], ["azul", "azules", "#3b82f6"], ["verde", "verdes", "#16a34a"], ["amarillo", "amarillos", "#eab308"], ["morado", "morados", "#9333ea"]];
 const TYPES = {
   color: { t: "Color favorito de la clase", vals: (k) => COLORS.slice(0, k).map((c) => c[0]), los: (i) => `los ${COLORS[i][1]}` },
-  dado: { t: "Tiradas de un dado", vals: () => [1, 2, 3, 4, 5, 6], los: (i) => `los ${i + 1}` },
+  dado: { t: "Tiradas de un dado", vals: () => [1, 2, 3, 4, 5, 6], los: (i) => `las veces que sale el ${i + 1}` },
   hermanos: { t: "Número de hermanos", vals: (k) => Array.from({ length: k }, (_, i) => i), los: (i) => `los de ${i} hermano${i === 1 ? "" : "s"}` },
   notas: { t: "Notas del examen", vals: (k) => Array.from({ length: k }, (_, i) => 5 + i), los: (i) => `los ${5 + i}` },
 };
@@ -108,7 +108,7 @@ export function mountFrecuenciasGame(container, { client, onExit }) {
     const heads = ["Dato", "Recuento", "Frec. absoluta"].concat(level === 2 ? ["Frec. relativa"] : level === 3 ? ["Frec. relativa", "%"] : []);
     const rows = counts.map((_, i) => {
       const extra = level === 2 ? `<td><span class="fq-frac">${slot(`fn${i}`)}${slot(`fd${i}`)}</span></td>` : level === 3 ? `<td>${slot(`d${i}`)}</td><td>${slot(`p${i}`)}</td>` : "";
-      return `<tr data-row="${i}"><td class="fq-val">${face(i)}${round.type === "color" ? `<small>${round.values[i]}</small>` : ""}</td><td data-tally="${i}"></td><td>${slot(`a${i}`)}</td>${extra}</tr>`;
+      return `<tr data-row="${i}"><td class="fq-val"><span class="fq-vin">${face(i)}${round.type === "color" ? `<small>${round.values[i]}</small>` : ""}</span></td><td data-tally="${i}"></td><td>${slot(`a${i}`)}</td>${extra}</tr>`;
     });
     const tot = level === 2 || level === 3 ? `<td>1</td>${level === 3 ? "<td>100</td>" : ""}` : "";
     body.innerHTML = `
@@ -151,7 +151,8 @@ export function mountFrecuenciasGame(container, { client, onExit }) {
     });
     round.counts.forEach((c, i) => {
       const n = busy ? c : round.data.filter((v, j) => v === i && crossed[j]).length;
-      body.querySelector(`[data-tally="${i}"]`).innerHTML = n ? tally(n) : "";
+      const tip = !busy && i === 0 && !crossed.includes(true) ? `<span class="fq-tip">toca los datos ↑</span>` : "";
+      body.querySelector(`[data-tally="${i}"]`).innerHTML = n ? tally(n) : tip;
     });
   }
 
@@ -185,7 +186,7 @@ export function mountFrecuenciasGame(container, { client, onExit }) {
     const ok = slots.map((s, i) => {
       if (s.id.startsWith("fn") || s.id.startsWith("fd")) {
         const j = s.id.startsWith("fn") ? i : i - 1, n = Number(typed[j]), d = Number(typed[j + 1]);
-        return d > 0 && n * N === round.counts[s.row] * d;
+        return (d > 0 && n * N === round.counts[s.row] * d) || typed[i] === s.want;
       }
       return cent(typed[i]) === cent(s.want);
     });

@@ -51,7 +51,7 @@ export function buildRound(level) {
     const e = randInt(2, 5);
     if (kind === 2) {
       // Mismo exponente: se multiplican las bases (2³ · 5³ = 10³).
-      const [a, c] = pick([[2, 5], [2, 3], [3, 3], [2, 4], [5, 4], [3, 5], [2, 2]]);
+      const [a, c] = pick([[2, 5], [2, 3], [3, 2], [2, 4], [5, 4], [3, 5], [5, 2], [3, 4]]);
       return { level, neg: false, text: `${pw(a, e)} · ${pw(c, e)} = ${pw("[0]", e)}`, answers: [a * c],
         hint: `Mismo exponente: multiplico las bases ${a} · ${c} = ${a * c} → ${a * c}${sup(e)}` };
     }
@@ -143,6 +143,9 @@ export function mountPropiedadespotenciasGame(container, { client, onExit }) {
       ${round.neg ? `<button type="button" class="choice-btn keypad-sign pp2-sign" data-sign>${M} cambiar signo</button>` : ""}
       <div class="feedback pp2-feedback" data-feedback></div>
     `;
+    // Si la cuenta no cabe en una línea, se achica la letra (como escribir más pequeño).
+    const ex = body.querySelector("[data-expr]");
+    for (let f = 2.1; ex.scrollWidth > ex.clientWidth + 1 && f > 1.2; f -= 0.1) ex.style.fontSize = `${f.toFixed(1)}rem`;
     body.querySelectorAll("[data-slot]").forEach((b) => b.addEventListener("click", () => !busy && ((active = +b.dataset.slot), paint())));
     const pad = body.querySelector("[data-keypad]");
     ["1", "2", "3", "4", "5", "6", "7", "8", "9", "⌫", "0", "✓"].forEach((key) => {

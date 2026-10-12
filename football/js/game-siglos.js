@@ -85,7 +85,8 @@ export function mountSiglosGame(container, { client, onExit }) {
       const [a, b] = [t(y), t(y2)];
       lo = Math.floor(a / 100) * 100;
       hi = Math.ceil(b / 100) * 100;
-      if (hi - lo < 300) hi = lo + 300;
+      // Al menos tres siglos de línea, repartiendo el margen a los dos lados.
+      if (hi - lo < 300) { const pad = (300 - (hi - lo)) / 100; lo -= Math.floor(pad / 2) * 100; hi += Math.ceil(pad / 2) * 100; }
       step = hi - lo > 1200 ? 200 : 100;
     } else if (ac) { lo = -(c + 1) * 100; hi = -(c - 2) * 100; }
     else { lo = (c - 2) * 100; hi = (c + 1) * 100; }
@@ -107,6 +108,7 @@ export function mountSiglosGame(container, { client, onExit }) {
     if (ac) out.push(`<text class="sl-ac" x="${x0 - 6}" y="12">años a. C.</text>`);
     const mark = (v, txt) => `<circle class="sl-dot" cx="${X(t(v))}" cy="${axisY}" r="6"/><text class="sl-year" x="${X(t(v))}" y="${axisY - 34}">${txt}</text><line class="sl-pin" x1="${X(t(v))}" y1="${axisY - 30}" x2="${X(t(v))}" y2="${axisY - 6}"/>`;
     if (type === "dif" || type === "difac") {
+      out.push(`<line class="sl-span" x1="${X(t(y))}" y1="${axisY}" x2="${X(t(y2))}" y2="${axisY}"/>`);
       out.push(`<path class="sl-arc" d="M${X(t(y))} ${axisY - 8} Q${(X(t(y)) + X(t(y2))) / 2} ${axisY - 46} ${X(t(y2))} ${axisY - 8}"/>`);
       out.push(`<text class="sl-gap" x="${(X(t(y)) + X(t(y2))) / 2}" y="${axisY - 30}">${reveal ? round.answers[0] : "?"} años</text>`);
       // Si las dos fechas quedan muy juntas, cada rótulo se aparta hacia su lado.
@@ -136,7 +138,7 @@ export function mountSiglosGame(container, { client, onExit }) {
       <p class="prompt sl-prompt">${prompt}</p>
       <div class="sl-cuaderno">
         <div class="sl-linea" data-line>${timeline(null)}</div>
-        <div class="sl-frase">${frase}</div>
+        <div class="sl-frase${type === "rango" ? " sl-frase-rango" : ""}">${frase}</div>
       </div>
       <div class="keypad sl-keypad" data-keypad></div>
       <div class="feedback sl-feedback" data-feedback></div>

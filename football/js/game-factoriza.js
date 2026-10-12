@@ -138,8 +138,8 @@ export function mountFactorizaGame(container, { client, onExit }) {
       : "";
     body.innerHTML = `
       <p class="prompt fz-prompt">Descompón <b>${n}</b> en factores primos</p>
-      <div class="fz-cuaderno">
-        <div class="fz-raya" style="--fz-w:${W};--fz-p:${P};--fz-rows:${level === 0 ? 5 : level === 1 ? 7 : 8}">
+      <div class="fz-cuaderno" style="--fz-rows:${level === 0 ? 5 : level === 1 ? 7 : 8}">
+        <div class="fz-raya" style="--fz-w:${W};--fz-p:${P}">
           <div class="fz-izq">${left.join("")}</div>
           <div class="fz-der">${right.join("")}</div>
         </div>
@@ -213,6 +213,8 @@ export function mountFactorizaGame(container, { client, onExit }) {
       if (ok) b.textContent = typed[k];
       else b.innerHTML = `<s>${typed[k]}</s><i class="fz-fix">${s.want}</i>`;
     });
+    // Sin casillas de exponentes, la línea final se escribe sola al corregir.
+    if (!round.withExpr) body.querySelector("[data-expr]").innerHTML = `<span class="fz-fixed">${round.n} = ${round.prime ? `${round.n} <small>(es primo)</small>` : expr(round.pw)}</span>`;
     paint();
     const text = round.prime ? `${round.n} es primo` : `${round.n} = ${expr(round.pw)}`;
     if (allOk) {

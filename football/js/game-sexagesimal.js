@@ -70,7 +70,7 @@ export function buildRound(level) {
     }
     carry = sol.conv[i] ? 1 : 0;
   }
-  const hint = parts.length ? parts.join("; ") : `Sin cambiar nada: ${plain.join(" y ")}`;
+  const hint = parts.length ? parts.join("; ") : `Sin llevar: ${plain.join(" y ")}`;
   const verb = op === "+" ? "Suma" : "Resta";
   return {
     op, sys, A, B, n, units: u0, res: sol.res, conv: sol.conv, hint,
@@ -108,7 +108,9 @@ export function mountSexagesimalGame(container, { client, onExit }) {
     if (finished) return;
     clearTimeout(pending);
     goNext = null;
-    round = buildRound(Math.min(5, Math.floor(hits / 2)));
+    const prev = round && JSON.stringify(round);
+    do round = buildRound(Math.min(5, Math.floor(hits / 2)));
+    while (JSON.stringify(round) === prev); // nunca la misma ronda dos veces seguidas
     const { n, units: U, op } = round;
     typed = Array(n).fill("");
     active = 0;
@@ -124,7 +126,7 @@ export function mountSexagesimalGame(container, { client, onExit }) {
     body.innerHTML = `
       <p class="prompt sx-prompt">${round.prompt}</p>
       <div class="sx-cuaderno">
-        <div class="sx-sheet" style="--sx-n:${n}">
+        <div class="sx-sheet${round.sys === "a" ? " sx-ang" : ""}" style="--sx-n:${n}">
           <span></span>${notes.map((t) => `<span class="sx-notecell">${t}</span>`).join("")}
           ${row(round.A, "")}
           ${row(round.B, op)}

@@ -85,7 +85,7 @@ export function buildRound(level) {
 
 // La figura con sus medidas rotuladas (a escala aproximada, centrada).
 function figure(r) {
-  const { shape, d } = r, W = 280, H = 136, cx = 128, cy = 60;
+  const { shape, d } = r, W = 280, H = 142, cx = 128, cy = 66;
   const t = (x, y, s, cls = "af-lab") => `<text x="${x}" y="${y}" class="${cls}">${s}</text>`;
   const poly = (pts, cls = "af-shape") => `<polygon class="${cls}" points="${pts.map((p) => p.join(",")).join(" ")}"/>`;
   const dash = (x1, y1, x2, y2) => `<line class="af-dash" x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}"/>`;
@@ -102,7 +102,7 @@ function figure(r) {
     const k = Math.min(170 / bw, 92 / bh), w = Math.max(70, bw * k), h = Math.max(40, bh * k);
     const x0 = cx - w / 2, x1 = cx + w / 2, y0 = cy - h / 2 + 4, y1 = cy + h / 2 + 4;
     if (shape === "cuadrado" || shape === "rectangulo") {
-      g = poly([[x0, y0], [x1, y0], [x1, y1], [x0, y1]]) + t(cx, y1 + 18, `${v(shape === "cuadrado" ? "l" : "b")} = ${d.l || d.b} cm`) +
+      g = poly([[x0, y0], [x1, y0], [x1, y1], [x0, y1]]) + t(cx, y1 + 18, `${sv(shape === "cuadrado" ? "l" : "b")} = ${d.l || d.b} cm`) +
         (shape === "rectangulo" ? t(x1 + 8, cy + 8, `${sv("h")} = ${d.h}`, "af-lab af-start") : "");
     } else if (shape === "triangulo") {
       const ax = x0 + w * 0.3;
@@ -154,7 +154,9 @@ export function mountAreaformulaGame(container, { client, onExit }) {
     if (finished) return;
     clearTimeout(pending);
     goNext = null;
-    round = buildRound(Math.min(4, Math.floor(hits / 2)));
+    const prev = round && JSON.stringify(round);
+    do round = buildRound(Math.min(4, Math.floor(hits / 2)));
+    while (JSON.stringify(round) === prev); // nunca la misma ronda dos veces seguidas
     typed = round.slots.map(() => "");
     active = 0;
     busy = false;

@@ -13,7 +13,6 @@ const GARMENTS = [
   { one: "gorra", many: "gorras", d: "M5 27 Q5 9 20 9 Q33 9 33 25 L39 25 L39 30 L5 30 Z" },
 ];
 const FRIENDS = ["Ana", "Bruno", "Carla", "Dani", "Eva"];
-const ORD = ["1.ª", "2.ª", "3.ª", "4.ª", "5.ª"];
 const prod = (a) => a.reduce((t, v) => t * v, 1);
 
 // Niveles: 0 2 × 2 · 1 dos prendas hasta 4 × 3 · 2 tres prendas ·
@@ -159,7 +158,7 @@ export function mountCombinacionesGame(container, { client, onExit }) {
     body.innerHTML = `
       <p class="prompt cb-prompt">${round.prompt}</p>
       <div class="cb-items">${round.items.map(group).join("")}</div>
-      <div class="cb-cuaderno cb-formula">${round.sizes.map((_, i) => slot(i)).join("<span>×</span>")}<span>=</span>${slot(k)}<span class="cb-unit">${round.unit}</span></div>
+      <div class="cb-cuaderno cb-formula">${round.sizes.map((_, i) => slot(i)).join("<span>×</span>")}<span>=</span>${slot(k)}${k <= 3 ? `<span class="cb-unit">${round.unit}</span>` : ""}</div>
       <div class="cb-treebox" data-tree>${treeSvg(round, false)}</div>
       <div class="keypad cb-keypad" data-keypad></div>
       <div class="feedback cb-feedback" data-feedback></div>
@@ -201,11 +200,11 @@ export function mountCombinacionesGame(container, { client, onExit }) {
     if (key === "⌫") {
       if (typed[active] === "" && active > 0) active--;
       else typed[active] = typed[active].slice(0, -1);
-    } else if (typed[active].length < 3) {
-      typed[active] += key;
-      // Los factores son de una cifra: el foco pasa solo al siguiente.
-      if (active < round.sizes.length) active++;
-    }
+    } else if (active < round.sizes.length) {
+      // Los factores son de una cifra: se escribe y el foco pasa solo al siguiente.
+      typed[active] = key;
+      active++;
+    } else if (typed[active].length < 3) typed[active] += key;
     paint();
   }
 
@@ -218,12 +217,10 @@ export function mountCombinacionesGame(container, { client, onExit }) {
     // Los factores valen en cualquier orden (3 × 2 = 2 × 3).
     const sameFactors = [...got].sort().join() === [...round.sizes].sort().join();
     const want = [...round.sizes, round.total];
-    let allOk = true;
+    const allOk = sameFactors && Number(typed[k]) === round.total;
     body.querySelectorAll("[data-slot]").forEach((b) => {
       const i = +b.dataset.slot;
       const ok = i < k ? sameFactors || got[i] === want[i] : Number(typed[i]) === round.total;
-      const good = i < k ? sameFactors : ok;
-      allOk = allOk && good;
       b.classList.remove("active");
       b.classList.add(ok ? "good" : "bad");
       if (!ok) b.innerHTML = `<s>${typed[i]}</s><i class="cb-fix">${want[i]}</i>`;

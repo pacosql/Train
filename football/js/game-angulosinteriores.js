@@ -51,7 +51,7 @@ export function buildRound(level) {
     prompt = `¿Qué polígono regular tiene ángulos de ${ang}°?`;
     lines = [[`Ángulo de fuera = 180° − ${ang}° = `, S(0), "°"], ["Lados = 360° ÷ ", S(1), "° = ", S(2)]];
     want = [ext, ext, n];
-    hint = `A cada ángulo le faltan 180 − ${ang} = ${ext}° para ser llano, y los ángulos de fuera dan una vuelta entera: 360 ÷ ${ext} = ${n} lados (${nameOf(n)}). Prueba: (${n} − 2) · 180 = ${fmt(sum)} y ${fmt(sum)} ÷ ${n} = ${ang}°`;
+    hint = `Por fuera, cada esquina gira 180 − ${ang} = ${ext}°, y al dar la vuelta entera se giran 360°: 360 ÷ ${ext} = ${n} lados. Prueba: (${n} − 2) · 180 = ${fmt(sum)} y ${fmt(sum)} ÷ ${n} = ${ang}°`;
   }
   const pts = polygon(n, kind !== "suma");
   return { kind, n, tri, sum, ang, ext, lines, want, prompt, hint, pts };
@@ -63,7 +63,7 @@ function polySvg(pts, nums) {
   const tris = pts.slice(1, -1).map((_, k) => {
     const a = pts[0], b = pts[k + 1], c = pts[k + 2];
     const gx = (a[0] + b[0] + c[0]) / 3, gy = (a[1] + b[1] + c[1]) / 3;
-    return `<polygon class="ai-t${k % 2}" points="${P(0)} ${P(k + 1)} ${P(k + 2)}"/>` + (nums ? `<text class="ai-tn" x="${gx}" y="${gy + 4}">${k + 1}</text>` : "");
+    return `<polygon class="ai-t${k % 2}" points="${P(0)} ${P(k + 1)} ${P(k + 2)}"/>` + (nums && pts.length <= 12 ? `<text class="ai-tn" x="${gx}" y="${gy + 4}">${k + 1}</text>` : "");
   });
   const diags = pts.slice(2, -1).map((p) => `<line class="ai-diag" x1="${pts[0][0]}" y1="${pts[0][1]}" x2="${p[0]}" y2="${p[1]}"/>`);
   return `<svg class="ai-svg" viewBox="0 0 ${W} ${H}">${tris.join("")}${diags.join("")}<polygon class="ai-poly" points="${pts.map((p) => p.join(",")).join(" ")}"/><circle class="ai-v0" cx="${pts[0][0]}" cy="${pts[0][1]}" r="4.5"/></svg>`;
@@ -188,7 +188,7 @@ export function mountAngulosinterioresGame(container, { client, onExit }) {
     const pts = round.kind === "cual" ? polygonOf(round.n) : round.pts;
     body.querySelector("[data-fig]").innerHTML = polySvg(pts, true);
     const r = round;
-    const text = r.kind === "suma" ? `Suman ${fmt(r.sum)}°` : r.kind === "regular" ? `Cada ángulo mide ${r.ang}°` : `Es el ${nameOf(r.n)} regular (${r.n} lados)`;
+    const text = r.kind === "suma" ? `Suman ${fmt(r.sum)}°` : r.kind === "regular" ? `Cada ángulo mide ${r.ang}°` : (NAMES[r.n] ? `Es el ${NAMES[r.n]} regular (${r.n} lados)` : `Es el polígono regular de ${r.n} lados`);
     if (allOk) {
       score += 10;
       hits++;

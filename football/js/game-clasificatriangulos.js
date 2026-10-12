@@ -5,7 +5,7 @@
 // nivel no hay marcas: se clasifican leyendo las medidas escritas.
 import { randInt, pick, shuffle, saveScore } from "./utils.js";
 
-const CW = 160, CH = 100;
+const CW = 160, CH = 112;
 const SIDE = { isosceles: "isósceles", equilatero: "equiláteros", escaleno: "escalenos" };
 const ANG = { rectangulo: "rectángulos", acutangulo: "acutángulos", obtusangulo: "obtusángulos" };
 const ONE = { isosceles: "isósceles", equilatero: "equilátero", escaleno: "escaleno", rectangulo: "rectángulo", acutangulo: "acutángulo", obtusangulo: "obtusángulo" };
@@ -21,7 +21,7 @@ const r1 = (v) => Math.round(v * 10) / 10;
 const odd = (lo, hi, skipLo, skipHi) => { for (;;) { const v = randInt(lo, hi); if (v < skipLo || v > skipHi) return v; } };
 
 // Ángulos (enteros) de un triángulo de cada clase; "near" acerca un ángulo a 90°.
-function anglesOf(s, a, near) {
+function anglesOf(s, a, near, l3) {
   for (;;) {
     let t;
     if (s === "equilatero") t = [60, 60, 60];
@@ -33,7 +33,8 @@ function anglesOf(s, a, near) {
     else { const c = near ? randInt(84, 88) : randInt(40, 80), x = randInt(40, 82); t = [c, x, 180 - c - x]; }
     const [p, q, r] = t, kindA = Math.max(p, q, r) === 90 ? "rectangulo" : Math.max(p, q, r) > 90 ? "obtusangulo" : "acutangulo";
     const distinct = Math.min(Math.abs(p - q), Math.abs(q - r), Math.abs(p - r)) >= 10;
-    if (Math.min(p, q, r) >= 15 && kindA === a && (s !== "escaleno" || distinct)) return shuffle(t);
+    // Con medidas escritas, nada de triángulos muy finos (no cabrían los números).
+    if (Math.min(p, q, r) >= (l3 ? 25 : 15) && (!l3 || Math.max(p, q, r) <= 125) && kindA === a && (s !== "escaleno" || distinct)) return shuffle(t);
   }
 }
 // Lados enteros (cm) para el nivel de medidas: la clase por lados manda.
@@ -43,12 +44,13 @@ function lensOf(s) {
     const t = s === "equilatero" ? [a, a, a] : s === "isosceles" ? [a, a, b] : [a, b, c];
     const [x, y, z] = t.slice().sort((m, n) => m - n);
     const eqs = (t[0] === t[1]) + (t[1] === t[2]) + (t[0] === t[2]);
-    if (x + y > z + 1 && (s === "equilatero" ? eqs === 3 : s === "isosceles" ? eqs === 1 : eqs === 0)) return shuffle(t);
+    const cosMin = (y * y + z * z - x * x) / (2 * y * z); // ángulo menor, frente al lado menor
+    if (x + y > z + 1 && cosMin < Math.cos((28 * Math.PI) / 180) && (s === "equilatero" ? eqs === 3 : s === "isosceles" ? eqs === 1 : eqs === 0)) return shuffle(t);
   }
 }
 
 // Vértices a partir de los ángulos (o de los lados), girados y encajados en la celda.
-function place(ang, lens, mg) {
+function place(ang, lens, mx, my) {
   let P;
   if (lens) {
     const [a, b, c] = lens, x = (b * b + c * c - a * a) / (2 * c); // a opuesto a P0, b a P1, c a P2
@@ -60,7 +62,7 @@ function place(ang, lens, mg) {
   const rot = (randInt(0, 359) * Math.PI) / 180;
   P = P.map(([x, y]) => [x * Math.cos(rot) - y * Math.sin(rot), x * Math.sin(rot) + y * Math.cos(rot)]);
   const xs = P.map((p) => p[0]), ys = P.map((p) => p[1]);
-  const s = Math.min((CW - 2 * mg) / (Math.max(...xs) - Math.min(...xs)), (CH - 2 * mg) / (Math.max(...ys) - Math.min(...ys)));
+  const s = Math.min((CW - 2 * mx) / (Math.max(...xs) - Math.min(...xs)), (CH - 2 * my) / (Math.max(...ys) - Math.min(...ys)));
   const ox = (CW - s * (Math.max(...xs) - Math.min(...xs))) / 2 - s * Math.min(...xs), oy = (CH - s * (Math.max(...ys) - Math.min(...ys))) / 2 - s * Math.min(...ys);
   return P.map(([x, y]) => [r1(ox + s * x), r1(oy + s * y)]);
 }
@@ -73,7 +75,7 @@ export function buildRound(level, roundNo = 0) {
     let ask, tris;
     const anyA = (s) => (s === "equilatero" ? "acutangulo" : pick(Object.keys(ANG)));
     if (mode === "s") {
-      ask = { s: pick(Object.keys(SIDE)) };
+      ask = { s: pick(["isosceles", "isosceles", "escaleno", "escaleno", "equilatero"]) };
       const pool = ask.s === "isosceles" ? ["isosceles", "escaleno"] : Object.keys(SIDE);
       tris = Array.from({ length: 6 }, () => { const s = pick(pool); return { s, a: anyA(s) }; });
     } else if (mode === "a") {
@@ -96,8 +98,8 @@ export function buildRound(level, roundNo = 0) {
     const L3 = level >= 3;
     tris = tris.map((t) => {
       const lens = L3 && mode === "s" ? lensOf(t.s) : null;
-      const ang = lens ? null : anglesOf(t.s, t.a, L3 && mode === "a" && Math.random() < 0.5);
-      const P = place(ang, lens, L3 ? 24 : 12);
+      const ang = lens ? null : anglesOf(t.s, t.a, L3 && mode === "a" && Math.random() < 0.5, L3);
+      const P = place(ang, lens, L3 && lens ? 26 : 12, L3 && lens ? 16 : 10);
       const key = lens || ang; // lado i opuesto al vértice i; iguales si su ángulo/medida opuesta lo es
       const eq = [0, 1, 2].filter((i) => [0, 1, 2].some((j) => j !== i && key[j] === key[i]));
       // Con lados escritos, la clase por ángulos sale de los lados (z² frente a x² + y²).

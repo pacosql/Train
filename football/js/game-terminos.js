@@ -77,7 +77,7 @@ export function buildRound(level) {
     suma: `En la suma: sumando + sumando = suma (o total): ${a} + ${b} = ${c}`,
     resta: `En la resta: minuendo − sustraendo = diferencia: ${a} − ${b} = ${c}`,
     mult: `En la multiplicación: factor × factor = producto: ${a} × ${b} = ${c}`,
-    div: `En la división: dividendo : divisor = cociente y lo que sobra es el resto: ${a} : ${b} = ${c} y sobran ${r} (${b} × ${c} + ${r} = ${a})`,
+    div: `En la división: dividendo : divisor = cociente y lo que sobra es el resto: ${a} : ${b} = ${c} y ${r === 1 ? "sobra" : "sobran"} ${r} (${b} × ${c} + ${r} = ${a})`,
     frac: `El denominador (abajo) dice en cuántas partes iguales se parte; el numerador (arriba), cuántas se cogen: ${a}/${b}`,
   }[op];
   return { op, full, nums, rows, roles, ask, prompt, hint: `${name}. ${rule}` };
@@ -132,8 +132,8 @@ export function mountTerminosGame(container, { client, onExit }) {
       return `<div class="tm-drow" style="${pad}">${k === below.length - 1 ? term(w.txt, "resto", " tm-low") : `<button type="button" class="tm-num tm-part" data-role="parcial">${w.txt}</button>`}</div>`;
     }).join("");
     return `<div class="tm-cuaderno tm-caja">
-      <div class="tm-left"><div class="tm-drow">${term(D, "dividendo", " tm-top")}</div>${left}</div>
-      <div class="tm-right"><div class="tm-dv">${term(d, "divisor", " tm-top")}</div><div class="tm-cc">${term(q, "cociente", " tm-low")}</div></div></div>`;
+      <div class="tm-left"><div class="tm-drow">${term(D, "dividendo", " tm-top tm-l")}</div>${left}</div>
+      <div class="tm-right"><div class="tm-dv">${term(d, "divisor", " tm-top tm-r")}</div><div class="tm-cc">${term(q, "cociente", " tm-low")}</div></div></div>`;
   }
 
   function nextRound() {
