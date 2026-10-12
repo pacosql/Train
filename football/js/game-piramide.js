@@ -61,17 +61,19 @@ export function buildRound(level) {
     if (holes.length !== nHoles) continue;
     const order = solveOrder(rows, holes);
     if (!order) continue;
-    const ups = [], downs = [];
-    for (const { r, c, trio } of order) {
+    // 💡 en el mismo orden en que se deducen los huecos (el del foco).
+    let saidDown = false; // "hacia abajo resto" se dice una vez
+    const steps = order.map(({ r, c, trio }) => {
       const [[tr, tc], [lr, lc], [rr, rc]] = trio;
       const top = rows[tr][tc], left = rows[lr][lc], right = rows[rr][rc];
-      if (r === tr) ups.push(`${fmt(left)} ${op} ${fmt(right)} = ${fmt(top)}`);
-      else downs.push(`${fmt(top)} ${op === "×" ? "÷" : "−"} ${fmt(c === lc && r === lr ? right : left)} = ${fmt(rows[r][c])}`);
-    }
-    const upTxt = op === "×" ? "El ladrillo de arriba es el producto de los dos de abajo" : "El ladrillo de arriba es la suma de los dos de abajo";
-    const downTxt = op === "×" ? "hacia abajo divido" : "hacia abajo resto";
-    const hint = [ups.length ? `${upTxt}: ${ups.join(", ")}` : "", downs.length ? `${ups.length ? downTxt : downTxt[0].toUpperCase() + downTxt.slice(1)}: ${downs.join(", ")}` : ""]
-      .filter(Boolean).join("; ");
+      if (r === tr) return `${fmt(left)} ${op} ${fmt(right)} = ${fmt(top)}`;
+      const other = r === lr && c === lc ? right : left;
+      const say = saidDown ? "" : `hacia abajo ${op === "×" ? "divido" : "resto"}: `;
+      saidDown = true;
+      return `${say}${fmt(top)} ${op === "×" ? "÷" : "−"} ${fmt(other)} = ${fmt(rows[r][c])}`;
+    });
+    const rule = op === "×" ? "El ladrillo de arriba es el producto de los dos de abajo" : "El ladrillo de arriba es la suma de los dos de abajo";
+    const hint = `${rule}: ${steps.join("; ")}`;
     const slots = order.map(({ r, c }) => ({ r, c, value: rows[r][c] }));
     return { op, rows, slots, hint, floors };
   }
@@ -80,7 +82,7 @@ export function buildRound(level) {
 export function mountPiramideGame(container, { client, onExit }) {
   const startLives = 3;
   let lives, score, rounds, hits, finished = false, pending = null;
-  let round, typed, active, busy;
+  let round, typed, active, busy, fresh;
 
   container.innerHTML = `
     <div class="game-topbar">
@@ -106,6 +108,7 @@ export function mountPiramideGame(container, { client, onExit }) {
     typed = round.slots.map(() => "");
     active = 0;
     busy = false;
+    fresh = false;
     const brick = (ri, ci) => {
       const i = slotIndex(ri, ci);
       return i === -1
@@ -119,7 +122,7 @@ export function mountPiramideGame(container, { client, onExit }) {
       <div class="keypad py-keypad" data-keypad></div>
       <div class="feedback py-feedback" data-feedback></div>
     `;
-    body.querySelectorAll("[data-slot]").forEach((b) => b.addEventListener("click", () => !busy && ((active = +b.dataset.slot), paint())));
+    body.querySelectorAll("[data-slot]").forEach((b) => b.addEventListener("click", () => !busy && ((active = +b.dataset.slot), (fresh = true), paint())));
     const pad = body.querySelector("[data-keypad]");
     ["1", "2", "3", "4", "5", "6", "7", "8", "9", "⌫", "0", "✓"].forEach((key) => {
       const btn = document.createElement("button");
@@ -158,9 +161,11 @@ export function mountPiramideGame(container, { client, onExit }) {
       fb.className = "feedback bad";
       return;
     }
-    if (key === "⌫") typed[active] = typed[active].slice(0, -1);
-    else if (typed[active].length < 4) {
-      typed[active] += key;
+    if (key === "⌫") (typed[active] = typed[active].slice(0, -1)), (fresh = false);
+    else if (fresh || typed[active].length < 4) {
+      // Tras tocar una casilla (o saltar a ella) la primera cifra sustituye a lo escrito.
+      typed[active] = (fresh ? "" : typed[active]) + key;
+      fresh = false;
       // Con la casilla completa el foco salta solo al siguiente hueco.
       if (typed[active].length >= String(round.slots[active].value).length) {
         const e = nextEmpty();
@@ -180,7 +185,7 @@ export function mountPiramideGame(container, { client, onExit }) {
       allOk = allOk && ok;
       b.classList.remove("active");
       b.classList.add(ok ? "good" : "bad");
-      if (!ok) b.innerHTML = `<s>${typed[i]}</s>${fmt(round.slots[i].value)}`;
+      if (!ok) b.innerHTML = `<s>${typed[i]}</s><b>${fmt(round.slots[i].value)}</b>`;
     });
     const feedback = body.querySelector("[data-feedback]");
     if (allOk) {

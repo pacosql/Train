@@ -39,7 +39,8 @@ export function buildRound(level) {
     else if (level === 2) { a = randInt(12, 99); b = randInt(1, 9) * 10 + randInt(1, 9); }
     else if (level === 3) { a = randInt(102, 999); b = randInt(1, 9) * 10 + randInt(1, 9); }
     else { a = randInt(101, 999); b = randInt(2, 9); dec = 1; }
-    if (a % 10 !== 0 && (b < 10 || b > 11)) break; // 40 × 6 o × 11 no enseñan la cuenta
+    // 40 × 6 o × 11 no enseñan la cuenta; 23,5 × 2 = 47,0 deja un 0 que sobra
+    if (a % 10 !== 0 && (b < 10 || b > 11) && !(dec && (a * b) % 10 === 0)) break;
   }
   const result = a * b;
   const w = len(result);
@@ -106,10 +107,10 @@ export function mountMultiplicaGame(container, { client, onExit }) {
     active = 0;
     busy = false;
     const lineRow = (ln, li) =>
-      row(`mu-line${ln.sum ? " mu-sum" : ""}`, ln.sum ? "=" : "", Array.from({ length: round.w }, (_, c) => {
+      row(`mu-line${li === 0 ? " mu-first" : ""}${ln.sum && li ? " mu-sum" : ""}`, li === 1 ? "+" : "", Array.from({ length: round.w }, (_, c) => {
         const k = round.slots.findIndex((s) => s.line === li && s.col === c);
         if (k >= 0) return `<button type="button" class="mu-cell mu-slot${round.dec && round.w - 1 - c === round.dec ? " mu-comma" : ""}" data-slot="${k}"></button>`;
-        return `<span class="mu-cell${ln.shift && c === round.w - 1 ? " mu-hole" : ""}">${ln.shift && c === round.w - 1 ? "–" : ""}</span>`;
+        return `<span class="mu-cell${ln.shift && c === round.w - 1 ? " mu-hole" : ""}">${ln.shift && c === round.w - 1 ? "·" : ""}</span>`;
       }));
     body.innerHTML = `
       <p class="prompt mu-prompt">Multiplica en columna</p>
@@ -172,7 +173,7 @@ export function mountMultiplicaGame(container, { client, onExit }) {
       active = missing;
       paint();
       feedback.textContent = "Faltan casillas por rellenar";
-      feedback.className = "feedback bad";
+      feedback.className = "feedback bad mu-feedback";
       return;
     }
     busy = true;
@@ -184,21 +185,21 @@ export function mountMultiplicaGame(container, { client, onExit }) {
       allOk = allOk && ok;
       b.classList.remove("active");
       b.classList.add(ok ? "good" : "bad");
-      if (!ok) b.innerHTML = `<s>${typed[k]}</s>${round.slots[k].want}`;
+      if (!ok) b.innerHTML = `<s>${typed[k]}</s><i class="mu-fix">${round.slots[k].want}</i>`;
     });
     if (allOk) {
       score += 10;
       hits++;
       renderScore();
       feedback.textContent = `✓ ${round.text}. 💡 ${round.hint}`;
-      feedback.className = "feedback ok";
+      feedback.className = "feedback ok mu-feedback";
       pending = setTimeout(nextRound, 900);
     } else {
       lives--;
       renderLives();
       const go = () => { clearTimeout(pending); lives <= 0 ? finish(false) : nextRound(); };
       feedback.innerHTML = `Era ${round.text}. 💡 ${round.hint} <button type="button" class="mu-next" data-next>Siguiente →</button>`;
-      feedback.className = "feedback bad";
+      feedback.className = "feedback bad mu-feedback";
       feedback.querySelector("[data-next]").addEventListener("click", go);
       pending = setTimeout(go, 2500);
     }

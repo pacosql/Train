@@ -14,8 +14,9 @@ const fmt = (n) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 const digitsOf = (n) => String(n).split("").map(Number).reverse();
 
 // Niveles: 0 dos o tres cifras · 1 cuatro cifras sin ceros · 2 con algún
-// cero (6.053) · 3 forma "× potencias de 10" · 4 inversa con los sumandos
-// desordenados (hasta cinco cifras).
+// cero (6.053), o la inversa ordenada "6.000 + 50 + 3 = □" · 3 forma
+// "× potencias de 10" · 4 inversa con los sumandos desordenados (hasta
+// cinco cifras).
 export function buildRound(level) {
   let n, ds;
   for (;;) {
@@ -28,7 +29,8 @@ export function buildRound(level) {
     if (level === 4 && ds.length - zeros < 3) continue; // hace falta algo que desordenar
     break;
   }
-  const kind = level === 3 ? "factores" : level === 4 ? "inversa" : "suma";
+  // En el nivel 2 se alterna con la inversa ordenada "6.000 + 50 + 3 = □"
+  const kind = level === 3 ? "factores" : level === 4 || (level === 2 && Math.random() < 0.5) ? "inversa" : "suma";
   // Sumandos de mayor a menor, sin los ceros: [{d, i, v}]
   const terms = ds.map((d, i) => ({ d, i, v: d * 10 ** i })).filter((t) => t.d).reverse();
   const valueHint = (t) => `El ${t.d} está en las ${NAMES[t.i]}: vale ${t.d} × ${fmt(10 ** t.i)} = ${fmt(t.v)}`;
@@ -48,7 +50,9 @@ export function buildRound(level) {
     }));
     hint = `Cada cifra por lo que vale su sitio: ${terms.map((t) => `${t.d} × ${fmt(10 ** t.i)}`).join(" + ")} = ${fmt(n)}`;
   } else {
-    shown = shuffle(terms.map((t) => fmt(t.v))).join(" + ");
+    // Nivel 4: desordenada de verdad (distinta del orden de mayor a menor)
+    shown = ordered;
+    while (level === 4 && shown === ordered) shown = shuffle(terms.map((t) => fmt(t.v))).join(" + ");
     hint = `Ordeno de mayor a menor: ${ordered}` + (zero ? `; no hay ${NAMES[zero.i]}, así que pongo un 0 en su sitio: ${fmt(n)}` : ` = ${fmt(n)}`);
     slots = [{ answer: n, hint }];
   }
@@ -86,13 +90,18 @@ export function mountPolinomicaGame(container, { client, onExit }) {
   }
   window.addEventListener("keydown", onKeyDown);
 
+  // La línea se parte en grupos que no se cortan por dentro: "3.482 =" y
+  // los sumandos; si no cabe en una línea, los sumandos bajan enteros.
   function line() {
     const slot = (k, cls) => `<button type="button" class="pn-slot ${cls}" data-slot="${k}"></button>`;
     const plus = (k) => (k ? '<span class="pn-op">+</span>' : "");
-    const head = `<span class="pn-num">${round.shown}</span><span class="pn-op">=</span>`;
-    if (round.kind === "suma") return head + round.slots.map((_, k) => plus(k) + slot(k, "pn-wide")).join("");
-    if (round.kind === "factores") return head + round.slots.map((s, k) => `${plus(k)}<span class="pn-term">${slot(k, "pn-digit")}<span class="pn-x">× ${s.mult}</span></span>`).join("");
-    return head + slot(0, "pn-wide");
+    const head = `<span class="pn-group"><span class="pn-num">${round.shown}</span><span class="pn-op">=</span></span>`;
+    if (round.kind === "suma") return head + `<span class="pn-group">${round.slots.map((_, k) => plus(k) + slot(k, "pn-wide")).join("")}</span>`;
+    if (round.kind === "factores")
+      return head + `<span class="pn-group pn-wrap">${round.slots.map((s, k) => `<span class="pn-term">${plus(k)}${slot(k, "pn-digit")}<span class="pn-x">× ${s.mult}</span></span>`).join("")}</span>`;
+    // inversa: cada "+ sumando" junto, y "= □" detrás
+    const terms = round.shown.split(" + ").map((t, k) => `<span class="pn-term">${plus(k)}<span>${t}</span></span>`).join("");
+    return `<span class="pn-group pn-wrap pn-sum">${terms}</span><span class="pn-group"><span class="pn-op">=</span>${slot(0, "pn-wide pn-big")}</span>`;
   }
 
   function nextRound() {
@@ -161,7 +170,7 @@ export function mountPolinomicaGame(container, { client, onExit }) {
       if (!ok && firstBad === -1) firstBad = k;
       b.classList.remove("active");
       b.classList.add(ok ? "good" : "bad");
-      if (!ok) b.innerHTML = `<s>${fmt(typed[k])}</s><b>${fmt(round.slots[k].answer)}</b>`;
+      if (!ok) b.innerHTML = `<s>${fmt(typed[k])}</s><em>${fmt(round.slots[k].answer)}</em>`;
     });
     if (firstBad === -1) {
       score += 10;

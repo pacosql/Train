@@ -36,7 +36,7 @@ export function buildRound(level) {
       for (const s of steps) vals.push(apply(s, vals[vals.length - 1]));
       return vals;
     });
-    if (rows.some((r) => r.some((v) => v < 0 || v > 200 || !Number.isInteger(v)))) continue;
+    if (rows.some((r) => r.some((v) => v < 1 || v > 200 || !Number.isInteger(v)))) continue; // sin ceros ni negativos
     // Casillas: por fila, qué posición falta (0 = entrada, última = salida, otras = paso intermedio).
     const showMid = level === 1;
     const slots = [];
@@ -62,7 +62,7 @@ export function buildRound(level) {
 export function mountMaquinaGame(container, { client, onExit }) {
   const startLives = 3;
   let lives, score, rounds, hits, finished = false, pending = null;
-  let round, typed, active, busy;
+  let round, typed, active, busy, fresh;
 
   container.innerHTML = `
     <div class="game-topbar">
@@ -87,6 +87,7 @@ export function mountMaquinaGame(container, { client, onExit }) {
     typed = round.slots.map(() => "");
     active = 0;
     busy = false;
+    fresh = false;
     const last = round.steps.length;
     const cell = (r, pos) => {
       const s = round.slots.findIndex((x) => x.r === r && x.pos === pos);
@@ -110,7 +111,7 @@ export function mountMaquinaGame(container, { client, onExit }) {
       <div class="keypad mq-keypad" data-keypad></div>
       <div class="feedback mq-feedback" data-feedback></div>
     `;
-    body.querySelectorAll("[data-slot]").forEach((b) => b.addEventListener("click", () => !busy && ((active = +b.dataset.slot), paint())));
+    body.querySelectorAll("[data-slot]").forEach((b) => b.addEventListener("click", () => !busy && ((active = +b.dataset.slot), (fresh = true), paint())));
     const pad = body.querySelector("[data-keypad]");
     ["1", "2", "3", "4", "5", "6", "7", "8", "9", "⌫", "0", "✓"].forEach((key) => {
       const btn = document.createElement("button");
@@ -148,9 +149,11 @@ export function mountMaquinaGame(container, { client, onExit }) {
       fb.className = "feedback bad";
       return;
     }
-    if (key === "⌫") typed[active] = typed[active].slice(0, -1);
-    else if (typed[active].length < 3) {
-      typed[active] += key;
+    if (key === "⌫") (typed[active] = typed[active].slice(0, -1)), (fresh = false);
+    else if (fresh || typed[active].length < 3) {
+      // Tras tocar una casilla (o saltar a ella) la primera cifra sustituye a lo escrito.
+      typed[active] = (fresh ? "" : typed[active]) + key;
+      fresh = false;
       if (typed[active].length >= String(round.slots[active].value).length) {
         const e = nextEmpty();
         if (e !== -1) active = e;
@@ -169,7 +172,7 @@ export function mountMaquinaGame(container, { client, onExit }) {
       allOk = allOk && ok;
       b.classList.remove("active");
       b.classList.add(ok ? "good" : "bad");
-      if (!ok) b.innerHTML = `<s>${typed[i]}</s>${round.slots[i].value}`;
+      if (!ok) b.innerHTML = `<s>${typed[i]}</s><b>${round.slots[i].value}</b>`;
     });
     const feedback = body.querySelector("[data-feedback]");
     if (allOk) {

@@ -31,7 +31,7 @@ export function buildRound(level) {
     hint = `${fmt(n)} = ${answer} ${name} (${answer} × ${pow})${rest ? ` y ${rest} ${rest === 1 ? "unidad suelta" : "unidades sueltas"}` : ""}: tapo ${tapa} y queda ${answer}`;
   } else {
     answer = n * pow;
-    digits = String(n) + "·".repeat(k); // los ceros se rellenan al responder
+    digits = String(n) + "·".repeat(k); // la tabla empieza vacía y se rellena al responder
     cols = digits.length;
     hint = `${n} ${name} = ${n} × ${pow} = ${fmt(answer)} unidades: pongo ${k === 1 ? "un 0" : "dos ceros"} a la derecha del ${n}`;
   }
@@ -78,9 +78,9 @@ export function mountCuantasdecenasGame(container, { client, onExit }) {
     body.innerHTML = `
       <p class="prompt cd-prompt">${question}</p>
       <div class="cd-cuaderno">
-        <div class="cd-table" style="grid-template-columns:repeat(${round.cols},56px)">
+        <div class="cd-table" style="grid-template-columns:repeat(${round.cols},64px)">
           ${heads.map((h) => `<div class="cd-head">${h}</div>`).join("")}
-          ${round.digits.split("").map((d, i) => `<div class="cd-cell${d === "·" ? " cd-dim" : ""}" data-cell="${i}">${d}</div>`).join("")}
+          ${round.digits.split("").map((d, i) => `<div class="cd-cell" data-cell="${i}">${round.kind === "count" ? d : ""}</div>`).join("")}
         </div>
         <div class="cd-line">
           <span>${round.kind === "count" ? fmt(round.n) : `${round.n} ${NAME[round.unit][0]}`} =</span>
@@ -124,13 +124,17 @@ export function mountCuantasdecenasGame(container, { client, onExit }) {
     const slot = body.querySelector("[data-slot]");
     slot.classList.remove("active");
     slot.classList.add(ok ? "good" : "bad");
-    if (!ok) slot.innerHTML = `<s>${typed}</s>${round.answer}`;
+    if (!ok) slot.innerHTML = `<s>${typed}</s><b class="cd-want">${fmt(round.answer)}</b>`;
     // La tabla enseña el truco: se tapan las cifras de la derecha (contar)
     // o se rellenan con ceros (inversa).
     body.querySelectorAll("[data-cell]").forEach((c, i) => {
       const fromRight = round.cols - 1 - i;
       if (round.kind === "count") c.classList.add(fromRight < round.k ? "cd-cover" : "cd-keep");
-      else if (fromRight < round.k) { c.textContent = "0"; c.classList.remove("cd-dim"); c.classList.add("cd-keep"); }
+      else {
+        // Inversa: la tabla se rellena con el número y los ceros (en verde).
+        c.textContent = String(round.answer)[i];
+        if (fromRight < round.k) c.classList.add("cd-keep");
+      }
     });
     if (ok) {
       score += 10;

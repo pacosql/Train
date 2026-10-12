@@ -9,20 +9,21 @@ const fmt = (n) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 const REGLA = "Los pares acaban en 0, 2, 4, 6, 8";
 
 // Niveles: 0 hasta 20 con puntos · 1 hasta 100 sin puntos (por la última
-// cifra) · 2 hasta 1.000 · 3 "el número que va antes del N, ¿par o impar?".
+// cifra) · 2 hasta 1.000 · 3 "el número que va antes/después del N, ¿par
+// o impar?" (hay que razonar: par e impar se turnan).
 export function buildRound(level) {
   let n, shown, before = false, dots = false;
-  if (level === 0) { n = randInt(1, 20); dots = true; }
+  if (level === 0) { n = randInt(5, 20); dots = true; }
   else if (level === 1) n = randInt(10, 100);
   else if (level === 2) n = randInt(101, 1000);
-  else { before = true; shown = randInt(2, 1000); n = shown - 1; }
+  else { before = Math.random() < 0.5 ? "antes" : "después"; shown = randInt(2, 999); n = before === "antes" ? shown - 1 : shown + 1; }
   if (!before) shown = n;
   const par = n % 2 === 0;
   const last = n % 10;
   const que = par ? "par" : "impar";
   let hint;
   if (dots) hint = par ? `${n}: todos los puntos tienen pareja → par. ${REGLA}` : `${n}: un punto se queda solo → impar. ${REGLA}`;
-  else if (before) hint = `Antes del ${fmt(shown)} va el ${fmt(n)}: acaba en ${last} → ${que} (par e impar se van alternando)`;
+  else if (before) hint = `${before === "antes" ? "Antes" : "Después"} del ${fmt(shown)} va el ${fmt(n)}: acaba en ${last} → ${que}. Par e impar se van turnando: ${fmt(shown)} es ${par ? "impar" : "par"}, el de al lado es ${que}`;
   else hint = `${fmt(n)} acaba en ${last} → ${que}. ${REGLA}`;
   return { n, shown, before, dots, par, answer: que, hint };
 }
@@ -56,20 +57,25 @@ export function mountParesimparesGame(container, { client, onExit }) {
   };
   window.addEventListener("keydown", onKey);
 
-  // Puntos en filas de 10; cada pareja (2 seguidos) lleva una rayita que se
-  // enseña al responder; si sobra uno, se marca con un círculo rojo.
+  // Puntos sueltos, sin agrupar: 6 por fila y cada uno algo movido al
+  // azar para que no se cuenten por filas. Cada pareja (dos seguidos de la
+  // misma fila) lleva una rayita que se enseña al responder; si sobra uno,
+  // se rodea en rojo.
   function dotsSvg(n) {
-    const per = 10, cell = 30, r = 8, rows = Math.ceil(n / per);
+    const per = 6, cell = 52, r = 11, rows = Math.ceil(n / per);
     const W = per * cell, H = rows * cell;
-    let out = "";
-    for (let i = 0; i < n; i++) {
-      const x = (i % per) * cell + cell / 2, y = Math.floor(i / per) * cell + cell / 2;
+    const pts = Array.from({ length: n }, (_, i) => [
+      (i % per) * cell + cell / 2 + randInt(-9, 9),
+      Math.floor(i / per) * cell + cell / 2 + randInt(-9, 9),
+    ]);
+    let lines = "", dots = "";
+    pts.forEach(([x, y], i) => {
       const solo = i === n - 1 && n % 2 === 1;
-      if (i % 2 === 0 && i + 1 < n) out += `<line class="pi-pair" x1="${x}" y1="${y}" x2="${x + cell}" y2="${y}"/>`;
-      out += `<circle class="pi-dot${solo ? " solo" : ""}" cx="${x}" cy="${y}" r="${r}"/>`;
-      if (solo) out += `<circle class="pi-alone" cx="${x}" cy="${y}" r="${r + 5}"/>`;
-    }
-    return `<svg class="pi-dots" data-dots viewBox="0 0 ${W} ${H}" style="max-width:${W}px">${out}</svg>`;
+      if (i % 2 === 0 && i + 1 < n) lines += `<line class="pi-pair" x1="${x}" y1="${y}" x2="${pts[i + 1][0]}" y2="${pts[i + 1][1]}"/>`;
+      dots += `<circle class="pi-dot${solo ? " solo" : ""}" cx="${x}" cy="${y}" r="${r}"/>`;
+      if (solo) dots += `<circle class="pi-alone" cx="${x}" cy="${y}" r="${r + 6}"/>`;
+    });
+    return `<svg class="pi-dots" data-dots viewBox="0 0 ${W} ${H}" style="max-width:${W}px">${lines}${dots}</svg>`;
   }
 
   function nextRound() {
@@ -77,7 +83,7 @@ export function mountParesimparesGame(container, { client, onExit }) {
     round = buildRound(Math.min(3, Math.floor(hits / 3)));
     busy = false;
     const numHtml = round.before
-      ? `<small>el número que va antes del</small>${fmt(round.shown)}`
+      ? `<small>el número que va ${round.before} del</small>${fmt(round.shown)}`
       : fmt(round.n);
     body.innerHTML = `
       <p class="prompt pi-prompt">${round.before ? "¿Es par o impar?" : "¿Par o impar?"}</p>
@@ -109,7 +115,7 @@ export function mountParesimparesGame(container, { client, onExit }) {
     if (dots) dots.classList.add("paired");
     else {
       const s = fmt(round.n);
-      body.querySelector("[data-num]").innerHTML = `${round.before ? `<small>antes del ${fmt(round.shown)} va el</small>` : ""}${s.slice(0, -1)}<u class="pi-last">${s.slice(-1)}</u>`;
+      body.querySelector("[data-num]").innerHTML = `${round.before ? `<small>${round.before} del ${fmt(round.shown)} va el</small>` : ""}${s.slice(0, -1)}<u class="pi-last">${s.slice(-1)}</u>`;
     }
     const fb = body.querySelector("[data-feedback]");
     if (ok) {

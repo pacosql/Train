@@ -28,7 +28,8 @@ export function explain(n, d) {
   // 11: suma alterna de cifras (lugares impares menos pares, desde la derecha)
   const rev = ds.slice().reverse(), odd = rev.filter((_, i) => i % 2 === 0), even = rev.filter((_, i) => i % 2 === 1);
   const A = odd.reduce((a, b) => a + b, 0), B = even.reduce((a, b) => a + b, 0), diff = Math.abs(A - B);
-  return `Cifras en lugar impar (desde la derecha): ${odd.join(" + ")} = ${A}; en lugar par: ${even.join(" + ")} = ${B}; la diferencia es ${diff}, ${yes ? `${diff === 0 ? "0" : "múltiplo de 11"} → sí` : "no es 0 ni múltiplo de 11 → no"}`;
+  const sumOf = (arr, s) => (arr.length > 1 ? `${arr.join(" + ")} = ${s}` : `${s}`);
+  return `Cifras en lugar impar (desde la derecha): ${sumOf(odd, A)}; en lugar par: ${sumOf(even, B)}; la diferencia es ${diff}${yes ? (diff === 0 ? " → sí" : ", múltiplo de 11 → sí") : ", que no es 0 ni múltiplo de 11 → no"}`;
 }
 
 // Niveles: 0 entre 2, 5 y 10 · 1 entre 3 · 2 entre 9 y 6 · 3 entre 4 y 25 ·
@@ -39,7 +40,7 @@ export function buildRound(level) {
   const digits = L === 0 ? pick([2, 3]) : L === 1 ? 3 : pick([3, 4]);
   const lo = 10 ** (digits - 1), hi = 10 ** digits - 1;
   let n;
-  if (Math.random() < 0.5) n = randInt(Math.ceil(lo / d), Math.floor(hi / d)) * d;
+  if (Math.random() < 0.5) n = randInt(Math.max(2, Math.ceil(lo / d)), Math.floor(hi / d)) * d; // nunca n = d
   else do n = randInt(lo, hi); while (n % d === 0);
   return { n, d, yes: n % d === 0, hint: explain(n, d), level: L };
 }
@@ -70,11 +71,14 @@ export function mountDivisibleGame(container, { client, onExit }) {
     if (finished) return;
     round = buildRound(Math.floor(hits / 2));
     busy = false;
+    // El número va cifra a cifra en casillas de cuaderno: al responder se
+    // marcan las cifras que mira el criterio.
+    const cells = String(round.n).split("").map((c) => `<span class="dv2-dig" data-dig>${c}</span>`).join("");
     body.innerHTML = `
-      <p class="prompt dv2-prompt">¿<b>${round.n}</b> es divisible entre <b>${round.d}</b>?</p>
+      <p class="prompt dv2-prompt">Aplica el criterio de divisibilidad</p>
       <div class="dv2-cuaderno">
-        <div class="dv2-num">${round.n}</div>
-        <div class="dv2-crit">÷ ${round.d}</div>
+        <div class="dv2-num">${cells}</div>
+        <div class="dv2-q">¿Es divisible entre <b>${round.d}</b>?</div>
       </div>
       <div class="dv2-bar"><div class="dv2-bar-fill" data-bar></div></div>
       <div class="dv2-buttons">
@@ -103,6 +107,17 @@ export function mountDivisibleGame(container, { client, onExit }) {
     raf = requestAnimationFrame(tick);
   }
 
+  // Cifras que mira el criterio: la última (2, 5, 10), las dos últimas
+  // (4, 25), todas (3, 9, 6) o en lugares alternos (11, dos colores).
+  function markDigits() {
+    const ds = [...body.querySelectorAll("[data-dig]")], n = ds.length, d = round.d;
+    ds.forEach((el, i) => {
+      const fromRight = n - 1 - i;
+      if (d === 11) el.classList.add(fromRight % 2 ? "dv2-alt" : "dv2-on");
+      else if (d === 3 || d === 9 || d === 6 || fromRight < (d === 4 || d === 25 ? 2 : 1)) el.classList.add("dv2-on");
+    });
+  }
+
   function answer(said) {
     if (finished || busy) return;
     busy = true;
@@ -112,6 +127,7 @@ export function mountDivisibleGame(container, { client, onExit }) {
     const yesBtn = body.querySelector("[data-yes]"), noBtn = body.querySelector("[data-no]");
     yesBtn.disabled = noBtn.disabled = true;
     (round.yes ? yesBtn : noBtn).classList.add("good");
+    markDigits();
     if (said !== null && said !== round.yes) (said ? yesBtn : noBtn).classList.add("bad");
     if (said === round.yes) {
       score += 10;
@@ -127,8 +143,9 @@ export function mountDivisibleGame(container, { client, onExit }) {
       lives--;
       streak = 0;
       renderLives();
+      body.querySelector("[data-streak]").textContent = "🔥 Racha: 0";
       const head = said === null ? "⏱ Se acabó el tiempo. " : "";
-      feedback.innerHTML = `${head}Era ${round.yes ? "SÍ" : "NO"}. 💡 ${round.hint} <button type="button" class="primary dv2-next" data-next>Siguiente →</button>`;
+      feedback.innerHTML = `${head}Era ${round.yes ? "SÍ" : "NO"}. 💡 ${round.hint} <button type="button" class="dv2-next" data-next>Siguiente →</button>`;
       feedback.className = "feedback bad";
       const go = () => { clearTimeout(pending); lives <= 0 ? finish(false) : nextRound(); };
       feedback.querySelector("[data-next]").addEventListener("click", go);

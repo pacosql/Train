@@ -56,7 +56,9 @@ export function mountAnteriorGame(container, { client, onExit }) {
   function nextRound() {
     if (finished) return;
     clearTimeout(pending);
-    round = buildRound(Math.min(3, Math.floor(hits / 3)));
+    // nunca dos rondas seguidas iguales
+    const last = round && round.n;
+    do round = buildRound(Math.min(3, Math.floor(hits / 3))); while (round.n === last);
     typed = { prev: "", next: "" };
     active = "prev";
     busy = false;

@@ -2,8 +2,9 @@
 // vacías en el lado derecho — conmutativa (4 × 7 = 7 × □), asociativa,
 // distributiva (3 × (4 + 5) = 3 × 4 + 3 × □) y sacar factor común. Se
 // escribe con el teclado; se acepta cualquier relleno que haga CIERTA la
-// igualdad (se evalúa de verdad) y al responder aparece el nombre de la
-// propiedad y un 💡 que la explica con los números de la ronda.
+// igualdad (se evalúa de verdad) usando los mismos números del libro (así
+// "3 × 4 + 4 × 3" vale, pero "9 × (1 + 2)" no), y al responder aparece el
+// nombre de la propiedad y un 💡 que la explica con los números de la ronda.
 import { randInt, pick, saveScore } from "./utils.js";
 
 const NAMES = { con: "Propiedad conmutativa", aso: "Propiedad asociativa", dis: "Propiedad distributiva", fac: "Sacar factor común" };
@@ -20,6 +21,10 @@ export function evalExpr(s) {
 }
 // Sustituye los □ de la plantilla, en orden, por lo escrito.
 export const fill = (tpl, vals) => { let k = 0; return tpl.replace(/□/g, () => String(vals[k++])); };
+const sorted = (v) => v.map(Number).sort((x, y) => x - y).join(",");
+// ¿Es correcta la respuesta? Igualdad cierta y con los números de la ronda.
+export const accepts = (round, vals) =>
+  vals.every((v) => /^\d+$/.test(String(v))) && evalExpr(fill(round.right, vals)) === round.value && sorted(vals) === sorted(round.expected);
 
 function conmutativa() {
   const op = pick(["+", "×"]), max = op === "+" ? 40 : 9;
@@ -31,7 +36,8 @@ function conmutativa() {
 }
 
 function asociativa(slots) {
-  const op = pick(["+", "×"]), max = op === "+" ? 30 : 6;
+  // Con tres casillas todos los números son de una cifra (el foco avanza solo).
+  const op = pick(["+", "×"]), max = op === "+" ? (slots === 3 ? 9 : 30) : 6;
   const a = randInt(2, max), b = randInt(2, max), c = randInt(2, max);
   const r = evalExpr(`${a} ${op} ${b} ${op} ${c}`);
   const forms = slots === 3
@@ -143,8 +149,9 @@ export function mountDistributivaGame(container, { client, onExit }) {
     });
   }
 
-  // Cada casilla admite hasta dos cifras; al completarlas el foco salta a la
-  // siguiente vacía. ✓ también salta si quedan huecos y corrige si no.
+  // Con una casilla caben dos cifras; con varias, cada número es de una
+  // cifra y el foco salta solo a la siguiente vacía (de izquierda a
+  // derecha, como se lee). ✓ también salta si quedan huecos y corrige si no.
   function pressKey(key) {
     if (finished || busy) return;
     const empty = typed.map((t, i) => (t === "" ? i : -1)).filter((i) => i >= 0);
@@ -157,9 +164,10 @@ export function mountDistributivaGame(container, { client, onExit }) {
       } else active = empty[0];
     } else if (key === "⌫") typed[active] = typed[active].slice(0, -1);
     else {
-      typed[active] = typed[active] === "0" ? key : (typed[active] + key).slice(0, 2);
+      const cap = typed.length === 1 ? 2 : 1;
+      typed[active] = typed[active] === "0" || typed[active].length >= cap ? key : typed[active] + key;
       const rest = empty.filter((i) => i !== active);
-      if (typed[active].length === 2 && rest.length) active = rest[0];
+      if (typed[active].length >= cap && rest.length) active = rest.find((i) => i > active) ?? rest[0];
     }
     paint();
   }
@@ -168,14 +176,16 @@ export function mountDistributivaGame(container, { client, onExit }) {
     busy = true;
     rounds++;
     const feedback = body.querySelector("[data-feedback]");
-    const ok = evalExpr(fill(round.right, typed)) === round.value;
+    const ok = accepts(round, typed);
     slots().forEach((b, i) => {
       b.classList.remove("active");
       const good = ok || Number(typed[i]) === round.expected[i];
       b.classList.add(good ? "good" : "bad");
-      if (!good) b.innerHTML = `<s>${typed[i]}</s>${round.expected[i]}`;
+      if (!good) b.innerHTML = `<s>${typed[i]}</s><em class="ds-want">${round.expected[i]}</em>`;
     });
-    body.querySelector("[data-prop]").textContent = round.name;
+    const prop = body.querySelector("[data-prop]");
+    prop.textContent = round.name;
+    prop.classList.add("on");
     if (ok) {
       score += 10;
       hits++;
@@ -186,7 +196,7 @@ export function mountDistributivaGame(container, { client, onExit }) {
     } else {
       lives--;
       renderLives();
-      feedback.innerHTML = `Era ${fill(round.right, round.expected)}. 💡 ${round.hint} <button type="button" class="primary ds-next" data-next>Siguiente →</button>`;
+      feedback.innerHTML = `Era ${fill(round.right, round.expected)}. 💡 ${round.hint} <button type="button" class="ds-next" data-next>Siguiente →</button>`;
       feedback.className = "feedback bad";
       const go = () => { clearTimeout(pending); lives <= 0 ? finish(false) : nextRound(); };
       feedback.querySelector("[data-next]").addEventListener("click", go);

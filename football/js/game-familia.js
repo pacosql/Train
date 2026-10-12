@@ -60,14 +60,18 @@ export function mountFamiliaGame(container, { client, onExit }) {
   };
   window.addEventListener("keydown", onKey);
 
-  // El triángulo: total arriba (acento), partes abajo, el signo en medio.
-  const triangle = (r) => `
-    <svg class="fa-tri" viewBox="0 0 118 108" aria-hidden="true">
-      <path d="M59 14 L108 94 L10 94 Z"/>
-      <text class="fa-top" x="59" y="34">${r.c}</text>
-      <text x="30" y="80">${r.a}</text><text x="88" y="80">${r.b}</text>
-      <text class="fa-sign" x="59" y="68">${r.mul ? "×" : "+"}</text>
+  // El triángulo del cuaderno: el total en la esquina de arriba (acento),
+  // las dos partes en las esquinas de abajo y el signo en medio.
+  const triangle = (r) => {
+    const corner = (x, y, v, cls) =>
+      `<circle class="fa-corner ${cls}" cx="${x}" cy="${y}" r="19"/><text class="${cls}" x="${x}" y="${y + 1}" style="font-size:${String(v).length > 2 ? 15 : 19}px">${v}</text>`;
+    return `
+    <svg class="fa-tri" viewBox="0 0 124 124" aria-hidden="true">
+      <path d="M62 22 L104 100 L20 100 Z"/>
+      <text class="fa-sign" x="62" y="76">${r.mul ? "×" : "+"}</text>
+      ${corner(62, 22, r.c, "fa-top")}${corner(20, 100, r.a, "")}${corner(104, 100, r.b, "")}
     </svg>`;
+  };
 
   function nextRound() {
     if (finished) return;
@@ -150,7 +154,7 @@ export function mountFamiliaGame(container, { client, onExit }) {
       allOk = allOk && ok;
       b.classList.remove("active");
       b.classList.add(ok ? "good" : "bad");
-      if (!ok) b.innerHTML = `<s>${typed[id]}</s>${want}`;
+      if (!ok) b.innerHTML = `<s>${typed[id]}</s><b class="fa-want">${want}</b>`;
     });
     if (allOk) {
       score += 10;

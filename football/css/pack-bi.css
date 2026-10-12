@@ -1,0 +1,136 @@
+/* Pack BI — las cuentas "como en el cuaderno": "Multiplica en columna"
+   (.mu-), "La caja de dividir" (.cj-), "Decimales en columna" (.dl-),
+   "La cifra que falta" (.cf-) y "La prueba de la resta" (.pr-).
+   Todas sobre papel cuadriculado (.xx-cuaderno) con casillas que se tocan
+   para enfocarlas (activa = borde acento, bien = verde, mal = rojo). */
+
+/* ---------- común ---------- */
+.game-body.mu-body, .game-body.cj-body, .game-body.dl-body, .game-body.cf-body, .game-body.pr-body {
+  justify-content: flex-start; padding: 12px 12px 10px;
+}
+.prompt.mu-prompt, .prompt.cj-prompt, .prompt.dl-prompt, .prompt.cf-prompt, .prompt.pr-prompt {
+  font-size: 1.1rem; margin: 0 0 8px; line-height: 1.25;
+}
+.feedback.mu-feedback, .feedback.cj-feedback, .feedback.dl-feedback, .feedback.cf-feedback, .feedback.pr-feedback {
+  margin-top: 8px; line-height: 1.35; text-align: center; max-width: 360px; font-size: 0.8rem;
+}
+.keypad.mu-keypad, .keypad.cj-keypad, .keypad.dl-keypad, .keypad.cf-keypad, .keypad.pr-keypad { margin-top: 10px; max-width: 230px; gap: 6px; }
+.keypad.mu-keypad .keypad-key, .keypad.cj-keypad .keypad-key, .keypad.dl-keypad .keypad-key,
+.keypad.cf-keypad .keypad-key, .keypad.pr-keypad .keypad-key { padding: 10px 8px; }
+.keypad.mu-keypad .keypad-key.primary, .keypad.cj-keypad .keypad-key.primary, .keypad.dl-keypad .keypad-key.primary,
+.keypad.cf-keypad .keypad-key.primary, .keypad.pr-keypad .keypad-key.primary {
+  background: var(--accent); border-color: var(--accent); color: #fff;
+}
+.mu-next, .cj-next, .dl-next, .cf-next, .pr-next {
+  margin-left: 6px; font: inherit; font-weight: 700; font-size: 0.8rem; padding: 4px 10px; cursor: pointer;
+  border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--text);
+}
+
+/* papel cuadriculado del cuaderno */
+.mu-cuaderno, .cj-cuaderno, .dl-cuaderno, .cf-cuaderno, .pr-cuaderno {
+  background-color: var(--card);
+  background-image:
+    repeating-linear-gradient(0deg, transparent 0 17px, var(--border) 17px 18px),
+    repeating-linear-gradient(90deg, transparent 0 17px, var(--border) 17px 18px);
+  border: 1px solid var(--border); border-radius: 10px;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace; font-weight: 800; color: var(--text);
+}
+
+/* casillas que se rellenan */
+.mu-slot, .cj-slot, .dl-slot, .cf-slot, .pr-slot {
+  font: inherit; font-weight: 800; color: var(--text); cursor: pointer;
+  background: var(--bg); border: 2px solid var(--border); border-radius: 7px;
+  display: flex; align-items: center; justify-content: center; gap: 2px; padding: 0;
+}
+.mu-slot.active, .cj-slot.active, .dl-slot.active, .cf-slot.active, .pr-slot.active {
+  border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+.mu-slot.good, .cj-slot.good, .dl-slot.good, .cf-slot.good, .pr-slot.good { background: var(--good); border-color: var(--good); color: #fff; }
+.mu-slot.bad, .cj-slot.bad, .dl-slot.bad, .cf-slot.bad, .pr-slot.bad { background: var(--danger); border-color: var(--danger); color: #fff; }
+.mu-slot s, .cj-slot s, .dl-slot s, .cf-slot s, .pr-slot s { opacity: 0.9; text-decoration-thickness: 2px; }
+
+/* ---------- Multiplica en columna ---------- */
+.mu-sheet { display: flex; flex-direction: column; gap: 3px; padding: 8px 14px 10px; font-size: 1.4rem; }
+.mu-row { display: grid; grid-template-columns: 24px repeat(var(--mu-w), 38px); gap: 3px; align-items: center; }
+.mu-row.mu-carries { height: 22px; }
+.mu-row.mu-first, .mu-row.mu-sum { border-top: 3px solid var(--text); padding-top: 5px; margin-top: 1px; }
+.mu-sign { color: var(--accent); text-align: center; font-size: 1.2rem; }
+.mu-cell { height: 38px; display: flex; align-items: center; justify-content: center; position: relative; }
+.mu-hole { color: var(--muted); }
+.mu-carry {
+  height: 22px; font: inherit; font-size: 0.8rem; color: var(--accent-2); cursor: pointer;
+  background: transparent; border: 1px dashed color-mix(in srgb, var(--muted) 45%, transparent); border-radius: 5px; padding: 0;
+}
+.mu-carry:not(:empty) { border-color: var(--accent-2); }
+.mu-comma::after { content: ","; position: absolute; right: -6px; bottom: 0; color: var(--text); }
+
+/* ---------- La caja de dividir ---------- */
+.cj-caja { display: flex; align-items: flex-start; justify-content: center; padding: 12px 14px 12px; font-size: 1.35rem; }
+.cj-left { display: flex; flex-direction: column; gap: 3px; padding-right: 6px; }
+.cj-row { display: grid; grid-template-columns: 16px repeat(var(--cj-n), var(--cj-c, 33px)); gap: 3px; }
+.cj-cell { height: calc(var(--cj-c, 33px) + 2px); display: flex; align-items: center; justify-content: center; position: relative; border-radius: 6px; }
+.cj-added { color: var(--accent-2); }
+.cj-comma::after { content: ","; position: absolute; right: -6px; bottom: 0; color: var(--text); }
+.cj-minus { color: var(--accent); justify-content: flex-end; padding-right: 2px; }
+.cj-under::before { content: ""; position: absolute; left: -3px; right: -3px; bottom: -5px; border-bottom: 2px solid var(--text); }
+.cj-baja { opacity: 0; transition: opacity 0.35s; }
+.cj-baja.cj-show { opacity: 1; }
+.cj-baja::before { content: "↓"; position: absolute; top: -9px; right: -4px; font-size: 0.8rem; color: var(--accent); }
+.cj-bajado::before { content: "•"; position: absolute; top: -13px; font-size: 0.9rem; color: var(--accent); }
+.cj-grupo { background: color-mix(in srgb, var(--accent) 16%, transparent); }
+.cj-slot.cj-grupo { background: color-mix(in srgb, var(--accent) 10%, var(--bg)); }
+.cj-right { display: flex; flex-direction: column; }
+.cj-divisor, .cj-cociente { display: grid; grid-template-columns: repeat(var(--cj-m), var(--cj-c, 33px)); gap: 3px; }
+.cj-divisor { border-left: 3px solid var(--text); border-bottom: 3px solid var(--text); padding: 0 6px 0 8px; }
+.cj-cociente { padding: 5px 6px 0 11px; }
+
+/* ---------- Decimales en columna ---------- */
+.dl-sheet { display: flex; flex-direction: column; gap: 4px; padding: 8px 16px 10px; font-size: 1.45rem; }
+.dl-row { display: grid; grid-template-columns: 24px repeat(var(--dl-i), 40px) 12px repeat(var(--dl-d), 40px); gap: 3px; align-items: center; }
+.dl-row.dl-carries { height: 22px; }
+.dl-row.dl-result { border-top: 3px solid var(--text); padding-top: 6px; margin-top: 1px; }
+.dl-sign { color: var(--accent); text-align: center; font-size: 1.25rem; }
+.dl-cell { height: 40px; display: flex; align-items: center; justify-content: center; }
+.dl-ghost { color: var(--muted); opacity: 0.6; }
+.dl-comma { align-self: end; text-align: center; line-height: 1; padding-bottom: 6px; color: var(--text); }
+.dl-comma-res { color: color-mix(in srgb, var(--good) 75%, transparent); }
+.dl-carry {
+  height: 22px; font: inherit; font-size: 0.8rem; color: var(--accent-2); cursor: pointer;
+  background: transparent; border: 1px dashed color-mix(in srgb, var(--muted) 45%, transparent); border-radius: 5px; padding: 0;
+}
+.dl-carry:not(:empty) { border-color: var(--accent-2); }
+
+/* ---------- La cifra que falta ---------- */
+.cf-sheet { display: flex; flex-direction: column; gap: 4px; padding: 10px 20px 12px; font-size: 1.6rem; }
+.cf-row { display: grid; grid-template-columns: 28px repeat(var(--cf-w), 44px); gap: 4px; align-items: center; }
+.cf-row.cf-result { border-top: 3px solid var(--text); padding-top: 6px; margin-top: 2px; }
+.cf-sign { color: var(--accent); text-align: center; font-size: 1.35rem; }
+.cf-cell { height: 44px; display: flex; align-items: center; justify-content: center; }
+
+/* ---------- La prueba de la resta ---------- */
+.pr-wrap { display: flex; gap: 14px; align-items: flex-start; justify-content: center; padding: 10px 12px 12px; font-size: 1.3rem; }
+.pr-sheet, .pr-proof { display: flex; flex-direction: column; gap: 3px; }
+.pr-sheet { margin-top: 22px; }
+.pr-proof {
+  border: 2px dashed var(--accent); border-radius: 10px; padding: 4px 8px 8px;
+  background: color-mix(in srgb, var(--card) 85%, transparent);
+}
+.pr-title { font-family: system-ui, sans-serif; font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); text-align: center; }
+.pr-row { display: grid; grid-template-columns: 18px; grid-auto-flow: column; grid-auto-columns: 32px; gap: 2px; align-items: center; }
+.pr-row.pr-line { border-top: 3px solid var(--text); padding-top: 4px; }
+.pr-sign { color: var(--accent); text-align: center; }
+.pr-cell { height: 34px; display: flex; align-items: center; justify-content: center; }
+.pr-caja { display: grid; grid-template-columns: auto auto; margin-top: 30px; letter-spacing: 0.14em; }
+.pr-dd { padding: 4px 8px 4px 0; }
+.pr-dv { border-left: 3px solid var(--text); border-bottom: 3px solid var(--text); padding: 4px 8px; }
+.pr-rr { padding: 6px 8px 0 0; text-align: right; }
+.pr-cc { padding: 6px 8px 0 11px; }
+.pr-verdict { display: flex; gap: 10px; margin-top: 8px; width: 100%; max-width: 300px; }
+.pr-verdict .choice-btn { flex: 1; padding: 10px 6px; font-size: 0.95rem; }
+
+/* al fallar: la cifra mala tachada en rojo y la buena en verde, al lado */
+.mu-slot.bad, .cj-slot.bad, .dl-slot.bad, .cf-slot.bad, .pr-slot.bad { position: relative; overflow: visible; }
+.mu-fix, .cj-fix, .dl-fix, .cf-fix, .pr-fix {
+  position: absolute; right: -6px; top: -9px; z-index: 1; font-style: normal; font-size: 0.55em; line-height: 1;
+  padding: 2px 3px; border-radius: 5px; background: var(--good); color: #fff; border: 1.5px solid var(--card);
+}

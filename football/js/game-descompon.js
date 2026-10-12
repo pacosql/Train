@@ -20,7 +20,8 @@ export function buildRound(level) {
   else if (level === 1) do n = randInt(111, 999); while (/0/.test(String(n)));
   else if (level === 2) do n = randInt(101, 999); while (!/0/.test(String(n).slice(1)));
   else if (level === 3) n = randInt(1000, 9999);
-  else do n = randInt(101, 9999); while (!/0/.test(String(n).slice(1)) && Math.random() < 0.6);
+  // nivel 4: a menudo con ceros, pero siempre con al menos dos cifras distintas de 0 (que haya algo que ordenar)
+  else do n = randInt(101, 9999); while ((!/0/.test(String(n).slice(1)) && Math.random() < 0.6) || String(n).replace(/0/g, "").length < 2);
   const digits = String(n).split("").map(Number); // de mayor a menor orden
   const k = digits.length;
   const places = SHORT.slice(4 - k), words = LONG.slice(4 - k);
@@ -74,14 +75,16 @@ export function mountDescomponGame(container, { client, onExit }) {
     const num = `<span class="dp-num" data-num>${fmt(round.n)}</span>`;
     if (form === "A") return `${num} <span>=</span> ${slots.map((s, i) => `${slotBtn(i)} <span class="dp-u">${places[i]}</span>${i < slots.length - 1 ? " <span>+</span>" : ""}`).join(" ")}`;
     if (form === "B") return `${num} <span>=</span> ${slots.map((s, i) => `${slotBtn(i, ["dp-xwide", "dp-wide", "dp-wide", ""][4 - slots.length + i])}${i < slots.length - 1 ? " <span>+</span>" : ""}`).join(" ")}`;
-    if (form === "C") return slots.map((s, i) => `${slotBtn(i)} <span class="dp-u">${words[i]}</span>${i < slots.length - 2 ? "<span>,</span>" : i === slots.length - 2 ? " <span class="dp-u">y</span>" : ""}`).join(" ");
+    if (form === "C") return slots.map((s, i) => `${slotBtn(i)} <span class="dp-u">${words[i]}</span>${i < slots.length - 2 ? "<span>,</span>" : i === slots.length - 2 ? ' <span class="dp-u">y</span>' : ""}`).join(" ");
     return `${terms.map((t) => `<span class="dp-num">${t.d}</span> <span class="dp-u">${places[t.i]}</span>`).join(" <span>+</span> ")} <span>=</span> ${slotBtn(0, "dp-xwide")}`;
   }
 
   function nextRound() {
     if (finished) return;
     clearTimeout(pending);
-    round = buildRound(Math.min(4, Math.floor(hits / 3)));
+    // nunca dos rondas seguidas iguales
+    const last = round && round.n;
+    do round = buildRound(Math.min(4, Math.floor(hits / 3))); while (round.n === last);
     typed = round.slots.map(() => "");
     active = 0;
     busy = false;

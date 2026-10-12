@@ -13,13 +13,17 @@
 }
 .prompt.cd-prompt b, .prompt.fp-prompt b { color: var(--accent); }
 .feedback.pi-feedback, .feedback.cd-feedback, .feedback.sr-feedback, .feedback.fa-feedback, .feedback.fp-feedback {
-  margin-top: 8px; line-height: 1.35; text-align: center; max-width: 350px; font-size: 0.8rem;
+  margin-top: 10px; line-height: 1.35; text-align: center; max-width: 350px; font-size: 0.92rem;
 }
-.keypad.cd-keypad, .keypad.sr-keypad, .keypad.fa-keypad, .keypad.fp-keypad { margin-top: 8px; max-width: 240px; gap: 6px; }
-.keypad.cd-keypad .keypad-key, .keypad.sr-keypad .keypad-key, .keypad.fa-keypad .keypad-key, .keypad.fp-keypad .keypad-key { padding: 9px 8px; font-size: 1rem; }
+.keypad.cd-keypad, .keypad.sr-keypad, .keypad.fa-keypad, .keypad.fp-keypad { margin-top: 12px; max-width: 270px; gap: 8px; }
+.keypad.cd-keypad .keypad-key, .keypad.sr-keypad .keypad-key, .keypad.fa-keypad .keypad-key, .keypad.fp-keypad .keypad-key { padding: 13px 8px; font-size: 1.2rem; }
 .keypad.fp-keypad .keypad-key.fp-check { grid-column: 1 / -1; padding: 8px; }
 .keypad .keypad-key.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
 .keypad .keypad-key:disabled { opacity: 0.35; }
+
+/* el end-card, centrado como en el resto de juegos */
+.game-body.pi-body:has(> .end-card), .game-body.cd-body:has(> .end-card), .game-body.sr-body:has(> .end-card),
+.game-body.fa-body:has(> .end-card), .game-body.fp-body:has(> .end-card) { justify-content: center; }
 
 /* botón "Siguiente →" dentro del feedback al fallar */
 .pi-next, .cd-next, .sr-next, .fa-next, .fp-next {
@@ -48,23 +52,30 @@
   border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);
 }
 .cd-slot.good, .sr-slot.good, .fa-slot.good, .fp-slot.good { background: var(--good); border-color: var(--good); color: #fff; }
-.cd-slot.bad, .sr-slot.bad, .fa-slot.bad, .fp-slot.bad { background: var(--danger); border-color: var(--danger); color: #fff; }
-.cd-slot s, .sr-slot s, .fa-slot s, .fp-slot s { font-size: 0.6em; opacity: 0.85; font-weight: 600; }
+/* al fallar: casilla en rojo con lo escrito tachado y la correcta en verde al lado */
+.cd-slot.bad, .sr-slot.bad, .fa-slot.bad, .fp-slot.bad {
+  background: color-mix(in srgb, var(--danger) 14%, var(--bg)); border-color: var(--danger); color: var(--danger); padding: 0 3px; width: auto;
+}
+.cd-slot s, .sr-slot s, .fa-slot s, .fp-slot s { font-size: 0.7em; font-weight: 700; }
+.cd-want, .sr-want, .fa-want, .fp-want {
+  background: var(--good); color: #fff; border-radius: 6px; padding: 1px 5px; font-size: 0.95em; line-height: 1.2;
+}
 
 /* ---------- Par o impar ---------- */
-.pi-num { font-size: 3rem; font-weight: 800; line-height: 1.1; text-align: center; margin: 2px 0 4px; font-variant-numeric: tabular-nums; }
+.pi-num { font-size: 4rem; font-weight: 800; line-height: 1.1; text-align: center; margin: 2px 0 4px; font-variant-numeric: tabular-nums; }
 .pi-num small { display: block; font-size: 0.85rem; font-weight: 600; color: var(--muted); }
 .pi-num u.pi-last { text-decoration: none; color: var(--accent); border-bottom: 4px solid var(--accent); }
-.pi-dots { width: 100%; max-width: 320px; display: block; margin: 0 auto 6px; }
+.pi-dots { width: 100%; display: block; margin: 4px auto 6px; }
 .pi-dot { fill: var(--accent); }
-.pi-pair { stroke: var(--accent-2); stroke-width: 5; stroke-linecap: round; opacity: 0; transition: opacity 0.4s; }
-.pi-alone { fill: none; stroke: var(--danger); stroke-width: 3; stroke-dasharray: 4 3; opacity: 0; transition: opacity 0.4s; }
+.pi-pair { stroke: var(--good); stroke-width: 6; stroke-linecap: round; opacity: 0; }
+.pi-alone { fill: none; stroke: var(--danger); stroke-width: 3; stroke-dasharray: 4 3; opacity: 0; }
 .pi-dots.paired .pi-pair, .pi-dots.paired .pi-alone { opacity: 1; }
 .pi-dots.paired .pi-dot.solo { fill: var(--danger); }
-.pi-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; max-width: 320px; margin-top: 10px; }
+.pi-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%; max-width: 340px; margin-top: 14px; }
+.feedback.pi-feedback { font-size: 0.95rem; margin-top: 12px; }
 .pi-opt {
-  font: inherit; font-weight: 800; font-size: 1.35rem; letter-spacing: 1px; color: var(--text); cursor: pointer;
-  background: var(--bg); border: 3px solid var(--border); border-radius: 14px; padding: 18px 8px;
+  font: inherit; font-weight: 800; font-size: 1.5rem; letter-spacing: 1px; color: var(--text); cursor: pointer;
+  background: var(--bg); border: 3px solid var(--border); border-radius: 14px; padding: 24px 8px;
 }
 .pi-opt.good { background: var(--good); border-color: var(--good); color: #fff; }
 .pi-opt.bad { background: var(--danger); border-color: var(--danger); color: #fff; text-decoration: line-through; }
@@ -72,9 +83,9 @@
 
 /* ---------- ¿Cuántas decenas hay? ---------- */
 .cd-table { display: grid; gap: 0; margin: 0 auto 10px; width: max-content; border: 2px solid var(--text); border-radius: 6px; overflow: hidden; background: var(--card); }
-.cd-head, .cd-cell { width: 56px; height: 44px; display: flex; align-items: center; justify-content: center; font-weight: 800; }
+.cd-head, .cd-cell { width: 64px; height: 52px; display: flex; align-items: center; justify-content: center; font-weight: 800; }
 .cd-head { background: var(--accent); color: #fff; font-size: 0.95rem; border-right: 1px solid var(--card); }
-.cd-cell { font-size: 1.6rem; border-right: 1px solid var(--border); border-top: 2px solid var(--text); font-variant-numeric: tabular-nums; }
+.cd-cell { font-size: 2rem; border-right: 1px solid var(--border); border-top: 2px solid var(--text); font-variant-numeric: tabular-nums; }
 .cd-head:last-child, .cd-cell:last-child { border-right: none; }
 .cd-cell.cd-dim { color: var(--muted); }
 .cd-cell.cd-cover { color: var(--danger); position: relative; }
@@ -83,36 +94,46 @@
   background: repeating-linear-gradient(45deg, color-mix(in srgb, var(--danger) 45%, transparent) 0 5px, transparent 5px 10px);
 }
 .cd-cell.cd-keep { color: var(--good); background: color-mix(in srgb, var(--good) 14%, transparent); }
-.cd-line { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 1.25rem; font-weight: 800; flex-wrap: wrap; }
-.cd-line .cd-slot { min-width: 70px; }
+.cd-line { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 1.35rem; font-weight: 800; flex-wrap: wrap; }
+.cd-line .cd-slot { min-width: 80px; height: 46px; font-size: 1.4rem; }
 
 /* ---------- Suma repetida ---------- */
-.sr-groups { display: flex; justify-content: center; gap: 6px; width: 100%; margin-bottom: 8px; flex-wrap: wrap; }
+.sr-groups { display: flex; justify-content: center; gap: 8px; width: 100%; margin: 2px 0 10px; flex-wrap: wrap; }
 .sr-group {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px 2px; padding: 5px 4px; min-width: 50px;
-  border: 2px solid var(--accent-2); border-radius: 10px 10px 6px 6px; background: color-mix(in srgb, var(--accent-2) 10%, transparent);
+  display: grid; grid-template-columns: repeat(var(--sr-cols, 3), auto); gap: 0 2px; padding: 6px 6px 4px; align-content: start;
+  border: 2px solid var(--accent-2); border-radius: 12px 12px 8px 8px; background: color-mix(in srgb, var(--accent-2) 12%, var(--card));
 }
-.sr-item { font-size: 0.95rem; line-height: 1.15; text-align: center; }
-.sr-groups.sr-five .sr-group { min-width: 56px; }
-.sr-line { display: flex; align-items: center; justify-content: center; gap: 5px 6px; flex-wrap: wrap; font-size: 1.2rem; font-weight: 800; line-height: 1.4; }
+.sr-item { font-size: 1.45rem; line-height: 1.2; text-align: center; }
+.sr-line { display: flex; align-items: center; justify-content: center; gap: 6px 5px; flex-wrap: wrap; font-size: 1.35rem; font-weight: 800; line-height: 1.4; }
 .sr-line .sr-op { color: var(--accent); }
-.sr-line .sr-slot { min-width: 40px; height: 38px; font-size: 1.15rem; }
+.sr-line .sr-br { flex-basis: 100%; height: 0; }
+.sr-line .sr-slot { min-width: 38px; height: 42px; font-size: 1.25rem; }
+.sr-line .sr-slot[data-slot="p"] { min-width: 50px; }
+/* 4 o 5 grupos: objetos más pequeños y línea más apretada para que quepa */
+.sr-groups.sr-many { gap: 6px; }
+.sr-groups.sr-many .sr-group { padding: 4px 4px 3px; }
+.sr-groups.sr-many .sr-item { font-size: 1.05rem; }
+.sr-line.sr-long { font-size: 1.2rem; gap: 6px 3px; }
+.sr-line.sr-long .sr-slot { min-width: 32px; height: 40px; }
+.sr-line.sr-long .sr-slot[data-slot="p"] { min-width: 44px; }
 
 /* ---------- La familia de operaciones ---------- */
-.fa-wrap { display: flex; gap: 10px; align-items: center; width: 100%; justify-content: center; }
-.fa-tri { width: 118px; height: 108px; flex: none; }
+.fa-wrap { display: flex; gap: 6px; align-items: center; width: 100%; justify-content: center; }
+.fa-tri { width: 124px; height: 124px; flex: none; overflow: visible; }
 .fa-tri path { fill: color-mix(in srgb, var(--accent) 10%, transparent); stroke: var(--accent); stroke-width: 2.5; stroke-linejoin: round; }
-.fa-tri text { font-weight: 800; font-size: 20px; fill: var(--text); text-anchor: middle; dominant-baseline: middle; }
-.fa-tri text.fa-top { fill: var(--accent); font-size: 22px; }
-.fa-tri text.fa-sign { fill: var(--muted); font-size: 14px; }
+.fa-tri .fa-corner { fill: var(--card); stroke: var(--accent); stroke-width: 2.5; }
+.fa-tri .fa-corner.fa-top { fill: var(--accent); }
+.fa-tri text { font-weight: 800; font-size: 19px; fill: var(--text); text-anchor: middle; dominant-baseline: middle; }
+.fa-tri text.fa-top { fill: #fff; }
+.fa-tri text.fa-sign { fill: var(--accent); font-size: 22px; }
 .fa-lines { display: flex; flex-direction: column; gap: 6px; }
-.fa-row { display: flex; align-items: center; gap: 6px; font-size: 1.2rem; font-weight: 800; height: 40px; }
+.fa-row { display: flex; align-items: center; gap: 5px; font-size: 1.2rem; font-weight: 800; height: 40px; }
 .fa-row .fa-op { color: var(--accent); min-width: 14px; text-align: center; }
-.fa-row .fa-slot { min-width: 48px; height: 38px; font-size: 1.15rem; }
+.fa-row .fa-slot { min-width: 46px; height: 38px; font-size: 1.15rem; }
 .fa-row .fa-fix { min-width: 30px; text-align: center; font-variant-numeric: tabular-nums; }
 
 /* ---------- ¿Cuánto falta? ---------- */
-.fp-bar { width: 100%; max-width: 336px; height: 72px; display: block; margin: 0 auto 4px; }
+.fp-bar { width: 100%; max-width: 336px; height: auto; display: block; margin: 0 auto 4px; }
 .fp-bar .fp-rail { fill: var(--bg); stroke: var(--text); stroke-width: 2; }
 .fp-bar .fp-known { fill: var(--accent); }
 .fp-bar .fp-miss { fill: none; stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 5 4; }
@@ -120,8 +141,10 @@
 .fp-bar .fp-miss.bad { fill: var(--danger); stroke: none; }
 .fp-bar .fp-tick { stroke: var(--card); stroke-width: 1.5; }
 .fp-bar .fp-tick.fp-rail-tick { stroke: var(--muted); }
-.fp-bar text { font-size: 13px; font-weight: 800; fill: var(--text); text-anchor: middle; }
-.fp-bar text.fp-in { fill: #fff; font-size: 15px; dominant-baseline: middle; }
+.fp-bar text { font-size: 14px; font-weight: 800; fill: var(--text); text-anchor: middle; }
+.fp-bar text.fp-start { text-anchor: start; }
+.fp-bar text.fp-end { text-anchor: end; }
+.fp-bar text.fp-in { fill: #fff; font-size: 16px; dominant-baseline: middle; }
 .fp-bar text.fp-q { fill: var(--muted); font-size: 18px; dominant-baseline: middle; }
 .fp-line { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 1.35rem; font-weight: 800; flex-wrap: wrap; }
 .fp-line .fp-op { color: var(--accent); }

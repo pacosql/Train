@@ -10,12 +10,14 @@ const calc = (op, a, b) => (op === "+" ? a + b : op === "−" ? a - b : a * b);
 const NUM = [[0, 0], [0, 2], [0, 4], [2, 0], [2, 2], [2, 4], [4, 0], [4, 2], [4, 4]];
 const idx = (r, c) => NUM.findIndex(([a, b]) => a === r && b === c);
 
-// Las seis cuentas: filas con la operación R y columnas con C; la fila de
-// abajo lleva C y la columna de la derecha lleva R, así siempre cuadra.
+// Las seis cuentas: las tres filas llevan la operación R y las tres
+// columnas la C (la fila de abajo suma/resta los resultados de las
+// columnas y la columna de la derecha los de las filas; la esquina cuadra
+// por los dos lados: (a + b) − (c + d) = (a − c) + (b − d)).
 function equations(R, C) {
   const eqs = [];
-  for (let r = 0; r < 3; r++) eqs.push({ cells: [r * 3, r * 3 + 1, r * 3 + 2], op: r === 2 ? C : R, dir: "fila" });
-  for (let c = 0; c < 3; c++) eqs.push({ cells: [c, c + 3, c + 6], op: c === 2 ? R : C, dir: "columna" });
+  for (let r = 0; r < 3; r++) eqs.push({ cells: [r * 3, r * 3 + 1, r * 3 + 2], op: R, dir: "fila" });
+  for (let c = 0; c < 3; c++) eqs.push({ cells: [c, c + 3, c + 6], op: C, dir: "columna" });
   return eqs;
 }
 
@@ -54,9 +56,9 @@ export function buildRound(level) {
     const [lo, hi] = level === 0 ? [1, 9] : level === 3 ? [2, 6] : level === 1 ? [10, 60] : [10, 99];
     const a = randInt(lo, hi), b = randInt(lo, hi), c = randInt(lo, hi), d = randInt(lo, hi);
     const vals = [a, b, calc(R, a, b), c, d, calc(R, c, d), calc(C, a, c), calc(C, b, d), 0];
-    vals[8] = calc(C, vals[2], vals[5]);
+    vals[8] = calc(R, vals[6], vals[7]);
     if (vals.some((v) => v < 1 || v > 999)) continue; // sin negativos, sin ceros, sin cuatro cifras
-    if (calc(R, vals[6], vals[7]) !== vals[8]) continue; // la esquina debe cuadrar por fila y por columna
+    if (calc(C, vals[2], vals[5]) !== vals[8]) continue; // la esquina debe cuadrar por fila y por columna
     const eqs = equations(R, C);
     const holes = shuffle([0, 1, 2, 3, 4, 5, 6, 7, 8]).slice(0, nHoles).sort((x, y) => x - y);
     const steps = solve(vals, holes, eqs);
@@ -69,14 +71,15 @@ export function buildRound(level) {
       `En la ${first.eq.dir}: ${eqText(vals, first.eq, first.cell)}; compruebo la ${other.dir}: ${vals[p]} ${other.op} ${vals[q]} = ${vals[r]} ✓`,
       ...steps.slice(1).map((s) => `${s.eq.dir}: ${eqText(vals, s.eq, s.cell)}`),
     ];
-    return { R, C, vals, holes, hint: parts.join(" · "), order: steps.map((s) => s.cell) };
+    // Los huecos se recorren en el orden en que se deducen.
+    return { R, C, vals, holes: steps.map((s) => s.cell), hint: parts.join(" · ") };
   }
 }
 
 export function mountCrucigramaGame(container, { client, onExit }) {
   const startLives = 3;
   let lives, score, rounds, hits, finished = false, pending = null;
-  let round, typed, active, busy;
+  let round, typed, active, busy, fresh;
 
   container.innerHTML = `
     <div class="game-topbar">
@@ -94,7 +97,6 @@ export function mountCrucigramaGame(container, { client, onExit }) {
   const body = container.querySelector("[data-body]");
   const renderLives = () => (livesEl.textContent = "❤️".repeat(Math.max(lives, 0)) + "🖤".repeat(startLives - Math.max(lives, 0)));
   const renderScore = () => (scoreEl.textContent = `⭐ ${score}`);
-  // Los huecos se recorren en orden de lectura (como se escribe en el cuaderno).
   const want = () => round.holes.map((i) => round.vals[i]);
 
   function nextRound() {
@@ -103,6 +105,7 @@ export function mountCrucigramaGame(container, { client, onExit }) {
     typed = round.holes.map(() => "");
     active = 0;
     busy = false;
+    fresh = false;
     const cell = (r, c) => {
       if (r % 2 === 0 && c % 2 === 0) {
         const n = idx(r, c), h = round.holes.indexOf(n);
@@ -110,8 +113,8 @@ export function mountCrucigramaGame(container, { client, onExit }) {
           ? `<span class="cg-cell cg-num">${round.vals[n]}</span>`
           : `<button type="button" class="cg-cell cg-slot" data-slot="${h}"></button>`;
       }
-      if (r % 2 === 0) return `<span class="cg-cell cg-op">${c === 3 ? "=" : r === 4 ? round.C : round.R}</span>`;
-      if (c % 2 === 0) return `<span class="cg-cell cg-op">${r === 3 ? "=" : c === 4 ? round.R : round.C}</span>`;
+      if (r % 2 === 0) return `<span class="cg-cell cg-op">${c === 3 ? "=" : round.R}</span>`;
+      if (c % 2 === 0) return `<span class="cg-cell cg-op${r === 3 ? " cg-veq" : ""}">${r === 3 ? "=" : round.C}</span>`;
       return `<span class="cg-cell cg-black"></span>`;
     };
     body.innerHTML = `
@@ -122,7 +125,7 @@ export function mountCrucigramaGame(container, { client, onExit }) {
       <div class="keypad cg-keypad" data-keypad></div>
       <div class="feedback cg-feedback" data-feedback></div>
     `;
-    body.querySelectorAll("[data-slot]").forEach((b) => b.addEventListener("click", () => !busy && ((active = +b.dataset.slot), paint())));
+    body.querySelectorAll("[data-slot]").forEach((b) => b.addEventListener("click", () => !busy && ((active = +b.dataset.slot), (fresh = true), paint())));
     const pad = body.querySelector("[data-keypad]");
     ["1", "2", "3", "4", "5", "6", "7", "8", "9", "⌫", "0", "✓"].forEach((key) => {
       const btn = document.createElement("button");
@@ -160,9 +163,11 @@ export function mountCrucigramaGame(container, { client, onExit }) {
       fb.className = "feedback bad";
       return;
     }
-    if (key === "⌫") typed[active] = typed[active].slice(0, -1);
-    else if (typed[active].length < 3) {
-      typed[active] += key;
+    if (key === "⌫") (typed[active] = typed[active].slice(0, -1)), (fresh = false);
+    else if (fresh || typed[active].length < 3) {
+      // Tras tocar una casilla (o saltar a ella) la primera cifra sustituye a lo escrito.
+      typed[active] = (fresh ? "" : typed[active]) + key;
+      fresh = false;
       if (typed[active].length >= String(want()[active]).length) {
         const e = nextEmpty();
         if (e !== -1) active = e;
@@ -182,7 +187,7 @@ export function mountCrucigramaGame(container, { client, onExit }) {
       allOk = allOk && ok;
       b.classList.remove("active");
       b.classList.add(ok ? "good" : "bad");
-      if (!ok) b.innerHTML = `<s>${typed[i]}</s>${w[i]}`;
+      if (!ok) b.innerHTML = `<s>${typed[i]}</s><b>${w[i]}</b>`;
     });
     const feedback = body.querySelector("[data-feedback]");
     if (allOk) {

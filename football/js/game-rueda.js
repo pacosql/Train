@@ -20,7 +20,7 @@ export function buildRound(level) {
   if (kind === 0) {
     op = pick(["+", "−"]);
     k = randInt(2, 9);
-    inner = op === "+" ? distinct(8, 1, 20 - k) : distinct(8, k, 20);
+    inner = op === "+" ? distinct(8, 1, 20 - k) : distinct(8, k + 1, 20); // sin resultados 0
   } else if (kind === 1) {
     op = "×";
     k = randInt(2, 9);
@@ -52,7 +52,7 @@ export function buildRound(level) {
 export function mountRuedaGame(container, { client, onExit }) {
   const startLives = 3;
   let lives, score, rounds, hits, finished = false, pending = null;
-  let round, typed, active, busy, sign;
+  let round, typed, active, busy, fresh, sign;
 
   container.innerHTML = `
     <div class="game-topbar">
@@ -79,6 +79,7 @@ export function mountRuedaGame(container, { client, onExit }) {
     typed = expected().map(() => "");
     active = 0;
     busy = false;
+    fresh = false;
     sign = "+";
     // Posiciones en la rueda: 8 radios en sentido horario empezando arriba.
     const pos = (i, r) => {
@@ -88,8 +89,8 @@ export function mountRuedaGame(container, { client, onExit }) {
     const outerCell = (i) => {
       const h = round.holes.indexOf(i);
       return h === -1
-        ? `<span class="ru-cell ru-outer ru-fixed" ${pos(i, 122)}>${fmt(round.outer[i])}</span>`
-        : `<button type="button" class="ru-cell ru-outer ru-slot" data-slot="${h}" ${pos(i, 122)}></button>`;
+        ? `<span class="ru-cell ru-outer ru-fixed" ${pos(i, 120)}>${fmt(round.outer[i])}</span>`
+        : `<button type="button" class="ru-cell ru-outer ru-slot" data-slot="${h}" ${pos(i, 120)}></button>`;
     };
     const center = round.hidden
       ? `<button type="button" class="ru-sign" data-sign>${sign}</button><button type="button" class="ru-cell ru-slot ru-center-slot" data-slot="0"></button>`
@@ -101,14 +102,14 @@ export function mountRuedaGame(container, { client, onExit }) {
           <div class="ru-ring ru-ring-out"></div>
           <div class="ru-ring ru-ring-in"></div>
           <div class="ru-center">${center}</div>
-          ${round.inner.map((v, i) => `<span class="ru-cell ru-inner" ${pos(i, 78)}>${fmt(v)}</span>`).join("")}
+          ${round.inner.map((v, i) => `<span class="ru-cell ru-inner" ${pos(i, 76)}>${fmt(v)}</span>`).join("")}
           ${round.inner.map((_, i) => outerCell(i)).join("")}
         </div>
       </div>
       <div class="keypad ru-keypad" data-keypad></div>
       <div class="feedback ru-feedback" data-feedback></div>
     `;
-    body.querySelectorAll("[data-slot]").forEach((b) => b.addEventListener("click", () => !busy && ((active = +b.dataset.slot), paint())));
+    body.querySelectorAll("[data-slot]").forEach((b) => b.addEventListener("click", () => !busy && ((active = +b.dataset.slot), (fresh = true), paint())));
     // El signo del centro se elige tocando: + → − → × → ÷.
     body.querySelector("[data-sign]")?.addEventListener("click", (e) => {
       if (busy) return;
@@ -116,7 +117,9 @@ export function mountRuedaGame(container, { client, onExit }) {
       e.currentTarget.textContent = sign;
     });
     const pad = body.querySelector("[data-keypad]");
-    const keys = round.op === "×" && round.k === 10 || round.k === 0.5 ? ["1", "2", "3", "4", "5", "6", "7", "8", "9", ",", "0", "⌫", "✓"] : ["1", "2", "3", "4", "5", "6", "7", "8", "9", "⌫", "0", "✓"];
+    // La coma solo aparece en el nivel de decimales.
+    round.dec = (round.op === "×" && round.k === 10) || round.k === 0.5;
+    const keys = round.dec ? ["1", "2", "3", "4", "5", "6", "7", "8", "9", ",", "0", "⌫", "✓"] : ["1", "2", "3", "4", "5", "6", "7", "8", "9", "⌫", "0", "✓"];
     keys.forEach((key) => {
       const btn = document.createElement("button");
       btn.type = "button";
@@ -153,9 +156,11 @@ export function mountRuedaGame(container, { client, onExit }) {
       fb.className = "feedback bad";
       return;
     }
-    if (key === "⌫") typed[active] = typed[active].slice(0, -1);
-    else if (key === "," ? !typed[active].includes(",") && typed[active] !== "" : typed[active].length < 4) {
-      typed[active] += key;
+    if (key === "⌫") (typed[active] = typed[active].slice(0, -1)), (fresh = false);
+    else if (key === "," ? !fresh && !typed[active].includes(",") && typed[active] !== "" : fresh || typed[active].length < 4) {
+      // Tras tocar una casilla (o saltar a ella) la primera cifra sustituye a lo escrito.
+      typed[active] = (fresh ? "" : typed[active]) + key;
+      fresh = false;
       if (typed[active].length >= fmt(expected()[active]).length) {
         const e = nextEmpty();
         if (e !== -1) active = e;
@@ -175,14 +180,14 @@ export function mountRuedaGame(container, { client, onExit }) {
       allOk = allOk && ok;
       b.classList.remove("active");
       b.classList.add(ok ? "good" : "bad");
-      if (!ok) b.innerHTML = `<s>${typed[i]}</s>${fmt(want[i])}`;
+      if (!ok) b.innerHTML = `<s>${typed[i]}</s><b>${fmt(want[i])}</b>`;
     });
     const signBtn = body.querySelector("[data-sign]");
     if (signBtn) {
       const ok = sign === round.op;
       allOk = allOk && ok;
       signBtn.classList.add(ok ? "good" : "bad");
-      if (!ok) signBtn.innerHTML = `<s>${sign}</s>${round.op}`;
+      if (!ok) signBtn.innerHTML = `<s>${sign}</s><b>${round.op}</b>`;
     }
     const feedback = body.querySelector("[data-feedback]");
     if (allOk) {
@@ -207,7 +212,7 @@ export function mountRuedaGame(container, { client, onExit }) {
     if (/^[0-9]$/.test(e.key)) pressKey(e.key);
     else if (e.key === "Backspace") pressKey("⌫");
     else if (e.key === "Enter") pressKey("✓");
-    else if (e.key === "," || e.key === ".") pressKey(",");
+    else if ((e.key === "," || e.key === ".") && round.dec) pressKey(",");
   };
   window.addEventListener("keydown", onKey);
 

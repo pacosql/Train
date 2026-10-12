@@ -1,0 +1,206 @@
+/* Pack BM — "Pirámide de sumas" (.py-), "La rueda de operaciones" (.ru-),
+   "Crucigrama de cuentas" (.cg-), "La tabla con huecos" (.th-) y "La
+   máquina de operar" (.mq-). Cinco ejercicios del cuaderno dibujados sobre
+   papel cuadriculado, con casillas que se tocan y se rellenan con el
+   teclado numérico (activa = borde acento, bien = verde, mal = rojo). */
+
+/* ---------- común: cuerpo compacto, cuaderno, casillas, teclado ---------- */
+.game-body.py-body, .game-body.ru-body, .game-body.cg-body, .game-body.th-body, .game-body.mq-body {
+  justify-content: flex-start; padding: 12px 12px 10px;
+  /* tinta morada legible en claro y en oscuro */
+  --bm-ink: color-mix(in srgb, var(--accent) 62%, var(--text));
+}
+.prompt.py-prompt, .prompt.ru-prompt, .prompt.cg-prompt, .prompt.th-prompt, .prompt.mq-prompt {
+  font-size: 1.08rem; margin: 0 0 10px; line-height: 1.3;
+}
+.prompt.mq-prompt b { color: var(--bm-ink); white-space: nowrap; }
+
+/* papel cuadriculado del cuaderno */
+.py-cuaderno, .ru-cuaderno, .cg-cuaderno, .th-cuaderno, .mq-cuaderno {
+  background-color: var(--card);
+  background-image:
+    repeating-linear-gradient(0deg, var(--border) 0 1px, transparent 1px 18px),
+    repeating-linear-gradient(90deg, var(--border) 0 1px, transparent 1px 18px);
+  border: 1px solid var(--border); border-radius: 10px;
+  padding: 12px; max-width: 100%;
+  display: flex; flex-direction: column; align-items: center;
+}
+
+/* casillas para escribir */
+.py-slot, .ru-slot, .cg-slot, .th-slot, .mq-slot {
+  font: inherit; font-weight: 800; color: var(--text); cursor: pointer;
+  background: var(--card); border: 2px solid var(--muted); border-radius: 7px;
+  display: flex; align-items: center; justify-content: center; gap: 3px; padding: 0;
+  font-variant-numeric: tabular-nums;
+}
+.py-slot.active, .ru-slot.active, .cg-slot.active, .th-slot.active, .mq-slot.active {
+  border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 28%, transparent);
+}
+.py-slot.good, .ru-slot.good, .cg-slot.good, .th-slot.good, .mq-slot.good, .ru-sign.good {
+  background: var(--good); border-color: var(--good); color: #fff;
+}
+/* al fallar: casilla en rojo con lo escrito tachado y la correcta en verde */
+.py-slot.bad, .ru-slot.bad, .cg-slot.bad, .th-slot.bad, .mq-slot.bad, .ru-sign.bad {
+  background: color-mix(in srgb, var(--danger) 14%, var(--card)); border-color: var(--danger); border-style: solid;
+  color: var(--danger); flex-direction: column; gap: 1px; line-height: 1;
+}
+.py-slot.bad s, .ru-slot.bad s, .cg-slot.bad s, .th-slot.bad s, .mq-slot.bad s, .ru-sign.bad s {
+  font-size: 0.66em; font-weight: 700; text-decoration-thickness: 2px;
+}
+.py-slot.bad b, .ru-slot.bad b, .cg-slot.bad b, .th-slot.bad b, .mq-slot.bad b, .ru-sign.bad b {
+  background: var(--good); color: #fff; border-radius: 5px; padding: 1px 4px; font-size: 0.86em;
+}
+
+/* teclado del núcleo, algo más compacto */
+.keypad.py-keypad, .keypad.ru-keypad, .keypad.cg-keypad, .keypad.th-keypad, .keypad.mq-keypad {
+  margin-top: 10px; max-width: 240px; gap: 7px;
+}
+.py-keypad .keypad-key, .ru-keypad .keypad-key, .cg-keypad .keypad-key, .th-keypad .keypad-key, .mq-keypad .keypad-key {
+  padding: 10px 8px;
+}
+.py-keypad .keypad-key.primary, .ru-keypad .keypad-key.primary, .cg-keypad .keypad-key.primary,
+.th-keypad .keypad-key.primary, .mq-keypad .keypad-key.primary {
+  background: var(--accent); border-color: var(--accent); color: #fff;
+}
+.ru-keypad .keypad-key.ru-wide { grid-column: 1 / -1; padding: 8px; }
+
+/* línea 💡 */
+.feedback.py-feedback, .feedback.ru-feedback, .feedback.cg-feedback, .feedback.th-feedback, .feedback.mq-feedback {
+  margin-top: 10px; line-height: 1.35; text-align: center; max-width: 360px; font-size: 0.8rem;
+}
+.py-next, .ru-next, .cg-next, .th-next, .mq-next {
+  display: inline-block; margin: 6px 0 0 4px; padding: 5px 12px !important; font-size: 0.8rem !important;
+}
+
+/* ---------- Pirámide de sumas ---------- */
+.py-sheet { padding: 14px 10px; }
+.py-row { display: flex; justify-content: center; }
+.py-row + .py-row { margin-top: -2px; }
+.py-brick {
+  width: 70px; height: 44px; margin-left: -2px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; font-weight: 800; font-variant-numeric: tabular-nums;
+}
+.py-row .py-brick:first-child { margin-left: 0; }
+.py-fixed {
+  background: color-mix(in srgb, var(--final) 16%, var(--card));
+  border: 2px solid color-mix(in srgb, var(--final) 70%, var(--text));
+  color: var(--text);
+}
+.py-slot { border-radius: 0; border-style: dashed; border-color: color-mix(in srgb, var(--final) 70%, var(--text)); }
+.py-slot.active { border-style: solid; position: relative; z-index: 1; }
+.py-slot.good, .py-slot.bad { border-style: solid; }
+
+/* ---------- La rueda de operaciones ---------- */
+.ru-sheet { padding: 8px; }
+.ru-wheel { position: relative; width: 300px; height: 300px; }
+.ru-ring { position: absolute; border-radius: 50%; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+.ru-ring-out {
+  width: 296px; height: 296px;
+  background:
+    repeating-conic-gradient(from 22.5deg, var(--accent) 0 0.6deg, transparent 0.6deg 45deg),
+    color-mix(in srgb, var(--accent) 10%, var(--card));
+  border: 2px solid var(--accent);
+}
+.ru-ring-in {
+  width: 200px; height: 200px;
+  background:
+    repeating-conic-gradient(from 22.5deg, var(--accent-2) 0 0.8deg, transparent 0.8deg 45deg),
+    var(--card);
+  border: 2px solid var(--accent);
+}
+.ru-center {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+  width: 104px; height: 104px; border-radius: 50%;
+  background: var(--accent); border: 2px solid var(--accent);
+  display: flex; align-items: center; justify-content: center; gap: 4px; z-index: 1;
+}
+.ru-op { color: #fff; font-size: 1.7rem; font-weight: 800; white-space: nowrap; }
+.ru-cell {
+  position: absolute; transform: translate(-50%, -50%);
+  width: 46px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.05rem; font-weight: 800; font-variant-numeric: tabular-nums;
+}
+.ru-inner { color: var(--text); width: 42px; height: 28px; z-index: 1; }
+.ru-outer.ru-fixed { color: var(--bm-ink); }
+.ru-slot { z-index: 1; }
+.ru-center .ru-center-slot { position: static; transform: none; width: 48px; height: 38px; }
+.ru-sign {
+  width: 30px; height: 38px; border-radius: 7px; padding: 0; cursor: pointer;
+  font: inherit; font-size: 1.3rem; font-weight: 800;
+  background: var(--card); color: var(--text); border: 2px solid var(--card);
+  display: flex; align-items: center; justify-content: center; gap: 2px;
+}
+
+/* ---------- Crucigrama de cuentas ---------- */
+.cg-grid { display: grid; grid-template-columns: repeat(5, 54px); grid-auto-rows: 50px; }
+.cg-cell {
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.15rem; font-weight: 800; font-variant-numeric: tabular-nums;
+}
+.cg-num, .cg-slot { margin: 2px; border-radius: 4px; }
+.cg-num { background: var(--card); border: 2px solid var(--text); color: var(--text); }
+.cg-op { color: var(--bm-ink); font-size: 1.35rem; }
+.cg-veq { transform: rotate(90deg); }
+.cg-black { background: #241f3a; margin: 2px; border-radius: 3px; }
+@media (prefers-color-scheme: dark) {
+  .cg-black { background: #05040c; box-shadow: inset 0 0 0 1px var(--border); }
+}
+
+/* ---------- La tabla con huecos ---------- */
+.th-sheet { padding: 12px 10px; }
+.th-grid {
+  display: grid; grid-template-columns: repeat(5, 56px); grid-auto-rows: 44px;
+  border: 2px solid var(--text); background: var(--card);
+}
+.th-cell {
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; font-weight: 800; font-variant-numeric: tabular-nums;
+  border-right: 1px solid var(--muted); border-bottom: 1px solid var(--muted);
+}
+.th-grid > :nth-child(5n) { border-right: none; }
+.th-grid > :nth-last-child(-n + 5) { border-bottom: none; }
+.th-grid > :nth-child(5n + 1) { border-right: 2px solid var(--text); }
+.th-grid > :nth-child(-n + 5) { border-bottom: 2px solid var(--text); }
+.th-corner { background: var(--accent); color: #fff; font-size: 1.3rem; }
+.th-head { background: color-mix(in srgb, var(--accent) 14%, var(--card)); color: var(--bm-ink); }
+.th-num { color: var(--text); }
+.th-cell.th-slot { margin: 0; border-radius: 0; border: 2px dashed var(--muted); }
+.th-cell.th-slot.active { border: 2px solid var(--accent); }
+.th-cell.th-slot.good { border: 2px solid var(--good); }
+.th-cell.th-slot.bad { border: 2px solid var(--danger); }
+
+/* ---------- La máquina de operar ---------- */
+.mq-machine { display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 10px; }
+.mq-port { font-size: 0.72rem; font-weight: 700; color: var(--muted); }
+.mq-in::after { content: " ➜"; color: var(--accent); font-size: 1rem; }
+.mq-out::before { content: "➜ "; color: var(--accent); font-size: 1rem; }
+.mq-box {
+  display: flex; align-items: center; gap: 4px; padding: 10px 10px;
+  border: 3px solid var(--accent); border-radius: 14px;
+  background: color-mix(in srgb, var(--accent) 12%, var(--card));
+  position: relative;
+}
+.mq-box::before {
+  content: "⚙️"; position: absolute; top: -14px; left: 50%; transform: translateX(-50%); font-size: 1.1rem;
+}
+.mq-chip {
+  background: var(--accent); color: #fff; border-radius: 8px; padding: 5px 9px;
+  font-weight: 800; font-size: 1.05rem; white-space: nowrap;
+}
+.mq-box .mq-arrow { color: var(--accent); font-weight: 800; }
+.mq-sheet { padding: 10px 12px; gap: 6px; }
+.mq-row { display: flex; align-items: center; justify-content: center; gap: 6px; }
+.mq-labels span { width: 64px; text-align: center; font-size: 0.72rem; font-weight: 700; color: var(--muted); }
+.mq-labels span:empty { width: 22px; }
+.mq-arrow { width: 22px; text-align: center; line-height: 1; color: var(--muted); font-weight: 800; font-size: 1.1rem; }
+.mq-cell {
+  width: 64px; height: 42px; display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; font-weight: 800; font-variant-numeric: tabular-nums;
+}
+.mq-num { color: var(--text); }
+
+/* el end-card, centrado en la tarjeta */
+.game-body.py-body:has(> .end-card), .game-body.ru-body:has(> .end-card), .game-body.cg-body:has(> .end-card),
+.game-body.th-body:has(> .end-card), .game-body.mq-body:has(> .end-card) { justify-content: center; }

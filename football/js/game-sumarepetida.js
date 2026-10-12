@@ -61,20 +61,23 @@ export function mountSumarepetidaGame(container, { client, onExit }) {
     typed = Object.fromEntries(round.slots.map((s) => [s.id, ""]));
     active = round.slots[0].id;
     busy = false;
+    // Cada grupo es una "cesta" con sus objetos (2 columnas si son pocos).
     const groups = round.draw
-      ? `<div class="sr-groups${round.g === 5 ? " sr-five" : ""}">${Array.from({ length: round.g }, () =>
-          `<div class="sr-group" data-group>${`<span class="sr-item">${round.set[2]}</span>`.repeat(round.k)}</div>`).join("")}</div>`
+      ? `<div class="sr-groups${round.g >= 4 ? " sr-many" : ""}">${Array.from({ length: round.g }, () =>
+          `<div class="sr-group" data-group style="--sr-cols:${round.k <= 4 ? 2 : 3}">${`<span class="sr-item">${round.set[2]}</span>`.repeat(round.k)}</div>`).join("")}</div>`
       : "";
+    // Si la línea no cabe, se parte tras el primer "=" como en el cuaderno.
+    const br = round.g >= 4 ? '<span class="sr-br"></span>' : "";
     const line = round.dir === "sum"
       ? `${Array.from({ length: round.g }, () => `<span data-num>${round.k}</span>`).join('<span class="sr-op">+</span>')}
-         <span class="sr-op">=</span>${slot("f1")}<span class="sr-op">×</span>${slot("f2")}<span class="sr-op">=</span>${slot("p")}`
-      : `<span data-num>${round.g}</span><span class="sr-op">×</span><span data-num>${round.k}</span><span class="sr-op">=</span>
+         <span class="sr-op">=</span>${br}${slot("f1")}<span class="sr-op">×</span>${slot("f2")}<span class="sr-op">=</span>${slot("p")}`
+      : `<span data-num>${round.g}</span><span class="sr-op">×</span><span data-num>${round.k}</span><span class="sr-op">=</span>${br}
          ${Array.from({ length: round.g }, (_, i) => slot(`a${i}`)).join('<span class="sr-op">+</span>')}<span class="sr-op">=</span>${slot("p")}`;
     body.innerHTML = `
       <p class="prompt sr-prompt">${round.dir === "sum" ? "Suma repetida → multiplicación" : "Multiplicación → suma repetida"}</p>
       <div class="sr-cuaderno">
         ${groups}
-        <div class="sr-line" data-line="${round.dir}">${line}</div>
+        <div class="sr-line${round.g >= 4 ? " sr-long" : ""}" data-line="${round.dir}">${line}</div>
       </div>
       <div class="keypad sr-keypad" data-keypad></div>
       <div class="feedback sr-feedback" data-feedback></div>
@@ -140,7 +143,7 @@ export function mountSumarepetidaGame(container, { client, onExit }) {
       allOk = allOk && ok;
       b.classList.remove("active");
       b.classList.add(ok ? "good" : "bad");
-      if (!ok) b.innerHTML = `<s>${typed[id]}</s>${want}`;
+      if (!ok) b.innerHTML = `<s>${typed[id]}</s><b class="sr-want">${want}</b>`;
     });
     if (allOk) {
       score += 10;

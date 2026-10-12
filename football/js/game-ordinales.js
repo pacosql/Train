@@ -72,7 +72,7 @@ export function mountOrdinalesGame(container, { client, onExit }) {
     body.innerHTML = `
       <p class="prompt or-prompt">${round.prompt}</p>
       <div class="or-cuaderno">
-        <div class="or-track" data-track>${row.join("")}</div>
+        <div class="or-track${round.count <= 6 ? " or-big" : ""}" data-track>${row.join("")}</div>
         <div class="or-ground"></div>
         ${round.mode === "type" ? `<div class="or-line"><span>Va en la posición</span><button type="button" class="or-slot active" data-slot></button></div>` : ""}
       </div>

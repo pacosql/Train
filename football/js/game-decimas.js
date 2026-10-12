@@ -3,7 +3,8 @@
 // casillas: "2,35 = □ unidades, □ décimas y □ centésimas" (una cifra por
 // casilla, el foco avanza solo) o "2,35 = □ + □ + □" (se escribe 2, 0,3 y
 // 0,05 con la tecla coma; ✓ salta a la siguiente). Luego la inversa
-// "7 décimas y 4 centésimas = □" (la tabla se rellena al corregir) y
+// "7 décimas y 4 centésimas = □,□□" (una cifra por casilla, la coma ya
+// escrita; la tabla se rellena al corregir) y
 // "¿cuántas centésimas hay en 2,35?". El 💡 sitúa la cifra respecto a la coma.
 import { randInt, pick, saveScore } from "./utils.js";
 
@@ -15,6 +16,8 @@ const name = (k, j) => `${k} ${k === 1 ? SING[j] : PLUR[j]}`;
 const fmtDec = (v, p) => (p ? `${Math.floor(v / 10 ** p)},${String(v % 10 ** p).padStart(p, "0")}` : String(v));
 // Cifras [unidades, décimas, centésimas, milésimas] de v con p decimales
 const digitsOf = (v, p) => Array.from({ length: p + 1 }, (_, j) => Math.floor(v / 10 ** (p - j)) % 10);
+// Enteros con punto de miles: 7011 → "7.011"
+const fmtInt = (n) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 const parse = (s) => Number(s.replace(",", "."));
 const same = (a, b) => Math.abs(a - b) < 1e-9;
 
@@ -48,12 +51,16 @@ export function buildRound(level) {
   } else if (kind === "inversa") {
     const names = parts.map((t) => name(t.d, t.j));
     shown = names.length > 1 ? `${names.slice(0, -1).join(", ")} y ${names[names.length - 1]}` : names[0];
-    const zero = ds.findIndex((d, j) => !d && j > 0);
-    hint = zero !== -1 ? `No hay ${PLUR[zero]}: escribo un 0 en su sitio, ${PLACE[zero]}: ${text}` : `Las décimas van justo después de la coma${p === 3 ? ", luego las centésimas y las milésimas" : " y las centésimas en el segundo sitio"}: ${text}`;
-    slots = [{ answer: v / 10 ** p, hint }];
+    const zero = ds.findIndex((d) => !d);
+    hint = zero !== -1
+      ? `No hay ${PLUR[zero]}: escribo un 0 en su sitio${zero ? `, ${PLACE[zero]}` : " antes de la coma"}: ${text}`
+      : `Las décimas van justo después de la coma${p === 3 ? ", luego las centésimas y las milésimas" : " y las centésimas en el segundo sitio"}: ${text}`;
+    // Una casilla por cifra: □,□□ (la coma ya está escrita)
+    slots = ds.map((d, j) => ({ answer: d, hint: d ? `${digitHint(d, j)}. ${text}` : `No hay ${PLUR[j]}: escribo un 0 en su sitio${j ? `, ${PLACE[j]}` : " antes de la coma"}. ${text}` }));
   } else {
-    const pieces = parts.map((t) => `${name(t.d, t.j)} (${t.d * 10 ** (p - t.j)})`);
-    hint = `${text} son ${pieces.join(" + ")} = ${v} ${PLUR[p]}`;
+    // 2 unidades = 200 centésimas, 3 décimas = 30 centésimas…
+    const pieces = parts.map((t) => (t.j === p ? name(t.d, t.j) : `${name(t.d, t.j)} = ${fmtInt(t.d * 10 ** (p - t.j))} ${PLUR[p]}`));
+    hint = `${pieces.join(", ")}: en total ${fmtInt(v)} ${PLUR[p]}`;
     slots = [{ answer: v, hint }];
   }
   return { kind, v, p, ds, text, shown, slots, hint };
@@ -100,11 +107,15 @@ export function mountDecimasGame(container, { client, onExit }) {
     const slot = (k, cls) => `<button type="button" class="de-slot ${cls}" data-slot="${k}"></button>`;
     const n = round.slots.length;
     if (round.kind === "cuenta")
-      return `<span class="de-num">${round.text}</span><span class="de-op">=</span>${round.slots
-        .map((s, k) => `<span class="de-term">${slot(k, "de-digit")} ${s.label}${k < n - 2 ? "," : k === n - 2 ? " y" : ""}</span>`).join("")}`;
-    if (round.kind === "suma") return `<span class="de-num">${round.text}</span><span class="de-op">=</span>${round.slots.map((_, k) => (k ? '<span class="de-op">+</span>' : "") + slot(k, "de-wide")).join("")}`;
-    if (round.kind === "inversa") return `<span class="de-num de-words">${round.shown}</span><span class="de-op">=</span>${slot(0, "de-wide")}`;
-    return `<span class="de-num">${round.text}</span><span class="de-op">=</span>${slot(0, "de-wide")}<span class="de-words">${PLUR[round.p]}</span>`;
+      return `<span class="de-group"><span class="de-num">${round.text}</span><span class="de-op">=</span></span><span class="de-group de-wrap">${round.slots
+        .map((s, k) => `<span class="de-term">${slot(k, "de-digit")} ${s.label}${k < n - 2 ? "," : k === n - 2 ? " y" : ""}</span>`).join("")}</span>`;
+    if (round.kind === "suma")
+      return `<span class="de-group"><span class="de-num">${round.text}</span><span class="de-op">=</span></span><span class="de-group">${round.slots
+        .map((_, k) => (k ? '<span class="de-op">+</span>' : "") + slot(k, "de-wide")).join("")}</span>`;
+    if (round.kind === "inversa")
+      return `<span class="de-num de-words">${round.shown}</span><span class="de-op">=</span><span class="de-term">${round.slots
+        .map((_, k) => (k === 1 ? '<span class="de-comma">,</span>' : "") + slot(k, "de-digit")).join("")}</span>`;
+    return `<span class="de-num">${round.text}</span><span class="de-op">=</span>${slot(0, "de-wide")}<span class="de-term">${PLUR[round.p]}</span>`;
   }
 
   function nextRound() {
@@ -135,7 +146,7 @@ export function mountDecimasGame(container, { client, onExit }) {
 
   function paint() {
     body.querySelectorAll("[data-slot]").forEach((b, k) => {
-      b.textContent = typed[k];
+      b.textContent = round.kind === "cuantas" && typed[k] ? fmtInt(typed[k]) : typed[k];
       b.classList.toggle("active", k === active);
     });
   }
@@ -143,7 +154,7 @@ export function mountDecimasGame(container, { client, onExit }) {
   function pressKey(key) {
     if (finished || busy) return;
     if (key === "✓") return check();
-    const digit = round.kind === "cuenta";
+    const digit = round.kind === "cuenta" || round.kind === "inversa";
     if (key === "⌫") {
       if (typed[active] === "" && active > 0) active--;
       typed[active] = typed[active].slice(0, -1);
@@ -176,8 +187,8 @@ export function mountDecimasGame(container, { client, onExit }) {
       if (!ok && firstBad === -1) firstBad = k;
       b.classList.remove("active");
       b.classList.add(ok ? "good" : "bad");
-      const wantText = round.kind === "inversa" ? round.text : round.kind === "suma" ? String(want).replace(".", ",") : String(want);
-      if (!ok) b.innerHTML = `<s>${typed[k]}</s><b>${wantText}</b>`;
+      const wantText = round.kind === "suma" ? String(want).replace(".", ",") : fmtInt(want);
+      if (!ok) b.innerHTML = `<s>${typed[k]}</s><em>${wantText}</em>`;
     });
     // En la inversa la tabla se rellena al corregir, cifra a cifra
     if (round.kind === "inversa") body.querySelectorAll("[data-col]").forEach((td, j) => { td.textContent = round.ds[j] ?? ""; td.classList.add(firstBad === -1 ? "good" : "bad"); });

@@ -1,0 +1,178 @@
+/* Pack BK — "La escalera de unidades" (.eu-), "Forma compleja e incompleja"
+   (.mc-), "Horas y minutos" (.hm-), "Fracciones de hora" (.fh-) y "Euros y
+   céntimos" (.ec-). Cinco ejercicios de medida escritos en el cuaderno:
+   papel cuadriculado, casillas que se tocan para enfocarlas (borde de
+   acento), bien = verde, mal = rojo con la correcta al lado. */
+
+/* ---------- común ---------- */
+.game-body.eu-body, .game-body.mc-body, .game-body.hm-body, .game-body.fh-body, .game-body.ec-body {
+  justify-content: flex-start; padding: 14px 12px 12px;
+}
+.prompt.eu-prompt, .prompt.mc-prompt, .prompt.hm-prompt, .prompt.fh-prompt, .prompt.ec-prompt {
+  font-size: 1.12rem; margin: 0 0 10px; line-height: 1.3;
+}
+.prompt.eu-prompt b, .prompt.mc-prompt b, .prompt.hm-prompt b, .prompt.fh-prompt b { color: var(--accent); }
+
+/* Papel cuadriculado del cuaderno */
+.eu-cuaderno, .mc-cuaderno, .hm-cuaderno, .fh-cuaderno, .ec-cuaderno {
+  width: 100%; max-width: 360px; box-sizing: border-box;
+  display: flex; justify-content: center; align-items: center;
+  padding: 12px 8px; border-radius: 10px; border: 1px solid var(--border);
+  background-color: var(--card);
+  background-image:
+    repeating-linear-gradient(0deg, var(--border) 0 1px, transparent 1px 16px),
+    repeating-linear-gradient(90deg, var(--border) 0 1px, transparent 1px 16px);
+  font-family: ui-monospace, "SF Mono", Menlo, monospace; font-weight: 800; font-size: 1.3rem; color: var(--text);
+}
+.eu-line, .mc-line, .hm-line, .fh-line, .ec-line {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px; line-height: 1.2;
+}
+.mc-unit, .hm-unit, .ec-unit { color: var(--muted); font-size: 1.05rem; }
+
+/* Casillas */
+.eu-box, .mc-box, .hm-box, .fh-box, .ec-box {
+  font: inherit; color: var(--text); cursor: pointer; padding: 0 4px;
+  min-width: 44px; height: 46px; box-sizing: border-box;
+  background: var(--bg); border: 2px solid var(--muted); border-radius: 6px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 4px;
+}
+.eu-box { min-width: 96px; }
+.mc-box.wide, .ec-box.wide { min-width: 70px; }
+.eu-box.active, .mc-box.active, .hm-box.active, .fh-box.active, .ec-box.active {
+  border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 28%, transparent);
+}
+.eu-box.good, .mc-box.good, .hm-box.good, .fh-box.good, .ec-box.good { background: var(--good); border-color: var(--good); color: #fff; }
+.eu-box.bad, .mc-box.bad, .hm-box.bad, .fh-box.bad, .ec-box.bad { background: var(--danger); border-color: var(--danger); color: #fff; }
+.eu-box s, .mc-box s, .hm-box s, .fh-box s, .ec-box s { font-size: 0.8em; opacity: 0.9; font-weight: 700; }
+/* La respuesta correcta, en verde junto a la casilla mala */
+.eu-right, .mc-right, .hm-right, .fh-right, .ec-right {
+  display: inline-flex; align-items: center; justify-content: center; min-width: 30px; height: 34px; padding: 0 5px;
+  border-radius: 6px; background: var(--good); color: #fff; font-size: 1.05rem;
+}
+.fh-right, .ec-right { height: 30px; min-width: 22px; margin-left: 2px; }
+
+/* Teclado */
+.keypad.eu-keypad, .keypad.mc-keypad, .keypad.hm-keypad, .keypad.fh-keypad, .keypad.ec-keypad { margin-top: 10px; max-width: 250px; gap: 7px; }
+.keypad.eu-keypad .keypad-key, .keypad.mc-keypad .keypad-key, .keypad.hm-keypad .keypad-key,
+.keypad.fh-keypad .keypad-key, .keypad.ec-keypad .keypad-key { padding: 10px 8px; }
+.eu-keypad .keypad-key.primary, .mc-keypad .keypad-key.primary, .hm-keypad .keypad-key.primary,
+.fh-keypad .keypad-key.primary, .ec-keypad .keypad-key.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.eu-keypad .keypad-key.primary { grid-column: 1 / -1; }
+
+/* 💡 */
+.feedback.eu-feedback, .feedback.mc-feedback, .feedback.hm-feedback, .feedback.fh-feedback, .feedback.ec-feedback {
+  margin-top: 10px; line-height: 1.35; text-align: center; max-width: 350px; font-size: 0.84rem;
+}
+.eu-next, .mc-next, .hm-next, .fh-next, .ec-next { display: block; margin: 8px auto 0; }
+
+/* ---------- La escalera de unidades ---------- */
+.eu-stairs { width: 100%; max-width: 310px; height: auto; margin-bottom: 6px; }
+.keypad.eu-keypad .keypad-key { padding: 9px 8px; }
+.eu-steps { fill: color-mix(in srgb, var(--accent) 12%, var(--card)); stroke: var(--accent); stroke-width: 2; stroke-linejoin: round; }
+.eu-lab { font-size: 12px; font-weight: 800; fill: var(--text); text-anchor: middle; }
+.eu-alias { font-size: 9px; font-weight: 800; fill: var(--accent-2); text-anchor: middle; }
+.eu-step { font-size: 9px; font-weight: 700; fill: var(--muted); }
+.eu-step.sm { font-size: 7px; }
+.eu-leg { font-size: 10px; font-weight: 700; fill: var(--muted); }
+.eu-mark { stroke-width: 5; stroke-linecap: round; }
+.eu-mark.from { stroke: var(--accent-2); }
+.eu-mark.to { stroke: var(--final, #b7791f); stroke-dasharray: 4 3; }
+.eu-ball { fill: var(--accent-2); transition: cx 0.2s, cy 0.2s; }
+.eu-hop { font-size: 11px; font-weight: 900; fill: var(--accent); text-anchor: middle; }
+.eu-line b { color: var(--accent-2); }
+.prompt.eu-prompt b:first-of-type { color: var(--accent-2); }
+.prompt.eu-prompt b:last-of-type { color: var(--final, #b7791f); }
+
+/* ---------- Forma compleja e incompleja ---------- */
+.mc-badge {
+  font-size: 0.85rem; font-weight: 700; color: var(--muted); margin-bottom: 10px;
+  padding: 4px 10px; border: 1px dashed var(--border); border-radius: 8px;
+}
+
+/* ---------- Horas y minutos ---------- */
+.hm-turns { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin-top: 10px; min-height: 62px; }
+.hm-clock { display: inline-flex; flex-direction: column; align-items: center; font-size: 0.7rem; font-weight: 700; color: var(--muted); }
+.hm-clock svg { width: 52px; height: 52px; }
+.hm-face { fill: var(--card); stroke: var(--text); stroke-width: 1.6; }
+.hm-fill { fill: color-mix(in srgb, var(--accent-2) 55%, transparent); }
+.hm-tick { stroke: var(--text); stroke-width: 1; }
+.hm-pin { fill: var(--text); }
+
+/* ---------- Fracciones de hora ---------- */
+.fh-clockwrap { width: 150px; height: 150px; margin-bottom: 8px; }
+.fh-clock { width: 100%; height: 100%; }
+.fh-face { fill: var(--card); stroke: var(--text); stroke-width: 3; }
+.fh-sector { fill: color-mix(in srgb, var(--accent-2) 50%, transparent); }
+.fh-cut { stroke: var(--accent); stroke-width: 1.6; stroke-dasharray: 4 3; }
+.fh-tick { stroke: var(--muted); stroke-width: 1; }
+.fh-tick.big { stroke: var(--text); stroke-width: 2.2; }
+.fh-num { font-size: 13px; font-weight: 800; fill: var(--text); text-anchor: middle; }
+.fh-hand { stroke: var(--accent); stroke-width: 3.5; stroke-linecap: round; }
+.fh-hand.short { stroke: var(--text); stroke-width: 4.5; }
+.fh-pin { fill: var(--text); }
+.fh-txt { font-size: 1.15rem; }
+/* Fracción de libro: numerador sobre denominador con la raya en medio */
+.fh-frac { display: inline-flex; flex-direction: column; align-items: center; font-size: 1.35rem; line-height: 1.05; }
+.fh-frac > i { font-style: normal; padding: 0 4px; }
+.fh-frac > i:first-child { border-bottom: 3px solid var(--text); }
+.fh-frac.fh-ask { gap: 4px; }
+.fh-ask > .fh-bar { display: block; width: 60px; height: 0; padding: 0; border-bottom: 3px solid var(--text); }
+.fh-ask .fh-box { min-width: 46px; height: 40px; }
+
+/* ---------- Euros y céntimos ---------- */
+.ec-money {
+  display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 5px;
+  min-height: 74px; width: 100%; max-width: 360px; margin-bottom: 10px;
+}
+.ec-pile { display: inline-flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 3px; max-width: 160px; }
+.ec-plus { font-size: 1.4rem; color: var(--accent); }
+.ec-hidden { font-size: 0.85rem; color: var(--muted); font-weight: 700; padding: 18px 22px; border: 2px dashed var(--border); border-radius: 14px; }
+.ec-comma { font-size: 1.8rem; line-height: 1; align-self: flex-end; margin: 0 -2px; }
+.ec-line > span:first-child { margin-right: 2px; }
+.ec-coin {
+  --d: calc(54px * var(--s, 1));
+  width: var(--d); height: var(--d); border-radius: 50%; flex: none;
+  display: inline-flex; flex-direction: column; align-items: center; justify-content: center;
+  font-family: system-ui, sans-serif; font-weight: 900; font-size: calc(var(--d) * 0.3); line-height: 1; color: #4a3500;
+  box-shadow: inset 0 0 0 2px rgba(0,0,0,.18), 0 2px 4px rgba(0,0,0,.25);
+}
+.ec-coin b { font-weight: 900; }
+.ec-coin i { font-style: normal; font-weight: 700; font-size: 0.5em; }
+.ec-coin.ec-gold { background: radial-gradient(circle at 35% 30%, #fbe7a1, #d9a82e 60%, #b8861b); }
+.ec-coin.ec-copper { background: radial-gradient(circle at 35% 30%, #f3c3a0, #c26a3a 60%, #94502a); color: #3d1a06; }
+.ec-coin.ec-c1e { background: radial-gradient(circle at 50% 50%, #e3e6ea 0 38%, #cfd3d8 38% 40%, #f3cf63 41%, #c99a26 100%); }
+.ec-coin.ec-c2e { --d: 60px; background: radial-gradient(circle at 50% 50%, #f3cf63 0 36%, #c99a26 38% 40%, #e3e6ea 41%, #a9aeb5 100%); }
+.ec-bill {
+  width: 74px; height: 40px; border-radius: 5px; flex: none; display: inline-flex; align-items: center; justify-content: center;
+  font-family: system-ui, sans-serif; font-weight: 900; font-size: 0.95rem; color: #fff;
+  box-shadow: inset 0 0 0 3px rgba(255,255,255,.35), 0 2px 4px rgba(0,0,0,.25); text-shadow: 0 1px 1px rgba(0,0,0,.35);
+}
+.ec-bill.ec-b5 { background: linear-gradient(135deg, #8d9a95, #6e7b76); }
+.ec-bill.ec-b10 { background: linear-gradient(135deg, #e07b6b, #b5473b); }
+.ec-bill.ec-b20 { background: linear-gradient(135deg, #6d93d1, #3f62a3); }
+.ec-pile .ec-coin { --d: calc(40px * var(--s, 1)); }
+.ec-pile .ec-coin.ec-c2e { --d: 44px; }
+.ec-box.wide { min-width: 52px; }
+
+@media (max-width: 380px) {
+  .eu-cuaderno, .mc-cuaderno, .hm-cuaderno, .fh-cuaderno, .ec-cuaderno { font-size: 1.15rem; }
+  .eu-box, .mc-box, .hm-box, .fh-box, .ec-box { min-width: 38px; height: 42px; }
+}
+
+/* Forma compleja con tres unidades: todo en una sola línea a 400 px */
+.mc-cuaderno.mc-tight { font-size: 1.12rem; padding: 12px 4px; }
+.mc-tight .mc-line { gap: 4px; }
+.mc-tight .mc-box { min-width: 38px; }
+.mc-tight .mc-right { min-width: 24px; padding: 0 3px; }
+.mc-tight .mc-unit { font-size: 0.95rem; }
+
+/* El número con coma nunca se parte en dos líneas */
+.ec-dec { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+
+/* Escalera, al fallar: la casilla tachada y la correcta caben en una línea */
+.eu-cuaderno.eu-wrong { font-size: 1.05rem; padding: 10px 4px; }
+.eu-wrong .eu-box { min-width: 70px; }
+.eu-wrong .eu-right { font-size: 1rem; }
+/* El end-card, centrado en la tarjeta */
+.game-body.eu-body > .end-card, .game-body.mc-body > .end-card, .game-body.hm-body > .end-card,
+.game-body.fh-body > .end-card, .game-body.ec-body > .end-card { margin: auto 0; }

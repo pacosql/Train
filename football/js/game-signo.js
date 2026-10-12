@@ -16,11 +16,12 @@ const prec = (a, o1, b, o2, c) => {
   return hi(o2) && !hi(o1) ? calc(a, o1, calc(b, o2, c)) : ltr(a, o1, b, o2, c);
 };
 
-function hintOne(a, op, b, r) {
-  if (op === "+") return `${a} + ${b} = ${r}: el resultado (${r}) es mayor que ${a}, así que sumo`;
-  if (op === "−") return `${a} − ${b} = ${r}: el resultado (${r}) es menor que ${a}, así que resto`;
-  if (op === "×") return `${a} × ${b} = ${r}: para pasar de ${a} a ${r} hay que multiplicar por ${b}`;
-  return `${a} ÷ ${b} = ${r}: ${a} repartido en ${b} partes iguales son ${r}, así que divido`;
+// El porqué, como en clase; si ya hay ×, se compara con el signo "primo".
+function hintOne(a, op, b, r, L) {
+  if (op === "+") return `${a} + ${b} = ${r}: de ${a} a ${r} he subido ${b}, así que sumo${L ? ` (${a} × ${b} daría ${a * b})` : ""}`;
+  if (op === "−") return `${a} − ${b} = ${r}: de ${a} a ${r} he bajado ${b}, así que resto${L > 1 && a % b === 0 ? ` (${a} ÷ ${b} daría ${a / b})` : ""}`;
+  if (op === "×") return `${a} × ${b} = ${r}: para pasar de ${a} a ${r} hay que multiplicar (${a} + ${b} solo daría ${a + b})`;
+  return `${a} ÷ ${b} = ${r}: ${a} repartido en ${b} partes iguales son ${r}, así que divido (${a} − ${b} daría ${a - b})`;
 }
 
 // Niveles: 0 + y − · 1 + − × · 2 las cuatro · 3 dos huecos.
@@ -38,7 +39,7 @@ export function buildRound(level) {
       const r = calc(a, op, b);
       // Ningún otro signo de las cuatro fichas puede dar el mismo resultado.
       if (OPS.filter((o) => same(calc(a, o, b), r)).length !== 1) continue;
-      return { nums: [a, b], ops: [op], result: r, level: L, hint: hintOne(a, op, b, r) };
+      return { nums: [a, b], ops: [op], result: r, level: L, hint: hintOne(a, op, b, r, L) };
     }
   }
   for (;;) {
@@ -125,7 +126,7 @@ export function mountSignoGame(container, { client, onExit }) {
       const good = holes[i] === round.ops[i];
       ok = ok && good;
       b.classList.add(good ? "good" : "bad");
-      if (!good) b.innerHTML = `<s>${holes[i]}</s>${round.ops[i]}`;
+      if (!good) b.innerHTML = `<s>${holes[i]}</s><em class="sg2-want">${round.ops[i]}</em>`;
     });
     body.querySelectorAll("[data-op]").forEach((b) => (b.disabled = true));
     const full = round.nums.map((n, i) => (i < round.ops.length ? `${n} ${round.ops[i]}` : n)).join(" ") + ` = ${round.result}`;
@@ -139,7 +140,7 @@ export function mountSignoGame(container, { client, onExit }) {
     } else {
       lives--;
       renderLives();
-      feedback.innerHTML = `Era ${full}. 💡 ${round.hint} <button type="button" class="primary sg2-next" data-next>Siguiente →</button>`;
+      feedback.innerHTML = `Era ${full}. 💡 ${round.hint} <button type="button" class="sg2-next" data-next>Siguiente →</button>`;
       feedback.className = "feedback bad";
       const go = () => { clearTimeout(pending); lives <= 0 ? finish(false) : nextRound(); };
       feedback.querySelector("[data-next]").addEventListener("click", go);

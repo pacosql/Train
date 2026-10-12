@@ -71,7 +71,7 @@ export function mountFaltaparaGame(container, { client, onExit }) {
   // La barra: parte conocida pintada, la que falta a trazos con "?",
   // marcas cada décima parte (cada euro si es dinero) y etiquetas.
   function bar(r) {
-    const W = 336, H = 72, x0 = 8, y0 = 22, h = 30, w = W - 16;
+    const W = 336, H = 88, x0 = 8, y0 = 24, h = 40, w = W - 16;
     const px = (v) => x0 + (v / r.T) * w;
     const show = r.money ? eur : fmt;
     const step = r.money ? 100 : r.T / 10;
@@ -84,8 +84,8 @@ export function mountFaltaparaGame(container, { client, onExit }) {
       ${ticks}
       <text class="fp-in" x="${(x0 + px(r.a)) / 2}" y="${y0 + h / 2}">${px(r.a) - x0 > 40 ? show(r.a) : ""}</text>
       <text class="fp-q" data-q x="${(px(r.a) + px(r.T)) / 2}" y="${y0 + h / 2}">${px(r.T) - px(r.a) > 40 ? "?" : ""}</text>
-      <text x="${x0}" y="${y0 + h + 16}">0</text>
-      <text x="${px(r.T)}" y="${y0 + h + 16}">${show(r.T)}</text>
+      <text class="fp-start" x="${x0}" y="${y0 + h + 18}">0</text>
+      <text class="fp-end" x="${px(r.T)}" y="${y0 + h + 18}">${show(r.T)}</text>
       ${px(r.a) > 50 && px(r.T) - px(r.a) > 50 ? `<text x="${px(r.a)}" y="${y0 - 7}">${show(r.a)}</text>` : ""}
     </svg>`;
   }
@@ -145,7 +145,7 @@ export function mountFaltaparaGame(container, { client, onExit }) {
     const slot = body.querySelector("[data-slot]");
     slot.classList.remove("active");
     slot.classList.add(ok ? "good" : "bad");
-    if (!ok) slot.innerHTML = `<s>${typed}</s>${round.money ? eur(round.b).replace(" €", "") : fmt(round.b)}`;
+    if (!ok) slot.innerHTML = `<s>${typed}</s><b class="fp-want">${round.money ? eur(round.b).replace(" €", "") : fmt(round.b)}</b>`;
     // La barra se completa con el trozo que faltaba.
     body.querySelector("[data-miss]").classList.add(ok ? "good" : "bad");
     const q = body.querySelector("[data-q]");

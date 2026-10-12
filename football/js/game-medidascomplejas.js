@@ -43,7 +43,7 @@ export function buildRound(level) {
     hint = `${list(conv)}; ${toSmall.map(fmt).join(" + ")} = ${fmt(total)} ${small}`;
   } else {
     const conv = parts.slice(0, -1).map((p, i) => `${fmt(toSmall[i])} ${small} son ${p} ${units[i]}`);
-    hint = `${fmt(total)} ${small}: ${list(conv)} y ${n > 2 ? "quedan" : "sobran"} ${parts[n - 1]} ${small} → ${compleja}`;
+    hint = `${fmt(total)} ${small}: ${conv.join(", ")} y ${n > 2 ? "quedan" : "sobran"} ${parts[n - 1]} ${small} → ${compleja}`;
   }
   const boxes = dir === "ci"
     ? [{ unit: small, ans: total, maxLen: 5, wide: true }]
@@ -78,14 +78,16 @@ export function mountMedidascomplejasGame(container, { client, onExit }) {
   function nextRound() {
     if (finished) return;
     clearTimeout(pending);
-    round = buildRound(Math.min(4, Math.floor(hits / 2)));
+    // Nunca dos rondas iguales seguidas.
+    const prev = round?.hint;
+    for (let t = 0; t < 20 && (!t || round.hint === prev); t++) round = buildRound(Math.min(4, Math.floor(hits / 2)));
     typed = round.boxes.map(() => "");
     active = 0;
     busy = false;
     body.innerHTML = `
       <p class="prompt mc-prompt">${round.dir === "ci" ? "Pasa a forma incompleja" : "Pasa a forma compleja"}</p>
       <div class="mc-badge">${round.badge}</div>
-      <div class="mc-cuaderno"><span class="mc-line">${round.given} = ${round.boxes
+      <div class="mc-cuaderno${round.boxes.length > 2 ? " mc-tight" : ""}"><span class="mc-line">${round.given} = ${round.boxes
         .map((b, i) => `<button type="button" class="mc-box${b.wide ? " wide" : ""}" data-box="${i}"></button> <span class="mc-unit">${b.unit}</span>`)
         .join(" ")}</span></div>
       <div class="keypad mc-keypad" data-keypad></div>
@@ -133,7 +135,7 @@ export function mountMedidascomplejasGame(container, { client, onExit }) {
       active = empty;
       paint();
       feedback.textContent = `Falta la casilla de ${round.boxes[empty].unit}`;
-      feedback.className = "feedback bad";
+      feedback.className = "feedback bad mc-feedback";
       return;
     }
     busy = true;
@@ -154,13 +156,13 @@ export function mountMedidascomplejasGame(container, { client, onExit }) {
       hits++;
       renderScore();
       feedback.textContent = `✓ ${round.answer}. 💡 ${round.hint}`;
-      feedback.className = "feedback ok";
+      feedback.className = "feedback ok mc-feedback";
       pending = setTimeout(nextRound, 900);
     } else {
       lives--;
       renderLives();
       feedback.innerHTML = `Era ${round.answer}. 💡 ${round.hint}<button type="button" class="secondary mc-next" data-next>Siguiente →</button>`;
-      feedback.className = "feedback bad";
+      feedback.className = "feedback bad mc-feedback";
       const go = () => (lives <= 0 ? finish(false) : nextRound());
       feedback.querySelector("[data-next]").addEventListener("click", go);
       pending = setTimeout(go, 2500);

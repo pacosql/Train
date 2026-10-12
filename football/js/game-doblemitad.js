@@ -2,7 +2,7 @@
 // dos (dos filas, como fichas de dominó) y debajo la frase del cuaderno
 // "El doble de 14 es □" o "La mitad de 28 es □". Se escribe con el
 // teclado y, al responder, los puntos se duplican (aparece una segunda
-// copia) o se partan por la mitad con una raya. 💡 "Doble = sumarlo dos
+// copia) o se parten por la mitad con una raya. 💡 "Doble = sumarlo dos
 // veces: 14 + 14 = 28" / "Mitad = repartir en 2 partes iguales: 28 → 14 y 14".
 import { randInt, saveScore } from "./utils.js";
 
@@ -14,7 +14,8 @@ export function buildRound(level) {
   if (level === 0) base = randInt(1, 10);
   else if (level === 1) base = randInt(6, 20);
   else if (level === 2) base = randInt(11, 50);
-  else base = Math.random() < 0.5 ? randInt(2, 10) * 10 : randInt(26, 100);
+  // nivel 3: números hasta 100 (26-50 → 52-100) o dobles/mitades de decenas (70 → 140, 180 → 90)
+  else base = Math.random() < 0.5 ? randInt(2, 9) * 10 : randInt(26, 50);
   const shown = kind === "doble" ? base : base * 2;
   const answer = kind === "doble" ? base * 2 : base;
   const dots = level <= 1; // a partir del nivel 2 solo se ve el número
@@ -53,7 +54,9 @@ export function mountDoblemitadGame(container, { client, onExit }) {
   function nextRound() {
     if (finished) return;
     clearTimeout(pending);
-    round = buildRound(Math.min(3, Math.floor(hits / 3)));
+    // nunca dos rondas seguidas iguales
+    const last = round && round.kind + round.shown;
+    do round = buildRound(Math.min(3, Math.floor(hits / 3))); while (round.kind + round.shown === last);
     typed = "";
     busy = false;
     const art = round.dots ? block(round.shown) : `<div class="dm-nodots">${round.shown}</div>`;

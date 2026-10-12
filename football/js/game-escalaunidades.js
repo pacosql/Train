@@ -59,13 +59,13 @@ export function buildRound(level) {
     const chain = Array.from({ length: n }, () => `${k > 0 ? "×" : "÷"} ${miles(String(10 ** p))}`).join(" ");
     const hint = n === 0
       ? `1 l = 1 dm³ (y 1 ml = 1 cm³): es la misma cantidad, ${a} ${fromLabel} = ${b} ${toLabel}`
-      : `${litros ? "1 l = 1 dm³. " : ""}De ${fromLabel} a ${toLabel} ${k > 0 ? "bajo" : "subo"} ${n} escalón${n > 1 ? "es" : ""}: ${a} ${chain} = ${b}`;
+      : `${litros ? "1 l = 1 dm³. " : ""}De ${fromLabel} a ${toLabel} ${k > 0 ? "bajo" : "subo"} ${n} ${n > 1 ? "escalones" : "escalón"}: ${a} ${chain} = ${b}`;
     return { mag, units, p, from, to, k, litros, fromLabel, toLabel, given: a, ans: b, ansVal: ans.M / 10 ** ans.D, hint };
   }
 }
 
 // La escalera: 7 escalones de 50×20 bajando a la derecha, dibujada en SVG.
-const W = 50, H = 20, X0 = 6, Y0 = 30;
+const W = 50, H = 20, X0 = 6, Y0 = 30, BX = 36; // BX: posición de la bolita en el peldaño
 const tx = (i) => X0 + i * W, ty = (i) => Y0 + i * H;
 function stairsSvg(r) {
   let d = `M${tx(0)} ${ty(0)}`;
@@ -74,13 +74,15 @@ function stairsSvg(r) {
   const f = miles(String(10 ** r.p));
   const labels = r.units.map((u, i) => `<text class="eu-lab" x="${tx(i) + W / 2}" y="${ty(i) + 14}">${u}</text>${
     r.mag === "volumen" && LITROS[i] ? `<text class="eu-alias" x="${tx(i) + W / 2}" y="${ty(i) + 29}">= ${LITROS[i]}</text>` : ""}`).join("");
+  // En cada peldaño, "×10" (o ×100, ×1.000) pegado a la contrahuella, como en el libro.
+  const steps = Array.from({ length: 6 }, (_, i) => `<text class="eu-step${f.length > 3 ? " sm" : ""}" x="${tx(i + 1) + 3}" y="${ty(i + 1) - 4}">×${f}</text>`).join("");
   const mark = (i, cls) => `<line class="eu-mark ${cls}" x1="${tx(i) + 2}" y1="${ty(i)}" x2="${tx(i + 1) - 2}" y2="${ty(i)}"/>`;
   return `<svg class="eu-stairs" viewBox="0 0 362 192" aria-label="escalera de unidades">
     <text class="eu-leg" x="${tx(7) - 2}" y="16" text-anchor="end">bajar ↘ ×${f}</text>
     <text class="eu-leg" x="${tx(0) + 2}" y="${ty(7) + 16}">subir ↖ ÷${f}</text>
-    <path class="eu-steps" d="${d}"/>${labels}${mark(r.from, "from")}${mark(r.to, "to")}
+    <path class="eu-steps" d="${d}"/>${steps}${labels}${mark(r.from, "from")}${mark(r.to, "to")}
     <text class="eu-hop" data-hop x="0" y="0"></text>
-    <circle class="eu-ball" data-ball cx="${tx(r.from) + W / 2}" cy="${ty(r.from) - 9}" r="7"/>
+    <circle class="eu-ball" data-ball cx="${tx(r.from) + BX}" cy="${ty(r.from) - 9}" r="7"/>
   </svg>`;
 }
 
@@ -110,7 +112,9 @@ export function mountEscalaunidadesGame(container, { client, onExit }) {
   function nextRound() {
     if (finished) return;
     clearTimers();
-    round = buildRound(Math.min(4, Math.floor(hits / 2)));
+    // Nunca dos rondas iguales seguidas.
+    const prev = round?.hint;
+    for (let t = 0; t < 20 && (!t || round.hint === prev); t++) round = buildRound(Math.min(4, Math.floor(hits / 2)));
     typed = "";
     busy = false;
     body.innerHTML = `
@@ -148,9 +152,9 @@ export function mountEscalaunidadesGame(container, { client, onExit }) {
     for (let j = 1; j <= Math.abs(round.k); j++) {
       timers.push(setTimeout(() => {
         const i = round.from + s * j;
-        ball.setAttribute("cx", tx(i) + W / 2);
+        ball.setAttribute("cx", tx(i) + BX);
         ball.setAttribute("cy", ty(i) - 9);
-        hop.setAttribute("x", tx(i) + W / 2);
+        hop.setAttribute("x", tx(i) + BX);
         hop.setAttribute("y", ty(i) - 22);
         hop.textContent = `${s > 0 ? "×" : "÷"}${f}`;
       }, 230 * j));
@@ -162,7 +166,7 @@ export function mountEscalaunidadesGame(container, { client, onExit }) {
     const value = parseNum(typed);
     if (Number.isNaN(value)) {
       feedback.textContent = "Escribe la respuesta en la casilla";
-      feedback.className = "feedback bad";
+      feedback.className = "feedback bad eu-feedback";
       return;
     }
     busy = true;
@@ -176,16 +180,17 @@ export function mountEscalaunidadesGame(container, { client, onExit }) {
       renderScore();
       box.classList.add("good");
       feedback.textContent = `✓ ${round.ans} ${round.toLabel}. 💡 ${round.hint}`;
-      feedback.className = "feedback ok";
+      feedback.className = "feedback ok eu-feedback";
       pending = setTimeout(nextRound, 900);
     } else {
       lives--;
       renderLives();
       box.classList.add("bad");
+      body.querySelector(".eu-cuaderno").classList.add("eu-wrong");
       box.innerHTML = `<s>${fmtTyped(typed)}</s>`;
       box.insertAdjacentHTML("afterend", ` <b class="eu-right">${round.ans}</b>`);
       feedback.innerHTML = `Era ${round.ans} ${round.toLabel}. 💡 ${round.hint}<button type="button" class="secondary eu-next" data-next>Siguiente →</button>`;
-      feedback.className = "feedback bad";
+      feedback.className = "feedback bad eu-feedback";
       const go = () => (lives <= 0 ? finish(false) : nextRound());
       feedback.querySelector("[data-next]").addEventListener("click", go);
       pending = setTimeout(go, 2500);

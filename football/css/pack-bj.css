@@ -1,0 +1,131 @@
+/* Pack BJ — "Descomposición polinómica" (.pn-), "Décimas, centésimas y
+   milésimas" (.de-), "Por 10, 100 y 1.000" (.ce-), "Redondea" (.rd-) y
+   "Escribe la fracción" (.ef-). Cinco ejercicios "como en el cuaderno":
+   hoja cuadriculada, casillas que se tocan y se rellenan con el teclado
+   numérico del núcleo; activa = borde acento, bien = verde, mal = rojo
+   con la cifra correcta en verde al lado. Todo con variables del tema. */
+
+/* ---------- común: cuerpo compacto, 💡 legible, hoja cuadriculada ---------- */
+.game-body.pn-body, .game-body.de-body, .game-body.ce-body, .game-body.rd-body, .game-body.ef-body {
+  justify-content: flex-start; padding: 12px 12px 10px;
+}
+.prompt.pn-prompt, .prompt.de-prompt, .prompt.ce-prompt, .prompt.rd-prompt, .prompt.ef-prompt {
+  font-size: 1.1rem; margin: 0 0 8px; line-height: 1.3;
+}
+.prompt.ef-prompt b { color: var(--danger); }
+.feedback.pn-feedback, .feedback.de-feedback, .feedback.ce-feedback, .feedback.rd-feedback, .feedback.ef-feedback {
+  margin-top: 8px; line-height: 1.35; text-align: center; max-width: 350px; font-size: 0.82rem; min-height: 2.2rem;
+}
+.keypad.pn-keypad, .keypad.de-keypad, .keypad.ce-keypad, .keypad.rd-keypad, .keypad.ef-keypad { margin-top: 10px; max-width: 240px; }
+.keypad.pn-keypad .keypad-key, .keypad.de-keypad .keypad-key, .keypad.ce-keypad .keypad-key,
+.keypad.rd-keypad .keypad-key, .keypad.ef-keypad .keypad-key { padding: 10px 8px; font-size: 1.05rem; }
+.keypad.pn-keypad .keypad-key.primary, .keypad.de-keypad .keypad-key.primary, .keypad.ce-keypad .keypad-key.primary,
+.keypad.rd-keypad .keypad-key.primary, .keypad.ef-keypad .keypad-key.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+/* teclados con coma: 1-9 / , 0 ⌫ / ✓ a lo ancho */
+.keypad.de-keypad .keypad-key.primary, .keypad.rd-keypad .keypad-key.primary { grid-column: 1 / -1; padding: 8px; }
+
+.pn-cuaderno, .de-cuaderno, .ce-cuaderno, .rd-cuaderno, .ef-cuaderno {
+  width: 100%; max-width: 360px; border: 1px solid var(--border); border-radius: 10px;
+  padding: 14px 8px; display: flex; flex-direction: column; align-items: center; gap: 10px;
+  background-color: var(--bg);
+  background-image:
+    repeating-linear-gradient(0deg, var(--border) 0 1px, transparent 1px 22px),
+    repeating-linear-gradient(90deg, var(--border) 0 1px, transparent 1px 22px);
+}
+
+/* casillas compartidas */
+.pn-slot, .de-slot, .ce-slot, .rd-slot, .ef-slot {
+  font: inherit; font-weight: 800; color: var(--text); cursor: pointer;
+  background: var(--card); border: 2px solid var(--muted); border-radius: 8px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 3px; padding: 0 4px;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace; height: 42px; font-size: 1.15rem;
+}
+.pn-slot.active, .de-slot.active, .ce-slot.active, .rd-slot.active, .ef-slot.active {
+  border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+.pn-slot.good, .de-slot.good, .ce-slot.good, .rd-slot.good, .ef-slot.good { background: var(--good); border-color: var(--good); color: #fff; }
+.pn-slot.bad, .de-slot.bad, .ce-slot.bad, .rd-slot.bad, .ef-slot.bad { background: var(--danger); border-color: var(--danger); color: #fff; }
+.pn-slot s, .de-slot s, .ce-slot s, .rd-slot s, .ef-slot s { font-size: 0.7em; opacity: 0.85; font-weight: 600; }
+/* la respuesta correcta en verde al lado de la tachada */
+.pn-slot.bad em, .de-slot.bad em, .ce-slot.bad em, .rd-slot.bad em, .ef-slot.bad em {
+  font-style: normal; background: var(--good); border-radius: 4px; padding: 0 3px; line-height: 1.25;
+}
+.pn-next, .de-next, .ce-next, .rd-next, .ef-next { display: block; margin: 6px auto 0; padding: 8px 16px; font-size: 0.85rem; }
+
+/* línea escrita "como en el cuaderno" */
+.pn-line, .de-line, .ce-line, .rd-line {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px 5px;
+  font-size: 1.3rem; font-weight: 800; color: var(--text); font-family: ui-monospace, "SF Mono", Menlo, monospace;
+}
+.pn-op, .de-op, .ce-op, .rd-op { color: color-mix(in srgb, var(--accent) 65%, var(--text)); font-weight: 800; }
+
+/* ---------- Descomposición polinómica ---------- */
+.pn-line { gap: 10px 6px; }
+.pn-group { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
+.pn-group.pn-wrap { flex-wrap: wrap; justify-content: center; row-gap: 8px; white-space: normal; }
+.pn-group.pn-wrap:not(.pn-sum) { max-width: 270px; } /* × potencias: dos términos por renglón */
+.pn-num { font-size: 1.5rem; }
+.pn-sum { font-size: 1.3rem; }
+.pn-slot.pn-wide { min-width: 62px; height: 40px; font-size: 1.05rem; }
+.pn-slot.pn-big { min-width: 104px; height: 44px; font-size: 1.25rem; }
+.pn-slot.pn-digit { width: 36px; height: 40px; }
+.pn-term { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
+.pn-x { font-size: 1rem; color: var(--text); white-space: nowrap; }
+
+/* ---------- Décimas, centésimas y milésimas ---------- */
+.de-tabla { border-collapse: collapse; background: var(--card); font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+.de-tabla th, .de-tabla td { border: 2px solid var(--text); width: 46px; height: 34px; text-align: center; font-size: 1.3rem; font-weight: 800; color: var(--text); }
+.de-tabla th { font-size: 1rem; color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, var(--card)); }
+.de-tabla .de-coma { width: 16px; border-left: none; border-right: none; color: var(--danger); font-size: 1.5rem; }
+.de-tabla td.good { color: var(--good); }
+.de-tabla td.bad { color: var(--danger); }
+.de-num { font-size: 1.45rem; }
+.de-words, .de-term { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-weight: 700; }
+.de-words { font-size: 1rem; text-align: center; flex-basis: 100%; }
+.de-term { display: inline-flex; align-items: center; gap: 4px; font-size: 0.95rem; white-space: nowrap; }
+.de-group { display: inline-flex; align-items: center; gap: 5px; }
+.de-group.de-wrap { flex-wrap: wrap; justify-content: center; gap: 8px 10px; }
+.de-slot.de-digit { width: 38px; }
+.de-slot.de-wide { min-width: 58px; height: 40px; font-size: 1.05rem; }
+.de-comma { font-size: 1.6rem; font-weight: 900; color: var(--text); margin: 0 1px; align-self: flex-end; }
+
+/* ---------- Por 10, 100 y 1.000 ---------- */
+.ce-line { font-size: 1.45rem; padding: 6px 0; }
+.ce-slot { min-width: 96px; height: 48px; font-size: 1.3rem; }
+.ce-worked { min-height: 2rem; font-size: 1.45rem; font-weight: 800; color: var(--text); font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+.ce-add { background: color-mix(in srgb, var(--good) 30%, transparent); color: var(--good); border-radius: 4px; padding: 0 2px; }
+.ce-del { color: var(--good); text-decoration: line-through; text-decoration-thickness: 3px; background: color-mix(in srgb, var(--good) 22%, transparent); border-radius: 4px; padding: 0 2px; }
+
+/* ---------- Redondea ---------- */
+.rd-line { font-size: 1.5rem; }
+.rd-slot { min-width: 96px; height: 46px; font-size: 1.3rem; }
+.rd-svg { width: 100%; max-width: 330px; display: block; }
+.rd-axis { stroke: var(--text); stroke-width: 3; stroke-linecap: round; }
+.rd-tick { stroke: var(--text); stroke-width: 2; }
+.rd-tick.rd-mid { stroke: var(--accent-2); stroke-width: 3; stroke-dasharray: 3 2; }
+.rd-end { fill: var(--text); font-size: 15px; font-weight: 800; text-anchor: middle; }
+.rd-end.rd-win { fill: var(--good); font-size: 17px; }
+.rd-midt { fill: var(--muted); font-size: 12.5px; font-weight: 700; text-anchor: middle; }
+.rd-dot { fill: var(--danger); stroke: var(--card); stroke-width: 2; }
+.rd-num { fill: var(--danger); font-size: 16px; font-weight: 800; text-anchor: middle; }
+.rd-arrow { stroke-width: 3; }
+.rd-arrow.good, .rd-arrow.bad { stroke: var(--good); }
+.rd-headp { fill: var(--good); }
+
+/* ---------- Escribe la fracción ---------- */
+.ef-cuaderno { flex-direction: row; justify-content: center; gap: 14px; }
+.ef-svg { width: 190px; max-width: 58%; height: auto; display: block; }
+.ef-svg.ef-many { width: 100%; max-width: 230px; }
+.ef-part { fill: var(--card); stroke: var(--text); stroke-width: 2.5; stroke-linejoin: round; }
+.ef-part.on { fill: var(--accent); }
+g.ef-part path { fill: var(--card); }
+g.ef-part.on path { fill: var(--accent); }
+.ef-eye { fill: var(--text); stroke: none; }
+g.ef-part.on .ef-eye { fill: #fff; }
+.ef-frac { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.ef-bar { width: 72px; height: 3px; background: var(--text); border-radius: 2px; }
+.ef-slot { width: 64px; height: 48px; font-size: 1.4rem; }
+/* varias figuras o un grupo de peces: dibujo arriba a lo ancho, fracción debajo */
+.ef-cuaderno.ef-col { flex-direction: column; gap: 8px; padding: 10px 8px; }
+.ef-col .ef-svg { width: 100%; max-width: 330px; max-height: 150px; }
+.ef-col .ef-slot { height: 42px; }

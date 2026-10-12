@@ -40,7 +40,8 @@ export function buildRound(level) {
       const cellV = hidden.kind === "fila" ? cells[hidden.i][j] : cells[j][hidden.i];
       const otherH = hidden.kind === "fila" ? colsH[j] : rowsH[j];
       slots.push({ kind: hidden.kind, i: hidden.i, value });
-      parts.push(`En la ${hidden.kind} hay un ${cellV} ${hidden.kind === "fila" ? "bajo" : "junto"} el ${otherH}: ${cellV} ${op === "+" ? "−" : "÷"} ${otherH} = ${value} → es la ${hidden.kind} del ${value}`);
+      const where = hidden.kind === "fila" ? `En esa fila, bajo el ${otherH}, hay un ${cellV}` : `En esa columna, en la fila del ${otherH}, hay un ${cellV}`;
+      parts.push(`${where}: ${cellV} ${op === "+" ? "−" : "÷"} ${otherH} = ${value} → es la ${hidden.kind} del ${value}`);
     }
     for (const [r, c] of holes) {
       slots.push({ kind: "celda", r, c, value: cells[r][c] });
@@ -53,7 +54,7 @@ export function buildRound(level) {
 export function mountTablahuecosGame(container, { client, onExit }) {
   const startLives = 3;
   let lives, score, rounds, hits, finished = false, pending = null;
-  let round, typed, active, busy;
+  let round, typed, active, busy, fresh;
 
   container.innerHTML = `
     <div class="game-topbar">
@@ -78,6 +79,7 @@ export function mountTablahuecosGame(container, { client, onExit }) {
     typed = round.slots.map(() => "");
     active = 0;
     busy = false;
+    fresh = false;
     const slotOf = (pred) => round.slots.findIndex(pred);
     const head = (kind, i, v) => {
       const s = slotOf((x) => x.kind === kind && x.i === i);
@@ -95,7 +97,7 @@ export function mountTablahuecosGame(container, { client, onExit }) {
       <div class="keypad th-keypad" data-keypad></div>
       <div class="feedback th-feedback" data-feedback></div>
     `;
-    body.querySelectorAll("[data-slot]").forEach((b) => b.addEventListener("click", () => !busy && ((active = +b.dataset.slot), paint())));
+    body.querySelectorAll("[data-slot]").forEach((b) => b.addEventListener("click", () => !busy && ((active = +b.dataset.slot), (fresh = true), paint())));
     const pad = body.querySelector("[data-keypad]");
     ["1", "2", "3", "4", "5", "6", "7", "8", "9", "⌫", "0", "✓"].forEach((key) => {
       const btn = document.createElement("button");
@@ -133,9 +135,11 @@ export function mountTablahuecosGame(container, { client, onExit }) {
       fb.className = "feedback bad";
       return;
     }
-    if (key === "⌫") typed[active] = typed[active].slice(0, -1);
-    else if (typed[active].length < 3) {
-      typed[active] += key;
+    if (key === "⌫") (typed[active] = typed[active].slice(0, -1)), (fresh = false);
+    else if (fresh || typed[active].length < 3) {
+      // Tras tocar una casilla (o saltar a ella) la primera cifra sustituye a lo escrito.
+      typed[active] = (fresh ? "" : typed[active]) + key;
+      fresh = false;
       if (typed[active].length >= String(round.slots[active].value).length) {
         const e = nextEmpty();
         if (e !== -1) active = e;
@@ -154,7 +158,7 @@ export function mountTablahuecosGame(container, { client, onExit }) {
       allOk = allOk && ok;
       b.classList.remove("active");
       b.classList.add(ok ? "good" : "bad");
-      if (!ok) b.innerHTML = `<s>${typed[i]}</s>${round.slots[i].value}`;
+      if (!ok) b.innerHTML = `<s>${typed[i]}</s><b>${round.slots[i].value}</b>`;
     });
     const feedback = body.querySelector("[data-feedback]");
     if (allOk) {
