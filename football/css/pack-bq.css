@@ -1,0 +1,205 @@
+/* Pack BQ — fracciones, decimales, % y estadística "como en el libro":
+   "De fracción a decimal" (.fd-), "Fracción, decimal y porcentaje" (.tf-),
+   "La media" (.me-), "Tabla de frecuencias" (.fq-) y "Gráfico de
+   sectores" (.sc-). Todas sobre papel cuadriculado (.xx-cuaderno) con
+   casillas que se tocan para enfocarlas (activa = borde acento). */
+
+/* ---------- común ---------- */
+.game-body.fd-body, .game-body.tf-body, .game-body.me-body, .game-body.fq-body, .game-body.sc-body {
+  justify-content: flex-start; padding: 10px 10px 8px;
+}
+.prompt.fd-prompt, .prompt.tf-prompt, .prompt.me-prompt, .prompt.fq-prompt, .prompt.sc-prompt {
+  font-size: 1.05rem; margin: 0 0 8px; line-height: 1.25;
+}
+.feedback.fd-feedback, .feedback.tf-feedback, .feedback.me-feedback, .feedback.fq-feedback, .feedback.sc-feedback {
+  margin-top: 6px; line-height: 1.32; text-align: center; max-width: 370px; font-size: 0.78rem;
+}
+.keypad.fd-keypad, .keypad.tf-keypad, .keypad.me-keypad, .keypad.fq-keypad, .keypad.sc-keypad { margin-top: 8px; max-width: 230px; gap: 5px; }
+.keypad.fd-keypad .keypad-key, .keypad.tf-keypad .keypad-key, .keypad.me-keypad .keypad-key,
+.keypad.fq-keypad .keypad-key, .keypad.sc-keypad .keypad-key { padding: 8px 6px; }
+.keypad.fd-keypad .keypad-key.primary, .keypad.tf-keypad .keypad-key.primary, .keypad.me-keypad .keypad-key.primary,
+.keypad.fq-keypad .keypad-key.primary, .keypad.sc-keypad .keypad-key.primary {
+  background: var(--accent); border-color: var(--accent); color: #fff;
+}
+.keypad .keypad-key.tf-ok, .keypad .keypad-key.me-ok, .keypad .keypad-key.fq-ok, .keypad .keypad-key.sc-ok { grid-column: 1 / -1; }
+.fd-next, .tf-next, .me-next, .fq-next, .sc-next {
+  margin-left: 6px; font: inherit; font-weight: 700; font-size: 0.8rem; padding: 4px 10px; cursor: pointer;
+  border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--text);
+}
+
+/* papel cuadriculado del cuaderno */
+.fd-cuaderno, .tf-cuaderno, .me-cuaderno, .fq-cuaderno, .sc-cuaderno {
+  background-color: var(--card);
+  background-image:
+    repeating-linear-gradient(0deg, transparent 0 17px, var(--border) 17px 18px),
+    repeating-linear-gradient(90deg, transparent 0 17px, var(--border) 17px 18px);
+  border: 1px solid var(--border); border-radius: 10px; color: var(--text);
+}
+
+/* casillas que se rellenan */
+.fd-slot, .tf-slot, .me-slot, .fq-slot, .sc-slot {
+  font: inherit; font-weight: 800; color: var(--text); cursor: pointer; position: relative;
+  background: var(--bg); border: 2px solid var(--border); border-radius: 7px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 2px; padding: 0; vertical-align: middle;
+}
+.fd-slot.active, .tf-slot.active, .me-slot.active, .fq-slot.active, .sc-slot.active {
+  border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+.fd-slot.good, .tf-slot.good, .me-slot.good, .fq-slot.good, .sc-slot.good { background: var(--good); border-color: var(--good); color: #fff; }
+.fd-slot.bad, .tf-slot.bad, .me-slot.bad, .fq-slot.bad, .sc-slot.bad { background: var(--danger); border-color: var(--danger); color: #fff; overflow: visible; }
+.fd-slot s, .tf-slot s, .me-slot s, .fq-slot s, .sc-slot s { opacity: 0.9; text-decoration-thickness: 2px; }
+/* al fallar: lo malo tachado en rojo y lo bueno en verde, al lado */
+.fd-fix, .tf-fix, .me-fix, .fq-fix, .sc-fix {
+  position: absolute; right: -7px; top: -10px; z-index: 1; font-style: normal; font-size: 0.62em; line-height: 1;
+  padding: 2px 3px; border-radius: 5px; background: var(--good); color: #fff; border: 1.5px solid var(--card);
+}
+/* fracción escrita como en el libro: numerador, raya, denominador */
+.fd-frac, .tf-frac, .me-frac, .fq-frac {
+  display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; gap: 2px;
+}
+.fd-frac > span:first-child, .tf-frac > span:first-child, .me-frac > span:first-child, .fq-frac > span:first-child {
+  border-bottom: 2.5px solid var(--text); padding: 0 4px 3px; align-self: stretch; text-align: center;
+}
+/* con casillas: la raya va entre las dos casillas */
+.fd-frac:has(> button:first-child)::before, .tf-frac:has(> button:first-child)::before,
+.me-frac:has(> button:first-child)::before, .fq-frac:has(> button:first-child)::before {
+  content: ""; order: 1; align-self: stretch; border-top: 2.5px solid var(--text);
+}
+.fd-frac:has(> button:first-child) > :last-child, .tf-frac:has(> button:first-child) > :last-child,
+.me-frac:has(> button:first-child) > :last-child, .fq-frac:has(> button:first-child) > :last-child { order: 2; }
+
+/* ---------- De fracción a decimal ---------- */
+.fd-top { display: flex; align-items: center; gap: 8px; font-size: 1.6rem; font-weight: 800; margin-bottom: 10px; }
+.fd-eq { color: var(--muted); font-weight: 700; }
+.fd-mirror { display: inline-flex; align-items: flex-end; font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+.fd-mwrap { display: inline-flex; flex-direction: column; align-items: center; }
+.fd-m { min-width: 22px; text-align: center; }
+.fd-comma { margin: 0 1px; }
+.fd-arc {
+  font: inherit; font-size: 1rem; line-height: 1; height: 20px; width: 26px; padding: 0; cursor: pointer;
+  color: color-mix(in srgb, var(--muted) 60%, transparent); background: transparent;
+  border: 1.5px dashed color-mix(in srgb, var(--muted) 50%, transparent); border-radius: 6px; margin-bottom: 2px;
+}
+.fd-arc.on { color: var(--accent); border-color: var(--accent); border-style: solid; font-weight: 900; }
+.fd-arc.fd-missed { color: #fff; background: var(--good); border-color: var(--good); }
+.fd-arc.fd-wrong { color: #fff; background: var(--danger); border-color: var(--danger); text-decoration: line-through; }
+.fd-caja {
+  display: flex; align-items: flex-start; justify-content: center; padding: 12px 16px;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace; font-weight: 800; font-size: 1.35rem;
+}
+.fd-left { display: flex; flex-direction: column; gap: 3px; padding-right: 8px; }
+.fd-row { display: grid; grid-template-columns: repeat(var(--fd-n), 32px); gap: 3px; }
+.fd-cell { height: 34px; display: flex; align-items: center; justify-content: center; position: relative; }
+.fd-slot { height: 34px; }
+.fd-added { color: var(--accent-2); opacity: 0; transition: opacity 0.3s; }
+.fd-added.fd-show { opacity: 1; }
+.fd-right { display: flex; flex-direction: column; }
+.fd-divisor, .fd-cociente { display: grid; grid-template-columns: repeat(var(--fd-m), 32px); gap: 3px; }
+.fd-divisor { border-left: 3px solid var(--text); border-bottom: 3px solid var(--text); padding: 0 6px 0 8px; }
+.fd-cociente { padding: 5px 6px 0 11px; }
+.fd-qc::after { content: ","; position: absolute; right: -6px; bottom: -2px; color: var(--text); }
+.fd-inv {
+  display: flex; align-items: center; gap: 8px; padding: 16px 14px; font-size: 1.5rem; font-weight: 800; margin: 6px 0 4px;
+}
+.fd-big { font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+.fd-slot.fd-wide { width: 58px; height: 40px; font-size: 1.3rem; }
+.fd-inv .fd-frac { gap: 4px; }
+
+/* ---------- Fracción, decimal y porcentaje ---------- */
+.tf-sheet { width: 100%; max-width: 370px; padding: 12px 10px; }
+.tf-table { width: 100%; border-collapse: collapse; background: var(--card); text-align: center; }
+.tf-table th {
+  font-size: 0.85rem; padding: 7px 4px; color: var(--text);
+  background: color-mix(in srgb, var(--accent-2) 22%, var(--card)); border: 1.5px solid var(--muted);
+}
+.tf-table td { height: 92px; border: 1.5px solid var(--muted); padding: 4px; font-size: 1.4rem; font-weight: 800; }
+.tf-slot { width: 74px; height: 38px; font-size: 1.15rem; }
+.tf-frac .tf-slot { width: 54px; height: 32px; }
+.tf-pct { display: inline-flex; align-items: center; gap: 3px; }
+.tf-pct .tf-slot { width: 58px; }
+.tf-grids { display: flex; gap: 8px; align-items: center; justify-content: center; flex-wrap: wrap; min-height: 10px; margin-top: 8px; }
+.tf-grid { width: 66px; height: 66px; }
+.tf-grid rect { fill: var(--card); stroke: var(--muted); stroke-width: 0.5; }
+.tf-grid rect.tf-on { fill: var(--accent-2); }
+.tf-glabel { font-size: 0.78rem; color: var(--muted); font-weight: 700; }
+
+/* ---------- La media ---------- */
+.me-cards { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; justify-content: center; }
+.me-card {
+  min-width: 38px; padding: 6px 8px; text-align: center; font-size: 1.2rem; font-weight: 800;
+  background: var(--bg); border: 2px solid var(--border); border-radius: 9px;
+}
+.me-card.me-q { border-style: dashed; border-color: var(--accent); color: var(--accent); }
+.me-dash { color: var(--muted); font-weight: 700; }
+.me-chart { display: block; width: 100%; max-width: 300px; height: 92px; margin: 6px auto 4px; overflow: visible; }
+.me-axis { stroke: var(--muted); stroke-width: 1.5; }
+.me-col { fill: color-mix(in srgb, var(--accent-2) 70%, var(--card)); }
+.me-col.me-new { fill: var(--accent); }
+.me-val { font-size: 11px; font-weight: 800; fill: var(--text); text-anchor: middle; }
+.me-line { stroke: var(--danger); stroke-width: 2.5; stroke-dasharray: 7 4; }
+.me-mlabel { font-size: 11px; font-weight: 800; fill: var(--danger); text-anchor: end; }
+.me-sheet { display: flex; flex-direction: column; gap: 8px; padding: 10px 12px; width: 100%; max-width: 370px; font-size: 1.15rem; font-weight: 800; }
+.me-line1, .me-step { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.me-line1 i { font-style: italic; color: var(--accent); }
+.me-step > span:first-child { min-width: 86px; color: var(--muted); font-size: 0.95rem; }
+.me-eq { color: var(--text); }
+.me-slot { min-width: 56px; height: 36px; font-size: 1.1rem; padding: 0 4px; }
+.me-frac .me-slot { min-width: 50px; height: 32px; }
+
+/* ---------- Tabla de frecuencias ---------- */
+.fq-data { display: flex; flex-wrap: wrap; gap: 3px; justify-content: center; max-width: 360px; margin-bottom: 8px; }
+.fq-item {
+  width: 30px; height: 30px; padding: 0; border: 1.5px solid var(--border); border-radius: 7px; background: var(--bg);
+  display: inline-flex; align-items: center; justify-content: center; cursor: pointer; position: relative; color: var(--text); font: inherit; font-size: 0.95rem;
+}
+.fq-item.fq-x { opacity: 0.35; }
+.fq-item.fq-x::after {
+  content: ""; position: absolute; left: 3px; right: 3px; top: 50%; border-top: 2.5px solid var(--text); transform: rotate(-35deg);
+}
+.fq-item.fq-blink { animation: fq-blink 0.7s ease-in-out infinite alternate; border-color: var(--accent); }
+@keyframes fq-blink { from { box-shadow: 0 0 0 0 transparent; transform: scale(1); } to { box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 55%, transparent); transform: scale(1.12); } }
+.fq-dot { width: 18px; height: 18px; border-radius: 50%; display: inline-block; flex: none; }
+.fq-die { width: 22px; height: 22px; flex: none; }
+.fq-die rect { fill: var(--card); stroke: var(--text); stroke-width: 1.6; }
+.fq-die circle { fill: var(--text); }
+.fq-sheet { width: 100%; max-width: 380px; padding: 8px 6px; }
+.fq-table { width: 100%; border-collapse: collapse; background: var(--card); text-align: center; font-weight: 800; }
+.fq-table th {
+  font-size: 0.68rem; line-height: 1.1; padding: 5px 2px; color: var(--text);
+  background: color-mix(in srgb, var(--accent-2) 22%, var(--card)); border: 1.5px solid var(--muted);
+}
+.fq-table td { border: 1.5px solid var(--muted); padding: 2px 3px; height: 36px; font-size: 1rem; }
+.fq-val { display: flex; align-items: center; justify-content: flex-start; gap: 4px; font-size: 1.05rem; }
+.fq-val small { font-size: 0.7rem; color: var(--muted); }
+.fq-table td[data-tally] { min-width: 60px; text-align: left; }
+.fq-tally { height: 18px; vertical-align: middle; }
+.fq-tally line { stroke: var(--text); stroke-width: 2; stroke-linecap: round; }
+.fq-total td { border-top: 3px solid var(--text); font-size: 0.9rem; }
+.fq-slot { width: 48px; height: 30px; font-size: 1rem; }
+.fq-l3 .fq-slot { width: 46px; font-size: 0.92rem; }
+.fq-frac .fq-slot { width: 38px; height: 26px; }
+.fq-frac { padding: 2px 0; }
+.fq-l2 td { height: 66px; }
+.fq-moda { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 8px; font-size: 1.1rem; font-weight: 800; }
+
+/* ---------- Gráfico de sectores ---------- */
+.sc-wrap { display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; max-width: 384px; padding: 8px 6px; flex-wrap: wrap; }
+.sc-table { border-collapse: collapse; background: var(--card); text-align: center; font-weight: 800; font-size: 0.9rem; }
+.sc-table th {
+  font-size: 0.72rem; padding: 5px 4px; color: var(--text);
+  background: color-mix(in srgb, var(--accent-2) 22%, var(--card)); border: 1.5px solid var(--muted);
+}
+.sc-table td { border: 1.5px solid var(--muted); padding: 3px 4px; height: 38px; white-space: nowrap; }
+.sc-cat { text-align: left; font-size: 0.8rem; }
+.sc-total td { border-top: 3px solid var(--text); font-size: 0.82rem; }
+.sc-slot { width: 52px; height: 30px; font-size: 1rem; }
+.sc-sw { display: inline-block; width: 11px; height: 11px; border-radius: 3px; margin-right: 4px; vertical-align: -1px; }
+.sc-pie { width: 150px; height: 150px; display: block; }
+.sc-rim { fill: var(--card); stroke: var(--muted); stroke-width: 1.2; stroke-dasharray: 3 3; }
+.sc-pie path, .sc-pie circle:not(.sc-rim) { stroke: var(--card); stroke-width: 1.5; }
+.sc-zero { stroke: var(--text); stroke-width: 1.5; }
+.sc-lab { font-size: 11px; font-weight: 800; fill: #fff; text-anchor: middle; paint-order: stroke; stroke: rgba(0, 0, 0, 0.35); stroke-width: 2px; }
+.sc-sw.sc-c0 { background: var(--accent); }   .sc-pie .sc-c0 { fill: var(--accent); }
+.sc-sw.sc-c1 { background: var(--accent-2); } .sc-pie .sc-c1 { fill: var(--accent-2); }
+.sc-sw.sc-c2 { background: #f59e0b; }         .sc-pie .sc-c2 { fill: #f59e0b; }
+.sc-sw.sc-c3 { background: #e0457b; }         .sc-pie .sc-c3 { fill: #e0457b; }

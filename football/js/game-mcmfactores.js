@@ -45,8 +45,9 @@ export function buildRound(level) {
   });
   const out = ps.filter((p) => mn[p] === 0);
   const parts = [];
-  if (want.mcd) parts.push(`mcd: comunes con el menor exponente (${show(ps, mn)} = ${fmt(mcd)})${out.length ? `; el ${out.join(" y el ")} no ${out.length > 1 ? "son comunes" : "es común"} → exponente 0` : ""}`);
-  if (want.mcm) parts.push(`mcm: comunes y no comunes con el mayor exponente (${show(ps, mx)} = ${fmt(mcm)})`);
+  const eq = (ex, v) => (show(ps, ex) === String(v) ? String(v) : `${show(ps, ex)} = ${fmt(v)}`);
+  if (want.mcd) parts.push(`mcd: comunes con el menor exponente (${eq(mn, mcd)})${out.length ? `; el ${out.join(" y el ")} no ${out.length > 1 ? "son comunes" : "es común"} → exponente 0` : ""}`);
+  if (want.mcm) parts.push(`mcm: comunes y no comunes con el mayor exponente (${eq(mx, mcm)})`);
   return { level, ps, nums, exps, mn, mx, mcd, mcm, want, slots, hint: parts.join("; ") };
 }
 

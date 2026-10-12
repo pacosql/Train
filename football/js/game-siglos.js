@@ -206,18 +206,19 @@ export function mountSiglosGame(container, { client, onExit }) {
     const { type, y, c, ac } = round;
     const text = type === "rango" ? `del ${round.answers[0]} al ${round.answers[1]}`
       : type.startsWith("siglo") ? `${y}${ac ? " a. C." : ""} es del siglo ${roman(c)}${ac ? " a. C." : ""}` : `${round.answers[0]} años`;
+    const dot = text.endsWith(".") ? "" : "."; // "a. C." ya lleva su punto
     if (allOk) {
       score += 10;
       hits++;
       renderScore();
-      feedback.textContent = `✓ ${text}. 💡 ${round.hint}`;
+      feedback.textContent = `✓ ${text}${dot} 💡 ${round.hint}`;
       feedback.className = "feedback ok sl-feedback";
       pending = setTimeout(nextRound, 900);
     } else {
       lives--;
       renderLives();
       const go = () => { clearTimeout(pending); lives <= 0 ? finish(false) : nextRound(); };
-      feedback.innerHTML = `Era: ${text}. 💡 ${round.hint} <button type="button" class="sl-next" data-next>Siguiente →</button>`;
+      feedback.innerHTML = `Era: ${text}${dot} 💡 ${round.hint} <button type="button" class="sl-next" data-next>Siguiente →</button>`;
       feedback.className = "feedback bad sl-feedback";
       feedback.querySelector("[data-next]").addEventListener("click", go);
       pending = setTimeout(go, 3000);

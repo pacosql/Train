@@ -11,6 +11,7 @@ const near = (a, b) => Math.abs(a - b) < 1e-6;
 const fmt = (n) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 const frac = (n, d) => `<span class="af-frac"><span>${n}</span><span>${d}</span></span>`;
 const v = (s) => `<i>${s}</i>`;
+const sv = (s) => `<tspan class="af-it">${s}</tspan>`; // cursiva dentro del SVG
 const TRIPLES = [[3, 4, 5], [4, 3, 5], [6, 8, 10], [8, 6, 10], [5, 12, 13], [12, 5, 13], [9, 12, 15], [12, 9, 15]];
 const POLY = { 5: "Pentágono", 6: "Hexágono", 8: "Octógono" };
 
@@ -27,14 +28,14 @@ function regular() {
 // Cada ronda: figura, renglones con {k} = casilla k y {=k} = copia de la k,
 // valores de las casillas y grupos que pueden ir en cualquier orden (b · h = h · b).
 export function buildRound(level) {
-  const shape = pick([["cuadrado", "rectangulo"], ["triangulo", "paralelogramo"], ["rombo", "trapecio"], ["poligono"], ["cuadrado", "rectangulo", "poligono"]][level]);
-  const both = level === 4, cm2 = "cm²";
+  const shape = pick([["cuadrado", "rectangulo"], ["triangulo", "paralelogramo"], ["rombo", "trapecio"], ["poligono"], ["cuadrado", "rectangulo", "poligono"]][Math.min(4, level)]);
+  const both = level >= 4, cm2 = "cm²";
   let d, lines, slots, groups = [], hint, name;
   if (shape === "cuadrado") {
     const l = randInt(2, 15); d = { l }; name = "Cuadrado";
     lines = both ? [`${v("P")} = 4 · ${v("l")} = 4 · {0} = {1} cm`, `${v("A")} = ${v("l")}² = {=0}² = {2} ${cm2}`] : [`${v("A")} = ${v("l")}²`, `${v("A")} = {0}² = {1} ${cm2}`];
     slots = both ? [l, 4 * l, l * l] : [l, l * l];
-    hint = `${both ? `P = 4 · ${l} = ${4 * l} cm; ` : ""}lado por lado: A = ${l}² = ${l} · ${l} = ${l * l} cm²`;
+    hint = `${both ? `P = 4 · ${l} = ${4 * l} cm; lado` : "Lado"} por lado: A = ${l}² = ${l} · ${l} = ${l * l} cm²`;
   } else if (shape === "rectangulo") {
     let b, h;
     do { b = randInt(3, 20); h = randInt(2, 14); } while (b <= h);
@@ -44,7 +45,7 @@ export function buildRound(level) {
       : [`${v("A")} = ${v("b")} · ${v("h")}`, `${v("A")} = {0} · {1} = {2} ${cm2}`];
     slots = both ? [b, h, 2 * b + 2 * h, b * h] : [b, h, b * h];
     groups = [[0, 1]];
-    hint = `${both ? `P = 2 · ${b} + 2 · ${h} = ${2 * b + 2 * h} cm; ` : ""}base por altura: A = ${b} · ${h} = ${b * h} cm²`;
+    hint = `${both ? `P = 2 · ${b} + 2 · ${h} = ${2 * b + 2 * h} cm; base` : "Base"} por altura: A = ${b} · ${h} = ${b * h} cm²`;
   } else if (shape === "triangulo" || shape === "rombo") {
     let b, h;
     do { b = randInt(3, 20); h = randInt(2, 14); } while ((b * h) % 2 || (shape === "rombo" && b <= h));
@@ -94,7 +95,7 @@ function figure(r) {
     const pts = Array.from({ length: d.n }, (_, i) => [cx + R * Math.cos(ang(i)), cy + R * Math.sin(ang(i))].map((z) => +z.toFixed(1)));
     const ap = R * Math.cos(Math.PI / d.n);
     g = poly(pts) + dash(cx, cy, cx, cy + ap) + `<circle class="af-dot" cx="${cx}" cy="${cy}" r="2.5"/>` +
-      t(cx + 8, cy + ap / 2 + 4, `${v("a")} = ${d.a}`, "af-lab af-start") + t(cx, cy + ap + 18, `${v("l")} = ${d.l} cm`);
+      t(cx + 8, cy + ap / 2 + 4, `${sv("a")} = ${d.a}`, "af-lab af-start") + t(cx, cy + ap + 18, `${sv("l")} = ${d.l} cm`);
   } else {
     // ancho y alto en píxeles, proporcionados pero legibles
     const [bw, bh] = shape === "rombo" ? [d.D, d.d] : shape === "trapecio" ? [d.B, d.h] : shape === "cuadrado" ? [d.l, d.l] : [d.b, d.h];
@@ -102,23 +103,23 @@ function figure(r) {
     const x0 = cx - w / 2, x1 = cx + w / 2, y0 = cy - h / 2 + 4, y1 = cy + h / 2 + 4;
     if (shape === "cuadrado" || shape === "rectangulo") {
       g = poly([[x0, y0], [x1, y0], [x1, y1], [x0, y1]]) + t(cx, y1 + 18, `${v(shape === "cuadrado" ? "l" : "b")} = ${d.l || d.b} cm`) +
-        (shape === "rectangulo" ? t(x1 + 8, cy + 8, `${v("h")} = ${d.h}`, "af-lab af-start") : "");
+        (shape === "rectangulo" ? t(x1 + 8, cy + 8, `${sv("h")} = ${d.h}`, "af-lab af-start") : "");
     } else if (shape === "triangulo") {
       const ax = x0 + w * 0.3;
       g = poly([[x0, y1], [x1, y1], [ax, y0]]) + dash(ax, y0, ax, y1) + `<path class="af-dash" d="M${ax} ${y1 - 8} h8 v8"/>` +
-        t(cx, y1 + 18, `${v("b")} = ${d.b} cm`) + t(ax - 6, cy + 8, `${v("h")} = ${d.h}`, "af-lab af-end");
+        t(cx, y1 + 18, `${sv("b")} = ${d.b} cm`) + t(ax - 6, cy + 8, `${sv("h")} = ${d.h}`, "af-lab af-end");
     } else if (shape === "paralelogramo") {
       const o = Math.min(w * 0.35, (d.off / d.b) * w + 14);
       g = poly([[x0, y1], [x1 - o, y1], [x1, y0], [x0 + o, y0]]) + dash(x0 + o, y0, x0 + o, y1) +
-        t(cx - o / 2, y1 + 18, `${v("b")} = ${d.b} cm`) + t(x0 + o + 6, cy + 8, `${v("h")} = ${d.h}`, "af-lab af-start") +
+        t(cx - o / 2, y1 + 18, `${sv("b")} = ${d.b} cm`) + t(x0 + o + 6, cy + 8, `${sv("h")} = ${d.h}`, "af-lab af-start") +
         t(x1 - o / 2 + 8, cy + 8, `${d.c}`, "af-lab af-start af-muted");
     } else if (shape === "rombo") {
       g = poly([[x0, cy + 4], [cx, y0], [x1, cy + 4], [cx, y1]]) + dash(x0, cy + 4, x1, cy + 4) + dash(cx, y0, cx, y1) +
-        t(x0 + w * 0.25, cy, `${v("D")} = ${d.D}`) + t(cx + 6, y1 - 6, `${v("d")} = ${d.d}`, "af-lab af-start");
+        t(x0 + w * 0.25, cy, `${sv("D")} = ${d.D}`) + t(cx + 6, y1 - 6, `${sv("d")} = ${d.d}`, "af-lab af-start");
     } else {
       const tw = Math.max(36, (d.b / d.B) * w);
       g = poly([[x0, y1], [x1, y1], [cx + tw / 2, y0], [cx - tw / 2, y0]]) + dash(cx - tw / 2, y0, cx - tw / 2, y1) +
-        t(cx, y1 + 18, `${v("B")} = ${d.B} cm`) + t(cx, y0 - 7, `${v("b")} = ${d.b}`) + t(cx - tw / 2 + 6, cy + 8, `${v("h")} = ${d.h}`, "af-lab af-start");
+        t(cx, y1 + 18, `${sv("B")} = ${d.B} cm`) + t(cx, y0 - 7, `${sv("b")} = ${d.b}`) + t(cx - tw / 2 + 6, cy + 8, `${sv("h")} = ${d.h}`, "af-lab af-start");
     }
   }
   return `<svg class="af-fig" viewBox="0 0 ${W} ${H}" role="img" aria-label="figura">${g}</svg>`;

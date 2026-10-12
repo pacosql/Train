@@ -23,7 +23,7 @@ const cent = (t) => (/^\d*,?\d*$/.test(t) && /\d/.test(t) ? Math.round(Number(t.
 export function buildRound(level) {
   if (level >= 5) level = pick([2, 3, 4]);
   const type = level === 0 ? "color" : pick(level === 1 || level === 4 ? ["dado", "hermanos", "notas", ...(level === 1 ? ["color"] : [])] : ["color", "hermanos", "notas"]);
-  const k = type === "dado" ? 6 : level === 0 ? 3 : level === 1 || level === 4 ? randInt(4, 5) : randInt(3, 4);
+  const k = type === "dado" ? 6 : level === 1 || level === 4 ? randInt(4, 5) : 3;
   const N = level === 3 ? 20 : level === 0 ? randInt(12, 15) : randInt(Math.max(12, k * 2), 20);
   let counts;
   do {

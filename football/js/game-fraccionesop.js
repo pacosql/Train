@@ -157,11 +157,14 @@ export function mountFraccionesopGame(container, { client, onExit }) {
     const n = Number(typed.n), d = Number(typed.d);
     const ok = accepts(round, n, d);
     const [sn, sd] = round.simple;
+    // Corrección casilla a casilla: si el denominador escrito es el de la simplificada,
+    // se compara con la simplificada; si no, con la de los pasos (sin simplificar).
+    const target = d === sd && !ok ? { n: sn, d: sd } : { n: round.N, d: round.D };
     body.querySelectorAll("[data-slot]").forEach((s) => {
-      const k = s.dataset.slot, want = k === "n" ? round.N : round.D;
+      const k = s.dataset.slot, good = ok || Number(typed[k]) === target[k];
       s.classList.remove("active");
-      s.classList.add(ok ? "good" : "bad");
-      if (!ok) s.innerHTML = `<s>${typed[k]}</s><em>${want}</em>`;
+      s.classList.add(good ? "good" : "bad");
+      if (!good) s.innerHTML = `<s>${typed[k]}</s><em>${target[k]}</em>`;
     });
     const simpler = sn !== round.N;
     body.querySelector("[data-after]").textContent = simpler ? `${round.N}/${round.D} = ${sd === 1 ? sn : `${sn}/${sd}`}` : "";
@@ -175,7 +178,7 @@ export function mountFraccionesopGame(container, { client, onExit }) {
     } else {
       lives--;
       renderLives();
-      feedback.textContent = `Era ${round.N}/${round.D}. 💡 ${round.hint}`;
+      feedback.textContent = `Era ${target.n}/${target.d}. 💡 ${round.hint}`;
       feedback.className = "feedback bad";
       const nxt = document.createElement("button");
       nxt.type = "button";

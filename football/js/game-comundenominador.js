@@ -176,7 +176,7 @@ export function mountComundenominadorGame(container, { client, onExit }) {
     renderScore();
     feedback.textContent = text;
     feedback.className = "feedback ok";
-    pending = setTimeout(nextRound, round.compare ? 1400 : 900);
+    pending = setTimeout(nextRound, 900);
   }
 
   function fail(text) {

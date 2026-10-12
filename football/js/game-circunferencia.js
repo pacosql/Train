@@ -16,6 +16,7 @@ const near = (a, b) => Math.abs(a - b) < 1e-6;
 const frac = (n, d) => `<span class="cc-frac"><span>${n}</span><span>${d}</span></span>`;
 const v = (s) => `<i>${s}</i>`;
 const PI = "π";
+const sv = (s) => `<tspan class="cc-it">${s}</tspan>`; // cursiva dentro del SVG
 
 // Niveles: 0 radio · 1 diámetro · 2 área · 3 al revés · 4 mezcla.
 export function buildRound(level) {
@@ -29,28 +30,28 @@ export function buildRound(level) {
     lines = [`${v("L")} = 2 · ${PI} · ${v("r")}`, `${v("L")} = 2 · 3,14 · {0} = {1} ${u}`];
     slots = [r, L];
     hint = `L = 2 · 3,14 · ${r} = ${fmt(L)} ${u}`;
-    fig = { show: "r", label: `${v("r")} = ${r} ${u}` };
+    fig = { show: "r", label: `${sv("r")} = ${r} ${u}` };
     answer = `L = ${fmt(L)} ${u}`;
   } else if (kind === 1) {
     prompt = "Calcula la longitud de la circunferencia";
     lines = [`${v("r")} = ${frac(v("d"), 2)} = ${frac(2 * r, 2)} = {0} ${u}`, `${v("L")} = 2 · ${PI} · ${v("r")} = 2 · 3,14 · {=0} = {1} ${u}`];
     slots = [r, L];
     hint = `El radio es la mitad del diámetro: r = ${2 * r} : 2 = ${r} ${u}; L = 2 · 3,14 · ${r} = ${fmt(L)} ${u}`;
-    fig = { show: "d", label: `${v("d")} = ${2 * r} ${u}` };
+    fig = { show: "d", label: `${sv("d")} = ${2 * r} ${u}` };
     answer = `r = ${r} ${u}, L = ${fmt(L)} ${u}`;
   } else if (kind === 2) {
     prompt = "Calcula el área del círculo";
     lines = [`${v("A")} = ${PI} · ${v("r")}²`, `${v("A")} = 3,14 · {0}² = {1} ${u}²`];
     slots = [r, A];
     hint = `A = 3,14 · ${r}² = 3,14 · ${r * r} = ${fmt(A)} ${u}²`;
-    fig = { show: "r", fill: true, label: `${v("r")} = ${r} ${u}` };
+    fig = { show: "r", fill: true, label: `${sv("r")} = ${r} ${u}` };
     answer = `A = ${fmt(A)} ${u}²`;
   } else {
     prompt = "La circunferencia mide L. ¿Cuál es el radio?";
     lines = [`${v("L")} = 2 · ${PI} · ${v("r")} → ${v("r")} = ${frac(v("L"), `2 · ${PI}`)}`, `${v("r")} = ${frac("{0}", "6,28")} = {1} ${u}`];
     slots = [L, r];
     hint = `r = ${fmt(L)} : 6,28 = ${r} ${u} (porque 2 · 3,14 = 6,28)`;
-    fig = { show: "L", label: `${v("L")} = ${fmt(L)} ${u}` };
+    fig = { show: "L", label: `${sv("L")} = ${fmt(L)} ${u}` };
     answer = `r = ${r} ${u}`;
   }
   return { kind, r, u, L, A, lines, slots, hint, fig, prompt, answer };
@@ -59,11 +60,11 @@ export function buildRound(level) {
 // El círculo del libro: centro, radio o diámetro rotulado; en "al revés"
 // se remarca la circunferencia y el radio es la incógnita.
 function figure(f) {
-  const c = 70, R = 54;
-  const seg = f.show === "d" ? `<line class="cc-seg" x1="${c - R + 50}" y1="70" x2="${c + R + 50}" y2="70"/>`
+  const R = 54;
+  const seg = f.show === "d" ? `<line class="cc-seg" x1="${120 - R}" y1="70" x2="${120 + R}" y2="70"/>`
     : `<line class="cc-seg${f.show === "L" ? " cc-dash" : ""}" x1="120" y1="70" x2="${120 + R}" y2="70"/>`;
   const lab = f.show === "L"
-    ? `<text class="cc-lab cc-big" x="120" y="146">${f.label}</text><text class="cc-lab" x="${120 + R / 2}" y="62">${v("r")} = ?</text>`
+    ? `<text class="cc-lab cc-big" x="120" y="146">${f.label}</text><text class="cc-lab" x="${120 + R / 2}" y="62">${sv("r")} = ?</text>`
     : `<text class="cc-lab" x="${f.show === "d" ? 120 : 120 + R / 2}" y="62">${f.label}</text>`;
   return `<svg class="cc-fig" viewBox="0 0 240 150" role="img" aria-label="círculo">
     <circle class="cc-circle${f.fill ? " cc-fill" : ""}${f.show === "L" ? " cc-thick" : ""}" cx="120" cy="70" r="${R}"/>

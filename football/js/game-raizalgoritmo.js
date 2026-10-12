@@ -59,7 +59,7 @@ export function buildRound(level) {
     if (level >= 3) digitsOf(root * root).forEach((ch, j) => slots.push({ kind: "pr", col: j, want: ch }));
     const g1 = Math.floor(N / 100), g2 = String(N % 100).padStart(2, "0");
     const nxt = b < 9 ? ` (${2 * a}${b + 1} × ${b + 1} = ${fmt((20 * a + b + 1) * (b + 1))} no cabe)` : "";
-    hint = `Separo en grupos de dos: ${g1}'${g2}. √${g1} → ${a} (${a}² = ${a * a} ≤ ${g1} < ${(a + 1) ** 2}); ${g1} − ${a * a} = ${r1} y bajo el ${g2} → ${R}. Doble de ${a} = ${2 * a}; ${2 * a}□ × □ ≤ ${R}: ${2 * a}${b} × ${b} = ${fmt(prod)}${nxt} → ${b} sube a la raíz; ${fmt(R)} − ${fmt(prod)} = ${r2}`;
+    hint = `Separo en grupos de dos: ${g1}'${g2}. √${g1} → ${a} (${a}² = ${a * a} ≤ ${g1} < ${(a + 1) ** 2}); ${g1} − ${a * a} = ${r1} y bajo el ${g2} → ${fmt(R)}. Doble de ${a} = ${2 * a}; ${2 * a}□ × □ ≤ ${fmt(R)}: ${2 * a}${b} × ${b} = ${fmt(prod)}${nxt} → ${b} sube a la raíz; ${fmt(R)} − ${fmt(prod)} = ${r2}`;
     if (level >= 3) hint += `. Prueba: ${root}² + ${r2} = ${fmt(root * root)} + ${r2} = ${fmt(N)} ✓`;
   }
   return { N, W, algo, level, a, r1, R, b, prod, r2, root, rest, slots, hint, prueba: level >= 3 };

@@ -48,7 +48,7 @@ export function buildRound(level) {
     sol = solve(op, A, B);
     const nConv = sol.conv.filter(Boolean).length;
     if (sol.res[0] <= 0 || (sys === "a" && sol.res[0] >= 360) || (sys === "t" && n === 2 && sol.res[0] >= 60)) continue;
-    if (kind === 0 ? nConv === 0 : kind === 1 ? nConv === 1 : nConv >= 1) break;
+    if (kind === 0 ? nConv === 0 : kind === 1 ? nConv === 1 : kind === 3 ? sol.conv[n - 1] : nConv >= 1) break;
   }
   const U = UNITS[sys], n = A.length, u0 = U.slice(3 - n);
   const q = (v, i) => (sys === "a" ? `${v}${u0[i]}` : `${v} ${u0[i]}`);
@@ -128,6 +128,7 @@ export function mountSexagesimalGame(container, { client, onExit }) {
           <span></span>${notes.map((t) => `<span class="sx-notecell">${t}</span>`).join("")}
           ${row(round.A, "")}
           ${row(round.B, op)}
+          <span class="sx-raya"></span>
           <span class="sx-sign sx-res"></span>${U.map((u, i) => `<button type="button" class="sx-slot sx-res" data-slot="${n - 1 - i}"></button><span class="sx-u sx-res">${u}</span>`).join("")}
         </div>
       </div>

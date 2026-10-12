@@ -48,9 +48,10 @@ function reason(x, p) {
 // Niveles: 0 hasta 30 · 1 hasta 100 · 2 hasta 300 · 3 con la expresión en
 // potencias (siempre con algún factor repetido) · 4 igual, y a veces primos.
 export function buildRound(level) {
-  let n, rows, prime = false;
+  let n, rows;
+  const prime = level === 4 && Math.random() < 0.35; // se decide antes de buscar el número
   for (;;) {
-    if (level === 4 && Math.random() < 0.4) { n = pick(PRIMES.filter((p) => p >= 11)); prime = true; }
+    if (prime) n = pick(PRIMES.filter((p) => p >= 11));
     else n = level === 0 ? randInt(4, 30) : level === 1 ? randInt(31, 100) : level === 2 ? randInt(101, 300) : randInt(12, 300);
     if (!prime && isPrime(n)) continue;
     rows = factorize(n);

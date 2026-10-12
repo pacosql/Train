@@ -123,7 +123,7 @@ export function mountCelosiaGame(container, { client, onExit }) {
     slots.forEach((s, k) => {
       const btn = `<button type="button" class="cl-cell cl-slot${s.kind === "s" ? " cl-sum" : ""}" data-slot="${k}"></button>`;
       if (s.kind !== "s") {
-        const c = cells[s.cell], o = s.kind === "t" ? 0.29 : 0.71;
+        const c = cells[s.cell], o = s.kind === "t" ? 0.27 : 0.73;
         pieces.push(at(c.j + o, c.i + o, btn));
       } else if (s.band >= R) pieces.push(at(s.band - R + 0.2, R + 0.36, btn));
       else pieces.push(at(-0.34, s.band + 0.8, btn));
