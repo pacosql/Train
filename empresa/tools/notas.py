@@ -97,8 +97,12 @@ def intercalar():
     import itertools
     rows = json.load(urllib.request.urlopen(urllib.request.Request(f"{BASE}?status=eq.pendiente&score=gte.70&orden=gte.0&select=id,metodo,nombre,score&order=score.desc&limit=1000", headers=H)))
     g = {}
-    for r in rows: g.setdefault((r["metodo"] or "", re.match(r"[A-Z][a-z]+", r["nombre"]).group(0) if re.match(r"[A-Z][a-z]+", r["nombre"]) else r["nombre"][:4]), []).append(r)
-    orden = [r for grupo in itertools.zip_longest(*g.values()) for r in grupo if r]
+    # Dos niveles: por turnos entre familias (metodo) y, dentro de cada
+    # familia, por turnos entre raíces (3 primeras letras: Tedar/Tedo/Tedio
+    # no salen seguidos).
+    for r in rows: g.setdefault(r["metodo"] or "", {}).setdefault(r["nombre"][:3].lower(), []).append(r)
+    por_familia = [[r for grupo in itertools.zip_longest(*raices.values()) for r in grupo if r] for raices in g.values()]
+    orden = [r for grupo in itertools.zip_longest(*por_familia) for r in grupo if r]
     for i, r in enumerate(orden): req("PATCH", f"{BASE}?id=eq.{r['id']}", {"orden": 10 + i})
     print(f"{len(orden)} pendientes intercalados por familia")
 
