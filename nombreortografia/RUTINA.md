@@ -60,7 +60,8 @@ nuevo de lo que aprender.
 ## Programación
 
 - Cron de sesión cada 15 min (CronCreate) + Routine horaria de respaldo que
-  recrea el cron si la sesión se reinicia y ejecuta la rutina.
+  (`trig_018w5z4dN7KtnkE8NitZZnga`) que recrea el cron si la sesión se
+  reinicia y ejecuta la rutina.
 
 ## Qué NO hacer
 
