@@ -221,7 +221,7 @@ export function mountAngulostipoGame(container, { client, onExit }) {
     saveScore(client, "angulostipo", { score, rounds });
     body.innerHTML = `
       <div class="end-card">
-        <div>📐</div>
+        <div>🕒</div>
         <div class="big-score">${score} pts</div>
         <p>${hits} aciertos de ${rounds}</p>
         <div class="end-actions">

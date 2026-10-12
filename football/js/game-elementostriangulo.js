@@ -63,6 +63,7 @@ export function buildRound(level, roundNo = 0) {
   const names = ["A", "B", "C"];
   const type = level === 0 ? "vl" : level <= 2 ? (roundNo % 3 === 2 ? "vl" : "rectas")
     : level === 3 ? (roundNo % 2 ? "recto" : "rectas") : roundNo % 2 ? "puntos" : pick(["rectas", "recto", "vl"]);
+  const wantKind = pick(Object.keys(POINT)); // fijado fuera del bucle: todos por igual
   for (;;) {
     const x = randInt(30, 60);
     const V = triangle(type === "recto" ? shuffle([90, x, 90 - x]) : acuteAngles());
@@ -92,7 +93,7 @@ export function buildRound(level, roundNo = 0) {
       // (elegida primero, para que salgan todas por igual) y la otra
       // familia se elige entre las que se cortan lejos (≥ 44 px).
       const all = Object.keys(POINT).map((k) => { const ls = [0, 1, 2].map((i) => ({ ...notable(k, V, i), kind: k, from: i })); return { kind: k, lines: ls, pt: cross(ls[0].p, ls[0].q, ls[1].p, ls[1].q) }; });
-      const want = pick(all), mates = all.filter((f) => f !== want && dist(f.pt, want.pt) >= 44);
+      const want = all.find((f) => f.kind === wantKind), mates = all.filter((f) => f !== want && dist(f.pt, want.pt) >= 44);
       if (!mates.length) continue;
       const fam = shuffle([want, pick(mates)]).map((f, k) => ({ kind: f.kind, color: col[k], lines: f.lines, pt: f.pt }));
       const kinds = fam.map((f) => f.kind), pts = fam.map((f) => f.pt), a = fam.findIndex((f) => f.kind === want.kind);

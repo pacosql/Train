@@ -16,7 +16,7 @@ const DEF = {
 };
 const r1 = (v) => Math.round(v * 10) / 10;
 const dir = (deg) => [Math.cos((deg * Math.PI) / 180), -Math.sin((deg * Math.PI) / 180)];
-const list = (xs) => xs.join(", ").replace(/, ([^,]+)$/, " y $1");
+const list = (xs) => (xs.length > 1 ? `${xs.slice(0, -1).join(", ")} y ${xs[xs.length - 1]}` : xs.join(""));
 
 // Recorta la recta (punto P, ángulo t) al recuadro: devuelve sus dos extremos.
 function clip(P, t, PH) {
@@ -100,7 +100,7 @@ function drawPair(p, k) {
   }
   p.lines.forEach(([a, b], j) => {
     const top = a[1] < b[1] ? a : b, other = top === a ? b : a, L = Math.hypot(b[0] - a[0], b[1] - a[1]);
-    const lab = [r1(top[0] + ((other[0] - top[0]) / L) * 12 + 9), r1(top[1] + ((other[1] - top[1]) / L) * 12 + 4)];
+    const lab = [r1(Math.min(PW - 9, Math.max(9, top[0] + ((other[0] - top[0]) / L) * 12 + 9))), r1(top[1] + ((other[1] - top[1]) / L) * 12 + 4)];
     out += `<line class="rp-line" x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}"/><text class="rp-name" x="${lab[0]}" y="${lab[1]}">${NAMES[k][j]}</text>`;
   });
   // Marcas del libro (se ven al corregir).

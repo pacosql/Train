@@ -85,13 +85,20 @@ export function buildTree(sizes) {
 }
 
 function treeSvg(r, show) {
-  const { root, slots } = buildTree(r.sizes);
+  const { root } = buildTree(r.sizes);
   const W = 360, L = r.sizes.length, gap = Math.min(44, 150 / L), H = 18 + L * gap + 22;
-  const xs = (slot) => 14 + (slot * (W - 28)) / Math.max(slots - 1, 1);
+  // Cada hoja ocupa 1 hueco y cada rama cerrada 2,5 (para su abanico).
+  const ends = [];
+  const collect = (n) => (n.kids.length ? n.kids.forEach(collect) : ends.push(n));
+  collect(root);
+  const wt = (n) => (n.collapsed ? 2.5 : 1), tot = ends.reduce((t, n) => t + wt(n), 0);
+  let acc = 0;
+  ends.forEach((n) => { n.x = 14 + ((acc + wt(n) / 2) * (W - 28)) / tot; acc += wt(n); });
+  const step = (W - 28) / tot;
   const out = [];
   const place = (n) => {
     n.kids.forEach(place);
-    n.x = n.kids.length ? n.kids.reduce((t, k) => t + k.x, 0) / n.kids.length : xs(n.slot);
+    if (n.kids.length) n.x = n.kids.reduce((t, k) => t + k.x, 0) / n.kids.length;
     n.y = 12 + n.d * gap;
   };
   place(root);
@@ -109,13 +116,13 @@ function treeSvg(r, show) {
     });
     if (n.d === 0) out.push(`<circle class="cb-root" cx="${n.x}" cy="${n.y}" r="5"/>`);
     else {
-      const s = n.d === L ? Math.min(18, (W - 28) / Math.max(slots - 1, 1) - 2) : 20;
+      const s = n.d === L ? Math.min(18, step - 1) : 20;
       const idx = r.kind === "ropa" ? n.path[n.d - 1] : who(n.path);
-      out.push(`<g class="cb-in" ${st}>${glyph(r, n.d - 1, idx, n.x, n.y, s)}${n.collapsed ? `<text class="cb-more" x="${n.x}" y="${n.y + 24}">…${n.collapsed}</text>` : ""}</g>`);
+      out.push(`<g class="cb-in" ${st}>${glyph(r, n.d - 1, idx, n.x, n.y, s)}${n.collapsed ? [-9, 0, 9].map((dx) => `<line class="cb-fan" x1="${n.x}" y1="${n.y + 10}" x2="${n.x + dx}" y2="${n.y + 20}"/>`).join("") + `<text class="cb-more" x="${n.x}" y="${n.y + 31}">${n.collapsed}</text>` : ""}</g>`);
     }
   };
   if (show) draw(root);
-  else out.push(`<circle class="cb-root" cx="${W / 2}" cy="12" r="5"/>`);
+  else out.push(`<circle class="cb-root" cx="${W / 2}" cy="12" r="5"/><text class="cb-wait" x="${W / 2}" y="44">el árbol se dibuja al responder</text>`);
   return `<svg class="cb-tree" viewBox="0 0 ${W} ${H}">${out.join("")}</svg>`;
 }
 

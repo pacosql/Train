@@ -32,7 +32,9 @@ function anglesOf(s, a, near, l3) {
     else if (a === "obtusangulo") { const c = near ? randInt(92, 96) : randInt(105, 140), x = randInt(15, 180 - c - 15); t = [c, x, 180 - c - x]; }
     else { const c = near ? randInt(84, 88) : randInt(40, 80), x = randInt(40, 82); t = [c, x, 180 - c - x]; }
     const [p, q, r] = t, kindA = Math.max(p, q, r) === 90 ? "rectangulo" : Math.max(p, q, r) > 90 ? "obtusangulo" : "acutangulo";
-    const distinct = Math.min(Math.abs(p - q), Math.abs(q - r), Math.abs(p - r)) >= 10;
+    // Escaleno que se note: lados (∝ senos) al menos un 8 % distintos entre sí.
+    const sn = t.map((x) => Math.sin((x * Math.PI) / 180)).sort((m, k) => m - k);
+    const distinct = Math.min(Math.abs(p - q), Math.abs(q - r), Math.abs(p - r)) >= 10 && sn[1] / sn[0] >= 1.08 && sn[2] / sn[1] >= 1.08;
     // Con medidas escritas, nada de triángulos muy finos (no cabrían los números).
     if (Math.min(p, q, r) >= (l3 ? 25 : 15) && (!l3 || Math.max(p, q, r) <= 125) && kindA === a && (s !== "escaleno" || distinct)) return shuffle(t);
   }
@@ -50,7 +52,7 @@ function lensOf(s) {
 }
 
 // Vértices a partir de los ángulos (o de los lados), girados y encajados en la celda.
-function place(ang, lens, mx, my) {
+function place(ang, lens, mx, my, flat) {
   let P;
   if (lens) {
     const [a, b, c] = lens, x = (b * b + c * c - a * a) / (2 * c); // a opuesto a P0, b a P1, c a P2
@@ -59,7 +61,12 @@ function place(ang, lens, mx, my) {
     const [A, B] = ang.map((d) => (d * Math.PI) / 180), t = Math.sin(B) / Math.sin(A + B);
     P = [[0, 0], [1, 0], [t * Math.cos(A), -t * Math.sin(A)]];
   }
-  const rot = (randInt(0, 359) * Math.PI) / 180;
+  // Con medidas escritas, apoyado sobre su lado mayor (±15°): caben los números.
+  let rot = (randInt(0, 359) * Math.PI) / 180;
+  if (flat) {
+    const sides = [[0, 1], [1, 2], [2, 0]].map(([i, j]) => [Math.hypot(P[j][0] - P[i][0], P[j][1] - P[i][1]), Math.atan2(P[j][1] - P[i][1], P[j][0] - P[i][0])]);
+    rot = -sides.sort((x, y) => y[0] - x[0])[0][1] + (randInt(-15, 15) * Math.PI) / 180 + (Math.random() < 0.5 ? Math.PI : 0);
+  }
   P = P.map(([x, y]) => [x * Math.cos(rot) - y * Math.sin(rot), x * Math.sin(rot) + y * Math.cos(rot)]);
   const xs = P.map((p) => p[0]), ys = P.map((p) => p[1]);
   const s = Math.min((CW - 2 * mx) / (Math.max(...xs) - Math.min(...xs)), (CH - 2 * my) / (Math.max(...ys) - Math.min(...ys)));
@@ -99,7 +106,7 @@ export function buildRound(level, roundNo = 0) {
     tris = tris.map((t) => {
       const lens = L3 && mode === "s" ? lensOf(t.s) : null;
       const ang = lens ? null : anglesOf(t.s, t.a, L3 && mode === "a" && Math.random() < 0.5, L3);
-      const P = place(ang, lens, L3 && lens ? 26 : 12, L3 && lens ? 16 : 10);
+      const P = place(ang, lens, L3 && lens ? 26 : 12, L3 && lens ? 16 : 10, L3);
       const key = lens || ang; // lado i opuesto al vértice i; iguales si su ángulo/medida opuesta lo es
       const eq = [0, 1, 2].filter((i) => [0, 1, 2].some((j) => j !== i && key[j] === key[i]));
       // Con lados escritos, la clase por ángulos sale de los lados (z² frente a x² + y²).

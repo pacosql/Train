@@ -115,7 +115,7 @@
 
 /* ---------- Tablas de doble entrada ---------- */
 .db-table { border-collapse: collapse; font-size: 0.9rem; margin: 2px 0 10px; background: var(--card); }
-.db-table th, .db-table td { border: 1.5px solid var(--border); padding: 7px 8px; text-align: center; }
+.db-table th, .db-table td { border: 1.5px solid var(--border); padding: 7px 5px; text-align: center; }
 .db-table th { background: var(--bg); font-weight: 800; white-space: nowrap; }
 .db-table tr th:first-child { text-align: left; }
 .db-table td { font-size: 1.15rem; font-weight: 800; min-width: 44px; transition: background 0.3s; }
@@ -143,6 +143,8 @@
 .cb-tree { display: block; width: 100%; height: auto; max-height: 190px; }
 .cb-edge { stroke: var(--muted); stroke-width: 1.4; }
 .cb-root { fill: var(--text); }
+.cb-wait { fill: var(--muted); font-size: 12px; font-style: italic; text-anchor: middle; font-family: system-ui, sans-serif; }
+.cb-fan { stroke: var(--accent); stroke-width: 1.3; stroke-dasharray: 2 2; }
 .cb-more { fill: var(--accent); font-size: 11px; font-weight: 800; text-anchor: middle; font-family: system-ui, sans-serif; }
 .cb-in { animation: cb-grow 0.35s ease-out both; }
 @keyframes cb-grow { from { opacity: 0; } to { opacity: 1; } }
@@ -160,3 +162,7 @@
 .dd-table td.dd-hit { background: color-mix(in srgb, var(--accent) 32%, transparent); outline: 2px solid var(--accent); outline-offset: -2px; }
 .dd-table td .dd-slot { min-width: 32px; height: 28px; margin: 0; padding: 0 2px; }
 .dd-line { display: flex; align-items: center; gap: 4px; padding: 8px 14px; font-size: 1.15rem; white-space: pre; }
+.dd-frac { display: inline-flex; flex-direction: column; align-items: center; gap: 3px; margin: 0 4px; }
+.dd-fn { border-bottom: 3px solid var(--text); padding: 0 4px 4px; }
+.dd-fd { padding: 4px 4px 0; }
+.dd-fn, .dd-fd { display: flex; justify-content: center; min-width: 46px; line-height: 36px; }

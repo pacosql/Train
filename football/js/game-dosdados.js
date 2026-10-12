@@ -64,11 +64,11 @@ export function buildRound(level) {
       want = [c];
     } else if (kind === "p36") {
       prompt = `¿Cuál es la probabilidad de ${ev.txt}?`;
-      line = ["P = ", S(0), " / 36"];
+      line = ["P = ", { frac: [S(0), "36"] }];
       want = [c];
     } else {
       prompt = `Probabilidad de ${ev.txt}, simplificada`;
-      line = ["P = ", S(0), " / 36 = ", S(1), " / ", S(2)];
+      line = ["P = ", { frac: [S(0), "36"] }, " = ", { frac: [S(1), S(2)] }];
       want = [c, c / g, 36 / g];
     }
     hint = `Hay ${c} casilla${c > 1 ? "s" : ""} de 36 (${lit.map(([a, b]) => `${a}+${b}`).join(", ")}): ${c}/36${kind === "simple" ? ` = ${c / g}/${36 / g} (divido entre ${g})` : ""}`;
@@ -115,7 +115,9 @@ export function mountDosdadosGame(container, { client, onExit }) {
     let head = `<tr><th class="dd-corner">+</th>${[1, 2, 3, 4, 5, 6].map((a) => `<th>${die(a, "dd-red")}</th>`).join("")}</tr>`;
     for (let b = 1; b <= 6; b++)
       head += `<tr><th>${die(b, "dd-blue")}</th>${[1, 2, 3, 4, 5, 6].map((a) => `<td data-a="${a}" data-b="${b}">${blankAt(a, b) >= 0 ? slot(blankAt(a, b)) : a + b}</td>`).join("")}</tr>`;
-    const line = round.line ? `<div class="dd-cuaderno dd-line">${round.line.map((t) => (typeof t === "string" ? `<span>${t}</span>` : slot(t.slot))).join("")}</div>` : "";
+    // Fracciones en vertical, como en el libro: numerador, raya, denominador.
+    const tok = (t) => (typeof t === "string" ? `<span>${t}</span>` : t.frac ? `<span class="dd-frac"><span class="dd-fn">${tok(t.frac[0])}</span><span class="dd-fd">${tok(t.frac[1])}</span></span>` : slot(t.slot));
+    const line = round.line ? `<div class="dd-cuaderno dd-line">${round.line.map(tok).join("")}</div>` : "";
     body.innerHTML = `
       <p class="prompt dd-prompt">${round.prompt}</p>
       <table class="dd-table">${head}</table>

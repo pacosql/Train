@@ -35,7 +35,7 @@ export function buildRound(level) {
     for (let i = 1; i < n; i++) cs.push(Math.random() < 0.35 ? -randInt(1, 6) : randInt(1, 9));
     const r = cs.reduce((a, b) => a + b, 0);
     if (r === 0 || r === 1 || (!mix && r < 0) || Math.abs(r) > 25) return buildRound(mix ? 5 : 0);
-    return { level, neg: mix, text: `${sum(cs.map((c) => [c, l, e]))} = [0]${lit(l, e)}`, answers: [r],
+    return { level, neg: mix, text: `${sum(cs.map((c) => [c, l, e]))} = [0]${lit(l, e)}`, answers: [r], res: monoT(r, l, e),
       hint: `Sumo coeficientes y dejo la parte literal: ${sumT(cs)} = ${s(r)} → ${monoT(r, l, e)}` };
   }
   if (level === 1) {
@@ -45,20 +45,20 @@ export function buildRound(level) {
     const cx = terms.filter((t) => t[0] === "x").map((t) => t[1]), cy = terms.filter((t) => t[0] === "y").map((t) => t[1]);
     const rx = cx.reduce((a, b) => a + b, 0), ry = cy.reduce((a, b) => a + b, 0);
     if (rx < 2 || ry < 2 || terms[0][1] < 0) return buildRound(mix ? 5 : 1);
-    return { level, neg: mix, text: `${sum(terms.map(([l, c]) => [c, l, 1]))} = [0]x + [1]y`, answers: [rx, ry],
+    return { level, neg: mix, text: `${sum(terms.map(([l, c]) => [c, l, 1]))} = [0]x + [1]y`, answers: [rx, ry], res: `${rx}x + ${ry}y`,
       hint: `Junto las x: ${part(cx, "x", rx)}; y las y: ${part(cy, "y", ry)}` };
   }
   if (level === 2) {
     const a = nz(-5, 6), b = randInt(2, 6), m = randInt(1, 5), n = randInt(1, 5);
     if (Math.abs(a) < 2) return buildRound(mix ? 5 : 2);
     const A = a < 0 ? `(${mono(a, "x", m)})` : mono(a, "x", m);
-    return { level, neg: negOk, text: `${A} · ${mono(b, "x", n)} = [0]x^{[1]}`, answers: [a * b, m + n],
+    return { level, neg: negOk, text: `${A} · ${mono(b, "x", n)} = [0]x^{[1]}`, answers: [a * b, m + n], res: monoT(a * b, "x", m + n),
       hint: `Multiplico coeficientes ${s(a)} · ${b} = ${s(a * b)} y sumo exponentes ${m} + ${n} = ${m + n} → ${monoT(a * b, "x", m + n)}` };
   }
   if (level === 3) {
     const c = randInt(2, 5), q = nz(-5, 6), n = randInt(1, 3), m = randInt(n + 2, 8);
     if (Math.abs(q) < 2) return buildRound(mix ? 5 : 3);
-    return { level, neg: negOk, text: `(${mono(c * q, "x", m)}) : (${mono(c, "x", n)}) = [0]x^{[1]}`, answers: [q, m - n],
+    return { level, neg: negOk, text: `(${mono(c * q, "x", m)}) : (${mono(c, "x", n)}) = [0]x^{[1]}`, answers: [q, m - n], res: monoT(q, "x", m - n),
       hint: `Divido coeficientes ${s(c * q)} : ${c} = ${s(q)} y resto exponentes ${m} − ${n} = ${m - n} → ${monoT(q, "x", m - n)}` };
   }
   // Grado: suma de los exponentes de todas las letras (x sin exponente es x¹).
@@ -66,7 +66,7 @@ export function buildRound(level) {
   const parts = [["x", ex], ["y", ey], ["z", ez]].filter((p) => p[1] > 0);
   const text = `${c === 1 ? "" : c === -1 ? M : s(c)}${parts.map(([l, e]) => lit(l, e)).join("")}`;
   const g = ex + ey + ez;
-  return { level, neg: negOk, text: `grado de ${text}: [0]`, answers: [g],
+  return { level, neg: negOk, text: `grado de ${text}: [0]`, answers: [g], res: `grado ${g}`,
     hint: parts.length === 1 ? `El grado es el exponente de la letra: ${g}${ex === 1 ? " (x es x¹)" : ""}`
       : `El grado es la suma de los exponentes de las letras: ${parts.map((p) => p[1]).join(" + ")} = ${g}${parts.some((p) => p[1] === 1) ? " (sin exponente es 1)" : ""}` };
 }
@@ -190,7 +190,7 @@ export function mountMonomiosGame(container, { client, onExit }) {
     } else {
       lives--;
       renderLives();
-      feedback.textContent = `Era ${round.answers.map(s).join(" y ")}. 💡 ${round.hint}`;
+      feedback.textContent = `Era ${round.res}. 💡 ${round.hint}`;
       feedback.className = "feedback bad mo-feedback";
       body.querySelector("[data-sign]")?.remove();
       const nxt = document.createElement("button");

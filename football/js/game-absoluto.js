@@ -113,7 +113,7 @@ export function mountAbsolutoGame(container, { client, onExit }) {
     const expr = round.text.replace(/\[(\d)\]/g, (_, i) => `<button type="button" class="ab-slot" data-slot="${i}"></button>`);
     body.innerHTML = `
       <p class="prompt ab-prompt">Mira la recta y completa</p>
-      <div class="ab-cuaderno">${line(round.dot)}<div class="ab-expr" data-expr>${expr}</div></div>
+      <div class="ab-cuaderno">${line(round.dot)}<div class="ab-expr${round.text.length > 20 ? " ab-long" : ""}" data-expr>${expr}</div></div>
       <div class="keypad ab-keypad" data-keypad></div>
       <button type="button" class="choice-btn keypad-sign ab-sign" data-sign>${M} cambiar signo</button>
       <div class="feedback ab-feedback" data-feedback></div>
