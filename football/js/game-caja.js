@@ -128,7 +128,7 @@ export function mountCajaGame(container, { client, onExit }) {
     const m = Math.max(String(d).length, steps.length);
     body.innerHTML = `
       <p class="prompt cj-prompt">${dec ? "Divide hasta las décimas" : "Haz la división"}</p>
-      <div class="cj-caja cj-cuaderno" style="--cj-n:${n};--cj-m:${m};--cj-c:${n + m <= 6 ? 40 : 33}px">
+      <div class="cj-caja cj-cuaderno" style="--cj-n:${n};--cj-m:${m};--cj-c:${nRows >= 6 ? 32 : n + m <= 6 ? 40 : 33}px">
         <div class="cj-left">${grid.map((r, i) => `<div class="cj-row" data-row="${i}">${r.join("")}</div>`).join("")}</div>
         <div class="cj-right">
           <div class="cj-divisor">${String(d).split("").map((v) => `<span class="cj-cell cj-fixed">${v}</span>`).join("")}</div>

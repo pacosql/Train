@@ -25,7 +25,7 @@ export function buildRound(level, mode) {
       ? `El último es el que va más lejos de la meta: ${queue[pos - 1]}, el ${ord(count)} de ${count}`
       : `El penúltimo va justo delante del último (${queue[count - 1]}): ${queue[pos - 1]}, el ${ord(pos)} de ${count}`;
   } else {
-    pos = randInt(1, level === 0 ? 5 : count);
+    pos = level === 0 ? randInt(2, 5) : randInt(1, count); // en el nivel 0 no se pregunta el 1.º (demasiado fácil)
     prompt = mode === "tap" ? `Toca el que va <b>${ord(pos)}</b>` : `¿En qué posición va el <b>${queue[pos - 1]}</b>?`;
     hint = `Contamos desde la meta: ${queue.slice(0, pos).map((a, i) => `${ord(i + 1)} ${a}`).join(", ")}`;
   }
