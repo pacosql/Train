@@ -36,7 +36,7 @@ export function buildRound(level) {
     return {
       level, cur, ec, answers: [fc], prompt: `De euros a ${cur.name}`,
       html: rate + table(cur, money(ec), "[0]"),
-      hint: `Es proporcional: multiplico por ${R} → ${money(ec)} · ${R} = ${money(fc)} ${cur.sym}`,
+      hint: `Es proporcional: multiplico por ${R} → ${money(ec)} € · ${R} = ${money(fc)} ${cur.sym}`,
     };
   }
   if (level === 2) {
@@ -54,7 +54,7 @@ export function buildRound(level) {
     level, cur, ec, pay, answers: [fc, back], prompt: "¿Cuánto me devuelven?",
     html: `<div class="cv-enun">Pago con <b>${money(pay)} ${cur.sym}</b> algo que vale <b>${money(ec)} €</b></div>` + rate +
       table(cur, money(ec), "[0]") + row(`me devuelven = ${money(pay)} − {0} = [1] ${cur.sym}`),
-    hint: `Primero paso el precio: ${money(ec)} · ${R} = ${money(fc)} ${cur.sym}; me devuelven ${money(pay)} − ${money(fc)} = ${money(back)} ${cur.sym}`,
+    hint: `Primero paso el precio: ${money(ec)} € · ${R} = ${money(fc)} ${cur.sym}; me devuelven ${money(pay)} − ${money(fc)} = ${money(back)} ${cur.sym}`,
   };
 }
 

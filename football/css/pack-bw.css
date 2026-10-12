@@ -122,7 +122,11 @@
 .lg-pow { white-space: nowrap; }
 .lg-line .lg-pow .lg-mirror { display: inline-block; min-width: 0.7em; font-size: 0.62em; vertical-align: 0.9em; line-height: 1.1;
   font-family: ui-monospace, "SF Mono", Menlo, monospace; text-align: center; }
-.lg-mirror:empty { width: 0.8em; height: 0.9em; border: 2px dashed var(--accent-2); border-radius: 3px; }
+.lg-mirror:empty, .lg-copy:empty { width: 0.8em; height: 0.9em; border: 2px dashed var(--accent-2); border-radius: 3px; }
+.lg-copy { display: inline-block; min-width: 1em; color: var(--accent-2); border-bottom: 2px dotted var(--accent-2); line-height: 1.1;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.8em; text-align: center; }
+.lg-props .lg-line { font-size: 1.45rem; }
+.lg-props .lg-line.lg-pow-line { color: var(--text); }
 .lg-line .lg-slot { font-size: 1.05rem; }
 
 /* ---------- Saca factores de la raíz ---------- */
@@ -154,7 +158,7 @@
   content: ""; position: absolute; left: 0; right: 0; top: -2px; height: 12px;
   border-top: 2.5px solid var(--accent); border-radius: 50% 50% 0 0 / 100% 100% 0 0;
 }
-.ge-eq { color: var(--muted); }
+.ge-eq { color: var(--muted); margin: 0 12px; }
 .ge-frac { gap: 0; }
 .ge-frac .ge-slot { width: 84px; height: 42px; font-size: 1.3rem; }
 .ge-frac .ge-slot:first-child { margin-bottom: 4px; }

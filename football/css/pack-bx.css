@@ -93,9 +93,9 @@
 .lp-cardtxt { font-family: system-ui, sans-serif; font-size: 14px; font-weight: 800; text-anchor: middle; }
 .lp-suit { font-family: system-ui, sans-serif; font-size: 13px; font-weight: 800; }
 .lp-legend { font-family: system-ui, sans-serif; font-size: 0.72rem; color: var(--muted); line-height: 1.2; margin-bottom: 2px; }
-.lp-law { font-size: 0.95rem; color: var(--muted); line-height: 1.5; }
-.lp-law .lp-frac { font-family: system-ui, sans-serif; font-size: 0.8rem; }
-.lp-row { font-size: 1.2rem; }
+.lp-frac.lp-law { font-family: system-ui, sans-serif; font-size: 0.7rem; color: var(--muted); line-height: 1.5; }
+.lp-row { font-size: 1.15rem; }
+.lp-row + .lp-row { margin-top: 2px; }
 
 /* ---------- Repartos proporcionales ---------- */
 .rt-cuaderno { line-height: 1.75; font-size: 1.12rem; }

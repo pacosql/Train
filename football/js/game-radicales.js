@@ -28,7 +28,7 @@ function extract(n, idx) {
   return { c, r };
 }
 const radH = (idx, inner) => `<span class="rc-rad">${idx === 3 ? '<sup class="rc-idx">3</sup>' : ""}<svg class="rc-sym" viewBox="0 0 10 20" preserveAspectRatio="none" aria-hidden="true"><path d="M0 12 L2.5 10.5 L6 19 L10 1"/></svg><span class="rc-arg">${inner}</span></span>`;
-const radS = (idx, inner) => `${idx === 3 ? "³√" : "√"}${inner}`;
+const radS = (idx, inner) => `${idx === 3 ? "∛" : "√"}${inner}`;
 const isSq = (n) => Number.isInteger(Math.sqrt(n));
 
 // Niveles: 0 cuadrado de un primo por un primo · 1 dos factores · 2 raíz
@@ -70,7 +70,7 @@ export function buildRound(level) {
       return {
         kind: "suma", idx: 2, r, ans: [s], key: `a${p}${op}${q},${r}`, prompt: "Suma los radicales semejantes",
         lines: [`<span class="rc-term">${coef(p)}${radH(2, r)}</span> ${op} <span class="rc-term">${coef(q)}${radH(2, r)}</span> = {0}${radH(2, r)}`],
-        hint: `Radicales semejantes (los dos con √${r}): se ${op === "+" ? "suman" : "restan"} los números de delante: ${p} ${op} ${q} = ${s} → ${s}√${r}`,
+        hint: `Radicales semejantes (los dos con √${r}): se ${op === "+" ? "suman" : "restan"} los números de delante${p === 1 || q === 1 ? ` (√${r} es 1√${r})` : ""}: ${p} ${op} ${q} = ${s} → ${s}√${r}`,
       };
     }
     if (r > 5) continue;
@@ -80,7 +80,7 @@ export function buildRound(level) {
     return {
       kind: "suma", idx: 2, r, ans: [s], key: `b${n1}${op}${n2}`, prompt: "Saca factores y suma",
       lines: [`<span class="rc-term">${radH(2, n1)}</span> ${op} <span class="rc-term">${radH(2, n2)}</span> = {0}${radH(2, r)}`],
-      hint: `Primero saca factores: √${n1} = ${t(s1)} y √${n2} = ${t(s2)} → ${s1} ${op} ${s2} = ${s}: ${s}√${r}`,
+      hint: `Primero saca factores: ${[[n1, s1], [n2, s2]].map(([n, k]) => (k === 1 ? `√${n} ya está simplificada` : `√${n} = ${t(k)}`)).join(" y ")} → ${s1} ${op} ${s2} = ${s}: ${s}√${r}`,
     };
   }
 }

@@ -65,29 +65,29 @@ export function buildRound(level) {
   else do e = pick([() => bag(pick([4, 5, 8, 10, 16, 20]), randInt(2, 4)), die, deck])(); while ((1000 * e.F) % e.P !== 0);
   const { F, P, label } = e;
   const P_ = `<i>P</i>`;
-  const law = `<div class="lp-row lp-law">${P_}(<i>A</i>) = ${fr("casos favorables", "casos posibles")}</div>`;
-  let html, answers, hint = `${e.why} → ${fracTxt(F, P)}`;
+  // Primera fila: la regla de Laplace con el suceso de la ronda y □/□.
+  const law = `<div class="lp-row">${P_}(${label}) = <span class="lp-frac lp-law"><span>casos favorables</span><span>casos posibles</span></span> = ${fr("[0]", "[1]")}</div>`;
+  let html = law, answers = [F, P], hint = `${e.why} → ${fracTxt(F, P)}`;
   if (level === 3) {
-    html = law + `<div class="lp-row">${P_}(no ${label}) = 1 ${M} ${P_}(${label})</div><div class="lp-row">= 1 ${M} ${fr("[0]", "[1]")} = ${fr("[2]", "[3]")}</div>`;
+    html += `<div class="lp-row">${P_}(no ${label}) = 1 ${M} ${P_}(${label}) = ${fr("[2]", "[3]")}</div>`;
     answers = [F, P, P - F, P];
     hint += `; ${P_}(no ${label}) = 1 ${M} ${F}/${P} = ${fracTxt(P - F, P)}`;
   } else if (level === 4) {
-    html = law + `<div class="lp-row">${P_}(${label}) = ${fr("[0]", "[1]")} = [2] %</div>`;
+    html += `<div class="lp-row">${P_}(${label}) = [2] %</div>`;
     answers = [F, P, (100 * F) / P];
     hint += `; ${F} : ${P} = ${fmt(F / P)} → ${fmt((100 * F) / P)} %`;
-  } else {
-    html = law + `<div class="lp-row">${P_}(${label}) = ${fr("[0]", "[1]")}</div>`;
-    answers = [F, P];
   }
   return { ...e, level, html, answers, hint, prompt: e.kind === "bolsa" ? "Sacas una bola sin mirar" : e.kind === "dado" ? "Tiras un dado" : "Sacas una carta de la baraja" };
 }
 
 // Corrección: cada pareja □/□ vale si es equivalente a la buena.
 function grade(r, v) {
-  const eq = (i, f) => v[i + 1] > 0 && v[i] * r.P === f * v[i + 1];
+  // Si la pareja no vale, cada casilla se marca bien solo si coincide con
+  // los casos (favorables o posibles) contados.
+  const pair = (i, f) => (v[i + 1] > 0 && v[i] * r.P === f * v[i + 1] ? [true, true] : [v[i] === f, v[i + 1] === r.P]);
   const g = Array(r.answers.length).fill(false);
-  g[0] = g[1] = eq(0, r.F);
-  if (r.level === 3) g[2] = g[3] = eq(2, r.P - r.F);
+  [g[0], g[1]] = pair(0, r.F);
+  if (r.level === 3) [g[2], g[3]] = pair(2, r.P - r.F);
   if (r.level === 4) g[2] = Math.abs(v[2] - r.answers[2]) < 1e-9;
   return g;
 }
@@ -110,12 +110,12 @@ function picture(r, fav) {
   }
   let g = "";
   SUITS.forEach(([name, col], s) => {
-    g += `<text class="lp-suit" x="2" y="${s * 40 + 27}" fill="${col}">${name}</text>`;
+    g += `<text class="lp-suit" x="2" y="${s * 34 + 23}" fill="${col}">${name}</text>`;
     CARD.forEach((c, i) => {
-      g += `<g transform="translate(${64 + i * 23.5} ${s * 40 + 4})"><rect class="lp-card${mark(r.test(s, i))}" width="21" height="34" rx="3" stroke="${col}"/><text class="lp-cardtxt" x="10.5" y="23" fill="${col}">${c}</text></g>`;
+      g += `<g transform="translate(${64 + i * 23.5} ${s * 34 + 3})"><rect class="lp-card${mark(r.test(s, i))}" width="21" height="30" rx="3" stroke="${col}"/><text class="lp-cardtxt" x="10.5" y="20.5" fill="${col}">${c}</text></g>`;
     });
   });
-  return `<svg class="lp-pic" viewBox="0 0 300 164">${g}</svg><div class="lp-legend">S = sota · C = caballo · R = rey</div>`;
+  return `<svg class="lp-pic" viewBox="0 0 300 140">${g}</svg><div class="lp-legend">S = sota · C = caballo · R = rey</div>`;
 }
 
 export function mountLaplaceGame(container, { client, onExit }) {

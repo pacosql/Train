@@ -73,3 +73,78 @@
 .rf-yesno[hidden] { display: none; }
 .rf-yn { padding: 8px 16px; font-weight: 800; }
 .rf-yn.rf-said { border-color: var(--accent); }
+
+/* ---------- Tabla de valores ---------- */
+.tv-formula { font-size: 1.45rem; font-weight: 800; color: var(--accent); }
+.tv-formula i, .tv-table i { font-family: Georgia, "Times New Roman", serif; }
+.tv-table { border-collapse: collapse; background: var(--card); font-size: 1.1rem; font-weight: 800; }
+.tv-table th, .tv-table td { border: 2px solid var(--text); width: 54px; height: 44px; text-align: center; padding: 0 2px; }
+.tv-table th { width: 38px; background: color-mix(in srgb, var(--accent) 14%, var(--card)); }
+.tv-table .tv-slot { min-width: 46px; width: 48px; height: 34px; }
+.tv-plot { width: 100%; display: flex; justify-content: center; }
+.tv-axes { width: 236px; height: 154px; display: block; overflow: visible; }
+.tv-axes.tv-empty { opacity: 0.5; }
+.tv-axis { stroke: var(--text); stroke-width: 1.6; }
+.tv-tick { stroke: var(--text); stroke-width: 1.2; }
+.tv-axes text { fill: var(--muted); font-size: 9px; font-weight: 700; text-anchor: middle; }
+.tv-axes text.tv-name { fill: var(--text); font-size: 12px; font-style: italic; font-family: Georgia, serif; }
+.tv-graph { fill: none; stroke: var(--accent); stroke-width: 2.4; stroke-linejoin: round; }
+.tv-dot { fill: var(--good); stroke: var(--card); stroke-width: 1.5; }
+.tv-wrong { fill: none; stroke: var(--danger); stroke-width: 2.4; }
+
+/* ---------- Despeja la fórmula ---------- */
+.df-cuaderno { gap: 12px; padding: 14px 6px; }
+.df-given, .df-solved { font-size: 1.5rem; font-weight: 700; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; justify-content: center; }
+.df-given { color: var(--accent); }
+.df-cuaderno i, .df-tile i, .df-prompt i, .df-slot i { font-family: Georgia, "Times New Roman", serif; font-weight: 700; }
+.df-arrow { color: var(--muted); }
+.df-data { font-size: 0.95rem; font-weight: 700; background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 4px 10px; }
+.df-frac { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; gap: 3px; }
+.df-frac > span { display: flex; align-items: center; gap: 4px; padding: 0 4px; }
+.df-frac > span:first-child { border-bottom: 2.5px solid currentColor; padding-bottom: 3px; }
+.df-slot { min-width: 48px; height: 40px; font-size: 1.25rem; }
+.df-slot.df-num { min-width: 70px; }
+.df-tiles { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin: 14px 0 4px; max-width: 360px; }
+.df-tile {
+  font: inherit; font-size: 1.35rem; font-weight: 800; color: var(--text); cursor: grab;
+  min-width: 56px; height: 50px; padding: 0 12px; border-radius: 12px;
+  background: var(--card); border: 2px solid var(--accent-2); box-shadow: 0 3px 0 var(--accent-2);
+  touch-action: none; user-select: none; -webkit-user-select: none;
+}
+.df-tile:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--accent-2); }
+.df-ghost { position: fixed; z-index: 50; pointer-events: none; transform: translate(-50%, -60%); opacity: 0.9; }
+.df-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; max-width: 280px; margin-top: 12px; }
+.df-actions .primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+/* ---------- Error absoluto y relativo ---------- */
+.er-cuaderno { gap: 10px; align-items: stretch; padding: 12px 10px; }
+.er-data { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; font-size: 1rem; }
+.er-data b { color: var(--accent); }
+.er-line { font-size: 1.12rem; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: wrap; }
+.er-line sub, .er-frac sub { font-size: 0.65em; }
+.er-frac { display: inline-flex; flex-direction: column; align-items: center; font-size: 0.92rem; }
+.er-frac > span { padding: 0 4px; }
+.er-frac > span:first-child { border-bottom: 2px solid currentColor; }
+.er-slot { min-width: 70px; height: 38px; }
+.er-card {
+  background: var(--card); border: 2px solid var(--border); border-radius: 12px; padding: 8px 10px;
+  font-size: 0.95rem; text-align: center; display: flex; flex-direction: column; gap: 6px;
+}
+.er-card > b { color: var(--accent); font-size: 1.1rem; }
+.er-asking .er-card { cursor: pointer; border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent); }
+.er-card.er-best { border-color: var(--good); background: color-mix(in srgb, var(--good) 14%, var(--card)); }
+.er-card.er-worse { border-color: var(--danger); background: color-mix(in srgb, var(--danger) 14%, var(--card)); }
+
+/* ---------- De km/h a m/s ---------- */
+.km-cuaderno { gap: 10px; padding: 16px 6px; }
+.km-chain { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 1.15rem; font-weight: 800; flex-wrap: wrap; }
+.km-start { white-space: nowrap; }
+.km-dot { color: var(--muted); }
+.km-frac { display: inline-flex; flex-direction: column; align-items: center; gap: 3px; }
+.km-frac > span { display: flex; align-items: center; gap: 4px; padding: 0 4px; white-space: nowrap; }
+.km-frac > span:first-child { border-bottom: 2.5px solid var(--text); padding-bottom: 3px; }
+.km-slot { min-width: 66px; height: 36px; }
+.km-slot.km-big { min-width: 86px; height: 42px; font-size: 1.3rem; }
+.km-res { font-size: 1.35rem; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+.km-u { color: var(--accent-2); }
+.km-done .km-gone { text-decoration: line-through; text-decoration-color: var(--danger); text-decoration-thickness: 2.5px; color: var(--muted); }

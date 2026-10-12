@@ -48,7 +48,8 @@ export function buildRound(level) {
       : `Logaritmo de un cociente = resta de logaritmos: ${logS(b)} ${fmt(a)} ${M} ${logS(b)} ${fmt(c)} = ${logS(b)} (${fmt(a)} : ${fmt(c)})`;
     return {
       kind: "prop", b, ans: [P, n], neg, key: `p${b}${op}${a},${c}`, prompt: "Usa las propiedades de los logaritmos",
-      lines: [`${logH(b)} <span class="lg-arg">${fmt(a)}</span> ${op} ${logH(b)} <span class="lg-arg">${fmt(c)}</span> = ${logH(b)} {0} = {1}`],
+      lines: [`${logH(b)} <span class="lg-arg">${fmt(a)}</span> ${op} ${logH(b)} <span class="lg-arg">${fmt(c)}</span> = ${logH(b)} {0}`,
+        `${logH(b)} <span class="lg-copy" data-mirror="0"></span> = {1}`],
       hint: `${how} = ${logS(b)} ${fmt(P)} = ${n}, porque ${b}${sup(n)} = ${fmt(P)}`,
     };
   }
@@ -61,7 +62,7 @@ export function buildRound(level) {
   let hint;
   if (e === 0) hint = `Cualquier número elevado a 0 da 1: ${b}⁰ = 1 → ${logS(b)} 1 = 0`;
   else if (e === 1) hint = `La base elevada a 1 es ella misma: ${b}¹ = ${b} → ${logS(b)} ${b} = 1`;
-  else if (e < 0) hint = `Exponente negativo = dar la vuelta: ${b}${sup(e)} = 1/${b}${sup(-e)} = ${x.s} → ${sgn(e)}`;
+  else if (e < 0) hint = `Exponente negativo = dar la vuelta: ${b}${sup(e)} = ${e === -1 ? x.s : `1/${b}${sup(-e)} = ${x.s}`} → ${sgn(e)}`;
   else hint = `Logaritmo = ¿a qué exponente elevo la base para obtener el número? ${b}${sup(e)} = ${x.s} → ${e}`;
   return {
     kind: "log", b, ans: [e], neg, key: `l${b}^${e}${x.s}`, prompt: "Calcula el logaritmo",
@@ -106,7 +107,7 @@ export function mountLogaritmoGame(container, { client, onExit }) {
     busy = false;
     body.innerHTML = `
       <p class="prompt lg-prompt">${round.prompt}</p>
-      <div class="lg-cuaderno">${round.lines.map((l, i) => `<div class="lg-line${i ? " lg-pow-line" : ""}">${fill(l)}</div>`).join("")}</div>
+      <div class="lg-cuaderno${round.kind === "prop" ? " lg-props" : ""}">${round.lines.map((l, i) => `<div class="lg-line${i ? " lg-pow-line" : ""}">${fill(l)}</div>`).join("")}</div>
       <div class="keypad lg-keypad" data-keypad></div>
       ${round.neg ? `<button type="button" class="choice-btn keypad-sign lg-sign" data-sign>${M} cambiar signo</button>` : ""}
       <div class="feedback lg-feedback" data-feedback></div>
@@ -131,7 +132,7 @@ export function mountLogaritmoGame(container, { client, onExit }) {
       b.classList.toggle("active", +b.dataset.slot === active);
     });
     // la potencia equivalente copia el exponente que se está escribiendo
-    body.querySelectorAll("[data-mirror]").forEach((m) => (m.textContent = shown(typed[+m.dataset.mirror]) || "□"));
+    body.querySelectorAll("[data-mirror]").forEach((m) => (m.textContent = shown(typed[+m.dataset.mirror])));
   }
 
   function say(h, cls) {
@@ -171,7 +172,7 @@ export function mountLogaritmoGame(container, { client, onExit }) {
       b.classList.add(ok[k] ? "good" : "bad");
       if (!ok[k]) b.innerHTML = `<s>${shown(typed[k])}</s><em class="lg-fix">${round.kind === "prop" && k === 0 ? fmt(round.ans[k]) : sgn(round.ans[k])}</em>`;
     });
-    body.querySelectorAll("[data-mirror]").forEach((m) => (m.textContent = sgn(round.ans[+m.dataset.mirror])));
+    body.querySelectorAll("[data-mirror]").forEach((m) => (m.textContent = round.kind === "prop" ? fmt(round.ans[0]) : sgn(round.ans[0])));
     if (ok.every(Boolean)) {
       score += 10;
       hits++;
