@@ -124,7 +124,8 @@
   display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 5px;
   min-height: 74px; width: 100%; max-width: 360px; margin-bottom: 10px;
 }
-.ec-pile { display: inline-flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 3px; max-width: 160px; }
+.ec-pile { display: inline-flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 3px; flex: 1 1 0; min-width: 0; }
+.ec-money.ec-sum { flex-wrap: nowrap; gap: 4px; }
 .ec-plus { font-size: 1.4rem; color: var(--accent); }
 .ec-hidden { font-size: 0.85rem; color: var(--muted); font-weight: 700; padding: 18px 22px; border: 2px dashed var(--border); border-radius: 14px; }
 .ec-comma { font-size: 1.8rem; line-height: 1; align-self: flex-end; margin: 0 -2px; }
@@ -150,8 +151,9 @@
 .ec-bill.ec-b5 { background: linear-gradient(135deg, #8d9a95, #6e7b76); }
 .ec-bill.ec-b10 { background: linear-gradient(135deg, #e07b6b, #b5473b); }
 .ec-bill.ec-b20 { background: linear-gradient(135deg, #6d93d1, #3f62a3); }
-.ec-pile .ec-coin { --d: calc(40px * var(--s, 1)); }
-.ec-pile .ec-coin.ec-c2e { --d: 44px; }
+.ec-pile .ec-coin { --d: calc(34px * var(--s, 1)); }
+.ec-pile .ec-coin.ec-c2e { --d: 38px; }
+.ec-pile .ec-bill { width: 56px; height: 32px; font-size: 0.8rem; }
 .ec-box.wide { min-width: 52px; }
 
 @media (max-width: 380px) {

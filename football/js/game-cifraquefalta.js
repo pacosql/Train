@@ -78,7 +78,7 @@ export function buildRound(level) {
   for (;;) {
     let op = "+", a, b, k;
     if (level <= 1) { a = randInt(12, 89); b = randInt(12, 89); k = 1; }
-    else if (level === 2) { a = randInt(15, 499); b = randInt(15, 499); k = 2; }
+    else if (level === 2) { a = randInt(15, 499); b = randInt(15, 499); k = randInt(2, 3); }
     else if (level === 3) { op = "−"; a = randInt(31, 999); b = randInt(12, a - 10); k = randInt(1, 2); }
     else { op = "×"; a = randInt(12, 299); b = randInt(2, 9); k = randInt(1, 2); }
     const rows = [a, b, calc(op, a, b)];

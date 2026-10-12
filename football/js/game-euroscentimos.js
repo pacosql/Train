@@ -93,7 +93,7 @@ export function mountEuroscentimosGame(container, { client, onExit }) {
       : `<span class="ec-hidden">💰 ¿cuánto dinero es?</span>`;
     body.innerHTML = `
       <p class="prompt ec-prompt">${r.dir === "de" ? "Sepáralo en euros y céntimos" : r.dir === "suma" ? "¿Cuánto es en total?" : "Escríbelo con coma"}</p>
-      <div class="ec-money" data-money>${money}</div>
+      <div class="ec-money${r.dir === "suma" ? " ec-sum" : ""}" data-money>${money}</div>
       <div class="ec-cuaderno"><span class="ec-line">${line}</span></div>
       <div class="keypad ec-keypad" data-keypad></div>
       <div class="feedback ec-feedback" data-feedback></div>

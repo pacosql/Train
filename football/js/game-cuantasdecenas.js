@@ -82,7 +82,7 @@ export function mountCuantasdecenasGame(container, { client, onExit }) {
           ${heads.map((h) => `<div class="cd-head">${h}</div>`).join("")}
           ${round.digits.split("").map((d, i) => `<div class="cd-cell" data-cell="${i}">${round.kind === "count" ? d : ""}</div>`).join("")}
         </div>
-        <div class="cd-line">
+        <div class="cd-line${round.kind === "count" ? "" : " cd-inv"}">
           <span>${round.kind === "count" ? fmt(round.n) : `${round.n} ${NAME[round.unit][0]}`} =</span>
           <button type="button" class="cd-slot active" data-slot></button>
           <span>${round.kind === "count" ? NAME[round.unit][0] : "unidades"}</span>
@@ -108,7 +108,7 @@ export function mountCuantasdecenasGame(container, { client, onExit }) {
     if (key === "✓") return check();
     if (key === "⌫") typed = typed.slice(0, -1);
     else if (typed.length < 5) typed += key;
-    body.querySelector("[data-slot]").textContent = typed;
+    body.querySelector("[data-slot]").textContent = fmt(typed); // con punto de miles, como se escribe
   }
 
   function check() {
@@ -124,7 +124,7 @@ export function mountCuantasdecenasGame(container, { client, onExit }) {
     const slot = body.querySelector("[data-slot]");
     slot.classList.remove("active");
     slot.classList.add(ok ? "good" : "bad");
-    if (!ok) slot.innerHTML = `<s>${typed}</s><b class="cd-want">${fmt(round.answer)}</b>`;
+    if (!ok) slot.innerHTML = `<s>${fmt(typed)}</s><b class="cd-want">${fmt(round.answer)}</b>`;
     // La tabla enseña el truco: se tapan las cifras de la derecha (contar)
     // o se rellenan con ceros (inversa).
     body.querySelectorAll("[data-cell]").forEach((c, i) => {

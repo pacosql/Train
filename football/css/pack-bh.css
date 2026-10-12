@@ -96,6 +96,7 @@
 .cd-cell.cd-keep { color: var(--good); background: color-mix(in srgb, var(--good) 14%, transparent); }
 .cd-line { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 1.35rem; font-weight: 800; flex-wrap: wrap; }
 .cd-line .cd-slot { min-width: 80px; height: 46px; font-size: 1.4rem; }
+.cd-line.cd-inv { font-size: 1.1rem; gap: 6px; flex-wrap: nowrap; }
 
 /* ---------- Suma repetida ---------- */
 .sr-groups { display: flex; justify-content: center; gap: 8px; width: 100%; margin: 2px 0 10px; flex-wrap: wrap; }
@@ -130,7 +131,7 @@
 .fa-row { display: flex; align-items: center; gap: 5px; font-size: 1.2rem; font-weight: 800; height: 40px; }
 .fa-row .fa-op { color: var(--accent); min-width: 14px; text-align: center; }
 .fa-row .fa-slot { min-width: 46px; height: 38px; font-size: 1.15rem; }
-.fa-row .fa-fix { min-width: 30px; text-align: center; font-variant-numeric: tabular-nums; }
+.fa-row .fa-fix { min-width: 38px; text-align: center; font-variant-numeric: tabular-nums; }
 
 /* ---------- ¿Cuánto falta? ---------- */
 .fp-bar { width: 100%; max-width: 336px; height: auto; display: block; margin: 0 auto 4px; }
