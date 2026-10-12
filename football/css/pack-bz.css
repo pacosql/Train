@@ -206,7 +206,7 @@
 .ga2-arc { fill: none; stroke: var(--accent-2); stroke-width: 2; stroke-dasharray: 600; stroke-dashoffset: 600; animation: ga2-draw 0.6s ease forwards; }
 @keyframes ga2-draw { to { stroke-dashoffset: 0; } }
 .ga2-alab {
-  font-size: 11px; font-weight: 900; text-anchor: middle; fill: var(--accent-2); opacity: 0;
+  font-size: 13px; font-weight: 900; text-anchor: middle; fill: var(--accent-2); opacity: 0;
   paint-order: stroke; stroke: var(--bg); stroke-width: 3px; animation: ga2-fade 0.3s ease forwards;
 }
 @keyframes ga2-fade { to { opacity: 1; } }
@@ -235,3 +235,4 @@
 
 /* El end-card centrado en la tarjeta, como en el resto de juegos */
 .bg-body > .end-card, .dn-body > .end-card, .pc2-body > .end-card, .ga2-body > .end-card, .tk-body > .end-card { margin: auto 0; }
+.pc2-t { display: inline-flex; align-items: center; gap: 1px; }

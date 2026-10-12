@@ -58,6 +58,7 @@ function nearMisses(o, k) {
   if (k === "dec" || k === "pct") for (const x of [-10, -5, 5, 10]) add(Math.round((100 * p) / q) + x, 100);
   // Si faltan, otras tartas con los mismos trozos pintados o el mismo número de trozos.
   if (k === "pie") for (let d = 2; d <= 8; d++) add(o.n, d), add(Math.min(d - 1, o.n + 1), d);
+  if (k === "frac") for (let d = 3; d <= 12; d++) add(Math.round((p * d) / q) + 1, d), add(Math.round((p * d) / q) - 1, d);
   return out.map((h) => (k === "dec" || k === "pct" ? { k, ...simp(h) } : h)).filter((h) => !same(h, o) && fits(h, k));
 }
 // Una mitad cualquiera para el lado libre de una ficha, con valor distinto de o.
@@ -96,7 +97,7 @@ export function buildRound(level, open = null, nextLv = level) {
 function explain(o, g) {
   if (o.k === "pie" || g.k === "pie") {
     const pie = o.k === "pie" ? o : g, other = o.k === "pie" ? g : o;
-    return `${label(other)}: la tarta en ${pie.d} trozos iguales y ${pie.n} ${pie.n === 1 ? "pintado" : "pintados"}${other.k === "frac" ? "" : ` = ${pie.n}/${pie.d}`}`;
+    return `${label(other)}: la tarta en ${pie.d} trozos iguales y ${pie.n} ${pie.n === 1 ? "pintado" : "pintados"}${label(other) === `${pie.n}/${pie.d}` ? "" : ` = ${pie.n}/${pie.d}`}`;
   }
   if (o.k === "frac" && g.k === "frac") {
     const [lo, hi] = o.n < g.n ? [o, g] : [g, o];

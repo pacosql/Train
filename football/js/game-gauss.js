@@ -20,7 +20,7 @@ export function buildRound(level) {
   const terms = m <= 10 ? Array.from({ length: m }, (_, i) => f + i * s) : [f, f + s, f + 2 * s, "…", last];
   let hint;
   if (level === 2) {
-    hint = `${m} · ${m + 1} / 2 = ${fmt(m * (m + 1))} / 2 = ${fmt(total)} (sumando del derecho y del revés salen ${m} parejas de ${m + 1}: es la suma dos veces)`;
+    hint = `${m} · ${m + 1} / 2 = ${fmt(m * (m + 1))} / 2 = ${fmt(total)} (${m} · ${m + 1} cuenta la suma dos veces: del derecho y del revés)`;
   } else {
     const how = level >= 3 ? `Del ${f} al ${last}${s === 2 ? " de 2 en 2" : ""} hay ${m} números → ` : "";
     const p = Math.floor(m / 2);
@@ -37,12 +37,16 @@ function pairsSVG(r, drawn) {
   const S = show.length, W = 340, x = (i) => 18 + (i * (W - 36)) / (S - 1), y = 104;
   const P = r.m <= 10 ? Math.floor(r.m / 2) : 4;
   let arcs = "";
-  if (drawn)
+  if (drawn) {
     for (let i = 0; i < P; i++) {
-      const a = x(i), b = x(S - 1 - i), h = 14 + 13 * (P - 1 - i), mid = (a + b) / 2;
+      const a = x(i), b = x(S - 1 - i), h = 12 + 12 * (P - 1 - i), mid = (a + b) / 2;
       arcs += `<path class="ga2-arc" style="animation-delay:${i * 140}ms" d="M${a} ${y - 14} Q${mid} ${y - 14 - 2 * h} ${b} ${y - 14}"/>`;
-      arcs += `<text class="ga2-alab" style="animation-delay:${i * 140 + 250}ms" x="${mid}" y="${y - 17 - h}">${r.pair}</text>`;
     }
+    // Una sola etiqueta arriba: todas las parejas suman lo mismo.
+    const b1 = r.f + r.s, b2 = r.last - r.s;
+    const txt = r.m >= 4 ? `${r.f} + ${r.last} = ${b1} + ${b2} = … = ${r.pair}` : `${r.f} + ${r.last} = ${r.pair}`;
+    arcs += `<text class="ga2-alab" style="animation-delay:${P * 140}ms" x="${W / 2}" y="14">${txt}</text>`;
+  }
   const chips = show.map((v, i) => {
     const middle = drawn && r.m <= 10 && r.m % 2 === 1 && i === (S - 1) / 2;
     return v === "…" ? `<text class="ga2-dots" x="${x(i)}" y="${y + 4}">…</text>`

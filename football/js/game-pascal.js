@@ -88,7 +88,7 @@ export function mountPascalGame(container, { client, onExit }) {
     let extra = "";
     if (round.kind === "binom") {
       const { n } = round;
-      const terms = t[n].map((c, i) => (i === 0 || i === n ? "" : slot(i - 1)) + `<span class="pc2-t">${term(n, i)}</span>`);
+      const terms = t[n].map((c, i) => `<span class="pc2-t">${i === 0 || i === n ? "" : slot(i - 1)}${term(n, i)}</span>`);
       extra = `<div class="pc2-binom"><span>(<i>a</i> + <i>b</i>)${SUP[n]} =</span> ${terms.join(" + ")}</div>`;
     }
     body.innerHTML = `
