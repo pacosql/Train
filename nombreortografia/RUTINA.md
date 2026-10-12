@@ -122,6 +122,17 @@ nuevo de lo que aprender.
   (Simple, Exacta, Precisa, Lista), palabra + Ortografía y Orto + palabra.
   orto10.com ocupado.
 
+- Tanda 5 revisada (12/10): **primera ⭐: Ortografia100**. La familia
+  **ortografía + número** va 4 de 4 (⭐ Ortografia100, 👍 Ortografia10,
+  Tildes10, Lengua10). También 👍 OrtoDiez, OrtoCien, OrtoApto,
+  OrtografiaPleno, OrtografiaSimple, OrtografiaPura. Es la línea buena:
+  número (10/100) como en Mates10 → marca de familia.
+- Tanda 6 (12/10): 45 de números (Ortografia365, 1000, 101, 360, 30;
+  Lengua100, Tildes100, Acentos10/100, Gramatica10/100, Escritura10/100,
+  Redaccion10/100, Dictado10/100, Opos10/100, Ebau10/100, Faltas0; Orto100,
+  Orto365, OrtoMil, OrtoPleno) y adjetivos simples (Llana, Neta, Limpia).
+  Ortografia + una cifra (0, 1, 5, 7) queda vetado por la app «Ortografía».
+
 ## Programación
 
 - Cron de sesión cada 15 min (CronCreate) + Routine horaria de respaldo que
