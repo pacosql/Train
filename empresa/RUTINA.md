@@ -135,6 +135,11 @@ que ha marcado. Todo desde la raíz del repo `Train`.
   TintaNorth, TintaForge, TizaWave**. «Tinta» es SU palabra: Tinta + palabra
   inglesa vuelve a subir aunque antes hubo 🙅 a otras mezclas (Trazo, Papel,
   Pluma + inglés siguen bajas). Cabezas buenas: Tinta, Tiza, Trail, Azul.
+- 🙅 (12/10, 23:50) a **206 de Tinta/Tiza + palabra inglesa** (tanda 19:
+  TintaKey, TintaOwl, TizaCrane…): esa familia está saturada; ya tiene sus
+  ⭐ (TintaNorth, TintaForge, TizaWave). Peso casi a cero. Siguen vivas
+  Trail + inglés (👍 TrailBrick) y Azul + inglés. Tanda 20 prueba
+  inventadas estilo Pixar + Studios.
 - Paco revisa ~150 nombres por hora: cada tanda debe cargar **≥ 300** y la
   rutina debe lanzar tanda en cuanto queden < 100 pendientes buenos.
 - La cola nunca debe quedarse vacía: `cribar.py` carga cada 10 aprobados.
