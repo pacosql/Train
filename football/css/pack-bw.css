@@ -155,7 +155,7 @@
 /* el arco del periodo, encima de sus cifras */
 .ge-per { position: relative; display: inline-block; }
 .ge-per::before {
-  content: ""; position: absolute; left: 0; right: 0; top: -2px; height: 12px;
+  content: ""; position: absolute; left: -2px; right: -2px; top: -2px; height: 12px;
   border-top: 2.5px solid var(--accent); border-radius: 50% 50% 0 0 / 100% 100% 0 0;
 }
 .ge-eq { color: var(--muted); margin: 0 12px; }

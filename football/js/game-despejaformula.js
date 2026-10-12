@@ -100,7 +100,7 @@ export function mountDespejaformulaGame(container, { client, onExit }) {
       <p class="prompt df-prompt">Despeja <b>${it(round.f.x)}</b></p>
       <div class="df-cuaderno">
         <div class="df-given">${it(round.f.given)}</div>
-        ${round.data ? `<div class="df-data">${round.data.map(([n, v, u]) => `${it(n)} = ${v} ${u}`).join(" · ")}</div>` : ""}
+        ${round.data ? `<div class="df-data">Datos: ${round.data.map(([n, v, u]) => `${it(n)} = ${v} ${u}`).join(", ")}</div>` : ""}
         <div class="df-solved"><span class="df-arrow">→</span> ${it(round.f.x)} = ${solved}</div>
         ${round.data ? `<div class="df-solved">${it(round.f.x)} = <button type="button" class="df-slot df-num" data-slot="${round.n}"></button> ${round.unit}</div>` : ""}
       </div>

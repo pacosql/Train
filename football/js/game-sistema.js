@@ -42,7 +42,7 @@ function reduction(E, x, y) {
   const m1 = L / Math.abs(b1), m2 = L / Math.abs(b2);
   const r1 = [a1 * m1, b1 * m1, c1 * m1], r2 = [a2 * m2, b2 * m2, c2 * m2];
   const steps = [];
-  if (m1 > 1 && m2 > 1) steps.push(`Multiplico la 1ª por ${m1} y la 2ª por ${m2}: ${lin(...r1)} ; ${lin(...r2)}`);
+  if (m1 > 1 && m2 > 1) steps.push(`Multiplico la 1ª por ${m1} y la 2ª por ${m2}:<br>${lin(...r1)} ; ${lin(...r2)}`);
   else if (m1 > 1) steps.push(`Multiplico la 1ª por ${m1}: ${lin(...r1)}`);
   else if (m2 > 1) steps.push(`Multiplico la 2ª por ${m2}: ${lin(...r2)}`);
   let k, rhs;

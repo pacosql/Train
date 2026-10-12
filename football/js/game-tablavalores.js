@@ -79,7 +79,7 @@ export function mountTablavaloresGame(container, { client, onExit }) {
     const x0 = Math.min(...xs) - 0.6, x1 = Math.max(...xs) + 0.6;
     const y0 = Math.min(...ys) - 1, y1 = Math.max(...ys) + 1;
     const X = (x) => ((x - x0) / (x1 - x0)) * W, Y = (y) => H - ((y - y0) / (y1 - y0)) * H;
-    const step = y1 - y0 > 24 ? 5 : y1 - y0 > 12 ? 2 : 1;
+    const step = [1, 2, 5, 10, 20].find((k) => (y1 - y0) / k <= 6); // ≤ 6 marcas en el eje y
     let g = "";
     for (let x = Math.ceil(x0); x <= x1; x++) g += `<line class="tv-tick" x1="${X(x)}" y1="${Y(0) - 3}" x2="${X(x)}" y2="${Y(0) + 3}"/>${x ? `<text x="${X(x)}" y="${Y(0) + 13}">${sg(x)}</text>` : ""}`;
     for (let y = Math.ceil(y0 / step) * step; y <= y1; y += step) if (y) g += `<line class="tv-tick" x1="${X(0) - 3}" y1="${Y(y)}" x2="${X(0) + 3}" y2="${Y(y)}"/><text x="${X(0) - 6}" y="${Y(y) + 3}" text-anchor="end">${sg(y)}</text>`;

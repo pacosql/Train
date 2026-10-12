@@ -63,8 +63,10 @@ export function buildRound(level) {
   for (let i = 1; i < n; i++) slots.push({ k: "prod", i, want: prod[i] }, { k: "res", i, want: res[i] });
   if (mode === "cociente") q.forEach((v, i) => slots.push({ k: "q", i, want: v })), slots.push({ k: "R", i: 0, want: R });
   if (mode === "resto") slots.push({ k: "P", i: 0, want: R });
-  const gap = c.findIndex((a, i) => i > 0 && a === 0);
-  const steps = [`${gap > 0 ? `Falta el término ${n - 1 - gap ? "en x" + SUP[n - 1 - gap] : "independiente"}: pongo un 0. ` : ""}Bajo el ${sg(c[0])}`];
+  // Términos que faltan: se escribe un 0 en su sitio (como en el libro)
+  const gaps = c.map((a, i) => (i > 0 && a === 0 ? (n - 1 - i ? "en x" + SUP[n - 1 - i] : "independiente") : null)).filter(Boolean);
+  const note = gaps.length ? `Falta${gaps.length > 1 ? "n los términos" : " el término"} ${gaps.join(" y ")}: pongo 0 en su sitio. ` : "";
+  const steps = [`${note}Bajo el ${sg(c[0])}`];
   for (let i = 1; i < n; i++) steps.push(`${sg(res[i - 1])} · ${par(r)} = ${sg(prod[i])}, ${sg(prod[i])} + ${par(c[i])} = ${sg(res[i])}`);
   const tail = mode === "cociente" ? `cociente ${polyText(q)}, resto ${sg(R)}`
     : mode === "resto" ? `el resto es P(${sg(r)}) = ${sg(R)} (teorema del resto)`
