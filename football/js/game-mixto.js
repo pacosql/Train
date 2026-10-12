@@ -5,6 +5,8 @@
 // Se rellena con el teclado; el foco va entero → numerador → denominador.
 import { randInt, saveScore } from "./utils.js";
 
+const gcd = (a, b) => (b ? gcd(b, a % b) : a);
+
 // Niveles: 0 hasta 10 · 1 hasta 30 · 2 inversa (mixto → fracción) ·
 // 3 sin dibujo, mezclando las dos direcciones.
 export function buildRound(level, turn = 0) {
@@ -12,11 +14,13 @@ export function buildRound(level, turn = 0) {
   let n, d;
   if (inverse) {
     d = randInt(2, level === 3 ? 9 : 6);
-    const w = randInt(1, level === 3 ? 5 : 4), r = randInt(1, d - 1);
+    const w = randInt(1, level === 3 ? 5 : 4);
+    let r;
+    do r = randInt(1, d - 1); while (gcd(r, d) !== 1); // 2 1/3 sí, 2 2/4 no (sin simplificar)
     n = w * d + r;
   } else {
     const max = level === 0 ? 10 : level === 1 ? 30 : 50;
-    do { d = randInt(2, level === 0 ? 5 : 9); n = randInt(d + 1, max); } while (n % d === 0);
+    do { d = randInt(2, level === 0 ? 5 : 9); n = randInt(d + 1, max); } while (gcd(n, d) !== 1); // irreducible: el resto queda ya simplificado
   }
   const q = Math.floor(n / d), r = n % d;
   const ent = q === 1 ? "entero" : "enteros";

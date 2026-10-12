@@ -48,7 +48,7 @@ export function buildRound(level) {
     sol = solve(op, A, B);
     const nConv = sol.conv.filter(Boolean).length;
     if (sol.res[0] <= 0 || (sys === "a" && sol.res[0] >= 360) || (sys === "t" && n === 2 && sol.res[0] >= 60)) continue;
-    if (kind === 0 ? nConv === 0 : kind === 1 ? nConv === 1 && sol.conv[0] : nConv >= 1) break;
+    if (kind === 0 ? nConv === 0 : kind === 1 ? nConv === 1 : nConv >= 1) break;
   }
   const U = UNITS[sys], n = A.length, u0 = U.slice(3 - n);
   const q = (v, i) => (sys === "a" ? `${v}${u0[i]}` : `${v} ${u0[i]}`);
@@ -197,7 +197,7 @@ export function mountSexagesimalGame(container, { client, onExit }) {
       if (!ok) b.innerHTML = `<s>${typed[k]}</s><em class="sx-fix">${want}</em>`;
     });
     // Se marcan las flechas de los cambios que había que hacer.
-    body.querySelectorAll("[data-note]").forEach((el) => el.classList.toggle("sx-used", round.conv[+el.dataset.note - (round.op === "+" ? 0 : 1)]));
+    body.querySelectorAll("[data-note]").forEach((el) => el.classList.toggle("sx-used", round.conv[+el.dataset.note]));
     if (allOk) {
       score += 10;
       hits++;
