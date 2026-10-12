@@ -12,8 +12,9 @@ nuevo de lo que aprender.
 
 ## Pasos
 
-1. **Cerrojo**: `pgrep -f "[c]ribar.py"`. Si hay una criba en marcha, no
-   arranques otra: termina.
+1. **Cerrojo**: `pgrep -af "[c]ribar.py"` **en un comando aparte** (si va en
+   el mismo comando que lanza cribar.py, se encuentra a sí mismo). Si hay una
+   criba en marcha, no arranques otra: termina.
 2. `python3 nombreortografia/tools/contexto.py --atender` y léelo entero:
    - **Comentarios generales «●»** (sin atender) = órdenes directas, la
      prioridad máxima. Cada uno cambia el gusto de la tanda siguiente.
@@ -56,6 +57,24 @@ nuevo de lo que aprender.
   le gusta: cero faltas, sin faltas, tilde, palabra con ortografía dentro,
   examen/aprobar, fusiones inventadas, metáforas (lápiz rojo, corrector),
   inglés corto.
+- Tanda 1 revisada entera en minutos (12/10): 25 👍, 1 🙅 (Ortografiko),
+  sin ⭐. Suben: **Orto + palabra** (OrtoTest, OrtoReto, OrtoDiaria,
+  OrtoRacha, Ortografix), **retos/rachas/duelos diarios** (DueloDeTildes,
+  RetoTilde, TildeDiaria, FaltaDiaria), **corrector** (SinTachones,
+  PapelLimpio), **examen** (EbauSinFaltas, OpoTilde, OpoOrto, NotaLimpia).
+  «Sin faltas» va a medias (NoMasFaltas, NiUnaFalta, FaltasFuera,
+  Antifaltas 👍; muchos otros 👎). Bajan: letras que dudan (BeVeHache,
+  GeOJota 👎), fusiones inventadas (🙅 Ortografiko), inglés, palabras con
+  historia, RAE.
+- **Comentario ● (12/10): «quiero ver la palabra ortografía continuamente»**,
+  y que pruebe sinónimos y escritores relacionados con la ortografía. →
+  Tanda 2: 50 «Ortografía + palabra» (reto, racha, duelo, liga, EBAU, opos,
+  aprobada, sin faltas, entreno…) + 12 sinónimos/escritores (RectaEscritura
+  —el significado literal de orto-grafía—, BuenaGrafia, Nebrija…).
+  «Ortografía + Test/Fit/Gym/Pro/Plus/Fix» chocan con apps que ya existen.
+  Pendientes de probar en la tanda 3 si sigue el gusto: Orto + palabra
+  (OrtoDuelo, OrtoLiga, OrtoSprint…), corrector (FolioLimpio, CeroTachones,
+  NiUnTachon), CazaFaltas, Ortografista, Mateo Alemán / Correas / Bello.
 
 ## Programación
 
