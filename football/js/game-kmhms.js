@@ -35,7 +35,7 @@ export function buildRound(level) {
     if (k === 0) { v = pick([2, 3, 4, 5, 1.5, 2.5, 0.8]); [from, to, fs] = [["m", "s"], ["cm", "s"], [F.mcm]]; hint = `1 m = 100 cm: ${fmt(v)} · 100 = ${fmt(v * 100)} cm/s`; }
     else if (k === 1) { v = pick([50, 150, 250, 300, 75, 120]); [from, to, fs] = [["cm", "s"], ["m", "s"], [F.cmm]]; hint = `100 cm = 1 m: ${fmt(v)} ÷ 100 = ${fmt(v / 100)} m/s`; }
     else if (k === 2) { v = pick([60, 90, 120, 150, 180, 240]); [from, to, fs] = [["km", "h"], ["km", "min"], [F.hmin]]; hint = `1 h = 60 min: ${fmt(v)} ÷ 60 = ${fmt(v / 60)} km/min`; }
-    else if (k === 3) { v = pick([3, 6, 9, 12]); [from, to, fs] = [["km", "min"], ["m", "s"], [F.kmm, F.mins]]; hint = `1 km = 1.000 m y 1 min = 60 s: ${fmt(v)} · 1.000 ÷ 60 = ${fmt((v * 1000) / 60)} m/s`; }
+    else if (k === 3) { v = pick([0.6, 1.2, 1.8, 3]); [from, to, fs] = [["km", "min"], ["m", "s"], [F.kmm, F.mins]]; hint = `1 km = 1.000 m y 1 min = 60 s: ${fmt(v)} · 1.000 ÷ 60 = ${fmt((v * 1000) / 60)} m/s`; }
     else { v = pick([6, 12, 30, 60, 90]); [from, to, fs] = [["km", "h"], ["m", "min"], [F.kmm, F.hmin]]; hint = `1 km = 1.000 m y 1 h = 60 min: ${fmt(v)} · 1.000 ÷ 60 = ${fmt((v * 1000) / 60)} m/min`; }
   }
   const want = Math.round(fs.reduce((x, f) => (x * f[0]) / f[2], v) * 10000) / 10000;

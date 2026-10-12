@@ -76,10 +76,7 @@ export function mountInecuacionGame(container, { client, onExit }) {
   container.innerHTML = `
     <div class="game-topbar">
       <button class="back-btn" data-exit>← Menú</button>
-      <div class="game-stats">
-        <span class="lives" data-lives></span>
-        <span class="score" data-score>⭐ 0</span>
-      </div>
+      <div class="game-stats"><span class="lives" data-lives></span><span class="score" data-score>⭐ 0</span></div>
     </div>
     <div class="game-body in-body" data-body></div>
   `;
@@ -278,10 +275,7 @@ export function mountInecuacionGame(container, { client, onExit }) {
         <div>⚖️</div>
         <div class="big-score">${score} pts</div>
         <p>${hits} inecuaciones resueltas de ${rounds}</p>
-        <div class="end-actions">
-          <button class="primary" data-retry>Jugar otra vez</button>
-          <button class="secondary" data-menu>Volver al menú</button>
-        </div>
+        <div class="end-actions"><button class="primary" data-retry>Jugar otra vez</button><button class="secondary" data-menu>Volver al menú</button></div>
       </div>
     `;
     body.querySelector("[data-retry]").addEventListener("click", start);
@@ -289,12 +283,7 @@ export function mountInecuacionGame(container, { client, onExit }) {
   }
 
   function start() {
-    lives = startLives;
-    score = 0;
-    rounds = 0;
-    hits = 0;
-    round = null;
-    finished = false;
+    [lives, score, rounds, hits, round, finished] = [startLives, 0, 0, 0, null, false];
     window.removeEventListener("keydown", onKey);
     window.addEventListener("keydown", onKey);
     renderLives();

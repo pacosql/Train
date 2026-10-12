@@ -23,6 +23,9 @@
 .keypad-sign.rf-sign, .keypad-sign.tv-sign, .keypad-sign.er-comma, .keypad-sign.km-comma { max-width: 240px; margin-top: 6px; padding: 8px; }
 .rf-next, .tv-next, .df-next, .er-next, .km-next { display: block; margin: 8px auto 0; padding: 9px 18px; font-size: 0.9rem; }
 
+/* Tinta de acento legible en claro y en oscuro (acento mezclado con el texto) */
+.rf-body, .tv-body, .df-body, .er-body, .km-body { --by-ink: color-mix(in srgb, var(--accent) 62%, var(--text)); }
+
 /* Hoja de cuaderno: cuadrícula tenue con el color del borde del tema */
 .rf-cuaderno, .tv-cuaderno, .df-cuaderno, .er-cuaderno, .km-cuaderno {
   width: 100%; max-width: 372px; border: 1px solid var(--border); border-radius: 10px;
@@ -39,7 +42,7 @@
   font: inherit; font-weight: 800; color: var(--text); cursor: pointer;
   background: var(--card); border: 2px solid var(--muted); border-radius: 7px;
   display: inline-flex; align-items: center; justify-content: center; gap: 2px; padding: 0 3px;
-  min-width: 42px; height: 34px; vertical-align: middle; font-size: 1.05rem; white-space: nowrap;
+  min-width: 42px; height: 34px; vertical-align: middle; font-size: 1.05rem; white-space: nowrap; line-height: 1.2;
 }
 .rf-slot.active, .tv-slot.active, .df-slot.active, .er-slot.active, .km-slot.active {
   border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 28%, transparent);
@@ -63,7 +66,7 @@
 .rf-c .rf-slot { min-width: 50px; height: 38px; font-family: inherit; font-size: 1.15rem; }
 /* raya vertical (coeficientes y productos) */
 .rf-left { border-right: 2.5px solid var(--text); }
-.rf-num { color: var(--accent); justify-content: center; }
+.rf-num { color: var(--by-ink); justify-content: center; }
 /* raya horizontal bajo la fila de productos */
 .rf-under { border-bottom: 2.5px solid var(--text); }
 /* el resto, en su cajita */
@@ -75,7 +78,7 @@
 .rf-yn.rf-said { border-color: var(--accent); }
 
 /* ---------- Tabla de valores ---------- */
-.tv-formula { font-size: 1.45rem; font-weight: 800; color: var(--accent); }
+.tv-formula { font-size: 1.45rem; font-weight: 800; color: var(--by-ink); }
 .tv-formula i, .tv-table i { font-family: Georgia, "Times New Roman", serif; }
 .tv-table { border-collapse: collapse; background: var(--card); font-size: 1.1rem; font-weight: 800; }
 .tv-table th, .tv-table td { border: 2px solid var(--text); width: 54px; height: 44px; text-align: center; padding: 0 2px; }
@@ -95,7 +98,7 @@
 /* ---------- Despeja la fórmula ---------- */
 .df-cuaderno { gap: 12px; padding: 14px 6px; }
 .df-given, .df-solved { font-size: 1.5rem; font-weight: 700; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; justify-content: center; }
-.df-given { color: var(--accent); }
+.df-given { color: var(--by-ink); }
 .df-cuaderno i, .df-tile i, .df-prompt i, .df-slot i { font-family: Georgia, "Times New Roman", serif; font-weight: 700; }
 .df-arrow { color: var(--muted); }
 .df-data { font-size: 0.95rem; font-weight: 700; background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 4px 10px; }
@@ -119,7 +122,7 @@
 /* ---------- Error absoluto y relativo ---------- */
 .er-cuaderno { gap: 10px; align-items: stretch; padding: 12px 10px; }
 .er-data { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; font-size: 1rem; }
-.er-data b { color: var(--accent); }
+.er-data b { color: var(--by-ink); }
 .er-line { font-size: 1.12rem; font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: wrap; }
 .er-line sub, .er-frac sub { font-size: 0.65em; }
 .er-frac { display: inline-flex; flex-direction: column; align-items: stretch; text-align: center; font-size: 0.92rem; }
@@ -131,7 +134,7 @@
   background: var(--card); border: 2px solid var(--border); border-radius: 12px; padding: 8px 10px;
   font-size: 0.95rem; text-align: center; display: flex; flex-direction: column; gap: 6px;
 }
-.er-card > b { color: var(--accent); font-size: 1.1rem; }
+.er-card > b { color: var(--by-ink); font-size: 1.1rem; }
 .er-asking .er-card { cursor: pointer; border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent); }
 .er-card.er-best { border-color: var(--good); background: color-mix(in srgb, var(--good) 14%, var(--card)); }
 .er-card.er-worse { border-color: var(--danger); background: color-mix(in srgb, var(--danger) 14%, var(--card)); }

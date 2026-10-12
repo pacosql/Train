@@ -56,10 +56,7 @@ export function mountIntervalosGame(container, { client, onExit }) {
   container.innerHTML = `
     <div class="game-topbar">
       <button class="back-btn" data-exit>← Menú</button>
-      <div class="game-stats">
-        <span class="lives" data-lives></span>
-        <span class="score" data-score>⭐ 0</span>
-      </div>
+      <div class="game-stats"><span class="lives" data-lives></span><span class="score" data-score>⭐ 0</span></div>
     </div>
     <div class="game-body iv-body" data-body></div>
   `;
@@ -284,12 +281,7 @@ export function mountIntervalosGame(container, { client, onExit }) {
   }
 
   function start() {
-    lives = startLives;
-    score = 0;
-    rounds = 0;
-    hits = 0;
-    round = null;
-    finished = false;
+    [lives, score, rounds, hits, round, finished] = [startLives, 0, 0, 0, null, false];
     window.removeEventListener("keydown", onKey);
     window.addEventListener("keydown", onKey);
     renderLives();
