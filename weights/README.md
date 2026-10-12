@@ -289,6 +289,15 @@ Los compañeros de estación:
   fue con su compañero, se propone ese mismo peso tal cual; y el peso de
   referencia que fijas en el catálogo se escribe en todos a la vez.
 
+### Parejas de superserie (`superset`)
+
+La columna `superset` agrupa máquinas distintas que se hacen siempre
+seguidas, como **Pectoral** y **Reverse Fly** (`pecho_espalda`). Se
+comportan como una estación en la lista (van pegadas y, al terminar
+una, la otra sube con la razón "superserie con…") pero **no comparten
+peso**: cada una propone el suyo. En la lista llevan la etiqueta
+"⚡ superserie".
+
 Para las máquinas asistidas (dominadas/fondos asistidos), la lógica de
 peso está invertida: menos peso en la pila = más difícil (menos
 ayuda), así que "más difícil la próxima vez" baja el número en vez de

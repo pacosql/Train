@@ -1422,9 +1422,25 @@
       if (!ex.station) return [];
       return catalog.filter((e) => e.id !== ex.id && e.station === ex.station);
     }
+    // Pareja de superserie (columna `superset`): dos máquinas que se hacen
+    // seguidas, como Pectoral y Reverse Fly. Van pegadas en la lista y se
+    // encadenan igual que una estación, pero cada una con su propio peso.
+    function supersetMates(ex) {
+      if (!ex.superset) return [];
+      return catalog.filter((e) => e.id !== ex.id && e.superset === ex.superset);
+    }
+    // Compañeros que deben ir juntos en la lista, por el motivo que sea.
+    function pairMates(ex) {
+      const seen = new Set();
+      return [...stationMates(ex), ...supersetMates(ex)].filter((e) => !seen.has(e.id) && seen.add(e.id));
+    }
+    function isPaired(a, b) {
+      return a.id !== b.id && ((!!a.station && a.station === b.station) || (!!a.superset && a.superset === b.superset));
+    }
     function stationLabel(ex) {
-      const mates = stationMates(ex);
-      return mates.length ? "🔗 misma máquina" : "";
+      if (stationMates(ex).length) return "🔗 misma máquina";
+      if (supersetMates(ex).length) return "⚡ superserie";
+      return "";
     }
     // El último uso de la MÁQUINA, sea con este ejercicio o con un compañero
     // de estación; "own" dice si fue este mismo ejercicio.
@@ -1545,10 +1561,9 @@
         score += alt;
       }
 
-      // Si acabas de usar un compañero de estación, este va a continuación:
-      // ya estás en la máquina y con el peso puesto.
-      const chain = !done && !cardio && ctx.lastToday && ctx.lastEx && ctx.lastEx.id !== ex.id
-        && !!ex.station && ctx.lastEx.station === ex.station;
+      // Si acabas de usar un compañero de estación o de superserie, este va
+      // a continuación: ya estás en la máquina (o es la pareja de siempre).
+      const chain = !done && !cardio && ctx.lastToday && ctx.lastEx && isPaired(ex, ctx.lastEx);
       if (chain) score += 40;
 
       // La nota 1-5 para tus lesiones pesa en toda la escala: 5 sube
@@ -1581,7 +1596,9 @@
         bits.push(`${REC_LABEL[r.rec].toLowerCase()} para tu espalda (${r.rec}/5)`);
         tone = "warn";
       } else if (r.chain) {
-        bits.push(`misma máquina que ${ctx.lastEx.name}: encadénalo`);
+        bits.push(!!ex.station && ex.station === ctx.lastEx.station
+          ? `misma máquina que ${ctx.lastEx.name}: encadénalo`
+          : `superserie con ${ctx.lastEx.name}: encadénalo`);
       } else if (heavy.length) {
         bits.push(`hoy ya has trabajado ${heavy.join(" y ")}`);
         tone = "warn";
@@ -1764,16 +1781,17 @@
         .map((ex) => ({ ex, r: rateExercise(ex, ctx) }))
         .sort((a, b) => a.r.bucket - b.r.bucket || b.r.score - a.r.score);
 
-      // Los de la misma estación van pegados: el mejor puntuado arrastra a
-      // sus compañeros justo detrás, siempre que estén en su misma cesta.
+      // Los de la misma estación o superserie van pegados: el mejor puntuado
+      // arrastra a sus compañeros justo detrás, siempre que estén en su
+      // misma cesta.
       const rated = [];
       const placed = new Set();
       for (const entry of sorted) {
         if (placed.has(entry.ex.id)) continue;
         rated.push(entry); placed.add(entry.ex.id);
-        if (!entry.ex.station) continue;
+        if (!entry.ex.station && !entry.ex.superset) continue;
         for (const mate of sorted) {
-          if (placed.has(mate.ex.id) || mate.ex.station !== entry.ex.station || mate.r.bucket !== entry.r.bucket) continue;
+          if (placed.has(mate.ex.id) || !isPaired(mate.ex, entry.ex) || mate.r.bucket !== entry.r.bucket) continue;
           rated.push(mate); placed.add(mate.ex.id);
         }
       }
