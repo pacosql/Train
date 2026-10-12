@@ -133,6 +133,16 @@ nuevo de lo que aprender.
   Orto365, OrtoMil, OrtoPleno) y adjetivos simples (Llana, Neta, Limpia).
   Ortografia + una cifra (0, 1, 5, 7) queda vetado por la app «Ortografía».
 
+- Tanda 6 revisada (12/10): ⭐ **Ortografia365**, 👍 Ortografia360 y
+  Ortografia101; 👎 a todo lo demás (otras materias: Gramatica, Acentos,
+  Redaccion, Dictado, Escritura, Opos/Ebau + número; números sin sentido:
+  1000, 99, 24, 30; Orto + número; adjetivos). Además ha subido a ⭐
+  Ortografia10, Lengua10 y OrtografiaDiez.
+- **Finalistas (5 ⭐): Ortografia10, Ortografia100, OrtografiaDiez,
+  Lengua10, Ortografia365.** Converge: «Ortografía»/«Lengua» + número con
+  significado. Tandas cortas y afinadas a partir de aquí (tanda 7: 27).
+  Con los finalistas, a mano: OEPM/EUIPO y el .es.
+
 ## Programación
 
 - Cron de sesión cada 15 min (CronCreate) + Routine horaria de respaldo que
