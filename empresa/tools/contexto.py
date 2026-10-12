@@ -40,6 +40,17 @@ _man = {_norm(l.split("|")[0]) for l in open(_sc, encoding="utf-8") if l.strip()
 sin_mano = [i["nombre"] for i in ideas if i["status"] in ("me_gusta", "favorito") and _norm(i["nombre"]) not in _man]
 print("\n== ME GUSTA SIN PUNTUAR A MANO (añádelos a tools/scores.txt y ejecuta puntuar.py) ==")
 print("  " + (" ".join(sin_mano) if sin_mano else "ninguno"))
+print("\n== PESO POR FAMILIA (👍 +1, ⭐ +2, 👎 −1, 🙅 −3; acumulan: más negativo → menos candidatos de ese estilo, pero no cero) ==")
+_fam = {}
+for i in ideas:
+    # Lo que quitó Claude en bloque por un comentario no cuenta nombre a nombre.
+    if i["status"] in ("me_gusta", "favorito", "no_me_gusta", "nada") and not (i["nota"] or "").startswith("(quitado por Claude)"):
+        d = _fam.setdefault(i["metodo"] or "?", {"me_gusta": 0, "favorito": 0, "no_me_gusta": 0, "nada": 0}); d[i["status"]] += 1
+for f_, d in sorted(_fam.items(), key=lambda x: -(x[1]["me_gusta"] + 2 * x[1]["favorito"] - x[1]["no_me_gusta"] - 3 * x[1]["nada"])):
+    print(f"  {d['me_gusta'] + 2 * d['favorito'] - d['no_me_gusta'] - 3 * d['nada']:+4d}  {f_}  (👍{d['me_gusta']} ⭐{d['favorito']} 👎{d['no_me_gusta']} 🙅{d['nada']})")
+print("\n== 🙅 NADA DE ESTO (peso muy bajo: solo alguno de vez en cuando; cada 🙅 repetido lo baja más) ==")
+for i in ideas:
+    if i["status"] == "nada": print(f"  🙅 {i['nombre']} [{i['metodo']}]" + (f" — «{i['nota']}»" if i["nota"] else ""))
 print("\n== DESCARTADOS CON COMENTARIO ==")
 for i in ideas:
     if i["status"] == "no_me_gusta" and i["nota"]: print(f"  👎 {i['nombre']} — «{i['nota']}»")
