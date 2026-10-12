@@ -83,6 +83,10 @@ que ha marcado. Todo desde la raíz del repo `Train`.
   AstilleroLab. Dirección: materiales de dibujar/escribir (carbón,
   grafito, tinta, papel) y caminos (trail), una palabra legible en los dos
   idiomas + Studio/Lab/Labs/Works.
+- 👍 (12/10, 18 h): **CarbonPaperStudio**, **TintaWorks**: material de
+  escribir (papel carbón, tinta) + Studio/Works. Tanda 9 explora imprenta y
+  escritura en inglés, materiales de escribir/pintar en español y tipos de
+  papel + Studio.
 - Paco revisa ~150 nombres por hora: cada tanda debe cargar **≥ 300** y la
   rutina debe lanzar tanda en cuanto queden < 100 pendientes buenos.
 - La cola nunca debe quedarse vacía: `cribar.py` carga cada 10 aprobados.
