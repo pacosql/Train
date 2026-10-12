@@ -40,9 +40,9 @@ export function buildRound(level, turn = 0) {
   if (kind === "B") {
     const pl = n !== 1;
     const nums = new Set([CARD[n]]);
-    for (const x of [d, n + 1, n - 1, n + 2, n + 3]) if (nums.size < 4 && x >= 1 && x <= 20) nums.add(CARD[x]);
+    for (const x of [d, n + 1, n - 1, n + 2, n - 2, n + 3, n - 3]) if (nums.size < 4 && x >= 1 && x <= 20) nums.add(CARD[x]);
     const dens = new Set([denName(d, pl)]);
-    const cands = [n <= 20 && n >= 2 && n !== d ? n : 0, d + 1, d - 1, d + 2, d - 2].filter((x) => x >= 2 && x <= 20);
+    const cands = [n >= 2 && n !== d ? n : 0, d + 1, d - 1, d + 2, d - 2, d + 3, d - 3].filter((x) => x >= 2 && x <= 20);
     if (!pl) dens.add(denName(d, true));
     for (const x of cands) if (dens.size < 4) dens.add(denName(x, pl));
     r.numChips = shuffle([...nums]);
