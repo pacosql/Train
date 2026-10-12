@@ -27,7 +27,14 @@ que ha marcado. Todo desde la raíz del repo `Train`.
    - **🏛️ Otras marcas** que ha marcado 👍/👎 (venture studios reales):
      úsalas como inspiración (tipo de nombre, sonido, longitud) y súbele el
      peso a los estilos de las 👍. Para añadir más marcas: `tools/marcas.py`.
-3. ¿Hace falta tanda? Sí si hay comentarios nuevos, o 👍/⭐/🙅 nuevos
+   - **💡 Palabras** que ha elegido (tabla `empresa_palabras`, status
+     me_gusta; contexto.py las lista): son sus piezas favoritas. En cada
+     tanda, `python3 empresa/tools/combinar.py <fichero>` genera las
+     combinaciones (A+B y A+B+Studio); añádelas al fichero de candidatos,
+     las recién elegidas primero. Si quedan < 20 palabras pendientes por
+     proponer, añade ~50 palabras simples nuevas en inglés (status
+     pendiente, origen claude) en la línea de las que elige.
+3. ¿Hace falta tanda? Sí si hay comentarios nuevos, palabras 💡 nuevas, o 👍/⭐/🙅 nuevos
    desde la última ejecución, o quedan **< 100 pendientes con score ≥ 70**.
    Si no hace falta, registra con `log.py` y termina.
 4. **Genera** `empresa/tools/out/candidatos.txt` (con Write) con líneas

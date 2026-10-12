@@ -374,6 +374,18 @@ header { position: relative; }
 .btn-ranking { display: inline-block; margin: 2px 0 6px; border: 1px solid var(--border); background: var(--card); color: var(--text); border-radius: 999px; padding: 6px 14px; font-size: 0.9rem; font-weight: 700; cursor: pointer; }
 body.en-lote .btn-ranking { padding: 3px 10px; font-size: 0.75rem; margin: 0 0 2px; }
 .vista-ranking { max-width: 560px; margin: 0 auto; }
+.pal-tit { font-size: 1.05rem; margin: 18px 0 8px; }
+.pal-tit small { font-weight: 400; color: var(--muted); font-size: 0.8rem; margin-left: 6px; }
+.pal-elegidas { display: flex; flex-wrap: wrap; gap: 8px; }
+.pal-chip { border: 1px solid var(--ok); background: rgba(47, 158, 68, 0.15); color: var(--text); border-radius: 999px; padding: 8px 14px; font-size: 1rem; font-weight: 700; cursor: pointer; }
+.pal-form { margin-top: 12px; }
+.pal-lote { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.pal-op { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; text-align: left; border: 1px solid var(--border); background: var(--card); color: var(--text); border-radius: 12px; padding: 12px; cursor: pointer; }
+.pal-op strong { font-size: 1.2rem; }
+.pal-op small { color: var(--muted); font-size: 0.8rem; }
+.pal-op[aria-pressed="true"] { border-color: var(--ok); background: rgba(47, 158, 68, 0.15); }
+.pal-op[aria-pressed="true"] strong::after { content: " 👍"; }
+.pal-siguiente { width: 100%; margin-top: 12px; }
 .ranking-cab { display: flex; align-items: center; gap: 12px; margin: 4px 0 8px; }
 .ranking-cab h2 { margin: 0; font-size: 1.3rem; }
 .ranking-cab .btn-ghost { border: 1px solid var(--border); background: var(--card); color: var(--text); border-radius: 999px; padding: 6px 12px; cursor: pointer; font-size: 0.9rem; }

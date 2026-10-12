@@ -26,6 +26,7 @@
         <button type="button" id="btn-ranking" class="btn-ranking">🏆 Ranking de Claude</button>
         <button type="button" id="btn-buscar" class="btn-ranking">🔍 Buscar</button>
         <button type="button" id="btn-referencias" class="btn-ranking">🏛️ Otras marcas</button>
+        <button type="button" id="btn-palabras" class="btn-ranking">💡 Palabras</button>
       </div>
     </header>
 
@@ -195,6 +196,28 @@
     <div id="lista-referencias" class="lista-referencias"></div>
   </section>
 
+  <section id="vista-palabras" class="vista-ranking vista-palabras" hidden>
+    <div class="ranking-cab">
+      <button type="button" id="btn-volver-palabras" class="btn-ghost">← Volver</button>
+      <h2>💡 Palabras que te gustan</h2>
+    </div>
+    <p class="sub">
+      Ideas sueltas, sin mirar si el .com está libre. Marca las palabras que
+      te gustan (o escribe las tuyas) y la rutina combinará las elegidas para
+      buscarte nombres, por ejemplo «Azul» + «Fox» → Azulfox Studio.
+    </p>
+    <h3 class="pal-tit">⭐ Tus palabras (<span id="pal-count">0</span>) <small>toca una para quitarla</small></h3>
+    <div id="pal-elegidas" class="pal-elegidas"></div>
+    <form id="form-palabras" class="add-form con-mic pal-form" autocomplete="off">
+      <input id="pal-input" type="text" placeholder="añade palabras: azul, marea, stone…" aria-label="Añadir palabras" enterkeyhint="done" />
+      <button type="button" class="btn-mic" data-mic-for="pal-input" aria-label="Dictar palabras">🎙️</button>
+      <button type="submit">Añadir</button>
+    </form>
+    <h3 class="pal-tit">Te propongo estas 10 <small>marca las que te gusten</small></h3>
+    <div id="pal-lote" class="pal-lote"></div>
+    <button type="button" id="pal-siguiente" class="btn-siguiente pal-siguiente">👎 Ninguna, ver 10 más →</button>
+  </section>
+
   <section id="vista-buscar" class="vista-ranking vista-buscar" hidden>
     <div class="ranking-cab">
       <button type="button" id="btn-volver-buscar" class="btn-ghost">← Volver</button>
@@ -303,5 +326,6 @@
 
   <script src="config.js"></script>
   <script src="app.js"></script>
+  <script src="palabras.js"></script>
 </body>
 </html>
