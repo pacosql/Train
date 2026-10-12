@@ -40,6 +40,7 @@ import { GAMES_PACK_35 } from "./games-pack-35.js";
 import { GAMES_PACK_36 } from "./games-pack-36.js";
 import { GAMES_PACK_37 } from "./games-pack-37.js";
 import { GAMES_PACK_38 } from "./games-pack-38.js";
+import { GAMES_PACK_39 } from "./games-pack-39.js";
 import {
   getRating,
   getRatingNote,
@@ -100,6 +101,7 @@ const GAMES = [
   ...GAMES_PACK_36,
   ...GAMES_PACK_37,
   ...GAMES_PACK_38,
+  ...GAMES_PACK_39,
 ].map((g, i) => ({ ...g, num: i + 1 }));
 const GAMES_BY_ID = Object.fromEntries(GAMES.map((g) => [g.id, g]));
 

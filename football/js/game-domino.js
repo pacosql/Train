@@ -3,7 +3,7 @@
 // (fracción, dibujo de tarta, decimal o porcentaje). Se toca la ficha que
 // tiene una mitad equivalente al extremo libre y se coloca en la cadena,
 // girada para que esa mitad toque el extremo. Siempre encaja exactamente una.
-import { randInt, pick, shuffle, saveScore } from "./utils.js";
+import { pick, shuffle, saveScore } from "./utils.js";
 
 const gcd = (a, b) => (b ? gcd(b, a % b) : a);
 // Una mitad de ficha es { k: "frac" | "pie" | "dec" | "pct", n, d }: n/d es
