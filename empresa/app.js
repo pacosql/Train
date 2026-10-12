@@ -604,12 +604,14 @@ function botonAccion(texto, clase, alPulsar) {
   return b;
 }
 
-function renderCard(container, row, acciones) {
+function renderCard(container, row, acciones, opciones = {}) {
   const node = document.getElementById("tpl-nombre-card").content.cloneNode(true);
   const card = node.querySelector(".name-card");
-  card.querySelector(".name-text").textContent = row.nombre;
+  card.querySelector(".name-text").textContent = (opciones.pos ? `${opciones.pos}. ` : "") + row.nombre;
   { const ps = pastillaScore(row); if (ps) card.querySelector(".name-text").after(ps); }
   pintaPorque(card.querySelector(".porque"), row);
+  // Ranking de definitivos: las 6 medidas a la vista, como en el ranking de Claude.
+  if (opciones.medidas && row.medidas) card.querySelector(".porque").after(bloqueMedidas(row.medidas));
 
   const notaEl = card.querySelector(".nota-guardada");
   if (row.nota) notaEl.textContent = `📝 ${row.nota}`;
@@ -653,7 +655,7 @@ function renderCard(container, row, acciones) {
   container.appendChild(node);
 }
 
-function pintaLista(idContenedor, idContador, filas, vacio, acciones) {
+function pintaLista(idContenedor, idContador, filas, vacio, acciones, opciones = {}) {
   const contenedor = document.getElementById(idContenedor);
   contenedor.innerHTML = "";
   const n = filas.total ?? filas.length;
@@ -665,7 +667,8 @@ function pintaLista(idContenedor, idContador, filas, vacio, acciones) {
     contenedor.appendChild(p);
     return;
   }
-  for (const row of filas) renderCard(contenedor, row, acciones);
+  const orden = opciones.ranking ? [...filas].sort((a, b) => (b.score ?? -1) - (a.score ?? -1)) : filas;
+  orden.forEach((row, i) => renderCard(contenedor, row, acciones, opciones.ranking ? { medidas: true, pos: i + 1 } : {}));
   if (n > filas.length) {
     const p = document.createElement("p");
     p.className = "empty";
@@ -712,7 +715,7 @@ async function recargarTodo() {
 
     pintaLista("lista-definitivos", "count-definitivos", favoritos, "Todavía no hay ningún definitivo.", [
       { texto: "👍 Bajar a me gusta", clase: "btn-mini", status: "me_gusta" },
-    ]);
+    ], { ranking: true });
     pintaLista("lista-me-gusta", "count-megusta", meGusta, "Nada todavía.", [
       { texto: "⭐ Definitivo", clase: "btn-mini btn-mini-star", status: "favorito" },
       { texto: "👎 Descartar", clase: "btn-mini", status: "no_me_gusta" },

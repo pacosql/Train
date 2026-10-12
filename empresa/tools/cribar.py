@@ -24,6 +24,7 @@ import concurrent.futures as cf
 from datetime import datetime, timezone
 sys.path.insert(0, __file__.rsplit("/", 1)[0])
 from seg import segment, norm, _W as DICC
+from medidas import MEDIDAS, total
 
 URL = "https://dzlhsdpgyxnjwudmrnul.supabase.co/rest/v1"
 ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR6bGhzZHBneXhuand1ZG1ybnVsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk0MzEzMjgsImV4cCI6MjEwNTAwNzMyOH0.B572twWEEJjnNr1SZDrUCHBG9VgIEo9RXyZXyszjhrM"
@@ -190,10 +191,11 @@ def leer_candidatos(path):
         if not line: continue
         if line.startswith("#"): fam = line.split(":", 1)[-1].strip(); continue
         if "|" not in line: continue
-        n, p = line.split("|")[:2]  # un tercer campo opcional lleva las notas (tools/notas.py)
+        partes = line.split("|"); n, p = partes[:2]  # un tercer campo opcional lleva las notas (tools/notas.py)
         n = n.strip()
         if not n or "ñ" in n.lower() or slug(n) in vistos or len(slug(n)) < 3: continue
-        vistos.add(slug(n)); rows.append({"nombre": n, "porque": p.strip(), "metodo": fam})
+        notas = [int(x) for x in partes[2].split()] if len(partes) > 2 and len(partes[2].split()) == 6 else None
+        vistos.add(slug(n)); rows.append({"nombre": n, "porque": p.strip(), "metodo": fam, "notas": notas})
     return rows
 
 def main():
@@ -243,7 +245,9 @@ def main():
             det = "Registro Mercantil / marcas (OEPM, EUIPO, USPTO): a mano con los finalistas. Desarrolladores y apps (App Store ES, Google Play) y YouTube: " + ("; ".join(r["leve"]) if r["leve"] else "nada con ese nombre o parecido") + "."
             orden += 1
             fila = {"nombre": c["nombre"], "status": "pendiente", "tanda": a.tanda, "metodo": c["metodo"], "porque": c["porque"], "com_libre": True,
-                    "dominio_comprobado_at": now, "otros_tld": tld, "notoriedad": 1 if r["leve"] else 0, "colision_detalle": det, "orden": orden, "veto_motivo": None}
+                    "dominio_comprobado_at": now, "otros_tld": tld, "notoriedad": 1 if r["leve"] else 0, "colision_detalle": det, "orden": orden, "veto_motivo": None,
+                    # Nota provisional desde el fichero: el nombre llega a la cola ya puntuado (notas.py pone después las 6 medidas).
+                    "score": total(dict(zip(MEDIDAS, c["notas"]))) if c.get("notas") else None}
             if r["choque"]:
                 fila.update(status="vetado", veto_motivo="; ".join(r["choque"]), notoriedad=2, colision_detalle="Choque: " + "; ".join(r["choque"]) + ". " + det)
                 res["vetados"] += 1

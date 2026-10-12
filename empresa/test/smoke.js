@@ -226,18 +226,32 @@ const ok = (cond, msg) => { if (!cond) throw new Error(msg); };
   await page.waitForSelector(".wrap:not([hidden])");
   console.log("buen nombre OK (nada enviado, solo lectura)");
 
+  // --- ⭐ Definitivos como ranking: posición, nota y 6 medidas ---
+  {
+    const def = page.locator("#lista-definitivos .name-card");
+    if (await def.count()) {
+      ok(/^1\. /.test(await def.first().locator(".name-text").textContent()), "el primer definitivo debe llevar su posición");
+      ok((await def.first().locator(".ref-medida").count()) === 6, "cada definitivo debe enseñar las 6 medidas");
+      console.log("definitivos como ranking OK");
+    }
+  }
+
   // --- 💡 Palabras ---
   escrituras.length = 0;
   await page.click("#btn-palabras");
-  await page.waitForSelector("#vista-palabras:not([hidden]) .pal-op");
+  await page.waitForSelector("#vista-palabras:not([hidden]) .pal-chip");
+  await page.waitForTimeout(800);
   ok((await page.locator("#pal-elegidas .pal-chip").count()) > 0, "deben verse tus palabras elegidas");
-  ok((await page.locator("#pal-lote .pal-op").count()) === 10, "deben proponerse 10 palabras");
+  const nPal = await page.locator("#pal-lote .pal-op").count();
+  ok(nPal <= 10, `deben proponerse como mucho 10 palabras (hay ${nPal})`);
+  if (nPal === 0) { console.log("(no quedan palabras por proponer)"); } else {
   await page.locator("#pal-lote .pal-op").first().click();
   ok((await page.textContent("#pal-siguiente")).includes("Guardar 1"), "el botón debe contar las marcadas");
   await page.click("#pal-siguiente");
   await page.waitForTimeout(1200);
   const pp = escrituras.filter((e) => e.method === "PATCH" && e.url.includes("empresa_palabras")).map((e) => JSON.parse(e.body).status);
-  ok(pp.includes("me_gusta") && pp.includes("no_me_gusta"), "siguiente debe guardar 👍 y descartar el resto");
+  ok(pp.includes("me_gusta") && (nPal === 1 || pp.includes("no_me_gusta")), "siguiente debe guardar 👍 y descartar el resto");
+  }
   await page.click("#btn-volver-palabras");
   await page.waitForSelector(".wrap:not([hidden])");
   console.log("palabras OK (nada enviado, solo lectura)");
