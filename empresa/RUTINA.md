@@ -112,6 +112,12 @@ que ha marcado. Todo desde la raíz del repo `Train`.
   con Azul o Stone como guiño (Azulfox, Azulkite, Inkstone Studios,
   Stonewren Studio). Azul + palabra inglesa corta suele tener el .com
   libre incluso sin «Studio».
+- ⭐ **Azulnorth** (12/10, 21 h): primer definitivo. 🙅 en bloque a
+  material español + palabra inglesa (TrazoTower, PapelCove, TintaPlot…):
+  esa familia queda casi a cero. **Azul + palabra inglesa** es la línea
+  buena. Comentario: «Quevedo Studios o Góngora Studios, busca algo
+  original» → figuras con nombre propio (escritores, científicos) +
+  Studios.
 - Paco revisa ~150 nombres por hora: cada tanda debe cargar **≥ 300** y la
   rutina debe lanzar tanda en cuanto queden < 100 pendientes buenos.
 - La cola nunca debe quedarse vacía: `cribar.py` carga cada 10 aprobados.
