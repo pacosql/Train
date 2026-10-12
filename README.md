@@ -66,3 +66,21 @@ reglas para no interferir con las demás:
    *Deploy static site to Pages* → **Run workflow**, eligiendo la rama.
 4. Cuando termine, la raíz queda en `https://<tu-usuario>.github.io/Train/`
    con enlaces a cada app.
+
+### Orden de la portada
+
+La portada ordena las tarjetas por actividad: arriba lo último que has
+abierto o lo que ha cambiado hace menos, y cada tarjeta dice "Abierta
+hace…" o "Cambios hace…". No hay que hacer nada al añadir una app:
+
+- el deploy ejecuta [`.github/scripts/activity.py`](./.github/scripts/activity.py),
+  que genera `activity.json` con la fecha del último commit de cada
+  carpeta enlazada desde la portada (por eso el checkout baja el
+  historial completo);
+- el mismo script inyecta en cada página `.html` de esas carpetas una
+  línea que guarda en `localStorage` (`train_activity`, compartido por
+  todo el origen) cuándo se abrió la app, también si entras desde el
+  icono del móvil. Solo cambia la copia publicada, no el repo.
+
+El uso se guarda en el navegador de cada dispositivo, así que el orden
+por "Abierta" es el de ese móvil u ordenador.

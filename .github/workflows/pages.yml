@@ -23,6 +23,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # Historial completo: la portada se ordena por el último cambio
+          # de cada app (git log por carpeta).
+          fetch-depth: 0
       - name: Stamp build id
         run: |
           BUILD_ID="${GITHUB_SHA::7}"
@@ -35,6 +39,8 @@ jobs:
           # mates10/fuentes es el archivo interno de fuentes (material con
           # derechos de terceros): vive en el repo privado, nunca en la web.
           rm -rf mates10/fuentes mates10/tools
+      - name: App activity for the home page
+        run: python3 .github/scripts/activity.py
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact

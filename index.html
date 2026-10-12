@@ -14,6 +14,7 @@
       --muted: #5b6b63;
       --accent: #3ecf8e;
       --border: #e2e8e5;
+      --when: #17804f;
       padding-top: env(safe-area-inset-top, 0px);
       padding-bottom: env(safe-area-inset-bottom, 0px);
     }
@@ -24,6 +25,7 @@
         --text: #eaf3ee;
         --muted: #93a69c;
         --border: #24322b;
+        --when: #3ecf8e;
       }
     }
     * { box-sizing: border-box; }
@@ -49,6 +51,7 @@
     }
     a.app-card .name { font-weight: 700; font-size: 1.05rem; }
     a.app-card .desc { color: var(--muted); font-size: 0.85rem; margin-top: 2px; }
+    a.app-card .when { color: var(--when); font-size: 0.75rem; font-weight: 600; margin-top: 6px; }
     .build-id {
       text-align: center;
       font-size: 0.7rem;
@@ -61,7 +64,7 @@
 <body>
   <div class="wrap">
     <h1>🧪 Train</h1>
-    <p class="sub">Hosting de pruebas de concepto. Cada app vive en su propia carpeta, con su propio prefijo de tablas en Supabase.</p>
+    <p class="sub">Hosting de pruebas de concepto. Cada app vive en su propia carpeta, con su propio prefijo de tablas en Supabase. Arriba, las que has usado o han cambiado hace menos.</p>
 
     <a class="app-card" href="weights/">
       <div class="name">🏋️ Weights</div>
@@ -137,6 +140,68 @@
   </div>
 
   <script>
+    // Orden por actividad: lo último que has abierto o que ha cambiado,
+    // arriba. "Abierta" sale de localStorage (train_activity), que cada app
+    // rellena al abrirse (lo inyecta el deploy, ver
+    // .github/scripts/activity.py) y también esta portada al pulsar una
+    // tarjeta. "Cambios" sale de activity.json, que el deploy genera con
+    // la fecha del último commit de cada carpeta.
+    (function () {
+      const KEY = "train_activity";
+      const readOpened = () => { try { return JSON.parse(localStorage.getItem(KEY) || "{}"); } catch (e) { return {}; } };
+      const appOf = (card) => card.getAttribute("href").replace(/\/$/, "");
+      const cards = [...document.querySelectorAll("a.app-card")];
+      const anchor = document.querySelector(".build-id");
+
+      for (const card of cards) {
+        card.addEventListener("click", () => {
+          const a = readOpened(); a[appOf(card)] = Date.now();
+          try { localStorage.setItem(KEY, JSON.stringify(a)); } catch (e) {}
+        });
+      }
+
+      function ago(ts) {
+        const min = Math.round((Date.now() - ts) / 60000);
+        if (min < 2) return "hace un momento";
+        if (min < 60) return `hace ${min} min`;
+        const h = Math.round(min / 60);
+        if (h < 24) return `hace ${h} h`;
+        const d = Math.round(h / 24);
+        if (d === 1) return "ayer";
+        if (d < 30) return `hace ${d} días`;
+        return new Date(ts).toLocaleDateString("es-ES", { day: "numeric", month: "short", year: "numeric" });
+      }
+
+      function render(changes) {
+        const opened = readOpened();
+        const info = cards.map((card, i) => {
+          const app = appOf(card);
+          const o = Number(opened[app]) || 0;
+          const c = changes[app] ? Date.parse(changes[app]) || 0 : 0;
+          return { card, i, o, c, ts: Math.max(o, c) };
+        });
+        // Estable: sin datos, se respeta el orden original del HTML.
+        info.sort((a, b) => b.ts - a.ts || a.i - b.i);
+        for (const { card, o, c } of info) {
+          let when = card.querySelector(".when");
+          if (!o && !c) { if (when) when.remove(); }
+          else {
+            if (!when) { when = document.createElement("div"); when.className = "when"; card.appendChild(when); }
+            when.textContent = o >= c ? `Abierta ${ago(o)}` : `Cambios ${ago(c)}`;
+          }
+          anchor.before(card);
+        }
+      }
+
+      render({});
+      fetch("activity.json", { cache: "no-store" })
+        .then((r) => (r.ok ? r.json() : {}))
+        .then((d) => render((d && d.changes) || {}))
+        .catch(() => {});
+      // Al volver atrás desde una app (bfcache) el orden se refresca.
+      window.addEventListener("pageshow", (e) => { if (e.persisted) location.reload(); });
+    })();
+
     // Limpia cualquier service worker/caché huérfano que haya quedado
     // registrado en la raíz de versiones anteriores del hosting.
     if ("serviceWorker" in navigator) {
