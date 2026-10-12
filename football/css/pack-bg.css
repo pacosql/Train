@@ -1,0 +1,127 @@
+/* Pack BG — "Anterior y posterior" (.an-), "Doble y mitad" (.dm-),
+   "Ordinales" (.or-), "La tabla del 100" (.tc-) y "Unidades, decenas y
+   centenas" (.dp-). Cinco ejercicios "como en el cuaderno": hoja
+   cuadriculada, casillas que se tocan y se rellenan con el teclado
+   numérico del núcleo; activa = borde acento, bien = verde, mal = rojo
+   con la cifra correcta al lado. Todo con variables del tema. */
+
+/* ---------- común: cuerpo compacto, 💡 legible, hoja cuadriculada ---------- */
+.game-body.an-body, .game-body.dm-body, .game-body.or-body, .game-body.tc-body, .game-body.dp-body {
+  justify-content: flex-start; padding: 12px 12px 10px;
+}
+.prompt.an-prompt, .prompt.dm-prompt, .prompt.or-prompt, .prompt.tc-prompt, .prompt.dp-prompt {
+  font-size: 1.1rem; margin: 0 0 8px; line-height: 1.3;
+}
+.prompt.dm-prompt b, .prompt.or-prompt b, .prompt.dp-prompt b { color: var(--accent); }
+.feedback.an-feedback, .feedback.dm-feedback, .feedback.or-feedback, .feedback.tc-feedback, .feedback.dp-feedback {
+  margin-top: 8px; line-height: 1.35; text-align: center; max-width: 350px; font-size: 0.8rem; min-height: 2.2rem;
+}
+.keypad.an-keypad, .keypad.dm-keypad, .keypad.or-keypad, .keypad.tc-keypad, .keypad.dp-keypad { margin-top: 8px; max-width: 240px; }
+.keypad.an-keypad .keypad-key, .keypad.dm-keypad .keypad-key, .keypad.or-keypad .keypad-key,
+.keypad.tc-keypad .keypad-key, .keypad.dp-keypad .keypad-key { padding: 10px 8px; font-size: 1rem; }
+.keypad .keypad-key.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+/* Hoja de cuaderno: cuadrícula tenue con el color del borde del tema */
+.an-cuaderno, .dm-cuaderno, .or-cuaderno, .tc-cuaderno, .dp-cuaderno {
+  width: 100%; max-width: 352px; border: 1px solid var(--border); border-radius: 10px;
+  padding: 12px 8px; display: flex; flex-direction: column; align-items: center; gap: 8px;
+  background-color: var(--bg);
+  background-image:
+    repeating-linear-gradient(0deg, var(--border) 0 1px, transparent 1px 22px),
+    repeating-linear-gradient(90deg, var(--border) 0 1px, transparent 1px 22px);
+  background-position: 0 0;
+}
+
+/* Casillas compartidas */
+.an-slot, .dm-slot, .or-slot, .tc-slot, .dp-slot {
+  font: inherit; font-weight: 800; color: var(--text); cursor: pointer;
+  background: var(--card); border: 2px solid var(--muted); border-radius: 8px;
+  display: flex; align-items: center; justify-content: center; gap: 3px; padding: 0;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+}
+.an-slot.active, .dm-slot.active, .or-slot.active, .tc-slot.active, .dp-slot.active {
+  border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+.an-slot.good, .dm-slot.good, .or-slot.good, .tc-slot.good, .dp-slot.good { background: var(--good); border-color: var(--good); color: #fff; }
+.an-slot.bad, .dm-slot.bad, .or-slot.bad, .tc-slot.bad, .dp-slot.bad { background: var(--danger); border-color: var(--danger); color: #fff; }
+.an-slot s, .dm-slot s, .or-slot s, .tc-slot s, .dp-slot s { font-size: 0.6em; opacity: 0.85; font-weight: 600; }
+/* la cifra correcta en verde al lado de la tachada */
+.an-slot.bad em, .dm-slot.bad em, .or-slot.bad em, .tc-slot.bad em, .dp-slot.bad em {
+  font-style: normal; background: var(--good); border-radius: 4px; padding: 0 3px; line-height: 1.2;
+}
+.an-next, .dm-next, .or-next, .tc-next, .dp-next { margin-top: 6px; padding: 8px 16px; font-size: 0.85rem; }
+
+/* ---------- Anterior y posterior ---------- */
+.an-row { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 6px 0; }
+.an-slot { width: 86px; height: 52px; font-size: 1.35rem; }
+.an-center { font-size: 2.3rem; font-weight: 800; color: var(--text); min-width: 96px; text-align: center; line-height: 1; }
+.an-arrows { display: flex; justify-content: center; gap: 70px; font-size: 0.78rem; color: var(--muted); font-weight: 700; }
+.an-arrows span { min-width: 86px; text-align: center; }
+
+/* ---------- Doble y mitad ---------- */
+.dm-dots { display: flex; flex-direction: column; gap: 10px; align-items: center; min-height: 44px; width: 100%; }
+.dm-block { display: grid; grid-template-rows: repeat(2, 13px); grid-auto-flow: column; grid-auto-columns: 13px; gap: 3px; position: relative; }
+.dm-block i { display: block; width: 13px; height: 13px; border-radius: 50%; background: var(--accent); }
+.dm-block.dm-copy i { background: var(--accent-2); }
+.dm-block.dm-copy { animation: dm-pop 0.4s ease-out; }
+.dm-block.dm-split::after {
+  content: ""; position: absolute; left: -8px; right: -8px; top: 50%; height: 0;
+  border-top: 3px dashed var(--danger); transform: translateY(-1.5px);
+}
+.dm-nodots { font-size: 2.4rem; font-weight: 800; color: var(--accent); padding: 8px 0; }
+.dm-line { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 1.25rem; font-weight: 700; flex-wrap: wrap; }
+.dm-slot { width: 84px; height: 50px; font-size: 1.35rem; }
+@keyframes dm-pop { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+
+/* ---------- Ordinales ---------- */
+.or-track { display: flex; align-items: flex-end; justify-content: center; gap: 1px; width: 100%; padding: 4px 0; }
+.or-track.or-left { flex-direction: row-reverse; }
+.or-flag { font-size: 1.6rem; line-height: 1; padding: 0 2px 8px; }
+.or-cuaderno { padding: 10px 4px; }
+.or-animal {
+  font: inherit; background: transparent; border: 2px solid transparent; border-radius: 10px; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; padding: 2px 0; min-width: 29px; gap: 2px;
+}
+.or-animal .or-emoji { font-size: 1.45rem; line-height: 1.15; }
+.or-animal .or-ord { font-size: 0.56rem; font-weight: 800; color: var(--muted); min-height: 0.8rem; font-variant-numeric: tabular-nums; }
+.or-animal.or-ask { background: color-mix(in srgb, var(--accent) 18%, transparent); border-color: var(--accent); }
+.or-animal.good { border-color: var(--good); background: color-mix(in srgb, var(--good) 22%, transparent); }
+.or-animal.bad { border-color: var(--danger); background: color-mix(in srgb, var(--danger) 22%, transparent); }
+.or-animal.good .or-ord { color: var(--good); }
+.or-animal.bad .or-ord { color: var(--danger); }
+.or-ground { width: 100%; height: 0; border-top: 3px solid var(--muted); opacity: 0.5; margin-top: -4px; }
+.or-line { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 1.1rem; font-weight: 700; }
+.or-slot { width: 72px; height: 48px; font-size: 1.3rem; }
+.or-tap { font-size: 0.8rem; color: var(--muted); padding: 10px 0 0; min-height: 110px; display: flex; align-items: flex-start; text-align: center; }
+
+/* ---------- La tabla del 100 ---------- */
+.tc-cuaderno { padding: 10px 6px; }
+.tc-grid { display: grid; grid-template-columns: repeat(10, 31px); gap: 2px; }
+.tc-cell {
+  height: 31px; display: flex; align-items: center; justify-content: center;
+  font-size: 0.78rem; font-weight: 700; color: var(--text); background: var(--card); border: 1px solid var(--border); border-radius: 5px;
+  font-variant-numeric: tabular-nums;
+}
+.tc-cell.tc-ctx { opacity: 0.55; }
+.tc-cell.tc-hidden { background: color-mix(in srgb, var(--muted) 22%, var(--card)); border-style: dashed; }
+.tc-slot { width: 31px; height: 31px; font-size: 0.78rem; border-radius: 5px; border-width: 2px; }
+.tc-slot.bad { flex-direction: column; gap: 1px; line-height: 1; font-size: 0.6rem; }
+.tc-slot.bad s { font-size: 1em; }
+.tc-slot.bad em { padding: 0 2px; }
+.tc-legend { font-size: 0.72rem; color: var(--muted); display: flex; gap: 14px; }
+
+/* ---------- Unidades, decenas y centenas ---------- */
+.dp-table { display: grid; gap: 0; border: 2px solid var(--text); border-radius: 6px; overflow: hidden; background: var(--card); }
+.dp-table span { display: flex; align-items: center; justify-content: center; width: 54px; height: 32px; border-left: 2px solid var(--text); font-weight: 800; }
+.dp-table span:nth-child(1), .dp-table span.dp-first { border-left: none; }
+.dp-table .dp-h { background: color-mix(in srgb, var(--accent) 16%, var(--card)); color: var(--accent); font-size: 0.82rem; border-bottom: 2px solid var(--text); }
+.dp-table .dp-d { font-size: 1.4rem; font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+.dp-table .dp-d.dp-empty { color: var(--muted); font-weight: 400; }
+.dp-table .dp-d.good { color: var(--good); }
+.dp-eq { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 5px 6px; font-size: 1.15rem; font-weight: 700; padding: 4px 0; max-width: 100%; }
+.dp-eq .dp-num { font-size: 1.5rem; font-weight: 800; color: var(--accent); font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+.dp-eq .dp-u { color: var(--muted); font-size: 0.95rem; font-weight: 700; }
+.dp-slot { width: 46px; height: 44px; font-size: 1.15rem; }
+.dp-slot.dp-wide { width: 76px; }
+.dp-slot.dp-xwide { width: 104px; }
+.dp-slot.bad { font-size: 0.95rem; }
