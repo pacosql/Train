@@ -127,6 +127,10 @@ que ha marcado. Todo desde la raíz del repo `Train`.
   palabra corta (4-5 letras) + **Studios** en plural. Tanda 15 lo explora
   (palabra española corta / inglesa corta + studios, y variantes con
   «Paco»).
+- ⭐ **Tintastudios** (segundo definitivo) y 👍 Brujulastudios, PacoNorth,
+  ZorrillaLabs. Palabra española de escribir/dibujar/navegar + studios es
+  la línea fuerte junto con Azul + astro. Las de 4-5 letras + studios
+  suelen tener el .com cogido: prueba también palabras de 6-9 letras.
 - Paco revisa ~150 nombres por hora: cada tanda debe cargar **≥ 300** y la
   rutina debe lanzar tanda en cuanto queden < 100 pendientes buenos.
 - La cola nunca debe quedarse vacía: `cribar.py` carga cada 10 aprobados.
