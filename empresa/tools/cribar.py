@@ -190,7 +190,7 @@ def leer_candidatos(path):
         if not line: continue
         if line.startswith("#"): fam = line.split(":", 1)[-1].strip(); continue
         if "|" not in line: continue
-        n, p = line.split("|", 1)
+        n, p = line.split("|")[:2]  # un tercer campo opcional lleva las notas (tools/notas.py)
         n = n.strip()
         if not n or "ñ" in n.lower() or slug(n) in vistos or len(slug(n)) < 3: continue
         vistos.add(slug(n)); rows.append({"nombre": n, "porque": p.strip(), "metodo": fam})

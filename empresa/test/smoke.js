@@ -147,6 +147,18 @@ const ok = (cond, msg) => { if (!cond) throw new Error(msg); };
     console.log(`lote a pantalla completa OK (botón en ${Math.round(r.boton)}px de 664, nombres en una línea)`);
   }
 
+  // --- 🙅 «Nada de esto»: marcar uno en el lote lo manda como status «nada» ---
+  {
+    escrituras.length = 0;
+    await page.locator("#lote-area .marca-nada").first().click();
+    ok((await page.textContent("#btn-siguiente")).includes("🙅 1"), "el botón del lote debe contar los 🙅");
+    await page.click("#btn-siguiente");
+    await page.waitForTimeout(1500);
+    const nada = escrituras.find((e) => e.method === "PATCH" && JSON.parse(e.body).status === "nada");
+    ok(nada, "🙅 debe guardar status «nada»");
+    console.log("🙅 nada de esto OK (nada enviado)");
+  }
+
   // --- «← Atrás» vuelve a los menús; cambiar a 1 en 1 ---
   escrituras.length = 0;
   await page.click("#btn-atras-lote");

@@ -437,6 +437,7 @@ function pintaUno() {
   };
   node.querySelector(".btn-dislike").addEventListener("click", decidir("no_me_gusta"));
   node.querySelector(".btn-star").addEventListener("click", decidir("favorito"));
+  node.querySelector(".btn-nada").addEventListener("click", decidir("nada"));
   node.querySelector(".btn-like").addEventListener("click", decidir("me_gusta"));
   area.appendChild(node);
 }
@@ -468,13 +469,15 @@ function pintaLote() {
   btn.hidden = false;
   const n = Math.min(TAM_LOTE, cola.length);
   const pintaBoton = () => {
-    const marcados = lote.filter((it) => it.marca).length;
+    const nNada = lote.filter((it) => it.marca === "nada").length;
+    const marcados = lote.filter((it) => it.marca && it.marca !== "nada").length;
     btn.classList.toggle("con-marcas", marcados > 0);
     btn.textContent = conversacion
       ? (marcados === 0 ? `👎 ${n} · siguiente` : `👍 ${marcados} · siguiente`)
       : marcados === 0
         ? `👎 No me gustan los ${n}`
         : `Guardar ${marcados} 👍 y descartar ${n - marcados} →`;
+    if (nNada && !conversacion) btn.textContent += ` (🙅 ${nNada})`;
   };
 
   cola.slice(0, TAM_LOTE).forEach((row, idx) => {
@@ -503,7 +506,12 @@ function pintaLote() {
     const bStar = fila.querySelector(".marca-star");
     const gLike = fila.querySelector(".grande-like");
     const gStar = fila.querySelector(".grande-star");
+    const bNada = fila.querySelector(".marca-nada");
+    const gNada = fila.querySelector(".grande-nada");
     const pinta = () => {
+      bNada.setAttribute("aria-pressed", String(item.marca === "nada"));
+      gNada.classList.toggle("activo", item.marca === "nada");
+      fila.classList.toggle("nada", item.marca === "nada");
       bLike.setAttribute("aria-pressed", String(item.marca === "me_gusta"));
       bStar.setAttribute("aria-pressed", String(item.marca === "favorito"));
       gLike.classList.toggle("activo", item.marca === "me_gusta");
@@ -517,6 +525,8 @@ function pintaLote() {
     gLike.addEventListener("click", alterna("me_gusta"));
     bStar.addEventListener("click", alterna("favorito"));
     gStar.addEventListener("click", alterna("favorito"));
+    bNada.addEventListener("click", alterna("nada"));
+    gNada.addEventListener("click", alterna("nada"));
     item.marcar = (m) => { item.marca = m; pinta(); };
 
     lote.push(item);
@@ -549,7 +559,7 @@ async function siguienteLote() {
   btn.disabled = true;
   const ahora = new Date().toISOString();
   try {
-    const grupos = { me_gusta: [], favorito: [], no_me_gusta: [] };
+    const grupos = { me_gusta: [], favorito: [], no_me_gusta: [], nada: [] };
     for (const it of lote) {
       const nota = it.campo.value.trim();
       const status = it.marca || "no_me_gusta";
@@ -680,12 +690,13 @@ async function pintaSugerencias() {
 
 async function recargarTodo() {
   try {
-    const [pendientes, meGusta, favoritos, descartados, vetados] = await Promise.all([
+    const [pendientes, meGusta, favoritos, descartados, vetados, nada] = await Promise.all([
       fetchIdeas("pendiente", "orden.asc.nullslast,id.asc", TAM_LOTE),
       fetchIdeas("me_gusta", "score.desc.nullslast,decidido_at.desc.nullslast"),
       fetchIdeas("favorito", "score.desc.nullslast,decidido_at.desc.nullslast"),
       fetchIdeas("no_me_gusta", "decidido_at.desc.nullslast", 100),
       fetchIdeas("vetado", "id.desc", 200),
+      fetchIdeas("nada", "decidido_at.desc.nullslast", 200),
     ]);
 
     cola = pendientes;
@@ -693,7 +704,7 @@ async function recargarTodo() {
     const referencias = await apiGet(`${TABLE}?status=in.(vetado,pendiente)&medidas=not.is.null&select=*`);
     gustados = [...favoritos, ...meGusta, ...referencias];
     if (!document.getElementById("vista-ranking").hidden) pintaRanking();
-    const decididos = meGusta.total + favoritos.total + descartados.total;
+    const decididos = meGusta.total + favoritos.total + descartados.total + nada.total;
     const total = decididos + pendientes.total;
     document.getElementById("decididos-count").textContent = decididos;
     document.getElementById("barra-progreso").style.width = total ? `${(100 * decididos) / total}%` : "0%";
@@ -708,6 +719,10 @@ async function recargarTodo() {
     ]);
     pintaLista("lista-descartados", "count-descartados", descartados, "Ninguno todavía.", [
       { texto: "👍 Me gusta", clase: "btn-mini btn-mini-like", status: "me_gusta" },
+      { texto: "↩️ A la cola", clase: "btn-mini", status: "pendiente" },
+    ]);
+    pintaLista("lista-nada", "count-nada", nada, "Ninguno.", [
+      { texto: "👎 Solo este no", clase: "btn-mini", status: "no_me_gusta" },
       { texto: "↩️ A la cola", clase: "btn-mini", status: "pendiente" },
     ]);
     pintaLista("lista-vetados", "count-vetados", vetados, "Ninguno.", [
@@ -809,6 +824,7 @@ const ESTADOS = {
   me_gusta: "👍 Te gusta",
   favorito: "⭐ Definitivo",
   no_me_gusta: "👎 Lo descartaste tú",
+  nada: "🙅 Nada de este estilo (lo dijiste tú)",
   vetado: "🚫 Vetado por Claude",
 };
 

@@ -66,7 +66,7 @@
           <span id="hueco-deshacer"></span>
           <button type="button" id="btn-conversacion" class="btn-conv" aria-pressed="false" hidden>🎙️ Conversación</button>
         </div>
-        <p class="lote-ayuda">Toca un nombre para ver por qué, marca 👍/⭐ y pulsa el botón: el resto van a «no me gusta». Con 🎙️ Conversación di «el 3 y el 5, siguiente».</p>
+        <p class="lote-ayuda">Toca un nombre para ver por qué, marca 👍/⭐ (o 🙅 si no quieres nada de ese estilo) y pulsa el botón: el resto van a «no me gusta». Con 🎙️ Conversación di «el 3 y el 5, siguiente».</p>
       </div>
 
       <div class="undo-row">
@@ -104,6 +104,14 @@
       <details>
         <summary><span class="sec-title">👎 Descartados <span id="count-descartados" class="count"></span></span></summary>
         <div id="lista-descartados" class="name-list"></div>
+      </details>
+    </section>
+
+    <section>
+      <details>
+        <summary><span class="sec-title">🙅 Nada de esto <span id="count-nada" class="count"></span></span></summary>
+        <p class="sub">Estilos que no te gustan nada (p. ej. nombres que terminan en «Apps»). No es un veto: la rutina baja mucho el peso de ese estilo y lo propone solo de vez en cuando; cada vez que lo repitas, menos aún. Un 👎 normal lo baja un poco.</p>
+        <div id="lista-nada" class="name-list"></div>
       </details>
     </section>
 
@@ -231,6 +239,7 @@
       </div>
       <div class="swipe-actions">
         <button class="btn-dislike" type="button">👎 No</button>
+        <button class="btn-nada" type="button" title="No quiero nada de este estilo">🙅 Nada</button>
         <button class="btn-star" type="button">⭐ Definitivo</button>
         <button class="btn-like" type="button">👍 Me gusta</button>
       </div>
@@ -251,12 +260,14 @@
                   </button>
         <button type="button" class="marca marca-like" aria-pressed="false" aria-label="Me gusta">👍</button>
         <button type="button" class="marca marca-star" aria-pressed="false" aria-label="Definitivo">⭐</button>
+        <button type="button" class="marca marca-nada" aria-pressed="false" aria-label="No quiero nada de este estilo">🙅</button>
       </div>
       <div class="lote-detalle" hidden>
         <p class="porque"></p>
         <div class="lote-grandes">
           <button type="button" class="grande grande-like">👍 Me gusta</button>
           <button type="button" class="grande grande-star">⭐ Definitivo</button>
+          <button type="button" class="grande grande-nada">🙅 Nada de esto</button>
         </div>
         <div class="nota-row">
           <textarea class="nota-input" rows="1" maxlength="1000" placeholder="comentario (opcional)" autocomplete="off"></textarea>
