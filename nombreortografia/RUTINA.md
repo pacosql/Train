@@ -94,6 +94,21 @@ nuevo de lo que aprender.
     OrtografiaCervantes, DesocupadoLector, HolaQueHaces (canales/marcas).
   - Si gustan, seguir con más chistes de homófonos y más citas literarias.
 
+- **Tanda 3 revisada (12/10): 👎 a TODO** lo «cultural»: Quijote (0/15),
+  chistes y homófonos (0/12), vengadores (0/10), sinónimos (0/10), RAE y
+  crisol, escritores, Nebrija, «faltas de ortografía» entero, ortografía
+  repetida. → Peso casi a cero: no más citas, chistes ni frases largas.
+- Lo que SÍ gusta (tanda 2, 18 👍): **«Ortografía» + UNA palabra corta,
+  sencilla y positiva**: Diez, DiezEnOrtografia, Sobresaliente, Aprobada,
+  Ok, Bien, Top, Max, Rápida, CeroFaltas, Entreno, Gimnasio, Práctica,
+  Diaria, Duelo, Copa, Ebau, Opos. 👎 a Reto, Racha, Liga, Al día, Quiz,
+  Opositor, Selectividad, SinTachones, Perfecta, Impecable…
+- Tanda 4 (12/10): 50 de «Ortografía + palabra corta» (nota: Nueve,
+  Matrícula, Apto, Plaza, Medalla; adjetivo: Genial, Segura, Veloz, Turbo;
+  entrenar: Rutina, Repaso, Sprint, Aula; juego: Torneo, Ronda, Récord).
+  Se quedaron sin cargar por el tope (siguiente tanda si sigue el gusto):
+  Orto + palabra (OrtoDiez, OrtoCopa, OrtoApto…) y Tilde + palabra.
+
 ## Programación
 
 - Cron de sesión cada 15 min (CronCreate) + Routine horaria de respaldo que
