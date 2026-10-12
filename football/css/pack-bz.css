@@ -1,0 +1,239 @@
+/* Pack bz: "Bingo de las tablas" (.bg-), "Dominó de fracciones" (.dn-),
+   "El triángulo de Pascal" (.pc2-), "La suma de Gauss" (.ga2-) y "Trucos
+   de cálculo mental" (.tk-). Los objetos de verdad (bola y cartón de
+   bingo, fichas de dominó, pósit) tienen su color propio en los dos temas;
+   todo lo demás usa las variables del tema. */
+
+/* ---------- común: cuerpo compacto, 💡 legible, teclado, hoja cuadriculada ---------- */
+.game-body.bg-body, .game-body.dn-body, .game-body.pc2-body, .game-body.ga2-body, .game-body.tk-body {
+  justify-content: flex-start; padding: 12px 12px 10px;
+}
+.prompt.bg-prompt, .prompt.dn-prompt, .prompt.pc2-prompt, .prompt.ga2-prompt, .prompt.tk-prompt {
+  font-size: 1.1rem; margin: 0 0 8px; line-height: 1.3;
+}
+.prompt.pc2-prompt i { font-family: Georgia, "Times New Roman", serif; }
+.feedback.bg-feedback, .feedback.dn-feedback, .feedback.pc2-feedback, .feedback.ga2-feedback, .feedback.tk-feedback {
+  margin-top: 8px; line-height: 1.35; text-align: center; max-width: 350px; font-size: 0.8rem; min-height: 2.2rem;
+}
+.keypad.pc2-keypad, .keypad.ga2-keypad, .keypad.tk-keypad { margin-top: 10px; max-width: 240px; }
+.keypad.pc2-keypad .keypad-key, .keypad.ga2-keypad .keypad-key, .keypad.tk-keypad .keypad-key { padding: 10px 8px; font-size: 1rem; }
+.keypad.pc2-keypad .keypad-key.primary, .keypad.ga2-keypad .keypad-key.primary, .keypad.tk-keypad .keypad-key.primary {
+  background: var(--accent); border-color: var(--accent); color: #fff;
+}
+.bg-next, .dn-next, .pc2-next, .ga2-next, .tk-next { visibility: hidden; margin-top: 4px; padding: 6px 16px; }
+.bg-next.show, .dn-next.show, .pc2-next.show, .ga2-next.show, .tk-next.show { visibility: visible; }
+
+/* Hoja de cuaderno: cuadrícula tenue con el color del borde del tema */
+.pc2-cuaderno, .ga2-cuaderno, .tk-cuaderno {
+  width: 100%; max-width: 352px; border: 1px solid var(--border); border-radius: 10px;
+  padding: 10px 6px; background-color: var(--bg);
+  background-image:
+    repeating-linear-gradient(0deg, var(--border) 0 1px, transparent 1px 20px),
+    repeating-linear-gradient(90deg, var(--border) 0 1px, transparent 1px 20px);
+}
+
+/* Casillas que se tocan y se rellenan: activa = acento, bien = verde, mal = rojo con la buena al lado */
+.pc2-slot, .ga2-slot, .tk-slot {
+  font: inherit; font-weight: 800; color: var(--text); background: var(--card);
+  border: 2px dashed var(--muted); border-radius: 6px; cursor: pointer; padding: 0 4px;
+  display: inline-grid; place-items: center; font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.pc2-slot.active, .ga2-slot.active, .tk-slot.active {
+  border: 2px solid var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+.pc2-slot.good, .ga2-slot.good, .tk-slot.good { border: 2px solid var(--good); color: var(--good); }
+.pc2-slot.bad, .ga2-slot.bad, .tk-slot.bad { border: 2px solid var(--danger); color: var(--good); display: inline-flex; gap: 3px; align-items: center; }
+.pc2-slot s, .ga2-slot s, .tk-slot s { color: var(--danger); font-size: 0.75em; }
+
+/* ---------- Bingo de las tablas ---------- */
+.bg-top { display: flex; align-items: center; gap: 12px; width: 100%; max-width: 320px; margin: 4px 0 12px; }
+.bg-ball { position: relative; width: 116px; height: 116px; flex: none; display: grid; place-items: center; }
+.bg-ball::before {
+  content: ""; position: absolute; inset: 9px; border-radius: 50%;
+  background: radial-gradient(circle at 34% 28%, #ffffff 0 22%, #ecebf3 55%, #bdb9d2 100%);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.28);
+}
+.bg-ring { position: absolute; inset: 0; transform: rotate(-90deg); }
+.bg-ring circle { fill: none; stroke-width: 6; }
+.bg-ring-bg { stroke: var(--border); }
+.bg-ring-fg { stroke: var(--accent-2); stroke-linecap: round; stroke-dasharray: 351.86; stroke-dashoffset: 0; }
+@keyframes bg-tick { 70% { stroke: var(--accent-2); } to { stroke-dashoffset: 351.86; stroke: var(--danger); } }
+.bg-op {
+  position: relative; width: 84px; height: 84px; border-radius: 50%; background: #fff; color: #201a3a;
+  border: 4px solid var(--accent); display: grid; place-items: center;
+  font-weight: 900; font-size: 1.02rem; white-space: nowrap; letter-spacing: -0.02em;
+}
+.bg-ball.bg-roll { animation: bg-roll 0.45s ease-out; }
+@keyframes bg-roll { from { transform: translateX(-70px) rotate(-220deg) scale(0.6); opacity: 0; } }
+.bg-side { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+.bg-count { font-size: 0.8rem; font-weight: 800; color: var(--muted); }
+.bg-past { display: flex; flex-wrap: wrap; gap: 4px; max-height: 58px; overflow: hidden; }
+.bg-mini {
+  width: 26px; height: 26px; border-radius: 50%; background: #fff; color: #201a3a;
+  border: 2px solid var(--good); font-size: 0.66rem; font-weight: 800; display: grid; place-items: center;
+}
+.bg-mini.bad { border-color: var(--danger); }
+
+.bg-carton {
+  position: relative; width: 100%; max-width: 320px; border-radius: 12px; padding: 6px 8px 8px;
+  background: color-mix(in srgb, var(--accent) 16%, var(--card)); border: 3px solid var(--accent);
+}
+.bg-head {
+  display: flex; justify-content: space-between; align-items: baseline; padding: 0 2px 5px;
+  font-size: 0.72rem; font-weight: 700; color: color-mix(in srgb, var(--accent) 55%, var(--text));
+}
+.bg-head b { font-size: 0.95rem; letter-spacing: 0.25em; }
+.bg-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; }
+.bg-cell {
+  position: relative; height: 74px; border-radius: 6px; cursor: pointer;
+  background: #fffdf6; color: #201a3a; border: 1px solid #d9d4c3;
+  font: inherit; font-size: 1.9rem; font-weight: 900; font-variant-numeric: tabular-nums;
+}
+.bg-cell:active { transform: scale(0.96); }
+/* La ficha que tapa el número cantado */
+.bg-cell.marked::after {
+  content: ""; position: absolute; left: 50%; top: 50%; width: 58px; height: 58px; border-radius: 50%;
+  transform: translate(-50%, -50%); background: color-mix(in srgb, var(--accent-2) 55%, transparent);
+  animation: bg-chip 0.25s ease-out;
+}
+.bg-cell.bg-missed::after { background: color-mix(in srgb, var(--danger) 22%, transparent); border: 2px dashed var(--danger); box-sizing: border-box; }
+@keyframes bg-chip { from { transform: translate(-50%, -50%) scale(1.8); opacity: 0; } }
+.bg-cell.bg-line { background: #ffeeb0; }
+.bg-cell.bg-right { box-shadow: inset 0 0 0 3px var(--good); }
+.bg-cell.bg-wrong { box-shadow: inset 0 0 0 3px var(--danger); animation: bg-shake 0.3s; }
+@keyframes bg-shake { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+.bg-stamp {
+  position: absolute; inset: 0; display: grid; place-items: center; pointer-events: none; opacity: 0;
+  font-size: 2.1rem; font-weight: 900; color: var(--danger); letter-spacing: 0.04em;
+  text-shadow: 0 0 6px #fff, 0 0 3px #fff, 0 0 1px #fff;
+}
+.bg-stamp.show { animation: bg-stamp 1.6s ease forwards; }
+@keyframes bg-stamp {
+  0% { opacity: 0; transform: scale(2) rotate(-14deg); }
+  15%, 75% { opacity: 1; transform: scale(1) rotate(-10deg); }
+  100% { opacity: 0; transform: scale(1) rotate(-10deg); }
+}
+.bg-none {
+  margin-top: 10px; width: 100%; max-width: 320px; padding: 13px; border-radius: 12px; cursor: pointer;
+  border: 2px solid var(--border); background: var(--bg); color: var(--text); font: inherit; font-weight: 800; font-size: 1rem;
+}
+.bg-none.bg-right { border-color: var(--good); background: color-mix(in srgb, var(--good) 18%, var(--bg)); }
+.bg-none.bg-wrong { border-color: var(--danger); background: color-mix(in srgb, var(--danger) 15%, var(--bg)); }
+
+/* ---------- Dominó de fracciones ---------- */
+.dn-mesa {
+  width: 100%; max-width: 352px; border-radius: 12px; padding: 16px 6px; overflow: hidden;
+  background: radial-gradient(ellipse at 50% 40%, #2f8a5b, #1d6542);
+  box-shadow: inset 0 0 0 3px #164d33;
+}
+.dn-chain { display: flex; justify-content: flex-end; align-items: center; gap: 3px; min-height: 70px; }
+.dn-tile {
+  position: relative; display: flex; flex: none; color: #2a2420; border-radius: 9px;
+  background: linear-gradient(#fffdf5, #efe7d1); border: 1.5px solid #b9ae8f;
+  box-shadow: 0 2px 0 #cdc19f, 0 3px 6px rgba(0, 0, 0, 0.3);
+}
+.dn-tile::after {
+  content: ""; position: absolute; left: 50%; top: 50%; width: 6px; height: 6px; border-radius: 50%;
+  transform: translate(-50%, -50%); background: radial-gradient(circle at 35% 35%, #f3d57a, #9c7a2c);
+}
+.dn-half { width: 64px; height: 64px; display: grid; place-items: center; }
+.dn-tile.dn-h .dn-half + .dn-half { border-left: 2px solid #6b604a; }
+.dn-tile.dn-v { flex-direction: column; }
+.dn-tile.dn-v .dn-half + .dn-half { border-top: 2px solid #6b604a; }
+.dn-chain .dn-tile:not(.dn-last) { opacity: 0.72; }
+.dn-last .dn-half:last-child { border-radius: 0 8px 8px 0; animation: dn-open 1.4s ease-in-out infinite; }
+@keyframes dn-open { 50% { box-shadow: inset 0 0 0 3px var(--accent-2); } }
+.dn-new { animation: dn-place 0.45s ease-out; }
+@keyframes dn-place { from { transform: translateY(80px) rotate(90deg) scale(0.8); opacity: 0.3; } }
+.dn-fr { display: inline-flex; flex-direction: column; align-items: center; font-weight: 900; font-size: 1.3rem; line-height: 1.05; }
+.dn-fr span:first-child { border-bottom: 2.5px solid currentColor; padding: 0 4px 1px; }
+.dn-txt { font-weight: 900; font-size: 1.12rem; white-space: nowrap; letter-spacing: -0.03em; }
+.dn-pie { width: 52px; height: 52px; }
+.dn-pie path { fill: #fffdf5; stroke: #2a2420; stroke-width: 1.3; stroke-linejoin: round; }
+.dn-pie path.on { fill: var(--accent); }
+.dn-hand-label { font-size: 0.75rem; font-weight: 800; color: var(--muted); margin: 12px 0 4px; letter-spacing: 0.05em; text-transform: uppercase; }
+.dn-hand { display: flex; gap: 6px; justify-content: center; }
+.dn-pick {
+  background: none; border: 3px solid transparent; border-radius: 13px; padding: 3px; cursor: pointer;
+  transition: transform 0.15s, opacity 0.3s;
+}
+.dn-pick:hover { transform: translateY(-4px); }
+.dn-pick.dn-ok { border-color: var(--good); }
+.dn-pick.dn-bad { border-color: var(--danger); animation: bg-shake 0.35s; }
+.dn-pick.dn-gone { opacity: 0; transform: translateY(-50px); }
+.dn-glow { box-shadow: inset 0 0 0 3px var(--good); border-radius: 8px; }
+
+/* ---------- El triángulo de Pascal ---------- */
+.pc2-tri { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+.pc2-row { position: relative; width: 100%; display: flex; justify-content: center; align-items: center; }
+.pc2-lab { position: absolute; left: 2px; font-size: 0.62rem; font-weight: 800; color: var(--muted); }
+.pc2-lab::before { content: "fila "; }
+.pc2-bricks { display: flex; gap: 3px; }
+.pc2-cell, .pc2-slot { width: 37px; height: 34px; font-size: 1rem; }
+.pc2-cell {
+  display: grid; place-items: center; border-radius: 6px; font-weight: 800; font-variant-numeric: tabular-nums;
+  background: color-mix(in srgb, var(--accent) 10%, var(--card));
+  border: 1.5px solid color-mix(in srgb, var(--accent) 35%, var(--border));
+}
+.pc2-slot.bad { font-size: 0.78rem; width: auto; min-width: 36px; }
+.pc2-narrow .pc2-cell, .pc2-narrow .pc2-slot:not(.bad) { width: 31px; }
+.pc2-narrow .pc2-lab::before { content: ""; }
+.pc2-hl .pc2-cell { background: color-mix(in srgb, var(--accent-2) 28%, var(--card)); }
+.pc2-sum { position: absolute; right: 2px; display: flex; align-items: center; gap: 3px; font-weight: 800; font-size: 0.85rem; color: var(--muted); }
+.pc2-sum .pc2-slot { width: 44px; }
+.pc2-sum .pc2-slot.bad { width: auto; }
+.pc2-binom {
+  margin-top: 12px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 4px;
+  font-size: 1.05rem; font-weight: 700;
+}
+.pc2-binom i { font-family: Georgia, "Times New Roman", serif; }
+.pc2-binom .pc2-slot { width: 34px; height: 32px; }
+
+/* ---------- La suma de Gauss ---------- */
+.ga2-cuaderno { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 6px 4px; }
+.ga2-line {
+  display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 6px;
+  font-size: 1.15rem; font-weight: 800; text-align: center; line-height: 1.5; font-variant-numeric: tabular-nums;
+}
+.ga2-slot { min-width: 66px; height: 38px; font-size: 1.15rem; }
+.ga2-line .ga2-slot[data-slot="0"], .ga2-line .ga2-slot[data-slot="1"] { min-width: 50px; }
+.ga2-tpl { font-family: Georgia, "Times New Roman", serif; color: var(--muted); font-size: 0.95rem; }
+.ga2-pairs { width: 100%; }
+.ga2-svg { width: 100%; max-width: 340px; display: block; margin: 0 auto; }
+.ga2-chip { fill: var(--card); stroke: var(--accent); stroke-width: 2; }
+.ga2-chip.ga2-mid { fill: color-mix(in srgb, var(--accent-2) 35%, var(--card)); stroke: var(--accent-2); }
+.ga2-num { font-size: 11px; font-weight: 800; text-anchor: middle; fill: var(--text); }
+.ga2-dots { font-size: 18px; font-weight: 800; text-anchor: middle; fill: var(--muted); }
+.ga2-arc { fill: none; stroke: var(--accent-2); stroke-width: 2; stroke-dasharray: 600; stroke-dashoffset: 600; animation: ga2-draw 0.6s ease forwards; }
+@keyframes ga2-draw { to { stroke-dashoffset: 0; } }
+.ga2-alab {
+  font-size: 13px; font-weight: 900; text-anchor: middle; fill: var(--accent-2); opacity: 0;
+  paint-order: stroke; stroke: var(--bg); stroke-width: 3px; animation: ga2-fade 0.3s ease forwards;
+}
+@keyframes ga2-fade { to { opacity: 1; } }
+
+/* ---------- Trucos de cálculo mental ---------- */
+.tk-cuaderno { position: relative; padding: 44px 8px 10px; min-height: 196px; }
+.tk-postit {
+  position: absolute; top: 8px; right: 12px; padding: 6px 10px; border-radius: 2px;
+  background: #ffe58a; color: #3d3200; font-weight: 800; font-size: 0.85rem;
+  transform: rotate(3deg); box-shadow: 0 2px 5px rgba(0, 0, 0, 0.22);
+}
+.tk-postit.tk-nohint { background: #dfe7ff; color: #24305e; }
+.tk-op {
+  display: flex; justify-content: center; align-items: center; gap: 8px; flex-wrap: wrap;
+  font-size: 2rem; font-weight: 900; font-variant-numeric: tabular-nums; margin-top: 8px;
+}
+.tk-slot { min-width: 100px; height: 52px; font-size: 1.7rem; }
+.tk-slot.bad { font-size: 1.4rem; }
+.tk-steps {
+  margin-top: 12px; min-height: 56px; text-align: center; font-size: 1.05rem; font-weight: 700; line-height: 1.5;
+  font-family: "Chalkboard SE", "Comic Neue", "Comic Sans MS", "Segoe Print", cursive;
+  color: color-mix(in srgb, var(--accent) 70%, var(--text));
+}
+.tk-step { opacity: 0; animation: tk-write 0.35s ease forwards; }
+@keyframes tk-write { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: none; } }
+
+/* El end-card centrado en la tarjeta, como en el resto de juegos */
+.bg-body > .end-card, .dn-body > .end-card, .pc2-body > .end-card, .ga2-body > .end-card, .tk-body > .end-card { margin: auto 0; }
+.pc2-t { display: inline-flex; align-items: center; gap: 1px; }

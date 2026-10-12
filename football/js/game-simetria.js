@@ -1,5 +1,8 @@
 // "Simetría": toca la celda que completa la figura simétrica respecto al
 // eje central. Razonamiento espacial/visual sobre una cuadrícula.
+// v2 (petición de Paco): el espejo se dibuja como una línea discontinua
+// entre las dos columnas centrales; antes se marcaba coloreando el borde de
+// las 8 casillas del centro y no se entendía qué significaba.
 import { randInt, saveScore } from "./utils.js";
 
 const COLS = 6; // eje de simetría vertical entre la columna 2 y 3
@@ -64,8 +67,8 @@ export function mountSimetriaGame(container, { client, onExit }) {
   function nextRound() {
     round = buildRound();
     body.innerHTML = `
-      <p class="prompt">Toca la celda que completa la simetría<small>El espejo está en el centro</small></p>
-      <div class="sym-grid" data-grid></div>
+      <p class="prompt">Toca la celda que completa la simetría<small>La línea discontinua es el espejo</small></p>
+      <div class="sym-grid" data-grid><div class="sym-mirror" aria-hidden="true"></div></div>
       <div class="feedback" data-feedback></div>
     `;
     const grid = body.querySelector("[data-grid]");
@@ -74,7 +77,6 @@ export function mountSimetriaGame(container, { client, onExit }) {
       for (let x = 0; x < COLS; x++) {
         const cell = document.createElement("button");
         cell.className = "sym-cell";
-        if (x === COLS / 2 - 1 || x === COLS / 2) cell.classList.add("sym-axis-edge");
         if (round.shown.some(([fx, fy]) => fx === x && fy === y)) cell.classList.add("filled");
         cell.addEventListener("click", () => tapCell(x, y, cell));
         grid.appendChild(cell);

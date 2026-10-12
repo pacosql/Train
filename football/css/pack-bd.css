@@ -1,0 +1,126 @@
+/* Pack BD — "En columna" (.co-), "División con resto" (.rs-), "Toca los
+   divisores" (.dv-), "Caras, aristas y vértices" (.ca-) y "Simplifica" (.sp-).
+   Cinco juegos de pregunta con teclado/toque; comparten el estilo de las
+   casillas de respuesta (activa = borde acento, bien = verde, mal = rojo). */
+
+/* ---------- común: cuerpo compacto, 💡 legible ---------- */
+.game-body.co-body, .game-body.rs-body, .game-body.dv-body, .game-body.ca-body, .game-body.sp-body {
+  justify-content: flex-start; padding: 14px 14px 12px;
+}
+.prompt.co-prompt, .prompt.rs-prompt, .prompt.dv-prompt, .prompt.ca-prompt, .prompt.sp-prompt {
+  font-size: 1.15rem; margin: 0 0 10px; line-height: 1.3;
+}
+.prompt.rs-prompt { font-size: 1.9rem; }
+.prompt.rs-prompt b, .prompt.dv-prompt b { color: var(--accent); }
+.feedback.co-feedback, .feedback.rs-feedback, .feedback.dv-feedback, .feedback.ca-feedback, .feedback.sp-feedback {
+  margin-top: 10px; line-height: 1.35; text-align: center; max-width: 340px; font-size: 0.82rem;
+}
+.keypad.co-keypad, .keypad.rs-keypad, .keypad.ca-keypad, .keypad.sp-keypad { margin-top: 10px; max-width: 240px; }
+.keypad.co-keypad .keypad-key, .keypad.rs-keypad .keypad-key, .keypad.ca-keypad .keypad-key, .keypad.sp-keypad .keypad-key { padding: 11px 8px; }
+.keypad-key.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+/* casillas de respuesta compartidas */
+.co-slot, .rs-slot, .sp-slot {
+  font: inherit; font-weight: 800; color: var(--text); cursor: pointer;
+  background: var(--bg); border: 2px solid var(--border); border-radius: 8px;
+  display: flex; align-items: center; justify-content: center; gap: 3px; padding: 0;
+}
+.co-slot.active, .rs-slot.active, .sp-slot.active { border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent); }
+.co-slot.good, .rs-slot.good, .sp-slot.good, .keypad-display.good { background: var(--good); border-color: var(--good); color: #fff; }
+.co-slot.bad, .rs-slot.bad, .sp-slot.bad, .keypad-display.bad { background: var(--danger); border-color: var(--danger); color: #fff; }
+.co-slot s, .rs-slot s, .sp-slot s, .keypad-display s { font-size: 0.6em; opacity: 0.8; font-weight: 600; }
+
+/* ---------- En columna ---------- */
+.co-sheet {
+  display: flex; flex-direction: column; gap: 4px; margin-bottom: 4px;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 1.5rem; font-weight: 800;
+  padding: 0 6px;
+}
+.co-row { display: grid; grid-template-columns: 28px repeat(var(--co-w), 44px); gap: 4px; align-items: center; }
+.co-row.co-carries { height: 24px; margin-bottom: -2px; }
+.co-row.co-result { border-top: 3px solid var(--text); padding-top: 6px; margin-top: 2px; }
+.co-sign { color: var(--accent); text-align: center; font-size: 1.3rem; }
+.co-cell { height: 44px; display: flex; align-items: center; justify-content: center; }
+.co-cell.co-fixed { color: var(--text); }
+.co-carry {
+  height: 24px; font: inherit; font-size: 0.85rem; font-weight: 800; color: var(--accent-2);
+  background: transparent; border: 1px dashed var(--border); border-radius: 5px; cursor: pointer; padding: 0;
+}
+.co-carry:not(:empty) { border-color: var(--accent-2); }
+
+/* ---------- División con resto ---------- */
+.rs-dots {
+  display: flex; flex-wrap: wrap; gap: 4px; justify-content: center; align-content: flex-start;
+  width: 100%; max-width: 340px; min-height: 68px; max-height: 150px; margin-bottom: 8px;
+  --rs-d: 5;
+}
+.rs-dots.rs-hidden { min-height: 0; }
+.rs-dots i, .rs-group i { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); display: block; transition: background 0.3s; }
+.rs-dots.grouped { gap: 6px; }
+.rs-group {
+  display: flex; gap: 3px; padding: 3px 5px; border-radius: 9px;
+  background: color-mix(in srgb, var(--accent) 14%, transparent); border: 1px solid var(--accent);
+}
+.rs-group.rs-rest { background: color-mix(in srgb, var(--danger) 14%, transparent); border-color: var(--danger); }
+.rs-group.rs-rest i { background: var(--danger); }
+.rs-boxes { display: flex; gap: 18px; justify-content: center; }
+.rs-box { display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 0.72rem; font-weight: 700; color: var(--muted); }
+.rs-slot { width: 76px; height: 48px; font-size: 1.5rem; }
+
+/* ---------- Toca los divisores ---------- */
+.dv-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; width: 100%; max-width: 330px; }
+.dv-grid.dv-small { grid-template-columns: repeat(10, 1fr); gap: 4px; }
+.dv-cell {
+  aspect-ratio: 1; min-height: 40px; font: inherit; font-weight: 800; font-size: 1.05rem; color: var(--text);
+  background: var(--bg); border: 2px solid var(--border); border-radius: 9px; cursor: pointer; padding: 0;
+}
+.dv-grid.dv-small .dv-cell { min-height: 30px; font-size: 0.82rem; border-radius: 7px; }
+.dv-cell.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+.dv-cell.good { background: var(--accent); border-color: var(--accent); color: #fff; }
+.dv-cell.miss { background: var(--good); border-color: var(--good); color: #fff; outline: 3px dashed var(--good); outline-offset: 1px; }
+.dv-cell.extra { background: var(--danger); border-color: var(--danger); color: #fff; text-decoration: line-through; }
+button.dv-check { margin-top: 12px; width: 100%; max-width: 240px; padding: 13px 18px; font-size: 1.05rem; }
+button.dv-check:disabled { opacity: 0.5; }
+
+/* ---------- Caras, aristas y vértices ---------- */
+.ca-figure { width: 100%; display: flex; flex-direction: column; align-items: center; }
+.ca-svg { width: 100%; max-width: 230px; height: auto; display: block; }
+.ca-name { font-size: 0.78rem; font-weight: 700; color: var(--muted); margin-top: -2px; }
+.ca-face { fill: var(--accent); fill-opacity: 0.1; stroke: none; }
+.ca-face.hid { fill-opacity: 0; }
+.ca-edge { stroke: var(--text); stroke-width: 2; fill: none; stroke-linecap: round; }
+.ca-edge.hid { stroke: var(--muted); stroke-dasharray: 4 4; stroke-width: 1.6; }
+.ca-vert { fill: var(--text); }
+.ca-vert.hid { fill: var(--muted); }
+.ca-face.hl { fill: var(--ca-c); fill-opacity: 0.45; animation: ca-blink 0.7s ease-in-out 3; }
+.ca-face.hl.hid { fill-opacity: 0.25; }
+.ca-edge.hl { stroke: var(--ca-c); stroke-width: 4; stroke-dasharray: none; animation: ca-blink 0.7s ease-in-out 3; }
+.ca-edge.hl.hid { stroke-dasharray: 5 4; }
+.ca-vert.hl { fill: var(--ca-c); r: 6; animation: ca-blink 0.7s ease-in-out 3; }
+@keyframes ca-blink { 50% { opacity: 0.3; } }
+.ca-lab { font-size: 11px; font-weight: 800; fill: var(--text); text-anchor: middle; dominant-baseline: middle; paint-order: stroke; stroke: var(--card); stroke-width: 3px; }
+.ca-euler { display: flex; gap: 10px; justify-content: center; margin: 14px 0 10px; }
+.ca-euler span {
+  display: flex; flex-direction: column; align-items: center; min-width: 74px; padding: 8px 6px;
+  background: var(--bg); border: 2px solid var(--border); border-radius: 12px; font-size: 1.5rem; font-weight: 800;
+}
+.ca-euler span b { font-size: 0.75rem; color: var(--muted); }
+.ca-euler span.ask { border-color: var(--accent); color: var(--accent); }
+.keypad-display.ca-display { margin: 6px 0 0; min-height: 2.2rem; border-radius: 8px; padding: 0 12px; display: flex; align-items: center; gap: 6px; }
+
+/* ---------- Simplifica ---------- */
+.sp-row { display: flex; align-items: center; gap: 14px; justify-content: center; margin-bottom: 8px; }
+.sp-frac { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 1.9rem; font-weight: 800; }
+.sp-frac > span { padding: 0 10px; line-height: 1.1; }
+.sp-frac > span:first-child { border-bottom: 3px solid var(--text); }
+.sp-eq { font-size: 1.8rem; font-weight: 800; color: var(--muted); }
+.sp-answer .sp-slot:first-child { border-bottom-width: 2px; }
+.sp-slot { width: 74px; height: 44px; font-size: 1.4rem; }
+.sp-bars { width: 100%; max-width: 300px; display: flex; flex-direction: column; gap: 6px; min-height: 60px; }
+.sp-bar { width: 100%; height: 26px; display: block; }
+.sp-bar .sp-bg { fill: var(--bg); }
+.sp-bar .sp-fill { fill: var(--accent); }
+.sp-bar.good .sp-fill { fill: var(--good); }
+.sp-bar.bad .sp-fill { fill: var(--good); }
+.sp-bar .sp-ticks line { stroke: var(--card); stroke-width: 2; }
+.sp-bar .sp-frame { fill: none; stroke: var(--border); stroke-width: 2; }

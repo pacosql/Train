@@ -1,0 +1,141 @@
+/* Pack BL — "Propiedades de las operaciones" (.ds-), "¿Es divisible?"
+   (.dv2-), "Los primeros múltiplos" (.cm2-), "Todos los divisores" (.ld-)
+   y "El signo que falta" (.sg2-). Ejercicios "como en el cuaderno": hoja
+   cuadriculada, casillas que se tocan y se rellenan (activa = borde
+   acento, bien = verde, mal = rojo con lo escrito tachado y la correcta
+   en verde al lado). */
+
+/* ---------- común: cuerpo compacto, 💡 legible, teclado ---------- */
+.game-body.ds-body, .game-body.dv2-body, .game-body.cm2-body, .game-body.ld-body, .game-body.sg2-body {
+  justify-content: flex-start; padding: 12px 12px 10px;
+}
+.ds-body > .end-card, .dv2-body > .end-card, .cm2-body > .end-card, .ld-body > .end-card, .sg2-body > .end-card { margin: auto 0; }
+.prompt.ds-prompt, .prompt.dv2-prompt, .prompt.cm2-prompt, .prompt.ld-prompt, .prompt.sg2-prompt {
+  font-size: 1.15rem; margin: 0 0 10px; line-height: 1.3;
+}
+.prompt.dv2-prompt { font-size: 0.95rem; color: var(--muted); font-weight: 600; }
+/* acento legible también en oscuro (el morado puro se pierde sobre --card) */
+.prompt.cm2-prompt b, .prompt.ld-prompt b, .dv2-q b { color: color-mix(in srgb, var(--accent) 70%, var(--text)); }
+.feedback.ds-feedback, .feedback.dv2-feedback, .feedback.cm2-feedback, .feedback.ld-feedback, .feedback.sg2-feedback {
+  margin-top: 8px; line-height: 1.35; text-align: center; max-width: 350px; font-size: 0.82rem;
+}
+.keypad.ds-keypad, .keypad.cm2-keypad, .keypad.ld-keypad { margin-top: 10px; max-width: 240px; gap: 6px; }
+.keypad.ds-keypad .keypad-key, .keypad.cm2-keypad .keypad-key, .keypad.ld-keypad .keypad-key { padding: 10px 8px; font-size: 1.05rem; }
+.keypad.ds-keypad .keypad-key.primary, .keypad.cm2-keypad .keypad-key.primary, .keypad.ld-keypad .keypad-key.primary {
+  background: var(--accent); border-color: var(--accent); color: #fff;
+}
+
+/* botón "Siguiente →" dentro del feedback al fallar */
+.ds-next, .dv2-next, .cm2-next, .ld-next, .sg2-next {
+  display: inline-block; margin-left: 6px; font: inherit; font-weight: 800; font-size: 0.8rem;
+  color: #fff; background: var(--danger); border: none; border-radius: 8px; padding: 4px 10px; cursor: pointer;
+}
+
+/* hoja de cuaderno: cuadrícula tenue con var(--border) */
+.ds-cuaderno, .dv2-cuaderno, .cm2-cuaderno, .ld-cuaderno, .sg2-cuaderno {
+  width: 100%; max-width: 352px; box-sizing: border-box; border-radius: 10px;
+  border: 1px solid var(--border); background-color: var(--card);
+  background-image:
+    repeating-linear-gradient(to right, var(--border) 0 1px, transparent 1px 22px),
+    repeating-linear-gradient(to bottom, var(--border) 0 1px, transparent 1px 22px);
+  background-size: 22px 22px; padding: 14px 8px;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+}
+
+/* casillas que se rellenan */
+.ds-slot, .cm2-slot, .ld-slot, .sg2-hole {
+  font: inherit; font-weight: 800; color: var(--text); cursor: pointer;
+  background: var(--bg); border: 2px solid var(--border); border-radius: 8px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 3px; padding: 0 2px;
+  min-width: 42px; height: 42px; font-size: 1.3rem; vertical-align: middle; font-variant-numeric: tabular-nums;
+}
+.ds-slot.active, .cm2-slot.active, .ld-slot.active, .sg2-hole.active {
+  border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+.ds-slot.good, .cm2-slot.good, .ld-slot.good, .sg2-hole.good { background: var(--good); border-color: var(--good); color: #fff; }
+.ds-slot.bad, .cm2-slot.bad, .ld-slot.bad, .sg2-hole.bad {
+  background: color-mix(in srgb, var(--danger) 14%, var(--bg)); border-color: var(--danger); color: var(--danger);
+}
+.ds-slot s, .cm2-slot s, .ld-slot s, .sg2-hole s { font-size: 0.7em; font-weight: 700; }
+.ds-want, .cm2-want, .ld-want, .sg2-want {
+  font-style: normal; background: var(--good); color: #fff; border-radius: 6px; padding: 1px 4px; font-size: 0.9em; line-height: 1.2;
+}
+
+/* ---------- Propiedades de las operaciones ---------- */
+.ds-line {
+  font-size: 1.45rem; font-weight: 800; color: var(--text); white-space: nowrap;
+  display: flex; align-items: center; gap: 6px; font-variant-numeric: tabular-nums;
+}
+.ds-line + .ds-line { color: var(--text); }
+.ds-prop {
+  margin-top: 8px; padding: 3px 12px; border-radius: 999px; font-weight: 800; font-size: 0.9rem;
+  color: var(--accent); border: 2px solid transparent; min-height: 1.6rem;
+}
+.ds-prop.on { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, var(--card)); }
+
+/* ---------- ¿Es divisible? ---------- */
+.dv2-q { font-size: 1.3rem; font-weight: 700; color: var(--text); text-align: center; }
+.dv2-q b { font-size: 1.6rem; }
+.dv2-num { display: flex; gap: 3px; justify-content: center; }
+.dv2-dig {
+  width: 44px; height: 54px; display: inline-flex; align-items: center; justify-content: center;
+  font-size: 2.2rem; font-weight: 800; color: var(--text); background: var(--bg);
+  border: 2px solid var(--border); border-radius: 8px;
+}
+.dv2-dig.dv2-on { background: var(--accent); border-color: var(--accent); color: #fff; }
+.dv2-dig.dv2-alt { background: var(--accent-2); border-color: var(--accent-2); color: #fff; }
+.dv2-bar { width: 100%; max-width: 320px; height: 10px; border-radius: 999px; background: var(--border); overflow: hidden; margin: 14px 0 12px; }
+.dv2-bar-fill { height: 100%; width: 100%; background: var(--good); border-radius: 999px; }
+.dv2-bar-fill.dv2-low { background: var(--danger); }
+.dv2-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; width: 100%; max-width: 320px; }
+.dv2-btn {
+  font: inherit; font-size: 1.8rem; font-weight: 800; letter-spacing: 1px; color: var(--text); cursor: pointer;
+  background: var(--bg); border: 3px solid var(--border); border-radius: 16px; padding: 22px 8px;
+}
+.dv2-btn.dv2-yes { border-color: color-mix(in srgb, var(--good) 55%, var(--border)); }
+.dv2-btn.dv2-no { border-color: color-mix(in srgb, var(--danger) 55%, var(--border)); }
+.dv2-btn:active { transform: scale(0.97); }
+.dv2-btn.good { background: var(--good); border-color: var(--good); color: #fff; }
+.dv2-btn.bad { background: var(--danger); border-color: var(--danger); color: #fff; text-decoration: line-through; }
+.dv2-btn:disabled { cursor: default; }
+.dv2-streak { margin-top: 10px; font-weight: 800; color: var(--final); min-height: 1.3rem; }
+
+/* ---------- Los primeros múltiplos ---------- */
+.cm2-row { display: grid; grid-template-columns: repeat(var(--cm2-n), 54px); gap: 10px; justify-content: center; }
+.cm2-slot { width: 54px; height: 48px; font-size: 1.45rem; }
+.cm2-slot.bad { font-size: 1.15rem; }
+.cm2-labels { margin-top: -6px; }
+.cm2-labels span { text-align: center; font-size: 0.75rem; font-weight: 700; color: var(--muted); min-height: 1rem; }
+
+/* ---------- Todos los divisores ---------- */
+.ld-cuaderno { position: relative; padding-top: 6px; gap: 6px; }
+.ld-arcs { width: 100%; height: 54px; display: block; overflow: visible; }
+.ld-row { display: grid; grid-template-columns: repeat(var(--ld-n), minmax(0, 40px)); gap: 6px; justify-content: center; width: 100%; }
+.ld-row.ld-many { gap: 3px; }
+.ld-cell { width: 100%; min-width: 0; height: 42px; font-size: 1.2rem; }
+.ld-row.ld-many .ld-cell { font-size: 1.02rem; }
+.ld-slot.bad { flex-direction: column; gap: 0; font-size: 0.95rem; line-height: 1; }
+.ld-fixed {
+  display: flex; align-items: center; justify-content: center; font-weight: 800; color: var(--text);
+  background: var(--bg); border: 2px dashed var(--border); border-radius: 8px;
+}
+.ld-arc { fill: none; stroke: var(--accent); stroke-width: 2.5; stroke-linecap: round; }
+.ld-arc.ld-arc-alt { stroke: var(--accent-2); }
+circle.ld-arc { fill: var(--accent); }
+circle.ld-arc.ld-arc-alt { fill: var(--accent-2); }
+
+/* ---------- El signo que falta ---------- */
+.sg2-cuaderno { padding: 26px 8px; }
+.sg2-eq { display: flex; align-items: center; gap: 8px; font-size: 2.3rem; font-weight: 800; color: var(--text); font-variant-numeric: tabular-nums; }
+.sg2-hole { width: 56px; height: 56px; font-size: 2rem; border-style: dashed; }
+.sg2-hole.active { border-style: solid; }
+.sg2-hole.bad { width: auto; min-width: 52px; font-size: 1.4rem; padding: 0 4px; }
+.sg2-eqs { color: var(--muted); }
+.sg2-chips { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; width: 100%; max-width: 320px; margin-top: 18px; }
+.sg2-chip {
+  font: inherit; font-size: 2.1rem; font-weight: 800; color: #fff; cursor: pointer; aspect-ratio: 1;
+  background: var(--accent); border: none; border-radius: 16px; box-shadow: 0 4px 0 var(--accent-dark);
+  display: flex; align-items: center; justify-content: center; padding: 0;
+}
+.sg2-chip:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--accent-dark); }
+.sg2-chip:disabled { opacity: 0.45; cursor: default; }

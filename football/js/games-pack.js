@@ -33,10 +33,10 @@ import { mountCubosGame } from "./game-cubos.js";
 
 export const GAMES_PACK_3 = [
   // Movimiento y velocidad
-  { id: "pesca", title: "Pesca de números", emoji: "🎣", topic: "Multiplicación", custom: mountPescaGame },
+  { id: "pesca", title: "Pesca de números", emoji: "🎣", topic: "Multiplicación", v: 2, custom: mountPescaGame },
   { id: "escalera", title: "Escalera de rachas", emoji: "🪜", topic: "Cálculo mental", custom: mountEscaleraGame },
   { id: "tragaperras", title: "Tragaperras de operaciones", emoji: "🎰", topic: "Operaciones", custom: mountTragaperrasGame },
-  { id: "dados", title: "Dados", emoji: "🎲", topic: "Sumas rápidas", custom: mountDadosGame },
+  { id: "dados", title: "Dados", emoji: "🎲", topic: "Sumas rápidas", v: 2, custom: mountDadosGame },
   { id: "carrera", title: "Carrera de cálculo", emoji: "🏁", topic: "Cálculo mental", custom: mountCarreraGame },
   // Manipular y construir
   { id: "abaco", title: "Ábaco", emoji: "🪀", topic: "Valor posicional", custom: mountAbacoGame },

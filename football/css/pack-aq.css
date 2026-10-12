@@ -1,0 +1,81 @@
+/* Pack AQ — "Corta a partes iguales" (.ct-) y "Ojo de geómetra" (.oj-). */
+
+/* ---------- Corta a partes iguales ---------- */
+.ct-prompt { margin-bottom: 12px; }
+.ct-extra { display: block; font-size: 0.95rem; color: var(--accent); margin-top: 2px; }
+.ct-svg {
+  width: 100%; max-width: 360px; height: auto; max-height: 52vh; display: block; margin: 0 auto;
+  touch-action: none; user-select: none; -webkit-user-select: none; cursor: crosshair;
+}
+.ct-grid line { stroke: var(--muted); stroke-opacity: 0.22; stroke-width: 1; vector-effect: non-scaling-stroke; }
+.ct-fig { fill: var(--accent-2); fill-opacity: 0.22; }
+.ct-edge { fill: none; stroke: var(--text); stroke-width: 2; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+.ct-cut { stroke: var(--accent); stroke-width: 2.5; stroke-dasharray: 7 4; vector-effect: non-scaling-stroke; }
+.ct-cut.sel { stroke-width: 3.5; stroke-dasharray: none; }
+.ct-cut.temp { stroke: var(--accent-2); stroke-dasharray: 4 4; }
+.ct-cut.bad { stroke: var(--danger); stroke-dasharray: none; }
+.ct-handle { fill: var(--card); stroke: var(--accent); stroke-width: 2.5; vector-effect: non-scaling-stroke; }
+.ct-handle.sel { fill: var(--accent); }
+.ct-ghost { fill: none; stroke: var(--muted); stroke-opacity: 0.5; stroke-width: 1; stroke-dasharray: 3 3; vector-effect: non-scaling-stroke; }
+.ct-piece { animation: ct-sep 0.4s ease-out both; }
+@keyframes ct-sep { from { transform: translate(0, 0); } to { transform: translate(var(--dx), var(--dy)); } }
+.ct-pc { fill: var(--accent-2); fill-opacity: 0.3; stroke: var(--text); stroke-width: 2; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+.ct-pc.ok { fill: var(--good); fill-opacity: 0.3; }
+.ct-pc.bad { fill: var(--danger); fill-opacity: 0.22; }
+.ct-area {
+  font-size: 0.62px; font-weight: 800; fill: var(--text); text-anchor: middle; dominant-baseline: central;
+  paint-order: stroke; stroke: var(--card); stroke-width: 0.12px; stroke-linejoin: round;
+}
+.ct-sol { stroke: var(--good); stroke-width: 3; stroke-dasharray: 6 4; vector-effect: non-scaling-stroke; }
+.ct-help { fill: none; stroke: var(--good); stroke-opacity: 0.7; stroke-width: 1.5; stroke-dasharray: 3 3; vector-effect: non-scaling-stroke; }
+.ct-center { fill: var(--good); }
+.ct-quarter { fill: var(--good); fill-opacity: 0.18; stroke: var(--good); stroke-width: 1.5; stroke-dasharray: 3 3; vector-effect: non-scaling-stroke; }
+.ct-qlabel {
+  font-size: 0.55px; font-weight: 800; fill: var(--good); text-anchor: middle; dominant-baseline: central;
+  paint-order: stroke; stroke: var(--card); stroke-width: 0.1px;
+}
+.ct-bar { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 10px; width: 100%; }
+.ct-count { font-size: 0.82rem; font-weight: 700; color: var(--muted); min-width: 74px; }
+.ct-bar .ct-btn { padding: 9px 12px; font-size: 0.86rem; }
+.ct-bar .ct-btn:disabled { opacity: 0.45; cursor: default; }
+.ct-why { font-size: 0.82rem; color: var(--text); text-align: center; max-width: 340px; margin: 6px auto 0; line-height: 1.35; }
+.ct-why:empty { display: none; }
+.ct-next { margin-top: 10px; }
+.ct-next[hidden] { display: none; }
+
+/* ---------- Ojo de geómetra ---------- */
+.oj-prompt { font-size: 1.12rem; margin-bottom: 10px; }
+.oj-svg {
+  width: 100%; max-width: 340px; height: auto; display: block; margin: 0 auto;
+  background: var(--bg); border: 1px solid var(--border); border-radius: 12px;
+  touch-action: none; user-select: none; -webkit-user-select: none; cursor: crosshair;
+}
+.oj-seg { stroke: var(--text); stroke-width: 2.5; stroke-linecap: round; fill: none; }
+.oj-tri { stroke-linejoin: round; fill: var(--accent-2); fill-opacity: 0.12; }
+.oj-mirror { stroke: var(--accent-2); stroke-width: 3; }
+.oj-dot { fill: var(--text); }
+.oj-lbl { font-size: 15px; font-weight: 800; fill: var(--text); text-anchor: middle; dominant-baseline: central; }
+.oj-lbl.small { font-size: 13px; fill: var(--good); }
+.oj-guide { fill: none; stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 4 4; }
+.oj-arc { fill: none; stroke: var(--accent-2); stroke-width: 1.8; }
+.oj-help { fill: none; stroke: var(--good); stroke-width: 1.6; stroke-dasharray: 6 4; }
+.oj-faint { stroke: var(--muted); stroke-width: 1.2; stroke-dasharray: 3 4; }
+.oj-chord { stroke: var(--accent-2); stroke-width: 2; }
+.oj-mark { fill: var(--accent-2); }
+.oj-tick { stroke: var(--good); stroke-width: 2; }
+.oj-part2 { stroke: var(--good); stroke-width: 5; stroke-opacity: 0.45; stroke-linecap: round; }
+.oj-part3 { stroke: var(--accent-2); stroke-width: 5; stroke-opacity: 0.35; stroke-linecap: round; }
+.oj-user { fill: var(--accent); }
+.oj-ring { fill: none; stroke: var(--accent); stroke-width: 2; }
+.oj-stalk { stroke: var(--accent); stroke-width: 1.2; stroke-dasharray: 2 3; }
+.oj-finger { fill: var(--accent); fill-opacity: 0.12; }
+.oj-good { fill: var(--good); }
+.oj-good-ring { fill: var(--good); fill-opacity: 0.14; stroke: var(--good); stroke-width: 1.2; }
+.oj-err { stroke: var(--danger); stroke-width: 1.5; stroke-dasharray: 3 3; }
+.oj-tip { font-size: 0.78rem; color: var(--muted); text-align: center; margin: 8px 0 4px; }
+.oj-btn { margin-top: 4px; }
+.oj-btn:disabled { opacity: 0.45; cursor: default; }
+.oj-why { font-size: 0.82rem; color: var(--text); text-align: center; max-width: 340px; margin: 6px auto 0; line-height: 1.35; }
+.oj-why:empty { display: none; }
+.oj-next { margin-top: 10px; }
+.oj-next[hidden] { display: none; }

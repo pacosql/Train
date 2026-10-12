@@ -1,0 +1,166 @@
+/* Pack BW — "Teorema de Tales" (.tls-; el prefijo .tl- ya lo usa "Dobla la
+   tela" en pack-m), "Seno, coseno y tangente" (.tg-), "Logaritmos" (.lg-),
+   "Saca factores de la raíz" (.rc-) y "Fracción generatriz" (.ge-).
+   Cinco ejercicios de ESO "como en el libro": hoja cuadriculada, la figura
+   o la expresión con notación de libro (x en cursiva, "·", exponentes y
+   subíndices en su sitio, √ con su raya, periodo con arco) y casillas que se
+   tocan y se rellenan con el teclado del núcleo. Todo con variables del
+   tema, así que funciona en claro y en oscuro. */
+
+/* ---------- común ---------- */
+.game-body.tls-body, .game-body.tg-body, .game-body.lg-body, .game-body.rc-body, .game-body.ge-body {
+  justify-content: flex-start; padding: 12px 10px 10px;
+}
+.prompt.tls-prompt, .prompt.tg-prompt, .prompt.lg-prompt, .prompt.rc-prompt, .prompt.ge-prompt {
+  font-size: 1rem; margin: 0 0 8px; line-height: 1.3;
+}
+.feedback.tls-feedback, .feedback.tg-feedback, .feedback.lg-feedback, .feedback.rc-feedback, .feedback.ge-feedback {
+  margin-top: 8px; line-height: 1.35; text-align: center; max-width: 370px; font-size: 0.8rem; min-height: 2.2rem;
+}
+.keypad.tls-keypad, .keypad.tg-keypad, .keypad.lg-keypad, .keypad.rc-keypad, .keypad.ge-keypad { margin-top: 10px; max-width: 240px; gap: 6px; }
+.keypad.tls-keypad .keypad-key, .keypad.tg-keypad .keypad-key, .keypad.lg-keypad .keypad-key,
+.keypad.rc-keypad .keypad-key, .keypad.ge-keypad .keypad-key { padding: 10px 6px; font-size: 1.05rem; }
+.keypad.tls-keypad .keypad-key.primary, .keypad.tg-keypad .keypad-key.primary, .keypad.lg-keypad .keypad-key.primary,
+.keypad.rc-keypad .keypad-key.primary, .keypad.ge-keypad .keypad-key.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.keypad.tls-keypad .tls-ok { grid-column: 1 / -1; }
+.keypad-sign.tg-sqrt, .keypad-sign.lg-sign { max-width: 240px; margin-top: 6px; }
+
+/* Hoja de cuaderno: cuadrícula tenue con el color del borde del tema */
+.tls-cuaderno, .tg-cuaderno, .lg-cuaderno, .rc-cuaderno, .ge-cuaderno {
+  width: 100%; max-width: 370px; border: 1px solid var(--border); border-radius: 10px;
+  padding: 8px 6px 10px; display: flex; flex-direction: column; align-items: center; gap: 4px;
+  background-color: var(--card);
+  background-image:
+    repeating-linear-gradient(0deg, var(--border) 0 1px, transparent 1px 20px),
+    repeating-linear-gradient(90deg, var(--border) 0 1px, transparent 1px 20px);
+}
+
+/* Renglones, con letras en cursiva como en el libro */
+.tls-line, .tg-line, .lg-line, .rc-line, .ge-line {
+  display: block; text-align: center; line-height: 2.8rem;
+  font-size: 1.2rem; font-weight: 700; color: var(--text); min-height: 44px; white-space: nowrap;
+}
+.tls-line > *, .tg-line > *, .lg-line > *, .rc-line > *, .ge-line > * { vertical-align: middle; }
+.tls-line sup, .lg-line sup, .rc-line sup { vertical-align: super; line-height: 0; }
+.tls-line i, .tg-line i, .rc-line i {
+  font-family: "Cambria Math", "Times New Roman", Georgia, serif; font-style: italic; font-size: 1.2em; font-weight: 600;
+}
+/* Fracción del libro: numerador, raya y denominador */
+.tls-frac, .tg-frac, .lg-frac, .ge-frac { display: inline-flex; flex-direction: column; align-items: center; line-height: 1.25; }
+.tls-frac > span, .tg-frac > span, .lg-frac > span { display: block; padding: 1px 5px; text-align: center; }
+.tls-frac > span:first-child, .tg-frac > span:first-child, .lg-frac > span:first-child { border-bottom: 2px solid var(--text); }
+
+/* Casillas */
+.tls-slot, .tg-slot, .lg-slot, .rc-slot, .ge-slot {
+  font: inherit; font-family: ui-monospace, "SF Mono", Menlo, monospace; font-weight: 800; font-size: 1.1rem;
+  color: var(--text); cursor: pointer; min-width: 44px; height: 38px; padding: 0 6px;
+  background: var(--card); border: 2px solid var(--muted); border-radius: 7px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 3px; line-height: 1.2;
+}
+.tls-slot.active, .tg-slot.active, .lg-slot.active, .rc-slot.active, .ge-slot.active {
+  border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 28%, transparent);
+}
+.tls-slot.good, .tg-slot.good, .lg-slot.good, .rc-slot.good, .ge-slot.good { background: var(--good); border-color: var(--good); color: #fff; }
+.tls-slot.bad, .tg-slot.bad, .lg-slot.bad, .rc-slot.bad, .ge-slot.bad { background: var(--danger); border-color: var(--danger); color: #fff; }
+.tls-slot s, .tg-slot s, .lg-slot s, .rc-slot s, .ge-slot s { font-size: 0.7em; opacity: 0.85; font-weight: 600; }
+/* la correcta en verde al lado de la tachada */
+.tls-fix, .tg-fix, .lg-fix, .rc-fix, .ge-fix {
+  font-style: normal; background: var(--good); color: #fff; border-radius: 4px; padding: 1px 4px; margin-left: 2px; line-height: 1.2;
+}
+.tls-next, .tg-next, .lg-next, .rc-next, .ge-next {
+  display: inline-block; margin-left: 6px; padding: 4px 10px; font: inherit; font-weight: 700; font-size: 0.8rem;
+  color: var(--text); background: var(--bg); border: 2px solid var(--border); border-radius: 999px; cursor: pointer;
+}
+
+/* Texto de los dibujos, con halo del color del papel */
+.tls-fig text, .tg-fig text { fill: var(--text); font-family: inherit; text-anchor: middle; font-size: 14px; font-weight: 700;
+  paint-order: stroke; stroke: var(--card); stroke-width: 4px; stroke-linejoin: round; }
+.tls-it, .tg-it { font-style: italic; font-family: "Cambria Math", "Times New Roman", Georgia, serif; font-size: 1.2em; }
+
+/* ---------- Teorema de Tales ---------- */
+.tls-fig { width: 100%; max-width: 340px; height: auto; display: block; }
+.tls-ray { stroke: var(--text); stroke-width: 2; }
+.tls-par { stroke: var(--danger); stroke-width: 2.5; }
+.tls-dot { fill: var(--text); }
+.tls-fig .tls-pt { fill: var(--muted); font-size: 12px; }
+.tls-fig .tls-unk { fill: var(--accent); }
+.tls-fig .tls-end { text-anchor: end; }
+.tls-ground { stroke: var(--text); stroke-width: 2; }
+.tls-shadow { stroke: var(--muted); stroke-width: 6; stroke-linecap: round; opacity: 0.55; }
+.tls-sun { stroke: #e0a100; stroke-width: 1.5; stroke-dasharray: 5 4; }
+.tls-sol { fill: #f5b301; }
+.tls-palo { stroke: var(--text); stroke-width: 4; stroke-linecap: round; }
+.tls-trunk { stroke: #8b5a2b; stroke-width: 5; }
+.tls-crown { fill: color-mix(in srgb, var(--good) 60%, transparent); stroke: var(--good); stroke-width: 1.5; }
+.tls-cota { stroke: var(--accent); stroke-width: 1.5; }
+.tls-tri { stroke: var(--text); stroke-width: 2; stroke-linejoin: round; }
+.tls-tri.tls-small { fill: color-mix(in srgb, var(--accent) 14%, transparent); }
+.tls-tri.tls-big { fill: color-mix(in srgb, var(--accent-2) 16%, transparent); }
+
+/* ---------- Seno, coseno y tangente ---------- */
+.tg-fig { width: 100%; max-width: 330px; height: auto; display: block; }
+.tg-tri { fill: color-mix(in srgb, var(--accent-2) 14%, transparent); stroke: var(--text); stroke-width: 2.5; stroke-linejoin: round; }
+.tg-mark { fill: none; stroke: var(--text); stroke-width: 1.5; }
+.tg-arc { fill: none; stroke: var(--accent); stroke-width: 2.5; }
+.tg-fig .tg-ang { fill: var(--accent); }
+.tg-fig .tg-unk { fill: var(--accent); }
+.tg-fig .tg-ov { text-decoration: overline; }
+.tg-line { font-size: 1.3rem; }
+.tg-frac .tg-slot { height: 34px; min-width: 52px; }
+.tg-frac > span { padding: 3px 4px; }
+.tg-rad { display: inline-flex; align-items: stretch; line-height: 1.15; }
+.tg-sym { width: 0.55em; flex: none; overflow: visible; }
+.tg-ra { border-top: 2px solid currentColor; padding: 1px 2px 0; min-width: 0.7em; }
+
+/* ---------- Logaritmos ---------- */
+.lg-cuaderno { padding: 12px 6px 14px; gap: 10px; }
+.lg-line { font-size: 1.85rem; font-family: "Cambria Math", "Times New Roman", Georgia, serif; line-height: 3.2rem; }
+.lg-line.lg-pow-line { font-size: 1.5rem; color: var(--accent-2); }
+.lg-log { font-weight: 600; }
+.lg-log sub { font-size: 0.6em; vertical-align: -0.35em; line-height: 0; }
+.lg-line .lg-frac { font-size: 0.8em; }
+.lg-pow { white-space: nowrap; }
+.lg-line .lg-pow .lg-mirror { display: inline-block; min-width: 0.7em; font-size: 0.62em; vertical-align: 0.9em; line-height: 1.1;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace; text-align: center; }
+.lg-mirror:empty, .lg-copy:empty { width: 0.8em; height: 0.9em; border: 2px dashed var(--accent-2); border-radius: 3px; }
+.lg-copy { display: inline-block; min-width: 1em; color: var(--accent-2); border-bottom: 2px dotted var(--accent-2); line-height: 1.1;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.8em; text-align: center; }
+.lg-props .lg-line { font-size: 1.45rem; }
+.lg-props .lg-line.lg-pow-line { color: var(--text); }
+.lg-line .lg-slot { font-size: 1.05rem; }
+
+/* ---------- Saca factores de la raíz ---------- */
+.rc-cuaderno { flex-direction: row; justify-content: center; align-items: center; gap: 18px; min-height: 120px; }
+.rc-lines { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.rc-line { font-size: 1.35rem; font-family: "Cambria Math", "Times New Roman", Georgia, serif; }
+.rc-line sup { font-size: 0.6em; }
+.rc-ladder { display: grid; grid-template-columns: auto auto; font-weight: 800; font-size: 1rem; line-height: 20px; color: var(--text); }
+.rc-ln { text-align: right; padding-right: 6px; font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+.rc-lp { border-left: 2px solid var(--text); padding-left: 6px; min-width: 22px; color: var(--accent); font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+.rc-rad { display: inline-flex; align-items: stretch; white-space: nowrap; vertical-align: middle; line-height: 1.2; }
+.rc-sym { width: 0.62em; flex: none; overflow: visible; }
+.rc-sym path, .tg-sym path { fill: none; stroke: currentColor; stroke-width: 2; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.rc-arg { border-top: 2px solid currentColor; padding: 2px 3px 0; display: inline-flex; align-items: center; }
+.rc-idx { font-size: 0.55em; margin-right: -0.5em; position: relative; top: -0.1em; z-index: 1; align-self: flex-start; }
+.rc-arg .rc-slot { height: 32px; min-width: 40px; margin: 1px 0; }
+.rc-line .rc-slot { font-size: 1.05rem; }
+.rc-term { white-space: nowrap; display: inline-flex; align-items: flex-start; }
+
+/* ---------- Fracción generatriz ---------- */
+.ge-cuaderno { padding: 12px 6px 16px; gap: 6px; }
+.ge-type { font-size: 0.85rem; color: var(--muted); font-weight: 600; }
+.ge-type b { color: var(--text); font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+.ge-line { font-size: 2rem; gap: 0 12px; font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+.ge-dec { white-space: nowrap; padding-top: 10px; }
+/* el arco del periodo, encima de sus cifras */
+.ge-per { position: relative; display: inline-block; }
+.ge-per::before {
+  content: ""; position: absolute; left: -2px; right: -2px; top: -2px; height: 12px;
+  border-top: 2.5px solid var(--accent); border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+}
+.ge-eq { color: var(--muted); margin: 0 12px; }
+.ge-frac { gap: 0; }
+.ge-frac .ge-slot { width: 84px; height: 42px; font-size: 1.3rem; }
+.ge-frac .ge-slot:first-child { margin-bottom: 4px; }
+.ge-frac { position: relative; }
+.ge-frac::after { content: ""; position: absolute; left: -4px; right: -4px; top: 50%; border-top: 3px solid var(--text); transform: translateY(-1px); }

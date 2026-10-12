@@ -1,6 +1,10 @@
 // "Atrapa los múltiplos": números suben en continuo; toca solo los que
 // cumplen la regla vigente y evita los demás. Flujo continuo, no un
 // "pregunta + 4 opciones" como el resto de juegos del motor de quiz.
+//
+// v2 (petición de Paco): una sola regla en toda la partida (antes cambiaba
+// cada 9 s y no se notaba el cambio), y cada toque dice claramente si está
+// bien (✓ +10 en verde) o mal (✗ en rojo y por qué no cumple la regla).
 import { randInt, pick, saveScore } from "./utils.js";
 
 const SLOTS = [6, 30, 54, 78];
@@ -10,17 +14,26 @@ function buildRule() {
   const kind = pick(["multiple", "parity", "compare"]);
   if (kind === "multiple") {
     const n = pick([2, 3, 4, 5]);
-    return { label: `Toca los múltiplos de ${n}`, test: (v) => v % n === 0 };
+    return {
+      label: `Toca los múltiplos de ${n}`,
+      test: (v) => v % n === 0,
+      why: (v) => `${v} no es múltiplo de ${n} (${v} : ${n} da resto ${v % n})`,
+    };
   }
   if (kind === "parity") {
     const even = Math.random() < 0.5;
-    return { label: `Toca los números ${even ? "pares" : "impares"}`, test: (v) => (v % 2 === 0) === even };
+    return {
+      label: `Toca los números ${even ? "pares" : "impares"}`,
+      test: (v) => (v % 2 === 0) === even,
+      why: (v) => `${v} es ${even ? "impar" : "par"}`,
+    };
   }
   const n = randInt(10, 40);
   const greater = Math.random() < 0.5;
   return {
     label: `Toca los números ${greater ? "mayores" : "menores"} que ${n}`,
     test: (v) => (greater ? v > n : v < n),
+    why: (v) => (v === n ? `${v} es igual a ${n}, no ${greater ? "mayor" : "menor"}` : `${v} es ${greater ? "menor" : "mayor"} que ${n}`),
   };
 }
 
@@ -32,10 +45,9 @@ export function mountAtrapaGame(container, { client, onExit }) {
   let finished = false;
   let rule = null;
   let spawnTimer = null;
-  let ruleTimer = null;
   let elapsed = 0;
   let live = [];
-  let sky, ruleEl;
+  let sky, ruleEl, feedbackEl;
 
   container.innerHTML = `
     <div class="game-topbar">
@@ -64,6 +76,29 @@ export function mountAtrapaGame(container, { client, onExit }) {
     ruleEl.textContent = rule.label;
   }
 
+  // Marca flotante ✓ +10 / ✗ donde estaba el número tocado.
+  function mark(el, ok) {
+    const sr = sky.getBoundingClientRect();
+    const r = el.getBoundingClientRect();
+    const m = document.createElement("div");
+    m.className = `atrapa-mark ${ok ? "ok" : "bad"}`;
+    m.textContent = ok ? "✓ +10" : "✗";
+    m.style.left = `${r.left - sr.left + r.width / 2}px`;
+    m.style.top = `${r.top - sr.top + r.height / 2}px`;
+    sky.appendChild(m);
+    setTimeout(() => m.remove(), 900);
+  }
+  let sayTimer = null;
+  function say(text, ok) {
+    feedbackEl.textContent = text;
+    feedbackEl.className = `feedback atrapa-say ${ok ? "ok" : "bad"}`;
+    clearTimeout(sayTimer);
+    sayTimer = setTimeout(() => {
+      feedbackEl.textContent = "";
+      feedbackEl.className = "feedback atrapa-say";
+    }, ok ? 900 : 2200);
+  }
+
   function spawn() {
     if (finished) return;
     const matches = Math.random() < 0.55;
@@ -85,13 +120,17 @@ export function mountAtrapaGame(container, { client, onExit }) {
       el.dataset.done = "1";
       rounds++;
       el.classList.add("popped");
-      if (rule.test(val)) {
+      const ok = rule.test(val);
+      mark(el, ok);
+      if (ok) {
         score += 10;
         renderScore();
+        say(`✓ ¡Bien! ${val} cumple la regla`, true);
       } else {
         lives--;
         renderLives();
-        if (lives <= 0) return setTimeout(() => finish(false), 300);
+        say(`✗ ${rule.why(val)}`, false);
+        if (lives <= 0) return setTimeout(() => finish(false), 900);
       }
     });
     el.addEventListener("animationend", () => {
@@ -109,7 +148,7 @@ export function mountAtrapaGame(container, { client, onExit }) {
     if (finished) return userExited ? onExit() : undefined;
     finished = true;
     if (spawnTimer) clearInterval(spawnTimer);
-    if (ruleTimer) clearInterval(ruleTimer);
+    clearTimeout(sayTimer);
     live.forEach((el) => el.remove());
     live = [];
     if (userExited) return onExit();
@@ -139,10 +178,12 @@ export function mountAtrapaGame(container, { client, onExit }) {
     bodyEl.innerHTML = `
       <div class="balloon-sky" data-sky>
         <div class="balloon-question" data-rule></div>
+        <div class="feedback atrapa-say" data-say></div>
       </div>
     `;
     sky = bodyEl.querySelector("[data-sky]");
     ruleEl = bodyEl.querySelector("[data-rule]");
+    feedbackEl = bodyEl.querySelector("[data-say]");
     renderLives();
     renderScore();
     newRule();
@@ -150,7 +191,6 @@ export function mountAtrapaGame(container, { client, onExit }) {
       elapsed++;
       spawn();
     }, 950);
-    ruleTimer = setInterval(newRule, 9000);
     spawn();
   }
 
@@ -158,6 +198,6 @@ export function mountAtrapaGame(container, { client, onExit }) {
   return function cleanup() {
     finished = true;
     if (spawnTimer) clearInterval(spawnTimer);
-    if (ruleTimer) clearInterval(ruleTimer);
+    clearTimeout(sayTimer);
   };
 }

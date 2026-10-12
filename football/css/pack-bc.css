@@ -1,0 +1,119 @@
+/* Pack BC — juegos de pregunta: Fracciones equivalentes (.eq-), La cuadrícula
+   del 100 (.ci-), ¿Cuántos grados? (.gr-), Las dos luces (.pp-), Las cintas (.cn2-). */
+
+/* ---------- comunes del pack: cuerpo arriba y línea 💡 ---------- */
+.game-body.eq-body, .game-body.ci-body, .game-body.gr-body, .game-body.pp-body, .game-body.cn2-body {
+  justify-content: flex-start; padding: 16px 14px;
+}
+/* El end-card vuelve a quedar centrado como en el resto de juegos. */
+.game-body.eq-body:has(.end-card), .game-body.ci-body:has(.end-card), .game-body.gr-body:has(.end-card),
+.game-body.pp-body:has(.end-card), .game-body.cn2-body:has(.end-card) { justify-content: center; }
+.prompt.eq-prompt, .prompt.ci-prompt, .prompt.gr-prompt, .prompt.pp-prompt, .prompt.cn2-prompt {
+  font-size: 1.12rem; margin-bottom: 12px;
+}
+.prompt.cn2-prompt { font-size: 1.02rem; }
+.eq-tip, .ci-tip, .gr-tip, .pp-tip, .cn2-tip {
+  display: block; margin-top: 4px; font-size: 0.8rem; font-weight: 600; color: var(--text); line-height: 1.35;
+}
+.eq-body .feedback, .ci-body .feedback, .gr-body .feedback, .pp-body .feedback, .cn2-body .feedback {
+  text-align: center; margin-top: 10px; max-width: 360px;
+}
+
+/* ---------- Fracciones equivalentes ---------- */
+.eq-row { display: flex; align-items: center; gap: 10px; width: 100%; max-width: 350px; }
+.eq-frac { display: inline-flex; flex-direction: column; align-items: center; min-width: 34px; font-weight: 800; font-size: 1.15rem; line-height: 1.15; }
+.eq-frac i { display: block; width: 100%; height: 2px; background: var(--text); margin: 2px 0; }
+.eq-frac b.eq-good { color: var(--good); }
+.eq-eq { font-size: 1.6rem; font-weight: 800; color: var(--muted); margin: 6px 0; }
+.eq-bar { flex: 1; display: flex; gap: 2px; height: 46px; border: 2px solid var(--text); border-radius: 8px; padding: 2px; background: var(--bg); }
+.eq-cell { flex: 1; border-radius: 4px; background: var(--card); border: 1px solid var(--border); transition: background 0.15s; }
+.eq-cell.on { background: var(--accent); border-color: var(--accent); }
+.eq-cell.good { background: var(--good); border-color: var(--good); }
+.eq-ctrl { display: flex; gap: 14px; align-items: center; justify-content: center; margin-top: 18px; width: 100%; }
+.eq-step {
+  width: 76px; height: 64px; border-radius: 14px; border: 2px solid var(--border); background: var(--bg);
+  color: var(--text); font-size: 2rem; font-weight: 800; cursor: pointer;
+}
+.eq-step:active { transform: scale(0.95); }
+button.primary.eq-check { width: 90px; height: 64px; font-size: 1.6rem; border-radius: 14px; }
+.eq-line { display: flex; align-items: center; gap: 12px; font-size: 1.5rem; font-weight: 800; margin: 4px 0 10px; }
+.eq-line .eq-frac { font-size: 1.5rem; min-width: 40px; }
+
+/* ---------- La cuadrícula del 100 ---------- */
+.ci-grid {
+  position: relative; display: grid; grid-template-columns: repeat(10, 1fr); gap: 2px;
+  width: 100%; max-width: 300px; aspect-ratio: 1; padding: 4px; border-radius: 10px;
+  background: var(--border); touch-action: none; user-select: none; -webkit-user-select: none;
+}
+.ci-cell { background: var(--card); border-radius: 3px; min-height: 0; }
+.ci-cell.on { background: var(--accent); }
+.ci-cell.good { background: var(--good); }
+.ci-reveal {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  font-size: 2.4rem; font-weight: 800; color: var(--good); pointer-events: none;
+  text-shadow: 0 0 10px var(--card), 0 0 20px var(--card), 0 0 4px var(--card);
+}
+.ci-count { font-size: 1.3rem; font-weight: 800; color: var(--muted); margin-top: 8px; }
+.ci-count b { color: var(--accent); font-size: 1.6rem; }
+button.primary.ci-check { width: 140px; height: 54px; font-size: 1.5rem; border-radius: 14px; margin-top: 6px; }
+.ci-grid.ci-static { max-width: 220px; }
+.ci-display.keypad-display { margin-top: 10px; margin-bottom: 8px; min-height: 2.2rem; }
+.ci-keypad.keypad { gap: 6px; }
+.ci-keypad .keypad-key { padding: 9px 8px; }
+
+/* ---------- ¿Cuántos grados? ---------- */
+.gr-svg { width: 100%; max-width: 300px; height: auto; display: block; margin: -6px auto 0; }
+.gr-ray { stroke: var(--text); stroke-width: 3; stroke-linecap: round; }
+.gr-arc { fill: none; stroke: var(--accent); stroke-width: 3; }
+.gr-vertex { fill: var(--text); }
+.gr-label { font-size: 17px; font-weight: 800; fill: var(--accent); text-anchor: middle; }
+.gr-label.good { fill: var(--good); }
+.gr-prot path { fill: none; stroke: var(--accent-2); stroke-width: 1.5; opacity: 0.8; }
+.gr-prot line { stroke: var(--accent-2); stroke-width: 1.2; }
+.gr-prot text { font-size: 9px; font-weight: 700; fill: var(--accent-2); text-anchor: middle; }
+.gr-display.keypad-display { margin-bottom: 8px; min-height: 2.2rem; }
+.gr-keypad.keypad { gap: 6px; }
+.gr-keypad .keypad-key { padding: 9px 8px; }
+
+/* ---------- Las dos luces ---------- */
+.pp-legend { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 12px; }
+.pp-light { font-weight: 800; font-size: 0.95rem; padding: 4px 10px; border-radius: 10px; background: var(--bg); border: 1px solid var(--border); }
+.pp-line { display: grid; grid-template-columns: repeat(12, 1fr); gap: 3px; width: 100%; max-width: 360px; }
+.pp-cell {
+  position: relative; aspect-ratio: 1; border-radius: 6px; border: 1px solid var(--border); background: var(--bg);
+  color: var(--text); font-weight: 700; font-size: 0.78rem; padding: 0; cursor: pointer;
+  display: flex; align-items: flex-start; justify-content: center; padding-top: 2px;
+}
+.pp-cell:active { transform: scale(0.94); }
+.pp-cell.good { background: var(--good); border-color: var(--good); color: #fff; }
+.pp-cell.bad { background: var(--danger); border-color: var(--danger); color: #fff; }
+.pp-cell:disabled { cursor: default; }
+.pp-dots { position: absolute; left: 0; right: 0; bottom: 2px; display: flex; gap: 1px; justify-content: center; }
+.pp-dot { width: 7px; height: 7px; border-radius: 50%; display: block; }
+.pp-dot.pp-l0 { background: var(--danger); }
+.pp-dot.pp-l1 { background: var(--accent-2); }
+.pp-dot.pp-l2 { background: #f5a623; }
+.pp-cell.good .pp-dot, .pp-cell.bad .pp-dot { outline: 1px solid #fff; }
+.pp-display.keypad-display { margin-bottom: 8px; }
+
+/* ---------- Las cintas ---------- */
+.cn2-ribbons { width: 100%; max-width: 360px; display: flex; flex-direction: column; gap: 8px; }
+.cn2-row { display: grid; grid-template-columns: 48px 1fr 56px; align-items: center; gap: 6px; }
+.cn2-len { font-weight: 800; font-size: 0.82rem; text-align: right; }
+.cn2-ribbon { display: flex; gap: 2px; height: 30px; padding: 2px; border: 2px solid var(--text); border-radius: 6px; background: var(--card); }
+.cn2-piece { display: flex; align-items: center; justify-content: center; border-radius: 3px; min-width: 0; font-size: 0.7rem; font-weight: 800; color: #fff; font-style: normal; }
+.cn2-piece.on { background: var(--accent); }
+.cn2-piece.good { background: var(--good); }
+.cn2-piece.rest { background: repeating-linear-gradient(45deg, var(--danger) 0 4px, transparent 4px 8px); color: var(--danger); }
+.cn2-note { font-size: 0.72rem; font-weight: 700; color: var(--muted); }
+.cn2-note.bad { color: var(--danger); }
+.cn2-size { margin-top: 12px; font-size: 1.05rem; font-weight: 700; color: var(--muted); }
+.cn2-size b { color: var(--accent); font-size: 1.5rem; }
+.cn2-ctrl { display: flex; align-items: center; gap: 8px; width: 100%; max-width: 360px; margin-top: 4px; }
+.cn2-step {
+  width: 52px; height: 48px; border-radius: 12px; border: 2px solid var(--border); background: var(--bg);
+  color: var(--text); font-size: 1.6rem; font-weight: 800; cursor: pointer; flex: 0 0 auto;
+}
+.cn2-range { flex: 1; min-width: 0; accent-color: var(--accent); height: 36px; touch-action: none; }
+button.primary.cn2-check { width: 140px; height: 52px; font-size: 1.5rem; border-radius: 14px; margin-top: 10px; }
+.cn2-display.keypad-display { margin-top: 10px; }

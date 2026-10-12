@@ -1,0 +1,144 @@
+/* Pack BR — geometría como en el libro: "Elementos del círculo" (.el-),
+   "Elementos del triángulo" (.et-), "Clasifica triángulos" (.ct-),
+   "Agudo, recto, obtuso" (.at-) y "Paralelas, secantes y
+   perpendiculares" (.rp-). */
+
+/* ---------- común: cuerpo compacto, 💡 legible ---------- */
+.game-body.el-body, .game-body.et-body, .game-body.ct-body, .game-body.at-body, .game-body.rp-body {
+  justify-content: flex-start; padding: 12px 10px;
+}
+.prompt.el-prompt, .prompt.et-prompt, .prompt.ct-prompt, .prompt.at-prompt, .prompt.rp-prompt {
+  font-size: 1.15rem; margin: 2px 0 8px; line-height: 1.3; text-align: center;
+}
+.prompt.el-prompt b, .prompt.et-prompt b, .prompt.ct-prompt b, .prompt.at-prompt b, .prompt.rp-prompt b { color: var(--accent); }
+.feedback.el-feedback, .feedback.et-feedback, .feedback.ct-feedback, .feedback.at-feedback, .feedback.rp-feedback {
+  margin-top: 8px; line-height: 1.35; text-align: center; max-width: 350px; font-size: 0.84rem;
+}
+button.secondary.el-next, button.secondary.et-next, button.secondary.ct-next, button.secondary.at-next, button.secondary.rp-next {
+  margin-top: 8px; padding: 7px 18px;
+}
+button.primary.ct-check, button.primary.at-check { margin-top: 10px; min-width: 170px; }
+button.primary.ct-check:disabled, button.primary.at-check:disabled { opacity: 0.45; cursor: default; }
+
+/* ---------- casilla sobre papel cuadriculado + teclado ---------- */
+.el-cuaderno, .at-cuaderno, .rp-cuaderno {
+  background-color: var(--card);
+  background-image:
+    repeating-linear-gradient(0deg, var(--border) 0 1px, transparent 1px 20px),
+    repeating-linear-gradient(90deg, var(--border) 0 1px, transparent 1px 20px);
+  border: 1px solid var(--border); border-radius: 10px; padding: 8px 18px;
+}
+.el-q, .at-q, .rp-q { display: flex; align-items: center; gap: 8px; font-size: 1.25rem; font-weight: 800; margin-top: 6px; }
+.el-slot, .at-slot, .rp-slot {
+  width: 60px; height: 44px; font: inherit; font-size: 1.4rem; font-weight: 800; color: var(--text); cursor: pointer;
+  background: var(--card); border: 2px solid var(--border); border-radius: 8px;
+  display: flex; align-items: center; justify-content: center; gap: 3px; padding: 0;
+}
+.el-slot.active, .at-slot.active, .rp-slot.active { border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent); }
+.el-slot.good, .at-slot.good, .rp-slot.good { background: var(--good); border-color: var(--good); color: #fff; }
+.el-slot.bad, .at-slot.bad, .rp-slot.bad { background: var(--danger); border-color: var(--danger); color: #fff; }
+.el-slot s, .at-slot s, .rp-slot s { font-size: 0.8em; opacity: 0.85; }
+.el-fix, .at-fix, .rp-fix { color: var(--good); font-weight: 900; font-size: 1.4rem; }
+.keypad.el-keypad, .keypad.at-keypad, .keypad.rp-keypad { margin-top: 8px; max-width: 230px; gap: 6px; }
+.keypad.el-keypad .keypad-key, .keypad.at-keypad .keypad-key, .keypad.rp-keypad .keypad-key { padding: 9px 8px; font-size: 1.1rem; }
+.keypad.el-keypad .keypad-key.primary, .keypad.at-keypad .keypad-key.primary, .keypad.rp-keypad .keypad-key.primary {
+  background: var(--accent); border-color: var(--accent); color: #fff;
+}
+
+/* ---------- Elementos del círculo ---------- */
+.el-svg { width: 100%; max-width: 340px; height: auto; display: block; overflow: visible; }
+.el-svg.el-small { max-width: 280px; }
+.el-circ { fill: none; stroke: var(--text); stroke-width: 2.5; }
+.el-line { fill: none; stroke: var(--text); stroke-width: 3; stroke-linecap: round; }
+.el-line.el-thick { stroke-width: 7; }
+.el-zone { fill: color-mix(in srgb, var(--accent-2) 30%, transparent); stroke: var(--text); stroke-width: 2.5; stroke-linejoin: round; cursor: pointer; }
+.el-dot { fill: var(--text); }
+.el-hit { fill: none; stroke: transparent; stroke-width: 30; stroke-linecap: round; pointer-events: stroke; cursor: pointer; }
+.el-hitpt { fill: transparent; pointer-events: all; cursor: pointer; }
+.el-pick.good .el-hit { stroke: color-mix(in srgb, var(--good) 35%, transparent); }
+.el-pick.bad .el-hit { stroke: color-mix(in srgb, var(--danger) 35%, transparent); }
+.el-pick.good .el-hitpt { fill: color-mix(in srgb, var(--good) 40%, transparent); }
+.el-pick.bad .el-hitpt { fill: color-mix(in srgb, var(--danger) 40%, transparent); }
+.el-pick.good .el-line, .el-pick.good .el-zone { stroke: var(--good); }
+.el-pick.bad .el-line, .el-pick.bad .el-zone { stroke: var(--danger); }
+.el-pick.good .el-zone { fill: color-mix(in srgb, var(--good) 45%, transparent); }
+.el-pick.bad .el-zone { fill: color-mix(in srgb, var(--danger) 45%, transparent); }
+.el-pick.good .el-dot { fill: var(--good); }
+.el-pick.bad .el-dot { fill: var(--danger); }
+.el-name, .el-measure, .et-name {
+  font-size: 14px; font-weight: 800; text-anchor: middle; pointer-events: none;
+  paint-order: stroke; stroke: var(--card); stroke-width: 4px; stroke-linejoin: round;
+}
+.el-name.good, .et-name.good { fill: var(--good); }
+.el-name.bad, .et-name.bad { fill: var(--danger); }
+.el-measure { font-size: 17px; fill: var(--text); }
+.el-measure.el-ask { fill: var(--accent); }
+
+/* ---------- Elementos del triángulo ---------- */
+.et-svg { width: 100%; max-width: 340px; height: auto; display: block; overflow: visible; }
+.et-svg.et-free { cursor: crosshair; touch-action: none; }
+.et-tri { fill: color-mix(in srgb, var(--accent) 6%, transparent); stroke: var(--text); stroke-width: 2.5; stroke-linejoin: round; }
+.et-side { stroke: var(--text); stroke-width: 2.5; stroke-linecap: round; }
+.et-nline { stroke: var(--et-c); stroke-width: 3; stroke-linecap: round; }
+.et-mark { fill: none; stroke: var(--et-c, var(--text)); stroke-width: 2.4; stroke-linecap: round; }
+.et-vertex { fill: var(--text); }
+.et-vname { font-size: 18px; font-weight: 800; text-anchor: middle; fill: var(--text); pointer-events: none; }
+.et-hit { fill: none; stroke: transparent; stroke-width: 30; stroke-linecap: round; pointer-events: stroke; cursor: pointer; }
+.et-hitpt { fill: transparent; pointer-events: all; cursor: pointer; }
+.et-pick.good .et-hit { stroke: color-mix(in srgb, var(--good) 35%, transparent); }
+.et-pick.bad .et-hit { stroke: color-mix(in srgb, var(--danger) 35%, transparent); }
+.et-pick.good .et-hitpt { fill: color-mix(in srgb, var(--good) 40%, transparent); }
+.et-pick.bad .et-hitpt { fill: color-mix(in srgb, var(--danger) 40%, transparent); }
+.et-dotmark { stroke: var(--card); stroke-width: 2; pointer-events: none; }
+.et-dotmark.good { fill: var(--good); }
+.et-dotmark.bad { fill: var(--danger); }
+
+/* ---------- celdas tocables (clasifica, ángulos, rectas) ---------- */
+.ct-grid, .at-grid, .rp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; width: 100%; max-width: 350px; }
+.at-grid.at-small { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.rp-grid.rp-small { max-width: 280px; gap: 6px; }
+.ct-cell, .at-cell, .rp-cell {
+  position: relative; padding: 2px 2px 15px; font: inherit; color: var(--text); cursor: pointer;
+  background: var(--card); border: 2px solid var(--border); border-radius: 12px;
+}
+.ct-cell svg, .at-cell svg, .rp-cell svg { display: block; width: 100%; height: auto; }
+.at-cell:disabled, .rp-cell:disabled { cursor: default; opacity: 1; color: var(--text); }
+.ct-cell.on, .at-cell.on, .rp-cell.on {
+  border-color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, var(--card));
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+.ct-cell.good, .at-cell.good, .rp-cell.good { border-color: var(--good); background: color-mix(in srgb, var(--good) 14%, var(--card)); box-shadow: none; }
+.ct-cell.miss, .at-cell.miss { border-color: var(--good); border-style: dashed; box-shadow: 0 0 0 2px color-mix(in srgb, var(--good) 30%, transparent); }
+.ct-cell.bad, .at-cell.bad, .rp-cell.bad { border-color: var(--danger); background: color-mix(in srgb, var(--danger) 14%, var(--card)); box-shadow: none; }
+.ct-cap, .at-cap, .rp-cap {
+  position: absolute; left: 0; right: 0; bottom: 1px; font-size: 0.68rem; font-weight: 700;
+  color: var(--muted); text-align: center; line-height: 1.2;
+}
+.ct-cell.good .ct-cap, .ct-cell.miss .ct-cap, .at-cell.good .at-cap, .at-cell.miss .at-cap, .rp-cell.good .rp-cap { color: var(--good); }
+.ct-cell.bad .ct-cap, .at-cell.bad .at-cap, .rp-cell.bad .rp-cap { color: var(--danger); }
+
+/* ---------- Clasifica triángulos ---------- */
+.ct-tri { fill: color-mix(in srgb, var(--accent-2) 14%, transparent); stroke: var(--text); stroke-width: 2.2; stroke-linejoin: round; }
+.ct-mark { fill: none; stroke: var(--accent); stroke-width: 2.2; stroke-linecap: round; }
+.ct-meas { font-size: 12px; font-weight: 800; fill: var(--text); text-anchor: middle; paint-order: stroke; stroke: var(--card); stroke-width: 3px; stroke-linejoin: round; }
+
+/* ---------- Agudo, recto, obtuso ---------- */
+.at-ray { stroke: var(--text); stroke-width: 2.5; stroke-linecap: round; }
+.at-arc { fill: none; stroke: var(--accent); stroke-width: 2; }
+.at-vertex { fill: var(--text); }
+.at-val { font-size: 12.5px; font-weight: 800; fill: var(--accent); text-anchor: middle; paint-order: stroke; stroke: var(--card); stroke-width: 3px; }
+.at-val.at-late { display: none; }
+.at-done .at-val.at-late { display: inline; }
+.at-recto { display: none; fill: none; stroke: var(--accent-2); stroke-width: 2; stroke-dasharray: 5 3; }
+.at-recto path:last-child { stroke-dasharray: none; }
+.at-done .at-recto { display: inline; }
+
+/* ---------- Paralelas, secantes y perpendiculares ---------- */
+.rp-line { stroke: var(--text); stroke-width: 2.5; stroke-linecap: round; }
+.rp-name { font: italic 800 16px Georgia, "Times New Roman", serif; fill: var(--accent); text-anchor: middle; paint-order: stroke; stroke: var(--card); stroke-width: 3px; }
+.rp-ref { stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 4 3; }
+.rp-arc { fill: none; stroke: var(--accent-2); stroke-width: 2; }
+.rp-deg { font-size: 12px; font-weight: 800; fill: var(--text); text-anchor: middle; paint-order: stroke; stroke: var(--card); stroke-width: 3px; }
+.rp-marks { display: none; fill: none; stroke: var(--good); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.rp-marks circle { fill: var(--accent); stroke: none; }
+.rp-done .rp-marks { display: inline; }

@@ -131,11 +131,15 @@ export function mountRuletaGame(container, { client, onExit }) {
       acc += wheel.weights[i];
       if (r < acc) { landedIdx = i; break; }
     }
-    let angle = -90;
-    for (let i = 0; i < landedIdx; i++) angle += (wheel.weights[i] / wheel.total) * 360;
+    // Los trozos se dibujan empezando arriba (donde está la flecha ▼) y en
+    // sentido horario. Para que el centro del trozo elegido quede bajo la
+    // flecha hay que girar la ruleta hacia atrás lo que mide desde arriba
+    // hasta ese centro. (v2: antes se contaba desde -90° y la ruleta paraba
+    // un cuarto de vuelta desplazada, en un color distinto del anunciado.)
+    let fromTop = 0;
+    for (let i = 0; i < landedIdx; i++) fromTop += (wheel.weights[i] / wheel.total) * 360;
     const midSweep = (wheel.weights[landedIdx] / wheel.total) * 360 / 2;
-    const targetAngle = angle + midSweep;
-    const finalRotation = 360 * 4 - targetAngle;
+    const finalRotation = 360 * 4 - (fromTop + midSweep);
     const holder = body.querySelector("[data-wheel-holder]");
     const svg = holder.querySelector(".wheel-svg");
     svg.style.transition = "transform 1.4s cubic-bezier(0.2, 0.7, 0.2, 1)";

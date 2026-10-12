@@ -1,0 +1,155 @@
+/* Pack BO — "como en el cuaderno" de ESO/últimos cursos: "Descompón en
+   factores primos" (.fz-, la raya vertical), "mcm y mcd por factores"
+   (.mf2-), "Raíz cuadrada entera" (.ra-, la caja de la raíz),
+   "Multiplicación por celosía" (.cl-) y "¿Qué siglo es?" (.sl-).
+   Todo sobre papel cuadriculado (.xx-cuaderno) con casillas que se tocan
+   para enfocarlas (activa = borde acento, bien = verde, mal = rojo). */
+
+/* ---------- común ---------- */
+.game-body.fz-body, .game-body.mf2-body, .game-body.ra-body, .game-body.cl-body, .game-body.sl-body {
+  justify-content: flex-start; padding: 12px 10px 10px;
+}
+.prompt.fz-prompt, .prompt.mf2-prompt, .prompt.ra-prompt, .prompt.cl-prompt, .prompt.sl-prompt {
+  font-size: 1.08rem; margin: 0 0 8px; line-height: 1.25;
+}
+.prompt.fz-prompt b, .prompt.cl-prompt b { color: var(--accent); }
+.feedback.fz-feedback, .feedback.mf2-feedback, .feedback.ra-feedback, .feedback.cl-feedback, .feedback.sl-feedback {
+  margin-top: 8px; line-height: 1.35; text-align: center; max-width: 360px; font-size: 0.78rem;
+}
+.keypad.fz-keypad, .keypad.mf2-keypad, .keypad.ra-keypad, .keypad.cl-keypad, .keypad.sl-keypad { margin-top: 10px; max-width: 230px; gap: 6px; }
+.keypad.fz-keypad .keypad-key, .keypad.mf2-keypad .keypad-key, .keypad.ra-keypad .keypad-key,
+.keypad.cl-keypad .keypad-key, .keypad.sl-keypad .keypad-key { padding: 9px 8px; }
+.keypad.fz-keypad .keypad-key.primary, .keypad.mf2-keypad .keypad-key.primary, .keypad.ra-keypad .keypad-key.primary,
+.keypad.cl-keypad .keypad-key.primary, .keypad.sl-keypad .keypad-key.primary {
+  background: var(--accent); border-color: var(--accent); color: #fff;
+}
+.fz-next, .mf2-next, .ra-next, .cl-next, .sl-next {
+  margin-left: 6px; font: inherit; font-weight: 700; font-size: 0.8rem; padding: 4px 10px; cursor: pointer;
+  border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--text);
+}
+
+/* papel cuadriculado del cuaderno */
+.fz-cuaderno, .mf2-cuaderno, .ra-cuaderno, .cl-cuaderno, .sl-cuaderno {
+  background-color: var(--card);
+  background-image:
+    repeating-linear-gradient(0deg, transparent 0 17px, var(--border) 17px 18px),
+    repeating-linear-gradient(90deg, transparent 0 17px, var(--border) 17px 18px);
+  border: 1px solid var(--border); border-radius: 10px;
+  font-weight: 800; color: var(--text); max-width: 100%;
+}
+.fz-cuaderno, .ra-cuaderno, .cl-cuaderno { font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+
+/* casillas que se rellenan */
+.fz-slot, .mf2-slot, .ra-slot, .cl-slot, .sl-slot {
+  font: inherit; font-weight: 800; color: var(--text); cursor: pointer;
+  background: var(--bg); border: 2px solid var(--border); border-radius: 7px;
+  display: flex; align-items: center; justify-content: center; gap: 2px; padding: 0;
+  position: relative; overflow: visible;
+}
+.fz-slot.active, .mf2-slot.active, .ra-slot.active, .cl-slot.active, .sl-slot.active {
+  border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+.fz-slot.good, .mf2-slot.good, .ra-slot.good, .cl-slot.good, .sl-slot.good { background: var(--good); border-color: var(--good); color: #fff; }
+.fz-slot.bad, .mf2-slot.bad, .ra-slot.bad, .cl-slot.bad, .sl-slot.bad { background: var(--danger); border-color: var(--danger); color: #fff; }
+.fz-slot s, .mf2-slot s, .ra-slot s, .cl-slot s, .sl-slot s { opacity: 0.9; text-decoration-thickness: 2px; }
+/* al fallar: lo escrito tachado en rojo y lo correcto en verde, al lado */
+.fz-fix, .mf2-fix, .ra-fix, .cl-fix, .sl-fix {
+  position: absolute; right: -7px; top: -10px; z-index: 2; font-style: normal; font-size: 0.62em; line-height: 1;
+  padding: 2px 3px; border-radius: 5px; background: var(--good); color: #fff; border: 1.5px solid var(--card);
+}
+
+/* ---------- Descompón en factores primos: la raya vertical ---------- */
+/* la hoja reserva sitio para todas las filas posibles: el teclado no salta */
+.fz-cuaderno {
+  padding: 10px 18px 8px; display: flex; flex-direction: column; align-items: center;
+  width: 100%; max-width: 330px; min-height: calc(var(--fz-rows) * 33px + 74px);
+}
+.fz-raya { display: flex; align-items: flex-start; justify-content: center; font-size: 1.35rem; }
+.fz-izq, .fz-der { display: flex; flex-direction: column; gap: 1px; }
+.fz-izq { padding-right: 8px; }
+.fz-der { border-left: 3px solid var(--text); padding-left: 8px; }
+.fz-izq .fz-row { display: grid; grid-template-columns: repeat(var(--fz-w), 30px); gap: 2px; justify-content: end; }
+.fz-der .fz-row { display: grid; grid-template-columns: repeat(var(--fz-p), 30px); gap: 2px; justify-content: start; }
+.fz-row.fz-hidden { display: none; }
+.fz-cell { width: 30px; height: 32px; display: flex; align-items: center; justify-content: center; }
+.fz-fixed { color: var(--text); }
+.fz-expr { display: flex; align-items: center; gap: 6px; min-height: 46px; font-size: 1.35rem; margin-top: 6px; }
+.fz-expr.fz-hidden { visibility: hidden; }
+.fz-op { color: var(--muted); }
+.fz-expr small { font-size: 0.7em; color: var(--muted); }
+.fz-pow { display: inline-flex; align-items: flex-start; }
+.fz-cell.fz-exp { width: 22px; height: 24px; font-size: 0.85rem; margin: -14px 0 0 1px; }
+
+/* ---------- mcm y mcd por factores ---------- */
+.mf2-cuaderno { padding: 12px 14px; display: flex; flex-direction: column; gap: 12px; font-size: 1.2rem; width: 100%; max-width: 350px; }
+.mf2-dados { display: flex; flex-direction: column; gap: 4px; align-items: center; font-weight: 700; }
+.mf2-dados b { color: var(--accent); }
+.mf2-linea { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 5px; row-gap: 8px; }
+.mf2-name { color: var(--accent); }
+.mf2-op { color: var(--muted); }
+.mf2-pow { display: inline-flex; align-items: flex-start; padding-top: 12px; }
+.mf2-slot.mf2-exp { width: 24px; height: 26px; font-size: 0.85rem; margin: -13px 0 0 1px; border-radius: 6px; }
+.mf2-slot.mf2-val { min-width: 66px; height: 42px; font-size: 1.2rem; padding: 0 6px; }
+.mf2-nota { font-size: 0.7rem; font-weight: 600; color: var(--muted); text-align: center; margin-top: -4px; }
+
+/* ---------- Raíz cuadrada: la caja de la raíz del libro ---------- */
+.ra-cuaderno { padding: 12px 10px 10px; display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 350px; }
+.ra-caja { display: flex; align-items: stretch; font-size: 1.25rem; }
+.ra-izq { display: flex; flex-direction: column; gap: 2px; padding-right: 6px; }
+.ra-row { display: flex; gap: 2px; }
+.ra-cell { width: 26px; height: 30px; display: flex; align-items: center; justify-content: center; position: relative; flex: none; }
+.ra-signo { height: 33px; color: var(--text); }
+.ra-signo svg { display: block; width: 26px; height: 33px; overflow: visible; }
+.ra-signo path { fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linejoin: round; stroke-linecap: round; }
+.ra-num { display: flex; gap: 2px; border-top: 3px solid var(--text); }
+.ra-fixed { color: var(--text); }
+.ra-tick::after { content: "'"; position: absolute; right: -5px; top: 1px; font-size: 1rem; color: var(--text); }
+.ra-minus { color: var(--accent); }
+.ra-baja { visibility: hidden; color: var(--text); }
+.ra-baja.ra-show { visibility: visible; }
+.ra-copy, .ra-echo { color: var(--accent-2); }
+.ra-der { border-left: 3px solid var(--text); display: flex; flex-direction: column; min-width: 84px; }
+.ra-raiz { display: flex; gap: 2px; height: 36px; padding: 3px 8px 0; border-bottom: 3px solid var(--text); box-sizing: border-box; }
+.ra-auxrow { display: flex; gap: 2px; align-items: center; padding: 5px 6px 0 8px; font-size: 1.05rem; }
+.ra-auxrow .ra-cell { width: 24px; height: 28px; }
+.ra-op { width: 16px; text-align: center; color: var(--muted); flex: none; }
+.ra-echo { font-size: 1rem; white-space: nowrap; }
+.ra-prueba { display: flex; align-items: center; gap: 3px; margin-top: 10px; font-size: 1rem; flex-wrap: wrap; justify-content: center; }
+.ra-prueba .ra-cell { width: 24px; height: 28px; }
+
+/* ---------- Multiplicación por celosía ---------- */
+.cl-cuaderno { padding: 8px 12px 6px; display: flex; flex-direction: column; align-items: center; }
+.cl-rejilla { position: relative; }
+.cl-svg { position: absolute; inset: 0; }
+.cl-grid { stroke: var(--text); stroke-width: 2.5; stroke-linecap: square; }
+.cl-diag { stroke: var(--text); stroke-width: 1.4; stroke-linecap: round; }
+.cl-at { position: absolute; transform: translate(-50%, -50%); line-height: 1; }
+.cl-fixed { font-size: 1.45rem; color: var(--text); }
+.cl-times { font-size: 1.1rem; color: var(--accent); }
+.cl-slot { width: 24px; height: 24px; font-size: 0.95rem; border-radius: 6px; }
+.cl-slot.cl-sum { width: 28px; height: 28px; font-size: 1.05rem; border-color: color-mix(in srgb, var(--accent-2) 60%, var(--border)); }
+.cl-slot.cl-glow:not(.active) { background: color-mix(in srgb, var(--accent-2) 22%, var(--bg)); }
+.cl-lee { min-height: 1.2em; font-size: 0.85rem; color: var(--accent); font-family: system-ui, sans-serif; }
+
+/* ---------- ¿Qué siglo es? ---------- */
+.sl-cuaderno { padding: 8px 6px 12px; display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 350px; }
+.sl-svg { display: block; width: 100%; max-width: 330px; height: auto; font-family: system-ui, sans-serif; }
+.sl-band { fill: color-mix(in srgb, var(--accent) 16%, transparent); stroke: var(--accent); stroke-width: 1.2; }
+.sl-band.sl-good, .sl-band.sl-bad { fill: color-mix(in srgb, var(--good) 22%, transparent); stroke: var(--good); }
+.sl-rom { text-anchor: middle; font-weight: 800; font-size: 14px; fill: var(--text); }
+.sl-axis { stroke: var(--text); stroke-width: 2.5; stroke-linecap: round; }
+.sl-tick { stroke: var(--text); stroke-width: 2; }
+.sl-lab { text-anchor: middle; font-size: 11px; font-weight: 700; fill: var(--muted); }
+.sl-lab.sl-labdot { fill: var(--danger); font-size: 12px; }
+.sl-ac { font-size: 11px; font-weight: 700; fill: var(--muted); }
+.sl-dot { fill: var(--danger); stroke: var(--card); stroke-width: 2; }
+.sl-year { text-anchor: middle; font-weight: 800; font-size: 13px; fill: var(--danger); }
+.sl-pin { stroke: var(--danger); stroke-width: 1.5; stroke-dasharray: 3 2; }
+.sl-arc { fill: none; stroke: var(--accent); stroke-width: 2; }
+.sl-gap { text-anchor: middle; font-weight: 800; font-size: 13px; fill: var(--accent); }
+.sl-frase { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px; font-size: 1.2rem; margin-top: 6px; }
+.sl-frase b { color: var(--accent); }
+.sl-slot { min-width: 70px; height: 44px; font-size: 1.25rem; padding: 0 6px; }
+.sl-frase.sl-frase-rango { font-size: 1.02rem; gap: 5px; }
+.sl-frase-rango .sl-slot { min-width: 60px; font-size: 1.1rem; padding: 0 4px; }
+.sl-span { stroke: var(--accent); stroke-width: 5; stroke-linecap: round; opacity: 0.55; }

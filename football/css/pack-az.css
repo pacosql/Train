@@ -1,0 +1,152 @@
+/* Pack AZ — "Monta los datos" (.md-) y "La caja negra" (.cn-). */
+
+/* ---------- Monta los datos ---------- */
+.game-body.md-body { justify-content: flex-start; padding: 16px 12px; }
+.prompt.md-prompt { font-size: 1.08rem; margin-bottom: 10px; line-height: 1.3; }
+.md-cards { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; width: 100%; }
+.md-card {
+  flex: 1 1 88px; max-width: 132px; min-width: 82px;
+  background: var(--bg); border: 2px solid var(--border); border-radius: 12px;
+  padding: 6px 6px 5px; text-align: center; display: flex; flex-direction: column; gap: 1px;
+  transition: border-color 0.2s, background 0.2s;
+}
+.md-c-name { font-size: 0.68rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.02em; }
+.md-c-target { font-size: 1.15rem; font-weight: 800; color: var(--text); line-height: 1.2; }
+.md-c-now { font-size: 0.72rem; color: var(--muted); }
+.md-c-now b { color: var(--text); }
+.md-card.md-live-ok { border-color: color-mix(in srgb, var(--good) 55%, var(--border)); }
+.md-card.md-ok { border-color: var(--good); background: color-mix(in srgb, var(--good) 14%, var(--bg)); }
+.md-card.md-bad { border-color: var(--danger); background: color-mix(in srgb, var(--danger) 13%, var(--bg)); }
+.md-card.md-ok .md-c-target { color: var(--good); }
+.md-card.md-bad .md-c-target { color: var(--danger); }
+.md-count { margin: 8px 0 2px; font-size: 0.85rem; color: var(--muted); }
+.md-count b { color: var(--text); }
+.md-count.md-full b { color: var(--good); }
+.md-stage { width: 100%; max-width: 380px; }
+.md-plot { display: block; width: 100%; height: auto; touch-action: none; user-select: none; -webkit-user-select: none; }
+.md-plot .md-col { fill: color-mix(in srgb, var(--accent) 4%, transparent); cursor: pointer; }
+.md-plot .md-col:hover, .md-plot .md-col.md-over { fill: color-mix(in srgb, var(--accent-2) 14%, transparent); }
+.md-plot .md-axis { stroke: var(--muted); stroke-width: 2.5; stroke-linecap: round; }
+.md-plot .md-tick { stroke: var(--muted); stroke-width: 2; }
+.md-plot .md-lab { fill: var(--text); font-size: 13px; font-weight: 700; text-anchor: middle; }
+.md-plot .md-dot { fill: var(--accent); stroke: var(--card); stroke-width: 2; pointer-events: none; }
+.md-plot .md-dot.md-lifted { opacity: 0.25; }
+.md-plot .md-start { fill: none; stroke: var(--muted); stroke-width: 1.6; stroke-dasharray: 3 3; pointer-events: none; }
+.md-plot .md-drag { fill: var(--accent-2); stroke: var(--card); stroke-width: 2; pointer-events: none; opacity: 0.95; }
+.md-plot .md-drag.md-out { fill: var(--danger); opacity: 0.6; }
+.md-plot .md-fulcrum { fill: var(--accent-2); pointer-events: none; }
+.md-plot .md-flab { fill: var(--accent-2); font-size: 10.5px; font-weight: 700; pointer-events: none; }
+.md-plot.md-mini { max-width: 300px; margin: 4px auto 0; pointer-events: none; }
+.md-plot.md-mini .md-dot { fill: var(--good); }
+.md-actions { display: flex; gap: 10px; justify-content: center; margin-top: 8px; }
+.md-actions button:disabled { opacity: 0.45; cursor: default; }
+.md-body .feedback { margin-top: 8px; text-align: center; }
+.md-why { width: 100%; max-width: 380px; }
+.md-reasons { margin: 6px 0 4px; padding-left: 18px; font-size: 0.82rem; line-height: 1.4; color: var(--text); }
+.md-reasons li { margin-bottom: 4px; }
+.md-sol-title { font-size: 0.82rem; color: var(--muted); text-align: center; margin-top: 6px; }
+.md-sol-title b { color: var(--good); }
+.md-next { display: block; margin: 8px auto 0; }
+
+/* ---------- La caja negra ---------- */
+.game-body.cn-body { justify-content: flex-start; padding: 14px 12px; }
+.prompt.cn-prompt { font-size: 1.15rem; margin-bottom: 8px; }
+.cn-top { display: flex; gap: 10px; width: 100%; max-width: 380px; align-items: flex-start; justify-content: center; }
+.cn-machine { flex: 0 0 52%; max-width: 190px; height: auto; display: block; overflow: visible; }
+.cn-machine .cn-funnel { fill: color-mix(in srgb, var(--accent-2) 30%, var(--bg)); stroke: var(--accent-2); stroke-width: 2.5; stroke-linejoin: round; }
+.cn-machine .cn-box { fill: var(--accent); stroke: var(--accent-dark); stroke-width: 3; }
+.cn-machine .cn-chute { fill: var(--accent-dark); }
+.cn-machine .cn-gear {
+  fill: none; stroke: color-mix(in srgb, #fff 75%, var(--accent)); stroke-width: 7; stroke-dasharray: 4.5 3.7;
+  transform-box: fill-box; transform-origin: center;
+}
+.cn-machine .cn-hub { fill: color-mix(in srgb, #fff 75%, var(--accent)); }
+.cn-machine.cn-working .cn-gear { animation: cn-spin 0.6s linear infinite; }
+.cn-machine.cn-working .cn-gear2 { animation-direction: reverse; }
+.cn-machine.cn-working .cn-box { animation: cn-shake 0.15s linear infinite; }
+@keyframes cn-spin { to { transform: rotate(360deg); } }
+@keyframes cn-shake { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(1.5px); } }
+.cn-machine .cn-label { fill: #fff; font-size: 40px; font-weight: 800; text-anchor: middle; }
+.cn-machine .cn-label.cn-revealed { font-size: 17px; }
+.cn-machine .cn-tok rect { fill: var(--card); stroke: var(--accent-2); stroke-width: 2.5; }
+.cn-machine .cn-tok text { fill: var(--text); font-size: 16px; font-weight: 800; text-anchor: middle; }
+.cn-machine .cn-tok-in { opacity: 0; }
+.cn-machine .cn-tok-in.cn-drop { animation: cn-drop 0.7s ease-in forwards; }
+@keyframes cn-drop {
+  0% { opacity: 1; transform: translateY(-10px); }
+  60% { opacity: 1; transform: translateY(14px) scale(0.9); }
+  100% { opacity: 0; transform: translateY(46px) scale(0.5); }
+}
+.cn-machine .cn-tok-out { opacity: 0; }
+.cn-machine .cn-tok-out rect { stroke: var(--good); }
+.cn-machine .cn-tok-out.cn-pop { animation: cn-pop 0.45s cubic-bezier(0.3, 1.5, 0.5, 1) forwards; }
+.cn-machine .cn-tok-out.cn-spit { animation: cn-pop 0.45s ease-out forwards; }
+.cn-machine .cn-tok-out.cn-spit rect { stroke: var(--danger); }
+@keyframes cn-pop {
+  0% { opacity: 0; transform: translateY(-22px) scale(0.4); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+.cn-table {
+  flex: 1 1 auto; min-width: 118px; max-width: 170px;
+  border: 2px solid var(--border); border-radius: 12px; background: var(--bg); overflow: hidden;
+  font-variant-numeric: tabular-nums;
+}
+.cn-row { display: grid; grid-template-columns: 1fr 1fr; text-align: center; font-size: 1rem; padding: 4px 4px; border-top: 1px solid var(--border); }
+.cn-row b { color: var(--accent); }
+.cn-row.cn-head { border-top: none; font-size: 0.7rem; font-weight: 700; color: var(--muted); text-transform: uppercase; background: var(--card); }
+.cn-row.cn-head b { color: var(--muted); }
+.cn-row.cn-rej b { color: var(--danger); }
+.cn-row.cn-new { animation: cn-flash 0.9s ease-out; }
+@keyframes cn-flash { from { background: color-mix(in srgb, var(--accent-2) 35%, transparent); } }
+.cn-empty { font-size: 0.75rem; color: var(--muted); padding: 10px 6px; text-align: center; }
+.cn-tries { margin: 6px 0 4px; font-size: 0.85rem; color: var(--muted); letter-spacing: 0.02em; }
+.cn-tries small { font-size: 0.75rem; }
+.cn-panel { width: 100%; max-width: 300px; }
+.cn-feedrow { display: flex; gap: 8px; align-items: stretch; }
+.cn-display {
+  flex: 1; min-height: 44px; border: 2px solid var(--accent-2); border-radius: 10px; background: var(--bg);
+  display: flex; align-items: center; justify-content: center; font-size: 1.35rem; font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+.cn-display i { color: var(--muted); font-style: normal; }
+.cn-feed:disabled, .cn-actions button:disabled { opacity: 0.45; cursor: default; }
+.cn-predtitle { font-size: 0.88rem; font-weight: 700; text-align: center; margin-bottom: 6px; }
+.cn-preds { display: flex; flex-direction: column; gap: 6px; }
+.cn-pred {
+  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 6px;
+  background: var(--bg); border: 2px solid var(--border); border-radius: 10px; padding: 6px 10px;
+  font-size: 1.1rem; color: var(--text); cursor: pointer; font-variant-numeric: tabular-nums;
+}
+.cn-pred .cn-px { text-align: right; font-weight: 700; }
+.cn-pred .cn-arrow { color: var(--muted); }
+.cn-pred .cn-py { text-align: left; color: var(--accent); }
+.cn-pred.cn-sel { border-color: var(--accent-2); box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-2) 35%, transparent); }
+.cn-pred.cn-good { border-color: var(--good); background: color-mix(in srgb, var(--good) 13%, var(--bg)); }
+.cn-pred.cn-bad { border-color: var(--danger); background: color-mix(in srgb, var(--danger) 12%, var(--bg)); }
+.cn-pred:disabled { cursor: default; color: var(--text); }
+.cn-keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; width: 100%; max-width: 260px; margin-top: 8px; }
+.cn-keypad.cn-off { display: none; }
+.cn-key {
+  background: var(--bg); border: 2px solid var(--border); border-radius: 10px; color: var(--text);
+  font-size: 1.15rem; font-weight: 800; padding: 8px 0; cursor: pointer; touch-action: manipulation;
+}
+.cn-key:active { transform: scale(0.95); background: var(--border); }
+.cn-key.cn-key-del { color: var(--danger); }
+.cn-key-gap { display: block; }
+.cn-actions { margin-top: 8px; }
+.cn-body .feedback { margin-top: 6px; text-align: center; }
+.cn-why { width: 100%; max-width: 360px; }
+.cn-bonus {
+  margin: 6px auto 0; width: fit-content; padding: 6px 12px; border-radius: 999px;
+  background: color-mix(in srgb, var(--final) 22%, var(--card)); border: 2px solid var(--final);
+  color: var(--text); font-weight: 800; font-size: 0.88rem; animation: cn-pop 0.5s ease-out;
+}
+.cn-cmp { margin: 6px auto 4px; border-collapse: collapse; font-size: 0.92rem; font-variant-numeric: tabular-nums; }
+.cn-cmp th { font-size: 0.68rem; color: var(--muted); text-transform: uppercase; padding: 2px 10px; }
+.cn-cmp td { text-align: center; padding: 3px 10px; border-top: 1px solid var(--border); }
+.cn-cmp .cn-tr-bad td:nth-child(2) { color: var(--danger); font-weight: 700; }
+.cn-cmp .cn-tr-ok td:nth-child(2) { color: var(--good); font-weight: 700; }
+.cn-rule, .cn-amb, .cn-tip { font-size: 0.82rem; line-height: 1.4; margin: 6px 0; }
+.cn-amb { color: var(--muted); }
+.cn-tip { background: var(--bg); border-radius: 10px; padding: 6px 10px; }
+.cn-next { display: block; margin: 8px auto 0; }

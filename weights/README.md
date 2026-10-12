@@ -205,7 +205,7 @@ entre cada una, sin que el usuario vea nada. Solo si las tres fallan se
 muestra un aviso — y en lenguaje llano ("sin conexión, inténtalo de
 nuevo"), no el texto crudo del error. El estado no se pierde mientras
 tanto: si aun así falla, la pantalla se queda como estaba (con el peso o
-el feedback ya elegido) para poder pulsar "Guardar" otra vez.
+lo marcado para la próxima vez) para poder pulsar "Stop" otra vez.
 
 ## Cómo se ordena la lista de ejercicios
 
@@ -262,11 +262,23 @@ mapa `{ id: { startedAt, weight } }` con todas las abiertas:
 `currentExerciseStartedAt`/`currentWeightDraft`) a `active`, para no
 perder un ejercicio a medias al actualizar la app.
 
+## Stop guarda directo ("la próxima vez")
+
+No hay pantalla de "¿cómo ha ido?": el peso ya lo has puesto tú con el
+stepper, así que **Stop** (o "Guardar peso sin cronometrar") guarda al
+instante y vuelve a la lista. Lo de más/igual/menos es un selector
+pequeño en la propia pantalla del ejercicio, encima de Start/Stop, con
+**Igual** marcado por defecto; solo hay que tocarlo si quieres que la
+próxima vez te proponga un escalón más (o menos). Debajo dice en claro
+qué va a pasar ("Stop guarda y la próxima te propondré 45 kg"). La
+elección vive en `state.active[id].nextTime`, así que sobrevive a
+cambiar de máquina en una superserie o a recargar.
+
 ## Misma máquina, varios ejercicios (estaciones)
 
 La columna `station` de `weights_exercises` agrupa filas que son la misma
 máquina física. Ahora mismo `asistida` une **Ascenso Asistido** (dominadas)
-y **Extensora Asistida** (fondos): una sola pila de pesos para las dos.
+y **Descenso Asistido** (fondos): una sola pila de pesos para las dos.
 Los compañeros de estación:
 
 - van siempre **pegados** en la lista de ejercicios (el mejor puntuado
@@ -277,6 +289,15 @@ Los compañeros de estación:
   fue con su compañero, se propone ese mismo peso tal cual; y el peso de
   referencia que fijas en el catálogo se escribe en todos a la vez.
 
+### Parejas de superserie (`superset`)
+
+La columna `superset` agrupa máquinas distintas que se hacen siempre
+seguidas, como **Pectoral** y **Reverse Fly** (`pecho_espalda`). Se
+comportan como una estación en la lista (van pegadas y, al terminar
+una, la otra sube con la razón "superserie con…") pero **no comparten
+peso**: cada una propone el suyo. En la lista llevan la etiqueta
+"⚡ superserie".
+
 Para las máquinas asistidas (dominadas/fondos asistidos), la lógica de
 peso está invertida: menos peso en la pila = más difícil (menos
 ayuda), así que "más difícil la próxima vez" baja el número en vez de
@@ -286,7 +307,7 @@ subirlo.
 
 - `weights_exercises`: catálogo de máquinas/ejercicios (nombre, grupo
   muscular opcional, tipo de movimiento push/pull/cardio/otro, si es
-  asistida, y el incremento de peso típico).
+  asistida, y el incremento de peso: 2,5 kg en todas las de fuerza).
 - `weights_sessions`: una fila por entrenamiento (duración planeada,
   minutos de cardio, inicio/fin).
 - `weights_session_exercises`: una fila por ejercicio hecho dentro de

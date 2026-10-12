@@ -1,0 +1,123 @@
+/* Pack BE — juegos de pregunta: El tercer ángulo (.ta-), Paso a paso (.je-),
+   Pon el paréntesis (.pa-), Pon la coma (.cm-) y ¿Entre qué números? (.rz-). */
+
+/* ---------- El tercer ángulo ---------- */
+.game-body.ta-body { justify-content: flex-start; padding: 14px 14px 16px; }
+.prompt.ta-prompt { font-size: 1.1rem; margin-bottom: 6px; }
+.ta-fig { width: 100%; max-width: 320px; height: auto; display: block; margin: 0 auto 8px; }
+.ta-fig .ta-shape { fill: var(--accent); fill-opacity: 0.08; stroke: var(--text); stroke-width: 2; stroke-linejoin: round; }
+.ta-fig .ta-line { stroke: var(--text); stroke-width: 2; stroke-linecap: round; }
+.ta-fig .ta-arc { fill: none; stroke: var(--accent-2); stroke-width: 2; }
+.ta-fig .ta-arc.q { stroke: var(--accent); stroke-width: 2.5; }
+.ta-fig .ta-tick { stroke: var(--accent-2); stroke-width: 2.5; stroke-linecap: round; }
+.ta-fig .ta-lab {
+  font-size: 15px; font-weight: 700; fill: var(--text); text-anchor: middle; dominant-baseline: middle;
+  paint-order: stroke; stroke: var(--card); stroke-width: 4px; stroke-linejoin: round;
+}
+.ta-fig .ta-lab.q { fill: var(--accent); font-size: 18px; font-weight: 800; }
+.ta-fig .ta-lab.good { fill: var(--good); }
+.keypad-display.ta-display { margin-bottom: 8px; min-height: 2.2rem; }
+.keypad-display.ta-display.bad { color: var(--danger); }
+.keypad-display.ta-display.ok { color: var(--good); }
+.keypad.ta-pad .keypad-key { padding: 11px 8px; font-size: 1.1rem; }
+.feedback.ta-fb { margin-top: 10px; line-height: 1.3; }
+
+/* ---------- Paso a paso ---------- */
+.game-body.je-body { justify-content: flex-start; padding: 16px 12px; }
+.prompt.je-prompt { font-size: 1.05rem; margin-bottom: 4px; }
+.je-orig { font-size: 0.8rem; color: var(--muted); margin: 0 0 14px; min-height: 1rem; text-align: center; }
+.je-expr {
+  display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
+  gap: 4px 2px; width: 100%; font-size: 1.7rem; font-weight: 800; font-variant-numeric: tabular-nums;
+  min-height: 120px;
+}
+.je-num { padding: 4px 3px; color: var(--text); }
+.je-num.fresh { color: var(--accent); }
+.je-par { color: var(--muted); padding: 0 1px; }
+.je-op {
+  background: var(--bg); border: 2px solid var(--border); border-radius: 12px;
+  min-width: 52px; padding: 8px 10px; font: inherit; font-size: 1.6rem; color: var(--accent);
+  cursor: pointer; line-height: 1.1; touch-action: manipulation;
+}
+.je-op:active { transform: scale(0.95); }
+.je-op.good { background: var(--good); border-color: var(--good); color: #fff; }
+.je-op.bad { background: var(--danger); border-color: var(--danger); color: #fff; }
+.je-op sup { font-size: 0.6em; vertical-align: top; }
+.je-result { font-size: 1.7rem; font-weight: 800; color: var(--good); padding: 4px 6px; }
+.je-rule { margin-top: 10px; font-size: 0.8rem; color: var(--muted); text-align: center; }
+.feedback.je-fb { line-height: 1.3; }
+
+/* ---------- Pon el paréntesis ---------- */
+.game-body.pa-body { justify-content: flex-start; padding: 16px 10px; }
+.prompt.pa-prompt { font-size: 1.05rem; margin-bottom: 14px; }
+.pa-expr {
+  display: flex; flex-wrap: nowrap; justify-content: center; align-items: center;
+  width: 100%; font-size: 1.55rem; font-weight: 800; font-variant-numeric: tabular-nums; gap: 0;
+}
+.pa-num, .pa-opr { padding: 6px 1px; }
+.pa-opr { color: var(--muted); font-size: 1.3rem; }
+.pa-eq { padding: 6px 2px; color: var(--muted); }
+.pa-target { color: var(--accent); }
+.pa-gap {
+  width: 22px; height: 54px; border: 2px dashed var(--border); border-radius: 8px; background: transparent;
+  font: inherit; font-size: 1.5rem; font-weight: 800; color: var(--accent); cursor: pointer; padding: 0;
+  display: inline-flex; align-items: center; justify-content: center; margin: 0 1px; touch-action: manipulation;
+}
+.pa-gap.set { border-style: solid; border-color: var(--accent); background: var(--bg); }
+.pa-gap:disabled { opacity: 0.25; cursor: default; }
+.pa-gap.good { border-style: solid; border-color: var(--good); color: var(--good); background: var(--bg); }
+.pa-gap.bad { border-style: solid; border-color: var(--danger); color: var(--danger); }
+.pa-expr.n4 { font-size: 1.3rem; }
+.pa-expr.n4 .pa-gap { width: 16px; margin: 0; font-size: 1.3rem; height: 48px; }
+.pa-expr.n4 .pa-opr { font-size: 1.1rem; padding: 6px 0; }
+.pa-live { margin: 14px 0 6px; font-size: 1.15rem; font-weight: 700; color: var(--muted); min-height: 1.5rem; }
+.pa-live.ok { color: var(--good); }
+.pa-live.bad { color: var(--danger); }
+.pa-none { margin-top: 10px; }
+.pa-sol { margin-top: 8px; font-size: 1.1rem; font-weight: 800; color: var(--good); min-height: 1.4rem; }
+.feedback.pa-fb { line-height: 1.3; }
+
+/* ---------- Pon la coma ---------- */
+.game-body.cm-body { justify-content: flex-start; padding: 16px 10px; }
+.prompt.cm-prompt { font-size: 1.05rem; margin-bottom: 10px; }
+.cm-op { font-size: 1.6rem; font-weight: 800; margin: 6px 0 14px; font-variant-numeric: tabular-nums; }
+.cm-digits {
+  display: flex; flex-wrap: nowrap; justify-content: center; align-items: center; width: 100%;
+  font-size: 2.1rem; font-weight: 800; font-variant-numeric: tabular-nums;
+}
+.cm-digit { padding: 6px 1px; min-width: 24px; text-align: center; }
+.cm-slot {
+  width: 20px; height: 60px; border: 2px dashed var(--border); border-radius: 7px; background: transparent;
+  font: inherit; font-size: 2rem; font-weight: 800; color: var(--accent); cursor: pointer; padding: 0;
+  display: inline-flex; align-items: flex-end; justify-content: center; margin: 0 1px; touch-action: manipulation;
+}
+.cm-slot.good { border-style: solid; border-color: var(--good); color: var(--good); background: var(--bg); }
+.cm-slot.bad { border-style: solid; border-color: var(--danger); color: var(--danger); }
+.cm-nocoma {
+  margin-left: 8px; width: auto; padding: 0 8px; font-size: 0.72rem; font-weight: 700; color: var(--muted);
+  align-items: center; line-height: 1.1; text-align: center;
+}
+.cm-nocoma.good { color: var(--good); }
+.cm-nocoma.bad { color: var(--danger); }
+.cm-sol { margin-top: 14px; font-size: 1.3rem; font-weight: 800; color: var(--good); min-height: 1.6rem; }
+.feedback.cm-fb { line-height: 1.35; text-align: center; }
+
+/* ---------- ¿Entre qué números? ---------- */
+.game-body.rz-body { justify-content: flex-start; padding: 16px 8px; }
+.prompt.rz-prompt { font-size: 1.15rem; margin-bottom: 10px; }
+.prompt.rz-prompt b { color: var(--accent); font-size: 1.5rem; }
+.rz-line { width: 100%; max-width: 380px; height: auto; display: block; margin: 0 auto; }
+.rz-line .rz-seg { fill: var(--bg); stroke: var(--border); stroke-width: 1; cursor: pointer; }
+.rz-line .rz-seg.good { fill: var(--good); fill-opacity: 0.35; stroke: var(--good); }
+.rz-line .rz-seg.bad { fill: var(--danger); fill-opacity: 0.35; stroke: var(--danger); }
+.rz-line .rz-axis { stroke: var(--text); stroke-width: 2; pointer-events: none; }
+.rz-line .rz-pt { fill: var(--card); stroke: var(--text); stroke-width: 2; cursor: pointer; }
+.rz-line .rz-pt.good { fill: var(--good); stroke: var(--good); }
+.rz-line .rz-pt.bad { fill: var(--danger); stroke: var(--danger); }
+.rz-line .rz-num { font-size: 12px; font-weight: 700; fill: var(--text); text-anchor: middle; pointer-events: none; }
+.rz-line .rz-sq { font-size: 11px; font-weight: 800; fill: var(--accent); text-anchor: middle; pointer-events: none; }
+.rz-line .rz-sq.q { fill: var(--good); }
+.rz-line .rz-mark { fill: var(--good); stroke: var(--card); stroke-width: 2; pointer-events: none; }
+.rz-line .rz-marklab { font-size: 12px; font-weight: 800; fill: var(--good); text-anchor: middle; pointer-events: none; }
+.rz-sol { margin-top: 12px; font-size: 1.2rem; font-weight: 800; color: var(--good); min-height: 1.5rem; }
+.feedback.rz-fb { line-height: 1.35; text-align: center; }

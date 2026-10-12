@@ -1,0 +1,117 @@
+/* Pack AR — "De un solo trazo" (prefijo ut-) y "La abeja programadora"
+   (prefijo pg-). Solo variables del núcleo: se ve en claro y en oscuro. */
+
+/* ---------- De un solo trazo (ut-) ---------- */
+.ut-prompt { margin-bottom: 10px; }
+.ut-wrap { width: 100%; display: flex; justify-content: center; }
+.ut-svg {
+  width: 100%;
+  max-height: 52vh;
+  height: auto;
+  display: block;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.ut-edge { stroke: var(--muted); stroke-width: 7; stroke-linecap: round; opacity: 0.55; }
+.ut-edge.ut-red { stroke: var(--danger); opacity: 0.85; stroke-dasharray: 2 12; }
+.ut-edge.ut-spent { stroke: var(--accent); opacity: 1; stroke-width: 9; stroke-dasharray: none; }
+.ut-edge.ut-red.ut-spent { stroke: var(--danger); }
+.ut-edge.ut-left { stroke: var(--danger); opacity: 1; stroke-dasharray: 10 8; stroke-width: 6; }
+.ut-band { stroke: var(--accent-2); stroke-width: 5; stroke-linecap: round; stroke-dasharray: 6 8; pointer-events: none; }
+.ut-band.red { stroke: var(--danger); stroke-dasharray: none; stroke-width: 6; }
+.ut-pt { fill: var(--card); stroke: var(--text); stroke-width: 4; }
+.ut-pt.ut-start { fill: var(--accent-2); }
+.ut-pt.ut-cur { fill: var(--accent); stroke: var(--accent); }
+.ut-glow { fill: var(--danger); opacity: 0.28; animation: ut-pulse 1.1s ease-in-out infinite alternate; }
+@keyframes ut-pulse { from { opacity: 0.12; } to { opacity: 0.4; } }
+.ut-deg { font-size: 17px; font-weight: 800; fill: var(--muted); text-anchor: middle; paint-order: stroke; stroke: var(--card); stroke-width: 4px; }
+.ut-deg.odd { fill: var(--danger); }
+.ut-legend { min-height: 1em; font-size: 0.74rem; color: var(--muted); text-align: center; margin-top: 4px; }
+
+/* ---------- La abeja programadora (pg-) ---------- */
+.pg-prompt { margin-bottom: 8px; font-size: 1.15rem; }
+.pg-wrap { width: 100%; display: flex; justify-content: center; }
+.pg-svg {
+  width: 100%;
+  max-width: 340px;
+  max-height: 30vh;
+  min-height: 150px;
+  display: block;
+  background: var(--bg);
+  border-radius: 12px;
+}
+.pg-grid { stroke: var(--border); stroke-width: 1; }
+.pg-target { stroke: var(--muted); stroke-opacity: 0.45; stroke-width: 9; stroke-linecap: round; }
+.pg-origin { fill: var(--muted); }
+.pg-start path { fill: none; stroke: var(--muted); stroke-width: 2; stroke-dasharray: 3 2; }
+.pg-trail { stroke: var(--accent); stroke-width: 4; stroke-linecap: round; }
+.pg-extra { stroke: var(--danger); stroke-width: 5; stroke-linecap: round; }
+.pg-missing { stroke: var(--text); stroke-width: 3; stroke-dasharray: 5 5; }
+.pg-gap { stroke: var(--danger); stroke-width: 4; stroke-dasharray: 4 5; }
+.pg-gaplbl { font-size: 12px; font-weight: 800; fill: var(--danger); text-anchor: middle; paint-order: stroke; stroke: var(--bg); stroke-width: 3px; }
+.pg-arrow { fill: #f5a623; }
+.pg-beeface { font-size: 17px; text-anchor: middle; dominant-baseline: middle; }
+.pg-turn { font-size: 0.8rem; font-weight: 700; color: var(--accent-2); margin: 4px 0 6px; font-variant-numeric: tabular-nums; }
+
+.pg-strip {
+  width: 100%;
+  min-height: 46px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 5px;
+  padding: 6px;
+  border: 2px dashed var(--border);
+  border-radius: 12px;
+  background: var(--bg);
+}
+.pg-placeholder { color: var(--muted); font-size: 0.8rem; padding: 6px; }
+.pg-chip {
+  border: none;
+  border-radius: 8px;
+  padding: 6px 8px;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.pg-chip.pg-fd, .pg-blk.pg-fd { background: var(--accent); }
+.pg-chip.pg-rt { background: var(--accent-2); }
+.pg-chip.pg-rp { background: #d08a12; }
+.pg-loop { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; border: 2px solid #d08a12; border-radius: 10px; padding: 3px; }
+.pg-loop.open { border-style: dashed; }
+.pg-hole { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; min-height: 30px; }
+.pg-caret { font-size: 0.72rem; font-weight: 700; color: #d08a12; padding: 0 4px; animation: pg-blink 1s steps(2) infinite; }
+@keyframes pg-blink { 50% { opacity: 0.3; } }
+.pg-empty { font-size: 0.72rem; color: var(--muted); padding: 0 4px; }
+.pg-count { font-size: 0.74rem; color: var(--muted); margin: 4px 0 8px; align-self: flex-end; }
+.pg-count.full { color: var(--danger); font-weight: 700; }
+
+.pg-palette { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; width: 100%; }
+.pg-blk {
+  display: flex;
+  align-items: stretch;
+  border-radius: 10px;
+  overflow: hidden;
+  min-height: 42px;
+  color: #fff;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+}
+button.pg-blk { justify-content: center; align-items: center; padding: 0 6px; }
+.pg-blk.pg-rt { background: var(--accent-2); }
+.pg-blk.pg-rp { background: #d08a12; }
+.pg-blk.pg-close { background: var(--card); color: #d08a12; border: 2px solid #d08a12; }
+.pg-blk button { background: none; border: none; color: inherit; font: inherit; cursor: pointer; }
+.pg-blk .pg-main { flex: 1; padding: 0 2px; white-space: nowrap; }
+.pg-blk .pg-arr { width: 30px; font-size: 1.1rem; background: rgba(0, 0, 0, 0.14); }
+.pg-blk button:disabled, button.pg-blk:disabled { opacity: 0.45; cursor: default; }
+.pg-actions { display: flex; gap: 10px; justify-content: center; margin-top: 10px; width: 100%; }
+.pg-actions .pg-run { flex: 1; max-width: 200px; }
+.pg-actions button:disabled { opacity: 0.5; }

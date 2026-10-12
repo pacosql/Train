@@ -78,9 +78,12 @@ export function mountClasificaGame(container, { client, onExit }) {
       chipsEl.appendChild(btn);
     });
     const basketsEl = body.querySelector("[data-baskets]");
-    round.rule.labels.forEach((label) => {
+    // v2 (petición de Paco): cada cesta tiene su color (azul / naranja) y
+    // el número clasificado se queda pintado del color de su cesta, así
+    // se ve de un vistazo cómo ha quedado repartido.
+    round.rule.labels.forEach((label, i) => {
       const btn = document.createElement("button");
-      btn.className = "secondary sort-basket";
+      btn.className = `secondary sort-basket tone-${i}`;
       btn.textContent = label;
       btn.addEventListener("click", () => dropIntoBasket(label));
       basketsEl.appendChild(btn);
@@ -101,7 +104,7 @@ export function mountClasificaGame(container, { client, onExit }) {
     const feedback = body.querySelector("[data-feedback]");
     if (label === correctLabel) {
       selected.el.disabled = true;
-      selected.el.classList.add("correct");
+      selected.el.classList.add("sorted", `tone-${round.rule.labels.indexOf(label)}`);
       selected.el.classList.remove("picked");
       remaining--;
       selected = null;
@@ -117,7 +120,7 @@ export function mountClasificaGame(container, { client, onExit }) {
       renderLives();
       selected.el.classList.add("wrong");
       setTimeout(() => selected && selected.el.classList.remove("wrong"), 350);
-      feedback.textContent = "Esa cesta no es…";
+      feedback.textContent = `✗ ${selected.n} va en «${correctLabel}»`;
       feedback.className = "feedback bad";
       if (lives <= 0) setTimeout(() => finish(false), 400);
     }

@@ -1,0 +1,158 @@
+/* Pack BP — "Regla de tres" (.r3-), "Horas, minutos y segundos en
+   columna" (.sx-), "Longitud de la circunferencia" (.cc-), "Fórmulas de
+   área" (.af-) y "Volumen de cuerpos" (.vo-). Cinco ejercicios "como en el
+   libro": hoja cuadriculada, la figura o el planteamiento dibujado y la
+   fórmula con casillas que se tocan y se rellenan con el teclado del
+   núcleo (activa = borde acento, bien = verde, mal = rojo con la correcta
+   en verde al lado). Todo con variables del tema (claro y oscuro). */
+
+/* ---------- común ---------- */
+.game-body.r3-body, .game-body.sx-body, .game-body.cc-body, .game-body.af-body, .game-body.vo-body {
+  justify-content: flex-start; padding: 12px 10px 10px;
+}
+.prompt.r3-prompt, .prompt.sx-prompt, .prompt.cc-prompt, .prompt.af-prompt, .prompt.vo-prompt {
+  font-size: 1rem; margin: 0 0 8px; line-height: 1.3;
+}
+.feedback.r3-feedback, .feedback.sx-feedback, .feedback.cc-feedback, .feedback.af-feedback, .feedback.vo-feedback {
+  margin-top: 8px; line-height: 1.35; text-align: center; max-width: 360px; font-size: 0.8rem; min-height: 2.2rem;
+}
+.keypad.r3-keypad, .keypad.sx-keypad, .keypad.cc-keypad, .keypad.af-keypad, .keypad.vo-keypad { margin-top: 8px; max-width: 240px; gap: 6px; }
+.keypad.r3-keypad .keypad-key, .keypad.sx-keypad .keypad-key, .keypad.cc-keypad .keypad-key,
+.keypad.af-keypad .keypad-key, .keypad.vo-keypad .keypad-key { padding: 10px 6px; font-size: 1.05rem; }
+.keypad.r3-keypad .keypad-key.primary, .keypad.sx-keypad .keypad-key.primary, .keypad.cc-keypad .keypad-key.primary,
+.keypad.af-keypad .keypad-key.primary, .keypad.vo-keypad .keypad-key.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+/* con la tecla de coma el teclado pasa a 4 columnas y ✓ ocupa toda la fila de abajo */
+.keypad.r3-keypad, .keypad.cc-keypad, .keypad.vo-keypad { grid-template-columns: repeat(4, 1fr); max-width: 260px; }
+.keypad-key.r3-ok, .keypad-key.cc-ok, .keypad-key.vo-ok { grid-column: 1 / -1; }
+
+/* Hoja de cuaderno: cuadrícula tenue con el color del borde del tema */
+.r3-cuaderno, .sx-cuaderno, .cc-cuaderno, .af-cuaderno, .vo-cuaderno {
+  width: 100%; max-width: 360px; border: 1px solid var(--border); border-radius: 10px;
+  padding: 8px 6px 10px; display: flex; flex-direction: column; align-items: center; gap: 6px;
+  background-color: var(--card);
+  background-image:
+    repeating-linear-gradient(0deg, var(--border) 0 1px, transparent 1px 20px),
+    repeating-linear-gradient(90deg, var(--border) 0 1px, transparent 1px 20px);
+}
+
+/* Renglones de la fórmula, con letras en cursiva como en el libro */
+.r3-line, .cc-line, .af-line, .vo-line {
+  display: block; text-align: center; line-height: 2.6rem;
+  font-size: 1.1rem; font-weight: 700; color: var(--text); min-height: 40px;
+}
+.r3-line > *, .cc-line > *, .af-line > *, .vo-line > * { vertical-align: middle; }
+.r3-line i, .cc-line i, .af-line i, .vo-line i, .r3-x { font-family: "Cambria Math", "Times New Roman", Georgia, serif; font-style: italic; font-size: 1.15em; }
+.vo-ab { white-space: nowrap; }
+.vo-ab sub { font-size: 0.6em; font-style: normal; vertical-align: sub; line-height: 0; }
+.r3-u { font-weight: 600; }
+.vo-note { font-size: 0.72rem; color: var(--muted); font-weight: 600; }
+
+/* Fracción del libro: numerador, raya y denominador */
+.r3-frac, .cc-frac, .af-frac, .vo-frac { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; line-height: 1.3; margin: 0 2px; }
+.r3-frac > span, .cc-frac > span, .af-frac > span, .vo-frac > span { display: block; white-space: nowrap; padding: 2px 4px; line-height: 2.3rem; }
+.r3-frac > span > *, .cc-frac > span > *, .af-frac > span > *, .vo-frac > span > * { vertical-align: middle; }
+.r3-frac > span:first-child, .cc-frac > span:first-child, .af-frac > span:first-child, .vo-frac > span:first-child { border-bottom: 2px solid var(--text); }
+
+/* Casillas */
+.r3-slot, .sx-slot, .cc-slot, .af-slot, .vo-slot {
+  font: inherit; font-family: ui-monospace, "SF Mono", Menlo, monospace; font-weight: 800; font-size: 1.05rem;
+  color: var(--text); cursor: pointer; min-width: 42px; height: 36px; padding: 0 6px;
+  background: var(--card); border: 2px solid var(--muted); border-radius: 7px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 3px; line-height: 1.2;
+}
+.r3-frac .r3-slot, .cc-frac .cc-slot, .af-frac .af-slot, .vo-frac .vo-slot { height: 32px; min-width: 38px; }
+.r3-slot.active, .sx-slot.active, .cc-slot.active, .af-slot.active, .vo-slot.active {
+  border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 28%, transparent);
+}
+.r3-slot.good, .sx-slot.good, .cc-slot.good, .af-slot.good, .vo-slot.good { background: var(--good); border-color: var(--good); color: #fff; }
+.r3-slot.bad, .sx-slot.bad, .cc-slot.bad, .af-slot.bad, .vo-slot.bad { background: var(--danger); border-color: var(--danger); color: #fff; }
+.r3-slot s, .sx-slot s, .cc-slot s, .af-slot s, .vo-slot s { font-size: 0.7em; opacity: 0.85; font-weight: 600; }
+/* la correcta en verde al lado de la tachada */
+.r3-fix, .sx-fix, .cc-fix, .af-fix, .vo-fix {
+  font-style: normal; background: var(--good); color: #fff; border-radius: 4px; padding: 1px 4px; margin-left: 2px; line-height: 1.2;
+}
+/* copia de lo escrito en otra casilla (no se toca) */
+.cc-mirror, .af-mirror, .vo-mirror {
+  display: inline-block; line-height: 1.5; min-width: 24px; text-align: center; color: var(--accent-2);
+  border-bottom: 2px dotted var(--accent-2); font-family: ui-monospace, "SF Mono", Menlo, monospace;
+}
+.r3-next, .sx-next, .cc-next, .af-next, .vo-next {
+  display: inline-block; margin-left: 6px; padding: 4px 10px; font: inherit; font-weight: 700; font-size: 0.8rem;
+  color: var(--text); background: var(--bg); border: 2px solid var(--border); border-radius: 999px; cursor: pointer;
+}
+
+/* Texto y trazos de los dibujos */
+.r3-plant text, .cc-fig text, .af-fig text, .vo-fig text { fill: var(--text); font-family: inherit; text-anchor: middle; }
+/* halo del color del papel para que los rótulos se lean encima de los trazos */
+.cc-fig text, .af-fig text, .vo-fig text { paint-order: stroke; stroke: var(--card); stroke-width: 4px; stroke-linejoin: round; }
+.cc-it, .af-it, .vo-it { font-style: italic; font-family: "Cambria Math", "Times New Roman", Georgia, serif; font-size: 1.1em; }
+
+/* ---------- Regla de tres ---------- */
+.r3-badge {
+  font-size: 0.75rem; font-weight: 700; padding: 3px 10px; border-radius: 999px;
+  color: var(--good); background: color-mix(in srgb, var(--good) 13%, var(--card)); border: 1px solid color-mix(in srgb, var(--good) 45%, transparent);
+}
+.r3-badge.r3-inv { color: var(--final); background: color-mix(in srgb, var(--final) 13%, var(--card)); border-color: color-mix(in srgb, var(--final) 50%, transparent); }
+.r3-plant { width: 100%; max-width: 300px; height: auto; display: block; }
+.r3-plant .r3-head { font-size: 14px; font-weight: 700; fill: var(--muted); }
+.r3-plant .r3-num { font-size: 21px; font-weight: 800; }
+.r3-plant .r3-x { fill: var(--accent); }
+.r3-plant .r3-arrow { font-size: 18px; fill: var(--muted); }
+.r3-raya { stroke: var(--text); stroke-width: 2; }
+.r3-mul { stroke: var(--accent); stroke-width: 2; stroke-dasharray: 6 4; fill: none; opacity: 0.8; }
+.r3-div { stroke: var(--accent-2); stroke-width: 2; fill: none; }
+
+/* ---------- Horas, minutos y segundos ---------- */
+.sx-sheet {
+  display: grid; grid-template-columns: 22px repeat(var(--sx-n), 58px 42px); gap: 6px 4px; align-items: center;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 1.6rem; font-weight: 800; padding: 4px 4px 6px;
+}
+.sx-sign { color: var(--accent); text-align: center; }
+.sx-num { text-align: right; color: var(--text); }
+.sx-u { font-size: 1rem; color: var(--muted); font-weight: 700; }
+/* en los ángulos el símbolo va pegado al número: 137° 7′ 59″ */
+.sx-sheet.sx-ang { grid-template-columns: 22px repeat(var(--sx-n), 64px 26px); }
+.sx-ang .sx-u { font-size: 1.6rem; color: var(--text); font-family: "Times New Roman", Georgia, serif; }
+.sx-notecell { grid-column: span 2; text-align: center; min-height: 20px; }
+.sx-ang .sx-notecell { text-align: left; }
+.sx-note {
+  display: inline-block; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 0.66rem; font-weight: 600; color: var(--muted); white-space: nowrap;
+  border: 1px dashed var(--border); border-radius: 6px; padding: 1px 4px; background: var(--card);
+}
+.sx-note.sx-used { color: #fff; background: var(--accent); border: 1px solid var(--accent); font-weight: 800; }
+.sx-raya { grid-column: 1 / -1; height: 3px; background: var(--text); border-radius: 2px; }
+.sx-slot { width: 100%; min-width: 0; height: 46px; padding: 0 2px; font-size: 1.35rem; }
+
+/* ---------- Circunferencia ---------- */
+.cc-fig { width: 100%; max-width: 230px; height: auto; display: block; }
+.cc-circle { fill: none; stroke: var(--text); stroke-width: 2.5; }
+.cc-circle.cc-fill { fill: color-mix(in srgb, var(--accent) 18%, transparent); }
+.cc-circle.cc-thick { stroke: var(--accent); stroke-width: 5; }
+.cc-seg { stroke: var(--accent-2); stroke-width: 3; stroke-linecap: round; }
+.cc-seg.cc-dash { stroke-dasharray: 6 4; }
+.cc-centre { fill: var(--text); }
+.cc-fig .cc-lab { font-size: 14px; font-weight: 700; }
+.cc-fig .cc-big { fill: var(--accent); font-size: 15px; }
+
+/* ---------- Fórmulas de área ---------- */
+.af-fig { width: 100%; max-width: 290px; height: auto; display: block; }
+.af-shape { fill: color-mix(in srgb, var(--accent) 15%, transparent); stroke: var(--text); stroke-width: 2.5; stroke-linejoin: round; }
+.af-dash { stroke: var(--accent-2); stroke-width: 2; stroke-dasharray: 5 4; fill: none; }
+.af-dot { fill: var(--text); }
+.af-fig .af-lab { font-size: 13px; font-weight: 700; }
+.af-fig .af-start { text-anchor: start; }
+.af-fig .af-end { text-anchor: end; }
+.af-fig .af-muted { fill: var(--muted); font-weight: 600; }
+
+/* ---------- Volúmenes ---------- */
+.vo-fig { width: 100%; max-width: 260px; height: auto; display: block; }
+.vo-face { fill: color-mix(in srgb, var(--accent) 14%, var(--card)); stroke: var(--text); stroke-width: 2; stroke-linejoin: round; }
+.vo-face.vo-topf, .vo-top { fill: color-mix(in srgb, var(--accent) 28%, var(--card)); stroke: var(--text); stroke-width: 2; }
+.vo-face.vo-noline { stroke: none; }
+.vo-edge { stroke: var(--text); stroke-width: 2; fill: none; }
+.vo-dash { stroke: var(--muted); stroke-width: 1.6; stroke-dasharray: 5 4; fill: none; }
+.vo-fig .vo-lab { font-size: 13px; font-weight: 700; }
+.vo-fig .vo-start { text-anchor: start; }
+.vo-fig .vo-end { text-anchor: end; }
+.vo-fig .vo-unit { font-size: 10px; font-weight: 600; fill: var(--muted); }

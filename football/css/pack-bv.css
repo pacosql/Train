@@ -1,0 +1,134 @@
+/* Pack BV — ecuaciones y problemas de ESO "como en el libro": "Sistema de
+   ecuaciones" (.si-), "Inecuaciones" (.in-), "Intervalos" (.iv-),
+   "Números consecutivos" (.cs-) y "Problemas de edades" (.ed-).
+   Hoja cuadriculada, x en cursiva, llave del sistema, corchetes de los
+   intervalos y casillas que se tocan y se rellenan con el teclado
+   (activa = borde acento, bien = verde, mal = rojo con la correcta al lado). */
+
+/* ---------- común ---------- */
+.game-body.si-body, .game-body.in-body, .game-body.iv-body, .game-body.cs-body, .game-body.ed-body {
+  justify-content: flex-start; padding: 12px 12px 10px;
+}
+.game-body.si-body:has(> .end-card), .game-body.in-body:has(> .end-card), .game-body.iv-body:has(> .end-card),
+.game-body.cs-body:has(> .end-card), .game-body.ed-body:has(> .end-card) { justify-content: center; }
+.prompt.si-prompt, .prompt.in-prompt, .prompt.iv-prompt, .prompt.cs-prompt, .prompt.ed-prompt {
+  font-size: 1.1rem; margin: 0 0 8px; line-height: 1.3;
+}
+.feedback.si-feedback, .feedback.in-feedback, .feedback.iv-feedback, .feedback.cs-feedback, .feedback.ed-feedback {
+  margin-top: 8px; line-height: 1.4; text-align: center; max-width: 370px; font-size: 0.86rem;
+}
+.si-feedback i, .in-feedback i, .iv-feedback i, .cs-feedback i, .ed-feedback i { font-family: Georgia, "Times New Roman", serif; }
+.keypad.si-keypad, .keypad.in-keypad, .keypad.iv-keypad, .keypad.cs-keypad, .keypad.ed-keypad { margin-top: 10px; max-width: 270px; gap: 7px; }
+.keypad.si-keypad .keypad-key, .keypad.in-keypad .keypad-key, .keypad.iv-keypad .keypad-key,
+.keypad.cs-keypad .keypad-key, .keypad.ed-keypad .keypad-key { padding: 11px 8px; font-size: 1.2rem; }
+.keypad.si-keypad .keypad-key.primary, .keypad.in-keypad .keypad-key.primary, .keypad.iv-keypad .keypad-key.primary,
+.keypad.cs-keypad .keypad-key.primary, .keypad.ed-keypad .keypad-key.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.keypad-sign.si-sign, .keypad-sign.in-sign, .keypad-sign.iv-sign { max-width: 270px; margin-top: 7px; padding: 8px; }
+
+/* hoja de cuaderno: cuadrícula tenue con var(--border) */
+.si-cuaderno, .in-cuaderno, .iv-cuaderno, .cs-cuaderno, .ed-cuaderno {
+  width: 100%; max-width: 370px; box-sizing: border-box; border-radius: 10px;
+  border: 1px solid var(--border); background-color: var(--card);
+  background-image:
+    repeating-linear-gradient(to right, var(--border) 0 1px, transparent 1px 22px),
+    repeating-linear-gradient(to bottom, var(--border) 0 1px, transparent 1px 22px);
+  background-size: 22px 22px; padding: 12px 8px;
+  font-family: "Cambria Math", "STIX Two Math", Cambria, Georgia, "Times New Roman", serif;
+  font-size: 1.3rem; line-height: 1.9; text-align: center; color: var(--text);
+}
+.si-cuaderno i, .in-cuaderno i, .iv-cuaderno i, .cs-cuaderno i, .ed-cuaderno i { font-style: italic; font-family: Georgia, "Times New Roman", serif; }
+
+/* casillas */
+.si-slot, .in-slot, .iv-slot, .iv-br, .cs-slot, .ed-slot {
+  font: inherit; font-family: system-ui, sans-serif; font-weight: 800; color: var(--text); cursor: pointer;
+  background: var(--bg); border: 2px solid var(--border); border-radius: 7px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 3px; padding: 0 2px;
+  min-width: 42px; height: 38px; font-size: 1.15rem; vertical-align: middle; margin: 0 2px; line-height: 1;
+}
+.si-slot.active, .in-slot.active, .iv-slot.active, .cs-slot.active, .ed-slot.active {
+  border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+.si-slot.good, .in-slot.good, .iv-slot.good, .iv-br.good, .cs-slot.good, .ed-slot.good { background: var(--good); border-color: var(--good); color: #fff; }
+.si-slot.bad, .in-slot.bad, .iv-slot.bad, .iv-br.bad, .cs-slot.bad, .ed-slot.bad {
+  background: color-mix(in srgb, var(--danger) 14%, var(--bg)); border-color: var(--danger); color: var(--danger); padding: 0 3px;
+}
+.si-slot s, .in-slot s, .iv-slot s, .iv-br s, .cs-slot s, .ed-slot s { font-size: 0.72em; font-weight: 700; }
+.si-want, .in-want, .iv-want, .cs-want, .ed-want {
+  background: var(--good); color: #fff; border-radius: 5px; padding: 1px 4px; font-size: 0.95em; line-height: 1.2;
+}
+
+/* botón "Siguiente →" dentro del feedback al fallar */
+.si-next, .in-next, .iv-next, .cs-next, .ed-next {
+  display: inline-block; margin-left: 6px; font: inherit; font-weight: 800; font-size: 0.8rem;
+  color: #fff; background: var(--danger); border: none; border-radius: 8px; padding: 4px 10px; cursor: pointer;
+}
+
+/* ---------- Sistema de ecuaciones: la llave ---------- */
+.si-sys { display: inline-flex; align-items: stretch; gap: 4px; margin: 2px auto 8px; text-align: left; }
+.si-brace { width: 16px; flex: none; }
+.si-brace path { fill: none; stroke: var(--text); stroke-width: 2.2; stroke-linecap: round; }
+.si-eqs { display: flex; flex-direction: column; justify-content: center; line-height: 1.75; font-size: 1.35rem; }
+.si-sol { font-size: 1.3rem; }
+.si-gap { display: inline-block; width: 18px; }
+
+/* ---------- Inecuaciones ---------- */
+.in-eq { font-size: 1.4rem; font-weight: 600; }
+.in-row { font-size: 1.25rem; margin-top: 4px; }
+.in-slot { min-width: 46px; }
+.in-sslot { min-width: 38px; font-family: "Cambria Math", Georgia, serif; font-size: 1.35rem; color: var(--accent); }
+.in-sslot.active { background: color-mix(in srgb, var(--accent) 10%, var(--bg)); }
+.in-chips { display: flex; gap: 8px; margin-top: 10px; }
+.in-chip {
+  width: 56px; height: 42px; font-size: 1.45rem; font-weight: 700; cursor: pointer;
+  font-family: "Cambria Math", Georgia, serif; color: var(--accent);
+  background: var(--bg); border: 2px solid var(--accent); border-radius: 10px;
+}
+.in-chip:active { transform: scale(0.95); }
+.in-recta, .iv-recta { display: block; width: 100%; height: auto; margin: 6px auto 0; overflow: visible; }
+.in-recta text, .iv-recta text { font: 600 10px system-ui, sans-serif; fill: var(--muted); text-anchor: middle; }
+.in-recta .in-end { font-size: 11px; font-weight: 800; }
+.in-axis, .in-tick, .iv-axis, .iv-tick { stroke: var(--muted); stroke-width: 1.5; }
+.in-seg, .iv-seg { stroke-width: 5; stroke-linecap: butt; }
+.in-arrow, .iv-arrow { fill: none; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.in-hollow, .iv-hollow { fill: var(--card); stroke-width: 2.5; }
+.in-full, .iv-full { stroke-width: 2.5; }
+.in-mine, .iv-mine, .iv-given-line { --c: var(--accent); }
+.in-ok, .iv-ok { --c: var(--good); }
+.in-ko, .iv-ko { --c: var(--danger); }
+:is(.in-mine, .in-ok, .in-ko) :is(.in-seg, .in-arrow, .in-hollow, .in-full),
+:is(.iv-mine, .iv-ok, .iv-ko, .iv-given-line) :is(.iv-seg, .iv-arrow, .iv-hollow, .iv-full) { stroke: var(--c); }
+:is(.in-mine, .in-ok, .in-ko) .in-full, :is(.iv-mine, .iv-ok, .iv-ko, .iv-given-line) .iv-full { fill: var(--c); }
+:is(.in-mine, .in-ok, .in-ko) .in-end { fill: var(--c); }
+
+/* ---------- Intervalos ---------- */
+.iv-given { font-size: 1.6rem; font-weight: 600; letter-spacing: 0.5px; }
+.iv-touch { touch-action: none; cursor: pointer; }
+.iv-help { font: 600 0.78rem system-ui, sans-serif; color: var(--muted); margin: 4px 0 0; line-height: 1.3; }
+.iv-write { display: flex; align-items: center; justify-content: center; gap: 2px; margin-top: 8px; font-size: 1.5rem; }
+.iv-br { min-width: 34px; height: 46px; font-family: "Cambria Math", Georgia, serif; font-size: 1.7rem; font-weight: 500; border-style: dashed; color: var(--accent); }
+.iv-br:not(:empty) { border-style: solid; }
+.iv-inf { font-size: 1.4rem; padding: 0 4px; }
+.iv-comma { padding: 0 2px; }
+button.primary.iv-check { margin-top: 14px; padding: 12px 26px; font-size: 1rem; }
+
+/* ---------- Números consecutivos ---------- */
+.cs-text { margin: 0 0 8px; font: 600 1.05rem/1.4 system-ui, sans-serif; text-align: left; padding: 0 4px; }
+.cs-row { display: flex; justify-content: center; gap: 10px; }
+.cs-col { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.cs-slot { min-width: 60px; height: 44px; font-size: 1.3rem; }
+.cs-lab { font-size: 1.05rem; color: var(--muted); line-height: 1.3; }
+.cs-name { font: 600 0.75rem system-ui, sans-serif; color: var(--muted); }
+.cs-frac { display: inline-flex; flex-direction: column; align-items: center; vertical-align: middle; line-height: 1.1; font-size: 0.9em; }
+.cs-frac > span:first-child { border-bottom: 1.5px solid currentColor; padding: 0 3px 1px; }
+
+/* ---------- Problemas de edades ---------- */
+.ed-text { margin: 0 0 8px; font: 600 0.98rem/1.4 system-ui, sans-serif; text-align: left; padding: 0 4px; }
+.ed-table { margin: 0 auto; border-collapse: collapse; font-size: 1.05rem; line-height: 1.3; background: var(--card); }
+.ed-table th, .ed-table td { border: 1.5px solid var(--muted); padding: 5px 9px; }
+.ed-table tr:first-child th { font: 700 0.78rem system-ui, sans-serif; color: var(--muted); }
+.ed-table tr:first-child th i { font-family: Georgia, serif; }
+.ed-table tr th:first-child { font: 700 0.85rem system-ui, sans-serif; text-align: left; }
+.ed-val { color: var(--good); font-family: system-ui, sans-serif; }
+.ed-sol { margin-top: 8px; font-size: 1.15rem; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 14px; }
+.ed-pair { white-space: nowrap; font-family: system-ui, sans-serif; font-weight: 600; font-size: 1rem; }
+.ed-pair i { font-size: 1.25rem; }

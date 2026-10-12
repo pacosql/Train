@@ -1,0 +1,69 @@
+/* Pack AS — "Camina la gráfica" (cg-) y "Dibuja cómo se llena" (jr-). */
+
+/* ---------- Camina la gráfica ---------- */
+.cg-prompt { margin-bottom: 10px; font-size: 1.2rem; }
+.cg-track {
+  width: 100%; max-width: 360px;
+  background: var(--bg); border: 1px solid var(--border); border-radius: 12px;
+  touch-action: none; user-select: none; -webkit-user-select: none; cursor: ew-resize;
+}
+.cg-graph { width: 100%; max-width: 360px; margin-top: 4px; }
+.cg-svg { display: block; width: 100%; height: auto; overflow: visible; }
+.cg-road { stroke: var(--muted); stroke-width: 3; stroke-linecap: round; }
+.cg-axis { stroke: var(--muted); stroke-width: 1.4; }
+.cg-grid { stroke: var(--border); stroke-width: 1; }
+.cg-plab, .cg-xlab { font-size: 9.5px; fill: var(--muted); text-anchor: middle; font-variant-numeric: tabular-nums; }
+.cg-ylab { font-size: 9.5px; fill: var(--muted); text-anchor: end; font-variant-numeric: tabular-nums; }
+.cg-unit { font-size: 9px; fill: var(--muted); font-weight: 700; }
+.cg-sensor { font-size: 14px; text-anchor: middle; }
+.cg-walker { font-size: 30px; text-anchor: middle; pointer-events: none; }
+.cg-dot { fill: var(--accent); stroke: var(--card); stroke-width: 2; }
+.cg-status {
+  font-size: 0.78rem; color: var(--muted); font-weight: 600;
+  font-variant-numeric: tabular-nums; margin: 6px 0 0; text-align: center;
+}
+.cg-band { fill: var(--accent-2); fill-opacity: 0.16; stroke: none; }
+.cg-target { fill: none; stroke: var(--accent-2); stroke-width: 2.6; stroke-linejoin: round; stroke-linecap: round; }
+.cg-target-hl { fill: none; stroke: var(--danger); stroke-width: 8; stroke-linecap: round; stroke-opacity: 0.3; }
+.cg-user { fill: none; stroke: var(--accent); stroke-width: 2.4; stroke-linejoin: round; stroke-linecap: round; }
+.cg-user.ok { stroke: var(--good); }
+.cg-user.bad { stroke: var(--danger); }
+.cg-hl { fill: var(--danger); fill-opacity: 0.1; }
+.cg-cursor { stroke: var(--text); stroke-opacity: 0.45; stroke-width: 1.2; stroke-dasharray: 4 3; }
+.cg-count { font-size: 52px; font-weight: 800; fill: var(--accent); text-anchor: middle; pointer-events: none; }
+.cg-actions { display: flex; gap: 10px; justify-content: center; margin-top: 8px; min-height: 42px; }
+.cg-feedback { text-align: center; line-height: 1.4; max-width: 360px; margin-top: 8px; }
+.cg-feedback:not(.ok):not(.bad) { color: var(--muted); }
+
+/* ---------- Dibuja cómo se llena ---------- */
+.jr-prompt { margin-bottom: 8px; font-size: 1.2rem; }
+.jr-wrap { width: 100%; max-width: 380px; }
+.jr-svg { display: block; width: 100%; height: auto; overflow: visible; touch-action: none; user-select: none; -webkit-user-select: none; }
+.jr-grid { stroke: var(--border); stroke-width: 1; }
+.jr-axis { stroke: var(--muted); stroke-width: 1.4; }
+.jr-xlab { font-size: 9.5px; fill: var(--muted); text-anchor: middle; font-variant-numeric: tabular-nums; }
+.jr-ylab { font-size: 9.5px; fill: var(--muted); text-anchor: end; font-variant-numeric: tabular-nums; }
+.jr-unit { font-size: 9px; fill: var(--muted); font-weight: 700; }
+.jr-guide { stroke: var(--muted); stroke-opacity: 0.45; stroke-width: 1; stroke-dasharray: 3 3; }
+.jr-seg { fill: var(--accent-2); fill-opacity: 0.07; stroke: var(--text); stroke-width: 2; stroke-linejoin: round; }
+.jr-water { fill: var(--accent-2); fill-opacity: 0.6; }
+.jr-stream { stroke: var(--accent-2); stroke-width: 3; stroke-linecap: round; stroke-opacity: 0.8; }
+.jr-tap { font-size: 16px; text-anchor: middle; }
+.jr-vlab {
+  font-size: 11px; font-weight: 800; fill: var(--text); text-anchor: middle;
+  paint-order: stroke; stroke: var(--card); stroke-width: 3px; stroke-linejoin: round; pointer-events: none;
+}
+.jr-band { fill: var(--accent-2); fill-opacity: 0.18; stroke: none; }
+.jr-user { fill: none; stroke: var(--accent); stroke-width: 2.6; stroke-linejoin: round; stroke-linecap: round; }
+.jr-real { fill: none; stroke: var(--accent-2); stroke-width: 2.6; stroke-linejoin: round; stroke-dasharray: 6 3; }
+.jr-origin { fill: var(--accent); }
+.jr-mark { stroke: var(--card); stroke-width: 1; }
+.jr-mark.ok { fill: var(--good); }
+.jr-mark.bad { fill: var(--danger); }
+.jr-hl { fill: var(--danger); fill-opacity: 0.1; }
+.jr-hl-lab { font-size: 10px; font-weight: 800; fill: var(--danger); text-anchor: middle; }
+.jr-hit { fill: transparent; cursor: crosshair; }
+.jr-actions { display: flex; gap: 10px; justify-content: center; margin-top: 8px; min-height: 42px; }
+.jr-actions button:disabled { opacity: 0.45; cursor: default; }
+.jr-feedback { text-align: center; line-height: 1.4; max-width: 380px; margin-top: 8px; }
+.jr-feedback:not(.ok):not(.bad) { color: var(--muted); }

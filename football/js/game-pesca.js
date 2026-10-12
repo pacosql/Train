@@ -68,21 +68,29 @@ export function mountPescaGame(container, { client, onExit }) {
     scoreEl.textContent = `⭐ ${score}`;
   }
 
-  function scheduleRound(ms) {
+  function scheduleRound(ms, again = false) {
     if (roundTimer) clearTimeout(roundTimer);
     roundTimer = setTimeout(() => {
-      if (!finished) nextRound();
+      if (!finished) nextRound(again);
     }, ms);
   }
 
-  function nextRound() {
+  // v2 (petición de Paco): si el pez bueno se escapa porque no le ha dado
+  // tiempo, NO se cambia de operación: vuelven a salir los mismos peces
+  // con la misma cuenta, para que el niño pueda terminarla.
+  let current = null;
+  function nextRound(again = false) {
     const token = ++roundToken;
-    const { text, correct } = buildOperation(level);
-    // 4 valores garantizados distintos: si el Set se quedara corto, se repite.
-    let values;
-    do {
-      values = buildChoices(correct, () => distractor(correct), 4);
-    } while (values.length < 4);
+    if (!again || !current) {
+      const { text, correct } = buildOperation(level);
+      // 4 valores garantizados distintos: si el Set se quedara corto, se repite.
+      let values;
+      do {
+        values = buildChoices(correct, () => distractor(correct), 4);
+      } while (values.length < 4);
+      current = { text, correct, values };
+    }
+    const { text, correct, values } = current;
 
     body.innerHTML = `
       <p class="prompt pesca-op">${text}</p>
@@ -146,10 +154,10 @@ export function mountPescaGame(container, { client, onExit }) {
     roundToken++;
     lives--;
     renderLives();
-    feedback.textContent = "¡Se ha escapado!";
+    feedback.textContent = "¡Se ha escapado! Vuelven los mismos peces…";
     feedback.className = "feedback bad";
     if (lives <= 0) return setTimeout(() => finish(false), 450);
-    scheduleRound(750);
+    scheduleRound(1300, true);
   }
 
   function finish(userExited) {

@@ -59,11 +59,13 @@
     .icon-btn.spin { animation: spin 0.8s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    .views { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 10px; }
+    .views { display: grid; grid-template-columns: 1.1fr 1fr 1.1fr; gap: 6px; margin-bottom: 10px; }
+    .b.cerrada { color: var(--bad); border-color: rgba(255, 84, 112, 0.55); background: var(--bad-soft); font-weight: 700; }
+    .archivo-note { color: var(--text-2); font-size: 0.82rem; margin: 0 0 10px; }
     .view-btn { font: inherit; font-weight: 700; font-size: 0.9rem; padding: 9px; border-radius: 12px; cursor: pointer; border: 1px solid var(--line-strong); background: rgba(255, 255, 255, 0.04); color: var(--text-2); }
     .view-btn.on { color: var(--accent-2); background: var(--accent-soft); border-color: rgba(110, 168, 255, 0.55); }
     .hidden { display: none !important; }
-    .tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 12px; }
+    .tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 12px; }
     .tab {
       font-family: var(--display); font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
       color: var(--text-2); background: rgba(255, 255, 255, 0.04); border: 1px solid var(--line); border-radius: 12px;
@@ -78,6 +80,7 @@
       font-size: 0.8rem; padding: 6px 11px; border-radius: 999px; cursor: pointer; user-select: none;
       border: 1px solid var(--line-strong); color: var(--text-2); background: rgba(255, 255, 255, 0.03);
     }
+    .filters .lbl { font-size: 0.8rem; color: var(--text-2); align-self: center; margin-right: 2px; }
     .chip.on { color: var(--accent-2); background: var(--accent-soft); border-color: rgba(110, 168, 255, 0.55); }
     .row2 { display: grid; grid-template-columns: 1fr auto; gap: 6px; margin-bottom: 12px; }
     input[type=search], select {
@@ -89,6 +92,11 @@
     .count { color: var(--text-2); font-size: 0.8rem; margin: 0 0 8px; }
     .card { background: var(--glass); border: 1px solid var(--line); border-radius: 18px; padding: 14px 15px; margin-bottom: 10px; }
     .card.new { border-color: rgba(110, 168, 255, 0.45); }
+    .card .emp { cursor: pointer; }
+    .card .emp .emp-go { font-size: 1rem; opacity: 0.6; }
+    .comp { cursor: pointer; }
+    #emp-filter .chip-emp { display: inline-flex; gap: 8px; align-items: center; margin: 0 0 8px; padding: 7px 12px; border-radius: 999px;
+      font-size: 0.9rem; font-weight: 700; color: var(--accent-2); background: var(--accent-soft); border: 1px solid rgba(110, 168, 255, 0.55); cursor: pointer; }
     .card .emp { font-family: var(--display); font-size: 1.45rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; line-height: 1.1; color: var(--accent); }
     .card .pto { font-weight: 700; font-size: 1.05rem; margin: 2px 0 6px; line-height: 1.25; }
     .badges { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 6px; }
@@ -107,7 +115,17 @@
       padding: 9px 6px; border-radius: 12px; cursor: pointer; border: 1px solid var(--line-strong); background: rgba(255, 255, 255, 0.05); color: var(--text);
     }
     .acts a { color: var(--accent-2); border-color: rgba(110, 168, 255, 0.45); }
-    .acts .like.on { background: var(--good-soft); color: var(--good); border-color: rgba(67, 211, 145, 0.6); }
+    .acts .wide { grid-column: span 2; }
+    .acts .high.on { background: rgba(255, 120, 60, 0.18); color: #ff9a5c; border-color: rgba(255, 120, 60, 0.7); }
+    .acts .medium.on { background: var(--good-soft); color: var(--good); border-color: rgba(67, 211, 145, 0.6); }
+    .acts .low.on { background: rgba(110, 168, 255, 0.14); color: var(--accent-2); border-color: rgba(110, 168, 255, 0.55); }
+    .key { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 8px; }
+    .key span { font-size: 0.85rem; font-weight: 700; padding: 4px 10px; border-radius: 10px; border: 1px solid var(--line-strong); background: rgba(255, 255, 255, 0.05); }
+    .key .k-rem { color: var(--good); border-color: rgba(67, 211, 145, 0.55); background: var(--good-soft); }
+    .key .k-hib { color: var(--mid); border-color: rgba(242, 184, 64, 0.55); }
+    .key .k-cat { color: var(--accent-2); border-color: rgba(110, 168, 255, 0.5); }
+    .key .k-emp { color: var(--text); }
+    .key .k-pay { color: #ffd66e; border-color: rgba(242, 184, 64, 0.55); background: rgba(242, 184, 64, 0.12); }
     .acts .dislike.on { background: var(--bad-soft); color: var(--bad); border-color: rgba(255, 84, 112, 0.6); }
     .acts .apply.on { background: rgba(110, 168, 255, 0.18); color: var(--accent-2); border-color: rgba(110, 168, 255, 0.7); }
     .acts .review.on { background: rgba(242, 184, 64, 0.14); color: var(--mid); border-color: rgba(242, 184, 64, 0.6); }
@@ -131,6 +149,9 @@
     .toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%) translateY(120px); background: #1b2230; border: 1px solid var(--line-strong); padding: 10px 14px; border-radius: 12px; font-size: 0.88rem; transition: transform 0.25s; display: flex; gap: 12px; align-items: center; }
     .toast.show { transform: translateX(-50%) translateY(0); }
     .toast button { background: none; border: none; color: var(--accent-2); font: inherit; font-weight: 700; cursor: pointer; }
+    .xl-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0 0 10px; }
+    .xl-bar .chip { cursor: pointer; }
+    .xl-bar .lbl { font-size: 0.75rem; color: var(--text-2); }
   </style>
 </head>
 <body>
@@ -139,21 +160,25 @@
       <div class="brand"><span class="brand-mark">💼</span> Empleo</div>
       <button class="icon-btn" id="btn-refresh" title="Recargar">↻</button>
     </div>
-    <p class="sub">Partner · Sales · Solution Architect · DevRel/Evangelist · CTO — Data &amp; AI · España · énfasis en remoto</p>
+    <p class="sub">Partner · Sales · Solution Architect · DevRel · CTO · Ejecutivo — Data &amp; AI · España · énfasis en remoto</p>
     <p class="msg" id="msg"></p>
 
     <div class="views" id="views">
       <button class="view-btn on" data-view="ofertas">💼 Ofertas</button>
+      <button class="view-btn" data-view="archivo">🗄️ No activas <span id="n-archivo"></span></button>
       <button class="view-btn" data-view="empresas">🏢 Compañías <span id="n-empresas"></span></button>
     </div>
 
     <div id="v-ofertas">
+    <p class="archivo-note hidden" id="archivo-note">🗄️ Ofertas que ya no están activas (cerradas o caducadas en el portal del empleador). Usa las pestañas y filtros igual que en Ofertas: p. ej. ✅ Aplicadas o 🔥 High.</p>
     <div class="tabs" id="tabs">
       <div class="tab active" data-tab="pendiente"><span class="n" id="n-pendiente">–</span>Pendientes</div>
-      <div class="tab" data-tab="gusta"><span class="n" id="n-gusta">–</span>Me gustan</div>
-      <div class="tab" data-tab="no_gusta"><span class="n" id="n-no_gusta">–</span>No me gustan</div>
-      <div class="tab" data-tab="revisar"><span class="n" id="n-revisar">–</span>Revisar</div>
-      <div class="tab" data-tab="aplicada"><span class="n" id="n-aplicada">–</span>Aplicadas</div>
+      <div class="tab" data-tab="high"><span class="n" id="n-high">–</span>🔥 High</div>
+      <div class="tab" data-tab="medium"><span class="n" id="n-medium">–</span>👌 Medium</div>
+      <div class="tab" data-tab="low"><span class="n" id="n-low">–</span>🧊 Low</div>
+      <div class="tab" data-tab="no_gusta"><span class="n" id="n-no_gusta">–</span>👎 No</div>
+      <div class="tab" data-tab="revisar"><span class="n" id="n-revisar">–</span>🔁 Revisar</div>
+      <div class="tab" data-tab="aplicada"><span class="n" id="n-aplicada">–</span>✅ Aplicadas</div>
       <div class="tab" data-tab="todas"><span class="n" id="n-todas">–</span>Todas</div>
     </div>
 
@@ -169,6 +194,25 @@
       <span class="chip" data-f="arquitecto">🛠️ Solution Architect</span>
       <span class="chip" data-f="devrel">📣 DevRel / Evangelist</span>
       <span class="chip" data-f="direccion">🧭 CTO / Dirección</span>
+      <span class="chip" data-f="ejecutivo">👔 Ejecutivo</span>
+    </div>
+    <div class="filters" id="sizes">
+      <span class="lbl">👥 Tamaño:</span>
+      <span class="chip" data-s="1-50">1–50</span>
+      <span class="chip" data-s="51-200">51–200</span>
+      <span class="chip" data-s="201-1K">201–1K</span>
+      <span class="chip" data-s="1K-5K">1K–5K</span>
+      <span class="chip" data-s="5K-10K">5K–10K</span>
+      <span class="chip" data-s="10K-50K">10K–50K</span>
+      <span class="chip" data-s="50K+">50K+</span>
+    </div>
+    <div class="filters" id="pay">
+      <span class="lbl">💶 Sueldo:</span>
+      <span class="chip" data-p="con">Con sueldo</span>
+      <span class="chip" data-p="50000">≥ 50K</span>
+      <span class="chip" data-p="75000">≥ 75K</span>
+      <span class="chip" data-p="100000">≥ 100K</span>
+      <span class="chip" data-p="150000">≥ 150K</span>
     </div>
     <div class="row2">
       <input type="search" id="q" placeholder="Buscar empresa, puesto, ciudad…" />
@@ -176,9 +220,15 @@
         <option value="encontrado">Más recientes</option>
         <option value="empresa">Empresa A–Z</option>
         <option value="remoto">Remoto primero</option>
+        <option value="sueldo">Sueldo más alto</option>
       </select>
     </div>
 
+    <div id="emp-filter"></div>
+    <div class="xl-bar hidden" id="xl-bar">
+      <button class="chip on" id="btn-xlsx">⬇️ Descargar Excel de aplicadas</button>
+      <span class="lbl">Hoja con todas las aplicadas (abiertas y cerradas) y un resumen con filtros por mes, modalidad y empresa.</span>
+    </div>
     <p class="count" id="count"></p>
     <div id="list"></div>
     </div>
@@ -200,6 +250,7 @@
   <div class="toast" id="toast"><span id="toast-text"></span><button id="toast-undo">Deshacer</button></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
   <script src="config.js"></script>
   <script>
     const { url, anonKey, tablePrefix } = window.EMPLEO_CONFIG;
@@ -212,9 +263,10 @@
 
     const STATE_KEY = "empleo.estado";
     const state = (() => {
-      const def = { tab: "pendiente", f: {}, q: "", sort: "encontrado", view: "ofertas", qe: "", fe: "" };
+      const def = { tab: "pendiente", f: {}, sz: {}, pay: "", q: "", sort: "encontrado", view: "ofertas", qe: "", fe: "" };
       try { return { ...def, ...JSON.parse(localStorage.getItem(STATE_KEY) || "{}") }; } catch { return def; }
     })();
+    if (state.tab === "gusta") state.tab = "medium";
     const save = () => { try { localStorage.setItem(STATE_KEY, JSON.stringify(state)); } catch {} };
 
     // Lo insertado desde la última visita se marca como nuevo durante esta apertura.
@@ -226,15 +278,24 @@
     const $ = (id) => document.getElementById(id);
     const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
     const fmtDate = (d) => d ? new Date(d + (d.length === 10 ? "T00:00:00" : "")).toLocaleDateString("es-ES", { day: "numeric", month: "short", year: "numeric" }) : "";
-    const CATS = ["partner", "sales", "arquitecto", "devrel", "direccion"];
-    const CAT_LABEL = { partner: "🤝 Partner", sales: "💼 Sales", arquitecto: "🛠️ Solution Architect", devrel: "📣 DevRel / Evangelist", direccion: "🧭 CTO / Dirección" };
+    const CATS = ["partner", "sales", "arquitecto", "devrel", "direccion", "ejecutivo"];
+    const CAT_LABEL = { partner: "🤝 Partner", sales: "💼 Sales", arquitecto: "🛠️ Solution Architect", devrel: "📣 DevRel / Evangelist", direccion: "🧭 CTO / Dirección", ejecutivo: "👔 Ejecutivo" };
+    // Una oferta "no activa" está desactivada o es una aplicada cuya oferta ya cerró.
+    const cerrada = (o) => !o.activa || (o.etiquetas || []).includes("oferta cerrada");
+    const base = () => ofertas.filter((o) => (state.view === "archivo" ? cerrada(o) : !cerrada(o)));
+    const PRIO = { high: "🔥 High", medium: "👌 Medium", low: "🧊 Low" };
+    function empleados(o) {
+      if (o.empleados) return o.empleados;
+      const e = empresas.find((x) => x.nombre.toLowerCase() === o.empresa.toLowerCase());
+      return e && e.empleados;
+    }
     const MOD = { remoto: "🏠 Remoto", hibrido: "🏢 Híbrido", presencial: "📍 Presencial", desconocido: "❔ Modalidad sin confirmar" };
 
     async function load() {
       $("btn-refresh").classList.add("spin");
       $("msg").textContent = "";
       const [{ data, error }, rut, emp] = await Promise.all([
-        client.from(T_OFERTAS).select("*").eq("activa", true).order("encontrado_en", { ascending: false }).order("created_at", { ascending: false }),
+        client.from(T_OFERTAS).select("*").order("encontrado_en", { ascending: false }).order("created_at", { ascending: false }),
         client.from(T_RUTINAS).select("*").order("created_at", { ascending: false }).limit(5),
         client.from(T_EMPRESAS).select("*").eq("activa", true).order("nombre"),
       ]);
@@ -248,7 +309,8 @@
 
     function filtered() {
       const q = state.q.trim().toLowerCase();
-      let list = ofertas.filter((o) => state.tab === "todas" || o.decision === state.tab);
+      let list = base().filter((o) => state.tab === "todas" || o.decision === state.tab);
+      if (state.empresa) list = list.filter((o) => o.empresa.toLowerCase() === state.empresa.toLowerCase());
       if (state.f.remoto_claro) list = list.filter((o) => o.remoto_claro);
       if (state.f.remoto || state.f.hibrido) list = list.filter((o) => (state.f.remoto && o.modalidad === "remoto") || (state.f.hibrido && o.modalidad === "hibrido"));
       if (state.f.nuevas) list = list.filter(isNew);
@@ -256,10 +318,15 @@
       if (cats.length) list = list.filter((o) => cats.includes(o.categoria));
       if (state.f.data_ai) list = list.filter((o) => o.empresa_data_ai);
       if (state.f.top) list = list.filter((o) => o.empresa_top);
+      const sizes = Object.keys(state.sz || {}).filter((k) => state.sz[k]);
+      if (sizes.length) list = list.filter((o) => sizes.includes(empleados(o)));
+      if (state.pay === "con") list = list.filter((o) => o.sueldo);
+      else if (state.pay) list = list.filter((o) => (o.sueldo_max_eur || o.sueldo_min_eur || 0) >= +state.pay);
       if (q) list = list.filter((o) => [o.empresa, o.puesto, o.ubicacion, o.resumen, o.fuente, o.sector, (o.etiquetas || []).join(" ")].join(" ").toLowerCase().includes(q));
       const by = {
         encontrado: (a, b) => (b.encontrado_en || "").localeCompare(a.encontrado_en || "") || b.created_at.localeCompare(a.created_at),
         empresa: (a, b) => a.empresa.localeCompare(b.empresa, "es"),
+        sueldo: (a, b) => (b.sueldo_max_eur || 0) - (a.sueldo_max_eur || 0),
         remoto: (a, b) => (b.remoto_claro - a.remoto_claro) || ((b.modalidad === "remoto") - (a.modalidad === "remoto")) || (b.encontrado_en || "").localeCompare(a.encontrado_en || ""),
       }[state.sort];
       return list.sort(by);
@@ -267,16 +334,24 @@
 
     function render() {
       document.querySelectorAll(".view-btn").forEach((b) => b.classList.toggle("on", b.dataset.view === state.view));
-      $("v-ofertas").classList.toggle("hidden", state.view !== "ofertas");
+      $("v-ofertas").classList.toggle("hidden", state.view === "empresas");
+      $("archivo-note").classList.toggle("hidden", state.view !== "archivo");
+      $("n-archivo").textContent = `(${ofertas.filter(cerrada).length})`;
       $("v-empresas").classList.toggle("hidden", state.view !== "empresas");
       $("n-empresas").textContent = empresas.length ? `(${empresas.length})` : "";
       renderEmpresas();
-      for (const k of ["pendiente", "gusta", "no_gusta", "revisar", "aplicada"]) $("n-" + k).textContent = ofertas.filter((o) => o.decision === k).length;
-      $("n-todas").textContent = ofertas.length;
+      const b = base();
+      for (const k of ["pendiente", "high", "medium", "low", "no_gusta", "revisar", "aplicada"]) $("n-" + k).textContent = b.filter((o) => o.decision === k).length;
+      $("n-todas").textContent = b.length;
       document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("active", t.dataset.tab === state.tab));
-      document.querySelectorAll(".chip").forEach((c) => c.classList.toggle("on", !!state.f[c.dataset.f]));
+      document.querySelectorAll("#filters .chip").forEach((c) => c.classList.toggle("on", !!state.f[c.dataset.f]));
+      document.querySelectorAll("#pay .chip").forEach((c) => c.classList.toggle("on", state.pay === c.dataset.p));
+      document.querySelectorAll("#sizes .chip").forEach((c) => c.classList.toggle("on", !!(state.sz || {})[c.dataset.s]));
       $("q").value = state.q; $("sort").value = state.sort;
 
+      $("xl-bar").classList.toggle("hidden", state.tab !== "aplicada");
+      $("emp-filter").innerHTML = state.empresa
+        ? `<span class="chip-emp" id="emp-clear">🏢 ${esc(state.empresa)} ✕</span>` : "";
       const list = filtered();
       $("count").textContent = `${list.length} oferta${list.length === 1 ? "" : "s"}`;
       if (!list.length) {
@@ -286,13 +361,90 @@
       $("list").innerHTML = list.map(card).join("");
     }
 
+
+    // ---- Excel de aplicadas: hoja "Aplicadas" (tabla filtrable) + hoja "Resumen" con filtros desplegables ----
+    async function descargarExcel() {
+      if (!window.ExcelJS) { alert("No se pudo cargar la librería de Excel (¿sin conexión?)."); return; }
+      const ap = ofertas.filter((o) => o.decision === "aplicada")
+        .sort((a, b) => (b.aplicada_en || "").localeCompare(a.aplicada_en || ""));
+      if (!ap.length) { alert("Todavía no hay ofertas aplicadas."); return; }
+      const wb = new ExcelJS.Workbook();
+      const ws = wb.addWorksheet("Aplicadas", { views: [{ state: "frozen", ySplit: 1 }] });
+      const cols = ["Fecha aplicación", "Mes", "Empresa", "Posición", "Estado", "Modalidad", "Remoto claro", "Prioridad", "Perfil", "Ubicación", "Sueldo", "Empleados", "Enlace", "Nota"];
+      const rows = ap.map((o) => {
+        const f = o.aplicada_en ? new Date(o.aplicada_en) : null;
+        return [
+          f ? new Date(f.getFullYear(), f.getMonth(), f.getDate()) : null,
+          f ? `${f.getFullYear()}-${String(f.getMonth() + 1).padStart(2, "0")}` : "",
+          o.empresa, o.puesto, cerrada(o) ? "Cerrada" : "Abierta",
+          (MOD[o.modalidad] || o.modalidad || "").replace(/^\S+\s/, ""),
+          o.remoto_claro ? "Sí" : "No",
+          (PRIO[o.prioridad] || "").replace(/^\S+\s/, ""),
+          (CAT_LABEL[o.categoria] || o.categoria || "").replace(/^\S+\s/, ""),
+          (o.ubicacion || "").slice(0, 80), o.sueldo || "", empleados(o) || "", o.url || "", o.nota || "",
+        ];
+      });
+      ws.addTable({ name: "Aplicadas", ref: "A1", headerRow: true, style: { theme: "TableStyleMedium2", showRowStripes: true },
+        columns: cols.map((name) => ({ name, filterButton: true })), rows });
+      const w = [16, 9, 24, 44, 10, 12, 12, 10, 20, 28, 18, 11, 40, 36];
+      w.forEach((x, i) => (ws.getColumn(i + 1).width = x));
+      ws.getColumn(1).numFmt = "dd/mm/yyyy";
+      const n = rows.length + 1;
+
+      // Resumen: desplegables Mes / Modalidad / Remoto claro / Estado + recuentos que los respetan.
+      const rs = wb.addWorksheet("Resumen");
+      const uniq = (i) => [...new Set(rows.map((r) => r[i]).filter(Boolean))].sort();
+      const meses = uniq(1).reverse(), mods = uniq(5), emps = uniq(2);
+      const lists = wb.addWorksheet("Listas", { state: "veryHidden" });
+      const L = (col, vals) => { lists.getColumn(col).values = ["", ...vals]; return `Listas!$${"ABCDE"[col - 1]}$2:$${"ABCDE"[col - 1]}$${vals.length + 1}`; };
+      const lm = L(1, ["(todos)", ...meses]), lmod = L(2, ["(todas)", ...mods]), lrc = L(3, ["(todos)", "Sí", "No"]), le = L(4, ["(todos)", "Abierta", "Cerrada"]);
+      rs.getCell("A1").value = "Resumen de aplicadas — cambia los desplegables amarillos"; rs.getCell("A1").font = { bold: true, size: 14 };
+      const filt = [["Mes", lm, "(todos)"], ["Modalidad", lmod, "(todas)"], ["Remoto claro", lrc, "(todos)"], ["Estado", le, "(todos)"]];
+      filt.forEach(([lab, list, def], i) => {
+        const r = 3 + i; rs.getCell(`A${r}`).value = lab; rs.getCell(`A${r}`).font = { bold: true };
+        const c = rs.getCell(`B${r}`); c.value = def; c.dataValidation = { type: "list", allowBlank: false, formulae: [list] };
+        c.fill = { type: "pattern", pattern: "solid", fgColor: { argb: "FFFFF2CC" } };
+      });
+      const crit = (col, cell) => `Aplicadas!$${col}$2:$${col}$${n},IF(OR(${cell}="(todos)",${cell}="(todas)"),"*",${cell})`;
+      const base = [crit("B", "$B$3"), crit("F", "$B$4"), crit("G", "$B$5"), crit("E", "$B$6")].join(",");
+      rs.getCell("A8").value = "Total aplicadas con estos filtros"; rs.getCell("A8").font = { bold: true };
+      rs.getCell("B8").value = { formula: `COUNTIFS(${base})` }; rs.getCell("B8").font = { bold: true, size: 14 };
+      rs.getCell("A10").value = "Por empresa"; rs.getCell("A10").font = { bold: true };
+      rs.getCell("B10").value = "Aplicadas"; rs.getCell("B10").font = { bold: true };
+      emps.forEach((e, i) => {
+        const r = 11 + i; rs.getCell(`A${r}`).value = e;
+        rs.getCell(`B${r}`).value = { formula: `COUNTIFS(Aplicadas!$C$2:$C$${n},$A${r},${base})` };
+      });
+      const r0 = 11 + emps.length + 1;
+      rs.getCell(`A${r0}`).value = "Por mes (sin filtro de mes)"; rs.getCell(`A${r0}`).font = { bold: true };
+      const noMes = [crit("F", "$B$4"), crit("G", "$B$5"), crit("E", "$B$6")].join(",");
+      meses.forEach((m, i) => {
+        const r = r0 + 1 + i; rs.getCell(`A${r}`).value = m;
+        rs.getCell(`B${r}`).value = { formula: `COUNTIFS(Aplicadas!$B$2:$B$${n},$A${r},${noMes})` };
+      });
+      rs.getColumn(1).width = 34; rs.getColumn(2).width = 16;
+      wb.views = [{ activeTab: 0 }];
+      const buf = await wb.xlsx.writeBuffer();
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(new Blob([buf], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }));
+      a.download = `empleo-aplicadas-${new Date().toISOString().slice(0, 10)}.xlsx`;
+      a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+    }
+    $("btn-xlsx").addEventListener("click", () => descargarExcel().catch((e) => alert("Error generando el Excel: " + e.message)));
+
     function card(o) {
       const badges = [];
+      if (cerrada(o)) badges.push(`<span class="b cerrada">⛔ No activa</span>`);
       if (isNew(o)) badges.push(`<span class="b nuevo">Nueva</span>`);
-      if (o.remoto_claro) badges.push(`<span class="b remoto">🟢 100% REMOTO</span>`);
-      else badges.push(`<span class="b ${o.modalidad}">${MOD[o.modalidad] || o.modalidad}</span>`);
       if (o.empresa_top) badges.push(`<span class="b cat">⭐ Top AI</span>`);
-      badges.push(`<span class="b cat">${CAT_LABEL[o.categoria] || o.categoria}</span>`);
+      if (o.decision === "aplicada" && o.prioridad) badges.push(`<span class="b cat">${PRIO[o.prioridad] || ""}</span>`);
+      const key = [
+        o.remoto_claro ? `<span class="k-rem">🟢 100% remoto</span>`
+          : `<span class="${o.modalidad === "remoto" ? "k-rem" : o.modalidad === "hibrido" ? "k-hib" : ""}">${MOD[o.modalidad] || o.modalidad}</span>`,
+        `<span class="k-cat">${CAT_LABEL[o.categoria] || o.categoria}</span>`,
+        `<span class="k-emp">👥 ${esc(empleados(o) || "¿?")} empleados</span>`,
+        o.sueldo ? `<span class="k-pay">💶 ${esc(o.sueldo)}/año</span>` : "",
+      ].join("");
       if (o.seniority) badges.push(`<span class="b">${esc(o.seniority)}</span>`);
       if (o.sector) badges.push(`<span class="b">${esc(o.sector)}</span>`);
       for (const e of o.etiquetas || []) badges.push(`<span class="b">#${esc(e)}</span>`);
@@ -304,17 +456,20 @@
         o.aplicada_en && "✅ Aplicada el " + fmtDate(o.aplicada_en.slice(0, 10)),
       ].filter(Boolean).join(" · ");
       return `<div class="card${isNew(o) ? " new" : ""}" data-id="${o.id}">
-        <div class="emp">${esc(o.empresa)}</div>
+        <div class="emp" data-emp="${esc(o.empresa)}" title="Ver todas las ofertas de ${esc(o.empresa)}">${esc(o.empresa)} <span class="emp-go">›</span></div>
         <div class="pto">${esc(o.puesto)}</div>
+        <div class="key">${key}</div>
         <div class="badges">${badges.join("")}</div>
         <div class="meta">${meta}</div>
         ${o.resumen ? `<p class="resumen">${esc(o.resumen)}</p>` : ""}
         <div class="links">${links(o)}</div>
         <div class="acts">
-          <button class="like${o.decision === "gusta" ? " on" : ""}" data-act="gusta">👍 Me gusta</button>
+          <button class="high${o.decision === "high" ? " on" : ""}" data-act="high">🔥 High</button>
+          <button class="medium${o.decision === "medium" ? " on" : ""}" data-act="medium">👌 Medium</button>
+          <button class="low${o.decision === "low" ? " on" : ""}" data-act="low">🧊 Low</button>
           <button class="dislike${o.decision === "no_gusta" ? " on" : ""}" data-act="no_gusta">👎 No</button>
-          <button class="review${o.decision === "revisar" ? " on" : ""}" data-act="revisar">🔁 Revisar</button>
-          <button class="apply${o.decision === "aplicada" ? " on" : ""}" data-act="aplicada">✅ Aplicar</button>
+          <button class="review wide${o.decision === "revisar" ? " on" : ""}" data-act="revisar">🔁 Revisar</button>
+          <button class="apply wide${o.decision === "aplicada" ? " on" : ""}" data-act="aplicada">✅ Aplicado</button>
         </div>
         <div class="nota"><textarea placeholder="${o.decision === "revisar" ? "¿Qué reviso? (p. ej. el enlace no funciona, confirmar si es remoto…)" : "Nota (opcional)…"}" data-nota>${esc(o.nota || "")}</textarea></div>
         ${o.respuesta ? `<div class="respuesta">🤖 ${esc(o.respuesta)}</div>` : ""}
@@ -328,7 +483,7 @@
 
     function renderEmpresas() {
       const cnt = {};
-      for (const o of ofertas) cnt[o.empresa.toLowerCase()] = (cnt[o.empresa.toLowerCase()] || 0) + 1;
+      for (const o of ofertas.filter((x) => !cerrada(x))) cnt[o.empresa.toLowerCase()] = (cnt[o.empresa.toLowerCase()] || 0) + 1;
       const q = state.qe.trim().toLowerCase();
       let list = empresas.map((e) => ({ ...e, n: cnt[e.nombre.toLowerCase()] || 0 }));
       if (state.fe === "data") list = list.filter((e) => e.data_ai);
@@ -339,9 +494,9 @@
       list.sort((a, b) => b.n - a.n || (b.top - a.top) || a.nombre.localeCompare(b.nombre, "es"));
       $("qe").value = state.qe; $("fe").value = state.fe;
       $("count-e").textContent = `${list.length} compañías`;
-      $("list-e").innerHTML = list.map((e) => `<div class="comp">
+      $("list-e").innerHTML = list.map((e) => `<div class="comp" data-emp="${esc(e.nombre)}">
         <div><div class="n">${e.n ? `<span class="cnt">${e.n}</span>` : ""}${e.top ? "⭐ " : ""}${esc(e.nombre)}</div>
-        <div class="s">${esc(e.sector || "")}${e.data_ai ? " · 🧠 Data & AI" : " · solo remoto"}</div></div>
+        <div class="s">${esc(e.sector || "")}${e.empleados ? " · 👥 " + esc(e.empleados) : ""}${e.data_ai ? " · 🧠 Data & AI" : " · solo remoto"}</div></div>
         ${e.portal_url ? `<a href="${esc(e.portal_url)}" target="_blank" rel="noopener">Empleo ↗</a>` : ""}
       </div>`).join("");
     }
@@ -361,22 +516,35 @@
       const o = ofertas.find((x) => x.id === id);
       const prev = o.decision;
       // Pulsar otra vez el mismo botón devuelve la oferta a pendientes
-      // (o a "me gusta" si se desmarca "aplicar").
-      const next = prev === decision ? (decision === "aplicada" ? "gusta" : "pendiente") : decision;
+      // (o a su prioridad anterior si se desmarca "aplicar").
+      const next = prev === decision ? (decision === "aplicada" ? (o.prioridad || "medium") : "pendiente") : decision;
       await setDecision(o, next);
-      const label = { gusta: "👍 Me gusta", no_gusta: "👎 No me gusta", revisar: "🔁 A revisar — deja una nota y la rutina la mira", aplicada: "✅ Aplicada", pendiente: "↺ Devuelta a pendientes" }[next];
+      const label = { high: "🔥 High", medium: "👌 Medium", low: "🧊 Low", no_gusta: "👎 No", revisar: "🔁 A revisar — deja una nota y la rutina la mira", aplicada: "✅ Aplicada", pendiente: "↺ Devuelta a pendientes" }[next];
       toast(`${label} · ${o.empresa}`, () => setDecision(o, prev));
     }
     async function setDecision(o, decision) {
       const now = new Date().toISOString();
       const patch = { decision, decidido_en: decision === "pendiente" ? null : now, aplicada_en: decision === "aplicada" ? (o.aplicada_en || now) : null };
+      if (["high", "medium", "low"].includes(decision)) patch.prioridad = decision;
       Object.assign(o, patch);
       render();
       const { error } = await client.from(T_OFERTAS).update(patch).eq("id", o.id);
       if (error) { $("msg").textContent = "No se pudo guardar: " + error.message; load(); }
     }
 
+    function verEmpresa(nombre) {
+      state.empresa = nombre; state.tab = "todas"; state.view = state.view === "archivo" ? "archivo" : "ofertas"; save(); render(); window.scrollTo(0, 0);
+    }
+    $("emp-filter").addEventListener("click", (e) => {
+      if (e.target.closest("#emp-clear")) { state.empresa = ""; save(); render(); }
+    });
+    $("list-e").addEventListener("click", (e) => {
+      if (e.target.closest("a")) return;
+      const c = e.target.closest(".comp[data-emp]"); if (c) verEmpresa(c.dataset.emp);
+    });
     $("list").addEventListener("click", (e) => {
+      const emp = e.target.closest(".emp[data-emp]");
+      if (emp) { verEmpresa(emp.dataset.emp); return; }
       const btn = e.target.closest("button[data-act]");
       if (btn) decide(btn.closest(".card").dataset.id, btn.dataset.act);
     });
@@ -395,6 +563,14 @@
     $("filters").addEventListener("click", (e) => {
       const c = e.target.closest(".chip"); if (!c) return;
       state.f[c.dataset.f] = !state.f[c.dataset.f]; save(); render();
+    });
+    $("pay").addEventListener("click", (e) => {
+      const c = e.target.closest(".chip"); if (!c) return;
+      state.pay = state.pay === c.dataset.p ? "" : c.dataset.p; save(); render();
+    });
+    $("sizes").addEventListener("click", (e) => {
+      const c = e.target.closest(".chip"); if (!c) return;
+      state.sz = state.sz || {}; state.sz[c.dataset.s] = !state.sz[c.dataset.s]; save(); render();
     });
     $("q").addEventListener("input", (e) => { state.q = e.target.value; save(); render(); });
     $("sort").addEventListener("change", (e) => { state.sort = e.target.value; save(); render(); });

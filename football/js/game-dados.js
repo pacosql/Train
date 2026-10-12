@@ -92,13 +92,11 @@ export function mountDadosGame(container, { client, onExit }) {
       choices = buildChoices(correct, () => distractor(correct), 4);
     } while (choices.length < 4);
 
-    const limit = Math.max(3600, 6500 - level * 180);
     body.innerHTML = `
       <p class="prompt dado-q" data-q>Tirando…</p>
       <div class="dado-table rolling" data-table>
         ${roll.dice.map((d) => dieHtml(d)).join("")}
       </div>
-      <div class="dado-bar"><i data-bar style="width:100%"></i></div>
       <div class="choices dado-choices" data-choices></div>
       <div class="feedback" data-feedback></div>
     `;
@@ -126,12 +124,8 @@ export function mountDadosGame(container, { client, onExit }) {
       body.querySelector("[data-q]").textContent =
         roll.mode === "suma" ? "¿Cuánto suman?" : "¿Cuál es la diferencia?";
       body.querySelectorAll(".choice-btn").forEach((b) => (b.disabled = false));
-      const bar = body.querySelector("[data-bar]");
-      bar.style.transition = `width ${limit}ms linear`;
-      requestAnimationFrame(() => {
-        bar.style.width = "0%";
-      });
-      limitTimer = setTimeout(() => timeout(), limit);
+      // v2 (petición de Paco): sin límite de tiempo. Antes una barra se
+      // vaciaba en 3,6-6,5 s y agotarla quitaba una vida.
     }, 750);
   }
 
@@ -169,19 +163,6 @@ export function mountDadosGame(container, { client, onExit }) {
     }
   }
 
-  function timeout() {
-    if (finished) return;
-    stopRound();
-    lives--;
-    renderLives();
-    const feedback = body.querySelector("[data-feedback]");
-    feedback.textContent = `¡Tiempo! Era ${roll.correct}`;
-    feedback.className = "feedback bad";
-    if (lives <= 0) return (nextTimer = setTimeout(() => finish(false), 600));
-    nextTimer = setTimeout(() => {
-      if (!finished) nextRound();
-    }, 900);
-  }
 
   function finish(userExited) {
     // Con el end-card en pantalla la partida ya está terminada, pero el
