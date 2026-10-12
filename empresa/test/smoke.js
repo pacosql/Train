@@ -136,13 +136,13 @@ const ok = (cond, msg) => { if (!cond) throw new Error(msg); };
     const r = await page.evaluate(() => ({
       boton: document.querySelector("#btn-siguiente").getBoundingClientRect().bottom,
       atras: document.querySelector("#btn-atras-lote").getBoundingClientRect().top,
-      altos: [...document.querySelectorAll("#lote-area .name-text")].map((e) => e.getBoundingClientRect().height),
+      altos: [...document.querySelectorAll("#lote-area .name-text")].map((e) => e.getBoundingClientRect().height / parseFloat(getComputedStyle(e).fontSize)),
       cortados: [...document.querySelectorAll("#lote-area .name-text")].filter((e) => e.scrollWidth > e.clientWidth + 1).length,
       dom: document.querySelectorAll("#lote-area .lote-dom").length,
       cab: document.querySelector("header").getBoundingClientRect().height > 0 && document.elementFromPoint(195, 20).closest("header") !== null,
     }));
     ok(r.boton <= 664 && r.atras >= r.boton, `el lote de 10 no cabe en pantalla o «Atrás» no va debajo: botón en ${r.boton}px de 664, atrás en ${r.atras}`);
-    ok(Math.max(...r.altos) < 2 * Math.min(...r.altos) && r.cortados === 0, `algún nombre del lote ocupa dos líneas o no cabe: ${JSON.stringify(r)}`);
+    ok(Math.max(...r.altos) < 1.9 && r.cortados === 0, `algún nombre del lote ocupa dos líneas o no cabe: ${JSON.stringify(r)}`);
     ok(r.dom === 0 && !r.cab, "en el lote no deben verse «.com ✓» ni los menús de arriba");
     console.log(`lote a pantalla completa OK (botón en ${Math.round(r.boton)}px de 664, nombres en una línea)`);
   }
@@ -225,6 +225,22 @@ const ok = (cond, msg) => { if (!cond) throw new Error(msg); };
   await page.click("#btn-volver-referencias");
   await page.waitForSelector(".wrap:not([hidden])");
   console.log("buen nombre OK (nada enviado, solo lectura)");
+
+  // --- 💡 Palabras ---
+  escrituras.length = 0;
+  await page.click("#btn-palabras");
+  await page.waitForSelector("#vista-palabras:not([hidden]) .pal-op");
+  ok((await page.locator("#pal-elegidas .pal-chip").count()) > 0, "deben verse tus palabras elegidas");
+  ok((await page.locator("#pal-lote .pal-op").count()) === 10, "deben proponerse 10 palabras");
+  await page.locator("#pal-lote .pal-op").first().click();
+  ok((await page.textContent("#pal-siguiente")).includes("Guardar 1"), "el botón debe contar las marcadas");
+  await page.click("#pal-siguiente");
+  await page.waitForTimeout(1200);
+  const pp = escrituras.filter((e) => e.method === "PATCH" && e.url.includes("empresa_palabras")).map((e) => JSON.parse(e.body).status);
+  ok(pp.includes("me_gusta") && pp.includes("no_me_gusta"), "siguiente debe guardar 👍 y descartar el resto");
+  await page.click("#btn-volver-palabras");
+  await page.waitForSelector(".wrap:not([hidden])");
+  console.log("palabras OK (nada enviado, solo lectura)");
 
   await page.screenshot({ path: path.join(dir, "empresa.png"), fullPage: true });
   console.log("captura:", path.join(dir, "empresa.png"));

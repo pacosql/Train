@@ -545,7 +545,7 @@ function ajustaNombresLote() {
   for (const el of document.querySelectorAll("#lote-area .lote-nombre .name-text")) {
     el.style.fontSize = "";
     let tam = parseFloat(getComputedStyle(el).fontSize);
-    while (el.scrollWidth > el.clientWidth + 1 && tam > 13) { tam -= 1; el.style.fontSize = tam + "px"; }
+    while (el.scrollWidth > el.clientWidth + 1 && tam > 10) { tam -= 1; el.style.fontSize = tam + "px"; }
   }
 }
 window.addEventListener("resize", () => { if (modo === "lote") ajustaNombresLote(); });

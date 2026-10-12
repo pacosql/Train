@@ -27,8 +27,15 @@ que ha marcado. Todo desde la raíz del repo `Train`.
    - **🏛️ Otras marcas** que ha marcado 👍/👎 (venture studios reales):
      úsalas como inspiración (tipo de nombre, sonido, longitud) y súbele el
      peso a los estilos de las 👍. Para añadir más marcas: `tools/marcas.py`.
-3. ¿Hace falta tanda? Sí si hay comentarios nuevos, o 👍/⭐/🙅 nuevos
-   desde la última ejecución, o quedan **< 60 pendientes con score ≥ 70**.
+   - **💡 Palabras** que ha elegido (tabla `empresa_palabras`, status
+     me_gusta; contexto.py las lista): son sus piezas favoritas. En cada
+     tanda, `python3 empresa/tools/combinar.py <fichero>` genera las
+     combinaciones (A+B y A+B+Studio); añádelas al fichero de candidatos,
+     las recién elegidas primero. Si quedan < 20 palabras pendientes por
+     proponer, añade ~50 palabras simples nuevas en inglés (status
+     pendiente, origen claude) en la línea de las que elige.
+3. ¿Hace falta tanda? Sí si hay comentarios nuevos, palabras 💡 nuevas, o 👍/⭐/🙅 nuevos
+   desde la última ejecución, o quedan **< 100 pendientes con score ≥ 70**.
    Si no hace falta, registra con `log.py` y termina.
 4. **Genera** `empresa/tools/out/candidatos.txt` (con Write) con líneas
    `Nombre|por qué|c f m s d b` bajo cabeceras `# familia: …`, donde las
@@ -50,7 +57,7 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 - Busca el nombre de una **SL paraguas** (venture studio): desarrollador
   de Mates10 y de apps de vocabulario/ortografía en App Store y Google
   Play, y nombre en facturas de consultoría a EE. UU.
-- Tiene que **sonar bien en inglés y en español** y tener sentido.
+- Tiene que **entenderse sobre todo en inglés** (y sonar bien en español) y tener sentido.
 - Le gusta **«Blue»** (p. ej. «Blue Studio»); propuso «azul studio» y
   «studiolab».
 - Lo que termina en **«Apps»**: 🙅 (12/10, «eso no me interesa»): peso
@@ -69,6 +76,44 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 - 👎 casi todo lo de las tandas 2-3: Azul + palabra inglesa, palabra
   bilingüe + Foundry/House, inventadas tipo Teselena/Brotova, imagen curiosa
   tipo Owlandkite. Peso bajo.
+- 👍 (12/10 tarde): EscuadraLab(s), CartabonLab(s) → **instrumentos de
+  dibujo técnico + Lab** gustan. Comentarios: le gusta **«paper»**
+  («Paperstudio»); quiere la versión **en inglés** de escuadra/cartabón
+  (set square, T-square, triangle, protractor, compass, blueprint).
+- 👎 masivo a la tanda 5 (palabra española con historia de navegación,
+  oficios, arquitectura, árboles + Labs/Works): no basta con «palabra
+  española antigua»; lo que gusta es más concreto (tintero, escuadra,
+  cartabón: útiles de escribir/dibujar/medir).
+- Comentarios (12/10, 17 h): le gustan **CarbonStudio**, **GraphiteStudio**
+  (grafito en inglés) y **TrailStudio**; insiste en que sea **compatible en
+  inglés y en español**. 👍 nuevos: GrafitoLabs, TipografiaLab,
+  AstilleroLab. Dirección: materiales de dibujar/escribir (carbón,
+  grafito, tinta, papel) y caminos (trail), una palabra legible en los dos
+  idiomas + Studio/Lab/Labs/Works.
+- 👍 (12/10, 18 h): **CarbonPaperStudio**, **TintaWorks**: material de
+  escribir (papel carbón, tinta) + Studio/Works. Tanda 9 explora imprenta y
+  escritura en inglés, materiales de escribir/pintar en español y tipos de
+  papel + Studio.
+- 👍 (12/10, 19 h): SepiaGrid, TintaNorth, TrailStroke, LapiceroLabs →
+  material + dirección/trazo funciona. Comentarios: **«Papersword» me
+  gusta**; **trail como en «trailblazers»**. Tanda 10: objeto de
+  papel/tinta (Paperfox, Inkblade), estilo trailblazer (Inkblazer,
+  Trailsmith) y material + dirección/trazo.
+- 👍 (12/10, 20 h): **Tinta + palabra inglesa corta** es lo que más gusta
+  (TintaGrid, TintaPoint, TintaForge, TintaNorth, TintaArc), también
+  SepiaSquare/Grid/Fold, GrafitoTrail, Inkblazer, CaligrafiaStudio,
+  EstilograficaLab, SketchPaperStudio. Patrón: **material de escribir en
+  español + sustantivo inglés de 4-5 letras**. Tanda 11 lo explora a fondo.
+- **Giro (12/10 noche)**: «me gusta mucho **Studio**, me gusta mucho
+  **Azul**, pero quiero que sea **principalmente entendible en inglés**;
+  me gusta **Stone** (Stone Studio); como **Pixar** (Toy Story y Pixar):
+  un nombre chulo». → Las mezclas español+inglés (TintaGrid…) bajan de
+  peso. Prioridad: nombre propio corto que funcione en inglés + Studio,
+  con Azul o Stone como guiño (Azulfox, Azulkite, Inkstone Studios,
+  Stonewren Studio). Azul + palabra inglesa corta suele tener el .com
+  libre incluso sin «Studio».
+- Paco revisa ~150 nombres por hora: cada tanda debe cargar **≥ 300** y la
+  rutina debe lanzar tanda en cuanto queden < 100 pendientes buenos.
 - La cola nunca debe quedarse vacía: `cribar.py` carga cada 10 aprobados.
 
 ## Programación
