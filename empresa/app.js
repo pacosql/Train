@@ -862,11 +862,11 @@ function abrirReferencias(abrir) {
 async function pintaReferencias() {
   const cont = document.getElementById("lista-referencias");
   try {
-    const filas = await apiGet(`${TABLE_REF}?select=*&order=orden.asc`);
+    const filas = await apiGet(`${TABLE_REF}?select=*&order=total.desc,orden.asc`);
     const hechas = filas.filter((r) => r.decision).length;
     const deAcuerdo = filas.filter((r) => r.decision === "de_acuerdo").length;
     document.getElementById("ref-progreso").textContent =
-      `${hechas} de ${filas.length} revisadas · ${deAcuerdo} 👍 de acuerdo · ${hechas - deAcuerdo} 👎 no`;
+      `${hechas} de ${filas.length} revisadas · ${deAcuerdo} 👍 · ${hechas - deAcuerdo} 👎`;
     cont.innerHTML = "";
     for (const r of filas) cont.appendChild(fichaReferencia(r));
     ocultarError();
@@ -915,15 +915,33 @@ function fichaReferencia(r) {
   const t = document.createElement("span");
   t.className = `rk-score ${claseScore(r.total)}`;
   t.textContent = r.total;
+  if (r.dominio) {
+    const logo = document.createElement("img");
+    logo.className = "ref-logo";
+    logo.alt = "";
+    logo.loading = "lazy";
+    logo.src = `https://www.google.com/s2/favicons?domain=${encodeURIComponent(r.dominio)}&sz=128`;
+    logo.onerror = () => logo.remove();
+    n.prepend(logo);
+  }
   cab.append(n, t);
   card.appendChild(cab);
   parrafo(card, `${r.sector} · ${r.tipo}`, "ref-sector");
+  if (r.web) {
+    const a = document.createElement("a");
+    a.className = "ref-web";
+    a.href = r.web;
+    a.target = "_blank";
+    a.rel = "noopener";
+    a.textContent = `🔗 ${r.web.replace(/^https?:\/\//, "")}`;
+    card.appendChild(a);
+  }
   parrafo(card, r.por_que, "ref-porque");
 
   card.appendChild(bloqueMedidas(r.medidas));
 
   if (r.decision) {
-    parrafo(card, r.decision === "de_acuerdo" ? "👍 Estás de acuerdo: es un buen nombre" : "👎 No te convence", "ref-estado");
+    parrafo(card, r.decision === "de_acuerdo" ? "👍 Te gusta" : "👎 No te gusta", "ref-estado");
   }
   if (r.nota) parrafo(card, `📝 ${r.nota}`, "ref-nota");
 
@@ -963,12 +981,12 @@ function fichaReferencia(r) {
   const si = document.createElement("button");
   si.type = "button";
   si.className = "grande grande-like";
-  si.textContent = "👍 De acuerdo";
+  si.textContent = "👍 Me gusta";
   si.addEventListener("click", decide("de_acuerdo"));
   const no = document.createElement("button");
   no.type = "button";
   no.className = "grande ref-no";
-  no.textContent = "👎 No me convence";
+  no.textContent = "👎 No me gusta";
   no.addEventListener("click", decide("no"));
   acciones.append(si, no);
   card.appendChild(acciones);

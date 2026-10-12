@@ -227,6 +227,12 @@ def main():
     now = datetime.now(timezone.utc).isoformat()
     res = {"com_ocupado": 0, "vetados": 0, "cargados": 0, "errores": 0}
     filas, comprobados = [], []
+    def guardar():
+        """Carga lo que lleva cribado: Paco ve nombres nuevos sin esperar al final."""
+        if a.solo_probar: filas.clear(); comprobados.clear(); return
+        if filas: sb("empresa_ideas?on_conflict=nombre", "POST", filas[:], "resolution=ignore-duplicates,return=minimal")
+        if comprobados: sb("empresa_comprobados?on_conflict=nombre", "POST", comprobados[:], "resolution=merge-duplicates,return=minimal")
+        filas.clear(); comprobados.clear()
     with cf.ThreadPoolExecutor(6) as ex:
         for c, r in zip(cands, ex.map(lambda c: cribar(c["nombre"]), cands)):
             if r["com"] is None: res["errores"] += 1; continue
@@ -244,12 +250,9 @@ def main():
             else:
                 res["cargados"] += 1
             filas.append(fila)
+            if len(filas) >= 10: guardar()
             print(("VETADO " if r["choque"] else "OK     ") + c["nombre"] + ("  ← " + r["choque"][0] if r["choque"] else ""), file=sys.stderr)
-    if not a.solo_probar:
-        for i in range(0, len(filas), 200):
-            sb("empresa_ideas?on_conflict=nombre", "POST", filas[i:i+200], "resolution=ignore-duplicates,return=minimal")
-        for i in range(0, len(comprobados), 200):
-            sb("empresa_comprobados?on_conflict=nombre", "POST", comprobados[i:i+200], "resolution=merge-duplicates,return=minimal")
+    guardar()
     fams = sorted({c["metodo"] for c in cands}) or sorted({c["metodo"] for c in leer_candidatos(a.fichero)})
     if not a.solo_probar:
         sb("empresa_rutina_log", "POST", [{"modelo": a.modelo, "tanda": a.tanda, "pendientes_antes": pend_antes, "candidatos": n_cands,

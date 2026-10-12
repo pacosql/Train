@@ -61,6 +61,9 @@ log = sb("empresa_rutina_log?select=created_at,modelo,tanda,cargados,vetados,com
 print("\n== ÚLTIMAS EJECUCIONES DE LA RUTINA (más reciente primero) ==")
 for l in log or []:
     print(f"  {l['created_at'][:16]} tanda {l['tanda']} · {l['modelo'] or '?'} · cargados {l['cargados']}, vetados {l['vetados']}, .com ocupado {l['com_ocupado']} · {l['familias']}")
+refs = sb("empresa_referencias?select=nombre,decision,nota&decision=not.is.null&order=decidido_at")
+print("\n== 🏛️ OTRAS MARCAS QUE HA CLASIFICADO (inspiración: genera en la línea de las 👍) ==")
+for r in refs or []: print(f"  {'👍' if r['decision'] == 'de_acuerdo' else '👎'} {r['nombre']}" + (f" — «{r['nota']}»" if r["nota"] else ""))
 sug = sb("empresa_sugerencias?select=id,texto,atendida,created_at&order=created_at")
 print("\n== COMENTARIOS GENERALES DEL USUARIO ==")
 for s in sug: print(f"  {'✓' if s['atendida'] else '●'} {s['texto']}")

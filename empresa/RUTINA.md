@@ -24,6 +24,9 @@ que ha marcado. Todo desde la raíz del repo `Train`.
        Un 👍 posterior lo vuelve a subir.
      - Generaliza el estilo: 🙅 a «OcreApps» pesa sobre «todo lo que acaba
        en Apps», no solo sobre ese nombre.
+   - **🏛️ Otras marcas** que ha marcado 👍/👎 (venture studios reales):
+     úsalas como inspiración (tipo de nombre, sonido, longitud) y súbele el
+     peso a los estilos de las 👍. Para añadir más marcas: `tools/marcas.py`.
 3. ¿Hace falta tanda? Sí si hay comentarios nuevos, o 👍/⭐/🙅 nuevos
    desde la última ejecución, o quedan **< 60 pendientes con score ≥ 70**.
    Si no hace falta, registra con `log.py` y termina.
@@ -55,6 +58,24 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 - 👎 a los 30 primeros de la tanda 1: objeto del cole + lab (TizaLab,
   PupitreLabs, Estuchelab…), juguetes (Peonza, Canica), colores + lab.
   Peso bajado, no a cero.
+
+- 👍 (12/10): MiradorWorks, AlmendroLab, TinteroLabs, TinteroWorks,
+  AstilleroLabs → **palabra española con historia (lugar, oficio, objeto
+  antiguo) + Labs/Works** es la familia que funciona. Explórala a fondo.
+- Comentarios (12/10): le gustan las palabras inglesas **smoke, stone,
+  circle, over**; **nombres de ciudad que suenen bien** («Atlanta
+  Studio»); **Blue Works / Blue Studio / Blue Labs** (cogidos: busca
+  variantes con sentido).
+- 👎 casi todo lo de las tandas 2-3: Azul + palabra inglesa, palabra
+  bilingüe + Foundry/House, inventadas tipo Teselena/Brotova, imagen curiosa
+  tipo Owlandkite. Peso bajo.
+- La cola nunca debe quedarse vacía: `cribar.py` carga cada 10 aprobados.
+
+## Programación
+
+- Cron de sesión cada 15 min (CronCreate) + Routine horaria de respaldo
+  (`trig_015wh7PUgjQgeKx92jVMeqLY`) que recrea el cron si la sesión se
+  reinicia y ejecuta la rutina.
 
 ## Qué NO hacer
 

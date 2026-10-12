@@ -84,7 +84,8 @@ def main():
         med["tipo"] = r["metodo"] or ""
         sc = total(dict(zip(M, ns)))
         body = {"medidas": med, "score": sc, "score_motivo": "Claude: " + (r["porque"] or "")}
-        if r["status"] == "pendiente": body["orden"] = round((100 - sc) * 10)
+        # < 70 va a la reserva (orden ≥ 100000): sigue en la cola, detrás de los buenos.
+        if r["status"] == "pendiente": body["orden"] = round((100 - sc) * 10) + (0 if sc >= 70 else 100000)
         req("PATCH", f"{BASE}?id=eq.{r['id']}", body); n += 1
     print(f"{n} nombres puntuados ({len(notas)} con notas a mano en el fichero)")
 
