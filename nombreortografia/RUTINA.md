@@ -148,6 +148,14 @@ rellena siempre que queden < 40 pendientes buenos.
   gusta (LenguaTop, LenguaApto, LenguaPleno…), Tildes + palabra (TildesDiez,
   TildesApto…) y Ortografía + palabras nuevas (Llana, Sobresale, Logro, Faro…).
 
+- Tanda 8 (61): 👎 a todo en minutos (Lengua/Tildes + palabra, Ortografía +
+  palabras nuevas). Van **dos tandas seguidas a 0 👍 (88 nombres)**: lo de
+  alrededor de los 5 ⭐ está agotado. Tanda 9 (46) prueba direcciones
+  nuevas: «X de ortografía» (HoraDeOrtografia), Tu/Mi + Ortografía10,
+  Ortografía + verbo (Clava, Suma, Acierta), + emoción (Zen, SinMiedo), +
+  tiempo (Junio, Anual) y número-palabra (Decena, Nota10). Si esta también
+  va a 0, proponer a Paco cerrar entre los 5 ⭐ (OEPM, .es, redes).
+
 ## Programación
 
 - Cron de sesión cada 15 min (CronCreate) + Routine horaria de respaldo que
