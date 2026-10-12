@@ -59,6 +59,24 @@ que ha marcado. Todo desde la raíz del repo `Train`.
   PupitreLabs, Estuchelab…), juguetes (Peonza, Canica), colores + lab.
   Peso bajado, no a cero.
 
+- 👍 (12/10): MiradorWorks, AlmendroLab, TinteroLabs, TinteroWorks,
+  AstilleroLabs → **palabra española con historia (lugar, oficio, objeto
+  antiguo) + Labs/Works** es la familia que funciona. Explórala a fondo.
+- Comentarios (12/10): le gustan las palabras inglesas **smoke, stone,
+  circle, over**; **nombres de ciudad que suenen bien** («Atlanta
+  Studio»); **Blue Works / Blue Studio / Blue Labs** (cogidos: busca
+  variantes con sentido).
+- 👎 casi todo lo de las tandas 2-3: Azul + palabra inglesa, palabra
+  bilingüe + Foundry/House, inventadas tipo Teselena/Brotova, imagen curiosa
+  tipo Owlandkite. Peso bajo.
+- La cola nunca debe quedarse vacía: `cribar.py` carga cada 10 aprobados.
+
+## Programación
+
+- Cron de sesión cada 15 min (CronCreate) + Routine horaria de respaldo
+  (`trig_015wh7PUgjQgeKx92jVMeqLY`) que recrea el cron si la sesión se
+  reinicia y ejecuta la rutina.
+
 ## Qué NO hacer
 
 - No cambies el estado de nada que Paco haya decidido.
