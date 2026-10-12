@@ -69,6 +69,14 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 - 👎 casi todo lo de las tandas 2-3: Azul + palabra inglesa, palabra
   bilingüe + Foundry/House, inventadas tipo Teselena/Brotova, imagen curiosa
   tipo Owlandkite. Peso bajo.
+- 👍 (12/10 tarde): EscuadraLab(s), CartabonLab(s) → **instrumentos de
+  dibujo técnico + Lab** gustan. Comentarios: le gusta **«paper»**
+  («Paperstudio»); quiere la versión **en inglés** de escuadra/cartabón
+  (set square, T-square, triangle, protractor, compass, blueprint).
+- 👎 masivo a la tanda 5 (palabra española con historia de navegación,
+  oficios, arquitectura, árboles + Labs/Works): no basta con «palabra
+  española antigua»; lo que gusta es más concreto (tintero, escuadra,
+  cartabón: útiles de escribir/dibujar/medir).
 - La cola nunca debe quedarse vacía: `cribar.py` carga cada 10 aprobados.
 
 ## Programación
