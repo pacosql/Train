@@ -69,7 +69,7 @@ export function buildRound(level) {
   if (kind === 1) {
     const c = pick([2, 3, 5, 7]), m = randInt(2, 6);
     return { level, neg: true, text: `${pw(c, m)} : ${pw(c, m)} = ${pw(c, "[0]")}`, answers: [0],
-      hint: `Resto exponentes: ${m} − ${m} = 0 → ${c}⁰, que vale 1 (algo entre sí mismo)` };
+      hint: `Resto exponentes: ${m} − ${m} = 0 → ${c}⁰, que vale 1 (un número entre sí mismo da 1)` };
   }
   if (kind === 2) {
     const c = pick([2, 3, 5, 7]), m = randInt(1, 5), n = randInt(m + 1, 8);
