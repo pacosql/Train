@@ -23,6 +23,10 @@
 .keypad-sign.rf-sign, .keypad-sign.tv-sign, .keypad-sign.er-comma, .keypad-sign.km-comma { max-width: 240px; margin-top: 6px; padding: 8px; }
 .rf-next, .tv-next, .df-next, .er-next, .km-next { display: block; margin: 8px auto 0; padding: 9px 18px; font-size: 0.9rem; }
 
+/* El end-card, centrado como en el resto de juegos */
+.game-body.rf-body:has(> .end-card), .game-body.tv-body:has(> .end-card), .game-body.df-body:has(> .end-card),
+.game-body.er-body:has(> .end-card), .game-body.km-body:has(> .end-card) { justify-content: center; }
+
 /* Tinta de acento legible en claro y en oscuro (acento mezclado con el texto) */
 .rf-body, .tv-body, .df-body, .er-body, .km-body { --by-ink: color-mix(in srgb, var(--accent) 62%, var(--text)); }
 
@@ -89,7 +93,7 @@
 .tv-axes.tv-empty { opacity: 0.5; }
 .tv-axis { stroke: var(--text); stroke-width: 1.6; }
 .tv-tick { stroke: var(--text); stroke-width: 1.2; }
-.tv-axes text { fill: var(--muted); font-size: 9px; font-weight: 700; text-anchor: middle; }
+.tv-axes text { fill: var(--muted); font-size: 9px; font-weight: 700; text-anchor: middle; paint-order: stroke; stroke: var(--bg); stroke-width: 3px; }
 .tv-axes text.tv-name { fill: var(--text); font-size: 12px; font-style: italic; font-family: Georgia, serif; }
 .tv-graph { fill: none; stroke: var(--accent); stroke-width: 2.4; stroke-linejoin: round; }
 .tv-dot { fill: var(--good); stroke: var(--card); stroke-width: 1.5; }

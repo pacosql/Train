@@ -43,7 +43,9 @@ export function buildRound(level) {
   // En × se puede escribir primero cualquiera de los dos factores.
   const swap = op === "×" && Math.random() < 0.3;
   const text = swap ? `${b} ${op} ${fmt(a)}` : `${fmt(a)} ${op} ${b}`;
-  const hint = `${type === "dm" ? "Doblar y mitad: " : ""}${rule}: ${steps.join(" → ")}`;
+  const hint = type === "dm"
+    ? `Doblar y mitad (${rule}): ${a} × ${b} = ${a / 2} × ${b * 2} = ${fmt(ans)}`
+    : `${rule}: ${steps.join(" → ")}`;
   return { level, type, a, b, op, ans, text, steps, name: level >= 4 ? null : NAME[type], hint };
 }
 
