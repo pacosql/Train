@@ -5,10 +5,9 @@ oposiciones, aprendiendo de lo que Paco marca en
 <https://pacosql.github.io/Train/nombreortografia/>. Todo desde la raíz del
 repo `Train`.
 
-**Ritmo (petición de Paco, 12/10):** empezamos con **50 nombres** y vamos
-despacio: Paco quiere ir dando consejos antes de que lleguen muchos más. Cada
-tanda carga como mucho 50 (`--max 50`), y solo se hace tanda cuando hay algo
-nuevo de lo que aprender.
+**Ritmo:** se empezó con 50 (12/10). Paco revisa rápido y la cola se le
+quedó vacía, así que ahora cada tanda carga hasta **70** (`--max 70`) y se
+rellena siempre que queden < 40 pendientes buenos.
 
 ## Pasos
 
@@ -26,9 +25,10 @@ nuevo de lo que aprender.
        Acumulan; un 👍 posterior lo vuelve a subir. Generaliza el estilo.
    - **🏛️ Otras marcas** marcadas 👍/👎: inspiración (tipo de nombre,
      sonido, longitud). Para añadir más: `tools/marcas.py`.
-3. ¿Hace falta tanda? **Solo** si hay comentarios nuevos, o al menos 10
-   decisiones (👍/⭐/👎/🙅) nuevas desde la última tanda, **y** quedan
-   < 15 pendientes buenos. Si no, registra con `log.py` y termina.
+3. ¿Hace falta tanda? **Sí siempre que queden < 40 pendientes buenos**,
+   haya o no feedback nuevo (regla de Paco 12/10: «está vacío, asegúrate de
+   que la rutina ejecuta»; revisa 50 en minutos). Si no, registra con
+   `log.py` y termina.
 4. **Genera** `nombreortografia/tools/out/candidatos.txt` (con Write) con
    líneas `Nombre|por qué|c f m s d b` bajo cabeceras `# familia: …`. Las
    seis notas 0-10 son tu opinión honesta: corto, fácil (se escribe como
@@ -37,7 +37,7 @@ nuevo de lo que aprender.
    para que pasen ~50: muchos caen por .com ocupado. Sin ñ ni tildes en el
    nombre (no caben en el .com). Las familias que funcionan primero; prueba
    2-3 nuevas.
-5. `python3 nombreortografia/tools/cribar.py nombreortografia/tools/out/candidatos.txt --tanda <N> --max 50 --modelo <tu modelo>`
+5. `python3 nombreortografia/tools/cribar.py nombreortografia/tools/out/candidatos.txt --tanda <N> --max 70 --modelo <tu modelo>`
    (N = tanda máxima + 1, la imprime contexto.py).
 6. `python3 nombreortografia/tools/notas.py nombreortografia/tools/out/candidatos.txt`:
    ranking (6 medidas, score y cola ordenada por score).
@@ -142,6 +142,11 @@ nuevo de lo que aprender.
   Lengua10, Ortografia365.** Converge: «Ortografía»/«Lengua» + número con
   significado. Tandas cortas y afinadas a partir de aquí (tanda 7: 27).
   Con los finalistas, a mano: OEPM/EUIPO y el .es.
+
+- Tanda 7 (27, números con significado): 👎 a todo. Los números están
+  agotados: los 5 ⭐ ya son los buenos. Tanda 8 (61): Lengua + palabra que
+  gusta (LenguaTop, LenguaApto, LenguaPleno…), Tildes + palabra (TildesDiez,
+  TildesApto…) y Ortografía + palabras nuevas (Llana, Sobresale, Logro, Faro…).
 
 ## Programación
 
