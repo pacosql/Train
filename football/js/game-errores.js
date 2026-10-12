@@ -11,7 +11,7 @@ export function fmt(x) {
   return (x < 0 ? M : "") + i.replace(/\B(?=(\d{3})+(?!\d))/g, ".") + (d ? "," + d : "");
 }
 const UNITS = ["m", "kg", "s", "L", "cm", "g"];
-const CONST = [["π", 31416], ["√2", 14142], ["√3", 17321], ["e", 27183], ["φ", 16180], ["√5", 22361]];
+const CONST = [["π", 31416], ["√2", 14142], ["√3", 17321], ["e", 27183], ["√5", 22361], ["√7", 26458]];
 
 // Una medición "de libro": Eᵣ con 4 decimales como mucho (en %, 2 como mucho).
 export function measure(maxPct = 20) {
@@ -44,7 +44,7 @@ export function buildRound(level) {
     do {
       [name, real] = Math.random() < 0.5 ? pick(CONST) : [null, randInt(10001, 99999)];
       dec = pick([1, 2]);
-    } while (real % 10 ** (4 - dec) === 0 || real % 10 ** (4 - dec) === 5 * 10 ** (3 - dec));
+    } while (real % 10 === 0 || real % 10 ** (4 - dec) === 0 || real % 10 ** (4 - dec) === 5 * 10 ** (3 - dec));
     const p = 10 ** (4 - dec), ap = Math.round(real / p) * p; // en diezmilésimas
     const next = Math.floor(real / 10 ** (3 - dec)) % 10;
     const where = dec === 1 ? "décimas" : "centésimas";
@@ -84,7 +84,7 @@ export function mountErroresGame(container, { client, onExit }) {
   const renderScore = () => (scoreEl.textContent = `⭐ ${score}`);
   const slot = (i) => `<button type="button" class="er-slot" data-slot="${i}"></button>`;
   const fr = (n, d) => `<span class="er-frac"><span>${n}</span><span>${d}</span></span>`;
-  const EA = "E<sub>a</sub>", ER = "E<sub>r</sub>";
+  const EA = `<span class="er-e">E<sub>a</sub></span>`, ER = `<span class="er-e">E<sub>r</sub></span>`;
 
   // La hoja de cada tipo de ronda
   function sheet() {

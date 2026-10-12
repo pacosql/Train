@@ -41,7 +41,7 @@ export function buildRound(level) {
     }
     if (L === 2) {
       const p = pick([1, 1.5, 2]), s1 = pick([0.5, 1, 1.5, 2, 2.5, 3]), s2 = randInt(3, 15), h = (p * s2) / s1;
-      if (!isHalf(h) || h < 2 || h > 10 * p || h > 24 || near(h, s2)) continue;
+      if (!isHalf(h) || h < 2 || h > 6 * p || near(h, s2)) continue;
       const q = [fmt(p), fmt(s1), fmt(s2)];
       return {
         kind: "arbol", p, s1, s2, h, ans: [h], key: `a${p},${s1},${s2}`,
@@ -153,10 +153,7 @@ export function mountTalesGame(container, { client, onExit }) {
   container.innerHTML = `
     <div class="game-topbar">
       <button class="back-btn" data-exit>← Menú</button>
-      <div class="game-stats">
-        <span class="lives" data-lives></span>
-        <span class="score" data-score>⭐ 0</span>
-      </div>
+      <div class="game-stats"><span class="lives" data-lives></span><span class="score" data-score>⭐ 0</span></div>
     </div>
     <div class="game-body tls-body" data-body></div>
   `;
@@ -242,14 +239,11 @@ export function mountTalesGame(container, { client, onExit }) {
       if (!ok[k]) b.innerHTML = `<s>${typed[k]}</s><em class="tls-fix">${fmt(round.ans[k])}</em>`;
     });
     if (ok.every(Boolean)) {
-      score += 10;
-      hits++;
-      renderScore();
+      score += 10; hits++; renderScore();
       say(`✓ 💡 ${round.hint}`, "ok");
       pending = setTimeout(nextRound, 900);
     } else {
-      lives--;
-      renderLives();
+      lives--; renderLives();
       goNext = () => { clearTimeout(pending); goNext = null; lives <= 0 ? finish(false) : nextRound(); };
       say(`💡 ${round.hint} <button type="button" class="tls-next" data-next>Siguiente →</button>`, "bad")
         .querySelector("[data-next]").addEventListener("click", goNext);
@@ -289,12 +283,7 @@ export function mountTalesGame(container, { client, onExit }) {
   }
 
   function start() {
-    lives = startLives;
-    score = 0;
-    rounds = 0;
-    hits = 0;
-    finished = false;
-    round = null;
+    lives = startLives; score = 0; rounds = 0; hits = 0; finished = false; round = null;
     window.removeEventListener("keydown", onKey);
     window.addEventListener("keydown", onKey);
     renderLives();

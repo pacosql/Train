@@ -28,7 +28,8 @@ function explain(f, x, y, inverse) {
   }
   if (f.kind === "lin") {
     const prod = f.a === 1 ? par(x) : f.a === -1 ? `${M}${par(x)}` : `${sg(f.a)} · ${par(x)}`;
-    return `x = ${sg(x)}: y = ${prod}${tail(f.b)} = ${sg(y)}`;
+    const mid = f.b && Math.abs(f.a) !== 1 ? `${sg(f.a * x)}${tail(f.b)} = ` : "";
+    return `x = ${sg(x)}: y = ${prod}${tail(f.b)} = ${mid}${sg(y)}`;
   }
   const sq = `${par(x)}²`, mid = f.a === 1 ? sq : f.a === -1 ? `${M}${sq}` : `${f.a} · ${sq}`;
   return `x = ${sg(x)}: y = ${mid}${tail(f.b)} = ${f.b ? sg(f.a * x * x) + tail(f.b) + " = " : ""}${sg(y)}${x < 0 ? " (un negativo al cuadrado da positivo)" : ""}`;

@@ -32,7 +32,8 @@ export function buildRound(level) {
     return {
       level, who, k, parts: p, T, u, answers: [p[0], p[1], S, u, p[0] * u, p[1] * u], prompt: "Reparto inversamente proporcional",
       html: `<div class="rt-enun">Reparte <b>${fmt(T)} €</b> entre ${list(who)} de forma <b class="rt-inv">inversamente</b> proporcional a <b>${k[0]}</b> y <b>${k[1]}</b></div>` +
-        row(`mcm(${k[0]}, ${k[1]}) = ${m} → ${who[0]}: ${m} : ${k[0]} = [0] &nbsp; ${who[1]}: ${m} : ${k[1]} = [1]`) +
+        row(`a los inversos: mcm(${k[0]}, ${k[1]}) = ${m}`) +
+        `<div class="rt-row rt-parts">${who[0]}: ${m} : ${k[0]} = [0] &nbsp; ${who[1]}: ${m} : ${k[1]} = [1]</div>` +
         row(`total de partes = ${echo(0)} + ${echo(1)} = [2]`) + row(`cada parte = ${fmt(T)} : ${echo(2)} = [3] €`) +
         who.map((w, i) => row(`${w} = ${echo(i)} · ${echo(3)} = [${4 + i}] €`)).join(""),
       hint: `Inversamente: quien tiene menos recibe más. mcm(${k[0]}, ${k[1]}) = ${m} → partes ${m} : ${k[0]} = ${p[0]} y ${m} : ${k[1]} = ${p[1]}; ${p[0]} + ${p[1]} = ${S}; ${fmt(T)} : ${S} = ${fmt(u)} €; ${who.map((w, i) => `${w} ${p[i]} · ${fmt(u)} = ${fmt(p[i] * u)} €`).join(", ")}`,

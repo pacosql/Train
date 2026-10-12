@@ -83,7 +83,7 @@ export function buildRound(level) {
     check = `hoy ${x} y ${m}; dentro de ${N} años, ${x + N} y ${m + N} = ${k2} · ${x + N} ✓`;
     answers = [x, m]; names = [`${kid}:`, `${Cap}:`];
   }
-  const hint = `${steps}. Compruebo: ${check}`;
+  const hint = `${steps}<br>Compruebo: ${check}`;
   return { level: lv, text, cols, rows, answers, names, hint };
 }
 

@@ -95,7 +95,7 @@ export function buildRound(level) {
       const a1 = randInt(big ? 2 : 1, big ? 7 : 4), a2 = randInt(big ? 2 : 1, big ? 7 : 5);
       const b1 = (big ? randInt(2, 5) : randInt(2, 3)) * pick([1, -1]);
       const b2 = (big ? randInt(2, 5) : 1) * pick([1, -1]);
-      if (a1 * b2 - a2 * b1 === 0 || (big && (Math.abs(b1) === Math.abs(b2) || Math.abs(b1) % Math.abs(b2) === 0 || Math.abs(b2) % Math.abs(b1) === 0))) continue;
+      if (a1 === a2 || a1 * b2 - a2 * b1 === 0 || (big && (Math.abs(b1) === Math.abs(b2) || Math.abs(b1) % Math.abs(b2) === 0 || Math.abs(b2) % Math.abs(b1) === 0))) continue;
       E = [[a1, b1, a1 * x + b1 * y], [a2, b2, a2 * x + b2 * y]];
       if (Math.abs(E[0][2]) > 60 || Math.abs(E[1][2]) > 60) continue;
       steps = reduction(E, x, y);
@@ -104,7 +104,7 @@ export function buildRound(level) {
     break;
   }
   const rows = [E.top || lin(...E[0]), lin(...E[1])];
-  const hint = `${steps.join(". ")}. ${E.chk || checkTxt(E, x, y)}`;
+  const hint = `${steps.join("<br>")}<br>${E.chk || checkTxt(E, x, y)}`;
   return { level, E, x, y, rows, method, hint, answers: [x, y], neg: x < 0 || y < 0 };
 }
 
@@ -253,7 +253,7 @@ export function mountSistemaGame(container, { client, onExit }) {
     saveScore(client, "sistema", { score, rounds });
     body.innerHTML = `
       <div class="end-card">
-        <div>⚖️</div>
+        <div>🧮</div>
         <div class="big-score">${score} pts</div>
         <p>${hits} sistemas resueltos de ${rounds}</p>
         <div class="end-actions">

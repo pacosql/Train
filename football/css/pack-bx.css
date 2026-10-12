@@ -101,6 +101,8 @@
 .rt-cuaderno { line-height: 1.75; font-size: 1.12rem; }
 .rt-inv { color: var(--danger); text-decoration: underline; }
 .rt-frac { font-size: 0.95em; }
+.rt-parts { font-size: 1.02rem; }
+.rt-cuaderno:has(.rt-parts) { line-height: 1.6; }
 
 /* ---------- Interés simple ---------- */
 .is-cuaderno { line-height: 1.8; }

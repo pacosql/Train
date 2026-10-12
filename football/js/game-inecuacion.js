@@ -40,7 +40,7 @@ function single(level) {
   const inc = fs === "≤" || fs === "≥";
   steps.push(`En la recta, ${dot(t, inc)}`);
   const sol = fs === ">" || fs === "≥" ? { lo: t, loIn: inc, hi: null } : { lo: null, hi: t, hiIn: inc };
-  return { a, b, c, s, kind: "simple", rows, answers, kinds, sol, hint: steps.join(". ") };
+  return { a, b, c, s, kind: "simple", rows, answers, kinds, sol, hint: steps.join("<br>") };
 }
 
 // Doble: L (s1) a·x + b (s2) R → l (s1) x (s2) r, con a > 0.
@@ -59,7 +59,7 @@ function double() {
   if (a > 1) steps.push(`Divido los tres entre ${a}, que es positivo: el sentido no cambia`);
   steps.push(`${neg(l)} ${H(s1)} ${X} ${H(s2)} ${neg(r)}: ${dot(l, s1 === "≤")} y ${dot(r, s2 === "≤")}`);
   const sol = { lo: l, loIn: s1 === "≤", hi: r, hiIn: s2 === "≤" };
-  return { a, b, kind: "doble", rows, answers, kinds, sol, hint: steps.join(". ") };
+  return { a, b, kind: "doble", rows, answers, kinds, sol, hint: steps.join("<br>") };
 }
 
 // Niveles: 0 x + a > b · 1 ax + b < c (a > 0) · 2 con a negativo (cambia
