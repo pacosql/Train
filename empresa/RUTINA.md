@@ -189,6 +189,9 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 - (13/10, 21:15) 👍 **CarpetaStudios** y **TintixStudios**: material de
   clase en español + Studios vuelve a puntuar (Tiza, Tinta, Carpeta).
   Tanda 28: más material escolar + Studios, variantes Tintix/Carpeta.
+- (13/10, 21:30) 110 👎 seguidos, ni un 👍: el material escolar + Studios
+  (Grapa, Chincheta, Plastilina…) no repite el acierto de Carpeta.
+  Tanda 29 (exploración): signos de ortografía y mates + Studios.
 - Paco revisa ~150 nombres por hora (hoy, hasta ~240): cada tanda debe cargar **≥ 300** y la
   rutina debe lanzar tanda en cuanto queden < 100 pendientes buenos.
 - La cola nunca debe quedarse vacía: `cribar.py` carga cada 10 aprobados.
