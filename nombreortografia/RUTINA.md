@@ -6,8 +6,8 @@ oposiciones, aprendiendo de lo que Paco marca en
 repo `Train`.
 
 **Ritmo:** se empezó con 50 (12/10). Paco revisa rápido y la cola se le
-quedó vacía, así que ahora cada tanda carga hasta **70** (`--max 70`) y se
-rellena siempre que queden < 40 pendientes buenos.
+quedó vacía, así que ahora la cola se mantiene en **200 por decidir**
+(13/10): cada pasada rellena hasta 200.
 
 ## Pasos
 
@@ -25,10 +25,11 @@ rellena siempre que queden < 40 pendientes buenos.
        Acumulan; un 👍 posterior lo vuelve a subir. Generaliza el estilo.
    - **🏛️ Otras marcas** marcadas 👍/👎: inspiración (tipo de nombre,
      sonido, longitud). Para añadir más: `tools/marcas.py`.
-3. ¿Hace falta tanda? **Sí siempre que queden < 40 pendientes buenos**,
-   haya o no feedback nuevo (regla de Paco 12/10: «está vacío, asegúrate de
-   que la rutina ejecuta»; revisa 50 en minutos). Si no, registra con
-   `log.py` y termina.
+3. ¿Hace falta tanda? **Sí siempre que haya < 200 pendientes en total**
+   (los «por decidir» de la app, incluida la reserva), haya o no feedback
+   nuevo (regla de Paco 13/10: «que la rutina cree nombres nuevos hasta
+   200»). Rellena hasta 200: `--max` = 200 − pendientes. Si ya hay ≥ 200,
+   registra con `log.py` y termina.
 4. **Genera** `nombreortografia/tools/out/candidatos.txt` (con Write) con
    líneas `Nombre|por qué|c f m s d b` bajo cabeceras `# familia: …`. Las
    seis notas 0-10 son tu opinión honesta: corto, fácil (se escribe como
@@ -37,7 +38,7 @@ rellena siempre que queden < 40 pendientes buenos.
    para que pasen ~50: muchos caen por .com ocupado. Sin ñ ni tildes en el
    nombre (no caben en el .com). Las familias que funcionan primero; prueba
    2-3 nuevas.
-5. `python3 nombreortografia/tools/cribar.py nombreortografia/tools/out/candidatos.txt --tanda <N> --max 70 --modelo <tu modelo>`
+5. `python3 nombreortografia/tools/cribar.py nombreortografia/tools/out/candidatos.txt --tanda <N> --max <200 − pendientes> --modelo <tu modelo>`
    (N = tanda máxima + 1, la imprime contexto.py).
 6. `python3 nombreortografia/tools/notas.py nombreortografia/tools/out/candidatos.txt`:
    ranking (6 medidas, score y cola ordenada por score).
@@ -167,6 +168,11 @@ rellena siempre que queden < 40 pendientes buenos.
   hermanas de la marca + sufijo (Ortografia100Web, Ortografia365Diario,
   Lengua10Club, Lengua100…) para pasar de 40. Sin feedback nuevo no tiene
   sentido seguir apilando: a partir de aquí, si la cola tiene ≥ 40, nada.
+
+- 13/10: Paco pide cola de 200. Tanda 12 (169): Ortografía + palabra corta
+  (Alta, Fiel, Fija, Óptima, CumLaude…), palabra + Ortografía (TopOrtografia,
+  DominaOrtografia…), Lengua + número/palabra, Orto + palabra,
+  Orthografia + palabra, Ortografía + número + palabra, Tildes + número.
 
 ## Programación
 
