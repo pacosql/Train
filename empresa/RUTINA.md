@@ -168,6 +168,13 @@ que ha marcado. Todo desde la raíz del repo `Train`.
   (Crisol, Fragua, Telar), doble sentido (Tales = Tales de Mileto +
   tales/cuentos) y figuras + Studios. Las inventadas en serie y las
   pegadas en minúscula (Pathfinderover) pasan a la reserva.
+- (13/10, 16:40) De la Sorpresa: 👍 solo **BrixelStudios** (brick +
+  pixel + Studios); 👎 a todo Cabeza + North/East/Labs/Works/Forge
+  (LapisNorth, CairnEast, PizarLabs, CrisolLabs…). Conclusión: lo que
+  gusta es **UNA palabra con carácter + Studios** (Faben, Brixel, Tinta,
+  Tiza, Trail, Ensayo, Brújula, Paco, Quevedo, Gaudí + studios), como
+  Pixar Animation Studios. Tanda 23: palabras inventadas tipo Brixel
+  (objeto concreto + pixel/bit/-ix/-en) + Studios.
 - Paco revisa ~150 nombres por hora: cada tanda debe cargar **≥ 300** y la
   rutina debe lanzar tanda en cuanto queden < 100 pendientes buenos.
 - La cola nunca debe quedarse vacía: `cribar.py` carga cada 10 aprobados.
