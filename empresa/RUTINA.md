@@ -180,6 +180,12 @@ que ha marcado. Todo desde la raíz del repo `Train`.
   es su línea más fiable: ya van 641 Azul probados, así que solo los
   monosílabos concretos que falten. Tanda 24: Azul/Trail/Faben + material;
   tanda 25: palabra real con carácter + Studios (Apunte, Acertijo, Renglón).
+- (13/10, 21 h) 👎 a las 30 de las tandas 23-26 (palabra real + Studios
+  como Ovillo/Cincel/Apunte, inventadas -ix, AzulPin/AzulCog, Faben +
+  material). Línea agotada. Lo único vivo: Brixel y Faben (+ Labs /
+  Studios) y Azul + material muy concreto (Tin, Rock, Clay). Tanda 27
+  pequeña: Brixel/Faben + colas de ⭐. Con un acierto de ~1 %, mejor
+  tandas cortas y muy dirigidas que volumen.
 - Paco revisa ~150 nombres por hora (hoy, hasta ~240): cada tanda debe cargar **≥ 300** y la
   rutina debe lanzar tanda en cuanto queden < 100 pendientes buenos.
 - La cola nunca debe quedarse vacía: `cribar.py` carga cada 10 aprobados.
