@@ -140,6 +140,11 @@ que ha marcado. Todo desde la raíz del repo `Train`.
   ⭐ (TintaNorth, TintaForge, TizaWave). Peso casi a cero. Siguen vivas
   Trail + inglés (👍 TrailBrick) y Azul + inglés. Tanda 20 prueba
   inventadas estilo Pixar + Studios.
+- (13/10, 5 h) Tanda 20: 👎 a casi todo (Azul + animal/árbol/objeto,
+  inventadas Pixar), pero 👍 **AzulClay**, **AzulRock** (Azul + tierra o
+  piedra, en la línea de Stone) y **FabenStudios** (inventada desde
+  «fábula»). Tanda 21: Azul + tierra/piedra/taller, tierra + Studios,
+  Cobalt/Indigo + taller, e inventadas desde palabras de contar historias.
 - Paco revisa ~150 nombres por hora: cada tanda debe cargar **≥ 300** y la
   rutina debe lanzar tanda en cuanto queden < 100 pendientes buenos.
 - La cola nunca debe quedarse vacía: `cribar.py` carga cada 10 aprobados.
