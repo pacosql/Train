@@ -14,7 +14,11 @@ quedó vacía, así que ahora la cola se mantiene en **200 por decidir**
 1. **Cerrojo**: `pgrep -af "[c]ribar.py"` **en un comando aparte** (si va en
    el mismo comando que lanza cribar.py, se encuentra a sí mismo). Si hay una
    criba en marcha, no arranques otra: termina.
-2. `python3 nombreortografia/tools/contexto.py --atender` y léelo entero:
+2. `python3 nombreortografia/tools/preferencias.py`: **qué rasgos le gustan
+   según TODOS sus votos** (largo, nº de palabras, Orto-, cifra, faltas…; lo
+   reciente pesa más). Es la guía principal para generar: haz nombres con los
+   rasgos que suman y evita los que restan.
+   Después, `python3 nombreortografia/tools/contexto.py --atender` y léelo entero:
    - **Comentarios generales «●»** (sin atender) = órdenes directas, la
      prioridad máxima. Cada uno cambia el gusto de la tanda siguiente.
    - **Pesos, no vetos** (igual que en Nombre Empresa). Cada estilo
@@ -40,8 +44,10 @@ quedó vacía, así que ahora la cola se mantiene en **200 por decidir**
    2-3 nuevas.
 5. `python3 nombreortografia/tools/cribar.py nombreortografia/tools/out/candidatos.txt --tanda <N> --max <200 − pendientes> --modelo <tu modelo>`
    (N = tanda máxima + 1, la imprime contexto.py).
-6. `python3 nombreortografia/tools/notas.py nombreortografia/tools/out/candidatos.txt`:
-   ranking (6 medidas, score y cola ordenada por score).
+6. `python3 nombreortografia/tools/notas.py nombreortografia/tools/out/candidatos.txt`
+   (6 medidas y score) y DESPUÉS `python3 nombreortografia/tools/preferencias.py --reordenar`:
+   **reordena SIEMPRE la cola** con lo aprendido de sus votos (2 por
+   probabilidad de 👍 + 1 sorpresa de la última tanda), aunque no haya tanda.
 7. Actualiza «Lo que ya sabemos de Paco», commit y push a la rama. Resumen
    de una línea. No hace falta desplegar.
 
@@ -173,6 +179,15 @@ quedó vacía, así que ahora la cola se mantiene en **200 por decidir**
   (Alta, Fiel, Fija, Óptima, CumLaude…), palabra + Ortografía (TopOrtografia,
   DominaOrtografia…), Lengua + número/palabra, Orto + palabra,
   Orthografia + palabra, Ortografía + número + palabra, Tildes + número.
+
+- **13/10, Paco: «estamos atrapados, sorpréndeme (como Pixar), mira lo
+  último que he votado, reordena».** Análisis de 461 votos
+  (`preferencias.py`): gusta **Orto-** (50 %), lo **corto ≤ 8 letras**, una o
+  dos piezas, «faltas», nota máxima. No gusta: ≥ 3 palabras (4: 0 %), > 16
+  letras, «Lengua» (salvo ⭐ Lengua10), nada sin raíz de ortografía.
+  «Ortografía» entera solo 14 %: él la pidió, pero no la vota. Tanda 13
+  (36): sorpresas cortas (Tildar, Ortoria, Tildora, Faltora, DonTilde,
+  ProfeTilde, CapitánTilde, Ortolingo, SinFaltas10…), y la cola reordenada.
 
 ## Programación
 
