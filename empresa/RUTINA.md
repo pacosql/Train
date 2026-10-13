@@ -192,6 +192,9 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 - (13/10, 21:30) 110 👎 seguidos, ni un 👍: el material escolar + Studios
   (Grapa, Chincheta, Plastilina…) no repite el acierto de Carpeta.
   Tanda 29 (exploración): signos de ortografía y mates + Studios.
+- (13/10, 21:45) 240 marcas más (casi toda la reserva), 1 👍: **Datastudios**.
+  Tanda 30: palabra inglesa corta + studios; 39 de 43 con .com ocupado,
+  solo 4 cargados. Palabra común + studios.com está casi agotado.
 - Paco revisa ~150 nombres por hora (hoy, hasta ~240): cada tanda debe cargar **≥ 300** y la
   rutina debe lanzar tanda en cuanto queden < 100 pendientes buenos.
 - La cola nunca debe quedarse vacía: `cribar.py` carga cada 10 aprobados.
