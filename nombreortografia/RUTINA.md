@@ -1,0 +1,69 @@
+# Rutina «Nombre Ortografía» (cada 15 minutos)
+
+Objetivo: buscar la marca de la app de ejercicios de ortografía para EBAU y
+oposiciones, aprendiendo de lo que Paco marca en
+<https://pacosql.github.io/Train/nombreortografia/>. Todo desde la raíz del
+repo `Train`.
+
+**Ritmo (petición de Paco, 12/10):** empezamos con **50 nombres** y vamos
+despacio: Paco quiere ir dando consejos antes de que lleguen muchos más. Cada
+tanda carga como mucho 50 (`--max 50`), y solo se hace tanda cuando hay algo
+nuevo de lo que aprender.
+
+## Pasos
+
+1. **Cerrojo**: `pgrep -f "[c]ribar.py"`. Si hay una criba en marcha, no
+   arranques otra: termina.
+2. `python3 nombreortografia/tools/contexto.py --atender` y léelo entero:
+   - **Comentarios generales «●»** (sin atender) = órdenes directas, la
+     prioridad máxima. Cada uno cambia el gusto de la tanda siguiente.
+   - **Pesos, no vetos** (igual que en Nombre Empresa). Cada estilo
+     (familia, tipo de palabra) tiene un peso que decide cuántos candidatos
+     de ese estilo entran en la tanda:
+     - **👍 / ⭐** suben el peso: genera parecidos, no copias. ⭐ cuenta doble.
+     - **👎** baja el peso un poco; **🙅 Nada de esto** lo baja mucho.
+       Acumulan; un 👍 posterior lo vuelve a subir. Generaliza el estilo.
+   - **🏛️ Otras marcas** marcadas 👍/👎: inspiración (tipo de nombre,
+     sonido, longitud). Para añadir más: `tools/marcas.py`.
+3. ¿Hace falta tanda? **Solo** si hay comentarios nuevos, o al menos 10
+   decisiones (👍/⭐/👎/🙅) nuevas desde la última tanda, **y** quedan
+   < 15 pendientes buenos. Si no, registra con `log.py` y termina.
+4. **Genera** `nombreortografia/tools/out/candidatos.txt` (con Write) con
+   líneas `Nombre|por qué|c f m s d b` bajo cabeceras `# familia: …`. Las
+   seis notas 0-10 son tu opinión honesta: corto, fácil (se escribe como
+   suena en español), memorable, sugiere (cero faltas / escribir bien /
+   aprobar la EBAU o la oposición), distintivo, búsqueda. ~150 candidatos
+   para que pasen ~50: muchos caen por .com ocupado. Sin ñ ni tildes en el
+   nombre (no caben en el .com). Las familias que funcionan primero; prueba
+   2-3 nuevas.
+5. `python3 nombreortografia/tools/cribar.py nombreortografia/tools/out/candidatos.txt --tanda <N> --max 50 --modelo <tu modelo>`
+   (N = tanda máxima + 1, la imprime contexto.py).
+6. `python3 nombreortografia/tools/notas.py nombreortografia/tools/out/candidatos.txt`:
+   ranking (6 medidas, score y cola ordenada por score).
+7. Actualiza «Lo que ya sabemos de Paco», commit y push a la rama. Resumen
+   de una línea. No hace falta desplegar.
+
+## Lo que ya sabemos de Paco (actualiza esta lista)
+
+- La app: ejercicios de ortografía para alumnos de **EBAU** y
+  **opositores**, para que no tengan faltas en el examen. Público joven y
+  adulto: nada infantil.
+- Él mismo dudó de «ortografía» a secas («bastante vacío»; ortografia.com y
+  .es cogidos) y propuso ideas tipo **«faltas de ortografía»**, **«no más
+  faltas»**: le atrae el ángulo de **quitar las faltas**, no solo la palabra
+  «ortografía».
+- Tanda 1 (12/10): 50 nombres repartidos entre muchas familias para ver qué
+  le gusta: cero faltas, sin faltas, tilde, palabra con ortografía dentro,
+  examen/aprobar, fusiones inventadas, metáforas (lápiz rojo, corrector),
+  inglés corto.
+
+## Programación
+
+- Cron de sesión cada 15 min (CronCreate) + Routine horaria de respaldo que
+  recrea el cron si la sesión se reinicia y ejecuta la rutina.
+
+## Qué NO hacer
+
+- No cambies el estado de nada que Paco haya decidido.
+- No consultes TMview/OEPM en bucle.
+- No despliegues ni toques `main` desde la rutina.

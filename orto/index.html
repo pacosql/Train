@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Orto · Ortografía</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#1d2a4d" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Orto" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="css/orto.css" />
+</head>
+<body>
+  <div class="wrap">
+    <div class="top"><a href="./" class="marca">Orto<span>.</span></a><button class="pill quien" id="quien" style="display:none"></button></div>
+    <div id="app"></div>
+    <footer class="build"><a href="../">Train</a> · build __BUILD_ID__</footer>
+  </div>
+  <script src="config.js"></script>
+  <script type="module" src="js/app.js"></script>
+  <script>
+    if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
+  </script>
+</body>
+</html>
