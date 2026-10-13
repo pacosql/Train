@@ -34,5 +34,7 @@ export const db = {
   scores: (id) => req(`${T("score")}?usuario_id=eq.${id}&select=score,faltas,nivel,motivo,creado_en&order=creado_en.asc`),
   guardarScore: (fila) => enCola(() => req(T("score"), { method: "POST", body: JSON.stringify(fila) })),
   misIntentos: (id) => req(`${T("intento")}?usuario_id=eq.${id}&select=palabra,competencia,correcto,respuesta,creado_en&order=creado_en.desc&limit=3000`),
+  // Respuestas de la prueba de nivel (para reanudarla donde se dejó).
+  intentosPrueba: (id) => req(`${T("intento")}?usuario_id=eq.${id}&fase=eq.prueba&select=sesion,competencia,correcto&order=id.asc`),
   dificiles: () => req(`${T("palabras_dificiles")}?select=*&order=tasa.desc,intentos.desc&limit=60`),
 };

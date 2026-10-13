@@ -37,7 +37,7 @@ async function arrancar() {
 }
 
 async function inicio() {
-  $("#quien").textContent = "";
+  pintaQuien();
   const lista = await db.usuarios().catch(() => []);
   app.innerHTML = `<h1>¿Quién eres?</h1>
     <div class="lista">${lista.map((u) => `<button class="fila-u" data-id="${u.id}"><b>${esc(u.nombre)}</b>${u.score != null ? `<span class="pill">OrtoScore ${u.score}</span>` : '<span class="pill">sin prueba</span>'}</button>`).join("") || '<p class="muted">Aún no hay nadie. Escribe tu nombre para empezar.</p>'}</div>
@@ -61,13 +61,29 @@ async function entrar(id) {
   usuario = await db.usuario(id);
   if (!usuario) throw new Error("no existe");
   ls.set("orto_usuario", id);
-  $("#quien").textContent = usuario.nombre;
+  pintaQuien();
   const filas = await db.dominio(id);
   dom = {}; stats = {}; ultimo = {};
   for (const f of filas) { dom[f.competencia] = +f.p; stats[f.competencia] = { n: f.intentos, ok: f.aciertos }; ultimo[f.competencia] = f.ultimo ? Date.parse(f.ultimo) : 0; }
   historial = await db.scores(id).catch(() => []);
   if (!usuario.prueba_hecha) return introPrueba();
   casa();
+}
+
+// El nombre de arriba a la derecha sirve para cambiar de usuario en
+// cualquier momento (también a mitad de la prueba: cada respuesta ya está
+// guardada y se puede seguir luego).
+function pintaQuien() {
+  const q = $("#quien");
+  q.innerHTML = usuario ? `${esc(usuario.nombre)} · cambiar` : "";
+  q.style.display = usuario ? "" : "none";
+  q.onclick = () => cambiarUsuario();
+}
+async function cambiarUsuario() {
+  try { speechSynthesis.cancel(); } catch {}
+  await esperarCola().catch(() => {});
+  ls.set("orto_usuario", null); usuario = null;
+  inicio();
 }
 
 // ---------------------------------------------------------------- registro
@@ -125,7 +141,7 @@ function casa() {
   $("#dificiles").onclick = dificiles;
   $("#escala").onclick = escala;
   $$(".fila-c").forEach((b) => (b.onclick = () => fichaCompetencia(b.dataset.id)));
-  $("#salir").onclick = () => { ls.set("orto_usuario", null); usuario = null; inicio(); };
+  $("#salir").onclick = cambiarUsuario;
 }
 
 function comparaEdad(edad, r) {
@@ -199,30 +215,56 @@ async function pantallaLeccion(c, intro = "Antes de practicar, la regla en 20 se
 }
 
 // ---------------------------------------------------------------- prueba de nivel
-function introPrueba() {
+async function introPrueba() {
+  const previas = await respuestasPrueba().catch(() => []);
   app.innerHTML = `<h1>Hola, ${esc(usuario.nombre)}</h1>
+    ${previas.length ? `<p>Tienes la <b>prueba de nivel a medias</b>: llevas ${previas.length} respuestas guardadas.</p>
+      <button class="primary grande" id="seguir">Continuar donde lo dejé</button><p></p>
+      <button class="grande" id="ir">Empezar de nuevo</button>` : `
     <p>Empezamos con una <b>prueba de nivel</b>: unas 40 preguntas de todo tipo (tildes, b/v, h, g/j, porque/por qué, comas…). Se adapta sobre la marcha: si aciertas sube, si fallas baja.</p>
     <p>Al final tendrás tu <b>OrtoScore</b> (0-100), las faltas que harías en un texto de periódico de 100 palabras y a qué curso equivale.</p>
-    <p class="muted small">No hay explicaciones durante la prueba: eso viene después, al practicar.</p>
-    <button class="primary grande" id="ir">Empezar la prueba</button>`;
-  $("#ir").onclick = prueba;
+    <p class="muted small">No hay explicaciones durante la prueba: eso viene después, al practicar. Puedes dejarla a medias y seguir otro día.</p>
+    <button class="primary grande" id="ir">Empezar la prueba</button>`}
+    <p></p><button class="link" id="otro">No soy ${esc(usuario.nombre)}</button>`;
+  $("#ir").onclick = () => prueba();
+  if (previas.length) $("#seguir").onclick = () => prueba(previas);
+  $("#otro").onclick = cambiarUsuario;
 }
 
-async function prueba() {
-  const sesion = uuid();
+// Respuestas de la última prueba sin terminar (la sesión más reciente).
+async function respuestasPrueba() {
+  const filas = await db.intentosPrueba(usuario.id);
+  if (!filas.length) return [];
+  const ultima = filas[filas.length - 1].sesion;
+  return filas.filter((f) => f.sesion === ultima);
+}
+
+// previas: respuestas ya dadas. La escalera de cada bloque solo depende de
+// sus aciertos y fallos, así que se rehace exactamente repitiéndolas.
+async function prueba(previas = []) {
+  const sesion = previas[0]?.sesion || uuid();
   const escaleras = barajar(planPrueba(modelo));
   const resultados = {};
   const total = escaleras.reduce((a, e) => a + e.max, 0);
   let hechas = 0;
   let vivas = escaleras.slice();
+  for (const f of previas) {
+    const e = vivas.find((x) => x.lista[x.i].id === f.competencia);
+    if (!e) continue;
+    hechas++;
+    (resultados[f.competencia] ||= []).push(f.correcto);
+    if (!pasoPrueba(e, f.correcto)) vivas = vivas.filter((x) => x !== e);
+  }
   while (vivas.length) {
     for (const e of vivas.slice()) {
       const c = e.lista[e.i];
       const it = banco.elegir(c.id, 2, "prueba");
       if (!it) { if (!pasoPrueba(e, true)) vivas = vivas.filter((x) => x !== e); continue; }
       hechas++;
-      const cab = `<div class="prog"><div class="bar"><i style="width:${Math.min(100, (hechas / total) * 100)}%"></i></div><span class="small muted">${hechas}</span></div>`;
+      const cab = `<div class="prog"><div class="bar"><i style="width:${Math.min(100, (hechas / total) * 100)}%"></i></div><span class="small muted">${hechas} de ~${total}</span></div>`;
+      const yo = usuario?.id;
       const res = await ejercicio(it, { cab, fase: "prueba", sesion, rapido: true });
+      if (!usuario || usuario.id !== yo) return; // cambió de usuario a mitad
       (resultados[c.id] ||= []).push(res.correcto);
       if (!pasoPrueba(e, res.correcto)) vivas = vivas.filter((x) => x !== e);
     }
