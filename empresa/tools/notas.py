@@ -88,7 +88,9 @@ def main():
         if r["status"] == "pendiente": body["orden"] = round((100 - sc) * 10) + (0 if sc >= 70 else 100000)
         req("PATCH", f"{BASE}?id=eq.{r['id']}", body); n += 1
     print(f"{n} nombres puntuados ({len(notas)} con notas a mano en el fichero)")
-    intercalar()
+    # La cola la ordena afinidad.py: aprende de lo último que ha marcado Paco
+    # y deja 1 de cada 4 huecos para explorar estilos nuevos.
+    import afinidad; afinidad.main()
 
 def intercalar():
     """Cola variada: los pendientes buenos (score ≥ 70) se intercalan por

@@ -37,7 +37,15 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 3. ¿Hace falta tanda? Sí si hay comentarios nuevos, palabras 💡 nuevas, o 👍/⭐/🙅 nuevos
    desde la última ejecución, o quedan **< 200 pendientes con score ≥ 70**.
    Si no hace falta, registra con `log.py` y termina.
-4. **Genera** `empresa/tools/out/candidatos.txt` (con Write) con líneas
+4. **Cómo generar (regla del 13/10, «estamos atrapados»)**: nada de
+   productos cartesianos (Azul × 150 palabras, raíz × 12 finales): cansan
+   y se llevan 👎 en bloque. Cada nombre se piensa uno a uno y tiene una
+   historia que se pueda contar en una línea (como Pixar = pixel + -ar).
+   Como mucho 6 nombres por raíz y por tanda (contando variantes
+   Studios/Labs/Works). Antes de escribir, mira los 👍/⭐ de las últimas
+   horas y `afinidad.py --ver` (qué piezas gustan ahora) y cruza lo que
+   gusta en ideas nuevas, no en variaciones de la misma palabra.
+   **Genera** `empresa/tools/out/candidatos.txt` (con Write) con líneas
    `Nombre|por qué|c f m s d b` bajo cabeceras `# familia: …`, donde las
    seis notas 0-10 son tu opinión honesta: corto, fácil (en español Y en
    inglés), memorable, sugiere (estudio que crea productos educativos y
@@ -48,7 +56,12 @@ que ha marcado. Todo desde la raíz del repo `Train`.
    (N = tanda máxima + 1, la imprime contexto.py). Tarda ~1 s por nombre
    (App Store va despacio a propósito).
 6. `python3 empresa/tools/notas.py empresa/tools/out/candidatos.txt`:
-   ranking de todo (6 medidas, score y cola ordenada por score).
+   ranking de todo (6 medidas y score) y al final `afinidad.py`, que
+   ordena la cola por lo que Paco ha marcado últimamente (rasgos: cabeza,
+   cola, palabras; ⭐ +3, 👍 +1.5, 👎 −0.3, 🙅 −1.2; lo reciente pesa más),
+   sin repetir raíz seguida y con 1 de cada 4 huecos para explorar
+   cabezas nuevas. Ejecuta `afinidad.py` también en las pasadas sin tanda
+   si ha marcado algo nuevo: así la cola aprende cada 15 minutos.
 7. Resumen de una línea: cuántos cargados, vetados, familias nuevas, y qué
    has aprendido de sus marcas. No hace falta desplegar.
 
@@ -145,6 +158,16 @@ que ha marcado. Todo desde la raíz del repo `Train`.
   piedra, en la línea de Stone) y **FabenStudios** (inventada desde
   «fábula»). Tanda 21: Azul + tierra/piedra/taller, tierra + Studios,
   Cobalt/Indigo + taller, e inventadas desde palabras de contar historias.
+- (13/10, 12 h) «Me cuesta seleccionar, estamos atrapados, sorpréndeme;
+  como Pixar». 46 👍/⭐ de ~3.250 decididos (1,4 %). Lo que gusta es
+  concreto: palabra con historia (tintero, astillero, brújula, Quevedo)
+  o cabeza corta + norte/este/ola/forja/piedra. Tanda 22 «Sorpresa», a
+  mano: estilo Pixar (Pizar = pizarra + -ar, Lapix = lápiz + pixel,
+  Fablar), piedras y pigmentos azules (Lapis, Lazuli, Ultramar), lo que
+  guía el camino (Cairn, Lodestone, Hito, Astrolab, Bitácora), el taller
+  (Crisol, Fragua, Telar), doble sentido (Tales = Tales de Mileto +
+  tales/cuentos) y figuras + Studios. Las inventadas en serie y las
+  pegadas en minúscula (Pathfinderover) pasan a la reserva.
 - Paco revisa ~150 nombres por hora: cada tanda debe cargar **≥ 300** y la
   rutina debe lanzar tanda en cuanto queden < 100 pendientes buenos.
 - La cola nunca debe quedarse vacía: `cribar.py` carga cada 10 aprobados.
