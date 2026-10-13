@@ -175,7 +175,12 @@ que ha marcado. Todo desde la raíz del repo `Train`.
   Tiza, Trail, Ensayo, Brújula, Paco, Quevedo, Gaudí + studios), como
   Pixar Animation Studios. Tanda 23: palabras inventadas tipo Brixel
   (objeto concreto + pixel/bit/-ix/-en) + Studios.
-- Paco revisa ~150 nombres por hora: cada tanda debe cargar **≥ 300** y la
+- (13/10, 17 h) ⭐ **AzulTin** y 👍 FabenLabs tras repasar 240 nombres
+  (incluida la reserva). Azul + material corto en inglés (Tin, Rock, Clay)
+  es su línea más fiable: ya van 641 Azul probados, así que solo los
+  monosílabos concretos que falten. Tanda 24: Azul/Trail/Faben + material;
+  tanda 25: palabra real con carácter + Studios (Apunte, Acertijo, Renglón).
+- Paco revisa ~150 nombres por hora (hoy, hasta ~240): cada tanda debe cargar **≥ 300** y la
   rutina debe lanzar tanda en cuanto queden < 100 pendientes buenos.
 - La cola nunca debe quedarse vacía: `cribar.py` carga cada 10 aprobados.
 
