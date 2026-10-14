@@ -1,66 +1,70 @@
-# Minería de nombres para Mates10 (rutina continua)
+# Minería de nombres para Mates10 (rutina)
 
-**Objetivo: encontrar un nombre de 90.** La rutina trabaja sin parar: se
-dispara cada hora y, si nadie está minando, toma el turno y se pone a
-trabajar (`tools/turno.py`). Cada ejecución apunta alto (≥ 88, ideal 90+)
-pero no tira nada bueno: todo lo que llegue a **65** con .com libre entra
-en la cola, ordenado por nota (Paco ve primero los mejores).
+**Objetivo: nombres que le gusten a Paco**, no nombres con nota alta. Con
+~2.900 decisiones (12/10) la nota de las 6 medidas **no predice su gusto**:
+le gusta el 3 % de lo que ve, igual con nota 76 que con 86, y cada vez
+menos (las últimas tandas, 0-1 %). Por eso descartaba sin parar. La nota
+de 6 medidas queda como filtro mínimo (≥ 70); lo que decide es el gusto.
 
-Mínimo por ejecución: **5 nombres nuevos ≥ 80**. Lo que se busca de verdad:
-**alguno ≥ 88**, que dispute el título a Netflix (88) y a Mates10.
+**La cola, como mucho 150.** Lo que no entra se guarda con status
+`reserva` (no se borra; puede volver a la cola si un día encaja).
+Cuándo se mina (`tools/turno.py`): a la **1 h de Madrid** se rellena
+hasta 150; el resto de horas, solo si quedan **menos de 30** por decidir.
 
-## Cómo se puntúa
+## Qué le gusta a Paco (12/10, 83 👍 de 2.881)
 
-La metodología de «📐 Buen nombre»: seis medidas de 0 a 10 (corto, fácil,
-memorable, sugiere, distintivo, búsqueda) con el porqué de cada nota. El
-total es la media ponderada × 10 y **distintivo pesa la mitad**
-(`tools/medidas.py`). Público: alumnos de 7 a 18 años en España; el mensaje
-es mates. Referencias: Netflix y Chupa Chups 88, PayPal 87, YouTube y
-Red Bull 86, Duolingo 85, Mates10 77. Puntúa con honestidad: un 80 es un
-nombre que pondrías al lado de BlaBlaCar o Nike; un 90 es **mejor que
-Netflix** para su público. Un 90 necesita algo como 9-10 en todo menos
-quizá distintivo (p. ej. 9/9/9/10/8/9): corto (≤ 2 sílabas fuertes), se lee
-a la primera, se recuerda tras oírlo una vez, dice «mates» sin explicarlo,
-no se confunde con nada y en Google sale solo él.
+- Lo que más le gusta: palabras con **energía o actitud**, cortas y
+  conocidas, pegadas a «mates»: Matesrock, Matesninja, Punkmates,
+  Heavymates, Rompemates, Surfeamates, Pateamates, Patinamates, Lasermates,
+  Rayomates, Matesrush, Matesmoto, Matesraptor, Kiaimates, Triplemates.
+- **Rompe-** (Rompemates, Rompenumeros, Rompeceros) y **-nauta**
+  (Matenauta, Numerauta, Cifronauta, Calculonauta, Matinauta).
+- **Cosas del cole**: Tizamates, Lapizmates, Libretamates, Pupitremates,
+  Tintamates, Colemates (pero no Borrador ni Pizarra).
+- **Tecnología y juego**: Matesgeek, Matescoder, Matesdev, Cibermates,
+  Matesclick, Matesgo, Matestic.
+- Ánimo y colegueo: Vamosmates, Aupamates, Molamates, Matesbro, Matesliga,
+  Matesprimo, Tomamates, Tiramates, Lanzamates, Retamates.
+- Infinito, potencia, factor: Matesinfinito, Infinitomates, Matepotencia,
+  Factormates, Maximates.
 
-## Proceso de cada ejecución (≈ 50 min)
+**Qué descarta casi siempre** (0 de 100 o más): terminaciones en
+**-tablas, -cuentas, -cifras** (0/55, 0/45, 0/34), **Mate + sustantivo
+cualquiera** (Matehelado, Matetrebol: 2 %), letras griegas (Theta, Kappa,
+Lambda, Iota), mitología y espacio (Odín, Olimpo, Andrómeda, astral,
+orbital), comida, jerga en inglés de redes (drip, dope, slay, pog, rizz),
+animales (0/94), y las variantes de algo que ya le gustó en cuanto se
+repite (rock: 3 de 13; ninja: 2 de 15): **una palabra que gustó vale como
+pista, pero no la exprimas** (máximo 2 nombres nuevos con la misma pieza).
+
+## Proceso de cada ejecución
 
 0. `python3 nombremates/tools/turno.py tomar <id de sesión>`. Si sale con
-   código 3 (OCUPADO) o 4 (COLA LLENA: a Paco le quedan 250 o más nombres
-   por decidir), **termina sin hacer nada**: solo se mina cuando la cola
-   baja de 250. Durante el trabajo,
-   `turno.py renovar` cada ~30 min; al acabar, `turno.py soltar "<resumen>"`
-   (también si algo falla).
-1. `git pull origin main`. Lee `tools/fichas.json`, este fichero entero y
-   las decisiones de Paco (`nombremates_ideas` con `decidido_at` reciente;
-   me_gusta / favorito / no_me_gusta). Lee también las lecciones de las
-   ejecuciones anteriores: `python3 nombremates/tools/lecciones.py leer`.
-   **Aprende de todo ello** y, al acabar, guarda lo aprendido con
-   `python3 nombremates/tools/lecciones.py anotar "<lección>" <sesión>`
-   (se guarda en la base de datos, así no se pierde aunque falle el push).
-2. **Ronda de exploración**: 150-300 candidatos NUEVOS con ficha completa en
-   `tools/out/cand.json` (formato de `fichas.json`), repartidos en familias
-   distintas, incluidas familias que nadie ha probado aún (ver «Ideas para
-   llegar a 90»). `python3 nombremates/tools/minar.py nombremates/tools/out/cand.json`.
-3. **Rondas de afinado** (el proceso creativo): coge los mejores que tengas
-   —los de esta ejecución, los ≥ 84 de la cola y los que le gustan a
-   Paco— y pregúntate qué medida les quita puntos. Genera variantes que
-   arreglen justo eso: acortar, quitar una letra que se lee mal, cambiar
-   el orden, otra grafía, una palabra con más gancho, un sonido que se
-   repita… Cada ronda: 50-150 variantes, `minar.py`, mira qué sube y
-   vuelve a mutar lo que subió. Alterna exploración y afinado hasta que se
-   acabe el tiempo (~45 min) o encuentres un ≥ 90.
-4. **Segunda opinión para los altos**: todo candidato que tú pongas ≥ 88
-   pásalo, antes de cargarlo, a un subagente que lo puntúe a ciegas con las
-   6 medidas contra las referencias (Netflix 88, PayPal 87, Duolingo 85,
-   Mates10 77) buscando por qué NO merece esa nota. Quédate con la media
-   de ambas notas en cada medida. Un 90 inflado no sirve de nada.
-5. Commit y push a main de `tools/fichas.json` y de este fichero si
-   añadiste lecciones (si el push falla no es bloqueante: las fichas ya
-   están en la base de datos, que es lo que ve la app).
-6. `turno.py soltar "<resumen corto>"` y resumen final: nuevos ≥ 80, los
-   ≥ 88 si hay, los 5 mejores con nota y qué medida les falta para el 90,
-   familias probadas.
+   código 3 (OCUPADO) o 4 (NO HACE FALTA MINAR), **termina sin hacer
+   nada**. Si lo toma, dice cuántos caben en la cola. Renueva con
+   `turno.py renovar` cada ~30 min y al acabar `turno.py soltar "<resumen>"`.
+1. `git pull origin main`. Lee esto entero, las lecciones
+   (`python3 nombremates/tools/lecciones.py leer`), **todos los 👍 de Paco**
+   y sus **300 últimos 👎** (`nombremates_ideas` por `decidido_at`), y
+   `python3 nombremates/tools/gusto.py --resumen`.
+2. **Antes de inventar, mira la reserva**: `status = 'reserva'`. Si alguno
+   encaja claramente con lo que le gusta, devuélvelo a la cola
+   (`status = 'pendiente'`, `orden` bajo).
+3. Escribe candidatos nuevos con ficha (formato de `fichas.json`) en
+   `tools/out/cand.json`. Para cada uno pregúntate con honestidad:
+   **«viendo sus 👍 y sus 👎, ¿le daría Paco un 👍?»**. Pasa la lista por
+   `python3 nombremates/tools/gusto.py --json tools/out/cand.json` como
+   pista (con la evidencia de cada pieza) y **quédate solo con los que
+   apostarías a que tienen 1 de cada 5 o más**. Mejor 40 buenos que 150
+   flojos. Variedad: palabras distintas, como mucho 2 por pieza.
+4. `python3 nombremates/tools/minar.py nombremates/tools/out/cand.json`
+   (filtra probados, comprueba .com, criba marcas, carga, ordena la cola por
+   gusto previsto y manda a reserva lo que pase de 150).
+5. Repite 3-4 hasta llenar el hueco o hasta ~45 min.
+6. Guarda lo aprendido (`lecciones.py anotar`), commit y push a main de
+   `tools/fichas.json` y tus arreglos (si el push falla, dilo; los datos ya
+   están en la base de datos), suelta el turno y resume: cuántos cargados,
+   cuántos devueltos de reserva, los 10 que más crees que le gustarán.
 
 ## Mejorar las herramientas
 
@@ -69,7 +73,10 @@ este fichero, fallos de la app): hazlo, prueba (`node nombremates/test/smoke.js`
 si tocas la app) y haz commit y push a main. Nunca cambies decisiones de
 Paco, ni borres nombres, ni toques tablas o carpetas de otras apps.
 
-## Ideas para llegar a 90
+## Nota alta (secundario)
+
+Si además sale algo de 88-90 que le pueda gustar, mejor; pero no a costa
+de su gusto. Ideas antiguas para subir la nota:
 
 - Lo que tienen los 88 (Netflix, Chupa Chups, PayPal): dos piezas cortas
   con ritmo o rima, se dice solo, y cuenta lo que es. Buscar ese ritmo con
@@ -81,7 +88,7 @@ Paco, ni borres nombres, ni toques tablas o carpetas de otras apps.
 - Evitar lo que ya se sabe que se queda en 80-85 (animal + mates): es
   seguro pero no llega a 90.
 
-## Qué funciona (familias con .com libre y ≥ 80)
+## Histórico: familias que sacaban buena NOTA (no buen gusto: ver arriba)
 
 - Animal + mates o cifra/suma, como Red Bull: Pulpomates, Buhomates,
   Zorromates (84), Tigremates, Lobomates, Torocifra.
