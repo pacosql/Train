@@ -258,3 +258,8 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 ### 14/10 — Nuevo estado 💚 «Me gusta, descartado» (`me_gusta_descartado`)
 - Paco: nombres que le gustan pero ya ha revisado y no van a ser el nombre de la empresa. Sección propia en la app, debajo de 👍 Me gusta, con botón 💚 en ⭐ y 👍.
 - Para aprender gustos cuenta como positivo suave (afinidad.py: +1, entre 👍 +1.5 y 👎 −0.3): el estilo le gusta. No es candidato: comprobar_com.py no lo revisa y no se vuelve a proponer.
+
+### 14/10 — Tanda 36 (al azar: inglés + español)
+- Marcas 12:10–12:30: de la tanda 34, 👍 ForwardQueryLab/Apps/Works/Studio/North, ForwardQueries, QueryForwardLabs/Studios, FwdQueryStudios; 👎 ForwardQueryCo, ForwardQueryHQ, FwdQueryLabs. Bajan de ⭐ a 👍: Azulnorth, PacoNorth, Tintazulstudio. ⭐ ahora: ForwardQuery, ForwardQueryLabs, FwdQuery, QueryForward, Querystudios, TrailBrick, TrailEast…
+- Receta azar.py: inglés + español (Bold, Leaf, Orbit, Kiln; ancla TrailEast). 18 candidatos, **13 con .com libre** (mucho mejor que dos palabras inglesas): HojaWorks, LeafCuaderno, BoldBrujula, HornoLab, RumboForward, FaroQuery, QueryFaro, OrillaWorks, BrujulaQuery, NorteQuery, PizarraForward, TizaQuery, LuzForward.
+- Aprendizaje: mezclar una palabra española da .com libres con facilidad; buena vía para las tandas al azar.
