@@ -36,7 +36,14 @@ que ha marcado. Todo desde la raíz del repo `Train`.
      pendiente, origen claude) en la línea de las que elige.
 3. ¿Hace falta tanda? Sí si hay comentarios nuevos, palabras 💡 nuevas, o 👍/⭐/🙅 nuevos
    desde la última ejecución, o quedan **< 200 pendientes con score ≥ 70**.
-   Si no hace falta, registra con `log.py` y termina.
+   **Si no hay nada que atender, no te quedes esperando (Paco, 14/10)**:
+   haz una **tanda al azar** corta (15-20 nombres) para que salgan cosas
+   nuevas. `python3 empresa/tools/azar.py` da la receta de esta pasada
+   (una forma de crear, 4 palabras al azar y uno de sus ⭐ como ancla):
+   sigue esa receta, sin repetir raíces ya probadas, criba sin `--primero`
+   y puntúa. Solo te saltas la tanda si azar.py dice que ya hay ≥ 60
+   pendientes buenos sin revisar (entonces registra con `log.py` y termina).
+   Después de cualquier tanda: `python3 empresa/tools/comprobar_com.py`.
 4. **Cómo generar (regla del 13/10, «estamos atrapados»)**: nada de
    productos cartesianos (Azul × 150 palabras, raíz × 12 finales): cansan
    y se llevan 👎 en bloque. Cada nombre se piensa uno a uno y tiene una
@@ -242,3 +249,7 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 - Lectura: le gusta **ForwardQuery exactamente**, no los sinónimos (Ahead, Onward, Forth) ni Query/Forward con otra palabra. Está convergiendo.
 - Tanda 34 (`--primero`): 12 cargados con .com libre — ForwardQueryWorks, ForwardQueryStudio, ForwardQueryLab, ForwardQueryHQ, ForwardQueryCo, ForwardQueryApps, ForwardQueries, FwdQueryLabs, FwdQueryStudios, QueryForwardLabs, QueryForwardStudios, ForwardQueryNorth. Ocupados: FwdQ, FQStudios.
 - Siguiente paso útil si sigue convergiendo: comprobación a fondo de ForwardQuery (marcas USPTO/EUIPO/OEPM, empresas, redes sociales) en vez de más volumen.
+
+### 14/10 — Nada de pasadas vacías
+- Paco: «si hay algo que hacer, hazlo; si no, ponte a hacer algo; una iteración más de forma random para que salgan cosas nuevas».
+- Las pasadas sin marcas hacen ahora una tanda al azar (paso 3, `tools/azar.py`). Por qué 4 rutinas: cada Routine puede ir como mucho cada hora, así que 4 desfasadas (:01, :16, :31, :46) dan una pasada cada 15 minutos.
