@@ -272,3 +272,8 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 - Limpieza de Paco (12:46–13:00): ~20 👍 antiguos a 👎 (Azul*, Tinta*, Grafito*, Sepia*, Inkblazer, Carbonblazer, BrixelStudios, TizaWave, LapiceroLabs, CartabonLabs…). Se queda 👍 GrafitoTrail. De la tanda 37: 👍 SlateQuery, SlateForward; el resto 👎.
 - Lectura: el gusto se estrecha a **dos palabras inglesas sobrias: Slate/Trail/Query/Forward**. Material escolar «infantil» (Crayon, Ruler, Pencil, Quill) no.
 - Tanda 38: Slate + dirección/pregunta y receta al azar (Vector, Leaf, Bench, Iron). 6 con .com libre: SlateAhead, SlateEast, SlateAsk, ForwardSlate, IronQuery, LeafQuery.
+
+### 14/10 — Tanda 39
+- Paco ya usa 💚 (28 nombres pasados a «me gusta, descartado»: Tinta*, Faben*, Lexix/Folon, Quevedo/Gaudí, parte de las variantes de ForwardQuery…). Shortlist ⭐ (13): ForwardQuery, ForwardQueryStudios, ForwardQueryStudio, QueryForward, ForwardQueryLabs, FwdQuery, ForwardQueries, QueryForwardStudios, Querystudios, SlateForward, TrailEast, TrailStroke, TrailBrick. 👍: ForwardSlate, LeafQuery, SlateQuery, Tintazulstudios, CarpetaStudios, PacoNorth, TintixStudios, SketchPaperStudio.
+- De la 38: 👍 ForwardSlate, LeafQuery; 👎 SlateAhead/Ask/East, IronQuery.
+- Tanda 39: trazo/gesto de escribir (ancla TrailStroke) + azar (objeto de escritorio + Works/Labs). 4 con .com libre: QueryStroke, StrokeQuery, HiveSlate, CoveQuery. PolarSlate vetado (canal Polar Skate Co.).
