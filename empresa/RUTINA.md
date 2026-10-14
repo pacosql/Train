@@ -236,3 +236,9 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 - **Ejecutarlo en cada pasada con tanda** (después de notas.py) y, como mínimo, una vez al día aunque no haya tanda.
 - Primera pasada (14/10, 58 nombres): 53 libres y 5 ocupados, que se vetaron: ⭐ Trailstudios y 👍 Bluestudios, Pacostudios, Datastudios, Azulstudios (venían de sugerencias o del buscador, sin .com libre).
 - Paco revisó toda la cola a las ~12:05 (0 pendientes). De la tanda 31 le gustaron ForwardQuery, ForwardQueryStudios, QueryForward, ForwardQueryLabs y FwdQuery.
+
+### 14/10 — Tanda 34: ForwardQuery con otras colas
+- Paco revisó la cola entera (~12:05): ⭐ ForwardQuery, ForwardQueryLabs, FwdQuery, QueryForward, Querystudios, PacoNorth, TrailBrick; 👍 ForwardQueryStudios; 👎 ~130 (inventadas + Studios de la tanda 21, QueryAhead/AheadQuery/ForwardAsk/ForwardQuiz/OnwardQuery/ForthQuery, QueryPaper/QueryOak/ForwardOak).
+- Lectura: le gusta **ForwardQuery exactamente**, no los sinónimos (Ahead, Onward, Forth) ni Query/Forward con otra palabra. Está convergiendo.
+- Tanda 34 (`--primero`): 12 cargados con .com libre — ForwardQueryWorks, ForwardQueryStudio, ForwardQueryLab, ForwardQueryHQ, ForwardQueryCo, ForwardQueryApps, ForwardQueries, FwdQueryLabs, FwdQueryStudios, QueryForwardLabs, QueryForwardStudios, ForwardQueryNorth. Ocupados: FwdQ, FQStudios.
+- Siguiente paso útil si sigue convergiendo: comprobación a fondo de ForwardQuery (marcas USPTO/EUIPO/OEPM, empresas, redes sociales) en vez de más volumen.
