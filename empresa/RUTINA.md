@@ -284,3 +284,5 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 - Tanda 44 (al azar, sin marcas nuevas; receta: oficio antiguo): 7 con .com libre — TypesetQuery, MapmakerQuery, JoineryQuery, TrailJoinery, QuarryQuery, MasonQuery, TrailMason. Cola: 42 pendientes. Si azar.py repite la forma de la tanda anterior, se vuelve a sortear.
 - Tanda 45 (al azar, sin marcas nuevas; receta: objeto de escritorio + Studios/Labs/Works): 4 con .com libre — FolioQuery, LampQuery, NotebookForward, EaselQuery. Cola: 46 pendientes.
 - Tanda 46 (al azar, sin marcas nuevas; avanzar/descubrir + palabra de los ⭐): 7 con .com libre — SeedQuery, SproutQuery, FrontierQuery, PioneerQuery, AscentQuery, SlateSeed, DawnQuery. Cola: 53 pendientes (cerca del tope de 60).
+- Tanda 47 (al azar, sin marcas nuevas; dos palabras inglesas dirección + objeto): 9 con .com libre — UpwardQuery, OnwardSlate, OutwardQuery, SkywardQuery, HomewardQuery, RiverForward, HeronQuery, ForwardHeron, AheadSlate. Cola: 62 pendientes → **tope alcanzado**; no más tandas al azar hasta que Paco revise.
+- azar.py: quitada la receta «inglés + español» (rechazada en la tanda 36).
