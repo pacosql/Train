@@ -253,3 +253,4 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 ### 14/10 — Nada de pasadas vacías
 - Paco: «si hay algo que hacer, hazlo; si no, ponte a hacer algo; una iteración más de forma random para que salgan cosas nuevas».
 - Las pasadas sin marcas hacen ahora una tanda al azar (paso 3, `tools/azar.py`). Por qué 4 rutinas: cada Routine puede ir como mucho cada hora, así que 4 desfasadas (:01, :16, :31, :46) dan una pasada cada 15 minutos.
+- Tanda 35 (primera al azar: dos palabras inglesas; Flame, Line, Atlas, Happy; ancla Tintazulstudio): 18 candidatos, 16 con .com ocupado. Cargados LanternQuery y ChalkForward. Las parejas de dos palabras inglesas comunes casi siempre están cogidas: en las tandas al azar, meter al menos la mitad con una palabra menos obvia (Lantern, Chalk) o con una española.
