@@ -267,3 +267,8 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 ### 14/10 — Tanda 37
 - Tanda 36 (inglés + español) rechazada casi entera: 12 👎. Solo 👍 ChalkForward (de la 35). **Corrige el aprendizaje de la 36**: que haya .com libre no significa que guste; las mezclas con español no le convencen. Prefiere dos palabras inglesas.
 - Tanda 37: material escolar en inglés + Forward/Query (siguiendo ChalkForward) y palabras inglesas de doble sentido. 16 candidatos, 8 con .com libre: SlateForward, QuillForward, PencilForward, ChalkQuery, SlateQuery, CrayonForward, RulerForward, CobaltSlate.
+
+### 14/10 — Tanda 38
+- Limpieza de Paco (12:46–13:00): ~20 👍 antiguos a 👎 (Azul*, Tinta*, Grafito*, Sepia*, Inkblazer, Carbonblazer, BrixelStudios, TizaWave, LapiceroLabs, CartabonLabs…). Se queda 👍 GrafitoTrail. De la tanda 37: 👍 SlateQuery, SlateForward; el resto 👎.
+- Lectura: el gusto se estrecha a **dos palabras inglesas sobrias: Slate/Trail/Query/Forward**. Material escolar «infantil» (Crayon, Ruler, Pencil, Quill) no.
+- Tanda 38: Slate + dirección/pregunta y receta al azar (Vector, Leaf, Bench, Iron). 6 con .com libre: SlateAhead, SlateEast, SlateAsk, ForwardSlate, IronQuery, LeafQuery.
