@@ -279,3 +279,4 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 - Tanda 39: trazo/gesto de escribir (ancla TrailStroke) + azar (objeto de escritorio + Works/Labs). 4 con .com libre: QueryStroke, StrokeQuery, HiveSlate, CoveQuery. PolarSlate vetado (canal Polar Skate Co.).
 - Tanda 40 (al azar, sin marcas nuevas; receta: avanzar/descubrir + palabra de los ⭐): 10 con .com libre — StrideQuery, StrideSlate, VoyageQuery, QueryVoyage, UnfoldQuery, QueryEast, EastQuery, QueryBrick, ClimbQuery, SlateStride.
 - Tanda 41 (al azar, sin marcas nuevas; receta: naturaleza + pensamiento): 9 con .com libre — PineQuery, WrenQuery, IndigoQuery, PineThought, WrenThink, RiverQuery, OakQuery, QueryRiver, CedarQuery. Cola: 23 pendientes.
+- Tanda 42 (al azar, sin marcas nuevas; receta: lugar/río que suene en los dos idiomas): 6 con .com libre — SierraQuery, AndesQuery, CaminoQuery, TahoeQuery, AtlantaQuery, AtlantaForward. Cola: 29 pendientes.
