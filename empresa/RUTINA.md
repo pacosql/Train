@@ -218,3 +218,9 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 - Paco propuso ForwardQuery / ForwardQueryStudios. Se cargaron con `--primero` (orden negativo, delante de todo) junto a variaciones: QueryForward, ForwardQueryLabs, FwdQuery, QueryAhead, AheadQuery, ForwardAsk, ForwardQuiz, OnwardQuery, ForthQuery (11 con .com libre; 9 ocupados: NextQuery, AskForward, ForwardQuest, QuestForward, QueryNorth, ForwardTrail, QueryTrail, QueryStudio, ForwardWonder).
 - `notas.py` reescribe `orden` al puntuar: tras puntuar, volver a fijar el orden negativo para que sigan primero.
 - Línea nueva a vigilar: dos palabras inglesas reales con sentido de «preguntar» + «avanzar».
+
+### 14/10 — Tanda 32: Query/Forward + palabras tuyas, y Lexix/Folon
+- Marcas de Paco (11:33–11:36 UTC): 👍 Querystudios, FolonStudios, LexixStudios; ~75 👎 en la reserva (inventadas + Studios tipo Mythan, Numlo, Grimmix…). Comentarios ● «forward» y «forwardquery» → ya atendidos con la tanda 31.
+- 22 candidatos, solo 5 con .com libre: QueryPaper, QueryOak, ForwardOak (buenos) y LexonStudios, FolioxStudios (reserva). Ocupados: QueryLabs/Works/Stone, BlueQuery, Querious, Queryon, Querly, ForwardStone/Paper/Circle/Studio, BlueForward, LexaStudios, FolixStudios, NumixStudios, LexumStudios, DataQuery, LexiData.
+- Aprendizaje: casi todo Query/Forward + palabra corta está cogido; lo que queda libre lleva palabras menos obvias (Paper, Oak).
+- La tanda 31 (ForwardQuery…) sigue delante con orden negativo hasta que Paco la revise.
