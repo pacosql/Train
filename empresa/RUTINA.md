@@ -263,3 +263,7 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 - Marcas 12:10–12:30: de la tanda 34, 👍 ForwardQueryLab/Apps/Works/Studio/North, ForwardQueries, QueryForwardLabs/Studios, FwdQueryStudios; 👎 ForwardQueryCo, ForwardQueryHQ, FwdQueryLabs. Bajan de ⭐ a 👍: Azulnorth, PacoNorth, Tintazulstudio. ⭐ ahora: ForwardQuery, ForwardQueryLabs, FwdQuery, QueryForward, Querystudios, TrailBrick, TrailEast…
 - Receta azar.py: inglés + español (Bold, Leaf, Orbit, Kiln; ancla TrailEast). 18 candidatos, **13 con .com libre** (mucho mejor que dos palabras inglesas): HojaWorks, LeafCuaderno, BoldBrujula, HornoLab, RumboForward, FaroQuery, QueryFaro, OrillaWorks, BrujulaQuery, NorteQuery, PizarraForward, TizaQuery, LuzForward.
 - Aprendizaje: mezclar una palabra española da .com libres con facilidad; buena vía para las tandas al azar.
+
+### 14/10 — Tanda 37
+- Tanda 36 (inglés + español) rechazada casi entera: 12 👎. Solo 👍 ChalkForward (de la 35). **Corrige el aprendizaje de la 36**: que haya .com libre no significa que guste; las mezclas con español no le convencen. Prefiere dos palabras inglesas.
+- Tanda 37: material escolar en inglés + Forward/Query (siguiendo ChalkForward) y palabras inglesas de doble sentido. 16 candidatos, 8 con .com libre: SlateForward, QuillForward, PencilForward, ChalkQuery, SlateQuery, CrayonForward, RulerForward, CobaltSlate.
