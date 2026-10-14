@@ -224,3 +224,8 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 - 22 candidatos, solo 5 con .com libre: QueryPaper, QueryOak, ForwardOak (buenos) y LexonStudios, FolioxStudios (reserva). Ocupados: QueryLabs/Works/Stone, BlueQuery, Querious, Queryon, Querly, ForwardStone/Paper/Circle/Studio, BlueForward, LexaStudios, FolixStudios, NumixStudios, LexumStudios, DataQuery, LexiData.
 - Aprendizaje: casi todo Query/Forward + palabra corta está cogido; lo que queda libre lleva palabras menos obvias (Paper, Oak).
 - La tanda 31 (ForwardQuery…) sigue delante con orden negativo hasta que Paco la revise.
+
+### 14/10 — Tanda 33: Trail + palabra de una sílaba (sin resultados)
+- Paco reordenó ⭐ a las 12:00: ⭐ TrailBrick; TizaWave y AzulTin bajan a 👍; AzulClay a 👎. Trail sube, Azul/Tiza bajan.
+- 16 Trail+X (West, North, Forge, Block, Beam, Step, Mark, Post, Mill, Yard, Tile, Craft, Forward, Key, Bolt, Loom): 11 ya estaban comprobados con .com ocupado, 4 ocupados ahora y TrailTile vetado (canal «Tile On Trail»). 0 cargados.
+- Conclusión: Trail + palabra inglesa corta está agotado (≈125 probados, 4 gustan). No insistir; si Paco quiere más Trail, probar Trail como sufijo o fundido (p. ej. Brickstrail) solo si lo pide.
