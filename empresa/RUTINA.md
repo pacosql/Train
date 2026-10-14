@@ -36,8 +36,23 @@ que ha marcado. Todo desde la raíz del repo `Train`.
      pendiente, origen claude) en la línea de las que elige.
 3. ¿Hace falta tanda? Sí si hay comentarios nuevos, palabras 💡 nuevas, o 👍/⭐/🙅 nuevos
    desde la última ejecución, o quedan **< 200 pendientes con score ≥ 70**.
-   Si no hace falta, registra con `log.py` y termina.
-4. **Genera** `empresa/tools/out/candidatos.txt` (con Write) con líneas
+   **Si no hay nada que atender, no te quedes esperando (Paco, 14/10)**:
+   haz una **tanda al azar** corta (15-20 nombres) para que salgan cosas
+   nuevas. `python3 empresa/tools/azar.py` da la receta de esta pasada
+   (una forma de crear, 4 palabras al azar y uno de sus ⭐ como ancla):
+   sigue esa receta, sin repetir raíces ya probadas, criba sin `--primero`
+   y puntúa. Solo te saltas la tanda si azar.py dice que ya hay ≥ 60
+   pendientes buenos sin revisar (entonces registra con `log.py` y termina).
+   Después de cualquier tanda: `python3 empresa/tools/comprobar_com.py`.
+4. **Cómo generar (regla del 13/10, «estamos atrapados»)**: nada de
+   productos cartesianos (Azul × 150 palabras, raíz × 12 finales): cansan
+   y se llevan 👎 en bloque. Cada nombre se piensa uno a uno y tiene una
+   historia que se pueda contar en una línea (como Pixar = pixel + -ar).
+   Como mucho 6 nombres por raíz y por tanda (contando variantes
+   Studios/Labs/Works). Antes de escribir, mira los 👍/⭐ de las últimas
+   horas y `afinidad.py --ver` (qué piezas gustan ahora) y cruza lo que
+   gusta en ideas nuevas, no en variaciones de la misma palabra.
+   **Genera** `empresa/tools/out/candidatos.txt` (con Write) con líneas
    `Nombre|por qué|c f m s d b` bajo cabeceras `# familia: …`, donde las
    seis notas 0-10 son tu opinión honesta: corto, fácil (en español Y en
    inglés), memorable, sugiere (estudio que crea productos educativos y
@@ -48,7 +63,12 @@ que ha marcado. Todo desde la raíz del repo `Train`.
    (N = tanda máxima + 1, la imprime contexto.py). Tarda ~1 s por nombre
    (App Store va despacio a propósito).
 6. `python3 empresa/tools/notas.py empresa/tools/out/candidatos.txt`:
-   ranking de todo (6 medidas, score y cola ordenada por score).
+   ranking de todo (6 medidas y score) y al final `afinidad.py`, que
+   ordena la cola por lo que Paco ha marcado últimamente (rasgos: cabeza,
+   cola, palabras; ⭐ +3, 👍 +1.5, 👎 −0.3, 🙅 −1.2; lo reciente pesa más),
+   sin repetir raíz seguida y con 1 de cada 4 huecos para explorar
+   cabezas nuevas. Ejecuta `afinidad.py` también en las pasadas sin tanda
+   si ha marcado algo nuevo: así la cola aprende cada 15 minutos.
 7. Resumen de una línea: cuántos cargados, vetados, familias nuevas, y qué
    has aprendido de sus marcas. No hace falta desplegar.
 
@@ -135,7 +155,54 @@ que ha marcado. Todo desde la raíz del repo `Train`.
   TintaNorth, TintaForge, TizaWave**. «Tinta» es SU palabra: Tinta + palabra
   inglesa vuelve a subir aunque antes hubo 🙅 a otras mezclas (Trazo, Papel,
   Pluma + inglés siguen bajas). Cabezas buenas: Tinta, Tiza, Trail, Azul.
-- Paco revisa ~150 nombres por hora: cada tanda debe cargar **≥ 300** y la
+- 🙅 (12/10, 23:50) a **206 de Tinta/Tiza + palabra inglesa** (tanda 19:
+  TintaKey, TintaOwl, TizaCrane…): esa familia está saturada; ya tiene sus
+  ⭐ (TintaNorth, TintaForge, TizaWave). Peso casi a cero. Siguen vivas
+  Trail + inglés (👍 TrailBrick) y Azul + inglés. Tanda 20 prueba
+  inventadas estilo Pixar + Studios.
+- (13/10, 5 h) Tanda 20: 👎 a casi todo (Azul + animal/árbol/objeto,
+  inventadas Pixar), pero 👍 **AzulClay**, **AzulRock** (Azul + tierra o
+  piedra, en la línea de Stone) y **FabenStudios** (inventada desde
+  «fábula»). Tanda 21: Azul + tierra/piedra/taller, tierra + Studios,
+  Cobalt/Indigo + taller, e inventadas desde palabras de contar historias.
+- (13/10, 12 h) «Me cuesta seleccionar, estamos atrapados, sorpréndeme;
+  como Pixar». 46 👍/⭐ de ~3.250 decididos (1,4 %). Lo que gusta es
+  concreto: palabra con historia (tintero, astillero, brújula, Quevedo)
+  o cabeza corta + norte/este/ola/forja/piedra. Tanda 22 «Sorpresa», a
+  mano: estilo Pixar (Pizar = pizarra + -ar, Lapix = lápiz + pixel,
+  Fablar), piedras y pigmentos azules (Lapis, Lazuli, Ultramar), lo que
+  guía el camino (Cairn, Lodestone, Hito, Astrolab, Bitácora), el taller
+  (Crisol, Fragua, Telar), doble sentido (Tales = Tales de Mileto +
+  tales/cuentos) y figuras + Studios. Las inventadas en serie y las
+  pegadas en minúscula (Pathfinderover) pasan a la reserva.
+- (13/10, 16:40) De la Sorpresa: 👍 solo **BrixelStudios** (brick +
+  pixel + Studios); 👎 a todo Cabeza + North/East/Labs/Works/Forge
+  (LapisNorth, CairnEast, PizarLabs, CrisolLabs…). Conclusión: lo que
+  gusta es **UNA palabra con carácter + Studios** (Faben, Brixel, Tinta,
+  Tiza, Trail, Ensayo, Brújula, Paco, Quevedo, Gaudí + studios), como
+  Pixar Animation Studios. Tanda 23: palabras inventadas tipo Brixel
+  (objeto concreto + pixel/bit/-ix/-en) + Studios.
+- (13/10, 17 h) ⭐ **AzulTin** y 👍 FabenLabs tras repasar 240 nombres
+  (incluida la reserva). Azul + material corto en inglés (Tin, Rock, Clay)
+  es su línea más fiable: ya van 641 Azul probados, así que solo los
+  monosílabos concretos que falten. Tanda 24: Azul/Trail/Faben + material;
+  tanda 25: palabra real con carácter + Studios (Apunte, Acertijo, Renglón).
+- (13/10, 21 h) 👎 a las 30 de las tandas 23-26 (palabra real + Studios
+  como Ovillo/Cincel/Apunte, inventadas -ix, AzulPin/AzulCog, Faben +
+  material). Línea agotada. Lo único vivo: Brixel y Faben (+ Labs /
+  Studios) y Azul + material muy concreto (Tin, Rock, Clay). Tanda 27
+  pequeña: Brixel/Faben + colas de ⭐. Con un acierto de ~1 %, mejor
+  tandas cortas y muy dirigidas que volumen.
+- (13/10, 21:15) 👍 **CarpetaStudios** y **TintixStudios**: material de
+  clase en español + Studios vuelve a puntuar (Tiza, Tinta, Carpeta).
+  Tanda 28: más material escolar + Studios, variantes Tintix/Carpeta.
+- (13/10, 21:30) 110 👎 seguidos, ni un 👍: el material escolar + Studios
+  (Grapa, Chincheta, Plastilina…) no repite el acierto de Carpeta.
+  Tanda 29 (exploración): signos de ortografía y mates + Studios.
+- (13/10, 21:45) 240 marcas más (casi toda la reserva), 1 👍: **Datastudios**.
+  Tanda 30: palabra inglesa corta + studios; 39 de 43 con .com ocupado,
+  solo 4 cargados. Palabra común + studios.com está casi agotado.
+- Paco revisa ~150 nombres por hora (hoy, hasta ~240): cada tanda debe cargar **≥ 300** y la
   rutina debe lanzar tanda en cuanto queden < 100 pendientes buenos.
 - La cola nunca debe quedarse vacía: `cribar.py` carga cada 10 aprobados.
 
@@ -153,3 +220,50 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 - No cambies el estado de nada que Paco haya decidido.
 - No consultes TMview/OEPM/RMC en bucle.
 - No despliegues ni toques `main` desde la rutina.
+
+### 14/10 — Tanda 31: ForwardQuery (sugerencia de Paco en el chat)
+- Paco propuso ForwardQuery / ForwardQueryStudios. Se cargaron con `--primero` (orden negativo, delante de todo) junto a variaciones: QueryForward, ForwardQueryLabs, FwdQuery, QueryAhead, AheadQuery, ForwardAsk, ForwardQuiz, OnwardQuery, ForthQuery (11 con .com libre; 9 ocupados: NextQuery, AskForward, ForwardQuest, QuestForward, QueryNorth, ForwardTrail, QueryTrail, QueryStudio, ForwardWonder).
+- `notas.py` reescribe `orden` al puntuar: tras puntuar, volver a fijar el orden negativo para que sigan primero.
+- Línea nueva a vigilar: dos palabras inglesas reales con sentido de «preguntar» + «avanzar».
+
+### 14/10 — Tanda 32: Query/Forward + palabras tuyas, y Lexix/Folon
+- Marcas de Paco (11:33–11:36 UTC): 👍 Querystudios, FolonStudios, LexixStudios; ~75 👎 en la reserva (inventadas + Studios tipo Mythan, Numlo, Grimmix…). Comentarios ● «forward» y «forwardquery» → ya atendidos con la tanda 31.
+- 22 candidatos, solo 5 con .com libre: QueryPaper, QueryOak, ForwardOak (buenos) y LexonStudios, FolioxStudios (reserva). Ocupados: QueryLabs/Works/Stone, BlueQuery, Querious, Queryon, Querly, ForwardStone/Paper/Circle/Studio, BlueForward, LexaStudios, FolixStudios, NumixStudios, LexumStudios, DataQuery, LexiData.
+- Aprendizaje: casi todo Query/Forward + palabra corta está cogido; lo que queda libre lleva palabras menos obvias (Paper, Oak).
+- La tanda 31 (ForwardQuery…) sigue delante con orden negativo hasta que Paco la revise.
+
+### 14/10 — Tanda 33: Trail + palabra de una sílaba (sin resultados)
+- Paco reordenó ⭐ a las 12:00: ⭐ TrailBrick; TizaWave y AzulTin bajan a 👍; AzulClay a 👎. Trail sube, Azul/Tiza bajan.
+- 16 Trail+X (West, North, Forge, Block, Beam, Step, Mark, Post, Mill, Yard, Tile, Craft, Forward, Key, Bolt, Loom): 11 ya estaban comprobados con .com ocupado, 4 ocupados ahora y TrailTile vetado (canal «Tile On Trail»). 0 cargados.
+- Conclusión: Trail + palabra inglesa corta está agotado (≈125 probados, 4 gustan). No insistir; si Paco quiere más Trail, probar Trail como sufijo o fundido (p. ej. Brickstrail) solo si lo pide.
+
+### 14/10 — Regla de Paco: nada sin .com
+- «No voy a comprar nada que no tenga el .com.» Ningún nombre con el .com ocupado puede estar en ⭐, 👍 ni en la cola.
+- Nuevo `tools/comprobar_com.py`: vuelve a comprobar el .com (RDAP Verisign) de ⭐, 👍 y pendientes y pasa a `vetado` los ocupados, con el estado que tenían en el motivo.
+- **Ejecutarlo en cada pasada con tanda** (después de notas.py) y, como mínimo, una vez al día aunque no haya tanda.
+- Primera pasada (14/10, 58 nombres): 53 libres y 5 ocupados, que se vetaron: ⭐ Trailstudios y 👍 Bluestudios, Pacostudios, Datastudios, Azulstudios (venían de sugerencias o del buscador, sin .com libre).
+- Paco revisó toda la cola a las ~12:05 (0 pendientes). De la tanda 31 le gustaron ForwardQuery, ForwardQueryStudios, QueryForward, ForwardQueryLabs y FwdQuery.
+
+### 14/10 — Tanda 34: ForwardQuery con otras colas
+- Paco revisó la cola entera (~12:05): ⭐ ForwardQuery, ForwardQueryLabs, FwdQuery, QueryForward, Querystudios, PacoNorth, TrailBrick; 👍 ForwardQueryStudios; 👎 ~130 (inventadas + Studios de la tanda 21, QueryAhead/AheadQuery/ForwardAsk/ForwardQuiz/OnwardQuery/ForthQuery, QueryPaper/QueryOak/ForwardOak).
+- Lectura: le gusta **ForwardQuery exactamente**, no los sinónimos (Ahead, Onward, Forth) ni Query/Forward con otra palabra. Está convergiendo.
+- Tanda 34 (`--primero`): 12 cargados con .com libre — ForwardQueryWorks, ForwardQueryStudio, ForwardQueryLab, ForwardQueryHQ, ForwardQueryCo, ForwardQueryApps, ForwardQueries, FwdQueryLabs, FwdQueryStudios, QueryForwardLabs, QueryForwardStudios, ForwardQueryNorth. Ocupados: FwdQ, FQStudios.
+- Siguiente paso útil si sigue convergiendo: comprobación a fondo de ForwardQuery (marcas USPTO/EUIPO/OEPM, empresas, redes sociales) en vez de más volumen.
+
+### 14/10 — Nada de pasadas vacías
+- Paco: «si hay algo que hacer, hazlo; si no, ponte a hacer algo; una iteración más de forma random para que salgan cosas nuevas».
+- Las pasadas sin marcas hacen ahora una tanda al azar (paso 3, `tools/azar.py`). Por qué 4 rutinas: cada Routine puede ir como mucho cada hora, así que 4 desfasadas (:01, :16, :31, :46) dan una pasada cada 15 minutos.
+- Tanda 35 (primera al azar: dos palabras inglesas; Flame, Line, Atlas, Happy; ancla Tintazulstudio): 18 candidatos, 16 con .com ocupado. Cargados LanternQuery y ChalkForward. Las parejas de dos palabras inglesas comunes casi siempre están cogidas: en las tandas al azar, meter al menos la mitad con una palabra menos obvia (Lantern, Chalk) o con una española.
+
+### 14/10 — Nuevo estado 💚 «Me gusta, descartado» (`me_gusta_descartado`)
+- Paco: nombres que le gustan pero ya ha revisado y no van a ser el nombre de la empresa. Sección propia en la app, debajo de 👍 Me gusta, con botón 💚 en ⭐ y 👍.
+- Para aprender gustos cuenta como positivo suave (afinidad.py: +1, entre 👍 +1.5 y 👎 −0.3): el estilo le gusta. No es candidato: comprobar_com.py no lo revisa y no se vuelve a proponer.
+
+### 14/10 — Tanda 36 (al azar: inglés + español)
+- Marcas 12:10–12:30: de la tanda 34, 👍 ForwardQueryLab/Apps/Works/Studio/North, ForwardQueries, QueryForwardLabs/Studios, FwdQueryStudios; 👎 ForwardQueryCo, ForwardQueryHQ, FwdQueryLabs. Bajan de ⭐ a 👍: Azulnorth, PacoNorth, Tintazulstudio. ⭐ ahora: ForwardQuery, ForwardQueryLabs, FwdQuery, QueryForward, Querystudios, TrailBrick, TrailEast…
+- Receta azar.py: inglés + español (Bold, Leaf, Orbit, Kiln; ancla TrailEast). 18 candidatos, **13 con .com libre** (mucho mejor que dos palabras inglesas): HojaWorks, LeafCuaderno, BoldBrujula, HornoLab, RumboForward, FaroQuery, QueryFaro, OrillaWorks, BrujulaQuery, NorteQuery, PizarraForward, TizaQuery, LuzForward.
+- Aprendizaje: mezclar una palabra española da .com libres con facilidad; buena vía para las tandas al azar.
+
+### 14/10 — Tanda 37
+- Tanda 36 (inglés + español) rechazada casi entera: 12 👎. Solo 👍 ChalkForward (de la 35). **Corrige el aprendizaje de la 36**: que haya .com libre no significa que guste; las mezclas con español no le convencen. Prefiere dos palabras inglesas.
+- Tanda 37: material escolar en inglés + Forward/Query (siguiendo ChalkForward) y palabras inglesas de doble sentido. 16 candidatos, 8 con .com libre: SlateForward, QuillForward, PencilForward, ChalkQuery, SlateQuery, CrayonForward, RulerForward, CobaltSlate.

@@ -88,7 +88,9 @@ def main():
         if r["status"] == "pendiente": body["orden"] = round((100 - sc) * 10) + (0 if sc >= 70 else 100000)
         req("PATCH", f"{BASE}?id=eq.{r['id']}", body); n += 1
     print(f"{n} nombres puntuados ({len(notas)} con notas a mano en el fichero)")
-    intercalar()
+    # La cola la ordena afinidad.py: aprende de lo último que ha marcado Paco
+    # y deja 1 de cada 4 huecos para explorar estilos nuevos.
+    import afinidad; afinidad.main()
 
 def intercalar():
     """Cola variada: los pendientes buenos (score ≥ 70) se intercalan por
@@ -97,8 +99,12 @@ def intercalar():
     import itertools
     rows = json.load(urllib.request.urlopen(urllib.request.Request(f"{BASE}?status=eq.pendiente&score=gte.70&orden=gte.0&select=id,metodo,nombre,score&order=score.desc&limit=1000", headers=H)))
     g = {}
-    for r in rows: g.setdefault((r["metodo"] or "", re.match(r"[A-Z][a-z]+", r["nombre"]).group(0) if re.match(r"[A-Z][a-z]+", r["nombre"]) else r["nombre"][:4]), []).append(r)
-    orden = [r for grupo in itertools.zip_longest(*g.values()) for r in grupo if r]
+    # Dos niveles: por turnos entre familias (metodo) y, dentro de cada
+    # familia, por turnos entre raíces (3 primeras letras: Tedar/Tedo/Tedio
+    # no salen seguidos).
+    for r in rows: g.setdefault(r["metodo"] or "", {}).setdefault(r["nombre"][:3].lower(), []).append(r)
+    por_familia = [[r for grupo in itertools.zip_longest(*raices.values()) for r in grupo if r] for raices in g.values()]
+    orden = [r for grupo in itertools.zip_longest(*por_familia) for r in grupo if r]
     for i, r in enumerate(orden): req("PATCH", f"{BASE}?id=eq.{r['id']}", {"orden": 10 + i})
     print(f"{len(orden)} pendientes intercalados por familia")
 
