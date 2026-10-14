@@ -4,7 +4,7 @@ Cada nombre se parte en piezas («rasgos»): cabeza (Tinta, Azul, Trail…),
 cola (Studios, North, Labs…), palabras que lo forman, familia (metodo),
 longitud y número de piezas. Cada decisión suma o resta a sus rasgos:
 
-    ⭐ +3   👍 +1.5   👎 −0.3   🙅 −1.2
+    ⭐ +3   👍 +1.5   💚 +1 (me gusta, descartado)   👎 −0.3   🙅 −1.2
 
 y las decisiones recientes pesan más (vida media: 600 decisiones), así lo
 último que ha marcado manda. La afinidad de un pendiente es la suma de lo
@@ -27,7 +27,7 @@ anon = re.search(r"eyJ[^\"']+", open(os.path.join(AQUI, "..", "config.js")).read
 BASE = "https://dzlhsdpgyxnjwudmrnul.supabase.co/rest/v1/empresa_ideas"
 H = {"apikey": anon, "Authorization": f"Bearer {anon}", "Content-Type": "application/json"}
 
-PESO = {"favorito": 3.0, "me_gusta": 1.5, "no_me_gusta": -0.3, "nada": -1.2}
+PESO = {"favorito": 3.0, "me_gusta": 1.5, "me_gusta_descartado": 1.0, "no_me_gusta": -0.3, "nada": -1.2}
 VIDA_MEDIA = 600      # decisiones
 ENCOGE = 4.0          # un rasgo necesita varias decisiones para pesar
 COLAS = ["studios", "studio", "labs", "lab", "works", "games", "media", "learning", "kids", "house", "co"]

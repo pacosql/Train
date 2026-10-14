@@ -254,3 +254,7 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 - Paco: «si hay algo que hacer, hazlo; si no, ponte a hacer algo; una iteración más de forma random para que salgan cosas nuevas».
 - Las pasadas sin marcas hacen ahora una tanda al azar (paso 3, `tools/azar.py`). Por qué 4 rutinas: cada Routine puede ir como mucho cada hora, así que 4 desfasadas (:01, :16, :31, :46) dan una pasada cada 15 minutos.
 - Tanda 35 (primera al azar: dos palabras inglesas; Flame, Line, Atlas, Happy; ancla Tintazulstudio): 18 candidatos, 16 con .com ocupado. Cargados LanternQuery y ChalkForward. Las parejas de dos palabras inglesas comunes casi siempre están cogidas: en las tandas al azar, meter al menos la mitad con una palabra menos obvia (Lantern, Chalk) o con una española.
+
+### 14/10 — Nuevo estado 💚 «Me gusta, descartado» (`me_gusta_descartado`)
+- Paco: nombres que le gustan pero ya ha revisado y no van a ser el nombre de la empresa. Sección propia en la app, debajo de 👍 Me gusta, con botón 💚 en ⭐ y 👍.
+- Para aprender gustos cuenta como positivo suave (afinidad.py: +1, entre 👍 +1.5 y 👎 −0.3): el estilo le gusta. No es candidato: comprobar_com.py no lo revisa y no se vuelve a proponer.

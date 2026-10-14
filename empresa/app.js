@@ -693,13 +693,14 @@ async function pintaSugerencias() {
 
 async function recargarTodo() {
   try {
-    const [pendientes, meGusta, favoritos, descartados, vetados, nada] = await Promise.all([
+    const [pendientes, meGusta, favoritos, descartados, vetados, nada, gustaDescartados] = await Promise.all([
       fetchIdeas("pendiente", "orden.asc.nullslast,id.asc", TAM_LOTE),
       fetchIdeas("me_gusta", "score.desc.nullslast,decidido_at.desc.nullslast"),
       fetchIdeas("favorito", "score.desc.nullslast,decidido_at.desc.nullslast"),
       fetchIdeas("no_me_gusta", "decidido_at.desc.nullslast", 100),
       fetchIdeas("vetado", "id.desc", 200),
       fetchIdeas("nada", "decidido_at.desc.nullslast", 200),
+      fetchIdeas("me_gusta_descartado", "decidido_at.desc.nullslast"),
     ]);
 
     cola = pendientes;
@@ -707,7 +708,7 @@ async function recargarTodo() {
     const referencias = await apiGet(`${TABLE}?status=in.(vetado,pendiente)&medidas=not.is.null&select=*`);
     gustados = [...favoritos, ...meGusta, ...referencias];
     if (!document.getElementById("vista-ranking").hidden) pintaRanking();
-    const decididos = meGusta.total + favoritos.total + descartados.total + nada.total;
+    const decididos = meGusta.total + favoritos.total + descartados.total + nada.total + gustaDescartados.total;
     const total = decididos + pendientes.total;
     document.getElementById("decididos-count").textContent = decididos;
     document.getElementById("barra-progreso").style.width = total ? `${(100 * decididos) / total}%` : "0%";
@@ -715,10 +716,16 @@ async function recargarTodo() {
 
     pintaLista("lista-definitivos", "count-definitivos", favoritos, "Todavía no hay ningún definitivo.", [
       { texto: "👍 Bajar a me gusta", clase: "btn-mini", status: "me_gusta" },
+      { texto: "💚 Me gusta, descartado", clase: "btn-mini", status: "me_gusta_descartado" },
     ], { ranking: true });
     pintaLista("lista-me-gusta", "count-megusta", meGusta, "Nada todavía.", [
       { texto: "⭐ Definitivo", clase: "btn-mini btn-mini-star", status: "favorito" },
+      { texto: "💚 Me gusta, descartado", clase: "btn-mini", status: "me_gusta_descartado" },
       { texto: "👎 Descartar", clase: "btn-mini", status: "no_me_gusta" },
+    ]);
+    pintaLista("lista-megusta-descartados", "count-megusta-descartados", gustaDescartados, "Ninguno todavía.", [
+      { texto: "👍 Volver a me gusta", clase: "btn-mini btn-mini-like", status: "me_gusta" },
+      { texto: "⭐ Definitivo", clase: "btn-mini btn-mini-star", status: "favorito" },
     ]);
     pintaLista("lista-descartados", "count-descartados", descartados, "Ninguno todavía.", [
       { texto: "👍 Me gusta", clase: "btn-mini btn-mini-like", status: "me_gusta" },
@@ -802,8 +809,8 @@ function pintaRanking() {
     const acciones = row.status === "vetado"
       ? [{ texto: "↩️ Rescatar", clase: "btn-mini", status: "pendiente" }]
       : row.status === "favorito"
-        ? [{ texto: "👍 Bajar a me gusta", clase: "btn-mini", status: "me_gusta" }, { texto: "👎 Descartar", clase: "btn-mini", status: "no_me_gusta" }]
-        : [{ texto: "⭐ Definitivo", clase: "btn-mini btn-mini-star", status: "favorito" }, { texto: "👎 Descartar", clase: "btn-mini", status: "no_me_gusta" }];
+        ? [{ texto: "👍 Bajar a me gusta", clase: "btn-mini", status: "me_gusta" }, { texto: "💚 Me gusta, descartado", clase: "btn-mini", status: "me_gusta_descartado" }, { texto: "👎 Descartar", clase: "btn-mini", status: "no_me_gusta" }]
+        : [{ texto: "⭐ Definitivo", clase: "btn-mini btn-mini-star", status: "favorito" }, { texto: "💚 Me gusta, descartado", clase: "btn-mini", status: "me_gusta_descartado" }, { texto: "👎 Descartar", clase: "btn-mini", status: "no_me_gusta" }];
     const zona = document.createElement("div");
     zona.className = "head-actions";
     for (const a of acciones) {
@@ -827,6 +834,7 @@ const ESTADOS = {
   me_gusta: "👍 Te gusta",
   favorito: "⭐ Definitivo",
   no_me_gusta: "👎 Lo descartaste tú",
+  me_gusta_descartado: "💚 Te gusta, pero lo descartaste",
   nada: "🙅 Nada de este estilo (lo dijiste tú)",
   vetado: "🚫 Vetado por Claude",
 };
@@ -1047,6 +1055,7 @@ function explicaFila(cont, row, textoBuscado) {
   if (row.status === "vetado") porque.push(`No entró en la cola porque ${(row.veto_motivo || "choca con una marca conocida").replace(/[.\s]+$/, "")}.`);
   if (row.status === "no_me_gusta") porque.push(`Lo descartaste${row.decidido_at ? " el " + fechaCorta(row.decidido_at) : ""}${row.nota ? " con el comentario «" + row.nota + "»" : ""}.`);
   if (row.status === "pendiente") porque.push("Está en la cola: te saldrá cuando le toque por su puntuación de marca.");
+  if (row.status === "me_gusta_descartado") porque.push(`Te gusta, pero lo descartaste${row.decidido_at ? " el " + fechaCorta(row.decidido_at) : ""}: no va a ser el nombre de la empresa.`);
   if (row.status === "me_gusta" || row.status === "favorito") porque.push(`Lo decidiste${row.decidido_at ? " el " + fechaCorta(row.decidido_at) : ""}; está en el ranking de marca.`);
   if (row.porque) porque.push(`Por qué lo propuse: ${row.porque}`);
   if (row.metodo) porque.push(`Familia: ${row.metodo}${row.tanda ? " (tanda " + row.tanda + ")" : ""}.`);
