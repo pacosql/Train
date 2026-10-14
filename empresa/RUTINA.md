@@ -281,3 +281,4 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 - Tanda 41 (al azar, sin marcas nuevas; receta: naturaleza + pensamiento): 9 con .com libre — PineQuery, WrenQuery, IndigoQuery, PineThought, WrenThink, RiverQuery, OakQuery, QueryRiver, CedarQuery. Cola: 23 pendientes.
 - Tanda 42 (al azar, sin marcas nuevas; receta: lugar/río que suene en los dos idiomas): 6 con .com libre — SierraQuery, AndesQuery, CaminoQuery, TahoeQuery, AtlantaQuery, AtlantaForward. Cola: 29 pendientes.
 - Tanda 43 (al azar, sin marcas nuevas; receta: palabra inglesa con doble sentido): 6 con .com libre — PlotQuery, FigureQuery, BoundQuery, BraveQuery, SlatePlot, TrailFigure. Cola: 35 pendientes.
+- Tanda 44 (al azar, sin marcas nuevas; receta: oficio antiguo): 7 con .com libre — TypesetQuery, MapmakerQuery, JoineryQuery, TrailJoinery, QuarryQuery, MasonQuery, TrailMason. Cola: 42 pendientes. Si azar.py repite la forma de la tanda anterior, se vuelve a sortear.
