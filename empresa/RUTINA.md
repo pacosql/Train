@@ -213,3 +213,8 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 - No cambies el estado de nada que Paco haya decidido.
 - No consultes TMview/OEPM/RMC en bucle.
 - No despliegues ni toques `main` desde la rutina.
+
+### 14/10 — Tanda 31: ForwardQuery (sugerencia de Paco en el chat)
+- Paco propuso ForwardQuery / ForwardQueryStudios. Se cargaron con `--primero` (orden negativo, delante de todo) junto a variaciones: QueryForward, ForwardQueryLabs, FwdQuery, QueryAhead, AheadQuery, ForwardAsk, ForwardQuiz, OnwardQuery, ForthQuery (11 con .com libre; 9 ocupados: NextQuery, AskForward, ForwardQuest, QuestForward, QueryNorth, ForwardTrail, QueryTrail, QueryStudio, ForwardWonder).
+- `notas.py` reescribe `orden` al puntuar: tras puntuar, volver a fijar el orden negativo para que sigan primero.
+- Línea nueva a vigilar: dos palabras inglesas reales con sentido de «preguntar» + «avanzar».
