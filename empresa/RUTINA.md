@@ -286,3 +286,4 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 - Tanda 46 (al azar, sin marcas nuevas; avanzar/descubrir + palabra de los ⭐): 7 con .com libre — SeedQuery, SproutQuery, FrontierQuery, PioneerQuery, AscentQuery, SlateSeed, DawnQuery. Cola: 53 pendientes (cerca del tope de 60).
 - Tanda 47 (al azar, sin marcas nuevas; dos palabras inglesas dirección + objeto): 9 con .com libre — UpwardQuery, OnwardSlate, OutwardQuery, SkywardQuery, HomewardQuery, RiverForward, HeronQuery, ForwardHeron, AheadSlate. Cola: 62 pendientes → **tope alcanzado**; no más tandas al azar hasta que Paco revise.
 - azar.py: quitada la receta «inglés + español» (rechazada en la tanda 36).
+- Tanda 48 (al azar, sin marcas nuevas; algo que se hace al aprender): 5 con .com libre — UnderlineQuery, TallyQuery, TallyForward, MarginQuery, SketchQuery. Cola: 60 pendientes buenos → tope; las próximas pasadas solo registran hasta que Paco revise.
