@@ -229,3 +229,10 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 - Paco reordenó ⭐ a las 12:00: ⭐ TrailBrick; TizaWave y AzulTin bajan a 👍; AzulClay a 👎. Trail sube, Azul/Tiza bajan.
 - 16 Trail+X (West, North, Forge, Block, Beam, Step, Mark, Post, Mill, Yard, Tile, Craft, Forward, Key, Bolt, Loom): 11 ya estaban comprobados con .com ocupado, 4 ocupados ahora y TrailTile vetado (canal «Tile On Trail»). 0 cargados.
 - Conclusión: Trail + palabra inglesa corta está agotado (≈125 probados, 4 gustan). No insistir; si Paco quiere más Trail, probar Trail como sufijo o fundido (p. ej. Brickstrail) solo si lo pide.
+
+### 14/10 — Regla de Paco: nada sin .com
+- «No voy a comprar nada que no tenga el .com.» Ningún nombre con el .com ocupado puede estar en ⭐, 👍 ni en la cola.
+- Nuevo `tools/comprobar_com.py`: vuelve a comprobar el .com (RDAP Verisign) de ⭐, 👍 y pendientes y pasa a `vetado` los ocupados, con el estado que tenían en el motivo.
+- **Ejecutarlo en cada pasada con tanda** (después de notas.py) y, como mínimo, una vez al día aunque no haya tanda.
+- Primera pasada (14/10, 58 nombres): 53 libres y 5 ocupados, que se vetaron: ⭐ Trailstudios y 👍 Bluestudios, Pacostudios, Datastudios, Azulstudios (venían de sugerencias o del buscador, sin .com libre).
+- Paco revisó toda la cola a las ~12:05 (0 pendientes). De la tanda 31 le gustaron ForwardQuery, ForwardQueryStudios, QueryForward, ForwardQueryLabs y FwdQuery.
