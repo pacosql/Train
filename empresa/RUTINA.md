@@ -287,3 +287,9 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 - Tanda 47 (al azar, sin marcas nuevas; dos palabras inglesas dirección + objeto): 9 con .com libre — UpwardQuery, OnwardSlate, OutwardQuery, SkywardQuery, HomewardQuery, RiverForward, HeronQuery, ForwardHeron, AheadSlate. Cola: 62 pendientes → **tope alcanzado**; no más tandas al azar hasta que Paco revise.
 - azar.py: quitada la receta «inglés + español» (rechazada en la tanda 36).
 - Tanda 48 (al azar, sin marcas nuevas; algo que se hace al aprender): 5 con .com libre — UnderlineQuery, TallyQuery, TallyForward, MarginQuery, SketchQuery. Cola: 60 pendientes buenos → tope; las próximas pasadas solo registran hasta que Paco revise.
+
+### 15/10 — Tanda 49 (dirigida: revisión de Paco de los 67)
+- Paco revisó la cola entera (~04:50 UTC). 👍 (11): QueryBrick, SproutQuery, StrokeQuery, StrideQuery, QueryStroke, PlotQuery, FigureQuery, IndigoQuery, FrontierQuery, SierraQuery, AtlantaForward. 🙅 3 (UnfoldQuery, TallyForward, CoveQuery). 👎 el resto.
+- Lectura: **palabra inglesa con fuerza + Query** (doble sentido de mates: Plot/Figure; avanzar: Stride/Sprout/Frontier; construir: Brick; color: Indigo; lugar bilingüe: Sierra). Ya no gustan: Slate + X (todo 👎), Trail + X, «-ward» (Upward, Onward, Skyward…), naturaleza común (Pine, Oak, Cedar, River, Wren, Heron) ni detalles de escribir (Margin, Underline, Typeset, Folio).
+- Tanda 49: 36 candidatos en esas cinco vías; 18 con .com libre (7 buenos, 11 en reserva): QueryPlot, VertexQuery, MesaQuery, FactorQuery, RatioQuery, BeamQuery, TangentQuery, MedianQuery, QueryFigure, QueryStride, KeystoneQuery, MortarQuery, SaffronQuery, CrimsonQuery, OchreQuery, VermilionQuery, CanyonQuery… Ocupados (15): AxisQuery, PrimeQuery, ScaleQuery, LeapQuery, SurgeQuery, BloomQuery, ArchQuery, AmberQuery, DeltaQuery, SummitQuery, KindleQuery, VentureQuery, TimberQuery, BrickForward, Sierra/Mesa/DeltaForward (parte).
+- comprobar_com.py: 50/50 libres.
