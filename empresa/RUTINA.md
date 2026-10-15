@@ -313,3 +313,9 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 - **QueryPlot / PlotQuery**: nada con ese nombre. Lo más cercano es Plotly (visualización de datos) y Plot Technologies; distinto, pero suena a herramienta de gráficos.
 - **SproutQuery**: nada.
 - Pendiente: búsqueda oficial en USPTO (TESS), EUIPO y OEPM; handles en X/Instagram/LinkedIn; Registro Mercantil / Delaware.
+- Segunda comprobación web (06:31 UTC), resto de ⭐:
+  - **Querystudios**: nada con ese nombre. Parecidos lejanos: QUERY (consultora de investigación de mercados, Bangladés), Qu Studios (estudio de foto/cine, Bristol).
+  - **TrailStroke / TrailBrick / TrailEast**: nada. TrailEast se confunde con «Eastern Trail» (ruta de Maine) y senderos «East Trail».
+  - **ForwardSlate / SlateForward**: nada, pero **ForwardSlate suena casi igual que «forward slash»** (la barra /; hay una empresa Forwardslash). Pega en voz alta. Slate también es una revista conocida (Slate).
+  - **QueryForward / FwdQuery**: nada como marca, pero **«query forwarding» es jerga de DNS** y «fwd» de reenvío de puertos/correo: suenan a herramienta de redes.
+  - Resumen hasta ahora: ningún ⭐ tiene un choque directo; los más limpios para registrar son ForwardQuery, QueryPlot/PlotQuery, SproutQuery, TrailStroke y TrailBrick.
