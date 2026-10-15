@@ -103,6 +103,7 @@ Al crear una app nueva `<app>/`:
 | ➗ Mates10 | `mates10/` | `mates10_` |
 | 📺 Series | `series/` | `series_` |
 | 🏢 Nombre Empresa | `empresa/` | `empresa_` |
+| ✒️ Nombre Autor | `autor/` | `autor_` |
 
 (Actualiza esta tabla al añadir una app nueva.)
 

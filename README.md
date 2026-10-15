@@ -43,6 +43,7 @@ reglas para no interferir con las demás:
 | ➗ Mates10 | [`mates10/`](./mates10) | `/Train/mates10/` | `mates10_` |
 | 🏢 Nombre Empresa | [`empresa/`](./empresa) | `/Train/empresa/` | `empresa_` |
 | 📺 Series | [`series/`](./series) | `/Train/series/` | `series_` |
+| ✒️ Nombre Autor | [`autor/`](./autor) | `/Train/autor/` | `autor_` |
 
 ## Añadir una app nueva
 
