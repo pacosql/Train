@@ -10,7 +10,7 @@ Pasos:
   3. Pasa los libres por cribar.py (marcas, apps y canales parecidos) en
      una tanda nueva.
   4. A los que quedan cargados les añade su ficha (fichas.json + fichas.py)
-     y la cola se ordena por nota.
+     y la cola se ordena por gusto previsto de Paco (gusto.py), con tope de 150.
 Salida: resumen con cuántos nuevos ≥ 80 se han cargado.
 Uso: python3 nombremates/tools/minar.py candidatos.json [--umbral 65]
 """
@@ -41,6 +41,7 @@ def main():
     a = ap.parse_args()
     cands = json.load(open(a.candidatos, encoding="utf-8"))
     for c in cands: c["_total"] = total({k: c["medidas"][k][0] for k in MEDIDAS})
+    # Ya probados: cualquier nombre en ideas (también los de reserva) o con el .com ocupado.
     probados = {r["n"] for r in sql("select lower(regexp_replace(nombre,'[^a-zA-Z0-9]','','g')) n from public.nombremates_ideas union select nombre from public.nombremates_comprobados where com_libre = false")}
     vistos, sel = set(), []
     for c in sorted(cands, key=lambda c: -c["_total"]):
@@ -76,6 +77,23 @@ def main():
     fichas += [{k: v for k, v in c.items() if not k.startswith("_")} for c in nuevos]
     json.dump(fichas, open(fj, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
     subprocess.run([sys.executable, os.path.join(AQUI, "fichas.py")], check=True, stdout=subprocess.DEVNULL)
+    # Tope de la cola (Paco, 12/10): como mucho 150 por decidir; lo que sobre
+    # (lo de menos gusto previsto) se guarda en reserva para más adelante.
+    import gusto
+    mod = gusto.Modelo(gusto.decisiones())
+    for c in nuevos: c["_gusto"] = mod.gusto(c["nombre"])[0]
+    pend = int(sql("select count(*) n from public.nombremates_ideas where status = 'pendiente'")[0]["n"])
+    sobran = max(0, pend - 150)
+    a_reserva = sorted(nuevos, key=lambda c: c["_gusto"])[:sobran]
+    if a_reserva:
+        lista = ",".join("'" + c["nombre"].replace("'", "''") + "'" for c in a_reserva)
+        sql(f"update public.nombremates_ideas set status = 'reserva' where status = 'pendiente' and nombre in ({lista})")
+        print(f"cola llena (150): {len(a_reserva)} van a reserva: " + ", ".join(c["nombre"] for c in a_reserva))
+    # Orden de la cola: por gusto previsto de Paco (la nota no lo predice), detrás de los ya elegidos a mano (orden < 1000).
+    for c in nuevos:
+        if c not in a_reserva:
+            sql(f"update public.nombremates_ideas set orden = {1000 + round((100 - c['_gusto']) * 10)} where status = 'pendiente' and nombre = '" + c["nombre"].replace("'", "''") + "'")
+    print("gusto Paco previsto de los cargados: " + ", ".join(f"{c['nombre']} {c['_gusto']}%" for c in sorted(nuevos, key=lambda c: -c["_gusto"]) if c not in a_reserva))
     buenos = sorted((c for c in nuevos if c["_total"] >= 80), key=lambda c: -c["_total"])
     altos = [c for c in buenos if c["_total"] >= 88]
     if altos: print("ALTOS (≥ 88): " + ", ".join(f"{c['nombre']} {c['_total']}" for c in altos))

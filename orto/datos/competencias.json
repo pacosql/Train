@@ -1,0 +1,2347 @@
+{
+ "bloques": [
+  {
+   "id": "ACE",
+   "n": "Acentuación",
+   "e": "🗣️"
+  },
+  {
+   "id": "BV",
+   "n": "B y V",
+   "e": "🅱️"
+  },
+  {
+   "id": "H",
+   "n": "La h",
+   "e": "🤫"
+  },
+  {
+   "id": "GJ",
+   "n": "G y J",
+   "e": "🦒"
+  },
+  {
+   "id": "LLY",
+   "n": "Ll e Y",
+   "e": "🌧️"
+  },
+  {
+   "id": "LET",
+   "n": "Otras letras (r, c, z, x…)",
+   "e": "🔤"
+  },
+  {
+   "id": "MAY",
+   "n": "Mayúsculas",
+   "e": "🔠"
+  },
+  {
+   "id": "PUN",
+   "n": "Puntuación",
+   "e": "❗"
+  },
+  {
+   "id": "JS",
+   "n": "Juntas o separadas",
+   "e": "🔗"
+  },
+  {
+   "id": "HOM",
+   "n": "Suenan igual (homófonos)",
+   "e": "👂"
+  },
+  {
+   "id": "ADU",
+   "n": "Las que más se escriben mal",
+   "e": "⚠️"
+  }
+ ],
+ "cursos": [
+  "",
+  "1º primaria",
+  "2º primaria",
+  "3º primaria",
+  "4º primaria",
+  "5º primaria",
+  "6º primaria",
+  "1º ESO",
+  "2º ESO",
+  "3º ESO",
+  "4º ESO",
+  "Bachillerato / adulto"
+ ],
+ "competencias": [
+  {
+   "id": "ACE.SILABAS",
+   "b": "ACE",
+   "n": "Separar en sílabas",
+   "c": 2,
+   "pre": [],
+   "r": 0.0,
+   "occ": 0.0,
+   "m": [
+    "silabas"
+   ],
+   "lec": {
+    "regla": "Cada sílaba tiene una vocal o un grupo de vocales que se pronuncian de un golpe. Una consonante entre vocales va con la vocal de detrás (ca-sa); dos consonantes se separan (can-to) salvo los grupos pl, pr, bl, br, cl, cr, gl, gr, fl, fr, tr, dr (ha-blar, o-tro). ch, ll y rr no se separan nunca (co-che, ca-lle, pe-rro).",
+    "ej": [
+     "ma-ri-po-sa",
+     "ár-bol",
+     "ins-tru-men-to",
+     "ca-rre-te-ra"
+    ],
+    "exc": [
+     "En diptongo las vocales van juntas: cie-lo, cuo-ta."
+    ],
+    "truco": "Da palmadas mientras dices la palabra: cada palmada, una sílaba."
+   }
+  },
+  {
+   "id": "ACE.TONICA",
+   "b": "ACE",
+   "n": "Encontrar la sílaba tónica",
+   "c": 2,
+   "pre": [
+    "ACE.SILABAS"
+   ],
+   "r": 0.0,
+   "occ": 0.0,
+   "m": [
+    "tonica"
+   ],
+   "lec": {
+    "regla": "La sílaba tónica es la que suena más fuerte. Lleve tilde o no, toda palabra de más de una sílaba tiene una.",
+    "ej": [
+     "ca-MIÓN",
+     "MA-no",
+     "PÁ-ja-ro",
+     "re-LOJ"
+    ],
+    "exc": [],
+    "truco": "Llama a la palabra como si estuviera lejos («¡caaa-MIÓN!»): la sílaba que alargas es la tónica."
+   }
+  },
+  {
+   "id": "ACE.CLASIFICA",
+   "b": "ACE",
+   "n": "Agudas, llanas, esdrújulas y sobresdrújulas",
+   "c": 3,
+   "pre": [
+    "ACE.TONICA"
+   ],
+   "r": 0.0,
+   "occ": 0.0,
+   "m": [
+    "clasifica"
+   ],
+   "lec": {
+    "regla": "Según dónde está la sílaba tónica: aguda si es la última (ca-MIÓN, re-LOJ), llana si es la penúltima (MA-no, ÁR-bol), esdrújula si es la antepenúltima (MÚ-si-ca) y sobresdrújula si es anterior (DÍ-ga-se-lo).",
+    "ej": [
+     "papel → aguda",
+     "lápiz → llana",
+     "teléfono → esdrújula",
+     "cómetelo → sobresdrújula"
+    ],
+    "exc": [],
+    "truco": "Cuenta desde el final: 1 aguda, 2 llana, 3 esdrújula, 4 sobresdrújula."
+   }
+  },
+  {
+   "id": "ACE.AGUDA_NS",
+   "b": "ACE",
+   "n": "Agudas terminadas en n o s (camión, compás)",
+   "c": 3,
+   "pre": [
+    "ACE.CLASIFICA"
+   ],
+   "r": 0.35,
+   "occ": 1.0,
+   "m": [
+    "tilde",
+    "elige",
+    "dictado",
+    "caza"
+   ],
+   "lec": {
+    "regla": "Las palabras agudas llevan tilde cuando terminan en vocal, en n o en s.",
+    "ej": [
+     "camión",
+     "también",
+     "además",
+     "compás",
+     "según",
+     "están"
+    ],
+    "exc": [
+     "Si la s va detrás de otra consonante, no: robots, tictacs."
+    ],
+    "truco": "«N, S o vocal»: la regla de las agudas. Las llanas hacen justo lo contrario."
+   }
+  },
+  {
+   "id": "ACE.AGUDA_VOCAL",
+   "b": "ACE",
+   "n": "Agudas terminadas en vocal (café, aquí, compró)",
+   "c": 3,
+   "pre": [
+    "ACE.CLASIFICA"
+   ],
+   "r": 0.3,
+   "occ": 1.0,
+   "m": [
+    "tilde",
+    "elige",
+    "dictado",
+    "caza"
+   ],
+   "lec": {
+    "regla": "Las palabras agudas que terminan en vocal llevan tilde. Incluye muchos verbos en pasado: compró, llegó, salí.",
+    "ej": [
+     "café",
+     "sofá",
+     "aquí",
+     "menú",
+     "llegó",
+     "dejé"
+    ],
+    "exc": [
+     "Las que acaban en -y no: estoy, virrey, convoy."
+    ],
+    "truco": "Si suena fuerte al final y acaba en vocal, tilde."
+   }
+  },
+  {
+   "id": "ACE.AGUDA_SIN",
+   "b": "ACE",
+   "n": "Agudas que no llevan tilde (reloj, ciudad, feliz)",
+   "c": 3,
+   "pre": [
+    "ACE.CLASIFICA"
+   ],
+   "r": 0.04,
+   "occ": 2.5,
+   "m": [
+    "tilde",
+    "elige",
+    "caza"
+   ],
+   "lec": {
+    "regla": "Las agudas que NO terminan en vocal, n o s no llevan tilde: reloj, ciudad, papel, feliz, comer, estoy.",
+    "ej": [
+     "reloj",
+     "ciudad",
+     "papel",
+     "feliz",
+     "salud",
+     "convoy"
+    ],
+    "exc": [],
+    "truco": "Los infinitivos (cantar, comer, vivir) son agudos y nunca llevan tilde."
+   }
+  },
+  {
+   "id": "ACE.LLANA_CON",
+   "b": "ACE",
+   "n": "Llanas con tilde (árbol, lápiz, fácil)",
+   "c": 4,
+   "pre": [
+    "ACE.CLASIFICA"
+   ],
+   "r": 0.35,
+   "occ": 0.5,
+   "m": [
+    "tilde",
+    "elige",
+    "dictado",
+    "caza"
+   ],
+   "lec": {
+    "regla": "Las llanas llevan tilde cuando NO terminan en vocal, n o s: árbol, lápiz, fácil, azúcar, cárcel.",
+    "ej": [
+     "árbol",
+     "lápiz",
+     "fácil",
+     "difícil",
+     "azúcar",
+     "carácter"
+    ],
+    "exc": [
+     "Si terminan en s tras consonante, sí llevan: bíceps, cómics, récords."
+    ],
+    "truco": "Al revés que las agudas."
+   }
+  },
+  {
+   "id": "ACE.LLANA_SIN",
+   "b": "ACE",
+   "n": "Llanas sin tilde (examen, joven, origen)",
+   "c": 4,
+   "pre": [
+    "ACE.CLASIFICA"
+   ],
+   "r": 0.1,
+   "occ": 3.0,
+   "m": [
+    "tilde",
+    "elige",
+    "dictado",
+    "caza"
+   ],
+   "lec": {
+    "regla": "Las llanas que terminan en vocal, n o s no llevan tilde. Ojo con las que acaban en -en: examen, joven, origen, imagen, volumen, resumen, crimen, virgen.",
+    "ej": [
+     "examen",
+     "joven",
+     "origen",
+     "imagen",
+     "volumen",
+     "crisis"
+    ],
+    "exc": [],
+    "truco": "¿«Exámen»? No: llana acabada en n. La tilde aparece en el plural: exámenes (esdrújula)."
+   }
+  },
+  {
+   "id": "ACE.ESDRUJULA",
+   "b": "ACE",
+   "n": "Esdrújulas y sobresdrújulas (siempre con tilde)",
+   "c": 4,
+   "pre": [
+    "ACE.CLASIFICA"
+   ],
+   "r": 0.25,
+   "occ": 1.2,
+   "m": [
+    "tilde",
+    "elige",
+    "dictado",
+    "caza"
+   ],
+   "lec": {
+    "regla": "Todas las esdrújulas y sobresdrújulas llevan tilde, sin excepción.",
+    "ej": [
+     "música",
+     "teléfono",
+     "rápido",
+     "público",
+     "económico",
+     "dígaselo"
+    ],
+    "exc": [],
+    "truco": "Si la tónica está a 3 o más del final: tilde siempre."
+   }
+  },
+  {
+   "id": "ACE.VERBOS",
+   "b": "ACE",
+   "n": "Tildes que cambian el verbo (terminó, término, termino)",
+   "c": 6,
+   "pre": [
+    "ACE.AGUDA_VOCAL",
+    "ACE.ESDRUJULA"
+   ],
+   "r": 0.2,
+   "occ": 0.5,
+   "m": [
+    "hueco"
+   ],
+   "lec": {
+    "regla": "Muchas palabras solo se distinguen por la tilde: término (nombre, esdrújula), termino (yo, ahora, llana), terminó (él, ayer, aguda). Igual: público/publico/publicó, cálculo/calculo/calculó, está/esta, llegue/llegué, continúo/continuo/continuó.",
+    "ej": [
+     "El término municipal",
+     "Yo termino a las tres",
+     "Ayer terminó la obra",
+     "Esta casa está vacía"
+    ],
+    "exc": [],
+    "truco": "Pon la frase en pasado o en presente y escucha dónde suena fuerte."
+   }
+  },
+  {
+   "id": "ACE.PLURALES",
+   "b": "ACE",
+   "n": "Tilde al formar el plural (examen → exámenes)",
+   "c": 6,
+   "pre": [
+    "ACE.LLANA_SIN",
+    "ACE.ESDRUJULA"
+   ],
+   "r": 0.3,
+   "occ": 0.15,
+   "m": [
+    "elige",
+    "dictado"
+   ],
+   "lec": {
+    "regla": "El plural añade una sílaba y la palabra puede cambiar de grupo: examen (llana) → exámenes (esdrújula, tilde); canción (aguda) → canciones (llana, sin tilde); carácter → caracteres (cambia la tónica).",
+    "ej": [
+     "joven → jóvenes",
+     "volumen → volúmenes",
+     "camión → camiones",
+     "régimen → regímenes"
+    ],
+    "exc": [],
+    "truco": "Vuelve a aplicar la regla al plural como si fuera otra palabra."
+   }
+  },
+  {
+   "id": "ACE.DIPTONGO",
+   "b": "ACE",
+   "n": "Diptongo, triptongo e hiato",
+   "c": 4,
+   "pre": [
+    "ACE.SILABAS"
+   ],
+   "r": 0.0,
+   "occ": 0.0,
+   "m": [
+    "diptongo"
+   ],
+   "lec": {
+    "regla": "Diptongo: dos vocales en la misma sílaba, al menos una cerrada (i, u) y sin tilde en ella: cie-lo, cui-da. Triptongo: tres (buey). Hiato: dos vocales en sílabas distintas: dos abiertas (le-er, ca-er) o una cerrada con tilde (pa-ís, rí-o).",
+    "ej": [
+     "ciudad → diptongo iu",
+     "aéreo → hiato a-e",
+     "río → hiato í-o",
+     "Paraguay → triptongo uay"
+    ],
+    "exc": [],
+    "truco": "Abiertas: a, e, o. Cerradas: i, u. Cerrada + lo que sea = juntas, salvo que la cerrada lleve tilde."
+   }
+  },
+  {
+   "id": "ACE.HIATO",
+   "b": "ACE",
+   "n": "Tilde en hiatos (país, río, oído, búho)",
+   "c": 5,
+   "pre": [
+    "ACE.DIPTONGO",
+    "ACE.CLASIFICA"
+   ],
+   "r": 0.4,
+   "occ": 0.4,
+   "m": [
+    "tilde",
+    "elige",
+    "dictado",
+    "caza"
+   ],
+   "lec": {
+    "regla": "Si la sílaba fuerte es una i o una u que va junto a a, e, o, lleva tilde SIEMPRE, aunque la regla general diga lo contrario: país, río, oído, baúl, reír, día, María. La h en medio no cambia nada: búho, prohíbe.",
+    "ej": [
+     "país",
+     "río",
+     "día",
+     "reúne",
+     "búho",
+     "economía"
+    ],
+    "exc": [
+     "Los hiatos de dos abiertas siguen la regla general: caer, leer, aéreo, héroe."
+    ],
+    "truco": "Todas las palabras en -ía (economía, policía, tenía) llevan tilde."
+   }
+  },
+  {
+   "id": "ACE.DIPT_TILDE",
+   "b": "ACE",
+   "n": "Dónde va la tilde en un diptongo",
+   "c": 7,
+   "pre": [
+    "ACE.DIPTONGO"
+   ],
+   "r": 0.08,
+   "occ": 0.6,
+   "m": [
+    "tilde",
+    "elige"
+   ],
+   "lec": {
+    "regla": "Las palabras con diptongo siguen la regla general; si les toca tilde, va en la vocal abierta (a, e, o): camión, después, náutico, cuídate (en ui/iu va en la segunda: construí, cuídate).",
+    "ej": [
+     "después",
+     "acción",
+     "náutico",
+     "huésped",
+     "construí",
+     "cuídate"
+    ],
+    "exc": [
+     "jesuita, construir, huir: sin tilde (regla general)."
+    ],
+    "truco": "En el diptongo, la tilde «se la queda» la vocal fuerte."
+   }
+  },
+  {
+   "id": "ACE.MONOSILABOS",
+   "b": "ACE",
+   "n": "Monosílabos sin tilde (fue, dio, vio, ti, guion)",
+   "c": 5,
+   "pre": [
+    "ACE.DIPTONGO"
+   ],
+   "r": 0.25,
+   "occ": 0.7,
+   "m": [
+    "elige",
+    "tilde",
+    "caza",
+    "dictado"
+   ],
+   "lec": {
+    "regla": "Las palabras de una sílaba no llevan tilde: fue, fui, dio, vio, ti, fe, pie, sol, mar. Desde 2010, tampoco guion, truhan, fie, liais, hui ni rio (de reír), porque cuentan como una sílaba.",
+    "ej": [
+     "fue",
+     "dio",
+     "vio",
+     "ti",
+     "guion",
+     "truhan"
+    ],
+    "exc": [
+     "Solo llevan la tilde diacrítica: tú, él, mí, sí, sé, té, dé, más, qué…"
+    ],
+    "truco": "«A ti» nunca lleva tilde: no hay otro «ti» con el que confundirlo."
+   }
+  },
+  {
+   "id": "ACE.DIAC_PRON",
+   "b": "ACE",
+   "n": "tú / tu, él / el, mí / mi",
+   "c": 5,
+   "pre": [
+    "ACE.MONOSILABOS"
+   ],
+   "r": 0.25,
+   "occ": 0.6,
+   "m": [
+    "hueco"
+   ],
+   "lec": {
+    "regla": "Llevan tilde cuando son pronombres personales: tú (la persona), él (la persona), mí (detrás de preposición: para mí). Sin tilde, son el posesivo o el artículo: tu casa, el coche, mi perro, la nota mi.",
+    "ej": [
+     "Tú tienes tu libro",
+     "Él trajo el pan",
+     "Es para mí y para mi madre"
+    ],
+    "exc": [],
+    "truco": "Si puedes cambiarlo por «ella» o «nosotros», lleva tilde."
+   }
+  },
+  {
+   "id": "ACE.DIAC_OTRAS",
+   "b": "ACE",
+   "n": "sí / si, sé / se, té / te, dé / de, más / mas",
+   "c": 6,
+   "pre": [
+    "ACE.MONOSILABOS"
+   ],
+   "r": 0.25,
+   "occ": 0.9,
+   "m": [
+    "hueco"
+   ],
+   "lec": {
+    "regla": "sí (afirmación o pronombre: «dijo que sí», «lo quiere para sí») / si (condición: «si llueve»); sé (de saber o ser: «no sé», «sé bueno») / se (pronombre); té (la bebida) / te (pronombre); dé (de dar) / de (preposición); más (cantidad) / mas (= pero, literario).",
+    "ej": [
+     "Sí, si quieres",
+     "No sé si se ha ido",
+     "¿Te apetece un té?",
+     "Quiere que le dé el libro de Ana"
+    ],
+    "exc": [],
+    "truco": "«Más» casi siempre lleva tilde: el «mas» sin tilde (= pero) apenas se usa."
+   }
+  },
+  {
+   "id": "ACE.INTERROG",
+   "b": "ACE",
+   "n": "qué, cómo, dónde, cuándo… en preguntas y exclamaciones",
+   "c": 6,
+   "pre": [],
+   "r": 0.3,
+   "occ": 0.35,
+   "m": [
+    "hueco",
+    "caza"
+   ],
+   "lec": {
+    "regla": "qué, quién, cuál, cuánto, cómo, dónde, cuándo y adónde llevan tilde cuando preguntan o exclaman: ¿Qué quieres? ¡Cómo llueve! ¿Dónde vives?",
+    "ej": [
+     "¿Qué hora es?",
+     "¡Qué frío!",
+     "¿Cuándo llegas?",
+     "¿Con quién vas?"
+    ],
+    "exc": [
+     "Sin pregunta ni exclamación, sin tilde: «Lo que quieras», «Vino cuando pudo»."
+    ],
+    "truco": "Si va entre ¿? o ¡!, y pregunta, tilde."
+   }
+  },
+  {
+   "id": "ACE.INTERROG_IND",
+   "b": "ACE",
+   "n": "Preguntas indirectas: «no sé qué hacer» / «lo que quiero»",
+   "c": 7,
+   "pre": [
+    "ACE.INTERROG"
+   ],
+   "r": 0.35,
+   "occ": 0.3,
+   "m": [
+    "hueco"
+   ],
+   "lec": {
+    "regla": "También llevan tilde cuando preguntan sin signos (pregunta indirecta): «No sé qué hacer», «Dime dónde vives», «Pregúntale cuándo viene». Sin tilde cuando son relativos o conjunciones: «La casa donde vivo», «Dice que vendrá», «Lo haré como quieras».",
+    "ej": [
+     "No sé qué decir",
+     "Explícame cómo funciona",
+     "El sitio donde nací",
+     "Me dijo que sí"
+    ],
+    "exc": [],
+    "truco": "Si puedes convertirlo en una pregunta (¿qué hacer?), lleva tilde."
+   }
+  },
+  {
+   "id": "ACE.AUN",
+   "b": "ACE",
+   "n": "aún / aun",
+   "c": 8,
+   "pre": [],
+   "r": 0.4,
+   "occ": 0.3,
+   "m": [
+    "hueco"
+   ],
+   "lec": {
+    "regla": "aún (con tilde) = todavía: «Aún no ha llegado». aun (sin tilde) = incluso, hasta, aunque: «Aun así, lo intentó», «Ni aun queriendo».",
+    "ej": [
+     "Aún es pronto",
+     "Aun así, vino",
+     "Aún no lo sé",
+     "Aun cuando llueva, iré"
+    ],
+    "exc": [],
+    "truco": "Cambia por «todavía»: si encaja, tilde."
+   }
+  },
+  {
+   "id": "ACE.SOLO",
+   "b": "ACE",
+   "n": "solo, este, ese, aquel: sin tilde",
+   "c": 8,
+   "pre": [],
+   "r": 0.3,
+   "occ": 0.6,
+   "m": [
+    "elige",
+    "caza"
+   ],
+   "lec": {
+    "regla": "Desde 2010 la norma es escribir sin tilde el adverbio solo (= solamente) y los demostrativos este, ese, aquel (y femeninos y plurales), sean pronombres o determinantes: «Solo quiero agua», «Este es el mío».",
+    "ej": [
+     "Solo vino uno",
+     "Este me gusta más",
+     "Esa es la mía",
+     "Aquellos días"
+    ],
+    "exc": [
+     "La RAE admite la tilde en «solo» únicamente si quien escribe ve un doble sentido real; la recomendación es no ponerla."
+    ],
+    "truco": "Si dudas, sin tilde: es lo que recomienda la RAE."
+   }
+  },
+  {
+   "id": "ACE.MENTE",
+   "b": "ACE",
+   "n": "Adverbios en -mente (rápidamente, fácilmente)",
+   "c": 6,
+   "pre": [
+    "ACE.LLANA_CON",
+    "ACE.ESDRUJULA"
+   ],
+   "r": 0.3,
+   "occ": 0.3,
+   "m": [
+    "elige",
+    "dictado"
+   ],
+   "lec": {
+    "regla": "Los adverbios en -mente conservan la tilde del adjetivo del que vienen: rápida → rápidamente, fácil → fácilmente, cortés → cortésmente. Si el adjetivo no lleva tilde, el adverbio tampoco: lenta → lentamente.",
+    "ej": [
+     "rápidamente",
+     "fácilmente",
+     "últimamente",
+     "lentamente"
+    ],
+    "exc": [],
+    "truco": "Tapa el -mente y mira el adjetivo."
+   }
+  },
+  {
+   "id": "ACE.COMPUESTAS",
+   "b": "ACE",
+   "n": "Compuestas y verbos con pronombre (veintidós, dámelo)",
+   "c": 6,
+   "pre": [
+    "ACE.CLASIFICA"
+   ],
+   "r": 0.35,
+   "occ": 0.15,
+   "m": [
+    "elige"
+   ],
+   "lec": {
+    "regla": "Las palabras compuestas se acentúan como una sola: veintidós, decimoséptimo, tiovivo. Los verbos con pronombres pegados siguen la regla general: dame, dímelo, cuéntaselo, mírame, ponte.",
+    "ej": [
+     "veintidós",
+     "veintitrés",
+     "dámelo",
+     "cuéntaselo",
+     "decimoséptimo"
+    ],
+    "exc": [
+     "Con guion, cada parte conserva su tilde: físico-químico."
+    ],
+    "truco": "Lee la palabra entera y aplica la regla de siempre."
+   }
+  },
+  {
+   "id": "ACE.MAYUSC",
+   "b": "ACE",
+   "n": "Tilde también en mayúsculas (Álvaro, ÉXITO)",
+   "c": 6,
+   "pre": [],
+   "r": 0.3,
+   "occ": 0.2,
+   "m": [
+    "elige"
+   ],
+   "lec": {
+    "regla": "Las mayúsculas llevan tilde igual que las minúsculas: Álvaro, Ángel, Él dijo, ÉXITO, ÁFRICA.",
+    "ej": [
+     "Álvaro",
+     "Ángela",
+     "Óscar",
+     "Él lo sabe"
+    ],
+    "exc": [],
+    "truco": "Nunca hubo regla que quitara la tilde a las mayúsculas."
+   }
+  },
+  {
+   "id": "BV.MB",
+   "b": "BV",
+   "n": "m antes de b y p (cambio, tiempo)",
+   "c": 1,
+   "pre": [],
+   "r": 0.1,
+   "occ": 0.5,
+   "m": [
+    "letra",
+    "elige",
+    "dictado"
+   ],
+   "lec": {
+    "regla": "Antes de b y p se escribe m, nunca n: cambio, hombre, tiempo, campo.",
+    "ej": [
+     "cambio",
+     "tiempo",
+     "hombre",
+     "siempre",
+     "ambiente"
+    ],
+    "exc": [
+     "Delante de v va n: invierno, enviar."
+    ],
+    "truco": "Mamá Paula y Mamá Beatriz: m antes de p y de b."
+   }
+  },
+  {
+   "id": "BV.BL_BR",
+   "b": "BV",
+   "n": "b en bl y br (blanco, brazo, hablar)",
+   "c": 1,
+   "pre": [],
+   "r": 0.05,
+   "occ": 0.8,
+   "m": [
+    "letra",
+    "elige"
+   ],
+   "lec": {
+    "regla": "Delante de l y r se escribe b, nunca v: blanco, hablar, brazo, libro.",
+    "ej": [
+     "blanco",
+     "pueblo",
+     "brazo",
+     "libro",
+     "hombre"
+    ],
+    "exc": [],
+    "truco": "En castellano no existen «vl» ni «vr»."
+   }
+  },
+  {
+   "id": "BV.ABA",
+   "b": "BV",
+   "n": "b en -aba, -abas, -ábamos (cantaba, estaba) e iba",
+   "c": 3,
+   "pre": [],
+   "r": 0.1,
+   "occ": 0.6,
+   "m": [
+    "letra",
+    "elige",
+    "dictado",
+    "caza"
+   ],
+   "lec": {
+    "regla": "El pretérito imperfecto de los verbos en -ar se escribe con b: cantaba, estaba, jugábamos, hablaban. También el del verbo ir: iba, íbamos.",
+    "ej": [
+     "estaba",
+     "jugaba",
+     "trabajábamos",
+     "iban"
+    ],
+    "exc": [],
+    "truco": "-aba de «acaba» con b."
+   }
+  },
+  {
+   "id": "BV.BIR",
+   "b": "BV",
+   "n": "Verbos en -bir y -buir (escribir, recibir, contribuir)",
+   "c": 3,
+   "pre": [],
+   "r": 0.15,
+   "occ": 0.3,
+   "m": [
+    "letra",
+    "elige"
+   ],
+   "lec": {
+    "regla": "Los verbos que terminan en -bir y -buir se escriben con b, y todas sus formas: escribir, recibir, prohibir, contribuir, distribuir.",
+    "ej": [
+     "escribir",
+     "recibió",
+     "prohíbe",
+     "atribuir"
+    ],
+    "exc": [
+     "Hervir, servir y vivir (y sus familias) van con v."
+    ],
+    "truco": "Excepciones: «hervir, servir y vivir»."
+   }
+  },
+  {
+   "id": "BV.BU",
+   "b": "BV",
+   "n": "bu-, bur-, bus- (buzón, burla, buscar)",
+   "c": 3,
+   "pre": [],
+   "r": 0.1,
+   "occ": 0.15,
+   "m": [
+    "letra",
+    "elige"
+   ],
+   "lec": {
+    "regla": "Las palabras que empiezan por bu-, bur- y bus- se escriben con b: bueno, burbuja, burla, buscar, buzón.",
+    "ej": [
+     "bueno",
+     "burro",
+     "buscar",
+     "buque",
+     "busto"
+    ],
+    "exc": [
+     "vudú, vuestro, vuelta, vuelo (y la familia de volver/volar)."
+    ],
+    "truco": "«Busca un burro bueno»."
+   }
+  },
+  {
+   "id": "BV.B_CONS",
+   "b": "BV",
+   "n": "b antes de consonante y al final (obtener, absoluto)",
+   "c": 5,
+   "pre": [],
+   "r": 0.1,
+   "occ": 0.4,
+   "m": [
+    "letra",
+    "elige"
+   ],
+   "lec": {
+    "regla": "Se escribe b (no v) delante de cualquier consonante y al final de sílaba: obtener, absoluto, objeto, subrayar, club.",
+    "ej": [
+     "obtener",
+     "absoluto",
+     "objeto",
+     "obvio",
+     "subterráneo"
+    ],
+    "exc": [
+     "Algunas palabras extranjeras: ovni (sigla)."
+    ],
+    "truco": "Tras b puede ir consonante; tras v, nunca."
+   }
+  },
+  {
+   "id": "BV.BILIDAD",
+   "b": "BV",
+   "n": "-bilidad, -bundo, -bunda (amabilidad, vagabundo)",
+   "c": 5,
+   "pre": [],
+   "r": 0.15,
+   "occ": 0.1,
+   "m": [
+    "letra",
+    "elige"
+   ],
+   "lec": {
+    "regla": "Las terminaciones -bilidad, -bundo y -bunda se escriben con b: amabilidad, posibilidad, responsabilidad, vagabundo, moribunda.",
+    "ej": [
+     "posibilidad",
+     "habilidad",
+     "estabilidad",
+     "nauseabundo"
+    ],
+    "exc": [
+     "movilidad y civilidad, con v (vienen de móvil y civil)."
+    ],
+    "truco": "Si viene de -ble (posible), b."
+   }
+  },
+  {
+   "id": "BV.PREF_B",
+   "b": "BV",
+   "n": "bi-, bis-, bien-, bene-, bio-, biblio-",
+   "c": 5,
+   "pre": [],
+   "r": 0.15,
+   "occ": 0.1,
+   "m": [
+    "letra",
+    "elige"
+   ],
+   "lec": {
+    "regla": "Los prefijos bi-, bis- y biz- (dos), bien- y bene- (bien), bio- (vida) y biblio- (libro) se escriben con b: bicicleta, bisabuelo, bienestar, beneficio, biología, biblioteca.",
+    "ej": [
+     "bicicleta",
+     "bisabuelo",
+     "bienvenido",
+     "beneficio",
+     "biografía"
+    ],
+    "exc": [],
+    "truco": "Bi = dos: bicicleta (dos ruedas)."
+   }
+  },
+  {
+   "id": "BV.V_NDB",
+   "b": "BV",
+   "n": "v después de n, d y b (enviar, advertir, obvio)",
+   "c": 4,
+   "pre": [],
+   "r": 0.1,
+   "occ": 0.25,
+   "m": [
+    "letra",
+    "elige",
+    "dictado"
+   ],
+   "lec": {
+    "regla": "Después de n, d y b se escribe v: invierno, enviar, convencer, adverbio, advertir, obvio, subvención.",
+    "ej": [
+     "invierno",
+     "enviar",
+     "convenio",
+     "adversario",
+     "obvio"
+    ],
+    "exc": [],
+    "truco": "Tras n nunca b: «nv» siempre (en «nb» la n se cambia por m)."
+   }
+  },
+  {
+   "id": "BV.ADJ_V",
+   "b": "BV",
+   "n": "Adjetivos en -avo, -ave, -evo, -eve, -ivo, -iva",
+   "c": 5,
+   "pre": [],
+   "r": 0.1,
+   "occ": 0.4,
+   "m": [
+    "letra",
+    "elige"
+   ],
+   "lec": {
+    "regla": "Los adjetivos terminados en -avo, -ava, -ave, -evo, -eva, -eve, -ivo, -iva se escriben con v: octavo, grave, nuevo, breve, activo, positiva.",
+    "ej": [
+     "octavo",
+     "suave",
+     "nuevo",
+     "leve",
+     "deportivo",
+     "negativa"
+    ],
+    "exc": [
+     "árabe y sílaba (no son adjetivos en -abe con v)."
+    ],
+    "truco": "«Activo, positivo, negativo»: todos con v."
+   }
+  },
+  {
+   "id": "BV.VERBOS_V",
+   "b": "BV",
+   "n": "tuve, estuve, anduve, voy (tener, estar, andar, ir)",
+   "c": 5,
+   "pre": [],
+   "r": 0.15,
+   "occ": 0.2,
+   "m": [
+    "letra",
+    "elige",
+    "dictado"
+   ],
+   "lec": {
+    "regla": "Las formas de tener, estar, andar e ir que tienen el sonido b se escriben con v: tuve, tuviera, estuvo, anduvimos, voy, vas, vaya, ve.",
+    "ej": [
+     "tuve",
+     "estuvieron",
+     "anduvo",
+     "voy",
+     "vaya"
+    ],
+    "exc": [
+     "Menos el imperfecto de ir: iba, íbamos (con b)."
+    ],
+    "truco": "Tuvo, estuvo, anduvo: tres verbos, tres uves."
+   }
+  },
+  {
+   "id": "BV.PREF_V",
+   "b": "BV",
+   "n": "vice-, villa-, -ívoro, -ívora (vicepresidente, herbívoro)",
+   "c": 7,
+   "pre": [],
+   "r": 0.15,
+   "occ": 0.05,
+   "m": [
+    "letra",
+    "elige"
+   ],
+   "lec": {
+    "regla": "Se escriben con v: vice- (en lugar de), villa- (pueblo), y las terminaciones -viro, -vira, -ívoro, -ívora: vicepresidente, Villarreal, herbívoro, carnívora.",
+    "ej": [
+     "vicepresidenta",
+     "villancico",
+     "carnívoro",
+     "omnívoro"
+    ],
+    "exc": [
+     "víbora (con v y b, sin regla)."
+    ],
+    "truco": "Carnívoro = come carne: «voro» de devorar."
+   }
+  },
+  {
+   "id": "BV.MEMORIA",
+   "b": "BV",
+   "n": "B o V sin regla (palabras de uso)",
+   "c": 6,
+   "pre": [],
+   "r": 0.04,
+   "occ": 4.0,
+   "m": [
+    "letra",
+    "elige",
+    "dictado",
+    "caza"
+   ],
+   "lec": {
+    "regla": "Muchas palabras con b o v no siguen ninguna regla: hay que aprenderlas de memoria. Ayuda pensar en la familia de palabras (bola, bolera, embolsar; vivir, vivienda, vivo).",
+    "ej": [
+     "gobierno",
+     "llevar",
+     "nivel",
+     "deber",
+     "ventana",
+     "abogado"
+    ],
+    "exc": [],
+    "truco": "Asocia la palabra con otra de la misma familia que ya sepas."
+   }
+  },
+  {
+   "id": "H.HIE_HUE",
+   "b": "H",
+   "n": "hie-, hue-, hui- (hielo, hueso, huida)",
+   "c": 3,
+   "pre": [],
+   "r": 0.1,
+   "occ": 0.1,
+   "m": [
+    "letra",
+    "elige",
+    "dictado"
+   ],
+   "lec": {
+    "regla": "Las palabras que empiezan por ie-, ue- o ui- se escriben con h: hielo, hierro, hierba, hueso, huevo, huerta, huida.",
+    "ej": [
+     "hielo",
+     "huevo",
+     "hueso",
+     "huelga",
+     "huida"
+    ],
+    "exc": [
+     "Las de su familia sin ue no llevan h: hueso → óseo; huevo → óvulo, oval; hueco → oquedad; huérfano → orfanato."
+    ],
+    "truco": "Ninguna palabra española empieza por «ue»."
+   }
+  },
+  {
+   "id": "H.HUM_HORR",
+   "b": "H",
+   "n": "hum-, horm-, horr-, hosp- (humano, hormiga, horror)",
+   "c": 4,
+   "pre": [],
+   "r": 0.1,
+   "occ": 0.1,
+   "m": [
+    "letra",
+    "elige"
+   ],
+   "lec": {
+    "regla": "Llevan h las palabras que empiezan por hum- seguido de vocal, horm-, horr-, hosp- y holg-: humano, humo, hormiga, horror, hospital, holgado.",
+    "ej": [
+     "humano",
+     "humedad",
+     "hormiga",
+     "horrible",
+     "hospital"
+    ],
+    "exc": [
+     "umbral, umbilical, ornamento, orfanato no llevan h."
+    ],
+    "truco": "«El humo horrible del hospital»: todo con h."
+   }
+  },
+  {
+   "id": "H.GRIEGO",
+   "b": "H",
+   "n": "hidr-, hiper-, hipo-, hemi-, hexa-, homo-, hetero- (raíces griegas)",
+   "c": 7,
+   "pre": [],
+   "r": 0.15,
+   "occ": 0.05,
+   "m": [
+    "letra",
+    "elige"
+   ],
+   "lec": {
+    "regla": "Llevan h muchas raíces griegas al principio: hidr- (agua), hiper- (exceso), hipo- (debajo / caballo), hemi- (medio), hexa- (seis), hepta- (siete), homo- (igual), hetero- (distinto), helio- (sol), hemo- (sangre).",
+    "ej": [
+     "hidráulico",
+     "hipermercado",
+     "hipótesis",
+     "hexágono",
+     "homogéneo",
+     "hemorragia"
+    ],
+    "exc": [],
+    "truco": "Las de ciencia y médicas casi siempre tienen h."
+   }
+  },
+  {
+   "id": "H.VERBOS",
+   "b": "H",
+   "n": "Verbos con h: haber, hacer, hablar, hallar (había, hizo)",
+   "c": 3,
+   "pre": [],
+   "r": 0.1,
+   "occ": 0.8,
+   "m": [
+    "letra",
+    "elige",
+    "dictado",
+    "caza"
+   ],
+   "lec": {
+    "regla": "Los verbos haber, hacer, hablar, hallar, habitar, helar… llevan h en todas sus formas: había, hubo, hizo, hecho, hablé, hallaron.",
+    "ej": [
+     "había",
+     "hubiera",
+     "hizo",
+     "hecho",
+     "hallamos"
+    ],
+    "exc": [
+     "echar (tirar) no lleva h: echo, echaba."
+    ],
+    "truco": "Si viene de hacer, h; si viene de echar, sin h."
+   }
+  },
+  {
+   "id": "H.INTERMEDIA",
+   "b": "H",
+   "n": "h intercalada (ahora, prohibir, zanahoria)",
+   "c": 5,
+   "pre": [],
+   "r": 0.2,
+   "occ": 0.2,
+   "m": [
+    "letra",
+    "elige",
+    "dictado"
+   ],
+   "lec": {
+    "regla": "Muchas palabras llevan h en medio, sin regla fija salvo los prefijos (des-hacer, in-humano): ahora, almohada, zanahoria, prohibir, vehículo, cohete, ahí, búho.",
+    "ej": [
+     "ahora",
+     "prohibir",
+     "vehículo",
+     "almohada",
+     "zanahoria",
+     "deshacer"
+    ],
+    "exc": [],
+    "truco": "Si la palabra sin prefijo lleva h, la compuesta también: hacer → deshacer."
+   }
+  },
+  {
+   "id": "H.MEMORIA",
+   "b": "H",
+   "n": "Con h o sin h (palabras de uso)",
+   "c": 6,
+   "pre": [],
+   "r": 0.05,
+   "occ": 1.5,
+   "m": [
+    "letra",
+    "elige",
+    "dictado",
+    "caza"
+   ],
+   "lec": {
+    "regla": "Hay palabras con h al principio sin regla (hora, hoja, hombre, historia) y otras sin h que a veces se escriben mal con ella (echar, iba, ola, ojear).",
+    "ej": [
+     "historia",
+     "hombre",
+     "ahorrar",
+     "echar",
+     "orden",
+     "hoy"
+    ],
+    "exc": [],
+    "truco": "Aprende de memoria las que más usas; para las demás, familias."
+   }
+  },
+  {
+   "id": "GJ.GUE",
+   "b": "GJ",
+   "n": "ga, go, gu, gue, gui, güe, güi",
+   "c": 1,
+   "pre": [],
+   "r": 0.05,
+   "occ": 0.4,
+   "m": [
+    "letra",
+    "elige"
+   ],
+   "lec": {
+    "regla": "Para el sonido suave de g delante de e, i se escribe gue, gui (guerra, guitarra). Si la u se pronuncia, lleva diéresis: güe, güi (pingüino, cigüeña, vergüenza).",
+    "ej": [
+     "guerra",
+     "guiso",
+     "pingüino",
+     "vergüenza",
+     "lingüística"
+    ],
+    "exc": [],
+    "truco": "Si la u suena, dos puntitos."
+   }
+  },
+  {
+   "id": "GJ.GEN_GIA",
+   "b": "GJ",
+   "n": "g en -gen, -gía, -gio, geo-, legi- (origen, energía)",
+   "c": 3,
+   "pre": [],
+   "r": 0.12,
+   "occ": 0.3,
+   "m": [
+    "letra",
+    "elige"
+   ],
+   "lec": {
+    "regla": "Se escriben con g las palabras terminadas en -gen, -gente, -gencia, -gía, -gio, -gión, -gional, -gioso y las que empiezan por geo-, gest- y legi-: origen, urgente, magia, colegio, religión, geografía.",
+    "ej": [
+     "origen",
+     "imagen",
+     "agencia",
+     "energía",
+     "región",
+     "geografía"
+    ],
+    "exc": [
+     "comején, ajeno, apoplejía, bujía, herejía, lejía (y las de -jería)."
+    ],
+    "truco": "Las ciencias en -logía: biología, ecología… con g."
+   }
+  },
+  {
+   "id": "GJ.VERBOS_GER",
+   "b": "GJ",
+   "n": "Verbos en -ger, -gir (coger, elegir; cojo, elijo)",
+   "c": 5,
+   "pre": [],
+   "r": 0.15,
+   "occ": 0.2,
+   "m": [
+    "letra",
+    "elige",
+    "dictado"
+   ],
+   "lec": {
+    "regla": "Los verbos en -ger y -gir se escriben con g (coger, proteger, elegir, dirigir) salvo tejer y crujir. Ante a, o la g pasa a j: cojo, eligió → elijo, dirija.",
+    "ej": [
+     "proteger",
+     "elegir",
+     "exigir",
+     "recoger",
+     "corrija"
+    ],
+    "exc": [
+     "tejer, crujir (y sus formas) con j."
+    ],
+    "truco": "La g de -ger se convierte en j delante de a y o."
+   }
+  },
+  {
+   "id": "GJ.AJE_JERO",
+   "b": "GJ",
+   "n": "j en -aje, -jero, -jera, -jería (viaje, extranjero)",
+   "c": 5,
+   "pre": [],
+   "r": 0.15,
+   "occ": 0.2,
+   "m": [
+    "letra",
+    "elige",
+    "dictado"
+   ],
+   "lec": {
+    "regla": "Se escriben con j las palabras terminadas en -aje, -eje, -jero, -jera y -jería: viaje, garaje, eje, extranjero, consejero, relojería.",
+    "ej": [
+     "viaje",
+     "mensaje",
+     "extranjero",
+     "pasajero",
+     "relojería"
+    ],
+    "exc": [
+     "ambages, enálage, auge."
+    ],
+    "truco": "Viaje, mensaje, paisaje: todas con j."
+   }
+  },
+  {
+   "id": "GJ.J_VERBOS",
+   "b": "GJ",
+   "n": "dije, traje, conduje (decir, traer, -ducir)",
+   "c": 6,
+   "pre": [],
+   "r": 0.15,
+   "occ": 0.15,
+   "m": [
+    "letra",
+    "elige",
+    "dictado"
+   ],
+   "lec": {
+    "regla": "Las formas con sonido j de decir, traer y los verbos en -ducir se escriben con j: dije, dijeron, trajo, trajeran, conduje, produjo, tradujeron.",
+    "ej": [
+     "dijeron",
+     "trajimos",
+     "produjo",
+     "tradujera",
+     "redujeron"
+    ],
+    "exc": [],
+    "truco": "Son verbos sin g ni j en el infinitivo: entonces, j."
+   }
+  },
+  {
+   "id": "GJ.MEMORIA",
+   "b": "GJ",
+   "n": "G o J ante e, i sin regla (jirafa, gente, ajeno)",
+   "c": 7,
+   "pre": [],
+   "r": 0.06,
+   "occ": 0.6,
+   "m": [
+    "letra",
+    "elige",
+    "dictado",
+    "caza"
+   ],
+   "lec": {
+    "regla": "Delante de e, i, la g y la j suenan igual y muchas palabras no siguen regla: gente, general, gigante, jirafa, jefe, ajeno, tejido.",
+    "ej": [
+     "gente",
+     "general",
+     "jefe",
+     "sujeto",
+     "tejido",
+     "ajeno"
+    ],
+    "exc": [],
+    "truco": "Familias: «jefe, jefatura»; «gente, gentío»."
+   }
+  },
+  {
+   "id": "LLY.ILLO",
+   "b": "LLY",
+   "n": "ll en -illo, -illa (pasillo, ventanilla)",
+   "c": 2,
+   "pre": [],
+   "r": 0.05,
+   "occ": 0.2,
+   "m": [
+    "letra",
+    "elige"
+   ],
+   "lec": {
+    "regla": "Las palabras terminadas en -illo, -illa se escriben con ll: pasillo, cuchillo, ventanilla, mantequilla, sencillo.",
+    "ej": [
+     "pasillo",
+     "amarillo",
+     "sencilla",
+     "ventanilla",
+     "bolsillo"
+    ],
+    "exc": [],
+    "truco": "Todos los diminutivos en -illo, con ll."
+   }
+  },
+  {
+   "id": "LLY.Y_FINAL",
+   "b": "LLY",
+   "n": "y al final de palabra (rey, hoy, muy, estoy)",
+   "c": 3,
+   "pre": [],
+   "r": 0.08,
+   "occ": 0.6,
+   "m": [
+    "letra",
+    "elige"
+   ],
+   "lec": {
+    "regla": "Al final de palabra, tras vocal, el sonido i sin acento se escribe y: rey, hoy, muy, ley, estoy, voy, Uruguay.",
+    "ej": [
+     "hoy",
+     "muy",
+     "ley",
+     "estoy",
+     "jersey"
+    ],
+    "exc": [
+     "Si es tónica lleva tilde y se escribe í: ahí, leí, huí. Y algunas extranjeras: saharaui, bonsái."
+    ],
+    "truco": "Si suena fuerte la i final, í con tilde; si no, y."
+   }
+  },
+  {
+   "id": "LLY.Y_VERBOS",
+   "b": "LLY",
+   "n": "y en verbos sin ll ni y (oyó, cayó, leyendo, construyo)",
+   "c": 5,
+   "pre": [],
+   "r": 0.15,
+   "occ": 0.3,
+   "m": [
+    "letra",
+    "elige",
+    "dictado"
+   ],
+   "lec": {
+    "regla": "Las formas verbales con sonido y de verbos que no tienen ll ni y en el infinitivo se escriben con y: oír → oyó; caer → cayeron; leer → leyendo; construir → construyo; haber → haya; ir → yendo.",
+    "ej": [
+     "oyó",
+     "cayeron",
+     "leyendo",
+     "construyó",
+     "haya",
+     "huyó"
+    ],
+    "exc": [],
+    "truco": "Si el infinitivo no tiene ll, el verbo no la tiene."
+   }
+  },
+  {
+   "id": "LLY.MEMORIA",
+   "b": "LLY",
+   "n": "Ll o Y (palabras de uso)",
+   "c": 6,
+   "pre": [],
+   "r": 0.05,
+   "occ": 0.7,
+   "m": [
+    "letra",
+    "elige",
+    "dictado",
+    "caza"
+   ],
+   "lec": {
+    "regla": "Fuera de las reglas, ll e y se aprenden de memoria: llegar, lleno, calle, ayer, ayuda, mayor, playa.",
+    "ej": [
+     "llegar",
+     "ayuda",
+     "calle",
+     "mayor",
+     "apoyo",
+     "pollo"
+    ],
+    "exc": [],
+    "truco": "Familias: «lleno, llenar, rellenar»."
+   }
+  },
+  {
+   "id": "LET.R_RR",
+   "b": "LET",
+   "n": "r y rr (perro, honra, alrededor)",
+   "c": 1,
+   "pre": [],
+   "r": 0.04,
+   "occ": 0.5,
+   "m": [
+    "letra",
+    "elige"
+   ],
+   "lec": {
+    "regla": "Entre vocales, el sonido fuerte se escribe rr (perro, carro). Al principio de palabra y detrás de l, n, s se escribe una sola r aunque suene fuerte: ratón, alrededor, honra, Israel, Enrique.",
+    "ej": [
+     "carretera",
+     "ratón",
+     "honrado",
+     "alrededor",
+     "pararrayos"
+    ],
+    "exc": [
+     "En compuestas, si la r queda entre vocales, se dobla: pararrayos, contrarreloj, autorretrato."
+    ],
+    "truco": "rr solo entre dos vocales."
+   }
+  },
+  {
+   "id": "LET.C_QU",
+   "b": "LET",
+   "n": "ca, co, cu, que, qui (y k)",
+   "c": 1,
+   "pre": [],
+   "r": 0.03,
+   "occ": 0.8,
+   "m": [
+    "letra",
+    "elige"
+   ],
+   "lec": {
+    "regla": "El sonido k se escribe c delante de a, o, u (casa, cosa, cuna) y qu delante de e, i (queso, quince). La k aparece en pocas palabras (kilo, karate, koala).",
+    "ej": [
+     "queso",
+     "quince",
+     "pequeño",
+     "aquí",
+     "kilómetro"
+    ],
+    "exc": [],
+    "truco": "Delante de e, i, la c suena z: por eso hace falta qu."
+   }
+  },
+  {
+   "id": "LET.Z_C",
+   "b": "LET",
+   "n": "za, zo, zu, ce, ci",
+   "c": 1,
+   "pre": [],
+   "r": 0.04,
+   "occ": 0.8,
+   "m": [
+    "letra",
+    "elige",
+    "dictado"
+   ],
+   "lec": {
+    "regla": "El sonido z se escribe z delante de a, o, u (zapato, zorro, zumo) y c delante de e, i (cero, cielo).",
+    "ej": [
+     "zapato",
+     "cielo",
+     "cereza",
+     "cocina",
+     "azúcar"
+    ],
+    "exc": [
+     "Unas pocas con ze, zi: zeta, zigzag, zinc, nazi, enzima (proteína)."
+    ],
+    "truco": "z con a, o, u; c con e, i."
+   }
+  },
+  {
+   "id": "LET.PLURAL_Z",
+   "b": "LET",
+   "n": "Plural de las palabras en z (lápiz → lápices)",
+   "c": 2,
+   "pre": [
+    "LET.Z_C"
+   ],
+   "r": 0.1,
+   "occ": 0.1,
+   "m": [
+    "letra",
+    "elige",
+    "dictado"
+   ],
+   "lec": {
+    "regla": "Las palabras que terminan en z forman el plural con -ces: lápiz → lápices, pez → peces, voz → voces, vez → veces. Los verbos en -zar cambian a c delante de e: empezar → empecé, cruzar → crucé.",
+    "ej": [
+     "lápices",
+     "peces",
+     "veces",
+     "luces",
+     "empecé"
+    ],
+    "exc": [],
+    "truco": "La z no se junta con e ni con i."
+   }
+  },
+  {
+   "id": "LET.D_Z",
+   "b": "LET",
+   "n": "d o z al final (verdad, salud, paz, feliz)",
+   "c": 2,
+   "pre": [],
+   "r": 0.1,
+   "occ": 0.4,
+   "m": [
+    "letra",
+    "elige",
+    "dictado"
+   ],
+   "lec": {
+    "regla": "Al final de palabra se escribe d si el plural lleva -des (verdad → verdades, pared → paredes) y z si el plural lleva -ces (paz → paces, feliz → felices). Y el imperativo de vosotros acaba en d: venid, comed.",
+    "ej": [
+     "ciudad",
+     "verdad",
+     "salud",
+     "nariz",
+     "actitud",
+     "capaz"
+    ],
+    "exc": [],
+    "truco": "Haz el plural y lo sabrás: ciudades → ciudad."
+   }
+  },
+  {
+   "id": "LET.CCION",
+   "b": "LET",
+   "n": "-cción, -ción, -sión (acción, canción, televisión)",
+   "c": 5,
+   "pre": [],
+   "r": 0.15,
+   "occ": 0.6,
+   "m": [
+    "letra",
+    "elige",
+    "dictado",
+    "caza"
+   ],
+   "lec": {
+    "regla": "Se escribe -cción si en la familia aparece -ct- (acción ← acto, dirección ← director, corrección ← correcto). Se escribe -ción si en la familia hay -t- o -d- (canción ← cantar, educación ← educado) y -sión si hay -s-, -sor, -sivo (televisión ← televisor, decisión ← decisivo).",
+    "ej": [
+     "acción",
+     "dirección",
+     "atracción",
+     "relación",
+     "decisión",
+     "expresión"
+    ],
+    "exc": [],
+    "truco": "¿Hay «ct» en la familia? → cc."
+   }
+  },
+  {
+   "id": "LET.X",
+   "b": "LET",
+   "n": "x o s (extranjero, explicar / espontáneo, estrategia)",
+   "c": 7,
+   "pre": [],
+   "r": 0.15,
+   "occ": 0.4,
+   "m": [
+    "letra",
+    "elige",
+    "dictado",
+    "caza"
+   ],
+   "lec": {
+    "regla": "Llevan x las palabras con ex- (fuera, que fue: exponer, expresidente) y con extra- (fuera de: extraordinario), y las que empiezan por expl-, expr- (explicar, expresar). Pero muchas otras van con s: espontáneo, esplendor, estrategia, estricto, espléndido.",
+    "ej": [
+     "explicar",
+     "expresión",
+     "extranjero",
+     "exacto",
+     "espontáneo",
+     "estrategia"
+    ],
+    "exc": [
+     "Ojo con las que parecen de «ex-» y no lo son: espontáneo, esplendor, espectáculo. Y al revés: explanada, exprimir, exhausto llevan x."
+    ],
+    "truco": "expl- y expr- con x; espl- casi nunca (solo esplendor y su familia)."
+   }
+  },
+  {
+   "id": "LET.SC",
+   "b": "LET",
+   "n": "sc (piscina, escena, adolescente)",
+   "c": 8,
+   "pre": [],
+   "r": 0.2,
+   "occ": 0.05,
+   "m": [
+    "letra",
+    "elige",
+    "dictado"
+   ],
+   "lec": {
+    "regla": "Algunas palabras llevan sc: piscina, escena, adolescente, consciente, disciplina, fascinante, discípulo, ascender, descender.",
+    "ej": [
+     "piscina",
+     "escena",
+     "consciente",
+     "disciplina",
+     "descender"
+    ],
+    "exc": [],
+    "truco": "Familia de «ciencia»: consciente, inconsciencia."
+   }
+  },
+  {
+   "id": "MAY.BASICA",
+   "b": "MAY",
+   "n": "Mayúscula al empezar y en nombres propios",
+   "c": 1,
+   "pre": [],
+   "r": 0.03,
+   "occ": 1.0,
+   "m": [
+    "frase"
+   ],
+   "lec": {
+    "regla": "Se escribe mayúscula al empezar un texto, después de punto y en los nombres propios de personas, animales, ciudades, países, ríos…: Ana vive en Murcia junto al río Segura.",
+    "ej": [
+     "Madrid",
+     "el Ebro",
+     "Luisa y Toby"
+    ],
+    "exc": [],
+    "truco": "Punto y seguido: siempre mayúscula detrás."
+   }
+  },
+  {
+   "id": "MAY.MINUSC",
+   "b": "MAY",
+   "n": "Días, meses, idiomas, gentilicios y cargos: en minúscula",
+   "c": 4,
+   "pre": [
+    "MAY.BASICA"
+   ],
+   "r": 0.15,
+   "occ": 0.6,
+   "m": [
+    "frase",
+    "caza"
+   ],
+   "lec": {
+    "regla": "Se escriben con minúscula los días de la semana, los meses, las estaciones, los idiomas, los gentilicios, las religiones y los cargos: lunes, marzo, verano, inglés, los murcianos, el rey, la presidenta, el ministro.",
+    "ej": [
+     "el lunes 3 de marzo",
+     "habla inglés",
+     "el papa Francisco",
+     "la ministra de Sanidad"
+    ],
+    "exc": [
+     "Llevan mayúscula si empiezan frase o forman parte de un nombre propio: Viernes Santo, Primero de Mayo."
+    ],
+    "truco": "Mayúscula solo para lo que es único con nombre propio."
+   }
+  },
+  {
+   "id": "MAY.AVANZADA",
+   "b": "MAY",
+   "n": "Instituciones, títulos y siglas",
+   "c": 9,
+   "pre": [
+    "MAY.MINUSC"
+   ],
+   "r": 0.25,
+   "occ": 0.3,
+   "m": [
+    "frase"
+   ],
+   "lec": {
+    "regla": "Las instituciones llevan mayúscula en las palabras con significado (el Ministerio de Sanidad, la Universidad de Murcia). En los títulos de libros y películas, solo la primera palabra (Cien años de soledad). Las siglas, en mayúscula y sin puntos (ONU, DNI); su plural no lleva s (las ONG).",
+    "ej": [
+     "el Gobierno de España",
+     "Cien años de soledad",
+     "las ONG",
+     "el Real Madrid"
+    ],
+    "exc": [
+     "Los periódicos y revistas sí llevan mayúscula en todo: El País, La Verdad."
+    ],
+    "truco": "Libro: solo la primera. Institución: todas las importantes."
+   }
+  },
+  {
+   "id": "PUN.APERTURA",
+   "b": "PUN",
+   "n": "¿? y ¡!: se abren y se cierran",
+   "c": 1,
+   "pre": [],
+   "r": 0.1,
+   "occ": 0.3,
+   "m": [
+    "frase"
+   ],
+   "lec": {
+    "regla": "En español las preguntas y exclamaciones llevan signo al principio y al final: ¿Vienes? ¡Qué bien! El signo de apertura va donde empieza la pregunta, aunque no sea el principio de la frase: Si llueve, ¿vendrás?",
+    "ej": [
+     "¿Qué hora es?",
+     "Oye, ¿tienes frío?",
+     "¡Enhorabuena!"
+    ],
+    "exc": [
+     "Detrás de ? o ! no se pone punto."
+    ],
+    "truco": "Abrir y cerrar, como un paréntesis."
+   }
+  },
+  {
+   "id": "PUN.COMA_ENUM",
+   "b": "PUN",
+   "n": "Coma en enumeraciones (y no antes de «y»)",
+   "c": 2,
+   "pre": [],
+   "r": 0.15,
+   "occ": 0.6,
+   "m": [
+    "frase"
+   ],
+   "lec": {
+    "regla": "Los elementos de una enumeración se separan con comas, salvo el último, que se une con y, e, o, ni (sin coma delante): Compré pan, leche, huevos y fruta.",
+    "ej": [
+     "rojo, azul y verde",
+     "ni frío ni calor",
+     "Madrid, Murcia o Málaga"
+    ],
+    "exc": [
+     "Puede ir coma antes de y si lo que sigue no es parte de la enumeración: «Pintó la valla, el banco y la puerta, y se fue a casa»."
+    ],
+    "truco": "La y hace de coma: no repitas."
+   }
+  },
+  {
+   "id": "PUN.VOCATIVO",
+   "b": "PUN",
+   "n": "Coma del vocativo (Hola, Ana)",
+   "c": 5,
+   "pre": [],
+   "r": 0.35,
+   "occ": 0.15,
+   "m": [
+    "frase"
+   ],
+   "lec": {
+    "regla": "El nombre de la persona a la que hablas (vocativo) va siempre entre comas: Hola, Ana. Ana, ven aquí. Gracias, señor López.",
+    "ej": [
+     "Hola, Paco",
+     "Buenos días, María",
+     "Mira, Juan, esto es tuyo"
+    ],
+    "exc": [],
+    "truco": "«Vamos a comer, niños» no es lo mismo que «Vamos a comer niños»."
+   }
+  },
+  {
+   "id": "PUN.SUJETO",
+   "b": "PUN",
+   "n": "Nunca coma entre sujeto y verbo",
+   "c": 7,
+   "pre": [],
+   "r": 0.25,
+   "occ": 0.3,
+   "m": [
+    "frase"
+   ],
+   "lec": {
+    "regla": "No se pone coma entre el sujeto y el verbo, aunque el sujeto sea largo: «Los alumnos que han aprobado todas las asignaturas (sin coma) podrán ir de viaje».",
+    "ej": [
+     "Mi hermano y su mujer viven en Lorca",
+     "El que lo encuentre se lo queda"
+    ],
+    "exc": [
+     "Sí, si hay un inciso entre comas: «Mi hermano, que vive en Lorca, viene hoy»."
+    ],
+    "truco": "Si quitarías la coma al decirlo de corrido, quítala."
+   }
+  },
+  {
+   "id": "PUN.INCISOS",
+   "b": "PUN",
+   "n": "Incisos y conectores entre comas (sin embargo, es decir)",
+   "c": 8,
+   "pre": [],
+   "r": 0.25,
+   "occ": 0.4,
+   "m": [
+    "frase"
+   ],
+   "lec": {
+    "regla": "Los incisos y los conectores como sin embargo, es decir, por tanto, además, no obstante van entre comas: «El plan, sin embargo, no funcionó». «Mi tío, que es médico, lo sabe».",
+    "ej": [
+     "Es decir, no viene",
+     "Sin embargo, llovió",
+     "Madrid, la capital, está lejos"
+    ],
+    "exc": [],
+    "truco": "Si lo puedes quitar y la frase sigue en pie, entre comas."
+   }
+  },
+  {
+   "id": "PUN.DOS_PUNTOS",
+   "b": "PUN",
+   "n": "Dos puntos y punto y coma",
+   "c": 4,
+   "pre": [],
+   "r": 0.25,
+   "occ": 0.2,
+   "m": [
+    "frase"
+   ],
+   "lec": {
+    "regla": "Dos puntos: antes de una enumeración anunciada (Tengo tres hermanos: Ana, Luis y Eva), después del saludo de una carta (Querida Ana:) y antes de una cita. Punto y coma: separa partes largas que ya llevan comas o ideas muy unidas (Unos querían ir; otros, quedarse).",
+    "ej": [
+     "Querido Juan:",
+     "Compra esto: pan y leche",
+     "Llovía mucho; aun así, salimos"
+    ],
+    "exc": [
+     "Tras el saludo de una carta, dos puntos, no coma."
+    ],
+    "truco": "Dos puntos anuncian; punto y coma separa."
+   }
+  },
+  {
+   "id": "JS.PORQUE",
+   "b": "JS",
+   "n": "porque / por qué / porqué / por que",
+   "c": 3,
+   "pre": [
+    "ACE.INTERROG"
+   ],
+   "r": 0.3,
+   "occ": 0.3,
+   "m": [
+    "hueco",
+    "caza"
+   ],
+   "lec": {
+    "regla": "por qué: para preguntar (¿Por qué lloras? No sé por qué). porque: para responder o dar la causa (Lloro porque me duele). el porqué: nombre = el motivo (Explícame el porqué). por que: preposición + que (Esa es la razón por (la) que vine; Lucharon por que se hiciera justicia).",
+    "ej": [
+     "¿Por qué no vienes?",
+     "Porque estoy cansado",
+     "No entiendo el porqué",
+     "La calle por (la) que pasamos"
+    ],
+    "exc": [],
+    "truco": "«El porqué» lleva artículo; si puedes meter «la» o «el» en medio (por la que), separado sin tilde."
+   }
+  },
+  {
+   "id": "JS.HABER",
+   "b": "JS",
+   "n": "haber / a ver",
+   "c": 3,
+   "pre": [],
+   "r": 0.3,
+   "occ": 0.15,
+   "m": [
+    "hueco",
+    "caza"
+   ],
+   "lec": {
+    "regla": "haber es un verbo (Tiene que haber pan; Debe de haber un error). a ver = vamos a ver, mirar (A ver qué pasa; Voy a ver la película).",
+    "ej": [
+     "Va a haber fiesta",
+     "A ver si llueve",
+     "Podría haber venido",
+     "Vamos a ver"
+    ],
+    "exc": [],
+    "truco": "Si puedes poner «vamos a ver», es a ver."
+   }
+  },
+  {
+   "id": "JS.SINO",
+   "b": "JS",
+   "n": "sino / si no",
+   "c": 9,
+   "pre": [],
+   "r": 0.35,
+   "occ": 0.3,
+   "m": [
+    "hueco",
+    "caza"
+   ],
+   "lec": {
+    "regla": "sino (junto) contrapone: «No es azul, sino verde»; o es un nombre: el destino («Era su sino»). si no (separado) = condición negativa: «Si no vienes, me enfado».",
+    "ej": [
+     "No vino Ana, sino Luis",
+     "Si no estudias, suspenderás",
+     "No hace sino quejarse"
+    ],
+    "exc": [],
+    "truco": "Si detrás de «si no» puedes poner «vienes, quieres…», es condición: separado."
+   }
+  },
+  {
+   "id": "JS.TAMBIEN",
+   "b": "JS",
+   "n": "también / tan bien, tampoco / tan poco, demás / de más",
+   "c": 9,
+   "pre": [],
+   "r": 0.3,
+   "occ": 0.15,
+   "m": [
+    "hueco"
+   ],
+   "lec": {
+    "regla": "también (además) / tan bien (= muy bien: «Canta tan bien…»). tampoco (negación) / tan poco (= muy poco). demás (= los otros: «los demás») / de más (= de sobra: «Hay dos sillas de más»).",
+    "ej": [
+     "Yo también voy",
+     "Lo hizo tan bien que ganó",
+     "Come tan poco…",
+     "Llegaron los demás",
+     "Has puesto sal de más"
+    ],
+    "exc": [],
+    "truco": "Si puedes poner «muy», va separado."
+   }
+  },
+  {
+   "id": "JS.ADONDE",
+   "b": "JS",
+   "n": "adonde / a donde / adónde; conque / con que / con qué",
+   "c": 9,
+   "pre": [],
+   "r": 0.35,
+   "occ": 0.05,
+   "m": [
+    "hueco"
+   ],
+   "lec": {
+    "regla": "adónde pregunta un destino (¿Adónde vas?). adonde/a donde, sin tilde, como relativo (El pueblo adonde vamos). conque = así que (Llueve, conque coge paraguas). con que = con el que / con tal de que (El cuchillo con que corta; Basta con que vengas). con qué = pregunta (¿Con qué lo pintas?).",
+    "ej": [
+     "¿Adónde vas?",
+     "Es la ciudad adonde voy",
+     "Ya es tarde, conque date prisa",
+     "¿Con qué lo has hecho?"
+    ],
+    "exc": [],
+    "truco": "Conque = así que."
+   }
+  },
+  {
+   "id": "JS.ASIMISMO",
+   "b": "JS",
+   "n": "asimismo / así mismo / a sí mismo",
+   "c": 10,
+   "pre": [],
+   "r": 0.3,
+   "occ": 0.05,
+   "m": [
+    "hueco"
+   ],
+   "lec": {
+    "regla": "asimismo = también, además («Asimismo, se aprobó el presupuesto»; vale también así mismo). así mismo = de esa misma manera («Hazlo así mismo, como te digo»). a sí mismo = a uno mismo («Se lo dijo a sí mismo»).",
+    "ej": [
+     "Asimismo, se informó…",
+     "Se habla a sí mismo",
+     "Déjalo así mismo"
+    ],
+    "exc": [],
+    "truco": "«A sí mismo» siempre se refiere a una persona."
+   }
+  },
+  {
+   "id": "JS.LOCUCIONES",
+   "b": "JS",
+   "n": "a veces, a lo mejor, enseguida, o sea, en serio, sobre todo…",
+   "c": 8,
+   "pre": [],
+   "r": 0.25,
+   "occ": 0.3,
+   "m": [
+    "elige",
+    "caza",
+    "hueco"
+   ],
+   "lec": {
+    "regla": "Se escriben separadas: a veces, a lo mejor, de repente, o sea, en serio, a partir de, a través, sobre todo (= especialmente), a menudo, de pronto, por favor, sin embargo, en cambio. Juntas: enseguida (también en seguida), aparte, apenas, acerca, debajo, encima, alrededor, también, tampoco.",
+    "ej": [
+     "a veces",
+     "a lo mejor",
+     "o sea",
+     "en serio",
+     "a partir de mañana",
+     "sobre todo"
+    ],
+    "exc": [
+     "sobretodo (junto) es solo la prenda de abrigo."
+    ],
+    "truco": "Ninguna de las separadas existe junta: «aveces» o «osea» no están en el diccionario."
+   }
+  },
+  {
+   "id": "HOM.HAY",
+   "b": "HOM",
+   "n": "hay / ahí / ay",
+   "c": 3,
+   "pre": [],
+   "r": 0.2,
+   "occ": 0.2,
+   "m": [
+    "hueco",
+    "parejas",
+    "caza"
+   ],
+   "lec": {
+    "regla": "hay: del verbo haber («Hay pan»). ahí: lugar («Está ahí»). ay: queja o susto («¡Ay, qué daño!»).",
+    "ej": [
+     "Hay mucha gente",
+     "Déjalo ahí",
+     "¡Ay, me he cortado!"
+    ],
+    "exc": [],
+    "truco": "Ahí es un sitio; hay es haber; ay es un grito."
+   }
+  },
+  {
+   "id": "HOM.ECHO",
+   "b": "HOM",
+   "n": "hecho / echo (hacer / echar)",
+   "c": 6,
+   "pre": [],
+   "r": 0.3,
+   "occ": 0.2,
+   "m": [
+    "hueco",
+    "parejas",
+    "caza"
+   ],
+   "lec": {
+    "regla": "hecho, hecha, con h, vienen de hacer («He hecho los deberes», «Un hecho histórico»). echo, echa, echas… sin h, vienen de echar («Le echo sal», «Echa la carta»).",
+    "ej": [
+     "Lo he hecho yo",
+     "Echo de menos",
+     "Echa más agua",
+     "De hecho, ganó"
+    ],
+    "exc": [],
+    "truco": "Hacer tiene h, echar no: sus formas tampoco."
+   }
+  },
+  {
+   "id": "HOM.VAYA",
+   "b": "HOM",
+   "n": "vaya / valla / baya; haya / halla / aya",
+   "c": 7,
+   "pre": [],
+   "r": 0.3,
+   "occ": 0.1,
+   "m": [
+    "hueco",
+    "parejas"
+   ],
+   "lec": {
+    "regla": "vaya: del verbo ir o exclamación («¡Vaya!», «Que te vaya bien»). valla: cerca, cartel («Saltó la valla»). baya: fruto («Las moras son bayas»). haya: de haber o árbol («Cuando haya tiempo»). halla: de hallar, encontrar («Se halla en Madrid»). aya: niñera.",
+    "ej": [
+     "Ojalá vaya bien",
+     "La valla publicitaria",
+     "Espero que haya pan",
+     "El museo se halla en el centro"
+    ],
+    "exc": [],
+    "truco": "Valla = cerca (con ll de «llave» para cerrar)."
+   }
+  },
+  {
+   "id": "HOM.BV",
+   "b": "HOM",
+   "n": "tuvo / tubo, votar / botar, grabar / gravar…",
+   "c": 8,
+   "pre": [],
+   "r": 0.3,
+   "occ": 0.2,
+   "m": [
+    "hueco",
+    "parejas"
+   ],
+   "lec": {
+    "regla": "tuvo (tener) / tubo (cilindro). votar (en elecciones) / botar (saltar, una pelota, un barco). grabar (sonido, imagen) / gravar (impuestos). bello (bonito) / vello (pelo). hierba (planta) / hierva (de hervir). sabia (que sabe) / savia (de las plantas). revelar (descubrir, fotos) / rebelar (sublevarse). bienes (cosas) / vienes (venir). cabo (extremo, militar) / cavo (cavar). baca (del coche) / vaca.",
+    "ej": [
+     "Tuvo suerte",
+     "El tubo de escape",
+     "Voy a votar",
+     "La pelota bota",
+     "Grabar un vídeo",
+     "Gravar con un impuesto"
+    ],
+    "exc": [],
+    "truco": "Votar con v de voto; botar con b de bote."
+   }
+  },
+  {
+   "id": "HOM.H",
+   "b": "HOM",
+   "n": "ola / hola, a / ha, asta / hasta, ojear / hojear…",
+   "c": 6,
+   "pre": [],
+   "r": 0.25,
+   "occ": 0.4,
+   "m": [
+    "hueco",
+    "parejas",
+    "caza"
+   ],
+   "lec": {
+    "regla": "hola (saludo) / ola (del mar). ha (haber: «ha venido») / a (preposición: «voy a casa»). hasta (preposición) / asta (cuerno, palo de bandera). hojear (pasar hojas) / ojear (mirar). honda (profunda) / onda (curva). hora (tiempo) / ora (de orar). errar (equivocarse) / herrar (poner herraduras). he (haber) / e (y, ante i-: «padre e hijo»).",
+    "ej": [
+     "Ha llegado a casa",
+     "Hasta mañana",
+     "Hojeé el libro",
+     "Una ola enorme"
+    ],
+    "exc": [],
+    "truco": "Si detrás va un participio (-ado, -ido), es ha con h."
+   }
+  },
+  {
+   "id": "HOM.LLY",
+   "b": "HOM",
+   "n": "calló / cayó, rallar / rayar, arrollo / arroyo…",
+   "c": 9,
+   "pre": [],
+   "r": 0.3,
+   "occ": 0.05,
+   "m": [
+    "hueco",
+    "parejas"
+   ],
+   "lec": {
+    "regla": "calló (de callar) / cayó (de caer). rallar (el queso) / rayar (hacer rayas). arrollar (atropellar) / arroyo (riachuelo). pollo (animal) / poyo (banco de piedra). malla (tejido) / maya (del pueblo maya). olla (cazuela) / hoya (hoyo).",
+    "ej": [
+     "Se cayó al suelo",
+     "Se calló de golpe",
+     "Rallar zanahoria",
+     "No rayes la mesa"
+    ],
+    "exc": [],
+    "truco": "Si viene de un infinitivo con ll (callar), ll."
+   }
+  },
+  {
+   "id": "HOM.CSZ",
+   "b": "HOM",
+   "n": "casa / caza, cocer / coser, abrasar / abrazar…",
+   "c": 9,
+   "pre": [],
+   "r": 0.2,
+   "occ": 0.05,
+   "m": [
+    "hueco",
+    "parejas"
+   ],
+   "lec": {
+    "regla": "En el centro y norte de España suenan distinto, pero en zonas de seseo no: casa (vivienda) / caza (cazar). cocer (cocinar) / coser (con aguja). abrasar (quemar) / abrazar (dar abrazos). ciervo (animal) / siervo (esclavo). asar (al fuego) / azar (suerte). cima (cumbre) / sima (cueva profunda). consejo (recomendación) / concejo (ayuntamiento).",
+    "ej": [
+     "Cocer la pasta",
+     "Coser un botón",
+     "Por azar",
+     "Un abrazo"
+    ],
+    "exc": [],
+    "truco": "Coser con s de «costura»."
+   }
+  },
+  {
+   "id": "HOM.PARONIMOS",
+   "b": "HOM",
+   "n": "Parecidas: actitud / aptitud, infligir / infringir…",
+   "c": 10,
+   "pre": [],
+   "r": 0.3,
+   "occ": 0.1,
+   "m": [
+    "hueco",
+    "parejas"
+   ],
+   "lec": {
+    "regla": "Palabras casi iguales con significado distinto: actitud (manera de comportarse) / aptitud (capacidad). infligir (causar un daño: «infligir una derrota») / infringir (incumplir una norma). absorber (empapar) / absolver (perdonar). prejuicio (idea previa) / perjuicio (daño). especia (condimento) / especie (tipo). desecho (resto) / deshecho (de deshacer). adoptar (hacer suyo) / adaptar (ajustar).",
+    "ej": [
+     "Buena actitud",
+     "Prueba de aptitud",
+     "Infringir la ley",
+     "Infligir un castigo"
+    ],
+    "exc": [
+     "«inflingir» no existe."
+    ],
+    "truco": "Infringir una norma: «in-fringir» como «in-cumplir»."
+   }
+  },
+  {
+   "id": "ADU.FRECUENTES",
+   "b": "ADU",
+   "n": "Palabras que mucha gente escribe mal",
+   "c": 11,
+   "pre": [],
+   "r": 0.15,
+   "occ": 0.2,
+   "m": [
+    "elige",
+    "dictado",
+    "caza"
+   ],
+   "lec": {
+    "regla": "Hay palabras que adultos con estudios escriben mal a menudo: prever (no «preveer»), haya (no «haiga»), idiosincrasia, cónyuge, exorbitante, meteorología, nadie, dentífrico, espontáneo, extranjero, exhausto, excepción, garaje… Se aprenden viendo dónde está la trampa de cada una.",
+    "ej": [
+     "prever",
+     "idiosincrasia",
+     "cónyuge",
+     "exorbitante",
+     "meteorología",
+     "exhausto"
+    ],
+    "exc": [],
+    "truco": "Busca la palabra de la familia: «meteoro» → meteorología; «órbita» → exorbitante."
+   }
+  }
+ ]
+}
