@@ -335,3 +335,12 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 - Tanda 60: palabras de los ⭐ + studios/labs (como Querystudios) y dos ⭐ + studios; 14 cargados. Tanda 61: personajes de la literatura española (como ⭐ Lazarillo, 👍 Rucio): 22 cargados (Patronio, Lucanor, Tormes, Buscón, Cortadillo, Rinconete, Urdemalas, Maritornes…). Tanda 62: 380 candidatos de los subagentes (verbos de VC/estudios de animación/apps infantiles, lugares bilingües, Forward + objeto nuevo, palabra única con historia).
 - Tanda 62 (380 de los subagentes): solo 59 cargados (265 .com ocupados: las parejas de palabras comunes están cogidas). Tanda 63 (personajes de la literatura en español, mitología, ciencia): 21 cargados; MortadeloStudios vetado a mano (marca registrada). Tanda 64 (pícaros y caballerías, literatura juvenil, lugares literarios): 26 cargados. **Lo que más .com libres da: personajes y lugares literarios + Studios/Labs/Works (60-75 %)**; parejas inglesas comunes ~15 %. Cola: 141.
 - Tanda 65 (relleno hasta 150): cuentos para enseñar (Calila e Dimna, Sendebar, Barlaam), retablo de Maese Pedro, Gepeto, Sherezade, Zifar.
+
+### 15/10 — Revisión de Paco de las tandas 59-65 (~17:24 UTC)
+- 110 marcas: solo 👍 **TormesLabs**. 👎 todo lo demás: personajes y lugares literarios + Studios/Labs/Works (Patronio, Lucanor, Buscón, Rinconete, Amadís, Tirant, Macondo, Comala, Cronopio, Gepeto, Pinocho…) y Forward/Sprout + objeto (Lantern, Lamp, Marble, Lever, Domino…). **La vía «personaje literario + Studios» está agotada**: Lazarillo ⭐ y Tormes 👍 son el mismo libro, no un patrón general.
+- Lectura: lo que queda vivo de esa vía es **río/lugar + Labs** (TormesLabs) y los comentarios de Paco que aún no se han explotado: material de escuela (paper, carbon, graphite, cartabón, escuadra), «papersword», trail(blazer), Quevedo/Góngora Studios (autor, no personaje), Atlanta/Murcia Studios.
+- Tanda 66 (ríos de España y América + Labs; material/herramienta de dibujo; escritores + Studios; lugares bilingües): 48 cargados. Nalon/Parana/Castro/Cisneros vetados por cribar.
+- Tanda 67 (material humilde + objeto épico, como PaperSword; Trail/Blaze + material de escuela): 19 cargados.
+- Tanda 68 (palabras que se escriben igual en ES/EN + Labs/Studios; latín corto): 9 cargados — las palabras comunes (Decimal, Lateral, Mural, Tutor…) están todas cogidas.
+- Tanda 69 (ríos, sierras y parajes de España y América + Labs, muchos del entorno del Tormes: Huebra, Yeltes, Alagón, Ledesma, Arapiles): 46 cargados (70 % libres).
+- Cola: 169 pendientes. comprobar_com.py: 190/190 libres.
