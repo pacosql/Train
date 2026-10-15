@@ -207,6 +207,8 @@ quedó vacía, así que ahora la cola se mantiene en **200 por decidir**
   correcto» (Pulcro, Nítida, Esmero, Atildado —lleva «tilde» dentro—).
 - Tanda 16 (relleno de 10): opo/EBAU + escribir/dictado/tildes y sorpresa
   monosílabo (Tild, Acent, Grafo). Tandas 14-15: 63 votos, todos 👎.
+- 15/10: arreglado preferencias.py, que solo leía 1000 filas (tope de
+  Supabase): ya pagina y aprende de TODOS los votos.
 
 ## Programación
 

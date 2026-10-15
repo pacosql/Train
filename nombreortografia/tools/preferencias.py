@@ -71,7 +71,11 @@ def prob(nombre, metodo, peso, base):
 CADA = int(sys.argv[sys.argv.index("--cada") + 1]) if "--cada" in sys.argv else 3
 
 def main():
-    todas = req("GET", f"{BASE}?select=id,nombre,status,tanda,metodo,score&limit=5000")
+    todas = []  # Supabase devuelve como mucho 1000 filas por petición: paginar
+    while True:
+        lote = req("GET", f"{BASE}?select=id,nombre,status,tanda,metodo,score&order=id&limit=1000&offset={len(todas)}")
+        todas += lote
+        if len(lote) < 1000: break
     dec = [d for d in todas if d["status"] in ("me_gusta", "favorito", "no_me_gusta", "nada")]
     peso, base, g, b = modelo(dec)
     print(f"== QUÉ LE GUSTA (de {len(dec)} votos; lo reciente pesa más) ==")
