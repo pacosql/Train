@@ -59,6 +59,16 @@ marca. Todo desde la raíz del repo `Train`.
   Góngora, Quevedo, Cervantes, Nebrija, Dulcinea. En Nombre Empresa ya le
   gustaron QuevedoStudios y GaudiStudios (figura con nombre propio).
 - Le encantaría que tuviera que ver con la ortografía.
+- (15/10, 05:50) 👎 a los 267 de la tanda 1 en dos minutos, sin ningún 👍 ni
+  comentario: autores españoles, variantes y personajes (sobre todo como
+  «Proyecto …») no le convencen tal cual. Tanda 2 (103 cargados) explora otras
+  vías: creadores de alfabetos (Cadmo, Sequoyah, Sejong, Braille), gramáticos
+  clásicos hispanos (Quintiliano, Isidoro, Casiodoro), impresores (Manucio,
+  Ibarra), lexicógrafos (Webster, Larousse), pedagogos (Comenio, Montessori)
+  y autores/personajes universales con letras (Rodari, Perec, Pinocho, Matilda).
+  Si esta tanda tampoco gusta, prueba otra forma de presentar («Taller …»,
+  «… Lab», el nombre solo aunque el .com esté ocupado) y pregúntale con un
+  comentario en el log.
 
 ## Qué NO hacer
 
