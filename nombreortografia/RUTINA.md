@@ -188,6 +188,17 @@ quedó vacía, así que ahora la cola se mantiene en **200 por decidir**
   «Ortografía» entera solo 14 %: él la pidió, pero no la vota. Tanda 13
   (36): sorpresas cortas (Tildar, Ortoria, Tildora, Faltora, DonTilde,
   ProfeTilde, CapitánTilde, Ortolingo, SinFaltas10…), y la cola reordenada.
+- 15/10 (madrugada): Paco vota los 246 de golpe. **Tanda 13 de sorpresas:
+  10 👍 de 36 (28 %), la mejor en días**; tanda 12 (Ortografía + cifra):
+  3 de 169. Gustan los **PERSONAJES/MASCOTA** (ProfeTilde, CapitánTilde,
+  DonTilde, DonAcento, SuperTilde, ProfeOrto), los **verbos** (Tildear,
+  Corrígeme) y **Orto + palabra con chispa** (OrtoBum, OrtoHoy, OrtoNota,
+  Orto1000). «Nada»: TíoTilde, ProfeComa, ProfeHache (Tilde/Acento/Orto
+  sí; Coma/Hache no), Ortolingo, Ortoria, y todo Orthografia*. → Tanda 14
+  (hasta 200): personaje + Tilde/Acento/Orto, verbos/imperativos, Orto/
+  Tilde/Acento + palabra con chispa; sorpresas: superhéroe -man, diminutivo
+  (Tildita), animal mascota (BúhoTilde), frase de profe (OjoTilde,
+  LlevaTilde), nombre de pila (Tilda).
 
 ## Programación
 
