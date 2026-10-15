@@ -199,6 +199,12 @@ quedó vacía, así que ahora la cola se mantiene en **200 por decidir**
   Tilde/Acento + palabra con chispa; sorpresas: superhéroe -man, diminutivo
   (Tildita), animal mascota (BúhoTilde), frase de profe (OjoTilde,
   LlevaTilde), nombre de pila (Tilda).
+- Tanda 14 cargada (200) y Paco la empezó a votar al momento: **59 👎 y
+  0 👍** (animales, -man, Ojo/Aquí, Capitán/Profe + Falta/Letra, Orto +
+  onomatopeya). Los personajes de la tanda 13 no eran un filón: no repetir
+  más mascotas. Tanda 15 (relleno de 49): rasgos que el modelo ve arriba
+  (opo, EBAU, faltas, escribir, corto) + sorpresa «palabra real de limpio/
+  correcto» (Pulcro, Nítida, Esmero, Atildado —lleva «tilde» dentro—).
 
 ## Programación
 
