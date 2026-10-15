@@ -69,6 +69,10 @@ marca. Todo desde la raíz del repo `Train`.
   Si esta tanda tampoco gusta, prueba otra forma de presentar («Taller …»,
   «… Lab», el nombre solo aunque el .com esté ocupado) y pregúntale con un
   comentario en el log.
+- (15/10, 07 h) Tanda 3, sin marcas nuevas: 105 cargados (22 tal cual) —
+  orígenes de la escritura (Biblos, Ugarit, Glosas Emilianenses, Silos),
+  Higgins/Pigmalión, Fray Gerundio, Belarmino, Trilce, Altazor y autores de
+  los siglos XVI-XX que faltaban. Cola: 208.
 
 ## Qué NO hacer
 
