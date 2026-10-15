@@ -302,3 +302,14 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 - Si esta tanda también cae, dejar de producir volumen en la vía Query y proponer a Paco el paso siguiente que ya estaba apuntado: comprobación a fondo de ForwardQuery (marcas USPTO/EUIPO/OEPM, empresas, redes).
 - Tanda 53 (al azar, sin marcas nuevas). azar.py sacó otra vez «oficio antiguo» (rechazada en la 44 y la 50): se volvió a sortear y se eligió «dos palabras que cuentan algo» (la forma de ForwardQuery). 15 candidatos, 4 con .com libre — HarborQuery, QueryOnward, QuerySwift, ForwardAnswer (7 ocupados, 4 ya existían). Las parejas obvias (NextQuery, OpenQuery, AskForward, QueryLeap…) están cogidas. comprobar_com.py: 44/44 libres.
 - Regla nueva: si azar.py saca una forma que Paco ha rechazado en bloque dos veces, se vuelve a sortear.
+
+### 15/10 — Paco consolida la shortlist (~06:10 UTC)
+- Tandas 52 y 53 rechazadas enteras (11 👎). 👍 vaciado: 15 pasan a 💚 (QueryStroke, StrokeQuery, QueryBrick, StrideQuery, FigureQuery, IndigoQuery, SierraQuery, AtlantaForward, FrontierQuery, LeafQuery, SlateQuery, QuerySwift, PacoNorth, Tintazulstudios, SketchPaperStudio); 👎 TintixStudios, CarpetaStudios.
+- **⭐ (17)**: ForwardQuery, ForwardQueries, ForwardQueryStudios, ForwardQueryStudio, ForwardQueryLabs, QueryForward, QueryForwardStudios, FwdQuery, Querystudios, QueryPlot, PlotQuery, SproutQuery, ForwardSlate, SlateForward, TrailStroke, TrailBrick, TrailEast.
+- Lectura: ya no busca más nombres, está eligiendo. **No más tandas de volumen** salvo que marque algo nuevo o lo pida; las pasadas sin marcas hacen comprobaciones de la shortlist (abajo) o registran y terminan.
+
+### 15/10 — Primera comprobación de la shortlist (búsqueda web, no es búsqueda oficial de marcas)
+- **ForwardQuery / Forward Query**: no aparece ninguna empresa, app ni marca con ese nombre. Ojo: «Forward» suelto está muy usado en estudios y marketing (marca FORWARD STUDIO de Forward Studio LLC, 2023, consultoría de marketing; Forward Labs, estudio de marketing en Toronto; Forward Partners, VC en Reino Unido). Eso pesa contra **ForwardQueryStudio(s)/Labs**: se acercan a «Forward Studio»/«Forward Labs». ForwardQuery a secas sale limpio.
+- **QueryPlot / PlotQuery**: nada con ese nombre. Lo más cercano es Plotly (visualización de datos) y Plot Technologies; distinto, pero suena a herramienta de gráficos.
+- **SproutQuery**: nada.
+- Pendiente: búsqueda oficial en USPTO (TESS), EUIPO y OEPM; handles en X/Instagram/LinkedIn; Registro Mercantil / Delaware.
