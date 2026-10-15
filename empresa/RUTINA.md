@@ -306,7 +306,7 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 ### 15/10 — Paco consolida la shortlist (~06:10 UTC)
 - Tandas 52 y 53 rechazadas enteras (11 👎). 👍 vaciado: 15 pasan a 💚 (QueryStroke, StrokeQuery, QueryBrick, StrideQuery, FigureQuery, IndigoQuery, SierraQuery, AtlantaForward, FrontierQuery, LeafQuery, SlateQuery, QuerySwift, PacoNorth, Tintazulstudios, SketchPaperStudio); 👎 TintixStudios, CarpetaStudios.
 - **⭐ (17)**: ForwardQuery, ForwardQueries, ForwardQueryStudios, ForwardQueryStudio, ForwardQueryLabs, QueryForward, QueryForwardStudios, FwdQuery, Querystudios, QueryPlot, PlotQuery, SproutQuery, ForwardSlate, SlateForward, TrailStroke, TrailBrick, TrailEast.
-- Lectura: ya no busca más nombres, está eligiendo. **No más tandas de volumen** salvo que marque algo nuevo o lo pida; las pasadas sin marcas hacen comprobaciones de la shortlist (abajo) o registran y terminan.
+- ~~Lectura: ya no busca más nombres~~ **ERROR (Paco, 06:4x): «¿por qué no hay más nombres? quiero clasificar más».** Paco quiere SIEMPRE nombres para clasificar. Nunca dejar la cola vacía: si quedan < 20 pendientes, tanda nueva (30-60 candidatos) aunque no haya marcas.
 
 ### 15/10 — Primera comprobación de la shortlist (búsqueda web, no es búsqueda oficial de marcas)
 - **ForwardQuery / Forward Query**: no aparece ninguna empresa, app ni marca con ese nombre. Ojo: «Forward» suelto está muy usado en estudios y marketing (marca FORWARD STUDIO de Forward Studio LLC, 2023, consultoría de marketing; Forward Labs, estudio de marketing en Toronto; Forward Partners, VC en Reino Unido). Eso pesa contra **ForwardQueryStudio(s)/Labs**: se acercan a «Forward Studio»/«Forward Labs». ForwardQuery a secas sale limpio.
@@ -319,3 +319,5 @@ que ha marcado. Todo desde la raíz del repo `Train`.
   - **ForwardSlate / SlateForward**: nada, pero **ForwardSlate suena casi igual que «forward slash»** (la barra /; hay una empresa Forwardslash). Pega en voz alta. Slate también es una revista conocida (Slate).
   - **QueryForward / FwdQuery**: nada como marca, pero **«query forwarding» es jerga de DNS** y «fwd» de reenvío de puertos/correo: suenan a herramienta de redes.
   - Resumen hasta ahora: ningún ⭐ tiene un choque directo; los más limpios para registrar son ForwardQuery, QueryPlot/PlotQuery, SproutQuery, TrailStroke y TrailBrick.
+- Tanda 54 (tras «quiero clasificar más»): 58 candidatos sobre los ⭐ (Forward + pensar, Query + crecer, Plot/gráfica, Trail, Slate); 22 cargados. Paco los clasificó al momento: 👍 ForwardPlot; 👎 casi todo (Forward + palabra de mates/acertijo, Query + plantas, Slope/Curve). TrailQuery 👍 → 👎.
+- Tanda 55: dos piezas de los ⭐ juntas (como ForwardPlot) + «plot a course» + Forward + pieza de dibujo. 45 candidatos, 13 cargados: ForwardAngle, StrokeTrail, PlotTrail, SproutSlate, PlotStroke, StrokePlot, QueryCourse, PlotBrick, ForwardBrick, PlotEast, ForwardChart, ForwardGraph, QueryEastward.
