@@ -267,3 +267,29 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 ### 14/10 — Tanda 37
 - Tanda 36 (inglés + español) rechazada casi entera: 12 👎. Solo 👍 ChalkForward (de la 35). **Corrige el aprendizaje de la 36**: que haya .com libre no significa que guste; las mezclas con español no le convencen. Prefiere dos palabras inglesas.
 - Tanda 37: material escolar en inglés + Forward/Query (siguiendo ChalkForward) y palabras inglesas de doble sentido. 16 candidatos, 8 con .com libre: SlateForward, QuillForward, PencilForward, ChalkQuery, SlateQuery, CrayonForward, RulerForward, CobaltSlate.
+
+### 14/10 — Tanda 38
+- Limpieza de Paco (12:46–13:00): ~20 👍 antiguos a 👎 (Azul*, Tinta*, Grafito*, Sepia*, Inkblazer, Carbonblazer, BrixelStudios, TizaWave, LapiceroLabs, CartabonLabs…). Se queda 👍 GrafitoTrail. De la tanda 37: 👍 SlateQuery, SlateForward; el resto 👎.
+- Lectura: el gusto se estrecha a **dos palabras inglesas sobrias: Slate/Trail/Query/Forward**. Material escolar «infantil» (Crayon, Ruler, Pencil, Quill) no.
+- Tanda 38: Slate + dirección/pregunta y receta al azar (Vector, Leaf, Bench, Iron). 6 con .com libre: SlateAhead, SlateEast, SlateAsk, ForwardSlate, IronQuery, LeafQuery.
+
+### 14/10 — Tanda 39
+- Paco ya usa 💚 (28 nombres pasados a «me gusta, descartado»: Tinta*, Faben*, Lexix/Folon, Quevedo/Gaudí, parte de las variantes de ForwardQuery…). Shortlist ⭐ (13): ForwardQuery, ForwardQueryStudios, ForwardQueryStudio, QueryForward, ForwardQueryLabs, FwdQuery, ForwardQueries, QueryForwardStudios, Querystudios, SlateForward, TrailEast, TrailStroke, TrailBrick. 👍: ForwardSlate, LeafQuery, SlateQuery, Tintazulstudios, CarpetaStudios, PacoNorth, TintixStudios, SketchPaperStudio.
+- De la 38: 👍 ForwardSlate, LeafQuery; 👎 SlateAhead/Ask/East, IronQuery.
+- Tanda 39: trazo/gesto de escribir (ancla TrailStroke) + azar (objeto de escritorio + Works/Labs). 4 con .com libre: QueryStroke, StrokeQuery, HiveSlate, CoveQuery. PolarSlate vetado (canal Polar Skate Co.).
+- Tanda 40 (al azar, sin marcas nuevas; receta: avanzar/descubrir + palabra de los ⭐): 10 con .com libre — StrideQuery, StrideSlate, VoyageQuery, QueryVoyage, UnfoldQuery, QueryEast, EastQuery, QueryBrick, ClimbQuery, SlateStride.
+- Tanda 41 (al azar, sin marcas nuevas; receta: naturaleza + pensamiento): 9 con .com libre — PineQuery, WrenQuery, IndigoQuery, PineThought, WrenThink, RiverQuery, OakQuery, QueryRiver, CedarQuery. Cola: 23 pendientes.
+- Tanda 42 (al azar, sin marcas nuevas; receta: lugar/río que suene en los dos idiomas): 6 con .com libre — SierraQuery, AndesQuery, CaminoQuery, TahoeQuery, AtlantaQuery, AtlantaForward. Cola: 29 pendientes.
+- Tanda 43 (al azar, sin marcas nuevas; receta: palabra inglesa con doble sentido): 6 con .com libre — PlotQuery, FigureQuery, BoundQuery, BraveQuery, SlatePlot, TrailFigure. Cola: 35 pendientes.
+- Tanda 44 (al azar, sin marcas nuevas; receta: oficio antiguo): 7 con .com libre — TypesetQuery, MapmakerQuery, JoineryQuery, TrailJoinery, QuarryQuery, MasonQuery, TrailMason. Cola: 42 pendientes. Si azar.py repite la forma de la tanda anterior, se vuelve a sortear.
+- Tanda 45 (al azar, sin marcas nuevas; receta: objeto de escritorio + Studios/Labs/Works): 4 con .com libre — FolioQuery, LampQuery, NotebookForward, EaselQuery. Cola: 46 pendientes.
+- Tanda 46 (al azar, sin marcas nuevas; avanzar/descubrir + palabra de los ⭐): 7 con .com libre — SeedQuery, SproutQuery, FrontierQuery, PioneerQuery, AscentQuery, SlateSeed, DawnQuery. Cola: 53 pendientes (cerca del tope de 60).
+- Tanda 47 (al azar, sin marcas nuevas; dos palabras inglesas dirección + objeto): 9 con .com libre — UpwardQuery, OnwardSlate, OutwardQuery, SkywardQuery, HomewardQuery, RiverForward, HeronQuery, ForwardHeron, AheadSlate. Cola: 62 pendientes → **tope alcanzado**; no más tandas al azar hasta que Paco revise.
+- azar.py: quitada la receta «inglés + español» (rechazada en la tanda 36).
+- Tanda 48 (al azar, sin marcas nuevas; algo que se hace al aprender): 5 con .com libre — UnderlineQuery, TallyQuery, TallyForward, MarginQuery, SketchQuery. Cola: 60 pendientes buenos → tope; las próximas pasadas solo registran hasta que Paco revise.
+
+### 15/10 — Tanda 49 (dirigida: revisión de Paco de los 67)
+- Paco revisó la cola entera (~04:50 UTC). 👍 (11): QueryBrick, SproutQuery, StrokeQuery, StrideQuery, QueryStroke, PlotQuery, FigureQuery, IndigoQuery, FrontierQuery, SierraQuery, AtlantaForward. 🙅 3 (UnfoldQuery, TallyForward, CoveQuery). 👎 el resto.
+- Lectura: **palabra inglesa con fuerza + Query** (doble sentido de mates: Plot/Figure; avanzar: Stride/Sprout/Frontier; construir: Brick; color: Indigo; lugar bilingüe: Sierra). Ya no gustan: Slate + X (todo 👎), Trail + X, «-ward» (Upward, Onward, Skyward…), naturaleza común (Pine, Oak, Cedar, River, Wren, Heron) ni detalles de escribir (Margin, Underline, Typeset, Folio).
+- Tanda 49: 35 candidatos en esas cinco vías; 18 con .com libre (7 buenos, 11 en reserva): VertexQuery, MesaQuery, QueryPlot, FactorQuery, RatioQuery, BeamQuery, TangentQuery, QueryStride, AxisQuery, QueryFigure, KeystoneQuery, MortarQuery, SaffronQuery, MedianQuery, CanyonQuery, CrimsonQuery, OchreQuery, VermilionQuery. Sin cargar (17, .com ocupado): PrimeQuery, ScaleQuery, SummitQuery, LeapQuery, SurgeQuery, KindleQuery, BloomQuery, VentureQuery, QuerySprout, ArchQuery, TimberQuery, BrickForward, AmberQuery, DeltaQuery, SierraForward, MesaForward, DeltaForward. Las palabras comunes de una sílaba + Query ya están cogidas: mejor palabras menos obvias (Vertex, Mortar, Ochre).
+- comprobar_com.py: 50/50 libres.

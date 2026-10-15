@@ -13,7 +13,7 @@ from cribar import sb_all
 
 FORMAS = [
     "Dos palabras inglesas reales que juntas cuenten algo (como ForwardQuery: verbo/dirección + objeto)",
-    "Palabra inglesa + palabra española que suenen bien juntas en los dos idiomas",
+    # Quitada 14/10: «inglés + español» → Paco rechazó casi toda la tanda 36.
     "Metáfora de un oficio antiguo (imprenta, cartografía, carpintería) en una o dos palabras",
     "Nombre de lugar, río o accidente geográfico que suene bien en inglés y español",
     "Palabra corta inventada a partir de dos raíces latinas o griegas (como Lexix, Folon)",

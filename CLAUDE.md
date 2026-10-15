@@ -105,6 +105,7 @@ Al crear una app nueva `<app>/`:
 | ✍️ Orto | `orto/` | `orto_` |
 | 🏢 Nombre Empresa | `empresa/` | `empresa_` |
 | ✍️ Nombre Ortografía | `nombreortografia/` | `nombreortografia_` |
+| ✒️ Nombre Autor | `autor/` | `autor_` |
 
 (Actualiza esta tabla al añadir una app nueva.)
 
