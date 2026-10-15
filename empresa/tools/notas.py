@@ -15,7 +15,7 @@ este script nunca toca un nombre que ya tenga medidas, salvo con --todo.
 import json, os, re, sys, unicodedata, urllib.parse, urllib.request
 AQUI = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, AQUI)
-from medidas import MEDIDAS as M, total
+from medidas import MEDIDAS as M, total, escritura
 anon = re.search(r"eyJ[^\"']+", open(os.path.join(AQUI, "..", "config.js")).read()).group(0)
 BASE = "https://dzlhsdpgyxnjwudmrnul.supabase.co/rest/v1/empresa_ideas"
 H = {"apikey": anon, "Authorization": f"Bearer {anon}", "Content-Type": "application/json"}
@@ -81,8 +81,10 @@ def main():
         ns = notas.get(k) or rubrica(r["nombre"])
         mot = motivos(r["nombre"], ns, r)
         med = {m: {"nota": v, "por_que": mot[m]} for m, v in zip(M, ns)}
+        e, e_pq = escritura(r["nombre"])
+        med["escritura"] = {"nota": e, "por_que": e_pq}
         med["tipo"] = r["metodo"] or ""
-        sc = total(dict(zip(M, ns)))
+        sc = total({**dict(zip(M, ns)), "escritura": e})
         body = {"medidas": med, "score": sc, "score_motivo": "Claude: " + (r["porque"] or "")}
         # < 70 va a la reserva (orden ≥ 100000): sigue en la cola, detrás de los buenos.
         if r["status"] == "pendiente": body["orden"] = round((100 - sc) * 10) + (0 if sc >= 70 else 100000)
