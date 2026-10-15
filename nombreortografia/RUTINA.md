@@ -205,6 +205,8 @@ quedó vacía, así que ahora la cola se mantiene en **200 por decidir**
   más mascotas. Tanda 15 (relleno de 49): rasgos que el modelo ve arriba
   (opo, EBAU, faltas, escribir, corto) + sorpresa «palabra real de limpio/
   correcto» (Pulcro, Nítida, Esmero, Atildado —lleva «tilde» dentro—).
+- Tanda 16 (relleno de 10): opo/EBAU + escribir/dictado/tildes y sorpresa
+  monosílabo (Tild, Acent, Grafo). Tandas 14-15: 63 votos, todos 👎.
 
 ## Programación
 
