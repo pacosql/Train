@@ -113,6 +113,13 @@ por partes. Trabajar en `/tmp/r/` (crear la carpeta).
    `python3 empleo/tools/sueldo.py rellenar`.
 9. **Compañías nuevas** relevantes: upsert directo en `empleo_empresas`
    (con `ats`/`ats_token` si tiene API, `top`, `data_ai`, `empleados`).
+   **Fiabilidad** (`confianza` 1-5 + `confianza_nota`) de cada empresa nueva
+   y de las ofertas sin ella: 5 gran empresa conocida · 4 consolidada y
+   verificable · 3 startup/pyme real con web y LinkedIn · 2 presencia mínima,
+   agencia que no nombra al cliente, "Stealth", venture builder genérico ·
+   1 PELIGROSA (sin presencia verificable o señales de estafa). Guardarla en
+   `empleo_empresas` y en las ofertas de esa empresa; `insertar` la copia a
+   las ofertas nuevas de empresas ya puntuadas.
 10. **Registrar**: `POST empleo_rutinas` con `{"nuevas": N, "nota": "…"}`
     (nuevas por perfil, cerradas retiradas, revisiones atendidas, incidencias).
 11. Solo si se cambia código: commit, merge a `main` y push (si el push

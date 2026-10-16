@@ -128,6 +128,10 @@
     .key .k-hib { color: var(--mid); border-color: rgba(242, 184, 64, 0.55); }
     .key .k-cat { color: var(--accent-2); border-color: rgba(110, 168, 255, 0.5); }
     .key .k-emp { color: var(--text); }
+    .key .k-star { color: #ffd66e; letter-spacing: 1px; }
+    .key .k-danger { color: #fff; background: var(--bad); border-color: var(--bad); }
+    .ya-aplicada { margin: 0 0 8px; padding: 7px 10px; border-radius: 10px; font-size: 0.84rem; font-weight: 600;
+      color: #ffd66e; background: rgba(242, 184, 64, 0.12); border: 1px solid rgba(242, 184, 64, 0.55); }
     .key .k-pay { color: #ffd66e; border-color: rgba(242, 184, 64, 0.55); background: rgba(242, 184, 64, 0.12); }
     .acts .dislike.on { background: var(--bad-soft); color: var(--bad); border-color: rgba(255, 84, 112, 0.6); }
     .acts .apply.on { background: rgba(110, 168, 255, 0.18); color: var(--accent-2); border-color: rgba(110, 168, 255, 0.7); }
@@ -218,6 +222,13 @@
       <span class="chip" data-p="100000">≥ 100K</span>
       <span class="chip" data-p="150000">≥ 150K</span>
     </div>
+    <div class="filters" id="trust">
+      <span class="lbl">🛡️ Fiabilidad:</span>
+      <span class="chip" data-t="5">★★★★★</span>
+      <span class="chip" data-t="4">★4+</span>
+      <span class="chip" data-t="3">★3+</span>
+      <span class="chip" data-t="peligro">⚠️ Peligrosas</span>
+    </div>
     <div class="row2">
       <input type="search" id="q" placeholder="Buscar empresa, puesto, ciudad…" />
       <select id="sort">
@@ -267,7 +278,7 @@
 
     const STATE_KEY = "empleo.estado";
     const state = (() => {
-      const def = { tab: "pendiente", f: {}, sz: {}, pay: "", q: "", sort: "encontrado", view: "ofertas", qe: "", fe: "" };
+      const def = { tab: "pendiente", f: {}, sz: {}, pay: "", trust: "", q: "", sort: "encontrado", view: "ofertas", qe: "", fe: "" };
       try { return { ...def, ...JSON.parse(localStorage.getItem(STATE_KEY) || "{}") }; } catch { return def; }
     })();
     if (state.tab === "gusta") state.tab = "medium";
@@ -287,6 +298,22 @@
     // Una oferta "no activa" está desactivada o es una aplicada cuya oferta ya cerró.
     const cerrada = (o) => !o.activa || (o.etiquetas || []).includes("oferta cerrada");
     const base = () => ofertas.filter((o) => (state.view === "archivo" ? cerrada(o) : !cerrada(o)));
+    function confianza(o) {
+      if (o.confianza) return { n: o.confianza, nota: o.confianza_nota };
+      const e = empresas.find((x) => x.nombre.toLowerCase() === o.empresa.toLowerCase());
+      return e && e.confianza ? { n: e.confianza, nota: e.confianza_nota } : null;
+    }
+    // Última aplicación a la misma empresa (cualquier oferta, activa o no).
+    function yaAplicada(o) {
+      const DIAS = 15, ahora = Date.now();
+      let mejor = null;
+      for (const x of ofertas) {
+        if (x.id === o.id || !x.aplicada_en || x.empresa.toLowerCase() !== o.empresa.toLowerCase()) continue;
+        const d = (ahora - new Date(x.aplicada_en).getTime()) / 864e5;
+        if (d <= DIAS && (!mejor || d < mejor.d)) mejor = { d, puesto: x.puesto };
+      }
+      return mejor;
+    }
     const PRIO = { high: "🔥 High", medium: "👌 Medium", low: "🧊 Low" };
     function empleados(o) {
       if (o.empleados) return o.empleados;
@@ -324,6 +351,8 @@
       if (state.f.top) list = list.filter((o) => o.empresa_top);
       const sizes = Object.keys(state.sz || {}).filter((k) => state.sz[k]);
       if (sizes.length) list = list.filter((o) => sizes.includes(empleados(o)));
+      if (state.trust === "peligro") list = list.filter((o) => (confianza(o) || {}).n === 1);
+      else if (state.trust) list = list.filter((o) => ((confianza(o) || {}).n || 0) >= +state.trust);
       if (state.pay === "con") list = list.filter((o) => o.sueldo);
       else if (state.pay) list = list.filter((o) => (o.sueldo_max_eur || o.sueldo_min_eur || 0) >= +state.pay);
       if (q) list = list.filter((o) => [o.empresa, o.puesto, o.ubicacion, o.resumen, o.fuente, o.sector, (o.etiquetas || []).join(" ")].join(" ").toLowerCase().includes(q));
@@ -349,6 +378,7 @@
       $("n-todas").textContent = b.length;
       document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("active", t.dataset.tab === state.tab));
       document.querySelectorAll("#filters .chip").forEach((c) => c.classList.toggle("on", !!state.f[c.dataset.f]));
+      document.querySelectorAll("#trust .chip").forEach((c) => c.classList.toggle("on", state.trust === c.dataset.t));
       document.querySelectorAll("#pay .chip").forEach((c) => c.classList.toggle("on", state.pay === c.dataset.p));
       document.querySelectorAll("#sizes .chip").forEach((c) => c.classList.toggle("on", !!(state.sz || {})[c.dataset.s]));
       $("q").value = state.q; $("sort").value = state.sort;
@@ -447,6 +477,12 @@
           : `<span class="${o.modalidad === "remoto" ? "k-rem" : o.modalidad === "hibrido" ? "k-hib" : ""}">${MOD[o.modalidad] || o.modalidad}</span>`,
         `<span class="k-cat">${CAT_LABEL[o.categoria] || o.categoria}</span>`,
         `<span class="k-emp">👥 ${esc(empleados(o) || "¿?")} empleados</span>`,
+        (() => {
+          const c = confianza(o);
+          if (!c) return "";
+          if (c.n <= 1) return `<span class="k-danger" title="${esc(c.nota || "")}">⚠️ Peligrosa</span>`;
+          return `<span class="k-star" title="${esc(c.nota || "")}">${"★".repeat(c.n)}${"☆".repeat(5 - c.n)}</span>`;
+        })(),
         o.sueldo ? `<span class="k-pay">💶 ${esc(o.sueldo)}/año</span>` : "",
       ].join("");
       if (o.seniority) badges.push(`<span class="b">${esc(o.seniority)}</span>`);
@@ -463,6 +499,8 @@
         <div class="emp" data-emp="${esc(o.empresa)}" title="Ver todas las ofertas de ${esc(o.empresa)}">${esc(o.empresa)} <span class="emp-go">›</span></div>
         <div class="pto">${esc(o.puesto)}</div>
         <div class="key">${key}</div>
+        ${(() => { const y = yaAplicada(o); return y ? `<div class="ya-aplicada">✋ Ya aplicaste a ${esc(o.empresa)} hace ${Math.round(y.d) || "menos de 1"} día${Math.round(y.d) === 1 ? "" : "s"} (${esc(y.puesto)})</div>` : ""; })()}
+        ${(() => { const c = confianza(o); return c && c.n <= 1 ? `<div class="ya-aplicada" style="color:#fff;background:var(--bad-soft);border-color:var(--bad)">⚠️ Empresa sin presencia verificable: ${esc(c.nota || "revisa antes de aplicar")}</div>` : ""; })()}
         <div class="badges">${badges.join("")}</div>
         <div class="meta">${meta}</div>
         ${o.resumen ? `<p class="resumen">${esc(o.resumen)}</p>` : ""}
@@ -501,7 +539,7 @@
       $("count-e").textContent = `${list.length} compañías`;
       $("list-e").innerHTML = list.map((e) => `<div class="comp" data-emp="${esc(e.nombre)}">
         <div><div class="n">${e.n ? `<span class="cnt">${e.n}</span>` : ""}${e.top ? "⭐ " : ""}${esc(e.nombre)}</div>
-        <div class="s">${esc(e.sector || "")}${e.empleados ? " · 👥 " + esc(e.empleados) : ""}${e.data_ai ? " · 🧠 Data & AI" : " · solo remoto"}</div></div>
+        <div class="s">${esc(e.sector || "")}${e.empleados ? " · 👥 " + esc(e.empleados) : ""}${e.confianza ? " · " + (e.confianza <= 1 ? "⚠️ Peligrosa" : "★".repeat(e.confianza)) : ""}${e.data_ai ? " · 🧠 Data & AI" : " · solo remoto"}</div></div>
         ${e.portal_url ? `<a href="${esc(e.portal_url)}" target="_blank" rel="noopener">Empleo ↗</a>` : ""}
       </div>`).join("");
     }
@@ -568,6 +606,10 @@
     $("filters").addEventListener("click", (e) => {
       const c = e.target.closest(".chip"); if (!c) return;
       state.f[c.dataset.f] = !state.f[c.dataset.f]; save(); render();
+    });
+    $("trust").addEventListener("click", (e) => {
+      const c = e.target.closest(".chip"); if (!c) return;
+      state.trust = state.trust === c.dataset.t ? "" : c.dataset.t; save(); render();
     });
     $("pay").addEventListener("click", (e) => {
       const c = e.target.closest(".chip"); if (!c) return;
