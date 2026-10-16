@@ -120,6 +120,10 @@ por partes. Trabajar en `/tmp/r/` (crear la carpeta).
    1 PELIGROSA (sin presencia verificable o señales de estafa). Guardarla en
    `empleo_empresas` y en las ofertas de esa empresa; `insertar` la copia a
    las ofertas nuevas de empresas ya puntuadas.
+   **Actividad** de cada empresa nueva (y de ofertas sin ella): `actividad`
+   = etiqueta corta en español ("Ciberseguridad", "IA farmacéutica"…) y
+   `actividad2` = qué hace exactamente (≤70 car.). Guardar en
+   `empleo_empresas` y en sus ofertas; `insertar` la copia a las nuevas.
 10. **Registrar**: `POST empleo_rutinas` con `{"nuevas": N, "nota": "…"}`
     (nuevas por perfil, cerradas retiradas, revisiones atendidas, incidencias).
 11. Solo si se cambia código: commit, merge a `main` y push (si el push

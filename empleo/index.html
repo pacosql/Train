@@ -93,6 +93,9 @@
     .card { background: var(--glass); border: 1px solid var(--line); border-radius: 18px; padding: 14px 15px; margin-bottom: 10px; }
     .card.new { border-color: rgba(110, 168, 255, 0.45); }
     .card .emp { cursor: pointer; }
+    .card .act { margin: 2px 0 6px; line-height: 1.25; }
+    .card .act .a1 { font-size: 0.86rem; font-weight: 700; color: var(--text); }
+    .card .act .a2 { font-size: 0.8rem; color: var(--text-2); }
     .card .emp .emp-go { font-size: 1rem; opacity: 0.6; }
     .comp { cursor: pointer; }
     #emp-filter .chip-emp { display: inline-flex; gap: 8px; align-items: center; margin: 0 0 8px; padding: 7px 12px; border-radius: 999px;
@@ -298,6 +301,11 @@
     // Una oferta "no activa" está desactivada o es una aplicada cuya oferta ya cerró.
     const cerrada = (o) => !o.activa || (o.etiquetas || []).includes("oferta cerrada");
     const base = () => ofertas.filter((o) => (state.view === "archivo" ? cerrada(o) : !cerrada(o)));
+    function actividad(o) {
+      if (o.actividad) return { a: o.actividad, b: o.actividad2 };
+      const e = empresas.find((x) => x.nombre.toLowerCase() === o.empresa.toLowerCase());
+      return e && e.actividad ? { a: e.actividad, b: e.actividad2 } : null;
+    }
     function confianza(o) {
       if (o.confianza) return { n: o.confianza, nota: o.confianza_nota };
       const e = empresas.find((x) => x.nombre.toLowerCase() === o.empresa.toLowerCase());
@@ -497,6 +505,7 @@
       ].filter(Boolean).join(" · ");
       return `<div class="card${isNew(o) ? " new" : ""}" data-id="${o.id}">
         <div class="emp" data-emp="${esc(o.empresa)}" title="Ver todas las ofertas de ${esc(o.empresa)}">${esc(o.empresa)} <span class="emp-go">›</span></div>
+        ${(() => { const ac = actividad(o); return ac && ac.a && ac.a !== "Desconocida" ? `<div class="act"><div class="a1">🏷️ ${esc(ac.a)}</div>${ac.b ? `<div class="a2">${esc(ac.b)}</div>` : ""}</div>` : ""; })()}
         <div class="pto">${esc(o.puesto)}</div>
         <div class="key">${key}</div>
         ${(() => { const y = yaAplicada(o); return y ? `<div class="ya-aplicada">✋ Ya aplicaste a ${esc(o.empresa)} hace ${Math.round(y.d) || "menos de 1"} día${Math.round(y.d) === 1 ? "" : "s"} (${esc(y.puesto)})</div>` : ""; })()}
@@ -539,7 +548,7 @@
       $("count-e").textContent = `${list.length} compañías`;
       $("list-e").innerHTML = list.map((e) => `<div class="comp" data-emp="${esc(e.nombre)}">
         <div><div class="n">${e.n ? `<span class="cnt">${e.n}</span>` : ""}${e.top ? "⭐ " : ""}${esc(e.nombre)}</div>
-        <div class="s">${esc(e.sector || "")}${e.empleados ? " · 👥 " + esc(e.empleados) : ""}${e.confianza ? " · " + (e.confianza <= 1 ? "⚠️ Peligrosa" : "★".repeat(e.confianza)) : ""}${e.data_ai ? " · 🧠 Data & AI" : " · solo remoto"}</div></div>
+        <div class="s">${esc(e.actividad && e.actividad !== "Desconocida" ? e.actividad + (e.actividad2 ? " — " + e.actividad2 : "") : (e.sector || ""))}${e.empleados ? " · 👥 " + esc(e.empleados) : ""}${e.confianza ? " · " + (e.confianza <= 1 ? "⚠️ Peligrosa" : "★".repeat(e.confianza)) : ""}${e.data_ai ? " · 🧠 Data & AI" : " · solo remoto"}</div></div>
         ${e.portal_url ? `<a href="${esc(e.portal_url)}" target="_blank" rel="noopener">Empleo ↗</a>` : ""}
       </div>`).join("");
     }
