@@ -22,7 +22,7 @@ Regla de selección:
   modalidad) + las 5 categorías si son remotas que admitan España.
 - **Otras empresas**: solo `partner`/`direccion`/`ejecutivo` remotas que admitan España.
 
-Cada oferta se marca 🔥 High, 👌 Medium, 🧊 Low, 👎 No, 🔁 revisar o ✅ aplicar (con una
+Cada oferta se marca 🔥 High, 👌 Medium, 🧊 Low, 👎 No, 🔁 revisar, 🎯 aplicar (para aplicar hoy) o ✅ aplicado (con una
 nota: "el enlace no funciona", "confirmar si es remoto"…); la rutina lee
 esas notas, lo comprueba y contesta en el campo `respuesta`.
 
@@ -42,7 +42,7 @@ URL: `https://pacosql.github.io/Train/empleo/`
   única), `enlaces` (JSON `[{label,url}]`: enlace 1 = portal oficial si
   existe, luego LinkedIn/agregadores), `encontrado_en`, `verificada_en`,
   `fecha_publicacion`, `resumen`, `etiquetas`, `decision`
-  (`pendiente|high|medium|low|no_gusta|revisar|aplicada`; `prioridad` guarda high/medium/low al aplicar), `nota` (del usuario),
+  (`pendiente|aplicar|high|medium|low|no_gusta|revisar|aplicada`; `aplicar` = "me pongo a aplicar hoy"; `prioridad` guarda high/medium/low al aplicar), `nota` (del usuario),
   `respuesta` (de la rutina), `activa`.
 - `empleo_empresas`: compañías vigiladas (`nombre`, `sector`, `data_ai`,
   `ats`, `ats_token`, `portal_url`). Es la fuente de verdad que
