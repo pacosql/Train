@@ -42,7 +42,7 @@ URL: `https://pacosql.github.io/Train/empleo/`
   única), `enlaces` (JSON `[{label,url}]`: enlace 1 = portal oficial si
   existe, luego LinkedIn/agregadores), `encontrado_en`, `verificada_en`,
   `fecha_publicacion`, `resumen`, `etiquetas`, `decision`
-  (`pendiente|aplicar|high|medium|low|no_gusta|revisar|aplicada`; `aplicar` = "me pongo a aplicar hoy"; `prioridad` guarda high/medium/low al aplicar), `nota` (del usuario),
+  (`pendiente|aplicar|aplicar_detalle|high|medium|low|no_gusta|revisar|aplicada`; `aplicar` = "me pongo a aplicar hoy"; `aplicar_detalle` = "aplicar con calma y cuidado"; `prioridad` guarda high/medium/low al aplicar), `nota` (del usuario),
   `respuesta` (de la rutina), `activa`.
 - `empleo_empresas`: compañías vigiladas (`nombre`, `sector`, `data_ai`,
   `ats`, `ats_token`, `portal_url`). Es la fuente de verdad que
