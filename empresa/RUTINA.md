@@ -349,3 +349,9 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 - 10 marcas: 👍 **PaperSable**; 👎 ríos/lugares + Labs (Henares, Jalón, Biobío, Arlanza, Pánuco), LulioLabs, PapiroLabs, TormesStudio, ChalkPlot. Primera señal: **río + Labs no repite el éxito de TormesLabs**.
 - Lectura: gusta **material humilde + arma con palabra que se lee igual en ES/EN** (Paper + Sable; antes comentó «papersword»).
 - Tanda 70: Paper + arma/objeto (Daga, Florete, Machete, Catapulta, Tizona, Yelmo…), material + Sable (Ink/Chalk/Wood/Cartón…) y Sable + X. 42 cargados (80 % libres).
+
+### 16/10 — Marcas de Paco (~12:40 UTC) y tanda 71
+- 201 marcas (toda la cola): 👍 **BrickChalk**, **BlazeQuery**, **ForwardLetter**, **SeveroStudios**; 👎 todo lo demás, incluida **toda la tanda 70 (Paper/material + arma: 0 de 42)**, ríos y parajes + Labs (0 de 45), palabras ES/EN + Labs y personajes + Studios. Esas vías quedan cerradas.
+- Comentario ● «**introbay mola, busca parecidos tb**» (atendido con esta tanda). Patrón Introbay: palabra latina corta que se lee igual en ES/EN + sustantivo inglés de lugar corto (bay, cove, mesa, dock, path, yard), sin Studios.
+- Tanda 71 (676 candidatos de 3 subagentes en paralelo): (a) tipo Introbay: Intro/Nova/Proto/Edu/Aula/Numo/Verbo… + bay/cove/mesa/yard/path (244 → 100 cargados); (b) parejas inglesas en la línea de BrickChalk/BlazeQuery/ForwardLetter: palabra de acción + objeto humilde de clase/escritura (Nib, Notch, Abacus, Primer, Tilde, Comma, Easel…); (c) cognomen latino sobrio como Severo (Probo, Firmo, Sereno, Prisco, Fausto…) + Studios/Works/Co y Severo-style + lugar (SeveroPath, SeveroBay). (b)+(c): 432 → 260 cargados. 13 vetados por cribar (canales de YouTube y apps parecidos).
+- Cola: 360 pendientes.
