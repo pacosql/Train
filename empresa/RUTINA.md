@@ -355,3 +355,9 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 - Comentario ● «**introbay mola, busca parecidos tb**» (atendido con esta tanda). Patrón Introbay: palabra latina corta que se lee igual en ES/EN + sustantivo inglés de lugar corto (bay, cove, mesa, dock, path, yard), sin Studios.
 - Tanda 71 (676 candidatos de 3 subagentes en paralelo): (a) tipo Introbay: Intro/Nova/Proto/Edu/Aula/Numo/Verbo… + bay/cove/mesa/yard/path (244 → 100 cargados); (b) parejas inglesas en la línea de BrickChalk/BlazeQuery/ForwardLetter: palabra de acción + objeto humilde de clase/escritura (Nib, Notch, Abacus, Primer, Tilde, Comma, Easel…); (c) cognomen latino sobrio como Severo (Probo, Firmo, Sereno, Prisco, Fausto…) + Studios/Works/Co y Severo-style + lugar (SeveroPath, SeveroBay). (b)+(c): 432 → 260 cargados. 13 vetados por cribar (canales de YouTube y apps parecidos).
 - Cola: 360 pendientes.
+
+### 16/10 — Marcas de Paco (~20:00 UTC) y tanda 72
+- 140 marcas de la tanda 71: 👍 **ForwardChalk**, **LetterComet**; 👎 el resto marcado. Tipo Introbay (palabra latina + bay/cove/mesa/path/yard): 34 👎 de 60 marcados, 0 👍 → **no repite**. También 👎: puntuación/tipografía (Tilde, Serif, Italic), ritmos y aliteraciones, ábaco/regla/compás + verbo, paisaje + objeto humilde. Los cognomen + Works/Co casi sin marcar (92 pendientes).
+- Lectura: lo que gusta sigue siendo **Forward + objeto básico de clase** (Chalk, Brick, Slate, Letter, Plot) y aparece **Letter + cielo** (Comet).
+- Tanda 72 (134 candidatos): Forward + objeto de clase nuevo (Eraser, Primer, Abacus, Crayon, Globe, Alphabet…), Forward + palabras 💡, material + Forward, Letter + cielo/palabra viva, objeto de clase + Comet, palabra/número + cielo. 60 cargados; 66 .com ocupados; 3 vetados (LetterAurora, LetterMeteor, LetterLighthouse por apps).
+- Cola: 280 pendientes.
