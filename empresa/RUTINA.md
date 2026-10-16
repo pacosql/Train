@@ -344,3 +344,8 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 - Tanda 68 (palabras que se escriben igual en ES/EN + Labs/Studios; latín corto): 9 cargados — las palabras comunes (Decimal, Lateral, Mural, Tutor…) están todas cogidas.
 - Tanda 69 (ríos, sierras y parajes de España y América + Labs, muchos del entorno del Tormes: Huebra, Yeltes, Alagón, Ledesma, Arapiles): 46 cargados (70 % libres).
 - Cola: 169 pendientes. comprobar_com.py: 190/190 libres.
+
+### 16/10 — Marcas de Paco (~08:00 UTC) y tanda 70
+- 10 marcas: 👍 **PaperSable**; 👎 ríos/lugares + Labs (Henares, Jalón, Biobío, Arlanza, Pánuco), LulioLabs, PapiroLabs, TormesStudio, ChalkPlot. Primera señal: **río + Labs no repite el éxito de TormesLabs**.
+- Lectura: gusta **material humilde + arma con palabra que se lee igual en ES/EN** (Paper + Sable; antes comentó «papersword»).
+- Tanda 70: Paper + arma/objeto (Daga, Florete, Machete, Catapulta, Tizona, Yelmo…), material + Sable (Ink/Chalk/Wood/Cartón…) y Sable + X. 42 cargados (80 % libres).
