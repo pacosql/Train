@@ -361,3 +361,7 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 - Lectura: lo que gusta sigue siendo **Forward + objeto básico de clase** (Chalk, Brick, Slate, Letter, Plot) y aparece **Letter + cielo** (Comet).
 - Tanda 72 (134 candidatos): Forward + objeto de clase nuevo (Eraser, Primer, Abacus, Crayon, Globe, Alphabet…), Forward + palabras 💡, material + Forward, Letter + cielo/palabra viva, objeto de clase + Comet, palabra/número + cielo. 60 cargados; 66 .com ocupados; 3 vetados (LetterAurora, LetterMeteor, LetterLighthouse por apps).
 - Cola: 280 pendientes.
+
+### 16/10 — Marcas (~21:00 UTC) y tanda 73
+- 20 marcas de la tanda 72: 👍 **ForwardComet**; 👎 objeto de clase + Comet (Slate, Brick, Plot, Number, Digit, Primer, Crayon, Abacus, Bead: 0/9), LetterForward, EaselForward, LetterChalk, LetterPlot, ForwardRuler. Lectura: el que tira es **Forward**; Comet solo funciona detrás de Forward (y de Letter).
+- Tanda 73 (47 candidatos): Forward + cielo/luz (Meteor, Nebula, Vega, Sirius, Orion, Zenith, Halley, Polaris, Stardust, Firefly, Sunbeam…). 34 cargados, 12 .com ocupados. Cola: 294.
