@@ -28,7 +28,7 @@ KEY = re.search(r'eyJ[^"]*', CFG).group(0)
 URL = re.search(r"https://[a-z0-9]*\.supabase\.co", CFG).group(0)
 HOY = datetime.date.today().isoformat()
 COLS = ("empresa", "puesto", "ubicacion", "modalidad", "remoto_claro", "url", "fuente", "sector", "area",
-        "seniority", "resumen", "fecha_publicacion", "etiquetas", "enlaces", "categoria", "empresa_data_ai", "empresa_top", "empleados", "sueldo", "sueldo_min_eur", "sueldo_max_eur")
+        "seniority", "resumen", "fecha_publicacion", "etiquetas", "enlaces", "categoria", "empresa_data_ai", "empresa_top", "empleados", "sueldo", "sueldo_min_eur", "sueldo_max_eur", "confianza", "confianza_nota", "actividad", "actividad2")
 
 
 def api(method, path, body=None, prefer="return=representation"):
@@ -101,9 +101,14 @@ def insertar(*paths):
             sd = sueldo_oferta([l["url"] for l in r["enlaces"]], r.get("empresa"), c.get("descripcion") or "")
             if sd:
                 r.update(sd)
-    emp = {e["nombre"].lower(): e["empleados"] for e in api("GET", "empleo_empresas?select=nombre,empleados") if e.get("empleados")}
+    emps = {e["nombre"].lower(): e for e in api("GET", "empleo_empresas?select=nombre,empleados,confianza,confianza_nota,actividad,actividad2")}
     for r in nuevas:
-        r["empleados"] = r.get("empleados") or emp.get((r.get("empresa") or "").lower())
+        e = emps.get((r.get("empresa") or "").lower()) or {}
+        r["empleados"] = r.get("empleados") or e.get("empleados")
+        r["confianza"] = r.get("confianza") or e.get("confianza")
+        r["confianza_nota"] = r.get("confianza_nota") or e.get("confianza_nota")
+        r["actividad"] = r.get("actividad") or e.get("actividad")
+        r["actividad2"] = r.get("actividad2") or e.get("actividad2")
     keys = set(COLS) | {"encontrado_en", "verificada_en", "decision", "activa"}
     nuevas = [{k: r.get(k) for k in keys} for r in nuevas]
     for r in nuevas:

@@ -22,7 +22,7 @@ Regla de selección:
   modalidad) + las 5 categorías si son remotas que admitan España.
 - **Otras empresas**: solo `partner`/`direccion`/`ejecutivo` remotas que admitan España.
 
-Cada oferta se marca 🔥 High, 👌 Medium, 🧊 Low, 👎 No, 🔁 revisar o ✅ aplicar (con una
+Cada oferta se marca 🔥 High, 👌 Medium, 🧊 Low, 👎 No, 🔁 revisar, 🎯 aplicar (para aplicar hoy) o ✅ aplicado (con una
 nota: "el enlace no funciona", "confirmar si es remoto"…); la rutina lee
 esas notas, lo comprueba y contesta en el campo `respuesta`.
 
@@ -42,7 +42,7 @@ URL: `https://pacosql.github.io/Train/empleo/`
   única), `enlaces` (JSON `[{label,url}]`: enlace 1 = portal oficial si
   existe, luego LinkedIn/agregadores), `encontrado_en`, `verificada_en`,
   `fecha_publicacion`, `resumen`, `etiquetas`, `decision`
-  (`pendiente|high|medium|low|no_gusta|revisar|aplicada`; `prioridad` guarda high/medium/low al aplicar), `nota` (del usuario),
+  (`pendiente|aplicar|aplicar_detalle|high|medium|low|no_gusta|revisar|aplicada`; `aplicar` = "me pongo a aplicar hoy"; `aplicar_detalle` = "aplicar con calma y cuidado"; `prioridad` guarda high/medium/low al aplicar), `nota` (del usuario),
   `respuesta` (de la rutina), `activa`.
 - `empleo_empresas`: compañías vigiladas (`nombre`, `sector`, `data_ai`,
   `ats`, `ats_token`, `portal_url`). Es la fuente de verdad que
@@ -113,6 +113,17 @@ por partes. Trabajar en `/tmp/r/` (crear la carpeta).
    `python3 empleo/tools/sueldo.py rellenar`.
 9. **Compañías nuevas** relevantes: upsert directo en `empleo_empresas`
    (con `ats`/`ats_token` si tiene API, `top`, `data_ai`, `empleados`).
+   **Fiabilidad** (`confianza` 1-5 + `confianza_nota`) de cada empresa nueva
+   y de las ofertas sin ella: 5 gran empresa conocida · 4 consolidada y
+   verificable · 3 startup/pyme real con web y LinkedIn · 2 presencia mínima,
+   agencia que no nombra al cliente, "Stealth", venture builder genérico ·
+   1 PELIGROSA (sin presencia verificable o señales de estafa). Guardarla en
+   `empleo_empresas` y en las ofertas de esa empresa; `insertar` la copia a
+   las ofertas nuevas de empresas ya puntuadas.
+   **Actividad** de cada empresa nueva (y de ofertas sin ella): `actividad`
+   = etiqueta corta en español ("Ciberseguridad", "IA farmacéutica"…) y
+   `actividad2` = qué hace exactamente (≤70 car.). Guardar en
+   `empleo_empresas` y en sus ofertas; `insertar` la copia a las nuevas.
 10. **Registrar**: `POST empleo_rutinas` con `{"nuevas": N, "nota": "…"}`
     (nuevas por perfil, cerradas retiradas, revisiones atendidas, incidencias).
 11. Solo si se cambia código: commit, merge a `main` y push (si el push

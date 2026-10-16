@@ -65,7 +65,7 @@
     .view-btn { font: inherit; font-weight: 700; font-size: 0.9rem; padding: 9px; border-radius: 12px; cursor: pointer; border: 1px solid var(--line-strong); background: rgba(255, 255, 255, 0.04); color: var(--text-2); }
     .view-btn.on { color: var(--accent-2); background: var(--accent-soft); border-color: rgba(110, 168, 255, 0.55); }
     .hidden { display: none !important; }
-    .tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 12px; }
+    .tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-bottom: 12px; }
     .tab {
       font-family: var(--display); font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
       color: var(--text-2); background: rgba(255, 255, 255, 0.04); border: 1px solid var(--line); border-radius: 12px;
@@ -93,6 +93,9 @@
     .card { background: var(--glass); border: 1px solid var(--line); border-radius: 18px; padding: 14px 15px; margin-bottom: 10px; }
     .card.new { border-color: rgba(110, 168, 255, 0.45); }
     .card .emp { cursor: pointer; }
+    .card .act { margin: 2px 0 6px; line-height: 1.25; }
+    .card .act .a1 { font-size: 0.86rem; font-weight: 700; color: var(--text); }
+    .card .act .a2 { font-size: 0.8rem; color: var(--text-2); }
     .card .emp .emp-go { font-size: 1rem; opacity: 0.6; }
     .comp { cursor: pointer; }
     #emp-filter .chip-emp { display: inline-flex; gap: 8px; align-items: center; margin: 0 0 8px; padding: 7px 12px; border-radius: 999px;
@@ -109,13 +112,18 @@
     .links { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
     .links a { font-size: 0.82rem; font-weight: 600; text-decoration: none; color: var(--accent-2); border: 1px solid rgba(110, 168, 255, 0.45); border-radius: 10px; padding: 6px 10px; }
     .links a small { color: var(--text-2); font-weight: 400; }
-    .acts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; margin-top: 8px; }
+    .acts { display: grid; grid-template-columns: repeat(12, 1fr); gap: 5px; margin-top: 8px; }
+    .acts button { grid-column: span 3; }
     .acts a, .acts button {
       display: grid; place-items: center; text-decoration: none; font: inherit; font-size: 0.8rem; font-weight: 600; white-space: nowrap;
       padding: 9px 6px; border-radius: 12px; cursor: pointer; border: 1px solid var(--line-strong); background: rgba(255, 255, 255, 0.05); color: var(--text);
     }
     .acts a { color: var(--accent-2); border-color: rgba(110, 168, 255, 0.45); }
-    .acts .wide { grid-column: span 2; }
+    .acts .wide { grid-column: span 4; }
+    .acts .target.on { background: rgba(255, 214, 110, 0.18); color: #ffd66e; border-color: rgba(255, 214, 110, 0.75); }
+    .acts .detail.on { background: rgba(196, 140, 255, 0.18); color: #d7b4ff; border-color: rgba(196, 140, 255, 0.75); }
+    .tab[data-tab="aplicar_detalle"] { border-color: rgba(196, 140, 255, 0.4); }
+    .tab[data-tab="aplicar"] { border-color: rgba(255, 214, 110, 0.35); }
     .acts .high.on { background: rgba(255, 120, 60, 0.18); color: #ff9a5c; border-color: rgba(255, 120, 60, 0.7); }
     .acts .medium.on { background: var(--good-soft); color: var(--good); border-color: rgba(67, 211, 145, 0.6); }
     .acts .low.on { background: rgba(110, 168, 255, 0.14); color: var(--accent-2); border-color: rgba(110, 168, 255, 0.55); }
@@ -125,6 +133,10 @@
     .key .k-hib { color: var(--mid); border-color: rgba(242, 184, 64, 0.55); }
     .key .k-cat { color: var(--accent-2); border-color: rgba(110, 168, 255, 0.5); }
     .key .k-emp { color: var(--text); }
+    .key .k-star { color: #ffd66e; letter-spacing: 1px; }
+    .key .k-danger { color: #fff; background: var(--bad); border-color: var(--bad); }
+    .ya-aplicada { margin: 0 0 8px; padding: 7px 10px; border-radius: 10px; font-size: 0.84rem; font-weight: 600;
+      color: #ffd66e; background: rgba(242, 184, 64, 0.12); border: 1px solid rgba(242, 184, 64, 0.55); }
     .key .k-pay { color: #ffd66e; border-color: rgba(242, 184, 64, 0.55); background: rgba(242, 184, 64, 0.12); }
     .acts .dislike.on { background: var(--bad-soft); color: var(--bad); border-color: rgba(255, 84, 112, 0.6); }
     .acts .apply.on { background: rgba(110, 168, 255, 0.18); color: var(--accent-2); border-color: rgba(110, 168, 255, 0.7); }
@@ -173,6 +185,8 @@
     <p class="archivo-note hidden" id="archivo-note">🗄️ Ofertas que ya no están activas (cerradas o caducadas en el portal del empleador). Usa las pestañas y filtros igual que en Ofertas: p. ej. ✅ Aplicadas o 🔥 High.</p>
     <div class="tabs" id="tabs">
       <div class="tab active" data-tab="pendiente"><span class="n" id="n-pendiente">–</span>Pendientes</div>
+      <div class="tab" data-tab="aplicar"><span class="n" id="n-aplicar">–</span>🎯 Aplicar</div>
+      <div class="tab" data-tab="aplicar_detalle"><span class="n" id="n-aplicar_detalle">–</span>🔍 En detalle</div>
       <div class="tab" data-tab="high"><span class="n" id="n-high">–</span>🔥 High</div>
       <div class="tab" data-tab="medium"><span class="n" id="n-medium">–</span>👌 Medium</div>
       <div class="tab" data-tab="low"><span class="n" id="n-low">–</span>🧊 Low</div>
@@ -213,6 +227,13 @@
       <span class="chip" data-p="75000">≥ 75K</span>
       <span class="chip" data-p="100000">≥ 100K</span>
       <span class="chip" data-p="150000">≥ 150K</span>
+    </div>
+    <div class="filters" id="trust">
+      <span class="lbl">🛡️ Fiabilidad:</span>
+      <span class="chip" data-t="5">★★★★★</span>
+      <span class="chip" data-t="4">★4+</span>
+      <span class="chip" data-t="3">★3+</span>
+      <span class="chip" data-t="peligro">⚠️ Peligrosas</span>
     </div>
     <div class="row2">
       <input type="search" id="q" placeholder="Buscar empresa, puesto, ciudad…" />
@@ -263,7 +284,7 @@
 
     const STATE_KEY = "empleo.estado";
     const state = (() => {
-      const def = { tab: "pendiente", f: {}, sz: {}, pay: "", q: "", sort: "encontrado", view: "ofertas", qe: "", fe: "" };
+      const def = { tab: "pendiente", f: {}, sz: {}, pay: "", trust: "", q: "", sort: "encontrado", view: "ofertas", qe: "", fe: "" };
       try { return { ...def, ...JSON.parse(localStorage.getItem(STATE_KEY) || "{}") }; } catch { return def; }
     })();
     if (state.tab === "gusta") state.tab = "medium";
@@ -283,6 +304,27 @@
     // Una oferta "no activa" está desactivada o es una aplicada cuya oferta ya cerró.
     const cerrada = (o) => !o.activa || (o.etiquetas || []).includes("oferta cerrada");
     const base = () => ofertas.filter((o) => (state.view === "archivo" ? cerrada(o) : !cerrada(o)));
+    function actividad(o) {
+      if (o.actividad) return { a: o.actividad, b: o.actividad2 };
+      const e = empresas.find((x) => x.nombre.toLowerCase() === o.empresa.toLowerCase());
+      return e && e.actividad ? { a: e.actividad, b: e.actividad2 } : null;
+    }
+    function confianza(o) {
+      if (o.confianza) return { n: o.confianza, nota: o.confianza_nota };
+      const e = empresas.find((x) => x.nombre.toLowerCase() === o.empresa.toLowerCase());
+      return e && e.confianza ? { n: e.confianza, nota: e.confianza_nota } : null;
+    }
+    // Última aplicación a la misma empresa (cualquier oferta, activa o no).
+    function yaAplicada(o) {
+      const DIAS = 15, ahora = Date.now();
+      let mejor = null;
+      for (const x of ofertas) {
+        if (x.id === o.id || !x.aplicada_en || x.empresa.toLowerCase() !== o.empresa.toLowerCase()) continue;
+        const d = (ahora - new Date(x.aplicada_en).getTime()) / 864e5;
+        if (d <= DIAS && (!mejor || d < mejor.d)) mejor = { d, puesto: x.puesto };
+      }
+      return mejor;
+    }
     const PRIO = { high: "🔥 High", medium: "👌 Medium", low: "🧊 Low" };
     function empleados(o) {
       if (o.empleados) return o.empleados;
@@ -320,6 +362,8 @@
       if (state.f.top) list = list.filter((o) => o.empresa_top);
       const sizes = Object.keys(state.sz || {}).filter((k) => state.sz[k]);
       if (sizes.length) list = list.filter((o) => sizes.includes(empleados(o)));
+      if (state.trust === "peligro") list = list.filter((o) => (confianza(o) || {}).n === 1);
+      else if (state.trust) list = list.filter((o) => ((confianza(o) || {}).n || 0) >= +state.trust);
       if (state.pay === "con") list = list.filter((o) => o.sueldo);
       else if (state.pay) list = list.filter((o) => (o.sueldo_max_eur || o.sueldo_min_eur || 0) >= +state.pay);
       if (q) list = list.filter((o) => [o.empresa, o.puesto, o.ubicacion, o.resumen, o.fuente, o.sector, (o.etiquetas || []).join(" ")].join(" ").toLowerCase().includes(q));
@@ -341,10 +385,11 @@
       $("n-empresas").textContent = empresas.length ? `(${empresas.length})` : "";
       renderEmpresas();
       const b = base();
-      for (const k of ["pendiente", "high", "medium", "low", "no_gusta", "revisar", "aplicada"]) $("n-" + k).textContent = b.filter((o) => o.decision === k).length;
+      for (const k of ["pendiente", "aplicar", "aplicar_detalle", "high", "medium", "low", "no_gusta", "revisar", "aplicada"]) $("n-" + k).textContent = b.filter((o) => o.decision === k).length;
       $("n-todas").textContent = b.length;
       document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("active", t.dataset.tab === state.tab));
       document.querySelectorAll("#filters .chip").forEach((c) => c.classList.toggle("on", !!state.f[c.dataset.f]));
+      document.querySelectorAll("#trust .chip").forEach((c) => c.classList.toggle("on", state.trust === c.dataset.t));
       document.querySelectorAll("#pay .chip").forEach((c) => c.classList.toggle("on", state.pay === c.dataset.p));
       document.querySelectorAll("#sizes .chip").forEach((c) => c.classList.toggle("on", !!(state.sz || {})[c.dataset.s]));
       $("q").value = state.q; $("sort").value = state.sort;
@@ -443,6 +488,12 @@
           : `<span class="${o.modalidad === "remoto" ? "k-rem" : o.modalidad === "hibrido" ? "k-hib" : ""}">${MOD[o.modalidad] || o.modalidad}</span>`,
         `<span class="k-cat">${CAT_LABEL[o.categoria] || o.categoria}</span>`,
         `<span class="k-emp">👥 ${esc(empleados(o) || "¿?")} empleados</span>`,
+        (() => {
+          const c = confianza(o);
+          if (!c) return "";
+          if (c.n <= 1) return `<span class="k-danger" title="${esc(c.nota || "")}">⚠️ Peligrosa</span>`;
+          return `<span class="k-star" title="${esc(c.nota || "")}">${"★".repeat(c.n)}${"☆".repeat(5 - c.n)}</span>`;
+        })(),
         o.sueldo ? `<span class="k-pay">💶 ${esc(o.sueldo)}/año</span>` : "",
       ].join("");
       if (o.seniority) badges.push(`<span class="b">${esc(o.seniority)}</span>`);
@@ -457,8 +508,11 @@
       ].filter(Boolean).join(" · ");
       return `<div class="card${isNew(o) ? " new" : ""}" data-id="${o.id}">
         <div class="emp" data-emp="${esc(o.empresa)}" title="Ver todas las ofertas de ${esc(o.empresa)}">${esc(o.empresa)} <span class="emp-go">›</span></div>
+        ${(() => { const ac = actividad(o); return ac && ac.a && ac.a !== "Desconocida" ? `<div class="act"><div class="a1">🏷️ ${esc(ac.a)}</div>${ac.b ? `<div class="a2">${esc(ac.b)}</div>` : ""}</div>` : ""; })()}
         <div class="pto">${esc(o.puesto)}</div>
         <div class="key">${key}</div>
+        ${(() => { const y = yaAplicada(o); return y ? `<div class="ya-aplicada">✋ Ya aplicaste a ${esc(o.empresa)} hace ${Math.round(y.d) || "menos de 1"} día${Math.round(y.d) === 1 ? "" : "s"} (${esc(y.puesto)})</div>` : ""; })()}
+        ${(() => { const c = confianza(o); return c && c.n <= 1 ? `<div class="ya-aplicada" style="color:#fff;background:var(--bad-soft);border-color:var(--bad)">⚠️ Empresa sin presencia verificable: ${esc(c.nota || "revisa antes de aplicar")}</div>` : ""; })()}
         <div class="badges">${badges.join("")}</div>
         <div class="meta">${meta}</div>
         ${o.resumen ? `<p class="resumen">${esc(o.resumen)}</p>` : ""}
@@ -468,8 +522,10 @@
           <button class="medium${o.decision === "medium" ? " on" : ""}" data-act="medium">👌 Medium</button>
           <button class="low${o.decision === "low" ? " on" : ""}" data-act="low">🧊 Low</button>
           <button class="dislike${o.decision === "no_gusta" ? " on" : ""}" data-act="no_gusta">👎 No</button>
-          <button class="review wide${o.decision === "revisar" ? " on" : ""}" data-act="revisar">🔁 Revisar</button>
-          <button class="apply wide${o.decision === "aplicada" ? " on" : ""}" data-act="aplicada">✅ Aplicado</button>
+          <button class="review${o.decision === "revisar" ? " on" : ""}" data-act="revisar">🔁 Revisar</button>
+          <button class="target${o.decision === "aplicar" ? " on" : ""}" data-act="aplicar">🎯 Aplicar</button>
+          <button class="detail${o.decision === "aplicar_detalle" ? " on" : ""}" data-act="aplicar_detalle">🔍 En detalle</button>
+          <button class="apply${o.decision === "aplicada" ? " on" : ""}" data-act="aplicada">✅ Aplicado</button>
         </div>
         <div class="nota"><textarea placeholder="${o.decision === "revisar" ? "¿Qué reviso? (p. ej. el enlace no funciona, confirmar si es remoto…)" : "Nota (opcional)…"}" data-nota>${esc(o.nota || "")}</textarea></div>
         ${o.respuesta ? `<div class="respuesta">🤖 ${esc(o.respuesta)}</div>` : ""}
@@ -496,7 +552,7 @@
       $("count-e").textContent = `${list.length} compañías`;
       $("list-e").innerHTML = list.map((e) => `<div class="comp" data-emp="${esc(e.nombre)}">
         <div><div class="n">${e.n ? `<span class="cnt">${e.n}</span>` : ""}${e.top ? "⭐ " : ""}${esc(e.nombre)}</div>
-        <div class="s">${esc(e.sector || "")}${e.empleados ? " · 👥 " + esc(e.empleados) : ""}${e.data_ai ? " · 🧠 Data & AI" : " · solo remoto"}</div></div>
+        <div class="s">${esc(e.actividad && e.actividad !== "Desconocida" ? e.actividad + (e.actividad2 ? " — " + e.actividad2 : "") : (e.sector || ""))}${e.empleados ? " · 👥 " + esc(e.empleados) : ""}${e.confianza ? " · " + (e.confianza <= 1 ? "⚠️ Peligrosa" : "★".repeat(e.confianza)) : ""}${e.data_ai ? " · 🧠 Data & AI" : " · solo remoto"}</div></div>
         ${e.portal_url ? `<a href="${esc(e.portal_url)}" target="_blank" rel="noopener">Empleo ↗</a>` : ""}
       </div>`).join("");
     }
@@ -517,9 +573,9 @@
       const prev = o.decision;
       // Pulsar otra vez el mismo botón devuelve la oferta a pendientes
       // (o a su prioridad anterior si se desmarca "aplicar").
-      const next = prev === decision ? (decision === "aplicada" ? (o.prioridad || "medium") : "pendiente") : decision;
+      const next = prev === decision ? (["aplicada", "aplicar", "aplicar_detalle"].includes(decision) ? (o.prioridad || "pendiente") : "pendiente") : decision;
       await setDecision(o, next);
-      const label = { high: "🔥 High", medium: "👌 Medium", low: "🧊 Low", no_gusta: "👎 No", revisar: "🔁 A revisar — deja una nota y la rutina la mira", aplicada: "✅ Aplicada", pendiente: "↺ Devuelta a pendientes" }[next];
+      const label = { high: "🔥 High", medium: "👌 Medium", low: "🧊 Low", no_gusta: "👎 No", revisar: "🔁 A revisar — deja una nota y la rutina la mira", aplicada: "✅ Aplicada", aplicar: "🎯 Para aplicar — la tienes en la pestaña Aplicar", aplicar_detalle: "🔍 Para aplicar en detalle — en la pestaña En detalle", pendiente: "↺ Devuelta a pendientes" }[next];
       toast(`${label} · ${o.empresa}`, () => setDecision(o, prev));
     }
     async function setDecision(o, decision) {
@@ -563,6 +619,10 @@
     $("filters").addEventListener("click", (e) => {
       const c = e.target.closest(".chip"); if (!c) return;
       state.f[c.dataset.f] = !state.f[c.dataset.f]; save(); render();
+    });
+    $("trust").addEventListener("click", (e) => {
+      const c = e.target.closest(".chip"); if (!c) return;
+      state.trust = state.trust === c.dataset.t ? "" : c.dataset.t; save(); render();
     });
     $("pay").addEventListener("click", (e) => {
       const c = e.target.closest(".chip"); if (!c) return;

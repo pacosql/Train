@@ -42,7 +42,10 @@ reglas para no interferir con las demás:
 | ➕ Nombre Mates | [`nombremates/`](./nombremates) | `/Train/nombremates/` | `nombremates_` |
 | ➗ Mates10 | [`mates10/`](./mates10) | `/Train/mates10/` | `mates10_` |
 | 🏢 Nombre Empresa | [`empresa/`](./empresa) | `/Train/empresa/` | `empresa_` |
+| ✍️ Nombre Ortografía | [`nombreortografia/`](./nombreortografia) | `/Train/nombreortografia/` | `nombreortografia_` |
 | 📺 Series | [`series/`](./series) | `/Train/series/` | `series_` |
+| ✍️ Orto | [`orto/`](./orto) | `/Train/orto/` | `orto_` |
+| ✒️ Nombre Autor | [`autor/`](./autor) | `/Train/autor/` | `autor_` |
 
 ## Añadir una app nueva
 
