@@ -374,3 +374,9 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 - Lectura: dos señales nuevas, **sufijo Partners** (encaja con la consultoría) y **Forward + árbol** (Pine).
 - Tanda 74 (139 candidatos): Forward + árbol/planta (Cedar, Birch, Elm, Maple, Laurel, Juniper…), pieza ⭐ + árbol (QueryCedar, SlateElm, PlotCedar…), nombre propio corto + Partners (Severo, Rucio, Tormes, Lucio, Julio, Fabio, Octavio, Hugo, Bruno…) y variantes Group/Capital/Co. 92 cargados; ForwardCypress y ChalkPine vetados (canales de YouTube).
 - Cola: 166 pendientes.
+
+### 17/10 — Marcas de Paco (08:17–08:38 UTC) y tandas 75-76
+- ~210 marcas: 👍 **ClaudioPartners**, **InterReef**; 👎 todo lo demás. Nombre propio + Partners: 2/60 (Tulio, Claudio; los dos son nombres romanos célebres en -io, el resto cae). Forward + árbol: 1/30 (solo Pine). Cognomen + Works/House/Studios: 0/10.
+- Tanda 75: cruce sistemático de raíces ⭐/👍 (Forward, Query, Plot, Slate, Trail, Brick, Chalk, Letter, Comet, Blaze, Paper, Pine, Sable, Stroke) en los dos órdenes, más pieza ⭐ × árbol. 43 + 44 cargados; **los 43 primeros, 👎 todos** → cruzar raíces ya conocidas no funciona.
+- Tanda 76 (eco de InterReef y del comentario «introbay»): Inter + costa/mar y naturaleza, prefijo latino + Reef, pieza ⭐ + Reef, nombre romano célebre o en -io + Partners, Intro/Proto/Nova/Alto + palabra 💡. 89 cargados (≈60 % .com ocupados).
+- Cola: 133 pendientes.
