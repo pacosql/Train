@@ -368,3 +368,9 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 
 ### 17/10 — Comprobación diaria del .com (00:01 UTC)
 - comprobar_com.py: 323/323 libres (⭐, 👍 y pendientes). Cola: 294 pendientes, sin marcas nuevas desde la tanda 73.
+
+### 17/10 — Marcas de Paco (~08:00 UTC) y tanda 74
+- 220 marcas: 👍 **TulioPartners**, **ForwardPine**; 👎 casi todo lo demás. Forward + cielo/luz (0/18) y Forward + objeto de clase (0/18) quedan saturados. Cognomen + Studios/Works/Co: 1/56 (solo el de Partners). Palabra latina + lugar tipo Introbay: 0/19.
+- Lectura: dos señales nuevas, **sufijo Partners** (encaja con la consultoría) y **Forward + árbol** (Pine).
+- Tanda 74 (139 candidatos): Forward + árbol/planta (Cedar, Birch, Elm, Maple, Laurel, Juniper…), pieza ⭐ + árbol (QueryCedar, SlateElm, PlotCedar…), nombre propio corto + Partners (Severo, Rucio, Tormes, Lucio, Julio, Fabio, Octavio, Hugo, Bruno…) y variantes Group/Capital/Co. 92 cargados; ForwardCypress y ChalkPine vetados (canales de YouTube).
+- Cola: 166 pendientes.
