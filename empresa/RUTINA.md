@@ -380,3 +380,4 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 - Tanda 75: cruce sistemático de raíces ⭐/👍 (Forward, Query, Plot, Slate, Trail, Brick, Chalk, Letter, Comet, Blaze, Paper, Pine, Sable, Stroke) en los dos órdenes, más pieza ⭐ × árbol. 43 + 44 cargados; **los 43 primeros, 👎 todos** → cruzar raíces ya conocidas no funciona.
 - Tanda 76 (eco de InterReef y del comentario «introbay»): Inter + costa/mar y naturaleza, prefijo latino + Reef, pieza ⭐ + Reef, nombre romano célebre o en -io + Partners, Intro/Proto/Nova/Alto + palabra 💡. 89 cargados (≈60 % .com ocupados).
 - Cola: 133 pendientes.
+- Tanda 77 (relleno, sin marcas nuevas): Intro + costa/naturaleza, Inter + costa, nombre romano en -io + Partners. 36 cargados; InterJetty vetado. Cola: 169.
