@@ -48,6 +48,8 @@ URL: `https://pacosql.github.io/Train/empleo/`
   `ats`, `ats_token`, `portal_url`). Es la fuente de verdad que
   lee `buscar.py`; `empleo/tools/empresas.json` es solo una copia de respaldo.
 - `empleo_rutinas`: log de cada ejecución (`nuevas`, `nota`).
+- `empleo_busquedas`: rendimiento de cada búsqueda (`consulta`, `ubicacion`, `candidatas`, `nuevas`); la exploración aleatoria lo usa para no repetir y para insistir en lo que funciona.
+- `empleo_ofertas.encaje` (`completo` | `parcial`) y `encaje_motivo`: las parciales solo entran tras 2 h de rutina y para completar 35.
 
 ## Herramientas
 
@@ -78,7 +80,9 @@ Regla de oro: enlace 1 = la oferta real en el portal del empleador.
 Ninguna orden de Bash puede durar más de 10 min: por eso la búsqueda va
 por partes. Trabajar en `/tmp/r/` (crear la carpeta).
 
-1. **Preparar**: `git pull` de `main`. Comprobar `$SUPABASE_ACCESS_TOKEN` y red.
+1. **Preparar**: `mkdir -p /tmp/r && date +%s > /tmp/r/inicio` (marca el
+   inicio: de ahí cuentan las 2 h y las 35 nuevas). `git pull` de `main`.
+   Comprobar `$SUPABASE_ACCESS_TOKEN` y red.
 2. **Revisar lo pedido**: leer
    `empleo_ofertas?decision=eq.revisar&select=id,empresa,puesto,url,enlaces,nota`.
    Para cada una, hacer lo que dice la nota (abrir enlaces, buscar la oferta
@@ -124,7 +128,34 @@ por partes. Trabajar en `/tmp/r/` (crear la carpeta).
    = etiqueta corta en español ("Ciberseguridad", "IA farmacéutica"…) y
    `actividad2` = qué hace exactamente (≤70 car.). Guardar en
    `empleo_empresas` y en sus ofertas; `insertar` la copia a las nuevas.
-10. **Registrar**: `POST empleo_rutinas` con `{"nuevas": N, "nota": "…"}`
-    (nuevas por perfil, cerradas retiradas, revisiones atendidas, incidencias).
-11. Solo si se cambia código: commit, merge a `main` y push (si el push
+10. **Objetivo: 35 nuevas vivas por rutina** (obligatorio). Mirar
+    `python3 empleo/tools/guardar.py cuenta` → `{minutos, nuevas, completas,
+    parciales, faltan, parciales_permitidas}`. Mientras `faltan > 0`, repetir
+    rondas de **exploración**, cada una con formas de buscar distintas:
+    - `EXPLORAR=1 python3 empleo/tools/buscar.py > /tmp/r/c_exp_<n>.json`
+      (~14 búsquedas de LinkedIn elegidas al azar: sinónimos de los perfiles ×
+      ciudades/zonas × filtros; evita las ya probadas en 14 días y repite más
+      las que rindieron, según `empleo_busquedas`).
+    - Al menos una vía nueva a mano por ronda, elegida al azar: compañías que
+      no están en `empleo_empresas` (rondas de financiación recientes, rankings
+      de startups de IA, partners de Microsoft/AWS/Google/NVIDIA/Databricks/
+      Snowflake en España), Welcome to the Jungle, Indeed/InfoJobs/Glassdoor
+      vía WebSearch, Tecnoempleo, portales de empleo de consultoras (Accenture,
+      Deloitte, NTT Data, Capgemini…), búsquedas en inglés y en español,
+      títulos poco habituales. Anotar en la nota qué vías se probaron.
+    - Cada ronda: `insertar` + pasos 7–8 sobre las nuevas, y volver a `cuenta`.
+    **Encaje parcial** (ofertas que casi cumplen: perfil correcto fuera de la
+    regla de empresa, o puesto afín como Business Development, Customer
+    Success Director o TAM; siempre en España o remoto que admita España):
+    **solo cuando `parciales_permitidas` sea true (2 h de rutina)** y solo
+    para completar las 35. Se buscan con
+    `ENCAJE_PARCIAL=1 EXPLORAR=1 python3 empleo/tools/buscar.py > /tmp/r/c_par_<n>.json`
+    (o a mano con `"encaje": "parcial", "encaje_motivo": "…"`); `insertar`
+    las rechaza antes de las 2 h y no deja pasar más de las que faltan. En la
+    app salen marcadas 🧩 con el motivo. Parar al llegar a 35, o a las 4 h
+    de rutina si no hay más (y explicarlo en la nota).
+11. **Registrar**: `POST empleo_rutinas` con `{"nuevas": N, "nota": "…"}`
+    (nuevas por perfil, completas/parciales, vías exploradas, cerradas
+    retiradas, revisiones atendidas, incidencias).
+12. Solo si se cambia código: commit, merge a `main` y push (si el push
     falla, anotarlo en la nota y seguir).

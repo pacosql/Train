@@ -27,6 +27,10 @@ Por partes (cada una < 10 min, para sesiones con límite de tiempo por comando):
         python3 empleo/tools/buscar.py > /tmp/c_li_$i.json
     done
 
+Exploración (rondas extra hasta llegar a 35 nuevas):
+    EXPLORAR=1 python3 empleo/tools/buscar.py > /tmp/r/c_exp_1.json
+    ENCAJE_PARCIAL=1 EXPLORAR=1 python3 empleo/tools/buscar.py > /tmp/r/c_par_1.json   # tras 2 h
+
 Imprime un array JSON. Cada candidata trae `enlaces` (enlace 1 = portal
 oficial cuando existe, luego LinkedIn/agregadores), `modalidad`,
 `remoto_claro`, `categoria`, `empresa_data_ai` y un extracto de la
@@ -43,6 +47,11 @@ import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+_CFG = open(os.path.join(HERE, "..", "config.js")).read()
+SB_KEY = re.search(r'eyJ[^"]*', _CFG).group(0)
+SB_URL = re.search(r"https://[a-z0-9]*\.supabase\.co", _CFG).group(0)
+
+
 def _empresas():
     """Lista de compañías: la tabla empleo_empresas de Supabase es la fuente de
     verdad (la rutina añade ahí sin necesidad de hacer push); empresas.json es
@@ -192,6 +201,55 @@ def evaluar(o):
              remoto_claro=bool(mod == "remoto" and (in_spain or re.search(r"spain|españa", desc, re.I))
                                and (REMOTE.search(loc) or REMOTE.search(o["puesto"]) or FULL_REMOTE_ES.search(desc)
                                     or (o.get("workplace") or "").lower() == "remote")))
+    return o
+
+
+# ENCAJE_PARCIAL=1: además de las que cumplen la regla, devuelve las que casi
+# la cumplen, marcadas encaje="parcial" con el motivo. `guardar.py insertar`
+# solo las admite tras 2 h de rutina y hasta completar 35 nuevas.
+PARCIAL = bool(os.environ.get("ENCAJE_PARCIAL"))
+AFIN = re.compile(r"business development|bizdev|strategic (accounts?|initiatives)|go[- ]to[- ]market|\bGTM\b|"
+                  r"customer success (director|lead|head)|head of customer success|technical account manager|"
+                  r"solutions? consultant|pre-?sales|product (lead|director|manager).{0,20}\b(AI|ML|data|platform)\b|"
+                  r"director de (negocio|expansi[oó]n|innovaci[oó]n|operaciones)|desarrollo de negocio|"
+                  r"head of (growth|operations|revenue|expansion)|account director|key account", re.I)
+TECH = re.compile(r"software|saas|cloud|internet|information technology|IT services|computer|tech|digital|cyber|"
+                  r"semiconductor|telecom|data|\bAI\b|inteligencia artificial|machine learning|plataforma", re.I)
+SENIOR = re.compile(r"manager|director|head|lead|principal|senior|sr\.?|VP|vice|chief|responsable|jefe|gerente", re.I)
+AFIN_NO = re.compile(r"\b(intern|internship|becari|junior|jr\.?|SDR|BDR|assistant|asistente|trainee|graduate|representative|specialist|associate)\b", re.I)
+
+
+def evaluar_parcial(o):
+    """Casi-encajes: puesto del perfil fuera de la regla de empresa, o puesto afín en España/remoto."""
+    t = o["puesto"]
+    if AFIN_NO.search(t):
+        return None
+    cat = categoria(t)
+    loc, desc = o.get("ubicacion", ""), o.get("descripcion", "")
+    mod = modalidad(loc, desc, o.get("workplace"))
+    in_spain = bool(SPAIN.search(loc))
+    remote_eu = mod == "remoto" and (in_spain or EUROPE.search(loc) or SPAIN.search(desc[:3000]))
+    if not (in_spain or remote_eu):
+        return None  # nunca ubicaciones incompatibles con España
+    data_ai = bool(o.get("empresa_data_ai")) or o["empresa"].lower() in DATA_AI_NAMES
+    tech = data_ai or bool(TECH.search(o.get("industria", "") + " " + o["empresa"] + " " + desc[:1500]))
+    if not tech:
+        return None  # parcial sí, pero siempre empresa tecnológica
+    if cat in ("partner", "direccion", "ejecutivo"):
+        motivo = "Empresa tecnológica fuera de Data & AI, en España sin remoto"
+    elif cat:
+        if not (data_ai and SENIOR.search(t)):
+            return None
+        motivo = "Empresa Data & AI (no Top AI) y no es remoto"
+    elif AFIN.search(t) and SENIOR.search(t):
+        cat = "ejecutivo" if re.search(r"director|head|VP|vice", t, re.I) else (
+            "arquitecto" if re.search(r"technical|consultant|pre-?sales|product", t, re.I) else "sales")
+        motivo = "Puesto afín a tu perfil (" + AFIN.search(t).group(0) + ")"
+    else:
+        return None
+    o.update(categoria=cat, modalidad=mod, empresa_data_ai=bool(o.get("empresa_data_ai")),
+             empresa_top=bool(o.get("empresa_top")), encaje="parcial", encaje_motivo=motivo,
+             remoto_claro=bool(mod == "remoto" and in_spain))
     return o
 
 
@@ -430,18 +488,19 @@ LI_REMOTE_EU = ["partner manager", "partnerships", "alliances", "channel manager
                 "country manager", "general manager", "head of sales", "VP sales", "managing director"]
 
 
-def linkedin():
+def linkedin(busquedas=None, max_pag=400):
     found = {}
-    busquedas = [(q, {"location": "Spain"}) for q in LI_QUERIES] + \
-                [(q, {"location": "European Union", "f_WT": "2"}) for q in LI_REMOTE_EU]
-    # LINKEDIN_LOTE="i/n": solo el lote i de n (para que cada ejecución dure < 10 min).
-    lote = os.environ.get("LINKEDIN_LOTE")
-    if lote:
-        i, n = map(int, lote.split("/"))
-        busquedas = busquedas[i - 1::n]
+    if busquedas is None:
+        busquedas = [(q, {"location": "Spain"}) for q in LI_QUERIES] + \
+                    [(q, {"location": "European Union", "f_WT": "2"}) for q in LI_REMOTE_EU]
+        # LINKEDIN_LOTE="i/n": solo el lote i de n (para que cada ejecución dure < 10 min).
+        lote = os.environ.get("LINKEDIN_LOTE")
+        if lote:
+            i, n = map(int, lote.split("/"))
+            busquedas = busquedas[i - 1::n]
     for q, extra in busquedas:
         vacias = 0
-        for start in range(0, 400, 10):
+        for start in range(0, max_pag, 10):
             try:
                 s = get("https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?"
                         + urllib.parse.urlencode({"keywords": q, "start": start, **extra}), raw=True)
@@ -462,7 +521,7 @@ def linkedin():
                 if not (t and co and u):
                     continue
                 title = html.unescape(t.group(1))
-                if not categoria(title):
+                if not (categoria(title) or (PARCIAL and AFIN.search(title))):
                     continue
                 jid = re.search(r"(\d+)$", u.group(1)).group(1)
                 if jid in found:
@@ -471,7 +530,8 @@ def linkedin():
                 found[jid] = dict(puesto=title, empresa=html.unescape(co.group(1)).strip(),
                                   ubicacion=html.unescape(l.group(1)).strip() if l else "",
                                   url=u.group(1).replace("es.linkedin.com", "www.linkedin.com"),
-                                  fecha=d.group(1) if d else None, fuente="LinkedIn", jid=jid)
+                                  fecha=d.group(1) if d else None, fuente="LinkedIn", jid=jid,
+                                  consulta=f"{q} @ {extra.get('location', '')}{' remoto' if extra.get('f_WT') == '2' else ''}")
             # corta cuando varias páginas seguidas no aportan títulos válidos nuevos
             vacias = vacias + 1 if not nuevos else 0
             if vacias >= 4:
@@ -503,6 +563,73 @@ def linkedin():
     for o in res:
         o["empresa_data_ai"] = (o["empresa"].lower() in DATA_AI_NAMES
                                 or bool(DATA_AI_HINT.search(o.get("industria", "") + " " + o["empresa"])))
+    return res
+
+
+# ---------- exploración aleatoria ----------
+# EXPLORAR=1: cada ejecución prueba ~14 búsquedas nuevas al azar (sinónimos de
+# los perfiles x ciudades/zonas x filtros), evitando las ya probadas en los
+# últimos 14 días y repitiendo más las que en el pasado trajeron ofertas nuevas.
+# Lo que rinde cada búsqueda lo apunta `guardar.py insertar` en empleo_busquedas.
+
+EXP_TITULOS = [
+    "strategic partnerships", "partner ecosystem", "technology partner manager", "ISV partner manager",
+    "GSI alliances", "SI partner manager", "cloud alliances", "AWS partner", "Microsoft partner manager",
+    "partner marketing manager", "channel sales director", "distribution manager", "reseller manager",
+    "business development director AI", "business development manager cloud", "head of business development",
+    "GTM lead", "go to market manager", "AI sales", "AI account executive", "enterprise sales director",
+    "sales director Iberia", "sales manager Spain", "regional sales manager EMEA", "regional director",
+    "solutions engineer", "principal solutions architect", "cloud architect presales", "AI architect",
+    "technical account manager", "customer engineer AI", "pre-sales engineer", "forward deployed engineer",
+    "solutions consultant AI", "field engineer AI", "head of solutions engineering",
+    "developer advocate AI", "developer relations engineer", "head of developer relations", "community lead developer",
+    "technical evangelist", "developer experience lead",
+    "chief AI officer", "head of AI engineering", "VP technology", "director de tecnología IA", "director de datos e IA",
+    "director de innovación", "head of technology", "engineering director", "VP data", "head of analytics",
+    "country lead Spain", "country director", "head of Spain", "director de negocio", "director de expansión",
+    "director de desarrollo de negocio", "responsable de alianzas estratégicas", "responsable de canal",
+    "gerente de alianzas", "director de ventas", "jefe de ventas", "director de preventa", "arquitecto de soluciones",
+    "general manager Iberia", "VP EMEA", "head of southern Europe", "managing director Spain",
+]
+EXP_ZONAS = [
+    {"location": "Spain"}, {"location": "Madrid"}, {"location": "Barcelona"}, {"location": "Valencia"},
+    {"location": "Málaga"}, {"location": "Bilbao"}, {"location": "Sevilla"},
+    {"location": "Spain", "f_WT": "2"}, {"location": "European Union", "f_WT": "2"},
+    {"location": "EMEA", "f_WT": "2"}, {"location": "Europe", "f_WT": "2"},
+]
+EXP_FILTROS = [{}, {"f_TPR": "r604800"}, {"f_TPR": "r2592000"}, {"sortBy": "DD"}, {"f_E": "5"}, {"f_E": "4"}]
+
+
+def explorar():
+    import random
+    rnd = random.Random(os.environ.get("EXPLORAR_SEMILLA") or time.time())
+    hechas, rinden = set(), {}
+    try:
+        desde = time.strftime("%Y-%m-%d", time.gmtime(time.time() - 14 * 86400))
+        req = urllib.request.Request(f"{SB_URL}/rest/v1/empleo_busquedas?select=consulta,nuevas&created_at=gte.{desde}",
+                                     headers={"apikey": SB_KEY, "Authorization": f"Bearer {SB_KEY}"})
+        for r in json.load(urllib.request.urlopen(req, timeout=30)):
+            hechas.add(r["consulta"])
+            q = r["consulta"].split(" @ ")[0]
+            rinden[q] = rinden.get(q, 0) + (r["nuevas"] or 0)
+    except Exception as ex:
+        log("[aviso] historial de búsquedas", ex)
+    titulos = EXP_TITULOS + LI_QUERIES
+    pesos = [1 + 3 * min(rinden.get(t, 0), 5) for t in titulos]
+    elegidas, intentos = [], 0
+    while len(elegidas) < int(os.environ.get("EXPLORAR_N", "14")) and intentos < 500:
+        intentos += 1
+        q = rnd.choices(titulos, pesos)[0]
+        z = dict(rnd.choice(EXP_ZONAS), **rnd.choice(EXP_FILTROS))
+        clave = f"{q} @ {z.get('location', '')}{' remoto' if z.get('f_WT') == '2' else ''}"
+        if clave in hechas and rnd.random() < 0.85:
+            continue
+        hechas.add(clave)
+        elegidas.append((q, z))
+    log("[explorar]", "; ".join(f"{q} @ {z}" for q, z in elegidas))
+    res = linkedin(elegidas, max_pag=150)
+    for o in res:
+        o["fuente_exploracion"] = True
     return res
 
 
@@ -693,10 +820,11 @@ def norm(s):
 
 def main():
     cands = []
-    for nombre, f in (("portales", portales), ("portales_web", portales_web), ("remotive", remotive), ("himalayas", himalayas), ("remoteok", remoteok),
+    for nombre, f in (("explorar", explorar), ("portales", portales), ("portales_web", portales_web), ("remotive", remotive), ("himalayas", himalayas), ("remoteok", remoteok),
                           ("weworkremotely", weworkremotely), ("workingnomads", workingnomads), ("jobicy", jobicy),
                           ("arbeitnow", arbeitnow), ("hackernews", hackernews), ("linkedin", linkedin)):
-        if os.environ.get("SIN_" + nombre.upper()):
+        # EXPLORAR=1 ejecuta solo la exploración aleatoria; sin él, todo menos la exploración.
+        if bool(os.environ.get("EXPLORAR")) != (nombre == "explorar") or os.environ.get("SIN_" + nombre.upper()):
             continue
         t = time.time()
         r = f()
@@ -705,7 +833,7 @@ def main():
 
     if os.environ.get("RAW_OUT"):
         json.dump(cands, open(os.environ["RAW_OUT"], "w"), ensure_ascii=False)
-    ok = [o for o in (evaluar(dict(o)) for o in cands) if o]
+    ok = [o for o in (evaluar(dict(o)) or (PARCIAL and evaluar_parcial(dict(o))) for o in cands) if o]
     # Fusiona la misma oferta vista en varios sitios -> varios enlaces.
     merged = {}
     for o in sorted(ok, key=lambda o: 0 if o["fuente"].startswith("portal") else 1):
@@ -726,7 +854,7 @@ def main():
     res = list(merged.values())
     for o in res:
         o["descripcion"] = (o.get("descripcion") or "")[:1500]
-        for k in ("jid", "workplace", "url_externa"):
+        for k in ("jid", "workplace", "url_externa", "fuente_exploracion", "industria"):
             o.pop(k, None)
     json.dump(res, sys.stdout, ensure_ascii=False, indent=1)
     log(f"[ok] {len(res)} candidatas ({sum(o['modalidad'] == 'remoto' for o in res)} remotas)")

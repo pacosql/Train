@@ -135,6 +135,8 @@
     .key .k-emp { color: var(--text); }
     .key .k-star { color: #ffd66e; letter-spacing: 1px; }
     .key .k-danger { color: #fff; background: var(--bad); border-color: var(--bad); }
+    .parcial { margin: 0 0 8px; padding: 7px 10px; border-radius: 10px; font-size: 0.84rem; font-weight: 600;
+      color: var(--accent-2); background: rgba(110, 168, 255, 0.1); border: 1px dashed rgba(110, 168, 255, 0.6); }
     .ya-aplicada { margin: 0 0 8px; padding: 7px 10px; border-radius: 10px; font-size: 0.84rem; font-weight: 600;
       color: #ffd66e; background: rgba(242, 184, 64, 0.12); border: 1px solid rgba(242, 184, 64, 0.55); }
     .key .k-pay { color: #ffd66e; border-color: rgba(242, 184, 64, 0.55); background: rgba(242, 184, 64, 0.12); }
@@ -201,6 +203,8 @@
       <span class="chip" data-f="remoto">Remoto</span>
       <span class="chip" data-f="hibrido">Híbrido</span>
       <span class="chip" data-f="nuevas">✨ Nuevas</span>
+      <span class="chip" data-f="parcial">🧩 Encaje parcial</span>
+      <span class="chip" data-f="completo">🎯 Encaje completo</span>
       <span class="chip" data-f="top">⭐ Top AI</span>
       <span class="chip" data-f="data_ai">🧠 Data &amp; AI</span>
       <span class="chip" data-f="partner">🤝 Partner</span>
@@ -356,6 +360,7 @@
       if (state.f.remoto_claro) list = list.filter((o) => o.remoto_claro);
       if (state.f.remoto || state.f.hibrido) list = list.filter((o) => (state.f.remoto && o.modalidad === "remoto") || (state.f.hibrido && o.modalidad === "hibrido"));
       if (state.f.nuevas) list = list.filter(isNew);
+      if (!!state.f.parcial !== !!state.f.completo) list = list.filter((o) => (o.encaje === "parcial") === !!state.f.parcial);
       const cats = CATS.filter((c) => state.f[c]);
       if (cats.length) list = list.filter((o) => cats.includes(o.categoria));
       if (state.f.data_ai) list = list.filter((o) => o.empresa_data_ai);
@@ -511,6 +516,7 @@
         ${(() => { const ac = actividad(o); return ac && ac.a && ac.a !== "Desconocida" ? `<div class="act"><div class="a1">🏷️ ${esc(ac.a)}</div>${ac.b ? `<div class="a2">${esc(ac.b)}</div>` : ""}</div>` : ""; })()}
         <div class="pto">${esc(o.puesto)}</div>
         <div class="key">${key}</div>
+        ${o.encaje === "parcial" ? `<div class="parcial">🧩 Encaje parcial: ${esc(o.encaje_motivo || "no cumple del todo tu regla")}</div>` : ""}
         ${(() => { const y = yaAplicada(o); return y ? `<div class="ya-aplicada">✋ Ya aplicaste a ${esc(o.empresa)} hace ${Math.round(y.d) || "menos de 1"} día${Math.round(y.d) === 1 ? "" : "s"} (${esc(y.puesto)})</div>` : ""; })()}
         ${(() => { const c = confianza(o); return c && c.n <= 1 ? `<div class="ya-aplicada" style="color:#fff;background:var(--bad-soft);border-color:var(--bad)">⚠️ Empresa sin presencia verificable: ${esc(c.nota || "revisa antes de aplicar")}</div>` : ""; })()}
         <div class="badges">${badges.join("")}</div>
