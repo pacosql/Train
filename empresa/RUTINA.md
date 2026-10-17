@@ -381,3 +381,9 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 - Tanda 76 (eco de InterReef y del comentario «introbay»): Inter + costa/mar y naturaleza, prefijo latino + Reef, pieza ⭐ + Reef, nombre romano célebre o en -io + Partners, Intro/Proto/Nova/Alto + palabra 💡. 89 cargados (≈60 % .com ocupados).
 - Cola: 133 pendientes.
 - Tanda 77 (relleno, sin marcas nuevas): Intro + costa/naturaleza, Inter + costa, nombre romano en -io + Partners. 36 cargados; InterJetty vetado. Cola: 169.
+
+### 17/10 — Marcas de Paco (~11:40 UTC) y tanda 78
+- 169 marcas (toda la cola): 👍 **SupraReef**, **SupraTide**, **SupraBay**; 👎 todo lo demás. Supra + mar: 3/6 (caen Cove, Harbor, Shore). Inter/Intro/Alto/Proto + costa: 0/61. Cruces de raíces ⭐ y pieza × árbol: 0/41. Nombre en -io + Partners: 0 → vía cerrada.
+- Comentario ● «**recursivequery** / **stonebase**» (atendido): los dos .com están ocupados, así que se exploran sus patrones.
+- Tanda 78 (643 candidatos): Supra + palabra corta de mar/naturaleza; otros prefijos latinos cortos + mar (Ultra, Infra, Magna, Ora, Alba, Vera…); adjetivo técnico/matemático + Query (Modular, Ordinal, Kinetic…); Recursive + pieza ⭐; Stone + pieza estructural; material + Base/Core/Ground/Stack. 210 cargados, 377 .com ocupados (Stone + X y material + Base casi todos cogidos), 7 vetados.
+- Cola: 210 pendientes.
