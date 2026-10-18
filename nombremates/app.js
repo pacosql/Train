@@ -802,6 +802,7 @@ const capitaliza = (s) => s.charAt(0).toUpperCase() + s.slice(1);
 
 const ESTADOS = {
   pendiente: "⏳ En tu cola, sin decidir",
+  reserva: "📦 Guardado en reserva: fuera de tu cola por ahora, puede volver",
   me_gusta: "👍 Te gusta",
   favorito: "⭐ Definitivo",
   no_me_gusta: "👎 Lo descartaste tú",

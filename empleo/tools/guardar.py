@@ -3,6 +3,7 @@
 
     python3 empleo/tools/guardar.py insertar /tmp/candidatas.json
     python3 empleo/tools/guardar.py revalidar
+    python3 empleo/tools/guardar.py cuenta     # nuevas de esta rutina vs. objetivo de 35
 
 insertar: ignora las que ya existen (misma URL en cualquiera de sus enlaces,
 o misma empresa + puesto) y a las existentes les añade los enlaces nuevos.
@@ -26,9 +27,16 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 CFG = open(os.path.join(HERE, "..", "config.js")).read()
 KEY = re.search(r'eyJ[^"]*', CFG).group(0)
 URL = re.search(r"https://[a-z0-9]*\.supabase\.co", CFG).group(0)
-HOY = datetime.date.today().isoformat()
+try:
+    from zoneinfo import ZoneInfo
+    HOY = datetime.datetime.now(ZoneInfo("Europe/Madrid")).date().isoformat()
+except Exception:
+    HOY = datetime.date.today().isoformat()
+OBJETIVO = 35          # nuevas mínimas por rutina
+ESPERA_PARCIAL = 7200  # segundos de rutina antes de admitir ofertas de encaje parcial
+INICIO_F = "/tmp/r/inicio"
 COLS = ("empresa", "puesto", "ubicacion", "modalidad", "remoto_claro", "url", "fuente", "sector", "area",
-        "seniority", "resumen", "fecha_publicacion", "etiquetas", "enlaces", "categoria", "empresa_data_ai", "empresa_top", "empleados", "sueldo", "sueldo_min_eur", "sueldo_max_eur")
+        "seniority", "resumen", "fecha_publicacion", "etiquetas", "enlaces", "categoria", "empresa_data_ai", "empresa_top", "empleados", "sueldo", "sueldo_min_eur", "sueldo_max_eur", "confianza", "confianza_nota", "actividad", "actividad2", "encaje", "encaje_motivo")
 
 
 def api(method, path, body=None, prefer="return=representation"):
@@ -58,8 +66,65 @@ def misma(a_emp, a_pto, b_emp, b_pto):
     return ea == eb and len(min(pa, pb, key=len)) >= 8 and (pa.startswith(pb) or pb.startswith(pa))
 
 
+def inicio():
+    """Momento (epoch) en que empezó la rutina: $RUTINA_INICIO o /tmp/r/inicio."""
+    try:
+        return float(os.environ.get("RUTINA_INICIO") or open(INICIO_F).read().strip())
+    except Exception:
+        return None
+
+
+def cuenta():
+    """Cuántas nuevas lleva la rutina, cuánto tiempo y si ya puede admitir parciales."""
+    t0 = inicio()
+    if not t0:
+        print(json.dumps({"error": f"sin inicio: ejecuta  mkdir -p /tmp/r && date +%s > {INICIO_F}"}))
+        return None
+    desde = datetime.datetime.fromtimestamp(t0, datetime.timezone.utc).isoformat()
+    rows = api("GET", "empleo_ofertas?select=encaje,activa&created_at=gte." + urllib.parse.quote(desde))
+    vivas = [r for r in rows if r["activa"]]
+    c = {"minutos": round((datetime.datetime.now().timestamp() - t0) / 60),
+         "nuevas": len(vivas), "completas": sum(r["encaje"] != "parcial" for r in vivas),
+         "parciales": sum(r["encaje"] == "parcial" for r in vivas), "descartadas": len(rows) - len(vivas)}
+    c["faltan"] = max(0, OBJETIVO - c["nuevas"])
+    c["parciales_permitidas"] = c["minutos"] * 60 >= ESPERA_PARCIAL
+    print(json.dumps(c))
+    return c
+
+
+def _apuntar_busquedas(cands, nuevas_ids):
+    """Rendimiento de cada búsqueda (consulta) en empleo_busquedas, para que la exploración aprenda."""
+    por = {}
+    for c in cands:
+        q = c.get("consulta")
+        if not q:
+            continue
+        d = por.setdefault(q, {"consulta": q, "ubicacion": q.split(" @ ")[-1], "fuente": c.get("fuente") or "LinkedIn",
+                               "candidatas": 0, "nuevas": 0})
+        d["candidatas"] += 1
+        d["nuevas"] += id(c) in nuevas_ids
+    if por:
+        api("POST", "empleo_busquedas", list(por.values()), "return=minimal")
+
+
 def insertar(*paths):
     cands = [c for p in paths for c in json.load(open(p))]
+    # Encaje parcial: solo tras ESPERA_PARCIAL de rutina y solo hasta llegar a OBJETIVO nuevas.
+    parciales = [c for c in cands if c.get("encaje") == "parcial"]
+    cupo = 0
+    if parciales:
+        with open(os.devnull, "w") as dn:
+            so, sys.stdout = sys.stdout, dn
+            try:
+                c = cuenta()
+            finally:
+                sys.stdout = so
+        if c and c["parciales_permitidas"]:
+            cupo = c["faltan"]
+        print(f"[parcial] {len(parciales)} candidatas de encaje parcial; cupo {cupo}"
+              + ("" if c and c["parciales_permitidas"] else " (aún no han pasado 2 h de rutina)"), file=sys.stderr)
+        # las completas primero; de las parciales, antes las remotas
+        cands.sort(key=lambda c: (c.get("encaje") == "parcial", c.get("modalidad") != "remoto", not c.get("remoto_claro")))
     rows = api("GET", "empleo_ofertas?select=id,empresa,puesto,url,enlaces")
     by_url = {}
     for r in rows:
@@ -79,6 +144,9 @@ def insertar(*paths):
                     api("PATCH", f"empleo_ofertas?id=eq.{ex['id']}", {"enlaces": ex["enlaces"]}, "return=minimal")
                     ampliadas += 1
             continue
+        if c.get("encaje") == "parcial" and cupo <= 0:
+            continue
+        cupo -= 1  # las completas de este mismo lote también cuentan para llegar a 35
         row = {k: c.get(k) for k in COLS if c.get(k) is not None}
         row["url"] = enl[0]["url"]
         row["enlaces"] = enl
@@ -90,6 +158,7 @@ def insertar(*paths):
         row.update(encontrado_en=HOY, verificada_en=HOY, decision="pendiente", activa=True,
                    etiquetas=row.get("etiquetas") or [])
         c["_nueva"] = True
+        row["encaje"] = c.get("encaje") or "completo"
         nuevas.append(row)
         rows.append(row)
         for l in enl:
@@ -101,9 +170,14 @@ def insertar(*paths):
             sd = sueldo_oferta([l["url"] for l in r["enlaces"]], r.get("empresa"), c.get("descripcion") or "")
             if sd:
                 r.update(sd)
-    emp = {e["nombre"].lower(): e["empleados"] for e in api("GET", "empleo_empresas?select=nombre,empleados") if e.get("empleados")}
+    emps = {e["nombre"].lower(): e for e in api("GET", "empleo_empresas?select=nombre,empleados,confianza,confianza_nota,actividad,actividad2")}
     for r in nuevas:
-        r["empleados"] = r.get("empleados") or emp.get((r.get("empresa") or "").lower())
+        e = emps.get((r.get("empresa") or "").lower()) or {}
+        r["empleados"] = r.get("empleados") or e.get("empleados")
+        r["confianza"] = r.get("confianza") or e.get("confianza")
+        r["confianza_nota"] = r.get("confianza_nota") or e.get("confianza_nota")
+        r["actividad"] = r.get("actividad") or e.get("actividad")
+        r["actividad2"] = r.get("actividad2") or e.get("actividad2")
     keys = set(COLS) | {"encontrado_en", "verificada_en", "decision", "activa"}
     nuevas = [{k: r.get(k) for k in keys} for r in nuevas]
     for r in nuevas:
@@ -113,9 +187,15 @@ def insertar(*paths):
         r["categoria"] = r["categoria"] or "partner"
         r["empresa_top"] = bool(r.get("empresa_top"))
         r["modalidad"] = r["modalidad"] or "desconocido"
+        r["encaje"] = r["encaje"] or "completo"
     for i in range(0, len(nuevas), 100):
         api("POST", "empleo_ofertas", nuevas[i:i + 100], "return=minimal")
-    print(json.dumps({"nuevas": len(nuevas), "ampliadas": ampliadas}))
+    try:
+        _apuntar_busquedas(cands, {id(c) for c in cands if c.get("_nueva")})
+    except Exception as ex:
+        print("[aviso] empleo_busquedas:", ex, file=sys.stderr)
+    print(json.dumps({"nuevas": len(nuevas), "parciales": sum(r["encaje"] == "parcial" for r in nuevas),
+                      "ampliadas": ampliadas}))
 
 
 UA = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/126 Safari/537.36"}
@@ -304,7 +384,7 @@ def limpiar_regla():
     """Retira (activa=false) las PENDIENTES que, con la modalidad ya confirmada, no cumplen la regla:
     no remotas -> partner/direccion/ejecutivo solo si Data & AI; sales/arquitecto/devrel solo si Top AI."""
     rows = api("GET", "empleo_ofertas?select=id,empresa,puesto,modalidad,categoria,empresa_data_ai,empresa_top"
-                      "&activa=eq.true&decision=eq.pendiente&modalidad=neq.remoto")
+                      "&activa=eq.true&decision=eq.pendiente&modalidad=neq.remoto&encaje=neq.parcial")
     n = 0
     for r in rows:
         bad = not r["empresa_data_ai"] if r["categoria"] in ("partner", "direccion", "ejecutivo") else not r["empresa_top"]
@@ -317,4 +397,4 @@ def limpiar_regla():
 if __name__ == "__main__":
     {"insertar": lambda: insertar(*sys.argv[2:]), "revalidar": revalidar,
      "para_resumir": lambda: para_resumir(sys.argv[2]), "aplicar_resumenes": lambda: aplicar_resumenes(*sys.argv[2:]),
-     "limpiar_regla": limpiar_regla}[sys.argv[1]]()
+     "limpiar_regla": limpiar_regla, "cuenta": cuenta}[sys.argv[1]]()
