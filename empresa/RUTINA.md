@@ -387,3 +387,6 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 - Comentario ● «**recursivequery** / **stonebase**» (atendido): los dos .com están ocupados, así que se exploran sus patrones.
 - Tanda 78 (643 candidatos): Supra + palabra corta de mar/naturaleza; otros prefijos latinos cortos + mar (Ultra, Infra, Magna, Ora, Alba, Vera…); adjetivo técnico/matemático + Query (Modular, Ordinal, Kinetic…); Recursive + pieza ⭐; Stone + pieza estructural; material + Base/Core/Ground/Stack. 210 cargados, 377 .com ocupados (Stone + X y material + Base casi todos cogidos), 7 vetados.
 - Cola: 210 pendientes.
+
+### 18/10 — Comprobación diaria del .com (00:02 UTC)
+- comprobar_com.py: 246/246 libres (⭐, 👍 y pendientes). Cola: 210 pendientes, sin marcas nuevas desde la tanda 78.
