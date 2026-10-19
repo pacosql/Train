@@ -7,10 +7,9 @@ mensaje para clasificarlo (⚽ Deportes, 📖 Leer luego, 💼 Trabajo,
 💡 Ideas, 🛒 Compras o una categoría nueva), copiarlo, abrirlo,
 compartirlo o borrarlo; arriba se filtra por categoría.
 
-- **Una sola persona, muchos dispositivos**: al crearla se genera una
-  clave secreta que va en el enlace (`#k=…`). Botón **🔗 Enlace** →
-  QR / copiar para abrirla en otro dispositivo. Quien tenga el enlace
-  está dentro.
+- **Sin configurar nada**: hay una única conversación; cualquier
+  dispositivo que abre la app ya está dentro (la sala fija está en
+  `config.js`).
 - **Pegar**: botón 📋, o pegar una imagen/archivo directamente
   (Cmd/Ctrl+V), o arrastrar archivos encima en el ordenador. Enter
   envía en el ordenador (Mayús+Enter, salto de línea).
@@ -25,8 +24,6 @@ Ver [`tools/schema.sql`](./tools/schema.sql).
 
 - Tabla `bandeja_items` con RLS activado y **sin** políticas para anon:
   solo se accede por las funciones `bandeja_list`, `bandeja_post`,
-  `bandeja_set_category` y `bandeja_delete`, que exigen la clave de la
-  sala.
+  `bandeja_set_category` y `bandeja_delete`, con la sala de `config.js`.
 - Bucket de Storage `bandeja` (lectura pública por URL, sin listado):
-  los archivos van en `<clave>/<id>/<nombre>`, así que sin la clave no
-  se pueden adivinar. Anon solo puede subir.
+  los archivos van en `<sala>/<id>/<nombre>`. Anon solo puede subir.

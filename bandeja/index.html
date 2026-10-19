@@ -177,26 +177,8 @@
     }
     .act.danger { color: var(--danger); }
     .sheet .close { width: 100%; margin-top: 14px; border: none; background: none; color: var(--text-2); padding: 10px; }
-    .qr { display: grid; place-items: center; margin: 10px 0; }
-    .qr img, .qr canvas { background: #fff; padding: 10px; border-radius: 12px; width: 220px; height: 220px; image-rendering: pixelated; }
-    .linkbox {
-      font-family: ui-monospace, monospace; font-size: 0.75rem; background: var(--surface-2);
-      border-radius: 10px; padding: 8px 10px; overflow-wrap: anywhere; color: var(--text-2);
-    }
     .note { font-size: 0.85rem; color: var(--text-2); }
 
-    /* Bienvenida (sin sala) */
-    .welcome { max-width: 460px; margin: 0 auto; padding: 40px 20px; }
-    .welcome h2 { font-size: 1.4rem; margin: 0 0 8px; }
-    .welcome p { color: var(--text-2); }
-    .big {
-      display: block; width: 100%; border: none; border-radius: 14px; padding: 14px; font-weight: 700;
-      background: var(--accent); color: var(--accent-ink); margin: 10px 0;
-    }
-    .welcome input {
-      width: 100%; border: 1px solid var(--line); background: var(--surface); color: var(--text);
-      border-radius: 12px; padding: 12px; font: inherit; font-size: 16px;
-    }
     .drop-hint {
       position: fixed; inset: 0; z-index: 30; background: rgba(47,111,224,0.25); border: 3px dashed var(--accent);
       display: grid; place-items: center; font-size: 1.4rem; font-weight: 700; pointer-events: none;
@@ -213,25 +195,16 @@
     <div class="top">
       <h1><a href="../">📥</a> Bandeja</h1>
       <button class="pill" id="deviceBtn" title="Nombre de este dispositivo">📱 …</button>
-      <button class="pill" id="linkBtn" title="Enlace para tus otros dispositivos">🔗 Enlace</button>
     </div>
     <div class="filters" id="filters"></div>
   </header>
 
   <main id="scroller">
-    <div id="welcome" class="welcome hidden">
-      <h2>📥 Tu bandeja entre dispositivos</h2>
-      <p>Un chat contigo mismo: pega texto, enlaces, fotos o archivos en un dispositivo y aparecen en todos los demás. Quien tenga el enlace está dentro, así que guárdalo solo para ti.</p>
-      <button class="big" id="createBtn">Crear mi bandeja</button>
-      <p class="note">¿Ya tienes una en otro dispositivo? Pega aquí su enlace (botón 🔗 Enlace allí):</p>
-      <input id="joinInput" placeholder="https://…/bandeja/#k=…" autocomplete="off" />
-      <button class="big" id="joinBtn" style="background: var(--surface-2); color: var(--text)">Unirme</button>
-    </div>
     <div id="list"></div>
     <div class="build-id">build __BUILD_ID__</div>
   </main>
 
-  <footer id="footer" class="hidden">
+  <footer id="footer">
     <div class="attach-preview" id="attachPreview"></div>
     <div class="compose">
       <button class="ibtn" id="attachBtn" title="Adjuntar">📎</button>
@@ -244,7 +217,6 @@
 
   <script src="config.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
   <script>
     const CFG = window.BANDEJA_CONFIG;
     const sb = supabase.createClient(CFG.url, CFG.anonKey, { auth: { persistSession: false } });
@@ -252,23 +224,12 @@
     const $ = (id) => document.getElementById(id);
 
     // ---------- Sala y dispositivo ----------
-    // La sala es una clave aleatoria larga: va en el hash del enlace (no
-    // llega al servidor de GitHub Pages) y se recuerda en localStorage.
+    // Una sola conversación para todos: quien abre la app, está dentro.
     const LS = {
       get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
       set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
     };
-    function roomFrom(text) {
-      const m = String(text || "").match(/[#&?]k=([A-Za-z0-9_-]{16,})/) || String(text || "").trim().match(/^([A-Za-z0-9_-]{16,})$/);
-      return m ? m[1] : null;
-    }
-    function newRoom() {
-      const b = new Uint8Array(18);
-      crypto.getRandomValues(b);
-      return btoa(String.fromCharCode(...b)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
-    }
-    let room = roomFrom(location.hash) || LS.get("bandeja_room");
-    const roomLink = () => location.origin + location.pathname.replace(/index\.html$/, "") + "#k=" + room;
+    const room = CFG.room;
 
     function guessDevice() {
       const ua = navigator.userAgent;
@@ -319,7 +280,6 @@
 
     // ---------- Datos ----------
     async function load() {
-      if (!room) return;
       const { data, error } = await sb.rpc("bandeja_list", { p_room: room, p_limit: 1000 });
       if (error) { console.error(error); return; }
       const sig = JSON.stringify(data.map((r) => [r.id, r.category]));
@@ -558,38 +518,7 @@
       } catch (e) { if (e.name !== "AbortError") toast("No se pudo compartir"); }
     }
 
-    function openLinkSheet() {
-      const link = roomLink();
-      let qrHtml = "";
-      try { const q = qrcode(0, "M"); q.addData(link); q.make(); qrHtml = q.createImgTag(6, 0); } catch (e) {}
-      openSheet(`
-        <h2>Añade otro dispositivo</h2>
-        <p class="note">Abre este enlace en tu otro dispositivo (escanea el QR con la cámara) y estará en esta misma conversación. Quien tenga el enlace puede verla: no lo compartas.</p>
-        <div class="qr">${qrHtml}</div>
-        <div class="linkbox">${esc(link)}</div>
-        <div class="actions" style="margin-top:10px">
-          <button class="act" data-a="copy">📋 Copiar enlace</button>
-          ${navigator.share ? `<button class="act" data-a="share">📤 Enviar…</button>` : ""}
-        </div>
-        <p class="note">En iPhone: ábrelo en Safari → Compartir → «Añadir a pantalla de inicio» para tenerla como app.</p>`,
-        async (b, close) => {
-          if (b.dataset.a === "copy") { await copyText(link); close(); }
-          if (b.dataset.a === "share") { try { await navigator.share({ title: "Mi Bandeja", url: link }); } catch (e) {} close(); }
-        });
-    }
-
     // ---------- Arranque ----------
-    function enter(r) {
-      room = r;
-      LS.set("bandeja_room", room);
-      if (roomFrom(location.hash) !== room) history.replaceState(null, "", location.pathname + location.search + "#k=" + room);
-      $("welcome").classList.add("hidden");
-      $("footer").classList.remove("hidden");
-      $("filters").classList.remove("hidden");
-      $("linkBtn").classList.remove("hidden");
-      load().then(toBottom);
-    }
-
     function autosize() {
       const t = $("input");
       t.style.height = "auto";
@@ -600,13 +529,6 @@
     $("deviceBtn").onclick = () => {
       const n = (prompt("Nombre de este dispositivo:", device) || "").trim();
       if (n) { device = n.slice(0, 40); LS.set("bandeja_device", device); paintDevice(); lastSig = ""; render(); }
-    };
-    $("linkBtn").onclick = openLinkSheet;
-    $("createBtn").onclick = () => { enter(newRoom()); setTimeout(openLinkSheet, 300); };
-    $("joinBtn").onclick = () => {
-      const r = roomFrom($("joinInput").value);
-      if (!r) return toast("Ese enlace no parece de una Bandeja");
-      enter(r);
     };
     $("filters").onclick = (e) => {
       const b = e.target.closest("[data-f]");
@@ -656,20 +578,18 @@
       }
     });
     document.addEventListener("paste", (e) => {
-      if (!room) return;
       const files = [...(e.clipboardData?.files || [])];
       if (files.length) { e.preventDefault(); addFiles(files); }
     });
     let dragDepth = 0, hint = null;
     document.addEventListener("dragenter", (e) => {
-      if (!room || !e.dataTransfer?.types?.includes("Files")) return;
+      if (!e.dataTransfer?.types?.includes("Files")) return;
       e.preventDefault(); dragDepth++;
       if (!hint) { hint = document.createElement("div"); hint.className = "drop-hint"; hint.textContent = "Suelta para adjuntar"; document.body.appendChild(hint); }
     });
-    document.addEventListener("dragover", (e) => { if (room) e.preventDefault(); });
+    document.addEventListener("dragover", (e) => { e.preventDefault(); });
     document.addEventListener("dragleave", () => { if (--dragDepth <= 0 && hint) { hint.remove(); hint = null; dragDepth = 0; } });
     document.addEventListener("drop", (e) => {
-      if (!room) return;
       e.preventDefault(); dragDepth = 0; if (hint) { hint.remove(); hint = null; }
       if (e.dataTransfer.files.length) addFiles(e.dataTransfer.files);
     });
@@ -677,15 +597,9 @@
     // Texto compartido desde otra app (Android: "Compartir con… Bandeja").
     const qs = new URLSearchParams(location.search);
     const shared = [qs.get("title"), qs.get("text"), qs.get("url")].filter(Boolean).join("\n");
-    if (shared) { $("input").value = shared; history.replaceState(null, "", location.pathname + (room ? "#k=" + room : "")); }
+    if (shared) { $("input").value = shared; history.replaceState(null, "", location.pathname); }
 
-    if (room) enter(room);
-    else {
-      $("welcome").classList.remove("hidden");
-      $("filters").classList.add("hidden");
-      $("linkBtn").classList.add("hidden");
-    }
-    window.addEventListener("hashchange", () => { const r = roomFrom(location.hash); if (r && r !== room) { lastSig = ""; items = []; enter(r); } });
+    load().then(toBottom);
 
     // Sondeo cada 3 s mientras la pestaña está visible; al volver, al momento.
     setInterval(() => { if (document.visibilityState === "visible") load(); }, 3000);
