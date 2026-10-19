@@ -46,6 +46,7 @@ reglas para no interferir con las demás:
 | 📺 Series | [`series/`](./series) | `/Train/series/` | `series_` |
 | ✍️ Orto | [`orto/`](./orto) | `/Train/orto/` | `orto_` |
 | ✒️ Nombre Autor | [`autor/`](./autor) | `/Train/autor/` | `autor_` |
+| 📥 Bandeja | [`bandeja/`](./bandeja) | `/Train/bandeja/` | `bandeja_` |
 
 ## Añadir una app nueva
 

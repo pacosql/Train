@@ -610,7 +610,7 @@ function renderCard(container, row, acciones, opciones = {}) {
   card.querySelector(".name-text").textContent = (opciones.pos ? `${opciones.pos}. ` : "") + row.nombre;
   { const ps = pastillaScore(row); if (ps) card.querySelector(".name-text").after(ps); }
   pintaPorque(card.querySelector(".porque"), row);
-  // Ranking de definitivos: las 6 medidas a la vista, como en el ranking de Claude.
+  // Ranking de definitivos: las 7 medidas a la vista, como en el ranking de Claude.
   if (opciones.medidas && row.medidas) card.querySelector(".porque").after(bloqueMedidas(row.medidas));
 
   const notaEl = card.querySelector(".nota-guardada");
@@ -780,13 +780,13 @@ function abrirRanking(abrir) {
 function pintaRanking() {
   const cont = document.getElementById("lista-ranking");
   cont.innerHTML = "";
-  // Solo los nombres puntuados con la metodología de las 6 medidas
+  // Solo los nombres puntuados con la metodología de las 7 medidas
   // (la misma de «📐 Buen nombre»), de mayor a menor.
   const filas = gustados
     .filter((r) => r.medidas && r.score !== null && r.score !== undefined)
     .sort((a, b) => b.score - a.score || a.nombre.localeCompare(b.nombre));
   if (filas.length === 0) {
-    parrafo(cont, "Todavía no hay nombres puntuados con las 6 medidas.", "empty");
+    parrafo(cont, "Todavía no hay nombres puntuados con las 7 medidas.", "empty");
     return;
   }
   filas.forEach((row, i) => {
@@ -856,6 +856,7 @@ const TABLE_REF = `${CFG.tablePrefix}referencias`;
 const MEDIDAS = [
   ["corto", "Corto"], ["facil", "Fácil"], ["memorable", "Memorable"],
   ["sugiere", "Sugiere"], ["distintivo", "Distintivo"], ["busqueda", "Búsqueda"],
+  ["escritura", "Se escribe ES/EN"],
 ];
 
 function abrirReferencias(abrir) {

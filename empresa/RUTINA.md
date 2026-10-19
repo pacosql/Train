@@ -293,3 +293,103 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 - Lectura: **palabra inglesa con fuerza + Query** (doble sentido de mates: Plot/Figure; avanzar: Stride/Sprout/Frontier; construir: Brick; color: Indigo; lugar bilingüe: Sierra). Ya no gustan: Slate + X (todo 👎), Trail + X, «-ward» (Upward, Onward, Skyward…), naturaleza común (Pine, Oak, Cedar, River, Wren, Heron) ni detalles de escribir (Margin, Underline, Typeset, Folio).
 - Tanda 49: 35 candidatos en esas cinco vías; 18 con .com libre (7 buenos, 11 en reserva): VertexQuery, MesaQuery, QueryPlot, FactorQuery, RatioQuery, BeamQuery, TangentQuery, QueryStride, AxisQuery, QueryFigure, KeystoneQuery, MortarQuery, SaffronQuery, MedianQuery, CanyonQuery, CrimsonQuery, OchreQuery, VermilionQuery. Sin cargar (17, .com ocupado): PrimeQuery, ScaleQuery, SummitQuery, LeapQuery, SurgeQuery, KindleQuery, BloomQuery, VentureQuery, QuerySprout, ArchQuery, TimberQuery, BrickForward, AmberQuery, DeltaQuery, SierraForward, MesaForward, DeltaForward. Las palabras comunes de una sílaba + Query ya están cogidas: mejor palabras menos obvias (Vertex, Mortar, Ochre).
 - comprobar_com.py: 50/50 libres.
+- Tanda 50 (al azar, sin marcas nuevas; receta: oficio antiguo, palabras Yes/Bay/Wave/Compass). Como esa forma sacó −7 en la 44, se adaptó a lo que gusta ahora: herramienta con lado de mates + Query. 17 candidatos, 11 con .com libre — SextantQuery, QuadrantQuery, MeridianQuery, AnvilQuery, QueryMeridian, QueryAnvil, KilnQuery, PlumbQuery, CaliperQuery, LatheQuery, BayQuery. Compass*, Wave, Ledger, *Forward: ocupados. comprobar_com.py: 61/61 libres.
+- Tanda 51 (al azar, sin marcas nuevas; receta: lugar que suene en los dos idiomas, como 👍 SierraQuery/AtlantaForward). 17 candidatos, 15 con .com libre; 14 cargados — SonoraQuery, QuerySonora, PampaQuery, SonoraForward, PampaForward, QuerySierra, LagunaQuery, ArroyoQuery, SavannaQuery, TundraQuery, NevadaQuery, MontanaQuery, AlamedaQuery, HillQuery. PatagoniaQuery vetado a mano (marca de ropa). Los nombres de lugar dan .com libre con facilidad. comprobar_com.py: 76/76 libres.
+
+### 15/10 — Revisión de Paco de las tandas 49-51 (~05:40 UTC)
+- 47 👎 y solo 👍 QueryPlot (más AtlantaForward y SierraQuery, que vuelve a marcar). Las tandas 49-51 (mates/construir/color/herramienta/lugar + Query) no le dicen nada: **la vía «palabra + Query» está agotada**. Lo que queda en 👍 con Query delante: QueryPlot, QueryStroke, QueryBrick.
+- Tanda 52 (receta azar.py: palabra inglesa de doble sentido; Ten, Think, Bee, Pixel): Query delante + sustantivo corto de doble sentido. 18 candidatos, 7 con .com libre — QueryLever, QueryTen, QueryPivot, QueryPixel, QueryDraft, QueryRule, QueryTally. comprobar_com.py: 40/40 libres.
+- Si esta tanda también cae, dejar de producir volumen en la vía Query y proponer a Paco el paso siguiente que ya estaba apuntado: comprobación a fondo de ForwardQuery (marcas USPTO/EUIPO/OEPM, empresas, redes).
+- Tanda 53 (al azar, sin marcas nuevas). azar.py sacó otra vez «oficio antiguo» (rechazada en la 44 y la 50): se volvió a sortear y se eligió «dos palabras que cuentan algo» (la forma de ForwardQuery). 15 candidatos, 4 con .com libre — HarborQuery, QueryOnward, QuerySwift, ForwardAnswer (7 ocupados, 4 ya existían). Las parejas obvias (NextQuery, OpenQuery, AskForward, QueryLeap…) están cogidas. comprobar_com.py: 44/44 libres.
+- Regla nueva: si azar.py saca una forma que Paco ha rechazado en bloque dos veces, se vuelve a sortear.
+
+### 15/10 — Paco consolida la shortlist (~06:10 UTC)
+- Tandas 52 y 53 rechazadas enteras (11 👎). 👍 vaciado: 15 pasan a 💚 (QueryStroke, StrokeQuery, QueryBrick, StrideQuery, FigureQuery, IndigoQuery, SierraQuery, AtlantaForward, FrontierQuery, LeafQuery, SlateQuery, QuerySwift, PacoNorth, Tintazulstudios, SketchPaperStudio); 👎 TintixStudios, CarpetaStudios.
+- **⭐ (17)**: ForwardQuery, ForwardQueries, ForwardQueryStudios, ForwardQueryStudio, ForwardQueryLabs, QueryForward, QueryForwardStudios, FwdQuery, Querystudios, QueryPlot, PlotQuery, SproutQuery, ForwardSlate, SlateForward, TrailStroke, TrailBrick, TrailEast.
+- ~~Lectura: ya no busca más nombres~~ **ERROR (Paco, 06:4x): «¿por qué no hay más nombres? quiero clasificar más».** Paco quiere SIEMPRE nombres para clasificar. **Regla (Paco, 07:35): «ten siempre 150 listos».** En cada pasada, si hay < 150 pendientes, genera y criba tandas hasta volver a ~150 (con ~1/3 de .com libres, eso son ~3 candidatos por hueco), aunque no haya marcas.
+
+### 15/10 — Primera comprobación de la shortlist (búsqueda web, no es búsqueda oficial de marcas)
+- **ForwardQuery / Forward Query**: no aparece ninguna empresa, app ni marca con ese nombre. Ojo: «Forward» suelto está muy usado en estudios y marketing (marca FORWARD STUDIO de Forward Studio LLC, 2023, consultoría de marketing; Forward Labs, estudio de marketing en Toronto; Forward Partners, VC en Reino Unido). Eso pesa contra **ForwardQueryStudio(s)/Labs**: se acercan a «Forward Studio»/«Forward Labs». ForwardQuery a secas sale limpio.
+- **QueryPlot / PlotQuery**: nada con ese nombre. Lo más cercano es Plotly (visualización de datos) y Plot Technologies; distinto, pero suena a herramienta de gráficos.
+- **SproutQuery**: nada.
+- Pendiente: búsqueda oficial en USPTO (TESS), EUIPO y OEPM; handles en X/Instagram/LinkedIn; Registro Mercantil / Delaware.
+- Segunda comprobación web (06:31 UTC), resto de ⭐:
+  - **Querystudios**: nada con ese nombre. Parecidos lejanos: QUERY (consultora de investigación de mercados, Bangladés), Qu Studios (estudio de foto/cine, Bristol).
+  - **TrailStroke / TrailBrick / TrailEast**: nada. TrailEast se confunde con «Eastern Trail» (ruta de Maine) y senderos «East Trail».
+  - **ForwardSlate / SlateForward**: nada, pero **ForwardSlate suena casi igual que «forward slash»** (la barra /; hay una empresa Forwardslash). Pega en voz alta. Slate también es una revista conocida (Slate).
+  - **QueryForward / FwdQuery**: nada como marca, pero **«query forwarding» es jerga de DNS** y «fwd» de reenvío de puertos/correo: suenan a herramienta de redes.
+  - Resumen hasta ahora: ningún ⭐ tiene un choque directo; los más limpios para registrar son ForwardQuery, QueryPlot/PlotQuery, SproutQuery, TrailStroke y TrailBrick.
+- Tanda 54 (tras «quiero clasificar más»): 58 candidatos sobre los ⭐ (Forward + pensar, Query + crecer, Plot/gráfica, Trail, Slate); 22 cargados. Paco los clasificó al momento: 👍 ForwardPlot; 👎 casi todo (Forward + palabra de mates/acertijo, Query + plantas, Slope/Curve). TrailQuery 👍 → 👎.
+- Tanda 55: dos piezas de los ⭐ juntas (como ForwardPlot) + «plot a course» + Forward + pieza de dibujo. 45 candidatos, 13 cargados: ForwardAngle, StrokeTrail, PlotTrail, SproutSlate, PlotStroke, StrokePlot, QueryCourse, PlotBrick, ForwardBrick, PlotEast, ForwardChart, ForwardGraph, QueryEastward.
+
+### 15/10 — Nueva medida «Se escribe ES/EN» (`escritura`) y nombres tipo estudio (Paco, ~07:00 UTC)
+- Paco: «que se escriba bien en español e inglés: Query cuesta escribirlo en español; Hello o Atlanta son muy familiares. Ponlo como métrica y recalcúlalo». 7.ª medida en `tools/medidas.py` (peso 1), con reglas fijas: resta por qu, w, k, y como vocal, th/sh/ph/gh/ck/tion, vocales inglesas (ee, oo, ea, ou, ai…), e final muda, consonantes dobles, j, gue/gui, ñ y tildes; Studio(s)/Lab(s)/Works no cuentan. Atlanta, Hello, Pixar, Sierra = 10; Query = 5; ForwardQuery = 4. `notas.py` la pone sola a cada nombre nuevo; `tools/escritura.py` la recalcula para todos (3.506 nombres). La app la enseña en el bloque de medidas.
+- Efecto en ⭐: los de Query bajan 3-6 puntos (ForwardQuery 73 → 68); ForwardPlot sube (70 → 72).
+- Paco pide nombres como los de venture studios, estudios de animación, estudios de apps y fondos (sin «Apps»): Pixar, Laika, DreamWorks, Illumination, Ghibli; Atomic, Idealab, Expa, High Alpha, Betaworks; Toca Boca, Rovio, Supercell; Sequoia, Accel, Benchmark, Index. Patrón: una palabra propia, con historia y fácil (lugar, animal o personaje, árbol, palabra latina) + Studios/Labs/Works.
+- Tanda 57 (65 candidatos) y 58 (55): las palabras comunes + Studios están casi todas cogidas (75 .com ocupados). Cargados 15: RucioStudios, BaltoStudios, AltoDelta, LaredoStudios, BabiecaStudios, TabulaStudios, ManatiStudios, SanchoStudios, CalculaStudios, TeruelStudios, MarengoStudios, SoriaStudios, AmarilloStudios, SacramentoStudios, HachikoStudios. Vetados PlateroStudios y PlanetaStudios (canales de YouTube grandes).
+- Lo que da .com libre: nombres propios menos obvios (personajes del Quijote, caballos y perros con historia, ciudades pequeñas) + Studios.
+- Clasificación en directo (06:45-07:05): de las tandas 54-58, 👍 RucioStudios, ForwardBrick (y ForwardPlot); 👎 casi todo lo demás (Plot + X, X + Plot, ciudades + Studios, Balto/Babieca/Marengo, AltoDelta, Tabula/Calcula).
+- Tanda 59 (cola < 20): personajes del Quijote y de la literatura española + Studios/Labs (como Rucio) y Forward + sustantivo concreto (como ForwardBrick). 36 candidatos, 21 cargados: ClavilenoLabs/Studios, TizonaLabs/Studios, LazarilloLabs/Studios, RocinanteWorks, AldonzaStudios, CopitoStudios, BucefaloStudios, FelicetteStudios, MontesinosStudios, SansonStudios, NanukStudios, StrelkaStudios, ForwardKiln, ForwardBeam, ForwardPillar, ForwardMason, ForwardTimber, ForwardTile. Cola: 38.
+- Clasificación en directo (07:05-07:40): ⭐ **LazarilloStudios** y ForwardPlot; TrailEast → 💚; 👎 el resto de la 59 (Clavileño, Tizona, Rocinante, Bucéfalo, Forward + madera/piedra/pilar…).
+- **Regla nueva: ~150 pendientes siempre** (ver arriba). Para llegar rápido se reparte la lluvia de ideas entre 3 subagentes en paralelo (familias distintas; se les pasa la lista de nombres existentes para no repetir) y se criba todo junto.
+- Tanda 60: palabras de los ⭐ + studios/labs (como Querystudios) y dos ⭐ + studios; 14 cargados. Tanda 61: personajes de la literatura española (como ⭐ Lazarillo, 👍 Rucio): 22 cargados (Patronio, Lucanor, Tormes, Buscón, Cortadillo, Rinconete, Urdemalas, Maritornes…). Tanda 62: 380 candidatos de los subagentes (verbos de VC/estudios de animación/apps infantiles, lugares bilingües, Forward + objeto nuevo, palabra única con historia).
+- Tanda 62 (380 de los subagentes): solo 59 cargados (265 .com ocupados: las parejas de palabras comunes están cogidas). Tanda 63 (personajes de la literatura en español, mitología, ciencia): 21 cargados; MortadeloStudios vetado a mano (marca registrada). Tanda 64 (pícaros y caballerías, literatura juvenil, lugares literarios): 26 cargados. **Lo que más .com libres da: personajes y lugares literarios + Studios/Labs/Works (60-75 %)**; parejas inglesas comunes ~15 %. Cola: 141.
+- Tanda 65 (relleno hasta 150): cuentos para enseñar (Calila e Dimna, Sendebar, Barlaam), retablo de Maese Pedro, Gepeto, Sherezade, Zifar.
+
+### 15/10 — Revisión de Paco de las tandas 59-65 (~17:24 UTC)
+- 110 marcas: solo 👍 **TormesLabs**. 👎 todo lo demás: personajes y lugares literarios + Studios/Labs/Works (Patronio, Lucanor, Buscón, Rinconete, Amadís, Tirant, Macondo, Comala, Cronopio, Gepeto, Pinocho…) y Forward/Sprout + objeto (Lantern, Lamp, Marble, Lever, Domino…). **La vía «personaje literario + Studios» está agotada**: Lazarillo ⭐ y Tormes 👍 son el mismo libro, no un patrón general.
+- Lectura: lo que queda vivo de esa vía es **río/lugar + Labs** (TormesLabs) y los comentarios de Paco que aún no se han explotado: material de escuela (paper, carbon, graphite, cartabón, escuadra), «papersword», trail(blazer), Quevedo/Góngora Studios (autor, no personaje), Atlanta/Murcia Studios.
+- Tanda 66 (ríos de España y América + Labs; material/herramienta de dibujo; escritores + Studios; lugares bilingües): 48 cargados. Nalon/Parana/Castro/Cisneros vetados por cribar.
+- Tanda 67 (material humilde + objeto épico, como PaperSword; Trail/Blaze + material de escuela): 19 cargados.
+- Tanda 68 (palabras que se escriben igual en ES/EN + Labs/Studios; latín corto): 9 cargados — las palabras comunes (Decimal, Lateral, Mural, Tutor…) están todas cogidas.
+- Tanda 69 (ríos, sierras y parajes de España y América + Labs, muchos del entorno del Tormes: Huebra, Yeltes, Alagón, Ledesma, Arapiles): 46 cargados (70 % libres).
+- Cola: 169 pendientes. comprobar_com.py: 190/190 libres.
+
+### 16/10 — Marcas de Paco (~08:00 UTC) y tanda 70
+- 10 marcas: 👍 **PaperSable**; 👎 ríos/lugares + Labs (Henares, Jalón, Biobío, Arlanza, Pánuco), LulioLabs, PapiroLabs, TormesStudio, ChalkPlot. Primera señal: **río + Labs no repite el éxito de TormesLabs**.
+- Lectura: gusta **material humilde + arma con palabra que se lee igual en ES/EN** (Paper + Sable; antes comentó «papersword»).
+- Tanda 70: Paper + arma/objeto (Daga, Florete, Machete, Catapulta, Tizona, Yelmo…), material + Sable (Ink/Chalk/Wood/Cartón…) y Sable + X. 42 cargados (80 % libres).
+
+### 16/10 — Marcas de Paco (~12:40 UTC) y tanda 71
+- 201 marcas (toda la cola): 👍 **BrickChalk**, **BlazeQuery**, **ForwardLetter**, **SeveroStudios**; 👎 todo lo demás, incluida **toda la tanda 70 (Paper/material + arma: 0 de 42)**, ríos y parajes + Labs (0 de 45), palabras ES/EN + Labs y personajes + Studios. Esas vías quedan cerradas.
+- Comentario ● «**introbay mola, busca parecidos tb**» (atendido con esta tanda). Patrón Introbay: palabra latina corta que se lee igual en ES/EN + sustantivo inglés de lugar corto (bay, cove, mesa, dock, path, yard), sin Studios.
+- Tanda 71 (676 candidatos de 3 subagentes en paralelo): (a) tipo Introbay: Intro/Nova/Proto/Edu/Aula/Numo/Verbo… + bay/cove/mesa/yard/path (244 → 100 cargados); (b) parejas inglesas en la línea de BrickChalk/BlazeQuery/ForwardLetter: palabra de acción + objeto humilde de clase/escritura (Nib, Notch, Abacus, Primer, Tilde, Comma, Easel…); (c) cognomen latino sobrio como Severo (Probo, Firmo, Sereno, Prisco, Fausto…) + Studios/Works/Co y Severo-style + lugar (SeveroPath, SeveroBay). (b)+(c): 432 → 260 cargados. 13 vetados por cribar (canales de YouTube y apps parecidos).
+- Cola: 360 pendientes.
+
+### 16/10 — Marcas de Paco (~20:00 UTC) y tanda 72
+- 140 marcas de la tanda 71: 👍 **ForwardChalk**, **LetterComet**; 👎 el resto marcado. Tipo Introbay (palabra latina + bay/cove/mesa/path/yard): 34 👎 de 60 marcados, 0 👍 → **no repite**. También 👎: puntuación/tipografía (Tilde, Serif, Italic), ritmos y aliteraciones, ábaco/regla/compás + verbo, paisaje + objeto humilde. Los cognomen + Works/Co casi sin marcar (92 pendientes).
+- Lectura: lo que gusta sigue siendo **Forward + objeto básico de clase** (Chalk, Brick, Slate, Letter, Plot) y aparece **Letter + cielo** (Comet).
+- Tanda 72 (134 candidatos): Forward + objeto de clase nuevo (Eraser, Primer, Abacus, Crayon, Globe, Alphabet…), Forward + palabras 💡, material + Forward, Letter + cielo/palabra viva, objeto de clase + Comet, palabra/número + cielo. 60 cargados; 66 .com ocupados; 3 vetados (LetterAurora, LetterMeteor, LetterLighthouse por apps).
+- Cola: 280 pendientes.
+
+### 16/10 — Marcas (~21:00 UTC) y tanda 73
+- 20 marcas de la tanda 72: 👍 **ForwardComet**; 👎 objeto de clase + Comet (Slate, Brick, Plot, Number, Digit, Primer, Crayon, Abacus, Bead: 0/9), LetterForward, EaselForward, LetterChalk, LetterPlot, ForwardRuler. Lectura: el que tira es **Forward**; Comet solo funciona detrás de Forward (y de Letter).
+- Tanda 73 (47 candidatos): Forward + cielo/luz (Meteor, Nebula, Vega, Sirius, Orion, Zenith, Halley, Polaris, Stardust, Firefly, Sunbeam…). 34 cargados, 12 .com ocupados. Cola: 294.
+
+### 17/10 — Comprobación diaria del .com (00:01 UTC)
+- comprobar_com.py: 323/323 libres (⭐, 👍 y pendientes). Cola: 294 pendientes, sin marcas nuevas desde la tanda 73.
+
+### 17/10 — Marcas de Paco (~08:00 UTC) y tanda 74
+- 220 marcas: 👍 **TulioPartners**, **ForwardPine**; 👎 casi todo lo demás. Forward + cielo/luz (0/18) y Forward + objeto de clase (0/18) quedan saturados. Cognomen + Studios/Works/Co: 1/56 (solo el de Partners). Palabra latina + lugar tipo Introbay: 0/19.
+- Lectura: dos señales nuevas, **sufijo Partners** (encaja con la consultoría) y **Forward + árbol** (Pine).
+- Tanda 74 (139 candidatos): Forward + árbol/planta (Cedar, Birch, Elm, Maple, Laurel, Juniper…), pieza ⭐ + árbol (QueryCedar, SlateElm, PlotCedar…), nombre propio corto + Partners (Severo, Rucio, Tormes, Lucio, Julio, Fabio, Octavio, Hugo, Bruno…) y variantes Group/Capital/Co. 92 cargados; ForwardCypress y ChalkPine vetados (canales de YouTube).
+- Cola: 166 pendientes.
+
+### 17/10 — Marcas de Paco (08:17–08:38 UTC) y tandas 75-76
+- ~210 marcas: 👍 **ClaudioPartners**, **InterReef**; 👎 todo lo demás. Nombre propio + Partners: 2/60 (Tulio, Claudio; los dos son nombres romanos célebres en -io, el resto cae). Forward + árbol: 1/30 (solo Pine). Cognomen + Works/House/Studios: 0/10.
+- Tanda 75: cruce sistemático de raíces ⭐/👍 (Forward, Query, Plot, Slate, Trail, Brick, Chalk, Letter, Comet, Blaze, Paper, Pine, Sable, Stroke) en los dos órdenes, más pieza ⭐ × árbol. 43 + 44 cargados; **los 43 primeros, 👎 todos** → cruzar raíces ya conocidas no funciona.
+- Tanda 76 (eco de InterReef y del comentario «introbay»): Inter + costa/mar y naturaleza, prefijo latino + Reef, pieza ⭐ + Reef, nombre romano célebre o en -io + Partners, Intro/Proto/Nova/Alto + palabra 💡. 89 cargados (≈60 % .com ocupados).
+- Cola: 133 pendientes.
+- Tanda 77 (relleno, sin marcas nuevas): Intro + costa/naturaleza, Inter + costa, nombre romano en -io + Partners. 36 cargados; InterJetty vetado. Cola: 169.
+
+### 17/10 — Marcas de Paco (~11:40 UTC) y tanda 78
+- 169 marcas (toda la cola): 👍 **SupraReef**, **SupraTide**, **SupraBay**; 👎 todo lo demás. Supra + mar: 3/6 (caen Cove, Harbor, Shore). Inter/Intro/Alto/Proto + costa: 0/61. Cruces de raíces ⭐ y pieza × árbol: 0/41. Nombre en -io + Partners: 0 → vía cerrada.
+- Comentario ● «**recursivequery** / **stonebase**» (atendido): los dos .com están ocupados, así que se exploran sus patrones.
+- Tanda 78 (643 candidatos): Supra + palabra corta de mar/naturaleza; otros prefijos latinos cortos + mar (Ultra, Infra, Magna, Ora, Alba, Vera…); adjetivo técnico/matemático + Query (Modular, Ordinal, Kinetic…); Recursive + pieza ⭐; Stone + pieza estructural; material + Base/Core/Ground/Stack. 210 cargados, 377 .com ocupados (Stone + X y material + Base casi todos cogidos), 7 vetados.
+- Cola: 210 pendientes.
+
+### 18/10 — Comprobación diaria del .com (00:02 UTC)
+- comprobar_com.py: 246/246 libres (⭐, 👍 y pendientes). Cola: 210 pendientes, sin marcas nuevas desde la tanda 78.
+
+### 19/10 — Comprobación diaria del .com (00:02 UTC)
+- comprobar_com.py: 245/246 libres; MatrixQuery (pendiente, tanda 78) se ha registrado y queda vetado. Cola: 209 pendientes, sin marcas nuevas desde la tanda 78.
