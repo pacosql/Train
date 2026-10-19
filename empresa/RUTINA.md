@@ -390,3 +390,6 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 
 ### 18/10 — Comprobación diaria del .com (00:02 UTC)
 - comprobar_com.py: 246/246 libres (⭐, 👍 y pendientes). Cola: 210 pendientes, sin marcas nuevas desde la tanda 78.
+
+### 19/10 — Comprobación diaria del .com (00:02 UTC)
+- comprobar_com.py: 245/246 libres; MatrixQuery (pendiente, tanda 78) se ha registrado y queda vetado. Cola: 209 pendientes, sin marcas nuevas desde la tanda 78.
