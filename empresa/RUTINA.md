@@ -393,3 +393,11 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 
 ### 19/10 — Comprobación diaria del .com (00:02 UTC)
 - comprobar_com.py: 245/246 libres; MatrixQuery (pendiente, tanda 78) se ha registrado y queda vetado. Cola: 209 pendientes, sin marcas nuevas desde la tanda 78.
+
+### 19/10 — Marcas de Paco (~20:30 UTC), comentario ● «Atlantic» y tanda 79
+- 209 marcas (toda la cola): ⭐ **SupraSpring**; 👎 todo lo demás. Supra + naturaleza: 1/41; prefijo latino + mar: 0/118; adjetivo técnico + Query y Recursive + pieza ⭐: 0/41; Stone/material + Base/Core/Stack: 0/10. Esas vías quedan cerradas.
+- Comentario ● «**Atlantic**» (atendido). Tanda 79 en tres bloques: (a) Atlantic + cola, variantes (Atlantico, Transatlantic…), otro océano/mar bilingüe + cola, lugar mítico del Atlántico (Hesperia, Gades, Tartessos…), pieza que gusta + Spring: 194 → 49 cargados; (b) adjetivo/accidente geográfico bilingüe (Insular, Litoral, Meridional, Fluvial, Estival…) + cola: 156 → 53.
+- Clasificación en directo de (a) y (b): 👍 **AtlanticoLabs**, **IberianStudios**; 👎 75, entre ellos todo Atlantic + pieza (Query, Plot, Comet, Chalk, Letter…) y océano + Forward/Spring/Tide.
+- Lectura: gusta la **palabra geográfica con historia en forma española (Atlántico) o gentilicio inglés (Iberian) + Labs/Studios**, no Atlantic pegado a las piezas de los ⭐.
+- (c) adjetivo geográfico en español + Labs/Studios/Works (Cantábrico, Mediterráneo, Ibérico, Hispano, Poniente, Antillas, Galaico…) y gentilicio/región en inglés + Studios/Labs (Iberian, Castilian, Basque, Andalusian, Asturian, Lusitania, Balearic…): 100 → 52 cargados.
+- Cola: 77 pendientes.
