@@ -412,3 +412,9 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 - Tanda 81, tres formas nuevas: (a) palabra inventada estilo Pixar desde piezas que gustan (Chalkar, Strokar, Supreef…): 58 → 3 cargados, casi todos los .com ocupados; (b) Ten/Diez/Deca/Tenth (Mates10) + pieza: muy buen ratio de .com libres; (c) palabra náutica española + Labs/Studios (Faro, Rumbo, Vela, Estela, Barlovento…): pocos libres. Relleno: número o palabra de mates bilingüe (Primo, Cubo, Sigma, Cifra, Prisma, Vector, Arco…) + Reef/Tide/Spring/Bay/Labs/Studios y animal del mar bilingüe + Labs/Studios. 261 candidatos → 88 cargados.
 - Cola: 115 pendientes.
 - Tanda 82 (05:32 UTC, relleno sin marcas nuevas): prefijo numérico o pieza de mates bilingüe (Hexa, Penta, Octo, Nano, Tetra, Mono, Duo, Radio, Gnomon, Nonio…) + Reef/Tide/Spring/Bay/Labs/Studios. 96 → 38 cargados.
+
+### 20/10 — Marcas de Paco (~10:30 UTC) y tanda 83
+- 153 marcas (toda la cola, tandas 80-82): 👍 **Strokar**, **BarloventoStudios**, **PentaSpring**; 👎 el resto. Ten/Diez/Deca + pieza: 0; número/mates + Reef/Tide/Bay/Labs: 1 (PentaSpring); náutica española + Labs: 0 salvo Barlovento + Studios; Hispania, costa legendaria y adjetivos ibéricos: 0.
+- Lectura: tres pistas nuevas. **Strokar** = Stroke + -ar, suena a verbo español (trazar): palabra inglesa con infinitivo español. **Barlovento**: palabra marinera rotunda + Studios. **PentaSpring**: número + Spring (vuelve Spring, como ⭐ SupraSpring).
+- Tanda 83: verbo spanglish (Sketchar, Doodlar, Brushar, Pixelar, Sparkar, Bloomar…), viento/mar/barco español + Studios (Sotavento, Tramontana, Alisio, Galerna, Pleamar, Atalaya, Bergantín, Goleta…) y número + Spring(s)/Penta + crecer (HeptaSpring, PentaBloom, PentaWell, SevenSprings…). 215 candidatos → 88 cargados, 100 .com ocupados, 9 vetados.
+- Cola: 88 pendientes.
