@@ -107,6 +107,7 @@ Al crear una app nueva `<app>/`:
 | ✍️ Nombre Ortografía | `nombreortografia/` | `nombreortografia_` |
 | ✒️ Nombre Autor | `autor/` | `autor_` |
 | 📥 Bandeja | `bandeja/` | `bandeja_` |
+| 💶 Gastos | `gastos/` | `gastos_` |
 
 (Actualiza esta tabla al añadir una app nueva.)
 
