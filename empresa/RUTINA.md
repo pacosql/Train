@@ -427,3 +427,10 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 - Cola: 90 pendientes.
 - Tanda 87 (13:47 UTC, sin marcas nuevas): exploración amplia 2, parejas de dos palabras con imagen (animal, sabio, instrumento antiguo, piedra, tela, sabor) + pieza, una por idea. 110 → 56 cargados (las parejas menos obvias dan ~50 % de .com libres).
 - Tanda 88 (14:03 UTC, relleno): animal curioso + pieza de aprender (IbexInk, MeerkatMath…). 16 → 8 cargados. Cola: 154.
+
+### 20/10 — Encargo directo de Paco (~14:10 UTC): 200 nombres con .com libre (tanda 89)
+- Paco: «no encuentro el nombre. Quiero algo **profesional y fuerte** (consultoría y freelance) que también sea **estudio/lab que construye apps**; fácil de leer en inglés y en español, **que no suene español**. Buenos ejemplos: **Databricks, Introbay, Pixar**; me gusta **Atlantic Studios**. Primera app: **Ortografía 10** (spelling bee); al descargarla se verá el creador. Añade 200 nombres con el .com libre».
+- Tanda 89: (a) palabra técnica/de oficio + objeto concreto (como Databricks): Lexicon, Syntax, Kernel, Schema, Glyph, Matrix… + Kiln, Keel, Anvil, Rail, Span, Bricks; (b) prefijo latino corto + lugar (como Introbay): Orto, Lexa, Prima, Alto, Aria, Vera, Nexa… + Shore, Landing, Reach, Crest, Cove; (c) nombre fuerte + Studios/Labs/Works/Partners (como Atlantic Studios): 156 de 160 con el .com ocupado; (d) ronda 2 con 84 raíces nuevas (técnicas, estrellas, piedras, latinas) × colas poco comunes (Lintel, Strand, Ledge, Spire, Jetty, Helm, Prow…), máx. 6 por raíz.
+- ~1.000 candidatos → **377 cargados con .com libre**, 12 vetados. Lo que da .com libre: raíz con sentido + cola concreta poco usada; las palabras fuertes sueltas o con Studios están cogidas.
+- La tanda 89 va la primera de la cola (orden por score, máx. 2 por raíz al principio). Cola total: 531 pendientes.
+- cribar.py se cortó dos veces por timeout de red al guardar (guarda cada 10 nombres, así que no se pierde nada; basta relanzarlo).
