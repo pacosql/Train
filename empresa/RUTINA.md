@@ -434,3 +434,4 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 - ~1.000 candidatos → **377 cargados con .com libre**, 12 vetados. Lo que da .com libre: raíz con sentido + cola concreta poco usada; las palabras fuertes sueltas o con Studios están cogidas.
 - La tanda 89 va la primera de la cola (orden por score, máx. 2 por raíz al principio). Cola total: 531 pendientes.
 - cribar.py se cortó dos veces por timeout de red al guardar (guarda cada 10 nombres, así que no se pierde nada; basta relanzarlo).
+- 16:02 UTC: Paco marcó 80 de la tanda 89: 78 👎 y 2 🙅 (RavenStrand, ArgentLintel), 0 👍. Caen sobre todo las colas Lintel, Strand, Span, Ledge, Anvil, Helm y Landing. **«Raíz + cola concreta poco común» no le convence**, aunque tenga el .com libre. Cola reordenada con afinidad.py; 451 pendientes, sin tanda nueva.
