@@ -418,3 +418,4 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 - Lectura: tres pistas nuevas. **Strokar** = Stroke + -ar, suena a verbo español (trazar): palabra inglesa con infinitivo español. **Barlovento**: palabra marinera rotunda + Studios. **PentaSpring**: número + Spring (vuelve Spring, como ⭐ SupraSpring).
 - Tanda 83: verbo spanglish (Sketchar, Doodlar, Brushar, Pixelar, Sparkar, Bloomar…), viento/mar/barco español + Studios (Sotavento, Tramontana, Alisio, Galerna, Pleamar, Atalaya, Bergantín, Goleta…) y número + Spring(s)/Penta + crecer (HeptaSpring, PentaBloom, PentaWell, SevenSprings…). 215 candidatos → 88 cargados, 100 .com ocupados, 9 vetados.
 - Cola: 88 pendientes.
+- Tanda 84 (10:47 UTC, sin marcas nuevas): tercera ronda de las tres líneas (verbos spanglish de dibujar/crear, marinería española + Studios, número/forma + crecer). 87 → 36 cargados.
