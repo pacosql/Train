@@ -403,3 +403,6 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 - Cola: 77 pendientes.
 - Tanda 80 (relleno hasta 150, sin marcas nuevas): pueblo o ciudad antigua de Hispania + Labs/Studios (Celtiberia, Baetica, Gallaecia, Carpetania, Hispalis, Corduba, Numantia…), la travesía atlántica (Carabela, Galeón, Indiano, Travesía, Magallanes, Estrecho) y gentilicio inglés de una región atlántica + Studios/Labs (Canarian, Madeiran, Hebridean, Acadian, Patagonian, Pampean…). 106 candidatos → 57 cargados, 29 .com ocupados, 7 vetados (canales y apps parecidos). Cola: 134.
 - Relleno de la tanda 80 (21:02 UTC, sin marcas nuevas): lugar legendario o del Camino en la costa atlántica de Iberia (Hespérides, Afortunadas, Finisterre, Brigantia, Olisipo, Portucale…) y adjetivo inglés de lo ibérico (Moorish, Mozarab, Visigothic, Mudéjar, Manchego, Castellano…) + Labs/Studios. 43 → 33 cargados. Cola: 167.
+
+### 20/10 — Comprobación diaria del .com (00:02 UTC)
+- comprobar_com.py: 197/197 libres (⭐, 👍 y pendientes). Cola: 167 pendientes, sin marcas nuevas desde la tanda 79.
