@@ -435,3 +435,9 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 - La tanda 89 va la primera de la cola (orden por score, máx. 2 por raíz al principio). Cola total: 531 pendientes.
 - cribar.py se cortó dos veces por timeout de red al guardar (guarda cada 10 nombres, así que no se pierde nada; basta relanzarlo).
 - 16:02 UTC: Paco marcó 80 de la tanda 89: 78 👎 y 2 🙅 (RavenStrand, ArgentLintel), 0 👍. Caen sobre todo las colas Lintel, Strand, Span, Ledge, Anvil, Helm y Landing. **«Raíz + cola concreta poco común» no le convence**, aunque tenga el .com libre. Cola reordenada con afinidad.py; 451 pendientes, sin tanda nueva.
+
+### 20/10 — Paco clasifica toda la cola (~16:15 UTC) y tanda 90
+- 461 marcas (tandas 81-89 enteras): ⭐ **AlfonsoDecimo**, ⭐ **Strokar** (antes 👍); 👍 **VeleroStudios**, **TramontanaStudios**, **SeptaSpring**; 💚 SotaventoStudios; 👎 el resto, incluida casi toda la tanda 89 del encargo (raíz + cola concreta poco común: 0 👍 de ~370).
+- Lectura: **AlfonsoDecimo** = Alfonso X el Sabio, y la X es un 10 (Mates10, Ortografía 10): historia española + saber + el número de sus apps. **Palabra marinera española + Studios** ya suma 4 aciertos (Barlovento, Velero, Tramontana, Sotavento): es la única línea que repite. **Número latino + Spring**: 2 (Penta, Septa).
+- Tanda 90: (a) Alfonso X / el Sabio / Décimo / Alfonsine / Escuela de Traductores de Toledo / Cantigas / Siete Partidas; (b) rey español + ordinal (CarlosQuinto, FelipeSegundo, JaimePrimero…) y Décimo/Tenth + palabra de saber; (c) viento, barco, vela o maniobra española + Studios (Ábrego, Solano, Balandro, Trainera, Foque, Gavia, Bolina, Orza…); (d) ordinal latino + Spring (Octa, Nona, Prima, Septima, Octava…). 223 candidatos → 140 cargados, 13 vetados.
+- Cola: 140 pendientes.
