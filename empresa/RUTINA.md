@@ -406,3 +406,8 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 
 ### 20/10 — Comprobación diaria del .com (00:02 UTC)
 - comprobar_com.py: 197/197 libres (⭐, 👍 y pendientes). Cola: 167 pendientes, sin marcas nuevas desde la tanda 79.
+
+### 20/10 — Marcas de Paco (~05:00 UTC) y tanda 81
+- 140 marcas, todas 👎: Atlántico/Iberian + Labs/Studios no repiten (adjetivo geográfico en español 0/30, gentilicios 0/36, Hispania antigua 0/30, travesía atlántica 0/10, costa legendaria 0/14, adjetivo ibérico 0/11). **La geografía queda cerrada**; AtlanticoLabs e IberianStudios son casos sueltos.
+- Tanda 81, tres formas nuevas: (a) palabra inventada estilo Pixar desde piezas que gustan (Chalkar, Strokar, Supreef…): 58 → 3 cargados, casi todos los .com ocupados; (b) Ten/Diez/Deca/Tenth (Mates10) + pieza: muy buen ratio de .com libres; (c) palabra náutica española + Labs/Studios (Faro, Rumbo, Vela, Estela, Barlovento…): pocos libres. Relleno: número o palabra de mates bilingüe (Primo, Cubo, Sigma, Cifra, Prisma, Vector, Arco…) + Reef/Tide/Spring/Bay/Labs/Studios y animal del mar bilingüe + Labs/Studios. 261 candidatos → 88 cargados.
+- Cola: 115 pendientes.
