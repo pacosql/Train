@@ -420,3 +420,8 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 - Cola: 88 pendientes.
 - Tanda 84 (10:47 UTC, sin marcas nuevas): tercera ronda de las tres líneas (verbos spanglish de dibujar/crear, marinería española + Studios, número/forma + crecer). 87 → 36 cargados.
 - Tanda 85 (11:03 UTC, sin marcas nuevas): cuarta ronda de las tres líneas (verbos spanglish desde piezas ⭐/👍, marinería española + Studios, número + brotar/florecer). 58 → 29 cargados. Cola: ~153.
+
+### 20/10 — Marcas de Paco (~13:30 UTC) y tanda 86
+- 90 marcas, todas 👎 (Paco va a medias de las tandas 83-85): verbo spanglish 0/33, marinería española + Studios 0/42, número + Spring 0/17. **Los ecos de Strokar, BarloventoStudios y PentaSpring no repiten.** Igual que con Atlántico/Iberian: cada 👍 es suelto, no abre familia.
+- Cambio de estrategia: **tanda de exploración amplia**, un nombre por idea, sin familias (animal + objeto con historia, mitología y científicos + pieza, inventores españoles, «X and Y» con piezas ⭐/👍, material de cole español, caminos e hitos). 172 candidatos → 27 cargados (108 .com ocupados: las palabras sueltas cortas están cogidas).
+- Cola: 90 pendientes.
