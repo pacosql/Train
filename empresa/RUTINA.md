@@ -463,3 +463,4 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 - Tanda 103: pueblos y parajes de la Región de Murcia + Studios (Cartagena, Lorca, Yecla, Jumilla, Caravaca, Cieza, Totana, Mazarrón, Águilas, Calblanque, Portmán…), al principio de la cola. 48 → 40 cargados. Cola: 40 (Paco sigue clasificando).
 - Tanda 104 (19:02 UTC, sin marcas nuevas): capitales y ciudades españolas y de EE. UU. aún no probadas + Studios (línea Murcia ⭐, Marietta ⭐). 106 → 30 cargados (30 ya existían). Cola: 70.
 - Tanda 105 (19:16 UTC): pareja inglesa clara de empresa americana (HarborLight, IronGate, CedarRidge…): 90 → 4 cargados (79 .com ocupados). Las parejas inglesas obvias están todas registradas; no repetir. Cola: 64.
+- Tanda 106 (19:32 UTC, 10 👎 nuevos): ciudad de Latinoamérica + Studios (Oaxaca, Morelia, Valparaíso, Valdivia, Popayán, Arequipa, Bariloche, Salta…). 92 → 60 cargados. Cola: 64 (Paco clasificando).
