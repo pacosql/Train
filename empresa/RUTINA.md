@@ -461,3 +461,4 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 - Tanda 102 (18:47 UTC): estrellas y constelaciones de nombre latino o árabe + Studios (Aldebarán, Altair, Vega, Rigel, Alcyone, Casiopea…). 57 → 27 cargados.
 - ~18:55 UTC: Paco clasifica en directo: ⭐ **MurciaStudios** (de la tanda 100; ya lo había propuesto él en un comentario). El resto 👎 (125). Sus ⭐ recientes son ciudad concreta + Studios que él mismo propuso (Marietta, Murcia; antes «atlantastudios»).
 - Tanda 103: pueblos y parajes de la Región de Murcia + Studios (Cartagena, Lorca, Yecla, Jumilla, Caravaca, Cieza, Totana, Mazarrón, Águilas, Calblanque, Portmán…), al principio de la cola. 48 → 40 cargados. Cola: 40 (Paco sigue clasificando).
+- Tanda 104 (19:02 UTC, sin marcas nuevas): capitales y ciudades españolas y de EE. UU. aún no probadas + Studios (línea Murcia ⭐, Marietta ⭐). 106 → 30 cargados (30 ya existían). Cola: 70.
