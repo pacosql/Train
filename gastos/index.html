@@ -1,0 +1,800 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Gastos</title>
+
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0d1117" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Gastos" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" href="icons/icon-192.png" />
+
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #eef1f6;
+      --surface: #ffffff;
+      --surface-2: #e4e8f0;
+      --text: #121826;
+      --text-2: #5d6779;
+      --line: #d7dce6;
+      --accent: #2f6fe0;
+      --accent-ink: #ffffff;
+      --full: #2f6fe0;
+      --part: #9dbcf5;
+      --miss: #ffffff;
+      --miss-line: #b9c1cf;
+      --out: transparent;
+      --warn: #b4560b;
+      --warn-bg: #fff3e6;
+      --ok: #1d8a4e;
+      --danger: #d93a4a;
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0d1117;
+        --surface: #161c26;
+        --surface-2: #222b3a;
+        --text: #e9eef7;
+        --text-2: #8f9bb0;
+        --line: #273142;
+        --accent: #4d8bff;
+        --full: #3f7ff0;
+        --part: #2a4777;
+        --miss: #e9eef7;
+        --miss-line: #e9eef7;
+        --warn: #ffb066;
+        --warn-bg: #2e2216;
+        --ok: #4fd18b;
+      }
+    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body {
+      margin: 0; background: var(--bg); color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 16px; line-height: 1.4; -webkit-font-smoothing: antialiased;
+    }
+    button { font: inherit; color: inherit; cursor: pointer; }
+    input, textarea { font: inherit; font-size: 16px; color: var(--text); }
+    .hidden { display: none !important; }
+    .wrap { max-width: 760px; margin: 0 auto; padding: 0 14px; }
+
+    header {
+      position: sticky; top: 0; z-index: 10;
+      padding: calc(var(--safe-top) + 10px) 0 10px;
+      background: var(--surface); border-bottom: 1px solid var(--line);
+    }
+    .top { display: flex; align-items: center; gap: 8px; }
+    .top h1 { font-size: 1.15rem; margin: 0; flex: 1; white-space: nowrap; }
+    .top h1 a { color: inherit; text-decoration: none; }
+    .pill {
+      border: 1px solid var(--line); background: var(--surface-2);
+      border-radius: 999px; padding: 6px 12px; font-size: 0.85rem; white-space: nowrap;
+    }
+    .pill.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 600; }
+
+    section { margin: 18px 0; }
+    h2 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-2); margin: 0 0 8px; }
+    .card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 14px; }
+    .muted { color: var(--text-2); }
+    .small { font-size: 0.82rem; }
+
+    /* Subida */
+    .drop {
+      display: block; border: 2px dashed var(--line); border-radius: 16px; padding: 20px 14px; text-align: center;
+      background: var(--surface); cursor: pointer;
+    }
+    .drop.over { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, var(--surface)); }
+    .drop b { display: block; font-size: 1.05rem; margin-bottom: 2px; }
+    .note-in {
+      width: 100%; margin-top: 8px; border: 1px solid var(--line); background: var(--surface); border-radius: 12px; padding: 9px 12px;
+    }
+    .uploads { margin-top: 8px; font-size: 0.85rem; }
+    .uploads div { padding: 3px 2px; }
+
+    /* Resumen */
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .stat { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 10px 12px; }
+    .stat .v { font-size: 1.35rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+    .stat .l { font-size: 0.75rem; color: var(--text-2); }
+    .status { margin-top: 8px; font-size: 0.85rem; color: var(--text-2); }
+
+    .avisos { list-style: none; margin: 0; padding: 0; }
+    .avisos li {
+      background: var(--warn-bg); color: var(--text); border-radius: 12px; padding: 9px 12px; margin-bottom: 6px; font-size: 0.9rem;
+      cursor: pointer;
+    }
+    .avisos li .who { font-weight: 600; color: var(--warn); }
+    .avisos li.nota { background: var(--surface-2); }
+    .allgood { color: var(--ok); font-weight: 600; }
+
+    /* Cuentas y calendario */
+    .acct { margin-bottom: 12px; }
+    .acct-head { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+    .acct-head .ico { font-size: 1.5rem; }
+    .acct-head .name { font-weight: 700; }
+    .acct-head .num { font-size: 0.82rem; color: var(--text-2); font-family: ui-monospace, monospace; }
+    .acct-head .cov { margin-left: auto; text-align: right; font-size: 0.8rem; color: var(--text-2); white-space: nowrap; }
+    .acct-head .cov b { display: block; font-size: 1.05rem; color: var(--text); }
+    .badge { display: inline-block; font-size: 0.7rem; font-weight: 700; border-radius: 6px; padding: 1px 6px; background: var(--surface-2); margin-left: 6px; vertical-align: 1px; }
+    .grid { margin-top: 12px; display: grid; grid-template-columns: 40px repeat(12, 1fr); gap: 4px; align-items: center; }
+    .grid .yl { font-size: 0.75rem; color: var(--text-2); font-variant-numeric: tabular-nums; }
+    .grid .ml { font-size: 0.65rem; color: var(--text-2); text-align: center; }
+    .cell {
+      aspect-ratio: 1; border-radius: 5px; border: 1px solid transparent; padding: 0; min-width: 0;
+      background: var(--out);
+    }
+    .cell.full { background: var(--full); }
+    .cell.part { background: linear-gradient(135deg, var(--full) 0 50%, var(--part) 50% 100%); }
+    .cell.miss { background: var(--miss); border-color: var(--miss-line); }
+    @media (prefers-color-scheme: dark) { .cell.miss { opacity: 0.92; } }
+    .cell.ign { background: repeating-linear-gradient(45deg, var(--surface-2) 0 3px, transparent 3px 6px); border-color: var(--line); }
+    .cell.now { border: 1px dashed var(--text-2); }
+    .cell.out { border-color: var(--line); opacity: 0.35; cursor: default; }
+    .legend { display: flex; flex-wrap: wrap; gap: 12px; font-size: 0.75rem; color: var(--text-2); margin-top: 6px; }
+    .legend span { display: inline-flex; align-items: center; gap: 5px; }
+    .legend i { width: 13px; height: 13px; border-radius: 3px; display: inline-block; border: 1px solid transparent; }
+
+    /* Archivos */
+    .files { list-style: none; margin: 0; padding: 0; }
+    .files li {
+      display: flex; gap: 10px; align-items: center; padding: 10px 12px; background: var(--surface);
+      border: 1px solid var(--line); border-radius: 12px; margin-bottom: 6px; cursor: pointer;
+    }
+    .files .st { font-size: 1.15rem; }
+    .files .fn { font-weight: 600; overflow-wrap: anywhere; }
+    .files .fd { font-size: 0.8rem; color: var(--text-2); }
+    .files .grow { flex: 1; min-width: 0; }
+    .empty { text-align: center; color: var(--text-2); padding: 18px 8px; }
+
+    /* Hoja */
+    .sheet-bg {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 20;
+      display: flex; align-items: flex-end; justify-content: center;
+    }
+    .sheet {
+      background: var(--surface); width: 100%; max-width: 560px;
+      border-radius: 20px 20px 0 0; padding: 16px 16px calc(var(--safe-bottom) + 16px);
+      max-height: 88vh; overflow-y: auto;
+    }
+    @media (min-width: 700px) { .sheet-bg { align-items: center; } .sheet { border-radius: 20px; } }
+    .sheet h3 { margin: 0 0 4px; font-size: 1.1rem; overflow-wrap: anywhere; }
+    .sheet h2 { margin-top: 16px; }
+    .sheet label { display: block; font-size: 0.85rem; color: var(--text-2); margin: 10px 0 4px; }
+    .sheet input[type=text], .sheet input[type=month], .sheet textarea {
+      width: 100%; border: 1px solid var(--line); background: var(--bg); border-radius: 10px; padding: 9px 11px;
+    }
+    .actions { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 8px; margin-top: 14px; }
+    .act { border: 1px solid var(--line); background: var(--surface-2); border-radius: 12px; padding: 11px 10px; text-align: center; text-decoration: none; color: inherit; }
+    .act.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 600; }
+    .act.danger { color: var(--danger); }
+    .close { width: 100%; margin-top: 12px; border: none; background: none; color: var(--text-2); padding: 10px; }
+    .kv { font-size: 0.9rem; margin: 2px 0; }
+    .kv span { color: var(--text-2); }
+    .plist { font-size: 0.88rem; margin: 4px 0 0; padding-left: 18px; }
+
+    /* Candado */
+    .lock { max-width: 420px; margin: 12vh auto 0; padding: 0 16px; }
+    .lock h1 { font-size: 1.6rem; margin: 0 0 6px; }
+    .lock input { width: 100%; border: 1px solid var(--line); background: var(--surface); border-radius: 12px; padding: 12px 14px; margin: 14px 0 10px; }
+    .lock button { width: 100%; border: none; border-radius: 12px; padding: 12px; background: var(--accent); color: var(--accent-ink); font-weight: 700; }
+    .lock .err { color: var(--danger); font-size: 0.85rem; min-height: 1.2em; margin-top: 8px; }
+
+    .toast {
+      position: fixed; left: 50%; bottom: calc(var(--safe-bottom) + 24px); transform: translateX(-50%);
+      background: var(--text); color: var(--bg); padding: 9px 16px; border-radius: 999px; font-size: 0.88rem; z-index: 40;
+      max-width: calc(100% - 32px); text-align: center;
+    }
+    .build-id { text-align: center; font-size: 0.65rem; color: var(--text-2); font-family: ui-monospace, monospace; padding: 16px 0 calc(var(--safe-bottom) + 16px); }
+  </style>
+</head>
+<body>
+  <!-- Candado: la contraseña define tu archivo (la misma en todos tus dispositivos). -->
+  <div class="lock hidden" id="lock">
+    <h1>💶 Gastos</h1>
+    <p class="muted">Tu archivo de extractos de cuentas y tarjetas. Elige una contraseña: es la llave de tu archivo y la misma en todos tus dispositivos. Si la olvidas no se puede recuperar.</p>
+    <form id="lockForm">
+      <input type="password" id="pass" autocomplete="current-password" placeholder="Contraseña (mínimo 8 caracteres)" />
+      <button type="submit">Entrar</button>
+      <div class="err" id="lockErr"></div>
+    </form>
+  </div>
+
+  <div id="app" class="hidden">
+    <header>
+      <div class="wrap top">
+        <h1><a href="../">💶</a> Gastos</h1>
+        <button class="pill primary" id="zipBtn" title="Descargar todo en un .zip">⬇️ .zip</button>
+        <button class="pill" id="menuBtn" title="Opciones">⋯</button>
+      </div>
+    </header>
+
+    <div class="wrap">
+      <section>
+        <label class="drop" id="drop">
+          <b>📤 Sube extractos</b>
+          <span class="muted small">PDF, CSV, Excel, OFX… de cualquier cuenta, tarjeta o divisa. Arrastra aquí o toca para elegir.</span>
+          <input type="file" id="fileInput" multiple class="hidden" />
+        </label>
+        <input class="note-in" id="noteIn" type="text" placeholder="Pista opcional para estos archivos (p. ej. «Visa de Ana», «cuenta en dólares»)" />
+        <div class="uploads" id="uploads"></div>
+      </section>
+
+      <section>
+        <div class="stats" id="stats"></div>
+        <div class="status" id="status"></div>
+      </section>
+
+      <section id="avisosSec">
+        <h2>Lo que te falta</h2>
+        <ul class="avisos" id="avisos"></ul>
+      </section>
+
+      <section>
+        <h2>Cuentas y tarjetas</h2>
+        <div id="accounts"></div>
+        <div class="legend" id="legend">
+          <span><i style="background:var(--full)"></i>Tengo el extracto</span>
+          <span><i style="background:linear-gradient(135deg,var(--full) 0 50%,var(--part) 50%)"></i>En parte</span>
+          <span><i style="background:var(--miss);border-color:var(--miss-line)"></i>Falta</span>
+          <span><i style="background:repeating-linear-gradient(45deg,var(--surface-2) 0 3px,transparent 3px 6px);border-color:var(--line)"></i>Sin extracto (a propósito)</span>
+          <span><i style="border:1px dashed var(--text-2)"></i>Mes en curso</span>
+        </div>
+      </section>
+
+      <section>
+        <h2>Archivos subidos</h2>
+        <ul class="files" id="files"></ul>
+      </section>
+    </div>
+    <div class="build-id">build __BUILD_ID__</div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script>
+    const CFG = window.GASTOS_CONFIG;
+    const sb = supabase.createClient(CFG.url, CFG.anonKey, { auth: { persistSession: false } });
+    const $ = (id) => document.getElementById(id);
+    const LS = {
+      get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+      set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
+      del(k) { try { localStorage.removeItem(k); } catch (e) {} },
+    };
+    const MESES = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"];
+    const INI = ["E", "F", "M", "A", "M", "J", "J", "A", "S", "O", "N", "D"];
+    const TIPO_ICO = { cuenta: "🏦", tarjeta: "💳", ahorro: "🐷", inversion: "📈", otro: "📁" };
+    const TIPO_TXT = { cuenta: "Cuenta", tarjeta: "Tarjeta", ahorro: "Ahorro", inversion: "Inversión", otro: "Otro" };
+
+    let room = LS.get("gastos_room");
+    let S = { archivos: [], cuentas: [], periodos: [], meses: [], avisos: [], rutina: null };
+    let lastSig = "";
+
+    const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    function toast(text, ms = 2200) {
+      document.querySelectorAll(".toast").forEach((t) => t.remove());
+      const t = document.createElement("div");
+      t.className = "toast"; t.textContent = text;
+      document.body.appendChild(t);
+      if (ms) setTimeout(() => t.remove(), ms);
+      return t;
+    }
+    async function sha256Hex(buf) {
+      const h = await crypto.subtle.digest("SHA-256", buf);
+      return [...new Uint8Array(h)].map((b) => b.toString(16).padStart(2, "0")).join("");
+    }
+    const publicUrl = (path) => sb.storage.from(CFG.bucket).getPublicUrl(path).data.publicUrl;
+    function money(v, divisa) {
+      if (v == null) return "—";
+      try { return Number(v).toLocaleString("es-ES", { style: "currency", currency: divisa || "EUR" }); }
+      catch (e) { return Number(v).toLocaleString("es-ES", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " " + (divisa || ""); }
+    }
+    const fmtDate = (s) => s ? new Date(s + (s.length === 10 ? "T00:00:00" : "")).toLocaleDateString("es-ES", { day: "numeric", month: "short", year: "numeric" }) : "";
+    function ago(iso) {
+      const m = Math.round((Date.now() - new Date(iso)) / 60000);
+      if (m < 1) return "ahora mismo";
+      if (m < 60) return `hace ${m} min`;
+      const h = Math.round(m / 60);
+      if (h < 48) return `hace ${h} h`;
+      return `hace ${Math.round(h / 24)} días`;
+    }
+    function fmtSize(n) {
+      if (n == null) return "";
+      if (n < 1024) return n + " B";
+      if (n < 1048576) return (n / 1024).toFixed(0) + " KB";
+      return (n / 1048576).toFixed(1) + " MB";
+    }
+    function safeName(name) {
+      const dot = name.lastIndexOf(".");
+      const base = (dot > 0 ? name.slice(0, dot) : name).normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^A-Za-z0-9_-]+/g, "_").slice(0, 80) || "archivo";
+      const ext = dot > 0 ? name.slice(dot + 1).replace(/[^A-Za-z0-9]/g, "").slice(0, 10) : "";
+      return ext ? `${base}.${ext}` : base;
+    }
+    const maskNum = (n) => { const s = String(n || ""); return s.length > 8 ? "··" + s.replace(/\s/g, "").slice(-4) : s; };
+    const acctName = (c) => c.alias || `${c.banco} · ${TIPO_TXT[c.tipo] || c.tipo}`;
+
+    // ---------- Meses (misma lógica que tools/db.py huecos) ----------
+    const ymOf = (d) => new Date(d).getUTCFullYear() * 12 + new Date(d).getUTCMonth();
+    const ymStr = (k) => `${Math.floor(k / 12)}-${String((k % 12) + 1).padStart(2, "0")}`;
+    const ymName = (k) => `${MESES[k % 12]} ${Math.floor(k / 12)}`;
+    // Fechas como días UTC (sin cambios de hora por medio).
+    const parseD = (s) => Date.parse(s.slice(0, 10) + "T00:00:00Z");
+    const DAY = 86400000;
+
+    function coverage(c) {
+      const per = S.periodos.filter((p) => p.cuenta_id === c.id).map((p) => ({ ...p, d0: parseD(p.desde), d1: parseD(p.hasta) }));
+      if (!per.length) return null;
+      const now = new Date(), today = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+      const ini = c.esperado_desde ? parseD(c.esperado_desde) : Math.min(...per.map((p) => p.d0));
+      const fin = c.cerrada_en ? parseD(c.cerrada_en) : today;
+      const kIni = ymOf(ini), kNow = ymOf(today);
+      const kLast = c.cerrada_en ? ymOf(fin) : kNow - 1; // el mes en curso no se exige
+      const kMaxData = Math.max(...per.map((p) => ymOf(p.d1)));
+      const ignored = new Set(c.meses_ignorados || []);
+      const months = {};
+      const kFrom = Math.min(kIni, ...per.map((p) => ymOf(p.d0)));
+      const kTo = Math.max(kLast, kMaxData, c.cerrada_en ? 0 : kNow);
+      for (let k = kFrom; k <= kTo; k++) {
+        const y = Math.floor(k / 12), m = k % 12;
+        const a = Date.UTC(y, m, 1), b = Date.UTC(y, m + 1, 0);
+        const days = new Set();
+        const files = [];
+        for (const p of per) {
+          const lo = Math.max(a, p.d0), hi = Math.min(b, p.d1);
+          if (hi < lo) continue;
+          files.push(p.archivo_id);
+          for (let t = lo; t <= hi; t += DAY) days.add(Math.round(t / DAY));
+        }
+        const frac = days.size / new Date(b).getUTCDate();
+        let st;
+        if (k < kIni || k > kLast) st = frac > 0 ? (frac >= 0.9 ? "full" : "part") : (k === kNow && !c.cerrada_en ? "now" : "out");
+        else if (ignored.has(ymStr(k)) && frac === 0) st = "ign";
+        else st = frac === 0 ? "miss" : frac >= 0.9 ? "full" : "part";
+        if (k === kNow && !c.cerrada_en && st !== "out") months[k] = { st, now: true, frac, files };
+        else months[k] = { st, frac, files };
+      }
+      const expected = Object.entries(months).filter(([k, v]) => k >= kIni && k <= kLast && v.st !== "ign").length;
+      const have = Object.entries(months).filter(([k, v]) => k >= kIni && k <= kLast && v.st === "full").length;
+      return { per, months, kFrom, kTo, kIni, kLast, expected, have };
+    }
+
+    function gaps() {
+      const out = [];
+      for (const c of S.cuentas) {
+        const cv = coverage(c);
+        if (!cv) continue;
+        let run = null;
+        const flush = () => {
+          if (!run) return;
+          const [a, b] = [run[0], run[run.length - 1]];
+          const d0 = Date.UTC(Math.floor(a / 12), a % 12, 1);
+          const before = cv.per.filter((p) => p.d1 < d0).pop();
+          const after = cv.per.find((p) => p.d0 > d0);
+          let hint = "";
+          if (before && after && before.saldo_final != null && after.saldo_inicial != null) {
+            const diff = after.saldo_inicial - before.saldo_final;
+            hint = ` — el saldo pasa de ${money(before.saldo_final, c.divisa)} a ${money(after.saldo_inicial, c.divisa)} (${diff >= 0 ? "+" : ""}${money(diff, c.divisa)} en movimientos que no tengo)`;
+          }
+          const what = run.length === 1 ? ymName(a) : `de ${ymName(a)} a ${ymName(b)} (${run.length} meses)`;
+          out.push({ c, k: a, text: `Te falta ${what}${hint}.` });
+          run = null;
+        };
+        for (let k = cv.kIni; k <= cv.kLast; k++) {
+          const m = cv.months[k];
+          if (m && m.st === "miss") { (run = run || []).push(k); continue; }
+          flush();
+          if (m && m.st === "part") out.push({ c, k, text: `${ymName(k)[0].toUpperCase() + ymName(k).slice(1)} solo lo tengo en parte (${Math.round(m.frac * 100)} % de los días).` });
+        }
+        flush();
+        for (let i = 1; i < cv.per.length; i++) {
+          const p = cv.per[i - 1], q = cv.per[i];
+          if (p.saldo_final != null && q.saldo_inicial != null && Math.abs(p.saldo_final - q.saldo_inicial) > 0.01 && (q.d0 - p.d1) <= DAY) {
+            out.push({ c, k: ymOf(q.d0), text: `El saldo final del ${fmtDate(p.hasta)} (${money(p.saldo_final, c.divisa)}) no cuadra con el inicial del ${fmtDate(q.desde)} (${money(q.saldo_inicial, c.divisa)}): ¿falta algún extracto?` });
+          }
+        }
+      }
+      return out;
+    }
+
+    // ---------- Datos ----------
+    async function load(force) {
+      const { data, error } = await sb.rpc("gastos_estado", { p_room: room });
+      if (error) { console.error(error); return; }
+      const sig = JSON.stringify(data);
+      if (!force && sig === lastSig) return;
+      lastSig = sig;
+      S = data;
+      render();
+    }
+
+    // ---------- Pintar ----------
+    function render() {
+      const pend = S.archivos.filter((a) => a.estado === "pendiente").length;
+      const errs = S.archivos.filter((a) => a.estado === "error").length;
+      const gs = gaps();
+      const missing = S.cuentas.reduce((n, c) => { const cv = coverage(c); return n + (cv ? cv.expected - cv.have : 0); }, 0);
+      $("stats").innerHTML = [
+        [S.cuentas.length, S.cuentas.length === 1 ? "cuenta o tarjeta" : "cuentas y tarjetas"],
+        [S.archivos.length, S.archivos.length === 1 ? "archivo" : "archivos"],
+        [missing, missing === 1 ? "mes por completar" : "meses por completar"],
+      ].map(([v, l]) => `<div class="stat"><div class="v">${v}</div><div class="l">${l}</div></div>`).join("");
+
+      const r = S.rutina;
+      let st = r ? `🤖 Última revisión ${ago(r.ejecutada_en)}${r.resumen ? ": " + esc(r.resumen) : ""}` : "🤖 La rutina aún no ha pasado.";
+      if (pend) st = `⏳ ${pend} ${pend === 1 ? "archivo espera" : "archivos esperan"} a la rutina, que pasa cada hora y los lee. ` + st;
+      if (errs) st += ` · ⚠️ ${errs} con problemas (míralos abajo).`;
+      $("status").innerHTML = st;
+
+      // Avisos: huecos calculados + notas de la rutina.
+      const notas = S.avisos || [];
+      $("avisosSec").classList.toggle("hidden", !S.cuentas.length && !notas.length);
+      if (!gs.length && !notas.length) $("avisos").innerHTML = `<li class="nota"><span class="allgood">✓ Lo tienes todo:</span> no falta ningún mes en ninguna cuenta.</li>`;
+      else $("avisos").innerHTML = gs.map((g) => `<li data-c="${g.c.id}" data-k="${g.k}"><span class="who">${TIPO_ICO[g.c.tipo] || "🏦"} ${esc(acctName(g.c))} ${esc(maskNum(g.c.numero))}</span> · ${esc(g.text)}</li>`).join("")
+        + notas.map((n) => { const c = S.cuentas.find((x) => x.id === n.cuenta_id); return `<li class="nota" ${c ? `data-c="${c.id}"` : ""}>🤖 ${c ? `<b>${esc(acctName(c))} ${esc(maskNum(c.numero))}</b> · ` : ""}${esc(n.texto)}</li>`; }).join("");
+
+      renderAccounts();
+      renderFiles();
+    }
+
+    function renderAccounts() {
+      if (!S.cuentas.length) {
+        $("accounts").innerHTML = `<div class="card empty">${S.archivos.length ? "Cuando la rutina lea tus archivos, aquí aparecerá cada cuenta con sus meses." : "Sube tu primer extracto y aquí aparecerá cada cuenta con un cuadro por mes."}</div>`;
+        $("legend").classList.add("hidden");
+        return;
+      }
+      $("legend").classList.remove("hidden");
+      $("accounts").innerHTML = S.cuentas.map((c) => {
+        const cv = coverage(c);
+        if (!cv) return "";
+        const pct = cv.expected ? Math.round((cv.have / cv.expected) * 100) : 100;
+        let g = `<div></div>` + INI.map((l) => `<div class="ml">${l}</div>`).join("");
+        const y0 = Math.floor(cv.kFrom / 12), y1 = Math.floor(cv.kTo / 12);
+        for (let y = y1; y >= y0; y--) {
+          g += `<div class="yl">${y}</div>`;
+          for (let m = 0; m < 12; m++) {
+            const k = y * 12 + m, mo = cv.months[k];
+            const cls = mo ? mo.st + (mo.now ? " now" : "") : "out";
+            const label = `${ymName(k)}: ${!mo || mo.st === "out" ? "fuera del periodo" : mo.st === "full" ? "lo tengo" : mo.st === "part" ? "en parte" : mo.st === "ign" ? "sin extracto a propósito" : mo.now ? "mes en curso" : "falta"}`;
+            g += `<button class="cell ${cls}" data-c="${c.id}" data-k="${k}" title="${esc(label)}" aria-label="${esc(label)}"></button>`;
+          }
+        }
+        const nFiles = new Set(cv.per.map((p) => p.archivo_id)).size;
+        const nMov = S.meses.filter((m) => m.cuenta_id === c.id).reduce((a, m) => a + m.n, 0);
+        return `<div class="card acct">
+          <div class="acct-head" data-acct="${c.id}">
+            <span class="ico">${TIPO_ICO[c.tipo] || "🏦"}</span>
+            <div style="min-width:0">
+              <div class="name">${esc(acctName(c))}<span class="badge">${esc(c.divisa)}</span>${c.cerrada_en ? `<span class="badge">cerrada</span>` : ""}</div>
+              <div class="num">${esc(c.numero)}</div>
+              <div class="muted small">${nFiles} ${nFiles === 1 ? "archivo" : "archivos"} · ${nMov} movimientos</div>
+            </div>
+            <div class="cov"><b>${pct} %</b>${cv.have}/${cv.expected} meses</div>
+          </div>
+          <div class="grid">${g}</div>
+        </div>`;
+      }).join("");
+    }
+
+    const ESTADO = { pendiente: ["⏳", "Esperando a la rutina"], procesado: ["✅", ""], error: ["⚠️", "No se pudo leer"], ignorado: ["➖", "No es un extracto"] };
+    function renderFiles() {
+      if (!S.archivos.length) { $("files").innerHTML = `<li class="empty" style="cursor:default;display:block">Aún no has subido nada.</li>`; return; }
+      const list = S.archivos.slice().sort((a, b) => {
+        const pa = S.periodos.find((p) => p.archivo_id === a.id), pb = S.periodos.find((p) => p.archivo_id === b.id);
+        const ka = a.estado === "procesado" ? 1 : 0, kb = b.estado === "procesado" ? 1 : 0;
+        if (ka !== kb) return ka - kb; // primero lo que requiere atención
+        return String(pb?.desde || b.created_at).localeCompare(String(pa?.desde || a.created_at));
+      });
+      $("files").innerHTML = list.map((a) => {
+        const [ico, txt] = ESTADO[a.estado] || ["❔", a.estado];
+        const per = S.periodos.filter((p) => p.archivo_id === a.id);
+        const desc = per.length
+          ? per.map((p) => { const c = S.cuentas.find((x) => x.id === p.cuenta_id); return `${c ? esc(acctName(c)) + " " + esc(maskNum(c.numero)) + " · " : ""}${fmtDate(p.desde)} – ${fmtDate(p.hasta)}`; }).join("<br>")
+          : esc(txt + (a.resumen && a.estado !== "procesado" ? ": " + a.resumen : ""));
+        return `<li data-f="${a.id}"><span class="st">${ico}</span><div class="grow"><div class="fn">${esc(a.nombre)}</div><div class="fd">${desc}</div></div></li>`;
+      }).join("");
+    }
+
+    // ---------- Subir ----------
+    async function upload(fileList) {
+      const files = [...fileList];
+      if (!files.length) return;
+      const note = $("noteIn").value.trim();
+      const box = $("uploads");
+      let ok = 0;
+      for (const f of files) {
+        const line = document.createElement("div");
+        line.textContent = `⏫ ${f.name}…`;
+        box.prepend(line);
+        try {
+          if (f.size > 50 * 1048576) throw new Error("máximo 50 MB por archivo");
+          const hash = await sha256Hex(await f.arrayBuffer());
+          const { data: dup } = await sb.rpc("gastos_existe", { p_room: room, p_sha256: hash });
+          if (dup) { line.textContent = `↩️ ${f.name}: ya lo tenías (como «${dup}»)`; continue; }
+          const path = `${room}/${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}/${safeName(f.name)}`;
+          const up = await sb.storage.from(CFG.bucket).upload(path, f, { contentType: f.type || "application/octet-stream", upsert: false });
+          if (up.error) throw up.error;
+          const { data, error } = await sb.rpc("gastos_subir", {
+            p_room: room, p_nombre: f.name, p_path: path, p_mime: f.type || null, p_tamano: f.size, p_sha256: hash, p_nota: note || null,
+          });
+          if (error) throw error;
+          line.textContent = data.duplicado ? `↩️ ${f.name}: ya lo tenías` : `✅ ${f.name} subido — la rutina lo leerá en la próxima pasada`;
+          ok++;
+        } catch (e) {
+          console.error(e);
+          line.textContent = `❌ ${f.name}: ${e.message || e}`;
+        }
+      }
+      if (ok) $("noteIn").value = "";
+      load(true);
+    }
+
+    // ---------- Hojas ----------
+    function openSheet(html, onClick) {
+      const bg = document.createElement("div");
+      bg.className = "sheet-bg";
+      bg.innerHTML = `<div class="sheet">${html}<button class="close" data-a="close">Cerrar</button></div>`;
+      bg.addEventListener("click", (e) => {
+        if (e.target === bg) return bg.remove();
+        const b = e.target.closest("[data-a]");
+        if (!b) return;
+        if (b.dataset.a === "close") return bg.remove();
+        onClick && onClick(b, () => bg.remove(), bg);
+      });
+      document.body.appendChild(bg);
+      return bg;
+    }
+
+    function fileLink(a) {
+      return `<a class="act" href="${esc(publicUrl(a.path))}" target="_blank" rel="noopener" download="${esc(a.nombre)}">⬇️ Descargar</a>`;
+    }
+
+    function openMonth(cid, k) {
+      const c = S.cuentas.find((x) => x.id === cid);
+      const cv = c && coverage(c);
+      if (!cv) return;
+      const mo = cv.months[k] || { st: "out", files: [] };
+      const stats = S.meses.find((m) => m.cuenta_id === cid && m.mes === ymStr(k));
+      const files = [...new Set(mo.files)].map((id) => S.archivos.find((a) => a.id === id)).filter(Boolean);
+      const ign = (c.meses_ignorados || []).includes(ymStr(k));
+      const stTxt = { full: "✅ Lo tienes", part: `🌓 Lo tienes en parte (${Math.round(mo.frac * 100)} % de los días)`, miss: "⬜ Te falta el extracto de este mes", ign: "➖ Marcado como «sin extracto»", out: "Fuera del periodo que sigo", now: "Mes en curso" }[mo.st];
+      openSheet(`
+        <h3>${TIPO_ICO[c.tipo] || "🏦"} ${esc(acctName(c))} — ${ymName(k)}</h3>
+        <div class="muted small">${esc(c.numero)} · ${esc(c.divisa)}</div>
+        <p>${stTxt}</p>
+        ${stats ? `<div class="kv"><span>Movimientos:</span> ${stats.n}</div><div class="kv"><span>Entradas:</span> ${money(stats.entradas || 0, c.divisa)} · <span>Salidas:</span> ${money(stats.salidas || 0, c.divisa)}</div>` : ""}
+        ${files.length ? `<h2>Archivos que lo cubren</h2><ul class="plist">${files.map((a) => `<li><a href="${esc(publicUrl(a.path))}" target="_blank" rel="noopener">${esc(a.nombre)}</a></li>`).join("")}</ul>` : ""}
+        ${(mo.st === "miss" || ign) ? `<p class="muted small">Si este mes no hubo extracto (cuenta sin movimientos, tarjeta sin usar…), márcalo y dejará de contar como hueco.</p>
+          <div class="actions"><button class="act ${ign ? "" : "primary"}" data-a="ign">${ign ? "↩️ Volver a exigirlo" : "➖ No hubo extracto"}</button></div>` : ""}
+      `, async (b, close) => {
+        if (b.dataset.a !== "ign") return;
+        const set = new Set(c.meses_ignorados || []);
+        ign ? set.delete(ymStr(k)) : set.add(ymStr(k));
+        close();
+        await saveAccount(c, { meses_ignorados: [...set].sort() });
+      });
+    }
+
+    async function saveAccount(c, patch) {
+      const n = { ...c, ...patch };
+      const { error } = await sb.rpc("gastos_editar_cuenta", {
+        p_room: room, p_id: c.id, p_alias: n.alias || "", p_esperado_desde: n.esperado_desde || null,
+        p_cerrada_en: n.cerrada_en || null, p_meses_ignorados: n.meses_ignorados || [],
+      });
+      if (error) return toast("No se pudo guardar");
+      toast("Guardado");
+      load(true);
+    }
+
+    function openAccount(cid) {
+      const c = S.cuentas.find((x) => x.id === cid);
+      if (!c) return;
+      const per = S.periodos.filter((p) => p.cuenta_id === cid);
+      const files = [...new Set(per.map((p) => p.archivo_id))].map((id) => S.archivos.find((a) => a.id === id)).filter(Boolean);
+      const toMonth = (d) => d ? d.slice(0, 7) : "";
+      openSheet(`
+        <h3>${TIPO_ICO[c.tipo] || "🏦"} ${esc(c.banco)} · ${esc(TIPO_TXT[c.tipo] || c.tipo)}</h3>
+        <div class="kv"><span>Número:</span> ${esc(c.numero)}</div>
+        <div class="kv"><span>Divisa:</span> ${esc(c.divisa)}</div>
+        ${c.titular ? `<div class="kv"><span>Titular:</span> ${esc(c.titular)}</div>` : ""}
+        <label>Nombre para reconocerla</label>
+        <input type="text" id="aAlias" value="${esc(c.alias || "")}" placeholder="${esc(c.banco + " · " + (TIPO_TXT[c.tipo] || c.tipo))}" />
+        <label>Quiero el histórico desde (vacío: desde el primer extracto que tengo)</label>
+        <input type="month" id="aDesde" value="${toMonth(c.esperado_desde)}" />
+        <label>Cerrada en (vacío: sigue abierta y espero un extracto cada mes)</label>
+        <input type="month" id="aCerrada" value="${toMonth(c.cerrada_en)}" />
+        <div class="actions"><button class="act primary" data-a="save">Guardar</button></div>
+        <h2>${files.length} ${files.length === 1 ? "archivo" : "archivos"}</h2>
+        <ul class="plist">${files.map((a) => `<li><a href="${esc(publicUrl(a.path))}" target="_blank" rel="noopener">${esc(a.nombre)}</a></li>`).join("")}</ul>
+      `, async (b, close, bg) => {
+        if (b.dataset.a !== "save") return;
+        const m = (v) => v ? v + "-01" : null;
+        const desde = bg.querySelector("#aDesde").value, cerr = bg.querySelector("#aCerrada").value;
+        let cerrada = null;
+        if (cerr) { const [y, mm] = cerr.split("-").map(Number); const d = new Date(y, mm, 0); cerrada = `${y}-${String(mm).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`; }
+        close();
+        await saveAccount(c, { alias: bg.querySelector("#aAlias").value.trim(), esperado_desde: m(desde), cerrada_en: cerrada });
+      });
+    }
+
+    function openFile(id) {
+      const a = S.archivos.find((x) => x.id === id);
+      if (!a) return;
+      const [ico, txt] = ESTADO[a.estado] || ["❔", a.estado];
+      const per = S.periodos.filter((p) => p.archivo_id === id);
+      openSheet(`
+        <h3>${ico} ${esc(a.nombre)}</h3>
+        <div class="muted small">Subido ${ago(a.created_at)} · ${fmtSize(a.tamano)}${a.procesado_en ? ` · leído ${ago(a.procesado_en)}` : ""}</div>
+        ${txt ? `<p>${esc(txt)}</p>` : ""}
+        ${a.resumen ? `<p>🤖 ${esc(a.resumen)}</p>` : ""}
+        ${per.length ? `<h2>Qué cubre</h2><ul class="plist">${per.map((p) => { const c = S.cuentas.find((x) => x.id === p.cuenta_id); return `<li>${c ? `${esc(acctName(c))} ${esc(maskNum(c.numero))}` : "?"}: ${fmtDate(p.desde)} – ${fmtDate(p.hasta)} · ${p.num_movimientos} movimientos${p.saldo_final != null && c ? ` · saldo final ${money(p.saldo_final, c.divisa)}` : ""}</li>`; }).join("")}</ul>` : ""}
+        <label>Pista para la rutina</label>
+        <textarea id="fNote" rows="2" placeholder="p. ej. «es la tarjeta de empresa», «las fechas van día/mes/año»">${esc(a.nota_usuario || "")}</textarea>
+        <div class="actions">
+          ${fileLink(a)}
+          <button class="act" data-a="again">🔁 Volver a leer</button>
+          <button class="act danger" data-a="del">🗑️ Borrar</button>
+        </div>
+      `, async (b, close, bg) => {
+        if (b.dataset.a === "again") {
+          close();
+          const { error } = await sb.rpc("gastos_reprocesar", { p_room: room, p_id: id, p_nota: bg.querySelector("#fNote").value });
+          if (error) return toast("No se pudo");
+          toast("En cola: la rutina lo volverá a leer en su próxima pasada"); load(true);
+        } else if (b.dataset.a === "del") {
+          if (!confirm(`¿Borrar «${a.nombre}» y lo que se sacó de él?`)) return;
+          close();
+          const { error } = await sb.rpc("gastos_borrar_archivo", { p_room: room, p_id: id });
+          if (error) return toast("No se pudo borrar");
+          toast("Borrado"); load(true);
+        }
+      });
+    }
+
+    function openMenu() {
+      openSheet(`
+        <h3>💶 Gastos</h3>
+        <p class="muted small">Tu archivo se abre con tu contraseña en cualquier dispositivo. La rutina lee los archivos nuevos cada hora: detecta de qué cuenta o tarjeta son, qué fechas cubren y saca los movimientos.</p>
+        <div class="actions">
+          <button class="act" data-a="reload">↻ Actualizar</button>
+          <button class="act danger" data-a="out">🔒 Salir en este dispositivo</button>
+        </div>
+      `, (b, close) => {
+        if (b.dataset.a === "reload") { close(); load(true); toast("Actualizado"); }
+        if (b.dataset.a === "out") { LS.del("gastos_room"); location.reload(); }
+      });
+    }
+
+    // ---------- .zip ----------
+    function folderName(c) {
+      const clean = (s) => String(s || "").replace(/[\\/:*?"<>|]+/g, "-").trim();
+      return clean(`${c.banco} - ${TIPO_TXT[c.tipo] || c.tipo} - ${String(c.numero).replace(/\s+/g, "").replace(/\*/g, "x")} (${c.divisa})${c.alias ? " - " + c.alias : ""}`);
+    }
+    const csvCell = (v) => { const s = String(v ?? ""); return /[;"\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
+    const num = (v) => v == null ? "" : String(v).replace(".", ",");
+
+    async function downloadZip() {
+      if (!S.archivos.length) return toast("Aún no hay nada que descargar");
+      const t = toast("Preparando el .zip…", 0);
+      try {
+        const zip = new JSZip();
+        const today = new Date().toISOString().slice(0, 10);
+        const root = zip.folder(`Gastos ${today}`);
+        // Movimientos (por páginas).
+        let movs = [], off = 0;
+        for (;;) {
+          const { data, error } = await sb.rpc("gastos_movimientos_pag", { p_room: room, p_offset: off, p_limit: 1000 });
+          if (error) throw error;
+          movs = movs.concat(data);
+          if (data.length < 1000) break;
+          off += 1000;
+        }
+        const used = new Set();
+        const uniq = (p) => { let q = p, i = 2; while (used.has(q)) { const d = p.lastIndexOf("."); q = d > 0 ? `${p.slice(0, d)} (${i})${p.slice(d)}` : `${p} (${i})`; i++; } used.add(q); return q; };
+        let n = 0;
+        for (const a of S.archivos) {
+          t.textContent = `Preparando el .zip… ${++n}/${S.archivos.length}`;
+          const res = await fetch(publicUrl(a.path));
+          if (!res.ok) throw new Error(`no se pudo bajar ${a.nombre}`);
+          const blob = await res.blob();
+          const per = S.periodos.filter((p) => p.archivo_id === a.id);
+          if (!per.length) { root.file(uniq(`Sin clasificar/${a.nombre}`), blob); continue; }
+          for (const cid of new Set(per.map((p) => p.cuenta_id))) {
+            const c = S.cuentas.find((x) => x.id === cid);
+            const p = per.find((x) => x.cuenta_id === cid);
+            root.file(uniq(`${folderName(c)}/${p.desde.slice(0, 4)}/${p.desde.slice(0, 7)} ${a.nombre}`), blob);
+          }
+        }
+        // Un CSV de movimientos por cuenta, sin duplicados entre extractos que se solapan.
+        let leeme = `Gastos — descargado el ${today}\n\nUna carpeta por cuenta o tarjeta (banco - tipo - número (divisa)),\ny dentro, una carpeta por año con los archivos que subiste, con el mes\nque cubren delante del nombre. movimientos.csv junta todos los movimientos\nque se han leído de esa cuenta (separado por ; y con coma decimal).\n\n`;
+        for (const c of S.cuentas) {
+          const seen = new Set();
+          const rows = movs.filter((m) => m.cuenta_id === c.id).filter((m) => {
+            const k = [m.fecha, m.importe, m.concepto, m.saldo].join("|");
+            if (seen.has(k)) return false; seen.add(k); return true;
+          });
+          const fname = (id) => S.archivos.find((a) => a.id === id)?.nombre || "";
+          const csv = "﻿fecha;fecha_valor;concepto;importe;divisa;saldo;archivo\n" +
+            rows.map((m) => [m.fecha, m.fecha_valor, m.concepto, num(m.importe), m.divisa, num(m.saldo), fname(m.archivo_id)].map(csvCell).join(";")).join("\n");
+          root.file(`${folderName(c)}/movimientos.csv`, csv);
+          const cv = coverage(c);
+          leeme += `${folderName(c)}\n  ${cv ? `${cv.have}/${cv.expected} meses completos` : ""} · ${rows.length} movimientos\n`;
+          for (const g of gaps().filter((x) => x.c.id === c.id)) leeme += `  - ${g.text}\n`;
+          leeme += "\n";
+        }
+        root.file("LEEME.txt", leeme);
+        t.textContent = "Comprimiendo…";
+        const blob = await zip.generateAsync({ type: "blob" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url; link.download = `Gastos ${today}.zip`;
+        document.body.appendChild(link); link.click(); link.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 60000);
+        t.remove(); toast("✅ .zip descargado");
+      } catch (e) {
+        console.error(e); t.remove(); toast("No se pudo crear el .zip: " + (e.message || e), 4000);
+      }
+    }
+
+    // ---------- Arranque ----------
+    async function enter(pass) {
+      const hex = await sha256Hex(new TextEncoder().encode("gastos-v1:" + pass));
+      room = hex; LS.set("gastos_room", hex);
+      start();
+    }
+    function start() {
+      $("lock").classList.add("hidden");
+      $("app").classList.remove("hidden");
+      load(true);
+    }
+    $("lockForm").onsubmit = (e) => {
+      e.preventDefault();
+      const p = $("pass").value;
+      if (p.length < 8) { $("lockErr").textContent = "Mínimo 8 caracteres."; return; }
+      enter(p);
+    };
+
+    $("fileInput").onchange = (e) => { upload(e.target.files); e.target.value = ""; };
+    const drop = $("drop");
+    ["dragenter", "dragover"].forEach((ev) => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.add("over"); }));
+    ["dragleave", "drop"].forEach((ev) => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.remove("over"); }));
+    drop.addEventListener("drop", (e) => upload(e.dataTransfer.files));
+    document.addEventListener("dragover", (e) => e.preventDefault());
+    document.addEventListener("drop", (e) => { if (!drop.contains(e.target) && room) { e.preventDefault(); upload(e.dataTransfer.files); } });
+
+    $("accounts").addEventListener("click", (e) => {
+      const cell = e.target.closest(".cell");
+      if (cell && !cell.classList.contains("out")) return openMonth(cell.dataset.c, Number(cell.dataset.k));
+      const h = e.target.closest("[data-acct]");
+      if (h) openAccount(h.dataset.acct);
+    });
+    $("avisos").addEventListener("click", (e) => {
+      const li = e.target.closest("li[data-c]");
+      if (!li) return;
+      li.dataset.k ? openMonth(li.dataset.c, Number(li.dataset.k)) : openAccount(li.dataset.c);
+    });
+    $("files").addEventListener("click", (e) => { const li = e.target.closest("li[data-f]"); if (li) openFile(li.dataset.f); });
+    $("zipBtn").onclick = downloadZip;
+    $("menuBtn").onclick = openMenu;
+
+    if (room) start(); else { $("lock").classList.remove("hidden"); $("pass").focus(); }
+
+    // La rutina escribe por detrás: refrescar cada 30 s si la app está a la vista.
+    setInterval(() => { if (room && document.visibilityState === "visible") load(); }, 30000);
+    document.addEventListener("visibilitychange", () => { if (room && document.visibilityState === "visible") load(); });
+
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+      navigator.serviceWorker.addEventListener("message", (e) => {
+        if (e.data && e.data.type === "new-version" && !document.querySelector(".sheet-bg")) location.reload();
+      });
+    }
+  </script>
+</body>
+</html>

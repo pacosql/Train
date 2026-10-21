@@ -47,6 +47,7 @@ reglas para no interferir con las demás:
 | ✍️ Orto | [`orto/`](./orto) | `/Train/orto/` | `orto_` |
 | ✒️ Nombre Autor | [`autor/`](./autor) | `/Train/autor/` | `autor_` |
 | 📥 Bandeja | [`bandeja/`](./bandeja) | `/Train/bandeja/` | `bandeja_` |
+| 💶 Gastos | [`gastos/`](./gastos) | `/Train/gastos/` | `gastos_` |
 
 ## Añadir una app nueva
 
