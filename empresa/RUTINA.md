@@ -481,3 +481,8 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 ### 21/10
 - Comprobación diaria del .com (00:02 UTC): 493/493 libres (⭐, 👍 y pendientes). Sin marcas nuevas; cola 449.
 - ⭐ **ForwardPrompt** (22/10): Paco lo pasa a definitivo desde el chat (antes 👎, tanda 54). .com libre según RDAP a 22/10.
+
+### 22/10 — marca educativa
+- ⭐ **ForwardPrompt** (definitivo, desde el chat) como nombre de la SL. Paco pide vaciar la cola y buscar la marca educativa de las apps (ver «Objetivo vigente» arriba). 89 pendientes → `vetado` con motivo.
+- Tanda 109: nombres educativos de una palabra y compuestos (el 10 de las apps, objetos del pupitre, búho/abeja, brotes, letras y tildes, profe y cole). 114 → 26 cargados (73 .com ocupados: las palabras sueltas en español están todas registradas).
+- Tanda 110: palabra de escuela + palabra cálida (Diez, Kids, Club, Nest, Play, Amigo…), máx. 6 por raíz.
