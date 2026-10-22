@@ -4,6 +4,17 @@ Objetivo: que Paco nunca se quede sin nombres buenos que revisar en
 <https://pacosql.github.io/Train/empresa/> y que cada tanda aprenda de lo
 que ha marcado. Todo desde la raíz del repo `Train`.
 
+> **Objetivo vigente desde el 22/10 (Paco, en el chat):** la SL ya tiene
+> nombre — ⭐ **ForwardPrompt**. Ahora se busca la **marca educativa de las
+> apps** (Ortografía 10, Mates 10…), la que ven los padres en la tienda:
+> cálida, de confianza, escolar, que no suene a IA ni a empresa
+> tecnológica, legible en español e inglés, .com libre. Vale el español
+> (el público son familias españolas). Nada de Forward/Query/Studios/Labs
+> de consultoría. La cola se vació el 22/10 (lo pendiente pasó a `vetado`
+> con motivo «Cola vaciada por Paco»); desde la tanda 109 todo es de esta
+> búsqueda. Las familias de marca educativa llevan «Marca educativa —» en
+> la cabecera.
+
 ## Pasos
 
 1. **Cerrojo**: `pgrep -f "[c]ribar.py"`. Si hay una criba en marcha, no
@@ -466,3 +477,12 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 - Tanda 106 (19:32 UTC, 10 👎 nuevos): ciudad de Latinoamérica + Studios (Oaxaca, Morelia, Valparaíso, Valdivia, Popayán, Arequipa, Bariloche, Salta…). 92 → 60 cargados. Cola: 64 (Paco clasificando).
 - Tanda 107 (19:48 UTC; cola a 0 tras 123 👎 —todas las ciudades de la 106— y 1 👍 MarMenorStudios). Se abandona «X + Studios» (1637 👎). Cuatro formas nuevas: raíz con aciertos (Query, Plot, Slate, Stroke, Brick, Forward) + palabra inglesa corta nueva (Ledger, Vector, Flint, Cobalt…); gramática y escritura hispánica + Labs/Works (Nebrija, Moliner, Covarrubias, Tintero, Silabario…); viento y mar en español + Labs/Partners (Galerna, Cierzo, Pleamar, Bitácora…); rey + ordinal (línea AlfonsoDecimo) y personaje literario + sufijo (Celestina, Rocinante, Babieca…). 430 → 247 cargados al principio de la cola. Cola: 247.
 - Tanda 108 (21:17 UTC; 160 👎 sobre la 107: náutica, rey + ordinal y personajes literarios fuera, 0 aciertos). Formas nuevas basadas en aciertos sueltos: prefijo latino + agua/costa en inglés (Supra: 4 aciertos de 49 —SupraSpring ⭐, SupraBay, SupraReef, SupraTide—; también PentaSpring, SeptaSpring, InterReef), con prefijos de esos aciertos y nuevos (Hexa, Octa, Tetra, Prima, Magna, Vela…); palabra de escuela en español + paisaje inglés (línea PapelCove, PapelRidge). 421 → 292 cargados. Cola: 449.
+
+### 21/10
+- Comprobación diaria del .com (00:02 UTC): 493/493 libres (⭐, 👍 y pendientes). Sin marcas nuevas; cola 449.
+- ⭐ **ForwardPrompt** (22/10): Paco lo pasa a definitivo desde el chat (antes 👎, tanda 54). .com libre según RDAP a 22/10.
+
+### 22/10 — marca educativa
+- ⭐ **ForwardPrompt** (definitivo, desde el chat) como nombre de la SL. Paco pide vaciar la cola y buscar la marca educativa de las apps (ver «Objetivo vigente» arriba). 89 pendientes → `vetado` con motivo.
+- Tanda 109: nombres educativos de una palabra y compuestos (el 10 de las apps, objetos del pupitre, búho/abeja, brotes, letras y tildes, profe y cole). 114 → 26 cargados (73 .com ocupados: las palabras sueltas en español están todas registradas).
+- Tanda 110: palabra de escuela + palabra cálida (Diez, Kids, Club, Nest, Play, Amigo…), máx. 6 por raíz.
