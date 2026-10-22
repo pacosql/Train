@@ -4,6 +4,17 @@ Objetivo: que Paco nunca se quede sin nombres buenos que revisar en
 <https://pacosql.github.io/Train/empresa/> y que cada tanda aprenda de lo
 que ha marcado. Todo desde la raíz del repo `Train`.
 
+> **Objetivo vigente desde el 22/10 (Paco, en el chat):** la SL ya tiene
+> nombre — ⭐ **ForwardPrompt**. Ahora se busca la **marca educativa de las
+> apps** (Ortografía 10, Mates 10…), la que ven los padres en la tienda:
+> cálida, de confianza, escolar, que no suene a IA ni a empresa
+> tecnológica, legible en español e inglés, .com libre. Vale el español
+> (el público son familias españolas). Nada de Forward/Query/Studios/Labs
+> de consultoría. La cola se vació el 22/10 (lo pendiente pasó a `vetado`
+> con motivo «Cola vaciada por Paco»); desde la tanda 109 todo es de esta
+> búsqueda. Las familias de marca educativa llevan «Marca educativa —» en
+> la cabecera.
+
 ## Pasos
 
 1. **Cerrojo**: `pgrep -f "[c]ribar.py"`. Si hay una criba en marcha, no
