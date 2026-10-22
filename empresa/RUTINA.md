@@ -469,3 +469,4 @@ que ha marcado. Todo desde la raíz del repo `Train`.
 
 ### 21/10
 - Comprobación diaria del .com (00:02 UTC): 493/493 libres (⭐, 👍 y pendientes). Sin marcas nuevas; cola 449.
+- ⭐ **ForwardPrompt** (22/10): Paco lo pasa a definitivo desde el chat (antes 👎, tanda 54). .com libre según RDAP a 22/10.
