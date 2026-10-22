@@ -72,6 +72,9 @@ def _empresas():
 
 
 EMPRESAS = _empresas()
+if os.environ.get("SOLO_EMPRESAS"):  # p. ej. SOLO_EMPRESAS="Tinybird,EDB": solo esos portales
+    _solo = {x.strip().lower() for x in os.environ["SOLO_EMPRESAS"].split(",")}
+    EMPRESAS = [e for e in EMPRESAS if e["nombre"].lower() in _solo]
 
 PARTNER = re.compile(r"partner|alliance|channel|ecosystem|reseller|\bGSI\b|system integrator|\bISV\b", re.I)
 PARTNER_NO = re.compile(r"business partner|people partner|hr partner|talent|recruit|\bHR\b|finance partner|payroll|design partner|accountant|counsel|legal|engineer\b|developer|scientist|\bSDR\b|sales development rep|marketing channels?|growth marketing|channel sales representative|product manager|funding|membership|client partner|partner funding|delivery partner|partner site|partner operations analyst|people operations|customer success partner|client success partner|care partner|junior partner|m&a|language|resource partner|customer care|coordinator|influencer|creator|omnichannel|technical lead|health partnership|student|physicist|product success|sales partner –|staffing|sponsorship|care representative|partner success manager ii", re.I)
@@ -307,6 +310,17 @@ def workable(e):
     return out
 
 
+def rippling(e):
+    out = []
+    for j in get(f"https://api.rippling.com/platform/api/ats/v1/board/{e['ats_token']}/jobs"):
+        if not categoria(j["name"]):
+            continue
+        loc = (j.get("workLocation") or {}).get("label", "")
+        out.append(dict(puesto=j["name"], ubicacion=loc, url=j["url"],
+                        workplace="remote" if re.search(r"remote", loc + j["name"], re.I) else ""))
+    return out
+
+
 def smartrecruiters(e):
     out = []
     for q in ("partner", "alliance", "channel", "CTO", "head of", "director", "VP"):
@@ -441,7 +455,7 @@ def amazon(e):
 
 
 HANDLERS = dict(google=google, eightfold=eightfold, greenhouse=greenhouse, ashby=ashby, lever=lever, workable=workable,
-                smartrecruiters=smartrecruiters, workday=workday, microsoft=microsoft, amazon=amazon)
+                smartrecruiters=smartrecruiters, workday=workday, microsoft=microsoft, amazon=amazon, rippling=rippling)
 
 
 def portales():

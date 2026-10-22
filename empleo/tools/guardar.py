@@ -241,6 +241,14 @@ def estado(url, empresa=None):
         tok, jid = (m.group(1), m.group(2)) if m else (_gh_token(empresa) or h.split(".")[-2], gh_id.group(1))
         code, _, _ = _http(f"https://boards-api.greenhouse.io/v1/boards/{tok}/jobs/{jid}")
         return True if code == 200 else False if code == 404 else None
+    m = re.search(r"ats\.rippling\.com/([^/]+)/jobs/([0-9a-f-]{36})", url)
+    if m:
+        org, jid = m.groups()
+        if ("rip", org) not in _cache:
+            code, d = _json(f"https://api.rippling.com/platform/api/ats/v1/board/{org}/jobs")
+            _cache[("rip", org)] = {j["uuid"] for j in d} if code == 200 and isinstance(d, list) else None
+        ids = _cache[("rip", org)]
+        return None if ids is None else jid in ids
     m = re.search(r"jobs\.ashbyhq\.com/([^/]+)/([0-9a-f-]{36})", url)
     if m:
         org, jid = m.groups()
