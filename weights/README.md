@@ -263,6 +263,16 @@ mapa `{ id: { startedAt, weight } }` con todas las abiertas:
 `currentExerciseStartedAt`/`currentWeightDraft`) a `active`, para no
 perder un ejercicio a medias al actualizar la app.
 
+## Sesiones olvidadas
+
+Si te vas del gimnasio sin pulsar "Terminar", la sesión no se queda
+abierta días: cuando lleva más de 12 horas (una jornada) se cierra sola
+como si hubiera durado una hora, o hasta su último ejercicio si este fue
+más tarde. Se comprueba al abrir la app y al volver a ella desde segundo
+plano, tanto la sesión de este móvil como cualquier otra que se quedara
+abierta en el servidor. Lo que hubiera pendiente de enviar en la bandeja
+de salida no se pierde.
+
 ## Stop guarda directo ("la próxima vez")
 
 No hay pantalla de "¿cómo ha ido?": el peso ya lo has puesto tú con el

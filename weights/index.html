@@ -2651,6 +2651,8 @@
     async function refreshData() {
       try {
         const perSession = await loadCatalogAndHistory();
+        await closeStaleRemoteSessions();
+        await flushOutbox();
         await loadSessions(perSession);
         showError("");
       } catch (err) {
@@ -2670,6 +2672,7 @@
     // tenía (la respuesta se perdió por el camino), cuenta como enviado y
     // no se duplica.
     let flushing = false;
+    let flushPromise = Promise.resolve();
     function enqueue(op) {
       op.id = op.id || (Date.now().toString(36) + Math.random().toString(36).slice(2, 8));
       state.outbox.push(op);
@@ -2695,9 +2698,16 @@
       }
       return null;
     }
-    async function flushOutbox() {
-      if (flushing || !client || !state.outbox.length) return;
+    // Devuelve una promesa que se cumple cuando la bandeja ha terminado de
+    // enviarse (también si ya había un envío en marcha).
+    function flushOutbox() {
+      if (flushing) return flushPromise;
+      if (!client || !state.outbox.length) return Promise.resolve();
       flushing = true;
+      flushPromise = flushOutboxRun();
+      return flushPromise;
+    }
+    async function flushOutboxRun() {
       try {
         while (state.outbox.length) {
           const op = state.outbox[0];
@@ -2718,6 +2728,58 @@
         flushing = false;
         renderPendingBadge();
       }
+    }
+
+    // ---------- sesiones olvidadas ----------
+    // Si una sesión lleva más de una jornada abierta (te fuiste sin pulsar
+    // Terminar), se cierra sola como si hubiera durado una hora: termina una
+    // hora después de empezar, o al guardar su último ejercicio si fue más
+    // tarde. Así no quedan "entrenamientos" de varios días.
+    const STALE_SESSION_MS = 12 * 3600 * 1000;
+    const AUTO_SESSION_MS = 3600 * 1000;
+    function autoEndAt(sessionId, startedAt) {
+      let end = new Date(startedAt).getTime() + AUTO_SESSION_MS;
+      for (const r of lastRows || []) {
+        if (r.session_id === sessionId) end = Math.max(end, new Date(r.completed_at).getTime() || 0);
+      }
+      for (const op of state.outbox) {
+        if (op.kind === "insertSessionExercise" && op.row.session_id === sessionId) {
+          end = Math.max(end, new Date(op.row.completed_at).getTime() || 0);
+        }
+      }
+      return new Date(end).toISOString();
+    }
+    function isStale(startedAt) {
+      return !!startedAt && Date.now() - new Date(startedAt).getTime() > STALE_SESSION_MS;
+    }
+    // La sesión de este móvil. Devuelve true si la ha cerrado.
+    function closeStaleLocalSession() {
+      if (!state.sessionId || !isStale(state.sessionStartedAt)) return false;
+      const id = state.sessionId;
+      const endedAt = autoEndAt(id, state.sessionStartedAt);
+      const outbox = state.outbox;
+      state = freshState();
+      state.outbox = outbox; // lo pendiente de enviar no se pierde
+      enqueue({ kind: "updateSession", sessionId: id, patch: { ended_at: endedAt, status: "done" } });
+      return true;
+    }
+    // Las que se quedaron abiertas en el servidor (otro móvil, caché borrada…).
+    async function closeStaleRemoteSessions() {
+      const cutoff = new Date(Date.now() - STALE_SESSION_MS).toISOString();
+      const { data, error } = await withRetry(() => client.from(T.sessions)
+        .select("id, started_at").eq("status", "in_progress").lt("started_at", cutoff));
+      if (error || !data || !data.length) return;
+      for (const s of data) {
+        if (s.id === state.sessionId) continue; // la de este móvil ya la cierra la local
+        if (state.outbox.some((op) => op.kind === "updateSession" && op.sessionId === s.id)) continue; // ya va de camino
+        enqueue({ kind: "updateSession", sessionId: s.id, patch: { ended_at: autoEndAt(s.id, s.started_at), status: "done" } });
+      }
+    }
+    function sweepStaleSessions() {
+      const closed = closeStaleLocalSession();
+      if (closed && state.screen !== "home") showScreen("home");
+      if (closed && state.screen === "home") renderHome();
+      return closed;
     }
 
     async function hydrateSessionStart() {
@@ -2799,6 +2861,8 @@
       } else {
         try {
           const perSession = await loadCatalogAndHistory();
+          await closeStaleRemoteSessions();
+          await flushOutbox();
           await loadSessions(perSession);
           showError("");
         } catch (err) {
@@ -2806,6 +2870,7 @@
           return;
         }
       }
+      closeStaleLocalSession();
 
       setInterval(tick, 1000);
       renderPendingBadge();
@@ -2815,7 +2880,11 @@
 
       if (state.sessionId && state.lastActiveScreen) restoreScreen(state.lastActiveScreen);
       else showScreen("home");
-      hydrateSessionStart();
+      // Si no sabíamos cuándo empezó, se pregunta y se vuelve a mirar.
+      hydrateSessionStart().then(sweepStaleSessions);
+      // Una PWA puede quedarse días en segundo plano sin recargarse: al
+      // volver a ella se comprueba otra vez.
+      document.addEventListener("visibilitychange", () => { if (!document.hidden) sweepStaleSessions(); });
     }
 
     init();
