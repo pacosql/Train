@@ -48,6 +48,7 @@ reglas para no interferir con las demás:
 | ✒️ Nombre Autor | [`autor/`](./autor) | `/Train/autor/` | `autor_` |
 | 📥 Bandeja | [`bandeja/`](./bandeja) | `/Train/bandeja/` | `bandeja_` |
 | 💶 Gastos | [`gastos/`](./gastos) | `/Train/gastos/` | `gastos_` |
+| 🔊 Read Aloud | [`readaloud/`](./readaloud) | `/Train/readaloud/` | `readaloud_` |
 
 ## Añadir una app nueva
 

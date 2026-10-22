@@ -1,0 +1,583 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Read Aloud</title>
+
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#5b4cff" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Read Aloud" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" href="icons/icon-192.png" />
+
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #f3f2f8;
+      --surface: #ffffff;
+      --surface-2: #e9e7f3;
+      --text: #17152a;
+      --text-2: #615d78;
+      --line: #dcd9e8;
+      --accent: #5b4cff;
+      --accent-ink: #ffffff;
+      --sentence: #ebe8ff;
+      --word: #ffd60a;
+      --word-ink: #17152a;
+      --danger: #d93a4a;
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #12111c;
+        --surface: #1c1a2b;
+        --surface-2: #29263d;
+        --text: #eceaf7;
+        --text-2: #9b97b3;
+        --line: #2f2c45;
+        --accent: #7d70ff;
+        --sentence: #2c2850;
+        --word: #ffd60a;
+      }
+    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body {
+      margin: 0; background: var(--bg); color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 16px; line-height: 1.4; -webkit-font-smoothing: antialiased;
+    }
+    button, select { font: inherit; color: inherit; cursor: pointer; }
+    input, textarea { font: inherit; font-size: 16px; color: var(--text); }
+    .hidden { display: none !important; }
+    .wrap { max-width: 720px; margin: 0 auto; padding: 0 16px; }
+
+    header {
+      position: sticky; top: 0; z-index: 10;
+      padding: calc(var(--safe-top) + 10px) 0 10px;
+      background: var(--surface); border-bottom: 1px solid var(--line);
+    }
+    .top { display: flex; align-items: center; gap: 8px; }
+    .top h1 { font-size: 1.15rem; margin: 0; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .pill {
+      border: 1px solid var(--line); background: var(--surface-2);
+      border-radius: 999px; padding: 7px 14px; font-size: 0.9rem; white-space: nowrap;
+    }
+    .pill.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 600; }
+    .pill.danger { color: var(--danger); }
+    .pill:disabled { opacity: 0.5; }
+
+    main { padding: 16px 0 40px; }
+
+    /* Lista */
+    .card {
+      background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
+      padding: 14px 16px; margin-bottom: 10px; cursor: pointer;
+    }
+    .card .t { font-weight: 700; }
+    .card .p { color: var(--text-2); font-size: 0.88rem; margin-top: 3px;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .card .d { color: var(--text-2); font-size: 0.75rem; margin-top: 6px; }
+    .empty { text-align: center; color: var(--text-2); padding: 40px 10px; }
+    .empty .big { font-size: 2.6rem; }
+
+    /* Editor */
+    .field { margin-bottom: 12px; }
+    .field label { display: block; font-size: 0.8rem; color: var(--text-2); margin-bottom: 4px; font-weight: 600; }
+    .field input, .field textarea {
+      width: 100%; background: var(--surface); border: 1px solid var(--line);
+      border-radius: 12px; padding: 12px;
+    }
+    .field textarea { min-height: 46vh; resize: vertical; line-height: 1.5; }
+    .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .row .grow { flex: 1; }
+
+    /* Lector */
+    .reader {
+      background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
+      padding: 18px 18px; font-size: 1.25rem; line-height: 1.75;
+      white-space: pre-wrap; word-wrap: break-word;
+    }
+    .reader .w { border-radius: 5px; padding: 1px 0; cursor: pointer; transition: background 0.08s; }
+    .reader .w.in-s { background: var(--sentence); }
+    .reader .w.cur { background: var(--word); color: var(--word-ink); box-shadow: 0 0 0 2px var(--word); }
+    .reader .w.mark { outline: 2px dashed var(--accent); outline-offset: 1px; }
+    #vRead main { padding-bottom: calc(var(--safe-bottom) + 170px); }
+    .hint { color: var(--text-2); font-size: 0.82rem; margin: 10px 2px 0; }
+
+    .player {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
+      background: var(--surface); border-top: 1px solid var(--line);
+      padding: 10px 0 calc(var(--safe-bottom) + 10px);
+    }
+    .ctrls { display: flex; align-items: center; justify-content: center; gap: 10px; }
+    .ctrl {
+      width: 46px; height: 46px; border-radius: 50%; border: 1px solid var(--line);
+      background: var(--surface-2); font-size: 1.15rem; display: grid; place-items: center;
+    }
+    .ctrl.play { width: 62px; height: 62px; background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-size: 1.6rem; }
+    .ctrl.on { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+    .opts { display: flex; gap: 8px; margin-top: 10px; }
+    .opts select {
+      background: var(--surface-2); border: 1px solid var(--line); border-radius: 10px;
+      padding: 8px 10px; font-size: 0.85rem; min-width: 0;
+    }
+    .opts .voice { flex: 1; }
+
+    .toast {
+      position: fixed; left: 50%; transform: translateX(-50%);
+      bottom: calc(var(--safe-bottom) + 150px); z-index: 50;
+      background: var(--text); color: var(--bg); padding: 10px 16px; border-radius: 12px;
+      font-size: 0.9rem; max-width: 90vw; text-align: center;
+    }
+    .build-id { text-align: center; font-size: 0.7rem; color: var(--text-2); margin-top: 24px; font-family: ui-monospace, monospace; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap top">
+      <button class="pill hidden" id="back">‹ Texts</button>
+      <h1 id="title">🔊 Read Aloud</h1>
+      <button class="pill primary" id="newBtn">+ New</button>
+      <button class="pill hidden" id="editBtn">Edit</button>
+    </div>
+  </header>
+
+  <!-- Lista de textos guardados -->
+  <main id="vList" class="wrap">
+    <div id="list"></div>
+    <div class="build-id">build __BUILD_ID__</div>
+  </main>
+
+  <!-- Editor -->
+  <main id="vEdit" class="wrap hidden">
+    <div class="field">
+      <label for="eTitle">Title (optional)</label>
+      <input id="eTitle" placeholder="e.g. Job interview intro" autocomplete="off" />
+    </div>
+    <div class="field">
+      <label for="eBody">Text</label>
+      <textarea id="eBody" placeholder="Paste or write your text here…"></textarea>
+    </div>
+    <div class="row">
+      <button class="pill" id="pasteBtn">📋 Paste</button>
+      <button class="pill danger hidden" id="delBtn">Delete</button>
+      <span class="grow"></span>
+      <button class="pill" id="cancelBtn">Cancel</button>
+      <button class="pill primary" id="saveBtn">Save &amp; read</button>
+    </div>
+  </main>
+
+  <!-- Lector -->
+  <div id="vRead" class="hidden">
+    <main class="wrap">
+      <div class="reader" id="reader"></div>
+      <p class="hint">Tap a word to hear it on its own — then ▶ continues from there. 🔁 repeats the current sentence.</p>
+    </main>
+    <div class="player">
+      <div class="wrap">
+        <div class="ctrls">
+          <button class="ctrl" id="prevBtn" title="Previous sentence">⏮</button>
+          <button class="ctrl play" id="playBtn" title="Play / pause">▶</button>
+          <button class="ctrl" id="nextBtn" title="Next sentence">⏭</button>
+          <button class="ctrl" id="loopBtn" title="Repeat sentence">🔁</button>
+        </div>
+        <div class="opts">
+          <select id="rate" title="Speed">
+            <option value="0.6">0.6×</option>
+            <option value="0.75">0.75×</option>
+            <option value="0.9">0.9×</option>
+            <option value="1" selected>1×</option>
+            <option value="1.15">1.15×</option>
+            <option value="1.3">1.3×</option>
+          </select>
+          <select id="voice" class="voice" title="Voice"></select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script>
+    const CFG = window.READALOUD_CONFIG;
+    const TABLE = CFG.tablePrefix + "texts";
+    const sb = supabase.createClient(CFG.url, CFG.anonKey, { auth: { persistSession: false } });
+    const $ = (id) => document.getElementById(id);
+    const LS = {
+      get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+      set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} },
+    };
+    const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    function toast(text, ms = 2400) {
+      document.querySelectorAll(".toast").forEach((t) => t.remove());
+      const t = document.createElement("div");
+      t.className = "toast"; t.textContent = text;
+      document.body.appendChild(t);
+      if (ms) setTimeout(() => t.remove(), ms);
+    }
+    const autoTitle = (body) => body.trim().split(/\s+/).slice(0, 6).join(" ") + (body.trim().split(/\s+/).length > 6 ? "…" : "");
+    function ago(iso) {
+      const m = Math.round((Date.now() - new Date(iso)) / 60000);
+      if (m < 1) return "just now";
+      if (m < 60) return `${m} min ago`;
+      const h = Math.round(m / 60);
+      if (h < 48) return `${h} h ago`;
+      return new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+    }
+
+    // ---------- Datos ----------
+    let texts = JSON.parse(LS.get("readaloud_cache") || "[]");
+    let current = null;   // texto abierto en el lector
+    let editing = null;   // texto en el editor (null = nuevo)
+
+    async function loadTexts() {
+      const { data, error } = await sb.from(TABLE).select("*").order("updated_at", { ascending: false });
+      if (error) { toast("Offline — showing saved copy"); return; }
+      texts = data;
+      LS.set("readaloud_cache", JSON.stringify(texts));
+    }
+
+    async function saveText(title, body) {
+      const row = { title: title || autoTitle(body), body, updated_at: new Date().toISOString() };
+      const q = editing ? sb.from(TABLE).update(row).eq("id", editing.id) : sb.from(TABLE).insert(row);
+      const { data, error } = await q.select().single();
+      if (error) throw error;
+      texts = [data, ...texts.filter((t) => t.id !== data.id)];
+      LS.set("readaloud_cache", JSON.stringify(texts));
+      return data;
+    }
+
+    // ---------- Vistas ----------
+    function show(view) {
+      stop();
+      for (const v of ["vList", "vEdit", "vRead"]) $(v).classList.toggle("hidden", v !== view);
+      $("back").classList.toggle("hidden", view === "vList");
+      $("newBtn").classList.toggle("hidden", view !== "vList");
+      $("editBtn").classList.toggle("hidden", view !== "vRead");
+      $("title").textContent = view === "vList" ? "🔊 Read Aloud" : view === "vEdit" ? (editing ? "Edit text" : "New text") : current.title;
+      window.scrollTo(0, 0);
+    }
+
+    function renderList() {
+      if (!texts.length) {
+        $("list").innerHTML = `<div class="empty"><div class="big">🔊</div><p>Paste any text and hear it read aloud<br>in an American accent, word by word.</p>
+          <button class="pill primary" onclick="openEditor(null)">+ Add your first text</button></div>`;
+        return;
+      }
+      $("list").innerHTML = texts.map((t) => `<div class="card" data-id="${t.id}">
+        <div class="t">${esc(t.title)}</div><div class="p">${esc(t.body)}</div><div class="d">${ago(t.updated_at)}</div></div>`).join("");
+    }
+    $("list").addEventListener("click", (e) => {
+      const c = e.target.closest(".card");
+      if (c) openReader(texts.find((t) => t.id === c.dataset.id));
+    });
+
+    function goList() { show("vList"); renderList(); history.replaceState(null, "", "./"); }
+
+    function openEditor(t) {
+      editing = t;
+      $("eTitle").value = t ? t.title : "";
+      $("eBody").value = t ? t.body : "";
+      $("delBtn").classList.toggle("hidden", !t);
+      show("vEdit");
+      if (!t) $("eBody").focus();
+    }
+
+    $("newBtn").onclick = () => openEditor(null);
+    $("editBtn").onclick = () => openEditor(current);
+    $("back").onclick = goList;
+    $("cancelBtn").onclick = () => (editing ? openReader(editing) : goList());
+    $("pasteBtn").onclick = async () => {
+      try {
+        const s = await navigator.clipboard.readText();
+        if (s) $("eBody").value = $("eBody").value ? $("eBody").value + "\n\n" + s : s;
+      } catch (e) { toast("Long-press the box and choose Paste"); $("eBody").focus(); }
+    };
+    $("saveBtn").onclick = async () => {
+      const body = $("eBody").value.trim();
+      if (!body) { toast("Write or paste some text first"); return; }
+      $("saveBtn").disabled = true;
+      try { openReader(await saveText($("eTitle").value.trim(), body)); }
+      catch (e) { toast("Couldn't save: " + (e.message || e)); }
+      finally { $("saveBtn").disabled = false; }
+    };
+    $("delBtn").onclick = async () => {
+      if (!editing || !confirm("Delete this text?")) return;
+      const { error } = await sb.from(TABLE).delete().eq("id", editing.id);
+      if (error) { toast("Couldn't delete: " + error.message); return; }
+      texts = texts.filter((t) => t.id !== editing.id);
+      LS.set("readaloud_cache", JSON.stringify(texts));
+      goList();
+    };
+
+    // ---------- Troceo en frases y palabras ----------
+    // words: [{start, end, el}] con offsets globales en el texto.
+    // chunks: trozos que se leen con una utterance cada uno (frases; las
+    // muy largas se parten por comas, porque Chrome corta las voces de
+    // Google pasados ~15 s).
+    let words = [], chunks = [];
+    const MAX_CHUNK = 220;
+
+    function splitSentences(text) {
+      const out = [];
+      if (window.Intl && Intl.Segmenter) {
+        for (const s of new Intl.Segmenter("en", { granularity: "sentence" }).segment(text)) out.push([s.index, s.index + s.segment.length]);
+      } else {
+        const re = /[^.!?\n]+(?:[.!?]+["')\]]*|\n+|$)\s*/g; let m;
+        while ((m = re.exec(text)) && m[0]) out.push([m.index, m.index + m[0].length]);
+      }
+      // Saltos de línea también cortan (títulos, listas).
+      return out.flatMap(([a, b]) => {
+        const parts = []; let s = a;
+        for (let i = a; i < b; i++) if (text[i] === "\n" && text.slice(s, i).trim()) { parts.push([s, i]); s = i; }
+        parts.push([s, b]);
+        return parts;
+      });
+    }
+
+    function buildChunks(text) {
+      const res = [];
+      for (const [a, b] of splitSentences(text)) {
+        if (!text.slice(a, b).trim()) continue;
+        let s = a;
+        while (b - s > MAX_CHUNK) {
+          const seg = text.slice(s, s + MAX_CHUNK);
+          const cut = Math.max(seg.lastIndexOf(", "), seg.lastIndexOf("; "), seg.lastIndexOf(": "), seg.lastIndexOf(" — "));
+          const at = cut > 40 ? s + cut + 2 : s + (seg.lastIndexOf(" ") > 40 ? seg.lastIndexOf(" ") + 1 : MAX_CHUNK);
+          res.push([s, at]); s = at;
+        }
+        res.push([s, b]);
+      }
+      return res.map(([start, end]) => ({ start, end, w0: -1, w1: -1 }));
+    }
+
+    function renderReader(text) {
+      words = [];
+      const re = /[\p{L}\p{N}]+(?:['’.\-][\p{L}\p{N}]+)*/gu; let m, last = 0, html = "";
+      while ((m = re.exec(text))) {
+        html += esc(text.slice(last, m.index)) + `<span class="w" data-i="${words.length}">${esc(m[0])}</span>`;
+        words.push({ start: m.index, end: m.index + m[0].length });
+        last = m.index + m[0].length;
+      }
+      html += esc(text.slice(last));
+      $("reader").innerHTML = html;
+      $("reader").querySelectorAll(".w").forEach((el, i) => (words[i].el = el));
+      chunks = buildChunks(text);
+      for (const c of chunks) {
+        for (let i = 0; i < words.length; i++) {
+          if (words[i].start >= c.start && words[i].start < c.end) { if (c.w0 < 0) c.w0 = i; c.w1 = i; }
+        }
+      }
+      chunks = chunks.filter((c) => c.w0 >= 0);
+    }
+
+    function openReader(t) {
+      current = t;
+      show("vRead");
+      renderReader(t.body);
+      pos = 0; setPlayIcon();
+      history.replaceState(null, "", "#" + t.id);
+    }
+
+    // ---------- Voces ----------
+    const synth = window.speechSynthesis;
+    let voices = [];
+    function voiceScore(v) {
+      let s = 0;
+      if (/^en[-_]US/i.test(v.lang)) s += 100; else if (/^en/i.test(v.lang)) s += 10;
+      if (/natural|neural|premium|enhanced/i.test(v.name)) s += 40;
+      if (/Google US English|Samantha|Ava|Aria|Jenny|Guy|Allison|Evan|Nathan|Zoe|Joelle/i.test(v.name)) s += 20;
+      if (v.localService) s += 2; // las locales dan eventos de palabra en más navegadores
+      return s;
+    }
+    function loadVoices() {
+      if (!synth) return;
+      const all = synth.getVoices().filter((v) => /^en/i.test(v.lang));
+      if (!all.length) return;
+      voices = all.sort((a, b) => voiceScore(b) - voiceScore(a) || a.name.localeCompare(b.name));
+      const saved = LS.get("readaloud_voice");
+      $("voice").innerHTML = voices.map((v, i) => `<option value="${i}">${esc(v.name.replace(/^Microsoft |\s*\(.*English.*\)/g, ""))} · ${esc(v.lang)}</option>`).join("");
+      const idx = voices.findIndex((v) => v.voiceURI === saved);
+      $("voice").value = String(idx >= 0 ? idx : 0);
+    }
+    if (synth) { loadVoices(); synth.onvoiceschanged = loadVoices; setTimeout(loadVoices, 800); }
+    const voice = () => voices[Number($("voice").value)] || null;
+    $("voice").onchange = () => { LS.set("readaloud_voice", voice() ? voice().voiceURI : ""); if (playing) restartIfPlaying(); else if (current && words.length) speakWord(pos); };
+    $("rate").value = LS.get("readaloud_rate") || "1";
+    $("rate").onchange = () => { LS.set("readaloud_rate", $("rate").value); restartIfPlaying(); };
+    const rate = () => Number($("rate").value) || 1;
+
+    // ---------- Reproducción ----------
+    // Una utterance por trozo. El resaltado sigue los eventos "boundary"
+    // del navegador cuando los da; si no (p. ej. voces de Google en Chrome
+    // de escritorio), se estima con un reloj calibrado por voz y velocidad.
+    let pos = 0;          // índice de palabra donde está/estará la lectura
+    let playing = false;
+    let loop = false;
+    let gen = 0;          // invalida callbacks de utterances viejas
+    let timer = null;
+
+    const calKey = () => "readaloud_cal_" + (voice() ? voice().voiceURI : "default");
+    const BASE_MS = 58;   // ms por "unidad" a 1× (ajustado por calibración)
+    function unitsOf(text) {
+      let u = text.replace(/\s+/g, " ").length;
+      u += (text.match(/[,;:—]/g) || []).length * 5 + (text.match(/[.!?]/g) || []).length * 8;
+      return u;
+    }
+
+    function highlight(i) {
+      document.querySelectorAll(".reader .cur").forEach((e) => e.classList.remove("cur"));
+      if (!words[i]) return;
+      words[i].el.classList.add("cur");
+      const r = words[i].el.getBoundingClientRect();
+      const bottomBar = document.querySelector(".player").getBoundingClientRect().top;
+      if (r.top < 70 || r.bottom > bottomBar - 20) window.scrollBy({ top: r.top - window.innerHeight / 3, behavior: "smooth" });
+    }
+    function markSentence(c) {
+      document.querySelectorAll(".reader .in-s").forEach((e) => e.classList.remove("in-s"));
+      if (c) for (let i = c.w0; i <= c.w1; i++) words[i].el.classList.add("in-s");
+    }
+    function setMark(i) {
+      document.querySelectorAll(".reader .mark").forEach((e) => e.classList.remove("mark"));
+      if (!playing && words[i] && i > 0) words[i].el.classList.add("mark");
+    }
+    const chunkOf = (i) => Math.max(0, chunks.findIndex((c) => i <= c.w1));
+    function setPlayIcon() { $("playBtn").textContent = playing ? "⏸" : "▶"; setMark(pos); }
+
+    function wordAtChar(charGlobal) {
+      let lo = 0, hi = words.length - 1, ans = 0;
+      while (lo <= hi) { const mid = (lo + hi) >> 1; if (words[mid].start <= charGlobal) { ans = mid; lo = mid + 1; } else hi = mid - 1; }
+      return ans;
+    }
+
+    function speakFrom(i) {
+      if (!synth) { toast("This browser can't speak — try Chrome, Safari or Edge"); return; }
+      clearInterval(timer);
+      const my = ++gen;
+      if (!chunks.length) return;
+      const ci = chunkOf(i);
+      const c = chunks[ci];
+      const startChar = words[Math.max(i, c.w0)].start;
+      const text = current.body.slice(startChar, c.end);
+      const firstWord = Math.max(i, c.w0);
+      pos = firstWord;
+      markSentence(c); highlight(firstWord);
+
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = "en-US";
+      if (voice()) { u.voice = voice(); u.lang = voice().lang; }
+      u.rate = rate();
+
+      // Estimación por tiempo (se apaga en cuanto llega un boundary real).
+      const plan = []; let acc = 0;
+      for (let w = firstWord; w <= c.w1; w++) {
+        plan.push({ w, at: acc });
+        const next = w < c.w1 ? words[w + 1].start : c.end;
+        acc += unitsOf(current.body.slice(words[w].start, next));
+      }
+      const total = acc;
+      let cal = Number(LS.get(calKey())) || 1;
+      let gotBoundary = false, t0 = 0;
+      const msPerUnit = () => (BASE_MS * cal) / rate();
+
+      u.onstart = () => {
+        if (my !== gen) return;
+        t0 = performance.now();
+        timer = setInterval(() => {
+          if (gotBoundary || my !== gen) return clearInterval(timer);
+          const el = (performance.now() - t0) / msPerUnit();
+          let k = 0; while (k + 1 < plan.length && plan[k + 1].at <= el) k++;
+          if (plan[k].w !== pos) { pos = plan[k].w; highlight(pos); }
+        }, 40);
+      };
+      u.onboundary = (e) => {
+        if (my !== gen || (e.name && e.name !== "word")) return;
+        gotBoundary = true; clearInterval(timer);
+        pos = Math.min(c.w1, wordAtChar(startChar + e.charIndex));
+        highlight(pos);
+      };
+      const done = (ok) => {
+        if (my !== gen) return;
+        clearInterval(timer);
+        // Calibra el reloj con lo que de verdad ha tardado esta frase.
+        if (ok && !gotBoundary && t0 && total > 20) {
+          const real = (performance.now() - t0) * rate() / (BASE_MS * total);
+          if (real > 0.4 && real < 2.5) LS.set(calKey(), String(cal * 0.5 + real * 0.5));
+        }
+        if (!playing) return;
+        if (loop) return speakFrom(c.w0);
+        if (ci + 1 < chunks.length) return speakFrom(chunks[ci + 1].w0);
+        playing = false; pos = 0; setPlayIcon(); markSentence(null); highlight(-1);
+      };
+      u.onend = () => done(true);
+      u.onerror = (e) => { if (e.error !== "interrupted" && e.error !== "canceled") { toast("Speech error: " + e.error); playing = false; setPlayIcon(); } done(false); };
+
+      synth.cancel();
+      synth.speak(u);
+      // Chrome a veces se queda "pausado" tras cancel(); esto lo despierta.
+      if (synth.paused) synth.resume();
+    }
+
+    function play() { playing = true; setPlayIcon(); speakFrom(pos); }
+    function stop() {
+      playing = false; gen++; clearInterval(timer);
+      if (synth) synth.cancel();
+      if ($("playBtn")) setPlayIcon();
+    }
+    function restartIfPlaying() { if (playing) speakFrom(chunks[chunkOf(pos)].w0); }
+
+    // Toca una palabra: si está leyendo, salta ahí; si no, la dice sola.
+    function speakWord(i) {
+      if (!synth || !words[i]) return;
+      gen++; clearInterval(timer); synth.cancel();
+      const u = new SpeechSynthesisUtterance(current.body.slice(words[i].start, words[i].end));
+      if (voice()) { u.voice = voice(); u.lang = voice().lang; } else u.lang = "en-US";
+      u.rate = Math.min(rate(), 0.9);
+      highlight(i); markSentence(null);
+      u.onend = () => { if (!playing) highlight(-1); setMark(pos); };
+      synth.speak(u);
+    }
+
+    $("reader").addEventListener("click", (e) => {
+      const el = e.target.closest(".w");
+      if (!el) return;
+      const i = Number(el.dataset.i);
+      if (playing) { speakFrom(i); return; }
+      pos = i; speakWord(i);
+    });
+    $("playBtn").onclick = () => (playing ? (stop(), markSentence(null)) : play());
+    $("prevBtn").onclick = () => {
+      const ci = chunkOf(pos);
+      // Si ya va por la mitad de la frase, vuelve a su principio; si no, a la anterior.
+      const target = pos > chunks[ci].w0 + 1 || ci === 0 ? chunks[ci].w0 : chunks[ci - 1].w0;
+      pos = target; playing ? speakFrom(target) : (setMark(pos), highlight(pos));
+    };
+    $("nextBtn").onclick = () => {
+      const ci = chunkOf(pos);
+      if (ci + 1 >= chunks.length) return;
+      pos = chunks[ci + 1].w0; playing ? speakFrom(pos) : (setMark(pos), highlight(pos));
+    };
+    $("loopBtn").onclick = () => { loop = !loop; $("loopBtn").classList.toggle("on", loop); toast(loop ? "Repeating the current sentence" : "Repeat off", 1400); };
+
+    // ---------- Arranque ----------
+    (async () => {
+      renderList();
+      await loadTexts();
+      const id = location.hash.slice(1);
+      const t = id && texts.find((x) => x.id === id);
+      if (t) openReader(t); else renderList();
+    })();
+
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+      navigator.serviceWorker.addEventListener("message", (e) => {
+        if (e.data && e.data.type === "new-version" && !playing && $("vEdit").classList.contains("hidden")) location.reload();
+      });
+    }
+  </script>
+</body>
+</html>
