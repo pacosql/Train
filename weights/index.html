@@ -199,6 +199,17 @@
     .item .reason { font-size: 0.72rem; font-weight: 700; color: var(--accent); margin-top: 4px; }
     .item .reason.warn { color: var(--pull); }
     .item .reason.muted { color: var(--text-2); }
+    /* motivos de la posición en la lista */
+    .why-f { display: block; font-size: 0.78rem; font-weight: 600; line-height: 1.3; margin-top: 3px; color: var(--text-2); }
+    .why-f.up { color: var(--accent); }
+    .why-f.down { color: var(--pull); }
+    .why-row { margin-top: 3px; }
+    .item:has(> .why) { flex-wrap: wrap; }
+    .item > .why { flex-basis: 100%; }
+    .why { margin-top: 8px; padding: 9px 11px; border-radius: 12px; background: rgba(255, 255, 255, 0.04); border: 1px solid var(--line); }
+    .why-h { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.8px; text-transform: uppercase; color: var(--text-2); margin-bottom: 2px; }
+    .why .why-f { font-size: 0.85rem; }
+    .why-ahead { margin-top: 6px; font-size: 0.82rem; color: var(--text); line-height: 1.35; }
     .item.done .name { color: var(--text-2); }
     .pill { font-family: var(--display); font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; padding: 4px 10px; border-radius: 999px; flex-shrink: 0; }
     .pill.push { background: var(--push); color: #04142e; }
@@ -1745,7 +1756,83 @@
       score += recBonus;
       const recPenalty = recBonus < 0 ? -recBonus : 0;
 
-      return { bucket, score, running, done, days, overlap, load, alt, chain, rec, recPenalty, recBonus };
+      const factors = whyFactors(ex, { days, overlap, load, alt, chain, rec, recBonus }, ctx);
+      return { bucket, score, running, done, days, overlap, load, alt, chain, rec, recPenalty, recBonus, factors };
+    }
+
+    // Los motivos de la posición en la lista, en palabras: los mismos
+    // puntos que suma rateExercise, cada uno con su signo. `pts` es lo que
+    // aporta a la puntuación; `sign` decide si se enseña como a favor (▲),
+    // en contra (▼) o neutro.
+    function whyFactors(ex, r, ctx) {
+      const out = [];
+      if (ex.movement_type === "cardio") return out;
+      // Llevar tiempo sin hacerlo es lo que más empuja hacia arriba.
+      const freshPts = (r.days == null ? 21 : Math.min(r.days, 21)) * 3;
+      if (r.days == null) out.push({ key: "fresh", pts: freshPts, sign: 1, text: "nunca lo has hecho" });
+      else if (r.days >= 7) out.push({ key: "fresh", pts: freshPts, sign: 1, text: `hace ${r.days} días que no lo haces` });
+      else if (r.days >= 3) out.push({ key: "fresh", pts: freshPts, sign: 1, text: `hace ${r.days} días que no lo haces` });
+      else if (r.days === 2) out.push({ key: "fresh", pts: freshPts, sign: 0, text: "lo hiciste hace 2 días" });
+      else if (r.days === 1) out.push({ key: "fresh", pts: freshPts, sign: -1, text: "lo hiciste ayer: el músculo aún se recupera" });
+      else if (r.days === 0) out.push({ key: "fresh", pts: freshPts, sign: -1, text: "ya lo has hecho hoy" });
+
+      if (r.chain) {
+        const same = !!ex.station && ex.station === ctx.lastEx.station;
+        out.push({ key: "chain", pts: 40, sign: 1, text: same
+          ? `es la misma máquina que ${ctx.lastEx.name}, ya tienes el peso puesto`
+          : `va en superserie con ${ctx.lastEx.name}` });
+      }
+
+      if (r.load > 0) {
+        const main = r.overlap.filter((o) => o.load >= 0.75).map((o) => o.tag);
+        const help = r.overlap.filter((o) => o.load < 0.75).map((o) => o.tag);
+        const text = main.length
+          ? `hoy ya has trabajado ${main.join(" y ")}, su músculo principal`
+          : `hoy ya has trabajado algo de ${help.join(" y ")}`;
+        out.push({ key: "overlap", pts: -Math.round(r.load * 30), sign: -1, text });
+      }
+
+      if (r.alt > 0) {
+        out.push({ key: "alt", pts: r.alt, sign: 1, text: ctx.lastToday
+          ? `vienes de ${movementWord(ctx.lastType)} (${ctx.lastName}): toca ${movementWord(ex.movement_type)}`
+          : `tu último entreno acabó con ${movementWord(ctx.lastType)}: toca ${movementWord(ex.movement_type)}` });
+      } else if (r.alt < 0) {
+        out.push({ key: "alt", pts: r.alt, sign: -1, text: ctx.lastToday
+          ? `vienes de ${movementWord(ctx.lastType)} (${ctx.lastName}) y esto es otra vez ${movementWord(ex.movement_type)}`
+          : `es ${movementWord(ex.movement_type)}, como tu último entreno` });
+      }
+
+      if (r.rec) {
+        const t = { 5: "5/5 para tu espalda: de lo mejor que puedes hacer", 4: "4/5 para tu espalda", 3: "3/5 para tu espalda: con cuidado",
+          2: "2/5 para tu espalda: mejor no", 1: "1/5 para tu espalda: evítalo" }[r.rec];
+        out.push({ key: "rec", pts: r.recBonus, sign: r.recBonus > 0 ? 1 : r.recBonus < 0 ? -1 : 0, text: t });
+      }
+      // Lo que más pesa, primero.
+      return out.sort((a, b) => Math.abs(b.pts) - Math.abs(a.pts));
+    }
+    const WHY_MARK = { 1: "▲", 0: "•", "-1": "▼" };
+    function whyLineHtml(f) {
+      return `<span class="why-f ${f.sign > 0 ? "up" : f.sign < 0 ? "down" : "flat"}">${WHY_MARK[f.sign]} ${f.text}</span>`;
+    }
+    // Por qué el primero va por delante del segundo: el motivo en el que
+    // más le saca.
+    function aheadReason(top, second) {
+      if (!second) return "";
+      const pts = (r, key) => (r.factors.find((f) => f.key === key) || { pts: 0 }).pts;
+      let best = null;
+      for (const key of ["fresh", "chain", "overlap", "alt", "rec"]) {
+        const d = pts(top.r, key) - pts(second.r, key);
+        if (d > 0 && (!best || d > best.d)) best = { key, d };
+      }
+      if (!best) return "";
+      const txt = {
+        fresh: top.r.days == null ? "este no lo has hecho nunca" : second.r.days == null ? "" : `hace más que no lo haces (${top.r.days} días frente a ${second.r.days})`,
+        chain: "este encadena con lo que acabas de hacer",
+        overlap: `${second.ex.name} repite músculo de hoy y este no tanto`,
+        alt: "este alterna con lo último que has hecho",
+        rec: `este es mejor para tu espalda (${top.r.rec || "-"}/5 frente a ${second.r.rec || "-"}/5)`,
+      }[best.key];
+      return txt ? `Va por delante de ${second.ex.name}: ${txt}.` : "";
     }
 
     function rateReason(ex, r, ctx) {
@@ -2000,6 +2087,21 @@
         const isTop = r.bucket === 0 && !starred;
         if (isTop) starred = true;
         const reason = rateReason(ex, r, ctx);
+        // Pendientes: los motivos reales de su sitio en la lista. El
+        // primero los lleva todos, con por qué gana al segundo; el resto,
+        // los dos o tres que más pesan.
+        let whyHtml = "";
+        if (r.bucket === 0 && r.factors.length) {
+          if (isTop) {
+            const second = rated.find((x) => x.r.bucket === 0 && x.ex.id !== ex.id);
+            const ahead = aheadReason({ ex, r }, second);
+            whyHtml = `<div class="why"><div class="why-h">Por qué ahora</div>` +
+              r.factors.map(whyLineHtml).join("") +
+              (ahead ? `<div class="why-ahead">${ahead}</div>` : "") + `</div>`;
+          } else {
+            whyHtml = `<div class="why-row">${r.factors.slice(0, 3).map(whyLineHtml).join("")}</div>`;
+          }
+        }
 
         const div = document.createElement("div");
         div.className = `item ${ex.movement_type}${isTop || r.running ? " top" : ""}${r.done && !r.running ? " done" : ""}`;
@@ -2009,8 +2111,10 @@
            <div class="item-main">
              <div class="name">${ex.name}${r.done && !r.running ? " ✓" : ""}</div>
              <div class="meta"><span class="type ${ex.movement_type}">${badgeLabel(ex.movement_type)}</span> · ${muscleLabel(ex)}${weightTxt}${link ? ` · ${link}` : ""}${recTagHtml(ex) ? ` · ${recTagHtml(ex)}` : ""}</div>
-             <div class="reason ${reason.tone}">${isTop ? "⭐ Recomendado · " : ""}${reason.text}</div>
-           </div>`;
+             ${whyHtml
+               ? (isTop ? `<div class="reason good">⭐ Recomendado</div>` : whyHtml)
+               : `<div class="reason ${reason.tone}">${isTop ? "⭐ Recomendado · " : ""}${reason.text}</div>`}
+           </div>${isTop && whyHtml ? whyHtml : ""}`;
         div.addEventListener("click", () =>
           isCardio
             ? startCardioFromList(ex, { resume: ex.id === state.cardioExerciseId })

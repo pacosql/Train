@@ -241,6 +241,20 @@ Cada fila enseña en una línea la razón de estar donde está ("descansas
 del tirón de Remo", "hoy ya has trabajado pecho", "9 días sin
 hacerlo"), en verde si empuja hacia arriba y en ámbar si la frena.
 
+
+### Por qué está cada uno donde está
+
+Cada ejercicio pendiente explica su sitio con los mismos puntos que lo
+ordenan (`whyFactors()`), en palabras y con su signo: ▲ lo sube, ▼ lo baja
+y • es neutro. Van primero los que más pesan: días sin hacerlo, si
+encadena con lo que acabas de hacer (estación o superserie), si repite
+músculo de hoy, si alterna empuje y tirón y su nota para la espalda.
+
+- El **recomendado** lleva un recuadro "Por qué ahora" a todo el ancho
+  con todos sus motivos y una línea "Va por delante de…" con el motivo en
+  el que más le saca al segundo (`aheadReason()`).
+- El **resto** enseña sus dos o tres motivos de más peso.
+
 ## Superseries (varias máquinas en marcha a la vez)
 
 Se pueden tener varios ejercicios empezados a la vez. El estado guarda
