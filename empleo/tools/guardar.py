@@ -189,7 +189,18 @@ def insertar(*paths):
         r["modalidad"] = r["modalidad"] or "desconocido"
         r["encaje"] = r["encaje"] or "completo"
     for i in range(0, len(nuevas), 100):
-        api("POST", "empleo_ofertas", nuevas[i:i + 100], "return=minimal")
+        try:
+            api("POST", "empleo_ofertas", nuevas[i:i + 100], "return=minimal")
+        except urllib.error.HTTPError as ex:
+            if ex.code != 409:
+                raise
+            for r in nuevas[i:i + 100]:  # URL duplicada dentro del lote o ya existente: saltar solo esa
+                try:
+                    api("POST", "empleo_ofertas", [r], "return=minimal")
+                except urllib.error.HTTPError as ex2:
+                    if ex2.code != 409:
+                        raise
+                    print("[dup] omitida", r.get("empresa"), "|", r.get("puesto"), file=sys.stderr)
     try:
         _apuntar_busquedas(cands, {id(c) for c in cands if c.get("_nueva")})
     except Exception as ex:
