@@ -602,7 +602,7 @@
           throw new Error(msg);
         }
         const blob = await res.blob();
-        const name = (current.title || "read-aloud").replace(/[\\/:*?"<>|…]+/g, "").trim().slice(0, 60) || "read-aloud";
+        const name = (current.title || "read-aloud").replace(/[\\/:*?"<>|…]+/g, "").trim().slice(0, 60).replace(/[.\s]+$/, "") || "read-aloud";
         const a = document.createElement("a");
         a.href = URL.createObjectURL(blob); a.download = name + ".mp3";
         document.body.appendChild(a); a.click(); a.remove();
