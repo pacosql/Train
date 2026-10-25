@@ -204,10 +204,26 @@
           <div class="lbl">Download as MP3 (Google US voice, at the speed above)</div>
           <div class="opts" style="margin-top:0">
             <select id="mp3Voice" class="voice" title="MP3 voice">
-              <option value="en-US-Neural2-F">Female 1 (Neural2-F)</option>
-              <option value="en-US-Neural2-H">Female 2 (Neural2-H)</option>
-              <option value="en-US-Neural2-D">Male 1 (Neural2-D)</option>
-              <option value="en-US-Neural2-J">Male 2 (Neural2-J)</option>
+              <optgroup label="Chirp 3 HD — most natural">
+                <option value="en-US-Chirp3-HD-Aoede">Aoede · female, warm</option>
+                <option value="en-US-Chirp3-HD-Kore">Kore · female, clear</option>
+                <option value="en-US-Chirp3-HD-Leda">Leda · female, young</option>
+                <option value="en-US-Chirp3-HD-Zephyr">Zephyr · female, bright</option>
+                <option value="en-US-Chirp3-HD-Charon">Charon · male, deep</option>
+                <option value="en-US-Chirp3-HD-Puck">Puck · male, upbeat</option>
+                <option value="en-US-Chirp3-HD-Fenrir">Fenrir · male, energetic</option>
+                <option value="en-US-Chirp3-HD-Orus">Orus · male, firm</option>
+              </optgroup>
+              <optgroup label="Studio — narrator quality">
+                <option value="en-US-Studio-O">Studio O · female</option>
+                <option value="en-US-Studio-Q">Studio Q · male</option>
+              </optgroup>
+              <optgroup label="Neural2 — previous voices">
+                <option value="en-US-Neural2-F">Female 1 (Neural2-F)</option>
+                <option value="en-US-Neural2-H">Female 2 (Neural2-H)</option>
+                <option value="en-US-Neural2-D">Male 1 (Neural2-D)</option>
+                <option value="en-US-Neural2-J">Male 2 (Neural2-J)</option>
+              </optgroup>
             </select>
             <button class="pill primary" id="mp3Go">⬇ Download</button>
           </div>
@@ -582,7 +598,8 @@
     // ---------- MP3 ----------
     // La voz del navegador no se puede grabar, así que el MP3 lo genera
     // la Edge Function readaloud-tts (Google Cloud Text-to-Speech).
-    $("mp3Voice").value = LS.get("readaloud_mp3voice") || "en-US-Neural2-F";
+    $("mp3Voice").value = LS.get("readaloud_mp3voice") || "en-US-Chirp3-HD-Aoede";
+    if (!$("mp3Voice").value) $("mp3Voice").value = "en-US-Chirp3-HD-Aoede"; // voz guardada que ya no existe
     $("mp3Voice").onchange = () => LS.set("readaloud_mp3voice", $("mp3Voice").value);
     $("mp3Btn").onclick = () => {
       const open = $("mp3Panel").classList.toggle("hidden") === false;

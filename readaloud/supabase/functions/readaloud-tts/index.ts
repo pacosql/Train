@@ -9,7 +9,14 @@
 // La app ya parte los textos largos en "Part 1", "Part 2"… de ~18 000
 // caracteres; esto es solo un tope de seguridad, nunca un recorte normal.
 const MAX_TEXT = 60000;
-const VOICES = ["en-US-Neural2-F", "en-US-Neural2-H", "en-US-Neural2-D", "en-US-Neural2-J"];
+// Las mismas que ofrece el desplegable de la app, de mejor a peor:
+// Chirp 3 HD (lo más natural), Studio (calidad narrador) y Neural2.
+const VOICES = [
+  "en-US-Chirp3-HD-Aoede", "en-US-Chirp3-HD-Kore", "en-US-Chirp3-HD-Leda", "en-US-Chirp3-HD-Zephyr",
+  "en-US-Chirp3-HD-Charon", "en-US-Chirp3-HD-Puck", "en-US-Chirp3-HD-Fenrir", "en-US-Chirp3-HD-Orus",
+  "en-US-Studio-O", "en-US-Studio-Q",
+  "en-US-Neural2-F", "en-US-Neural2-H", "en-US-Neural2-D", "en-US-Neural2-J",
+];
 
 const cors = {
   "Access-Control-Allow-Origin": "*",
