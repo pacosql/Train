@@ -588,28 +588,58 @@
       const open = $("mp3Panel").classList.toggle("hidden") === false;
       $("mp3Btn").classList.toggle("on", open);
     };
+    // Textos largos: un MP3 por cada ~18 min (≈18 000 caracteres a 1×),
+    // "Part 1", "Part 2"…, cortando siempre en fin de frase. Así ninguna
+    // petición se acerca al límite de tiempo de la función y cada parte
+    // cabe en un mensaje o reproductor.
+    const PART_CHARS = 18000;
+    function splitParts(text) {
+      const parts = [];
+      let s = text.trim();
+      while (s.length > PART_CHARS) {
+        const seg = s.slice(0, PART_CHARS);
+        let cut = Math.max(seg.lastIndexOf(". "), seg.lastIndexOf("! "), seg.lastIndexOf("? "), seg.lastIndexOf("\n"));
+        if (cut < PART_CHARS / 2) cut = seg.lastIndexOf(" ");
+        if (cut < 1) cut = PART_CHARS - 1;
+        parts.push(s.slice(0, cut + 1).trim());
+        s = s.slice(cut + 1).trim();
+      }
+      if (s) parts.push(s);
+      return parts;
+    }
+    const download = (blob, filename) => {
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob); a.download = filename;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 60000);
+    };
     $("mp3Go").onclick = async () => {
       const btn = $("mp3Go");
-      btn.disabled = true; btn.textContent = "Creating…";
+      const parts = splitParts(current.body);
+      const name = (current.title || "read-aloud").replace(/[\\/:*?"<>|…]+/g, "").trim().slice(0, 60).replace(/[.\s]+$/, "") || "read-aloud";
+      btn.disabled = true;
+      let done = 0;
       try {
-        const res = await fetch(CFG.url + "/functions/v1/readaloud-tts", {
-          method: "POST",
-          headers: { "Content-Type": "application/json", apikey: CFG.anonKey, Authorization: "Bearer " + CFG.anonKey },
-          body: JSON.stringify({ text: current.body, voice: $("mp3Voice").value, rate: rate() }),
-        });
-        if (!res.ok) {
-          let msg = res.status; try { msg = (await res.json()).error || msg; } catch (e) {}
-          throw new Error(msg);
+        for (let i = 0; i < parts.length; i++) {
+          btn.textContent = parts.length > 1 ? `Creating part ${i + 1} of ${parts.length}…` : "Creating…";
+          const res = await fetch(CFG.url + "/functions/v1/readaloud-tts", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", apikey: CFG.anonKey, Authorization: "Bearer " + CFG.anonKey },
+            body: JSON.stringify({ text: parts[i], voice: $("mp3Voice").value, rate: rate() }),
+          });
+          if (!res.ok) {
+            let msg = res.status; try { msg = (await res.json()).error || msg; } catch (e) {}
+            throw new Error(msg);
+          }
+          download(await res.blob(), parts.length > 1 ? `${name} - Part ${i + 1} of ${parts.length}.mp3` : `${name}.mp3`);
+          done++;
+          // Safari/iOS solo permite una descarga por gesto si van seguidas; un respiro ayuda.
+          if (i + 1 < parts.length) await new Promise((r) => setTimeout(r, 1200));
         }
-        const blob = await res.blob();
-        const name = (current.title || "read-aloud").replace(/[\\/:*?"<>|…]+/g, "").trim().slice(0, 60).replace(/[.\s]+$/, "") || "read-aloud";
-        const a = document.createElement("a");
-        a.href = URL.createObjectURL(blob); a.download = name + ".mp3";
-        document.body.appendChild(a); a.click(); a.remove();
-        setTimeout(() => URL.revokeObjectURL(a.href), 60000);
-        toast("MP3 ready ✓");
-      } catch (e) { toast("Couldn't create the MP3: " + (e.message || e), 4000); }
-      finally { btn.disabled = false; btn.textContent = "⬇ Download"; }
+        toast(parts.length > 1 ? `${parts.length} MP3 parts ready ✓` : "MP3 ready ✓");
+      } catch (e) {
+        toast((done ? `Parts 1–${done} downloaded, then failed on part ${done + 1}: ` : "Couldn't create the MP3: ") + (e.message || e), 5000);
+      } finally { btn.disabled = false; btn.textContent = "⬇ Download"; }
     };
 
     // ---------- Arranque ----------
