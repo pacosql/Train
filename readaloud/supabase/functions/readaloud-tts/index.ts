@@ -6,7 +6,9 @@
 //
 // POST { text, voice?, rate? }  →  audio/mpeg
 
-const MAX_TEXT = 20000;
+// La app ya parte los textos largos en "Part 1", "Part 2"… de ~18 000
+// caracteres; esto es solo un tope de seguridad, nunca un recorte normal.
+const MAX_TEXT = 60000;
 const VOICES = ["en-US-Neural2-F", "en-US-Neural2-H", "en-US-Neural2-D", "en-US-Neural2-J"];
 
 const cors = {
@@ -40,8 +42,9 @@ Deno.serve(async (req) => {
     const key = Deno.env.get("GOOGLE_TTS_KEY");
     if (!key) return json({ error: "MP3 download isn't set up yet (missing Google key)" }, 503);
     const { text, voice, rate } = await req.json();
-    const t = String(text || "").slice(0, MAX_TEXT);
+    const t = String(text || "");
     if (!t.trim()) return json({ error: "empty text" }, 400);
+    if (t.length > MAX_TEXT) return json({ error: `text too long for one request (${t.length} chars, max ${MAX_TEXT})` }, 413);
     const v = VOICES.includes(voice) ? voice : VOICES[0];
     const r = Math.min(2, Math.max(0.5, Number(rate) || 1));
 
