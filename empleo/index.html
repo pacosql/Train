@@ -137,6 +137,9 @@
     .key .k-danger { color: #fff; background: var(--bad); border-color: var(--bad); }
     .parcial { margin: 0 0 8px; padding: 7px 10px; border-radius: 10px; font-size: 0.84rem; font-weight: 600;
       color: var(--accent-2); background: rgba(110, 168, 255, 0.1); border: 1px dashed rgba(110, 168, 255, 0.6); }
+    .comp .s.ap { color: var(--good); font-weight: 600; }
+    .ya-aplicada .ya-item { font-weight: 500; margin-top: 3px; }
+    .ya-aplicada.vieja { color: var(--text-2, #b7bcc6); background: rgba(255, 255, 255, 0.04); border-color: var(--line-strong); }
     .ya-aplicada { margin: 0 0 8px; padding: 7px 10px; border-radius: 10px; font-size: 0.84rem; font-weight: 600;
       color: #ffd66e; background: rgba(242, 184, 64, 0.12); border: 1px solid rgba(242, 184, 64, 0.55); }
     .key .k-pay { color: #ffd66e; border-color: rgba(242, 184, 64, 0.55); background: rgba(242, 184, 64, 0.12); }
@@ -319,15 +322,17 @@
       return e && e.confianza ? { n: e.confianza, nota: e.confianza_nota } : null;
     }
     // Última aplicación a la misma empresa (cualquier oferta, activa o no).
+    // Todas las candidaturas a la misma empresa (la más reciente primero), sin límite de tiempo.
     function yaAplicada(o) {
-      const DIAS = 15, ahora = Date.now();
-      let mejor = null;
-      for (const x of ofertas) {
-        if (x.id === o.id || !x.aplicada_en || x.empresa.toLowerCase() !== o.empresa.toLowerCase()) continue;
-        const d = (ahora - new Date(x.aplicada_en).getTime()) / 864e5;
-        if (d <= DIAS && (!mejor || d < mejor.d)) mejor = { d, puesto: x.puesto };
-      }
-      return mejor;
+      const ahora = Date.now();
+      return ofertas
+        .filter((x) => x.id !== o.id && x.aplicada_en && x.empresa.toLowerCase() === o.empresa.toLowerCase())
+        .map((x) => ({ d: (ahora - new Date(x.aplicada_en).getTime()) / 864e5, puesto: x.puesto, fecha: x.aplicada_en.slice(0, 10), cerrada: cerrada(x) }))
+        .sort((a, b) => a.d - b.d);
+    }
+    function hace(d) {
+      const n = Math.round(d);
+      return n < 1 ? "hoy" : n === 1 ? "hace 1 día" : n < 30 ? `hace ${n} días` : n < 60 ? "hace 1 mes" : `hace ${Math.round(n / 30)} meses`;
     }
     const PRIO = { high: "🔥 High", medium: "👌 Medium", low: "🧊 Low" };
     function empleados(o) {
@@ -517,7 +522,8 @@
         <div class="pto">${esc(o.puesto)}</div>
         <div class="key">${key}</div>
         ${o.encaje === "parcial" ? `<div class="parcial">🧩 Encaje parcial: ${esc(o.encaje_motivo || "no cumple del todo tu regla")}</div>` : ""}
-        ${(() => { const y = yaAplicada(o); return y ? `<div class="ya-aplicada">✋ Ya aplicaste a ${esc(o.empresa)} hace ${Math.round(y.d) || "menos de 1"} día${Math.round(y.d) === 1 ? "" : "s"} (${esc(y.puesto)})</div>` : ""; })()}
+        ${(() => { const ys = yaAplicada(o); if (!ys.length) return ""; const rec = ys[0].d <= 15;
+          return `<div class="ya-aplicada${rec ? "" : " vieja"}">✋ Ya aplicaste a ${esc(o.empresa)}${ys.length > 1 ? ` (${ys.length} veces)` : ""}:${ys.map((y) => `<div class="ya-item">· ${esc(y.puesto)} — ${fmtDate(y.fecha)} (${hace(y.d)})${y.cerrada ? " · oferta ya cerrada" : ""}</div>`).join("")}</div>`; })()}
         ${(() => { const c = confianza(o); return c && c.n <= 1 ? `<div class="ya-aplicada" style="color:#fff;background:var(--bad-soft);border-color:var(--bad)">⚠️ Empresa sin presencia verificable: ${esc(c.nota || "revisa antes de aplicar")}</div>` : ""; })()}
         <div class="badges">${badges.join("")}</div>
         <div class="meta">${meta}</div>
@@ -559,6 +565,8 @@
       $("list-e").innerHTML = list.map((e) => `<div class="comp" data-emp="${esc(e.nombre)}">
         <div><div class="n">${e.n ? `<span class="cnt">${e.n}</span>` : ""}${e.top ? "⭐ " : ""}${esc(e.nombre)}</div>
         <div class="s">${esc(e.actividad && e.actividad !== "Desconocida" ? e.actividad + (e.actividad2 ? " — " + e.actividad2 : "") : (e.sector || ""))}${e.empleados ? " · 👥 " + esc(e.empleados) : ""}${e.confianza ? " · " + (e.confianza <= 1 ? "⚠️ Peligrosa" : "★".repeat(e.confianza)) : ""}${e.data_ai ? " · 🧠 Data & AI" : " · solo remoto"}</div></div>
+        ${(() => { const ap = ofertas.filter((o) => o.aplicada_en && o.empresa.toLowerCase() === e.nombre.toLowerCase()).sort((a, b) => b.aplicada_en.localeCompare(a.aplicada_en));
+          return ap.length ? `<div class="s ap">✅ Aplicaste ${ap.length > 1 ? ap.length + " veces, última " : ""}el ${fmtDate(ap[0].aplicada_en.slice(0, 10))} (${esc(ap[0].puesto)})</div>` : ""; })()}
         ${e.portal_url ? `<a href="${esc(e.portal_url)}" target="_blank" rel="noopener">Empleo ↗</a>` : ""}
       </div>`).join("");
     }
