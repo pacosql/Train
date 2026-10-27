@@ -33,6 +33,16 @@ empresa, posición, estado abierta/cerrada, modalidad, remoto claro…) y hoja
 
 URL: `https://pacosql.github.io/Train/empleo/`
 
+## Dos interfaces
+
+- `index.html`: la clásica (tarjetas, filtros, compañías, no activas). Arriba
+  tiene un enlace a la nueva.
+- `tabla.html`: tabla rápida. Una fila por oferta (empresa, oferta, sueldo,
+  remoto, "ya aplicaste hace N días") en grupos Pendientes / 🎯 Aplicar /
+  🔍 En detalle (+ High/Medium/Low plegado), remoto primero. Se marcan
+  muchas filas (🎯 Aplicar, 🔍 Detalle, ✅ Aplicado, ✕ Descartar) y se
+  guardan todas de golpe con **Guardar**; entonces se redistribuyen.
+
 ## Tablas (Supabase, prefijo `empleo_`)
 
 - `empleo_ofertas`: una fila por oferta. Campos clave: `empresa`,
@@ -48,6 +58,10 @@ URL: `https://pacosql.github.io/Train/empleo/`
   `ats`, `ats_token`, `portal_url`). Es la fuente de verdad que
   lee `buscar.py`; `empleo/tools/empresas.json` es solo una copia de respaldo.
 - `empleo_rutinas`: log de cada ejecución (`nuevas`, `nota`).
+- `empleo_candidaturas`: candidaturas por empresa cuando no se sabe a qué
+  oferta exacta (p. ej. leídas de los correos "Thank you for applying"):
+  `empresa`, `fecha`, `puesto` (opcional), `fuente`. Las dos interfaces las
+  juntan con las ofertas aplicadas para el aviso "✋ ya aplicaste hace N días".
 - `empleo_busquedas`: rendimiento de cada búsqueda (`consulta`, `ubicacion`, `candidatas`, `nuevas`); la exploración aleatoria lo usa para no repetir y para insistir en lo que funciona.
 - `empleo_ofertas.encaje` (`completo` | `parcial`) y `encaje_motivo`: las parciales solo entran tras 2 h de rutina y para completar 35.
 

@@ -166,6 +166,8 @@
     .toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%) translateY(120px); background: #1b2230; border: 1px solid var(--line-strong); padding: 10px 14px; border-radius: 12px; font-size: 0.88rem; transition: transform 0.25s; display: flex; gap: 12px; align-items: center; }
     .toast.show { transform: translateX(-50%) translateY(0); }
     .toast button { background: none; border: none; color: var(--accent-2); font: inherit; font-weight: 700; cursor: pointer; }
+    .nueva-ui { display: block; text-align: center; margin: 0 0 12px; padding: 10px 12px; border-radius: 12px; font-weight: 700;
+      color: #fff; text-decoration: none; background: linear-gradient(135deg, var(--accent), #5b7cff); }
     .xl-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0 0 10px; }
     .xl-bar .chip { cursor: pointer; }
     .xl-bar .lbl { font-size: 0.75rem; color: var(--text-2); }
@@ -173,6 +175,7 @@
 </head>
 <body>
   <div class="wrap">
+    <a class="nueva-ui" href="tabla.html">✨ Cambia a la nueva interfaz (tabla rápida) →</a>
     <div class="top-bar">
       <div class="brand"><span class="brand-mark">💼</span> Empleo</div>
       <button class="icon-btn" id="btn-refresh" title="Recargar">↻</button>
@@ -280,6 +283,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
   <script src="config.js"></script>
+  <script src="candidaturas.js"></script>
   <script>
     const { url, anonKey, tablePrefix } = window.EMPLEO_CONFIG;
     const T_OFERTAS = tablePrefix + "ofertas";
@@ -323,17 +327,9 @@
     }
     // Última aplicación a la misma empresa (cualquier oferta, activa o no).
     // Todas las candidaturas a la misma empresa (la más reciente primero), sin límite de tiempo.
-    function yaAplicada(o) {
-      const ahora = Date.now();
-      return ofertas
-        .filter((x) => x.id !== o.id && x.aplicada_en && x.empresa.toLowerCase() === o.empresa.toLowerCase())
-        .map((x) => ({ d: (ahora - new Date(x.aplicada_en).getTime()) / 864e5, puesto: x.puesto, fecha: x.aplicada_en.slice(0, 10), cerrada: cerrada(x) }))
-        .sort((a, b) => a.d - b.d);
-    }
-    function hace(d) {
-      const n = Math.round(d);
-      return n < 1 ? "hoy" : n === 1 ? "hace 1 día" : n < 30 ? `hace ${n} días` : n < 60 ? "hace 1 mes" : `hace ${Math.round(n / 30)} meses`;
-    }
+    let candidaturas = [];
+    const yaAplicada = (o) => EmpleoCand.aplicaciones(o, ofertas, candidaturas);
+    const hace = EmpleoCand.hace;
     const PRIO = { high: "🔥 High", medium: "👌 Medium", low: "🧊 Low" };
     function empleados(o) {
       if (o.empleados) return o.empleados;
@@ -345,15 +341,17 @@
     async function load() {
       $("btn-refresh").classList.add("spin");
       $("msg").textContent = "";
-      const [{ data, error }, rut, emp] = await Promise.all([
+      const [{ data, error }, rut, emp, cand] = await Promise.all([
         client.from(T_OFERTAS).select("*").order("encontrado_en", { ascending: false }).order("created_at", { ascending: false }),
         client.from(T_RUTINAS).select("*").order("created_at", { ascending: false }).limit(5),
         client.from(T_EMPRESAS).select("*").eq("activa", true).order("nombre"),
+        client.from(tablePrefix + "candidaturas").select("empresa,fecha,puesto"),
       ]);
       $("btn-refresh").classList.remove("spin");
       if (error) { $("msg").textContent = "Error cargando ofertas: " + error.message; return; }
       ofertas = data;
       empresas = emp.data || [];
+      candidaturas = cand.data || [];
       renderRoutines(rut.data || []);
       render();
     }
@@ -565,8 +563,8 @@
       $("list-e").innerHTML = list.map((e) => `<div class="comp" data-emp="${esc(e.nombre)}">
         <div><div class="n">${e.n ? `<span class="cnt">${e.n}</span>` : ""}${e.top ? "⭐ " : ""}${esc(e.nombre)}</div>
         <div class="s">${esc(e.actividad && e.actividad !== "Desconocida" ? e.actividad + (e.actividad2 ? " — " + e.actividad2 : "") : (e.sector || ""))}${e.empleados ? " · 👥 " + esc(e.empleados) : ""}${e.confianza ? " · " + (e.confianza <= 1 ? "⚠️ Peligrosa" : "★".repeat(e.confianza)) : ""}${e.data_ai ? " · 🧠 Data & AI" : " · solo remoto"}</div></div>
-        ${(() => { const ap = ofertas.filter((o) => o.aplicada_en && o.empresa.toLowerCase() === e.nombre.toLowerCase()).sort((a, b) => b.aplicada_en.localeCompare(a.aplicada_en));
-          return ap.length ? `<div class="s ap">✅ Aplicaste ${ap.length > 1 ? ap.length + " veces, última " : ""}el ${fmtDate(ap[0].aplicada_en.slice(0, 10))} (${esc(ap[0].puesto)})</div>` : ""; })()}
+        ${(() => { const ap = yaAplicada({ id: null, empresa: e.nombre });
+          return ap.length ? `<div class="s ap">✅ Aplicaste ${ap.length > 1 ? ap.length + " veces, última " : ""}el ${fmtDate(ap[0].fecha)} (${esc(ap[0].puesto)})</div>` : ""; })()}
         ${e.portal_url ? `<a href="${esc(e.portal_url)}" target="_blank" rel="noopener">Empleo ↗</a>` : ""}
       </div>`).join("");
     }

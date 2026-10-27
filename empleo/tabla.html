@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Empleo · tabla rápida</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0b0d10" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b0d10;
+      --panel: rgba(255, 255, 255, 0.035);
+      --line: rgba(255, 255, 255, 0.08);
+      --line-strong: rgba(255, 255, 255, 0.16);
+      --text: #f4f5f7;
+      --text-2: #9aa3ad;
+      --accent: #6ea8ff;
+      --accent-soft: rgba(110, 168, 255, 0.16);
+      --good: #43d391;
+      --good-soft: rgba(67, 211, 145, 0.16);
+      --bad: #ff5470;
+      --bad-soft: rgba(255, 84, 112, 0.14);
+      --mid: #f2b840;
+      --mid-soft: rgba(242, 184, 64, 0.14);
+      --body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body { margin: 0; background: var(--bg); color: var(--text); font: 14px/1.35 var(--body); padding: 12px 16px 60px; -webkit-font-smoothing: antialiased; }
+    .wrap { max-width: 1280px; margin: 0 auto; }
+    a { color: var(--accent); }
+    .top { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
+    .top h1 { font-size: 1.15rem; margin: 0; flex: 1; min-width: 180px; }
+    .back { font-size: 0.85rem; color: var(--text-2); text-decoration: none; border: 1px solid var(--line-strong); padding: 6px 10px; border-radius: 10px; }
+    .icon { background: rgba(255, 255, 255, 0.06); border: 1px solid var(--line-strong); color: var(--text); border-radius: 10px; padding: 6px 10px; cursor: pointer; font-size: 0.95rem; }
+
+    /* Barra fija con el botón Guardar */
+    .bar { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+      background: rgba(11, 13, 16, 0.94); backdrop-filter: blur(8px); padding: 8px 0; border-bottom: 1px solid var(--line); margin-bottom: 8px; }
+    .bar input[type=search] { flex: 1; min-width: 160px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--line-strong); color: var(--text); border-radius: 10px; padding: 8px 10px; font-size: 0.9rem; }
+    .save { background: var(--good); color: #062014; border: 0; border-radius: 10px; padding: 9px 16px; font-weight: 800; cursor: pointer; font-size: 0.95rem; }
+    .save:disabled { background: rgba(255, 255, 255, 0.08); color: var(--text-2); cursor: default; }
+    .undo { background: none; border: 1px solid var(--line-strong); color: var(--text-2); border-radius: 10px; padding: 8px 10px; cursor: pointer; }
+    .undo:disabled { opacity: 0.4; cursor: default; }
+    .chk { display: inline-flex; align-items: center; gap: 5px; font-size: 0.85rem; color: var(--text-2); cursor: pointer; user-select: none; }
+    .msg { font-size: 0.85rem; color: var(--good); min-height: 1.1em; margin: 2px 0 6px; }
+    .msg.err { color: var(--bad); }
+
+    /* Grupos */
+    details.g { margin-bottom: 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--panel); overflow: hidden; }
+    details.g > summary { cursor: pointer; list-style: none; padding: 9px 12px; font-weight: 800; font-size: 1rem; display: flex; gap: 8px; align-items: center; }
+    details.g > summary::-webkit-details-marker { display: none; }
+    details.g > summary::before { content: "▸"; color: var(--text-2); transition: transform .15s; }
+    details.g[open] > summary::before { transform: rotate(90deg); }
+    .n { font-size: 0.8rem; font-weight: 700; color: var(--text-2); background: rgba(255, 255, 255, 0.07); border-radius: 999px; padding: 1px 8px; }
+    .hint { font-weight: 400; font-size: 0.8rem; color: var(--text-2); margin-left: auto; }
+
+    /* Filas: rejilla compacta (en móvil se apila) */
+    .row { display: grid; grid-template-columns: minmax(110px, 170px) minmax(160px, 1fr) 96px 118px 128px 246px; gap: 8px; align-items: center;
+      padding: 5px 12px; border-top: 1px solid var(--line); }
+    .row.head { font-size: 0.72rem; text-transform: uppercase; letter-spacing: .5px; color: var(--text-2); padding-top: 6px; padding-bottom: 6px; }
+    .row.marked { background: var(--accent-soft); }
+    .row.marked.to-no_gusta { background: var(--bad-soft); }
+    .row.marked.to-aplicada { background: var(--good-soft); }
+    .emp { font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .pto { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .pto a { color: var(--text); text-decoration: none; }
+    .pto a:hover { text-decoration: underline; color: var(--accent); }
+    .pto .loc { color: var(--text-2); font-size: 0.78rem; }
+    .pay { font-size: 0.82rem; color: var(--mid); white-space: nowrap; }
+    .rem { font-size: 0.82rem; white-space: nowrap; }
+    .rem.claro { color: var(--good); font-weight: 700; }
+    .rem.remoto { color: var(--good); }
+    .rem.hibrido { color: var(--mid); }
+    .rem.otro { color: var(--text-2); }
+    .ap { font-size: 0.8rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ap.rec { color: var(--mid); font-weight: 700; }
+    .ap.vieja { color: var(--text-2); }
+    .acts { display: flex; gap: 4px; justify-content: flex-end; }
+    .acts button { flex: 1; min-width: 0; border: 1px solid var(--line-strong); background: rgba(255, 255, 255, 0.04); color: var(--text);
+      border-radius: 8px; padding: 5px 4px; font-size: 0.78rem; cursor: pointer; white-space: nowrap; }
+    .acts button:hover { border-color: var(--accent); }
+    .acts button.on { background: var(--accent); border-color: var(--accent); color: #06111f; font-weight: 800; }
+    .acts button.on[data-to="no_gusta"] { background: var(--bad); border-color: var(--bad); color: #fff; }
+    .acts button.on[data-to="aplicada"] { background: var(--good); border-color: var(--good); color: #062014; }
+    .empty { padding: 10px 12px; color: var(--text-2); font-size: 0.85rem; border-top: 1px solid var(--line); }
+    .build { text-align: center; font-size: 0.7rem; color: var(--text-2); margin-top: 18px; font-family: ui-monospace, monospace; }
+
+    @media (max-width: 860px) {
+      .row.head, .hint { display: none; }
+      .row { grid-template-columns: 1fr auto; grid-template-areas: "emp rem" "pto pto" "pay ap" "acts acts"; gap: 3px 8px; padding: 8px 12px; }
+      .emp { grid-area: emp; } .pto { grid-area: pto; white-space: normal; } .pay { grid-area: pay; }
+      .rem { grid-area: rem; text-align: right; } .ap { grid-area: ap; text-align: right; } .acts { grid-area: acts; margin-top: 3px; }
+      .acts button { padding: 7px 4px; font-size: 0.82rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <h1>💼 Empleo · tabla rápida</h1>
+      <a class="back" href="index.html">← Interfaz clásica</a>
+      <button class="icon" id="reload" title="Recargar">↻</button>
+    </div>
+    <div class="bar">
+      <button class="save" id="save" disabled>Guardar</button>
+      <button class="undo" id="undo" disabled>Deshacer marcas</button>
+      <input id="q" type="search" placeholder="Buscar empresa o puesto…" autocomplete="off" />
+      <label class="chk"><input type="checkbox" id="solo-remoto" /> Solo remoto</label>
+    </div>
+    <div class="msg" id="msg"></div>
+    <div id="groups">Cargando…</div>
+    <div class="build">build __BUILD_ID__</div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="config.js"></script>
+  <script src="candidaturas.js"></script>
+  <script>
+    const { url, anonKey, tablePrefix } = window.EMPLEO_CONFIG;
+    const client = window.supabase.createClient(url, anonKey);
+    const T = tablePrefix + "ofertas";
+    const $ = (id) => document.getElementById(id);
+    const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+    // Grupos y botones de cada uno. `to` = decisión que se guardará.
+    const B = { aplicar: "🎯 Aplicar", aplicar_detalle: "🔍 Detalle", aplicada: "✅ Aplicado", no_gusta: "✕ Descartar" };
+    const GRUPOS = [
+      { id: "pendiente", t: "🕐 Pendientes", match: (o) => o.decision === "pendiente", acts: ["aplicar", "aplicar_detalle", "no_gusta"], open: true,
+        hint: "marca 🎯 Aplicar, 🔍 Detalle o ✕ y pulsa Guardar" },
+      { id: "aplicar", t: "🎯 Aplicar", match: (o) => o.decision === "aplicar", acts: ["aplicada", "aplicar_detalle", "no_gusta"], open: true,
+        hint: "marca ✅ Aplicado cuando hayas enviado la candidatura" },
+      { id: "aplicar_detalle", t: "🔍 En detalle", match: (o) => o.decision === "aplicar_detalle", acts: ["aplicada", "aplicar", "no_gusta"], open: true,
+        hint: "aplicar con calma" },
+      { id: "clasificadas", t: "👌 High / Medium / Low", match: (o) => ["high", "medium", "low"].includes(o.decision), acts: ["aplicar", "aplicar_detalle", "no_gusta"], open: false,
+        hint: "las que ya clasificaste antes" },
+    ];
+
+    let ofertas = [], candidaturas = [];
+    const marcas = new Map(); // id -> decisión nueva (sin guardar)
+
+    // Remoto primero: 100% remoto > remoto > híbrido > sin confirmar > presencial; luego las más nuevas.
+    const RANGO = (o) => (o.remoto_claro ? 0 : o.modalidad === "remoto" ? 1 : o.modalidad === "hibrido" ? 2 : o.modalidad === "presencial" ? 4 : 3);
+    function remoto(o) {
+      if (o.remoto_claro) return `<span class="rem claro">🟢 100% remoto</span>`;
+      return { remoto: `<span class="rem remoto">🏠 Remoto</span>`, hibrido: `<span class="rem hibrido">🏢 Híbrido</span>`,
+        presencial: `<span class="rem otro">📍 Presencial</span>` }[o.modalidad] || `<span class="rem otro">❔ Sin confirmar</span>`;
+    }
+    function aplicaste(o) {
+      const ys = EmpleoCand.aplicaciones(o, ofertas, candidaturas);
+      if (!ys.length) return `<span class="ap vieja"></span>`;
+      const tip = ys.map((y) => `${y.puesto} — ${y.fecha} (${EmpleoCand.hace(y.d)})`).join("\n");
+      return `<span class="ap ${ys[0].d <= 15 ? "rec" : "vieja"}" title="${esc(tip)}">✋ ${EmpleoCand.hace(ys[0].d)}${ys.length > 1 ? ` · ${ys.length}×` : ""}</span>`;
+    }
+
+    function fila(o, g) {
+      const m = marcas.get(o.id);
+      const link = (o.enlaces && o.enlaces[0] && o.enlaces[0].url) || o.url;
+      return `<div class="row${m ? " marked to-" + m : ""}" data-id="${o.id}">
+        <div class="emp" title="${esc(o.empresa)}">${esc(o.empresa)}</div>
+        <div class="pto" title="${esc(o.puesto)}${o.ubicacion ? " · " + esc(o.ubicacion) : ""}"><a href="${esc(link)}" target="_blank" rel="noopener">${esc(o.puesto)}</a>${o.ubicacion ? ` <span class="loc">· ${esc(o.ubicacion)}</span>` : ""}</div>
+        <div class="pay">${o.sueldo ? "💶 " + esc(o.sueldo) : ""}</div>
+        ${remoto(o)}
+        ${aplicaste(o)}
+        <div class="acts">${g.acts.map((a) => `<button data-to="${a}" class="${m === a ? "on" : ""}">${B[a]}</button>`).join("")}</div>
+      </div>`;
+    }
+
+    function render() {
+      const q = $("q").value.trim().toLowerCase();
+      const soloRem = $("solo-remoto").checked;
+      const abiertos = new Set([...document.querySelectorAll("details.g[open]")].map((d) => d.dataset.g));
+      const primera = !document.querySelector("details.g");
+      $("groups").innerHTML = GRUPOS.map((g) => {
+        let list = ofertas.filter((o) => o.activa !== false && g.match(o));
+        if (soloRem) list = list.filter((o) => o.modalidad === "remoto");
+        if (q) list = list.filter((o) => (o.empresa + " " + o.puesto).toLowerCase().includes(q));
+        list.sort((a, b) => RANGO(a) - RANGO(b) || (b.encontrado_en || "").localeCompare(a.encontrado_en || "") || a.empresa.localeCompare(b.empresa));
+        const open = primera ? g.open : abiertos.has(g.id);
+        return `<details class="g" data-g="${g.id}"${open ? " open" : ""}>
+          <summary>${g.t} <span class="n">${list.length}</span><span class="hint">${g.hint}</span></summary>
+          <div class="row head"><div>Empresa</div><div>Oferta</div><div>Sueldo</div><div>Remoto</div><div>Ya aplicaste</div><div></div></div>
+          ${list.length ? list.map((o) => fila(o, g)).join("") : `<div class="empty">Nada por aquí.</div>`}
+        </details>`;
+      }).join("");
+      actualizarBarra();
+    }
+
+    function actualizarBarra() {
+      const n = marcas.size;
+      $("save").disabled = !n;
+      $("undo").disabled = !n;
+      $("save").textContent = n ? `Guardar ${n} cambio${n === 1 ? "" : "s"}` : "Guardar";
+    }
+
+    $("groups").addEventListener("click", (e) => {
+      const b = e.target.closest(".acts button");
+      if (!b) return;
+      const row = b.closest(".row");
+      const id = row.dataset.id, to = b.dataset.to;
+      if (marcas.get(id) === to) marcas.delete(id); else marcas.set(id, to);
+      // Repintar solo la fila (sin mover nada hasta Guardar)
+      const m = marcas.get(id);
+      row.className = "row" + (m ? " marked to-" + m : "");
+      row.querySelectorAll(".acts button").forEach((x) => x.classList.toggle("on", x.dataset.to === m));
+      actualizarBarra();
+    });
+
+    $("undo").addEventListener("click", () => { marcas.clear(); render(); });
+    $("q").addEventListener("input", render);
+    $("solo-remoto").addEventListener("change", render);
+    $("reload").addEventListener("click", () => {
+      if (marcas.size && !confirm("Tienes cambios sin guardar. ¿Recargar igualmente?")) return;
+      marcas.clear(); load();
+    });
+    window.addEventListener("beforeunload", (e) => { if (marcas.size) { e.preventDefault(); e.returnValue = ""; } });
+
+    $("save").addEventListener("click", async () => {
+      const now = new Date().toISOString();
+      const porDecision = {};
+      for (const [id, to] of marcas) (porDecision[to] ||= []).push(id);
+      $("save").disabled = true; $("save").textContent = "Guardando…";
+      const errores = [];
+      for (const [to, ids] of Object.entries(porDecision)) {
+        const patch = { decision: to, decidido_en: now, aplicada_en: to === "aplicada" ? now : null };
+        const { error } = await client.from(T).update(patch).in("id", ids);
+        if (error) errores.push(error.message);
+      }
+      const NOM = { aplicar: "a 🎯 Aplicar", aplicar_detalle: "a 🔍 En detalle", aplicada: "✅ aplicadas", no_gusta: "✕ descartadas" };
+      const resumen = Object.entries(porDecision).map(([to, ids]) => `${ids.length} ${NOM[to]}`).join(" · ");
+      $("msg").className = "msg" + (errores.length ? " err" : "");
+      $("msg").textContent = errores.length ? "No se pudo guardar todo: " + errores.join("; ") : `Guardado: ${resumen}`;
+      if (!errores.length) marcas.clear();
+      await load();
+    });
+
+    async function load() {
+      $("reload").textContent = "…";
+      const [of, ca] = await Promise.all([
+        client.from(T).select("id,empresa,puesto,ubicacion,modalidad,remoto_claro,sueldo,url,enlaces,decision,activa,aplicada_en,encontrado_en"),
+        client.from(tablePrefix + "candidaturas").select("empresa,fecha,puesto"),
+      ]);
+      $("reload").textContent = "↻";
+      if (of.error) { $("groups").textContent = "Error cargando ofertas: " + of.error.message; return; }
+      ofertas = of.data || [];
+      candidaturas = ca.data || [];
+      render();
+    }
+    load();
+    if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js");
+  </script>
+</body>
+</html>
