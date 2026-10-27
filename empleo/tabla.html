@@ -87,6 +87,20 @@
     .acts button.on { background: var(--accent); border-color: var(--accent); color: #06111f; font-weight: 800; }
     .acts button.on[data-to="no_gusta"] { background: var(--bad); border-color: var(--bad); color: #fff; }
     .acts button.on[data-to="aplicada"] { background: var(--good); border-color: var(--good); color: #062014; }
+    .cc { border: 1px solid rgba(217, 119, 87, 0.7); background: rgba(217, 119, 87, 0.16); color: #ffb59a; font-weight: 800;
+      border-radius: 7px; padding: 2px 7px; margin-right: 6px; font-size: 0.75rem; cursor: pointer; vertical-align: 1px; }
+    .cc:hover { background: rgba(217, 119, 87, 0.32); }
+    .icon.ficha.falta { border-color: #d97757; color: #ffb59a; }
+    dialog { background: #14171c; color: var(--text); border: 1px solid var(--line-strong); border-radius: 14px; padding: 16px; width: min(640px, calc(100vw - 32px)); }
+    dialog::backdrop { background: rgba(0, 0, 0, 0.6); }
+    dialog h2 { margin: 0 0 6px; font-size: 1.05rem; }
+    dialog p { margin: 6px 0; font-size: 0.85rem; color: var(--text-2); }
+    dialog textarea { width: 100%; height: 220px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--line-strong); color: var(--text);
+      border-radius: 10px; padding: 8px; font: 0.8rem/1.35 ui-monospace, monospace; }
+    dialog .btns { display: flex; gap: 8px; justify-content: flex-end; margin-top: 10px; flex-wrap: wrap; }
+    .toast { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); z-index: 20; max-width: min(560px, calc(100vw - 32px));
+      background: #1d232c; border: 1px solid var(--line-strong); border-radius: 12px; padding: 10px 14px; font-size: 0.88rem; box-shadow: 0 8px 30px rgba(0,0,0,.5); }
+    .toast[hidden] { display: none; }
     .empty { padding: 10px 12px; color: var(--text-2); font-size: 0.85rem; border-top: 1px solid var(--line); }
     .build { text-align: center; font-size: 0.7rem; color: var(--text-2); margin-top: 18px; font-family: ui-monospace, monospace; }
 
@@ -104,6 +118,7 @@
   <div class="wrap">
     <div class="top">
       <h1>💼 Empleo · tabla rápida</h1>
+      <button class="icon ficha" id="ficha-btn" title="Tu ficha para que Claude rellene las candidaturas">📎 Mi ficha</button>
       <a class="back" href="index.html">← Interfaz clásica</a>
       <button class="icon" id="reload" title="Recargar">↻</button>
     </div>
@@ -118,8 +133,22 @@
     <div id="groups">Cargando…</div>
     <div class="build">build __BUILD_ID__</div>
   </div>
+  <div class="toast" id="toast" hidden></div>
+  <dialog id="ficha-dlg">
+    <h2>📎 Tu ficha para candidaturas</h2>
+    <p>Carga tu <b>.docx</b> (o pega el texto). Se guarda <b>solo en este navegador</b>: no se sube a ningún sitio ni a la base de datos.
+      Luego, el botón <b>🤖 CC</b> de cada oferta copia la ficha + "rellena esta candidatura" y abre la oferta.</p>
+    <input type="file" id="ficha-file" accept=".docx,.txt,.md" />
+    <textarea id="ficha-txt" placeholder="…o pega aquí el texto de tu ficha"></textarea>
+    <div class="btns">
+      <button class="undo" id="ficha-borrar">Borrar</button>
+      <button class="undo" id="ficha-cerrar">Cerrar</button>
+      <button class="save" id="ficha-guardar">Guardar ficha</button>
+    </div>
+  </dialog>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <script src="config.js"></script>
   <script src="candidaturas.js"></script>
   <script>
@@ -134,15 +163,15 @@
     // Adónde va cada oferta al guardar (se muestra en la fila al marcarla).
     const DESTINO = { aplicar: "🎯 Aplicar", aplicar_detalle: "🔍 En detalle", aplicada: "✅ Aplicados", no_gusta: "👎 Descartadas", pendiente: "🕐 Pendientes" };
     const GRUPOS = [
-      { id: "pendiente", t: "🕐 Pendientes", match: (o) => o.decision === "pendiente", acts: ["aplicar", "aplicar_detalle", "no_gusta"], open: true,
+      { id: "pendiente", cc: true, t: "🕐 Pendientes", match: (o) => o.decision === "pendiente", acts: ["aplicar", "aplicar_detalle", "no_gusta"], open: true,
         hint: "marca 🎯 Aplicar, 🔍 Detalle o ✕ y pulsa Guardar" },
-      { id: "aplicar", t: "🎯 Aplicar", match: (o) => o.decision === "aplicar", acts: ["aplicada", "aplicar_detalle", "no_gusta"], open: true,
+      { id: "aplicar", cc: true, t: "🎯 Aplicar", match: (o) => o.decision === "aplicar", acts: ["aplicada", "aplicar_detalle", "no_gusta"], open: true,
         hint: "marca ✅ Aplicado cuando hayas enviado la candidatura" },
-      { id: "aplicar_detalle", t: "🔍 En detalle", match: (o) => o.decision === "aplicar_detalle", acts: ["aplicada", "aplicar", "no_gusta"], open: true,
+      { id: "aplicar_detalle", cc: true, t: "🔍 En detalle", match: (o) => o.decision === "aplicar_detalle", acts: ["aplicada", "aplicar", "no_gusta"], open: true,
         hint: "aplicar con calma" },
       { id: "aplicada", t: "✅ Aplicados", match: (o) => o.decision === "aplicada", todas: true, acts: ["pendiente"], open: false,
         hint: "a las que ya has aplicado, la más reciente primero (también las ya cerradas)" },
-      { id: "clasificadas", t: "👌 High / Medium / Low", match: (o) => ["high", "medium", "low"].includes(o.decision), acts: ["aplicar", "aplicar_detalle", "no_gusta"], open: false,
+      { id: "clasificadas", cc: true, t: "👌 High / Medium / Low", match: (o) => ["high", "medium", "low"].includes(o.decision), acts: ["aplicar", "aplicar_detalle", "no_gusta"], open: false,
         hint: "las que ya clasificaste antes" },
       { id: "no_gusta", t: "👎 Descartadas", match: (o) => o.decision === "no_gusta", acts: ["pendiente", "aplicar", "aplicar_detalle"], open: false,
         hint: "aquí van las que marcas ✕ Descartar; ↺ para recuperarlas" },
@@ -177,7 +206,7 @@
       const link = (o.enlaces && o.enlaces[0] && o.enlaces[0].url) || o.url;
       return `<div class="row${m ? " marked to-" + m : ""}" data-id="${o.id}" data-dest="${m ? "→ " + DESTINO[m] : ""}">
         <div class="emp" title="${esc(o.empresa)}">${esc(o.empresa)}</div>
-        <div class="pto" title="${esc(o.puesto)}${o.ubicacion ? " · " + esc(o.ubicacion) : ""}"><a href="${esc(link)}" target="_blank" rel="noopener">${esc(o.puesto)}</a>${o.ubicacion ? ` <span class="loc">· ${esc(o.ubicacion)}</span>` : ""}</div>
+        <div class="pto" title="${esc(o.puesto)}${o.ubicacion ? " · " + esc(o.ubicacion) : ""}">${g.cc ? `<button class="cc" data-cc title="Copia tu ficha + 'rellena esta candidatura' y abre la oferta: luego abre Claude en Chrome y pega (Ctrl+V)">🤖 CC</button>` : ""}<a href="${esc(link)}" target="_blank" rel="noopener">${esc(o.puesto)}</a>${o.ubicacion ? ` <span class="loc">· ${esc(o.ubicacion)}</span>` : ""}</div>
         <div class="pay">${o.sueldo ? "💶 " + esc(o.sueldo) : ""}</div>
         ${remoto(o)}
         ${g.id === "aplicada" ? aplicadoEl(o) : aplicaste(o)}
@@ -213,7 +242,71 @@
       $("save").textContent = n ? `Guardar ${n} cambio${n === 1 ? "" : "s"}` : "Guardar";
     }
 
+    // ---------- 🤖 CC: Claude en Chrome rellena la candidatura ----------
+    // La ficha vive solo en localStorage (tiene datos personales: nunca va al repo ni a Supabase).
+    const FICHA_KEY = "empleo.ficha";
+    const getFicha = () => { try { return localStorage.getItem(FICHA_KEY) || ""; } catch { return ""; } };
+    function setFicha(t) { try { t ? localStorage.setItem(FICHA_KEY, t) : localStorage.removeItem(FICHA_KEY); } catch {} pintaFichaBtn(); }
+    function pintaFichaBtn() { $("ficha-btn").classList.toggle("falta", !getFicha()); $("ficha-btn").textContent = getFicha() ? "📎 Mi ficha ✓" : "📎 Mi ficha"; }
+    let toastT;
+    function toast(html, ms = 7000) { $("toast").innerHTML = html; $("toast").hidden = false; clearTimeout(toastT); toastT = setTimeout(() => ($("toast").hidden = true), ms); }
+
+    // Texto de un .docx: párrafos (w:p) con saltos de línea (w:br) y tabuladores.
+    async function textoDocx(file) {
+      const zip = await JSZip.loadAsync(file);
+      const xml = new DOMParser().parseFromString(await zip.file("word/document.xml").async("string"), "application/xml");
+      const W = "http://schemas.openxmlformats.org/wordprocessingml/2006/main";
+      return [...xml.getElementsByTagNameNS(W, "p")].map((p) => {
+        let t = "";
+        p.querySelectorAll("*").forEach((n) => {
+          if (n.namespaceURI !== W) return;
+          if (n.localName === "t") t += n.textContent;
+          else if (n.localName === "br" || n.localName === "cr") t += "\n";
+          else if (n.localName === "tab") t += "\t";
+        });
+        return t;
+      }).join("\n").replace(/\n{3,}/g, "\n\n").trim();
+    }
+    $("ficha-btn").addEventListener("click", () => { $("ficha-txt").value = getFicha(); $("ficha-dlg").showModal(); });
+    $("ficha-cerrar").addEventListener("click", () => $("ficha-dlg").close());
+    $("ficha-borrar").addEventListener("click", () => { $("ficha-txt").value = ""; setFicha(""); });
+    $("ficha-guardar").addEventListener("click", () => { setFicha($("ficha-txt").value.trim()); $("ficha-dlg").close(); toast("📎 Ficha guardada en este navegador."); });
+    $("ficha-file").addEventListener("change", async (e) => {
+      const f = e.target.files[0]; if (!f) return;
+      try { $("ficha-txt").value = /\.docx$/i.test(f.name) ? await textoDocx(f) : await f.text(); }
+      catch (err) { $("ficha-txt").value = ""; toast("No pude leer el archivo: " + err.message); }
+    });
+
+    function promptCC(o, link) {
+      return `${getFicha()}
+
+=====================================================================
+FILL IN THIS APPLICATION
+=====================================================================
+Role: ${o.puesto} at ${o.empresa}${o.ubicacion ? " (" + o.ubicacion + ")" : ""}
+Application page: ${link}
+
+Fill in this application for me using the brief above, without asking questions. Do not click Submit/Apply.`;
+    }
+    function copiar(texto) {
+      if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(texto);
+      const ta = document.createElement("textarea"); ta.value = texto; ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select(); const ok = document.execCommand("copy"); ta.remove();
+      return ok ? Promise.resolve() : Promise.reject(new Error("copy"));
+    }
+    function abrirCC(o) {
+      if (!getFicha()) { $("ficha-txt").value = ""; $("ficha-dlg").showModal(); toast("Primero carga tu ficha (.docx) una vez; luego 🤖 CC ya funciona en un clic."); return; }
+      const link = (o.enlaces && o.enlaces[0] && o.enlaces[0].url) || o.url;
+      // Copiar ANTES de abrir la pestaña (el portapapeles exige que esta página tenga el foco).
+      const copia = copiar(promptCC(o, link));
+      window.open(link, "_blank", "noopener");
+      copia.then(() => toast(`🤖 <b>Copiado.</b> En la pestaña de la oferta abre <b>Claude</b> (icono de la extensión) y pega con <b>Ctrl+V</b> (Cmd+V en Mac) → Enter.`, 10000))
+           .catch(() => toast("No pude copiar al portapapeles: abre 📎 Mi ficha y cópiala a mano."));
+    }
+
     $("groups").addEventListener("click", (e) => {
+      const cc = e.target.closest("[data-cc]");
+      if (cc) { e.preventDefault(); abrirCC(ofertas.find((x) => x.id === cc.closest(".row").dataset.id)); return; }
       const b = e.target.closest(".acts button");
       if (!b) return;
       const row = b.closest(".row");
@@ -267,6 +360,7 @@
       candidaturas = ca.data || [];
       render();
     }
+    pintaFichaBtn();
     load();
     if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js");
   </script>
