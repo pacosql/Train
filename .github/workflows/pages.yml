@@ -31,7 +31,7 @@ jobs:
         run: |
           BUILD_ID="${GITHUB_SHA::7}"
           # Sella todas las apps del hosting (una por carpeta), no solo una.
-          find . -type f \( -name "index.html" -o -name "sw.js" \) \
+          find . -type f \( -name "*.html" -o -name "sw.js" \) \
             -not -path "./.git/*" \
             -exec sed -i "s/__BUILD_ID__/${BUILD_ID}/g" {} +
       - name: Exclude internal archives
