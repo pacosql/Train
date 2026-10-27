@@ -36,7 +36,7 @@ OBJETIVO = 35          # nuevas mínimas por rutina
 ESPERA_PARCIAL = 7200  # segundos de rutina antes de admitir ofertas de encaje parcial
 INICIO_F = "/tmp/r/inicio"
 COLS = ("empresa", "puesto", "ubicacion", "modalidad", "remoto_claro", "url", "fuente", "sector", "area",
-        "seniority", "resumen", "fecha_publicacion", "etiquetas", "enlaces", "categoria", "empresa_data_ai", "empresa_top", "empleados", "sueldo", "sueldo_min_eur", "sueldo_max_eur", "confianza", "confianza_nota", "actividad", "actividad2", "encaje", "encaje_motivo")
+        "seniority", "resumen", "fecha_publicacion", "etiquetas", "enlaces", "categoria", "empresa_data_ai", "empresa_top", "empleados", "sueldo", "sueldo_min_eur", "sueldo_max_eur", "confianza", "confianza_nota", "actividad", "actividad2", "encaje", "encaje_motivo", "consulta")
 
 
 def api(method, path, body=None, prefer="return=representation"):

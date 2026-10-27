@@ -60,7 +60,10 @@
     .row { display: grid; grid-template-columns: minmax(110px, 170px) minmax(160px, 1fr) 96px 118px 128px 246px; gap: 8px; align-items: center;
       padding: 5px 12px; border-top: 1px solid var(--line); }
     .row.head { font-size: 0.72rem; text-transform: uppercase; letter-spacing: .5px; color: var(--text-2); padding-top: 6px; padding-bottom: 6px; }
-    .row.marked { background: var(--accent-soft); }
+    .row.marked { background: var(--accent-soft); position: relative; }
+    .row.marked::after { content: attr(data-dest); position: absolute; right: 266px; top: 50%; transform: translateY(-50%); font-size: 0.68rem; font-weight: 800;
+      color: var(--text); background: var(--bg); border: 1px solid var(--line-strong); border-radius: 6px; padding: 1px 7px; }
+    .leyenda { font-size: 0.8rem; color: var(--text-2); margin: 0 0 8px; }
     .row.marked.to-no_gusta { background: var(--bad-soft); }
     .row.marked.to-aplicada { background: var(--good-soft); }
     .emp { font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -93,6 +96,7 @@
       .emp { grid-area: emp; } .pto { grid-area: pto; white-space: normal; } .pay { grid-area: pay; }
       .rem { grid-area: rem; text-align: right; } .ap { grid-area: ap; text-align: right; } .acts { grid-area: acts; margin-top: 3px; }
       .acts button { padding: 7px 4px; font-size: 0.82rem; }
+      .row.marked::after { right: auto; left: 50%; top: 0; transform: translate(-50%, -1px); border-radius: 0 0 6px 6px; }
     }
   </style>
 </head>
@@ -109,6 +113,7 @@
       <input id="q" type="search" placeholder="Buscar empresa o puesto…" autocomplete="off" />
       <label class="chk"><input type="checkbox" id="solo-remoto" /> Solo remoto</label>
     </div>
+    <p class="leyenda">🎯 Aplicar → grupo <b>Aplicar</b> · 🔍 Detalle → <b>En detalle</b> · ✅ Aplicado → <b>Aplicados</b> · ✕ Descartar → <b>👎 Descartadas</b> (abajo del todo; ↺ para recuperarla). Nada se mueve hasta que pulsas <b>Guardar</b>.</p>
     <div class="msg" id="msg"></div>
     <div id="groups">Cargando…</div>
     <div class="build">build __BUILD_ID__</div>
@@ -125,7 +130,9 @@
     const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
     // Grupos y botones de cada uno. `to` = decisión que se guardará.
-    const B = { aplicar: "🎯 Aplicar", aplicar_detalle: "🔍 Detalle", aplicada: "✅ Aplicado", no_gusta: "✕ Descartar" };
+    const B = { aplicar: "🎯 Aplicar", aplicar_detalle: "🔍 Detalle", aplicada: "✅ Aplicado", no_gusta: "✕ Descartar", pendiente: "↺ Pendiente" };
+    // Adónde va cada oferta al guardar (se muestra en la fila al marcarla).
+    const DESTINO = { aplicar: "🎯 Aplicar", aplicar_detalle: "🔍 En detalle", aplicada: "✅ Aplicados", no_gusta: "👎 Descartadas", pendiente: "🕐 Pendientes" };
     const GRUPOS = [
       { id: "pendiente", t: "🕐 Pendientes", match: (o) => o.decision === "pendiente", acts: ["aplicar", "aplicar_detalle", "no_gusta"], open: true,
         hint: "marca 🎯 Aplicar, 🔍 Detalle o ✕ y pulsa Guardar" },
@@ -133,8 +140,12 @@
         hint: "marca ✅ Aplicado cuando hayas enviado la candidatura" },
       { id: "aplicar_detalle", t: "🔍 En detalle", match: (o) => o.decision === "aplicar_detalle", acts: ["aplicada", "aplicar", "no_gusta"], open: true,
         hint: "aplicar con calma" },
+      { id: "aplicada", t: "✅ Aplicados", match: (o) => o.decision === "aplicada", todas: true, acts: ["pendiente"], open: false,
+        hint: "a las que ya has aplicado, la más reciente primero (también las ya cerradas)" },
       { id: "clasificadas", t: "👌 High / Medium / Low", match: (o) => ["high", "medium", "low"].includes(o.decision), acts: ["aplicar", "aplicar_detalle", "no_gusta"], open: false,
         hint: "las que ya clasificaste antes" },
+      { id: "no_gusta", t: "👎 Descartadas", match: (o) => o.decision === "no_gusta", acts: ["pendiente", "aplicar", "aplicar_detalle"], open: false,
+        hint: "aquí van las que marcas ✕ Descartar; ↺ para recuperarlas" },
     ];
 
     let ofertas = [], candidaturas = [];
@@ -154,15 +165,22 @@
       return `<span class="ap ${ys[0].d <= 15 ? "rec" : "vieja"}" title="${esc(tip)}">✋ ${EmpleoCand.hace(ys[0].d)}${ys.length > 1 ? ` · ${ys.length}×` : ""}</span>`;
     }
 
+    function aplicadoEl(o) {
+      if (!o.aplicada_en) return `<span class="ap vieja"></span>`;
+      const d = (Date.now() - new Date(o.aplicada_en).getTime()) / 864e5;
+      const f = new Date(o.aplicada_en).toLocaleDateString("es-ES", { day: "numeric", month: "short" });
+      return `<span class="ap ${d <= 15 ? "rec" : "vieja"}">✅ ${f} · ${EmpleoCand.hace(d)}${o.activa === false ? " · cerrada" : ""}</span>`;
+    }
+
     function fila(o, g) {
       const m = marcas.get(o.id);
       const link = (o.enlaces && o.enlaces[0] && o.enlaces[0].url) || o.url;
-      return `<div class="row${m ? " marked to-" + m : ""}" data-id="${o.id}">
+      return `<div class="row${m ? " marked to-" + m : ""}" data-id="${o.id}" data-dest="${m ? "→ " + DESTINO[m] : ""}">
         <div class="emp" title="${esc(o.empresa)}">${esc(o.empresa)}</div>
         <div class="pto" title="${esc(o.puesto)}${o.ubicacion ? " · " + esc(o.ubicacion) : ""}"><a href="${esc(link)}" target="_blank" rel="noopener">${esc(o.puesto)}</a>${o.ubicacion ? ` <span class="loc">· ${esc(o.ubicacion)}</span>` : ""}</div>
         <div class="pay">${o.sueldo ? "💶 " + esc(o.sueldo) : ""}</div>
         ${remoto(o)}
-        ${aplicaste(o)}
+        ${g.id === "aplicada" ? aplicadoEl(o) : aplicaste(o)}
         <div class="acts">${g.acts.map((a) => `<button data-to="${a}" class="${m === a ? "on" : ""}">${B[a]}</button>`).join("")}</div>
       </div>`;
     }
@@ -173,14 +191,15 @@
       const abiertos = new Set([...document.querySelectorAll("details.g[open]")].map((d) => d.dataset.g));
       const primera = !document.querySelector("details.g");
       $("groups").innerHTML = GRUPOS.map((g) => {
-        let list = ofertas.filter((o) => o.activa !== false && g.match(o));
+        let list = ofertas.filter((o) => (g.todas || o.activa !== false) && g.match(o));
         if (soloRem) list = list.filter((o) => o.modalidad === "remoto");
         if (q) list = list.filter((o) => (o.empresa + " " + o.puesto).toLowerCase().includes(q));
-        list.sort((a, b) => RANGO(a) - RANGO(b) || (b.encontrado_en || "").localeCompare(a.encontrado_en || "") || a.empresa.localeCompare(b.empresa));
+        if (g.id === "aplicada") list.sort((a, b) => (b.aplicada_en || "").localeCompare(a.aplicada_en || ""));
+        else list.sort((a, b) => RANGO(a) - RANGO(b) || (b.encontrado_en || "").localeCompare(a.encontrado_en || "") || a.empresa.localeCompare(b.empresa));
         const open = primera ? g.open : abiertos.has(g.id);
         return `<details class="g" data-g="${g.id}"${open ? " open" : ""}>
           <summary>${g.t} <span class="n">${list.length}</span><span class="hint">${g.hint}</span></summary>
-          <div class="row head"><div>Empresa</div><div>Oferta</div><div>Sueldo</div><div>Remoto</div><div>Ya aplicaste</div><div></div></div>
+          <div class="row head"><div>Empresa</div><div>Oferta</div><div>Sueldo</div><div>Remoto</div><div>${g.id === "aplicada" ? "Aplicaste el" : "Ya aplicaste"}</div><div></div></div>
           ${list.length ? list.map((o) => fila(o, g)).join("") : `<div class="empty">Nada por aquí.</div>`}
         </details>`;
       }).join("");
@@ -203,6 +222,7 @@
       // Repintar solo la fila (sin mover nada hasta Guardar)
       const m = marcas.get(id);
       row.className = "row" + (m ? " marked to-" + m : "");
+      row.dataset.dest = m ? "→ " + DESTINO[m] : "";
       row.querySelectorAll(".acts button").forEach((x) => x.classList.toggle("on", x.dataset.to === m));
       actualizarBarra();
     });
@@ -223,11 +243,11 @@
       $("save").disabled = true; $("save").textContent = "Guardando…";
       const errores = [];
       for (const [to, ids] of Object.entries(porDecision)) {
-        const patch = { decision: to, decidido_en: now, aplicada_en: to === "aplicada" ? now : null };
+        const patch = { decision: to, decidido_en: to === "pendiente" ? null : now, aplicada_en: to === "aplicada" ? now : null };
         const { error } = await client.from(T).update(patch).in("id", ids);
         if (error) errores.push(error.message);
       }
-      const NOM = { aplicar: "a 🎯 Aplicar", aplicar_detalle: "a 🔍 En detalle", aplicada: "✅ aplicadas", no_gusta: "✕ descartadas" };
+      const NOM = { aplicar: "a 🎯 Aplicar", aplicar_detalle: "a 🔍 En detalle", aplicada: "a ✅ Aplicados", no_gusta: "a 👎 Descartadas (abajo del todo)", pendiente: "a 🕐 Pendientes" };
       const resumen = Object.entries(porDecision).map(([to, ids]) => `${ids.length} ${NOM[to]}`).join(" · ");
       $("msg").className = "msg" + (errores.length ? " err" : "");
       $("msg").textContent = errores.length ? "No se pudo guardar todo: " + errores.join("; ") : `Guardado: ${resumen}`;

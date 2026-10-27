@@ -629,7 +629,26 @@ def explorar():
     except Exception as ex:
         log("[aviso] historial de búsquedas", ex)
     titulos = EXP_TITULOS + LI_QUERIES
-    pesos = [1 + 3 * min(rinden.get(t, 0), 5) for t in titulos]
+    # Lo que más enseña es a qué aplica el usuario (🎯 Aplicar, 🔍 En detalle, ✅ Aplicado):
+    # cada búsqueda que trajo una de esas, o cuyo título se parece al puesto, pesa mucho más.
+    # Descartar NO penaliza (a menudo descarta porque ya aplicó a esa empresa o va a aplicar a otra).
+    interes = {}
+    try:
+        req = urllib.request.Request(f"{SB_URL}/rest/v1/empleo_ofertas?select=puesto,consulta"
+                                     "&decision=in.(aplicar,aplicar_detalle,aplicada)",
+                                     headers={"apikey": SB_KEY, "Authorization": f"Bearer {SB_KEY}"})
+        for r in json.load(urllib.request.urlopen(req, timeout=30)):
+            if r.get("consulta"):
+                q = r["consulta"].split(" @ ")[0]
+                interes[q] = interes.get(q, 0) + 2
+            pto = r["puesto"] or ""
+            for t in titulos:
+                if re.search(r"\b" + re.escape(t) + r"\b", pto, re.I):
+                    interes[t] = interes.get(t, 0) + 1
+    except Exception as ex:
+        log("[aviso] ofertas de interés", ex)
+    pesos = [1 + 3 * min(rinden.get(t, 0), 5) + 4 * min(interes.get(t, 0), 10) for t in titulos]
+    log("[explorar] más peso por tus candidaturas:", ", ".join(f"{t} ({n})" for t, n in sorted(interes.items(), key=lambda x: -x[1])[:10]))
     elegidas, intentos = [], 0
     while len(elegidas) < int(os.environ.get("EXPLORAR_N", "14")) and intentos < 500:
         intentos += 1

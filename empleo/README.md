@@ -39,9 +39,18 @@ URL: `https://pacosql.github.io/Train/empleo/`
   tiene un enlace a la nueva.
 - `tabla.html`: tabla rápida. Una fila por oferta (empresa, oferta, sueldo,
   remoto, "ya aplicaste hace N días") en grupos Pendientes / 🎯 Aplicar /
-  🔍 En detalle (+ High/Medium/Low plegado), remoto primero. Se marcan
+  🔍 En detalle / ✅ Aplicados / High-Medium-Low / 👎 Descartadas, remoto
+  primero (Aplicados: por fecha, incluidas las ya cerradas). Se marcan
   muchas filas (🎯 Aplicar, 🔍 Detalle, ✅ Aplicado, ✕ Descartar) y se
   guardan todas de golpe con **Guardar**; entonces se redistribuyen.
+
+## Qué aprende la rutina de tus decisiones
+
+- Aprende de lo que **aplicas** (🎯 Aplicar, 🔍 En detalle, ✅ Aplicado): la
+  exploración da mucho más peso a las búsquedas que trajeron esas ofertas
+  (`empleo_ofertas.consulta`) y a los títulos que se parecen a esos puestos.
+- **Descartar no penaliza nada**: a menudo se descarta porque ya se aplicó a
+  esa empresa o porque se va a aplicar a otra oferta suya.
 
 ## Tablas (Supabase, prefijo `empleo_`)
 
