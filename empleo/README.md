@@ -71,6 +71,10 @@ URL: `https://pacosql.github.io/Train/empleo/`
   oferta exacta (p. ej. leídas de los correos "Thank you for applying"):
   `empresa`, `fecha`, `puesto` (opcional), `fuente`. Las dos interfaces las
   juntan con las ofertas aplicadas para el aviso "✋ ya aplicaste hace N días".
+- `empleo_capturas`: capturas de la bandeja de entrada que pega el usuario
+  (`imagen` JPEG en base64, `procesada`, `resultado`); la rutina las lee.
+- `empleo_ofertas.resultado` (`rechazada|entrevista|oferta`), `resultado_en`,
+  `resultado_nota`: qué pasó tras aplicar.
 - `empleo_busquedas`: rendimiento de cada búsqueda (`consulta`, `ubicacion`, `candidatas`, `nuevas`); la exploración aleatoria lo usa para no repetir y para insistir en lo que funciona.
 - `empleo_ofertas.encaje` (`completo` | `parcial`) y `encaje_motivo`: las parciales solo entran tras 2 h de rutina y para completar 35.
 
@@ -112,6 +116,19 @@ por partes. Trabajar en `/tmp/r/` (crear la carpeta).
    en el portal oficial, confirmar modalidad…), corregir datos, escribir en
    `respuesta` qué se ha hecho (con fecha) y devolverla a su prioridad
    (`prioridad`, o `pendiente` si no tenía).
+2b. **Capturas del correo** (caja 📥 de la tabla rápida):
+   `python3 empleo/tools/guardar.py capturas /tmp/r/caps` descarga las
+   pendientes como JPG. Abrir cada imagen (herramienta Read) y sacar cada
+   correo relevante: "Thank you for applying / application received" →
+   `aplicada`; "not moving forward / decided not to proceed" → `rechazada`;
+   propuesta de llamada/entrevista → `entrevista`; oferta de trabajo →
+   `oferta`. Ignorar resets de contraseña, códigos de seguridad y
+   newsletters. Guardar `[{empresa, puesto (si sale), fecha (hora de Madrid
+   del correo, ISO), tipo, nota}]` en `/tmp/r/correos.json` y
+   `python3 empleo/tools/guardar.py correos /tmp/r/correos.json` (busca la
+   oferta por empresa y puesto; si no está clara, lo guarda por empresa en
+   `empleo_candidaturas`). Por último, por cada captura,
+   `python3 empleo/tools/guardar.py captura_hecha <id> "<resumen corto>"`.
 3. **Limpiar cerradas**: `python3 empleo/tools/guardar.py revalidar`
    (verifica cada enlace con la API de su portal; puede tardar ~8 min).
 4. **Buscar** (cada orden < 10 min):

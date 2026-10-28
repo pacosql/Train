@@ -30,5 +30,16 @@
     const n = Math.max(0, Math.floor(d));
     return n < 1 ? "hoy" : n === 1 ? "hace 1 día" : n < 30 ? `hace ${n} días` : n < 60 ? "hace 1 mes" : `hace ${Math.round(n / 30)} meses`;
   }
-  window.EmpleoCand = { aplicaciones, hace, mismaEmpresa };
+  // Supabase devuelve como mucho 1000 filas por consulta: pide páginas hasta tenerlas todas.
+  // `consulta(desde, hasta)` debe devolver la query ya con .range(desde, hasta) y un orden estable.
+  async function todas(consulta) {
+    let out = [];
+    for (let i = 0; ; i += 1000) {
+      const { data, error } = await consulta(i, i + 999);
+      if (error) return { data: out.length ? out : null, error };
+      out = out.concat(data || []);
+      if (!data || data.length < 1000) return { data: out, error: null };
+    }
+  }
+  window.EmpleoCand = { aplicaciones, hace, mismaEmpresa, todas };
 })();

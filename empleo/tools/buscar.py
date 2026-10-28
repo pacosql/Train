@@ -635,7 +635,7 @@ def explorar():
     interes = {}
     try:
         req = urllib.request.Request(f"{SB_URL}/rest/v1/empleo_ofertas?select=puesto,consulta"
-                                     "&decision=in.(aplicar,aplicar_detalle,aplicada)",
+                                     "&decision=in.(aplicar,aplicar_detalle,aplicada)&limit=5000",
                                      headers={"apikey": SB_KEY, "Authorization": f"Bearer {SB_KEY}"})
         for r in json.load(urllib.request.urlopen(req, timeout=30)):
             if r.get("consulta"):

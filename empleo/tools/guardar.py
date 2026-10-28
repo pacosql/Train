@@ -40,6 +40,20 @@ COLS = ("empresa", "puesto", "ubicacion", "modalidad", "remoto_claro", "url", "f
 
 
 def api(method, path, body=None, prefer="return=representation"):
+    # PostgREST devuelve como mucho 1000 filas por consulta: los GET sin limit se paginan.
+    if method == "GET" and "limit=" not in path:
+        q = path if "order=" in path else path + ("&" if "?" in path else "?") + "order=id"
+        out, off = [], 0
+        while True:
+            page = _api(method, f"{q}&limit=1000&offset={off}")
+            out += page
+            if len(page) < 1000:
+                return out
+            off += 1000
+    return _api(method, path, body, prefer)
+
+
+def _api(method, path, body=None, prefer="return=representation"):
     req = urllib.request.Request(f"{URL}/rest/v1/{path}", method=method,
                                  data=json.dumps(body).encode() if body is not None else None,
                                  headers={"apikey": KEY, "Authorization": f"Bearer {KEY}",
@@ -413,7 +427,85 @@ def limpiar_regla():
     print(json.dumps({"retiradas_por_regla": n}))
 
 
+# ---------- Capturas del correo (caja 📥 de la tabla rápida) ----------
+
+def capturas(dirpath):
+    """Descarga las capturas pendientes a <dir>/captura_<id>.jpg para que la rutina las lea."""
+    import base64
+    os.makedirs(dirpath, exist_ok=True)
+    rows = api("GET", "empleo_capturas?select=id,created_at,imagen&procesada=eq.false&order=created_at")
+    out = []
+    for r in rows:
+        f = os.path.join(dirpath, f"captura_{r['id']}.jpg")
+        open(f, "wb").write(base64.b64decode(r["imagen"].split(",", 1)[1]))
+        out.append({"id": r["id"], "subida": r["created_at"], "archivo": f})
+    print(json.dumps(out, ensure_ascii=False, indent=1))
+
+
+def _palabras(s):
+    return {w for w in re.findall(r"[a-z0-9]+", (s or "").lower()) if len(w) > 2 or w in ("ai", "ml", "eu", "uk")}
+
+
+def _misma_empresa(a, b):
+    a, b = norm(a), norm(b)
+    if not a or not b:
+        return False
+    c, l = sorted((a, b), key=len)
+    return a == b or (len(c) >= 4 and l.startswith(c))
+
+
+def correos(path):
+    """Aplica lo leído en las capturas: [{empresa, puesto?, fecha (ISO, hora de Madrid), tipo, nota?}]
+    tipo: aplicada | rechazada | entrevista | oferta. Busca la oferta de esa empresa (por puesto, o la única
+    candidata); si no la encuentra con seguridad, lo guarda en empleo_candidaturas por empresa."""
+    items = json.load(open(path))
+    rows = api("GET", "empleo_ofertas?select=id,empresa,puesto,decision,aplicada_en,resultado")
+    log = []
+    for it in items:
+        emp, pto, tipo = it["empresa"], it.get("puesto") or "", it["tipo"]
+        fecha = it["fecha"] if "T" in it["fecha"] else it["fecha"] + "T12:00:00"
+        if not re.search(r"[+-]\d\d:\d\d$|Z$", fecha):
+            fecha += "+01:00" if fecha[5:7] in ("11", "12", "01", "02", "03") or (fecha[5:7] == "10" and fecha[8:10] >= "26") else "+02:00"
+        de_emp = [r for r in rows if _misma_empresa(r["empresa"], emp)]
+        cand = []
+        if pto:
+            pw = _palabras(pto)
+            score = lambda r: len(pw & _palabras(r["puesto"])) / max(1, len(pw | _palabras(r["puesto"])))
+            mejores = sorted(de_emp, key=score, reverse=True)
+            if mejores and score(mejores[0]) >= 0.5 and (len(mejores) == 1 or score(mejores[0]) > score(mejores[1])):
+                cand = [mejores[0]]
+        else:
+            pool = [r for r in de_emp if (r["decision"] in ("aplicar", "aplicar_detalle") if tipo == "aplicada" else r["decision"] == "aplicada")]
+            if len(pool) == 1:
+                cand = pool
+        if cand:
+            o = cand[0]
+            if tipo == "aplicada":
+                patch = {"decision": "aplicada", "aplicada_en": o["aplicada_en"] or fecha, "decidido_en": fecha}
+            else:
+                patch = {"resultado": tipo, "resultado_en": fecha, "resultado_nota": it.get("nota")}
+                if o["decision"] != "aplicada":
+                    patch.update(decision="aplicada", aplicada_en=o["aplicada_en"] or fecha)
+            api("PATCH", f"empleo_ofertas?id=eq.{o['id']}", patch, "return=minimal")
+            o.update(patch)
+            log.append(f"{tipo}: {o['empresa']} — {o['puesto']}")
+        else:
+            api("POST", "empleo_candidaturas", {"empresa": emp, "fecha": fecha[:10], "puesto": pto or None,
+                                                "fuente": "captura de correo", "resultado": None if tipo == "aplicada" else tipo,
+                                                "nota": it.get("nota")}, "return=minimal")
+            log.append(f"{tipo} (sin oferta concreta): {emp}{' — ' + pto if pto else ''}")
+    print("\n".join(log))
+    return log
+
+
+def captura_hecha(cid, resultado):
+    api("PATCH", f"empleo_capturas?id=eq.{cid}", {"procesada": True, "procesada_en": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+                                                   "resultado": resultado, "imagen": "data:image/jpeg;base64,"}, "return=minimal")
+
+
 if __name__ == "__main__":
     {"insertar": lambda: insertar(*sys.argv[2:]), "revalidar": revalidar,
      "para_resumir": lambda: para_resumir(sys.argv[2]), "aplicar_resumenes": lambda: aplicar_resumenes(*sys.argv[2:]),
-     "limpiar_regla": limpiar_regla, "cuenta": cuenta}[sys.argv[1]]()
+     "limpiar_regla": limpiar_regla, "cuenta": cuenta,
+     "capturas": lambda: capturas(sys.argv[2]), "correos": lambda: correos(sys.argv[2]),
+     "captura_hecha": lambda: captura_hecha(sys.argv[2], sys.argv[3])}[sys.argv[1]]()

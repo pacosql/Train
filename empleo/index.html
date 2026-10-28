@@ -106,6 +106,9 @@
     .b { font-size: 0.72rem; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--line-strong); color: var(--text-2); white-space: nowrap; }
     .b.remoto { color: var(--good); border-color: rgba(67, 211, 145, 0.5); background: var(--good-soft); font-weight: 700; }
     .b.hibrido { color: var(--mid); border-color: rgba(242, 184, 64, 0.5); }
+    .b.res-rechazada { color: #fff; background: var(--bad); border-color: var(--bad); font-weight: 700; }
+    .b.res-entrevista { color: #062014; background: var(--good); border-color: var(--good); font-weight: 700; }
+    .b.res-oferta { color: #241a00; background: var(--mid); border-color: var(--mid); font-weight: 700; }
     .b.nuevo { color: #fff; background: var(--accent); border-color: var(--accent); }
     .meta { color: var(--text-2); font-size: 0.8rem; }
     .resumen { font-size: 0.88rem; margin: 6px 0 0; color: #d5dae0; }
@@ -342,7 +345,7 @@
       $("btn-refresh").classList.add("spin");
       $("msg").textContent = "";
       const [{ data, error }, rut, emp, cand] = await Promise.all([
-        client.from(T_OFERTAS).select("*").order("encontrado_en", { ascending: false }).order("created_at", { ascending: false }),
+        EmpleoCand.todas((a, b) => client.from(T_OFERTAS).select("*").order("encontrado_en", { ascending: false }).order("created_at", { ascending: false }).order("id").range(a, b)),
         client.from(T_RUTINAS).select("*").order("created_at", { ascending: false }).limit(5),
         client.from(T_EMPRESAS).select("*").eq("activa", true).order("nombre"),
         client.from(tablePrefix + "candidaturas").select("empresa,fecha,puesto"),
@@ -490,6 +493,7 @@
       if (cerrada(o)) badges.push(`<span class="b cerrada">⛔ No activa</span>`);
       if (isNew(o)) badges.push(`<span class="b nuevo">Nueva</span>`);
       if (o.empresa_top) badges.push(`<span class="b cat">⭐ Top AI</span>`);
+      if (o.resultado) badges.push(`<span class="b res-${o.resultado}" title="${esc(o.resultado_nota || "")}">${{ rechazada: "❌ Rechazada", entrevista: "🗣️ Entrevista", oferta: "🏆 Oferta" }[o.resultado]}${o.resultado_en ? " · " + fmtDate(o.resultado_en.slice(0, 10)) : ""}</span>`);
       if (o.decision === "aplicada" && o.prioridad) badges.push(`<span class="b cat">${PRIO[o.prioridad] || ""}</span>`);
       const key = [
         o.remoto_claro ? `<span class="k-rem">🟢 100% remoto</span>`
