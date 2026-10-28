@@ -49,6 +49,7 @@ reglas para no interferir con las demás:
 | 📥 Bandeja | [`bandeja/`](./bandeja) | `/Train/bandeja/` | `bandeja_` |
 | 💶 Gastos | [`gastos/`](./gastos) | `/Train/gastos/` | `gastos_` |
 | 🔊 Read Aloud | [`readaloud/`](./readaloud) | `/Train/readaloud/` | `readaloud_` |
+| 🔭 Observa | [`observa/`](./observa) (alumno: `/observa/alumno/`, padre: `/observa/padre/`) | `/Train/observa/` | `observa_` |
 
 ## Añadir una app nueva
 

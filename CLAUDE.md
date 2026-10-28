@@ -109,6 +109,7 @@ Al crear una app nueva `<app>/`:
 | 📥 Bandeja | `bandeja/` | `bandeja_` |
 | 💶 Gastos | `gastos/` | `gastos_` |
 | 🔊 Read Aloud | `readaloud/` | `readaloud_` |
+| 🔭 Observa | `observa/` | `observa_` |
 
 (Actualiza esta tabla al añadir una app nueva.)
 
