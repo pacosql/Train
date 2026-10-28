@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Observa · Alumno</title>
+  <link rel="manifest" href="../manifest.json" />
+  <meta name="theme-color" content="#1f1e1d" />
+  <link rel="icon" href="../icons/icon-192.png" />
+  <link rel="stylesheet" href="../comun.css" />
+  <style>
+    .q { font-size: 1.25rem; line-height: 1.4; margin: 14px 0 10px; }
+    .ops button { display: block; width: 100%; text-align: left; margin: 8px 0; padding: 14px 16px; font-size: 1rem; line-height: 1.35; }
+    .ops button.bien { background: rgba(127, 182, 133, 0.2); border-color: var(--ok); }
+    .ops button.mal { background: rgba(224, 115, 107, 0.15); border-color: var(--bad); }
+    .ops button:disabled { opacity: 1; cursor: default; }
+    .nose { background: none; border: 1px dashed var(--line); color: var(--muted); width: 100%; margin-top: 4px; }
+    .timer { height: 4px; background: var(--surface-2); border-radius: 2px; overflow: hidden; margin: 8px 0 0; }
+    .timer > i { display: block; height: 100%; width: 0; background: var(--muted); transition: width 1s linear; }
+    .timer.tarde > i { background: var(--bad); }
+    .fb { border-radius: 12px; padding: 12px 14px; margin: 12px 0; }
+    .fb.ok { background: rgba(127, 182, 133, 0.12); border: 1px solid var(--ok); }
+    .fb.ko { background: rgba(224, 115, 107, 0.1); border: 1px solid var(--bad); }
+    .grande { font-size: 1.05rem; padding: 14px 18px; width: 100%; margin: 6px 0; text-align: left; }
+    .grande .s { display: block; font-size: 0.8rem; color: var(--muted); font-weight: 400; }
+    button.primary.grande .s { color: var(--accent-ink); opacity: 0.8; }
+    .tema { margin: 10px 0; }
+    .tema .n { display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 4px; }
+    .crow { display: flex; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--line); cursor: pointer; }
+    .learners button { display: block; width: 100%; text-align: left; font-size: 1.1rem; padding: 14px; margin: 8px 0; }
+    .head { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top"><a href="../">← Observa</a><span class="pill" id="quien">alumno</span></div>
+    <div id="app">Cargando…</div>
+    <footer class="build">build __BUILD_ID__</footer>
+  </div>
+  <script src="../vendor/supabase.min.js"></script>
+  <script src="../config.js"></script>
+  <script src="../banco.js"></script>
+  <script src="../comun.js"></script>
+  <script>
+  (() => {
+    const app = O.$("#app");
+    const K = "observa_learner";
+    const LIMIT = 40; // segundos objetivo por pregunta
+    let learner = null, answers = [], topic = O.get("observa_topic") || "";
+    let timerId = null;
+
+    const fail = (e) => (app.innerHTML = `<p class="err">${O.esc(e.message || e)}</p><button onclick="location.reload()">Reintentar</button>`);
+
+    // ---------------------------------------------------------------- quién
+    async function inicio() {
+      O.$("#quien").textContent = "alumno";
+      const saved = O.get(K);
+      if (saved) return elegir(saved).catch(() => { O.set(K, null); inicio(); });
+      const ls = O.must(await O.t("learner").select("id,name").order("created_at", { ascending: false }).limit(50));
+      app.innerHTML = `<h1>¿Quién eres?</h1>
+        <div class="learners">${ls.map((l) => `<button data-id="${l.id}">${O.esc(l.name)}</button>`).join("") || '<p class="muted">Aún no hay nadie. Escribe tu nombre para empezar.</p>'}</div>
+        <h3>Soy nuevo</h3>
+        <div class="row"><input id="nombre" class="grow" placeholder="Tu nombre" maxlength="40" autocomplete="off" /><button class="primary" id="crear">Empezar</button></div>`;
+      O.$$(".learners button").forEach((b) => (b.onclick = () => elegir(b.dataset.id).catch(fail)));
+      O.$("#crear").onclick = async () => {
+        const n = O.$("#nombre").value.trim();
+        if (!n) return O.$("#nombre").focus();
+        O.$("#crear").disabled = true;
+        const row = O.must(await O.t("learner").insert({ name: n }).select("id").single());
+        elegir(row.id).catch(fail);
+      };
+      O.$("#nombre").onkeydown = (e) => { if (e.key === "Enter") O.$("#crear").click(); };
+    }
+
+    async function elegir(id) {
+      learner = O.must(await O.t("learner").select("*").eq("id", id).single());
+      O.set(K, id);
+      O.$("#quien").textContent = learner.name;
+      answers = await O.all(() => O.t("answer").select("concept_id,question_id,correct,created_at").eq("learner_id", id).order("id"));
+      casa();
+    }
+
+    // ---------------------------------------------------------------- casa
+    function casa() {
+      clearInterval(timerId);
+      const st = O.states(answers);
+      const sum = O.topicSummary(st);
+      const inTopic = (c) => !topic || c.topic === topic;
+      const cnt = (k) => O.CONCEPTS.filter((c) => inTopic(c) && st[c.id].status === k).length;
+      const dom = O.CONCEPTS.filter((c) => st[c.id].status === "dominado").length;
+      const nuevos = cnt("nuevo"), flojos = cnt("flojo") + cnt("aprendiendo");
+      app.innerHTML = `<h1>Hola, ${O.esc(learner.name)}</h1>
+        <p class="muted">Sabes <b>${dom}</b> de ${O.CONCEPTS.length} conceptos. Pregunta corta, respuesta rápida; si no lo sabes, pulsa «No lo sé» y te lo explico.</p>
+        <label>Tema</label>
+        <select id="tema"><option value="">Todos los temas</option>${O.TOPICS.map((t) => `<option value="${t.id}" ${t.id === topic ? "selected" : ""}>${t.emoji} ${O.esc(t.name)}</option>`).join("")}</select>
+        <p></p>
+        <button class="primary grande" id="smart">Sesión de 10 preguntas<span class="s">Mezcla: repasa lo que fallas, introduce conceptos nuevos · ~5 min</span></button>
+        <button class="grande" id="diag" ${nuevos ? "" : "disabled"}>Diagnóstico: ¿qué sé?<span class="s">${nuevos ? `${nuevos} conceptos sin ver · sin pistas, para medir` : "Ya has visto todos los conceptos"}</span></button>
+        <button class="grande" id="repaso" ${flojos ? "" : "disabled"}>Repasar lo que no sé<span class="s">${flojos ? `${flojos} conceptos flojos o a medias · con mini-lección antes` : "Nada pendiente"}</span></button>
+        <button class="grande" id="conceptos">Fichas de conceptos<span class="s">Lección corta + frase para la entrevista de cada concepto</span></button>
+        <h3>Por tema</h3>
+        ${sum.map((t) => `<div class="tema"><div class="n"><span>${t.emoji} ${O.esc(t.name)}</span><span class="muted">${t.count.dominado}/${t.total}</span></div>${O.stackBar(t.count, t.total)}</div>`).join("")}
+        <div class="leyenda"><span><i class="st dominado"></i>Lo sé</span><span><i class="st aprendiendo"></i>Aprendiendo</span><span><i class="st flojo"></i>No lo sé</span><span><i class="st nuevo"></i>Sin ver</span></div>
+        <p></p><button id="salir">No soy ${O.esc(learner.name)}</button>`;
+      O.$("#tema").onchange = (e) => { topic = e.target.value; O.set("observa_topic", topic || null); casa(); };
+      O.$("#smart").onclick = () => sesion("smart");
+      O.$("#diag").onclick = () => sesion("diag");
+      O.$("#repaso").onclick = () => sesion("repaso");
+      O.$("#conceptos").onclick = () => fichas();
+      O.$("#salir").onclick = () => { O.set(K, null); learner = null; answers = []; inicio(); };
+      window.scrollTo(0, 0);
+    }
+
+    // ---------------------------------------------------------------- fichas
+    function fichas() {
+      const st = O.states(answers);
+      app.innerHTML = `<div class="head"><h2>Fichas</h2><button id="volver">Volver</button></div>
+        ${O.TOPICS.filter((t) => !topic || t.id === topic).map((t) => `<h3>${t.emoji} ${O.esc(t.name)}</h3>
+          ${O.CONCEPTS.filter((c) => c.topic === t.id).map((c) => `<div class="crow" data-id="${c.id}"><i class="st ${st[c.id].status}"></i><span class="grow">${O.esc(c.title)}</span><span class="small muted">${O.STATUS[st[c.id].status]}</span></div>`).join("")}`).join("")}`;
+      O.$("#volver").onclick = casa;
+      O.$$(".crow").forEach((r) => (r.onclick = () => ficha(r.dataset.id)));
+      window.scrollTo(0, 0);
+    }
+
+    function ficha(id) {
+      const c = O.byId[id], s = O.states(answers)[id];
+      app.innerHTML = `<div class="head"><span class="pill">${O.topicById[c.topic].emoji} ${O.esc(O.topicById[c.topic].name)}</span><button id="volver">Fichas</button></div>
+        ${O.lessonHtml(c, true)}
+        <p class="small muted"><i class="st ${s.status}"></i>${O.STATUS[s.status]}${s.n ? ` · ${s.ok}/${s.n} aciertos` : ""}</p>
+        <button class="primary grande" id="practicar">Practicar este concepto<span class="s">${c.qs.length} preguntas</span></button>`;
+      O.$("#volver").onclick = fichas;
+      O.$("#practicar").onclick = () => sesion("concept:" + id);
+      O.$$("[data-concept]").forEach((b) => (b.onclick = () => ficha(b.dataset.concept)));
+      window.scrollTo(0, 0);
+    }
+
+    // ---------------------------------------------------------------- sesión
+    function sesion(mode) {
+      const st = O.states(answers);
+      const queue = O.buildQueue(st, mode, mode.startsWith("concept:") ? "" : topic);
+      if (!queue.length) return casa();
+      const sid = crypto.randomUUID();
+      const res = []; const retried = new Set();
+      let i = 0;
+      const next = () => {
+        if (i >= queue.length) return fin(res);
+        const item = queue[i++];
+        const run = () => pregunta(item, i, queue.length, sid, mode, (r) => {
+          res.push(r);
+          // Fallo → la misma idea vuelve 3 preguntas después, con otra variante.
+          if (!r.correct && !retried.has(item.cid) && !mode.startsWith("concept:")) {
+            retried.add(item.cid);
+            const c = O.byId[item.cid];
+            const other = c.qs.map((_, k) => `${c.id}.${k + 1}`).find((q) => q !== item.qid) || item.qid;
+            queue.splice(Math.min(queue.length, i + 3), 0, { cid: item.cid, qid: other, lesson: false, retry: true });
+          }
+          next();
+        });
+        if (item.lesson) leccion(O.byId[item.cid], run);
+        else run();
+      };
+      next();
+    }
+
+    function leccion(c, onGo) {
+      clearInterval(timerId);
+      app.innerHTML = `<div class="head"><span class="pill acc">Repaso</span><span class="small muted">${O.topicById[c.topic].emoji} ${O.esc(O.topicById[c.topic].name)}</span></div>
+        <p class="muted small">Este lo fallaste. Léelo (20 s) y ahora te pregunto.</p>
+        ${O.lessonHtml(c, false)}
+        <button class="primary grande" id="go">Pregúntame</button>`;
+      O.$("#go").onclick = onGo;
+      window.scrollTo(0, 0);
+    }
+
+    function pregunta(item, n, total, sid, mode, onDone) {
+      const { c, q } = O.question(item.qid);
+      const order = O.shuffle(q.o.map((_, k) => k));
+      const t0 = performance.now();
+      app.innerHTML = `<div class="head"><span class="small muted">${O.topicById[c.topic].emoji} ${O.esc(O.topicById[c.topic].name)}${item.retry ? " · otra vez" : ""}</span><span class="small muted">${n}/${total} · <span id="secs">0</span> s</span></div>
+        <div class="timer" id="timer"><i></i></div>
+        <div class="q">${O.esc(q.q)}</div>
+        <div class="ops">${order.map((k) => `<button data-k="${k}">${O.esc(q.o[k])}</button>`).join("")}</div>
+        <button class="nose" id="nose">No lo sé</button>
+        <div id="fb"></div>`;
+      const bar = O.$("#timer i");
+      requestAnimationFrame(() => (bar.style.width = "0%"));
+      clearInterval(timerId);
+      timerId = setInterval(() => {
+        const s = Math.round((performance.now() - t0) / 1000);
+        const el = O.$("#secs"); if (!el) return clearInterval(timerId);
+        el.textContent = s;
+        bar.style.width = Math.min(100, (s * 100) / LIMIT) + "%";
+        if (s >= LIMIT) O.$("#timer").classList.add("tarde");
+      }, 1000);
+
+      const answer = (chosen) => {
+        clearInterval(timerId);
+        const ms = Math.round(performance.now() - t0);
+        const correct = chosen === q.a;
+        O.$$(".ops button").forEach((b) => {
+          b.disabled = true;
+          const k = Number(b.dataset.k);
+          if (k === q.a) b.classList.add("bien");
+          else if (k === chosen) b.classList.add("mal");
+        });
+        O.$("#nose").remove();
+        const row = { learner_id: learner.id, session_id: sid, question_id: item.qid, concept_id: c.id, topic: c.topic,
+          correct, chosen: chosen ?? null, dont_know: chosen == null, ms };
+        answers.push({ concept_id: c.id, question_id: item.qid, correct, created_at: new Date().toISOString() });
+        O.t("answer").insert(row).then(({ error }) => { if (error) O.$("#fb").insertAdjacentHTML("beforeend", `<p class="err small">No se ha guardado: ${O.esc(error.message)}</p>`); });
+        const secs = Math.round(ms / 1000);
+        O.$("#fb").innerHTML = `<div class="fb ${correct ? "ok" : "ko"}"><b>${correct ? "Bien" : chosen == null ? "Sin problema, aquí va" : "No"}</b>
+            <span class="small muted"> · ${secs} s${secs > LIMIT ? " (más de " + LIMIT + " s)" : ""}</span><div>${O.esc(q.why)}</div></div>
+          ${correct ? (c.line ? `<div class="line small">💬 ${O.esc(c.line)}</div>` : "") : O.lessonHtml(c, true)}
+          <p></p><button class="primary grande" id="sig">Siguiente</button>`;
+        O.$$("#fb [data-concept]").forEach((b) => (b.onclick = () => {
+          const rc = O.byId[b.dataset.concept];
+          b.replaceWith(Object.assign(document.createElement("div"), { innerHTML: O.lessonHtml(rc, false) }));
+        }));
+        O.$("#sig").onclick = () => onDone({ cid: c.id, correct, ms });
+        O.$("#sig").scrollIntoView({ behavior: "smooth", block: "nearest" });
+      };
+      O.$$(".ops button").forEach((b) => (b.onclick = () => answer(Number(b.dataset.k))));
+      O.$("#nose").onclick = () => answer(null);
+      window.scrollTo(0, 0);
+    }
+
+    function fin(res) {
+      clearInterval(timerId);
+      const ok = res.filter((r) => r.correct).length;
+      const avg = res.length ? Math.round(res.reduce((s, r) => s + r.ms, 0) / res.length / 1000) : 0;
+      const fallados = [...new Set(res.filter((r) => !r.correct).map((r) => r.cid))];
+      const st = O.states(answers);
+      app.innerHTML = `<h1>${ok}/${res.length}</h1>
+        <p class="muted">Media de ${avg} s por pregunta${avg <= LIMIT ? " — buen ritmo." : " — intenta ir más rápido."}</p>
+        ${fallados.length ? `<h3>Para repasar</h3>${fallados.map((id) => `<div class="crow" data-id="${id}"><i class="st ${st[id].status}"></i><span class="grow">${O.esc(O.byId[id].title)}</span></div>`).join("")}` : "<p>Todo bien. 👌</p>"}
+        <p></p><button class="primary grande" id="otra">Otra sesión</button><button class="grande" id="casa">Inicio</button>`;
+      O.$("#otra").onclick = () => sesion("smart");
+      O.$("#casa").onclick = casa;
+      O.$$(".crow").forEach((r) => (r.onclick = () => ficha(r.dataset.id)));
+      window.scrollTo(0, 0);
+    }
+
+    inicio().catch(fail);
+  })();
+  </script>
+</body>
+</html>

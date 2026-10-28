@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Observa</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#1f1e1d" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="comun.css" />
+</head>
+<body>
+  <div class="wrap">
+    <h1>Observa</h1>
+    <p class="muted">Preguntas rápidas (30–40 s) de observability, Splunk, OpenTelemetry y Kubernetes para preparar la entrevista de Splunk Observability: primero ve qué sabes y qué no, y luego te va metiendo los conceptos que te faltan.</p>
+
+    <a class="card acceso" href="alumno/">
+      <div class="t">Alumno</div>
+      <div class="d">Diagnóstico, sesiones cortas, repaso de lo que fallas y fichas de cada concepto.</div>
+    </a>
+    <a class="card acceso" href="padre/">
+      <div class="t">Padre</div>
+      <div class="d">Progreso por tema, conceptos flojos, sesiones y tiempos.</div>
+    </a>
+
+    <h3>Banco</h3>
+    <div class="card small" id="estado">Cargando…</div>
+
+    <footer class="build">build __BUILD_ID__</footer>
+  </div>
+  <script src="vendor/supabase.min.js"></script>
+  <script src="config.js"></script>
+  <script src="banco.js"></script>
+  <script src="comun.js"></script>
+  <script>
+    (async () => {
+      const nq = O.CONCEPTS.reduce((n, c) => n + c.qs.length, 0);
+      const { count, error } = await O.t("answer").select("*", { count: "exact" }).limit(1);
+      O.$("#estado").innerHTML = `<b>${O.TOPICS.length}</b> temas · <b>${O.CONCEPTS.length}</b> conceptos · <b>${nq}</b> preguntas · ` +
+        (error ? `<span class="err">${O.esc(error.message)}</span>` : `<b>${count}</b> respuestas guardadas`);
+    })();
+  </script>
+</body>
+</html>
