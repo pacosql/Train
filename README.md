@@ -50,6 +50,7 @@ reglas para no interferir con las demás:
 | 💶 Gastos | [`gastos/`](./gastos) | `/Train/gastos/` | `gastos_` |
 | 🔊 Read Aloud | [`readaloud/`](./readaloud) | `/Train/readaloud/` | `readaloud_` |
 | 🔭 Observa | [`observa/`](./observa) (alumno: `/observa/alumno/`, padre: `/observa/padre/`) | `/Train/observa/` | `observa_` |
+| 🐷 Hucha | [`hucha/`](./hucha) | `/Train/hucha/` | `hucha_` |
 
 ## Añadir una app nueva
 

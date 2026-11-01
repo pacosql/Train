@@ -110,6 +110,7 @@ Al crear una app nueva `<app>/`:
 | 💶 Gastos | `gastos/` | `gastos_` |
 | 🔊 Read Aloud | `readaloud/` | `readaloud_` |
 | 🔭 Observa | `observa/` | `observa_` |
+| 🐷 Hucha | `hucha/` | `hucha_` |
 
 (Actualiza esta tabla al añadir una app nueva.)
 
