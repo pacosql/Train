@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Lengua · Revisión de May</title>
+  <link rel="manifest" href="../manifest.json" />
+  <meta name="theme-color" content="#1f1e1d" />
+  <link rel="icon" href="../icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="../icons/apple-touch-icon.png" />
+  <link rel="stylesheet" href="../comun.css" />
+  <style>
+    .q { font-size: 1.2rem; line-height: 1.4; margin: 12px 0 10px; font-weight: 500; }
+    .txt { font-family: var(--serif); font-size: 1.12rem; line-height: 1.5; background: var(--surface); border-left: 3px solid var(--accent); border-radius: 10px; padding: 12px 14px; margin: 12px 0 4px; white-space: pre-line; }
+    .ops button { display: flex; gap: 12px; align-items: baseline; width: 100%; text-align: left; margin: 8px 0; padding: 13px 14px; font-size: 1rem; line-height: 1.35; }
+    .ops button b { color: var(--muted); font-weight: 600; min-width: 1em; }
+    .ops button.bien { background: rgba(127, 182, 133, 0.2); border-color: var(--ok); }
+    .ops button.suya { background: rgba(224, 115, 107, 0.15); border-color: var(--bad); }
+    .ops button:disabled { opacity: 1; cursor: default; }
+    .ops button.apagada { opacity: 0.45; }
+    .nose { background: none; border: 1px dashed var(--line); color: var(--muted); width: 100%; margin-top: 2px; }
+    .fb { border-radius: 12px; padding: 12px 14px; margin: 12px 0; line-height: 1.45; background: var(--surface); border: 1px solid var(--line); }
+    .fb.ok { border-color: var(--ok); } .fb.ko { border-color: var(--bad); }
+    .grande { font-size: 1.02rem; padding: 13px 16px; width: 100%; margin: 5px 0; text-align: left; }
+    .grande .s { display: block; font-size: 0.8rem; color: var(--muted); font-weight: 400; }
+    button.primary.grande .s { color: var(--accent-ink); opacity: 0.8; }
+    button.quitar { border-color: var(--bad); color: var(--bad); }
+    .head { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+    .progreso { height: 4px; background: var(--surface-2); border-radius: 2px; overflow: hidden; margin: 8px 0 0; }
+    .progreso > i { display: block; height: 100%; background: var(--accent); }
+    .hist { font-size: 0.85rem; border-bottom: 1px solid var(--line); padding: 8px 0; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top"><a href="../">← Lengua</a><span class="pill">May · experta</span></div>
+    <div id="app">Cargando…</div>
+    <footer class="build">build __BUILD_ID__</footer>
+  </div>
+  <script src="../vendor/supabase.min.js"></script>
+  <script src="../config.js"></script>
+  <script src="../comun.js"></script>
+  <script>
+  (() => {
+    const REV = "May";
+    const app = L.$("#app");
+    let banco = [], revs = [], area = L.get("lengua_may_area") || "", vistasSesion = new Set();
+    const fail = (e) => (app.innerHTML = `<p class="err">${L.esc(e.message || e)}</p><button onclick="location.reload()">Reintentar</button>`);
+
+    async function cargar() {
+      const [qs, rv] = await Promise.all([
+        L.preguntas(),
+        L.all(() => L.t("revision").select("*").eq("revisor", REV).order("id")),
+      ]);
+      banco = qs; revs = rv;
+    }
+    // Revisada = tiene revisión de la versión actual de la pregunta.
+    const revisada = (q) => revs.some((r) => r.pregunta_id === q.id && r.version >= (q.version || 1));
+
+    function casa() {
+      const activas = banco.filter((q) => q.activa);
+      const hechas = activas.filter(revisada).length;
+      const quitadas = new Set(revs.filter((r) => r.veredicto === "quitar").map((r) => r.pregunta_id)).size;
+      const discrepa = revs.filter((r) => r.veredicto === "discrepa").length;
+      const coinc = revs.filter((r) => r.coincide != null);
+      const pend = (a) => activas.filter((q) => (!a || q.area === a) && !revisada(q)).length;
+      app.innerHTML = `<h1>Hola, May</h1>
+        <p class="muted">Gracias por revisar. Cada pregunta sale <b>sin la respuesta marcada</b>: elige tú la correcta y luego te enseño cuál tenemos. Si no tiene sentido, quítala; si dudas o no estás de acuerdo, escríbelo. Cada noche la rutina corrige lo que señales.</p>
+        <div class="kpis">
+          <div class="kpi"><b>${hechas}/${activas.length}</b><span>revisadas</span></div>
+          <div class="kpi"><b>${coinc.length ? L.pct(coinc.filter((r) => r.coincide).length / coinc.length) : "–"}</b><span>coincides con la marcada</span></div>
+          <div class="kpi"><b>${quitadas}</b><span>quitadas</span></div>
+          <div class="kpi"><b>${discrepa}</b><span>discrepancias enviadas</span></div>
+        </div>
+        <div class="progreso"><i style="width:${activas.length ? (hechas * 100) / activas.length : 0}%"></i></div>
+        <label>Área</label>
+        <select id="area"><option value="">Todas (${pend("")} pendientes)</option>${L.AREAS.map((a) => `<option value="${a.id}" ${a.id === area ? "selected" : ""}>${a.emoji} ${L.esc(a.name)} (${pend(a.id)})</option>`).join("")}</select>
+        <p></p>
+        <button class="primary grande" id="go" ${pend(area) ? "" : "disabled"}>Revisar${pend(area) ? "" : " — no quedan"}<span class="s">${pend(area)} pendientes${area ? " en esta área" : ""}</span></button>
+        <h3>Tus últimas revisiones</h3>
+        ${revs.slice(-15).reverse().map((r) => { const q = banco.find((x) => x.id === r.pregunta_id); return q ? `<div class="hist">${{ ok: "✅", quitar: "🗑️", discrepa: "⚠️", comentario: "💬" }[r.veredicto] || ""} ${L.esc(q.q)}${r.texto ? ` <span class="muted">— ${L.esc(r.texto)}</span>` : ""}</div>` : ""; }).join("") || '<p class="muted small">Aún ninguna.</p>'}`;
+      L.$("#area").onchange = (e) => { area = e.target.value; L.set("lengua_may_area", area || null); casa(); };
+      L.$("#go").onclick = siguiente;
+      window.scrollTo(0, 0);
+    }
+
+    // Al azar entre las pendientes (áreas mezcladas).
+    function siguiente() {
+      const pool = banco.filter((q) => q.activa && (!area || q.area === area) && !revisada(q) && !vistasSesion.has(q.id));
+      if (!pool.length) return casa();
+      const q = pool[Math.floor(Math.random() * pool.length)];
+      vistasSesion.add(q.id);
+      pregunta(q);
+    }
+
+    function pregunta(q) {
+      const a = L.areaById[q.area] || { emoji: "", name: q.area };
+      const order = L.shuffle([0, 1, 2, 3]);
+      const pend = banco.filter((x) => x.activa && !revisada(x)).length;
+      app.innerHTML = `<div class="head"><span class="small muted">${a.emoji} ${L.esc(a.name)} · ${"●".repeat(q.nivel)}${"○".repeat(3 - q.nivel)} · ${q.id}</span>
+          <span class="small muted">quedan ${pend} · <a href="#" id="parar" style="color:var(--muted)">✕ parar</a></span></div>
+        ${q.txt ? `<div class="txt">${L.esc(q.txt)}</div>` : ""}
+        <div class="q">${L.esc(q.q)}</div>
+        <div class="ops">${order.map((k, i) => `<button data-k="${k}"><b>${"ABCD"[i]}</b><span>${L.esc(q.o[k])}</span></button>`).join("")}</div>
+        <button class="nose" id="nose">No lo sé / no está clara</button>
+        <button class="grande quitar" id="quitarYa">🗑️ Quitar esta pregunta<span class="s">No tiene sentido o está mal planteada</span></button>
+        <div id="fb"></div>`;
+      L.$("#parar").onclick = (e) => { e.preventDefault(); casa(); };
+      L.$("#quitarYa").onclick = () => quitar(q, null);
+      const elegir = (k) => {
+        const coincide = k === q.a;
+        L.$$(".ops button").forEach((b) => {
+          b.disabled = true;
+          const kk = Number(b.dataset.k);
+          if (kk === q.a) b.classList.add("bien"); else if (kk === k) b.classList.add("suya"); else b.classList.add("apagada");
+        });
+        L.$("#nose").remove(); L.$("#quitarYa").remove();
+        L.$("#fb").innerHTML = `<div class="fb ${coincide ? "ok" : "ko"}">${coincide ? "<b>Coincides</b> con la respuesta marcada." : k == null ? `La marcada es <b>${L.esc(q.o[q.a])}</b>.` : `Tú: <b>${L.esc(q.o[k])}</b> · marcada: <b>${L.esc(q.o[q.a])}</b>.`}
+            <div class="small muted" style="margin-top:6px">💡 ${L.esc(q.why)}</div></div>
+          ${coincide
+            ? `<button class="primary grande" id="ok">✅ Correcta, siguiente</button>`
+            : `<button class="primary grande" id="mia">⚠️ ${k == null ? "La pregunta no está clara" : "La correcta es la mía"}<span class="s">Se corrige esta noche</span></button>
+               <button class="grande" id="ok">Me equivoqué: la marcada está bien</button>`}
+          <textarea id="nota" rows="2" placeholder="Comentario opcional (explicación mejorable, errata, otra respuesta posible…)"></textarea>
+          <button class="grande quitar" id="quitar">🗑️ Quitar esta pregunta<span class="s">No tiene sentido o está mal planteada</span></button>`;
+        L.$("#ok").onclick = () => guardar(q, { elegida: k, coincide, veredicto: L.$("#nota").value.trim() ? "comentario" : "ok" });
+        if (L.$("#mia")) L.$("#mia").onclick = () => guardar(q, { elegida: k, coincide, veredicto: "discrepa" });
+        L.$("#quitar").onclick = () => quitar(q, k);
+        L.$("#fb").scrollIntoView({ behavior: "smooth", block: "start" });
+      };
+      L.$$(".ops button").forEach((b) => (b.onclick = () => elegir(Number(b.dataset.k))));
+      L.$("#nose").onclick = () => elegir(null);
+      window.scrollTo(0, 0);
+    }
+
+    async function guardar(q, { elegida, coincide, veredicto }) {
+      const texto = L.$("#nota")?.value.trim() || null;
+      L.$$("#fb button").forEach((b) => (b.disabled = true));
+      const row = { revisor: REV, pregunta_id: q.id, version: q.version || 1, elegida: elegida ?? null, coincide: elegida == null && veredicto === "quitar" ? null : coincide, veredicto, texto };
+      const { error } = await L.t("revision").insert(row);
+      if (error) return alert(error.message);
+      revs.push({ ...row, created_at: new Date().toISOString() });
+      // Lo que necesita arreglo pasa a avisos para la rutina nocturna.
+      if (veredicto !== "ok") {
+        const partes = [];
+        if (veredicto === "quitar") partes.push("QUITADA por May (experta): no tiene sentido o está mal planteada.");
+        if (veredicto === "discrepa") partes.push(elegida == null ? "May (experta): la pregunta no está clara." : `May (experta) cree que la correcta es «${q.o[elegida]}», no «${q.o[q.a]}».`);
+        if (veredicto === "comentario") partes.push("Comentario de May (experta):");
+        if (texto) partes.push(texto);
+        await L.t("reporte").insert({ pregunta_id: q.id, quien: "May (experta)", texto: partes.join(" ") });
+      }
+      siguiente();
+    }
+
+    async function quitar(q, k) {
+      if (!confirm("¿Quitar esta pregunta? Deja de salirle a Carmen ahora mismo.")) return;
+      const { error } = await L.t("pregunta").update({ activa: false }).eq("id", q.id);
+      if (error) return alert(error.message);
+      q.activa = false;
+      await guardar(q, { elegida: k, coincide: k == null ? null : k === q.a, veredicto: "quitar" });
+    }
+
+    cargar().then(casa).catch(fail);
+  })();
+  </script>
+</body>
+</html>

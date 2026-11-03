@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Lengua · Revisor</title>
+  <link rel="manifest" href="../manifest.json" />
+  <meta name="theme-color" content="#1f1e1d" />
+  <link rel="icon" href="../icons/icon-192.png" />
+  <link rel="stylesheet" href="../comun.css" />
+  <style>
+    .pq { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; margin: 10px 0; }
+    .pq.off { opacity: 0.5; }
+    .pq .meta { display: flex; justify-content: space-between; gap: 8px; font-size: 0.78rem; color: var(--muted); }
+    .pq .txt { font-family: var(--serif); margin: 6px 0; padding-left: 10px; border-left: 2px solid var(--accent); white-space: pre-line; }
+    .pq .qq { font-weight: 600; margin: 4px 0; }
+    .pq ol { margin: 4px 0; padding-left: 22px; font-size: 0.92rem; }
+    .pq li.ok { color: var(--ok); font-weight: 600; }
+    .pq .why { font-size: 0.85rem; color: var(--muted); margin-top: 4px; }
+    .pq .acc { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
+    .pq .acc button { font-size: 0.8rem; padding: 5px 10px; }
+    .filtros { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .rep { font-size: 0.82rem; border-top: 1px solid var(--line); margin-top: 8px; padding-top: 6px; }
+    .tabs { display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0; }
+    .tabs button.on { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top"><a href="../">← Lengua</a><span class="pill">revisor</span></div>
+    <h1>Revisor</h1>
+    <p class="muted small">Todas las preguntas con sus resultados. Si ves algo mal, «Avisar» (la rutina de la noche lo corrige y te contesta aquí) o «Retirar» para que deje de salir ya.</p>
+    <div class="tabs" id="tabs"></div>
+    <div class="filtros">
+      <select id="area"><option value="">Todas las áreas</option></select>
+      <select id="nivel"><option value="">Todos los niveles</option><option value="1">● Básico</option><option value="2">●● Medio</option><option value="3">●●● Examen</option></select>
+    </div>
+    <input id="buscar" placeholder="Buscar texto…" style="margin-top:8px" />
+    <div id="resumen" class="small muted" style="margin-top:8px"></div>
+    <div id="app">Cargando…</div>
+    <footer class="build">build __BUILD_ID__</footer>
+  </div>
+  <script src="../vendor/supabase.min.js"></script>
+  <script src="../config.js"></script>
+  <script src="../comun.js"></script>
+  <script>
+  (async () => {
+    const app = L.$("#app");
+    const TABS = [["todas", "Todas"], ["falladas", "Más falladas"], ["avisos", "Con avisos"], ["nuevas", "Nuevas (noche)"], ["retiradas", "Retiradas"], ["rutina", "Rutina"]];
+    let tab = L.get("lengua_rev_tab") || "todas";
+    let qs = [], stats = {}, reps = {}, log = [];
+    L.$("#area").innerHTML += L.AREAS.map((a) => `<option value="${a.id}">${a.emoji} ${L.esc(a.name)}</option>`).join("");
+
+    async function cargar() {
+      const [p, r, rp, lg] = await Promise.all([
+        L.preguntas(),
+        L.all(() => L.t("respuesta").select("pregunta_id,correcta,elegida,ms").order("id")),
+        L.all(() => L.t("reporte").select("*").order("id", { ascending: false })),
+        L.t("rutina_log").select("*").eq("tipo", "noche").order("id", { ascending: false }).limit(30).then(L.must),
+      ]);
+      qs = p; log = lg; stats = {}; reps = {};
+      r.forEach((x) => { const s = (stats[x.pregunta_id] ||= { n: 0, ko: 0, el: {} }); s.n++; if (!x.correcta) { s.ko++; const k = x.elegida == null ? "nose" : x.elegida; s.el[k] = (s.el[k] || 0) + 1; } });
+      rp.forEach((x) => (reps[x.pregunta_id] ||= []).push(x));
+      const activas = qs.filter((q) => q.activa).length;
+      L.$("#resumen").textContent = `${activas} activas · ${qs.length - activas} retiradas · ${r.length} respuestas · ${rp.filter((x) => x.estado === "pendiente").length} avisos pendientes`;
+      pintar();
+    }
+
+    function card(q) {
+      const s = stats[q.id] || { n: 0, ko: 0, el: {} }, a = L.areaById[q.area] || { emoji: "", name: q.area };
+      const rs = reps[q.id] || [];
+      const masElegida = Object.entries(s.el).sort((x, y) => y[1] - x[1])[0];
+      return `<div class="pq ${q.activa ? "" : "off"}" data-id="${q.id}">
+        <div class="meta"><span>${a.emoji} ${L.esc(a.name)} · ${"●".repeat(q.nivel)} · ${q.id}${q.origen !== "semilla" ? " · " + L.esc(q.origen) : ""}${q.version > 1 ? " · v" + q.version : ""}</span>
+          <span>${s.n ? `${s.n - s.ko}/${s.n} bien` : "sin respuestas"}</span></div>
+        ${q.txt ? `<div class="txt">${L.esc(q.txt)}</div>` : ""}
+        <div class="qq">${L.esc(q.q)}</div>
+        <ol type="A">${q.o.map((o, i) => `<li class="${i === q.a ? "ok" : ""}">${L.esc(o)}${s.el[i] ? ` <span class="small muted">(${s.el[i]}× elegida mal)</span>` : ""}</li>`).join("")}</ol>
+        <div class="why">💡 ${L.esc(q.why)}</div>
+        ${masElegida && masElegida[0] === "nose" ? `<div class="small muted">«No lo sé» ×${masElegida[1]}</div>` : ""}
+        ${rs.map((r) => `<div class="rep">⚑ <b>${L.esc(r.quien)}</b> ${L.hace(r.created_at)}: ${L.esc(r.texto)}<br><span class="${r.estado === "pendiente" ? "pill acc" : "pill ok"}">${r.estado}</span>${r.respuesta ? ` <span class="muted">${L.esc(r.respuesta)}</span>` : ""}</div>`).join("")}
+        <div class="acc"><button data-act="avisar">⚑ Avisar</button><button data-act="toggle">${q.activa ? "Retirar" : "Reactivar"}</button></div>
+        <div class="box"></div></div>`;
+    }
+
+    function pintar() {
+      L.$("#tabs").innerHTML = TABS.map(([k, n]) => `<button data-tab="${k}" class="${k === tab ? "on" : ""}">${n}</button>`).join("");
+      L.$$("#tabs button").forEach((b) => (b.onclick = () => { tab = b.dataset.tab; L.set("lengua_rev_tab", tab); pintar(); }));
+      if (tab === "rutina") {
+        app.innerHTML = log.length ? log.map((r) => `<div class="card small"><b>${new Date(r.created_at).toLocaleString("es-ES", { dateStyle: "medium", timeStyle: "short" })}</b><br>${L.esc(r.nota)}
+          ${r.datos ? `<details><summary class="muted">detalle</summary><pre style="white-space:pre-wrap;font-size:0.75rem">${L.esc(JSON.stringify(r.datos, null, 1))}</pre></details>` : ""}</div>`).join("") : '<p class="muted">La rutina nocturna (00:00) aún no ha pasado.</p>';
+        return;
+      }
+      const area = L.$("#area").value, nivel = L.$("#nivel").value, txt = L.$("#buscar").value.trim().toLowerCase();
+      let list = qs.filter((q) => (!area || q.area === area) && (!nivel || String(q.nivel) === nivel)
+        && (!txt || (q.q + " " + (q.txt || "") + " " + q.o.join(" ") + " " + q.why).toLowerCase().includes(txt)));
+      const st = (q) => stats[q.id] || { n: 0, ko: 0 };
+      if (tab === "falladas") list = list.filter((q) => q.activa && st(q).ko).sort((a, b) => st(b).ko / st(b).n - st(a).ko / st(a).n || st(b).n - st(a).n);
+      else if (tab === "avisos") list = list.filter((q) => reps[q.id]).sort((a, b) => Date.parse(reps[b.id][0].created_at) - Date.parse(reps[a.id][0].created_at));
+      else if (tab === "nuevas") list = list.filter((q) => q.origen !== "semilla" || q.version > 1).sort((a, b) => Date.parse(b.updated_at) - Date.parse(a.updated_at));
+      else if (tab === "retiradas") list = list.filter((q) => !q.activa);
+      else list = list.filter((q) => q.activa);
+      const shown = list.slice(0, 150);
+      app.innerHTML = (list.length ? "" : '<p class="muted">Nada por aquí.</p>') + shown.map(card).join("") + (list.length > shown.length ? `<p class="small muted">… y ${list.length - shown.length} más (filtra por área o busca).</p>` : "");
+      L.$$(".pq").forEach((el) => {
+        const q = qs.find((x) => x.id === el.dataset.id);
+        el.querySelector('[data-act="avisar"]').onclick = () => {
+          const box = el.querySelector(".box");
+          box.innerHTML = `<textarea rows="2" placeholder="Qué está mal o cómo mejorarla"></textarea><p></p><button class="primary">Enviar</button>`;
+          box.querySelector("button").onclick = async () => {
+            const texto = box.querySelector("textarea").value.trim();
+            if (!texto) return;
+            const { error } = await L.t("reporte").insert({ pregunta_id: q.id, quien: "revisor", texto });
+            if (error) return (box.innerHTML = `<p class="err small">${L.esc(error.message)}</p>`);
+            cargar();
+          };
+        };
+        el.querySelector('[data-act="toggle"]').onclick = async () => {
+          const { error } = await L.t("pregunta").update({ activa: !q.activa }).eq("id", q.id);
+          if (error) return alert(error.message);
+          q.activa = !q.activa; pintar();
+        };
+      });
+    }
+    ["#area", "#nivel"].forEach((s) => (L.$(s).onchange = pintar));
+    L.$("#buscar").oninput = pintar;
+    cargar().catch((e) => (app.innerHTML = `<p class="err">${L.esc(e.message)}</p>`));
+  })();
+  </script>
+</body>
+</html>

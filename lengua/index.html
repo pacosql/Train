@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Lengua · Oposición</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#1f1e1d" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="comun.css" />
+</head>
+<body>
+  <div class="wrap">
+    <h1>Lengua</h1>
+    <p class="muted">Test diario para la oposición de <b>Lengua Castellana y Literatura</b> (Secundaria, Región de Murcia): 50 preguntas cortas al día de lo que entra en el tema y en el práctico — comentario literario y comentario lingüístico y pragmático. Se adapta a su nivel cada 5 minutos y cada noche aprende y escribe preguntas nuevas.</p>
+
+    <a class="card acceso" href="alumno/">
+      <div class="t">🎓 Alumno</div>
+      <div class="d">Las 50 preguntas de hoy. Si fallas, explicación (5 s para leerla).</div>
+    </a>
+    <a class="card acceso" href="padre/">
+      <div class="t">👀 Padre</div>
+      <div class="d">Cómo va: índice de preparación, ¿está lista?, áreas fuertes y flojas, constancia.</div>
+    </a>
+    <a class="card acceso" href="revisor/">
+      <div class="t">🔍 Revisor</div>
+      <div class="d">Todas las preguntas con sus aciertos; avisa de errores o retira las malas. La rutina de la noche lo corrige.</div>
+    </a>
+
+    <h3>Banco</h3>
+    <div class="card small" id="estado">Cargando…</div>
+
+    <footer class="build">build __BUILD_ID__</footer>
+  </div>
+  <script src="vendor/supabase.min.js"></script>
+  <script src="config.js"></script>
+  <script src="comun.js"></script>
+  <script>
+    (async () => {
+      try {
+        const qs = await L.all(() => L.t("pregunta").select("id,activa").eq("activa", true));
+        const { count } = await L.t("respuesta").select("*", { count: "exact", head: true });
+        const log = L.must(await L.t("rutina_log").select("tipo,nota,created_at").order("id", { ascending: false }).limit(20));
+        const last = (t) => log.find((r) => r.tipo === t);
+        const r5 = last("5min"), rn = last("noche");
+        L.$("#estado").innerHTML = `<b>${qs.length}</b> preguntas en <b>${L.AREAS.length}</b> áreas · <b>${count ?? 0}</b> respuestas<br>
+          <span class="muted">Rutina 5 min: ${r5 ? L.hace(r5.created_at) : "aún no"} · Rutina noche: ${rn ? L.hace(rn.created_at) + " — " + L.esc(rn.nota) : "aún no ha pasado"}</span>`;
+      } catch (e) { L.$("#estado").innerHTML = `<span class="err">${L.esc(e.message)}</span>`; }
+    })();
+  </script>
+</body>
+</html>
