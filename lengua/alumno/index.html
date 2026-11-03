@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Lengua · Alumno</title>
+  <link rel="manifest" href="../manifest.json" />
+  <meta name="theme-color" content="#1f1e1d" />
+  <link rel="icon" href="../icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="../icons/apple-touch-icon.png" />
+  <link rel="stylesheet" href="../comun.css" />
+  <style>
+    .q { font-size: 1.2rem; line-height: 1.4; margin: 12px 0 10px; font-weight: 500; }
+    .txt { font-family: var(--serif); font-size: 1.12rem; line-height: 1.5; background: var(--surface); border-left: 3px solid var(--accent); border-radius: 10px; padding: 12px 14px; margin: 12px 0 4px; white-space: pre-line; }
+    .ops button { display: flex; gap: 12px; align-items: baseline; width: 100%; text-align: left; margin: 8px 0; padding: 13px 14px; font-size: 1rem; line-height: 1.35; }
+    .ops button b { color: var(--muted); font-weight: 600; min-width: 1em; }
+    .ops button.bien { background: rgba(127, 182, 133, 0.2); border-color: var(--ok); }
+    .ops button.mal { background: rgba(224, 115, 107, 0.15); border-color: var(--bad); }
+    .ops button:disabled { opacity: 1; cursor: default; }
+    .ops button.apagada { opacity: 0.45; }
+    .nose { background: none; border: 1px dashed var(--line); color: var(--muted); width: 100%; margin-top: 2px; }
+    .fb { border-radius: 12px; padding: 12px 14px; margin: 12px 0; line-height: 1.45; }
+    .fb.ok { background: rgba(127, 182, 133, 0.12); border: 1px solid var(--ok); }
+    .fb.ko { background: rgba(224, 115, 107, 0.1); border: 1px solid var(--bad); }
+    .grande { font-size: 1.05rem; padding: 14px 18px; width: 100%; margin: 6px 0; text-align: left; }
+    .grande .s { display: block; font-size: 0.8rem; color: var(--muted); font-weight: 400; }
+    button.primary.grande .s { color: var(--accent-ink); opacity: 0.8; }
+    .head { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+    .progreso { height: 4px; background: var(--surface-2); border-radius: 2px; overflow: hidden; margin: 8px 0 0; }
+    .progreso > i { display: block; height: 100%; background: var(--accent); }
+    .area { display: grid; grid-template-columns: 1fr 64px; gap: 4px 10px; align-items: center; margin: 8px 0; font-size: 0.9rem; }
+    .learners button { display: block; width: 100%; text-align: left; font-size: 1.1rem; padding: 14px; margin: 8px 0; }
+    .hoy { font-family: var(--serif); font-size: 3rem; line-height: 1; margin: 8px 0 2px; }
+    .hoy small { font-size: 1.2rem; color: var(--muted); }
+    .aviso { background: none; border: none; color: var(--muted); font-size: 0.8rem; padding: 6px 0; text-decoration: underline; }
+    .nivel { letter-spacing: 1px; color: var(--accent); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top"><a href="../">← Lengua</a><span class="pill" id="quien">alumno</span></div>
+    <div id="app">Cargando…</div>
+    <footer class="build">build __BUILD_ID__</footer>
+  </div>
+  <script src="../vendor/supabase.min.js"></script>
+  <script src="../config.js"></script>
+  <script src="../comun.js"></script>
+  <script>
+  (() => {
+    const app = L.$("#app");
+    const K = "lengua_alumno";
+    const BLOQUEO = 5;      // segundos de lectura obligada tras un fallo
+    const PAUSA = 10;       // pausa corta cada 10 preguntas
+    let alumno = null, banco = {}, answers = [], cola = [], retries = [];
+    let sesion = null, hechasSesion = 0, okSesion = 0, falladasSesion = [];
+    let lockId = null, rellenando = null;
+
+    const fail = (e) => (app.innerHTML = `<p class="err">${L.esc(e.message || e)}</p><button onclick="location.reload()">Reintentar</button>`);
+    const hoy = () => answers.filter((a) => L.dayKey(a.created_at) === L.dayKey(Date.now())).length;
+
+    // ------------------------------------------------------------ quién
+    async function inicio() {
+      const saved = L.get(K);
+      if (saved) return elegir(saved).catch(() => { L.set(K, null); inicio(); });
+      const ls = L.must(await L.t("alumno").select("id,nombre").order("created_at"));
+      app.innerHTML = `<h1>¿Quién eres?</h1>
+        <div class="learners">${ls.map((l) => `<button data-id="${l.id}">${L.esc(l.nombre)}</button>`).join("") || '<p class="muted">Aún no hay nadie.</p>'}</div>
+        <h3>Soy nuevo</h3>
+        <div class="row"><input id="nombre" class="grow" placeholder="Tu nombre" maxlength="40" autocomplete="off" /><button class="primary" id="crear">Empezar</button></div>`;
+      L.$$(".learners button").forEach((b) => (b.onclick = () => elegir(b.dataset.id).catch(fail)));
+      L.$("#crear").onclick = async () => {
+        const n = L.$("#nombre").value.trim();
+        if (!n) return L.$("#nombre").focus();
+        L.$("#crear").disabled = true;
+        const row = L.must(await L.t("alumno").insert({ nombre: n }).select("id").single());
+        elegir(row.id).catch(fail);
+      };
+      L.$("#nombre").onkeydown = (e) => { if (e.key === "Enter") L.$("#crear").click(); };
+    }
+
+    async function elegir(id) {
+      alumno = L.must(await L.t("alumno").select("*").eq("id", id).single());
+      L.set(K, id);
+      L.$("#quien").textContent = alumno.nombre;
+      const [qs, ans] = await Promise.all([L.preguntas(), L.respuestas(id)]);
+      banco = Object.fromEntries(qs.filter((q) => q.activa).map((q) => [q.id, q]));
+      answers = ans;
+      casa();
+    }
+
+    // ------------------------------------------------------------ casa
+    function casa() {
+      clearInterval(lockId);
+      const h = hoy(), obj = alumno.objetivo, nv = L.niveles(answers);
+      const quedan = Math.max(0, obj - h);
+      const racha = L.racha(answers, obj);
+      app.innerHTML = `<h1>Hola, ${L.esc(alumno.nombre)}</h1>
+        <div class="hoy">${h}<small> / ${obj} hoy</small></div>
+        <div class="progreso"><i style="width:${Math.min(100, (h * 100) / obj)}%"></i></div>
+        <p class="muted small">${racha ? `🔥 ${racha} día${racha > 1 ? "s" : ""} seguidos cumpliendo · ` : ""}${answers.length} respuestas en total</p>
+        ${quedan
+          ? `<button class="primary grande" id="go">${h ? "Seguir" : "Empezar"}<span class="s">Quedan ${quedan} para el objetivo de hoy · preguntas cortas, ~20 s cada una</span></button>`
+          : `<p>✅ Objetivo de hoy cumplido.</p><button class="grande" id="go">10 más<span class="s">Opcional: repaso extra</span></button>`}
+        <h3>Tu nivel por área</h3>
+        ${L.BLOQUES.map((b) => `<div class="small muted" style="margin-top:12px">${L.esc(b.name)}</div>
+          ${L.AREAS.filter((a) => a.bloque === b.id).map((a) => {
+            const x = nv[a.id];
+            return `<div class="area"><div>${a.emoji} ${L.esc(a.name)} <span class="small muted">· ${x.n ? L.NIVEL[x.obj] : "sin empezar"}</span></div>
+              <div class="bar" title="dominio ${L.pct(x.dominio)}"><i style="width:${x.n ? Math.round(x.dominio * 100) : 0}%"></i></div></div>`;
+          }).join("")}`).join("")}
+        <p class="small muted">La barra es tu dominio a nivel de examen: los aciertos de preguntas difíciles cuentan más.</p>
+        <p></p><button id="salir">No soy ${L.esc(alumno.nombre)}</button>`;
+      L.$("#go").onclick = () => practicar(quedan ? quedan : 10);
+      L.$("#salir").onclick = () => { L.set(K, null); alumno = null; answers = []; inicio(); };
+      window.scrollTo(0, 0);
+    }
+
+    // ------------------------------------------------------------ cola
+    async function cargarCola() {
+      const rows = L.must(await L.t("cola").select("pos,pregunta_id,motivo").eq("alumno_id", alumno.id).order("pos"));
+      const vistas = new Set(answers.filter((a) => sesion && a.sesion === sesion).map((a) => a.pregunta_id));
+      cola = rows.filter((r) => banco[r.pregunta_id] && !vistas.has(r.pregunta_id));
+    }
+
+    // Pide a Supabase un lote nuevo ya (la misma función que la rutina de 5 min).
+    async function rellenar() {
+      if (rellenando) return rellenando;
+      rellenando = (async () => {
+        try { await L.sb.rpc("lengua_preparar", { p_alumno: alumno.id }); await cargarCola(); }
+        catch (e) { console.warn(e); }
+        finally { rellenando = null; }
+      })();
+      return rellenando;
+    }
+
+    // Último recurso si Supabase no responde: elige aquí mismo.
+    function eleccionLocal() {
+      const nv = L.niveles(answers);
+      const vistas = new Set(answers.map((a) => a.pregunta_id));
+      const sesionVistas = new Set(answers.filter((a) => a.sesion === sesion).map((a) => a.pregunta_id));
+      let pool = Object.values(banco).filter((q) => !vistas.has(q.id));
+      if (!pool.length) pool = Object.values(banco).filter((q) => !sesionVistas.has(q.id));
+      if (!pool.length) pool = Object.values(banco);
+      const peso = (q) => (1.15 - nv[q.area].dominio) / (1 + Math.abs(q.nivel - nv[q.area].obj));
+      let r = Math.random() * pool.reduce((s, q) => s + peso(q), 0);
+      for (const q of pool) { r -= peso(q); if (r <= 0) return { pregunta_id: q.id, motivo: "local" }; }
+      return { pregunta_id: pool[0].id, motivo: "local" };
+    }
+
+    async function siguienteItem() {
+      const i = retries.findIndex((r) => r.due <= hechasSesion);
+      if (i >= 0) return retries.splice(i, 1)[0];
+      const vistas = new Set(answers.filter((a) => a.sesion === sesion).map((a) => a.pregunta_id));
+      cola = cola.filter((c) => !vistas.has(c.pregunta_id) && banco[c.pregunta_id]);
+      if (!cola.length) await rellenar();
+      cola = cola.filter((c) => !vistas.has(c.pregunta_id) && banco[c.pregunta_id]);
+      if (cola.length < 6) rellenar();  // en segundo plano
+      return cola.shift() || (retries.length ? retries.shift() : eleccionLocal());
+    }
+
+    // ------------------------------------------------------------ práctica
+    async function practicar(n) {
+      sesion = crypto.randomUUID();
+      hechasSesion = 0; okSesion = 0; falladasSesion = []; retries = [];
+      app.innerHTML = "Preparando preguntas…";
+      try { await cargarCola(); } catch (e) { console.warn(e); }
+      siguiente(n);
+    }
+
+    async function siguiente(n) {
+      if (hechasSesion >= n) return fin();
+      if (hechasSesion && hechasSesion % PAUSA === 0 && !siguiente.pausado) { siguiente.pausado = true; return pausa(n); }
+      siguiente.pausado = false;
+      const item = await siguienteItem();
+      pregunta(item, n);
+    }
+
+    function pausa(n) {
+      const h = hoy();
+      app.innerHTML = `<h2>${okSesion}/${hechasSesion} bien</h2>
+        <p class="muted">Llevas ${h} de ${alumno.objetivo} hoy. Respira y sigue.</p>
+        <button class="primary grande" id="seg">Seguir<span class="s">Quedan ${n - hechasSesion} en esta tanda</span></button>
+        <button class="grande" id="casa">Parar aquí</button>`;
+      L.$("#seg").onclick = () => siguiente(n);
+      L.$("#casa").onclick = casa;
+      window.scrollTo(0, 0);
+    }
+
+    function pregunta(item, n) {
+      const q = banco[item.pregunta_id];
+      if (!q) return siguiente(n);
+      const area = L.areaById[q.area] || { emoji: "•", name: q.area };
+      const order = L.shuffle([0, 1, 2, 3]);
+      const t0 = performance.now();
+      const h = hoy();
+      app.innerHTML = `<div class="head"><span class="small muted">${area.emoji} ${L.esc(area.name)} · <span class="nivel">${"●".repeat(q.nivel)}${"○".repeat(3 - q.nivel)}</span>${item.retry ? " · otra vez" : item.motivo === "repaso" ? " · repaso" : ""}</span>
+          <span class="small muted">${h}/${alumno.objetivo}</span></div>
+        <div class="progreso"><i style="width:${Math.min(100, (h * 100) / alumno.objetivo)}%"></i></div>
+        ${q.txt ? `<div class="txt">${L.esc(q.txt)}</div>` : ""}
+        <div class="q">${L.esc(q.q)}</div>
+        <div class="ops">${order.map((k, i) => `<button data-k="${k}"><b>${"ABCD"[i]}</b><span>${L.esc(q.o[k])}</span></button>`).join("")}</div>
+        <button class="nose" id="nose">No lo sé</button>
+        <div id="fb"></div>`;
+
+      const responder = (chosen) => {
+        const ms = Math.round(performance.now() - t0);
+        const correcta = chosen === q.a;
+        L.$$(".ops button").forEach((b) => {
+          b.disabled = true;
+          const k = Number(b.dataset.k);
+          if (k === q.a) b.classList.add("bien");
+          else if (k === chosen) b.classList.add("mal");
+          else b.classList.add("apagada");
+        });
+        L.$("#nose").remove();
+        hechasSesion++;
+        if (correcta) okSesion++; else falladasSesion.push(q.id);
+        const row = { alumno_id: alumno.id, pregunta_id: q.id, area: q.area, nivel: q.nivel, correcta,
+          elegida: chosen ?? null, ms, sesion, repaso: !!item.retry || item.motivo === "repaso" };
+        answers.push({ ...row, created_at: new Date().toISOString() });
+        L.t("respuesta").insert(row).then(({ error }) => {
+          if (error) L.$("#fb")?.insertAdjacentHTML("afterbegin", `<p class="err small">No se ha guardado: ${L.esc(error.message)}</p>`);
+        });
+        if (item.pos != null) L.t("cola").delete().eq("alumno_id", alumno.id).eq("pos", item.pos).eq("pregunta_id", q.id).then(() => {});
+        // Fallo → vuelve a salir 6 preguntas después (una vez), con las opciones barajadas.
+        if (!correcta && !item.retry) retries.push({ pregunta_id: q.id, motivo: "repaso", retry: true, due: hechasSesion + 6 });
+
+        L.$("#fb").innerHTML = `<div class="fb ${correcta ? "ok" : "ko"}"><b>${correcta ? "Bien" : chosen == null ? "Aquí va" : "No"}.</b> ${L.esc(q.why)}</div>
+          <button class="primary grande" id="sig" ${correcta ? "" : "disabled"}>${correcta ? "Siguiente" : `Lee la explicación · ${BLOQUEO}`}</button>
+          <button class="aviso" id="aviso">⚑ ¿Ves un error en esta pregunta?</button><div id="avisoBox"></div>`;
+        const sig = L.$("#sig");
+        sig.onclick = () => siguiente(n);
+        if (!correcta) {
+          let s = BLOQUEO;
+          clearInterval(lockId);
+          lockId = setInterval(() => {
+            s--;
+            if (!L.$("#sig")) return clearInterval(lockId);
+            if (s > 0) sig.textContent = `Lee la explicación · ${s}`;
+            else { clearInterval(lockId); sig.disabled = false; sig.textContent = "Siguiente"; }
+          }, 1000);
+        }
+        L.$("#aviso").onclick = () => {
+          L.$("#avisoBox").innerHTML = `<textarea id="avisoTxt" rows="2" placeholder="¿Qué está mal? (respuesta, explicación, errata…)"></textarea>
+            <p></p><button id="avisoOk">Enviar aviso</button>`;
+          L.$("#avisoOk").onclick = async () => {
+            const texto = L.$("#avisoTxt").value.trim();
+            if (!texto) return L.$("#avisoTxt").focus();
+            const { error } = await L.t("reporte").insert({ pregunta_id: q.id, alumno_id: alumno.id, quien: "alumno", texto });
+            L.$("#avisoBox").innerHTML = error ? `<p class="err small">${L.esc(error.message)}</p>` : `<p class="small muted">Gracias: esta noche se revisa.</p>`;
+          };
+        };
+        sig.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      };
+      L.$$(".ops button").forEach((b) => (b.onclick = () => responder(Number(b.dataset.k))));
+      L.$("#nose").onclick = () => responder(null);
+      window.scrollTo(0, 0);
+    }
+
+    function fin() {
+      clearInterval(lockId);
+      const h = hoy();
+      const fallos = [...new Set(falladasSesion)].map((id) => banco[id]).filter(Boolean);
+      app.innerHTML = `<h1>${okSesion}/${hechasSesion}</h1>
+        <p class="muted">${h >= alumno.objetivo ? `🎉 Objetivo de hoy cumplido: ${h} preguntas.` : `Llevas ${h} de ${alumno.objetivo} hoy.`}</p>
+        ${fallos.length ? `<h3>Repasa</h3>${fallos.map((q) => `<div class="card small"><div class="muted">${L.areaById[q.area]?.emoji || ""} ${L.esc(q.q)}</div>
+          <div><b>${L.esc(q.o[q.a])}</b> — ${L.esc(q.why)}</div></div>`).join("")}` : "<p>Todo bien. 👌</p>"}
+        <p></p><button class="primary grande" id="casa">Inicio</button>`;
+      L.$("#casa").onclick = casa;
+      window.scrollTo(0, 0);
+    }
+
+    inicio().catch(fail);
+  })();
+  </script>
+</body>
+</html>

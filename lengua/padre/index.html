@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Lengua · Padre</title>
+  <link rel="manifest" href="../manifest.json" />
+  <meta name="theme-color" content="#1f1e1d" />
+  <link rel="icon" href="../icons/icon-192.png" />
+  <link rel="stylesheet" href="../comun.css" />
+  <style>
+    .veredicto { display: flex; gap: 16px; align-items: center; }
+    .gauge { position: relative; width: 112px; height: 112px; flex: none; }
+    .gauge svg { transform: rotate(-90deg); }
+    .gauge b { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: var(--serif); font-size: 2rem; font-weight: 500; }
+    .gauge b small { font-size: 0.9rem; color: var(--muted); margin-left: 2px; }
+    .estado { font-family: var(--serif); font-size: 1.35rem; }
+    .area { display: grid; grid-template-columns: 1fr 90px 46px; gap: 4px 10px; align-items: center; padding: 7px 0; border-bottom: 1px solid var(--line); font-size: 0.9rem; }
+    .area .r { text-align: right; font-variant-numeric: tabular-nums; }
+    .bloque { display: flex; justify-content: space-between; align-items: baseline; margin: 16px 0 2px; }
+    .bloque b { font-family: var(--serif); font-weight: 500; font-size: 1.1rem; }
+    .dias { display: flex; align-items: flex-end; gap: 4px; height: 110px; margin: 22px 0 2px; position: relative; }
+    .dias > div { flex: 1; display: flex; flex-direction: column-reverse; height: 100%; }
+    .dias i { display: block; width: 100%; }
+    .dias i.ok { background: var(--ok); border-radius: 0 0 2px 2px; } .dias i.ko { background: var(--bad); border-radius: 3px 3px 0 0; }
+    .meta { position: absolute; left: 0; right: 0; border-top: 1px dashed var(--muted); pointer-events: none; }
+    .meta span { position: absolute; right: 0; top: -16px; font-size: 0.65rem; color: var(--muted); }
+    .dias-l { display: flex; gap: 4px; font-size: 0.65rem; color: var(--muted); }
+    .dias-l > span { flex: 1; text-align: center; }
+    .linea { width: 100%; height: 120px; }
+    details { border-bottom: 1px solid var(--line); padding: 8px 0; }
+    summary { cursor: pointer; }
+    td.r, th.r { text-align: right; }
+    .frase { line-height: 1.55; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top"><a href="../">← Lengua</a><span class="pill">padre</span></div>
+    <h1>¿Cómo va?</h1>
+    <select id="quien"></select>
+    <div id="app">Cargando…</div>
+    <footer class="build">build __BUILD_ID__</footer>
+  </div>
+  <script src="../vendor/supabase.min.js"></script>
+  <script src="../config.js"></script>
+  <script src="../comun.js"></script>
+  <script>
+  (async () => {
+    const app = L.$("#app");
+    const K = "lengua_padre_alumno";
+    let banco = {};
+    try {
+      const ls = L.must(await L.t("alumno").select("id,nombre,objetivo").order("created_at"));
+      if (!ls.length) { L.$("#quien").remove(); app.innerHTML = `<p class="muted">Todavía no hay ningún alumno. Entra en <a href="../alumno/">Alumno</a>.</p>`; return; }
+      banco = Object.fromEntries((await L.preguntas()).map((q) => [q.id, q]));
+      const sel = L.$("#quien");
+      sel.innerHTML = ls.map((l) => `<option value="${l.id}">${L.esc(l.nombre)}</option>`).join("");
+      const saved = L.get(K) || L.get("lengua_alumno");
+      if (saved && ls.some((l) => l.id === saved)) sel.value = saved;
+      sel.onchange = () => { L.set(K, sel.value); pintar(ls.find((l) => l.id === sel.value)).catch(fail); };
+      await pintar(ls.find((l) => l.id === sel.value));
+    } catch (e) { fail(e); }
+
+    function fail(e) { app.innerHTML = `<p class="err">${L.esc(e.message || e)}</p>`; }
+
+    function gauge(v, color) {
+      const r = 48, c = 2 * Math.PI * r, f = Math.max(0, Math.min(1, v / 10));
+      return `<div class="gauge"><svg width="112" height="112"><circle cx="56" cy="56" r="${r}" fill="none" stroke="var(--surface-2)" stroke-width="10"/>
+        <circle cx="56" cy="56" r="${r}" fill="none" stroke="${color}" stroke-width="10" stroke-linecap="round" stroke-dasharray="${c * f} ${c}"/></svg>
+        <b>${v.toFixed(1)}<small>/10</small></b></div>`;
+    }
+
+    async function pintar(al) {
+      app.innerHTML = "Cargando…";
+      const [ans, log] = await Promise.all([
+        L.respuestas(al.id),
+        L.t("rutina_log").select("tipo,nota,created_at").order("id", { ascending: false }).limit(40).then(L.must),
+      ]);
+      const r5 = log.find((r) => r.tipo === "5min"), noches = log.filter((r) => r.tipo === "noche").slice(0, 3);
+      const rutinas = `<h3>Rutinas</h3><div class="card small">
+          ⏱️ Cada 5 min (prepara las siguientes preguntas según su nivel): ${r5 ? L.hace(r5.created_at) : "aún no"}<br>
+          🌙 Cada noche (revisa avisos, mejora explicaciones y escribe preguntas nuevas): ${noches.length ? noches.map((n) => `<div class="muted" style="margin-top:4px">${new Date(n.created_at).toLocaleDateString("es-ES", { day: "numeric", month: "short" })} — ${L.esc(n.nota)}</div>`).join("") : "aún no ha pasado (a las 00:00)"}
+        </div>`;
+      if (!ans.length) { app.innerHTML = `<p class="muted">${L.esc(al.nombre)} aún no ha respondido nada. Objetivo: ${al.objetivo} preguntas al día.</p>${rutinas}`; return; }
+
+      const nv = L.niveles(ans), prep = L.preparacion(nv);
+      const colorVar = { dominado: "var(--ok)", aprendiendo: "#e5c07b", flojo: "var(--bad)", nuevo: "var(--muted)" }[prep.color];
+      const obj = al.objetivo;
+      const per = {};
+      ans.forEach((a) => { const k = L.dayKey(a.created_at); (per[k] ||= { ok: 0, ko: 0, n: 0, ms: 0 }); per[k].n++; a.correcta ? per[k].ok++ : per[k].ko++; per[k].ms += a.ms || 0; });
+      const hoyN = per[L.dayKey(Date.now())]?.n || 0;
+      const racha = L.racha(ans, obj);
+      const last14 = [...Array(14)].map((_, k) => L.dayKey(Date.now() - (13 - k) * 864e5));
+      const cumplidos = last14.filter((d) => (per[d]?.n || 0) >= obj).length;
+      const maxD = Math.max(obj * 1.25, ...last14.map((d) => per[d]?.n || 0));
+      const ult100 = ans.slice(-100), acc100 = ult100.filter((a) => a.correcta).length / ult100.length;
+      const ms = ans.slice(-100).filter((a) => a.ms).map((a) => a.ms);
+      const medS = ms.length ? Math.round(ms.sort((a, b) => a - b)[Math.floor(ms.length / 2)] / 1000) : 0;
+
+      // Evolución: % de acierto en bloques de 25 respuestas, con su dificultad media.
+      const bloques = [];
+      for (let i = 0; i + 10 <= ans.length; i += 25) {
+        const s = ans.slice(i, i + 25);
+        bloques.push({ acc: s.filter((a) => a.correcta).length / s.length, niv: s.reduce((t, a) => t + a.nivel, 0) / s.length });
+      }
+      const linea = bloques.length >= 2 ? (() => {
+        const W = 520, H = 120, px = (i) => 10 + (i * (W - 20)) / (bloques.length - 1), py = (v) => H - 10 - v * (H - 20);
+        const path = (f) => bloques.map((b, i) => `${i ? "L" : "M"}${px(i).toFixed(1)},${py(f(b)).toFixed(1)}`).join(" ");
+        return `<svg class="linea" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
+          <line x1="0" x2="${W}" y1="${py(0.75)}" y2="${py(0.75)}" stroke="var(--line)" stroke-dasharray="4 4"/>
+          <path d="${path((b) => b.acc)}" fill="none" stroke="var(--accent)" stroke-width="2.5" vector-effect="non-scaling-stroke"/>
+          <path d="${path((b) => (b.niv - 1) / 2)}" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="3 3" vector-effect="non-scaling-stroke"/></svg>
+          <div class="leyenda"><span style="color:var(--accent)">━ % acierto (cada 25 respuestas)</span><span>┅ dificultad media</span><span>- - 75 %</span></div>`;
+      })() : "";
+
+      // Frase resumen en lenguaje llano.
+      const conDatos = L.AREAS.filter((a) => nv[a.id].n >= 5);
+      const fuertes = [...conDatos].sort((a, b) => nv[b.id].dominio - nv[a.id].dominio).slice(0, 2);
+      const flojas = [...conDatos].sort((a, b) => nv[a.id].dominio - nv[b.id].dominio).filter((a) => nv[a.id].dominio < 0.6).slice(0, 3);
+      const sinVer = L.AREAS.filter((a) => nv[a.id].n < 5);
+      const frase = [
+        `${L.esc(al.nombre)} lleva <b>${ans.length}</b> respuestas en <b>${Object.keys(per).length}</b> días, con un <b>${L.pct(acc100)}</b> de acierto en las 100 últimas.`,
+        fuertes.length ? `Lo mejor: ${fuertes.map((a) => `<b>${a.name.toLowerCase()}</b>`).join(" y ")}.` : "",
+        flojas.length ? `Donde más le cuesta: ${flojas.map((a) => `<b>${a.name.toLowerCase()}</b>`).join(", ")} — la rutina le pregunta más de eso.` : "",
+        sinVer.length ? `Aún con pocos datos: ${sinVer.map((a) => a.name.toLowerCase()).join(", ")}.` : "",
+      ].filter(Boolean).join(" ");
+
+      const listo = (() => {
+        const falta = [];
+        if (prep.cobertura < 0.95) falta.push(`practicar todas las áreas (cobertura ${L.pct(prep.cobertura)})`);
+        if (prep.idx < 7.5) falta.push(`subir el índice a 7,5 (ahora ${prep.idx.toFixed(1).replace(".", ",")})`);
+        if (prep.flojas.length) falta.push(`reforzar ${prep.flojas.map((a) => a.name.toLowerCase()).join(", ")}`);
+        return falta.length ? `Para estar lista le falta: ${falta.join("; ")}.` : "Domina todas las áreas a nivel de examen con constancia. ✅";
+      })();
+
+      // Preguntas más falladas.
+      const porQ = {};
+      ans.forEach((a) => { (porQ[a.pregunta_id] ||= { n: 0, ko: 0 }); porQ[a.pregunta_id].n++; if (!a.correcta) porQ[a.pregunta_id].ko++; });
+      const falladas = Object.entries(porQ).filter(([, v]) => v.ko).sort((a, b) => b[1].ko - a[1].ko || b[1].n - a[1].n).slice(0, 10);
+
+      const fmt = (d) => new Date(d).toLocaleDateString("es-ES", { weekday: "short", day: "numeric", month: "short" });
+      app.innerHTML = `
+        <div class="card veredicto">${gauge(prep.idx, colorVar)}
+          <div><div class="small muted">Índice de preparación</div><div class="estado"><i class="st ${prep.color}"></i>${prep.estado}</div>
+          <div class="small muted">${listo}</div></div></div>
+        <p class="frase">${frase}</p>
+
+        <div class="kpis">
+          <div class="kpi"><b>${hoyN}/${obj}</b><span>preguntas hoy</span></div>
+          <div class="kpi"><b>${racha} 🔥</b><span>días seguidos cumpliendo</span></div>
+          <div class="kpi"><b>${cumplidos}/14</b><span>días con objetivo (2 semanas)</span></div>
+          <div class="kpi"><b>${medS} s</b><span>tiempo típico por pregunta</span></div>
+        </div>
+
+        <h3>Por parte del examen</h3>
+        ${L.BLOQUES.map((b) => {
+          const as = L.AREAS.filter((a) => a.bloque === b.id);
+          const dom = as.reduce((s, a) => s + nv[a.id].dominio * Math.min(1, nv[a.id].n / 20), 0) / as.length;
+          return `<div class="bloque"><b>${L.esc(b.name)}</b><span class="muted">${(dom * 10).toFixed(1)}/10</span></div>
+            ${as.map((a) => { const x = nv[a.id]; return `<div class="area"><div>${a.emoji} ${L.esc(a.name)}<div class="small muted">${x.n ? `${x.ok}/${x.n} bien · nivel ${L.NIVEL[x.obj].toLowerCase()}` : "sin empezar"}</div></div>
+              <div class="bar"><i style="width:${x.n ? Math.round(x.dominio * 100) : 0}%;background:${x.dominio >= 0.75 ? "var(--ok)" : x.dominio >= 0.5 ? "#e5c07b" : "var(--bad)"}"></i></div>
+              <div class="r small">${x.n ? L.pct(x.dominio) : "–"}</div></div>`; }).join("")}`;
+        }).join("")}
+        <p class="small muted">Dominio = aciertos recientes ponderados por dificultad (un acierto «de examen» vale el triple que uno básico). El nivel indica a qué dificultad le pregunta ahora la rutina.</p>
+
+        <h3>Constancia (14 días)</h3>
+        <div class="dias">${last14.map((d) => { const p = per[d] || { ok: 0, ko: 0 }; return `<div title="${d}: ${p.ok} bien, ${p.ko} mal"><i class="ok" style="height:${(p.ok * 100) / maxD}%"></i><i class="ko" style="height:${(p.ko * 100) / maxD}%"></i></div>`; }).join("")}
+          <div class="meta" style="bottom:${(obj * 100) / maxD}%"><span>objetivo ${obj}</span></div></div>
+        <div class="dias-l">${last14.map((d) => `<span>${Number(d.slice(8))}</span>`).join("")}</div>
+        <div class="leyenda" style="margin-top:6px"><span><i class="st dominado"></i>bien</span><span><i class="st flojo"></i>mal</span></div>
+
+        ${linea ? `<h3>Evolución</h3>${linea}` : ""}
+
+        <h3>Las que más falla</h3>
+        ${falladas.length ? falladas.map(([id, v]) => { const q = banco[id]; if (!q) return ""; return `<details><summary>${L.areaById[q.area]?.emoji || ""} ${q.txt ? `<i>${L.esc(q.txt.length > 70 ? q.txt.slice(0, 70) + "…" : q.txt)}</i> — ` : ""}${L.esc(q.q)} <span class="small muted">· ${v.ko}/${v.n} mal</span></summary>
+          ${q.txt && q.txt.length > 70 ? `<div class="small muted" style="margin:6px 0">${L.esc(q.txt)}</div>` : ""}<div class="small"><b>${L.esc(q.o[q.a])}</b> — ${L.esc(q.why)}</div></details>`; }).join("") : '<p class="muted">Nada fallado todavía.</p>'}
+
+        ${rutinas}
+
+        <h3>Objetivo diario</h3>
+        <div class="row"><input id="obj" type="number" min="5" max="300" step="5" value="${obj}" style="width:100px" /><button id="guardaObj">Guardar</button><span class="small muted" id="objMsg"></span></div>`;
+      L.$("#guardaObj").onclick = async () => {
+        const v = Math.max(5, Math.min(300, Number(L.$("#obj").value) || 50));
+        const { error } = await L.t("alumno").update({ objetivo: v }).eq("id", al.id);
+        L.$("#objMsg").textContent = error ? error.message : "Guardado";
+        if (!error) al.objetivo = v;
+      };
+    }
+  })();
+  </script>
+</body>
+</html>

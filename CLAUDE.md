@@ -111,6 +111,7 @@ Al crear una app nueva `<app>/`:
 | 🔊 Read Aloud | `readaloud/` | `readaloud_` |
 | 🔭 Observa | `observa/` | `observa_` |
 | 🐷 Hucha | `hucha/` | `hucha_` |
+| 📝 Lengua | `lengua/` | `lengua_` |
 
 (Actualiza esta tabla al añadir una app nueva.)
 
