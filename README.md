@@ -52,6 +52,7 @@ reglas para no interferir con las demás:
 | 🔭 Observa | [`observa/`](./observa) (alumno: `/observa/alumno/`, padre: `/observa/padre/`) | `/Train/observa/` | `observa_` |
 | 🐷 Hucha | [`hucha/`](./hucha) | `/Train/hucha/` | `hucha_` |
 | 📣 Orto Redes | [`ortoredes/`](./ortoredes) | `/Train/ortoredes/` | `ortoredes_` |
+| 📝 Lengua | [`lengua/`](./lengua) (alumno: `/lengua/alumno/`, padre: `/lengua/padre/`, revisor: `/lengua/revisor/`) | `/Train/lengua/` | `lengua_` |
 
 ## Añadir una app nueva
 
