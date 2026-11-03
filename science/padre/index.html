@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="robots" content="noindex" />
+  <title>Science · Padre</title>
+  <link rel="manifest" href="../manifest.json" />
+  <meta name="theme-color" content="#2e9a6a" />
+  <link rel="apple-touch-icon" href="../icons/apple-touch-icon.png" />
+  <link rel="icon" href="../icons/icon-192.png" />
+  <link rel="stylesheet" href="../comun.css" />
+  <style>
+    .tema { margin: 12px 0; }
+    .tema .n { display: flex; justify-content: space-between; font-size: 0.95rem; margin-bottom: 4px; font-weight: 700; }
+    .dias { display: flex; align-items: flex-end; gap: 4px; height: 90px; margin: 8px 0 2px; }
+    .dias > div { flex: 1; display: flex; flex-direction: column-reverse; height: 100%; }
+    .dias i { display: block; width: 100%; border-radius: 3px 3px 0 0; }
+    .dias i.ok { background: var(--ok); } .dias i.ko { background: var(--bad); border-radius: 0; }
+    .dias-l { display: flex; gap: 4px; font-size: 0.65rem; color: var(--muted); }
+    .dias-l > span { flex: 1; text-align: center; }
+    .fallo { font-size: 0.86rem; padding: 6px 0; border-top: 1px dashed var(--line); }
+    .fallo b.ok { color: var(--ok); } .fallo b.ko { color: var(--bad); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top"><a href="../">← Science</a><span class="pill">padre</span></div>
+    <h1>Progreso · Unit 1</h1>
+    <select id="quien"></select>
+    <div id="app">Cargando…</div>
+    <footer class="build">build __BUILD_ID__</footer>
+  </div>
+  <script src="../vendor/supabase.min.js"></script>
+  <script src="../config.js"></script>
+  <script src="../banco.js"></script>
+  <script src="../comun.js"></script>
+  <script>
+  (async () => {
+    const { $, esc, rich } = K;
+    const S = K.S;
+    const app = $("#app");
+    const KEY = "science_padre_learner";
+    const fail = (e) => (app.innerHTML = `<p class="err">${esc(e.message || e)}</p>`);
+    try {
+      const ls = K.must(await K.t("learner").select("id,name").order("created_at"));
+      if (!ls.length) { $("#quien").remove(); app.innerHTML = `<p class="muted">Todavía no hay ningún alumno. Entra en <a href="../alumno/">Alumno</a> y crea uno.</p>`; return; }
+      const sel = $("#quien");
+      sel.innerHTML = ls.map((l) => `<option value="${l.id}">${esc(l.name)}</option>`).join("");
+      const saved = K.get(KEY) || K.get("science_learner");
+      if (saved && ls.some((l) => l.id === saved)) sel.value = saved;
+      sel.onchange = () => { K.set(KEY, sel.value); pintar(sel.value).catch(fail); };
+      await pintar(sel.value);
+    } catch (e) { fail(e); }
+
+    async function pintar(id) {
+      app.innerHTML = "Cargando…";
+      const [ans, ev] = await Promise.all([
+        K.all(() => K.t("answer").select("*").eq("learner_id", id).order("id")),
+        K.all(() => K.t("event").select("*").eq("learner_id", id).order("id")),
+      ]);
+      const seen = new Set(ev.filter((e) => e.kind === "lesson").map((e) => e.topic));
+      const exams = ev.filter((e) => e.kind === "exam" && e.data).reverse();
+      if (!ans.length && !seen.size) { app.innerHTML = `<p class="muted">Aún no ha empezado. Cuando juegue en <a href="../alumno/">Alumno</a>, aquí verás lo que sabe y lo que falla.</p>`; return; }
+      const st = K.states(ans);
+      const ov = K.overall(st);
+      const sum = K.topicSummary(st);
+      const c = { nuevo: 0, flojo: 0, aprendiendo: 0, dominado: 0 };
+      S.CONCEPTS.forEach((x) => c[st[x.id].status]++);
+      const now = Date.now(), day = 864e5;
+      const week = ans.filter((a) => now - Date.parse(a.created_at) < 7 * day);
+      const acc = (xs) => (xs.length ? xs.filter((a) => a.correct).length / xs.length : 0);
+      const mins = (xs) => { const m = xs.reduce((s, a) => s + Math.min(a.ms || 0, 120000), 0) / 60000; return xs.length && m < 1 ? "<1" : Math.round(m); };
+      const dayKey = (d) => new Date(d).toLocaleDateString("sv-SE");
+      const days = new Set(ans.map((a) => dayKey(a.created_at)));
+      const lastExam = exams[0];
+      const fmt = (d) => new Date(d).toLocaleString("es-ES", { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+      const nota = (n) => String(n).replace(".", ",");
+
+      // ¿Lista para el examen?
+      const ready = ov.f >= 0.85 && (!lastExam || lastExam.data.nota >= 8) ? "si" : ov.f >= 0.5 ? "casi" : "no";
+      const readyTxt = { si: "✅ Está lista", casi: "🟡 Va por buen camino", no: "🔴 Le falta práctica" }[ready];
+      const pendientes = sum.filter((t) => t.f < 1).map((t) => `${t.emoji} ${t.es}`);
+
+      // Últimos 14 días.
+      const last = [...Array(14)].map((_, k) => dayKey(now - (13 - k) * day));
+      const per = Object.fromEntries(last.map((d) => [d, { ok: 0, ko: 0 }]));
+      ans.forEach((a) => { const p = per[dayKey(a.created_at)]; if (p) a.correct ? p.ok++ : p.ko++; });
+      const max = Math.max(1, ...Object.values(per).map((p) => p.ok + p.ko));
+
+      // Sesiones.
+      const ses = {};
+      ans.forEach((a) => { (ses[a.session_id || "x"] ||= []).push(a); });
+      const sesiones = Object.values(ses).sort((a, b) => Date.parse(b[0].created_at) - Date.parse(a[0].created_at)).slice(0, 15);
+      const MODO = { jugar: "Jugar", tema: "Tema", examen: "Examen" };
+
+      // Lo que falla: conceptos flojos o a medias, con sus respuestas equivocadas.
+      const flojos = S.CONCEPTS.filter((x) => st[x.id].status === "flojo" || (st[x.id].status === "aprendiendo" && st[x.id].wrongs > 0))
+        .sort((a, b) => (st[a.id].status === "flojo" ? 0 : 1) - (st[b.id].status === "flojo" ? 0 : 1) || st[b.id].wrongs - st[a.id].wrongs);
+      const malDe = (cid) => ans.filter((a) => a.concept_id === cid && !a.correct).slice(-3).reverse();
+      const qtxt = (qid) => (S.qById[qid] ? K.describe(S.qById[qid]) : qid);
+      const fallo = (a) => `<div class="fallo">${esc(qtxt(a.question_id))}<br>Contestó <b class="ko">${esc(a.dont_know ? "no lo sé" : a.chosen || "—")}</b> · era <b class="ok">${esc(a.expected || "")}</b> <span class="muted">· ${fmt(a.created_at)}</span></div>`;
+      const recientes = ans.filter((a) => !a.correct).slice(-12).reverse();
+
+      app.innerHTML = `
+        <div class="listo ${ready}"><b>${readyTxt}</b>
+          Domina <b style="display:inline;font-size:1em">${ov.dom} de ${ov.total}</b> conceptos (${K.pct(ov.f)}).
+          ${lastExam ? `Último examen de prueba: <b style="display:inline;font-size:1em">${nota(lastExam.data.nota)}</b> (${lastExam.data.ok}/${lastExam.data.total}).` : "Aún no ha hecho ningún examen de prueba."}
+          ${pendientes.length ? `<div class="small" style="font-weight:600;margin-top:6px">Le falta rematar: ${esc(pendientes.join(" · "))}</div>` : ""}</div>
+
+        <div class="kpis">
+          <div class="kpi"><b>${ov.dom}/${ov.total}</b><span>conceptos que domina</span></div>
+          <div class="kpi"><b>${c.nuevo}</b><span>sin ver todavía</span></div>
+          <div class="kpi"><b>${K.pct(acc(week))}</b><span>aciertos últimos 7 días (${week.length})</span></div>
+          <div class="kpi"><b>${mins(week)} min</b><span>practicados en 7 días · ${mins(ans)} en total</span></div>
+          <div class="kpi"><b>${ans.length}</b><span>respuestas en total</span></div>
+          <div class="kpi"><b>${days.size}</b><span>días practicados</span></div>
+        </div>
+
+        <h3>Por tema</h3>
+        ${sum.map((t) => `<div class="tema"><div class="n"><span>${t.emoji} ${esc(t.es)}</span><span class="muted">${t.count.dominado}/${t.total}</span></div>${K.stackBar(t.count, t.total)}
+          <div class="small muted" style="margin-top:2px">${t.count.dominado} sabe · ${t.count.aprendiendo} a medias · ${t.count.flojo} falla · ${t.count.nuevo} sin ver · ${seen.has(t.id) ? "📖 lección vista" : "lección sin ver"}</div></div>`).join("")}
+        <div class="leyenda"><span><i class="st dominado"></i>Lo sabe</span><span><i class="st aprendiendo"></i>Aprendiendo</span><span><i class="st flojo"></i>Lo falla</span><span><i class="st"></i>Sin ver</span></div>
+
+        <h3>Lo que falla (${flojos.length})</h3>
+        ${flojos.length ? `<div class="lista">${flojos.map((x) => `<details><summary><i class="st ${st[x.id].status}"></i><span class="grow">${esc(x.t)}</span><span class="small muted">${st[x.id].ok}/${st[x.id].n}</span></summary>
+          <p class="small">${rich(x.ex)}</p>${malDe(x.id).map(fallo).join("")}</details>`).join("")}</div>` : '<p class="muted">Nada pendiente. 👌</p>'}
+
+        <h3>Últimos fallos</h3>
+        ${recientes.length ? `<div class="lista">${recientes.map(fallo).join("")}</div>` : '<p class="muted">Ninguno.</p>'}
+
+        <h3>Exámenes de prueba</h3>
+        ${exams.length ? `<table class="t"><tr><th>Cuándo</th><th class="r">Bien</th><th class="r">Nota</th></tr>
+          ${exams.slice(0, 10).map((e) => `<tr><td>${fmt(e.created_at)}</td><td class="r">${e.data.ok}/${e.data.total}</td><td class="r"><b>${nota(e.data.nota)}</b></td></tr>`).join("")}</table>` : '<p class="muted">Todavía ninguno. Está en el botón 🏁 de su pantalla.</p>'}
+
+        <h3>Últimos 14 días</h3>
+        <div class="dias">${last.map((d) => `<div title="${d}: ${per[d].ok} bien, ${per[d].ko} mal"><i class="ok" style="height:${(per[d].ok * 100) / max}%"></i><i class="ko" style="height:${(per[d].ko * 100) / max}%"></i></div>`).join("")}</div>
+        <div class="dias-l">${last.map((d) => `<span>${Number(d.slice(8))}</span>`).join("")}</div>
+
+        <h3>Sesiones</h3>
+        <table class="t"><tr><th>Cuándo</th><th>Modo</th><th class="r">Preg.</th><th class="r">Bien</th><th class="r">Min</th></tr>
+        ${sesiones.map((s) => `<tr><td>${fmt(s[0].created_at)}</td><td>${MODO[s[0].mode] || s[0].mode || ""}</td><td class="r">${s.length}</td><td class="r">${K.pct(acc(s))}</td><td class="r">${mins(s)}</td></tr>`).join("")}</table>
+
+        <h3>Todos los conceptos</h3>
+        <div class="lista">${S.TOPICS.map((t) => `<details><summary><span class="grow">${t.emoji} ${esc(t.es)}</span><span class="small muted">${sum.find((x) => x.id === t.id).count.dominado}/${sum.find((x) => x.id === t.id).total}</span></summary>
+          ${S.CONCEPTS.filter((x) => x.topic === t.id).map((x) => `<div class="small" style="padding:4px 0"><i class="st ${st[x.id].status}"></i>${esc(x.t)} <span class="muted">${st[x.id].n ? `${st[x.id].ok}/${st[x.id].n}` : ""}</span></div>`).join("")}</details>`).join("")}</div>
+        <p class="small muted" style="margin-top:14px">«Lo sabe» = las últimas respuestas seguidas bien (2, o 3 en los dibujos y en las de dos opciones); en las partes de la célula, además, tiene que haber escrito bien la palabra al menos una vez. Si falla uno que sabía, vuelve a «lo falla» y el juego se lo repasa.</p>`;
+    }
+  })();
+  </script>
+</body>
+</html>

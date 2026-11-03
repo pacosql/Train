@@ -1,0 +1,564 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="robots" content="noindex" />
+  <title>Science · Alumno</title>
+  <link rel="manifest" href="../manifest.json" />
+  <meta name="theme-color" content="#2e9a6a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Science" />
+  <link rel="apple-touch-icon" href="../icons/apple-touch-icon.png" />
+  <link rel="icon" href="../icons/icon-192.png" />
+  <link rel="stylesheet" href="../comun.css" />
+</head>
+<body>
+  <div class="wrap">
+    <div class="top"><a href="../">← Science</a><span class="row"><button class="iconbtn" id="sonido" title="Sonido">🔈</button><span class="pill" id="quien">alumno</span></span></div>
+    <div id="app">Cargando…</div>
+    <footer class="build">build __BUILD_ID__</footer>
+  </div>
+  <script src="../vendor/supabase.min.js"></script>
+  <script src="../config.js"></script>
+  <script src="../banco.js"></script>
+  <script src="../comun.js"></script>
+  <script>
+  (() => {
+    const { $, $$, esc, rich } = K;
+    const S = K.S;
+    const app = $("#app");
+    const KEY = "science_learner";
+    let learner = null, answers = [], seen = new Set(), st = K.states([]);
+    const topicOf = (id) => S.TOPICS.find((t) => t.id === id);
+    const uuid = () => (crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random().toString(16).slice(2));
+    const fail = (e) => (app.innerHTML = `<p class="err">${esc(e.message || e)}</p><button onclick="location.reload()">Reintentar</button>`);
+    const arriba = () => window.scrollTo({ top: 0 });
+
+    const sonido = $("#sonido");
+    const pintaSonido = () => (sonido.textContent = K.soundOn() ? "🔈" : "🔇");
+    sonido.onclick = () => { K.set("science_sound", K.soundOn() ? "off" : null); pintaSonido(); };
+    pintaSonido();
+
+    // ---------------------------------------------------------------- quién eres
+    async function inicio() {
+      $("#quien").textContent = "alumno";
+      const saved = K.get(KEY);
+      if (saved) return elegir(saved).catch(() => { K.set(KEY, null); inicio(); });
+      const ls = K.must(await K.t("learner").select("id,name").order("created_at", { ascending: true }).limit(50));
+      app.innerHTML = `<h1>¿Quién eres?</h1>
+        <div class="alumnos">${ls.map((l) => `<button data-id="${l.id}">🧒 ${esc(l.name)}</button>`).join("") || '<p class="muted">Aún no hay nadie. Escribe tu nombre para empezar.</p>'}</div>
+        <h3>Soy nuevo</h3>
+        <div class="row"><input id="nombre" class="grow" placeholder="Tu nombre" maxlength="40" autocomplete="off" /><button class="primary" id="crear">Empezar</button></div>`;
+      $$(".alumnos button").forEach((b) => (b.onclick = () => elegir(b.dataset.id).catch(fail)));
+      $("#crear").onclick = async () => {
+        const n = $("#nombre").value.trim();
+        if (!n) return $("#nombre").focus();
+        $("#crear").disabled = true;
+        const row = K.must(await K.t("learner").insert({ name: n }).select("id").single());
+        elegir(row.id).catch(fail);
+      };
+      $("#nombre").onkeydown = (e) => { if (e.key === "Enter") $("#crear").click(); };
+    }
+
+    async function elegir(id) {
+      learner = K.must(await K.t("learner").select("*").eq("id", id).single());
+      K.set(KEY, id);
+      $("#quien").textContent = learner.name;
+      const [ans, ev] = await Promise.all([
+        K.all(() => K.t("answer").select("concept_id,question_id,correct,created_at,mode").eq("learner_id", id).order("id")),
+        K.all(() => K.t("event").select("kind,topic,data,created_at").eq("learner_id", id).order("id")),
+      ]);
+      answers = ans;
+      seen = new Set(ev.filter((e) => e.kind === "lesson").map((e) => e.topic));
+      // #q=<id>: abre esa pregunta suelta (para revisar el banco).
+      const m = location.hash.match(/^#q=(.+)$/);
+      const solo = m && S.qById[decodeURIComponent(m[1])];
+      if (solo) { st = K.states(answers); return pregunta(solo, { mode: "tema", qn: 1, retry: [], recent: [], sid: uuid(), racha: 0 }, () => {}, casa); }
+      casa();
+    }
+
+    // ---------------------------------------------------------------- inicio
+    function casa() {
+      try { window.speechSynthesis && speechSynthesis.cancel(); } catch {}
+      st = K.states(answers);
+      const ov = K.overall(st);
+      const sum = K.topicSummary(st);
+      const estrellas = answers.filter((a) => a.correct).length;
+      const todo = ov.dom === ov.total;
+      app.innerHTML = `<div class="hola"><h1>¡Hola, ${esc(learner.name)}!</h1><span class="estrellas">⭐ ${estrellas}</span></div>
+        ${todo ? `<div class="trofeo">🏆</div><p style="text-align:center"><b>¡Ya te lo sabes todo!</b><br><span class="muted">Puedes seguir jugando para no olvidarlo.</span></p>` :
+          `<p class="muted">Unit 1: <b>Living organisms</b>. Te lo explico, te pregunto y, si fallas, te lo vuelvo a explicar.</p>`}
+        <div class="row" style="margin:6px 0 2px"><span class="small muted grow">Te sabes <b>${ov.dom}</b> de ${ov.total}</span><span class="small muted">${K.pct(ov.f)}</span></div>
+        <div class="bar"><i style="width:${ov.f * 100}%"></i></div>
+        <button class="primary big" id="jugar">▶️ Jugar<span class="s">${answers.length ? "Seguimos: lo nuevo, y repasamos lo que fallas" : "Empezamos por el principio, con explicación"}</span></button>
+        <button class="big" id="examen">🏁 Examen de prueba<span class="s">${Object.values(K.EXAM).reduce((a, b) => a + b, 0)} preguntas como en el examen, con nota al final</span></button>
+        <h3>Temas</h3>
+        ${sum.map((t) => `<div class="tema${t.f >= 1 ? " hecho" : ""}">
+          <div class="n" data-ver="${t.id}"><span>${t.emoji} ${esc(t.en)}<div class="es">${esc(t.es)} · ${t.count.dominado}/${t.total} ›</div></span><span class="estrellas" title="${t.count.dominado}/${t.total}">${K.stars(t.stars)}</span></div>
+          <div style="margin-top:8px">${K.stackBar(t.count, t.total)}</div>
+          <div class="row"><button data-aprender="${t.id}">📖 Aprender</button><button data-practicar="${t.id}">✏️ Practicar</button></div>
+        </div>`).join("")}
+        <div class="leyenda"><span><i class="st dominado"></i>Lo sé</span><span><i class="st aprendiendo"></i>Aprendiendo</span><span><i class="st flojo"></i>Lo fallo</span><span><i class="st"></i>Sin ver</span></div>
+        <p></p><button id="salir" class="nose">No soy ${esc(learner.name)}</button>`;
+      $("#jugar").onclick = () => jugar(null);
+      $("#examen").onclick = examenIntro;
+      $$("[data-aprender]").forEach((b) => (b.onclick = () => leccion(b.dataset.aprender, casa, true)));
+      $$("[data-practicar]").forEach((b) => (b.onclick = () => jugar(b.dataset.practicar)));
+      $$("[data-ver]").forEach((b) => (b.onclick = () => verTema(b.dataset.ver)));
+      $("#salir").onclick = () => { K.set(KEY, null); learner = null; answers = []; inicio(); };
+      arriba();
+    }
+
+    function verTema(tid) {
+      st = K.states(answers);
+      const t = topicOf(tid);
+      const cs = S.CONCEPTS.filter((c) => c.topic === tid);
+      app.innerHTML = `<div class="top"><h2>${t.emoji} ${esc(t.en)}</h2><button class="iconbtn" id="cerrar">✕</button></div>
+        <p class="muted">${esc(t.es)}</p>
+        <div class="lista">${cs.map((c) => `<details><summary><i class="st ${st[c.id].status}"></i><span class="grow">${esc(c.t)}</span><span class="small muted">${K.STATUS[st[c.id].status]}</span></summary>
+          <p>${rich(c.ex)}</p></details>`).join("")}</div>
+        <p></p><button class="primary big" id="prac">✏️ Practicar este tema</button>`;
+      $("#cerrar").onclick = casa;
+      $("#prac").onclick = () => jugar(tid);
+      arriba();
+    }
+
+    // ---------------------------------------------------------------- lecciones
+    function leccion(tid, onEnd, desdeInicio) {
+      const t = topicOf(tid);
+      const slides = S.LESSONS[tid];
+      let i = 0;
+      const pinta = () => {
+        const s = slides[i];
+        const last = i === slides.length - 1;
+        app.innerHTML = `<div class="top"><span class="pill">📖 ${t.emoji} ${esc(t.en)}</span><button class="iconbtn" id="cerrar">✕</button></div>
+          <div class="slide"><h2>${esc(s.t)}</h2><div class="media" id="lm"></div>
+          <div class="txt">${rich(s.es)}</div>
+          <button class="lee" id="lee">🔊 Léemelo</button></div>
+          <div class="dots">${slides.map((_, k) => `<i class="${k === i ? "on" : ""}"></i>`).join("")}</div>
+          <div class="nav"><button id="atras" ${i ? "" : "disabled"}>← Atrás</button><button class="primary" id="sig">${last ? (desdeInicio ? "¡Entendido! ✅" : "¡Pregúntame! ✏️") : "Siguiente →"}</button></div>`;
+        const m = $("#lm");
+        if (s.img) m.innerHTML = `<img class="pic" src="${K.IMG(s.img)}" alt="" />`;
+        else if (s.gallery) m.innerHTML = K.gallery(s.gallery);
+        else if (s.table) m.innerHTML = K.compareTable();
+        else if (s.both) K.bothView(m, s.both === "hl");
+        else if (s.book) {
+          K.bookView(m, s.book.cell);
+          const B = S.BOOK[s.book.cell];
+          m.insertAdjacentHTML("beforeend", `<p class="small" style="text-align:center">${Object.entries(B.n).map(([n, x]) => `<b>${n}</b> ${rich("[[" + B.names[x.part] + "]]")}`).join(" · ")}</p>`);
+        } else if (s.cell) {
+          const v = K.cellView(m, s.cell.cell, { labels: s.cell.labels || "all" });
+          if (s.cell.part) {
+            v.highlight(s.cell.part);
+            if (s.cell.also) v.highlight(s.cell.also, null, false);
+            v.box(s.cell.part, null, "on");
+            v.dot(s.cell.part);
+            if (!s.cell.also) setTimeout(() => v.zoomPart(s.cell.part), 450);
+          } else {
+            Object.keys(S.LABEL[s.cell.cell]).forEach((p) => v.highlight(p, null, false));
+          }
+        }
+        $("#lee").onclick = () => K.sayRich(s.t + ". " + s.es);
+        $("#atras").onclick = () => { i--; pinta(); };
+        $("#sig").onclick = () => {
+          if (!last) { i++; return pinta(); }
+          try { speechSynthesis.cancel(); } catch {}
+          if (!seen.has(tid)) {
+            seen.add(tid);
+            K.t("event").insert({ learner_id: learner.id, kind: "lesson", topic: tid }).then(() => {});
+          }
+          onEnd();
+        };
+        $("#cerrar").onclick = () => { try { speechSynthesis.cancel(); } catch {} casa(); };
+        arriba();
+      };
+      pinta();
+    }
+
+    // ---------------------------------------------------------------- juego infinito
+    function jugar(topic) {
+      const ctx = { topic, qn: 0, retry: [], recent: [], sid: uuid(), ok: 0, racha: 0, best: 0, mode: topic ? "tema" : "jugar" };
+      const next = () => {
+        st = K.states(answers);
+        if (ctx.qn > 0 && ctx.qn % 10 === 0 && ctx.pausa !== ctx.qn) { ctx.pausa = ctx.qn; return hito(ctx, next); }
+        const nx = K.nextConcept(st, ctx, seen);
+        if (nx.lesson) return leccion(nx.lesson, next, false);
+        const c = S.byId[nx.cid];
+        const q = K.pickQuestion(c, st[c.id], nx.avoid, false);
+        ctx.recent.push(c.id);
+        ctx.qn++;
+        pregunta(q, ctx, (res) => {
+          if (res.correct) { ctx.ok++; ctx.racha++; ctx.best = Math.max(ctx.best, ctx.racha); }
+          else { ctx.racha = 0; ctx.retry.push({ cid: c.id, at: ctx.qn + 3, qid: q.qid }); }
+        }, next);
+      };
+      next();
+    }
+
+    function hito(ctx, seguir) {
+      const ov = K.overall(K.states(answers));
+      app.innerHTML = `<div class="trofeo">${ctx.ok >= ctx.qn * 0.8 ? "🌟" : "💪"}</div>
+        <h2 style="text-align:center">¡${ctx.qn} preguntas!</h2>
+        <p style="text-align:center;font-size:1.15rem">Llevas <b>${ctx.ok}</b> bien. Mejor racha: <b>🔥 ${ctx.best}</b>.<br>Te sabes <b>${ov.dom}</b> de ${ov.total}.</p>
+        <button class="primary big" id="seguir">Seguir jugando ▶️</button><button class="big" id="parar">Parar por hoy 🏠</button>`;
+      $("#seguir").onclick = seguir;
+      $("#parar").onclick = casa;
+      arriba();
+    }
+
+    // ---------------------------------------------------------------- pregunta
+    const DIST = {
+      plant: ["cell wall", "cell membrane", "chloroplast", "nucleus", "vacuole"],
+      animal: ["cell membrane", "nucleus", "vacuoles"],
+    };
+    function opcionesDe(q) {
+      // [{text, ok, idx}] ya en el orden en que se muestran
+      if (q.k === "tf") return [{ text: "✔️ True", ok: q.a === true, val: "True" }, { text: "✖️ False", ok: q.a === false, val: "False" }];
+      if (q.k === "label" || q.k === "num") {
+        const names = q.k === "label" ? DIST[q.cell] : Object.values(S.BOOK[q.cell].names);
+        const right = K.answerText(q);
+        let others = K.shuffle(names.filter((n) => n !== right)).slice(0, 3);
+        if (q.cell === "animal") others = [...others, K.shuffle(["cell wall", "chloroplast"])[0]].slice(0, 3);
+        return K.shuffle([right, ...others]).map((t) => ({ text: t, ok: t === right, val: t }));
+      }
+      let os = q.o.map((t, i) => ({ text: t, ok: i === q.a, val: t, idx: i }));
+      if (q.groups) { const ord = ["Animals", "Natural", "Plants", "Artificial"]; os = ord.map((t) => os.find((o) => o.text === t)); }
+      else if (!q.keep) os = K.shuffle(os);
+      return os;
+    }
+    const CONF = {
+      "wall>membrane": "La [[cell wall]] es la pared GORDA de fuera; la [[cell membrane]] es la línea fina justo dentro de ella.",
+      "membrane>wall": "La [[cell membrane]] es la línea fina de DENTRO; la [[cell wall]] es la pared gorda de fuera.",
+    };
+    const PART_BY_LABEL = (cell, txt) => Object.keys(S.LABEL[cell]).find((p) => S.LABEL[cell][p] === txt) ||
+      Object.keys(S.BOOK[cell].names).find((p) => S.BOOK[cell].names[p] === txt);
+
+    // Pinta la pregunta q. modo: ctx (juego) o {exam:true, n, total}. alResponder(res) se llama
+    // al contestar; seguir() al pulsar «Siguiente».
+    function pregunta(q, ctx, alResponder, seguir) {
+      const exam = !!ctx.exam;
+      const c = S.byId[q.cid];
+      const t = topicOf(c.topic);
+      const [en, es] = K.qText(q);
+      const kind = q.k || "choice";
+      window.__sci = { q };
+      const t0 = performance.now();
+      let done = false, view = null;
+      const ov = K.overall(st);
+      const progreso = exam ? (ctx.n - 1) / ctx.total : ctx.topic ? (() => { const s = K.topicSummary(st).find((x) => x.id === ctx.topic); return s.f; })() : ov.f;
+      app.innerHTML = `<div class="qhead"><button class="iconbtn" id="salir" title="Salir">✕</button><div class="bar"><i style="width:${progreso * 100}%"></i></div>
+          <span class="racha">${exam ? `${ctx.n}/${ctx.total}` : ctx.racha >= 2 ? `🔥 ${ctx.racha}` : ""}</span></div>
+        <span class="pill">${t.emoji} ${esc(t.en)}${exam ? " · examen" : ""}</span>
+        <div class="q">${esc(en)} <button class="en say" data-say="${esc(en)}" title="Escuchar">🔊</button></div>
+        <div class="qes">${esc(es)}</div>
+        <div class="media" id="media"></div>
+        <div id="resp"></div>
+        <button class="nose" id="nose">🤷 No lo sé</button>
+        <div id="fb"></div>`;
+      $("#salir").onclick = () => { if (exam && !confirm("¿Dejar el examen? No se guardará la nota.")) return; casa(); };
+      const media = $("#media"), resp = $("#resp");
+
+      // ---------- media
+      if (q.img) media.innerHTML = `<img class="pic" src="${K.IMG(q.img)}" alt="" />${q.cap ? `<div class="cap">${esc(q.cap)} <button class="en say" data-say="${esc(q.cap)}">🔊</button><br><span>${esc(q.capEs || "")}</span></div>` : ""}`;
+      else if (q.cellimg) K.cellView(media, q.cellimg, { labels: "blank" });
+      else if (kind === "label" || kind === "write") view = K.cellView(media, q.cell, { labels: "blank", ask: q.part });
+      else if (kind === "tap") view = K.cellView(media, q.cell, { labels: "blank", tap: (p, fx, fy) => !done && tocar(p, fx, fy) });
+      else if (kind === "num") K.bookView(media, q.cell, { ring: q.n });
+
+      // ---------- respuesta
+      const responder = (res) => {
+        if (done) return;
+        done = true;
+        res.ms = Math.round(performance.now() - t0);
+        res.expected = K.answerText(q);
+        $("#nose") && $("#nose").remove();
+        $$("#resp button, .pics button").forEach((b) => (b.disabled = true));
+        const antes = K.topicSummary(st), antesOv = K.overall(st), antesC = st[c.id].status;
+        guardar(q, res, exam ? "examen" : ctx.mode, ctx.sid);
+        alResponder(res);
+        if (exam) return setTimeout(seguir, 450);
+        st = K.states(answers);
+        const ganado = antesC !== "dominado" && st[c.id].status === "dominado";
+        explicar(q, res, ganado);
+        celebrar(antes, antesOv);
+      };
+      $("#nose").onclick = () => responder({ correct: false, chosen: null, dontKnow: true });
+
+      if (kind === "choice" || kind === "tf" || kind === "label" || kind === "num") {
+        const os = opcionesDe(q);
+        const uno = os.some((o) => o.text.length > 16);
+        resp.innerHTML = `${q.groups ? `<div class="grupos-h"><span>Living things</span><span>Non-living things</span></div>` : ""}
+          <div class="ops${uno && !q.groups ? " uno" : ""}">${os.map((o, i) => `<button class="op" data-i="${i}">${esc(o.text)}</button>`).join("")}</div>`;
+        $$(".op", resp).forEach((b) => (b.onclick = () => {
+          if (done) return;
+          const o = os[Number(b.dataset.i)];
+          if (exam) { b.classList.add("sel"); $$(".op", resp).forEach((x) => x !== b && x.classList.add("fuera")); }
+          else {
+            $$(".op", resp).forEach((x) => { const oo = os[Number(x.dataset.i)]; if (oo.ok) x.classList.add("bien"); else if (x !== b) x.classList.add("fuera"); });
+            if (!o.ok) b.classList.add("mal");
+          }
+          responder({ correct: o.ok, chosen: o.val, chosenIdx: o.idx });
+        }));
+      } else if (kind === "pics") {
+        const items = K.shuffle(q.pics.map((p, i) => ({ p, i })));
+        resp.innerHTML = `<div class="pics">${items.map((x, k) => `<button data-k="${k}"><img src="${K.IMG(x.p)}" alt="" /></button>`).join("")}</div>`;
+        $$(".pics button", resp).forEach((b) => (b.onclick = () => {
+          if (done) return;
+          const x = items[Number(b.dataset.k)];
+          if (exam) b.classList.add("sel");
+          else {
+            $$(".pics button", resp).forEach((y) => { if (items[Number(y.dataset.k)].i === q.a) y.classList.add("bien"); });
+            if (x.i !== q.a) b.classList.add("mal");
+          }
+          responder({ correct: x.i === q.a, chosen: x.p.split("/").pop() });
+        }));
+      } else if (kind === "order") {
+        const items = K.shuffle(q.o.map((t2, i) => ({ t: t2, i })));
+        const puesto = [];
+        resp.innerHTML = `<p class="small muted">Toca en orden. Si te equivocas, toca otra vez para quitar.</p><div class="orden">${items.map((x, k) => `<button data-k="${k}"><span class="n"></span>${esc(x.t)}</button>`).join("")}</div>`;
+        const pinta = () => $$(".orden button", resp).forEach((b) => {
+          const pos = puesto.indexOf(Number(b.dataset.k));
+          b.querySelector(".n").textContent = pos >= 0 ? pos + 1 : "";
+          b.classList.toggle("puesta", pos >= 0);
+        });
+        $$(".orden button", resp).forEach((b) => (b.onclick = () => {
+          if (done) return;
+          const k = Number(b.dataset.k);
+          const pos = puesto.indexOf(k);
+          if (pos >= 0) puesto.splice(pos); else puesto.push(k);
+          pinta();
+          if (puesto.length === items.length) {
+            const ok = puesto.every((kk, j) => items[kk].i === j);
+            if (!exam) $$(".orden button", resp).forEach((bb) => { const kk = Number(bb.dataset.k); bb.classList.remove("puesta"); bb.classList.add(puesto.indexOf(kk) === items[kk].i ? "bien" : "mal"); });
+            responder({ correct: ok, chosen: puesto.map((kk) => items[kk].t).join(" → ") });
+          }
+        }));
+      } else if (kind === "write") {
+        letras(resp, K.answerText(q), false, !exam, (txt) => {
+          const right = K.answerText(q).replace(/ /g, "");
+          responder({ correct: txt === right, chosen: txt });
+        });
+      } else if (kind === "tap") {
+        resp.innerHTML = `<p class="small muted" style="text-align:center">👆 Toca en el dibujo.</p>`;
+      }
+
+      function tocar(p, fx, fy) {
+        const ok = p === q.part;
+        view.mark(fx, fy, exam ? null : ok);
+        responder({ correct: ok, chosen: p, fx, fy });
+      }
+
+      // ---------- explicación
+      function explicar(q, res, ganado) {
+        const fb = $("#fb");
+        const right = K.answerText(q);
+        const cellKind = ["label", "write", "tap"].includes(kind);
+        let why = q.why || c.ex;
+        if (!res.correct && res.chosenIdx != null && q.w && q.w[res.chosenIdx]) why = q.w[res.chosenIdx] + " " + (q.why || "");
+        if (!res.correct && cellKind) {
+          const chosenPart = kind === "tap" ? res.chosen : PART_BY_LABEL(q.cell, res.chosen);
+          if (q.cell === "animal" && (res.chosen === "cell wall" || res.chosen === "chloroplast")) why = `¡Ojo! La célula animal NO tiene [[cell wall]] ni [[chloroplasts]]: eso solo lo tienen las plantas. Aquí va [[${right}]].`;
+          else if (chosenPart && CONF[q.part + ">" + chosenPart]) why = CONF[q.part + ">" + chosenPart] + " " + c.ex;
+          else if (kind === "tap" && S.OTHER[res.chosen]) why = S.OTHER[res.chosen] + " " + c.ex;
+          else if (kind === "tap" && res.chosen && res.chosen !== "none") why = `Has tocado: [[${S.LABEL[q.cell][res.chosen] || res.chosen}]] (${S.PART_ES[res.chosen]}). ` + c.ex;
+        }
+        if (!res.correct && kind === "num" && res.chosen) {
+          const chosenPart = PART_BY_LABEL(q.cell, res.chosen);
+          if (chosenPart && CONF[S.BOOK[q.cell].n[q.n].part + ">" + chosenPart]) why = CONF[S.BOOK[q.cell].n[q.n].part + ">" + chosenPart] + " " + c.ex;
+        }
+        const bien = ["¡Muy bien!", "¡Eso es!", "¡Genial!", "¡Correcto!", "¡Bravo!", "¡Lo sabes!"];
+        const partOk = cellKind ? q.part : kind === "num" ? S.BOOK[q.cell].n[q.n].part : null;
+        const cortoOk = res.correct ? (q.why || (partOk ? `Sí: ${S.PART_ART[q.cell][partOk]}, [[${right}]].` : (c.pic ? why : ""))) : "";
+        fb.innerHTML = res.correct
+          ? `<div class="fb ok"><div class="tit">✅ ${bien[Math.floor(Math.random() * bien.length)]}</div>${cortoOk ? `<div>${rich(cortoOk)}</div>` : ""}
+              ${ganado ? `<span class="ganado">⭐ ¡Ya te sabes «${esc(c.t.split(" · ")[0])}»!</span>` : ""}</div>
+             <button class="primary big" id="sig" style="text-align:center">Siguiente ➜</button>`
+          : `<div class="fb ko"><div class="tit">${res.dontKnow ? "¡No pasa nada! Mira 👀" : "¡Casi! 💪"}</div>
+              <p>${kind === "pics" ? "La correcta está marcada en verde 👆" : `La respuesta es: <span class="sol">${esc(right)}</span>${kind !== "order" ? ` <button class="en say" data-say="${esc(right)}">🔊</button>` : ""}`}</p>
+              <div>${rich(why)}</div><button class="lee" id="lee">🔊 Léemelo</button><div class="media" id="vis"></div></div>
+             <div id="copia"></div>
+             <button class="primary big" id="sig" style="text-align:center">Entendido ➜</button>`;
+        K.beep(res.correct);
+        if (!res.correct) {
+          $("#lee").onclick = () => K.sayRich(why);
+          visual(q, res);
+          if (kind === "write") {
+            // Para fijar la ortografía: la escribe bien antes de seguir.
+            $("#sig").disabled = true;
+            $("#copia").innerHTML = `<p style="text-align:center;font-weight:800">Ahora escríbela tú bien 👇</p><div id="copiatiles"></div>`;
+            letras($("#copiatiles"), right, true, true, () => { $("#sig").disabled = false; K.beep(true); $("#sig").scrollIntoView({ behavior: "smooth", block: "center" }); });
+          }
+        } else if (cellKind && view) {
+          view.box(q.part, S.LABEL[q.cell][q.part], "ok");
+          view.highlight(q.part, "ok", false);
+        }
+        $("#sig").onclick = () => { try { speechSynthesis.cancel(); } catch {} seguir(); };
+        setTimeout(() => (kind === "write" && !res.correct ? $("#copia") : $("#fb")).scrollIntoView({ behavior: "smooth", block: "nearest" }), 120);
+      }
+
+      // Dibujo que explica: la parte resaltada y ampliada, la célula del libro, etc.
+      function visual(q, res) {
+        const vis = $("#vis");
+        if (["label", "write", "tap"].includes(kind) && view) {
+          view.box(q.part, S.LABEL[q.cell][q.part], "ok");
+          view.highlight(q.part, "ok");
+          if (kind === "tap" && res.chosen && res.chosen !== "none" && res.chosen !== q.part) view.highlight(res.chosen, "bad", false);
+          setTimeout(() => view.zoomPart(q.part), 600);
+          vis.innerHTML = `<p class="small muted">👆 Mira arriba: en verde, ${esc(S.PART_ART[q.cell][q.part])} (<b>${esc(S.LABEL[q.cell][q.part])}</b>).</p>`;
+          return;
+        }
+        if (kind === "num") {
+          K.bookView(media, q.cell, { ring: q.n, to: q.n });
+          const p = S.BOOK[q.cell].n[q.n].part;
+          const v = K.cellView(vis, q.cell, { labels: "all" });
+          v.highlight(p, "ok"); v.box(p, null, "ok"); v.dot(p);
+          setTimeout(() => v.zoomPart(p), 600);
+          return;
+        }
+        const see = c.see || {};
+        if (q.img || q.cellimg) return;
+        if (see.cell) {
+          const v = K.cellView(vis, see.cell, { labels: "all" });
+          v.highlight(see.part, "ok"); v.box(see.part, null, "ok"); v.dot(see.part);
+          setTimeout(() => v.zoomPart(see.part), 600);
+        } else if (see.both) K.bothView(vis, c.id === "cmp.only");
+        else if (see.img) vis.innerHTML = `<img class="pic" src="${K.IMG(see.img)}" alt="" />`;
+        else if (see.gallery) vis.innerHTML = K.gallery(see.gallery);
+      }
+      arriba();
+    }
+
+    // Fichas de letras. guiado=true: solo deja poner la letra correcta (para copiarla bien).
+    function letras(el, word, guiado, revelar, fin) {
+      const target = word.replace(/ /g, "").split("");
+      const pool = "abcdeilmnoprstuvw".split("").filter((ch) => !target.includes(ch));
+      const extra = guiado ? [] : K.shuffle(pool).slice(0, 2);
+      const tiles = K.shuffle([...target, ...extra]).map((ch, i) => ({ ch, i, used: false }));
+      const puestos = [];
+      const groups = word.split(" ").map((w) => w.length);
+      el.innerHTML = `<div class="slots"></div><div class="tiles">${tiles.map((tl) => `<button class="tile" data-i="${tl.i}">${tl.ch}</button>`).join("")}</div>
+        ${guiado ? "" : `<div style="text-align:center"><button class="borrar" id="borrar">⌫ Borrar</button></div>`}`;
+      const slots = $(".slots", el);
+      const pinta = (marcar) => {
+        let k = 0;
+        slots.innerHTML = groups.map((n) => `<div class="w">${Array.from({ length: n }, () => {
+          const tl = puestos[k] != null ? tiles[puestos[k]] : null;
+          const cls = marcar ? (tl && tl.ch === target[k] ? "bien" : "mal") : k === puestos.length ? "cur" : "";
+          return `<span class="slot ${cls}" data-k="${k++}">${tl ? tl.ch : ""}</span>`;
+        }).join("")}</div>`).join("");
+        $$(".tile", el).forEach((b) => b.classList.toggle("usada", tiles[Number(b.dataset.i)].used));
+      };
+      pinta(false);
+      let acabado = false;
+      $$(".tile", el).forEach((b) => (b.onclick = () => {
+        if (acabado) return;
+        const tl = tiles[Number(b.dataset.i)];
+        if (tl.used || puestos.length >= target.length) return;
+        if (guiado && tl.ch !== target[puestos.length]) { b.animate([{ transform: "translateX(-6px)" }, { transform: "translateX(6px)" }, { transform: "none" }], { duration: 250 }); return; }
+        tl.used = true; puestos.push(tl.i);
+        pinta(false);
+        if (puestos.length === target.length) {
+          acabado = true;
+          pinta(!guiado && revelar);
+          if (guiado) $$(".slot", el).forEach((s) => s.classList.add("bien"));
+          $(".tiles", el).style.display = "none";
+          if ($("#borrar", el)) $("#borrar", el).style.display = "none";
+          fin(puestos.map((i) => tiles[i].ch).join(""));
+        }
+      }));
+      if (!guiado) {
+        $("#borrar", el).onclick = () => { if (acabado || !puestos.length) return; tiles[puestos.pop()].used = false; pinta(false); };
+        slots.onclick = (e) => {
+          const s = e.target.closest(".slot");
+          if (!s || acabado) return;
+          const k = Number(s.dataset.k);
+          while (puestos.length > k) tiles[puestos.pop()].used = false;
+          pinta(false);
+        };
+      }
+    }
+
+    async function guardar(q, res, mode, sid) {
+      const c = S.byId[q.cid];
+      answers.push({ concept_id: c.id, question_id: q.qid, correct: res.correct, created_at: new Date().toISOString(), mode });
+      const { error } = await K.t("answer").insert({
+        learner_id: learner.id, session_id: sid, mode, topic: c.topic, concept_id: c.id, question_id: q.qid, kind: q.k || "choice",
+        correct: res.correct, chosen: res.chosen == null ? null : String(res.chosen).slice(0, 200), expected: String(res.expected).slice(0, 200),
+        dont_know: !!res.dontKnow, ms: res.ms,
+      });
+      if (error) document.body.insertAdjacentHTML("beforeend", `<p class="err small" style="position:fixed;bottom:4px;left:8px;right:8px;background:#fff;padding:6px;border-radius:8px">No se ha guardado: ${esc(error.message)}</p>`);
+    }
+
+    // Celebraciones: tema completo y todo completo.
+    function celebrar(antes, antesOv) {
+      const ahora = K.topicSummary(st), ov = K.overall(st);
+      if (ov.dom === ov.total && antesOv.dom < ov.total) {
+        K.confetti(140);
+        return modal(`<div class="trofeo">🏆</div><h2>¡YA TE LO SABES TODO!</h2><p>Te sabes las ${ov.total} cosas de la Unit 1. ¡Eres una crack! 🎉</p><p class="muted">Puedes seguir jugando para repasar y no olvidarlo.</p>`);
+      }
+      const nuevo = ahora.find((t, i) => t.f >= 1 && antes[i].f < 1);
+      if (nuevo) {
+        K.confetti(70);
+        modal(`<div class="trofeo">⭐⭐⭐</div><h2>¡Ya te sabes «${esc(nuevo.en)}»!</h2><p class="muted">${esc(nuevo.es)}</p>`);
+      }
+    }
+    function modal(html) {
+      const m = document.createElement("div");
+      m.className = "modal";
+      m.innerHTML = `<div>${html}<button class="primary big" style="text-align:center">¡Sí! 😄</button></div>`;
+      document.body.appendChild(m);
+      m.querySelector("button").onclick = () => m.remove();
+    }
+
+    // ---------------------------------------------------------------- examen de prueba
+    function examenIntro() {
+      const n = Object.values(K.EXAM).reduce((a, b) => a + b, 0);
+      app.innerHTML = `<div class="trofeo">🏁</div><h2 style="text-align:center">Examen de prueba</h2>
+        <p style="font-size:1.1rem">Son <b>${n} preguntas</b> de todos los temas, como en el examen de verdad: dibujos para poner el nombre, escribir palabras, elegir…</p>
+        <p class="muted">No te diré si está bien hasta el final. Al acabar verás tu nota y te explico lo que falles.</p>
+        <button class="primary big" id="ir" style="text-align:center">¡Empezar! ✏️</button><button class="big" id="volver" style="text-align:center">Ahora no</button>`;
+      $("#ir").onclick = examen;
+      $("#volver").onclick = casa;
+      arriba();
+    }
+    function examen() {
+      st = K.states(answers);
+      const qs = K.examQuestions(st);
+      const sid = uuid();
+      const res = [];
+      let i = 0;
+      const next = () => {
+        if (i >= qs.length) return finExamen(qs, res);
+        const q = qs[i++];
+        pregunta(q, { exam: true, n: i, total: qs.length, sid }, (r) => res.push(r), next);
+      };
+      next();
+    }
+    function finExamen(qs, res) {
+      const ok = res.filter((r) => r.correct).length;
+      const nota = Math.round((ok / qs.length) * 100) / 10;
+      K.t("event").insert({ learner_id: learner.id, kind: "exam", data: { ok, total: qs.length, nota, fallos: qs.filter((q, i) => !res[i].correct).map((q) => q.qid) } }).then(() => {});
+      st = K.states(answers);
+      const msg = nota >= 9 ? "¡Sobresaliente! 🏆" : nota >= 7 ? "¡Notable! Muy bien 🌟" : nota >= 5 ? "¡Aprobado! Vamos a repasar lo que falta 💪" : "Hay que repasar un poquito más 💪";
+      if (nota >= 9) K.confetti(120);
+      app.innerHTML = `<div class="trofeo">${nota >= 9 ? "🏆" : nota >= 7 ? "🌟" : nota >= 5 ? "👍" : "📚"}</div>
+        <h1 style="text-align:center">${String(nota).replace(".", ",")} / 10</h1>
+        <p style="text-align:center;font-size:1.15rem">${ok} de ${qs.length} bien. ${msg}</p>
+        <h3>Corrección</h3>
+        <div class="lista">${qs.map((q, i) => {
+          const r = res[i], c = S.byId[q.cid];
+          return `<details${r.correct ? "" : " open"}><summary>${r.correct ? "✅" : "❌"} <span class="grow">${esc(K.qText(q)[0])}</span></summary>
+            ${r.correct ? "" : `<p class="small">Tu respuesta: <b>${esc(r.dontKnow ? "no lo sé" : r.chosen || "—")}</b><br>Correcta: <b style="color:var(--ok)">${esc(K.answerText(q))}</b></p><p>${rich(q.why || c.ex)}</p>`}</details>`;
+        }).join("")}</div>
+        <p></p><button class="primary big" id="repasar" style="text-align:center">Repasar lo que he fallado ▶️</button><button class="big" id="casa" style="text-align:center">Inicio</button>`;
+      $("#repasar").onclick = () => jugar(null);
+      $("#casa").onclick = casa;
+      arriba();
+    }
+
+    inicio().catch(fail);
+  })();
+  </script>
+</body>
+</html>

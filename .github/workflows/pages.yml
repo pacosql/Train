@@ -39,6 +39,8 @@ jobs:
           # mates10/fuentes es el archivo interno de fuentes (material con
           # derechos de terceros): vive en el repo privado, nunca en la web.
           rm -rf mates10/fuentes mates10/tools
+          # science/tools: scripts con los que se recortaron las imágenes.
+          rm -rf science/tools
       - name: App activity for the home page
         run: python3 .github/scripts/activity.py
       - name: Setup Pages

@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="robots" content="noindex" />
+  <title>Science · Living organisms</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#2e9a6a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Science" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="comun.css" />
+  <style>
+    a.acceso { display: block; text-decoration: none; color: var(--ink); }
+    a.acceso .t { font-weight: 800; font-size: 1.25rem; }
+    a.acceso .d { color: var(--muted); font-size: 0.92rem; }
+    .portada { display: block; width: 100%; max-width: 360px; margin: 6px auto 0; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>🔬 Science</h1>
+    <p class="muted">Unit 1: <b>Living organisms</b> — seres vivos e inertes, las 3 funciones vitales, las células, los niveles de organización y los cinco reinos. Con los dibujos de la ficha y del libro.</p>
+    <img class="portada" src="img/cells/plant.png" alt="Plant cell" />
+
+    <a class="card acceso" href="alumno/">
+      <div class="t">🧒 Alumno</div>
+      <div class="d">Te lo explico paso a paso, te pregunto y, si fallas, te lo vuelvo a explicar. Infinito: juega hasta que te lo sepas.</div>
+    </a>
+    <a class="card acceso" href="padre/">
+      <div class="t">👨 Padre</div>
+      <div class="d">Qué se sabe ya, qué falla, sus respuestas, tiempo practicado y exámenes de prueba.</div>
+    </a>
+
+    <h3>Banco</h3>
+    <div class="card small" id="estado">Cargando…</div>
+
+    <footer class="build">build __BUILD_ID__</footer>
+  </div>
+  <script src="vendor/supabase.min.js"></script>
+  <script src="config.js"></script>
+  <script src="banco.js"></script>
+  <script src="comun.js"></script>
+  <script>
+    (async () => {
+      const nq = K.S.CONCEPTS.reduce((n, c) => n + c.qs.length, 0);
+      const { count, error } = await K.t("answer").select("*", { count: "exact", head: true });
+      K.$("#estado").innerHTML = `<b>${K.S.TOPICS.length}</b> temas · <b>${K.S.CONCEPTS.length}</b> conceptos · <b>${nq}</b> preguntas · ` +
+        (error ? `<span class="err">${K.esc(error.message)}</span>` : `<b>${count}</b> respuestas guardadas`);
+    })();
+  </script>
+</body>
+</html>
