@@ -346,7 +346,8 @@
       function tocar(p, fx, fy) {
         const ok = p === q.part;
         view.mark(fx, fy, exam ? null : ok);
-        responder({ correct: ok, chosen: p, fx, fy });
+        const txt = p === "none" ? "(fuera de las partes)" : S.LABEL[q.cell][p] || `${p} (${S.PART_ES[p]})`;
+        responder({ correct: ok, chosen: txt, part: p, fx, fy });
       }
 
       // ---------- explicación
@@ -357,11 +358,11 @@
         let why = q.why || c.ex;
         if (!res.correct && res.chosenIdx != null && q.w && q.w[res.chosenIdx]) why = q.w[res.chosenIdx] + " " + (q.why || "");
         if (!res.correct && cellKind) {
-          const chosenPart = kind === "tap" ? res.chosen : PART_BY_LABEL(q.cell, res.chosen);
+          const chosenPart = kind === "tap" ? res.part : PART_BY_LABEL(q.cell, res.chosen);
           if (q.cell === "animal" && (res.chosen === "cell wall" || res.chosen === "chloroplast")) why = `¡Ojo! La célula animal NO tiene [[cell wall]] ni [[chloroplasts]]: eso solo lo tienen las plantas. Aquí va [[${right}]].`;
           else if (chosenPart && CONF[q.part + ">" + chosenPart]) why = CONF[q.part + ">" + chosenPart] + " " + c.ex;
-          else if (kind === "tap" && S.OTHER[res.chosen]) why = S.OTHER[res.chosen] + " " + c.ex;
-          else if (kind === "tap" && res.chosen && res.chosen !== "none") why = `Has tocado: [[${S.LABEL[q.cell][res.chosen] || res.chosen}]] (${S.PART_ES[res.chosen]}). ` + c.ex;
+          else if (kind === "tap" && S.OTHER[res.part]) why = S.OTHER[res.part] + " " + c.ex;
+          else if (kind === "tap" && res.part && res.part !== "none") why = `Has tocado: [[${S.LABEL[q.cell][res.part] || res.part}]] (${S.PART_ES[res.part]}). ` + c.ex;
         }
         if (!res.correct && kind === "num" && res.chosen) {
           const chosenPart = PART_BY_LABEL(q.cell, res.chosen);
@@ -403,7 +404,7 @@
         if (["label", "write", "tap"].includes(kind) && view) {
           view.box(q.part, S.LABEL[q.cell][q.part], "ok");
           view.highlight(q.part, "ok");
-          if (kind === "tap" && res.chosen && res.chosen !== "none" && res.chosen !== q.part) view.highlight(res.chosen, "bad", false);
+          if (kind === "tap" && res.part && res.part !== "none" && res.part !== q.part) view.highlight(res.part, "bad", false);
           setTimeout(() => view.zoomPart(q.part), 600);
           vis.innerHTML = `<p class="small muted">👆 Mira arriba: en verde, ${esc(S.PART_ART[q.cell][q.part])} (<b>${esc(S.LABEL[q.cell][q.part])}</b>).</p>`;
           return;
