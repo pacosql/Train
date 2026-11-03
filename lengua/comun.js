@@ -90,7 +90,7 @@
     pct: (x) => Math.round((x || 0) * 100) + "%",
     get: (k) => { try { return localStorage.getItem(k); } catch { return null; } },
     set: (k, v) => { try { v == null ? localStorage.removeItem(k) : localStorage.setItem(k, v); } catch {} },
-    preguntas: () => L.all(() => L.t("pregunta").select("id,area,nivel,q,txt,o,a,why,activa,origen,created_at,updated_at").order("id")),
+    preguntas: () => L.all(() => L.t("pregunta").select("id,area,nivel,q,txt,o,a,why,activa,origen,version,created_at,updated_at").order("id")),
     respuestas: (alumno) => L.all(() => L.t("respuesta").select("id,pregunta_id,area,nivel,correcta,elegida,ms,repaso,created_at").eq("alumno_id", alumno).order("id")),
     hace(d) {
       const s = (Date.now() - Date.parse(d)) / 1000;

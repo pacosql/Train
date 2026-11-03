@@ -38,7 +38,7 @@
 </head>
 <body>
   <div class="wrap">
-    <div class="top"><a href="../">← Lengua</a><span class="pill" id="quien">alumno</span></div>
+    <div class="top"><a href="../">← Lengua</a><button class="pill" id="quien" title="Cambiar de usuario">alumno</button></div>
     <div id="app">Cargando…</div>
     <footer class="build">build __BUILD_ID__</footer>
   </div>
@@ -55,11 +55,16 @@
     let sesion = null, hechasSesion = 0, okSesion = 0, falladasSesion = [];
     let lockId = null, rellenando = null;
 
+    // Salir: vuelve a «¿Quién eres?» (desde cualquier pantalla).
+    function salir() { clearInterval(lockId); L.set(K, null); alumno = null; answers = []; cola = []; L.$("#quien").textContent = "alumno"; inicio().catch(fail); }
+    L.$("#quien").onclick = () => { if (alumno) salir(); };
+
     const fail = (e) => (app.innerHTML = `<p class="err">${L.esc(e.message || e)}</p><button onclick="location.reload()">Reintentar</button>`);
     const hoy = () => answers.filter((a) => L.dayKey(a.created_at) === L.dayKey(Date.now())).length;
 
     // ------------------------------------------------------------ quién
     async function inicio() {
+      clearInterval(lockId);
       const saved = L.get(K);
       if (saved) return elegir(saved).catch(() => { L.set(K, null); inicio(); });
       const ls = L.must(await L.t("alumno").select("id,nombre").order("created_at"));
@@ -81,7 +86,7 @@
     async function elegir(id) {
       alumno = L.must(await L.t("alumno").select("*").eq("id", id).single());
       L.set(K, id);
-      L.$("#quien").textContent = alumno.nombre;
+      L.$("#quien").textContent = alumno.nombre + " · salir";
       const [qs, ans] = await Promise.all([L.preguntas(), L.respuestas(id)]);
       banco = Object.fromEntries(qs.filter((q) => q.activa).map((q) => [q.id, q]));
       answers = ans;
@@ -109,9 +114,9 @@
               <div class="bar" title="dominio ${L.pct(x.dominio)}"><i style="width:${x.n ? Math.round(x.dominio * 100) : 0}%"></i></div></div>`;
           }).join("")}`).join("")}
         <p class="small muted">La barra es tu dominio a nivel de examen: los aciertos de preguntas difíciles cuentan más.</p>
-        <p></p><button id="salir">No soy ${L.esc(alumno.nombre)}</button>`;
+        <p></p><button id="salir">Salir (no soy ${L.esc(alumno.nombre)})</button>`;
       L.$("#go").onclick = () => practicar(quedan ? quedan : 10);
-      L.$("#salir").onclick = () => { L.set(K, null); alumno = null; answers = []; inicio(); };
+      L.$("#salir").onclick = salir;
       window.scrollTo(0, 0);
     }
 
@@ -194,7 +199,7 @@
       const t0 = performance.now();
       const h = hoy();
       app.innerHTML = `<div class="head"><span class="small muted">${area.emoji} ${L.esc(area.name)} · <span class="nivel">${"●".repeat(q.nivel)}${"○".repeat(3 - q.nivel)}</span>${item.retry ? " · otra vez" : item.motivo === "repaso" ? " · repaso" : ""}</span>
-          <span class="small muted">${h}/${alumno.objetivo}</span></div>
+          <span class="small muted">${h}/${alumno.objetivo} · <a href="#" id="parar" style="color:var(--muted)">✕ parar</a></span></div>
         <div class="progreso"><i style="width:${Math.min(100, (h * 100) / alumno.objetivo)}%"></i></div>
         ${q.txt ? `<div class="txt">${L.esc(q.txt)}</div>` : ""}
         <div class="q">${L.esc(q.q)}</div>
@@ -252,6 +257,7 @@
         };
         sig.scrollIntoView({ behavior: "smooth", block: "nearest" });
       };
+      L.$("#parar").onclick = (e) => { e.preventDefault(); casa(); };
       L.$$(".ops button").forEach((b) => (b.onclick = () => responder(Number(b.dataset.k))));
       L.$("#nose").onclick = () => responder(null);
       window.scrollTo(0, 0);

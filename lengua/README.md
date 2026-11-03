@@ -13,6 +13,10 @@ Lengua Castellana y Literatura (590-004), Región de Murcia**.
   lista», «Lista para el examen») con lo que le falta, nivel por parte del
   examen y por área, constancia (14 días frente al objetivo), evolución,
   las que más falla, qué han hecho las rutinas y el objetivo diario.
+- 🧐 May (experta): `/Train/lengua/may/` — revisión a ciegas: elige la
+  correcta sin verla marcada, luego compara; puede quitar la pregunta al
+  momento o discrepar/comentar (va como aviso a la rutina nocturna, que le
+  da prioridad). Tabla `lengua_revision`.
 - 🔍 Revisor: `/Train/lengua/revisor/` — todo el banco con aciertos y
   distractores elegidos; avisar o retirar preguntas; ver lo que hace la
   rutina nocturna.

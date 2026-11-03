@@ -155,6 +155,8 @@ def contexto():
         where not correcta group by 1,2 having count(*) >= 2 order by 3 desc limit 40""")
     out["muy_lentas"] = sql("""select pregunta_id, round(avg(ms)/1000.0,1) seg, count(*) n from lengua_respuesta
         where ms is not null group by 1 having count(*) >= 2 and avg(ms) > 40000 order by 2 desc limit 20""")
+    out["revision_experta"] = sql("""select revisor, veredicto, count(*) n,
+        count(*) filter (where coincide) coincide from lengua_revision group by 1,2 order by 1,2""")
     out["ultimas_rutinas"] = sql("select tipo, nota, created_at from lengua_rutina_log where tipo = 'noche' order by id desc limit 5")
     out["ids_max"] = sql("""select area, max(substring(id from '\\d+$')::int) ultimo from lengua_pregunta group by 1 order by 1""")
     print(json.dumps(out, ensure_ascii=False, indent=1, default=str))

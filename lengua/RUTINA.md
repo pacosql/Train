@@ -45,6 +45,12 @@ lo escribas en un fichero).
    - si no → explica por qué en la respuesta.
    Cierra cada uno: `db.py reporte <id> atendido|descartado "<qué hiciste>"`
    (el revisor ve esa respuesta en su pantalla).
+   - **Los avisos de «May (experta)» mandan** (página `/lengua/may/`: May,
+     María Luisa, es experta y revisa a ciegas). Si dice que la correcta es
+     otra, que no está clara o la ha quitado, dale la razón salvo error
+     evidente: corrige la pregunta (y vuelve a activarla con `cargar`) o
+     déjala retirada si no tiene arreglo. Si la descartas, explica por qué
+     con argumentos (gramática, fuente), porque ella lo leerá.
 3. **Mejorar lo que falla**: en las preguntas con ≥ 50 % de fallo mira el
    distractor que más eligen (`distractores`, índice en el orden original
    de `o`). Si la pregunta es ambigua o el enunciado confunde, reescríbela.
