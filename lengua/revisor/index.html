@@ -47,7 +47,7 @@
   (async () => {
     const app = L.$("#app");
     const TABS = [["todas", "Todas"], ["falladas", "Más falladas"], ["avisos", "Con avisos"], ["nuevas", "Nuevas (noche)"], ["retiradas", "Retiradas"], ["rutina", "Rutina"]];
-    let tab = L.get("lengua_rev_tab") || "falladas";
+    let tab = L.get("lengua_rev_tab") || "todas";
     let qs = [], stats = {}, reps = {}, log = [];
     L.$("#area").innerHTML += L.AREAS.map((a) => `<option value="${a.id}">${a.emoji} ${L.esc(a.name)}</option>`).join("");
 
