@@ -78,7 +78,7 @@ if os.environ.get("SOLO_EMPRESAS"):  # p. ej. SOLO_EMPRESAS="Tinybird,EDB": solo
 
 PARTNER = re.compile(r"partner|alliance|channel|ecosystem|reseller|\bGSI\b|system integrator|\bISV\b", re.I)
 PARTNER_NO = re.compile(r"business partner|people partner|hr partner|talent|recruit|\bHR\b|finance partner|payroll|design partner|accountant|counsel|legal|engineer\b|developer|scientist|\bSDR\b|sales development rep|marketing channels?|growth marketing|channel sales representative|product manager|funding|membership|client partner|partner funding|delivery partner|partner site|partner operations analyst|people operations|customer success partner|client success partner|care partner|junior partner|m&a|language|resource partner|customer care|coordinator|influencer|creator|omnichannel|technical lead|health partnership|student|physicist|product success|sales partner –|staffing|sponsorship|care representative|partner success manager ii", re.I)
-LEAD = re.compile(r"\bCTO\b|chief technology|chief (data|ai|artificial intelligence|digital|product and technology|information) officer|\bCDO\b|\bCAIO\b|\bVP\b.{0,20}(engineering|technology|data|ai|machine learning|platform)|vice president.{0,20}(engineering|technology|data|ai)|head of (engineering|technology|data|ai|artificial intelligence|machine learning|ml|platform|r&d)|(engineering|technology|data|ai) director|director.{0,40}(engineering|technology|data|ai\b|machine learning|platform)|director de (tecnolog|ingenier|datos|ia\b)|responsable de (tecnolog|ingenier|datos)", re.I)
+LEAD = re.compile(r"\bCTO\b|chief technology|chief (data|ai|artificial intelligence|digital|product and technology|information) officer|\bCDO\b|\bCAIO\b|\bVP\b.{0,20}(engineering|technology|data|ai|machine learning|platform)|vice president.{0,20}(engineering|technology|data|ai)|head of (product )?(engineering|technology|data|ai|artificial intelligence|machine learning|ml|platform|r&d)|(engineering|technology|data|ai) director|director.{0,40}(engineering|technology|data|ai\b|machine learning|platform)|director de (tecnolog|ingenier|datos|ia\b)|responsable de (tecnolog|ingenier|datos)", re.I)
 LEAD_NO = re.compile(r"intern|becari|junior|assistant|recruit|talent|account executive|sales engineer|data ?center|facilities|construction|operations", re.I)
 SPAIN = re.compile(r"spain|españa|espana|madrid|barcelona|valencia|m[aá]laga|sevilla|seville|bilbao|zaragoza|alicante|iberia|\bESP\b", re.I)
 EUROPE = re.compile(r"emea|europe|european union|\beu\b|southern europe|iberia|cet\b|anywhere|worldwide|global", re.I)
@@ -88,8 +88,8 @@ HYBRID = re.compile(r"hybrid|híbrid|hibrid", re.I)
 ONSITE = re.compile(r"on[- ]?site|in[- ]office|presencial", re.I)
 
 DEVREL = re.compile(r"developer relations|devrel|developer advocate|advocate|evangelist|developer experience|developer community|community (manager|lead).{0,20}(developer|technical)|developer marketing|technical community", re.I)
-ARQ = re.compile(r"solutions? architect|solution engineer|solutions engineer|sales engineer|customer engineer|pre-?sales|field cto|forward[- ]deployed|technical account manager|cloud solution architect|ai architect|technical specialist|solution specialist.{0,30}(technical|architect)|arquitecto de soluciones|ingeniero de preventa|preventa", re.I)
-SALES = re.compile(r"account executive|account manager|account director|enterprise sales|strategic account|sales (director|manager|executive|lead|specialist)|business development (manager|director|lead|executive)|go[- ]to[- ]market|\bGTM\b|country (manager|lead|director)|territory manager|client director|commercial (director|lead|manager)|director comercial|ejecutivo de cuentas|gerente de cuentas|digital (solution|sales)|solution (area )?specialist|specialist.{0,20}(sales|azure|ai|cloud|data)|industry (lead|director|executive)|head of sales|vp.{0,10}sales|sales leader|sales representative|adoption (lead|manager|specialist)", re.I)
+ARQ = re.compile(r"solutions? architect|solution engineer|solutions engineer|sales engineer|customer engineer|pre-?sales|solutions? consultant|value (engineer|consultant)|technology specialist|consultor de soluciones|field cto|forward[- ]deployed|technical account manager|cloud solution architect|ai architect|technical specialist|solution specialist.{0,30}(technical|architect)|arquitecto de soluciones|ingeniero de preventa|preventa", re.I)
+SALES = re.compile(r"account executive|account manager|account director|enterprise sales|strategic account|sales (director|manager|executive|lead|specialist)|business development (manager|director|lead|executive)|director of business development|go[- ]to[- ]market|\bGTM\b|country (manager|lead|director)|territory manager|client director|commercial (director|lead|manager)|director comercial|ejecutivo de cuentas|gerente de cuentas|digital (solution|sales)|solution (area )?specialist|specialist.{0,20}(sales|azure|ai|cloud|data)|industry (lead|director|executive)|head of sales|vp.{0,10}sales|sales leader|sales representative|adoption (lead|manager|specialist)", re.I)
 EXEC = re.compile(r"country (manager|lead|director|head|general manager)|general manager|managing director|director general|"
                   r"directora? general|\bCEO\b|chief executive|\bCOO\b|chief operating|\bCRO\b|chief revenue|chief commercial|"
                   r"\bCCO\b|chief business|chief growth|chief customer|chief sales|\bCMO\b|chief marketing|chief strategy|"
@@ -489,7 +489,7 @@ LI_QUERIES = [
     "responsable de alianzas", "jefe de ingeniería", "director de ingeniería", "channel account manager",
     "partner account manager", "partner sales", "alliances", "VP of engineering", "fractional CTO",
     "head of data science", "director de datos", "head of platform",
-    "solutions architect", "solution architect AI", "developer relations", "developer advocate", "evangelist",
+    "solutions architect", "solution architect AI", "solution consultant", "solutions consultant", "value engineer", "developer relations", "developer advocate", "evangelist",
     "sales engineer", "customer engineer", "presales AI", "preventa", "enterprise account executive AI",
     "account executive cloud", "field CTO",
     "country manager", "general manager", "managing director", "director general", "director comercial",
@@ -498,7 +498,7 @@ LI_QUERIES = [
 ]
 LI_REMOTE_EU = ["partner manager", "partnerships", "alliances", "channel manager", "CTO",
                 "head of engineering", "VP engineering", "director of engineering", "head of data", "head of AI",
-                "solutions architect", "developer relations", "developer advocate", "sales engineer",
+                "solutions architect", "solution consultant", "developer relations", "developer advocate", "sales engineer",
                 "country manager", "general manager", "head of sales", "VP sales", "managing director"]
 
 
