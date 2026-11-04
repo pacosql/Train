@@ -192,7 +192,8 @@ def rellenar():
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
     import guardar as g
     from concurrent.futures import ThreadPoolExecutor
-    rows = g.api("GET", "empleo_ofertas?select=id,empresa,url,enlaces,resumen&activa=eq.true&sueldo=is.null")
+    # Sin sueldo o solo con una estimación: si la oferta publica sueldo real, sustituye a la estimación.
+    rows = g.api("GET", "empleo_ofertas?select=id,empresa,url,enlaces,resumen&activa=eq.true&or=(sueldo.is.null,sueldo_estimado.is.true)")
     n = 0
 
     def una(r):
@@ -200,7 +201,7 @@ def rellenar():
         urls = [l["url"] for l in (r.get("enlaces") or [{"url": r["url"]}])]
         s = sueldo_oferta(urls, r["empresa"], r.get("resumen") or "")
         if s:
-            g.api("PATCH", f"empleo_ofertas?id=eq.{r['id']}", s, "return=minimal")
+            g.api("PATCH", f"empleo_ofertas?id=eq.{r['id']}", dict(s, sueldo_estimado=False, sueldo_nota=None), "return=minimal")
             n += 1
             print(f"{r['empresa']}: {s['sueldo']}", file=sys.stderr)
 

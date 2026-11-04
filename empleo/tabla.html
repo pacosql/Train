@@ -72,6 +72,7 @@
     .pto a:hover { text-decoration: underline; color: var(--accent); }
     .pto .loc { color: var(--text-2); font-size: 0.78rem; }
     .pay { font-size: 0.82rem; color: var(--mid); white-space: nowrap; }
+    .pay.est { color: var(--text-2); font-style: italic; }
     .rem { font-size: 0.82rem; white-space: nowrap; }
     .rem.claro { color: var(--good); font-weight: 700; }
     .rem.remoto { color: var(--good); }
@@ -210,7 +211,7 @@
       return `<div class="row${m ? " marked to-" + m : ""}" data-id="${o.id}" data-dest="${m ? "→ " + DESTINO[m] : ""}">
         <div class="emp" title="${esc(o.empresa)}">${esc(o.empresa)}</div>
         <div class="pto" title="${esc(o.puesto)}${o.ubicacion ? " · " + esc(o.ubicacion) : ""}"><a href="${esc(link)}" target="_blank" rel="noopener">${esc(o.puesto)}</a>${resultado(o)}${o.ubicacion ? ` <span class="loc">· ${esc(o.ubicacion)}</span>` : ""}</div>
-        <div class="pay">${o.sueldo ? "💶 " + esc(o.sueldo) : ""}</div>
+        <div class="pay${o.sueldo_estimado ? " est" : ""}"${o.sueldo_estimado ? ` title="${esc(o.sueldo_nota || "Estimación de mercado: la oferta no publica sueldo")}"` : ""}>${o.sueldo ? (o.sueldo_estimado ? "≈ " : "💶 ") + esc(o.sueldo) : ""}</div>
         ${remoto(o)}
         ${g.id === "aplicada" ? aplicadoEl(o) : aplicaste(o)}
         <div class="acts">${g.acts.map((a) => `<button data-to="${a}" class="${m === a ? "on" : ""}">${B[a]}</button>`).join("")}</div>
@@ -347,7 +348,7 @@
     async function load() {
       $("reload").textContent = "…";
       const [of, ca] = await Promise.all([
-        EmpleoCand.todas((a, b) => client.from(T).select("id,empresa,puesto,ubicacion,modalidad,remoto_claro,sueldo,url,enlaces,decision,activa,aplicada_en,encontrado_en,resultado,resultado_en,resultado_nota").order("id").range(a, b)),
+        EmpleoCand.todas((a, b) => client.from(T).select("id,empresa,puesto,ubicacion,modalidad,remoto_claro,sueldo,sueldo_estimado,sueldo_nota,url,enlaces,decision,activa,aplicada_en,encontrado_en,resultado,resultado_en,resultado_nota").order("id").range(a, b)),
         client.from(tablePrefix + "candidaturas").select("empresa,fecha,puesto"),
       ]);
       $("reload").textContent = "↻";

@@ -145,6 +145,7 @@
     .ya-aplicada.vieja { color: var(--text-2, #b7bcc6); background: rgba(255, 255, 255, 0.04); border-color: var(--line-strong); }
     .ya-aplicada { margin: 0 0 8px; padding: 7px 10px; border-radius: 10px; font-size: 0.84rem; font-weight: 600;
       color: #ffd66e; background: rgba(242, 184, 64, 0.12); border: 1px solid rgba(242, 184, 64, 0.55); }
+    .key .k-pay.est { color: var(--text-2); background: rgba(255, 255, 255, 0.04); border-color: var(--line-strong); border-style: dashed; font-weight: 600; }
     .key .k-pay { color: #ffd66e; border-color: rgba(242, 184, 64, 0.55); background: rgba(242, 184, 64, 0.12); }
     .acts .dislike.on { background: var(--bad-soft); color: var(--bad); border-color: rgba(255, 84, 112, 0.6); }
     .acts .apply.on { background: rgba(110, 168, 255, 0.18); color: var(--accent-2); border-color: rgba(110, 168, 255, 0.7); }
@@ -375,7 +376,7 @@
       if (sizes.length) list = list.filter((o) => sizes.includes(empleados(o)));
       if (state.trust === "peligro") list = list.filter((o) => (confianza(o) || {}).n === 1);
       else if (state.trust) list = list.filter((o) => ((confianza(o) || {}).n || 0) >= +state.trust);
-      if (state.pay === "con") list = list.filter((o) => o.sueldo);
+      if (state.pay === "con") list = list.filter((o) => o.sueldo && !o.sueldo_estimado);
       else if (state.pay) list = list.filter((o) => (o.sueldo_max_eur || o.sueldo_min_eur || 0) >= +state.pay);
       if (q) list = list.filter((o) => [o.empresa, o.puesto, o.ubicacion, o.resumen, o.fuente, o.sector, (o.etiquetas || []).join(" ")].join(" ").toLowerCase().includes(q));
       const by = {
@@ -506,7 +507,9 @@
           if (c.n <= 1) return `<span class="k-danger" title="${esc(c.nota || "")}">⚠️ Peligrosa</span>`;
           return `<span class="k-star" title="${esc(c.nota || "")}">${"★".repeat(c.n)}${"☆".repeat(5 - c.n)}</span>`;
         })(),
-        o.sueldo ? `<span class="k-pay">💶 ${esc(o.sueldo)}/año</span>` : "",
+        o.sueldo ? (o.sueldo_estimado
+          ? `<span class="k-pay est" title="${esc(o.sueldo_nota || "Estimación de mercado: la oferta no publica sueldo")}">≈ ${esc(o.sueldo)}/año (estimado)</span>`
+          : `<span class="k-pay">💶 ${esc(o.sueldo)}/año</span>`) : "",
       ].join("");
       if (o.seniority) badges.push(`<span class="b">${esc(o.seniority)}</span>`);
       if (o.sector) badges.push(`<span class="b">${esc(o.sector)}</span>`);

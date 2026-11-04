@@ -74,10 +74,68 @@ def nurl(u):
     return re.sub(r"/[a-z]{2}-[A-Z]{2}/", "/", u).lower()
 
 
+_LUGAR = r"(remote|remoto|hybrid|h[ií]brido|spain|españa|madrid|barcelona|emea|europe|eu|anywhere|worldwide|home[ -]based|m/f/d|m/w/d|f/m/d|h/m|en|in|or|o|y|and|,|/|-|\s)+"
+
+
+def _pto(s):
+    """Puesto comparable: quita solo paréntesis y sufijos de ubicación/modalidad ("(Remote)", "| Spain | Remote")."""
+    s = (s or "").lower()
+    s = re.sub(r"\(\s*" + _LUGAR + r"\)", " ", s)
+    s = re.sub(r"(\s[|–-]\s*" + _LUGAR + r")+$", " ", s)
+    return norm(s)
+
+
 def misma(a_emp, a_pto, b_emp, b_pto):
-    """Misma empresa (prefijo) y mismo puesto (uno contiene al otro)."""
-    ea, eb, pa, pb = norm(a_emp)[:6], norm(b_emp)[:6], norm(a_pto), norm(b_pto)
-    return ea == eb and len(min(pa, pb, key=len)) >= 8 and (pa.startswith(pb) or pb.startswith(pa))
+    """Misma empresa (una empieza como la otra: "Siena" / "Siena AI") y mismo puesto (igual salvo ubicación)."""
+    ea, eb = norm(a_emp), norm(b_emp)
+    c, l = sorted((ea, eb), key=len)
+    if not c or not (ea == eb or (len(c) >= 4 and l.startswith(c))):
+        return False
+    pa, pb = _pto(a_pto), _pto(b_pto)
+    return len(pa) >= 6 and pa == pb
+
+
+RANGO_DECISION = ["aplicada", "aplicar_detalle", "aplicar", "revisar", "high", "medium", "low", "pendiente", "no_gusta"]
+
+
+def duplicados(aplicar=True):
+    """Misma oferta repetida (activas): deja una (la de decisión más avanzada; si empatan, la más antigua),
+    le pasa los enlaces de las otras y desactiva las demás con la etiqueta 'duplicada'."""
+    rows = api("GET", "empleo_ofertas?select=id,empresa,puesto,decision,enlaces,url,created_at,etiquetas,aplicada_en,nota,resultado"
+                      "&activa=eq.true&order=created_at")
+    grupos, usado = [], set()
+    for i, a in enumerate(rows):
+        if a["id"] in usado:
+            continue
+        g = [a]
+        for b in rows[i + 1:]:
+            if b["id"] not in usado and misma(a["empresa"], a["puesto"], b["empresa"], b["puesto"]):
+                g.append(b); usado.add(b["id"])
+        if len(g) > 1:
+            grupos.append(g)
+    n = 0
+    for g in grupos:
+        g.sort(key=lambda r: (RANGO_DECISION.index(r["decision"]) if r["decision"] in RANGO_DECISION else 99, r["created_at"]))
+        k, otras = g[0], g[1:]
+        print(f"{k['empresa']} — {k['puesto']} [{k['decision']}] ← " + "; ".join(f"{o['empresa']} — {o['puesto']} [{o['decision']}]" for o in otras), file=sys.stderr)
+        if not aplicar:
+            continue
+        enl = list(k.get("enlaces") or [{"label": "Oferta", "url": k["url"]}])
+        have = {nurl(l["url"]) for l in enl}
+        patch = {}
+        for o in otras:
+            for l in (o.get("enlaces") or [{"label": "Oferta", "url": o["url"]}]):
+                if nurl(l["url"]) not in have:
+                    enl.append(l); have.add(nurl(l["url"]))
+            if o.get("nota") and not k.get("nota"):
+                patch["nota"] = k["nota"] = o["nota"]
+            if o.get("resultado") and not k.get("resultado"):
+                patch["resultado"] = k["resultado"] = o["resultado"]
+            api("PATCH", f"empleo_ofertas?id=eq.{o['id']}", {"activa": False, "etiquetas": sorted(set((o.get("etiquetas") or []) + ["duplicada"]))}, "return=minimal")
+            n += 1
+        patch["enlaces"] = enl
+        api("PATCH", f"empleo_ofertas?id=eq.{k['id']}", patch, "return=minimal")
+    print(json.dumps({"grupos": len(grupos), "desactivadas": n}))
 
 
 def inicio():
@@ -506,6 +564,6 @@ def captura_hecha(cid, resultado):
 if __name__ == "__main__":
     {"insertar": lambda: insertar(*sys.argv[2:]), "revalidar": revalidar,
      "para_resumir": lambda: para_resumir(sys.argv[2]), "aplicar_resumenes": lambda: aplicar_resumenes(*sys.argv[2:]),
-     "limpiar_regla": limpiar_regla, "cuenta": cuenta,
+     "limpiar_regla": limpiar_regla, "cuenta": cuenta, "duplicados": lambda: duplicados(sys.argv[2:] != ["--ver"]),
      "capturas": lambda: capturas(sys.argv[2]), "correos": lambda: correos(sys.argv[2]),
      "captura_hecha": lambda: captura_hecha(sys.argv[2], sys.argv[3])}[sys.argv[1]]()

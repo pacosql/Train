@@ -71,6 +71,10 @@ URL: `https://pacosql.github.io/Train/empleo/`
   oferta exacta (p. ej. leídas de los correos "Thank you for applying"):
   `empresa`, `fecha`, `puesto` (opcional), `fuente`. Las dos interfaces las
   juntan con las ofertas aplicadas para el aviso "✋ ya aplicaste hace N días".
+- `empleo_ofertas.sueldo_estimado` / `sueldo_nota`: si la oferta no publica
+  sueldo, la rutina puede poner una estimación de mercado (se ve como
+  "≈ … (estimado)" en gris y no cuenta para el filtro "Con sueldo");
+  `sueldo.py rellenar` la sustituye si la oferta llega a publicar sueldo.
 - `empleo_capturas`: capturas de la bandeja de entrada que pega el usuario
   (`imagen` JPEG en base64, `procesada`, `resultado`); la rutina las lee.
 - `empleo_ofertas.resultado` (`rechazada|entrevista|oferta`), `resultado_en`,
@@ -153,6 +157,9 @@ por partes. Trabajar en `/tmp/r/` (crear la carpeta).
    frases: rol + dónde/cómo) y `empleados` si falta. Guardar como
    `[{id, resumen, modalidad, remoto_claro, activa, empleados}]` y
    `python3 empleo/tools/guardar.py aplicar_resumenes /tmp/r/pr_out*.json`.
+7b. **Duplicados**: `python3 empleo/tools/guardar.py duplicados` (misma empresa
+   y mismo puesto salvo ubicación: deja la de decisión más avanzada, le pasa
+   los enlaces y desactiva las demás con la etiqueta `duplicada`).
 8. **Aplicar la regla**: `python3 empleo/tools/guardar.py limpiar_regla` y
    `python3 empleo/tools/sueldo.py rellenar`.
 9. **Compañías nuevas** relevantes: upsert directo en `empleo_empresas`
