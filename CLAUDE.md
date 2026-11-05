@@ -114,6 +114,7 @@ Al crear una app nueva `<app>/`:
 | 📣 Orto Redes | `ortoredes/` | `ortoredes_` |
 | 📝 Lengua | `lengua/` | `lengua_` |
 | 🔬 Science | `science/` | `science_` |
+| 🔤 Logo Orto | `logoorto/` | `logoorto_` |
 
 (Actualiza esta tabla al añadir una app nueva.)
 
