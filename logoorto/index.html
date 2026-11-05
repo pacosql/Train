@@ -145,6 +145,36 @@
     .ii .ib button { border: 1px solid var(--line); background: #fff; border-radius: 10px; padding: 5px 0; font-size: 0.9rem; }
     .ii .ib button.on[data-v="gusta"] { background: var(--good); border-color: var(--good); }
     .ii .ib button.on[data-v="no_gusta"] { background: var(--bad); border-color: var(--bad); }
+    .gal { display: grid; grid-template-columns: repeat(var(--cols, 4), minmax(0, 1fr)); gap: 10px 8px; touch-action: pan-y; }
+    .gi { position: relative; cursor: pointer; border-radius: 22%; min-width: 0; }
+    .gi img, .gi .ic { width: 100%; aspect-ratio: 1; border-radius: 22%; display: block; box-shadow: 0 0 0 1px rgba(0,0,0,0.06); background: var(--paper); }
+    .gi .in { font-size: 0.68rem; margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .gi .ck { position: absolute; top: 4px; right: 4px; width: 26px; height: 26px; border-radius: 50%; border: 2px solid #fff; background: rgba(0,0,0,0.25); padding: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
+    .gi.sel .ck { background: var(--blue); }
+    .gi.sel .ck::after { content: "✓"; color: #fff; font-weight: 800; font-size: 0.8rem; }
+    .gi.sel img, .gi.sel .ic { outline: 3px solid var(--blue); outline-offset: 2px; }
+    .gi.d-gusta::before, .gi.d-no_gusta::before { position: absolute; top: 4px; left: 4px; z-index: 1; font-size: 0.9rem; }
+    .gi.d-gusta::before { content: "👍"; } .gi.d-no_gusta::before { content: "👎"; }
+    .gi.dim { opacity: 0.45; }
+    .zoom { display: flex; align-items: center; gap: 8px; margin: 0 0 10px; flex-wrap: wrap; }
+    .zoom button { border: 1px solid var(--line); background: #fff; border-radius: 10px; width: 38px; height: 34px; font-size: 1.1rem; }
+    .zoom span { font-size: 0.8rem; font-weight: 600; }
+    .zoom .hint { font-weight: 400; color: var(--ink-2); font-size: 0.72rem; flex-basis: 100%; }
+    .vbtn { border: 1px solid var(--line); background: #fff; border-radius: 999px; padding: 6px 12px; font-size: 0.8rem; font-weight: 600; margin: 0 0 10px; }
+    .selbar { position: fixed; left: 50%; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 160%); background: var(--ink); color: #fff; border-radius: 18px; padding: 8px; display: flex; gap: 6px; align-items: center; z-index: 25; transition: transform 0.2s; max-width: calc(100% - 20px); font-size: 0.85rem; }
+    .selbar.show { transform: translate(-50%, 0); }
+    .selbar span { padding: 0 6px; white-space: nowrap; }
+    .selbar button { border: 0; border-radius: 12px; padding: 10px 10px; font-weight: 700; font-size: 0.85rem; background: #fff; color: var(--ink); white-space: nowrap; }
+    .selbar button[data-b="gusta"] { background: var(--good); color: #fff; } .selbar button[data-b="no_gusta"] { background: var(--bad); color: #fff; }
+    .selbar button[data-b="x"] { background: transparent; color: #fff; }
+    .lb { position: fixed; inset: 0; background: rgba(10,10,10,0.94); z-index: 40; display: none; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 16px; color: #fff; }
+    .lb.show { display: flex; }
+    .lbimg img { width: min(78vw, 60vh, 520px); aspect-ratio: 1; border-radius: 22%; display: block; background: #222; }
+    .lbinfo { text-align: center; font-size: 0.95rem; } .lbinfo small { color: #bbb; } .lbinfo a { color: #9db4ff; font-size: 0.85rem; }
+    .lbacts { display: flex; gap: 8px; } .lbacts button { border: 0; border-radius: 14px; padding: 12px 14px; font-weight: 700; background: #fff; color: var(--ink); font-size: 0.95rem; }
+    .lbacts button[data-l] { background: #333; color: #fff; font-size: 1.3rem; padding: 8px 16px; }
+    .lbacts button.on[data-v="gusta"] { background: var(--good); color: #fff; } .lbacts button.on[data-v="no_gusta"] { background: var(--bad); color: #fff; }
+    .lbx { position: absolute; top: calc(12px + env(safe-area-inset-top, 0px)); right: 14px; background: #333; color: #fff; border: 0; border-radius: 50%; width: 40px; height: 40px; font-size: 1.1rem; }
     .empty { text-align: center; padding: 50px 10px; color: var(--ink-2); }
     .empty .big { font-size: 2.4rem; }
     .back { font-weight: 600; font-size: 0.9rem; margin: 4px 0 4px; cursor: pointer; display: inline-block; }
@@ -177,7 +207,7 @@
 
     <details class="general" id="about"><summary>ℹ️ Qué es esto</summary><div class="prefs">
       <p>Buscamos el <b>icono de app</b> de <b>Ortografía10</b> (ortografia10.com): el mismo dibujo sirve de icono en la App Store y Google Play, de <b>favicon</b> en la pestaña del navegador y de base del <b>logotipo</b> (el «wordmark» con el nombre escrito).</p>
-      <p>Brief: blanco y negro, colores sencillos, muy limpio y chulo, con la <b>Ñ</b> si puede ser, y el nombre escrito todo junto: <b>Ortografía10</b>.</p>
+      <p>Uso: app, web, <b>pegatinas</b> e <b>imán de nevera</b> (tiene que funcionar impreso y troquelado). Brief: blanco y negro, colores sencillos, muy limpio y chulo, con la <b>Ñ</b> si puede ser, y el nombre escrito todo junto: <b>Ortografía10</b>.</p>
       <p>Cómo funciona: marca 👍 / 👎 en cada propuesta (y en los iconos de <b>🎨 Inspiración</b>, que son apps populares de la App Store). Una rutina lee tus votos y comentarios y cada pocos minutos añade tandas de ~35 variantes nuevas: parte cerca de lo que te gusta, evita lo que no y mete algunas al azar para explorar. Cuando una sea la buena, márcala ⭐ Final y su «Kit» te da los PNG/SVG.</p>
     </div></details>
     <p class="msg" id="msg"></p>
@@ -187,6 +217,8 @@
     <div class="build-id">build __BUILD_ID__</div>
   </div>
 
+  <div class="selbar" id="selbar"></div>
+  <div class="lb" id="lb"></div>
   <div class="toast" id="toast"><span id="toast-text"></span><button id="toast-undo"></button></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
@@ -208,7 +240,7 @@
     let disenos = [];
     let comentarios = [];
     let rutinas = [];
-    const state = { tab: "pendiente", detail: null };
+    const state = { tab: "pendiente", detail: null, vista: "gal" };
     // Última visita: lo creado desde entonces lleva la etiqueta «nuevo».
     const VISIT_KEY = "logoorto.ultimaVisita";
     let prevVisit = null;
@@ -671,11 +703,14 @@
       }
       if (state.tab === "inspiracion") return renderInsp(view);
       const list = inTab(state.tab);
-      if (state.tab === "todos") {
-        view.innerHTML = list.length ? `<p class="eyebrow">Todos los diseños, del más nuevo al más antiguo. Toca uno para verlo entero.</p><div class="grid">${list.map((d) => `
-          <button type="button" class="g-item ${["no_gusta", "versionado", "retirado"].includes(d.decision) ? "dim" : ""}" data-go="${d.id}">${icon(d, "")}
-            <div class="cap"><b>${d.numero}</b>${d.decision ? `<span>${DECISION_LABEL[d.decision].split(" ")[0]}</span>` : ""}</div></button>`).join("")}</div>` : emptyHTML();
+      if (state.tab === "todos" || state.vista === "gal") {
+        view.innerHTML = (list.length ? `<p class="eyebrow">${state.tab === "todos" ? "Todos los diseños, del más nuevo al más antiguo." : ""} Toca uno para verlo entero; marca ○ en varios y decide de golpe abajo.</p>${state.tab !== "todos" ? `<button type="button" class="vbtn" id="vista">☰ Ver como lista</button>` : ""}${zoomBar()}<div class="gal" style="--cols:${cols}">${list.map((d) => `
+          <div class="gi dz ${sel.has(d.id) ? "sel" : ""} ${["no_gusta", "versionado", "retirado"].includes(d.decision) ? "dim" : ""}" data-go="${d.id}">${icon(d, "")}
+            <button type="button" class="ck" data-sel="${d.id}" aria-label="Elegir"></button>
+            <div class="in"><b>${d.numero}</b> ${d.decision ? (DECISION_LABEL[d.decision] || "").split(" ")[0] : ""}</div></div>`).join("")}</div>` : emptyHTML());
         view.querySelectorAll("[data-go]").forEach((b) => b.onclick = () => openDetail(b.dataset.go));
+        const vb = el("vista"); if (vb) vb.onclick = () => { state.vista = "lista"; sel.clear(); render(); };
+        wireGallery(view); renderBar();
         return;
       }
       const intro = {
@@ -691,33 +726,90 @@
           ${prefs.no_gusta ? `<p><b>No te gusta:</b> ${esc(prefs.no_gusta)}</p>` : ""}
           ${prefs.explorando ? `<p><b>Explorando ahora:</b> ${esc(prefs.explorando)}</p>` : ""}
           <p class="helper">Actualizado ${prefs.actualizado_en ? ago(prefs.actualizado_en) : ""}. Si algo no es así, dilo en «Pide algo general».</p></div></details>` : "";
-      view.innerHTML = learned + general + `<p class="eyebrow">${intro}</p>` + (list.length ? list.map(cardHTML).join("") : emptyHTML());
+      view.innerHTML = learned + general + `<p class="eyebrow">${intro}</p><button type="button" class="vbtn" id="vista">▦ Ver como galería (zoom y elegir varios)</button>` + (list.length ? list.map(cardHTML).join("") : emptyHTML());
       view.querySelectorAll(".card").forEach(wireCard);
+      el("vista").onclick = () => { state.vista = "gal"; render(); };
+      renderBar();
       const g = el("general");
       if (g) g.addEventListener("toggle", () => { if (g.open) renderCommentBox(g, null); });
     }
+    // ---------- galería: zoom, selección múltiple y visor ----------
+    let cols = 4; try { cols = +localStorage.getItem("logoorto.cols") || 4; } catch {}
+    const sel = new Set();
+    function setCols(n) { cols = Math.max(2, Math.min(10, n)); try { localStorage.setItem("logoorto.cols", cols); } catch {} document.querySelectorAll(".gal").forEach((g) => g.style.setProperty("--cols", cols)); const z = el("zoomlbl"); if (z) z.textContent = cols + " por fila"; }
+    function zoomBar() { return `<div class="zoom"><button type="button" data-z="1" title="Más grandes">＋</button><span id="zoomlbl">${cols} por fila</span><button type="button" data-z="-1" title="Más pequeños">－</button><span class="hint">pellizca para hacer zoom · toca para ver · ○ para elegir varios</span></div>`; }
+    function wireGallery(view) {
+      view.querySelectorAll("[data-z]").forEach((b) => b.onclick = () => setCols(cols - +b.dataset.z));
+      const g = view.querySelector(".gal"); if (!g) return;
+      let d0 = 0, c0 = cols;
+      g.addEventListener("touchstart", (e) => { if (e.touches.length === 2) { d0 = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); c0 = cols; } }, { passive: true });
+      g.addEventListener("touchmove", (e) => { if (e.touches.length === 2 && d0) { e.preventDefault(); const d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); const n = Math.round(c0 * d0 / d); if (n !== cols) setCols(n); } }, { passive: false });
+      g.addEventListener("touchend", () => { d0 = 0; });
+      g.addEventListener("wheel", (e) => { if (e.ctrlKey) { e.preventDefault(); setCols(cols + (e.deltaY > 0 ? 1 : -1)); } }, { passive: false });
+      g.querySelectorAll("[data-sel]").forEach((c) => c.onclick = (e) => { e.stopPropagation(); const id = c.dataset.sel; sel.has(id) ? sel.delete(id) : sel.add(id); c.closest(".gi").classList.toggle("sel", sel.has(id)); renderBar(); });
+    }
+    function renderBar() {
+      const bar = el("selbar");
+      if (!sel.size) { bar.classList.remove("show"); return; }
+      const isInsp = state.tab === "inspiracion";
+      bar.innerHTML = `<span><b>${sel.size}</b> elegido${sel.size > 1 ? "s" : ""}</span>
+        <button type="button" data-b="no_gusta">👎 No me gusta</button><button type="button" data-b="gusta">👍 Me gusta</button>
+        ${isInsp ? "" : `<button type="button" data-b="definitivo">⭐</button>`}<button type="button" data-b="x" title="Quitar selección">✕</button>`;
+      bar.classList.add("show");
+      bar.querySelectorAll("[data-b]").forEach((b) => b.onclick = () => b.dataset.b === "x" ? (sel.clear(), render()) : bulk(b.dataset.b));
+    }
+    async function bulk(decision) {
+      const isInsp = state.tab === "inspiracion";
+      const items = [...sel].map((id) => isInsp ? insp.find((x) => x.id === id) : byId(id)).filter(Boolean);
+      const prevs = items.map((x) => ({ x, d: x.decision, t: x.decidido_en }));
+      const now = new Date().toISOString();
+      items.forEach((x) => Object.assign(x, { decision, decidido_en: now }));
+      sel.clear(); render();
+      const { error } = await client.from(isInsp ? T_INSP : T_DISENOS).update({ decision, decidido_en: now }).in("id", items.map((x) => x.id));
+      if (error) { prevs.forEach((p) => Object.assign(p.x, { decision: p.d, decidido_en: p.t })); render(); showMsg("No se pudo guardar: " + error.message); return; }
+      showToast(`${decision === "gusta" ? "👍" : decision === "no_gusta" ? "👎" : "⭐"} Guardado${items.length > 1 ? `s ${items.length}` : ""}`, async () => {
+        prevs.forEach((p) => Object.assign(p.x, { decision: p.d, decidido_en: p.t })); render();
+        for (const p of prevs) await client.from(isInsp ? T_INSP : T_DISENOS).update({ decision: p.d, decidido_en: p.t }).eq("id", p.x.id);
+      });
+    }
+    // visor a pantalla completa (inspiración)
+    let lbList = [], lbI = 0;
+    function openLb(list, i) { lbList = list; lbI = i; drawLb(); el("lb").classList.add("show"); }
+    function drawLb() {
+      const x = lbList[lbI]; if (!x) return closeLb();
+      el("lb").innerHTML = `<button type="button" class="lbx" data-l="close">✕</button>
+        <div class="lbimg"><img src="${esc(x.icono_url.replace("256x256bb", "1024x1024bb"))}" style="background:#222 url(${esc(x.icono_url)}) center/cover" alt=""></div>
+        <div class="lbinfo"><b>${esc(x.nombre)}</b><br><small>${esc(x.desarrollador || "")}${x.categoria ? " · " + esc(x.categoria) : ""} · ${esc(x.fuente || "")}</small><br><a href="${esc(x.tienda_url)}" target="_blank" rel="noopener">Ver en la App Store ↗</a> · <small>${lbI + 1} / ${lbList.length}</small></div>
+        <div class="lbacts"><button type="button" data-l="prev">‹</button><button type="button" data-v="no_gusta" class="${x.decision === "no_gusta" ? "on" : ""}">👎 No me gusta</button><button type="button" data-v="gusta" class="${x.decision === "gusta" ? "on" : ""}">👍 Me gusta</button><button type="button" data-l="next">›</button></div>`;
+      el("lb").querySelectorAll("[data-l]").forEach((b) => b.onclick = () => b.dataset.l === "close" ? closeLb() : (lbI = Math.max(0, Math.min(lbList.length - 1, lbI + (b.dataset.l === "next" ? 1 : -1))), drawLb()));
+      el("lb").querySelectorAll("[data-v]").forEach((b) => b.onclick = async () => {
+        const decision = x.decision === b.dataset.v ? null : b.dataset.v;
+        const prev = { decision: x.decision, decidido_en: x.decidido_en };
+        Object.assign(x, { decision, decidido_en: new Date().toISOString() });
+        const { error } = await client.from(T_INSP).update({ decision, decidido_en: x.decidido_en }).eq("id", x.id);
+        if (error) { Object.assign(x, prev); showMsg("No se pudo guardar: " + error.message); }
+        if (decision && lbI < lbList.length - 1) lbI++;
+        drawLb(); render();
+      });
+    }
+    function closeLb() { el("lb").classList.remove("show"); el("lb").innerHTML = ""; }
+    let tx0 = null;
+    document.addEventListener("keydown", (e) => { if (!el("lb").classList.contains("show")) return; if (e.key === "Escape") closeLb(); if (e.key === "ArrowRight") { lbI = Math.min(lbList.length - 1, lbI + 1); drawLb(); } if (e.key === "ArrowLeft") { lbI = Math.max(0, lbI - 1); drawLb(); } });
+    el("lb").addEventListener("touchstart", (e) => { tx0 = e.touches[0].clientX; }, { passive: true });
+    el("lb").addEventListener("touchend", (e) => { if (tx0 == null) return; const dx = e.changedTouches[0].clientX - tx0; tx0 = null; if (Math.abs(dx) > 50) { lbI = Math.max(0, Math.min(lbList.length - 1, lbI + (dx < 0 ? 1 : -1))); drawLb(); } });
     function renderInsp(view) {
       const n = (f) => insp.filter((x) => f === "pendiente" ? !x.decision : x.decision === f).length;
       const list = insp.filter((x) => inspFiltro === "pendiente" ? !x.decision : x.decision === inspFiltro);
-      view.innerHTML = `<p class="eyebrow">Iconos de apps populares de la App Store (top España, EE. UU. y educación/idiomas). Marca los que te inspiran: la rutina usa tus 👍 y 👎 como pistas de estilo.</p>
+      view.innerHTML = `<p class="eyebrow">Iconos de apps populares de la App Store. Toca uno para verlo en grande; marca ○ en varios y guárdalos de golpe con la barra de abajo. Tus 👍 y 👎 orientan las propuestas.</p>
         <div class="tabs" style="position:static;padding-top:0">${[["pendiente", "Por ver"], ["gusta", "👍"], ["no_gusta", "👎"]].map(([k, l]) => `<button class="tab ${inspFiltro === k ? "active" : ""}" data-f="${k}">${l} <b>${n(k)}</b></button>`).join("")}</div>
-        ${list.length ? `<div class="igrid">${list.map((x) => `<div class="ii" data-i="${x.id}">
-          <a href="${esc(x.tienda_url)}" target="_blank" rel="noopener"><img loading="lazy" src="${esc(x.icono_url)}" alt=""></a>
-          <div class="in">${esc(x.nombre)}</div>
-          <div class="ib"><button type="button" data-v="no_gusta" class="${x.decision === "no_gusta" ? "on" : ""}">👎</button><button type="button" data-v="gusta" class="${x.decision === "gusta" ? "on" : ""}">👍</button></div></div>`).join("")}</div>` : `<div class="empty"><div class="big">📭</div><div>Nada por aquí.</div></div>`}`;
-      view.querySelectorAll("[data-f]").forEach((b) => b.onclick = () => { inspFiltro = b.dataset.f; render(); });
-      view.querySelectorAll(".ii").forEach((card) => {
-        const x = insp.find((y) => y.id === card.dataset.i);
-        card.querySelectorAll("[data-v]").forEach((b) => b.onclick = async () => {
-          const prev = { decision: x.decision, decidido_en: x.decidido_en };
-          const patch = { decision: x.decision === b.dataset.v ? null : b.dataset.v, decidido_en: new Date().toISOString() };
-          Object.assign(x, patch);
-          if (inspFiltro === "pendiente" && patch.decision) { card.style.opacity = 0; setTimeout(render, 200); } else render();
-          const { error } = await client.from(T_INSP).update(patch).eq("id", x.id);
-          if (error) { Object.assign(x, prev); render(); showMsg("No se pudo guardar: " + error.message); return; }
-          showToast(`${patch.decision === "gusta" ? "👍" : patch.decision === "no_gusta" ? "👎" : "↩️"} ${x.nombre}`, async () => { Object.assign(x, prev); render(); await client.from(T_INSP).update(prev).eq("id", x.id); });
-        });
-      });
+        ${zoomBar()}
+        ${list.length ? `<div class="gal" style="--cols:${cols}">${list.map((x, i) => `<div class="gi ${sel.has(x.id) ? "sel" : ""} ${x.decision ? "d-" + x.decision : ""}" data-i="${i}">
+          <img loading="lazy" src="${esc(x.icono_url)}" alt="">
+          <button type="button" class="ck" data-sel="${x.id}" aria-label="Elegir"></button>
+          <div class="in">${esc(x.nombre)}</div></div>`).join("")}</div>` : `<div class="empty"><div class="big">📭</div><div>Nada por aquí.</div></div>`}`;
+      view.querySelectorAll("[data-f]").forEach((b) => b.onclick = () => { inspFiltro = b.dataset.f; sel.clear(); render(); });
+      view.querySelectorAll(".gi").forEach((g) => g.onclick = () => openLb(list, +g.dataset.i));
+      wireGallery(view); renderBar();
     }
     function emptyHTML() {
       return `<div class="empty"><div class="big">${state.tab === "pendiente" ? "✅" : "📭"}</div><div>${state.tab === "pendiente" ? "No queda nada por decidir." : "Nada por aquí todavía."}</div><p class="helper">${state.tab === "pendiente" ? "Comenta alguno o pide algo general y la rutina te traerá propuestas nuevas." : ""}</p></div>`;
@@ -744,7 +836,7 @@
     }
 
     async function init() {
-      document.querySelectorAll(".tab").forEach((t) => t.addEventListener("click", () => { resetRec(); stopDictate(); state.tab = t.dataset.tab; state.detail = null; render(); window.scrollTo(0, 0); }));
+      document.querySelectorAll(".tab").forEach((t) => t.addEventListener("click", () => { resetRec(); stopDictate(); state.tab = t.dataset.tab; state.detail = null; sel.clear(); render(); window.scrollTo(0, 0); }));
       el("btn-refresh").addEventListener("click", (e) => refresh(e.currentTarget));
       if (!url || !anonKey) { showMsg("Faltan credenciales en config.js"); return; }
       client = supabase.createClient(url, anonKey);
