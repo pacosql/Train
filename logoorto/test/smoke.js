@@ -33,6 +33,8 @@ const server = http.createServer((req, res) => {
   await page.route("**/supabase-js@2/dist/umd/supabase.js", (r) => r.fulfill({ path: supabaseJs(), contentType: "text/javascript" }));
   await require("../tools/route.js")(page, dir);
   await page.goto(`http://localhost:${server.address().port}/logoorto/`, { waitUntil: "networkidle" });
+  await page.waitForSelector("#view .gal, #view .empty");
+  if (await page.$("#vista")) await page.click("#vista");
   await page.waitForSelector("#view .card, #view .empty");
   const n = await page.textContent("#n-pendiente");
   console.log("por decidir:", n, "· total:", await page.textContent("#n-todos"));
@@ -53,8 +55,8 @@ const server = http.createServer((req, res) => {
   const f = path.join(dir, dl.suggestedFilename()); await dl.saveAs(f);
   console.log("PNG exportado:", dl.suggestedFilename(), fs.statSync(f).size, "bytes");
   fs.copyFileSync(f, "/tmp/logoorto-export.png");
-  await page.click('.tab[data-tab="todos"]'); await page.waitForSelector(".g-item");
-  await page.click(".g-item"); await page.waitForSelector("#back");
+  await page.click('.tab[data-tab="todos"]'); await page.waitForSelector(".gal .gi");
+  await page.click(".gal .gi"); await page.waitForSelector("#back");
   console.log("galería + detalle OK");
   await browser.close(); server.close();
   if (errors.length) { console.error(errors.join("\n")); process.exit(1); }
