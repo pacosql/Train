@@ -52,7 +52,8 @@ const server = http.createServer((req, res) => {
     });
   }
   await page.goto(`http://localhost:${server.address().port}/logoorto/`, { waitUntil: "networkidle" });
-  await page.waitForSelector("#view .card, #view .empty, #view .grid", { timeout: 20000 });
+  await page.waitForSelector("#view .card, #view .empty, #view .gal", { timeout: 20000 });
+  if (tab === "pendiente" && await page.$("#vista")) { await page.click("#vista"); await page.waitForTimeout(300); }
   if (tab !== "pendiente") { await page.click(`.tab[data-tab="${tab}"]`); await page.waitForTimeout(300); }
   await page.waitForTimeout(400);
   await page.screenshot({ path: `${out}/page.png`, fullPage: true });
