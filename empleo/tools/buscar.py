@@ -572,7 +572,7 @@ def linkedin(busquedas=None, max_pag=400):
         time.sleep(0.6)
         return o
 
-    with ThreadPoolExecutor(6) as ex:
+    with ThreadPoolExecutor(int(os.environ.get("FICHAS_HILOS", 6))) as ex:
         res = list(ex.map(ficha, found.values()))
     for o in res:
         o["empresa_data_ai"] = (o["empresa"].lower() in DATA_AI_NAMES
