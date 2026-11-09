@@ -39,8 +39,11 @@ URL: `https://pacosql.github.io/Train/empleo/`
   tiene un enlace a la nueva.
 - `tabla.html`: tabla rápida. Una fila por oferta (empresa, oferta, sueldo,
   remoto, "ya aplicaste hace N días") en grupos Pendientes / 🎯 Aplicar /
-  🔍 En detalle / ✅ Aplicados / High-Medium-Low / 👎 Descartadas, remoto
-  primero (Aplicados: por fecha, incluidas las ya cerradas). Se marcan
+  🔍 En detalle / ✅ Aplicados / High-Medium-Low / 👎 Descartadas. Columna
+  Fecha (publicación; si no la hay, cuándo se encontró, con *). Orden: 100%
+  remoto → remoto → híbrido → sin confirmar → presencial y, dentro de cada
+  uno, la más reciente primero (Aplicados: por fecha de candidatura).
+  Desde Pendientes se puede pasar una oferta directamente a ✅ Aplicado. Se marcan
   muchas filas (🎯 Aplicar, 🔍 Detalle, ✅ Aplicado, ✕ Descartar) y se
   guardan todas de golpe con **Guardar**; entonces se redistribuyen.
 

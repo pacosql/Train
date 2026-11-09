@@ -57,11 +57,11 @@
     .hint { font-weight: 400; font-size: 0.8rem; color: var(--text-2); margin-left: auto; }
 
     /* Filas: rejilla compacta (en móvil se apila) */
-    .row { display: grid; grid-template-columns: minmax(110px, 170px) minmax(160px, 1fr) 96px 118px 128px 246px; gap: 8px; align-items: center;
+    .row { display: grid; grid-template-columns: minmax(110px, 160px) minmax(160px, 1fr) 84px 96px 118px 118px 330px; gap: 8px; align-items: center;
       padding: 5px 12px; border-top: 1px solid var(--line); }
     .row.head { font-size: 0.72rem; text-transform: uppercase; letter-spacing: .5px; color: var(--text-2); padding-top: 6px; padding-bottom: 6px; }
     .row.marked { background: var(--accent-soft); position: relative; }
-    .row.marked::after { content: attr(data-dest); position: absolute; right: 266px; top: 50%; transform: translateY(-50%); font-size: 0.68rem; font-weight: 800;
+    .row.marked::after { content: attr(data-dest); position: absolute; right: 350px; top: 50%; transform: translateY(-50%); font-size: 0.68rem; font-weight: 800;
       color: var(--text); background: var(--bg); border: 1px solid var(--line-strong); border-radius: 6px; padding: 1px 7px; }
     .leyenda { font-size: 0.8rem; color: var(--text-2); margin: 0 0 8px; }
     .row.marked.to-no_gusta { background: var(--bad-soft); }
@@ -78,6 +78,9 @@
     .rem.remoto { color: var(--good); }
     .rem.hibrido { color: var(--mid); }
     .rem.otro { color: var(--text-2); }
+    .fecha { font-size: 0.8rem; color: var(--text-2); white-space: nowrap; line-height: 1.15; }
+    .fecha b { color: var(--text); font-weight: 600; }
+    .fecha.nueva b { color: var(--accent); }
     .ap { font-size: 0.8rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .ap.rec { color: var(--mid); font-weight: 700; }
     .ap.vieja { color: var(--text-2); }
@@ -112,8 +115,8 @@
 
     @media (max-width: 860px) {
       .row.head, .hint { display: none; }
-      .row { grid-template-columns: 1fr auto; grid-template-areas: "emp rem" "pto pto" "pay ap" "acts acts"; gap: 3px 8px; padding: 8px 12px; }
-      .emp { grid-area: emp; } .pto { grid-area: pto; white-space: normal; } .pay { grid-area: pay; }
+      .row { grid-template-columns: 1fr auto; grid-template-areas: "emp rem" "pto pto" "pay fecha" "ap ap" "acts acts"; gap: 3px 8px; padding: 8px 12px; }
+      .emp { grid-area: emp; } .pto { grid-area: pto; white-space: normal; } .pay { grid-area: pay; } .fecha { grid-area: fecha; text-align: right; }
       .rem { grid-area: rem; text-align: right; } .ap { grid-area: ap; text-align: right; } .acts { grid-area: acts; margin-top: 3px; }
       .acts button { padding: 7px 4px; font-size: 0.82rem; }
       .row.marked::after { right: auto; left: 50%; top: 0; transform: translate(-50%, -1px); border-radius: 0 0 6px 6px; }
@@ -161,24 +164,25 @@
     // Adónde va cada oferta al guardar (se muestra en la fila al marcarla).
     const DESTINO = { aplicar: "🎯 Aplicar", aplicar_detalle: "🔍 En detalle", aplicada: "✅ Aplicados", no_gusta: "👎 Descartadas", pendiente: "🕐 Pendientes" };
     const GRUPOS = [
-      { id: "pendiente", t: "🕐 Pendientes", match: (o) => o.decision === "pendiente", acts: ["aplicar", "aplicar_detalle", "no_gusta"], open: true,
-        hint: "marca 🎯 Aplicar, 🔍 Detalle o ✕ y pulsa Guardar" },
+      { id: "pendiente", t: "🕐 Pendientes", match: (o) => o.decision === "pendiente", acts: ["aplicar", "aplicar_detalle", "aplicada", "no_gusta"], open: true,
+        hint: "marca 🎯 Aplicar, 🔍 Detalle, ✅ Aplicado o ✕ y pulsa Guardar" },
       { id: "aplicar", t: "🎯 Aplicar", match: (o) => o.decision === "aplicar", acts: ["aplicada", "aplicar_detalle", "no_gusta"], open: true,
         hint: "marca ✅ Aplicado cuando hayas enviado la candidatura" },
       { id: "aplicar_detalle", t: "🔍 En detalle", match: (o) => o.decision === "aplicar_detalle", acts: ["aplicada", "aplicar", "no_gusta"], open: true,
         hint: "aplicar con calma" },
       { id: "aplicada", t: "✅ Aplicados", match: (o) => o.decision === "aplicada", todas: true, acts: ["pendiente"], open: false,
         hint: "a las que ya has aplicado, la más reciente primero (también las ya cerradas)" },
-      { id: "clasificadas", t: "👌 High / Medium / Low", match: (o) => ["high", "medium", "low"].includes(o.decision), acts: ["aplicar", "aplicar_detalle", "no_gusta"], open: false,
+      { id: "clasificadas", t: "👌 High / Medium / Low", match: (o) => ["high", "medium", "low"].includes(o.decision), acts: ["aplicar", "aplicar_detalle", "aplicada", "no_gusta"], open: false,
         hint: "las que ya clasificaste antes" },
-      { id: "no_gusta", t: "👎 Descartadas", match: (o) => o.decision === "no_gusta", acts: ["pendiente", "aplicar", "aplicar_detalle"], open: false,
+      { id: "no_gusta", t: "👎 Descartadas", match: (o) => o.decision === "no_gusta", acts: ["pendiente", "aplicar", "aplicar_detalle", "aplicada"], open: false,
         hint: "aquí van las que marcas ✕ Descartar; ↺ para recuperarlas" },
     ];
 
     let ofertas = [], candidaturas = [];
     const marcas = new Map(); // id -> decisión nueva (sin guardar)
 
-    // Remoto primero: 100% remoto > remoto > híbrido > sin confirmar > presencial; luego las más nuevas.
+    // Remoto primero: 100% remoto > remoto > híbrido > sin confirmar > presencial; dentro de cada grupo, la fecha más reciente
+    // (publicación; si la oferta no la da, cuando se encontró).
     const RANGO = (o) => (o.remoto_claro ? 0 : o.modalidad === "remoto" ? 1 : o.modalidad === "hibrido" ? 2 : o.modalidad === "presencial" ? 4 : 3);
     function remoto(o) {
       if (o.remoto_claro) return `<span class="rem claro">🟢 100% remoto</span>`;
@@ -205,12 +209,23 @@
       return `<span class="ap ${d <= 15 ? "rec" : "vieja"}">✅ ${f} · ${EmpleoCand.hace(d)}${o.activa === false ? " · cerrada" : ""}</span>`;
     }
 
+    const fechaOf = (o) => o.fecha_publicacion || o.encontrado_en || "";
+    function fechaEl(o) {
+      const f = fechaOf(o);
+      if (!f) return `<div class="fecha"></div>`;
+      const d = Math.max(0, Math.floor((Date.now() - new Date(f + "T12:00:00").getTime()) / 864e5));
+      const txt = new Date(f + "T12:00:00").toLocaleDateString("es-ES", { day: "numeric", month: "short" });
+      const tip = o.fecha_publicacion ? "Publicada el " + f : "Encontrada el " + f + " (la oferta no da fecha de publicación)";
+      return `<div class="fecha${d <= 3 ? " nueva" : ""}" title="${tip}"><b>${txt}</b><br>${d === 0 ? "hoy" : d === 1 ? "ayer" : "hace " + d + " d"}${o.fecha_publicacion ? "" : " *"}</div>`;
+    }
+
     function fila(o, g) {
       const m = marcas.get(o.id);
       const link = (o.enlaces && o.enlaces[0] && o.enlaces[0].url) || o.url;
       return `<div class="row${m ? " marked to-" + m : ""}" data-id="${o.id}" data-dest="${m ? "→ " + DESTINO[m] : ""}">
         <div class="emp" title="${esc(o.empresa)}">${esc(o.empresa)}</div>
-        <div class="pto" title="${esc(o.puesto)}${o.ubicacion ? " · " + esc(o.ubicacion) : ""}"><a href="${esc(link)}" target="_blank" rel="noopener">${esc(o.puesto)}</a>${resultado(o)}${o.ubicacion ? ` <span class="loc">· ${esc(o.ubicacion)}</span>` : ""}</div>
+        <div class="pto" title="${esc(o.puesto)}${o.ubicacion ? " · " + esc(o.ubicacion) : ""}"><a href="${esc(link)}" target="_blank" rel="noopener">${esc(o.puesto)}</a>${resultado(o)}${o.ubicacion ? ` <span class="loc">· ${esc(o.ubicacion.length > 60 ? o.ubicacion.slice(0, 57).replace(/[ ,(]+[^ ,(]*$/, "") + "…" : o.ubicacion)}</span>` : ""}</div>
+        ${fechaEl(o)}
         <div class="pay${o.sueldo_estimado ? " est" : ""}"${o.sueldo_estimado ? ` title="${esc(o.sueldo_nota || "Estimación de mercado: la oferta no publica sueldo")}"` : ""}>${o.sueldo ? (o.sueldo_estimado ? "≈ " : "💶 ") + esc(o.sueldo) : ""}</div>
         ${remoto(o)}
         ${g.id === "aplicada" ? aplicadoEl(o) : aplicaste(o)}
@@ -228,11 +243,11 @@
         if (soloRem) list = list.filter((o) => o.modalidad === "remoto");
         if (q) list = list.filter((o) => (o.empresa + " " + o.puesto).toLowerCase().includes(q));
         if (g.id === "aplicada") list.sort((a, b) => (b.aplicada_en || "").localeCompare(a.aplicada_en || ""));
-        else list.sort((a, b) => RANGO(a) - RANGO(b) || (b.encontrado_en || "").localeCompare(a.encontrado_en || "") || a.empresa.localeCompare(b.empresa));
+        else list.sort((a, b) => RANGO(a) - RANGO(b) || fechaOf(b).localeCompare(fechaOf(a)) || (b.encontrado_en || "").localeCompare(a.encontrado_en || "") || a.empresa.localeCompare(b.empresa));
         const open = primera ? g.open : abiertos.has(g.id);
         return `<details class="g" data-g="${g.id}"${open ? " open" : ""}>
           <summary>${g.t} <span class="n">${list.length}</span><span class="hint">${g.hint}</span></summary>
-          <div class="row head"><div>Empresa</div><div>Oferta</div><div>Sueldo</div><div>Remoto</div><div>${g.id === "aplicada" ? "Aplicaste el" : "Ya aplicaste"}</div><div></div></div>
+          <div class="row head"><div>Empresa</div><div>Oferta</div><div>Fecha</div><div>Sueldo</div><div>Remoto</div><div>${g.id === "aplicada" ? "Aplicaste el" : "Ya aplicaste"}</div><div></div></div>
           ${list.length ? list.map((o) => fila(o, g)).join("") : `<div class="empty">Nada por aquí.</div>`}
         </details>`;
       }).join("");
@@ -348,7 +363,7 @@
     async function load() {
       $("reload").textContent = "…";
       const [of, ca] = await Promise.all([
-        EmpleoCand.todas((a, b) => client.from(T).select("id,empresa,puesto,ubicacion,modalidad,remoto_claro,sueldo,sueldo_estimado,sueldo_nota,url,enlaces,decision,activa,aplicada_en,encontrado_en,resultado,resultado_en,resultado_nota").order("id").range(a, b)),
+        EmpleoCand.todas((a, b) => client.from(T).select("id,empresa,puesto,ubicacion,modalidad,remoto_claro,sueldo,sueldo_estimado,sueldo_nota,url,enlaces,decision,activa,aplicada_en,encontrado_en,fecha_publicacion,resultado,resultado_en,resultado_nota").order("id").range(a, b)),
         client.from(tablePrefix + "candidaturas").select("empresa,fecha,puesto"),
       ]);
       $("reload").textContent = "↻";
