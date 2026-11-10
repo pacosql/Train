@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Reserva tu cita · Peluquería</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#121010" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Peluquería" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="comun.css" />
+  <style>
+    .hero { position: relative; padding: calc(28px + var(--safe-top)) 20px 26px; text-align: center; overflow: hidden;
+      background: radial-gradient(120% 90% at 50% 0%, #3a2a17 0%, #1b1513 55%, var(--bg) 100%); }
+    .hero::after { content: "✂"; position: absolute; right: -10px; top: 10px; font-size: 130px; opacity: .05; transform: rotate(-30deg); }
+    .hero .kicker { color: var(--gold); letter-spacing: .3em; font-size: 11px; text-transform: uppercase; font-weight: 600; }
+    .hero h1 { font-size: 34px; margin: 8px 0 6px; line-height: 1.1; }
+    .hero p { margin: 0; color: var(--text-2); }
+    .chairs { display: flex; justify-content: center; gap: 14px; margin-top: 20px; }
+    .chair { width: 62px; text-align: center; font-size: 11px; color: var(--text-2); }
+    .chair svg { width: 44px; height: 44px; display: block; margin: 0 auto 4px; }
+    .chair.libre svg { color: var(--gold); filter: drop-shadow(0 0 8px rgba(214,162,78,.5)); }
+    .chair.ocupado svg { color: #5b524c; }
+    .first { margin: -6px 0 26px; width: 100%; padding: 18px; border-radius: 20px; text-align: left; display: flex; align-items: center; gap: 14px;
+      background: linear-gradient(135deg, var(--gold-2), var(--gold)); color: #1a1208; box-shadow: 0 12px 30px rgba(214,162,78,.25); }
+    .first .bolt { font-size: 30px; }
+    .first .t1 { font-weight: 700; font-size: 18px; }
+    .first .t2 { font-size: 14px; opacity: .8; }
+    .first .arr { margin-left: auto; font-size: 22px; }
+    .sec-t { font-size: 22px; margin: 6px 0 14px; }
+    .barbers { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
+    .barber { background: var(--card); border: 1px solid var(--line); border-radius: 20px; padding: 18px 12px; text-align: center; transition: transform .1s, border-color .2s; }
+    .barber:active { transform: scale(.97); }
+    .barber .avatar { margin: 0 auto 10px; width: 66px; height: 66px; font-size: 28px; }
+    .barber .n { font-weight: 700; font-size: 17px; }
+    .barber .s { font-size: 12px; color: var(--text-2); margin-top: 3px; }
+    .barber.sel { border-color: var(--gold); box-shadow: 0 0 0 2px var(--gold) inset; }
+    .any .avatar { background: var(--card-2); color: var(--gold); font-size: 26px; }
+    #agenda { margin-top: 26px; }
+    .agenda-head { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .agenda-head .avatar { width: 44px; height: 44px; font-size: 19px; }
+    .franja { font-size: 12px; text-transform: uppercase; letter-spacing: .12em; color: var(--text-2); margin: 16px 0 8px; }
+    .slots { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+    .slot { padding: 12px 0; border-radius: 12px; background: var(--card); border: 1px solid #4a3d2c; color: var(--gold-2); font-weight: 600; }
+    .slot:active { transform: scale(.95); background: var(--gold); color: #1a1208; }
+    .slot.busy { border-color: transparent; background: transparent; color: #57504b; text-decoration: line-through; pointer-events: none; }
+    .empty { padding: 26px; text-align: center; color: var(--text-2); background: var(--card); border-radius: 16px; }
+    .mine { margin-top: 30px; }
+    .res { display: flex; align-items: center; gap: 12px; background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 12px 14px; margin-bottom: 8px; }
+    .res .avatar { width: 42px; height: 42px; font-size: 18px; }
+    .res .info { flex: 1; }
+    .res .w { font-weight: 600; }
+    .sum { display: flex; gap: 14px; align-items: center; background: var(--card); border-radius: 16px; padding: 14px; margin: 14px 0; }
+    .ok-ico { width: 78px; height: 78px; border-radius: 50%; margin: 6px auto 14px; display: grid; place-items: center; background: rgba(79,174,123,.15); color: var(--green); font-size: 40px; animation: pop .4s cubic-bezier(.3,1.6,.6,1); }
+    @keyframes pop { from { transform: scale(.3); opacity: 0; } }
+    .foot { text-align: center; margin-top: 30px; font-size: 13px; color: var(--text-2); }
+    .foot a { color: var(--text-2); }
+  </style>
+</head>
+<body>
+  <div class="pole"></div>
+  <header class="hero">
+    <div class="kicker">Peluquería · Barbería</div>
+    <h1 id="nombreLocal">&nbsp;</h1>
+    <p>Elige peluquero, escoge hora y listo.</p>
+    <div class="chairs" id="chairs"></div>
+  </header>
+
+  <main class="wrap">
+    <button class="first" id="btnFirst" disabled>
+      <span class="bolt">⚡</span>
+      <span><div class="t1">Primer hueco disponible</div><div class="t2" id="firstTxt">Buscando…</div></span>
+      <span class="arr">→</span>
+    </button>
+
+    <h2 class="sec-t">Elige tu peluquero</h2>
+    <div class="barbers" id="barbers"></div>
+
+    <section id="agenda" class="hidden">
+      <div class="agenda-head" id="agendaHead"></div>
+      <div class="days" id="days"></div>
+      <div id="slots"></div>
+    </section>
+
+    <section class="mine hidden" id="mine">
+      <h2 class="sec-t">Mis citas</h2>
+      <div id="mineList"></div>
+    </section>
+
+    <div class="foot"><a href="gestion/">Gestión del local</a></div>
+    <div class="build-id">build __BUILD_ID__</div>
+  </main>
+
+  <div class="sheet-bg hidden" id="sheetBg"><div class="sheet" id="sheet"></div></div>
+  <div class="toast hidden" id="toast"></div>
+
+  <script src="config.js"></script>
+  <script src="comun.js"></script>
+  <script>
+    const P = window.Pelu, $ = (id) => document.getElementById(id);
+    const COLORES = ["#f0c97f", "#e7a77f", "#a9c7a0", "#9cb8e0", "#d9a6c9", "#e4d48a", "#9fd6d0"];
+    const CHAIR = '<svg viewBox="0 0 48 48" fill="currentColor"><path d="M14 6h20a3 3 0 0 1 3 3v15H11V9a3 3 0 0 1 3-3z"/><rect x="7" y="22" width="34" height="7" rx="3"/><rect x="9" y="17" width="5" height="9" rx="2"/><rect x="34" y="17" width="5" height="9" rx="2"/><rect x="22" y="29" width="4" height="10"/><rect x="13" y="39" width="22" height="4" rx="2"/></svg>';
+    const MIAS = "peluqueria_mias";
+    let D = null, sel = null /* id peluquero | "any" */, dia = null;
+
+    const activos = () => D.peluqueros.filter((p) => p.activo);
+    const colorDe = (p) => COLORES[(D.peluqueros.indexOf(p)) % COLORES.length];
+    const pelu = (id) => D.peluqueros.find((p) => p.id === id);
+    const ocupado = (pid, f, h) => D.reservas.some((r) => r.peluquero_id === pid && r.fecha === f && r.hora === h);
+    const libresEn = (f, h) => activos().filter((p) => !ocupado(p.id, f, h));
+    const avatar = (p) => `<div class="avatar" style="background:${colorDe(p)}">${P.esc(p.nombre[0] || "?")}</div>`;
+
+    function toast(t) { const el = $("toast"); el.textContent = t; el.classList.remove("hidden"); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.add("hidden"), 2600); }
+    function leerMias() { try { return JSON.parse(localStorage.getItem(MIAS) || "[]"); } catch { return []; } }
+    function guardarMias(a) { try { localStorage.setItem(MIAS, JSON.stringify(a)); } catch {} }
+
+    function primerHueco(pid) {
+      for (const d of P.dias(PELU_CONFIG.diasVista)) {
+        const f = P.ymd(d);
+        for (const h of P.huecos(D.ajustes, d)) {
+          const libres = pid ? activos().filter((p) => p.id === pid && !ocupado(p.id, f, h)) : libresEn(f, h);
+          if (libres.length) return { d, f, h, libres };
+        }
+      }
+      return null;
+    }
+
+    // Reparte para llenar sillones: entre los libres, el que menos citas tiene ese día.
+    function elegirPeluquero(libres, f) {
+      return libres.slice().sort((a, b) =>
+        D.reservas.filter((r) => r.peluquero_id === a.id && r.fecha === f).length -
+        D.reservas.filter((r) => r.peluquero_id === b.id && r.fecha === f).length)[0];
+    }
+
+    function render() {
+      $("nombreLocal").textContent = D.ajustes.nombre_local;
+      document.title = "Reserva tu cita · " + D.ajustes.nombre_local;
+      // Sillones: ¿quién está libre ahora mismo?
+      const now = new Date(), f = P.ymd(now), dur = D.ajustes.duracion_min;
+      const nowMin = now.getHours() * 60 + now.getMinutes();
+      const actual = P.huecos(D.ajustes, now, { soloFuturo: false }).find((h) => P.toMin(h) <= nowMin && nowMin < P.toMin(h) + dur);
+      $("chairs").innerHTML = activos().map((p) => {
+        const est = !actual ? "cerrado" : ocupado(p.id, f, actual) ? "ocupado" : "libre";
+        const cls = est === "libre" ? "libre" : "ocupado";
+        return `<div class="chair ${cls}">${CHAIR}${P.esc(p.nombre)}<br>${est === "libre" ? "libre ahora" : est}</div>`;
+      }).join("");
+
+      const ph = primerHueco(null);
+      $("btnFirst").disabled = !ph;
+      $("firstTxt").textContent = ph ? `${P.etiquetaFecha(ph.d)} a las ${ph.h} · ${ph.libres.length > 1 ? "con quien esté libre" : "con " + ph.libres[0].nombre}` : "No quedan huecos estos días";
+
+      $("barbers").innerHTML = activos().map((p) => {
+        const h = primerHueco(p.id);
+        return `<button class="barber ${sel === p.id ? "sel" : ""}" data-id="${p.id}">${avatar(p)}<div class="n">${P.esc(p.nombre)}</div><div class="s">${h ? "Próximo: " + P.etiquetaFecha(h.d).toLowerCase() + " " + h.h : "Sin huecos"}</div></button>`;
+      }).join("") + `<button class="barber any ${sel === "any" ? "sel" : ""}" data-id="any"><div class="avatar">✂</div><div class="n">Me da igual</div><div class="s">Cualquier peluquero</div></button>`;
+      $("barbers").querySelectorAll(".barber").forEach((b) => b.onclick = () => elegir(b.dataset.id === "any" ? "any" : Number(b.dataset.id)));
+
+      if (sel != null) renderAgenda();
+      renderMias();
+    }
+
+    function elegir(id) {
+      sel = id;
+      const pid = id === "any" ? null : id;
+      const ph = primerHueco(pid);
+      dia = ph ? ph.f : P.ymd(new Date());
+      render();
+      $("agenda").classList.remove("hidden");
+      setTimeout(() => $("agenda").scrollIntoView({ behavior: "smooth", block: "start" }), 50);
+    }
+
+    function renderAgenda() {
+      if (sel !== "any" && !pelu(sel)?.activo) { sel = null; $("agenda").classList.add("hidden"); return; }
+      const p = sel === "any" ? null : pelu(sel);
+      $("agendaHead").innerHTML = p
+        ? `${avatar(p)}<div><h3>Agenda de ${P.esc(p.nombre)}</h3><div class="muted" style="font-size:14px">Toca una hora libre para reservar</div></div>`
+        : `<div class="avatar" style="background:var(--card-2);color:var(--gold)">✂</div><div><h3>Cualquier peluquero</h3><div class="muted" style="font-size:14px">Te asignamos el que esté libre</div></div>`;
+      $("days").innerHTML = P.dias(PELU_CONFIG.diasVista).map((d) => {
+        const f = P.ymd(d), cerrado = !P.huecos(D.ajustes, d, { soloFuturo: false }).length;
+        return `<button class="day ${f === dia ? "sel" : ""} ${cerrado ? "closed" : ""}" data-f="${f}"><div class="dw">${P.DIAS_C[d.getDay()]}</div><div class="dn">${d.getDate()}</div><div class="dm">${P.MESES[d.getMonth()]}</div></button>`;
+      }).join("");
+      $("days").querySelectorAll(".day").forEach((b) => b.onclick = () => { dia = b.dataset.f; renderAgenda(); });
+      const selDay = $("days").querySelector(".day.sel"); if (selDay) selDay.scrollIntoView({ inline: "center", block: "nearest" });
+
+      const d = P.parseYmd(dia), hs = P.huecos(D.ajustes, d);
+      if (!P.huecos(D.ajustes, d, { soloFuturo: false }).length) { $("slots").innerHTML = `<div class="empty">🔒 Cerrado este día</div>`; return; }
+      if (!hs.length) { $("slots").innerHTML = `<div class="empty">Ya no quedan horas hoy. Prueba mañana 👉</div>`; return; }
+      const libre = (h) => p ? !ocupado(p.id, dia, h) : libresEn(dia, h).length > 0;
+      const grupo = (titulo, arr) => arr.length ? `<div class="franja">${titulo}</div><div class="slots">${arr.map((h) => `<button class="slot ${libre(h) ? "" : "busy"}" data-h="${h}">${h}</button>`).join("")}</div>` : "";
+      const total = hs.filter(libre).length;
+      $("slots").innerHTML = (total ? "" : `<div class="empty" style="margin-bottom:8px">Completo este día 😅 Prueba otro.</div>`) +
+        grupo("☀️ Mañana", hs.filter((h) => P.toMin(h) < 15 * 60)) + grupo("🌙 Tarde", hs.filter((h) => P.toMin(h) >= 15 * 60));
+      $("slots").querySelectorAll(".slot").forEach((b) => b.onclick = () => abrirReserva(dia, b.dataset.h, p ? p.id : null));
+    }
+
+    function abrirReserva(f, h, pid) {
+      const libres = pid ? [pelu(pid)] : libresEn(f, h);
+      const p = pid ? pelu(pid) : null;
+      const nombreGuardado = (() => { try { return localStorage.getItem("peluqueria_nombre") || ""; } catch { return ""; } })();
+      $("sheet").innerHTML = `
+        <h2>Confirmar cita</h2>
+        <div class="sum">${p ? avatar(p) : `<div class="avatar" style="background:var(--card-2);color:var(--gold)">✂</div>`}
+          <div><div style="font-weight:700;font-size:18px">${P.etiquetaFecha(P.parseYmd(f))} · ${h}</div>
+          <div class="muted">${p ? "con " + P.esc(p.nombre) : libres.length > 1 ? "con el peluquero que esté libre" : "con " + P.esc(libres[0].nombre)}</div></div></div>
+        <label class="muted" style="font-size:14px">Tu nombre</label>
+        <input id="nom" placeholder="p. ej. Laura" autocomplete="name" value="${P.esc(nombreGuardado)}" style="margin:6px 0 16px" />
+        <div style="display:flex;gap:10px"><button class="btn btn-ghost" id="cancel" style="flex:1">Volver</button><button class="btn btn-gold" id="ok" style="flex:2">Reservar</button></div>`;
+      $("sheetBg").classList.remove("hidden");
+      const inp = $("nom"); if (!nombreGuardado) setTimeout(() => inp.focus(), 250);
+      $("cancel").onclick = cerrarSheet;
+      $("ok").onclick = async () => {
+        const nombre = inp.value.trim();
+        if (!nombre) { inp.focus(); toast("Pon tu nombre 🙂"); return; }
+        $("ok").disabled = true; $("ok").textContent = "Reservando…";
+        try { localStorage.setItem("peluqueria_nombre", nombre); } catch {}
+        // Si es "me da igual", probar con cada libre por si otro cliente se adelanta.
+        const candidatos = pid ? [pelu(pid)] : [elegirPeluquero(libres, f), ...libres];
+        let hecha = null;
+        for (const c of candidatos) {
+          try {
+            const r = await P.api(P.T("reservas"), { method: "POST", body: { peluquero_id: c.id, fecha: f, hora: h, cliente: nombre }, prefer: "return=representation" });
+            hecha = r[0]; break;
+          } catch (e) { if (e.status !== 409) { toast("Error: " + e.message); break; } }
+        }
+        if (!hecha) { await refrescar(); if ($("ok")) { toast("Vaya, alguien acaba de coger esa hora. Elige otra."); cerrarSheet(); } return; }
+        guardarMias([...leerMias(), hecha.id]);
+        D.reservas.push(hecha);
+        const pp = pelu(hecha.peluquero_id);
+        $("sheet").innerHTML = `<div style="text-align:center"><div class="ok-ico">✓</div><h2>¡Reservado, ${P.esc(nombre)}!</h2>
+          <p class="muted" style="font-size:17px">${P.etiquetaFecha(P.parseYmd(f))} a las <b style="color:var(--text)">${h}</b><br>con <b style="color:var(--text)">${P.esc(pp.nombre)}</b></p>
+          <button class="btn btn-gold" id="fin" style="width:100%;margin-top:8px">Perfecto</button></div>`;
+        $("fin").onclick = cerrarSheet;
+        render();
+      };
+    }
+    function cerrarSheet() { $("sheetBg").classList.add("hidden"); }
+    $("sheetBg").onclick = (e) => { if (e.target === $("sheetBg")) cerrarSheet(); };
+
+    function renderMias() {
+      const ids = leerMias(), hoy = P.ymd(new Date());
+      const mias = D.reservas.filter((r) => ids.includes(r.id) && r.fecha >= hoy);
+      $("mine").classList.toggle("hidden", !mias.length);
+      $("mineList").innerHTML = mias.map((r) => {
+        const p = pelu(r.peluquero_id);
+        return `<div class="res">${p ? avatar(p) : ""}<div class="info"><div class="w">${P.etiquetaFecha(P.parseYmd(r.fecha))} · ${r.hora}</div><div class="muted" style="font-size:14px">con ${P.esc(p ? p.nombre : "?")} · a nombre de ${P.esc(r.cliente)}</div></div><button class="btn btn-red" data-id="${r.id}" style="padding:10px 12px">Anular</button></div>`;
+      }).join("");
+      $("mineList").querySelectorAll("button").forEach((b) => b.onclick = async () => {
+        if (!confirm("¿Anular esta cita?")) return;
+        try {
+          await P.api(`${P.T("reservas")}?id=eq.${b.dataset.id}`, { method: "DELETE" });
+          guardarMias(leerMias().filter((x) => x !== Number(b.dataset.id)));
+          toast("Cita anulada"); refrescar();
+        } catch (e) { toast("Error: " + e.message); }
+      });
+    }
+
+    $("btnFirst").onclick = () => { const ph = primerHueco(null); if (ph) abrirReserva(ph.f, ph.h, null); };
+
+    async function refrescar() {
+      try { D = await P.cargar(); render(); } catch (e) { toast("Sin conexión: " + e.message); }
+    }
+    refrescar();
+    setInterval(() => { if ($("sheetBg").classList.contains("hidden")) refrescar(); }, 20000);
+    document.addEventListener("visibilitychange", () => { if (!document.hidden && D) refrescar(); });
+    P.registrarSW(() => { if ($("sheetBg").classList.contains("hidden")) location.reload(); });
+  </script>
+</body>
+</html>

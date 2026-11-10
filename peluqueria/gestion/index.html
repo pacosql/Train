@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Gestión · Peluquería</title>
+  <link rel="manifest" href="../manifest.json" />
+  <meta name="theme-color" content="#121010" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="apple-touch-icon" href="../icons/apple-touch-icon.png" />
+  <link rel="icon" href="../icons/icon-192.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../comun.css" />
+  <style>
+    header { padding: calc(18px + var(--safe-top)) 16px 10px; max-width: 640px; margin: 0 auto; display: flex; align-items: center; gap: 12px; }
+    header h1 { font-size: 24px; flex: 1; }
+    header .k { color: var(--gold); font-size: 11px; letter-spacing: .25em; text-transform: uppercase; font-weight: 600; }
+    header a { color: var(--gold-2); font-size: 14px; text-decoration: none; background: var(--card); padding: 8px 12px; border-radius: 10px; white-space: nowrap; }
+    .tabs { display: flex; gap: 6px; background: var(--card); padding: 5px; border-radius: 14px; margin: 6px 0 18px; position: sticky; top: 0; z-index: 5; }
+    .tab { flex: 1; padding: 10px 0; border-radius: 10px; font-weight: 600; color: var(--text-2); }
+    .tab.sel { background: var(--card-2); color: var(--gold-2); }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 4px 0 14px; }
+    .stat { background: var(--card); border-radius: 14px; padding: 12px; text-align: center; }
+    .stat b { display: block; font-size: 22px; font-family: "Playfair Display", serif; color: var(--gold-2); }
+    .stat span { font-size: 12px; color: var(--text-2); }
+    .grid { overflow-x: auto; border-radius: 16px; border: 1px solid var(--line); }
+    table { border-collapse: collapse; width: 100%; table-layout: fixed; }
+    th, td { border-bottom: 1px solid var(--line); padding: 0; font-size: 14px; }
+    th { background: var(--card-2); padding: 10px 6px; font-weight: 600; position: sticky; top: 0; }
+    th:first-child, td.h { width: 58px; }
+    td.h { text-align: center; color: var(--text-2); background: var(--card); font-variant-numeric: tabular-nums; }
+    td.c { padding: 4px; }
+    td.c button { width: 100%; min-height: 40px; border-radius: 10px; padding: 6px; font-size: 13px; }
+    .free { color: #5f5650; border: 1px dashed #3d3633 !important; }
+    .taken { background: linear-gradient(135deg, var(--gold-2), var(--gold)); color: #1a1208; font-weight: 600; }
+    .past td { opacity: .5; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 14px; margin-bottom: 10px; }
+    .row { display: flex; gap: 10px; align-items: center; }
+    .switch { position: relative; width: 50px; height: 30px; flex: 0 0 auto; }
+    .switch input { opacity: 0; width: 0; height: 0; position: absolute; }
+    .switch span { position: absolute; inset: 0; background: var(--line); border-radius: 30px; transition: .2s; }
+    .switch span::before { content: ""; position: absolute; width: 24px; height: 24px; left: 3px; top: 3px; background: #fff; border-radius: 50%; transition: .2s; }
+    .switch input:checked + span { background: var(--green); }
+    .switch input:checked + span::before { transform: translateX(20px); }
+    .dia-h { display: flex; align-items: center; justify-content: space-between; font-weight: 700; }
+    .tramo { display: flex; gap: 8px; align-items: center; margin-top: 10px; }
+    .tramo input[type=time] { padding: 9px 8px; }
+    .tramo .lbl { width: 64px; font-size: 13px; color: var(--text-2); }
+    .x { width: 38px; height: 38px; border-radius: 10px; background: var(--card-2); color: var(--text-2); flex: 0 0 auto; }
+    .add { font-size: 13px; color: var(--gold-2); margin-top: 10px; }
+    label.l { font-size: 13px; color: var(--text-2); display: block; margin-bottom: 6px; }
+    .save-bar { position: sticky; bottom: calc(10px + var(--safe-bottom)); margin-top: 14px; }
+    .links .card a { color: var(--gold-2); word-break: break-all; }
+  </style>
+</head>
+<body>
+  <div class="pole"></div>
+  <header>
+    <div style="flex:1"><div class="k">Gestión</div><h1 id="nombreLocal">Peluquería</h1></div>
+    <a href="../">Ver como cliente ↗</a>
+  </header>
+  <main class="wrap">
+    <div class="tabs">
+      <button class="tab sel" data-t="agenda">📅 Agenda</button>
+      <button class="tab" data-t="equipo">💈 Equipo</button>
+      <button class="tab" data-t="horario">🕘 Horario</button>
+    </div>
+
+    <section id="t-agenda">
+      <div class="days" id="days"></div>
+      <div class="stats" id="stats"></div>
+      <div id="tabla"></div>
+      <p class="muted" style="font-size:13px;text-align:center">Toca un hueco libre para apuntar una cita a mano, o una cita para anularla.</p>
+    </section>
+
+    <section id="t-equipo" class="hidden">
+      <div id="equipo"></div>
+      <div class="card">
+        <label class="l">Nuevo peluquero</label>
+        <div class="row"><input id="nuevo" placeholder="Nombre" /><button class="btn btn-gold" id="btnNuevo">Añadir</button></div>
+      </div>
+      <p class="muted" style="font-size:13px">Desactivar lo oculta a los clientes pero conserva sus citas. Eliminar borra también sus citas.</p>
+    </section>
+
+    <section id="t-horario" class="hidden">
+      <div class="card">
+        <label class="l">Nombre del local</label>
+        <input id="hNombre" />
+        <label class="l" style="margin-top:12px">Duración de cada cita</label>
+        <select id="hDur">
+          <option value="15">15 minutos</option><option value="20">20 minutos</option><option value="30">30 minutos</option>
+          <option value="45">45 minutos</option><option value="60">1 hora</option>
+        </select>
+      </div>
+      <div id="semana"></div>
+      <div class="save-bar"><button class="btn btn-gold" id="btnGuardar" style="width:100%">Guardar horario</button></div>
+    </section>
+
+    <div class="build-id">build __BUILD_ID__</div>
+  </main>
+  <div class="toast hidden" id="toast"></div>
+
+  <script>window.PELU_SW = "../sw.js";</script>
+  <script src="../config.js"></script>
+  <script src="../comun.js"></script>
+  <script>
+    const P = window.Pelu, $ = (id) => document.getElementById(id);
+    let D = null, dia = P.ymd(new Date()), tab = "agenda", horarioDirty = false;
+    const ORDEN_SEM = [1, 2, 3, 4, 5, 6, 0];
+
+    function toast(t) { const el = $("toast"); el.textContent = t; el.classList.remove("hidden"); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.add("hidden"), 2600); }
+    const activos = () => D.peluqueros.filter((p) => p.activo);
+
+    document.querySelectorAll(".tab").forEach((b) => b.onclick = () => {
+      tab = b.dataset.t;
+      document.querySelectorAll(".tab").forEach((x) => x.classList.toggle("sel", x === b));
+      ["agenda", "equipo", "horario"].forEach((t) => $("t-" + t).classList.toggle("hidden", t !== tab));
+      render();
+    });
+
+    function render() {
+      $("nombreLocal").textContent = D.ajustes.nombre_local;
+      if (tab === "agenda") renderAgenda();
+      if (tab === "equipo") renderEquipo();
+      if (tab === "horario" && !horarioDirty) renderHorario();
+    }
+
+    // ---------- Agenda ----------
+    function renderAgenda() {
+      $("days").innerHTML = P.dias(PELU_CONFIG.diasVista).map((d) => {
+        const f = P.ymd(d), cerrado = !P.huecos(D.ajustes, d, { soloFuturo: false }).length;
+        const n = D.reservas.filter((r) => r.fecha === f).length;
+        return `<button class="day ${f === dia ? "sel" : ""} ${cerrado ? "closed" : ""}" data-f="${f}"><div class="dw">${P.DIAS_C[d.getDay()]}</div><div class="dn">${d.getDate()}</div><div class="dm">${n ? n + " cita" + (n > 1 ? "s" : "") : P.MESES[d.getMonth()]}</div></button>`;
+      }).join("");
+      $("days").querySelectorAll(".day").forEach((b) => b.onclick = () => { dia = b.dataset.f; renderAgenda(); });
+
+      const d = P.parseYmd(dia), hs = P.huecos(D.ajustes, d, { soloFuturo: false }), ps = activos();
+      const delDia = D.reservas.filter((r) => r.fecha === dia);
+      const huecosTot = hs.length * ps.length, ocup = delDia.filter((r) => ps.some((p) => p.id === r.peluquero_id)).length;
+      $("stats").innerHTML = `<div class="stat"><b>${ocup}</b><span>citas</span></div><div class="stat"><b>${Math.max(0, huecosTot - ocup)}</b><span>huecos libres</span></div><div class="stat"><b>${huecosTot ? Math.round(100 * ocup / huecosTot) : 0}%</b><span>sillones llenos</span></div>`;
+      if (!hs.length) { $("tabla").innerHTML = `<div class="card" style="text-align:center">🔒 Cerrado este día</div>`; return; }
+      if (!ps.length) { $("tabla").innerHTML = `<div class="card" style="text-align:center">No hay peluqueros activos</div>`; return; }
+      const now = new Date(), esHoy = dia === P.ymd(now), nowMin = now.getHours() * 60 + now.getMinutes();
+      $("tabla").innerHTML = `<div class="grid"><table><thead><tr><th></th>${ps.map((p) => `<th>${P.esc(p.nombre)}</th>`).join("")}</tr></thead><tbody>${
+        hs.map((h) => `<tr class="${esHoy && P.toMin(h) + D.ajustes.duracion_min <= nowMin ? "past" : ""}"><td class="h">${h}</td>${ps.map((p) => {
+          const r = delDia.find((x) => x.peluquero_id === p.id && x.hora === h);
+          return `<td class="c">${r ? `<button class="taken" data-del="${r.id}">${P.esc(r.cliente)}</button>` : `<button class="free" data-p="${p.id}" data-h="${h}">+</button>`}</td>`;
+        }).join("")}</tr>`).join("")}</tbody></table></div>`;
+      $("tabla").querySelectorAll("[data-del]").forEach((b) => b.onclick = async () => {
+        const r = D.reservas.find((x) => x.id === Number(b.dataset.del));
+        if (!confirm(`¿Anular la cita de ${r.cliente} a las ${r.hora}?`)) return;
+        try { await P.api(`${P.T("reservas")}?id=eq.${r.id}`, { method: "DELETE" }); toast("Cita anulada"); refrescar(); } catch (e) { toast("Error: " + e.message); }
+      });
+      $("tabla").querySelectorAll("[data-p]").forEach((b) => b.onclick = async () => {
+        const nombre = (prompt(`Cita a las ${b.dataset.h}. Nombre del cliente:`) || "").trim();
+        if (!nombre) return;
+        try {
+          await P.api(P.T("reservas"), { method: "POST", body: { peluquero_id: Number(b.dataset.p), fecha: dia, hora: b.dataset.h, cliente: nombre } });
+          toast("Cita apuntada"); refrescar();
+        } catch (e) { toast(e.status === 409 ? "Ese hueco ya está cogido" : "Error: " + e.message); refrescar(); }
+      });
+    }
+
+    // ---------- Equipo ----------
+    function renderEquipo() {
+      $("equipo").innerHTML = D.peluqueros.map((p) => {
+        const n = D.reservas.filter((r) => r.peluquero_id === p.id && r.fecha >= P.ymd(new Date())).length;
+        return `<div class="card"><div class="row">
+          <input value="${P.esc(p.nombre)}" data-nom="${p.id}" />
+          <label class="switch" title="Activo"><input type="checkbox" data-act="${p.id}" ${p.activo ? "checked" : ""}><span></span></label>
+          <button class="x" data-borrar="${p.id}" title="Eliminar">🗑</button></div>
+          <div class="muted" style="font-size:13px;margin-top:8px">${p.activo ? "Visible para clientes" : "Desactivado"} · ${n} cita${n === 1 ? "" : "s"} próximas</div></div>`;
+      }).join("") || `<div class="card muted">Sin peluqueros todavía.</div>`;
+      $("equipo").querySelectorAll("[data-nom]").forEach((i) => i.onchange = () => patchPel(i.dataset.nom, { nombre: i.value.trim() || "Sin nombre" }, "Nombre guardado"));
+      $("equipo").querySelectorAll("[data-act]").forEach((i) => i.onchange = () => patchPel(i.dataset.act, { activo: i.checked }, i.checked ? "Activado" : "Desactivado"));
+      $("equipo").querySelectorAll("[data-borrar]").forEach((b) => b.onclick = async () => {
+        const p = D.peluqueros.find((x) => x.id === Number(b.dataset.borrar));
+        if (!confirm(`¿Eliminar a ${p.nombre} y todas sus citas?`)) return;
+        try { await P.api(`${P.T("peluqueros")}?id=eq.${p.id}`, { method: "DELETE" }); toast(p.nombre + " eliminado"); refrescar(); } catch (e) { toast("Error: " + e.message); }
+      });
+    }
+    async function patchPel(id, body, msg) {
+      try { await P.api(`${P.T("peluqueros")}?id=eq.${id}`, { method: "PATCH", body }); toast(msg); refrescar(); } catch (e) { toast("Error: " + e.message); }
+    }
+    $("btnNuevo").onclick = async () => {
+      const nombre = $("nuevo").value.trim(); if (!nombre) return $("nuevo").focus();
+      const orden = Math.max(0, ...D.peluqueros.map((p) => p.orden)) + 1;
+      try { await P.api(P.T("peluqueros"), { method: "POST", body: { nombre, orden } }); $("nuevo").value = ""; toast(nombre + " añadido"); refrescar(); } catch (e) { toast("Error: " + e.message); }
+    };
+
+    // ---------- Horario ----------
+    let H = null;
+    function renderHorario() {
+      H = JSON.parse(JSON.stringify(D.ajustes.horario || {}));
+      $("hNombre").value = D.ajustes.nombre_local;
+      $("hDur").value = String(D.ajustes.duracion_min);
+      pintarSemana();
+    }
+    function pintarSemana() {
+      $("semana").innerHTML = ORDEN_SEM.map((w) => {
+        const tr = H[w] || [];
+        return `<div class="card"><div class="dia-h">${P.DIAS[w]}<label class="switch"><input type="checkbox" data-abierto="${w}" ${tr.length ? "checked" : ""}><span></span></label></div>
+          ${tr.length ? tr.map(([a, b], i) => `<div class="tramo"><span class="lbl">${i === 0 ? "Turno 1" : "Turno " + (i + 1)}</span>
+            <input type="time" value="${a}" data-w="${w}" data-i="${i}" data-k="0" step="900"><span class="muted">–</span>
+            <input type="time" value="${b}" data-w="${w}" data-i="${i}" data-k="1" step="900">
+            <button class="x" data-quitar="${w}:${i}">✕</button></div>`).join("") + (tr.length < 3 ? `<button class="add" data-anadir="${w}">+ Añadir turno</button>` : "")
+          : `<div class="muted" style="font-size:14px;margin-top:6px">Cerrado</div>`}</div>`;
+      }).join("");
+      const sucio = () => { horarioDirty = true; };
+      $("semana").querySelectorAll("[data-abierto]").forEach((i) => i.onchange = () => { H[i.dataset.abierto] = i.checked ? [["09:00", "14:00"]] : []; sucio(); pintarSemana(); });
+      $("semana").querySelectorAll("input[type=time]").forEach((i) => i.onchange = () => { H[i.dataset.w][i.dataset.i][i.dataset.k] = i.value; sucio(); });
+      $("semana").querySelectorAll("[data-quitar]").forEach((b) => b.onclick = () => { const [w, i] = b.dataset.quitar.split(":"); H[w].splice(Number(i), 1); sucio(); pintarSemana(); });
+      $("semana").querySelectorAll("[data-anadir]").forEach((b) => b.onclick = () => { const w = b.dataset.anadir, t = H[w]; const last = t[t.length - 1]; t.push([last ? "17:00" : "09:00", last ? "20:00" : "14:00"]); sucio(); pintarSemana(); });
+    }
+    $("hNombre").oninput = $("hDur").onchange = () => { horarioDirty = true; };
+    $("btnGuardar").onclick = async () => {
+      for (const w of Object.keys(H)) for (const [a, b] of H[w]) if (!a || !b || P.toMin(a) >= P.toMin(b)) return toast(`Revisa el horario del ${P.DIAS[w].toLowerCase()}`);
+      Object.keys(H).forEach((w) => H[w].sort((x, y) => P.toMin(x[0]) - P.toMin(y[0])));
+      try {
+        await P.api(`${P.T("ajustes")}?id=eq.1`, { method: "PATCH", body: { horario: H, duracion_min: Number($("hDur").value), nombre_local: $("hNombre").value.trim() || "Peluquería", updated_at: new Date().toISOString() } });
+        horarioDirty = false; toast("Horario guardado ✓"); refrescar();
+      } catch (e) { toast("Error: " + e.message); }
+    };
+
+    async function refrescar() { try { D = await P.cargar(); render(); } catch (e) { toast("Sin conexión: " + e.message); } }
+    refrescar();
+    setInterval(() => { if (tab === "agenda") refrescar(); }, 15000);
+    document.addEventListener("visibilitychange", () => { if (!document.hidden && D) refrescar(); });
+    P.registrarSW(() => { if (!horarioDirty) location.reload(); });
+  </script>
+</body>
+</html>
