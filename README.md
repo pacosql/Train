@@ -55,6 +55,7 @@ reglas para no interferir con las demás:
 | 📣 Orto Redes | [`ortoredes/`](./ortoredes) | `/Train/ortoredes/` | `ortoredes_` |
 | 📝 Lengua | [`lengua/`](./lengua) (alumno: `/lengua/alumno/`, padre: `/lengua/padre/`, revisor: `/lengua/revisor/`) | `/Train/lengua/` | `lengua_` |
 | 🔬 Science | [`science/`](./science) (alumno: `/science/alumno/`, padre: `/science/padre/`) | `/Train/science/` | `science_` |
+| 💈 Peluquería | [`peluqueria/`](./peluqueria) (cliente: `/peluqueria/`, gestión: `/peluqueria/gestion/`) | `/Train/peluqueria/` | `peluqueria_` |
 
 ## Añadir una app nueva
 
