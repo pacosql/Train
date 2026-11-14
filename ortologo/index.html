@@ -1,0 +1,872 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Ortografía10 · logos</title>
+
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Logo O10" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="fonts/poppins.css" />
+
+  <style>
+    :root {
+      --bg: #ffffff;
+      --paper: #f5f4ef;
+      --ink: #141413;
+      --ink-2: #6b6a66;
+      --line: #e6e4dd;
+      --blue: #2f5fe8;
+      --good: #1f9d55;
+      --bad: #d6453d;
+      --gold: #c98a12;
+      --font: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      padding-top: env(safe-area-inset-top, 0px);
+    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html { -webkit-text-size-adjust: 100%; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font); font-size: 15px; line-height: 1.45; }
+    button { font: inherit; color: inherit; cursor: pointer; }
+    .wrap { max-width: 640px; margin: 0 auto; padding: 0 16px 120px; }
+
+    header { display: flex; align-items: center; gap: 10px; padding: 18px 0 6px; }
+    header h1 { font-size: 1.35rem; font-weight: 800; letter-spacing: -0.02em; margin: 0; flex: 1; }
+    header h1 span { font-weight: 500; color: var(--ink-2); }
+    .icon-btn { border: 1px solid var(--line); background: var(--bg); border-radius: 12px; width: 40px; height: 40px; font-size: 1.1rem; }
+    .icon-btn.spin { animation: spin 0.8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .tabs { display: flex; gap: 6px; overflow-x: auto; padding: 8px 0 12px; scrollbar-width: none; position: sticky; top: 0; background: var(--bg); z-index: 5; }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab { flex: none; border: 1px solid var(--line); background: var(--bg); border-radius: 999px; padding: 6px 12px; font-size: 0.85rem; font-weight: 500; white-space: nowrap; }
+    .tab.active { background: var(--ink); border-color: var(--ink); color: #fff; }
+    .tab b { font-weight: 700; margin-left: 2px; }
+
+    .msg { color: var(--bad); font-size: 0.9rem; min-height: 0; margin: 0 0 8px; }
+    .msg:empty { display: none; }
+    .eyebrow { font-size: 0.78rem; color: var(--ink-2); margin: 4px 0 10px; }
+
+    /* petición general (sin tarjeta concreta) */
+    .general { border: 1px dashed var(--line); border-radius: 16px; padding: 12px 14px; margin: 0 0 18px; }
+    .general > summary { font-weight: 600; font-size: 0.95rem; list-style: none; cursor: pointer; }
+    .general > summary::-webkit-details-marker { display: none; }
+    .general p.helper { margin: 6px 0 10px; }
+    .prefs p { font-size: 0.86rem; margin: 8px 0 0; }
+
+    /* tarjeta de diseño: mismo formato que las pruebas previas */
+    .card { border-bottom: 1px solid var(--line); padding: 18px 0 16px; }
+    .card.fading { opacity: 0; transform: translateX(24px); transition: 0.25s; }
+    .card-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 12px; }
+    .num { font-size: 1.6rem; font-weight: 800; line-height: 1; min-width: 1.4em; }
+    .titulo { font-size: 0.98rem; color: #3b3a37; flex: 1; }
+    .badge { font-size: 0.7rem; font-weight: 600; padding: 2px 8px; border-radius: 999px; background: var(--paper); color: var(--ink-2); white-space: nowrap; }
+    .badge.gusta { background: #e3f4ea; color: var(--good); }
+    .badge.no_gusta { background: #fbe7e5; color: var(--bad); }
+    .badge.definitivo { background: #fdf1d6; color: var(--gold); }
+    .badge.revisar { background: #e6ecfd; color: var(--blue); }
+    .badge.new { background: var(--ink); color: #fff; }
+
+    .icons { display: flex; align-items: center; gap: 14px; }
+    .ic { position: relative; overflow: hidden; flex: none; }
+    .ic svg { display: block; width: 100%; height: 100%; }
+    .ic .acento, .wm .acento { fill: var(--acento); }
+    .ic .acento-trazo, .wm .acento-trazo { stroke: var(--acento); }
+    .ic .fondo, .wm .fondo { fill: var(--fondo); }
+    .ic .fondo-trazo, .wm .fondo-trazo { stroke: var(--fondo); }
+    .ic.sq { width: clamp(92px, 28vw, 124px); aspect-ratio: 1; border-radius: 22%; }
+    .ic.ci { width: clamp(92px, 28vw, 124px); aspect-ratio: 1; border-radius: 50%; }
+    .ic.f40 { width: 40px; height: 40px; border-radius: 22%; }
+    .ic.f20 { width: 20px; height: 20px; border-radius: 22%; }
+    .ic.claro { box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.04); }
+    .favs-col { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
+    .favs { display: flex; align-items: flex-end; gap: 12px; }
+    .favs-col small { color: var(--ink-2); font-size: 0.8rem; }
+    .wm { margin: 16px 0 4px; height: clamp(64px, 19vw, 84px); padding: clamp(18px, 5.4vw, 24px) 18px; border-radius: 14px; display: flex; justify-content: center; }
+    .wm.claro { box-shadow: inset 0 0 0 1px var(--line); }
+    .ic-col { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
+    .ic-col small, .extras small { color: var(--ink-2); font-size: 0.72rem; line-height: 1.2; }
+    .extras { display: flex; gap: 14px; align-items: flex-start; margin-top: 14px; }
+    .extras > div { display: flex; flex-direction: column; gap: 6px; }
+    .peg { width: clamp(120px, 38vw, 160px); background: #e9e7e1; border-radius: 12px; padding: 12px; }
+    .peg svg { display: block; width: 100%; height: auto; filter: drop-shadow(0 2px 3px rgba(0,0,0,.25)); }
+    .reel { width: clamp(84px, 25vw, 104px); aspect-ratio: 9 / 16; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; align-items: center; padding: 12% 8% 0; text-align: center; font-weight: 700; }
+    .reel .wm { height: 11px; margin: 0; padding: 0; border-radius: 0; box-shadow: none; }
+    .reel .pill { font-size: 6px; border-radius: 99px; padding: 2px 6px; margin-top: 12%; }
+    .reel .frase { font-size: 9px; line-height: 1.25; margin-top: 10%; }
+    .reel .frase mark { border-radius: 2px; padding: 0 1px; color: inherit; }
+    .herm { width: 64px; height: 64px; border-radius: 22%; }
+    .paso { display: flex; align-items: center; gap: 8px; margin: 0 0 4px; }
+    .paso span { flex: 1; text-align: center; font-size: 0.85rem; color: var(--ink-2); }
+    .paso button { border: 1px solid var(--line); background: var(--bg); border-radius: 12px; padding: 9px 14px; font-size: 0.85rem; font-weight: 600; }
+    .paso button.primary { background: var(--ink); border-color: var(--ink); color: #fff; }
+    .paso button:disabled { opacity: 0.35; }
+    .a4 { width: 100%; margin-top: 10px; border: 1px solid var(--ink); background: var(--bg); border-radius: 12px; padding: 11px; font-size: 0.9rem; font-weight: 700; }
+    .a4:disabled { opacity: 0.5; }
+    .wm svg { height: 100%; width: auto; max-width: 100%; display: block; }
+
+    .concepto { font-size: 0.88rem; color: var(--ink-2); margin: 8px 0 0; }
+    .revnota { font-size: 0.85rem; background: #eef2fd; color: #23408f; border-radius: 10px; padding: 8px 10px; margin: 10px 0 0; }
+    .padre { font-size: 0.78rem; color: var(--ink-2); margin: 6px 0 0; }
+    .padre a { color: inherit; }
+
+    .acts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 12px; }
+    .acts button { border: 1px solid var(--line); background: var(--bg); border-radius: 12px; padding: 10px 2px; font-size: 0.8rem; font-weight: 600; white-space: nowrap; }
+    .acts button.on[data-d="gusta"] { background: var(--good); border-color: var(--good); color: #fff; }
+    .acts button.on[data-d="no_gusta"] { background: var(--bad); border-color: var(--bad); color: #fff; }
+    .acts button.on[data-d="definitivo"] { background: var(--gold); border-color: var(--gold); color: #fff; }
+    .acts button.on[data-d="revisar"] { background: var(--blue); border-color: var(--blue); color: #fff; }
+
+    details.more { margin-top: 10px; }
+    details.more > summary { font-size: 0.85rem; font-weight: 600; color: var(--ink-2); cursor: pointer; list-style: none; padding: 4px 0; }
+    details.more > summary::-webkit-details-marker { display: none; }
+    details.more[open] > summary { color: var(--ink); }
+    .panel { background: var(--paper); border-radius: 14px; padding: 12px; margin-top: 6px; }
+    .helper { font-size: 0.78rem; color: var(--ink-2); margin: 8px 0 0; }
+    textarea { width: 100%; min-height: 70px; border: 1px solid var(--line); border-radius: 10px; padding: 10px; font: inherit; font-size: 0.92rem; resize: vertical; background: #fff; }
+    .row { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+    .row button { flex: 1; border: 1px solid var(--line); background: #fff; border-radius: 10px; padding: 9px 6px; font-size: 0.85rem; font-weight: 600; }
+    .row button.primary { background: var(--ink); border-color: var(--ink); color: #fff; }
+    .row button.on { background: var(--bad); border-color: var(--bad); color: #fff; }
+    .row button:disabled { opacity: 0.5; }
+    .comment { background: #fff; border-radius: 10px; padding: 8px 10px; margin-bottom: 6px; font-size: 0.88rem; }
+    .comment .head { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--ink-2); margin-bottom: 2px; }
+    .comment .trans { font-style: italic; color: #3b3a37; margin-top: 4px; }
+    .comment audio, .rec-preview audio { width: 100%; height: 36px; margin-top: 4px; }
+    .estado.procesado { color: var(--good); }
+
+    /* kit / guía de marca */
+    .swatches { display: flex; gap: 8px; flex-wrap: wrap; }
+    .sw { border: 0; background: none; padding: 0; text-align: left; font-size: 0.72rem; }
+    .sw i { display: block; width: 54px; height: 40px; border-radius: 8px; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08); margin-bottom: 3px; }
+    .kit h4 { font-size: 0.8rem; margin: 12px 0 6px; }
+    .kit h4:first-child { margin-top: 0; }
+    .dl { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    .dl button { border: 1px solid var(--line); background: #fff; border-radius: 10px; padding: 8px 6px; font-size: 0.78rem; font-weight: 500; }
+    .tab-mock { display: inline-flex; align-items: center; gap: 8px; background: #fff; border-radius: 10px 10px 0 0; padding: 7px 14px 7px 10px; font-size: 0.8rem; box-shadow: 0 -1px 0 var(--line) inset; }
+    .tab-mock .ic { width: 16px; height: 16px; border-radius: 22%; }
+
+    /* galería */
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 12px; }
+    .g-item { border: 0; background: none; padding: 0; text-align: left; }
+    .g-item .ic { width: 100%; aspect-ratio: 1; border-radius: 22%; }
+    .g-item div.cap { font-size: 0.75rem; margin-top: 4px; display: flex; gap: 4px; align-items: center; }
+    .g-item div.cap b { font-weight: 800; }
+    .g-item.dim { opacity: 0.45; }
+
+    .empty { text-align: center; padding: 50px 10px; color: var(--ink-2); }
+    .empty .big { font-size: 2.4rem; }
+    .back { font-weight: 600; font-size: 0.9rem; margin: 4px 0 4px; cursor: pointer; display: inline-block; }
+
+    .routines { font-size: 0.72rem; color: var(--ink-2); margin-top: 28px; }
+    .build-id { font-size: 0.7rem; color: #b5b3ac; text-align: center; margin-top: 18px; }
+
+    .toast { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 140%); background: var(--ink); color: #fff; border-radius: 14px; padding: 10px 12px 10px 16px; display: flex; gap: 12px; align-items: center; font-size: 0.88rem; transition: transform 0.25s, visibility 0.25s; visibility: hidden; max-width: calc(100% - 32px); z-index: 20; }
+    .toast.show { transform: translate(-50%, 0); visibility: visible; }
+    .toast button { background: #fff; color: var(--ink); border: 0; border-radius: 10px; padding: 6px 10px; font-weight: 600; font-size: 0.82rem; }
+    .toast button:empty { display: none; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Ortografía10 <span>· elige el logo</span></h1>
+      <button class="icon-btn" id="btn-refresh" title="Recargar">↻</button>
+    </header>
+
+    <nav class="tabs" id="tabs">
+      <button class="tab active" data-tab="pendiente">Por decidir <b id="n-pendiente">·</b></button>
+      <button class="tab" data-tab="gusta">👍 <b id="n-gusta">·</b></button>
+      <button class="tab" data-tab="definitivo">⭐ <b id="n-definitivo">·</b></button>
+      <button class="tab" data-tab="revisar">🔁 En cola <b id="n-revisar">·</b></button>
+      <button class="tab" data-tab="no_gusta">👎 <b id="n-no_gusta">·</b></button>
+      <button class="tab" data-tab="todos">Todos <b id="n-todos">·</b></button>
+    </nav>
+
+    <p class="msg" id="msg"></p>
+    <div id="view"></div>
+
+    <div class="routines" id="routines"></div>
+    <div class="build-id">build __BUILD_ID__</div>
+  </div>
+
+  <div class="toast" id="toast"><span id="toast-text"></span><button id="toast-undo"></button></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="config.js"></script>
+  <script>
+    const { url, anonKey, tablePrefix } = window.ORTOLOGO_CONFIG;
+    const T_DISENOS = tablePrefix + "disenos";
+    const T_COMENTARIOS = tablePrefix + "comentarios";
+    const T_RUTINAS = tablePrefix + "rutinas";
+    const T_PREFS = tablePrefix + "preferencias";
+    let prefs = null;
+    const BUCKET = "ortologo-audios";
+    const DECISION_LABEL = { gusta: "👍 Me gusta", no_gusta: "👎 No", definitivo: "⭐ Final", revisar: "🔁 Otra", versionado: "Ya versionado", retirado: "Retirado" };
+    const ESTADO_LABEL = { pendiente: "⏳ pendiente", transcrito: "⏳ pendiente", procesado: "✅ usado" };
+    let client = null;
+    let disenos = [];
+    let comentarios = [];
+    let rutinas = [];
+    const state = { tab: "pendiente", detail: null, idx: 0 };
+    // Última visita: lo creado desde entonces lleva la etiqueta «nuevo».
+    const VISIT_KEY = "ortologo.ultimaVisita";
+    let prevVisit = null;
+    try { prevVisit = localStorage.getItem(VISIT_KEY); localStorage.setItem(VISIT_KEY, new Date().toISOString()); } catch {}
+    const isNew = (d) => !!prevVisit && d.created_at > prevVisit;
+
+    const el = (id) => document.getElementById(id);
+    const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+    // ---------- SVG: saneado (las filas vienen de la base de datos) ----------
+    const svgCache = new Map();
+    const fitCache = new Map(); // svg original → viewBox ya encajado a la tinta real
+
+    // Encaje automático: los SVG con data-fit se miden ya renderizados (con la
+    // fuente cargada) y se les ajusta el viewBox a la tinta de los glifos, así
+    // la rutina no tiene que calcular anchos. Poppins: mayúsculas/dígitos 0,70 em,
+    // minúsculas 0,55 em; la caja em de cada glifo mide 1,4 em (1,05 + 0,35).
+    const CAP = 0.7, XH = 0.55, EM_BOX = 1.4;
+    function inkBox(svg) {
+      let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+      for (const t of svg.querySelectorAll("text")) {
+      const txt = t.textContent, n = t.getNumberOfChars();
+      for (let i = 0; i < n; i++) {
+        const ch = txt[i];
+        if (!ch || ch === " ") continue;
+        const e = t.getExtentOfChar(i), p = t.getStartPositionOfChar(i), sz = e.height / EM_BOX;
+        let top = p.y - CAP * sz, bot = p.y;
+        if (ch === "°") bot = p.y - 0.4 * sz;
+        else if (ch === "·") { top = p.y - 0.42 * sz; bot = p.y - 0.26 * sz; }
+        else if (/[acemnorsuvwxz]/.test(ch)) top = p.y - XH * sz;
+        else if (/[gjpqy]/.test(ch)) { top = p.y - XH * sz; bot = p.y + 0.22 * sz; }
+        x0 = Math.min(x0, e.x); x1 = Math.max(x1, e.x + e.width);
+        y0 = Math.min(y0, top); y1 = Math.max(y1, bot);
+      }
+      }
+      // formas (círculos, rectángulos, trazos…) que acompañan al texto
+      for (const sh of svg.querySelectorAll("circle,rect,path,line,polygon,polyline,ellipse")) {
+        const b = sh.getBBox(), sw = (parseFloat(sh.getAttribute("stroke-width")) || 0) / 2;
+        x0 = Math.min(x0, b.x - sw); y0 = Math.min(y0, b.y - sw); x1 = Math.max(x1, b.x + b.width + sw); y1 = Math.max(y1, b.y + b.height + sw);
+      }
+      return x0 === Infinity ? null : { x0, y0, x1, y1 };
+    }
+    function fitSvgs(root) {
+      root.querySelectorAll("svg[data-fit]").forEach((svg) => {
+        const key = svg.dataset.src;
+        if (!key || fitCache.has(key)) return;
+        let b; try { b = inkBox(svg); } catch { return; }
+        if (!b) return;
+        const w = b.x1 - b.x0, h = b.y1 - b.y0, cx = (b.x0 + b.x1) / 2, cy = (b.y0 + b.y1) / 2;
+        let vb;
+        if (svg.dataset.fit === "wordmark") { const pad = h * 0.08; vb = [b.x0 - pad, b.y0 - pad, w + 2 * pad, h + 2 * pad]; }
+        else { const side = Math.max(w, h * 1.15) / (parseFloat(svg.dataset.tam) || 0.62); vb = [cx - side / 2, cy - side / 2, side, side]; }
+        const v = vb.map((x) => +x.toFixed(2)).join(" ");
+        fitCache.set(key, v);
+        const orig = [...srcIds].find(([, id]) => id === key);
+        if (orig && svgCache.has(orig[0])) svgCache.set(orig[0], svgCache.get(orig[0]).replace(/viewBox="[^"]*"/, `viewBox="${v}"`));
+        root.querySelectorAll("svg[data-src]").forEach((s) => { if (s.dataset.src === key) s.setAttribute("viewBox", v); });
+      });
+    }
+    let srcIds = new Map();
+    const srcId = (str) => { if (!srcIds.has(str)) srcIds.set(str, "s" + srcIds.size); return srcIds.get(str); };
+    function safeSvg(str) {
+      if (!str) return "";
+      if (svgCache.has(str)) return svgCache.get(str);
+      let out = "";
+      try {
+        const doc = new DOMParser().parseFromString(str, "image/svg+xml");
+        const svg = doc.documentElement;
+        if (svg && svg.nodeName.toLowerCase() === "svg" && !doc.querySelector("parsererror")) {
+          svg.querySelectorAll("script,foreignObject,iframe,image,a,animate,set,style").forEach((n) => n.remove());
+          for (const n of [svg, ...svg.querySelectorAll("*")]) {
+            for (const a of [...n.attributes]) {
+              const name = a.name.toLowerCase();
+              if (name.startsWith("on")) n.removeAttribute(a.name);
+              else if ((name === "href" || name === "xlink:href") && !a.value.startsWith("#")) n.removeAttribute(a.name);
+            }
+          }
+          svg.removeAttribute("width"); svg.removeAttribute("height");
+          if (svg.hasAttribute("data-fit")) { svg.setAttribute("data-src", srcId(str)); if (fitCache.has(srcId(str))) svg.setAttribute("viewBox", fitCache.get(srcId(str))); }
+          if (!svg.getAttribute("preserveAspectRatio")) svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+          out = new XMLSerializer().serializeToString(svg);
+        }
+      } catch {}
+      svgCache.set(str, out);
+      return out;
+    }
+    const C = (d) => ({ icono_fondo: "#141839", icono_tinta: "#F6F2EA", acento: "#FECB3B", wordmark: "#F6F2EA", wordmark_fondo: "#141839", error: "#FE5F5E", acierto: "#3FD480", ...(d.colores || {}) });
+    const lum = (hex) => { const h = (hex || "").replace("#", ""); if (h.length < 6) return 0; const [r, g, b] = [0, 2, 4].map((i) => parseInt(h.substr(i, 2), 16)); return 0.299 * r + 0.587 * g + 0.114 * b; };
+    const isLight = (hex) => { const h = (hex || "").replace("#", ""); if (h.length < 6) return false; const [r, g, b] = [0, 2, 4].map((i) => parseInt(h.substr(i, 2), 16)); return (0.299 * r + 0.587 * g + 0.114 * b) > 225; };
+    function icon(d, cls, fav = false) {
+      const c = C(d);
+      return `<div class="ic ${cls} ${isLight(c.icono_fondo) ? "claro" : ""}" style="background:${esc(c.icono_fondo)};color:${esc(c.icono_tinta)};--acento:${esc(c.acento)};--fondo:${esc(c.icono_fondo)}">${safeSvg(fav ? (d.svg_favicon || d.svg_marca) : d.svg_marca)}</div>`;
+    }
+    function wordmark(d) {
+      const c = C(d);
+      return `<div class="wm ${isLight(c.wordmark_fondo) ? "claro" : ""}" style="background:${esc(c.wordmark_fondo)};color:${esc(c.wordmark)};--acento:${esc(c.acento)};--fondo:${esc(c.wordmark_fondo)}">${safeSvg(d.svg_wordmark)}</div>`;
+    }
+    // Fotograma de Reel como el del vídeo: el nombre arriba y el ejercicio debajo.
+    function reel(d) {
+      const c = C(d), claro = isLight(c.wordmark_fondo) || lum(c.wordmark_fondo) > 150;
+      return `<div class="reel" style="background:${esc(c.wordmark_fondo)};color:${esc(c.wordmark)};${isLight(c.wordmark_fondo) ? "box-shadow:inset 0 0 0 1px var(--line)" : ""}">
+        <div class="wm" style="color:${esc(c.wordmark)};--acento:${esc(c.acento)};--fondo:${esc(c.wordmark_fondo)}">${safeSvg(d.svg_wordmark)}</div>
+        <div class="pill" style="background:${esc(c.error)};color:#fff">¡Aquí está!</div>
+        <div class="frase">Ayer conduje mi cami<mark style="background:${claro ? "rgba(0,0,0,.12)" : "rgba(255,255,255,.16)"};color:${esc(c.acento === c.wordmark ? c.error : c.acento)}">on</mark>.</div></div>`;
+    }
+    // Fuentes extra (Google Fonts) que pida un diseño además de Poppins, que va alojada aquí.
+    const loadedFonts = new Set();
+    function loadFonts() {
+      for (const d of disenos) for (const f of d.fuentes || []) {
+        if (!f || loadedFonts.has(f) || /^poppins/i.test(f)) continue;
+        loadedFonts.add(f);
+        const l = document.createElement("link"); l.rel = "stylesheet";
+        l.href = "https://fonts.googleapis.com/css2?family=" + encodeURIComponent(f).replace(/%20/g, "+").replace(/%3A/gi, ":").replace(/%40/g, "@").replace(/%3B/gi, ";").replace(/%2C/gi, ",") + "&display=swap";
+        document.head.appendChild(l);
+      }
+    }
+
+    // ---------- datos ----------
+    async function load() {
+      const [a, b, r] = await Promise.all([
+        client.from(T_DISENOS).select("*").order("numero", { ascending: true }),
+        client.from(T_COMENTARIOS).select("*").order("created_at", { ascending: true }),
+        client.from(T_RUTINAS).select("rutina,ejecutada_en,resumen").eq("rutina", "hecho").order("ejecutada_en", { ascending: false }).limit(5),
+      ]);
+      if (a.error) throw a.error;
+      if (b.error) throw b.error;
+      disenos = a.data || [];
+      comentarios = b.data || [];
+      rutinas = r.error ? [] : (r.data || []);
+      const pr = await client.from(T_PREFS).select("*").eq("id", "yo").maybeSingle();
+      prefs = pr.error ? null : pr.data;
+      loadFonts();
+      renderRoutines();
+    }
+    const byId = (id) => disenos.find((d) => d.id === id);
+    const commentsOf = (id) => comentarios.filter((c) => c.diseno_id === id);
+    const pendingComments = (id) => commentsOf(id).filter((c) => c.estado !== "procesado").length;
+    // Por decidir: primero las versiones que responden a tus comentarios (la más
+    // nueva arriba) y después el resto en orden de número.
+    const inTab = (tab) => tab === "todos" ? disenos.slice().reverse()
+      : tab === "pendiente" ? disenos.filter((d) => !d.decision).sort((a, b) => (!!b.revision_nota - !!a.revision_nota) || (a.revision_nota ? b.numero - a.numero : a.numero - b.numero))
+      : disenos.filter((d) => d.decision === tab).sort((a, b) => (b.decidido_en || "").localeCompare(a.decidido_en || ""));
+
+    function counts() {
+      for (const t of ["pendiente", "gusta", "definitivo", "revisar", "no_gusta"]) el("n-" + t).textContent = inTab(t).length;
+      el("n-todos").textContent = disenos.length;
+    }
+    function ago(iso) {
+      const m = Math.round((Date.now() - new Date(iso).getTime()) / 60000);
+      return m < 60 ? `hace ${m} min` : m < 1440 ? `hace ${Math.round(m / 60)} h` : `hace ${Math.round(m / 1440)} d`;
+    }
+    function renderRoutines() {
+      const r = rutinas[0];
+      el("routines").textContent = r ? `Última pasada de la rutina ${ago(r.ejecutada_en)}: ${r.resumen || ""}` : "La rutina todavía no ha pasado. Lee tus votos y comentarios y trae versiones y propuestas nuevas.";
+    }
+
+    // ---------- tarjeta ----------
+    function cardHTML(d) {
+      const nc = commentsOf(d.id).length;
+      const padre = d.padre_id && byId(d.padre_id);
+      const hijos = disenos.filter((x) => x.padre_id === d.id);
+      return `<article class="card" id="d-${d.numero}" data-id="${d.id}">
+        <div class="card-head">
+          <span class="num">${d.numero}</span>
+          <span class="titulo">${esc(d.titulo)}</span>
+          ${isNew(d) && !d.decision ? `<span class="badge new">nuevo</span>` : ""}
+          ${d.decision && state.tab !== d.decision ? `<span class="badge ${d.decision}">${DECISION_LABEL[d.decision]}</span>` : ""}
+          ${d.version > 1 ? `<span class="badge">v${d.version}</span>` : ""}
+        </div>
+        <div class="icons">
+          <div class="ic-col">${icon(d, "sq")}<small>App Store · Google Play</small></div>
+          <div class="ic-col">${icon(d, "ci")}<small>LinkedIn · Instagram</small></div>
+          <div class="favs-col">
+            <div class="favs">${icon(d, "f40", true)}${icon(d, "f20", true)}</div>
+            <small>favicon</small>
+          </div>
+        </div>
+        ${wordmark(d)}
+        <div class="extras">
+          ${d.svg_pegatina ? `<div><div class="peg">${safeSvg(d.svg_pegatina)}</div><small>Pegatina · imán de coche</small></div>` : ""}
+          <div>${reel(d)}<small>En un Reel</small></div>
+          ${d.svg_hermano ? `<div><div class="ic herm" style="background:${esc(C(d).icono_fondo)};color:${esc(C(d).icono_tinta)};--acento:${esc(C(d).acento)};--fondo:${esc(C(d).icono_fondo)}">${safeSvg(d.svg_hermano)}</div><small>Hermano:<br>Mates10</small></div>` : ""}
+        </div>
+        ${d.revision_nota ? `<p class="revnota">${esc(d.revision_nota)}</p>` : ""}
+        ${padre ? `<p class="padre">Viene del <a href="#" data-go="${padre.id}">nº ${padre.numero}</a></p>` : ""}
+        ${hijos.length ? `<p class="padre">Versiones nuevas: ${hijos.map((h) => `<a href="#" data-go="${h.id}">nº ${h.numero}</a>`).join(", ")}</p>` : ""}
+        ${d.concepto ? `<p class="concepto">${esc(d.concepto)}</p>` : ""}
+        <div class="acts">
+          ${["no_gusta", "gusta", "revisar", "definitivo"].map((k) => `<button type="button" data-d="${k}" class="${d.decision === k ? "on" : ""}">${DECISION_LABEL[k]}</button>`).join("")}
+        </div>
+        <button type="button" class="a4" data-a4>⬇️ Descargar A4 para imprimir (PDF)</button>
+        <details class="more" data-panel="coment">
+          <summary>💬 Comentar${nc ? ` (${nc}${pendingComments(d.id) ? `, ${pendingComments(d.id)} por usar` : ""})` : ""}</summary>
+          <div class="panel" data-comment-box></div>
+        </details>
+        <details class="more" data-panel="kit">
+          <summary>📐 Kit y guía de marca</summary>
+          <div class="panel kit" data-kit-box></div>
+        </details>
+      </article>`;
+    }
+
+    function wireCard(card) {
+      const d = byId(card.dataset.id);
+      card.querySelectorAll(".acts button").forEach((b) => b.onclick = () => decide(d, d.decision === b.dataset.d ? null : b.dataset.d, card));
+      card.querySelector("[data-a4]").onclick = (e) => exportA4(d, e.currentTarget);
+      card.querySelectorAll("a[data-go]").forEach((a) => a.onclick = (e) => { e.preventDefault(); openDetail(a.dataset.go); });
+      card.querySelector('[data-panel="coment"]').addEventListener("toggle", (e) => { if (e.target.open) renderCommentBox(card, d); else if (rec.card === card) resetRec(); });
+      card.querySelector('[data-panel="kit"]').addEventListener("toggle", (e) => { if (e.target.open) renderKit(card, d); });
+    }
+
+    // ---------- decisiones ----------
+    let toastTimer = null;
+    async function decide(d, decision, card) {
+      const prev = { decision: d.decision, decidido_en: d.decidido_en };
+      const patch = { decision, decidido_en: decision ? new Date().toISOString() : null };
+      Object.assign(d, patch);
+      const leaves = state.tab !== "todos" && !state.detail && (state.tab === "pendiente" ? !!decision : decision !== state.tab);
+      if (leaves && card) { card.classList.add("fading"); setTimeout(render, 250); } else render();
+      const { error } = await client.from(T_DISENOS).update(patch).eq("id", d.id);
+      if (error) { Object.assign(d, prev); render(); showMsg("No se pudo guardar: " + error.message); return; }
+      showMsg("");
+      const txt = decision === "revisar" ? `🔁 Nº ${d.numero}: la rutina hará otra versión con tus comentarios` : decision ? `${DECISION_LABEL[decision]} · nº ${d.numero}` : `Nº ${d.numero} vuelve a Por decidir`;
+      showToast(txt, async () => {
+        Object.assign(d, prev); render();
+        await client.from(T_DISENOS).update(prev).eq("id", d.id);
+      });
+    }
+
+    // ---------- comentarios ----------
+    const audioUrl = (path) => `${url}/storage/v1/object/public/${BUCKET}/${path}`;
+    function commentsListHTML(id) {
+      const cs = commentsOf(id);
+      if (!cs.length) return "";
+      return cs.map((c) => `<div class="comment">
+          <div class="head"><span>${c.tipo === "audio" ? "🎤 Audio" : "📝 Nota"} · ${new Date(c.created_at).toLocaleString("es-ES", { dateStyle: "short", timeStyle: "short" })}${c.duracion_seg ? " · " + c.duracion_seg + " s" : ""}</span><span class="estado ${c.estado}">${ESTADO_LABEL[c.estado] || c.estado}</span></div>
+          ${c.tipo === "texto" ? `<div>${esc(c.texto)}</div>` : `<audio controls preload="none" src="${audioUrl(c.audio_path)}"></audio>`}
+          ${c.transcripcion ? `<div class="trans">“${esc(c.transcripcion)}”</div>` : (c.tipo === "audio" && c.estado !== "procesado" ? `<div class="trans">Sin transcripción: la rutina no puede oírlo. Usa Dictar para que llegue como texto.</div>` : "")}
+        </div>`).join("");
+    }
+    function commentBoxHTML(id, placeholder) {
+      return `<div data-list>${commentsListHTML(id)}</div>
+        <textarea data-nota placeholder="${esc(placeholder)}"></textarea>
+        <div class="row">
+          <button type="button" data-dictar>🎙️ Dictar</button>
+          <button type="button" data-rec>🎤 Grabar</button>
+          <button type="button" class="primary" data-guardar>Guardar</button>
+        </div>
+        <div data-preview></div>`;
+    }
+    function renderCommentBox(card, d) {
+      const box = card.querySelector("[data-comment-box]");
+      box.innerHTML = commentBoxHTML(d ? d.id : null, d ? "Qué cambiarías: «la tilde más grande», «pruébalo en negro», «el 10 más pequeño»…" : "Pide algo general: «más como el 6 pero en negro», «quiero ver una ñ», «más estilo periódico»…")
+        + `<p class="helper">Dictar convierte tu voz en texto aquí mismo (es lo que mejor entiende la rutina). Grabar guarda el audio. La rutina lee tus comentarios y crea versiones nuevas numeradas${d ? " a partir de esta" : ""}.</p>`;
+      const q = (s) => box.querySelector(s);
+      q("[data-guardar]").onclick = () => { stopDictate(); saveText(box, d); };
+      q("[data-dictar]").onclick = () => toggleDictate(box);
+      q("[data-rec]").onclick = () => { stopDictate(); toggleRec(box, d); };
+    }
+    function refreshComments(box, d) {
+      box.querySelector("[data-list]").innerHTML = commentsListHTML(d ? d.id : null);
+      const card = box.closest(".card");
+      if (card && d) {
+        const nc = commentsOf(d.id).length, np = pendingComments(d.id);
+        card.querySelector('[data-panel="coment"] > summary').textContent = `💬 Comentar (${nc}${np ? `, ${np} por usar` : ""})`;
+      }
+    }
+    async function saveText(box, d) {
+      const ta = box.querySelector("[data-nota]");
+      const texto = ta.value.trim();
+      if (!texto) return;
+      const { data, error } = await client.from(T_COMENTARIOS).insert({ diseno_id: d ? d.id : null, tipo: "texto", texto }).select().single();
+      if (error) { showMsg("No se pudo guardar el comentario: " + error.message); return; }
+      comentarios.push(data);
+      ta.value = "";
+      refreshComments(box, d);
+      showToast(d ? `📝 Comentario guardado en el nº ${d.numero}` : "📝 Petición guardada");
+    }
+
+    // dictado (Web Speech API)
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition || null;
+    const dict = { rec: null, on: false, box: null };
+    function startSR(onFinal, onEnd) {
+      if (!SR) return null;
+      const r = new SR();
+      r.lang = "es-ES"; r.continuous = true; r.interimResults = false;
+      r.onresult = (e) => { for (let k = e.resultIndex; k < e.results.length; k++) if (e.results[k].isFinal) onFinal(e.results[k][0].transcript.trim()); };
+      r.onerror = () => {};
+      r.onend = () => onEnd && onEnd();
+      try { r.start(); } catch { return null; }
+      return r;
+    }
+    function toggleDictate(box) {
+      if (dict.on) return stopDictate();
+      if (!SR) { showMsg("Este navegador no permite dictar; usa Grabar o escribe."); return; }
+      const ta = box.querySelector("[data-nota]");
+      dict.rec = startSR((t) => { ta.value = (ta.value.trim() ? ta.value.trim() + " " : "") + t; }, () => { if (dict.on) { try { dict.rec.start(); } catch {} } });
+      if (!dict.rec) { showMsg("No se pudo iniciar el dictado."); return; }
+      dict.on = true; dict.box = box;
+      const b = box.querySelector("[data-dictar]"); b.classList.add("on"); b.textContent = "⏹ Parar";
+      showMsg("");
+    }
+    function stopDictate() {
+      dict.on = false;
+      if (dict.rec) { try { dict.rec.stop(); } catch {} dict.rec = null; }
+      const b = dict.box && dict.box.querySelector("[data-dictar]"); if (b) { b.classList.remove("on"); b.textContent = "🎙️ Dictar"; }
+      dict.box = null;
+    }
+
+    // audio (MediaRecorder) + transcripción simultánea si el navegador puede
+    const rec = { recorder: null, stream: null, chunks: [], blob: null, url: "", mime: "", texto: [], box: null, card: null };
+    function pickMime() {
+      if (!window.MediaRecorder) return "";
+      for (const m of ["audio/webm;codecs=opus", "audio/webm", "audio/mp4", "audio/ogg;codecs=opus", "audio/ogg"]) if (MediaRecorder.isTypeSupported(m)) return m;
+      return "";
+    }
+    const extOf = (mime) => mime.includes("webm") ? "webm" : mime.includes("mp4") ? "m4a" : mime.includes("ogg") ? "ogg" : "bin";
+    async function toggleRec(box, d) {
+      if (rec.recorder && rec.recorder.state === "recording") return stopRec();
+      resetRec();
+      if (!navigator.mediaDevices || !window.MediaRecorder) { showMsg("Este navegador no permite grabar audio."); return; }
+      try { rec.stream = await navigator.mediaDevices.getUserMedia({ audio: true }); }
+      catch (err) { showMsg("Sin acceso al micrófono: " + err.message); return; }
+      rec.box = box; rec.card = box.closest(".card");
+      rec.mime = pickMime(); rec.chunks = []; rec.texto = [];
+      rec.recorder = new MediaRecorder(rec.stream, rec.mime ? { mimeType: rec.mime } : undefined);
+      rec.recorder.ondataavailable = (e) => { if (e.data && e.data.size) rec.chunks.push(e.data); };
+      rec.recorder.onstop = () => {
+        rec.stream.getTracks().forEach((t) => t.stop());
+        rec.blob = new Blob(rec.chunks, { type: rec.recorder.mimeType || rec.mime || "audio/webm" });
+        rec.mime = rec.blob.type;
+        rec.url = URL.createObjectURL(rec.blob);
+        showPreview(box, d);
+      };
+      rec.startedAt = Date.now();
+      rec.recorder.start(1000);
+      rec.sr = startSR((t) => rec.texto.push(t), () => { if (rec.recorder && rec.recorder.state === "recording" && rec.sr) { try { rec.sr.start(); } catch {} } });
+      const b = box.querySelector("[data-rec]"); b.classList.add("on"); b.textContent = "⏹ 0:00";
+      rec.timer = setInterval(() => { const s = Math.round((Date.now() - rec.startedAt) / 1000); b.textContent = `⏹ ${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`; }, 250);
+      box.querySelector("[data-preview]").innerHTML = "";
+    }
+    function stopRec() {
+      clearInterval(rec.timer);
+      if (rec.sr) { const r = rec.sr; rec.sr = null; try { r.stop(); } catch {} }
+      const b = rec.box && rec.box.querySelector("[data-rec]"); if (b) { b.classList.remove("on"); b.textContent = "🎤 Grabar"; }
+      if (rec.recorder && rec.recorder.state !== "inactive") rec.recorder.stop();
+    }
+    function resetRec() {
+      if (rec.recorder && rec.recorder.state === "recording") { rec.recorder.onstop = () => rec.stream.getTracks().forEach((t) => t.stop()); }
+      stopRec();
+      if (rec.url) URL.revokeObjectURL(rec.url);
+      const pv = rec.box && rec.box.querySelector("[data-preview]"); if (pv) pv.innerHTML = "";
+      Object.assign(rec, { recorder: null, stream: null, chunks: [], blob: null, url: "", box: null, card: null });
+    }
+    function showPreview(box, d) {
+      const sec = Math.max(1, Math.round((Date.now() - rec.startedAt) / 1000));
+      const pv = box.querySelector("[data-preview]");
+      pv.innerHTML = `<div class="rec-preview"><p class="helper">Audio grabado · ${sec} s${rec.texto.length ? " · con transcripción" : ""}</p>
+        <audio controls src="${rec.url}"></audio>
+        <div class="row"><button type="button" data-descartar>Descartar</button><button type="button" class="primary" data-subir>💾 Guardar audio</button></div></div>`;
+      pv.querySelector("[data-descartar]").onclick = resetRec;
+      pv.querySelector("[data-subir]").onclick = () => saveAudio(box, d, sec);
+    }
+    async function saveAudio(box, d, sec) {
+      const btn = box.querySelector("[data-subir]"); btn.disabled = true; btn.textContent = "Subiendo…";
+      const path = `${d ? d.id : "general"}/${new Date().toISOString().replace(/[:.]/g, "-")}.${extOf(rec.mime)}`;
+      const up = await client.storage.from(BUCKET).upload(path, rec.blob, { contentType: rec.mime || "audio/webm", upsert: false });
+      if (up.error) { showMsg("No se pudo subir el audio: " + up.error.message); btn.disabled = false; btn.textContent = "💾 Guardar audio"; return; }
+      const transcripcion = rec.texto.join(" ").trim() || null;
+      const { data, error } = await client.from(T_COMENTARIOS).insert({ diseno_id: d ? d.id : null, tipo: "audio", audio_path: path, audio_mime: rec.mime, duracion_seg: sec, transcripcion, estado: transcripcion ? "transcrito" : "pendiente" }).select().single();
+      if (error) { showMsg("Audio subido pero no se pudo registrar: " + error.message); btn.disabled = false; btn.textContent = "💾 Guardar audio"; return; }
+      comentarios.push(data);
+      resetRec();
+      refreshComments(box, d);
+      showToast(transcripcion ? "🎤 Audio guardado con transcripción" : "🎤 Audio guardado (sin transcripción)");
+    }
+
+    // ---------- kit y guía de marca ----------
+    function renderKit(card, d) {
+      const c = C(d);
+      const box = card.querySelector("[data-kit-box]");
+      const sw = (label, hex) => `<button type="button" class="sw" data-copy="${esc(hex)}"><i style="background:${esc(hex)}"></i>${esc(label)}<br><b>${esc(hex)}</b></button>`;
+      box.innerHTML = `
+        <h4>Colores</h4>
+        <div class="swatches">${sw("Fondo", c.icono_fondo)}${sw("Tinta", c.icono_tinta)}${sw("Acento", c.acento)}${sw("Error", c.error)}${sw("Acierto", c.acierto)}</div>
+        <h4>Tipografía</h4>
+        <p class="helper" style="margin:0">Poppins para la app, la web y los Reels (Google Fonts, licencia libre OFL). El logo va en trazados: no necesita tipografía instalada.</p>
+        <h4>Así se ve en una pestaña del navegador</h4>
+        <div style="background:#e9e7e1;border-radius:10px;padding:8px 8px 0"><span class="tab-mock">${icon(d, "", true)}Ortografía10</span></div>
+        <h4>Descargas</h4>
+        <div class="dl">
+          <button type="button" data-png="full:1024">Icono tiendas 1024 PNG</button>
+          <button type="button" data-png="sq:512">Icono redondeado 512 PNG</button>
+          <button type="button" data-png="ci:512">Avatar círculo 512 PNG</button>
+          <button type="button" data-png="sq:180">Apple touch 180 PNG</button>
+          <button type="button" data-png="fav:32">Favicon 32 PNG</button>
+          <button type="button" data-png="wm:1600">Nombre PNG</button>
+          <button type="button" data-png="peg:1500">Pegatina PNG</button>
+          <button type="button" data-svg="peg">Pegatina SVG</button>
+          <button type="button" data-svg="sq">Icono SVG</button>
+          <button type="button" data-svg="wm">Nombre SVG</button>
+          <button type="button" data-tokens>Copiar tokens CSS</button>
+        </div>
+        <p class="helper">El icono de tiendas va a sangre y sin esquinas (App Store y Google Play las recortan). La pegatina en SVG es vectorial: vale para imprenta o imán de coche a cualquier tamaño.</p>`;
+      box.querySelectorAll("[data-copy]").forEach((b) => b.onclick = () => copy(b.dataset.copy, "Color copiado"));
+      box.querySelectorAll("[data-png]").forEach((b) => b.onclick = () => { const [k, s] = b.dataset.png.split(":"); exportPng(d, k, +s); });
+      box.querySelectorAll("[data-svg]").forEach((b) => b.onclick = () => exportSvg(d, b.dataset.svg));
+      box.querySelector("[data-tokens]").onclick = () => copy(`:root {\n  --o10-fondo: ${c.icono_fondo};\n  --o10-tinta: ${c.icono_tinta};\n  --o10-acento: ${c.acento};\n  --o10-error: ${c.error};\n  --o10-acierto: ${c.acierto};\n  --o10-fuente: "Poppins", system-ui, sans-serif;\n}\n/* Ortografía10, logo nº ${d.numero}: ${d.titulo} */`, "Tokens copiados");
+    }
+    async function copy(t, msg) { try { await navigator.clipboard.writeText(t); showToast("📋 " + msg); } catch { prompt("Copia:", t); } }
+
+    // SVG autónomo: los logos son trazados, así que basta con resolver los
+    // colores (tinta, acento, fondo) y, en los iconos, poner el fondo.
+    function resolved(src, ink, acento, fondo) {
+      return safeSvg(src).replace(/(fill|stroke)="currentColor"/g, `$1="${ink}"`)
+        .replace(/class="acento"/g, `fill="${acento}"`).replace(/class="acento-trazo"/g, `stroke="${acento}"`)
+        .replace(/class="fondo"/g, `fill="${fondo}"`).replace(/class="fondo-trazo"/g, `stroke="${fondo}"`);
+    }
+    const inner = (svg) => svg.replace(/^[\s\S]*?<svg[^>]*>/, "").replace(/<\/svg>\s*$/, "");
+    // kind: sq (redondeado) · full (a sangre) · ci (círculo) · fav · herm · wm · peg
+    function standaloneSvg(d, kind) {
+      const c = C(d);
+      let text;
+      if (kind === "peg") text = safeSvg(d.svg_pegatina);
+      else if (kind === "wm") text = resolved(d.svg_wordmark, c.wordmark, c.acento, c.wordmark_fondo);
+      else {
+        const src = kind === "fav" ? (d.svg_favicon || d.svg_marca) : kind === "herm" ? d.svg_hermano : d.svg_marca;
+        const bg = kind === "ci" ? `<circle cx="50" cy="50" r="50" fill="${c.icono_fondo}"/>` : `<rect width="100" height="100" rx="${kind === "full" ? 0 : 22}" fill="${c.icono_fondo}"/>`;
+        text = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">${bg}${inner(resolved(src, c.icono_tinta, c.acento, c.icono_fondo))}</svg>`;
+      }
+      const vb = ((text.match(/viewBox="([^"]*)"/) || [])[1] || "0 0 100 100").split(/[\s,]+/).map(Number);
+      return { text, ratio: vb[2] / vb[3] };
+    }
+    async function svgImage(text, w, h) {
+      const img = new Image();
+      img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(text.replace("<svg ", `<svg width="${w}" height="${h}" `));
+      await img.decode();
+      return img;
+    }
+    function download(blob, name) { const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 2000); }
+    const KIND_NAME = { wm: "nombre", fav: "favicon", ci: "avatar", peg: "pegatina", full: "icono-tiendas", sq: "icono" };
+    function exportSvg(d, kind) {
+      download(new Blob([standaloneSvg(d, kind).text], { type: "image/svg+xml" }), `ortografia10-${d.numero}-${KIND_NAME[kind]}.svg`);
+    }
+    async function exportPng(d, kind, size) {
+      try {
+        const { text, ratio } = standaloneSvg(d, kind);
+        const cv = document.createElement("canvas");
+        cv.width = size; cv.height = Math.round(size / ratio);
+        cv.getContext("2d").drawImage(await svgImage(text, cv.width, cv.height), 0, 0, cv.width, cv.height);
+        cv.toBlob((b) => download(b, `ortografia10-${d.numero}-${KIND_NAME[kind]}-${size}.png`), "image/png");
+      } catch (e) { showMsg("No se pudo exportar: " + e.message); }
+    }
+
+    // ---------- A4 para imprimir (PDF de una página) ----------
+    // Se dibuja en un lienzo a 200 ppp y se mete como JPEG en un PDF mínimo.
+    async function a4Canvas(d) {
+      const c = C(d), K = 2339 / 297, mm = (v) => Math.round(v * K);
+      const cv = document.createElement("canvas"); cv.width = 1654; cv.height = 2339;
+      const g = cv.getContext("2d");
+      g.fillStyle = "#fff"; g.fillRect(0, 0, cv.width, cv.height);
+      const text = (t, x, y, size, weight = 500, color = "#141413", align = "left") => { g.font = `${weight} ${mm(size)}px Poppins, sans-serif`; g.fillStyle = color; g.textAlign = align; g.textBaseline = "alphabetic"; g.fillText(t, mm(x), mm(y)); };
+      const label = (t, x, y) => text(t, x, y, 2.9, 500, "#6b6a66");
+      const draw = async (kind, x, y, w) => { const { text: t, ratio } = standaloneSvg(d, kind); const h = w / ratio; g.drawImage(await svgImage(t, mm(w), mm(h)), mm(x), mm(y), mm(w), mm(h)); return h; };
+      const rr = (x, y, w, h, r, fill, stroke) => { g.beginPath(); g.roundRect(mm(x), mm(y), mm(w), mm(h), mm(r)); if (fill) { g.fillStyle = fill; g.fill(); } if (stroke) { g.strokeStyle = stroke; g.lineWidth = mm(0.25); g.stroke(); } };
+      const claro = (hex) => lum(hex) > 225;
+
+      // cabecera
+      text("Ortografía10", 15, 21, 6.2, 800);
+      text(`propuesta nº ${d.numero}`, 15 + g.measureText("Ortografía10 ").width / K + 1, 21, 6.2, 400, "#6b6a66");
+      text("ortografia10.com", 195, 21, 3.4, 600, "#6b6a66", "right");
+      text(d.titulo, 15, 28.5, 3.6, 500, "#3b3a37");
+      g.fillStyle = "#141413"; g.fillRect(mm(15), mm(32), mm(180), mm(0.35));
+
+      // fila 1: icono de tiendas, avatar, favicon, hermano
+      let y = 40;
+      await draw("sq", 15, y, 62); if (claro(c.icono_fondo)) rr(15, y, 62, 62, 13.6, null, "#d8d6cf");
+      label("Icono de App Store y Google Play", 15, y + 68);
+      await draw("ci", 88, y, 46); if (claro(c.icono_fondo)) { g.beginPath(); g.arc(mm(111), mm(y + 23), mm(23), 0, 7); g.strokeStyle = "#d8d6cf"; g.lineWidth = mm(0.25); g.stroke(); }
+      label("Avatar: LinkedIn, Instagram, YouTube", 88, y + 52);
+      await draw("fav", 147, y, 16); await draw("fav", 167, y + 8, 8); await draw("fav", 179, y + 11.5, 4.5);
+      label("Favicon (pestaña del navegador)", 147, y + 22);
+      if (d.svg_hermano) { await draw("herm", 147, y + 30, 24); label("Serie 10: el hermano Mates10", 147, y + 60); }
+
+      // fila 2: el nombre
+      y = 118;
+      rr(15, y, 180, 38, 4, c.wordmark_fondo, claro(c.wordmark_fondo) ? "#d8d6cf" : null);
+      { const { text: t, ratio } = standaloneSvg(d, "wm"); let h = 15, w = h * ratio; if (w > 150) { w = 150; h = w / ratio; } g.drawImage(await svgImage(t, mm(w), mm(h)), mm(105 - w / 2), mm(y + 19 - h / 2), mm(w), mm(h)); }
+      label("Nombre: «Ortografía10», siempre junto y con tilde en la í", 15, y + 44);
+
+      // fila 3: pegatina a tamaño real + fotogramas de Reel
+      y = 166;
+      rr(15, y, 92, 98, 4, "#eceae4");
+      if (d.svg_pegatina) { const { ratio } = standaloneSvg(d, "peg"); const w = ratio > 0.9 ? 80 : 70, h = w / ratio; g.save(); g.shadowColor = "rgba(0,0,0,.28)"; g.shadowBlur = mm(1.6); g.shadowOffsetY = mm(0.6); await draw("peg", 61 - w / 2, y + 49 - h / 2, w); g.restore(); }
+      label("Pegatina o imán de coche, a tamaño real (recortable)", 15, y + 103.5);
+      const reelFrame = async (x, fin) => {
+        const w = 40, h = 71;
+        g.save(); g.beginPath(); g.roundRect(mm(x), mm(y), mm(w), mm(h), mm(3)); g.clip();
+        g.fillStyle = c.wordmark_fondo; g.fillRect(mm(x), mm(y), mm(w), mm(h));
+        const { text: t, ratio } = standaloneSvg(d, "wm");
+        if (fin) {
+          const ww = 30, hh = ww / ratio; g.drawImage(await svgImage(t, mm(ww), mm(hh)), mm(x + 5), mm(y + 30 - hh / 2), mm(ww), mm(hh));
+          text("Mañana, otra regla.", x + w / 2, y + 40, 2.3, 500, c.wordmark, "center");
+          rr(x + 12, y + 45, 16, 5, 2.5, c.acento === c.wordmark ? c.error : c.acento); text("Descárgala", x + w / 2, y + 48.5, 2, 700, c.wordmark_fondo, "center");
+        } else {
+          const hh = 3.4, ww = hh * ratio; g.drawImage(await svgImage(t, mm(ww), mm(hh)), mm(x + w / 2 - ww / 2), mm(y + 8), mm(ww), mm(hh));
+          rr(x + 11.5, y + 16, 17, 4.6, 2.3, c.error); text("¡Aquí está!", x + w / 2, y + 19.2, 2, 700, "#ffffff", "center");
+          text("Ayer conduje", x + w / 2, y + 30, 3.6, 700, c.wordmark, "center");
+          g.font = `700 ${mm(3.6)}px Poppins, sans-serif`;
+          const a = "mi cami", b = "on", z = ".", wa = g.measureText(a).width, wb = g.measureText(b).width, wz = g.measureText(z).width;
+          let px = mm(x + w / 2) - (wa + wb + wz) / 2; g.textAlign = "left";
+          g.fillStyle = c.wordmark; g.fillText(a, px, mm(y + 35.5)); px += wa;
+          g.fillStyle = c.acento === c.wordmark ? c.error : c.acento; g.fillText(b, px, mm(y + 35.5)); px += wb;
+          g.fillStyle = c.wordmark; g.fillText(z, px, mm(y + 35.5));
+        }
+        g.restore();
+        if (claro(c.wordmark_fondo)) rr(x, y, w, h, 3, null, "#d8d6cf");
+      };
+      await reelFrame(113, false); await reelFrame(155, true);
+      label("En un Reel o Short: el ejercicio y el cierre", 113, y + 77);
+      // paleta
+      const pal = [["Fondo", c.icono_fondo], ["Tinta", c.icono_tinta], ["Acento", c.acento], ["Error", c.error], ["Acierto", c.acierto]];
+      pal.forEach(([n, hex], i) => { const x = 113 + i * 16.6; rr(x, y + 84, 14.6, 12, 2, hex, claro(hex) ? "#d8d6cf" : null); text(n, x, y + 100.5, 2.3, 600); text(hex.toUpperCase(), x, y + 104, 2.1, 400, "#6b6a66"); });
+
+      // pie: el concepto
+      g.fillStyle = "#141413"; g.fillRect(mm(15), mm(275), mm(180), mm(0.2));
+      if (d.concepto) {
+        g.font = `400 ${mm(3)}px Poppins, sans-serif`; g.fillStyle = "#3b3a37"; g.textAlign = "left";
+        const words = d.concepto.split(" "); let line = "", ly = 281.5;
+        for (const w of words) { if (g.measureText(line + w).width > mm(180)) { g.fillText(line, mm(15), mm(ly)); line = ""; ly += 4.4; } line += w + " "; }
+        g.fillText(line, mm(15), mm(ly));
+      }
+      return cv;
+    }
+    function jpegPdf(jpeg, w, h) {
+      const enc = new TextEncoder(), parts = [], offs = [];
+      let len = 0;
+      const push = (x) => { const b = typeof x === "string" ? enc.encode(x) : x; parts.push(b); len += b.length; };
+      const obj = (n, body, stream) => { offs[n] = len; push(`${n} 0 obj\n${body}\n`); if (stream) { push("stream\n"); push(stream); push("\nendstream\n"); } push("endobj\n"); };
+      push("%PDF-1.4\n%âãÏÓ\n");
+      const content = "q 595.28 0 0 841.89 0 0 cm /Im0 Do Q";
+      obj(1, "<< /Type /Catalog /Pages 2 0 R >>");
+      obj(2, "<< /Type /Pages /Kids [3 0 R] /Count 1 >>");
+      obj(3, "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Resources << /XObject << /Im0 4 0 R >> >> /Contents 5 0 R >>");
+      obj(4, `<< /Type /XObject /Subtype /Image /Width ${w} /Height ${h} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${jpeg.length} >>`, jpeg);
+      obj(5, `<< /Length ${content.length} >>`, content);
+      const xref = len;
+      push("xref\n0 6\n0000000000 65535 f \n" + [1, 2, 3, 4, 5].map((n) => String(offs[n]).padStart(10, "0") + " 00000 n \n").join(""));
+      push(`trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF\n`);
+      return new Blob(parts, { type: "application/pdf" });
+    }
+    async function exportA4(d, btn) {
+      const old = btn.textContent; btn.disabled = true; btn.textContent = "Preparando el A4…";
+      try {
+        const cv = await a4Canvas(d);
+        const bin = atob(cv.toDataURL("image/jpeg", 0.93).split(",")[1]);
+        const u8 = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i);
+        download(jpegPdf(u8, cv.width, cv.height), `ortografia10-propuesta-${d.numero}-A4.pdf`);
+        showToast(`⬇️ A4 del nº ${d.numero} descargado`);
+      } catch (e) { showMsg("No se pudo preparar el A4: " + e.message); }
+      finally { btn.disabled = false; btn.textContent = old; }
+    }
+
+    // ---------- vistas ----------
+    function openDetail(id) { resetRec(); stopDictate(); state.detail = id; render(); window.scrollTo(0, 0); }
+    function render() { renderView(); fitSvgs(el("view")); }
+    function renderView() {
+      counts();
+      document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("active", !state.detail && t.dataset.tab === state.tab));
+      const view = el("view");
+      if (state.detail) {
+        const d = byId(state.detail);
+        if (!d) { state.detail = null; return renderView(); }
+        view.innerHTML = `<span class="back" id="back">← Volver</span>${cardHTML(d)}`;
+        el("back").onclick = () => { resetRec(); state.detail = null; render(); };
+        wireCard(view.querySelector(".card"));
+        return;
+      }
+      const list = inTab(state.tab);
+      if (state.tab === "todos") {
+        view.innerHTML = list.length ? `<p class="eyebrow">Todos los diseños, del más nuevo al más antiguo. Toca uno para verlo entero.</p><div class="grid">${list.map((d) => `
+          <button type="button" class="g-item ${["no_gusta", "versionado", "retirado"].includes(d.decision) ? "dim" : ""}" data-go="${d.id}">${icon(d, "")}
+            <div class="cap"><b>${d.numero}</b>${d.decision ? `<span>${DECISION_LABEL[d.decision].split(" ")[0]}</span>` : ""}</div></button>`).join("")}</div>` : emptyHTML();
+        view.querySelectorAll("[data-go]").forEach((b) => b.onclick = () => openDetail(b.dataset.go));
+        return;
+      }
+      const intro = {
+        pendiente: "De uno en uno: di si te gusta o no y pasa al siguiente. Coméntalo (texto o voz) y la rutina hará versiones nuevas con lo que digas.",
+        gusta: "Los que te gustan. La rutina los usa como dirección para las propuestas nuevas.",
+        definitivo: "Los definitivos. Abre «Kit y guía de marca» para descargar iconos, favicon y colores.",
+        revisar: "En cola para otra versión: la rutina los rehace con tus comentarios en unos minutos.",
+        no_gusta: "Descartados. La rutina evita lo que tienen en común.",
+      }[state.tab];
+      const general = state.tab === "pendiente" ? `<details class="general card-like" id="general"><summary>💡 Pide algo general (no sobre una tarjeta concreta)</summary><div class="panel" data-comment-box style="background:none;padding:0"></div></details>` : "";
+      const learned = state.tab === "pendiente" && prefs && (prefs.gusta || prefs.no_gusta || prefs.explorando) ? `<details class="general"><summary>🧠 Lo que he aprendido de tus gustos</summary><div class="prefs">
+          ${prefs.gusta ? `<p><b>Te gusta:</b> ${esc(prefs.gusta)}</p>` : ""}
+          ${prefs.no_gusta ? `<p><b>No te gusta:</b> ${esc(prefs.no_gusta)}</p>` : ""}
+          ${prefs.explorando ? `<p><b>Explorando ahora:</b> ${esc(prefs.explorando)}</p>` : ""}
+          <p class="helper">Actualizado ${prefs.actualizado_en ? ago(prefs.actualizado_en) : ""}. Si algo no es así, dilo en «Pide algo general».</p></div></details>` : "";
+      // Por decidir va de uno en uno: decides (o pasas) y sale el siguiente.
+      const uno = state.tab === "pendiente" && list.length;
+      if (uno) state.idx = Math.max(0, Math.min(state.idx || 0, list.length - 1));
+      const paso = uno ? `<div class="paso"><button type="button" id="prev" ${state.idx ? "" : "disabled"}>←</button><span>${state.idx + 1} de ${list.length} por decidir</span><button type="button" class="primary" id="next" ${state.idx < list.length - 1 ? "" : "disabled"}>Siguiente →</button></div>` : "";
+      view.innerHTML = learned + general + `<p class="eyebrow">${intro}</p>` + paso + (list.length ? (uno ? cardHTML(list[state.idx]) : list.map(cardHTML).join("")) : emptyHTML());
+      view.querySelectorAll(".card").forEach(wireCard);
+      if (uno) {
+        const go = (n) => { resetRec(); stopDictate(); state.idx += n; render(); window.scrollTo(0, 0); };
+        el("prev").onclick = () => go(-1); el("next").onclick = () => go(1);
+        const card = view.querySelector(".card");
+        card.querySelector('[data-panel="coment"]').open = true;
+      }
+      const g = el("general");
+      if (g) g.addEventListener("toggle", () => { if (g.open) renderCommentBox(g, null); });
+    }
+    function emptyHTML() {
+      return `<div class="empty"><div class="big">${state.tab === "pendiente" ? "✅" : "📭"}</div><div>${state.tab === "pendiente" ? "No queda nada por decidir." : "Nada por aquí todavía."}</div><p class="helper">${state.tab === "pendiente" ? "Comenta alguno o pide algo general y la rutina te traerá propuestas nuevas." : ""}</p></div>`;
+    }
+
+    // ---------- utilidades ----------
+    function showMsg(t) { el("msg").textContent = t; }
+    function showToast(t, undo) {
+      el("toast-text").textContent = t;
+      const u = el("toast-undo");
+      u.textContent = undo ? "Deshacer" : "";
+      u.onclick = undo ? () => { hideToast(); undo(); } : null;
+      el("toast").classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(hideToast, 5000);
+    }
+    function hideToast() { el("toast").classList.remove("show"); }
+
+    async function refresh(btn) {
+      btn && btn.classList.add("spin");
+      try { await load(); showMsg(""); render(); }
+      catch (err) { showMsg("Sin conexión con Supabase: " + (err.message || err)); }
+      finally { btn && btn.classList.remove("spin"); }
+    }
+
+    async function init() {
+      document.querySelectorAll(".tab").forEach((t) => t.addEventListener("click", () => { resetRec(); stopDictate(); state.tab = t.dataset.tab; state.detail = null; render(); window.scrollTo(0, 0); }));
+      el("btn-refresh").addEventListener("click", (e) => refresh(e.currentTarget));
+      if (!url || !anonKey) { showMsg("Faltan credenciales en config.js"); return; }
+      client = supabase.createClient(url, anonKey);
+      // las marcas se miden con la fuente ya cargada (si no, el encaje sale mal)
+      try { await Promise.all(["500", "600", "700", "800", "900", "italic 700", "italic 800", "italic 900"].map((v) => document.fonts.load(`${v.includes("italic") ? v : "normal " + v} 40px Poppins`, "Ortografía10"))); } catch {}
+      await refresh(null);
+      const m = location.hash.match(/^#(\d+)$/);
+      if (m) { const d = disenos.find((x) => x.numero === +m[1]); if (d) openDetail(d.id); }
+    }
+    init();
+
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+    }
+  </script>
+</body>
+</html>
