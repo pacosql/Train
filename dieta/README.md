@@ -1,0 +1,53 @@
+# 🥗 Dieta — ¿voy en verde?
+
+App mínima para saber si Paco va bien hacia **perder 1 kg por semana**
+(empezando el lunes 16/11/2026 con 104,4 kg, con 2.500 kcal fijas el
+sábado y el domingo).
+
+URL: `https://pacosql.github.io/Train/dieta/`
+
+## Pantallas
+
+- **🚦 Resumen**: dos semáforos — *Peso* (media de las 3 últimas pesadas
+  vs la línea de −1 kg/semana: verde ≤ +0,3 kg, ámbar ≤ +1 kg, rojo más)
+  y *Calorías semana* (déficit acumulado de los días cerrados vs el que
+  tocaba). Además: kcal que te quedan hoy, tabla de la semana, gráfico
+  de peso y **lo que gastas en reposo** (basal Mifflin-St Jeor por día y
+  por semana, y con vida diaria sin deporte).
+- **🍽️ Comida**: elige el momento (se preselecciona por la hora) y toca
+  comidas rápidas con kcal ya conocidas, o haz **fotos / dicta / escribe**
+  y queda ⏳ pendiente hasta que la rutina lo calcula.
+- **🎾 Ejercicio**: deporte + minutos (kcal por MET netos y tu peso), o
+  **pantallazo de la pulsera** / texto → pendiente para la rutina.
+- **⚖️ Peso**: número a mano o **foto de la báscula** (la rutina la lee).
+- **⚙️ Ajustes**: peso y fecha de inicio, kg/semana, kcal de finde, sexo,
+  edad, altura y nivel de actividad.
+
+## Cálculo
+
+- Gasto diario = basal × factor de vida diaria (1,2 sedentaria).
+- Déficit semanal = 7.700 kcal × kg/semana.
+- Plan laborable = (gasto×7 − déficit − 2×kcal finde) / 5. El ejercicio
+  apuntado se **suma** al presupuesto de ese día.
+
+## Tablas (prefijo `dieta_`)
+
+| Tabla | Para qué |
+|---|---|
+| `dieta_ajustes` | una fila (`id=1`) con objetivo y datos personales |
+| `dieta_pesos` | `fecha`, `kg` (null si es foto pendiente), `foto`, `estado`, `detalle` |
+| `dieta_comidas` | `fecha`, `momento`, `texto`, `origen` (rapida/texto/voz/foto), `fotos[]`, `kcal`, `detalle`, `estado` |
+| `dieta_ejercicios` | `fecha`, `texto`, `minutos`, `fotos[]`, `kcal`, `detalle`, `estado` |
+| `dieta_rutinas` | log de cada pasada de la rutina |
+
+`estado`: `pendiente` · `procesado`. Nada se borra: la app marca
+`borrado = true`. Fotos en el bucket público `dieta-fotos`
+(anon puede subir y leer). RLS: anon lee, inserta y actualiza.
+
+## Rutina de calorías
+
+Una tarea programada de Claude Code se ejecuta **cada hora** en sesión
+nueva y sigue [`RUTINA.md`](./RUTINA.md): si hay registros pendientes,
+mira las fotos y textos, calcula kcal (o lee el peso de la báscula) y
+los escribe; si no hay nada, solo deja constancia en `dieta_rutinas`.
+Usa la suscripción de Claude, no la API de pago.
