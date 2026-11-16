@@ -83,6 +83,14 @@ cambiar la app.
 7. Si la sugerencia es un **dato** (p. ej. "la naranja que tomo pesa
    menos"), corrige los datos en vez del código.
 
+## Lo que ya sabemos de Paco (actualiza esta lista)
+
+- **Su café**: 115 g de leche desnatada Mercadona (34 kcal/100 ml) →
+  **40 kcal** por café. Toma varios al día.
+- **Carne**: le quita la grasa visible (borde y vetas). Calcula solo la
+  parte magra; si pesa la bandeja en la báscula, descuenta ~8 g.
+- Pesa la comida en una báscula de cocina: usa el número de la foto.
+
 ## Qué NO hacer
 
 - No borres nada ni toques filas `procesado` (salvo corregir una propia
