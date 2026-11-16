@@ -98,7 +98,7 @@
 </head>
 <body>
 <div class="wrap">
-  <h1><span>⚡ Power</span><button id="btn-refresh" title="Recargar">↻</button></h1>
+  <h1><span>⚡ Power</span><span class="row"><button id="btn-refresh" title="Recargar">↻</button><button data-v="feedback" title="Opinar sobre la app" style="font-weight:800">⋯</button></span></h1>
 
   <!-- ===================== RESUMEN ===================== -->
   <section class="view act" id="v-resumen">
@@ -189,6 +189,21 @@
   </section>
 
   <!-- ===================== AJUSTES ===================== -->
+  <section class="view" id="v-feedback">
+    <div class="card">
+      <h2>💬 ¿Qué te gusta y qué no de la app?</h2>
+      <div class="muted small">Habla, escribe o sube capturas de pantalla. En la siguiente pasada (cada hora) Claude lo lee, cambia la app y te deja aquí la respuesta.</div>
+      <textarea id="f-texto" placeholder="Ej: el botón del café debería salir el primero; no me gusta el gráfico…"></textarea>
+      <div class="row" style="margin-top:8px">
+        <button id="f-mic" class="grow">🎤 Hablar</button>
+        <label class="btn grow" style="text-align:center">🖼️ Capturas<input id="f-fotos" type="file" accept="image/*" multiple hidden /></label>
+      </div>
+      <div class="preview" id="f-prev"></div>
+      <button class="primary" id="f-guardar" style="width:100%;margin-top:8px">Enviar</button>
+    </div>
+    <div class="card"><h2>Lo que has pedido</h2><div id="f-lista"></div></div>
+  </section>
+
   <section class="view" id="v-ajustes">
     <div class="card">
       <h2>🎯 Objetivo</h2>
@@ -249,22 +264,24 @@
     return s === t ? `Hoy · ${base}` : s === addDays(t, -1) ? `Ayer · ${base}` : base; };
 
   // ---------- datos ----------
+  let feedback = [];
   let A = null, pesos = [], comidas = [], ejercicios = [], rutinas = [];
   let dia = iso(new Date());
   let momento = momentoActual();
 
   async function cargar() {
     const desde = addDays(iso(new Date()), -120);
-    const [a, p, c, e, r] = await Promise.all([
+    const [a, p, c, e, r, f] = await Promise.all([
       sb.from(T("ajustes")).select("*").eq("id", 1).single(),
       sb.from(T("pesos")).select("*").eq("borrado", false).order("fecha").order("created_at"),
       sb.from(T("comidas")).select("*").eq("borrado", false).gte("fecha", desde).order("created_at"),
       sb.from(T("ejercicios")).select("*").eq("borrado", false).gte("fecha", desde).order("created_at"),
       sb.from(T("rutinas")).select("*").order("ejecutada_en", { ascending: false }).limit(1),
+      sb.from(T("feedback")).select("*").eq("borrado", false).order("created_at", { ascending: false }).limit(50),
     ]);
-    const err = [a, p, c, e, r].find((x) => x.error);
+    const err = [a, p, c, e, r, f].find((x) => x.error);
     if (err) { toast("Error cargando: " + err.error.message); return; }
-    A = a.data; pesos = p.data; comidas = c.data; ejercicios = e.data; rutinas = r.data;
+    A = a.data; pesos = p.data; comidas = c.data; ejercicios = e.data; rutinas = r.data; feedback = f.data;
     render();
   }
 
@@ -333,7 +350,7 @@
   // ---------- render ----------
   function render() {
     if (!A) return;
-    renderResumen(); renderComida(); renderEjercicio(); renderPeso(); renderAjustes();
+    renderResumen(); renderComida(); renderEjercicio(); renderPeso(); renderAjustes(); renderFeedback();
   }
 
   function setLight(id, cls, v, d) {
@@ -584,7 +601,16 @@
     }
     return paths;
   }
-  const seleccion = { c: [], e: [] };
+  const seleccion = { c: [], e: [], f: [] };
+  function renderFeedback() {
+    const ES = { pendiente: "⏳ Pendiente", hecho: "✅ Hecho", no: "💬 Respondido" };
+    $("f-lista").innerHTML = feedback.length ? feedback.map((x) => `<div class="item"><div class="grow">
+      <div class="small muted">${new Date(x.created_at).toLocaleString("es-ES", { day: "numeric", month: "numeric", hour: "2-digit", minute: "2-digit" })} · <b>${ES[x.estado] || x.estado}</b></div>
+      ${esc(x.texto || "")}
+      ${x.fotos.length ? `<div class="thumbs">${x.fotos.map((p) => `<a href="${fotoUrl(p)}" target="_blank"><img src="${fotoUrl(p)}" loading="lazy"/></a>`).join("")}</div>` : ""}
+      ${x.respuesta ? `<div class="small" style="margin-top:4px;color:var(--green)">🤖 ${esc(x.respuesta)}</div>` : ""}</div>
+      ${x.estado === "pendiente" ? `<button class="x" data-del="feedback:${x.id}">✕</button>` : ""}</div>`).join("") : `<div class="muted">Nada todavía.</div>`;
+  }
   function preview(k) {
     $(k + "-prev").innerHTML = seleccion[k].map((f) => `<img src="${URL.createObjectURL(f)}"/>`).join("");
   }
@@ -635,6 +661,7 @@
     if (tabla === "comidas") comidas = comidas.filter((x) => x.id !== id);
     if (tabla === "ejercicios") ejercicios = ejercicios.filter((x) => x.id !== id);
     if (tabla === "pesos") pesos = pesos.filter((x) => x.id !== id);
+    if (tabla === "feedback") feedback = feedback.filter((x) => x.id !== id);
     render();
   }
 
@@ -662,6 +689,21 @@
     if (t.closest("#toast")) return;
   });
   $("btn-refresh").onclick = cargar;
+  $("f-mic").onclick = () => dictar($("f-mic"), $("f-texto"));
+  $("f-fotos").onchange = (e) => { seleccion.f.push(...e.target.files); e.target.value = ""; preview("f"); };
+  $("f-guardar").onclick = async () => {
+    const texto = $("f-texto").value.trim(), files = seleccion.f;
+    if (!texto && !files.length) { toast("Escribe, dicta o sube una captura"); return; }
+    const btn = $("f-guardar"); btn.disabled = true; btn.textContent = "Enviando…";
+    try {
+      const fotos = files.length ? await subir(files, "feedback") : [];
+      const r = await sb.from(T("feedback")).insert({ texto: texto || null, fotos }).select().single();
+      if (r.error) throw r.error;
+      feedback.unshift(r.data); $("f-texto").value = ""; seleccion.f = []; preview("f");
+      toast("Enviado ✓ se aplicará en la próxima pasada"); renderFeedback();
+    } catch (e) { toast("Error: " + (e.message || e)); }
+    btn.disabled = false; btn.textContent = "Enviar";
+  };
   $("c-mic").onclick = () => dictar($("c-mic"), $("c-texto"));
   $("e-mic").onclick = () => dictar($("e-mic"), $("e-texto"));
   $("c-fotos").onchange = (e) => { seleccion.c.push(...e.target.files); e.target.value = ""; preview("c"); };

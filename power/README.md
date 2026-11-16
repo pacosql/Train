@@ -20,6 +20,8 @@ URL: `https://pacosql.github.io/Train/power/`
 - **🎾 Ejercicio**: deporte + minutos (kcal por MET netos y tu peso), o
   **pantallazo de la pulsera** / texto → pendiente para la rutina.
 - **⚖️ Peso**: número a mano o **foto de la báscula** (la rutina la lee).
+- **⋯ Opinar** (arriba a la derecha): texto, dictado o capturas sobre qué
+  te gusta y qué no; la rutina lo aplica a la app y responde ahí mismo.
 - **⚙️ Ajustes**: peso y fecha de inicio, kg/semana, kcal de finde, sexo,
   edad, altura y nivel de actividad.
 
@@ -39,6 +41,7 @@ URL: `https://pacosql.github.io/Train/power/`
 | `power_comidas` | `fecha`, `momento`, `texto`, `origen` (rapida/texto/voz/foto), `fotos[]`, `kcal`, `detalle`, `estado` |
 | `power_ejercicios` | `fecha`, `texto`, `minutos`, `fotos[]`, `kcal`, `detalle`, `estado` |
 | `power_rutinas` | log de cada pasada de la rutina |
+| `power_feedback` | sugerencias sobre la app: `texto`, `fotos[]`, `estado` (pendiente/hecho/no), `respuesta`, `atendido_en` |
 
 `estado`: `pendiente` · `procesado`. Nada se borra: la app marca
 `borrado = true`. Fotos en el bucket público `power-fotos`
