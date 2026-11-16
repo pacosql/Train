@@ -1,10 +1,10 @@
-# 🥗 Dieta — ¿voy en verde?
+# ⚡ Power — ¿voy en verde?
 
 App mínima para saber si Paco va bien hacia **perder 1 kg por semana**
 (empezando el lunes 16/11/2026 con 104,4 kg, con 2.500 kcal fijas el
 sábado y el domingo).
 
-URL: `https://pacosql.github.io/Train/dieta/`
+URL: `https://pacosql.github.io/Train/power/`
 
 ## Pantallas
 
@@ -30,18 +30,18 @@ URL: `https://pacosql.github.io/Train/dieta/`
 - Plan laborable = (gasto×7 − déficit − 2×kcal finde) / 5. El ejercicio
   apuntado se **suma** al presupuesto de ese día.
 
-## Tablas (prefijo `dieta_`)
+## Tablas (prefijo `power_`)
 
 | Tabla | Para qué |
 |---|---|
-| `dieta_ajustes` | una fila (`id=1`) con objetivo y datos personales |
-| `dieta_pesos` | `fecha`, `kg` (null si es foto pendiente), `foto`, `estado`, `detalle` |
-| `dieta_comidas` | `fecha`, `momento`, `texto`, `origen` (rapida/texto/voz/foto), `fotos[]`, `kcal`, `detalle`, `estado` |
-| `dieta_ejercicios` | `fecha`, `texto`, `minutos`, `fotos[]`, `kcal`, `detalle`, `estado` |
-| `dieta_rutinas` | log de cada pasada de la rutina |
+| `power_ajustes` | una fila (`id=1`) con objetivo y datos personales |
+| `power_pesos` | `fecha`, `kg` (null si es foto pendiente), `foto`, `estado`, `detalle` |
+| `power_comidas` | `fecha`, `momento`, `texto`, `origen` (rapida/texto/voz/foto), `fotos[]`, `kcal`, `detalle`, `estado` |
+| `power_ejercicios` | `fecha`, `texto`, `minutos`, `fotos[]`, `kcal`, `detalle`, `estado` |
+| `power_rutinas` | log de cada pasada de la rutina |
 
 `estado`: `pendiente` · `procesado`. Nada se borra: la app marca
-`borrado = true`. Fotos en el bucket público `dieta-fotos`
+`borrado = true`. Fotos en el bucket público `power-fotos`
 (anon puede subir y leer). RLS: anon lee, inserta y actualiza.
 
 ## Rutina de calorías
@@ -49,5 +49,5 @@ URL: `https://pacosql.github.io/Train/dieta/`
 Una tarea programada de Claude Code se ejecuta **cada hora** en sesión
 nueva y sigue [`RUTINA.md`](./RUTINA.md): si hay registros pendientes,
 mira las fotos y textos, calcula kcal (o lee el peso de la báscula) y
-los escribe; si no hay nada, solo deja constancia en `dieta_rutinas`.
+los escribe; si no hay nada, solo deja constancia en `power_rutinas`.
 Usa la suscripción de Claude, no la API de pago.

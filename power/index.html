@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Dieta — ¿voy en verde?</title>
+  <title>Power — ¿voy en verde?</title>
   <link rel="manifest" href="manifest.json" />
   <link rel="icon" href="icons/icon-192.png" />
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-title" content="Dieta" />
+  <meta name="apple-mobile-web-app-title" content="Power" />
   <meta name="theme-color" content="#0f1a14" />
   <style>
     :root {
@@ -84,7 +84,7 @@
 </head>
 <body>
 <div class="wrap">
-  <h1><span>🥗 Dieta</span><button id="btn-refresh" title="Recargar">↻</button></h1>
+  <h1><span>⚡ Power</span><button id="btn-refresh" title="Recargar">↻</button></h1>
 
   <!-- ===================== RESUMEN ===================== -->
   <section class="view act" id="v-resumen">
@@ -207,7 +207,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <script src="config.js"></script>
 <script>
-  const CFG = window.DIETA_CONFIG;
+  const CFG = window.POWER_CONFIG;
   const sb = supabase.createClient(CFG.url, CFG.anonKey);
   const T = (n) => CFG.tablePrefix + n;
   const $ = (id) => document.getElementById(id);

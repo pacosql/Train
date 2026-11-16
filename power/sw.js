@@ -9,8 +9,8 @@
 //
 // Este repo aloja varias apps en subcarpetas; el Cache Storage es
 // compartido por todo el origen, así que el nombre de caché lleva el
-// prefijo "dieta-" y el cleanup solo toca cachés con ese prefijo.
-const CACHE_PREFIX = "dieta-shell-";
+// prefijo "power-" y el cleanup solo toca cachés con ese prefijo.
+const CACHE_PREFIX = "power-shell-";
 const CACHE_NAME = `${CACHE_PREFIX}__BUILD_ID__`;
 const SHELL = [
   "./",
@@ -37,7 +37,7 @@ self.addEventListener("activate", (event) => {
 
 function isShell(request) {
   const u = new URL(request.url);
-  return u.origin === self.location.origin && u.pathname.includes("/dieta/");
+  return u.origin === self.location.origin && u.pathname.includes("/power/");
 }
 
 self.addEventListener("fetch", (event) => {

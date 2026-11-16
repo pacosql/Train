@@ -1,13 +1,13 @@
-# Rutina «Dieta» — calcular calorías pendientes (cada hora)
+# Rutina «Power» — calcular calorías pendientes (cada hora)
 
-App: <https://pacosql.github.io/Train/dieta/>. Paco apunta comidas, ejercicio
+App: <https://pacosql.github.io/Train/power/>. Paco apunta comidas, ejercicio
 y peso; lo que no trae kcal queda `estado = 'pendiente'` y esta rutina lo
 calcula. **Si no hay nada pendiente, registra la pasada y termina** (no
 gastes más).
 
 ```bash
 U=https://dzlhsdpgyxnjwudmrnul.supabase.co
-ANON=$(grep -o 'eyJ[^"]*' dieta/config.js)
+ANON=$(grep -o 'eyJ[^"]*' power/config.js)
 H=(-H "apikey: $ANON" -H "Authorization: Bearer $ANON")
 ```
 
@@ -15,15 +15,15 @@ H=(-H "apikey: $ANON" -H "Authorization: Bearer $ANON")
 
 1. Leer pendientes (las tres tablas):
    ```bash
-   curl -s "$U/rest/v1/dieta_comidas?estado=eq.pendiente&borrado=eq.false&order=created_at" "${H[@]}"
-   curl -s "$U/rest/v1/dieta_ejercicios?estado=eq.pendiente&borrado=eq.false&order=created_at" "${H[@]}"
-   curl -s "$U/rest/v1/dieta_pesos?estado=eq.pendiente&borrado=eq.false&order=created_at" "${H[@]}"
-   curl -s "$U/rest/v1/dieta_ajustes?id=eq.1" "${H[@]}"   # peso/edad/altura de Paco
+   curl -s "$U/rest/v1/power_comidas?estado=eq.pendiente&borrado=eq.false&order=created_at" "${H[@]}"
+   curl -s "$U/rest/v1/power_ejercicios?estado=eq.pendiente&borrado=eq.false&order=created_at" "${H[@]}"
+   curl -s "$U/rest/v1/power_pesos?estado=eq.pendiente&borrado=eq.false&order=created_at" "${H[@]}"
+   curl -s "$U/rest/v1/power_ajustes?id=eq.1" "${H[@]}"   # peso/edad/altura de Paco
    ```
    Si las tres listas están vacías → paso 5 con `procesados: 0`.
 2. Para cada fila con fotos (`fotos` en comidas/ejercicios, `foto` en pesos),
    descárgalas a un directorio temporal nuevo y **míralas de verdad** con Read:
-   `curl -s -o /tmp/dieta/x.jpg "$U/storage/v1/object/public/dieta-fotos/<path>"`.
+   `curl -s -o /tmp/power/x.jpg "$U/storage/v1/object/public/power-fotos/<path>"`.
 3. Calcular:
    - **Comidas** (`texto` + fotos, `momento`): identifica cada alimento,
      estima la ración (platos, vasos, cubiertos como referencia; en España,
@@ -40,15 +40,15 @@ H=(-H "apikey: $ANON" -H "Authorization: Bearer $ANON")
      `detalle` ("no se lee el número, vuelve a hacer la foto").
 4. Escribir cada resultado:
    ```bash
-   curl -s -X PATCH "$U/rest/v1/dieta_comidas?id=eq.<ID>" "${H[@]}" -H "Content-Type: application/json" \
+   curl -s -X PATCH "$U/rest/v1/power_comidas?id=eq.<ID>" "${H[@]}" -H "Content-Type: application/json" \
      -d '{"kcal": 160, "detalle": "Leche entera 250 ml", "estado": "procesado"}'
-   # dieta_ejercicios igual; dieta_pesos: {"kg": 104.1, "detalle": "Leído de la foto", "estado": "procesado"}
+   # power_ejercicios igual; power_pesos: {"kg": 104.1, "detalle": "Leído de la foto", "estado": "procesado"}
    ```
    Si el texto remite a otro registro (p. ej. "lo mismo que ayer en la
    cena"), busca esa fila y úsala de referencia.
 5. Registrar la pasada SIEMPRE:
    ```bash
-   curl -s -X POST "$U/rest/v1/dieta_rutinas" "${H[@]}" -H "Content-Type: application/json" \
+   curl -s -X POST "$U/rest/v1/power_rutinas" "${H[@]}" -H "Content-Type: application/json" \
      -d '{"procesados": N, "resumen": "una frase"}'
    ```
 
@@ -56,6 +56,6 @@ H=(-H "apikey: $ANON" -H "Authorization: Bearer $ANON")
 
 - No borres nada ni toques filas `procesado` (salvo corregir una propia
   si Paco lo pide en un texto nuevo).
-- No toques tablas de otras apps ni `dieta_ajustes`.
+- No toques tablas de otras apps ni `power_ajustes`.
 - No hagas commits, ni despliegues, ni toques `main`: los datos viven en
   Supabase.
