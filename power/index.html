@@ -77,6 +77,20 @@
     table.wk { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
     table.wk td, table.wk th { padding: 5px 3px; text-align: right; border-top: 1px solid var(--border); }
     table.wk td:first-child, table.wk th:first-child { text-align: left; }
+    .tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 8px; }
+    .tile { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+      padding: 10px 4px 8px; border-radius: 16px; background: var(--chip); border: 1px solid var(--border); min-height: 92px; }
+    .tile .em { font-size: 2.1rem; line-height: 1; }
+    .tile .nm { font-size: 0.74rem; text-align: center; line-height: 1.15; }
+    .tile .kc { font-size: 0.68rem; color: var(--muted); }
+    .tile .ct { position: absolute; top: 4px; right: 4px; background: var(--accent); color: #fff; border-radius: 999px; font-size: 0.7rem; font-weight: 800; padding: 1px 7px; }
+    .tile:active { transform: scale(.95); }
+    .eaten { display: flex; align-items: center; gap: 10px; padding: 7px 0; border-top: 1px solid var(--border); }
+    .eaten:first-child { border-top: 0; }
+    .eaten .em { font-size: 1.5rem; width: 32px; text-align: center; }
+    .eaten .h { font-size: 0.72rem; color: var(--muted); }
+    .addbig { width: 100%; font-size: 1.1rem; padding: 14px; margin: 4px 0 12px; }
+    .toast button { background: none; border: 0; color: #7fe0b0; font-weight: 800; padding: 0 0 0 12px; }
     .toast { position: fixed; left: 50%; bottom: 90px; transform: translateX(-50%); background: #222; color: #fff; padding: 10px 16px; border-radius: 12px; font-size: .9rem; z-index: 9; display: none; }
     .build-id { text-align: center; font-size: 0.65rem; color: var(--muted); opacity: .6; margin-top: 20px; font-family: ui-monospace, monospace; }
     svg text { fill: var(--muted); font-size: 10px; }
@@ -93,7 +107,9 @@
       <div class="light n" id="l-kcal"><div class="t">Calorías semana</div><div class="v">—</div><div class="d"></div></div>
     </div>
     <div style="height:12px"></div>
+    <button class="primary addbig" data-v="comida">＋ Añadir comida</button>
     <div class="card" id="c-hoy"></div>
+    <div class="card" id="c-comido"></div>
     <div class="card" id="c-semana"></div>
     <div class="card" id="c-grafico"><h2>📉 Peso vs objetivo</h2><div id="grafico"></div></div>
     <div class="card" id="c-gasto"></div>
@@ -103,11 +119,16 @@
   <section class="view" id="v-comida">
     <div class="daynav"><button data-dd="-1">‹</button><div class="lbl" id="dia-lbl-c"></div><button data-dd="1">›</button></div>
     <div class="card">
-      <h2>🍽️ ¿Qué has comido?</h2>
-      <div class="chips" id="momentos"></div>
-      <div class="muted small">Rápidas (se suman al momento):</div>
-      <div class="chips" id="rapidas"></div>
+      <h2>👆 Toca para sumar</h2>
+      <div class="muted small" id="sug-sub">Lo que sueles tomar a esta hora. Cada toque suma uno.</div>
+      <div class="tiles" id="tiles"></div>
+      <button id="ver-todo" style="width:100%;margin-top:8px">Ver más comidas</button>
+      <div id="todo" style="display:none">
+        <div class="chips" id="momentos"></div>
+        <div class="tiles" id="tiles-todo"></div>
+      </div>
     </div>
+    <div class="card"><h2 id="c-lista-t">Hoy</h2><div id="c-lista"></div></div>
     <div class="card">
       <h2>📸 Foto, voz o texto</h2>
       <div class="muted small">Haz una o varias fotos y/o descríbelo. La rutina de Claude calcula las calorías (⏳ hasta que pase, como mucho ~1 h).</div>
@@ -122,7 +143,6 @@
         <button class="primary" id="c-guardar">Guardar</button>
       </div>
     </div>
-    <div class="card"><h2 id="c-lista-t">Hoy</h2><div id="c-lista"></div></div>
   </section>
 
   <!-- ===================== EJERCICIO ===================== -->
@@ -372,6 +392,8 @@
       <tr><td>Ejercicio apuntado esta semana</td><td></td><td><b>${fmt(ejSemana)}</b></td></tr></table>
       <div class="muted small" style="margin-top:6px">Calculado con Mifflin-St Jeor para ${kg.toFixed(1)} kg, ${A.altura_cm} cm, ${A.edad} años (${A.sexo}). Cámbialo en ⚙️ Ajustes. 1 kg de grasa ≈ ${fmt(KCAL_KG)} kcal → para ${A.objetivo_kg_semana} kg/sem hace falta un déficit de ${fmt(P.deficitSemana)} kcal/sem.</div>`;
 
+    const hoyL = delDia(comidas, hoy);
+    $("c-comido").innerHTML = `<h2>🍽️ Hoy has comido · ${fmt(comido)} kcal</h2>` + comidoHtml(hoyL);
     renderGrafico();
   }
 
@@ -400,14 +422,89 @@
 
   // ---------- comida ----------
   const MOMENTOS = [["desayuno", "☕ Desayuno"], ["mediamanana", "🍎 Media mañana"], ["comida", "🍲 Comida"], ["merienda", "🥪 Merienda"], ["cena", "🌙 Cena"], ["picoteo", "🍺 Picoteo/bebida"]];
-  const RAPIDAS = {
-    desayuno: [["Vaso de leche semidesnatada", 115], ["Vaso de leche entera", 160], ["Café con leche", 60], ["Café solo / sacarina", 5], ["Tostada con aceite", 180], ["Tostada con tomate y aceite", 200], ["Tostada con jamón", 220], ["Yogur natural", 60], ["Zumo de naranja", 110], ["Fruta", 80], ["Cereales con leche", 260], ["Galletas (4)", 140]],
-    mediamanana: [["Fruta", 80], ["Yogur natural", 60], ["Café con leche", 60], ["Puñado frutos secos", 180], ["Barrita", 150], ["Bocadillo pequeño", 300]],
-    comida: [["Ensalada", 150], ["Lentejas / legumbre (plato)", 400], ["Pollo plancha + ensalada", 350], ["Pescado plancha + verdura", 300], ["Plato de pasta", 550], ["Paella / arroz (plato)", 550], ["Filete con patatas", 700], ["Menú del día", 950], ["Trozo de pan", 80], ["Fruta de postre", 80], ["Caña de cerveza", 140], ["Copa de vino", 120]],
-    merienda: [["Fruta", 80], ["Yogur natural", 60], ["Café con leche", 60], ["Tostada con aceite", 180], ["Puñado frutos secos", 180], ["Onza de chocolate", 50]],
-    cena: [["Tortilla francesa (2 huevos)", 200], ["Verdura + pollo", 300], ["Ensalada con atún", 300], ["Sándwich mixto", 350], ["Pizza (2 porciones)", 550], ["Hamburguesa con pan", 600], ["Yogur natural", 60], ["Fruta", 80], ["Trozo de pan", 80]],
-    picoteo: [["Caña de cerveza", 140], ["Copa de vino", 120], ["Refresco normal", 140], ["Refresco zero", 1], ["Gin tonic", 200], ["Patatas fritas (bolsa peq.)", 230], ["Aceitunas (10)", 50], ["Onza de chocolate", 50], ["Puñado frutos secos", 180], ["Galletas (4)", 140]],
-  };
+  // Catálogo con dibujito: [nombre, kcal, emoji, momentos]
+  const CATALOGO = [
+    ["Café con leche desnatada", 80, "☕", "desayuno mediamanana merienda"],
+    ["Café solo", 5, "☕", "desayuno mediamanana comida merienda"],
+    ["Vaso de leche desnatada", 85, "🥛", "desayuno merienda cena"],
+    ["Vaso de leche entera", 160, "🥛", "desayuno merienda"],
+    ["Naranja", 105, "🍊", "desayuno mediamanana merienda comida cena"],
+    ["Manzana", 80, "🍎", "mediamanana merienda comida cena"],
+    ["Plátano", 105, "🍌", "desayuno mediamanana merienda"],
+    ["Tostada con aceite", 180, "🍞", "desayuno merienda"],
+    ["Tostada con tomate y aceite", 200, "🍅", "desayuno merienda"],
+    ["Tostada con jamón", 220, "🥓", "desayuno merienda"],
+    ["Yogur natural", 60, "🥣", "desayuno mediamanana merienda cena"],
+    ["Zumo de naranja", 110, "🧃", "desayuno"],
+    ["Cereales con leche", 260, "🥣", "desayuno"],
+    ["Galletas (4)", 140, "🍪", "desayuno merienda picoteo"],
+    ["Puñado frutos secos", 180, "🥜", "mediamanana merienda picoteo"],
+    ["Barrita", 150, "🍫", "mediamanana merienda"],
+    ["Bocadillo pequeño", 300, "🥖", "mediamanana merienda"],
+    ["Ensalada", 150, "🥗", "comida cena"],
+    ["Lentejas / legumbre", 400, "🍲", "comida"],
+    ["Pollo plancha + ensalada", 350, "🍗", "comida cena"],
+    ["Pescado plancha + verdura", 300, "🐟", "comida cena"],
+    ["Plato de pasta", 550, "🍝", "comida"],
+    ["Paella / arroz", 550, "🥘", "comida"],
+    ["Filete con patatas", 700, "🥩", "comida"],
+    ["Menú del día", 950, "🍽️", "comida"],
+    ["Trozo de pan", 80, "🥖", "comida cena"],
+    ["Tortilla francesa (2 huevos)", 200, "🍳", "cena"],
+    ["Verdura + pollo", 300, "🥦", "cena"],
+    ["Ensalada con atún", 300, "🥗", "cena comida"],
+    ["Sándwich mixto", 350, "🥪", "cena merienda"],
+    ["Pizza (2 porciones)", 550, "🍕", "cena"],
+    ["Hamburguesa con pan", 600, "🍔", "cena"],
+    ["Caña de cerveza", 140, "🍺", "comida picoteo cena"],
+    ["Copa de vino", 120, "🍷", "comida picoteo cena"],
+    ["Refresco normal", 140, "🥤", "picoteo comida"],
+    ["Refresco zero", 1, "🥤", "picoteo comida"],
+    ["Gin tonic", 200, "🍸", "picoteo"],
+    ["Patatas fritas (bolsa peq.)", 230, "🍟", "picoteo"],
+    ["Aceitunas (10)", 50, "🫒", "picoteo comida"],
+    ["Onza de chocolate", 50, "🍫", "merienda picoteo"],
+  ];
+  const EMOJIS = [["caf", "☕"], ["leche", "🥛"], ["naranj", "🍊"], ["manzan", "🍎"], ["plátano", "🍌"], ["platano", "🍌"], ["tostad", "🍞"], ["pan", "🥖"],
+    ["yogur", "🥣"], ["zumo", "🧃"], ["galleta", "🍪"], ["fruto", "🥜"], ["ensalad", "🥗"], ["lenteja", "🍲"], ["garbanzo", "🍲"], ["pollo", "🍗"], ["pescado", "🐟"],
+    ["pasta", "🍝"], ["arroz", "🥘"], ["paella", "🥘"], ["filete", "🥩"], ["carne", "🥩"], ["huevo", "🍳"], ["tortilla", "🍳"], ["pizza", "🍕"], ["hamburg", "🍔"],
+    ["cerveza", "🍺"], ["vino", "🍷"], ["refresco", "🥤"], ["coca", "🥤"], ["chocolate", "🍫"], ["sándwich", "🥪"], ["bocadillo", "🥖"], ["queso", "🧀"], ["jamón", "🥓"],
+    ["fresa", "🍓"], ["uva", "🍇"], ["sandía", "🍉"], ["melón", "🍈"], ["kiwi", "🥝"], ["agua", "💧"], ["patata", "🥔"], ["verdura", "🥦"]];
+  const norm = (t) => String(t || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").trim();
+  function emojiDe(texto) {
+    const c = CATALOGO.find((x) => norm(x[0]) === norm(texto)); if (c) return c[2];
+    const t = norm(texto); const e = EMOJIS.find(([k]) => t.includes(norm(k)));
+    return e ? e[1] : "🍽️";
+  }
+  // Sugerencias: lo que has tomado otros días a esta hora (±2 h) primero, luego el catálogo del momento.
+  function sugeridos() {
+    const h = new Date().getHours(), cuenta = new Map();
+    for (const x of comidas) {
+      if (x.kcal == null || !x.texto || x.texto.length > 45) continue;
+      const hh = new Date(x.created_at).getHours();
+      if (Math.abs(hh - h) > 2) continue;
+      const k = norm(x.texto), prev = cuenta.get(k);
+      cuenta.set(k, { n: x.texto, k: x.kcal, e: emojiDe(x.texto), c: (prev ? prev.c : 0) + 1 });
+    }
+    const hist = [...cuenta.values()].sort((a, b) => b.c - a.c);
+    const vistos = new Set(hist.map((x) => norm(x.n)));
+    const cat = CATALOGO.filter((x) => x[3].includes(momento) && !vistos.has(norm(x[0]))).map(([n, k, e]) => ({ n, k, e }));
+    return hist.concat(cat).slice(0, 12);
+  }
+  let tilesActuales = [];
+  function tileHtml(it) {
+    const hoyN = delDia(comidas, dia).filter((x) => norm(x.texto) === norm(it.n)).length;
+    const i = tilesActuales.push(it) - 1;
+    return `<button class="tile" data-tile="${i}">${hoyN ? `<span class="ct">×${hoyN}</span>` : ""}<span class="em">${it.e}</span><span class="nm">${esc(it.n)}</span><span class="kc">${it.k} kcal</span></button>`;
+  }
+  function horaDe(x) { const d = new Date(x.created_at); return `${d.getHours()}:${String(d.getMinutes()).padStart(2, "0")}`; }
+  function comidoHtml(lista) {
+    if (!lista.length) return `<div class="muted">Todavía nada. Dale a ＋ Añadir comida.</div>`;
+    return lista.map((x) => `<div class="eaten"><span class="em">${x.fotos && x.fotos.length && !x.texto ? "📷" : emojiDe(x.texto)}</span>
+      <div class="grow">${esc(x.texto || "Foto")}<div class="h">${horaDe(x)}${x.detalle ? " · " + esc(x.detalle) : ""}</div></div>
+      <div class="k">${x.kcal == null ? `<span class="pend">⏳</span>` : fmt(x.kcal)}</div>
+      <button class="x" data-del="comidas:${x.id}">✕</button></div>`).join("");
+  }
   function momentoActual() {
     const h = new Date().getHours();
     return h < 11 ? "desayuno" : h < 13 ? "mediamanana" : h < 16.5 ? "comida" : h < 20 ? "merienda" : "cena";
@@ -415,14 +512,12 @@
   function renderComida() {
     $("dia-lbl-c").textContent = diaLbl(dia);
     $("momentos").innerHTML = MOMENTOS.map(([k, l]) => `<button class="chip ${k === momento ? "sel" : ""}" data-m="${k}">${l}</button>`).join("");
-    $("rapidas").innerHTML = RAPIDAS[momento].map(([n, k], i) => `<button class="chip" data-r="${i}">${esc(n)} <small>${k}</small></button>`).join("");
+    tilesActuales = [];
+    $("tiles").innerHTML = sugeridos().map(tileHtml).join("");
+    $("tiles-todo").innerHTML = CATALOGO.filter((x) => x[3].includes(momento)).map(([n, k, e]) => tileHtml({ n, k, e })).join("");
     const lista = delDia(comidas, dia);
-    $("c-lista-t").textContent = `${diaLbl(dia)} · ${fmt(sumK(lista))} kcal`;
-    $("c-lista").innerHTML = lista.length ? MOMENTOS.map(([k, l]) => {
-      const xs = lista.filter((x) => x.momento === k);
-      return xs.length ? `<div class="muted small" style="margin-top:6px">${l}</div>` + xs.map(itemHtml("comidas")).join("") : "";
-    }).join("") + lista.filter((x) => !MOMENTOS.some(([k]) => k === x.momento)).map(itemHtml("comidas")).join("")
-      : `<div class="muted">Nada apuntado.</div>`;
+    $("c-lista-t").textContent = `🍽️ ${diaLbl(dia)} has comido · ${fmt(sumK(lista))} kcal`;
+    $("c-lista").innerHTML = comidoHtml(lista);
   }
   function itemHtml(tabla) {
     return (x) => `<div class="item"><div class="grow">${esc(x.texto || (x.fotos.length ? "📷 Foto" : ""))}
@@ -545,18 +640,26 @@
 
   document.addEventListener("click", async (ev) => {
     const t = ev.target.closest("button"); if (!t) return;
-    if (t.dataset.v) { document.querySelectorAll("nav.tabs button").forEach((b) => b.classList.toggle("act", b === t));
+    if (t.dataset.v) { document.querySelectorAll("nav.tabs button").forEach((b) => b.classList.toggle("act", b.dataset.v === t.dataset.v));
       document.querySelectorAll(".view").forEach((v) => v.classList.toggle("act", v.id === "v-" + t.dataset.v)); window.scrollTo(0, 0); return; }
     if (t.dataset.dd) { const n = addDays(dia, Number(t.dataset.dd)); if (n <= iso(new Date())) { dia = n; render(); } return; }
     if (t.dataset.m) { momento = t.dataset.m; renderComida(); return; }
     if (t.dataset.d) { deporte = Number(t.dataset.d); renderEjercicio(); return; }
     if (t.dataset.del) { borrar(t.dataset.del); return; }
-    if (t.dataset.r) {
-      const [n, k] = RAPIDAS[momento][Number(t.dataset.r)];
-      const r = await sb.from(T("comidas")).insert({ fecha: dia, momento, texto: n, kcal: k, origen: "rapida", estado: "procesado" }).select().single();
+    if (t.dataset.tile) {
+      const it = tilesActuales[Number(t.dataset.tile)];
+      const mom = dia === iso(new Date()) ? momentoActual() : momento;
+      const r = await sb.from(T("comidas")).insert({ fecha: dia, momento: mom, texto: it.n, kcal: it.k, origen: "rapida", estado: "procesado" }).select().single();
       if (r.error) { toast("Error: " + r.error.message); return; }
-      comidas.push(r.data); toast(`+ ${n} (${k} kcal)`); render(); return;
+      comidas.push(r.data); render();
+      toast(`${it.e} +1 ${it.n} (${it.k} kcal)`, "Deshacer", async () => {
+        const u = await sb.from(T("comidas")).update({ borrado: true }).eq("id", r.data.id);
+        if (!u.error) { comidas = comidas.filter((x) => x.id !== r.data.id); render(); toast("Quitado"); }
+      });
+      return;
     }
+    if (t.id === "ver-todo") { const v = $("todo"); const on = v.style.display === "none"; v.style.display = on ? "block" : "none"; t.textContent = on ? "Ocultar" : "Ver más comidas"; return; }
+    if (t.closest("#toast")) return;
   });
   $("btn-refresh").onclick = cargar;
   $("c-mic").onclick = () => dictar($("c-mic"), $("c-texto"));
@@ -602,7 +705,11 @@
   };
 
   let toastT;
-  function toast(m) { const t = $("toast"); t.textContent = m; t.style.display = "block"; clearTimeout(toastT); toastT = setTimeout(() => (t.style.display = "none"), 2600); }
+  function toast(m, accion, fn) {
+    const t = $("toast"); t.textContent = m;
+    if (accion) { const b = document.createElement("button"); b.textContent = accion; b.onclick = () => { t.style.display = "none"; fn(); }; t.appendChild(b); }
+    t.style.display = "block"; clearTimeout(toastT); toastT = setTimeout(() => (t.style.display = "none"), accion ? 4500 : 2600);
+  }
 
   document.addEventListener("visibilitychange", () => { if (!document.hidden) { if (dia > iso(new Date())) dia = iso(new Date()); cargar(); } });
   cargar();
