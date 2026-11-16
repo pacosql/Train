@@ -1,0 +1,616 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Dieta — ¿voy en verde?</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Dieta" />
+  <meta name="theme-color" content="#0f1a14" />
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #f4f6f5; --card: #fff; --text: #10231a; --muted: #5b6b63; --border: #e0e7e3;
+      --green: #1f9d63; --amber: #d98e04; --red: #d64545; --accent: #1f9d63; --chip: #eef3f0;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #0f1a14; --card: #17231d; --text: #eaf3ee; --muted: #93a69c; --border: #26352d;
+        --green: #3ecf8e; --amber: #f2b53a; --red: #ff6b6b; --accent: #3ecf8e; --chip: #20302a; }
+    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body { margin: 0; background: var(--bg); color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      padding: calc(env(safe-area-inset-top, 0px) + 12px) 16px calc(env(safe-area-inset-bottom, 0px) + 90px); }
+    .wrap { max-width: 520px; margin: 0 auto; }
+    h1 { font-size: 1.25rem; margin: 4px 0 10px; display: flex; justify-content: space-between; align-items: center; }
+    h2 { font-size: 1rem; margin: 0 0 8px; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 14px; margin-bottom: 12px; }
+    .muted { color: var(--muted); font-size: 0.85rem; }
+    .small { font-size: 0.78rem; }
+    .row { display: flex; gap: 8px; align-items: center; }
+    .grow { flex: 1; }
+    .lights { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .light { border-radius: 14px; padding: 12px; color: #fff; }
+    .light .t { font-size: 0.75rem; opacity: .9; text-transform: uppercase; letter-spacing: .04em; }
+    .light .v { font-size: 1.35rem; font-weight: 800; margin: 2px 0; }
+    .light .d { font-size: 0.78rem; opacity: .95; }
+    .g { background: var(--green); } .a { background: var(--amber); } .r { background: var(--red); } .n { background: #7b8a83; }
+    .big { font-size: 2rem; font-weight: 800; }
+    .bar { height: 10px; background: var(--chip); border-radius: 6px; overflow: hidden; margin: 6px 0; }
+    .bar > div { height: 100%; background: var(--green); }
+    .bar.over > div { background: var(--red); }
+    button, .btn { font: inherit; border: 1px solid var(--border); background: var(--chip); color: var(--text);
+      border-radius: 12px; padding: 10px 12px; cursor: pointer; }
+    button.primary { background: var(--accent); color: #fff; border-color: transparent; font-weight: 700; }
+    button.on { background: var(--red); color: #fff; }
+    input, textarea, select { font: inherit; width: 100%; padding: 10px; border-radius: 12px; border: 1px solid var(--border);
+      background: var(--bg); color: var(--text); }
+    textarea { min-height: 64px; resize: vertical; }
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+    .chip { border-radius: 999px; padding: 7px 11px; font-size: 0.85rem; background: var(--chip); border: 1px solid var(--border); }
+    .chip.sel { background: var(--accent); color: #fff; border-color: transparent; }
+    .chip small { opacity: .7; }
+    .item { display: flex; gap: 10px; align-items: flex-start; padding: 9px 0; border-top: 1px solid var(--border); }
+    .item:first-child { border-top: 0; }
+    .item .k { font-weight: 700; white-space: nowrap; }
+    .item .x { background: none; border: 0; padding: 2px 6px; color: var(--muted); }
+    .thumbs { display: flex; gap: 4px; margin-top: 4px; flex-wrap: wrap; }
+    .thumbs img { width: 46px; height: 46px; object-fit: cover; border-radius: 8px; }
+    .pend { color: var(--amber); font-weight: 600; }
+    nav.tabs { position: fixed; left: 0; right: 0; bottom: 0; background: var(--card); border-top: 1px solid var(--border);
+      display: flex; padding: 6px 8px calc(env(safe-area-inset-bottom, 0px) + 6px); z-index: 5; }
+    nav.tabs button { flex: 1; background: none; border: 0; font-size: 0.75rem; padding: 6px 2px; color: var(--muted); }
+    nav.tabs button span { display: block; font-size: 1.3rem; }
+    nav.tabs button.act { color: var(--accent); font-weight: 700; }
+    .view { display: none; } .view.act { display: block; }
+    .daynav { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+    .daynav button { padding: 6px 12px; }
+    .daynav .lbl { flex: 1; text-align: center; font-weight: 700; }
+    .warn { background: color-mix(in srgb, var(--amber) 18%, transparent); border: 1px solid var(--amber); border-radius: 12px; padding: 10px; font-size: 0.85rem; margin-top: 8px; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    label.f { font-size: 0.8rem; color: var(--muted); display: block; margin-top: 6px; }
+    .preview { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+    .preview img { width: 60px; height: 60px; object-fit: cover; border-radius: 8px; }
+    table.wk { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+    table.wk td, table.wk th { padding: 5px 3px; text-align: right; border-top: 1px solid var(--border); }
+    table.wk td:first-child, table.wk th:first-child { text-align: left; }
+    .toast { position: fixed; left: 50%; bottom: 90px; transform: translateX(-50%); background: #222; color: #fff; padding: 10px 16px; border-radius: 12px; font-size: .9rem; z-index: 9; display: none; }
+    .build-id { text-align: center; font-size: 0.65rem; color: var(--muted); opacity: .6; margin-top: 20px; font-family: ui-monospace, monospace; }
+    svg text { fill: var(--muted); font-size: 10px; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h1><span>🥗 Dieta</span><button id="btn-refresh" title="Recargar">↻</button></h1>
+
+  <!-- ===================== RESUMEN ===================== -->
+  <section class="view act" id="v-resumen">
+    <div class="lights">
+      <div class="light n" id="l-peso"><div class="t">Peso</div><div class="v">—</div><div class="d"></div></div>
+      <div class="light n" id="l-kcal"><div class="t">Calorías semana</div><div class="v">—</div><div class="d"></div></div>
+    </div>
+    <div style="height:12px"></div>
+    <div class="card" id="c-hoy"></div>
+    <div class="card" id="c-semana"></div>
+    <div class="card" id="c-grafico"><h2>📉 Peso vs objetivo</h2><div id="grafico"></div></div>
+    <div class="card" id="c-gasto"></div>
+  </section>
+
+  <!-- ===================== COMIDA ===================== -->
+  <section class="view" id="v-comida">
+    <div class="daynav"><button data-dd="-1">‹</button><div class="lbl" id="dia-lbl-c"></div><button data-dd="1">›</button></div>
+    <div class="card">
+      <h2>🍽️ ¿Qué has comido?</h2>
+      <div class="chips" id="momentos"></div>
+      <div class="muted small">Rápidas (se suman al momento):</div>
+      <div class="chips" id="rapidas"></div>
+    </div>
+    <div class="card">
+      <h2>📸 Foto, voz o texto</h2>
+      <div class="muted small">Haz una o varias fotos y/o descríbelo. La rutina de Claude calcula las calorías (⏳ hasta que pase, como mucho ~1 h).</div>
+      <textarea id="c-texto" placeholder="Ej: un vaso de leche entera grande y dos galletas María"></textarea>
+      <div class="row" style="margin-top:8px">
+        <button id="c-mic" class="grow">🎤 Hablar</button>
+        <label class="btn grow" style="text-align:center">📷 Fotos<input id="c-fotos" type="file" accept="image/*" multiple hidden /></label>
+      </div>
+      <div class="preview" id="c-prev"></div>
+      <div class="row" style="margin-top:8px">
+        <input id="c-kcal" type="number" inputmode="numeric" placeholder="kcal (opcional, si las sabes)" />
+        <button class="primary" id="c-guardar">Guardar</button>
+      </div>
+    </div>
+    <div class="card"><h2 id="c-lista-t">Hoy</h2><div id="c-lista"></div></div>
+  </section>
+
+  <!-- ===================== EJERCICIO ===================== -->
+  <section class="view" id="v-ejercicio">
+    <div class="daynav"><button data-dd="-1">‹</button><div class="lbl" id="dia-lbl-e"></div><button data-dd="1">›</button></div>
+    <div class="card">
+      <h2>🎾 Ejercicio rápido</h2>
+      <div class="chips" id="deportes"></div>
+      <div class="row"><input id="e-min" type="number" inputmode="numeric" value="60" style="max-width:110px" /><span class="muted">minutos</span>
+        <button class="primary grow" id="e-rapido">Añadir</button></div>
+      <div class="muted small" id="e-est" style="margin-top:6px"></div>
+    </div>
+    <div class="card">
+      <h2>⌚ Pantallazo de la pulsera, foto o texto</h2>
+      <div class="muted small">Sube la captura de tu pulsera; la rutina lee las kcal (activas) de la imagen.</div>
+      <textarea id="e-texto" placeholder="Ej: partido de tenis individual 1h30, bastante intenso"></textarea>
+      <div class="row" style="margin-top:8px">
+        <button id="e-mic" class="grow">🎤 Hablar</button>
+        <label class="btn grow" style="text-align:center">🖼️ Capturas<input id="e-fotos" type="file" accept="image/*" multiple hidden /></label>
+      </div>
+      <div class="preview" id="e-prev"></div>
+      <div class="row" style="margin-top:8px">
+        <input id="e-kcal" type="number" inputmode="numeric" placeholder="kcal (opcional)" />
+        <button class="primary" id="e-guardar">Guardar</button>
+      </div>
+    </div>
+    <div class="card"><h2 id="e-lista-t">Hoy</h2><div id="e-lista"></div></div>
+  </section>
+
+  <!-- ===================== PESO ===================== -->
+  <section class="view" id="v-peso">
+    <div class="card">
+      <h2>⚖️ Peso de hoy</h2>
+      <div class="row">
+        <input id="p-kg" type="number" step="0.1" inputmode="decimal" placeholder="kg, ej. 104.2" />
+        <button class="primary" id="p-guardar">Guardar</button>
+      </div>
+      <div class="row" style="margin-top:8px">
+        <label class="btn grow" style="text-align:center">📷 Foto de la báscula<input id="p-foto" type="file" accept="image/*" hidden /></label>
+      </div>
+      <div class="muted small" style="margin-top:6px">Con foto, la rutina lee el número de la báscula. Pésate siempre a la misma hora (en ayunas, tras el baño).</div>
+    </div>
+    <div class="card"><h2>Historial</h2><div id="p-lista"></div></div>
+  </section>
+
+  <!-- ===================== AJUSTES ===================== -->
+  <section class="view" id="v-ajustes">
+    <div class="card">
+      <h2>🎯 Objetivo</h2>
+      <div class="grid2">
+        <div><label class="f">Peso inicial (kg)</label><input id="a-peso" type="number" step="0.1" /></div>
+        <div><label class="f">Fecha inicio</label><input id="a-fecha" type="date" /></div>
+        <div><label class="f">Perder kg/semana</label><input id="a-obj" type="number" step="0.1" /></div>
+        <div><label class="f">kcal sáb y dom (cada día)</label><input id="a-finde" type="number" /></div>
+      </div>
+      <h2 style="margin-top:14px">🧍 Tú (para el gasto en reposo)</h2>
+      <div class="grid2">
+        <div><label class="f">Sexo</label><select id="a-sexo"><option value="hombre">Hombre</option><option value="mujer">Mujer</option></select></div>
+        <div><label class="f">Edad</label><input id="a-edad" type="number" /></div>
+        <div><label class="f">Altura (cm)</label><input id="a-altura" type="number" /></div>
+        <div><label class="f">Vida diaria (sin deporte)</label><select id="a-factor">
+          <option value="1.2">Sedentaria (oficina)</option><option value="1.3">Algo activa</option><option value="1.4">Activa (de pie)</option></select></div>
+      </div>
+      <button class="primary" id="a-guardar" style="width:100%;margin-top:12px">Guardar ajustes</button>
+      <div class="muted small" style="margin-top:8px">El ejercicio NO va en "vida diaria": se suma aparte con lo que apuntes.</div>
+    </div>
+    <div class="card" id="a-rutina"></div>
+  </section>
+
+  <div class="build-id">build __BUILD_ID__</div>
+</div>
+
+<nav class="tabs">
+  <button data-v="resumen" class="act"><span>🚦</span>Resumen</button>
+  <button data-v="comida"><span>🍽️</span>Comida</button>
+  <button data-v="ejercicio"><span>🎾</span>Ejercicio</button>
+  <button data-v="peso"><span>⚖️</span>Peso</button>
+  <button data-v="ajustes"><span>⚙️</span>Ajustes</button>
+</nav>
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="config.js"></script>
+<script>
+  const CFG = window.DIETA_CONFIG;
+  const sb = supabase.createClient(CFG.url, CFG.anonKey);
+  const T = (n) => CFG.tablePrefix + n;
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const fotoUrl = (p) => sb.storage.from(CFG.bucket).getPublicUrl(p).data.publicUrl;
+  const fmt = (n) => Math.round(n).toLocaleString("es-ES");
+  const KCAL_KG = 7700; // kcal por kg de grasa (aprox.)
+
+  // ---------- fechas (hora local del móvil) ----------
+  const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  const parse = (s) => { const [y, m, d] = s.split("-").map(Number); return new Date(y, m - 1, d); };
+  const addDays = (s, n) => { const d = parse(s); d.setDate(d.getDate() + n); return iso(d); };
+  const diffDays = (a, b) => Math.round((parse(a) - parse(b)) / 86400000);
+  const isWeekend = (s) => [0, 6].includes(parse(s).getDay());
+  const monday = (s) => { const d = parse(s); const wd = (d.getDay() + 6) % 7; d.setDate(d.getDate() - wd); return iso(d); };
+  const DIAS = ["dom", "lun", "mar", "mié", "jue", "vie", "sáb"];
+  const diaLbl = (s) => { const d = parse(s); const t = iso(new Date());
+    const base = `${DIAS[d.getDay()]} ${d.getDate()}/${d.getMonth() + 1}`;
+    return s === t ? `Hoy · ${base}` : s === addDays(t, -1) ? `Ayer · ${base}` : base; };
+
+  // ---------- datos ----------
+  let A = null, pesos = [], comidas = [], ejercicios = [], rutinas = [];
+  let dia = iso(new Date());
+  let momento = momentoActual();
+
+  async function cargar() {
+    const desde = addDays(iso(new Date()), -120);
+    const [a, p, c, e, r] = await Promise.all([
+      sb.from(T("ajustes")).select("*").eq("id", 1).single(),
+      sb.from(T("pesos")).select("*").eq("borrado", false).order("fecha").order("created_at"),
+      sb.from(T("comidas")).select("*").eq("borrado", false).gte("fecha", desde).order("created_at"),
+      sb.from(T("ejercicios")).select("*").eq("borrado", false).gte("fecha", desde).order("created_at"),
+      sb.from(T("rutinas")).select("*").order("ejecutada_en", { ascending: false }).limit(1),
+    ]);
+    const err = [a, p, c, e, r].find((x) => x.error);
+    if (err) { toast("Error cargando: " + err.error.message); return; }
+    A = a.data; pesos = p.data; comidas = c.data; ejercicios = e.data; rutinas = r.data;
+    render();
+  }
+
+  // ---------- cálculos ----------
+  function pesoActual() {
+    const v = pesos.filter((x) => x.kg != null);
+    if (!v.length) return Number(A.peso_inicio);
+    const ult = v.slice(-3); // media de las 3 últimas pesadas: suaviza el agua/hinchazón
+    return ult.reduce((s, x) => s + Number(x.kg), 0) / ult.length;
+  }
+  function bmr(kg) { // Mifflin-St Jeor: lo que gastas en reposo absoluto (tumbado todo el día)
+    return 10 * kg + 6.25 * A.altura_cm - 5 * A.edad + (A.sexo === "mujer" ? -161 : 5);
+  }
+  function gastoDia() { return bmr(pesoActual()) * Number(A.factor_actividad); }
+  function plan() {
+    const tdee = gastoDia();
+    const semana = tdee * 7;
+    const deficitSemana = KCAL_KG * Number(A.objetivo_kg_semana);
+    const finde = 2 * A.kcal_finde;
+    const laborable = (semana - deficitSemana - finde) / 5;
+    return { tdee, semana, deficitSemana, laborable };
+  }
+  const sumK = (arr) => arr.reduce((s, x) => s + (x.kcal || 0), 0);
+  const delDia = (arr, f) => arr.filter((x) => x.fecha === f);
+  function presupuestoDia(f) { const P = plan(); return isWeekend(f) ? A.kcal_finde : P.laborable; }
+
+  function semaforoPeso() {
+    const hoy = iso(new Date());
+    const dias = Math.max(0, diffDays(hoy, A.fecha_inicio));
+    const esperado = Number(A.peso_inicio) - Number(A.objetivo_kg_semana) * dias / 7;
+    const actual = pesoActual();
+    const dif = actual - esperado;
+    const cls = !pesos.some((x) => x.kg != null) ? "n" : dif <= 0.3 ? "g" : dif <= 1 ? "a" : "r";
+    return { esperado, actual, dif, cls, dias };
+  }
+
+  function semaforoKcal() {
+    // Déficit acumulado esta semana (días cerrados) vs el que tocaba para 1 kg/sem.
+    const hoy = iso(new Date());
+    const lun = monday(hoy);
+    const P = plan();
+    let real = 0, objetivo = 0, n = 0, pendientes = 0;
+    const cerrados = [];
+    for (let f = lun; f < hoy; f = addDays(f, 1)) cerrados.push(f);
+    const dias = cerrados.length ? cerrados : [hoy]; // lunes: se mira el día en curso
+    for (const f of dias) {
+      const comido = sumK(delDia(comidas, f));
+      const quemado = sumK(delDia(ejercicios, f));
+      pendientes += delDia(comidas, f).filter((x) => x.kcal == null).length + delDia(ejercicios, f).filter((x) => x.kcal == null).length;
+      real += P.tdee + quemado - comido;
+      objetivo += P.tdee - presupuestoDia(f);
+      n++;
+    }
+    const enCurso = !cerrados.length;
+    let cls;
+    if (enCurso) { // hoy en curso: ¿cabe aún en el presupuesto?
+      const resto = presupuestoDia(hoy) + sumK(delDia(ejercicios, hoy)) - sumK(delDia(comidas, hoy));
+      cls = resto >= 0 ? "g" : resto >= -300 ? "a" : "r";
+    } else {
+      const falta = objetivo - real; // kcal de déficit que faltan
+      cls = falta <= 150 * n ? "g" : falta <= 500 * n ? "a" : "r";
+    }
+    return { real, objetivo, n, cls, enCurso, pendientes, kgSemana: real / KCAL_KG };
+  }
+
+  // ---------- render ----------
+  function render() {
+    if (!A) return;
+    renderResumen(); renderComida(); renderEjercicio(); renderPeso(); renderAjustes();
+  }
+
+  function setLight(id, cls, v, d) {
+    const el = $(id); el.className = "light " + cls;
+    el.querySelector(".v").textContent = v; el.querySelector(".d").innerHTML = d;
+  }
+
+  function renderResumen() {
+    const sp = semaforoPeso(), sk = semaforoKcal(), P = plan(), hoy = iso(new Date());
+    const txtP = { g: "🟢 En verde", a: "🟡 Justo", r: "🔴 Por detrás", n: "Sin pesadas" }[sp.cls];
+    setLight("l-peso", sp.cls, `${sp.actual.toFixed(1)} kg`,
+      `${txtP}<br>Objetivo hoy: ${sp.esperado.toFixed(1)} kg (${sp.dif >= 0 ? "+" : ""}${sp.dif.toFixed(1)})<br>Llevas ${(Number(A.peso_inicio) - sp.actual).toFixed(1)} kg en ${sp.dias} d`);
+    const txtK = { g: "🟢 En verde", a: "🟡 Justo", r: "🔴 Te pasas" }[sk.cls];
+    setLight("l-kcal", sk.cls, sk.enCurso ? "Hoy" : `${sk.kgSemana >= 0 ? "−" : "+"}${Math.abs(sk.kgSemana).toFixed(2)} kg`,
+      sk.enCurso ? `${txtK}<br>Primer día de la semana: mira el presupuesto de hoy`
+        : `${txtK}<br>Déficit ${fmt(sk.real)} de ${fmt(sk.objetivo)} kcal (${sk.n} d)` + (sk.pendientes ? `<br>⏳ ${sk.pendientes} sin calcular` : ""));
+
+    // Hoy
+    const comido = sumK(delDia(comidas, hoy)), quemado = sumK(delDia(ejercicios, hoy));
+    const pres = presupuestoDia(hoy) + quemado, resto = pres - comido;
+    const pend = delDia(comidas, hoy).filter((x) => x.kcal == null).length + delDia(ejercicios, hoy).filter((x) => x.kcal == null).length;
+    const pct = Math.min(100, (comido / Math.max(1, pres)) * 100);
+    $("c-hoy").innerHTML = `<h2>📅 ${diaLbl(hoy)}</h2>
+      <div class="row"><div class="grow"><div class="big" style="color:var(${resto >= 0 ? "--green" : "--red"})">${fmt(resto)}</div>
+      <div class="muted">kcal que te quedan hoy</div></div>
+      <div class="muted small" style="text-align:right">Presupuesto ${fmt(presupuestoDia(hoy))}<br>+ ejercicio ${fmt(quemado)}<br>− comido ${fmt(comido)}</div></div>
+      <div class="bar ${resto < 0 ? "over" : ""}"><div style="width:${pct}%"></div></div>
+      ${pend ? `<div class="pend small">⏳ ${pend} registro(s) pendientes de calcular por la rutina</div>` : ""}
+      ${P.laborable < (A.sexo === "mujer" ? 1200 : 1500) ? `<div class="warn">⚠️ Con ${fmt(A.kcal_finde)} kcal el sábado y el domingo y sin ejercicio, para perder ${A.objetivo_kg_semana} kg/semana te quedan solo <b>${fmt(P.laborable)} kcal</b> de lunes a viernes. Es muy poco: el ejercicio que apuntes te da más margen (se suma al día), o baja un poco el finde.</div>` : ""}`;
+
+    // Semana
+    const lun = monday(hoy);
+    let filas = "", tC = 0, tE = 0, tP = 0;
+    for (let i = 0; i < 7; i++) {
+      const f = addDays(lun, i);
+      const c = sumK(delDia(comidas, f)), e = sumK(delDia(ejercicios, f)), p = presupuestoDia(f) + e;
+      const fut = f > hoy;
+      if (!fut) { tC += c; tE += e; tP += p; }
+      const bal = p - c;
+      filas += `<tr style="${f === hoy ? "font-weight:700" : ""}${fut ? ";opacity:.45" : ""}"><td>${DIAS[parse(f).getDay()]} ${parse(f).getDate()}</td>
+        <td>${fmt(presupuestoDia(f))}</td><td>${e ? "+" + fmt(e) : "·"}</td><td>${fut ? "" : fmt(c)}</td>
+        <td style="color:var(${bal >= 0 ? "--green" : "--red"})">${fut ? "" : (bal >= 0 ? "+" : "") + fmt(bal)}</td></tr>`;
+    }
+    $("c-semana").innerHTML = `<h2>🗓️ Esta semana</h2>
+      <table class="wk"><tr><th></th><th>Plan</th><th>Ejerc.</th><th>Comido</th><th>Margen</th></tr>${filas}
+      <tr style="font-weight:700"><td>Total</td><td></td><td>${tE ? "+" + fmt(tE) : ""}</td><td>${fmt(tC)}</td><td style="color:var(${tP - tC >= 0 ? "--green" : "--red"})">${(tP - tC >= 0 ? "+" : "") + fmt(tP - tC)}</td></tr></table>
+      <div class="muted small" style="margin-top:6px">Plan: ${fmt(P.laborable)} kcal L–V y ${fmt(A.kcal_finde)} S–D. Margen positivo = vas mejor que el plan.</div>`;
+
+    // Gasto en reposo
+    const kg = pesoActual(), b = bmr(kg);
+    const ejSemana = sumK(ejercicios.filter((x) => x.fecha >= lun && x.fecha <= hoy));
+    $("c-gasto").innerHTML = `<h2>🔥 Lo que gastas</h2>
+      <table class="wk">
+      <tr><td>Reposo absoluto (metabolismo basal)</td><td>${fmt(b)}/día</td><td><b>${fmt(b * 7)}</b>/sem</td></tr>
+      <tr><td>Vida diaria sin deporte (×${A.factor_actividad})</td><td>${fmt(P.tdee)}/día</td><td><b>${fmt(P.semana)}</b>/sem</td></tr>
+      <tr><td>Ejercicio apuntado esta semana</td><td></td><td><b>${fmt(ejSemana)}</b></td></tr></table>
+      <div class="muted small" style="margin-top:6px">Calculado con Mifflin-St Jeor para ${kg.toFixed(1)} kg, ${A.altura_cm} cm, ${A.edad} años (${A.sexo}). Cámbialo en ⚙️ Ajustes. 1 kg de grasa ≈ ${fmt(KCAL_KG)} kcal → para ${A.objetivo_kg_semana} kg/sem hace falta un déficit de ${fmt(P.deficitSemana)} kcal/sem.</div>`;
+
+    renderGrafico();
+  }
+
+  function renderGrafico() {
+    const v = pesos.filter((x) => x.kg != null);
+    const hoy = iso(new Date());
+    const ini = A.fecha_inicio;
+    const fin = addDays(hoy, Math.max(7, Math.min(28, diffDays(hoy, ini) + 7)) - Math.max(0, 0));
+    const span = Math.max(7, diffDays(fin, ini));
+    const objFin = Number(A.peso_inicio) - Number(A.objetivo_kg_semana) * span / 7;
+    const kgs = v.map((x) => Number(x.kg)).concat([Number(A.peso_inicio), objFin]);
+    const lo = Math.floor(Math.min(...kgs) - 0.5), hi = Math.ceil(Math.max(...kgs) + 0.5);
+    const W = 320, H = 150, L = 30, R = 8, Tp = 8, B = 20;
+    const x = (f) => L + (diffDays(f, ini) / span) * (W - L - R);
+    const y = (k) => Tp + (hi - k) / (hi - lo) * (H - Tp - B);
+    let s = `<svg viewBox="0 0 ${W} ${H}" width="100%">`;
+    for (let k = lo; k <= hi; k++) s += `<line x1="${L}" x2="${W - R}" y1="${y(k)}" y2="${y(k)}" stroke="currentColor" opacity=".08"/><text x="2" y="${y(k) + 3}">${k}</text>`;
+    s += `<line x1="${x(ini)}" y1="${y(Number(A.peso_inicio))}" x2="${x(addDays(ini, span))}" y2="${y(objFin)}" stroke="var(--green)" stroke-dasharray="4 3" stroke-width="2"/>`;
+    const pts = v.filter((p) => p.fecha >= ini).map((p) => `${x(p.fecha)},${y(Number(p.kg))}`);
+    if (pts.length > 1) s += `<polyline points="${pts.join(" ")}" fill="none" stroke="var(--text)" stroke-width="2"/>`;
+    pts.forEach((p) => { const [a, b] = p.split(","); s += `<circle cx="${a}" cy="${b}" r="3.5" fill="var(--text)"/>`; });
+    s += `<line x1="${x(hoy)}" x2="${x(hoy)}" y1="${Tp}" y2="${H - B}" stroke="var(--amber)" opacity=".6"/>`;
+    s += `<text x="${L}" y="${H - 5}">${diaLbl(ini).replace("Hoy · ", "")}</text><text x="${W - R - 40}" y="${H - 5}">${parse(addDays(ini, span)).getDate()}/${parse(addDays(ini, span)).getMonth() + 1}</text></svg>`;
+    $("grafico").innerHTML = s + `<div class="muted small">Línea verde discontinua = objetivo (−${A.objetivo_kg_semana} kg/sem). Puntos = tus pesadas.</div>`;
+  }
+
+  // ---------- comida ----------
+  const MOMENTOS = [["desayuno", "☕ Desayuno"], ["mediamanana", "🍎 Media mañana"], ["comida", "🍲 Comida"], ["merienda", "🥪 Merienda"], ["cena", "🌙 Cena"], ["picoteo", "🍺 Picoteo/bebida"]];
+  const RAPIDAS = {
+    desayuno: [["Vaso de leche semidesnatada", 115], ["Vaso de leche entera", 160], ["Café con leche", 60], ["Café solo / sacarina", 5], ["Tostada con aceite", 180], ["Tostada con tomate y aceite", 200], ["Tostada con jamón", 220], ["Yogur natural", 60], ["Zumo de naranja", 110], ["Fruta", 80], ["Cereales con leche", 260], ["Galletas (4)", 140]],
+    mediamanana: [["Fruta", 80], ["Yogur natural", 60], ["Café con leche", 60], ["Puñado frutos secos", 180], ["Barrita", 150], ["Bocadillo pequeño", 300]],
+    comida: [["Ensalada", 150], ["Lentejas / legumbre (plato)", 400], ["Pollo plancha + ensalada", 350], ["Pescado plancha + verdura", 300], ["Plato de pasta", 550], ["Paella / arroz (plato)", 550], ["Filete con patatas", 700], ["Menú del día", 950], ["Trozo de pan", 80], ["Fruta de postre", 80], ["Caña de cerveza", 140], ["Copa de vino", 120]],
+    merienda: [["Fruta", 80], ["Yogur natural", 60], ["Café con leche", 60], ["Tostada con aceite", 180], ["Puñado frutos secos", 180], ["Onza de chocolate", 50]],
+    cena: [["Tortilla francesa (2 huevos)", 200], ["Verdura + pollo", 300], ["Ensalada con atún", 300], ["Sándwich mixto", 350], ["Pizza (2 porciones)", 550], ["Hamburguesa con pan", 600], ["Yogur natural", 60], ["Fruta", 80], ["Trozo de pan", 80]],
+    picoteo: [["Caña de cerveza", 140], ["Copa de vino", 120], ["Refresco normal", 140], ["Refresco zero", 1], ["Gin tonic", 200], ["Patatas fritas (bolsa peq.)", 230], ["Aceitunas (10)", 50], ["Onza de chocolate", 50], ["Puñado frutos secos", 180], ["Galletas (4)", 140]],
+  };
+  function momentoActual() {
+    const h = new Date().getHours();
+    return h < 11 ? "desayuno" : h < 13 ? "mediamanana" : h < 16.5 ? "comida" : h < 20 ? "merienda" : "cena";
+  }
+  function renderComida() {
+    $("dia-lbl-c").textContent = diaLbl(dia);
+    $("momentos").innerHTML = MOMENTOS.map(([k, l]) => `<button class="chip ${k === momento ? "sel" : ""}" data-m="${k}">${l}</button>`).join("");
+    $("rapidas").innerHTML = RAPIDAS[momento].map(([n, k], i) => `<button class="chip" data-r="${i}">${esc(n)} <small>${k}</small></button>`).join("");
+    const lista = delDia(comidas, dia);
+    $("c-lista-t").textContent = `${diaLbl(dia)} · ${fmt(sumK(lista))} kcal`;
+    $("c-lista").innerHTML = lista.length ? MOMENTOS.map(([k, l]) => {
+      const xs = lista.filter((x) => x.momento === k);
+      return xs.length ? `<div class="muted small" style="margin-top:6px">${l}</div>` + xs.map(itemHtml("comidas")).join("") : "";
+    }).join("") + lista.filter((x) => !MOMENTOS.some(([k]) => k === x.momento)).map(itemHtml("comidas")).join("")
+      : `<div class="muted">Nada apuntado.</div>`;
+  }
+  function itemHtml(tabla) {
+    return (x) => `<div class="item"><div class="grow">${esc(x.texto || (x.fotos.length ? "📷 Foto" : ""))}
+      ${x.detalle ? `<div class="muted small">${esc(x.detalle)}</div>` : ""}
+      ${x.fotos && x.fotos.length ? `<div class="thumbs">${x.fotos.map((p) => `<a href="${fotoUrl(p)}" target="_blank"><img src="${fotoUrl(p)}" loading="lazy"/></a>`).join("")}</div>` : ""}</div>
+      <div class="k">${x.kcal == null ? `<span class="pend">⏳</span>` : fmt(x.kcal)}</div>
+      <button class="x" data-del="${tabla}:${x.id}">✕</button></div>`;
+  }
+
+  // ---------- ejercicio ----------
+  const DEPORTES = [["Tenis individual", 8], ["Tenis dobles", 6], ["Pádel", 6], ["Caminar rápido", 4.3], ["Correr suave", 8.3], ["Bici", 7], ["Gimnasio pesas", 5], ["Elíptica", 5], ["Nadar", 7], ["Fútbol", 8]];
+  let deporte = 0;
+  const kcalDeporte = (met, min) => Math.round((met - 1) * pesoActual() * min / 60); // MET netos: sin contar lo que gastarías igualmente
+  function renderEjercicio() {
+    $("dia-lbl-e").textContent = diaLbl(dia);
+    $("deportes").innerHTML = DEPORTES.map(([n], i) => `<button class="chip ${i === deporte ? "sel" : ""}" data-d="${i}">${n}</button>`).join("");
+    const min = Number($("e-min").value) || 0;
+    $("e-est").textContent = `≈ ${kcalDeporte(DEPORTES[deporte][1], min)} kcal extra (${DEPORTES[deporte][0]}, ${min} min, ${pesoActual().toFixed(0)} kg)`;
+    const lista = delDia(ejercicios, dia);
+    $("e-lista-t").textContent = `${diaLbl(dia)} · ${fmt(sumK(lista))} kcal`;
+    $("e-lista").innerHTML = lista.length ? lista.map(itemHtml("ejercicios")).join("") : `<div class="muted">Nada apuntado.</div>`;
+  }
+
+  // ---------- peso ----------
+  function renderPeso() {
+    const xs = pesos.slice().reverse();
+    $("p-lista").innerHTML = xs.length ? xs.map((x) => `<div class="item"><div class="grow">${diaLbl(x.fecha)}
+      ${x.detalle ? `<div class="muted small">${esc(x.detalle)}</div>` : ""}
+      ${x.foto ? `<div class="thumbs"><a href="${fotoUrl(x.foto)}" target="_blank"><img src="${fotoUrl(x.foto)}" loading="lazy"/></a></div>` : ""}</div>
+      <div class="k">${x.kg == null ? `<span class="pend">⏳ leyendo foto</span>` : Number(x.kg).toFixed(1) + " kg"}</div>
+      <button class="x" data-del="pesos:${x.id}">✕</button></div>`).join("") : `<div class="muted">Sin pesadas.</div>`;
+  }
+
+  // ---------- ajustes ----------
+  function renderAjustes() {
+    $("a-peso").value = A.peso_inicio; $("a-fecha").value = A.fecha_inicio; $("a-obj").value = A.objetivo_kg_semana;
+    $("a-finde").value = A.kcal_finde; $("a-sexo").value = A.sexo; $("a-edad").value = A.edad; $("a-altura").value = A.altura_cm;
+    $("a-factor").value = String(A.factor_actividad);
+    const r = rutinas[0];
+    $("a-rutina").innerHTML = `<h2>🤖 Rutina de calorías</h2><div class="muted small">Cada hora, Claude mira si hay fotos/textos/capturas ⏳ pendientes, calcula las calorías y las escribe aquí. Si no hay nada nuevo, no hace nada.<br><br>
+      Última pasada: ${r ? new Date(r.ejecutada_en).toLocaleString("es-ES") + ` — ${r.procesados} calculados. ${esc(r.resumen || "")}` : "todavía ninguna"}</div>`;
+  }
+
+  // ---------- fotos: se reducen en el móvil antes de subir ----------
+  async function reducir(file, max = 1600) {
+    try {
+      const url = URL.createObjectURL(file);
+      const img = await new Promise((ok, ko) => { const i = new Image(); i.onload = () => ok(i); i.onerror = ko; i.src = url; });
+      const s = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight));
+      const c = document.createElement("canvas"); c.width = Math.round(img.naturalWidth * s); c.height = Math.round(img.naturalHeight * s);
+      c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(url);
+      return await new Promise((ok) => c.toBlob(ok, "image/jpeg", 0.85));
+    } catch (e) { return file; }
+  }
+  async function subir(files, carpeta) {
+    const paths = [];
+    for (const f of files) {
+      const blob = await reducir(f);
+      const path = `${carpeta}/${dia}/${Date.now()}-${Math.random().toString(36).slice(2, 7)}.jpg`;
+      const up = await sb.storage.from(CFG.bucket).upload(path, blob, { contentType: "image/jpeg" });
+      if (up.error) throw up.error;
+      paths.push(path);
+    }
+    return paths;
+  }
+  const seleccion = { c: [], e: [] };
+  function preview(k) {
+    $(k + "-prev").innerHTML = seleccion[k].map((f) => `<img src="${URL.createObjectURL(f)}"/>`).join("");
+  }
+
+  // ---------- dictado ----------
+  let rec = null;
+  function dictar(btn, ta) {
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) { toast("Usa el micrófono del teclado del iPhone para dictar"); ta.focus(); return; }
+    if (rec) { rec.stop(); return; }
+    rec = new SR(); rec.lang = "es-ES"; rec.continuous = true; rec.interimResults = true;
+    const base = ta.value ? ta.value.trim() + " " : "";
+    rec.onresult = (ev) => { let fin = "", tmp = "";
+      for (let i = 0; i < ev.results.length; i++) { const t = ev.results[i][0].transcript; ev.results[i].isFinal ? (fin += t + " ") : (tmp += t); }
+      ta.value = (base + fin + tmp).trim(); ta.dataset.voz = "1"; };
+    const end = () => { rec = null; btn.classList.remove("on"); btn.textContent = "🎤 Hablar"; };
+    rec.onend = end; rec.onerror = end; rec.start();
+    btn.classList.add("on"); btn.textContent = "⏹ Parar";
+  }
+
+  // ---------- acciones ----------
+  async function guardarLibre(k) {
+    const tabla = k === "c" ? "comidas" : "ejercicios";
+    const ta = $(k + "-texto"), kc = $(k + "-kcal");
+    const texto = ta.value.trim(), files = seleccion[k], kcal = kc.value ? Math.round(Number(kc.value)) : null;
+    if (!texto && !files.length && kcal == null) { toast("Escribe, dicta o añade una foto"); return; }
+    const btn = $(k + "-guardar"); btn.disabled = true; btn.textContent = "Subiendo…";
+    try {
+      const fotos = files.length ? await subir(files, tabla) : [];
+      const row = { fecha: dia, texto: texto || null, fotos, kcal, estado: kcal == null ? "pendiente" : "procesado",
+        origen: fotos.length ? "foto" : ta.dataset.voz ? "voz" : "texto" };
+      if (k === "c") row.momento = momento; else delete row.origen;
+      const r = await sb.from(T(tabla)).insert(row).select().single();
+      if (r.error) throw r.error;
+      (k === "c" ? comidas : ejercicios).push(r.data);
+      ta.value = ""; delete ta.dataset.voz; kc.value = ""; seleccion[k] = []; preview(k);
+      toast(kcal == null ? "Guardado ⏳ la rutina calculará las kcal" : "Guardado ✓");
+      render();
+    } catch (e) { toast("Error: " + (e.message || e)); }
+    btn.disabled = false; btn.textContent = "Guardar";
+  }
+
+  async function borrar(spec) {
+    const [tabla, id] = spec.split(":");
+    if (!confirm("¿Quitar este registro?")) return;
+    const r = await sb.from(T(tabla)).update({ borrado: true }).eq("id", id);
+    if (r.error) { toast("Error: " + r.error.message); return; }
+    if (tabla === "comidas") comidas = comidas.filter((x) => x.id !== id);
+    if (tabla === "ejercicios") ejercicios = ejercicios.filter((x) => x.id !== id);
+    if (tabla === "pesos") pesos = pesos.filter((x) => x.id !== id);
+    render();
+  }
+
+  document.addEventListener("click", async (ev) => {
+    const t = ev.target.closest("button"); if (!t) return;
+    if (t.dataset.v) { document.querySelectorAll("nav.tabs button").forEach((b) => b.classList.toggle("act", b === t));
+      document.querySelectorAll(".view").forEach((v) => v.classList.toggle("act", v.id === "v-" + t.dataset.v)); window.scrollTo(0, 0); return; }
+    if (t.dataset.dd) { const n = addDays(dia, Number(t.dataset.dd)); if (n <= iso(new Date())) { dia = n; render(); } return; }
+    if (t.dataset.m) { momento = t.dataset.m; renderComida(); return; }
+    if (t.dataset.d) { deporte = Number(t.dataset.d); renderEjercicio(); return; }
+    if (t.dataset.del) { borrar(t.dataset.del); return; }
+    if (t.dataset.r) {
+      const [n, k] = RAPIDAS[momento][Number(t.dataset.r)];
+      const r = await sb.from(T("comidas")).insert({ fecha: dia, momento, texto: n, kcal: k, origen: "rapida", estado: "procesado" }).select().single();
+      if (r.error) { toast("Error: " + r.error.message); return; }
+      comidas.push(r.data); toast(`+ ${n} (${k} kcal)`); render(); return;
+    }
+  });
+  $("btn-refresh").onclick = cargar;
+  $("c-mic").onclick = () => dictar($("c-mic"), $("c-texto"));
+  $("e-mic").onclick = () => dictar($("e-mic"), $("e-texto"));
+  $("c-fotos").onchange = (e) => { seleccion.c.push(...e.target.files); e.target.value = ""; preview("c"); };
+  $("e-fotos").onchange = (e) => { seleccion.e.push(...e.target.files); e.target.value = ""; preview("e"); };
+  $("c-guardar").onclick = () => guardarLibre("c");
+  $("e-guardar").onclick = () => guardarLibre("e");
+  $("e-min").oninput = renderEjercicio;
+  $("e-rapido").onclick = async () => {
+    const [n, met] = DEPORTES[deporte], min = Number($("e-min").value) || 0;
+    if (!min) return;
+    const r = await sb.from(T("ejercicios")).insert({ fecha: dia, texto: `${n} · ${min} min`, minutos: min, kcal: kcalDeporte(met, min), estado: "procesado",
+      detalle: `Estimado con MET ${met} y ${pesoActual().toFixed(0)} kg` }).select().single();
+    if (r.error) { toast("Error: " + r.error.message); return; }
+    ejercicios.push(r.data); toast("Ejercicio añadido ✓"); render();
+  };
+  $("p-guardar").onclick = async () => {
+    const kg = Number(String($("p-kg").value).replace(",", "."));
+    if (!kg || kg < 30 || kg > 300) { toast("Pon el peso en kg"); return; }
+    const r = await sb.from(T("pesos")).insert({ fecha: iso(new Date()), kg }).select().single();
+    if (r.error) { toast("Error: " + r.error.message); return; }
+    pesos.push(r.data); $("p-kg").value = ""; toast("Peso guardado ✓"); render();
+  };
+  $("p-foto").onchange = async (e) => {
+    const f = e.target.files[0]; e.target.value = ""; if (!f) return;
+    toast("Subiendo foto…");
+    try {
+      const saved = dia; dia = iso(new Date());
+      const [path] = await subir([f], "pesos"); dia = saved;
+      const r = await sb.from(T("pesos")).insert({ fecha: iso(new Date()), foto: path, estado: "pendiente" }).select().single();
+      if (r.error) throw r.error;
+      pesos.push(r.data); toast("Foto guardada ⏳ la rutina leerá el peso"); render();
+    } catch (err) { toast("Error: " + (err.message || err)); }
+  };
+  $("a-guardar").onclick = async () => {
+    const upd = { peso_inicio: Number($("a-peso").value), fecha_inicio: $("a-fecha").value, objetivo_kg_semana: Number($("a-obj").value),
+      kcal_finde: Math.round(Number($("a-finde").value)), sexo: $("a-sexo").value, edad: Math.round(Number($("a-edad").value)),
+      altura_cm: Math.round(Number($("a-altura").value)), factor_actividad: Number($("a-factor").value), updated_at: new Date().toISOString() };
+    const r = await sb.from(T("ajustes")).update(upd).eq("id", 1).select().single();
+    if (r.error) { toast("Error: " + r.error.message); return; }
+    A = r.data; toast("Ajustes guardados ✓"); render();
+  };
+
+  let toastT;
+  function toast(m) { const t = $("toast"); t.textContent = m; t.style.display = "block"; clearTimeout(toastT); toastT = setTimeout(() => (t.style.display = "none"), 2600); }
+
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) { if (dia > iso(new Date())) dia = iso(new Date()); cargar(); } });
+  cargar();
+
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+    navigator.serviceWorker.addEventListener("message", (e) => { if (e.data && e.data.type === "new-version") location.reload(); });
+  }
+</script>
+</body>
+</html>

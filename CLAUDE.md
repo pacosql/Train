@@ -117,6 +117,7 @@ Al crear una app nueva `<app>/`:
 | 🔤 Logo Orto | `logoorto/` | `logoorto_` |
 | 💈 Peluquería | `peluqueria/` (gestión en `peluqueria/gestion/`) | `peluqueria_` |
 | 🅾️ Ortologo (logo de Ortografía10) | `ortologo/` | `ortologo_` |
+| 🥗 Dieta | `dieta/` | `dieta_` |
 
 (Actualiza esta tabla al añadir una app nueva.)
 
