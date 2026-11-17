@@ -43,7 +43,11 @@ URL: `https://pacosql.github.io/Train/empleo/`
   Fecha (publicación; si no la hay, cuándo se encontró, con *). Orden: 100%
   remoto → remoto → híbrido → sin confirmar → presencial y, dentro de cada
   uno, la más reciente primero (Aplicados: por fecha de candidatura).
-  Desde Pendientes se puede pasar una oferta directamente a ✅ Aplicado. Se marcan
+  Desde Pendientes se puede pasar una oferta directamente a ✅ Aplicado.
+  Al cargar, si una oferta es la misma que una ya aplicada (misma empresa y
+  puesto salvo ubicación, o mismo enlace), pasa sola a Aplicados. El botón
+  🙈 oculta las ofertas de empresas a las que se aplicó en los últimos 60
+  días (se recuerda en el navegador). Se marcan
   muchas filas (🎯 Aplicar, 🔍 Detalle, ✅ Aplicado, ✕ Descartar) y se
   guardan todas de golpe con **Guardar**; entonces se redistribuyen.
 

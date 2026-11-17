@@ -44,6 +44,9 @@
     .undo { background: none; border: 1px solid var(--line-strong); color: var(--text-2); border-radius: 10px; padding: 8px 10px; cursor: pointer; }
     .undo:disabled { opacity: 0.4; cursor: default; }
     .chk { display: inline-flex; align-items: center; gap: 5px; font-size: 0.85rem; color: var(--text-2); cursor: pointer; user-select: none; }
+    .oculta { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--line-strong); color: var(--text); border-radius: 10px;
+      padding: 8px 12px; cursor: pointer; font-size: 0.85rem; font-weight: 700; white-space: nowrap; }
+    .oculta.on { background: var(--mid-soft); border-color: var(--mid); color: var(--mid); }
     .msg { font-size: 0.85rem; color: var(--good); min-height: 1.1em; margin: 2px 0 6px; }
     .msg.err { color: var(--bad); }
 
@@ -135,6 +138,7 @@
       <button class="undo" id="undo" disabled>Deshacer marcas</button>
       <input id="q" type="search" placeholder="Buscar empresa o puesto…" autocomplete="off" />
       <label class="chk"><input type="checkbox" id="solo-remoto" /> Solo remoto</label>
+      <button class="oculta" id="oculta60" title="Quita de Pendientes, Aplicar, En detalle y High/Medium/Low las ofertas de empresas a las que has aplicado en los últimos 60 días">🙈 Ocultar empresas aplicadas (60 días)</button>
     </div>
     <p class="leyenda">🎯 Aplicar → grupo <b>Aplicar</b> · 🔍 Detalle → <b>En detalle</b> · ✅ Aplicado → <b>Aplicados</b> · ✕ Descartar → <b>👎 Descartadas</b> (abajo del todo; ↺ para recuperarla). Nada se mueve hasta que pulsas <b>Guardar</b>.</p>
     <details class="cap" id="cap">
@@ -238,9 +242,11 @@
       const soloRem = $("solo-remoto").checked;
       const abiertos = new Set([...document.querySelectorAll("details.g[open]")].map((d) => d.dataset.g));
       const primera = !document.querySelector("details.g");
+      let ocultas = 0;
       $("groups").innerHTML = GRUPOS.map((g) => {
         let list = ofertas.filter((o) => (g.todas || o.activa !== false) && g.match(o));
         if (soloRem) list = list.filter((o) => o.modalidad === "remoto");
+        if (oculta60 && g.id !== "aplicada") { const n = list.length; list = list.filter((o) => !aplicadaEmpresa60(o)); ocultas += n - list.length; }
         if (q) list = list.filter((o) => (o.empresa + " " + o.puesto).toLowerCase().includes(q));
         if (g.id === "aplicada") list.sort((a, b) => (b.aplicada_en || "").localeCompare(a.aplicada_en || ""));
         else list.sort((a, b) => RANGO(a) - RANGO(b) || fechaOf(b).localeCompare(fechaOf(a)) || (b.encontrado_en || "").localeCompare(a.encontrado_en || "") || a.empresa.localeCompare(b.empresa));
@@ -251,6 +257,8 @@
           ${list.length ? list.map((o) => fila(o, g)).join("") : `<div class="empty">Nada por aquí.</div>`}
         </details>`;
       }).join("");
+      $("oculta60").textContent = oculta60 ? `🙈 Ocultando ${ocultas} de empresas aplicadas (60 días) · mostrar` : "🙈 Ocultar empresas aplicadas (60 días)";
+      $("oculta60").classList.toggle("on", oculta60);
       actualizarBarra();
     }
 
@@ -335,6 +343,39 @@
     $("undo").addEventListener("click", () => { marcas.clear(); render(); });
     $("q").addEventListener("input", render);
     $("solo-remoto").addEventListener("change", render);
+
+    // 🙈 Ocultar ofertas de empresas a las que ya he aplicado en los últimos 60 días (se recuerda en este navegador).
+    let oculta60 = (() => { try { return localStorage.getItem("empleo.tabla.oculta60") === "1"; } catch { return false; } })();
+    const aplicadaEmpresa60 = (o) => EmpleoCand.aplicaciones(o, ofertas, candidaturas).some((y) => y.d <= 60);
+    $("oculta60").addEventListener("click", () => {
+      oculta60 = !oculta60;
+      try { localStorage.setItem("empleo.tabla.oculta60", oculta60 ? "1" : "0"); } catch {}
+      render();
+    });
+
+    // Si una oferta es LA MISMA que una ya aplicada (misma empresa y mismo puesto salvo ubicación, o mismo enlace),
+    // pasa a Aplicados y no se vuelve a ver en Pendientes.
+    const normT = (s) => (s || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+    const LUGAR = String.raw`(remote|remoto|hybrid|h[ií]brido|spain|españa|madrid|barcelona|emea|europe|eu|anywhere|worldwide|home[ -]based|m/f/d|m/w/d|f/m/d|h/m|en|in|or|o|y|and|,|/|-|\s)+`;
+    const puestoT = (s) => normT((s || "").toLowerCase().replace(new RegExp(String.raw`\(\s*` + LUGAR + String.raw`\)`, "g"), " ")
+      .replace(new RegExp(String.raw`(\s[|–-]\s*` + LUGAR + ")+$"), " "));
+    const urlT = (u) => (u || "").replace(/^https?:\/\/(www\.)?/, "").split("#")[0].replace(/[?&]utm_[^&]*/g, "").replace(/[\/?&]+$/, "").toLowerCase();
+    async function promoverAplicadas() {
+      const apl = ofertas.filter((o) => o.decision === "aplicada");
+      const urls = new Map();
+      for (const a of apl) for (const l of [...(a.enlaces || []), { url: a.url }]) urls.set(urlT(l.url), a);
+      const cambios = [];
+      for (const o of ofertas) {
+        if (o.decision === "aplicada" || o.activa === false) continue;
+        const pt = puestoT(o.puesto);
+        const m = apl.find((a) => EmpleoCand.mismaEmpresa(a.empresa, o.empresa) && pt.length >= 6 && puestoT(a.puesto) === pt)
+          || [...(o.enlaces || []), { url: o.url }].map((l) => urls.get(urlT(l.url))).find(Boolean);
+        if (m) { o.decision = "aplicada"; o.aplicada_en = m.aplicada_en; cambios.push(o); }
+      }
+      for (const o of cambios)
+        await client.from(T).update({ decision: "aplicada", aplicada_en: o.aplicada_en, decidido_en: new Date().toISOString() }).eq("id", o.id);
+      if (cambios.length) toast(`✅ ${cambios.length} oferta${cambios.length === 1 ? "" : "s"} que ya habías aplicado pasada${cambios.length === 1 ? "" : "s"} a Aplicados.`);
+    }
     $("reload").addEventListener("click", () => {
       if (marcas.size && !confirm("Tienes cambios sin guardar. ¿Recargar igualmente?")) return;
       marcas.clear(); load();
@@ -370,6 +411,7 @@
       if (of.error) { $("groups").textContent = "Error cargando ofertas: " + of.error.message; return; }
       ofertas = of.data || [];
       candidaturas = ca.data || [];
+      await promoverAplicadas();
       render();
     }
     load();
