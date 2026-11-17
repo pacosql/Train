@@ -2,8 +2,11 @@
 
 App para **elegir el logo de Ortografía10** (la app de ortografía de los
 Reels de «busca el error», hermana de Mates10 dentro de la «Serie 10»).
-Enseña las propuestas **de una en una**: 👎 No · 👍 Me gusta · 🔁 Otra ·
-⭐ Final, comentario escrito, dictado o grabado, y **Siguiente**. Cada
+Enseña las propuestas **de una en una** con una barra fija (← Atrás · 👎 ·
+🔁 · 👍 · ⭐ · Siguiente →): al decidir pasa sola a la siguiente y con Atrás
+se vuelve a ver lo ya decidido. Con el móvil apaisado o en pantalla ancha
+todo el diseño cabe en una pantalla sin scroll (comentar y el kit quedan
+debajo); en teclado, ← → y N / O / G / F. Cada
 propuesta se ve como:
 
 - icono de **App Store / Google Play**, avatar redondo (LinkedIn,
@@ -92,8 +95,8 @@ en cuanto haya algo. Así el usuario ve respuesta en 1-5 minutos.
    orientan la tanda. Lo que un comentario deje obsoleto → `retirado`.
    Comentarios usados → `estado: procesado`, `procesado_en`.
 6. **Rellenar hasta 30 por decidir**: ~60 % variaciones de lo que gusta,
-   ~40 % ideas nuevas. Si ya hay 30 (`uno_mas`), meter una sola idea
-   original.
+   ~40 % ideas nuevas. **Si ya hay 30 o más por decidir y no hay
+   comentarios ni 🔁, no se añade nada** (la cola no debe crecer sola).
 7. Escribir la tanda como un script de Python **fuera del repo** que
    importe `marca.py` y lo que haga falta de `tanda1.py`, generar las filas
    (`origen: "rutina"`), **mirar la hoja de `tools/hoja.js`**, corregir lo
