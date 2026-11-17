@@ -68,10 +68,13 @@ cambiar la app.
 
 1. `curl -s "$U/rest/v1/power_feedback?estado=eq.pendiente&borrado=eq.false&order=created_at" "${H[@]}"`
    Si no hay ninguna, sáltate esta sección.
+   **La rutina horaria NO tiene permiso de push al repo**: si hay alguna,
+   solo llama una vez a `fire_trigger` con `trig_01P1ztEuaEZYJWm3ihAu6reL`,
+   que avisa a la sesión de Claude que sí puede publicar, y no hagas nada
+   más con ellas. Los pasos siguientes son para esa sesión.
 2. Descarga y mira las capturas (`fotos`, mismo bucket `power-fotos`).
-3. Conecta el repo con la herramienta `add_repo` (owner `pacosql`, repo
-   `Train`, access `push`), clónalo como te indique y trabaja en él.
-   Lee `CLAUDE.md` y `power/README.md`.
+3. Trabaja en el repo `Train` (`git pull` de `main` antes). Lee
+   `CLAUDE.md` y `power/README.md`.
 4. Haz los cambios **solo dentro de `power/`** (y, si cambias tablas,
    solo tablas `power_` con la Management API si tienes
    `$SUPABASE_ACCESS_TOKEN`; si no lo tienes, dilo en la respuesta).
