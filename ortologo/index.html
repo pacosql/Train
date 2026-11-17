@@ -32,7 +32,7 @@
     html { -webkit-text-size-adjust: 100%; }
     body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font); font-size: 15px; line-height: 1.45; }
     button { font: inherit; color: inherit; cursor: pointer; }
-    .wrap { max-width: 640px; margin: 0 auto; padding: 0 16px 120px; }
+    .wrap { max-width: 640px; margin: 0 auto; padding: 0 16px 140px; }
 
     header { display: flex; align-items: center; gap: 10px; padding: 18px 0 6px; }
     header h1 { font-size: 1.35rem; font-weight: 800; letter-spacing: -0.02em; margin: 0; flex: 1; }
@@ -94,17 +94,48 @@
     .extras > div { display: flex; flex-direction: column; gap: 6px; }
     .peg { width: clamp(120px, 38vw, 160px); background: #e9e7e1; border-radius: 12px; padding: 12px; }
     .peg svg { display: block; width: 100%; height: auto; filter: drop-shadow(0 2px 3px rgba(0,0,0,.25)); }
-    .reel { width: clamp(84px, 25vw, 104px); aspect-ratio: 9 / 16; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; align-items: center; padding: 12% 8% 0; text-align: center; font-weight: 700; }
-    .reel .wm { height: 11px; margin: 0; padding: 0; border-radius: 0; box-shadow: none; }
-    .reel .pill { font-size: 6px; border-radius: 99px; padding: 2px 6px; margin-top: 12%; }
-    .reel .frase { font-size: 9px; line-height: 1.25; margin-top: 10%; }
+    .reel { --rw: clamp(84px, 25vw, 104px); width: var(--rw); aspect-ratio: 9 / 16; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; align-items: center; padding: calc(var(--rw) * 0.2) calc(var(--rw) * 0.08) 0; text-align: center; font-weight: 700; box-sizing: border-box; }
+    .reel .wm { height: calc(var(--rw) * 0.11); margin: 0; padding: 0; border-radius: 0; box-shadow: none; }
+    .reel .pill { font-size: calc(var(--rw) * 0.06); border-radius: 99px; padding: 0.3em 1em; margin-top: calc(var(--rw) * 0.1); }
+    .reel .frase { font-size: calc(var(--rw) * 0.09); line-height: 1.25; margin-top: calc(var(--rw) * 0.08); }
     .reel .frase mark { border-radius: 2px; padding: 0 1px; color: inherit; }
     .herm { width: 64px; height: 64px; border-radius: 22%; }
-    .paso { display: flex; align-items: center; gap: 8px; margin: 0 0 4px; }
-    .paso span { flex: 1; text-align: center; font-size: 0.85rem; color: var(--ink-2); }
-    .paso button { border: 1px solid var(--line); background: var(--bg); border-radius: 12px; padding: 9px 14px; font-size: 0.85rem; font-weight: 600; }
-    .paso button.primary { background: var(--ink); border-color: var(--ink); color: #fff; }
-    .paso button:disabled { opacity: 0.35; }
+    /* barra de decidir: siempre a mano (fija abajo en vertical, parte de la pantalla en horizontal) */
+    .st-bar { display: flex; gap: 6px; padding: 8px 10px calc(8px + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--line); background: var(--bg); }
+    .st-bar button { flex: 1; min-width: 0; border: 1px solid var(--line); background: var(--bg); border-radius: 12px; padding: 12px 2px; font-size: 0.9rem; font-weight: 600; white-space: nowrap; }
+    .st-bar button.primary { background: var(--ink); border-color: var(--ink); color: #fff; }
+    .st-bar button:disabled { opacity: 0.35; }
+    body:not(.rev) .st-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 10; }
+    @media (max-width: 599px) { .st-bar .lb { display: none; } .st-bar button { font-size: 1.15rem; } }
+    .cnt { font-size: 0.8rem; color: var(--ink-2); white-space: nowrap; }
+    .mini { border: 1px solid var(--line); background: var(--bg); border-radius: 10px; padding: 5px 10px; font-size: 0.78rem; font-weight: 600; white-space: nowrap; }
+
+    /* pantalla ancha / móvil en horizontal: todo el diseño en una pantalla, sin scroll */
+    body.rev .wrap { max-width: none; padding: 0 0 40px; display: flex; flex-direction: column; }
+    body.rev #view { order: -1; }
+    body.rev header, body.rev .tabs, body.rev .msg, body.rev .routines { padding-left: 16px; padding-right: 16px; }
+    body.rev .tabs { position: static; }
+    .stage-card { padding: 0; border: 0; }
+    .stage { height: 100vh; height: 100dvh; display: flex; flex-direction: column; --H: calc(100dvh - 44px - 66px - 20px); --S: min(calc(var(--H) - 22px), 20vw); }
+    .st-top { height: 44px; flex: none; display: flex; align-items: center; gap: 10px; padding: 0 14px; border-bottom: 1px solid var(--line); }
+    .st-top .num { font-size: 1.3rem; min-width: 0; }
+    .st-top .titulo { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .st-main { flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; gap: clamp(10px, 1.6vw, 30px); padding: 10px 14px; overflow: hidden; }
+    .st-main .ic.sq { width: var(--S); }
+    .st-main .ic.ci { width: calc(var(--S) * 0.62); }
+    .st-main small { color: var(--ink-2); font-size: 0.68rem; white-space: nowrap; }
+    .st-favs { display: flex; flex-direction: column; gap: 8px; align-items: center; flex: none; }
+    .st-favs .herm { width: 44px; height: 44px; }
+    .st-mid { flex: 1; min-width: 0; max-width: 560px; display: flex; flex-direction: column; justify-content: center; }
+    .st-mid .wm { margin: 0; height: clamp(46px, 9vw, 120px); padding: clamp(12px, 2.4vw, 34px) 14px; }
+    .st-mid .concepto, .st-mid .revnota span { font-size: 0.76rem; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .st-mid .revnota { padding: 6px 8px; margin-top: 8px; }
+    @media (max-height: 520px) { .st-mid .concepto, .st-mid .revnota span { -webkit-line-clamp: 2; } }
+    .st-main .peg { flex: none; width: auto; height: min(var(--H), 22vw); padding: 8px; }
+    .st-main .peg svg { height: 100%; width: auto; }
+    .st-main .reel { flex: none; --rw: calc(min(var(--H), 21vw) * 0.5625); }
+    .stage .st-bar { flex: none; height: 66px; }
+    .st-below { max-width: 640px; margin: 0 auto; padding: 16px; }
     .a4 { width: 100%; margin-top: 10px; border: 1px solid var(--ink); background: var(--bg); border-radius: 12px; padding: 11px; font-size: 0.9rem; font-weight: 700; }
     .a4:disabled { opacity: 0.5; }
     .wm svg { height: 100%; width: auto; max-width: 100%; display: block; }
@@ -116,10 +147,10 @@
 
     .acts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 12px; }
     .acts button { border: 1px solid var(--line); background: var(--bg); border-radius: 12px; padding: 10px 2px; font-size: 0.8rem; font-weight: 600; white-space: nowrap; }
-    .acts button.on[data-d="gusta"] { background: var(--good); border-color: var(--good); color: #fff; }
-    .acts button.on[data-d="no_gusta"] { background: var(--bad); border-color: var(--bad); color: #fff; }
-    .acts button.on[data-d="definitivo"] { background: var(--gold); border-color: var(--gold); color: #fff; }
-    .acts button.on[data-d="revisar"] { background: var(--blue); border-color: var(--blue); color: #fff; }
+    button.on[data-d="gusta"] { background: var(--good); border-color: var(--good); color: #fff; }
+    button.on[data-d="no_gusta"] { background: var(--bad); border-color: var(--bad); color: #fff; }
+    button.on[data-d="definitivo"] { background: var(--gold); border-color: var(--gold); color: #fff; }
+    button.on[data-d="revisar"] { background: var(--blue); border-color: var(--blue); color: #fff; }
 
     details.more { margin-top: 10px; }
     details.more > summary { font-size: 0.85rem; font-weight: 600; color: var(--ink-2); cursor: pointer; list-style: none; padding: 4px 0; }
@@ -165,7 +196,7 @@
     .routines { font-size: 0.72rem; color: var(--ink-2); margin-top: 28px; }
     .build-id { font-size: 0.7rem; color: #b5b3ac; text-align: center; margin-top: 18px; }
 
-    .toast { position: fixed; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 140%); background: var(--ink); color: #fff; border-radius: 14px; padding: 10px 12px 10px 16px; display: flex; gap: 12px; align-items: center; font-size: 0.88rem; transition: transform 0.25s, visibility 0.25s; visibility: hidden; max-width: calc(100% - 32px); z-index: 20; }
+    .toast { position: fixed; left: 50%; bottom: calc(84px + env(safe-area-inset-bottom, 0px)); transform: translate(-50%, 240%); background: var(--ink); color: #fff; border-radius: 14px; padding: 10px 12px 10px 16px; display: flex; gap: 12px; align-items: center; font-size: 0.88rem; transition: transform 0.25s, visibility 0.25s; visibility: hidden; max-width: calc(100% - 32px); z-index: 20; }
     .toast.show { transform: translate(-50%, 0); visibility: visible; }
     .toast button { background: #fff; color: var(--ink); border: 0; border-radius: 10px; padding: 6px 10px; font-weight: 600; font-size: 0.82rem; }
     .toast button:empty { display: none; }
@@ -212,7 +243,17 @@
     let disenos = [];
     let comentarios = [];
     let rutinas = [];
-    const state = { tab: "pendiente", detail: null, idx: 0 };
+    const state = { tab: "pendiente", detail: null, idx: 0, queue: [] };
+    // Cola de revisión: los pendientes en orden. Al decidir se pasa al siguiente,
+    // pero lo ya decidido sigue en la cola para poder volver atrás y verlo.
+    const WIDE = window.matchMedia("(orientation: landscape) and (min-width: 600px)");
+    const inQueue = () => state.tab === "pendiente" && !state.detail;
+    function buildQueue(reset) {
+      const vistos = reset ? [] : state.queue.slice(0, state.idx).filter((id) => byId(id));
+      const pend = inTab("pendiente").map((d) => d.id).filter((id) => !vistos.includes(id));
+      state.queue = vistos.concat(pend); state.idx = vistos.length;
+    }
+    function go(n) { resetRec(); stopDictate(); state.idx = Math.max(0, Math.min(state.idx + n, state.queue.length)); render(); window.scrollTo(0, 0); }
     // Última visita: lo creado desde entonces lleva la etiqueta «nuevo».
     const VISIT_KEY = "ortologo.ultimaVisita";
     let prevVisit = null;
@@ -346,6 +387,7 @@
       prefs = pr.error ? null : pr.data;
       loadFonts();
       renderRoutines();
+      buildQueue(false);
     }
     const byId = (id) => disenos.find((d) => d.id === id);
     const commentsOf = (id) => comentarios.filter((c) => c.diseno_id === id);
@@ -370,7 +412,45 @@
     }
 
     // ---------- tarjeta ----------
-    function cardHTML(d) {
+    function barHTML(d) {
+      const b = (k, e, t) => `<button type="button" data-d="${k}" class="${d && d.decision === k ? "on" : ""}" ${d ? "" : "disabled"} title="${t}">${e}<span class="lb"> ${t}</span></button>`;
+      return `<div class="st-bar"><button type="button" id="prev" ${state.idx ? "" : "disabled"} title="Atrás">←<span class="lb"> Atrás</span></button>${b("no_gusta", "👎", "No")}${b("revisar", "🔁", "Otra")}${b("gusta", "👍", "Me gusta")}${b("definitivo", "⭐", "Final")}<button type="button" id="next" class="primary" ${d ? "" : "disabled"} title="Siguiente"><span class="lb">Siguiente </span>→</button></div>`;
+    }
+    const panelsHTML = (d, nc) => `<details class="more" data-panel="coment">
+          <summary>💬 Comentar${nc ? ` (${nc}${pendingComments(d.id) ? `, ${pendingComments(d.id)} por usar` : ""})` : ""}</summary>
+          <div class="panel" data-comment-box></div>
+        </details>
+        <details class="more" data-panel="kit">
+          <summary>📐 Kit y guía de marca</summary>
+          <div class="panel kit" data-kit-box></div>
+        </details>`;
+    // Horizontal: todo el diseño en una pantalla; comentar y el kit quedan debajo.
+    function stageHTML(d, below) {
+      const c = C(d), padre = d.padre_id && byId(d.padre_id);
+      return `<article class="card stage-card" id="d-${d.numero}" data-id="${d.id}">
+        <section class="stage">
+          <div class="st-top">
+            <span class="num">${d.numero}</span><span class="titulo">${esc(d.titulo)}</span>
+            ${d.version > 1 ? `<span class="badge">v${d.version}${padre ? ` del nº ${padre.numero}` : ""}</span>` : ""}
+            ${isNew(d) && !d.decision ? `<span class="badge new">nuevo</span>` : ""}
+            <span class="cnt">${state.idx + 1} / ${state.queue.length}</span>
+            <button type="button" class="mini" data-a4>⬇️ A4</button>
+            <button type="button" class="mini" data-com>💬 Comentar ↓</button>
+          </div>
+          <div class="st-main">
+            <div class="ic-col">${icon(d, "sq")}<small>App Store · Google Play</small></div>
+            <div class="ic-col">${icon(d, "ci")}<small>Avatar</small></div>
+            <div class="st-favs">${icon(d, "f40", true)}${icon(d, "f20", true)}${d.svg_hermano ? `<div class="ic herm" title="Hermano: Mates10" style="background:${esc(c.icono_fondo)};color:${esc(c.icono_tinta)};--acento:${esc(c.acento)};--fondo:${esc(c.icono_fondo)}">${safeSvg(d.svg_hermano)}</div><small>Mates10</small>` : ""}</div>
+            <div class="st-mid">${wordmark(d)}${d.revision_nota ? `<p class="revnota"><span>${esc(d.revision_nota)}</span></p>` : ""}${d.concepto ? `<p class="concepto">${esc(d.concepto)}</p>` : ""}</div>
+            ${d.svg_pegatina ? `<div class="peg">${safeSvg(d.svg_pegatina)}</div>` : ""}
+            ${reel(d)}
+          </div>
+          ${barHTML(d)}
+        </section>
+        <div class="st-below">${panelsHTML(d, commentsOf(d.id).length)}${below}</div>
+      </article>`;
+    }
+    function cardHTML(d, cola) {
       const nc = commentsOf(d.id).length;
       const padre = d.padre_id && byId(d.padre_id);
       const hijos = disenos.filter((x) => x.padre_id === d.id);
@@ -400,24 +480,19 @@
         ${padre ? `<p class="padre">Viene del <a href="#" data-go="${padre.id}">nº ${padre.numero}</a></p>` : ""}
         ${hijos.length ? `<p class="padre">Versiones nuevas: ${hijos.map((h) => `<a href="#" data-go="${h.id}">nº ${h.numero}</a>`).join(", ")}</p>` : ""}
         ${d.concepto ? `<p class="concepto">${esc(d.concepto)}</p>` : ""}
-        <div class="acts">
+        ${cola ? barHTML(d) : `<div class="acts">
           ${["no_gusta", "gusta", "revisar", "definitivo"].map((k) => `<button type="button" data-d="${k}" class="${d.decision === k ? "on" : ""}">${DECISION_LABEL[k]}</button>`).join("")}
-        </div>
+        </div>`}
         <button type="button" class="a4" data-a4>⬇️ Descargar A4 para imprimir (PDF)</button>
-        <details class="more" data-panel="coment">
-          <summary>💬 Comentar${nc ? ` (${nc}${pendingComments(d.id) ? `, ${pendingComments(d.id)} por usar` : ""})` : ""}</summary>
-          <div class="panel" data-comment-box></div>
-        </details>
-        <details class="more" data-panel="kit">
-          <summary>📐 Kit y guía de marca</summary>
-          <div class="panel kit" data-kit-box></div>
-        </details>
+        ${panelsHTML(d, nc)}
       </article>`;
     }
 
     function wireCard(card) {
       const d = byId(card.dataset.id);
-      card.querySelectorAll(".acts button").forEach((b) => b.onclick = () => decide(d, d.decision === b.dataset.d ? null : b.dataset.d, card));
+      const com = card.querySelector("[data-com]");
+      if (com) com.onclick = () => card.querySelector(".st-below").scrollIntoView({ behavior: "smooth" });
+      card.querySelectorAll("button[data-d]").forEach((b) => b.onclick = () => decide(d, d.decision === b.dataset.d ? null : b.dataset.d, card));
       card.querySelector("[data-a4]").onclick = (e) => exportA4(d, e.currentTarget);
       card.querySelectorAll("a[data-go]").forEach((a) => a.onclick = (e) => { e.preventDefault(); openDetail(a.dataset.go); });
       card.querySelector('[data-panel="coment"]').addEventListener("toggle", (e) => { if (e.target.open) renderCommentBox(card, d); else if (rec.card === card) resetRec(); });
@@ -430,11 +505,15 @@
       const prev = { decision: d.decision, decidido_en: d.decidido_en };
       const patch = { decision, decidido_en: decision ? new Date().toISOString() : null };
       Object.assign(d, patch);
-      const leaves = state.tab !== "todos" && !state.detail && (state.tab === "pendiente" ? !!decision : decision !== state.tab);
+      const cola = inQueue();
+      const leaves = !cola && state.tab !== "todos" && !state.detail && decision !== state.tab;
       if (leaves && card) { card.classList.add("fading"); setTimeout(render, 250); } else render();
+      // en la cola: se ve un instante lo marcado y pasa solo al siguiente
+      if (cola && decision) setTimeout(() => { if (inQueue() && state.queue[state.idx] === d.id) go(1); }, 220);
       const { error } = await client.from(T_DISENOS).update(patch).eq("id", d.id);
       if (error) { Object.assign(d, prev); render(); showMsg("No se pudo guardar: " + error.message); return; }
       showMsg("");
+      if (cola) return; // en la cola se deshace volviendo atrás
       const txt = decision === "revisar" ? `🔁 Nº ${d.numero}: la rutina hará otra versión con tus comentarios` : decision ? `${DECISION_LABEL[decision]} · nº ${d.numero}` : `Nº ${d.numero} vuelve a Por decidir`;
       showToast(txt, async () => {
         Object.assign(d, prev); render();
@@ -778,7 +857,7 @@
 
     // ---------- vistas ----------
     function openDetail(id) { resetRec(); stopDictate(); state.detail = id; render(); window.scrollTo(0, 0); }
-    function render() { renderView(); fitSvgs(el("view")); }
+    function render() { document.body.classList.toggle("rev", inQueue() && WIDE.matches); renderView(); fitSvgs(el("view")); }
     function renderView() {
       counts();
       document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("active", !state.detail && t.dataset.tab === state.tab));
@@ -812,17 +891,23 @@
           ${prefs.no_gusta ? `<p><b>No te gusta:</b> ${esc(prefs.no_gusta)}</p>` : ""}
           ${prefs.explorando ? `<p><b>Explorando ahora:</b> ${esc(prefs.explorando)}</p>` : ""}
           <p class="helper">Actualizado ${prefs.actualizado_en ? ago(prefs.actualizado_en) : ""}. Si algo no es así, dilo en «Pide algo general».</p></div></details>` : "";
-      // Por decidir va de uno en uno: decides (o pasas) y sale el siguiente.
-      const uno = state.tab === "pendiente" && list.length;
-      if (uno) state.idx = Math.max(0, Math.min(state.idx || 0, list.length - 1));
-      const paso = uno ? `<div class="paso"><button type="button" id="prev" ${state.idx ? "" : "disabled"}>←</button><span>${state.idx + 1} de ${list.length} por decidir</span><button type="button" class="primary" id="next" ${state.idx < list.length - 1 ? "" : "disabled"}>Siguiente →</button></div>` : "";
-      view.innerHTML = learned + general + `<p class="eyebrow">${intro}</p>` + paso + (list.length ? (uno ? cardHTML(list[state.idx]) : list.map(cardHTML).join("")) : emptyHTML());
-      view.querySelectorAll(".card").forEach(wireCard);
-      if (uno) {
-        const go = (n) => { resetRec(); stopDictate(); state.idx += n; render(); window.scrollTo(0, 0); };
-        el("prev").onclick = () => go(-1); el("next").onclick = () => go(1);
-        const card = view.querySelector(".card");
-        card.querySelector('[data-panel="coment"]').open = true;
+      // Por decidir va de uno en uno, con la cola de revisión.
+      if (state.tab === "pendiente") {
+        const d = byId(state.queue[state.idx]);
+        if (!d) {
+          view.innerHTML = `<div class="empty"><div class="big">✅</div><div>${state.queue.length ? "Has visto todos los que había." : "No queda nada por decidir."}</div><p class="helper">Comenta alguno o pide algo general y la rutina te traerá propuestas nuevas.</p></div>` + learned + general + barHTML(null);
+          el("prev").onclick = () => go(-1);
+        } else {
+          view.innerHTML = WIDE.matches ? stageHTML(d, learned + general)
+            : learned + general + `<p class="eyebrow">${intro} <span class="cnt">${state.idx + 1} de ${state.queue.length}</span></p>` + cardHTML(d, true);
+          const card = view.querySelector(".card");
+          wireCard(card);
+          el("prev").onclick = () => go(-1); el("next").onclick = () => go(1);
+          card.querySelector('[data-panel="coment"]').open = true;
+        }
+      } else {
+        view.innerHTML = `<p class="eyebrow">${intro}</p>` + (list.length ? list.map((d) => cardHTML(d)).join("") : emptyHTML());
+        view.querySelectorAll(".card").forEach(wireCard);
       }
       const g = el("general");
       if (g) g.addEventListener("toggle", () => { if (g.open) renderCommentBox(g, null); });
@@ -852,7 +937,16 @@
     }
 
     async function init() {
-      document.querySelectorAll(".tab").forEach((t) => t.addEventListener("click", () => { resetRec(); stopDictate(); state.tab = t.dataset.tab; state.detail = null; render(); window.scrollTo(0, 0); }));
+      document.querySelectorAll(".tab").forEach((t) => t.addEventListener("click", () => { resetRec(); stopDictate(); state.tab = t.dataset.tab; state.detail = null; if (state.tab === "pendiente") buildQueue(true); render(); window.scrollTo(0, 0); }));
+      WIDE.addEventListener("change", () => { resetRec(); stopDictate(); render(); });
+      // teclado (pantalla grande): ← → para moverse, N no · O otra · G me gusta · F final
+      document.addEventListener("keydown", (e) => {
+        if (!inQueue() || e.metaKey || e.ctrlKey || e.altKey || /^(TEXTAREA|INPUT|SELECT)$/.test(e.target.tagName)) return;
+        if (e.key === "ArrowLeft") return go(-1);
+        if (e.key === "ArrowRight") return go(1);
+        const k = { n: "no_gusta", o: "revisar", g: "gusta", f: "definitivo" }[e.key.toLowerCase()], d = byId(state.queue[state.idx]);
+        if (k && d) decide(d, d.decision === k ? null : k, null);
+      });
       el("btn-refresh").addEventListener("click", (e) => refresh(e.currentTarget));
       if (!url || !anonKey) { showMsg("Faltan credenciales en config.js"); return; }
       client = supabase.createClient(url, anonKey);

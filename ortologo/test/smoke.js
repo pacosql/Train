@@ -1,6 +1,6 @@
 // Prueba de humo de Ortologo en Chromium contra el Supabase real:
 //   node ortologo/test/smoke.js
-// Vota «me gusta» en la primera tarjeta, comprueba que se guarda, lo deshace
+// Vota «me gusta» en la primera tarjeta, comprueba que se guarda y avanza, vuelve atrás y lo quita
 // (dejando los datos como estaban), abre comentarios y kit y exporta un PNG.
 const fs = require("fs"), path = require("path"), http = require("http"), os = require("os");
 const { execSync } = require("child_process");
@@ -38,10 +38,12 @@ const server = http.createServer((req, res) => {
   console.log("por decidir:", n, "· total:", await page.textContent("#n-todos"));
   const card = page.locator("#view .card").first();
   const id = await card.getAttribute("data-id"), num = await card.locator(".num").textContent();
-  await card.locator('.acts button[data-d="gusta"]').click();
+  await card.locator('button[data-d="gusta"]').click();
   await page.waitForTimeout(1500);
   if (sb(`ortologo_disenos?select=decision&id=eq.${id}`)[0].decision !== "gusta") throw new Error("no se guardó el me gusta");
-  await page.click("#toast-undo");
+  await page.click("#prev"); // tras decidir pasa al siguiente: se vuelve atrás y se quita el voto
+  await page.waitForTimeout(300);
+  await page.click('#view .card button[data-d="gusta"]');
   await page.waitForTimeout(1500);
   if (sb(`ortologo_disenos?select=decision&id=eq.${id}`)[0].decision !== null) throw new Error("no se deshizo");
   console.log(`me gusta + deshacer OK en nº ${num}`);
