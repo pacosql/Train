@@ -88,7 +88,13 @@
     .eaten { display: flex; align-items: center; gap: 10px; padding: 7px 0; border-top: 1px solid var(--border); }
     .eaten:first-child { border-top: 0; }
     .eaten .em { font-size: 1.5rem; width: 32px; text-align: center; }
-    .eaten .h { font-size: 0.72rem; color: var(--muted); }
+    .eaten .h { font-size: 0.72rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .eaten.open .h, .item.open .muted.small { white-space: normal; }
+    .eaten .tt, .item .tt { font-size: 0.95rem; font-weight: 600; }
+    .eaten .grow, .item .grow { min-width: 0; }
+    .item .muted.small { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .otrodia { background: var(--amber); color: #fff; border-radius: 12px; padding: 10px 12px; margin-bottom: 10px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+    .otrodia button { background: #fff; color: #000; border: 0; padding: 6px 10px; font-weight: 700; }
     .addbig { width: 100%; font-size: 1.1rem; padding: 14px; margin: 4px 0 12px; }
     .toast button { background: none; border: 0; color: #7fe0b0; font-weight: 800; padding: 0 0 0 12px; }
     .toast { position: fixed; left: 50%; bottom: 90px; transform: translateX(-50%); background: #222; color: #fff; padding: 10px 16px; border-radius: 12px; font-size: .9rem; z-index: 9; display: none; }
@@ -115,11 +121,13 @@
     <div class="card" id="c-comido"></div>
     <div class="card" id="c-semana"></div>
     <div class="card" id="c-grafico"><h2>📉 Peso vs objetivo</h2><div id="grafico"></div></div>
+    <div class="card" id="c-real"></div>
     <div class="card" id="c-gasto"></div>
   </section>
 
   <!-- ===================== COMIDA ===================== -->
   <section class="view" id="v-comida">
+    <div class="otrodia" id="otro-c" style="display:none"></div>
     <div class="daynav"><button data-dd="-1">‹</button><div class="lbl" id="dia-lbl-c"></div><button data-dd="1">›</button></div>
     <div class="card">
       <h2>👆 Toca para sumar</h2>
@@ -150,6 +158,7 @@
 
   <!-- ===================== EJERCICIO ===================== -->
   <section class="view" id="v-ejercicio">
+    <div class="otrodia" id="otro-e" style="display:none"></div>
     <div class="daynav"><button data-dd="-1">‹</button><div class="lbl" id="dia-lbl-e"></div><button data-dd="1">›</button></div>
     <div class="card">
       <h2>🎾 Ejercicio rápido</h2>
@@ -353,6 +362,12 @@
   // ---------- render ----------
   function render() {
     if (!A) return;
+    if (dia < A.fecha_inicio) dia = A.fecha_inicio;
+    const otro = dia !== iso(new Date());
+    for (const id of ["otro-c", "otro-e"]) {
+      $(id).style.display = otro ? "flex" : "none";
+      if (otro) $(id).innerHTML = `<span class="grow">⚠️ Estás apuntando en ${diaLbl(dia)}, no hoy</span><button data-hoy="1">Volver a hoy</button>`;
+    }
     renderResumen(); renderComida(); renderEjercicio(); renderPeso(); renderAjustes(); renderFeedback();
   }
 
@@ -412,9 +427,38 @@
       <tr><td>Ejercicio apuntado esta semana</td><td></td><td><b>${fmt(ejSemana)}</b></td></tr></table>
       <div class="muted small" style="margin-top:6px">Calculado con Mifflin-St Jeor para ${kg.toFixed(1)} kg, ${A.altura_cm} cm, ${A.edad} años (${A.sexo}). Cámbialo en ⚙️ Ajustes. 1 kg de grasa ≈ ${fmt(KCAL_KG)} kcal → para ${A.objetivo_kg_semana} kg/sem hace falta un déficit de ${fmt(P.deficitSemana)} kcal/sem.</div>`;
 
+    $("c-real").innerHTML = gastoRealHtml();
     const hoyL = delDia(comidas, hoy);
     $("c-comido").innerHTML = `<h2>🍽️ Hoy has comido · ${fmt(comido)} kcal</h2>` + comidoHtml(hoyL);
     renderGrafico();
+  }
+
+  // Gasto real a partir de la báscula: lo que comes + lo que bajas × 7.700 = lo que gastas.
+  // Usa la tendencia (recta de regresión) de todas las pesadas, no un día suelto.
+  function gastoRealHtml() {
+    const hoy = iso(new Date()), ini = A.fecha_inicio;
+    const D = diffDays(hoy, ini); // días cerrados (hasta ayer)
+    const v = pesos.filter((x) => x.kg != null && x.fecha >= ini);
+    const head = `<h2>📏 Tu gasto real (según la báscula)</h2>`;
+    if (D < 1 || v.length < 2) return head + `<div class="muted small">Pésate cada día: en cuanto haya unos días de datos calculo cuánto gastas de verdad.</div>`;
+    const xs = v.map((p) => diffDays(p.fecha, ini)), ys = v.map((p) => Number(p.kg));
+    const mx = xs.reduce((a, b) => a + b, 0) / xs.length, my = ys.reduce((a, b) => a + b, 0) / ys.length;
+    const den = xs.reduce((a, x) => a + (x - mx) ** 2, 0);
+    const pend = den ? xs.reduce((a, x, i) => a + (x - mx) * (ys[i] - my), 0) / den : 0; // kg/día
+    let comido = 0, pendientes = 0;
+    for (let f = ini; f < hoy; f = addDays(f, 1)) { const c = delDia(comidas, f); comido += sumK(c); pendientes += c.filter((x) => x.kcal == null).length; }
+    if (D < 7) return head + `<div class="muted small">Llevas ${D} día${D > 1 ? "s" : ""} pesándote. Al principio la báscula baja o sube sobre todo por agua (deshincharse del finde, sal, hidratos), así que calcularlo ahora daría números absurdos. <b>A partir del día 7</b> (${diaLbl(addDays(ini, 7)).replace(/^(Hoy|Ayer) · /, "")}) te enseño aquí cuánto gastas de verdad y cuánto comer para perder ${A.objetivo_kg_semana} kg/sem.</div>
+      <div class="bar"><div style="width:${(D / 7) * 100}%"></div></div>`;
+    const bajado = -pend * D;
+    const gasto = (comido + bajado * KCAL_KG) / D;
+    const P = plan();
+    const ejMedio = sumK(ejercicios.filter((x) => x.fecha >= ini && x.fecha < hoy)) / D;
+    const para = gasto - KCAL_KG * Number(A.objetivo_kg_semana) / 7;
+    const fiable = D >= 14 ? "" : `<div class="warn">⚠️ Con solo ${D} día${D > 1 ? "s" : ""} de datos, esto es sobre todo agua (deshincharse del finde, sal, hidratos), no grasa. Empieza a ser fiable a partir de ~2 semanas pesándote cada día.</div>`;
+    return head + `<div class="row"><div class="grow"><div class="big">${fmt(gasto)}</div><div class="muted">kcal/día que gastas de verdad</div></div>
+      <div class="muted small" style="text-align:right">Estimado por fórmula:<br>${fmt(P.tdee + ejMedio)}/día<br>(${fmt(P.tdee)} + ${fmt(ejMedio)} ejercicio)</div></div>
+      <div class="muted small" style="margin-top:6px">En ${D} día${D > 1 ? "s" : ""} has comido ${fmt(comido)} kcal y la tendencia de tu peso baja ${bajado.toFixed(1)} kg (${(-pend * 7).toFixed(1)} kg/sem).
+      Para perder ${A.objetivo_kg_semana} kg/sem, de media: <b>${fmt(para)} kcal/día</b>.${pendientes ? ` ⏳ ${pendientes} comida(s) sin calcular.` : ""}</div>${fiable}`;
   }
 
   function renderGrafico() {
@@ -488,7 +532,7 @@
   const CAFE = CATALOGO[0];
   const CAFE_DETALLE = "Leche desnatada Mercadona 115 g (≈111 ml × 34 kcal/100 ml = 38) + café 2 ≈ 40";
   const EMOJIS = [["caf", "☕"], ["leche", "🥛"], ["naranj", "🍊"], ["manzan", "🍎"], ["plátano", "🍌"], ["platano", "🍌"], ["tostad", "🍞"], ["pan", "🥖"],
-    ["yogur", "🥣"], ["zumo", "🧃"], ["galleta", "🍪"], ["fruto", "🥜"], ["ensalad", "🥗"], ["lenteja", "🍲"], ["garbanzo", "🍲"], ["pollo", "🍗"], ["pescado", "🐟"],
+    ["yogur", "🥣"], ["zumo", "🧃"], ["galleta", "🍪"], ["fruto", "🥜"], ["ensalad", "🥗"], ["lenteja", "🍲"], ["garbanzo", "🍲"], ["pollo", "🍗"], ["pescado", "🐟"], ["dorada", "🐟"], ["lubina", "🐟"], ["merluza", "🐟"], ["salmón", "🐟"], ["atún", "🐟"], ["mayonesa", "🥫"], ["huevo", "🍳"],
     ["pasta", "🍝"], ["arroz", "🥘"], ["paella", "🥘"], ["filete", "🥩"], ["carne", "🥩"], ["huevo", "🍳"], ["tortilla", "🍳"], ["pizza", "🍕"], ["hamburg", "🍔"],
     ["cerveza", "🍺"], ["vino", "🍷"], ["refresco", "🥤"], ["coca", "🥤"], ["chocolate", "🍫"], ["sándwich", "🥪"], ["bocadillo", "🥖"], ["queso", "🧀"], ["jamón", "🥓"],
     ["fresa", "🍓"], ["uva", "🍇"], ["sandía", "🍉"], ["melón", "🍈"], ["kiwi", "🥝"], ["agua", "💧"], ["patata", "🥔"], ["verdura", "🥦"]];
@@ -502,11 +546,12 @@
   function sugeridos() {
     const h = new Date().getHours(), cuenta = new Map();
     for (const x of comidas) {
-      if (x.kcal == null || !x.texto || x.texto.length > 45) continue;
+      const nom = tit(x);
+      if (x.kcal == null || !x.kcal || nom.endsWith("…") || nom.length > 45) continue;
       const hh = new Date(x.created_at).getHours();
       if (Math.abs(hh - h) > 2) continue;
-      const k = norm(x.texto), prev = cuenta.get(k);
-      cuenta.set(k, { n: x.texto, k: x.kcal, e: emojiDe(x.texto), c: (prev ? prev.c : 0) + 1 });
+      const k = norm(nom), prev = cuenta.get(k);
+      cuenta.set(k, { n: nom, k: x.kcal, e: emojiDe(nom), c: (prev ? prev.c : 0) + 1 });
     }
     const hist = [...cuenta.values()].sort((a, b) => b.c - a.c);
     const vistos = new Set(hist.map((x) => norm(x.n)));
@@ -519,15 +564,22 @@
   }
   let tilesActuales = [];
   function tileHtml(it) {
-    const hoyN = delDia(comidas, dia).filter((x) => norm(x.texto) === norm(it.n)).length;
+    const hoyN = delDia(comidas, dia).filter((x) => norm(tit(x)) === norm(it.n)).length;
     const i = tilesActuales.push(it) - 1;
     return `<button class="tile" data-tile="${i}">${hoyN ? `<span class="ct">×${hoyN}</span>` : ""}<span class="em">${it.e}</span><span class="nm">${esc(it.n)}</span><span class="kc">${it.k} kcal</span></button>`;
+  }
+  // Título corto: lo pone la rutina (titulo); si no, el texto si es corto, o las primeras palabras.
+  function tit(x) {
+    if (x.titulo) return x.titulo;
+    const t = (x.texto || "").trim();
+    if (!t) return x.fotos && x.fotos.length ? "Foto" : "—";
+    return t.length <= 40 ? t : t.split(/\s+/).slice(0, 5).join(" ") + "…";
   }
   function horaDe(x) { const d = new Date(x.created_at); return `${d.getHours()}:${String(d.getMinutes()).padStart(2, "0")}`; }
   function comidoHtml(lista) {
     if (!lista.length) return `<div class="muted">Todavía nada. Dale a ＋ Añadir comida.</div>`;
-    return lista.map((x) => `<div class="eaten"><span class="em">${x.fotos && x.fotos.length && !x.texto ? "📷" : emojiDe(x.texto)}</span>
-      <div class="grow">${esc(x.texto || "Foto")}<div class="h">${horaDe(x)}${x.detalle ? " · " + esc(x.detalle) : ""}</div></div>
+    return lista.map((x) => `<div class="eaten"><span class="em">${x.kcal == null && !x.titulo && x.fotos && x.fotos.length ? "📷" : emojiDe(tit(x))}</span>
+      <div class="grow"><div class="tt">${esc(tit(x))}</div><div class="h">${horaDe(x)}${x.detalle ? " · " + esc(x.detalle) : ""}</div></div>
       <div class="k">${x.kcal == null ? `<span class="pend">⏳</span>` : fmt(x.kcal)}</div>
       <button class="x" data-del="comidas:${x.id}">✕</button></div>`).join("");
   }
@@ -546,7 +598,7 @@
     $("c-lista").innerHTML = comidoHtml(lista);
   }
   function itemHtml(tabla) {
-    return (x) => `<div class="item"><div class="grow">${esc(x.texto || (x.fotos.length ? "📷 Foto" : ""))}
+    return (x) => `<div class="item"><div class="grow"><div class="tt">${esc(tit(x))}</div>
       ${x.detalle ? `<div class="muted small">${esc(x.detalle)}</div>` : ""}
       ${x.fotos && x.fotos.length ? `<div class="thumbs">${x.fotos.map((p) => `<a href="${fotoUrl(p)}" target="_blank"><img src="${fotoUrl(p)}" loading="lazy"/></a>`).join("")}</div>` : ""}</div>
       <div class="k">${x.kcal == null ? `<span class="pend">⏳</span>` : fmt(x.kcal)}</div>
@@ -675,10 +727,18 @@
   }
 
   document.addEventListener("click", async (ev) => {
+    const row = ev.target.closest(".eaten, .item");
+    if (row && !ev.target.closest("button, a")) { row.classList.toggle("open"); return; }
     const t = ev.target.closest("button"); if (!t) return;
     if (t.dataset.v) { document.querySelectorAll("nav.tabs button").forEach((b) => b.classList.toggle("act", b.dataset.v === t.dataset.v));
       document.querySelectorAll(".view").forEach((v) => v.classList.toggle("act", v.id === "v-" + t.dataset.v)); window.scrollTo(0, 0); return; }
-    if (t.dataset.dd) { const n = addDays(dia, Number(t.dataset.dd)); if (n <= iso(new Date())) { dia = n; render(); } return; }
+    if (t.dataset.dd) {
+      const n = addDays(dia, Number(t.dataset.dd));
+      if (n > iso(new Date())) return;
+      if (n < A.fecha_inicio) { toast("Empezaste el " + diaLbl(A.fecha_inicio).replace(/^(Hoy|Ayer) · /, "") + ": no hay días antes"); return; }
+      dia = n; render(); return;
+    }
+    if (t.dataset.hoy) { dia = iso(new Date()); render(); return; }
     if (t.dataset.m) { momento = t.dataset.m; renderComida(); return; }
     if (t.dataset.d) { deporte = Number(t.dataset.d); renderEjercicio(); return; }
     if (t.dataset.del) { borrar(t.dataset.del); return; }
@@ -715,7 +775,7 @@
   $("e-rapido").onclick = async () => {
     const [n, met] = DEPORTES[deporte], min = Number($("e-min").value) || 0;
     if (!min) return;
-    const r = await sb.from(T("ejercicios")).insert({ fecha: dia, texto: `${n} · ${min} min`, minutos: min, kcal: kcalDeporte(met, min), estado: "procesado",
+    const r = await sb.from(T("ejercicios")).insert({ fecha: dia, texto: `${n} · ${min} min`, titulo: `${n} · ${min} min`, minutos: min, kcal: kcalDeporte(met, min), estado: "procesado",
       detalle: `Estimado con MET ${met} y ${pesoActual().toFixed(0)} kg` }).select().single();
     if (r.error) { toast("Error: " + r.error.message); return; }
     ejercicios.push(r.data); toast("Ejercicio añadido ✓"); render();
@@ -750,12 +810,12 @@
   async function sumar(it) {
       const mom = dia === iso(new Date()) ? momentoActual() : momento;
       const fecha = document.querySelector("#v-resumen.act") ? iso(new Date()) : dia;
-      const row = { fecha, momento: mom, texto: it.n, kcal: it.k, origen: "rapida", estado: "procesado" };
+      const row = { fecha, momento: mom, texto: it.n, titulo: it.n, kcal: it.k, origen: "rapida", estado: "procesado" };
       if (norm(it.n) === norm(CAFE[0])) row.detalle = CAFE_DETALLE;
       const r = await sb.from(T("comidas")).insert(row).select().single();
       if (r.error) { toast("Error: " + r.error.message); return; }
       comidas.push(r.data); render();
-      const n = delDia(comidas, fecha).filter((x) => norm(x.texto) === norm(it.n)).length;
+      const n = delDia(comidas, fecha).filter((x) => norm(tit(x)) === norm(it.n)).length;
       toast(`${it.e} +1 ${it.n} (${it.k} kcal) · llevas ${n} hoy`, "Deshacer", async () => {
         const u = await sb.from(T("comidas")).update({ borrado: true }).eq("id", r.data.id);
         if (!u.error) { comidas = comidas.filter((x) => x.id !== r.data.id); render(); toast("Quitado"); }
@@ -768,7 +828,12 @@
     t.style.display = "block"; clearTimeout(toastT); toastT = setTimeout(() => (t.style.display = "none"), accion ? 4500 : 2600);
   }
 
-  document.addEventListener("visibilitychange", () => { if (!document.hidden) { if (dia > iso(new Date())) dia = iso(new Date()); cargar(); } });
+  let ocultoDesde = 0;
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) { ocultoDesde = Date.now(); return; }
+    if (Date.now() - ocultoDesde > 5 * 60 * 1000 || dia > iso(new Date())) dia = iso(new Date()); // tras 5 min fuera, vuelve a hoy
+    cargar();
+  });
   cargar();
 
   if ("serviceWorker" in navigator) {

@@ -38,15 +38,23 @@ H=(-H "apikey: $ANON" -H "Authorization: Bearer $ANON")
    - **Pesos** (foto de la báscula): lee el número de la pantalla → `kg`.
      Si no se lee bien, deja `kg` null, `estado` `procesado` y explica en
      `detalle` ("no se lee el número, vuelve a hacer la foto").
-4. Escribir cada resultado:
+4. **Título corto** (`titulo`, 1-4 palabras: "Dorada", "Naranja",
+   "Mayonesa", "2 yogures DIA"). Paco dicta párrafos: el `texto` se queda
+   como está, pero la app enseña `titulo`. Pon siempre `titulo`.
+   - Si una entrada es una **aclaración** de otra ("la dorada de antes no
+     llevaba aceite"), corrige la entrada original (kcal, detalle) y
+     marca la aclaración `"borrado": true` en vez de dejarla con 0 kcal.
+   - Si la fecha es anterior a `power_ajustes.fecha_inicio`, es un error
+     de la app: muévela al día de `created_at` (hora de España).
+5. Escribir cada resultado:
    ```bash
    curl -s -X PATCH "$U/rest/v1/power_comidas?id=eq.<ID>" "${H[@]}" -H "Content-Type: application/json" \
-     -d '{"kcal": 160, "detalle": "Leche entera 250 ml", "estado": "procesado"}'
+     -d '{"kcal": 160, "titulo": "Vaso de leche", "detalle": "Leche entera 250 ml", "estado": "procesado"}'
    # power_ejercicios igual; power_pesos: {"kg": 104.1, "detalle": "Leído de la foto", "estado": "procesado"}
    ```
    Si el texto remite a otro registro (p. ej. "lo mismo que ayer en la
    cena"), busca esa fila y úsala de referencia.
-5. Registrar la pasada SIEMPRE:
+6. Registrar la pasada SIEMPRE:
    ```bash
    curl -s -X POST "$U/rest/v1/power_rutinas" "${H[@]}" -H "Content-Type: application/json" \
      -d '{"procesados": N, "resumen": "una frase"}'
@@ -90,6 +98,9 @@ cambiar la app.
 - **Carne**: le quita la grasa visible (borde y vetas). Calcula solo la
   parte magra; si pesa la bandeja en la báscula, descuenta ~8 g.
 - Pesa la comida en una báscula de cocina: usa el número de la foto.
+- Su yogur: DIA natural 62 kcal/100 g, tarrina 125 g → **80 kcal** (él lo
+  llama "yogur griego").
+- Empezó el **lunes 16/11/2026**: no hay datos válidos antes.
 
 ## Qué NO hacer
 
