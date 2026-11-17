@@ -502,6 +502,27 @@ LI_REMOTE_EU = ["partner manager", "partnerships", "alliances", "channel manager
                 "country manager", "general manager", "head of sales", "VP sales", "managing director"]
 
 
+def _li_conocidas():
+    """IDs de LinkedIn de todas las ofertas ya guardadas (enlace 1 o cualquier enlace)."""
+    ids, off = set(), 0
+    try:
+        while True:
+            req = urllib.request.Request(f"{SB_URL}/rest/v1/empleo_ofertas?select=url,enlaces&order=id&limit=1000&offset={off}",
+                                         headers={"apikey": SB_KEY, "Authorization": f"Bearer {SB_KEY}"})
+            rows = json.load(urllib.request.urlopen(req, timeout=30))
+            for r in rows:
+                for u in [r.get("url")] + [e.get("url") for e in (r.get("enlaces") or []) if isinstance(e, dict)]:
+                    m = re.search(r"linkedin\.com/jobs/view/[^?#]*?(\d+)/?(?:[?#]|$)", u or "")
+                    if m:
+                        ids.add(m.group(1))
+            if len(rows) < 1000:
+                break
+            off += 1000
+    except Exception as ex:
+        log("[aviso] ofertas conocidas de LinkedIn", ex)
+    return ids
+
+
 def linkedin(busquedas=None, max_pag=400):
     found = {}
     if busquedas is None:
@@ -551,6 +572,14 @@ def linkedin(busquedas=None, max_pag=400):
             if vacias >= 4:
                 break
             time.sleep(1.2)
+    # Las ofertas de LinkedIn que ya están en empleo_ofertas no aportan nada nuevo
+    # (insertar solo volvería a fusionar el mismo enlace): no se leen sus fichas,
+    # que es lo que más tarda. SIN_SALTAR_CONOCIDAS=1 lo desactiva.
+    if not os.environ.get("SIN_SALTAR_CONOCIDAS"):
+        conocidas = _li_conocidas()
+        antes = len(found)
+        found = {j: o for j, o in found.items() if j not in conocidas}
+        log(f"[li] {antes - len(found)} ya conocidas (sin leer ficha)")
     log(f"[li] {len(found)} ofertas en listados; leyendo fichas…")
 
     def ficha(o):
