@@ -8,7 +8,7 @@ URL: `https://pacosql.github.io/Train/power/`
 
 ## Pantallas
 
-- **🚦 Resumen**: dos semáforos — *Peso* (media de las 3 últimas pesadas
+- **🚦 Resumen** (gráfico con 3 líneas: objetivo, báscula y dónde deberías estar según lo apuntado): dos semáforos — *Peso* (media de las 3 últimas pesadas
   vs la línea de −1 kg/semana: verde ≤ +0,3 kg, ámbar ≤ +1 kg, rojo más)
   y *Calorías semana* (déficit acumulado de los días cerrados vs el que
   tocaba). Además: kcal que te quedan hoy, tabla de la semana, gráfico

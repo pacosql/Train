@@ -14,11 +14,11 @@
     :root {
       color-scheme: light dark;
       --bg: #f4f6f5; --card: #fff; --text: #10231a; --muted: #5b6b63; --border: #e0e7e3;
-      --green: #1f9d63; --amber: #d98e04; --red: #d64545; --accent: #1f9d63; --chip: #eef3f0;
+      --green: #1f9d63; --blue: #2f6fdb; --amber: #d98e04; --red: #d64545; --accent: #1f9d63; --chip: #eef3f0;
     }
     @media (prefers-color-scheme: dark) {
       :root { --bg: #0f1a14; --card: #17231d; --text: #eaf3ee; --muted: #93a69c; --border: #26352d;
-        --green: #3ecf8e; --amber: #f2b53a; --red: #ff6b6b; --accent: #3ecf8e; --chip: #20302a; }
+        --green: #3ecf8e; --blue: #6aa1ff; --amber: #f2b53a; --red: #ff6b6b; --accent: #3ecf8e; --chip: #20302a; }
     }
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
     body { margin: 0; background: var(--bg); color: var(--text);
@@ -468,7 +468,16 @@
     const fin = addDays(hoy, Math.max(7, Math.min(28, diffDays(hoy, ini) + 7)) - Math.max(0, 0));
     const span = Math.max(7, diffDays(fin, ini));
     const objFin = Number(A.peso_inicio) - Number(A.objetivo_kg_semana) * span / 7;
-    const kgs = v.map((x) => Number(x.kg)).concat([Number(A.peso_inicio), objFin]);
+    // "Dónde deberías estar": peso inicial − Σ (gasto + ejercicio − comido) / 7.700, día cerrado a día cerrado.
+    const P = plan(), deb = [[ini, Number(A.peso_inicio)]];
+    let acum = Number(A.peso_inicio);
+    for (let f = ini; f < hoy; f = addDays(f, 1)) {
+      const c = delDia(comidas, f);
+      const bal = c.length ? P.tdee + sumK(delDia(ejercicios, f)) - sumK(c) : 0; // día sin nada apuntado: no cuenta
+      acum -= bal / KCAL_KG;
+      deb.push([addDays(f, 1), acum]);
+    }
+    const kgs = v.map((x) => Number(x.kg)).concat([Number(A.peso_inicio), objFin], deb.map((d) => d[1]));
     const lo = Math.floor(Math.min(...kgs) - 0.5), hi = Math.ceil(Math.max(...kgs) + 0.5);
     const W = 320, H = 150, L = 30, R = 8, Tp = 8, B = 20;
     const x = (f) => L + (diffDays(f, ini) / span) * (W - L - R);
@@ -476,12 +485,22 @@
     let s = `<svg viewBox="0 0 ${W} ${H}" width="100%">`;
     for (let k = lo; k <= hi; k++) s += `<line x1="${L}" x2="${W - R}" y1="${y(k)}" y2="${y(k)}" stroke="currentColor" opacity=".08"/><text x="2" y="${y(k) + 3}">${k}</text>`;
     s += `<line x1="${x(ini)}" y1="${y(Number(A.peso_inicio))}" x2="${x(addDays(ini, span))}" y2="${y(objFin)}" stroke="var(--green)" stroke-dasharray="4 3" stroke-width="2"/>`;
+    if (deb.length > 1) {
+      s += `<polyline points="${deb.map(([f, k]) => `${x(f)},${y(k)}`).join(" ")}" fill="none" stroke="var(--blue)" stroke-width="2"/>`;
+      deb.forEach(([f, k]) => { s += `<rect x="${x(f) - 3}" y="${y(k) - 3}" width="6" height="6" fill="var(--blue)"/>`; });
+    }
     const pts = v.filter((p) => p.fecha >= ini).map((p) => `${x(p.fecha)},${y(Number(p.kg))}`);
     if (pts.length > 1) s += `<polyline points="${pts.join(" ")}" fill="none" stroke="var(--text)" stroke-width="2"/>`;
     pts.forEach((p) => { const [a, b] = p.split(","); s += `<circle cx="${a}" cy="${b}" r="3.5" fill="var(--text)"/>`; });
     s += `<line x1="${x(hoy)}" x2="${x(hoy)}" y1="${Tp}" y2="${H - B}" stroke="var(--amber)" opacity=".6"/>`;
     s += `<text x="${L}" y="${H - 5}">${diaLbl(ini).replace("Hoy · ", "")}</text><text x="${W - R - 40}" y="${H - 5}">${parse(addDays(ini, span)).getDate()}/${parse(addDays(ini, span)).getMonth() + 1}</text></svg>`;
-    $("grafico").innerHTML = s + `<div class="muted small">Línea verde discontinua = objetivo (−${A.objetivo_kg_semana} kg/sem). Puntos = tus pesadas.</div>`;
+    const ult = deb[deb.length - 1][1], realHoy = v.length ? Number(v[v.length - 1].kg) : null;
+    const leyenda = `<div class="small" style="display:grid;gap:3px;margin-top:4px">
+      <div><span style="color:var(--green);font-weight:800">- - -</span> Donde <b>quieres</b> estar (−${A.objetivo_kg_semana} kg/sem): <b>${(Number(A.peso_inicio) - Number(A.objetivo_kg_semana) * diffDays(hoy, ini) / 7).toFixed(1)} kg</b> hoy</div>
+      <div><span style="color:var(--blue);font-weight:800">■—</span> Donde <b>deberías</b> estar con lo apuntado (gasto + ejercicio − comido): <b>${ult.toFixed(1)} kg</b></div>
+      <div><span style="font-weight:800">●—</span> Lo que dice la <b>báscula</b>: <b>${realHoy != null ? realHoy.toFixed(1) + " kg" : "—"}</b></div>
+      <div class="muted">La báscula baja o sube mucho más rápido que la grasa por el agua (sal, hidratos, deshincharse del finde); en 1–2 semanas ambas líneas deberían juntarse. Si la báscula queda <b>por encima</b> de la azul de forma sostenida, hay comida sin apuntar o gastas menos de lo calculado.</div></div>`;
+    $("grafico").innerHTML = s + leyenda;
   }
 
   // ---------- comida ----------
