@@ -865,8 +865,21 @@
 
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
-    navigator.serviceWorker.addEventListener("message", (e) => { if (e.data && e.data.type === "new-version") location.reload(); });
   }
+  // ¿Hay una versión más nueva publicada? Se comprueba al abrir y cada vez que vuelves a la app.
+  const BUILD = "__BUILD_ID__";
+  async function comprobarVersion() {
+    try {
+      const r = await fetch("./index.html?v=" + Date.now(), { cache: "no-store" });
+      const m = (await r.text()).match(/const BUILD = "([0-9a-f]{7})"/);
+      if (!m || m[1] === BUILD || sessionStorage.getItem("power-reload") === m[1]) return;
+      sessionStorage.setItem("power-reload", m[1]); // una sola recarga por versión, sin bucles
+      if (navigator.serviceWorker) { const reg = await navigator.serviceWorker.getRegistration(); if (reg) await reg.update().catch(() => {}); }
+      location.reload();
+    } catch (e) { /* sin conexión: se queda la que hay */ }
+  }
+  comprobarVersion();
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) comprobarVersion(); });
 </script>
 </body>
 </html>

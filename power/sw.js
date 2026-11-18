@@ -40,6 +40,14 @@ function isShell(request) {
   return u.origin === self.location.origin && u.pathname.includes("/power/");
 }
 
+// La página (index) va SIEMPRE primero a la red, saltándose la caché HTTP
+// (GitHub Pages la guarda 10 min): así un cambio recién publicado se ve al
+// abrir. Solo si no hay conexión (o tarda > 3 s) se usa la copia guardada.
+// El resto del shell (iconos, config, manifest) sigue con caché primero.
+function esPagina(request) {
+  return request.mode === "navigate" || /\/(index\.html)?$/.test(new URL(request.url).pathname);
+}
+
 self.addEventListener("fetch", (event) => {
   const { request } = event;
   if (request.method !== "GET") return;
@@ -49,27 +57,20 @@ self.addEventListener("fetch", (event) => {
   event.respondWith(
     caches.open(CACHE_NAME).then(async (cache) => {
       const cached = await cache.match(request, { ignoreSearch: true });
-      const network = fetch(request)
+      const network = fetch(request.url, { cache: "no-cache" })
         .then(async (response) => {
-          if (!response || !response.ok) return response;
-          const fresh = response.clone();
-          // ¿Ha cambiado el index? Comparar con lo que había antes de
-          // sobrescribir la caché, y avisar a las pestañas abiertas.
-          if (cached && /\/(index\.html)?$/.test(new URL(request.url).pathname)) {
-            const [a, b] = await Promise.all([cached.clone().text(), fresh.clone().text()]);
-            if (a !== b) {
-              const clients = await self.clients.matchAll({ type: "window" });
-              clients.forEach((c) => c.postMessage({ type: "new-version" }));
-            }
-          }
-          await cache.put(request, fresh);
+          if (response && response.ok) await cache.put(request, response.clone());
           return response;
         })
         .catch(() => null);
-      if (cached) {
+      if (esPagina(request)) {
+        const lento = new Promise((ok) => setTimeout(() => ok(null), cached ? 3000 : 15000));
+        const r = await Promise.race([network, lento]);
+        if (r && r.ok) return r;
         event.waitUntil(network);
-        return cached;
+        return cached || (await network) || new Response("Sin conexión", { status: 503 });
       }
+      if (cached) { event.waitUntil(network); return cached; }
       return (await network) || new Response("Sin conexión", { status: 503 });
     })
   );
