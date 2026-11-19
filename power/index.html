@@ -189,7 +189,7 @@
     <div class="card">
       <h2>⚖️ Peso de hoy</h2>
       <div class="row">
-        <input id="p-kg" type="number" step="0.1" inputmode="decimal" placeholder="kg, ej. 104.2" />
+        <input id="p-kg" type="text" inputmode="decimal" autocomplete="off" placeholder="kg, ej. 102,6" style="font-size:1.3rem" />
         <button class="primary" id="p-guardar">Guardar</button>
       </div>
       <div class="row" style="margin-top:8px">
@@ -220,9 +220,9 @@
     <div class="card">
       <h2>🎯 Objetivo</h2>
       <div class="grid2">
-        <div><label class="f">Peso inicial (kg)</label><input id="a-peso" type="number" step="0.1" /></div>
+        <div><label class="f">Peso inicial (kg)</label><input id="a-peso" type="text" inputmode="decimal" /></div>
         <div><label class="f">Fecha inicio</label><input id="a-fecha" type="date" /></div>
-        <div><label class="f">Perder kg/semana</label><input id="a-obj" type="number" step="0.1" /></div>
+        <div><label class="f">Perder kg/semana</label><input id="a-obj" type="text" inputmode="decimal" /></div>
         <div><label class="f">kcal sáb y dom (cada día)</label><input id="a-finde" type="number" /></div>
       </div>
       <h2 style="margin-top:14px">🧍 Tú (para el gasto en reposo)</h2>
@@ -261,6 +261,7 @@
   const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
   const fotoUrl = (p) => sb.storage.from(CFG.bucket).getPublicUrl(p).data.publicUrl;
   const fmt = (n) => Math.round(n).toLocaleString("es-ES");
+  const num = (v) => Number(String(v).trim().replace(",", ".")); // acepta 102,6 y 102.6
   const KCAL_KG = 7700; // kcal por kg de grasa (aprox.)
 
   // ---------- fechas (hora local del móvil) ----------
@@ -808,7 +809,7 @@
     ejercicios.push(r.data); toast("Ejercicio añadido ✓"); render();
   };
   $("p-guardar").onclick = async () => {
-    const kg = Number(String($("p-kg").value).replace(",", "."));
+    const kg = num($("p-kg").value);
     if (!kg || kg < 30 || kg > 300) { toast("Pon el peso en kg"); return; }
     const r = await sb.from(T("pesos")).insert({ fecha: iso(new Date()), kg }).select().single();
     if (r.error) { toast("Error: " + r.error.message); return; }
@@ -826,7 +827,7 @@
     } catch (err) { toast("Error: " + (err.message || err)); }
   };
   $("a-guardar").onclick = async () => {
-    const upd = { peso_inicio: Number($("a-peso").value), fecha_inicio: $("a-fecha").value, objetivo_kg_semana: Number($("a-obj").value),
+    const upd = { peso_inicio: num($("a-peso").value), fecha_inicio: $("a-fecha").value, objetivo_kg_semana: num($("a-obj").value),
       kcal_finde: Math.round(Number($("a-finde").value)), sexo: $("a-sexo").value, edad: Math.round(Number($("a-edad").value)),
       altura_cm: Math.round(Number($("a-altura").value)), factor_actividad: Number($("a-factor").value), updated_at: new Date().toISOString() };
     const r = await sb.from(T("ajustes")).update(upd).eq("id", 1).select().single();
