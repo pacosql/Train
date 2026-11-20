@@ -111,6 +111,10 @@ Lo que ha dicho el usuario (manda sobre cualquier deducción):
 - **No le gusta el blanco / crema** en letras y símbolos: amarillo y azul
   noche (o negro). Le gusta el 10 en su bloque amarillo (nº 1), la í
   (nº 19) y la ñ (nº 17).
+- **Finalistas: la í con tilde y la ñ** (ortografía + español). Le gustan
+  también las comillas españolas « » y los signos que solo tiene el
+  español. **El 10 y la O no dicen nada**: no hacer símbolos basados solo
+  en ellos (el 10 sigue en el nombre «Ortografía10»).
 - **Los números de propuesta no se tocan**: nunca se borra ni se modifica
   un diseño existente. Un cambio es siempre una fila nueva (con `padre_id`
   y `revision_nota`); lo que sobra se marca `retirado`.
