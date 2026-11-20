@@ -70,6 +70,10 @@ Requisitos: `pip install fonttools brotli uharfbuzz`.
   hoja hay que **mirar el círculo y la pegatina**, no solo el icono cuadrado.
 - `tools/tanda1.py`: la primera tanda; es la plantilla para las siguientes
   (paletas, palabras `w_*`, marcas `m_*`, `add(...)`, `filas()`).
+- `tools/tanda4.py`: la í, la ñ y la Ñ en ~70 tipografías libres (OFL, de
+  Fontsource, en `tools/fuentes/<familia>-<peso>.woff2`; se usan con
+  `txt(..., peso, fam="<familia>")`) y construcciones de icono (un solo
+  trazo, contorno, tecla, bocadillo, aro, rombo, ficha…).
 - `tools/hoja.js filas.json [salida.png]`: hoja de contacto para **mirar
   los diseños antes de insertarlos**.
 - `tools/sb.sh GET|POST|PATCH <ruta> [fichero.json]`: REST de Supabase.
