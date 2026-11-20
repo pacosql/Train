@@ -228,10 +228,21 @@ def render(g, tinta=None, acento=None, fondo=None):
     return s
 
 
+def _dentro(g, cx, cy, lado, radio):
+    """Centra g en (cx, cy) dentro de un cuadrado de `lado`, y lo encoge lo
+    necesario para que las esquinas de su caja no pasen de `radio`: así nada
+    se sale del avatar redondo ni roza el borde del icono o de la pegatina."""
+    m = g.en(cx - lado / 2, cy - lado / 2, lado, lado)
+    r = math.hypot(m.w, m.h) / 2
+    if r > radio:
+        lado *= radio / r
+        m = g.en(cx - lado / 2, cy - lado / 2, lado, lado)
+    return m
+
+
 def svg_marca(g, tam=0.62, dy=0):
     """Marca centrada en un lienzo 100×100 ocupando `tam` del lado."""
-    lado = 100 * tam
-    m = g.en(50 - lado / 2, 50 - lado / 2 + dy, lado, lado)
+    m = _dentro(g, 50, 50 + dy, 100 * tam, 45)
     return f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">{render(m)}</svg>'
 
 
@@ -253,9 +264,9 @@ def pegatina_tarjeta(marca, palabra, c, tam=0.62, url=URL):
     """Pegatina rectangular troquelada: marca, nombre y la web."""
     f, t, a = c["icono_fondo"], c["icono_tinta"], c["acento"]
     cuerpo = rect(0, 0, 300, 372, 46, "#FFFFFF") + rect(12, 12, 276, 348, 36, f)
-    lado = 200 * tam / 0.62
-    lado = min(lado, 236)
-    m = marca.en(150 - lado / 2, 128 - lado / 2, lado, lado)
+    # la marca cabe siempre en el hueco de arriba (sin tocar el borde ni el nombre)
+    m = _dentro(marca, 150, 128, min(200 * tam / 0.62, 228), 142)
+    if m.h > 184: m = marca.en(36, 36, 228, 184)
     p = palabra.en(40, 252, 220, 44)
     u = txt(url, 600, papel="T").en(60, 316, 180, 17).op(0.75)
     els = render(cuerpo + m + p + u, t, a, f)
@@ -266,9 +277,7 @@ def pegatina_sello(marca, c, nombre="ORTOGRAFÍA10", tam=0.62, url=URL):
     """Pegatina redonda: la marca en el centro, el nombre arriba y la web abajo."""
     f, t, a = c["icono_fondo"], c["icono_tinta"], c["acento"]
     els = render(circ(150, 150, 150, "#FFFFFF") + circ(150, 150, 138, f))
-    lado = 128 * tam / 0.62
-    lado = min(lado, 150)
-    m = marca.en(150 - lado / 2, 150 - lado / 2, lado, lado)
+    m = _dentro(marca, 150, 150, min(128 * tam / 0.62, 150), 80)  # sin pisar el texto del aro
     arriba = arco(nombre, 104, 150, 150, 21, 800, "T")
     abajo = arco(url, 104, 150, 150, 17.5, 600, "A", abajo=True)
     puntos = circ(150 - 117, 150, 3.2, "A") + circ(150 + 117, 150, 3.2, "A")
