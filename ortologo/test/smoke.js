@@ -55,7 +55,7 @@ const server = http.createServer((req, res) => {
   console.log("PNG exportado:", dl.suggestedFilename(), fs.statSync(f).size, "bytes");
   fs.copyFileSync(f, "/tmp/ortologo-export.png");
   await page.click('.tab[data-tab="todos"]'); await page.waitForSelector(".g-item");
-  await page.click(".g-item"); await page.waitForSelector("#back");
+  await page.click(".g-open"); await page.waitForSelector("#back");
   console.log("galería + detalle OK");
   await browser.close(); server.close();
   if (errors.length) { console.error(errors.join("\n")); process.exit(1); }
