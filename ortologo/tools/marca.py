@@ -228,21 +228,21 @@ def render(g, tinta=None, acento=None, fondo=None):
     return s
 
 
-def _dentro(g, cx, cy, lado, radio):
+def _dentro(g, cx, cy, lado, radio, redondo=False):
     """Centra g en (cx, cy) dentro de un cuadrado de `lado`, y lo encoge lo
     necesario para que las esquinas de su caja no pasen de `radio`: así nada
     se sale del avatar redondo ni roza el borde del icono o de la pegatina."""
     m = g.en(cx - lado / 2, cy - lado / 2, lado, lado)
-    r = math.hypot(m.w, m.h) / 2
+    r = max(m.w, m.h) / 2 if redondo else math.hypot(m.w, m.h) / 2
     if r > radio:
         lado *= radio / r
         m = g.en(cx - lado / 2, cy - lado / 2, lado, lado)
     return m
 
 
-def svg_marca(g, tam=0.62, dy=0):
+def svg_marca(g, tam=0.62, dy=0, redondo=False):
     """Marca centrada en un lienzo 100×100 ocupando `tam` del lado."""
-    m = _dentro(g, 50, 50 + dy, 100 * tam, 45)
+    m = _dentro(g, 50, 50 + dy, 100 * tam, 45, redondo)  # redondo=True si la marca es un círculo
     return f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">{render(m)}</svg>'
 
 
