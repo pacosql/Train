@@ -190,6 +190,10 @@
     .g-item .cap { white-space: nowrap; overflow: hidden; }
     body.gridv .wrap { max-width: 1180px; }
     .icon-btn.on { background: var(--ink); border-color: var(--ink); color: #fff; }
+    .bulk { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 0 0 14px; }
+    .bulk .helper { margin: 0; }
+    .bulk button { border: 1px solid var(--bad); color: var(--bad); background: var(--bg); border-radius: 12px; padding: 9px 14px; font-size: 0.88rem; font-weight: 700; }
+    .bulk button.armed { background: var(--bad); color: #fff; }
     .g-item .ic { width: 100%; aspect-ratio: 1; border-radius: 22%; }
     .g-item div.cap { font-size: 0.75rem; margin-top: 4px; display: flex; gap: 4px; align-items: center; }
     .g-item div.cap b { font-weight: 800; }
@@ -535,6 +539,28 @@
         Object.assign(d, prev); render();
         await client.from(T_DISENOS).update(prev).eq("id", d.id);
       });
+    }
+
+    // Varias decisiones de golpe (descartar el resto), con Deshacer.
+    async function bulkSet(ids, patch) {
+      for (let i = 0; i < ids.length; i += 60) {
+        const { error } = await client.from(T_DISENOS).update(patch).in("id", ids.slice(i, i + 60));
+        if (error) return error;
+      }
+      return null;
+    }
+    async function bulkDecide(list, decision) {
+      const ids = list.map((d) => d.id), patch = { decision, decidido_en: new Date().toISOString() };
+      list.forEach((d) => Object.assign(d, patch)); render();
+      const error = await bulkSet(ids, patch);
+      if (error) { showMsg("No se pudo guardar: " + error.message); await refresh(null); return; }
+      showMsg("");
+      showToast(`👎 ${ids.length} descartados`, async () => {
+        const back = { decision: null, decidido_en: null };
+        list.forEach((d) => Object.assign(d, back)); render();
+        const e2 = await bulkSet(ids, back);
+        if (e2) showMsg("No se pudo deshacer: " + e2.message);
+      }, 12000);
     }
 
     // ---------- comentarios ----------
@@ -928,6 +954,16 @@
             <div class="cap"><b>${d.numero}</b>${d.decision && !["gusta", "no_gusta"].includes(d.decision) ? `<span>${DECISION_LABEL[d.decision].replace(/^Ya /, "")}</span>` : ""}</div>
             <div class="g-acts"><button type="button" data-d="no_gusta" class="${d.decision === "no_gusta" ? "on" : ""}">👎</button><button type="button" data-d="gusta" class="${d.decision === "gusta" ? "on" : ""}">👍</button></div>
           </div>`).join("")}</div>` : emptyHTML();
+        // Por decidir: marcas los que te gustan y descartas todo lo demás de una vez (dos toques).
+        const resto = state.tab === "pendiente" ? gl.filter((d) => !d.decision) : [];
+        if (resto.length) {
+          view.querySelector(".eyebrow").insertAdjacentHTML("afterend", `<div class="bulk"><button type="button" id="bulk-no">👎 Descartar los ${resto.length} que quedan sin marcar</button><span class="helper">Marca antes con 👍 los que te gustan.</span></div>`);
+          const b = el("bulk-no");
+          b.onclick = () => {
+            if (!b.classList.contains("armed")) { b.classList.add("armed"); b.textContent = `¿Seguro? Toca otra vez para descartar ${resto.length}`; setTimeout(() => { if (b.isConnected && b.classList.contains("armed")) { b.classList.remove("armed"); b.textContent = `👎 Descartar los ${resto.length} que quedan sin marcar`; } }, 4000); return; }
+            bulkDecide(resto, "no_gusta");
+          };
+        }
         view.querySelectorAll("[data-go]").forEach((b) => b.onclick = () => openDetail(b.dataset.go));
         view.querySelectorAll(".g-acts button").forEach((b) => b.onclick = () => { const d = byId(b.closest(".g-item").dataset.id); decide(d, d.decision === b.dataset.d ? null : b.dataset.d, null); });
         return;
@@ -972,14 +1008,14 @@
 
     // ---------- utilidades ----------
     function showMsg(t) { el("msg").textContent = t; }
-    function showToast(t, undo) {
+    function showToast(t, undo, ms = 5000) {
       el("toast-text").textContent = t;
       const u = el("toast-undo");
       u.textContent = undo ? "Deshacer" : "";
       u.onclick = undo ? () => { hideToast(); undo(); } : null;
       el("toast").classList.add("show");
       clearTimeout(toastTimer);
-      toastTimer = setTimeout(hideToast, 5000);
+      toastTimer = setTimeout(hideToast, ms);
     }
     function hideToast() { el("toast").classList.remove("show"); }
 
