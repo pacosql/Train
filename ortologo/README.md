@@ -65,6 +65,9 @@ Requisitos: `pip install fonttools brotli uharfbuzz`.
   convertido a trazados con la tilde separable, pastillas, anillos, trazos,
   texto en arco) y plantillas de pegatina (`pegatina_tarjeta`,
   `pegatina_sello`).
+  `svg_marca` y las pegatinas encogen solas la marca si las esquinas de su
+  caja se saldrían del avatar redondo o rozarían el borde; aun así, en la
+  hoja hay que **mirar el círculo y la pegatina**, no solo el icono cuadrado.
 - `tools/tanda1.py`: la primera tanda; es la plantilla para las siguientes
   (paletas, palabras `w_*`, marcas `m_*`, `add(...)`, `filas()`).
 - `tools/hoja.js filas.json [salida.png]`: hoja de contacto para **mirar
