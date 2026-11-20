@@ -104,6 +104,17 @@ en cuanto haya algo. Así el usuario ve respuesta en 1-5 minutos.
    `sb.sh POST ortologo_disenos`.
 8. Insertar `{"rutina":"hecho","resumen":"…"}` (una frase).
 
+Lo que ha dicho el usuario (manda sobre cualquier deducción):
+
+- **La tilde solo va en la í** de Ortografía. Nada de tilde sobre la O, la
+  ó ni el 10.
+- **No le gusta el blanco / crema** en letras y símbolos: amarillo y azul
+  noche (o negro). Le gusta el 10 en su bloque amarillo (nº 1), la í
+  (nº 19) y la ñ (nº 17).
+- **Los números de propuesta no se tocan**: nunca se borra ni se modifica
+  un diseño existente. Un cambio es siempre una fila nueva (con `padre_id`
+  y `revision_nota`); lo que sobra se marca `retirado`.
+
 Reglas de marca que no se tocan: el nombre es **«Ortografía10»** junto, con
 tilde en la í; la pegatina lleva `ortografia10.com`; el símbolo tiene que
 funcionar igual en el icono de las tiendas, el avatar y la pegatina, y a
