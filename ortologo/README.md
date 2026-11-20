@@ -6,7 +6,9 @@ Enseña las propuestas **de una en una** con una barra fija (← Atrás · 👎 
 🔁 · 👍 · ⭐ · Siguiente →): al decidir pasa sola a la siguiente y con Atrás
 se vuelve a ver lo ya decidido. Con el móvil apaisado o en pantalla ancha
 todo el diseño cabe en una pantalla sin scroll (comentar y el kit quedan
-debajo); en teclado, ← → y N / O / G / F. Cada
+debajo); en teclado, ← → y N / O / G / F. El botón **▦** cambia cualquier
+pestaña a cuadrícula: solo los iconos, todos de un vistazo, con 👎 / 👍
+debajo de cada uno para votar ahí mismo. Cada
 propuesta se ve como:
 
 - icono de **App Store / Google Play**, avatar redondo (LinkedIn,

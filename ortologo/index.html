@@ -182,8 +182,14 @@
     .tab-mock .ic { width: 16px; height: 16px; border-radius: 22%; }
 
     /* galería */
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 12px; }
-    .g-item { border: 0; background: none; padding: 0; text-align: left; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); gap: 14px 12px; }
+    .g-item { text-align: left; min-width: 0; }
+    .g-open { border: 0; background: none; padding: 0; display: block; width: 100%; }
+    .g-acts { display: flex; gap: 4px; margin-top: 4px; }
+    .g-acts button { flex: 1; border: 1px solid var(--line); background: var(--bg); border-radius: 9px; padding: 5px 0; font-size: 0.9rem; line-height: 1.2; }
+    .g-item .cap { white-space: nowrap; overflow: hidden; }
+    body.gridv .wrap { max-width: 1180px; }
+    .icon-btn.on { background: var(--ink); border-color: var(--ink); color: #fff; }
     .g-item .ic { width: 100%; aspect-ratio: 1; border-radius: 22%; }
     .g-item div.cap { font-size: 0.75rem; margin-top: 4px; display: flex; gap: 4px; align-items: center; }
     .g-item div.cap b { font-weight: 800; }
@@ -206,6 +212,7 @@
   <div class="wrap">
     <header>
       <h1>Ortografía10 <span>· elige el logo</span></h1>
+      <button class="icon-btn" id="btn-grid" title="Ver todos los iconos de un vistazo / de uno en uno">▦</button>
       <button class="icon-btn" id="btn-refresh" title="Recargar">↻</button>
     </header>
 
@@ -247,7 +254,15 @@
     // Cola de revisión: los pendientes en orden. Al decidir se pasa al siguiente,
     // pero lo ya decidido sigue en la cola para poder volver atrás y verlo.
     const WIDE = window.matchMedia("(orientation: landscape) and (min-width: 600px)");
-    const inQueue = () => state.tab === "pendiente" && !state.detail;
+    // Cuadrícula: solo los iconos, todos de un vistazo, y se vota tocando 👎 / 👍.
+    // La lista se congela al entrar para que nada salte de sitio al votar.
+    try { state.grid = localStorage.getItem("ortologo.grid") === "1"; } catch {}
+    const isGrid = () => state.tab === "todos" || !!state.grid;
+    const inQueue = () => state.tab === "pendiente" && !state.detail && !isGrid();
+    function gridList() {
+      if (!state.snap || state.snap.tab !== state.tab) state.snap = { tab: state.tab, ids: inTab(state.tab).map((d) => d.id) };
+      return state.snap.ids.map(byId).filter(Boolean);
+    }
     function buildQueue(reset) {
       const vistos = reset ? [] : state.queue.slice(0, state.idx).filter((id) => byId(id));
       const pend = inTab("pendiente").map((d) => d.id).filter((id) => !vistos.includes(id));
@@ -388,6 +403,7 @@
       loadFonts();
       renderRoutines();
       buildQueue(false);
+      state.snap = null;
     }
     const byId = (id) => disenos.find((d) => d.id === id);
     const commentsOf = (id) => comentarios.filter((c) => c.diseno_id === id);
@@ -506,14 +522,14 @@
       const patch = { decision, decidido_en: decision ? new Date().toISOString() : null };
       Object.assign(d, patch);
       const cola = inQueue();
-      const leaves = !cola && state.tab !== "todos" && !state.detail && decision !== state.tab;
+      const leaves = !cola && !isGrid() && !state.detail && decision !== state.tab;
       if (leaves && card) { card.classList.add("fading"); setTimeout(render, 250); } else render();
       // en la cola: se ve un instante lo marcado y pasa solo al siguiente
       if (cola && decision) setTimeout(() => { if (inQueue() && state.queue[state.idx] === d.id) go(1); }, 220);
       const { error } = await client.from(T_DISENOS).update(patch).eq("id", d.id);
       if (error) { Object.assign(d, prev); render(); showMsg("No se pudo guardar: " + error.message); return; }
       showMsg("");
-      if (cola) return; // en la cola se deshace volviendo atrás
+      if (cola || (isGrid() && !state.detail)) return; // en la cola se deshace volviendo atrás; en la cuadrícula, tocando otra vez
       const txt = decision === "revisar" ? `🔁 Nº ${d.numero}: la rutina hará otra versión con tus comentarios` : decision ? `${DECISION_LABEL[decision]} · nº ${d.numero}` : `Nº ${d.numero} vuelve a Por decidir`;
       showToast(txt, async () => {
         Object.assign(d, prev); render();
@@ -889,7 +905,7 @@
 
     // ---------- vistas ----------
     function openDetail(id) { resetRec(); stopDictate(); state.detail = id; render(); window.scrollTo(0, 0); }
-    function render() { document.body.classList.toggle("rev", inQueue() && WIDE.matches); renderView(); fitSvgs(el("view")); }
+    function render() { document.body.classList.toggle("rev", inQueue() && WIDE.matches); document.body.classList.toggle("gridv", isGrid() && !state.detail); el("btn-grid").classList.toggle("on", isGrid()); renderView(); fitSvgs(el("view")); }
     function renderView() {
       counts();
       document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("active", !state.detail && t.dataset.tab === state.tab));
@@ -903,11 +919,17 @@
         return;
       }
       const list = inTab(state.tab);
-      if (state.tab === "todos") {
-        view.innerHTML = list.length ? `<p class="eyebrow">Todos los diseños, del más nuevo al más antiguo. Toca uno para verlo entero.</p><div class="grid">${list.map((d) => `
-          <button type="button" class="g-item ${["no_gusta", "versionado", "retirado"].includes(d.decision) ? "dim" : ""}" data-go="${d.id}">${icon(d, "")}
-            <div class="cap"><b>${d.numero}</b>${d.decision ? `<span>${DECISION_LABEL[d.decision].split(" ")[0]}</span>` : ""}</div></button>`).join("")}</div>` : emptyHTML();
+      if (isGrid()) {
+        const gl = gridList();
+        const sub = { pendiente: "Por decidir", gusta: "Los que te gustan", definitivo: "Los definitivos", revisar: "En cola para otra versión", no_gusta: "Descartados", todos: "Todos los diseños, del más nuevo al más antiguo" }[state.tab];
+        view.innerHTML = gl.length ? `<p class="eyebrow">${sub} (${gl.length}). Toca 👎 o 👍 para votar aquí mismo; toca el icono para verlo entero.${state.tab === "todos" ? "" : " Con ▦ vuelves a verlos de uno en uno."}</p><div class="grid">${gl.map((d) => `
+          <div class="g-item ${["no_gusta", "versionado", "retirado"].includes(d.decision) ? "dim" : ""}" data-id="${d.id}">
+            <button type="button" class="g-open" data-go="${d.id}" title="${esc(d.titulo)}">${icon(d, "")}</button>
+            <div class="cap"><b>${d.numero}</b>${d.decision && !["gusta", "no_gusta"].includes(d.decision) ? `<span>${DECISION_LABEL[d.decision].replace(/^Ya /, "")}</span>` : ""}</div>
+            <div class="g-acts"><button type="button" data-d="no_gusta" class="${d.decision === "no_gusta" ? "on" : ""}">👎</button><button type="button" data-d="gusta" class="${d.decision === "gusta" ? "on" : ""}">👍</button></div>
+          </div>`).join("")}</div>` : emptyHTML();
         view.querySelectorAll("[data-go]").forEach((b) => b.onclick = () => openDetail(b.dataset.go));
+        view.querySelectorAll(".g-acts button").forEach((b) => b.onclick = () => { const d = byId(b.closest(".g-item").dataset.id); decide(d, d.decision === b.dataset.d ? null : b.dataset.d, null); });
         return;
       }
       const intro = {
@@ -969,7 +991,7 @@
     }
 
     async function init() {
-      document.querySelectorAll(".tab").forEach((t) => t.addEventListener("click", () => { resetRec(); stopDictate(); state.tab = t.dataset.tab; state.detail = null; if (state.tab === "pendiente") buildQueue(true); render(); window.scrollTo(0, 0); }));
+      document.querySelectorAll(".tab").forEach((t) => t.addEventListener("click", () => { resetRec(); stopDictate(); state.tab = t.dataset.tab; state.detail = null; state.snap = null; if (state.tab === "pendiente") buildQueue(true); render(); window.scrollTo(0, 0); }));
       WIDE.addEventListener("change", () => { resetRec(); stopDictate(); render(); });
       // teclado (pantalla grande): ← → para moverse, N no · O otra · G me gusta · F final
       document.addEventListener("keydown", (e) => {
@@ -980,6 +1002,13 @@
         if (k && d) decide(d, d.decision === k ? null : k, null);
       });
       el("btn-refresh").addEventListener("click", (e) => refresh(e.currentTarget));
+      el("btn-grid").addEventListener("click", () => {
+        if (state.tab === "todos") return; // «Todos» siempre va en cuadrícula
+        state.grid = !state.grid; state.detail = null; state.snap = null;
+        try { localStorage.setItem("ortologo.grid", state.grid ? "1" : "0"); } catch {}
+        if (!state.grid && state.tab === "pendiente") buildQueue(true);
+        resetRec(); stopDictate(); render(); window.scrollTo(0, 0);
+      });
       if (!url || !anonKey) { showMsg("Faltan credenciales en config.js"); return; }
       client = supabase.createClient(url, anonKey);
       // las marcas se miden con la fuente ya cargada (si no, el encaje sale mal)
