@@ -113,6 +113,37 @@ en cuanto haya algo. Así el usuario ve respuesta en 1-5 minutos.
    `sb.sh POST ortologo_disenos`.
 8. Insertar `{"rutina":"hecho","resumen":"…"}` (una frase).
 
+## Rutina «Ortologo: 10 ideas nuevas con inspiración» (una sesión cada hora)
+
+Independiente de la anterior: cada hora **busca inspiración fuera** y añade
+**10 propuestas nuevas**, haya o no feedback.
+
+1. `pip install -q fonttools brotli uharfbuzz`. Si hay **250 o más por
+   decidir**, o `estado.sh` dice `en_curso: true`, terminar sin hacer nada.
+2. Leer `ortologo_preferencias` y los títulos y decisiones de
+   `ortologo_disenos` (para no repetir y saber qué gusta y qué no).
+3. **Investigar 10-15 minutos en la web** (búsqueda y lectura de páginas):
+   cada hora un filón distinto, por ejemplo iconos de apps de idiomas y
+   educación, identidades premiadas (Cannes Lions, D&AD, Laus, Brand New /
+   UnderConsideration), colecciones de museos de diseño (Design Museum,
+   MoMA, Cooper Hewitt, Museu del Disseny), cabeceras de periódicos y
+   editoriales, marcas hechas con una sola letra, logotipos con ñ o con
+   tilde, tendencias de iconos y tipografía que se comenten en redes. Si
+   una fuente no se puede abrir (muchas redes piden sesión), pasar a otra.
+4. Sacar de ahí **10 ideas distintas entre sí** y dibujarlas con
+   `tools/marca.py` (ver `tanda1.py` y `tanda4.py`; hay ~70 tipografías en
+   `tools/fuentes`). Es **inspiración, no copia**: se toma el recurso (una
+   proporción, un corte, un contenedor, un juego tipográfico), nunca el
+   logo, el nombre ni el dibujo de otra marca.
+5. En `concepto`, una frase que diga la idea **y de dónde viene**
+   («Inspirado en …»); en `spec`, `{"tanda":"inspiracion","fuente":"<url>"}`;
+   `origen: "rutina"`.
+6. **Mirar la hoja de `tools/hoja.js`** (icono, círculo y pegatina),
+   corregir o tirar lo que se vea mal, e insertar con `sb.sh POST`.
+7. Registrar `{"rutina":"en-curso"}` al empezar a insertar y
+   `{"rutina":"hecho","resumen":"…"}` al acabar (qué se ha mirado y qué 10
+   ideas han salido).
+
 Lo que ha dicho el usuario (manda sobre cualquier deducción):
 
 - **La tilde solo va en la í** de Ortografía. Nada de tilde sobre la O, la
