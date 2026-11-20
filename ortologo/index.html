@@ -787,34 +787,66 @@
       rr(15, y, 92, 98, 4, "#eceae4");
       if (d.svg_pegatina) { const { ratio } = standaloneSvg(d, "peg"); const w = ratio > 0.9 ? 80 : 70, h = w / ratio; g.save(); g.shadowColor = "rgba(0,0,0,.28)"; g.shadowBlur = mm(1.6); g.shadowOffsetY = mm(0.6); await draw("peg", 61 - w / 2, y + 49 - h / 2, w); g.restore(); }
       label("Pegatina o imán de coche, a tamaño real (recortable)", 15, y + 103.5);
-      const reelFrame = async (x, fin) => {
-        const w = 40, h = 71;
-        g.save(); g.beginPath(); g.roundRect(mm(x), mm(y), mm(w), mm(h), mm(3)); g.clip();
+      // iPhone con la pantalla de inicio: el icono entre apps conocidas
+      const phone = async (x, w, h) => {
+        rr(x, y, w, h, 7.2, "#0b0b0d");
+        const sx = x + 1.5, sy = y + 1.5, sw = w - 3, sh = h - 3;
+        g.save(); g.beginPath(); g.roundRect(mm(sx), mm(sy), mm(sw), mm(sh), mm(5.8)); g.clip();
+        const gr = g.createLinearGradient(0, mm(sy), 0, mm(sy + sh)); gr.addColorStop(0, "#2f3f63"); gr.addColorStop(0.55, "#5d6c95"); gr.addColorStop(1, "#b08a9c");
+        g.fillStyle = gr; g.fillRect(mm(sx), mm(sy), mm(sw), mm(sh));
+        rr(x + w / 2 - 6, sy + 1.8, 12, 3.3, 1.65, "#0b0b0d");
+        text("9:41", sx + 3.2, sy + 4.6, 2, 600, "#ffffff");
+        const tile = (ix, iy, sz, bg, draw) => {
+          g.save(); g.beginPath(); g.roundRect(mm(ix), mm(iy), mm(sz), mm(sz), mm(sz * 0.225)); g.clip();
+          if (Array.isArray(bg)) { const q = g.createLinearGradient(mm(ix), mm(iy + sz), mm(ix + sz), mm(iy)); bg.forEach((c2, k) => q.addColorStop(k / (bg.length - 1), c2)); g.fillStyle = q; } else g.fillStyle = bg;
+          g.fillRect(mm(ix), mm(iy), mm(sz), mm(sz));
+          if (draw) draw(ix, iy, sz); g.restore();
+        };
+        const letter = (t, color = "#fff", k = 0.56, weight = 800) => (ix, iy, sz) => { g.font = `${weight} ${mm(sz * k)}px Poppins, sans-serif`; g.fillStyle = color; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText(t, mm(ix + sz / 2), mm(iy + sz * 0.53)); };
+        const camera = (ix, iy, sz) => { g.strokeStyle = "#fff"; g.lineWidth = mm(sz * 0.075); g.beginPath(); g.roundRect(mm(ix + sz * 0.22), mm(iy + sz * 0.22), mm(sz * 0.56), mm(sz * 0.56), mm(sz * 0.16)); g.stroke(); g.beginPath(); g.arc(mm(ix + sz / 2), mm(iy + sz / 2), mm(sz * 0.14), 0, 7); g.stroke(); g.fillStyle = "#fff"; g.beginPath(); g.arc(mm(ix + sz * 0.67), mm(iy + sz * 0.33), mm(sz * 0.035), 0, 7); g.fill(); };
+        const flame = (ix, iy, sz) => { const cx = ix + sz / 2, by = iy + sz * 0.78; g.fillStyle = "#fff"; g.beginPath(); g.moveTo(mm(cx - sz * 0.02), mm(iy + sz * 0.2)); g.bezierCurveTo(mm(cx + sz * 0.3), mm(iy + sz * 0.38), mm(cx + sz * 0.3), mm(by), mm(cx), mm(by)); g.bezierCurveTo(mm(cx - sz * 0.3), mm(by), mm(cx - sz * 0.28), mm(iy + sz * 0.5), mm(cx - sz * 0.12), mm(iy + sz * 0.42)); g.bezierCurveTo(mm(cx - sz * 0.08), mm(iy + sz * 0.5), mm(cx), mm(iy + sz * 0.46), mm(cx - sz * 0.02), mm(iy + sz * 0.2)); g.fill(); };
+        const owl = (ix, iy, sz) => { for (const dx of [-0.15, 0.15]) { g.fillStyle = "#fff"; g.beginPath(); g.arc(mm(ix + sz * (0.5 + dx)), mm(iy + sz * 0.44), mm(sz * 0.14), 0, 7); g.fill(); g.fillStyle = "#3c3c3c"; g.beginPath(); g.arc(mm(ix + sz * (0.5 + dx * 0.85)), mm(iy + sz * 0.45), mm(sz * 0.06), 0, 7); g.fill(); } g.fillStyle = "#FFC800"; g.beginPath(); g.moveTo(mm(ix + sz * 0.42), mm(iy + sz * 0.58)); g.lineTo(mm(ix + sz * 0.58), mm(iy + sz * 0.58)); g.lineTo(mm(ix + sz * 0.5), mm(iy + sz * 0.72)); g.fill(); };
+        const play = (ix, iy, sz) => { g.fillStyle = "#fff"; g.beginPath(); g.moveTo(mm(ix + sz * 0.4), mm(iy + sz * 0.32)); g.lineTo(mm(ix + sz * 0.7), mm(iy + sz * 0.5)); g.lineTo(mm(ix + sz * 0.4), mm(iy + sz * 0.68)); g.fill(); };
+        const apps = [["LinkedIn", "#0A66C2", letter("in")], ["X", "#000000", letter("X", "#fff", 0.6, 700)], ["Facebook", "#1877F2", letter("f", "#fff", 0.78)], ["Instagram", ["#FEDA75", "#FA7E1E", "#D62976", "#962FBF", "#4F5BD5"], camera],
+          ["Tinder", ["#FD297B", "#FF655B"], flame], null, ["Badoo", "#783BF9", letter("b", "#fff", 0.7)], ["RAE", "#7A1A2B", letter("RAE", "#fff", 0.3, 700)],
+          ["Lingokids", "#19B5E8", letter("L", "#fff", 0.62, 900)], ["Duolingo", "#58CC02", owl], ["WhatsApp", "#25D366", letter("✆", "#fff", 0.6, 500)], ["YouTube", "#FF0000", play]];
+        const cols = 4, sz = sw * 0.17, gap = (sw - cols * sz) / (cols + 1), rowH = sz + 6.2, top = sy + 10.5;
+        for (let k = 0; k < apps.length; k++) {
+          const ix = sx + gap + (k % cols) * (sz + gap), iy = top + Math.floor(k / cols) * rowH;
+          if (apps[k]) tile(ix, iy, sz, apps[k][1], apps[k][2]);
+          else { const { text: t } = standaloneSvg(d, "sq"); g.drawImage(await svgImage(t, mm(sz), mm(sz)), mm(ix), mm(iy), mm(sz), mm(sz)); if (claro(c.icono_fondo)) rr(ix, iy, sz, sz, sz * 0.22, null, "rgba(0,0,0,.15)"); }
+          text(apps[k] ? apps[k][0] : "Ortografía10", ix + sz / 2, iy + sz + 2.6, 1.55, 500, "#ffffff", "center");
+        }
+        // dock
+        const dy = sy + sh - sz - 5.4;
+        rr(sx + 2, dy - 2, sw - 4, sz + 4, 4.2, "rgba(255,255,255,.28)");
+        [["#34C759", letter("✆", "#fff", 0.6, 500)], ["#0A84FF", letter("◎", "#fff", 0.62, 500)], [["#5EE06B", "#2AC84A"], letter("✉", "#fff", 0.55, 500)], [["#FA233B", "#FB5C74"], letter("♪", "#fff", 0.6, 600)]].forEach(([bg, dr], k) => tile(sx + gap + k * (sz + gap), dy, sz, bg, dr));
+        rr(x + w / 2 - 6.5, sy + sh - 1.9, 13, 0.7, 0.35, "rgba(255,255,255,.85)");
+        g.restore();
+      };
+      await phone(113, 47, 98);
+      label("En el móvil, entre otras apps", 113, y + 103.5);
+      // fotograma de Reel (más pequeño) y paleta, en la columna de la derecha
+      {
+        const x = 165, w = 30, h = 53.3;
+        g.save(); g.beginPath(); g.roundRect(mm(x), mm(y), mm(w), mm(h), mm(2.4)); g.clip();
         g.fillStyle = c.wordmark_fondo; g.fillRect(mm(x), mm(y), mm(w), mm(h));
         const { text: t, ratio } = standaloneSvg(d, "wm");
-        if (fin) {
-          const ww = 30, hh = ww / ratio; g.drawImage(await svgImage(t, mm(ww), mm(hh)), mm(x + 5), mm(y + 30 - hh / 2), mm(ww), mm(hh));
-          text("Mañana, otra regla.", x + w / 2, y + 40, 2.3, 500, c.wordmark, "center");
-          rr(x + 12, y + 45, 16, 5, 2.5, c.acento === c.wordmark ? c.error : c.acento); text("Descárgala", x + w / 2, y + 48.5, 2, 700, c.wordmark_fondo, "center");
-        } else {
-          const hh = 3.4, ww = hh * ratio; g.drawImage(await svgImage(t, mm(ww), mm(hh)), mm(x + w / 2 - ww / 2), mm(y + 8), mm(ww), mm(hh));
-          rr(x + 11.5, y + 16, 17, 4.6, 2.3, c.error); text("¡Aquí está!", x + w / 2, y + 19.2, 2, 700, "#ffffff", "center");
-          text("Ayer conduje", x + w / 2, y + 30, 3.6, 700, c.wordmark, "center");
-          g.font = `700 ${mm(3.6)}px Poppins, sans-serif`;
-          const a = "mi cami", b = "on", z = ".", wa = g.measureText(a).width, wb = g.measureText(b).width, wz = g.measureText(z).width;
-          let px = mm(x + w / 2) - (wa + wb + wz) / 2; g.textAlign = "left";
-          g.fillStyle = c.wordmark; g.fillText(a, px, mm(y + 35.5)); px += wa;
-          g.fillStyle = c.acento === c.wordmark ? c.error : c.acento; g.fillText(b, px, mm(y + 35.5)); px += wb;
-          g.fillStyle = c.wordmark; g.fillText(z, px, mm(y + 35.5));
-        }
+        const hh = 2.6, ww = hh * ratio; g.drawImage(await svgImage(t, mm(ww), mm(hh)), mm(x + w / 2 - ww / 2), mm(y + 6), mm(ww), mm(hh));
+        rr(x + 8.5, y + 12, 13, 3.6, 1.8, c.error); text("¡Aquí está!", x + w / 2, y + 14.5, 1.55, 700, "#ffffff", "center");
+        text("Ayer conduje", x + w / 2, y + 23, 2.7, 700, c.wordmark, "center");
+        g.font = `700 ${mm(2.7)}px Poppins, sans-serif`;
+        const a = "mi cami", b = "on", z = ".", wa = g.measureText(a).width, wb = g.measureText(b).width, wz = g.measureText(z).width;
+        let px = mm(x + w / 2) - (wa + wb + wz) / 2; g.textAlign = "left";
+        g.fillStyle = c.wordmark; g.fillText(a, px, mm(y + 27.2)); px += wa;
+        g.fillStyle = c.acento === c.wordmark ? c.error : c.acento; g.fillText(b, px, mm(y + 27.2)); px += wb;
+        g.fillStyle = c.wordmark; g.fillText(z, px, mm(y + 27.2));
         g.restore();
-        if (claro(c.wordmark_fondo)) rr(x, y, w, h, 3, null, "#d8d6cf");
-      };
-      await reelFrame(113, false); await reelFrame(155, true);
-      label("En un Reel o Short: el ejercicio y el cierre", 113, y + 77);
-      // paleta
+        if (claro(c.wordmark_fondo)) rr(x, y, w, h, 2.4, null, "#d8d6cf");
+        label("En un Reel o Short", x, y + 57.5);
+      }
       const pal = [["Fondo", c.icono_fondo], ["Tinta", c.icono_tinta], ["Acento", c.acento], ["Error", c.error], ["Acierto", c.acierto]];
-      pal.forEach(([n, hex], i) => { const x = 113 + i * 16.6; rr(x, y + 84, 14.6, 12, 2, hex, claro(hex) ? "#d8d6cf" : null); text(n, x, y + 100.5, 2.3, 600); text(hex.toUpperCase(), x, y + 104, 2.1, 400, "#6b6a66"); });
+      pal.forEach(([n, hex], i) => { const py = y + 63 + i * 7.2; rr(165, py, 6, 6, 1.2, hex, claro(hex) ? "#d8d6cf" : null); text(n, 173, py + 2.6, 2.2, 600); text(hex.toUpperCase(), 173, py + 5.5, 2, 400, "#6b6a66"); });
 
       // pie: el concepto
       g.fillStyle = "#141413"; g.fillRect(mm(15), mm(275), mm(180), mm(0.2));
