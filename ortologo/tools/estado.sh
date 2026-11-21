@@ -2,7 +2,7 @@
 # Estado rápido para la rutina de Ortologo: ¿hay algo que hacer?
 #   bash ortologo/tools/estado.sh
 # Imprime una línea JSON y termina con código 0 si HAY trabajo, 1 si no.
-#  - por_decidir: diseños sin decisión (objetivo: 30)
+#  - por_decidir: diseños sin decisión (de rellenar la cola se ocupa la rutina del proceso creativo)
 #  - comentarios: comentarios sin usar que ya se pueden leer (texto, o audio con transcripción)
 #  - revisar: diseños marcados «🔁 Otra»
 #  - en_curso: otra ejecución empezó hace < 12 min y no ha terminado → no hacer nada
@@ -16,5 +16,5 @@ ULT=$($SB GET "ortologo_rutinas?select=rutina,ejecutada_en&rutina=in.(en-curso,h
 EN_CURSO=$([ "$ULT" = "en-curso" ] && echo true || echo false)
 echo "{\"por_decidir\":$POR,\"comentarios\":$COM,\"revisar\":$REV,\"en_curso\":$EN_CURSO}"
 if [ "$EN_CURSO" = true ]; then exit 1; fi
-if [ "$POR" -lt 30 ] || [ "$COM" -gt 0 ] || [ "$REV" -gt 0 ]; then exit 0; fi
+if [ "$COM" -gt 0 ] || [ "$REV" -gt 0 ]; then exit 0; fi
 exit 1

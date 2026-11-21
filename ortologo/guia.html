@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Ortografía10 · guía del logo</title>
+  <meta name="theme-color" content="#141839" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="fonts/poppins.css" />
+  <style>
+    @font-face { font-family: "Playfair"; font-weight: 700; src: url(tools/fuentes/playfair-700.woff2) format("woff2"); font-display: swap; }
+    @font-face { font-family: "Playfair"; font-weight: 900; src: url(tools/fuentes/playfair-900.woff2) format("woff2"); font-display: swap; }
+    @font-face { font-family: "Playfair"; font-weight: 900; font-style: italic; src: url(tools/fuentes/playfair-900i.woff2) format("woff2"); font-display: swap; }
+    :root { --noche: #141839; --sol: #fecb3b; --tinta: #141413; --gris: #6b6a66; --linea: #e6e4dd; --papel: #f6f2ea; --rojo: #e8443a; --verde: #1f9d55; }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+    body { margin: 0; background: #fff; color: var(--tinta); font-family: "Poppins", system-ui, sans-serif; font-size: 16px; line-height: 1.6; }
+    a { color: inherit; }
+    .col { max-width: 760px; margin: 0 auto; padding: 0 20px; }
+    h1, h2, .serif { font-family: "Playfair", Georgia, serif; font-weight: 900; letter-spacing: -0.01em; }
+    mark { background: linear-gradient(transparent 55%, var(--sol) 55%); color: inherit; padding: 0 2px; }
+
+    .top { position: sticky; top: 0; z-index: 5; background: rgba(255, 255, 255, 0.94); backdrop-filter: blur(6px); border-bottom: 1px solid var(--linea); }
+    .top .col { display: flex; align-items: center; gap: 14px; height: 52px; }
+    .top a.back { font-weight: 700; text-decoration: none; font-size: 0.9rem; white-space: nowrap; }
+    .top nav { display: flex; gap: 14px; overflow-x: auto; scrollbar-width: none; font-size: 0.82rem; color: var(--gris); }
+    .top nav::-webkit-scrollbar { display: none; }
+    .top nav a { text-decoration: none; white-space: nowrap; }
+
+    .hero { background: var(--noche); color: var(--sol); padding: 64px 0 56px; }
+    .hero .kicker { font-size: 0.8rem; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600; opacity: 0.8; }
+    .hero h1 { font-size: clamp(2.6rem, 9vw, 4.6rem); line-height: 1.02; margin: 14px 0 18px; }
+    .hero h1 i { font-style: italic; }
+    .hero p { color: #f6f2ea; max-width: 34em; font-size: 1.05rem; margin: 0; }
+
+    section { padding: 56px 0 8px; }
+    .num { font-family: "Playfair", serif; font-weight: 900; font-size: 0.95rem; color: var(--gris); border-top: 3px solid var(--tinta); display: inline-block; padding-top: 8px; margin-bottom: 6px; }
+    h2 { font-size: clamp(1.9rem, 6vw, 2.8rem); line-height: 1.08; margin: 0 0 16px; }
+    h3 { font-size: 1.05rem; margin: 0 0 4px; }
+    p { margin: 0 0 14px; }
+    .lead { font-size: 1.12rem; }
+    .nota { font-size: 0.85rem; color: var(--gris); }
+
+    /* anatomía */
+    .anat { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin: 22px 0 10px; }
+    .anat > div { border: 1px solid var(--linea); border-radius: 16px; padding: 16px 14px; }
+    .anat .demo { height: 84px; border-radius: 12px; background: var(--noche); color: var(--sol); display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 12px; font-weight: 800; }
+    .tile { width: 46px; height: 46px; border-radius: 11px; background: var(--sol); color: var(--noche); display: flex; align-items: center; justify-content: center; font-size: 1.7rem; font-weight: 800; line-height: 1; flex: none; }
+    .anat small { color: var(--gris); display: block; font-size: 0.82rem; line-height: 1.4; }
+
+    /* tres capas */
+    .capas { display: grid; gap: 0; margin: 22px 0; border: 2px solid var(--tinta); border-radius: 18px; overflow: hidden; }
+    .capas > div { padding: 18px 20px; border-top: 2px solid var(--tinta); }
+    .capas > div:first-child { border-top: 0; background: var(--sol); }
+    .capas > div:nth-child(2) { background: var(--papel); }
+    .capas b { font-family: "Playfair", serif; font-size: 1.3rem; }
+
+    /* las 10 preguntas */
+    .q { display: grid; grid-template-columns: 64px 1fr; gap: 6px 14px; padding: 20px 0; border-top: 1px solid var(--linea); }
+    .q:first-of-type { border-top: 3px solid var(--tinta); }
+    .q .n { font-family: "Playfair", serif; font-weight: 900; font-size: 2.6rem; line-height: 1; color: var(--tinta); }
+    .q h3 { font-size: 1.18rem; }
+    .q p { margin: 0 0 8px; }
+    .q .como { font-size: 0.86rem; background: var(--papel); border-radius: 10px; padding: 8px 12px; margin: 0; }
+    .q .como b { color: var(--verde); }
+    .q label { grid-column: 2; display: inline-flex; align-items: center; gap: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; margin-top: 4px; }
+    .q input { width: 20px; height: 20px; accent-color: var(--noche); }
+    .marcador { position: sticky; bottom: 12px; z-index: 4; margin: 18px auto 0; width: fit-content; background: var(--noche); color: var(--sol); border-radius: 999px; padding: 10px 20px; font-weight: 700; font-size: 0.92rem; box-shadow: 0 6px 18px rgba(20, 24, 57, 0.3); display: flex; gap: 12px; align-items: center; }
+    .marcador button { font: inherit; font-size: 0.78rem; background: none; border: 1px solid rgba(254, 203, 59, 0.5); color: inherit; border-radius: 999px; padding: 2px 10px; cursor: pointer; }
+
+    /* imagen de marca */
+    .ingr { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin: 20px 0; }
+    .ingr > div { background: var(--papel); border-radius: 16px; padding: 16px; }
+    .ingr .ico { font-size: 1.5rem; }
+    .ingr p { font-size: 0.9rem; margin: 4px 0 0; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .chip { display: inline-flex; align-items: center; gap: 6px; font-size: 0.75rem; font-weight: 600; border-radius: 999px; padding: 3px 10px 3px 4px; border: 1px solid var(--linea); background: #fff; }
+    .chip i { width: 16px; height: 16px; border-radius: 50%; display: block; }
+
+    /* arquetipos */
+    .rueda { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px; margin: 22px 0 8px; }
+    .arq { border: 1px solid var(--linea); border-radius: 16px; padding: 14px 16px; position: relative; }
+    .arq .g { font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gris); font-weight: 600; }
+    .arq h3 { font-family: "Playfair", serif; font-size: 1.35rem; margin: 2px 0 4px; }
+    .arq p { font-size: 0.88rem; margin: 0 0 6px; }
+    .arq small { color: var(--gris); font-size: 0.78rem; }
+    .arq.si { background: var(--noche); color: #f6f2ea; border-color: var(--noche); }
+    .arq.si h3, .arq.si .g { color: var(--sol); }
+    .arq.si small { color: #aeb4d6; }
+    .arq.medio { background: var(--sol); border-color: var(--sol); }
+    .arq.medio small, .arq.medio .g { color: #5b4a12; }
+    .arq .tag { position: absolute; top: 12px; right: 12px; font-size: 0.66rem; font-weight: 700; border-radius: 999px; padding: 2px 8px; background: var(--sol); color: var(--noche); }
+    .arq.medio .tag { background: var(--noche); color: var(--sol); }
+    .veredicto { border: 2px solid var(--tinta); border-radius: 18px; padding: 22px; margin: 22px 0; }
+    .veredicto h3 { font-family: "Playfair", serif; font-size: 1.5rem; margin-bottom: 8px; }
+    .dos { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-top: 12px; }
+    .dos > div { background: var(--papel); border-radius: 14px; padding: 14px; font-size: 0.9rem; }
+    .dos b { display: block; margin-bottom: 4px; }
+
+    /* examen de los favoritos */
+    .exam { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; margin: 18px 0; }
+    .ex { border: 1px solid var(--linea); border-radius: 16px; padding: 12px; text-decoration: none; display: block; }
+    .ex .fila { display: flex; align-items: flex-end; gap: 8px; }
+    .ic { overflow: hidden; flex: none; }
+    .ic svg { display: block; width: 100%; height: 100%; }
+    .ic .acento { fill: var(--a); } .ic .acento-trazo { stroke: var(--a); } .ic .fondo { fill: var(--f); } .ic .fondo-trazo { stroke: var(--f); }
+    .ex .cap { font-size: 0.74rem; color: var(--gris); margin-top: 8px; line-height: 1.3; }
+    .ex .cap b { color: var(--tinta); font-size: 0.9rem; }
+    .mono svg * { }
+    .pasos { counter-reset: p; list-style: none; padding: 0; margin: 20px 0; }
+    .pasos li { counter-increment: p; position: relative; padding: 0 0 16px 52px; }
+    .pasos li::before { content: counter(p); position: absolute; left: 0; top: -2px; width: 36px; height: 36px; border-radius: 50%; background: var(--sol); color: var(--noche); font-weight: 800; display: flex; align-items: center; justify-content: center; }
+    .pasos b { display: block; }
+
+    footer { margin-top: 56px; background: var(--noche); color: #aeb4d6; padding: 36px 0 44px; font-size: 0.85rem; }
+    footer .cta { display: inline-block; background: var(--sol); color: var(--noche); font-weight: 800; text-decoration: none; border-radius: 14px; padding: 12px 20px; margin-bottom: 18px; }
+    .build-id { font-size: 0.7rem; opacity: 0.6; margin-top: 14px; }
+  </style>
+</head>
+<body>
+  <div class="top"><div class="col">
+    <a class="back" href="./">← Los logos</a>
+    <nav><a href="#que-es">Qué es</a><a href="#preguntas">Las 10 preguntas</a><a href="#marca">Imagen de marca</a><a href="#arquetipos">Arquetipos</a><a href="#examen">Tus favoritos</a><a href="#decidir">Cómo decidir</a></nav>
+  </div></div>
+
+  <header class="hero"><div class="col">
+    <div class="kicker">Ortografía10 · guía del logo</div>
+    <h1>Un logo para <i>toda la vida</i></h1>
+    <p>Qué es un logo, qué es una imagen de marca, qué tiene que aprobar un símbolo para durar veinte años, y qué personaje interpreta Ortografía10. Léelo una vez antes de elegir: cambia la forma de mirar las propuestas.</p>
+  </div></header>
+
+  <section id="que-es"><div class="col">
+    <span class="num">01</span>
+    <h2>Un logo es una firma, no un resumen</h2>
+    <p class="lead">Un logo no tiene que explicar lo que haces. Tiene que hacer una sola cosa: que <mark>te reconozcan</mark> al instante y sin esfuerzo, igual que reconoces la letra de alguien antes de leer lo que ha escrito.</p>
+    <p>El significado llega después, a base de verlo junto al producto. Una manzana mordida no dice «ordenadores» y un trazo curvo no dice «zapatillas»: lo dicen los años de encontrártelos siempre en el mismo sitio. Por eso lo que pedimos a un logo es que sea fácil de recordar y difícil de confundir, no que sea ingenioso.</p>
+
+    <h3 style="margin-top:26px">Las piezas, con sus nombres</h3>
+    <div class="anat">
+      <div><div class="demo"><span class="tile">í</span></div><h3>Símbolo</h3><small>También «isotipo». El dibujo solo. Es lo que va en el icono de la app, el favicon y el avatar.</small></div>
+      <div><div class="demo">Ortografía10</div><h3>Logotipo</h3><small>El nombre escrito con una letra y unas proporciones fijas. En inglés, <i>wordmark</i>.</small></div>
+      <div><div class="demo"><span class="tile">í</span>Ortografía10</div><h3>Imagotipo</h3><small>Símbolo y nombre juntos pero separables. Es lo que usarás casi siempre mientras la marca no sea conocida.</small></div>
+    </div>
+    <p class="nota">Regla práctica: el símbolo solo se puede soltar cuando la gente ya lo asocia al nombre. Hasta entonces, siempre con «Ortografía10» al lado (y en la pegatina, con ortografia10.com).</p>
+
+    <h3 style="margin-top:26px">Logo, identidad y marca no son lo mismo</h3>
+    <div class="capas">
+      <div><b>Marca</b><br>Lo que la gente piensa y siente cuando oye «Ortografía10». No lo decides tú: se gana Reel a Reel, regla a regla.</div>
+      <div><b>Identidad visual</b><br>Todo lo que se ve y se repite: símbolo, nombre, colores, tipografía, la forma de animar un Reel, el tono de las frases. Esto sí lo diseñas.</div>
+      <div><b>Logo</b><br>La pieza más pequeña y más repetida de la identidad. La punta del iceberg.</div>
+    </div>
+  </div></section>
+
+  <section id="preguntas"><div class="col">
+    <span class="num">02</span>
+    <h2>Las 10 preguntas que tiene que aprobar</h2>
+    <p class="lead">Un examen de diez preguntas, como debe ser. Pásaselo a cada finalista y marca las que aprueba: un logo para toda la vida necesita, como mínimo, un <mark>8 sobre 10</mark>, y no puede fallar ninguna de las cuatro primeras.</p>
+
+    <div id="qs"></div>
+    <div class="marcador"><span id="nota">Nota: 0 / 10</span><button type="button" id="borrar">Borrar</button></div>
+    <p class="nota" style="margin-top:18px">Las marcas se guardan solo en este dispositivo. Sirven para examinar un finalista cada vez: pulsa «Borrar» y pasa al siguiente.</p>
+  </div></section>
+
+  <section id="marca"><div class="col">
+    <span class="num">03</span>
+    <h2>La imagen de marca: pocas cosas, siempre las mismas</h2>
+    <p class="lead">La gente no estudia tu marca: la ve de reojo, medio segundo, mientras pasa el dedo. Lo que queda en la memoria son unas pocas señales repetidas hasta el aburrimiento. Cuantas menos sean y más constantes, antes te reconocen.</p>
+    <div class="ingr">
+      <div><div class="ico">🔤</div><h3>El nombre</h3><p>«Ortografía10», siempre junto y con tilde en la í. Se dice por teléfono y se teclea sin dudar: ortografia10.com.</p></div>
+      <div><div class="ico">✳️</div><h3>El símbolo</h3><p>Una sola idea. Si necesita explicación, son dos ideas.</p></div>
+      <div><div class="ico">🎨</div><h3>El color</h3><p>Un color propio vale más que un logo bonito: es lo primero que se reconoce y lo último que se olvida.</p>
+        <div class="chips"><span class="chip"><i style="background:#fecb3b"></i>Amarillo</span><span class="chip"><i style="background:#141839"></i>Azul noche</span><span class="chip"><i style="background:#fe5f5e"></i>Error</span><span class="chip"><i style="background:#3fd480"></i>Acierto</span></div></div>
+      <div><div class="ico">🅰️</div><h3>La tipografía</h3><p>Una familia para todo. Cambiar de letra en cada pieza es empezar de cero cada vez.</p></div>
+      <div><div class="ico">🗣️</div><h3>La voz</h3><p>Cómo hablas: frases cortas, una regla cada vez, sin sermón. «Una regla. Un minuto.»</p></div>
+      <div><div class="ico">🎬</div><h3>El movimiento y el sonido</h3><p>En Reels y Shorts, la marca también es cómo entra el nombre, la barra amarilla y el «¡Aquí está!». Siempre igual.</p></div>
+    </div>
+    <p>El amarillo y el azul noche ya están trabajando para ti en los vídeos. Elegir un logo que los use no es falta de imaginación: es <mark>no tirar lo que ya has sembrado</mark>. El rojo y el verde son del ejercicio (fallo y acierto), no de la marca: mejor que no entren en el símbolo.</p>
+  </div></section>
+
+  <section id="arquetipos"><div class="col">
+    <span class="num">04</span>
+    <h2>Los 12 arquetipos: qué personaje es tu marca</h2>
+    <p class="lead">Las marcas que duran se comportan como un personaje reconocible. El modelo más usado reparte esos personajes en doce arquetipos, tomados de la psicología de Carl Jung y llevados al marketing por Margaret Mark y Carol Pearson. No es ciencia exacta: es una brújula para que todo lo que haga la marca suene a la misma persona.</p>
+    <div class="rueda" id="rueda"></div>
+    <p class="nota">Las marcas de ejemplo son las que se suelen citar en los manuales para cada arquetipo; sirven para orientarse, no son una clasificación oficial.</p>
+
+    <div class="veredicto">
+      <h3>Ortografía10 es un Sabio con corazón de Héroe</h3>
+      <p><b>El Sabio</b> promete la verdad: «te explico la regla y ya no vuelves a dudar». Es exactamente lo que hace cada Reel con «camión». <b>El Héroe</b> aporta el motivo: tu público no quiere saber ortografía por gusto, quiere <mark>no perder puntos el día del examen</mark> (EBAU, oposición). El Sabio da la regla; el Héroe, las ganas de entrenar.</p>
+      <div class="dos">
+        <div><b>Lo que pide ese personaje al logo</b>Seguridad y claridad: una letra rotunda, sin adornos ni mascotas. Mejor tipográfico que ilustrado. Que parezca una herramienta seria que usarías la víspera del examen.</div>
+        <div><b>Lo que debe evitar</b>El Bufón (chistes, mascotas, colores de juguete): tu público tiene 17 años o es opositor, no está en primaria. Y el Gobernante (escudos, laureles, tono de academia): eso ya lo ocupan las instituciones.</div>
+        <div><b>Por qué encajan la í y la ñ</b>Son la prueba visible de que sabes: la tilde bien puesta y la letra que solo tiene el español. Un símbolo de Sabio no presume, <i>acierta</i>.</div>
+        <div><b>El 10</b>Es el toque de Héroe: la meta. Funciona en el nombre, donde se lee como nota; como símbolo solo no dice nada.</div>
+      </div>
+    </div>
+  </div></section>
+
+  <section id="examen"><div class="col">
+    <span class="num">05</span>
+    <h2>Tus favoritos, a examen</h2>
+    <p class="lead">Estos son los últimos que has marcado con 👍 o ⭐, vistos como los verá la gente: grande, en círculo, a tamaño de pestaña y <mark>a una sola tinta</mark>. Si a 16 píxeles o en negro deja de reconocerse, no aprueba.</p>
+    <div class="exam" id="exam"><p class="nota">Cargando tus favoritos…</p></div>
+    <p class="nota">Toca uno para abrirlo en la app y descargar su A4.</p>
+  </div></section>
+
+  <section id="decidir"><div class="col">
+    <span class="num">06</span>
+    <h2>Cómo decidir sin arrepentirte</h2>
+    <ol class="pasos">
+      <li><b>Quédate con cinco.</b>Con ⭐ Final en la app. Si dudas entre dos muy parecidos, son el mismo: elige uno y sigue.</li>
+      <li><b>Imprime el A4 de cada uno y cuélgalos una semana.</b>En la nevera o junto a la pantalla. El que te cansa al tercer día no es para toda la vida.</li>
+      <li><b>Haz la prueba del móvil.</b>En el A4 ya sale el icono entre otras apps: mira la hoja a un metro. ¿Lo encuentras a la primera?</li>
+      <li><b>Enséñalos cinco segundos a cinco personas de tu público.</b>Estudiantes de 17-18 y opositores. Al día siguiente pregunta: «¿de cuál te acuerdas?». No preguntes cuál les gusta: pregunta cuál recuerdan.</li>
+      <li><b>Comprueba que es tuyo.</b>Búsqueda de parecidos en la OEPM y la EUIPO (clases 9 y 41: aplicaciones y educación) y en las tiendas de apps. Un logo que se confunde con otro no dura.</li>
+      <li><b>Y entonces, no lo toques.</b>Lo que hace que un logo sea «para toda la vida» no es el dibujo: es que nadie lo cambie durante veinte años.</li>
+    </ol>
+  </div></section>
+
+  <footer><div class="col">
+    <a class="cta" href="./">Volver a elegir →</a>
+    <div>Guía de la app Ortologo, para elegir la marca de Ortografía10. Los arquetipos siguen el modelo de Margaret Mark y Carol S. Pearson («The Hero and the Outlaw», 2001), basado en Carl G. Jung.</div>
+    <div class="build-id">build __BUILD_ID__</div>
+  </div></footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="config.js"></script>
+  <script>
+    // ---------- las 10 preguntas ----------
+    const QS = [
+      ["¿Se entiende en un segundo?", "Una sola idea, pocas formas. Si hay que explicarlo, sobra algo.", "Enséñalo un segundo y tápalo. ¿Sabrían decir qué han visto con tres palabras?"],
+      ["¿Lo dibujarías de memoria?", "Lo memorable es lo que se puede repetir. Si tú no puedes dibujarlo con un boli, nadie lo recordará.", "Dibújalo sin mirar en diez segundos. Tiene que parecerse."],
+      ["¿Se reconoce a 16 píxeles?", "Vivirá en el icono del móvil, en la pestaña del navegador y en la notificación. Ahí no caben detalles.", "Mira el favicon pequeño de la tarjeta. ¿Sigue siendo él o es una mancha?"],
+      ["¿Funciona a una sola tinta?", "Sello, bordado, fotocopia, vinilo de coche, marca de agua. Un logo que necesita sus colores para existir es frágil.", "Míralo en negro sobre blanco (abajo, en «Tus favoritos, a examen»)."],
+      ["¿Se distingue entre treinta apps?", "No compite contra el vacío: compite contra la pantalla de inicio. Tiene que ser distinto de sus vecinos, no solo bonito.", "El A4 lo coloca en un iPhone entre apps conocidas. ¿Lo encuentras de un vistazo?"],
+      ["¿Tiene que ver con lo que eres?", "No hace falta que lo describa, pero no puede llevar la contraria. Ortografía y español: una tilde, una ñ, una letra bien puesta.", "¿Podría ser el logo de una app de recetas? Si la respuesta es sí, le falta pertinencia."],
+      ["¿Aguantará veinte años?", "Las modas (degradados, 3D, mascotas del momento) caducan. Las letras y las formas simples, no.", "Imagínalo en 2046. ¿Da vergüenza o sigue ahí tan tranquilo?"],
+      ["¿Vale para todo?", "Icono cuadrado, avatar redondo, pegatina, imán, cabecera web, cierre de Reel, bordado en una sudadera.", "En la tarjeta: ¿se corta en el círculo? ¿Respira en la pegatina? ¿Se lee en el Reel?"],
+      ["¿Da familia?", "Ortografía10 es la primera de la Serie 10. El símbolo tiene que dejar sitio a Mates10 sin empezar de cero.", "¿Sabrías dibujar el hermano de Mates10 con las mismas reglas?"],
+      ["¿Es tuyo?", "Que no se confunda con el de otro y que se pueda registrar. Un parecido razonable hoy es un problema caro mañana.", "Busca parecidos en las tiendas de apps y en la OEPM / EUIPO antes de encariñarte."],
+    ];
+    const KEY = "ortologo.examen";
+    let marcas = []; try { marcas = JSON.parse(localStorage.getItem(KEY) || "[]"); } catch {}
+    const qs = document.getElementById("qs");
+    qs.innerHTML = QS.map(([t, d, c], i) => `<div class="q"><div class="n">${i + 1}</div><div><h3>${t}</h3><p>${d}</p><p class="como"><b>Cómo comprobarlo:</b> ${c}</p></div><label><input type="checkbox" data-i="${i}" ${marcas.includes(i) ? "checked" : ""}> Aprueba</label></div>`).join("");
+    const pintaNota = () => { const n = qs.querySelectorAll("input:checked").length; const basicas = [0, 1, 2, 3].every((i) => qs.querySelector(`input[data-i="${i}"]`).checked); document.getElementById("nota").textContent = `Nota: ${n} / 10` + (n >= 8 && basicas ? " · para toda la vida" : n >= 8 ? " · le falta una de las cuatro primeras" : ""); };
+    qs.addEventListener("change", () => { marcas = [...qs.querySelectorAll("input:checked")].map((x) => +x.dataset.i); try { localStorage.setItem(KEY, JSON.stringify(marcas)); } catch {} pintaNota(); });
+    document.getElementById("borrar").onclick = () => { qs.querySelectorAll("input").forEach((x) => x.checked = false); marcas = []; try { localStorage.removeItem(KEY); } catch {} pintaNota(); };
+    pintaNota();
+
+    // ---------- arquetipos ----------
+    const ARQ = [
+      ["Inocente", "Orden", "Promete sencillez y optimismo: las cosas pueden ser fáciles y buenas.", "Dove, Coca-Cola"],
+      ["Sabio", "Conocimiento", "Promete la verdad: te ayuda a entender el mundo y a no equivocarte.", "Google, Harvard, National Geographic", "si", "Principal"],
+      ["Explorador", "Libertad", "Promete descubrir: salir de lo conocido y encontrar tu camino.", "The North Face, Jeep"],
+      ["Forajido", "Ruptura", "Promete romper las reglas que no funcionan.", "Harley-Davidson, Diesel"],
+      ["Mago", "Transformación", "Promete que lo imposible ocurre: un antes y un después.", "Disney, Dyson"],
+      ["Héroe", "Superación", "Promete que con esfuerzo se puede: te entrena para ganar.", "Nike, Adidas", "medio", "Secundario"],
+      ["Amante", "Intimidad", "Promete placer, belleza y sentirse deseado.", "Chanel, Häagen-Dazs"],
+      ["Bufón", "Diversión", "Promete pasarlo bien: la vida es corta para ponerse serios.", "M&M's, Old Spice"],
+      ["Persona corriente", "Pertenencia", "Promete que eres uno más y que así está bien.", "IKEA, Levi's"],
+      ["Cuidador", "Servicio", "Promete protegerte y cuidar de los tuyos.", "Volvo, Johnson & Johnson"],
+      ["Gobernante", "Control", "Promete orden, prestigio y estar por encima.", "Rolex, Mercedes-Benz"],
+      ["Creador", "Innovación", "Promete darte herramientas para hacer algo propio.", "LEGO, Adobe"],
+    ];
+    document.getElementById("rueda").innerHTML = ARQ.map(([n, g, p, m, cls, tag]) => `<div class="arq ${cls || ""}">${tag ? `<span class="tag">${tag}</span>` : ""}<div class="g">${g}</div><h3>${n}</h3><p>${p}</p><small>Se suele citar: ${m}</small></div>`).join("");
+
+    // ---------- tus favoritos, a examen ----------
+    const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    function safeSvg(str) {
+      try {
+        const doc = new DOMParser().parseFromString(str || "", "image/svg+xml"), svg = doc.documentElement;
+        if (!svg || svg.nodeName.toLowerCase() !== "svg" || doc.querySelector("parsererror")) return "";
+        svg.querySelectorAll("script,foreignObject,iframe,image,a,animate,set,style").forEach((n) => n.remove());
+        for (const n of [svg, ...svg.querySelectorAll("*")]) for (const a of [...n.attributes]) { const k = a.name.toLowerCase(); if (k.startsWith("on") || ((k === "href" || k === "xlink:href") && !a.value.startsWith("#"))) n.removeAttribute(a.name); }
+        svg.removeAttribute("width"); svg.removeAttribute("height");
+        return new XMLSerializer().serializeToString(svg);
+      } catch { return ""; }
+    }
+    const hex = (h, d) => /^#[0-9a-f]{3,8}$/i.test(h || "") ? h : d;
+    function ic(d, size, radius, mono) {
+      const c = d.colores || {}, f = mono ? "#ffffff" : hex(c.icono_fondo, "#141839"), t = mono ? "#111111" : hex(c.icono_tinta, "#F6F2EA"), a = mono ? "#111111" : hex(c.acento, "#FECB3B");
+      let svg = safeSvg(size <= 32 ? (d.svg_favicon || d.svg_marca) : d.svg_marca);
+      if (mono) svg = svg.replace(/(fill|stroke)="#[0-9a-fA-F]{3,8}"/g, '$1="#111111"');
+      return `<div class="ic" style="width:${size}px;height:${size}px;border-radius:${radius};background:${f};color:${t};--a:${a};--f:${f};${mono ? "box-shadow:inset 0 0 0 1px #e6e4dd" : ""}">${svg}</div>`;
+    }
+    (async () => {
+      const box = document.getElementById("exam");
+      try {
+        const { url, anonKey, tablePrefix } = window.ORTOLOGO_CONFIG;
+        const client = supabase.createClient(url, anonKey);
+        const { data, error } = await client.from(tablePrefix + "disenos").select("numero,titulo,decision,svg_marca,svg_favicon,colores,decidido_en").in("decision", ["gusta", "definitivo"]).order("decidido_en", { ascending: false }).limit(24);
+        if (error) throw error;
+        const list = (data || []).sort((x, y) => (y.decision === "definitivo") - (x.decision === "definitivo"));
+        box.innerHTML = list.length ? list.map((d) => `<a class="ex" href="./#${d.numero}"><div class="fila">${ic(d, 64, "22%")}${ic(d, 40, "50%")}${ic(d, 16, "22%")}</div><div class="fila" style="margin-top:8px">${ic(d, 64, "22%", true)}${ic(d, 16, "22%", true)}</div><div class="cap"><b>${d.decision === "definitivo" ? "⭐ " : ""}nº ${d.numero}</b><br>${esc(d.titulo)}</div></a>`).join("")
+          : `<p class="nota">Todavía no has marcado ninguno con 👍 o ⭐. Vuelve cuando tengas favoritos.</p>`;
+      } catch (e) { box.innerHTML = `<p class="nota">No se han podido cargar tus favoritos (${esc(e.message || e)}).</p>`; }
+    })();
+  </script>
+</body>
+</html>
