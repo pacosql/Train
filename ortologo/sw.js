@@ -7,6 +7,7 @@ const CACHE_NAME = `${CACHE_PREFIX}__BUILD_ID__`;
 const SHELL = [
   "./",
   "./index.html",
+  "./guia.html",
   "./manifest.json",
   "./config.js",
   "./fonts/poppins.css",
@@ -43,7 +44,7 @@ self.addEventListener("fetch", (event) => {
   if (request.url.includes(".supabase.co")) return;
   // La página, siempre de la red primero (si no, se vería un build viejo).
   if (request.mode === "navigate") {
-    event.respondWith(fetch(request).catch(() => caches.match("./index.html")));
+    event.respondWith(fetch(request).catch(() => caches.match(request, { ignoreSearch: true }).then((r) => r || caches.match("./index.html"))));
     return;
   }
   event.respondWith(caches.match(request).then((cached) => cached || fetch(request)));

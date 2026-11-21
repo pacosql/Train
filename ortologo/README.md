@@ -18,6 +18,12 @@ propuesta se ve como:
 - un fotograma de **Reel** con el ejercicio del camión;
 - el **hermano Mates10** cuando el símbolo es un sistema de serie.
 
+**📖 Guía** (`guia.html`): qué es un logo y una imagen de marca, las 10
+preguntas que tiene que aprobar un logo para toda la vida (con casillas),
+los 12 arquetipos y cuál es Ortografía10 (Sabio con corazón de Héroe), los
+favoritos del usuario «a examen» (grande, círculo, 16 px y a una tinta) y
+cómo decidir.
+
 **⬇️ Descargar A4** genera un PDF de una página con todo eso (más la
 paleta) para imprimirlo. «📐 Kit y guía de marca» da los PNG/SVG sueltos
 (icono 1024 a sangre para las tiendas, avatar, favicon, pegatina vectorial)
@@ -103,9 +109,7 @@ en cuanto haya algo. Así el usuario ve respuesta en 1-5 minutos.
    X en `revisar` → `versionado`. Peticiones generales (`diseno_id` null)
    orientan la tanda. Lo que un comentario deje obsoleto → `retirado`.
    Comentarios usados → `estado: procesado`, `procesado_en`.
-6. **Rellenar hasta 30 por decidir**: ~60 % variaciones de lo que gusta,
-   ~40 % ideas nuevas. **Si ya hay 30 o más por decidir y no hay
-   comentarios ni 🔁, no se añade nada** (la cola no debe crecer sola).
+6. No rellena la cola: de eso se ocupa la rutina «proceso creativo».
 7. Escribir la tanda como un script de Python **fuera del repo** que
    importe `marca.py` y lo que haga falta de `tanda1.py`, generar las filas
    (`origen: "rutina"`), **mirar la hoja de `tools/hoja.js`**, corregir lo
@@ -113,36 +117,44 @@ en cuanto haya algo. Así el usuario ve respuesta en 1-5 minutos.
    `sb.sh POST ortologo_disenos`.
 8. Insertar `{"rutina":"hecho","resumen":"…"}` (una frase).
 
-## Rutina «Ortologo: 10 ideas nuevas con inspiración» (una sesión cada hora)
+## Rutina «Ortologo: proceso creativo» (una sesión cada hora)
 
-Independiente de la anterior: cada hora **busca inspiración fuera** y añade
-**10 propuestas nuevas**, haya o no feedback.
+Mantiene la cola **siempre llena (250 por decidir como mínimo)** y trae
+ideas nuevas cada hora, haya o no feedback. No hay tope: no pasa nada si
+se acumulan 1000 o 2000.
 
-1. `pip install -q fonttools brotli uharfbuzz`. Si hay **250 o más por
-   decidir**, o `estado.sh` dice `en_curso: true`, terminar sin hacer nada.
-2. Leer `ortologo_preferencias` y los títulos y decisiones de
-   `ortologo_disenos` (para no repetir y saber qué gusta y qué no).
-3. **Investigar 10-15 minutos en la web** (búsqueda y lectura de páginas):
-   cada hora un filón distinto, por ejemplo iconos de apps de idiomas y
-   educación, identidades premiadas (Cannes Lions, D&AD, Laus, Brand New /
-   UnderConsideration), colecciones de museos de diseño (Design Museum,
-   MoMA, Cooper Hewitt, Museu del Disseny), cabeceras de periódicos y
-   editoriales, marcas hechas con una sola letra, logotipos con ñ o con
-   tilde, tendencias de iconos y tipografía que se comenten en redes. Si
-   una fuente no se puede abrir (muchas redes piden sesión), pasar a otra.
-4. Sacar de ahí **10 ideas distintas entre sí** y dibujarlas con
-   `tools/marca.py` (ver `tanda1.py` y `tanda4.py`; hay ~70 tipografías en
-   `tools/fuentes`). Es **inspiración, no copia**: se toma el recurso (una
-   proporción, un corte, un contenedor, un juego tipográfico), nunca el
-   logo, el nombre ni el dibujo de otra marca.
-5. En `concepto`, una frase que diga la idea **y de dónde viene**
-   («Inspirado en …»); en `spec`, `{"tanda":"inspiracion","fuente":"<url>"}`;
-   `origen: "rutina"`.
-6. **Mirar la hoja de `tools/hoja.js`** (icono, círculo y pegatina),
-   corregir o tirar lo que se vea mal, e insertar con `sb.sh POST`.
-7. Registrar `{"rutina":"en-curso"}` al empezar a insertar y
-   `{"rutina":"hecho","resumen":"…"}` al acabar (qué se ha mirado y qué 10
-   ideas han salido).
+1. `pip install -q fonttools brotli uharfbuzz`. `bash tools/estado.sh`: si
+   `en_curso` es true, esperar 3 minutos y volver a mirar (máx. 3 veces).
+   Tamaño de la tanda: **N = 250 − por_decidir, con un mínimo de 30 y un
+   máximo de 120** por sesión.
+2. **Aprender**: leer todos los diseños con su decisión. Qué tienen en
+   común los 👍/⭐ recientes (símbolo, tipografía, tratamiento, paleta) y
+   qué tienen en común los 👎. Reescribir `ortologo_preferencias`.
+3. **Investigar 10-15 minutos en la web** un filón distinto cada hora
+   (mirar en `ortologo_rutinas` los ya usados): iconos de apps, identidades
+   premiadas (Cannes Lions, D&AD, Laus, Brand New), museos de diseño,
+   cabeceras y editoriales, cartelismo, señalética, marcas de una letra,
+   logotipos con ñ o tilde… Es **inspiración, no copia**: se toma el
+   recurso, nunca el logo, el nombre ni el dibujo de otra marca.
+4. **Generar N propuestas** con un script de Python fuera del repo que
+   importe `tools/marca.py` (plantillas: `tanda1.py`, `tanda4.py`; ~70
+   tipografías en `tools/fuentes`):
+   - **~50 % explotar lo que gusta**: variaciones sistemáticas de los 👍/⭐
+     más recientes (otra tipografía, peso, proporción, contenedor, paleta,
+     recorte), sin repetir títulos que ya existan.
+   - **~30 % ideas del filón** de esta hora, llevadas al terreno que gusta.
+   - **~20 % sorpresas**: algo que no se haya probado todavía.
+   En `concepto`, la idea en una frase (y «Inspirado en …» si viene del
+   filón); `origen: "rutina"`; `spec: {"tanda":"creativo","fuente":"…"}`.
+5. **Mirar todas las hojas de `tools/hoja.js`** (icono, círculo y
+   pegatina) y tirar o corregir lo que se vea mal, cortado, ilegible a
+   20 px o repetido.
+6. Insertar `{"rutina":"en-curso"}`, las filas (`sb.sh POST`, en trozos de
+   50) y `{"rutina":"hecho","resumen":"…"}` (cuántas, qué se ha aprendido,
+   qué filón y qué ideas).
+
+La rutina de feedback (la de arriba) ya **no rellena la cola**: solo
+responde a comentarios y 🔁.
 
 Lo que ha dicho el usuario (manda sobre cualquier deducción):
 
