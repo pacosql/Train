@@ -94,6 +94,7 @@ Requisitos: `pip install fonttools brotli uharfbuzz`.
 - `tools/tanda5.py`: la tanda divertida (caras con signos, la í como
   personaje, pegatinas de cómic, nota adhesiva, sello). Ejemplo de formas
   libres: `poli`, `estrella`, `sonrisa`, `forma`, `trazo`.
+- `tools/tanda6.py`: la O manuscrita con rabito en ~60 combinaciones.
 - `tools/hoja.js filas.json [salida.png]`: hoja de contacto para **mirar
   los diseños antes de insertarlos**.
 - `tools/sb.sh GET|POST|PATCH <ruta> [fichero.json]`: REST de Supabase.
@@ -223,6 +224,10 @@ Lo que ha dicho el usuario (manda sobre cualquier deducción):
   también las comillas españolas « » y los signos que solo tiene el
   español. **El 10 y la O no dicen nada**: no hacer símbolos basados solo
   en ellos (el 10 sigue en el nombre «Ortografía10»).
+- **La O escrita a mano, con su rabito** (la del cuaderno de caligrafía):
+  la ha pedido expresamente «en muchísimas combinaciones». `tanda6.py`
+  tiene las piezas (`o_mano`, cinco rabitos, grosores, pauta, el 10 con el
+  cero a mano, la O-manzana). La O de imprenta sola sigue sin ayudar.
 - **Los números de propuesta no se tocan**: nunca se borra ni se modifica
   un diseño existente. Un cambio es siempre una fila nueva (con `padre_id`
   y `revision_nota`); lo que sobra se marca `retirado`.
