@@ -392,12 +392,52 @@
     }
 
     // ---------- datos ----------
+    // Supabase devuelve como mucho 1000 filas por petición: se pide por páginas.
+    async function fetchAll(build) {
+      let out = [];
+      for (let from = 0; ; from += 1000) {
+        const { data, error } = await build().range(from, from + 999);
+        if (error) return { error };
+        out = out.concat(data || []);
+        if (!data || data.length < 1000) return { data: out };
+      }
+    }
+    // Para ir rápido con miles de diseños: al entrar solo se cargan los vivos
+    // (por decidir, 👍, ⭐, 🔁) y sin las piezas pesadas; el nombre, la pegatina y
+    // el hermano de cada diseño se piden al enseñarlo, y los descartados al abrir
+    // 👎 o «Todos».
+    const LIGERO = "id,numero,titulo,concepto,svg_marca,svg_favicon,colores,fuentes,padre_id,version,revision_nota,etiquetas,origen,decision,decidido_en,created_at";
+    const VIVOS = "decision.is.null,decision.in.(gusta,definitivo,revisar)";
+    const totales = { no_gusta: null, todos: null };
+    let restoCargado = false;
+    async function loadResto() {
+      if (restoCargado) return;
+      const r = await fetchAll(() => client.from(T_DISENOS).select(LIGERO).in("decision", ["no_gusta", "versionado", "retirado"]).order("numero", { ascending: true }));
+      if (r.error) throw r.error;
+      const ya = new Set(disenos.map((d) => d.id));
+      disenos = disenos.concat(r.data.filter((d) => !ya.has(d.id))).sort((x, y) => x.numero - y.numero);
+      restoCargado = true;
+    }
+    const pidiendo = new Set();
+    async function ensureFull(d) {
+      if (!d || d._full || pidiendo.has(d.id)) return;
+      pidiendo.add(d.id);
+      const { data, error } = await client.from(T_DISENOS).select("svg_wordmark,svg_pegatina,svg_hermano,spec").eq("id", d.id).maybeSingle();
+      pidiendo.delete(d.id);
+      if (error || !data) return;
+      Object.assign(d, data, { _full: true });
+      if (document.querySelector(`.card[data-id="${d.id}"]`)) render();
+    }
     async function load() {
-      const [a, b, r] = await Promise.all([
-        client.from(T_DISENOS).select("*").order("numero", { ascending: true }),
+      restoCargado = false;
+      const [a, b, r, c1, c2] = await Promise.all([
+        fetchAll(() => client.from(T_DISENOS).select(LIGERO).or(VIVOS).order("numero", { ascending: true })),
         client.from(T_COMENTARIOS).select("*").order("created_at", { ascending: true }),
         client.from(T_RUTINAS).select("rutina,ejecutada_en,resumen").eq("rutina", "hecho").order("ejecutada_en", { ascending: false }).limit(5),
+        client.from(T_DISENOS).select("id", { count: "exact", head: true }).eq("decision", "no_gusta"),
+        client.from(T_DISENOS).select("id", { count: "exact", head: true }),
       ]);
+      totales.no_gusta = c1.error ? null : c1.count; totales.todos = c2.error ? null : c2.count;
       if (a.error) throw a.error;
       if (b.error) throw b.error;
       disenos = a.data || [];
@@ -409,6 +449,7 @@
       renderRoutines();
       buildQueue(false);
       state.snap = null;
+      if (state.tab === "no_gusta" || state.tab === "todos") await loadResto();
     }
     const byId = (id) => disenos.find((d) => d.id === id);
     const commentsOf = (id) => comentarios.filter((c) => c.diseno_id === id);
@@ -421,7 +462,8 @@
 
     function counts() {
       for (const t of ["pendiente", "gusta", "definitivo", "revisar", "no_gusta"]) el("n-" + t).textContent = inTab(t).length;
-      el("n-todos").textContent = disenos.length;
+      if (!restoCargado) { if (totales.no_gusta != null) el("n-no_gusta").textContent = totales.no_gusta; el("n-todos").textContent = totales.todos ?? disenos.length; }
+      else el("n-todos").textContent = disenos.length;
     }
     function ago(iso) {
       const m = Math.round((Date.now() - new Date(iso).getTime()) / 60000);
@@ -447,6 +489,7 @@
         </details>`;
     // Horizontal: todo el diseño en una pantalla; comentar y el kit quedan debajo.
     function stageHTML(d, below) {
+      ensureFull(d); ensureFull(byId(state.queue[state.idx + 1]));
       const c = C(d), padre = d.padre_id && byId(d.padre_id);
       return `<article class="card stage-card" id="d-${d.numero}" data-id="${d.id}">
         <section class="stage">
@@ -472,6 +515,7 @@
       </article>`;
     }
     function cardHTML(d, cola) {
+      ensureFull(d);
       const nc = commentsOf(d.id).length;
       const padre = d.padre_id && byId(d.padre_id);
       const hijos = disenos.filter((x) => x.padre_id === d.id);
@@ -1028,7 +1072,16 @@
     }
 
     async function init() {
-      document.querySelectorAll(".tab").forEach((t) => t.addEventListener("click", () => { resetRec(); stopDictate(); state.tab = t.dataset.tab; state.detail = null; state.snap = null; if (state.tab === "pendiente") buildQueue(true); render(); window.scrollTo(0, 0); }));
+      document.querySelectorAll(".tab").forEach((t) => t.addEventListener("click", async () => {
+        resetRec(); stopDictate(); state.tab = t.dataset.tab; state.detail = null; state.snap = null;
+        if ((state.tab === "no_gusta" || state.tab === "todos") && !restoCargado) {
+          document.querySelectorAll(".tab").forEach((x) => x.classList.toggle("active", x === t));
+          el("view").innerHTML = `<p class="eyebrow">Cargando…</p>`;
+          try { await loadResto(); } catch (e) { showMsg("Sin conexión con Supabase: " + (e.message || e)); }
+        }
+        if (state.tab === "pendiente") buildQueue(true);
+        render(); window.scrollTo(0, 0);
+      }));
       WIDE.addEventListener("change", () => { resetRec(); stopDictate(); render(); });
       // teclado (pantalla grande): ← → para moverse, N no · O otra · G me gusta · F final
       document.addEventListener("keydown", (e) => {
@@ -1052,7 +1105,11 @@
       try { await Promise.all(["500", "600", "700", "800", "900", "italic 700", "italic 800", "italic 900"].map((v) => document.fonts.load(`${v.includes("italic") ? v : "normal " + v} 40px Poppins`, "Ortografía10"))); } catch {}
       await refresh(null);
       const m = location.hash.match(/^#(\d+)$/);
-      if (m) { const d = disenos.find((x) => x.numero === +m[1]); if (d) openDetail(d.id); }
+      if (m) {
+        let d = disenos.find((x) => x.numero === +m[1]);
+        if (!d) { const one = await client.from(T_DISENOS).select(LIGERO).eq("numero", +m[1]).maybeSingle(); if (one.data) { d = one.data; disenos.push(d); disenos.sort((x, y) => x.numero - y.numero); } }
+        if (d) openDetail(d.id);
+      }
     }
     init();
 
