@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Ortografía10 · ranking de logos</title>
+  <meta name="theme-color" content="#141839" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="fonts/poppins.css" />
+  <style>
+    @font-face { font-family: "Playfair"; font-weight: 900; src: url(tools/fuentes/playfair-900.woff2) format("woff2"); font-display: swap; }
+    @font-face { font-family: "Playfair"; font-weight: 900; font-style: italic; src: url(tools/fuentes/playfair-900i.woff2) format("woff2"); font-display: swap; }
+    :root { --noche: #141839; --sol: #fecb3b; --tinta: #141413; --gris: #6b6a66; --linea: #e6e4dd; --papel: #f6f2ea; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: #fff; color: var(--tinta); font-family: "Poppins", system-ui, sans-serif; font-size: 15px; line-height: 1.55; }
+    a { color: inherit; }
+    .col { max-width: 980px; margin: 0 auto; padding: 0 20px; }
+    h1, h2 { font-family: "Playfair", Georgia, serif; font-weight: 900; letter-spacing: -0.01em; }
+    .top { position: sticky; top: 0; z-index: 5; background: rgba(255, 255, 255, 0.94); backdrop-filter: blur(6px); border-bottom: 1px solid var(--linea); }
+    .top .col { display: flex; align-items: center; gap: 16px; height: 52px; font-size: 0.9rem; }
+    .top a { font-weight: 700; text-decoration: none; white-space: nowrap; }
+    .top a.sec { font-weight: 500; color: var(--gris); }
+    .hero { background: var(--noche); color: var(--sol); padding: 54px 0 46px; }
+    .hero .kicker { font-size: 0.8rem; letter-spacing: 0.16em; text-transform: uppercase; font-weight: 600; opacity: 0.8; }
+    .hero h1 { font-size: clamp(2.3rem, 8vw, 4rem); line-height: 1.03; margin: 12px 0 16px; }
+    .hero h1 i { font-style: italic; }
+    .hero p { color: #f6f2ea; max-width: 44em; margin: 0; font-size: 1.02rem; }
+    .rec { border: 2px solid var(--tinta); border-radius: 18px; padding: 20px 22px; margin: 34px 0 10px; }
+    .rec h2 { font-size: 1.6rem; margin: 0 0 8px; }
+    .rec p { margin: 0; }
+    .podio { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 26px 0 8px; }
+    .podio a { text-decoration: none; border-radius: 18px; padding: 16px; background: var(--papel); display: block; }
+    .podio a:first-child { background: var(--sol); }
+    .podio .p { font-family: "Playfair", serif; font-weight: 900; font-size: 2rem; line-height: 1; }
+    .podio .ic { width: 78%; max-width: 150px; aspect-ratio: 1; margin: 12px 0 10px; }
+    .podio b { display: block; font-size: 0.92rem; line-height: 1.3; }
+    .podio small { color: #3b3a37; }
+    .ic { overflow: hidden; border-radius: 22.5%; flex: none; }
+    .ic svg { display: block; width: 100%; height: 100%; }
+    .ic .acento { fill: var(--a); } .ic .acento-trazo { stroke: var(--a); } .ic .fondo { fill: var(--f); } .ic .fondo-trazo { stroke: var(--f); }
+    .ic.borde { box-shadow: inset 0 0 0 1px #e0ded7; }
+    .ley { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 0.78rem; color: var(--gris); margin: 26px 0 10px; }
+    .ley span { display: inline-flex; align-items: center; gap: 6px; }
+    .ley i { width: 9px; height: 9px; border-radius: 50%; display: block; }
+    table { width: 100%; border-collapse: collapse; }
+    th { text-align: left; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gris); font-weight: 600; padding: 8px 10px; border-bottom: 3px solid var(--tinta); white-space: nowrap; }
+    td { padding: 12px 10px; border-bottom: 1px solid var(--linea); vertical-align: middle; }
+    td.pos { font-family: "Playfair", serif; font-weight: 900; font-size: 1.5rem; width: 1%; }
+    td.icono { width: 1%; }
+    td.icono .ic { width: 56px; height: 56px; }
+    td.nombre b { display: block; line-height: 1.3; }
+    td.nombre small { color: var(--gris); }
+    td.nota { white-space: nowrap; font-weight: 800; font-size: 1.25rem; width: 1%; }
+    td.nota small { font-weight: 500; font-size: 0.75rem; color: var(--gris); }
+    td.nota .ex-dots { display: flex; margin-top: 5px; }
+    td.por { font-size: 0.88rem; color: #3b3a37; }
+    td.por .tag { display: inline-block; font-size: 0.68rem; font-weight: 700; border-radius: 999px; padding: 1px 9px; margin-bottom: 4px; background: var(--papel); color: var(--tinta); }
+    td.por .tag.top { background: var(--sol); }
+    tr.fila { cursor: pointer; }
+    tr.fila:hover td { background: #faf8f3; }
+    .nota-pie { font-size: 0.82rem; color: var(--gris); margin: 20px 0; }
+    .qs { columns: 2; column-gap: 28px; font-size: 0.82rem; color: #3b3a37; padding-left: 20px; margin: 10px 0 0; }
+    footer { margin-top: 40px; background: var(--noche); color: #aeb4d6; padding: 30px 0 38px; font-size: 0.84rem; }
+    footer a.cta { display: inline-block; background: var(--sol); color: var(--noche); font-weight: 800; text-decoration: none; border-radius: 14px; padding: 11px 18px; margin-bottom: 14px; }
+    .build-id { font-size: 0.7rem; opacity: 0.6; margin-top: 12px; }
+    @media (max-width: 680px) {
+      .podio { grid-template-columns: 1fr; } .podio a { display: grid; grid-template-columns: auto 84px 1fr; gap: 12px; align-items: center; } .podio .ic { width: 84px; margin: 0; }
+      thead { display: none; } table, tbody { display: block; }
+      tr.fila { display: grid; grid-template-columns: 34px 56px 1fr auto; gap: 4px 10px; padding: 14px 0; border-bottom: 1px solid var(--linea); align-items: center; }
+      td { border: 0; padding: 0; } td.por { grid-column: 1 / -1; margin-top: 6px; } td.pos { font-size: 1.25rem; }
+      .qs { columns: 1; }
+    }
+  </style>
+  <style id="examen-css"></style>
+</head>
+<body>
+  <div class="top"><div class="col"><a href="./">← Los logos</a><a class="sec" href="guia.html">📖 Guía</a><a class="sec" href="guia.html#preguntas">Las 10 preguntas</a></div></div>
+  <header class="hero"><div class="col">
+    <div class="kicker">Ortografía10 · ranking</div>
+    <h1>Cuál es <i>el mejor</i>, y por qué</h1>
+    <p>Tus 👍 y ⭐ ordenados de mejor a peor según las 10 preguntas de la guía, con una frase que explica cada puesto. Es la valoración de Claude: razonada, pero una opinión. Toca cualquiera para abrirlo, ver su examen completo y descargar su A4.</p>
+  </div></header>
+
+  <div class="col">
+    <div id="rec"></div>
+    <div class="podio" id="podio"></div>
+    <div class="ley"><span><i style="background:#1f9d55"></i>aprueba</span><span><i style="background:#e0a526"></i>a medias</span><span><i style="background:#d6453d"></i>suspende</span><span>Los diez puntos de cada fila son las diez preguntas, en orden.</span></div>
+    <table><thead><tr><th>#</th><th></th><th>Propuesta</th><th>Nota</th><th>Por qué</th></tr></thead><tbody id="tabla"><tr><td colspan="5" class="nota-pie">Cargando el ranking…</td></tr></tbody></table>
+    <p class="nota-pie" id="pend"></p>
+    <details class="nota-pie"><summary><b>Las 10 preguntas, en orden</b></summary><ol class="qs" id="qs"></ol></details>
+    <p class="nota-pie"><b>Cómo se puntúa.</b> Cada pregunta vale 1 punto si aprueba, medio si se queda a medias y 0 si suspende. «Para toda la vida» exige 8 o más y no suspender ninguna de las cuatro primeras (un segundo, de memoria, 16 píxeles, una tinta). A igual nota, el orden es el criterio de Claude sobre cuál encaja mejor con lo que ya tienes sembrado en los Reels.</p>
+  </div>
+
+  <footer><div class="col"><a class="cta" href="./">Volver a elegir →</a><div>El ranking se actualiza solo: cada vez que marcas un 👍 o un ⭐, la rutina lo examina en su siguiente pasada.</div><div class="build-id">build __BUILD_ID__</div></div></footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="config.js"></script>
+  <script src="examen.js"></script>
+  <script>
+    const EX = window.ORTOLOGO_EXAMEN;
+    document.getElementById("examen-css").textContent = EX.CSS;
+    document.getElementById("qs").innerHTML = EX.QS.map((q) => `<li>${q[0]}</li>`).join("");
+    const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    function safeSvg(str) {
+      try {
+        const doc = new DOMParser().parseFromString(str || "", "image/svg+xml"), svg = doc.documentElement;
+        if (!svg || svg.nodeName.toLowerCase() !== "svg" || doc.querySelector("parsererror")) return "";
+        svg.querySelectorAll("script,foreignObject,iframe,image,a,animate,set,style").forEach((n) => n.remove());
+        for (const n of [svg, ...svg.querySelectorAll("*")]) for (const a of [...n.attributes]) { const k = a.name.toLowerCase(); if (k.startsWith("on") || ((k === "href" || k === "xlink:href") && !a.value.startsWith("#"))) n.removeAttribute(a.name); }
+        svg.removeAttribute("width"); svg.removeAttribute("height");
+        return new XMLSerializer().serializeToString(svg);
+      } catch { return ""; }
+    }
+    const hex = (h, d) => (/^#[0-9a-f]{3,8}$/i.test(h || "") ? h : d);
+    const lum = (h) => { h = (h || "").replace("#", ""); if (h.length < 6) return 0; const [r, g, b] = [0, 2, 4].map((i) => parseInt(h.substr(i, 2), 16)); return 0.299 * r + 0.587 * g + 0.114 * b; };
+    function ic(d) {
+      const c = d.colores || {}, f = hex(c.icono_fondo, "#141839");
+      return `<div class="ic ${lum(f) > 225 ? "borde" : ""}" style="background:${f};color:${hex(c.icono_tinta, "#F6F2EA")};--a:${hex(c.acento, "#FECB3B")};--f:${f}">${safeSvg(d.svg_marca)}</div>`;
+    }
+    (async () => {
+      const tabla = document.getElementById("tabla");
+      try {
+        const { url, anonKey, tablePrefix } = window.ORTOLOGO_CONFIG;
+        const client = supabase.createClient(url, anonKey);
+        const [a, p] = await Promise.all([
+          client.from(tablePrefix + "disenos").select("numero,titulo,decision,svg_marca,colores,examen").in("decision", ["gusta", "definitivo"]).limit(1000),
+          client.from(tablePrefix + "preferencias").select("recomendacion").eq("id", "yo").maybeSingle(),
+        ]);
+        if (a.error) throw a.error;
+        const todos = a.data || [], list = todos.filter((d) => EX.ok(d.examen)).sort((x, y) => (EX.nota(y.examen) - EX.nota(x.examen)) || ((x.examen.o ?? 1e9) - (y.examen.o ?? 1e9)) || (x.numero - y.numero));
+        const pend = todos.length - list.length;
+        if (p.data && p.data.recomendacion) document.getElementById("rec").innerHTML = `<div class="rec"><h2>Mi recomendación</h2><p>${esc(p.data.recomendacion)}</p></div>`;
+        document.getElementById("podio").innerHTML = list.slice(0, 3).map((d, i) => `<a href="./#${d.numero}"><div class="p">${i + 1}.º</div>${ic(d)}<div><b>nº ${d.numero} · ${esc(d.titulo)}</b><small>${EX.fmt(EX.nota(d.examen))} / 10</small></div></a>`).join("");
+        tabla.innerHTML = list.length ? list.map((d, i) => `<tr class="fila" data-n="${d.numero}"><td class="pos">${i + 1}</td><td class="icono">${ic(d)}</td>
+          <td class="nombre"><b>${d.decision === "definitivo" ? "⭐ " : ""}${esc(d.titulo)}</b><small>nº ${d.numero}</small></td>
+          <td class="nota">${EX.fmt(EX.nota(d.examen))}<small> / 10</small>${EX.puntos(d.examen)}</td>
+          <td class="por"><span class="tag ${EX.paraSiempre(d.examen) ? "top" : ""}">${EX.etiqueta(d.examen)}</span><br>${esc(d.examen.v || "")}</td></tr>`).join("")
+          : `<tr><td colspan="5" class="nota-pie">Todavía no hay ningún 👍 examinado.</td></tr>`;
+        tabla.querySelectorAll("tr.fila").forEach((tr) => tr.onclick = () => { location.href = "./#" + tr.dataset.n; });
+        document.getElementById("pend").textContent = pend ? `Quedan ${pend} de tus 👍 sin examinar: la rutina los puntúa en su próxima pasada y entrarán solos en la tabla.` : "";
+      } catch (e) { tabla.innerHTML = `<tr><td colspan="5" class="nota-pie">No se ha podido cargar el ranking (${esc(e.message || e)}).</td></tr>`; }
+    })();
+  </script>
+</body>
+</html>

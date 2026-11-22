@@ -190,6 +190,32 @@
     .g-item .cap { white-space: nowrap; overflow: hidden; }
     body.gridv .wrap { max-width: 1180px; }
     .icon-btn.on { background: var(--ink); border-color: var(--ink); color: #fff; }
+    /* pantalla de inicio de un iPhone de 6,3" (402 × 874 pt), a escala */
+    .phones-bar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 0 0 16px; }
+    .phones-bar button, .ver-iphone { border: 1px solid var(--line); background: var(--bg); border-radius: 999px; padding: 7px 14px; font-size: 0.82rem; font-weight: 600; }
+    .phones-bar button.on { background: var(--ink); border-color: var(--ink); color: #fff; }
+    .ver-iphone { border-color: var(--ink); font-weight: 700; margin: 0 0 14px; }
+    .phones { display: flex; flex-wrap: wrap; gap: 28px; justify-content: center; }
+    .iph { --u: calc(min(100vw - 40px, 432px) / 432); width: calc(var(--u) * 432); height: calc(var(--u) * 903); border-radius: calc(var(--u) * 66); background: #1b1b1f; padding: calc(var(--u) * 15) calc(var(--u) * 15); box-shadow: 0 0 0 calc(var(--u) * 2) #3a3a40 inset, 0 calc(var(--u) * 24) calc(var(--u) * 50) rgba(0, 0, 0, 0.28); flex: none; position: relative; }
+    .iph .scr { width: 100%; height: 100%; border-radius: calc(var(--u) * 52); overflow: hidden; position: relative; font-family: -apple-system, "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif; color: #fff; }
+    .iph.negro .scr { background: #000; }
+    .iph.claro .scr { background: linear-gradient(160deg, #f3f1ec, #dcd8cf); color: #111; }
+    .iph.color .scr { background: linear-gradient(165deg, #23345f 0%, #5d6c95 50%, #b98a9a 100%); }
+    .iph .isla { position: absolute; top: calc(var(--u) * 11); left: 50%; width: calc(var(--u) * 124); height: calc(var(--u) * 36); margin-left: calc(var(--u) * -62); border-radius: 99px; background: #000; z-index: 2; }
+    .iph.negro .isla { background: #0e0e10; }
+    .iph .hora { position: absolute; top: calc(var(--u) * 19); left: calc(var(--u) * 52); font-size: calc(var(--u) * 17); font-weight: 600; }
+    .iph .bat { position: absolute; top: calc(var(--u) * 21); right: calc(var(--u) * 34); width: calc(var(--u) * 26); height: calc(var(--u) * 13); border-radius: calc(var(--u) * 4); border: calc(var(--u) * 1.2) solid currentColor; opacity: 0.9; }
+    .iph .bat::after { content: ""; position: absolute; inset: calc(var(--u) * 1.4); border-radius: calc(var(--u) * 2); background: currentColor; }
+    .iph .apps { position: absolute; top: calc(var(--u) * 78); left: calc(var(--u) * 27); right: calc(var(--u) * 27); display: grid; grid-template-columns: repeat(4, calc(var(--u) * 60)); justify-content: space-between; row-gap: calc(var(--u) * 44); }
+    .iph .app { border: 0; background: none; padding: 0; color: inherit; font: inherit; width: calc(var(--u) * 60); position: relative; }
+    .iph .app .ic { width: calc(var(--u) * 60); height: calc(var(--u) * 60); border-radius: 22.5%; }
+    .iph.claro .app .ic.claro, .iph .app .ic.osc { box-shadow: inset 0 0 0 calc(var(--u) * 0.7) rgba(128, 128, 128, 0.45); }
+    .iph .app span { position: absolute; top: calc(var(--u) * 65); left: 50%; transform: translateX(-50%); font-size: calc(var(--u) * 11.5); font-weight: 500; white-space: nowrap; letter-spacing: -0.02em; }
+    .iph .busca { position: absolute; bottom: calc(var(--u) * 118); left: 50%; transform: translateX(-50%); font-size: calc(var(--u) * 13.5); font-weight: 500; background: rgba(120, 120, 128, 0.36); border-radius: 99px; padding: calc(var(--u) * 6) calc(var(--u) * 14); }
+    .iph .dock { position: absolute; left: calc(var(--u) * 13); right: calc(var(--u) * 13); bottom: calc(var(--u) * 13); height: calc(var(--u) * 94); border-radius: calc(var(--u) * 36); background: rgba(120, 120, 128, 0.32); display: flex; align-items: center; justify-content: space-between; padding: 0 calc(var(--u) * 14); }
+    .iph .dock i { width: calc(var(--u) * 60); height: calc(var(--u) * 60); border-radius: 22.5%; display: flex; align-items: center; justify-content: center; font-style: normal; font-size: calc(var(--u) * 30); color: #fff; }
+    .iph .raya { position: absolute; bottom: calc(var(--u) * 5); left: 50%; width: calc(var(--u) * 140); height: calc(var(--u) * 5); margin-left: calc(var(--u) * -70); border-radius: 99px; background: currentColor; opacity: 0.85; z-index: 3; }
+    .iph-cap { text-align: center; font-size: 0.78rem; color: var(--ink-2); margin-top: 8px; }
     .bulk { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 0 0 14px; }
     .bulk .helper { margin: 0; }
     .bulk button { border: 1px solid var(--bad); color: var(--bad); background: var(--bg); border-radius: 12px; padding: 9px 14px; font-size: 0.88rem; font-weight: 700; }
@@ -211,11 +237,13 @@
     .toast button { background: #fff; color: var(--ink); border: 0; border-radius: 10px; padding: 6px 10px; font-weight: 600; font-size: 0.82rem; }
     .toast button:empty { display: none; }
   </style>
+  <style id="examen-css"></style>
 </head>
 <body>
   <div class="wrap">
     <header>
       <h1>Ortografía10 <span>· elige el logo</span></h1>
+      <a class="icon-btn" href="ranking.html" title="Ranking: cuáles son los mejores según las 10 preguntas, y por qué" style="display:flex;align-items:center;justify-content:center;text-decoration:none">🏆</a>
       <a class="icon-btn" href="guia.html" title="Guía: qué tiene que cumplir un logo, imagen de marca y arquetipos" style="display:flex;align-items:center;justify-content:center;text-decoration:none">📖</a>
       <button class="icon-btn" id="btn-grid" title="Ver todos los iconos de un vistazo / de uno en uno">▦</button>
       <button class="icon-btn" id="btn-refresh" title="Recargar">↻</button>
@@ -241,7 +269,10 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script src="config.js"></script>
+  <script src="examen.js"></script>
   <script>
+    const EX = window.ORTOLOGO_EXAMEN;
+    document.getElementById("examen-css").textContent = EX.CSS;
     const { url, anonKey, tablePrefix } = window.ORTOLOGO_CONFIG;
     const T_DISENOS = tablePrefix + "disenos";
     const T_COMENTARIOS = tablePrefix + "comentarios";
@@ -406,7 +437,7 @@
     // (por decidir, 👍, ⭐, 🔁) y sin las piezas pesadas; el nombre, la pegatina y
     // el hermano de cada diseño se piden al enseñarlo, y los descartados al abrir
     // 👎 o «Todos».
-    const LIGERO = "id,numero,titulo,concepto,svg_marca,svg_favicon,colores,fuentes,padre_id,version,revision_nota,etiquetas,origen,decision,decidido_en,created_at";
+    const LIGERO = "examen,id,numero,titulo,concepto,svg_marca,svg_favicon,colores,fuentes,padre_id,version,revision_nota,etiquetas,origen,decision,decidido_en,created_at";
     const VIVOS = "decision.is.null,decision.in.(gusta,definitivo,revisar)";
     const totales = { no_gusta: null, todos: null };
     let restoCargado = false;
@@ -475,6 +506,11 @@
     }
 
     // ---------- tarjeta ----------
+    // El examen de las 10 preguntas (lo pone Claude a los que marcas con 👍 o ⭐).
+    function examenHTML(d) {
+      if (EX.ok(d.examen)) return EX.html(d.examen);
+      return ["gusta", "definitivo"].includes(d.decision) ? `<p class="helper" style="margin-top:12px">🎓 Este todavía no está examinado con las 10 preguntas de la <a href="guia.html#preguntas">guía</a>: la rutina lo hará en su próxima pasada.</p>` : "";
+    }
     function barHTML(d) {
       const b = (k, e, t) => `<button type="button" data-d="${k}" class="${d && d.decision === k ? "on" : ""}" ${d ? "" : "disabled"} title="${t}">${e}<span class="lb"> ${t}</span></button>`;
       return `<div class="st-bar"><button type="button" id="prev" ${state.idx ? "" : "disabled"} title="Atrás">←<span class="lb"> Atrás</span></button>${b("no_gusta", "👎", "No")}${b("revisar", "🔁", "Otra")}${b("gusta", "👍", "Me gusta")}${b("definitivo", "⭐", "Final")}<button type="button" id="next" class="primary" ${d ? "" : "disabled"} title="Siguiente"><span class="lb">Siguiente </span>→</button></div>`;
@@ -511,7 +547,7 @@
           </div>
           ${barHTML(d)}
         </section>
-        <div class="st-below">${panelsHTML(d, commentsOf(d.id).length)}${below}</div>
+        <div class="st-below">${examenHTML(d)}${panelsHTML(d, commentsOf(d.id).length)}${below}</div>
       </article>`;
     }
     function cardHTML(d, cola) {
@@ -545,6 +581,7 @@
         ${padre ? `<p class="padre">Viene del <a href="#" data-go="${padre.id}">nº ${padre.numero}</a></p>` : ""}
         ${hijos.length ? `<p class="padre">Versiones nuevas: ${hijos.map((h) => `<a href="#" data-go="${h.id}">nº ${h.numero}</a>`).join(", ")}</p>` : ""}
         ${d.concepto ? `<p class="concepto">${esc(d.concepto)}</p>` : ""}
+        ${examenHTML(d)}
         ${cola ? barHTML(d) : `<div class="acts">
           ${["no_gusta", "gusta", "revisar", "definitivo"].map((k) => `<button type="button" data-d="${k}" class="${d.decision === k ? "on" : ""}">${DECISION_LABEL[k]}</button>`).join("")}
         </div>`}
@@ -836,90 +873,102 @@
     // ---------- A4 para imprimir (PDF de una página) ----------
     // Se dibuja en un lienzo a 200 ppp y se mete como JPEG en un PDF mínimo.
     async function a4Canvas(d) {
-      const c = C(d), K = 2339 / 297, mm = (v) => Math.round(v * K);
-      const cv = document.createElement("canvas"); cv.width = 1654; cv.height = 2339;
+      // 300 ppp. Todo en milímetros reales: si se imprime al 100 %, el iPhone y sus
+      // iconos salen a tamaño real (iPhone de 6,3": 71,5 × 149,6 mm, iconos de 9,9 mm).
+      const c = C(d), K = 3508 / 297, mm = (v) => v * K;
+      const cv = document.createElement("canvas"); cv.width = 2480; cv.height = 3508;
       const g = cv.getContext("2d");
+      g.imageSmoothingQuality = "high";
       g.fillStyle = "#fff"; g.fillRect(0, 0, cv.width, cv.height);
-      const text = (t, x, y, size, weight = 500, color = "#141413", align = "left") => { g.font = `${weight} ${mm(size)}px Poppins, sans-serif`; g.fillStyle = color; g.textAlign = align; g.textBaseline = "alphabetic"; g.fillText(t, mm(x), mm(y)); };
-      const label = (t, x, y) => text(t, x, y, 2.9, 500, "#6b6a66");
-      const draw = async (kind, x, y, w) => { const { text: t, ratio } = standaloneSvg(d, kind); const h = w / ratio; g.drawImage(await svgImage(t, mm(w), mm(h)), mm(x), mm(y), mm(w), mm(h)); return h; };
-      const rr = (x, y, w, h, r, fill, stroke) => { g.beginPath(); g.roundRect(mm(x), mm(y), mm(w), mm(h), mm(r)); if (fill) { g.fillStyle = fill; g.fill(); } if (stroke) { g.strokeStyle = stroke; g.lineWidth = mm(0.25); g.stroke(); } };
+      const text = (t, x, y, size, weight = 500, color = "#141413", align = "left", fam = "Poppins, sans-serif") => { g.font = `${weight} ${mm(size)}px ${fam}`; g.fillStyle = color; g.textAlign = align; g.textBaseline = "alphabetic"; g.fillText(t, mm(x), mm(y)); };
+      const label = (t, x, y) => text(t, x, y, 2.7, 500, "#6b6a66");
+      const draw = async (kind, x, y, w) => { const { text: t, ratio } = standaloneSvg(d, kind); const h = w / ratio; g.drawImage(await svgImage(t, Math.round(mm(w)), Math.round(mm(h))), mm(x), mm(y), mm(w), mm(h)); return h; };
+      const rr = (x, y, w, h, r, fill, stroke, lw = 0.25) => { g.beginPath(); g.roundRect(mm(x), mm(y), mm(w), mm(h), mm(r)); if (fill) { g.fillStyle = fill; g.fill(); } if (stroke) { g.strokeStyle = stroke; g.lineWidth = mm(lw); g.stroke(); } };
       const claro = (hex) => lum(hex) > 225;
 
       // cabecera
       text("Ortografía10", 15, 21, 6.2, 800);
       text(`propuesta nº ${d.numero}`, 15 + g.measureText("Ortografía10 ").width / K + 1, 21, 6.2, 400, "#6b6a66");
       text("ortografia10.com", 195, 21, 3.4, 600, "#6b6a66", "right");
-      text(d.titulo, 15, 28.5, 3.6, 500, "#3b3a37");
+      text(d.titulo.length > 78 ? d.titulo.slice(0, 77) + "…" : d.titulo, 15, 28.5, 3.6, 500, "#3b3a37");
       g.fillStyle = "#141413"; g.fillRect(mm(15), mm(32), mm(180), mm(0.35));
 
-      // fila 1: icono de tiendas, avatar, favicon, hermano
+      // ---------- columna izquierda ----------
       let y = 40;
-      await draw("sq", 15, y, 62); if (claro(c.icono_fondo)) rr(15, y, 62, 62, 13.6, null, "#d8d6cf");
-      label("Icono de App Store y Google Play", 15, y + 68);
-      await draw("ci", 88, y, 46); if (claro(c.icono_fondo)) { g.beginPath(); g.arc(mm(111), mm(y + 23), mm(23), 0, 7); g.strokeStyle = "#d8d6cf"; g.lineWidth = mm(0.25); g.stroke(); }
-      label("Avatar: LinkedIn, Instagram, YouTube", 88, y + 52);
-      await draw("fav", 147, y, 16); await draw("fav", 167, y + 8, 8); await draw("fav", 179, y + 11.5, 4.5);
-      label("Favicon (pestaña del navegador)", 147, y + 22);
-      if (d.svg_hermano) { await draw("herm", 147, y + 30, 24); label("Serie 10: el hermano Mates10", 147, y + 60); }
+      await draw("sq", 15, y, 50); if (claro(c.icono_fondo)) rr(15, y, 50, 50, 11, null, "#d8d6cf");
+      label("Icono de App Store y Google Play", 15, y + 55);
+      await draw("ci", 73, y + 4, 34); if (claro(c.icono_fondo)) { g.beginPath(); g.arc(mm(90), mm(y + 21), mm(17), 0, 7); g.strokeStyle = "#d8d6cf"; g.lineWidth = mm(0.25); g.stroke(); }
+      label("Avatar de redes", 73, y + 43.5);
+      y = 103;
+      await draw("fav", 15, y, 14); await draw("fav", 33, y + 7, 7); await draw("fav", 44, y + 10, 4);
+      label("Favicon", 15, y + 19);
+      if (d.svg_hermano) { await draw("herm", 73, y - 3, 20); label("Hermano: Mates10", 73, y + 21.5); }
+      y = 131;
+      rr(15, y, 98, 30, 4, c.wordmark_fondo, claro(c.wordmark_fondo) ? "#d8d6cf" : null);
+      { const { text: t, ratio } = standaloneSvg(d, "wm"); let h = 12, w = h * ratio; if (w > 84) { w = 84; h = w / ratio; } g.drawImage(await svgImage(t, Math.round(mm(w)), Math.round(mm(h))), mm(64 - w / 2), mm(y + 15 - h / 2), mm(w), mm(h)); }
+      label("Nombre: «Ortografía10», junto y con tilde en la í", 15, y + 35);
+      y = 172;
+      rr(15, y, 98, 92, 4, "#eceae4");
+      if (d.svg_pegatina) { const { ratio } = standaloneSvg(d, "peg"); const w = ratio > 0.9 ? 78 : 66, h = w / ratio; g.save(); g.shadowColor = "rgba(0,0,0,.28)"; g.shadowBlur = mm(1.6); g.shadowOffsetY = mm(0.6); await draw("peg", 64 - w / 2, y + 46 - h / 2, w); g.restore(); }
+      label("Pegatina o imán de coche, a tamaño real (recortable)", 15, y + 96.5);
 
-      // fila 2: el nombre
-      y = 118;
-      rr(15, y, 180, 38, 4, c.wordmark_fondo, claro(c.wordmark_fondo) ? "#d8d6cf" : null);
-      { const { text: t, ratio } = standaloneSvg(d, "wm"); let h = 15, w = h * ratio; if (w > 150) { w = 150; h = w / ratio; } g.drawImage(await svgImage(t, mm(w), mm(h)), mm(105 - w / 2), mm(y + 19 - h / 2), mm(w), mm(h)); }
-      label("Nombre: «Ortografía10», siempre junto y con tilde en la í", 15, y + 44);
-
-      // fila 3: pegatina a tamaño real + fotogramas de Reel
-      y = 166;
-      rr(15, y, 92, 98, 4, "#eceae4");
-      if (d.svg_pegatina) { const { ratio } = standaloneSvg(d, "peg"); const w = ratio > 0.9 ? 80 : 70, h = w / ratio; g.save(); g.shadowColor = "rgba(0,0,0,.28)"; g.shadowBlur = mm(1.6); g.shadowOffsetY = mm(0.6); await draw("peg", 61 - w / 2, y + 49 - h / 2, w); g.restore(); }
-      label("Pegatina o imán de coche, a tamaño real (recortable)", 15, y + 103.5);
-      // iPhone con la pantalla de inicio: el icono entre apps conocidas
-      const phone = async (x, w, h) => {
-        rr(x, y, w, h, 7.2, "#0b0b0d");
-        const sx = x + 1.5, sy = y + 1.5, sw = w - 3, sh = h - 3;
-        g.save(); g.beginPath(); g.roundRect(mm(sx), mm(sy), mm(sw), mm(sh), mm(5.8)); g.clip();
-        const gr = g.createLinearGradient(0, mm(sy), 0, mm(sy + sh)); gr.addColorStop(0, "#2f3f63"); gr.addColorStop(0.55, "#5d6c95"); gr.addColorStop(1, "#b08a9c");
-        g.fillStyle = gr; g.fillRect(mm(sx), mm(sy), mm(sw), mm(sh));
-        rr(x + w / 2 - 6, sy + 1.8, 12, 3.3, 1.65, "#0b0b0d");
-        text("9:41", sx + 3.2, sy + 4.6, 2, 600, "#ffffff");
-        const tile = (ix, iy, sz, bg, draw) => {
-          g.save(); g.beginPath(); g.roundRect(mm(ix), mm(iy), mm(sz), mm(sz), mm(sz * 0.225)); g.clip();
-          if (Array.isArray(bg)) { const q = g.createLinearGradient(mm(ix), mm(iy + sz), mm(ix + sz), mm(iy)); bg.forEach((c2, k) => q.addColorStop(k / (bg.length - 1), c2)); g.fillStyle = q; } else g.fillStyle = bg;
-          g.fillRect(mm(ix), mm(iy), mm(sz), mm(sz));
-          if (draw) draw(ix, iy, sz); g.restore();
-        };
-        const letter = (t, color = "#fff", k = 0.56, weight = 800) => (ix, iy, sz) => { g.font = `${weight} ${mm(sz * k)}px Poppins, sans-serif`; g.fillStyle = color; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText(t, mm(ix + sz / 2), mm(iy + sz * 0.53)); };
-        const camera = (ix, iy, sz) => { g.strokeStyle = "#fff"; g.lineWidth = mm(sz * 0.075); g.beginPath(); g.roundRect(mm(ix + sz * 0.22), mm(iy + sz * 0.22), mm(sz * 0.56), mm(sz * 0.56), mm(sz * 0.16)); g.stroke(); g.beginPath(); g.arc(mm(ix + sz / 2), mm(iy + sz / 2), mm(sz * 0.14), 0, 7); g.stroke(); g.fillStyle = "#fff"; g.beginPath(); g.arc(mm(ix + sz * 0.67), mm(iy + sz * 0.33), mm(sz * 0.035), 0, 7); g.fill(); };
-        const flame = (ix, iy, sz) => { const cx = ix + sz / 2, by = iy + sz * 0.78; g.fillStyle = "#fff"; g.beginPath(); g.moveTo(mm(cx - sz * 0.02), mm(iy + sz * 0.2)); g.bezierCurveTo(mm(cx + sz * 0.3), mm(iy + sz * 0.38), mm(cx + sz * 0.3), mm(by), mm(cx), mm(by)); g.bezierCurveTo(mm(cx - sz * 0.3), mm(by), mm(cx - sz * 0.28), mm(iy + sz * 0.5), mm(cx - sz * 0.12), mm(iy + sz * 0.42)); g.bezierCurveTo(mm(cx - sz * 0.08), mm(iy + sz * 0.5), mm(cx), mm(iy + sz * 0.46), mm(cx - sz * 0.02), mm(iy + sz * 0.2)); g.fill(); };
-        const owl = (ix, iy, sz) => { for (const dx of [-0.15, 0.15]) { g.fillStyle = "#fff"; g.beginPath(); g.arc(mm(ix + sz * (0.5 + dx)), mm(iy + sz * 0.44), mm(sz * 0.14), 0, 7); g.fill(); g.fillStyle = "#3c3c3c"; g.beginPath(); g.arc(mm(ix + sz * (0.5 + dx * 0.85)), mm(iy + sz * 0.45), mm(sz * 0.06), 0, 7); g.fill(); } g.fillStyle = "#FFC800"; g.beginPath(); g.moveTo(mm(ix + sz * 0.42), mm(iy + sz * 0.58)); g.lineTo(mm(ix + sz * 0.58), mm(iy + sz * 0.58)); g.lineTo(mm(ix + sz * 0.5), mm(iy + sz * 0.72)); g.fill(); };
-        const play = (ix, iy, sz) => { g.fillStyle = "#fff"; g.beginPath(); g.moveTo(mm(ix + sz * 0.4), mm(iy + sz * 0.32)); g.lineTo(mm(ix + sz * 0.7), mm(iy + sz * 0.5)); g.lineTo(mm(ix + sz * 0.4), mm(iy + sz * 0.68)); g.fill(); };
-        const apps = [["LinkedIn", "#0A66C2", letter("in")], ["X", "#000000", letter("X", "#fff", 0.6, 700)], ["Facebook", "#1877F2", letter("f", "#fff", 0.78)], ["Instagram", ["#FEDA75", "#FA7E1E", "#D62976", "#962FBF", "#4F5BD5"], camera],
-          ["Tinder", ["#FD297B", "#FF655B"], flame], null, ["Badoo", "#783BF9", letter("b", "#fff", 0.7)], ["RAE", "#7A1A2B", letter("RAE", "#fff", 0.3, 700)],
-          ["Lingokids", "#19B5E8", letter("L", "#fff", 0.62, 900)], ["Duolingo", "#58CC02", owl], ["WhatsApp", "#25D366", letter("✆", "#fff", 0.6, 500)], ["YouTube", "#FF0000", play]];
-        const cols = 4, sz = sw * 0.17, gap = (sw - cols * sz) / (cols + 1), rowH = sz + 6.2, top = sy + 10.5;
-        for (let k = 0; k < apps.length; k++) {
-          const ix = sx + gap + (k % cols) * (sz + gap), iy = top + Math.floor(k / cols) * rowH;
-          if (apps[k]) tile(ix, iy, sz, apps[k][1], apps[k][2]);
-          else { const { text: t } = standaloneSvg(d, "sq"); g.drawImage(await svgImage(t, mm(sz), mm(sz)), mm(ix), mm(iy), mm(sz), mm(sz)); if (claro(c.icono_fondo)) rr(ix, iy, sz, sz, sz * 0.22, null, "rgba(0,0,0,.15)"); }
-          text(apps[k] ? apps[k][0] : "Ortografía10", ix + sz / 2, iy + sz + 2.6, 1.55, 500, "#ffffff", "center");
-        }
-        // dock
-        const dy = sy + sh - sz - 5.4;
-        rr(sx + 2, dy - 2, sw - 4, sz + 4, 4.2, "rgba(255,255,255,.28)");
-        [["#34C759", letter("✆", "#fff", 0.6, 500)], ["#0A84FF", letter("◎", "#fff", 0.62, 500)], [["#5EE06B", "#2AC84A"], letter("✉", "#fff", 0.55, 500)], [["#FA233B", "#FB5C74"], letter("♪", "#fff", 0.6, 600)]].forEach(([bg, dr], k) => tile(sx + gap + k * (sz + gap), dy, sz, bg, dr));
-        rr(x + w / 2 - 6.5, sy + sh - 1.9, 13, 0.7, 0.35, "rgba(255,255,255,.85)");
-        g.restore();
+      // ---------- iPhone a tamaño real ----------
+      const X = 123.5, Y = 40, PT = 66.6 / 402, pt = (v) => v * PT;            // 1 pt de iOS en mm
+      const SX = X + (71.5 - 66.6) / 2, SY = Y + (149.6 - pt(874)) / 2;          // esquina de la pantalla
+      rr(X, Y, 71.5, 149.6, 10.4, "#1b1b1f"); rr(X + 0.35, Y + 0.35, 70.8, 148.9, 10.1, null, "#55555c", 0.3);
+      g.save(); g.beginPath(); g.roundRect(mm(SX), mm(SY), mm(66.6), mm(pt(874)), mm(8.4)); g.clip();
+      g.fillStyle = "#000"; g.fillRect(mm(SX), mm(SY), mm(66.6), mm(pt(874)));
+      const SF = '-apple-system, "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif';
+      rr(SX + pt(139), SY + pt(11), pt(124), pt(36), pt(18), "#0e0e10");
+      text("9:41", SX + pt(52), SY + pt(34), pt(17), 600, "#fff", "left", SF);
+      rr(SX + pt(342), SY + pt(21), pt(26), pt(13), pt(4), null, "#fff", pt(1.2)); rr(SX + pt(344.2), SY + pt(23.2), pt(21.6), pt(8.6), pt(2), "#fff");
+      const tile = (ix, iy, sz, bg, dr) => {
+        g.save(); g.beginPath(); g.roundRect(mm(ix), mm(iy), mm(sz), mm(sz), mm(sz * 0.225)); g.clip();
+        if (Array.isArray(bg)) { const q = g.createLinearGradient(mm(ix), mm(iy + sz), mm(ix + sz), mm(iy)); bg.forEach((c2, k) => q.addColorStop(k / (bg.length - 1), c2)); g.fillStyle = q; } else g.fillStyle = bg;
+        g.fillRect(mm(ix), mm(iy), mm(sz), mm(sz));
+        if (dr) dr(ix, iy, sz); g.restore();
       };
-      await phone(113, 47, 98);
-      label("En el móvil, entre otras apps", 113, y + 103.5);
-      // fotograma de Reel (más pequeño) y paleta, en la columna de la derecha
+      const letter = (t, color = "#fff", k = 0.56, weight = 800) => (ix, iy, sz) => { g.font = `${weight} ${mm(sz * k)}px Poppins, sans-serif`; g.fillStyle = color; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText(t, mm(ix + sz / 2), mm(iy + sz * 0.53)); };
+      const dot = (ix, iy, sz, fx, fy, r, col, stroke) => { g.beginPath(); g.arc(mm(ix + sz * fx), mm(iy + sz * fy), mm(sz * r), 0, 7); if (stroke) { g.strokeStyle = col; g.lineWidth = mm(sz * stroke); g.stroke(); } else { g.fillStyle = col; g.fill(); } };
+      const camera = (ix, iy, sz) => { g.strokeStyle = "#fff"; g.lineWidth = mm(sz * 0.075); g.beginPath(); g.roundRect(mm(ix + sz * 0.22), mm(iy + sz * 0.22), mm(sz * 0.56), mm(sz * 0.56), mm(sz * 0.16)); g.stroke(); dot(ix, iy, sz, 0.5, 0.5, 0.14, "#fff", 0.075); dot(ix, iy, sz, 0.67, 0.33, 0.035, "#fff"); };
+      const flame = (ix, iy, sz) => { const cx = ix + sz / 2, by = iy + sz * 0.78; g.fillStyle = "#fff"; g.beginPath(); g.moveTo(mm(cx - sz * 0.02), mm(iy + sz * 0.2)); g.bezierCurveTo(mm(cx + sz * 0.3), mm(iy + sz * 0.38), mm(cx + sz * 0.3), mm(by), mm(cx), mm(by)); g.bezierCurveTo(mm(cx - sz * 0.3), mm(by), mm(cx - sz * 0.28), mm(iy + sz * 0.5), mm(cx - sz * 0.12), mm(iy + sz * 0.42)); g.bezierCurveTo(mm(cx - sz * 0.08), mm(iy + sz * 0.5), mm(cx), mm(iy + sz * 0.46), mm(cx - sz * 0.02), mm(iy + sz * 0.2)); g.fill(); };
+      const owl = (ix, iy, sz) => { for (const dx of [-0.15, 0.15]) { dot(ix, iy, sz, 0.5 + dx, 0.44, 0.14, "#fff"); dot(ix, iy, sz, 0.5 + dx * 0.85, 0.45, 0.06, "#3c3c3c"); } g.fillStyle = "#FFC800"; g.beginPath(); g.moveTo(mm(ix + sz * 0.42), mm(iy + sz * 0.58)); g.lineTo(mm(ix + sz * 0.58), mm(iy + sz * 0.58)); g.lineTo(mm(ix + sz * 0.5), mm(iy + sz * 0.72)); g.fill(); };
+      const play = (ix, iy, sz) => { g.fillStyle = "#fff"; g.beginPath(); g.moveTo(mm(ix + sz * 0.4), mm(iy + sz * 0.32)); g.lineTo(mm(ix + sz * 0.7), mm(iy + sz * 0.5)); g.lineTo(mm(ix + sz * 0.4), mm(iy + sz * 0.68)); g.fill(); };
+      const cal = (ix, iy, sz) => { letter("DOM", "#ff3b30", 0.17, 700)(ix, iy - sz * 0.3, sz); letter("22", "#111", 0.5, 400)(ix, iy + sz * 0.1, sz); };
+      const reloj = (ix, iy, sz) => { dot(ix, iy, sz, 0.5, 0.5, 0.4, "#fff"); g.strokeStyle = "#111"; g.lineWidth = mm(sz * 0.045); g.lineCap = "round"; g.beginPath(); g.moveTo(mm(ix + sz * 0.5), mm(iy + sz * 0.5)); g.lineTo(mm(ix + sz * 0.5), mm(iy + sz * 0.22)); g.moveTo(mm(ix + sz * 0.5), mm(iy + sz * 0.5)); g.lineTo(mm(ix + sz * 0.68), mm(iy + sz * 0.58)); g.stroke(); };
+      const fotos = (ix, iy, sz) => { ["#ff3b30", "#ff9500", "#ffcc00", "#34c759", "#5ac8fa", "#007aff", "#af52de", "#ff2d55"].forEach((col, k) => { const a = k * Math.PI / 4; g.globalAlpha = 0.85; dot(ix, iy, sz, 0.5 + 0.19 * Math.cos(a), 0.5 + 0.19 * Math.sin(a), 0.15, col); g.globalAlpha = 1; }); };
+      const notas = (ix, iy, sz) => { g.fillStyle = "#ffd60a"; g.fillRect(mm(ix), mm(iy), mm(sz), mm(sz * 0.28)); g.fillStyle = "#c7c7cc"; for (const f of [0.48, 0.64, 0.8]) g.fillRect(mm(ix + sz * 0.16), mm(iy + sz * f), mm(sz * 0.68), mm(sz * 0.035)); };
+      const sol = (ix, iy, sz) => { dot(ix, iy, sz, 0.4, 0.42, 0.2, "#ffd60a"); g.fillStyle = "#fff"; g.beginPath(); g.roundRect(mm(ix + sz * 0.3), mm(iy + sz * 0.52), mm(sz * 0.5), mm(sz * 0.22), mm(sz * 0.11)); g.fill(); };
+      const ajustes = (ix, iy, sz) => { dot(ix, iy, sz, 0.5, 0.5, 0.27, "#e5e5ea", 0.12); dot(ix, iy, sz, 0.5, 0.5, 0.09, "#e5e5ea"); };
+      const cam2 = (ix, iy, sz) => { g.fillStyle = "#3a3a3c"; g.beginPath(); g.roundRect(mm(ix + sz * 0.16), mm(iy + sz * 0.3), mm(sz * 0.68), mm(sz * 0.46), mm(sz * 0.08)); g.fill(); dot(ix, iy, sz, 0.5, 0.53, 0.14, "#8e8e93", 0.05); };
+      const apps = [["LinkedIn", "#0A66C2", letter("in")], ["X", "#000", letter("X", "#fff", 0.6, 700), 1], ["Facebook", "#1877F2", letter("f", "#fff", 0.78)], ["Instagram", ["#FEDA75", "#FA7E1E", "#D62976", "#962FBF", "#4F5BD5"], camera],
+        ["Tinder", ["#FD297B", "#FF655B"], flame], null, ["Badoo", "#783BF9", letter("b", "#fff", 0.7)], ["RAE", "#7A1A2B", letter("RAE", "#fff", 0.3, 700)],
+        ["Lingokids", "#19B5E8", letter("L", "#fff", 0.62, 900)], ["Duolingo", "#58CC02", owl], ["WhatsApp", "#25D366", letter("✆", "#fff", 0.6, 500)], ["YouTube", "#FF0000", play],
+        ["Calendario", "#fff", cal], ["Fotos", "#fff", fotos], ["Cámara", "#d1d1d6", cam2], ["Reloj", "#111", reloj, 1],
+        ["Notas", "#fff", notas], ["Tiempo", ["#1e6fd9", "#5ab0f5"], sol], ["Ajustes", ["#636366", "#8e8e93"], ajustes], ["Mapas", ["#34c759", "#a8e6a1"], letter("➤", "#0a84ff", 0.5, 700)],
+        ["Podcasts", ["#832bc1", "#c86dd7"], letter("◉", "#fff", 0.6, 500)], ["Salud", "#fff", letter("♥", "#ff2d55", 0.52, 700)], ["Libros", ["#ff9500", "#ffb340"], letter("▮▮", "#fff", 0.36, 700)], ["Wallet", "#111", letter("▤", "#ffd60a", 0.56, 700), 1]];
+      const sz = pt(60), gap = (66.6 - pt(54) - 4 * sz) / 3, top = SY + pt(78), rowH = pt(86 + 26 - 26 + 26);
+      for (let k = 0; k < apps.length; k++) {
+        const ix = SX + pt(27) + (k % 4) * (sz + gap), iy = top + Math.floor(k / 4) * pt(104);
+        if (apps[k]) { tile(ix, iy, sz, apps[k][1], apps[k][2]); if (apps[k][3]) rr(ix, iy, sz, sz, sz * 0.225, null, "rgba(140,140,146,.55)", 0.08); }
+        else { const { text: t } = standaloneSvg(d, "sq"); const px = Math.round(mm(sz)); g.drawImage(await svgImage(t.replace('rx="22"', 'rx="22.5"'), px, px), mm(ix), mm(iy), mm(sz), mm(sz)); if (lum(c.icono_fondo) < 30) rr(ix, iy, sz, sz, sz * 0.225, null, "rgba(140,140,146,.55)", 0.08); }
+        text(apps[k] ? apps[k][0] : "Ortografía10", ix + sz / 2, iy + sz + pt(16.5), pt(12), 500, "#fff", "center", SF);
+      }
+      rr(SX + pt(162), SY + pt(726), pt(78), pt(30), pt(15), "rgba(120,120,128,.36)"); text("⌕ Buscar", SX + pt(201), SY + pt(746), pt(13.5), 500, "#fff", "center", SF);
+      rr(SX + pt(13), SY + pt(767), pt(376), pt(94), pt(36), "rgba(120,120,128,.32)");
+      [["#34C759", letter("✆", "#fff", 0.6, 500)], ["#0A84FF", letter("◎", "#fff", 0.62, 500)], [["#5EE06B", "#2AC84A"], letter("✉", "#fff", 0.55, 500)], [["#FA233B", "#FB5C74"], letter("♪", "#fff", 0.6, 600)]].forEach(([bg, dr], k) => tile(SX + pt(27) + k * (sz + gap), SY + pt(784), sz, bg, dr));
+      rr(SX + pt(131), SY + pt(864), pt(140), pt(5), pt(2.5), "rgba(255,255,255,.85)");
+      g.restore();
+      label("iPhone de 6,3″ a tamaño real. El icono mide 9,9 mm.", X, Y + 154.5);
+
+      // ---------- debajo del teléfono: Reel y paleta ----------
+      y = 201;
       {
-        const x = 165, w = 30, h = 53.3;
+        const x = X, w = 30, h = 53.3;
         g.save(); g.beginPath(); g.roundRect(mm(x), mm(y), mm(w), mm(h), mm(2.4)); g.clip();
         g.fillStyle = c.wordmark_fondo; g.fillRect(mm(x), mm(y), mm(w), mm(h));
         const { text: t, ratio } = standaloneSvg(d, "wm");
-        const hh = 2.6, ww = hh * ratio; g.drawImage(await svgImage(t, mm(ww), mm(hh)), mm(x + w / 2 - ww / 2), mm(y + 6), mm(ww), mm(hh));
+        const hh = 2.6, ww = Math.min(hh * ratio, 24), h2 = ww / ratio; g.drawImage(await svgImage(t, Math.round(mm(ww)), Math.round(mm(h2))), mm(x + w / 2 - ww / 2), mm(y + 6), mm(ww), mm(h2));
         rr(x + 8.5, y + 12, 13, 3.6, 1.8, c.error); text("¡Aquí está!", x + w / 2, y + 14.5, 1.55, 700, "#ffffff", "center");
         text("Ayer conduje", x + w / 2, y + 23, 2.7, 700, c.wordmark, "center");
         g.font = `700 ${mm(2.7)}px Poppins, sans-serif`;
@@ -933,15 +982,21 @@
         label("En un Reel o Short", x, y + 57.5);
       }
       const pal = [["Fondo", c.icono_fondo], ["Tinta", c.icono_tinta], ["Acento", c.acento], ["Error", c.error], ["Acierto", c.acierto]];
-      pal.forEach(([n, hex], i) => { const py = y + 63 + i * 7.2; rr(165, py, 6, 6, 1.2, hex, claro(hex) ? "#d8d6cf" : null); text(n, 173, py + 2.6, 2.2, 600); text(hex.toUpperCase(), 173, py + 5.5, 2, 400, "#6b6a66"); });
+      pal.forEach(([n, hex], i) => { const py = y + i * 7.2; rr(160, py, 6, 6, 1.2, hex, claro(hex) ? "#d8d6cf" : null); text(n, 168, py + 2.6, 2.2, 600); text(hex.toUpperCase(), 168, py + 5.5, 2, 400, "#6b6a66"); });
+      // regla de comprobación de escala
+      g.fillStyle = "#141413"; g.fillRect(mm(160), mm(y + 44), mm(35), mm(0.3)); g.fillRect(mm(160), mm(y + 42.5), mm(0.3), mm(3)); g.fillRect(mm(195 - 0.3), mm(y + 42.5), mm(0.3), mm(3));
+      text("Esta línea mide 3,5 cm si has", 160, y + 49, 2, 500, "#6b6a66"); text("impreso al 100 % (sin «ajustar»).", 160, y + 52, 2, 500, "#6b6a66");
 
-      // pie: el concepto
-      g.fillStyle = "#141413"; g.fillRect(mm(15), mm(275), mm(180), mm(0.2));
-      if (d.concepto) {
-        g.font = `400 ${mm(3)}px Poppins, sans-serif`; g.fillStyle = "#3b3a37"; g.textAlign = "left";
-        const words = d.concepto.split(" "); let line = "", ly = 281.5;
-        for (const w of words) { if (g.measureText(line + w).width > mm(180)) { g.fillText(line, mm(15), mm(ly)); line = ""; ly += 4.4; } line += w + " "; }
-        g.fillText(line, mm(15), mm(ly));
+      // pie: nota del examen y concepto
+      g.fillStyle = "#141413"; g.fillRect(mm(15), mm(273.5), mm(180), mm(0.2));
+      let ly = 279.5;
+      if (EX.ok(d.examen)) { text(`Examen de las 10 preguntas: ${EX.fmt(EX.nota(d.examen))} / 10 · ${EX.etiqueta(d.examen)}`, 15, ly, 3, 700); ly += 4.6; }
+      const pie = (EX.ok(d.examen) && d.examen.v) || d.concepto;
+      if (pie) {
+        g.font = `400 ${mm(2.9)}px Poppins, sans-serif`; g.fillStyle = "#3b3a37"; g.textAlign = "left";
+        const words = pie.split(" "); let line = "";
+        for (const w of words) { if (g.measureText(line + w).width > mm(180)) { g.fillText(line, mm(15), mm(ly)); line = ""; ly += 4.2; if (ly > 290) break; } line += w + " "; }
+        if (ly <= 290) g.fillText(line, mm(15), mm(ly));
       }
       return cv;
     }
@@ -966,7 +1021,7 @@
       const old = btn.textContent; btn.disabled = true; btn.textContent = "Preparando el A4…";
       try {
         const cv = await a4Canvas(d);
-        const bin = atob(cv.toDataURL("image/jpeg", 0.93).split(",")[1]);
+        const bin = atob(cv.toDataURL("image/jpeg", 0.95).split(",")[1]);
         const u8 = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i);
         download(jpegPdf(u8, cv.width, cv.height), `ortografia10-propuesta-${d.numero}-A4.pdf`);
         showToast(`⬇️ A4 del nº ${d.numero} descargado`);
@@ -976,7 +1031,7 @@
 
     // ---------- vistas ----------
     function openDetail(id) { resetRec(); stopDictate(); state.detail = id; render(); window.scrollTo(0, 0); }
-    function render() { document.body.classList.toggle("rev", inQueue() && WIDE.matches); document.body.classList.toggle("gridv", isGrid() && !state.detail); el("btn-grid").classList.toggle("on", isGrid()); renderView(); fitSvgs(el("view")); }
+    function render() { document.body.classList.toggle("rev", inQueue() && WIDE.matches); document.body.classList.toggle("gridv", (isGrid() || (state.phone && (state.tab === "gusta" || state.tab === "definitivo"))) && !state.detail); el("btn-grid").classList.toggle("on", isGrid()); renderView(); fitSvgs(el("view")); }
     function renderView() {
       counts();
       document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("active", !state.detail && t.dataset.tab === state.tab));
@@ -990,6 +1045,8 @@
         return;
       }
       const list = inTab(state.tab);
+      const conPhone = state.tab === "gusta" || state.tab === "definitivo";
+      if (conPhone && state.phone) { renderPhones(view, list); return; }
       if (isGrid()) {
         const gl = gridList();
         const sub = { pendiente: "Por decidir", gusta: "Los que te gustan", definitivo: "Los definitivos", revisar: "En cola para otra versión", no_gusta: "Descartados", todos: "Todos los diseños, del más nuevo al más antiguo" }[state.tab];
@@ -1009,10 +1066,16 @@
             bulkDecide(resto, "no_gusta");
           };
         }
+        if (conPhone && gl.length) {
+          view.querySelector(".eyebrow").insertAdjacentHTML("afterend", `<button type="button" class="ver-iphone" id="ver-iphone">📱 Verlos en un iPhone</button>`);
+          el("ver-iphone").onclick = () => { state.phone = true; render(); window.scrollTo(0, 0); };
+        }
         view.querySelectorAll("[data-go]").forEach((b) => b.onclick = () => openDetail(b.dataset.go));
         view.querySelectorAll(".g-acts button").forEach((b) => b.onclick = () => { const d = byId(b.closest(".g-item").dataset.id); decide(d, d.decision === b.dataset.d ? null : b.dataset.d, null); });
         return;
       }
+      // 👍 y ⭐ dentro de un iPhone
+      if ((state.tab === "gusta" || state.tab === "definitivo") && state.phone && !state.detail) { renderPhones(view, list); return; }
       const intro = {
         pendiente: "De uno en uno: di si te gusta o no y pasa al siguiente. Coméntalo (texto o voz) y la rutina hará versiones nuevas con lo que digas.",
         gusta: "Los que te gustan. La rutina los usa como dirección para las propuestas nuevas.",
@@ -1041,11 +1104,37 @@
           card.querySelector('[data-panel="coment"]').open = true;
         }
       } else {
-        view.innerHTML = `<p class="eyebrow">${intro}</p>` + (list.length ? list.map((d) => cardHTML(d)).join("") : emptyHTML());
+        const verIphone = (state.tab === "gusta" || state.tab === "definitivo") && list.length ? `<button type="button" class="ver-iphone" id="ver-iphone">📱 Verlos en un iPhone</button>` : "";
+        view.innerHTML = `<p class="eyebrow">${intro}</p>` + verIphone + (list.length ? list.map((d) => cardHTML(d)).join("") : emptyHTML());
         view.querySelectorAll(".card").forEach(wireCard);
+        if (el("ver-iphone")) el("ver-iphone").onclick = () => { state.phone = true; render(); window.scrollTo(0, 0); };
       }
       const g = el("general");
       if (g) g.addEventListener("toggle", () => { if (g.open) renderCommentBox(g, null); });
+    }
+    // Pantallas de inicio de un iPhone de 6,3" (402 × 874 pt, 6 filas de 4 iconos de
+    // 60 pt), una por cada 24 diseños. Los iconos son vectoriales: se ven nítidos a
+    // cualquier tamaño de pantalla.
+    try { state.fondoPhone = localStorage.getItem("ortologo.fondoPhone") || "negro"; } catch { state.fondoPhone = "negro"; }
+    function renderPhones(view, list) {
+      const orden = list.slice().sort((a, b) => (EX.ok(b.examen) - EX.ok(a.examen)) || ((EX.nota(b.examen) || 0) - (EX.nota(a.examen) || 0)) || ((a.examen?.o || 1e9) - (b.examen?.o || 1e9)));
+      const fondo = state.fondoPhone, nums = !!state.numsPhone;
+      const dock = [["#34C759", "✆"], ["#0A84FF", "◎"], ["#30D158", "✉"], ["#FA2D48", "♪"]].map(([c, g]) => `<i style="background:${c}">${g}</i>`).join("");
+      let phones = "";
+      for (let i = 0; i < orden.length; i += 24) {
+        phones += `<div><div class="iph ${fondo}"><div class="scr"><div class="isla"></div><div class="hora">9:41</div><div class="bat"></div>
+          <div class="apps">${orden.slice(i, i + 24).map((d) => { const c = C(d); return `<button type="button" class="app" data-go="${d.id}" title="nº ${d.numero}: ${esc(d.titulo)}"><div class="ic ${isLight(c.icono_fondo) ? "claro" : ""} ${lum(c.icono_fondo) < 30 ? "osc" : ""}" style="background:${esc(c.icono_fondo)};color:${esc(c.icono_tinta)};--acento:${esc(c.acento)};--fondo:${esc(c.icono_fondo)}">${safeSvg(d.svg_marca)}</div><span>${nums ? "nº " + d.numero : "Ortografía10"}</span></button>`; }).join("")}</div>
+          <div class="busca">⌕ Buscar</div><div class="dock">${dock}</div><div class="raya"></div></div></div>
+          <div class="iph-cap">${orden.length > 24 ? `Pantalla ${i / 24 + 1} de ${Math.ceil(orden.length / 24)} · ` : ""}del nº ${orden[i].numero} al nº ${orden[Math.min(i + 23, orden.length - 1)].numero} por nota</div></div>`;
+      }
+      const b = (k, t) => `<button type="button" data-fondo="${k}" class="${fondo === k ? "on" : ""}">${t}</button>`;
+      view.innerHTML = `<div class="phones-bar"><button type="button" id="phone-back">← Lista</button>${b("negro", "Fondo negro")}${b("color", "Fondo de color")}${b("claro", "Fondo claro")}<button type="button" id="phone-nums" class="${nums ? "on" : ""}">Ver números</button></div>
+        <p class="eyebrow">Tus ${state.tab === "gusta" ? "👍" : "⭐"} como iconos en la pantalla de inicio de un iPhone de 6,3", ordenados de mejor a peor nota. Toca uno para abrirlo. En el A4 de cada diseño el teléfono sale a tamaño real.</p>
+        <div class="phones">${phones}</div>`;
+      el("phone-back").onclick = () => { state.phone = false; render(); };
+      el("phone-nums").onclick = () => { state.numsPhone = !state.numsPhone; render(); };
+      view.querySelectorAll("[data-fondo]").forEach((x) => x.onclick = () => { state.fondoPhone = x.dataset.fondo; try { localStorage.setItem("ortologo.fondoPhone", state.fondoPhone); } catch {} render(); });
+      view.querySelectorAll("[data-go]").forEach((x) => x.onclick = () => openDetail(x.dataset.go));
     }
     function emptyHTML() {
       return `<div class="empty"><div class="big">${state.tab === "pendiente" ? "✅" : "📭"}</div><div>${state.tab === "pendiente" ? "No queda nada por decidir." : "Nada por aquí todavía."}</div><p class="helper">${state.tab === "pendiente" ? "Comenta alguno o pide algo general y la rutina te traerá propuestas nuevas." : ""}</p></div>`;
