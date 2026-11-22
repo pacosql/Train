@@ -88,6 +88,9 @@ Requisitos: `pip install fonttools brotli uharfbuzz`.
   Fontsource, en `tools/fuentes/<familia>-<peso>.woff2`; se usan con
   `txt(..., peso, fam="<familia>")`) y construcciones de icono (un solo
   trazo, contorno, tecla, bocadillo, aro, rombo, ficha…).
+- `tools/tanda5.py`: la tanda divertida (caras con signos, la í como
+  personaje, pegatinas de cómic, nota adhesiva, sello). Ejemplo de formas
+  libres: `poli`, `estrella`, `sonrisa`, `forma`, `trazo`.
 - `tools/hoja.js filas.json [salida.png]`: hoja de contacto para **mirar
   los diseños antes de insertarlos**.
 - `tools/sb.sh GET|POST|PATCH <ruta> [fichero.json]`: REST de Supabase.
@@ -147,11 +150,19 @@ se acumulan 1000 o 2000.
 4. **Generar N propuestas** con un script de Python fuera del repo que
    importe `tools/marca.py` (plantillas: `tanda1.py`, `tanda4.py`; ~70
    tipografías en `tools/fuentes`):
-   - **~50 % explotar lo que gusta**: variaciones sistemáticas de los 👍/⭐
-     más recientes (otra tipografía, peso, proporción, contenedor, paleta,
-     recorte), sin repetir títulos que ya existan.
-   - **~30 % ideas del filón** de esta hora, llevadas al terreno que gusta.
-   - **~20 % sorpresas**: algo que no se haya probado todavía.
+   - **Como mucho un 25 % de variaciones** de lo que ya tiene 👍/⭐, y
+     nunca la misma idea con otro color o en otro contenedor más de dos
+     veces por tanda. El usuario se ha quejado de ver «lo mismo una y otra
+     vez».
+   - **Al menos un 50 % de ideas que no existan todavía**, con chispa:
+     juegos visuales, caras y personajes hechos con signos, la letra
+     convertida en objeto, pegatinas, guiños de cómic, palabras con ñ o
+     con í… (`tanda5.py` es el ejemplo del tono). Cada tanda, **tres o
+     cuatro familias de ideas distintas** y distintas de las de la tanda
+     anterior (mirar los últimos resúmenes en `ortologo_rutinas`).
+   - **El resto, del filón** investigado esa hora.
+   Antes de dibujar, escribir la lista de ideas y **tachar las que ya
+   existan** (comparar con los títulos de `ortologo_disenos`).
    En `concepto`, la idea en una frase (y «Inspirado en …» si viene del
    filón); `origen: "rutina"`; `spec: {"tanda":"creativo","fuente":"…"}`.
 5. **Mirar todas las hojas de `tools/hoja.js`** (icono, círculo y
