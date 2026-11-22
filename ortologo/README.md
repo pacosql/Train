@@ -23,7 +23,10 @@ iconos en la pantalla de inicio de un iPhone de 6,3″ (402 × 874 pt, 24 por
 pantalla, fondo negro / de color / claro). El **A4** (300 ppp) lleva ese
 iPhone **a tamaño real** (71,5 × 149,6 mm, iconos de 9,9 mm) con el icono
 entre otras apps, y una regla de 3,5 cm para comprobar que se ha impreso
-al 100 %. **🏆 Ranking** (`ranking.html`): los favoritos ordenados por la
+al 100 %. Desde la vista de iPhones, **⬇️ Descargar en A4 (PDF)** saca
+todos los favoritos en hojas A4 con dos iPhones a tamaño real cada una (48
+iconos por hoja, nombre a 12 pt) y debajo qué número es cada icono.
+**🏆 Ranking** (`ranking.html`): los favoritos ordenados por la
 nota del examen, con el porqué de cada puesto.
 
 **📖 Guía** (`guia.html`): qué es un logo y una imagen de marca, las 10

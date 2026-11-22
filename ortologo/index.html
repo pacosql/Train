@@ -210,7 +210,7 @@
     .iph .app { border: 0; background: none; padding: 0; color: inherit; font: inherit; width: calc(var(--u) * 60); position: relative; }
     .iph .app .ic { width: calc(var(--u) * 60); height: calc(var(--u) * 60); border-radius: 22.5%; }
     .iph.claro .app .ic.claro, .iph .app .ic.osc { box-shadow: inset 0 0 0 calc(var(--u) * 0.7) rgba(128, 128, 128, 0.45); }
-    .iph .app span { position: absolute; top: calc(var(--u) * 65); left: 50%; transform: translateX(-50%); font-size: calc(var(--u) * 11.5); font-weight: 500; white-space: nowrap; letter-spacing: -0.02em; }
+    .iph .app span { position: absolute; top: calc(var(--u) * 65); left: 50%; transform: translateX(-50%); font-size: calc(var(--u) * 12); font-weight: 500; white-space: nowrap; letter-spacing: -0.01em; }
     .iph .busca { position: absolute; bottom: calc(var(--u) * 118); left: 50%; transform: translateX(-50%); font-size: calc(var(--u) * 13.5); font-weight: 500; background: rgba(120, 120, 128, 0.36); border-radius: 99px; padding: calc(var(--u) * 6) calc(var(--u) * 14); }
     .iph .dock { position: absolute; left: calc(var(--u) * 13); right: calc(var(--u) * 13); bottom: calc(var(--u) * 13); height: calc(var(--u) * 94); border-radius: calc(var(--u) * 36); background: rgba(120, 120, 128, 0.32); display: flex; align-items: center; justify-content: space-between; padding: 0 calc(var(--u) * 14); }
     .iph .dock i { width: calc(var(--u) * 60); height: calc(var(--u) * 60); border-radius: 22.5%; display: flex; align-items: center; justify-content: center; font-style: normal; font-size: calc(var(--u) * 30); color: #fff; }
@@ -1000,30 +1000,97 @@
       }
       return cv;
     }
-    function jpegPdf(jpeg, w, h) {
+    // PDF mínimo con una página A4 por imagen JPEG.
+    function jpegPdf(jpegs, w, h) {
+      if (!Array.isArray(jpegs)) jpegs = [jpegs];
       const enc = new TextEncoder(), parts = [], offs = [];
       let len = 0;
       const push = (x) => { const b = typeof x === "string" ? enc.encode(x) : x; parts.push(b); len += b.length; };
       const obj = (n, body, stream) => { offs[n] = len; push(`${n} 0 obj\n${body}\n`); if (stream) { push("stream\n"); push(stream); push("\nendstream\n"); } push("endobj\n"); };
       push("%PDF-1.4\n%âãÏÓ\n");
-      const content = "q 595.28 0 0 841.89 0 0 cm /Im0 Do Q";
+      const content = "q 595.28 0 0 841.89 0 0 cm /Im0 Do Q", N = jpegs.length;
       obj(1, "<< /Type /Catalog /Pages 2 0 R >>");
-      obj(2, "<< /Type /Pages /Kids [3 0 R] /Count 1 >>");
-      obj(3, "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Resources << /XObject << /Im0 4 0 R >> >> /Contents 5 0 R >>");
-      obj(4, `<< /Type /XObject /Subtype /Image /Width ${w} /Height ${h} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${jpeg.length} >>`, jpeg);
-      obj(5, `<< /Length ${content.length} >>`, content);
-      const xref = len;
-      push("xref\n0 6\n0000000000 65535 f \n" + [1, 2, 3, 4, 5].map((n) => String(offs[n]).padStart(10, "0") + " 00000 n \n").join(""));
-      push(`trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF\n`);
+      obj(2, `<< /Type /Pages /Kids [${jpegs.map((_, k) => `${3 + 3 * k} 0 R`).join(" ")}] /Count ${N} >>`);
+      jpegs.forEach((jpeg, k) => {
+        const a = 3 + 3 * k;
+        obj(a, `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Resources << /XObject << /Im0 ${a + 1} 0 R >> >> /Contents ${a + 2} 0 R >>`);
+        obj(a + 1, `<< /Type /XObject /Subtype /Image /Width ${w} /Height ${h} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${jpeg.length} >>`, jpeg);
+        obj(a + 2, `<< /Length ${content.length} >>`, content);
+      });
+      const total = 3 + 3 * N, xref = len;
+      push(`xref\n0 ${total}\n0000000000 65535 f \n` + Array.from({ length: total - 1 }, (_, k) => String(offs[k + 1]).padStart(10, "0") + " 00000 n \n").join(""));
+      push(`trailer\n<< /Size ${total} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF\n`);
       return new Blob(parts, { type: "application/pdf" });
+    }
+    const jpegBytes = (cv, q = 0.95) => { const bin = atob(cv.toDataURL("image/jpeg", q).split(",")[1]); const u8 = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i); return u8; };
+
+    // ---------- A4 con los favoritos dentro de iPhones a tamaño real ----------
+    // Dos iPhones de 6,3" por hoja (71,5 × 149,6 mm cada uno, 24 iconos de 9,9 mm
+    // con su nombre a 12 pt, que es el cuerpo de las etiquetas de la pantalla de
+    // inicio de iOS), a 300 ppp, y debajo qué número es cada icono.
+    async function exportPhonesA4(list, btn) {
+      const old = btn.textContent; btn.disabled = true;
+      try {
+        const K = 3508 / 297, mm = (v) => v * K, PT = 66.6 / 402, pt = (v) => v * PT;
+        const SF = '-apple-system, "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif';
+        const cv = document.createElement("canvas"); cv.width = 2480; cv.height = 3508;
+        const g = cv.getContext("2d"); g.imageSmoothingQuality = "high";
+        const text = (t, x, y, size, weight = 500, color = "#141413", align = "left", fam = "Poppins, sans-serif") => { g.font = `${weight} ${mm(size)}px ${fam}`; g.fillStyle = color; g.textAlign = align; g.textBaseline = "alphabetic"; g.fillText(t, mm(x), mm(y)); };
+        const rr = (x, y, w, h, r, fill, stroke, lw = 0.25) => { g.beginPath(); g.roundRect(mm(x), mm(y), mm(w), mm(h), mm(r)); if (fill) { g.fillStyle = fill; g.fill(); } if (stroke) { g.strokeStyle = stroke; g.lineWidth = mm(lw); g.stroke(); } };
+        const fondo = state.fondoPhone || "negro", tinta = fondo === "claro" ? "#111" : "#fff", nums = !!state.numsPhone;
+        const phone = async (X, Y, items) => {
+          const SX = X + 2.45, SY = Y + (149.6 - pt(874)) / 2, sz = pt(60), gap = (66.6 - pt(54) - 4 * sz) / 3;
+          rr(X, Y, 71.5, 149.6, 10.4, "#1b1b1f"); rr(X + 0.35, Y + 0.35, 70.8, 148.9, 10.1, null, "#55555c", 0.3);
+          g.save(); g.beginPath(); g.roundRect(mm(SX), mm(SY), mm(66.6), mm(pt(874)), mm(8.4)); g.clip();
+          if (fondo === "negro") g.fillStyle = "#000"; else { const q = g.createLinearGradient(0, mm(SY), mm(20), mm(SY + pt(874))); (fondo === "claro" ? ["#f3f1ec", "#dcd8cf"] : ["#23345f", "#5d6c95", "#b98a9a"]).forEach((c2, k, a) => q.addColorStop(k / (a.length - 1), c2)); g.fillStyle = q; }
+          g.fillRect(mm(SX), mm(SY), mm(66.6), mm(pt(874)));
+          rr(SX + pt(139), SY + pt(11), pt(124), pt(36), pt(18), fondo === "negro" ? "#0e0e10" : "#000");
+          text("9:41", SX + pt(52), SY + pt(34), pt(17), 600, tinta, "left", SF);
+          rr(SX + pt(342), SY + pt(21), pt(26), pt(13), pt(4), null, tinta, pt(1.2)); rr(SX + pt(344.2), SY + pt(23.2), pt(21.6), pt(8.6), pt(2), tinta);
+          for (let k = 0; k < items.length; k++) {
+            const d = items[k], c = C(d), ix = SX + pt(27) + (k % 4) * (sz + gap), iy = SY + pt(78) + Math.floor(k / 4) * pt(104), px = Math.round(mm(sz));
+            g.drawImage(await svgImage(standaloneSvg(d, "sq").text.replace('rx="22"', 'rx="22.5"'), px, px), mm(ix), mm(iy), mm(sz), mm(sz));
+            if ((fondo !== "claro" && lum(c.icono_fondo) < 30) || (fondo === "claro" && lum(c.icono_fondo) > 225)) rr(ix, iy, sz, sz, sz * 0.225, null, "rgba(128,128,128,.5)", 0.08);
+            text(nums ? "nº " + d.numero : "Ortografía10", ix + sz / 2, iy + sz + pt(16.5), pt(12), 500, tinta, "center", SF);
+          }
+          rr(SX + pt(162), SY + pt(726), pt(78), pt(30), pt(15), "rgba(120,120,128,.36)"); text("⌕ Buscar", SX + pt(201), SY + pt(746), pt(13.5), 500, tinta, "center", SF);
+          rr(SX + pt(13), SY + pt(767), pt(376), pt(94), pt(36), "rgba(120,120,128,.32)");
+          [["#34C759", "✆"], ["#0A84FF", "◎"], ["#30D158", "✉"], ["#FA2D48", "♪"]].forEach(([bg, gl], k) => { const ix = SX + pt(27) + k * (sz + gap), iy = SY + pt(784); rr(ix, iy, sz, sz, sz * 0.225, bg); g.font = `500 ${mm(sz * 0.55)}px Poppins, sans-serif`; g.fillStyle = "#fff"; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText(gl, mm(ix + sz / 2), mm(iy + sz * 0.53)); });
+          rr(SX + pt(131), SY + pt(864), pt(140), pt(5), pt(2.5), fondo === "claro" ? "rgba(0,0,0,.8)" : "rgba(255,255,255,.85)");
+          g.restore();
+        };
+        const pages = [], total = Math.ceil(list.length / 48);
+        for (let p = 0; p < list.length; p += 48) {
+          btn.textContent = `Preparando hoja ${p / 48 + 1} de ${total}…`;
+          await new Promise((r) => setTimeout(r, 30));
+          g.fillStyle = "#fff"; g.fillRect(0, 0, cv.width, cv.height);
+          text("Ortografía10", 15, 21, 6.2, 800);
+          text("tus favoritos en un iPhone", 15 + g.measureText("Ortografía10 ").width / K + 1, 21, 6.2, 400, "#6b6a66");
+          text(total > 1 ? `hoja ${p / 48 + 1} de ${total}` : "ortografia10.com", 195, 21, 3.4, 600, "#6b6a66", "right");
+          text(`iPhone de 6,3″ a tamaño real · iconos de 9,9 mm · nombre a 12 pt, como en la pantalla de inicio de iOS`, 15, 28.5, 3.1, 500, "#3b3a37");
+          g.fillStyle = "#141413"; g.fillRect(mm(15), mm(32), mm(180), mm(0.35));
+          for (let k = 0; k < 2; k++) {
+            const items = list.slice(p + k * 24, p + k * 24 + 24); if (!items.length) break;
+            const X = k ? 113.5 : 25, Y = 40;
+            await phone(X, Y, items);
+            text(`Pantalla ${p / 24 + k + 1}`, X, Y + 157, 3, 700);
+            items.forEach((d, i) => { const col = i < 12 ? 0 : 1, row = i % 12, t = `${i + 1}. nº ${d.numero} · ${d.titulo}`; g.font = `400 ${mm(2.15)}px Poppins, sans-serif`; let s2 = t; while (g.measureText(s2).width > mm(34.5) && s2.length > 8) s2 = s2.slice(0, -2); text(s2 === t ? t : s2 + "…", X + col * 36.5, Y + 163 + row * 3.5, 2.15, 400, "#3b3a37"); });
+          }
+          text("Los iconos están numerados de izquierda a derecha y de arriba abajo, ordenados de mejor a peor nota.", 15, 252, 2.6, 500, "#6b6a66");
+          g.fillStyle = "#141413"; g.fillRect(mm(15), mm(262), mm(50), mm(0.3)); g.fillRect(mm(15), mm(260.5), mm(0.3), mm(3)); g.fillRect(mm(65 - 0.3), mm(260.5), mm(0.3), mm(3));
+          text("Esta línea mide 5 cm si has impreso al 100 % (sin «ajustar a la página»). Así el teléfono y los iconos salen a tamaño real.", 15, 267.5, 2.6, 500, "#6b6a66");
+          pages.push(jpegBytes(cv));
+        }
+        download(jpegPdf(pages, cv.width, cv.height), `ortografia10-favoritos-iphone-A4.pdf`);
+        showToast(`⬇️ A4 con ${list.length} iconos en ${total} ${total === 1 ? "hoja" : "hojas"}`);
+      } catch (e) { showMsg("No se pudo preparar el A4: " + e.message); }
+      finally { btn.disabled = false; btn.textContent = old; }
     }
     async function exportA4(d, btn) {
       const old = btn.textContent; btn.disabled = true; btn.textContent = "Preparando el A4…";
       try {
         const cv = await a4Canvas(d);
-        const bin = atob(cv.toDataURL("image/jpeg", 0.95).split(",")[1]);
-        const u8 = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i);
-        download(jpegPdf(u8, cv.width, cv.height), `ortografia10-propuesta-${d.numero}-A4.pdf`);
+        download(jpegPdf(jpegBytes(cv), cv.width, cv.height), `ortografia10-propuesta-${d.numero}-A4.pdf`);
         showToast(`⬇️ A4 del nº ${d.numero} descargado`);
       } catch (e) { showMsg("No se pudo preparar el A4: " + e.message); }
       finally { btn.disabled = false; btn.textContent = old; }
@@ -1128,10 +1195,11 @@
           <div class="iph-cap">${orden.length > 24 ? `Pantalla ${i / 24 + 1} de ${Math.ceil(orden.length / 24)} · ` : ""}del nº ${orden[i].numero} al nº ${orden[Math.min(i + 23, orden.length - 1)].numero} por nota</div></div>`;
       }
       const b = (k, t) => `<button type="button" data-fondo="${k}" class="${fondo === k ? "on" : ""}">${t}</button>`;
-      view.innerHTML = `<div class="phones-bar"><button type="button" id="phone-back">← Lista</button>${b("negro", "Fondo negro")}${b("color", "Fondo de color")}${b("claro", "Fondo claro")}<button type="button" id="phone-nums" class="${nums ? "on" : ""}">Ver números</button></div>
+      view.innerHTML = `<div class="phones-bar"><button type="button" id="phone-back">← Lista</button>${b("negro", "Fondo negro")}${b("color", "Fondo de color")}${b("claro", "Fondo claro")}<button type="button" id="phone-nums" class="${nums ? "on" : ""}">Ver números</button><button type="button" id="phone-a4" style="border-color:var(--ink);font-weight:700">⬇️ Descargar en A4 (PDF)</button></div>
         <p class="eyebrow">Tus ${state.tab === "gusta" ? "👍" : "⭐"} como iconos en la pantalla de inicio de un iPhone de 6,3", ordenados de mejor a peor nota. Toca uno para abrirlo. En el A4 de cada diseño el teléfono sale a tamaño real.</p>
         <div class="phones">${phones}</div>`;
       el("phone-back").onclick = () => { state.phone = false; render(); };
+      el("phone-a4").onclick = (e) => exportPhonesA4(orden, e.currentTarget);
       el("phone-nums").onclick = () => { state.numsPhone = !state.numsPhone; render(); };
       view.querySelectorAll("[data-fondo]").forEach((x) => x.onclick = () => { state.fondoPhone = x.dataset.fondo; try { localStorage.setItem("ortologo.fondoPhone", state.fondoPhone); } catch {} render(); });
       view.querySelectorAll("[data-go]").forEach((x) => x.onclick = () => openDetail(x.dataset.go));
