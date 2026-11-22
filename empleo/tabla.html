@@ -60,7 +60,7 @@
     .hint { font-weight: 400; font-size: 0.8rem; color: var(--text-2); margin-left: auto; }
 
     /* Filas: rejilla compacta (en móvil se apila) */
-    .row { display: grid; grid-template-columns: minmax(110px, 160px) minmax(160px, 1fr) 84px 96px 118px 118px 330px; gap: 8px; align-items: center;
+    .row { display: grid; grid-template-columns: minmax(100px, 150px) minmax(160px, 1fr) 92px 78px 92px 112px 110px 330px; gap: 8px; align-items: center;
       padding: 5px 12px; border-top: 1px solid var(--line); }
     .row.head { font-size: 0.72rem; text-transform: uppercase; letter-spacing: .5px; color: var(--text-2); padding-top: 6px; padding-bottom: 6px; }
     .row.marked { background: var(--accent-soft); position: relative; }
@@ -81,6 +81,11 @@
     .rem.remoto { color: var(--good); }
     .rem.hibrido { color: var(--mid); }
     .rem.otro { color: var(--text-2); }
+    .ofi { font-size: 0.78rem; white-space: nowrap; font-weight: 700; }
+    .ofi a { color: var(--good); text-decoration: none; border: 1px solid rgba(67, 211, 145, 0.5); border-radius: 7px; padding: 2px 7px; background: var(--good-soft); }
+    .ofi a:hover { background: rgba(67, 211, 145, 0.3); }
+    .ofi .no { color: var(--bad); }
+    .ofi .pend { color: var(--text-2); font-weight: 400; }
     .fecha { font-size: 0.8rem; color: var(--text-2); white-space: nowrap; line-height: 1.15; }
     .fecha b { color: var(--text); font-weight: 600; }
     .fecha.nueva b { color: var(--accent); }
@@ -118,8 +123,8 @@
 
     @media (max-width: 860px) {
       .row.head, .hint { display: none; }
-      .row { grid-template-columns: 1fr auto; grid-template-areas: "emp rem" "pto pto" "pay fecha" "ap ap" "acts acts"; gap: 3px 8px; padding: 8px 12px; }
-      .emp { grid-area: emp; } .pto { grid-area: pto; white-space: normal; } .pay { grid-area: pay; } .fecha { grid-area: fecha; text-align: right; }
+      .row { grid-template-columns: 1fr auto; grid-template-areas: "emp rem" "pto pto" "ofi fecha" "pay ap" "acts acts"; gap: 3px 8px; padding: 8px 12px; }
+      .emp { grid-area: emp; } .pto { grid-area: pto; white-space: normal; } .pay { grid-area: pay; } .fecha { grid-area: fecha; text-align: right; } .ofi { grid-area: ofi; }
       .rem { grid-area: rem; text-align: right; } .ap { grid-area: ap; text-align: right; } .acts { grid-area: acts; margin-top: 3px; }
       .acts button { padding: 7px 4px; font-size: 0.82rem; }
       .row.marked::after { right: auto; left: 50%; top: 0; transform: translate(-50%, -1px); border-radius: 0 0 6px 6px; }
@@ -223,12 +228,21 @@
       return `<div class="fecha${d <= 3 ? " nueva" : ""}" title="${tip}"><b>${txt}</b><br>${d === 0 ? "hoy" : d === 1 ? "ayer" : "hace " + d + " d"}${o.fecha_publicacion ? "" : " *"}</div>`;
     }
 
+    // Enlace oficial: la oferta en el portal de la propia empresa (no en un agregador).
+    function oficialEl(o) {
+      if (o.url_empresa) return `<div class="ofi"><a href="${esc(o.url_empresa)}" target="_blank" rel="noopener" title="${esc(o.url_empresa_nota || "Oferta en la web de la empresa")}">🏢 Empresa ↗</a></div>`;
+      if (o.url_empresa_estado === "no_encontrado") return `<div class="ofi"><span class="no" title="${esc(o.url_empresa_nota || "No está en la web de la empresa")}">⚠️ No en su web</span></div>`;
+      return `<div class="ofi"><span class="pend" title="${esc(o.url_empresa_nota || "Aún sin comprobar")}">⏳ buscando</span></div>`;
+    }
+
     function fila(o, g) {
       const m = marcas.get(o.id);
-      const link = (o.enlaces && o.enlaces[0] && o.enlaces[0].url) || o.url;
+      // El puesto lleva a la oferta en la web de la empresa si la tenemos; si no, al enlace donde se encontró.
+      const link = o.url_empresa || (o.enlaces && o.enlaces[0] && o.enlaces[0].url) || o.url;
       return `<div class="row${m ? " marked to-" + m : ""}" data-id="${o.id}" data-dest="${m ? "→ " + DESTINO[m] : ""}">
         <div class="emp" title="${esc(o.empresa)}">${esc(o.empresa)}</div>
         <div class="pto" title="${esc(o.puesto)}${o.ubicacion ? " · " + esc(o.ubicacion) : ""}"><a href="${esc(link)}" target="_blank" rel="noopener">${esc(o.puesto)}</a>${resultado(o)}${o.ubicacion ? ` <span class="loc">· ${esc(o.ubicacion.length > 60 ? o.ubicacion.slice(0, 57).replace(/[ ,(]+[^ ,(]*$/, "") + "…" : o.ubicacion)}</span>` : ""}</div>
+        ${oficialEl(o)}
         ${fechaEl(o)}
         <div class="pay${o.sueldo_estimado ? " est" : ""}"${o.sueldo_estimado ? ` title="${esc(o.sueldo_nota || "Estimación de mercado: la oferta no publica sueldo")}"` : ""}>${o.sueldo ? (o.sueldo_estimado ? "≈ " : "💶 ") + esc(o.sueldo) : ""}</div>
         ${remoto(o)}
@@ -253,7 +267,7 @@
         const open = primera ? g.open : abiertos.has(g.id);
         return `<details class="g" data-g="${g.id}"${open ? " open" : ""}>
           <summary>${g.t} <span class="n">${list.length}</span><span class="hint">${g.hint}</span></summary>
-          <div class="row head"><div>Empresa</div><div>Oferta</div><div>Fecha</div><div>Sueldo</div><div>Remoto</div><div>${g.id === "aplicada" ? "Aplicaste el" : "Ya aplicaste"}</div><div></div></div>
+          <div class="row head"><div>Empresa</div><div>Oferta</div><div>Web empresa</div><div>Fecha</div><div>Sueldo</div><div>Remoto</div><div>${g.id === "aplicada" ? "Aplicaste el" : "Ya aplicaste"}</div><div></div></div>
           ${list.length ? list.map((o) => fila(o, g)).join("") : `<div class="empty">Nada por aquí.</div>`}
         </details>`;
       }).join("");
@@ -404,7 +418,7 @@
     async function load() {
       $("reload").textContent = "…";
       const [of, ca] = await Promise.all([
-        EmpleoCand.todas((a, b) => client.from(T).select("id,empresa,puesto,ubicacion,modalidad,remoto_claro,sueldo,sueldo_estimado,sueldo_nota,url,enlaces,decision,activa,aplicada_en,encontrado_en,fecha_publicacion,resultado,resultado_en,resultado_nota").order("id").range(a, b)),
+        EmpleoCand.todas((a, b) => client.from(T).select("id,empresa,puesto,ubicacion,modalidad,remoto_claro,sueldo,sueldo_estimado,sueldo_nota,url,enlaces,decision,activa,aplicada_en,encontrado_en,fecha_publicacion,resultado,resultado_en,resultado_nota,url_empresa,url_empresa_estado,url_empresa_nota").order("id").range(a, b)),
         client.from(tablePrefix + "candidaturas").select("empresa,fecha,puesto"),
       ]);
       $("reload").textContent = "↻";

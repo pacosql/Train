@@ -82,6 +82,10 @@ URL: `https://pacosql.github.io/Train/empleo/`
   sueldo, la rutina puede poner una estimación de mercado (se ve como
   "≈ … (estimado)" en gris y no cuenta para el filtro "Con sueldo");
   `sueldo.py rellenar` la sustituye si la oferta llega a publicar sueldo.
+- `empleo_ofertas.url_empresa` / `url_empresa_estado` (`oficial|no_encontrado`)
+  / `url_empresa_nota`: la oferta en el portal de la propia empresa (no en un
+  agregador). La app lleva ahí al pulsar el puesto y lo muestra en la columna
+  "Web empresa"; ⚠️ si no existe.
 - `empleo_capturas`: capturas de la bandeja de entrada que pega el usuario
   (`imagen` JPEG en base64, `procesada`, `resultado`); la rutina las lee.
 - `empleo_ofertas.resultado` (`rechazada|entrevista|oferta`), `resultado_en`,
@@ -168,6 +172,13 @@ por partes. Trabajar en `/tmp/r/` (crear la carpeta).
 7b. **Duplicados**: `python3 empleo/tools/guardar.py duplicados` (misma empresa
    y mismo puesto salvo ubicación: deja la de decisión más avanzada, le pasa
    los enlaces y desactiva las demás con la etiqueta `duplicada`).
+7c. **Enlace oficial** (obligatorio): `python3 empleo/tools/oficial.py rellenar`
+   busca cada oferta nueva en el portal de la propia empresa (columna
+   `url_empresa`). Las que queden: `oficial.py pendientes /tmp/r/sin_oficial.json`,
+   buscarlas a mano (WebSearch en la web de empleo de la empresa; abrir y
+   comprobar que es esa oferta y sigue abierta) y guardar
+   `[{id, url_empresa (o null), nota}]` con `oficial.py aplicar <json>`. Si no
+   está en la web de la empresa queda `no_encontrado` (la app lo avisa).
 8. **Aplicar la regla**: `python3 empleo/tools/guardar.py limpiar_regla` y
    `python3 empleo/tools/sueldo.py rellenar`.
 9. **Compañías nuevas** relevantes: upsert directo en `empleo_empresas`

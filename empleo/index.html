@@ -106,6 +106,8 @@
     .b { font-size: 0.72rem; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--line-strong); color: var(--text-2); white-space: nowrap; }
     .b.remoto { color: var(--good); border-color: rgba(67, 211, 145, 0.5); background: var(--good-soft); font-weight: 700; }
     .b.hibrido { color: var(--mid); border-color: rgba(242, 184, 64, 0.5); }
+    a.ofi { color: var(--good) !important; border-color: rgba(67, 211, 145, 0.6) !important; background: var(--good-soft) !important; font-weight: 700; }
+    .ofi-no { display: inline-block; color: var(--bad); font-size: 0.82rem; font-weight: 700; padding: 6px 4px; }
     .b.res-rechazada { color: #fff; background: var(--bad); border-color: var(--bad); font-weight: 700; }
     .b.res-entrevista { color: #062014; background: var(--good); border-color: var(--good); font-weight: 700; }
     .b.res-oferta { color: #241a00; background: var(--mid); border-color: var(--mid); font-weight: 700; }
@@ -551,7 +553,11 @@
 
     function links(o) {
       const ls = (o.enlaces && o.enlaces.length) ? o.enlaces : [{ label: o.fuente || "Oferta", url: o.url }];
-      return ls.map((l, i) => `<a href="${esc(l.url)}" target="_blank" rel="noopener">Enlace ${i + 1} ↗ <small>${esc(l.label || "")}</small></a>`).join("");
+      // Primero, la oferta en la web de la propia empresa (o un aviso si no existe).
+      const ofi = o.url_empresa
+        ? `<a class="ofi" href="${esc(o.url_empresa)}" target="_blank" rel="noopener" title="${esc(o.url_empresa_nota || "")}">🏢 Web de la empresa ↗</a>`
+        : o.url_empresa_estado === "no_encontrado" ? `<span class="ofi-no" title="${esc(o.url_empresa_nota || "")}">⚠️ No está en la web de la empresa</span>` : "";
+      return ofi + ls.filter((l) => l.url !== o.url_empresa).map((l, i) => `<a href="${esc(l.url)}" target="_blank" rel="noopener">Enlace ${i + 1} ↗ <small>${esc(l.label || "")}</small></a>`).join("");
     }
 
     function renderEmpresas() {
