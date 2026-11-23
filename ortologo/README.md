@@ -28,6 +28,10 @@ iconos por hoja, nombre a 12 pt) y debajo qué número es cada icono.
 **🔖 Verlos como favicon** hace lo mismo a 16 px: todos juntos y cada
 uno en una pestaña de navegador (clara u oscura) y en la barra de
 marcadores, con su A4 a tamaño real (16 px = 4,2 mm).
+**🌐 Web** (`web.html#<nº>`): cada logo dentro de una web de ejemplo,
+en ordenador (1280 px) y en móvil (390 px), en cuatro estilos (Simple tipo
+Easlo, Cálida tipo Claude, Oscura como los Reels, A todo color). Es HTML
+real dentro de un iframe, con Inter, Fraunces y Poppins (`fonts/`).
 **🏆 Ranking** (`ranking.html`): los favoritos ordenados por la
 nota del examen, con el porqué de cada puesto.
 
@@ -135,6 +139,11 @@ en cuanto haya algo. Así el usuario ve respuesta en 1-5 minutos.
 8. Insertar `{"rutina":"hecho","resumen":"…"}` (una frase).
 
 ## Rutina «Ortologo: proceso creativo» (una sesión cada hora)
+
+> **En pausa desde el 23-nov-2026.** El usuario ya ha elegido la familia
+> del logo: «Ortografía10» compuesto en bloque (nº 1968, 2323, 2074, 1802,
+> 1019 y la tanda 7, `tools/tanda7.py`). El símbolo pequeño (favicon) queda
+> entre la í y la ñ.
 
 Mantiene la cola **siempre llena (250 por decidir como mínimo)** y trae
 ideas nuevas cada hora, haya o no feedback. No hay tope: no pasa nada si
