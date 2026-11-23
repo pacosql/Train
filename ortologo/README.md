@@ -25,6 +25,9 @@ entre otras apps, y una regla de 3,5 cm para comprobar que se ha impreso
 al 100 %. Desde la vista de iPhones, **⬇️ Descargar en A4 (PDF)** saca
 todos los favoritos en hojas A4 con dos iPhones a tamaño real cada una (48
 iconos por hoja, nombre a 12 pt) y debajo qué número es cada icono.
+**🔖 Verlos como favicon** hace lo mismo a 16 px: todos juntos y cada
+uno en una pestaña de navegador (clara u oscura) y en la barra de
+marcadores, con su A4 a tamaño real (16 px = 4,2 mm).
 **🏆 Ranking** (`ranking.html`): los favoritos ordenados por la
 nota del examen, con el porqué de cada puesto.
 

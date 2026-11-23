@@ -216,6 +216,25 @@
     .iph .dock i { width: calc(var(--u) * 60); height: calc(var(--u) * 60); border-radius: 22.5%; display: flex; align-items: center; justify-content: center; font-style: normal; font-size: calc(var(--u) * 30); color: #fff; }
     .iph .raya { position: absolute; bottom: calc(var(--u) * 5); left: 50%; width: calc(var(--u) * 140); height: calc(var(--u) * 5); margin-left: calc(var(--u) * -70); border-radius: 99px; background: currentColor; opacity: 0.85; z-index: 3; }
     .iph-cap { text-align: center; font-size: 0.78rem; color: var(--ink-2); margin-top: 8px; }
+    /* favicons a tamaño real (16 px) en pestañas de navegador */
+    .fav-tira { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: flex-end; margin: 0 0 22px; padding: 14px; border: 1px solid var(--line); border-radius: 14px; }
+    .fav-tira button { border: 0; background: none; padding: 0; display: flex; flex-direction: column; align-items: center; gap: 3px; font: inherit; font-size: 0.62rem; color: var(--ink-2); }
+    .fv { overflow: hidden; flex: none; border-radius: 22%; display: block; }
+    .fv svg { display: block; width: 100%; height: 100%; }
+    .fv .acento { fill: var(--acento); } .fv .acento-trazo { stroke: var(--acento); } .fv .fondo { fill: var(--fondo); } .fv .fondo-trazo { stroke: var(--fondo); }
+    .navs { display: flex; flex-direction: column; gap: 18px; }
+    .nav { border-radius: 10px; overflow: hidden; border: 1px solid #c9ccd3; font-family: "Segoe UI", system-ui, -apple-system, Helvetica, Arial, sans-serif; font-size: 12px; background: #fff; color: #1f1f1f; }
+    .nav .tabs-n { display: flex; background: #dfe3ee; padding: 6px 8px 0; gap: 1px; }
+    .nav .tb { flex: 1 1 0; min-width: 0; max-width: 240px; display: flex; align-items: center; gap: 8px; padding: 8px 10px; border: 0; border-radius: 8px 8px 0 0; background: none; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+    .nav .tb.on { background: #fff; }
+    .nav .tb .tt { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .nav .tb i { font-style: normal; opacity: 0.55; font-size: 11px; }
+    .nav .dir { display: flex; align-items: center; gap: 12px; padding: 7px 12px; color: #5f6368; }
+    .nav .dir b { flex: 1; font-weight: 400; background: #f1f3f4; border-radius: 99px; padding: 5px 14px; color: #1f1f1f; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .nav .marc { display: flex; gap: 16px; padding: 4px 12px 7px; border-top: 1px solid #eceef1; overflow: hidden; white-space: nowrap; }
+    .nav .marc > span { display: inline-flex; align-items: center; gap: 6px; }
+    .nav.osc { background: #292a2d; color: #e8eaed; border-color: #3c4043; }
+    .nav.osc .tabs-n { background: #1b1c1f; } .nav.osc .tb.on { background: #292a2d; } .nav.osc .dir { color: #9aa0a6; } .nav.osc .dir b { background: #1b1c1f; color: #e8eaed; } .nav.osc .marc { border-color: #3c4043; }
     .bulk { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 0 0 14px; }
     .bulk .helper { margin: 0; }
     .bulk button { border: 1px solid var(--bad); color: var(--bad); background: var(--bg); border-radius: 12px; padding: 9px 14px; font-size: 0.88rem; font-weight: 700; }
@@ -1123,7 +1142,7 @@
 
     // ---------- vistas ----------
     function openDetail(id) { resetRec(); stopDictate(); state.detail = id; render(); window.scrollTo(0, 0); }
-    function render() { document.body.classList.toggle("rev", inQueue() && WIDE.matches); document.body.classList.toggle("gridv", (isGrid() || (state.phone && (state.tab === "gusta" || state.tab === "definitivo"))) && !state.detail); el("btn-grid").classList.toggle("on", isGrid()); renderView(); fitSvgs(el("view")); }
+    function render() { document.body.classList.toggle("rev", inQueue() && WIDE.matches); document.body.classList.toggle("gridv", (isGrid() || ((state.phone || state.favs) && (state.tab === "gusta" || state.tab === "definitivo"))) && !state.detail); el("btn-grid").classList.toggle("on", isGrid()); renderView(); fitSvgs(el("view")); }
     function renderView() {
       counts();
       document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("active", !state.detail && t.dataset.tab === state.tab));
@@ -1138,6 +1157,7 @@
       }
       const list = inTab(state.tab);
       const conPhone = state.tab === "gusta" || state.tab === "definitivo";
+      if (conPhone && state.favs) { renderFavs(view, list); return; }
       if (conPhone && state.phone) { renderPhones(view, list); return; }
       if (isGrid()) {
         const gl = gridList();
@@ -1159,8 +1179,9 @@
           };
         }
         if (conPhone && gl.length) {
-          view.querySelector(".eyebrow").insertAdjacentHTML("afterend", `<button type="button" class="ver-iphone" id="ver-iphone">📱 Verlos en un iPhone</button>`);
+          view.querySelector(".eyebrow").insertAdjacentHTML("afterend", `<button type="button" class="ver-iphone" id="ver-iphone">📱 Verlos en un iPhone</button> <button type="button" class="ver-iphone" id="ver-favs">🔖 Verlos como favicon</button>`);
           el("ver-iphone").onclick = () => { state.phone = true; render(); window.scrollTo(0, 0); };
+          el("ver-favs").onclick = () => { state.favs = true; render(); window.scrollTo(0, 0); };
         }
         view.querySelectorAll("[data-go]").forEach((b) => b.onclick = () => openDetail(b.dataset.go));
         view.querySelectorAll(".g-acts button").forEach((b) => b.onclick = () => { const d = byId(b.closest(".g-item").dataset.id); decide(d, d.decision === b.dataset.d ? null : b.dataset.d, null); });
@@ -1196,10 +1217,11 @@
           card.querySelector('[data-panel="coment"]').open = true;
         }
       } else {
-        const verIphone = (state.tab === "gusta" || state.tab === "definitivo") && list.length ? `<button type="button" class="ver-iphone" id="ver-iphone">📱 Verlos en un iPhone</button>` : "";
+        const verIphone = (state.tab === "gusta" || state.tab === "definitivo") && list.length ? `<button type="button" class="ver-iphone" id="ver-iphone">📱 Verlos en un iPhone</button> <button type="button" class="ver-iphone" id="ver-favs">🔖 Verlos como favicon</button>` : "";
         view.innerHTML = `<p class="eyebrow">${intro}</p>` + verIphone + (list.length ? list.map((d) => cardHTML(d)).join("") : emptyHTML());
         view.querySelectorAll(".card").forEach(wireCard);
         if (el("ver-iphone")) el("ver-iphone").onclick = () => { state.phone = true; render(); window.scrollTo(0, 0); };
+        if (el("ver-favs")) el("ver-favs").onclick = () => { state.favs = true; render(); window.scrollTo(0, 0); };
       }
       const g = el("general");
       if (g) g.addEventListener("toggle", () => { if (g.open) renderCommentBox(g, null); });
@@ -1224,10 +1246,96 @@
         <p class="eyebrow">Tus ${state.tab === "gusta" ? "👍" : "⭐"} como iconos en la pantalla de inicio de un iPhone de 6,3", ordenados de mejor a peor nota. Toca uno para abrirlo. En el A4 de cada diseño el teléfono sale a tamaño real.</p>
         <div class="phones">${phones}</div>`;
       el("phone-back").onclick = () => { state.phone = false; render(); };
+      // (la vista de favicons tiene su propio «← Lista»)
       el("phone-a4").onclick = (e) => exportPhonesA4(orden, e.currentTarget);
       el("phone-nums").onclick = () => { state.numsPhone = !state.numsPhone; render(); };
       view.querySelectorAll("[data-fondo]").forEach((x) => x.onclick = () => { state.fondoPhone = x.dataset.fondo; try { localStorage.setItem("ortologo.fondoPhone", state.fondoPhone); } catch {} render(); });
       view.querySelectorAll("[data-go]").forEach((x) => x.onclick = () => openDetail(x.dataset.go));
+    }
+    // ---------- 👍 como favicon: 16 px, que es como se ve en la pestaña ----------
+    const porNota = (list) => list.slice().sort((a, b) => (EX.ok(b.examen) - EX.ok(a.examen)) || ((EX.nota(b.examen) || 0) - (EX.nota(a.examen) || 0)) || ((a.examen?.o || 1e9) - (b.examen?.o || 1e9)));
+    function fv(d, px) {
+      const c = C(d);
+      return `<span class="fv" style="width:${px}px;height:${px}px;background:${esc(c.icono_fondo)};color:${esc(c.icono_tinta)};--acento:${esc(c.acento)};--fondo:${esc(c.icono_fondo)}${isLight(c.icono_fondo) ? ";box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)" : ""}">${safeSvg(d.svg_favicon || d.svg_marca)}</span>`;
+    }
+    function renderFavs(view, list) {
+      const orden = porNota(list), osc = !!state.favOsc, nums = !!state.numsPhone, POR = 5;
+      let navs = "";
+      for (let i = 0; i < orden.length; i += POR) {
+        const g = orden.slice(i, i + POR);
+        navs += `<div class="nav ${osc ? "osc" : ""}"><div class="tabs-n">${g.map((d, k) => `<button type="button" class="tb ${k === 0 ? "on" : ""}" data-go="${d.id}" title="nº ${d.numero}: ${esc(d.titulo)}">${fv(d, 16)}<span class="tt">${nums ? "nº " + d.numero + " · " : ""}Ortografía10 · Una regla. Un minuto.</span><i>✕</i></button>`).join("")}</div>
+          <div class="dir">←&nbsp;&nbsp;→&nbsp;&nbsp;↻<b>https://ortografia10.com</b>☆</div>
+          <div class="marc">${g.map((d) => `<span>${fv(d, 16)}${nums ? "nº " + d.numero : "Ortografía10"}</span>`).join("")}</div></div>`;
+      }
+      view.innerHTML = `<div class="phones-bar"><button type="button" id="fav-back">← Lista</button><button type="button" id="fav-claro" class="${osc ? "" : "on"}">Navegador claro</button><button type="button" id="fav-osc" class="${osc ? "on" : ""}">Navegador oscuro</button><button type="button" id="fav-nums" class="${nums ? "on" : ""}">Ver números</button><button type="button" id="fav-a4" style="border-color:var(--ink);font-weight:700">⬇️ Descargar en A4 (PDF)</button></div>
+        <p class="eyebrow">Tus ${state.tab === "gusta" ? "👍" : "⭐"} a 16 píxeles, que es el tamaño real del favicon en una pestaña del navegador. Primero todos juntos (a 16 y a 32 px) y debajo cada uno en su pestaña y en la barra de marcadores. Toca uno para abrirlo.</p>
+        <div class="fav-tira">${orden.map((d) => `<button type="button" data-go="${d.id}" title="nº ${d.numero}: ${esc(d.titulo)}">${fv(d, 32)}${fv(d, 16)}<span>${d.numero}</span></button>`).join("")}</div>
+        <div class="navs">${navs}</div>`;
+      el("fav-back").onclick = () => { state.favs = false; render(); };
+      el("fav-claro").onclick = () => { state.favOsc = false; render(); };
+      el("fav-osc").onclick = () => { state.favOsc = true; render(); };
+      el("fav-nums").onclick = () => { state.numsPhone = !state.numsPhone; render(); };
+      el("fav-a4").onclick = (e) => exportFavsA4(orden, e.currentTarget);
+      view.querySelectorAll("[data-go]").forEach((x) => x.onclick = () => openDetail(x.dataset.go));
+    }
+    // A4 con los favoritos como favicon a tamaño real: 16 px de pantalla = 4,2 mm
+    // (a 96 px por pulgada). Los títulos van como texto de verdad en el PDF.
+    async function exportFavsA4(list, btn) {
+      const old = btn.textContent; btn.disabled = true;
+      try {
+        const K = 3508 / 297, mm = (v) => v * K, PX = 25.4 / 96, px = (v) => v * PX;
+        const cv = document.createElement("canvas"); cv.width = 2480; cv.height = 3508;
+        const g = cv.getContext("2d"); g.imageSmoothingQuality = "high";
+        const text = (t, x, y, size, weight = 500, color = "#141413", align = "left") => { g.font = `${weight} ${mm(size)}px Poppins, sans-serif`; g.fillStyle = color; g.textAlign = align; g.textBaseline = "alphabetic"; g.fillText(t, mm(x), mm(y)); };
+        const rr = (x, y, w, h, r, fill, stroke, lw = 0.2) => { g.beginPath(); g.roundRect(mm(x), mm(y), mm(w), mm(h), mm(r)); if (fill) { g.fillStyle = fill; g.fill(); } if (stroke) { g.strokeStyle = stroke; g.lineWidth = mm(lw); g.stroke(); } };
+        const osc = !!state.favOsc, nums = !!state.numsPhone, POR = 4, FILAS = 8;
+        const col = osc ? { vent: "#292a2d", tira: "#1b1c1f", tinta: "#e8eaed", gris: "#9aa0a6", caja: "#1b1c1f", borde: "#3c4043" } : { vent: "#ffffff", tira: "#dfe3ee", tinta: "#1f1f1f", gris: "#5f6368", caja: "#f1f3f4", borde: "#c9ccd3" };
+        const favicon = async (d, x, y, lado) => { const c = C(d), p = Math.round(mm(lado)); g.drawImage(await svgImage(standaloneSvg(d, "fav").text, p, p), mm(x), mm(y), mm(lado), mm(lado)); if (lum(c.icono_fondo) > 225) rr(x, y, lado, lado, lado * 0.22, null, "rgba(0,0,0,.25)", 0.06); };
+        const pages = [], textos = [], porHoja = POR * FILAS, total = Math.ceil(list.length / porHoja);
+        for (let p = 0; p < list.length; p += porHoja) {
+          btn.textContent = `Preparando hoja ${p / porHoja + 1} de ${total}…`; await new Promise((r) => setTimeout(r, 30));
+          const vt = [];
+          g.fillStyle = "#fff"; g.fillRect(0, 0, cv.width, cv.height);
+          text("Ortografía10", 15, 21, 6.2, 800);
+          text("tus favoritos como favicon", 15 + g.measureText("Ortografía10 ").width / K + 1, 21, 6.2, 400, "#6b6a66");
+          text(total > 1 ? `hoja ${p / porHoja + 1} de ${total}` : "ortografia10.com", 195, 21, 3.4, 600, "#6b6a66", "right");
+          text("Pestañas de navegador a tamaño real: el favicon mide 16 píxeles (4,2 mm). Es lo que se ve cuando alguien tiene tu web abierta.", 15, 28.5, 2.9, 500, "#3b3a37");
+          g.fillStyle = "#141413"; g.fillRect(mm(15), mm(32), mm(180), mm(0.35));
+          const W = 180, tw = W / POR;
+          for (let f = 0; f < FILAS; f++) {
+            const grupo = list.slice(p + f * POR, p + f * POR + POR); if (!grupo.length) break;
+            const Y = 38 + f * 29.5;
+            rr(15, Y, W, px(98), 2.4, col.vent, col.borde);
+            g.save(); g.beginPath(); g.roundRect(mm(15), mm(Y), mm(W), mm(px(98)), mm(2.4)); g.clip();
+            g.fillStyle = col.tira; g.fillRect(mm(15), mm(Y), mm(W), mm(px(40)));
+            rr(15 + px(8), Y + px(6), tw - px(8), px(40), px(8), col.vent);
+            g.restore();
+            for (let k = 0; k < grupo.length; k++) {
+              const d = grupo[k], x = 15 + k * tw + px(8) + px(10);
+              await favicon(d, x, Y + px(15), px(16));
+              // el título se corta con «…» donde lo cortaría el navegador
+              let t = (nums ? `nº ${d.numero} · ` : "") + "Ortografía10 · Una regla. Un minuto.";
+              g.font = `400 ${mm(px(12))}px Helvetica, Arial, "Liberation Sans", sans-serif`;
+              if (g.measureText(t).width > mm(tw - px(66))) { while (t.length > 4 && g.measureText(t + "…").width > mm(tw - px(66))) t = t.slice(0, -1); t = t.trimEnd() + "…"; }
+              vtexto(g, K, vt, t, x + px(24), Y + px(27.5), px(12), col.tinta);
+              vtexto(g, K, vt, "x", 15 + (k + 1) * tw - px(16), Y + px(27.5), px(11), col.gris);
+              await favicon(d, 15 + px(12) + k * px(150), Y + px(76), px(16));
+              vtexto(g, K, vt, nums ? "nº " + d.numero : "Ortografía10", 15 + px(12) + k * px(150) + px(22), Y + px(88.5), px(12), col.tinta);
+            }
+            rr(15 + px(92), Y + px(46), W - px(130), px(24), px(12), col.caja);
+            vtexto(g, K, vt, "https://ortografia10.com", 15 + px(106), Y + px(62.5), px(12), col.tinta);
+            vtexto(g, K, vt, "<    >    o", 15 + px(14), Y + px(62.5), px(12), col.gris);
+            text("nº " + grupo.map((d) => d.numero).join(" · "), 195, Y + px(98) + 3.2, 2.1, 500, "#6b6a66", "right");
+          }
+          text("Arriba, el favicon en la pestaña; abajo, en la barra de marcadores. Ordenados de mejor a peor nota.", 15, 277, 2.6, 500, "#6b6a66");
+          g.fillStyle = "#141413"; g.fillRect(mm(15), mm(283), mm(50), mm(0.3)); g.fillRect(mm(15), mm(281.5), mm(0.3), mm(3)); g.fillRect(mm(65 - 0.3), mm(281.5), mm(0.3), mm(3));
+          text("Esta línea mide 5 cm si has impreso al 100 % (sin «ajustar a la página»).", 68, 284, 2.6, 500, "#6b6a66");
+          pages.push(jpegBytes(cv)); textos.push(vt);
+        }
+        download(jpegPdf(pages, cv.width, cv.height, textos), "ortografia10-favoritos-favicon-A4.pdf");
+        showToast(`⬇️ A4 con ${list.length} favicons en ${total} ${total === 1 ? "hoja" : "hojas"}`);
+      } catch (e) { showMsg("No se pudo preparar el A4: " + e.message); }
+      finally { btn.disabled = false; btn.textContent = old; }
     }
     function emptyHTML() {
       return `<div class="empty"><div class="big">${state.tab === "pendiente" ? "✅" : "📭"}</div><div>${state.tab === "pendiente" ? "No queda nada por decidir." : "Nada por aquí todavía."}</div><p class="helper">${state.tab === "pendiente" ? "Comenta alguno o pide algo general y la rutina te traerá propuestas nuevas." : ""}</p></div>`;
@@ -1255,7 +1363,7 @@
 
     async function init() {
       document.querySelectorAll(".tab").forEach((t) => t.addEventListener("click", async () => {
-        resetRec(); stopDictate(); state.tab = t.dataset.tab; state.detail = null; state.snap = null;
+        resetRec(); stopDictate(); state.tab = t.dataset.tab; state.detail = null; state.snap = null; state.favs = false; state.phone = false;
         if ((state.tab === "no_gusta" || state.tab === "todos") && !restoCargado) {
           document.querySelectorAll(".tab").forEach((x) => x.classList.toggle("active", x === t));
           el("view").innerHTML = `<p class="eyebrow">Cargando…</p>`;
