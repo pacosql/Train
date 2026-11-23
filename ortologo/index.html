@@ -243,7 +243,7 @@
   <div class="wrap">
     <header>
       <h1>Ortografía10 <span>· elige el logo</span></h1>
-      <a class="icon-btn" href="ranking.html" title="Ranking: cuáles son los mejores según las 10 preguntas, y por qué" style="display:flex;align-items:center;justify-content:center;text-decoration:none">🏆</a>
+      <a class="icon-btn" href="ranking.html" title="Ranking: cuáles son los mejores según las 9 preguntas, y por qué" style="display:flex;align-items:center;justify-content:center;text-decoration:none">🏆</a>
       <a class="icon-btn" href="guia.html" title="Guía: qué tiene que cumplir un logo, imagen de marca y arquetipos" style="display:flex;align-items:center;justify-content:center;text-decoration:none">📖</a>
       <button class="icon-btn" id="btn-grid" title="Ver todos los iconos de un vistazo / de uno en uno">▦</button>
       <button class="icon-btn" id="btn-refresh" title="Recargar">↻</button>
@@ -506,10 +506,10 @@
     }
 
     // ---------- tarjeta ----------
-    // El examen de las 10 preguntas (lo pone Claude a los que marcas con 👍 o ⭐).
+    // El examen de las 9 preguntas (lo pone Claude a los que marcas con 👍 o ⭐).
     function examenHTML(d) {
       if (EX.ok(d.examen)) return EX.html(d.examen);
-      return ["gusta", "definitivo"].includes(d.decision) ? `<p class="helper" style="margin-top:12px">🎓 Este todavía no está examinado con las 10 preguntas de la <a href="guia.html#preguntas">guía</a>: la rutina lo hará en su próxima pasada.</p>` : "";
+      return ["gusta", "definitivo"].includes(d.decision) ? `<p class="helper" style="margin-top:12px">🎓 Este todavía no está examinado con las 9 preguntas de la <a href="guia.html#preguntas">guía</a>: la rutina lo hará en su próxima pasada.</p>` : "";
     }
     function barHTML(d) {
       const b = (k, e, t) => `<button type="button" data-d="${k}" class="${d && d.decision === k ? "on" : ""}" ${d ? "" : "disabled"} title="${t}">${e}<span class="lb"> ${t}</span></button>`;
@@ -540,7 +540,7 @@
           <div class="st-main">
             <div class="ic-col">${icon(d, "sq")}<small>App Store · Google Play</small></div>
             <div class="ic-col">${icon(d, "ci")}<small>Avatar</small></div>
-            <div class="st-favs">${icon(d, "f40", true)}${icon(d, "f20", true)}${d.svg_hermano ? `<div class="ic herm" title="Hermano: Mates10" style="background:${esc(c.icono_fondo)};color:${esc(c.icono_tinta)};--acento:${esc(c.acento)};--fondo:${esc(c.icono_fondo)}">${safeSvg(d.svg_hermano)}</div><small>Mates10</small>` : ""}</div>
+            <div class="st-favs">${icon(d, "f40", true)}${icon(d, "f20", true)}</div>
             <div class="st-mid">${wordmark(d)}${d.revision_nota ? `<p class="revnota"><span>${esc(d.revision_nota)}</span></p>` : ""}${d.concepto ? `<p class="concepto">${esc(d.concepto)}</p>` : ""}</div>
             ${d.svg_pegatina ? `<div class="peg">${safeSvg(d.svg_pegatina)}</div>` : ""}
             ${reel(d)}
@@ -575,7 +575,7 @@
         <div class="extras">
           ${d.svg_pegatina ? `<div><div class="peg">${safeSvg(d.svg_pegatina)}</div><small>Pegatina · imán de coche</small></div>` : ""}
           <div>${reel(d)}<small>En un Reel</small></div>
-          ${d.svg_hermano ? `<div><div class="ic herm" style="background:${esc(C(d).icono_fondo)};color:${esc(C(d).icono_tinta)};--acento:${esc(C(d).acento)};--fondo:${esc(C(d).icono_fondo)}">${safeSvg(d.svg_hermano)}</div><small>Hermano:<br>Mates10</small></div>` : ""}
+
         </div>
         ${d.revision_nota ? `<p class="revnota">${esc(d.revision_nota)}</p>` : ""}
         ${padre ? `<p class="padre">Viene del <a href="#" data-go="${padre.id}">nº ${padre.numero}</a></p>` : ""}
@@ -903,7 +903,6 @@
       y = 103;
       await draw("fav", 15, y, 14); await draw("fav", 33, y + 7, 7); await draw("fav", 44, y + 10, 4);
       label("Favicon", 15, y + 19);
-      if (d.svg_hermano) { await draw("herm", 73, y - 3, 20); label("Hermano: Mates10", 73, y + 21.5); }
       y = 131;
       rr(15, y, 98, 30, 4, c.wordmark_fondo, claro(c.wordmark_fondo) ? "#d8d6cf" : null);
       { const { text: t, ratio } = standaloneSvg(d, "wm"); let h = 12, w = h * ratio; if (w > 84) { w = 84; h = w / ratio; } g.drawImage(await svgImage(t, Math.round(mm(w)), Math.round(mm(h))), mm(64 - w / 2), mm(y + 15 - h / 2), mm(w), mm(h)); }
@@ -991,7 +990,7 @@
       // pie: nota del examen y concepto
       g.fillStyle = "#141413"; g.fillRect(mm(15), mm(273.5), mm(180), mm(0.2));
       let ly = 279.5;
-      if (EX.ok(d.examen)) { text(`Examen de las 10 preguntas: ${EX.fmt(EX.nota(d.examen))} / 10 · ${EX.etiqueta(d.examen)}`, 15, ly, 3, 700); ly += 4.6; }
+      if (EX.ok(d.examen)) { text(`Examen de las ${EX.N} preguntas: ${EX.fmt(EX.nota(d.examen))} / ${EX.N} · ${EX.etiqueta(d.examen)}`, 15, ly, 3, 700); ly += 4.6; }
       const pie = (EX.ok(d.examen) && d.examen.v) || d.concepto;
       if (pie) {
         g.font = `400 ${mm(2.9)}px Poppins, sans-serif`; g.fillStyle = "#3b3a37"; g.textAlign = "left";

@@ -16,7 +16,6 @@ propuesta se ve como:
 - el nombre **«Ortografía10»** (siempre junto, con tilde en la í);
 - **pegatina / imán de coche** con `ortografia10.com`;
 - un fotograma de **Reel** con el ejercicio del camión;
-- el **hermano Mates10** cuando el símbolo es un sistema de serie.
 
 En 👍 y ⭐, **📱 Verlos en un iPhone** enseña todos los favoritos como
 iconos en la pantalla de inicio de un iPhone de 6,3″ (402 × 874 pt, 24 por
@@ -29,7 +28,7 @@ iconos por hoja, nombre a 12 pt) y debajo qué número es cada icono.
 **🏆 Ranking** (`ranking.html`): los favoritos ordenados por la
 nota del examen, con el porqué de cada puesto.
 
-**📖 Guía** (`guia.html`): qué es un logo y una imagen de marca, las 10
+**📖 Guía** (`guia.html`): qué es un logo y una imagen de marca, las 9
 preguntas que tiene que aprobar un logo para toda la vida (con casillas),
 los 12 arquetipos y cuál es Ortografía10 (Sabio con corazón de Héroe), los
 favoritos del usuario «a examen» (grande, círculo, 16 px y a una tinta) y
@@ -179,30 +178,36 @@ se acumulan 1000 o 2000.
 La rutina de feedback (la de arriba) ya **no rellena la cola**: solo
 responde a comentarios y 🔁.
 
-## El examen de las 10 preguntas y el ranking
+## El examen de las 9 preguntas y el ranking
 
-Cada diseño que el usuario marca con 👍 o ⭐ se **examina** con las 10
+> **Mates10 está fuera (23-nov-2026).** El usuario se ha olvidado del
+> todo de Mates10 y de la «Serie 10»: nada de hermanos, ni de «da
+> familia», ni de `svg_hermano` (la app ya no lo enseña). El examen pasó
+> de 10 preguntas a **9**. **Si el encargo de una rutina habla todavía de
+> diez notas o de un hermano para Mates10, manda este README.**
+
+Cada diseño que el usuario marca con 👍 o ⭐ se **examina** con las 9
 preguntas de la guía (`examen.js` tiene los enunciados y los textos
 genéricos). El resultado va en `ortologo_disenos.examen`:
 
 ```json
-{"p":[1,1,1,1,1,1,1,1,1,0.5], "t":9.5, "o":1,
+{"p":[1,1,1,1,1,1,1,1,0.5], "t":8.5, "o":1,
  "v":"Veredicto en una o dos frases: qué tiene de bueno y cuál es su pero.",
- "n":{"10":"Nota propia para la pregunta 10 (sustituye a la genérica)"},
- "en":"2026-11-22T12:00:00Z"}
+ "n":{"9":"Nota propia para la pregunta 9 (sustituye a la genérica)"},
+ "en":"2026-11-23T12:00:00Z"}
 ```
 
-- `p`: diez notas en orden (1 aprueba · 0.5 a medias · 0 suspende):
+- `p`: **nueve** notas en orden (1 aprueba · 0.5 a medias · 0 suspende):
   1 se entiende en un segundo · 2 se dibuja de memoria · 3 se reconoce a
   16 px · 4 funciona a una tinta · 5 se distingue entre apps · 6 tiene que
   ver con la ortografía · 7 aguantará 20 años · 8 vale para todo (icono,
-  círculo, pegatina, Reel) · 9 da familia (Mates10) · 10 es tuyo
-  (registrable, no se confunde).
-- `t`: la suma. `o`: orden de desempate dentro del ranking (menor = mejor;
-  puede llevar decimales para colocarse entre dos existentes).
+  círculo, pegatina, Reel) · 9 es tuyo (registrable, no se confunde).
+- `t`: la suma (sobre 9). «Para toda la vida» = 7 o más y sin suspender
+  ninguna de las cuatro primeras. `o`: orden de desempate dentro del
+  ranking (menor = mejor; puede llevar decimales).
 - Hay que **mirar el diseño** (hoja con icono, círculo, 20 px y a una
   tinta) antes de puntuar. Criterios que ya se han aplicado: una letra
-  sola saca 0.5 en la 10 (difícil de registrar); la ñ saca 0.5 en la 6
+  sola saca 0.5 en la 9 (difícil de registrar); la ñ saca 0.5 en la 6
   (habla de español más que de ortografía); un cartel de tres líneas saca
   0 en la 3; lo que depende del rojo o del verde saca 0.5 en la 4; una i
   dentro de un círculo se confunde con «información».
@@ -235,5 +240,5 @@ Lo que ha dicho el usuario (manda sobre cualquier deducción):
 Reglas de marca que no se tocan: el nombre es **«Ortografía10»** junto, con
 tilde en la í; la pegatina lleva `ortografia10.com`; el símbolo tiene que
 funcionar igual en el icono de las tiendas, el avatar y la pegatina, y a
-ser posible dar un hermano para Mates10. La rutina no toca el código de la
+ser posible (Mates10 ya no cuenta: ver el aviso del examen). La rutina no toca el código de la
 app ni hace commits: solo filas en las tablas `ortologo_`.
