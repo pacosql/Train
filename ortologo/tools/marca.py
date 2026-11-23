@@ -106,12 +106,14 @@ def _dibuja(contornos, t):
     return sp.getCommands(), bp.bounds
 
 
-def txt(s, peso=800, it=False, papel="T", tilde=None, punto=None, size=100, tracking=0, trazo=None, fam="poppins"):
+def txt(s, peso=800, it=False, papel="T", tilde=None, punto=None, size=100, tracking=0, trazo=None, fam="poppins", letras=None):
     """Texto en Poppins convertido a trazados. Línea base en y=0, empieza en x=0.
 
     tilde: papel distinto para las tildes/virgulillas (á é í ó ú ñ).
     punto: papel distinto para el punto de la i / j.
     trazo: si se da, solo contorno de ese grosor (en unidades del lienzo).
+    letras: {posición en s: papel} para pintar letras enteras de otro color
+            (p. ej. txt("grafía", letras={4: "#E8443A"}) pinta la í entera).
     """
     tt, gs, hbf = _font(peso, it, fam)
     capH, xH = tt["OS/2"].sCapHeight, tt["OS/2"].sxHeight
@@ -119,7 +121,7 @@ def txt(s, peso=800, it=False, papel="T", tilde=None, punto=None, size=100, trac
     hb.shape(hbf, buf, {"kern": True, "liga": False, "lnum": True})
     k = size / 1000
     x = 0
-    base, marcas, puntos = [], [], []
+    base, marcas, puntos, otras = [], [], [], {}
     for info, pos in zip(buf.glyph_infos, buf.glyph_positions):
         ch = s[info.cluster]
         rec = DecomposingRecordingPen(gs); gs[tt.getGlyphName(info.codepoint)].draw(rec)
@@ -129,12 +131,13 @@ def txt(s, peso=800, it=False, papel="T", tilde=None, punto=None, size=100, trac
             if not bp.bounds: continue
             ymin = bp.bounds[1]
             alto = capH if ch.isupper() else xH
-            if tilde and ch in "áéíóúñÁÉÍÓÚÑ" and ymin > alto * 0.98: marcas.append((c, t))
+            if letras and info.cluster in letras: otras.setdefault(letras[info.cluster], []).append((c, t))
+            elif tilde and ch in "áéíóúñÁÉÍÓÚÑ" and ymin > alto * 0.98: marcas.append((c, t))
             elif punto and ch in "ij" and ymin > xH * 0.98: puntos.append((c, t))
             else: base.append((c, t))
         x += pos.x_advance + tracking * 1000
     g = G()
-    for grupo, p in ((base, papel), (marcas, tilde), (puntos, punto)):
+    for grupo, p in ((base, papel), (marcas, tilde), (puntos, punto), *[(v, k2) for k2, v in otras.items()]):
         if not grupo: continue
         ds, bbs = zip(*[_dibuja([c], t) for c, t in grupo])
         bb = (min(b[0] for b in bbs), min(b[1] for b in bbs), max(b[2] for b in bbs), max(b[3] for b in bbs))

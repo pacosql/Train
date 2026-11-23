@@ -8,6 +8,7 @@ const SHELL = [
   "./",
   "./index.html",
   "./guia.html",
+  "./web.html",
   "./ranking.html",
   "./examen.js",
   "./manifest.json",

@@ -262,6 +262,7 @@
   <div class="wrap">
     <header>
       <h1>Ortografía10 <span>· elige el logo</span></h1>
+      <a class="icon-btn" href="web.html" title="Tus favoritos en una web de ejemplo (ordenador y móvil)" style="display:flex;align-items:center;justify-content:center;text-decoration:none">🌐</a>
       <a class="icon-btn" href="ranking.html" title="Ranking: cuáles son los mejores según las 9 preguntas, y por qué" style="display:flex;align-items:center;justify-content:center;text-decoration:none">🏆</a>
       <a class="icon-btn" href="guia.html" title="Guía: qué tiene que cumplir un logo, imagen de marca y arquetipos" style="display:flex;align-items:center;justify-content:center;text-decoration:none">📖</a>
       <button class="icon-btn" id="btn-grid" title="Ver todos los iconos de un vistazo / de uno en uno">▦</button>
@@ -554,6 +555,7 @@
             ${isNew(d) && !d.decision ? `<span class="badge new">nuevo</span>` : ""}
             <span class="cnt">${state.idx + 1} / ${state.queue.length}</span>
             <button type="button" class="mini" data-a4>⬇️ A4</button>
+            <a class="mini" href="web.html#${d.numero}" style="text-decoration:none;color:inherit">🌐 Web</a>
             <button type="button" class="mini" data-com>💬 Comentar ↓</button>
           </div>
           <div class="st-main">
@@ -605,6 +607,7 @@
           ${["no_gusta", "gusta", "revisar", "definitivo"].map((k) => `<button type="button" data-d="${k}" class="${d.decision === k ? "on" : ""}">${DECISION_LABEL[k]}</button>`).join("")}
         </div>`}
         <button type="button" class="a4" data-a4>⬇️ Descargar A4 para imprimir (PDF)</button>
+        <a class="a4" href="web.html#${d.numero}" style="display:block;text-align:center;text-decoration:none;color:inherit">🌐 Verlo en una web (ordenador y móvil)</a>
         ${panelsHTML(d, nc)}
       </article>`;
     }
