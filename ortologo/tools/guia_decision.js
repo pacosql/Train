@@ -7,6 +7,8 @@
 // Cambios pedidos hasta ahora:
 //  v2 (23-nov-2026): fuera «qué es barato / caro de cambiar» y «antes de
 //      imprimir nada»: irrelevante, no quiere releerlo.
+//  v3 (23-nov-2026): fuera la fila «Hermano Mates10» de la comparación ñ / í:
+//      no la quiere para nada.
 const fs = require("fs"); const { chromium } = require("playwright");
 const path = require("path"), { execSync } = require("child_process");
 const F = path.resolve(__dirname, "..") + "/";
@@ -38,7 +40,7 @@ ol,ul{margin:1pt 0 4pt;padding-left:15pt}li{margin-bottom:1pt}
 .dos{display:grid;grid-template-columns:1fr 1fr;gap:8pt}.dos .box{margin:0}
 .salto{break-before:page}.nota{font-size:8.4pt;color:#6b6a66}
 </style>
-<div class="hero"><div class="k">Ortografía10 · guía de decisión</div><h1>Cómo decidir la marca <i>en una tarde</i></h1><p>Qué usar como símbolo, como logotipo y como dirección; dónde va cada cosa; y seis pruebas para validarlo tú solo en unas dos horas.</p><p style="font-size:7.5pt;opacity:.7;margin-top:6pt">Documento vivo · versión 2 · 23 de noviembre de 2026</p></div>
+<div class="hero"><div class="k">Ortografía10 · guía de decisión</div><h1>Cómo decidir la marca <i>en una tarde</i></h1><p>Qué usar como símbolo, como logotipo y como dirección; dónde va cada cosa; y seis pruebas para validarlo tú solo en unas dos horas.</p><p style="font-size:7.5pt;opacity:.7;margin-top:6pt">Documento vivo · versión 3 · 23 de noviembre de 2026</p></div>
 
 <h2><span>1</span>No es una decisión, son tres</h2>
 <p class="lead">Tu duda —«la ñ o el nombre con letras»— desaparece cuando ves que no compiten. Una marca tiene piezas distintas para sitios distintos, y puedes quedarte con la ñ <b>y</b> con las letras.</p>
@@ -65,7 +67,7 @@ ol,ul{margin:1pt 0 4pt;padding-left:15pt}li{margin-bottom:1pt}
 <table><tr><th></th><th>La ñ ${fila([667, 711, 712], 26)}</th><th>La í ${fila([659, 728, 734], 26)}</th></tr>
 <tr><td>A favor</td><td>Es la que mejor te está funcionando. Simpática, redonda, se recuerda sola.</td><td>Está en tu nombre. La tilde es justo lo que enseña la app.</td></tr>
 <tr><td>En contra</td><td>Dice «español» antes que «ortografía». No está en «Ortografía10». La Ñ se usa mucho para «lo español».</td><td>Es más fría. Una i en una caja puede recordar a «información».</td></tr>
-<tr><td>Hermano Mates10</td><td>Hay que inventarlo.</td><td>Hay que inventarlo igual, salvo la í que hace de 1 (nº 734).</td></tr></table>
+</table>
 <div class="box"><b>Mi opinión.</b> En el ranking puse la í primera por pertinencia. Pero si la ñ es la que la gente recuerda y le gusta, eso pesa más que mi nota: un logo sirve para que te reconozcan, no para explicar el producto. Comprueba con la prueba de los cinco segundos que no es solo que <i>guste</i> más, sino que se <i>recuerda</i> más.</div>
 
 <h2><span>4</span>Decisión B: el logotipo</h2>
