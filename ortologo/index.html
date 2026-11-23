@@ -885,6 +885,7 @@
       const draw = async (kind, x, y, w) => { const { text: t, ratio } = standaloneSvg(d, kind); const h = w / ratio; g.drawImage(await svgImage(t, Math.round(mm(w)), Math.round(mm(h))), mm(x), mm(y), mm(w), mm(h)); return h; };
       const rr = (x, y, w, h, r, fill, stroke, lw = 0.25) => { g.beginPath(); g.roundRect(mm(x), mm(y), mm(w), mm(h), mm(r)); if (fill) { g.fillStyle = fill; g.fill(); } if (stroke) { g.strokeStyle = stroke; g.lineWidth = mm(lw); g.stroke(); } };
       const claro = (hex) => lum(hex) > 225;
+      const vt = []; cv.vt = vt;   // textos que van como texto real en el PDF
 
       // cabecera
       text("Ortografía10", 15, 21, 6.2, 800);
@@ -920,7 +921,7 @@
       g.fillStyle = "#000"; g.fillRect(mm(SX), mm(SY), mm(66.6), mm(pt(874)));
       const SF = '-apple-system, "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif';
       rr(SX + pt(139), SY + pt(11), pt(124), pt(36), pt(18), "#0e0e10");
-      text("9:41", SX + pt(52), SY + pt(34), pt(17), 600, "#fff", "left", SF);
+      vtexto(g, K, vt, "9:41", SX + pt(52), SY + pt(34), pt(17), "#ffffff", "left", { bold: true });
       rr(SX + pt(342), SY + pt(21), pt(26), pt(13), pt(4), null, "#fff", pt(1.2)); rr(SX + pt(344.2), SY + pt(23.2), pt(21.6), pt(8.6), pt(2), "#fff");
       const tile = (ix, iy, sz, bg, dr) => {
         g.save(); g.beginPath(); g.roundRect(mm(ix), mm(iy), mm(sz), mm(sz), mm(sz * 0.225)); g.clip();
@@ -952,9 +953,9 @@
         const ix = SX + pt(27) + (k % 4) * (sz + gap), iy = top + Math.floor(k / 4) * pt(104);
         if (apps[k]) { tile(ix, iy, sz, apps[k][1], apps[k][2]); if (apps[k][3]) rr(ix, iy, sz, sz, sz * 0.225, null, "rgba(140,140,146,.55)", 0.08); }
         else { const { text: t } = standaloneSvg(d, "sq"); const px = Math.round(mm(sz)); g.drawImage(await svgImage(t.replace('rx="22"', 'rx="22.5"'), px, px), mm(ix), mm(iy), mm(sz), mm(sz)); if (lum(c.icono_fondo) < 30) rr(ix, iy, sz, sz, sz * 0.225, null, "rgba(140,140,146,.55)", 0.08); }
-        text(apps[k] ? apps[k][0] : "Ortografía10", ix + sz / 2, iy + sz + pt(16.5), pt(12), 500, "#fff", "center", SF);
+        vtexto(g, K, vt, apps[k] ? apps[k][0] : "Ortografía10", ix + sz / 2, iy + sz + pt(16.5), pt(12), "#ffffff", "center", { medio: true });
       }
-      rr(SX + pt(162), SY + pt(726), pt(78), pt(30), pt(15), "rgba(120,120,128,.36)"); text("⌕ Buscar", SX + pt(201), SY + pt(746), pt(13.5), 500, "#fff", "center", SF);
+      rr(SX + pt(162), SY + pt(726), pt(78), pt(30), pt(15), "rgba(120,120,128,.36)"); vtexto(g, K, vt, "Buscar", SX + pt(201), SY + pt(746), pt(13.5), "#ffffff", "center", { medio: true });
       rr(SX + pt(13), SY + pt(767), pt(376), pt(94), pt(36), "rgba(120,120,128,.32)");
       [["#34C759", letter("✆", "#fff", 0.6, 500)], ["#0A84FF", letter("◎", "#fff", 0.62, 500)], [["#5EE06B", "#2AC84A"], letter("✉", "#fff", 0.55, 500)], [["#FA233B", "#FB5C74"], letter("♪", "#fff", 0.6, 600)]].forEach(([bg, dr], k) => tile(SX + pt(27) + k * (sz + gap), SY + pt(784), sz, bg, dr));
       rr(SX + pt(131), SY + pt(864), pt(140), pt(5), pt(2.5), "rgba(255,255,255,.85)");
@@ -1000,27 +1001,51 @@
       }
       return cv;
     }
-    // PDF mínimo con una página A4 por imagen JPEG.
-    function jpegPdf(jpegs, w, h) {
-      if (!Array.isArray(jpegs)) jpegs = [jpegs];
+    // PDF mínimo con una página A4 por imagen JPEG. Los textos pequeños (los
+    // nombres bajo los iconos del iPhone, las listas) no van dentro de la imagen:
+    // se escriben encima como texto de verdad (Helvetica), así salen nítidos a
+    // cualquier ampliación y al imprimir.  textos[k] = [{t, x, y, size, color, align, w}]
+    // con x, y y size en milímetros (y = línea base desde arriba).
+    function jpegPdf(jpegs, w, h, textos) {
+      if (!Array.isArray(jpegs)) { jpegs = [jpegs]; textos = textos ? [textos] : null; }
       const enc = new TextEncoder(), parts = [], offs = [];
       let len = 0;
       const push = (x) => { const b = typeof x === "string" ? enc.encode(x) : x; parts.push(b); len += b.length; };
       const obj = (n, body, stream) => { offs[n] = len; push(`${n} 0 obj\n${body}\n`); if (stream) { push("stream\n"); push(stream); push("\nendstream\n"); } push("endobj\n"); };
+      const MM = 72 / 25.4, N = jpegs.length, WIN = { "…": 0x85, "–": 0x96, "—": 0x97, "“": 0x93, "”": 0x94, "‘": 0x91, "’": 0x92, "€": 0x80, "″": 0x94, "′": 0x92 };
+      const rgb = (c) => { let x = (c || "#000").replace("#", ""); if (x.length === 3) x = [...x].map((ch) => ch + ch).join(""); return [0, 2, 4].map((k) => (parseInt(x.substr(k, 2), 16) / 255).toFixed(3)).join(" "); };
+      const pdfStr = (t) => { const out = [40]; for (const ch of t) { let code = WIN[ch] ?? ch.charCodeAt(0); if (code > 255) code = 63; if (code === 40 || code === 41 || code === 92) out.push(92); out.push(code); } out.push(41); return new Uint8Array(out); };
+      const contenido = (k) => {
+        const trozos = [enc.encode("q 595.28 0 0 841.89 0 0 cm /Im0 Do Q\n")];
+        for (const o of (textos && textos[k]) || []) {
+          const pt = o.size * MM, col = rgb(o.color), x = (o.x - (o.align === "center" ? o.w / 2 : o.align === "right" ? o.w : 0)) * MM, y = 841.89 - o.y * MM;
+          trozos.push(enc.encode(`BT /${o.bold ? "F2" : "F1"} ${pt.toFixed(2)} Tf ${col} rg ${col} RG ${(pt * (o.medio ? 0.028 : 0)).toFixed(3)} w ${o.medio ? 2 : 0} Tr ${x.toFixed(2)} ${y.toFixed(2)} Td `), pdfStr(o.t), enc.encode(" Tj ET\n"));
+        }
+        const total = trozos.reduce((a, b) => a + b.length, 0), u8 = new Uint8Array(total); let off = 0;
+        for (const b of trozos) { u8.set(b, off); off += b.length; }
+        return u8;
+      };
       push("%PDF-1.4\n%âãÏÓ\n");
-      const content = "q 595.28 0 0 841.89 0 0 cm /Im0 Do Q", N = jpegs.length;
       obj(1, "<< /Type /Catalog /Pages 2 0 R >>");
-      obj(2, `<< /Type /Pages /Kids [${jpegs.map((_, k) => `${3 + 3 * k} 0 R`).join(" ")}] /Count ${N} >>`);
+      obj(2, `<< /Type /Pages /Kids [${jpegs.map((_, k) => `${5 + 3 * k} 0 R`).join(" ")}] /Count ${N} >>`);
+      obj(3, "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>");
+      obj(4, "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>");
       jpegs.forEach((jpeg, k) => {
-        const a = 3 + 3 * k;
-        obj(a, `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Resources << /XObject << /Im0 ${a + 1} 0 R >> >> /Contents ${a + 2} 0 R >>`);
+        const a = 5 + 3 * k, c = contenido(k);
+        obj(a, `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595.28 841.89] /Resources << /XObject << /Im0 ${a + 1} 0 R >> /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents ${a + 2} 0 R >>`);
         obj(a + 1, `<< /Type /XObject /Subtype /Image /Width ${w} /Height ${h} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${jpeg.length} >>`, jpeg);
-        obj(a + 2, `<< /Length ${content.length} >>`, content);
+        obj(a + 2, `<< /Length ${c.length} >>`, c);
       });
-      const total = 3 + 3 * N, xref = len;
+      const total = 5 + 3 * N, xref = len;
       push(`xref\n0 ${total}\n0000000000 65535 f \n` + Array.from({ length: total - 1 }, (_, k) => String(offs[k + 1]).padStart(10, "0") + " 00000 n \n").join(""));
       push(`trailer\n<< /Size ${total} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF\n`);
       return new Blob(parts, { type: "application/pdf" });
+    }
+    // Apunta un texto para escribirlo como texto real en el PDF (mide su ancho con
+    // una letra de las mismas medidas que Helvetica para poder centrarlo).
+    function vtexto(g, K, lista, t, x, y, size, color = "#141413", align = "left", extra = {}) {
+      g.font = `${extra.bold ? 700 : 400} ${size * K}px Helvetica, Arial, "Liberation Sans", sans-serif`;
+      lista.push({ t, x, y, size, color, align, w: g.measureText(t).width / K, ...extra });
     }
     const jpegBytes = (cv, q = 0.95) => { const bin = atob(cv.toDataURL("image/jpeg", q).split(",")[1]); const u8 = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i); return u8; };
 
@@ -1038,6 +1063,7 @@
         const text = (t, x, y, size, weight = 500, color = "#141413", align = "left", fam = "Poppins, sans-serif") => { g.font = `${weight} ${mm(size)}px ${fam}`; g.fillStyle = color; g.textAlign = align; g.textBaseline = "alphabetic"; g.fillText(t, mm(x), mm(y)); };
         const rr = (x, y, w, h, r, fill, stroke, lw = 0.25) => { g.beginPath(); g.roundRect(mm(x), mm(y), mm(w), mm(h), mm(r)); if (fill) { g.fillStyle = fill; g.fill(); } if (stroke) { g.strokeStyle = stroke; g.lineWidth = mm(lw); g.stroke(); } };
         const fondo = state.fondoPhone || "negro", tinta = fondo === "claro" ? "#111" : "#fff", nums = !!state.numsPhone;
+        let vt = [];
         const phone = async (X, Y, items) => {
           const SX = X + 2.45, SY = Y + (149.6 - pt(874)) / 2, sz = pt(60), gap = (66.6 - pt(54) - 4 * sz) / 3;
           rr(X, Y, 71.5, 149.6, 10.4, "#1b1b1f"); rr(X + 0.35, Y + 0.35, 70.8, 148.9, 10.1, null, "#55555c", 0.3);
@@ -1045,25 +1071,25 @@
           if (fondo === "negro") g.fillStyle = "#000"; else { const q = g.createLinearGradient(0, mm(SY), mm(20), mm(SY + pt(874))); (fondo === "claro" ? ["#f3f1ec", "#dcd8cf"] : ["#23345f", "#5d6c95", "#b98a9a"]).forEach((c2, k, a) => q.addColorStop(k / (a.length - 1), c2)); g.fillStyle = q; }
           g.fillRect(mm(SX), mm(SY), mm(66.6), mm(pt(874)));
           rr(SX + pt(139), SY + pt(11), pt(124), pt(36), pt(18), fondo === "negro" ? "#0e0e10" : "#000");
-          text("9:41", SX + pt(52), SY + pt(34), pt(17), 600, tinta, "left", SF);
+          vtexto(g, K, vt, "9:41", SX + pt(52), SY + pt(34), pt(17), tinta, "left", { bold: true });
           rr(SX + pt(342), SY + pt(21), pt(26), pt(13), pt(4), null, tinta, pt(1.2)); rr(SX + pt(344.2), SY + pt(23.2), pt(21.6), pt(8.6), pt(2), tinta);
           for (let k = 0; k < items.length; k++) {
             const d = items[k], c = C(d), ix = SX + pt(27) + (k % 4) * (sz + gap), iy = SY + pt(78) + Math.floor(k / 4) * pt(104), px = Math.round(mm(sz));
             g.drawImage(await svgImage(standaloneSvg(d, "sq").text.replace('rx="22"', 'rx="22.5"'), px, px), mm(ix), mm(iy), mm(sz), mm(sz));
             if ((fondo !== "claro" && lum(c.icono_fondo) < 30) || (fondo === "claro" && lum(c.icono_fondo) > 225)) rr(ix, iy, sz, sz, sz * 0.225, null, "rgba(128,128,128,.5)", 0.08);
-            text(nums ? "nº " + d.numero : "Ortografía10", ix + sz / 2, iy + sz + pt(16.5), pt(12), 500, tinta, "center", SF);
+            vtexto(g, K, vt, nums ? "nº " + d.numero : "Ortografía10", ix + sz / 2, iy + sz + pt(16.5), pt(12), tinta, "center", { medio: true });
           }
-          rr(SX + pt(162), SY + pt(726), pt(78), pt(30), pt(15), "rgba(120,120,128,.36)"); text("⌕ Buscar", SX + pt(201), SY + pt(746), pt(13.5), 500, tinta, "center", SF);
+          rr(SX + pt(162), SY + pt(726), pt(78), pt(30), pt(15), "rgba(120,120,128,.36)"); vtexto(g, K, vt, "Buscar", SX + pt(201), SY + pt(746), pt(13.5), tinta, "center", { medio: true });
           rr(SX + pt(13), SY + pt(767), pt(376), pt(94), pt(36), "rgba(120,120,128,.32)");
           [["#34C759", "✆"], ["#0A84FF", "◎"], ["#30D158", "✉"], ["#FA2D48", "♪"]].forEach(([bg, gl], k) => { const ix = SX + pt(27) + k * (sz + gap), iy = SY + pt(784); rr(ix, iy, sz, sz, sz * 0.225, bg); g.font = `500 ${mm(sz * 0.55)}px Poppins, sans-serif`; g.fillStyle = "#fff"; g.textAlign = "center"; g.textBaseline = "middle"; g.fillText(gl, mm(ix + sz / 2), mm(iy + sz * 0.53)); });
           rr(SX + pt(131), SY + pt(864), pt(140), pt(5), pt(2.5), fondo === "claro" ? "rgba(0,0,0,.8)" : "rgba(255,255,255,.85)");
           g.restore();
         };
-        const pages = [], total = Math.ceil(list.length / 48);
+        const pages = [], textos = [], total = Math.ceil(list.length / 48);
         for (let p = 0; p < list.length; p += 48) {
           btn.textContent = `Preparando hoja ${p / 48 + 1} de ${total}…`;
           await new Promise((r) => setTimeout(r, 30));
-          g.fillStyle = "#fff"; g.fillRect(0, 0, cv.width, cv.height);
+          g.fillStyle = "#fff"; g.fillRect(0, 0, cv.width, cv.height); vt = [];
           text("Ortografía10", 15, 21, 6.2, 800);
           text("tus favoritos en un iPhone", 15 + g.measureText("Ortografía10 ").width / K + 1, 21, 6.2, 400, "#6b6a66");
           text(total > 1 ? `hoja ${p / 48 + 1} de ${total}` : "ortografia10.com", 195, 21, 3.4, 600, "#6b6a66", "right");
@@ -1074,14 +1100,14 @@
             const X = k ? 113.5 : 25, Y = 40;
             await phone(X, Y, items);
             text(`Pantalla ${p / 24 + k + 1}`, X, Y + 157, 3, 700);
-            items.forEach((d, i) => { const col = i < 12 ? 0 : 1, row = i % 12, t = `${i + 1}. nº ${d.numero} · ${d.titulo}`; g.font = `400 ${mm(2.15)}px Poppins, sans-serif`; let s2 = t; while (g.measureText(s2).width > mm(34.5) && s2.length > 8) s2 = s2.slice(0, -2); text(s2 === t ? t : s2 + "…", X + col * 36.5, Y + 163 + row * 3.5, 2.15, 400, "#3b3a37"); });
+            items.forEach((d, i) => { const col = i < 12 ? 0 : 1, row = i % 12, t = `${i + 1}. nº ${d.numero} · ${d.titulo}`; g.font = `400 ${mm(2.2)}px Helvetica, Arial, "Liberation Sans", sans-serif`; let s2 = t; while (g.measureText(s2).width > mm(34) && s2.length > 8) s2 = s2.slice(0, -2); vtexto(g, K, vt, s2 === t ? t : s2 + "…", X + col * 36.5, Y + 163 + row * 3.5, 2.2, "#3b3a37"); });
           }
           text("Los iconos están numerados de izquierda a derecha y de arriba abajo, ordenados de mejor a peor nota.", 15, 252, 2.6, 500, "#6b6a66");
           g.fillStyle = "#141413"; g.fillRect(mm(15), mm(262), mm(50), mm(0.3)); g.fillRect(mm(15), mm(260.5), mm(0.3), mm(3)); g.fillRect(mm(65 - 0.3), mm(260.5), mm(0.3), mm(3));
           text("Esta línea mide 5 cm si has impreso al 100 % (sin «ajustar a la página»). Así el teléfono y los iconos salen a tamaño real.", 15, 267.5, 2.6, 500, "#6b6a66");
-          pages.push(jpegBytes(cv));
+          pages.push(jpegBytes(cv)); textos.push(vt);
         }
-        download(jpegPdf(pages, cv.width, cv.height), `ortografia10-favoritos-iphone-A4.pdf`);
+        download(jpegPdf(pages, cv.width, cv.height, textos), `ortografia10-favoritos-iphone-A4.pdf`);
         showToast(`⬇️ A4 con ${list.length} iconos en ${total} ${total === 1 ? "hoja" : "hojas"}`);
       } catch (e) { showMsg("No se pudo preparar el A4: " + e.message); }
       finally { btn.disabled = false; btn.textContent = old; }
@@ -1090,7 +1116,7 @@
       const old = btn.textContent; btn.disabled = true; btn.textContent = "Preparando el A4…";
       try {
         const cv = await a4Canvas(d);
-        download(jpegPdf(jpegBytes(cv), cv.width, cv.height), `ortografia10-propuesta-${d.numero}-A4.pdf`);
+        download(jpegPdf(jpegBytes(cv), cv.width, cv.height, cv.vt), `ortografia10-propuesta-${d.numero}-A4.pdf`);
         showToast(`⬇️ A4 del nº ${d.numero} descargado`);
       } catch (e) { showMsg("No se pudo preparar el A4: " + e.message); }
       finally { btn.disabled = false; btn.textContent = old; }
