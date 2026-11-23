@@ -312,7 +312,9 @@
     const WIDE = window.matchMedia("(orientation: landscape) and (min-width: 600px)");
     // Cuadrícula: solo los iconos, todos de un vistazo, y se vota tocando 👎 / 👍.
     // La lista se congela al entrar para que nada salte de sitio al votar.
-    try { state.grid = localStorage.getItem("ortologo.grid") === "1"; } catch {}
+    // Por defecto, todos los iconos de un vistazo (como en el móvil); ▦ cambia a uno en uno.
+    state.grid = true;
+    try { state.grid = localStorage.getItem("ortologo.vista") !== "uno"; } catch {}
     const isGrid = () => state.tab === "todos" || !!state.grid;
     const inQueue = () => state.tab === "pendiente" && !state.detail && !isGrid();
     function gridList() {
@@ -554,6 +556,7 @@
             ${d.version > 1 ? `<span class="badge">v${d.version}${padre ? ` del nº ${padre.numero}` : ""}</span>` : ""}
             ${isNew(d) && !d.decision ? `<span class="badge new">nuevo</span>` : ""}
             <span class="cnt">${state.idx + 1} / ${state.queue.length}</span>
+            <button type="button" class="mini" data-todos>▦ Ver todos</button>
             <button type="button" class="mini" data-a4>⬇️ A4</button>
             <a class="mini" href="web.html#${d.numero}" style="text-decoration:none;color:inherit">🌐 Web</a>
             <button type="button" class="mini" data-com>💬 Comentar ↓</button>
@@ -614,6 +617,8 @@
 
     function wireCard(card) {
       const d = byId(card.dataset.id);
+      const todos = card.querySelector("[data-todos]");
+      if (todos) todos.onclick = () => { state.grid = true; state.snap = null; try { localStorage.setItem("ortologo.vista", "todos"); } catch {} render(); window.scrollTo(0, 0); };
       const com = card.querySelector("[data-com]");
       if (com) com.onclick = () => card.querySelector(".st-below").scrollIntoView({ behavior: "smooth" });
       card.querySelectorAll("button[data-d]").forEach((b) => b.onclick = () => decide(d, d.decision === b.dataset.d ? null : b.dataset.d, card));
@@ -1388,7 +1393,7 @@
       el("btn-grid").addEventListener("click", () => {
         if (state.tab === "todos") return; // «Todos» siempre va en cuadrícula
         state.grid = !state.grid; state.detail = null; state.snap = null;
-        try { localStorage.setItem("ortologo.grid", state.grid ? "1" : "0"); } catch {}
+        try { localStorage.setItem("ortologo.vista", state.grid ? "todos" : "uno"); } catch {}
         if (!state.grid && state.tab === "pendiente") buildQueue(true);
         resetRec(); stopDictate(); render(); window.scrollTo(0, 0);
       });

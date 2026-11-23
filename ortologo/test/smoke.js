@@ -33,7 +33,8 @@ const server = http.createServer((req, res) => {
   await page.route("**/supabase-js@2/dist/umd/supabase.js", (r) => r.fulfill({ path: supabaseJs(), contentType: "text/javascript" }));
   await require("../tools/route.js")(page, dir);
   await page.goto(`http://localhost:${server.address().port}/ortologo/`, { waitUntil: "networkidle" });
-  await page.waitForSelector("#view .card, #view .empty");
+  await page.waitForSelector("#view .card, #view .empty, #view .g-item");
+  if (await page.locator("#view .g-item").count()) { await page.click("#btn-grid"); await page.waitForSelector("#view .card"); } // por defecto se ve la cuadrícula: la prueba va de uno en uno
   const n = await page.textContent("#n-pendiente");
   console.log("por decidir:", n, "· total:", await page.textContent("#n-todos"));
   const card = page.locator("#view .card").first();
