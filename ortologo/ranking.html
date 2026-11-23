@@ -74,21 +74,21 @@
   <style id="examen-css"></style>
 </head>
 <body>
-  <div class="top"><div class="col"><a href="./">← Los logos</a><a class="sec" href="guia.html">📖 Guía</a><a class="sec" href="guia.html#preguntas">Las 10 preguntas</a></div></div>
+  <div class="top"><div class="col"><a href="./">← Los logos</a><a class="sec" href="guia.html">📖 Guía</a><a class="sec" href="guia.html#preguntas">Las 9 preguntas</a></div></div>
   <header class="hero"><div class="col">
     <div class="kicker">Ortografía10 · ranking</div>
     <h1>Cuál es <i>el mejor</i>, y por qué</h1>
-    <p>Tus 👍 y ⭐ ordenados de mejor a peor según las 10 preguntas de la guía, con una frase que explica cada puesto. Es la valoración de Claude: razonada, pero una opinión. Toca cualquiera para abrirlo, ver su examen completo y descargar su A4.</p>
+    <p>Tus 👍 y ⭐ ordenados de mejor a peor según las 9 preguntas de la guía, con una frase que explica cada puesto. Es la valoración de Claude: razonada, pero una opinión. Toca cualquiera para abrirlo, ver su examen completo y descargar su A4.</p>
   </div></header>
 
   <div class="col">
     <div id="rec"></div>
     <div class="podio" id="podio"></div>
-    <div class="ley"><span><i style="background:#1f9d55"></i>aprueba</span><span><i style="background:#e0a526"></i>a medias</span><span><i style="background:#d6453d"></i>suspende</span><span>Los diez puntos de cada fila son las diez preguntas, en orden.</span></div>
+    <div class="ley"><span><i style="background:#1f9d55"></i>aprueba</span><span><i style="background:#e0a526"></i>a medias</span><span><i style="background:#d6453d"></i>suspende</span><span>Los nueve puntos de cada fila son las nueve preguntas, en orden.</span></div>
     <table><thead><tr><th>#</th><th></th><th>Propuesta</th><th>Nota</th><th>Por qué</th></tr></thead><tbody id="tabla"><tr><td colspan="5" class="nota-pie">Cargando el ranking…</td></tr></tbody></table>
     <p class="nota-pie" id="pend"></p>
-    <details class="nota-pie"><summary><b>Las 10 preguntas, en orden</b></summary><ol class="qs" id="qs"></ol></details>
-    <p class="nota-pie"><b>Cómo se puntúa.</b> Cada pregunta vale 1 punto si aprueba, medio si se queda a medias y 0 si suspende. «Para toda la vida» exige 8 o más y no suspender ninguna de las cuatro primeras (un segundo, de memoria, 16 píxeles, una tinta). A igual nota, el orden es el criterio de Claude sobre cuál encaja mejor con lo que ya tienes sembrado en los Reels.</p>
+    <details class="nota-pie"><summary><b>Las 9 preguntas, en orden</b></summary><ol class="qs" id="qs"></ol></details>
+    <p class="nota-pie"><b>Cómo se puntúa.</b> Cada pregunta vale 1 punto si aprueba, medio si se queda a medias y 0 si suspende. «Para toda la vida» exige 7 o más sobre 9 y no suspender ninguna de las cuatro primeras (un segundo, de memoria, 16 píxeles, una tinta). A igual nota, el orden es el criterio de Claude sobre cuál encaja mejor con lo que ya tienes sembrado en los Reels.</p>
   </div>
 
   <footer><div class="col"><a class="cta" href="./">Volver a elegir →</a><div>El ranking se actualiza solo: cada vez que marcas un 👍 o un ⭐, la rutina lo examina en su siguiente pasada.</div><div class="build-id">build __BUILD_ID__</div></div></footer>
@@ -130,10 +130,10 @@
         const todos = a.data || [], list = todos.filter((d) => EX.ok(d.examen)).sort((x, y) => (EX.nota(y.examen) - EX.nota(x.examen)) || ((x.examen.o ?? 1e9) - (y.examen.o ?? 1e9)) || (x.numero - y.numero));
         const pend = todos.length - list.length;
         if (p.data && p.data.recomendacion) document.getElementById("rec").innerHTML = `<div class="rec"><h2>Mi recomendación</h2><p>${esc(p.data.recomendacion)}</p></div>`;
-        document.getElementById("podio").innerHTML = list.slice(0, 3).map((d, i) => `<a href="./#${d.numero}"><div class="p">${i + 1}.º</div>${ic(d)}<div><b>nº ${d.numero} · ${esc(d.titulo)}</b><small>${EX.fmt(EX.nota(d.examen))} / 10</small></div></a>`).join("");
+        document.getElementById("podio").innerHTML = list.slice(0, 3).map((d, i) => `<a href="./#${d.numero}"><div class="p">${i + 1}.º</div>${ic(d)}<div><b>nº ${d.numero} · ${esc(d.titulo)}</b><small>${EX.fmt(EX.nota(d.examen))} / ${EX.N}</small></div></a>`).join("");
         tabla.innerHTML = list.length ? list.map((d, i) => `<tr class="fila" data-n="${d.numero}"><td class="pos">${i + 1}</td><td class="icono">${ic(d)}</td>
           <td class="nombre"><b>${d.decision === "definitivo" ? "⭐ " : ""}${esc(d.titulo)}</b><small>nº ${d.numero}</small></td>
-          <td class="nota">${EX.fmt(EX.nota(d.examen))}<small> / 10</small>${EX.puntos(d.examen)}</td>
+          <td class="nota">${EX.fmt(EX.nota(d.examen))}<small> / ${EX.N}</small>${EX.puntos(d.examen)}</td>
           <td class="por"><span class="tag ${EX.paraSiempre(d.examen) ? "top" : ""}">${EX.etiqueta(d.examen)}</span><br>${esc(d.examen.v || "")}</td></tr>`).join("")
           : `<tr><td colspan="5" class="nota-pie">Todavía no hay ningún 👍 examinado.</td></tr>`;
         tabla.querySelectorAll("tr.fila").forEach((tr) => tr.onclick = () => { location.href = "./#" + tr.dataset.n; });

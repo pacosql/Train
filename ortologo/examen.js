@@ -1,10 +1,14 @@
-// Las 10 preguntas de la guía (guia.html) y cómo se pinta el examen de un
+// Las 9 preguntas de la guía (guia.html) y cómo se pinta el examen de un
 // diseño. Lo usan la app (index.html) y el ranking (ranking.html).
 //
 // En la base de datos, `ortologo_disenos.examen` es:
-//   { p: [10 notas: 1 aprueba · 0.5 a medias · 0 suspende], t: suma,
+//   { p: [9 notas: 1 aprueba · 0.5 a medias · 0 suspende], t: suma,
 //     o: orden de desempate (1 = mejor), v: veredicto en una frase,
-//     n: { "<nº de pregunta 1-10>": "nota propia que sustituye a la genérica" } }
+//     n: { "<nº de pregunta 1-9>": "nota propia que sustituye a la genérica" } }
+//
+// (Hasta el 23-nov-2026 eran 10: había una pregunta 9, «¿Da familia?», sobre el
+// hermano Mates10, que el usuario descartó. Si llega un examen antiguo de 10
+// notas, se le quita esa y la antigua 10 pasa a ser la 9.)
 window.ORTOLOGO_EXAMEN = (() => {
   const QS = [
     ["¿Se entiende en un segundo?", "Una sola idea: se entiende de un vistazo.", "Hay que mirarlo un momento para entenderlo.", "Demasiados elementos: no se entiende en un segundo."],
@@ -15,24 +19,27 @@ window.ORTOLOGO_EXAMEN = (() => {
     ["¿Tiene que ver con lo que eres?", "Habla de ortografía: la tilde, la letra bien puesta o el nombre.", "Habla de español más que de ortografía.", "No se relaciona con lo que hace la app."],
     ["¿Aguantará veinte años?", "Formas simples y letra neutra: no caduca.", "Lleva algún recurso de moda que puede envejecer.", "Muy de ahora: en unos años se verá antiguo."],
     ["¿Vale para todo?", "Cabe en el icono, el avatar redondo, la pegatina y el Reel.", "Funciona en grande; en formatos pequeños o redondos sufre.", "Solo funciona en un formato."],
-    ["¿Da familia?", "Deja sitio para Mates10 con las mismas reglas.", "El hermano de Mates10 habría que inventarlo aparte.", "No da pie a una serie."],
     ["¿Es tuyo?", "Es difícil confundirlo con otro y se puede registrar.", "Una letra sola es difícil de registrar: mejor siempre junto al nombre.", "Se parece a símbolos que ya usan otros."],
   ];
+  const N = QS.length;
   const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-  const ok = (ex) => ex && Array.isArray(ex.p) && ex.p.length === 10;
-  const nota = (ex) => (ok(ex) ? ex.p.reduce((a, b) => a + (+b || 0), 0) : null);
+  // notas y notas propias, ya en el formato de 9 (admite el antiguo de 10)
+  const P = (ex) => (ex.p.length === 10 ? ex.p.filter((_, i) => i !== 8) : ex.p);
+  const propia = (ex, i) => { if (!ex.n) return null; if (ex.p.length === 10) return i === 8 ? ex.n[10] : ex.n[i + 1]; return ex.n[i + 1]; };
+  const ok = (ex) => !!ex && Array.isArray(ex.p) && (ex.p.length === N || ex.p.length === 10);
+  const nota = (ex) => (ok(ex) ? P(ex).reduce((a, b) => a + (+b || 0), 0) : null);
   const fmt = (n) => String(n).replace(".", ",");
   const clase = (v) => (v >= 1 ? "si" : v > 0 ? "medio" : "no");
   const signo = (v) => (v >= 1 ? "✓" : v > 0 ? "~" : "✗");
-  // «para toda la vida»: 8 o más y sin suspender ninguna de las cuatro primeras
-  const paraSiempre = (ex) => ok(ex) && nota(ex) >= 8 && ex.p.slice(0, 4).every((v) => v > 0);
-  const etiqueta = (ex) => { const n = nota(ex); return paraSiempre(ex) ? "Para toda la vida" : n >= 8 ? "Bueno, con un pero importante" : n >= 6.5 ? "Buen logotipo, flojo como icono" : "Bonito, pero no es un logo"; };
-  const puntos = (ex) => (ok(ex) ? `<span class="ex-dots">${ex.p.map((v, i) => `<i class="${clase(v)}" title="${i + 1}. ${esc(QS[i][0])}"></i>`).join("")}</span>` : "");
+  // «para toda la vida»: 7 o más sobre 9 y sin suspender ninguna de las cuatro primeras
+  const paraSiempre = (ex) => ok(ex) && nota(ex) >= 7 && P(ex).slice(0, 4).every((v) => v > 0);
+  const etiqueta = (ex) => { const n = nota(ex); return paraSiempre(ex) ? "Para toda la vida" : n >= 7 ? "Bueno, con un pero importante" : n >= 5.5 ? "Buen logotipo, flojo como icono" : "Bonito, pero no es un logo"; };
+  const puntos = (ex) => (ok(ex) ? `<span class="ex-dots">${P(ex).map((v, i) => `<i class="${clase(v)}" title="${i + 1}. ${esc(QS[i][0])}"></i>`).join("")}</span>` : "");
   function html(ex) {
     if (!ok(ex)) return "";
-    return `<div class="examen"><div class="ex-head"><b class="ex-nota">${fmt(nota(ex))}<small> / 10</small></b><div><b>${etiqueta(ex)}</b>${ex.v ? `<p>${esc(ex.v)}</p>` : ""}</div></div>
-      <ol class="ex-list">${ex.p.map((v, i) => `<li class="${clase(v)}"><span class="ex-s">${signo(v)}</span><div><b>${esc(QS[i][0])}</b><br>${esc((ex.n && ex.n[i + 1]) || QS[i][v >= 1 ? 1 : v > 0 ? 2 : 3])}</div></li>`).join("")}</ol>
-      <p class="ex-pie">Valoración de Claude con las 10 preguntas de la <a href="guia.html#preguntas">guía</a>. Es una opinión razonada, no una medida: la última palabra es tuya.</p></div>`;
+    return `<div class="examen"><div class="ex-head"><b class="ex-nota">${fmt(nota(ex))}<small> / ${N}</small></b><div><b>${etiqueta(ex)}</b>${ex.v ? `<p>${esc(ex.v)}</p>` : ""}</div></div>
+      <ol class="ex-list">${P(ex).map((v, i) => `<li class="${clase(v)}"><span class="ex-s">${signo(v)}</span><div><b>${esc(QS[i][0])}</b><br>${esc(propia(ex, i) || QS[i][v >= 1 ? 1 : v > 0 ? 2 : 3])}</div></li>`).join("")}</ol>
+      <p class="ex-pie">Valoración de Claude con las ${N} preguntas de la <a href="guia.html#preguntas">guía</a>. Es una opinión razonada, no una medida: la última palabra es tuya.</p></div>`;
   }
   const CSS = `
     .examen { border: 2px solid #141413; border-radius: 16px; padding: 14px 16px; margin: 14px 0 0; }
@@ -48,5 +55,5 @@ window.ORTOLOGO_EXAMEN = (() => {
     .ex-dots { display: inline-flex; gap: 3px; vertical-align: middle; }
     .ex-dots i { width: 9px; height: 9px; border-radius: 50%; display: block; }
     .ex-dots i.si { background: #1f9d55; } .ex-dots i.medio { background: #e0a526; } .ex-dots i.no { background: #d6453d; }`;
-  return { QS, ok, nota, fmt, clase, etiqueta, paraSiempre, puntos, html, CSS };
+  return { QS, N, ok, nota, fmt, clase, etiqueta, paraSiempre, puntos, html, CSS };
 })();

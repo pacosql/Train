@@ -55,7 +55,7 @@
     .capas > div:nth-child(2) { background: var(--papel); }
     .capas b { font-family: "Playfair", serif; font-size: 1.3rem; }
 
-    /* las 10 preguntas */
+    /* las preguntas */
     .q { display: grid; grid-template-columns: 64px 1fr; gap: 6px 14px; padding: 20px 0; border-top: 1px solid var(--linea); }
     .q:first-of-type { border-top: 3px solid var(--tinta); }
     .q .n { font-family: "Playfair", serif; font-weight: 900; font-size: 2.6rem; line-height: 1; color: var(--tinta); }
@@ -120,7 +120,7 @@
 <body>
   <div class="top"><div class="col">
     <a class="back" href="./">← Los logos</a>
-    <nav><a href="#que-es">Qué es</a><a href="#preguntas">Las 10 preguntas</a><a href="#marca">Imagen de marca</a><a href="#arquetipos">Arquetipos</a><a href="#examen">Tus favoritos</a><a href="#decidir">Cómo decidir</a></nav>
+    <nav><a href="#que-es">Qué es</a><a href="#preguntas">Las 9 preguntas</a><a href="#marca">Imagen de marca</a><a href="#arquetipos">Arquetipos</a><a href="#examen">Tus favoritos</a><a href="#decidir">Cómo decidir</a></nav>
   </div></div>
 
   <header class="hero"><div class="col">
@@ -153,11 +153,11 @@
 
   <section id="preguntas"><div class="col">
     <span class="num">02</span>
-    <h2>Las 10 preguntas que tiene que aprobar</h2>
-    <p class="lead">Un examen de diez preguntas, como debe ser. Pásaselo a cada finalista y marca las que aprueba: un logo para toda la vida necesita, como mínimo, un <mark>8 sobre 10</mark>, y no puede fallar ninguna de las cuatro primeras.</p>
+    <h2>Las 9 preguntas que tiene que aprobar</h2>
+    <p class="lead">Un examen de nueve preguntas. Pásaselo a cada finalista y marca las que aprueba: un logo para toda la vida necesita, como mínimo, un <mark>7 sobre 9</mark>, y no puede fallar ninguna de las cuatro primeras.</p>
 
     <div id="qs"></div>
-    <div class="marcador"><span id="nota">Nota: 0 / 10</span><button type="button" id="borrar">Borrar</button></div>
+    <div class="marcador"><span id="nota">Nota: 0 / 9</span><button type="button" id="borrar">Borrar</button></div>
     <p class="nota" style="margin-top:18px">Las marcas se guardan solo en este dispositivo. Sirven para examinar un finalista cada vez: pulsa «Borrar» y pasa al siguiente.</p>
   </div></section>
 
@@ -226,7 +226,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script src="config.js"></script>
   <script>
-    // ---------- las 10 preguntas ----------
+    // ---------- las preguntas ----------
     const QS = [
       ["¿Se entiende en un segundo?", "Una sola idea, pocas formas. Si hay que explicarlo, sobra algo.", "Enséñalo un segundo y tápalo. ¿Sabrían decir qué han visto con tres palabras?"],
       ["¿Lo dibujarías de memoria?", "Lo memorable es lo que se puede repetir. Si tú no puedes dibujarlo con un boli, nadie lo recordará.", "Dibújalo sin mirar en diez segundos. Tiene que parecerse."],
@@ -236,14 +236,13 @@
       ["¿Tiene que ver con lo que eres?", "No hace falta que lo describa, pero no puede llevar la contraria. Ortografía y español: una tilde, una ñ, una letra bien puesta.", "¿Podría ser el logo de una app de recetas? Si la respuesta es sí, le falta pertinencia."],
       ["¿Aguantará veinte años?", "Las modas (degradados, 3D, mascotas del momento) caducan. Las letras y las formas simples, no.", "Imagínalo en 2046. ¿Da vergüenza o sigue ahí tan tranquilo?"],
       ["¿Vale para todo?", "Icono cuadrado, avatar redondo, pegatina, imán, cabecera web, cierre de Reel, bordado en una sudadera.", "En la tarjeta: ¿se corta en el círculo? ¿Respira en la pegatina? ¿Se lee en el Reel?"],
-      ["¿Da familia?", "Ortografía10 es la primera de la Serie 10. El símbolo tiene que dejar sitio a Mates10 sin empezar de cero.", "¿Sabrías dibujar el hermano de Mates10 con las mismas reglas?"],
       ["¿Es tuyo?", "Que no se confunda con el de otro y que se pueda registrar. Un parecido razonable hoy es un problema caro mañana.", "Busca parecidos en las tiendas de apps y en la OEPM / EUIPO antes de encariñarte."],
     ];
     const KEY = "ortologo.examen";
     let marcas = []; try { marcas = JSON.parse(localStorage.getItem(KEY) || "[]"); } catch {}
     const qs = document.getElementById("qs");
     qs.innerHTML = QS.map(([t, d, c], i) => `<div class="q"><div class="n">${i + 1}</div><div><h3>${t}</h3><p>${d}</p><p class="como"><b>Cómo comprobarlo:</b> ${c}</p></div><label><input type="checkbox" data-i="${i}" ${marcas.includes(i) ? "checked" : ""}> Aprueba</label></div>`).join("");
-    const pintaNota = () => { const n = qs.querySelectorAll("input:checked").length; const basicas = [0, 1, 2, 3].every((i) => qs.querySelector(`input[data-i="${i}"]`).checked); document.getElementById("nota").textContent = `Nota: ${n} / 10` + (n >= 8 && basicas ? " · para toda la vida" : n >= 8 ? " · le falta una de las cuatro primeras" : ""); };
+    const pintaNota = () => { const n = qs.querySelectorAll("input:checked").length; const basicas = [0, 1, 2, 3].every((i) => qs.querySelector(`input[data-i="${i}"]`).checked); document.getElementById("nota").textContent = `Nota: ${n} / 9` + (n >= 7 && basicas ? " · para toda la vida" : n >= 7 ? " · le falta una de las cuatro primeras" : ""); };
     qs.addEventListener("change", () => { marcas = [...qs.querySelectorAll("input:checked")].map((x) => +x.dataset.i); try { localStorage.setItem(KEY, JSON.stringify(marcas)); } catch {} pintaNota(); });
     document.getElementById("borrar").onclick = () => { qs.querySelectorAll("input").forEach((x) => x.checked = false); marcas = []; try { localStorage.removeItem(KEY); } catch {} pintaNota(); };
     pintaNota();

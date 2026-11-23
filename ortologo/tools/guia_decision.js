@@ -9,6 +9,8 @@
 //      imprimir nada»: irrelevante, no quiere releerlo.
 //  v3 (23-nov-2026): fuera la fila «Hermano Mates10» de la comparación ñ / í:
 //      no la quiere para nada.
+//  v4 (23-nov-2026): Mates10 fuera del todo: también la pregunta «¿Da familia?»
+//      de la tabla de puntuar (el examen pasa a ser de 9 preguntas).
 const fs = require("fs"); const { chromium } = require("playwright");
 const path = require("path"), { execSync } = require("child_process");
 const F = path.resolve(__dirname, "..") + "/";
@@ -40,7 +42,7 @@ ol,ul{margin:1pt 0 4pt;padding-left:15pt}li{margin-bottom:1pt}
 .dos{display:grid;grid-template-columns:1fr 1fr;gap:8pt}.dos .box{margin:0}
 .salto{break-before:page}.nota{font-size:8.4pt;color:#6b6a66}
 </style>
-<div class="hero"><div class="k">Ortografía10 · guía de decisión</div><h1>Cómo decidir la marca <i>en una tarde</i></h1><p>Qué usar como símbolo, como logotipo y como dirección; dónde va cada cosa; y seis pruebas para validarlo tú solo en unas dos horas.</p><p style="font-size:7.5pt;opacity:.7;margin-top:6pt">Documento vivo · versión 3 · 23 de noviembre de 2026</p></div>
+<div class="hero"><div class="k">Ortografía10 · guía de decisión</div><h1>Cómo decidir la marca <i>en una tarde</i></h1><p>Qué usar como símbolo, como logotipo y como dirección; dónde va cada cosa; y seis pruebas para validarlo tú solo en unas dos horas.</p><p style="font-size:7.5pt;opacity:.7;margin-top:6pt">Documento vivo · versión 4 · 23 de noviembre de 2026</p></div>
 
 <h2><span>1</span>No es una decisión, son tres</h2>
 <p class="lead">Tu duda —«la ñ o el nombre con letras»— desaparece cuando ves que no compiten. Una marca tiene piezas distintas para sitios distintos, y puedes quedarte con la ñ <b>y</b> con las letras.</p>
@@ -100,7 +102,7 @@ ol,ul{margin:1pt 0 4pt;padding-left:15pt}li{margin-bottom:1pt}
 <li><b>La pareja.</b> Pon el símbolo junto a cada logotipo. ¿Parecen la misma marca?</li></ol></div></div>
 <div class="paso"><div class="n">4</div><div><b>Puntúa · 15 min</b>Rellena la tabla con ✓, ~ o ✗. Quien falle una de las cuatro primeras queda fuera, aunque sea tu favorito.</div></div>
 <table class="punt"><tr><th>Pregunta</th><th>Símbolo nº ____</th><th>Símbolo nº ____</th><th>Símbolo nº ____</th></tr>
-${["¿Se entiende en un segundo?", "¿Lo dibujaría de memoria?", "¿Se reconoce a 16 píxeles?", "¿Funciona a una tinta?", "¿Destaca entre las apps?", "¿Tiene que ver con lo que soy?", "¿Aguantará veinte años?", "¿Vale para todo?", "¿Da familia (Mates10)?", "¿Es mío?"].map((q, i) => `<tr${i === 3 ? ' style="border-bottom:2pt solid #141413"' : ""}><td>${i + 1}. ${q}</td><td></td><td></td><td></td></tr>`).join("")}
+${["¿Se entiende en un segundo?", "¿Lo dibujaría de memoria?", "¿Se reconoce a 16 píxeles?", "¿Funciona a una tinta?", "¿Destaca entre las apps?", "¿Tiene que ver con lo que soy?", "¿Aguantará veinte años?", "¿Vale para todo?", "¿Es mío?"].map((q, i) => `<tr${i === 3 ? ' style="border-bottom:2pt solid #141413"' : ""}><td>${i + 1}. ${q}</td><td></td><td></td><td></td></tr>`).join("")}
 <tr><td><b>Total</b></td><td></td><td></td><td></td></tr></table>
 <div class="paso"><div class="n">5</div><div><b>Si hay empate · 10 min</b>¿Cuál no me cansaría ver todos los días durante años? · ¿Cuál me imagino bordado en una sudadera sin que dé vergüenza? · ¿Cuál encaja con lo que ya tengo en los Reels (amarillo y azul noche)?</div></div>
 <div class="paso"><div class="n">6</div><div><b>Escribe la decisión · 10 min</b></div></div>
