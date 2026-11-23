@@ -57,6 +57,7 @@ reglas para no interferir con las demás:
 | 🔬 Science | [`science/`](./science) (alumno: `/science/alumno/`, padre: `/science/padre/`) | `/Train/science/` | `science_` |
 | 🅾️ Ortologo | [`ortologo/`](./ortologo) | `/Train/ortologo/` | `ortologo_` |
 | ⚡ Power | [`power/`](./power) | `/Train/power/` | `power_` |
+| 🧠 GIA | [`gia/`](./gia) | `/Train/gia/` | `gia_` |
 
 ## Añadir una app nueva
 

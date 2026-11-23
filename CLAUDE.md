@@ -117,6 +117,7 @@ Al crear una app nueva `<app>/`:
 | 🔤 Logo Orto | `logoorto/` | `logoorto_` |
 | 🅾️ Ortologo (logo de Ortografía10) | `ortologo/` | `ortologo_` |
 | ⚡ Power | `power/` | `power_` |
+| 🧠 GIA | `gia/` (rutina horaria: `gia/RUTINA.md`) | `gia_` |
 
 (Actualiza esta tabla al añadir una app nueva.)
 
