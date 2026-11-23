@@ -16,14 +16,14 @@
       color-scheme: light dark;
       --bg: #f2f2f7; --surface: #fff; --surface-2: #e9e9f2; --text: #171a2b; --text-2: #5d6178;
       --line: #dcdce8; --accent: #2f3a8f; --accent-2: #dfe2ff; --ok: #138a52; --ko: #cc3b3b; --warn: #c98a0b;
-      --stage: #c9c9f6; --btn-a: #2a4a8c; --btn-b: #0d2a63; --card: #fff; --glyph: #1d3f72;
+      --stage: #dde2ec; --btn-a: #3d5a80; --btn-b: #263c5c; --card: #fff; --glyph: #1d3f72;
       --safe-top: env(safe-area-inset-top, 0px); --safe-bottom: env(safe-area-inset-bottom, 0px);
     }
     @media (prefers-color-scheme: dark) {
       :root {
         --bg: #0f1020; --surface: #1a1b30; --surface-2: #25274a; --text: #eceefa; --text-2: #9ea2c0;
         --line: #2c2f55; --accent: #9aa6ff; --accent-2: #2b3170; --ok: #3fcf8a; --ko: #ff7b7b; --warn: #f2b938;
-        --stage: #2b2d63; --btn-a: #3a5fae; --btn-b: #1a3a7c; --card: #f4f4fb; --glyph: #1d3f72;
+        --stage: #262b3d; --btn-a: #4a6a96; --btn-b: #2c4466; --card: #f4f4fb; --glyph: #1d3f72;
       }
     }
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -66,7 +66,7 @@
     ul.tips { padding-left: 18px; margin: 6px 0; } ul.tips li { margin: 4px 0; line-height: 1.4; }
     label.chk { display: flex; gap: 8px; align-items: center; font-size: 14px; margin: 8px 0; }
 
-    /* ---- Escenario de examen (imita la pantalla de Thomas) ---- */
+    /* ---- Escenario de práctica ---- */
     #juego { position: fixed; inset: 0; background: var(--bg); z-index: 10; display: flex; flex-direction: column; }
     .topbar { display: flex; align-items: center; gap: 10px; padding: calc(8px + var(--safe-top)) 14px 8px; }
     .topbar .t { font-weight: 700; }
@@ -80,7 +80,7 @@
     .stage.flash-ko { box-shadow: 0 0 0 4px var(--ko); }
     .stmt { background: #fff; color: #1b4f86; border-radius: 6px; padding: 26px 18px; width: min(440px, 100%); text-align: center; font-weight: 700; font-size: 19px; }
     .gbtns { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
-    .gbtn { background: linear-gradient(#3b5a9c, var(--btn-b)); color: #fff; border-radius: 3px; min-width: 64px; padding: 14px 18px;
+    .gbtn { background: var(--btn-a); color: #fff; border-radius: 3px; min-width: 64px; padding: 14px 18px;
       font-size: 22px; text-align: center; font-weight: 500; box-shadow: 0 1px 2px rgba(0,0,0,.3); }
     .gbtn:active { filter: brightness(1.25); }
     .gbtn:disabled { pointer-events: none; opacity: .75; }
@@ -140,41 +140,46 @@
   // puede recalibrarlas.
   // ===================================================================
   const TAREAS = {
-    razonamiento: { nombre: "Razonamiento", emoji: "🧩", dur: 180, pen: 1,
-      curva: [[0, 1], [15, 4], [25, 15], [33, 35], [40, 55], [46, 76], [52, 93], [58, 99]],
+    razonamiento: { nombre: "Razonamiento", emoji: "🧩", dur: 300, pen: 1, obj: 44, seg: 6,
+      curva: [[0, 1], [20, 5], [30, 18], [38, 44], [44, 80], [51, 93], [58, 99]],
       instr: "Verás una frase que compara a dos personas. Léela, pulsa la pantalla y la frase desaparecerá: aparecerá una pregunta y dos nombres. Pulsa el nombre correcto.",
       tips: ["Mientras lees, quédate con UN dato: quién tiene MÁS del adjetivo de la frase.",
         "«A es menos fuerte que B» y «A no es tan fuerte como B» → el fuerte es B.",
         "Si preguntan por el contrario (débil), es el otro. Cuidado con «¿quién es MENOS…?».",
         "Los nombres de los botones no salen en el orden de la frase.",
         "Un fallo resta un acierto: medio segundo para fijar el dato compensa."] },
-    perceptiva: { nombre: "Velocidad perceptiva", emoji: "🔤", dur: 180, pen: 0.25,
-      curva: [[0, 1], [20, 3], [30, 7], [37, 12], [42, 24], [50, 42], [58, 60], [66, 77], [74, 90], [84, 98]],
+    perceptiva: { nombre: "Velocidad perceptiva", emoji: "🔤", dur: 120, pen: 0.25, obj: 46, seg: 2.2,
+      curva: [[0, 1], [25, 3], [35.75, 13], [39, 24], [43.5, 54], [48, 72], [54, 88], [60, 96]],
       instr: "Cuatro columnas con una letra arriba y otra abajo (una fila en mayúsculas, otra en minúsculas). Cuenta en cuántas columnas es la MISMA letra y pulsa el número (0 a 4).",
       tips: ["Recorre siempre igual: de izquierda a derecha, columna a columna.",
         "Si casi todas coinciden, cuenta las que NO y resta de 4.",
         "Ojo con b/d/p/q, i/l/j, m/n, u/v, h/n.",
         "Deja el ratón sobre la fila de botones."] },
-    numerica: { nombre: "Velocidad numérica", emoji: "🔢", dur: 120, pen: 0.5,
-      curva: [[0, 1], [6, 8], [9, 18], [12, 34], [16, 57], [20, 75], [24, 88], [28, 96], [32, 99]],
+    numerica: { nombre: "Velocidad numérica", emoji: "🔢", dur: 120, pen: 0.5, obj: 16, seg: 6.5,
+      curva: [[0, 1], [6, 8], [9, 20], [12, 40], [15.5, 57], [19, 85], [23, 96], [27, 99]],
       instr: "Tres números. Localiza el mayor y el menor y pulsa el que esté MÁS LEJOS del número que queda (el del medio por valor).",
       tips: ["La respuesta es siempre el mayor o el menor, nunca el del medio.",
         "Ordénalos de cabeza, calcula los dos huecos y pulsa el extremo del hueco grande.",
         "12, 3, 5 → 3·5·12, huecos 2 y 7 → 12."] },
-    palabras: { nombre: "Significado de palabras", emoji: "📖", dur: 120, pen: 0.5,
-      curva: [[0, 1], [10, 6], [16, 18], [22, 38], [28, 60], [34, 84], [39, 97], [44, 99]],
+    palabras: { nombre: "Significado de palabras", emoji: "📖", dur: 180, pen: 0.5, obj: 32, seg: 4.5,
+      curva: [[0, 1], [15, 8], [22, 25], [28, 52], [34, 84], [37, 96], [41, 99]],
       instr: "Tres palabras: dos están relacionadas (sinónimos, contrarios o de la misma familia) y una sobra. Pulsa la que sobra.",
       tips: ["Los contrarios cuentan como relacionados: «arriba / abajo / calle» → calle.",
         "No busques matices: la intrusa suele ser de otro campo por completo.",
         "Primera impresión y clic."] },
-    espacial: { nombre: "Visualización espacial", emoji: "🔄", dur: 150, pen: 0.5,
-      curva: [[0, 1], [4, 8], [7, 22], [10, 43], [13, 73], [16, 88], [19, 96], [22, 99]],
+    espacial: { nombre: "Visualización espacial", emoji: "🔄", dur: 120, pen: 0.5, obj: 12, seg: 7.5,
+      curva: [[0, 1], [4, 5], [6.5, 15], [9, 34], [12, 72], [15, 88], [18, 96]],
       instr: "Dos tarjetas, cada una con dos R giradas. Cuenta en cuántas tarjetas el símbolo de abajo es el MISMO que el de arriba (girado), no su imagen en espejo. Pulsa 0, 1 o 2.",
       tips: ["Clasifica cada R como «normal» o «espejo»: recorre el palo recto desde el pie hasta la cabeza; si la barriga queda a tu DERECHA es normal, a tu izquierda es espejo.",
         "La tarjeta cuenta si los dos son del mismo tipo (normal-normal o espejo-espejo).",
         "Compara solo en vertical, nunca entre tarjetas."] },
   };
   const ORDEN = ["razonamiento", "perceptiva", "numerica", "palabras", "espacial"];
+  // Ajustes del usuario (duraciones configurables y reloj visible). El percentil
+  // siempre se calcula escalando a la duración de referencia (TAREAS[t].dur).
+  const AJ_DEF = { reloj: true, dur: {} };
+  const ajustes = () => { try { return { ...AJ_DEF, ...(JSON.parse(localStorage.getItem("gia_ajustes")) || {}) }; } catch (e) { return { ...AJ_DEF }; } };
+  const durDe = (t) => Number(ajustes().dur[t]) || TAREAS[t].dur;
 
   function percentil(tarea, netaNorm) {
     const c = TAREAS[tarea].curva;
@@ -253,28 +258,30 @@
     const upTop = Math.random() < 0.5;
     const a = top.map((c) => (upTop ? c.toUpperCase() : c)), b = bot.map((c) => (upTop ? c : c.toUpperCase()));
     const conf = top.some((l, i) => !pos.includes(i) && CONF[l] && CONF[l].includes(bot[i]));
-    return { s: `n${k}`, conf, q: `${a.join("")}/${b.join("")}`, arriba: a, abajo: b,
+    const x = top.map((l, i) => (pos.includes(i) ? null : `${l}/${bot[i]}`)).filter(Boolean).join(",");
+    return { s: `n${k}`, conf, x, q: `${a.join("")}/${b.join("")}`, arriba: a, abajo: b,
       opciones: [0, 1, 2, 3, 4].map((v) => ({ v, label: String(v) })), correcta: k,
       expl: `Coinciden ${k}: ${a.map((c, i) => (pos.includes(i) ? `${c}${b[i]}✓` : `${c}${b[i]}✗`)).join(" ")}` };
   }
 
   function genNumerica(params) {
+    // Menor entre 1 y 40, dos huecos distintos entre 1 y 12, sin empates.
     const [lo, hi] = params.rango || [1, 40];
+    const maxH = params.maxHueco || 12;
     for (;;) {
-      const ns = shuffle(Array.from({ length: hi - lo + 1 }, (_, i) => i + lo)).slice(0, 3);
-      const [a, m, z] = ns.slice().sort((p, q) => p - q);
-      const g1 = m - a, g2 = z - m;
+      const a = lo + rnd(hi - lo + 1), g1 = 1 + rnd(maxH), g2 = 1 + rnd(maxH);
       if (g1 === g2) continue;
+      const m = a + g1, z = m + g2;
+      const ns = shuffle([a, m, z]);
       const resp = g2 > g1 ? z : a;
       const dif = Math.abs(g1 - g2);
-      const cerca = dif <= 2 ? "cerca" : "claro";
-      return { s: `${resp === z ? "mayor" : "menor"}-${cerca}`, q: ns.join(" "), nums: ns,
+      return { s: `${resp === z ? "mayor" : "menor"}-d${dif >= 3 ? 3 : dif}`, x: `huecos ${Math.min(g1, g2)}/${Math.max(g1, g2)}`, q: ns.join(" "), nums: ns,
         opciones: ns.map((v) => ({ v, label: String(v) })), correcta: resp,
         expl: `Orden ${a}·${m}·${z}. Huecos: ${a}→${m} = ${g1}, ${m}→${z} = ${g2}. Más lejos: ${resp}.` };
     }
   }
 
-  let BANCO = (window.GIA_PALABRAS || []).map(([a, b, intruso, relacion]) => ({ a, b, intruso, relacion }));
+  let BANCO = (window.GIA_PALABRAS || []).map(([a, b, intruso, relacion, nivel]) => ({ a, b, intruso, relacion, nivel: nivel || 1 }));
   const usadas = new Set();
   function genPalabras() {
     let w;
@@ -282,7 +289,7 @@
     usadas.add(w.intruso + w.a);
     if (usadas.size > BANCO.length * 0.8) usadas.clear();
     const rel = { sin: "significan lo mismo", ant: "son contrarios", fam: "son de la misma familia" }[w.relacion] || "están relacionadas";
-    return { s: w.relacion, q: `${w.a} · ${w.b} · ${w.intruso}`, palabra: w.intruso,
+    return { s: w.relacion, x: `nivel ${w.nivel || 1}`, q: `${w.a} · ${w.b} · ${w.intruso}`, palabra: w.intruso,
       opciones: shuffle([w.a, w.b, w.intruso]).map((v) => ({ v, label: v })), correcta: w.intruso,
       expl: `«${w.a}» y «${w.b}» ${rel}; sobra «${w.intruso}».` };
   }
@@ -293,13 +300,14 @@
       const same = Math.random() < 0.5;
       const m2 = same ? m1 : !m1;
       let r2 = pick([0, 90, 180, 270]);
-      if (r2 === r1 && Math.random() < 0.7) r2 = (r1 + pick([90, 180, 270])) % 360;
+      if (r2 === r1) r2 = (r1 + pick([90, 180, 270])) % 360;
       return { top: { m: m1, r: r1 }, bot: { m: m2, r: r2 }, same };
     });
     const k = cards.filter((c) => c.same).length;
     const espejos = cards.some((c) => c.same && c.top.m);
     const tipo = (g) => (g.m ? "espejo" : "normal");
-    return { s: `n${k}${espejos ? "-ee" : ""}`, q: cards.map((c) => `${tipo(c.top)}${c.top.r}/${tipo(c.bot)}${c.bot.r}`).join(" | "), cards,
+    const x = cards.map((c) => `${tipo(c.top)}-${tipo(c.bot)} ${(c.bot.r - c.top.r + 360) % 360}°`).join(", ");
+    return { s: `n${k}${espejos ? "-ee" : ""}`, x, q: cards.map((c) => `${tipo(c.top)}${c.top.r}/${tipo(c.bot)}${c.bot.r}`).join(" | "), cards,
       opciones: [0, 1, 2].map((v) => ({ v, label: String(v) })), correcta: k,
       expl: cards.map((c, i) => `Tarjeta ${i + 1}: ${tipo(c.top)} / ${tipo(c.bot)} → ${c.same ? "igual" : "distinta"}`).join(" · ") };
   }
@@ -320,8 +328,9 @@
     "mas-mismo": "«A es más X que B», preguntan X", "mas-contrario": "«A es más X que B», preguntan el contrario",
     "menos-mismo": "«A es menos X que B», preguntan X", "menos-contrario": "«A es menos X que B», preguntan el contrario",
     "notan-mismo": "«A no es tan X como B», preguntan X", "notan-contrario": "«A no es tan X como B», preguntan el contrario",
-    "mayor-cerca": "Gana el mayor, huecos parecidos", "menor-cerca": "Gana el menor, huecos parecidos",
-    "mayor-claro": "Gana el mayor, huecos claros", "menor-claro": "Gana el menor, huecos claros",
+    "mayor-d1": "Gana el mayor, huecos que difieren en 1", "menor-d1": "Gana el menor, huecos que difieren en 1",
+    "mayor-d2": "Gana el mayor, huecos que difieren en 2", "menor-d2": "Gana el menor, huecos que difieren en 2",
+    "mayor-d3": "Gana el mayor, huecos claros (3+)", "menor-d3": "Gana el menor, huecos claros (3+)",
     sin: "Sinónimos", ant: "Contrarios", fam: "Misma familia",
   };
   function etiqueta(tarea, s) {
@@ -368,7 +377,7 @@
       const [ses, plan, pal] = await Promise.all([
         sb("gia_sesiones?select=*&order=created_at.desc&limit=400"),
         sb("gia_plan?select=*&order=created_at.desc&limit=1"),
-        sb("gia_palabras?select=a,b,intruso,relacion&activo=eq.true&limit=5000"),
+        sb("gia_palabras?select=a,b,intruso,relacion,nivel&activo=eq.true&limit=5000"),
       ]);
       SESIONES = ses || []; PLAN = (plan && plan[0]) || null;
       if (pal && pal.length > 50) BANCO = pal;
@@ -406,6 +415,26 @@
     return Object.values(agg).filter((a) => a.n >= 4 && a.ko > 0).map((a) => ({ ...a, tasa: a.ko / a.n }))
       .sort((a, b) => b.tasa - a.tasa).slice(0, n);
   }
+  // Fallos concretos de las últimas sesiones: parejas de letras, giros, tríos de palabras.
+  function fallosConcretos() {
+    const cuenta = (arr) => Object.entries(arr.reduce((m, k) => ((m[k] = (m[k] || 0) + 1), m), {})).sort((a, b) => b[1] - a[1]);
+    const pares = [], giros = [], pal = [], num = [];
+    for (const s of SESIONES.slice(0, 60)) for (const it of s.detalle || []) {
+      if (it.ok || !it.x) continue;
+      if (s.tarea === "perceptiva") it.x.split(",").forEach((p) => pares.push(p));
+      if (s.tarea === "espacial") it.x.split(", ").forEach((g) => giros.push(g));
+      if (s.tarea === "palabras") pal.push(`${it.q} (pusiste «${it.r}»)`);
+      if (s.tarea === "numerica") num.push(it.x);
+    }
+    if (!pares.length && !giros.length && !pal.length && !num.length) return "";
+    const lista = (t, xs, n = 8) => xs.length ? `<h3>${t}</h3><div class="muted">${xs.slice(0, n).map(([k, c]) => `${esc(k)} ×${c}`).join(" · ")}</div>` : "";
+    return `<h2>Fallos concretos</h2><div class="card">
+      ${lista("🔤 Parejas no coincidentes en preguntas falladas", cuenta(pares))}
+      ${lista("🔢 Huecos en preguntas falladas", cuenta(num))}
+      ${lista("🔄 Combinaciones de tarjetas (tipo arriba-abajo, giro) en preguntas falladas", cuenta(giros))}
+      ${pal.length ? `<h3>📖 Tríos fallados</h3><ul class="tips">${[...new Set(pal)].slice(0, 15).map((x) => `<li>${esc(x)}</li>`).join("")}</ul>` : ""}
+    </div>`;
+  }
   function hace(ts) {
     const min = Math.round((Date.now() - Date.parse(ts)) / 60000);
     if (min < 2) return "hace un momento"; if (min < 60) return `hace ${min} min`;
@@ -424,7 +453,7 @@
     const nivel = plan ? plan.nivel : "sin datos";
     const planTxt = plan && plan.plan && plan.plan.orden ? plan.plan.orden.map((t) => TAREAS[t]?.emoji || "").join(" ") : "";
     $app.innerHTML = `
-      <h1>🧠 Entrenador GIA <span class="muted" style="margin-left:auto">Thomas · Canonical</span></h1>
+      <h1>🧠 Entrenador GIA <span class="muted" style="margin-left:auto">práctica no oficial</span></h1>
       <div class="card hero">
         <div class="muted">Veredicto del entrenador ${plan ? `· ${hace(plan.created_at)}` : ""}</div>
         <b class="big">${plan?.listo ? "✅ Listo para examinarte" : nivel === "casi" ? "🟡 Casi listo" : nivel === "sin datos" ? "Sin datos aún" : "⏳ Aún no"}</b>
@@ -436,7 +465,7 @@
       </div>
       <button class="big primary" id="b-plan">🎯 Entrenamiento recomendado ${planTxt}
         <small>${esc(plan?.plan?.nota || "El que te prepara la rutina horaria según tus fallos")}</small></button>
-      <button class="big" id="b-sim">⏱️ Simulacro completo <small>Las 5 tareas seguidas con tiempos reales (≈13 min + ejemplos), sin ver aciertos</small></button>
+      <button class="big" id="b-sim">⏱️ Simulacro completo <small>Las 5 tareas en orden (5·2·2·3·2 min ≈ 14 min + ejemplos), sin ver aciertos</small></button>
       <h2>Practicar una tarea</h2>
       <div class="grid">${ORDEN.map((t) => { const e = estadoTarea(t); return `
         <button class="task-btn" data-t="${t}"><span class="e">${TAREAS[t].emoji}</span><b>${TAREAS[t].nombre}</b>
@@ -445,6 +474,7 @@
         <button id="b-prog">📈 Progreso</button>
         <button id="b-learn">🎓 Modo aprendizaje</button>
         <button id="b-guia">📋 Técnica y consejos</button>
+        <button id="b-aj">⚙️ Ajustes</button>
       </div>
       <div class="footer">build ${BUILD} · datos en Supabase (tablas gia_)</div>`;
     $app.querySelector("#b-sim").onclick = () => iniciarSecuencia("simulacro", ORDEN, null);
@@ -456,6 +486,7 @@
     $app.querySelector("#b-prog").onclick = pantallaProgreso;
     $app.querySelector("#b-learn").onclick = pantallaAprender;
     $app.querySelector("#b-guia").onclick = pantallaGuia;
+    $app.querySelector("#b-aj").onclick = pantallaAjustes;
     window.scrollTo(0, 0);
   }
 
@@ -465,7 +496,7 @@
       <h1>${T.emoji} ${T.nombre} <button class="link back" id="b-back">← Inicio</button></h1>
       <div class="card"><p style="margin-top:0">${esc(T.instr)}</p><ul class="tips">${T.tips.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>
       <div class="muted">Penalización estimada por fallo: −${T.pen}. ${e ? `Tu nivel actual: percentil ≈ ${e.p}.` : ""}</div></div>
-      <button class="big primary" data-d="${T.dur}">Ronda real · ${fmt(T.dur)} <small>Duración estimada del examen; cuenta para el percentil</small></button>
+      <button class="big primary" data-d="${durDe(t)}">Ronda real · ${fmt(durDe(t))} <small>Duración estimada del examen; objetivo ≥ ${T.obj} puntos ajustados (~${T.seg} s por pregunta)</small></button>
       <button class="big" data-d="60">Ronda rápida · 1:00 <small>Calentamiento (también se mide, escalado)</small></button>
       <label class="chk"><input type="checkbox" id="c-ej" checked /> Hacer antes los 8 ejemplos (como en el examen)</label>
       <label class="chk"><input type="checkbox" id="c-fb" /> Ver si acierto en cada pregunta (el examen real NO lo muestra)</label>`;
@@ -493,11 +524,42 @@
         <li>5 tareas cronometradas (2–5 min cada una), 8 ejemplos de práctica antes de cada una. Total 30–45 min con instrucciones.</li>
         <li>Hazlo en <b>español</b>, con <b>ratón</b> (no touchpad), sin interrupciones y descansado.</li>
         <li>Los fallos restan (no oficial): no adivines a ciegas, pero no te atasques: si dudas 2 s, tu mejor opción y siguiente.</li>
-        <li>Thomas da percentiles: 66–85 «por encima de la media», 86+ «alto». Canonical busca candidatos por encima de la media.</li>
+        <li>Puntuación ajustada = aciertos − fallos / (opciones − 1): razonamiento −1, perceptiva −0,25, el resto −0,5. Las no contestadas no restan.</li>
+        <li>Percentiles: 66–85 «por encima de la media», 86+ «alto». Canonical busca candidatos por encima de la media.</li>
+        <li>No hay número fijo de preguntas: salen hasta que se acaba el tiempo. No hay botón de atrás.</li>
       </ul></div>
       ${ORDEN.map((t) => `<div class="card"><b>${TAREAS[t].emoji} ${TAREAS[t].nombre}</b> <span class="muted">· ≈${fmt(TAREAS[t].dur)} · fallo −${TAREAS[t].pen}</span>
         <ul class="tips">${TAREAS[t].tips.map((x) => `<li>${esc(x)}</li>`).join("")}</ul></div>`).join("")}
-      <p class="muted">Los tiempos por tarea y los percentiles de esta app son estimaciones: Thomas no los publica. Se calibran con los informes de ejemplo de Thomas y guías de preparación.</p>`;
+      <div class="card"><b>Lo que cuentan otros candidatos</b><ul class="tips">
+        <li>La espacial es la que más gente cita como difícil. Una candidata pasó en una semana de no terminarla a hacerla sin fallos.</li>
+        <li>Su error más frecuente: pulsar demasiado rápido. En razonamiento memorizaba un solo nombre.</li>
+        <li>Le fue mejor a media mañana, en una habitación silenciosa y sin comer justo antes.</li>
+      </ul></div>
+      <p class="muted">Práctica no oficial. Los tiempos por tarea y los percentiles de esta app son estimaciones: Thomas no los publica. Se calibran con los informes de ejemplo de Thomas y guías de preparación.</p>`;
+    $app.querySelector("#b-back").onclick = pantallaInicio;
+  }
+
+  function pantallaAjustes() {
+    const a = ajustes();
+    $app.innerHTML = `
+      <h1>⚙️ Ajustes <button class="link back" id="b-back">← Inicio</button></h1>
+      <div class="card">
+        <label class="chk"><input type="checkbox" id="a-reloj" ${a.reloj ? "checked" : ""}/> Ver el reloj durante las rondas</label>
+        <div class="muted">No se sabe si el examen real muestra el reloj: entrena también con él oculto.</div>
+      </div>
+      <div class="card"><b>Duración de cada tarea (minutos)</b>
+        <div class="muted" style="margin-bottom:8px">Por defecto 5 · 2 · 2 · 3 · 2, la cifra más repetida en las guías (Thomas no la publica). El percentil se escala siempre a esa referencia.</div>
+        ${ORDEN.map((t) => `<label class="chk">${TAREAS[t].emoji} <span style="min-width:190px">${TAREAS[t].nombre}</span>
+          <input type="number" min="0.5" max="10" step="0.5" data-t="${t}" value="${durDe(t) / 60}" style="width:70px;font:inherit;padding:4px"/></label>`).join("")}
+        <button class="link" id="a-reset">Restablecer 5·2·2·3·2</button>
+      </div>`;
+    const guardar = () => {
+      const dur = {};
+      $app.querySelectorAll("input[data-t]").forEach((i) => { const v = Math.round(Number(i.value) * 60); if (v >= 30 && v !== TAREAS[i.dataset.t].dur) dur[i.dataset.t] = v; });
+      try { localStorage.setItem("gia_ajustes", JSON.stringify({ reloj: $app.querySelector("#a-reloj").checked, dur })); } catch (e) {}
+    };
+    $app.querySelectorAll("input").forEach((i) => (i.onchange = guardar));
+    $app.querySelector("#a-reset").onclick = () => { $app.querySelectorAll("input[data-t]").forEach((i) => (i.value = TAREAS[i.dataset.t].dur / 60)); guardar(); };
     $app.querySelector("#b-back").onclick = pantallaInicio;
   }
 
@@ -545,6 +607,7 @@
       <div class="card">${deb.length ? `<table><tr><th>Tarea</th><th>Tipo de pregunta</th><th>Fallos</th></tr>
         ${deb.map((d) => `<tr><td>${TAREAS[d.tarea].emoji}</td><td>${esc(etiqueta(d.tarea, d.s))}</td><td class="num">${d.ko}/${d.n} (${Math.round(d.tasa * 100)} %)</td></tr>`).join("")}</table>`
         : `<div class="muted">Aún no hay fallos suficientes para detectar patrones.</div>`}</div>
+      ${fallosConcretos()}
       <h2>Historial</h2>
       <div class="card"><table><tr><th>Cuándo</th><th>Tarea</th><th>Modo</th><th>Bien/mal</th><th>P</th></tr>
         ${ses.slice(0, 60).map((s) => `<tr><td>${hace(s.created_at)}</td><td>${TAREAS[s.tarea]?.emoji || ""} ${TAREAS[s.tarea]?.nombre || s.tarea}</td><td>${s.modo}</td>
@@ -559,7 +622,7 @@
   function iniciarSecuencia(modo, tareas, plan) {
     const pasos = tareas.map((t) => ({
       tarea: t, modo,
-      dur: modo === "simulacro" ? TAREAS[t].dur : (plan?.duraciones?.[t] || plan?.duracion_s || TAREAS[t].dur),
+      dur: modo === "simulacro" ? durDe(t) : (plan?.duraciones?.[t] || plan?.duracion_s || durDe(t)),
       ejemplos: modo === "simulacro", feedback: modo === "plan" ? !!plan?.feedback : false,
       foco: plan?.foco?.[t] || null, params: plan?.params?.[t] || null,
     }));
@@ -622,10 +685,11 @@
   function jugar(p) {
     return new Promise((resolve) => {
       const T = TAREAS[p.tarea];
-      JUEGO = { p, resolve, items: [], t0: performance.now(), tItem: 0, timer: null, done: false, cur: null };
+      JUEGO = { p, resolve, items: [], vistos: new Set(), t0: performance.now(), tItem: 0, timer: null, done: false, cur: null };
       document.getElementById("j-titulo").textContent = `${T.emoji} ${p.practica ? "Ejemplos" : T.nombre}`;
       $j.classList.remove("hidden");
       const bar = document.getElementById("j-bar"), clock = document.getElementById("j-clock");
+      document.querySelector(".timer").style.visibility = clock.style.visibility = p.dur && !ajustes().reloj ? "hidden" : "visible";
       if (p.dur) {
         JUEGO.timer = setInterval(() => {
           const el = (performance.now() - JUEGO.t0) / 1000, rest = p.dur - el;
@@ -644,7 +708,9 @@
     const p = J.p;
     if (p.maxItems && J.items.length >= p.maxItems) return terminarJuego(false);
     if (!p.dur && p.maxItems) document.getElementById("j-clock").textContent = `${J.items.length + 1}/${p.maxItems}`;
-    const it = generar(p.tarea, p.foco, p.params);
+    let it;
+    for (let t = 0; t < 12; t++) { it = generar(p.tarea, p.foco, p.params); if (!J.vistos.has(it.q)) break; }
+    J.vistos.add(it.q);
     J.cur = it; J.tItem = performance.now();
     $stage.className = "stage";
     const ribbon = p.practica ? `<div class="ribbon">EJEMPLO ${J.items.length + 1} de ${p.maxItems}</div>` : "";
@@ -684,7 +750,7 @@
     const J = JUEGO; if (!J || J.done || J.cur !== it) return;
     const ok = v === it.correcta;
     const ms = Math.round(performance.now() - J.tItem);
-    J.items.push({ s: it.s, ok, ms, q: it.q, r: String(v), c: String(it.correcta), expl: it.expl });
+    J.items.push({ s: it.s, x: it.x, ok, ms, q: it.q, r: String(v), c: String(it.correcta), expl: it.expl });
     J.cur = null;
     if (J.p.feedback) {
       $stage.classList.add(ok ? "flash-ok" : "flash-ko");
@@ -718,7 +784,7 @@
       intentadas: J.items.length, correctas, fallos, neta, neta_norm: Math.round(netaNorm * 10) / 10,
       percentil: p.modo === "aprendizaje" || p.practica ? 0 : percentil(p.tarea, netaNorm),
       ms_medio: J.items.length ? Math.round(msResp / J.items.length) : null,
-      detalle: J.items.map(({ s, ok, ms, q, r, c }) => ({ s, ok, ms, q, r, c })),
+      detalle: J.items.map(({ s, x, ok, ms, q, r, c }) => ({ s, x, ok, ms, q, r, c })),
       version: BUILD, _items: J.items,
     });
   }
@@ -731,7 +797,8 @@
       ${rs.map((r) => { const T = TAREAS[r.tarea]; const errs = r._items.filter((x) => !x.ok); const apr = r.modo === "aprendizaje";
         return `<div class="card"><div class="row"><b>${T.emoji} ${T.nombre}</b><span class="spacer"></span>
           ${apr ? "" : `<span class="pill ${banda(r.percentil)[1]}">P${r.percentil} · ${banda(r.percentil)[0]}</span>`}</div>
-          <p class="num" style="margin:8px 0">✓ ${r.correctas} · ✗ ${r.fallos} · neta ${r.neta} ${apr ? "" : `· ritmo ${(r.intentadas / (r.usado_s / 60)).toFixed(1)}/min`} · ${r.ms_medio ? (r.ms_medio / 1000).toFixed(1) + " s/pregunta" : ""}</p>
+          <p class="num" style="margin:8px 0">Hechas ${r.intentadas} · ✓ ${r.correctas} · ✗ ${r.fallos} · <b>ajustada ${r.neta}</b>${!apr && r.duracion_s !== T.dur ? ` (≈${r.neta_norm} a ${fmt(T.dur)})` : ""} · ${r.ms_medio ? (r.ms_medio / 1000).toFixed(1) + " s/pregunta" : ""}</p>
+          ${apr ? "" : `<div class="muted">Objetivo «por encima de la media»: ajustada ≥ ${T.obj} en ${fmt(T.dur)} (~${T.seg} s por pregunta) ${r.neta_norm >= T.obj ? "✅" : `→ te faltan ${Math.ceil(T.obj - r.neta_norm)}`}</div>`}
           ${consejo(r)}
           ${errs.length ? `<details><summary>Ver ${errs.length} fallo${errs.length > 1 ? "s" : ""}</summary><ul class="tips">${errs.map((x) => `<li>${esc(x.q)} — pusiste <b>${esc(x.r)}</b>. ${esc(x.expl)}</li>`).join("")}</ul></details>` : ""}
         </div>`; }).join("")}
