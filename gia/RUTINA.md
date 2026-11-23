@@ -6,6 +6,11 @@ de Claude Code. Su trabajo: mirar cómo va Francisco con la app
 entrenamiento, decirle si ya está listo para el examen Thomas GIA de
 Canonical y, si hace falta, mejorar la app. Todo en **español**.
 
+Referencia del formato del test y de la calibración: `gia/SPEC.md`
+(especificación con fuentes: duraciones 5/2/2/3/2 min, fórmula de la
+puntuación ajustada, 4 informes de ejemplo y objetivos por tarea). Ya no hay
+fecha de examen fija: Francisco se examinará cuando tú le digas que está listo.
+
 Reglas duras:
 - Solo tocas la carpeta `gia/` y las tablas `gia_*`. Nunca otras apps ni tablas.
 - **Nunca borres** filas de `gia_sesiones` (es el historial del usuario).
@@ -53,8 +58,17 @@ Calcula, ignorando `modo = 'aprendizaje'` para los percentiles:
 - Días distintos con práctica y minutos totales.
 
 Subtipos: razonamiento `mas|menos|notan` + `-mismo|-contrario` + opcional
-`-qmenos`; numérica `mayor|menor` + `-cerca|-claro`; palabras `sin|ant|fam`;
-perceptiva `n0..n4`; espacial `n0..n2` (+ `-ee` si hay pareja espejo-espejo).
+`-qmenos`; numérica `mayor|menor` + `-d1|-d2|-d3` (diferencia entre huecos; d1 es
+lo más difícil); palabras `sin|ant|fam`; perceptiva `n0..n4`; espacial `n0..n2`
+(+ `-ee` si hay pareja espejo-espejo). Además cada pregunta guarda `x` con el
+detalle: perceptiva = parejas no coincidentes (`b/d,q/o`), numérica = huecos,
+espacial = tipo arriba-abajo y giro relativo por tarjeta, palabras = nivel (1
+común, 2 culto, 3 intrusa del mismo campo).
+
+La **puntuación ajustada** (`neta`) = aciertos − fallos/(opciones−1) y
+`neta_norm` es esa cifra escalada a la duración de referencia (5/2/2/3/2 min).
+Objetivos «por encima de la media» (percentil 66+), de SPEC.md §4:
+razonamiento ≥ 44, perceptiva ≥ 46, numérica ≥ 16, palabras ≥ 32, espacial ≥ 12.
 
 ## 4. Plan y veredicto (inserta UNA fila en `gia_plan`)
 
@@ -66,7 +80,7 @@ y que los percentiles son estimaciones) y `plan` (jsonb):
 ```json
 {
   "orden": ["espacial", "numerica", "razonamiento"],
-  "duraciones": {"espacial": 150, "numerica": 120, "razonamiento": 180},
+  "duraciones": {"espacial": 120, "numerica": 120, "razonamiento": 300},
   "foco": {"razonamiento": {"notan-contrario": 3, "menos-contrario": 2}},
   "params": {"numerica": {"rango": [1, 60]}, "perceptiva": {"confusables": 0.7}},
   "feedback": false,
@@ -77,14 +91,15 @@ y que los percentiles son estimaciones) y `plan` (jsonb):
 - `orden`: 2–4 tareas, las más flojas primero (si todo va parejo, las 5 = un simulacro sin ejemplos).
 - `foco[tarea][subtipo]` = peso relativo (1 por defecto; 2–4 para lo que falla).
   Se aplica también por prefijo (`"notan": 3` cubre `notan-*`).
-- `params`: numérica `rango` (por defecto [1,40]; súbelo si la precisión > 95 %),
+- `params`: numérica `rango` del número menor (por defecto [1,40]) y `maxHueco` (por defecto 12),
   perceptiva `confusables` (0–1, por defecto 0.5), razonamiento `qMenos` (0–1, por defecto 0.25).
 - `feedback`: `true` solo si la precisión de alguna tarea del plan es < 85 % (para aprender); si no, `false` (como el examen).
 
 **Criterio de «listo»** (`listo = true`, `nivel = 'listo'`), todos a la vez:
 1. Al menos 3 simulacros completos, en al menos 2 días distintos.
 2. Los 2 últimos simulacros con percentil global estimado ≥ 70.
-3. Ninguna tarea por debajo de 50 en esos 2 simulacros.
+3. Ninguna tarea por debajo de 50 en esos 2 simulacros, y al menos 4 de las 5
+   tareas con `neta_norm` ≥ su objetivo (44 / 46 / 16 / 32 / 12) en el último.
 4. Precisión en el último simulacro ≥ 90 % en razonamiento y ≥ 85 % en el resto.
 
 `casi`: último simulacro ≥ 60 y falla como mucho uno de los puntos 2–4.
@@ -99,7 +114,8 @@ después, puede volver a `casi`.
 Ideas, por orden de prioridad:
 - **Banco de palabras**: si falla en palabras o lleva > 150 preguntas de palabras
   vistas, inserta 20–40 tríos nuevos en `gia_palabras` (`a`, `b`, `intruso`,
-  `relacion` = sin|ant|fam). Deben ser inequívocos: la intrusa sin relación con
+  `relacion` = sin|ant|fam, `nivel` = 1|2|3; ver SPEC.md §2.4: la meta es
+  más de 300 tríos activos, mitad sinónimos y mitad contrarios). Deben ser inequívocos: la intrusa sin relación con
   ninguna de las otras dos, sin antónimos «trampa». Desactiva (`activo=false`)
   tríos que resulten ambiguos al revisar sus fallos. Esto no necesita deploy.
 - **Calibración**: si hay muchos datos, ajusta con prudencia las curvas
