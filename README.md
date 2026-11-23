@@ -51,6 +51,7 @@ reglas para no interferir con las demás:
 | 🔊 Read Aloud | [`readaloud/`](./readaloud) | `/Train/readaloud/` | `readaloud_` |
 | 🔭 Observa | [`observa/`](./observa) (alumno: `/observa/alumno/`, padre: `/observa/padre/`) | `/Train/observa/` | `observa_` |
 | 🐷 Hucha | [`hucha/`](./hucha) | `/Train/hucha/` | `hucha_` |
+| 🧠 GIA | [`gia/`](./gia) | `/Train/gia/` | `gia_` |
 
 ## Añadir una app nueva
 
