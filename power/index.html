@@ -97,6 +97,7 @@
     .otrodia button { background: #fff; color: #000; border: 0; padding: 6px 10px; font-weight: 700; }
     .addbig { width: 100%; font-size: 1.1rem; padding: 14px; margin: 4px 0 12px; }
     .toast button { background: none; border: 0; color: #7fe0b0; font-weight: 800; padding: 0 0 0 12px; }
+    table.wk7 { font-size: 0.72rem; } table.wk7 td, table.wk7 th { padding: 5px 2px; }
     .toast { position: fixed; left: 50%; bottom: 90px; transform: translateX(-50%); background: #222; color: #fff; padding: 10px 16px; border-radius: 12px; font-size: .9rem; z-index: 9; display: none; }
     .build-id { text-align: center; font-size: 0.65rem; color: var(--muted); opacity: .6; margin-top: 20px; font-family: ui-monospace, monospace; }
     svg text { fill: var(--muted); font-size: 10px; }
@@ -278,6 +279,7 @@
 
   // ---------- datos ----------
   let feedback = [];
+  let semOff = 0; // 0 = esta semana, -1 = la pasada…
   let A = null, pesos = [], comidas = [], ejercicios = [], rutinas = [];
   let dia = iso(new Date());
   let momento = momentoActual();
@@ -407,33 +409,40 @@
       ${pend ? `<div class="pend small">⏳ ${pend} registro(s) pendientes de calcular por la rutina</div>` : ""}
       ${P.laborable < (A.sexo === "mujer" ? 1200 : 1500) ? `<div class="warn">⚠️ Con ${fmt(A.kcal_finde)} kcal el sábado y el domingo y sin ejercicio, para perder ${A.objetivo_kg_semana} kg/semana te quedan solo <b>${fmt(P.laborable)} kcal</b> de lunes a viernes. Es muy poco: el ejercicio que apuntes te da más margen (se suma al día), o baja un poco el finde.</div>` : ""}`;
 
-    // Semana
-    const lun = monday(hoy);
-    let filas = "", tC = 0, tE = 0, tP = 0;
+    // Semana (con ‹ › para ver semanas anteriores)
+    const lun = addDays(monday(hoy), 7 * semOff);
+    let filas = "", tR = 0, tC = 0, tE = 0, tD = 0, tPl = 0, tM = 0;
     for (let i = 0; i < 7; i++) {
       const f = addDays(lun, i);
-      const c = sumK(delDia(comidas, f)), e = sumK(delDia(ejercicios, f)), p = presupuestoDia(f) + e;
-      const fut = f > hoy;
-      if (!fut) { tC += c; tE += e; tP += p; }
-      const bal = p - c;
+      if (f < A.fecha_inicio) { filas += `<tr style="opacity:.35"><td>${DIAS[parse(f).getDay()]} ${parse(f).getDate()}</td><td colspan="6" style="text-align:center">antes de empezar</td></tr>`; continue; }
+      const c = sumK(delDia(comidas, f)), e = sumK(delDia(ejercicios, f)), pl = presupuestoDia(f);
+      const fut = f > hoy, def = P.tdee + e - c, mar = pl + e - c;
+      if (!fut) { tR += P.tdee; tC += c; tE += e; tD += def; tPl += pl; tM += mar; }
+      const col = (v) => `color:var(${v >= 0 ? "--green" : "--red"})`, sg = (v) => (v >= 0 ? "+" : "−") + fmt(Math.abs(v));
       filas += `<tr style="${f === hoy ? "font-weight:700" : ""}${fut ? ";opacity:.45" : ""}"><td>${DIAS[parse(f).getDay()]} ${parse(f).getDate()}</td>
-        <td>${fmt(presupuestoDia(f))}</td><td>${e ? "+" + fmt(e) : "·"}</td><td>${fut ? "" : fmt(c)}</td>
-        <td style="color:var(${bal >= 0 ? "--green" : "--red"})">${fut ? "" : (bal >= 0 ? "+" : "") + fmt(bal)}</td></tr>`;
+        <td>${fmt(P.tdee)}</td><td>${e ? "+" + fmt(e) : "·"}</td><td>${fut ? "" : fmt(c)}</td>
+        <td style="${fut ? "" : col(def)}">${fut ? "" : sg(def)}</td>
+        <td>${fmt(pl)}</td><td style="${fut ? "" : col(mar)}">${fut ? "" : sg(mar)}</td></tr>`;
     }
-    $("c-semana").innerHTML = `<h2>🗓️ Esta semana</h2>
-      <table class="wk"><tr><th></th><th>Plan</th><th>Ejerc.</th><th>Comido</th><th>Margen</th></tr>${filas}
-      <tr style="font-weight:700"><td>Total</td><td></td><td>${tE ? "+" + fmt(tE) : ""}</td><td>${fmt(tC)}</td><td style="color:var(${tP - tC >= 0 ? "--green" : "--red"})">${(tP - tC >= 0 ? "+" : "") + fmt(tP - tC)}</td></tr></table>
-      <div class="muted small" style="margin-top:6px">Plan: ${fmt(P.laborable)} kcal L–V y ${fmt(A.kcal_finde)} S–D. Margen positivo = vas mejor que el plan.</div>`;
+    const sg = (v) => (v >= 0 ? "+" : "−") + fmt(Math.abs(v)), col = (v) => `color:var(${v >= 0 ? "--green" : "--red"})`;
+    $("c-semana").innerHTML = `<div class="row"><h2 class="grow" style="margin:0">🗓️ ${semOff === 0 ? "Esta semana" : semOff === -1 ? "Semana pasada" : "Semana del " + parse(lun).getDate() + "/" + (parse(lun).getMonth() + 1)}</h2>
+      <button data-sem="-1" style="padding:4px 10px" ${addDays(lun, -1) < A.fecha_inicio ? "disabled" : ""}>‹</button><button data-sem="1" style="padding:4px 10px" ${semOff >= 0 ? "disabled" : ""}>›</button></div>
+      <table class="wk wk7" style="margin-top:8px"><tr><th></th><th>Reposo</th><th>Ejerc.</th><th>Comido</th><th>Déficit</th><th>Plan</th><th>vs plan</th></tr>${filas}
+      <tr style="font-weight:700"><td>Total</td><td>${fmt(tR)}</td><td>${tE ? "+" + fmt(tE) : ""}</td><td>${fmt(tC)}</td><td style="${col(tD)}">${sg(tD)}</td><td>${fmt(tPl)}</td><td style="${col(tM)}">${sg(tM)}</td></tr></table>
+      <div class="muted small" style="margin-top:6px"><b>Reposo</b>: lo que gastas sin deporte (vida diaria). <b>Déficit</b> = reposo + ejercicio − comido (≈ ${(tD / KCAL_KG).toFixed(2)} kg de grasa esta semana).
+      <b>Plan</b>: lo que te toca comer (${fmt(P.laborable)} L–V, ${fmt(A.kcal_finde)} S–D). <b>vs plan</b> = plan + ejercicio − comido: positivo = vas mejor que el plan.</div>`;
 
     // Gasto en reposo
     const kg = pesoActual(), b = bmr(kg);
     const ejSemana = sumK(ejercicios.filter((x) => x.fecha >= lun && x.fecha <= hoy));
-    $("c-gasto").innerHTML = `<h2>🔥 Lo que gastas</h2>
+    $("c-gasto").innerHTML = `<h2>🔥 Lo que gastas según la fórmula</h2>
       <table class="wk">
       <tr><td>Reposo absoluto (metabolismo basal)</td><td>${fmt(b)}/día</td><td><b>${fmt(b * 7)}</b>/sem</td></tr>
       <tr><td>Vida diaria sin deporte (×${A.factor_actividad})</td><td>${fmt(P.tdee)}/día</td><td><b>${fmt(P.semana)}</b>/sem</td></tr>
       <tr><td>Ejercicio apuntado esta semana</td><td></td><td><b>${fmt(ejSemana)}</b></td></tr></table>
-      <div class="muted small" style="margin-top:6px">Calculado con Mifflin-St Jeor para ${kg.toFixed(1)} kg, ${A.altura_cm} cm, ${A.edad} años (${A.sexo}). Cámbialo en ⚙️ Ajustes. 1 kg de grasa ≈ ${fmt(KCAL_KG)} kcal → para ${A.objetivo_kg_semana} kg/sem hace falta un déficit de ${fmt(P.deficitSemana)} kcal/sem.</div>`;
+      <div class="muted small" style="margin-top:6px"><b>Reposo absoluto</b>: lo que quemarías tumbado todo el día (corazón, cerebro, respiración…). Fórmula de Mifflin-St Jeor con ${kg.toFixed(1)} kg (media de tus 3 últimas pesadas), ${A.altura_cm} cm, ${A.edad} años, ${A.sexo}.
+      <b>Vida diaria sin deporte</b>: lo anterior × ${A.factor_actividad} (moverte por casa, trabajar, digerir). Es la columna <b>Reposo</b> de la tabla de la semana; el ejercicio va aparte.
+      Es una estimación de libro (±10 %): la cifra buena es la de <b>📏 Tu gasto real</b>, que sale de tus pesadas. Edad y altura se cambian en ⚙️ Ajustes. 1 kg de grasa ≈ ${fmt(KCAL_KG)} kcal → para ${A.objetivo_kg_semana} kg/sem hace falta un déficit de ${fmt(P.deficitSemana)} kcal/sem.</div>`;
 
     $("c-real").innerHTML = gastoRealHtml();
     const hoyL = delDia(comidas, hoy);
@@ -441,32 +450,49 @@
     renderGrafico();
   }
 
-  // Gasto real a partir de la báscula: lo que comes + lo que bajas × 7.700 = lo que gastas.
-  // Usa la tendencia (recta de regresión) de todas las pesadas, no un día suelto.
-  function gastoRealHtml() {
-    const hoy = iso(new Date()), ini = A.fecha_inicio;
-    const D = diffDays(hoy, ini); // días cerrados (hasta ayer)
-    const v = pesos.filter((x) => x.kg != null && x.fecha >= ini);
-    const head = `<h2>📏 Tu gasto real (según la báscula)</h2>`;
-    if (D < 1 || v.length < 2) return head + `<div class="muted small">Pésate cada día: en cuanto haya unos días de datos calculo cuánto gastas de verdad.</div>`;
+  // Gasto real a partir de la báscula, para los últimos 7, 14 y 31 días cerrados:
+  // lo que comes + lo que bajas (tendencia del peso) × 7.700 = lo que gastas de verdad.
+  // Restando el ejercicio apuntado sale tu gasto "en reposo" (vida diaria sin deporte) real.
+  function ventanaReal(N) {
+    const hoy = iso(new Date());
+    const fin = addDays(hoy, -1);
+    let ini = addDays(hoy, -N); if (ini < A.fecha_inicio) ini = A.fecha_inicio;
+    const D = diffDays(hoy, ini);
+    if (D < 3) return null;
+    const v = pesos.filter((x) => x.kg != null && x.fecha >= ini && x.fecha <= hoy);
+    if (v.length < 3) return null;
     const xs = v.map((p) => diffDays(p.fecha, ini)), ys = v.map((p) => Number(p.kg));
     const mx = xs.reduce((a, b) => a + b, 0) / xs.length, my = ys.reduce((a, b) => a + b, 0) / ys.length;
     const den = xs.reduce((a, x) => a + (x - mx) ** 2, 0);
     const pend = den ? xs.reduce((a, x, i) => a + (x - mx) * (ys[i] - my), 0) / den : 0; // kg/día
-    let comido = 0, pendientes = 0;
-    for (let f = ini; f < hoy; f = addDays(f, 1)) { const c = delDia(comidas, f); comido += sumK(c); pendientes += c.filter((x) => x.kcal == null).length; }
-    if (D < 7) return head + `<div class="muted small">Llevas ${D} día${D > 1 ? "s" : ""} pesándote. Al principio la báscula baja o sube sobre todo por agua (deshincharse del finde, sal, hidratos), así que calcularlo ahora daría números absurdos. <b>A partir del día 7</b> (${diaLbl(addDays(ini, 7)).replace(/^(Hoy|Ayer) · /, "")}) te enseño aquí cuánto gastas de verdad y cuánto comer para perder ${A.objetivo_kg_semana} kg/sem.</div>
-      <div class="bar"><div style="width:${(D / 7) * 100}%"></div></div>`;
-    const bajado = -pend * D;
-    const gasto = (comido + bajado * KCAL_KG) / D;
-    const P = plan();
-    const ejMedio = sumK(ejercicios.filter((x) => x.fecha >= ini && x.fecha < hoy)) / D;
-    const para = gasto - KCAL_KG * Number(A.objetivo_kg_semana) / 7;
-    const fiable = D >= 14 ? "" : `<div class="warn">⚠️ Con solo ${D} día${D > 1 ? "s" : ""} de datos, esto es sobre todo agua (deshincharse del finde, sal, hidratos), no grasa. Empieza a ser fiable a partir de ~2 semanas pesándote cada día.</div>`;
-    return head + `<div class="row"><div class="grow"><div class="big">${fmt(gasto)}</div><div class="muted">kcal/día que gastas de verdad</div></div>
-      <div class="muted small" style="text-align:right">Estimado por fórmula:<br>${fmt(P.tdee + ejMedio)}/día<br>(${fmt(P.tdee)} + ${fmt(ejMedio)} ejercicio)</div></div>
-      <div class="muted small" style="margin-top:6px">En ${D} día${D > 1 ? "s" : ""} has comido ${fmt(comido)} kcal y la tendencia de tu peso baja ${bajado.toFixed(1)} kg (${(-pend * 7).toFixed(1)} kg/sem).
-      Para perder ${A.objetivo_kg_semana} kg/sem, de media: <b>${fmt(para)} kcal/día</b>.${pendientes ? ` ⏳ ${pendientes} comida(s) sin calcular.` : ""}</div>${fiable}`;
+    let comido = 0, ejer = 0, flojos = [];
+    for (let f = ini; f <= fin; f = addDays(f, 1)) {
+      const c = sumK(delDia(comidas, f)); comido += c; ejer += sumK(delDia(ejercicios, f));
+      if (c < 800) flojos.push(`${DIAS[parse(f).getDay()]} ${parse(f).getDate()} (${fmt(c)})`);
+    }
+    const bajado = -pend * D, gasto = (comido + bajado * KCAL_KG) / D;
+    return { N, D, ini, fin, n: v.length, kg0: my - pend * (mx - 0), comido, ejer, bajado, gasto, reposo: gasto - ejer / D, flojos };
+  }
+  function gastoRealHtml() {
+    const P = plan(), head = `<h2>📏 Tu gasto real (según la báscula)</h2>`;
+    const vs = []; const vistos = new Set();
+    for (const N of [7, 14, 31]) { const r = ventanaReal(N); if (r && !vistos.has(r.D)) { vistos.add(r.D); vs.push(r); } }
+    if (!vs.length) return head + `<div class="muted small">Hacen falta al menos 3 días y 3 pesadas para calcularlo. Pésate cada mañana.</div>`;
+    const fila = (r) => `<tr><td>${r.D === r.N ? `Últimos ${r.N} días` : `Desde el inicio (${r.D} días)`}<div class="muted" style="font-size:.68rem">${parse(r.ini).getDate()}/${parse(r.ini).getMonth() + 1}–${parse(r.fin).getDate()}/${parse(r.fin).getMonth() + 1} · ${r.n} pesadas</div></td>
+      <td>${fmt(r.comido / r.D)}</td><td>${fmt(r.ejer / r.D)}</td><td>${r.bajado >= 0 ? "−" : "+"}${Math.abs(r.bajado).toFixed(1)} kg</td><td><b>${fmt(r.gasto)}</b></td><td><b>${fmt(r.reposo)}</b></td></tr>`;
+    const best = vs[vs.length - 1];
+    const dif = best.reposo - P.tdee;
+    const sentido = best.D < 14
+      ? `<div class="warn">⚠️ Con ${best.D} días esto todavía <b>no es fiable</b>: el peso sube y baja 1–2 kg por agua (sal, hidratos, el finde), y cada kilo de agua que la báscula confunde con grasa mueve el resultado en ${fmt(KCAL_KG / best.D)} kcal/día. A partir de 14 días se estabiliza y con 31 es bastante fiable.</div>`
+      : Math.abs(dif) > 600
+        ? `<div class="warn">⚠️ Sale ${fmt(Math.abs(dif))} kcal/día ${dif > 0 ? "por encima" : "por debajo"} de la fórmula: ${dif > 0 ? "o el ejercicio cuenta menos de lo que dice la pulsera, o la báscula ha bajado por agua" : "lo más probable es que haya comida sin apuntar (picoteos, aceite, bebidas)"}.</div>`
+        : `<div class="small" style="color:var(--green);margin-top:6px">✅ Cuadra con la fórmula (diferencia de ${fmt(Math.abs(dif))} kcal/día): los datos tienen sentido.</div>`;
+    const flojos = best.flojos.length ? `<div class="muted small" style="margin-top:4px">Días con muy poco apuntado (¿falta algo?): ${best.flojos.join(", ")}. Si faltan comidas, el gasto sale más bajo de lo real.</div>` : "";
+    return head + `<table class="wk wk7"><tr><th></th><th>Comido/día</th><th>Ejerc./día</th><th>Peso</th><th>Gasto total/día</th><th>Reposo/día</th></tr>${vs.map(fila).join("")}</table>
+      <div class="muted small" style="margin-top:6px"><b>Cómo se calcula</b>: si en esos días has comido X y la tendencia de tu peso (recta que pasa por todas las pesadas, no un día suelto) ha bajado Y kg, has gastado X + Y × ${fmt(KCAL_KG)} kcal.
+      Repartido por días es tu <b>gasto total</b>; quitando el ejercicio apuntado queda tu <b>gasto en reposo real</b> (vida diaria sin deporte).
+      La fórmula estima ${fmt(P.tdee)}/día en reposo.</div>${sentido}${flojos}
+      <div class="small" style="margin-top:6px">Para perder ${A.objetivo_kg_semana} kg/sem con este gasto: comer de media <b>${fmt(best.gasto - KCAL_KG * Number(A.objetivo_kg_semana) / 7)} kcal/día</b> (contando el ejercicio que sueles hacer).</div>`;
   }
 
   function renderGrafico() {
@@ -766,6 +792,7 @@
       if (n < A.fecha_inicio) { toast("Empezaste el " + diaLbl(A.fecha_inicio).replace(/^(Hoy|Ayer) · /, "") + ": no hay días antes"); return; }
       dia = n; render(); return;
     }
+    if (t.dataset.sem) { semOff = Math.min(0, semOff + Number(t.dataset.sem)); renderResumen(); return; }
     if (t.dataset.hoy) { dia = iso(new Date()); render(); return; }
     if (t.dataset.m) { momento = t.dataset.m; renderComida(); return; }
     if (t.dataset.d) { deporte = Number(t.dataset.d); renderEjercicio(); return; }

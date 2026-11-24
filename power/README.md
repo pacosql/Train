@@ -25,6 +25,18 @@ URL: `https://pacosql.github.io/Train/power/`
 - **⚙️ Ajustes**: peso y fecha de inicio, kg/semana, kcal de finde, sexo,
   edad, altura y nivel de actividad.
 
+## Tabla de la semana y gasto real
+
+- **Tabla de la semana** (‹ › para semanas anteriores): Reposo (gasto sin
+  deporte), Ejercicio, Comido, Déficit (= reposo + ejercicio − comido),
+  Plan (lo que toca comer ese día: L–V o finde) y vs plan
+  (= plan + ejercicio − comido).
+- **📏 Gasto real**: para los últimos 7, 14 y 31 días cerrados,
+  gasto = (comido + kg bajados según la recta de tendencia de las
+  pesadas × 7.700) / días; restando el ejercicio sale el reposo real.
+  Avisa si hay menos de 14 días, si no cuadra con la fórmula o si hay
+  días con menos de 800 kcal apuntadas.
+
 ## Cálculo
 
 - Gasto diario = basal × factor de vida diaria (1,2 sedentaria).
