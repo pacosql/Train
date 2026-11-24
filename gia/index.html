@@ -397,6 +397,46 @@
   const marcarExplicada = (t) => { const e = explicadas(); e[t] = Date.now(); try { localStorage.setItem("gia_explicadas", JSON.stringify(e)); } catch (x) {} };
 
   // ===================================================================
+  // Registro de eventos (tabla gia_eventos) para poder depurar: cada ronda,
+  // cada respuesta, por qué termina cada ronda, cambios de pestaña, errores…
+  // Se envía por lotes; lo que no se pudo enviar se guarda en localStorage.
+  // ===================================================================
+  const CLIENTE = (() => { try { let c = localStorage.getItem("gia_cliente"); if (!c) { c = Math.random().toString(36).slice(2, 10); localStorage.setItem("gia_cliente", c); } return c; } catch (e) { return "anon"; } })();
+  const SESION = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  let LOGQ = (() => { try { return JSON.parse(localStorage.getItem("gia_log_cola")) || []; } catch (e) { return []; } })();
+  const LOG_LOCAL = [];
+  function LOG(tipo, datos = {}) {
+    const ev = { ts: new Date().toISOString(), cliente: CLIENTE, sesion: SESION, tipo, datos, version: BUILD };
+    LOGQ.push(ev); LOG_LOCAL.push(ev);
+    if (LOG_LOCAL.length > 300) LOG_LOCAL.shift();
+    if (LOGQ.length > 600) LOGQ = LOGQ.slice(-600);
+    try { localStorage.setItem("gia_log_cola", JSON.stringify(LOGQ)); } catch (e) {}
+    if (LOGQ.length >= 25) enviarLog();
+  }
+  let enviando = false;
+  async function enviarLog(keepalive = false) {
+    if (enviando || !LOGQ.length) return;
+    enviando = true;
+    const lote = LOGQ.slice(0, 200);
+    try {
+      const r = await fetch(`${CFG.url}/rest/v1/gia_eventos`, { method: "POST", keepalive,
+        headers: { apikey: CFG.anonKey, Authorization: `Bearer ${CFG.anonKey}`, "Content-Type": "application/json", Prefer: "return=minimal" },
+        body: JSON.stringify(lote) });
+      if (r.ok) { LOGQ = LOGQ.slice(lote.length); try { localStorage.setItem("gia_log_cola", JSON.stringify(LOGQ)); } catch (e) {} }
+    } catch (e) {} finally { enviando = false; }
+  }
+  setInterval(() => enviarLog(), 8000);
+  document.addEventListener("visibilitychange", () => {
+    LOG("visibilidad", { estado: document.visibilityState, jugando: !!JUEGO, tarea: JUEGO?.p.tarea, seg: JUEGO ? Math.round((performance.now() - JUEGO.t0) / 100) / 10 : null });
+    if (document.visibilityState === "hidden") enviarLog(true);
+  });
+  window.addEventListener("pagehide", () => { LOG("pagehide", { jugando: !!JUEGO }); enviarLog(true); });
+  window.addEventListener("error", (e) => LOG("error", { msg: String(e.message), src: e.filename, line: e.lineno }));
+  window.addEventListener("unhandledrejection", (e) => LOG("error", { msg: String(e.reason && (e.reason.message || e.reason)) }));
+  LOG("carga", { ua: navigator.userAgent, w: innerWidth, h: innerHeight, dpr: devicePixelRatio, tactil: "ontouchstart" in window,
+    standalone: matchMedia("(display-mode: standalone)").matches, url: location.pathname + location.search, ajustes: (() => { try { return JSON.parse(localStorage.getItem("gia_ajustes")); } catch (e) { return null; } })() });
+
+  // ===================================================================
   // Datos: Supabase (REST con la anon key) + cola local si no hay red.
   // ===================================================================
   async function sb(path, opts = {}) {
@@ -426,8 +466,9 @@
     try {
       await sb("gia_sesiones", { method: "POST", body: JSON.stringify(cola.map(limpia)), headers: { Prefer: "return=minimal" } });
       LS.set("gia_pendientes", []);
+      LOG("guardar_ok", { n: cola.length });
       return true;
-    } catch (e) { console.warn("Sin conexión, se guardará luego", e); return false; }
+    } catch (e) { console.warn("Sin conexión, se guardará luego", e); LOG("guardar_error", { n: cola.length, msg: String(e.message).slice(0, 300) }); return false; }
   }
   async function cargarDatos() {
     await vaciarCola();
@@ -523,6 +564,8 @@
   // ===================================================================
   const NIVEL = { "sin datos": "", empezando: "ko", progresando: "warn", casi: "warn", listo: "ok" };
   function pantallaInicio() {
+    if (RECARGA_PENDIENTE && !JUEGO && !EN_CURSO) return location.reload();
+    LOG("pantalla", { nombre: "inicio" });
     const g = estimacionGlobal();
     const total = cronometradas().length;
     const plan = PLAN;
@@ -631,7 +674,10 @@
         ${ORDEN.map((t) => `<label class="chk">${TAREAS[t].emoji} <span style="min-width:190px">${TAREAS[t].nombre}</span>
           <input type="number" min="0.5" max="10" step="0.5" data-t="${t}" value="${durDe(t) / 60}" style="width:70px;font:inherit;padding:4px"/></label>`).join("")}
         <button class="link" id="a-reset">Restablecer 5·2·2·3·2</button>
-      </div>`;
+      </div>
+      <details class="card"><summary>🪵 Registro de esta visita (para depurar)</summary>
+        <div class="muted">Se envía a Supabase (tabla gia_eventos). Pendientes de enviar: ${LOGQ.length}.</div>
+        <pre style="font-size:11px;white-space:pre-wrap;max-height:320px;overflow:auto">${esc(LOG_LOCAL.slice(-60).reverse().map((e) => `${e.ts.slice(11, 19)} ${e.tipo} ${JSON.stringify(e.datos)}`).join("\n"))}</pre></details>`;
     const guardar = () => {
       const dur = {};
       $app.querySelectorAll("input[data-t]").forEach((i) => { const v = Math.round(Number(i.value) * 60); if (v >= 30 && v !== TAREAS[i.dataset.t].dur) dur[i.dataset.t] = v; });
@@ -708,12 +754,12 @@
     correrSecuencia(pasos, modo === "simulacro" ? `sim-${Date.now().toString(36)}` : null);
   }
 
-  let JUEGO = null;
+  let JUEGO = null, EN_CURSO = false, RECARGA_PENDIENTE = false;
   const $j = document.getElementById("juego"), $stage = document.getElementById("stage");
   document.getElementById("j-salir").onclick = () => {
-    if (JUEGO?.p.modo === "jugar") { JUEGO.parar = true; return terminarJuego(false); } // se guarda lo hecho
+    if (JUEGO?.p.modo === "jugar") { JUEGO.parar = true; return terminarJuego(false, "parar"); } // se guarda lo hecho
     if (!confirm("¿Salir? Esta ronda no se guardará.")) return;
-    terminarJuego(true);
+    terminarJuego(true, "salir");
   };
 
   // ===================================================================
@@ -741,6 +787,7 @@
   }
 
   async function jugarLibre() {
+    EN_CURSO = true;
     const plan = PLAN?.plan || {};
     const hechas = new Set(), sesion = [];
     let prev = null;
@@ -756,6 +803,7 @@
       hechas.add(t); prev = t;
       if (r._parar) break;
     }
+    EN_CURSO = false;
     pantallaFinJugar(sesion);
     cargarDatos();
   }
@@ -817,6 +865,10 @@
   }
 
   async function correrSecuencia(pasos, simId) {
+    EN_CURSO = true;
+    try { return await correrSecuencia0(pasos, simId); } finally { EN_CURSO = false; }
+  }
+  async function correrSecuencia0(pasos, simId) {
     const resultados = [];
     for (let i = 0; i < pasos.length; i++) {
       const p = pasos[i];
@@ -866,6 +918,7 @@
     return new Promise((resolve) => {
       const T = TAREAS[p.tarea];
       JUEGO = { p, resolve, items: [], vistos: new Set(), t0: performance.now(), tItem: 0, timer: null, done: false, cur: null };
+      LOG("ronda_inicio", { tarea: p.tarea, modo: p.modo, practica: !!p.practica, dur: p.dur || 0, maxItems: p.maxItems || null, feedback: !!p.feedback, reloj: ajustes().reloj });
       document.getElementById("j-titulo").textContent = `${T.emoji} ${p.practica ? "Ejemplos" : T.nombre}`;
       document.getElementById("j-salir").textContent = p.modo === "jugar" ? "⏹ Parar" : "Salir";
       $j.classList.remove("hidden");
@@ -876,7 +929,7 @@
           const el = (performance.now() - JUEGO.t0) / 1000, rest = p.dur - el;
           bar.style.width = `${Math.max(0, (rest / p.dur) * 100)}%`;
           clock.textContent = fmt(rest);
-          if (rest <= 0) terminarJuego(false);
+          if (rest <= 0) terminarJuego(false, "tiempo");
         }, 200);
         bar.style.width = "100%"; clock.textContent = fmt(p.dur);
       } else { bar.style.width = "0%"; clock.textContent = p.maxItems ? `0/${p.maxItems}` : ""; }
@@ -887,7 +940,7 @@
   function siguiente() {
     const J = JUEGO; if (!J || J.done) return;
     const p = J.p;
-    if (p.maxItems && J.items.length >= p.maxItems) return terminarJuego(false);
+    if (p.maxItems && J.items.length >= p.maxItems) return terminarJuego(false, "completada");
     if (!p.dur && p.maxItems) document.getElementById("j-clock").textContent = `${J.items.length + 1}/${p.maxItems}`;
     let it;
     for (let t = 0; t < 12; t++) { it = generar(p.tarea, p.foco, p.params); if (!J.vistos.has(it.q)) break; }
@@ -932,6 +985,7 @@
     const ok = v === it.correcta;
     const ms = Math.round(performance.now() - J.tItem);
     J.items.push({ s: it.s, x: it.x, ok, ms, q: it.q, r: String(v), c: String(it.correcta), expl: it.expl, it });
+    LOG("respuesta", { tarea: J.p.tarea, n: J.items.length, ok, ms, q: it.q, r: String(v), c: String(it.correcta), s: it.s, seg: Math.round((performance.now() - J.t0) / 100) / 10 });
     J.cur = null;
     if (J.p.explicar && J.items.length === 1) {
       marcarExplicada(J.p.tarea);
@@ -957,9 +1011,12 @@
     } else siguiente();
   }
 
-  function terminarJuego(cancelado) {
+  function terminarJuego(cancelado, motivo = "?") {
     const J = JUEGO; if (!J || J.done) return;
     J.done = true; clearInterval(J.timer); JUEGO = null;
+    LOG("ronda_fin", { motivo, tarea: J.p.tarea, modo: J.p.modo, practica: !!J.p.practica, dur: J.p.dur || 0,
+      seg_reales: Math.round((performance.now() - J.t0) / 100) / 10, items: J.items.length, ok: J.items.filter((x) => x.ok).length,
+      pregunta_en_pantalla: !!J.cur, visible: document.visibilityState });
     $j.classList.add("hidden"); $stage.onclick = null;
     if (cancelado) return J.resolve(null);
     const p = J.p, T = TAREAS[p.tarea];
@@ -977,7 +1034,7 @@
       percentil: p.modo === "aprendizaje" || p.practica ? 0 : percentil(p.tarea, netaNorm),
       ms_medio: J.items.length ? Math.round(msResp / J.items.length) : null,
       detalle: J.items.map(({ s, x, ok, ms, q, r, c }) => ({ s, x, ok, ms, q, r, c })),
-      version: BUILD, _items: J.items, _parar: !!J.parar, _explicada: !!p.explicar,
+      version: BUILD, _items: J.items, _parar: !!J.parar, _explicada: !!p.explicar, _motivo: motivo,
     });
   }
 
@@ -985,6 +1042,7 @@
     const resumen = rs.length === 5 && simId ? Math.round(rs.reduce((a, r) => a + r.percentil, 0) / 5) : null;
     $app.innerHTML = `
       <h1>${resumen != null ? "🏁 Simulacro terminado" : "Resultado"} <button class="link back" id="b-back">← Inicio</button></h1>
+      ${resumen == null && rs.length === 1 && rs[0]._motivo === "tiempo" ? `<div class="card"><b>⏱ Se acabó el tiempo.</b> La ronda duraba ${fmt(rs[0].duracion_s)}${rs[0].duracion_s < TAREAS[rs[0].tarea].dur ? ` (ronda rápida; la del examen es de ${fmt(TAREAS[rs[0].tarea].dur)})` : ""}.</div>` : ""}
       ${resumen != null ? `<div class="card hero"><div class="muted">Percentil global estimado</div><b class="big">P${resumen}</b><div>${banda(resumen)[0]}</div></div>` : ""}
       ${rs.map((r) => { const T = TAREAS[r.tarea]; const errs = r._items.filter((x) => !x.ok); const apr = r.modo === "aprendizaje";
         return `<div class="card"><div class="row"><b>${T.emoji} ${T.nombre}</b><span class="spacer"></span>
@@ -1026,7 +1084,10 @@
   if ("serviceWorker" in navigator) {
     navigator.serviceWorker.register("sw.js").catch(() => {});
     navigator.serviceWorker.addEventListener("message", (e) => {
-      if (e.data?.type === "new-version" && !JUEGO) location.reload();
+      if (e.data?.type !== "new-version") return;
+      const libre = !JUEGO && !EN_CURSO;
+      LOG("nueva_version", { recarga: libre });
+      if (libre) location.reload(); else RECARGA_PENDIENTE = true;
     });
   }
   </script>

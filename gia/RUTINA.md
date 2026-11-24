@@ -79,6 +79,24 @@ La **puntuación ajustada** (`neta`) = aciertos − fallos/(opciones−1) y
 Objetivos «por encima de la media» (percentil 66+), de SPEC.md §4:
 razonamiento ≥ 44, perceptiva ≥ 46, numérica ≥ 16, palabras ≥ 32, espacial ≥ 12.
 
+### Registro de eventos (depuración)
+
+La tabla `gia_eventos` guarda todo lo que pasa en la app: `carga` (navegador,
+pantalla, móvil/ordenador), `ronda_inicio`, `respuesta` (cada pregunta con ms),
+`ronda_fin` (con `motivo`: tiempo | completada | parar | salir), `visibilidad`
+(si cambió de app/pestaña en mitad de una ronda), `nueva_version`, `guardar_ok` /
+`guardar_error` y `error` (errores de JavaScript). Revisa en cada ejecución los
+eventos nuevos: si hay `error`, `guardar_error`, rondas que terminan de forma
+rara o quejas posibles (rondas cortadas por `visibilidad` hidden), **arréglalo**
+(paso 5). Usa `cliente`/`sesion` para seguir una visita. No borres eventos del
+usuario; puedes borrar eventos con `version = '__BUILD_ID__'` (pruebas locales).
+
+Nota sobre velocidad perceptiva: el baremo es muy exigente (en los informes de
+ejemplo, candidatos con P76–P93 en razonamiento sacan P12–P24 aquí) y la
+duración real de la tarea no es pública (se asume 2 min). Si Francisco va alto
+en todo y muy bajo solo aquí, dilo en el mensaje con esa cautela y céntrate en
+su ritmo en segundos por pregunta (objetivo ~2,5 s con ≤ 1 fallo de cada 10).
+
 ## 4. Plan y veredicto (inserta UNA fila en `gia_plan`)
 
 Columnas: `listo` (bool), `nivel` (`empezando` | `progresando` | `casi` | `listo`),
