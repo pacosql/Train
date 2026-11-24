@@ -236,7 +236,8 @@
     const s = `${forma}-${contrario ? "contrario" : "mismo"}${qMenos ? "-qmenos" : ""}`;
     const fuerteEs = masAdj;
     const expl = `«${frase}» → más ${adjF}: ${fuerteEs}. ${contrario ? `Más ${adjOtro}: ${fuerteEs === x ? y : x}. ` : ""}${qMenos ? `Te preguntan por MENOS ${adjQ}: ${resp}.` : `Respuesta: ${resp}.`}`;
-    return { s, q: `${frase} ${pregunta}`, frase, pregunta, opciones: shuffle([x, y]).map((v) => ({ v, label: v })), correcta: resp, expl };
+    const m = { forma, adjF, adjOtro, adjQ, masAdj, otro: masAdj === x ? y : x, contrario, qMenos, resp };
+    return { s, m, q: `${frase} ${pregunta}`, frase, pregunta, opciones: shuffle([x, y]).map((v) => ({ v, label: v })), correcta: resp, expl };
   }
 
   const CONF = { b: "dpqh", d: "bpq", p: "bdq", q: "pdbg", i: "jlt", l: "ijt", j: "ilg", m: "nwh", n: "mhu", u: "vn", v: "uwy", h: "nb", c: "eoa", e: "co", o: "ac", a: "oe", g: "qy", f: "tj", t: "fi", w: "vm", y: "vg", r: "n", k: "h", x: "z", z: "x", s: "z" };
@@ -289,7 +290,7 @@
     usadas.add(w.intruso + w.a);
     if (usadas.size > BANCO.length * 0.8) usadas.clear();
     const rel = { sin: "significan lo mismo", ant: "son contrarios", fam: "son de la misma familia" }[w.relacion] || "están relacionadas";
-    return { s: w.relacion, x: `nivel ${w.nivel || 1}`, q: `${w.a} · ${w.b} · ${w.intruso}`, palabra: w.intruso,
+    return { s: w.relacion, w, x: `nivel ${w.nivel || 1}`, q: `${w.a} · ${w.b} · ${w.intruso}`, palabra: w.intruso,
       opciones: shuffle([w.a, w.b, w.intruso]).map((v) => ({ v, label: v })), correcta: w.intruso,
       expl: `«${w.a}» y «${w.b}» ${rel}; sobra «${w.intruso}».` };
   }
@@ -341,6 +342,61 @@
   }
 
   // ===================================================================
+  // «Cómo hacerlo rápido»: el método mental aplicado a ESA pregunta.
+  // ===================================================================
+  const REGLA = {
+    razonamiento: "Al leer, quédate con un solo dato: quién tiene MÁS del adjetivo de la frase.",
+    perceptiva: "Recorre de izquierda a derecha y cuenta solo los «sí».",
+    numerica: "Mayor y menor; huecos hasta el del medio; gana el extremo del hueco grande.",
+    palabras: "Busca la pareja (sinónimos o contrarios); la que sobra es la otra.",
+    espacial: "Clasifica cada R: palo recto de pie a cabeza, barriga a la derecha = normal.",
+  };
+  function metodo(tarea, it) {
+    const li = (xs) => `<ol class="tips">${xs.map((x) => `<li>${x}</li>`).join("")}</ol>`;
+    const b = (x) => `<b>${esc(x)}</b>`;
+    if (tarea === "razonamiento") {
+      const m = it.m;
+      const quien = m.forma === "mas" ? "el que va PRIMERO" : `el que va SEGUNDO (con «${m.forma === "menos" ? "menos… que" : "no es tan… como"}» siempre gana el segundo)`;
+      return li([
+        `Lees «${esc(it.frase)}» y la conviertes en una sola etiqueta: ${b(m.adjF + " = " + m.masAdj)}. Es ${quien}. No memorices la frase, solo ese nombre.`,
+        `Pulsas y aparece «${esc(it.pregunta)}». ${m.contrario ? `«${esc(m.adjQ)}» es el contrario de «${esc(m.adjF)}» → el otro: ${b(m.otro)}.` : `Mismo adjetivo → ${b(m.masAdj)}.`}${m.qMenos ? ` Pero pregunta MENOS → das la vuelta: ${b(m.resp)}.` : ""}`,
+        `Buscas ${b(m.resp)} en los botones (no siempre están en el orden de la frase) y clic. Todo esto debería llevarte unos 5–6 s.`]);
+    }
+    if (tarea === "perceptiva") {
+      let n = 0;
+      const pasos = it.arriba.map((c, i) => { const ok = c.toLowerCase() === it.abajo[i].toLowerCase(); if (ok) n++; return `${esc(c)}/${esc(it.abajo[i])} ${ok ? `sí (${n})` : "no"}`; });
+      return li([
+        `Barrido único de izquierda a derecha, sin volver atrás: ${pasos.join(" · ")} → ${b(String(it.correcta))}.`,
+        "No «leas» las letras: compara su forma. Para las que cambian mucho de mayúscula a minúscula (a/A, b/B, d/D, e/E, g/G, q/Q, r/R) piensa en el sonido de la letra.",
+        `${it.correcta >= 3 ? "Aquí casi todas coinciden: es más rápido contar las distintas y restar de 4." : "Si de un vistazo ves que casi todas coinciden, cuenta las distintas y resta de 4."} Deja el ratón quieto sobre los botones: unos 2 s por pregunta.`]);
+    }
+    if (tarea === "numerica") {
+      const [a, m, z] = it.nums.slice().sort((p, q) => p - q), g1 = m - a, g2 = z - m;
+      return li([
+        `Localiza extremos: menor ${b(String(a))}, mayor ${b(String(z))}. El que queda es ${b(String(m))} (el del medio por valor, no por posición).`,
+        `Dos restas pequeñas: ${m}−${a} = ${g1} y ${z}−${m} = ${g2}.`,
+        `Gana el extremo del hueco grande: ${b(String(it.correcta))}. ${Math.abs(g1 - g2) >= 3 ? "Aquí la diferencia se ve a ojo: no hacía falta restar con precisión." : "Huecos casi iguales: aquí sí hay que restar de verdad, no estimar."} Nunca es el del medio.`]);
+    }
+    if (tarea === "palabras") {
+      const w = it.w, rel = { sin: "significan lo mismo", ant: "son contrarias (los contrarios cuentan como relacionadas)", fam: "son de la misma familia" }[w.relacion];
+      return li([
+        `No analices las tres por separado: busca la pareja. «${esc(w.a)}» y «${esc(w.b)}» ${rel}.`,
+        `La que queda fuera es ${b(w.intruso)}: no hace falta pensar por qué no encaja.`,
+        "Primera impresión y clic (~4 s). Si ninguna pareja salta, prueba contrarios: es lo que más se pasa por alto."]);
+    }
+    if (tarea === "espacial") {
+      const t = (g) => (g.m ? "espejo" : "normal");
+      return li([
+        "No gires la letra entera en la cabeza. Para cada R: recorre el palo recto desde el pie hasta la cabeza; si la barriga queda a tu DERECHA es normal, si a la izquierda es espejo.",
+        ...it.cards.map((c, i) => `Tarjeta ${i + 1}: arriba ${b(t(c.top))}, abajo ${b(t(c.bot))} → ${c.same ? "mismo tipo, cuenta" : "distinto tipo, no cuenta"}.`),
+        `Total: ${b(String(it.correcta))}. Compara solo en vertical, nunca entre tarjetas. Unos 7 s por pregunta.`]);
+    }
+    return "";
+  }
+  const explicadas = () => { try { return JSON.parse(localStorage.getItem("gia_explicadas")) || {}; } catch (e) { return {}; } };
+  const marcarExplicada = (t) => { const e = explicadas(); e[t] = Date.now(); try { localStorage.setItem("gia_explicadas", JSON.stringify(e)); } catch (x) {} };
+
+  // ===================================================================
   // Datos: Supabase (REST con la anon key) + cola local si no hay red.
   // ===================================================================
   async function sb(path, opts = {}) {
@@ -355,8 +411,10 @@
   let SESIONES = LS.get("gia_cache_sesiones", []);
   let PLAN = LS.get("gia_cache_plan", null);
 
+  // Solo columnas reales: fuera los campos internos (_items, _parar, …).
+  const limpia = (r) => Object.fromEntries(Object.entries(r).filter(([k]) => !k.startsWith("_")));
   async function guardarSesion(r) {
-    const { _items, ...ses } = r;
+    const ses = limpia(r);
     const cola = LS.get("gia_pendientes", []);
     cola.push(ses); LS.set("gia_pendientes", cola);
     SESIONES.unshift({ ...ses, created_at: new Date().toISOString(), _local: true });
@@ -366,7 +424,7 @@
     const cola = LS.get("gia_pendientes", []);
     if (!cola.length) return true;
     try {
-      await sb("gia_sesiones", { method: "POST", body: JSON.stringify(cola), headers: { Prefer: "return=minimal" } });
+      await sb("gia_sesiones", { method: "POST", body: JSON.stringify(cola.map(limpia)), headers: { Prefer: "return=minimal" } });
       LS.set("gia_pendientes", []);
       return true;
     } catch (e) { console.warn("Sin conexión, se guardará luego", e); return false; }
@@ -391,15 +449,26 @@
   // Estadísticas
   // ===================================================================
   const cronometradas = () => SESIONES.filter((s) => s.modo !== "aprendizaje");
+  // Junta las sesiones más recientes de la tarea hasta cubrir su duración de
+  // referencia (así 6 bloques de 30 s valen como una ronda de 3 min).
+  function ventana(ss, desde, ref) {
+    let c = 0, f = 0, n = 0, t = 0, k = 0;
+    for (let i = desde; i < ss.length && k < 15 && (t < ref || k === 0); i++, k++) {
+      c += ss[i].correctas; f += ss[i].fallos; n += Number(ss[i].neta); t += Number(ss[i].usado_s) || 0;
+    }
+    return k ? { c, f, n, t, k } : null;
+  }
   function estadoTarea(t) {
+    const T = TAREAS[t];
     const ss = cronometradas().filter((s) => s.tarea === t);
-    const ult = ss.slice(0, 3);
-    if (!ult.length) return null;
-    const p = Math.round(ult.reduce((a, s) => a + s.percentil, 0) / ult.length);
-    const ac = ult.reduce((a, s) => a + s.correctas, 0), fa = ult.reduce((a, s) => a + s.fallos, 0);
-    const prev = ss.slice(3, 6);
-    const pPrev = prev.length ? Math.round(prev.reduce((a, s) => a + s.percentil, 0) / prev.length) : null;
-    return { p, precision: ac + fa ? ac / (ac + fa) : 0, n: ss.length, tendencia: pPrev == null ? 0 : p - pPrev, ult: ss[0] };
+    const w = ventana(ss, 0, T.dur);
+    if (!w) return null;
+    const norm = (v) => Math.max(0, v.n) * T.dur / Math.max(10, v.t);
+    const neta = norm(w), p = percentil(t, neta);
+    const w2 = ventana(ss, w.k, T.dur);
+    const p2 = w2 ? percentil(t, norm(w2)) : null;
+    return { p, neta: Math.round(neta * 10) / 10, precision: w.c + w.f ? w.c / (w.c + w.f) : 0, n: ss.length,
+      preguntas: w.c + w.f, segundos: w.t, tendencia: p2 == null ? 0 : p - p2, ult: ss[0] };
   }
   function estimacionGlobal() {
     const e = ORDEN.map(estadoTarea);
@@ -435,6 +504,13 @@
       ${pal.length ? `<h3>📖 Tríos fallados</h3><ul class="tips">${[...new Set(pal)].slice(0, 15).map((x) => `<li>${esc(x)}</li>`).join("")}</ul>` : ""}
     </div>`;
   }
+  function hoyTxt() {
+    const hoy = new Date().toDateString();
+    const ss = SESIONES.filter((s) => new Date(s.created_at).toDateString() === hoy);
+    if (!ss.length) return "Sin elegir nada: bloques cortos de cada tipo. Para cuando quieras.";
+    const n = ss.reduce((a, s) => a + s.intentadas, 0), seg = ss.reduce((a, s) => a + Number(s.usado_s || 0), 0);
+    return `Hoy: ${n} preguntas · ${Math.round(seg / 60)} min. Para cuando quieras.`;
+  }
   function hace(ts) {
     const min = Math.round((Date.now() - Date.parse(ts)) / 60000);
     if (min < 2) return "hace un momento"; if (min < 60) return `hace ${min} min`;
@@ -454,6 +530,8 @@
     const planTxt = plan && plan.plan && plan.plan.orden ? plan.plan.orden.map((t) => TAREAS[t]?.emoji || "").join(" ") : "";
     $app.innerHTML = `
       <h1>🧠 Entrenador GIA <span class="muted" style="margin-left:auto">práctica no oficial</span></h1>
+      <button class="big primary" id="b-jugar" style="font-size:24px;text-align:center;padding:22px">▶ Jugar
+        <small>${hoyTxt()}</small></button>
       <div class="card hero">
         <div class="muted">Veredicto del entrenador ${plan ? `· ${hace(plan.created_at)}` : ""}</div>
         <b class="big">${plan?.listo ? "✅ Listo para examinarte" : nivel === "casi" ? "🟡 Casi listo" : nivel === "sin datos" ? "Sin datos aún" : "⏳ Aún no"}</b>
@@ -463,7 +541,7 @@
           <span class="pill">${total} sesiones</span>
         </div>
       </div>
-      <button class="big primary" id="b-plan">🎯 Entrenamiento recomendado ${planTxt}
+      <button class="big" id="b-plan">🎯 Entrenamiento recomendado ${planTxt}
         <small>${esc(plan?.plan?.nota || "El que te prepara la rutina horaria según tus fallos")}</small></button>
       <button class="big" id="b-sim">⏱️ Simulacro completo <small>Las 5 tareas en orden (5·2·2·3·2 min ≈ 14 min + ejemplos), sin ver aciertos</small></button>
       <h2>Practicar una tarea</h2>
@@ -477,6 +555,7 @@
         <button id="b-aj">⚙️ Ajustes</button>
       </div>
       <div class="footer">build ${BUILD} · datos en Supabase (tablas gia_)</div>`;
+    $app.querySelector("#b-jugar").onclick = jugarLibre;
     $app.querySelector("#b-sim").onclick = () => iniciarSecuencia("simulacro", ORDEN, null);
     $app.querySelector("#b-plan").onclick = () => {
       const p = PLAN?.plan || {};
@@ -632,9 +711,110 @@
   let JUEGO = null;
   const $j = document.getElementById("juego"), $stage = document.getElementById("stage");
   document.getElementById("j-salir").onclick = () => {
+    if (JUEGO?.p.modo === "jugar") { JUEGO.parar = true; return terminarJuego(false); } // se guarda lo hecho
     if (!confirm("¿Salir? Esta ronda no se guardará.")) return;
     terminarJuego(true);
   };
+
+  // ===================================================================
+  // ▶ JUGAR: bloques cortos de un tipo, elegidos por la app; se para cuando quieras.
+  // ===================================================================
+  const BLOQUE = { razonamiento: 6, perceptiva: 10, numerica: 6, palabras: 8, espacial: 5 };
+  function elegirTarea(prev, hechas) {
+    const plan = PLAN?.plan || {};
+    // Primero, las que aún no han salido en esta tanda (las más flojas antes).
+    const peso = (t) => {
+      if (t === prev) return 0;
+      const e = estadoTarea(t);
+      let w = e ? Math.min(4, Math.max(0.6, 1 + (75 - e.p) / 20)) : 3;
+      if (e && e.preguntas < 20) w += 1;
+      if (plan.jugar?.pesos?.[t] != null) w *= plan.jugar.pesos[t];
+      else if (plan.orden?.includes(t)) w *= 1.5;
+      return w;
+    };
+    let cands = ORDEN.filter((t) => !hechas.has(t) && t !== prev);
+    if (!cands.length) cands = ORDEN.filter((t) => t !== prev);
+    const ws = cands.map(peso), tot = ws.reduce((a, b) => a + b, 0);
+    let r = Math.random() * tot;
+    for (let i = 0; i < cands.length; i++) { r -= ws[i]; if (r <= 0) return cands[i]; }
+    return cands[0];
+  }
+
+  async function jugarLibre() {
+    const plan = PLAN?.plan || {};
+    const hechas = new Set(), sesion = [];
+    let prev = null;
+    for (;;) {
+      const t = elegirTarea(prev, hechas);
+      const primera = !explicadas()[t];
+      const go = await pantallaBloque(t, sesion, primera);
+      if (!go) break;
+      const r = await jugar({ tarea: t, modo: "jugar", dur: 0, maxItems: BLOQUE[t], feedback: false, explicar: primera,
+        foco: plan.foco?.[t] || null, params: plan.params?.[t] || null });
+      if (!r) break;
+      if (r.intentadas) { await guardarSesion(r); sesion.push(r); }
+      hechas.add(t); prev = t;
+      if (r._parar) break;
+    }
+    pantallaFinJugar(sesion);
+    cargarDatos();
+  }
+
+  // Pantalla entre bloques: resumen del anterior (con el método si fallaste) y qué viene.
+  function pantallaBloque(t, sesion, primera) {
+    const T = TAREAS[t], ult = sesion[sesion.length - 1];
+    return new Promise((res) => {
+      $j.classList.add("hidden");
+      let resumen = "";
+      if (ult) {
+        const TU = TAREAS[ult.tarea], e = estadoTarea(ult.tarea);
+        // El fallo de la primera pregunta ya se explicó en el momento: no repetirlo.
+        const errs = ult._items.filter((x, i) => !x.ok && !(i === 0 && ult._explicada));
+        resumen = `<div class="card"><div class="row"><b>${TU.emoji} ${TU.nombre}</b><span class="spacer"></span>
+            <span class="pill ${ult.fallos ? "ko" : "ok"}">${ult.correctas}/${ult.intentadas}</span>
+            <span class="pill">${(ult.ms_medio / 1000).toFixed(1)} s/preg · objetivo ${TU.seg}</span></div>
+          ${e ? `<div class="muted" style="margin-top:6px">Tu estimación en esta tarea${e.preguntas < 15 ? " (provisional, pocas preguntas)" : ""}: <b>P${e.p}</b> · ajustada ≈ ${e.neta} de ${TU.obj} objetivo (con tus últimas ${e.preguntas} preguntas)</div>` : ""}
+          ${errs.map((x) => `<div style="margin-top:10px"><b>✗ ${esc(x.q)}</b> — pusiste ${esc(x.r)}, era ${esc(x.c)}.${metodo(ult.tarea, x.it)}</div>`).join("")}
+        </div>`;
+      }
+      const sinFallos = ult && !ult.fallos;
+      $app.innerHTML = `
+        <h1>▶ Jugando <span class="muted">· ${sesion.reduce((a, r) => a + r.intentadas, 0)} preguntas</span>
+          <button class="link back" id="b-stop">⏹ Parar</button></h1>
+        ${resumen}
+        <div class="card"><div class="muted">Siguiente</div><b style="font-size:19px">${T.emoji} ${T.nombre} · ${BLOQUE[t]} preguntas</b>
+          <p style="margin:6px 0 0">${primera ? esc(T.instr) : esc(REGLA[t])}</p>
+          ${primera ? `<p class="muted">Es tu primera vez con este tipo: después de la primera pregunta te explico cómo hacerla rápido de cabeza.</p>` : ""}</div>
+        <button class="big primary" id="b-go">Seguir ▶ ${sinFallos ? '<small id="auto">Sigue solo en 3 s</small>' : ""}</button>`;
+      let auto = null;
+      const fin = (v) => { clearInterval(auto); res(v); };
+      if (sinFallos) {
+        let n = 3;
+        auto = setInterval(() => { n--; const a = document.getElementById("auto"); if (a) a.textContent = `Sigue solo en ${n} s`; if (n <= 0) fin(true); }, 1000);
+      }
+      $app.querySelector("#b-go").onclick = () => fin(true);
+      $app.querySelector("#b-stop").onclick = () => fin(false);
+      window.scrollTo(0, 0);
+    });
+  }
+
+  function pantallaFinJugar(sesion) {
+    const n = sesion.reduce((a, r) => a + r.intentadas, 0), ok = sesion.reduce((a, r) => a + r.correctas, 0);
+    const seg = sesion.reduce((a, r) => a + Number(r.usado_s), 0);
+    const tareas = [...new Set(sesion.map((r) => r.tarea))];
+    const g = estimacionGlobal();
+    $app.innerHTML = `
+      <h1>⏹ Pausa <button class="link back" id="b-back">← Inicio</button></h1>
+      <div class="card hero"><div class="muted">Esta tanda</div>
+        <b class="big">${ok}/${n} bien</b><div>${fmt(seg)} respondiendo · ${tareas.map((t) => TAREAS[t].emoji).join(" ")}</div>
+        ${g ? `<div class="row" style="margin-top:10px"><span class="pill">Percentil global estimado P${g.p} · ${banda(g.p)[0]}</span></div>` : ""}</div>
+      ${tareas.map((t) => { const e = estadoTarea(t); return e ? `<div class="card"><div class="row"><b>${TAREAS[t].emoji} ${TAREAS[t].nombre}</b><span class="spacer"></span>
+        <span class="pill ${banda(e.p)[1]}">P${e.p}${e.preguntas < 15 ? "?" : ""}</span></div><div class="muted">${e.preguntas < 15 ? "Provisional (pocas preguntas) · " : ""}Ajustada ≈ ${e.neta} (objetivo ${TAREAS[t].obj}) · ${Math.round(e.precision * 100)} % acierto</div></div>` : ""; }).join("")}
+      <button class="big primary" id="b-play">▶ Seguir jugando</button>`;
+    $app.querySelector("#b-back").onclick = pantallaInicio;
+    $app.querySelector("#b-play").onclick = jugarLibre;
+    window.scrollTo(0, 0);
+  }
 
   async function correrSecuencia(pasos, simId) {
     const resultados = [];
@@ -687,6 +867,7 @@
       const T = TAREAS[p.tarea];
       JUEGO = { p, resolve, items: [], vistos: new Set(), t0: performance.now(), tItem: 0, timer: null, done: false, cur: null };
       document.getElementById("j-titulo").textContent = `${T.emoji} ${p.practica ? "Ejemplos" : T.nombre}`;
+      document.getElementById("j-salir").textContent = p.modo === "jugar" ? "⏹ Parar" : "Salir";
       $j.classList.remove("hidden");
       const bar = document.getElementById("j-bar"), clock = document.getElementById("j-clock");
       document.querySelector(".timer").style.visibility = clock.style.visibility = p.dur && !ajustes().reloj ? "hidden" : "visible";
@@ -750,8 +931,18 @@
     const J = JUEGO; if (!J || J.done || J.cur !== it) return;
     const ok = v === it.correcta;
     const ms = Math.round(performance.now() - J.tItem);
-    J.items.push({ s: it.s, x: it.x, ok, ms, q: it.q, r: String(v), c: String(it.correcta), expl: it.expl });
+    J.items.push({ s: it.s, x: it.x, ok, ms, q: it.q, r: String(v), c: String(it.correcta), expl: it.expl, it });
     J.cur = null;
+    if (J.p.explicar && J.items.length === 1) {
+      marcarExplicada(J.p.tarea);
+      J.pausa = performance.now();
+      $stage.onclick = null;
+      $stage.innerHTML = `<div class="card" style="max-width:560px;margin:0;color:var(--text)">
+        <b>${ok ? "✓ Bien." : `✗ Era ${esc(String(it.correcta))}.`} Primera de este tipo: así se hace rápido de cabeza</b>${metodo(J.p.tarea, it)}
+        <button class="big primary" id="b-seguir">Entendido, seguir</button></div>`;
+      document.getElementById("b-seguir").onclick = (ev) => { ev.stopPropagation(); siguiente(); };
+      return;
+    }
     if (J.p.feedback) {
       $stage.classList.add(ok ? "flash-ok" : "flash-ko");
       const fb = document.getElementById("fb");
@@ -772,20 +963,21 @@
     $j.classList.add("hidden"); $stage.onclick = null;
     if (cancelado) return J.resolve(null);
     const p = J.p, T = TAREAS[p.tarea];
-    const usado = p.dur ? p.dur : (performance.now() - J.t0) / 1000;
+    const msResp0 = J.items.reduce((a, x) => a + x.ms, 0);
+    const usado = p.dur ? p.dur : p.modo === "jugar" ? msResp0 / 1000 : (performance.now() - J.t0) / 1000;
     const correctas = J.items.filter((x) => x.ok).length, fallos = J.items.length - correctas;
     const neta = correctas - T.pen * fallos;
     // En rondas con feedback se descuenta el tiempo de la animación para no penalizar el ritmo.
     const msResp = J.items.reduce((a, x) => a + x.ms, 0);
     const tiempoEfectivo = p.feedback && p.dur ? Math.max(30, msResp / 1000) : usado;
-    const netaNorm = Math.max(0, neta) * (T.dur / Math.max(30, tiempoEfectivo));
+    const netaNorm = Math.max(0, neta) * (T.dur / Math.max(p.modo === "jugar" ? 5 : 30, tiempoEfectivo));
     J.resolve({
       modo: p.modo, tarea: p.tarea, duracion_s: Math.round(p.dur || 0), usado_s: Math.round(usado * 10) / 10,
       intentadas: J.items.length, correctas, fallos, neta, neta_norm: Math.round(netaNorm * 10) / 10,
       percentil: p.modo === "aprendizaje" || p.practica ? 0 : percentil(p.tarea, netaNorm),
       ms_medio: J.items.length ? Math.round(msResp / J.items.length) : null,
       detalle: J.items.map(({ s, x, ok, ms, q, r, c }) => ({ s, x, ok, ms, q, r, c })),
-      version: BUILD, _items: J.items,
+      version: BUILD, _items: J.items, _parar: !!J.parar, _explicada: !!p.explicar,
     });
   }
 
@@ -827,7 +1019,8 @@
   // Arranque
   // ===================================================================
   pantallaInicio();
-  cargarDatos().then((ok) => { if (ok && !JUEGO && $app.querySelector("#b-sim")) pantallaInicio(); });
+  cargarDatos().then((ok) => { if (ok && !JUEGO && $app.querySelector("#b-sim")) pantallaInicio();
+    if (new URLSearchParams(location.search).has("jugar") && !JUEGO) jugarLibre(); });
   window.addEventListener("online", vaciarCola);
 
   if ("serviceWorker" in navigator) {

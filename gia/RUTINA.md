@@ -46,6 +46,15 @@ Lee las sesiones (`select id, created_at, modo, tarea, simulacro_id, duracion_s,
 intentadas, correctas, fallos, neta, neta_norm, percentil, ms_medio, detalle from gia_sesiones
 order by created_at`). `detalle` es una lista de preguntas `{s: subtipo, ok, ms, q, r, c}`.
 
+**Modo principal: «▶ Jugar»** (`modo = 'jugar'`). Francisco juega a ratos
+sueltos a lo largo del día: bloques de 5–10 preguntas de una tarea que elige la
+app (las más flojas pesan más). Cada bloque es una fila con `duracion_s = 0` y
+`usado_s` = suma de los tiempos de respuesta. Un bloque suelto es ruidoso: para
+estimar, **junta las filas recientes de cada tarea hasta cubrir su duración de
+referencia** (como hace la app en `estadoTarea`): neta total / segundos totales ×
+duración de referencia → percentil con las curvas de `TAREAS`. La primera vez
+que juega cada tipo la app le explica el método mental tras la primera pregunta.
+
 Calcula, ignorando `modo = 'aprendizaje'` para los percentiles:
 - Por tarea (razonamiento, perceptiva, numerica, palabras, espacial): percentil
   medio de las 3 últimas sesiones, precisión (correctas / intentadas), ritmo
@@ -88,6 +97,9 @@ y que los percentiles son estimaciones) y `plan` (jsonb):
 }
 ```
 
+- `jugar.pesos`: multiplicador por tarea para el modo Jugar (p. ej.
+  `{"espacial": 2.5, "palabras": 0.5}`); es lo que más usa, así que ajústalo
+  siempre según los puntos débiles.
 - `orden`: 2–4 tareas, las más flojas primero (si todo va parejo, las 5 = un simulacro sin ejemplos).
 - `foco[tarea][subtipo]` = peso relativo (1 por defecto; 2–4 para lo que falla).
   Se aplica también por prefijo (`"notan": 3` cubre `notan-*`).
@@ -96,7 +108,11 @@ y que los percentiles son estimaciones) y `plan` (jsonb):
 - `feedback`: `true` solo si la precisión de alguna tarea del plan es < 85 % (para aprender); si no, `false` (como el examen).
 
 **Criterio de «listo»** (`listo = true`, `nivel = 'listo'`), todos a la vez:
-1. Al menos 3 simulacros completos, en al menos 2 días distintos.
+1. Al menos 3 simulacros completos, en al menos 2 días distintos. Mientras
+   juegue solo en modo Jugar, el veredicto se basa en las estimaciones agrupadas;
+   cuando esas estimaciones ya cumplan los puntos 2–4, pídele en el `veredicto`
+   que haga simulacros completos para confirmarlo (no puede ser «listo» sin ellos:
+   el examen exige aguantar 5 min seguidos por tarea).
 2. Los 2 últimos simulacros con percentil global estimado ≥ 70.
 3. Ninguna tarea por debajo de 50 en esos 2 simulacros, y al menos 4 de las 5
    tareas con `neta_norm` ≥ su objetivo (44 / 46 / 16 / 32 / 12) en el último.
