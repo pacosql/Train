@@ -58,6 +58,7 @@ reglas para no interferir con las demás:
 | 🅾️ Ortologo | [`ortologo/`](./ortologo) | `/Train/ortologo/` | `ortologo_` |
 | ⚡ Power | [`power/`](./power) | `/Train/power/` | `power_` |
 | 🧠 GIA | [`gia/`](./gia) | `/Train/gia/` | `gia_` |
+| 🏆 Logros | [`logros/`](./logros) | `/Train/logros/` | `logros_` |
 
 ## Añadir una app nueva
 

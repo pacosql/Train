@@ -118,6 +118,7 @@ Al crear una app nueva `<app>/`:
 | 🅾️ Ortologo (logo de Ortografía10) | `ortologo/` | `ortologo_` |
 | ⚡ Power | `power/` | `power_` |
 | 🧠 GIA | `gia/` (rutina horaria: `gia/RUTINA.md`) | `gia_` |
+| 🏆 Logros | `logros/` | `logros_` |
 
 (Actualiza esta tabla al añadir una app nueva.)
 
