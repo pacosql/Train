@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Logros</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#c8901a" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Logros" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #f6f2e9;
+      --surface: #ffffff;
+      --surface-2: #efe9dc;
+      --text: #1f1a10;
+      --text-2: #6c6454;
+      --line: #e3dccb;
+      --gold: #c8901a;
+      --gold-2: #f6dc9b;
+      --green: #1f8a57;
+      --red: #c8473b;
+      --red-2: #f6d3cf;
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #14110b;
+        --surface: #1f1a11;
+        --surface-2: #2b2418;
+        --text: #f3ecdc;
+        --text-2: #a69c86;
+        --line: #352d1f;
+        --gold: #f0b830;
+        --gold-2: #4a3a14;
+        --green: #4cc58a;
+        --red: #ef7b6f;
+        --red-2: #4a221d;
+      }
+    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body { margin: 0; background: var(--bg); color: var(--text); }
+    body {
+      font: 16px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      padding: calc(var(--safe-top) + 12px) 16px calc(var(--safe-bottom) + 150px);
+      max-width: 640px; margin: 0 auto;
+    }
+    button, input, textarea, select { font: inherit; color: inherit; }
+    button { cursor: pointer; }
+    .hidden { display: none !important; }
+    header { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: 4px 0 14px; }
+    header h1 { margin: 0; font-size: 26px; letter-spacing: -0.02em; }
+    header .sum { color: var(--text-2); font-size: 14px; text-align: right; }
+    header .sum b { color: var(--gold); font-variant-numeric: tabular-nums; }
+
+    .day { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; margin-bottom: 12px; overflow: hidden; }
+    .day.target { border-color: var(--gold); box-shadow: 0 0 0 2px var(--gold-2); }
+    .day-h { display: flex; align-items: center; gap: 10px; padding: 12px 12px 8px 14px; }
+    .day-h .d { flex: 1; min-width: 0; }
+    .day-h .d b { font-size: 17px; }
+    .day-h .d span { color: var(--text-2); font-size: 14px; margin-left: 6px; }
+    .day-h .t { color: var(--gold); font-weight: 700; font-variant-numeric: tabular-nums; font-size: 15px; white-space: nowrap; }
+    .day-h .add { border: 0; background: var(--surface-2); width: 34px; height: 34px; border-radius: 50%; font-size: 20px; line-height: 1; flex: none; }
+    .empty-day { color: var(--text-2); font-size: 14px; padding: 0 14px 14px; }
+    .item { border-top: 1px solid var(--line); }
+    .item-r { display: flex; align-items: center; gap: 10px; padding: 11px 14px; width: 100%; border: 0; background: none; text-align: left; }
+    .item-r .ic { flex: none; width: 22px; text-align: center; }
+    .item-r .ti { flex: 1; min-width: 0; font-weight: 600; }
+    .item.fail .ti { color: var(--red); }
+    .item-r .mi { color: var(--text-2); font-size: 14px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .item-x { padding: 0 14px 12px 46px; color: var(--text-2); font-size: 14px; }
+    .item-x p { margin: 0 0 8px; white-space: pre-wrap; }
+    .item-x .acts { display: flex; gap: 8px; }
+    .chipbtn { border: 1px solid var(--line); background: var(--surface-2); border-radius: 999px; padding: 6px 12px; font-size: 14px; }
+    .more { display: block; margin: 8px auto 0; }
+    .muted { color: var(--text-2); font-size: 14px; }
+    .msg { text-align: center; padding: 24px 8px; color: var(--text-2); }
+
+    /* Barra de abajo: micro + texto */
+    .bar {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 10;
+      background: color-mix(in srgb, var(--bg) 88%, transparent);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border-top: 1px solid var(--line);
+      padding: 8px 12px calc(var(--safe-bottom) + 10px);
+    }
+    .bar-in { max-width: 640px; margin: 0 auto; }
+    .target-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 14px; color: var(--text-2); }
+    .target-row label { position: relative; display: inline-flex; align-items: center; gap: 4px; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 4px 12px; color: var(--text); font-weight: 600; }
+    .target-row input[type=date] { position: absolute; inset: 0; opacity: 0; width: 100%; }
+    .compose { display: flex; gap: 8px; align-items: flex-end; }
+    .compose textarea {
+      flex: 1; min-width: 0; resize: none; border: 1px solid var(--line); background: var(--surface);
+      border-radius: 22px; padding: 11px 16px; max-height: 140px; min-height: 46px; line-height: 1.35;
+    }
+    .compose textarea:focus { outline: 2px solid var(--gold); outline-offset: -1px; }
+    .mic, .send { flex: none; width: 52px; height: 46px; border-radius: 23px; border: 0; font-size: 22px; }
+    .mic { background: var(--gold); color: #fff; width: 60px; }
+    .mic.on { background: var(--red); animation: pulse 1.2s infinite; }
+    .send { background: var(--surface-2); }
+    @keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--red) 50%, transparent); } 50% { box-shadow: 0 0 0 10px transparent; } }
+    .interim { font-size: 14px; color: var(--text-2); font-style: italic; margin: 0 4px 6px; min-height: 0; }
+
+    /* Hojas (vista previa y edición) */
+    .sheet-bg { position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 20; display: flex; align-items: flex-end; justify-content: center; }
+    .sheet {
+      background: var(--bg); width: 100%; max-width: 640px; max-height: 92vh; overflow: auto;
+      border-radius: 20px 20px 0 0; padding: 18px 16px calc(var(--safe-bottom) + 16px);
+    }
+    .sheet h3 { margin: 0 0 4px; font-size: 20px; }
+    .field { margin: 12px 0; }
+    .field > label { display: block; font-size: 13px; color: var(--text-2); margin-bottom: 4px; font-weight: 600; }
+    .field input, .field textarea { width: 100%; border: 1px solid var(--line); background: var(--surface); border-radius: 12px; padding: 10px 12px; }
+    .field textarea { min-height: 80px; resize: vertical; }
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .seg { display: flex; background: var(--surface-2); border-radius: 12px; padding: 3px; }
+    .seg button { flex: 1; border: 0; background: none; border-radius: 9px; padding: 8px; font-weight: 600; color: var(--text-2); }
+    .seg button.on { background: var(--surface); color: var(--text); box-shadow: 0 1px 2px rgba(0,0,0,.12); }
+    .actions { display: flex; gap: 10px; margin-top: 16px; }
+    .btn { flex: 1; border: 0; border-radius: 14px; padding: 13px; font-weight: 700; background: var(--gold); color: #fff; }
+    .btn.ghost { background: var(--surface-2); color: var(--text); }
+    .btn.danger { background: none; color: var(--red); flex: none; padding: 13px 8px; }
+    .pv { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 10px; margin: 8px 0; }
+    .pv.off { opacity: .45; }
+    .pv-top { display: flex; gap: 8px; align-items: center; }
+    .pv-top input.t { flex: 1; min-width: 0; border: 0; background: none; font-weight: 600; padding: 4px 2px; }
+    .pv-sub input.m { width: 84px; border: 1px solid var(--line); background: var(--surface-2); border-radius: 10px; padding: 6px 8px; text-align: center; font-size: 14px; }
+    .pv-sub { display: flex; gap: 8px; align-items: center; margin: 6px 0 0 28px; }
+    .pv-top .k { border: 0; background: none; font-size: 20px; padding: 2px; flex: none; }
+    .pv-top input[type=checkbox] { width: 20px; height: 20px; accent-color: var(--gold); flex: none; }
+    .build-id { text-align: center; color: var(--text-2); font-size: 11px; opacity: .6; margin-top: 20px; }
+    .toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(var(--safe-bottom) + 130px); background: var(--text); color: var(--bg); padding: 10px 16px; border-radius: 999px; font-size: 14px; z-index: 30; max-width: 90vw; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🏆 Logros</h1>
+    <div class="sum" id="sum"></div>
+  </header>
+
+  <div id="feed"><div class="msg">Cargando…</div></div>
+  <button class="chipbtn more hidden" id="more">Ver días anteriores</button>
+  <div class="build-id">build __BUILD_ID__</div>
+
+  <div class="bar">
+    <div class="bar-in">
+      <div class="interim hidden" id="interim"></div>
+      <div class="target-row">
+        Apuntar en
+        <label>📅 <span id="targetLabel">hoy</span> ▾<input type="date" id="targetDate" /></label>
+        <button class="chipbtn hidden" id="targetReset">volver a hoy</button>
+      </div>
+      <div class="compose">
+        <button class="mic" id="mic" aria-label="Dictar">🎤</button>
+        <textarea id="txt" rows="1" placeholder="¿Qué has hecho? p. ej. «he ido 1 hora al gimnasio y he aplicado a 10 ofertas»"></textarea>
+        <button class="send" id="send" aria-label="Apuntar">➤</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vista previa de lo entendido -->
+  <div class="sheet-bg hidden" id="pvBg">
+    <div class="sheet">
+      <h3>¿Apunto esto?</h3>
+      <div class="muted" id="pvDate"></div>
+      <div id="pvList"></div>
+      <button class="chipbtn" id="pvAdd">＋ Otra línea</button>
+      <div class="actions">
+        <button class="btn ghost" id="pvCancel">Cancelar</button>
+        <button class="btn" id="pvSave">Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Editar una entrada -->
+  <div class="sheet-bg hidden" id="edBg">
+    <form class="sheet" id="ed" autocomplete="off">
+      <h3 id="edTitle">Editar</h3>
+      <div class="field">
+        <label>Título (breve)</label>
+        <input id="edT" maxlength="90" required />
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label>Tiempo</label>
+          <input id="edM" placeholder="1h30, 45 min…" />
+        </div>
+        <div class="field">
+          <label>Día</label>
+          <input id="edD" type="date" required />
+        </div>
+      </div>
+      <div class="field">
+        <div class="seg" id="edK">
+          <button type="button" data-k="logro">✅ Logro</button>
+          <button type="button" data-k="fracaso">❌ Fracaso</button>
+        </div>
+      </div>
+      <div class="field">
+        <label>Descripción (opcional)</label>
+        <textarea id="edX"></textarea>
+      </div>
+      <div class="actions">
+        <button type="button" class="btn danger" id="edDel">Borrar</button>
+        <button type="button" class="btn ghost" id="edCancel">Cancelar</button>
+        <button type="submit" class="btn">Guardar</button>
+      </div>
+    </form>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="config.js"></script>
+  <script src="parse.js"></script>
+  <script>
+    const C = window.LOGROS_CONFIG;
+    const T = C.tablePrefix + "entradas";
+    const sb = window.supabase.createClient(C.url, C.anonKey);
+    const P = window.LogrosParse;
+    const $ = (id) => document.getElementById(id);
+    const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+    // ---------- Fechas ----------
+    const iso = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+    const fromIso = (s) => { const [y, m, d] = s.split("-").map(Number); return new Date(y, m - 1, d); };
+    const todayIso = () => iso(new Date());
+    const addDays = (s, n) => { const d = fromIso(s); d.setDate(d.getDate() + n); return iso(d); };
+    function dayName(s) {
+      const t = todayIso();
+      if (s === t) return "Hoy";
+      if (s === addDays(t, -1)) return "Ayer";
+      const w = fromIso(s).toLocaleDateString("es-ES", { weekday: "long" });
+      return w.charAt(0).toUpperCase() + w.slice(1);
+    }
+    const dayDate = (s) => fromIso(s).toLocaleDateString("es-ES", { day: "numeric", month: "short", year: fromIso(s).getFullYear() === new Date().getFullYear() ? undefined : "numeric" });
+
+    // ---------- Estado ----------
+    const PAGE = 500;
+    const LS = "logros_cache_v1";
+    let entries = [];
+    let loadedAll = false;
+    let target = todayIso();
+    const open = new Set();
+    try { entries = JSON.parse(localStorage.getItem(LS) || "[]"); } catch (e) {}
+
+    function toast(msg) {
+      const t = document.createElement("div");
+      t.className = "toast"; t.textContent = msg;
+      document.body.appendChild(t);
+      setTimeout(() => t.remove(), 2600);
+    }
+
+    async function load(more = false) {
+      const from = more ? entries.length : 0;
+      const { data, error } = await sb.from(T).select("*")
+        .order("fecha", { ascending: false }).order("created_at", { ascending: true })
+        .range(from, from + PAGE - 1);
+      if (error) { if (!entries.length) $("feed").innerHTML = `<div class="msg">No se pudo cargar: ${esc(error.message)}</div>`; else toast("Sin conexión: mostrando lo guardado"); return; }
+      entries = more ? entries.concat(data) : data;
+      loadedAll = data.length < PAGE;
+      try { localStorage.setItem(LS, JSON.stringify(entries.slice(0, 1500))); } catch (e) {}
+      render();
+    }
+
+    function render() {
+      const byDay = new Map();
+      for (const e of entries) {
+        if (!byDay.has(e.fecha)) byDay.set(e.fecha, []);
+        byDay.get(e.fecha).push(e);
+      }
+      // Hoy y el día elegido siempre aparecen, aunque estén vacíos.
+      for (const d of [todayIso(), target]) if (!byDay.has(d)) byDay.set(d, []);
+      const days = [...byDay.keys()].sort().reverse();
+
+      // Cabecera: resumen de hoy y de la semana.
+      const t = todayIso(), wk = addDays(t, -6);
+      const sumMin = (f) => entries.filter(f).reduce((a, e) => a + (e.minutos || 0), 0);
+      const nToday = entries.filter((e) => e.fecha === t && e.tipo === "logro").length;
+      $("sum").innerHTML = `Hoy <b>${nToday}</b> logro${nToday === 1 ? "" : "s"} · <b>${P.fmtMinutes(sumMin((e) => e.fecha === t && e.tipo === "logro")) || "0 min"}</b><br>7 días · <b>${P.fmtMinutes(sumMin((e) => e.fecha >= wk && e.fecha <= t && e.tipo === "logro")) || "0 min"}</b>`;
+
+      $("feed").innerHTML = days.map((d) => {
+        const list = byDay.get(d);
+        const mins = list.filter((e) => e.tipo === "logro").reduce((a, e) => a + (e.minutos || 0), 0);
+        const items = list.map((e) => {
+          const isOpen = open.has(e.id);
+          return `<div class="item ${e.tipo === "fracaso" ? "fail" : ""}" data-id="${e.id}">
+            <button class="item-r" data-toggle="${e.id}">
+              <span class="ic">${e.tipo === "fracaso" ? "❌" : "✅"}</span>
+              <span class="ti">${esc(e.titulo)}</span>
+              <span class="mi">${esc(P.fmtMinutes(e.minutos))}</span>
+            </button>
+            ${isOpen ? `<div class="item-x">${e.descripcion ? `<p>${esc(e.descripcion)}</p>` : `<p><i>Sin descripción</i></p>`}
+              <div class="acts"><button class="chipbtn" data-edit="${e.id}">✏️ Editar</button></div></div>` : ""}
+          </div>`;
+        }).join("");
+        return `<section class="day ${d === target ? "target" : ""}" data-day="${d}">
+          <div class="day-h">
+            <div class="d"><b>${dayName(d)}</b><span>${dayDate(d)}</span></div>
+            ${mins ? `<div class="t">${P.fmtMinutes(mins)}</div>` : ""}
+            <button class="add" data-add="${d}" aria-label="Añadir a este día">＋</button>
+          </div>
+          ${items || `<div class="empty-day">Nada todavía. Pulsa 🎤 y cuéntame qué has hecho.</div>`}
+        </section>`;
+      }).join("");
+      $("more").classList.toggle("hidden", loadedAll);
+    }
+
+    // ---------- Día de destino ----------
+    function setTarget(d) {
+      target = d || todayIso();
+      $("targetDate").value = target;
+      $("targetLabel").textContent = target === todayIso() ? "hoy" : `${dayName(target).toLowerCase()} ${dayDate(target)}`;
+      $("targetReset").classList.toggle("hidden", target === todayIso());
+      render();
+    }
+    $("targetDate").addEventListener("change", (e) => {
+      const v = e.target.value;
+      if (v && v > todayIso()) { toast("Ese día aún no ha llegado"); setTarget(todayIso()); return; }
+      setTarget(v);
+    });
+    $("targetReset").onclick = () => setTarget(todayIso());
+
+    // ---------- Feed: clics ----------
+    $("feed").addEventListener("click", (ev) => {
+      const b = ev.target.closest("button");
+      if (!b) return;
+      if (b.dataset.toggle) {
+        const id = +b.dataset.toggle;
+        open.has(id) ? open.delete(id) : open.add(id);
+        render();
+      } else if (b.dataset.edit) {
+        openEditor(entries.find((e) => e.id === +b.dataset.edit));
+      } else if (b.dataset.add) {
+        setTarget(b.dataset.add);
+        $("txt").focus();
+      }
+    });
+    $("more").onclick = () => load(true);
+
+    // ---------- Texto / voz → vista previa ----------
+    let pv = [];
+    let pvDate = target;
+    function autoGrow() { const t = $("txt"); t.style.height = "auto"; t.style.height = Math.min(t.scrollHeight, 140) + "px"; }
+    $("txt").addEventListener("input", autoGrow);
+    $("txt").addEventListener("keydown", (e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); submitText(); } });
+    $("send").onclick = submitText;
+
+    function submitText() {
+      const text = $("txt").value.trim();
+      if (!text) { $("txt").focus(); return; }
+      const r = P.parse(text, new Date());
+      // "ayer" / "el lunes" en la frase manda sobre el día elegido.
+      pvDate = r.fecha ? iso(r.fecha) : target;
+      pv = r.items.length ? r.items : [{ titulo: text.slice(0, 90), minutos: null, tipo: "logro", descripcion: text }];
+      pv.forEach((i) => (i.on = true));
+      showPreview();
+    }
+
+    function showPreview() {
+      $("pvDate").textContent = `Para ${dayName(pvDate).toLowerCase()}, ${dayDate(pvDate)} · toca para corregir`;
+      $("pvList").innerHTML = pv.map((i, n) => `<div class="pv ${i.on ? "" : "off"}" data-n="${n}">
+        <div class="pv-top">
+          <input type="checkbox" ${i.on ? "checked" : ""} data-f="on" />
+          <input class="t" value="${esc(i.titulo)}" data-f="titulo" maxlength="90" placeholder="Título" />
+        </div>
+        <div class="pv-sub">
+          <button class="chipbtn" data-f="tipo">${i.tipo === "fracaso" ? "❌ Fracaso" : "✅ Logro"}</button>
+          <input class="m" value="${esc(P.fmtMinutes(i.minutos))}" data-f="min" placeholder="⏱ tiempo" />
+        </div>
+      </div>`).join("");
+      $("pvBg").classList.remove("hidden");
+    }
+    $("pvList").addEventListener("input", (e) => {
+      const box = e.target.closest(".pv"); if (!box) return;
+      const i = pv[+box.dataset.n], f = e.target.dataset.f;
+      if (f === "titulo") i.titulo = e.target.value;
+      if (f === "min") i.minRaw = e.target.value;
+      if (f === "on") { i.on = e.target.checked; box.classList.toggle("off", !i.on); }
+    });
+    $("pvList").addEventListener("click", (e) => {
+      const b = e.target.closest("button[data-f=tipo]"); if (!b) return;
+      const i = pv[+b.closest(".pv").dataset.n];
+      i.tipo = i.tipo === "fracaso" ? "logro" : "fracaso";
+      b.textContent = i.tipo === "fracaso" ? "❌ Fracaso" : "✅ Logro";
+    });
+    $("pvAdd").onclick = () => { pv.push({ titulo: "", minutos: null, tipo: "logro", descripcion: "", on: true }); showPreview(); const ins = $("pvList").querySelectorAll("input.t"); ins[ins.length - 1].focus(); };
+    $("pvCancel").onclick = () => $("pvBg").classList.add("hidden");
+    $("pvSave").onclick = async () => {
+      const rows = pv.filter((i) => i.on && i.titulo.trim()).map((i) => ({
+        fecha: pvDate,
+        titulo: i.titulo.trim(),
+        minutos: i.minRaw !== undefined ? P.parseMinutes(i.minRaw) : i.minutos,
+        tipo: i.tipo,
+        descripcion: i.descripcion || "",
+      }));
+      if (!rows.length) { $("pvBg").classList.add("hidden"); return; }
+      $("pvSave").disabled = true;
+      const { data, error } = await sb.from(T).insert(rows).select();
+      $("pvSave").disabled = false;
+      if (error) { toast("No se pudo guardar: " + error.message); return; }
+      entries = entries.concat(data);
+      $("pvBg").classList.add("hidden");
+      $("txt").value = ""; autoGrow();
+      if (pvDate !== target) setTarget(pvDate); else render();
+      try { localStorage.setItem(LS, JSON.stringify(entries.slice(0, 1500))); } catch (e) {}
+      const n = rows.filter((r) => r.tipo === "logro").length;
+      toast(n ? `🏆 ${n} logro${n === 1 ? "" : "s"} apuntado${n === 1 ? "" : "s"}` : "Apuntado");
+      document.querySelector(`.day[data-day="${pvDate}"]`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    };
+
+    // ---------- Dictado ----------
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    let rec = null, listening = false, baseText = "", finalText = "";
+    $("mic").onclick = () => {
+      if (!SR) { toast("Tu navegador no tiene dictado aquí: usa el 🎤 del teclado"); $("txt").focus(); return; }
+      listening ? stopRec() : startRec();
+    };
+    function startRec() {
+      rec = new SR();
+      rec.lang = "es-ES"; rec.continuous = true; rec.interimResults = true;
+      baseText = $("txt").value.trim(); finalText = "";
+      rec.onresult = (e) => {
+        let interim = "";
+        for (let i = e.resultIndex; i < e.results.length; i++) {
+          const r = e.results[i];
+          if (r.isFinal) finalText += (finalText ? " " : "") + r[0].transcript.trim();
+          else interim += r[0].transcript;
+        }
+        $("txt").value = [baseText, finalText].filter(Boolean).join(" "); autoGrow();
+        $("interim").textContent = interim; $("interim").classList.toggle("hidden", !interim);
+      };
+      rec.onerror = (e) => { if (e.error === "not-allowed") toast("Permite el micrófono para dictar"); else if (e.error !== "no-speech" && e.error !== "aborted") toast("Dictado: " + e.error); };
+      rec.onend = () => {
+        const wasListening = listening;
+        listening = false; $("mic").classList.remove("on"); $("mic").textContent = "🎤";
+        $("interim").classList.add("hidden");
+        if (wasListening && $("txt").value.trim()) submitText();
+      };
+      rec.start(); listening = true;
+      $("mic").classList.add("on"); $("mic").textContent = "■";
+    }
+    function stopRec() { if (rec) rec.stop(); }
+
+    // ---------- Editor ----------
+    let editing = null, edKind = "logro";
+    function setKind(k) { edKind = k; [...$("edK").children].forEach((b) => b.classList.toggle("on", b.dataset.k === k)); }
+    $("edK").onclick = (e) => { const b = e.target.closest("button"); if (b) setKind(b.dataset.k); };
+    function openEditor(e) {
+      editing = e;
+      $("edT").value = e.titulo; $("edM").value = P.fmtMinutes(e.minutos);
+      $("edD").value = e.fecha; $("edD").max = todayIso(); $("edX").value = e.descripcion || "";
+      setKind(e.tipo);
+      $("edBg").classList.remove("hidden");
+    }
+    const closeEd = () => $("edBg").classList.add("hidden");
+    $("edCancel").onclick = closeEd;
+    $("ed").onsubmit = async (ev) => {
+      ev.preventDefault();
+      const patch = { titulo: $("edT").value.trim(), minutos: P.parseMinutes($("edM").value), fecha: $("edD").value, tipo: edKind, descripcion: $("edX").value.trim() };
+      if (!patch.titulo) return;
+      if ($("edM").value.trim() && patch.minutos == null) { toast("No entiendo ese tiempo (prueba 1h30 o 45 min)"); return; }
+      const { data, error } = await sb.from(T).update(patch).eq("id", editing.id).select().single();
+      if (error) { toast("No se pudo guardar: " + error.message); return; }
+      entries = entries.map((e) => (e.id === data.id ? data : e));
+      closeEd(); render();
+    };
+    $("edDel").onclick = async () => {
+      if (!confirm(`¿Borrar «${editing.titulo}»?`)) return;
+      const { error } = await sb.from(T).delete().eq("id", editing.id);
+      if (error) { toast("No se pudo borrar: " + error.message); return; }
+      entries = entries.filter((e) => e.id !== editing.id);
+      closeEd(); render();
+    };
+    for (const bg of ["pvBg", "edBg"]) $(bg).addEventListener("click", (e) => { if (e.target.id === bg) $(bg).classList.add("hidden"); });
+
+    // ---------- Arranque ----------
+    setTarget(todayIso());
+    load();
+    document.addEventListener("visibilitychange", () => { if (!document.hidden) { if (target < todayIso() && $("targetReset").classList.contains("hidden")) setTarget(todayIso()); load(); } });
+
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+      navigator.serviceWorker.addEventListener("message", (e) => {
+        if (e.data && e.data.type === "new-version" && $("pvBg").classList.contains("hidden") && $("edBg").classList.contains("hidden") && !$("txt").value) location.reload();
+      });
+    }
+  </script>
+</body>
+</html>
