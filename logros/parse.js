@@ -102,7 +102,8 @@
       }
     }
     t = t
-      .replace(/^\s*(?:empezado|comenzado|puesto)\s+a\s+(?:preparar(?:me)?|estudiar)\s+(?:para\s+)?(?:la|el|las|los)?\s*/i, "Preparar ")
+      .replace(/^\s*(?:empezado|comenzado|puesto)\s+a\s+preparar(?:me)?\s+(?:para\s+)?(?:la|el|las|los)?\s*/i, "Preparar ")
+      .replace(/^\s*(?:empezado|comenzado|puesto)\s+a\s+/i, " ")
       .replace(/^\s*(?:preparado|preparándome|preparandome)\s+(?:para\s+)?(?:la|el|las|los)?\s*/i, "Preparar ")
       .replace(/^\s*(?:a|al|en)\s+(?:el\s+|la\s+)?/i, " ")
       .replace(/\s+/g, " ")
@@ -133,7 +134,7 @@
   function split(text) {
     return text
       .replace(/(\d),(\d)/g, "$1\u0001$2")
-      .split(/[.;\n]+|,|\s+(?:y|e)\s+(?=(?:hoy|ayer|también|además|luego|después|he|me|no|fui|estuve|hice|tuve|terminé|acabé|empecé|aplicé|comí|dormí|leí|estudié|entrené|corrí|salí)\b)|\s+(?:y\s+)?(?:también|además|luego|después)\s+(?=\S)/i)
+      .split(/[.;\n]+|,|\s+(?:y|e)\s+(?=(?:hoy|ayer|también|además|luego|después|he|me|no|fui|estuve|hice|tuve|terminé|acabé|empecé|aplicé|comí|dormí|leí|estudié|entrené|corrí|salí)(?!\p{L}))|\s+(?:y\s+)?(?:también|además|luego|después)\s+(?=\S)|(?<!\b(?:no|me|se|lo|la|le|que|ya))\s+(?=(?:me\s+|no\s+(?:me\s+)?)?he\s+\p{L}*(?:ado|ido|ído|to|cho|sto|elto|ierto)(?!\p{L}))/iu)
       .map((s) => s.replace(/\u0001/g, ",").trim())
       .filter((s) => s.replace(/[^\p{L}\d]/gu, "").length > 1);
   }

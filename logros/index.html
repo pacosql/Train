@@ -133,6 +133,9 @@
     .pv-sub { display: flex; gap: 8px; align-items: center; margin: 6px 0 0 28px; }
     .pv-top .k { border: 0; background: none; font-size: 20px; padding: 2px; flex: none; }
     .pv-top input[type=checkbox] { width: 20px; height: 20px; accent-color: var(--gold); flex: none; }
+    .pvbtns { display: flex; gap: 8px; flex-wrap: wrap; }
+    #pvMic.on { background: var(--red); color: #fff; border-color: var(--red); }
+    #pvLive { font-style: italic; margin: 6px 2px 10px; }
     .build-id { text-align: center; color: var(--text-2); font-size: 11px; opacity: .6; margin-top: 20px; }
     .toast { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(var(--safe-bottom) + 130px); background: var(--text); color: var(--bg); padding: 10px 16px; border-radius: 999px; font-size: 14px; z-index: 30; max-width: 90vw; }
   </style>
@@ -149,7 +152,7 @@
 
   <div class="bar">
     <div class="bar-in">
-      <div class="interim hidden" id="interim"></div>
+      <div class="interim hidden" id="micHint">🔴 Te escucho… di todo lo que hayas hecho, con pausas si quieres, y pulsa ■ al acabar.</div>
       <div class="target-row">
         Apuntar en
         <label>📅 <span id="targetLabel">hoy</span> ▾<input type="date" id="targetDate" /></label>
@@ -169,7 +172,11 @@
       <h3>¿Apunto esto?</h3>
       <div class="muted" id="pvDate"></div>
       <div id="pvList"></div>
-      <button class="chipbtn" id="pvAdd">＋ Otra línea</button>
+      <div class="muted hidden" id="pvLive"></div>
+      <div class="pvbtns">
+        <button class="chipbtn" id="pvMic">🎤 Dictar más</button>
+        <button class="chipbtn" id="pvAdd">＋ Otra línea</button>
+      </div>
       <div class="actions">
         <button class="btn ghost" id="pvCancel">Cancelar</button>
         <button class="btn" id="pvSave">Guardar</button>
@@ -388,8 +395,9 @@
       b.textContent = i.tipo === "fracaso" ? "❌ Fracaso" : "✅ Logro";
     });
     $("pvAdd").onclick = () => { pv.push({ titulo: "", minutos: null, tipo: "logro", descripcion: "", on: true }); showPreview(); const ins = $("pvList").querySelectorAll("input.t"); ins[ins.length - 1].focus(); };
-    $("pvCancel").onclick = () => $("pvBg").classList.add("hidden");
+    $("pvCancel").onclick = () => { if (want) { want = false; try { rec && rec.abort(); } catch (e) {} rec = null; micUI(false); } $("pvBg").classList.add("hidden"); };
     $("pvSave").onclick = async () => {
+      if (want) { toast("Pulsa ■ para terminar de dictar"); return; }
       const rows = pv.filter((i) => i.on && i.titulo.trim()).map((i) => ({
         fecha: pvDate,
         titulo: i.titulo.trim(),
@@ -413,37 +421,98 @@
     };
 
     // ---------- Dictado ----------
+    // El reconocimiento del móvil se corta solo en cada pausa (y en Android
+    // "continuous" duplica frases), así que escuchamos en tandas cortas y
+    // las encadenamos hasta que pulses ■. Cada tanda es una instancia nueva:
+    // reutilizar la anterior es lo que hacía fallar la segunda grabación.
     const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    let rec = null, listening = false, baseText = "", finalText = "";
-    $("mic").onclick = () => {
-      if (!SR) { toast("Tu navegador no tiene dictado aquí: usa el 🎤 del teclado"); $("txt").focus(); return; }
-      listening ? stopRec() : startRec();
-    };
-    function startRec() {
-      rec = new SR();
-      rec.lang = "es-ES"; rec.continuous = true; rec.interimResults = true;
-      baseText = $("txt").value.trim(); finalText = "";
-      rec.onresult = (e) => {
-        let interim = "";
-        for (let i = e.resultIndex; i < e.results.length; i++) {
-          const r = e.results[i];
-          if (r.isFinal) finalText += (finalText ? " " : "") + r[0].transcript.trim();
-          else interim += r[0].transcript;
-        }
-        $("txt").value = [baseText, finalText].filter(Boolean).join(" "); autoGrow();
-        $("interim").textContent = interim; $("interim").classList.toggle("hidden", !interim);
-      };
-      rec.onerror = (e) => { if (e.error === "not-allowed") toast("Permite el micrófono para dictar"); else if (e.error !== "no-speech" && e.error !== "aborted") toast("Dictado: " + e.error); };
-      rec.onend = () => {
-        const wasListening = listening;
-        listening = false; $("mic").classList.remove("on"); $("mic").textContent = "🎤";
-        $("interim").classList.add("hidden");
-        if (wasListening && $("txt").value.trim()) submitText();
-      };
-      rec.start(); listening = true;
-      $("mic").classList.add("on"); $("mic").textContent = "■";
+    const ANDROID = /android/i.test(navigator.userAgent);
+    let rec = null, want = false, acc = "", sess = "", sessInterim = "", into = "txt", startedAt = 0, endTimer = null;
+    const joinT = (...xs) => xs.map((x) => (x || "").trim()).filter(Boolean).join(" ");
+    // Entre tandas (cada pausa) ponemos coma: así cada cosa dicha es una línea.
+    const joinC = (...xs) => xs.map((x) => (x || "").trim().replace(/[,.]$/, "")).filter(Boolean).join(", ");
+
+    function micUI(on) {
+      for (const id of ["mic", "pvMic"]) { const b = $(id); b.classList.toggle("on", on); }
+      $("mic").textContent = on ? "■" : "🎤";
+      $("pvMic").textContent = on ? "■ Parar" : "🎤 Dictar más";
+      $("micHint").classList.toggle("hidden", !on);
     }
-    function stopRec() { if (rec) rec.stop(); }
+    function showLive() {
+      const live = joinC(acc, joinT(sess, sessInterim));
+      if (into === "txt") { $("txt").value = joinT(baseText, live); autoGrow(); }
+      else $("pvLive").textContent = live || "Te escucho…";
+    }
+    let baseText = "";
+    function toggleMic(where) {
+      if (!SR) { toast("Este navegador no tiene dictado: usa el 🎤 del teclado"); $("txt").focus(); return; }
+      if (want) { stopMic(); return; }
+      into = where; want = true; acc = ""; startedAt = Date.now();
+      baseText = where === "txt" ? $("txt").value.trim() : "";
+      $("pvLive").classList.toggle("hidden", where !== "pv");
+      micUI(true); showLive(); spawn();
+    }
+    function spawn() {
+      sess = ""; sessInterim = "";
+      try { if (rec) { rec.onend = rec.onresult = rec.onerror = null; rec.abort(); } } catch (e) {}
+      const r = new SR();
+      rec = r;
+      r.lang = "es-ES"; r.interimResults = true; r.continuous = !ANDROID; r.maxAlternatives = 1;
+      r.onresult = (e) => {
+        if (rec !== r) return;
+        let fin = "", inter = "";
+        for (let i = 0; i < e.results.length; i++) {
+          const t = e.results[i][0].transcript;
+          if (e.results[i].isFinal) fin = joinT(fin, t); else inter = joinT(inter, t);
+        }
+        sess = fin; sessInterim = inter; showLive();
+      };
+      r.onerror = (e) => {
+        if (rec !== r) return;
+        if (e.error === "not-allowed" || e.error === "service-not-allowed" || e.error === "audio-capture") {
+          want = false;
+          toast(e.error === "audio-capture" ? "No encuentro el micrófono" : "Permite el micrófono para dictar (ajustes del navegador)");
+        }
+        // "no-speech", "aborted", "network"… : onend vuelve a arrancar.
+      };
+      r.onend = () => {
+        if (rec !== r) return;
+        acc = joinC(acc, joinT(sess, sessInterim)); sess = ""; sessInterim = "";
+        // Seguir escuchando hasta que pulses ■ (máx. 5 min por si te olvidas).
+        if (want && Date.now() - startedAt < 5 * 60 * 1000) setTimeout(() => { if (want && rec === r) spawn(); }, 150);
+        else finish();
+      };
+      try { r.start(); }
+      catch (e) { setTimeout(() => { if (want && rec === r) { try { r.start(); } catch (e2) { want = false; finish(); toast("No pude arrancar el dictado, prueba otra vez"); } } }, 400); }
+    }
+    function stopMic() {
+      want = false;
+      const r = rec;
+      try { r && r.stop(); } catch (e) {}
+      // Por si el navegador no avisa del final (pasa en iPhone).
+      clearTimeout(endTimer);
+      endTimer = setTimeout(() => { if (rec === r) { acc = joinC(acc, joinT(sess, sessInterim)); sess = sessInterim = ""; try { r.abort(); } catch (e) {} finish(); } }, 1500);
+    }
+    function finish() {
+      clearTimeout(endTimer);
+      const r = rec; rec = null;
+      if (r) { r.onend = r.onresult = r.onerror = null; }
+      want = false; micUI(false);
+      const text = acc.trim(); acc = "";
+      if (into === "pv") {
+        $("pvLive").classList.add("hidden");
+        if (!text) return;
+        const res = P.parse(text, new Date());
+        const more = res.items.length ? res.items : [{ titulo: text.slice(0, 90), minutos: null, tipo: "logro", descripcion: text }];
+        more.forEach((i) => (i.on = true));
+        pv = pv.concat(more); showPreview();
+      } else {
+        $("txt").value = joinC(baseText, text); autoGrow();
+        if ($("txt").value.trim()) submitText();
+      }
+    }
+    $("mic").onclick = () => toggleMic("txt");
+    $("pvMic").onclick = () => toggleMic("pv");
 
     // ---------- Editor ----------
     let editing = null, edKind = "logro";
