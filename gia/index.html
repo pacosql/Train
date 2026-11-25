@@ -825,7 +825,6 @@
           ${errs.map((x) => `<div style="margin-top:10px"><b>✗ ${esc(x.q)}</b> — pusiste ${esc(x.r)}, era ${esc(x.c)}.${metodo(ult.tarea, x.it)}</div>`).join("")}
         </div>`;
       }
-      const sinFallos = ult && !ult.fallos;
       $app.innerHTML = `
         <h1>▶ Jugando <span class="muted">· ${sesion.reduce((a, r) => a + r.intentadas, 0)} preguntas</span>
           <button class="link back" id="b-stop">⏹ Parar</button></h1>
@@ -833,13 +832,9 @@
         <div class="card"><div class="muted">Siguiente</div><b style="font-size:19px">${T.emoji} ${T.nombre} · ${BLOQUE[t]} preguntas</b>
           <p style="margin:6px 0 0">${primera ? esc(T.instr) : esc(REGLA[t])}</p>
           ${primera ? `<p class="muted">Es tu primera vez con este tipo: después de la primera pregunta te explico cómo hacerla rápido de cabeza.</p>` : ""}</div>
-        <button class="big primary" id="b-go">Seguir ▶ ${sinFallos ? '<small id="auto">Sigue solo en 3 s</small>' : ""}</button>`;
-      let auto = null;
-      const fin = (v) => { clearInterval(auto); res(v); };
-      if (sinFallos) {
-        let n = 3;
-        auto = setInterval(() => { n--; const a = document.getElementById("auto"); if (a) a.textContent = `Sigue solo en ${n} s`; if (n <= 0) fin(true); }, 1000);
-      }
+        <button class="big primary" id="b-go">Continuar ▶</button>`;
+      // Nunca avanza solo: espera a que pulses Continuar (para poder leer los fallos).
+      const fin = (v) => { LOG("bloque_continuar", { seguir: v, tarea: t }); res(v); };
       $app.querySelector("#b-go").onclick = () => fin(true);
       $app.querySelector("#b-stop").onclick = () => fin(false);
       window.scrollTo(0, 0);
@@ -926,7 +921,8 @@
       document.querySelector(".timer").style.visibility = clock.style.visibility = p.dur && !ajustes().reloj ? "hidden" : "visible";
       if (p.dur) {
         JUEGO.timer = setInterval(() => {
-          const el = (performance.now() - JUEGO.t0) / 1000, rest = p.dur - el;
+          if (JUEGO.enPausa) return; // leyendo un fallo: el reloj no corre
+          const el = (performance.now() - JUEGO.t0 - (JUEGO.pausado || 0)) / 1000, rest = p.dur - el;
           bar.style.width = `${Math.max(0, (rest / p.dur) * 100)}%`;
           clock.textContent = fmt(rest);
           if (rest <= 0) terminarJuego(false, "tiempo");
@@ -1002,12 +998,19 @@
       const fb = document.getElementById("fb");
       if (fb) { fb.className = `feedback ${ok ? "ok" : "ko"}`; fb.textContent = ok ? `✓ Correcto${J.p.aprender || J.p.practica ? " · " + it.expl : ""}` : `✗ ${it.expl}`; }
       $stage.querySelectorAll(".gbtn").forEach((b) => (b.disabled = true));
-      const espera = J.p.aprender || J.p.practica ? (ok ? 1100 : 2600) : ok ? 250 : 1400;
-      if (J.p.aprender || J.p.practica) {
-        // Sin reloj: pulsar para continuar o esperar.
-        const t = setTimeout(siguiente, espera);
+      if (!ok) {
+        // Fallo: no avanza solo. Se para el reloj hasta que pulses Continuar.
+        J.enPausa = performance.now();
+        if (fb) fb.insertAdjacentHTML("afterend", `<button class="big primary" id="b-cont" style="max-width:320px">Continuar ▶</button>`);
+        document.getElementById("b-cont").onclick = (ev) => {
+          ev.stopPropagation();
+          J.pausado = (J.pausado || 0) + (performance.now() - J.enPausa); J.enPausa = null;
+          siguiente();
+        };
+      } else if (J.p.aprender || J.p.practica) {
+        const t = setTimeout(siguiente, 1100);
         $stage.onclick = () => { clearTimeout(t); $stage.onclick = null; siguiente(); };
-      } else setTimeout(siguiente, espera);
+      } else setTimeout(siguiente, 250);
     } else siguiente();
   }
 
