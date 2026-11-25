@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Ortografía10 · Parte 2: afinar el logotipo</title>
+  <meta name="theme-color" content="#141839" />
+  <link rel="icon" href="icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <link rel="stylesheet" href="fonts/poppins.css" />
+  <style>
+    :root { --tinta: #141413; --gris: #6b6a66; --linea: #e6e4dd; --papel: #f6f2ea; --fondo: #f3f2ee; }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html { -webkit-text-size-adjust: 100%; }
+    body { margin: 0; background: var(--fondo); color: var(--tinta); font-family: "Poppins", system-ui, sans-serif; font-size: 14px; }
+    button { font: inherit; color: inherit; cursor: pointer; }
+    a { color: inherit; }
+    header { position: sticky; top: 0; z-index: 10; background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(6px); border-bottom: 1px solid var(--linea); }
+    header .in { max-width: 1440px; margin: 0 auto; padding: 10px 16px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; }
+    header h1 { font-size: 1.05rem; margin: 0; font-weight: 800; letter-spacing: -0.01em; }
+    header h1 span { font-weight: 500; color: var(--gris); }
+    .partes { display: flex; gap: 4px; background: var(--fondo); border-radius: 999px; padding: 3px; }
+    .partes a { text-decoration: none; padding: 6px 12px; border-radius: 999px; font-size: 0.8rem; font-weight: 600; color: var(--gris); }
+    .partes a.on { background: var(--tinta); color: #fff; }
+    .tabs { display: flex; gap: 6px; margin-left: auto; flex-wrap: wrap; }
+    .tabs button { border: 1px solid var(--linea); background: #fff; border-radius: 999px; padding: 7px 14px; font-weight: 600; font-size: 0.85rem; }
+    .tabs button.on { background: var(--tinta); border-color: var(--tinta); color: #fff; }
+    main { max-width: 1440px; margin: 0 auto; padding: 16px; }
+    .vista { display: none; } .vista.on { display: block; }
+    .intro { color: var(--gris); margin: 0 0 14px; max-width: 900px; line-height: 1.5; font-size: 0.86rem; }
+
+    /* ---------- editor ---------- */
+    .editor { display: grid; grid-template-columns: 360px minmax(0, 1fr); gap: 18px; align-items: start; }
+    @media (max-width: 900px) { .editor { grid-template-columns: 1fr; } .previews { order: -1; } }
+    .panel { background: #fff; border-radius: 16px; padding: 6px 14px 14px; }
+    .ctl { padding: 10px 0; border-bottom: 1px solid var(--linea); }
+    .ctl:last-child { border-bottom: 0; }
+    .ctl > label, .ctl > .t { display: flex; justify-content: space-between; font-size: 0.74rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gris); margin-bottom: 7px; }
+    .ctl > label b, .ctl > .t b { color: var(--tinta); letter-spacing: 0; text-transform: none; font-weight: 600; }
+    .ctl input[type=range] { width: 100%; accent-color: var(--tinta); }
+    .ctl select { width: 100%; padding: 8px 10px; border-radius: 10px; border: 1px solid var(--linea); font: inherit; background: #fff; }
+    .chips { display: flex; flex-wrap: wrap; gap: 5px; }
+    .chips button { border: 1px solid var(--linea); background: #fff; border-radius: 999px; padding: 5px 11px; font-size: 0.8rem; font-weight: 500; }
+    .chips button.on { background: var(--tinta); border-color: var(--tinta); color: #fff; }
+    .pal { display: flex; flex-wrap: wrap; gap: 6px; }
+    .pal button { width: 40px; height: 40px; border-radius: 10px; border: 2px solid transparent; padding: 0; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.8rem; }
+    .pal button.on { border-color: var(--tinta); }
+    .colores { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 8px; font-size: 0.7rem; color: var(--gris); text-align: center; }
+    .colores input { width: 100%; height: 34px; border: 1px solid var(--linea); border-radius: 8px; padding: 2px; background: #fff; }
+    .acciones { display: flex; flex-wrap: wrap; gap: 6px; padding-top: 12px; }
+    .acciones button { flex: 1 1 auto; border: 1px solid var(--linea); background: #fff; border-radius: 12px; padding: 10px 8px; font-weight: 700; font-size: 0.82rem; }
+    .acciones button.primary { background: var(--tinta); border-color: var(--tinta); color: #fff; }
+    .previews { display: grid; gap: 14px; position: sticky; top: 70px; }
+    @media (max-width: 900px) { .previews { position: static; } }
+    .pv { background: #fff; border-radius: 16px; padding: 14px; }
+    .pv h3 { margin: 0 0 10px; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gris); }
+    .grande { display: flex; gap: 22px; align-items: flex-end; flex-wrap: wrap; }
+    .ic { display: block; overflow: hidden; flex: none; }
+    .ic svg { display: block; width: 100%; height: 100%; }
+    .borde { box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08); }
+    small.n { display: block; text-align: center; font-size: 0.68rem; color: var(--gris); margin-top: 4px; }
+    .home { border-radius: 20px; padding: 22px 18px 18px; background: linear-gradient(160deg, #1d2a4a, #5a6890 55%, #b48b98); display: grid; grid-template-columns: repeat(6, 60px); justify-content: space-between; row-gap: 24px; font-family: -apple-system, "SF Pro Text", Helvetica, Arial, sans-serif; }
+    .home.negro { background: #000; }
+    .home .app { width: 60px; text-align: center; color: #fff; font-size: 11px; font-weight: 500; letter-spacing: -0.01em; white-space: nowrap; }
+    .home .app .ic, .home .app i { width: 60px; height: 60px; border-radius: 22.5%; margin-bottom: 5px; }
+    .home .app i { display: flex; align-items: center; justify-content: center; font-style: normal; font-size: 26px; font-weight: 700; color: #fff; }
+    .home .app span { display: block; overflow: visible; }
+    @media (max-width: 520px) { .home { grid-template-columns: repeat(4, 60px); } .home .app:nth-child(n+9) { display: none; } }
+    .fila-pv { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+    .tabnav { border-radius: 10px; overflow: hidden; border: 1px solid #c9ccd3; font-family: "Segoe UI", system-ui, Helvetica, Arial, sans-serif; font-size: 12px; flex: 1; min-width: 260px; }
+    .tabnav .tt { background: #dfe3ee; padding: 6px 8px 0; display: flex; }
+    .tabnav .tb { background: #fff; border-radius: 8px 8px 0 0; padding: 8px 10px; display: flex; gap: 8px; align-items: center; width: 230px; }
+    .tabnav .tb span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .tabnav .url { padding: 7px 12px; color: #5f6368; display: flex; gap: 10px; align-items: center; }
+    .tabnav .url b { flex: 1; font-weight: 400; background: #f1f3f4; border-radius: 99px; padding: 4px 12px; color: #1f1f1f; }
+    .store { display: flex; gap: 12px; align-items: center; font-family: -apple-system, Helvetica, Arial, sans-serif; }
+    .store b { display: block; font-size: 15px; } .store span { color: #8a8a8e; font-size: 12px; }
+    .store em { font-style: normal; margin-left: auto; background: #0a7aff; color: #fff; font-weight: 700; border-radius: 99px; padding: 5px 16px; font-size: 13px; }
+    .ig { display: flex; gap: 14px; align-items: center; font-family: -apple-system, Helvetica, Arial, sans-serif; }
+    .ig .ring { padding: 3px; border-radius: 50%; background: conic-gradient(#feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5, #feda75); }
+    .ig .ring > div { padding: 3px; background: #fff; border-radius: 50%; }
+
+    /* ---------- explosión ---------- */
+    .exp-bar { background: #fff; border-radius: 16px; padding: 12px 14px; margin-bottom: 14px; display: grid; gap: 10px; }
+    .exp-bar .t { font-size: 0.74rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--gris); }
+    .exp-bar .base { display: flex; align-items: center; gap: 10px; font-size: 0.82rem; color: var(--gris); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(196px, 1fr)); gap: 12px; }
+    .tile { background: #fff; border-radius: 14px; padding: 10px; display: flex; flex-direction: column; gap: 8px; }
+    .tile .vistas { display: flex; align-items: flex-end; gap: 8px; min-height: 96px; }
+    .tile .vistas .ic:first-child { cursor: pointer; }
+    .tile .lab { font-size: 0.7rem; color: var(--gris); line-height: 1.3; min-height: 2.6em; }
+    .tile .bt { display: flex; gap: 5px; }
+    .tile .bt button { flex: 1; border: 1px solid var(--linea); background: #fff; border-radius: 9px; padding: 5px 0; font-size: 0.85rem; }
+    .tile .bt button.on { background: #d6453d; border-color: #d6453d; color: #fff; }
+    .tile.guardado { box-shadow: inset 0 0 0 2px #d6453d; }
+    .tamanos { display: inline-flex; gap: 4px; }
+    .vacio { background: #fff; border-radius: 16px; padding: 50px 20px; text-align: center; color: var(--gris); }
+    .toast { position: fixed; left: 50%; bottom: 18px; transform: translateX(-50%); background: var(--tinta); color: #fff; border-radius: 12px; padding: 10px 16px; font-size: 0.86rem; opacity: 0; transition: opacity 0.2s; pointer-events: none; z-index: 30; }
+    .toast.show { opacity: 1; }
+    .build { text-align: center; font-size: 0.7rem; color: #b5b3ac; padding: 10px 0 30px; }
+  </style>
+</head>
+<body>
+  <header><div class="in">
+    <h1>Ortografía10 <span>· elige el logo</span></h1>
+    <nav class="partes"><a href="./">Parte 1 · La familia</a><a href="parte2.html" class="on">Parte 2 · Afinar el logotipo</a></nav>
+    <div class="tabs" id="tabs">
+      <button type="button" data-v="editor" class="on">✏️ Editor</button>
+      <button type="button" data-v="explosion">💥 Explosión</button>
+      <button type="button" data-v="guardados">♥ Guardados <b id="n-guardados"></b></button>
+    </div>
+  </div></header>
+
+  <main>
+    <!-- EDITOR -->
+    <section class="vista on" id="v-editor">
+      <p class="intro">Parte 2: ya está elegida la familia (el nombre «Ortografía10» en bloque y alineado a la izquierda, como los nº 1968, 1941, 3467 y 3479). Aquí lo afinas: cada cambio se ve a la vez en grande, en la pantalla de inicio del móvil, en la tienda, en el avatar y en el favicon, al tamaño real.</p>
+      <div class="editor">
+        <div class="panel" id="panel"></div>
+        <div class="previews" id="previews"></div>
+      </div>
+    </section>
+
+    <!-- EXPLOSIÓN -->
+    <section class="vista" id="v-explosion">
+      <div class="exp-bar">
+        <div class="base"><span id="exp-base"></span><span>Se parte del logo que tienes en el editor y se cambian las dimensiones que marques (una o dos). Toca un icono para llevarlo al editor; ♥ para guardarlo.</span></div>
+        <div><div class="t">Qué dimensiones explotar</div><div class="chips" id="exp-dims"></div></div>
+        <div class="base"><span class="t" style="margin-right:4px">Tamaños a la vista</span><div class="chips" id="exp-tam"></div><span id="exp-n" style="margin-left:auto"></span></div>
+      </div>
+      <div class="grid" id="exp-grid"></div>
+    </section>
+
+    <!-- GUARDADOS -->
+    <section class="vista" id="v-guardados">
+      <p class="intro">Los que has guardado con ♥, del más nuevo al más antiguo. Toca uno para abrirlo en el editor.</p>
+      <div class="grid" id="g-grid"></div>
+    </section>
+  </main>
+  <div class="toast" id="toast"></div>
+  <div class="build">build __BUILD_ID__</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="config.js"></script>
+  <script>
+    // ===================== tipografías =====================
+    // Familias libres (OFL) con todos sus grosores, alojadas en fonts/p2/.
+    const FAMILIAS = {
+      "poppins": ["Poppins", [300, 400, 500, 600, 700, 800, 900]], "montserrat": ["Montserrat", [300, 400, 500, 600, 700, 800, 900]],
+      "inter": ["Inter", [300, 400, 500, 600, 700, 800, 900]], "rubik": ["Rubik", [300, 400, 500, 600, 700, 800, 900]],
+      "outfit": ["Outfit", [300, 400, 500, 600, 700, 800, 900]], "lexend": ["Lexend", [300, 400, 500, 600, 700, 800, 900]],
+      "manrope": ["Manrope", [300, 400, 500, 600, 700, 800]], "dm-sans": ["DM Sans", [300, 400, 500, 600, 700, 800, 900]],
+      "plus-jakarta-sans": ["Plus Jakarta Sans", [300, 400, 500, 600, 700, 800]], "sora": ["Sora", [300, 400, 500, 600, 700, 800]],
+      "urbanist": ["Urbanist", [300, 400, 500, 600, 700, 800, 900]], "league-spartan": ["League Spartan", [300, 400, 500, 600, 700, 800, 900]],
+      "work-sans": ["Work Sans", [300, 400, 500, 600, 700, 800, 900]], "figtree": ["Figtree", [300, 400, 500, 600, 700, 800, 900]],
+      "red-hat-display": ["Red Hat Display", [300, 400, 500, 600, 700, 800, 900]], "jost": ["Jost", [300, 400, 500, 600, 700, 800, 900]],
+      "nunito": ["Nunito", [300, 400, 500, 600, 700, 800, 900]], "space-grotesk": ["Space Grotesk", [300, 400, 500, 600, 700]],
+    };
+    const css = Object.entries(FAMILIAS).flatMap(([k, [, ws]]) => ws.map((w) => `@font-face{font-family:"P2-${k}";font-weight:${w};font-display:block;src:url(fonts/p2/${k}-${w}.woff2) format("woff2")}`)).join("");
+    document.head.insertAdjacentHTML("beforeend", `<style>${css}</style>`);
+    const pesoValido = (fam, w) => { const ws = FAMILIAS[fam][1]; return ws.reduce((a, b) => (Math.abs(b - w) < Math.abs(a - w) ? b : a)); };
+    const cargadas = new Set();
+    async function cargar(specs) {
+      const pend = [];
+      for (const s of specs) for (const w of [s.w, s.w10]) { const k = `${s.font}|${pesoValido(s.font, w)}`; if (!cargadas.has(k)) { cargadas.add(k); pend.push(document.fonts.load(`${pesoValido(s.font, w)} 50px "P2-${s.font}"`, "Ortografía10ORTOGRAFÍA")); } }
+      if (pend.length) await Promise.all(pend).catch(() => {});
+    }
+
+    // ===================== el logo: medida y dibujo =====================
+    // Todo se mide con canvas (tinta real de los glifos) para encajar el bloque
+    // en el icono con el mismo margen sea cual sea la letra.
+    const BASE = { font: "poppins", w: 600, w10: 600, caseO: "Orto", caseG: "grafía", sO: 0.56, s10: 0.56, pos10: "debajo", gap: 0.2, track: -0.01,
+      acc: "tilde", fondo: "#141839", tinta: "#FECB3B", acento: "#E8443A", color10: "tinta", margen: 0.17, sitio: "centro" };
+    const PALETAS = [["#141839", "#FECB3B", "#E8443A"], ["#FECB3B", "#141839", "#E8443A"], ["#111111", "#FECB3B", "#E8443A"], ["#FECB3B", "#111111", "#E8443A"],
+      ["#FFFFFF", "#141839", "#E8443A"], ["#141839", "#FFFFFF", "#FECB3B"], ["#E8443A", "#FFFFFF", "#FECB3B"], ["#3FD480", "#141839", "#FFFFFF"]];
+    const ctx = document.createElement("canvas").getContext("2d");
+    const fam = (s) => `"P2-${s.font}"`;
+    function mide(t, s, w, size) { ctx.font = `${pesoValido(s.font, w)} ${size}px ${fam(s)}`; const r = ctx.measureText(t); return { l: r.actualBoundingBoxLeft, r: r.actualBoundingBoxRight, a: r.actualBoundingBoxAscent, d: r.actualBoundingBoxDescent }; }
+    const conCaja = (c, base) => (c === "ORTO" || c === "GRAFÍA" ? base.toUpperCase() : c === "orto" || c === "grafía" ? base.toLowerCase() : base[0].toUpperCase() + base.slice(1).toLowerCase());
+    function layout(s0) {
+      const s = { ...BASE, ...s0 };
+      const cap = mide("H", s, s.w, 100).a, xh = mide("x", s, s.w, 100).a;
+      const tO = conCaja(s.caseO, "orto"), tG = conCaja(s.caseG, "grafía");
+      const L = [];
+      const add = (texto, tipo, size, w, x, y) => { const m = mide(texto, s, w, size), tr = s.track * size * (texto.length - 1); L.push({ texto, tipo, size, w: pesoValido(s.font, w), x, y, caja: [x - m.l, y - m.a, x + m.r + tr, y + m.d] }); return L[L.length - 1]; };
+      const yO = cap * s.sO, gap = s.gap * cap;
+      const lo = add(tO, "O", 100 * s.sO, s.w, 0, yO);
+      const yG = yO + gap + cap;
+      const lg = add(tG, "G", 100, s.w, 0, yG);
+      const sep = 0.16 * cap;
+      if (s.pos10 === "debajo") add("10", "D", 100 * s.s10, s.w10, 0, yG + mide(tG, s, s.w, 100).d + gap + cap * s.s10);
+      else if (s.pos10 === "tras") add("10", "D", 100 * s.s10, s.w10, lg.caja[2] + sep, yG);
+      else if (s.pos10 === "arriba") add("10", "D", 100 * s.s10, s.w10, lg.caja[2] + sep, yG - cap + cap * s.s10);
+      else if (s.pos10 === "orto") add("10", "D", 100 * s.s10, s.w10, lo.caja[2] + sep * Math.max(s.sO, 0.5), yO);
+      const caja = L.reduce((b, l) => [Math.min(b[0], l.caja[0]), Math.min(b[1], l.caja[1]), Math.max(b[2], l.caja[2]), Math.max(b[3], l.caja[3])], [1e9, 1e9, -1e9, -1e9]);
+      return { s, L, caja, cap, xh, yG, mayus: s.caseG === "GRAFÍA" };
+    }
+    function encaje(lay) {
+      const { s, caja } = lay, w = caja[2] - caja[0], h = caja[3] - caja[1], hueco = 100 * (1 - 2 * s.margen), k = hueco / Math.max(w, h);
+      const tx = s.sitio === "esquina" ? 100 * s.margen - caja[0] * k : (100 - w * k) / 2 - caja[0] * k;
+      const ty = s.sitio === "esquina" ? 100 * s.margen - caja[1] * k : (100 - h * k) / 2 - caja[1] * k;
+      return { k, tx, ty };
+    }
+    const escX = (t) => String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;");
+    let nClip = 0;
+    function svg(s0) {
+      const lay = layout(s0), { s, L } = lay, { k, tx, ty } = encaje(lay), id = "c" + (++nClip);
+      const color = (l) => (l.tipo === "D" ? (s.color10 === "acento" ? s.acento : s.tinta) : s.tinta);
+      const attrs = (l) => `x="${l.x.toFixed(2)}" y="${l.y.toFixed(2)}" font-family='${fam(s)}' font-weight="${l.w}" font-size="${l.size.toFixed(2)}" letter-spacing="${(s.track * l.size).toFixed(2)}"`;
+      let out = "";
+      for (const l of L) {
+        const iI = l.tipo === "G" ? [...l.texto].findIndex((c) => c === "í" || c === "Í") : -1;
+        if (iI >= 0 && s.acc === "i") { const t = [...l.texto]; out += `<text ${attrs(l)} fill="${color(l)}">${escX(t.slice(0, iI).join(""))}<tspan fill="${s.acento}">${t[iI]}</tspan>${escX(t.slice(iI + 1).join(""))}</text>`; continue; }
+        out += `<text ${attrs(l)} fill="${color(l)}">${escX(l.texto)}</text>`;
+        if (iI >= 0 && s.acc === "tilde") {
+          const t = [...l.texto], tope = lay.yG - (lay.mayus ? lay.cap : lay.xh) * 1.02;
+          out += `<clipPath id="${id}"><rect x="-1000" y="-1000" width="3000" height="${(tope + 1000).toFixed(2)}"/></clipPath><text ${attrs(l)} fill="none" clip-path="url(#${id})">${escX(t.slice(0, iI).join(""))}<tspan fill="${s.acento}">${t[iI]}</tspan>${escX(t.slice(iI + 1).join(""))}</text>`;
+        }
+      }
+      return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="${s.fondo}"/><g transform="translate(${tx.toFixed(2)} ${ty.toFixed(2)}) scale(${k.toFixed(4)})">${out}</g></svg>`;
+    }
+    const claro = (h) => { h = h.replace("#", ""); const [r, g, b] = [0, 2, 4].map((i) => parseInt(h.substr(i, 2), 16)); return 0.299 * r + 0.587 * g + 0.114 * b > 225; };
+    const icono = (s, px, radio = "22.5%", extra = "") => `<span class="ic ${claro({ ...BASE, ...s }.fondo) ? "borde" : ""}" style="width:${px}px;height:${px}px;border-radius:${radio};${extra}">${svg(s)}</span>`;
+    // PNG: el mismo dibujo en canvas (las letras web no pasan a una imagen SVG)
+    function png(s0, px) {
+      const lay = layout(s0), { s, L } = lay, { k, tx, ty } = encaje(lay), cv = document.createElement("canvas"); cv.width = cv.height = px;
+      const g = cv.getContext("2d"), u = px / 100; g.fillStyle = s.fondo; g.fillRect(0, 0, px, px); g.setTransform(u * k, 0, 0, u * k, u * tx, u * ty);
+      for (const l of L) {
+        g.font = `${l.w} ${l.size}px ${fam(s)}`; if ("letterSpacing" in g) g.letterSpacing = `${s.track * l.size}px`;
+        g.fillStyle = l.tipo === "D" && s.color10 === "acento" ? s.acento : s.tinta; g.fillText(l.texto, l.x, l.y);
+        const iI = l.tipo === "G" ? [...l.texto].findIndex((c) => c === "í" || c === "Í") : -1;
+        if (iI >= 0 && s.acc !== "ninguno") {
+          const antes = g.measureText([...l.texto].slice(0, iI).join("")).width;
+          g.save(); if (s.acc === "tilde") { g.beginPath(); g.rect(-1000, -1000, 3000, lay.yG - (lay.mayus ? lay.cap : lay.xh) * 1.02 + 1000); g.clip(); }
+          g.fillStyle = s.acento; g.fillText([...l.texto][iI], l.x + antes, l.y); g.restore();
+        }
+      }
+      return cv;
+    }
+    const nombreSpec = (s0) => { const s = { ...BASE, ...s0 }; return `${FAMILIAS[s.font][0]} ${s.w}${s.w10 !== s.w ? ` (10: ${s.w10})` : ""} · ${s.caseO}/${s.caseG} · Orto ${Math.round(s.sO * 100)} % · 10 ${Math.round(s.s10 * 100)} % ${({ debajo: "debajo", tras: "detrás", arriba: "voladito", orto: "junto a Orto" })[s.pos10]} · ${({ tilde: "tilde de color", i: "í de color", ninguno: "sin color" })[s.acc]}`; };
+
+    // ===================== estado =====================
+    const el = (id) => document.getElementById(id);
+    let spec = { ...BASE };
+    const desdeHash = () => { const m = location.hash.match(/[#&]e=([^&]+)/); if (!m) return null; try { return JSON.parse(decodeURIComponent(escape(atob(m[1])))); } catch { return null; } };
+    const aHash = (s) => btoa(unescape(encodeURIComponent(JSON.stringify(s))));
+    try { const g = JSON.parse(localStorage.getItem("ortologo.p2.spec") || "null"); if (g) spec = { ...BASE, ...g }; } catch {}
+    const h = desdeHash(); if (h) spec = { ...BASE, ...h };
+    const guarda = () => { try { localStorage.setItem("ortologo.p2.spec", JSON.stringify(spec)); } catch {} history.replaceState(null, "", "#e=" + aHash(spec)); };
+    function toast(t) { const x = el("toast"); x.textContent = t; x.classList.add("show"); clearTimeout(toast.t); toast.t = setTimeout(() => x.classList.remove("show"), 2200); }
+
+    // ===================== panel del editor =====================
+    const chips = (clave, ops) => `<div class="chips" data-k="${clave}">${ops.map(([v, t]) => `<button type="button" data-v="${v}" class="${String(spec[clave]) === String(v) ? "on" : ""}">${t}</button>`).join("")}</div>`;
+    const rango = (clave, t, min, max, paso, fmt) => `<div class="ctl"><label>${t} <b data-out="${clave}">${fmt(spec[clave])}</b></label><input type="range" data-k="${clave}" min="${min}" max="${max}" step="${paso}" value="${spec[clave]}"></div>`;
+    const pct = (v) => Math.round(v * 100) + " %";
+    function pintaPanel() {
+      el("panel").innerHTML = `
+        <div class="ctl"><label>Tipografía <b>${FAMILIAS[spec.font][0]}</b></label><select data-k="font">${Object.entries(FAMILIAS).map(([k, [n]]) => `<option value="${k}" ${k === spec.font ? "selected" : ""}>${n}</option>`).join("")}</select></div>
+        ${rango("w", "Grosor de Orto y grafía", 300, 900, 100, (v) => v)}
+        ${rango("w10", "Grosor del 10", 300, 900, 100, (v) => v)}
+        <div class="ctl"><div class="t">Mayúsculas</div>${chips("caseO", [["Orto", "Orto"], ["orto", "orto"], ["ORTO", "ORTO"]])}<div style="height:6px"></div>${chips("caseG", [["grafía", "grafía"], ["Grafía", "Grafía"], ["GRAFÍA", "GRAFÍA"]])}</div>
+        ${rango("sO", "Tamaño de «Orto» (respecto a grafía)", 0.3, 1.3, 0.02, pct)}
+        ${rango("s10", "Tamaño del 10", 0.25, 1.3, 0.02, pct)}
+        <div class="ctl"><div class="t">Dónde va el 10</div>${chips("pos10", [["debajo", "Debajo"], ["tras", "Detrás de grafía"], ["arriba", "Voladito"], ["orto", "Junto a Orto"]])}</div>
+        ${rango("gap", "Interlineado", 0, 0.7, 0.01, pct)}
+        ${rango("track", "Espacio entre letras", -0.08, 0.1, 0.005, (v) => (v > 0 ? "+" : "") + Math.round(v * 1000) / 10 + " %")}
+        <div class="ctl"><div class="t">La í</div>${chips("acc", [["tilde", "Tilde de color"], ["i", "í entera de color"], ["ninguno", "Sin color"]])}</div>
+        <div class="ctl"><div class="t">Colores</div><div class="pal">${PALETAS.map(([f, t, a], i) => `<button type="button" data-pal="${i}" class="${spec.fondo === f && spec.tinta === t ? "on" : ""}" style="background:${f};color:${t};${claro(f) ? "box-shadow:inset 0 0 0 1px #ddd" : ""}">A<span style="color:${a}">´</span></button>`).join("")}</div>
+          <div class="colores"><div><input type="color" data-k="fondo" value="${spec.fondo}">Fondo</div><div><input type="color" data-k="tinta" value="${spec.tinta}">Letras</div><div><input type="color" data-k="acento" value="${spec.acento}">Acento</div><div>${chips("color10", [["tinta", "10 igual"], ["acento", "10 acento"]])}</div></div></div>
+        ${rango("margen", "Margen dentro del icono", 0.06, 0.3, 0.01, pct)}
+        <div class="ctl"><div class="t">Colocación</div>${chips("sitio", [["centro", "Centrado"], ["esquina", "Arriba a la izquierda"]])}</div>
+        <div class="acciones"><button type="button" class="primary" id="b-guardar">♥ Guardar</button><button type="button" id="b-explotar">💥 Explotar este</button><button type="button" id="b-png">⬇️ PNG 1024</button><button type="button" id="b-link">🔗 Copiar enlace</button><button type="button" id="b-reset">↺ Volver al de partida</button></div>`;
+      const p = el("panel");
+      p.querySelectorAll("input[type=range]").forEach((r) => r.oninput = () => { spec[r.dataset.k] = +r.value; if (r.dataset.k === "w") spec.w10 = spec.w10 === spec._wPrev || spec._wPrev === undefined ? spec.w10 : spec.w10; const o = p.querySelector(`[data-out="${r.dataset.k}"]`); if (o) o.textContent = ({ sO: pct, s10: pct, gap: pct, margen: pct, track: (v) => (v > 0 ? "+" : "") + Math.round(v * 1000) / 10 + " %" }[r.dataset.k] || ((v) => v))(spec[r.dataset.k]); cambio(); });
+      p.querySelector("select").onchange = (e) => { spec.font = e.target.value; pintaPanel(); cambio(); };
+      p.querySelectorAll("input[type=color]").forEach((c) => c.oninput = () => { spec[c.dataset.k] = c.value.toUpperCase(); cambio(); });
+      p.querySelectorAll(".chips[data-k] button").forEach((b) => b.onclick = () => { const k = b.parentElement.dataset.k; spec[k] = b.dataset.v; b.parentElement.querySelectorAll("button").forEach((x) => x.classList.toggle("on", x === b)); cambio(); });
+      p.querySelectorAll("[data-pal]").forEach((b) => b.onclick = () => { const [f, t, a] = PALETAS[+b.dataset.pal]; Object.assign(spec, { fondo: f, tinta: t, acento: a }); pintaPanel(); cambio(); });
+      el("b-guardar").onclick = () => guardar(spec);
+      el("b-explotar").onclick = () => irA("explosion");
+      el("b-png").onclick = async () => { await cargar([spec]); png(spec, 1024).toBlob((bl) => { const a = document.createElement("a"); a.href = URL.createObjectURL(bl); a.download = "ortografia10-logo.png"; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000); }); };
+      el("b-link").onclick = async () => { guarda(); try { await navigator.clipboard.writeText(location.href); toast("🔗 Enlace copiado: abre exactamente este logo"); } catch { prompt("Copia el enlace:", location.href); } };
+      el("b-reset").onclick = () => { spec = { ...BASE }; pintaPanel(); cambio(); };
+    }
+    let pendiente = null;
+    function cambio() { guarda(); if (pendiente) return; pendiente = requestAnimationFrame(async () => { pendiente = null; await cargar([spec]); pintaPreviews(); }); }
+
+    // ===================== previsualizaciones =====================
+    const OTRAS = [["#25D366", "✆"], ["#0A66C2", "in"], ["#E1306C", "◎"], ["#FF0000", "▶"], ["#58CC02", "🦉"], ["#000000", "X"], ["#1877F2", "f"], ["#7A1A2B", "RAE"], ["#FD297B", "♥"], ["#0A84FF", "✉"], ["#FA2D48", "♪"]];
+    const NOMBRES = ["WhatsApp", "LinkedIn", "Instagram", "YouTube", "Duolingo", "X", "Facebook", "RAE", "Tinder", "Mail", "Música"];
+    let fondoHome = "color";
+    function pintaPreviews() {
+      const s = spec, apps = OTRAS.map(([c, g], i) => `<div class="app"><i style="background:${c};${c === "#000000" ? "box-shadow:inset 0 0 0 1px #444" : ""}">${g}</i><span>${NOMBRES[i]}</span></div>`);
+      apps.splice(4, 0, `<div class="app">${icono(s, 60)}<span>Ortografía10</span></div>`);
+      el("previews").innerHTML = `
+        <div class="pv"><h3>Icono de la app · ${nombreSpec(s)}</h3><div class="grande">${icono(s, 260)}<div>${icono(s, 120)}<small class="n">120 px</small></div><div>${icono(s, 60)}<small class="n">60 px · móvil</small></div><div>${icono(s, 40)}<small class="n">40</small></div><div>${icono(s, 32)}<small class="n">32</small></div><div>${icono(s, 16, "3px")}<small class="n">16 · favicon</small></div></div></div>
+        <div class="pv"><h3 style="display:flex;justify-content:space-between">En la pantalla de inicio (tamaño real de un iPhone) <span class="chips" id="fh">${["color", "negro"].map((f) => `<button type="button" data-f="${f}" class="${fondoHome === f ? "on" : ""}">${f === "color" ? "Fondo de color" : "Fondo negro"}</button>`).join("")}</span></h3><div class="home ${fondoHome === "negro" ? "negro" : ""}">${apps.join("")}</div></div>
+        <div class="pv fila-pv"><div class="store" style="flex:1;min-width:260px">${icono(s, 64)}<div><b>Ortografía10</b><span>Una regla. Un minuto.</span></div><em>OBTENER</em></div>
+          <div class="ig">${["110", "56"].map((px) => `<div class="ring"><div>${icono(s, +px, "50%")}</div></div>`).join("")}${icono(s, 28, "50%")}</div></div>
+        <div class="pv fila-pv"><div class="tabnav"><div class="tt"><div class="tb">${icono(s, 16, "3px")}<span>Ortografía10 · Una regla. Un minuto.</span></div></div><div class="url">←&nbsp;→&nbsp;↻<b>https://ortografia10.com</b></div></div>
+          <div class="tabnav" style="max-width:340px"><div class="tt" style="background:#1b1c1f"><div class="tb" style="background:#292a2d;color:#e8eaed">${icono(s, 16, "3px")}<span>Ortografía10</span></div></div><div class="url" style="background:#292a2d;color:#9aa0a6"><b style="background:#1b1c1f;color:#e8eaed">ortografia10.com</b></div></div></div>`;
+      el("fh").querySelectorAll("button").forEach((b) => b.onclick = () => { fondoHome = b.dataset.f; pintaPreviews(); });
+    }
+
+    // ===================== explosión =====================
+    const DIMS = {
+      font: ["Tipografía", Object.keys(FAMILIAS)], w: ["Grosor", [300, 400, 500, 600, 700, 800]], sO: ["Tamaño de Orto", [0.4, 0.5, 0.6, 0.72, 0.85, 1]],
+      s10: ["Tamaño del 10", [0.35, 0.45, 0.56, 0.7, 0.85, 1]], pos10: ["Dónde va el 10", ["debajo", "tras", "arriba", "orto"]],
+      caja: ["Mayúsculas", ["Orto|grafía", "orto|grafía", "ORTO|GRAFÍA", "Orto|Grafía", "ORTO|grafía", "orto|GRAFÍA"]], acc: ["La í", ["tilde", "i", "ninguno"]],
+      pal: ["Colores", PALETAS.map((_, i) => i)], gap: ["Interlineado", [0.04, 0.12, 0.2, 0.3, 0.42]], track: ["Espacio entre letras", [-0.05, -0.03, -0.01, 0.01, 0.04]],
+      azar: ["🎲 100 al azar", null],
+    };
+    let dims = ["font", "w"]; try { const d = JSON.parse(localStorage.getItem("ortologo.p2.dims") || "null"); if (Array.isArray(d) && d.length) dims = d; } catch {}
+    let tams = { g: true, m: true, f: true }, guardados = [];
+    const aplica = (s, k, v) => { const o = { ...s }; if (k === "caja") { const [a, b] = v.split("|"); o.caseO = a; o.caseG = b; } else if (k === "pal") { const [f, t, a] = PALETAS[v]; Object.assign(o, { fondo: f, tinta: t, acento: a }); } else if (k === "w") { o.w = v; o.w10 = v; } else o[k] = v; return o; };
+    function rnd(seed) { let x = seed >>> 0 || 1; return () => ((x = (x * 1664525 + 1013904223) >>> 0) / 4294967296); }
+    function combinaciones() {
+      if (dims.includes("azar")) {
+        const r = rnd(Date.now() % 100000), out = [], pick = (a) => a[Math.floor(r() * a.length)];
+        for (let i = 0; i < 100; i++) { let s = { ...spec }; for (const k of ["font", "w", "sO", "s10", "pos10", "caja", "acc", "pal", "gap", "track"]) s = aplica(s, k, pick(DIMS[k][1])); s.w = Math.min(s.w, 700); s.w10 = s.w; out.push(s); }
+        return out;
+      }
+      let out = [{ ...spec }];
+      for (const k of dims) out = out.flatMap((s) => DIMS[k][1].map((v) => aplica(s, k, v)));
+      return out.slice(0, 240);
+    }
+    const clave = (s) => JSON.stringify(["font", "w", "w10", "caseO", "caseG", "sO", "s10", "pos10", "gap", "track", "acc", "fondo", "tinta", "acento", "color10", "margen", "sitio"].map((k) => ({ ...BASE, ...s })[k]));
+    async function pintaExplosion() {
+      el("exp-base").innerHTML = icono(spec, 40);
+      el("exp-dims").innerHTML = Object.entries(DIMS).map(([k, [t]]) => `<button type="button" data-d="${k}" class="${dims.includes(k) ? "on" : ""}">${k === "azar" && dims.includes("azar") ? "🎲 Otras 100" : t}</button>`).join("");
+      el("exp-dims").querySelectorAll("button").forEach((b) => b.onclick = () => {
+        const k = b.dataset.d;
+        if (k === "azar") dims = ["azar"]; else { dims = dims.filter((x) => x !== "azar"); dims = dims.includes(k) ? dims.filter((x) => x !== k) : [...dims, k].slice(-2); if (!dims.length) dims = [k]; }
+        try { localStorage.setItem("ortologo.p2.dims", JSON.stringify(dims)); } catch {} pintaExplosion();
+      });
+      el("exp-tam").innerHTML = [["g", "Grande"], ["m", "Móvil 60 px"], ["f", "Favicon 16 px"]].map(([k, t]) => `<button type="button" data-t="${k}" class="${tams[k] ? "on" : ""}">${t}</button>`).join("");
+      el("exp-tam").querySelectorAll("button").forEach((b) => b.onclick = () => { tams[b.dataset.t] = !tams[b.dataset.t]; if (!tams.g && !tams.m && !tams.f) tams.g = true; pintaExplosion(); });
+      const lista = combinaciones();
+      el("exp-n").textContent = `${lista.length} variantes`;
+      el("exp-grid").innerHTML = `<div class="vacio" style="grid-column:1/-1">Cargando letras…</div>`;
+      await cargar(lista);
+      const ya = new Set(guardados.map((g) => clave(g.spec)));
+      el("exp-grid").innerHTML = lista.map((s, i) => `<div class="tile ${ya.has(clave(s)) ? "guardado" : ""}" data-i="${i}"><div class="vistas">${tams.g ? icono(s, 96) : ""}${tams.m ? icono(s, 60) : ""}${tams.f ? icono(s, 16, "3px") : ""}</div><div class="lab">${nombreSpec(s)}</div><div class="bt"><button type="button" data-a="g" class="${ya.has(clave(s)) ? "on" : ""}">♥</button><button type="button" data-a="e">✏️ Editar</button></div></div>`).join("");
+      el("exp-grid").querySelectorAll(".tile").forEach((t) => {
+        const s = lista[+t.dataset.i];
+        const editar = () => { spec = { ...s }; pintaPanel(); cambio(); irA("editor"); };
+        t.querySelector(".vistas .ic").onclick = editar; t.querySelector('[data-a="e"]').onclick = editar;
+        t.querySelector('[data-a="g"]').onclick = async (e) => { await guardar(s); e.target.classList.add("on"); t.classList.add("guardado"); };
+      });
+    }
+
+    // ===================== guardados =====================
+    let client = null;
+    async function cargaGuardados() {
+      if (!client) return;
+      const { data, error } = await client.from(window.ORTOLOGO_CONFIG.tablePrefix + "p2").select("*").order("created_at", { ascending: false }).limit(500);
+      if (!error) guardados = (data || []).filter((g) => g.spec && g.spec.font);
+      el("n-guardados").textContent = guardados.length ? guardados.length : "";
+    }
+    async function guardar(s) {
+      if (!client) return toast("Sin conexión: no se ha podido guardar");
+      const k = clave(s); if (guardados.some((g) => clave(g.spec) === k)) return toast("Ya estaba guardado");
+      const { data, error } = await client.from(window.ORTOLOGO_CONFIG.tablePrefix + "p2").insert({ spec: { ...BASE, ...s }, nombre: nombreSpec(s) }).select().single();
+      if (error) return toast("No se pudo guardar: " + error.message);
+      guardados.unshift(data); el("n-guardados").textContent = guardados.length; toast("♥ Guardado");
+    }
+    async function pintaGuardados() {
+      await cargar(guardados.map((g) => ({ ...BASE, ...g.spec })));
+      el("g-grid").innerHTML = guardados.length ? guardados.map((g, i) => `<div class="tile" data-i="${i}"><div class="vistas">${icono(g.spec, 96)}${icono(g.spec, 60)}${icono(g.spec, 16, "3px")}</div><div class="lab">${nombreSpec(g.spec)}</div><div class="bt"><button type="button" data-a="e">✏️ Editar</button><button type="button" data-a="x" title="Quitar de guardados">🗑</button></div></div>`).join("")
+        : `<div class="vacio" style="grid-column:1/-1">Todavía no has guardado ninguno. Usa ♥ en el editor o en la explosión.</div>`;
+      el("g-grid").querySelectorAll(".tile").forEach((t) => {
+        const g = guardados[+t.dataset.i], editar = () => { spec = { ...BASE, ...g.spec }; pintaPanel(); cambio(); irA("editor"); };
+        t.querySelector(".vistas .ic").onclick = editar; t.querySelector('[data-a="e"]').onclick = editar;
+        t.querySelector('[data-a="x"]').onclick = async () => { if (!confirm("¿Quitar este de guardados?")) return; await client.from(window.ORTOLOGO_CONFIG.tablePrefix + "p2").delete().eq("id", g.id); guardados = guardados.filter((x) => x.id !== g.id); el("n-guardados").textContent = guardados.length || ""; pintaGuardados(); };
+      });
+    }
+
+    // ===================== navegación =====================
+    let vistaActual = "editor";
+    function irA(v) {
+      vistaActual = v;
+      document.querySelectorAll(".vista").forEach((x) => x.classList.toggle("on", x.id === "v-" + v));
+      document.querySelectorAll("#tabs button").forEach((b) => b.classList.toggle("on", b.dataset.v === v));
+      try { localStorage.setItem("ortologo.p2.vista", v); } catch {}
+      if (v === "explosion") pintaExplosion(); if (v === "guardados") pintaGuardados();
+      window.scrollTo(0, 0);
+    }
+    document.querySelectorAll("#tabs button").forEach((b) => b.onclick = () => irA(b.dataset.v));
+
+    (async () => {
+      pintaPanel(); await cargar([spec]); pintaPreviews(); guarda();
+      try { const { url, anonKey } = window.ORTOLOGO_CONFIG; client = supabase.createClient(url, anonKey); await cargaGuardados(); } catch {}
+      let v = "editor"; try { v = localStorage.getItem("ortologo.p2.vista") || "editor"; } catch {}
+      if (desdeHash()) v = "editor";
+      if (v !== "editor") irA(v);
+    })();
+  </script>
+</body>
+</html>

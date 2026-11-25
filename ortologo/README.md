@@ -35,6 +35,21 @@ real dentro de un iframe, con Inter, Fraunces y Poppins (`fonts/`).
 **🏆 Ranking** (`ranking.html`): los favoritos ordenados por la
 nota del examen, con el porqué de cada puesto.
 
+**Parte 2** (`parte2.html`, 25-nov-2026): elegida la familia (el nombre
+«Ortografía10» en bloque y alineado a la izquierda, como los nº 1968, 1941,
+3467, 3479, 947, 721), aquí se afina. ✏️ **Editor**: tipografía (18
+familias libres con todos sus grosores, en `fonts/p2/`), grosor de las
+letras y del 10, mayúsculas, tamaños de Orto y del 10, dónde va el 10,
+interlineado, espaciado, la í (tilde / í entera / sin color), colores,
+margen y colocación; se ve a la vez en grande, a 60 px en una pantalla de
+inicio, en la tienda, en el avatar y en el favicon a 16 px. 💥
+**Explosión**: rejilla con todas las combinaciones de una o dos dimensiones
+partiendo del logo del editor, o 100 al azar (grosor máximo 700). ♥
+**Guardados**: tabla `ortologo_p2` (`spec` jsonb con los parámetros,
+`nombre`, `voto`, `nota`). El logo se dibuja con texto web (canvas para
+medir y para el PNG), no con trazados: es un explorador, no la versión
+final para imprenta.
+
 **📖 Guía** (`guia.html`): qué es un logo y una imagen de marca, las 9
 preguntas que tiene que aprobar un logo para toda la vida (con casillas),
 los 12 arquetipos y cuál es Ortografía10 (Sabio con corazón de Héroe), los
