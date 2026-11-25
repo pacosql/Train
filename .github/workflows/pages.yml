@@ -15,10 +15,10 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  # Dos trabajos (plantilla oficial de GitHub): si se sube y se despliega en
+  # el mismo trabajo, a veces deploy-pages no encuentra todavía el artefacto
+  # ("No artifacts named github-pages were found") y el deploy falla.
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -49,6 +49,13 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: "."
+  deploy:
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
