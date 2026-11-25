@@ -45,6 +45,12 @@ margen y colocación; se ve a la vez en grande, a 60 px en una pantalla de
 inicio, en la tienda, en el avatar y en el favicon a 16 px. 💥
 **Explosión**: rejilla con todas las combinaciones de una o dos dimensiones
 partiendo del logo del editor, o 100 al azar (grosor máximo 700). ♥
+**Códigos**: cada combinación tiene un código fijo de 8 caracteres
+(`XXXX-XXXX`, hash cyrb53 de sus parámetros en base 32 sin I, L, O ni U):
+la misma combinación da siempre el mismo código. Todos los que se ven se
+apuntan en `ortologo_p2_codigos` (`codigo`, `spec`), así que un código que
+diga el usuario se puede abrir con el buscador de la cabecera o consultar
+desde el chat con `sb.sh GET 'ortologo_p2_codigos?codigo=eq.XXXX-XXXX'`.
 **Guardados**: tabla `ortologo_p2` (`spec` jsonb con los parámetros,
 `nombre`, `voto`, `nota`). El logo se dibuja con texto web (canvas para
 medir y para el PNG), no con trazados: es un explorador, no la versión
