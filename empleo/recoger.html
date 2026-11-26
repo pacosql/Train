@@ -3,48 +3,136 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Empleo · recoger ofertas</title>
+  <title>Empleo · ofertas capturadas</title>
   <link rel="icon" href="icons/icon-192.png" />
   <style>
-    body { margin: 0; background: #0b0d10; color: #f4f5f7; font: 16px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; display: grid; place-items: center; min-height: 100vh; padding: 20px; }
-    .box { max-width: 520px; text-align: center; border: 1px solid rgba(255, 255, 255, 0.16); border-radius: 16px; padding: 26px 22px; background: rgba(255, 255, 255, 0.04); }
-    h1 { font-size: 1.25rem; margin: 0 0 8px; }
-    p { color: #9aa3ad; margin: 6px 0; font-size: 0.92rem; }
+    body { margin: 0; background: #0b0d10; color: #f4f5f7; font: 15px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding: 20px 16px 50px; }
+    .wrap { max-width: 860px; margin: 0 auto; }
+    .box { text-align: center; border: 1px solid rgba(255, 255, 255, 0.16); border-radius: 16px; padding: 20px; background: rgba(255, 255, 255, 0.04); margin-bottom: 18px; }
+    h1 { font-size: 1.25rem; margin: 0 0 6px; }
+    h2 { font-size: 1rem; margin: 20px 0 6px; }
+    p { color: #9aa3ad; margin: 6px 0; font-size: 0.9rem; }
     .ok { color: #43d391; } .err { color: #ff5470; }
     a { color: #6ea8ff; }
-    .build { font-size: 0.7rem; color: #9aa3ad; margin-top: 16px; font-family: ui-monospace, monospace; }
+    .n { font-size: 0.78rem; color: #9aa3ad; background: rgba(255, 255, 255, 0.07); border-radius: 999px; padding: 1px 8px; margin-left: 6px; font-weight: 600; }
+    .it { display: grid; grid-template-columns: 1fr auto; gap: 2px 10px; padding: 7px 10px; border-top: 1px solid rgba(255, 255, 255, 0.08); font-size: 0.88rem; }
+    .it .t { font-weight: 600; } .it .e { color: #9aa3ad; font-weight: 400; }
+    .it .r { color: #9aa3ad; font-size: 0.8rem; text-align: right; white-space: nowrap; }
+    .it .r.add { color: #43d391; font-weight: 700; } .it .r.pend { color: #f2b840; }
+    .it.nueva { background: rgba(67, 211, 145, 0.08); }
+    .tag { font-size: 0.7rem; font-weight: 800; color: #062014; background: #43d391; border-radius: 6px; padding: 0 6px; margin-right: 6px; }
+    .lista { border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; overflow: hidden; background: rgba(255, 255, 255, 0.03); }
+    .guia p b { color: #f4f5f7; }
+    .bs { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 8px; }
+    .bs a { text-decoration: none; color: #f4f5f7; border: 1px solid rgba(255, 255, 255, 0.16); border-radius: 9px; padding: 6px 10px; font-size: 0.84rem; background: rgba(255, 255, 255, 0.04); }
+    .bs a:hover { border-color: #6ea8ff; }
+    .bs a.hecha { color: #43d391; border-color: rgba(67, 211, 145, 0.5); }
+    .bs .sep { flex-basis: 100%; font-size: 0.78rem; color: #9aa3ad; margin-top: 6px; }
+    .bien { font-size: 0.95rem; color: #f4f5f7 !important; }
+    .build { text-align: center; font-size: 0.7rem; color: #9aa3ad; margin-top: 18px; font-family: ui-monospace, monospace; }
   </style>
 </head>
 <body>
-  <div class="box">
-    <h1 id="t">📥 Recibiendo ofertas…</h1>
-    <p id="d"></p>
-    <p><a href="tabla.html">Ir a la tabla de ofertas</a></p>
+  <div class="wrap">
+    <div class="box">
+      <h1 id="t">📥 Ofertas capturadas en LinkedIn</h1>
+      <p id="d"></p>
+      <p><a href="tabla.html">Ir a la tabla de ofertas</a></p>
+    </div>
+    <div class="box guia">
+      <h1 style="font-size:1.05rem">🧭 Encuentra más: búsquedas ya preparadas</h1>
+      <p>Pulsa una → se abre LinkedIn con la búsqueda hecha → allí pulsa tu marcador <b>📥 Empleo</b> → pasa a la página 2 y púlsalo otra vez → vuelve aquí a por la siguiente. Las que ya has abierto hoy salen con ✔.</p>
+      <p><label><input type="radio" name="tpr" value="r86400" checked> Últimas 24 h</label> &nbsp; <label><input type="radio" name="tpr" value="r604800"> Última semana</label></p>
+      <div class="bs" id="busquedas"></div>
+    </div>
+    <div id="listas"></div>
     <div class="build">build __BUILD_ID__</div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script src="config.js"></script>
   <script>
     // Recibe las ofertas que el marcador "📥 Empleo" recoge de la página de LinkedIn que el usuario
-    // tiene abierta (vienen en el # de la URL) y las deja en empleo_vistas para la rutina.
+    // tiene abierta (vienen en el # de la URL), las deja en empleo_vistas para la rutina y muestra
+    // todo lo capturado, por día. No se cierra sola.
     (async () => {
       const { url, anonKey, tablePrefix } = window.EMPLEO_CONFIG;
       const client = window.supabase.createClient(url, anonKey);
+      const TV = tablePrefix + "vistas";
       const $ = (id) => document.getElementById(id);
+      const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
       let data;
       try { data = JSON.parse(decodeURIComponent(location.hash.slice(1))); } catch { data = null; }
       const filas = ((data && data.o) || []).filter((x) => /^\d{6,}$/.test(x.j || "")).map((x) => ({
         origen: "linkedin", jid: x.j, titulo: (x.t || "").slice(0, 200) || null, empresa: (x.e || "").slice(0, 120) || null, ubicacion: (x.l || "").slice(0, 160) || null }));
-      if (!filas.length) { $("t").textContent = "No ha llegado ninguna oferta"; $("t").className = "err"; $("d").textContent = "Pulsa el marcador «📥 Empleo» estando en una página de empleos de LinkedIn."; return; }
-      const { data: antes } = await client.from(tablePrefix + "vistas").select("jid").in("jid", filas.map((f) => f.jid));
-      const ya = new Set((antes || []).map((r) => r.jid));
-      const nuevas = filas.filter((f) => !ya.has(f.jid));
-      const { error } = nuevas.length ? await client.from(tablePrefix + "vistas").upsert(nuevas, { onConflict: "jid", ignoreDuplicates: true }) : { error: null };
-      if (error) { $("t").textContent = "No se pudo guardar"; $("t").className = "err"; $("d").textContent = error.message; return; }
-      $("t").textContent = `✅ ${filas.length} ofertas recibidas (${nuevas.length} nuevas)`; $("t").className = "ok";
-      $("d").textContent = "Esta noche la rutina las revisa y añade a la app las que encajen. Puedes cerrar esta pestaña y seguir en LinkedIn (siguiente página → marcador otra vez).";
-      history.replaceState(null, "", location.pathname);
-      if (window.opener || history.length <= 1) setTimeout(() => window.close(), 3500);
+      const recibidas = new Set(filas.map((f) => f.jid));
+      let nuevas = new Set();
+      if (filas.length) {
+        const ya = new Set();
+        for (let i = 0; i < filas.length; i += 100) {
+          const { data: antes } = await client.from(TV).select("jid").in("jid", filas.slice(i, i + 100).map((f) => f.jid));
+          (antes || []).forEach((r) => ya.add(r.jid));
+        }
+        const ins = filas.filter((f) => !ya.has(f.jid));
+        nuevas = new Set(ins.map((f) => f.jid));
+        const { error } = ins.length ? await client.from(TV).upsert(ins, { onConflict: "jid", ignoreDuplicates: true }) : { error: null };
+        if (error) { $("t").textContent = "No se pudo guardar"; $("t").className = "err"; $("d").textContent = error.message; return; }
+        $("t").textContent = `✅ ${filas.length} ofertas recibidas: ${nuevas.size} nuevas y ${filas.length - nuevas.size} que ya habías capturado`; $("t").className = "ok";
+        $("d").className = "bien";
+        $("d").innerHTML = nuevas.size
+          ? `👍 <b>Lo has hecho bien.</b> Me han llegado y están guardadas (abajo, marcadas NUEVA). Esta noche la rutina las revisa y añade a la app las que encajen.<br>Ahora: vuelve a LinkedIn, pasa a la <b>página siguiente</b> y pulsa el marcador otra vez, o elige otra búsqueda de la guía.`
+          : `👍 <b>Lo has hecho bien</b>, pero estas ${filas.length} ya las habías capturado antes (no hay ninguna nueva). Pasa a la <b>página siguiente</b> en LinkedIn o prueba otra búsqueda de la guía.`;
+        history.replaceState(null, "", location.pathname);
+      } else if (location.hash.length > 1) {
+        $("t").textContent = "No ha llegado ninguna oferta"; $("t").className = "err";
+        $("d").textContent = "Pulsa el marcador «📥 Empleo» estando en una página de empleos de LinkedIn.";
+      } else {
+        $("d").textContent = "Todo lo que has enviado con el marcador «📥 Empleo» o pegando enlaces, por día.";
+      }
+
+      // Guía: búsquedas de LinkedIn ya preparadas (se recuerda cuáles se han abierto hoy)
+      const Q = [["España", { location: "Spain" }, ["Partner Manager", "Alliances Manager", "Channel Manager", "Head of Partnerships", "Solutions Engineer", "Solutions Architect", "Solution Consultant", "Sales Engineer", "Account Executive", "Sales Director", "Head of Sales", "Country Manager", "Developer Advocate", "Head of Engineering", "CTO"]],
+                 ["Remoto en Europa", { location: "European Union", f_WT: "2" }, ["Partner Manager", "Head of Partnerships", "Channel Manager", "Solutions Engineer", "Solutions Architect", "Sales Engineer", "Account Executive EMEA", "Head of Sales", "Developer Advocate", "Director of Engineering"]]];
+      const hoy = new Date().toISOString().slice(0, 10);
+      let hechas = {}; try { hechas = JSON.parse(localStorage.getItem("empleo.guia") || "{}"); } catch {}
+      if (hechas.dia !== hoy) hechas = { dia: hoy, k: [] };
+      function pintaGuia() {
+        const tpr = document.querySelector("input[name=tpr]:checked").value;
+        $("busquedas").innerHTML = Q.map(([nombre, extra, qs]) => `<div class="sep">${nombre}</div>` + qs.map((q) => {
+          const k = nombre + "|" + q + "|" + tpr;
+          const u = "https://www.linkedin.com/jobs/search/?" + new URLSearchParams({ keywords: q, f_TPR: tpr, sortBy: "DD", ...extra });
+          return `<a href="${u}" target="_blank" rel="noopener" data-k="${esc(k)}" class="${hechas.k.includes(k) ? "hecha" : ""}">${hechas.k.includes(k) ? "✔ " : ""}${esc(q)}</a>`;
+        }).join("")).join("");
+      }
+      pintaGuia();
+      document.querySelectorAll("input[name=tpr]").forEach((r) => r.addEventListener("change", pintaGuia));
+      $("busquedas").addEventListener("click", (e) => {
+        const a = e.target.closest("a[data-k]"); if (!a) return;
+        if (!hechas.k.includes(a.dataset.k)) hechas.k.push(a.dataset.k);
+        try { localStorage.setItem("empleo.guia", JSON.stringify(hechas)); } catch {}
+        setTimeout(pintaGuia, 300);
+      });
+
+      // Historial completo, por día de captura
+      let todas = [];
+      for (let i = 0; ; i += 1000) {
+        const { data: page } = await client.from(TV).select("jid,url,titulo,empresa,ubicacion,created_at,procesada,resultado").order("created_at", { ascending: false }).order("id", { ascending: false }).range(i, i + 999);
+        todas = todas.concat(page || []);
+        if (!page || page.length < 1000) break;
+      }
+      const dia = (iso) => new Date(iso).toLocaleDateString("es-ES", { weekday: "long", day: "numeric", month: "long" });
+      const hora = (iso) => new Date(iso).toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" });
+      const fila = (v) => {
+        const link = v.jid ? `https://www.linkedin.com/jobs/view/${v.jid}` : v.url;
+        const r = !v.procesada ? `<span class="r pend">⏳ por revisar esta noche</span>`
+          : `<span class="r${/añadida/.test(v.resultado || "") ? " add" : ""}">${esc(v.resultado || "revisada")}</span>`;
+        return `<div class="it${nuevas.has(v.jid) ? " nueva" : ""}"><div>${nuevas.has(v.jid) ? `<span class="tag">NUEVA</span>` : ""}<a class="t" href="${esc(link)}" target="_blank" rel="noopener">${esc(v.titulo || link)}</a>${v.empresa ? ` <span class="e">· ${esc(v.empresa)}</span>` : ""}${v.ubicacion ? ` <span class="e">· ${esc(v.ubicacion)}</span>` : ""}</div>${r}
+          <div class="e" style="font-size:.76rem">capturada a las ${hora(v.created_at)}${recibidas.has(v.jid) && !nuevas.has(v.jid) ? " · vuelta a ver ahora" : ""}</div></div>`;
+      };
+      const grupos = new Map();
+      for (const v of todas) { const k = dia(v.created_at); if (!grupos.has(k)) grupos.set(k, []); grupos.get(k).push(v); }
+      $("listas").innerHTML = todas.length ? [...grupos].map(([k, vs]) =>
+        `<h2>${k}<span class="n">${vs.length} capturadas${vs.some((v) => /añadida/.test(v.resultado || "")) ? " · " + vs.filter((v) => /añadida/.test(v.resultado || "")).length + " añadidas a la app" : ""}</span></h2><div class="lista">${vs.map(fila).join("")}</div>`).join("")
+        : `<p style="text-align:center">Aún no has capturado ninguna oferta.</p>`;
     })();
   </script>
 </body>
