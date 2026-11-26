@@ -106,6 +106,10 @@
     .cap { border: 1px dashed var(--line-strong); border-radius: 12px; background: var(--panel); margin-bottom: 14px; }
     .cap > summary { cursor: pointer; list-style: none; padding: 9px 12px; font-weight: 800; display: flex; gap: 8px; align-items: center; }
     .cap > summary::-webkit-details-marker { display: none; }
+    .li-box { padding: 0 12px 12px; font-size: 0.88rem; color: var(--text-2); }
+    .li-box p { margin: 6px 0; } .li-box b { color: var(--text); }
+    .li-box textarea { width: 100%; height: 64px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--line-strong); color: var(--text); border-radius: 10px; padding: 8px; font: 0.8rem ui-monospace, monospace; margin-bottom: 6px; }
+    .bm { display: inline-block; background: var(--accent); color: #06111f; font-weight: 800; border-radius: 9px; padding: 5px 12px; text-decoration: none; cursor: grab; }
     .cap .zona { margin: 0 12px 10px; border: 2px dashed rgba(110, 168, 255, 0.5); border-radius: 10px; padding: 18px 12px; text-align: center;
       color: var(--text-2); font-size: 0.88rem; outline: none; cursor: text; }
     .cap .zona:focus, .cap .zona.drag { border-color: var(--accent); background: var(--accent-soft); color: var(--text); }
@@ -146,6 +150,18 @@
       <button class="oculta" id="oculta60" title="Quita de Pendientes, Aplicar, En detalle y High/Medium/Low las ofertas de empresas a las que has aplicado en los últimos 60 días">🙈 Ocultar empresas aplicadas (60 días)</button>
     </div>
     <p class="leyenda">🎯 Aplicar → grupo <b>Aplicar</b> · 🔍 Detalle → <b>En detalle</b> · ✅ Aplicado → <b>Aplicados</b> · ✕ Descartar → <b>👎 Descartadas</b> (abajo del todo; ↺ para recuperarla). Nada se mueve hasta que pulsas <b>Guardar</b>.</p>
+    <details class="cap" id="li">
+      <summary>🔗 Que no se escape nada: LinkedIn con tu sesión y enlaces sueltos <span class="n" id="li-n">0</span><span class="hint">un clic en LinkedIn manda a la app las ofertas que estás viendo; la rutina las revisa esa noche</span></summary>
+      <div class="li-box">
+        <p><b>1. Una sola vez:</b> arrastra este botón a tu barra de marcadores de Chrome (Ctrl+Shift+B para verla):
+          <a class="bm" id="bm" href="javascript:(()=&gt;{const m=new Map();const add=(id,el)=&gt;{if(!id)return;const o=m.get(id)||{j:id};if(el){const t=el.querySelector(&#x27;a[href*=&quot;/jobs/view/&quot;]&#x27;);const g=s=&gt;{const e=el.querySelector(s);return e?e.innerText.trim().split(&#x27;\n&#x27;)[0]:&#x27;&#x27;};o.t=o.t||(t?(t.getAttribute(&#x27;aria-label&#x27;)||t.innerText).trim().split(&#x27;\n&#x27;)[0]:&#x27;&#x27;);o.e=o.e||g(&#x27;.artdeco-entity-lockup__subtitle&#x27;);o.l=o.l||g(&#x27;.artdeco-entity-lockup__caption&#x27;)}m.set(id,o)};document.querySelectorAll(&#x27;[data-job-id],[data-occludable-job-id]&#x27;).forEach(el=&gt;add(el.getAttribute(&#x27;data-job-id&#x27;)||el.getAttribute(&#x27;data-occludable-job-id&#x27;),el));document.querySelectorAll(&#x27;a[href*=&quot;/jobs/view/&quot;]&#x27;).forEach(a=&gt;{const x=a.href.match(/\/jobs\/view\/(?:[^\/?]*-)?(\d{6,})/);if(x)add(x[1],a.closest(&#x27;li&#x27;)||a.parentElement)});const c=new URLSearchParams(location.search).get(&#x27;currentJobId&#x27;);if(c)add(c);if(!m.size){alert(&#x27;No veo ofertas en esta pagina. Abre LinkedIn &gt; Empleos y vuelve a pulsar.&#x27;);return}window.open(&#x27;https://pacosql.github.io/Train/empleo/recoger.html#&#x27;+encodeURIComponent(JSON.stringify({o:[...m.values()]})))})();" onclick="alert('No lo pulses aquí: arrástralo a la barra de marcadores de Chrome.');return false;">📥 Empleo</a></p>
+        <p><b>2. Cuando busques en LinkedIn</b> (Empleos → tu búsqueda, tus alertas o «Recomendados»), pulsa el marcador <b>📥 Empleo</b>. Se abre una pestañita que dice «✅ 25 ofertas recibidas» y se cierra sola. Pasa a la página siguiente y vuelve a pulsar. Solo lee los títulos de la página que tienes abierta: no hace nada en tu cuenta.</p>
+        <p><b>3. ¿Has visto una oferta en otro sitio?</b> Pega aquí su enlace (o varios, uno por línea) y pulsa Añadir:</p>
+        <textarea id="li-txt" placeholder="https://…"></textarea>
+        <div style="text-align:right"><button class="save" id="li-add">Añadir enlaces</button></div>
+        <div class="hechas" id="li-hechas" style="padding:0"></div>
+      </div>
+    </details>
     <details class="cap" id="cap">
       <summary>📥 Capturas del correo <span class="n" id="cap-n">0</span><span class="hint">pega aquí tus correos de "Thank you for applying"; la rutina de la noche las lee y marca Aplicados, rechazos y entrevistas</span></summary>
       <div class="zona" id="cap-zona" tabindex="0">Haz clic aquí y pega la captura con <b>Ctrl+V</b> (o arrástrala, o <label style="color:var(--accent);cursor:pointer;text-decoration:underline">elige archivo<input type="file" id="cap-file" accept="image/*" multiple hidden /></label>). Puedes pegar varias.</div>
@@ -354,6 +370,26 @@
         `<div>${new Date(c.procesada_en).toLocaleDateString("es-ES", { day: "numeric", month: "short" })} · ${esc(c.resultado || "")}</div>`).join("") : "";
     }
 
+    // ---------- 🔗 Ofertas vistas por el usuario (marcador de LinkedIn / enlaces pegados) ----------
+    const TV = tablePrefix + "vistas";
+    async function cargarVistas() {
+      const [pend, hechas] = await Promise.all([
+        client.from(TV).select("id", { count: "exact", head: true }).eq("procesada", false),
+        client.from(TV).select("procesada_en,resultado,titulo,empresa").eq("procesada", true).not("resultado", "is", null).order("procesada_en", { ascending: false }).limit(6),
+      ]);
+      $("li-n").textContent = pend.count ? `${pend.count} por revisar` : "0";
+      $("li-hechas").innerHTML = (hechas.data || []).length ? "<b>Últimas revisadas:</b>" + hechas.data.map((v) =>
+        `<div>${esc(v.empresa || "")}${v.titulo ? " — " + esc(v.titulo) : ""}: ${esc(v.resultado)}</div>`).join("") : "";
+    }
+    $("li-add").addEventListener("click", async () => {
+      const urls = [...new Set(($("li-txt").value.match(/https?:\/\/[^\s<>"']+/g) || []).map((u) => u.replace(/[),.;]+$/, "")))];
+      if (!urls.length) return toast("No veo ningún enlace (tiene que empezar por https://).");
+      const filas = urls.map((u) => { const m = u.match(/linkedin\.com\/.*?(?:jobs\/view\/(?:[^\/?]*-)?|currentJobId=)(\d{6,})/); return m ? { origen: "linkedin", jid: m[1] } : { origen: "url", url: u }; });
+      let ok = 0;
+      for (const f of filas) { const { error } = await client.from(TV).upsert(f, { onConflict: f.jid ? "jid" : "url", ignoreDuplicates: true }); if (!error) ok++; }
+      $("li-txt").value = ""; toast(`🔗 ${ok} enlace${ok === 1 ? "" : "s"} guardado${ok === 1 ? "" : "s"}: la rutina los revisa esta noche.`); cargarVistas();
+    });
+
     $("undo").addEventListener("click", () => { marcas.clear(); render(); });
     $("q").addEventListener("input", render);
     $("solo-remoto").addEventListener("change", render);
@@ -430,6 +466,7 @@
     }
     load();
     cargarCapturas();
+    cargarVistas();
     if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js");
   </script>
 </body>

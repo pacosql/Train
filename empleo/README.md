@@ -86,6 +86,10 @@ URL: `https://pacosql.github.io/Train/empleo/`
   / `url_empresa_nota`: la oferta en el portal de la propia empresa (no en un
   agregador). La app lleva ahí al pulsar el puesto y lo muestra en la columna
   "Web empresa"; ⚠️ si no existe.
+- `empleo_vistas`: ofertas que el usuario ve él mismo (`origen` linkedin|url,
+  `jid` o `url`, `procesada`, `resultado`). Las de LinkedIn entran aunque la
+  empresa esté fuera de la regla (`encaje = "visto"`) si perfil y ubicación
+  encajan; `limpiar_regla` no las toca.
 - `empleo_capturas`: capturas de la bandeja de entrada que pega el usuario
   (`imagen` JPEG en base64, `procesada`, `resultado`); la rutina las lee.
 - `empleo_ofertas.resultado` (`rechazada|entrevista|oferta`), `resultado_en`,
@@ -144,6 +148,14 @@ por partes. Trabajar en `/tmp/r/` (crear la carpeta).
    oferta por empresa y puesto; si no está clara, lo guarda por empresa en
    `empleo_candidaturas`). Por último, por cada captura,
    `python3 empleo/tools/guardar.py captura_hecha <id> "<resumen corto>"`.
+2c. **Ofertas vistas por el usuario** (tabla `empleo_vistas`: marcador
+   "📥 Empleo" en LinkedIn con su sesión + enlaces que pega en la app):
+   `python3 empleo/tools/vistas.py procesar /tmp/r/c_vistas.json` (repetir
+   mientras `quedan > 0`) y `guardar.py insertar /tmp/r/c_vistas.json`. Para
+   los enlaces sueltos: `vistas.py urls /tmp/r/vistas_urls.json`, abrir cada
+   uno, añadir la oferta a mano si encaja (JSON de candidata + `insertar`) y
+   `vistas.py hecha <id> "<qué pasó>"`. Estas ofertas tienen prioridad: el
+   usuario las ha visto y no quiere que se escapen.
 3. **Limpiar cerradas**: `python3 empleo/tools/guardar.py revalidar`
    (verifica cada enlace con la API de su portal; puede tardar ~8 min).
 4. **Buscar** (cada orden < 10 min):

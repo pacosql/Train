@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Empleo · recoger ofertas</title>
+  <link rel="icon" href="icons/icon-192.png" />
+  <style>
+    body { margin: 0; background: #0b0d10; color: #f4f5f7; font: 16px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; display: grid; place-items: center; min-height: 100vh; padding: 20px; }
+    .box { max-width: 520px; text-align: center; border: 1px solid rgba(255, 255, 255, 0.16); border-radius: 16px; padding: 26px 22px; background: rgba(255, 255, 255, 0.04); }
+    h1 { font-size: 1.25rem; margin: 0 0 8px; }
+    p { color: #9aa3ad; margin: 6px 0; font-size: 0.92rem; }
+    .ok { color: #43d391; } .err { color: #ff5470; }
+    a { color: #6ea8ff; }
+    .build { font-size: 0.7rem; color: #9aa3ad; margin-top: 16px; font-family: ui-monospace, monospace; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <h1 id="t">📥 Recibiendo ofertas…</h1>
+    <p id="d"></p>
+    <p><a href="tabla.html">Ir a la tabla de ofertas</a></p>
+    <div class="build">build __BUILD_ID__</div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="config.js"></script>
+  <script>
+    // Recibe las ofertas que el marcador "📥 Empleo" recoge de la página de LinkedIn que el usuario
+    // tiene abierta (vienen en el # de la URL) y las deja en empleo_vistas para la rutina.
+    (async () => {
+      const { url, anonKey, tablePrefix } = window.EMPLEO_CONFIG;
+      const client = window.supabase.createClient(url, anonKey);
+      const $ = (id) => document.getElementById(id);
+      let data;
+      try { data = JSON.parse(decodeURIComponent(location.hash.slice(1))); } catch { data = null; }
+      const filas = ((data && data.o) || []).filter((x) => /^\d{6,}$/.test(x.j || "")).map((x) => ({
+        origen: "linkedin", jid: x.j, titulo: (x.t || "").slice(0, 200) || null, empresa: (x.e || "").slice(0, 120) || null, ubicacion: (x.l || "").slice(0, 160) || null }));
+      if (!filas.length) { $("t").textContent = "No ha llegado ninguna oferta"; $("t").className = "err"; $("d").textContent = "Pulsa el marcador «📥 Empleo» estando en una página de empleos de LinkedIn."; return; }
+      const { data: antes } = await client.from(tablePrefix + "vistas").select("jid").in("jid", filas.map((f) => f.jid));
+      const ya = new Set((antes || []).map((r) => r.jid));
+      const nuevas = filas.filter((f) => !ya.has(f.jid));
+      const { error } = nuevas.length ? await client.from(tablePrefix + "vistas").upsert(nuevas, { onConflict: "jid", ignoreDuplicates: true }) : { error: null };
+      if (error) { $("t").textContent = "No se pudo guardar"; $("t").className = "err"; $("d").textContent = error.message; return; }
+      $("t").textContent = `✅ ${filas.length} ofertas recibidas (${nuevas.length} nuevas)`; $("t").className = "ok";
+      $("d").textContent = "Esta noche la rutina las revisa y añade a la app las que encajen. Puedes cerrar esta pestaña y seguir en LinkedIn (siguiente página → marcador otra vez).";
+      history.replaceState(null, "", location.pathname);
+      if (window.opener || history.length <= 1) setTimeout(() => window.close(), 3500);
+    })();
+  </script>
+</body>
+</html>

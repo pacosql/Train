@@ -475,7 +475,7 @@ def limpiar_regla():
     """Retira (activa=false) las PENDIENTES que, con la modalidad ya confirmada, no cumplen la regla:
     no remotas -> partner/direccion/ejecutivo solo si Data & AI; sales/arquitecto/devrel solo si Top AI."""
     rows = api("GET", "empleo_ofertas?select=id,empresa,puesto,modalidad,categoria,empresa_data_ai,empresa_top"
-                      "&activa=eq.true&decision=eq.pendiente&modalidad=neq.remoto&encaje=neq.parcial")
+                      "&activa=eq.true&decision=eq.pendiente&modalidad=neq.remoto&encaje=eq.completo")
     n = 0
     for r in rows:
         bad = not r["empresa_data_ai"] if r["categoria"] in ("partner", "direccion", "ejecutivo") else not r["empresa_top"]

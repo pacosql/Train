@@ -745,6 +745,120 @@ def himalayas():
 
 # ---------- más bolsas (feeds públicos) ----------
 
+# ---------- más bolsas (nov 2026): Workable global, Manfred, 4dayweek, Tecnoempleo ----------
+
+BOLSA_Q = ("partner manager", "partnerships", "alliances", "channel manager", "ecosystem", "account executive",
+           "sales director", "head of sales", "business development director", "solutions architect",
+           "solutions engineer", "sales engineer", "solution consultant", "presales", "forward deployed",
+           "developer advocate", "developer relations", "CTO", "head of engineering", "director of engineering",
+           "head of data", "head of AI", "country manager", "general manager", "managing director", "VP sales")
+
+
+def workable_global():
+    """Buscador público de Workable: ofertas en España (remotas o no) de TODAS las empresas que usan Workable."""
+    out, vistos = [], set()
+    for q in BOLSA_Q:
+        token = ""
+        for _ in range(3):
+            try:
+                d = get("https://jobs.workable.com/api/v1/jobs?location=Spain&query=" + urllib.parse.quote(q)
+                        + ("&pageToken=" + urllib.parse.quote(token) if token else ""))
+            except Exception as ex:
+                log("[aviso] Workable", q, ex)
+                break
+            for j in d.get("jobs", []):
+                if j["id"] in vistos or not categoria(j.get("title", "")):
+                    continue
+                vistos.add(j["id"])
+                locs = [l for l in j.get("locations") or [] if l != "TELECOMMUTE"]
+                rem = j.get("workplace") == "remote"
+                out.append(dict(puesto=j["title"], empresa=(j.get("company") or {}).get("title", ""),
+                                ubicacion=("Remoto (" + ", ".join(locs) + ")") if rem else ", ".join(locs),
+                                url=j["url"], workplace=j.get("workplace") or "", fecha=(j.get("created") or "")[:10],
+                                descripcion=text((j.get("description") or "") + " " + (j.get("requirementsSection") or "")),
+                                fuente="Workable", consulta=f"workable: {q}"))
+            token = d.get("nextPageToken") or ""
+            if not token:
+                break
+            time.sleep(0.5)
+    return out
+
+
+def manfred():
+    """Manfred (getmanfred.com): ofertas tech en España con sueldo publicado."""
+    out = []
+    try:
+        d = get("https://www.getmanfred.com/api/v2/public/offers?lang=ES")
+    except Exception as ex:
+        log("[aviso] Manfred", ex)
+        return out
+    for j in d:
+        if j.get("status") != "ACTIVE" or not categoria(j.get("position", "")):
+            continue
+        pct = j.get("remotePercentage") or 0
+        locs = ", ".join(j.get("locations") or []) or "España"
+        o = dict(puesto=j["position"], empresa=(j.get("company") or {}).get("name", "Manfred"),
+                 ubicacion=f"Remoto (España)" if pct >= 100 else locs, workplace="remote" if pct >= 100 else "hybrid" if pct else "",
+                 url=f"https://www.getmanfred.com/ofertas-empleo/{j['id']}/{j['slug']}", fecha=(j.get("updatedAt") or "")[:10],
+                 descripcion="Spain. " + " ".join(j.get("highlights") or []) if isinstance(j.get("highlights"), list) else "Spain",
+                 fuente="Manfred", consulta="manfred")
+        if j.get("salaryFrom") and (j.get("currency") or "€") in ("€", "EUR"):
+            lo, hi = int(j["salaryFrom"]), int(j.get("salaryTo") or j["salaryFrom"])
+            o.update(sueldo=f"{round(lo / 1000)}–{round(hi / 1000)}K €" if hi > lo else f"{round(lo / 1000)}K €", sueldo_min_eur=lo, sueldo_max_eur=hi)
+        out.append(o)
+    return out
+
+
+def cuatrodias():
+    """4dayweek.io: empresas con semana de 4 días o buen equilibrio; solo remoto que admita Europa/España."""
+    out = []
+    for page in range(1, 9):
+        try:
+            d = get(f"https://4dayweek.io/api?page={page}")
+        except Exception as ex:
+            log("[aviso] 4dayweek", ex)
+            break
+        for j in d.get("jobs", []):
+            loc = j.get("location_original") or ""
+            cont = j.get("location_continent") or ""
+            if not categoria(j.get("title", "")) or not (SPAIN.search(loc) or (j.get("is_remote") and (cont == "Europe" or EUROPE.search(loc) or not j.get("location_country")))):
+                continue
+            out.append(dict(puesto=j["title"], empresa=j.get("company_name", ""), ubicacion=f"Remoto ({loc or cont or 'Worldwide'})" if j.get("is_remote") else loc,
+                            url=j["url"], workplace="remote" if j.get("is_remote") else "",
+                            fecha=time.strftime("%Y-%m-%d", time.gmtime(int(j["posted"]))) if str(j.get("posted", "")).isdigit() else None,
+                            descripcion=text(j.get("description")), fuente="4dayweek", consulta="4dayweek"))
+        if not d.get("has_more"):
+            break
+    return out
+
+
+def tecnoempleo():
+    """Tecnoempleo (RSS por palabra clave): mercado español; muchas ofertas no salen en LinkedIn."""
+    out, vistos = [], set()
+    for q in ("partner", "alianzas", "canal", "preventa", "arquitecto soluciones", "director tecnologia", "CTO",
+              "director comercial", "account executive", "desarrollo de negocio", "head of", "country manager"):
+        try:
+            x = get("https://www.tecnoempleo.com/alertas-empleo-rss.php?te=" + urllib.parse.quote(q) + "&pr=,", raw=True)
+        except Exception as ex:
+            log("[aviso] Tecnoempleo", q, ex)
+            continue
+        for it in re.findall(r"<item>(.*?)</item>", x, re.S):
+            c = lambda tag: html.unescape(re.sub(r"<!\[CDATA\[|\]\]>", "", (re.search(rf"<{tag}>(.*?)</{tag}>", it, re.S) or [None, ""])[1])).strip()
+            titulo, link, desc = c("title"), c("link"), c("description")
+            if not link or link in vistos or not categoria(titulo):
+                continue
+            vistos.add(link)
+            emp = re.search(r"Empresa:</b>(?:&nbsp;|\s)*([^<]+)", desc)
+            prov = re.search(r"Provincia:</b>(?:&nbsp;|\s)*([^<]+)", desc)
+            lugar = (prov.group(1).strip() if prov else "")
+            rem = bool(re.search(r"remoto|teletrabajo", lugar + " " + titulo, re.I))
+            out.append(dict(puesto=titulo, empresa=(emp.group(1).strip() if emp else "Tecnoempleo"),
+                            ubicacion=f"Remoto (Spain)" if rem else f"{lugar}, Spain", url=link,
+                            workplace="remote" if rem else "hybrid" if re.search(r"h[ií]brido", lugar, re.I) else "",
+                            descripcion="Spain. " + text(desc), fuente="Tecnoempleo", consulta=f"tecnoempleo: {q}"))
+    return out
+
+
 def _geo(loc):
     """Ubicación normalizada para bolsas de remoto: solo si admite España/Europa/mundo."""
     return bool(SPAIN.search(loc) or EUROPE.search(loc))
@@ -884,7 +998,8 @@ def main():
     cands = []
     for nombre, f in (("explorar", explorar), ("portales", portales), ("portales_web", portales_web), ("remotive", remotive), ("himalayas", himalayas), ("remoteok", remoteok),
                           ("weworkremotely", weworkremotely), ("workingnomads", workingnomads), ("jobicy", jobicy),
-                          ("arbeitnow", arbeitnow), ("hackernews", hackernews), ("linkedin", linkedin)):
+                          ("arbeitnow", arbeitnow), ("hackernews", hackernews), ("workable_global", workable_global), ("manfred", manfred),
+                          ("cuatrodias", cuatrodias), ("tecnoempleo", tecnoempleo), ("linkedin", linkedin)):
         # EXPLORAR=1 ejecuta solo la exploración aleatoria; sin él, todo menos la exploración.
         if bool(os.environ.get("EXPLORAR")) != (nombre == "explorar") or os.environ.get("SIN_" + nombre.upper()):
             continue
