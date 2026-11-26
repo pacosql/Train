@@ -160,6 +160,10 @@ por partes. Trabajar en `/tmp/r/` (crear la carpeta).
    (verifica cada enlace con la API de su portal; puede tardar ~8 min).
 4. **Buscar** (cada orden < 10 min):
    - `SIN_LINKEDIN=1 python3 empleo/tools/buscar.py > /tmp/r/c_portales.json` (incluye portales web y todas las bolsas; ~5 min)
+   - Barrido rotatorio (portales de empresas que aún no vigilamos; ~6 min):
+     `BARRIDO_LOTE=<d>/7 SIN_PORTALES=1 SIN_PORTALES_WEB=1 SIN_REMOTIVE=1 SIN_HIMALAYAS=1 SIN_REMOTEOK=1 SIN_WEWORKREMOTELY=1 SIN_WORKINGNOMADS=1 SIN_JOBICY=1 SIN_ARBEITNOW=1 SIN_HACKERNEWS=1 SIN_WORKABLE_GLOBAL=1 SIN_MANFRED=1 SIN_CUATRODIAS=1 SIN_TECNOEMPLEO=1 SIN_LINKEDIN=1 python3 empleo/tools/buscar.py > /tmp/r/c_barrido.json`
+     con d = día de la semana (`date +%u`). Las empresas donde aparece una
+     oferta del perfil se añaden solas a `empleo_empresas`.
    - LinkedIn en 32 lotes, una orden por lote (~5 min cada uno):
      `SIN_PORTALES=1 SIN_PORTALES_WEB=1 SIN_REMOTIVE=1 SIN_HIMALAYAS=1 SIN_REMOTEOK=1 SIN_WEWORKREMOTELY=1 SIN_WORKINGNOMADS=1 SIN_JOBICY=1 SIN_ARBEITNOW=1 SIN_HACKERNEWS=1 LINKEDIN_LOTE=<i>/32 python3 empleo/tools/buscar.py > /tmp/r/c_li_<i>.json`
      (hay que apagar cada fuente con su `SIN_<NOMBRE>`; si un lote pasa de 10 min usar `/64` y dos mitades `i/64` e `(i+32)/64`; `FICHAS_HILOS=N` sube los hilos de lectura de fichas y `EXPLORAR_N=4` reduce la exploración, que con 14 búsquedas tarda >10 min)

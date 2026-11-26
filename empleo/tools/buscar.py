@@ -745,6 +745,56 @@ def himalayas():
 
 # ---------- más bolsas (feeds públicos) ----------
 
+# ---------- barrido rotatorio de portales que no vigilamos ----------
+
+def barrido():
+    """BARRIDO_LOTE=i/n: recorre la parte i de n de empleo/tools/portales_extra.json (miles de portales
+    Greenhouse/Ashby/Lever válidos de empresas que no están en empleo_empresas). Las empresas en las
+    que aparezca una oferta del perfil se añaden solas a empleo_empresas para vigilarlas a diario."""
+    lote = os.environ.get("BARRIDO_LOTE")
+    if not lote:
+        return []
+    i, n = map(int, lote.split("/"))
+    try:
+        extra = json.load(open(os.path.join(HERE, "portales_extra.json")))[i - 1::n]
+    except Exception as ex:
+        log("[aviso] barrido", ex)
+        return []
+    ya = {(e.get("ats_token") or "").lower() for e in EMPRESAS}
+    H = {"greenhouse": greenhouse, "ashby": ashby, "lever": lever}
+    PORTAL = {"greenhouse": "https://job-boards.greenhouse.io/{}", "ashby": "https://jobs.ashbyhq.com/{}", "lever": "https://jobs.lever.co/{}"}
+
+    def una(x):
+        if x["slug"] in ya:
+            return []
+        nombre = x["slug"].replace("-", " ").title()
+        try:
+            res = H[x["ats"]]({"ats_token": x["slug"], "nombre": nombre, "top": False})
+        except Exception:
+            return []
+        ok = []
+        for o in res:
+            o.update(empresa=nombre, empresa_data_ai=True, empresa_top=False, sector="SaaS / tecnología",
+                     fuente=f"portal oficial {nombre}", consulta="barrido de portales")
+            if evaluar(dict(o)):
+                ok.append(o)
+        if 0 < len(ok) <= 15:
+            try:
+                fila = dict(nombre=nombre, ats=x["ats"], ats_token=x["slug"], portal_url=PORTAL[x["ats"]].format(x["slug"]),
+                            sector="SaaS / tecnología", data_ai=True, top=False, activa=True, notas="barrido rotatorio de portales")
+                req = urllib.request.Request(f"{SB_URL}/rest/v1/empleo_empresas?on_conflict=nombre", data=json.dumps(fila).encode(), method="POST",
+                                             headers={"apikey": SB_KEY, "Authorization": f"Bearer {SB_KEY}", "Content-Type": "application/json",
+                                                      "Prefer": "resolution=ignore-duplicates,return=minimal"})
+                urllib.request.urlopen(req, timeout=30)
+            except Exception as ex:
+                log("[aviso] alta de empresa", nombre, ex)
+            return ok
+        return []
+
+    with ThreadPoolExecutor(16) as ex:
+        return [o for r in ex.map(una, extra) for o in r]
+
+
 # ---------- más bolsas (nov 2026): Workable global, Manfred, 4dayweek, Tecnoempleo ----------
 
 BOLSA_Q = ("partner manager", "partnerships", "alliances", "channel manager", "ecosystem", "account executive",
@@ -999,7 +1049,7 @@ def main():
     for nombre, f in (("explorar", explorar), ("portales", portales), ("portales_web", portales_web), ("remotive", remotive), ("himalayas", himalayas), ("remoteok", remoteok),
                           ("weworkremotely", weworkremotely), ("workingnomads", workingnomads), ("jobicy", jobicy),
                           ("arbeitnow", arbeitnow), ("hackernews", hackernews), ("workable_global", workable_global), ("manfred", manfred),
-                          ("cuatrodias", cuatrodias), ("tecnoempleo", tecnoempleo), ("linkedin", linkedin)):
+                          ("cuatrodias", cuatrodias), ("tecnoempleo", tecnoempleo), ("barrido", barrido), ("linkedin", linkedin)):
         # EXPLORAR=1 ejecuta solo la exploración aleatoria; sin él, todo menos la exploración.
         if bool(os.environ.get("EXPLORAR")) != (nombre == "explorar") or os.environ.get("SIN_" + nombre.upper()):
             continue
