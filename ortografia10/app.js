@@ -11,6 +11,7 @@
 // ortografia10_respuestas); si no hay red o la tabla aún no existe, se quedan
 // en cola y se reintentan al abrir la app.
 import { quitarTildes, silabear, analizar, explicarTilde } from "./silabas.js";
+import { catDe, registrarNota, sembrarNota, pintarNota } from "./nota.js?v=__BUILD_ID__";
 
 const CFG = window.ORTOGRAFIA10_CONFIG;
 const $main = document.getElementById("main");
@@ -19,7 +20,7 @@ const RONDA = 10;
 // ------------------------------------------------------------ utilidades
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 const rnd = (n) => Math.floor(Math.random() * n);
-const pick = (a) => a[rnd(a.length)];
+const pick = (a) => { const x = a[rnd(a.length)]; if (x && typeof x.c === "string") compUsada = x.c; return x; }; // la competencia va a la Nota
 const shuffle = (a) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = rnd(i + 1); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 const norm = (s) => String(s).trim().toLowerCase().replace(/\s+/g, " ");
 const tokens = (s) => s.match(/[\p{L}\p{M}]+|[^\p{L}\p{M}]+/gu) || [];
@@ -39,7 +40,9 @@ if (!DISP) { DISP = Math.random().toString(36).slice(2, 10); ls.set("dev", DISP)
 // ------------------------------------------------------------ datos
 let D = null, byWord = new Map();
 const COMP = (id) => (D.C[id] || [id, "", ""]);
-const P = (i) => ({ w: D.P[i][0], alts: D.P[i][1], g: D.P[i][2], op: D.P[i][3], c: D.P[i][4], d: D.P[i][5] });
+const P = (i) => (compUsada = D.P[i][4], { w: D.P[i][0], alts: D.P[i][1], g: D.P[i][2], op: D.P[i][3], c: D.P[i][4], d: D.P[i][5] });
+// compUsada: la competencia del último ejercicio (para la pestaña Nota).
+let compUsada = null;
 const manual = (f) => D.M.filter(f);
 let MAN = {};
 
@@ -126,7 +129,9 @@ function apuntar(tipo, ok) {
   if (!s.dias.includes(hoy)) s.dias.push(hoy);
   s.hoy = s.hoyFecha === hoy ? (s.hoy || 0) + 1 : 1; s.hoyFecha = hoy;
   ls.set("stats", s);
-  encolar("respuestas", { tipo, acierto: ok, dispositivo: DISP });
+  const comp = compUsada, categoria = catDe(comp, tipo);
+  registrarNota(categoria, comp, ok);
+  encolar("respuestas", { tipo, acierto: ok, dispositivo: DISP, categoria, comp });
 }
 function racha(dias) {
   let n = 0; const d = new Date();
@@ -163,7 +168,7 @@ function marcarToks(cont, tocado, correcto) {
     if (i === tocado && tocado !== correcto) b.classList.add("mal");
   });
 }
-const reglaDe = (c) => { const [n, r, t] = COMP(c); return r ? `<div class="regla"><b>${esc(n)}</b>${esc(r)}${t ? `<br><i>Truco: ${esc(t)}</i>` : ""}</div>` : ""; };
+const reglaDe = (c) => { if (c) compUsada = c; const [n, r, t] = COMP(c); return r ? `<div class="regla"><b>${esc(n)}</b>${esc(r)}${t ? `<br><i>Truco: ${esc(t)}</i>` : ""}</div>` : ""; };
 function hablar(t) {
   if (!("speechSynthesis" in window)) return false;
   const u = new SpeechSynthesisUtterance(t); u.lang = "es-ES"; u.rate = 0.85;
@@ -710,13 +715,13 @@ function siguienteTipo(ultimo, forzado) {
 let tab = "jugar";
 // Si el móvil aún tiene un index.html viejo en caché, añadir la pestaña que falte.
 { const nav = document.querySelector(".tabs");
-  for (const [id, n] of [["valorar", "Valorar"], ["fichas", "Fichas"]]) if (nav && !nav.querySelector(`[data-tab="${id}"]`)) { const b = document.createElement("button"); b.dataset.tab = id; b.textContent = n; nav.appendChild(b); } }
+  for (const [id, n] of [["valorar", "Valorar"], ["fichas", "Fichas"], ["nota", "Nota"]]) if (nav && !nav.querySelector(`[data-tab="${id}"]`)) { const b = document.createElement("button"); b.dataset.tab = id; b.textContent = n; nav.appendChild(b); } }
 document.querySelectorAll(".tabs button").forEach((b) => b.onclick = () => irA(b.dataset.tab));
 function irA(t) {
   tab = t; ronda = null;
   document.querySelectorAll(".tabs button").forEach((b) => b.classList.toggle("on", b.dataset.tab === t));
   if ("speechSynthesis" in window) speechSynthesis.cancel();
-  t === "jugar" ? inicio() : t === "fichas" ? fichas() : valorar();
+  t === "jugar" ? inicio() : t === "fichas" ? fichas() : t === "nota" ? pintarNota($main, { COMP, esc, empezar }) : valorar();
   scrollTo(0, 0);
 }
 
@@ -756,6 +761,7 @@ async function turno() {
       <div class="tipo">${t.e} ${esc(t.n)}</div><div id="ej"></div><div id="fb"></div>`;
     $main.querySelector("#salir").onclick = () => irA(R.forzado ? "valorar" : "jugar");
     cuerpo = $main.querySelector("#ej");
+    compUsada = null;
     try { res = t.run(cuerpo); res = await res; } catch (e) { console.error(t.id, e); res = null; }
     if (ronda !== R) return; // salió a mitad
     if (!res && R.forzado) { $main.innerHTML = `<p>Este ejercicio no funciona en este navegador (necesita voz).</p>`; return; }
@@ -922,6 +928,7 @@ function fichas() {
 // ------------------------------------------------------------ arranque
 $main.innerHTML = `<p class="sub">Cargando ejercicios…</p>`;
 cargar().then(() => {
+  sembrarNota();
   inicio();
   vaciarCola();
   cargarTotales().then(() => { if (tab === "valorar" && !ronda) valorar(); });

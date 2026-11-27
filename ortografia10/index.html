@@ -144,6 +144,22 @@
     .ficha .lab { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--mute); margin: 10px 0 2px; }
     .quedan { font-size: 14px; color: var(--mute); margin: 0 0 10px; }
     .nota { font-size: 13px; color: var(--mute); margin: 18px 0 0; }
+    /* Nota */
+    .nota-global { border: 2px solid var(--ink); border-radius: 16px; padding: 14px 16px; margin: 4px 0 16px; display: grid; }
+    .nota-global span { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--mute); }
+    .nota-global b { font-family: "P10", var(--sans); font-weight: 800; font-size: 56px; line-height: 1.05; }
+    .nota-global small { color: var(--mute); font-size: 13px; }
+    .cat { border: 1.5px solid var(--line); border-radius: 14px; padding: 10px 14px; margin-bottom: 8px; }
+    .cat.vacia { opacity: .5; }
+    .cat-top { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+    .cat-n { font-weight: 700; font-size: 16px; }
+    .cat-nota { font-family: "P10", var(--sans); font-weight: 800; font-size: 24px; }
+    .cat.prov .cat-nota { color: var(--mute); }
+    .cat-bar { height: 6px; background: var(--soft); border-radius: 9px; overflow: hidden; margin: 6px 0; }
+    .cat-bar i { display: block; height: 100%; background: var(--ink); }
+    .cat.prov .cat-bar i { background: #9a9a9a; }
+    .cat-pie { font-size: 13px; color: var(--mute); }
+    @media (max-width: 400px) { .tabs button { padding: 8px 8px; font-size: 14px; } .logo { font-size: 22px; } }
     .build-id { margin-top: 30px; font-size: 11px; color: #aaa; text-align: center; }
     .toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom)); transform: translateX(-50%); background: #000; color: #fff; padding: 10px 16px; border-radius: 999px; font-size: 14px; z-index: 9; }
   </style>
@@ -156,6 +172,7 @@
         <button data-tab="jugar" class="on">Jugar</button>
         <button data-tab="valorar">Valorar</button>
         <button data-tab="fichas">Fichas</button>
+        <button data-tab="nota">Nota</button>
       </nav>
     </header>
     <main id="main"></main>
