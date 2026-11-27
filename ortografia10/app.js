@@ -641,8 +641,8 @@ const TIPOS = [
     id: "ortodle", e: "🟩", n: "Ortodle", orig: "Wordle (juego de palabras)",
     desc: "Adivina la palabra en 6 intentos. Verde: letra en su sitio; amarilla: está pero en otro sitio. La á y la a son letras distintas, y la pista te dice qué regla tiene.",
     ej: "Pista «B o V sin regla», 5 letras → n·u·b·e·s.",
-    async run(el) {
-      const p = palAzar((p) => p.w.length >= 5 && p.w.length <= 6 && p.d <= 3 && /^[a-záéíóúñ]+$/.test(p.w));
+    async run(el, pFijo) {
+      const p = pFijo || palAzar((p) => p.w.length >= 5 && p.w.length <= 6 && p.d <= 3 && /^[a-záéíóúñ]+$/.test(p.w));
       const w = p.w, L = w.length, filas = []; let actual = "";
       const teclas = [..."qwertyuiopasdfghjklñzxcvbnmáéíóú"];
       const estado = {}; // letra -> ok | casi | no
@@ -947,6 +947,232 @@ const TIPOS = [
     },
   },
   {
+    id: "rosco", e: "⭕", n: "El rosco", orig: "Pasapalabra (concurso de TV)",
+    desc: "Una letra para cada palabra del abecedario. Te doy la palabra mal escrita y tú la escribes bien. «Pasapalabra» la deja para la siguiente vuelta. 150 segundos.",
+    ej: "Con la H: «ierba» → hierba.",
+    async run(el) {
+      const letras = [..."abcdefghijlmnñopqrstuvxyz"]; const usados = new Set();
+      const ro = letras.map((l) => {
+        const ini = (w) => quitarTildes(w)[0] === l;
+        let p = palAzar((p) => ini(p.w) && !usados.has(p.w) && p.d <= 3 && /^[a-záéíóúñü]+$/.test(p.w), 600), modo = "Empieza por";
+        if (!ini(p.w)) { p = palAzar((p) => quitarTildes(p.w).includes(l) && !usados.has(p.w) && /^[a-záéíóúñü]+$/.test(p.w), 600); modo = "Contiene la"; }
+        usados.add(p.w); return { l, p, modo, mal: pick(p.alts), estado: "" };
+      });
+      const rec = ls.get("rec.rosco", 0); const fin = Date.now() + 150000; let cola = ro.map((_, i) => i);
+      el.innerHTML = `<div class="rosco" id="ro">${ro.map((r, i) => `<span data-i="${i}" style="--a:${(360 / ro.length) * i}deg">${r.l.toUpperCase()}</span>`).join("")}
+        <div class="rosco-c"><div class="reloj" id="tt"></div><p id="cl"></p><input class="esc" id="in" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Escríbela bien">
+        <div class="fila"><button class="btn" id="pasa">Pasapalabra</button><button class="btn neg" id="ok">OK</button></div></div></div>`;
+      const inp = el.querySelector("#in");
+      const pinta = () => {
+        ro.forEach((r, i) => { el.querySelector(`#ro [data-i="${i}"]`).className = r.estado + (i === cola[0] ? " act" : ""); });
+        const r = ro[cola[0]];
+        if (r) el.querySelector("#cl").innerHTML = `${r.modo} <b>${r.l.toUpperCase()}</b>: «<s>${esc(r.mal)}</s>»`;
+        el.querySelector("#tt").textContent = `${Math.max(0, Math.ceil((fin - Date.now()) / 1000))} s`;
+      };
+      pinta(); inp.focus();
+      await new Promise((res) => {
+        const rel = setInterval(() => { pinta(); if (Date.now() > fin) { clearInterval(rel); res(); } }, 300);
+        const sig = () => { if (!cola.length) { clearInterval(rel); res(); return; } pinta(); inp.value = ""; inp.focus(); };
+        el.querySelector("#ok").onclick = () => { const i = cola.shift(); const r = ro[i]; r.estado = norm(inp.value) === norm(r.p.w) ? "ok" : "mal"; r.dijo = inp.value; sig(); };
+        el.querySelector("#pasa").onclick = () => { cola.push(cola.shift()); sig(); };
+        inp.onkeydown = (e) => { if (e.key === "Enter") el.querySelector(inp.value.trim() ? "#ok" : "#pasa").click(); };
+      });
+      inp.disabled = true; el.querySelectorAll(".rosco-c button").forEach((b) => b.disabled = true);
+      const bien = ro.filter((r) => r.estado === "ok").length; const nuevoRec = bien > rec; if (nuevoRec) ls.set("rec.rosco", bien);
+      const malas = ro.filter((r) => r.estado !== "ok");
+      return { ok: bien >= Math.ceil(ro.length * 0.6) || nuevoRec, html: `<p><b>${bien} de ${ro.length}</b>. ${nuevoRec ? "🏆 ¡Nuevo récord!" : `Tu récord: ${rec}.`}</p>${malas.length ? `<p>${malas.map((r) => `${r.l.toUpperCase()}: <b>${esc(r.p.w)}</b>${r.dijo ? ` (pusiste «${esc(r.dijo)}»)` : ""}`).join(" · ")}</p>` : ""}` };
+    },
+  },
+  {
+    id: "panal", e: "🐝", n: "El panal", orig: "Spelling Bee del NYT",
+    desc: "7 letras en un panal. Forma todas las palabras que puedas de 4 letras o más, usando siempre la del centro. La á y la a son letras distintas.",
+    ej: "Letras C·A·M·I·Ó·N·S (centro A) → «cama», «camión»…",
+    async run(el) {
+      const dic = D.W || D.P.map((p) => p[0]).filter((w) => /^[a-záéíóúñü]{4,}$/.test(w));
+      let L, centro, sol;
+      for (let k = 0; k < 120; k++) {
+        const base = pick(dic); const set = [...new Set(base)]; if (set.length !== 7) continue;
+        for (const c of shuffle(set)) { const s = dic.filter((w) => w.includes(c) && [...w].every((x) => set.includes(x))); if (s.length >= 8) { L = set; centro = c; sol = s; break; } }
+        if (sol) break;
+      }
+      if (!sol) return null;
+      let otras = shuffle(L.filter((c) => c !== centro)), actual = ""; const hechas = [];
+      const meta = Math.min(sol.length, Math.max(5, Math.ceil(sol.length * 0.35)));
+      el.innerHTML = `<p class="enun">Forma palabras con la letra del centro</p><p class="reloj" id="pt"></p><div class="palabra" id="w" style="min-height:52px"></div>
+        <div class="panal" id="pn"></div><div class="fila" style="margin-top:12px"><button class="btn" id="bo">Borrar</button><button class="btn" id="mz">Mezclar</button><button class="btn neg" id="en">Enviar</button></div>
+        <div class="pistas" id="hh" style="margin-top:12px"></div><button class="btn" style="width:100%;margin-top:6px" id="fin">Terminar</button>`;
+      const pinta = () => {
+        el.querySelector("#w").textContent = actual || " ";
+        el.querySelector("#pn").innerHTML = [otras[0], otras[1], otras[2], centro, otras[3], otras[4], otras[5]].map((c) => `<button data-c="${c}" class="${c === centro ? "centro" : ""}">${c.toUpperCase()}</button>`).join("");
+        el.querySelector("#pt").textContent = `${hechas.length} de ${sol.length} palabras · objetivo ${meta}`;
+        el.querySelector("#hh").innerHTML = hechas.map((w) => `<span class="hecha">${esc(w)}</span>`).join("");
+      };
+      pinta();
+      await new Promise((res) => {
+        el.querySelector("#pn").onclick = (e) => { const b = e.target.closest("[data-c]"); if (b) { actual += b.dataset.c; pinta(); } };
+        el.querySelector("#bo").onclick = () => { actual = actual.slice(0, -1); pinta(); };
+        el.querySelector("#mz").onclick = () => { otras = shuffle(otras); pinta(); };
+        el.querySelector("#fin").onclick = res;
+        el.querySelector("#en").onclick = () => {
+          const w = actual; actual = "";
+          if (w.length < 4) toast("Mínimo 4 letras");
+          else if (!w.includes(centro)) toast("Tiene que llevar la letra del centro");
+          else if (hechas.includes(w)) toast("Esa ya la tienes");
+          else if (sol.includes(w)) { hechas.push(w); toast(new Set(w).size === 7 ? "🐝 ¡Usa las 7 letras!" : "¡Bien!"); if (hechas.length === sol.length) res(); }
+          else if (sol.includes(quitarTildes(w)) || sol.some((s) => quitarTildes(s) === quitarTildes(w))) toast("Casi: revisa la tilde");
+          else toast("No está en la lista");
+          pinta();
+        };
+      });
+      el.querySelectorAll("#pn button, .fila button, #fin").forEach((b) => b.disabled = true);
+      const faltan = sol.filter((w) => !hechas.includes(w));
+      return { ok: hechas.length >= meta, html: `<p><b>${hechas.length} de ${sol.length}</b> palabras.</p>${faltan.length ? `<p>Te faltaron: ${faltan.map(esc).join(" · ")}</p>` : "<p>¡Todas!</p>"}` };
+    },
+  },
+  {
+    id: "memoria", e: "🃏", n: "Memoria de parejas", orig: "Juego de memoria (cartas boca abajo)",
+    desc: "12 cartas boca abajo: 6 palabras bien escritas y sus 6 versiones con falta. Levanta dos y encuentra cada pareja con los menos intentos posibles.",
+    ej: "«hierba» ↔ «ierba».",
+    async run(el) {
+      const usados = new Set(), pares = [];
+      while (pares.length < 6) { const p = palAzar((p) => p.w.length <= 10 && p.d <= 3 && !usados.has(p.w)); usados.add(p.w); pares.push([p.w, pick(p.alts)]); }
+      const cartas = shuffle(pares.flatMap(([b, m], i) => [{ t: b, i, bien: true }, { t: m, i, bien: false }]));
+      let abiertas = [], intentos = 0, hechas = 0; const rec = ls.get("rec.memoria", 0);
+      el.innerHTML = `<p class="enun">Encuentra las parejas</p><p class="reloj" id="pt"></p><div class="memo" id="m">${cartas.map((c, k) => `<button data-k="${k}"><span>${esc(c.t)}</span></button>`).join("")}</div>`;
+      const hud = () => { el.querySelector("#pt").textContent = `${intentos} intentos${rec ? ` · récord ${rec}` : ""}`; };
+      hud();
+      await new Promise((res) => {
+        el.querySelector("#m").onclick = (e) => {
+          const b = e.target.closest("[data-k]"); if (!b || b.classList.contains("vista") || abiertas.length >= 2) return;
+          b.classList.add("vista"); abiertas.push(b);
+          if (abiertas.length === 2) {
+            intentos++; hud(); const [a, c] = abiertas.map((x) => cartas[+x.dataset.k]);
+            if (a.i === c.i) { abiertas.forEach((x) => { x.classList.add("hecha"); const cc = cartas[+x.dataset.k]; if (!cc.bien) x.querySelector("span").innerHTML = `<s>${esc(cc.t)}</s>`; }); abiertas = []; if (++hechas === 6) setTimeout(res, 300); }
+            else setTimeout(() => { abiertas.forEach((x) => x.classList.remove("vista")); abiertas = []; }, 900);
+          }
+        };
+      });
+      const nuevoRec = !rec || intentos < rec; if (nuevoRec) ls.set("rec.memoria", intentos);
+      return { ok: intentos <= 12 || nuevoRec, html: `<p><b>${intentos} intentos</b> (lo perfecto son 6). ${nuevoRec ? "🏆 ¡Nuevo récord!" : `Tu récord: ${rec}.`}</p><p>${pares.map(([b, m]) => `<b>${esc(b)}</b> / <s>${esc(m)}</s>`).join(" · ")}</p>` };
+    },
+  },
+  {
+    id: "desliza", e: "👆", n: "Desliza", orig: "Gesto de Tinder (deslizar)",
+    desc: "Sale una palabra con hueco y dos opciones, una a cada lado. Desliza la tarjeta hacia la buena (o toca el lado). 25 segundos: ¿cuántas haces?",
+    ej: "«hier_a» → desliza a la izquierda «b».",
+    async run(el) {
+      const rec = ls.get("rec.desliza", 0); let bien = 0, total = 0; const fallos = []; const fin = Date.now() + 25000;
+      el.innerHTML = `<div class="hud"><span id="pt">0</span><span id="tt"></span><span>Récord ${rec}</span></div><div class="desliza" id="z"><div class="lado iz" id="li"></div><div class="lado de" id="ld"></div><div class="carta" id="c"></div></div>`;
+      const $c = el.querySelector("#c"); let act;
+      const nueva = () => {
+        const p = palAzar((p) => p.g && p.op && p.op.length === 2 && p.op.includes(p.w.slice(p.g[0], p.g[1])));
+        const ops = shuffle(p.op); act = { p, ops, pieza: p.w.slice(p.g[0], p.g[1]) };
+        el.querySelector("#li").textContent = ops[0] || "(nada)"; el.querySelector("#ld").textContent = ops[1] || "(nada)";
+        $c.innerHTML = `${esc(p.w.slice(0, p.g[0]))}<span class="hueco">&nbsp;</span>${esc(p.w.slice(p.g[1]))}`; $c.style.transform = "";
+      };
+      await new Promise((res) => {
+        const rel = setInterval(() => { el.querySelector("#tt").textContent = `${Math.max(0, Math.ceil((fin - Date.now()) / 1000))} s`; if (Date.now() > fin) { clearInterval(rel); res(); } }, 200);
+        const elige = (lado) => {
+          if (Date.now() > fin) return; total++;
+          if (act.ops[lado] === act.pieza) { bien++; $c.classList.add("bien"); } else { fallos.push(act.p.w); $c.classList.add("malc"); }
+          el.querySelector("#pt").textContent = `${bien} ✓`;
+          $c.style.transform = `translateX(${lado ? 140 : -140}%) rotate(${lado ? 20 : -20}deg)`;
+          setTimeout(() => { $c.classList.remove("bien", "malc"); nueva(); }, 220);
+        };
+        let x0 = null;
+        $c.onpointerdown = (e) => { x0 = e.clientX; $c.setPointerCapture(e.pointerId); };
+        $c.onpointermove = (e) => { if (x0 !== null) $c.style.transform = `translateX(${e.clientX - x0}px) rotate(${(e.clientX - x0) / 12}deg)`; };
+        $c.onpointerup = (e) => { const dx = e.clientX - x0; x0 = null; if (Math.abs(dx) > 60) elige(dx > 0 ? 1 : 0); else $c.style.transform = ""; };
+        el.querySelector("#li").onclick = () => elige(0); el.querySelector("#ld").onclick = () => elige(1);
+        nueva();
+      });
+      $c.onpointerdown = null; el.querySelector("#li").onclick = el.querySelector("#ld").onclick = null;
+      const nuevoRec = bien > rec; if (nuevoRec) ls.set("rec.desliza", bien);
+      return { ok: (bien >= 8 && bien / Math.max(1, total) >= 0.8) || nuevoRec, html: `<p><b>${bien} de ${total}</b>. ${nuevoRec ? "🏆 ¡Nuevo récord!" : `Tu récord: ${rec}.`}</p>${fallos.length ? `<p>Fallaste: ${fallos.map((w) => `<b>${esc(w)}</b>`).join(" · ")}</p>` : ""}` };
+    },
+  },
+  {
+    id: "carrera", e: "🏁", n: "Carrera contra el Profe", orig: "Duelo contra un rival (carreras)",
+    desc: "El Profe Tilde avanza solo. Tú avanzas con cada acierto y retrocedes con cada fallo. El primero en llegar a la meta gana.",
+    ej: "Tú 🏃 ━━━━━━━━ 🏁 · Profe 🧑‍🏫 ━━━━ 🏁",
+    async run(el) {
+      const META = 12; let yo = 0, profe = 0; const fallos = [];
+      el.innerHTML = `<div class="pista-c"><div>Tú <span id="py"></span></div><div>Profe <span id="pp"></span></div></div><div class="palabra" id="w"></div><div class="ops dos"><button class="op" data-v="1">✓ Bien</button><button class="op" data-v="0">✗ Mal</button></div>`;
+      const barra = (n, e) => "━".repeat(n) + e + "┄".repeat(META - n) + "🏁";
+      const hud = () => { el.querySelector("#py").textContent = barra(yo, "🏃"); el.querySelector("#pp").textContent = barra(profe, "🧑‍🏫"); };
+      let act; const nueva = () => { const p = palAzar((p) => p.d <= 3); const ok = Math.random() < 0.5; act = { p, ok, w: ok ? p.w : pick(p.alts) }; el.querySelector("#w").textContent = act.w; };
+      hud(); nueva();
+      const gana = await new Promise((res) => {
+        const bot = setInterval(() => { profe++; hud(); if (profe >= META) { clearInterval(bot); res(false); } }, 2300);
+        el.querySelectorAll(".op").forEach((b) => b.onclick = () => {
+          if (profe >= META || yo >= META) return;
+          if ((b.dataset.v === "1") === act.ok) yo++; else { yo = Math.max(0, yo - 1); fallos.push(act); }
+          hud(); if (yo >= META) { clearInterval(bot); res(true); } else nueva();
+        });
+      });
+      el.querySelectorAll(".op").forEach((b) => b.disabled = true);
+      return { ok: gana, html: `<p>${gana ? "🏆 ¡Le has ganado al Profe Tilde!" : "El Profe llegó antes. ¡La revancha!"}</p>${fallos.slice(0, 5).map((f) => `<p>«${esc(f.w)}» → <b>${esc(f.p.w)}</b>${f.ok ? " (estaba bien)" : ""}</p>`).join("")}` };
+    },
+  },
+  {
+    id: "raya", e: "#️⃣", n: "Tres en raya", orig: "Juego de mesa (tres en raya)",
+    desc: "Juegas contra la máquina. Para poner tu ✗ en una casilla tienes que acertar la letra que falta; si fallas, pierdes el turno.",
+    ej: "Eliges la casilla del centro → «hier_a» → b → ✗ tuya.",
+    async run(el) {
+      const T = Array(9).fill(""); const lineas = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
+      const gana = (s) => lineas.some((l) => l.every((i) => T[i] === s));
+      el.innerHTML = `<p class="enun" id="msg">Elige casilla</p><div class="raya" id="t"></div><div id="q"></div>`;
+      const pinta = () => { el.querySelector("#t").innerHTML = T.map((v, i) => `<button data-i="${i}" ${v ? "disabled" : ""}>${v}</button>`).join(""); };
+      const bot = () => {
+        const libres = T.map((v, i) => (v ? -1 : i)).filter((i) => i >= 0);
+        const prueba = (s) => libres.find((i) => { T[i] = s; const g = gana(s); T[i] = ""; return g; });
+        let i = prueba("◯"); if (i === undefined) i = prueba("✗"); if (i === undefined) i = T[4] ? pick(libres) : 4;
+        T[i] = "◯";
+      };
+      pinta();
+      const res = await new Promise((fin) => {
+        el.querySelector("#t").onclick = async (e) => {
+          const b = e.target.closest("[data-i]"); if (!b || b.disabled || el.querySelector("#q").innerHTML) return;
+          const i = +b.dataset.i; b.classList.add("sel");
+          const p = palAzar((p) => p.g && p.op && p.op.includes(p.w.slice(p.g[0], p.g[1])));
+          const pieza = p.w.slice(p.g[0], p.g[1]); const ops = shuffle(p.op).slice(0, 3); if (!ops.includes(pieza)) ops[0] = pieza;
+          const q = el.querySelector("#q");
+          q.innerHTML = `<div class="palabra">${esc(p.w.slice(0, p.g[0]))}<span class="hueco">&nbsp;</span>${esc(p.w.slice(p.g[1]))}</div><div id="z"></div>`;
+          const ok = await opciones(q.querySelector("#z"), ops, ops.indexOf(pieza), { dos: true });
+          el.querySelector("#msg").textContent = ok ? "¡Casilla tuya!" : `Era «${p.w}». Pierdes el turno.`;
+          await new Promise((r) => setTimeout(r, ok ? 500 : 1200)); q.innerHTML = "";
+          if (ok) T[i] = "✗";
+          if (gana("✗")) { pinta(); return fin("gana"); }
+          if (T.every(Boolean)) { pinta(); return fin("empate"); }
+          bot(); pinta();
+          if (gana("◯")) return fin("pierde");
+          if (T.every(Boolean)) return fin("empate");
+          el.querySelector("#msg").textContent = "Tu turno: elige casilla";
+        };
+      });
+      el.querySelectorAll("#t button").forEach((b) => b.disabled = true);
+      return { ok: res === "gana", html: `<p>${res === "gana" ? "🏆 ¡Tres en raya!" : res === "empate" ? "Empate." : "Ha ganado la máquina."}</p>` };
+    },
+  },
+  {
+    id: "diario", e: "📅", n: "Reto del día", orig: "Wordle (un reto al día y racha)",
+    desc: "Un Ortodle al día, la misma palabra para todos ese día. Mantén la racha de días seguidos y comparte tu cuadrícula.",
+    ej: "Racha: 🔥 5 días.",
+    async run(el) {
+      const hoy = new Date().toISOString().slice(0, 10);
+      const elegibles = D.P.map((_, i) => i).filter((i) => { const w = D.P[i][0]; return w.length >= 5 && w.length <= 6 && D.P[i][5] <= 3 && /^[a-záéíóúñ]+$/.test(w); });
+      let h = 0; for (const c of hoy) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+      const p = P(elegibles[h % elegibles.length]);
+      const st = ls.get("diario", { ult: "", racha: 0, hechos: {} });
+      const res = await TIPO.ortodle.run(el, p);
+      if (!st.hechos[hoy]) {
+        const ayer = new Date(Date.now() - 864e5).toISOString().slice(0, 10);
+        st.racha = res.ok ? (st.ult === ayer ? st.racha + 1 : 1) : 0; st.ult = hoy; st.hechos[hoy] = res.ok ? 1 : -1; ls.set("diario", st);
+      }
+      return { ok: res.ok, html: `<p>${st.hechos[hoy] ? `Reto de hoy ${st.hechos[hoy] === 1 ? "superado" : "fallado"} · 🔥 racha de ${st.racha} ${st.racha === 1 ? "día" : "días"}. Mañana, palabra nueva.` : ""}</p>${res.html}` };
+    },
+  },
+  {
     id: "reloj", e: "⏱️", n: "Contrarreloj", orig: "Orto (semáforo) e Instagram (reto)",
     desc: "20 segundos: palabras que pasan rápido y tú dices bien o mal. ¿Cuántas aciertas?",
     ej: "10 aciertos de 12 en 20 s.",
@@ -1014,6 +1240,13 @@ const VA = {
   sopa: [2, 3, "Pasatiempo de siempre con giro: buscas la forma correcta de una palabra mal escrita."],
   caja: [2, 3, "Escape room exprés: código, candados y cuenta atrás."],
   duo: [2, 2, "Formato Duolingo, con fichas trampa mal escritas."],
+  rosco: [3, 3, "El rosco de Pasapalabra: todo el mundo lo conoce y quiere completarlo."],
+  panal: [2, 3, "Como Spelling Bee: «solo una más» hasta encontrarlas todas."],
+  memoria: [2, 3, "Memoria de toda la vida, pero cada pareja es una falta típica."],
+  desliza: [2, 3, "El gesto de deslizar es rapidísimo y engancha como una app de citas."],
+  carrera: [2, 3, "Rival que avanza solo: tensión y ganas de revancha."],
+  raya: [2, 2, "Un juego de mesa conocido con la ortografía como llave."],
+  diario: [3, 3, "Un reto al día, igual para todos, con racha: el truco de Wordle."],
 };
 const puntos = (n) => "●".repeat(n) + "○".repeat(3 - n);
 

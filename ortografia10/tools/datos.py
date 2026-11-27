@@ -6,6 +6,7 @@
 - M: ejercicios hechos a mano de orto/datos/manual (hueco, elige, caza, frase, parejas)
 - F: frases reales de prensa que contienen una palabra de P: [frase, índice en P]
 - C: competencias {id: [nombre, regla, truco, ejemplos, excepciones, bloque, curso]}
+- W: todas las palabras de orto (4+ letras), para el Panal
 - B: bloques {id: [nombre, emoji]} · CU: cursos
 """
 import json, os, re, random
@@ -63,5 +64,6 @@ for c in comp["competencias"]:
 
 B = {b["id"]: [b["n"], b["e"]] for b in comp["bloques"]}
 CU = comp["cursos"]
-json.dump({"P": P, "F": F, "M": M, "C": C, "B": B, "CU": CU}, open(SAL, "w"), ensure_ascii=False, separators=(",", ":"))
+W = sorted({p["w"] for p in pal if re.fullmatch(r"[a-záéíóúñü]+", p["w"]) and len(p["w"]) >= 4})
+json.dump({"W": W, "P": P, "F": F, "M": M, "C": C, "B": B, "CU": CU}, open(SAL, "w"), ensure_ascii=False, separators=(",", ":"))
 print(f"P={len(P)} F={len(F)} M={len(M)} C={len(C)} -> {os.path.getsize(SAL) // 1024} KB")

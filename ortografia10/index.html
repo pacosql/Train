@@ -186,6 +186,31 @@
     .racha { font-size: 16px; color: #000; background: var(--soft); border-radius: 999px; padding: 2px 10px; vertical-align: middle; }
     .votar-ya .probar { border: 1.5px solid #000; background: #fff; border-radius: 999px; padding: 6px 14px; font-weight: 700; font-size: 14px; }
     .votar-ya { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; border: 2px solid #000; border-radius: 14px; padding: 8px 10px; margin: 0 0 14px; font-size: 14px; font-weight: 600; }
+    .rosco { position: relative; width: min(100%, 360px); aspect-ratio: 1; margin: 0 auto; }
+    .rosco > span { position: absolute; left: 50%; top: 50%; width: 30px; height: 30px; margin: -15px; display: grid; place-items: center; border-radius: 50%; border: 2px solid #000; background: #fff; font-weight: 800; font-size: 13px; transform: rotate(var(--a)) translateY(-165px) rotate(calc(-1 * var(--a))); }
+    .rosco > span.ok { background: #000; color: #fff; }
+    .rosco > span.mal { background: var(--mal); border-color: var(--mal); color: #fff; }
+    .rosco > span.act { outline: 3px solid var(--mal); outline-offset: 2px; }
+    .rosco-c { position: absolute; inset: 44px; display: flex; flex-direction: column; justify-content: center; gap: 6px; text-align: center; }
+    .rosco-c p { margin: 0; font-size: 16px; } .rosco-c input { font-size: 18px; padding: 8px; margin: 0; } .rosco-c .btn { min-height: 42px; padding: 6px 8px; font-size: 14px; }
+    .panal { display: grid; grid-template-columns: repeat(3, 64px); gap: 8px; justify-content: center; }
+    .panal button { width: 64px; height: 64px; clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0 50%); border: 0; background: #e6e6e6; font-weight: 800; font-size: 22px; }
+    .panal button.centro { background: #000; color: #fff; }
+    .memo { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .memo button { min-height: 72px; border: 2px solid #000; border-radius: 12px; background: #000; font-weight: 700; font-size: 15px; padding: 4px; }
+    .memo button span { visibility: hidden; }
+    .memo button.vista { background: #fff; } .memo button.vista span { visibility: visible; }
+    .memo button.hecha { background: #f0f0f0; border-color: #bbb; }
+    .memo button s { color: var(--mal); }
+    .desliza { position: relative; height: 300px; display: grid; place-items: center; overflow: hidden; touch-action: none; }
+    .desliza .lado { position: absolute; top: 0; bottom: 0; width: 26%; display: grid; place-items: center; font-family: "P10", var(--sans); font-weight: 800; font-size: 30px; background: var(--soft); cursor: pointer; }
+    .desliza .iz { left: 0; border-radius: 14px 0 0 14px; } .desliza .de { right: 0; border-radius: 0 14px 14px 0; }
+    .desliza .carta { position: relative; z-index: 2; width: 56%; padding: 34px 8px; border: 3px solid #000; border-radius: 18px; background: #fff; text-align: center; font-family: "P10", var(--sans); font-weight: 800; font-size: 26px; transition: transform .2s; cursor: grab; user-select: none; word-break: break-word; }
+    .desliza .carta.bien { background: #000; color: #fff; } .desliza .carta.malc { background: var(--mal); color: #fff; }
+    .pista-c { font-family: monospace; font-size: 15px; line-height: 1.8; background: var(--soft); border-radius: 12px; padding: 10px; margin-bottom: 10px; overflow-x: auto; white-space: nowrap; }
+    .raya { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; max-width: 280px; margin: 0 auto 14px; }
+    .raya button { aspect-ratio: 1; border: 3px solid #000; background: #fff; border-radius: 12px; font-size: 40px; font-weight: 800; }
+    .raya button.sel { background: var(--soft); }
     .nota { font-size: 13px; color: var(--mute); margin: 18px 0 0; }
     /* Nota */
     .nota-global { border: 2px solid var(--ink); border-radius: 16px; padding: 14px 16px; margin: 4px 0 16px; display: grid; }

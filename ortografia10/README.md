@@ -11,7 +11,7 @@ PWA en blanco y negro con el logotipo elegido en [`ortologo/`](../ortologo)
 - **Jugar**: rondas de 10 ejercicios de tipos variados. Los tipos con 👍
   salen el triple y los 👎 no salen. Cada respuesta enseña la regla
   (competencia de Orto, con su truco) y deja votar ese tipo ahí mismo.
-- **Valorar**: los 36 tipos con descripción, ejemplo, de dónde sale la
+- **Valorar**: los 43 tipos con descripción, ejemplo, de dónde sale la
   idea, ▶ Probar (3 seguidos de ese tipo) y 👍/👎 con el total de todos los
   dispositivos. Tras un 👍 se eligen de 1 a 5 ★ (un 👍 empieza en 3 ★);
   al jugar, cuantas más estrellas, más sale (1★ ×1,5 … 5★ ×6). En
@@ -72,6 +72,13 @@ estimación a ojo (`VA` en `app.js`), no un dato medido.
 | `sopa` | 🔎 Sopa de letras (buscas la forma correcta) | pasatiempo |
 | `caja` | 🔐 La caja fuerte (4 cierres, 60 s) | escape room de Projet Voltaire |
 | `duo` | 🦉 Escribe lo que oyes (banco de fichas con trampas) | Duolingo |
+| `rosco` | ⭕ El rosco (A-Z, pasapalabra, 150 s, récord) | Pasapalabra |
+| `panal` | 🐝 El panal (7 letras, la del centro obligatoria) | Spelling Bee del NYT |
+| `memoria` | 🃏 Memoria de parejas (bien ↔ con falta) | juego de memoria |
+| `desliza` | 👆 Desliza la tarjeta hacia la letra buena (25 s) | gesto de Tinder |
+| `carrera` | 🏁 Carrera contra el Profe Tilde | duelo |
+| `raya` | #️⃣ Tres en raya (aciertas para poner tu ✗) | juego de mesa |
+| `diario` | 📅 Reto del día (Ortodle igual para todos, racha de días) | Wordle |
 | `corrige` | ✏️ Corrígela tú (escribir sin opciones) | nuevo |
 
 En Jugar se cuenta la racha de aciertos seguidos (🔥 desde 3). Supervivencia y
@@ -80,7 +87,7 @@ Lluvia guardan récord en el móvil (`o10.rec.*`).
 ## Material
 
 `datos.json` sale de `orto/datos` con `python3 ortografia10/tools/datos.py`:
-4.000 palabras con sus faltas típicas, 1.500 frases de prensa, 1.300
+4.000 palabras con sus faltas típicas, la lista completa de ~5.800 palabras para el Panal (`W`), 1.500 frases de prensa, 1.300
 ejercicios hechos a mano (hueco, elige, caza, frase, parejas) y las 86
 competencias con regla y truco. `silabas.js` es una copia del motor de
 sílabas de Orto.
