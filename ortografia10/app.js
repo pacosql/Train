@@ -633,6 +633,315 @@ const TIPOS = [
     },
   },
   {
+    id: "ortodle", e: "🟩", n: "Ortodle", orig: "Wordle (juego de palabras)",
+    desc: "Adivina la palabra en 6 intentos. Verde: letra en su sitio; amarilla: está pero en otro sitio. La á y la a son letras distintas, y la pista te dice qué regla tiene.",
+    ej: "Pista «B o V sin regla», 5 letras → n·u·b·e·s.",
+    async run(el) {
+      const p = palAzar((p) => p.w.length >= 5 && p.w.length <= 6 && p.d <= 3 && /^[a-záéíóúñ]+$/.test(p.w));
+      const w = p.w, L = w.length, filas = []; let actual = "";
+      const teclas = [..."qwertyuiopasdfghjklñzxcvbnmáéíóú"];
+      const estado = {}; // letra -> ok | casi | no
+      el.innerHTML = `<p class="enun">Adivina la palabra</p><p class="sub" style="margin:-8px 0 10px">Pista: ${esc(COMP(p.c)[0])} · ${L} letras</p>
+        <div class="wd" id="g" style="grid-template-columns:repeat(${L},1fr)"></div><div class="teclado wk" id="k"></div>`;
+      const colorea = (g) => {
+        const r = Array(L).fill("no"), resto = {};
+        [...w].forEach((c, i) => { if (g[i] === c) r[i] = "ok"; else resto[c] = (resto[c] || 0) + 1; });
+        [...g].forEach((c, i) => { if (r[i] !== "ok" && resto[c]) { r[i] = "casi"; resto[c]--; } });
+        return r;
+      };
+      const pinta = () => {
+        let h = "";
+        for (let f = 0; f < 6; f++) {
+          const g = filas[f]; const col = g ? colorea(g) : null; const txt = g || (f === filas.length ? actual : "");
+          for (let i = 0; i < L; i++) h += `<span class="${col ? col[i] : txt[i] ? "lleno" : ""}">${esc(txt[i] || "")}</span>`;
+        }
+        el.querySelector("#g").innerHTML = h;
+        el.querySelector("#k").innerHTML = teclas.map((c) => `<button data-c="${c}" class="${estado[c] || ""}">${c}</button>`).join("") + `<button data-c="⌫" class="ancha">⌫</button><button data-c="↵" class="ancha neg">OK</button>`;
+      };
+      pinta();
+      const ok = await new Promise((res) => {
+        const tecla = (c) => {
+          if (c === "⌫") actual = actual.slice(0, -1);
+          else if (c === "↵") {
+            if (actual.length !== L) return toast(`Tiene ${L} letras`);
+            filas.push(actual); const col = colorea(actual);
+            [...actual].forEach((x, i) => { const n = col[i]; if (estado[x] !== "ok") estado[x] = n === "ok" ? "ok" : estado[x] === "casi" ? "casi" : n; });
+            const g = actual; actual = "";
+            if (g === w) { pinta(); return res(true); }
+            if (filas.length >= 6) { pinta(); return res(false); }
+          } else if (actual.length < L) actual += c;
+          pinta();
+        };
+        el.querySelector("#k").onclick = (e) => { const b = e.target.closest("[data-c]"); if (b) tecla(b.dataset.c); };
+      });
+      el.querySelector("#k").onclick = null;
+      const cuadro = filas.map((g) => colorea(g).map((c) => (c === "ok" ? "🟩" : c === "casi" ? "🟨" : "⬜")).join("")).join("<br>");
+      return { ok, html: `<p>${ok ? `¡En ${filas.length} de 6!` : "Se acabaron los intentos."} Era <b>${esc(w)}</b>.</p><p style="line-height:1.2">${cuadro}</p>${reglaDe(p.c)}` };
+    },
+  },
+  {
+    id: "intercambia", e: "🔄", n: "Intercambia letras", orig: "Waffle (juego de palabras)",
+    desc: "Las letras están revueltas. Toca dos para cambiarlas de sitio hasta formar la palabra bien escrita. Las que ya están en su sitio se ponen en negro. Movimientos limitados.",
+    ej: "C·N·A·I·Ó·M → camión en 4 cambios.",
+    async run(el) {
+      const p = palAzar((p) => p.w.length >= 5 && p.w.length <= 8 && p.d <= 3 && /^[a-záéíóúñ]+$/.test(p.w) && new Set(p.w).size >= 4);
+      const w = [...p.w]; let a; do { a = shuffle(w); } while (a.join("") === p.w);
+      // mínimo de cambios = n - nº de ciclos (con letras repetidas es una cota)
+      let min = 0; { const b = a.slice(); for (let i = 0; i < b.length; i++) if (b[i] !== w[i]) { const j = b.findIndex((c, k) => k > i && c === w[i] && b[k] !== w[k]); [b[i], b[j]] = [b[j], b[i]]; min++; } }
+      let quedan = min + 3, sel = -1;
+      el.innerHTML = `<p class="enun">Ordénala con cambios de dos en dos</p><p class="reloj" id="m"></p><div class="fichas-l tap" id="t"></div><p class="sub" style="text-align:center">Pista: ${esc(COMP(p.c)[0])}</p>`;
+      const pinta = () => {
+        el.querySelector("#m").textContent = `${quedan} ${quedan === 1 ? "cambio" : "cambios"} (mínimo ${min})`;
+        el.querySelector("#t").innerHTML = a.map((c, i) => `<span data-i="${i}" class="${c === w[i] ? "ok" : ""} ${i === sel ? "sel" : ""}">${esc(c.toUpperCase())}</span>`).join("");
+      };
+      pinta();
+      const ok = await new Promise((res) => {
+        el.querySelector("#t").onclick = (e) => {
+          const s = e.target.closest("[data-i]"); if (!s) return; const i = +s.dataset.i;
+          if (sel < 0) { sel = i; return pinta(); }
+          if (sel !== i) { [a[sel], a[i]] = [a[i], a[sel]]; quedan--; }
+          sel = -1; pinta();
+          if (a.join("") === p.w) res(true); else if (quedan <= 0) res(false);
+        };
+      });
+      el.querySelector("#t").onclick = null;
+      return { ok, html: `<p>${ok ? `¡Conseguido con ${quedan} ${quedan === 1 ? "cambio" : "cambios"} de sobra!` : "Te has quedado sin cambios."} Era <b>${esc(p.w)}</b>.</p>${reglaDe(p.c)}` };
+    },
+  },
+  {
+    id: "superviv", e: "❤️", n: "Supervivencia", orig: "Juegos arcade (vidas y récord)",
+    desc: "Palabras sin parar: ¿bien o mal? Tienes 3 vidas y cada vez hay menos tiempo. ¿Cuántas aguantas? Guarda tu récord.",
+    ej: "Récord: 23 seguidas.",
+    async run(el) {
+      const rec = ls.get("rec.superviv", 0); let vidas = 3, puntos = 0, t = 4500; const fallos = [];
+      el.innerHTML = `<p class="enun">¿Bien o mal? Que no se te acabe el tiempo</p><div class="hud"><span id="v"></span><span id="pt"></span><span>Récord ${rec}</span></div>
+        <div class="barra-t"><i id="bt"></i></div><div class="palabra" id="w"></div><div class="ops dos"><button class="op" data-v="1">✓ Bien</button><button class="op" data-v="0">✗ Mal</button></div>`;
+      const $w = el.querySelector("#w"), $bt = el.querySelector("#bt");
+      await new Promise((res) => {
+        let act, tim;
+        const hud = () => { el.querySelector("#v").textContent = "♥".repeat(vidas) + "♡".repeat(3 - vidas); el.querySelector("#pt").textContent = `${puntos} puntos`; };
+        const fallo = () => { vidas--; fallos.push(act); hud(); if (vidas <= 0) { clearTimeout(tim); res(); return true; } };
+        const nueva = () => {
+          const p = palAzar((p) => p.d <= 3); const ok = Math.random() < 0.5; act = { p, ok, w: ok ? p.w : pick(p.alts) };
+          $w.textContent = act.w; $bt.style.transition = "none"; $bt.style.width = "100%"; void $bt.offsetWidth;
+          $bt.style.transition = `width ${t}ms linear`; $bt.style.width = "0%";
+          clearTimeout(tim); tim = setTimeout(() => { if (!fallo()) nueva(); }, t);
+        };
+        hud(); nueva();
+        el.querySelectorAll(".op").forEach((b) => b.onclick = () => {
+          if (vidas <= 0) return;
+          if ((b.dataset.v === "1") === act.ok) { puntos++; t = Math.max(1400, t * 0.94); hud(); nueva(); }
+          else if (!fallo()) nueva();
+        });
+      });
+      el.querySelectorAll(".op").forEach((b) => b.disabled = true);
+      const nuevoRec = puntos > rec; if (nuevoRec) ls.set("rec.superviv", puntos);
+      return { ok: puntos >= 10 || nuevoRec, html: `<p><b>${puntos} puntos</b>. ${nuevoRec ? "🏆 ¡Nuevo récord!" : `Tu récord: ${rec}.`}</p>${fallos.map((f) => `<p>«${esc(f.w)}» → <b>${esc(f.p.w)}</b>${f.ok ? " (estaba bien)" : ""}</p>`).join("")}` };
+    },
+  },
+  {
+    id: "lluvia", e: "🌧️", n: "Lluvia de palabras", orig: "Arcade (lluvia de palabras)",
+    desc: "Caen palabras. Revienta las que están mal escritas antes de que lleguen al suelo; deja caer las buenas. 3 vidas, 45 segundos.",
+    ej: "«exhuberante» cae → la tocas y explota.",
+    async run(el) {
+      const rec = ls.get("rec.lluvia", 0); let vidas = 3, puntos = 0, fin = Date.now() + 45000, vel = 6500; const fallos = [];
+      el.innerHTML = `<p class="enun">Toca solo las mal escritas</p><div class="hud"><span id="v"></span><span id="pt"></span><span id="tt"></span></div><div class="lluvia" id="z"></div>`;
+      const z = el.querySelector("#z");
+      await new Promise((res) => {
+        const hud = () => { el.querySelector("#v").textContent = "♥".repeat(Math.max(0, vidas)) + "♡".repeat(Math.max(0, 3 - vidas)); el.querySelector("#pt").textContent = `${puntos} puntos`; el.querySelector("#tt").textContent = `${Math.max(0, Math.ceil((fin - Date.now()) / 1000))} s`; };
+        let acabado = false;
+        const acabar = () => { if (acabado) return; acabado = true; clearInterval(gen); clearInterval(rel); z.querySelectorAll(".gota").forEach((g) => g.remove()); res(); };
+        const quita = () => { vidas--; hud(); if (vidas <= 0) acabar(); };
+        const gota = () => {
+          const p = palAzar((p) => p.d <= 3 && p.w.length <= 11); const malo = Math.random() < 0.5; const w = malo ? pick(p.alts) : p.w;
+          const g = document.createElement("button"); g.className = "gota"; g.textContent = w;
+          g.style.left = `${4 + rnd(56)}%`; z.appendChild(g);
+          const an = g.animate([{ transform: "translateY(-40px)" }, { transform: `translateY(${z.clientHeight}px)` }], { duration: vel, easing: "linear" });
+          g.onclick = () => { if (acabado) return; an.cancel(); g.remove(); if (malo) { puntos++; hud(); } else { fallos.push([w, p.w, true]); quita(); } };
+          an.onfinish = () => { g.remove(); if (acabado) return; if (malo) { fallos.push([w, p.w, false]); quita(); } };
+          vel = Math.max(3200, vel * 0.97);
+        };
+        hud(); gota();
+        const gen = setInterval(gota, 1300);
+        const rel = setInterval(() => { hud(); if (Date.now() > fin) acabar(); }, 250);
+      });
+      const nuevoRec = puntos > rec; if (nuevoRec) ls.set("rec.lluvia", puntos);
+      return { ok: vidas > 0 || nuevoRec, html: `<p><b>${puntos} puntos</b>. ${nuevoRec ? "🏆 ¡Nuevo récord!" : `Tu récord: ${rec}.`}</p>${fallos.slice(0, 6).map(([m, b, buena]) => `<p>${buena ? `Tocaste «${esc(m)}», que estaba bien` : `Se te escapó «<s>${esc(m)}</s>» → <b>${esc(b)}</b>`}</p>`).join("")}` };
+    },
+  },
+  {
+    id: "construye", e: "🧱", n: "Construye la palabra", orig: "Construcción por sílabas",
+    desc: "Monta la palabra tocando sus sílabas en orden. Cuidado: hay una sílaba trampa con la falta típica.",
+    ej: "ca · vi · llo · ba → ca-ba-llo (la trampa es «va»).",
+    async run(el) {
+      const p = palAzar((p) => silabear(p.w).length >= 3 && silabear(p.w).length <= 5 && p.alts.some((a) => silabear(a).some((s) => !silabear(p.w).includes(s))));
+      const sil = silabear(p.w); const alt = p.alts.find((a) => silabear(a).some((s) => !sil.includes(s)));
+      const trampa = silabear(alt).find((s) => !sil.includes(s));
+      const fichas = shuffle([...sil.map((s, i) => ({ s, i })), { s: trampa, i: -1 }]);
+      let pos = 0, errores = 0;
+      el.innerHTML = `<p class="enun">Monta la palabra sílaba a sílaba</p><div class="palabra" id="w">&nbsp;</div><div class="sils" id="f">${fichas.map((f, k) => `<button data-k="${k}">${esc(f.s)}</button>`).join("")}</div>`;
+      await new Promise((res) => {
+        el.querySelector("#f").onclick = (e) => {
+          const b = e.target.closest("[data-k]"); if (!b || b.disabled) return; const f = fichas[+b.dataset.k];
+          if (f.s === sil[pos]) { b.disabled = true; b.classList.add("ok"); pos++; el.querySelector("#w").textContent = sil.slice(0, pos).join("·"); if (pos === sil.length) res(); }
+          else { errores++; b.classList.add("mal"); setTimeout(() => b.classList.remove("mal"), 450); }
+        };
+      });
+      el.querySelectorAll("#f button").forEach((b) => b.disabled = true);
+      return { ok: errores === 0, html: `<p><b>${esc(p.w)}</b>${errores ? ` (${errores} ${errores === 1 ? "error" : "errores"})` : ", sin un fallo"}. La trampa era «${esc(trampa)}», de «<s>${esc(alt)}</s>».</p>${reglaDe(p.c)}` };
+    },
+  },
+  {
+    id: "conexiones", e: "🧩", n: "Conexiones", orig: "Connections del NYT (inteligencia)",
+    desc: "16 palabras: agrúpalas de 4 en 4 según la regla de ortografía que comparten. Solo puedes fallar 4 veces.",
+    ej: "cambio, hombre, tiempo, siempre → «m antes de b y p».",
+    async run(el) {
+      const porComp = {};
+      // Sin tildes (sus grupos se solapan con los de letras) y sin plurales repetidos.
+      D.P.forEach((p) => { if (p[0].length <= 10 && !/MEMORIA$/.test(p[4]) && !p[4].startsWith("ACE.") && COMP(p[4])[1]) (porComp[p[4]] = porComp[p[4]] || []).push(p[0]); });
+      const raiz = (w) => quitarTildes(w).slice(0, 5);
+      const raices = new Set();
+      const usados = new Set(), grupos = [], bloques = new Set();
+      for (const c of shuffle(Object.keys(porComp))) {
+        if (grupos.length === 4) break;
+        const b = c.split(".")[0]; if (bloques.has(b)) continue;
+        const ws = [];
+        for (const w of shuffle([...new Set(porComp[c])])) { if (ws.length < 4 && !usados.has(w) && !raices.has(raiz(w)) && !ws.some((x) => raiz(x) === raiz(w))) ws.push(w); }
+        if (ws.length < 4) continue;
+        ws.forEach((w) => { usados.add(w); raices.add(raiz(w)); }); bloques.add(b); grupos.push({ c, ws });
+      }
+      if (grupos.length < 4) return null;
+      let quedan = shuffle(grupos.flatMap((g, gi) => g.ws.map((w) => ({ w, gi })))), sel = new Set(), fallos = 0; const hechos = [];
+      el.innerHTML = `<p class="enun">Haz 4 grupos de 4 por su regla</p><div id="hechos"></div><div class="cx" id="g"></div><p class="reloj" id="f"></p><div class="fila"><button class="btn" id="mez">Mezclar</button><button class="btn neg" id="ok" disabled>Comprobar</button></div>`;
+      const pinta = () => {
+        el.querySelector("#hechos").innerHTML = hechos.map((g) => `<div class="cx-ok"><b>${esc(COMP(g.c)[0])}</b><br>${g.ws.map(esc).join(" · ")}</div>`).join("");
+        el.querySelector("#g").innerHTML = quedan.map((x, i) => `<button data-i="${i}" class="${sel.has(i) ? "sel" : ""}">${esc(x.w)}</button>`).join("");
+        el.querySelector("#f").textContent = "Fallos: " + "●".repeat(fallos) + "○".repeat(4 - fallos);
+        el.querySelector("#ok").disabled = sel.size !== 4;
+      };
+      pinta();
+      const ok = await new Promise((res) => {
+        el.querySelector("#g").onclick = (e) => { const b = e.target.closest("[data-i]"); if (!b) return; const i = +b.dataset.i; sel.has(i) ? sel.delete(i) : sel.size < 4 && sel.add(i); pinta(); };
+        el.querySelector("#mez").onclick = () => { quedan = shuffle(quedan); sel.clear(); pinta(); };
+        el.querySelector("#ok").onclick = () => {
+          const xs = [...sel].map((i) => quedan[i]); const gi = xs[0].gi;
+          if (xs.every((x) => x.gi === gi)) { hechos.push(grupos[gi]); quedan = quedan.filter((x) => x.gi !== gi); sel.clear(); pinta(); if (!quedan.length) res(true); }
+          else {
+            fallos++; const cuenta = Math.max(...[0, 1, 2, 3].map((g) => xs.filter((x) => x.gi === g).length));
+            toast(cuenta === 3 ? "¡Casi! Te sobra una" : "No es un grupo"); sel.clear(); pinta();
+            if (fallos >= 4) res(false);
+          }
+        };
+      });
+      el.querySelectorAll("#g button, .fila button").forEach((b) => b.disabled = true);
+      return { ok, html: `<p>${ok ? `¡Los 4 grupos${fallos ? ` con ${fallos} ${fallos === 1 ? "fallo" : "fallos"}` : " sin fallar"}!` : "Se acabaron los fallos. Los grupos eran:"}</p>${grupos.map((g) => `<div class="regla"><b>${esc(COMP(g.c)[0])}</b>${g.ws.map(esc).join(" · ")}</div>`).join("<div style='height:6px'></div>")}` };
+    },
+  },
+  {
+    id: "sopa", e: "🔎", n: "Sopa de letras", orig: "Sopa de letras (pasatiempo)",
+    desc: "Te doy 4 palabras MAL escritas. Encuentra en la sopa la versión correcta: toca su primera y su última letra.",
+    ej: "Buscas «ierba» → encuentras HIERBA en la sopa.",
+    async run(el) {
+      const N = 9; const g = Array.from({ length: N }, () => Array(N).fill(""));
+      const pals = []; const usados = new Set();
+      for (let k = 0; k < 300 && pals.length < 4; k++) {
+        const p = palAzar((p) => p.w.length >= 4 && p.w.length <= N && /^[a-záéíóúñ]+$/.test(p.w) && !usados.has(p.w) && p.d <= 3);
+        const w = p.w.toUpperCase(); const dir = rnd(2); const r = rnd(dir ? N - w.length + 1 : N), c = rnd(dir ? N : N - w.length + 1);
+        const celdas = [...w].map((_, i) => (dir ? [r + i, c] : [r, c + i]));
+        if (celdas.every(([y, x], i) => !g[y][x] || g[y][x] === w[i])) { celdas.forEach(([y, x], i) => (g[y][x] = w[i])); pals.push({ p, celdas, w, mal: pick(p.alts), hecha: false }); usados.add(p.w); }
+      }
+      if (pals.length < 4) return null;
+      const relleno = "AAAEEEIIOOUBCDLMNRRSSTTGPVHÑZJ";
+      for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) if (!g[y][x]) g[y][x] = relleno[rnd(relleno.length)];
+      let ini = null;
+      el.innerHTML = `<p class="enun">Encuentra la forma correcta</p><div class="pistas" id="pi"></div><div class="sopa" id="s" style="grid-template-columns:repeat(${N},1fr)">${g.flat().map((ch, i) => `<button data-i="${i}">${ch}</button>`).join("")}</div><button class="btn" style="width:100%;margin-top:10px" id="rinde">Me rindo</button>`;
+      const pistas = () => { el.querySelector("#pi").innerHTML = pals.map((x) => x.hecha ? `<span class="hecha">${esc(x.p.w)}</span>` : `<span><s>${esc(x.mal)}</s></span>`).join(""); };
+      pistas();
+      const ok = await new Promise((res) => {
+        el.querySelector("#rinde").onclick = () => res(false);
+        el.querySelector("#s").onclick = (e) => {
+          const b = e.target.closest("[data-i]"); if (!b) return; const i = +b.dataset.i;
+          if (ini === null) { ini = i; b.classList.add("sel"); return; }
+          const a = ini; ini = null; el.querySelectorAll("#s .sel").forEach((x) => x.classList.remove("sel"));
+          const pos = (k) => [Math.floor(k / N), k % N];
+          const x = pals.find((x) => !x.hecha && [[a, i], [i, a]].some(([u, v]) => String(pos(u)) === String(x.celdas[0]) && String(pos(v)) === String(x.celdas.at(-1))));
+          if (x) { x.hecha = true; x.celdas.forEach(([yy, xx]) => el.querySelector(`#s [data-i="${yy * N + xx}"]`).classList.add("ok")); pistas(); if (pals.every((q) => q.hecha)) res(true); }
+          else { b.classList.add("mal"); setTimeout(() => b.classList.remove("mal"), 400); }
+        };
+      });
+      pals.forEach((x) => x.celdas.forEach(([yy, xx]) => el.querySelector(`#s [data-i="${yy * N + xx}"]`).classList.add("ok")));
+      el.querySelectorAll("#s button, #rinde").forEach((b) => b.disabled = true);
+      return { ok, html: `<p>${pals.map((x) => `«<s>${esc(x.mal)}</s>» → <b>${esc(x.p.w)}</b>`).join(" · ")}</p>` };
+    },
+  },
+  {
+    id: "caja", e: "🔐", n: "La caja fuerte", orig: "Escape room de Projet Voltaire (Revolt-IA)",
+    desc: "Abre los 4 cierres de la caja fuerte: cada acierto abre uno y te da una cifra del código; cada fallo vuelve a cerrar el último. 60 segundos.",
+    ej: "🔓🔓🔒🔒 · código 7 3 _ _.",
+    async run(el) {
+      const codigo = Array.from({ length: 4 }, () => rnd(10)); let abiertos = 0, fin = Date.now() + 60000, preguntas = 0;
+      el.innerHTML = `<p class="enun">Abre la caja fuerte</p><div class="caja"><div id="cer"></div><div id="cod"></div><div class="reloj" id="tt"></div></div><div id="q"></div>`;
+      const hud = () => {
+        el.querySelector("#cer").textContent = "🔓".repeat(abiertos) + "🔒".repeat(4 - abiertos);
+        el.querySelector("#cod").textContent = codigo.map((d, i) => (i < abiertos ? d : "_")).join(" ");
+        el.querySelector("#tt").textContent = `${Math.max(0, Math.ceil((fin - Date.now()) / 1000))} s`;
+      };
+      const ok = await new Promise((res) => {
+        const rel = setInterval(() => { hud(); if (Date.now() > fin) { clearInterval(rel); res(false); } }, 250);
+        const pregunta = async () => {
+          if (abiertos >= 4) { clearInterval(rel); return res(true); }
+          preguntas++; const q = el.querySelector("#q"); const yo = preguntas; let bien;
+          const p = palAzar((p) => p.d <= 3);
+          if (Math.random() < 0.5 && p.g && p.op && p.op.includes(p.w.slice(p.g[0], p.g[1]))) {
+            const pieza = p.w.slice(p.g[0], p.g[1]); const ops = shuffle(p.op).slice(0, 3); if (!ops.includes(pieza)) ops[0] = pieza;
+            q.innerHTML = `<div class="palabra">${esc(p.w.slice(0, p.g[0]))}<span class="hueco">&nbsp;</span>${esc(p.w.slice(p.g[1]))}</div><div id="z"></div>`;
+            bien = await opciones(q.querySelector("#z"), ops, ops.indexOf(pieza), { dos: true });
+          } else {
+            const b = Math.random() < 0.5; q.innerHTML = `<div class="palabra">${esc(b ? p.w : pick(p.alts))}</div><div id="z"></div>`;
+            bien = await opciones(q.querySelector("#z"), ["✓ Bien", "✗ Mal"], b ? 0 : 1, { dos: true });
+          }
+          if (yo !== preguntas || Date.now() > fin) return;
+          abiertos = Math.max(0, abiertos + (bien ? 1 : -1)); hud();
+          setTimeout(pregunta, bien ? 250 : 700);
+        };
+        hud(); pregunta();
+      });
+      preguntas = -1; el.querySelector("#q").innerHTML = "";
+      return { ok, html: `<p>${ok ? `🔓 ¡Abierta! El código era <b>${codigo.join(" ")}</b>, con ${Math.ceil((fin - Date.now()) / 1000)} s de sobra.` : `Se acabó el tiempo con ${abiertos} de 4 cierres abiertos.`}</p>` };
+    },
+  },
+  {
+    id: "duo", e: "🦉", n: "Escribe lo que oyes", orig: "Duolingo (banco de palabras)",
+    desc: "Oyes una frase y la montas tocando las fichas en orden. Entre las fichas hay trampas: la misma palabra con falta.",
+    ej: "🔊 «El equipo estuvo a punto…» → fichas: estuvo · estubo · …",
+    async run(el) {
+      if (!("speechSynthesis" in window)) return null;
+      let s, pi; for (let k = 0; k < 80; k++) { [s, pi] = pick(D.F); if (s.split(" ").length <= 11) break; }
+      const pals = s.match(/[\p{L}\p{M}]+/gu); const p = P(pi);
+      const trampas = [pick(p.alts)];
+      const otra = pals.find((w) => w !== p.w && w.length > 3 && byWord.has(w)); if (otra) trampas.push(pick(P(byWord.get(otra)).alts));
+      const fichas = shuffle([...pals.map((w) => ({ w, ok: true })), ...trampas.map((w) => ({ w, ok: false }))]);
+      const puesto = [];
+      el.innerHTML = `<p class="enun">Escucha y monta la frase</p><div class="fila" style="margin:8px 0 12px"><button class="btn neg" id="oir">🔊 Oír</button><button class="btn" id="lento">🐢 Despacio</button></div>
+        <div class="banco-r" id="r"></div><div class="banco" id="b">${fichas.map((f, k) => `<button data-k="${k}">${esc(f.w)}</button>`).join("")}</div>
+        <button class="btn" style="width:100%;margin-top:12px" id="ok">Comprobar</button>`;
+      const di = (rate) => { const u = new SpeechSynthesisUtterance(s); u.lang = "es-ES"; u.rate = rate; const v = speechSynthesis.getVoices().find((v) => /^es/i.test(v.lang)); if (v) u.voice = v; speechSynthesis.cancel(); speechSynthesis.speak(u); };
+      el.querySelector("#oir").onclick = () => di(0.9); el.querySelector("#lento").onclick = () => di(0.6); setTimeout(() => di(0.9), 250);
+      const pinta = () => {
+        el.querySelector("#r").innerHTML = puesto.map((k, i) => `<button data-i="${i}">${esc(fichas[k].w)}</button>`).join("") || "<span class='sub'>Toca las fichas en orden</span>";
+        el.querySelectorAll("#b button").forEach((b) => b.style.visibility = puesto.includes(+b.dataset.k) ? "hidden" : "");
+      };
+      pinta();
+      el.querySelector("#b").onclick = (e) => { const b = e.target.closest("[data-k]"); if (b) { puesto.push(+b.dataset.k); pinta(); } };
+      el.querySelector("#r").onclick = (e) => { const b = e.target.closest("[data-i]"); if (b) { puesto.splice(+b.dataset.i, 1); pinta(); } };
+      await new Promise((res) => el.querySelector("#ok").onclick = res);
+      el.querySelectorAll("button").forEach((b) => b.disabled = true);
+      const dicho = puesto.map((k) => fichas[k].w).join(" ");
+      const ok = dicho === pals.join(" ");
+      return { ok, html: `<p>${esc(s)}</p>${ok ? "" : `<p>Tú: ${esc(dicho || "(nada)")}</p>`}<p>Las trampas eran: ${trampas.map((t) => `<s>${esc(t)}</s>`).join(" · ")}</p>${reglaDe(p.c)}` };
+    },
+  },
+  {
     id: "reloj", e: "⏱️", n: "Contrarreloj", orig: "Orto (semáforo) e Instagram (reto)",
     desc: "20 segundos: palabras que pasan rápido y tú dices bien o mal. ¿Cuántas aciertas?",
     ej: "10 aciertos de 12 en 20 s.",
@@ -691,6 +1000,15 @@ const VA = {
   separa: [1, 2, "Mecánico pero rápido."],
   teoria: [1, 1, "Para repasar reglas; poco juego."],
   reloj: [2, 3, "La presión del tiempo engancha: «¿cuántas haces en 20 s?»."],
+  ortodle: [3, 3, "El fenómeno Wordle: un reto corto, colores y la cuadrícula 🟩🟨 para compartir."],
+  intercambia: [2, 3, "Como Waffle: pocos movimientos y la sensación de «ya casi» engancha."],
+  superviv: [3, 3, "Vidas + récord + cada vez más rápido: el «una más» de los arcades."],
+  lluvia: [3, 3, "Arcade puro: grabado en vídeo da un reel muy vistoso."],
+  construye: [2, 2, "Montar con fichas y la sílaba trampa hacen pensar en la falta."],
+  conexiones: [3, 3, "Como Connections del NYT: reto de inteligencia diario muy compartido."],
+  sopa: [2, 3, "Pasatiempo de siempre con giro: buscas la forma correcta de una palabra mal escrita."],
+  caja: [2, 3, "Escape room exprés: código, candados y cuenta atrás."],
+  duo: [2, 2, "Formato Duolingo, con fichas trampa mal escritas."],
 };
 const puntos = (n) => "●".repeat(n) + "○".repeat(3 - n);
 
@@ -761,12 +1079,13 @@ async function turno() {
     if (!res && R.forzado) { $main.innerHTML = `<p>Este ejercicio no funciona en este navegador (necesita voz).</p>`; return; }
   }
   if (!res) return;
+  R.racha = res.ok ? (R.racha || 0) + 1 : 0; R.mejor = Math.max(R.mejor || 0, R.racha);
   R.n++; if (res.ok) R.ok++; R.ultimo = t.id; R.hist.push([t.id, res.ok]);
   apuntar(t.id, res.ok);
   const v = votos()[t.id] || 0;
   const fb = $main.querySelector("#fb");
   fb.innerHTML = `<div class="fb">
-      <h3 class="${res.ok ? "" : "mal"}">${res.ok ? pick(["¡Bien!", "¡Correcto!", "¡Eso es!", "¡Perfecto!"]) : "Casi…"}</h3>${res.html}
+      <h3 class="${res.ok ? "" : "mal"}">${res.ok ? pick(["¡Bien!", "¡Correcto!", "¡Eso es!", "¡Perfecto!"]) : "Casi…"}${R.racha >= 3 ? ` <span class="racha">🔥 ${R.racha} seguidas</span>` : ""}</h3>${res.html}
       <div class="mini"><span>¿Te gusta este tipo de ejercicio?</span>${botonesVoto(t.id, v, true)}</div>
       ${R.forzado
         ? `<div class="fila"><button class="btn" id="sig">Otro ejemplo</button><button class="btn neg" id="sigtipo">${sinVal() ? "Siguiente tipo sin valorar →" : "Volver a Valorar"}</button></div>`

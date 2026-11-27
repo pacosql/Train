@@ -143,6 +143,47 @@
     .ficha ul { padding-left: 18px; margin: 0 0 6px; }
     .ficha .lab { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--mute); margin: 10px 0 2px; }
     .quedan { font-size: 14px; color: var(--mute); margin: 0 0 10px; }
+    .wd { display: grid; gap: 5px; max-width: 330px; margin: 0 auto 12px; }
+    .wd span { aspect-ratio: 1; display: grid; place-items: center; border: 2px solid var(--line); font-family: "P10", var(--sans); font-weight: 800; font-size: 24px; text-transform: uppercase; border-radius: 6px; }
+    .wd span.lleno { border-color: var(--ink); }
+    .wd span.ok { background: #000; color: #fff; border-color: #000; }
+    .wd span.casi { background: #fff; color: #000; border: 3px dashed #000; }
+    .wd span.no { background: #d8d8d8; color: #777; border-color: #d8d8d8; }
+    .wk { grid-template-columns: repeat(10, 1fr); gap: 4px; }
+    .wk button { padding: 10px 0; font-size: 15px; }
+    .wk button.ok { background: #000; color: #fff; }
+    .wk button.casi { border: 2px dashed #000; }
+    .wk button.no { background: #e5e5e5; color: #aaa; border-color: #e5e5e5; }
+    .wk button.ancha { grid-column: span 3; }
+    .wk button.neg { background: #000; color: #fff; }
+    .fichas-l.tap span { cursor: pointer; user-select: none; }
+    .fichas-l span.ok { background: #000; color: #fff; }
+    .fichas-l span.sel { outline: 3px solid var(--mal); }
+    .hud { display: flex; justify-content: space-between; font-family: "P10", var(--sans); font-weight: 800; font-size: 16px; margin-bottom: 8px; }
+    .barra-t { height: 8px; background: var(--soft); border-radius: 9px; overflow: hidden; }
+    .barra-t i { display: block; height: 100%; background: #000; width: 100%; }
+    .lluvia { position: relative; height: 420px; border: 2px solid #000; border-radius: 14px; overflow: hidden; background: repeating-linear-gradient(#fff 0 39px, #f3f3f3 39px 40px); }
+    .gota { position: absolute; top: 0; border: 2px solid #000; background: #fff; border-radius: 999px; padding: 6px 12px; font-weight: 700; font-size: 16px; white-space: nowrap; }
+    .cx { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 10px; }
+    .cx button { border: 2px solid #000; background: #fff; border-radius: 10px; padding: 14px 2px; font-size: 13px; font-weight: 700; word-break: break-word; min-height: 58px; }
+    .cx button.sel { background: #000; color: #fff; }
+    .cx-ok { background: #000; color: #fff; border-radius: 10px; padding: 8px 10px; margin-bottom: 6px; font-size: 14px; text-align: center; }
+    .sopa { display: grid; gap: 3px; }
+    .sopa button { aspect-ratio: 1; border: 1px solid var(--line); background: #fff; border-radius: 6px; font-weight: 800; font-size: 16px; padding: 0; }
+    .sopa button.sel { outline: 3px solid var(--mal); }
+    .sopa button.ok { background: #000; color: #fff; }
+    .sopa button.mal { background: var(--mal); color: #fff; }
+    .pistas { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+    .pistas span { border: 1.5px solid var(--line); border-radius: 999px; padding: 4px 10px; font-size: 15px; }
+    .pistas span s { color: var(--mal); }
+    .pistas .hecha { background: #000; color: #fff; border-color: #000; font-weight: 700; }
+    .caja { text-align: center; border: 3px solid #000; border-radius: 16px; padding: 14px; margin-bottom: 14px; font-size: 30px; }
+    .caja #cod { font-family: "P10", var(--sans); font-weight: 800; font-size: 34px; letter-spacing: .2em; }
+    .banco, .banco-r { display: flex; flex-wrap: wrap; gap: 6px; }
+    .banco-r { min-height: 54px; border-bottom: 2px solid #000; padding-bottom: 8px; margin-bottom: 12px; }
+    .banco button, .banco-r button { border: 2px solid #000; background: #fff; border-radius: 10px; padding: 8px 10px; font-size: 16px; font-weight: 600; }
+    .banco-r button { background: #000; color: #fff; }
+    .racha { font-size: 16px; color: #000; background: var(--soft); border-radius: 999px; padding: 2px 10px; vertical-align: middle; }
     .nota { font-size: 13px; color: var(--mute); margin: 18px 0 0; }
     .build-id { margin-top: 30px; font-size: 11px; color: #aaa; text-align: center; }
     .toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom)); transform: translateX(-50%); background: #000; color: #fff; padding: 10px 16px; border-radius: 999px; font-size: 14px; z-index: 9; }
