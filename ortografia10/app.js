@@ -10,7 +10,7 @@
 // guardan en el móvil y se suben a Supabase (ortografia10_votos,
 // ortografia10_respuestas); si no hay red o la tabla aún no existe, se quedan
 // en cola y se reintentan al abrir la app.
-import { quitarTildes, silabear, analizar, explicarTilde } from "./silabas.js";
+import { quitarTildes, silabear, analizar, explicarTilde, marcarTonica } from "./silabas.js";
 import { catDe, registrarNota, sembrarNota, pintarNota } from "./nota.js?v=__BUILD_ID__";
 
 const CFG = window.ORTOGRAFIA10_CONFIG;
@@ -250,6 +250,112 @@ const TEORIA = [
   ["Al separar en sílabas, una consonante entre dos vocales va…", ["con la vocal de detrás", "con la vocal de delante", "sola"], 0, "ca-sa, pe-ro, a-mi-go."],
   ["«ch», «ll» y «rr» al separar en sílabas…", ["no se separan nunca", "se separan siempre", "depende de la palabra"], 0, "co-che, ca-lle, pe-rro: son una sola consonante."],
   ["«Examen» es llana y no lleva tilde. ¿Y «exámenes»?", ["esdrújula, con tilde", "llana, sin tilde", "aguda, con tilde"], 0, "Al hacer el plural la sílaba fuerte se queda en el mismo sitio (XA), pero ahora es la antepenúltima: e-XÁ-me-nes."],
+];
+
+// ------------------------------------------------------------ la coma (o la tilde) que cambia el sentido
+// [frase A, frase B, qué quiere decir A, qué quiere decir B, explicación]
+const COMAS = [
+  ["Vamos a comer, niños.", "Vamos a comer niños.", "Avisas a los niños de que es la hora de comer 🍽️", "Anuncias un menú de ogro: los niños son la comida 👹", "La coma separa el vocativo (a quién hablas): «Vamos a comer, niños»."],
+  ["Hay que comer, abuela.", "Hay que comer abuela.", "Animas a tu abuela a que coma 👵", "Propones comerse a la abuela 😱", "A la persona a la que hablas (vocativo) se la separa con coma."],
+  ["No, quiero café.", "No quiero café.", "Dices que no a otra cosa, pero sí quieres café ☕", "Rechazas el café 🙅", "Tras el «no» que responde va coma: «No, quiero café» = no (a lo otro), quiero café."],
+  ["Perdón imposible, que cumpla su condena.", "Perdón, imposible que cumpla su condena.", "El rey no perdona: a la cárcel ⛓️", "El rey perdona: no cumplirá la condena 🕊️", "Mover una coma cambia qué es «imposible»: el perdón o que cumpla la condena."],
+  ["Juan, mi tío viene.", "Juan, mi tío, viene.", "Le cuentas a Juan que viene tu tío 🗣️", "Anuncias que viene Juan, que es tu tío 👨", "Entre dos comas va una aclaración («mi tío» es Juan); con una sola, «Juan» es a quien hablas."],
+  ["Los niños, que estaban cansados, se fueron a casa.", "Los niños que estaban cansados se fueron a casa.", "Se fueron todos los niños (y todos estaban cansados) 🧒🧒🧒", "Solo se fueron los que estaban cansados; los demás se quedaron 🧒", "Con comas la aclaración vale para todos; sin comas especifica solo a unos."],
+  ["No es cierto, que lo hice yo.", "No, es cierto que lo hice yo.", "Dices que es mentira lo que te cuentan, porque lo hiciste tú 🙄", "Confiesas: sí, lo hiciste tú 🙋", "La coma tras el «no» de respuesta separa la negación del resto."],
+  ["Estudia, Paco.", "Estudia Paco.", "Le ordenas a Paco que estudie 📚", "Cuentas que Paco estudia (o el nombre de una asignatura: «Estudia Paco») 🤷", "El vocativo, siempre entre comas: «Estudia, Paco»."],
+  ["Dejó de fumar, tranquilo.", "Dejó de fumar tranquilo.", "Le dices a alguien que no se preocupe: ya no fuma 😌", "Cuentas cómo lo dejó: sin nervios 🧘", "Con coma, «tranquilo» es lo que le dices a la otra persona; sin coma, describe cómo lo dejó."],
+  ["Sí, voy.", "Si voy…", "Respondes que sí vas ✅", "Pones una condición: si voy, pasará algo 🤔", "«Sí» con tilde afirma; «si» sin tilde es condición."],
+  ["¿Por qué vienes?", "Porque vienes.", "Preguntas el motivo 🤔", "Das la razón de algo 💡", "«Por qué», separado y con tilde, pregunta; «porque», junto y sin tilde, responde."],
+  ["Él te da té.", "El te da te.", "Una persona te ofrece una infusión 🍵", "No significa nada: faltan las tildes 🤯", "Él (persona), té (bebida): la tilde diacrítica distingue palabras que se escriben igual."],
+  ["¡Qué rico está!", "Que rico está.", "Exclamas lo bueno que está algo 😋", "Cuentas que alguien está rico (de dinero), como en «dice que rico está» 💰", "«Qué» con tilde exclama o pregunta; «que» sin tilde enlaza."],
+  ["Si el hombre supiera realmente el valor que tiene, la mujer andaría a cuatro patas en su búsqueda.", "Si el hombre supiera realmente el valor que tiene la mujer, andaría a cuatro patas en su búsqueda.", "La que buscaría a cuatro patas es la mujer 🙋‍♀️", "El que buscaría a cuatro patas es el hombre 🙋‍♂️", "El famoso ejemplo de la coma: según dónde vaya, cambia quién tiene el valor y quién busca."],
+];
+
+// ------------------------------------------------------------ compartir en redes (imagen de historia + texto)
+const URL_APP = "https://pacosql.github.io/Train/ortografia10/";
+// Palabra trampa para retar a los seguidores: una falta típica y difícil.
+function trampa() {
+  const p = palAzar((p) => p.d === 2 && p.w.length >= 6 && p.alts.length >= 1);
+  const bien = Math.random() < 0.4; return { i: byWord.get(p.w), w: bien ? p.w : p.alts[0], bien };
+}
+function lienzoHistoria({ grande, sub, cuadros = "", trampaW = "" }) {
+  const c = document.createElement("canvas"); c.width = 1080; c.height = 1920; const x = c.getContext("2d");
+  x.fillStyle = "#fff"; x.fillRect(0, 0, 1080, 1920); x.fillStyle = "#000"; x.textBaseline = "alphabetic";
+  const F = (px, w = 800) => `${w} ${px}px P10, Helvetica, Arial, sans-serif`;
+  x.font = F(96); x.fillText("ortografía", 90, 230); x.fillText("10", 90, 330);
+  x.fillRect(90, 380, 900, 8);
+  x.font = F(grande.length > 5 ? 220 : 300); x.fillText(grande, 90, 760);
+  x.font = F(54, 600); wrap(x, sub, 90, 860, 900, 68);
+  if (cuadros) { const n = [...cuadros].length || 1; x.font = `${Math.min(90, Math.floor(860 / (n * 1.25)))}px sans-serif`; x.fillText(cuadros, 90, 1120); }
+  if (trampaW) {
+    x.fillRect(90, 1230, 900, 380); x.fillStyle = "#fff";
+    x.font = F(46, 600); x.fillText("¿Bien o mal escrita?", 140, 1320);
+    x.font = F(trampaW.length > 11 ? 84 : 110); x.fillText(trampaW, 140, 1470);
+    x.font = F(40, 600); x.fillText("Respóndelo en la app 👇", 140, 1560); x.fillStyle = "#000";
+  }
+  x.font = F(44, 600); x.fillText("pacosql.github.io/Train/ortografia10", 90, 1800);
+  return c;
+}
+function wrap(x, t, X, Y, w, lh) {
+  let l = ""; for (const p of t.split(" ")) { const n = l ? l + " " + p : p; if (x.measureText(n).width > w && l) { x.fillText(l, X, Y); Y += lh; l = p; } else l = n; } if (l) x.fillText(l, X, Y);
+}
+async function compartir({ texto, grande, sub, cuadros, r }) {
+  const tr = trampa();
+  const url = `${URL_APP}?reto=${encodeURIComponent(r ?? grande)}&t=${tr.i}&b=${tr.bien ? 1 : 0}`;
+  const msg = `${texto}\n¿Bien o mal: «${tr.w}»? ¿Me superas?\n${url}`;
+  try { await document.fonts.load('800 100px "P10"'); } catch {}
+  const c = lienzoHistoria({ grande: String(grande), sub, cuadros, trampaW: tr.w });
+  const blob = await new Promise((res) => c.toBlob(res, "image/png"));
+  const file = blob && new File([blob], "ortografia10.png", { type: "image/png" });
+  try {
+    if (file && navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], text: msg }); return; }
+    if (navigator.share) { await navigator.share({ text: msg }); return; }
+  } catch (e) { if (e && e.name === "AbortError") return; }
+  try { await navigator.clipboard.writeText(msg); toast("Texto y enlace copiados · se descarga la imagen"); } catch { toast("Se descarga la imagen"); }
+  if (blob) { const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "ortografia10.png"; a.click(); }
+}
+// Botón para el html de un resultado (se engancha con un único listener global).
+function botonCompartir(texto, grande, sub) {
+  return `<button class="btn" style="width:100%;margin-top:6px" data-compartir="${esc(JSON.stringify({ texto, grande: String(grande), sub }))}">📤 Compartir en redes</button>`;
+}
+document.addEventListener("click", (e) => {
+  const b = e.target.closest("[data-compartir]"); if (!b) return;
+  try { compartir(JSON.parse(b.dataset.compartir)); } catch {}
+});
+
+// ------------------------------------------------------------ ideas para hacerla viral (se votan como los tipos)
+// Se guardan en ortografia10_votos con tipo = "idea:<id>".
+const IDEAS = [
+  { id: "historia", e: "📸", n: "Imagen de resultado para historias", red: "Instagram / WhatsApp", hecho: true,
+    desc: "Al acabar una ronda, un botón crea una imagen vertical en blanco y negro con tu nota (8/10), tu fila de aciertos ⬛🟥 y una palabra trampa «¿bien o mal escrita?» para que tus seguidores respondan." },
+  { id: "reto", e: "🔗", n: "Enlace de reto «¿me superas?»", red: "WhatsApp / X", hecho: true,
+    desc: "El texto que compartes lleva un enlace: quien lo abre ve «Te han retado: sacó 8/10», contesta la palabra trampa y juega para superarlo." },
+  { id: "wordle", e: "🟩", n: "Cuadrícula del Reto del día", red: "X / WhatsApp",
+    desc: "Como Wordle: una sola palabra al día igual para todos y un texto con emojis (🟩🟨⬛) que no destripa la respuesta. Lo mejor para grupos de amigos." },
+  { id: "racha", e: "🔥", n: "Racha de días y récords", red: "Instagram / TikTok",
+    desc: "Compartir «🔥 30 días seguidos» o «récord de 47 en Supervivencia». Los récords crean pique entre amigos." },
+  { id: "nota", e: "🎓", n: "Mi nota de ortografía", red: "Instagram / LinkedIn",
+    desc: "Una imagen tipo boletín con tu nota de 0 a 10 por categoría (tildes, b/v, h…). Gusta presumir de un 9,5 en tildes." },
+  { id: "solo10", e: "🧠", n: "«Solo el 10 % la escribe bien»", red: "Instagram / TikTok",
+    desc: "Cada semana, la palabra que más se falla en la app (dato real de Supabase) como reto: «¿Eres del 10 %?». Datos reales = credibilidad." },
+  { id: "reel", e: "🎬", n: "Vídeo vertical de una partida", red: "TikTok / Reels / Shorts",
+    desc: "Botón que graba 15 s de Lluvia de palabras o Supervivencia como vídeo vertical con marcador. Los arcades se ven muy bien en vídeo." },
+  { id: "duelo", e: "⚔️", n: "Duelo con las mismas palabras", red: "WhatsApp",
+    desc: "Retas a un amigo con un enlace y os tocan exactamente los mismos 10 ejercicios. Al acabar se comparan los dos resultados." },
+  { id: "liga", e: "🏆", n: "Liga semanal de clase o grupo", red: "WhatsApp / aula",
+    desc: "Un código de grupo (una clase, una familia, una oficina) con clasificación semanal. Muy útil para profesores." },
+  { id: "carteles", e: "🪧", n: "Caza de carteles con falta", red: "Instagram / X",
+    desc: "Los usuarios suben fotos de carteles reales con faltas; los mejores salen en el juego «El cartel con falta» con su nombre. Contenido generado por la gente." },
+  { id: "polemica", e: "🔥", n: "Encuesta polémica del día", red: "Instagram / X",
+    desc: "«¿Solo o sólo?», «¿Guion o guión?»: un dato de lo que vota la gente en la app frente a lo que dice la RAE. La polémica genera comentarios." },
+  { id: "famosos", e: "📰", n: "Faltas de famosos y titulares", red: "X / Instagram",
+    desc: "Ejercicios con faltas reales de titulares, tuits de famosos o carteles de series. Muy compartible, pero cuidado con los derechos de imagen." },
+  { id: "pegatinas", e: "🏷️", n: "Pegatinas y memes descargables", red: "WhatsApp / Telegram",
+    desc: "Pegatinas de WhatsApp tipo «Haber si nos vemos 🤦» o «La coma salva vidas». Se reenvían solas en los grupos." },
+  { id: "profe", e: "👩‍🏫", n: "Modo profe: enviar un reto a la clase", red: "WhatsApp / Classroom",
+    desc: "El profesor elige un tipo de ejercicio y manda un enlace; ve quién lo ha hecho y la nota media. Los profes son grandes difusores." },
+  { id: "insignias", e: "🏅", n: "Insignias coleccionables", red: "Instagram",
+    desc: "Medallas por hitos («Maestro de la h», «100 tildes seguidas») que se pueden compartir como imagen." },
 ];
 
 // ------------------------------------------------------------ tipos de ejercicio
@@ -1198,6 +1304,180 @@ const TIPOS = [
       return { ok, html: `<p>${bien} aciertos de ${total}.${ok ? "" : " (Para darlo por bueno: 5 o más y 3 de cada 4 bien.)"}</p>${fallos.slice(0, 5).map((f) => `<p>«${esc(f.w)}» → <b>${esc(f.p.w)}</b></p>`).join("")}` };
     },
   },
+  // ---------------------------------------------------------------- tanda 3 (según los votos: decisiones rápidas,
+  // contexto real, entender la regla y arcade con vidas; nada de adivinar palabras ni de teclear)
+  {
+    id: "autocor", e: "📱", n: "El autocorrector", orig: "Nuevo · chats de WhatsApp",
+    desc: "Escribes un mensaje y el autocorrector te propone un cambio. A veces arregla una falta… y a veces te la mete. ¿Aceptas o ignoras?",
+    ej: "«Llegó aver» → sugiere «a ver»… ¡Ignorar! Era «ayer».",
+    async run(el) {
+      const [s, pi] = pick(D.F); const p = P(pi); const toks = tokens(s); const i = toks.indexOf(p.w);
+      const arregla = Math.random() < 0.5; const mal = pick(p.alts);
+      const escrita = arregla ? mal : p.w, sugerida = arregla ? p.w : mal;
+      toks[i] = `\u0000${i}`;
+      const html = esc(toks.join("")).replace(`\u0000${i}`, `<u style="text-decoration-color:var(--mal);text-decoration-style:wavy">${esc(escrita)}</u>`);
+      el.innerHTML = `<p class="enun">El autocorrector quiere cambiar la palabra subrayada</p>
+        <div class="chat"><div class="burbuja yo">${html}</div></div>
+        <div class="sugiere">✨ ¿Querías decir <b>${esc(sugerida)}</b>?</div><div id="z"></div>`;
+      const ok = await opciones(el.querySelector("#z"), ["✓ Aceptar", "✗ Ignorar"], arregla ? 0 : 1, { dos: true });
+      return { ok, html: arregla ? `<p>Bien hecho el cambio: «<s>${esc(mal)}</s>» → <b>${esc(p.w)}</b>.</p>${reglaDe(p.c)}` : `<p>¡Trampa! «<b>${esc(p.w)}</b>» ya estaba bien; el autocorrector te iba a meter «<s>${esc(mal)}</s>».</p>${reglaDe(p.c)}` };
+    },
+  },
+  {
+    id: "coma", e: "🦸", n: "La coma que salva vidas", orig: "Nuevo · memes de «la coma salva vidas»",
+    desc: "Dos frases casi iguales: una coma o una tilde les cambia el sentido. Te digo qué se quiere decir y eliges la frase que lo dice.",
+    ej: "«Avisas a los niños de que es la hora de comer» → «Vamos a comer, niños».",
+    async run(el) {
+      const [a, b, sa, sb, x] = pick(COMAS); const quiere = Math.random() < 0.5 ? 0 : 1;
+      const lista = shuffle([[a, 0], [b, 1]]);
+      el.innerHTML = `<p class="enun">Quieres decir esto:</p><div class="sentido">${esc(quiere ? sb : sa)}</div><p class="enun">¿Qué frase lo dice?</p><div id="z"></div>`;
+      const ok = await opciones(el.querySelector("#z"), lista.map((q) => q[0]), lista.findIndex((q) => q[1] === quiere), { fr: true });
+      return { ok, html: `<p>«${esc(a)}» → ${esc(sa)}</p><p>«${esc(b)}» → ${esc(sb)}</p><div class="regla"><b>Por qué</b>${esc(x)}</div>` };
+    },
+  },
+  {
+    id: "jefe", e: "👾", n: "El jefe final", orig: "Nuevo · videojuegos (jefe con barra de vida)",
+    desc: "Un párrafo de prensa con 2 o 3 faltas: cada una que tocas le quita vida al jefe. Tú tienes 3 corazones y cada toque en falso cuesta uno.",
+    ej: "👾 ▮▮▮ — tocas «estubo» y le quitas un trozo de vida.",
+    async run(el) {
+      let toks, cambios = [];
+      for (let k = 0; k < 30; k++) {
+        const fr = [pick(D.F)[0], pick(D.F)[0]]; toks = tokens(fr.join(" "));
+        const cand = shuffle(toks.map((t, i) => [t, i]).filter(([t]) => t.length > 3 && byWord.has(t)));
+        if (cand.length < 3) continue;
+        const n = Math.random() < 0.5 ? 2 : 3; cambios = [];
+        for (const [t, i] of cand.slice(0, n)) { const p = P(byWord.get(t)); const alt = pick(p.alts); toks[i] = alt; cambios.push({ i, mal: alt, bien: t, c: p.c }); }
+        break;
+      }
+      let vidas = 3, quedan = cambios.length;
+      el.innerHTML = `<div class="hud"><span>👾 <span id="hp"></span></span><span id="v"></span></div>
+        <p class="enun">Toca las faltas para derrotar al jefe</p><div class="frase" id="z">${toks.map((t, i) => esPal(t) ? `<button class="tok" data-i="${i}">${esc(t)}</button>` : esc(t)).join("")}</div>`;
+      const hud = () => { el.querySelector("#hp").textContent = "▮".repeat(quedan) + "▯".repeat(cambios.length - quedan); el.querySelector("#v").textContent = "♥".repeat(vidas) + "♡".repeat(3 - vidas); };
+      hud();
+      await new Promise((res) => el.querySelectorAll(".tok").forEach((b) => b.onclick = () => {
+        const i = +b.dataset.i; const c = cambios.find((q) => q.i === i);
+        b.disabled = true;
+        if (c) { b.textContent = c.bien; b.classList.add("ok"); quedan--; } else { b.classList.add("mal"); vidas--; }
+        hud(); if (!quedan || !vidas) res();
+      }));
+      el.querySelectorAll(".tok").forEach((b) => { b.disabled = true; const c = cambios.find((q) => q.i === +b.dataset.i); if (c && !b.classList.contains("ok")) b.classList.add("era"); });
+      const ok = !quedan;
+      return { ok, html: `<p>${ok ? `👾 ¡Jefe derrotado con ${vidas} ${vidas === 1 ? "corazón" : "corazones"}!` : "El jefe ha ganado esta vez."}</p>${cambios.map((c) => `<p>«<s>${esc(c.mal)}</s>» → <b>${esc(c.bien)}</b></p>`).join("")}${reglaDe(cambios[0] && cambios[0].c)}` };
+    },
+  },
+  {
+    id: "escalera", e: "🪜", n: "La escalera", orig: "Nuevo · concursos de la tele (¿plantarse o seguir?)",
+    desc: "8 peldaños de puntos que se doblan. En cada uno: ¿cómo se escribe? Puedes plantarte y guardar lo ganado o arriesgar. El peldaño 3 es seguro y tienes un comodín 50:50.",
+    ej: "Peldaño 6 · 400 puntos: ¿te plantas o subes?",
+    async run(el) {
+      const PREM = [25, 50, 100, 200, 400, 800, 1600, 3200], SEGURO = 2, rec = ls.get("rec.escalera", 0);
+      let peldano = 0, comodin = true, fallo = null, plantado = false; const usadas = new Set();
+      const ganado = () => (peldano ? PREM[peldano - 1] : 0);
+      while (peldano < PREM.length && !fallo && !plantado) {
+        const p = palAzar((p) => p.alts.length >= 2 && !usadas.has(p.w) && (peldano < 3 ? p.d === 1 : p.d === 2)); usadas.add(p.w);
+        const o = shuffle([[p.w, true], ...p.alts.slice(0, 2).map((t) => [t, false])]);
+        el.innerHTML = `<div class="escalera">${PREM.map((v, i) => `<span class="${i === peldano ? "act" : i < peldano ? "hecho" : ""}${i === SEGURO ? " seguro" : ""}">${v}</span>`).join("")}</div>
+          <p class="enun">Peldaño ${peldano + 1} · por ${PREM[peldano]} puntos: ¿cuál está bien?</p><div id="z"></div>
+          <div class="fila" style="margin-top:12px">${comodin ? `<button class="btn" id="c50">50:50</button>` : ""}${peldano ? `<button class="btn" id="plant">Plantarme con ${ganado()}</button>` : ""}</div>`;
+        const z = el.querySelector("#z");
+        const r = await new Promise((res) => {
+          z.innerHTML = `<div class="ops">${o.map((q, i) => `<button class="op" data-i="${i}">${esc(q[0])}</button>`).join("")}</div>`;
+          z.querySelectorAll(".op").forEach((b) => b.onclick = () => res(+b.dataset.i));
+          const c = el.querySelector("#c50"); if (c) c.onclick = () => { comodin = false; c.remove(); const malas = shuffle(o.map((q, i) => i).filter((i) => !o[i][1])); z.querySelector(`[data-i="${malas[0]}"]`).style.visibility = "hidden"; };
+          const pl = el.querySelector("#plant"); if (pl) pl.onclick = () => res(-1);
+        });
+        if (r === -1) { plantado = true; break; }
+        z.querySelectorAll(".op").forEach((b) => { b.disabled = true; if (o[+b.dataset.i][1]) b.classList.add("ok"); else if (+b.dataset.i === r) b.classList.add("mal"); });
+        if (o[r][1]) { peldano++; await new Promise((s) => setTimeout(s, 650)); } else fallo = p;
+      }
+      const final = fallo ? (peldano > SEGURO ? PREM[SEGURO] : 0) : ganado();
+      const nuevoRec = final > rec; if (nuevoRec) ls.set("rec.escalera", final);
+      return { ok: final >= PREM[SEGURO], html: `<p><b>${final} puntos</b>${peldano === PREM.length ? " · 🏆 ¡Escalera completa!" : plantado ? " · te has plantado" : ""}. ${nuevoRec ? "🏆 ¡Nuevo récord!" : `Tu récord: ${rec}.`}</p>${fallo ? `<p>Caíste en <b>${esc(fallo.w)}</b>.</p>${reglaDe(fallo.c)}` : ""}${botonCompartir(`🪜 He subido la escalera de la ortografía hasta ${final} puntos.`, final, "puntos en la escalera")}` };
+    },
+  },
+  {
+    id: "cestas", e: "🧺", n: "Las tres cestas", orig: "Nuevo · arcade de clasificar",
+    desc: "Caen palabras y las mandas a su cesta: aguda, llana o esdrújula. Cada vez más rápido, 3 vidas y combo ×2 a partir de 5 seguidas. ¿Cuál es tu récord?",
+    ej: "«lápiz» → cesta LLANA · combo ×2.",
+    async run(el) {
+      const rec = ls.get("rec.cestas", 0), L = ["aguda", "llana", "esdrújula"];
+      let vidas = 3, puntos = 0, seguidas = 0, t = 5000; const fallos = [];
+      el.innerHTML = `<div class="hud"><span id="v"></span><span id="pt"></span><span>Récord ${rec}</span></div><div class="barra-t"><i id="bt"></i></div>
+        <div class="palabra" id="w"></div><div class="ops" style="grid-template-columns:1fr 1fr 1fr">${L.map((n, i) => `<button class="op cesta" data-k="${i}">🧺<br>${n}</button>`).join("")}</div>`;
+      const $w = el.querySelector("#w"), $bt = el.querySelector("#bt");
+      await new Promise((res) => {
+        let act, tim;
+        const hud = () => { el.querySelector("#v").textContent = "♥".repeat(vidas) + "♡".repeat(3 - vidas); el.querySelector("#pt").textContent = `${puntos} pts${seguidas >= 5 ? " · ×2" : ""}`; };
+        const fallo = () => { vidas--; seguidas = 0; fallos.push(act); hud(); if (vidas <= 0) { clearTimeout(tim); res(); return true; } };
+        const nueva = () => {
+          let p, a; for (let k = 0; k < 50; k++) { p = palAzar((p) => p.c.startsWith("ACE.") && p.c !== "ACE.MENTE" && silabear(p.w).length >= 2); a = analizar(p.w); if (a.coherente && L.includes(a.tipo)) break; }
+          act = { p, k: L.indexOf(a.tipo) }; $w.textContent = p.w;
+          $bt.style.transition = "none"; $bt.style.width = "100%"; void $bt.offsetWidth; $bt.style.transition = `width ${t}ms linear`; $bt.style.width = "0%";
+          clearTimeout(tim); tim = setTimeout(() => { if (!fallo()) nueva(); }, t);
+        };
+        hud(); nueva();
+        el.querySelectorAll(".cesta").forEach((b) => b.onclick = () => {
+          if (vidas <= 0) return;
+          if (+b.dataset.k === act.k) { seguidas++; puntos += seguidas >= 5 ? 2 : 1; t = Math.max(1600, t * 0.95); hud(); nueva(); }
+          else if (!fallo()) nueva();
+        });
+      });
+      el.querySelectorAll(".cesta").forEach((b) => b.disabled = true);
+      const nuevoRec = puntos > rec; if (nuevoRec) ls.set("rec.cestas", puntos);
+      return { ok: puntos >= 10 || nuevoRec, html: `<p><b>${puntos} puntos</b>. ${nuevoRec ? "🏆 ¡Nuevo récord!" : `Tu récord: ${rec}.`}</p>${fallos.filter((f) => f && f.p).slice(0, 4).map((f) => `<p><b>${esc(f.p.w)}</b> es ${L[f.k]}: ${esc(explicarTilde(f.p.w))}</p>`).join("")}${botonCompartir(`🧺 ${puntos} palabras clasificadas en agudas, llanas y esdrújulas.`, puntos, "puntos en las tres cestas")}` };
+    },
+  },
+  {
+    id: "diana", e: "🎯", n: "Tiro al acento", orig: "Nuevo · arcade de puntería",
+    desc: "Las sílabas aparecen como dianas: dispara a la que suena más fuerte antes de que se acabe el tiempo. 3 vidas, cada vez más rápido.",
+    ej: "ca · MIÓN · → 🎯 en «mión».",
+    async run(el) {
+      const rec = ls.get("rec.diana", 0); let vidas = 3, puntos = 0, t = 4500; const fallos = [];
+      el.innerHTML = `<div class="hud"><span id="v"></span><span id="pt"></span><span>Récord ${rec}</span></div><div class="barra-t"><i id="bt"></i></div>
+        <p class="enun" style="text-align:center">Dispara a la sílaba fuerte</p><div class="sils dianas" id="z"></div>`;
+      const z = el.querySelector("#z"), $bt = el.querySelector("#bt");
+      await new Promise((res) => {
+        let act, tim;
+        const hud = () => { el.querySelector("#v").textContent = "♥".repeat(vidas) + "♡".repeat(3 - vidas); el.querySelector("#pt").textContent = `${puntos} 🎯`; };
+        const fallo = () => { vidas--; fallos.push(act); hud(); if (vidas <= 0) { clearTimeout(tim); res(); return true; } };
+        const nueva = () => {
+          const sinT = Math.random() < 0.6; // sin tilde la sílaba fuerte no se ve: hay que oírla
+          let p, a; for (let k = 0; k < 50; k++) { p = palAzar((p) => p.c.startsWith("ACE.") && p.c !== "ACE.MENTE" && silabear(p.w).length >= 2 && (!sinT || !/[áéíóú]/.test(p.w))); a = analizar(p.w); if (a.coherente) break; }
+          act = { p, a };
+          z.innerHTML = a.silabas.map((s, i) => `<button data-i="${i}">${esc(s)}</button>`).join("");
+          z.querySelectorAll("button").forEach((b) => b.onclick = () => {
+            if (vidas <= 0) return;
+            if (+b.dataset.i === a.tonica) { puntos++; t = Math.max(1500, t * 0.94); hud(); nueva(); } else if (!fallo()) nueva();
+          });
+          $bt.style.transition = "none"; $bt.style.width = "100%"; void $bt.offsetWidth; $bt.style.transition = `width ${t}ms linear`; $bt.style.width = "0%";
+          clearTimeout(tim); tim = setTimeout(() => { if (!fallo()) nueva(); }, t);
+        };
+        hud(); nueva();
+      });
+      z.querySelectorAll("button").forEach((b) => b.disabled = true);
+      const nuevoRec = puntos > rec; if (nuevoRec) ls.set("rec.diana", puntos);
+      return { ok: puntos >= 10 || nuevoRec, html: `<p><b>${puntos} dianas</b>. ${nuevoRec ? "🏆 ¡Nuevo récord!" : `Tu récord: ${rec}.`}</p>${fallos.filter((f) => f && f.a).slice(0, 4).map((f) => `<p>${esc(marcarTonica(f.a))}</p>`).join("")}${botonCompartir(`🎯 He acertado ${puntos} sílabas fuertes seguidas.`, puntos, "dianas en el tiro al acento")}` };
+    },
+  },
+  {
+    id: "razon", e: "💬", n: "¿Quién tiene razón?", orig: "Nuevo · discusiones de grupo de WhatsApp",
+    desc: "Dos amigos discuten en el grupo cómo se escribe algo. Toca el mensaje de quien tiene razón… y te explico por qué.",
+    ej: "Ana: «a ver si vienes» · Leo: «haber si vienes» → Ana.",
+    async run(el) {
+      const m = pick(Math.random() < 0.5 ? MAN.hueco : MAN.junto);
+      const malo = shuffle(m.o.map((_, i) => i).filter((i) => i !== m.a))[0];
+      const [n1, n2] = shuffle(["Ana", "Leo", "Sara", "Hugo", "Lucía", "Dani"]).slice(0, 2);
+      const yo = Math.random() < 0.5 ? [m.a, malo] : [malo, m.a];
+      const frase = (i) => esc(m.q).replace("___", `<b>${esc(m.o[i])}</b>`);
+      el.innerHTML = `<p class="enun">Discusión en el grupo. ¿Quién tiene razón?</p>
+        <div class="chat"><button class="burbuja otro" data-k="0"><small>${n1}</small>${frase(yo[0])}</button>
+        <button class="burbuja otro" data-k="1"><small>${n2}</small>${frase(yo[1])}</button></div>`;
+      const k = await new Promise((res) => el.querySelectorAll(".burbuja").forEach((b) => b.onclick = () => res(+b.dataset.k)));
+      const bien = yo[0] === m.a ? 0 : 1;
+      el.querySelectorAll(".burbuja").forEach((b) => { b.disabled = true; if (+b.dataset.k === bien) b.classList.add("ok"); else if (+b.dataset.k === k) b.classList.add("mal"); });
+      return { ok: k === bien, html: `<p>Tiene razón <b>${bien ? n2 : n1}</b>: va «${esc(m.o[m.a])}».</p>${m.x ? `<p>${esc(m.x)}</p>` : reglaDe(m.c)}` };
+    },
+  },
 ];
 const TIPO = Object.fromEntries(TIPOS.map((t) => [t.id, t]));
 
@@ -1247,6 +1527,13 @@ const VA = {
   carrera: [2, 3, "Rival que avanza solo: tensión y ganas de revancha."],
   raya: [2, 2, "Un juego de mesa conocido con la ortografía como llave."],
   diario: [3, 3, "Un reto al día, igual para todos, con racha: el truco de Wordle."],
+  autocor: [3, 3, "Todo el mundo ha sufrido al autocorrector: captura de chat muy compartible."],
+  coma: [3, 2, "«La coma salva vidas» es un meme clásico: se comparte solo."],
+  jefe: [2, 3, "Barra de vida y corazones: la tensión de un videojuego con frases reales."],
+  escalera: [3, 3, "¿Plantarse o arriesgar? El enganche de los concursos de la tele."],
+  cestas: [2, 3, "Arcade rápido con combo y récord: «una más» garantizado."],
+  diana: [2, 3, "Puntería contra el reloj; grabado en vídeo luce mucho."],
+  razon: [3, 2, "Las discusiones de grupo sobre cómo se escribe algo son de lo más viral."],
 };
 const puntos = (n) => "●".repeat(n) + "○".repeat(3 - n);
 
@@ -1266,23 +1553,24 @@ function siguienteTipo(ultimo, forzado) {
 let tab = "jugar";
 // Si el móvil aún tiene un index.html viejo en caché, añadir la pestaña que falte.
 { const nav = document.querySelector(".tabs");
-  for (const [id, n] of [["valorar", "Valorar"], ["fichas", "Fichas"], ["nota", "Nota"]]) if (nav && !nav.querySelector(`[data-tab="${id}"]`)) { const b = document.createElement("button"); b.dataset.tab = id; b.textContent = n; nav.appendChild(b); } }
+  for (const [id, n] of [["valorar", "Valorar"], ["fichas", "Fichas"], ["nota", "Nota"], ["ideas", "Ideas"]]) if (nav && !nav.querySelector(`[data-tab="${id}"]`)) { const b = document.createElement("button"); b.dataset.tab = id; b.textContent = n; nav.appendChild(b); } }
 document.querySelectorAll(".tabs button").forEach((b) => b.onclick = () => irA(b.dataset.tab));
 function irA(t) {
   tab = t; ronda = null;
   document.querySelectorAll(".tabs button").forEach((b) => b.classList.toggle("on", b.dataset.tab === t));
   if ("speechSynthesis" in window) speechSynthesis.cancel();
-  t === "jugar" ? inicio() : t === "fichas" ? fichas() : t === "nota" ? pintarNota($main, { COMP, esc, empezar }) : valorar();
+  t === "jugar" ? inicio() : t === "ideas" ? ideas() : t === "fichas" ? fichas() : t === "nota" ? pintarNota($main, { COMP, esc, empezar }) : valorar();
   scrollTo(0, 0);
 }
 
 function inicio() {
-  const s = ls.get("stats", { n: 0, ok: 0, tipos: {}, dias: [] }); const v = votos();
+  const s = ls.get("stats", { n: 0, ok: 0, tipos: {}, dias: [] }); const v = Object.fromEntries(Object.entries(votos()).filter(([k]) => TIPO[k]));
   const hoy = s.hoyFecha === new Date().toISOString().slice(0, 10) ? s.hoy || 0 : 0;
   const nUp = Object.values(v).filter((x) => x > 0).length, nDown = Object.values(v).filter((x) => x === -1).length;
   $main.innerHTML = `
     <h2>Aprende ortografía jugando</h2>
     <p class="sub">Rondas de ${RONDA} ejercicios de ${TIPOS.length} tipos distintos. Si fallas, te explico la regla.</p>
+    ${retoHTML()}
     <button class="btn neg big" id="go">Jugar</button>
     <div class="stats">
       <div class="stat"><b>${hoy}</b><span>hoy</span></div>
@@ -1293,6 +1581,38 @@ function inicio() {
     <button class="btn" style="width:100%" id="val">👍 👎 Valorar los ${TIPOS.length} tipos de ejercicio</button>`;
   $main.querySelector("#go").onclick = () => empezar();
   $main.querySelector("#val").onclick = () => irA("valorar");
+  const rt = $main.querySelector(".reto");
+  if (rt) rt.querySelectorAll("[data-rb]").forEach((b) => b.onclick = () => {
+    const R = RETO, p = P(R.t), ok = (b.dataset.rb === "1") === R.bien;
+    rt.querySelectorAll("[data-rb]").forEach((x) => x.disabled = true); b.classList.add(ok ? "ok" : "mal");
+    rt.querySelector(".rsol").innerHTML = `${ok ? "¡Bien!" : "¡Has caído!"} Se escribe <b>${esc(p.w)}</b>. Ahora juega una ronda para superar su ${esc(R.reto)}.`;
+  });
+}
+
+// Enlace de reto: ?reto=8/10&t=<índice de palabra>&b=1 (la palabra trampa estaba bien escrita)
+let RETO = null;
+try {
+  const q = new URLSearchParams(location.search);
+  if (q.has("reto")) { RETO = { reto: q.get("reto").slice(0, 20), t: +q.get("t") || 0, bien: q.get("b") === "1" }; history.replaceState(null, "", location.pathname); }
+} catch {}
+function retoHTML() {
+  if (!RETO || !D || !D.P[RETO.t]) return "";
+  const p = P(RETO.t); const w = RETO.bien ? p.w : (p.alts[0] || p.w);
+  return `<div class="reto"><b>⚔️ Te han retado: ${esc(RETO.reto)}</b><p>Primero, la palabra trampa: ¿está bien escrita?</p>
+    <div class="palabra">${esc(w)}</div><div class="ops dos"><button class="op" data-rb="1">✓ Bien</button><button class="op" data-rb="0">✗ Mal</button></div><p class="rsol"></p></div>`;
+}
+
+// ------------------------------------------------------------ ideas para hacerla viral
+function ideas() {
+  const v = votos(); const n = IDEAS.filter((i) => v["idea:" + i.id]).length;
+  $main.innerHTML = `
+    <h2>Ideas para hacerla viral</h2>
+    <p class="sub">${IDEAS.length} ideas para que la app se comparta en redes. Dime cuáles te gustan: 👍 y de 1 a 5 ★, o 👎. Las que marco con ✅ ya están hechas: pruébalas al acabar una ronda. Llevas ${n} de ${IDEAS.length} valoradas.</p>
+    ${IDEAS.map((i) => { const x = v["idea:" + i.id] || 0; return `<div class="tarjeta ${x > 0 ? "like" : x === -1 ? "dislike" : ""}">
+      <h3><span>${i.e}</span>${esc(i.n)}${i.hecho ? " <small>✅ ya está</small>" : ""}</h3>
+      <div class="orig">${esc(i.red)}</div><p>${esc(i.desc)}</p>
+      <div class="pie"><span></span>${botonesVoto("idea:" + i.id, x)}</div></div>`; }).join("")}`;
+  enganchaVotos($main, () => setTimeout(() => { if (tab === "ideas") { const y = scrollY; ideas(); scrollTo(0, y); } }, 400));
 }
 
 let ronda = null;
@@ -1360,9 +1680,12 @@ function resumen() {
     <h2>${R.ok} de ${R.total}</h2>
     <p class="sub">${R.ok === R.total ? "¡Ronda perfecta!" : R.ok >= R.total * 0.7 ? "Muy bien. Sigue así." : "Cada fallo es una regla nueva aprendida."}</p>
     ${Object.entries(porTipo).map(([id, [n, ok]]) => `<div class="mini" style="color:#000"><span>${TIPO[id].e} ${esc(TIPO[id].n)} · ${ok}/${n}</span>${botonesVoto(id, votos()[id] || 0)}</div>`).join("")}
+    ${R.forzado ? "" : `<button class="btn neg big" id="comp" style="margin-top:14px">📤 Compartir en redes</button>`}
     <div class="fila" style="margin-top:18px"><button class="btn neg" id="otra">${R.forzado ? "Probar otra vez" : "Otra ronda"}</button><button class="btn" id="val">${R.forzado ? "Volver a Valorar" : "Valorar"}</button></div>`;
   enganchaVotos($main);
   $main.querySelector("#otra").onclick = () => empezar(R.forzado);
+  const cp = $main.querySelector("#comp");
+  if (cp) cp.onclick = () => compartir({ texto: `🔟 Ortografía 10: ${R.ok}/${R.total}\n${R.hist.map(([, ok]) => (ok ? "⬛" : "🟥")).join("")}`, grande: `${R.ok}/${R.total}`, sub: R.ok === R.total ? "¡Ronda perfecta de ortografía!" : `aciertos en mi ronda de ortografía${R.mejor >= 3 ? ` · 🔥 ${R.mejor} seguidas` : ""}`, cuadros: R.hist.map(([, ok]) => (ok ? "⬛" : "🟥")).join("") });
   $main.querySelector("#val").onclick = () => irA(R.forzado ? "valorar" : "valorar");
 }
 
@@ -1493,4 +1816,4 @@ cargar().then(() => {
   vaciarCola();
   cargarTotales().then(() => { if (tab === "valorar" && !ronda) valorar(); });
 }).catch((e) => { $main.innerHTML = `<p>No se han podido cargar los ejercicios. ${esc(e.message)}</p>`; });
-window.__o10 = { TIPOS, empezar, irA };
+window.__o10 = { TIPOS, empezar, irA, compartir };

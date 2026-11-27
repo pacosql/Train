@@ -230,6 +230,29 @@
     @media (max-width: 400px) { .tabs button { padding: 8px 8px; font-size: 14px; } .logo { font-size: 22px; } }
     .build-id { margin-top: 30px; font-size: 11px; color: #aaa; text-align: center; }
     .toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom)); transform: translateX(-50%); background: #000; color: #fff; padding: 10px 16px; border-radius: 999px; font-size: 14px; z-index: 9; }
+    /* tanda 3 */
+    .chat { display: flex; flex-direction: column; gap: 10px; margin: 10px 0 14px; }
+    .burbuja { border: 0; text-align: left; font-size: 19px; line-height: 1.45; padding: 12px 14px; border-radius: 18px; max-width: 92%; }
+    .burbuja.yo { align-self: flex-end; background: var(--ink); color: var(--bg); border-bottom-right-radius: 4px; }
+    .burbuja.otro { align-self: flex-start; background: var(--soft); border: 2px solid var(--soft); border-bottom-left-radius: 4px; }
+    .burbuja.otro small { display: block; font-weight: 800; font-size: 13px; color: var(--mute); }
+    .burbuja.ok { border-color: var(--ink); background: var(--bg); }
+    .burbuja.mal { border-color: var(--mal); background: var(--mal); color: #fff; }
+    .burbuja.mal small { color: #fff; }
+    .sugiere { border: 2px dashed var(--ink); border-radius: 12px; padding: 10px 12px; margin-bottom: 14px; font-size: 18px; text-align: center; }
+    .sentido { font-family: "P10", var(--sans); font-weight: 800; font-size: 22px; line-height: 1.25; margin: 6px 0 16px; }
+    .escalera { display: grid; grid-template-columns: repeat(8, 1fr); gap: 3px; margin: 0 0 12px; }
+    .escalera span { border: 1.5px solid var(--line); border-radius: 8px; padding: 6px 0; font-weight: 800; font-family: "P10", var(--sans); font-size: 12px; text-align: center; color: var(--mute); }
+    .escalera span.seguro { border-color: var(--ink); }
+    .escalera span.hecho { background: var(--soft); color: var(--ink); }
+    .escalera span.act { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+    .cesta { text-align: center !important; font-size: 16px !important; padding: 10px 4px !important; }
+    .dianas button { border-radius: 999px; min-width: 76px; }
+    .reto { border: 2px solid var(--ink); border-radius: 16px; padding: 14px; margin-bottom: 16px; }
+    .reto p { margin: 6px 0; }
+    .reto .palabra { margin: 10px 0 14px; }
+    .tarjeta h3 small { font-size: 12px; font-weight: 700; color: var(--mute); }
+    @media (max-width: 420px) { .tabs button { padding: 7px 7px; font-size: 13px; } .logo { font-size: 21px; } }
   </style>
 </head>
 <body>
@@ -241,6 +264,7 @@
         <button data-tab="valorar">Valorar</button>
         <button data-tab="fichas">Fichas</button>
         <button data-tab="nota">Nota</button>
+        <button data-tab="ideas">Ideas</button>
       </nav>
     </header>
     <main id="main"></main>

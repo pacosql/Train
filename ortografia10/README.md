@@ -11,7 +11,7 @@ PWA en blanco y negro con el logotipo elegido en [`ortologo/`](../ortologo)
 - **Jugar**: rondas de 10 ejercicios de tipos variados. Los tipos con 👍
   salen el triple y los 👎 no salen. Cada respuesta enseña la regla
   (competencia de Orto, con su truco) y deja votar ese tipo ahí mismo.
-- **Valorar**: los 43 tipos con descripción, ejemplo, de dónde sale la
+- **Valorar**: los 50 tipos con descripción, ejemplo, de dónde sale la
   idea, ▶ Probar (3 seguidos de ese tipo) y 👍/👎 con el total de todos los
   dispositivos. Tras un 👍 se eligen de 1 a 5 ★ (un 👍 empieza en 3 ★);
   al jugar, cuantas más estrellas, más sale (1★ ×1,5 … 5★ ×6). En
@@ -29,6 +29,12 @@ PWA en blanco y negro con el logotipo elegido en [`ortologo/`](../ortologo)
   categoría de su competencia (o la fija del tipo); nota = 10 × aciertos /
   respuestas sobre las últimas 40; con menos de 5 es provisional. Código en
   `nota.js`.
+
+- **Ideas**: 15 ideas para hacerla viral en redes (qué compartir y en qué
+  red), con 👍/👎 y ★ como los tipos; se guardan en `ortografia10_votos` con
+  `tipo = "idea:<id>"`. Ya hechas: imagen de resultado para historias
+  (canvas 1080×1920 en blanco y negro, con palabra trampa) y enlace de reto
+  `?reto=8/10&t=<índice de palabra>&b=<1 si la trampa está bien>`.
 
 En Valorar cada tipo lleva «🔥 viral» y «🔁 adictivo» de 1 a 3: es una
 estimación a ojo (`VA` en `app.js`), no un dato medido.
@@ -80,6 +86,13 @@ estimación a ojo (`VA` en `app.js`), no un dato medido.
 | `raya` | #️⃣ Tres en raya (aciertas para poner tu ✗) | juego de mesa |
 | `diario` | 📅 Reto del día (Ortodle igual para todos, racha de días) | Wordle |
 | `corrige` | ✏️ Corrígela tú (escribir sin opciones) | nuevo |
+| `autocor` | 📱 El autocorrector (¿aceptas o ignoras su cambio?) | Nuevo (tanda 3) |
+| `coma` | 🦸 La coma que salva vidas (qué frase dice lo que quieres decir) | Nuevo (tanda 3) |
+| `jefe` | 👾 El jefe final (2-3 faltas = vida del jefe; 3 corazones) | Nuevo (tanda 3) |
+| `escalera` | 🪜 La escalera (8 peldaños, plantarse, seguro y 50:50) | Nuevo (tanda 3) |
+| `cestas` | 🧺 Las tres cestas (arcade aguda/llana/esdrújula) | Nuevo (tanda 3) |
+| `diana` | 🎯 Tiro al acento (arcade de sílaba fuerte) | Nuevo (tanda 3) |
+| `razon` | 💬 ¿Quién tiene razón? (discusión de grupo) | Nuevo (tanda 3) |
 
 En Jugar se cuenta la racha de aciertos seguidos (🔥 desde 3). Supervivencia y
 Lluvia guardan récord en el móvil (`o10.rec.*`).
