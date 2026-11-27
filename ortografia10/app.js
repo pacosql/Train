@@ -741,7 +741,7 @@ function inicio() {
 
 let ronda = null;
 function empezar(forzado = null) {
-  ronda = { n: 0, ok: 0, total: forzado ? 3 : RONDA, forzado, ultimo: null, hist: [], id: Math.random() };
+  ronda = { n: 0, ok: 0, total: forzado ? 999 : RONDA, forzado, ultimo: null, hist: [], id: Math.random() };
   turno();
 }
 
@@ -752,7 +752,7 @@ async function turno() {
   for (let k = 0; k < 8 && !res; k++) {
     t = siguienteTipo(R.ultimo, R.forzado);
     $main.innerHTML = `
-      <div class="barra"><button class="x" id="salir" aria-label="Salir">✕</button><div class="prog"><i style="width:${(100 * R.n) / R.total}%"></i></div><b>${R.n + 1}/${R.total}</b></div>
+      <div class="barra"><button class="x" id="salir" aria-label="Salir">✕</button>${R.forzado ? `<div class="prog"></div><b>Probando · ${votos()[R.forzado] ? "valorado" : "sin valorar"}</b>` : `<div class="prog"><i style="width:${(100 * R.n) / R.total}%"></i></div><b>${R.n + 1}/${R.total}</b>`}</div>
       <div class="tipo">${t.e} ${esc(t.n)}</div><div id="ej"></div><div id="fb"></div>`;
     $main.querySelector("#salir").onclick = () => irA(R.forzado ? "valorar" : "jugar");
     cuerpo = $main.querySelector("#ej");
@@ -767,11 +767,23 @@ async function turno() {
   const fb = $main.querySelector("#fb");
   fb.innerHTML = `<div class="fb">
       <h3 class="${res.ok ? "" : "mal"}">${res.ok ? pick(["¡Bien!", "¡Correcto!", "¡Eso es!", "¡Perfecto!"]) : "Casi…"}</h3>${res.html}
-      <div class="mini"><span>¿Te gusta este tipo de ejercicio?</span>${botonesVoto(t.id, v)}</div>
-      <button class="btn neg big" id="sig">${R.n >= R.total ? "Ver resultado" : "Siguiente"}</button></div>`;
-  enganchaVotos(fb);
-  const sig = fb.querySelector("#sig"); sig.onclick = () => turno();
+      <div class="mini"><span>¿Te gusta este tipo de ejercicio?</span>${botonesVoto(t.id, v, true)}</div>
+      ${R.forzado
+        ? `<div class="fila"><button class="btn" id="sig">Otro ejemplo</button><button class="btn neg" id="sigtipo">${sinVal() ? "Siguiente tipo sin valorar →" : "Volver a Valorar"}</button></div>`
+        : `<button class="btn neg big" id="sig">${R.n >= R.total ? "Ver resultado" : "Siguiente"}</button>${sinVal() ? `<button class="btn" id="sigtipo" style="width:100%;margin-top:10px">Valorar un tipo que aún no has valorado →</button>` : ""}`}</div>`;
+  // Votar mientras se prueba un tipo lleva solo al siguiente tipo sin valorar.
+  enganchaVotos(fb, (acc, nuevo) => { if (R.forzado && nuevo !== 0) setTimeout(() => { if (ronda === R) irSinValorar(t.id); }, 700); });
+  fb.querySelector("#sig").onclick = () => turno();
+  const st = fb.querySelector("#sigtipo"); if (st) st.onclick = () => irSinValorar(t.id);
+  function sinVal() { return TIPOS.find((x) => !votos()[x.id] && x.id !== t.id); }
   fb.scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+
+function irSinValorar(actual) {
+  const n = TIPOS.find((x) => !votos()[x.id] && x.id !== actual);
+  if ("speechSynthesis" in window) speechSynthesis.cancel();
+  if (n) { empezar(n.id); scrollTo(0, 0); toast(`Siguiente sin valorar: ${n.e} ${n.n}`); }
+  else { filtro = "todos"; irA("valorar"); toast("¡Ya has valorado todos los tipos!"); }
 }
 
 function resumen() {
