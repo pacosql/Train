@@ -803,14 +803,19 @@ function enganchaVotos(root, despues) {
     root.querySelectorAll(`[data-vt="${id}"]`).forEach((x) => { x.outerHTML = botonesVoto(id, nuevo); });
     enganchaVotos(root, despues);
     toast(nuevo > 0 ? `${"★".repeat(nuevo)} ${TXT[nuevo]}${b.dataset.voto === "up" ? " · pon de 1 a 5 ★" : ""}` : nuevo === -1 ? "👎 Ya no te saldrá" : "Voto quitado");
-    if (despues) despues();
+    if (despues) despues(b.dataset.voto, nuevo);
   }));
 }
 
-let filtro = "todos";
+// En «Sin valorar» se ven de uno en uno: votas y aparece el siguiente, sin
+// buscar con scroll. Es lo que se abre por defecto mientras quede alguno.
+let filtro = null; const saltados = [];
 function valorar() {
   const v = votos(); const s = ls.get("stats", { tipos: {} });
-  const lista = TIPOS.filter((t) => filtro === "todos" || (filtro === "up" && v[t.id] > 0) || (filtro === "down" && v[t.id] === -1) || (filtro === "sin" && !v[t.id]));
+  const sinValorar = TIPOS.filter((t) => !v[t.id]).sort((a, b) => saltados.indexOf(a.id) - saltados.indexOf(b.id));
+  if (!filtro) filtro = sinValorar.length ? "sin" : "todos";
+  const uno = filtro === "sin";
+  const lista = uno ? sinValorar.slice(0, 1) : TIPOS.filter((t) => filtro === "todos" || (filtro === "up" && v[t.id] > 0) || (filtro === "down" && v[t.id] === -1));
   const n = (f) => TIPOS.filter(f).length;
   $main.innerHTML = `
     <h2>¿Qué ejercicios te gustan?</h2>
@@ -821,15 +826,26 @@ function valorar() {
       <button data-f="up" class="${filtro === "up" ? "on" : ""}">👍 ${n((t) => v[t.id] > 0)}</button>
       <button data-f="down" class="${filtro === "down" ? "on" : ""}">👎 ${n((t) => v[t.id] === -1)}</button>
     </div>
+    ${uno && lista.length ? `<p class="quedan">Quedan <b>${sinValorar.length}</b> sin valorar · de uno en uno</p>` : ""}
     ${lista.map((t) => { const st = (s.tipos || {})[t.id]; return `<article class="tarjeta ${v[t.id] > 0 ? "like" : v[t.id] === -1 ? "dislike" : ""}">
       <h3><span>${t.e}</span>${esc(t.n)}</h3><div class="orig">${esc(t.orig)}</div>
       <p>${esc(t.desc)}</p><p class="ej">Ejemplo: ${esc(t.ej)}</p>${VA[t.id] ? `<p class="va"><span>🔥 Viral ${puntos(VA[t.id][0])}</span><span>🔁 Adictivo ${puntos(VA[t.id][1])}</span><br>${esc(VA[t.id][2])}</p>` : ""}
       <div class="pie"><button class="probar" data-probar="${t.id}">▶ Probar${st ? ` · ${st[1]}/${st[0]}` : ""}</button>${botonesVoto(t.id, v[t.id] || 0)}</div>
-    </article>`; }).join("") || `<p class="sub">Nada por aquí.</p>`}
+      ${uno ? `<div class="fila" style="margin-top:12px"><button class="btn" id="saltar">Saltar</button><button class="btn neg" id="sigv" style="display:none">Siguiente →</button></div>` : ""}
+    </article>`; }).join("") || (uno ? `<div class="tarjeta like"><h3>¡Ya los has valorado todos! 🎉</h3><p>Puedes cambiar cualquier voto en «Todos».</p><button class="btn neg" id="vertodos">Ver todos</button></div>` : `<p class="sub">Nada por aquí.</p>`)}
     <p class="nota">Los votos se guardan en este móvil y en Supabase (tabla <code>ortografia10_votos</code>), junto con los de otros dispositivos; el número junto a 👍/👎 es el total de todos.</p>`;
   $main.querySelectorAll("[data-f]").forEach((b) => b.onclick = () => { filtro = b.dataset.f; valorar(); });
   $main.querySelectorAll("[data-probar]").forEach((b) => b.onclick = () => empezar(b.dataset.probar));
-  enganchaVotos($main, () => setTimeout(() => { if (tab === "valorar" && !ronda) valorar(); }, 350));
+  const otra = (ms) => setTimeout(() => { if (tab === "valorar" && !ronda) { valorar(); scrollTo(0, 0); } }, ms);
+  const sigv = $main.querySelector("#sigv"), salt = $main.querySelector("#saltar"), vt = $main.querySelector("#vertodos");
+  if (salt) salt.onclick = () => { const id = lista[0].id; const i = saltados.indexOf(id); if (i >= 0) saltados.splice(i, 1); saltados.push(id); valorar(); };
+  if (sigv) sigv.onclick = () => otra(0);
+  if (vt) vt.onclick = () => { filtro = "todos"; valorar(); };
+  enganchaVotos($main, (accion, nuevo) => {
+    if (!uno) return otra(350);
+    if (accion === "up" && nuevo > 0) { if (sigv) sigv.style.display = ""; if (salt) salt.style.display = "none"; return; } // primero las ★
+    otra(accion === "down" ? 450 : 600);
+  });
 }
 
 // ------------------------------------------------------------ fichas
