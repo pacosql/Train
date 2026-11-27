@@ -51,6 +51,15 @@ self.addEventListener("fetch", (event) => {
   // Nunca cachear Supabase ni scripts de terceros: datos siempre frescos.
   if (!isShell(request)) return;
 
+  // La página (index.html) va con red primero: así nunca se queda una
+  // versión vieja de la cabecera con un app.js nuevo. Sin red, la de caché.
+  if (request.mode === "navigate") {
+    event.respondWith(
+      fetch(request).then(async (r) => { if (r && r.ok) (await caches.open(CACHE_NAME)).put(request, r.clone()); return r; })
+        .catch(async () => (await caches.match(request, { ignoreSearch: true })) || new Response("Sin conexión", { status: 503 }))
+    );
+    return;
+  }
   event.respondWith(
     caches.open(CACHE_NAME).then(async (cache) => {
       const cached = await cache.match(request, { ignoreSearch: true });

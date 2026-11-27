@@ -708,6 +708,9 @@ function siguienteTipo(ultimo, forzado) {
 
 // ------------------------------------------------------------ pantallas
 let tab = "jugar";
+// Si el móvil aún tiene un index.html viejo en caché, añadir la pestaña que falte.
+{ const nav = document.querySelector(".tabs");
+  for (const [id, n] of [["valorar", "Valorar"], ["fichas", "Fichas"]]) if (nav && !nav.querySelector(`[data-tab="${id}"]`)) { const b = document.createElement("button"); b.dataset.tab = id; b.textContent = n; nav.appendChild(b); } }
 document.querySelectorAll(".tabs button").forEach((b) => b.onclick = () => irA(b.dataset.tab));
 function irA(t) {
   tab = t; ronda = null;
