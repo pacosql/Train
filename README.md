@@ -59,6 +59,7 @@ reglas para no interferir con las demás:
 | ⚡ Power | [`power/`](./power) | `/Train/power/` | `power_` |
 | 🧠 GIA | [`gia/`](./gia) | `/Train/gia/` | `gia_` |
 | 🏆 Logros | [`logros/`](./logros) | `/Train/logros/` | `logros_` |
+| 🔟 Ortografía 10 | [`ortografia10/`](./ortografia10) | `/Train/ortografia10/` | `ortografia10_` |
 
 ## Añadir una app nueva
 

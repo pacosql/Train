@@ -119,6 +119,7 @@ Al crear una app nueva `<app>/`:
 | ⚡ Power | `power/` | `power_` |
 | 🧠 GIA | `gia/` (rutina horaria: `gia/RUTINA.md`) | `gia_` |
 | 🏆 Logros | `logros/` | `logros_` |
+| 🔟 Ortografía 10 (la app de ortografía) | `ortografia10/` | `ortografia10_` |
 
 (Actualiza esta tabla al añadir una app nueva.)
 
