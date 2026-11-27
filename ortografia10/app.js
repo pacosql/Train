@@ -1076,8 +1076,16 @@ async function turno() {
     t = siguienteTipo(R.ultimo, R.forzado);
     $main.innerHTML = `
       <div class="barra"><button class="x" id="salir" aria-label="Salir">✕</button>${R.forzado ? `<div class="prog"></div><b>Probando · ${votos()[R.forzado] ? "valorado" : "sin valorar"}</b>` : `<div class="prog"><i style="width:${(100 * R.n) / R.total}%"></i></div><b>${R.n + 1}/${R.total}</b>`}</div>
-      <div class="tipo">${t.e} ${esc(t.n)}</div><div id="ej"></div><div id="fb"></div>`;
+      <div class="tipo">${t.e} ${esc(t.n)}</div>
+      ${R.forzado ? `<div class="votar-ya"><span>¿Te gusta? Vota sin jugar:</span>${botonesVoto(t.id, votos()[t.id] || 0, true)}<button class="probar" id="saltatipo">Siguiente tipo →</button></div>` : ""}
+      <div id="ej"></div><div id="fb"></div>`;
     $main.querySelector("#salir").onclick = () => irA(R.forzado ? "valorar" : "jugar");
+    if (R.forzado) {
+      // Votar nada más ver el ejercicio, sin resolverlo: pasa al siguiente tipo sin valorar.
+      const vy = $main.querySelector(".votar-ya"), tid = t.id;
+      enganchaVotos(vy, (acc, nuevo) => { if (nuevo !== 0) setTimeout(() => { if (ronda === R) irSinValorar(tid); }, 600); });
+      vy.querySelector("#saltatipo").onclick = () => irSinValorar(tid);
+    }
     cuerpo = $main.querySelector("#ej");
     compUsada = null;
     try { res = t.run(cuerpo); res = await res; } catch (e) { console.error(t.id, e); res = null; }
