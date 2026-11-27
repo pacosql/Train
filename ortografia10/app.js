@@ -788,12 +788,12 @@ function resumen() {
   $main.querySelector("#val").onclick = () => irA(R.forzado ? "valorar" : "valorar");
 }
 
-function botonesVoto(id, v) {
+function botonesVoto(id, v, siempreEstrellas = false) {
   const t = TOT && TOT[id];
   const media = t && t.up ? `★${(t.est / t.up).toFixed(1).replace(".", ",")} · ` : "";
   return `<span class="votos" data-vt="${id}">
     <button class="voto ${v > 0 ? "on" : ""}" data-voto="up" aria-label="Me gusta">👍${t ? `<small>${t.up}</small>` : ""}</button><button class="voto ${v === -1 ? "on" : ""}" data-voto="down" aria-label="No me gusta">👎${t ? `<small>${t.down}</small>` : ""}</button>
-    ${v > 0 ? `<span class="estrellas" title="¿Cuánto te gusta?">${[1, 2, 3, 4, 5].map((n) => `<button data-voto="${n}" class="${n <= v ? "on" : ""}" aria-label="${n} estrellas">★</button>`).join("")}${t && t.up ? `<small>${media}${t.up}</small>` : ""}</span>` : ""}
+    ${v > 0 || siempreEstrellas ? `<span class="estrellas" title="¿Cuánto te gusta?">${[1, 2, 3, 4, 5].map((n) => `<button data-voto="${n}" class="${n <= v ? "on" : ""}" aria-label="${n} estrellas">★</button>`).join("")}${t && t.up ? `<small>${media}${t.up}</small>` : ""}</span>` : ""}
   </span>`;
 }
 const TXT = { 1: "Te gusta un poco", 2: "Te gusta algo", 3: "Te gusta", 4: "Te gusta mucho", 5: "¡Te encanta! Te saldrá muchísimo" };
@@ -826,24 +826,22 @@ function valorar() {
       <button data-f="up" class="${filtro === "up" ? "on" : ""}">👍 ${n((t) => v[t.id] > 0)}</button>
       <button data-f="down" class="${filtro === "down" ? "on" : ""}">👎 ${n((t) => v[t.id] === -1)}</button>
     </div>
-    ${uno && lista.length ? `<p class="quedan">Quedan <b>${sinValorar.length}</b> sin valorar · de uno en uno</p>` : ""}
+    ${uno && lista.length ? `<p class="quedan">Quedan <b>${sinValorar.length}</b> sin valorar. Toca 👎, 👍 (3 ★) o directamente las estrellas: pasa solo al siguiente.</p>` : ""}
     ${lista.map((t) => { const st = (s.tipos || {})[t.id]; return `<article class="tarjeta ${v[t.id] > 0 ? "like" : v[t.id] === -1 ? "dislike" : ""}">
       <h3><span>${t.e}</span>${esc(t.n)}</h3><div class="orig">${esc(t.orig)}</div>
       <p>${esc(t.desc)}</p><p class="ej">Ejemplo: ${esc(t.ej)}</p>${VA[t.id] ? `<p class="va"><span>🔥 Viral ${puntos(VA[t.id][0])}</span><span>🔁 Adictivo ${puntos(VA[t.id][1])}</span><br>${esc(VA[t.id][2])}</p>` : ""}
-      <div class="pie"><button class="probar" data-probar="${t.id}">▶ Probar${st ? ` · ${st[1]}/${st[0]}` : ""}</button>${botonesVoto(t.id, v[t.id] || 0)}</div>
-      ${uno ? `<div class="fila" style="margin-top:12px"><button class="btn" id="saltar">Saltar</button><button class="btn neg" id="sigv" style="display:none">Siguiente →</button></div>` : ""}
+      <div class="pie"><button class="probar" data-probar="${t.id}">▶ Probar${st ? ` · ${st[1]}/${st[0]}` : ""}</button>${botonesVoto(t.id, v[t.id] || 0, uno)}</div>
+      ${uno ? `<div class="fila" style="margin-top:12px"><button class="btn" id="saltar">Saltar</button></div>` : ""}
     </article>`; }).join("") || (uno ? `<div class="tarjeta like"><h3>¡Ya los has valorado todos! 🎉</h3><p>Puedes cambiar cualquier voto en «Todos».</p><button class="btn neg" id="vertodos">Ver todos</button></div>` : `<p class="sub">Nada por aquí.</p>`)}
     <p class="nota">Los votos se guardan en este móvil y en Supabase (tabla <code>ortografia10_votos</code>), junto con los de otros dispositivos; el número junto a 👍/👎 es el total de todos.</p>`;
   $main.querySelectorAll("[data-f]").forEach((b) => b.onclick = () => { filtro = b.dataset.f; valorar(); });
   $main.querySelectorAll("[data-probar]").forEach((b) => b.onclick = () => empezar(b.dataset.probar));
   const otra = (ms) => setTimeout(() => { if (tab === "valorar" && !ronda) { valorar(); scrollTo(0, 0); } }, ms);
-  const sigv = $main.querySelector("#sigv"), salt = $main.querySelector("#saltar"), vt = $main.querySelector("#vertodos");
+  const salt = $main.querySelector("#saltar"), vt = $main.querySelector("#vertodos");
   if (salt) salt.onclick = () => { const id = lista[0].id; const i = saltados.indexOf(id); if (i >= 0) saltados.splice(i, 1); saltados.push(id); valorar(); };
-  if (sigv) sigv.onclick = () => otra(0);
   if (vt) vt.onclick = () => { filtro = "todos"; valorar(); };
   enganchaVotos($main, (accion, nuevo) => {
     if (!uno) return otra(350);
-    if (accion === "up" && nuevo > 0) { if (sigv) sigv.style.display = ""; if (salt) salt.style.display = "none"; return; } // primero las ★
     otra(accion === "down" ? 450 : 600);
   });
 }
