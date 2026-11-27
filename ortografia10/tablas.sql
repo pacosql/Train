@@ -14,6 +14,9 @@ create table if not exists public.ortografia10_respuestas (
   acierto boolean not null,
   dispositivo text not null
 );
+-- Para la pestaña Nota (2026-11-27):
+alter table public.ortografia10_respuestas add column if not exists categoria text;
+alter table public.ortografia10_respuestas add column if not exists comp text;
 alter table public.ortografia10_votos enable row level security;
 alter table public.ortografia10_respuestas enable row level security;
 drop policy if exists "allow anon read" on public.ortografia10_votos;

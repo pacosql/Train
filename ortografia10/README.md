@@ -22,6 +22,14 @@ PWA en blanco y negro con el logotipo elegido en [`ortologo/`](../ortologo)
   palabras que se confunden (homófonos con ejemplos y «¿las dos valen?»).
   Buscador y filtro por bloque.
 
+- **Nota**: una nota de 0 a 10 (2 decimales) por categoría de ortografía
+  (acentuación, tilde diacrítica, porque/por qué, b/v, h, g/j, ll/y, otras
+  letras, mayúsculas, puntuación, juntas o separadas, homófonos y las que más
+  se escriben mal) y una nota global. Cada respuesta de Jugar cuenta en la
+  categoría de su competencia (o la fija del tipo); nota = 10 × aciertos /
+  respuestas sobre las últimas 40; con menos de 5 es provisional. Código en
+  `nota.js`.
+
 En Valorar cada tipo lleva «🔥 viral» y «🔁 adictivo» de 1 a 3: es una
 estimación a ojo (`VA` en `app.js`), no un dato medido.
 
@@ -80,6 +88,6 @@ sílabas de Orto.
 ## Tablas
 
 `tablas.sql`: `ortografia10_votos` (`tipo`, `valor` 1/-1/0, `dispositivo`)
-y `ortografia10_respuestas` (`tipo`, `acierto`, `dispositivo`). La app
+y `ortografia10_respuestas` (`tipo`, `acierto`, `dispositivo`, `categoria`, `comp`). La app
 guarda todo en `localStorage` y lo sube en cola: si la tabla no existe o no
 hay red, lo reintenta al abrir.

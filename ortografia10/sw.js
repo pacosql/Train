@@ -19,6 +19,7 @@ const SHELL = [
   "./config.js",
   "./app.js",
   "./silabas.js",
+  "./nota.js",
   "./datos.json",
   "./fonts/poppins-800.woff2",
   "./fonts/poppins-600.woff2",
@@ -62,7 +63,10 @@ self.addEventListener("fetch", (event) => {
   }
   event.respondWith(
     caches.open(CACHE_NAME).then(async (cache) => {
-      const cached = await cache.match(request, { ignoreSearch: true });
+      // Con ?v=<build> (app.js, nota.js) solo vale la copia de ESA versión:
+      // así una página nueva nunca recibe el script viejo de la caché.
+      const versionado = new URL(request.url).search.includes("v=");
+      const cached = await cache.match(request, { ignoreSearch: !versionado });
       const network = fetch(request)
         .then(async (response) => {
           if (!response || !response.ok) return response;
@@ -84,7 +88,7 @@ self.addEventListener("fetch", (event) => {
         event.waitUntil(network);
         return cached;
       }
-      return (await network) || new Response("Sin conexión", { status: 503 });
+      return (await network) || (await cache.match(request, { ignoreSearch: true })) || new Response("Sin conexión", { status: 503 });
     })
   );
 });
