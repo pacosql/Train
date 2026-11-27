@@ -5,7 +5,8 @@
 - P: palabras  [palabra, [faltas típicas], [ini, fin] | null, [opciones] | null, competencia, dificultad]
 - M: ejercicios hechos a mano de orto/datos/manual (hueco, elige, caza, frase, parejas)
 - F: frases reales de prensa que contienen una palabra de P: [frase, índice en P]
-- C: competencias {id: [nombre, regla, truco]}
+- C: competencias {id: [nombre, regla, truco, ejemplos, excepciones, bloque, curso]}
+- B: bloques {id: [nombre, emoji]} · CU: cursos
 """
 import json, os, re, random
 
@@ -58,7 +59,9 @@ for f in ["acentuacion", "adultos", "homofonos", "puntuacion", "pares_minimos"]:
 C = {}
 for c in comp["competencias"]:
     lec = c.get("lec") or {}
-    C[c["id"]] = [c["n"], lec.get("regla", ""), lec.get("truco", "")]
+    C[c["id"]] = [c["n"], lec.get("regla", ""), lec.get("truco", ""), lec.get("ej", []), lec.get("exc", []), c["b"], c.get("c", 0)]
 
-json.dump({"P": P, "F": F, "M": M, "C": C}, open(SAL, "w"), ensure_ascii=False, separators=(",", ":"))
+B = {b["id"]: [b["n"], b["e"]] for b in comp["bloques"]}
+CU = comp["cursos"]
+json.dump({"P": P, "F": F, "M": M, "C": C, "B": B, "CU": CU}, open(SAL, "w"), ensure_ascii=False, separators=(",", ":"))
 print(f"P={len(P)} F={len(F)} M={len(M)} C={len(C)} -> {os.path.getsize(SAL) // 1024} KB")

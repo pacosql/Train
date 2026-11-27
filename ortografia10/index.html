@@ -28,7 +28,7 @@
     header { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; padding: 6px 0 14px; border-bottom: 2px solid var(--ink); }
     .logo { font-family: "P10", var(--sans); font-weight: 800; line-height: 1.02; font-size: 25px; letter-spacing: -.02em; display: flex; flex-direction: column; align-items: flex-start; }
     .tabs { display: flex; gap: 4px; background: var(--soft); border-radius: 999px; padding: 4px; }
-    .tabs button { border: 0; background: transparent; padding: 8px 14px; border-radius: 999px; font-weight: 700; font-size: 15px; }
+    .tabs button { border: 0; background: transparent; padding: 8px 11px; border-radius: 999px; font-weight: 700; font-size: 15px; }
     .tabs button.on { background: var(--ink); color: var(--bg); }
 
     main { padding-top: 18px; }
@@ -104,6 +104,11 @@
     .votos { display: flex; gap: 8px; }
     .voto { border: 1.5px solid var(--line); background: var(--bg); border-radius: 999px; padding: 6px 12px; font-size: 18px; min-width: 52px; }
     .voto.on { border-color: var(--ink); background: var(--ink); }
+    .estrellas { display: inline-flex; align-items: center; gap: 0; margin-left: 4px; }
+    .estrellas button { border: 0; background: none; font-size: 24px; line-height: 1; padding: 2px 1px; color: #cfcfcf; }
+    .estrellas button.on { color: #000; }
+    .estrellas small { font-size: 12px; color: var(--mute); margin-left: 4px; }
+    .votos { flex-wrap: wrap; align-items: center; justify-content: flex-end; }
     .voto small { font-size: 12px; margin-left: 4px; color: var(--mute); }
     .voto.on small { color: #ddd; }
 
@@ -120,6 +125,23 @@
     .filtros { display: flex; gap: 6px; flex-wrap: wrap; margin: 0 0 14px; }
     .filtros button { border: 1.5px solid var(--line); background: var(--bg); border-radius: 999px; padding: 6px 12px; font-size: 14px; font-weight: 600; }
     .filtros button.on { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+    .va { font-size: 13px; color: var(--ink); background: var(--soft); border-radius: 10px; padding: 7px 10px; }
+    .va span { font-weight: 700; margin-right: 12px; letter-spacing: .02em; }
+    .fichas-l { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; margin: 16px 0 20px; }
+    .fichas-l span { width: 44px; height: 50px; display: grid; place-items: center; border: 2px solid var(--ink); border-radius: 10px; font-family: "P10", var(--sans); font-weight: 800; font-size: 24px; }
+    .teclado { display: grid; grid-template-columns: repeat(8, 1fr); gap: 5px; margin-top: 14px; }
+    .teclado button { border: 1.5px solid var(--ink); background: var(--bg); border-radius: 8px; padding: 9px 0; font-size: 17px; font-weight: 700; }
+    .teclado button.ok { background: var(--ink); color: var(--bg); }
+    .teclado button.mal { background: var(--soft); color: #aaa; border-color: #ddd; text-decoration: line-through; }
+    .buscar { font-size: 17px; text-align: left; font-weight: 500; padding: 11px 14px; }
+    .ficha { border: 1.5px solid var(--line); border-radius: 14px; padding: 12px 14px; margin-bottom: 10px; }
+    .ficha[open] { border: 2px solid var(--ink); }
+    .ficha summary { cursor: pointer; font-weight: 700; font-size: 16px; list-style: none; }
+    .ficha summary::-webkit-details-marker { display: none; }
+    .fb-b { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--mute); margin-bottom: 2px; }
+    .ficha p, .ficha li { font-size: 15px; margin: 0 0 6px; }
+    .ficha ul { padding-left: 18px; margin: 0 0 6px; }
+    .ficha .lab { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--mute); margin: 10px 0 2px; }
     .nota { font-size: 13px; color: var(--mute); margin: 18px 0 0; }
     .build-id { margin-top: 30px; font-size: 11px; color: #aaa; text-align: center; }
     .toast { position: fixed; left: 50%; bottom: calc(20px + env(safe-area-inset-bottom)); transform: translateX(-50%); background: #000; color: #fff; padding: 10px 16px; border-radius: 999px; font-size: 14px; z-index: 9; }
@@ -132,6 +154,7 @@
       <nav class="tabs">
         <button data-tab="jugar" class="on">Jugar</button>
         <button data-tab="valorar">Valorar</button>
+        <button data-tab="fichas">Fichas</button>
       </nav>
     </header>
     <main id="main"></main>

@@ -11,9 +11,19 @@ PWA en blanco y negro con el logotipo elegido en [`ortologo/`](../ortologo)
 - **Jugar**: rondas de 10 ejercicios de tipos variados. Los tipos con 👍
   salen el triple y los 👎 no salen. Cada respuesta enseña la regla
   (competencia de Orto, con su truco) y deja votar ese tipo ahí mismo.
-- **Valorar**: los 20 tipos con descripción, ejemplo, de dónde sale la
+- **Valorar**: los 27 tipos con descripción, ejemplo, de dónde sale la
   idea, ▶ Probar (3 seguidos de ese tipo) y 👍/👎 con el total de todos los
-  dispositivos.
+  dispositivos. Tras un 👍 se eligen de 1 a 5 ★ (un 👍 empieza en 3 ★);
+  al jugar, cuantas más estrellas, más sale (1★ ×1,5 … 5★ ×6). En
+  `ortografia10_votos.valor`: 1-5 = ★, -1 = 👎, 0 = voto quitado.
+
+- **Fichas**: índice de ~120 fichas: una por competencia de Orto (regla,
+  palabras que la cumplen, excepciones, errores típicos y truco) y las
+  palabras que se confunden (homófonos con ejemplos y «¿las dos valen?»).
+  Buscador y filtro por bloque.
+
+En Valorar cada tipo lleva «🔥 viral» y «🔁 adictivo» de 1 a 3: es una
+estimación a ojo (`VA` en `app.js`), no un dato medido.
 
 ## Tipos de ejercicio
 
@@ -38,6 +48,13 @@ PWA en blanco y negro con el logotipo elegido en [`ortologo/`](../ortologo)
 | `puntua` | ❗ Comas y puntos | Orto |
 | `mayus` | 🔠 Mayúsculas | Orto |
 | `parejas` | 🃏 Une las parejas | Orto |
+| `dosvalen` | ⚖️ ¿Las dos valen? (A, B o las dos) | Ortografix (Instagram / Threads) |
+| `anagrama` | 🔀 Anagrama | juego de palabras |
+| `ahorcado` | 🪢 Palabra oculta (ahorcado con tildes) | juego de palabras |
+| `vocales` | 🫥 Sin vocales | juego de palabras |
+| `diptongo` | 🔗 ¿Diptongo, hiato o triptongo? | clasificaciones |
+| `separa` | ✂️ Separa en sílabas | clasificaciones |
+| `teoria` | 🎓 Teoría de la tilde (20 preguntas) | clasificaciones |
 | `corrige` | ✏️ Corrígela tú (escribir sin opciones) | nuevo |
 
 ## Material

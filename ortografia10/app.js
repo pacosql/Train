@@ -90,24 +90,34 @@ async function cargarTotales() {
     TOT = {};
     for (const v of Object.values(ult)) {
       if (!v.valor) continue;
-      const t = (TOT[v.tipo] = TOT[v.tipo] || { up: 0, down: 0 });
-      v.valor > 0 ? t.up++ : t.down++;
+      const t = (TOT[v.tipo] = TOT[v.tipo] || { up: 0, down: 0, est: 0 });
+      if (v.valor > 0) { t.up++; t.est += v.valor; } else t.down++;
     }
   } catch {}
 }
 
 // ------------------------------------------------------------ votos y estadísticas locales
+// Voto por tipo: -1 = 👎, 1-5 = 👍 con sus estrellas (un 👍 recién dado
+// empieza en 3 ★). En Supabase va igual en «valor» (0 = voto quitado).
 const votos = () => ls.get("votos", {});
-function votar(tipo, valor) {
-  const v = votos(); const nuevo = v[tipo] === valor ? 0 : valor;
+const PESO = { 1: 1.5, 2: 2, 3: 3, 4: 4.5, 5: 6 }; // cuánto más sale al jugar
+function votar(tipo, accion) {
+  const v = votos(); const antes = v[tipo] || 0;
+  let nuevo;
+  if (accion === "up") nuevo = antes > 0 ? 0 : 3;
+  else if (accion === "down") nuevo = antes === -1 ? 0 : -1;
+  else nuevo = +accion; // 1-5 estrellas
   if (nuevo) v[tipo] = nuevo; else delete v[tipo];
   ls.set("votos", v);
   encolar("votos", { tipo, valor: nuevo, dispositivo: DISP });
   if (TOT) {
-    TOT[tipo] = TOT[tipo] || { up: 0, down: 0 };
+    const t = (TOT[tipo] = TOT[tipo] || { up: 0, down: 0, est: 0 });
+    if (antes > 0) { t.up--; t.est -= antes; } if (antes === -1) t.down--;
+    if (nuevo > 0) { t.up++; t.est += nuevo; } if (nuevo === -1) t.down++;
   }
   return nuevo;
 }
+{ const v = votos(); if (!ls.get("v2", false)) { for (const k in v) if (v[k] === 1) v[k] = 3; ls.set("votos", v); ls.set("v2", true); } }
 function apuntar(tipo, ok) {
   const s = ls.get("stats", { n: 0, ok: 0, tipos: {}, dias: [] });
   s.n++; if (ok) s.ok++;
@@ -184,6 +194,57 @@ const REFRANES = [
   ["Donde fueres, has lo que vieres.", "has", "haz", "«Haz» es el imperativo de hacer (haz tú), con z. «Has» es de haber."],
   ["A buen entendedor, pocas palabras vastan.", "vastan", "bastan", "«Bastar» va con b. «Vasto» con v significa «muy grande»."],
   ["Quien siembra bientos recoge tempestades.", "bientos", "vientos", "«Viento» va con v, como «ventilador» y «ventana»."],
+];
+
+
+// ------------------------------------------------------------ ¿las dos valen? (formato de Ortografix)
+// [A, B, respuesta: 0 = solo A, 1 = solo B, 2 = las dos, explicación]
+const DOSVALEN = [
+  ["guion", "guión", 0, "Desde 2010 «guion» es monosílabo a efectos de tilde, como «fue» o «dio»: sin tilde."],
+  ["psicología", "sicología", 2, "Valen las dos, pero se prefiere «psicología», con ps-."],
+  ["septiembre", "setiembre", 2, "Valen las dos; la más usada y recomendada es «septiembre»."],
+  ["quizá", "quizás", 2, "Las dos son correctas e igual de válidas."],
+  ["periodo", "período", 2, "Las dos son correctas: «periodo» (llana) y «período» (esdrújula)."],
+  ["vídeo", "video", 2, "Las dos: «vídeo» es la de España y «video», la de América."],
+  ["oscuro", "obscuro", 2, "Valen las dos, pero se prefiere «oscuro», sin b."],
+  ["fue", "fué", 0, "«Fue» es monosílabo: los monosílabos no llevan tilde (salvo la diacrítica: tú, él, sí…)."],
+  ["truhan", "truhán", 0, "«Truhan» es monosílabo a efectos de tilde (como «guion»): sin tilde."],
+  ["armonía", "harmonía", 2, "Las dos están en el diccionario, pero se prefiere «armonía», sin h."],
+  ["hierba", "yerba", 2, "Las dos son correctas; «hierba» es la más general."],
+  ["posdata", "postdata", 2, "Valen las dos, pero se prefiere «posdata»."],
+  ["transporte", "trasporte", 2, "Valen las dos; la preferida es «transporte»."],
+  ["cóctel", "coctel", 2, "Las dos: «cóctel» (llana) en España y «coctel» (aguda), sobre todo en América."],
+  ["haya", "haiga", 0, "El subjuntivo de haber es «haya». «Haiga» es un vulgarismo."],
+  ["aun así", "aún así", 0, "«Aun así» significa «incluso así»: sin tilde. «Aún» con tilde es «todavía»."],
+  ["echo de menos", "hecho de menos", 0, "Es del verbo echar: «echo de menos», sin h."],
+  ["grosso modo", "a grosso modo", 0, "Es latín y significa «a grandes rasgos»: «grosso modo», sin «a» delante."],
+  ["solo", "sólo", 2, "Las dos se admiten, pero se recomienda «solo» sin tilde; la tilde solo se tolera si hay ambigüedad."],
+  ["icono", "ícono", 2, "Las dos: «icono» en España e «ícono», muy usada en América."],
+];
+
+// ------------------------------------------------------------ teoría de las clasificaciones
+// [pregunta, opciones, correcta, explicación]
+const TEORIA = [
+  ["Una palabra es aguda cuando la sílaba fuerte es…", ["la última", "la penúltima", "la antepenúltima"], 0, "Agudas: ca-MIÓN, re-LOJ, ca-FÉ. El golpe de voz va en la última sílaba."],
+  ["Una palabra es llana (o grave) cuando la sílaba fuerte es…", ["la última", "la penúltima", "la antepenúltima"], 1, "Llanas: ÁR-bol, LÁ-piz, CA-sa, e-XA-men."],
+  ["Una palabra es esdrújula cuando la sílaba fuerte es…", ["la penúltima", "la antepenúltima", "la última"], 1, "Esdrújulas: PÁ-ja-ro, MÚ-si-ca, TELÉ-fo-no."],
+  ["Una sobresdrújula tiene la sílaba fuerte…", ["antes de la antepenúltima", "en la antepenúltima", "en la penúltima"], 0, "Sobresdrújulas: DÍ-ga-me-lo, RÁ-pi-da-men-te. Casi siempre son verbos con pronombres o adverbios en -mente."],
+  ["Las agudas llevan tilde cuando terminan en…", ["vocal, n o s", "consonante que no sea n ni s", "cualquier letra"], 0, "camión, café, compás llevan tilde; reloj, pared, feliz no."],
+  ["Las llanas llevan tilde cuando terminan en…", ["vocal, n o s", "consonante que no sea n ni s (o en -s tras consonante)", "nunca la llevan"], 1, "árbol, lápiz, fácil, bíceps llevan tilde; casa, examen, joven no. Justo al revés que las agudas."],
+  ["Las esdrújulas y sobresdrújulas llevan tilde…", ["siempre", "solo si terminan en vocal", "nunca"], 0, "Todas, sin excepción: pájaro, música, dígamelo."],
+  ["Un diptongo es…", ["dos vocales seguidas que van en la misma sílaba", "dos vocales seguidas en sílabas distintas", "tres vocales seguidas"], 0, "cie-lo, au-la, cui-da-do. Se forma con una vocal cerrada (i, u) sin acento y otra vocal."],
+  ["Un hiato es…", ["dos vocales seguidas en la misma sílaba", "dos vocales seguidas que van en sílabas distintas", "una vocal con tilde"], 1, "ca-er, le-ón, pa-ís, rí-o."],
+  ["Un triptongo es…", ["tres vocales seguidas en la misma sílaba", "tres sílabas con tilde", "dos diptongos seguidos"], 0, "a-ve-ri-guáis, buey, U-ru-guay: cerrada + abierta + cerrada en una sola sílaba."],
+  ["Las vocales abiertas (o fuertes) son…", ["a, e, o", "i, u", "a, i, u"], 0, "a, e, o son abiertas; i, u son cerradas. Dos abiertas juntas siempre forman hiato: le-ón, ca-er."],
+  ["¿Cuándo lleva tilde la i o la u de un hiato (país, río, búho)?", ["siempre que sea la sílaba fuerte", "solo si es aguda", "nunca"], 0, "Una i o u tónica junto a a, e, o lleva tilde siempre, aunque la regla general no la pida: rí-o es llana en vocal y la lleva."],
+  ["Los monosílabos (palabras de una sílaba)…", ["no llevan tilde, salvo la diacrítica", "llevan tilde si terminan en n o s", "siempre llevan tilde"], 0, "fue, dio, vio, fe, ti, guion: sin tilde. Solo la diacrítica distingue parejas: tú/tu, él/el, sí/si, más/mas…"],
+  ["La tilde diacrítica sirve para…", ["distinguir palabras que se escriben igual pero significan distinto", "marcar las sílabas largas", "las palabras extranjeras"], 0, "tú (persona) / tu (posesivo), sé (saber) / se (pronombre), té (bebida) / te."],
+  ["Los adverbios acabados en -mente…", ["llevan tilde si la llevaba el adjetivo", "nunca llevan tilde", "siempre llevan tilde"], 0, "fácil → fácilmente; rápido → rápidamente; lento → lentamente (sin tilde)."],
+  ["Las mayúsculas…", ["llevan tilde igual que las minúsculas", "nunca llevan tilde", "solo en los nombres propios"], 0, "Álvaro, ÉXITO, Óscar: la tilde no se quita por ir en mayúscula."],
+  ["Qué, quién, cómo, cuándo, dónde, cuál llevan tilde…", ["cuando preguntan o exclaman, también en preguntas indirectas", "siempre", "nunca"], 0, "¿Qué quieres? / No sé qué quieres. Pero: Dice que viene (sin tilde)."],
+  ["Al separar en sílabas, una consonante entre dos vocales va…", ["con la vocal de detrás", "con la vocal de delante", "sola"], 0, "ca-sa, pe-ro, a-mi-go."],
+  ["«ch», «ll» y «rr» al separar en sílabas…", ["no se separan nunca", "se separan siempre", "depende de la palabra"], 0, "co-che, ca-lle, pe-rro: son una sola consonante."],
+  ["«Examen» es llana y no lleva tilde. ¿Y «exámenes»?", ["esdrújula, con tilde", "llana, sin tilde", "aguda, con tilde"], 0, "Al hacer el plural la sílaba fuerte se queda en el mismo sitio (XA), pero ahora es la antepenúltima: e-XÁ-me-nes."],
 ];
 
 // ------------------------------------------------------------ tipos de ejercicio
@@ -409,10 +470,10 @@ const TIPOS = [
     desc: "¿Dónde cae el golpe de voz? Clasifica la palabra.",
     ej: "«lápiz» → llana.",
     async run(el) {
-      const p = palAzar((p) => p.c.startsWith("ACE.") && p.c !== "ACE.MENTE" && silabear(p.w).length >= 2 && analizar(p.w).coherente);
-      const a = analizar(p.w); const L = ["aguda", "llana", "esdrújula"]; const k = Math.min(L.indexOf(a.tipo) < 0 ? 2 : L.indexOf(a.tipo), 2);
+      const p = palAzar((p) => p.c.startsWith("ACE.") && (p.c !== "ACE.MENTE" || /[áéíóú]/.test(p.w)) && silabear(p.w).length >= 2 && (analizar(p.w).coherente || analizar(p.w).mente));
+      const a = analizar(p.w); const L = ["aguda", "llana", "esdrújula", "sobresdrújula"]; const k = Math.max(0, L.indexOf(a.tipo));
       el.innerHTML = `<p class="enun">¿Qué tipo de palabra es?</p><div class="palabra">${esc(p.w)}</div><div id="z"></div>`;
-      const ok = await opciones(el.querySelector("#z"), ["Aguda", "Llana", "Esdrújula"], k);
+      const ok = await opciones(el.querySelector("#z"), ["Aguda", "Llana", "Esdrújula", "Sobresdrújula"], k, { dos: true });
       return { ok, html: `<div class="regla"><b>Por qué</b>${esc(explicarTilde(p.w))}</div>` };
     },
   },
@@ -459,6 +520,119 @@ const TIPOS = [
     },
   },
   {
+    id: "dosvalen", e: "⚖️", n: "¿Las dos valen?", orig: "Ortografix (Instagram / Threads)",
+    desc: "¿Se escribe A o B? Ojo: a veces valen las dos y una es la recomendada.",
+    ej: "«quizá» o «quizás» → las dos valen.",
+    async run(el) {
+      const [a, b, r, x] = pick(DOSVALEN); const sw = Math.random() < 0.5; const A = sw ? b : a, B = sw ? a : b;
+      const correcta = r === 2 ? 2 : (r === 0) !== sw ? 0 : 1;
+      el.innerHTML = `<p class="enun">¿Se escribe «${esc(A)}» o «${esc(B)}»?</p><div id="z"></div>`;
+      const ok = await opciones(el.querySelector("#z"), [`Solo «${A}»`, `Solo «${B}»`, "Las dos valen"], correcta);
+      return { ok, html: `<p>${esc(x)}</p>` };
+    },
+  },
+  {
+    id: "anagrama", e: "🔀", n: "Anagrama", orig: "Juego de palabras (inteligencia)",
+    desc: "Las letras de una palabra, desordenadas. Ordénalas y escríbela bien escrita (con su tilde).",
+    ej: "Ó · M · N · I · C · A → camión.",
+    async run(el) {
+      const p = palAzar((p) => p.w.length >= 5 && p.w.length <= 9 && p.d <= 3 && /^[a-záéíóúüñ]+$/.test(p.w));
+      let l; do { l = shuffle([...p.w]); } while (l.join("") === p.w);
+      el.innerHTML = `<p class="enun">Ordena las letras</p><div class="fichas-l">${l.map((c) => `<span>${esc(c.toUpperCase())}</span>`).join("")}</div>
+        <input class="esc" id="in" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="¿Qué palabra es?"><button class="btn" style="width:100%" id="ok">Comprobar</button>`;
+      const inp = el.querySelector("#in"); inp.focus();
+      await new Promise((res) => { el.querySelector("#ok").onclick = res; inp.onkeydown = (e) => { if (e.key === "Enter") res(); }; });
+      inp.disabled = true; el.querySelector("#ok").disabled = true;
+      const ok = norm(inp.value) === norm(p.w);
+      return { ok, html: `<p>Era <b>${esc(p.w)}</b>.</p>${reglaDe(p.c)}` };
+    },
+  },
+  {
+    id: "ahorcado", e: "🪢", n: "Palabra oculta", orig: "Juego de palabras (ahorcado)",
+    desc: "Adivina la palabra letra a letra antes de 6 fallos. Las vocales con tilde son letras distintas: ¡piensa cómo se escribe!",
+    ej: "_ _ _ _ _ Ó _ → camión.",
+    async run(el) {
+      const p = palAzar((p) => p.w.length >= 5 && p.w.length <= 10 && p.d <= 3 && /^[a-záéíóúüñ]+$/.test(p.w));
+      const w = p.w; const dichas = new Set(); let fallos = 0;
+      const teclas = [..."aábcdeéfghiíjklmnñoópqrstuúüvwxyz"].filter((c) => !"üwk".includes(c) || w.includes(c));
+      el.innerHTML = `<p class="enun">Adivina la palabra</p><div class="palabra" id="w"></div><div class="reloj" id="f"></div><div class="teclado">${teclas.map((c) => `<button data-c="${c}">${c}</button>`).join("")}</div>`;
+      const pinta = () => { el.querySelector("#w").textContent = [...w].map((c) => (dichas.has(c) ? c : "_")).join(" "); el.querySelector("#f").textContent = "♥".repeat(6 - fallos) + "♡".repeat(fallos); };
+      pinta();
+      const ok = await new Promise((res) => el.querySelectorAll("[data-c]").forEach((b) => b.onclick = () => {
+        const c = b.dataset.c; dichas.add(c); b.disabled = true;
+        if (w.includes(c)) b.classList.add("ok"); else { b.classList.add("mal"); fallos++; }
+        pinta();
+        if ([...w].every((x) => dichas.has(x))) res(true); else if (fallos >= 6) res(false);
+      }));
+      el.querySelectorAll("[data-c]").forEach((b) => b.disabled = true);
+      el.querySelector("#w").textContent = w;
+      return { ok, html: `<p>La palabra era <b>${esc(w)}</b>${ok ? ` (${fallos} ${fallos === 1 ? "fallo" : "fallos"})` : ""}.</p>${reglaDe(p.c)}` };
+    },
+  },
+  {
+    id: "vocales", e: "🫥", n: "Sin vocales", orig: "Juego de palabras (inteligencia)",
+    desc: "Solo quedan las consonantes. Adivina la palabra y escríbela entera, con sus tildes.",
+    ej: "c _ m _ _ n → camión.",
+    async run(el) {
+      const p = palAzar((p) => p.w.length >= 5 && p.w.length <= 11 && p.d <= 3 && /^[a-záéíóúüñ]+$/.test(p.w) && (p.w.match(/[^aeiouáéíóúü]/g) || []).length >= 3);
+      const m = [...p.w].map((c) => (/[aeiouáéíóúü]/.test(c) ? "_" : c)).join(" ");
+      el.innerHTML = `<p class="enun">¿Qué palabra es?</p><div class="palabra" style="font-size:${p.w.length > 7 ? 28 : 36}px;letter-spacing:.04em">${esc(m)}</div>
+        <input class="esc" id="in" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Escríbela entera"><button class="btn" style="width:100%" id="ok">Comprobar</button>`;
+      const inp = el.querySelector("#in"); inp.focus();
+      await new Promise((res) => { el.querySelector("#ok").onclick = res; inp.onkeydown = (e) => { if (e.key === "Enter") res(); }; });
+      inp.disabled = true; el.querySelector("#ok").disabled = true;
+      const ok = norm(inp.value) === norm(p.w);
+      return { ok, html: `<p>Era <b>${esc(p.w)}</b>.${!ok && norm(quitarTildes(inp.value)) === norm(quitarTildes(p.w)) ? " ¡Casi! Solo te ha fallado la tilde." : ""}</p>${reglaDe(p.c)}` };
+    },
+  },
+  {
+    id: "diptongo", e: "🔗", n: "¿Diptongo o hiato?", orig: "Clasificaciones (base de las reglas)",
+    desc: "Dos vocales juntas: ¿van en la misma sílaba (diptongo) o en sílabas distintas (hiato)?",
+    ej: "«cielo» → diptongo (cie-lo) · «país» → hiato (pa-ís).",
+    async run(el) {
+      const p = palAzar((p) => /[aeiouáéíóú]h?[aeiouáéíóú]/.test(p.w) && !/q|gu[eéií]|y|ü/.test(p.w) && (p.w.match(/[aeiouáéíóú]h?[aeiouáéíóú]/g) || []).length === 1);
+      const sil = silabear(p.w);
+      const tri = sil.some((s) => /[aeiouáéíóú]{3}/.test(s));
+      const dip = sil.some((s) => /[aeiouáéíóú]{2}/.test(s));
+      const k = tri ? 2 : dip ? 0 : 1;
+      el.innerHTML = `<p class="enun">Las vocales juntas de esta palabra forman…</p><div class="palabra">${esc(p.w).replace(/([aeiouáéíóú]h?[aeiouáéíóú]+)/, "<u>$1</u>")}</div><div id="z"></div>`;
+      const ok = await opciones(el.querySelector("#z"), ["Diptongo", "Hiato", "Triptongo"], k);
+      return { ok, html: `<p>Se separa <b>${esc(sil.join("-"))}</b>: ${k === 1 ? "las vocales quedan en sílabas distintas, es un hiato." : k === 2 ? "tres vocales en la misma sílaba, es un triptongo." : "las vocales van en la misma sílaba, es un diptongo."}</p>${p.c === "ACE.HIATO" || p.c === "ACE.DIPT_TILDE" ? reglaDe(p.c) : ""}` };
+    },
+  },
+  {
+    id: "separa", e: "✂️", n: "Separa en sílabas", orig: "Clasificaciones (base de las reglas)",
+    desc: "Tres maneras de partir la palabra en sílabas. Solo una es la buena.",
+    ej: "«ventana» → ven-ta-na.",
+    async run(el) {
+      const p = palAzar((p) => p.w.length >= 5 && silabear(p.w).length >= 3 && !/y/.test(p.w));
+      const sil = silabear(p.w); const bien = sil.join("-");
+      const malas = new Set();
+      for (let k = 0; k < 40 && malas.size < 2; k++) {
+        const s = sil.slice(); const i = rnd(s.length - 1);
+        if (Math.random() < 0.5 && s[i].length > 1) { s[i + 1] = s[i].slice(-1) + s[i + 1]; s[i] = s[i].slice(0, -1); }
+        else if (s[i + 1].length > 1) { s[i] = s[i] + s[i + 1][0]; s[i + 1] = s[i + 1].slice(1); }
+        const t = s.join("-"); if (t !== bien && !s.includes("")) malas.add(t);
+      }
+      if (malas.size < 2) return null;
+      const o = shuffle([bien, ...malas]);
+      el.innerHTML = `<p class="enun">¿Cómo se separa en sílabas?</p><div class="palabra">${esc(p.w)}</div><div id="z"></div>`;
+      const ok = await opciones(el.querySelector("#z"), o, o.indexOf(bien));
+      return { ok, html: `<p><b>${esc(bien)}</b> (${sil.length} sílabas).</p><div class="regla"><b>Separar en sílabas</b>${esc(COMP("ACE.SILABAS")[1])}</div>` };
+    },
+  },
+  {
+    id: "teoria", e: "🎓", n: "Teoría de la tilde", orig: "Clasificaciones (base de las reglas)",
+    desc: "Preguntas cortas sobre las reglas: qué es una llana, cuándo hay hiato, qué es la tilde diacrítica…",
+    ej: "«Las llanas llevan tilde cuando terminan en…» → consonante que no sea n ni s.",
+    async run(el) {
+      const [q, o, a, x] = pick(TEORIA); const mix = shuffle(o.map((t, i) => [t, i === a]));
+      el.innerHTML = `<p class="enun">${esc(q)}</p><div id="z"></div>`;
+      const ok = await opciones(el.querySelector("#z"), mix.map((m) => m[0]), mix.findIndex((m) => m[1]), { fr: true });
+      return { ok, html: `<p>${esc(x)}</p>` };
+    },
+  },
+  {
     id: "reloj", e: "⏱️", n: "Contrarreloj", orig: "Orto (semáforo) e Instagram (reto)",
     desc: "20 segundos: palabras que pasan rápido y tú dices bien o mal. ¿Cuántas aciertas?",
     ej: "10 aciertos de 12 en 20 s.",
@@ -487,13 +661,46 @@ const TIPOS = [
 ];
 const TIPO = Object.fromEntries(TIPOS.map((t) => [t.id, t]));
 
+// Valoración a ojo (mía, no medida): viral = cuánto se compartiría como
+// post o reel; adictivo = cuántas veces seguidas apetece jugarlo. 1-3.
+const VA = {
+  caza: [2, 3, "El clásico de Voltaire: rápido, y el «no hay falta» engancha."],
+  bienmal: [3, 3, "Formato de encuesta de historias: un toque y comentas."],
+  elige: [3, 2, "El quiz A/B/C que más se comparte en Instagram."],
+  letra: [1, 2, "Útil para practicar, poco vistoso para compartir."],
+  tilde: [2, 2, "Funciona como reto «¿dónde va la tilde?»."],
+  dictado: [2, 2, "«Dictado imposible» da vídeos virales; en la app es más lento."],
+  hueco: [2, 2, "«¿Tú o tu?» genera debate en comentarios."],
+  junto: [3, 2, "porque/por qué/porqué: todo el mundo duda y lo comenta."],
+  intruso: [3, 3, "Muy compartible: «solo el 10 % la encuentra»."],
+  cuantas: [3, 2, "Provoca comentarios con el número que ve cada uno."],
+  corrige: [1, 2, "Exigente: aprende mucho, se comparte poco."],
+  cartel: [3, 2, "Las faltas en carteles reales son de lo más viral."],
+  refran: [3, 2, "Refrán conocido + falta = reconocible y gracioso."],
+  porque: [1, 1, "Para entender la regla; más estudio que juego."],
+  tonica: [1, 1, "Base necesaria, poco espectáculo."],
+  clase: [2, 1, "«¿Aguda, llana o esdrújula?» engancha a los que se acuerdan del cole."],
+  puntua: [2, 1, "La coma que cambia el sentido («Vamos a comer, niños») sí es viral."],
+  mayus: [1, 1, "Útil, poco emocionante."],
+  parejas: [1, 2, "Juego tranquilo, gusta repetirlo."],
+  dosvalen: [3, 2, "«¡Las dos valen!» sorprende y se comenta mucho (formato Ortografix)."],
+  anagrama: [2, 3, "Juego de inteligencia: muy adictivo, poco de ortografía."],
+  ahorcado: [2, 3, "Adictivo de toda la vida; con tildes obliga a pensar."],
+  vocales: [3, 3, "Reto visual que se resuelve en segundos: perfecto para historias."],
+  diptongo: [1, 1, "Teoría pura: útil para entender los hiatos con tilde."],
+  separa: [1, 2, "Mecánico pero rápido."],
+  teoria: [1, 1, "Para repasar reglas; poco juego."],
+  reloj: [2, 3, "La presión del tiempo engancha: «¿cuántas haces en 20 s?»."],
+};
+const puntos = (n) => "●".repeat(n) + "○".repeat(3 - n);
+
 // ------------------------------------------------------------ elegir el siguiente tipo
 function siguienteTipo(ultimo, forzado) {
   if (forzado) return TIPO[forzado];
   const v = votos();
   let pool = TIPOS.filter((t) => v[t.id] !== -1 && t.id !== ultimo);
   if (!pool.length) pool = TIPOS.filter((t) => t.id !== ultimo);
-  const peso = (t) => (v[t.id] === 1 ? 3 : 1);
+  const peso = (t) => (v[t.id] > 0 ? PESO[v[t.id]] : 1);
   let r = Math.random() * pool.reduce((s, t) => s + peso(t), 0);
   for (const t of pool) { r -= peso(t); if (r <= 0) return t; }
   return pool[0];
@@ -506,14 +713,14 @@ function irA(t) {
   tab = t; ronda = null;
   document.querySelectorAll(".tabs button").forEach((b) => b.classList.toggle("on", b.dataset.tab === t));
   if ("speechSynthesis" in window) speechSynthesis.cancel();
-  t === "jugar" ? inicio() : valorar();
+  t === "jugar" ? inicio() : t === "fichas" ? fichas() : valorar();
   scrollTo(0, 0);
 }
 
 function inicio() {
   const s = ls.get("stats", { n: 0, ok: 0, tipos: {}, dias: [] }); const v = votos();
   const hoy = s.hoyFecha === new Date().toISOString().slice(0, 10) ? s.hoy || 0 : 0;
-  const nUp = Object.values(v).filter((x) => x === 1).length, nDown = Object.values(v).filter((x) => x === -1).length;
+  const nUp = Object.values(v).filter((x) => x > 0).length, nDown = Object.values(v).filter((x) => x === -1).length;
   $main.innerHTML = `
     <h2>Aprende ortografía jugando</h2>
     <p class="sub">Rondas de ${RONDA} ejercicios de ${TIPOS.length} tipos distintos. Si fallas, te explico la regla.</p>
@@ -523,7 +730,7 @@ function inicio() {
       <div class="stat"><b>${s.n ? Math.round((100 * s.ok) / s.n) + "%" : "—"}</b><span>aciertos</span></div>
       <div class="stat"><b>${racha(s.dias || [])}</b><span>días seguidos</span></div>
     </div>
-    <p class="sub">${nUp || nDown ? `Has valorado ${nUp + nDown} tipos: los 👍 (${nUp}) te salen más y los 👎 (${nDown}) ya no te salen.` : "Aún no has valorado ningún tipo de ejercicio: puedes hacerlo mientras juegas o en «Valorar»."}</p>
+    <p class="sub">${nUp || nDown ? `Has valorado ${nUp + nDown} tipos: los 👍 (${nUp}) te salen más, y cuantas más ★ más, y los 👎 (${nDown}) ya no te salen.` : "Aún no has valorado ningún tipo de ejercicio: puedes hacerlo mientras juegas o en «Valorar»."}</p>
     <button class="btn" style="width:100%" id="val">👍 👎 Valorar los ${TIPOS.length} tipos de ejercicio</button>`;
   $main.querySelector("#go").onclick = () => empezar();
   $main.querySelector("#val").onclick = () => irA("valorar");
@@ -557,7 +764,7 @@ async function turno() {
   const fb = $main.querySelector("#fb");
   fb.innerHTML = `<div class="fb">
       <h3 class="${res.ok ? "" : "mal"}">${res.ok ? pick(["¡Bien!", "¡Correcto!", "¡Eso es!", "¡Perfecto!"]) : "Casi…"}</h3>${res.html}
-      <div class="mini"><span>¿Te gusta este tipo de ejercicio?</span><span class="votos">${botonesVoto(t.id, v)}</span></div>
+      <div class="mini"><span>¿Te gusta este tipo de ejercicio?</span>${botonesVoto(t.id, v)}</div>
       <button class="btn neg big" id="sig">${R.n >= R.total ? "Ver resultado" : "Siguiente"}</button></div>`;
   enganchaVotos(fb);
   const sig = fb.querySelector("#sig"); sig.onclick = () => turno();
@@ -571,7 +778,7 @@ function resumen() {
   $main.innerHTML = `
     <h2>${R.ok} de ${R.total}</h2>
     <p class="sub">${R.ok === R.total ? "¡Ronda perfecta!" : R.ok >= R.total * 0.7 ? "Muy bien. Sigue así." : "Cada fallo es una regla nueva aprendida."}</p>
-    ${Object.entries(porTipo).map(([id, [n, ok]]) => `<div class="mini" style="color:#000"><span>${TIPO[id].e} ${esc(TIPO[id].n)} · ${ok}/${n}</span><span class="votos">${botonesVoto(id, votos()[id] || 0)}</span></div>`).join("")}
+    ${Object.entries(porTipo).map(([id, [n, ok]]) => `<div class="mini" style="color:#000"><span>${TIPO[id].e} ${esc(TIPO[id].n)} · ${ok}/${n}</span>${botonesVoto(id, votos()[id] || 0)}</div>`).join("")}
     <div class="fila" style="margin-top:18px"><button class="btn neg" id="otra">${R.forzado ? "Probar otra vez" : "Otra ronda"}</button><button class="btn" id="val">${R.forzado ? "Volver a Valorar" : "Valorar"}</button></div>`;
   enganchaVotos($main);
   $main.querySelector("#otra").onclick = () => empezar(R.forzado);
@@ -580,45 +787,107 @@ function resumen() {
 
 function botonesVoto(id, v) {
   const t = TOT && TOT[id];
-  return `<button class="voto ${v === 1 ? "on" : ""}" data-voto="1" data-tipo="${id}" aria-label="Me gusta">👍${t ? `<small>${t.up}</small>` : ""}</button><button class="voto ${v === -1 ? "on" : ""}" data-voto="-1" data-tipo="${id}" aria-label="No me gusta">👎${t ? `<small>${t.down}</small>` : ""}</button>`;
+  const media = t && t.up ? `★${(t.est / t.up).toFixed(1).replace(".", ",")} · ` : "";
+  return `<span class="votos" data-vt="${id}">
+    <button class="voto ${v > 0 ? "on" : ""}" data-voto="up" aria-label="Me gusta">👍${t ? `<small>${t.up}</small>` : ""}</button><button class="voto ${v === -1 ? "on" : ""}" data-voto="down" aria-label="No me gusta">👎${t ? `<small>${t.down}</small>` : ""}</button>
+    ${v > 0 ? `<span class="estrellas" title="¿Cuánto te gusta?">${[1, 2, 3, 4, 5].map((n) => `<button data-voto="${n}" class="${n <= v ? "on" : ""}" aria-label="${n} estrellas">★</button>`).join("")}${t && t.up ? `<small>${media}${t.up}</small>` : ""}</span>` : ""}
+  </span>`;
 }
+const TXT = { 1: "Te gusta un poco", 2: "Te gusta algo", 3: "Te gusta", 4: "Te gusta mucho", 5: "¡Te encanta! Te saldrá muchísimo" };
 function enganchaVotos(root, despues) {
-  root.querySelectorAll("[data-voto]").forEach((b) => b.onclick = () => {
-    const id = b.dataset.tipo, val = +b.dataset.voto; const antes = votos()[id] || 0;
-    const nuevo = votar(id, val);
-    if (TOT) { const t = (TOT[id] = TOT[id] || { up: 0, down: 0 }); if (antes === 1) t.up--; if (antes === -1) t.down--; if (nuevo === 1) t.up++; if (nuevo === -1) t.down++; }
-    root.querySelectorAll(`[data-tipo="${id}"]`).forEach((x) => {
-      x.classList.toggle("on", +x.dataset.voto === nuevo);
-      const sm = x.querySelector("small"); if (sm && TOT) sm.textContent = +x.dataset.voto === 1 ? TOT[id].up : TOT[id].down;
-    });
-    toast(nuevo === 1 ? "👍 Te saldrá más a menudo" : nuevo === -1 ? "👎 Ya no te saldrá" : "Voto quitado");
+  root.querySelectorAll("[data-vt]").forEach((cont) => cont.querySelectorAll("[data-voto]").forEach((b) => b.onclick = () => {
+    const id = cont.dataset.vt; const nuevo = votar(id, b.dataset.voto);
+    root.querySelectorAll(`[data-vt="${id}"]`).forEach((x) => { x.outerHTML = botonesVoto(id, nuevo); });
+    enganchaVotos(root, despues);
+    toast(nuevo > 0 ? `${"★".repeat(nuevo)} ${TXT[nuevo]}${b.dataset.voto === "up" ? " · pon de 1 a 5 ★" : ""}` : nuevo === -1 ? "👎 Ya no te saldrá" : "Voto quitado");
     if (despues) despues();
-  });
+  }));
 }
 
 let filtro = "todos";
 function valorar() {
   const v = votos(); const s = ls.get("stats", { tipos: {} });
-  const lista = TIPOS.filter((t) => filtro === "todos" || (filtro === "up" && v[t.id] === 1) || (filtro === "down" && v[t.id] === -1) || (filtro === "sin" && !v[t.id]));
+  const lista = TIPOS.filter((t) => filtro === "todos" || (filtro === "up" && v[t.id] > 0) || (filtro === "down" && v[t.id] === -1) || (filtro === "sin" && !v[t.id]));
   const n = (f) => TIPOS.filter(f).length;
   $main.innerHTML = `
     <h2>¿Qué ejercicios te gustan?</h2>
-    <p class="sub">${TIPOS.length} tipos, sacados de Projet Voltaire, de cuentas de ortografía de Instagram y de lo que ya teníamos en Orto. Los 👍 te saldrán más al jugar y los 👎 dejarán de salir.</p>
+    <p class="sub">${TIPOS.length} tipos, sacados de Projet Voltaire, de cuentas de ortografía de Instagram de lo que ya teníamos en Orto y de juegos de palabras. «Viral» y «adictivo» son mi estimación, no un dato medido. Con 👍 eliges de 1 a 5 ★: cuantas más estrellas, más te sale al jugar. Los 👎 dejan de salir.</p>
     <div class="filtros">
       <button data-f="todos" class="${filtro === "todos" ? "on" : ""}">Todos ${TIPOS.length}</button>
       <button data-f="sin" class="${filtro === "sin" ? "on" : ""}">Sin valorar ${n((t) => !v[t.id])}</button>
-      <button data-f="up" class="${filtro === "up" ? "on" : ""}">👍 ${n((t) => v[t.id] === 1)}</button>
+      <button data-f="up" class="${filtro === "up" ? "on" : ""}">👍 ${n((t) => v[t.id] > 0)}</button>
       <button data-f="down" class="${filtro === "down" ? "on" : ""}">👎 ${n((t) => v[t.id] === -1)}</button>
     </div>
-    ${lista.map((t) => { const st = (s.tipos || {})[t.id]; return `<article class="tarjeta ${v[t.id] === 1 ? "like" : v[t.id] === -1 ? "dislike" : ""}">
+    ${lista.map((t) => { const st = (s.tipos || {})[t.id]; return `<article class="tarjeta ${v[t.id] > 0 ? "like" : v[t.id] === -1 ? "dislike" : ""}">
       <h3><span>${t.e}</span>${esc(t.n)}</h3><div class="orig">${esc(t.orig)}</div>
-      <p>${esc(t.desc)}</p><p class="ej">Ejemplo: ${esc(t.ej)}</p>
-      <div class="pie"><button class="probar" data-probar="${t.id}">▶ Probar${st ? ` · ${st[1]}/${st[0]}` : ""}</button><span class="votos">${botonesVoto(t.id, v[t.id] || 0)}</span></div>
+      <p>${esc(t.desc)}</p><p class="ej">Ejemplo: ${esc(t.ej)}</p>${VA[t.id] ? `<p class="va"><span>🔥 Viral ${puntos(VA[t.id][0])}</span><span>🔁 Adictivo ${puntos(VA[t.id][1])}</span><br>${esc(VA[t.id][2])}</p>` : ""}
+      <div class="pie"><button class="probar" data-probar="${t.id}">▶ Probar${st ? ` · ${st[1]}/${st[0]}` : ""}</button>${botonesVoto(t.id, v[t.id] || 0)}</div>
     </article>`; }).join("") || `<p class="sub">Nada por aquí.</p>`}
     <p class="nota">Los votos se guardan en este móvil y en Supabase (tabla <code>ortografia10_votos</code>), junto con los de otros dispositivos; el número junto a 👍/👎 es el total de todos.</p>`;
   $main.querySelectorAll("[data-f]").forEach((b) => b.onclick = () => { filtro = b.dataset.f; valorar(); });
   $main.querySelectorAll("[data-probar]").forEach((b) => b.onclick = () => empezar(b.dataset.probar));
   enganchaVotos($main, () => setTimeout(() => { if (tab === "valorar" && !ronda) valorar(); }, 350));
+}
+
+// ------------------------------------------------------------ fichas
+// Índice de fichas: una por competencia de Orto (regla, palabras que la
+// cumplen, excepciones, errores típicos y truco) y una por grupo de
+// palabras que se confunden (parejas de homófonos + ejemplos de frases).
+let fBloque = "todas", fTexto = "";
+function datosFichas() {
+  if (datosFichas.c) return datosFichas.c;
+  const porComp = {};
+  D.P.forEach((p) => { (porComp[p[4]] = porComp[p[4]] || []).push(p); });
+  const reglas = Object.entries(D.C).filter(([, c]) => c[1]).map(([id, c]) => {
+    const pals = porComp[id] || [];
+    const ej = [...new Set([...(c[3] || []), ...pals.slice(0, 14).map((p) => p[0])])].slice(0, 14);
+    const errores = pals.filter((p) => p[1] && p[1][0]).slice(0, 6).map((p) => [p[1][0], p[0]]);
+    return { id, tipo: "regla", b: c[5], titulo: c[0], regla: c[1], truco: c[2], ej, exc: c[4] || [], errores, curso: D.CU[c[6]] || "" };
+  });
+  const vistos = new Set();
+  const conf = [];
+  for (const m of MAN.parejas) {
+    const clave = m.pares.map((p) => p[0].toLowerCase()).sort().join("|");
+    if (vistos.has(clave)) continue; vistos.add(clave);
+    const pal = m.pares.map((p) => p[0].toLowerCase());
+    const frases = D.M.filter((x) => x.t === "hueco" && x.o && x.o.some((o) => pal.includes(o.toLowerCase())) && x.o.every((o) => pal.includes(o.toLowerCase()))).slice(0, 3)
+      .map((x) => x.q.replace("___", `«${x.o[x.a]}»`));
+    conf.push({ id: "c" + conf.length, tipo: "conf", b: "CONF", titulo: m.pares.map((p) => p[0]).join(" / "), pares: m.pares, frases, regla: COMP(m.c)[1] });
+  }
+  conf.push({ id: "dosvalen", tipo: "dos", b: "CONF", titulo: "¿Las dos valen? Parejas con dos formas (o solo una)", lista: DOSVALEN });
+  return (datosFichas.c = [...conf, ...reglas]);
+}
+function fichaHTML(f) {
+  if (f.tipo === "conf") return `<details class="ficha"><summary><span class="fb-b">👂 Se confunden</span>${esc(f.titulo)}</summary>
+    <ul>${f.pares.map((p) => `<li><b>${esc(p[0])}</b>: ${esc(p[1])}</li>`).join("")}</ul>
+    ${f.frases.length ? `<p class="lab">Ejemplos</p><ul>${f.frases.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>` : ""}
+    ${f.regla ? `<p class="lab">Regla</p><p>${esc(f.regla)}</p>` : ""}</details>`;
+  if (f.tipo === "dos") return `<details class="ficha"><summary><span class="fb-b">⚖️ Se confunden</span>${esc(f.titulo)}</summary>
+    <ul>${f.lista.map(([a, b, r, x]) => `<li><b>${esc(a)}</b> / <b>${esc(b)}</b>: ${r === 2 ? "valen las dos" : `solo «${esc(r === 0 ? a : b)}»`}. ${esc(x)}</li>`).join("")}</ul></details>`;
+  const B = D.B[f.b] || ["", ""];
+  return `<details class="ficha"><summary><span class="fb-b">${B[1]} ${esc(B[0])}${f.curso ? ` · ${esc(f.curso)}` : ""}</span>${esc(f.titulo)}</summary>
+    <p class="lab">Regla</p><p>${esc(f.regla)}</p>
+    ${f.ej.length ? `<p class="lab">✓ Palabras que la cumplen</p><p>${f.ej.map(esc).join(" · ")}</p>` : ""}
+    <p class="lab">✗ Excepciones y palabras que no la siguen</p><p>${f.exc.length ? f.exc.map(esc).join("<br>") : "No tiene excepciones importantes."}</p>
+    ${f.errores.length ? `<p class="lab">⚠️ Errores típicos</p><p>${f.errores.map(([m, b]) => `<s>${esc(m)}</s> → <b>${esc(b)}</b>`).join(" · ")}</p>` : ""}
+    ${f.truco ? `<p class="lab">💡 Truco</p><p>${esc(f.truco)}</p>` : ""}</details>`;
+}
+function fichas() {
+  const todas = datosFichas();
+  const bloques = [["todas", "Todas"], ["CONF", "👂 Se confunden"], ...Object.entries(D.B).map(([id, [n, e]]) => [id, `${e} ${n}`])];
+  $main.innerHTML = `<h2>Fichas de ortografía</h2>
+    <p class="sub">${todas.length} fichas: cada regla con las palabras que la cumplen, las que no y los errores típicos, y las palabras que más se confunden. Toca una para abrirla.</p>
+    <input class="esc buscar" id="q" placeholder="Buscar: mb, hiato, porque, haber…" value="${esc(fTexto)}">
+    <div class="filtros">${bloques.map(([id, n]) => `<button data-b="${id}" class="${fBloque === id ? "on" : ""}">${esc(n)}</button>`).join("")}</div>
+    <div id="lista"></div>`;
+  const pinta = () => {
+    const q = norm(quitarTildes(fTexto));
+    const l = todas.filter((f) => (fBloque === "todas" || f.b === fBloque) && (!q || norm(quitarTildes(JSON.stringify(f))).includes(q)));
+    $main.querySelector("#lista").innerHTML = l.map(fichaHTML).join("") || `<p class="sub">No hay fichas con eso.</p>`;
+  };
+  $main.querySelector("#q").oninput = (e) => { fTexto = e.target.value; pinta(); };
+  $main.querySelectorAll("[data-b]").forEach((b) => b.onclick = () => { fBloque = b.dataset.b; fichas(); });
+  pinta();
 }
 
 // ------------------------------------------------------------ arranque
