@@ -81,6 +81,8 @@
         $("d").innerHTML = nuevas.size
           ? `👍 <b>Lo has hecho bien.</b> Me han llegado y están guardadas (abajo, marcadas NUEVA). Esta noche la rutina las revisa y añade a la app las que encajen.<br>Ahora: vuelve a LinkedIn, pasa a la <b>página siguiente</b> y pulsa el marcador otra vez, o elige otra búsqueda de la guía.`
           : `👍 <b>Lo has hecho bien</b>, pero estas ${filas.length} ya las habías capturado antes (no hay ninguna nueva). Pasa a la <b>página siguiente</b> en LinkedIn o prueba otra búsqueda de la guía.`;
+        if (data.d) $("d").insertAdjacentHTML("beforeend", `<br><span style="font-size:.72rem;color:#9aa3ad">detección: ${esc(data.d)}</span>`);
+        if (!data.v) $("d").insertAdjacentHTML("beforeend", `<br><span style="color:#f2b840">⚠️ Estás usando el marcador antiguo, que con el LinkedIn nuevo solo ve una oferta. Bórralo y arrastra el nuevo «📥 Empleo v2» desde la tabla.</span>`);
         history.replaceState(null, "", location.pathname);
       } else if (location.hash.length > 1) {
         $("t").textContent = "No ha llegado ninguna oferta"; $("t").className = "err";
