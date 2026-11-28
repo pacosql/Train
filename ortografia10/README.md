@@ -11,7 +11,7 @@ PWA en blanco y negro con el logotipo elegido en [`ortologo/`](../ortologo)
 - **Jugar**: rondas de 10 ejercicios de tipos variados. Los tipos con 👍
   salen el triple y los 👎 no salen. Cada respuesta enseña la regla
   (competencia de Orto, con su truco) y deja votar ese tipo ahí mismo.
-- **Valorar**: los 51 tipos con descripción, ejemplo, de dónde sale la
+- **Valorar**: los 58 tipos con descripción, ejemplo, de dónde sale la
   idea, ▶ Probar (3 seguidos de ese tipo) y 👍/👎 con el total de todos los
   dispositivos. Tras un 👍 se eligen de 1 a 5 ★ (un 👍 empieza en 3 ★);
   al jugar, cuantas más estrellas, más sale (1★ ×1,5 … 5★ ×6). En
@@ -38,6 +38,8 @@ PWA en blanco y negro con el logotipo elegido en [`ortologo/`](../ortologo)
 
 En Valorar cada tipo lleva «🔥 viral» y «🔁 adictivo» de 1 a 3: es una
 estimación a ojo (`VA` en `app.js`), no un dato medido.
+
+XP (capa tipo Duolingo): 10 por acierto en Jugar, ×2 desde 3 seguidas y ×3 desde 6; en `localStorage` (`o10.xp`) con el total por semana, que sale en la portada.
 
 ## Tipos de ejercicio
 
@@ -92,6 +94,13 @@ estimación a ojo (`VA` en `app.js`), no un dato medido.
 | `escalera` | 🪜 La escalera (8 peldaños, plantarse, seguro y 50:50) | Nuevo (tanda 3) |
 | `cestas` | 🧺 Las tres cestas (arcade aguda/llana/esdrújula) | Nuevo (tanda 3) |
 | `diana` | 🎯 Tiro al acento (arcade de sílaba fuerte) | Nuevo (tanda 3) |
+| `hayfalta` | 🔍 ¿Hay falta o no? (WhatsApp, correo o cartel; «Está bien») | Projet Voltaire |
+| `anclaje` | ⚓ Repaso de tu regla floja (regla + 3 seguidas) | Projet Voltaire |
+| `rapido` | ⚡ Rápido y difícil (15 s, puntos por velocidad y dificultad) | Merriam-Webster |
+| `falsas` | ❌ Falsas tildes (tacha guión, dió, exámen…) | Ortografix |
+| `truco` | 🪄 El truco (truco de la competencia + 5 frases) | Ortografix |
+| `bandera` | 🚩 Bandera roja (mensaje de cita o jefe: ¿huye o quédate?) | Ortografix |
+| `tildemsj` | 💌 Una tilde cambia el mensaje (hacia/hacía, sino/si no…) | Ortografix |
 | `mismo` | 🟰 ¿Es lo mismo? (dos frases: ¿mismo sentido o no?; se comparte como post) | Ortografix |
 | `razon` | 💬 ¿Quién tiene razón? (discusión de grupo) | Nuevo (tanda 3) |
 

@@ -133,6 +133,9 @@ function apuntar(tipo, ok) {
   registrarNota(categoria, comp, ok);
   encolar("respuestas", { tipo, acierto: ok, dispositivo: DISP, categoria, comp });
 }
+// XP (capa tipo Duolingo): 10 por acierto, ×2 desde 3 seguidas y ×3 desde 6. Se guarda por semana.
+function semana(d = new Date()) { const x = new Date(d); x.setHours(0, 0, 0, 0); x.setDate(x.getDate() - ((x.getDay() + 6) % 7)); return x.toISOString().slice(0, 10); }
+function sumarXP(n) { if (!n) return; const x = ls.get("xp", { total: 0, sem: {} }); x.total += n; const k = semana(); x.sem[k] = (x.sem[k] || 0) + n; ls.set("xp", x); }
 function racha(dias) {
   let n = 0; const d = new Date();
   for (;;) { const k = d.toISOString().slice(0, 10); if (dias.includes(k)) { n++; d.setDate(d.getDate() - 1); } else if (n === 0 && k === new Date().toISOString().slice(0, 10)) { d.setDate(d.getDate() - 1); } else break; }
@@ -205,6 +208,21 @@ const REFRANES = [
 // ------------------------------------------------------------ ¿las dos valen? (formato de Ortografix)
 // [A, B, respuesta: 0 = solo A, 1 = solo B, 2 = las dos, explicación]
 const DOSVALEN = [
+  ["esta agua", "este agua", 0, "«Agua» es femenino: «esta agua». Solo «el» y «un» cambian delante de a tónica (el agua, un águila); los demás determinantes no."],
+  ["había muchas personas", "habían muchas personas", 0, "«Haber» impersonal no tiene plural: había, hubo, habrá… siempre en singular."],
+  ["hubo fiestas", "hubieron fiestas", 0, "Igual que «había»: «hubo» va siempre en singular cuando significa «existir»."],
+  ["pienso que vendrá", "pienso de que vendrá", 0, "«Pensar que»: meter un «de» que sobra es dequeísmo. Truco: pienso ESO → pienso que."],
+  ["estoy seguro de que", "estoy seguro que", 0, "«Seguro DE algo» → «seguro de que». Quitar el «de» es queísmo."],
+  ["medio dormida", "media dormida", 0, "Delante de un adjetivo, «medio» significa «un poco» y no cambia: medio dormida, medio abiertas."],
+  ["sobre todo", "sobretodo", 0, "«Sobre todo» (= especialmente) va separado. «Sobretodo» junto es una prenda de abrigo."],
+  ["en serio", "enserio", 0, "«En serio» siempre separado. «Enserio» no existe."],
+  ["a veces", "aveces", 0, "«A veces», separado, como «a menudo»."],
+  ["o sea", "osea", 0, "«O sea», en dos palabras. «Osea» solo existe como forma de «óseo» (de hueso)."],
+  ["tal vez", "talvez", 2, "Se prefiere «tal vez», separado; «talvez» junto se admite y es frecuente en América."],
+  ["reemplazar", "remplazar", 2, "Valen las dos; la más usada es «reemplazar»."],
+  ["dentífrico", "dentrífico", 0, "Es «dentífrico» (de «diente»). La r de «dentrífico» se cuela, pero sobra."],
+  ["croqueta", "cocreta", 0, "Es «croqueta». «Cocreta» es un vulgarismo que intercambia sonidos."],
+  ["de repente", "derrepente", 0, "«De repente», separado: es «de» + «repente»."],
   ["guion", "guión", 0, "Desde 2010 «guion» es monosílabo a efectos de tilde, como «fue» o «dio»: sin tilde."],
   ["psicología", "sicología", 2, "Valen las dos, pero se prefiere «psicología», con ps-."],
   ["septiembre", "setiembre", 2, "Valen las dos; la más usada y recomendada es «septiembre»."],
@@ -295,6 +313,58 @@ const MISMO = [
   ["Te espero si vienes.", "Si vienes, te espero.", true, "Mismo sentido. Cuando la condición va delante, se separa con coma."],
   ["Él lo sabe.", "Lo sabe él.", true, "Cambia el orden, no el sentido. «Él», pronombre, lleva tilde."],
   ["Sí, lo sé.", "Claro, lo sé.", true, "«Sí» con tilde afirma, como «claro». «Sé», de saber, también lleva tilde."],
+];
+
+// ------------------------------------------------------------ bandera roja: mensajes de una cita o del jefe
+// [quién, mensaje, palabra mal (o ""), cómo es]
+const BANDERAS = [
+  ["💘 Tu cita", "¿Te apetece quedar el viernes haber una peli?", "haber", "a ver"],
+  ["💘 Tu cita", "Me gustaría volver a verte. ¿Te viene bien el sábado?", "", ""],
+  ["💼 Tu jefe", "Tienes que hechar un vistazo al informe antes de las 12.", "hechar", "echar"],
+  ["💘 Tu cita", "Ayer me lo pasé genial, hací que repetimos cuando quieras.", "hací", "así"],
+  ["💘 Tu cita", "Valla, no sabía que te gustaba tanto el sushi.", "Valla", "Vaya"],
+  ["💼 Tu jefe", "Te he enviado el informe; revísalo cuando puedas.", "", ""],
+  ["💘 Tu cita", "Ahí un sitio nuevo en el centro que te va a encantar.", "Ahí", "Hay"],
+  ["💼 Tu jefe", "Si no te viene bien el lunes, lo dejamos para el martes.", "", ""],
+  ["💘 Tu cita", "Eres la persona más interesante que e conocido.", "e", "he"],
+  ["💼 Tu jefe", "A sido un placer trabajar contigo este año.", "A", "Ha"],
+  ["💘 Tu cita", "¿Porqué no me contestas?", "Porqué", "Por qué"],
+  ["💘 Tu cita", "No sé por qué, pero me haces reír muchísimo.", "", ""],
+  ["💼 Tu jefe", "Hemos reducido costes; aún así, habrá cena de Navidad.", "aún", "aun"],
+  ["💘 Tu cita", "Te espero aquí, en la puerta del cine.", "", ""],
+  ["💼 Tu jefe", "Me ubiera gustado avisarte antes del cambio.", "ubiera", "hubiera"],
+  ["💼 Tu jefe", "Echo de menos tu puntualidad de antes.", "", ""],
+  ["💘 Tu cita", "Tengo un regalo para tí.", "tí", "ti"],
+  ["💼 Tu jefe", "Mañana tenemos una reunión a las nueve en la sala grande.", "", ""],
+];
+const BANDERA_X = { "a ver": "«A ver» (de ver), no «haber» (verbo)", "echar": "«Echar» no lleva h: echar un vistazo, echar de menos", "así": "«Así», con s", "Vaya": "«Vaya» es exclamación; «valla» es una cerca", "Hay": "«Hay» es del verbo haber; «ahí» es un lugar", "he": "«He» es del verbo haber: he conocido", "Ha": "«Ha» es del verbo haber: ha sido", "Por qué": "Para preguntar, «por qué» separado y con tilde", "aun": "«Aun así» (= incluso así) va sin tilde", "hubiera": "«Hubiera», del verbo haber, con h", "ti": "«Ti» nunca lleva tilde: es monosílabo y no tiene pareja" };
+
+// ------------------------------------------------------------ una tilde (o un espacio) cambia el mensaje
+// [contexto, frase con ___, opciones, correcta, explicación]
+const TILDEMSJ = [
+  ["Tu abuela recuerda su infancia:", "De pequeña ___ mucho frío en el pueblo.", ["hacia", "hacía"], 1, "«Hacía», con tilde, es del verbo hacer. «Hacia», sin tilde, indica dirección: voy hacia el pueblo."],
+  ["Te indican el camino:", "Camina ___ la plaza y gira a la derecha.", ["hacia", "hacía"], 0, "«Hacia» sin tilde indica dirección. «Hacía» con tilde es del verbo hacer."],
+  ["Tu madre prueba la comida:", "Has echado sal ___: está salado.", ["de más", "demás"], 0, "«De más», separado, es «de sobra». «Demás», junto, significa «los otros»."],
+  ["En clase:", "Tú te quedas; los ___ pueden salir al recreo.", ["de más", "demás"], 1, "«Los demás» = los otros: junto. «De más» separado = de sobra."],
+  ["Un amigo te corrige:", "No es rojo, ___ granate.", ["sino", "si no"], 0, "«Sino» contrapone: no es esto, sino aquello. «Si no» es una condición."],
+  ["Tu hermano te avisa:", "___ vienes pronto, me voy sin ti.", ["Sino", "Si no"], 1, "Es una condición (si no vienes…): separado. Truco: cabe «es que» → si es que no vienes."],
+  ["Te tranquilizan:", "Tranquilo, ya lo ___.", ["sé", "se"], 0, "«Sé» con tilde es del verbo saber (yo sé). «Se» sin tilde es pronombre: se fue."],
+  ["Te cuentan:", "Ana ___ fue temprano de la fiesta.", ["sé", "se"], 1, "Aquí es el pronombre «se» (ella se fue): sin tilde."],
+  ["En la cafetería:", "¿Quieres un ___ o un café?", ["te", "té"], 1, "«Té», la bebida, lleva tilde para distinguirse del pronombre «te»."],
+  ["Un amigo te escribe:", "¿___ apetece un café?", ["Te", "Té"], 0, "Es el pronombre (a ti te apetece): sin tilde."],
+  ["Te preguntan:", "¿Ya has terminado ___?", ["tú", "tu"], 0, "«Tú», con tilde, es la persona. «Tu», sin tilde, acompaña a un nombre: tu coche."],
+  ["Te felicitan:", "Me encanta ___ coche nuevo.", ["tú", "tu"], 1, "«Tu» acompaña a «coche»: es posesivo, sin tilde."],
+  ["Tu padre, impaciente:", "¿___ no ha llegado tu hermano?", ["Aún", "Aun"], 0, "«Aún» con tilde = todavía. «Aun» sin tilde = incluso."],
+  ["Te animan:", "___ cansado, terminó la carrera.", ["Aún", "Aun"], 1, "Aquí significa «incluso» (incluso cansado): sin tilde."],
+];
+
+// Palabras que creemos que llevan tilde y no (y algunas trampas que sí). [bien, mal]
+const FALSAS = [
+  ["guion", "guión"], ["dio", "dió"], ["fue", "fué"], ["fe", "fé"], ["ti", "tí"], ["vio", "vió"], ["fui", "fuí"], ["pie", "pié"],
+  ["examen", "exámen"], ["joven", "jóven"], ["imagen", "imágen"], ["resumen", "resúmen"], ["crimen", "crímen"], ["origen", "orígen"],
+  ["margen", "márgen"], ["canon", "cánon"], ["Ruiz", "Ruíz"], ["huir", "huír"], ["construir", "construír"], ["incluido", "incluído"],
+  ["jesuita", "jesuíta"], ["truhan", "truhán"], ["virgen", "vírgen"], ["mi casa", "mí casa"], ["tu perro", "tú perro"], ["hacia el mar", "hacía el mar"],
+  ["exámenes", "examenes"], ["imágenes", "imagenes"], ["jóvenes", "jovenes"], ["cárcel", "carcel"], ["lápiz", "lapiz"], ["país", "pais"],
 ];
 
 // ------------------------------------------------------------ compartir en redes (imagen de historia + texto)
@@ -1547,6 +1617,149 @@ const TIPOS = [
       return { ok: k === bien, html: `<p>Tiene razón <b>${bien ? n2 : n1}</b>: va «${esc(m.o[m.a])}».</p>${m.x ? `<p>${esc(m.x)}</p>` : reglaDe(m.c)}` };
     },
   },
+  // ---------------------------------------------------------------- tanda 4 (ideas de Projet Voltaire, Ortografix, Merriam-Webster y Duolingo)
+  {
+    id: "hayfalta", e: "🔍", n: "¿Hay falta o no?", orig: "Projet Voltaire (la pregunta del día)",
+    desc: "Un mensaje real: un WhatsApp, un correo o un cartel. Toca la palabra mal escrita… o pulsa «Está bien». Casi la mitad están perfectos: esa es la trampa.",
+    ej: "📧 «Le adjunto el presupuesto» → Está bien.",
+    async run(el) {
+      let toks, err = -1, bien = "", mal = "", c = null, x = "";
+      if (Math.random() < 0.3 && MAN.caza.length) { const m = pick(MAN.caza); toks = tokens(m.q); err = toks.indexOf(m.mal); bien = m.bien; mal = m.mal; c = m.c; x = m.x; }
+      else { const [f, pi] = pick(D.F); const p = P(pi); toks = tokens(f); c = p.c; if (Math.random() < 0.55) { err = toks.indexOf(p.w); mal = pick(p.alts); bien = p.w; toks[err] = mal; } }
+      const marco = pick(["chat", "correo", "cartel"]);
+      const cuerpo = toks.map((t, i) => esPal(t) ? `<button class="tok" data-i="${i}">${esc(t)}</button>` : esc(t)).join("");
+      el.innerHTML = `<p class="enun">¿Hay alguna falta? Tócala, o di que está bien.</p>
+        ${marco === "chat" ? `<div class="chat"><div class="burbuja otro frase" style="margin:0">${cuerpo}</div></div>` : marco === "correo" ? `<div class="correo"><small>📧 Asunto: Re: lo de mañana</small><div class="frase" style="margin:6px 0 0">${cuerpo}</div></div>` : `<div class="cartelito frase">${cuerpo}</div>`}
+        <button class="btn neg" style="width:100%;margin-top:10px" data-no>✓ Está bien</button>`;
+      const t = await new Promise((res) => { el.querySelectorAll(".tok").forEach((b) => b.onclick = () => res(+b.dataset.i)); el.querySelector("[data-no]").onclick = () => res(-1); });
+      el.querySelectorAll("button").forEach((b) => b.disabled = true);
+      marcarToks(el, t, err);
+      const ok = t === err;
+      if (err < 0) return { ok, html: ok ? `<p>Bien visto: estaba perfecto.</p>` : `<p>Estaba bien escrito: «${esc(toks[t])}» es correcto.</p>` };
+      return { ok, html: `<p>Era «<s>${esc(mal)}</s>» → <b>${esc(bien)}</b>.</p>${x ? `<p>${esc(x)}</p>` : reglaDe(c)}` };
+    },
+  },
+  {
+    id: "anclaje", e: "⚓", n: "Repaso de tu regla floja", orig: "Projet Voltaire (corrección inmediata + repetición)",
+    desc: "Te saco la regla que más fallas, te la recuerdo y te pongo 3 seguidas de esa regla para fijarla. Si ya te la sabes, «Ya me la sé» y paso a otra.",
+    ej: "⚓ «Por qué / porque» → 3 frases seguidas.",
+    async run(el) {
+      const huecos = {}; MAN.hueco.concat(MAN.junto).forEach((m) => (huecos[m.c] = huecos[m.c] || []).push(m));
+      const palabras = {}; D.P.forEach((p, i) => { if (p[1].length >= 2 && p[5] <= 2) (palabras[p[4]] = palabras[p[4]] || []).push(i); });
+      const k = ls.get("comp", {}), saltadas = new Set(ls.get("anclaje.ya", []));
+      const usables = Object.keys(D.C).filter((c) => !saltadas.has(c) && ((huecos[c] || []).length >= 3 || (palabras[c] || []).length >= 3));
+      const nota = (c) => (k[c] && k[c][0] ? (k[c][1] + 1) / (k[c][0] + 2) : 0.75);
+      const comp = usables.sort((a, b) => nota(a) - nota(b) || Math.random() - 0.5)[rnd(Math.min(3, usables.length))];
+      const [nombre, regla, truco] = COMP(comp);
+      el.innerHTML = `<p class="enun">⚓ Tu regla floja: <b>${esc(nombre)}</b></p><div class="regla" style="background:var(--soft);border-radius:12px;padding:10px 12px">${esc(regla)}${truco ? `<br><i>Truco: ${esc(truco)}</i>` : ""}</div>
+        <div class="fila" style="margin:12px 0"><button class="btn neg" id="vamos">Vamos: 3 seguidas</button><button class="btn" id="ya">Ya me la sé</button></div><div id="z"></div>`;
+      const ir = await new Promise((res) => { el.querySelector("#vamos").onclick = () => res(true); el.querySelector("#ya").onclick = () => res(false); });
+      if (!ir) { saltadas.add(comp); ls.set("anclaje.ya", [...saltadas].slice(-30)); return { ok: true, html: `<p>Apuntado: no te vuelvo a sacar «${esc(nombre)}» aquí.</p>` }; }
+      el.querySelector(".fila").remove();
+      const z = el.querySelector("#z"); let bien = 0; const fallos = [];
+      const items = (huecos[comp] || []).length >= 3 ? shuffle(huecos[comp]).slice(0, 3).map((m) => ({ q: esc(m.q).replace("___", '<span style="border-bottom:3px solid #000;padding:0 18px"></span>'), o: m.o, a: m.a, sol: m.o[m.a] }))
+        : shuffle(palabras[comp]).slice(0, 3).map((i) => { const p = P(i); const o = shuffle([p.w, ...p.alts.slice(0, 2)]); return { q: "¿Cuál está bien escrita?", o, a: o.indexOf(p.w), sol: p.w }; });
+      for (let n = 0; n < items.length; n++) {
+        const it = items[n];
+        z.innerHTML = `<p class="enun">${n + 1}/3 · ${it.q}</p><div id="zz"></div>`;
+        const ok = await opciones(z.querySelector("#zz"), it.o, it.a, { dos: it.o.length === 2 });
+        if (ok) bien++; else fallos.push(it.sol);
+        await new Promise((r) => setTimeout(r, 700));
+      }
+      compUsada = comp;
+      return { ok: bien >= 2, html: `<p><b>${bien} de 3</b> en «${esc(nombre)}». ${bien === 3 ? "¡Anclada! ⚓" : "La volverás a ver."}</p>${fallos.map((f) => `<p>Era <b>${esc(f)}</b>.</p>`).join("")}` };
+    },
+  },
+  {
+    id: "rapido", e: "⚡", n: "Rápido y difícil", orig: "Merriam-Webster (True or False: puntos por velocidad)",
+    desc: "8 preguntas de «¿cómo se escribe?» con 15 segundos cada una. Cuanto antes contestas, más puntos; y las palabras difíciles valen el doble. ¿Superas tu récord?",
+    ej: "«exhuberante / exuberante» en 3 s → +170.",
+    async run(el) {
+      const rec = ls.get("rec.rapido", 0); let puntos = 0, bien = 0; const fallos = [], usadas = new Set();
+      for (let n = 0; n < 8; n++) {
+        const p = palAzar((p) => p.alts.length >= 1 && !usadas.has(p.w)); usadas.add(p.w);
+        const o = shuffle([p.w, ...p.alts.slice(0, 2)]);
+        el.innerHTML = `<div class="hud"><span>${n + 1}/8</span><span>${puntos} pts</span><span>Récord ${rec}</span></div><div class="barra-t"><i id="bt"></i></div>
+          <p class="enun" style="margin-top:12px">¿Cuál está bien escrita?${p.d >= 2 ? " <b>×2</b>" : ""}</p><div id="z"></div><p class="sub" id="gan" style="text-align:center"></p>`;
+        const bt = el.querySelector("#bt"); bt.style.transition = "none"; bt.style.width = "100%"; void bt.offsetWidth; bt.style.transition = "width 15000ms linear"; bt.style.width = "0%";
+        const t0 = Date.now(); let tim;
+        const ok = await Promise.race([opciones(el.querySelector("#z"), o, o.indexOf(p.w)), new Promise((r) => (tim = setTimeout(() => r(null), 15000)))]);
+        clearTimeout(tim);
+        const quedan = Math.max(0, 15000 - (Date.now() - t0)) / 1000;
+        if (ok) { const g = Math.round((50 + quedan * 10) * (p.d >= 2 ? 2 : 1)); puntos += g; bien++; el.querySelector("#gan").textContent = `+${g}`; }
+        else { fallos.push(p); el.querySelectorAll(".op").forEach((b) => { b.disabled = true; if (b.textContent === p.w) b.classList.add("ok"); }); el.querySelector("#gan").textContent = ok === null ? "¡Tiempo!" : "0"; }
+        await new Promise((r) => setTimeout(r, 650));
+      }
+      const nuevoRec = puntos > rec; if (nuevoRec) ls.set("rec.rapido", puntos);
+      return { ok: bien >= 6, html: `<p><b>${puntos} puntos</b> · ${bien}/8. ${nuevoRec ? "🏆 ¡Nuevo récord!" : `Tu récord: ${rec}.`}</p>${fallos.slice(0, 4).map((f) => `<p>Era <b>${esc(f.w)}</b>.</p>`).join("")}${botonCompartir(`⚡ ${puntos} puntos en «Rápido y difícil» (${bien}/8).`, puntos, "puntos en Rápido y difícil")}` };
+    },
+  },
+  {
+    id: "falsas", e: "❌", n: "Falsas tildes", orig: "Ortografix («palabras que no llevan tilde y creemos que sí»)",
+    desc: "Seis parejas: guion/guión, dio/dió, examen/exámen… Tacha la que está mal en cada una a toda velocidad. Ojo, alguna trampa sí la lleva.",
+    ej: "dio · ~~dió~~ · fe · ~~fé~~ · exámenes · ~~examenes~~.",
+    async run(el) {
+      const extra = D.P.filter((p) => !/[áéíóú]/.test(p[0]) && p[1].some((a) => /[áéíóú]/.test(a)) && p[5] <= 2).slice(0, 400);
+      const pares = shuffle(FALSAS).slice(0, 4).concat(shuffle(extra).slice(0, 2).map((p) => [p[0], p[1].find((a) => /[áéíóú]/.test(a))]));
+      const filas = shuffle(pares).map(([b, m]) => (Math.random() < 0.5 ? [[b, 1], [m, 0]] : [[m, 0], [b, 1]]));
+      const fin = Date.now() + 20000; let hechos = 0, fallos = 0;
+      el.innerHTML = `<div class="hud"><span>Tacha la que está mal</span><span id="tt">20 s</span></div>
+        <div class="falsas">${filas.map((f, i) => f.map(([w, ok], j) => `<button data-f="${i}" data-ok="${ok}">${esc(w)}</button>`).join("")).join("")}</div>`;
+      await new Promise((res) => {
+        const tic = setInterval(() => { const s = Math.max(0, Math.ceil((fin - Date.now()) / 1000)); el.querySelector("#tt").textContent = `${s} s`; if (s <= 0) { clearInterval(tic); res(); } }, 200);
+        el.querySelectorAll(".falsas button").forEach((b) => b.onclick = () => {
+          const fila = el.querySelectorAll(`[data-f="${b.dataset.f}"]`); fila.forEach((x) => x.disabled = true);
+          if (b.dataset.ok === "0") { b.classList.add("tachada"); } else { b.classList.add("mal"); fallos++; fila.forEach((x) => { if (x.dataset.ok === "0") x.classList.add("tachada"); }); }
+          if (++hechos === filas.length) { clearInterval(tic); res(); }
+        });
+      });
+      el.querySelectorAll(".falsas button").forEach((b) => { if (!b.disabled && b.dataset.ok === "0") b.classList.add("tachada"); b.disabled = true; });
+      const ok = hechos === filas.length && fallos === 0;
+      return { ok, html: `<p>${hechos === filas.length ? `${filas.length - fallos} de ${filas.length} bien.` : "Se acabó el tiempo."}</p><div class="regla"><b>Por qué</b>Los monosílabos no llevan tilde (dio, fue, fe, ti, guion). Las llanas en -n o -s tampoco (examen, joven, imagen), pero sus plurales son esdrújulos y sí (exámenes, jóvenes, imágenes).</div>` };
+    },
+  },
+  {
+    id: "truco", e: "🪄", n: "El truco", orig: "Ortografix (trucos de sustitución: «va a ser = será»)",
+    desc: "Te doy un truco para una duda (porque / por qué, a ver / haber, sino / si no…) y lo aplicas en 5 frases seguidas. Truco aprendido, duda resuelta para siempre.",
+    ej: "🪄 «Si cabe “vamos a ver”, es “a ver”» → 5 frases.",
+    async run(el) {
+      const grupos = {}; MAN.hueco.concat(MAN.junto).forEach((m) => (grupos[m.c] = grupos[m.c] || []).push(m));
+      const comps = Object.keys(grupos).filter((c) => grupos[c].length >= 5 && COMP(c)[2] && c !== "ACE.VERBOS");
+      const comp = pick(comps); const [nombre, , truco] = COMP(comp);
+      el.innerHTML = `<div class="truco"><small>🪄 El truco</small><b>${esc(nombre)}</b><p>${esc(truco)}</p></div><div id="z"></div>`;
+      const z = el.querySelector("#z"); let bien = 0; const fallos = [];
+      for (const [n, m] of shuffle(grupos[comp]).slice(0, 5).entries()) {
+        z.innerHTML = `<p class="enun">${n + 1}/5 · ${esc(m.q).replace("___", '<span style="border-bottom:3px solid #000;padding:0 18px"></span>')}</p><div id="zz"></div>`;
+        const ok = await opciones(z.querySelector("#zz"), m.o, m.a, { dos: m.o.length === 2 });
+        if (ok) bien++; else fallos.push(m);
+        await new Promise((r) => setTimeout(r, 700));
+      }
+      compUsada = comp;
+      return { ok: bien >= 4, html: `<p><b>${bien} de 5</b> con el truco.</p>${fallos.slice(0, 2).map((m) => `<p>Iba «<b>${esc(m.o[m.a])}</b>». ${esc(m.x || "")}</p>`).join("")}${reglaDe(comp)}` };
+    },
+  },
+  {
+    id: "bandera", e: "🚩", n: "Bandera roja", orig: "Ortografix (humor: «si te invita haber una película, huye»)",
+    desc: "Un mensaje de tu cita o de tu jefe. Si tiene falta, es bandera roja: ¡huye! Si está perfecto, quédate. Con explicación (y algo de humor).",
+    ej: "💘 «¿Quedamos haber una peli?» → 🚩 Huye.",
+    async run(el) {
+      const [quien, msg, mal, bien] = pick(BANDERAS);
+      el.innerHTML = `<p class="enun">${esc(quien)} te escribe:</p><div class="chat"><div class="burbuja otro">${esc(msg)}</div></div><div id="z"></div>`;
+      const ok = await opciones(el.querySelector("#z"), ["🚩 Huye", "💚 Quédate"], mal ? 0 : 1, { dos: true });
+      return { ok, html: mal ? `<p>🚩 Bandera roja: «<s>${esc(mal)}</s>» → <b>${esc(bien)}</b>.</p><div class="regla"><b>Por qué</b>${esc(BANDERA_X[bien] || "")}.</div>` : `<p>💚 Mensaje impecable: ${quien.includes("cita") ? "esta cita merece la pena" : "este jefe escribe bien"}.</p>` };
+    },
+  },
+  {
+    id: "tildemsj", e: "💌", n: "Una tilde cambia el mensaje", orig: "Ortografix (hacia / hacía, de más / demás, sino / si no)",
+    desc: "Un mensaje con contexto y dos formas casi iguales: hacia o hacía, de más o demás, sino o si no, té o te. Una tilde o un espacio cambian lo que dices.",
+    ej: "Tu abuela: «De pequeña ___ mucho frío» → hacía.",
+    async run(el) {
+      const [ctx, q, o, a, x] = pick(TILDEMSJ);
+      el.innerHTML = `<p class="enun">${esc(ctx)}</p><div class="chat"><div class="burbuja otro">${esc(q).replace("___", '<span style="border-bottom:3px solid #000;padding:0 18px"></span>')}</div></div><div id="z"></div>`;
+      const ok = await opciones(el.querySelector("#z"), o, a, { dos: true });
+      return { ok, html: `<p>Va <b>${esc(o[a])}</b>.</p><div class="regla"><b>Por qué</b>${esc(x)}</div>` };
+    },
+  },
   {
     id: "mismo", e: "🟰", n: "¿Es lo mismo?", orig: "Ortografix (Instagram: «No es lo mismo… que…»)",
     desc: "Dos frases casi iguales. ¿Significan lo mismo o una coma, una tilde o una palabra les cambia el sentido? Luego, compártelo como post.",
@@ -1618,6 +1831,13 @@ const VA = {
   cestas: [2, 3, "Arcade rápido con combo y récord: «una más» garantizado."],
   diana: [2, 3, "Puntería contra el reloj; grabado en vídeo luce mucho."],
   mismo: [3, 2, "El formato «No es lo mismo… que…» de Ortografix: se comparte tal cual como post."],
+  hayfalta: [3, 3, "La pregunta del día de Voltaire: «¿correcta o no?» engancha porque a veces no hay falta."],
+  anclaje: [1, 2, "Más estudio que juego, pero es lo que hace que la regla se quede."],
+  rapido: [2, 3, "Puntos por rapidez y dificultad: ganas de bajar tu tiempo."],
+  falsas: [3, 3, "«Palabras que no llevan tilde y creemos que sí» es de los posts más compartidos."],
+  truco: [3, 2, "Los trucos («va a ser = será») se guardan y se reenvían."],
+  bandera: [3, 2, "Humor de citas y jefes: muy de reel y de captura."],
+  tildemsj: [2, 2, "Pares con contexto: la tilde que cambia la frase da para debate."],
   razon: [3, 2, "Las discusiones de grupo sobre cómo se escribe algo son de lo más viral."],
 };
 const puntos = (n) => "●".repeat(n) + "○".repeat(3 - n);
@@ -1661,6 +1881,7 @@ function inicio() {
       <div class="stat"><b>${hoy}</b><span>hoy</span></div>
       <div class="stat"><b>${s.n ? Math.round((100 * s.ok) / s.n) + "%" : "—"}</b><span>aciertos</span></div>
       <div class="stat"><b>${racha(s.dias || [])}</b><span>días seguidos</span></div>
+      <div class="stat"><b>${(ls.get("xp", { sem: {} }).sem[semana()] || 0)}</b><span>XP semana</span></div>
     </div>
     <p class="sub">${nUp || nDown ? `Has valorado ${nUp + nDown} tipos: los 👍 (${nUp}) te salen más, y cuantas más ★ más, y los 👎 (${nDown}) ya no te salen.` : "Aún no has valorado ningún tipo de ejercicio: puedes hacerlo mientras juegas o en «Valorar»."}</p>
     <button class="btn" style="width:100%" id="val">👍 👎 Valorar los ${TIPOS.length} tipos de ejercicio</button>`;
@@ -1733,11 +1954,12 @@ async function turno() {
   if (!res) return;
   R.racha = res.ok ? (R.racha || 0) + 1 : 0; R.mejor = Math.max(R.mejor || 0, R.racha);
   R.n++; if (res.ok) R.ok++; R.ultimo = t.id; R.hist.push([t.id, res.ok]);
+  const mult = res.ok ? Math.min(3, 1 + Math.floor(R.racha / 3)) : 0, xp = 10 * mult; sumarXP(xp);
   apuntar(t.id, res.ok);
   const v = votos()[t.id] || 0;
   const fb = $main.querySelector("#fb");
   fb.innerHTML = `<div class="fb">
-      <h3 class="${res.ok ? "" : "mal"}">${res.ok ? pick(["¡Bien!", "¡Correcto!", "¡Eso es!", "¡Perfecto!"]) : "Casi…"}${R.racha >= 3 ? ` <span class="racha">🔥 ${R.racha} seguidas</span>` : ""}</h3>${res.html}
+      <h3 class="${res.ok ? "" : "mal"}">${res.ok ? pick(["¡Bien!", "¡Correcto!", "¡Eso es!", "¡Perfecto!"]) : "Casi…"}${R.racha >= 3 ? ` <span class="racha">🔥 ${R.racha} seguidas</span>` : ""}${xp ? ` <span class="racha">+${xp} XP${mult > 1 ? ` ×${mult}` : ""}</span>` : ""}</h3>${res.html}
       <div class="mini"><span>¿Te gusta este tipo de ejercicio?</span>${botonesVoto(t.id, v, true)}</div>
       ${R.forzado
         ? `<div class="fila"><button class="btn" id="sig">Otro ejemplo</button><button class="btn neg" id="sigtipo">${sinVal() ? "Siguiente tipo sin valorar →" : "Volver a Valorar"}</button></div>`
