@@ -12,6 +12,7 @@
 // en cola y se reintentan al abrir la app.
 import { quitarTildes, silabear, analizar, explicarTilde, marcarTonica } from "./silabas.js";
 import { catDe, registrarNota, sembrarNota, pintarNota } from "./nota.js?v=__BUILD_ID__";
+import { IDEAS } from "./ideas.js?v=__BUILD_ID__";
 
 const CFG = window.ORTOGRAFIA10_CONFIG;
 const $main = document.getElementById("main");
@@ -462,40 +463,6 @@ document.addEventListener("click", (e) => {
   try { compartir(JSON.parse(b.dataset.compartir)); } catch {}
 });
 
-// ------------------------------------------------------------ ideas para hacerla viral (se votan como los tipos)
-// Se guardan en ortografia10_votos con tipo = "idea:<id>".
-const IDEAS = [
-  { id: "historia", e: "📸", n: "Imagen de resultado para historias", red: "Instagram / WhatsApp", hecho: true,
-    desc: "Al acabar una ronda, un botón crea una imagen vertical en blanco y negro con tu nota (8/10), tu fila de aciertos ⬛🟥 y una palabra trampa «¿bien o mal escrita?» para que tus seguidores respondan." },
-  { id: "reto", e: "🔗", n: "Enlace de reto «¿me superas?»", red: "WhatsApp / X", hecho: true,
-    desc: "El texto que compartes lleva un enlace: quien lo abre ve «Te han retado: sacó 8/10», contesta la palabra trampa y juega para superarlo." },
-  { id: "wordle", e: "🟩", n: "Cuadrícula del Reto del día", red: "X / WhatsApp",
-    desc: "Como Wordle: una sola palabra al día igual para todos y un texto con emojis (🟩🟨⬛) que no destripa la respuesta. Lo mejor para grupos de amigos." },
-  { id: "racha", e: "🔥", n: "Racha de días y récords", red: "Instagram / TikTok",
-    desc: "Compartir «🔥 30 días seguidos» o «récord de 47 en Supervivencia». Los récords crean pique entre amigos." },
-  { id: "nota", e: "🎓", n: "Mi nota de ortografía", red: "Instagram / LinkedIn",
-    desc: "Una imagen tipo boletín con tu nota de 0 a 10 por categoría (tildes, b/v, h…). Gusta presumir de un 9,5 en tildes." },
-  { id: "solo10", e: "🧠", n: "«Solo el 10 % la escribe bien»", red: "Instagram / TikTok",
-    desc: "Cada semana, la palabra que más se falla en la app (dato real de Supabase) como reto: «¿Eres del 10 %?». Datos reales = credibilidad." },
-  { id: "reel", e: "🎬", n: "Vídeo vertical de una partida", red: "TikTok / Reels / Shorts",
-    desc: "Botón que graba 15 s de Lluvia de palabras o Supervivencia como vídeo vertical con marcador. Los arcades se ven muy bien en vídeo." },
-  { id: "duelo", e: "⚔️", n: "Duelo con las mismas palabras", red: "WhatsApp",
-    desc: "Retas a un amigo con un enlace y os tocan exactamente los mismos 10 ejercicios. Al acabar se comparan los dos resultados." },
-  { id: "liga", e: "🏆", n: "Liga semanal de clase o grupo", red: "WhatsApp / aula",
-    desc: "Un código de grupo (una clase, una familia, una oficina) con clasificación semanal. Muy útil para profesores." },
-  { id: "carteles", e: "🪧", n: "Caza de carteles con falta", red: "Instagram / X",
-    desc: "Los usuarios suben fotos de carteles reales con faltas; los mejores salen en el juego «El cartel con falta» con su nombre. Contenido generado por la gente." },
-  { id: "polemica", e: "🔥", n: "Encuesta polémica del día", red: "Instagram / X",
-    desc: "«¿Solo o sólo?», «¿Guion o guión?»: un dato de lo que vota la gente en la app frente a lo que dice la RAE. La polémica genera comentarios." },
-  { id: "famosos", e: "📰", n: "Faltas de famosos y titulares", red: "X / Instagram",
-    desc: "Ejercicios con faltas reales de titulares, tuits de famosos o carteles de series. Muy compartible, pero cuidado con los derechos de imagen." },
-  { id: "pegatinas", e: "🏷️", n: "Pegatinas y memes descargables", red: "WhatsApp / Telegram",
-    desc: "Pegatinas de WhatsApp tipo «Haber si nos vemos 🤦» o «La coma salva vidas». Se reenvían solas en los grupos." },
-  { id: "profe", e: "👩‍🏫", n: "Modo profe: enviar un reto a la clase", red: "WhatsApp / Classroom",
-    desc: "El profesor elige un tipo de ejercicio y manda un enlace; ve quién lo ha hecho y la nota media. Los profes son grandes difusores." },
-  { id: "insignias", e: "🏅", n: "Insignias coleccionables", red: "Instagram",
-    desc: "Medallas por hitos («Maestro de la h», «100 tildes seguidas») que se pueden compartir como imagen." },
-];
 
 // ------------------------------------------------------------ tipos de ejercicio
 // orig: de dónde sale la idea. Cada run(el) devuelve una promesa con
@@ -1858,10 +1825,11 @@ function siguienteTipo(ultimo, forzado) {
 let tab = "jugar";
 // Si el móvil aún tiene un index.html viejo en caché, añadir la pestaña que falte.
 { const nav = document.querySelector(".tabs");
-  for (const [id, n] of [["valorar", "Valorar"], ["fichas", "Fichas"], ["nota", "Nota"], ["ideas", "Ideas"]]) if (nav && !nav.querySelector(`[data-tab="${id}"]`)) { const b = document.createElement("button"); b.dataset.tab = id; b.textContent = n; nav.appendChild(b); } }
+  for (const [id, n] of [["valorar", "Ejercicios"], ["fichas", "Fichas"], ["nota", "Nota"], ["ideas", "Ideas"]]) if (nav && !nav.querySelector(`[data-tab="${id}"]`)) { const b = document.createElement("button"); b.dataset.tab = id; b.textContent = n; nav.appendChild(b); }
+  const vb = nav && nav.querySelector('[data-tab="valorar"]'); if (vb) vb.textContent = "Ejercicios"; }
 document.querySelectorAll(".tabs button").forEach((b) => b.onclick = () => irA(b.dataset.tab));
 function irA(t) {
-  tab = t; ronda = null;
+  tab = t; ronda = null; if (t !== "ideas") ideaAbierta = null;
   document.querySelectorAll(".tabs button").forEach((b) => b.classList.toggle("on", b.dataset.tab === t));
   if ("speechSynthesis" in window) speechSynthesis.cancel();
   t === "jugar" ? inicio() : t === "ideas" ? ideas() : t === "fichas" ? fichas() : t === "nota" ? pintarNota($main, { COMP, esc, empezar }) : valorar();
@@ -1883,8 +1851,8 @@ function inicio() {
       <div class="stat"><b>${racha(s.dias || [])}</b><span>días seguidos</span></div>
       <div class="stat"><b>${(ls.get("xp", { sem: {} }).sem[semana()] || 0)}</b><span>XP semana</span></div>
     </div>
-    <p class="sub">${nUp || nDown ? `Has valorado ${nUp + nDown} tipos: los 👍 (${nUp}) te salen más, y cuantas más ★ más, y los 👎 (${nDown}) ya no te salen.` : "Aún no has valorado ningún tipo de ejercicio: puedes hacerlo mientras juegas o en «Valorar»."}</p>
-    <button class="btn" style="width:100%" id="val">👍 👎 Valorar los ${TIPOS.length} tipos de ejercicio</button>`;
+    <p class="sub">${nUp || nDown ? `Has valorado ${nUp + nDown} tipos: los 👍 (${nUp}) te salen más, y cuantas más ★ más, y los 👎 (${nDown}) ya no te salen.` : "Aún no has valorado ningún tipo de ejercicio: puedes hacerlo mientras juegas o en «Ejercicios»."}</p>
+    <button class="btn" style="width:100%" id="val">👍 👎 Ejercicios: valora los ${TIPOS.length} tipos</button>`;
   $main.querySelector("#go").onclick = () => empezar();
   $main.querySelector("#val").onclick = () => irA("valorar");
   const rt = $main.querySelector(".reto");
@@ -1908,17 +1876,38 @@ function retoHTML() {
     <div class="palabra">${esc(w)}</div><div class="ops dos"><button class="op" data-rb="1">✓ Bien</button><button class="op" data-rb="0">✗ Mal</button></div><p class="rsol"></p></div>`;
 }
 
-// ------------------------------------------------------------ ideas para hacerla viral
+// ------------------------------------------------------------ ideas de lanzamiento, marketing, juegos y retos
+let ideaAbierta = null;
 function ideas() {
-  const v = votos(); const n = IDEAS.filter((i) => v["idea:" + i.id]).length;
+  const v = votos();
+  if (ideaAbierta) {
+    const i = IDEAS.find((x) => x.id === ideaAbierta), k = IDEAS.indexOf(i), x = v["idea:" + i.id] || 0;
+    $main.innerHTML = `
+      <button class="probar" id="volver">← Todas las ideas</button>
+      <h2 style="margin-top:14px">${i.e} ${esc(i.n)}</h2>
+      <div class="orig" style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--mute)">${esc(i.tipo)} · ${esc(i.red)}${i.hecho ? " · ✅ ya está en la app" : ""}</div>
+      <p>${esc(i.desc)}</p>
+      <ol class="pasos">${i.pasos.map((p) => `<li>${esc(p)}</li>`).join("")}</ol>
+      <p class="sub" style="margin:14px 0 6px">Así se vería (maqueta, datos inventados):</p>
+      <div class="mqs">${i.mq().join("")}</div>
+      <div class="mini" style="color:#000"><span>¿Te gusta esta idea?</span>${botonesVoto("idea:" + i.id, x)}</div>
+      <div class="fila"><button class="btn" id="ant" ${k ? "" : "disabled"}>← Anterior</button><button class="btn neg" id="sig">${k < IDEAS.length - 1 ? "Siguiente idea →" : "Volver a la lista"}</button></div>`;
+    $main.querySelector("#volver").onclick = () => { ideaAbierta = null; ideas(); };
+    $main.querySelector("#ant").onclick = () => { ideaAbierta = IDEAS[k - 1].id; ideas(); scrollTo(0, 0); };
+    $main.querySelector("#sig").onclick = () => { ideaAbierta = k < IDEAS.length - 1 ? IDEAS[k + 1].id : null; ideas(); scrollTo(0, 0); };
+    enganchaVotos($main);
+    return;
+  }
+  const n = IDEAS.filter((i) => v["idea:" + i.id]).length;
   $main.innerHTML = `
-    <h2>Ideas para hacerla viral</h2>
-    <p class="sub">${IDEAS.length} ideas para que la app se comparta en redes. Dime cuáles te gustan: 👍 y de 1 a 5 ★, o 👎. Las que marco con ✅ ya están hechas: pruébalas al acabar una ronda. Llevas ${n} de ${IDEAS.length} valoradas.</p>
+    <h2>Ideas de lanzamiento</h2>
+    <p class="sub">${IDEAS.length} ideas de marketing, juegos y retos para lanzar la app y que se comparta en redes. Toca una para ver cómo sería, con maquetas de pantalla. Vota 👍 (y de 1 a 5 ★) o 👎. Las ✅ ya están hechas. Llevas ${n} de ${IDEAS.length} valoradas.</p>
     ${IDEAS.map((i) => { const x = v["idea:" + i.id] || 0; return `<div class="tarjeta ${x > 0 ? "like" : x === -1 ? "dislike" : ""}">
       <h3><span>${i.e}</span>${esc(i.n)}${i.hecho ? " <small>✅ ya está</small>" : ""}</h3>
-      <div class="orig">${esc(i.red)}</div><p>${esc(i.desc)}</p>
-      <div class="pie"><span></span>${botonesVoto("idea:" + i.id, x)}</div></div>`; }).join("")}`;
-  enganchaVotos($main, () => setTimeout(() => { if (tab === "ideas") { const y = scrollY; ideas(); scrollTo(0, y); } }, 400));
+      <div class="orig">${esc(i.tipo)} · ${esc(i.red)}</div><p>${esc(i.desc)}</p>
+      <div class="pie"><button class="probar" data-idea="${i.id}">👁 Ver cómo sería</button>${botonesVoto("idea:" + i.id, x)}</div></div>`; }).join("")}`;
+  $main.querySelectorAll("[data-idea]").forEach((b) => b.onclick = () => { ideaAbierta = b.dataset.idea; ideas(); scrollTo(0, 0); });
+  enganchaVotos($main, () => setTimeout(() => { if (tab === "ideas" && !ideaAbierta) { const y = scrollY; ideas(); scrollTo(0, y); } }, 400));
 }
 
 let ronda = null;
@@ -1962,7 +1951,7 @@ async function turno() {
       <h3 class="${res.ok ? "" : "mal"}">${res.ok ? pick(["¡Bien!", "¡Correcto!", "¡Eso es!", "¡Perfecto!"]) : "Casi…"}${R.racha >= 3 ? ` <span class="racha">🔥 ${R.racha} seguidas</span>` : ""}${xp ? ` <span class="racha">+${xp} XP${mult > 1 ? ` ×${mult}` : ""}</span>` : ""}</h3>${res.html}
       <div class="mini"><span>¿Te gusta este tipo de ejercicio?</span>${botonesVoto(t.id, v, true)}</div>
       ${R.forzado
-        ? `<div class="fila"><button class="btn" id="sig">Otro ejemplo</button><button class="btn neg" id="sigtipo">${sinVal() ? "Siguiente tipo sin valorar →" : "Volver a Valorar"}</button></div>`
+        ? `<div class="fila"><button class="btn" id="sig">Otro ejemplo</button><button class="btn neg" id="sigtipo">${sinVal() ? "Siguiente tipo sin valorar →" : "Volver a Ejercicios"}</button></div>`
         : `<button class="btn neg big" id="sig">${R.n >= R.total ? "Ver resultado" : "Siguiente"}</button>${sinVal() ? `<button class="btn" id="sigtipo" style="width:100%;margin-top:10px">Valorar un tipo que aún no has valorado →</button>` : ""}`}</div>`;
   // Votar mientras se prueba un tipo lleva solo al siguiente tipo sin valorar.
   enganchaVotos(fb, (acc, nuevo) => { if (R.forzado && nuevo !== 0) setTimeout(() => { if (ronda === R) irSinValorar(t.id); }, 700); });
@@ -1988,7 +1977,7 @@ function resumen() {
     <p class="sub">${R.ok === R.total ? "¡Ronda perfecta!" : R.ok >= R.total * 0.7 ? "Muy bien. Sigue así." : "Cada fallo es una regla nueva aprendida."}</p>
     ${Object.entries(porTipo).map(([id, [n, ok]]) => `<div class="mini" style="color:#000"><span>${TIPO[id].e} ${esc(TIPO[id].n)} · ${ok}/${n}</span>${botonesVoto(id, votos()[id] || 0)}</div>`).join("")}
     ${R.forzado ? "" : `<button class="btn neg big" id="comp" style="margin-top:14px">📤 Compartir en redes</button>`}
-    <div class="fila" style="margin-top:18px"><button class="btn neg" id="otra">${R.forzado ? "Probar otra vez" : "Otra ronda"}</button><button class="btn" id="val">${R.forzado ? "Volver a Valorar" : "Valorar"}</button></div>`;
+    <div class="fila" style="margin-top:18px"><button class="btn neg" id="otra">${R.forzado ? "Probar otra vez" : "Otra ronda"}</button><button class="btn" id="val">${R.forzado ? "Volver a Ejercicios" : "Ejercicios"}</button></div>`;
   enganchaVotos($main);
   $main.querySelector("#otra").onclick = () => empezar(R.forzado);
   const cp = $main.querySelector("#comp");

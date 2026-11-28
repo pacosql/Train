@@ -11,7 +11,7 @@ PWA en blanco y negro con el logotipo elegido en [`ortologo/`](../ortologo)
 - **Jugar**: rondas de 10 ejercicios de tipos variados. Los tipos con 👍
   salen el triple y los 👎 no salen. Cada respuesta enseña la regla
   (competencia de Orto, con su truco) y deja votar ese tipo ahí mismo.
-- **Valorar**: los 58 tipos con descripción, ejemplo, de dónde sale la
+- **Ejercicios** (antes «Valorar»; el id interno sigue siendo `valorar`): los 58 tipos con descripción, ejemplo, de dónde sale la
   idea, ▶ Probar (3 seguidos de ese tipo) y 👍/👎 con el total de todos los
   dispositivos. Tras un 👍 se eligen de 1 a 5 ★ (un 👍 empieza en 3 ★);
   al jugar, cuantas más estrellas, más sale (1★ ×1,5 … 5★ ×6). En
@@ -30,8 +30,9 @@ PWA en blanco y negro con el logotipo elegido en [`ortologo/`](../ortologo)
   respuestas sobre las últimas 40; con menos de 5 es provisional. Código en
   `nota.js`.
 
-- **Ideas**: 15 ideas para hacerla viral en redes (qué compartir y en qué
-  red), con 👍/👎 y ★ como los tipos; se guardan en `ortografia10_votos` con
+- **Ideas**: 15 ideas de lanzamiento, marketing, juegos y retos (`ideas.js`).
+  Cada una se abre con sus pasos y maquetas de pantalla de móvil hechas con
+  HTML/CSS (datos inventados), y se vota con 👍/👎 y ★ como los tipos; se guardan en `ortografia10_votos` con
   `tipo = "idea:<id>"`. Ya hechas: imagen de resultado para historias
   (canvas 1080×1920 en blanco y negro, con palabra trampa) y enlace de reto
   `?reto=8/10&t=<índice de palabra>&b=<1 si la trampa está bien>`.

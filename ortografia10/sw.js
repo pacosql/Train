@@ -20,6 +20,7 @@ const SHELL = [
   "./app.js",
   "./silabas.js",
   "./nota.js",
+  "./ideas.js",
   "./datos.json",
   "./fonts/poppins-800.woff2",
   "./fonts/poppins-600.woff2",
