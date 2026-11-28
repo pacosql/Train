@@ -7,7 +7,7 @@
 
 const m = (titulo, cuerpo, { app = "", negro = false } = {}) =>
   `<figure class="mq"><div class="mv${negro ? " neg" : ""}"><div class="mv-st"><span>9:41</span><span>${app}</span><span>▮▮▮</span></div><div class="mv-c">${cuerpo}</div></div><figcaption>${titulo}</figcaption></figure>`;
-const logo = `<div class="mv-logo">orto<br>grafía<br>10</div>`;
+const logo = `<div class="mv-logo">orto-<br>grafía<br>10</div>`;
 const chat = (quien, msgs) => `<div class="mv-wa"><b>${quien}</b></div>${msgs.map(([yo, t]) => `<div class="mv-b ${yo ? "yo" : ""}">${t}</div>`).join("")}`;
 const sq = (s) => s.split("").map((c) => `<i class="sq ${c === "1" ? "n" : c === "2" ? "r" : c === "3" ? "g" : ""}"></i>`).join("");
 
