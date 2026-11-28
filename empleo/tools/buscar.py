@@ -127,7 +127,7 @@ def get(url, data=None, headers=None, raw=False, tries=3):
                 return b if raw else json.loads(b)
         except urllib.error.HTTPError as e:
             if e.code in (429, 503) and i < tries - 1:
-                time.sleep(5 * (i + 1))
+                time.sleep(min(5 * (i + 1), 12) if tries <= 3 else 1.5 * (i + 1))
                 continue
             raise
 
@@ -348,7 +348,16 @@ def workday(e):
                "developer advocate", "account manager Spain", "sales Spain", "sales EMEA remote", "architect EMEA remote", "country manager", "general manager Spain", "head of sales Spain"]
     for q in qs:
         body = json.dumps({"appliedFacets": {}, "limit": 20, "offset": 0, "searchText": q}).encode()
-        for j in get(api + "/jobs", body, {"Content-Type": "application/json"}).get("jobPostings", []):
+        # Workday responde 429 de forma intermitente: una búsqueda fallida no
+        # debe tirar todo el portal (antes se perdía la empresa entera).
+        try:
+            posts = get(api + "/jobs", body, {"Content-Type": "application/json"}, tries=6).get("jobPostings", [])
+        except Exception as ex:
+            fallos = locals().get("fallos", 0) + 1
+            if fallos > len(qs) // 2:
+                raise
+            continue
+        for j in posts:
             url = f"https://{host}/{site}{j.get('externalPath', '')}"
             if url in seen or not categoria(j.get("title", "")):
                 continue
@@ -357,7 +366,7 @@ def workday(e):
             desc = ""
             if re.match(r"\d+ Locations", j.get("locationsText", "")) or SPAIN.search(loc) or REMOTE.search(loc):
                 try:
-                    info = get(api + j["externalPath"]).get("jobPostingInfo", {})
+                    info = get(api + j["externalPath"], tries=5).get("jobPostingInfo", {})
                     loc = " / ".join([info.get("location", "")] + info.get("additionalLocations", []))
                     desc = text(info.get("jobDescription"))
                 except Exception:
@@ -533,9 +542,19 @@ def linkedin(busquedas=None, max_pag=400):
         if lote:
             i, n = map(int, lote.split("/"))
             busquedas = busquedas[i - 1::n]
+    # LINKEDIN_LIMITE=<seg>: tope de tiempo. Cuando LinkedIn responde 429 a
+    # menudo un lote puede pasar de 10 min y perderse entero; con el tope se
+    # dejan de pedir listados al 45 % del tiempo y fichas al 100 %, y se
+    # devuelve lo leído hasta entonces (las ofertas sin ficha se descartan).
+    limite = float(os.environ.get("LINKEDIN_LIMITE", 0))
+    t0 = time.time()
+    fuera = lambda frac=1.0: bool(limite) and time.time() - t0 > limite * frac
     for q, extra in busquedas:
         vacias = 0
         for start in range(0, max_pag, 10):
+            if fuera(0.45):
+                log("[li] tope de tiempo en listados:", q, start)
+                break
             try:
                 s = get("https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?"
                         + urllib.parse.urlencode({"keywords": q, "start": start, **extra}), raw=True)
@@ -583,6 +602,9 @@ def linkedin(busquedas=None, max_pag=400):
     log(f"[li] {len(found)} ofertas en listados; leyendo fichas…")
 
     def ficha(o):
+        if fuera():
+            o["_sin_ficha"] = True
+            return o
         try:
             s = get(f"https://www.linkedin.com/jobs-guest/jobs/api/jobPosting/{o['jid']}", raw=True)
         except Exception:
@@ -603,6 +625,11 @@ def linkedin(busquedas=None, max_pag=400):
 
     with ThreadPoolExecutor(int(os.environ.get("FICHAS_HILOS", 6))) as ex:
         res = list(ex.map(ficha, found.values()))
+    if limite:
+        n = len(res)
+        res = [o for o in res if not o.pop("_sin_ficha", False)]
+        if n - len(res):
+            log(f"[li] tope de tiempo: {n - len(res)} fichas sin leer (descartadas)")
     for o in res:
         o["empresa_data_ai"] = (o["empresa"].lower() in DATA_AI_NAMES
                                 or bool(DATA_AI_HINT.search(o.get("industria", "") + " " + o["empresa"])))
