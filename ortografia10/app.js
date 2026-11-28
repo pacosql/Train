@@ -85,12 +85,14 @@ async function vaciarCola() {
   } catch {} finally { vaciando = false; }
 }
 let TOT = null; // {tipo: {up, down}} de todos los dispositivos
+let ULT = null; // último voto de cada dispositivo|tipo (para recuperar los tuyos)
 async function cargarTotales() {
   try {
     const r = await fetch(`${CFG.url}/rest/v1/${T("votos")}?select=tipo,valor,dispositivo,created_at&order=created_at.asc&limit=20000`, { headers: H });
     if (!r.ok) return;
     const ult = {};
     for (const v of await r.json()) ult[v.dispositivo + "|" + v.tipo] = v;
+    ULT = ult;
     TOT = {};
     for (const v of Object.values(ult)) {
       if (!v.valor) continue;
@@ -120,6 +122,41 @@ function votar(tipo, accion) {
     if (nuevo > 0) { t.up++; t.est += nuevo; } if (nuevo === -1) t.down++;
   }
   return nuevo;
+}
+// Recuperar votos desde Supabase: si este navegador perdió su localStorage
+// (o es otro móvil/navegador), los votos siguen en ortografia10_votos con el
+// código del dispositivo. Se copian los que falten aquí (los locales mandan).
+function votosDe(disp) {
+  const r = {};
+  for (const v of Object.values(ULT || {})) if (v.dispositivo === disp && v.valor) r[v.tipo] = v.valor;
+  return r;
+}
+function restaurarVotos(disp) {
+  const srv = votosDe(disp), v = votos(); let n = 0;
+  for (const k in srv) if (!(k in v)) { v[k] = srv[k]; n++; }
+  if (n) ls.set("votos", v);
+  return n;
+}
+// Adoptar el código de otro dispositivo: desde ahora votas con ese código, se
+// recuperan sus votos y los que hubieras dado aquí se suben también con él.
+function adoptar(disp) {
+  disp = String(disp || "").trim().toLowerCase();
+  if (!/^[a-z0-9]{4,16}$/.test(disp)) return -1;
+  const srv = votosDe(disp), v = votos();
+  if (disp !== DISP) {
+    for (const k in v) if (srv[k] !== v[k] && !k.startsWith("idea:")) encolar("votos", { tipo: k, valor: v[k], dispositivo: disp });
+    DISP = disp; ls.set("dev", DISP);
+  }
+  return restaurarVotos(disp);
+}
+function dispositivosConVotos() {
+  const m = {};
+  for (const v of Object.values(ULT || {})) {
+    if (!v.valor || v.tipo.startsWith("idea:")) continue;
+    const d = (m[v.dispositivo] = m[v.dispositivo] || { id: v.dispositivo, n: 0, ult: "" });
+    d.n++; if (v.created_at > d.ult) d.ult = v.created_at;
+  }
+  return Object.values(m).filter((d) => d.id !== DISP).sort((a, b) => b.n - a.n);
 }
 { const v = votos(); if (!ls.get("v2", false)) { for (const k in v) if (v[k] === 1) v[k] = 3; ls.set("votos", v); ls.set("v2", true); } }
 function apuntar(tipo, ok) {
@@ -2128,13 +2165,21 @@ function valorar() {
       <div class="pie"><button class="probar" data-probar="${t.id}">▶ Probar${st ? ` · ${st[1]}/${st[0]}` : ""}</button>${botonesVoto(t.id, v[t.id] || 0, uno)}</div>
       ${uno ? `<div class="fila" style="margin-top:12px"><button class="btn" id="saltar">Saltar</button></div>` : ""}
     </article>`; }).join("") || (uno ? `<div class="tarjeta like"><h3>¡Ya los has valorado todos! 🎉</h3><p>Puedes cambiar cualquier voto en «Todos».</p><button class="btn neg" id="vertodos">Ver todos</button></div>` : `<p class="sub">Nada por aquí.</p>`)}
-    <p class="nota">Los votos se guardan en este móvil y en Supabase (tabla <code>ortografia10_votos</code>), junto con los de otros dispositivos; el número junto a 👍/👎 es el total de todos.</p>`;
+    <p class="nota">Los votos se guardan en este móvil y en Supabase (tabla <code>ortografia10_votos</code>), junto con los de otros dispositivos; el número junto a 👍/👎 es el total de todos.</p>
+    <div class="recuperar">
+      <p class="nota">Tu código de dispositivo: <b>${esc(DISP)}</b>. Si votaste en otro móvil o navegador (o se borraron los datos de este), recupera esos votos aquí:</p>
+      ${ULT ? dispositivosConVotos().filter((d) => d.n >= 3).slice(0, 6).map((d) => `<button class="btn neg" data-adopta="${esc(d.id)}">Recuperar ${d.n} votos de ${esc(d.id)} · ${new Date(d.ult).toLocaleString("es-ES", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}</button>`).join("") : `<p class="nota">Cargando votos guardados…</p>`}
+      <div class="fila"><input id="codigo" placeholder="o escribe un código" autocomplete="off" autocapitalize="off"><button class="btn neg" id="adoptar">Recuperar</button></div>
+    </div>`;
   $main.querySelectorAll("[data-f]").forEach((b) => b.onclick = () => { filtro = b.dataset.f; valorar(); });
   $main.querySelectorAll("[data-probar]").forEach((b) => b.onclick = () => empezar(b.dataset.probar));
   const otra = (ms) => setTimeout(() => { if (tab === "valorar" && !ronda) { valorar(); scrollTo(0, 0); } }, ms);
   const salt = $main.querySelector("#saltar"), vt = $main.querySelector("#vertodos");
   if (salt) salt.onclick = () => { const id = lista[0].id; const i = saltados.indexOf(id); if (i >= 0) saltados.splice(i, 1); saltados.push(id); valorar(); };
   if (vt) vt.onclick = () => { filtro = "todos"; valorar(); };
+  const recup = (cod) => { const n = adoptar(cod); if (n < 0) return toast("Código no válido"); toast(n ? `Recuperados ${n} votos` : "No había votos nuevos que recuperar"); filtro = null; valorar(); scrollTo(0, 0); };
+  $main.querySelectorAll("[data-adopta]").forEach((b) => b.onclick = () => recup(b.dataset.adopta));
+  const ad = $main.querySelector("#adoptar"); if (ad) ad.onclick = () => recup($main.querySelector("#codigo").value);
   enganchaVotos($main, (accion, nuevo) => {
     if (!uno) return otra(350);
     otra(accion === "down" ? 450 : 600);
@@ -2208,6 +2253,14 @@ cargar().then(() => {
   sembrarNota();
   inicio();
   vaciarCola();
-  cargarTotales().then(() => { if (tab === "valorar" && !ronda) valorar(); });
+  cargarTotales().then(() => {
+    // ?yo=<código>: enlace para recuperar los votos de otro dispositivo.
+    const q = new URLSearchParams(location.search), yo = q.get("yo");
+    let n = 0;
+    if (yo) { n = Math.max(0, adoptar(yo)); q.delete("yo"); history.replaceState(null, "", location.pathname + (q.toString() ? "?" + q : "") + location.hash); }
+    else n = restaurarVotos(DISP);
+    if (n) toast(`Recuperados ${n} votos guardados`);
+    if (tab === "valorar" && !ronda) { filtro = null; valorar(); }
+  });
 }).catch((e) => { $main.innerHTML = `<p>No se han podido cargar los ejercicios. ${esc(e.message)}</p>`; });
 window.__o10 = { TIPOS, empezar, irA, compartir, compartirPar };
