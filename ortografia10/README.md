@@ -11,7 +11,7 @@ PWA en blanco y negro con el logotipo elegido en [`ortologo/`](../ortologo)
 - **Jugar**: rondas de 10 ejercicios de tipos variados. Los tipos con 👍
   salen el triple y los 👎 no salen. Cada respuesta enseña la regla
   (competencia de Orto, con su truco) y deja votar ese tipo ahí mismo.
-- **Ejercicios** (antes «Valorar»; el id interno sigue siendo `valorar`): los 58 tipos con descripción, ejemplo, de dónde sale la
+- **Ejercicios** (antes «Valorar»; el id interno sigue siendo `valorar`): los 60 tipos con descripción, ejemplo, de dónde sale la
   idea, ▶ Probar (3 seguidos de ese tipo) y 👍/👎 con el total de todos los
   dispositivos. Tras un 👍 se eligen de 1 a 5 ★ (un 👍 empieza en 3 ★);
   al jugar, cuantas más estrellas, más sale (1★ ×1,5 … 5★ ×6). En
@@ -30,7 +30,7 @@ PWA en blanco y negro con el logotipo elegido en [`ortologo/`](../ortologo)
   respuestas sobre las últimas 40; con menos de 5 es provisional. Código en
   `nota.js`.
 
-- **Ideas**: 20 ideas en 4 categorías (lanzamiento, viralidad, marketing y
+- **Ideas**: 28 ideas en 4 categorías (lanzamiento, viralidad, marketing y
   contenido, retos y juegos) con ranking de potencial 1-10 para antes del
   lanzamiento (`cat`, `pt`, `por` en `ideas.js`; estimación a ojo).
   Cada una se abre con sus pasos y maquetas de pantalla de móvil hechas con
@@ -42,7 +42,7 @@ PWA en blanco y negro con el logotipo elegido en [`ortologo/`](../ortologo)
 En Valorar cada tipo lleva «🔥 viral» y «🔁 adictivo» de 1 a 3: es una
 estimación a ojo (`VA` en `app.js`), no un dato medido.
 
-XP (capa tipo Duolingo): 10 por acierto en Jugar, ×2 desde 3 seguidas y ×3 desde 6; en `localStorage` (`o10.xp`) con el total por semana, que sale en la portada.
+XP (capa tipo Duolingo): 10 por acierto en Jugar, ×2 desde 3 seguidas y ×3 desde 6; en `localStorage` (`o10.xp`) con el total por semana, que sale en la portada. Objetivo diario elegible (`o10.objetivo`) y protector de racha: +1 🛡️ cada 7 días seguidos (máx. 2), se gasta solo si un día no juegas (`o10.protector`, `o10.protegidos`).
 
 ## Tipos de ejercicio
 
@@ -104,6 +104,8 @@ XP (capa tipo Duolingo): 10 por acierto en Jugar, ×2 desde 3 seguidas y ×3 des
 | `truco` | 🪄 El truco (truco de la competencia + 5 frases) | Ortografix |
 | `bandera` | 🚩 Bandera roja (mensaje de cita o jefe: ¿huye o quédate?) | Ortografix |
 | `tildemsj` | 💌 Una tilde cambia el mensaje (hacia/hacía, sino/si no…) | Ortografix |
+| `clasifica` | ↔️ Clasifica deslizando (-ción/-sión, b/v, con o sin tilde; arcade) | Apps de ortografía |
+| `repaso` | 🔁 Repaso de tus fallos (palabras falladas hace ≥2 días; `o10.fallos`) | Repetición espaciada |
 | `mismo` | 🟰 ¿Es lo mismo? (dos frases: ¿mismo sentido o no?; se comparte como post) | Ortografix |
 | `razon` | 💬 ¿Quién tiene razón? (discusión de grupo) | Nuevo (tanda 3) |
 

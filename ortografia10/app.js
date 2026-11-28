@@ -41,9 +41,9 @@ if (!DISP) { DISP = Math.random().toString(36).slice(2, 10); ls.set("dev", DISP)
 // ------------------------------------------------------------ datos
 let D = null, byWord = new Map();
 const COMP = (id) => (D.C[id] || [id, "", ""]);
-const P = (i) => (compUsada = D.P[i][4], { w: D.P[i][0], alts: D.P[i][1], g: D.P[i][2], op: D.P[i][3], c: D.P[i][4], d: D.P[i][5] });
+const P = (i) => (compUsada = D.P[i][4], palUsada = i, { w: D.P[i][0], alts: D.P[i][1], g: D.P[i][2], op: D.P[i][3], c: D.P[i][4], d: D.P[i][5] });
 // compUsada: la competencia del último ejercicio (para la pestaña Nota).
-let compUsada = null;
+let compUsada = null, palUsada = null;
 const manual = (f) => D.M.filter(f);
 let MAN = {};
 
@@ -133,11 +133,31 @@ function apuntar(tipo, ok) {
   const comp = compUsada, categoria = catDe(comp, tipo);
   registrarNota(categoria, comp, ok);
   encolar("respuestas", { tipo, acierto: ok, dispositivo: DISP, categoria, comp });
+  // Repaso de fallos: guarda la palabra fallada (en los tipos de una sola palabra) para volver a ella días después.
+  if (UNA_PALABRA.has(tipo) && palUsada != null) {
+    const f = ls.get("fallos", {}), w = D.P[palUsada][0];
+    if (!ok) f[w] = { i: palUsada, f: hoy, n: ((f[w] && f[w].n) || 0) + 1 };
+    else if (tipo === "repaso" && f[w]) delete f[w];
+    ls.set("fallos", f);
+  }
+  // Protector de racha: uno por cada 7 días seguidos (máximo 2).
+  const r = racha(s.dias), pr = ls.get("protector", { n: 0, dado: 0 });
+  if (r >= 7 && r % 7 === 0 && pr.dado !== r) { pr.n = Math.min(2, pr.n + 1); pr.dado = r; ls.set("protector", pr); toast("🛡️ ¡Ganas un protector de racha!"); }
+}
+const UNA_PALABRA = new Set(["bienmal", "elige", "letra", "tilde", "intruso", "autocor", "corrige", "dictado", "repaso", "superviv", "rapido"]);
+// Si ayer no jugaste pero tienes protector, se gasta y la racha sigue.
+function usarProtector() {
+  const s = ls.get("stats", { dias: [] }), pr = ls.get("protector", { n: 0, dado: 0 }), cub = ls.get("protegidos", []);
+  const dia = (k) => new Date(Date.now() - k * 864e5).toISOString().slice(0, 10);
+  const tiene = (d) => (s.dias || []).includes(d) || cub.includes(d);
+  if (pr.n > 0 && !tiene(dia(1)) && tiene(dia(2))) { cub.push(dia(1)); pr.n--; ls.set("protegidos", cub); ls.set("protector", pr); return true; }
+  return false;
 }
 // XP (capa tipo Duolingo): 10 por acierto, ×2 desde 3 seguidas y ×3 desde 6. Se guarda por semana.
 function semana(d = new Date()) { const x = new Date(d); x.setHours(0, 0, 0, 0); x.setDate(x.getDate() - ((x.getDay() + 6) % 7)); return x.toISOString().slice(0, 10); }
 function sumarXP(n) { if (!n) return; const x = ls.get("xp", { total: 0, sem: {} }); x.total += n; const k = semana(); x.sem[k] = (x.sem[k] || 0) + n; ls.set("xp", x); }
 function racha(dias) {
+  dias = dias.concat(ls.get("protegidos", []));
   let n = 0; const d = new Date();
   for (;;) { const k = d.toISOString().slice(0, 10); if (dias.includes(k)) { n++; d.setDate(d.getDate() - 1); } else if (n === 0 && k === new Date().toISOString().slice(0, 10)) { d.setDate(d.getDate() - 1); } else break; }
   return n;
@@ -1584,6 +1604,64 @@ const TIPOS = [
       return { ok: k === bien, html: `<p>Tiene razón <b>${bien ? n2 : n1}</b>: va «${esc(m.o[m.a])}».</p>${m.x ? `<p>${esc(m.x)}</p>` : reglaDe(m.c)}` };
     },
   },
+  // ---------------------------------------------------------------- tanda 5 (segunda ronda de investigación)
+  {
+    id: "clasifica", e: "↔️", n: "Clasifica deslizando", orig: "Apps de ortografía (clasificar deslizando)",
+    desc: "Cae una palabra con un hueco y la mandas a la izquierda o a la derecha: ¿-ción o -sión?, ¿b o v?, ¿lleva tilde o no? Desliza o toca un lado. 3 vidas y cada vez más rápido.",
+    ej: "«televi_ión» → desliza a «-sión».",
+    async run(el) {
+      const MODOS = [
+        { n: "-ción o -sión", l: "-ción", r: "-sión", f: (p) => /[cs]ión$/.test(p.w), m: (p) => [p.w.slice(0, -4) + "_ión", p.w.endsWith("sión") ? 1 : 0] },
+        { n: "b o v", l: "b", r: "v", f: (p) => p.g && p.op && p.op.length === 2 && p.op.includes("b") && p.op.includes("v") && ["b", "v"].includes(p.w.slice(p.g[0], p.g[1])), m: (p) => [p.w.slice(0, p.g[0]) + "_" + p.w.slice(p.g[1]), p.w.slice(p.g[0], p.g[1]) === "v" ? 1 : 0] },
+        { n: "¿Lleva tilde?", l: "Con tilde", r: "Sin tilde", f: (p) => p.c.startsWith("ACE.") && p.c !== "ACE.MENTE" && p.w.length >= 4, m: (p) => [quitarTildes(p.w), /[áéíóú]/.test(p.w) ? 0 : 1] },
+      ];
+      const M = pick(MODOS), rec = ls.get("rec.clasifica", 0); let vidas = 3, puntos = 0, t = 5000; const fallos = [];
+      el.innerHTML = `<div class="hud"><span id="v"></span><span id="pt"></span><span>Récord ${rec}</span></div><p class="enun" style="text-align:center">${esc(M.n)}</p>
+        <div class="desl"><div class="lado" data-k="0">← ${esc(M.l)}</div><div class="pista"><div class="carta" id="w"></div></div><div class="lado" data-k="1">${esc(M.r)} →</div></div><div class="barra-t"><i id="bt"></i></div>`;
+      const $w = el.querySelector("#w"), $bt = el.querySelector("#bt");
+      await new Promise((res) => {
+        let act, tim, x0 = null;
+        const hud = () => { el.querySelector("#v").textContent = "♥".repeat(vidas) + "♡".repeat(3 - vidas); el.querySelector("#pt").textContent = `${puntos} pts`; };
+        const fallo = () => { vidas--; fallos.push(act); hud(); if (vidas <= 0) { clearTimeout(tim); res(); return true; } };
+        const nueva = () => {
+          const p = palAzar(M.f); const [txt, k] = M.m(p); act = { p, k, txt };
+          $w.textContent = txt; $w.style.transform = ""; $w.className = "carta cae";
+          $bt.style.transition = "none"; $bt.style.width = "100%"; void $bt.offsetWidth; $bt.style.transition = `width ${t}ms linear`; $bt.style.width = "0%";
+          clearTimeout(tim); tim = setTimeout(() => { if (!fallo()) nueva(); }, t);
+        };
+        const decide = (k) => {
+          if (vidas <= 0) return;
+          $w.style.transform = `translateX(${k ? 120 : -120}px) rotate(${k ? 12 : -12}deg)`;
+          if (k === act.k) { puntos++; t = Math.max(1600, t * 0.95); hud(); setTimeout(nueva, 160); } else if (!fallo()) setTimeout(nueva, 160);
+        };
+        el.querySelectorAll(".lado").forEach((b) => b.onclick = () => decide(+b.dataset.k));
+        const pista = el.querySelector(".pista");
+        pista.onpointerdown = (e) => { x0 = e.clientX; };
+        pista.onpointermove = (e) => { if (x0 != null) $w.style.transform = `translateX(${e.clientX - x0}px) rotate(${(e.clientX - x0) / 12}deg)`; };
+        pista.onpointerup = (e) => { if (x0 == null) return; const dx = e.clientX - x0; x0 = null; if (Math.abs(dx) > 50) decide(dx > 0 ? 1 : 0); else $w.style.transform = ""; };
+        hud(); nueva();
+      });
+      el.querySelectorAll(".lado").forEach((b) => b.onclick = null);
+      const nuevoRec = puntos > rec; if (nuevoRec) ls.set("rec.clasifica", puntos);
+      return { ok: puntos >= 10 || nuevoRec, html: `<p><b>${puntos} puntos</b>. ${nuevoRec ? "🏆 ¡Nuevo récord!" : `Tu récord: ${rec}.`}</p>${fallos.filter((f) => f && f.p).slice(0, 4).map((f) => `<p>«${esc(f.txt)}» → <b>${esc(f.p.w)}</b></p>`).join("")}${fallos[0] && fallos[0].p ? reglaDe(fallos[0].p.c) : ""}${botonCompartir(`↔️ ${puntos} palabras clasificadas (${M.n}).`, puntos, `puntos en Clasifica: ${M.n}`)}` };
+    },
+  },
+  {
+    id: "repaso", e: "🔁", n: "Repaso de tus fallos", orig: "Repetición espaciada (Duolingo, Palabra Correcta)",
+    desc: "Vuelven las palabras que fallaste hace unos días, para fijarlas. Cada una que aciertas sale de tu lista de fallos. Con explicación comparando la buena y la mala.",
+    ej: "Fallaste «exhuberante» el lunes → el jueves vuelve.",
+    async run(el) {
+      const f = ls.get("fallos", {}), hoy = new Date().toISOString().slice(0, 10), hace = (d) => Math.round((Date.parse(hoy) - Date.parse(d)) / 864e5);
+      let lista = Object.values(f).filter((x) => D.P[x.i]).sort((a, b) => hace(b.f) - hace(a.f));
+      const maduras = lista.filter((x) => hace(x.f) >= 2); if (maduras.length) lista = maduras;
+      if (!lista.length) { el.innerHTML = `<p class="enun">🔁 Aún no tienes fallos que repasar.</p><p class="sub">Cuando falles una palabra en «¿Bien o mal?», «¿Cómo se escribe?», «Pon la tilde»… volverá aquí unos días después.</p>`; return { ok: true, html: `<p>Sigue jugando: aquí aparecerán tus fallos para repasarlos.</p>` }; }
+      const x = lista[0], p = P(x.i);
+      const mal = pick(p.alts); const o = shuffle([p.w, ...p.alts.slice(0, 2)]);
+      el.innerHTML = `<p class="enun">🔁 La fallaste ${hace(x.f) === 0 ? "hoy" : hace(x.f) === 1 ? "ayer" : `hace ${hace(x.f)} días`}${x.n > 1 ? ` (${x.n} veces)` : ""}. ¿Cuál está bien?</p><p class="sub">Te quedan ${lista.length} por repasar.</p><div id="z"></div>`;
+      const ok = await opciones(el.querySelector("#z"), o, o.indexOf(p.w));
+      return { ok, html: `<div class="compara"><div><b>${esc(p.w)}</b><small>✓ así</small></div><div><s>${esc(mal)}</s><small>✗ así no</small></div></div>${reglaDe(p.c)}${ok ? "<p>✅ Sale de tu lista de fallos.</p>" : "<p>Se queda en tu lista: volverá.</p>"}` };
+    },
+  },
   // ---------------------------------------------------------------- tanda 4 (ideas de Projet Voltaire, Ortografix, Merriam-Webster y Duolingo)
   {
     id: "hayfalta", e: "🔍", n: "¿Hay falta o no?", orig: "Projet Voltaire (la pregunta del día)",
@@ -1805,6 +1883,8 @@ const VA = {
   truco: [3, 2, "Los trucos («va a ser = será») se guardan y se reenvían."],
   bandera: [3, 2, "Humor de citas y jefes: muy de reel y de captura."],
   tildemsj: [2, 2, "Pares con contexto: la tilde que cambia la frase da para debate."],
+  clasifica: [2, 3, "Deslizar a un lado u otro es el gesto más rápido del móvil: arcade de «una más»."],
+  repaso: [1, 3, "Poco vistoso, pero la repetición a los pocos días es lo que fija la ortografía."],
   razon: [3, 2, "Las discusiones de grupo sobre cómo se escribe algo son de lo más viral."],
 };
 const puntos = (n) => "●".repeat(n) + "○".repeat(3 - n);
@@ -1836,6 +1916,14 @@ function irA(t) {
   scrollTo(0, 0);
 }
 
+// Objetivo diario que elige el usuario (ejercicios al día).
+let protegido = usarProtector();
+function objetivoHTML(hoy) {
+  const o = ls.get("objetivo", 0);
+  if (!o) return `<div class="obj"><b>🎯 ¿Cuál es tu objetivo diario?</b><div class="filtros" style="margin:8px 0 0">${[[10, "Suave"], [20, "Normal"], [30, "Serio"], [50, "Intenso"]].map(([n, t]) => `<button data-obj="${n}">${t} · ${n}</button>`).join("")}</div></div>`;
+  const pc = Math.min(100, Math.round((100 * hoy) / o));
+  return `<div class="obj"><div style="display:flex;justify-content:space-between"><b>🎯 Objetivo de hoy: ${Math.min(hoy, o)}/${o}${hoy >= o ? " ✅" : ""}</b><button class="probar" data-obj="0" style="padding:2px 10px;font-size:12px">Cambiar</button></div><div class="barra-t" style="margin-top:8px"><i style="width:${pc}%;transition:none"></i></div></div>`;
+}
 function inicio() {
   const s = ls.get("stats", { n: 0, ok: 0, tipos: {}, dias: [] }); const v = Object.fromEntries(Object.entries(votos()).filter(([k]) => TIPO[k]));
   const hoy = s.hoyFecha === new Date().toISOString().slice(0, 10) ? s.hoy || 0 : 0;
@@ -1845,16 +1933,19 @@ function inicio() {
     <p class="sub">Rondas de ${RONDA} ejercicios de ${TIPOS.length} tipos distintos. Si fallas, te explico la regla.</p>
     ${retoHTML()}
     <button class="btn neg big" id="go">Jugar</button>
+    ${objetivoHTML(hoy)}
     <div class="stats">
       <div class="stat"><b>${hoy}</b><span>hoy</span></div>
       <div class="stat"><b>${s.n ? Math.round((100 * s.ok) / s.n) + "%" : "—"}</b><span>aciertos</span></div>
-      <div class="stat"><b>${racha(s.dias || [])}</b><span>días seguidos</span></div>
+      <div class="stat"><b>${racha(s.dias || [])}${ls.get("protector", { n: 0 }).n ? `<small> 🛡️${ls.get("protector", { n: 0 }).n}</small>` : ""}</b><span>días seguidos</span></div>
       <div class="stat"><b>${(ls.get("xp", { sem: {} }).sem[semana()] || 0)}</b><span>XP semana</span></div>
     </div>
     <p class="sub">${nUp || nDown ? `Has valorado ${nUp + nDown} tipos: los 👍 (${nUp}) te salen más, y cuantas más ★ más, y los 👎 (${nDown}) ya no te salen.` : "Aún no has valorado ningún tipo de ejercicio: puedes hacerlo mientras juegas o en «Ejercicios»."}</p>
     <button class="btn" style="width:100%" id="val">👍 👎 Ejercicios: valora los ${TIPOS.length} tipos</button>`;
   $main.querySelector("#go").onclick = () => empezar();
   $main.querySelector("#val").onclick = () => irA("valorar");
+  $main.querySelectorAll("[data-obj]").forEach((b) => b.onclick = () => { ls.set("objetivo", +b.dataset.obj); inicio(); });
+  if (protegido) { toast("🛡️ Has gastado un protector: tu racha sigue viva"); protegido = false; }
   const rt = $main.querySelector(".reto");
   if (rt) rt.querySelectorAll("[data-rb]").forEach((b) => b.onclick = () => {
     const R = RETO, p = P(R.t), ok = (b.dataset.rb === "1") === R.bien;
