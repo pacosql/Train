@@ -41,7 +41,7 @@ const POR_TIPO = {
 
 // Tipos que siempre cuentan en la misma categoría (mezclan palabras de
 // reglas distintas o trabajan la tilde con cualquier palabra).
-const FIJO = { tilde: "ACE", tonica: "ACE", clase: "ACE", diptongo: "ACE", separa: "ACE", teoria: "ACE", puntua: "PUN", mayus: "MAY", reloj: "ADU", cuantas: "ADU", coma: "PUN", cestas: "ACE", diana: "ACE" };
+const FIJO = { tilde: "ACE", tonica: "ACE", clase: "ACE", diptongo: "ACE", separa: "ACE", teoria: "ACE", puntua: "PUN", mayus: "MAY", reloj: "ADU", cuantas: "ADU", coma: "PUN", mismo: "PUN", cestas: "ACE", diana: "ACE" };
 
 export function catDe(comp, tipo) {
   if (FIJO[tipo]) { const c = catDe(comp); return FIJO[tipo] === "ACE" && c === "DIA" ? "DIA" : FIJO[tipo]; }

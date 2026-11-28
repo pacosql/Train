@@ -11,7 +11,7 @@ PWA en blanco y negro con el logotipo elegido en [`ortologo/`](../ortologo)
 - **Jugar**: rondas de 10 ejercicios de tipos variados. Los tipos con 👍
   salen el triple y los 👎 no salen. Cada respuesta enseña la regla
   (competencia de Orto, con su truco) y deja votar ese tipo ahí mismo.
-- **Valorar**: los 50 tipos con descripción, ejemplo, de dónde sale la
+- **Valorar**: los 51 tipos con descripción, ejemplo, de dónde sale la
   idea, ▶ Probar (3 seguidos de ese tipo) y 👍/👎 con el total de todos los
   dispositivos. Tras un 👍 se eligen de 1 a 5 ★ (un 👍 empieza en 3 ★);
   al jugar, cuantas más estrellas, más sale (1★ ×1,5 … 5★ ×6). En
@@ -92,6 +92,7 @@ estimación a ojo (`VA` en `app.js`), no un dato medido.
 | `escalera` | 🪜 La escalera (8 peldaños, plantarse, seguro y 50:50) | Nuevo (tanda 3) |
 | `cestas` | 🧺 Las tres cestas (arcade aguda/llana/esdrújula) | Nuevo (tanda 3) |
 | `diana` | 🎯 Tiro al acento (arcade de sílaba fuerte) | Nuevo (tanda 3) |
+| `mismo` | 🟰 ¿Es lo mismo? (dos frases: ¿mismo sentido o no?; se comparte como post) | Ortografix |
 | `razon` | 💬 ¿Quién tiene razón? (discusión de grupo) | Nuevo (tanda 3) |
 
 En Jugar se cuenta la racha de aciertos seguidos (🔥 desde 3). Supervivencia y

@@ -271,6 +271,32 @@ const COMAS = [
   ["Si el hombre supiera realmente el valor que tiene, la mujer andaría a cuatro patas en su búsqueda.", "Si el hombre supiera realmente el valor que tiene la mujer, andaría a cuatro patas en su búsqueda.", "La que buscaría a cuatro patas es la mujer 🙋‍♀️", "El que buscaría a cuatro patas es el hombre 🙋‍♂️", "El famoso ejemplo de la coma: según dónde vaya, cambia quién tiene el valor y quién busca."],
 ];
 
+
+// ------------------------------------------------------------ ¿es lo mismo? (formato «No es lo mismo… que…» de Ortografix)
+// [frase A, frase B, ¿significan lo mismo?, explicación]. Los pares de COMAS también entran (no son lo mismo).
+const MISMO = [
+  ["No me mires feo.", "No me mires, feo.", false, "Sin coma, «feo» dice cómo no te tiene que mirar. Con coma, «feo» es a quien le hablas (vocativo): le estás llamando feo."],
+  ["Habla bajo.", "Habla, bajo.", false, "Sin coma: que hable en voz baja. Con coma: le hablas a alguien bajito de estatura."],
+  ["No, espera.", "No espera.", false, "Con coma: «no» responde y luego pides que espere. Sin coma: cuentas que alguien no espera."],
+  ["Mañana no, voy al cine.", "Mañana no voy al cine.", false, "Con coma: mañana no puedes porque vas al cine. Sin coma: mañana no vas al cine."],
+  ["Tranquilo, papá, no corre.", "Tranquilo, papá no corre.", false, "Con «papá» entre comas le hablas a tu padre. Con una sola coma tranquilizas a otro: papá no conduce deprisa."],
+  ["Mi amigo, el médico, vino.", "Mi amigo el médico vino.", false, "Entre comas, «el médico» explica quién es tu amigo (solo tienes uno). Sin comas, distingue: de tus amigos, vino el médico."],
+  ["Mas no quiso.", "Más no quiso.", false, "«Mas» sin tilde significa «pero»: pero no quiso. «Más» con tilde es cantidad: no quiso más."],
+  ["Solo vino Juan.", "Vino Juan solo.", false, "«Solo vino Juan»: no vino nadie más. «Vino Juan solo»: Juan vino sin compañía (quizá vinieron más)."],
+  ["Tú, llama.", "Tu llama.", false, "«Tú», con tilde, es la persona: tú, llama por teléfono. «Tu», sin tilde, es posesivo: tu llama 🦙."],
+  ["El presidente dijo: «El ministro es un desastre».", "«El presidente», dijo el ministro, «es un desastre».", false, "Cambiando la puntuación cambia quién habla y quién es el desastre."],
+  ["Aún no ha llegado.", "Todavía no ha llegado.", true, "«Aún» con tilde significa «todavía»: es lo mismo."],
+  ["Aun así, lo hizo.", "Incluso así, lo hizo.", true, "«Aun» sin tilde significa «incluso»: es lo mismo."],
+  ["Solo quiero agua.", "Únicamente quiero agua.", true, "«Solo» (adverbio) es «solamente», «únicamente». Hoy se escribe sin tilde."],
+  ["Quizá llueva.", "Quizás llueva.", true, "«Quizá» y «quizás» son igual de correctas y significan lo mismo."],
+  ["No sé por qué llora.", "No sé el motivo por el que llora.", true, "«Por qué» separado y con tilde equivale a «por qué motivo», también en preguntas indirectas."],
+  ["Has de beber agua.", "Tienes que beber agua.", true, "«Haber de» + infinitivo expresa obligación, como «tener que». Y va con h: has."],
+  ["Dime qué quieres.", "Dime lo que quieres.", true, "Las dos preguntan lo mismo; en la primera «qué» lleva tilde porque es interrogativo indirecto."],
+  ["Te espero si vienes.", "Si vienes, te espero.", true, "Mismo sentido. Cuando la condición va delante, se separa con coma."],
+  ["Él lo sabe.", "Lo sabe él.", true, "Cambia el orden, no el sentido. «Él», pronombre, lleva tilde."],
+  ["Sí, lo sé.", "Claro, lo sé.", true, "«Sí» con tilde afirma, como «claro». «Sé», de saber, también lleva tilde."],
+];
+
 // ------------------------------------------------------------ compartir en redes (imagen de historia + texto)
 const URL_APP = "https://pacosql.github.io/Train/ortografia10/";
 // Palabra trampa para retar a los seguidores: una falta típica y difícil.
@@ -314,6 +340,49 @@ async function compartir({ texto, grande, sub, cuadros, r }) {
   try { await navigator.clipboard.writeText(msg); toast("Texto y enlace copiados · se descarga la imagen"); } catch { toast("Se descarga la imagen"); }
   if (blob) { const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "ortografia10.png"; a.click(); }
 }
+// Imagen minimalista estilo post: «No es lo mismo «A» que «B».», centrado en blanco.
+function lienzoPar(a, b, mismo) {
+  const c = document.createElement("canvas"); c.width = 1080; c.height = 1350; const x = c.getContext("2d");
+  x.fillStyle = "#fff"; x.fillRect(0, 0, 1080, 1350); x.fillStyle = "#000"; x.textBaseline = "alphabetic";
+  const fam = "P10, Helvetica, Arial, sans-serif";
+  const segs = [[mismo ? "Es lo mismo" : "No es lo mismo", 0], ["«" + a + "»", 1], ["que", 0], ["«" + b + "».", 1]];
+  const palabras = []; segs.forEach(([t, bold]) => t.split(" ").forEach((w) => palabras.push([w, bold])));
+  let size = 58, lineas;
+  for (; size >= 34; size -= 4) {
+    lineas = []; let l = [], ancho = 0;
+    for (const [w, bold] of palabras) {
+      x.font = `${bold ? 800 : 600} ${size}px ${fam}`; const ww = x.measureText(w + " ").width;
+      if (ancho + ww > 900 && l.length) { lineas.push([l, ancho]); l = []; ancho = 0; }
+      l.push([w, bold, ww]); ancho += ww;
+    }
+    lineas.push([l, ancho]); if (lineas.length * size * 1.35 < 800) break;
+  }
+  let y = 675 - ((lineas.length - 1) * size * 1.35) / 2 + size / 3;
+  for (const [l, ancho] of lineas) {
+    let X = 540 - ancho / 2;
+    for (const [w, bold, ww] of l) { x.font = `${bold ? 800 : 600} ${size}px ${fam}`; x.fillStyle = bold ? "#000" : "#444"; x.fillText(w, X, y); X += ww; }
+    y += size * 1.35;
+  }
+  x.fillStyle = "#000"; x.font = `800 34px ${fam}`; x.fillText("ortografía 10", 90, 1250);
+  x.fillStyle = "#6b6b6b"; x.font = `600 28px ${fam}`; x.textAlign = "right"; x.fillText("pacosql.github.io/Train/ortografia10", 990, 1250);
+  return c;
+}
+async function compartirPar(a, b, mismo) {
+  const msg = `${mismo ? "Es lo mismo" : "No es lo mismo"} «${a}» que «${b}». ¿Sabrías decir por qué? 🤔\n${URL_APP}`;
+  try { await document.fonts.load('800 60px "P10"'); await document.fonts.load('600 60px "P10"'); } catch {}
+  const blob = await new Promise((res) => lienzoPar(a, b, mismo).toBlob(res, "image/png"));
+  const file = blob && new File([blob], "ortografia10-par.png", { type: "image/png" });
+  try {
+    if (file && navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], text: msg }); return; }
+    if (navigator.share) { await navigator.share({ text: msg }); return; }
+  } catch (e) { if (e && e.name === "AbortError") return; }
+  try { await navigator.clipboard.writeText(msg); toast("Texto copiado · se descarga la imagen"); } catch { toast("Se descarga la imagen"); }
+  if (blob) { const l = document.createElement("a"); l.href = URL.createObjectURL(blob); l.download = "ortografia10-par.png"; l.click(); }
+}
+document.addEventListener("click", (e) => {
+  const b = e.target.closest("[data-par]"); if (!b) return;
+  try { const [a, c, m] = JSON.parse(b.dataset.par); compartirPar(a, c, m); } catch {}
+});
 // Botón para el html de un resultado (se engancha con un único listener global).
 function botonCompartir(texto, grande, sub) {
   return `<button class="btn" style="width:100%;margin-top:6px" data-compartir="${esc(JSON.stringify({ texto, grande: String(grande), sub }))}">📤 Compartir en redes</button>`;
@@ -1478,6 +1547,21 @@ const TIPOS = [
       return { ok: k === bien, html: `<p>Tiene razón <b>${bien ? n2 : n1}</b>: va «${esc(m.o[m.a])}».</p>${m.x ? `<p>${esc(m.x)}</p>` : reglaDe(m.c)}` };
     },
   },
+  {
+    id: "mismo", e: "🟰", n: "¿Es lo mismo?", orig: "Ortografix (Instagram: «No es lo mismo… que…»)",
+    desc: "Dos frases casi iguales. ¿Significan lo mismo o una coma, una tilde o una palabra les cambia el sentido? Luego, compártelo como post.",
+    ej: "«No me mires feo» / «No me mires, feo» → No es lo mismo.",
+    async run(el) {
+      let a, b, mismo, x, sa = "", sb = "";
+      if (Math.random() < 0.35) { [a, b, sa, sb, x] = pick(COMAS); mismo = false; } else [a, b, mismo, x] = pick(MISMO);
+      if (Math.random() < 0.5) { [a, b] = [b, a]; [sa, sb] = [sb, sa]; }
+      [a, b] = [a, b].map((f) => f.replace(/\.$/, "")); // como en el post: «no me mires feo», sin punto dentro de las comillas
+      el.innerHTML = `<div class="par"><p>«<b>${esc(a)}</b>»</p><p>«<b>${esc(b)}</b>»</p></div><div id="z"></div>`;
+      const ok = await opciones(el.querySelector("#z"), ["🟰 Es lo mismo", "≠ No es lo mismo"], mismo ? 0 : 1, { dos: true });
+      return { ok, html: `<p><b>${mismo ? "Es lo mismo." : "No es lo mismo."}</b></p>${sa ? `<p>«${esc(a)}» → ${esc(sa)}</p><p>«${esc(b)}» → ${esc(sb)}</p>` : ""}<div class="regla"><b>Por qué</b>${esc(x)}</div>
+        <button class="btn" style="width:100%;margin-top:6px" data-par="${esc(JSON.stringify([a, b, mismo]))}">📤 Compartir como post</button>` };
+    },
+  },
 ];
 const TIPO = Object.fromEntries(TIPOS.map((t) => [t.id, t]));
 
@@ -1533,6 +1617,7 @@ const VA = {
   escalera: [3, 3, "¿Plantarse o arriesgar? El enganche de los concursos de la tele."],
   cestas: [2, 3, "Arcade rápido con combo y récord: «una más» garantizado."],
   diana: [2, 3, "Puntería contra el reloj; grabado en vídeo luce mucho."],
+  mismo: [3, 2, "El formato «No es lo mismo… que…» de Ortografix: se comparte tal cual como post."],
   razon: [3, 2, "Las discusiones de grupo sobre cómo se escribe algo son de lo más viral."],
 };
 const puntos = (n) => "●".repeat(n) + "○".repeat(3 - n);
@@ -1816,4 +1901,4 @@ cargar().then(() => {
   vaciarCola();
   cargarTotales().then(() => { if (tab === "valorar" && !ronda) valorar(); });
 }).catch((e) => { $main.innerHTML = `<p>No se han podido cargar los ejercicios. ${esc(e.message)}</p>`; });
-window.__o10 = { TIPOS, empezar, irA, compartir };
+window.__o10 = { TIPOS, empezar, irA, compartir, compartirPar };
