@@ -30,7 +30,9 @@ PWA en blanco y negro con el logotipo elegido en [`ortologo/`](../ortologo)
   respuestas sobre las últimas 40; con menos de 5 es provisional. Código en
   `nota.js`.
 
-- **Ideas**: 15 ideas de lanzamiento, marketing, juegos y retos (`ideas.js`).
+- **Ideas**: 20 ideas en 4 categorías (lanzamiento, viralidad, marketing y
+  contenido, retos y juegos) con ranking de potencial 1-10 para antes del
+  lanzamiento (`cat`, `pt`, `por` en `ideas.js`; estimación a ojo).
   Cada una se abre con sus pasos y maquetas de pantalla de móvil hechas con
   HTML/CSS (datos inventados), y se vota con 👍/👎 y ★ como los tipos; se guardan en `ortografia10_votos` con
   `tipo = "idea:<id>"`. Ya hechas: imagen de resultado para historias

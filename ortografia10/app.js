@@ -12,7 +12,7 @@
 // en cola y se reintentan al abrir la app.
 import { quitarTildes, silabear, analizar, explicarTilde, marcarTonica } from "./silabas.js";
 import { catDe, registrarNota, sembrarNota, pintarNota } from "./nota.js?v=__BUILD_ID__";
-import { IDEAS } from "./ideas.js?v=__BUILD_ID__";
+import { IDEAS, CATS_IDEAS } from "./ideas.js?v=__BUILD_ID__";
 
 const CFG = window.ORTOGRAFIA10_CONFIG;
 const $main = document.getElementById("main");
@@ -1877,7 +1877,7 @@ function retoHTML() {
 }
 
 // ------------------------------------------------------------ ideas de lanzamiento, marketing, juegos y retos
-let ideaAbierta = null;
+let ideaAbierta = null, filtroIdeas = "rank";
 function ideas() {
   const v = votos();
   if (ideaAbierta) {
@@ -1885,8 +1885,9 @@ function ideas() {
     $main.innerHTML = `
       <button class="probar" id="volver">← Todas las ideas</button>
       <h2 style="margin-top:14px">${i.e} ${esc(i.n)}</h2>
-      <div class="orig" style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--mute)">${esc(i.tipo)} · ${esc(i.red)}${i.hecho ? " · ✅ ya está en la app" : ""}</div>
-      <p>${esc(i.desc)}</p>
+      <div class="orig" style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--mute)">${CATS_IDEAS.find((q) => q[0] === i.cat).slice(1, 3).join(" ")} · ${esc(i.red)}${i.hecho ? " · ✅ ya está en la app" : ""}</div>
+      <div class="pot"><b>${i.pt}/10</b><i style="width:${i.pt * 10}%"></i></div>
+      <p>${esc(i.desc)}</p><p class="sub">💡 ${esc(i.por)}</p>
       <ol class="pasos">${i.pasos.map((p) => `<li>${esc(p)}</li>`).join("")}</ol>
       <p class="sub" style="margin:14px 0 6px">Así se vería (maqueta, datos inventados):</p>
       <div class="mqs">${i.mq().join("")}</div>
@@ -1899,13 +1900,19 @@ function ideas() {
     return;
   }
   const n = IDEAS.filter((i) => v["idea:" + i.id]).length;
+  const rank = [...IDEAS].sort((x, y) => y.pt - x.pt || IDEAS.indexOf(x) - IDEAS.indexOf(y));
+  const puesto = (i) => rank.indexOf(i) + 1;
+  const tarjeta = (i) => { const x = v["idea:" + i.id] || 0; const c = CATS_IDEAS.find((q) => q[0] === i.cat); return `<div class="tarjeta ${x > 0 ? "like" : x === -1 ? "dislike" : ""}">
+      <h3><span class="rk">#${puesto(i)}</span><span>${i.e}</span>${esc(i.n)}${i.hecho ? " <small>✅ ya está</small>" : ""}</h3>
+      <div class="orig">${c[1]} ${esc(c[2])} · ${esc(i.red)}</div>
+      <div class="pot"><b>${i.pt}/10</b><i style="width:${i.pt * 10}%"></i></div><p>${esc(i.desc)}</p><p class="ej">💡 ${esc(i.por)}</p>
+      <div class="pie"><button class="probar" data-idea="${i.id}">👁 Ver cómo sería</button>${botonesVoto("idea:" + i.id, x)}</div></div>`; };
   $main.innerHTML = `
     <h2>Ideas de lanzamiento</h2>
-    <p class="sub">${IDEAS.length} ideas de marketing, juegos y retos para lanzar la app y que se comparta en redes. Toca una para ver cómo sería, con maquetas de pantalla. Vota 👍 (y de 1 a 5 ★) o 👎. Las ✅ ya están hechas. Llevas ${n} de ${IDEAS.length} valoradas.</p>
-    ${IDEAS.map((i) => { const x = v["idea:" + i.id] || 0; return `<div class="tarjeta ${x > 0 ? "like" : x === -1 ? "dislike" : ""}">
-      <h3><span>${i.e}</span>${esc(i.n)}${i.hecho ? " <small>✅ ya está</small>" : ""}</h3>
-      <div class="orig">${esc(i.tipo)} · ${esc(i.red)}</div><p>${esc(i.desc)}</p>
-      <div class="pie"><button class="probar" data-idea="${i.id}">👁 Ver cómo sería</button>${botonesVoto("idea:" + i.id, x)}</div></div>`; }).join("")}`;
+    <p class="sub">${IDEAS.length} ideas de lanzamiento, viralidad, marketing y juegos, con un ranking de potencial (de 1 a 10) pensando en que la app aún no ha salido: arriba, lo que más usuarios traería en el lanzamiento. Es mi estimación, no un dato medido. Toca una para ver maquetas. Llevas ${n} de ${IDEAS.length} valoradas.</p>
+    <div class="filtros"><button data-fi="rank" class="${filtroIdeas === "rank" ? "on" : ""}">🏆 Ranking</button>${CATS_IDEAS.map(([k, e, nom]) => `<button data-fi="${k}" class="${filtroIdeas === k ? "on" : ""}">${e} ${nom}</button>`).join("")}</div>
+    ${filtroIdeas === "rank" ? rank.map(tarjeta).join("") : CATS_IDEAS.filter((c) => c[0] === filtroIdeas).map(([k, e, nom, d]) => `<p class="sub">${esc(d)}</p>${rank.filter((i) => i.cat === k).map(tarjeta).join("")}`).join("")}`;
+  $main.querySelectorAll("[data-fi]").forEach((b) => b.onclick = () => { filtroIdeas = b.dataset.fi; ideas(); });
   $main.querySelectorAll("[data-idea]").forEach((b) => b.onclick = () => { ideaAbierta = b.dataset.idea; ideas(); scrollTo(0, 0); });
   enganchaVotos($main, () => setTimeout(() => { if (tab === "ideas" && !ideaAbierta) { const y = scrollY; ideas(); scrollTo(0, y); } }, 400));
 }
