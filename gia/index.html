@@ -105,6 +105,31 @@
     svg text { fill: var(--text-2); font-size: 10px; }
     .bar { height: 8px; border-radius: 99px; background: var(--surface-2); overflow: hidden; }
     .bar > div { height: 100%; background: var(--accent); }
+    /* ---- Atajos visuales ---- */
+    .atajos summary { cursor: pointer; font-weight: 700; font-size: 16px; padding: 4px 0 8px; list-style: none; }
+    .atajos summary::-webkit-details-marker { display: none; }
+    .atajos summary::before { content: "▸ "; } .atajos[open] summary::before { content: "▾ "; }
+    .strip { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); padding-bottom: 6px; }
+    .desliza { display: none; font-size: 12px; color: var(--text-2); font-weight: 400; }
+    @media (max-width: 700px) {
+      .strip { grid-template-columns: repeat(5, 84%); overflow-x: auto; scroll-snap-type: x mandatory; }
+      .desliza { display: inline; }
+    }
+    .tip { scroll-snap-align: start; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
+    .tip h4 { margin: 0; font-size: 15px; display: flex; gap: 6px; align-items: center; }
+    .tip h4 .seg { margin-left: auto; font-size: 11px; font-weight: 600; color: var(--text-2); }
+    .tip .vis { background: var(--surface-2); border-radius: 12px; padding: 10px; min-height: 104px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 6px; font-size: 14px; }
+    .tip .regla { font-size: 13px; line-height: 1.35; }
+    .tip .regla b { color: var(--accent); }
+    .chip { display: inline-block; padding: 2px 8px; border-radius: 8px; background: var(--surface); border: 1px solid var(--line); font-weight: 600; }
+    .chip.hl { background: var(--accent); color: #fff; border-color: transparent; }
+    @media (prefers-color-scheme: dark) { .chip.hl { color: #11142e; } }
+    .chip.x { text-decoration: line-through; opacity: .55; }
+    .arrow { color: var(--text-2); font-weight: 700; }
+    .lt { display: grid; grid-template-columns: repeat(4, 26px); text-align: center; font: 700 18px Verdana, "DejaVu Sans", sans-serif; row-gap: 2px; }
+    .lt .y { color: var(--ok); font-size: 13px; } .lt .n { color: var(--ko); font-size: 13px; }
+    .rr { display: inline-block; font: 800 34px "Arial Black", Arial, sans-serif; color: var(--glyph); }
+    @media (prefers-color-scheme: dark) { .rr { color: #9fb6ff; } }
     .footer { text-align: center; margin-top: 30px; font-size: 11px; color: var(--text-2); }
   </style>
 </head>
@@ -545,6 +570,48 @@
       ${pal.length ? `<h3>📖 Tríos fallados</h3><ul class="tips">${[...new Set(pal)].slice(0, 15).map((x) => `<li>${esc(x)}</li>`).join("")}</ul>` : ""}
     </div>`;
   }
+  // Tira visual «Cómo ir más rápido»: el truco de cada tarea en un vistazo.
+  function atajosHTML() {
+    const tu = (t) => { const e = estadoTarea(t); return e && e.preguntas ? `tú ${(e.segundos / e.preguntas).toFixed(1)} s · ` : ""; };
+    const card = (t, vis, regla) => `<div class="tip"><h4>${TAREAS[t].emoji} ${TAREAS[t].nombre}<span class="seg">${tu(t)}meta ${TAREAS[t].seg} s</span></h4>
+      <div class="vis">${vis}</div><div class="regla">${regla}</div></div>`;
+    const abierto = (() => { try { return localStorage.getItem("gia_atajos") !== "0"; } catch (e) { return true; } })();
+    return `<details class="atajos" id="atajos" ${abierto ? "open" : ""}><summary>⚡ Cómo ir más rápido <span class="desliza">· desliza →</span></summary><div class="strip">
+      ${card("razonamiento",
+        `<div><span class="chip x">Ana no es tan fuerte como Eva</span></div>
+         <div class="arrow">↓ guarda solo</div>
+         <div><span class="chip hl">fuerte = Eva</span></div>
+         <div><span class="chip">¿más débil?</span> <span class="arrow">→ el otro →</span> <span class="chip hl">Ana</span></div>`,
+        `Al leer, guarda <b>un solo nombre</b>: quién tiene MÁS del adjetivo. Con «<b>menos… que</b>» o «<b>no es tan… como</b>» gana el <b>segundo</b>. Si preguntan el contrario o «¿menos…?», es <b>el otro</b>.`)}
+      ${card("perceptiva",
+        `<div class="lt"><div>E</div><div>Q</div><div>D</div><div>K</div><div>e</div><div>y</div><div>d</div><div>k</div>
+          <div class="y">✓</div><div class="n">✗</div><div class="y">✓</div><div class="y">✓</div></div>
+         <div><span class="arrow">sí · no · sí · sí →</span> <span class="chip hl">3</span></div>`,
+        `<b>Un solo barrido</b> de izquierda a derecha contando solo los «sí». Si ves que casi todas coinciden, <b>cuenta las distintas y resta de 4</b>. Compara la forma, no leas; ratón quieto sobre los botones.`)}
+      ${card("numerica",
+        `<svg viewBox="0 0 220 64" width="100%" style="max-width:240px">
+           <line x1="10" y1="34" x2="210" y2="34" stroke="currentColor" opacity=".35" stroke-width="2"/>
+           <circle cx="30" cy="34" r="5" fill="currentColor"/><circle cx="60" cy="34" r="5" fill="currentColor"/>
+           <circle cx="200" cy="34" r="9" fill="none" stroke="var(--accent)" stroke-width="3"/><circle cx="200" cy="34" r="5" fill="var(--accent)"/>
+           <text x="30" y="58" text-anchor="middle" style="fill:currentColor;font-size:13px">3</text><text x="60" y="58" text-anchor="middle" style="fill:currentColor;font-size:13px">5</text>
+           <text x="200" y="58" text-anchor="middle" style="fill:var(--accent);font-size:13px;font-weight:700">12</text>
+           <path d="M30 22 Q45 8 60 22" fill="none" stroke="currentColor" opacity=".6"/><text x="45" y="12" text-anchor="middle" style="fill:currentColor;font-size:12px">2</text>
+           <path d="M60 22 Q130 -6 200 22" fill="none" stroke="var(--accent)" stroke-width="2"/><text x="130" y="12" text-anchor="middle" style="fill:var(--accent);font-size:12px;font-weight:700">7</text>
+         </svg>`,
+        `Localiza <b>menor y mayor</b>; el otro es el «de en medio». Mira los <b>dos huecos</b> y pulsa el extremo del <b>hueco grande</b>. Si a ojo un hueco es claramente mayor, no restes. Nunca es el del medio.`)}
+      ${card("palabras",
+        `<div><span class="chip hl">arriba</span> <span class="arrow">↔</span> <span class="chip hl">abajo</span></div>
+         <div class="arrow">pareja (contrarios) → sobra</div>
+         <div><span class="chip x">calle</span></div>`,
+        `No analices las tres: <b>busca la pareja</b> (sinónimos o <b>contrarios</b>, que también cuentan). La que queda fuera es la respuesta. Primera impresión y clic.`)}
+      ${card("espacial",
+        `<div style="display:flex;gap:18px;align-items:center">
+           <div style="text-align:center"><span class="rr" style="transform:rotate(90deg)">R</span><div class="y" style="color:var(--ok);font-size:12px;font-weight:700">barriga a la derecha<br>= NORMAL</div></div>
+           <div style="text-align:center"><span class="rr" style="transform:rotate(90deg) scaleX(-1)">R</span><div style="color:var(--ko);font-size:12px;font-weight:700">barriga a la izquierda<br>= ESPEJO</div></div>
+         </div>`,
+        `No gires la letra: recorre el <b>palo recto del pie a la cabeza</b> y mira hacia dónde queda la barriga. Cuenta la tarjeta si arriba y abajo son <b>del mismo tipo</b> (normal-normal o espejo-espejo).`)}
+    </div></details>`;
+  }
   function hoyTxt() {
     const hoy = new Date().toDateString();
     const ss = SESIONES.filter((s) => new Date(s.created_at).toDateString() === hoy);
@@ -575,6 +642,7 @@
       <h1>🧠 Entrenador GIA <span class="muted" style="margin-left:auto">práctica no oficial</span></h1>
       <button class="big primary" id="b-jugar" style="font-size:24px;text-align:center;padding:22px">▶ Jugar
         <small>${hoyTxt()}</small></button>
+      ${atajosHTML()}
       <div class="card hero">
         <div class="muted">Veredicto del entrenador ${plan ? `· ${hace(plan.created_at)}` : ""}</div>
         <b class="big">${plan?.listo ? "✅ Listo para examinarte" : nivel === "casi" ? "🟡 Casi listo" : nivel === "sin datos" ? "Sin datos aún" : "⏳ Aún no"}</b>
@@ -599,6 +667,7 @@
       </div>
       <div class="footer">build ${BUILD} · datos en Supabase (tablas gia_)</div>`;
     $app.querySelector("#b-jugar").onclick = jugarLibre;
+    $app.querySelector("#atajos").addEventListener("toggle", (e) => { try { localStorage.setItem("gia_atajos", e.target.open ? "1" : "0"); } catch (x) {} });
     $app.querySelector("#b-sim").onclick = () => iniciarSecuencia("simulacro", ORDEN, null);
     $app.querySelector("#b-plan").onclick = () => {
       const p = PLAN?.plan || {};
